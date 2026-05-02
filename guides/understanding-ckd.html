@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding CKD – W. G. M. Rivero, MD</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1e2e;
+    --navy-light: #1a2f45;
+    --gold: #b8962e;
+    --gold-light: #d4af4f;
+    --teal: #1a6b72;
+    --teal-light: #e1f5f0;
+    --text: #1a1a1a;
+    --text-muted: #5a6472;
+    --border: #e2e6eb;
+    --bg: #f9fafb;
+    --white: #ffffff;
+    --red-soft: #fdf0ef;
+    --red: #c0392b;
+    --amber: #f5a623;
+    --amber-soft: #fef9ec;
+    --green: #2d7a4f;
+    --green-soft: #edf7f2;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    color: white;
+    padding: 72px 0 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -80px;
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,150,46,0.15);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(26,107,114,0.2);
+  }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    border: 1px solid rgba(184,150,46,0.4);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+    max-width: 600px;
+    line-height: 1.65;
+    margin-bottom: 36px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 7px; }
+  .hero-meta strong { color: rgba(255,255,255,0.8); font-weight: 500; }
+
+  /* ── NAV PILLS ── */
+  .nav-strip {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-pills {
+    display: flex;
+    gap: 4px;
+    padding: 12px 32px;
+    max-width: 860px;
+    margin: 0 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill {
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav-pill:hover {
+    color: var(--navy);
+    border-color: var(--border);
+    background: var(--bg);
+  }
+
+  /* ── SECTIONS ── */
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+  .section h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(22px, 3.5vw, 32px);
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 20px;
+    letter-spacing: -0.015em;
+  }
+  .section p { color: var(--text-muted); margin-bottom: 16px; }
+  .section p:last-child { margin-bottom: 0; }
+
+  /* ── INTRO CALLOUT ── */
+  .intro-callout {
+    background: var(--navy);
+    color: white;
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 40px;
+  }
+  .intro-callout p {
+    color: rgba(255,255,255,0.78);
+    font-size: 17px;
+    line-height: 1.75;
+    margin: 0;
+  }
+  .intro-callout p strong { color: white; font-weight: 600; }
+
+  /* ── STAGE CARDS ── */
+  .stages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 28px 0;
+  }
+  .stage-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .stage-card .stage-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .stage-card .stage-num {
+    font-family: 'Lora', serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stage-card .stage-egfr {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .stage-card .stage-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+  .stage-1 .stage-num { color: #2d7a4f; }
+  .stage-2 .stage-num { color: #5a9e68; }
+  .stage-3a .stage-num { color: #f0a500; }
+  .stage-3b .stage-num { color: #e07b00; }
+  .stage-4 .stage-num { color: #c0392b; }
+  .stage-5 .stage-num { color: #8b0000; }
+
+  /* ── 2-COL LAYOUT ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── FEATURE CARDS ── */
+  .feature-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .feature-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .feature-card p { font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-teal { background: var(--teal); }
+  .dot-gold { background: var(--gold); }
+  .dot-red { background: var(--red); }
+  .dot-navy { background: var(--navy); }
+  .dot-green { background: var(--green); }
+  .dot-amber { background: var(--amber); }
+
+  /* ── ALERT BOXES ── */
+  .alert {
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 24px 0;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .alert-red { background: var(--red-soft); border-left: 3px solid var(--red); }
+  .alert-amber { background: var(--amber-soft); border-left: 3px solid var(--amber); }
+  .alert-green { background: var(--green-soft); border-left: 3px solid var(--green); }
+  .alert-teal { background: var(--teal-light); border-left: 3px solid var(--teal); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p { font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+  .alert-body ul { font-size: 14px; color: var(--text-muted); margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+
+  /* ── SYMPTOM CHECKLIST ── */
+  .symptom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .symptom-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    line-height: 1.4;
+  }
+  .symptom-item .si-icon { font-size: 16px; flex-shrink: 0; }
+
+  /* ── PILL LIST ── */
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .pill {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 20px;
+    background: var(--teal-light);
+    color: var(--teal);
+    border: 1px solid rgba(26,107,114,0.2);
+  }
+
+  /* ── LAB TABLE ── */
+  .lab-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .lab-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 14px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .lab-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+  .lab-table td:first-child { font-weight: 500; color: var(--navy); }
+  .lab-table tr:last-child td { border-bottom: none; }
+  .lab-table tr:hover td { background: var(--bg); }
+  .target-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 10px;
+    background: var(--green-soft);
+    color: var(--green);
+  }
+
+  /* ── MANAGEMENT STEPS ── */
+  .steps { margin: 24px 0; }
+  .step {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 24px;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 36px; height: 36px;
+    background: var(--navy);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .step-body { flex: 1; }
+  .step-body h4 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .step-body p { font-size: 14px; color: var(--text-muted); margin: 0; }
+
+  /* ── NUTRITION GRID ── */
+  .nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .nutrition-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    background: var(--white);
+  }
+  .nutrition-card .n-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .nutrition-card .n-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .nutrition-card .n-note { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+  /* ── RED FLAGS ── */
+  .red-flags {
+    background: var(--red-soft);
+    border: 1px solid rgba(192,57,43,0.2);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin: 32px 0;
+  }
+  .red-flags h3 {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+  .red-flags-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .red-flag-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .rf-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  /* ── DR CARD ── */
+  .dr-card {
+    background: var(--navy);
+    color: white;
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-top: 48px;
+  }
+  .dr-avatar {
+    width: 56px; height: 56px;
+    background: rgba(184,150,46,0.25);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    border: 2px solid rgba(184,150,46,0.4);
+  }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px; }
+  .dr-card p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 8px; letter-spacing: 0.03em; }
+
+  /* ── FOOTER ── */
+  .guide-footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    margin-top: 64px;
+  }
+  .guide-footer .footer-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .disclaimer {
+    background: var(--amber-soft);
+    border: 1px solid rgba(245,166,35,0.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 40px 0 0;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .disclaimer strong { color: var(--navy); }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">Nephrology · Patient Guide</div>
+    <h1>Understanding Chronic Kidney Disease</h1>
+    <p class="hero-sub">A complete guide to what CKD means, how it progresses, and what you can do — today — to protect your kidneys and live well.</p>
+    <div class="hero-meta">
+      <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+      <span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+      <span><strong>Updated:</strong> 2025</span>
+    </div>
+  </div>
+</section>
+
+<!-- STICKY NAV -->
+<nav class="nav-strip">
+  <div class="nav-pills">
+    <a class="nav-pill" href="#what-is-ckd">What is CKD?</a>
+    <a class="nav-pill" href="#stages">Stages</a>
+    <a class="nav-pill" href="#causes">Causes</a>
+    <a class="nav-pill" href="#symptoms">Symptoms</a>
+    <a class="nav-pill" href="#labs">Lab Targets</a>
+    <a class="nav-pill" href="#management">Management</a>
+    <a class="nav-pill" href="#nutrition">Nutrition</a>
+    <a class="nav-pill" href="#red-flags">Red Flags</a>
+    <a class="nav-pill" href="#faq">FAQ</a>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- WHAT IS CKD -->
+  <section class="section" id="what-is-ckd">
+    <div class="section-tag">The Basics</div>
+    <h2>What is Chronic Kidney Disease?</h2>
+
+    <div class="intro-callout">
+      <p>Your kidneys filter <strong>200 liters of blood every day</strong> — removing waste, regulating blood pressure, balancing electrolytes, and producing hormones that control red blood cell production and bone health. CKD means this filtering capacity is <strong>gradually, and sometimes silently, declining.</strong></p>
+    </div>
+
+    <p>CKD is defined as kidney damage or reduced kidney function lasting <strong>three months or more</strong>. It is diagnosed through blood tests, urine tests, and imaging — not just how you feel. Many people with early CKD feel completely normal.</p>
+
+    <p>The key measure is your <strong>eGFR</strong> (estimated Glomerular Filtration Rate) — think of it as a percentage of your kidney's filtering capacity. A healthy eGFR is above 90. CKD progresses through 5 stages based on this number.</p>
+
+    <div class="two-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>Why "chronic"?</h4>
+        <p>Unlike acute kidney injury — which can recover — CKD represents structural changes to the kidney that are largely irreversible. The goal is to <em>slow progression</em>, not reverse it.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-gold"></span>How common is it?</h4>
+        <p>Approximately 1 in 10 Filipinos has CKD. Most cases are driven by diabetes and hypertension — both of which damage the delicate filtering units (glomeruli) over time.</p>
+      </div>
+    </div>
+
+    <div class="alert alert-teal">
+      <div class="alert-icon">💡</div>
+      <div class="alert-body">
+        <h4>The kidney-heart connection</h4>
+        <p>Kidney disease and heart disease are deeply linked. Damaged kidneys raise blood pressure, worsen anemia, and promote inflammation — all of which strain the heart. This is why your nephrologist pays close attention to your blood pressure, cholesterol, and heart health simultaneously.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGES -->
+  <section class="section" id="stages">
+    <div class="section-tag">Disease Staging</div>
+    <h2>The 5 Stages of CKD</h2>
+    <p>CKD is classified by eGFR (mL/min/1.73m²) and albuminuria (protein in urine). Knowing your stage helps guide how often you need labs, what treatments apply, and when referral to a specialist is needed.</p>
+
+    <div class="stages-grid">
+      <div class="stage-card stage-1">
+        <div class="stage-label">Stage</div>
+        <div class="stage-num">1</div>
+        <div class="stage-egfr">eGFR ≥ 90</div>
+        <div class="stage-desc">Normal function with kidney damage markers (e.g. protein in urine)</div>
+      </div>
+      <div class="stage-card stage-2">
+        <div class="stage-label">Stage</div>
+        <div class="stage-num">2</div>
+        <div class="stage-egfr">eGFR 60–89</div>
+        <div class="stage-desc">Mildly decreased. Often no symptoms. Focus on prevention.</div>
+      </div>
+      <div class="stage-card stage-3a">
+        <div class="stage-label">Stage</div>
+        <div class="stage-num">3a</div>
+        <div class="stage-egfr">eGFR 45–59</div>
+        <div class="stage-desc">Mildly to moderately decreased. Labs begin to change.</div>
+      </div>
+      <div class="stage-card stage-3b">
+        <div class="stage-label">Stage</div>
+        <div class="stage-num">3b</div>
+        <div class="stage-egfr">eGFR 30–44</div>
+        <div class="stage-desc">Moderately to severely decreased. Prepare for complications.</div>
+      </div>
+      <div class="stage-card stage-4">
+        <div class="stage-label">Stage</div>
+        <div class="stage-num">4</div>
+        <div class="stage-egfr">eGFR 15–29</div>
+        <div class="stage-desc">Severely decreased. Discuss dialysis or transplant planning.</div>
+      </div>
+      <div class="stage-card stage-5">
+        <div class="stage-label">Stage</div>
+        <div class="stage-num">5</div>
+        <div class="stage-egfr">eGFR &lt; 15</div>
+        <div class="stage-desc">Kidney failure. Renal replacement therapy (dialysis/transplant) required.</div>
+      </div>
+    </div>
+
+    <div class="alert alert-amber">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-body">
+        <h4>Proteinuria matters independently of eGFR</h4>
+        <p>The amount of protein in your urine (albuminuria) is a powerful predictor of kidney decline — separate from your eGFR. Even with a normal eGFR, significant proteinuria requires treatment. Your doctor uses both together to guide your care plan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAUSES -->
+  <section class="section" id="causes">
+    <div class="section-tag">Root Causes</div>
+    <h2>What Causes CKD?</h2>
+    <p>In the Philippines, the overwhelming majority of CKD cases stem from two preventable, treatable conditions. Understanding the cause of <em>your</em> CKD is essential — because different causes require different treatments.</p>
+
+    <div class="two-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>Diabetic kidney disease</h4>
+        <p>Chronically elevated blood sugar damages the glomerular filtration membrane. High glucose causes thickening of basement membranes and eventually scarring (diabetic nephropathy). It is the #1 cause of kidney failure in the Philippines.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Hypertensive nephrosclerosis</h4>
+        <p>Uncontrolled high blood pressure damages kidney arterioles — the tiny vessels that feed each glomerulus. Over years, this causes ischemic scarring and progressive loss of nephrons (the filtering units).</p>
+      </div>
+    </div>
+
+    <p style="margin-top:20px;">Other causes include:</p>
+    <div class="pill-list">
+      <span class="pill">Lupus nephritis (SLE)</span>
+      <span class="pill">IgA nephropathy</span>
+      <span class="pill">Polycystic kidney disease</span>
+      <span class="pill">Recurrent kidney infections</span>
+      <span class="pill">Obstructive uropathy</span>
+      <span class="pill">NSAIDs / analgesic overuse</span>
+      <span class="pill">Contrast nephropathy</span>
+      <span class="pill">Hereditary nephritis</span>
+    </div>
+  </section>
+
+  <!-- SYMPTOMS -->
+  <section class="section" id="symptoms">
+    <div class="section-tag">Clinical Presentation</div>
+    <h2>Signs and Symptoms</h2>
+    <p>CKD is famously "silent" in early stages. Symptoms typically emerge only when eGFR falls below 30 — which is why routine laboratory screening is so important, especially if you have diabetes or hypertension.</p>
+
+    <div class="symptom-grid">
+      <div class="symptom-item"><span class="si-icon">😴</span> Persistent fatigue and weakness — from anemia and uremic toxins</div>
+      <div class="symptom-item"><span class="si-icon">🦶</span> Swelling of feet, ankles, or face — from fluid retention</div>
+      <div class="symptom-item"><span class="si-icon">🌙</span> Waking at night to urinate (nocturia) — kidney losing concentrating ability</div>
+      <div class="symptom-item"><span class="si-icon">🫧</span> Foamy or bubbly urine — sign of protein leaking into urine</div>
+      <div class="symptom-item"><span class="si-icon">🩸</span> Blood in urine (hematuria) — may indicate active kidney inflammation</div>
+      <div class="symptom-item"><span class="si-icon">🤢</span> Nausea, vomiting, poor appetite — uremic toxin buildup</div>
+      <div class="symptom-item"><span class="si-icon">😵</span> Difficulty concentrating, confusion — advanced uremia</div>
+      <div class="symptom-item"><span class="si-icon">🫁</span> Shortness of breath — fluid overload or metabolic acidosis</div>
+      <div class="symptom-item"><span class="si-icon">🦴</span> Bone pain or fractures — mineral bone disorder from CKD</div>
+      <div class="symptom-item"><span class="si-icon">🫀</span> Chest pain or palpitations — electrolyte imbalance (high potassium)</div>
+    </div>
+
+    <div class="alert alert-red">
+      <div class="alert-icon">🚨</div>
+      <div class="alert-body">
+        <h4>Uremia — the end-stage warning sign</h4>
+        <p>Uremia refers to the toxic accumulation of waste products when kidneys can no longer excrete them. It causes a syndrome of nausea, confusion, pericarditis (heart sac inflammation), and bleeding. This is a medical emergency requiring immediate evaluation for dialysis initiation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LABS -->
+  <section class="section" id="labs">
+    <div class="section-tag">KDIGO 2024 Targets</div>
+    <h2>Key Laboratory Targets</h2>
+    <p>These are the evidence-based targets your nephrologist aims for at each follow-up visit. Keeping these numbers within range significantly slows CKD progression and reduces complications.</p>
+
+    <table class="lab-table">
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>What it measures</th>
+          <th>Target (KDIGO 2024)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>eGFR</td>
+          <td>Kidney filtering capacity</td>
+          <td><span class="target-badge">Track trend over time</span></td>
+        </tr>
+        <tr>
+          <td>Urine albumin-creatinine ratio (UACR)</td>
+          <td>Protein leak; damage marker</td>
+          <td><span class="target-badge">&lt; 30 mg/g (aim to reduce)</span></td>
+        </tr>
+        <tr>
+          <td>Hemoglobin</td>
+          <td>Anemia of CKD</td>
+          <td><span class="target-badge">100–115 g/L</span></td>
+        </tr>
+        <tr>
+          <td>Ferritin / TSAT</td>
+          <td>Iron stores for erythropoiesis</td>
+          <td><span class="target-badge">Ferritin &gt;200 / TSAT &gt;30%</span></td>
+        </tr>
+        <tr>
+          <td>Parathyroid hormone (iPTH)</td>
+          <td>Bone-mineral metabolism</td>
+          <td><span class="target-badge">130–600 pg/mL (dialysis)</span></td>
+        </tr>
+        <tr>
+          <td>Phosphorus</td>
+          <td>Mineral balance; vessel calcification risk</td>
+          <td><span class="target-badge">3.5–5.5 mg/dL</span></td>
+        </tr>
+        <tr>
+          <td>Calcium</td>
+          <td>Bone health and cardiac function</td>
+          <td><span class="target-badge">8.4–10.2 mg/dL</span></td>
+        </tr>
+        <tr>
+          <td>Potassium</td>
+          <td>Heart rhythm safety</td>
+          <td><span class="target-badge">3.5–5.5 mEq/L</span></td>
+        </tr>
+        <tr>
+          <td>Bicarbonate</td>
+          <td>Acid-base balance (metabolic acidosis)</td>
+          <td><span class="target-badge">22–26 mEq/L</span></td>
+        </tr>
+        <tr>
+          <td>Blood pressure</td>
+          <td>Hypertension control</td>
+          <td><span class="target-badge">&lt; 140/90 mmHg</span></td>
+        </tr>
+        <tr>
+          <td>LDL cholesterol</td>
+          <td>Cardiovascular risk (CKD = very high risk)</td>
+          <td><span class="target-badge">&lt; 55 mg/dL (ACC/AHA 2026)</span></td>
+        </tr>
+        <tr>
+          <td>HbA1c (if diabetic)</td>
+          <td>Long-term blood sugar control</td>
+          <td><span class="target-badge">7–8% (individualized)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- MANAGEMENT -->
+  <section class="section" id="management">
+    <div class="section-tag">Treatment Strategy</div>
+    <h2>How CKD is Managed</h2>
+    <p>CKD management is multifaceted — targeting the underlying cause, protecting residual kidney function, and preventing cardiovascular complications simultaneously. There is no single pill; it is a lifestyle and medication partnership.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Control the primary driver</h4>
+          <p>If the cause is diabetes, tight glucose control (HbA1c 7–8%) is essential. If it's hypertension, blood pressure must reach &lt;140/90 mmHg. ACE inhibitors or ARBs are first-line in both — they reduce intra-glomerular pressure and cut proteinuria directly.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>SGLT2 inhibitors — a kidney-protective revolution</h4>
+          <p>Medications like dapagliflozin (Catania/Rhea) now have strong evidence for slowing CKD progression regardless of diabetes status. They reduce intra-glomerular hypertension, decrease proteinuria, and provide cardiovascular protection simultaneously.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Manage CKD complications</h4>
+          <p>Anemia (erythropoiesis-stimulating agents + iron), bone-mineral disorder (active vitamin D, phosphate binders), metabolic acidosis (sodium bicarbonate), and hyperkalemia all require active, targeted treatment as kidney function declines.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Aggressive cardiovascular protection</h4>
+          <p>CKD patients are at very high cardiovascular risk. Statin therapy targeting LDL &lt;55 mg/dL, aspirin where indicated, and smoking cessation are non-negotiable. Your heart and kidneys must be protected together.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Prepare for renal replacement therapy (Stage 4–5)</h4>
+          <p>Planning for dialysis or kidney transplant should begin at Stage 4. This includes AV fistula creation (for hemodialysis), vaccination completion (Hepatitis B double-dose, pneumococcal, flu), and transplant workup if appropriate.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NUTRITION -->
+  <section class="section" id="nutrition">
+    <div class="section-tag">Diet &amp; Lifestyle</div>
+    <h2>Nutrition for Kidney Health</h2>
+    <p>Diet in CKD is highly individualized. What you should or should not eat depends on your stage, your lab values, and whether you are on dialysis. The following are general principles — always confirm specifics with your nephrologist or renal dietitian.</p>
+
+    <div class="nutrition-grid">
+      <div class="nutrition-card">
+        <div class="n-label">Protein intake</div>
+        <div class="n-value">0.6–0.8 g/kg/day</div>
+        <div class="n-note">Pre-dialysis: low-protein diet slows progression. On dialysis: increase to 1.0–1.4 g/kg/day to prevent malnutrition.</div>
+      </div>
+      <div class="nutrition-card">
+        <div class="n-label">Sodium</div>
+        <div class="n-value">&lt; 2,000 mg/day</div>
+        <div class="n-note">Reduces blood pressure and proteinuria. Avoid processed foods, bagoong, soy sauce, and instant noodles.</div>
+      </div>
+      <div class="nutrition-card">
+        <div class="n-label">Potassium</div>
+        <div class="n-value">Individualized</div>
+        <div class="n-note">Restrict only if serum potassium is elevated (&gt;5.5). Limit banana, coconut, kamote, squash if needed.</div>
+      </div>
+      <div class="nutrition-card">
+        <div class="n-label">Phosphorus</div>
+        <div class="n-value">800–1,000 mg/day</div>
+        <div class="n-note">Limit dark colas, processed cheese, nuts, and organ meats. Prefer fresh foods over preserved.</div>
+      </div>
+      <div class="nutrition-card">
+        <div class="n-label">Fluids</div>
+        <div class="n-value">Adjusted per stage</div>
+        <div class="n-note">Restriction usually only needed on dialysis. In earlier stages, adequate hydration (2–2.5L/day unless told otherwise) is beneficial.</div>
+      </div>
+      <div class="nutrition-card">
+        <div class="n-label">Calories</div>
+        <div class="n-value">30–35 kcal/kg/day</div>
+        <div class="n-note">Adequate calories prevent muscle breakdown. Malnutrition is a major risk in advanced CKD — do not under-eat.</div>
+      </div>
+    </div>
+
+    <div class="alert alert-green">
+      <div class="alert-icon">🥗</div>
+      <div class="alert-body">
+        <h4>Safe foods for most CKD patients</h4>
+        <ul>
+          <li>White rice, bread, pasta (low potassium/phosphorus)</li>
+          <li>Egg whites (high-quality protein, low phosphorus)</li>
+          <li>Cabbage, cauliflower, green beans, cucumber (low potassium after leaching)</li>
+          <li>Apples, grapes, cranberries, pineapple</li>
+          <li>Unsalted crackers, corn, rice cakes</li>
+          <li>Poaching or boiling vegetables (reduces potassium by ~50%)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- RED FLAGS -->
+  <section class="section" id="red-flags">
+    <div class="section-tag">When to Seek Immediate Care</div>
+    <h2>Warning Signs — Do Not Wait</h2>
+
+    <div class="red-flags">
+      <h3>⚠ Go to the Emergency Room or call your doctor immediately if you experience:</h3>
+      <div class="red-flags-grid">
+        <div class="red-flag-item"><div class="rf-dot"></div>Sudden decrease in urine output</div>
+        <div class="red-flag-item"><div class="rf-dot"></div>Severe shortness of breath at rest</div>
+        <div class="red-flag-item"><div class="rf-dot"></div>Chest pain or irregular heartbeat</div>
+        <div class="red-flag-item"><div class="rf-dot"></div>Sudden, severe swelling of face or limbs</div>
+        <div class="red-flag-item"><div class="rf-dot"></div>Confusion, drowsiness, or seizures</div>
+        <div class="red-flag-item"><div class="rf-dot"></div>Uncontrollable vomiting or inability to eat</div>
+        <div class="red-flag-item"><div class="rf-dot"></div>Blood pressure above 180/110 mmHg</div>
+        <div class="red-flag-item"><div class="rf-dot"></div>Muscle weakness, paralysis, or cramping</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-tag">Common Questions</div>
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num" style="background: var(--teal); font-size: 18px; font-weight:600;">?</div>
+        <div class="step-body">
+          <h4>Will my kidneys get better?</h4>
+          <p>CKD is not curable, but it is manageable. With good control of blood pressure, blood sugar, and proteinuria, many patients remain stable for years or even decades. Progression is not inevitable — it depends heavily on how well the risk factors are managed.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background: var(--teal); font-size: 18px; font-weight:600;">?</div>
+        <div class="step-body">
+          <h4>Should I avoid contrast dye or NSAIDs?</h4>
+          <p>Yes. Nonsteroidal anti-inflammatory drugs (ibuprofen, mefenamic acid, naproxen) reduce blood flow to the kidneys and can precipitate acute injury — avoid them unless directed otherwise. Iodinated contrast for CT scans also carries risk; always inform your doctor and radiologist of your CKD diagnosis before any imaging study.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background: var(--teal); font-size: 18px; font-weight:600;">?</div>
+        <div class="step-body">
+          <h4>Can I take herbal supplements or alternative medicines?</h4>
+          <p>Many herbal preparations (including common "kidney cleanse" supplements) contain aristolochic acid, heavy metals, or oxalates that are directly nephrotoxic. Please always disclose any supplement, herbal, or traditional medicine you are taking. Some may interfere with medications or worsen kidney function.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background: var(--teal); font-size: 18px; font-weight:600;">?</div>
+        <div class="step-body">
+          <h4>How often do I need to see my nephrologist?</h4>
+          <p>Frequency depends on your stage and stability. Stage 1–2: every 6–12 months. Stage 3: every 3–6 months. Stage 4–5: every 1–3 months. Your doctor will set the appropriate interval based on your individual trends.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Important:</strong> This guide is for educational purposes only. It does not replace individualized medical advice. Always consult your physician before making changes to your diet, medications, or activity level. Clinical decisions should be based on your complete history, physical examination, and laboratory results.
+    </div>
+
+    <!-- DR CARD -->
+    <div class="dr-card">
+      <div class="dr-avatar">🩺</div>
+      <div>
+        <h4>W. G. M. Rivero, MD, FPCP, DPSN</h4>
+        <p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+        <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero · williamrivero@gmail.com</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="guide-footer">
+  <div class="footer-inner">
+    <p>© 2025 W. G. M. Rivero, MD · <a href="https://williamriveromd.com">williamriveromd.com</a></p>
+    <p>References: KDIGO 2024 CKD Guidelines · ACC/AHA 2026 Dyslipidemia · ADA Standards of Care 2025</p>
+  </div>
+</footer>
+
+</body>
+</html>
