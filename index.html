@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Guides – W. G. M. Rivero, MD</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1e2e;
+    --gold: #b8962e;
+    --gold-light: #d4af4f;
+    --teal: #1a6b72;
+    --teal-light: #e1f5f0;
+    --text: #1a1a1a;
+    --text-muted: #5a6472;
+    --border: #e2e6eb;
+    --bg: #f9fafb;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; }
+
+  /* NAV */
+  nav {
+    background: var(--navy);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: white;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  .nav-logo strong { font-weight: 600; color: var(--gold-light); }
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: white; }
+  .nav-cta {
+    background: var(--gold);
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 9px 20px;
+    border-radius: 6px;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--navy) !important; }
+
+  /* HERO */
+  .hero {
+    padding: 72px 48px 64px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero p {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  /* GRID */
+  .guides-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  /* CARD BASE */
+  .guide-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .guide-card:hover {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    border-color: #c8d0d8;
+  }
+
+  /* ALL GUIDES CARD */
+  .card-all {
+    background: var(--bg);
+    border-style: solid;
+  }
+
+  /* LIVE CARD */
+  .card-live {
+    border-style: solid;
+  }
+  .card-live:hover { border-color: var(--teal); }
+
+  /* COMING SOON */
+  .card-soon {
+    border-style: dashed;
+    opacity: 0.65;
+    cursor: default;
+  }
+  .card-soon:hover { box-shadow: none; border-color: var(--border); }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+    width: fit-content;
+  }
+  .badge-all { background: #e8f5e8; color: #2a7a2a; border: 1px solid rgba(42,122,42,0.2); }
+  .badge-live { background: var(--teal-light); color: var(--teal); border: 1px solid rgba(26,107,114,0.2); }
+  .badge-soon { background: #f0f2f4; color: #7a8694; border: 1px solid rgba(122,134,148,0.2); }
+
+  .guide-card h2 {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+  .guide-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    flex: 1;
+    margin-bottom: 20px;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: auto;
+  }
+  .card-tags {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .card-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .card-link:hover { color: var(--navy); }
+
+  /* SECTION HEADER */
+  .section-header {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 48px 24px;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy);
+    color: white;
+    padding: 48px;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+  }
+  footer h4 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 14px;
+  }
+  footer p, footer a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    line-height: 1.8;
+    display: block;
+  }
+  footer a:hover { color: white; }
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .hero { padding: 48px 20px 40px; }
+    .guides-grid { padding: 0 20px 60px; grid-template-columns: 1fr; }
+    .section-header { padding: 0 20px 20px; }
+    .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+    footer { padding: 40px 20px; }
+    .footer-bottom { padding: 0 0; margin-top: 24px; flex-direction: column; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://williamriveromd.com" class="nav-logo">W. G. M. <strong>Rivero</strong>, MD</a>
+  <div class="nav-links">
+    <a href="https://williamriveromd.com#about">About</a>
+    <a href="https://williamriveromd.com#specialties">Specialties</a>
+    <a href="https://williamriveromd.com/guides/index.html">Patient Guides</a>
+    <a href="https://williamriveromd.com#clinics">Clinics</a>
+    <a href="https://seriousmd.com/doc/williamrivero" target="_blank" class="nav-cta">Book Appointment</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Patient Education</div>
+  <h1>Guides for your care</h1>
+  <p>Clear, personalized guides to help you and your family understand your conditions and manage your health at home.</p>
+</div>
+
+<!-- AVAILABLE NOW -->
+<div class="section-header">
+  <div class="section-label">Available Now</div>
+  <hr class="section-divider">
+</div>
+
+<div class="guides-grid" style="padding-bottom: 32px;">
+
+  <!-- All Guides -->
+  <div class="guide-card card-all">
+    <span class="badge badge-all">All Guides</span>
+    <h2>Patient Education Library</h2>
+    <p>Browse all patient education guides — organized by condition and date.</p>
+    <div class="card-footer">
+      <span class="card-tags">Updated regularly</span>
+      <span class="card-link">View all →</span>
+    </div>
+  </div>
+
+  <!-- CKD Guide -->
+  <a href="understanding-ckd.html" class="guide-card card-live">
+    <span class="badge badge-live">Nephrology</span>
+    <h2>Understanding CKD</h2>
+    <p>A complete guide to chronic kidney disease — what it means, how to slow it down, and how to live well with it. Covers stages, symptoms, lab targets, nutrition, and red flags.</p>
+    <div class="card-footer">
+      <span class="card-tags">Nephrology</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <!-- Diabetes Guide -->
+  <a href="diabetes-kidneys.html" class="guide-card card-live">
+    <span class="badge badge-live">Nephrology · Diabetes</span>
+    <h2>Diabetes &amp; Your Kidneys</h2>
+    <p>How diabetes affects kidney function, what targets to aim for, and practical strategies to protect both. Includes HbA1c explained, DKD staging, and key medications.</p>
+    <div class="card-footer">
+      <span class="card-tags">Nephrology · Diabetes</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+</div>
+
+<!-- NOW LIVE -->
+<div class="section-header" style="padding-top: 8px;">
+  <div class="section-label">Also Available</div>
+  <hr class="section-divider">
+</div>
+
+<div class="guides-grid">
+
+  <a href="managing-hypertension.html" class="guide-card card-live">
+    <span class="badge badge-live">Internal Medicine</span>
+    <h2>Managing High Blood Pressure</h2>
+    <p>Understanding hypertension — how to monitor it at home, what medications do, and how lifestyle changes make a real difference.</p>
+    <div class="card-footer">
+      <span class="card-tags">Internal Medicine</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="living-with-dialysis.html" class="guide-card card-live">
+    <span class="badge badge-live">Nephrology · ESKD</span>
+    <h2>Living with Dialysis</h2>
+    <p>A practical guide for hemodialysis patients — what to expect, how to manage your diet, and how to protect your access site and quality of life.</p>
+    <div class="card-footer">
+      <span class="card-tags">Nephrology · ESKD</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="gout-uric-acid.html" class="guide-card card-live">
+    <span class="badge badge-live">Internal Medicine · Nephrology</span>
+    <h2>Gout &amp; Uric Acid</h2>
+    <p>Why uric acid builds up, how it damages kidneys and joints, which foods matter most, and how to work with your doctor to prevent flares.</p>
+    <div class="card-footer">
+      <span class="card-tags">Internal Medicine · Nephrology</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="understanding-lab-results.html" class="guide-card card-live">
+    <span class="badge badge-live">All Conditions</span>
+    <h2>Understanding Your Lab Results</h2>
+    <p>A plain-language decoder for the most common blood and urine tests — what each number means and what your doctor is watching for.</p>
+    <div class="card-footer">
+      <span class="card-tags">All Conditions</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="nutrition-kidney-patients.html" class="guide-card card-live">
+    <span class="badge badge-live">Nephrology · Nutrition</span>
+    <h2>Nutrition for Kidney Patients</h2>
+    <p>A practical Filipino guide to eating well with CKD — what to limit, what is safe, how to read food labels, and sample meal plans using local ingredients.</p>
+    <div class="card-footer">
+      <span class="card-tags">Nephrology · Nutrition</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="heart-kidney-connection.html" class="guide-card card-live">
+    <span class="badge badge-live">Nephrology · Cardiology</span>
+    <h2>Heart &amp; Kidney Connection</h2>
+    <p>Why kidney disease and heart disease so often occur together — and what protecting one organ does for the other.</p>
+    <div class="card-footer">
+      <span class="card-tags">Nephrology · Cardiology</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="dialysis-access-care.html" class="guide-card card-live">
+    <span class="badge badge-live">Nephrology · ESKD</span>
+    <h2>Dialysis Access &amp; Care</h2>
+    <p>Understanding fistulas, grafts, and catheters — how to check your access daily, protect it, and recognize complications before they become emergencies.</p>
+    <div class="card-footer">
+      <span class="card-tags">Nephrology · ESKD</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="managing-kidney-stones.html" class="guide-card card-live">
+    <span class="badge badge-live">Nephrology · Internal Medicine</span>
+    <h2>Managing Kidney Stones</h2>
+    <p>Why stones form, the different types, how to pass one safely — and the dietary and medical strategies to prevent recurrence.</p>
+    <div class="card-footer">
+      <span class="card-tags">Nephrology · Internal Medicine</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="dyslipidemia-2026.html" class="guide-card card-live">
+    <span class="badge badge-live">Cardiology · 2026 Update</span>
+    <h2>Dyslipidemia: 2026 Guidelines</h2>
+    <p>New LDL targets, PREVENT risk calculator, stepwise therapy — and what CKD and diabetes patients need to know about the latest ACC/AHA update.</p>
+    <div class="card-footer">
+      <span class="card-tags">Cardiology · Internal Medicine</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="preventing-uti.html" class="guide-card card-live">
+    <span class="badge badge-live">Internal Medicine · Nephrology</span>
+    <h2>Preventing UTI</h2>
+    <p>Why UTIs keep coming back, the right and wrong way to use antibiotics, and the hydration, hygiene, and supplement strategies that break the cycle.</p>
+    <div class="card-footer">
+      <span class="card-tags">Internal Medicine · Nephrology</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="prostate-enlargement.html" class="guide-card card-live">
+    <span class="badge badge-live">Internal Medicine · Urology</span>
+    <h2>Prostate Enlargement (BPH)</h2>
+    <p>What BPH is, why it causes urinary problems, and the lifestyle changes and medications that restore flow before surgery is ever needed.</p>
+    <div class="card-footer">
+      <span class="card-tags">Internal Medicine · Urology</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="anemia-management.html" class="guide-card card-live">
+    <span class="badge badge-live">Internal Medicine · Nephrology</span>
+    <h2>Anemia Management</h2>
+    <p>Why anemia develops in CKD, the iron-first principle, ESA therapy targets — and the Filipino iron-rich foods that support healthy blood production.</p>
+    <div class="card-footer">
+      <span class="card-tags">Internal Medicine · Nephrology</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+  <a href="ckd-mbd.html" class="guide-card card-live">
+    <span class="badge badge-live">Nephrology · CKD-MBD</span>
+    <h2>CKD-MBD: Kidney, Bone &amp; Heart</h2>
+    <p>How CKD disrupts calcium, phosphorus, and vitamin D — causing bone loss, vascular calcification, and cardiovascular risk that must be actively managed.</p>
+    <div class="card-footer">
+      <span class="card-tags">Nephrology · CKD-MBD</span>
+      <span class="card-link">Read guide →</span>
+    </div>
+  </a>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>Clinics &amp; Contact</h4>
+      <p>Fe Del Mundo Medical Center — Mon &amp; Sat 10:30 AM–2 PM</p>
+      <p>St. John Biocare Center — Wed 1–4 PM</p>
+      <p>RCU Ospital Ning Angeles — Tue 11 AM–5 PM</p>
+      <p>St. Josef Renal Care Center — Thu 12–4 PM</p>
+    </div>
+    <div>
+      <h4>Online</h4>
+      <a href="https://seriousmd.com/doc/williamrivero" target="_blank">Book via SeriousMD</a>
+      <a href="mailto:williamrivero@gmail.com">williamrivero@gmail.com</a>
+      <a href="mailto:labportal@williamriveromd.com">labportal@williamriveromd.com</a>
+    </div>
+    <div>
+      <h4>Physician</h4>
+      <p>William Gregory M. Rivero, MD, FPCP, DPSN</p>
+      <p>Internal Medicine · Nephrology · Clinical Nutrition</p>
+      <p>PRC 0105184</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 williamriveromd.com</span>
+    <span>Patient education content is for informational purposes only and does not replace individualized medical advice.</span>
+  </div>
+</footer>
+
+</body>
+</html>
