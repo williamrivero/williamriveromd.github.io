@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding Iron – W. G. M. Rivero, MD</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0f1e2e;--gold:#b8962e;--gold-light:#d4af4f;--teal:#1a6b72;--teal-light:#e1f5f0;--text:#1a1a1a;--text-muted:#5a6472;--border:#e2e6eb;--bg:#f9fafb;--white:#ffffff;--red:#c0392b;--red-soft:#fdf0ef;--amber:#f5a623;--amber-soft:#fef9ec;--green:#2d7a4f;--green-soft:#edf7f2;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.7;font-size:16px;}
+  .site-header{background:var(--navy);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,0.08);}
+  .site-header a.brand{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:400;color:white;text-decoration:none;}
+  .site-header a.brand strong{font-weight:600;color:#d4af4f;}
+  .site-header a.back{font-size:12px;color:rgba(255,255,255,.55);text-decoration:none;letter-spacing:.04em;}
+  .hero{background:var(--navy);color:white;padding:72px 0 80px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-60px;right:-80px;width:420px;height:420px;border-radius:50%;border:1px solid rgba(184,150,46,.15);}
+  .container{max-width:860px;margin:0 auto;padding:0 32px;}
+  .hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);border:1px solid rgba(184,150,46,.4);padding:5px 14px;border-radius:20px;margin-bottom:24px;}
+  .hero h1{font-family:'Lora',serif;font-size:clamp(30px,5vw,50px);font-weight:600;line-height:1.2;margin-bottom:20px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;color:rgba(255,255,255,.7);max-width:600px;line-height:1.65;margin-bottom:36px;}
+  .hero-meta{display:flex;gap:32px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.5);}
+  .hero-meta strong{color:rgba(255,255,255,.8);font-weight:500;}
+  .nav-strip{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100;}
+  .nav-pills{display:flex;gap:4px;padding:12px 32px;max-width:860px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
+  .nav-pills::-webkit-scrollbar{display:none;}
+  .nav-pill{white-space:nowrap;font-size:13px;font-weight:500;color:var(--text-muted);text-decoration:none;padding:6px 14px;border-radius:20px;border:1px solid transparent;transition:all .2s;}
+  .nav-pill:hover{color:var(--navy);border-color:var(--border);background:var(--bg);}
+  .section{padding:64px 0;border-bottom:1px solid var(--border);}
+  .section:last-of-type{border-bottom:none;}
+  .section-tag{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+  .section h2{font-family:'Lora',serif;font-size:clamp(22px,3.5vw,32px);font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:20px;}
+  .section p{color:var(--text-muted);margin-bottom:16px;}
+  .section p:last-child{margin-bottom:0;}
+  .intro-callout{background:var(--navy);color:white;border-radius:16px;padding:32px 36px;margin-bottom:36px;}
+  .intro-callout p{color:rgba(255,255,255,.78);font-size:17px;line-height:1.75;margin:0;}
+  .intro-callout p strong{color:white;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0;}
+  .three-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0;}
+  @media(max-width:600px){.two-col,.three-col{grid-template-columns:1fr;}}
+  .feature-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;}
+  .feature-card h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .feature-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6;}
+  .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .dot-teal{background:var(--teal);}.dot-red{background:var(--red);}.dot-amber{background:var(--amber);}.dot-green{background:var(--green);}.dot-navy{background:var(--navy);}
+  .alert{border-radius:12px;padding:20px 24px;margin:24px 0;display:flex;gap:16px;align-items:flex-start;}
+  .alert-red{background:var(--red-soft);border-left:3px solid var(--red);}
+  .alert-amber{background:var(--amber-soft);border-left:3px solid var(--amber);}
+  .alert-green{background:var(--green-soft);border-left:3px solid var(--green);}
+  .alert-teal{background:var(--teal-light);border-left:3px solid var(--teal);}
+  .alert-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+  .alert-body h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .alert-body p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6;}
+  .alert-body ul{font-size:14px;color:var(--text-muted);margin:6px 0 0 16px;}
+  .alert-body ul li{margin-bottom:4px;line-height:1.5;}
+  .lab-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;}
+  .lab-table th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--border);}
+  .lab-table td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text-muted);vertical-align:top;}
+  .lab-table td:first-child{font-weight:500;color:var(--navy);}
+  .lab-table tr:last-child td{border-bottom:none;}
+  .lab-table tr:hover td{background:var(--bg);}
+  .target-badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 10px;border-radius:10px;background:var(--green-soft);color:var(--green);}
+  .steps{margin:24px 0;}
+  .step{display:flex;gap:20px;margin-bottom:24px;align-items:flex-start;}
+  .step-num{width:36px;height:36px;background:var(--navy);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0;}
+  .step-body{flex:1;}
+  .step-body h4{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .step-body p{font-size:14px;color:var(--text-muted);margin:0;}
+  .iron-journey{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .iron-journey h4{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:20px;}
+  .journey-steps{display:flex;flex-direction:column;gap:0;}
+  .j-step{display:flex;gap:16px;align-items:flex-start;padding:14px 0;border-bottom:1px dashed var(--border);}
+  .j-step:last-child{border-bottom:none;}
+  .j-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--white);border:1px solid var(--border);}
+  .j-body h5{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;}
+  .j-body p{font-size:13px;color:var(--text-muted);margin:0;line-height:1.5;}
+  .food-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+  @media(max-width:600px){.food-grid{grid-template-columns:1fr;}}
+  .food-ok{background:var(--green-soft);border:1px solid rgba(45,122,79,.2);border-radius:12px;padding:20px;}
+  .food-block{background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:12px;padding:20px;}
+  .food-ok h4{color:var(--green);font-size:14px;font-weight:600;margin-bottom:12px;}
+  .food-block h4{color:var(--red);font-size:14px;font-weight:600;margin-bottom:12px;}
+  .food-ok ul,.food-block ul{font-size:13px;color:var(--text-muted);margin-left:16px;}
+  .food-ok ul li,.food-block ul li{margin-bottom:5px;line-height:1.5;}
+  .num-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:24px 0;}
+  .num-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;}
+  .num-card .n-val{font-family:'Lora',serif;font-size:26px;font-weight:600;color:var(--navy);line-height:1;}
+  .num-card .n-label{font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.4;}
+  .num-card .n-target{font-size:11px;font-weight:600;color:var(--green);margin-top:6px;}
+  .dr-card{background:var(--navy);color:white;border-radius:16px;padding:32px;display:flex;gap:24px;align-items:flex-start;margin-top:48px;}
+  .dr-avatar{width:56px;height:56px;background:rgba(184,150,46,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:2px solid rgba(184,150,46,.4);}
+  .dr-card h4{font-size:16px;font-weight:600;margin-bottom:4px;}
+  .dr-card p{font-size:14px;color:rgba(255,255,255,.65);line-height:1.6;}
+  .dr-card .dr-creds{font-size:12px;color:rgba(255,255,255,.45);margin-top:8px;}
+  .guide-footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 0;margin-top:64px;}
+  .guide-footer .footer-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .guide-footer p{font-size:13px;color:var(--text-muted);}
+  .guide-footer a{color:var(--teal);text-decoration:none;font-weight:500;}
+  .disclaimer{background:var(--amber-soft);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:16px 20px;margin:40px 0 0;font-size:13px;color:var(--text-muted);line-height:1.6;}
+  .disclaimer strong{color:var(--navy);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="https://williamriveromd.com" class="brand">W. G. M. <strong>Rivero</strong>, MD</a>
+  <a href="https://williamriveromd.com/guides/index.html" class="back">← All Guides</a>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">Internal Medicine · Nutrition · Patient Guide</div>
+    <h1>Understanding Iron</h1>
+    <p class="hero-sub">What iron does in your body, why deficiency is so common, how to replenish it correctly — and what blocks or enhances its absorption.</p>
+    <div class="hero-meta">
+      <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+      <span><strong>Specialty:</strong> Internal Medicine · Nephrology · Nutrition</span>
+      <span><strong>Updated:</strong> 2025</span>
+    </div>
+  </div>
+</section>
+
+<nav class="nav-strip">
+  <div class="nav-pills">
+    <a class="nav-pill" href="#what">What Iron Does</a>
+    <a class="nav-pill" href="#journey">How Iron Travels</a>
+    <a class="nav-pill" href="#deficiency">Iron Deficiency</a>
+    <a class="nav-pill" href="#labs">Lab Tests</a>
+    <a class="nav-pill" href="#absorption">Absorption</a>
+    <a class="nav-pill" href="#foods">Food Sources</a>
+    <a class="nav-pill" href="#supplements">Supplements</a>
+    <a class="nav-pill" href="#ckd">Iron in CKD</a>
+  </div>
+</nav>
+
+<main class="container">
+
+  <section class="section" id="what">
+    <div class="section-tag">The Basics</div>
+    <h2>What Does Iron Do in Your Body?</h2>
+    <div class="intro-callout">
+      <p>Iron is the mineral at the center of hemoglobin — the protein in red blood cells that <strong>carries oxygen from your lungs to every organ in your body</strong>. Without adequate iron, your body cannot make enough healthy red blood cells. The result is anemia — persistent fatigue, shortness of breath, pale skin, and reduced capacity to heal, think, and function.</p>
+    </div>
+
+    <div class="three-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>Oxygen transport</h4>
+        <p>Iron is the core of heme — the part of hemoglobin that binds and releases oxygen. Each red blood cell contains ~270 million hemoglobin molecules. Without iron, cells cannot load oxygen in the lungs or deliver it to tissues.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>Energy production</h4>
+        <p>Iron is essential in the mitochondrial electron transport chain — the process that produces ATP (cellular energy). Iron deficiency causes fatigue not just from anemia, but from impaired energy metabolism in every cell even before hemoglobin falls.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Immune function and DNA synthesis</h4>
+        <p>Iron is required for lymphocyte and neutrophil activity — immune cells need it to fight infection. It is also essential for DNA replication, which is why iron deficiency impairs wound healing, gut lining renewal, and immune response simultaneously.</p>
+      </div>
+    </div>
+
+    <div class="num-grid">
+      <div class="num-card">
+        <div class="n-val">3–4 g</div>
+        <div class="n-label">Total iron in a healthy adult body</div>
+        <div class="n-target">~70% in hemoglobin</div>
+      </div>
+      <div class="num-card">
+        <div class="n-val">1–2 mg</div>
+        <div class="n-label">Iron absorbed from food per day</div>
+        <div class="n-target">Only 10% of dietary intake absorbed</div>
+      </div>
+      <div class="num-card">
+        <div class="n-val">1–2 mg</div>
+        <div class="n-label">Iron lost per day (sweat, cells, GI)</div>
+        <div class="n-target">Women lose more via menstruation</div>
+      </div>
+      <div class="num-card">
+        <div class="n-val">25 mg</div>
+        <div class="n-label">Iron recycled daily from old red cells</div>
+        <div class="n-target">Most iron is reused, not excreted</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="journey">
+    <div class="section-tag">Iron Metabolism</div>
+    <h2>How Iron Travels Through Your Body</h2>
+    <p>Understanding iron's journey helps explain why deficiency develops, why oral iron sometimes fails, and why IV iron is necessary in certain conditions.</p>
+
+    <div class="iron-journey">
+      <h4>The Iron Cycle — From Food to Red Blood Cell</h4>
+      <div class="journey-steps">
+        <div class="j-step">
+          <div class="j-icon">🍽️</div>
+          <div class="j-body">
+            <h5>Dietary intake — the starting point</h5>
+            <p>Iron enters the body through food. Heme iron (from animal meat) is absorbed at 15–35%. Non-heme iron (from plants) is absorbed at only 2–10% — highly dependent on what else you eat at the same meal.</p>
+          </div>
+        </div>
+        <div class="j-step">
+          <div class="j-icon">🫁</div>
+          <div class="j-body">
+            <h5>Absorption in the small intestine (duodenum)</h5>
+            <p>The duodenum is the primary site of iron absorption. Non-heme iron must first be reduced from Fe³⁺ (ferric) to Fe²⁺ (ferrous) form by stomach acid and vitamin C before it can be absorbed by enterocyte transporters. Low stomach acid (from antacids, PPIs) significantly impairs this step.</p>
+          </div>
+        </div>
+        <div class="j-step">
+          <div class="j-icon">🔗</div>
+          <div class="j-body">
+            <h5>Transport in the blood — transferrin carries iron</h5>
+            <p>Absorbed iron binds to transferrin — a specialized transport protein. Transferrin saturation (TSAT) measures what percentage of transferrin is carrying iron. TSAT &lt;20% means iron transport is insufficient for the bone marrow's needs.</p>
+          </div>
+        </div>
+        <div class="j-step">
+          <div class="j-icon">🦴</div>
+          <div class="j-body">
+            <h5>Bone marrow — red cell production</h5>
+            <p>Developing red blood cell precursors in the marrow absorb transferrin-bound iron to build hemoglobin. EPO (from the kidneys) stimulates this process. Iron-restricted erythropoiesis occurs when iron delivery is inadequate — even if iron stores appear normal.</p>
+          </div>
+        </div>
+        <div class="j-step">
+          <div class="j-icon">♻️</div>
+          <div class="j-body">
+            <h5>Recycling — macrophages reclaim iron from old cells</h5>
+            <p>Red blood cells live ~120 days. When they age and die, macrophages in the spleen and liver engulf them and extract the iron — returning ~25 mg back into circulation daily. This recycling is far larger than dietary absorption and is disrupted by chronic inflammation (anemia of chronic disease).</p>
+          </div>
+        </div>
+        <div class="j-step">
+          <div class="j-icon">🏦</div>
+          <div class="j-body">
+            <h5>Storage — ferritin holds iron reserves</h5>
+            <p>Excess iron is stored as ferritin inside cells (primarily liver, spleen, and bone marrow). Serum ferritin reflects these stores — but ferritin is also an acute phase reactant that rises with inflammation, potentially masking true iron deficiency.</p>
+          </div>
+        </div>
+        <div class="j-step">
+          <div class="j-icon">🔒</div>
+          <div class="j-body">
+            <h5>Hepcidin — the iron gatekeeper</h5>
+            <p>Hepcidin is a liver hormone that blocks iron absorption and release from stores. It rises dramatically with infection and inflammation — this is why iron supplements often fail during illness, and why treating the underlying inflammation is essential for iron therapy to work.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="deficiency">
+    <div class="section-tag">Iron Deficiency</div>
+    <h2>Iron Deficiency — Stages and Symptoms</h2>
+    <p>Iron deficiency progresses in three stages before anemia becomes visible on a blood test. Symptoms appear early — often before hemoglobin falls.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num" style="background:#f5a623;">1</div>
+        <div class="step-body">
+          <h4>Stage 1 — Storage depletion (no symptoms yet)</h4>
+          <p>Ferritin falls below 30 ng/mL. Iron stores are depleted but hemoglobin and TSAT are still normal. The body compensates by increasing transferrin production. No symptoms yet — detected only on laboratory testing. This is the ideal stage to intervene and prevent progression.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#e07b00;">2</div>
+        <div class="step-body">
+          <h4>Stage 2 — Iron-restricted erythropoiesis (early symptoms)</h4>
+          <p>TSAT falls below 20%. The bone marrow starts producing smaller, paler red blood cells because there is insufficient iron for hemoglobin synthesis. Fatigue, difficulty concentrating, reduced exercise tolerance, and cold intolerance begin — even before hemoglobin falls below the "anemia threshold."</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--red);">3</div>
+        <div class="step-body">
+          <h4>Stage 3 — Iron deficiency anemia (full clinical picture)</h4>
+          <p>Hemoglobin falls below 120 g/L (women) or 130 g/L (men). Red cells are microcytic (small) and hypochromic (pale). Symptoms are now clear: significant fatigue, pallor of skin and inner eyelids (conjunctival pallor), rapid heartbeat on exertion, shortness of breath, brittle nails, hair loss, and cravings for non-food items (pagophagia — craving for ice is classic).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-amber">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-body">
+        <h4>Common causes of iron deficiency in Filipino patients</h4>
+        <ul>
+          <li><strong>Menstruation</strong> — women lose 15–30 mg of iron per cycle; heavy periods rapidly deplete stores</li>
+          <li><strong>Poor dietary iron</strong> — predominantly plant-based diets with low heme iron intake</li>
+          <li><strong>GI blood loss</strong> — peptic ulcer, gastritis, colon polyps, hemorrhoids, or cancer. Always investigate in men and post-menopausal women.</li>
+          <li><strong>Pregnancy</strong> — iron requirements nearly triple; deficiency affects both mother and fetal brain development</li>
+          <li><strong>Malabsorption</strong> — gastric bypass, celiac disease, chronic use of antacids or PPIs</li>
+          <li><strong>CKD and dialysis</strong> — blood loss through the dialysis circuit + hepcidin-driven iron trapping</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="labs">
+    <div class="section-tag">Laboratory Tests</div>
+    <h2>Understanding Your Iron Labs</h2>
+
+    <table class="lab-table">
+      <thead><tr><th>Test</th><th>What it measures</th><th>Normal range</th><th>Iron deficiency pattern</th></tr></thead>
+      <tbody>
+        <tr><td>Hemoglobin (Hgb)</td><td>Oxygen-carrying protein in red cells</td><td>120–160 g/L (F) / 130–170 g/L (M)</td><td>Low — but only in Stage 3. Normal in Stages 1–2.</td></tr>
+        <tr><td>MCV (Mean Cell Volume)</td><td>Red blood cell size</td><td>80–100 fL</td><td>Low (&lt;80 fL) — microcytic cells. If normal, may be early/mixed deficiency.</td></tr>
+        <tr><td>Serum ferritin</td><td>Iron storage protein — reflects body iron stores</td><td>12–150 ng/mL (F) / 12–300 (M)</td><td>&lt;30 ng/mL = depleted stores. &lt;12 = severe deficiency. NOTE: ferritin is falsely elevated with inflammation.</td></tr>
+        <tr><td>Serum iron</td><td>Iron currently circulating bound to transferrin</td><td>60–170 mcg/dL</td><td>Low. Fluctuates with meals — less reliable alone than ferritin or TSAT.</td></tr>
+        <tr><td>TIBC (Total Iron Binding Capacity)</td><td>Maximum amount of iron transferrin can carry</td><td>250–370 mcg/dL</td><td>High — body makes more transferrin to capture scarce iron</td></tr>
+        <tr><td>TSAT (Transferrin Saturation)</td><td>% of transferrin actually carrying iron</td><td>20–50%</td><td>&lt;20% = functional iron deficiency. Below this, bone marrow cannot make hemoglobin efficiently.</td></tr>
+        <tr><td>Reticulocyte Hgb Content (CHr)</td><td>Iron availability in newly made red cells</td><td>&gt;29 pg</td><td>&lt;29 pg = iron-restricted erythropoiesis — most sensitive early marker</td></tr>
+        <tr><td>Soluble transferrin receptor (sTfR)</td><td>Tissue iron demand — rises when cells are iron-starved</td><td>0.8–1.8 mg/L (varies by lab)</td><td>Elevated — does NOT rise with inflammation (unlike ferritin). Useful when ferritin is unreliable due to inflammation.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-teal">
+      <div class="alert-icon">💡</div>
+      <div class="alert-body">
+        <h4>The ferritin paradox in inflammation</h4>
+        <p>Ferritin is an acute-phase reactant — it rises dramatically during infection, autoimmune disease, malignancy, and chronic inflammation. A ferritin of 300 ng/mL in a patient with active rheumatoid arthritis or CKD does not mean iron stores are adequate — it may still be iron-deficient. In these cases, TSAT and sTfR are more reliable guides than ferritin alone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="absorption">
+    <div class="section-tag">Absorption Science</div>
+    <h2>What Helps and What Blocks Iron Absorption</h2>
+    <p>Iron absorption is one of the most heavily regulated processes in human physiology. Understanding what enhances and inhibits it allows you to time meals and supplements for maximum benefit.</p>
+
+    <div class="food-grid">
+      <div class="food-ok">
+        <h4>ENHANCERS — take iron with these</h4>
+        <ul>
+          <li><strong>Vitamin C (ascorbic acid)</strong> — most potent enhancer. Converts Fe³⁺ to absorbable Fe²⁺. Squeeze calamansi or dalandan with every iron-rich meal or supplement. Even 50 mg vitamin C doubles non-heme iron absorption.</li>
+          <li><strong>Meat, fish, and poultry (MFP factor)</strong> — heme iron in animal protein enhances non-heme iron absorption from plant foods eaten in the same meal. Eating chicken with mongo beans increases mongo's iron absorption significantly.</li>
+          <li><strong>Acidic environment</strong> — take oral iron supplements on an empty stomach (30 minutes before meals) when tolerated, where stomach acid is highest.</li>
+          <li><strong>Fermented foods</strong> — lacto-fermented vegetables may partially reduce phytate inhibitors.</li>
+        </ul>
+      </div>
+      <div class="food-block">
+        <h4>INHIBITORS — separate from iron by 2 hours</h4>
+        <ul>
+          <li><strong>Tea and coffee</strong> — tannins bind iron tightly. Drinking tea or coffee with a meal reduces iron absorption by 60–90%. Wait at least 1 hour after eating before drinking.</li>
+          <li><strong>Calcium</strong> — competes with iron for the same intestinal transporter. Do not take calcium supplements or eat large amounts of dairy within 2 hours of iron supplements.</li>
+          <li><strong>Phytates</strong> — found in whole grains, legumes, and nuts. Significantly reduce non-heme iron absorption. Soaking and fermenting reduces phytate content.</li>
+          <li><strong>Antacids and PPIs</strong> — reduce stomach acid needed to reduce Fe³⁺ to absorbable Fe²⁺. Take iron supplements at least 2 hours before antacids.</li>
+          <li><strong>Phosphate binders (in CKD)</strong> — separate from iron by at least 2 hours.</li>
+          <li><strong>Eggs (oxalates in yolk)</strong> — moderate inhibition of non-heme iron.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="foods">
+    <div class="section-tag">Dietary Sources</div>
+    <h2>Iron-Rich Foods — Filipino Sources</h2>
+
+    <table class="lab-table">
+      <thead><tr><th>Food</th><th>Iron content (per 100g)</th><th>Type</th><th>Kidney safety</th></tr></thead>
+      <tbody>
+        <tr><td>Malunggay (moringa) leaves</td><td>~7 mg (dried) / ~1.5 mg (fresh)</td><td>Non-heme</td><td>✓ Safe in moderate amounts; low potassium when boiled</td></tr>
+        <tr><td>Lean beef (kaldereta cut)</td><td>~2.5–3.5 mg</td><td>Heme</td><td>⚠ Limit to 1 serving/day in CKD — phosphorus and potassium</td></tr>
+        <tr><td>Chicken liver</td><td>~9 mg</td><td>Heme</td><td>✗ Avoid in CKD — extremely high phosphorus and potassium</td></tr>
+        <tr><td>Chicken breast / thigh</td><td>~1.0–1.5 mg</td><td>Heme</td><td>✓ Best animal iron source for CKD patients</td></tr>
+        <tr><td>Bangus (milkfish)</td><td>~1.2 mg</td><td>Heme</td><td>✓ Safe; moderate phosphorus</td></tr>
+        <tr><td>Mongo beans (mung beans, boiled)</td><td>~1.4 mg</td><td>Non-heme</td><td>⚠ Moderate phosphorus; small portions in advanced CKD</td></tr>
+        <tr><td>Kangkong (water spinach)</td><td>~1.7 mg</td><td>Non-heme</td><td>⚠ Moderate potassium — leach before eating</td></tr>
+        <tr><td>Tofu (firm)</td><td>~1.6 mg</td><td>Non-heme</td><td>⚠ Moderate phosphorus; small portions in CKD</td></tr>
+        <tr><td>Egg yolk (1 large)</td><td>~0.9 mg</td><td>Non-heme</td><td>⚠ High phosphorus — egg whites are better for CKD</td></tr>
+        <tr><td>Fortified white rice / cereals</td><td>1.5–4 mg (fortified)</td><td>Non-heme</td><td>✓ Safe; lower phosphorus than brown rice</td></tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-green">
+      <div class="alert-icon">🍊</div>
+      <div class="alert-body">
+        <h4>The calamansi trick for every iron-rich meal</h4>
+        <p>Squeeze 2–3 calamansi over any plant-based iron source — mongo, kangkong, malunggay, fortified rice. The vitamin C converts plant iron to its absorbable form and can multiply absorption 2–4 fold. This single habit significantly improves iron status in patients relying on plant iron sources. For CKD patients who cannot eat calamansi (very rare) — a small piece of pineapple or guava achieves the same effect.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="supplements">
+    <div class="section-tag">Iron Supplementation</div>
+    <h2>Iron Supplements — How to Take Them Correctly</h2>
+
+    <div class="two-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Oral iron — forms and timing</h4>
+        <p>Ferrous sulfate (325 mg) is the most common and least expensive. Ferrous gluconate and ferrous fumarate are gentler on the stomach. Take on an empty stomach 30 minutes before meals for best absorption. If stomach upset occurs, take with a small amount of food — absorption decreases but tolerability improves. Alternate-day dosing (every other day) is now shown to be as effective as daily dosing with fewer side effects.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>Expected side effects</h4>
+        <p>Black or dark green stools — completely normal and expected (not blood). Constipation — increase water and fiber intake; psyllium husk 5 g daily helps. Nausea — take with a small amount of food and reduce dose temporarily. These effects are from the 90% of iron that is NOT absorbed irritating the gut lining.</p>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Take with vitamin C — always</h4>
+          <p>Swallow your iron tablet with a glass of calamansi juice or orange juice, or take a 250 mg vitamin C tablet at the same time. This doubles to quadruples absorption. Never take with tea, coffee, milk, or antacids.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Allow 3–4 months for stores to replenish</h4>
+          <p>Hemoglobin typically begins rising within 2–4 weeks of adequate iron supplementation. However, ferritin (iron stores) takes 3–6 months to fully replenish. Do not stop iron supplementation when you feel better — continue until ferritin is above 50 ng/mL (or as directed by your doctor).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Find and treat the cause — not just the deficiency</h4>
+          <p>Iron supplementation without finding the cause of deficiency is incomplete treatment. If you are a man or post-menopausal woman with iron deficiency, your doctor must investigate for occult gastrointestinal blood loss — which can be a sign of colorectal cancer or peptic ulcer. Do not accept "just take iron" without an explanation of why you are deficient.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ckd">
+    <div class="section-tag">Iron in Kidney Disease</div>
+    <h2>Special Considerations for CKD and Dialysis Patients</h2>
+    <p>Iron management in CKD is more complex than in the general population — and the rules are different.</p>
+
+    <div class="three-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>IV iron preferred over oral in dialysis</h4>
+        <p>Hemodialysis patients lose iron through the dialysis circuit, frequent blood draws, and GI microbleeding from uremia. Oral iron is poorly absorbed due to elevated hepcidin and reduced gut transit time. Iron sucrose (Venofer) 100 mg IV per session is the standard — it bypasses the gut entirely and delivers iron directly to storage and marrow.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Functional iron deficiency</h4>
+        <p>In CKD with chronic inflammation, hepcidin traps iron inside macrophages — making it unavailable for erythropoiesis even when ferritin appears adequate. TSAT &lt;30% despite ferritin &gt;200 ng/mL indicates functional deficiency requiring IV iron — not more oral iron or higher ESA doses.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>Hold IV iron during active infection</h4>
+        <p>Never administer IV iron when a patient has active bacterial infection. Free iron feeds bacteria and worsens sepsis outcomes. Hold IV iron until the infection is fully treated and resolved — at least 2 weeks after completing antibiotics and confirming clinical and laboratory improvement.</p>
+      </div>
+    </div>
+
+    <table class="lab-table">
+      <thead><tr><th>Parameter</th><th>Pre-dialysis CKD target</th><th>Dialysis (KDIGO 2024)</th></tr></thead>
+      <tbody>
+        <tr><td>Ferritin</td><td><span class="target-badge">&gt;100 ng/mL</span></td><td><span class="target-badge">&gt;200 ng/mL</span></td></tr>
+        <tr><td>TSAT</td><td><span class="target-badge">&gt;20%</span></td><td><span class="target-badge">&gt;30%</span></td></tr>
+        <tr><td>Hemoglobin</td><td><span class="target-badge">100–115 g/L</span></td><td><span class="target-badge">100–115 g/L</span></td></tr>
+        <tr><td>CHr (Reticulocyte Hgb)</td><td><span class="target-badge">&gt;29 pg</span></td><td><span class="target-badge">&gt;29 pg</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="disclaimer"><strong>Important:</strong> This guide is for educational purposes. Iron supplementation in CKD requires individual assessment — type of iron, dose, and route must be guided by your nephrologist based on your specific lab results and clinical situation.</div>
+
+    <div class="dr-card">
+      <div class="dr-avatar">🩺</div>
+      <div>
+        <h4><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+        <p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing evidence-based nephrology with integrative nutritional approaches across Quezon City, Pampanga, and Bulacan.</p>
+        <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero · williamrivero@gmail.com</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="guide-footer">
+  <div class="footer-inner">
+    <p>© 2025 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a> · <a href="https://williamriveromd.com">williamriveromd.com</a></p>
+    <p>References: KDIGO 2024 Anemia Guidelines · WHO Iron Deficiency Anemia 2001 · NKF KDOQI Nutrition 2020 · Moretti et al., Iron absorption 2015</p>
+  </div>
+</footer>
+
+</body>
+</html>
