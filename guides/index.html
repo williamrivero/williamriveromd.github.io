@@ -553,10 +553,14 @@ function doSearch(q){
   const noRes = document.getElementById('no-results');
   clr.style.display = q ? 'block' : 'none';
   ico.style.display = q ? 'none' : 'block';
+
   if(!q){
     cards.forEach(c=>c.classList.remove('s-hidden'));
+    // Show all section headers and grids
+    document.querySelectorAll('.section-header,.guides-grid').forEach(el=>el.style.display='');
     count.textContent=''; noRes.style.display='none'; return;
   }
+
   const words = q.split(/\s+/);
   let shown=0;
   cards.forEach(c=>{
@@ -565,11 +569,32 @@ function doSearch(q){
     c.classList.toggle('s-hidden',!match);
     if(match) shown++;
   });
+
+  // Hide section headers whose grid has no visible cards
+  document.querySelectorAll('.guides-grid').forEach(grid=>{
+    const visibleCards = grid.querySelectorAll('.guide-card:not(.s-hidden)');
+    const isEmpty = visibleCards.length === 0;
+    grid.style.display = isEmpty ? 'none' : '';
+    // Hide the preceding section-header too
+    let prev = grid.previousElementSibling;
+    while(prev && !prev.classList.contains('section-header')){
+      prev = prev.previousElementSibling;
+    }
+    if(prev && prev.classList.contains('section-header')){
+      prev.style.display = isEmpty ? 'none' : '';
+    }
+  });
+
   count.textContent = shown===0 ? '' : shown + ' guide' + (shown===1?'':'s') + ' found';
   document.getElementById('no-term').textContent = q;
   noRes.style.display = shown===0 ? 'block' : 'none';
+
+  // Scroll first result into view smoothly
+  if(shown > 0){
+    const first = document.querySelector('.guide-card:not(.s-hidden)');
+    if(first) setTimeout(()=>first.scrollIntoView({behavior:'smooth',block:'center'}), 80);
+  }
 }
-function clearSearch(){
   document.getElementById('gsearch').value='';
   doSearch('');
 }
