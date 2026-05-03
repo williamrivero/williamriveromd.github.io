@@ -204,31 +204,56 @@
     @page{margin:18mm 15mm;size:A4;}
   }
 
+
+  /* ── LANGUAGE TOGGLE ── */
+  .guide-toggle-bar { display:flex; gap:8px; align-items:center; padding:6px 32px; background:rgba(0,0,0,.18); border-bottom:1px solid rgba(255,255,255,.06); justify-content:flex-end; flex-wrap:wrap; }
+  .lang-label { font-size:11px; color:rgba(255,255,255,.35); margin-right:4px; letter-spacing:.06em; }
+  .lang-btn { font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; padding:4px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.15); background:transparent; color:rgba(255,255,255,.55); cursor:pointer; transition:all .2s; }
+  .lang-btn:hover { color:white; border-color:rgba(255,255,255,.4); }
+  .lang-btn.active { background:#b8962e; border-color:#b8962e; color:white; }
+  [data-lang].lang-hidden { display:none !important; }
+
 </style>
 </head>
 <body>
 <header class="site-header">
   <a href="https://williamriveromd.com" class="brand">W. G. M. <strong>Rivero</strong>, MD</a>
-  <a href="https://williamriveromd.com/guides/index.html" class="back">← All Guides</a>
+  <a href="https://williamriveromd.com/guides/index.html" class="back"><span data-lang="en">← All Guides</span><span data-lang="tl" class="lang-hidden">← Lahat ng Gabay</span><span data-lang="ceb" class="lang-hidden">← Tanan nga Giya</span></a>
 </header>
-<div class="guide-toggle-bar">
-  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    <span class="toggle-label" id="darkLabel">Dark</span>
-  </button>
-  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-    <span class="toggle-label" id="desktopLabel">Desktop</span>
-  </button>
+<div class="guide-toggle-bar" style="justify-content:space-between;">
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="lang-label">Language:</span>
+    <button class="lang-btn active" id="glb-en" onclick="setLang('en')">English</button>
+    <button class="lang-btn" id="glb-tl" onclick="setLang('tl')">Tagalog</button>
+    <button class="lang-btn" id="glb-ceb" onclick="setLang('ceb')">Cebuano</button>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button class="toggle-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;display:flex;align-items:center;gap:5px;">
+      <svg id="darkIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span id="darkLabel">Dark</span>
+    </button>
+    <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;display:flex;align-items:center;gap:5px;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span id="desktopLabel">Desktop</span>
+    </button>
+  </div>
 </div>
 <section class="hero">
   <div class="container">
-    <div class="hero-tag">Nephrology · Pharmacotherapy · 2025 Update</div>
-    <h1>New Therapeutic Agents for CKD</h1>
+    <div class="hero-tag">
+  <span data-lang="en">Nephrology · Pharmacotherapy · 2025 Update</span>
+  <span data-lang="tl" class="lang-hidden">Nefrolohiya · Pharmacotherapy · Update 2025</span>
+  <span data-lang="ceb" class="lang-hidden">Nefrolohiya · Pharmacotherapy · Update 2025</span>
+</div>
+    <h1>
+  <span data-lang="en">New Therapeutic Agents for CKD</span>
+  <span data-lang="tl" class="lang-hidden">Mga Bagong Therapeutic Agent para sa CKD</span>
+  <span data-lang="ceb" class="lang-hidden">Mga Bag-ong Therapeutic Agent para sa CKD</span>
+</h1>
     <p class="hero-sub">The landmark trials and emerging drugs that have transformed CKD management — from SGLT2 inhibitors and finerenone to GLP-1 agonists, sparsentan, and HIF-PHI.</p>
     <div class="hero-meta">
-      <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
-      <span><strong>Updated:</strong> 2025</span>
+      <span><strong><span data-lang="en">Author</span><span data-lang="tl" class="lang-hidden">May-akda</span><span data-lang="ceb" class="lang-hidden">Awtor</span>:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+      <span><strong><span data-lang="en">Updated</span><span data-lang="tl" class="lang-hidden">Na-update</span><span data-lang="ceb" class="lang-hidden">Na-update</span>:</strong> 2025</span>
     </div>
   </div>
 </section>
@@ -498,13 +523,13 @@
       </table>
     </div>
 
-    <div class="disclaimer"><strong>Important:</strong> Drug availability and pricing change frequently. Always verify current registration status and discuss affordability with your nephrologist — generic and biosimilar options may become available. Never start or stop these medications without medical supervision.</div>
+    <div class="disclaimer"><strong><span data-lang="en">Important</span><span data-lang="tl" class="lang-hidden">Mahalagang Paalala</span><span data-lang="ceb" class="lang-hidden">Importante nga Pahibalo</span>:</strong> Drug availability and pricing change frequently. Always verify current registration status and discuss affordability with your nephrologist — generic and biosimilar options may become available. Never start or stop these medications without medical supervision.</div>
 
     <div class="dr-card">
       <div class="dr-avatar">🩺</div>
       <div>
         <h4><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
-        <p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition.</p>
+        <p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon.</span></p>
         <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero · williamrivero@gmail.com</p>
       </div>
     </div>
@@ -558,5 +583,23 @@
     <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
   </svg>
 </button>
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
 </body>
 </html>
