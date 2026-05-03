@@ -32,8 +32,79 @@
     line-height: 1.6;
   }
 
-  /* NAV */
-  nav {
+  /* ── DARK MODE ─────────────────────────────── */
+  html[data-theme="dark"] {
+    --navy: #1a2e4a;
+    --navy-deep: #0a0f1a;
+    --teal: #25949d;
+    --teal-light: #0e2f32;
+    --gold: #b8962e;
+    --gold-light: #d4af4f;
+    --cream: #0f1520;
+    --white: #1a2030;
+    --text: #e8eaf0;
+    --muted: #8a95a8;
+    --border: #2a3548;
+  }
+  html[data-theme="dark"] body { background: #0f1520; color: #e8eaf0; }
+  html[data-theme="dark"] nav { background: rgba(10,15,26,0.97); }
+  html[data-theme="dark"] .about { background: #141c2a; }
+  html[data-theme="dark"] .specialties { background: #0f1520; }
+  html[data-theme="dark"] .research { background: #141c2a; }
+  html[data-theme="dark"] .faq { background: #0f1520; }
+  html[data-theme="dark"] footer { background: #080d16; }
+  html[data-theme="dark"] .spec-card,
+  html[data-theme="dark"] .faq-item,
+  html[data-theme="dark"] .contact-card,
+  html[data-theme="dark"] .research-item,
+  html[data-theme="dark"] .award-item { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .contact-book { background: #0a1428; }
+  html[data-theme="dark"] .credentials-list li { border-color: #2a3548; }
+  html[data-theme="dark"] .stats-row { background: #080d16; }
+  html[data-theme="dark"] .badges-row { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .smd-badge { background: #0e2f32; border-color: #25949d; color: #8de0e8; }
+  html[data-theme="dark"] .section-title,
+  html[data-theme="dark"] .faq-q,
+  html[data-theme="dark"] h2, html[data-theme="dark"] h3,
+  html[data-theme="dark"] h4 { color: #e8eaf0; }
+  html[data-theme="dark"] .ri-body h4 { color: #e8eaf0; }
+  html[data-theme="dark"] .award-body h4 { color: #e8eaf0; }
+  html[data-theme="dark"] .cred-label { color: #8a95a8; }
+  html[data-theme="dark"] .cred-value { color: #c8d0dc; }
+  html[data-theme="dark"] .faq-a { color: #9aa5b8; }
+  html[data-theme="dark"] .contact-card h3 { color: #e8eaf0; }
+
+  /* ── DESKTOP FORCED MODE ────────────────────── */
+  html[data-view="desktop"] { min-width: 1024px; }
+  html[data-view="desktop"] body { min-width: 1024px; }
+
+  /* ── TOGGLE CONTROLS ───────────────────────── */
+  .view-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 16px;
+  }
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 11px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .toggle-btn:hover { background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,.3); }
+  .toggle-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .toggle-btn.active { background: var(--gold); border-color: var(--gold); color: white; }
+  @media(max-width:768px){ .toggle-label { display: none; } }
     position: fixed; top: 0; left: 0; right: 0;
     background: rgba(26,46,74,0.97);
     backdrop-filter: blur(8px);
@@ -832,6 +903,22 @@
     <li><a href="#contact">Clinics</a></li>
     <li><a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" class="nav-cta">Book Appointment</a></li>
   </ul>
+  <div class="view-controls">
+    <!-- Dark mode toggle -->
+    <button class="toggle-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span class="toggle-label" id="darkLabel">Dark</span>
+    </button>
+    <!-- Desktop view toggle -->
+    <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+      <span class="toggle-label" id="desktopLabel">Desktop</span>
+    </button>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -1413,5 +1500,59 @@
   <p>&copy; 2026 williamriveromd.com</p>
 </footer>
 
+<script>
+  // ── DARK MODE ──────────────────────────────────────────────────
+  const DARK_KEY = 'wgmr-dark';
+  const DESK_KEY = 'wgmr-desktop';
+
+  function applyDark(on) {
+    document.documentElement.setAttribute('data-theme', on ? 'dark' : 'light');
+    const btn = document.getElementById('darkToggle');
+    const lbl = document.getElementById('darkLabel');
+    const ico = document.getElementById('darkIcon');
+    if (!btn) return;
+    btn.classList.toggle('active', on);
+    if (lbl) lbl.textContent = on ? 'Light' : 'Dark';
+    if (ico) ico.innerHTML = on
+      ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+
+  function toggleDark() {
+    const on = document.documentElement.getAttribute('data-theme') !== 'dark';
+    localStorage.setItem(DARK_KEY, on ? '1' : '0');
+    applyDark(on);
+  }
+
+  // ── DESKTOP VIEW ───────────────────────────────────────────────
+  function applyDesktop(on) {
+    const vp = document.querySelector('meta[name="viewport"]');
+    if (on) {
+      document.documentElement.setAttribute('data-view', 'desktop');
+      if (vp) vp.setAttribute('content', 'width=1024');
+    } else {
+      document.documentElement.removeAttribute('data-view');
+      if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1.0');
+    }
+    const btn = document.getElementById('desktopToggle');
+    const lbl = document.getElementById('desktopLabel');
+    if (btn) btn.classList.toggle('active', on);
+    if (lbl) lbl.textContent = on ? 'Mobile' : 'Desktop';
+  }
+
+  function toggleDesktop() {
+    const on = document.documentElement.getAttribute('data-view') !== 'desktop';
+    localStorage.setItem(DESK_KEY, on ? '1' : '0');
+    applyDesktop(on);
+  }
+
+  // ── RESTORE ON LOAD ────────────────────────────────────────────
+  (function() {
+    const dark = localStorage.getItem(DARK_KEY) === '1';
+    const desk = localStorage.getItem(DESK_KEY) === '1';
+    if (dark) applyDark(true);
+    if (desk) applyDesktop(true);
+  })();
+</script>
 </body>
 </html>
