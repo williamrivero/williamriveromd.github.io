@@ -194,6 +194,34 @@
   html[data-theme="dark"] .checklist h4 { color: rgba(255,255,255,.9); }
   html[data-theme="dark"] .checklist ul li { color: rgba(255,255,255,.75); }
 
+
+  /* ── TOGGLE BAR contrast fix ── */
+  .guide-toggle-bar {
+    background: rgba(10, 18, 32, 0.96) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  }
+
+
+  /* ── LANG TOGGLE (guide pages) ── */
+  .guide-lang-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 32px; height: 36px;
+    background: rgba(0,0,0,.35);
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    justify-content: flex-end;
+  }
+  .guide-lang-bar .lang-lbl { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing:.06em; margin-right:2px; }
+  .lang-btn-g {
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: transparent; color: rgba(255,255,255,.6);
+    cursor: pointer; transition: all .18s;
+  }
+  .lang-btn-g:hover { color: white; border-color: rgba(255,255,255,.4); }
+  .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
+  [data-lang].lang-hidden { display: none !important; }
+
 </style>
 </head>
 <body>
@@ -216,8 +244,8 @@
 
 <section class="hero">
   <div class="container">
-    <div class="hero-tag">CKD · Nutrition · Philippine Context · Myths vs Evidence</div>
-    <h1>Buko Juice &amp; Alkaline Water in CKD — Myths vs Evidence</h1>
+    <div class="hero-tag"><span data-lang="en">CKD · Nutrition · Philippine Context · Myths vs Evidence</span><span data-lang="tl" class="lang-hidden">CKD · Nutrisyon · Kontekstong Pilipino · Mito vs Katotohanan</span><span data-lang="ceb" class="lang-hidden">CKD · Nutrisyon · Konteksto sa Pilipinas · Mito vs Ebidensya</span></div>
+    <h1><span data-lang="en">Buko Juice &amp; Alkaline Water in CKD — Myths vs Evidence</span><span data-lang="tl" class="lang-hidden">Buko Juice at Alkaline Water sa CKD — Mito vs Katotohanan</span><span data-lang="ceb" class="lang-hidden">Buko Juice &amp; Alkaline Water sa CKD — Mito vs Ebidensya</span></h1>
     <p class="hero-sub">Two of the most common questions Filipino kidney patients ask their nephrologist: "Is buko juice good for my kidneys?" and "Should I drink alkaline water?" This guide gives you the honest, evidence-based answers — and explains why these well-meaning choices can sometimes cause serious harm.</p>
     <div class="hero-meta">
       <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
@@ -633,6 +661,24 @@ function toggleDesktop(){const on=document.documentElement.getAttribute('data-vi
   if(localStorage.getItem(DK)==='1')applyDark(true);
   if(localStorage.getItem(DSK)==='1')applyDesktop(true);
 })();
+
+// Language toggle for guide pages
+const GLANG_KEY = 'wgmr-lang';
+function setGuideLang(lang) {
+  localStorage.setItem(GLANG_KEY, lang);
+  ['en','tl','ceb'].forEach(l => {
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el => {
+      el.classList.toggle('lang-hidden', l !== lang);
+    });
+    const btn = document.getElementById('glb-'+l);
+    if (btn) btn.classList.toggle('active', l === lang);
+  });
+}
+(function(){
+  const saved = localStorage.getItem(GLANG_KEY) || 'en';
+  if (saved !== 'en') setGuideLang(saved);
+})();
+
 </script>
 </body>
 </html>

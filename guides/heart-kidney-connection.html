@@ -312,6 +312,34 @@
   html[data-theme="dark"] .checklist h4 { color: rgba(255,255,255,.9); }
   html[data-theme="dark"] .checklist ul li { color: rgba(255,255,255,.75); }
 
+
+  /* ── TOGGLE BAR contrast fix ── */
+  .guide-toggle-bar {
+    background: rgba(10, 18, 32, 0.96) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  }
+
+
+  /* ── LANG TOGGLE (guide pages) ── */
+  .guide-lang-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 32px; height: 36px;
+    background: rgba(0,0,0,.35);
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    justify-content: flex-end;
+  }
+  .guide-lang-bar .lang-lbl { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing:.06em; margin-right:2px; }
+  .lang-btn-g {
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: transparent; color: rgba(255,255,255,.6);
+    cursor: pointer; transition: all .18s;
+  }
+  .lang-btn-g:hover { color: white; border-color: rgba(255,255,255,.4); }
+  .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
+  [data-lang].lang-hidden { display: none !important; }
+
 </style>
 </head>
 <body>
@@ -680,7 +708,25 @@
       <div>
         <h4><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
         <p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon.</span> Practicing integrative, evidence-based cardiorenal medicine across Quezon City, Pampanga, and Bulacan.</p>
-        <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero · <span id="eml23"></span><script>(function(){var p=["will","iamr","iver","o@gm","ail.","com"];var e=p.join("");var el=document.getElementById("eml23");if(el)el.innerHTML='<a href="mailto:'+e+'" style="color:rgba(255,255,255,.45);">'+e+'</a>';})();</script></p>
+        <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero · <span id="eml23"></span><script>(function(){var p=["will","iamr","iver","o@gm","ail.","com"];var e=p.join("");var el=document.getElementById("eml23");if(el)el.innerHTML='<a href="mailto:'+e+'" style="color:rgba(255,255,255,.45);">'+e+'</a>';})();
+// Language toggle for guide pages
+const GLANG_KEY = 'wgmr-lang';
+function setGuideLang(lang) {
+  localStorage.setItem(GLANG_KEY, lang);
+  ['en','tl','ceb'].forEach(l => {
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el => {
+      el.classList.toggle('lang-hidden', l !== lang);
+    });
+    const btn = document.getElementById('glb-'+l);
+    if (btn) btn.classList.toggle('active', l === lang);
+  });
+}
+(function(){
+  const saved = localStorage.getItem(GLANG_KEY) || 'en';
+  if (saved !== 'en') setGuideLang(saved);
+})();
+
+</script></p>
       </div>
     </div>
   </section>

@@ -175,6 +175,34 @@
   html[data-theme="dark"] .checklist h4 { color: rgba(255,255,255,.9); }
   html[data-theme="dark"] .checklist ul li { color: rgba(255,255,255,.75); }
 
+
+  /* ── TOGGLE BAR contrast fix ── */
+  .guide-toggle-bar {
+    background: rgba(10, 18, 32, 0.96) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  }
+
+
+  /* ── LANG TOGGLE (guide pages) ── */
+  .guide-lang-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 32px; height: 36px;
+    background: rgba(0,0,0,.35);
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    justify-content: flex-end;
+  }
+  .guide-lang-bar .lang-lbl { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing:.06em; margin-right:2px; }
+  .lang-btn-g {
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: transparent; color: rgba(255,255,255,.6);
+    cursor: pointer; transition: all .18s;
+  }
+  .lang-btn-g:hover { color: white; border-color: rgba(255,255,255,.4); }
+  .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
+  [data-lang].lang-hidden { display: none !important; }
+
 </style>
 </head>
 <body>
@@ -188,9 +216,9 @@
 </div>
 <section class="hero">
   <div class="container">
-    <div class="hero-tag">Nephrology · Infectious Disease · Philippines</div>
-    <h1>Tuberculosis and Kidney Disease</h1>
-    <p class="hero-sub">The Philippines has one of the highest TB burdens in the world, and CKD dramatically increases TB risk. This guide explains how TB and kidney disease interact, how TB is diagnosed and treated differently in kidney patients, and what precautions dialysis and transplant patients must take.</p>
+    <div class="hero-tag"><span data-lang="en">Nephrology · Infectious Disease · Philippines</span><span data-lang="tl" class="lang-hidden">Nefrolohiya · Nakakahawang Sakit · Pilipinas</span><span data-lang="ceb" class="lang-hidden">Nefrolohiya · Infectious Disease · Pilipinas</span></div>
+    <h1><span data-lang="en">Tuberculosis and Kidney Disease</span><span data-lang="tl" class="lang-hidden">Tuberkulosis at Sakit sa Bato</span><span data-lang="ceb" class="lang-hidden">Tuberkulosis ug Sakit sa Kidney</span></h1>
+    <p class="hero-sub"><span data-lang="en">The Philippines has one of the highest TB burdens in the world, and CKD dramatically increases TB risk.</span><span data-lang="tl" class="lang-hidden">Ang Pilipinas ay isa sa mga bansang may pinakamataas na bilang ng TB sa buong mundo, at ang CKD ay malaki ang naidiudulot sa panganib ng TB.</span><span data-lang="ceb" class="lang-hidden">Ang Pilipinas usa sa mga nasod nga adunay pinakataas nga TB burden sa kalibutan, ug ang CKD dramatikong nagdugang sa risgo sa TB.</span> This guide explains how TB and kidney disease interact, how TB is diagnosed and treated differently in kidney patients, and what precautions dialysis and transplant patients must take.</p>
     <div class="hero-meta">
       <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
       <span><strong>Updated:</strong> 2025</span>
@@ -429,6 +457,24 @@ function toggleDark(){const on=document.documentElement.getAttribute('data-theme
 function applyDesktop(on){const vp=document.querySelector('meta[name="viewport"]');if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}const b=document.getElementById('desktopToggle'),l=document.getElementById('desktopLabel');if(b)b.classList.toggle('active',on);if(l)l.textContent=on?'Mobile':'Desktop';}
 function toggleDesktop(){const on=document.documentElement.getAttribute('data-view')!=='desktop';localStorage.setItem(DSK,on?'1':'0');applyDesktop(on);}
 (function(){if(localStorage.getItem(DK)==='1')applyDark(true);if(localStorage.getItem(DSK)==='1')applyDesktop(true);})();
+
+// Language toggle for guide pages
+const GLANG_KEY = 'wgmr-lang';
+function setGuideLang(lang) {
+  localStorage.setItem(GLANG_KEY, lang);
+  ['en','tl','ceb'].forEach(l => {
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el => {
+      el.classList.toggle('lang-hidden', l !== lang);
+    });
+    const btn = document.getElementById('glb-'+l);
+    if (btn) btn.classList.toggle('active', l === lang);
+  });
+}
+(function(){
+  const saved = localStorage.getItem(GLANG_KEY) || 'en';
+  if (saved !== 'en') setGuideLang(saved);
+})();
+
 </script>
 </body>
 </html>

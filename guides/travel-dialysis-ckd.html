@@ -189,6 +189,34 @@
   html[data-theme="dark"] .checklist h4 { color: rgba(255,255,255,.9); }
   html[data-theme="dark"] .checklist ul li { color: rgba(255,255,255,.75); }
 
+
+  /* ── TOGGLE BAR contrast fix ── */
+  .guide-toggle-bar {
+    background: rgba(10, 18, 32, 0.96) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  }
+
+
+  /* ── LANG TOGGLE (guide pages) ── */
+  .guide-lang-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 32px; height: 36px;
+    background: rgba(0,0,0,.35);
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    justify-content: flex-end;
+  }
+  .guide-lang-bar .lang-lbl { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing:.06em; margin-right:2px; }
+  .lang-btn-g {
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: transparent; color: rgba(255,255,255,.6);
+    cursor: pointer; transition: all .18s;
+  }
+  .lang-btn-g:hover { color: white; border-color: rgba(255,255,255,.4); }
+  .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
+  [data-lang].lang-hidden { display: none !important; }
+
 </style>
 </head>
 <body>
@@ -208,9 +236,9 @@
 </div>
 <section class="hero">
   <div class="container">
-    <div class="hero-tag">Nephrology · Patient Guide · Travel</div>
-    <h1>Travel Guidelines for Dialysis &amp; CKD Patients</h1>
-    <p class="hero-sub">Kidney disease does not have to stop you from traveling — but it requires careful planning. This guide covers dialysis arrangements, medications, diet, fluid management, and what to do in a medical emergency abroad.</p>
+    <div class="hero-tag"><span data-lang="en">Nephrology · Patient Guide · Travel</span><span data-lang="tl" class="lang-hidden">Nefrolohiya · Gabay sa Pasyente · Paglalakbay</span><span data-lang="ceb" class="lang-hidden">Nefrolohiya · Giya sa Pasyente · Pagbiyahe</span></div>
+    <h1><span data-lang="en">Travel Guidelines for Dialysis &amp; CKD Patients</span><span data-lang="tl" class="lang-hidden">Mga Gabay sa Paglalakbay para sa mga Pasyenteng may Diyalisis at CKD</span><span data-lang="ceb" class="lang-hidden">Mga Giya sa Pagbiyahe para sa mga Pasyente nga adunay Dyalisis ug CKD</span></h1>
+    <p class="hero-sub"><span data-lang="en">Kidney disease does not have to stop you from traveling — but it requires careful planning.</span><span data-lang="tl" class="lang-hidden">Ang sakit sa bato ay hindi dapat hadlangan kayo sa paglalakbay — ngunit nangangailangan ito ng maingat na pagpaplano.</span><span data-lang="ceb" class="lang-hidden">Ang sakit sa kidney dili kinahanglan nga mohunong kaninyo sa pagbiyahe — apan nanginahanglan kini og maayo nga pagplano.</span> This guide covers dialysis arrangements, medications, diet, fluid management, and what to do in a medical emergency abroad.</p>
     <div class="hero-meta">
       <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
       <span><strong>Updated:</strong> 2025</span>
@@ -546,6 +574,24 @@ function toggleDark(){const on=document.documentElement.getAttribute('data-theme
 function applyDesktop(on){const vp=document.querySelector('meta[name="viewport"]');if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}const btn=document.getElementById('desktopToggle');const lbl=document.getElementById('desktopLabel');if(btn)btn.classList.toggle('active',on);if(lbl)lbl.textContent=on?'Mobile':'Desktop';}
 function toggleDesktop(){const on=document.documentElement.getAttribute('data-view')!=='desktop';localStorage.setItem(DESK_KEY,on?'1':'0');applyDesktop(on);}
 (function(){if(localStorage.getItem(DARK_KEY)==='1')applyDark(true);if(localStorage.getItem(DESK_KEY)==='1')applyDesktop(true);})();
+
+// Language toggle for guide pages
+const GLANG_KEY = 'wgmr-lang';
+function setGuideLang(lang) {
+  localStorage.setItem(GLANG_KEY, lang);
+  ['en','tl','ceb'].forEach(l => {
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el => {
+      el.classList.toggle('lang-hidden', l !== lang);
+    });
+    const btn = document.getElementById('glb-'+l);
+    if (btn) btn.classList.toggle('active', l === lang);
+  });
+}
+(function(){
+  const saved = localStorage.getItem(GLANG_KEY) || 'en';
+  if (saved !== 'en') setGuideLang(saved);
+})();
+
 </script>
 </body>
 </html>
