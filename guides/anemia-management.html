@@ -153,6 +153,62 @@
   .toggle-btn svg { width:12px; height:12px; flex-shrink:0; }
   @media(max-width:600px){ .toggle-label { display:none; } }
 
+
+  /* ── PRINT ── */
+  .print-btn{
+    position:fixed;bottom:80px;right:24px;
+    width:44px;height:44px;border-radius:50%;
+    background:var(--teal,#1a6b72);color:white;
+    border:none;cursor:pointer;display:flex;
+    align-items:center;justify-content:center;
+    box-shadow:0 4px 16px rgba(0,0,0,.25);
+    transition:transform .2s,box-shadow .2s;
+    z-index:9998;
+  }
+  .print-btn:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(0,0,0,.35);}
+  .print-btn svg{width:18px;height:18px;}
+  .print-btn .p-tip{
+    position:absolute;right:54px;
+    background:rgba(15,30,46,.9);color:white;
+    font-size:12px;font-weight:500;white-space:nowrap;
+    padding:5px 10px;border-radius:6px;
+    opacity:0;pointer-events:none;transition:opacity .15s;
+  }
+  .print-btn:hover .p-tip{opacity:1;}
+  @media print{
+    .site-header,.nav-strip,.guide-toggle-bar,.print-btn,
+    .float-controls,.guide-footer{display:none!important;}
+    body{font-size:13px;line-height:1.6;color:#000;background:#fff;}
+    .hero{background:#fff!important;color:#000!important;padding:24px 0 16px!important;}
+    .hero h1{color:#0f1e2e!important;font-size:22px!important;}
+    .hero-sub{color:#444!important;font-size:13px!important;}
+    .hero-tag,.hero-meta{color:#666!important;}
+    .container{max-width:100%;padding:0 24px;}
+    .section{padding:20px 0;border-bottom:1px solid #ddd;}
+    .intro-callout{background:#f0f4f8!important;color:#000!important;border:1px solid #ccc;}
+    .intro-callout p{color:#222!important;}
+    .alert{border:1px solid #ccc!important;background:#f9f9f9!important;}
+    .alert-body h4,.alert-body p,.alert-body ul{color:#222!important;}
+    .illus-wrap{border:1px solid #ccc;background:#f9f9f9!important;page-break-inside:avoid;}
+    .illus-caption{color:#555!important;}
+    .ex-card,.feature-card,.toxin-card,.utox-card,.modality-card{
+      border:1px solid #ccc!important;background:#fff!important;page-break-inside:avoid;
+    }
+    .ex-name,.feature-card h4{color:#0f1e2e!important;}
+    .ex-desc,.ex-steps,.feature-card p{color:#333!important;}
+    .section h2{color:#0f1e2e!important;}
+    .section-tag{color:#1a6b72!important;}
+    .lab-table th{background:#eee!important;color:#333!important;}
+    .lab-table td{color:#333!important;}
+    .dr-card{background:#f0f4f8!important;color:#000!important;border:1px solid #ccc;}
+    .dr-card h4,.dr-card p,.dr-card .dr-creds{color:#222!important;}
+    .disclaimer{background:#fff8e8!important;border:1px solid #ccc!important;color:#333!important;}
+    .stop-sign{background:#fff0f0!important;border:1px solid #c00!important;}
+    a[href]:after{content:" (" attr(href) ")";font-size:10px;color:#666;}
+    .nav-pill{display:none;}
+    @page{margin:18mm 15mm;size:A4;}
+  }
+
 </style>
 </head>
 <body>
@@ -503,5 +559,12 @@
     if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
   })();
 </script>
+
+<button class="print-btn" onclick="window.print()" aria-label="Print this guide">
+  <span class="p-tip">Print / Save PDF</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+  </svg>
+</button>
 </body>
 </html>

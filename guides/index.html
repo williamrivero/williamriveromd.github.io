@@ -48,6 +48,21 @@
   footer a:hover{color:white;}
   .footer-bottom{max-width:1100px;margin:32px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.3);flex-wrap:wrap;gap:8px;}
   @media(max-width:768px){nav{padding:0 20px;}.nav-links{display:none;}.hero,.section-header,.guides-grid{padding-left:20px;padding-right:20px;}.footer-inner{grid-template-columns:1fr;}footer{padding:40px 20px;}}
+
+  /* ── SEARCH ── */
+  .search-wrap{max-width:1100px;margin:0 auto;padding:0 48px 32px;}
+  .search-box{position:relative;max-width:520px;}
+  .search-box input{width:100%;padding:13px 44px 13px 18px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:var(--white);border:1.5px solid var(--border);border-radius:12px;outline:none;transition:border-color .2s,box-shadow .2s;}
+  .search-box input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.12);}
+  .search-box input::placeholder{color:#a0aab8;}
+  .s-ico{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#a0aab8;pointer-events:none;}
+  .s-clr{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#a0aab8;font-size:20px;line-height:1;display:none;padding:2px;}
+  .s-clr:hover{color:var(--text);}
+  .s-count{font-size:13px;color:var(--text-muted);margin-top:10px;min-height:20px;}
+  .guide-card.s-hidden{display:none!important;}
+  .no-results{max-width:1100px;margin:0 auto;padding:0 48px 32px;font-size:15px;color:var(--text-muted);display:none;}
+  @media(max-width:768px){.search-wrap,.no-results{padding-left:20px;padding-right:20px;}}
+
 </style>
 </head>
 <body>
@@ -68,6 +83,16 @@
   <h1>Guides for your care</h1>
   <p>Clear, evidence-based guides to help you and your family understand your conditions — and take an active role in your health.</p>
 </div>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <input type="search" id="gsearch" placeholder="Search all guides — e.g. kidney stones, dialysis, diet, gout…" oninput="doSearch(this.value)" autocomplete="off" aria-label="Search guides">
+    <svg class="s-ico" id="s-ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <button class="s-clr" id="s-clr" onclick="clearSearch()" aria-label="Clear">×</button>
+  </div>
+  <div class="s-count" id="s-count"></div>
+</div>
+<div class="no-results" id="no-results">No guides match "<span id="no-term"></span>" — try a different keyword.</div>
 
 <!-- NEPHROLOGY -->
 <div class="section-header">
@@ -351,5 +376,36 @@
   </div>
 </footer>
 
+<script>
+function doSearch(q){
+  q = q.trim().toLowerCase();
+  const cards = document.querySelectorAll('.guide-card');
+  const clr = document.getElementById('s-clr');
+  const ico = document.getElementById('s-ico');
+  const count = document.getElementById('s-count');
+  const noRes = document.getElementById('no-results');
+  clr.style.display = q ? 'block' : 'none';
+  ico.style.display = q ? 'none' : 'block';
+  if(!q){
+    cards.forEach(c=>c.classList.remove('s-hidden'));
+    count.textContent=''; noRes.style.display='none'; return;
+  }
+  const words = q.split(/\s+/);
+  let shown=0;
+  cards.forEach(c=>{
+    const txt = c.textContent.toLowerCase();
+    const match = words.every(w=>txt.includes(w));
+    c.classList.toggle('s-hidden',!match);
+    if(match) shown++;
+  });
+  count.textContent = shown===0 ? '' : shown + ' guide' + (shown===1?'':'s') + ' found';
+  document.getElementById('no-term').textContent = q;
+  noRes.style.display = shown===0 ? 'block' : 'none';
+}
+function clearSearch(){
+  document.getElementById('gsearch').value='';
+  doSearch('');
+}
+</script>
 </body>
 </html>
