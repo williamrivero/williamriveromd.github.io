@@ -78,7 +78,106 @@
   html[data-view="desktop"] { min-width: 1024px; }
   html[data-view="desktop"] body { min-width: 1024px; }
 
-  /* ── FLOATING TOGGLE BUTTONS ─── always visible, bottom-right corner */
+  /* ── APPOINTMENT REQUEST FORM ── */
+  .appt-section { background: var(--white); }
+  .appt-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+    margin-top: 40px;
+  }
+  @media(max-width:900px){ .appt-wrap { grid-template-columns: 1fr; gap: 32px; } }
+  .appt-info h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+  .appt-info p { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 14px; }
+  .appt-option {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--cream); border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 10px;
+    border: 1px solid var(--border);
+  }
+  .appt-option-icon { font-size: 22px; flex-shrink: 0; }
+  .appt-option-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+  .appt-option-body p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.55; }
+  .appt-option-body a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  /* Form card */
+  .appt-form-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.06);
+  }
+  .appt-form-header {
+    background: var(--navy);
+    padding: 20px 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .appt-form-header h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 500; color: white; margin: 0;
+  }
+  .appt-form-header p { font-size: 12px; color: rgba(255,255,255,.5); margin: 3px 0 0; }
+  .appt-form-body { padding: 28px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:600px){ .form-row { grid-template-columns: 1fr; } }
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 6px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%; padding: 11px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--text); background: var(--bg);
+    border: 1.5px solid var(--border); border-radius: 8px;
+    outline: none; transition: border-color .2s, box-shadow .2s;
+    appearance: none; -webkit-appearance: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .form-group input::placeholder { color: #b0b8c4; }
+  .form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6472' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer; }
+  .form-group select option { color: var(--text); background: white; }
+  .form-submit {
+    width: 100%; padding: 14px;
+    background: var(--navy); color: white;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+    border: none; border-radius: 8px; cursor: pointer;
+    transition: background .2s, transform .15s;
+    letter-spacing: .02em; margin-top: 4px;
+  }
+  .form-submit:hover { background: var(--teal); transform: translateY(-1px); }
+  .form-submit:disabled { background: #9aa3b0; cursor: not-allowed; transform: none; }
+  .form-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 12px; line-height: 1.6; }
+  .form-note a { color: var(--teal); text-decoration: none; }
+  /* Success / Error states */
+  .form-success, .form-error {
+    display: none; border-radius: 10px; padding: 18px 20px;
+    text-align: center; margin-top: 16px;
+  }
+  .form-success { background: var(--green-soft); border: 1px solid rgba(45,122,79,.2); }
+  .form-success h4 { color: var(--green); font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .form-success p { color: var(--text-muted); font-size: 13px; margin: 0; }
+  .form-error { background: var(--red-soft); border: 1px solid rgba(192,57,43,.2); }
+  .form-error p { color: var(--red); font-size: 13px; margin: 0; }
+  .required-star { color: var(--red); margin-left: 2px; }
+  /* API key reminder badge */
+  .api-key-notice {
+    background: var(--amber-soft); border: 1px solid rgba(245,166,35,.3);
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 16px;
+    font-size: 12px; color: #7a5200; line-height: 1.6; display: flex; gap: 8px;
+  }
+  .api-key-notice a { color: var(--teal); font-weight: 600; }
   .float-controls {
     position: fixed;
     bottom: 24px;
@@ -951,6 +1050,7 @@
     <li><a href="#research">Research</a></li>
     <li><a href="#guides">Patient Guides</a></li>
     <li><a href="#faq">FAQ</a></li>
+    <li><a href="#appointment">Appointment</a></li>
     <li><a href="#contact">Clinics</a></li>
     <li><a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" class="nav-cta">Book Appointment</a></li>
   </ul>
@@ -1552,6 +1652,156 @@
   </div>
 </section>
 
+<!-- APPOINTMENT REQUEST FORM -->
+<section class="appt-section" id="appointment">
+  <div class="section-inner">
+    <div class="section-eyebrow">Request a Consultation</div>
+    <h2 class="section-title">Book an Appointment</h2>
+    <p class="section-sub">Choose the option that works best for you — instant booking through SeriousMD, or send a request and the clinic will confirm your schedule within 24 hours.</p>
+
+    <div class="appt-wrap">
+
+      <!-- Left: context -->
+      <div class="appt-info">
+        <h3>Two ways to reach us</h3>
+        <p>Both options go to the same clinics. Use SeriousMD for instant confirmation. Use the form below if you are a new patient or prefer to describe your concern first.</p>
+
+        <div class="appt-option">
+          <div class="appt-option-icon">⚡</div>
+          <div class="appt-option-body">
+            <h4>Instant — via SeriousMD</h4>
+            <p>Real-time availability, instant confirmation. Recommended for returning patients.<br>
+            <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank">seriousmd.com/doc/williamrivero →</a></p>
+          </div>
+        </div>
+
+        <div class="appt-option">
+          <div class="appt-option-icon">📋</div>
+          <div class="appt-option-body">
+            <h4>Request Form — this page</h4>
+            <p>Fill out the form. Clinic staff will contact you within 24 hours to confirm your schedule. Ideal for new patients.</p>
+          </div>
+        </div>
+
+        <div class="appt-option">
+          <div class="appt-option-icon">📧</div>
+          <div class="appt-option-body">
+            <h4>Email directly</h4>
+            <p><a href="mailto:williamrivero@gmail.com">williamrivero@gmail.com</a><br>
+            For referral letters, medical records, and urgent clinical concerns.</p>
+          </div>
+        </div>
+
+        <p style="font-size:13px;color:var(--muted);margin-top:20px;line-height:1.75;">
+          <strong style="color:var(--navy);">What to prepare:</strong> Recent laboratory results, list of current medications with doses, PhilHealth MDR card, HMO LOA if applicable. For kidney ultrasound or CT scan — bring the actual CD/film, not just the report.
+        </p>
+      </div>
+
+      <!-- Right: form -->
+      <div>
+        <div class="appt-form-card">
+          <div class="appt-form-header">
+            <div>
+              <h3>Appointment Request</h3>
+              <p>We will confirm your schedule within 24 hours.</p>
+            </div>
+          </div>
+          <div class="appt-form-body">
+            <form id="apptForm" onsubmit="submitApptForm(event)">
+
+              <input type="hidden" name="access_key" value="52209a70-96fc-4d8f-8c6b-d8e7e7a3fb9e">
+              <input type="hidden" name="subject" value="New Appointment Request — williamriveromd.com">
+              <input type="hidden" name="from_name" value="williamriveromd.com">
+              <input type="hidden" name="redirect" value="false">
+              <input type="checkbox" name="botcheck" style="display:none;">
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Full Name <span class="required-star">*</span></label>
+                  <input type="text" name="name" placeholder="Juan Dela Cruz" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                  <label>Email Address <span class="required-star">*</span></label>
+                  <input type="email" name="email" placeholder="juan@email.com" required autocomplete="email">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Mobile Number <span class="required-star">*</span></label>
+                  <input type="tel" name="phone" placeholder="09XX XXX XXXX" required autocomplete="tel">
+                </div>
+                <div class="form-group">
+                  <label>Preferred Date</label>
+                  <input type="date" name="preferred_date" id="prefDate">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Preferred Clinic <span class="required-star">*</span></label>
+                <select name="preferred_clinic" required>
+                  <option value="" disabled selected>Select a clinic…</option>
+                  <option>Fe Del Mundo Medical Center — Banawe, Quezon City (Mon &amp; Sat 10:30AM–2PM)</option>
+                  <option>St. John Biocare Center — Quezon Ave, QC (Wednesday 1PM–4PM)</option>
+                  <option>RCU Ospital Ning Angeles — Angeles City (Tuesday 11AM–5PM)</option>
+                  <option>St. Josef Renal Care Center — Marilao, Bulacan (Thursday 12PM–4PM)</option>
+                  <option>No preference — any available clinic</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Primary Concern <span class="required-star">*</span></label>
+                <select name="concern" required>
+                  <option value="" disabled selected>What brings you in?</option>
+                  <optgroup label="Kidney / Nephrology">
+                    <option>Abnormal creatinine or eGFR</option>
+                    <option>Protein or blood in urine</option>
+                    <option>Chronic Kidney Disease (CKD) follow-up</option>
+                    <option>Hemodialysis / dialysis concerns</option>
+                    <option>Kidney transplant consultation</option>
+                    <option>Kidney stones</option>
+                    <option>Swelling / fluid retention (edema)</option>
+                  </optgroup>
+                  <optgroup label="Internal Medicine / Metabolic">
+                    <option>Diabetes management</option>
+                    <option>Hypertension / high blood pressure</option>
+                    <option>High cholesterol / dyslipidemia</option>
+                    <option>Gout / high uric acid</option>
+                    <option>General internal medicine check-up</option>
+                  </optgroup>
+                  <optgroup label="Nutrition">
+                    <option>Renal diet consultation</option>
+                    <option>Weight management</option>
+                    <option>Nutritional assessment</option>
+                  </optgroup>
+                  <option>Other — please contact me to discuss</option>
+                </select>
+              </div>
+
+              <button type="submit" class="form-submit" id="submitBtn">
+                Send Appointment Request
+              </button>
+
+              <div class="form-success" id="formSuccess">
+                <h4>✓ Request sent!</h4>
+                <p>Thank you, <strong id="successName"></strong>. We will contact you at <strong id="successContact"></strong> within 24 hours to confirm your appointment.</p>
+              </div>
+              <div class="form-error" id="formError">
+                <p>Something went wrong. Please try again or email <a href="mailto:williamrivero@gmail.com">williamrivero@gmail.com</a> directly.</p>
+              </div>
+
+            </form>
+            <p class="form-note">
+              Fields marked <span class="required-star">*</span> are required. Your information is used solely to confirm your appointment and is never shared with third parties.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section class="contact" id="contact">
   <div class="section-inner">
@@ -1719,6 +1969,56 @@ function setLang(lang) {
   const saved = localStorage.getItem(LANG_KEY) || 'en';
   if (saved !== 'en') setLang(saved);
 })();
+</script>
+<script>
+// Set minimum date to today
+document.addEventListener('DOMContentLoaded', function() {
+  const d = document.getElementById('prefDate');
+  if (d) d.min = new Date().toISOString().split('T')[0];
+});
+
+// Web3Forms submission
+async function submitApptForm(e) {
+  e.preventDefault();
+  const form = document.getElementById('apptForm');
+  const btn  = document.getElementById('submitBtn');
+  const ok   = document.getElementById('formSuccess');
+  const err  = document.getElementById('formError');
+
+  // Reset state
+  ok.style.display = 'none';
+  err.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    const data = new FormData(form);
+    const res  = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: data
+    });
+    const json = await res.json();
+
+    if (json.success) {
+      // Populate success message
+      const name  = data.get('name') || '';
+      const phone = data.get('phone') || data.get('email') || '';
+      document.getElementById('successName').textContent    = name;
+      document.getElementById('successContact').textContent = phone;
+      ok.style.display = 'block';
+      form.reset();
+      btn.textContent = '✓ Sent';
+      // Scroll success into view
+      ok.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      throw new Error(json.message || 'Submission failed');
+    }
+  } catch(ex) {
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Send Appointment Request';
+  }
+}
 </script>
 </body>
 </html>
