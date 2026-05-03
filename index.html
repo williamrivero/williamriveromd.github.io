@@ -78,33 +78,48 @@
   html[data-view="desktop"] { min-width: 1024px; }
   html[data-view="desktop"] body { min-width: 1024px; }
 
-  /* ── TOGGLE CONTROLS ───────────────────────── */
-  .view-controls {
+  /* ── FLOATING TOGGLE BUTTONS ─── always visible, bottom-right corner */
+  .float-controls {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
     display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 16px;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
   }
-  .toggle-btn {
+  .float-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.7);
-    font-family: 'DM Sans', sans-serif;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.3);
+    transition: transform .2s, box-shadow .2s;
+    background: var(--navy, #1a2e4a);
+    color: white;
+  }
+  .float-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+  .float-btn.active { background: var(--gold, #b8962e); }
+  .float-btn svg { width: 18px; height: 18px; }
+  .float-btn .float-tooltip {
+    position: absolute;
+    right: 54px;
+    background: rgba(15,30,46,.92);
+    color: white;
     font-size: 12px;
     font-weight: 500;
-    padding: 5px 11px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
     white-space: nowrap;
+    padding: 5px 10px;
+    border-radius: 6px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .15s;
   }
-  .toggle-btn:hover { background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,.3); }
-  .toggle-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
-  .toggle-btn.active { background: var(--gold); border-color: var(--gold); color: white; }
-  @media(max-width:768px){ .toggle-label { display: none; } }
+  .float-btn:hover .float-tooltip { opacity: 1; }
 
   /* NAV */
   nav {
@@ -895,9 +910,37 @@
   @media (max-width: 900px) {
     .hero-photo-panel { display: none; }
   }
+
+  /* ── LANGUAGE TOGGLE ── */
+  .lang-bar{
+    background:rgba(15,20,30,.95);
+    border-bottom:1px solid rgba(255,255,255,.06);
+    padding:6px 32px;
+    display:flex;align-items:center;justify-content:flex-end;gap:6px;
+  }
+  .lang-label{font-size:11px;color:rgba(255,255,255,.35);margin-right:4px;letter-spacing:.06em;}
+  .lang-btn{
+    font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;
+    padding:4px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);
+    background:transparent;color:rgba(255,255,255,.55);cursor:pointer;
+    transition:all .2s;
+  }
+  .lang-btn:hover{color:white;border-color:rgba(255,255,255,.4);}
+  .lang-btn.active{background:var(--gold);border-color:var(--gold);color:white;}
+  [data-lang]{transition:opacity .15s;}
+  [data-lang].lang-hidden{display:none!important;}
+
 </style>
 </head>
 <body>
+
+<!-- LANGUAGE BAR -->
+<div class="lang-bar" role="navigation" aria-label="Language selector">
+  <span class="lang-label">Language:</span>
+  <button class="lang-btn active" id="lb-en" onclick="setLang('en')">English</button>
+  <button class="lang-btn" id="lb-tl" onclick="setLang('tl')">Tagalog</button>
+  <button class="lang-btn" id="lb-ceb" onclick="setLang('ceb')">Cebuano</button>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -911,22 +954,6 @@
     <li><a href="#contact">Clinics</a></li>
     <li><a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" class="nav-cta">Book Appointment</a></li>
   </ul>
-  <div class="view-controls">
-    <!-- Dark mode toggle -->
-    <button class="toggle-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-      </svg>
-      <span class="toggle-label" id="darkLabel">Dark</span>
-    </button>
-    <!-- Desktop view toggle -->
-    <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-      </svg>
-      <span class="toggle-label" id="desktopLabel">Desktop</span>
-    </button>
-  </div>
 </nav>
 
 <!-- HERO -->
@@ -936,7 +963,11 @@
     </div>
     <div class="hero-content">
     <div>
-      <div class="hero-eyebrow">Nephrology &bull; Internal Medicine &bull; Clinical Nutrition</div>
+      <div class="hero-eyebrow">
+  <span data-lang="en">Nephrology &bull; Internal Medicine &bull; Clinical Nutrition</span>
+  <span data-lang="tl" class="lang-hidden">Nefrolohiya &bull; Panloob na Medisina &bull; Klinikal na Nutrisyon</span>
+  <span data-lang="ceb" class="lang-hidden">Nefrolohiya &bull; Internal nga Medisina &bull; Klinikal nga Nutrisyon</span>
+</div>
       <h1 class="hero-name">
         William Gregory M.
         <strong>Rivero, MD</strong>
@@ -949,33 +980,49 @@
         <span class="spec-tag">Clinical Nutrition</span>
         <span class="spec-tag">Integrative Medicine</span>
       </div>
-      <p class="hero-desc">Providing evidence-based, patient-centered care across nephrology, internal medicine, and clinical nutrition — with an integrative approach that honors both the science and the person.</p>
+      <p class="hero-desc">
+  <span data-lang="en">Providing evidence-based, patient-centered care across nephrology, internal medicine, and clinical nutrition — with an integrative approach that honors both the science and the person.</span>
+  <span data-lang="tl" class="lang-hidden">Nagbibigay ng pangangalagang nakabatay sa ebidensya, nakatuon sa pasyente sa nefrolohiya, panloob na medisina, at klinikal na nutrisyon — sa pamamagitan ng integratibong pamamaraan na ginagalang ang agham at ang tao.</span>
+  <span data-lang="ceb" class="lang-hidden">Naghatag og pag-atiman nga nakabase sa ebidensya, nakasentro sa pasyente sa nefrolohiya, internal nga medisina, ug klinikal nga nutrisyon — uban sa integratibong pamaagi nga nagpasidungog sa syensya ug sa tawo.</span>
+</p>
       <div class="hero-actions">
-        <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" class="btn-primary">Book an Appointment</a>
-        <a href="#guides" class="btn-secondary">Patient Education Guides</a>
+        <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" class="btn-primary">
+  <span data-lang="en">Book an Appointment</span>
+  <span data-lang="tl" class="lang-hidden">Mag-book ng Konsultasyon</span>
+  <span data-lang="ceb" class="lang-hidden">Mag-book og Konsultasyon</span>
+</a>
+<a href="#guides" class="btn-secondary">
+  <span data-lang="en">Patient Education Guides</span>
+  <span data-lang="tl" class="lang-hidden">Mga Gabay para sa Pasyente</span>
+  <span data-lang="ceb" class="lang-hidden">Mga Giya para sa Pasyente</span>
+</a>
       </div>
     </div>
     <div class="hero-card">
-      <div class="hero-card-title">Clinic Schedules</div>
+      <div class="hero-card-title">
+  <span data-lang="en">Clinic Schedules</span>
+  <span data-lang="tl" class="lang-hidden">Iskedyul ng Klinika</span>
+  <span data-lang="ceb" class="lang-hidden">Iskedyul sa Klinika</span>
+</div>
       <div class="clinic-item">
         <div class="clinic-name">Fe Del Mundo Medical Center</div>
         <div class="clinic-location">Rm 206 OCS, 11 Banawe St., Quezon City</div>
-        <div class="clinic-schedule">Monday &amp; Saturday &mdash; 10:30 AM to 2:00 PM</div>
+        <div class="clinic-schedule"><span data-lang="en">Monday &amp; Saturday &mdash; 10:30 AM to 2:00 PM</span><span data-lang="tl" class="lang-hidden">Lunes &amp; Sabado &mdash; 10:30 AM hanggang 2:00 PM</span><span data-lang="ceb" class="lang-hidden">Lunes &amp; Sabado &mdash; 10:30 AM hangtod 2:00 PM</span></div>
       </div>
       <div class="clinic-item">
         <div class="clinic-name">St. John Biocare Center</div>
         <div class="clinic-location">2/F Casman Bld, 1198 Quezon Ave., Quezon City</div>
-        <div class="clinic-schedule">Wednesday &mdash; 1:00 PM to 4:00 PM</div>
+        <div class="clinic-schedule"><span data-lang="en">Wednesday &mdash; 1:00 PM to 4:00 PM</span><span data-lang="tl" class="lang-hidden">Miyerkules &mdash; 1:00 PM hanggang 4:00 PM</span><span data-lang="ceb" class="lang-hidden">Miyerkules &mdash; 1:00 PM hangtod 4:00 PM</span></div>
       </div>
       <div class="clinic-item">
         <div class="clinic-name">RCU Ospital Ning Angeles</div>
         <div class="clinic-location">Visitacion St., Pampanga, Angeles City</div>
-        <div class="clinic-schedule">Tuesday &mdash; 11:00 AM to 5:00 PM</div>
+        <div class="clinic-schedule"><span data-lang="en">Tuesday &mdash; 11:00 AM to 5:00 PM</span><span data-lang="tl" class="lang-hidden">Martes &mdash; 11:00 AM hanggang 5:00 PM</span><span data-lang="ceb" class="lang-hidden">Martes &mdash; 11:00 AM hangtod 5:00 PM</span></div>
       </div>
       <div class="clinic-item">
         <div class="clinic-name">St. Josef Renal Care Center</div>
         <div class="clinic-location">Brgy Patubig, NLEX Rd., Marilao, Bulacan</div>
-        <div class="clinic-schedule">Thursday &mdash; 12:00 PM to 4:00 PM</div>
+        <div class="clinic-schedule"><span data-lang="en">Thursday &mdash; 12:00 PM to 4:00 PM</span><span data-lang="tl" class="lang-hidden">Huwebes &mdash; 12:00 PM hanggang 4:00 PM</span><span data-lang="ceb" class="lang-hidden">Huwebes &mdash; 12:00 PM hangtod 4:00 PM</span></div>
       </div>
     </div>
   </div>
@@ -989,12 +1036,32 @@
         <img src="images/photo-about.jpg" alt="Dr. William Gregory M. Rivero" loading="lazy">
       </div>
       <div class="about-text">
-        <div class="section-eyebrow">About</div>
-        <h2 class="section-title">A physician who listens, thinks, and cares</h2>
+        <div class="section-eyebrow">
+  <span data-lang="en">About</span>
+  <span data-lang="tl" class="lang-hidden">Tungkol Sa Akin</span>
+  <span data-lang="ceb" class="lang-hidden">Mahitungod Nako</span>
+</div>
+        <h2 class="section-title">
+  <span data-lang="en">A physician who listens, thinks, and cares</span>
+  <span data-lang="tl" class="lang-hidden">Isang doktor na nakikinig, nag-iisip, at nagmamalasakit</span>
+  <span data-lang="ceb" class="lang-hidden">Usa ka doktor nga namati, naghunahuna, ug nagmalasakit</span>
+</h2>
         <div style="margin-bottom:28px;margin-top:24px;">
-          <p>Dr. William Gregory M. Rivero is a specialist in <strong>Internal Medicine, Nephrology, and Clinical Nutrition</strong> with over a decade of experience caring for patients with complex chronic conditions across Metro Manila, Pampanga, and Bulacan.</p>
-          <p>His practice integrates <strong>evidence-based medicine with functional and integrative approaches</strong> — recognizing that kidney disease, diabetes, hypertension, and metabolic disorders are deeply interconnected and require a whole-person strategy.</p>
-          <p>Dr. Rivero is committed to <strong>clear communication and patient education</strong>, ensuring that every patient and family understands their condition, their medicines, and their path forward.</p>
+          <p>
+  <span data-lang="en">Dr. William Gregory M. Rivero is a specialist in <strong>Internal Medicine, Nephrology, and Clinical Nutrition</strong> with over a decade of experience caring for patients with complex chronic conditions across Metro Manila, Pampanga, and Bulacan.</span>
+  <span data-lang="tl" class="lang-hidden">Si Dr. William Gregory M. Rivero ay isang espesyalista sa <strong>Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon</strong> na may higit sa isang dekada ng karanasan sa pag-aalaga ng mga pasyenteng may kumplikadong talamak na kondisyon sa Metro Manila, Pampanga, at Bulacan.</span>
+  <span data-lang="ceb" class="lang-hidden">Si Dr. William Gregory M. Rivero usa ka espesyalista sa <strong>Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon</strong> nga adunay kapin sa usa ka dekada nga kasinatian sa pag-atiman sa mga pasyente nga adunay komplikadong kronikal nga kondisyon sa Metro Manila, Pampanga, ug Bulacan.</span>
+</p>
+          <p>
+  <span data-lang="en">His practice integrates <strong>evidence-based medicine with functional and integrative approaches</strong> — recognizing that kidney disease, diabetes, hypertension, and metabolic disorders are deeply interconnected and require a whole-person strategy.</span>
+  <span data-lang="tl" class="lang-hidden">Pinagsasama ng kanyang pagsasanay ang <strong>medisina batay sa ebidensya at mga integratibong pamamaraan</strong> — kinikilala na ang sakit sa bato, diyabetes, hypertension, at mga metabolikong karamdaman ay malalim na magkakaugnay at nangangailangan ng buong-taong estratehiya.</span>
+  <span data-lang="ceb" class="lang-hidden">Ang iyang praktis naghiusa sa <strong>medisina nga nakabase sa ebidensya ug integratibong mga pamaagi</strong> — nga nakaila nga ang sakit sa kidney, diabetes, hypertension, ug mga metabolikong sakit hugot nga magkakaugnay ug nanginahanglan og tibuok-tawo nga estratehiya.</span>
+</p>
+          <p>
+  <span data-lang="en">Dr. Rivero is committed to <strong>clear communication and patient education</strong>, ensuring that every patient and family understands their condition, their medicines, and their path forward.</span>
+  <span data-lang="tl" class="lang-hidden">Nakatuon si Dr. Rivero sa <strong>malinaw na komunikasyon at edukasyon ng pasyente</strong>, tinitiyak na ang bawat pasyente at pamilya ay naiintindihan ang kanilang kondisyon, gamot, at landas pasulong.</span>
+  <span data-lang="ceb" class="lang-hidden">Nakatuon si Dr. Rivero sa <strong>klaro nga komunikasyon ug edukasyon sa pasyente</strong>, sigurohon nga ang matag pasyente ug pamilya nakasabut sa ilang kondisyon, mga tambal, ug dalan padulong.</span>
+</p>
         </div>
         <ul class="credentials-list">
           <li>
@@ -1063,8 +1130,16 @@
 <section class="specialties" id="specialties">
   <div class="section-inner">
     <div class="section-eyebrow">Specialties</div>
-    <h2 class="section-title">Areas of expertise</h2>
-    <p class="section-sub">Comprehensive care across three interconnected disciplines, grounded in physiology and delivered with compassion.</p>
+    <h2 class="section-title">
+  <span data-lang="en">Areas of expertise</span>
+  <span data-lang="tl" class="lang-hidden">Mga Larangan ng Espesyalidad</span>
+  <span data-lang="ceb" class="lang-hidden">Mga Lugar sa Espesyalidad</span>
+</h2>
+    <p class="section-sub">
+  <span data-lang="en">Comprehensive care across three interconnected disciplines, grounded in physiology and delivered with compassion.</span>
+  <span data-lang="tl" class="lang-hidden">Komprehensibong pangangalaga sa tatlong magkakaugnay na disiplina, nakabase sa pisyolohiya at ibinibigay nang may pagmamahal.</span>
+  <span data-lang="ceb" class="lang-hidden">Komprehensibong pag-atiman sa tulo ka magkakaugnay nga disiplina, nakabase sa pisyolohiya ug gihatod uban sa pagmahal.</span>
+</p>
 
     <!-- STATS ROW -->
     <div class="stats-row">
@@ -1389,47 +1464,87 @@
 <section class="faq" id="faq">
   <div class="section-inner">
     <div class="section-eyebrow">Common Questions</div>
-    <h2 class="section-title">Frequently asked questions</h2>
-    <p class="section-sub">Answers to the questions patients most commonly ask before their first visit.</p>
+    <h2 class="section-title">
+  <span data-lang="en">Frequently asked questions</span>
+  <span data-lang="tl" class="lang-hidden">Mga Madalas na Tanong</span>
+  <span data-lang="ceb" class="lang-hidden">Mga Kanunay nga Gipangutana</span>
+</h2>
+    <p class="section-sub">
+  <span data-lang="en">Answers to the questions patients most commonly ask before their first visit.</span>
+  <span data-lang="tl" class="lang-hidden">Mga sagot sa mga tanong na madalas itanong ng mga pasyente bago ang kanilang unang pagbisita.</span>
+  <span data-lang="ceb" class="lang-hidden">Mga tubag sa mga pangutana nga kanunay gipangutana sa mga pasyente sa wala pa ang ilang unang pagbisita.</span>
+</p>
     <div class="faq-grid">
 
       <div class="faq-item">
-        <div class="faq-q">What is a nephrologist, and when should I see one?</div>
+        <div class="faq-q">
+  <span data-lang="en">What is a nephrologist, and when should I see one?</span>
+  <span data-lang="tl" class="lang-hidden">Ano ang isang nefrolohista, at kailan ko siya dapat bisitahin?</span>
+  <span data-lang="ceb" class="lang-hidden">Unsa ang usa ka nephrologist, ug kanus-a ko siya angay bisitahan?</span>
+</div>
         <div class="faq-a">A nephrologist is a specialist in kidney diseases. You should see one if you have been told your <strong>kidneys are not functioning normally</strong>, if your creatinine or eGFR is abnormal, if you have persistent protein or blood in your urine, or if you have diabetes or hypertension and have not had a kidney function check in the past year. Your family doctor or internist can refer you, but you may also book directly.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">Do you accept PhilHealth? What about HMOs?</div>
+        <div class="faq-q">
+  <span data-lang="en">Do you accept PhilHealth? What about HMOs?</span>
+  <span data-lang="tl" class="lang-hidden">Tumatanggap ba kayo ng PhilHealth? Paano ang HMO?</span>
+  <span data-lang="ceb" class="lang-hidden">Modawat ba kamo og PhilHealth? Unsa ang HMO?</span>
+</div>
         <div class="faq-a">Yes — <strong>PhilHealth is accepted</strong> at all clinic locations. For HMO coverage, please contact your HMO provider directly and ask for an LOA (Letter of Authorization) before your appointment, as accepted HMOs vary by clinic location. When in doubt, call the clinic directly or message via <a href="https://seriousmd.com/doc/williamrivero" target="_blank">SeriousMD</a>.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">What is the difference between an internist and a nephrologist?</div>
+        <div class="faq-q">
+  <span data-lang="en">What is the difference between an internist and a nephrologist?</span>
+  <span data-lang="tl" class="lang-hidden">Ano ang pagkakaiba ng isang internista at isang nefrolohista?</span>
+  <span data-lang="ceb" class="lang-hidden">Unsa ang kalainan tali sa internist ug nephrologist?</span>
+</div>
         <div class="faq-a">An <strong>internist</strong> (specialist in Internal Medicine) manages a wide range of adult diseases — diabetes, hypertension, infections, heart disease, and more. A <strong>nephrologist</strong> is an internist who completed additional subspecialty training specifically in kidney diseases, dialysis, and electrolyte disorders. Dr. Rivero is both — he completed his Internal Medicine residency and Nephrology fellowship at St. Luke's Medical Center, and manages patients across both disciplines.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">I have diabetes. Should I be seeing a nephrologist?</div>
+        <div class="faq-q">
+  <span data-lang="en">I have diabetes. Should I be seeing a nephrologist?</span>
+  <span data-lang="tl" class="lang-hidden">Mayroon akong diyabetes. Dapat ba akong makita ng isang nefrolohista?</span>
+  <span data-lang="ceb" class="lang-hidden">Aduna akoy diabetes. Kinahanglan ba akong makita sa usa ka nephrologist?</span>
+</div>
         <div class="faq-a">If you have had diabetes for more than 5 years, or if your doctor has found <strong>protein in your urine or a rising creatinine</strong>, a nephrology consultation is strongly recommended. Diabetic kidney disease is the leading cause of kidney failure in the Philippines and is often silent until significantly advanced. Early detection and treatment can slow or stop progression entirely.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">What should I bring to my first consultation?</div>
+        <div class="faq-q">
+  <span data-lang="en">What should I bring to my first consultation?</span>
+  <span data-lang="tl" class="lang-hidden">Ano ang dapat dalhin sa aking unang konsultasyon?</span>
+  <span data-lang="ceb" class="lang-hidden">Unsa ang akong dad-on sa akong unang konsultasyon?</span>
+</div>
         <div class="faq-a">Bring all <strong>recent laboratory results</strong> (blood tests, urine tests, imaging), a list of current medications with doses, your PhilHealth MDR card, any previous medical records or discharge summaries, and your HMO LOA if applicable. If you have had a kidney ultrasound or CT scan, bring the actual images (CD/film), not just the report.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">Can I consult online?</div>
+        <div class="faq-q">
+  <span data-lang="en">Can I consult online?</span>
+  <span data-lang="tl" class="lang-hidden">Maaari ba akong kumonsulta online?</span>
+  <span data-lang="ceb" class="lang-hidden">Makakakonsulta ba ako online?</span>
+</div>
         <div class="faq-a">Yes. Online consultations are available through <a href="https://seriousmd.com/doc/williamrivero" target="_blank"><strong>SeriousMD</strong></a> — bookable 24/7. Online consultations are suitable for follow-up visits, medication adjustments, result interpretations, and second opinions. Initial consultations for new, complex, or undiagnosed conditions are best done in person so that a physical examination can be performed.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">How often do I need to see a nephrologist once I'm diagnosed with CKD?</div>
+        <div class="faq-q">
+  <span data-lang="en">How often do I need to see a nephrologist once I'm diagnosed with CKD?</span>
+  <span data-lang="tl" class="lang-hidden">Gaano kadalas ako dapat makita ng nefrolohista kapag na-diagnose na ako ng CKD?</span>
+  <span data-lang="ceb" class="lang-hidden">Unsa kadalas nga makita ko ang nephrologist kung na-diagnose na ako sa CKD?</span>
+</div>
         <div class="faq-a">Visit frequency depends on your CKD stage: <strong>Stage 1–2:</strong> every 6–12 months. <strong>Stage 3:</strong> every 3–6 months. <strong>Stage 4:</strong> every 1–3 months. <strong>Stage 5 / dialysis:</strong> monthly or more frequently. More frequent visits may be needed when starting new medications, adjusting doses, or managing acute changes. Regular monitoring is what protects your kidneys — do not skip follow-ups even when you feel well.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">My creatinine is slightly elevated but I feel fine. Is that a problem?</div>
+        <div class="faq-q">
+  <span data-lang="en">My creatinine is slightly elevated but I feel fine. Is that a problem?</span>
+  <span data-lang="tl" class="lang-hidden">Medyo mataas ang aking creatinine ngunit okay naman ang pakiramdam ko. Problema ba iyon?</span>
+  <span data-lang="ceb" class="lang-hidden">Medyo taas ang akong creatinine apan maayo man ang akong gibati. Problema ba kana?</span>
+</div>
         <div class="faq-a">Yes — and this is exactly why CKD is called a <strong>"silent disease."</strong> Symptoms of kidney disease typically don't appear until 60–70% of kidney function is already lost. A mildly elevated creatinine may represent Stage 2–3 CKD with no symptoms at all. The earlier it is evaluated and managed, the better the long-term outcome. Please do not wait for symptoms before seeking evaluation.</div>
       </div>
 
@@ -1456,21 +1571,21 @@
           <div class="contact-icon">&#127968;</div>
           <div>
             <div class="contact-info-label">St. John Biocare Center</div>
-            <div class="contact-info-value">2/F Casman Bld, 1198 Quezon Ave., QC<br><span style="color:var(--gold-light);">Wednesday &mdash; 1:00 PM to 4:00 PM</span></div>
+            <div class="contact-info-value">2/F Casman Bld, 1198 Quezon Ave., QC<br><span style="color:var(--gold-light);"><span data-lang="en">Wednesday &mdash; 1:00 PM to 4:00 PM</span><span data-lang="tl" class="lang-hidden">Miyerkules &mdash; 1:00 PM hanggang 4:00 PM</span><span data-lang="ceb" class="lang-hidden">Miyerkules &mdash; 1:00 PM hangtod 4:00 PM</span></span></div>
           </div>
         </div>
         <div class="contact-info-item">
           <div class="contact-icon">&#127968;</div>
           <div>
             <div class="contact-info-label">RCU Ospital Ning Angeles</div>
-            <div class="contact-info-value">Visitacion St., Pampanga, Angeles City<br><span style="color:var(--gold-light);">Tuesday &mdash; 11:00 AM to 5:00 PM</span></div>
+            <div class="contact-info-value">Visitacion St., Pampanga, Angeles City<br><span style="color:var(--gold-light);"><span data-lang="en">Tuesday &mdash; 11:00 AM to 5:00 PM</span><span data-lang="tl" class="lang-hidden">Martes &mdash; 11:00 AM hanggang 5:00 PM</span><span data-lang="ceb" class="lang-hidden">Martes &mdash; 11:00 AM hangtod 5:00 PM</span></span></div>
           </div>
         </div>
         <div class="contact-info-item">
           <div class="contact-icon">&#127968;</div>
           <div>
             <div class="contact-info-label">St. Josef Renal Care Center</div>
-            <div class="contact-info-value">Brgy Patubig, NLEX Rd., Marilao, Bulacan<br><span style="color:var(--gold-light);">Thursday &mdash; 12:00 PM to 4:00 PM</span></div>
+            <div class="contact-info-value">Brgy Patubig, NLEX Rd., Marilao, Bulacan<br><span style="color:var(--gold-light);"><span data-lang="en">Thursday &mdash; 12:00 PM to 4:00 PM</span><span data-lang="tl" class="lang-hidden">Huwebes &mdash; 12:00 PM hanggang 4:00 PM</span><span data-lang="ceb" class="lang-hidden">Huwebes &mdash; 12:00 PM hangtod 4:00 PM</span></span></div>
           </div>
         </div>
         <div class="contact-info-item">
@@ -1491,10 +1606,18 @@
       <div>
         <div class="contact-book">
           <img src="images/photo-contact.jpg" alt="Dr. W. G. M. Rivero" class="contact-photo" style="display:block;margin:0 auto 16px;">
-          <h3>Book an Appointment</h3>
+          <h3>
+  <span data-lang="en">Book an Appointment</span>
+  <span data-lang="tl" class="lang-hidden">Mag-book ng Konsultasyon</span>
+  <span data-lang="ceb" class="lang-hidden">Mag-book og Konsultasyon</span>
+</h3>
           <p>Schedule your consultation online through SeriousMD — available 24/7. Choose your preferred clinic, date, and time.</p>
           <p style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:16px;">Powered by SeriousMD</p>
-          <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" class="btn-book">Book via SeriousMD</a>
+          <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" class="btn-book">
+  <span data-lang="en">Book via SeriousMD</span>
+  <span data-lang="tl" class="lang-hidden">Mag-book sa SeriousMD</span>
+  <span data-lang="ceb" class="lang-hidden">Mag-book sa SeriousMD</span>
+</a>
           <div class="seriousmd-note">You will be redirected to seriousmd.com/doc/williamrivero</div>
         </div>
       </div>
@@ -1507,6 +1630,22 @@
   <p><strong>William Gregory M. Rivero, MD, FPCP, DPSN</strong> &mdash; Nephrology &bull; Internal Medicine &bull; Clinical Nutrition &mdash; PRC 0105184</p>
   <p>&copy; 2026 williamriveromd.com</p>
 </footer>
+
+<!-- FLOATING TOGGLES — always visible bottom-right -->
+<div class="float-controls">
+  <button class="float-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">
+    <span class="float-tooltip">Dark mode</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+  <button class="float-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view">
+    <span class="float-tooltip">Desktop view</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+    </svg>
+  </button>
+</div>
 
 <script>
   // ── DARK MODE ──────────────────────────────────────────────────
@@ -1561,6 +1700,25 @@
     if (dark) applyDark(true);
     if (desk) applyDesktop(true);
   })();
+</script>
+
+<script>
+const LANG_KEY = 'wgmr-lang';
+function setLang(lang) {
+  localStorage.setItem(LANG_KEY, lang);
+  document.documentElement.setAttribute('lang', lang === 'tl' ? 'tl' : lang === 'ceb' ? 'ceb' : 'en');
+  ['en','tl','ceb'].forEach(l => {
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el => {
+      el.classList.toggle('lang-hidden', l !== lang);
+    });
+    const btn = document.getElementById('lb-'+l);
+    if (btn) btn.classList.toggle('active', l === lang);
+  });
+}
+(function(){
+  const saved = localStorage.getItem(LANG_KEY) || 'en';
+  if (saved !== 'en') setLang(saved);
+})();
 </script>
 </body>
 </html>
