@@ -518,6 +518,35 @@
 
 </div>
 
+<div class="section-header" style="margin-top:16px;">
+  <div class="section-label">Philippine-Specific / Safety / Access</div>
+  <hr class="section-divider">
+</div>
+<div class="guides-grid">
+
+  <a href="philhealth-z-packages.html" class="guide-card">
+    <span class="badge bn">PhilHealth · Patient Rights · Philippines</span>
+    <h2>PhilHealth Z-Package: PD &amp; Kidney Transplant Benefits</h2>
+    <p>What PhilHealth covers for peritoneal dialysis (₱120,000/year) and kidney transplantation (₱660,000) — qualifications, documentary requirements, step-by-step application, and practical tips.</p>
+    <div class="card-footer"><span class="card-tags">PhilHealth · Z Benefit · PD · KT</span><span class="card-link">Read →</span></div>
+  </a>
+
+  <a href="tuberculosis-kidney-disease.html" class="guide-card">
+    <span class="badge bn">Nephrology · Infectious Disease · Philippines</span>
+    <h2>Tuberculosis and Kidney Disease</h2>
+    <p>Why CKD patients have 6–25× higher TB risk, renal TB diagnosis, drug dose adjustments by CKD stage, the critical rifampicin–tacrolimus interaction in transplant recipients, and latent TB preventive therapy.</p>
+    <div class="card-footer"><span class="card-tags">TB · CKD · Dialysis · Transplant</span><span class="card-link">Read →</span></div>
+  </a>
+
+  <a href="buko-juice-alkaline-water-ckd.html" class="guide-card">
+    <span class="badge bn">CKD · Nutrition · Philippines · Myths vs Evidence</span>
+    <h2>Buko Juice &amp; Alkaline Water in CKD</h2>
+    <p>Evidence-based answers to two of the most common Filipino patient questions — why buko juice can cause fatal hyperkalemia in dialysis patients, and why alkaline water cannot cleanse kidneys or reduce creatinine.</p>
+    <div class="card-footer"><span class="card-tags">Buko · Alkaline Water · Potassium · Myths</span><span class="card-link">Read →</span></div>
+  </a>
+
+</div>
+
 <footer>
   <div class="footer-inner">
     <div>
@@ -554,18 +583,13 @@ function doSearch(q){
   const count = document.getElementById('s-count');
   const noRes = document.getElementById('no-results');
   const cards = document.querySelectorAll('.guide-card');
-
   clr.style.display = q ? 'block' : 'none';
   ico.style.display  = q ? 'none'  : 'block';
-
   if(!q){
     cards.forEach(c => c.classList.remove('s-hidden'));
     document.querySelectorAll('.section-header,.guides-grid').forEach(el => el.style.display='');
-    count.textContent='';
-    noRes.style.display='none';
-    return;
+    count.textContent=''; noRes.style.display='none'; return;
   }
-
   const words = q.split(/\s+/).filter(Boolean);
   let shown = 0;
   cards.forEach(c => {
@@ -574,7 +598,6 @@ function doSearch(q){
     c.classList.toggle('s-hidden', !match);
     if(match) shown++;
   });
-
   document.querySelectorAll('.guides-grid').forEach(grid => {
     const visible = grid.querySelectorAll('.guide-card:not(.s-hidden)').length > 0;
     grid.style.display = visible ? '' : 'none';
@@ -584,11 +607,9 @@ function doSearch(q){
       el = el.previousElementSibling;
     }
   });
-
   count.textContent = shown===0 ? '' : shown+' guide'+(shown===1?'':'s')+' found';
   document.getElementById('no-term').textContent = q;
   noRes.style.display = shown===0 ? 'block' : 'none';
-
   if(shown>0){
     const first = document.querySelector('.guide-card:not(.s-hidden)');
     if(first) setTimeout(()=>first.scrollIntoView({behavior:'smooth',block:'center'}),100);
@@ -599,35 +620,6 @@ function clearSearch(){
   el.value=''; el.focus(); doSearch('');
 }
 </script>
-
-<div class="section-header" style="margin-top:16px;">
-  <div class="section-label">Philippine-Specific / Safety / Access</div>
-  <hr class="section-divider">
-</div>
-<div class="guides-grid">
-
-  <a href="philhealth-z-packages.html" class="guide-card">
-    <span class="badge bn">PhilHealth · Patient Rights · Philippines</span>
-    <h2>PhilHealth Z-Package: PD &amp; Kidney Transplant Benefits</h2>
-    <p>What PhilHealth covers for peritoneal dialysis (₱120,000/year) and kidney transplantation (₱660,000) — qualifications, documentary requirements, step-by-step application, and practical tips.</p>
-    <div class="card-footer"><span class="card-tags">PhilHealth · Z Benefit · PD · KT</span><span class="card-link">Read →</span></div>
-  </a>
-
-  <a href="tuberculosis-kidney-disease.html" class="guide-card">
-    <span class="badge bn">Nephrology · Infectious Disease · Philippines</span>
-    <h2>Tuberculosis and Kidney Disease</h2>
-    <p>Why CKD patients have 6–25× higher TB risk, renal TB diagnosis, drug dose adjustments by CKD stage, the critical rifampicin–tacrolimus interaction in transplant recipients, and latent TB preventive therapy.</p>
-    <div class="card-footer"><span class="card-tags">TB · CKD · Dialysis · Transplant</span><span class="card-link">Read →</span></div>
-  </a>
-
-  <a href="buko-juice-alkaline-water-ckd.html" class="guide-card">
-    <span class="badge bn">CKD · Nutrition · Philippines · Myths vs Evidence</span>
-    <h2>Buko Juice &amp; Alkaline Water in CKD</h2>
-    <p>Evidence-based answers to two of the most common Filipino patient questions — why buko juice can cause fatal hyperkalemia in dialysis patients, and why alkaline water cannot cleanse kidneys or reduce creatinine.</p>
-    <div class="card-footer"><span class="card-tags">Buko · Alkaline Water · Potassium · Myths</span><span class="card-link">Read →</span></div>
-  </a>
-
-</div>
 
 </body>
 </html>
