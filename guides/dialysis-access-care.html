@@ -98,6 +98,73 @@
   .guide-footer a{color:var(--teal);text-decoration:none;font-weight:500;}
   .disclaimer{background:var(--amber-soft);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:16px 20px;margin:40px 0 0;font-size:13px;color:var(--text-muted);line-height:1.6;}
   .disclaimer strong{color:var(--navy);}
+
+  /* ── DARK MODE ─────────────────────────────── */
+  html[data-theme="dark"] {
+    --navy:#0f1e2e; --gold:#b8962e; --gold-light:#d4af4f;
+    --teal:#25949d; --teal-light:#0e2f32;
+    --text:#e8eaf0; --text-muted:#8a95a8;
+    --border:#2a3548; --bg:#141c2a; --white:#1a2030;
+    --red:#e55; --red-soft:#2a1515; --amber:#f5a623; --amber-soft:#2a1f0a;
+    --green:#3d9a6a; --green-soft:#0e2a1c; --purple:#9a6ed4; --purple-soft:#1a1030;
+  }
+  html[data-theme="dark"] body { background:#0f1520; color:#e8eaf0; }
+  html[data-theme="dark"] .site-header { background:#080d16; }
+  html[data-theme="dark"] .nav-strip { background:#141c2a; border-color:#2a3548; }
+  html[data-theme="dark"] .hero { background:#080d16; }
+  html[data-theme="dark"] .section { border-color:#2a3548; }
+  html[data-theme="dark"] .intro-callout { background:#080d16; }
+  html[data-theme="dark"] .feature-card,
+  html[data-theme="dark"] .illus-wrap,
+  html[data-theme="dark"] .ex-card,
+  html[data-theme="dark"] .utox-card,
+  html[data-theme="dark"] .modality-card,
+  html[data-theme="dark"] .drug-card,
+  html[data-theme="dark"] .tech-card,
+  html[data-theme="dark"] .toxin-card,
+  html[data-theme="dark"] .verdict-card { background:#1a2535; border-color:#2a3548; }
+  html[data-theme="dark"] .section h2,
+  html[data-theme="dark"] .ex-name,
+  html[data-theme="dark"] h3, html[data-theme="dark"] h4 { color:#e8eaf0; }
+  html[data-theme="dark"] .section p,
+  html[data-theme="dark"] .ex-desc,
+  html[data-theme="dark"] .ex-steps { color:#9aa5b8; }
+  html[data-theme="dark"] .lab-table th { background:#1a2535; color:#8a95a8; }
+  html[data-theme="dark"] .lab-table td { border-color:#2a3548; color:#9aa5b8; }
+  html[data-theme="dark"] .lab-table td:first-child { color:#e8eaf0; }
+  html[data-theme="dark"] .lab-table tr:hover td { background:#202d40; }
+  html[data-theme="dark"] .dr-card { background:#080d16; }
+  html[data-theme="dark"] .guide-footer { background:#141c2a; border-color:#2a3548; }
+  html[data-theme="dark"] .schedule-table th { background:#1a2535; color:#8a95a8; }
+  html[data-theme="dark"] .schedule-table td { border-color:#2a3548; color:#9aa5b8; }
+  html[data-theme="dark"] .alert-teal { background:#0e2f32; }
+  html[data-theme="dark"] .alert-amber { background:#2a1f0a; }
+  html[data-theme="dark"] .alert-green { background:#0e2a1c; }
+  html[data-theme="dark"] .alert-red { background:#2a1515; }
+  html[data-theme="dark"] .stop-sign { background:#2a1515; }
+  html[data-theme="dark"] .disclaimer { background:#2a1f0a; }
+  /* ── DESKTOP FORCED MODE ────────────────────── */
+  html[data-view="desktop"] { min-width:1024px; }
+  html[data-view="desktop"] body { min-width:1024px; }
+  /* ── TOGGLE BUTTON ──────────────────────────── */
+  .guide-toggle-bar {
+    display:flex; gap:8px; align-items:center;
+    padding:6px 32px; background:rgba(0,0,0,.2);
+    border-bottom:1px solid rgba(255,255,255,.06);
+    justify-content:flex-end;
+  }
+  .toggle-btn {
+    display:flex; align-items:center; gap:5px;
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15);
+    color:rgba(255,255,255,.7); font-family:'DM Sans',sans-serif;
+    font-size:11px; font-weight:500; padding:4px 10px;
+    border-radius:16px; cursor:pointer; transition:all .2s; white-space:nowrap;
+  }
+  .toggle-btn:hover { background:rgba(255,255,255,.15); color:white; }
+  .toggle-btn.active { background:#b8962e; border-color:#b8962e; color:white; }
+  .toggle-btn svg { width:12px; height:12px; flex-shrink:0; }
+  @media(max-width:600px){ .toggle-label { display:none; } }
+
 </style>
 </head>
 <body>
@@ -107,6 +174,16 @@
   <a href="https://williamriveromd.com" style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:400;color:white;text-decoration:none;letter-spacing:0.01em;">W. G. M. <strong style="font-weight:600;color:#d4af4f;">Rivero</strong>, MD</a>
   <a href="https://williamriveromd.com/guides/index.html" style="font-size:12px;color:rgba(255,255,255,0.55);text-decoration:none;letter-spacing:0.04em;">← All Guides</a>
 </header>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span class="toggle-label" id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span class="toggle-label" id="desktopLabel">Desktop</span>
+  </button>
+</div>
 
 <section class="hero">
   <div class="container">
@@ -502,5 +579,40 @@
     <p>References: KDOQI Vascular Access Guidelines 2019 · KDIGO 2024 · NKF Fistula First Initiative</p>
   </div>
 </footer>
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
 </body>
 </html>
