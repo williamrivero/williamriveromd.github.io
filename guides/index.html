@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Patient Guides – W. G. M. Rivero, MD</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -166,7 +169,7 @@
 
 <div class="search-wrap">
   <div class="search-box">
-    <input type="search" id="gsearch" placeholder="Search all guides — e.g. kidney stones, dialysis, diet, gout…" oninput="doSearch(this.value)" autocomplete="off" aria-label="Search guides">
+    <input type="text" id="gsearch" placeholder="Search all guides — e.g. kidney stones, dialysis, diet, gout…" oninput="doSearch(this.value)" autocomplete="off" aria-label="Search guides" spellcheck="false">
     <svg class="s-ico" id="s-ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <button class="s-clr" id="s-clr" onclick="clearSearch()" aria-label="Clear">×</button>
   </div>
@@ -545,58 +548,55 @@
 
 <script>
 function doSearch(q){
-  q = q.trim().toLowerCase();
-  const cards = document.querySelectorAll('.guide-card');
+  q = (q||'').trim().toLowerCase();
   const clr = document.getElementById('s-clr');
   const ico = document.getElementById('s-ico');
   const count = document.getElementById('s-count');
   const noRes = document.getElementById('no-results');
+  const cards = document.querySelectorAll('.guide-card');
+
   clr.style.display = q ? 'block' : 'none';
-  ico.style.display = q ? 'none' : 'block';
+  ico.style.display  = q ? 'none'  : 'block';
 
   if(!q){
-    cards.forEach(c=>c.classList.remove('s-hidden'));
-    // Show all section headers and grids
-    document.querySelectorAll('.section-header,.guides-grid').forEach(el=>el.style.display='');
-    count.textContent=''; noRes.style.display='none'; return;
+    cards.forEach(c => c.classList.remove('s-hidden'));
+    document.querySelectorAll('.section-header,.guides-grid').forEach(el => el.style.display='');
+    count.textContent='';
+    noRes.style.display='none';
+    return;
   }
 
-  const words = q.split(/\s+/);
-  let shown=0;
-  cards.forEach(c=>{
+  const words = q.split(/\s+/).filter(Boolean);
+  let shown = 0;
+  cards.forEach(c => {
     const txt = c.textContent.toLowerCase();
-    const match = words.every(w=>txt.includes(w));
-    c.classList.toggle('s-hidden',!match);
+    const match = words.every(w => txt.includes(w));
+    c.classList.toggle('s-hidden', !match);
     if(match) shown++;
   });
 
-  // Hide section headers whose grid has no visible cards
-  document.querySelectorAll('.guides-grid').forEach(grid=>{
-    const visibleCards = grid.querySelectorAll('.guide-card:not(.s-hidden)');
-    const isEmpty = visibleCards.length === 0;
-    grid.style.display = isEmpty ? 'none' : '';
-    // Hide the preceding section-header too
-    let prev = grid.previousElementSibling;
-    while(prev && !prev.classList.contains('section-header')){
-      prev = prev.previousElementSibling;
-    }
-    if(prev && prev.classList.contains('section-header')){
-      prev.style.display = isEmpty ? 'none' : '';
+  document.querySelectorAll('.guides-grid').forEach(grid => {
+    const visible = grid.querySelectorAll('.guide-card:not(.s-hidden)').length > 0;
+    grid.style.display = visible ? '' : 'none';
+    let el = grid.previousElementSibling;
+    while(el){
+      if(el.classList.contains('section-header')){ el.style.display = visible ? '' : 'none'; break; }
+      el = el.previousElementSibling;
     }
   });
 
-  count.textContent = shown===0 ? '' : shown + ' guide' + (shown===1?'':'s') + ' found';
+  count.textContent = shown===0 ? '' : shown+' guide'+(shown===1?'':'s')+' found';
   document.getElementById('no-term').textContent = q;
   noRes.style.display = shown===0 ? 'block' : 'none';
 
-  // Scroll first result into view smoothly
-  if(shown > 0){
+  if(shown>0){
     const first = document.querySelector('.guide-card:not(.s-hidden)');
-    if(first) setTimeout(()=>first.scrollIntoView({behavior:'smooth',block:'center'}), 80);
+    if(first) setTimeout(()=>first.scrollIntoView({behavior:'smooth',block:'center'}),100);
   }
 }
-  document.getElementById('gsearch').value='';
-  doSearch('');
+function clearSearch(){
+  const el=document.getElementById('gsearch');
+  el.value=''; el.focus(); doSearch('');
 }
 </script>
 
