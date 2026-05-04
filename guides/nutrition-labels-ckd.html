@@ -160,6 +160,29 @@
   .print-btn:hover{transform:scale(1.1);}
   .print-btn svg{width:18px;height:18px;}
   @media print{.site-header,.nav-strip,.guide-toggle-bar,.guide-lang-bar,.print-btn,.guide-footer{display:none!important;}body{font-size:12px;color:#000;background:#fff;}.section{padding:14px 0;border-bottom:1px solid #ddd;}.intro-callout{background:#f0f4f8!important;}.intro-callout p{color:#000!important;}@page{margin:14mm;size:A4;}}
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -221,6 +244,7 @@
     <a class="nav-pill" href="#potassium">Hidden Potassium</a>
     <a class="nav-pill" href="#sodium">Sodium Decoding</a>
     <a class="nav-pill" href="#aisles">Aisle-by-Aisle</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#checklist">Shopping Checklist</a>
   </div>
 </nav>
@@ -684,6 +708,98 @@
   </section>
 
   <!-- SHOPPING CHECKLIST -->
+
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>Daily Electrolyte Budget Tracker — Enter Label Values as You Eat</h2>
+    <p>Use this running tracker throughout the day. Each time you eat a packaged food, enter the sodium, potassium, and phosphorus from its nutrition label and the number of servings you ate. The tracker totals your intake and shows how much of your daily budget remains.</p>
+    <div class="calc-wrap">
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Step 1 — Set your daily limits by CKD stage</div>
+        <div class="calc-grid" style="margin-bottom:0;">
+          <div class="calc-field">
+            <label>CKD Stage / Dialysis</label>
+            <select id="tr-stage" onchange="setTrackerLimits()">
+              <option value="">Select…</option>
+              <option value="ckd3">CKD Stage 3</option>
+              <option value="ckd4">CKD Stage 4</option>
+              <option value="ckd5">CKD Stage 5 / pre-dialysis</option>
+              <option value="hd">Hemodialysis (HD)</option>
+              <option value="pd">Peritoneal Dialysis (PD)</option>
+            </select>
+          </div>
+          <div class="calc-field">
+            <label>Custom Na limit (mg) — optional</label>
+            <input id="tr-custom-na" type="number" min="500" max="4000" step="100" placeholder="Leave blank for stage default" oninput="setTrackerLimits()">
+            <div class="field-hint">Override if your nephrologist set a specific sodium limit</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Step 2 — Add a food item from its nutrition label</div>
+        <div class="calc-grid" style="margin-bottom:12px;">
+          <div class="calc-field">
+            <label>Food name (optional)</label>
+            <input id="tr-name" type="text" placeholder="e.g. Skyflakes crackers" style="font-size:14px;">
+          </div>
+          <div class="calc-field">
+            <label>Servings eaten</label>
+            <input id="tr-servings" type="number" min="0.25" max="10" step="0.25" placeholder="e.g. 1.5" value="1">
+          </div>
+          <div class="calc-field">
+            <label>Sodium per serving (mg)</label>
+            <input id="tr-na" type="number" min="0" max="3000" step="1" placeholder="from label">
+          </div>
+          <div class="calc-field">
+            <label>Potassium per serving (mg) — if listed</label>
+            <input id="tr-k" type="number" min="0" max="2000" step="1" placeholder="from label or 0">
+          </div>
+          <div class="calc-field">
+            <label>Phosphorus per serving (mg) — if listed</label>
+            <input id="tr-p" type="number" min="0" max="1000" step="1" placeholder="from label or 0">
+          </div>
+          <div class="calc-field" style="display:flex;align-items:flex-end;">
+            <button onclick="addFoodItem()" style="width:100%;padding:10px 12px;background:var(--teal);color:white;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">+ Add to today</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="tr-items" style="margin-bottom:16px;display:none;">
+        <div style="font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Today's food log</div>
+        <div id="tr-item-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;"></div>
+      </div>
+
+      <div id="tr-totals" style="display:none;">
+        <div style="font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Running totals vs daily budget</div>
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="tr-na-pct" style="font-size:22px;">—</div>
+            <div class="cml">Sodium</div>
+            <div class="cmt" id="tr-na-status">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="tr-k-pct" style="font-size:22px;">—</div>
+            <div class="cml">Potassium</div>
+            <div class="cmt" id="tr-k-status">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="tr-p-pct" style="font-size:22px;">—</div>
+            <div class="cml">Phosphorus</div>
+            <div class="cmt" id="tr-p-status">—</div>
+          </div>
+        </div>
+        <div id="tr-warning" style="display:none;margin-top:10px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.6;"></div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-top:12px;">
+        <button onclick="resetTracker()" style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--teal);background:transparent;border:1px solid var(--teal);border-radius:20px;padding:5px 16px;cursor:pointer;">Reset day</button>
+      </div>
+
+      <p class="calc-disclaimer">⚕ Potassium and phosphorus are not required on Philippine nutrition labels — many products will show 0 or N/A. For those items, use the food composition tables in the guide or estimate from known high-risk categories (processed meats, dairy, dark colas = high phosphorus; root vegetables, bananas, coconut = high potassium). This tracker is a teaching tool — for precise dietary management, work with a renal dietitian.</p>
+    </div>
+  </section>
+
   <section class="section" id="checklist">
     <div class="section-tag">Printable Reference</div>
     <h2>Your CKD Shopping Checklist</h2>
@@ -789,6 +905,124 @@ function setGuideLang(lang){
   if(localStorage.getItem(DSK)==='1')applyDesktop(true);
   const lang=localStorage.getItem(GLK)||'en';if(lang!=='en')setGuideLang(lang);
 })();
+</script>
+
+<script>
+let trackerItems = [];
+let trackerLimits = {na: 2000, k: 2500, p: 900};
+
+function setTrackerLimits() {
+  const stage = document.getElementById('tr-stage').value;
+  const customNa = parseFloat(document.getElementById('tr-custom-na').value);
+  const limits = {
+    ckd3: {na:2000, k:3000, p:1000},
+    ckd4: {na:2000, k:2500, p:900},
+    ckd5: {na:2000, k:2000, p:800},
+    hd:   {na:2000, k:2000, p:800},
+    pd:   {na:2000, k:3000, p:900},
+  };
+  if (stage && limits[stage]) {
+    trackerLimits = {...limits[stage]};
+    if (!isNaN(customNa) && customNa > 0) trackerLimits.na = customNa;
+  }
+  updateTotals();
+}
+
+function addFoodItem() {
+  const stage = document.getElementById('tr-stage').value;
+  if (!stage) { alert('Please select your CKD stage first.'); return; }
+  const name = document.getElementById('tr-name').value || 'Food item';
+  const servings = parseFloat(document.getElementById('tr-servings').value) || 1;
+  const naPerSrv = parseFloat(document.getElementById('tr-na').value) || 0;
+  const kPerSrv  = parseFloat(document.getElementById('tr-k').value)  || 0;
+  const pPerSrv  = parseFloat(document.getElementById('tr-p').value)  || 0;
+  trackerItems.push({
+    name, servings,
+    na: Math.round(naPerSrv*servings),
+    k:  Math.round(kPerSrv*servings),
+    p:  Math.round(pPerSrv*servings)
+  });
+  document.getElementById('tr-na').value='';
+  document.getElementById('tr-k').value='';
+  document.getElementById('tr-p').value='';
+  document.getElementById('tr-name').value='';
+  document.getElementById('tr-servings').value='1';
+  renderItems();
+  updateTotals();
+}
+
+function removeItem(idx) {
+  trackerItems.splice(idx,1);
+  renderItems();
+  updateTotals();
+}
+
+function renderItems() {
+  const list = document.getElementById('tr-item-list');
+  const wrap = document.getElementById('tr-items');
+  if (trackerItems.length===0) { wrap.style.display='none'; return; }
+  wrap.style.display='block';
+  list.innerHTML = trackerItems.map((item,i)=>
+    '<div style="display:flex;justify-content:space-between;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;">'+
+    '<span style="font-weight:600;color:var(--text-primary)">'+item.name+' ×'+item.servings+'</span>'+
+    '<span style="color:var(--text-muted);margin:0 8px;">Na '+item.na+'mg'+(item.k?' · K '+item.k+'mg':''+(item.p?' · P '+item.p+'mg':''))+'</span>'+
+    '<button onclick="removeItem('+i+')" style="background:none;border:none;color:#c0392b;cursor:pointer;font-size:16px;line-height:1;padding:0 4px;">×</button>'+
+    '</div>'
+  ).join('');
+}
+
+function updateTotals() {
+  const tot = trackerItems.reduce((acc,it)=>({na:acc.na+it.na, k:acc.k+it.k, p:acc.p+it.p}),{na:0,k:0,p:0});
+  const wrap = document.getElementById('tr-totals');
+  if (trackerItems.length===0) { wrap.style.display='none'; return; }
+  wrap.style.display='block';
+
+  function pct(val,lim){return Math.round(val/lim*100);}
+  function color(p){return p>100?'#c0392b':p>80?'#9a6500':'#2d7a4f';}
+  function remaining(val,lim){const r=lim-val; return r>=0?r+' mg remaining':'OVER by '+Math.abs(r)+' mg';}
+
+  const naPct=pct(tot.na,trackerLimits.na);
+  const kPct=pct(tot.k,trackerLimits.k);
+  const pPct=pct(tot.p,trackerLimits.p);
+
+  document.getElementById('tr-na-pct').textContent=naPct+'%';
+  document.getElementById('tr-na-pct').style.color=color(naPct);
+  document.getElementById('tr-na-status').textContent=tot.na+'mg · '+remaining(tot.na,trackerLimits.na);
+  document.getElementById('tr-na-status').style.color=color(naPct);
+
+  document.getElementById('tr-k-pct').textContent=tot.k>0?kPct+'%':'Not tracked';
+  document.getElementById('tr-k-pct').style.color=tot.k>0?color(kPct):'var(--text-muted)';
+  document.getElementById('tr-k-status').textContent=tot.k>0?(tot.k+'mg · '+remaining(tot.k,trackerLimits.k)):'Enter K from labels';
+  document.getElementById('tr-k-status').style.color=tot.k>0?color(kPct):'var(--text-muted)';
+
+  document.getElementById('tr-p-pct').textContent=tot.p>0?pPct+'%':'Not tracked';
+  document.getElementById('tr-p-pct').style.color=tot.p>0?color(pPct):'var(--text-muted)';
+  document.getElementById('tr-p-status').textContent=tot.p>0?(tot.p+'mg · '+remaining(tot.p,trackerLimits.p)):'Enter P from labels';
+  document.getElementById('tr-p-status').style.color=tot.p>0?color(pPct):'var(--text-muted)';
+
+  const warnings=[];
+  if (naPct>100) warnings.push('Sodium is OVER the daily limit by '+Math.abs(trackerLimits.na-tot.na)+' mg. Avoid adding any more salt or salty condiments for the rest of the day. High sodium worsens blood pressure and fluid retention.');
+  else if (naPct>80) warnings.push('You have used '+naPct+'% of your sodium budget. Be careful with remaining meals — choose unsalted or low-sodium options for the rest of the day.');
+  if (kPct>80&&tot.k>0) warnings.push('Potassium is at '+kPct+'% of the daily limit. Avoid high-potassium foods for the rest of today: banana, coconut water, buko juice, kamote, sayote with skin, dark leafy vegetables.');
+  if (pPct>80&&tot.p>0) warnings.push('Phosphorus is at '+pPct+'% of the daily limit. Take your phosphate binder with the next meal. Avoid: processed meats, dairy products, dark colas, instant noodles for the rest of the day.');
+
+  const warnDiv = document.getElementById('tr-warning');
+  if (warnings.length>0) {
+    warnDiv.style.display='block';
+    warnDiv.style.background=naPct>100||kPct>100||pPct>100?'#fdf0ef':'#fef9ec';
+    warnDiv.style.borderLeft=naPct>100||kPct>100||pPct>100?'3px solid #c0392b':'3px solid #f5a623';
+    warnDiv.innerHTML=warnings.map(w=>'<p style="margin-bottom:6px;">⚠ '+w+'</p>').join('');
+  } else {
+    warnDiv.style.display='none';
+  }
+}
+
+function resetTracker() {
+  trackerItems=[];
+  renderItems();
+  document.getElementById('tr-totals').style.display='none';
+  document.getElementById('tr-items').style.display='none';
+}
 </script>
 </body>
 </html>

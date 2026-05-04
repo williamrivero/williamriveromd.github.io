@@ -313,6 +313,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -367,6 +390,7 @@
     <a class="nav-pill" href="#lipids">Lipids</a>
     <a class="nav-pill" href="#diabetes">Diabetes Tests</a>
     <a class="nav-pill" href="#urine">Urine Tests</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#bone-mineral">Bone &amp; Mineral</a>
   </div>
 </nav>
@@ -634,6 +658,79 @@
   </section>
 
   <!-- BONE & MINERAL -->
+
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>Lab Interpretation Calculator — BUN:Creatinine Ratio, Anion Gap &amp; Key Ratios</h2>
+    <p>Enter your metabolic panel values to calculate and interpret the most clinically useful derived ratios. These calculations help explain the <em>why</em> behind your kidney lab results — not just the numbers themselves.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>BUN — Blood Urea Nitrogen (mg/dL)</label>
+          <input id="lb-bun" type="number" min="1" max="300" step="0.1" placeholder="e.g. 42" oninput="calcLabs()">
+          <div class="field-hint">Also reported as Urea Nitrogen or Serum Urea. Normal: 7–25 mg/dL</div>
+        </div>
+        <div class="calc-field">
+          <label>Serum Creatinine (mg/dL)</label>
+          <input id="lb-cr" type="number" min="0.3" max="20" step="0.01" placeholder="e.g. 2.1" oninput="calcLabs()">
+          <div class="field-hint">Normal: 0.6–1.2 mg/dL (male); 0.5–1.1 mg/dL (female)</div>
+        </div>
+        <div class="calc-field">
+          <label>Sodium (mEq/L)</label>
+          <input id="lb-na" type="number" min="100" max="170" step="0.1" placeholder="e.g. 138" oninput="calcLabs()">
+          <div class="field-hint">Normal: 135–145 mEq/L. Required for anion gap calculation</div>
+        </div>
+        <div class="calc-field">
+          <label>Chloride (mEq/L)</label>
+          <input id="lb-cl" type="number" min="70" max="130" step="0.1" placeholder="e.g. 102" oninput="calcLabs()">
+          <div class="field-hint">Normal: 98–106 mEq/L</div>
+        </div>
+        <div class="calc-field">
+          <label>Bicarbonate / HCO₃ (mEq/L)</label>
+          <input id="lb-hco3" type="number" min="5" max="45" step="0.1" placeholder="e.g. 19" oninput="calcLabs()">
+          <div class="field-hint">Also reported as CO₂ or Total CO₂. Normal: 22–26 mEq/L. CKD target: ≥22</div>
+        </div>
+        <div class="calc-field">
+          <label>Albumin (g/dL)</label>
+          <input id="lb-alb" type="number" min="1" max="6" step="0.1" placeholder="e.g. 3.4" oninput="calcLabs()">
+          <div class="field-hint">Normal: 3.5–5.0 g/dL. Used for albumin-corrected anion gap</div>
+        </div>
+      </div>
+      <div class="calc-result-box" id="labs-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="lb-buncr-val">—</div>
+            <div class="cml">BUN:Cr Ratio</div>
+            <div class="cmt" id="lb-buncr-badge">Normal: 10–20</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:16px;line-height:1.2;" id="lb-buncr-interp">—</div>
+            <div class="cml">Suggests</div>
+            <div class="cmt" id="lb-buncr-sub">AKI cause classifier</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="lb-ag-val">—</div>
+            <div class="cml">Anion Gap</div>
+            <div class="cmt" id="lb-ag-badge">Normal: 8–12 mEq/L</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="lb-cag-val">—</div>
+            <div class="cml">Corrected AG</div>
+            <div class="cmt" id="lb-cag-badge">Albumin-adjusted</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="lb-hco3-status">—</div>
+            <div class="cml">HCO₃ Status</div>
+            <div class="cmt" id="lb-hco3-badge">CKD target ≥22</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="lb-verdict"></div>
+        <div class="calc-action-text" id="lb-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ Anion Gap = Na − (Cl + HCO₃). Normal AG: 8–12 mEq/L. Albumin-corrected AG = AG + 2.5 × (4.0 − Albumin) — corrects for hypoalbuminemia which masks a raised AG. BUN:Cr ratio >20 suggests pre-renal cause or high protein state; ratio 10–20 suggests intrinsic renal disease; ratio &lt;10 may suggest low protein intake, liver disease, or over-hydration. These ratios are clinical reasoning tools, not diagnoses — always interpret in clinical context.</p>
+    </div>
+  </section>
+
   <section class="section" id="bone-mineral">
     <div class="section-tag">CKD-Mineral Bone Disorder</div>
     <h2>Bone &amp; Mineral Tests</h2>
@@ -754,6 +851,103 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcLabs() {
+  const bun  = parseFloat(document.getElementById('lb-bun').value);
+  const cr   = parseFloat(document.getElementById('lb-cr').value);
+  const na   = parseFloat(document.getElementById('lb-na').value);
+  const cl   = parseFloat(document.getElementById('lb-cl').value);
+  const hco3 = parseFloat(document.getElementById('lb-hco3').value);
+  const alb  = parseFloat(document.getElementById('lb-alb').value);
+  const res  = document.getElementById('labs-result');
+  if ([bun,cr,na,cl,hco3,alb].some(isNaN) || cr<=0) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  const buncr = Math.round(bun/cr*10)/10;
+  const ag    = Math.round((na-cl-hco3)*10)/10;
+  const cag   = Math.round((ag + 2.5*(4.0-alb))*10)/10;
+
+  // BUN:Cr interpretation
+  let buncrInterp, buncrColor;
+  if (buncr > 20) {
+    buncrInterp='Pre-renal / High protein'; buncrColor='#c0392b';
+  } else if (buncr >= 10) {
+    buncrInterp='Intrinsic renal'; buncrColor='#9a6500';
+  } else {
+    buncrInterp='Low protein / Liver dz'; buncrColor='#9a6500';
+  }
+
+  // Anion gap
+  let agLabel, agColor;
+  if (cag > 12) {
+    agLabel='Elevated AG — MUDPILES'; agColor='#c0392b';
+  } else {
+    agLabel='Normal AG'; agColor='#2d7a4f';
+  }
+
+  // HCO3 status
+  const hco3Ok = hco3 >= 22;
+  const acidosis = hco3 < 18;
+
+  // Overall
+  const issues = [buncr>20||buncr<10, cag>12, !hco3Ok].filter(Boolean).length;
+  let borderColor, bg;
+  if (issues===0) { borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+  else if (issues===1) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  document.getElementById('lb-buncr-val').textContent=buncr;
+  document.getElementById('lb-buncr-val').style.color=buncr>=10&&buncr<=20?'#2d7a4f':buncrColor;
+  document.getElementById('lb-buncr-badge').textContent=buncr>=10&&buncr<=20?'✓ Normal range':'Outside 10–20';
+  document.getElementById('lb-buncr-badge').style.color=buncr>=10&&buncr<=20?'#2d7a4f':buncrColor;
+  document.getElementById('lb-buncr-interp').textContent=buncrInterp;
+  document.getElementById('lb-buncr-interp').style.color=buncrColor;
+  document.getElementById('lb-buncr-sub').textContent=buncr>20?'Dehydration / bleeding / steroids?':buncr<10?'Low protein / liver disease?':'Consistent with CKD';
+  document.getElementById('lb-buncr-sub').style.color=buncrColor;
+
+  document.getElementById('lb-ag-val').textContent=ag;
+  document.getElementById('lb-ag-val').style.color=ag>12?'#c0392b':'#2d7a4f';
+  document.getElementById('lb-ag-badge').textContent=ag>12?'✗ Elevated (>12)':'✓ Normal (8–12)';
+  document.getElementById('lb-ag-badge').style.color=ag>12?'#c0392b':'#2d7a4f';
+
+  document.getElementById('lb-cag-val').textContent=cag;
+  document.getElementById('lb-cag-val').style.color=cag>12?'#c0392b':'#2d7a4f';
+  document.getElementById('lb-cag-badge').textContent=cag>12?'Elevated after correction':'Normal after correction';
+  document.getElementById('lb-cag-badge').style.color=cag>12?'#c0392b':'#2d7a4f';
+
+  document.getElementById('lb-hco3-status').textContent=hco3;
+  document.getElementById('lb-hco3-status').style.color=hco3Ok?'#2d7a4f':(acidosis?'#c0392b':'#9a6500');
+  document.getElementById('lb-hco3-badge').textContent=hco3Ok?'✓ At CKD target (≥22)':acidosis?'✗ Significant acidosis (<18)':'⚠ Mildly low (18–21)';
+  document.getElementById('lb-hco3-badge').style.color=hco3Ok?'#2d7a4f':(acidosis?'#c0392b':'#9a6500');
+
+  let verdict='', action='';
+
+  const parts=[];
+  if (buncr>20) parts.push('BUN:Cr ratio of '+buncr+' is elevated (>20) — this suggests a pre-renal component (dehydration, bleeding, high protein intake, or steroid use) is raising BUN disproportionately to creatinine. In the context of CKD, it may also reflect inadequate fluid intake or recent dietary protein excess.');
+  else if (buncr<10) parts.push('BUN:Cr ratio of '+buncr+' is low (<10) — this may suggest low protein intake (malnutrition), liver disease (reduced urea synthesis), or over-hydration diluting BUN. In dialysis patients, very low pre-dialysis BUN may indicate inadequate dietary protein intake.');
+  else parts.push('BUN:Cr ratio of '+buncr+' is in the normal intrinsic renal range (10–20), consistent with chronic kidney disease as the primary driver of elevated urea and creatinine.');
+
+  if (cag>12) parts.push('Corrected anion gap of '+cag+' mEq/L is elevated — indicates unmeasured anions (MUDPILES mnemonic: Methanol, Uremia, DKA, Propylene glycol, Isoniazid, Lactic acidosis, Ethylene glycol, Salicylates). In CKD, uremic acidosis is a common cause of elevated AG.');
+  else parts.push('Corrected anion gap of '+cag+' mEq/L is normal — if acidosis is present, it is a normal-gap (hyperchloremic) metabolic acidosis, which in CKD suggests tubular acidosis or early renal bicarbonate wasting.');
+
+  if (!hco3Ok) parts.push('Bicarbonate of '+hco3+' mEq/L is below the CKD target (≥22 mEq/L). Metabolic acidosis in CKD directly accelerates muscle wasting, bone mineral loss, and CKD progression. '+(acidosis?'This level of acidosis ('+hco3+') requires active treatment. ':''));
+
+  verdict = parts.join(' ');
+
+  const actionParts=[];
+  if (buncr>20) actionParts.push('Reassess fluid intake — target urine output >1L/day in non-dialysis CKD. Review dietary protein. If on steroids, explain their BUN-elevating effect to your team.');
+  if (cag>12) actionParts.push('Report elevated anion gap to your nephrologist — requires clinical investigation for cause. If due to uremia: increase dialysis adequacy or optimize CKD management.');
+  if (!hco3Ok) actionParts.push('Sodium bicarbonate supplementation (500–650 mg twice daily) or potassium citrate is indicated to correct metabolic acidosis in CKD. Target HCO₃ ≥22 mEq/L. '+(acidosis?'Severe acidosis (<18 mEq/L) may require more aggressive treatment — discuss urgently with your nephrologist.':''));
+  if (actionParts.length===0) actionParts.push('All calculated ratios are within acceptable ranges. Continue regular monitoring as scheduled.');
+
+  document.getElementById('lb-verdict').innerHTML='<strong style="color:'+borderColor+'">'+(issues===0?'Derived ratios within range':issues+' finding'+(issues>1?'s':'')+' to review')+'</strong> — '+verdict;
+  document.getElementById('lb-action').innerHTML='<strong style="color:'+borderColor+'">Clinical interpretation:</strong> '+actionParts.join(' ');
+}
 </script>
 </body>
 </html>

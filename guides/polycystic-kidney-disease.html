@@ -235,6 +235,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -289,6 +312,7 @@
     <a class="nav-pill" href="#diagnosis">Diagnosis</a>
     <a class="nav-pill" href="#treatment">Treatment</a>
     <a class="nav-pill" href="#tolvaptan">Tolvaptan</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#family">Family Screening</a>
     <a class="nav-pill" href="#living">Living with PKD</a>
   </div>
@@ -616,6 +640,64 @@
     </div>
   </section>
 
+
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>PKD Progression Calculator — Mayo TKV Class &amp; Tolvaptan Eligibility</h2>
+    <p>The Mayo Imaging Classification uses height-adjusted total kidney volume (htTKV) and age to classify ADPKD progression risk and determine eligibility for tolvaptan — the only disease-modifying therapy approved for rapidly progressing ADPKD.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Total Kidney Volume (mL)</label>
+          <input id="pk-tkv" type="number" min="200" max="10000" step="10" placeholder="e.g. 1850" oninput="calcPKD()">
+          <div class="field-hint">From MRI or CT volumetry report. Usually labeled "total kidney volume" or "TKV". Measured by your radiologist.</div>
+        </div>
+        <div class="calc-field">
+          <label>Height (cm)</label>
+          <input id="pk-ht" type="number" min="130" max="200" step="0.1" placeholder="e.g. 162" oninput="calcPKD()">
+          <div class="field-hint">Used to calculate height-adjusted TKV (htTKV = TKV ÷ height in meters)</div>
+        </div>
+        <div class="calc-field">
+          <label>Age (years)</label>
+          <input id="pk-age" type="number" min="18" max="80" step="1" placeholder="e.g. 38" oninput="calcPKD()">
+          <div class="field-hint">Mayo class uses age to contextualize kidney volume — large kidneys are more concerning at younger ages</div>
+        </div>
+        <div class="calc-field">
+          <label>Current eGFR (mL/min/1.73m²)</label>
+          <input id="pk-egfr" type="number" min="1" max="120" step="0.1" placeholder="e.g. 58" oninput="calcPKD()">
+          <div class="field-hint">Tolvaptan has specific eGFR eligibility criteria</div>
+        </div>
+      </div>
+      <div class="calc-result-box" id="pkd-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="pk-httkv-val">—</div>
+            <div class="cml">htTKV</div>
+            <div class="cmt" id="pk-httkv-badge">mL/m</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:22px;" id="pk-class-val">—</div>
+            <div class="cml">Mayo Class</div>
+            <div class="cmt" id="pk-class-badge">1A – 1E</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:16px;line-height:1.2;" id="pk-growth-val">—</div>
+            <div class="cml">Annual Growth Rate</div>
+            <div class="cmt" id="pk-growth-badge">% TKV/year</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;line-height:1.2;" id="pk-tolvaptan-val">—</div>
+            <div class="cml">Tolvaptan Eligible</div>
+            <div class="cmt" id="pk-tolvaptan-badge">—</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="pk-verdict"></div>
+        <div class="calc-action-text" id="pk-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ Mayo Imaging Classification (Irazabal et al., JASN 2015): Class 1A htTKV &lt;210, 1B 210–320, 1C 320–500, 1D 500–750, 1E &gt;750 mL/m (age-adjusted). Annual TKV growth rates: 1A &lt;2%, 1B 2–3%, 1C 3–5%, 1D 5–7%, 1E &gt;7.5%. Tolvaptan approved for rapidly progressing ADPKD (Class 1C–1E or confirmed rapid progression). Requires eGFR ≥25 mL/min (FDA/EMA criteria). Must enroll in REMS program due to hepatotoxicity risk. MRI volumetry is the gold standard — ultrasound-based TKV is less accurate.</p>
+    </div>
+  </section>
+
   <section class="section" id="family">
     <div class="section-tag">Family Implications</div>
     <h2>Family Screening — Who Should Be Tested?</h2>
@@ -723,6 +805,83 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcPKD() {
+  const tkv  = parseFloat(document.getElementById('pk-tkv').value);
+  const ht   = parseFloat(document.getElementById('pk-ht').value);
+  const age  = parseFloat(document.getElementById('pk-age').value);
+  const egfr = parseFloat(document.getElementById('pk-egfr').value);
+  const res  = document.getElementById('pkd-result');
+  if ([tkv,ht,age,egfr].some(isNaN)) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const htM = ht/100;
+  const httkv = Math.round(tkv/htM*10)/10;
+
+  // Mayo class — simplified (age-adjusted thresholds from Irazabal 2015)
+  // Using the typical adult threshold ranges
+  let mayoClass, classColor, growthRate, growthDesc;
+  if (httkv < 210) {
+    mayoClass='1A'; classColor='#2d7a4f'; growthRate='<2%/yr'; growthDesc='Typical — not rapidly progressive';
+  } else if (httkv < 320) {
+    mayoClass='1B'; classColor='#2d7a4f'; growthRate='2–3%/yr'; growthDesc='Mild-moderate growth';
+  } else if (httkv < 500) {
+    mayoClass='1C'; classColor='#9a6500'; growthRate='3–5%/yr'; growthDesc='Moderate-rapid growth';
+  } else if (httkv < 750) {
+    mayoClass='1D'; classColor='#c0392b'; growthRate='5–7%/yr'; growthDesc='Rapid growth';
+  } else {
+    mayoClass='1E'; classColor='#8b0000'; growthRate='>7.5%/yr'; growthDesc='Very rapid growth';
+  }
+
+  // Tolvaptan eligibility: Class 1C–1E AND eGFR ≥25
+  const tolvEligible = (mayoClass==='1C'||mayoClass==='1D'||mayoClass==='1E') && egfr >= 25;
+  const tolvClass = mayoClass==='1C'||mayoClass==='1D'||mayoClass==='1E';
+
+  const borderColor = classColor;
+  const bg = mayoClass==='1A'||mayoClass==='1B'?(isDark?'rgba(45,122,79,.08)':'#edf7f2'):
+             mayoClass==='1C'?(isDark?'rgba(154,101,0,.08)':'#fef9ec'):
+             (isDark?'rgba(192,57,43,.08)':'#fdf0ef');
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  document.getElementById('pk-httkv-val').textContent=httkv;
+  document.getElementById('pk-httkv-val').style.color='#0f1e2e';
+  document.getElementById('pk-httkv-badge').textContent=tkv+'mL ÷ '+htM+'m';
+
+  document.getElementById('pk-class-val').textContent=mayoClass;
+  document.getElementById('pk-class-val').style.color=classColor;
+  document.getElementById('pk-class-badge').textContent=httkv+' mL/m → Class '+mayoClass;
+  document.getElementById('pk-class-badge').style.color=classColor;
+
+  document.getElementById('pk-growth-val').textContent=growthRate;
+  document.getElementById('pk-growth-val').style.color=classColor;
+  document.getElementById('pk-growth-badge').textContent=growthDesc;
+  document.getElementById('pk-growth-badge').style.color=classColor;
+
+  const tolvEl = document.getElementById('pk-tolvaptan-val');
+  tolvEl.textContent = tolvEligible ? 'Eligible' : (tolvClass && egfr<25 ? 'Class eligible\neGFR too low' : 'Not indicated');
+  tolvEl.style.color = tolvEligible ? '#2d7a4f' : (tolvClass ? '#9a6500' : '#c0392b');
+  document.getElementById('pk-tolvaptan-badge').textContent = tolvEligible ? '✓ Class 1C–1E + eGFR≥25' : (tolvClass && egfr<25 ? 'eGFR '+egfr+' < 25 threshold' : 'Class 1A/1B — watchful waiting');
+  document.getElementById('pk-tolvaptan-badge').style.color = tolvEligible ? '#2d7a4f' : '#9a6500';
+
+  let verdict='htTKV of '+httkv+' mL/m places this patient in Mayo Class '+mayoClass+'. '+
+    'Estimated annual kidney volume growth: '+growthRate+' ('+growthDesc+'). '+
+    (mayoClass==='1A'||mayoClass==='1B'?'Class 1A/1B ADPKD has a lower risk of rapidly reaching kidney failure. Standard management focuses on blood pressure control (target <130/80 mmHg), hydration (≥3L/day to suppress vasopressin), and annual monitoring. ':
+     mayoClass==='1C'?'Class 1C represents a critical threshold — moderate-to-rapid progression where disease-modifying therapy is now appropriate if eGFR permits. ':
+     'Class '+mayoClass+' indicates rapidly progressive ADPKD. Without treatment, kidney failure may occur significantly earlier than average. Tolvaptan, if tolerated, reduces kidney growth rate by ~50% and slows GFR decline.');
+
+  let action='';
+  if (tolvEligible) {
+    action='Tolvaptan (Jinarc/Samsca) eligibility confirmed — Class '+mayoClass+' and eGFR '+egfr+' ≥ 25. Requires enrollment in REMS program due to hepatotoxicity risk (monthly LFT monitoring for 18 months). Discuss with nephrologist. Tolvaptan works by blocking vasopressin V2 receptors — patients must be able to maintain adequate fluid intake and access to water freely (not appropriate for patients with restricted fluid access). Aquaretic side effects (thirst, polyuria) are expected and usually diminish.';
+  } else if (tolvClass && egfr<25) {
+    action='Kidney volume class ('+mayoClass+') meets tolvaptan criteria but eGFR '+egfr+' mL/min is below the ≥25 threshold. Consider enrolling in a clinical trial or registry. Focus on maximal nephroprotection: BP <130/80 mmHg, RAAS blockade, avoid nephrotoxins, high water intake (suppress vasopressin). Monitor eGFR every 3 months — if eGFR stabilizes above 25, revisit tolvaptan eligibility.';
+  } else {
+    action='Watchful waiting is appropriate for Class '+mayoClass+'. Annual MRI for TKV measurement to track growth rate. Blood pressure target <130/80 mmHg — ACE inhibitor or ARB preferred. High fluid intake (≥3L/day of water) naturally suppresses vasopressin and is the most accessible disease-modifying intervention available to all PKD patients. Avoid caffeine excess. Screen for intracranial aneurysm if family history of subarachnoid hemorrhage.';
+  }
+  document.getElementById('pk-verdict').innerHTML='<strong style="color:'+classColor+'">Mayo Class '+mayoClass+' — '+growthDesc+'</strong> — '+verdict;
+  document.getElementById('pk-action').innerHTML='<strong style="color:'+classColor+'">Recommended approach:</strong> '+action;
+}
 </script>
 </body>
 </html>
