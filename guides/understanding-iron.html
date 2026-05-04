@@ -774,7 +774,7 @@
   <section class="section" id="calculator">
     <div class="section-tag">Interactive Tool</div>
     <h2>Iron Deficit &amp; IV Replacement Calculator</h2>
-    <p>Calculate the total iron deficit and estimated IV iron replacement dose. This uses the Ganzoni formula — the standard method used to determine IV iron sucrose (Venofer) dosing in CKD and dialysis patients.</p>
+    <p>Calculate the total iron deficit and estimated IV iron replacement dose. This uses the Ganzoni formula — the standard method used to determine IV iron sucrose (Ferrofer / Anema) dosing in CKD and dialysis patients.</p>
     <div class="calc-wrap">
       <div class="calc-grid">
         <div class="calc-field">
@@ -796,7 +796,7 @@
           <label>Route of Iron Replacement</label>
           <select id="ir-route" onchange="calcIron()">
             <option value="">Select…</option>
-            <option value="iv">IV iron (sucrose / Venofer) — preferred in HD</option>
+            <option value="iv">IV iron (sucrose — Ferrofer / Anema) — preferred in HD</option>
             <option value="oral">Oral iron — for non-dialysis CKD</option>
           </select>
         </div>
@@ -822,7 +822,7 @@
         <div class="calc-verdict-text" id="ir-verdict"></div>
         <div class="calc-action-text" id="ir-action"></div>
       </div>
-      <p class="calc-disclaimer">⚕ Ganzoni formula: Iron deficit (mg) = Weight (kg) × (Target Hgb − Actual Hgb) × 0.24 + 500 (depot iron). Depot iron 500 mg is standard for replenishment; omit for maintenance dosing. IV iron sucrose (Venofer): standard infusion 100–200 mg per session. This is a dosing guide — actual prescribing requires physician authorization and consideration of ferritin, TSAT, and clinical status.</p>
+      <p class="calc-disclaimer">⚕ Ganzoni formula: Iron deficit (mg) = Weight (kg) × (Target Hgb − Actual Hgb) × 0.24 + 500 (depot iron). Depot iron 500 mg is standard for replenishment; omit for maintenance dosing. IV iron sucrose (Ferrofer / Anema): standard infusion 100–200 mg per session. This is a dosing guide — actual prescribing requires physician authorization and consideration of ferritin, TSAT, and clinical status.</p>
     </div>
   </section>
 
@@ -834,7 +834,7 @@
     <div class="three-col">
       <div class="feature-card">
         <h4><span class="dot dot-teal"></span>IV iron preferred over oral in dialysis</h4>
-        <p>Hemodialysis patients lose iron through the dialysis circuit, frequent blood draws, and GI microbleeding from uremia. Oral iron is poorly absorbed due to elevated hepcidin and reduced gut transit time. Iron sucrose (Venofer) 100 mg IV per session is the standard — it bypasses the gut entirely and delivers iron directly to storage and marrow.</p>
+        <p>Hemodialysis patients lose iron through the dialysis circuit, frequent blood draws, and GI microbleeding from uremia. Oral iron is poorly absorbed due to elevated hepcidin and reduced gut transit time. Iron sucrose (Ferrofer / Anema) 100 mg IV per session is the standard — it bypasses the gut entirely and delivers iron directly to storage and marrow.</p>
       </div>
       <div class="feature-card">
         <h4><span class="dot dot-amber"></span>Functional iron deficiency</h4>
@@ -991,7 +991,7 @@ function calcIron() {
   let verdict='', action='';
   if (route==='iv') {
     verdict='Estimated iron deficit of '+deficitTotal+' mg (Ganzoni formula). This requires approximately '+sessions+' IV iron sucrose sessions at 100 mg per session, given over '+sessions+' dialysis sessions. Hgb is '+hgbGap+' g/dL below target ('+target+' g/dL).';
-    action='IV iron sucrose (Venofer) 100–200 mg per infusion administered into the venous side of the dialysis circuit during the last hour of the session. Check TSAT and ferritin before starting — do not give IV iron if ferritin >800 ng/mL. Recheck CBC and iron panel after completing the repletion course (4–6 weeks after last dose).';
+    action='IV iron sucrose (Ferrofer / Anema) 100–200 mg per infusion administered into the venous side of the dialysis circuit during the last hour of the session. Check TSAT and ferritin before starting — do not give IV iron if ferritin >800 ng/mL. Recheck CBC and iron panel after completing the repletion course (4–6 weeks after last dose).';
   } else {
     verdict='Estimated iron deficit of '+deficitTotal+' mg. For non-dialysis CKD, oral iron is first-line if tolerated. Iron absorption from oral supplements is typically 10–20 mg/day — repletion of '+deficitTotal+' mg deficit takes approximately '+Math.ceil(deficitTotal/15)+' days (2–4 months) of consistent therapy.';
     action='Ferrous sulfate 325 mg (65 mg elemental iron) on empty stomach for best absorption, or with food if causing GI upset. Take 2 hours apart from phosphate binders, antacids, and calcium supplements — these block iron absorption. IV iron (ferric carboxymaltose or iron sucrose) if oral is not tolerated or TSAT is critically low.';
