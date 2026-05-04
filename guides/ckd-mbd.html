@@ -319,6 +319,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -367,6 +390,7 @@
     <a class="nav-pill" href="#phosphorus">Phosphorus Control</a>
     <a class="nav-pill" href="#vitamin-d">Vitamin D</a>
     <a class="nav-pill" href="#pth">Managing PTH</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#diet">Diet</a>
   </div>
 </nav>
@@ -619,6 +643,71 @@
     </div>
   </section>
 
+
+  <!-- CKD-MBD CALCULATOR -->
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>CKD-MBD Lab Calculator — Ca×P Product, Corrected Calcium &amp; PTH Staging</h2>
+    <p>Enter your mineral metabolism lab results to calculate the calcium-phosphorus product, correct your calcium for albumin, and see whether your PTH is within the KDIGO 2024 target range for your dialysis status.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Total Calcium (mg/dL)</label>
+          <input id="m-ca" type="number" min="4" max="15" step="0.1" placeholder="e.g. 8.8" oninput="calcMBD()">
+          <div class="field-hint">Normal: 8.4–10.2 mg/dL. This is the raw value — we correct it for albumin below</div>
+        </div>
+        <div class="calc-field">
+          <label>Phosphorus (mg/dL)</label>
+          <input id="m-phos" type="number" min="1" max="15" step="0.1" placeholder="e.g. 5.2" oninput="calcMBD()">
+          <div class="field-hint">Pre-dialysis or fasting value. HD target: 3.5–5.5 mg/dL</div>
+        </div>
+        <div class="calc-field">
+          <label>Albumin (g/dL)</label>
+          <input id="m-alb" type="number" min="1" max="6" step="0.1" placeholder="e.g. 3.2" oninput="calcMBD()">
+          <div class="field-hint">Used to correct calcium. Normal: 3.5–5.0 g/dL. Dialysis patients often have low albumin</div>
+        </div>
+        <div class="calc-field">
+          <label>iPTH (pg/mL)</label>
+          <input id="m-pth" type="number" min="1" max="3000" step="1" placeholder="e.g. 450" oninput="calcMBD()">
+          <div class="field-hint">Intact parathyroid hormone. Lab may report as PTH or iPTH</div>
+        </div>
+        <div class="calc-field">
+          <label>Dialysis Status</label>
+          <select id="m-dialysis" onchange="calcMBD()">
+            <option value="">Select…</option>
+            <option value="hd">On hemodialysis (HD)</option>
+            <option value="pd">On peritoneal dialysis (PD)</option>
+            <option value="ckd3">CKD Stage 3</option>
+            <option value="ckd4">CKD Stage 4</option>
+            <option value="ckd5">CKD Stage 5 (pre-dialysis)</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-box" id="mbd-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="m-cap-val">—</div>
+            <div class="cml">Ca×P Product</div>
+            <div class="cmt" id="m-cap-badge">Target &lt;55 mg²/dL²</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="m-cca-val">—</div>
+            <div class="cml">Corrected Ca</div>
+            <div class="cmt" id="m-cca-badge">mg/dL</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;line-height:1.2;" id="m-pth-status">—</div>
+            <div class="cml">PTH Status</div>
+            <div class="cmt" id="m-pth-badge">—</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="m-verdict"></div>
+        <div class="calc-action-text" id="m-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ Corrected Ca = Total Ca + 0.8 × (4.0 − Albumin). Ca×P product uses corrected calcium. PTH targets: KDIGO 2024 recommends HD/PD iPTH 130–600 pg/mL (2–9× ULN); CKD 3–5: maintain within normal to 3× ULN. All values require physician interpretation in clinical context.</p>
+    </div>
+  </section>
+
   <section class="section" id="diet">
     <div class="section-tag">Dietary Guidance</div>
     <h2>CKD-MBD Diet — What to Eat and Avoid</h2>
@@ -731,6 +820,79 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcMBD() {
+  const ca = parseFloat(document.getElementById('m-ca').value);
+  const phos = parseFloat(document.getElementById('m-phos').value);
+  const alb = parseFloat(document.getElementById('m-alb').value);
+  const pth = parseFloat(document.getElementById('m-pth').value);
+  const dial = document.getElementById('m-dialysis').value;
+  const res = document.getElementById('mbd-result');
+  if ([ca,phos,alb,pth].some(isNaN) || !dial) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const corrCa = Math.round((ca + 0.8*(4.0-alb))*100)/100;
+  const caprod = Math.round(corrCa*phos*10)/10;
+
+  // PTH targets by stage
+  let pthLow, pthHigh, pthLabel;
+  if (dial==='hd'||dial==='pd') { pthLow=130; pthHigh=600; pthLabel='HD/PD target: 130–600 pg/mL'; }
+  else if (dial==='ckd3') { pthLow=35; pthHigh=70; pthLabel='CKD 3 target: 35–70 pg/mL'; }
+  else if (dial==='ckd4') { pthLow=70; pthHigh=110; pthLabel='CKD 4 target: 70–110 pg/mL'; }
+  else { pthLow=110; pthHigh=300; pthLabel='CKD 5 target: 110–300 pg/mL'; }
+
+  const capOk = caprod < 55;
+  const corrCaOk = corrCa >= 8.4 && corrCa <= 10.2;
+  const pthOk = pth >= pthLow && pth <= pthHigh;
+  const pthHigh_ = pth > pthHigh;
+  const pthLow_ = pth < pthLow;
+
+  // Overall color
+  const problems = [!capOk, !corrCaOk, !pthOk].filter(Boolean).length;
+  let borderColor, bg;
+  if (problems===0) { borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+  else if (problems===1) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  // Ca×P
+  document.getElementById('m-cap-val').textContent=caprod;
+  document.getElementById('m-cap-val').style.color=capOk?'#2d7a4f':'#c0392b';
+  document.getElementById('m-cap-badge').textContent=capOk?'✓ Safe (<55)':'✗ High risk (≥55)';
+  document.getElementById('m-cap-badge').style.color=capOk?'#2d7a4f':'#c0392b';
+
+  // Corrected Ca
+  document.getElementById('m-cca-val').textContent=corrCa;
+  document.getElementById('m-cca-val').style.color=corrCaOk?'#2d7a4f':(corrCa<8.4?'#c0392b':'#c0392b');
+  document.getElementById('m-cca-badge').textContent=corrCaOk?'✓ Normal (8.4–10.2)':(corrCa<8.4?'✗ Hypocalcemia':'✗ Hypercalcemia');
+  document.getElementById('m-cca-badge').style.color=corrCaOk?'#2d7a4f':'#c0392b';
+
+  // PTH
+  const pthStatusEl=document.getElementById('m-pth-status');
+  pthStatusEl.textContent=pthOk?'In range':pthHigh_?'Elevated':'Suppressed';
+  pthStatusEl.style.color=pthOk?'#2d7a4f':(pthHigh_?'#c0392b':'#9a6500');
+  document.getElementById('m-pth-badge').textContent=pthLabel;
+  document.getElementById('m-pth-badge').style.color=pthOk?'#2d7a4f':'#c0392b';
+
+  // Verdict
+  let verdictParts=[], actionParts=[];
+  if (!capOk) { verdictParts.push('Ca×P product of '+caprod+' mg²/dL² exceeds 55 — vascular calcification risk is elevated.'); actionParts.push('Phosphate binder review urgently: ensure patient is taking binders with every meal and snack. Check dietary phosphorus compliance. Consider switching to non-calcium binder (sevelamer, lanthanum) to avoid further calcium load.'); }
+  if (!corrCaOk) {
+    if (corrCa<8.4) { verdictParts.push('Corrected calcium '+corrCa+' mg/dL is low (hypocalcemia) — risk of muscle cramps, arrhythmia, and tetany.'); actionParts.push('Review active vitamin D (calcitriol/alfacalcidol) dose. Check dialysate calcium concentration if on HD. Symptomatic hypocalcemia requires IV calcium — do not delay.'); }
+    else { verdictParts.push('Corrected calcium '+corrCa+' mg/dL is elevated (hypercalcemia) — risk of calcification, arrhythmia, and adynamic bone disease.'); actionParts.push('Hold calcium-containing phosphate binders and active vitamin D. Review calcium concentration in dialysate. Persistent hypercalcemia may indicate tertiary hyperparathyroidism requiring cinacalcet or parathyroidectomy.'); }
+  }
+  if (!pthOk) {
+    if (pthHigh_) { verdictParts.push('PTH '+pth+' pg/mL is above target ('+pthHigh+') — secondary hyperparathyroidism is under-treated.'); actionParts.push('Escalate phosphate control, correct vitamin D deficiency, and consider calcimimetic (cinacalcet) or active vitamin D analogue. PTH >600 pg/mL in HD patients significantly elevates fracture and cardiovascular risk.'); }
+    else { verdictParts.push('PTH '+pth+' pg/mL is suppressed below target ('+pthLow+') — adynamic bone disease risk.'); actionParts.push('Reduce or hold active vitamin D. Review calcium-containing binder load. Adynamic bone disease has a high fracture risk despite normal-looking X-rays. Discuss with nephrologist before adjusting cinacalcet or parathyroidectomy status.'); }
+  }
+  if (problems===0) { verdictParts=['All three mineral metabolism parameters are within KDIGO 2024 target ranges. Well-managed CKD-MBD significantly reduces fracture, vascular calcification, and cardiovascular mortality risk.']; actionParts=['Continue current phosphate binder and vitamin D regimen. Maintain dietary phosphorus restriction. Recheck labs monthly (HD) or every 3 months (CKD stages 3–5).']; }
+
+  document.getElementById('m-verdict').innerHTML='<strong style="color:'+borderColor+'">'+(problems===0?'All targets met':problems+' parameter'+(problems>1?'s':'')+' out of range')+'</strong> — '+verdictParts.join(' ');
+  document.getElementById('m-action').innerHTML='<strong style="color:'+borderColor+'">Recommended action:</strong> '+actionParts.join(' ');
+}
 </script>
 </body>
 </html>

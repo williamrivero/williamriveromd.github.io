@@ -327,6 +327,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -375,6 +398,7 @@
     <a class="nav-pill" href="#beyond-ldl">Beyond LDL</a>
     <a class="nav-pill" href="#ckd-dm">CKD &amp; Diabetes</a>
     <a class="nav-pill" href="#lifestyle">Lifestyle</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#faq">FAQ</a>
   </div>
 </nav>
@@ -670,6 +694,76 @@
     </div>
   </section>
 
+
+  <!-- LIPID CALCULATOR -->
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>Lipid Calculator — LDL-C, Non-HDL-C &amp; 2026 ACC/AHA Risk Tier</h2>
+    <p>Enter your lipid panel results and clinical profile to calculate your LDL-C (Friedewald equation), Non-HDL-C, and determine your 2026 ACC/AHA ASCVD risk category with the corresponding LDL-C target.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Total Cholesterol (mg/dL)</label>
+          <input id="l-tc" type="number" min="50" max="500" step="0.1" placeholder="e.g. 185" oninput="calcLipid()">
+        </div>
+        <div class="calc-field">
+          <label>HDL-C (mg/dL)</label>
+          <input id="l-hdl" type="number" min="10" max="150" step="0.1" placeholder="e.g. 38" oninput="calcLipid()">
+          <div class="field-hint">High-density lipoprotein. "Good" cholesterol. Low HDL (&lt;40M/&lt;50F) is an independent risk factor</div>
+        </div>
+        <div class="calc-field">
+          <label>Triglycerides (mg/dL)</label>
+          <input id="l-tg" type="number" min="30" max="2000" step="0.1" placeholder="e.g. 165" oninput="calcLipid()">
+          <div class="field-hint">Friedewald formula invalid if TG &gt;400 mg/dL — report direct LDL-C instead</div>
+        </div>
+        <div class="calc-field">
+          <label>Direct LDL-C (mg/dL) — optional</label>
+          <input id="l-ldl-direct" type="number" min="10" max="400" step="0.1" placeholder="Leave blank if not measured" oninput="calcLipid()">
+          <div class="field-hint">If your lab reports direct LDL, enter it here. It overrides the Friedewald calculation when TG &gt;400</div>
+        </div>
+        <div class="calc-field">
+          <label>Risk Factors Present</label>
+          <select id="l-risk" onchange="calcLipid()">
+            <option value="">Select your situation…</option>
+            <option value="vh">Established ASCVD (prior MI, stroke, coronary artery disease)</option>
+            <option value="vh-ckd">CKD Stage 3–5 or dialysis + any cardiovascular disease</option>
+            <option value="h-ckd">CKD Stage 3–5 or dialysis (no established ASCVD)</option>
+            <option value="h-dm">Diabetes mellitus (type 1 or 2) aged 40–75</option>
+            <option value="h">Multiple risk factors (HTN, smoking, family history)</option>
+            <option value="low">No significant risk factors</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-box" id="lipid-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="l-ldl-val">—</div>
+            <div class="cml">LDL-C mg/dL</div>
+            <div class="cmt" id="l-ldl-badge">Friedewald</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="l-nonhdl-val">—</div>
+            <div class="cml">Non-HDL-C</div>
+            <div class="cmt" id="l-nonhdl-badge">mg/dL</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:13px;line-height:1.2;" id="l-tier-val">—</div>
+            <div class="cml">Risk Tier</div>
+            <div class="cmt" id="l-tier-badge">2026 ACC/AHA</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:18px;" id="l-target-val">—</div>
+            <div class="cml">LDL Target</div>
+            <div class="cmt" id="l-target-badge">mg/dL</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="l-verdict"></div>
+        <div class="calc-action-text" id="l-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ Friedewald equation: LDL-C = Total Cholesterol − HDL-C − (TG ÷ 5). Invalid when TG &gt;400 mg/dL — use direct LDL-C. Non-HDL-C = Total Cholesterol − HDL-C; captures all atherogenic lipoproteins including VLDL and IDL. Risk tiers and LDL targets per 2026 ACC/AHA Dyslipidemia Guidelines. Note: Rozuor = rosuvastatin+ezetimibe combo — do not use when rosuvastatin is withheld.</p>
+    </div>
+  </section>
+
   <section class="section" id="faq">
     <div class="section-tag">Common Questions</div>
     <h2>Frequently Asked Questions</h2>
@@ -793,6 +887,93 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcLipid() {
+  const tc = parseFloat(document.getElementById('l-tc').value);
+  const hdl = parseFloat(document.getElementById('l-hdl').value);
+  const tg = parseFloat(document.getElementById('l-tg').value);
+  const ldlDirect = parseFloat(document.getElementById('l-ldl-direct').value);
+  const risk = document.getElementById('l-risk').value;
+  const res = document.getElementById('lipid-result');
+  if ([tc,hdl,tg].some(isNaN) || !risk) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const tgHigh = tg > 400;
+  let ldl, ldlMethod;
+  if (!isNaN(ldlDirect) && (tgHigh || ldlDirect > 0)) {
+    ldl = Math.round(ldlDirect*10)/10; ldlMethod='Direct';
+  } else if (!tgHigh) {
+    ldl = Math.round((tc - hdl - tg/5)*10)/10; ldlMethod='Friedewald';
+  } else {
+    ldl = null; ldlMethod='Invalid (TG>400)';
+  }
+  const nonHDL = Math.round((tc-hdl)*10)/10;
+
+  // Risk tier and target
+  let tier, tierColor, ldlTarget, nonHDLTarget;
+  if (risk==='vh'||risk==='vh-ckd') {
+    tier='Very High Risk'; tierColor='#8b0000'; ldlTarget=55; nonHDLTarget=85;
+  } else if (risk==='h-ckd'||risk==='h-dm'||risk==='h') {
+    tier='High Risk'; tierColor='#c0392b'; ldlTarget=70; nonHDLTarget=100;
+  } else {
+    tier='Moderate/Low Risk'; tierColor='#9a6500'; ldlTarget=100; nonHDLTarget=130;
+  }
+
+  const ldlOk = ldl !== null && ldl <= ldlTarget;
+  const nonHdlOk = nonHDL <= nonHDLTarget;
+  let borderColor, bg;
+  if (ldlOk && nonHdlOk) { borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+  else if (ldl!==null && ldl<=ldlTarget*1.3) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  if (ldl!==null) {
+    document.getElementById('l-ldl-val').textContent=ldl;
+    document.getElementById('l-ldl-val').style.color=ldlOk?'#2d7a4f':'#c0392b';
+    document.getElementById('l-ldl-badge').textContent=ldlMethod+(tgHigh?' (Direct used)':'');
+    document.getElementById('l-ldl-badge').style.color=ldlOk?'#2d7a4f':'#c0392b';
+  } else {
+    document.getElementById('l-ldl-val').textContent='N/A';
+    document.getElementById('l-ldl-val').style.color='#9a6500';
+    document.getElementById('l-ldl-badge').textContent='TG>400 — enter direct LDL';
+    document.getElementById('l-ldl-badge').style.color='#9a6500';
+  }
+
+  document.getElementById('l-nonhdl-val').textContent=nonHDL;
+  document.getElementById('l-nonhdl-val').style.color=nonHdlOk?'#2d7a4f':'#c0392b';
+  document.getElementById('l-nonhdl-badge').textContent='Target <'+nonHDLTarget;
+  document.getElementById('l-nonhdl-badge').style.color=nonHdlOk?'#2d7a4f':'#c0392b';
+
+  document.getElementById('l-tier-val').textContent=tier;
+  document.getElementById('l-tier-val').style.color=tierColor;
+  document.getElementById('l-tier-badge').textContent='2026 ACC/AHA';
+  document.getElementById('l-tier-badge').style.color=tierColor;
+
+  document.getElementById('l-target-val').textContent='<'+ldlTarget;
+  document.getElementById('l-target-val').style.color=ldlOk?'#2d7a4f':'#c0392b';
+  document.getElementById('l-target-badge').textContent=ldlOk?'✓ At target':'✗ Above target';
+  document.getElementById('l-target-badge').style.color=ldlOk?'#2d7a4f':'#c0392b';
+
+  let verdict='', action='';
+  if (ldl===null) {
+    verdict='Triglycerides are too high ('+tg+' mg/dL) to calculate LDL-C by Friedewald formula. Request a direct LDL-C measurement from your laboratory. High triglycerides themselves require treatment (target <150 mg/dL) — omega-3 fatty acids and fibrates are options.';
+    action='Repeat fasting lipid panel. Request direct LDL-C. Address hypertriglyceridemia: reduce refined carbohydrates, alcohol, and sugar. Omega-3 (Omacor 2–4g/day) or fenofibrate if TG >500 mg/dL.';
+  } else if (ldlOk) {
+    verdict='LDL-C '+ldl+' mg/dL is at target (<'+ldlTarget+' mg/dL) for your '+tier+' profile. Non-HDL-C '+(nonHdlOk?'is also at target.':'of '+nonHDL+' mg/dL is above target (<'+nonHDLTarget+') — elevated VLDL/remnant particles contribute to residual cardiovascular risk even when LDL is controlled.');
+    action='Maintain current statin regimen. Recheck lipid panel in 3–6 months. '+(tg>150?'Address hypertriglyceridemia — target TG <150 mg/dL. ':'')+(hdl<40?'Low HDL (<40 mg/dL) is an independent risk factor — regular aerobic exercise is the most effective way to raise HDL. ':'');
+  } else {
+    const gap = ldl - ldlTarget;
+    verdict='LDL-C '+ldl+' mg/dL is '+Math.round(gap)+' mg/dL above your target of <'+ldlTarget+' mg/dL for '+tier+'. '+(risk==='vh'||risk==='vh-ckd'?'As a very high-risk patient, every mg/dL of LDL reduction above target translates to measurable mortality benefit.':'This level of LDL elevation carries significant cardiovascular risk.');
+    action=ldl>ldlTarget+30
+      ? 'Start or intensify statin therapy (rosuvastatin 20–40mg or atorvastatin 40–80mg). If already on high-intensity statin, add ezetimibe 10mg (or Rozuor combo). If still above target, PCSK9 inhibitor (evolocumab or alirocumab) is indicated per 2026 guidelines.'
+      : 'Add ezetimibe 10mg daily to current statin therapy — reduces LDL by additional 18–25%. Optimize statin dose if not yet at maximum tolerated dose. Dietary: reduce saturated fat (<7% of calories), eliminate trans fats.';
+  }
+  document.getElementById('l-verdict').innerHTML='<strong style="color:'+borderColor+'">'+tier+'</strong> — '+verdict;
+  document.getElementById('l-action').innerHTML='<strong style="color:'+borderColor+'">Stepwise treatment:</strong> '+action;
+}
 </script>
 </body>
 </html>

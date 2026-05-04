@@ -330,6 +330,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -385,6 +408,7 @@
     <a class="nav-pill" href="#monitoring">Home Monitoring</a>
     <a class="nav-pill" href="#digital-tools">Apps &amp; Tools</a>
     <a class="nav-pill" href="#red-flags">Red Flags</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#faq">FAQ</a>
   </div>
 </nav>
@@ -825,6 +849,77 @@
     </div>
   </section>
 
+
+  <!-- HYPERTENSION CALCULATOR -->
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>Blood Pressure Calculator — MAP, Pulse Pressure &amp; CKD Target Checker</h2>
+    <p>Enter your blood pressure reading and clinical profile to calculate MAP and pulse pressure, and see whether your BP meets the KDIGO 2024 target for your specific CKD and proteinuria status.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Systolic BP (mmHg)</label>
+          <input id="bp-sbp" type="number" min="60" max="260" step="1" placeholder="e.g. 138" oninput="calcBP()">
+          <div class="field-hint">Upper number. Use the average of 2–3 readings taken while seated and rested</div>
+        </div>
+        <div class="calc-field">
+          <label>Diastolic BP (mmHg)</label>
+          <input id="bp-dbp" type="number" min="30" max="160" step="1" placeholder="e.g. 85" oninput="calcBP()">
+          <div class="field-hint">Lower number</div>
+        </div>
+        <div class="calc-field">
+          <label>CKD / Clinical Profile</label>
+          <select id="bp-profile" onchange="calcBP()">
+            <option value="">Select your situation…</option>
+            <option value="ckd-prot">CKD with significant proteinuria (UACR ≥30 mg/g)</option>
+            <option value="ckd-noprot">CKD without significant proteinuria (UACR &lt;30 mg/g)</option>
+            <option value="ckd-dm">CKD with diabetes mellitus</option>
+            <option value="dialysis">On dialysis (HD or PD)</option>
+            <option value="transplant">Post kidney transplant</option>
+            <option value="no-ckd">Hypertension without CKD</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label>Number of BP Meds Currently</label>
+          <select id="bp-meds" onchange="calcBP()">
+            <option value="">Select…</option>
+            <option value="0">None</option>
+            <option value="1">1 medication</option>
+            <option value="2">2 medications</option>
+            <option value="3">3+ medications</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-box" id="bp-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="bp-map-val">—</div>
+            <div class="cml">MAP mmHg</div>
+            <div class="cmt" id="bp-map-badge">Mean Arterial Pressure</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="bp-pp-val">—</div>
+            <div class="cml">Pulse Pressure</div>
+            <div class="cmt" id="bp-pp-badge">mmHg</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:13px;line-height:1.2;" id="bp-target-val">—</div>
+            <div class="cml">BP Target</div>
+            <div class="cmt" id="bp-target-badge">KDIGO 2024</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;line-height:1.2;" id="bp-status-val">—</div>
+            <div class="cml">BP Status</div>
+            <div class="cmt" id="bp-status-badge">—</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="bp-verdict"></div>
+        <div class="calc-action-text" id="bp-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ MAP = DBP + (SBP − DBP) ÷ 3. Pulse pressure = SBP − DBP; PP &gt;60 mmHg suggests arterial stiffness, common in CKD and associated with increased cardiovascular risk. BP targets per KDIGO 2024 and 2023 ESH guidelines. Home BP monitoring (morning before medications) is more reliable than office readings for CKD patients. This tool is educational — antihypertensive adjustments require physician evaluation.</p>
+    </div>
+  </section>
+
   <section class="section" id="faq">
     <div class="section-tag">Common Questions</div>
     <h2>Frequently Asked Questions</h2>
@@ -958,6 +1053,91 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcBP() {
+  const sbp = parseFloat(document.getElementById('bp-sbp').value);
+  const dbp = parseFloat(document.getElementById('bp-dbp').value);
+  const profile = document.getElementById('bp-profile').value;
+  const meds = document.getElementById('bp-meds').value;
+  const res = document.getElementById('bp-result');
+  if ([sbp,dbp].some(isNaN) || !profile || !meds || sbp<=dbp) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const map = Math.round((dbp+(sbp-dbp)/3)*10)/10;
+  const pp = sbp-dbp;
+
+  // BP targets by profile (KDIGO 2024)
+  let targetSBP, targetLabel, targetNote;
+  if (profile==='ckd-prot'||profile==='ckd-dm') {
+    targetSBP=130; targetLabel='<130/80 mmHg';
+    targetNote='KDIGO 2024: CKD with proteinuria or DM — tighter control reduces glomerular pressure and slows GFR decline';
+  } else if (profile==='ckd-noprot') {
+    targetSBP=140; targetLabel='<140/90 mmHg';
+    targetNote='KDIGO 2024: CKD without significant proteinuria — standard target. If UACR becomes ≥30, tighten to <130/80';
+  } else if (profile==='dialysis') {
+    targetSBP=140; targetLabel='<140/90 mmHg (pre-dialysis)';
+    targetNote='Measured pre-dialysis. Fluid removal at each session is the primary BP intervention — optimize dry weight before adding antihypertensives';
+  } else if (profile==='transplant') {
+    targetSBP=130; targetLabel='<130/80 mmHg';
+    targetNote='Post-transplant: calcineurin inhibitors cause vasoconstriction and sodium retention — CCBs are first-line. Avoid RAAS blockers in first 3–6 months post-transplant';
+  } else {
+    targetSBP=140; targetLabel='<140/90 mmHg';
+    targetNote='Standard hypertension target. Consider tighter control if additional risk factors present';
+  }
+
+  const atTarget = sbp < targetSBP && dbp < 90;
+  const crisis = sbp >= 180 || dbp >= 120;
+  const ppHigh = pp > 60;
+
+  let borderColor, bg;
+  if (crisis) { borderColor='#8b0000'; bg=isDark?'rgba(139,0,0,.1)':'#fdf0ef'; }
+  else if (!atTarget && sbp>=160) { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+  else if (!atTarget) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  document.getElementById('bp-map-val').textContent=map;
+  document.getElementById('bp-map-val').style.color=map<100?'#2d7a4f':(map<110?'#9a6500':'#c0392b');
+  document.getElementById('bp-map-badge').textContent='Target MAP <100 mmHg';
+  document.getElementById('bp-map-badge').style.color=map<100?'#2d7a4f':'#c0392b';
+
+  document.getElementById('bp-pp-val').textContent=pp;
+  document.getElementById('bp-pp-val').style.color=pp<=60?'#2d7a4f':'#c0392b';
+  document.getElementById('bp-pp-badge').textContent=pp<=60?'Normal (≤60)':'Elevated — arterial stiffness';
+  document.getElementById('bp-pp-badge').style.color=pp<=60?'#2d7a4f':'#c0392b';
+
+  document.getElementById('bp-target-val').textContent=targetLabel; document.getElementById('bp-target-val').style.color=atTarget?'#2d7a4f':'#c0392b';
+  document.getElementById('bp-target-badge').textContent=targetNote.substring(0,40)+'…';
+  document.getElementById('bp-target-badge').style.color=atTarget?'#2d7a4f':'#c0392b';
+
+  const statusEl=document.getElementById('bp-status-val');
+  statusEl.textContent=crisis?'Hypertensive Crisis':atTarget?'At Target':sbp>=160?'Stage 2':'Above Target';
+  statusEl.style.color=crisis?'#8b0000':atTarget?'#2d7a4f':(sbp>=160?'#c0392b':'#9a6500');
+  document.getElementById('bp-status-badge').textContent=sbp+'/'+dbp+' mmHg';
+  document.getElementById('bp-status-badge').style.color=borderColor;
+
+  let verdict='', action='';
+  if (crisis) {
+    verdict='BP of '+sbp+'/'+dbp+' mmHg is a hypertensive crisis (SBP ≥180 or DBP ≥120). Immediate medical attention is required. Do not drive yourself — call for assistance. Check for end-organ damage symptoms: headache, visual changes, chest pain, shortness of breath, decreased urine output.';
+    action='Present to emergency department immediately. Do not abruptly self-medicate with extra doses of antihypertensives — controlled reduction is required. If on dialysis, emergency ultrafiltration may be needed.';
+  } else if (!atTarget) {
+    verdict='BP of '+sbp+'/'+dbp+' mmHg is above the '+targetLabel+' target for your profile ('+profile.replace('ckd-prot','CKD with proteinuria').replace('ckd-noprot','CKD without proteinuria').replace('ckd-dm','CKD+DM').replace('dialysis','dialysis').replace('transplant','transplant').replace('no-ckd','no CKD')+').'+
+      (ppHigh?' Pulse pressure of '+pp+' mmHg signals arterial stiffness — common in CKD due to vascular calcification and calcium-phosphorus deposition. This independently increases cardiovascular risk.':'')+' '+targetNote;
+    action=meds==='0'?'Start antihypertensive therapy. First-line for CKD with proteinuria: ACE inhibitor or ARB (reduces intraglomerular pressure and proteinuria in addition to BP effect). Lifestyle: sodium <2g/day, weight loss if BMI>25, aerobic exercise 150 min/week.':
+      meds==='1'?'Consider combining an ACE inhibitor/ARB with a calcium channel blocker (amlodipine) — well tolerated in CKD and synergistic. Sodium restriction is still the most powerful non-drug intervention (target <2g/day).':
+      meds==='2'?'Add a thiazide-like diuretic (chlorthalidone, indapamide) as third agent if eGFR permits. If eGFR <30, switch to loop diuretic (furosemide). Ensure medication adherence before adding a fourth agent.':
+      'Resistant hypertension (≥3 agents). Evaluate for secondary causes: renal artery stenosis, primary aldosteronism, obstructive sleep apnea. Consider spironolactone as 4th agent if K+ permits. Reassess dry weight if on dialysis.';
+  } else {
+    verdict='BP of '+sbp+'/'+dbp+' mmHg is at target ('+targetLabel+').'+
+      (ppHigh?' However, pulse pressure of '+pp+' mmHg is elevated — even with controlled BP, arterial stiffness contributes to cardiovascular risk in CKD. Address calcium-phosphorus balance and minimize vascular calcification.':' Pulse pressure is normal.')+' Well-controlled BP is the single most modifiable factor in slowing CKD progression. '+targetNote;
+    action='Maintain current regimen. Home BP monitoring: measure every morning before medications. Record and bring readings to appointments. Continue sodium restriction (<2g/day). Recheck in 1–3 months.';
+  }
+  document.getElementById('bp-verdict').innerHTML='<strong style="color:'+borderColor+'">'+(crisis?'HYPERTENSIVE CRISIS':atTarget?'At target':'Above target')+'</strong> — '+verdict;
+  document.getElementById('bp-action').innerHTML='<strong style="color:'+borderColor+'">Recommended action:</strong> '+action;
+}
 </script>
 </body>
 </html>

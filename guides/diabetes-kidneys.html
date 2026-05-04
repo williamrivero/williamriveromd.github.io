@@ -458,6 +458,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -509,6 +532,7 @@
     <a class="nav-pill" href="#targets">Targets</a>
     <a class="nav-pill" href="#lifestyle">Lifestyle</a>
     <a class="nav-pill" href="#red-flags">Red Flags</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#faq">FAQ</a>
   </div>
 </nav>
@@ -982,6 +1006,65 @@
   </section>
 
   <!-- FAQ -->
+
+  <!-- DKD CALCULATOR -->
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>DKD Risk &amp; Treatment Calculator — SGLT2i Eligibility, HbA1c, UACR</h2>
+    <p>Enter your most recent lab results to check whether you qualify for kidney-protective SGLT2 inhibitor therapy, see what your HbA1c means in average daily glucose, and understand your UACR risk category.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>eGFR (mL/min/1.73m²)</label>
+          <input id="d-egfr" type="number" min="1" max="120" step="0.1" placeholder="e.g. 42" oninput="calcDKD()">
+          <div class="field-hint">Your most recent kidney function result. Used to determine SGLT2i eligibility and dosing</div>
+        </div>
+        <div class="calc-field">
+          <label>HbA1c (%)</label>
+          <input id="d-hba1c" type="number" min="4" max="18" step="0.1" placeholder="e.g. 7.8" oninput="calcDKD()">
+          <div class="field-hint">3-month average blood sugar control marker. Target: 7–8% for most CKD-DM patients</div>
+        </div>
+        <div class="calc-field">
+          <label>UACR (mg/g)</label>
+          <input id="d-uacr" type="number" min="0" max="10000" step="1" placeholder="e.g. 185" oninput="calcDKD()">
+          <div class="field-hint">Urine albumin-to-creatinine ratio from spot urine. Normal &lt;30 mg/g</div>
+        </div>
+        <div class="calc-field">
+          <label>Current SGLT2 inhibitor?</label>
+          <select id="d-sglt2" onchange="calcDKD()">
+            <option value="">Select…</option>
+            <option value="none">Not currently taking one</option>
+            <option value="dapa">Taking dapagliflozin (Forxiga / Catania / Rhea)</option>
+            <option value="empa">Taking empagliflozin (Jardiance)</option>
+            <option value="other">Taking another SGLT2i</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-box" id="dkd-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;line-height:1.2;" id="d-sglt2-status">—</div>
+            <div class="cml">SGLT2i Status</div>
+            <div class="cmt" id="d-sglt2-badge">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="d-eag-val">—</div>
+            <div class="cml">Avg Glucose</div>
+            <div class="cmt" id="d-eag-badge">mg/dL (eAG)</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;" id="d-uacr-status">—</div>
+            <div class="cml">UACR Category</div>
+            <div class="cmt" id="d-uacr-badge">—</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="d-verdict"></div>
+        <div class="calc-action-text" id="d-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ eAG = 28.7 × HbA1c − 46.7 (ADA formula). SGLT2i eligibility thresholds: dapagliflozin eGFR ≥25 (DAPA-CKD trial); empagliflozin eGFR ≥20 (EMPA-KIDNEY trial). UACR categories per KDIGO 2024. Prescribing decisions require physician evaluation. Philippine brands: dapagliflozin = Catania or Rhea (cost-effective); empagliflozin = Jardiance.</p>
+    </div>
+  </section>
+
   <section class="section" id="faq">
     <div class="section-tag">Common Questions</div>
     <h2>Frequently Asked Questions</h2>
@@ -1119,6 +1202,76 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcDKD() {
+  const egfr = parseFloat(document.getElementById('d-egfr').value);
+  const hba1c = parseFloat(document.getElementById('d-hba1c').value);
+  const uacr = parseFloat(document.getElementById('d-uacr').value);
+  const sglt2 = document.getElementById('d-sglt2').value;
+  const res = document.getElementById('dkd-result');
+  if ([egfr,hba1c,uacr].some(isNaN) || !sglt2) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const eag = Math.round(28.7*hba1c-46.7);
+
+  // SGLT2i eligibility
+  const dapaOk = egfr >= 25;
+  const empaOk = egfr >= 20;
+  let sglt2Status, sglt2Color, sglt2Msg;
+  if (!dapaOk && !empaOk) {
+    sglt2Status='Not eligible'; sglt2Color='#c0392b';
+    sglt2Msg='eGFR '+egfr+' is below the minimum threshold for both dapagliflozin (≥25) and empagliflozin (≥20). SGLT2 inhibitors should not be started at this stage. Focus on RAAS blockade, blood pressure control, and finerenone if applicable.';
+  } else if (!dapaOk && empaOk) {
+    sglt2Status='Empa only'; sglt2Color='#9a6500';
+    sglt2Msg='eGFR '+egfr+' qualifies for empagliflozin (≥20 threshold) but is below dapagliflozin threshold (≥25). If not already on an SGLT2i, empagliflozin is appropriate. Dapagliflozin should not be used at this eGFR.';
+  } else {
+    sglt2Status='Eligible'; sglt2Color='#2d7a4f';
+    sglt2Msg=sglt2==='none'
+      ? 'eGFR '+egfr+' qualifies for both dapagliflozin and empagliflozin. '+(uacr>=200?'With UACR '+uacr+' mg/g, you have a strong indication — SGLT2i reduce proteinuria by 30–40% and slow GFR decline independently of glucose control.':'SGLT2 inhibitors are kidney-protective regardless of HbA1c. Discuss initiation with your nephrologist.')
+      : 'You are already taking an SGLT2i — continue unless eGFR falls below threshold or AKI occurs. Note: the kidney-protective effect persists even at eGFR as low as 20–25; do not stop without physician guidance.';
+  }
+
+  // UACR category
+  let uacrCat, uacrColor;
+  if (uacr < 30) { uacrCat='A1 — Normal'; uacrColor='#2d7a4f'; }
+  else if (uacr < 300) { uacrCat='A2 — Mildly ↑'; uacrColor='#9a6500'; }
+  else { uacrCat='A3 — Severely ↑'; uacrColor='#c0392b'; }
+
+  // HbA1c assessment
+  const hba1cOk = hba1c >= 7.0 && hba1c <= 8.0;
+  const hba1cLow = hba1c < 7.0;
+  let hba1cMsg = hba1cOk
+    ? 'HbA1c '+hba1c+'% is within the recommended 7–8% range for CKD-DM patients ('+eag+' mg/dL average glucose). Tight control &lt;7% risks hypoglycemia which independently worsens kidney outcomes.'
+    : hba1cLow
+    ? 'HbA1c '+hba1c+'% ('+eag+' mg/dL average glucose) is below the 7% lower limit for CKD patients — hypoglycemia risk is elevated. Discuss liberalizing glycemic targets slightly with your nephrologist, especially if on insulin or sulfonylurea.'
+    : 'HbA1c '+hba1c+'% ('+eag+' mg/dL average glucose) is above target (7–8%). Each 1% reduction in HbA1c reduces DKD progression risk by 25–30%. Consider medication review, dietary carbohydrate reduction, and physical activity.';
+
+  // Overall
+  const problems = [!dapaOk||!empaOk, !hba1cOk, uacr>=300].filter(Boolean).length;
+  let borderColor, bg;
+  if (problems===0) { borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+  else if (problems===1) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  const sglt2El=document.getElementById('d-sglt2-status');
+  sglt2El.textContent=sglt2Status; sglt2El.style.color=sglt2Color;
+  document.getElementById('d-sglt2-badge').textContent='eGFR threshold check';
+  document.getElementById('d-sglt2-badge').style.color=sglt2Color;
+  document.getElementById('d-eag-val').textContent=eag;
+  document.getElementById('d-eag-val').style.color=hba1cOk?'#2d7a4f':(hba1cLow?'#9a6500':'#c0392b');
+  document.getElementById('d-eag-badge').textContent='HbA1c '+hba1c+'% → '+eag+' mg/dL';
+  document.getElementById('d-eag-badge').style.color=hba1cOk?'#2d7a4f':'#c0392b';
+  document.getElementById('d-uacr-status').textContent=uacrCat; document.getElementById('d-uacr-status').style.color=uacrColor;
+  document.getElementById('d-uacr-badge').textContent=uacr<30?'Normal (<30 mg/g)':(uacr<300?'Microalbuminuria':'Macroalbuminuria');
+  document.getElementById('d-uacr-badge').style.color=uacrColor;
+
+  document.getElementById('d-verdict').innerHTML='<strong style="color:'+borderColor+'">Summary</strong> — '+sglt2Msg+' '+hba1cMsg;
+  document.getElementById('d-action').innerHTML='<strong style="color:'+borderColor+'">Key actions:</strong> '+(uacr>=30?'RAAS blockade (ACE inhibitor or ARB) is indicated for UACR ≥30 mg/g with DM. ':'')+(sglt2==='none'&&dapaOk?'Initiate SGLT2i (dapagliflozin 10mg OD — Catania or Rhea brand available in Philippines). ':'')+(uacr>=300?'With UACR ≥300, target BP &lt;130/80 mmHg and consider finerenone (Firialta) if not already on it. ':'')+'Monitor eGFR and UACR every 3–6 months.';
+}
 </script>
 </body>
 </html>

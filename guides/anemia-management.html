@@ -325,6 +325,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -373,6 +396,7 @@
     <a class="nav-pill" href="#iron">Iron Therapy</a>
     <a class="nav-pill" href="#esa">ESA Therapy</a>
     <a class="nav-pill" href="#nutrition">Nutrition</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#targets">Targets</a>
   </div>
 </nav>
@@ -690,6 +714,65 @@
     </div>
   </section>
 
+
+  <!-- IRON STATUS CALCULATOR -->
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>Iron Status Calculator — TSAT &amp; Iron Deficiency Classifier</h2>
+    <p>Enter your iron panel results to calculate TSAT and determine your iron deficiency type. Your doctor uses this to decide whether IV iron, oral iron, or no iron therapy is appropriate for you.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Serum Iron (μg/dL)</label>
+          <input id="a-si" type="number" min="1" max="300" step="0.1" placeholder="e.g. 45" oninput="calcAnemia()">
+          <div class="field-hint">Found on your blood chemistry panel. Normal: 60–170 μg/dL</div>
+        </div>
+        <div class="calc-field">
+          <label>TIBC (μg/dL)</label>
+          <input id="a-tibc" type="number" min="100" max="600" step="0.1" placeholder="e.g. 280" oninput="calcAnemia()">
+          <div class="field-hint">Total iron-binding capacity. Normal: 250–370 μg/dL. If TIBC not available, enter transferrin × 25.1</div>
+        </div>
+        <div class="calc-field">
+          <label>Serum Ferritin (ng/mL)</label>
+          <input id="a-ferritin" type="number" min="1" max="5000" step="0.1" placeholder="e.g. 120" oninput="calcAnemia()">
+          <div class="field-hint">Iron storage marker. Also reflects inflammation — unreliable in acute illness</div>
+        </div>
+        <div class="calc-field">
+          <label>Dialysis Status</label>
+          <select id="a-dialysis" onchange="calcAnemia()">
+            <option value="">Select…</option>
+            <option value="hd">On hemodialysis</option>
+            <option value="pd">On peritoneal dialysis</option>
+            <option value="ckd">CKD (not on dialysis)</option>
+          </select>
+          <div class="field-hint">Targets differ between dialysis and non-dialysis CKD patients (KDIGO 2024)</div>
+        </div>
+      </div>
+      <div class="calc-result-box" id="anemia-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="a-tsat-val">—</div>
+            <div class="cml">TSAT %</div>
+            <div class="cmt" id="a-tsat-badge">HD target &gt;30%</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="a-ferritin-val">—</div>
+            <div class="cml">Ferritin</div>
+            <div class="cmt" id="a-ferritin-badge">ng/mL</div>
+          </div>
+          <div class="calc-metric-card" id="a-type-card">
+            <div class="cmv" style="font-size:14px;line-height:1.3;" id="a-type-val">—</div>
+            <div class="cml">Iron Status</div>
+            <div class="cmt" id="a-type-badge">—</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="a-verdict"></div>
+        <div class="calc-action-text" id="a-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ TSAT = (Serum Iron ÷ TIBC) × 100. Ferritin is an acute phase reactant — elevated by inflammation, infection, or malignancy independent of iron stores. Classification per KDIGO 2024. This tool is for educational guidance only — iron therapy decisions require physician assessment.</p>
+    </div>
+  </section>
+
   <section class="section" id="targets">
     <div class="section-tag">KDIGO 2024 Targets</div>
     <h2>Treatment Targets for CKD-Related Anemia</h2>
@@ -799,6 +882,77 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcAnemia() {
+  const si = parseFloat(document.getElementById('a-si').value);
+  const tibc = parseFloat(document.getElementById('a-tibc').value);
+  const ferritin = parseFloat(document.getElementById('a-ferritin').value);
+  const dialysis = document.getElementById('a-dialysis').value;
+  const res = document.getElementById('anemia-result');
+  if ([si,tibc,ferritin].some(isNaN) || !dialysis || tibc<=0) { res.style.display='none'; return; }
+
+  const tsat = Math.round((si/tibc)*1000)/10;
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  // KDIGO 2024 targets
+  const tsatTarget = dialysis==='hd' ? 30 : 20;
+  const ferritinTarget = dialysis==='hd' ? 200 : 100;
+  const ferritinUpper = dialysis==='hd' ? 800 : 500;
+
+  // Classify iron status
+  let type, typeColor, bg, borderColor, verdict, action;
+  const tsatLow = tsat < tsatTarget;
+  const ferritinLow = ferritin < ferritinTarget;
+  const ferritinHigh = ferritin > ferritinUpper;
+
+  if (ferritinHigh) {
+    type='Iron Overload Risk'; typeColor='#c0392b';
+    bg = isDark ? 'rgba(192,57,43,.08)' : '#fdf0ef'; borderColor='#c0392b';
+    verdict = `Ferritin of ${ferritin} ng/mL exceeds the upper safety threshold (${ferritinUpper} ng/mL for ${dialysis==='hd'?'HD':'CKD'} patients). TSAT of ${tsat}% suggests ${tsat>30?'iron stores are replete — further iron supplementation carries accumulation risk.':'assess for functional deficiency before supplementing.'}`;
+    action = 'Hold IV iron supplementation. Re-evaluate in 3 months. If TSAT remains low despite high ferritin, consider functional iron deficiency from inflammation — discuss with your nephrologist before giving more iron.';
+  } else if (tsatLow && ferritinLow) {
+    type='Absolute Iron Deficiency'; typeColor='#c0392b';
+    bg = isDark ? 'rgba(192,57,43,.08)' : '#fdf0ef'; borderColor='#c0392b';
+    verdict = `TSAT ${tsat}% (target ≥${tsatTarget}%) and Ferritin ${ferritin} ng/mL (target ≥${ferritinTarget} ng/mL) — both below target. This is absolute iron deficiency: iron stores are genuinely depleted. This is the most common cause of poor ESA response in CKD.`;
+    action = (dialysis==='hd')
+      ? 'IV iron sucrose (Venofer) is preferred — oral iron is poorly absorbed in HD patients and disrupted by phosphate binders. Typical protocol: 100 mg IV per session × 10 sessions. Recheck iron panel after full repletion.'
+      : 'Oral iron (ferrous sulfate or ferric carboxymaltose) is first-line for non-dialysis CKD. IV iron if oral is not tolerated or TSAT critically low. Recheck in 4–8 weeks.';
+  } else if (tsatLow && !ferritinLow) {
+    type='Functional Iron Deficiency'; typeColor='#9a6500';
+    bg = isDark ? 'rgba(154,101,0,.08)' : '#fef9ec'; borderColor='#f5a623';
+    verdict = `TSAT ${tsat}% (below target ≥${tsatTarget}%) but Ferritin ${ferritin} ng/mL (adequate). This is functional iron deficiency — iron is stored but unavailable for erythropoiesis. Common causes: ESA therapy driving rapid iron utilization, inflammation blocking iron release (hepcidin effect), or malnutrition.`;
+    action = 'A trial of IV iron is often warranted even with adequate ferritin in dialysis patients — if Hgb improves, the functional deficiency is confirmed. Review ESA dose adequacy and check CRP/inflammatory markers. Oral iron is not effective for functional deficiency.';
+  } else if (!tsatLow && ferritinLow) {
+    type='Depleting Stores'; typeColor='#9a6500';
+    bg = isDark ? 'rgba(154,101,0,.08)' : '#fef9ec'; borderColor='#f5a623';
+    verdict = `TSAT ${tsat}% is adequate but Ferritin ${ferritin} ng/mL is below target (${ferritinTarget} ng/mL). Iron stores are being depleted — if not repleted, TSAT will fall and functional deficiency will develop. Early intervention prevents anemia worsening.`;
+    action = 'Preventive iron supplementation is recommended. Oral iron may be sufficient for non-dialysis CKD. In HD patients, proactive IV iron maintenance doses prevent cycle of depletion and repletion.';
+  } else {
+    type='Iron Replete'; typeColor='#2d7a4f';
+    bg = isDark ? 'rgba(45,122,79,.08)' : '#edf7f2'; borderColor='#2d7a4f';
+    verdict = `TSAT ${tsat}% (target ≥${tsatTarget}%) and Ferritin ${ferritin} ng/mL (target ≥${ferritinTarget} ng/mL) — both at target. Iron status is adequate. If anemia persists with adequate iron, the cause is likely EPO deficiency requiring ESA therapy, or another co-existing cause (B12, folate deficiency, inflammation, hemolysis).`;
+    action = 'No iron supplementation needed at this time. If Hgb remains below target (100–115 g/L) despite adequate iron, discuss ESA (erythropoietin stimulating agent) initiation or dose adjustment with your nephrologist.';
+  }
+
+  res.style.display='block';
+  res.style.background=bg; res.style.borderColor=borderColor;
+  document.getElementById('a-tsat-val').textContent=tsat+'%';
+  document.getElementById('a-tsat-val').style.color=tsat>=tsatTarget?'#2d7a4f':'#c0392b';
+  document.getElementById('a-tsat-badge').textContent='Target ≥'+tsatTarget+'% ('+(dialysis==='hd'?'HD':'CKD')+')';
+  document.getElementById('a-tsat-badge').style.color=tsat>=tsatTarget?'#2d7a4f':'#c0392b';
+  document.getElementById('a-ferritin-val').textContent=ferritin;
+  document.getElementById('a-ferritin-val').style.color=ferritin>=ferritinTarget&&ferritin<=ferritinUpper?'#2d7a4f':(ferritin>ferritinUpper?'#c0392b':'#c0392b');
+  document.getElementById('a-ferritin-badge').textContent='Target '+ferritinTarget+'–'+ferritinUpper;
+  document.getElementById('a-ferritin-badge').style.color=ferritin>=ferritinTarget&&ferritin<=ferritinUpper?'#2d7a4f':'#c0392b';
+  document.getElementById('a-type-val').textContent=type;
+  document.getElementById('a-type-val').style.color=typeColor;
+  document.getElementById('a-type-badge').textContent='KDIGO 2024';
+  document.getElementById('a-type-badge').style.color=typeColor;
+  document.getElementById('a-verdict').innerHTML='<strong style="color:'+typeColor+'">'+type+'</strong> — '+verdict;
+  document.getElementById('a-action').innerHTML='<strong style="color:'+typeColor+'">Recommended action:</strong> '+action;
+}
 </script>
 </body>
 </html>

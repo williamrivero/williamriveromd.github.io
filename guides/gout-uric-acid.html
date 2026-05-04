@@ -336,6 +336,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -386,6 +409,7 @@
     <a class="nav-pill" href="#diet">Food Guide</a>
     <a class="nav-pill" href="#medications">Medications</a>
     <a class="nav-pill" href="#flare">During a Flare</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#faq">FAQ</a>
   </div>
 </nav>
@@ -717,6 +741,75 @@
     </div>
   </section>
 
+
+  <!-- GOUT CALCULATOR -->
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>Uric Acid Calculator — Target Checker, FEUA &amp; ULT Dose Guide</h2>
+    <p>Enter your uric acid results and kidney function to check whether you have met your urate target, calculate your fractional excretion of uric acid (which determines the cause of hyperuricemia), and see your febuxostat/allopurinol dose guidance by eGFR.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Serum Uric Acid (mg/dL)</label>
+          <input id="g-ua" type="number" min="1" max="20" step="0.1" placeholder="e.g. 7.8" oninput="calcGout()">
+          <div class="field-hint">Normal: &lt;6.8 mg/dL (solubility limit). Target on ULT: &lt;6.0 mg/dL; tophaceous gout: &lt;5.0 mg/dL</div>
+        </div>
+        <div class="calc-field">
+          <label>eGFR (mL/min/1.73m²)</label>
+          <input id="g-egfr" type="number" min="1" max="120" step="0.1" placeholder="e.g. 38" oninput="calcGout()">
+          <div class="field-hint">Used to guide ULT dosing and assess uric acid excretion capacity</div>
+        </div>
+        <div class="calc-field">
+          <label>Urine Uric Acid (mg/dL) — optional</label>
+          <input id="g-uua" type="number" min="1" max="200" step="0.1" placeholder="From spot urine (optional)" oninput="calcGout()">
+          <div class="field-hint">For FEUA calculation. From the same spot urine used for creatinine</div>
+        </div>
+        <div class="calc-field">
+          <label>Urine Creatinine (mg/dL) — optional</label>
+          <input id="g-ucr" type="number" min="10" max="400" step="0.1" placeholder="From spot urine (optional)" oninput="calcGout()">
+          <div class="field-hint">Required for FEUA. Urine creatinine from same spot specimen</div>
+        </div>
+        <div class="calc-field">
+          <label>Serum Creatinine (mg/dL)</label>
+          <input id="g-scr" type="number" min="0.3" max="15" step="0.01" placeholder="e.g. 2.1" oninput="calcGout()">
+          <div class="field-hint">Required for FEUA calculation</div>
+        </div>
+        <div class="calc-field">
+          <label>Gout phenotype</label>
+          <select id="g-type" onchange="calcGout()">
+            <option value="">Select…</option>
+            <option value="acute">Acute gout / flare management</option>
+            <option value="chronic">Chronic gout — on ULT (febuxostat/allopurinol)</option>
+            <option value="new">New diagnosis — not yet on ULT</option>
+            <option value="toph">Tophaceous gout</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-box" id="gout-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="g-ua-status" style="font-size:14px;line-height:1.2;">—</div>
+            <div class="cml">UA vs Target</div>
+            <div class="cmt" id="g-ua-badge">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="g-feua-val">—</div>
+            <div class="cml">FEUA %</div>
+            <div class="cmt" id="g-feua-badge">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:13px;line-height:1.2;" id="g-dose-val">—</div>
+            <div class="cml">ULT Dose Guide</div>
+            <div class="cmt" id="g-dose-badge">By eGFR</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="g-verdict"></div>
+        <div class="calc-action-text" id="g-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ FEUA = (Urine UA × Serum Cr) ÷ (Serum UA × Urine Cr) × 100. FEUA &lt;5.5% = under-excretor (most common in CKD); FEUA &gt;10% = over-producer. ULT preference per Dr. Rivero practice protocol: febuxostat 40–80mg OD preferred over allopurinol in CKD (no dose adjustment needed for eGFR &gt;30). Losartan is the only ARB with clinically meaningful uricosuric effect (Nishida 2014). This tool is educational — ULT initiation and flare management require physician supervision.</p>
+    </div>
+  </section>
+
   <section class="section" id="faq">
     <div class="section-tag">Common Questions</div>
     <h2>Frequently Asked Questions</h2>
@@ -850,6 +943,85 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcGout() {
+  const ua = parseFloat(document.getElementById('g-ua').value);
+  const egfr = parseFloat(document.getElementById('g-egfr').value);
+  const uua = parseFloat(document.getElementById('g-uua').value);
+  const ucr = parseFloat(document.getElementById('g-ucr').value);
+  const scr = parseFloat(document.getElementById('g-scr').value);
+  const gtype = document.getElementById('g-type').value;
+  const res = document.getElementById('gout-result');
+  if ([ua,egfr].some(isNaN) || !gtype) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const toph = gtype==='toph';
+  const target = toph ? 5.0 : 6.0;
+  const atTarget = ua <= target;
+
+  // FEUA
+  let feua=null, feuaText='Needs urine UA + Cr + serum Cr';
+  if (!isNaN(uua)&&!isNaN(ucr)&&!isNaN(scr)&&ucr>0&&scr>0&&ua>0) {
+    feua = Math.round((uua*scr)/(ua*ucr)*1000)/10;
+    feuaText = feua<5.5?'Under-excretor (&lt;5.5%)':feua>10?'Over-producer (&gt;10%)':'Mixed/Normal (5.5–10%)';
+  }
+
+  // Dose guide
+  let doseText, doseBadge;
+  if (egfr >= 30) {
+    doseText='Febuxostat 40mg OD'; doseBadge='No dose adj. needed (eGFR≥30)';
+  } else if (egfr >= 15) {
+    doseText='Febuxostat 40mg OD with caution'; doseBadge='Limited data — monitor LFTs, CV risk';
+  } else {
+    doseText='Use with extreme caution'; doseBadge='eGFR<15 — nephrologist guidance required';
+  }
+
+  // Color
+  let borderColor, bg;
+  if (atTarget) { borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+  else if (ua<=8.0) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  const uaEl=document.getElementById('g-ua-status');
+  uaEl.textContent=atTarget?'At target':'Above target'; uaEl.style.color=atTarget?'#2d7a4f':'#c0392b';
+  document.getElementById('g-ua-badge').textContent=(atTarget?'✓ ':'✗ ')+ua+' mg/dL (target <'+target+')';
+  document.getElementById('g-ua-badge').style.color=atTarget?'#2d7a4f':'#c0392b';
+
+  const feuaEl=document.getElementById('g-feua-val');
+  if (feua!==null) {
+    feuaEl.textContent=feua+'%'; feuaEl.style.color=feua<5.5?'#9a6500':(feua>10?'#c0392b':'#2d7a4f');
+    document.getElementById('g-feua-badge').textContent=feuaText;
+    document.getElementById('g-feua-badge').style.color=feua<5.5?'#9a6500':(feua>10?'#c0392b':'#2d7a4f');
+  } else {
+    feuaEl.textContent='—'; feuaEl.style.color='var(--text-muted)';
+    document.getElementById('g-feua-badge').textContent='Enter urine values above';
+    document.getElementById('g-feua-badge').style.color='var(--text-muted)';
+  }
+
+  document.getElementById('g-dose-val').textContent=doseText; document.getElementById('g-dose-val').style.color=egfr>=30?'#2d7a4f':'#9a6500';
+  document.getElementById('g-dose-badge').textContent=doseBadge;
+
+  let verdict='', action='';
+  if (atTarget) {
+    verdict='Serum uric acid '+ua+' mg/dL is at target (<'+target+' mg/dL'+(toph?' for tophaceous gout':'')+').'+( gtype==='chronic'?' Continue current ULT dose. Crystal dissolution and tophus regression require sustained levels below target for 12–24 months.':' Excellent control.');
+    action='Continue current management. Recheck uric acid every 3–6 months. '+(feua!==null&&feua<5.5?'FEUA confirms under-excretor pattern — uricosuric strategy (ensuring adequate hydration, losartan if on antihypertensives) provides additive benefit. ':'')+' Avoid NSAIDs and dehydration. Maintain urine output >2L/day.';
+  } else {
+    const gap = Math.round((ua-target)*10)/10;
+    verdict='Serum uric acid '+ua+' mg/dL is '+gap+' mg/dL above target (<'+target+' mg/dL). '+
+      (ua>8?'At this level, urate crystals are actively depositing in joints, kidneys, and soft tissues. ':'Subcritical — above solubility threshold (6.8 mg/dL) but modest elevation. ')+
+      (feua!==null?(feua<5.5?'FEUA of '+feua+'% confirms the primary mechanism is under-excretion — common in CKD patients where reduced GFR limits uric acid clearance. Xanthine oxidase inhibition (febuxostat) reduces production and is the preferred first-line ULT.':'FEUA of '+feua+'% suggests over-production — xanthine oxidase inhibition is strongly indicated. '):'')+
+      (egfr<30?' Note: with eGFR '+egfr+', allopurinol requires significant dose reduction and has increased toxicity risk — febuxostat is preferred in CKD.':'');
+    action=gtype==='acute'?'Do NOT start or change ULT dose during an acute flare — this prolongs the attack. Treat the flare first: colchicine 0.5mg BID (dose-reduce if eGFR<30), prednisolone, or joint aspiration. Start/resume ULT 2–4 weeks after flare resolves with prophylactic colchicine cover.':
+      gtype==='new'?'Initiate febuxostat 40mg OD (preferred over allopurinol in CKD — no dose adjustment needed for eGFR≥30). Cover initiation with colchicine 0.5mg OD for 3–6 months to prevent mobilization flares. Dietary: reduce red meat, organ meat, shellfish, alcohol (especially beer). Hydration target: urine output >2L/day.':
+      'Escalate febuxostat to 80mg OD if already on 40mg and UA remains above target after 4 weeks. If on allopurinol, consider switching to febuxostat (does not require dose adjustment in CKD). Recheck UA in 4–8 weeks after any dose change.';
+  }
+  document.getElementById('g-verdict').innerHTML='<strong style="color:'+borderColor+'">'+(atTarget?'UA at target':'UA above target')+'</strong> — '+verdict;
+  document.getElementById('g-action').innerHTML='<strong style="color:'+borderColor+'">Recommended action:</strong> '+action;
+}
 </script>
 </body>
 </html>
