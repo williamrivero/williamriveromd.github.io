@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKD Dietary Reference Intake Calculator — W. G. M. Rivero, MD</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0f1e2e;--gold:#b8962e;--gold-light:#d4af4f;
+  --teal:#1a6b72;--teal-light:#e1f5f0;
+  --text:#1a1a1a;--text-muted:#5a6472;
+  --border:#e2e6eb;--bg:#f9fafb;--white:#ffffff;
+  --red:#c0392b;--red-soft:#fdf0ef;
+  --amber:#f5a623;--amber-soft:#fef9ec;
+  --green:#2d7a4f;--green-soft:#edf7f2;
+  --purple:#6b3fa0;--purple-soft:#f3eeff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.7;font-size:16px;}
+
+/* ── HEADER / NAV ── */
+.site-header{background:var(--navy);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+.site-header a.brand{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:400;color:white;text-decoration:none;}
+.site-header a.brand strong{font-weight:600;color:#d4af4f;}
+.site-header a.back{font-size:12px;color:rgba(255,255,255,.55);text-decoration:none;}
+.guide-toggle-bar{display:flex;align-items:center;padding:6px 32px;background:rgba(10,18,32,.96);border-bottom:1px solid rgba(255,255,255,.08);justify-content:space-between;}
+.lang-label{font-size:11px;color:rgba(255,255,255,.35);margin-right:4px;}
+.lang-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;transition:all .2s;}
+.lang-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+.toggle-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s;}
+.toggle-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+.toggle-btn svg{width:12px;height:12px;}
+[data-lang].lang-hidden{display:none !important;}
+
+/* ── HERO ── */
+.hero{background:var(--navy);color:white;padding:64px 0 72px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;border-radius:50%;border:1px solid rgba(184,150,46,.15);}
+.container{max-width:900px;margin:0 auto;padding:0 32px;}
+.hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);border:1px solid rgba(184,150,46,.4);padding:5px 14px;border-radius:20px;margin-bottom:20px;}
+.hero h1{font-family:'Lora',serif;font-size:clamp(28px,4.5vw,46px);font-weight:600;line-height:1.2;margin-bottom:16px;}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.85);max-width:620px;line-height:1.65;margin-bottom:32px;}
+.hero-meta{display:flex;gap:28px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.55);}
+.hero-meta strong{color:rgba(255,255,255,.88);font-weight:500;}
+
+/* ── NAV STRIP ── */
+.nav-strip{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100;}
+.nav-pills{display:flex;gap:4px;padding:10px 32px;max-width:900px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
+.nav-pills::-webkit-scrollbar{display:none;}
+.nav-pill{white-space:nowrap;font-size:13px;font-weight:500;color:var(--text-muted);text-decoration:none;padding:5px 14px;border-radius:20px;border:1px solid transparent;transition:all .2s;}
+.nav-pill:hover,.nav-pill.active{color:var(--navy);border-color:var(--border);background:var(--bg);}
+
+/* ── SECTIONS ── */
+.section{padding:60px 0;border-bottom:1px solid var(--border);}
+.section:last-of-type{border-bottom:none;}
+.section-tag{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+.section h2{font-family:'Lora',serif;font-size:clamp(22px,3.2vw,30px);font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:18px;}
+.section h3{font-family:'Lora',serif;font-size:17px;font-weight:600;color:var(--navy);margin:28px 0 10px;}
+.section p{color:#2c3340;margin-bottom:14px;}
+.section p:last-child{margin-bottom:0;}
+
+/* ── ALERTS ── */
+.alert{border-radius:10px;padding:18px 22px;margin:20px 0;display:flex;gap:14px;align-items:flex-start;}
+.alert-amber{background:var(--amber-soft);border-left:3px solid var(--amber);}
+.alert-teal{background:var(--teal-light);border-left:3px solid var(--teal);}
+.alert-red{background:var(--red-soft);border-left:3px solid var(--red);}
+.alert-green{background:var(--green-soft);border-left:3px solid var(--green);}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:2px;}
+.alert-body h4{font-size:14px;font-weight:600;color:#0f1e2e;margin-bottom:5px;}
+.alert-body p,.alert-body ul{font-size:13.5px;color:#2c3340;margin:0;line-height:1.6;}
+.alert-body ul{margin-left:16px;}
+.alert-body ul li{margin-bottom:3px;}
+
+/* ── CALCULATOR FORM ── */
+.calc-card{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin:24px 0;}
+.calc-card-header{background:var(--navy);padding:22px 28px;}
+.calc-card-header h3{font-family:'Lora',serif;font-size:19px;font-weight:600;color:white;margin:0 0 4px;}
+.calc-card-header p{font-size:13px;color:rgba(255,255,255,.55);margin:0;}
+.calc-card-body{padding:28px;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:400px){.form-grid{grid-template-columns:1fr;}}
+.form-group label{display:block;font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.form-group input,.form-group select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.form-group input:focus,.form-group select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+.form-group .hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+
+.check-section-label{font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin:20px 0 10px;}
+.check-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;}
+.check-pill{display:flex;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:9px 14px;cursor:pointer;transition:border-color .18s;user-select:none;}
+.check-pill:hover{border-color:var(--teal);}
+.check-pill input[type=checkbox]{width:15px;height:15px;accent-color:var(--teal);cursor:pointer;flex-shrink:0;}
+.check-pill span{font-size:13px;font-weight:500;color:#2c3340;}
+
+.calc-btn{background:var(--navy);color:white;border:none;border-radius:8px;padding:13px 36px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s;}
+.calc-btn:hover{background:var(--teal);}
+.calc-btn:disabled{background:#9aa3b0;cursor:not-allowed;}
+
+/* ── RESULTS ── */
+#results-panel{display:none;}
+#results-panel.show{display:block;}
+
+.results-title-bar{background:var(--navy);border-radius:12px 12px 0 0;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-top:28px;}
+.results-title-bar h3{font-family:'Lora',serif;font-size:18px;font-weight:600;color:white;margin:0;}
+.results-title-bar p{font-size:12px;color:rgba(255,255,255,.5);margin:4px 0 0;}
+.stage-pill{display:inline-block;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap;}
+
+/* ── DRI TABLE (USDA-style) ── */
+.dri-section{border:1.5px solid var(--border);border-top:none;margin-bottom:0;}
+.dri-section:last-child{border-radius:0 0 12px 12px;}
+.dri-section-header{background:var(--teal);color:white;padding:11px 20px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;}
+.dri-table{width:100%;border-collapse:collapse;}
+.dri-table th{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);padding:10px 16px;background:var(--bg);border-bottom:1.5px solid var(--border);text-align:left;}
+.dri-table th:not(:first-child){text-align:center;}
+.dri-table td{padding:11px 16px;border-bottom:1px solid var(--border);font-size:14px;color:#2c3340;vertical-align:middle;}
+.dri-table tr:last-child td{border-bottom:none;}
+.dri-table tr:hover td{background:#f4f7fa;}
+.dri-table td:first-child{font-weight:600;color:#0f1e2e;width:38%;}
+.dri-table td.val{text-align:center;font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--navy);}
+.dri-table td.ul{text-align:center;font-size:13px;color:var(--text-muted);}
+.dri-table td.notes{font-size:12px;color:var(--text-muted);line-height:1.5;}
+.badge-ok{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:var(--green-soft);color:var(--green);}
+.badge-warn{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:var(--amber-soft);color:#7a4a00;}
+.badge-restrict{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:var(--red-soft);color:var(--red);}
+.badge-avoid{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:#1a1a1a;color:white;}
+.badge-more{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:var(--purple-soft,#f3eeff);color:var(--purple,#6b3fa0);}
+
+/* Protein meal split */
+.meal-strip{display:grid;grid-template-columns:repeat(5,1fr);border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:16px 0 0;}
+@media(max-width:520px){.meal-strip{grid-template-columns:repeat(3,1fr);}}
+.meal-slot{padding:12px 8px;text-align:center;border-right:1px solid var(--border);}
+.meal-slot:last-child{border-right:none;}
+.meal-name{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);}
+.meal-g{font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--navy);line-height:1.1;margin:4px 0 2px;}
+.meal-g span{font-size:11px;font-weight:400;color:var(--text-muted);}
+
+/* Clinical summary */
+.clin-summary{background:linear-gradient(135deg,#0f1e2e 0%,#1a3a50 100%);border-radius:12px;padding:24px 28px;margin-top:20px;}
+.clin-summary h4{font-family:'Lora',serif;font-size:17px;font-weight:600;color:var(--gold-light);margin-bottom:14px;}
+.clin-list{list-style:none;padding:0;margin:0;}
+.clin-list li{font-size:13.5px;color:rgba(255,255,255,.88);padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07);display:flex;gap:10px;line-height:1.5;}
+.clin-list li:last-child{border-bottom:none;}
+.clin-list li .icon{flex-shrink:0;font-size:14px;}
+
+/* Vitamin warning box */
+.vit-warn-box{background:#2a1515;border-radius:10px;padding:18px 22px;margin-top:16px;}
+.vit-warn-box h4{font-size:13px;font-weight:700;color:#e55050;margin-bottom:10px;letter-spacing:.04em;}
+.vit-warn-box ul{list-style:none;padding:0;margin:0;}
+.vit-warn-box li{font-size:13px;color:rgba(255,255,255,.75);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06);display:flex;gap:8px;line-height:1.5;}
+.vit-warn-box li:last-child{border-bottom:none;}
+
+.calc-disclaimer{font-size:12px;color:var(--text-muted);margin-top:20px;padding-top:14px;border-top:1px dashed var(--border);line-height:1.6;}
+
+/* ── REFERENCE TABLE SECTION ── */
+.ref-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px;}
+.ref-table th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);padding:9px 14px;background:var(--bg);border-bottom:1px solid var(--border);}
+.ref-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:#2c3340;vertical-align:top;}
+.ref-table td:first-child{font-weight:600;color:#0f1e2e;}
+.ref-table tr:last-child td{border-bottom:none;}
+.ref-table tr:hover td{background:var(--bg);}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0;}
+@media(max-width:600px){.two-col{grid-template-columns:1fr;}}
+.feat-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:18px;}
+.feat-card h4{font-size:13.5px;font-weight:600;color:#0f1e2e;margin-bottom:8px;}
+.feat-card p{font-size:13px;color:#2c3340;margin:0;line-height:1.6;}
+
+/* ── DR CARD / FOOTER ── */
+.dr-card{background:#0f1e2e;color:white;border-radius:14px;padding:28px;display:flex;gap:20px;align-items:flex-start;margin-top:48px;}
+.dr-card h4{font-size:15px;font-weight:600;color:white;margin-bottom:4px;}
+.dr-card p{font-size:13.5px;color:rgba(255,255,255,.85);line-height:1.6;}
+.dr-creds{font-size:11.5px;color:rgba(255,255,255,.45);margin-top:8px;}
+.guide-footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0;margin-top:64px;}
+.guide-footer .fi{max-width:900px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.guide-footer p{font-size:12.5px;color:#4a5260;}
+.guide-footer a{color:var(--teal);text-decoration:none;font-weight:500;}
+.disclaimer{background:var(--amber-soft);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:14px 18px;margin:36px 0 0;font-size:12.5px;color:#2c3340;line-height:1.6;}
+.disclaimer strong{color:var(--navy);}
+
+/* ── PRINT ── */
+.print-btn{position:fixed;bottom:76px;right:22px;width:42px;height:42px;border-radius:50%;background:var(--teal);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:transform .2s;z-index:9998;}
+.print-btn:hover{transform:scale(1.1);}
+.print-btn svg{width:17px;height:17px;}
+.p-tip{position:absolute;right:52px;background:rgba(15,30,46,.9);color:white;font-size:11.5px;white-space:nowrap;padding:4px 9px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s;}
+.print-btn:hover .p-tip{opacity:1;}
+
+/* ── DARK MODE ── */
+html[data-theme="dark"]{--navy:#0f1e2e;--teal:#25949d;--teal-light:#0e2f32;--gold-light:#d4af4f;--text:#e8eaf0;--text-muted:#8a95a8;--border:#2a3548;--bg:#141c2a;--white:#1a2030;--red:#e55050;--red-soft:#2a1515;--amber:#f5a623;--amber-soft:#2a1f0a;--green:#3d9a6a;--green-soft:#0e2a1c;}
+html[data-theme="dark"] body{background:#0f1520;color:#e8eaf0;}
+html[data-theme="dark"] .site-header{background:#080d16;}
+html[data-theme="dark"] .nav-strip{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .hero{background:#080d16;}
+html[data-theme="dark"] .section{border-color:#2a3548;}
+html[data-theme="dark"] .section h2,.section h3,html[data-theme="dark"] h4{color:#e8eaf0;}
+html[data-theme="dark"] .section p,html[data-theme="dark"] .feat-card p,html[data-theme="dark"] .alert-body p,html[data-theme="dark"] .alert-body ul li{color:#c0cad8 !important;}
+html[data-theme="dark"] .calc-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .calc-card-header{background:#080d16;}
+html[data-theme="dark"] .form-group input,.form-group select,.dark-inp{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+html[data-theme="dark"] .form-group label{color:#25949d;}
+html[data-theme="dark"] .form-group .hint{color:#8a95a8;}
+html[data-theme="dark"] .check-pill{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .check-pill span{color:#c0cad8;}
+html[data-theme="dark"] .dri-table th{background:#1a2535;color:#8a95a8;}
+html[data-theme="dark"] .dri-table td{color:#c0cad8;border-color:#2a3548;}
+html[data-theme="dark"] .dri-table td:first-child{color:#e8eaf0;}
+html[data-theme="dark"] .dri-table tr:hover td{background:#1e2d42;}
+html[data-theme="dark"] .dri-table td.val{color:#e8eaf0;}
+html[data-theme="dark"] .dri-section{border-color:#2a3548;}
+html[data-theme="dark"] .feat-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .feat-card h4{color:#e8eaf0;}
+html[data-theme="dark"] .ref-table th{background:#1a2535;color:#8a95a8;}
+html[data-theme="dark"] .ref-table td{color:#c0cad8;border-color:#2a3548;}
+html[data-theme="dark"] .ref-table td:first-child{color:#e8eaf0;}
+html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .disclaimer{background:#2a1f0a;}
+html[data-theme="dark"] .meal-slot{border-color:#2a3548;}
+html[data-theme="dark"] .meal-g{color:#e8eaf0;}
+html[data-theme="dark"] .meal-strip{border-color:#2a3548;}
+html[data-theme="dark"] .alert-teal{background:#0e2f32;}
+html[data-theme="dark"] .alert-amber{background:#2a1f0a;}
+html[data-theme="dark"] .alert-red{background:#2a1515;}
+html[data-theme="dark"] .alert-green{background:#0e2a1c;}
+html[data-theme="dark"] .results-title-bar{background:#080d16;}
+html[data-theme="dark"] .dr-card{background:#080d16;}
+
+html[data-view="desktop"]{min-width:1024px;}
+html[data-view="desktop"] body{min-width:1024px;}
+
+@media print{
+  .site-header,.nav-strip,.guide-toggle-bar,.print-btn,.guide-footer{display:none !important;}
+  body{font-size:12px;color:#000;background:#fff;}
+  .hero{background:#fff !important;color:#000 !important;padding:16px 0 !important;}
+  .hero h1{color:#0f1e2e !important;font-size:20px !important;}
+  .section{padding:16px 0;border-bottom:1px solid #ddd;}
+  .dri-section-header{background:#1a6b72 !important;}
+  .results-title-bar{background:#0f1e2e !important;}
+  .clin-summary{background:#1a3a50 !important;}
+  .vit-warn-box{background:#3a1515 !important;}
+  @page{margin:15mm;size:A4;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="https://williamriveromd.com" class="brand">W. G. M. <strong>Rivero</strong>, MD</a>
+  <a href="https://williamriveromd.com/guides/index.html" class="back">← All Guides</a>
+</header>
+
+<div class="guide-toggle-bar">
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="lang-label">Language:</span>
+    <button class="lang-btn active" id="glb-en" onclick="setLang('en')">English</button>
+    <button class="lang-btn" id="glb-tl" onclick="setLang('tl')">Tagalog</button>
+    <button class="lang-btn" id="glb-ceb" onclick="setLang('ceb')">Cebuano</button>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+      <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span id="darkLabel">Dark</span>
+    </button>
+    <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span id="desktopLabel">Desktop</span>
+    </button>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">Nutrition · CKD · Personalized Calculator</div>
+    <h1>
+      <span data-lang="en">CKD Dietary Reference Intake Calculator</span>
+      <span data-lang="tl" class="lang-hidden">CKD Dietary Reference Intake Calculator</span>
+      <span data-lang="ceb" class="lang-hidden">CKD Dietary Reference Intake Calculator</span>
+    </h1>
+    <p class="hero-sub">Your personalized daily targets for protein, potassium, phosphorus, sodium, fluid, calories, vitamins, and minerals — CKD-adjusted by stage and clinical profile using KDIGO 2024 and NKF KDOQI 2020 guidelines.</p>
+    <div class="hero-meta">
+      <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+      <span><strong>Guidelines:</strong> KDIGO 2024 · NKF KDOQI Nutrition 2020</span>
+      <span><strong>Updated:</strong> 2026</span>
+    </div>
+  </div>
+</section>
+
+<nav class="nav-strip">
+  <div class="nav-pills">
+    <a class="nav-pill" href="#calculator">Calculator</a>
+    <a class="nav-pill" href="#macros">Macronutrients</a>
+    <a class="nav-pill" href="#minerals">Minerals</a>
+    <a class="nav-pill" href="#vitamins">Vitamins in CKD</a>
+    <a class="nav-pill" href="#tips">Practical Tips</a>
+  </div>
+</nav>
+
+<main class="container">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CALCULATOR -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="calculator">
+  <div class="section-tag">Personalized Nutrition Tool</div>
+  <h2>
+    <span data-lang="en">Enter Your Profile</span>
+    <span data-lang="tl" class="lang-hidden">Ilagay ang Inyong Impormasyon</span>
+    <span data-lang="ceb" class="lang-hidden">Isulod ang Imong Impormasyon</span>
+  </h2>
+  <p>Dietary requirements in CKD change dramatically by stage — what is correct for Stage 2 may be harmful at Stage 4. This calculator applies NKF KDOQI 2020 and KDIGO 2024 equations to your specific profile. Always confirm targets with your nephrologist and renal dietitian.</p>
+
+  <div class="calc-card">
+    <div class="calc-card-header">
+      <h3>Your Personal DRI Calculator</h3>
+      <p>Results are computed locally — no data is stored or transmitted.</p>
+    </div>
+    <div class="calc-card-body">
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Weight (kg)</label>
+          <input type="number" id="f-wt" placeholder="e.g. 60" min="30" max="200" step="0.5">
+          <div class="hint">Use dry weight if on dialysis (weight after a dialysis session).</div>
+        </div>
+        <div class="form-group">
+          <label>Height (cm)</label>
+          <input type="number" id="f-ht" placeholder="e.g. 160" min="100" max="220">
+        </div>
+        <div class="form-group">
+          <label>Age (years)</label>
+          <input type="number" id="f-age" placeholder="e.g. 55" min="18" max="100">
+        </div>
+        <div class="form-group">
+          <label>Biological Sex</label>
+          <select id="f-sex">
+            <option value="">Select…</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>CKD Stage / Modality</label>
+          <select id="f-stage">
+            <option value="">Select…</option>
+            <option value="1">Stage 1 — eGFR ≥90</option>
+            <option value="2">Stage 2 — eGFR 60–89</option>
+            <option value="3a">Stage 3a — eGFR 45–59</option>
+            <option value="3b">Stage 3b — eGFR 30–44</option>
+            <option value="4">Stage 4 — eGFR 15–29</option>
+            <option value="5">Stage 5 — eGFR &lt;15 (pre-dialysis)</option>
+            <option value="HD">Hemodialysis (HD)</option>
+            <option value="PD">Peritoneal Dialysis (PD)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Daily Urine Output</label>
+          <select id="f-uo">
+            <option value="high">&gt;800 mL/day</option>
+            <option value="low">200–800 mL/day</option>
+            <option value="anuric">&lt;200 mL/day (anuric)</option>
+          </select>
+          <div class="hint">Relevant for fluid target on dialysis.</div>
+        </div>
+      </div>
+
+      <div class="check-section-label">Clinical Modifiers</div>
+      <div class="check-row">
+        <label class="check-pill"><input type="checkbox" id="c-dm"><span>Diabetes mellitus</span></label>
+        <label class="check-pill"><input type="checkbox" id="c-hk"><span>Hyperkalemia (K &gt;5.5)</span></label>
+        <label class="check-pill"><input type="checkbox" id="c-hp"><span>Hyperphosphatemia (P &gt;5.5)</span></label>
+        <label class="check-pill"><input type="checkbox" id="c-pew"><span>Protein-energy wasting / underweight</span></label>
+        <label class="check-pill"><input type="checkbox" id="c-prot"><span>Heavy proteinuria (&gt;3 g/day)</span></label>
+        <label class="check-pill"><input type="checkbox" id="c-htn"><span>Resistant hypertension</span></label>
+      </div>
+
+      <button class="calc-btn" onclick="runCalc()">Calculate My Daily Targets →</button>
+      <div id="err-msg" style="display:none;color:var(--red);font-size:13px;margin-top:10px;font-weight:600;"></div>
+
+      <!-- ═══ RESULTS PANEL ═══ -->
+      <div id="results-panel">
+
+        <div class="results-title-bar">
+          <div>
+            <h3 id="res-h3">Your CKD Dietary Reference Intakes</h3>
+            <p id="res-sub">Based on your weight, stage, and clinical profile</p>
+          </div>
+          <span class="stage-pill" id="stage-pill" style="background:rgba(255,255,255,.12);color:white;"></span>
+        </div>
+
+        <!-- MACRONUTRIENTS TABLE -->
+        <div class="dri-section">
+          <div class="dri-section-header">Macronutrients &amp; Energy</div>
+          <table class="dri-table">
+            <thead><tr>
+              <th>Nutrient</th>
+              <th>Recommended / Day</th>
+              <th>Upper Limit</th>
+              <th>CKD Note</th>
+            </tr></thead>
+            <tbody id="macro-tbody"></tbody>
+          </table>
+          <!-- Protein meal split -->
+          <div style="padding:16px 20px;background:var(--bg);border-top:1px solid var(--border);">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:10px;">Suggested protein distribution across meals</div>
+            <div class="meal-strip" id="meal-strip"></div>
+          </div>
+        </div>
+
+        <!-- MINERALS TABLE -->
+        <div class="dri-section">
+          <div class="dri-section-header">Minerals &amp; Electrolytes</div>
+          <table class="dri-table">
+            <thead><tr>
+              <th>Mineral</th>
+              <th>Recommended / Day</th>
+              <th>Upper Limit</th>
+              <th>CKD Note</th>
+            </tr></thead>
+            <tbody id="mineral-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- VITAMINS TABLE -->
+        <div class="dri-section">
+          <div class="dri-section-header">Vitamins — CKD-Adjusted</div>
+          <table class="dri-table">
+            <thead><tr>
+              <th>Vitamin</th>
+              <th>Recommended / Day</th>
+              <th>Upper Limit</th>
+              <th>CKD Note</th>
+            </tr></thead>
+            <tbody id="vit-tbody"></tbody>
+          </table>
+          <div class="vit-warn-box" style="margin:16px 20px 20px;">
+            <h4>⚠ Vitamin Cautions Specific to CKD</h4>
+            <ul id="vit-warn-list"></ul>
+          </div>
+        </div>
+
+        <!-- CLINICAL SUMMARY -->
+        <div class="clin-summary">
+          <h4>Clinical Priorities for Your Stage</h4>
+          <ul class="clin-list" id="clin-list"></ul>
+        </div>
+
+        <div class="calc-disclaimer">⚕ <strong>Educational estimates only.</strong> Calculated using KDIGO 2024 and NKF KDOQI Nutrition 2020 equations. Actual targets must be individualized by your nephrologist and renal dietitian based on your complete laboratory results (serum potassium, phosphorus, albumin, urine output) and medications. Never start a restrictive diet without professional supervision — protein-energy wasting is common in CKD and is dangerous. Results are not stored.</div>
+      </div><!-- /results-panel -->
+
+    </div><!-- /calc-card-body -->
+  </div><!-- /calc-card -->
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- MACRONUTRIENT GUIDE -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="macros">
+  <div class="section-tag">Reference Guide</div>
+  <h2>
+    <span data-lang="en">Macronutrients — Stage-by-Stage</span>
+    <span data-lang="tl" class="lang-hidden">Mga Macronutrient — Ayon sa Stage</span>
+    <span data-lang="ceb" class="lang-hidden">Mga Macronutrient — Matag Stage</span>
+  </h2>
+  <p>Understanding <em>why</em> the targets change at each stage helps you follow them more accurately — and helps you recognize when something is wrong.</p>
+
+  <h3>Protein</h3>
+  <table class="ref-table">
+    <thead><tr><th>Stage / Modality</th><th>Target (g/kg IBW/day)</th><th>Rationale</th></tr></thead>
+    <tbody>
+      <tr><td>Stage 1–3a</td><td>0.8 g/kg</td><td>Standard healthy adult intake; restriction not yet beneficial</td></tr>
+      <tr><td>Stage 3b–5 (non-dialysis)</td><td>0.6–0.8 g/kg</td><td>Reduces urea production, PTH drive, and acid load; slows GFR decline. With keto-analogues, 0.3–0.4 g/kg may be used under close supervision.</td></tr>
+      <tr><td>Hemodialysis (HD)</td><td>1.0–1.2 g/kg</td><td>Each session removes 6–12 g amino acids; needs increase substantially. Target 50%+ high biological value (HBV) protein.</td></tr>
+      <tr><td>Peritoneal Dialysis (PD)</td><td>1.2–1.5 g/kg</td><td>Peritoneum loses 5–15 g protein/day; highest CKD protein requirement. HBV sources essential.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-body">
+      <h4>The most common dietary error in CKD: continuing pre-dialysis restriction after starting dialysis</h4>
+      <p>Patients who restricted protein appropriately before dialysis often continue the same restriction once on HD. This causes protein-energy wasting — the leading cause of malnutrition and death in dialysis patients. When you start dialysis, your protein target increases, not decreases.</p>
+    </div>
+  </div>
+
+  <h3>Carbohydrates &amp; Fat</h3>
+  <div class="two-col">
+    <div class="feat-card">
+      <h4>Carbohydrates</h4>
+      <p>45–65% of total calories. In CKD with diabetes, complex carbohydrates (brown rice, oats, camote) are preferred over simple sugars. Filipino staples like steamed rice and root vegetables are appropriate in moderate portions — portion control matters more than carbohydrate restriction in most CKD patients.</p>
+    </div>
+    <div class="feat-card">
+      <h4>Fat &amp; Omega-3</h4>
+      <p>CKD patients have 5–10× higher cardiovascular risk than the general population. Emphasize monounsaturated fats (olive oil, avocado) and Omega-3 (bangus, tulingan, sardines in oil). Reduce saturated fat (&lt;7% of calories). Omega-3 at 1.8–3.4 g/day (EPA+DHA) is supported by KDIGO for cardiovascular protection in CKD.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- MINERALS GUIDE -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="minerals">
+  <div class="section-tag">Reference Guide</div>
+  <h2>
+    <span data-lang="en">Minerals &amp; Electrolytes — Why CKD Changes Everything</span>
+    <span data-lang="tl" class="lang-hidden">Mga Mineral at Electrolyte — Bakit Nagbabago sa CKD</span>
+    <span data-lang="ceb" class="lang-hidden">Mga Mineral ug Electrolyte — Ngano Nagbag-o sa CKD</span>
+  </h2>
+
+  <table class="ref-table">
+    <thead><tr><th>Mineral</th><th>Healthy Adult (USDA)</th><th>CKD Target</th><th>Key Reason for Change</th></tr></thead>
+    <tbody>
+      <tr><td>Sodium</td><td>1,500–2,300 mg</td><td>&lt;2,300 mg all CKD; &lt;2,000 mg on dialysis</td><td>Sodium drives hypertension, fluid retention, and inter-dialytic weight gain. Every 1 g excess sodium = ~200 mL extra fluid retained.</td></tr>
+      <tr><td>Potassium</td><td>3,400 mg</td><td>Unrestricted Stage 1–3a; 2,000–3,000 mg Stage 3b–5; 2,000 mg HD/PD</td><td>Kidneys cannot excrete potassium adequately as eGFR falls. Hyperkalemia (K&gt;6.5) causes fatal arrhythmia — the leading acute cause of dialysis-related cardiac death.</td></tr>
+      <tr><td>Phosphorus</td><td>700 mg</td><td>800–1,000 mg all stages; tighter with elevated serum P</td><td>Phosphorus drives PTH elevation, vascular calcification, and FGF-23 excess — a triad that kills dialysis patients. Binders required at most meals if dietary restriction insufficient.</td></tr>
+      <tr><td>Calcium</td><td>1,000 mg</td><td>Total ≤1,500 mg (dietary + binders) KDIGO 2024</td><td>Excess calcium from binders contributes to vascular calcification. Calcium-based binders (CaCO₃) counted toward the 1,500 mg total.</td></tr>
+      <tr><td>Magnesium</td><td>420 mg</td><td>Generally maintained; monitor if using antacids</td><td>Accumulates in ESKD; excess causes neuromuscular depression. Avoid magnesium-containing antacids and laxatives.</td></tr>
+      <tr><td>Iron</td><td>8 mg (M) / 18 mg (F)</td><td>Supplement if ferritin &lt;200, TSAT &lt;20% on dialysis</td><td>CKD causes functional iron deficiency due to hepcidin excess. IV iron (Ferrofer/Anema) preferred on dialysis — oral iron poorly absorbed with high hepcidin.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-teal">
+    <div class="alert-icon">🧂</div>
+    <div class="alert-body">
+      <h4>Filipino food and hidden sodium — the biggest practical challenge</h4>
+      <ul>
+        <li>Patis (fish sauce): ~1,400 mg sodium per tablespoon — a single serving exceeds safe daily limit for dialysis patients</li>
+        <li>Bagoong, alamang, soy sauce, instant noodle sachets: all extremely high-sodium</li>
+        <li>Canned goods labeled "reduced sodium" still contain 400–600 mg per serving</li>
+        <li>Strategy: cook from scratch, use calamansi and herbs for flavor, reduce patis/toyo by 75%, eliminate instant noodles entirely</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- VITAMINS GUIDE -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="vitamins">
+  <div class="section-tag">Reference Guide</div>
+  <h2>
+    <span data-lang="en">Vitamins in CKD — Not the Same as for Healthy Adults</span>
+    <span data-lang="tl" class="lang-hidden">Mga Bitamina sa CKD — Hindi Katulad ng para sa Malusog na Tao</span>
+    <span data-lang="ceb" class="lang-hidden">Mga Bitamina sa CKD — Dili Sama sa Malusog nga Tawo</span>
+  </h2>
+  <p>The USDA DRI values for vitamins apply to healthy adults. CKD changes absorption, metabolism, and toxicity thresholds for many vitamins. Some must be supplemented more than usual; others must be actively avoided.</p>
+
+  <div class="two-col">
+    <div class="feat-card">
+      <h4>🔼 Vitamins that are commonly depleted in CKD — supplement</h4>
+      <p><strong>Vitamin D (cholecalciferol):</strong> Deficiency near-universal in Filipinos with CKD. Target 25-OH vitamin D 30–60 ng/mL. Supplement with D-Cure 25,000 IU weekly.<br><br>
+      <strong>Renal B-complex (B1, B2, B6, B12, folate):</strong> Water-soluble vitamins are removed by dialysis every session. Standard multivitamins are insufficient — use a renal-specific B-complex. Folate 1 mg/day reduces homocysteine, a cardiovascular risk factor in CKD.</p>
+    </div>
+    <div class="feat-card">
+      <h4>🔽 Vitamins that accumulate in CKD — do NOT supplement</h4>
+      <p><strong>Vitamin A:</strong> Accumulates in CKD — supplementation causes toxicity (hypercalcemia, bone pain, liver damage). Avoid all supplements containing retinol above baseline RDA. Carotenoids from food (vegetables) are safe.<br><br>
+      <strong>Vitamin C:</strong> Limit to &lt;100 mg/day in CKD. Excess vitamin C metabolizes to oxalate — causing oxalate deposits in kidneys and soft tissues. Standard supplements (500–1000 mg) are dangerous in CKD.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-red">
+    <div class="alert-icon">🚫</div>
+    <div class="alert-body">
+      <h4>Never take these over-the-counter supplements without nephrologist clearance in CKD</h4>
+      <ul>
+        <li><strong>Herbal supplements / barley grass / wheatgrass / moringa powders:</strong> Often high in potassium, phosphorus, or oxalate — can cause fatal hyperkalemia in dialysis patients</li>
+        <li><strong>High-dose Vitamin C</strong> (&gt;100 mg/day): Oxalate nephropathy</li>
+        <li><strong>Vitamin A / Retinol supplements:</strong> Accumulates to toxic levels in CKD</li>
+        <li><strong>Vitamin K2 supplements:</strong> Emerging evidence in CKD but also potential vascular calcification interactions — discuss with nephrologist first</li>
+        <li><strong>Buko juice, banana heart supplements, coconut water concentrate:</strong> Very high potassium — fatal in anuric dialysis patients</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PRACTICAL TIPS -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="tips">
+  <div class="section-tag">Practical Application</div>
+  <h2>
+    <span data-lang="en">Using Your DRI Results in Daily Life</span>
+    <span data-lang="tl" class="lang-hidden">Paggamit ng Inyong mga Resulta sa Pang-araw-araw na Buhay</span>
+    <span data-lang="ceb" class="lang-hidden">Paggamit sa Imong mga Resulta sa Adlaw-adlaw</span>
+  </h2>
+
+  <div class="two-col">
+    <div class="feat-card">
+      <h4>How to hit your protein target with Filipino food</h4>
+      <p>High biological value (HBV) sources: itlog (1 large = 6 g), bangus fillet (100 g = 20 g), tilapia (100 g = 20 g), manok (100 g = 25–30 g), tofu (100 g = 8 g). On HD, aim for 1–2 HBV servings per meal. On pre-dialysis restriction, 1 small serving of meat or fish per meal is usually the target.</p>
+    </div>
+    <div class="feat-card">
+      <h4>Leaching — how to reduce potassium in vegetables</h4>
+      <p>Peel and cut vegetables small → soak in large volume of water for at least 2 hours → drain completely → boil in fresh water → drain again before eating. This reduces potassium content by 30–50%. Do NOT drink the water used for soaking or boiling. Applicable to kamote, kalabasa, patatas, saging na saba.</p>
+    </div>
+    <div class="feat-card">
+      <h4>Reading labels for hidden phosphorus additives</h4>
+      <p>Inorganic phosphate additives (absorbed 90–100%) are far more dangerous than natural food phosphorus (absorbed 40–60%). Look for: "sodium phosphate," "calcium phosphate," "disodium phosphate," "phosphoric acid" in ingredient lists. Common in processed meats, instant noodles, cheese spreads, canned goods, and flavored drinks.</p>
+    </div>
+    <div class="feat-card">
+      <h4>Managing fluid between dialysis sessions</h4>
+      <p>Inter-dialytic weight gain should not exceed 1 kg/day (max 2–3 kg per 2-day interval). Front-load fluids in the morning. Count all liquids: soup, sabaw, ice, jelly, gulaman, watermelon. Suck on ice chips instead of drinking water if very thirsty — the volume is much smaller. Salt restriction is the single most powerful way to reduce thirst and fluid intake.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-green">
+    <div class="alert-icon">👩‍⚕️</div>
+    <div class="alert-body">
+      <h4>Work with a renal dietitian — this calculator is a starting point, not a meal plan</h4>
+      <p>Your DRI results should be reviewed alongside your quarterly labs (serum K, P, albumin, Ca, BUN/creatinine, HbA1c if diabetic) with a renal dietitian. Targets shift as your kidney function changes. The NKTI and many dialysis centers in the Philippines have accredited renal dietitians available at low or no cost for registered patients.</p>
+    </div>
+  </div>
+
+  <div class="disclaimer"><strong>Important:</strong> This calculator is an educational tool based on KDIGO 2024 and NKF KDOQI 2020 population-level equations. Individual dietary prescriptions depend on your complete laboratory profile, medications (especially phosphate binders, diuretics, and RAAS agents), and nutritional status assessment. Do not use these results to start, stop, or modify your diet without guidance from your nephrologist or renal dietitian.</div>
+
+  <div class="dr-card">
+    <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid rgba(184,150,46,.5);background:#0f1e2e;">
+      <img src="../images/photo-contact.jpg" alt="Dr. W. G. M. Rivero" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+    </div>
+    <div>
+      <h4><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+      <p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing evidence-based nephrology with integrative approaches across Quezon City, Pampanga, and Bulacan.</p>
+      <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="guide-footer">
+  <div class="fi">
+    <p>© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p>
+    <p>References: KDIGO CKD 2024 · NKF KDOQI Nutrition in CKD 2020 · USDA DRI Reference Tables · NKF KDOQI HD Adequacy 2015</p>
+  </div>
+</footer>
+
+<button class="print-btn" onclick="window.print()" aria-label="Print">
+  <span class="p-tip">Print / Save PDF</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+  </svg>
+</button>
+
+<script>
+// ── THEME / DESKTOP / LANG ──────────────────────────────────────────
+const DK='wgmr-dark',DSK='wgmr-desktop',GLK='wgmr-lang';
+function applyDark(on){
+  document.documentElement.setAttribute('data-theme',on?'dark':'light');
+  const b=document.getElementById('darkToggle'),l=document.getElementById('darkLabel'),i=document.getElementById('darkIcon');
+  if(b)b.classList.toggle('active',on);
+  if(l)l.textContent=on?'Light':'Dark';
+  if(i)i.innerHTML=on?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+function toggleDark(){const on=document.documentElement.getAttribute('data-theme')!=='dark';localStorage.setItem(DK,on?'1':'0');applyDark(on);}
+function applyDesktop(on){
+  const vp=document.querySelector('meta[name="viewport"]');
+  if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+  else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width,initial-scale=1.0');}
+  const b=document.getElementById('desktopToggle'),l=document.getElementById('desktopLabel');
+  if(b)b.classList.toggle('active',on);if(l)l.textContent=on?'Mobile':'Desktop';
+}
+function toggleDesktop(){const on=document.documentElement.getAttribute('data-view')!=='desktop';localStorage.setItem(DSK,on?'1':'0');applyDesktop(on);}
+function setLang(lang){
+  localStorage.setItem(GLK,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>el.classList.toggle('lang-hidden',l!==lang));
+    const btn=document.getElementById('glb-'+l);if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  if(localStorage.getItem(DK)==='1')applyDark(true);
+  if(localStorage.getItem(DSK)==='1')applyDesktop(true);
+  const lang=localStorage.getItem(GLK)||'en';if(lang!=='en')setLang(lang);
+})();
+
+// ── DRI CALCULATOR ──────────────────────────────────────────────────
+function runCalc(){
+  const err=document.getElementById('err-msg');
+  err.style.display='none';
+
+  const wt   = parseFloat(document.getElementById('f-wt').value);
+  const ht   = parseFloat(document.getElementById('f-ht').value);
+  const age  = parseInt(document.getElementById('f-age').value);
+  const sex  = document.getElementById('f-sex').value;
+  const stage= document.getElementById('f-stage').value;
+  const uo   = document.getElementById('f-uo').value;
+  const dm   = document.getElementById('c-dm').checked;
+  const hk   = document.getElementById('c-hk').checked;
+  const hp   = document.getElementById('c-hp').checked;
+  const pew  = document.getElementById('c-pew').checked;
+  const prot = document.getElementById('c-prot').checked;
+  const htn  = document.getElementById('c-htn').checked;
+
+  if(!wt||!ht||!age||!sex||!stage){
+    err.textContent='Please fill in all required fields (weight, height, age, sex, and CKD stage).';
+    err.style.display='block';return;
+  }
+  if(wt<30||wt>250||ht<100||ht>230||age<18||age>110){
+    err.textContent='Please check your entered values — some appear outside expected ranges.';
+    err.style.display='block';return;
+  }
+
+  // ── Derived values ──
+  const bmi = wt / ((ht/100)**2);
+  const isDialysis = stage==='HD'||stage==='PD';
+  const isHD = stage==='HD';
+  const isPD = stage==='PD';
+  const isPreD = ['3b','4','5'].includes(stage);
+  const isEarly = ['1','2','3a'].includes(stage);
+
+  // Ideal body weight (Devine formula)
+  const ibw = sex==='M' ? 50 + 2.3*(ht/2.54 - 60) : 45.5 + 2.3*(ht/2.54 - 60);
+  // Use adjusted BW if obese
+  const adjwt = bmi > 30 ? ibw + 0.4*(wt - ibw) : wt;
+  const calcWt = Math.max(adjwt, 30); // safety floor
+
+  // ── ENERGY ──
+  // Mifflin-St Jeor BMR
+  const bmr = sex==='M'
+    ? 10*wt + 6.25*ht - 5*age + 5
+    : 10*wt + 6.25*ht - 5*age - 161;
+  // KDOQI: 30–35 kcal/kg for dialysis, 25–35 for non-dialysis (age/activity adjusted)
+  let kcalPerKg = isDialysis ? 33 : (age>=60 ? 30 : 33);
+  if(bmi>30) kcalPerKg = 28; // reduce for obesity
+  if(pew) kcalPerKg = 35; // increase for PEW
+  const kcalMin = Math.round(calcWt*(kcalPerKg-2));
+  const kcalMax = Math.round(calcWt*(kcalPerKg+2));
+
+  // ── PROTEIN ──
+  let protMin, protMax, protNote, protBadge;
+  if(isHD){
+    protMin=Math.round(calcWt*1.0*10)/10; protMax=Math.round(calcWt*1.2*10)/10;
+    protNote='1.0–1.2 g/kg: compensates for amino acid losses each HD session (6–12 g/session). At least 50% HBV sources.';
+    protBadge='<span class="badge-more">↑ INCREASE</span>';
+  } else if(isPD){
+    protMin=Math.round(calcWt*1.2*10)/10; protMax=Math.round(calcWt*1.5*10)/10;
+    protNote='1.2–1.5 g/kg: peritoneal losses are 5–15 g protein/day. Highest CKD protein target. HBV sources essential.';
+    protBadge='<span class="badge-more">↑ INCREASE</span>';
+  } else if(isPreD){
+    protMin=Math.round(calcWt*0.6*10)/10; protMax=Math.round(calcWt*0.8*10)/10;
+    protNote='0.6–0.8 g/kg: reduces urea/uremic toxin production, slows GFR decline (KDIGO 2024). Increase to 1.0+ if starting dialysis.';
+    protBadge='<span class="badge-warn">RESTRICT</span>';
+  } else {
+    protMin=Math.round(calcWt*0.8*10)/10; protMax=Math.round(calcWt*0.8*10)/10;
+    protNote='0.8 g/kg: standard healthy adult target. Restriction not yet beneficial in early CKD.';
+    protBadge='<span class="badge-ok">STANDARD</span>';
+  }
+  if(pew){ protMin=Math.round(calcWt*1.0*10)/10; protMax=Math.round(calcWt*1.2*10)/10; protNote='PEW modifier: increase to 1.0–1.2 g/kg to replenish lean body mass. Discuss with renal dietitian.'; protBadge='<span class="badge-more">↑ PEW</span>'; }
+  if(prot && !isDialysis){ protNote+=' Heavy proteinuria: keep at lower end of range; each g of urinary protein lost = 1 g that must be replaced.'; }
+
+  const protRange = protMin===protMax ? protMin+'&thinsp;g' : protMin+'–'+protMax+'&thinsp;g';
+
+  // ── CARBS & FAT ──
+  const carbMin=Math.round((kcalMin*0.45)/4), carbMax=Math.round((kcalMax*0.65)/4);
+  const fatMin=Math.round((kcalMin*0.25)/9), fatMax=Math.round((kcalMax*0.35)/9);
+  const fiberTarget = sex==='M' ? (age<=50?38:30) : (age<=50?25:21);
+
+  // ── SODIUM ──
+  let naTarget, naUL, naNote, naBadge;
+  if(isDialysis||htn){
+    naTarget='&lt;2,000 mg'; naUL='2,000 mg'; naBadge='<span class="badge-restrict">STRICT</span>';
+    naNote='&lt;2,000 mg on dialysis — excess sodium = fluid retention + weight gain between sessions. Avoid patis, toyo, bagoong, and all instant/processed foods.';
+  } else {
+    naTarget='&lt;2,300 mg'; naUL='2,300 mg'; naBadge='<span class="badge-warn">RESTRICT</span>';
+    naNote='&lt;2,300 mg for all CKD — controls blood pressure and reduces proteinuria. Each 1 g less sodium = ~200 mL less fluid retained.';
+  }
+
+  // ── POTASSIUM ──
+  let kTarget, kUL, kNote, kBadge;
+  if(isEarly && !hk){
+    kTarget='3,000–4,000 mg'; kUL='No formal limit'; kBadge='<span class="badge-ok">STANDARD</span>';
+    kNote='No restriction needed in early CKD unless hyperkalemia develops. Adequate potassium intake supports blood pressure control.';
+  } else if(isPreD && !hk){
+    kTarget='2,000–3,000 mg'; kUL='3,000 mg'; kBadge='<span class="badge-warn">MONITOR</span>';
+    kNote='Moderate restriction as eGFR falls. Monitor serum K monthly. Leach vegetables before eating (soak + boil in fresh water). Avoid buko juice, saging, banana peel tea.';
+  } else if(hk || isDialysis){
+    kTarget='2,000 mg'; kUL='2,000 mg'; kBadge='<span class="badge-restrict">STRICT</span>';
+    kNote='Strict 2,000 mg/day. Hyperkalemia (K&gt;5.5) risk. Fatal arrhythmia at K&gt;6.5. Leach all vegetables, avoid high-K fruits (banana, melon, buko), use potassium binders (patiromer/SPS) if prescribed.';
+  } else {
+    kTarget='2,000–3,000 mg'; kUL='3,000 mg'; kBadge='<span class="badge-warn">RESTRICT</span>';
+    kNote='Restrict based on serum K. Recheck labs every 1–3 months.';
+  }
+
+  // ── PHOSPHORUS ──
+  let pTarget, pUL, pNote, pBadge;
+  if(hp || isDialysis || isPreD){
+    pTarget='800–1,000 mg'; pUL='1,000 mg'; pBadge='<span class="badge-restrict">RESTRICT</span>';
+    pNote='Limit to 800–1,000 mg. Avoid phosphate food additives (E338–E452) — absorbed 90–100% vs 40–60% for natural phosphorus. Phosphate binders required with all meals if serum P elevated.';
+  } else {
+    pTarget='800–1,000 mg'; pUL='1,200 mg'; pBadge='<span class="badge-warn">MONITOR</span>';
+    pNote='Watch for phosphate additives in processed foods. As eGFR falls, restriction becomes more important.';
+  }
+
+  // ── CALCIUM ──
+  let caTarget='800–1,000 mg dietary', caUL='1,500 mg total (incl. binders)', caNote, caBadge;
+  caNote='KDIGO 2024: total calcium ≤1,500 mg/day including calcium from phosphate binders (CaCO₃). Excess calcium drives vascular calcification.';
+  caBadge='<span class="badge-warn">MONITOR</span>';
+
+  // ── FLUID ──
+  let flTarget, flNote, flBadge;
+  if(isHD){
+    const uoEst = uo==='anuric' ? 100 : uo==='low' ? 400 : 800;
+    flTarget = (500 + uoEst) + ' mL/day';
+    flNote='500 mL + urine output. Estimated based on your selected urine output. Inter-dialytic weight gain should not exceed 1 kg/day (2–3 kg max per 2-day interval).';
+    flBadge='<span class="badge-restrict">STRICT</span>';
+  } else if(isPD){
+    flTarget='1,500–2,000 mL/day'; flNote='PD patients have more flexibility due to continuous ultrafiltration, but fluid targets still apply. Discuss with your PD team.'; flBadge='<span class="badge-warn">MONITOR</span>';
+  } else if(isPreD){
+    flTarget='Individualized'; flNote='Restrict only if oliguric (&lt;500 mL/day) or hypertensive/edematous. Many Stage 4–5 patients are advised to maintain good fluid intake to preserve residual kidney function.'; flBadge='<span class="badge-ok">INDIVIDUALIZE</span>';
+  } else {
+    flTarget='2,000–2,500 mL/day'; flNote='Standard intake. Adequate hydration helps preserve eGFR in early CKD and reduces stone risk.'; flBadge='<span class="badge-ok">STANDARD</span>';
+  }
+
+  // ── MAGNESIUM ──
+  const mgTarget = sex==='M' ? '420 mg' : '320 mg';
+
+  // ── IRON ──
+  let feTarget, feNote;
+  if(isDialysis){ feTarget='IV iron preferred'; feNote='Oral iron poorly absorbed in CKD (high hepcidin). IV iron sucrose (Ferrofer/Anema) given during HD sessions. Target: ferritin 200–500, TSAT 20–40%.'; }
+  else { feTarget=sex==='M'?'8 mg':'18 mg'; feNote='Supplement orally if ferritin &lt;100 or TSAT &lt;20%. Consider IV iron if not tolerating oral or if eGFR &lt;30.'; }
+
+  // ══ VITAMINS ══
+  const vitDTarget = '25–50 mcg (1,000–2,000 IU) cholecalciferol';
+  const vitDNote = 'Deficiency near-universal in Filipino CKD patients. Replace to target 25-OH Vit D 30–60 ng/mL. Active Vit D (calcitriol) given separately for PTH suppression — different from storage Vit D.';
+  const vitCTarget = '&lt;100 mg';
+  const vitCNote = 'CRITICAL LIMIT in CKD. Excess metabolizes to oxalate — oxalate nephropathy and soft-tissue deposits. Standard 500–1,000 mg supplements are DANGEROUS in CKD.';
+  const vitATarget = 'Food sources only — NO supplements';
+  const vitANote = 'Accumulates in CKD; supplemental retinol causes toxicity. Carotenoids from food (vegetables) are safe. Avoid all multivitamins containing Vitamin A retinol equivalents above 100% DV.';
+  const vitBTarget = 'Renal B-complex daily (if on dialysis)';
+  const vitBNote = 'Dialysis removes water-soluble B vitamins every session. Standard multivitamins insufficient. Use renal-specific formulation containing B1, B2, B6, B12, folate, niacin, pantothenic acid.';
+  const folateTarget = '1 mg/day';
+  const folateNote = 'Higher than standard DRI for dialysis patients. Reduces homocysteine — elevated in CKD and linked to cardiovascular events.';
+  const vitKNote = 'Emerging role in CKD-MBD — Vit K2 may reduce vascular calcification, but also interactions with anticoagulants. Do not self-supplement; discuss with nephrologist.';
+  const vitETarget = '15 mg'; // standard, not changed
+  const vitENote = 'Some evidence for antioxidant benefit in CKD. Standard RDA acceptable. Fat-soluble — does not clear with dialysis. Monitor for accumulation at high doses.';
+
+  // ══ BUILD OUTPUT ══
+  // Macronutrient rows
+  const macroRows = [
+    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`&le;${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',`${kcalPerKg} kcal/kg dry weight. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}`],
+    ['Protein',protRange,protMax+'&thinsp;g',protBadge,protNote],
+    ['Carbohydrates',`${carbMin}–${carbMax}&thinsp;g`,carbMax+50+'&thinsp;g','<span class="badge-ok">STANDARD</span>',`45–65% of calories. Prefer complex carbs — brown rice, oats, camote. ${dm?'Diabetic: choose low-GI options, monitor portions carefully.':''}`],
+    ['Total Fiber',fiberTarget+'&thinsp;g','No UL','<span class="badge-ok">STANDARD</span>','Fiber supports gut health, reduces uremic toxin precursor production (indoxyl sulfate). Filipino sources: okra, ampalaya, malunggay (if K allows).'],
+    ['Total Fat',`${fatMin}–${fatMax}&thinsp;g`,'Minimize sat fat','<span class="badge-warn">QUALITY</span>','Emphasize MUFA/PUFA. Omega-3 (EPA+DHA) 1.8–3.4 g/day supported by KDIGO for CV protection. Use coconut oil sparingly.'],
+    ['Fluid',flTarget,'See note',flBadge,flNote],
+  ];
+
+  // Mineral rows
+  const mineralRows = [
+    ['Sodium',naTarget,naUL,naBadge,naNote],
+    ['Potassium',kTarget,kUL,kBadge,kNote],
+    ['Phosphorus',pTarget,pUL,pBadge,pNote],
+    ['Calcium (dietary)',caTarget,caUL,caBadge,caNote],
+    ['Magnesium',mgTarget,'350 mg (suppl.)','<span class="badge-warn">MONITOR</span>','Accumulates in ESKD. Avoid magnesium-containing antacids (Maalox, magnesium hydroxide). Dietary sources generally safe.'],
+    ['Iron',feTarget,'45 mg oral','<span class="badge-more">CHECK LABS</span>',feNote],
+    ['Zinc',sex==='M'?'11 mg':'8 mg','40 mg','<span class="badge-ok">STANDARD</span>','Deficiency common in CKD (poor intake + losses). Zinc 50 mg/day under supervision for taste disorders (dysgeusia) in dialysis patients.'],
+    ['Selenium','55 mcg','400 mcg','<span class="badge-ok">STANDARD</span>','Lower in dialysis patients; may contribute to immune dysfunction. Dietary sources (seafood, garlic, onion) preferred over supplements.'],
+  ];
+
+  // Vitamin rows
+  const vitRows = [
+    ['Vitamin D (cholecalciferol)',vitDTarget,'100 mcg (4,000 IU)','<span class="badge-more">SUPPLEMENT</span>',vitDNote],
+    ['Active Vitamin D (calcitriol/alfacalcidol)','As prescribed','Individualized','<span class="badge-more">PRESCRIBED</span>','Prescribed for PTH suppression in Stage 4–5 and dialysis. Separate from storage Vit D. Monitor calcium and phosphorus closely — over-supplementation causes hypercalcemia.'],
+    ['Vitamin C','&lt;100 mg','100 mg',`<span class="${['HD','PD','4','5','3b'].includes(stage)?'badge-restrict':'badge-warn'}">${['HD','PD','4','5','3b'].includes(stage)?'STRICT LIMIT':'LIMIT'}</span>`,vitCNote],
+    ['Vitamin A (retinol)','Food sources ONLY','No supplemental retinol','<span class="badge-avoid">NO SUPPLEMENTS</span>',vitANote],
+    ['Renal B-complex',vitBTarget,'—','<span class="badge-more">'+( isDialysis?'REQUIRED':'CONSIDER')+'</span>',vitBNote],
+    ['Folate',folateTarget,'1,000 mcg','<span class="badge-more">'+( isDialysis?'INCREASE':'STANDARD')+'</span>',folateNote],
+    ['Vitamin E',vitETarget,'1,000 mg','<span class="badge-ok">STANDARD</span>',vitENote],
+    ['Vitamin K','120 mcg (food)','No established UL','<span class="badge-warn">CAUTION</span>',vitKNote],
+    ['Thiamin (B1)',sex==='M'?'1.2 mg':'1.1 mg','No UL','<span class="badge-more">'+(isDialysis?'SUPPLEMENT':'STANDARD')+'</span>',(isDialysis?'Lost in dialysis — include in renal B-complex.':'Standard intake from varied diet.')],
+    ['Vitamin B12','2.4 mcg','No UL','<span class="badge-more">'+(isDialysis?'SUPPLEMENT':'STANDARD')+'</span>',(isDialysis?'Lost in dialysis. Supplement in renal B-complex. Check serum B12 annually.':'Check level if neuropathy or macrocytic anemia present.')],
+    ['Niacin',sex==='M'?'16 mg':'14 mg','35 mg','<span class="badge-ok">STANDARD</span>','High-dose niacin (1–2 g/day) lowers phosphorus by reducing intestinal absorption — an emerging therapeutic use, but requires physician supervision.'],
+  ];
+
+  // ══ RENDER TABLES ══
+  function buildRows(rows, tbodyId){
+    const tb = document.getElementById(tbodyId);
+    tb.innerHTML = rows.map(([nutrient,rec,ul,badge,note])=>`
+      <tr>
+        <td>${nutrient}</td>
+        <td class="val">${rec}</td>
+        <td class="ul">${ul}</td>
+        <td class="notes">${badge} ${note}</td>
+      </tr>`).join('');
+  }
+  buildRows(macroRows,'macro-tbody');
+  buildRows(mineralRows,'mineral-tbody');
+  buildRows(vitRows,'vit-tbody');
+
+  // ── Protein meal split ──
+  const totalProt = (protMin + protMax) / 2;
+  const meals = isDialysis
+    ? [['Breakfast',0.2],['AM Snack',0.1],['Lunch',0.3],['PM Snack',0.1],['Dinner',0.3]]
+    : [['Breakfast',0.25],['Lunch',0.35],['PM Snack',0.1],['Dinner',0.3]];
+  document.getElementById('meal-strip').innerHTML = meals.map(([name,frac])=>`
+    <div class="meal-slot">
+      <div class="meal-name">${name}</div>
+      <div class="meal-g">${Math.round(totalProt*frac)}<span>g</span></div>
+      <div class="meal-name" style="margin-top:2px;font-size:9px;">${Math.round(totalProt*frac*4)} kcal</div>
+    </div>`).join('');
+
+  // ── Stage pill ──
+  const stageLabels={
+    '1':'CKD Stage 1','2':'CKD Stage 2','3a':'CKD Stage 3a','3b':'CKD Stage 3b',
+    '4':'CKD Stage 4','5':'CKD Stage 5 (pre-dialysis)','HD':'Hemodialysis','PD':'Peritoneal Dialysis'
+  };
+  const stageColors={
+    '1':'background:#edf7f2;color:#2d7a4f',
+    '2':'background:#ddf0f2;color:#1a6b72',
+    '3a':'background:#fef9ec;color:#9a6500',
+    '3b':'background:#fff0e0;color:#b45309',
+    '4':'background:#fdf0ef;color:#c0392b',
+    '5':'background:#fee2e2;color:#9f1239',
+    'HD':'background:#e0f2fe;color:#075985',
+    'PD':'background:#dcfce7;color:#166534'
+  };
+  const sp=document.getElementById('stage-pill');
+  sp.textContent=stageLabels[stage]||stage;
+  sp.setAttribute('style',stageColors[stage]+';font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;');
+
+  document.getElementById('res-h3').textContent='Your CKD Dietary Reference Intakes';
+  document.getElementById('res-sub').textContent=
+    `${sex==='M'?'Male':'Female'}, age ${age} · ${wt} kg · Height ${ht} cm · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]}`;
+
+  // ── Vitamin warnings ──
+  const vwList=[];
+  vwList.push({icon:'🚫',text:'<strong>Vitamin A supplements: do NOT take</strong> — accumulates to toxic levels in CKD. Avoid all multivitamins containing retinol above 100% DV.'});
+  vwList.push({icon:'⚠',text:'<strong>Vitamin C: strict 100 mg/day limit</strong> — metabolizes to oxalate. Standard supplements (500–1,000 mg) are contraindicated in CKD.'});
+  if(isDialysis) vwList.push({icon:'💊',text:'<strong>Renal B-complex required every day</strong> — dialysis removes all water-soluble vitamins each session. Standard multivitamins are insufficient.'});
+  vwList.push({icon:'☀',text:'<strong>Vitamin D (cholecalciferol) supplementation almost always needed</strong> — deficiency near-universal in Filipino CKD patients due to indoor lifestyle and melanin pigmentation.'});
+  vwList.push({icon:'⚠',text:'<strong>Herbal supplements, barley grass, wheatgrass, malunggay powders</strong>: do NOT take without nephrologist clearance — high potassium, phosphorus, or oxalate content can be fatal.'});
+  document.getElementById('vit-warn-list').innerHTML = vwList.map(v=>`<li><span style="flex-shrink:0;">${v.icon}</span><span>${v.text}</span></li>`).join('');
+
+  // ── Clinical summary ──
+  const clinItems=[];
+  if(isHD){
+    clinItems.push({icon:'🥩',text:'<strong>Increase protein to '+protMin+'–'+protMax+' g/day</strong> — dialysis removes amino acids; restriction causes muscle wasting'});
+    clinItems.push({icon:'🧂',text:'<strong>Strict sodium &lt;2,000 mg/day</strong> — controls inter-dialytic weight gain and hypertension'});
+    clinItems.push({icon:'🍌',text:'<strong>Potassium 2,000 mg limit</strong> — hyperkalemia causes fatal arrhythmia; leach all vegetables'});
+    clinItems.push({icon:'💊',text:'<strong>Take phosphate binders with every meal and snack</strong> — not before or after eating'});
+    clinItems.push({icon:'💧',text:'<strong>Fluid: '+ flTarget+'</strong> — inter-dialytic weight gain max 2–3 kg'});
+    clinItems.push({icon:'🔴',text:'<strong>Daily renal B-complex required</strong> — dialysis strips all water-soluble vitamins'});
+  } else if(isPD){
+    clinItems.push({icon:'🥩',text:'<strong>Protein '+protMin+'–'+protMax+' g/day</strong> — highest CKD requirement due to peritoneal protein losses'});
+    clinItems.push({icon:'🧂',text:'<strong>Sodium &lt;2,000 mg/day</strong>'});
+    clinItems.push({icon:'💊',text:'<strong>Phosphate binders with every meal</strong>'});
+    clinItems.push({icon:'🔴',text:'<strong>Daily renal B-complex required</strong>'});
+  } else if(isPreD){
+    clinItems.push({icon:'🥩',text:`<strong>Protein restriction ${protMin}–${protMax} g/day</strong> — reduces uremic toxin production and slows GFR decline. Increase to 1.0+ g/kg when starting dialysis.`});
+    clinItems.push({icon:'🧂',text:`<strong>Sodium &lt;2,300 mg/day</strong>${htn?' — especially important with resistant hypertension':''}`});
+    if(!isEarly) clinItems.push({icon:'🍌',text:'<strong>Begin potassium monitoring</strong> — check serum K every 1–3 months; avoid high-K foods if elevated'});
+    clinItems.push({icon:'💊',text:'<strong>Phosphate restriction 800–1,000 mg/day</strong> — eliminate phosphate food additives'});
+  } else {
+    clinItems.push({icon:'🥩',text:'<strong>Protein 0.8 g/kg/day</strong> — standard adult target; restriction not yet needed in early CKD'});
+    clinItems.push({icon:'🧂',text:'<strong>Sodium &lt;2,300 mg/day</strong> — controls blood pressure and slows CKD progression'});
+    clinItems.push({icon:'📊',text:'<strong>Monitor labs every 3–6 months</strong> — eGFR, potassium, phosphorus, albumin, urine protein'});
+  }
+  if(dm) clinItems.push({icon:'🍚',text:'<strong>Diabetes: low-GI carbohydrates, consistent meal timing</strong> — target HbA1c &lt;7% (KDIGO 2024)'});
+  if(pew) clinItems.push({icon:'⬆',text:'<strong>Protein-energy wasting modifier applied</strong> — consult renal dietitian urgently for nutritional rehabilitation plan'});
+  clinItems.push({icon:'☀',text:'<strong>Vitamin D: check 25-OH Vit D and supplement</strong> — deficiency near-universal in Filipino CKD patients'});
+  document.getElementById('clin-list').innerHTML = clinItems.map(i=>`<li><span class="icon">${i.icon}</span><span>${i.text}</span></li>`).join('');
+
+  // ── Show results ──
+  const panel = document.getElementById('results-panel');
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+</body>
+</html>
