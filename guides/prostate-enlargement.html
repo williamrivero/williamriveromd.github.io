@@ -316,6 +316,26 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+  /* IPSS Calculator */
+  .ipss-q-row { background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px; }
+  .ipss-q-text { font-size:13.5px;font-weight:600;color:#0f1e2e;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px; }
+  .ipss-q-num { display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;min-width:24px;background:#e1f5f0;color:#1a6b72;border-radius:50%;font-size:11px;font-weight:700;margin-top:1px; }
+  .ipss-options { display:grid;grid-template-columns:repeat(6,1fr);gap:6px; }
+  .ipss-opt { cursor:pointer;text-align:center;padding:9px 4px;border-radius:8px;border:2px solid var(--border);background:var(--white);font-size:12px;font-weight:600;color:var(--text-muted);transition:all .15s;user-select:none; }
+  .ipss-opt:hover { border-color:#1a6b72;color:#1a6b72; }
+  .ipss-opt.selected { background:#1a6b72;border-color:#1a6b72;color:white; }
+  .ipss-qol-btn.selected { background:#1a6b72 !important;border-color:#1a6b72 !important;color:white !important; }
+  html[data-theme="dark"] #ipss-wrap { background:#1a2535;border-color:#2a3548; }
+  html[data-theme="dark"] .ipss-q-row,
+  html[data-theme="dark"] .ipss-qol-btn { background:#141c2a !important;border-color:#2a3548 !important;color:#e8eaf0 !important; }
+  html[data-theme="dark"] .ipss-opt { background:#141c2a;border-color:#2a3548;color:#8a95a8; }
+  html[data-theme="dark"] .ipss-opt.selected { background:#1a6b72;border-color:#1a6b72;color:white; }
+  html[data-theme="dark"] .ipss-qol-btn.selected { background:#1a6b72 !important;border-color:#1a6b72 !important;color:white !important; }
+  html[data-theme="dark"] #ipss-wrap > div:first-child > div { background:#141c2a !important;border-color:#2a3548 !important; }
+  @media(max-width:520px){
+    .ipss-options,.ipss-q-text+div { grid-template-columns:repeat(3,1fr) !important; }
+    #ipss-wrap > div:first-child { grid-template-columns:repeat(3,1fr) !important; }
+  }
 </style>
 </head>
 <body>
@@ -363,6 +383,7 @@
   <div class="nav-pills">
     <a class="nav-pill" href="#what">What is BPH?</a>
     <a class="nav-pill" href="#symptoms">Symptoms (LUTS)</a>
+    <a class="nav-pill" href="#ipss">IPSS Score</a>
     <a class="nav-pill" href="#kidneys">Kidney Impact</a>
     <a class="nav-pill" href="#diagnosis">Diagnosis</a>
     <a class="nav-pill" href="#medications">Medications</a>
@@ -463,6 +484,117 @@
         <h4>The IPSS — measuring your symptom severity</h4>
         <p>Your doctor uses the International Prostate Symptom Score (IPSS) — a 7-question questionnaire — to grade BPH severity. Mild = 0–7; Moderate = 8–19; Severe = 20–35. Your score guides treatment intensity and monitors treatment response over time. Tracking your score at each visit provides objective evidence of improvement or progression.</p>
       </div>
+    </div>
+  </section>
+
+  </section>
+
+  <!-- IPSS CALCULATOR -->
+  <section class="section" id="ipss">
+    <div class="section-tag">
+      <span data-lang="en">Symptom Assessment Tool</span>
+      <span data-lang="tl" class="lang-hidden">Kagamitan sa Pagtatasa ng Sintomas</span>
+      <span data-lang="ceb" class="lang-hidden">Himan sa Pagtasa sa Sintomas</span>
+    </div>
+    <h2>
+      <span data-lang="en">International Prostate Symptom Score (IPSS)</span>
+      <span data-lang="tl" class="lang-hidden">International Prostate Symptom Score (IPSS)</span>
+      <span data-lang="ceb" class="lang-hidden">International Prostate Symptom Score (IPSS)</span>
+    </h2>
+    <p>
+      <span data-lang="en">This is the same validated questionnaire your urologist uses to grade your BPH severity and monitor your response to treatment. Answer each question based on your experience <strong>over the past month</strong>. There are no right or wrong answers — honest responses give the most useful result.</span>
+      <span data-lang="tl" class="lang-hidden">Ito ang parehong napatunayang talatanungan na ginagamit ng inyong urologist upang i-grade ang kalubhaan ng inyong BPH at subaybayan ang inyong tugon sa paggamot. Sagutin ang bawat tanong batay sa inyong karanasan <strong>sa nakalipas na buwan</strong>.</span>
+      <span data-lang="ceb" class="lang-hidden">Kini mao ang samang napatunayang questionnaire nga gigamit sa imong urologist aron i-grade ang kabug-at sa imong BPH ug i-monitor ang imong tubag sa pagtambal. Tubaga ang matag pangutana base sa imong kasinatian <strong>sa miaging buwan</strong>.</span>
+    </p>
+
+    <div id="ipss-wrap" style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;">
+
+      <!-- Answer scale legend -->
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:20px;text-align:center;">
+        <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;grid-column:1/-1;margin-bottom:6px;">
+          <span data-lang="en">Answer Scale</span><span data-lang="tl" class="lang-hidden">Sukat ng Sagot</span><span data-lang="ceb" class="lang-hidden">Sukod sa Tubag</span>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:8px 4px;font-size:11px;line-height:1.3;"><strong>0</strong><br><span data-lang="en">Not at all</span><span data-lang="tl" class="lang-hidden">Hindi kailanman</span><span data-lang="ceb" class="lang-hidden">Wala gayod</span></div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:8px 4px;font-size:11px;line-height:1.3;"><strong>1</strong><br><span data-lang="en">Less than 1 in 5 times</span><span data-lang="tl" class="lang-hidden">Mas mababa sa 1 sa 5</span><span data-lang="ceb" class="lang-hidden">Menos sa 1 sa 5</span></div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:8px 4px;font-size:11px;line-height:1.3;"><strong>2</strong><br><span data-lang="en">Less than half the time</span><span data-lang="tl" class="lang-hidden">Mas mababa sa kalahati</span><span data-lang="ceb" class="lang-hidden">Menos sa katunga</span></div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:8px 4px;font-size:11px;line-height:1.3;"><strong>3</strong><br><span data-lang="en">About half the time</span><span data-lang="tl" class="lang-hidden">Mga kalahati ng oras</span><span data-lang="ceb" class="lang-hidden">Mga katunga sa oras</span></div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:8px 4px;font-size:11px;line-height:1.3;"><strong>4</strong><br><span data-lang="en">More than half the time</span><span data-lang="tl" class="lang-hidden">Higit sa kalahati</span><span data-lang="ceb" class="lang-hidden">Labaw sa katunga</span></div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:8px 4px;font-size:11px;line-height:1.3;"><strong>5</strong><br><span data-lang="en">Almost always</span><span data-lang="tl" class="lang-hidden">Halos palagi</span><span data-lang="ceb" class="lang-hidden">Halos kanunay</span></div>
+      </div>
+
+      <!-- Questions 1–7 -->
+      <div id="ipss-questions"></div>
+
+      <!-- Q8 — Quality of Life (scored separately) -->
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-top:16px;">
+        <div style="font-size:13px;font-weight:600;color:#0f1e2e;margin-bottom:12px;">
+          <span style="display:inline-block;width:24px;height:24px;background:#1a6b72;color:white;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;margin-right:8px;">QoL</span>
+          <span data-lang="en">If you were to spend the rest of your life with your urinary condition just the way it is now, how would you feel about that?</span>
+          <span data-lang="tl" class="lang-hidden">Kung gagastusin mo ang natitirang buhay mo na may kondisyon ng ihi na katulad ng ngayon, paano mo mararamdaman iyon?</span>
+          <span data-lang="ceb" class="lang-hidden">Kung gaganawon mo ang nabilin mong kinabuhi nga adunay kondisyon sa ihi sama sa karon, unsay imong mabatyagan bahin niana?</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;">
+          <label id="qol-0" class="ipss-qol-btn" onclick="selectQol(0)" style="cursor:pointer;text-align:center;padding:10px 4px;border-radius:8px;border:2px solid var(--border);background:var(--white);font-size:11px;line-height:1.3;transition:all .15s;">
+            <strong style="display:block;font-size:15px;margin-bottom:4px;">0</strong>
+            <span data-lang="en">Delighted</span><span data-lang="tl" class="lang-hidden">Masaya</span><span data-lang="ceb" class="lang-hidden">Nalipay</span>
+          </label>
+          <label id="qol-1" class="ipss-qol-btn" onclick="selectQol(1)" style="cursor:pointer;text-align:center;padding:10px 4px;border-radius:8px;border:2px solid var(--border);background:var(--white);font-size:11px;line-height:1.3;transition:all .15s;">
+            <strong style="display:block;font-size:15px;margin-bottom:4px;">1</strong>
+            <span data-lang="en">Pleased</span><span data-lang="tl" class="lang-hidden">Nasisiyahan</span><span data-lang="ceb" class="lang-hidden">Nalipay</span>
+          </label>
+          <label id="qol-2" class="ipss-qol-btn" onclick="selectQol(2)" style="cursor:pointer;text-align:center;padding:10px 4px;border-radius:8px;border:2px solid var(--border);background:var(--white);font-size:11px;line-height:1.3;transition:all .15s;">
+            <strong style="display:block;font-size:15px;margin-bottom:4px;">2</strong>
+            <span data-lang="en">Mostly satisfied</span><span data-lang="tl" class="lang-hidden">Karamihan ay nasiyahan</span><span data-lang="ceb" class="lang-hidden">Kasagarang naugma</span>
+          </label>
+          <label id="qol-3" class="ipss-qol-btn" onclick="selectQol(3)" style="cursor:pointer;text-align:center;padding:10px 4px;border-radius:8px;border:2px solid var(--border);background:var(--white);font-size:11px;line-height:1.3;transition:all .15s;">
+            <strong style="display:block;font-size:15px;margin-bottom:4px;">3</strong>
+            <span data-lang="en">Mixed</span><span data-lang="tl" class="lang-hidden">Halo-halo</span><span data-lang="ceb" class="lang-hidden">Halo-halo</span>
+          </label>
+          <label id="qol-4" class="ipss-qol-btn" onclick="selectQol(4)" style="cursor:pointer;text-align:center;padding:10px 4px;border-radius:8px;border:2px solid var(--border);background:var(--white);font-size:11px;line-height:1.3;transition:all .15s;">
+            <strong style="display:block;font-size:15px;margin-bottom:4px;">4</strong>
+            <span data-lang="en">Mostly dissatisfied</span><span data-lang="tl" class="lang-hidden">Karamihan ay hindi nasisiyahan</span><span data-lang="ceb" class="lang-hidden">Kasagarang dili naugma</span>
+          </label>
+          <label id="qol-5" class="ipss-qol-btn" onclick="selectQol(5)" style="cursor:pointer;text-align:center;padding:10px 4px;border-radius:8px;border:2px solid var(--border);background:var(--white);font-size:11px;line-height:1.3;transition:all .15s;">
+            <strong style="display:block;font-size:15px;margin-bottom:4px;">5</strong>
+            <span data-lang="en">Unhappy</span><span data-lang="tl" class="lang-hidden">Hindi masaya</span><span data-lang="ceb" class="lang-hidden">Dili malipayon</span>
+          </label>
+          <label id="qol-6" class="ipss-qol-btn" onclick="selectQol(6)" style="cursor:pointer;text-align:center;padding:10px 4px;border-radius:8px;border:2px solid var(--border);background:var(--white);font-size:11px;line-height:1.3;transition:all .15s;">
+            <strong style="display:block;font-size:15px;margin-bottom:4px;">6</strong>
+            <span data-lang="en">Terrible</span><span data-lang="tl" class="lang-hidden">Napakasamâ</span><span data-lang="ceb" class="lang-hidden">Makalilisang</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div id="ipss-result" style="display:none;margin-top:20px;border-radius:12px;padding:22px 24px;border:2px solid transparent;transition:all .3s;">
+        <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+          <div style="text-align:center;min-width:80px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;opacity:.7;">IPSS</div>
+            <div id="ipss-score" style="font-family:'Lora',serif;font-size:48px;font-weight:600;line-height:1;"></div>
+            <div style="font-size:11px;opacity:.6;margin-top:2px;">/ 35</div>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div id="ipss-severity" style="font-size:18px;font-weight:700;margin-bottom:4px;"></div>
+            <div id="ipss-subscores" style="font-size:12px;opacity:.75;margin-bottom:10px;"></div>
+            <div id="ipss-interp" style="font-size:13.5px;line-height:1.7;"></div>
+          </div>
+        </div>
+        <div id="ipss-qol-result" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.1);font-size:13px;line-height:1.65;"></div>
+        <div id="ipss-action" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.1);font-size:13px;line-height:1.65;"></div>
+      </div>
+
+      <!-- Reset -->
+      <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+        <button onclick="resetIpss()" style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--teal);background:transparent;border:1px solid var(--teal);border-radius:20px;padding:5px 16px;cursor:pointer;">
+          <span data-lang="en">Reset</span><span data-lang="tl" class="lang-hidden">I-reset</span><span data-lang="ceb" class="lang-hidden">I-reset</span>
+        </button>
+      </div>
+
+      <p style="font-size:11.5px;color:var(--text-muted);margin-top:12px;line-height:1.6;">
+        <span data-lang="en">⚕ Bring your score to your next appointment. Your IPSS guides treatment decisions and helps track whether medications are working. This tool does not replace clinical evaluation.</span>
+        <span data-lang="tl" class="lang-hidden">⚕ Dalhin ang inyong score sa inyong susunod na appointment. Ang inyong IPSS ay nagagabayan ng mga desisyon sa paggamot at tumutulong sa pagsubaybay kung gumagana ang mga gamot. Ang tool na ito ay hindi pumapalit sa klinikal na pagsusuri.</span>
+        <span data-lang="ceb" class="lang-hidden">⚕ Dad-a ang imong score sa imong sunod nga appointment. Ang imong IPSS naggiya sa mga desisyon sa pagtambal ug nagtabang sa pagmonitor kung nagtrabaho ang mga tambal. Kining himan dili nagpuli sa klinikal nga pagsusuri.</span>
+      </p>
     </div>
   </section>
 
@@ -709,6 +841,167 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+<script>
+/* ── IPSS CALCULATOR ── */
+const IPSS_QS = [
+  {
+    en:"Over the past month, how often have you had a sensation of not emptying your bladder completely after you finished urinating?",
+    tl:"Sa nakalipas na buwan, gaano kadalas kang nakaramdam na hindi ganap na nabubuksan ang iyong pantog pagkatapos ng pag-ihi?",
+    ceb:"Sa miaging buwan, kapila ka nakasinati nga dili hingpit nabuksan ang imong pantog human mo mag-ihi?"
+  },
+  {
+    en:"Over the past month, how often have you had to urinate again less than 2 hours after you finished urinating?",
+    tl:"Sa nakalipas na buwan, gaano kadalas kang kailangang muling umihi nang wala pang 2 oras pagkatapos umihi?",
+    ceb:"Sa miaging buwan, kapila kang kinahanglan mag-ihi pag-usab nga dili pa 2 ka oras human mag-ihi?"
+  },
+  {
+    en:"Over the past month, how often have you found you stopped and started again several times when you urinated?",
+    tl:"Sa nakalipas na buwan, gaano kadalas mong natuklasan na tumigil ka at nagsimula ulit nang ilang beses habang umihi?",
+    ceb:"Sa miaging buwan, kapila kang nakahibaw nga mihunong ka ug nagsugod pag-usab sa pipila ka higayon samtang nag-ihi?"
+  },
+  {
+    en:"Over the past month, how often have you found it difficult to postpone urination?",
+    tl:"Sa nakalipas na buwan, gaano kadalas kang nahirapang ipagpaliban ang pag-ihi?",
+    ceb:"Sa miaging buwan, kapila kang nakakaplag nga lisod ang pagpalangan sa pag-ihi?"
+  },
+  {
+    en:"Over the past month, how often have you had a weak urinary stream?",
+    tl:"Sa nakalipas na buwan, gaano kadalas kang nagkaroon ng mahinang daloy ng ihi?",
+    ceb:"Sa miaging buwan, kapila kang adunay huyang nga agos sa ihi?"
+  },
+  {
+    en:"Over the past month, how often have you had to push or strain to begin urination?",
+    tl:"Sa nakalipas na buwan, gaano kadalas kang kailangang magtulak o magsumikap upang magsimulang umihi?",
+    ceb:"Sa miaging buwan, kapila kang kinahanglan maghigmat o maningkamot aron magsugod sa pag-ihi?"
+  },
+  {
+    en:"Over the past month, how many times did you most typically get up to urinate from the time you went to bed until the time you got up in the morning?",
+    tl:"Sa nakalipas na buwan, ilang beses ka kadalasang bumangon para umihi mula nang matulog ka hanggang sa magising ka sa umaga?",
+    ceb:"Sa miaging buwan, pila ka higayon ka kasagarang mibangon sa gabii aron mag-ihi gikan sa higda hangtud sa pagmata sa buntag?",
+    alt5:"0 times / 1 time / 2 times / 3 times / 4 times / 5+ times"
+  }
+];
+
+const LABELS_EN = ["Not at all","< 1 in 5","< Half","~Half","> Half","Almost always"];
+const LABELS_Q7_EN = ["0 times","1 time","2 times","3 times","4 times","5+ times"];
+let ipssAnswers = new Array(7).fill(null);
+let qolAnswer = null;
+
+function buildIpss() {
+  const wrap = document.getElementById('ipss-questions');
+  const lang = document.documentElement.getAttribute('lang') || 'en';
+  wrap.innerHTML = '';
+  IPSS_QS.forEach((q, qi) => {
+    const labels = qi === 6 ? LABELS_Q7_EN : LABELS_EN;
+    const qtext = q[lang] || q.en;
+    const row = document.createElement('div');
+    row.className = 'ipss-q-row';
+    row.innerHTML = `
+      <div class="ipss-q-text">
+        <span class="ipss-q-num">${qi+1}</span>
+        <span>${qtext}</span>
+      </div>
+      <div class="ipss-options" id="ipss-opts-${qi}">
+        ${labels.map((lbl,v)=>`
+          <div class="ipss-opt${ipssAnswers[qi]===v?' selected':''}" onclick="selectIpss(${qi},${v})">${v}</div>
+        `).join('')}
+      </div>`;
+    wrap.appendChild(row);
+  });
+}
+
+function selectIpss(qi, val) {
+  ipssAnswers[qi] = val;
+  document.querySelectorAll(`#ipss-opts-${qi} .ipss-opt`).forEach((el,i)=>{
+    el.classList.toggle('selected', i===val);
+  });
+  updateIpssResult();
+}
+
+function selectQol(val) {
+  qolAnswer = val;
+  document.querySelectorAll('.ipss-qol-btn').forEach((el,i)=>{
+    el.classList.toggle('selected', i===val);
+  });
+  updateIpssResult();
+}
+
+function updateIpssResult() {
+  if (ipssAnswers.some(v=>v===null)) { document.getElementById('ipss-result').style.display='none'; return; }
+
+  const total = ipssAnswers.reduce((a,b)=>a+b,0);
+  // Subscores: voiding (Q3,Q5,Q6) + storage (Q1,Q2,Q4,Q7)
+  const voiding = ipssAnswers[2]+ipssAnswers[4]+ipssAnswers[5];
+  const storage = ipssAnswers[0]+ipssAnswers[1]+ipssAnswers[3]+ipssAnswers[6];
+
+  let severity, color, bg, interp, action;
+  if (total <= 7) {
+    severity='Mild BPH'; color='#2d7a4f'; bg='#edf7f2';
+    interp='Your symptoms are mild. They may be bothersome but are unlikely to be causing significant obstruction or kidney damage at this stage.';
+    action='Watchful waiting is appropriate. Lifestyle modifications (fluid timing, reducing caffeine/alcohol, bladder training) are the first-line approach. Medications are not yet required. Re-score in 6–12 months or sooner if symptoms worsen.';
+  } else if (total <= 19) {
+    severity='Moderate BPH'; color='#9a6500'; bg='#fef9ec';
+    interp='Your symptoms are moderate. This level of LUTS significantly affects quality of life and warrants active treatment. There is a real risk of progressive bladder and kidney damage if left unmanaged.';
+    action='Medical treatment is recommended. Alpha-blockers (tamsulosin, silodosin) are first-line. 5-alpha reductase inhibitors (finasteride, dutasteride) are added for large prostates. Post-void residual urine and creatinine should be checked. Urology referral is appropriate.';
+  } else {
+    severity='Severe BPH'; color='#c0392b'; bg='#fdf0ef';
+    interp='Your symptoms are severe. This level of LUTS indicates significant obstruction. The risk of acute urinary retention, recurrent UTI, bladder damage, and obstructive kidney disease is high.';
+    action='Urgent urology referral. Combination medical therapy or surgical evaluation (TURP, laser prostatectomy, or minimally invasive procedure) should be discussed. Kidney function (creatinine, eGFR) and bladder ultrasound are essential. Do not delay evaluation.';
+  }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const res = document.getElementById('ipss-result');
+  res.style.display='block';
+  res.style.background = isDark ? 'rgba(255,255,255,.04)' : bg;
+  res.style.borderColor = color;
+
+  document.getElementById('ipss-score').style.color = color;
+  document.getElementById('ipss-score').textContent = total;
+  document.getElementById('ipss-severity').style.color = color;
+  document.getElementById('ipss-severity').textContent = severity + ' — Score ' + total + '/35';
+  document.getElementById('ipss-subscores').textContent =
+    'Voiding score: ' + voiding + '/15  ·  Storage score: ' + storage + '/20';
+  document.getElementById('ipss-interp').textContent = interp;
+  document.getElementById('ipss-action').innerHTML =
+    '<strong style="color:'+color+'">Recommended next step:</strong> ' + action;
+
+  // QoL result
+  const qolDiv = document.getElementById('ipss-qol-result');
+  if (qolAnswer !== null) {
+    const qolLabels = ['Delighted','Pleased','Mostly satisfied','Mixed feelings','Mostly dissatisfied','Unhappy','Terrible'];
+    const qolColors = ['#2d7a4f','#2d7a4f','#2d7a4f','#9a6500','#9a6500','#c0392b','#c0392b'];
+    qolDiv.style.display = 'block';
+    qolDiv.innerHTML = '<strong>Quality of Life:</strong> ' + qolAnswer + '/6 — <span style="color:'+qolColors[qolAnswer]+';font-weight:600;">'+qolLabels[qolAnswer]+'</span>. ' +
+      (qolAnswer >= 4 ? 'A QoL score of 4 or higher indicates the symptoms are significantly impacting daily life — this weighs strongly toward active treatment regardless of the total IPSS score.' :
+       qolAnswer >= 2 ? 'Your symptoms are having a moderate impact on quality of life. Discuss with your urologist whether treatment should be escalated.' :
+       'Your quality of life is relatively preserved despite the symptoms — watchful waiting may be appropriate depending on your total score.');
+  } else {
+    qolDiv.style.display = 'none';
+  }
+}
+
+function resetIpss() {
+  ipssAnswers = new Array(7).fill(null);
+  qolAnswer = null;
+  buildIpss();
+  document.querySelectorAll('.ipss-qol-btn').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('ipss-result').style.display='none';
+  document.getElementById('ipss-qol-result').style.display='none';
+}
+
+// Build on load and on language change
+document.addEventListener('DOMContentLoaded', buildIpss);
+// Rebuild when language toggles (patch setLang)
+const _origSetLang = typeof setLang === 'function' ? setLang : null;
+</script>
+<script>
+if (typeof setLang === 'function') {
+  const _sl = setLang;
+  window.setLang = function(lang) { _sl(lang); buildIpss(); };
+}
+// Initial build if DOM already ready
+if (document.readyState !== 'loading') buildIpss();
 </script>
 </body>
 </html>
