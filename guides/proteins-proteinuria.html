@@ -316,6 +316,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -360,6 +383,7 @@
     <a class="nav-pill" href="#measuring">Measuring It</a>
     <a class="nav-pill" href="#why-matters">Why It Matters</a>
     <a class="nav-pill" href="#reducing">Reducing Proteinuria</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#diet">Protein in Diet</a>
   </div>
 </nav>
@@ -623,6 +647,67 @@
     </div>
   </section>
 
+
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>Proteinuria Calculator — UACR Staging, PCR &amp; CKD Risk Classification</h2>
+    <p>Enter your urine protein or albumin results to determine your KDIGO albuminuria category, cross-reference it with your eGFR stage, and understand what your combined risk classification means for monitoring and treatment.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>UACR — Urine Albumin:Creatinine Ratio (mg/g)</label>
+          <input id="pr-uacr" type="number" min="0" max="20000" step="1" placeholder="e.g. 185" oninput="calcProt()">
+          <div class="field-hint">From spot urine (random sample). Most common test for CKD screening and monitoring. Normal &lt;30 mg/g</div>
+        </div>
+        <div class="calc-field">
+          <label>PCR — Protein:Creatinine Ratio (mg/g) — optional</label>
+          <input id="pr-pcr" type="number" min="0" max="30000" step="1" placeholder="e.g. 450" oninput="calcProt()">
+          <div class="field-hint">If PCR is reported instead of UACR. PCR ≈ 24-hour urine protein in g/day. Enter one or both.</div>
+        </div>
+        <div class="calc-field">
+          <label>eGFR (mL/min/1.73m²)</label>
+          <input id="pr-egfr" type="number" min="1" max="120" step="0.1" placeholder="e.g. 42" oninput="calcProt()">
+          <div class="field-hint">For combined GFR + albuminuria risk classification (KDIGO heat map)</div>
+        </div>
+        <div class="calc-field">
+          <label>On RAAS blockade?</label>
+          <select id="pr-raas" onchange="calcProt()">
+            <option value="">Select…</option>
+            <option value="yes">Yes — on ACE inhibitor or ARB</option>
+            <option value="no">No — not on RAAS blocker</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-box" id="prot-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:20px;" id="pr-a-cat">—</div>
+            <div class="cml">Albuminuria Category</div>
+            <div class="cmt" id="pr-a-badge">KDIGO A1/A2/A3</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:20px;" id="pr-g-cat">—</div>
+            <div class="cml">GFR Category</div>
+            <div class="cmt" id="pr-g-badge">KDIGO G1–G5</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;line-height:1.2;" id="pr-risk-val">—</div>
+            <div class="cml">Combined Risk</div>
+            <div class="cmt" id="pr-risk-badge">KDIGO 2024</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="pr-freq-val">—</div>
+            <div class="cml">Monitor Frequency</div>
+            <div class="cmt" id="pr-freq-badge">per year</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="pr-verdict"></div>
+        <div class="calc-action-text" id="pr-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ UACR categories: A1 &lt;30 mg/g (normal/mildly increased), A2 30–300 mg/g (moderately increased), A3 &gt;300 mg/g (severely increased). GFR categories: G1 ≥90, G2 60–89, G3a 45–59, G3b 30–44, G4 15–29, G5 &lt;15. Combined KDIGO risk classification uses the intersecting cell of G and A categories (green/yellow/orange/red heat map). PCR ≈ UACR × 1.1–1.3 correction for non-albumin proteins. UACR should be confirmed on at least 2 of 3 samples before diagnosing CKD.</p>
+    </div>
+  </section>
+
   <section class="section" id="diet">
     <div class="section-tag">Dietary Protein</div>
     <h2>Protein in the Diet — How Much Is Safe?</h2>
@@ -746,6 +831,100 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcProt() {
+  const uacr = parseFloat(document.getElementById('pr-uacr').value);
+  const pcr  = parseFloat(document.getElementById('pr-pcr').value);
+  const egfr = parseFloat(document.getElementById('pr-egfr').value);
+  const raas = document.getElementById('pr-raas').value;
+  const res  = document.getElementById('prot-result');
+  const hasUACR = !isNaN(uacr);
+  const hasPCR  = !isNaN(pcr);
+  if ((!hasUACR && !hasPCR) || isNaN(egfr) || !raas) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  // Albuminuria category from UACR (prefer UACR; fallback PCR/1.2)
+  const effUACR = hasUACR ? uacr : pcr/1.2;
+  let aCat, aColor, aLabel;
+  if (effUACR < 30) { aCat='A1'; aColor='#2d7a4f'; aLabel='Normal/mildly ↑ (<30 mg/g)'; }
+  else if (effUACR < 300) { aCat='A2'; aColor='#9a6500'; aLabel='Moderately ↑ (30–300 mg/g)'; }
+  else { aCat='A3'; aColor='#c0392b'; aLabel='Severely ↑ (>300 mg/g)'; }
+
+  // GFR category
+  let gCat, gColor;
+  if (egfr >= 90) { gCat='G1'; gColor='#2d7a4f'; }
+  else if (egfr >= 60) { gCat='G2'; gColor='#2d7a4f'; }
+  else if (egfr >= 45) { gCat='G3a'; gColor='#9a6500'; }
+  else if (egfr >= 30) { gCat='G3b'; gColor='#f5a623'; }
+  else if (egfr >= 15) { gCat='G4'; gColor='#c0392b'; }
+  else { gCat='G5'; gColor='#8b0000'; }
+
+  // KDIGO combined risk (simplified heat map)
+  const riskMatrix = {
+    'G1-A1':'Low','G1-A2':'Moderate','G1-A3':'High',
+    'G2-A1':'Low','G2-A2':'Moderate','G2-A3':'High',
+    'G3a-A1':'Moderate','G3a-A2':'High','G3a-A3':'Very High',
+    'G3b-A1':'High','G3b-A2':'Very High','G3b-A3':'Very High',
+    'G4-A1':'Very High','G4-A2':'Very High','G4-A3':'Very High',
+    'G5-A1':'Very High','G5-A2':'Very High','G5-A3':'Very High',
+  };
+  const riskKey = gCat+'-'+aCat;
+  const riskLevel = riskMatrix[riskKey] || 'Very High';
+  const riskColors = {'Low':'#2d7a4f','Moderate':'#9a6500','High':'#c0392b','Very High':'#8b0000'};
+  const riskColor = riskColors[riskLevel];
+
+  // Monitoring frequency by risk
+  const freqMap = {'Low':1,'Moderate':1,'High':2,'Very High':4};
+  const freq = freqMap[riskLevel];
+
+  const borderColor = riskColor;
+  const bg = riskLevel==='Low'?(isDark?'rgba(45,122,79,.08)':'#edf7f2'):
+             riskLevel==='Moderate'?(isDark?'rgba(154,101,0,.08)':'#fef9ec'):
+             (isDark?'rgba(192,57,43,.08)':'#fdf0ef');
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  document.getElementById('pr-a-cat').textContent=aCat;
+  document.getElementById('pr-a-cat').style.color=aColor;
+  document.getElementById('pr-a-badge').textContent=aLabel;
+  document.getElementById('pr-a-badge').style.color=aColor;
+
+  document.getElementById('pr-g-cat').textContent=gCat;
+  document.getElementById('pr-g-cat').style.color=gColor;
+  document.getElementById('pr-g-badge').textContent='eGFR '+egfr+' mL/min';
+  document.getElementById('pr-g-badge').style.color=gColor;
+
+  document.getElementById('pr-risk-val').textContent=riskLevel+' Risk';
+  document.getElementById('pr-risk-val').style.color=riskColor;
+  document.getElementById('pr-risk-badge').textContent=gCat+' × '+aCat;
+  document.getElementById('pr-risk-badge').style.color=riskColor;
+
+  document.getElementById('pr-freq-val').textContent=freq+'×';
+  document.getElementById('pr-freq-val').style.color=riskColor;
+  document.getElementById('pr-freq-badge').textContent=freq>2?'Every 3 months':'Every '+(12/freq)+' months';
+  document.getElementById('pr-freq-badge').style.color=riskColor;
+
+  const est24hr = hasUACR ? Math.round(uacr/1000*10)/10 : Math.round(pcr/1000*10)/10;
+  let verdict='KDIGO category '+gCat+'/'+aCat+' — '+riskLevel+' risk of CKD progression and cardiovascular events. '+
+    (hasUACR?'UACR of '+uacr+' mg/g':hasPCR?'PCR of '+pcr+' mg/g':'')+' (≈'+est24hr+' g/day protein in urine). '+
+    'Combined '+gCat+'×'+aCat+' requires monitoring '+freq+' times per year (every '+(freq>2?'3':12/freq)+' months).';
+
+  let action='';
+  if (aCat!=='A1' && raas==='no') {
+    action='RAAS blockade (ACE inhibitor or ARB) is indicated — reduces proteinuria by 30–50% and slows GFR decline independently. Start at lowest dose, titrate up over 4–8 weeks monitoring potassium and creatinine. ';
+  } else if (aCat!=='A1' && raas==='yes') {
+    action='Continue RAAS blockade — ensure you are at the maximum tolerated dose. ';
+    if (aCat==='A3') action+='With severely elevated proteinuria (>300 mg/g), consider adding finerenone (Firialta) — proven to reduce proteinuria and slow progression in CKD+DM patients. ';
+  }
+  if (riskLevel==='Very High'||riskLevel==='High') action+='Add SGLT2 inhibitor if eGFR≥25 (dapagliflozin/empagliflozin — Catania or Rhea brand). Target BP <130/80 mmHg. Protein restriction 0.6–0.8 g/kg/day. ';
+  action+='Recheck UACR in '+(freq>2?'3':'6')+' months after treatment changes to assess response.';
+
+  document.getElementById('pr-verdict').innerHTML='<strong style="color:'+riskColor+'">'+riskLevel+' Risk — '+gCat+'/'+aCat+'</strong> — '+verdict;
+  document.getElementById('pr-action').innerHTML='<strong style="color:'+riskColor+'">Recommended action:</strong> '+action;
+}
 </script>
 </body>
 </html>

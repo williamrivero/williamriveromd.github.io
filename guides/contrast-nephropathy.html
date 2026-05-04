@@ -213,6 +213,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -250,6 +273,7 @@
     <a class="nav-pill" href="#prevention">Prevention</a>
     <a class="nav-pill" href="#procedures">Common Procedures</a>
     <a class="nav-pill" href="#dialysis">Dialysis Patients</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#after">After the Procedure</a>
   </div>
 </nav>
@@ -455,6 +479,94 @@
     </div>
   </section>
 
+
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>CI-AKI Risk Calculator — Mehran Score &amp; Maximum Safe Contrast Volume</h2>
+    <p>Calculate the Mehran risk score for contrast-induced acute kidney injury before any procedure involving iodinated contrast dye (CT scan with contrast, coronary angiogram, angioplasty). Also calculates the maximum safe contrast volume for your kidney function.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>eGFR (mL/min/1.73m²)</label>
+          <input id="ci-egfr" type="number" min="1" max="120" step="0.1" placeholder="e.g. 38" oninput="calcCI()">
+        </div>
+        <div class="calc-field">
+          <label>Serum Creatinine (mg/dL)</label>
+          <input id="ci-cr" type="number" min="0.3" max="15" step="0.01" placeholder="e.g. 1.8" oninput="calcCI()">
+          <div class="field-hint">Used for max contrast volume formula: 5 mL × body weight ÷ creatinine</div>
+        </div>
+        <div class="calc-field">
+          <label>Body Weight (kg)</label>
+          <input id="ci-wt" type="number" min="20" max="200" step="0.1" placeholder="e.g. 62" oninput="calcCI()">
+        </div>
+        <div class="calc-field">
+          <label>Hypotension during/before procedure?</label>
+          <select id="ci-htn" onchange="calcCI()">
+            <option value="0">No</option>
+            <option value="5">Yes — SBP &lt;80 mmHg for &gt;1 hour requiring vasopressors</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label>Intra-aortic balloon pump (IABP) use?</label>
+          <select id="ci-iabp" onchange="calcCI()">
+            <option value="0">No</option>
+            <option value="5">Yes</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label>Congestive heart failure (CHF)?</label>
+          <select id="ci-chf" onchange="calcCI()">
+            <option value="0">No</option>
+            <option value="5">Yes — known CHF, NYHA III–IV, or history of pulmonary edema</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label>Age &gt; 75 years?</label>
+          <select id="ci-age" onchange="calcCI()">
+            <option value="0">No (&lt;75)</option>
+            <option value="4">Yes (&gt;75)</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label>Anemia (Hct &lt;39% M / &lt;36% F)?</label>
+          <select id="ci-anemia" onchange="calcCI()">
+            <option value="0">No</option>
+            <option value="3">Yes</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label>Diabetes mellitus?</label>
+          <select id="ci-dm" onchange="calcCI()">
+            <option value="0">No</option>
+            <option value="3">Yes</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-box" id="ci-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="ci-score-val">—</div>
+            <div class="cml">Mehran Score</div>
+            <div class="cmt" id="ci-score-badge">/ max ~35</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;line-height:1.2;" id="ci-risk-val">—</div>
+            <div class="cml">CI-AKI Risk</div>
+            <div class="cmt" id="ci-risk-badge">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="ci-maxvol-val">—</div>
+            <div class="cml">Max Safe Volume</div>
+            <div class="cmt" id="ci-maxvol-badge">mL contrast</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="ci-verdict"></div>
+        <div class="calc-action-text" id="ci-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ Mehran score components: eGFR scoring (2–6pts based on GFR), hypotension (5pts), IABP (5pts), CHF (5pts), age &gt;75 (4pts), anemia (3pts), DM (3pts), contrast volume (1pt per 100mL). CI-AKI risk: ≤5 = 7.5%; 6–10 = 14%; 11–16 = 26.1%; &gt;16 = 57.3% (Mehran et al., JACC 2004). Max safe contrast volume = 5 mL × body weight (kg) ÷ serum creatinine (mg/dL). This tool supports procedural risk counseling — final decisions require cardiologist/radiologist assessment.</p>
+    </div>
+  </section>
+
   <section class="section" id="after">
     <div class="section-tag">Post-Procedure Care</div>
     <h2>After Your Contrast Procedure — What to Watch For</h2>
@@ -535,6 +647,77 @@ function setGuideLang(lang) {
   if (saved !== 'en') setGuideLang(saved);
 })();
 
+</script>
+
+<script>
+function calcCI() {
+  const egfr = parseFloat(document.getElementById('ci-egfr').value);
+  const cr   = parseFloat(document.getElementById('ci-cr').value);
+  const wt   = parseFloat(document.getElementById('ci-wt').value);
+  const res  = document.getElementById('ci-result');
+  if ([egfr,cr,wt].some(isNaN)) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  // eGFR score component
+  let egfrScore;
+  if (egfr > 60)      egfrScore = 0;
+  else if (egfr >= 40) egfrScore = 2;
+  else if (egfr >= 20) egfrScore = 4;
+  else                  egfrScore = 6;
+
+  const htn   = parseInt(document.getElementById('ci-htn').value)||0;
+  const iabp  = parseInt(document.getElementById('ci-iabp').value)||0;
+  const chf   = parseInt(document.getElementById('ci-chf').value)||0;
+  const age   = parseInt(document.getElementById('ci-age').value)||0;
+  const anemia= parseInt(document.getElementById('ci-anemia').value)||0;
+  const dm    = parseInt(document.getElementById('ci-dm').value)||0;
+
+  const score = egfrScore + htn + iabp + chf + age + anemia + dm;
+
+  // Risk classification
+  let riskPct, riskLabel, riskColor;
+  if (score <= 5)       { riskPct='7.5%'; riskLabel='Low'; riskColor='#2d7a4f'; }
+  else if (score <= 10) { riskPct='14%'; riskLabel='Moderate'; riskColor='#9a6500'; }
+  else if (score <= 16) { riskPct='26%'; riskLabel='High'; riskColor='#c0392b'; }
+  else                  { riskPct='57%'; riskLabel='Very High'; riskColor='#8b0000'; }
+
+  // Max safe contrast volume
+  const maxVol = Math.round(5*wt/cr);
+
+  const borderColor = riskColor;
+  const bg = riskLabel==='Low'?(isDark?'rgba(45,122,79,.08)':'#edf7f2'):
+             riskLabel==='Moderate'?(isDark?'rgba(154,101,0,.08)':'#fef9ec'):
+             (isDark?'rgba(192,57,43,.08)':'#fdf0ef');
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  document.getElementById('ci-score-val').textContent=score;
+  document.getElementById('ci-score-val').style.color=riskColor;
+  document.getElementById('ci-score-badge').textContent='CI-AKI score';
+  document.getElementById('ci-risk-val').textContent=riskLabel+' ('+riskPct+')';
+  document.getElementById('ci-risk-val').style.color=riskColor;
+  document.getElementById('ci-risk-badge').textContent=riskPct+' CI-AKI probability';
+  document.getElementById('ci-risk-badge').style.color=riskColor;
+  document.getElementById('ci-maxvol-val').textContent=maxVol;
+  document.getElementById('ci-maxvol-val').style.color=maxVol<100?'#c0392b':(maxVol<200?'#9a6500':'#2d7a4f');
+  document.getElementById('ci-maxvol-badge').textContent='5 × '+wt+'kg ÷ '+cr+' mg/dL';
+
+  let verdict='Mehran score of '+score+' — '+riskLabel+' risk of contrast-induced AKI (probability: '+riskPct+'). '+
+    'Maximum safe iodinated contrast volume for eGFR '+egfr+' and creatinine '+cr+': <strong>'+maxVol+' mL</strong>. '+
+    (maxVol<150?'This is a very restricted volume — low-osmolar or iso-osmolar contrast (iodixanol) should be used, and the minimum necessary volume only. ':'');
+
+  let action='';
+  if (riskLabel==='Low') {
+    action='Standard pre-procedure hydration with IV normal saline (1 mL/kg/hr × 12 hrs before and after). Avoid NSAIDs and metformin for 48 hours before and 48 hours after. Recheck creatinine at 48–72 hours.';
+  } else if (riskLabel==='Moderate') {
+    action='Mandatory IV hydration: 0.9% NaCl 1–1.5 mL/kg/hr for 3–12 hrs pre- and 6–12 hrs post-procedure. Use lowest possible contrast volume and iso-osmolar agent (iodixanol). Discontinue metformin 48 hrs before. Hold ACE/ARB/diuretics day of procedure. Recheck creatinine 48–72 hrs post.';
+  } else {
+    action='DISCUSS with referring physician whether procedure can be modified or deferred. If unavoidable: aggressive IV hydration (1.5 mL/kg/hr NaCl), minimum contrast volume, iso-osmolar contrast only, staged procedure if large volume needed. Post-procedure monitoring with daily creatinine for 72 hours. If creatinine rises >25% or >0.5 mg/dL — treat as CI-AKI.'+
+      (riskLabel==='Very High'?' Consider non-contrast imaging alternatives (MRI without gadolinium, ultrasound, non-contrast CT) if diagnostically acceptable.':'');
+  }
+  document.getElementById('ci-verdict').innerHTML='<strong style="color:'+riskColor+'">'+riskLabel+' Risk</strong> — '+verdict;
+  document.getElementById('ci-action').innerHTML='<strong style="color:'+riskColor+'">Pre-procedure protocol:</strong> '+action;
+}
 </script>
 </body>
 </html>

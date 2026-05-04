@@ -142,6 +142,29 @@
   .print-btn:hover{transform:scale(1.1);}
   .print-btn svg{width:18px;height:18px;}
   @media print{.site-header,.nav-strip,.guide-toggle-bar,.guide-lang-bar,.print-btn,.guide-footer{display:none!important;}body{font-size:13px;color:#000;background:#fff;}.section{padding:14px 0;border-bottom:1px solid #ddd;}.intro-callout{background:#f0f4f8!important;}.intro-callout p{color:#000!important;}@page{margin:14mm;size:A4;}}
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -203,6 +226,7 @@
     <a class="nav-pill" href="#filipino">Filipino Meal Guide</a>
     <a class="nav-pill" href="#mealplan">7-Day Meal Plan</a>
     <a class="nav-pill" href="#monitoring">Kidney Monitoring</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#postpartum">Postpartum</a>
   </div>
 </nav>
@@ -908,6 +932,70 @@
   </section>
 
   <!-- KIDNEY MONITORING DURING PREGNANCY -->
+
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>GDM Nutrition Calculator — Caloric Needs &amp; Gestational Weight Gain Target</h2>
+    <p>Enter your pre-pregnancy weight, height, trimester, and activity level to calculate your daily caloric target and IOM-recommended gestational weight gain range for your BMI category.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Pre-Pregnancy Weight (kg)</label>
+          <input id="gdm-wt" type="number" min="30" max="200" step="0.1" placeholder="e.g. 62" oninput="calcGDM()">
+        </div>
+        <div class="calc-field">
+          <label>Height (cm)</label>
+          <input id="gdm-ht" type="number" min="130" max="200" step="0.1" placeholder="e.g. 158" oninput="calcGDM()">
+        </div>
+        <div class="calc-field">
+          <label>Trimester</label>
+          <select id="gdm-tri" onchange="calcGDM()">
+            <option value="">Select…</option>
+            <option value="1">1st Trimester (weeks 1–12)</option>
+            <option value="2">2nd Trimester (weeks 13–26)</option>
+            <option value="3">3rd Trimester (weeks 27–40)</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label>Activity Level</label>
+          <select id="gdm-act" onchange="calcGDM()">
+            <option value="">Select…</option>
+            <option value="sed">Sedentary (desk work, minimal movement)</option>
+            <option value="light">Light activity (short walks, light housework)</option>
+            <option value="mod">Moderate (regular walking, prenatal exercise)</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-box" id="gdm-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="gdm-bmi-val">—</div>
+            <div class="cml">Pre-preg BMI</div>
+            <div class="cmt" id="gdm-bmi-badge">kg/m²</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="gdm-cal-val">—</div>
+            <div class="cml">Daily Calories</div>
+            <div class="cmt" id="gdm-cal-badge">kcal/day</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:16px;" id="gdm-gwg-val">—</div>
+            <div class="cml">Total GWG Target</div>
+            <div class="cmt" id="gdm-gwg-badge">IOM guidelines</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:16px;" id="gdm-rate-val">—</div>
+            <div class="cml">Weekly Gain T2/T3</div>
+            <div class="cmt" id="gdm-rate-badge">kg/week target</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="gdm-verdict"></div>
+        <div class="calc-action-text" id="gdm-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ Caloric needs estimated using Mifflin-St Jeor REE × activity factor + trimester addition (T1: +0, T2: +340, T3: +450 kcal). GWG targets per IOM 2009 guidelines (still current standard). GDM patients should distribute carbohydrates across 3 small meals + 2–3 snacks to minimize postprandial glucose spikes. This calculator does not account for CKD-specific protein or electrolyte restrictions — discuss with your nephrologist and dietitian.</p>
+    </div>
+  </section>
+
   <section class="section" id="monitoring">
     <div class="section-tag">Nephrology Monitoring</div>
     <h2>Kidney Monitoring During GDM Pregnancy</h2>
@@ -1046,6 +1134,66 @@ function setGuideLang(lang){
   if(localStorage.getItem(DSK)==='1')applyDesktop(true);
   const lang=localStorage.getItem(GLK)||'en';if(lang!=='en')setGuideLang(lang);
 })();
+</script>
+
+<script>
+function calcGDM() {
+  const wt = parseFloat(document.getElementById('gdm-wt').value);
+  const ht = parseFloat(document.getElementById('gdm-ht').value);
+  const tri = document.getElementById('gdm-tri').value;
+  const act = document.getElementById('gdm-act').value;
+  const res = document.getElementById('gdm-result');
+  if ([wt,ht].some(isNaN) || !tri || !act) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const htM = ht/100;
+  const bmi = Math.round(wt/(htM*htM)*10)/10;
+
+  // BMI category
+  let bmiCat, gwgMin, gwgMax, weeklyMin, weeklyMax;
+  if (bmi < 18.5) { bmiCat='Underweight'; gwgMin=12.5; gwgMax=18; weeklyMin=0.44; weeklyMax=0.58; }
+  else if (bmi < 25) { bmiCat='Normal weight'; gwgMin=11.5; gwgMax=16; weeklyMin=0.35; weeklyMax=0.50; }
+  else if (bmi < 30) { bmiCat='Overweight'; gwgMin=7; gwgMax=11.5; weeklyMin=0.23; weeklyMax=0.33; }
+  else { bmiCat='Obese'; gwgMin=5; gwgMax=9; weeklyMin=0.17; weeklyMax=0.27; }
+
+  // REE (Mifflin-St Jeor female)
+  const ree = 10*wt + 6.25*ht - 5*30 - 161; // using avg age 30
+  const actFactor = act==='sed'?1.2:act==='light'?1.375:1.55;
+  const tdee = Math.round(ree*actFactor);
+  const triAdd = tri==='1'?0:tri==='2'?340:450;
+  const totalCal = tdee + triAdd;
+
+  const borderColor='#1a6b72';
+  const bg = isDark?'rgba(26,107,114,.08)':'#e1f5f0';
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  document.getElementById('gdm-bmi-val').textContent=bmi;
+  document.getElementById('gdm-bmi-val').style.color=bmi>=18.5&&bmi<25?'#2d7a4f':(bmi<18.5?'#9a6500':'#c0392b');
+  document.getElementById('gdm-bmi-badge').textContent=bmiCat;
+  document.getElementById('gdm-bmi-badge').style.color=bmi>=18.5&&bmi<25?'#2d7a4f':(bmi<18.5?'#9a6500':'#c0392b');
+
+  document.getElementById('gdm-cal-val').textContent=totalCal.toLocaleString();
+  document.getElementById('gdm-cal-val').style.color='#1a6b72';
+  document.getElementById('gdm-cal-badge').textContent='T'+tri+' (base '+tdee+(triAdd?'+'+triAdd:'')+'kcal)';
+
+  document.getElementById('gdm-gwg-val').textContent=gwgMin+'–'+gwgMax+' kg';
+  document.getElementById('gdm-gwg-val').style.color='#1a6b72';
+  document.getElementById('gdm-gwg-badge').textContent='Total pregnancy ('+bmiCat+')';
+
+  document.getElementById('gdm-rate-val').textContent=weeklyMin+'–'+weeklyMax;
+  document.getElementById('gdm-rate-val').style.color='#1a6b72';
+  document.getElementById('gdm-rate-badge').textContent='kg/week in T2 and T3';
+
+  const triName = tri==='1'?'1st':tri==='2'?'2nd':'3rd';
+  document.getElementById('gdm-verdict').innerHTML='<strong style="color:'+borderColor+'">'+triName+' trimester nutrition targets ('+bmiCat+' BMI '+bmi+')</strong> — '+
+    'Daily caloric target: '+totalCal.toLocaleString()+' kcal/day (base TDEE '+tdee+' + '+triAdd+' kcal trimester addition). '+
+    'Total gestational weight gain target: '+gwgMin+'–'+gwgMax+' kg over the full pregnancy. '+
+    'In the 2nd and 3rd trimesters, aim for '+weeklyMin+'–'+weeklyMax+' kg weight gain per week.';
+  document.getElementById('gdm-action').innerHTML='<strong style="color:'+borderColor+'">GDM carbohydrate distribution:</strong> '+
+    'Do not restrict total calories aggressively — undereating increases ketone production which is harmful to fetal brain development. Instead, spread carbohydrate intake evenly: 15–30g per meal and 15–20g per snack, 3 meals + 2–3 snacks daily. '+
+    'Avoid high glycemic index foods (white rice, white bread, sweetened drinks, fruit juice). Prioritize low-GI carbohydrates: kamote, brown rice, oats, legumes. '+
+    (bmi>=30?'With obesity (BMI '+bmi+'), aim for the lower end of weight gain ('+gwgMin+' kg) — excessive weight gain in obese pregnancy significantly increases preeclampsia and macrosomia risk.':'');
+}
 </script>
 </body>
 </html>

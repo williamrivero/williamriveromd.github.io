@@ -339,6 +339,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -389,6 +412,7 @@
     <a class="nav-pill" href="#medications">Dual-Protective Medications</a>
     <a class="nav-pill" href="#targets">Targets</a>
     <a class="nav-pill" href="#red-flags">Red Flags</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#faq">FAQ</a>
   </div>
 </nav>
@@ -693,6 +717,76 @@
     </div>
   </section>
 
+
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>Cardiorenal Risk Calculator — CRS Classifier &amp; Volume Overload Assessment</h2>
+    <p>Classify the type of cardiorenal syndrome affecting your patient, estimate the degree of fluid overload, and determine the monitoring intensity and treatment urgency based on combined cardiac and renal function.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Current eGFR (mL/min/1.73m²)</label>
+          <input id="cr-egfr" type="number" min="1" max="120" step="0.1" placeholder="e.g. 28" oninput="calcCRS()">
+        </div>
+        <div class="calc-field">
+          <label>BNP or NT-proBNP</label>
+          <select id="cr-bnp" onchange="calcCRS()">
+            <option value="">Select…</option>
+            <option value="normal">Normal (BNP &lt;100 or NT-proBNP &lt;300)</option>
+            <option value="mild">Mildly elevated (BNP 100–400 or NT-proBNP 300–1800)</option>
+            <option value="high">Highly elevated (BNP &gt;400 or NT-proBNP &gt;1800)</option>
+            <option value="unknown">Not measured</option>
+          </select>
+          <div class="field-hint">Cardiac biomarker reflecting ventricular wall stress / volume overload</div>
+        </div>
+        <div class="calc-field">
+          <label>Current Weight vs Dry Weight</label>
+          <select id="cr-wt" onchange="calcCRS()">
+            <option value="">Select…</option>
+            <option value="dry">At dry weight (no significant excess fluid)</option>
+            <option value="1-2">1–2 kg above dry weight</option>
+            <option value="3-5">3–5 kg above dry weight</option>
+            <option value="over5">More than 5 kg above dry weight</option>
+          </select>
+          <div class="field-hint">Compare to your usual dry weight or post-dialysis weight</div>
+        </div>
+        <div class="calc-field">
+          <label>Primary Clinical Scenario</label>
+          <select id="cr-scenario" onchange="calcCRS()">
+            <option value="">Select…</option>
+            <option value="crs1">Acute heart failure causing acute kidney injury</option>
+            <option value="crs2">Chronic heart failure worsening stable CKD</option>
+            <option value="crs3">Acute kidney injury causing acute cardiac stress</option>
+            <option value="crs4">Chronic CKD causing chronic cardiac disease</option>
+            <option value="crs5">Systemic disease affecting both (DM, sepsis, amyloid)</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-box" id="crs-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:22px;" id="cr-type-val">—</div>
+            <div class="cml">CRS Type</div>
+            <div class="cmt" id="cr-type-badge">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;line-height:1.2;" id="cr-fluid-val">—</div>
+            <div class="cml">Fluid Status</div>
+            <div class="cmt" id="cr-fluid-badge">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;line-height:1.2;" id="cr-urgency-val">—</div>
+            <div class="cml">Urgency</div>
+            <div class="cmt" id="cr-urgency-badge">—</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="cr-verdict"></div>
+        <div class="calc-action-text" id="cr-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ Cardiorenal syndrome (CRS) classification per Ronco et al. (JACC 2008), endorsed by KDIGO. BNP thresholds adjusted for CKD — BNP and NT-proBNP are chronically elevated in CKD independent of fluid status, so higher thresholds apply. This tool provides clinical framework support — cardiorenal management requires combined nephrology and cardiology assessment.</p>
+    </div>
+  </section>
+
   <section class="section" id="faq">
     <div class="section-tag">Common Questions</div>
     <h2>Frequently Asked Questions</h2>
@@ -826,6 +920,78 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcCRS() {
+  const egfr = parseFloat(document.getElementById('cr-egfr').value);
+  const bnp = document.getElementById('cr-bnp').value;
+  const wt = document.getElementById('cr-wt').value;
+  const scenario = document.getElementById('cr-scenario').value;
+  const res = document.getElementById('crs-result');
+  if (isNaN(egfr) || !bnp || !wt || !scenario) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  // CRS type from scenario
+  const crsMap = {
+    'crs1':'CRS Type 1','crs2':'CRS Type 2','crs3':'CRS Type 3','crs4':'CRS Type 4','crs5':'CRS Type 5'
+  };
+  const crsDescMap = {
+    'crs1':'Acute cardio→renal — Acute HF causing AKI','crs2':'Chronic cardio→renal — CHF worsening CKD',
+    'crs3':'Acute reno→cardiac — AKI causing cardiac stress','crs4':'Chronic reno→cardiac — CKD causing cardiomyopathy',
+    'crs5':'Secondary — Systemic disease (DM, sepsis, amyloid)'
+  };
+  const crsType = crsMap[scenario];
+  const crsDesc = crsDescMap[scenario];
+
+  // Fluid status
+  let fluidStatus, fluidColor;
+  if (wt==='dry') { fluidStatus='Euvolemic'; fluidColor='#2d7a4f'; }
+  else if (wt==='1-2') { fluidStatus='Mild overload (+1–2kg)'; fluidColor='#9a6500'; }
+  else if (wt==='3-5') { fluidStatus='Moderate overload (+3–5kg)'; fluidColor='#c0392b'; }
+  else { fluidStatus='Severe overload (>5kg)'; fluidColor='#8b0000'; }
+
+  // Urgency
+  const acute = scenario==='crs1'||scenario==='crs3';
+  const severe = wt==='over5'||(wt==='3-5'&&bnp==='high');
+  let urgency, urgencyColor;
+  if (acute && severe) { urgency='URGENT — same day'; urgencyColor='#8b0000'; }
+  else if (acute || severe) { urgency='Soon — within 48h'; urgencyColor='#c0392b'; }
+  else if (wt==='1-2'||bnp==='mild') { urgency='Close monitoring'; urgencyColor='#9a6500'; }
+  else { urgency='Routine follow-up'; urgencyColor='#2d7a4f'; }
+
+  const borderColor = urgencyColor;
+  const bg = urgencyColor==='#8b0000'||urgencyColor==='#c0392b'?(isDark?'rgba(192,57,43,.08)':'#fdf0ef'):(isDark?'rgba(154,101,0,.08)':'#fef9ec');
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  document.getElementById('cr-type-val').textContent=crsType; document.getElementById('cr-type-val').style.color='#1a6b72';
+  document.getElementById('cr-type-badge').textContent=crsDesc;
+  document.getElementById('cr-fluid-val').textContent=fluidStatus; document.getElementById('cr-fluid-val').style.color=fluidColor;
+  document.getElementById('cr-fluid-badge').textContent=bnp==='unknown'?'BNP not measured':'BNP: '+bnp;
+  document.getElementById('cr-fluid-badge').style.color=fluidColor;
+  document.getElementById('cr-urgency-val').textContent=urgency; document.getElementById('cr-urgency-val').style.color=urgencyColor;
+  document.getElementById('cr-urgency-badge').textContent='Review urgency';
+
+  const verdicts = {
+    'crs1':'Acute heart failure is causing acute kidney injury — the classic "forward failure" mechanism: low cardiac output → reduced renal perfusion → AKI. Diuresis improves both heart failure and kidney perfusion when venous congestion is the primary driver.',
+    'crs2':'Chronic heart failure is chronically reducing renal perfusion and causing neurohormonal activation (RAAS, SNS) that accelerates CKD progression. SGLT2 inhibitors are the only class proven to protect both organs simultaneously.',
+    'crs3':'Acute kidney injury is stressing the heart — via fluid overload, electrolyte disturbance (hyperkalemia, acidosis), and uremic myocardial toxicity. Urgent electrolyte management and volume control are critical.',
+    'crs4':'Chronic CKD is causing cardiomyopathy via multiple mechanisms: volume overload, uremic toxins, anemia, calcium-phosphorus deposition in coronary arteries, and RAAS activation. This is the most common CRS pattern in nephrology practice.',
+    'crs5':'A systemic disease (diabetes, sepsis, amyloidosis, etc.) is simultaneously damaging both heart and kidneys. Management must address the underlying systemic disease alongside organ support.'
+  };
+  const actions = {
+    'crs1':'Cautious diuresis with loop diuretics (furosemide IV) guided by fluid status and urine output response. Monitor creatinine — transient worsening during diuresis is acceptable if congestion is the primary driver. Hold nephrotoxins. Daily weights. If refractory, consider cardiorenal team or ultrafiltration.',
+    'crs2':'Optimize RAAS blockade (ACE/ARB at maximum tolerated dose). Add SGLT2 inhibitor (empagliflozin/dapagliflozin) — proven to reduce hospitalization and CV death in HFrEF and HFpEF while slowing CKD. Control fluid with sodium restriction (<2g/day). Anemia treatment with ESA/IV iron reduces cardiac workload.',
+    'crs3':'Urgent management of AKI: correct volume status, remove nephrotoxins, treat underlying cause. ECG and electrolyte monitoring for hyperkalemia-induced arrhythmia. If oliguria persists and creatinine rises sharply — early nephrology consult for possible dialysis.',
+    'crs4':'Address all CKD-cardiovascular risk factors: BP <130/80, LDL <55 mg/dL (very high risk), uric acid <6.0, HbA1c 7–8%, UACR reduction with RAAS blockade. Treat anemia (Hgb 100–115 g/L). Control Ca×P product to prevent vascular calcification.',
+    'crs5':'Systemic disease treatment is primary — organ support follows. For DM: SGLT2 inhibitor provides cardiorenal protection. For sepsis-AKI: early fluid resuscitation then conservative fluid strategy. For amyloid: specialist referral.'
+  };
+
+  document.getElementById('cr-verdict').innerHTML='<strong style="color:#1a6b72">'+crsType+' — '+crsDesc+'</strong>. '+verdicts[scenario]+
+    (wt!=='dry'?' <strong>Fluid status:</strong> '+fluidStatus+(bnp!=='unknown'?' with '+bnp+' BNP.':'.')+' Volume overload independently worsens both cardiac and renal function — fluid management is a priority.':'');
+  document.getElementById('cr-action').innerHTML='<strong style="color:'+borderColor+'">Management approach ('+urgency+'):</strong> '+actions[scenario];
+}
 </script>
 </body>
 </html>

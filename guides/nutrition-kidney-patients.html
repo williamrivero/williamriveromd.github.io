@@ -335,6 +335,29 @@
   .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
 </style>
 </head>
 <body>
@@ -389,6 +412,7 @@
     <a class="nav-pill" href="#meal-plan">Sample Meals</a>
     <a class="nav-pill" href="#labels">Reading Labels</a>
     <a class="nav-pill" href="#leaching">Leaching Guide</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#tips">Practical Tips</a>
   </div>
 </nav>
@@ -712,6 +736,70 @@
     </div>
   </section>
 
+
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>Renal Nutrition Calculator — Daily Protein, K, P &amp; Na Budget</h2>
+    <p>Enter your weight and CKD stage to calculate your personalized daily targets for protein, potassium, phosphorus, and sodium. These are starting points — your nephrologist or renal dietitian may adjust them based on your labs.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Body Weight (kg)</label>
+          <input id="n-wt" type="number" min="30" max="200" step="0.1" placeholder="e.g. 65" oninput="calcNutrition()">
+          <div class="field-hint">Use your dry weight (post-dialysis weight or target weight without fluid overload)</div>
+        </div>
+        <div class="calc-field">
+          <label>CKD Stage / Dialysis Status</label>
+          <select id="n-stage" onchange="calcNutrition()">
+            <option value="">Select…</option>
+            <option value="ckd3">CKD Stage 3 (eGFR 30–59)</option>
+            <option value="ckd4">CKD Stage 4 (eGFR 15–29)</option>
+            <option value="ckd5">CKD Stage 5 pre-dialysis (eGFR &lt;15)</option>
+            <option value="hd">Hemodialysis (HD)</option>
+            <option value="pd">Peritoneal Dialysis (PD)</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label>Serum Potassium (mEq/L) — optional</label>
+          <input id="n-k" type="number" min="2" max="8" step="0.1" placeholder="e.g. 5.2" oninput="calcNutrition()">
+          <div class="field-hint">If elevated (&gt;5.5), potassium restriction is tightened further</div>
+        </div>
+        <div class="calc-field">
+          <label>Serum Phosphorus (mg/dL) — optional</label>
+          <input id="n-phos" type="number" min="1" max="12" step="0.1" placeholder="e.g. 5.8" oninput="calcNutrition()">
+          <div class="field-hint">If elevated (&gt;5.5), phosphorus restriction is tightened further</div>
+        </div>
+      </div>
+      <div class="calc-result-box" id="nutr-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="n-prot-val">—</div>
+            <div class="cml">Protein g/day</div>
+            <div class="cmt" id="n-prot-badge">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="n-k-val">—</div>
+            <div class="cml">Potassium mg/day</div>
+            <div class="cmt" id="n-k-badge">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="n-p-val">—</div>
+            <div class="cml">Phosphorus mg/day</div>
+            <div class="cmt" id="n-p-badge">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="n-na-val">—</div>
+            <div class="cml">Sodium mg/day</div>
+            <div class="cmt" id="n-na-badge">—</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="n-verdict"></div>
+        <div class="calc-action-text" id="n-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ Protein targets: CKD 3–5 pre-dialysis 0.6–0.8 g/kg/day (KDIGO 2024); HD 1.1–1.2 g/kg/day (losses during dialysis); PD 1.2–1.3 g/kg/day (higher peritoneal losses). Electrolyte limits are general guidelines — individualize based on lab results and clinical assessment. 1 tsp salt = ~2,300 mg sodium = daily limit for most CKD patients.</p>
+    </div>
+  </section>
+
   <section class="section" id="tips">
     <div class="section-tag">Practical Advice</div>
     <h2>Everyday Tips for Eating Well with CKD</h2>
@@ -841,6 +929,80 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+
+<script>
+function calcNutrition() {
+  const wt = parseFloat(document.getElementById('n-wt').value);
+  const stage = document.getElementById('n-stage').value;
+  const kVal = parseFloat(document.getElementById('n-k').value);
+  const phosVal = parseFloat(document.getElementById('n-phos').value);
+  const res = document.getElementById('nutr-result');
+  if (isNaN(wt) || !stage) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  // Protein targets by stage
+  let protLow, protHigh, protLabel;
+  if (stage==='hd')       { protLow=1.1; protHigh=1.2; protLabel='HD (losses during dialysis)'; }
+  else if (stage==='pd')  { protLow=1.2; protHigh=1.3; protLabel='PD (peritoneal losses)'; }
+  else                    { protLow=0.6; protHigh=0.8; protLabel='Pre-dialysis CKD (reduce load)'; }
+
+  const protMin = Math.round(protLow*wt);
+  const protMax = Math.round(protHigh*wt);
+
+  // Potassium limits
+  let kLimit = 3000;
+  if (stage==='hd') kLimit = 2000;
+  else if (stage==='pd') kLimit = 3000;
+  else if (stage==='ckd4'||stage==='ckd5') kLimit = 2500;
+  if (!isNaN(kVal) && kVal > 5.5) kLimit = Math.max(kLimit-500, 1500);
+  const kTight = !isNaN(kVal) && kVal > 5.5;
+
+  // Phosphorus limits
+  let phosLimit = 1000;
+  if (stage==='hd'||stage==='pd') phosLimit = 800;
+  else if (stage==='ckd4'||stage==='ckd5') phosLimit = 900;
+  if (!isNaN(phosVal) && phosVal > 5.5) phosLimit = Math.max(phosLimit-200, 600);
+  const phosTight = !isNaN(phosVal) && phosVal > 5.5;
+
+  // Sodium — universal
+  const naLimit = 2000;
+
+  res.style.display='block';
+  const borderColor='#1a6b72';
+  const bg = isDark?'rgba(26,107,114,.08)':'#e1f5f0';
+  res.style.background=bg; res.style.borderColor=borderColor;
+
+  document.getElementById('n-prot-val').textContent=protMin+'–'+protMax;
+  document.getElementById('n-prot-val').style.color='#1a6b72';
+  document.getElementById('n-prot-badge').textContent=protLow+'–'+protHigh+' g/kg/day';
+  document.getElementById('n-prot-badge').style.color='#1a6b72';
+
+  document.getElementById('n-k-val').textContent=kLimit.toLocaleString();
+  document.getElementById('n-k-val').style.color=kTight?'#c0392b':'#1a6b72';
+  document.getElementById('n-k-badge').textContent=kTight?'Tightened (K⁺>5.5)':'Standard limit';
+  document.getElementById('n-k-badge').style.color=kTight?'#c0392b':'#2d7a4f';
+
+  document.getElementById('n-p-val').textContent=phosLimit.toLocaleString();
+  document.getElementById('n-p-val').style.color=phosTight?'#c0392b':'#1a6b72';
+  document.getElementById('n-p-badge').textContent=phosTight?'Tightened (P>5.5)':'Standard limit';
+  document.getElementById('n-p-badge').style.color=phosTight?'#c0392b':'#2d7a4f';
+
+  document.getElementById('n-na-val').textContent=naLimit.toLocaleString();
+  document.getElementById('n-na-val').style.color='#1a6b72';
+  document.getElementById('n-na-badge').textContent='≈1 tsp salt/day total';
+  document.getElementById('n-na-badge').style.color='#1a6b72';
+
+  const stageNames = {ckd3:'CKD Stage 3',ckd4:'CKD Stage 4',ckd5:'CKD Stage 5 pre-dialysis',hd:'Hemodialysis',pd:'Peritoneal Dialysis'};
+  document.getElementById('n-verdict').innerHTML='<strong style="color:#1a6b72">Daily targets for '+wt+'kg patient on '+stageNames[stage]+'</strong> — '+
+    'Protein '+protMin+'–'+protMax+'g/day ('+protLabel+'). '+
+    (kTight?'Potassium is restricted to '+kLimit+' mg/day due to elevated serum K⁺ '+kVal+' mEq/L. ':'Potassium limit: '+kLimit+' mg/day. ')+
+    (phosTight?'Phosphorus is restricted to '+phosLimit+' mg/day due to elevated serum phosphorus '+phosVal+' mg/dL. ':'Phosphorus limit: '+phosLimit+' mg/day. ')+
+    'Sodium: ≤2,000 mg/day (≈1 teaspoon of salt total including all food sources).';
+  document.getElementById('n-action').innerHTML='<strong style="color:#1a6b72">Practical reminders:</strong> '+(stage==='hd'||stage==='pd'?'As a dialysis patient, your protein needs are HIGHER — not lower — than pre-dialysis patients. Underfeeding protein causes malnutrition and muscle wasting, which independently worsens survival. ':'Protein restriction reduces glomerular hyperfiltration and uremic toxin production — but do not go below '+protMin+'g/day or malnutrition risk increases. ')+
+    'All electrolyte limits include hidden sources: processed foods, condiments, restaurant meals, and bottled sauces. Leach root vegetables before cooking to reduce potassium by 30–50%.';
+}
 </script>
 </body>
 </html>
