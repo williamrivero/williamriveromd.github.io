@@ -681,7 +681,11 @@
   html[data-theme="dark"] .myth-claim,
   html[data-theme="dark"] .z-benefit .zb-label,
   html[data-theme="dark"] .req-block h4{ color: #e8eaf0 !important; }
-  html[data-theme="dark"] .illus-caption { color: #8a95a8; }
+  html[data-theme="dark"] #egfr-calc-wrap { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] #egfr-calc-wrap input,
+  html[data-theme="dark"] #egfr-calc-wrap select { background: #141c2a; border-color: #2a3548; color: #e8eaf0; }
+  html[data-theme="dark"] #egfr-calc-wrap label { color: #25949d; }
+  @media(max-width:480px){ #egfr-calc-wrap > div:first-child { grid-template-columns: 1fr !important; } }
   html[data-theme="dark"] .illus-wrap { background: #1a2535; }
   .illus-wrap-light { background: #f9fafb !important; border: 1px solid #e2e6eb; border-radius: 14px; }
   html[data-theme="dark"] .illus-wrap-light { background: #f9fafb !important; }
@@ -774,6 +778,7 @@
   <div class="nav-pills">
     <a class="nav-pill" href="#what-is-ckd">What is CKD?</a>
     <a class="nav-pill" href="#stages">Stages</a>
+    <a class="nav-pill" href="#egfr-calculator">eGFR Calculator</a>
     <a class="nav-pill" href="#causes">Causes</a>
     <a class="nav-pill" href="#symptoms">Symptoms</a>
     <a class="nav-pill" href="#labs">Lab Targets</a>
@@ -935,6 +940,101 @@
         <p>The amount of protein in your urine (albuminuria) is a powerful predictor of kidney decline — separate from your eGFR. Even with a normal eGFR, significant proteinuria requires treatment. Your doctor uses both together to guide your care plan.</p>
       </div>
     </div>
+  </section>
+
+  <!-- EGFR CALCULATOR -->
+  <section class="section" id="egfr-calculator">
+    <div class="section-tag">
+      <span data-lang="en">Interactive Tool</span>
+      <span data-lang="tl" class="lang-hidden">Interactive na Kagamitan</span>
+      <span data-lang="ceb" class="lang-hidden">Interactive nga Himan</span>
+    </div>
+    <h2>
+      <span data-lang="en">eGFR Calculator — CKD-EPI 2021</span>
+      <span data-lang="tl" class="lang-hidden">eGFR Calculator — CKD-EPI 2021</span>
+      <span data-lang="ceb" class="lang-hidden">eGFR Calculator — CKD-EPI 2021</span>
+    </h2>
+    <p>
+      <span data-lang="en">Enter your most recent serum creatinine result to estimate your kidney function. This calculator uses the <strong>CKD-EPI 2021 equation</strong> — the current international standard recommended by KDIGO, race-free and validated for Filipino patients.</span>
+      <span data-lang="tl" class="lang-hidden">Ilagay ang inyong pinakabagong resulta ng serum creatinine upang matantya ang inyong pag-andar ng bato. Ginagamit ng calculator na ito ang <strong>CKD-EPI 2021 equation</strong> — ang kasalukuyang internasyonal na pamantayan na inirerekomenda ng KDIGO, walang lahi at napatunayan para sa mga pasyenteng Filipino.</span>
+      <span data-lang="ceb" class="lang-hidden">Isulod ang imong pinakabag-o nga resulta sa serum creatinine aron matantya ang imong pag-andar sa kidney. Kining calculator naggamit sa <strong>CKD-EPI 2021 equation</strong> — ang kasamtangan nga internasyonal nga pamantayan nga girekomenda sa KDIGO, race-free ug napatunayang angay alang sa mga pasyente nga Filipino.</span>
+    </p>
+
+    <div id="egfr-calc-wrap" style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;max-width:580px;">
+
+      <!-- Inputs -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+
+        <div>
+          <label for="calc-sex" style="display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">
+            <span data-lang="en">Biological Sex</span>
+            <span data-lang="tl" class="lang-hidden">Biyolohikal na Kasarian</span>
+            <span data-lang="ceb" class="lang-hidden">Biyolohikal nga Sekso</span>
+          </label>
+          <select id="calc-sex" onchange="calcEgfr()" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231a6b72' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;">
+            <option value="">
+              <span data-lang="en">Select…</span>
+            </option>
+            <option value="female">
+              <span data-lang="en">Female</span>
+            </option>
+            <option value="male">
+              <span data-lang="en">Male</span>
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="calc-age" style="display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">
+            <span data-lang="en">Age (years)</span>
+            <span data-lang="tl" class="lang-hidden">Edad (taon)</span>
+            <span data-lang="ceb" class="lang-hidden">Edad (tuig)</span>
+          </label>
+          <input id="calc-age" type="number" min="18" max="110" placeholder="e.g. 55" oninput="calcEgfr()" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;">
+        </div>
+
+        <div>
+          <label for="calc-cr" style="display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">
+            <span data-lang="en">Serum Creatinine (mg/dL)</span>
+            <span data-lang="tl" class="lang-hidden">Serum Creatinine (mg/dL)</span>
+            <span data-lang="ceb" class="lang-hidden">Serum Creatinine (mg/dL)</span>
+          </label>
+          <input id="calc-cr" type="number" min="0.1" max="30" step="0.01" placeholder="e.g. 1.20" oninput="calcEgfr()" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;">
+        </div>
+
+        <div style="display:flex;flex-direction:column;justify-content:flex-end;">
+          <div style="font-size:11px;color:var(--text-muted);line-height:1.5;padding-bottom:4px;">
+            <span data-lang="en">Find your creatinine on your recent blood test results (CBC/chemistry panel). Usually labeled "SCr" or "Creatinine."</span>
+            <span data-lang="tl" class="lang-hidden">Hanapin ang inyong creatinine sa inyong mga kamakailang resulta ng pagsusuri ng dugo. Karaniwang may label na "SCr" o "Creatinine."</span>
+            <span data-lang="ceb" class="lang-hidden">Pangitaa ang imong creatinine sa imong mga bag-o nga resulta sa pagsusuri sa dugo. Kasagarang may label nga "SCr" o "Creatinine."</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result box — hidden until calculated -->
+      <div id="egfr-result" style="display:none;border-radius:12px;padding:20px 24px;margin-top:4px;border:2px solid transparent;transition:all .3s;">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div style="text-align:center;min-width:90px;">
+            <div id="egfr-value" style="font-family:'Lora',serif;font-size:42px;font-weight:600;line-height:1;"></div>
+            <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:4px;opacity:.7;">mL/min/1.73m²</div>
+          </div>
+          <div style="flex:1;min-width:180px;">
+            <div id="egfr-stage" style="font-size:16px;font-weight:700;margin-bottom:4px;"></div>
+            <div id="egfr-label" style="font-size:13px;opacity:.8;margin-bottom:10px;"></div>
+            <div id="egfr-interp" style="font-size:13px;line-height:1.6;"></div>
+          </div>
+        </div>
+        <div id="egfr-action" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.08);font-size:13px;line-height:1.65;"></div>
+      </div>
+
+      <!-- Disclaimer -->
+      <p style="font-size:11.5px;color:var(--text-muted);margin-top:16px;line-height:1.6;">
+        <span data-lang="en">⚕ This calculator is for educational purposes only. eGFR alone does not determine your CKD stage — your doctor also considers proteinuria, blood pressure, and clinical history. Always discuss your results with your nephrologist.</span>
+        <span data-lang="tl" class="lang-hidden">⚕ Ang calculator na ito ay para sa layuning pang-edukasyon lamang. Ang eGFR lamang ay hindi nagtatakda ng inyong yugto ng CKD — isinasaalang-alang din ng inyong doktor ang proteinuria, presyon ng dugo, at kasaysayang klinikal. Laging talakayin ang inyong mga resulta sa inyong nephrologist.</span>
+        <span data-lang="ceb" class="lang-hidden">⚕ Kining calculator alang sa layunin sa edukasyon lamang. Ang eGFR lamang dili nagtakda sa imong yugto sa CKD — gikonsiderar usab sa imong doktor ang proteinuria, presyon sa dugo, ug klinikal nga kasaysayan. Kanunay hisguti ang imong mga resulta uban sa imong nephrologist.</span>
+      </p>
+    </div>
+
   </section>
 
   <!-- CAUSES -->
@@ -1334,6 +1434,67 @@ function setLang(lang){
   const saved=localStorage.getItem(LANG_KEY)||'en';
   if(saved!=='en')setLang(saved);
 })();
+</script>
+<script>
+/* CKD-EPI 2021 race-free eGFR calculator */
+function calcEgfr() {
+  const sex = document.getElementById('calc-sex').value;
+  const age = parseFloat(document.getElementById('calc-age').value);
+  const cr  = parseFloat(document.getElementById('calc-cr').value);
+  const res = document.getElementById('egfr-result');
+  if (!sex || isNaN(age) || isNaN(cr) || age < 1 || cr <= 0) { res.style.display='none'; return; }
+
+  // CKD-EPI 2021 — race-free
+  const k = sex==='female' ? 0.7 : 0.9;
+  const a = sex==='female' ? -0.241 : -0.302;
+  const crk = cr / k;
+  const egfr = 142
+    * Math.pow(Math.min(crk,1), a)
+    * Math.pow(Math.max(crk,1), -1.200)
+    * Math.pow(0.9938, age)
+    * (sex==='female' ? 1.012 : 1.0);
+  const val = Math.round(egfr * 10) / 10;
+
+  let stage, stageLabel, color, bg, interp, action;
+  if (val >= 90) {
+    stage='Stage 1'; stageLabel='Normal or High'; color='#2d7a4f'; bg='#edf7f2';
+    interp='Kidney function is in the normal range. If you have been diagnosed with CKD Stage 1, it means there is evidence of kidney damage (such as protein in the urine) even though filtration rate is still normal.';
+    action='Focus on treating the underlying cause (diabetes, hypertension). Annual monitoring of creatinine, urine protein, and blood pressure is recommended.';
+  } else if (val >= 60) {
+    stage='Stage 2'; stageLabel='Mildly Reduced'; color='#2d7a4f'; bg='#edf7f2';
+    interp='Kidney function is mildly reduced. Most people at this stage feel completely well. Kidney damage is present but the kidneys are still compensating effectively.';
+    action='Blood pressure control and urine protein monitoring are the most important actions. RAAS blockade (ACE inhibitor or ARB) should be started if proteinuria is present.';
+  } else if (val >= 45) {
+    stage='Stage 3a'; stageLabel='Mildly to Moderately Reduced'; color='#9a6500'; bg='#fef9ec';
+    interp='Kidney function is noticeably reduced. Some patients begin to notice fatigue or mild fluid retention. Risk of cardiovascular disease increases significantly at this stage.';
+    action='Nephrology referral is recommended. SGLT2 inhibitors and RAAS blockers should be optimized. Dietary sodium and protein modifications become important.';
+  } else if (val >= 30) {
+    stage='Stage 3b'; stageLabel='Moderately Reduced'; color='#9a6500'; bg='#fef9ec';
+    interp='Kidney function is moderately reduced. Complications including anemia, bone disease, and metabolic acidosis may begin to appear. This is a critical stage for active intervention.';
+    action='Regular nephrology follow-up is essential. Check PTH, calcium, phosphorus, bicarbonate, and hemoglobin. Consider SGLT2 inhibitors, finerenone, and dietary protein restriction to 0.6–0.8 g/kg/day.';
+  } else if (val >= 15) {
+    stage='Stage 4'; stageLabel='Severely Reduced'; color='#c0392b'; bg='#fdf0ef';
+    interp='Kidney function is severely reduced. Symptoms of uremia (fatigue, nausea, poor appetite, fluid retention) are common. Planning for kidney replacement therapy should begin now — do not wait.';
+    action='Urgent nephrology involvement. Begin dialysis access planning early — a fistula takes 3–6 months to mature. Evaluate for kidney transplant candidacy. Strict dietary management of potassium, phosphorus, and fluid required.';
+  } else {
+    stage='Stage 5'; stageLabel='Kidney Failure (ESKD)'; color='#8b0000'; bg='#fdf0ef';
+    interp='End-stage kidney disease. The kidneys can no longer maintain life without kidney replacement therapy. This is not the end — dialysis and transplantation are effective, life-sustaining treatments.';
+    action='Immediate nephrology care. Initiate dialysis if not already started, or arrange kidney transplantation evaluation. Full CKD-MBD, anemia, and cardiovascular risk management is required.';
+  }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  res.style.display = 'block';
+  res.style.background = isDark ? 'rgba(255,255,255,.05)' : bg;
+  res.style.borderColor = color;
+  document.getElementById('egfr-value').style.color = color;
+  document.getElementById('egfr-value').textContent = val;
+  document.getElementById('egfr-stage').style.color = color;
+  document.getElementById('egfr-stage').textContent = stage + ' CKD';
+  document.getElementById('egfr-label').style.color = color;
+  document.getElementById('egfr-label').textContent = stageLabel;
+  document.getElementById('egfr-interp').textContent = interp;
+  document.getElementById('egfr-action').innerHTML = '<strong style="color:'+color+'">What this means for your care:</strong> ' + action;
+}
 </script>
 </body>
 </html>
