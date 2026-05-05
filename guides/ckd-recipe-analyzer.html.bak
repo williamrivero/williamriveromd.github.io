@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CKD Recipe Nutrition Analyzer — W. G. M. Rivero, MD</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0f1e2e;--gold:#b8962e;--gold-light:#d4af4f;
+  --teal:#1a6b72;--teal-light:#e1f5f0;
+  --text:#1a1a1a;--text-muted:#5a6472;
+  --border:#e2e6eb;--bg:#f9fafb;--white:#ffffff;
+  --red:#c0392b;--red-soft:#fdf0ef;
+  --amber:#f5a623;--amber-soft:#fef9ec;
+  --green:#2d7a4f;--green-soft:#edf7f2;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.7;font-size:16px;}
+
+.site-header{background:var(--navy);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+.site-header a.brand{font-size:16px;font-weight:400;color:white;text-decoration:none;}
+.site-header a.brand strong{font-weight:600;color:#d4af4f;}
+.site-header a.back{font-size:12px;color:rgba(255,255,255,.55);text-decoration:none;}
+.guide-toggle-bar{display:flex;align-items:center;padding:6px 32px;background:rgba(10,18,32,.96);border-bottom:1px solid rgba(255,255,255,.08);justify-content:space-between;}
+.lang-label{font-size:11px;color:rgba(255,255,255,.35);margin-right:4px;}
+.lang-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;transition:all .2s;}
+.lang-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+.toggle-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s;}
+.toggle-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+.toggle-btn svg{width:12px;height:12px;}
+[data-lang].lang-hidden{display:none !important;}
+
+.hero{background:var(--navy);color:white;padding:64px 0 72px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;border-radius:50%;border:1px solid rgba(184,150,46,.15);}
+.container{max-width:900px;margin:0 auto;padding:0 32px;}
+.hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);border:1px solid rgba(184,150,46,.4);padding:5px 14px;border-radius:20px;margin-bottom:20px;}
+.hero h1{font-family:'Lora',serif;font-size:clamp(28px,4.5vw,46px);font-weight:600;line-height:1.2;margin-bottom:16px;}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.85);max-width:620px;line-height:1.65;margin-bottom:32px;}
+.hero-meta{display:flex;gap:28px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.55);}
+.hero-meta strong{color:rgba(255,255,255,.88);font-weight:500;}
+
+.nav-strip{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100;}
+.nav-pills{display:flex;gap:4px;padding:10px 32px;max-width:900px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
+.nav-pills::-webkit-scrollbar{display:none;}
+.nav-pill{white-space:nowrap;font-size:13px;font-weight:500;color:var(--text-muted);text-decoration:none;padding:5px 14px;border-radius:20px;border:1px solid transparent;transition:all .2s;}
+.nav-pill:hover{color:var(--navy);border-color:var(--border);background:var(--bg);}
+
+.section{padding:60px 0;border-bottom:1px solid var(--border);}
+.section:last-of-type{border-bottom:none;}
+.section-tag{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+.section h2{font-family:'Lora',serif;font-size:clamp(22px,3.2vw,30px);font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:18px;}
+.section p{color:#2c3340;margin-bottom:14px;}
+
+/* ── ANALYZER CARD ── */
+.analyzer-card{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin:24px 0;}
+.analyzer-header{background:var(--navy);padding:22px 28px;}
+.analyzer-header h3{font-family:'Lora',serif;font-size:19px;font-weight:600;color:white;margin:0 0 4px;}
+.analyzer-header p{font-size:13px;color:rgba(255,255,255,.5);margin:0;}
+.analyzer-body{padding:28px;}
+
+/* Stage selector */
+.stage-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.stage-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);color:var(--text-muted);cursor:pointer;transition:all .18s;white-space:nowrap;}
+.stage-btn:hover{border-color:var(--teal);color:var(--teal);}
+.stage-btn.active{color:white;border-color:transparent;}
+.stage-btn[data-stage="1"].active,.stage-btn[data-stage="2"].active{background:#2d7a4f;}
+.stage-btn[data-stage="3a"].active{background:#9a6500;}
+.stage-btn[data-stage="3b"].active{background:#b45309;}
+.stage-btn[data-stage="4"].active{background:#c0392b;}
+.stage-btn[data-stage="5"].active{background:#9f1239;}
+.stage-btn[data-stage="HD"].active{background:#075985;}
+.stage-btn[data-stage="PD"].active{background:#166534;}
+
+/* Servings */
+.form-row-inline{display:flex;gap:16px;align-items:flex-end;margin-bottom:20px;flex-wrap:wrap;}
+.form-group{flex:1;min-width:120px;}
+.form-group label{display:block;font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.form-group input,.form-group select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.form-group input:focus,.form-group select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+
+/* Ingredient textarea */
+.ingredient-label{font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:block;}
+.ingredient-area{width:100%;min-height:180px;padding:8px 10px;border:1.5px solid var(--border);border-radius:10px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;outline:none;resize:vertical;transition:border-color .2s;}
+.ingredient-area:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+.ingredient-area::placeholder{color:#b0b8c4;}
+.example-btn{font-size:12px;color:var(--teal);background:none;border:none;cursor:pointer;padding:0;margin-top:6px;text-decoration:underline;font-family:'DM Sans',sans-serif;}
+
+.analyze-btn{background:var(--navy);color:white;border:none;border-radius:8px;padding:13px 36px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s;margin-top:20px;display:flex;align-items:center;gap:10px;}
+.analyze-btn:hover{background:var(--teal);}
+.analyze-btn:disabled{background:#9aa3b0;cursor:not-allowed;}
+
+/* Spinner */
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.spinner.show{display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── RESULTS ── */
+#results-wrap{display:none;margin-top:32px;}
+#results-wrap.show{display:block;}
+
+.results-top{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start;}
+@media(max-width:640px){.results-top{grid-template-columns:1fr;}}
+
+/* NUTRITION FACTS LABEL — FDA format */
+.nf-label{width:300px;background:#fff;border:1px solid #ccc;padding:8px 10px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000;flex-shrink:0;}
+.nf-title{font-size:36px;font-weight:900;line-height:1;margin-bottom:2px;}
+.nf-servings{font-size:13px;margin-bottom:4px;}
+.nf-thick{border-top:10px solid #000;margin:4px 0;}
+.nf-med{border-top:4px solid #000;margin:3px 0;}
+.nf-thin{border-top:1px solid #000;margin:2px 0;}
+.nf-cal-row{display:flex;justify-content:space-between;align-items:baseline;}
+.nf-cal-label{font-size:14px;font-weight:700;}
+.nf-cal-val{font-size:44px;font-weight:900;line-height:1;letter-spacing:-2px;}
+.nf-dv-header{display:flex;justify-content:flex-end;font-size:9px;font-weight:700;margin-bottom:2px;}
+.nf-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:1.5px 0;}
+.nf-row-indent{padding-left:12px;}
+.nf-row-label{font-weight:400;}
+.nf-row-label.bold{font-weight:700;}
+.nf-row-pct{font-weight:700;font-size:12px;}
+.nf-footer{font-size:10px;margin-top:6px;line-height:1.4;border-top:5px solid #000;padding-top:4px;}
+
+/* CKD FLAGS PANEL */
+.ckd-flags{flex:1;}
+.flags-header{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:4px;}
+.flags-sub{font-size:13px;color:var(--text-muted);margin-bottom:16px;}
+.flag-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.flag-row:last-child{border-bottom:none;}
+.flag-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:2px;}
+.flag-ok .flag-icon{background:var(--green-soft);color:var(--green);}
+.flag-warn .flag-icon{background:var(--amber-soft);color:#7a4a00;}
+.flag-danger .flag-icon{background:var(--red-soft);color:var(--red);}
+.flag-info .flag-icon{background:var(--teal-light);color:var(--teal);}
+.flag-body h4{font-size:13.5px;font-weight:600;color:#0f1e2e;margin-bottom:3px;}
+.flag-body p{font-size:12.5px;color:#2c3340;margin:0;line-height:1.55;}
+.flag-body .flag-values{font-size:12px;color:var(--text-muted);margin-top:3px;}
+.flag-body .flag-values strong{color:#0f1e2e;}
+
+/* Per ingredient breakdown */
+.ingredient-breakdown{margin-top:24px;}
+.ib-header{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
+.ib-table{width:100%;border-collapse:collapse;font-size:13px;}
+.ib-table th{text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);padding:7px 12px;background:var(--bg);border-bottom:1px solid var(--border);}
+.ib-table th:not(:first-child){text-align:right;}
+.ib-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:#2c3340;vertical-align:top;}
+.ib-table td:first-child{font-weight:500;color:#0f1e2e;}
+.ib-table td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;}
+.ib-table tr:last-child td{border-bottom:none;font-weight:700;background:var(--bg);color:#0f1e2e;}
+.ib-table tr:hover td{background:#f4f7fa;}
+
+/* Error */
+.api-error{background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:10px;padding:16px 20px;margin-top:20px;font-size:14px;color:var(--red);display:none;}
+.api-error.show{display:block;}
+
+/* Alert */
+.alert{border-radius:10px;padding:18px 22px;margin:20px 0;display:flex;gap:14px;align-items:flex-start;}
+.alert-amber{background:var(--amber-soft);border-left:3px solid var(--amber);}
+.alert-teal{background:var(--teal-light);border-left:3px solid var(--teal);}
+.alert-red{background:var(--red-soft);border-left:3px solid var(--red);}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:2px;}
+.alert-body h4{font-size:14px;font-weight:600;color:#0f1e2e;margin-bottom:5px;}
+.alert-body p,.alert-body ul{font-size:13.5px;color:#2c3340;margin:0;line-height:1.6;}
+.alert-body ul{margin-left:16px;}
+.alert-body ul li{margin-bottom:3px;}
+
+/* Two col */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0;}
+@media(max-width:600px){.two-col{grid-template-columns:1fr;}}
+.feat-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:18px;}
+.feat-card h4{font-size:13.5px;font-weight:600;color:#0f1e2e;margin-bottom:8px;}
+.feat-card p{font-size:13px;color:#2c3340;margin:0;line-height:1.6;}
+
+/* Ref table */
+.ref-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px;}
+.ref-table th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);padding:9px 14px;background:var(--bg);border-bottom:1px solid var(--border);}
+.ref-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:#2c3340;vertical-align:top;}
+.ref-table td:first-child{font-weight:600;color:#0f1e2e;}
+.ref-table tr:last-child td{border-bottom:none;}
+.ref-table tr:hover td{background:var(--bg);}
+
+.dr-card{background:#0f1e2e;color:white;border-radius:14px;padding:28px;display:flex;gap:20px;align-items:flex-start;margin-top:48px;}
+.dr-card h4{font-size:15px;font-weight:600;color:white;margin-bottom:4px;}
+.dr-card p{font-size:13.5px;color:rgba(255,255,255,.85);line-height:1.6;}
+.dr-creds{font-size:11.5px;color:rgba(255,255,255,.45);margin-top:8px;}
+.guide-footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0;margin-top:64px;}
+.guide-footer .fi{max-width:900px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.guide-footer p{font-size:12.5px;color:#4a5260;}
+.guide-footer a{color:var(--teal);text-decoration:none;font-weight:500;}
+.disclaimer{background:var(--amber-soft);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:14px 18px;margin:36px 0 0;font-size:12.5px;color:#2c3340;line-height:1.6;}
+.disclaimer strong{color:var(--navy);}
+.print-btn{position:fixed;bottom:76px;right:22px;width:42px;height:42px;border-radius:50%;background:var(--teal);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:transform .2s;z-index:9998;}
+.print-btn:hover{transform:scale(1.1);}
+.print-btn svg{width:17px;height:17px;}
+
+/* ── DARK MODE ── */
+html[data-theme="dark"]{--navy:#0f1e2e;--teal:#25949d;--teal-light:#0e2f32;--gold-light:#d4af4f;--text:#e8eaf0;--text-muted:#8a95a8;--border:#2a3548;--bg:#141c2a;--white:#1a2030;--red:#e55050;--red-soft:#2a1515;--amber:#f5a623;--amber-soft:#2a1f0a;--green:#3d9a6a;--green-soft:#0e2a1c;}
+html[data-theme="dark"] body{background:#0f1520;color:#e8eaf0;}
+html[data-theme="dark"] .site-header{background:#080d16;}
+html[data-theme="dark"] .nav-strip{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .hero{background:#080d16;}
+html[data-theme="dark"] .section{border-color:#2a3548;}
+html[data-theme="dark"] .analyzer-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .analyzer-header{background:#080d16;}
+html[data-theme="dark"] .form-group input,html[data-theme="dark"] .form-group select,html[data-theme="dark"] .ingredient-area{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+html[data-theme="dark"] .form-group label,html[data-theme="dark"] .ingredient-label{color:#25949d;}
+html[data-theme="dark"] .stage-btn{background:#141c2a;border-color:#2a3548;color:#8a95a8;}
+html[data-theme="dark"] .section p,html[data-theme="dark"] .feat-card p,html[data-theme="dark"] .alert-body p,html[data-theme="dark"] .alert-body ul li,html[data-theme="dark"] .flag-body p{color:#c0cad8 !important;}
+html[data-theme="dark"] .flag-body h4{color:#e8eaf0;}
+html[data-theme="dark"] .ib-table th{background:#1a2535;color:#8a95a8;}
+html[data-theme="dark"] .ib-table td{color:#c0cad8;border-color:#2a3548;}
+html[data-theme="dark"] .ib-table td:first-child,html[data-theme="dark"] .ib-table tr:last-child td{color:#e8eaf0;}
+html[data-theme="dark"] .ib-table tr:last-child td{background:#1a2535;}
+html[data-theme="dark"] .ib-table tr:hover td{background:#1e2d42;}
+html[data-theme="dark"] .flag-row{border-color:#2a3548;}
+html[data-theme="dark"] .ref-table th{background:#1a2535;color:#8a95a8;}
+html[data-theme="dark"] .ref-table td{color:#c0cad8;border-color:#2a3548;}
+html[data-theme="dark"] .ref-table td:first-child{color:#e8eaf0;}
+html[data-theme="dark"] .feat-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .feat-card h4{color:#e8eaf0;}
+html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .disclaimer{background:#2a1f0a;}
+html[data-theme="dark"] .nf-label{background:#e8e8e8;}
+html[data-theme="dark"] .alert-teal{background:#0e2f32;}
+html[data-theme="dark"] .alert-amber{background:#2a1f0a;}
+html[data-theme="dark"] .alert-red{background:#2a1515;}
+html[data-theme="dark"] .dr-card{background:#080d16;}
+
+html[data-view="desktop"]{min-width:1024px;}
+html[data-view="desktop"] body{min-width:1024px;}
+
+@media print{
+  .site-header,.nav-strip,.guide-toggle-bar,.print-btn,.guide-footer,.analyze-btn,.stage-row,.form-row-inline,.ingredient-area,.example-btn,.ingredient-label{display:none !important;}
+  body{font-size:12px;color:#000;background:#fff;}
+  .hero{background:#fff !important;color:#000 !important;padding:16px 0 !important;}
+  .results-top{grid-template-columns:220px 1fr;}
+  @page{margin:15mm;size:A4;}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+<a class="brand" href="https://williamriveromd.com">W. G. M. <strong>Rivero</strong>, MD</a>
+<a class="back" href="https://williamriveromd.com/guides/index.html">← All Guides</a>
+</header>
+<div class="guide-toggle-bar">
+<div style="display:flex;gap:8px;align-items:center;">
+<span class="lang-label">Language:</span>
+<button class="lang-btn active" id="glb-en" onclick="setLang('en')">English</button>
+<button class="lang-btn" id="glb-tl" onclick="setLang('tl')">Tagalog</button>
+<button class="lang-btn" id="glb-ceb" onclick="setLang('ceb')">Cebuano</button>
+      <button id="glb-kap" class="lang-btn" onclick="setLang('kap')">KAP</button>
+</div>
+<div style="display:flex;gap:8px;">
+<button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+<svg fill="none" id="darkIcon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+<span id="darkLabel">Dark</span>
+</button>
+<button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="14" rx="2" width="20" x="2" y="3"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg>
+<span id="desktopLabel">Desktop</span>
+</button>
+</div>
+</div>
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nutrition · CKD · Recipe Analyzer</div>
+<h1>CKD Recipe Nutrition Analyzer</h1>
+<p class="hero-sub" data-lang="en">Paste any recipe's ingredients and get a full Nutrition Facts label — then see instant CKD safety flags showing whether the recipe is safe for your stage, and which ingredients to modify.</p><p class="hero-sub lang-hidden" data-lang="tl">I-paste ang mga sangkap ng kahit anong recipe at makakuha ng kumpletong Nutrition Facts label — pagkatapos ay makikita mo agad ang mga CKD safety flags na nagpapakita kung ligtas ang recipe para sa iyong stage, at kung aling mga sangkap ang dapat baguhin.</p><p class="hero-sub lang-hidden" data-lang="ceb">I-paste ang bisan unsang ingredients sa recipe ug makuha nimo ang kompleto nga Nutrition Facts label — dayon makita dayon ang CKD safety flags nga magpakita kung safe ba ang recipe para sa imong stage, ug unsang mga ingredients ang kinahanglan usbon.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Guidelines:</strong> KDIGO 2024 · NKF KDOQI 2020</span>
+<span><strong>Updated:</strong> 2026</span>
+</div>
+</div>
+</section>
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#analyzer">Analyzer</a>
+<a class="nav-pill" href="#how-to-use">How to Use</a>
+<a class="nav-pill" href="#ckd-limits">CKD Limits by Stage</a>
+<a class="nav-pill" href="#filipino-tips">Filipino Food Tips</a>
+</div>
+</nav>
+<main class="container">
+<!-- ═══════════ ANALYZER ═══════════ -->
+<section class="section" id="analyzer">
+<div class="section-tag">Recipe Nutrition Tool</div>
+<h2 data-lang="en">Analyze a Recipe</h2><h2 class="lang-hidden" data-lang="tl">Mag-analyze ng Recipe</h2><h2 class="lang-hidden" data-lang="ceb">I-analyze ang Recipe</h2>
+<p data-lang="en">List your ingredients with quantities, select your CKD stage, and the analyzer will generate a Nutrition Facts label and flag any nutrients of concern for your stage.</p><p class="lang-hidden" data-lang="tl">Ilista ang iyong mga sangkap kasama ang dami, piliin ang iyong CKD stage, at ang analyzer ay gagawa ng Nutrition Facts label at magfla-flag ng anumang nutrients na dapat bantayan para sa iyong stage.</p><p class="lang-hidden" data-lang="ceb">Ilista ang imong mga ingredients uban sa gidaghanon, pilia ang imong CKD stage, ug ang analyzer maghimo og Nutrition Facts label ug mag-flag sa bisan unsang nutrients nga kinahanglan bantayan para sa imong stage.</p>
+<div class="analyzer-card">
+<div class="analyzer-header">
+<h3 data-lang="en">Recipe Nutrition Analyzer</h3><h3 class="lang-hidden" data-lang="tl">Recipe Nutrition Analyzer</h3><h3 class="lang-hidden" data-lang="ceb">Recipe Nutrition Analyzer</h3>
+<p data-lang="en">Powered by AI nutritional analysis · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="tl">Pinapagana ng AI nutritional analysis · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="ceb">Gipadagan sa AI nutritional analysis · CKD-adjusted safety flags</p>
+</div>
+<div class="analyzer-body">
+<!-- Stage selector -->
+<div style="margin-bottom:6px;">
+<span class="ingredient-label">Your CKD Stage (for safety flags)</span>
+</div>
+<div class="stage-row" id="stage-row">
+<button class="stage-btn active" data-stage="none" onclick="setStage('none',this)">No CKD / General</button>
+<button class="stage-btn" data-stage="1" onclick="setStage('1',this)">Stage 1–2</button>
+<button class="stage-btn" data-stage="3a" onclick="setStage('3a',this)">Stage 3a</button>
+<button class="stage-btn" data-stage="3b" onclick="setStage('3b',this)">Stage 3b</button>
+<button class="stage-btn" data-stage="4" onclick="setStage('4',this)">Stage 4</button>
+<button class="stage-btn" data-stage="5" onclick="setStage('5',this)">Stage 5</button>
+<button class="stage-btn" data-stage="HD" onclick="setStage('HD',this)">Hemodialysis</button>
+<button class="stage-btn" data-stage="PD" onclick="setStage('PD',this)">Peritoneal Dialysis</button>
+</div>
+<!-- Servings and recipe name -->
+<div class="form-row-inline">
+<div class="form-group" style="max-width:220px;">
+<label>Recipe Name (optional)</label>
+<input id="f-name" placeholder="e.g. Chicken Tinola" type="text"/>
+</div>
+<div class="form-group" style="max-width:130px;">
+<label>Total Servings</label>
+<input id="f-servings" max="50" min="1" type="number" value="4"/>
+</div>
+<div class="form-group" style="max-width:130px;">
+<label>Serving Size</label>
+<input id="f-serving-desc" placeholder="e.g. 1 bowl" type="text"/>
+</div>
+</div>
+<!-- Ingredient list -->
+<label class="ingredient-label">Ingredients (one per line, with quantity and unit)</label>
+<textarea class="ingredient-area" id="f-ingredients" placeholder="2 cups rice
+200g chicken breast
+1 medium sayote
+1 tbsp patis (fish sauce)
+3 cloves garlic
+1 thumb ginger
+2 cups water
+2 stalks green onion"></textarea>
+<button class="example-btn" onclick="loadExample('tinola')">Load example: Chicken Tinola</button>
+        
+      <button class="example-btn" onclick="loadExample('sinigang')">Load example: Pork Sinigang</button>
+        
+      <button class="example-btn" onclick="loadExample('tortang_talong')">Load example: Tortang Talong</button>
+<br/>
+<button class="analyze-btn" id="analyze-btn" onclick="analyzeRecipe()">
+<div class="spinner" id="spinner"></div>
+<span id="btn-text">Analyze Recipe</span>
+</button>
+<div class="api-error" id="api-error"></div>
+<!-- ═══ RESULTS ═══ -->
+<div id="results-wrap">
+<div class="results-top">
+<!-- NUTRITION FACTS LABEL -->
+<div>
+<div class="nf-label" id="nf-label">
+<!-- Populated by JS -->
+</div>
+</div>
+<!-- CKD FLAGS -->
+<div class="ckd-flags">
+<div class="flags-header" id="flags-header">CKD Safety Assessment</div>
+<div class="flags-sub" id="flags-sub">Per serving</div>
+<div id="flags-list"></div>
+</div>
+</div>
+<!-- INGREDIENT BREAKDOWN -->
+<div class="ingredient-breakdown" id="ingredient-breakdown">
+<div class="ib-header">Contribution by ingredient (per serving)</div>
+<table class="ib-table">
+<thead><tr>
+<th>Ingredient</th>
+<th>Calories</th>
+<th>Protein</th>
+<th>Sodium</th>
+<th>Potassium</th>
+<th>Phosphorus</th>
+</tr></thead>
+<tbody id="ib-tbody"></tbody>
+</table>
+</div>
+<!-- MODIFICATION TIPS -->
+<div id="mod-tips-wrap" style="margin-top:20px;"></div>
+</div><!-- /results-wrap -->
+</div><!-- /analyzer-body -->
+</div><!-- /analyzer-card -->
+<div class="disclaimer" data-lang="en"><strong>Educational tool only.</strong> Nutritional values are AI-estimated and may vary from actual values depending on brands, preparation methods, and ingredient variations. Always verify with your nephrologist and renal dietitian before making significant dietary changes. Not a substitute for professional medical or dietary advice.</div><div class="disclaimer lang-hidden" data-lang="tl"><strong>Pang-edukasyon lamang.</strong> Ang mga nutritional values ay AI-estimated at maaaring mag-iba sa totoong values depende sa mga brand, paraan ng pagluto, at pagkakaiba ng mga sangkap. Palaging kumpirmahin sa iyong nephrologist at renal dietitian bago gumawa ng malalaking pagbabago sa diyeta. Hindi ito pamalit sa propesyonal na medikal o dietary advice.</div><div class="disclaimer lang-hidden" data-lang="ceb"><strong>Alang ra sa pagtuon.</strong> Ang nutritional values gi-estimate sa AI ug mahimong lahi sa tinuod nga values depende sa brands, paagi sa pagluto, ug kalainan sa ingredients. Kanunay i-verify sa imong nephrologist ug renal dietitian sa dili pa maghimo og dagkong kausaban sa pagkaon. Dili ni kapuli sa propesyonal nga medical o dietary advice.</div>
+</section>
+<!-- ═══════════ HOW TO USE ═══════════ -->
+<section class="section" id="how-to-use">
+<div class="section-tag">Guide</div>
+<h2 data-lang="en">How to Use This Analyzer</h2><h2 class="lang-hidden" data-lang="tl">Paano Gamitin ang Analyzer na Ito</h2><h2 class="lang-hidden" data-lang="ceb">Unsaon Paggamit Niini nga Analyzer</h2>
+<div class="two-col">
+<div class="feat-card">
+<h4 data-lang="en">1. Enter your CKD stage</h4><h4 class="lang-hidden" data-lang="tl">1. Ilagay ang iyong CKD stage</h4><h4 class="lang-hidden" data-lang="ceb">1. I-enter ang imong CKD stage</h4>
+<p data-lang="en">Select your current stage or dialysis modality. This activates the safety flag system — the analyzer will compare each nutrient in the recipe against your specific stage limits and flag anything that exceeds safe thresholds.</p><p class="lang-hidden" data-lang="tl">Piliin ang iyong kasalukuyang stage o dialysis modality. Ito ang mag-a-activate ng safety flag system — ikukumpara ng analyzer ang bawat nutrient sa recipe laban sa mga limit para sa iyong partikular na stage at magfla-flag ng kahit anong lumampas sa ligtas na threshold.</p><p class="lang-hidden" data-lang="ceb">Pilia ang imong kasamtangang stage o dialysis modality. Kini mag-activate sa safety flag system — ang analyzer magtandi sa matag nutrient sa recipe batok sa imong piho nga stage limits ug mag-flag sa bisan unsa nga mosobra sa safe thresholds.</p>
+</div>
+<div class="feat-card">
+<h4 data-lang="en">2. Enter ingredients with quantities</h4><h4 class="lang-hidden" data-lang="tl">2. Ilagay ang mga sangkap kasama ang dami</h4><h4 class="lang-hidden" data-lang="ceb">2. I-enter ang mga ingredients uban sa gidaghanon</h4>
+<p data-lang="en">One ingredient per line. Include the amount and unit: "200g chicken breast," "1 tbsp patis," "2 cups rice." Filipino ingredients are recognized — use local names (sayote, kangkong, bangus, patis, bagoong). Be specific about preparation (boiled vs fried changes calorie counts significantly).</p><p class="lang-hidden" data-lang="tl">Isang sangkap lang bawat linya. Isama ang dami at unit: "200g chicken breast," "1 tbsp patis," "2 cups rice." Kinikilala ang mga Filipino ingredients — gamitin ang mga lokal na pangalan (sayote, kangkong, bangus, patis, bagoong). Maging tiyak sa paraan ng paghahanda (malaki ang pagkakaiba ng calories ng nilaga kumpara sa prito).</p><p class="lang-hidden" data-lang="ceb">Usa ka ingredient matag linya. Iapil ang kantidad ug unit: "200g chicken breast," "1 tbsp patis," "2 cups rice." Ang Filipino ingredients mailhan — gamita ang lokal nga ngalan (sayote, kangkong, bangus, patis, bagoong). Espesipiko sa pag-andam (boiled vs fried lahi kaayo ang calorie counts).</p>
+</div>
+<div class="feat-card">
+<h4 data-lang="en">3. Read the Nutrition Facts label</h4><h4 class="lang-hidden" data-lang="tl">3. Basahin ang Nutrition Facts label</h4><h4 class="lang-hidden" data-lang="ceb">3. Basaha ang Nutrition Facts label</h4>
+<p data-lang="en">The output mirrors the standard FDA Nutrition Facts label format — identical to what you see on packaged food. Values are per serving. Use the "Total Servings" field to divide the recipe correctly.</p><p class="lang-hidden" data-lang="tl">Ang output ay kapareho ng standard FDA Nutrition Facts label format — katulad ng makikita mo sa mga nakabalot na pagkain. Ang mga values ay per serving. Gamitin ang "Total Servings" field para hatiin nang tama ang recipe.</p><p class="lang-hidden" data-lang="ceb">Ang output pareho sa standard FDA Nutrition Facts label format — pareho sa makita nimo sa mga de-pakete nga pagkaon. Ang values kay per serving. Gamita ang "Total Servings" field para mabahin og husto ang recipe.</p>
+</div>
+<div class="feat-card">
+<h4 data-lang="en">4. Review CKD safety flags</h4><h4 class="lang-hidden" data-lang="tl">4. Suriin ang mga CKD safety flags</h4><h4 class="lang-hidden" data-lang="ceb">4. Tan-awa ang CKD safety flags</h4>
+<p data-lang="en">The flag panel shows whether each key nutrient (sodium, potassium, phosphorus, protein, fluid) is within safe limits for your stage. Green = safe, yellow = monitor, red = exceeds limit. The ingredient breakdown shows <em>which ingredient</em> is the main contributor to any flagged nutrient.</p><p class="lang-hidden" data-lang="tl">Ipinapakita ng flag panel kung ang bawat pangunahing nutrient (sodium, potassium, phosphorus, protein, fluid) ay nasa loob ng ligtas na limit para sa iyong stage. Green = ligtas, yellow = bantayan, red = lampas sa limit. Ang ingredient breakdown ay nagpapakita kung <em>aling sangkap</em> ang pangunahing contributor sa anumang na-flag na nutrient.</p><p class="lang-hidden" data-lang="ceb">Ang flag panel magpakita kung ang matag importante nga nutrient (sodium, potassium, phosphorus, protein, fluid) naa ba sa safe limits para sa imong stage. Green = safe, yellow = bantayi, red = sobra sa limit. Ang ingredient breakdown magpakita <em>unsang ingredient</em> ang pinaka-kontribyutor sa bisan unsang na-flag nga nutrient.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4 data-lang="en">Tip: Use this to modify family recipes, not just analyze them</h4><h4 class="lang-hidden" data-lang="tl">Tip: Gamitin ito para baguhin ang mga family recipes, hindi lang para suriin ang mga ito</h4><h4 class="lang-hidden" data-lang="ceb">Tip: Gamita ni para usbon ang family recipes, dili lang i-analyze</h4>
+<p data-lang="en">Try analyzing a recipe first to see which ingredient is causing a problem (usually patis, soy sauce, or a high-potassium vegetable), then remove or reduce that ingredient and re-analyze to see if it becomes safe. Most traditional Filipino dishes can be made CKD-safe with small modifications — usually just reducing patis by 75% and switching to calamansi for flavor.</p><p class="lang-hidden" data-lang="tl">Subukang mag-analyze muna ng recipe para makita kung aling sangkap ang nagdudulot ng problema (kadalasan patis, toyo, o high-potassium na gulay), pagkatapos ay alisin o bawasan ang sangkap na iyon at mag-analyze ulit para makita kung magiging ligtas na. Karamihan sa mga tradisyonal na Filipino dishes ay maaaring gawing CKD-safe sa mga maliliit na pagbabago — kadalasan pagbawas lang ng patis ng 75% at pagpalit sa calamansi para sa lasa.</p><p class="lang-hidden" data-lang="ceb">Sulayi og analyze ang recipe una para makita unsang ingredient ang naghatag problema (kasagaran patis, toyo, o taas-potassium nga utanon), dayon tangtanga o gamaya ang ingredient ug i-analyze balik para makita kung mahimo nang safe. Kadaghanan sa tradisyonal nga Filipino nga pagkaon mahimo nga CKD-safe uban sa gamay nga pagbag-o — kasagaran gamayan lang og 75% ang patis ug ilisan og calamansi para sa lami.</p>
+</div>
+</div>
+</section>
+<!-- ═══════════ CKD LIMITS ═══════════ -->
+<section class="section" id="ckd-limits">
+<div class="section-tag">Reference</div>
+<h2 data-lang="en">CKD Nutrient Limits by Stage</h2><h2 class="lang-hidden" data-lang="tl">CKD Nutrient Limits Ayon sa Stage</h2><h2 class="lang-hidden" data-lang="ceb">CKD Nutrient Limits Kada Stage</h2>
+<p data-lang="en">These are the thresholds used to generate the safety flags. Values are per meal (assuming 3 meals/day) unless noted.</p><p class="lang-hidden" data-lang="tl">Ito ang mga threshold na ginagamit para gawin ang mga safety flags. Ang mga values ay per meal (ipinapalagay na 3 meals/araw) maliban kung nakalagay.</p><p class="lang-hidden" data-lang="ceb">Mao ni ang thresholds nga gigamit sa pag-generate sa safety flags. Ang values kay per meal (nag-assume og 3 ka meals/adlaw) gawas kung gisulti.</p>
+<table class="ref-table">
+<thead><tr><th>Nutrient</th><th>Stage 1–2</th><th>Stage 3a–3b</th><th>Stage 4–5</th><th>HD</th><th>PD</th></tr></thead>
+<tbody>
+<tr><td>Sodium (per meal)</td><td>&lt;767 mg</td><td>&lt;767 mg</td><td>&lt;767 mg</td><td>&lt;667 mg</td><td>&lt;667 mg</td></tr>
+<tr><td>Potassium (per meal)</td><td>No restriction</td><td>1,000 mg</td><td>700–800 mg</td><td>667 mg</td><td>750 mg</td></tr>
+<tr><td>Phosphorus (per meal)</td><td>400 mg</td><td>350 mg</td><td>300 mg</td><td>300 mg</td><td>300 mg</td></tr>
+<tr><td>Protein (per meal)</td><td>Based on weight</td><td>Moderate restriction</td><td>Low (0.6–0.8 g/kg/day)</td><td>Higher (1.0–1.2 g/kg/day)</td><td>Highest (1.2–1.5 g/kg/day)</td></tr>
+<tr><td>Fluid (per day)</td><td>Unrestricted</td><td>Unrestricted</td><td>Individualized</td><td>500 mL + urine output</td><td>1,500–2,000 mL</td></tr>
+</tbody>
+</table>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠</div>
+<div class="alert-body">
+<h4 data-lang="en">Phosphorus additives are not captured by this tool</h4><h4 class="lang-hidden" data-lang="tl">Hindi nakukuha ng tool na ito ang phosphorus additives</h4><h4 class="lang-hidden" data-lang="ceb">Ang Phosphorus additives dili makuha niini nga tool</h4>
+<p data-lang="en">The analyzer estimates naturally occurring phosphorus in whole food ingredients. <strong>Inorganic phosphate additives</strong> in processed ingredients (patis, instant noodle sachets, processed meats, canned goods) are absorbed at 90–100% vs 40–60% for natural food phosphorus. The real phosphorus burden from processed ingredients is always higher than calculated. When in doubt, choose fresh ingredients.</p><p class="lang-hidden" data-lang="tl">Ang analyzer ay nagtatantya ng natural na phosphorus sa mga buong pagkain. Ang <strong>inorganic phosphate additives</strong> sa mga processed ingredients (patis, instant noodle sachets, processed meats, de-lata) ay naa-absorb ng 90–100% kumpara sa 40–60% para sa natural food phosphorus. Ang totoong phosphorus burden mula sa processed ingredients ay palaging mas mataas kaysa sa kinalkula. Kapag hindi sigurado, pumili ng mga sariwang sangkap.</p><p class="lang-hidden" data-lang="ceb">Ang analyzer nag-estimate sa natural nga phosphorus sa whole food ingredients. <strong>Inorganic phosphate additives</strong> sa processed ingredients (patis, instant noodle sachets, processed meats, de-lata) gi-absorb sa 90–100% kompara sa 40–60% para sa natural food phosphorus. Ang tinuod nga phosphorus burden gikan sa processed ingredients kanunay mas taas kay sa gi-calculate. Kung nagduda, pilia ang fresh ingredients.</p>
+</div>
+</div>
+</section>
+<!-- ═══════════ FILIPINO FOOD TIPS ═══════════ -->
+<section class="section" id="filipino-tips">
+<div class="section-tag">Practical Guide</div>
+<h2 data-lang="en">CKD-Safe Filipino Cooking Tips</h2><h2 class="lang-hidden" data-lang="tl">Mga Tip sa CKD-Safe na Filipino Cooking</h2><h2 class="lang-hidden" data-lang="ceb">CKD-Safe Filipino nga mga Tip sa Pagluto</h2>
+<div class="two-col">
+<div class="feat-card">
+<h4 data-lang="en">Reducing sodium without losing flavor</h4><h4 class="lang-hidden" data-lang="tl">Pagbabawas ng sodium nang hindi nawawala ang lasa</h4><h4 class="lang-hidden" data-lang="ceb">Pagkunhod sa sodium nga dili mawala ang lami</h4>
+<p data-lang="en">Replace patis tablespoon-for-tablespoon with: calamansi + a tiny pinch of salt (1/8 tsp = 300 mg vs patis 1,400 mg/tbsp). Use fresh ginger, garlic, and sibuyas tagalog generously — these are low-sodium and high-flavor. Avoid toyo, bagoong, and MSG-based seasoning cubes entirely on dialysis.</p><p class="lang-hidden" data-lang="tl">Palitan ang patis tablespoon-for-tablespoon ng: calamansi + kaunting asin (1/8 tsp = 300 mg kumpara sa patis 1,400 mg/tbsp). Gumamit ng maraming sariwang luya, bawang, at sibuyas tagalog — low-sodium ang mga ito at matapang ang lasa. Iwasan ang toyo, bagoong, at MSG-based seasoning cubes kapag nasa dialysis.</p><p class="lang-hidden" data-lang="ceb">Ilisan ang patis tablespoon-for-tablespoon og: calamansi + gamay kaayo nga asin (1/8 tsp = 300 mg vs patis 1,400 mg/tbsp). Paggamit og daghan nga fresh luya, ahos, ug sibuyas tagalog — kini ubos-sodium ug taas-lami. Likayi ang toyo, bagoong, ug MSG-based seasoning cubes sa dialysis.</p>
+</div>
+<div class="feat-card">
+<h4 data-lang="en">Leaching high-potassium vegetables</h4><h4 class="lang-hidden" data-lang="tl">Pag-leach ng high-potassium na mga gulay</h4><h4 class="lang-hidden" data-lang="ceb">Pag-leach sa taas-potassium nga mga utanon</h4>
+<p data-lang="en">Peel and dice → soak in large volume of water ≥2 hours → drain fully → boil in fresh water → drain again before eating. Reduces potassium by 30–50%. Apply to: kamote, kalabasa, patatas, saging na saba. Do not drink the soaking or boiling water.</p><p class="lang-hidden" data-lang="tl">Balatan at hiwain → ibabad sa maraming tubig nang ≥2 oras → patuluin nang husto → pakuluan sa bagong tubig → patuluin ulit bago kainin. Nakababawas ng potassium ng 30–50%. Gawin ito sa: kamote, kalabasa, patatas, saging na saba. Huwag inumin ang tubig na pinagbabaran o pinagpakuluan.</p><p class="lang-hidden" data-lang="ceb">Panita ug hiwa-hiwaa → ituslob sa dakong tubig sulod sa ≥2 ka oras → hugas-a pag-ayo → lag-a sa bag-ong tubig → hugas-a pag-usab sa dili pa kaonon. Makunhuran ang potassium og 30–50%. Magamit sa: kamote, kalabasa, patatas, saging na saba. Ayaw imna ang tubig nga gituslob o gilaug-an.</p>
+</div>
+<div class="feat-card">
+<h4 data-lang="en">Best CKD-safe Filipino ingredients</h4><h4 class="lang-hidden" data-lang="tl">Pinakamainam na sangkap na ligtas sa CKD para sa lutuing Pilipino</h4><h4 class="lang-hidden" data-lang="ceb">Pinakamaayo nga mga sangkap para sa CKD</h4>
+<p data-lang="en"><strong>Low K, Low P, Low Na:</strong> sayote (chayote), ampalaya (bitter gourd), upo, labanos, cabbage, green beans (sitaw), kangkong (small portions). <strong>Good protein sources:</strong> egg whites (no yolk = no phosphorus), lean chicken (breast, no skin), tilapia, bangus (rinse to reduce sodium).</p><p class="lang-hidden" data-lang="tl"><strong>Mababa sa K, P, at Na:</strong> sayote (chayote), ampalaya (bitter gourd), upo, labanos, repolyo, sitaw (green beans), kangkong (maliit na dami lamang). <strong>Magagandang pinagkukunan ng protina:</strong> puti ng itlog (walang bula = walang phosphorus), manok na walang taba (dibdib, walang balat), tilapia, bangus (hugasan para mabawasan ang sodium).</p><p class="lang-hidden" data-lang="ceb"><strong>Ubos K, Ubos P, Ubos Na:</strong> sayote (chayote), ampalaya (bitter gourd - pait nga tanom), upo, labanos, repolyo, sitaw, kangkong (gamay nga gidaghanon). <strong>Maayo nga tinubdan sa protein:</strong> puti sa itlog (walay pula = walay phosphorus), manok nga walay tabas (dughan, walay panit), tilapia, bangus (hugasi aron makunhuran ang sodium).</p>
+</div>
+<div class="feat-card">
+<h4 data-lang="en">Ingredients to minimize or avoid</h4><h4 class="lang-hidden" data-lang="tl">Mga sangkap na dapat bawasan o iwasan</h4><h4 class="lang-hidden" data-lang="ceb">Mga sangkap nga angay kunhuran o likayan</h4>
+<p data-lang="en"><strong>High sodium:</strong> patis, toyo, bagoong, magic sarap, instant soups, processed longanisa, tocino, canned sardines in brine. <strong>High potassium:</strong> saging (all types), buko juice, kamote, avocado, tomato sauce, kamatis in large amounts. <strong>High phosphorus:</strong> nuts, beans, dairy, colas, whole grains in excess.</p><p class="lang-hidden" data-lang="tl"><strong>Mataas sa sodium:</strong> patis, toyo, bagoong, magic sarap, instant na sopas, processed na longganisa, tocino, sardinas sa lata na may salty brine. <strong>Mataas sa potassium:</strong> saging (lahat ng klase), buko juice, kamote, avocado, tomato sauce, kamatis kapag marami. <strong>Mataas sa phosphorus:</strong> nuts, beans, gatas at produktong gawa sa gatas, mga cola, sobrang daming whole grains.</p><p class="lang-hidden" data-lang="ceb"><strong>Taas og sodium:</strong> patis, toyo, bagoong, magic sarap, instant nga sabaw, processed nga longanisa, tocino, de lata nga sardinas sa brine. <strong>Taas og potassium:</strong> saging (tanang klase), buko juice, kamote, avocado, tomato sauce, kamatis sa daghang gidaghanon. <strong>Taas og phosphorus:</strong> mga nuts, beans, gatas ug gikan sa gatas, colas, sobra nga whole grains.</p>
+</div>
+</div>
+<div class="disclaimer" data-lang="en"><strong>Important:</strong> This analyzer provides educational estimates based on AI nutritional analysis. Nutrient values vary by brand, preparation method, and specific ingredient variety. Always consult your nephrologist and renal dietitian for personalized dietary advice.</div><div class="disclaimer lang-hidden" data-lang="tl"><strong>Mahalaga:</strong> Ang analyzer na ito ay nagbibigay ng tantyang pang-edukasyon batay sa AI nutritional analysis. Nag-iiba ang halaga ng nutrients depende sa brand, paraan ng pagluluto, at klase ng sangkap. Laging kumonsulta sa iyong nephrologist at renal dietitian para sa personalized na payo sa pagkain.</div><div class="disclaimer lang-hidden" data-lang="ceb"><strong>Importante:</strong> Kini nga analyzer naghatag og educational estimates base sa AI nutritional analysis. Ang kantidad sa nutrients lahi-lahi depende sa brand, paagi sa pagluto, ug klase sa sangkap. Kanunay pakigsulti sa imong nephrologist ug renal dietitian para sa personalized nga tambag sa pagkaon.</div>
+<div class="dr-card">
+<div style="width:60px;height:60px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid rgba(184,150,46,.5);background:#0f1e2e;">
+<img alt="Dr. W. G. M. Rivero" src="../images/photo-contact.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
+</div>
+<div>
+<h4 data-lang="en"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4><h4 class="lang-hidden" data-lang="tl"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4><h4 class="lang-hidden" data-lang="ceb"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing across Quezon City, Angeles City, and Bulacan.</p><p class="lang-hidden" data-lang="tl">Espesyalista sa Internal Medicine, Nephrology, at Clinical Nutrition. Nagpapraktis sa Quezon City, Angeles City, at Bulacan.</p><p class="lang-hidden" data-lang="ceb">Espesyalista sa Internal Medicine, Nephrology, ug Clinical Nutrition. Nagpraktis sa Quezon City, Angeles City, ug Bulacan.</p>
+<p class="dr-creds" data-lang="en">PRC 0105184 · seriousmd.com/doc/williamrivero</p><p class="dr-creds lang-hidden" data-lang="tl">PRC 0105184 · seriousmd.com/doc/williamrivero</p><p class="dr-creds lang-hidden" data-lang="ceb">PRC 0105184 · seriousmd.com/doc/williamrivero</p>
+</div>
+</div>
+</section>
+</main>
+<footer class="guide-footer">
+<div class="fi">
+<p data-lang="en">© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p><p class="lang-hidden" data-lang="tl">© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p><p class="lang-hidden" data-lang="ceb">© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p>
+<p data-lang="en">References: KDIGO CKD 2024 · NKF KDOQI Nutrition 2020 · USDA FoodData Central · Philippine Food Composition Tables</p><p class="lang-hidden" data-lang="tl">References: KDIGO CKD 2024 · NKF KDOQI Nutrition 2020 · USDA FoodData Central · Philippine Food Composition Tables</p><p class="lang-hidden" data-lang="ceb">References: KDIGO CKD 2024 · NKF KDOQI Nutrition 2020 · USDA FoodData Central · Philippine Food Composition Tables</p>
+</div>
+</footer>
+<button aria-label="Print" class="print-btn" onclick="window.print()">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
+</svg>
+</button>
+<script>
+// ── THEME / LANG ──────────────────────────────────────────────────────
+const DK='wgmr-dark',DSK='wgmr-desktop',GLK='wgmr-lang';
+function applyDark(on){
+  document.documentElement.setAttribute('data-theme',on?'dark':'light');
+  const b=document.getElementById('darkToggle'),l=document.getElementById('darkLabel'),i=document.getElementById('darkIcon');
+  if(b)b.classList.toggle('active',on);
+  if(l)l.textContent=on?'Light':'Dark';
+  if(i)i.innerHTML=on?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+function toggleDark(){const on=document.documentElement.getAttribute('data-theme')!=='dark';localStorage.setItem(DK,on?'1':'0');applyDark(on);}
+function applyDesktop(on){
+  const vp=document.querySelector('meta[name="viewport"]');
+  if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+  else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width,initial-scale=1.0');}
+  const b=document.getElementById('desktopToggle'),l=document.getElementById('desktopLabel');
+  if(b)b.classList.toggle('active',on);if(l)l.textContent=on?'Mobile':'Desktop';
+}
+function toggleDesktop(){const on=document.documentElement.getAttribute('data-view')!=='desktop';localStorage.setItem(DSK,on?'1':'0');applyDesktop(on);}
+function setLang(lang){
+  localStorage.setItem(GLK,lang);
+  ['en','tl','ceb'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>el.classList.toggle('lang-hidden',l!==lang));
+    const btn=document.getElementById('glb-'+l);if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  if(localStorage.getItem(DK)==='1')applyDark(true);
+  if(localStorage.getItem(DSK)==='1')applyDesktop(true);
+  const lang=localStorage.getItem(GLK)||'en';if(lang!=='en')setLang(lang);
+})();
+
+// ── STAGE ─────────────────────────────────────────────────────────────
+let selectedStage = 'none';
+function setStage(s, el){
+  selectedStage = s;
+  document.querySelectorAll('.stage-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── EXAMPLE RECIPES ───────────────────────────────────────────────────
+const examples = {
+  tinola: {name:'Chicken Tinola',servings:4,desc:'1 bowl',ing:`300g chicken thighs, bone-in
+1 medium sayote (chayote), cubed
+1 cup malunggay leaves
+1 tbsp patis (fish sauce)
+3 cloves garlic, minced
+1 medium onion, sliced
+1 thumb-size ginger, julienned
+1 tbsp vegetable oil
+4 cups water
+salt to taste`},
+  sinigang: {name:'Pork Sinigang',servings:4,desc:'1 bowl',ing:`400g pork belly, sliced
+2 medium tomatoes
+1 medium onion
+2 cups kangkong leaves
+1 cup green beans (sitaw)
+1 medium radish (labanos), sliced
+2 pcs eggplant (talong)
+2 tbsp tamarind soup base (sampaloc mix)
+1 tbsp patis
+6 cups water`},
+  tortang_talong: {name:'Tortang Talong',servings:2,desc:'1 piece',ing:`2 medium eggplants (talong)
+2 whole eggs
+1 tbsp patis
+1/4 tsp ground black pepper
+2 tbsp vegetable oil
+2 cloves garlic`}
+};
+function loadExample(key){
+  const ex = examples[key];
+  document.getElementById('f-name').value = ex.name;
+  document.getElementById('f-servings').value = ex.servings;
+  document.getElementById('f-serving-desc').value = ex.desc;
+  document.getElementById('f-ingredients').value = ex.ing;
+}
+
+// ── CKD LIMITS ────────────────────────────────────────────────────────
+const CKD_LIMITS = {
+  none:  {na:2300,  k:null,  p:null,  note:'General healthy limits applied.'},
+  '1':   {na:2300,  k:null,  p:400,   note:'Stage 1–2: minimal restriction needed.'},
+  '3a':  {na:2300,  k:3000,  p:1000,  note:'Stage 3a: moderate monitoring.'},
+  '3b':  {na:2300,  k:2500,  p:900,   note:'Stage 3b: increased restriction.'},
+  '4':   {na:2300,  k:2000,  p:800,   note:'Stage 4: significant restriction required.'},
+  '5':   {na:2300,  k:2000,  p:800,   note:'Stage 5: strict restriction; monitor closely.'},
+  'HD':  {na:2000,  k:2000,  p:800,   note:'Hemodialysis: strict limits. Potassium between sessions is critical.'},
+  'PD':  {na:2000,  k:2500,  p:800,   note:'Peritoneal Dialysis: strict sodium; potassium slightly more flexible.'},
+};
+
+// ── NUTRITION FACTS LABEL BUILDER ─────────────────────────────────────
+function buildNFLabel(n, recipeName, servings, servingDesc){
+  const pct = (val, dv) => val==null||dv==null ? '' : Math.round(val/dv*100)+'%';
+  return `
+  <div class="nf-title">Nutrition Facts</div>
+  <div class="nf-servings">${servings} servings per recipe</div>
+  <div class="nf-servings" style="display:flex;justify-content:space-between;font-weight:700;font-size:14px;">
+    <span>Serving size</span><span>${servingDesc||'1 serving'}</span>
+  </div>
+  <div class="nf-thick"></div>
+  <div style="font-size:11px;text-align:right;font-weight:700;">Amount per serving</div>
+  <div class="nf-cal-row">
+    <span class="nf-cal-label">Calories</span>
+    <span class="nf-cal-val">${Math.round(n.calories)}</span>
+  </div>
+  <div class="nf-med"></div>
+  <div class="nf-dv-header">% Daily Value*</div>
+  <div class="nf-thin"></div>
+  <div class="nf-row"><span class="nf-row-label bold">Total Fat</span><span>${n.fat?.toFixed(1)}g</span><span class="nf-row-pct">${pct(n.fat,78)}</span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row nf-row-indent"><span class="nf-row-label">Saturated Fat</span><span>${n.sat_fat?.toFixed(1)}g</span><span class="nf-row-pct">${pct(n.sat_fat,20)}</span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row nf-row-indent"><span class="nf-row-label"><i>Trans</i> Fat</span><span>${n.trans_fat?.toFixed(1)}g</span><span class="nf-row-pct"></span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row"><span class="nf-row-label bold">Cholesterol</span><span>${Math.round(n.cholesterol)}mg</span><span class="nf-row-pct">${pct(n.cholesterol,300)}</span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row"><span class="nf-row-label bold">Sodium</span><span>${Math.round(n.sodium)}mg</span><span class="nf-row-pct">${pct(n.sodium,2300)}</span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row"><span class="nf-row-label bold">Total Carbohydrate</span><span>${Math.round(n.carbs)}g</span><span class="nf-row-pct">${pct(n.carbs,275)}</span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row nf-row-indent"><span class="nf-row-label">Dietary Fiber</span><span>${n.fiber?.toFixed(1)}g</span><span class="nf-row-pct">${pct(n.fiber,28)}</span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row nf-row-indent"><span class="nf-row-label">Total Sugars</span><span>${n.sugars?.toFixed(1)}g</span><span class="nf-row-pct"></span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row"><span class="nf-row-label bold">Protein</span><span>${n.protein?.toFixed(1)}g</span><span class="nf-row-pct"></span></div>
+  <div class="nf-med"></div>
+  <div class="nf-row"><span class="nf-row-label">Potassium</span><span>${Math.round(n.potassium)}mg</span><span class="nf-row-pct">${pct(n.potassium,4700)}</span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row"><span class="nf-row-label">Phosphorus</span><span>${Math.round(n.phosphorus)}mg</span><span class="nf-row-pct">${pct(n.phosphorus,1250)}</span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row"><span class="nf-row-label">Calcium</span><span>${Math.round(n.calcium)}mg</span><span class="nf-row-pct">${pct(n.calcium,1300)}</span></div>
+  <div class="nf-thin"></div>
+  <div class="nf-row"><span class="nf-row-label">Iron</span><span>${n.iron?.toFixed(1)}mg</span><span class="nf-row-pct">${pct(n.iron,18)}</span></div>
+  <div class="nf-footer">*The % Daily Value tells you how much a nutrient in a serving contributes to a 2,000 calorie daily diet.</div>
+  `;
+}
+
+// ── CKD FLAGS BUILDER ─────────────────────────────────────────────────
+function buildFlags(n, stage){
+  const lim = CKD_LIMITS[stage] || CKD_LIMITS['none'];
+  const flags = [];
+  const stageLabels = {none:'General',1:'Stage 1–2','3a':'Stage 3a','3b':'Stage 3b',4:'Stage 4',5:'Stage 5',HD:'Hemodialysis',PD:'Peritoneal Dialysis'};
+  const stageName = stageLabels[stage] || 'General';
+
+  // Sodium
+  const naLim = lim.na;
+  const naPerMeal = naLim / 3;
+  if(n.sodium > naPerMeal * 1.5){
+    flags.push({cls:'danger',icon:'🚨',title:`High Sodium — ${Math.round(n.sodium)} mg per serving`,body:`Exceeds the ${stageName} meal limit of ~${Math.round(naPerMeal)} mg. ${stage==='HD'||stage==='PD'?'Each gram of excess sodium adds ~200 mL of retained fluid — directly worsening inter-dialytic weight gain.':'Reduces blood pressure control and accelerates CKD progression.'}`,values:`This serving: ${Math.round(n.sodium)} mg · Meal target: &lt;${Math.round(naPerMeal)} mg`});
+  } else if(n.sodium > naPerMeal){
+    flags.push({cls:'warn',icon:'⚠️',title:`Sodium Approaching Limit — ${Math.round(n.sodium)} mg per serving`,body:`Near the ${stageName} per-meal sodium limit. Consider reducing patis, toyo, or salt in this recipe. Calamansi juice is an excellent flavor substitute.`,values:`This serving: ${Math.round(n.sodium)} mg · Meal target: &lt;${Math.round(naPerMeal)} mg`});
+  } else {
+    flags.push({cls:'ok',icon:'✓',title:`Sodium OK — ${Math.round(n.sodium)} mg per serving`,body:`Within safe limits for ${stageName}.`,values:`${Math.round(n.sodium)} mg of ${Math.round(naPerMeal)} mg meal limit`});
+  }
+
+  // Potassium
+  if(lim.k){
+    const kPerMeal = lim.k / 3;
+    if(n.potassium > kPerMeal * 1.5){
+      flags.push({cls:'danger',icon:'🚨',title:`High Potassium — ${Math.round(n.potassium)} mg per serving`,body:`Exceeds safe limit for ${stageName}. Hyperkalemia (serum K &gt;5.5) risk. ${stage==='HD'?'Between dialysis sessions, potassium accumulates — high-potassium meals are particularly dangerous on days before dialysis.':'Monitor serum potassium closely.'} Consider removing or replacing the highest-potassium ingredient in this recipe.`,values:`This serving: ${Math.round(n.potassium)} mg · Meal target: &lt;${Math.round(kPerMeal)} mg`});
+    } else if(n.potassium > kPerMeal){
+      flags.push({cls:'warn',icon:'⚠️',title:`Potassium Elevated — ${Math.round(n.potassium)} mg per serving`,body:`Approaching potassium limit for ${stageName}. Leach high-potassium vegetables before cooking (soak 2+ hours, boil in fresh water, drain).`,values:`This serving: ${Math.round(n.potassium)} mg · Meal target: &lt;${Math.round(kPerMeal)} mg`});
+    } else {
+      flags.push({cls:'ok',icon:'✓',title:`Potassium OK — ${Math.round(n.potassium)} mg per serving`,body:`Within safe limits for ${stageName}.`,values:`${Math.round(n.potassium)} mg of ${Math.round(kPerMeal)} mg meal limit`});
+    }
+  } else {
+    flags.push({cls:'info',icon:'ℹ',title:`Potassium — ${Math.round(n.potassium)} mg per serving`,body:`No potassium restriction needed at ${stageName}. Monitor if labs show elevated serum K.`,values:''});
+  }
+
+  // Phosphorus
+  if(lim.p){
+    const pPerMeal = lim.p / 3;
+    if(n.phosphorus > pPerMeal * 1.5){
+      flags.push({cls:'danger',icon:'🚨',title:`High Phosphorus — ${Math.round(n.phosphorus)} mg per serving`,body:`Exceeds safe limit for ${stageName}. Elevated phosphorus drives PTH secretion, vascular calcification, and cardiovascular mortality. ${stage==='HD'||stage==='PD'?'Take your phosphate binder with this meal as prescribed.':'Discuss adding a phosphate binder with your nephrologist.'}`,values:`This serving: ${Math.round(n.phosphorus)} mg · Meal target: &lt;${Math.round(pPerMeal)} mg`});
+    } else if(n.phosphorus > pPerMeal){
+      flags.push({cls:'warn',icon:'⚠️',title:`Phosphorus Elevated — ${Math.round(n.phosphorus)} mg per serving`,body:`Approaching phosphorus limit. Ensure phosphate binder is taken with this meal if prescribed. Watch for processed ingredients with phosphate additives (E338–E452) — actual phosphorus burden may be higher than calculated.`,values:`This serving: ${Math.round(n.phosphorus)} mg · Meal target: &lt;${Math.round(pPerMeal)} mg`});
+    } else {
+      flags.push({cls:'ok',icon:'✓',title:`Phosphorus OK — ${Math.round(n.phosphorus)} mg per serving`,body:`Within safe limits for ${stageName}. Still take phosphate binder with this meal if prescribed.`,values:`${Math.round(n.phosphorus)} mg of ${Math.round(pPerMeal)} mg meal limit`});
+    }
+  }
+
+  // Protein
+  if(stage==='HD'||stage==='PD'){
+    if(n.protein < 20){
+      flags.push({cls:'warn',icon:'⚠️',title:`Low Protein — ${n.protein?.toFixed(1)} g per serving`,body:`Dialysis patients need 1.0–1.5 g/kg/day. This meal is low in protein — consider adding a high biological value protein source (egg white, lean chicken, tilapia) to meet daily targets.`,values:''});
+    } else {
+      flags.push({cls:'ok',icon:'✓',title:`Protein Adequate — ${n.protein?.toFixed(1)} g per serving`,body:`Good protein content for a dialysis patient. Aim for 50%+ high biological value (HBV) sources.`,values:''});
+    }
+  } else if(['4','5','3b'].includes(stage)){
+    if(n.protein > 25){
+      flags.push({cls:'warn',icon:'⚠️',title:`Protein — ${n.protein?.toFixed(1)} g per serving`,body:`Pre-dialysis CKD patients are advised to moderate protein intake (0.6–0.8 g/kg/day). This meal is relatively high in protein. Consider reducing meat/fish portion slightly.`,values:''});
+    }
+  }
+
+  // Fluid note (soups/stews)
+  if((stage==='HD'||stage==='PD') && n.fluid_ml && n.fluid_ml > 200){
+    flags.push({cls:'warn',icon:'💧',title:`Fluid Content — ~${Math.round(n.fluid_ml)} mL per serving`,body:`This recipe contains significant liquid (broth, soup, sabaw). On dialysis, all liquid sources count toward your daily fluid limit — including soup. Consider eating less sabaw or choosing drier preparations.`,values:''});
+  }
+
+  return flags;
+}
+
+// ── MAIN ANALYZE FUNCTION ─────────────────────────────────────────────
+async function analyzeRecipe(){
+  const ingredients = document.getElementById('f-ingredients').value.trim();
+  const servings    = parseInt(document.getElementById('f-servings').value)||4;
+  const servingDesc = document.getElementById('f-serving-desc').value.trim()||'1 serving';
+  const recipeName  = document.getElementById('f-name').value.trim()||'Recipe';
+
+  if(!ingredients){
+    document.getElementById('api-error').textContent='Please enter at least one ingredient.';
+    document.getElementById('api-error').classList.add('show');
+    return;
+  }
+  document.getElementById('api-error').classList.remove('show');
+
+  const btn = document.getElementById('analyze-btn');
+  const spinner = document.getElementById('spinner');
+  const btnText = document.getElementById('btn-text');
+  btn.disabled=true; spinner.classList.add('show'); btnText.textContent='Analyzing…';
+
+  const prompt = `You are a clinical nutritionist with expertise in Filipino food. Analyze the following recipe ingredients and return ONLY a valid JSON object — no markdown, no backticks, no explanation.
+
+Recipe: "${recipeName}"
+Total servings: ${servings}
+Ingredients (total recipe):
+${ingredients}
+
+Return this exact JSON structure with numeric values per serving:
+{
+  "calories": number,
+  "protein": number,
+  "fat": number,
+  "sat_fat": number,
+  "trans_fat": number,
+  "carbs": number,
+  "fiber": number,
+  "sugars": number,
+  "cholesterol": number,
+  "sodium": number,
+  "potassium": number,
+  "phosphorus": number,
+  "calcium": number,
+  "iron": number,
+  "fluid_ml": number,
+  "ingredients": [
+    {
+      "name": "ingredient name",
+      "calories": number,
+      "protein": number,
+      "sodium": number,
+      "potassium": number,
+      "phosphorus": number
+    }
+  ],
+  "modifications": [
+    "Specific CKD-safe modification suggestion for this recipe"
+  ]
+}
+
+Rules:
+- All values are PER SERVING (divide total recipe by ${servings})
+- fluid_ml = approximate total liquid content per serving in mL (broth, soup, water in the dish)
+- For Filipino ingredients: patis = fish sauce (~1400mg sodium per tbsp), bagoong = shrimp paste (very high sodium), kangkong = water spinach (~low K), kamote = sweet potato (high K ~450mg/100g), sayote = chayote (low K ~~170mg/100g)
+- Use USDA food composition data and Philippine Food Composition Tables where applicable
+- For ingredients you cannot identify, use reasonable estimates
+- modifications should be specific to this recipe (e.g. "Reduce patis from 1 tbsp to 1 tsp and add calamansi juice for flavor")
+- Return ONLY the JSON object, nothing else`;
+
+  try {
+    const resp = await fetch('/api/analyze',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1200,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await resp.json();
+    if(data.error){throw new Error(data.error.message||'API error');}
+
+    const raw = data.content.filter(c=>c.type==='text').map(c=>c.text).join('');
+    const clean = raw.replace(/```json|```/g,'').trim();
+    const n = JSON.parse(clean);
+
+    // Build NF label
+    document.getElementById('nf-label').innerHTML = buildNFLabel(n, recipeName, servings, servingDesc);
+
+    // Build CKD flags
+    const flags = buildFlags(n, selectedStage);
+    const stageLabels = {none:'General Population','1':'CKD Stage 1–2','3a':'CKD Stage 3a','3b':'CKD Stage 3b','4':'CKD Stage 4','5':'CKD Stage 5','HD':'Hemodialysis','PD':'Peritoneal Dialysis'};
+    document.getElementById('flags-header').textContent = `CKD Safety — ${stageLabels[selectedStage]||'General'}`;
+    document.getElementById('flags-sub').textContent = `Per serving of ${recipeName}`;
+    document.getElementById('flags-list').innerHTML = flags.map(f=>`
+      <div class="flag-row flag-${f.cls}">
+        <div class="flag-icon">${f.icon}</div>
+        <div class="flag-body">
+          <h4>${f.title}</h4>
+          <p>${f.body}</p>
+          ${f.values?`<div class="flag-values">${f.values}</div>`:''}
+        </div>
+      </div>`).join('');
+
+    // Ingredient breakdown
+    if(n.ingredients && n.ingredients.length){
+      const rows = n.ingredients.map(ig=>`<tr>
+        <td>${ig.name}</td>
+        <td>${Math.round(ig.calories)}</td>
+        <td>${ig.protein?.toFixed(1)}g</td>
+        <td>${Math.round(ig.sodium)}mg</td>
+        <td>${Math.round(ig.potassium)}mg</td>
+        <td>${Math.round(ig.phosphorus)}mg</td>
+      </tr>`).join('');
+      const totals = n.ingredients.reduce((a,ig)=>({
+        calories:a.calories+ig.calories,protein:a.protein+ig.protein,
+        sodium:a.sodium+ig.sodium,potassium:a.potassium+ig.potassium,phosphorus:a.phosphorus+ig.phosphorus
+      }),{calories:0,protein:0,sodium:0,potassium:0,phosphorus:0});
+      document.getElementById('ib-tbody').innerHTML = rows + `<tr>
+        <td>Total per serving</td>
+        <td>${Math.round(totals.calories)}</td>
+        <td>${totals.protein.toFixed(1)}g</td>
+        <td>${Math.round(totals.sodium)}mg</td>
+        <td>${Math.round(totals.potassium)}mg</td>
+        <td>${Math.round(totals.phosphorus)}mg</td>
+      </tr>`;
+      document.getElementById('ingredient-breakdown').style.display='block';
+    } else {
+      document.getElementById('ingredient-breakdown').style.display='none';
+    }
+
+    // Modification tips
+    if(n.modifications && n.modifications.length){
+      document.getElementById('mod-tips-wrap').innerHTML=`
+        <div class="alert alert-teal">
+          <div class="alert-icon">💡</div>
+          <div class="alert-body">
+            <h4>CKD-Safe Modifications for This Recipe</h4>
+            <ul>${n.modifications.map(m=>`<li>${m}</li>`).join('')}</ul>
+          </div>
+        </div>`;
+    }
+
+    document.getElementById('results-wrap').classList.add('show');
+    document.getElementById('results-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+
+  } catch(e){
+    document.getElementById('api-error').textContent='Analysis failed: '+e.message+'. Please try again.';
+    document.getElementById('api-error').classList.add('show');
+  } finally {
+    btn.disabled=false; spinner.classList.remove('show'); btnText.textContent='Analyze Recipe';
+  }
+}
+</script>
+</body>
+</html>

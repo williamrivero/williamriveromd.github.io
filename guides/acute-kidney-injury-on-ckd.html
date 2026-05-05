@@ -206,6 +206,83 @@
   [data-lang].lang-hidden { display: none !important; }
 
 </style>
+
+<style>
+.related-guides {
+  margin: 48px 0 32px;
+  padding-top: 32px;
+  border-top: 2px solid var(--border, #e2e6eb);
+}
+.related-guides h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy, #0f1e2e);
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.related-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+.related-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--border, #e2e6eb);
+  border-radius: 10px;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.18s, border-color 0.18s;
+  cursor: pointer;
+}
+.related-card:hover {
+  border-color: var(--teal, #1a6b72);
+  box-shadow: 0 4px 16px rgba(26,107,114,0.10);
+}
+.related-card-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--teal, #1a6b72);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.related-card-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--navy, #0f1e2e);
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+.related-card-desc {
+  font-size: 0.80rem;
+  color: var(--text-muted, #5a6472);
+  line-height: 1.45;
+  flex: 1;
+}
+.related-card-arrow {
+  font-size: 0.80rem;
+  color: var(--teal, #1a6b72);
+  font-weight: 700;
+  margin-top: 10px;
+  align-self: flex-end;
+}
+/* Dark mode */
+body.dark .related-card {
+  background: #1a2535;
+  border-color: #2a3a4a;
+}
+body.dark .related-card:hover {
+  border-color: var(--teal, #1a6b72);
+}
+body.dark .related-card-title {
+  color: #e8edf2;
+}
+</style>
+
 </head>
 <body>
 <header class="site-header">
@@ -218,6 +295,7 @@
 <button class="lang-btn active" id="glb-en" onclick="setLang('en')">English</button>
 <button class="lang-btn" id="glb-tl" onclick="setLang('tl')">Tagalog</button>
 <button class="lang-btn" id="glb-ceb" onclick="setLang('ceb')">Cebuano</button>
+<button class="lang-btn" id="glb-kap" onclick="setLang('kap')">KAP</button>
 </div>
 <div style="display:flex;gap:8px;align-items:center;">
 <button class="toggle-btn" id="darkToggle" onclick="toggleDark()"><svg fill="none" height="12" id="darkIcon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="12"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><span id="darkLabel">Dark</span></button>
@@ -228,7 +306,7 @@
 <div class="container">
 <div class="hero-tag">Nephrology · AKI · Critical Care</div>
 <h1>Acute Kidney Injury on Top of CKD (AKI-on-CKD)</h1>
-<p class="hero-sub" data-lang="en">When an acute insult strikes kidneys already weakened by chronic disease — the most dangerous form of acute kidney injury, with the highest risk of permanent function loss, dialysis dependence, and death.</p><p class="hero-sub lang-hidden" data-lang="tl">Kapag may biglaang pinsala sa mga bato na dati nang mahina dahil sa malalang sakit — ito ang pinakamapanganib na uri ng acute kidney injury (biglaang pagkasira ng bato), na may pinakamataas na panganib ng permanenteng pagkawala ng function, pag-asa sa dialysis, at kamatayan.</p><p class="hero-sub lang-hidden" data-lang="ceb">Kung ang kalit nga kadaot motama sa mga kidney nga nadaot na tungod sa chronic disease — ang pinakadelikado nga porma sa acute kidney injury, nga adunay pinakataas nga risgo sa permanente nga pagkawala sa function, pagsalig sa dialysis, ug kamatayon.</p>
+<p class="hero-sub" data-lang="en">When an acute insult strikes kidneys already weakened by chronic disease — the most dangerous form of acute kidney injury, with the highest risk of permanent function loss, dialysis dependence, and death.</p><p class="lang-hidden" data-lang="kap">Potang ing maragul a kapanyasatan mamalet karing batu a masakit na uling matuling sakit — iti ing kadelikaduan a klasi ning acute kidney injury, a ating pikamaatas a risgu ning permanenting kayawaran ning function, pamamalino king dialysis, at kamatayan.</p><p class="hero-sub lang-hidden" data-lang="tl">Kapag may biglaang pinsala sa mga bato na dati nang mahina dahil sa malalang sakit — ito ang pinakamapanganib na uri ng acute kidney injury (biglaang pagkasira ng bato), na may pinakamataas na panganib ng permanenteng pagkawala ng function, pag-asa sa dialysis, at kamatayan.</p><p class="hero-sub lang-hidden" data-lang="ceb">Kung ang kalit nga kadaot motama sa mga kidney nga nadaot na tungod sa chronic disease — ang pinakadelikado nga porma sa acute kidney injury, nga adunay pinakataas nga risgo sa permanente nga pagkawala sa function, pagsalig sa dialysis, ug kamatayon.</p>
 <div class="hero-meta">
 <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
 <span><strong>Updated:</strong> 2025</span>
@@ -251,9 +329,22 @@
 <main class="container">
 <section class="section" id="what">
 <div class="section-tag">A Dangerous Combination</div>
-<h2 data-lang="en">What Is AKI-on-CKD and Why Is It So Serious?</h2><h2 class="lang-hidden" data-lang="tl">Ano ang AKI-on-CKD at Bakit Ito Napakaseryoso?</h2><h2 class="lang-hidden" data-lang="ceb">Unsa ang AKI-on-CKD ug Ngano Grabe Kaayo Kini?</h2>
+<h2 data-lang="en">What Is AKI-on-CKD and Why Is It So Serious?</h2><h2 class="lang-hidden" data-lang="kap">**Nanu ing AKI-on-CKD at Bakit Grabi Ya Iti?**
+
+Ing AKI-on-CKD milyari potang ing taung atin nang chronic kidney disease (CKD) makaranas yang bigla at mabilis a pamangasira king kayang batu. Iti mangabaldugan a ing batu na, a makaluya na, mas lalung mesira king ditak a panaun.
+
+Isipan me ing batu mu a antimo ing sasakyan a malaon nang leluma. Nung makaranas yang dagdag pang problema—antimo ing impeksion, dehydration, o pipigil a gamut—malyari yang tuknang ngan a gumana.
+
+Grabi ya iti uling:
+
+- Ing batu mu e na malyaring ilako ing lason king katawan mu
+- Malyari yang mipunan ing daganum at asin king katawan mu
+- Ing presion ning daya mu at ing balanse ning chemical king daya mu malyaring magulo
+- Nung e agad arakap, malyari yang permanenting masira ing batu mu o kailangan ing dialysis
+
+Ing maagang pamangakit at mabilis a pamamalakad importanti la para asalba ing anumang gana ning batu a atiu pa at pigilan ing mas grabling pamangasira.</h2><h2 class="lang-hidden" data-lang="tl">Ano ang AKI-on-CKD at Bakit Ito Napakaseryoso?</h2><h2 class="lang-hidden" data-lang="ceb">Unsa ang AKI-on-CKD ug Ngano Grabe Kaayo Kini?</h2>
 <div class="intro-callout">
-<p data-lang="en">AKI-on-CKD occurs when an <strong>acute kidney injury develops in a patient who already has chronic kidney disease</strong>. It is uniquely dangerous because: the baseline reserve is already depleted (fewer functional nephrons), the injured kidney has less capacity to recover, uremic complications appear at much lower creatinine rise than in previously healthy kidneys, and the risk of permanent function loss — and dialysis dependence — is dramatically higher than AKI in previously healthy individuals.</p><p class="lang-hidden" data-lang="tl">Ang AKI-on-CKD ay nangyayari kapag ang <strong>acute kidney injury ay nagkaroon sa pasyenteng may chronic kidney disease na (matagalang sakit sa bato)</strong>. Ito ay lubhang mapanganib dahil: ubos na ang reserbang lakas ng bato (mas kakaunti na ang gumaganang nephron o yunit ng bato), mas mahina ang kakayahan ng nasirang bato na gumaling, ang mga komplikasyon ng uremia (pagtitipon ng lason sa dugo) ay lumilitaw sa mas mababang pagtaas ng creatinine kumpara sa dating malusog na bato, at ang panganib ng permanenteng pagkawala ng function — at pag-asa sa dialysis — ay mas mataas kaysa sa AKI sa dating malusog na tao.</p><p class="lang-hidden" data-lang="ceb">Ang AKI-on-CKD mahitabo kung ang <strong>acute kidney injury motubo sa pasyente nga naa nay chronic kidney disease</strong>. Kini lahi ang kadelikado tungod kay: ang baseline reserve naubos na (mas gamay na ang functional nephrons o mga nagpasala sa ihi), ang na-injure nga kidney kulang sa kapasidad sa pag-recover, ang uremic complications mogawas bisan gamay ra ang pagtaas sa creatinine kompara sa healthy kidneys, ug ang risgo sa permanente nga pagkawala sa function — ug pagsalig sa dialysis — mas taas kaayo kompara sa AKI sa healthy nga mga indibidwal.</p>
+<p data-lang="en">AKI-on-CKD occurs when an <strong>acute kidney injury develops in a patient who already has chronic kidney disease</strong>. It is uniquely dangerous because: the baseline reserve is already depleted (fewer functional nephrons), the injured kidney has less capacity to recover, uremic complications appear at much lower creatinine rise than in previously healthy kidneys, and the risk of permanent function loss — and dialysis dependence — is dramatically higher than AKI in previously healthy individuals.</p><p class="lang-hidden" data-lang="kap">Ing AKI-on-CKD malyari ya potang ing acute kidney injury mibayu ya king metung a pasyenting atin nang chronic kidney disease. Mapeligru yang tutu uling: ing baseline reserve maubos na (ditak na lu ing functional nephrons), ing asakit a batu ala nang masyadung kakayanan makabalik, ing uremic complications lulutung na agad maski ditak mu ing pamaitas ning creatinine kesa karing batu a masalese pa, at ing risgung mawala ya itang function ning batu — at maging dependent king dialysis — mas matas ya kesa king AKI karing taung masalese pa dati ing batu ra.</p><p class="lang-hidden" data-lang="tl">Ang AKI-on-CKD ay nangyayari kapag ang <strong>acute kidney injury ay nagkaroon sa pasyenteng may chronic kidney disease na (matagalang sakit sa bato)</strong>. Ito ay lubhang mapanganib dahil: ubos na ang reserbang lakas ng bato (mas kakaunti na ang gumaganang nephron o yunit ng bato), mas mahina ang kakayahan ng nasirang bato na gumaling, ang mga komplikasyon ng uremia (pagtitipon ng lason sa dugo) ay lumilitaw sa mas mababang pagtaas ng creatinine kumpara sa dating malusog na bato, at ang panganib ng permanenteng pagkawala ng function — at pag-asa sa dialysis — ay mas mataas kaysa sa AKI sa dating malusog na tao.</p><p class="lang-hidden" data-lang="ceb">Ang AKI-on-CKD mahitabo kung ang <strong>acute kidney injury motubo sa pasyente nga naa nay chronic kidney disease</strong>. Kini lahi ang kadelikado tungod kay: ang baseline reserve naubos na (mas gamay na ang functional nephrons o mga nagpasala sa ihi), ang na-injure nga kidney kulang sa kapasidad sa pag-recover, ang uremic complications mogawas bisan gamay ra ang pagtaas sa creatinine kompara sa healthy kidneys, ug ang risgo sa permanente nga pagkawala sa function — ug pagsalig sa dialysis — mas taas kaayo kompara sa AKI sa healthy nga mga indibidwal.</p>
 </div>
 <div class="illus-wrap illus-wrap-light">
 <svg style="max-width:560px;width:100%;" viewbox="0 0 580 205" xmlns="http://www.w3.org/2000/svg">
@@ -295,47 +386,127 @@
 <p class="illus-caption" data-lang="en">The same AKI insult — dehydration, sepsis, or nephrotoxic drug — causes proportionally greater damage and recovery is far less complete when kidney reserve is already reduced by CKD. A creatinine rise from 1.0 to 3.0 mg/dL in a healthy person is very different from the same rise in someone whose baseline is already 3.0 mg/dL.</p><p class="illus-caption lang-hidden" data-lang="tl">Ang parehong sanhi ng AKI — dehydration (kakulangan sa tubig), sepsis (malubhang impeksyon sa dugo), o gamot na nakakasira sa bato — ay nagdudulot ng mas malaking pinsala at ang paggaling ay hindi kumpleto kapag ang reserba ng bato ay nabawasan na dahil sa CKD. Ang pagtaas ng creatinine mula 1.0 hanggang 3.0 mg/dL sa malusog na tao ay ibang-iba sa parehong pagtaas sa isang taong ang baseline ay 3.0 mg/dL na.</p><p class="illus-caption lang-hidden" data-lang="ceb">Ang pareho nga AKI insult — dehydration, sepsis, o nephrotoxic drug — magpahinabo og mas grabe nga kadaot ug ang recovery dili kompleto kung ang kidney reserve naubos na tungod sa CKD. Ang pagtaas sa creatinine gikan sa 1.0 ngadto sa 3.0 mg/dL sa healthy nga tawo lahi kaayo kompara kung kinsa ang baseline niya 3.0 mg/dL na.</p>
 <div class="three-col">
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-red"></span>Why CKD increases AKI risk</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-red"></span>Bakit pinapataas ng CKD ang panganib ng AKI</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-red"></span>Ngano ang CKD magdugang sa AKI risk</h4>
+<h4 data-lang="en"><span class="dot dot-red"></span>Why CKD increases AKI risk</h4><h4 class="lang-hidden" data-lang="kap">**Bakit mas matas ya ing chance dang magkasakit king AKI ding ating CKD**
+
+Nung atin kang CKD (chronic kidney disease), e na masyadung masalese deng batu mu. Kaibat na nita, mas madali lang magkasakit king AKI (acute kidney injury) uling:
+
+**Meragul nang damage ding batu mu**
+Ding batu da reng ating CKD, meragul na lang asakitan. E na la malyaring mag-adjust o mag-recover antimong dati nung ating stress o injury king katawan.
+
+**Mas sensitivo la king marauk a gamut**
+Ding batu a masakit e na la masalese mag-filter king gamut. Ding aliwang medications malyari rang dagdagan ing damage king batu mu.
+
+**Masakit ya ing daloy na ning daya**
+King CKD, e masalese ing blood flow karing batu. Nung magkasakit kang dehydration o mababa ing blood pressure mu, mas madali yang masakitan ing batu mu.
+
+**Mayna ya ing reserve na ning batu**
+Antimong savings account ya ing batu mu — ding ating CKD, kakaditak na ing "savings" da. Maski malating problema, malyari nang maging maragul a sakit.
+
+**Nanu ing kailangan mung gawan:**
+-Inum kang dakal a danum maliban nung sinabing e ning doktor mu
+- Pakisabi mu king doktor mu ding eganaganang gamut a iinuman mu
+- Ilakuan me ing NSAIDs (antimo ibuprofen) nung e sinabi ning doktor mu
+- Magpa-check-up kang regular</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-red"></span>Bakit pinapataas ng CKD ang panganib ng AKI</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-red"></span>Ngano ang CKD magdugang sa AKI risk</h4>
 <p data-lang="en">Impaired autoregulation — CKD kidneys cannot vasodilate adequately in response to reduced perfusion. Reduced tubular repair capacity — surviving nephrons have less regenerative potential. Chronic inflammation — baseline inflammatory state amplifies injury responses. Medication burden — many CKD patients are on ACE/ARB, diuretics, and NSAIDs that interact dangerously when volume-depleted.</p><p class="lang-hidden" data-lang="tl">May sira na ang autoregulation (awtomatikong pag-aayos ng daloy ng dugo) — ang mga bato na may CKD ay hindi makapag-vasodilate (magpaluwang ng ugat) nang sapat kapag bumaba ang daloy ng dugo. Mababang kakayahan ng tubular repair — ang natitirang mga nephron ay mas mahina ang kakayahang magpanumbalik. Malalang inflammation — ang patuloy na pamamaga ay nagpapalala sa reaksyon sa pinsala. Dami ng gamot — maraming pasyenteng may CKD ang umiinom ng ACE/ARB, diuretics (pampaihi), at NSAIDs na mapanganib kapag nagsabay sa kakulangan ng tubig.</p><p class="lang-hidden" data-lang="ceb">Nadaot nga autoregulation — ang CKD kidneys dili makahimo og tarong nga vasodilate kung kulang ang blood flow. Gamay na ang tubular repair capacity — ang nahibiling nephrons kulang na sa regenerative potential. Chronic inflammation — ang baseline inflammatory state magpadako sa injury responses. Daghan nga tambal — daghang CKD patients naggamit og ACE/ARB, diuretics, ug NSAIDs nga delikado kung dehydrated.</p>
 </div>
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-amber"></span>The AKI-on-CKD outcome data</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-amber"></span>Mga datos sa resulta ng AKI-on-CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-amber"></span>Ang AKI-on-CKD outcome data</h4>
+<h4 data-lang="en"><span class="dot dot-amber"></span>The AKI-on-CKD outcome data</h4><h4 class="lang-hidden" data-lang="kap">Ing datos tungkul king resulta ning AKI-on-CKD</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-amber"></span>Mga datos sa resulta ng AKI-on-CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-amber"></span>Ang AKI-on-CKD outcome data</h4>
 <p data-lang="en">AKI-on-CKD carries 4–8× higher risk of ESKD compared to AKI in previously healthy individuals. 30-day mortality is 2–3× higher than AKI alone. 50–60% of patients who require temporary dialysis for AKI-on-CKD do not recover enough function to discontinue dialysis. Each AKI episode accelerates long-term CKD progression — even after apparent recovery.</p><p class="lang-hidden" data-lang="tl">Ang AKI-on-CKD ay may 4–8× na mas mataas na panganib ng ESKD (huling yugto ng sakit sa bato) kumpara sa AKI sa dating malusog na tao. Ang pagkamatay sa loob ng 30 araw ay 2–3× na mas mataas kaysa sa AKI lamang. 50–60% ng mga pasyenteng nangailangan ng pansamantalang dialysis para sa AKI-on-CKD ay hindi nakaka-recover ng sapat na function para ihinto ang dialysis. Bawat episode ng AKI ay nagpapabilis sa pangmatagalang paglala ng CKD — kahit matapos ang mukhang paggaling.</p><p class="lang-hidden" data-lang="ceb">Ang AKI-on-CKD adunay 4–8× mas taas nga risgo sa ESKD (end-stage kidney disease) kompara sa AKI sa healthy individuals. Ang 30-day mortality 2–3× mas taas kay sa AKI lang. 50–60% sa mga pasyente nga nanginahanglan og temporary dialysis para sa AKI-on-CKD wala maka-recover og igo para mohunong sa dialysis. Matag AKI episode magpadali sa long-term CKD progression — bisan human sa apparent recovery.</p>
 </div>
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-teal"></span>How to recognize AKI in a CKD patient</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-teal"></span>Paano makilala ang AKI sa pasyenteng may CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-teal"></span>Unsaon pag-ila ang AKI sa CKD patient</h4>
+<h4 data-lang="en"><span class="dot dot-teal"></span>How to recognize AKI in a CKD patient</h4><h4 class="lang-hidden" data-lang="kap">Makananu mong akilalanan ing AKI king metung a pasyenting atin nang CKD
+
+Ing AKI (Acute Kidney Injury) malyari yang mapalyari karing tau a atin nang CKD (Chronic Kidney Disease). Importanting abalu mu ing pamangakilala kareting sinyales ban agad kang makapaniawad saup medikal.
+
+**Sinyales a dapat mung bantayan:**
+
+- Ditak a ihi o ala kang ihi
+- Mamasa o mamuga ing kekang bitis, bitis-bitis, o arap
+- Makapagal ka a e mu abalu ing sangkan
+- Malilitu ka o e ka makapagisip a masalese
+- Ditak ing ganang kang mamangan
+- Masakit ing kekang dugu-dugu o sikmura
+- Mabayat ing kekang pangasnasa o kapigilan mung mangasnasa
+
+**Kailan ka sukat maniawad saup agad:**
+
+Tawagan mu ing kekang doktor o munta ka king emergency room nung maramdaman mu ing alin man kareting sinyales a iti, lalu na nung:
+
+- Ala kang ihi kilub ning metung a aldo
+- Mamasa kang mabilis
+- Mapagal ka pêru e ka makapainawa
+- Malilitu ka o antuk-antuk kang tutu
+
+**Nung makananu mong asaup ing kekang sarili:**
+
+- Inuman mu ing tamang dami ning danum a sinabi ning kekang doktor
+- E ka manyaman karing gamut a NSAID (antimo ing ibuprofen o naproxen) nung ala kang papagsalitaan king kekang doktor
+- Sunuran mu ing kekang diet a mababa king asin
+- Regular mong ipasuri ing kekang creatinine ampo ing kidney function
+
+Tandanan mu: Nung atin kang CKD, mas maragul ing kekang peligru a magkasakit king AKI. Ing malelut a pamangakilala at paniniawad saup medikal malyaring iligtas ing kekang balu.</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-teal"></span>Paano makilala ang AKI sa pasyenteng may CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-teal"></span>Unsaon pag-ila ang AKI sa CKD patient</h4>
 <p data-lang="en">Rise in serum creatinine ≥0.3 mg/dL within 48 hours OR ≥1.5× baseline within 7 days OR urine output &lt;0.5 mL/kg/hr for 6 hours. In CKD patients, the baseline creatinine must be known — AKI diagnosis requires comparison to the patient's own recent baseline, not normal reference ranges. A creatinine of 3.5 in a CKD patient with a known baseline of 2.0 is AKI Stage 2.</p><p class="lang-hidden" data-lang="tl">Pagtaas ng serum creatinine ng ≥0.3 mg/dL sa loob ng 48 oras O ≥1.5× ng baseline sa loob ng 7 araw O ihi na &lt;0.5 mL/kg/oras sa loob ng 6 oras. Sa mga pasyenteng may CKD, kailangang malaman ang baseline creatinine — ang diagnosis ng AKI ay nangangailangan ng paghahambing sa sariling kamakailang baseline ng pasyente, hindi sa normal reference ranges. Ang creatinine na 3.5 sa pasyenteng may CKD na may baseline na 2.0 ay AKI Stage 2.</p><p class="lang-hidden" data-lang="ceb">Pagtaas sa serum creatinine ≥0.3 mg/dL sulod sa 48 oras O ≥1.5× baseline sulod sa 7 ka adlaw O urine output &lt;0.5 mL/kg/hr sulod sa 6 ka oras. Sa CKD patients, kinahanglan mahibal-an ang baseline creatinine — ang AKI diagnosis nanginahanglan og pagtandi sa kaugalingon nga recent baseline sa pasyente, dili sa normal reference ranges. Ang creatinine nga 3.5 sa CKD patient nga nahibal-an nga baseline niya 2.0 kay AKI Stage 2.</p>
 </div>
 </div>
 </section>
 <section class="section" id="staging">
 <div class="section-tag">KDIGO 2012 / 2024 Criteria</div>
-<h2 data-lang="en">AKI Staging — The KDIGO Classification</h2><h2 class="lang-hidden" data-lang="tl">Mga Yugto ng AKI — Ang KDIGO Classification</h2><h2 class="lang-hidden" data-lang="ceb">AKI Staging — Ang KDIGO Classification</h2>
+<h2 data-lang="en">AKI Staging — The KDIGO Classification</h2><h2 class="lang-hidden" data-lang="kap"># AKI Staging — Ing KDIGO Classification
+
+Ing Acute Kidney Injury (AKI) mibibilang ya king telung stage depende king severity na. Gagamitan da ring doktor ing KDIGO classification ba rang matukoy kung makananu yang kalubha ing pamanirang batu (kidney) mu.
+
+**Stage 1 (Malulung AKI)**
+- Ing serum creatinine mu miragdag yang 1.5 angga 1.9 times kesa king normal mung level, o miragdag yang 0.3 mg/dL o maygit kilub ning 48 oras
+- Ing urine output mu malyaring maging menus kesa 0.5 mL/kg/hour kilub ning 6 angga 12 oras
+
+**Stage 2 (Katambatan a AKI)**
+- Ing serum creatinine mu miragdag yang 2.0 angga 2.9 times kesa king baseline mu
+- Ing urine output mu menus kesa 0.5 mL/kg/hour kilub ning 12 oras o maygit
+
+**Stage 3 (Malubhang AKI)**
+- Ing serum creatinine mu miragdag yang 3 times o maygit kesa king baseline mu, o miragdag yang 4.0 mg/dL o maygit, o kailangan mu nang dialysis
+- Ing urine output mu menus kesa 0.3 mL/kg/hour kilub ning 24 oras o maygit, o ala kang ihi (anuria) kilub ning 12 oras o maygit
+
+Makatulung ya ining classification karing doktor bang matukoy da ing ustung pamanalese at pamamalakad king kondisyon mu. Nung atin kang kutang tungkul kaniti, makisabi ka king doktor mu.</h2><h2 class="lang-hidden" data-lang="tl">Mga Yugto ng AKI — Ang KDIGO Classification</h2><h2 class="lang-hidden" data-lang="ceb">AKI Staging — Ang KDIGO Classification</h2>
 <div class="aki-stage">
 <div class="stage-badge sb1">AKI 1</div>
 <div class="stage-body">
-<h4 data-lang="en">Stage 1 — Mild AKI</h4><h4 class="lang-hidden" data-lang="tl">Stage 1 — Banayad na AKI</h4><h4 class="lang-hidden" data-lang="ceb">Stage 1 — Mild AKI</h4>
+<h4 data-lang="en">Stage 1 — Mild AKI</h4><h4 class="lang-hidden" data-lang="kap">Kayang 1 — Malutu a AKI</h4><h4 class="lang-hidden" data-lang="tl">Stage 1 — Banayad na AKI</h4><h4 class="lang-hidden" data-lang="ceb">Stage 1 — Mild AKI</h4>
 <p data-lang="en">Creatinine rise ≥0.3 mg/dL within 48 hrs, OR 1.5–1.9× baseline within 7 days, OR UO &lt;0.5 mL/kg/hr for 6–12 hrs. In AKI-on-CKD: even Stage 1 warrants hospital admission and urgent evaluation — the CKD reserve means Stage 1 can rapidly progress. Remove all nephrotoxins, optimize volume, hold ACE/ARB temporarily, avoid NSAIDs and contrast.</p><p class="lang-hidden" data-lang="tl">Pagtaas ng creatinine ng ≥0.3 mg/dL sa loob ng 48 oras, O 1.5–1.9× ng baseline sa loob ng 7 araw, O ihi na &lt;0.5 mL/kg/oras sa loob ng 6–12 oras. Sa AKI-on-CKD: kahit Stage 1 ay nangangailangan ng pagpapaospital at agarang pagsusuri — ang reserbang CKD ay nangangahulugang ang Stage 1 ay maaaring mabilis na lumala. Alisin lahat ng nakakasira sa bato, ayusin ang tubig sa katawan, pansamantalang ihinto ang ACE/ARB, iwasan ang NSAIDs at contrast.</p><p class="lang-hidden" data-lang="ceb">Pagtaas sa creatinine ≥0.3 mg/dL sulod sa 48 hrs, O 1.5–1.9× baseline sulod sa 7 ka adlaw, O UO &lt;0.5 mL/kg/hr sulod sa 6–12 hrs. Sa AKI-on-CKD: bisan Stage 1 nanginahanglan og hospital admission ug urgent evaluation — ang CKD reserve nagpasabot nga ang Stage 1 dali ra mosamot. Tangtanga tanang nephrotoxins, optimize volume, temporarily hold ACE/ARB, likayi ang NSAIDs ug contrast.</p>
 </div>
 </div>
 <div class="aki-stage">
 <div class="stage-badge sb2">AKI 2</div>
 <div class="stage-body">
-<h4 data-lang="en">Stage 2 — Moderate AKI</h4><h4 class="lang-hidden" data-lang="tl">Stage 2 — Katamtamang AKI</h4><h4 class="lang-hidden" data-lang="ceb">Stage 2 — Moderate AKI</h4>
+<h4 data-lang="en">Stage 2 — Moderate AKI</h4><h4 class="lang-hidden" data-lang="kap">Ikaladwang Yugtu — Mepalpalan a AKI</h4><h4 class="lang-hidden" data-lang="tl">Stage 2 — Katamtamang AKI</h4><h4 class="lang-hidden" data-lang="ceb">Stage 2 — Moderate AKI</h4>
 <p data-lang="en">Creatinine 2.0–2.9× baseline within 7 days, OR UO &lt;0.5 mL/kg/hr for ≥12 hours. Hospitalization mandatory. ICU consideration if AKI-on-CKD with Stage 4–5 baseline. Nephrology consultation urgent. Begin assessing for RRT indications. Volume resuscitate cautiously — CKD patients are at high risk for fluid overload.</p><p class="lang-hidden" data-lang="tl">Creatinine na 2.0–2.9× ng baseline sa loob ng 7 araw, O ihi na &lt;0.5 mL/kg/oras sa loob ng ≥12 oras. Kailangan ang pagpapaospital. Isaalang-alang ang ICU kung AKI-on-CKD na may Stage 4–5 baseline. Agarang konsultasyon sa nephrologist (espesyalista sa bato). Simulan ang pagsusuri para sa mga indikasyon ng RRT (renal replacement therapy o pagtratong panghalili sa bato). Mag-resuscitate ng tubig nang maingat — ang mga pasyenteng may CKD ay may mataas na panganib ng fluid overload (sobrang tubig sa katawan).</p><p class="lang-hidden" data-lang="ceb">Creatinine 2.0–2.9× baseline sulod sa 7 ka adlaw, O UO &lt;0.5 mL/kg/hr sulod sa ≥12 oras. Mandatory ang hospitalization. ICU consideration kung AKI-on-CKD nga Stage 4–5 baseline. Urgent ang nephrology consultation. Sugdi ang pag-assess para sa RRT indications. Pag-volume resuscitate og maampingon — ang CKD patients taas og risgo sa fluid overload.</p>
 </div>
 </div>
 <div class="aki-stage">
 <div class="stage-badge sb3">AKI 3</div>
 <div class="stage-body">
-<h4 data-lang="en">Stage 3 — Severe AKI (or requiring RRT)</h4><h4 class="lang-hidden" data-lang="tl">Stage 3 — Malalang AKI (o nangangailangan ng RRT)</h4><h4 class="lang-hidden" data-lang="ceb">Stage 3 — Severe AKI (o nanginahanglan og RRT)</h4>
+<h4 data-lang="en">Stage 3 — Severe AKI (or requiring RRT)</h4><h4 class="lang-hidden" data-lang="kap">Stage 3 — Malasakit a AKI (o kailangan neng RRT)</h4><h4 class="lang-hidden" data-lang="tl">Stage 3 — Malalang AKI (o nangangailangan ng RRT)</h4><h4 class="lang-hidden" data-lang="ceb">Stage 3 — Severe AKI (o nanginahanglan og RRT)</h4>
 <p data-lang="en">Creatinine ≥3.0× baseline, OR creatinine ≥4.0 mg/dL, OR UO &lt;0.3 mL/kg/hr for ≥24 hours, OR anuria ≥12 hours, OR requiring RRT. ICU care. Emergent RRT consideration. In AKI-on-CKD Stage 3, a significant proportion will not recover to pre-AKI baseline. Goals of care discussion may be appropriate for elderly patients with multiple comorbidities.</p><p class="lang-hidden" data-lang="tl">Creatinine na ≥3.0× ng baseline, O creatinine na ≥4.0 mg/dL, O ihi na &lt;0.3 mL/kg/oras sa loob ng ≥24 oras, O walang ihi sa loob ng ≥12 oras, O nangangailangan ng RRT. Pag-aalaga sa ICU. Isaalang-alang ang emerhensiyang RRT. Sa AKI-on-CKD Stage 3, malaking bahagi ang hindi na babalik sa dating baseline bago ang AKI. Maaaring naaangkop ang talakayan tungkol sa layunin ng pangangalaga para sa mga matatandang pasyente na may maraming karamdaman.</p><p class="lang-hidden" data-lang="ceb">Creatinine ≥3.0× baseline, O creatinine ≥4.0 mg/dL, O UO &lt;0.3 mL/kg/hr sulod sa ≥24 oras, O anuria ≥12 oras, O nanginahanglan og RRT (renal replacement therapy o dialysis). ICU care. Emergent RRT consideration. Sa AKI-on-CKD Stage 3, daghan ang dili maka-recover sa pre-AKI baseline. Ang goals of care discussion mahimong angay para sa mga tigulang nga pasyente nga daghan og comorbidities.</p>
 </div>
 </div>
 </section>
 <section class="section" id="causes">
 <div class="section-tag">Etiology</div>
-<h2 data-lang="en">Causes of AKI-on-CKD — The AKIN Triad</h2><h2 class="lang-hidden" data-lang="tl">Mga Sanhi ng AKI-on-CKD — Ang AKIN Triad</h2><h2 class="lang-hidden" data-lang="ceb">Mga Hinungdan sa AKI-on-CKD — Ang AKIN Triad</h2>
+<h2 data-lang="en">Causes of AKI-on-CKD — The AKIN Triad</h2><h2 class="lang-hidden" data-lang="kap">**Sangkan ning AKI-on-CKD — Ing AKIN Triad**
+
+Ing acute kidney injury (AKI) a malyari yang dumatang karing taung atin nang chronic kidney disease (CKD). Iti ausan dang "AKI-on-CKD." Atin tlang peka-karaniwang sangkan niti a ausan dang AKIN Triad:
+
+**1. Infection (Impeksion)**
+
+Ing impeksion metung ya karing peka-karaniwang sangkan ning AKI karing taung atin nang CKD. Potang atin kang impeksion, ing katawan mu magobra yang masikan ban labanan ne iti. Iting stress malyari yang makasakit karing batu mu. Ing urinary tract infection (UTI), pneumonia, at aliwa pang impeksion malyari dang maging sangkan.
+
+**2. NSAIDs (Anti-inflammatory Medications)**
+
+Deng gamut a anti-inflammatory drugs, antimo ing ibuprofen, naproxen, at aliwa pang NSAIDs, malyari lang makasakit karing batu mu. Ining gamutababatan da ing dalus ning daya papuntang batu. Para karing taung atin nang masakit a batu, malyari yang maging masakit iti. Pakisabi mu king doctor mu bayu ka minum kareting gamut.
+
+**3. Nephrotoxins (Gamut a Makasakit King Batu)**
+
+Atin gamut at substansya a malyari dang diretsung makasakit karing batu. Deti ausan dang nephrotoxins. Kasali keti deng maragul a dosis ning contrast dye (a gagamitan para karing CT scan o aliwa pang imaging), deng ibat a antibiotics, at aliwa pang gamut. Pakisabi mu king doctor mu ing mipalpalan mung gamut ban e ra ireseta deng malyaring makasakit karing batu mu.</h2><h2 class="lang-hidden" data-lang="tl">Mga Sanhi ng AKI-on-CKD — Ang AKIN Triad</h2><h2 class="lang-hidden" data-lang="ceb">Mga Hinungdan sa AKI-on-CKD — Ang AKIN Triad</h2>
 <div class="illus-wrap illus-wrap-light">
 <svg style="max-width:520px;width:100%;" viewbox="0 0 540 155" xmlns="http://www.w3.org/2000/svg">
 <text fill="#0f1e2e" font-size="13" font-weight="600" text-anchor="middle" x="270" y="16">The Three Categories of AKI — Pre-Renal, Intrinsic, Post-Renal</text>
@@ -370,28 +541,169 @@
 <div class="alert alert-red">
 <div class="alert-icon">⚠</div>
 <div class="alert-body">
-<h4 data-lang="en">The "Triple Whammy" — Most Avoidable Cause of AKI-on-CKD</h4><h4 class="lang-hidden" data-lang="tl">Ang "Triple Whammy" — Pinaka-maiiwasang Sanhi ng AKI-on-CKD</h4><h4 class="lang-hidden" data-lang="ceb">Ang "Triple Whammy" — Pinaka-Malikayan nga Hinungdan sa AKI-on-CKD</h4>
+<h4 data-lang="en">The "Triple Whammy" — Most Avoidable Cause of AKI-on-CKD</h4><h4 class="lang-hidden" data-lang="kap">Ing "Triple Whammy" — Ing Pikamalyaring Pigaglariang Sangkan ning AKI-on-CKD
+
+Ing "Triple Whammy" ya ing kombinasyun ning atlung klasing gamut a, nung ausan deng sablang-sabla, malyari deng siraan a mabilis ing batu mu. Deng atlung ini ya pin:
+
+1. **ACE inhibitors o ARBs** (kaybat ning gamut para king high blood pressure)
+2. **Diuretics** (gamut a makapapawas urine o "pampaigi")
+3. **NSAIDs** (gamut kontra sakit, antimo ing ibuprofen, naproxen, o mefenamic acid)
+
+**Bakit delikadu ya iti?**
+
+Ing batu mu bíe ne ing dugu gamit ing pressure at flow king loob na. Balang metung kareng atlung gamut a iti, aduan de ing paralan nung makananu neng gágawan ning batu mu iting trabahu:
+
+- Ing **ACE inhibitors/ARBs** lálaparan de ing ugat-dugu a lulual king batu
+- Ing **Diuretics** bababan de ing danum king katawan mu
+- Ing **NSAIDs** písitan de ing ugat-dugu a lulub king batu
+
+Nung samasan mu lang atlu, malyaring mabilis yang kumupas ing trabahu ning batu mu — lalu na nung maki **CKD** na ka.
+
+**Nanu ing dapat mung gawan?**
+
+- **E ka mamili ning NSAIDs** (antimo ing ibuprofen o mefenamic acid) nung ala kang pagsabi ning doktor mu
+- Nung maki sakit ka king úlu, samasan, o lagnat, paracetamol ya ing mas masalese
+- Sabian mu king doktor mu ing sablang gamut a íinum mu
+- Nung maki diarrhea ka, sumúka ka, o e ka makainum mayap, tawagan me agad ing doktor mu
+
+**Tandanan mu:**
+
+Ing batu mu, lalu na nung maki CKD na ka, kailangan meng ingatan. E mu lang basta-basta ausan ing gamut a e sinabi ning doktor mu, at pakisabi mu lagi nung atin kang balung gamut a íinum.</h4><h4 class="lang-hidden" data-lang="tl">Ang "Triple Whammy" — Pinaka-maiiwasang Sanhi ng AKI-on-CKD</h4><h4 class="lang-hidden" data-lang="ceb">Ang "Triple Whammy" — Pinaka-Malikayan nga Hinungdan sa AKI-on-CKD</h4>
 <p data-lang="en">The combination of <strong>ACE inhibitor or ARB + diuretic (furosemide) + NSAID</strong> in a CKD patient who becomes even mildly dehydrated (gastroenteritis, diarrhea, vomiting, fever) dramatically reduces renal perfusion and causes severe AKI. This iatrogenic combination accounts for a large proportion of preventable hospitalizations in CKD. <strong>Patient rule: When you have vomiting, diarrhea, or fever — temporarily hold your ACE/ARB, hold your diuretic, avoid ALL NSAIDs, drink extra fluids, and call your nephrologist within 24 hours.</strong></p><p class="lang-hidden" data-lang="tl">Ang kombinasyon ng <strong>ACE inhibitor o ARB + diuretic (furosemide) + NSAID</strong> sa pasyenteng may CKD na kahit bahagyang nawawalan ng tubig (gastroenteritis, pagtatae, pagsusuka, lagnat) ay lubhang nagpapababa ng daloy ng dugo sa bato at nagdudulot ng malalang AKI. Ang iatrogenic na kombinasyong ito ang sanhi ng malaking bahagi ng maiiwasang pagpapaospital sa CKD. <strong>Panuntunan para sa pasyente: Kapag may pagsusuka, pagtatae, o lagnat ka — pansamantalang ihinto ang ACE/ARB mo, ihinto ang diuretic mo, iwasan ang LAHAT ng NSAIDs, uminom ng maraming tubig, at tumawag sa nephrologist mo sa loob ng 24 oras.</strong></p><p class="lang-hidden" data-lang="ceb">Ang kombinasyon sa <strong>ACE inhibitor o ARB + diuretic (furosemide) + NSAID</strong> sa CKD patient nga dehydrated bisan gamay lang (gastroenteritis, diarrhea, pagsuka, hilanat) grabe kaayo ang pagpakunhod sa renal perfusion ug magpahinabo og severe AKI. Kining iatrogenic combination maoy dakong bahin sa preventable hospitalizations sa CKD. <strong>Lagda sa pasyente: Kung nagsuka ka, nagkalibang, o gihilantan — temporarily hold ang imong ACE/ARB, hold ang imong diuretic, likayi TANANG NSAIDs, inom og extra fluids, ug tawagi ang imong nephrologist sulod sa 24 oras.</strong></p>
 </div>
 </div>
 <div class="three-col">
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-amber"></span>Top causes in CKD patients specifically</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-amber"></span>Mga pangunahing sanhi sa mga pasyenteng may CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-amber"></span>Top causes sa CKD patients</h4>
+<h4 data-lang="en"><span class="dot dot-amber"></span>Top causes in CKD patients specifically</h4><h4 class="lang-hidden" data-lang="kap">**Pêkamalapit a dahilan karêng pasyenteng atin CKD**
+
+Dêng tau a atin chronic kidney disease (CKD) atin lang mas matas a riesgo king heart failure uling:
+
+- **Sobrang danum (fluid overload)** – E na malyaring itapon ning bato ing sobrang danum, inya mamigat ya ing obra ning pusu.
+
+- **Matas a presion ning daya (hypertension)** – Karamihan karêng atin CKD, matas ya ing blood pressure da, at iti makasakit king pusu.
+
+- **Anemia** – Pauli na ning bato e na magawa ing sapat a erythropoietin, kulang la king red blood cells, inya mas masikan magsikap ing pusu.
+
+- **Uremic toxins** – Dêng lason a e maitapon ning bato makaapekto la king muscle ning pusu.
+
+- **Sobrang calcium ampong phosphorus** – Makapasikan dêng iti king pamanigas da rêng ugat (vascular calcification).
+
+- **Matas a uric acid** – Kayagnan nang makasakit king pusu.
+
+- **Karakal nang sodium** – Makapasikan king pamanipit ning danum at matas a presion.
+
+Nung atin kang CKD, makatulung ing regular a pamanintun king nefrologo at cardiologo ban alagaan me ing pusu mu.</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-amber"></span>Mga pangunahing sanhi sa mga pasyenteng may CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-amber"></span>Top causes sa CKD patients</h4>
 <p data-lang="en">Dehydration from illness (GE, fever, poor oral intake) · Sepsis — commonest cause of AKI in hospital · Contrast-induced AKI (iodinated dye for imaging) · Aminoglycoside antibiotics · NSAID use (absolutely contraindicated in CKD — but patients still take them for pain) · Urinary tract obstruction (BPH — causes silent obstruction) · New or worsening heart failure · Rhabdomyolysis (myoglobinuria).</p><p class="lang-hidden" data-lang="tl">Dehydration mula sa sakit (GE, lagnat, hindi makainom) · Sepsis — pinakakaraniwang sanhi ng AKI sa ospital · Contrast-induced AKI (iodinated dye para sa imaging) · Aminoglycoside antibiotics · Paggamit ng NSAID (talagang ipinagbabawal sa CKD — ngunit iniinom pa rin ng mga pasyente para sa pananakit) · Pagkabara ng daanan ng ihi (BPH — nagdudulot ng tahimik na pagkabara) · Bago o lumalalang heart failure (pagpalya ng puso) · Rhabdomyolysis (myoglobinuria o pagkasira ng kalamnan).</p><p class="lang-hidden" data-lang="ceb">Dehydration gikan sa sakit (GE, hilanat, gamay og inom) · Sepsis — pinaka-common nga hinungdan sa AKI sa hospital · Contrast-induced AKI (iodinated dye para sa imaging) · Aminoglycoside antibiotics · Paggamit og NSAID (absolutong contraindicated sa CKD — pero ang mga pasyente mogamit gihapon para sa sakit) · Urinary tract obstruction (BPH — nagpahinabo og silent obstruction) · Bag-o o nagkagrabe nga heart failure · Rhabdomyolysis (myoglobinuria).</p>
 </div>
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-red"></span>Contrast-induced AKI in CKD</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-red"></span>Contrast-induced AKI sa CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-red"></span>Contrast-induced AKI sa CKD</h4>
+<h4 data-lang="en"><span class="dot dot-red"></span>Contrast-induced AKI in CKD</h4><h4 class="lang-hidden" data-lang="kap"># Contrast-induced AKI keng CKD
+
+## Nanu ya ing Contrast-induced AKI?
+
+Ing contrast-induced AKI metung yang uri ning pamanyira keng bato (kidney) a malyari muring mangyari kaybat mung bigyan ka ning contrast dye para keng CT scan, angiogram, o aliwa pang imaging tests. Ing contrast dye makatulung keng mga doktor a akit la ding blood vessels at organs mu neng mas malinaw, oneng malyari yang maging masakit keng mga bato mu.
+
+## Bakit mas matas ing risk mu?
+
+Uling atin kang CKD (chronic kidney disease), e la masyadung masalese magtrabahu ding bato mu kesa keng normal. Makalupa ya iti a mas masakit para karela ing ilako ya ing contrast dye king katawan mu. Inya mas matas ing chance mung magkaroon ning contrast-induced AKI kesa keng taung mayap la ding bato na.
+
+## Nanu la ding sintomas a dapat mung bantayan?
+
+- Mas ditak a ihi kesa keng dati
+- Pamamamaga keng bitis, bukung-bukung, o arap
+- Kapagalan o kakapuyan
+- Pamangasilu o pamagsuka
+- Kalituhan o e makapag-concentrate
+
+## Makananu me apigilan iti?
+
+- Minum kang dakal a danum bayu at kaybat ning procedure, liban mu nung sabian na ning doktor mu a e ka dapat
+- Sabian mu keng doktor mu ding oras-oras mung gamut, lalu na ding NSAIDs (anti-inflammatory drugs) at metformin
+- Malyaring bigyan da kang IV fluids bayu at kaybat ning procedure
+
+Tawagan me ing doktor mu kaagad nung mapansin mung atin kang nanumang sintomas kaybat ning procedure mu.</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-red"></span>Contrast-induced AKI sa CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-red"></span>Contrast-induced AKI sa CKD</h4>
 <p data-lang="en">Iodinated contrast dye is directly nephrotoxic in CKD patients. Risk increases with: eGFR &lt;60, diabetes, volume depletion, high contrast dose, repeated contrast within 48 hours. Prevention: IV normal saline hydration 1 mL/kg/hr for 3–12 hours pre-procedure; use lowest dose of iso-osmolar contrast; avoid NSAIDS and metformin for 48 hours post-contrast; check creatinine 48–72 hours after. Dialysis patients: no special precaution needed — contrast is safely dialyzed out.</p><p class="lang-hidden" data-lang="tl">Ang iodinated contrast dye ay direktang nakakasira sa bato ng mga pasyenteng may CKD. Tumataas ang panganib kapag: eGFR na &lt;60, may diabetes, kakulangan sa tubig, mataas na dosis ng contrast, paulit-ulit na contrast sa loob ng 48 oras. Pag-iwas: IV normal saline hydration na 1 mL/kg/oras sa loob ng 3–12 oras bago ang procedure; gamitin ang pinakamababang dosis ng iso-osmolar contrast; iwasan ang NSAIDs at metformin sa loob ng 48 oras pagkatapos ng contrast; suriin ang creatinine 48–72 oras pagkatapos. Mga pasyenteng nasa dialysis: walang espesyal na pag-iingat na kailangan — ang contrast ay ligtas na maalis sa pamamagitan ng dialysis.</p><p class="lang-hidden" data-lang="ceb">Ang iodinated contrast dye direktang nephrotoxic sa CKD patients. Motaas ang risgo kung: eGFR &lt;60, diabetes, dehydrated, taas nga contrast dose, balik-balik nga contrast sulod sa 48 oras. Prevention: IV normal saline hydration 1 mL/kg/hr sulod sa 3–12 oras before sa procedure; gamita ang pinakagamay nga dose sa iso-osmolar contrast; likayi ang NSAIDs ug metformin sulod sa 48 oras human sa contrast; check ang creatinine 48–72 oras human. Dialysis patients: walay special precaution nga gikinahanglan — ang contrast malimpyo ra pinaagi sa dialysis.</p>
 </div>
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-purple"></span>Rhabdomyolysis in CKD</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-purple"></span>Rhabdomyolysis sa CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-purple"></span>Rhabdomyolysis sa CKD</h4>
+<h4 data-lang="en"><span class="dot dot-purple"></span>Rhabdomyolysis in CKD</h4><h4 class="lang-hidden" data-lang="kap"># Rhabdomyolysis king CKD
+
+Ing rhabdomyolysis metung yang kondisyon a nung nu ing muscles mu masisira at milepas la reng laman da king dugu mu. Malyari yang maging seryosu iti, lalu na nung atin kang CKD (chronic kidney disease).
+
+## Nanu reng señas a banten mu?
+
+- Masakit a masakit deng muscles mu
+- Malambot at maina deng galamay mu
+- Kulay tea o cola ing ihi mu (dark urine)
+- Mapagal ka pisan at mayna
+- Mimugmug ka o misusuka ka
+- Malilitu ka o confused
+
+## Nanu reng daraptan mu?
+
+Nung akit mu reting señas, munta ka agad king emergency room o ospital. E mu paabalan iti.
+
+**King ospital:**
+- Dinan da kang dakal a IV fluids para malinis deng bato mu
+- I-monitor da ing kidney function mu
+- Banten da reng electrolytes mu (potasssium, calcium, phosphorus)
+
+## Obat mas delikadu iti nung atin kang CKD?
+
+Nung atin nang CKD, e na masyadung makasali deng bato mu. Nung atin pang rhabdomyolysis, mas masakit pa kareng bato mu. Malyaring:
+
+- Mas dinan pang damage king bato mu
+- Tumaas ing potassium mu (dangerous iti king pusu mu)
+- Kailangan mung dialysis nung grabe na
+
+## Makananu mung pigilan iti?
+
+- Minum kang dakal a danum, lalu na nung mag-exercise ka
+- E ka mag-exercise a sobra-sobra
+- Sabian mu king doctor mu nung mamangan kang statins o aliwa pang gamut a malyaring maka-affect king muscles mu
+- Nung masakit deng muscles mu kaybat mangan gamut, sabian mu agad king doctor mu
+
+## Kailan ka munta king doctor?
+
+Munta ka agad king doctor o emergency nung:
+- Kulay cola o kulay tea ing ihi mu
+- Masakit a masakit deng muscles mu at e ka makalako
+- Mamasa ka pisan at e ka maka-ihi
+- Malilitu ka
+
+Tandaan mu: Ing maaga mong panuntunan king doctor, mas mayap ing resulta. E mu paabalan deng señas a reti.</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-purple"></span>Rhabdomyolysis sa CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-purple"></span>Rhabdomyolysis sa CKD</h4>
 <p data-lang="en">Muscle breakdown releases myoglobin — directly toxic to renal tubules. Causes: statin-induced myopathy (risk increases with concurrent fibrate use), extreme exertion, trauma, seizures, prolonged immobility, infections. CKD patients on statins have 3–5× higher rhabdomyolysis risk. Presentation: dark "cola-colored" urine + elevated CK &gt;1,000 U/L. Treatment: aggressive IV hydration (100–200 mL/hr NS) to flush myoglobin — but caution with fluid overload in oliguric CKD.</p><p class="lang-hidden" data-lang="tl">Ang pagkasira ng kalamnan ay naglalabas ng myoglobin — direktang nakalalason sa mga tubule ng bato. Mga sanhi: myopathy (panghihina ng kalamnan) dahil sa statin, lalo na kapag kasabay ang fibrate, labis na pagpapagod, trauma, seizures o kombulsyon, matagal na pagkahiga nang hindi gumagalaw, impeksyon. Ang mga pasyenteng may CKD na umiinom ng statin ay may 3–5× na mas mataas na panganib ng rhabdomyolysis. Senyales: maitim na ihi na kulay "cola" + mataas na CK &gt;1,000 U/L. Gamot: maramihang IV fluid (100–200 mL/hr NS) para matanggal ang myoglobin — ngunit mag-ingat sa labis na tubig sa katawan kung kakaunti ang ihi dahil sa CKD.</p><p class="lang-hidden" data-lang="ceb">Ang pagkaguba sa kaunoran nagpagawas og myoglobin — direktang makadaot sa renal tubules (mga tubo sa kidney). Mga hinungdan: myopathy tungod sa statin (mas taas ang risgo kung dungan sa fibrate), sobra nga pagkahago, trauma, seizures (kombulsyon), dugay nga pagka-immobile, mga impeksyon. Ang mga pasyente nga CKD nga naga-inom og statin mas taas og 3–5× ang risgo sa rhabdomyolysis. Mga timailhan: itom nga ihi sama sa kolor sa cola + taas nga CK &gt;1,000 U/L. Tambal: agresibo nga IV hydration (100–200 mL/hr NS) aron maflush ang myoglobin — pero pagmatngon sa sobra nga tubig kung gamay na og ihi ang CKD patient.</p>
 </div>
 </div>
 </section>
 <section class="section" id="diagnosis">
 <div class="section-tag">Workup</div>
-<h2 data-lang="en">Diagnosing AKI-on-CKD — What Tests Are Needed</h2><h2 class="lang-hidden" data-lang="tl">Pag-diagnose ng AKI-on-CKD — Anong mga Pagsusuri ang Kailangan</h2><h2 class="lang-hidden" data-lang="ceb">Pag-diagnose sa AKI-on-CKD — Unsa nga mga Test ang Gikinahanglan</h2>
+<h2 data-lang="en">Diagnosing AKI-on-CKD — What Tests Are Needed</h2><h2 class="lang-hidden" data-lang="kap">**Pamaniagnose king AKI-on-CKD — Nanu deng Kailangan a Test**
+
+Nung ing doktor mu susuptya a atin kang AKI-on-CKD, kailangan dang gawan tests ba rang malaman nung nanu talaga ing kararatan ning batu mu.
+
+**Deng Kalaganapan a Blood Tests**
+
+Susukatan da ing creatinine at BUN king daya mu. Deting chemical waste ya ring dapat itafut da ring batu mu. Nung makatas la, kabaldugan na ali masalese magtrabahu deng batu mu.
+
+**Urine Tests**
+
+Kukuanan da ka urine sample ba rang lauan nung atin protein, daya, o impeksyon. Malyari da namang sukatan ing urine output mu — ing dami ning ihi mu king metung a aldo.
+
+**Imaging Tests**
+
+Malyari rang gawan ultrasound ba rang lauan ing kalapad at itsura da ring batu mu. Ing CKD, karaniwang malati na la deng batu kaysa karaniwan. Makatulung ya ini ba rang abansagan nung ing problema bagu ya o makananu nang apulung.
+
+**Pamanikit king Medical History Mu**
+
+Kukutang ya ing doktor tungkul king deng gamut a papanumnan mu, deng sakit mu bayu, at nung makananu meging malati ing katawan mu. Importante ya ini ba rang maintindian nung bakit meyari ing AKI keng ibabat ning CKD mu.
+
+**Nanu ing Layun Da?**
+
+Bibilang la deng doktor king:
+- Pamagbayut king creatinine level kesa king dati mung level
+- Itsura da ring batu king imaging
+- Deng nanumang rason a milyari (antimo dehydration, impeksyon, o sakit)
+
+Kumausap ka king doktor mu nung atin kang kutang tungkul kareting tests.</h2><h2 class="lang-hidden" data-lang="tl">Pag-diagnose ng AKI-on-CKD — Anong mga Pagsusuri ang Kailangan</h2><h2 class="lang-hidden" data-lang="ceb">Pag-diagnose sa AKI-on-CKD — Unsa nga mga Test ang Gikinahanglan</h2>
 <table class="lab-table">
 <thead><tr><th>Test</th><th>What it tells you</th><th>AKI-on-CKD interpretation</th></tr></thead>
 <tbody>
@@ -408,31 +720,103 @@
 </section>
 <section class="section" id="management">
 <div class="section-tag">Treatment Principles</div>
-<h2 data-lang="en">Managing AKI-on-CKD — The Priority Framework</h2><h2 class="lang-hidden" data-lang="tl">Pamamahala ng AKI-on-CKD — Ang Prayoridad na Balangkas</h2><h2 class="lang-hidden" data-lang="ceb">Pagdumala sa AKI-on-CKD — Ang Priority Framework</h2>
+<h2 data-lang="en">Managing AKI-on-CKD — The Priority Framework</h2><h2 class="lang-hidden" data-lang="kap">Pangasiwa king AKI-on-CKD — Ing Priority Framework
+
+**Nanu ing AKI-on-CKD?**
+
+Ing AKI-on-CKD milyari potang ing metung a tau a atin nang chronic kidney disease (CKD) magkasakit ya naman acute kidney injury (AKI). Kabaldugan na niti, ing bato mu a mayna nang makapasya, biglang miragdag pa ing kasakitan na.
+
+**Bakit Importante Ini?**
+
+Nung atin kang CKD, mas madaling masira ing bato mu. Ing AKI malyari nang papasya ing bato mu mas lalung malala at permanente. Inya kailangan agad ayusan ini.
+
+**Ing Priority Framework — Nanu ing Mumuna?**
+
+**1. Ilako ing Dugu at Fluid**
+- Siguraduwan mung sapat ing fluid king katawan mu
+- E ka magpabayat king pamaglakad mu — magpaynawa ka
+- Uminum kang danum maliban nung sinabi ning doktor mu a limitaran me
+
+**2. Itigil ing Makasira karing Bato**
+- Sabian mu king doktor mu ing sablang gamut a iinuman mu
+- Ating gamut a kailangan itigil magpasalamat antimo ing NSAIDs (ibuprofen, mefenamic acid)
+- E ka manyali gamut a alang abalu ning doktor mu
+
+**3. Ayusan ing Sangkan**
+- Nung atin kang infection, kailangan agamutan
+- Nung masakit ka, sabian mu king doktor mu
+- Nung e ka makapangihi o ditak mu buring pangihi, agad kang magsabi
+
+**4. I-monitor ing Kondisyon Mu**
+- Kailangan regular a blood test para akit ing creatinine at electrolytes mu
+- Timbangan me ing sarili mu aldo-aldo — nung biglang dagdag, sabian mu
+- Bantayan mu nung atin kang pamamaga (edema) karing bitis o lupa
+
+**Nanu ing Dapat Mung Bantayan?**
+
+Agad kang munta king ospital nung:
+- Ditak na ditak ing pangihi mu o ala na
+- Mipangangasngas ka at magulo ing isip mu
+- Masakit ing dagpa mu o masakit kang maningas
+- Mamaga ing bitis mu, gamat, o lupa
+- Mangulisap ka o masakit ing dadagpa mu
+
+**Karing Gamut**
+
+- Malyaring kailangan bagulan ning doktor mu ing dose ning gamut mu
+- Ating gamut a kailangan itigil mu magpasalamat
+- E mu babagulan ing sarili mung gamut — agpasabi ka pa king doktor mu
+
+**Karing Pamangan**
+
+- Malyaring kailangan mung limitaran ing asin (sodium)
+- Malyaring kailangan mung limitaran ing potassium (atin karing saging, kamatis, patatas)
+- Malyaring kailangan mung limitaran ing phosphorus
+- Kumonsulta ka king dietitian o nutritionist
+
+**Tandanan Mu**
+
+Ing AKI-on-CKD seryosu ya, pero nung agad ayusan, malyaring mig-recover ya ing bato mu. Ing maimpurtante, sumunud ka king pamamala ning doktor mu at agad kang magsabi nung atin kang maramdaman a e masalese.
+
+Ing bato mu kailangan yang ingatan — metung ya mu at masakit nang gumawe. Tulungan me ya king pamag-alaga mu king sarili mu.</h2><h2 class="lang-hidden" data-lang="tl">Pamamahala ng AKI-on-CKD — Ang Prayoridad na Balangkas</h2><h2 class="lang-hidden" data-lang="ceb">Pagdumala sa AKI-on-CKD — Ang Priority Framework</h2>
 <div class="two-col">
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-red"></span>Step 1 — Identify and remove the cause IMMEDIATELY</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-red"></span>Hakbang 1 — Tukuyin at alisin KAAGAD ang sanhi</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-red"></span>Lakang 1 — Ilhon ug tangtangon ang hinungdan DAYON</h4>
+<h4 data-lang="en"><span class="dot dot-red"></span>Step 1 — Identify and remove the cause IMMEDIATELY</h4><h4 class="lang-hidden" data-lang="kap">Dake 1 — Abutan at ilako ing sangkan KAIBAT-KAIBAT</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-red"></span>Hakbang 1 — Tukuyin at alisin KAAGAD ang sanhi</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-red"></span>Lakang 1 — Ilhon ug tangtangon ang hinungdan DAYON</h4>
 <p data-lang="en">Every minute of ongoing nephrotoxic exposure or hypoperfusion causes additional irreversible nephron loss. <strong>Hold all nephrotoxins immediately:</strong> NSAIDs, aminoglycosides, IV contrast (defer imaging if possible), herbal medicines, metformin (lactic acidosis risk with poor renal clearance). Hold ACE/ARB temporarily if volume-depleted. Stop diuretics if pre-renal. Relieve obstruction urgently if post-renal (catheter for BPH, ureteral stenting for stones).</p><p class="lang-hidden" data-lang="tl">Bawat minutong nagpapatuloy ang exposure sa nakalalasong gamot o mahinang daloy ng dugo sa bato ay nagdudulot ng karagdagang permanenteng pagkasira ng nephron (yunit ng pagsasala ng bato). <strong>Itigil kaagad ang lahat ng nakalalasong gamot sa bato:</strong> NSAIDs, aminoglycosides, IV contrast (ipagpaliban ang imaging kung maaari), herbal medicines, metformin (panganib ng lactic acidosis dahil sa mahinang pagtanggal ng bato). Pansamantalang itigil ang ACE/ARB kung kulang sa tubig ang katawan. Itigil ang diuretics kung pre-renal ang problema. Alisin agad ang bara kung post-renal (catheter para sa BPH, ureteral stenting para sa bato sa ihi).</p><p class="lang-hidden" data-lang="ceb">Matag minuto nga padayon ang pagkaexpose sa nephrotoxin o dili tarong nga pag-abot sa dugo ngadto sa kidneys makadugang og permanente nga pagkawala sa nephrons. <strong>Ihunong dayon ang tanang nephrotoxins:</strong> NSAIDs, aminoglycosides, IV contrast (ilangan ang imaging kung mahimo), herbal medicines, metformin (risgo sa lactic acidosis kung dili maayo ang kidney function). Ihunong temporaryo ang ACE/ARB kung kulang og tubig ang lawas. Ihunong ang diuretics kung pre-renal. Tangtangon dayon ang babag kung post-renal (catheter para sa BPH, ureteral stenting para sa bato).</p>
 </div>
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-amber"></span>Step 2 — Volume optimization (not over-resuscitation)</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-amber"></span>Hakbang 2 — Tamang dami ng tubig (hindi labis na pagbibigay ng fluid)</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-amber"></span>Lakang 2 — Pag-optimize sa tubig (dili sobra nga pagresuscitate)</h4>
+<h4 data-lang="en"><span class="dot dot-amber"></span>Step 2 — Volume optimization (not over-resuscitation)</h4><h4 class="lang-hidden" data-lang="kap">Hakbang 2 — Pamag-ayus king dami ning likido (e na sobra-sobraing pamag-balik likido)</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-amber"></span>Hakbang 2 — Tamang dami ng tubig (hindi labis na pagbibigay ng fluid)</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-amber"></span>Lakang 2 — Pag-optimize sa tubig (dili sobra nga pagresuscitate)</h4>
 <p data-lang="en">In pre-renal AKI: IV crystalloid (normal saline preferred) — 500 mL bolus, reassess. Target MAP ≥65 mmHg. In CKD patients, the risk of fluid overload is very high — do NOT give unlimited fluids. Monitor for pulmonary edema: rising oxygen requirement, crackles, new chest X-ray infiltrates = stop IV fluids. In septic shock: early goal-directed therapy, vasopressors (noradrenaline) if MAP &lt;65 despite adequate volume — vasopressors restore renal perfusion better than excess fluid in this context.</p><p class="lang-hidden" data-lang="tl">Sa pre-renal AKI: IV crystalloid (normal saline ang pinakanais) — 500 mL bolus, suriin muli. Target na MAP ≥65 mmHg. Sa mga pasyenteng may CKD, napakataas ng panganib ng labis na tubig — HUWAG magbigay ng walang limitasyong fluid. Bantayan kung may pulmonary edema (tubig sa baga): tumataas na pangangailangan ng oxygen, lagutok sa baga, bagong infiltrates sa chest X-ray = itigil ang IV fluids. Sa septic shock: maagang goal-directed therapy, vasopressors (noradrenaline) kung MAP &lt;65 kahit sapat na ang fluid — mas mainam ang vasopressors sa pagpapabuti ng daloy ng dugo sa bato kaysa labis na fluid sa ganitong sitwasyon.</p><p class="lang-hidden" data-lang="ceb">Sa pre-renal AKI: IV crystalloid (normal saline ang mas maayo) — 500 mL bolus, unya i-assess. Target MAP ≥65 mmHg. Sa mga CKD patients, taas kaayo ang risgo sa sobra nga tubig — AYAW paghatag og walay limitasyon nga fluids. Bantayi kung naay pulmonary edema (tubig sa baga): nagkataas nga gikinahanglan nga oxygen, mga crackles, bag-o nga infiltrates sa chest X-ray = hunong sa IV fluids. Sa septic shock: early goal-directed therapy, vasopressors (noradrenaline) kung MAP &lt;65 bisan tarong na ang tubig — ang vasopressors mas maayo mo-restore sa renal perfusion kaysa sobra nga tubig niining sitwasyona.</p>
 </div>
 </div>
 <div class="two-col">
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-teal"></span>Step 3 — Treat the underlying cause</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-teal"></span>Hakbang 3 — Gamutin ang pinagmumulan ng problema</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-teal"></span>Lakang 3 — Tambali ang tinuod nga hinungdan</h4>
+<h4 data-lang="en"><span class="dot dot-teal"></span>Step 3 — Treat the underlying cause</h4><h4 class="lang-hidden" data-lang="kap">**Step 3 — Iyalang ya ing sangkan a gagawan kasakit**</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-teal"></span>Hakbang 3 — Gamutin ang pinagmumulan ng problema</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-teal"></span>Lakang 3 — Tambali ang tinuod nga hinungdan</h4>
 <p data-lang="en">Sepsis: blood cultures → broad-spectrum antibiotics within 1 hour (2026 Surviving Sepsis Campaign) → source control. Avoid aminoglycosides — use carbapenems or beta-lactams for Gram-negative cover. Heart failure: diuresis with IV furosemide (paradoxically helpful even in AKI if volume-overloaded — loop diuretics remove fluid without causing further injury). Obstruction: catheter or ureteral stenting urgently. Rhabdomyolysis: aggressive hydration ± urinary alkalinization.</p><p class="lang-hidden" data-lang="tl">Sepsis (malubhang impeksyon sa dugo): blood cultures → broad-spectrum antibiotics sa loob ng 1 oras (2026 Surviving Sepsis Campaign) → source control. Iwasan ang aminoglycosides — gumamit ng carbapenems o beta-lactams para sa Gram-negative coverage. Heart failure: diuresis gamit ang IV furosemide (nakakatulong kahit sa AKI kung labis ang tubig sa katawan — tinatanggal ng loop diuretics ang tubig nang hindi nagdudulot ng karagdagang pinsala). Obstruction (bara): catheter o ureteral stenting kaagad. Rhabdomyolysis: maramihang hydration ± urinary alkalinization.</p><p class="lang-hidden" data-lang="ceb">Sepsis: blood cultures → broad-spectrum antibiotics sulod sa 1 oras (2026 Surviving Sepsis Campaign) → source control. Likayi ang aminoglycosides — gamita ang carbapenems o beta-lactams para sa Gram-negative coverage. Heart failure: diuresis gamit ang IV furosemide (makatabang bisan sa AKI kung sobra og tubig ang lawas — ang loop diuretics makatangtang sa tubig nga dili makadaot pa). Obstruction: catheter o ureteral stenting dayon. Rhabdomyolysis: agresibo nga hydration ± urinary alkalinization.</p>
 </div>
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-purple"></span>Step 4 — Manage uremic complications</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-purple"></span>Hakbang 4 — Pamahalaan ang mga komplikasyon ng uremia (mataas na toxin sa dugo)</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-purple"></span>Lakang 4 — Dumalaon ang mga komplikasyon sa uremia</h4>
+<h4 data-lang="en"><span class="dot dot-purple"></span>Step 4 — Manage uremic complications</h4><h4 class="lang-hidden" data-lang="kap">**Yápin 4 — Pamangasiwa karing uremic complications**
+
+Nung e na malyari ning batu mu ing milabas ya ing creatinine, manyambut la ding toxins king dágat mu. Deti reng toxins ákaúsá da ring uremic complications—sakit karing butul, pamangasim bitis, pangatda pamangan, pamágsuká, at kapagalan.
+
+Malyari rang sabyan ning doktor mu ing:
+
+- **Phosphate binders** — Párá paábában ya ing phosphorus king dágat mu. Kanan mung kásabay ning pamangan.
+
+- **Sodium bicarbonate** — Párá ayúsan ne ing acidosis (masyadung masim ing dágat mu).
+
+- **Kayúpan king pamangan** — Ing dietitian turu na keka nung nanu reng paintulut mung kanan para e magrákal ing toxins.
+
+- **Antiemetics** — Párá itda ne ing pamágsuká mu.
+
+Nung makaramdam kang mabigat a kapagalan, pangatda gána mangan, o pamangasim bitis, agád mung sabyan king doktor mu. Malyari nang tanda iti king kailangan me nang **dialysis**.</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-purple"></span>Hakbang 4 — Pamahalaan ang mga komplikasyon ng uremia (mataas na toxin sa dugo)</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-purple"></span>Lakang 4 — Dumalaon ang mga komplikasyon sa uremia</h4>
 <p data-lang="en"><strong>Hyperkalemia (K+ &gt;6.0):</strong> 12-lead ECG immediately (peaked T-waves, wide QRS = emergency) → calcium gluconate IV (cardioprotection) → insulin + glucose → sodium bicarbonate → kayexalate or patiromer. <strong>Pulmonary edema:</strong> Furosemide IV, BiPAP, dialysis if refractory. <strong>Severe acidosis (pH &lt;7.2):</strong> Sodium bicarbonate IV if not oliguric; dialysis if refractory. <strong>Uremic pericarditis:</strong> Dialysis urgently — fibrinous pericarditis from uremia is a medical emergency.</p><p class="lang-hidden" data-lang="tl"><strong>Hyperkalemia (K+ &gt;6.0):</strong> 12-lead ECG kaagad (peaked T-waves, wide QRS = emergency) → calcium gluconate IV (proteksyon sa puso) → insulin + glucose → sodium bicarbonate → kayexalate o patiromer. <strong>Pulmonary edema (tubig sa baga):</strong> Furosemide IV, BiPAP, dialysis kung hindi tumutugon. <strong>Malubhang acidosis (pH &lt;7.2):</strong> Sodium bicarbonate IV kung may sapat na ihi; dialysis kung hindi tumutugon. <strong>Uremic pericarditis (pamamaga ng balot ng puso dahil sa uremia):</strong> Kailangan agad ng dialysis — ito ay isang medical emergency.</p><p class="lang-hidden" data-lang="ceb"><strong>Hyperkalemia (K+ &gt;6.0):</strong> 12-lead ECG dayon (peaked T-waves, wide QRS = emergency) → calcium gluconate IV (proteksyon sa kasingkasing) → insulin + glucose → sodium bicarbonate → kayexalate o patiromer. <strong>Pulmonary edema:</strong> Furosemide IV, BiPAP, dialysis kung dili mo-respond. <strong>Grabe nga acidosis (pH &lt;7.2):</strong> Sodium bicarbonate IV kung naa pay ihi; dialysis kung dili mo-respond. <strong>Uremic pericarditis:</strong> Dialysis dayon — ang fibrinous pericarditis gikan sa uremia usa ka medical emergency.</p>
 </div>
 </div>
 <div class="stop-sign">
-<h4 data-lang="en">AKI-on-CKD emergencies — go to ER immediately:</h4><h4 class="lang-hidden" data-lang="tl">Mga emergency sa AKI-on-CKD — pumunta kaagad sa ER:</h4><h4 class="lang-hidden" data-lang="ceb">AKI-on-CKD emergencies — adto dayon sa ER:</h4>
+<h4 data-lang="en">AKI-on-CKD emergencies — go to ER immediately:</h4><h4 class="lang-hidden" data-lang="kap">Mga emerhensia ning AKI-on-CKD — munta ka agad king ER:</h4><h4 class="lang-hidden" data-lang="tl">Mga emergency sa AKI-on-CKD — pumunta kaagad sa ER:</h4><h4 class="lang-hidden" data-lang="ceb">AKI-on-CKD emergencies — adto dayon sa ER:</h4>
 <ul>
-<li data-lang="en">Serum K+ &gt;6.5 mEq/L or ECG changes (peaked T-waves, wide QRS) — cardiac arrest risk</li><li class="lang-hidden" data-lang="tl">Serum K+ &gt;6.5 mEq/L o may pagbabago sa ECG (peaked T-waves, wide QRS) — panganib ng cardiac arrest</li><li class="lang-hidden" data-lang="ceb">Serum K+ &gt;6.5 mEq/L o ECG changes (peaked T-waves, wide QRS) — risgo sa cardiac arrest</li>
+<li data-lang="en">Serum K+ &gt;6.5 mEq/L or ECG changes (peaked T-waves, wide QRS) — cardiac arrest risk</li><li class="lang-hidden" data-lang="kap">Serum K+ &gt;6.5 mEq/L o atin yang pagbabago king ECG (peaked T-waves, wide QRS) — atin yang risgo ning cardiac arrest</li><li class="lang-hidden" data-lang="tl">Serum K+ &gt;6.5 mEq/L o may pagbabago sa ECG (peaked T-waves, wide QRS) — panganib ng cardiac arrest</li><li class="lang-hidden" data-lang="ceb">Serum K+ &gt;6.5 mEq/L o ECG changes (peaked T-waves, wide QRS) — risgo sa cardiac arrest</li>
 <li data-lang="en">No urine output for &gt;12 hours in a previously urinating patient</li><li class="lang-hidden" data-lang="tl">Walang lumabas na ihi sa loob ng &gt;12 oras sa pasyenteng dating umiihi</li><li class="lang-hidden" data-lang="ceb">Walay ihi sulod sa &gt;12 oras sa pasyente nga kaniadto nag-ihi pa</li>
 <li data-lang="en">Severe shortness of breath from pulmonary edema (fluid overload)</li><li class="lang-hidden" data-lang="tl">Matinding hirap sa paghinga dahil sa pulmonary edema (labis na tubig sa baga)</li><li class="lang-hidden" data-lang="ceb">Grabe nga kakulang sa ginhawa tungod sa pulmonary edema (sobra nga tubig)</li>
 <li data-lang="en">Altered consciousness, confusion, or seizures — uremic encephalopathy</li><li class="lang-hidden" data-lang="tl">Nagbabago ang ulirat, nalilito, o may seizures — uremic encephalopathy (apektado ang utak dahil sa toxin)</li><li class="lang-hidden" data-lang="ceb">Nabag-o nga panimuot, kalibog, o seizures — uremic encephalopathy</li>
@@ -444,9 +828,33 @@
 </section>
 <section class="section" id="rrt">
 <div class="section-tag">Renal Replacement Therapy</div>
-<h2 data-lang="en">When to Start Dialysis in AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="tl">Kailan Magsisimula ng Dialysis sa AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="ceb">Kanus-a Magsugod og Dialysis sa AKI-on-CKD</h2>
+<h2 data-lang="en">When to Start Dialysis in AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="kap">**Nukarin ya Mipunan ing Dialysis king AKI-on-CKD**
+
+Ing dialysis kailangan yang mipunan potang ing batu mu ali na malyaring ituglung ing katawan mu king pamag-alis da reng waste ampong sobrang danum. Iti malyaring mapalyari potang ing acute kidney injury (AKI) miragdag king chronic kidney disease (CKD) a atin na kang dati.
+
+**Tandang Kailangan mong Abisuan ing Doktor mu:**
+
+- Ali ka makapangihi o ditak mu nang pangihi
+- Mamasa la deng bitis, sakong, o lupa mu (edema)
+- Mabigat ya ing pamanghinga mu o makaramdam kang kakulangan angin
+- Makaramdam kang labis a kapagalan o kalituan
+- Mangasilo ya ing pusu mu o ali regular ing tibok na
+- Mangasuka ka, matalwa ka, o alang gana mung mangan
+- Mangati ya ing balat mu o makaramdam kang pamagkirut king dibdib
+
+**Nung Makananu La Mipagpasya deng Doktor:**
+
+Ing doktor mu lalawan na la deng resulta ning blood tests mu, lalu na ing creatinine ampong potassium levels. Lalawan da munaman nung magkanu kang danum a mipapatung king katawan mu ampong nung malyari na kang maka-breathe ustu.
+
+**Makanung Dapat:**
+
+- Sunuran mu ing lahat dang instruction ning doktor mu tungkul king gamut ampong danum a malyari mung inuman
+- Magpasuri kang regular agpang mamonitor ya ing kalagayan da reng batu mu
+- Agad kang munta king emergency room nung makaramdam kang mabigat a pamanghinga o dibdib sakit
+
+Ing malugud a pakikipagtulungan mu king healthcare team mu malyari nang saupan a mas mayap ing kalalabasan ning kalagayan mu.</h2><h2 class="lang-hidden" data-lang="tl">Kailan Magsisimula ng Dialysis sa AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="ceb">Kanus-a Magsugod og Dialysis sa AKI-on-CKD</h2>
 <div class="intro-callout">
-<p data-lang="en">The decision to start dialysis in AKI-on-CKD is among the most consequential in nephrology — initiated too early it may prevent spontaneous recovery; too late it allows life-threatening complications. <strong>Timing should be based on clinical context, not a single creatinine value.</strong></p><p class="lang-hidden" data-lang="tl">Ang desisyon kung kailan magsisimula ng dialysis sa AKI-on-CKD ay isa sa pinakamahalagang desisyon sa nephrology — kung masyadong maaga, maaaring mapigilan ang natural na paggaling ng bato; kung masyadong huli, maaaring magkaroon ng mga komplikasyong nakamamatay. <strong>Dapat ibatay ang oras sa klinikal na sitwasyon, hindi sa isang halaga ng creatinine lamang.</strong></p><p class="lang-hidden" data-lang="ceb">Ang desisyon sa pagsugod og dialysis sa AKI-on-CKD usa sa pinakaimportante nga desisyon sa nephrology — kung sayo kaayo mahimong mapugngan ang natural nga pag-ayo; kung ulahi kaayo makatugot sa mga komplikasyon nga makamatay. <strong>Ang timing kinahanglan base sa clinical context, dili sa usa lang ka creatinine value.</strong></p>
+<p data-lang="en">The decision to start dialysis in AKI-on-CKD is among the most consequential in nephrology — initiated too early it may prevent spontaneous recovery; too late it allows life-threatening complications. <strong>Timing should be based on clinical context, not a single creatinine value.</strong></p><p class="lang-hidden" data-lang="kap">Ing desisyun a magumpisan dialysis king AKI-on-CKD metung ya kareng pinakamahalagang desisyun king nephrology — nung maranun yang simumulan, malyari nang apigilan ing sariling pamag-recover ning katawan; nung maluat ya naman, malyari yang maging sanhi da reng life-threatening complications. Ing timing sukat makabasi king clinical context, aliwa king metung mung creatinine value.</p><p class="lang-hidden" data-lang="tl">Ang desisyon kung kailan magsisimula ng dialysis sa AKI-on-CKD ay isa sa pinakamahalagang desisyon sa nephrology — kung masyadong maaga, maaaring mapigilan ang natural na paggaling ng bato; kung masyadong huli, maaaring magkaroon ng mga komplikasyong nakamamatay. <strong>Dapat ibatay ang oras sa klinikal na sitwasyon, hindi sa isang halaga ng creatinine lamang.</strong></p><p class="lang-hidden" data-lang="ceb">Ang desisyon sa pagsugod og dialysis sa AKI-on-CKD usa sa pinakaimportante nga desisyon sa nephrology — kung sayo kaayo mahimong mapugngan ang natural nga pag-ayo; kung ulahi kaayo makatugot sa mga komplikasyon nga makamatay. <strong>Ang timing kinahanglan base sa clinical context, dili sa usa lang ka creatinine value.</strong></p>
 </div>
 <table class="lab-table">
 <thead><tr><th>Indication</th><th>Threshold</th><th>Rationale</th></tr></thead>
@@ -463,14 +871,71 @@
 <div class="alert alert-teal">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
-<h4 data-lang="en">CRRT vs IHD vs SLED for AKI-on-CKD — which to use?</h4><h4 class="lang-hidden" data-lang="tl">CRRT vs IHD vs SLED para sa AKI-on-CKD — alin ang gagamitin?</h4><h4 class="lang-hidden" data-lang="ceb">CRRT vs IHD vs SLED para sa AKI-on-CKD — asa ang gamiton?</h4>
+<h4 data-lang="en">CRRT vs IHD vs SLED for AKI-on-CKD — which to use?</h4><h4 class="lang-hidden" data-lang="kap">**CRRT vs IHD vs SLED para king AKI-on-CKD — ninu ing gamitan?**
+
+Nung atin kang sakit king batu (kidney) a matagal na (CKD) at kaybat bigla yang linubluban (AKI), kailangan mung dialysis ba yang tumulung king katawan mu. Atlung klasi ing pamamaralan a magagamit:
+
+**CRRT (Continuous Renal Replacement Therapy)**
+Iti makanyan yang dialysis a magpapatuloy-tuloy, 24 oras king metung a aldo. Malumanay ya ing pamangalas na king dugu mu. Mayap ya iti nung:
+- Mababa ya ing pressure mu (hypotension)
+- Malubha ya ing kalagayan mu at atyu ka king ICU
+- Maragul ya ing fluid a kailangan ilako king katawan mu
+
+**IHD (Intermittent Hemodialysis)**
+Iti ing karaniwang dialysis a gagawan da ka 3-4 oras, 3 besis king sanlinggu. Mapali ya at masikan ing pamangalas na. Mayap ya iti nung:
+- Estable ya ing kalagayan mu
+- Ali ka kailangan king ICU
+- Malyari kang magbyahe papuntang dialysis center
+
+**SLED (Sustained Low-Efficiency Dialysis)**
+Iti karelang IHD at CRRT — malumanay ya pero ali ya 24 oras, manga 6-12 oras mu. Mayap ya iti nung:
+- Medyu estable ka pero kailangan mu pang bantayan
+- E masyadu mababa ing pressure mu
+
+Ing doktor mu ya ing mamili kung ninu ing bagya keka depende king kalagayan ning katawan mu.</h4><h4 class="lang-hidden" data-lang="tl">CRRT vs IHD vs SLED para sa AKI-on-CKD — alin ang gagamitin?</h4><h4 class="lang-hidden" data-lang="ceb">CRRT vs IHD vs SLED para sa AKI-on-CKD — asa ang gamiton?</h4>
 <p data-lang="en">For hemodynamically unstable patients (ICU, septic shock, MAP &lt;65): CRRT (continuous renal replacement therapy) is preferred — slow, gentle, continuous fluid and toxin removal without causing BP drops. For hemodynamically stable patients: intermittent hemodialysis (IHD) or SLED is appropriate and more efficient for rapid toxin removal. For high potassium with cardiac instability: IHD is fastest at K+ correction but must be performed gradually. The choice should always consider the patient's cardiac stability, available ICU resources, and probability of renal recovery.</p><p class="lang-hidden" data-lang="tl">Para sa mga pasyenteng hindi stable ang blood pressure (ICU, septic shock, MAP &lt;65): CRRT (continuous renal replacement therapy) ang mas mainam — mabagal, banayad, at tuloy-tuloy na pagtanggal ng tubig at toxin nang hindi bumababa ang blood pressure. Para sa mga pasyenteng stable ang blood pressure: intermittent hemodialysis (IHD) o SLED ang angkop at mas mabilis sa pagtanggal ng toxin. Para sa mataas na potassium na may cardiac instability: IHD ang pinakamabilis sa pagbaba ng K+ ngunit dapat gawin nang dahan-dahan. Ang pagpili ay dapat isaalang-alang ang stability ng puso ng pasyente, available na ICU resources, at posibilidad na makaka-recover ang bato.</p><p class="lang-hidden" data-lang="ceb">Para sa mga pasyente nga unstable ang presyon (ICU, septic shock, MAP &lt;65): CRRT (continuous renal replacement therapy) ang mas maayo — hinay, dili kusog, padayon nga pagtangtang sa tubig ug toxins nga dili makapaubos sa BP. Para sa mga pasyente nga stable ang presyon: intermittent hemodialysis (IHD) o SLED ang angay ug mas episyente para sa paspas nga pagtangtang sa toxins. Para sa taas nga potassium nga dunay cardiac instability: IHD ang pinakadali sa pag-correct sa K+ pero kinahanglan buhaton og hinay-hinay. Ang pagpili kinahanglan magkonsiderar sa cardiac stability sa pasyente, available nga ICU resources, ug ang probabilidad sa pag-recover sa kidney.</p>
 </div>
 </div>
 </section>
 <section class="section" id="recovery">
 <div class="section-tag">The Critical Post-AKI Period</div>
-<h2 data-lang="en">Renal Recovery After AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="tl">Pagbawi ng Bato Matapos ang AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="ceb">Pag-recover sa Kidney Human og AKI-on-CKD</h2>
+<h2 data-lang="en">Renal Recovery After AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="kap"># Pamag-recover ning Batu king Lalam ning AKI-on-CKD
+
+Nung miras ka king ospital, e na sasayang masalese ing batu mu uling atin kang chronic kidney disease (CKD). Kaybat meyari mu ing acute kidney injury (AKI), kailangan tamung abatan kung makananu yang mag-recover ing batu mu.
+
+## Nanu ing malyari king batu mu
+
+Ing batu mu mesakitan ya — iti ing ausan dang AKI-on-CKD. Kabaldugan na niti, ing batu mu a maynang mepalpak na, mas mesakitan ya pa. Ating mapilan a batu a mag-recover la, oneng ating mapilan a e na la mag-balik king dati rang kalagayan.
+
+## Nanu ing kailangan mung gawan
+
+**Tungkul king gamut mu:**
+- Inuman mu ing lahat a gamut mu antimo ing exact a oras a sinabi ning doktor mu
+- E mu tatanggalan o babayuan ing dose ning ACE inhibitor o ARB mu anggang e na sinabi ning doktor mu
+- Paabye mu king doktor mu nung manyali kang over-the-counter a gamut, lalu na ing NSAIDs (antimo ing ibuprofen o naproxen)
+
+**Tungkul king pamamangan mu:**
+- Kulangan mu ing asin king pamangan mu — target a mababa king 2,000 mg sodium balang aldo
+- Kumbinasan mu ing protina a kakanan mu — masiadung dakal a protina malyaring makapagobra king batu mu
+- Inuman mung mayap ing danum, oneng e mu naman oobra — sunuran mu ing sinabi ning doktor mu
+
+**Nung kapilan ka mibalik king doktor:**
+
+Kailangan mung mibalik para king blood tests a ausan dang creatinine at eGFR. Iting iti ing magpakita nung makananu yang gagana ing batu mu. Ing mumunang follow-up mu ______ (petsa).
+
+## Tawagan mu ing doktor mu nung:
+
+- Manguliat ka king bitis, bitis mu, o karia ning mata mu
+- Kulang ing ihi mu o ala kang ihi
+- Masakit ing ulo mu a e mawala o malilitu ka
+- Misnang kapagalan o kaluya ing arap mu
+- Managilung ka o mabasa ing hininga mu
+
+## Tandanan mu
+
+E ka magsawa tungkul king pamag-recover mu. Ing batu mu kailangan na yang panaun ban mag-recover ya. Nung sunuran mu ing planu na ning doktor mu at datang ka king lahat a follow-up appointments mu, gagawan mu ing mabaling magawa mu para king kalusugan ning batu mu.
+
+Nung atin kang kutang, tawagan mu ing opisina mi king ______.</h2><h2 class="lang-hidden" data-lang="tl">Pagbawi ng Bato Matapos ang AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="ceb">Pag-recover sa Kidney Human og AKI-on-CKD</h2>
 <div class="illus-wrap illus-wrap-light">
 <svg style="max-width:520px;width:100%;" viewbox="0 0 540 155" xmlns="http://www.w3.org/2000/svg">
 <text fill="#0f1e2e" font-size="13" font-weight="600" text-anchor="middle" x="270" y="16">eGFR Recovery Trajectories After AKI-on-CKD</text>
@@ -504,36 +969,125 @@
 <p class="illus-caption" data-lang="en">Only 30% of AKI-on-CKD patients return to their pre-AKI baseline kidney function. 40% achieve partial recovery but at a lower new baseline. 30% — especially those with Stage 3 AKI on advanced CKD — progress directly to ESKD requiring permanent dialysis.</p><p class="illus-caption lang-hidden" data-lang="tl">Tanging 30% lamang ng mga pasyenteng may AKI-on-CKD ang nagbabalik sa dati nilang baseline kidney function bago ang AKI. 40% ay bahagyang nakaka-recover ngunit sa mas mababang bagong baseline. 30% — lalo na ang mga may Stage 3 AKI sa advanced CKD — direktang umuusad sa ESKD na nangangailangan ng permanenteng dialysis.</p><p class="illus-caption lang-hidden" data-lang="ceb">30% ra sa mga pasyente nga adunay AKI-on-CKD ang makabalik sa ilang baseline nga kidney function sa wala pa ang AKI. 40% makab-ot og partial recovery apan mas ubos na ang bag-ong baseline. 30% — ilabi na kadtong adunay Stage 3 AKI sa advanced CKD — direkta nga mo-progreso ngadto sa ESKD nga nagkinahanglan og permanente nga dialysis.</p>
 <div class="two-col">
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-teal"></span>The post-AKI monitoring protocol (first 3 months)</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-teal"></span>Ang post-AKI monitoring protocol (unang 3 buwan)</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-teal"></span>Ang post-AKI monitoring protocol (una nga 3 ka bulan)</h4>
+<h4 data-lang="en"><span class="dot dot-teal"></span>The post-AKI monitoring protocol (first 3 months)</h4><h4 class="lang-hidden" data-lang="kap">**Ing protokol ning pamanintun kaibat ning AKI (mumunang 3 bulan)**</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-teal"></span>Ang post-AKI monitoring protocol (unang 3 buwan)</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-teal"></span>Ang post-AKI monitoring protocol (una nga 3 ka bulan)</h4>
 <p data-lang="en">Follow-up creatinine at 1 week, 4 weeks, 3 months, and 6 months post-discharge. Reassess whether medications held during AKI can be safely restarted (ACE/ARB, diuretics — restart only when creatinine stable and K+ normal). UACR at 3 months — new or worsening proteinuria post-AKI signals incomplete recovery. Urine output monitoring at home if oliguric during AKI. Blood pressure monitoring daily.</p><p class="lang-hidden" data-lang="tl">Follow-up creatinine sa 1 linggo, 4 na linggo, 3 buwan, at 6 na buwan pagkatapos ma-discharge. Suriin kung ang mga gamot na itinigil noong may AKI ay ligtas nang simulang muli (ACE/ARB, diuretics — simulan lamang kapag stable na ang creatinine at normal ang K+). UACR sa 3 buwan — ang bago o lumalalang proteinuria pagkatapos ng AKI ay senyales ng hindi kumpletong paggaling. Pagmamanman ng urine output sa bahay kung oliguria noong may AKI. Araw-araw na pagsukat ng blood pressure.</p><p class="lang-hidden" data-lang="ceb">Follow-up creatinine sa 1 semana, 4 ka semana, 3 ka bulan, ug 6 ka bulan pagkahuman sa discharge. I-assess pag-usab kung ang mga tambal nga gi-hold panahon sa AKI pwede nang i-restart nga luwas (ACE/ARB, diuretics — i-restart ra kung stable na ang creatinine ug normal ang K+). UACR sa 3 ka bulan — ang bag-o o mas grabe nga proteinuria pagkahuman sa AKI nagpakita nga dili kompleto ang pag-recover. Pag-monitor sa urine output sa balay kung oliguria panahon sa AKI. Pag-monitor sa blood pressure adlaw-adlaw.</p>
 </div>
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-amber"></span>Factors predicting poor renal recovery</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-amber"></span>Mga salik na naghuhula ng mahinang paggaling ng bato</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-amber"></span>Mga hinungdan nga nagpahibalo og dili maayo nga renal recovery</h4>
+<h4 data-lang="en"><span class="dot dot-amber"></span>Factors predicting poor renal recovery</h4><h4 class="lang-hidden" data-lang="kap">Deng factors a makapagpredikta kareng marok a renal recovery</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-amber"></span>Mga salik na naghuhula ng mahinang paggaling ng bato</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-amber"></span>Mga hinungdan nga nagpahibalo og dili maayo nga renal recovery</h4>
 <p data-lang="en">Advanced baseline CKD (eGFR &lt;30 pre-AKI) · Older age (&gt;65) · Diabetes · Severe AKI (Stage 3, requiring dialysis) · Duration of oliguria &gt;72 hours · Intrinsic AKI (ATN) rather than pre-renal · Multiple comorbidities · Delayed treatment · Second AKI episode. Each prior AKI episode increases the risk of ESKD from the next one — prevention of recurrence is paramount.</p><p class="lang-hidden" data-lang="tl">Advanced baseline CKD (eGFR &lt;30 bago ang AKI) · Mas matandang edad (&gt;65) · Diabetes · Malubhang AKI (Stage 3, nangangailangan ng dialysis) · Tagal ng oliguria na &gt;72 oras · Intrinsic AKI (ATN o acute tubular necrosis — direktang pinsala sa mga tubules ng bato) kaysa pre-renal · Maraming kasamang sakit · Naantalang paggamot · Pangalawang episode ng AKI. Ang bawat nakaraang AKI episode ay nagpapataas ng panganib ng ESKD sa susunod — napakahalaga ng pag-iwas sa pag-ulit.</p><p class="lang-hidden" data-lang="ceb">Advanced baseline CKD (eGFR &lt;30 sa wala pa ang AKI) · Tigulang na og edad (&gt;65) · Diabetes · Grabe nga AKI (Stage 3, nagkinahanglan og dialysis) · Gidugayon sa oliguria &gt;72 ka oras · Intrinsic AKI (ATN) imbes nga pre-renal · Daghan nga comorbidities · Nalangan nga pagtambal · Ikaduha nga episode sa AKI. Ang matag miaging episode sa AKI nagdugang sa risgo sa ESKD gikan sa sunod — ang pagpugong sa pag-usab mao ang pinakahinungdanon.</p>
 </div>
 </div>
 </section>
 <section class="section" id="prevention">
 <div class="section-tag">Prevention — The Most Important Section</div>
-<h2 data-lang="en">How CKD Patients Can Prevent AKI</h2><h2 class="lang-hidden" data-lang="tl">Paano Mapipigilan ng mga Pasyenteng may CKD ang AKI</h2><h2 class="lang-hidden" data-lang="ceb">Unsaon sa mga Pasyente nga CKD Pagpugong sa AKI</h2>
+<h2 data-lang="en">How CKD Patients Can Prevent AKI</h2><h2 class="lang-hidden" data-lang="kap">**Makananu deng Pasyenting ati CKD Agyu rang Apigilan ing AKI**
+
+Nung atin kang CKD (Chronic Kidney Disease), mas matas ing peligru mu king makaranas kang AKI (Acute Kidney Injury). Iti deng mangailangan mung balu para aprotektahan la deng batu mu:
+
+**1. Maginu kang masalpak**
+
+Siguraduwan mung masalpak ka parati. Nung masakit ka, mamawasak ka, o mipapasang lugal a mapali, dagdagan mu ing pag-inum mung danum. Ing dehydration metung ya kareng maragul a dahilan na ning AKI.
+
+**2. Likasan mo deng gamut a makasira king batu**
+
+Deng aduang gamut a malyari rang sakitan deng batu mu:
+- NSAIDs (antimo Ibuprofen, Naproxen, Mefenamic Acid)
+- Deng contrast dye a gagamitan da karing CT scan ampong aliwang pamamasusuri
+
+Parati mung ikumusta king doktor mu bayu ka minum nanumang gamut, pati na deng herbal o supplement.
+
+**3. Panalatanan mu ing blood pressure mu**
+
+Ing matas a presyun na ning daya (high blood pressure) malyari neng pasakitan deng batu mu. Inuman mu deng gamut mu para king blood pressure agpang king sinabi na ning doktor mu.
+
+**4. Panalatanan mu ing blood sugar mu**
+
+Nung atin kang diabetes, siguraduwan mung kontroladu ya ing blood sugar mu. Ing matas a blood sugar malyari neng pagparakal ya ing sira karing batu.
+
+**5. Adua mu ing impeksyon**
+
+Nung atin kang lagnat, masakit kang dili, o masakit ka pamag-ihi, magpatingin ka agad king doktor. Deng impeksyon, lalu na nung grabe la, malyari rang dalang AKI.
+
+**6. E mu pababayan deng regular a check-up mu**
+
+Parati kang magpa-test ning creatinine at eGFR para mabantayan ya ing kabilyan da reng batu mu. Nung atin kang pamansing aliwang sintomas, agad agad kang magpatingin.
+
+**Kailan ka mamisinup agad king doktor?**
+
+- Ditak mu nang pag-ihi o ala ka nang ihi
+- Manamdam kang sobrang kapagalan
+- Mamamaga la deng bitis mu o arap
+- Malilitu ka o mabigat ing ulo mu
+- Alang gana mung mangan at sisiwa ka
+
+Tandanan mu: Ing AKI malyari yang apigilan. Makipagsaup ka king doktor mu at sunuran mu ing payuyu ra para manalatag lang mayap deng batu mu.</h2><h2 class="lang-hidden" data-lang="tl">Paano Mapipigilan ng mga Pasyenteng may CKD ang AKI</h2><h2 class="lang-hidden" data-lang="ceb">Unsaon sa mga Pasyente nga CKD Pagpugong sa AKI</h2>
 <div class="three-col">
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-teal"></span>The sick-day rules — memorize these</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-teal"></span>Ang sick-day rules — isaulo ito</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-teal"></span>Ang mga sick-day rules — sabihon kini</h4>
+<h4 data-lang="en"><span class="dot dot-teal"></span>The sick-day rules — memorize these</h4><h4 class="lang-hidden" data-lang="kap">**Ding reglas para kasakit — tandanan mung mabuti deti**</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-teal"></span>Ang sick-day rules — isaulo ito</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-teal"></span>Ang mga sick-day rules — sabihon kini</h4>
 <p data-lang="en">When you have vomiting, diarrhea, fever, or are unable to eat or drink normally: <strong>(1) STOP your ACE inhibitor or ARB</strong> · <strong>(2) STOP your diuretic (furosemide, hydrochlorothiazide)</strong> · <strong>(3) NEVER take NSAIDs (mefenamic acid, ibuprofen, naproxen)</strong> · <strong>(4) Drink extra water/ORS to stay hydrated</strong> · <strong>(5) Call your nephrologist within 24 hours</strong> · Restart medications only when feeling better and eating normally.</p><p class="lang-hidden" data-lang="tl">Kapag ikaw ay may pagsusuka, pagtatae, lagnat, o hindi makakaing o makainom ng normal: <strong>(1) ITIGIL ang iyong ACE inhibitor o ARB</strong> · <strong>(2) ITIGIL ang iyong diuretic (furosemide, hydrochlorothiazide)</strong> · <strong>(3) HUWAG KAILANMAN uminom ng NSAIDs (mefenamic acid, ibuprofen, naproxen)</strong> · <strong>(4) Uminom ng mas maraming tubig/ORS para manatiling hydrated</strong> · <strong>(5) Tawagan ang iyong nephrologist sa loob ng 24 oras</strong> · Simulan lamang muli ang mga gamot kapag bumuti na ang pakiramdam at kumakain na ng normal.</p><p class="lang-hidden" data-lang="ceb">Kung adunay ka pagsuka, pagkalibang, hilanat, o dili makahimo sa pagkaon o pag-inom sa normal: <strong>(1) I-HUNONG ang imong ACE inhibitor o ARB</strong> · <strong>(2) I-HUNONG ang imong diuretic (furosemide, hydrochlorothiazide)</strong> · <strong>(3) AYAW GAYUD PAGKUHA OG NSAIDs (mefenamic acid, ibuprofen, naproxen)</strong> · <strong>(4) Pag-inom og dugang tubig/ORS aron magpabilin nga hydrated</strong> · <strong>(5) Tawagi ang imong nephrologist sulod sa 24 ka oras</strong> · I-restart ra ang mga tambal kung maayo na ang imong pamati ug nakakaon na og normal.</p>
 </div>
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-amber"></span>Before any hospital procedure</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-amber"></span>Bago ang anumang proseso sa ospital</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-amber"></span>Sa wala pa ang bisan unsang hospital procedure</h4>
+<h4 data-lang="en"><span class="dot dot-amber"></span>Before any hospital procedure</h4><h4 class="lang-hidden" data-lang="kap">**Bayu ing nanumang prosedur king ospital**</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-amber"></span>Bago ang anumang proseso sa ospital</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-amber"></span>Sa wala pa ang bisan unsang hospital procedure</h4>
 <p data-lang="en">Always tell every doctor, dentist, and radiologist that you have CKD and your current eGFR. Before contrast dye (CT with contrast, angiogram): request IV pre-hydration and lowest possible contrast dose. Before surgery: make sure your anesthesiologist knows your CKD — avoid hypotension during surgery (MAP must stay ≥65 mmHg). Before any antibiotic: ask if it is safe in CKD — request dose adjustment. Keep a written card with your current eGFR, medications, and allergies.</p><p class="lang-hidden" data-lang="tl">Palaging sabihin sa bawat doktor, dentista, at radiologist na mayroon kang CKD at ang kasalukuyan mong eGFR. Bago ang contrast dye (CT with contrast, angiogram): humingi ng IV pre-hydration at pinakamababang posibleng dosis ng contrast. Bago ang operasyon: siguraduhing alam ng iyong anesthesiologist ang iyong CKD — iwasan ang hypotension o mababang presyon ng dugo habang naooperahan (ang MAP ay dapat manatiling ≥65 mmHg). Bago ang anumang antibiotic: itanong kung ligtas ito sa CKD — humingi ng dose adjustment. Magdala ng nakasulat na card na may kasalukuyan mong eGFR, mga gamot, at allergies.</p><p class="lang-hidden" data-lang="ceb">Kanunay isulti sa matag doktor, dentista, ug radiologist nga adunay ka CKD ug ang imong kasamtangan nga eGFR. Sa wala pa ang contrast dye (CT with contrast, angiogram): pangayoa ang IV pre-hydration ug ang labing gamay nga dose sa contrast. Sa wala pa ang operasyon: siguruha nga nahibal-an sa imong anesthesiologist ang imong CKD — likayi ang hypotension panahon sa operasyon (ang MAP kinahanglan magpabilin nga ≥65 mmHg). Sa wala pa ang bisan unsang antibiotic: pangutan-a kung luwas ba kini sa CKD — pangayoa ang dose adjustment. Paghimo og sinulat nga card nga adunay imong kasamtangan nga eGFR, mga tambal, ug mga allergy.</p>
 </div>
 <div class="feature-card">
-<h4 data-lang="en"><span class="dot dot-green"></span>Medications to always avoid in CKD</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-green"></span>Mga gamot na dapat palaging iwasan sa CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-green"></span>Mga tambal nga kanunay likayin sa CKD</h4>
+<h4 data-lang="en"><span class="dot dot-green"></span>Medications to always avoid in CKD</h4><h4 class="lang-hidden" data-lang="kap">Mga gamut a dapat pirming ilag keng CKD
+
+Ating mapilan a gamut a makapanyira keng batu (kidney) mu o e gagana masyadu mayap nung atin kang CKD. Palagi mung ipakibalita keng doktor mu o pharmacist mu bayu ka minum ning nanumang bayung gamut, pati na ring herbal supplements ampong over-the-counter medicines.
+
+**NSAIDs (Non-Steroidal Anti-Inflammatory Drugs)**
+Deng pain relievers a anti-inflammatory anti ibuprofen, naproxen, ampong aspirin (high-dose) makapanyira la keng batu mu. Malyari dang pasakitan ing dalanan ning daya papunta keng batu mu ampong lalu rang pasakitan ing CKD mu. Nung kailangan mung minum pain reliever, kumonsulta ka keng doktor mu nung nanu ing ligtas para keka.
+
+**Mapilan a Antibiotics**
+Ding mapilan a antibiotics kailangan dang i-adjust ing dose o ilag da tuknang depende keng kidney function mu. E ka minum antibiotics a ala prescripsiyon ning doktor mu.
+
+**Contrast Dye**
+Nung kailangan mung magpa-CT scan o aliwa pang imaging test a gagamit contrast dye, sabian mu keng doktor mu a atin kang CKD. Ing contrast dye makapanyira ya keng batu mu.
+
+**Mapilan a Herbal Supplements**
+E ngan ligtas ding herbal supplements para keng tau a atin CKD. Ating mapilan a makapanyira keng batu o makasalungat keng gamut mu.
+
+Pirmi mung itanong keng healthcare provider mu bayu ka minum ning nanumang bayung gamut.</h4><h4 class="lang-hidden" data-lang="tl"><span class="dot dot-green"></span>Mga gamot na dapat palaging iwasan sa CKD</h4><h4 class="lang-hidden" data-lang="ceb"><span class="dot dot-green"></span>Mga tambal nga kanunay likayin sa CKD</h4>
 <p data-lang="en">NSAIDs (mefenamic acid, ibuprofen, naproxen, aspirin &gt;100 mg/day for pain) · Aminoglycosides (gentamicin, amikacin) without dose adjustment and monitoring · IV contrast without pre-hydration · Herbal remedies (many contain aristolochic acid, which causes rapid irreversible CKD progression) · Chinese herbal preparations (same risk) · Salt substitutes containing potassium chloride · Metformin if eGFR &lt;30 (lactic acidosis risk during AKI).</p><p class="lang-hidden" data-lang="tl">NSAIDs (mefenamic acid, ibuprofen, naproxen, aspirin &gt;100 mg/day para sa sakit) · Aminoglycosides (gentamicin, amikacin) na walang dose adjustment at monitoring · IV contrast na walang pre-hydration · Herbal remedies (marami ang may aristolochic acid, na nagdudulot ng mabilis at hindi na maibabalik na CKD progression) · Chinese herbal preparations (parehong panganib) · Salt substitutes na naglalaman ng potassium chloride · Metformin kung eGFR &lt;30 (panganib ng lactic acidosis habang may AKI).</p><p class="lang-hidden" data-lang="ceb">NSAIDs (mefenamic acid, ibuprofen, naproxen, aspirin &gt;100 mg/day para sa kasakit) · Aminoglycosides (gentamicin, amikacin) nga walay dose adjustment ug monitoring · IV contrast nga walay pre-hydration · Herbal remedies (daghan ang adunay aristolochic acid, nga maoy hinungdan sa paspas ug dili na mabawi nga CKD progression) · Chinese herbal preparations (parehas nga risgo) · Salt substitutes nga adunay potassium chloride · Metformin kung eGFR &lt;30 (risgo sa lactic acidosis panahon sa AKI).</p>
 </div>
 </div>
 </section>
 <section class="section" id="drugs">
 <div class="section-tag">Drug Safety in AKI</div>
-<h2 data-lang="en">Medication Dosing During AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="tl">Pagdo-dosis ng Gamot Habang May AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="ceb">Medication Dosing Panahon sa AKI-on-CKD</h2>
+<h2 data-lang="en">Medication Dosing During AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="kap">**Panyukat ning Gamut Kabang Atin AKI-on-CKD**
+
+Nung atin kang chronic kidney disease (CKD) at bigla yang memuriat ing obra ning batu mu (acute kidney injury o AKI), kailangan i-adjust ding doktor ing dosis ning gamut mu.
+
+**Bakit kailangan i-adjust ing dosis?**
+
+Ing batu mu e na makapag-filter ning gamut antimo kapilan man. Nung e ya i-adjust ing dosis, malyari yang mag-build up ing gamut king katawan mu at magdala yang side effects a masakit.
+
+**Nanong gamut ing kadalasan a kailangan i-adjust?**
+
+- Antibiotics (antimang gentamicin, vancomycin)
+- Pain medications (lalu na ing NSAIDs at opioids)
+- Diabetes medications (antimang metformin at insulin)
+- Blood pressure medications
+- Ing mapilan a heart medications
+
+**Nanong sukat mung gawan?**
+
+1. Sabian mu king doktor mu ing sablang gamut a tatangap mu, pati na ing mga supplements at herbal medicines.
+
+2. E ka manyukat gamut mu neng ala kapaintulutan ning doktor mu.
+
+3. E ka magpasal ning gamut neng e na sasabian ning doktor mu.
+
+4. Munta ka king lahat a follow-up appointments mu.
+
+5. Magpaexam kang dugu para i-monitor da ing kidney function mu.
+
+**Tawagan me ing doktor mu nung:**
+
+- Atin kang pananakit o pamanilab
+- Mababa ya ing ihi mu
+- Makayaliwa ya ing kule ning ihi mu
+- Maramut ka o magulo ya ing buntuk mu</h2><h2 class="lang-hidden" data-lang="tl">Pagdo-dosis ng Gamot Habang May AKI-on-CKD</h2><h2 class="lang-hidden" data-lang="ceb">Medication Dosing Panahon sa AKI-on-CKD</h2>
 <table class="lab-table">
 <thead><tr><th>Drug</th><th>AKI / Severe CKD adjustment</th><th>Notes</th></tr></thead>
 <tbody>
@@ -553,7 +1107,7 @@
 <img alt="Dr. W. G. M. Rivero" src="../images/photo-contact.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
 </div>
 <div>
-<h4 data-lang="en"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4><h4 class="lang-hidden" data-lang="tl"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4><h4 class="lang-hidden" data-lang="ceb"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<h4 data-lang="en"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4><h4 class="lang-hidden" data-lang="kap">W. G. M. Rivero, MD, FPCP, DPSN</h4><h4 class="lang-hidden" data-lang="tl"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4><h4 class="lang-hidden" data-lang="ceb"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
 <p data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition.</p><p class="lang-hidden" data-lang="tl">Espesyalista sa Internal Medicine, Nephrology, at Clinical Nutrition.</p><p class="lang-hidden" data-lang="ceb">Espesyalista sa Internal Medicine, Nephrology, ug Clinical Nutrition.</p>
 <p class="dr-creds" data-lang="en">PRC 0105184 · seriousmd.com/doc/williamrivero · <span id="eml11"></span><script>(function(){var p=["will","iamr","iver","o@gm","ail.","com"];var e=p.join("");var el=document.getElementById("eml11");if(el)el.innerHTML='<a href="mailto:'+e+'" style="color:rgba(255,255,255,.45);">'+e+'</a>';})();
 // Language toggle for guide pages
@@ -578,9 +1132,46 @@ function setGuideLang(lang) {
 </div>
 </section>
 </main>
+
+    <!-- RELATED-GUIDES-START -->
+      <div class="related-guides">
+        <h2>
+          <span data-lang="en">Related Guides</span>
+          <span data-lang="tl" class="lang-hidden">Mga Kaugnay na Gabay</span>
+          <span data-lang="ceb" class="lang-hidden">Mga May Kalabtan nga Giya</span>
+          <span data-lang="kap" class="lang-hidden">Ding Kaugnay nga Gabay</span>
+        </h2>
+        <div class="related-cards">
+        <a class="related-card" href="understanding-ckd.html">
+          <div class="related-card-tag">The Basics</div>
+          <div class="related-card-title">Understanding Chronic Kidney Disease</div>
+          <div class="related-card-desc">A complete guide to what CKD means, how it progresses, and what you can do — today — to protect your</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        <a class="related-card" href="contrast-nephropathy.html">
+          <div class="related-card-tag">The Problem</div>
+          <div class="related-card-title">Contrast-Induced Nephropathy</div>
+          <div class="related-card-desc">CT scans, angiograms, and heart catheterizations all use iodinated contrast dye — a substance that c</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        <a class="related-card" href="nsaid-kidney-injury.html">
+          <div class="related-card-tag">The Problem</div>
+          <div class="related-card-title">Kidney Injury from NSAIDs</div>
+          <div class="related-card-desc">Ibuprofen, mefenamic acid (Ponstan), diclofenac, and naproxen are among the most widely used over-th</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        <a class="related-card" href="understanding-lab-results.html">
+          <div class="related-card-tag">Getting Started</div>
+          <div class="related-card-title">Understanding Your Lab Results</div>
+          <div class="related-card-desc">A plain-language decoder for the most common blood and urine tests — what each number means, what yo</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        </div>
+      </div>
+    <!-- RELATED-GUIDES-END -->
 <footer class="guide-footer">
 <div class="footer-inner">
-<p data-lang="en">© 2025 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p><p class="lang-hidden" data-lang="tl">// Language toggle for guide pages</p><p class="lang-hidden" data-lang="ceb">// Language toggle for guide pages</p>
+<p data-lang="en">© 2025 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p><p class="lang-hidden" data-lang="kap">© 2025 W. G. M. Rivero, MD</p><p class="lang-hidden" data-lang="tl">// Language toggle for guide pages</p><p class="lang-hidden" data-lang="ceb">// Language toggle for guide pages</p>
 <p data-lang="en">References: KDIGO AKI 2012 · 2024 KDIGO Update · Surviving Sepsis Campaign 2026 · Kellum et al. Nat Rev Dis Primers 2021</p><p class="lang-hidden" data-lang="tl">const GLANG_KEY = 'wgmr-lang';</p><p class="lang-hidden" data-lang="ceb">const GLANG_KEY = 'wgmr-lang';</p>
 </div>
 </footer>

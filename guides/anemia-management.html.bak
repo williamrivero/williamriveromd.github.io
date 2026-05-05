@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anemia Management – W. G. M. Rivero, MD</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0f1e2e;--gold:#b8962e;--gold-light:#d4af4f;--teal:#1a6b72;--teal-light:#e1f5f0;--text:#1a1a1a;--text-muted:#5a6472;--border:#e2e6eb;--bg:#f9fafb;--white:#ffffff;--red:#c0392b;--red-soft:#fdf0ef;--amber:#f5a623;--amber-soft:#fef9ec;--green:#2d7a4f;--green-soft:#edf7f2;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.7;font-size:16px;}
+  .hero{background:var(--navy);color:white;padding:72px 0 80px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-60px;right:-80px;width:420px;height:420px;border-radius:50%;border:1px solid rgba(184,150,46,.15);}
+  .container{max-width:860px;margin:0 auto;padding:0 32px;}
+  .hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);border:1px solid rgba(184,150,46,.4);padding:5px 14px;border-radius:20px;margin-bottom:24px;}
+  .hero h1{font-family:'Lora',serif;font-size:clamp(30px,5vw,50px);font-weight:600;line-height:1.2;margin-bottom:20px;letter-spacing:-.02em;}
+  .hero-sub{font-size:18px;color:rgba(255,255,255,.7);max-width:600px;line-height:1.65;margin-bottom:36px;}
+  .hero-meta{display:flex;gap:32px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.5);}
+  .hero-meta strong{color:rgba(255,255,255,.8);font-weight:500;}
+  .nav-strip{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100;}
+  .nav-pills{display:flex;gap:4px;padding:12px 32px;max-width:860px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
+  .nav-pills::-webkit-scrollbar{display:none;}
+  .nav-pill{white-space:nowrap;font-size:13px;font-weight:500;color:var(--text-muted);text-decoration:none;padding:6px 14px;border-radius:20px;border:1px solid transparent;transition:all .2s;}
+  .nav-pill:hover{color:var(--navy);border-color:var(--border);background:var(--bg);}
+  .section{padding:64px 0;border-bottom:1px solid var(--border);}
+  .section:last-of-type{border-bottom:none;}
+  .section-tag{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+  .section h2{font-family:'Lora',serif;font-size:clamp(22px,3.5vw,32px);font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:20px;}
+  .section p{color:var(--text-muted);margin-bottom:16px;}
+  .section p:last-child{margin-bottom:0;}
+  .intro-callout{background:var(--navy);color:white;border-radius:16px;padding:32px 36px;margin-bottom:36px;}
+  .intro-callout p{color:rgba(255,255,255,.78);font-size:17px;line-height:1.75;margin:0;}
+  .intro-callout p strong{color:white;font-weight:600;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0;}
+  .three-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0;}
+  @media(max-width:600px){.two-col,.three-col{grid-template-columns:1fr;}}
+  .feature-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;}
+  .feature-card h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .feature-card p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6;}
+  .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .dot-teal{background:var(--teal);}.dot-red{background:var(--red);}.dot-amber{background:var(--amber);}.dot-green{background:var(--green);}.dot-navy{background:var(--navy);}
+  .alert{border-radius:12px;padding:20px 24px;margin:24px 0;display:flex;gap:16px;align-items:flex-start;}
+  .alert-red{background:var(--red-soft);border-left:3px solid var(--red);}
+  .alert-amber{background:var(--amber-soft);border-left:3px solid var(--amber);}
+  .alert-green{background:var(--green-soft);border-left:3px solid var(--green);}
+  .alert-teal{background:var(--teal-light);border-left:3px solid var(--teal);}
+  .alert-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+  .alert-body h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .alert-body p{font-size:14px;color:var(--text-muted);margin:0;line-height:1.6;}
+  .alert-body ul{font-size:14px;color:var(--text-muted);margin:6px 0 0 16px;}
+  .alert-body ul li{margin-bottom:4px;line-height:1.5;}
+  .lab-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;}
+  .lab-table th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--border);}
+  .lab-table td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text-muted);vertical-align:top;}
+  .lab-table td:first-child{font-weight:500;color:var(--navy);}
+  .lab-table tr:last-child td{border-bottom:none;}
+  .lab-table tr:hover td{background:var(--bg);}
+  .target-badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 10px;border-radius:10px;background:var(--green-soft);color:var(--green);}
+  .steps{margin:24px 0;}
+  .step{display:flex;gap:20px;margin-bottom:24px;align-items:flex-start;}
+  .step-num{width:36px;height:36px;background:var(--navy);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0;}
+  .step-body{flex:1;}
+  .step-body h4{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .step-body p{font-size:14px;color:var(--text-muted);margin:0;}
+  .cause-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:24px 0;}
+  .cause-card{border-radius:12px;padding:16px;border:1px solid var(--border);text-align:center;}
+  .cause-card .c-icon{font-size:24px;margin-bottom:8px;}
+  .cause-card h4{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .cause-card p{font-size:12px;color:var(--text-muted);margin:0;line-height:1.4;}
+  .food-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+  @media(max-width:600px){.food-grid{grid-template-columns:1fr;}}
+  .food-ok{background:var(--green-soft);border:1px solid rgba(45,122,79,.2);border-radius:12px;padding:20px;}
+  .food-avoid{background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:12px;padding:20px;}
+  .food-ok h4{color:var(--green);font-size:14px;font-weight:600;margin-bottom:12px;}
+  .food-avoid h4{color:var(--red);font-size:14px;font-weight:600;margin-bottom:12px;}
+  .food-ok ul,.food-avoid ul{font-size:13px;color:var(--text-muted);margin-left:16px;}
+  .food-ok ul li,.food-avoid ul li{margin-bottom:5px;line-height:1.5;}
+  .dr-card{background:var(--navy);color:white;border-radius:16px;padding:32px;display:flex;gap:24px;align-items:flex-start;margin-top:48px;}
+  .dr-avatar{width:56px;height:56px;background:rgba(184,150,46,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:2px solid rgba(184,150,46,.4);}
+  .dr-card h4{font-size:16px;font-weight:600;color:white;margin-bottom:4px;}
+  .dr-card p{font-size:14px;color:rgba(255,255,255,.65);line-height:1.6;}
+  .dr-card .dr-creds{font-size:12px;color:rgba(255,255,255,.45);margin-top:8px;}
+  .guide-footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 0;margin-top:64px;}
+  .guide-footer .footer-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .guide-footer p{font-size:13px;color:var(--text-muted);}
+  .guide-footer a{color:var(--teal);text-decoration:none;font-weight:500;}
+  .disclaimer{background:var(--amber-soft);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:16px 20px;margin:40px 0 0;font-size:13px;color:var(--text-muted);line-height:1.6;}
+  .disclaimer strong{color:var(--navy);}
+
+  /* ── DARK MODE ─────────────────────────────── */
+  html[data-theme="dark"] {
+    --navy:#0f1e2e; --gold:#b8962e; --gold-light:#d4af4f;
+    --teal:#25949d; --teal-light:#0e2f32;
+    --text:#e8eaf0; --text-muted:#8a95a8;
+    --border:#2a3548; --bg:#141c2a; --white:#1a2030;
+    --red:#e55; --red-soft:#2a1515; --amber:#f5a623; --amber-soft:#2a1f0a;
+    --green:#3d9a6a; --green-soft:#0e2a1c; --purple:#9a6ed4; --purple-soft:#1a1030;
+  }
+  html[data-theme="dark"] body { background:#0f1520; color:#e8eaf0; }
+  html[data-theme="dark"] .site-header { background:#080d16; }
+  html[data-theme="dark"] .nav-strip { background:#141c2a; border-color:#2a3548; }
+  html[data-theme="dark"] .hero { background:#080d16; }
+  html[data-theme="dark"] .section { border-color:#2a3548; }
+  html[data-theme="dark"] .intro-callout { background:#080d16; }
+  html[data-theme="dark"] .feature-card,
+  html[data-theme="dark"] .illus-wrap,
+  html[data-theme="dark"] .ex-card,
+  html[data-theme="dark"] .utox-card,
+  html[data-theme="dark"] .modality-card,
+  html[data-theme="dark"] .drug-card,
+  html[data-theme="dark"] .tech-card,
+  html[data-theme="dark"] .toxin-card,
+  html[data-theme="dark"] .verdict-card{ background:#1a2535; border-color:#2a3548; }
+  html[data-theme="dark"] .section h2,
+  html[data-theme="dark"] .ex-name,
+  html[data-theme="dark"] h3,
+  html[data-theme="dark"] h4{ color:#e8eaf0; }
+  html[data-theme="dark"] .section p,
+  html[data-theme="dark"] .ex-desc,
+  html[data-theme="dark"] .ex-steps{ color:#9aa5b8; }
+  html[data-theme="dark"] .lab-table th { background:#1a2535; color:#8a95a8; }
+  html[data-theme="dark"] .lab-table td { border-color:#2a3548; color:#9aa5b8; }
+  html[data-theme="dark"] .lab-table td:first-child { color:#e8eaf0; }
+  html[data-theme="dark"] .lab-table tr:hover td { background:#202d40; }
+  html[data-theme="dark"] .dr-card { background:#080d16; }
+  html[data-theme="dark"] .guide-footer { background:#141c2a; border-color:#2a3548; }
+  html[data-theme="dark"] .schedule-table th { background:#1a2535; color:#8a95a8; }
+  html[data-theme="dark"] .schedule-table td { border-color:#2a3548; color:#9aa5b8; }
+  html[data-theme="dark"] .alert-teal { background:#0e2f32; }
+  html[data-theme="dark"] .alert-amber { background:#2a1f0a; }
+  html[data-theme="dark"] .alert-green { background:#0e2a1c; }
+  html[data-theme="dark"] .alert-red { background:#2a1515; }
+  html[data-theme="dark"] .stop-sign { background:#2a1515; }
+  html[data-theme="dark"] .disclaimer { background:#2a1f0a; }
+  /* ── DESKTOP FORCED MODE ────────────────────── */
+  html[data-view="desktop"] { min-width:1024px; }
+  html[data-view="desktop"] body { min-width:1024px; }
+  /* ── TOGGLE BUTTON ──────────────────────────── */
+  .guide-toggle-bar {
+    display:flex; gap:8px; align-items:center;
+    padding:6px 32px; background:rgba(0,0,0,.2);
+    border-bottom:1px solid rgba(255,255,255,.06);
+    justify-content:flex-end;
+  }
+  .toggle-btn {
+    display:flex; align-items:center; gap:5px;
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15);
+    color:rgba(255,255,255,.7); font-family:'DM Sans',sans-serif;
+    font-size:11px; font-weight:500; padding:4px 10px;
+    border-radius:16px; cursor:pointer; transition:all .2s; white-space:nowrap;
+  }
+  .toggle-btn:hover { background:rgba(255,255,255,.15); color:white; }
+  .toggle-btn.active { background:#b8962e; border-color:#b8962e; color:white; }
+  .toggle-btn svg { width:12px; height:12px; flex-shrink:0; }
+  @media(max-width:600px){ .toggle-label { display:none; } }
+
+
+  /* ── PRINT ── */
+  .print-btn{
+    position:fixed;bottom:80px;right:24px;
+    width:44px;height:44px;border-radius:50%;
+    background:var(--teal,#1a6b72);color:white;
+    border:none;cursor:pointer;display:flex;
+    align-items:center;justify-content:center;
+    box-shadow:0 4px 16px rgba(0,0,0,.25);
+    transition:transform .2s,box-shadow .2s;
+    z-index:9998;
+  }
+  .print-btn:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(0,0,0,.35);}
+  .print-btn svg{width:18px;height:18px;}
+  .print-btn .p-tip{
+    position:absolute;right:54px;
+    background:rgba(15,30,46,.9);color:white;
+    font-size:12px;font-weight:500;white-space:nowrap;
+    padding:5px 10px;border-radius:6px;
+    opacity:0;pointer-events:none;transition:opacity .15s;
+  }
+  .print-btn:hover .p-tip{opacity:1;}
+  @media print{
+    .site-header,.nav-strip,.guide-toggle-bar,.print-btn,
+    .float-controls,.guide-footer{display:none!important;}
+    body{font-size:13px;line-height:1.6;color:#000;background:#fff;}
+    .hero{background:#fff!important;color:#000!important;padding:24px 0 16px!important;}
+    .hero h1{color:#0f1e2e!important;font-size:22px!important;}
+    .hero-sub{color:#444!important;font-size:13px!important;}
+    .hero-tag,.hero-meta{color:#666!important;}
+    .container{max-width:100%;padding:0 24px;}
+    .section{padding:20px 0;border-bottom:1px solid #ddd;}
+    .intro-callout{background:#f0f4f8!important;color:#000!important;border:1px solid #ccc;}
+    .intro-callout p{color:#222!important;}
+    .alert{border:1px solid #ccc!important;background:#f9f9f9!important;}
+    .alert-body h4,.alert-body p,.alert-body ul{color:#222!important;}
+    .illus-wrap{border:1px solid #ccc;background:#f9f9f9!important;page-break-inside:avoid;}
+    .illus-caption{color:#555!important;}
+    .ex-card,.feature-card,.toxin-card,.utox-card,.modality-card{
+      border:1px solid #ccc!important;background:#fff!important;page-break-inside:avoid;
+    }
+    .ex-name,.feature-card h4{color:#0f1e2e!important;}
+    .ex-desc,.ex-steps,.feature-card p{color:#333!important;}
+    .section h2{color:#0f1e2e!important;}
+    .section-tag{color:#1a6b72!important;}
+    .lab-table th{background:#eee!important;color:#333!important;}
+    .lab-table td{color:#333!important;}
+    .dr-card{background:#f0f4f8!important;color:#000!important;border:1px solid #ccc;}
+    .dr-card h4,.dr-card p,.dr-card .dr-creds{color:#222!important;}
+    .disclaimer{background:#fff8e8!important;border:1px solid #ccc!important;color:#333!important;}
+    .stop-sign{background:#fff0f0!important;border:1px solid #c00!important;}
+    a[href]:after{content:" (" attr(href) ")";font-size:10px;color:#666;}
+    .nav-pill{display:none;}
+    @page{margin:18mm 15mm;size:A4;}
+  }
+
+
+  /* ── LANGUAGE TOGGLE ── */
+  .guide-toggle-bar { display:flex; gap:8px; align-items:center; padding:6px 32px; background:rgba(0,0,0,.18); border-bottom:1px solid rgba(255,255,255,.06); justify-content:flex-end; flex-wrap:wrap; }
+  .lang-label { font-size:11px; color:rgba(255,255,255,.35); margin-right:4px; letter-spacing:.06em; }
+  .lang-btn { font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; padding:4px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.15); background:transparent; color:rgba(255,255,255,.55); cursor:pointer; transition:all .2s; }
+  .lang-btn:hover { color:white; border-color:rgba(255,255,255,.4); }
+  .lang-btn.active { background:#b8962e; border-color:#b8962e; color:white; }
+  [data-lang].lang-hidden { display:none !important; }
+
+
+  /* ── CONTRAST IMPROVEMENTS (v2) ── */
+
+  /* Light-background text — darker for readability */
+  .section > .container > p,
+  .section p:not(.hero-sub):not(.intro-callout p) { color: #2c3340; }
+  .feature-card p { color: #2c3340; }
+  .feature-card h4 { color: #0f1e2e; }
+  .alert-body p, .alert-body ul, .alert-body ul li { color: #2c3340; }
+  .alert-body h4 { color: #0f1e2e; }
+  .lab-table td { color: #2c3340; }
+  .lab-table td:first-child { color: #0f1e2e; font-weight: 600; }
+  .step-body p { color: #2c3340; }
+  .step-body h4 { color: #0f1e2e; }
+  .disclaimer { color: #2c3340; }
+  .illus-caption { color: #2c3340; font-size: 13px; font-style: italic; margin-top: 12px; line-height: 1.65; display: block; }
+  .intro-callout .illus-caption { color: rgba(255,255,255,.82) !important; font-style: italic; }
+  .guide-footer p { color: #4a5260; }
+
+  /* Light cards */
+  .herb-card { background: #ffffff; }
+  .herb-card h4 { color: #0f1e2e; }
+  .herb-card .h-aka { color: #4a5260; }
+  .herb-card p { color: #2c3340; }
+  .myth-card.busted, .myth-card.partial, .myth-card.caution, .myth-card.true { background: #ffffff; }
+  .myth-claim { color: #0f1e2e; }
+  .myth-explanation { color: #2c3340; }
+  .myth-explanation strong { color: #0f1e2e; }
+  .alt-card p { color: #1e3a2a; }
+  .req-block ul li { color: #2c3340; }
+  .z-benefit { color: #2c3340; }
+  .z-benefit .zb-label { color: #0f1e2e; }
+
+  /* illus-wrap — slightly off-white so SVG text pops */
+  .illus-wrap { background: #f0f4f8; }
+
+  /* DARK-BACKGROUND PANELS — always white text, no exceptions */
+  .intro-callout { background: #0f1e2e; }
+  .intro-callout p { color: rgba(255,255,255,.92) !important; font-size: 16px; line-height: 1.75; margin: 0; }
+  .intro-callout p strong { color: #ffffff !important; }
+  .dr-card { background: #0f1e2e; }
+  .dr-card h4 { color: #ffffff !important; }
+  .dr-card p { color: rgba(255,255,255,.88) !important; }
+  .dr-card .dr-creds { color: rgba(255,255,255,.55) !important; }
+  .checklist { background: #0f1e2e; border-color: rgba(255,255,255,.1); }
+  .checklist h4 { color: rgba(255,255,255,.95) !important; }
+  .checklist ul li { color: rgba(255,255,255,.88) !important; border-color: rgba(255,255,255,.1); font-size: 14.5px; }
+  .checklist ul li::before { color: #d4af4f; }
+  .appt-form-header h3 { color: #ffffff !important; }
+  .appt-form-header p { color: rgba(255,255,255,.6) !important; }
+  .hero-sub { color: rgba(255,255,255,.88) !important; }
+  .hero-meta { color: rgba(255,255,255,.6) !important; }
+  .hero-meta strong { color: rgba(255,255,255,.9) !important; }
+
+  /* Dark mode — keep all text legible */
+  html[data-theme="dark"] .section p,
+  html[data-theme="dark"] .feature-card p,
+  html[data-theme="dark"] .alert-body p,
+  html[data-theme="dark"] .alert-body ul li,
+  html[data-theme="dark"] .step-body p,
+  html[data-theme="dark"] .myth-explanation,
+  html[data-theme="dark"] .lab-table td,
+  html[data-theme="dark"] .disclaimer,
+  html[data-theme="dark"] .req-block ul li,
+  html[data-theme="dark"] .z-benefit,
+  html[data-theme="dark"] .herb-card p,
+  html[data-theme="dark"] .alt-card p{ color: #c0cad8 !important; }
+  html[data-theme="dark"] .feature-card h4,
+  html[data-theme="dark"] .step-body h4,
+  html[data-theme="dark"] .myth-claim,
+  html[data-theme="dark"] .z-benefit .zb-label,
+  html[data-theme="dark"] .req-block h4{ color: #e8eaf0 !important; }
+  html[data-theme="dark"] .illus-caption { color: #8a95a8; }
+  html[data-theme="dark"] .illus-wrap { background: #1a2535; }
+  .illus-wrap-light { background: #f9fafb !important; border: 1px solid #e2e6eb; border-radius: 14px; }
+  html[data-theme="dark"] .illus-wrap-light { background: #f9fafb !important; }
+  html[data-theme="dark"] .herb-card,
+  html[data-theme="dark"] .myth-card{ background: #1a2535 !important; border-color: #2a3548; }
+
+    /* ── TOGGLE BAR contrast fix ── */
+  .guide-toggle-bar {
+    background: rgba(10, 18, 32, 0.96) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  }
+
+
+  /* ── LANG TOGGLE (guide pages) ── */
+  .guide-lang-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 32px; height: 36px;
+    background: rgba(0,0,0,.35);
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    justify-content: flex-end;
+  }
+  .guide-lang-bar .lang-lbl { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing:.06em; margin-right:2px; }
+  .lang-btn-g {
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: transparent; color: rgba(255,255,255,.6);
+    cursor: pointer; transition: all .18s;
+  }
+  .lang-btn-g:hover { color: white; border-color: rgba(255,255,255,.4); }
+  .lang-btn-g.active { background: var(--gold); border-color: var(--gold); color: white; }
+  [data-lang].lang-hidden { display: none !important; }
+
+
+  /* ── CALCULATOR SHARED STYLES ── */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
+  .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+  .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
+  .calc-result-box{display:none;border-radius:12px;padding:20px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+  .calc-metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+  .calc-metric-card{background:rgba(255,255,255,.6);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+  .calc-metric-card .cmv{font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1;}
+  .calc-metric-card .cml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.7;}
+  .calc-metric-card .cmt{font-size:11px;margin-top:4px;font-weight:600;}
+  .calc-verdict-text{font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .calc-action-text{font-size:13px;line-height:1.65;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+  .calc-disclaimer{font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6;}
+  html[data-theme="dark"] .calc-wrap{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .calc-field input,html[data-theme="dark"] .calc-field select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
+  html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
+  html[data-theme="dark"] .calc-field label{color:#25949d;}
+</style>
+</head>
+<body>
+<!-- SITE HEADER -->
+<header style="background:var(--navy);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,0.08);">
+  <a href="https://williamriveromd.com" style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:400;color:white;text-decoration:none;letter-spacing:0.01em;">W. G. M. <strong style="font-weight:600;color:#d4af4f;">Rivero</strong>, MD</a>
+  <a href="https://williamriveromd.com/guides/index.html" style="font-size:12px;color:rgba(255,255,255,0.55);text-decoration:none;letter-spacing:0.04em;"><span data-lang="en">← All Guides</span><span data-lang="tl" class="lang-hidden">← Lahat ng Gabay</span><span data-lang="ceb" class="lang-hidden">← Tanan nga Giya</span></a>
+</header>
+<div class="guide-toggle-bar" style="justify-content:space-between;">
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="lang-label">Language:</span>
+    <button class="lang-btn active" id="glb-en" onclick="setLang('en')">English</button>
+    <button class="lang-btn" id="glb-tl" onclick="setLang('tl')">Tagalog</button>
+    <button class="lang-btn" id="glb-ceb" onclick="setLang('ceb')">Cebuano</button>
+      <button id="glb-kap" class="lang-btn" onclick="setLang('kap')">KAP</button>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button class="toggle-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;display:flex;align-items:center;gap:5px;">
+      <svg id="darkIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span id="darkLabel">Dark</span>
+    </button>
+    <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;display:flex;align-items:center;gap:5px;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span id="desktopLabel">Desktop</span>
+    </button>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">Internal Medicine · Nephrology · Patient Guide</div>
+    <h1>Anemia Management</h1>
+    <p class="hero-sub">Why anemia develops, how to identify its cause, and the targeted treatments — iron, erythropoietin, and nutrition — that restore energy and protect your heart and kidneys.</p>
+    <div class="hero-meta">
+      <span><strong><span data-lang="en">Author</span><span data-lang="tl" class="lang-hidden">May-akda</span><span data-lang="ceb" class="lang-hidden">Awtor</span>:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+      <span><strong>Specialty:</strong> Internal Medicine · Nephrology · Nutrition</span>
+      <span><strong><span data-lang="en">Updated</span><span data-lang="tl" class="lang-hidden">Na-update</span><span data-lang="ceb" class="lang-hidden">Na-update</span>:</strong> 2025</span>
+    </div>
+  </div>
+</section>
+<nav class="nav-strip">
+  <div class="nav-pills">
+    <a class="nav-pill" href="#what">What is Anemia?</a>
+    <a class="nav-pill" href="#causes">Causes</a>
+    <a class="nav-pill" href="#ckd-anemia">Anemia of CKD</a>
+    <a class="nav-pill" href="#diagnosis">Diagnosis</a>
+    <a class="nav-pill" href="#iron">Iron Therapy</a>
+    <a class="nav-pill" href="#esa">ESA Therapy</a>
+    <a class="nav-pill" href="#nutrition">Nutrition</a>
+    <a class="nav-pill" href="#calculator">Calculator</a>
+    <a class="nav-pill" href="#targets">Targets</a>
+  </div>
+</nav>
+<main class="container">
+
+  <section class="section" id="what">
+    <div class="section-tag">The Basics</div>
+    <h2>What Is Anemia — and Why Does It Matter?</h2>
+    <div class="intro-callout">
+    <div class="illus-wrap" style="background:#f9fafb;border:1px solid #e2e6eb;border-radius:14px;padding:24px;margin:24px 0;text-align:center;">
+      <svg viewBox="0 0 540 170" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;">
+  <text x="270" y="16" text-anchor="middle" font-size="13" font-weight="600" fill="#0f1e2e">Why CKD Causes Anemia — The Triple Mechanism</text>
+  <defs><marker id="ar" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#c0392b"/></marker>
+  <marker id="ag" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#2d7a4f"/></marker></defs>
+  <!-- Kidney box -->
+  <rect x="10" y="40" width="120" height="70" rx="10" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="70" y="62" text-anchor="middle" font-size="10" font-weight="600" fill="#c0392b">Damaged Kidney</text>
+  <text x="70" y="77" text-anchor="middle" font-size="9" fill="#1e2a38">↓ EPO production</text>
+  <text x="70" y="91" text-anchor="middle" font-size="9" fill="#1e2a38">↑ Hepcidin (inflammation)</text>
+  <text x="70" y="105" text-anchor="middle" font-size="9" fill="#1e2a38">Uremic toxins</text>
+  <!-- Three arrows -->
+  <line x1="130" y1="60" x2="195" y2="60" stroke="#c0392b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="130" y1="80" x2="195" y2="100" stroke="#c0392b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="130" y1="100" x2="195" y2="130" stroke="#c0392b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <!-- Three effect boxes -->
+  <rect x="198" y="40" width="120" height="34" rx="8" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.2"/>
+  <text x="258" y="56" text-anchor="middle" font-size="9" font-weight="600" fill="#c0392b">↓ EPO → Bone marrow</text>
+  <text x="258" y="68" text-anchor="middle" font-size="9" fill="#1e2a38">makes fewer RBCs</text>
+
+  <rect x="198" y="84" width="120" height="34" rx="8" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.2"/>
+  <text x="258" y="100" text-anchor="middle" font-size="9" font-weight="600" fill="#c0392b">↑ Hepcidin → Iron</text>
+  <text x="258" y="112" text-anchor="middle" font-size="9" fill="#1e2a38">trapped in stores</text>
+
+  <rect x="198" y="122" width="120" height="34" rx="8" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.2"/>
+  <text x="258" y="138" text-anchor="middle" font-size="9" font-weight="600" fill="#c0392b">Uremic toxins →</text>
+  <text x="258" y="150" text-anchor="middle" font-size="9" fill="#1e2a38">RBC lifespan ↓ to 60d</text>
+
+  <!-- Converge to anemia -->
+  <line x1="318" y1="57" x2="370" y2="90" stroke="#c0392b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="318" y1="101" x2="370" y2="95" stroke="#c0392b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="318" y1="139" x2="370" y2="105" stroke="#c0392b" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <rect x="373" y="68" width="110" height="56" rx="10" fill="#8b0000"/>
+  <text x="428" y="90" text-anchor="middle" font-size="11" font-weight="700" fill="white">Anemia</text>
+  <text x="428" y="105" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Hgb &lt;100 g/L</text>
+  <text x="428" y="118" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.8)">Fatigue · Dyspnea</text>
+
+  <!-- Treatment arrows -->
+  <rect x="490" y="40" width="42" height="20" rx="5" fill="#edf7f2" stroke="#2d7a4f" stroke-width="1"/>
+  <text x="511" y="54" text-anchor="middle" font-size="8" fill="#2d7a4f">ESA</text>
+  <rect x="490" y="72" width="42" height="20" rx="5" fill="#edf7f2" stroke="#2d7a4f" stroke-width="1"/>
+  <text x="511" y="86" text-anchor="middle" font-size="8" fill="#2d7a4f">IV Iron</text>
+  <rect x="490" y="104" width="42" height="20" rx="5" fill="#edf7f2" stroke="#2d7a4f" stroke-width="1"/>
+  <text x="511" y="118" text-anchor="middle" font-size="8" fill="#2d7a4f">Dialysis</text>
+  <line x1="490" y1="50" x2="485" y2="78" stroke="#2d7a4f" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ag)"/>
+  <line x1="490" y1="82" x2="485" y2="96" stroke="#2d7a4f" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ag)"/>
+
+  <text x="270" y="168" text-anchor="middle" font-size="10" fill="#1a6b72" font-weight="600">Iron must be replete (Ferritin &gt;200, TSAT &gt;30%) BEFORE starting ESA — iron first, always</text>
+</svg>
+          </div>
+      <p class="illus-caption">CKD anemia is multifactorial — EPO deficiency, functional iron deficiency, and shortened RBC survival all contribute simultaneously. All three must be addressed.</p>
+
+      <p>Anemia means your blood does not carry enough oxygen to meet your body's needs. Red blood cells contain hemoglobin — the protein that picks up oxygen in the lungs and delivers it to every organ. <strong>When hemoglobin falls too low, every organ suffers</strong> — especially the heart (which works harder) and the kidneys (which need oxygen to maintain filtration).</p>
+    </div>
+    <p>Anemia is defined as hemoglobin below 130 g/L in men and below 120 g/L in women. In CKD patients, the KDIGO 2024 target is 100–115 g/L — a range that balances oxygen delivery with the risk of excess hemoglobin causing hypertension and thrombosis.</p>
+    <div class="two-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>Symptoms of anemia</h4>
+        <p>Persistent fatigue and weakness even with rest, shortness of breath on mild exertion, palpitations or rapid heartbeat, pale skin, pale inner eyelids (conjunctival pallor), dizziness or light-headedness on standing, difficulty concentrating, cold intolerance, and reduced exercise capacity.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Why anemia is dangerous in CKD</h4>
+        <p>The heart compensates for anemia by beating faster and pumping more blood — chronic compensation causes left ventricular hypertrophy and eventual heart failure. In dialysis patients, anemia is independently associated with increased cardiovascular mortality, hospitalizations, and reduced quality of life.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="causes">
+    <div class="section-tag">Etiology</div>
+    <h2>Common Causes of Anemia</h2>
+    <div class="cause-grid">
+      <div class="cause-card"><div class="c-icon">🩸</div><h4>Iron deficiency</h4><p>Most common cause globally. Blood loss (menstruation, GI bleeding), poor dietary intake, or poor absorption (gastritis, celiac).</p></div>
+      <div class="cause-card"><div class="c-icon">🫘</div><h4>CKD / EPO deficiency</h4><p>Failing kidneys produce insufficient erythropoietin — the hormone that signals bone marrow to make red blood cells.</p></div>
+      <div class="cause-card"><div class="c-icon">🧬</div><h4>B12 / Folate deficiency</h4><p>Required for DNA synthesis in red cell precursors. Deficiency causes large, immature cells (megaloblastic anemia).</p></div>
+      <div class="cause-card"><div class="c-icon">🔥</div><h4>Anemia of chronic disease</h4><p>Inflammation from chronic illness (infection, autoimmune, cancer) sequesters iron and suppresses erythropoiesis via hepcidin.</p></div>
+      <div class="cause-card"><div class="c-icon">🧱</div><h4>Thalassemia</h4><p>Genetic disorder causing defective hemoglobin production. Common in Southeast Asia including the Philippines. Causes microcytic, hypochromic anemia resistant to iron therapy.</p></div>
+      <div class="cause-card"><div class="c-icon">💊</div><h4>Medication-related</h4><p>ACE inhibitors, ARBs, immunosuppressants, and certain antibiotics can suppress red cell production or cause hemolysis.</p></div>
+    </div>
+    <div class="alert alert-teal">
+      <div class="alert-icon">💡</div>
+      <div class="alert-body">
+        <h4>Most CKD anemia is multifactorial</h4>
+        <p>In a CKD or dialysis patient, anemia is rarely from a single cause. The most common combination is <strong>EPO deficiency + iron deficiency + chronic inflammation</strong> — all three must be addressed simultaneously. Treating EPO deficiency alone without ensuring iron adequacy is a common cause of ESA therapy failure.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ckd-anemia">
+    <div class="section-tag">Anemia of CKD</div>
+    <h2>Why CKD Causes Anemia — The Mechanism</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Erythropoietin (EPO) deficiency — the primary driver</h4>
+          <p>The peritubular cells of the kidney sense oxygen tension and produce erythropoietin in response to hypoxia. As kidney tissue is lost in CKD, EPO production falls proportionally. Without EPO, the bone marrow receives no signal to produce new red blood cells — existing cells age and die without replacement, causing progressive anemia.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Iron deficiency — absolute and functional</h4>
+          <p>CKD patients lose iron through the dialysis circuit (blood remaining in tubing), frequent blood draws, and GI bleeding from uremic platelet dysfunction. Additionally, inflammation raises hepcidin — a hormone that blocks iron release from stores even when ferritin appears adequate. This "functional iron deficiency" requires IV iron, not oral iron.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Shortened red blood cell survival</h4>
+          <p>Uremic toxins damage red blood cell membranes, shortening their lifespan from the normal 120 days to as little as 60–90 days. Even with adequate EPO and iron, the bone marrow cannot produce cells fast enough to replace those being destroyed — worsening the anemia.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Secondary hyperparathyroidism — bone marrow fibrosis</h4>
+          <p>Severely elevated PTH causes marrow fibrosis (osteitis fibrosa cystica) — replacing the normal marrow where red cells are made with fibrous tissue. This form of anemia responds poorly to EPO and iron — it requires control of PTH through active vitamin D, phosphate binders, and sometimes parathyroidectomy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="diagnosis">
+    <div class="section-tag">Workup</div>
+    <h2>Diagnosing and Classifying Anemia</h2>
+    <table class="lab-table">
+      <thead><tr><th>Test</th><th>What it identifies</th><th>Key values to note</th></tr></thead>
+      <tbody>
+        <tr><td>Hemoglobin (Hgb)</td><td>Severity of anemia</td><td>CKD target 100–115 g/L. &lt;80 = severe anemia requiring urgent evaluation.</td></tr>
+        <tr><td>MCV (Mean Cell Volume)</td><td>Type of anemia by cell size</td><td>&lt;80 fL = microcytic (iron deficiency, thalassemia); &gt;100 fL = macrocytic (B12/folate deficiency); 80–100 = normocytic (CKD, chronic disease, mixed)</td></tr>
+        <tr><td>Serum ferritin</td><td>Iron stores</td><td>CKD/dialysis target &gt;200 ng/mL. &lt;100 = definite iron deficiency. 100–200 = borderline; check TSAT.</td></tr>
+        <tr><td>TSAT (Transferrin Saturation)</td><td>Functional iron availability for erythropoiesis</td><td>CKD target &gt;30%. &lt;20% = functional iron deficiency — IV iron indicated even if ferritin is "normal".</td></tr>
+        <tr><td>Reticulocyte count + CHr</td><td>Bone marrow response; iron adequacy for erythropoiesis</td><td>Low reticulocytes = insufficient production. CHr (reticulocyte hemoglobin content) &lt;29 pg = iron-restricted erythropoiesis.</td></tr>
+        <tr><td>Serum B12 and folate</td><td>Macrocytic/megaloblastic anemia</td><td>B12 &lt;200 pg/mL = deficiency. Low folate with megaloblastic picture requires oral folic acid 1–5 mg daily.</td></tr>
+        <tr><td>Hemoglobin electrophoresis</td><td>Thalassemia and hemoglobin variants</td><td>Essential when microcytic anemia does not respond to iron therapy. Common in Filipino patients — alpha and beta thalassemia trait are prevalent.</td></tr>
+        <tr><td>CRP / hsCRP</td><td>Inflammation — suppresses iron utilization</td><td>Elevated CRP + low TSAT + high ferritin = anemia of chronic disease / functional iron deficiency. IV iron + treat underlying inflammation.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section" id="iron">
+    <div class="section-tag">Iron Therapy</div>
+    <h2>Iron Supplementation — Oral vs Intravenous</h2>
+    <div class="two-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Oral iron — overview</h4>
+        <p>Oral iron remains the first-line choice for pre-dialysis CKD Stage 1–3 with mild-to-moderate iron deficiency. Absorption is limited in CKD (hepcidin elevation, reduced gastric acid) — typically only 10–15% of the elemental iron dose is absorbed, compared to 25–35% in healthy individuals. Multiple formulations are now available in the Philippines with different elemental iron content, tolerability profiles, and mechanisms of absorption. See comparison table below.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>IV iron — preferred in CKD Stage 3b–5 and dialysis</h4>
+        <p>IV iron sucrose is the standard in Philippine dialysis centers, available locally as <strong>Ferrofer / Anema</strong> (Vifor Pharma) and <strong>Ferrofer</strong> (iron sucrose 100 mg/5 mL ampoule — local generic formulation). Both contain elemental iron sucrose complex and are bioequivalent for clinical purposes. IV iron bypasses absorption barriers, delivers iron directly to storage and bone marrow, and is significantly more effective than oral iron in CKD Stage 3–5 and dialysis. Standard dosing: <strong>loading 200 mg IV × 3 sessions</strong> (over 1–2 weeks); <strong>maintenance 100 mg per HD session</strong> once iron targets are reached. Infuse slowly over 15–30 minutes diluted in 100 mL normal saline. Monitor for hypersensitivity reactions — observe patient for 30 minutes post-infusion. Do not administer if ferritin &gt;500 ng/mL with active infection or inflammation.</p>
+      </div>
+    </div>
+
+    <h3>Oral Iron Formulations — New vs. Conventional</h3>
+    <p>Not all oral iron supplements are equal. Conventional ferrous sulfate is inexpensive but poorly tolerated and poorly absorbed in CKD. Newer formulations — sucrosomial iron (Sideral) and liposomal/ferric pyrophosphate (Pelamis) — offer higher bioavailability, significantly fewer GI side effects, and novel absorption pathways that partially bypass hepcidin blockade.</p>
+
+    <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;">
+      <thead>
+        <tr>
+          <th style="text-align:left;background:#0f1e2e;color:white;padding:10px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Formulation</th>
+          <th style="text-align:left;background:#0f1e2e;color:white;padding:10px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Brand (PH)</th>
+          <th style="text-align:left;background:#0f1e2e;color:white;padding:10px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Elemental Fe</th>
+          <th style="text-align:left;background:#0f1e2e;color:white;padding:10px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Absorption mechanism</th>
+          <th style="text-align:left;background:#0f1e2e;color:white;padding:10px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">GI tolerability</th>
+          <th style="text-align:left;background:#0f1e2e;color:white;padding:10px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">CKD role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;font-weight:600;color:#0f1e2e;">Ferrous sulfate (FeSO₄)</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">Feosol, Ferobin, generics</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">65 mg per 325 mg tab</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">DMT-1 transporter (duodenum). Requires acidic gastric environment. Blocked by hepcidin and inflammation.</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;vertical-align:top;"><span style="background:#fdf0ef;color:#c0392b;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;">Poor</span> — constipation, nausea, black stools common. GI side effects lead to non-adherence in ~30–40%.</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">First-line in Stage 1–3 mild deficiency. Limited utility in Stage 3b–5 due to absorption barriers. Inexpensive.</td>
+        </tr>
+        <tr style="background:#f9fafb;">
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#0f1e2e;vertical-align:top;font-weight:600;">Ferrous gluconate / fumarate</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">Fergon, Ferro-folic generics</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">36 mg (gluconate) / 33 mg (fumarate) per tab</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">Same DMT-1 pathway as FeSO₄. Lower elemental iron per dose than sulfate.</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;vertical-align:top;"><span style="background:#fef9ec;color:#9a6500;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;">Moderate</span> — slightly better tolerated than sulfate due to lower elemental iron per dose.</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">Alternative to FeSO₄ when GI side effects are dose-limiting. Comparable efficacy.</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#0f1e2e;vertical-align:top;font-weight:600;">Sucrosomial iron<br><span style="font-size:11px;font-weight:400;color:#5a6472;">(ferric pyrophosphate encapsulated in phospholipid + sucrose ester matrix)</span></td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;"><strong>Sideral</strong> (Pharma Nord / local distributors)<br><span style="font-size:11px;color:#5a6472;">30 mg elemental Fe capsule</span></td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">30 mg per capsule</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">Absorbed via both DMT-1 and a novel transcellular pathway through enterocytes — partially bypasses the hepcidin-DMT1 blockade seen in CKD. Does not require gastric acid activation.</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;vertical-align:top;"><span style="background:#edf7f2;color:#2d7a4f;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;">Good</span> — phospholipid matrix protects GI mucosa. Significantly fewer side effects than FeSO₄. Can be taken with food.</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">Emerging role in CKD Stage 2–4 where hepcidin-mediated absorption is impaired. RCTs show non-inferiority to IV iron in non-dialysis CKD for mild-moderate deficiency. Higher cost than FeSO₄.</td>
+        </tr>
+        <tr style="background:#f9fafb;">
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#0f1e2e;vertical-align:top;font-weight:600;">Ferric pyrophosphate citrate — oral / dialysate <br><span style="font-size:11px;font-weight:400;color:#5a6472;">(liposomal iron formulation)</span></td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;"><strong>Pelamis</strong> (oral sachets)<br><span style="font-size:11px;color:#5a6472;">Note: Triferic (dialysate FPC) is a related but distinct IV formulation — not the same as oral Pelamis</span></td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">Variable by sachet formulation — confirm on package insert</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">Liposomal encapsulation delivers ferric iron directly to enterocyte membrane — absorbed via a non-DMT1 pathway. Highly resistant to hepcidin blockade. Stable at neutral pH — does not require gastric acid.</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;vertical-align:top;"><span style="background:#edf7f2;color:#2d7a4f;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;">Excellent</span> — minimal GI side effects due to liposomal protection. Can be taken at any time, with or without food.</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;">Most promising oral formulation for CKD patients who cannot tolerate conventional iron or have significant hepcidin-mediated absorption failure. Local availability: verify current FDA-PH registration status before prescribing. Higher cost. Emerging evidence in CKD; Phase III data expected 2025–2026.</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 12px;color:#0f1e2e;vertical-align:top;font-weight:600;">Iron sucrose IV<br><span style="font-size:11px;font-weight:400;color:#5a6472;">(parenteral — reference standard)</span></td>
+          <td style="padding:10px 12px;color:#2c3340;vertical-align:top;"><strong>Ferrofer / Anema</strong>, <strong>Ferrofer</strong></td>
+          <td style="padding:10px 12px;color:#2c3340;vertical-align:top;">100 mg / 5 mL ampoule (20 mg/mL)</td>
+          <td style="padding:10px 12px;color:#2c3340;vertical-align:top;">Direct IV delivery — 100% bioavailable. No GI absorption required. Bypasses all hepcidin-mediated barriers. Taken up by reticuloendothelial system and released to transferrin.</td>
+          <td style="padding:10px 12px;vertical-align:top;"><span style="background:#edf7f2;color:#2d7a4f;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;">N/A (IV)</span> — No GI side effects. Hypersensitivity reaction risk (&lt;1%); observe 30 min post-infusion.</td>
+          <td style="padding:10px 12px;color:#2c3340;vertical-align:top;">Gold standard for CKD Stage 3b–5 and all dialysis patients. Most effective at replenishing iron stores rapidly. Requires healthcare facility administration.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-teal">
+      <div class="alert-icon">💡</div>
+      <div class="alert-body">
+        <h4>Practical prescribing guidance — choosing the right oral iron in CKD</h4>
+        <ul>
+          <li><strong>CKD Stage 1–2, mild deficiency, no inflammation:</strong> Ferrous sulfate 325 mg OD–BID on empty stomach + calamansi juice. Inexpensive, effective if hepcidin not elevated.</li>
+          <li><strong>CKD Stage 2–4, GI intolerance to FeSO₄ or suboptimal response:</strong> Sideral (sucrosomial iron) 1 cap OD–BID with food. Better tolerability, partially bypasses hepcidin, suitable for patients who cannot tolerate conventional iron.</li>
+          <li><strong>CKD Stage 3–4, significant hepcidin elevation, absorption failure:</strong> Consider Pelamis (liposomal FPC) sachets — verify local FDA-PH availability before prescribing.</li>
+          <li><strong>CKD Stage 3b–5 and all hemodialysis patients:</strong> IV iron sucrose (Ferrofer / Anema or Ferrofer) — oral iron is largely ineffective at this stage due to functional iron deficiency from hepcidin. IV route is standard of care.</li>
+          <li><strong>Never give IV iron during active bacterial infection</strong> — see alert below.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <h4>Do not give IV iron during active infection</h4>
+        <p>IV iron should be withheld during active bacterial infection — bacteria thrive on free iron, and IV iron administration during sepsis or bacteremia worsens outcomes. Withhold IV iron until the infection has been treated and resolved (typically at least 2–4 weeks after completing antibiotics and confirming culture negativity).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="esa">
+    <div class="section-tag">Erythropoiesis-Stimulating Agents</div>
+    <h2>ESA Therapy — Replacing the Kidney's Signal</h2>
+    <p>When iron stores are adequate (ferritin &gt;200, TSAT &gt;30%) and hemoglobin remains below 100 g/L, erythropoiesis-stimulating agents (ESAs) are initiated to stimulate bone marrow red cell production.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Iron first — always</h4>
+          <p>ESA therapy without adequate iron stores is ineffective and wasteful. The bone marrow needs iron to build hemoglobin in every new red cell. Always ensure ferritin &gt;200 and TSAT &gt;30% before initiating or escalating ESA dose.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Starting dose and route</h4>
+          <p><strong>Epoietin alpha</strong> — available in the Philippines as <strong>Eprex</strong> (Janssen) and <strong>Eposino</strong> (biosimilar epoietin alpha) — is the standard first-line ESA. Dose: 4,000 IU subcutaneously 2–3 times per week (or IV during dialysis). <strong>Recormon</strong> (Roche) is <strong>epoietin beta</strong> — a distinct molecular form available in 2,000 IU, 5,000 IU, and 10,000 IU prefilled syringes — and is also used in the Philippines but is not epoietin alpha. Both alpha and beta forms stimulate the same EPO receptor and have comparable clinical efficacy at equivalent doses; however they are not interchangeable unit-for-unit — confirm the specific agent and dose with your nephrologist. Darbepoetin alfa (Aranesp) has a longer half-life and can be given weekly or every 2 weeks at lower injection frequency. Start low and titrate — overshoot above 115 g/L increases cardiovascular risk and thrombosis.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Hemoglobin monitoring and target</h4>
+          <p>Check hemoglobin monthly. Target is 100–115 g/L — do NOT target higher. If hemoglobin rises above 115 g/L, reduce ESA dose. If hemoglobin rises above 130 g/L, hold ESA temporarily. Higher hemoglobin targets are associated with increased stroke and myocardial infarction risk (TREAT trial).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>ESA resistance — investigate before escalating dose</h4>
+          <p>If hemoglobin does not rise after 4–8 weeks despite adequate ESA dosing, do not simply increase the dose. Investigate: is iron truly adequate? Is there occult bleeding? Active infection or inflammation? Vitamin B12/folate deficiency? Hyperparathyroidism with marrow fibrosis? Anti-EPO antibodies (rare)? Each cause requires specific treatment, not more ESA.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="nutrition">
+    <div class="section-tag">Nutritional Support</div>
+    <h2>Eating for Healthy Blood — Iron-Rich Filipino Foods</h2>
+    <div class="food-grid">
+      <div class="food-ok">
+        <h4>Iron-rich foods — eat regularly</h4>
+        <ul>
+          <li>Lean beef and pork — heme iron (best absorbed, 15–35%)</li>
+          <li>Chicken and turkey dark meat</li>
+          <li>Malunggay (moringa) leaves — high non-heme iron; local and affordable</li>
+          <li>Mongo beans (mung beans) — plant-based iron</li>
+          <li>Kangkong — moderate iron; boil to reduce potassium if needed</li>
+          <li>Fortified rice and cereals</li>
+          <li>Egg yolks — moderate iron content</li>
+          <li>Bangus (milkfish) and other fish</li>
+        </ul>
+      </div>
+      <div class="food-avoid">
+        <h4>Reduce these — they block iron absorption</h4>
+        <ul>
+          <li>Tea and coffee within 1 hour of iron-rich meals (tannins)</li>
+          <li>Calcium-rich foods (dairy) taken at the same time as iron supplements</li>
+          <li>Whole grain phytates when taken with iron supplements</li>
+          <li>Antacids, phosphate binders taken simultaneously with oral iron</li>
+          <li>Excessive processed foods that lack nutritional density</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert alert-green">
+      <div class="alert-icon">🍊</div>
+      <div class="alert-body">
+        <h4>Enhance iron absorption with vitamin C</h4>
+        <p>Vitamin C (ascorbic acid) converts non-heme iron (from plants) from ferric (Fe³⁺) to ferrous (Fe²⁺) form — the absorbable form. Squeeze calamansi or dalandan over iron-rich plant foods at mealtime. A small amount of vitamin C (50–100 mg) with oral iron supplements can increase absorption by 2–4 fold. Do not exceed 1,000 mg vitamin C supplementation — high doses increase urinary oxalate and kidney stone risk.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- IRON STATUS CALCULATOR -->
+  <section class="section" id="calculator">
+    <div class="section-tag">Interactive Tool</div>
+    <h2>Iron Status Calculator — TSAT &amp; Iron Deficiency Classifier</h2>
+    <p>Enter your iron panel results to calculate TSAT and determine your iron deficiency type. Your doctor uses this to decide whether IV iron, oral iron, or no iron therapy is appropriate for you.</p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Serum Iron (μg/dL)</label>
+          <input id="a-si" type="number" min="1" max="300" step="0.1" placeholder="e.g. 45" oninput="calcAnemia()">
+          <div class="field-hint">Found on your blood chemistry panel. Normal: 60–170 μg/dL</div>
+        </div>
+        <div class="calc-field">
+          <label>TIBC (μg/dL)</label>
+          <input id="a-tibc" type="number" min="100" max="600" step="0.1" placeholder="e.g. 280" oninput="calcAnemia()">
+          <div class="field-hint">Total iron-binding capacity. Normal: 250–370 μg/dL. If TIBC not available, enter transferrin × 25.1</div>
+        </div>
+        <div class="calc-field">
+          <label>Serum Ferritin (ng/mL)</label>
+          <input id="a-ferritin" type="number" min="1" max="5000" step="0.1" placeholder="e.g. 120" oninput="calcAnemia()">
+          <div class="field-hint">Iron storage marker. Also reflects inflammation — unreliable in acute illness</div>
+        </div>
+        <div class="calc-field">
+          <label>Dialysis Status</label>
+          <select id="a-dialysis" onchange="calcAnemia()">
+            <option value="">Select…</option>
+            <option value="hd">On hemodialysis</option>
+            <option value="pd">On peritoneal dialysis</option>
+            <option value="ckd">CKD (not on dialysis)</option>
+          </select>
+          <div class="field-hint">Targets differ between dialysis and non-dialysis CKD patients (KDIGO 2024)</div>
+        </div>
+      </div>
+      <div class="calc-result-box" id="anemia-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="a-tsat-val">—</div>
+            <div class="cml">TSAT %</div>
+            <div class="cmt" id="a-tsat-badge">HD target &gt;30%</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="a-ferritin-val">—</div>
+            <div class="cml">Ferritin</div>
+            <div class="cmt" id="a-ferritin-badge">ng/mL</div>
+          </div>
+          <div class="calc-metric-card" id="a-type-card">
+            <div class="cmv" style="font-size:14px;line-height:1.3;" id="a-type-val">—</div>
+            <div class="cml">Iron Status</div>
+            <div class="cmt" id="a-type-badge">—</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="a-verdict"></div>
+        <div class="calc-action-text" id="a-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ TSAT = (Serum Iron ÷ TIBC) × 100. Ferritin is an acute phase reactant — elevated by inflammation, infection, or malignancy independent of iron stores. Classification per KDIGO 2024. This tool is for educational guidance only — iron therapy decisions require physician assessment.</p>
+    </div>
+  </section>
+
+  <section class="section" id="targets">
+    <div class="section-tag">KDIGO 2024 Targets</div>
+    <h2>Treatment Targets for CKD-Related Anemia</h2>
+    <table class="lab-table">
+      <thead><tr><th>Parameter</th><th>KDIGO 2024 Target</th><th>Action if below target</th><th>Action if above target</th></tr></thead>
+      <tbody>
+        <tr><td>Hemoglobin</td><td><span class="target-badge">100–115 g/L</span></td><td>Evaluate iron, initiate/increase ESA; investigate resistance</td><td>Reduce/hold ESA; investigate polycythemia causes</td></tr>
+        <tr><td>Serum ferritin</td><td><span class="target-badge">&gt;200 ng/mL (dialysis) / &gt;100 (pre-dialysis)</span></td><td>IV iron supplementation (dialysis) or oral iron (pre-dialysis)</td><td>&gt;500 with active inflammation — avoid IV iron; ferritin may be falsely elevated</td></tr>
+        <tr><td>TSAT</td><td><span class="target-badge">&gt;30% (dialysis) / &gt;20% (pre-dialysis)</span></td><td>IV iron even if ferritin is adequate — functional iron deficiency</td><td>&gt;50% — hold IV iron; risk of iron overload</td></tr>
+        <tr><td>Reticulocyte Hgb content (CHr)</td><td><span class="target-badge">&gt;29 pg</span></td><td>Iron-restricted erythropoiesis — IV iron needed before escalating ESA</td><td>Iron replete — proceed with ESA optimization</td></tr>
+      </tbody>
+    </table>
+    <div class="disclaimer"><strong><span data-lang="en">Important</span><span data-lang="tl" class="lang-hidden">Mahalagang Paalala</span><span data-lang="ceb" class="lang-hidden">Importante nga Pahibalo</span>:</strong> Anemia management in CKD is complex and requires individualized assessment. Iron, ESA doses, and monitoring frequency must be tailored by your nephrologist based on your complete clinical picture.</div>
+    <div class="dr-card">
+      <div class="dr-avatar" style="width:64px;height:64px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid rgba(184,150,46,0.5);background:#0f1e2e;">
+    <img src="../images/photo-contact.jpg" alt="Dr. W. G. M. Rivero" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+  </div>
+      <div>
+        <h4><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+        <p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon.</span> Practicing evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+        <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero · <span id="eml12"></span><script>(function(){var p=["will","iamr","iver","o@gm","ail.","com"];var e=p.join("");var el=document.getElementById("eml12");if(el)el.innerHTML='<a href="mailto:'+e+'" style="color:rgba(255,255,255,.45);">'+e+'</a>';})();
+// Language toggle for guide pages
+const GLANG_KEY = 'wgmr-lang';
+function setGuideLang(lang) {
+  localStorage.setItem(GLANG_KEY, lang);
+  ['en','tl','ceb'].forEach(l => {
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el => {
+      el.classList.toggle('lang-hidden', l !== lang);
+    });
+    const btn = document.getElementById('glb-'+l);
+    if (btn) btn.classList.toggle('active', l === lang);
+  });
+}
+(function(){
+  const saved = localStorage.getItem(GLANG_KEY) || 'en';
+  if (saved !== 'en') setGuideLang(saved);
+})();
+
+</script></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer class="guide-footer">
+  <div class="footer-inner">
+    <p>© 2025 <a href="https://williamriveromd.com" style="color:var(--teal);text-decoration:none;font-weight:500;">W. G. M. Rivero, MD</a> · <a href="https://williamriveromd.com">williamriveromd.com</a></p>
+    <p>References: KDIGO 2024 Anemia Guidelines · WHO Anemia Classification · TREAT Trial · NKF KDOQI Anemia 2012 update</p>
+  </div>
+</footer>
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
+
+<button class="print-btn" onclick="window.print()" aria-label="Print this guide">
+  <span class="p-tip">Print / Save PDF</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+  </svg>
+</button>
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+function calcAnemia() {
+  const si = parseFloat(document.getElementById('a-si').value);
+  const tibc = parseFloat(document.getElementById('a-tibc').value);
+  const ferritin = parseFloat(document.getElementById('a-ferritin').value);
+  const dialysis = document.getElementById('a-dialysis').value;
+  const res = document.getElementById('anemia-result');
+  if ([si,tibc,ferritin].some(isNaN) || !dialysis || tibc<=0) { res.style.display='none'; return; }
+
+  const tsat = Math.round((si/tibc)*1000)/10;
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  // KDIGO 2024 targets
+  const tsatTarget = dialysis==='hd' ? 30 : 20;
+  const ferritinTarget = dialysis==='hd' ? 200 : 100;
+  const ferritinUpper = dialysis==='hd' ? 800 : 500;
+
+  // Classify iron status
+  let type, typeColor, bg, borderColor, verdict, action;
+  const tsatLow = tsat < tsatTarget;
+  const ferritinLow = ferritin < ferritinTarget;
+  const ferritinHigh = ferritin > ferritinUpper;
+
+  if (ferritinHigh) {
+    type='Iron Overload Risk'; typeColor='#c0392b';
+    bg = isDark ? 'rgba(192,57,43,.08)' : '#fdf0ef'; borderColor='#c0392b';
+    verdict = `Ferritin of ${ferritin} ng/mL exceeds the upper safety threshold (${ferritinUpper} ng/mL for ${dialysis==='hd'?'HD':'CKD'} patients). TSAT of ${tsat}% suggests ${tsat>30?'iron stores are replete — further iron supplementation carries accumulation risk.':'assess for functional deficiency before supplementing.'}`;
+    action = 'Hold IV iron supplementation. Re-evaluate in 3 months. If TSAT remains low despite high ferritin, consider functional iron deficiency from inflammation — discuss with your nephrologist before giving more iron.';
+  } else if (tsatLow && ferritinLow) {
+    type='Absolute Iron Deficiency'; typeColor='#c0392b';
+    bg = isDark ? 'rgba(192,57,43,.08)' : '#fdf0ef'; borderColor='#c0392b';
+    verdict = `TSAT ${tsat}% (target ≥${tsatTarget}%) and Ferritin ${ferritin} ng/mL (target ≥${ferritinTarget} ng/mL) — both below target. This is absolute iron deficiency: iron stores are genuinely depleted. This is the most common cause of poor ESA response in CKD.`;
+    action = (dialysis==='hd')
+      ? 'IV iron sucrose (Ferrofer / Anema) is preferred — oral iron is poorly absorbed in HD patients and disrupted by phosphate binders. Typical protocol: 100 mg IV per session × 10 sessions. Recheck iron panel after full repletion.'
+      : 'Oral iron (ferrous sulfate or ferric carboxymaltose) is first-line for non-dialysis CKD. IV iron if oral is not tolerated or TSAT critically low. Recheck in 4–8 weeks.';
+  } else if (tsatLow && !ferritinLow) {
+    type='Functional Iron Deficiency'; typeColor='#9a6500';
+    bg = isDark ? 'rgba(154,101,0,.08)' : '#fef9ec'; borderColor='#f5a623';
+    verdict = `TSAT ${tsat}% (below target ≥${tsatTarget}%) but Ferritin ${ferritin} ng/mL (adequate). This is functional iron deficiency — iron is stored but unavailable for erythropoiesis. Common causes: ESA therapy driving rapid iron utilization, inflammation blocking iron release (hepcidin effect), or malnutrition.`;
+    action = 'A trial of IV iron is often warranted even with adequate ferritin in dialysis patients — if Hgb improves, the functional deficiency is confirmed. Review ESA dose adequacy and check CRP/inflammatory markers. Oral iron is not effective for functional deficiency.';
+  } else if (!tsatLow && ferritinLow) {
+    type='Depleting Stores'; typeColor='#9a6500';
+    bg = isDark ? 'rgba(154,101,0,.08)' : '#fef9ec'; borderColor='#f5a623';
+    verdict = `TSAT ${tsat}% is adequate but Ferritin ${ferritin} ng/mL is below target (${ferritinTarget} ng/mL). Iron stores are being depleted — if not repleted, TSAT will fall and functional deficiency will develop. Early intervention prevents anemia worsening.`;
+    action = 'Preventive iron supplementation is recommended. Oral iron may be sufficient for non-dialysis CKD. In HD patients, proactive IV iron maintenance doses prevent cycle of depletion and repletion.';
+  } else {
+    type='Iron Replete'; typeColor='#2d7a4f';
+    bg = isDark ? 'rgba(45,122,79,.08)' : '#edf7f2'; borderColor='#2d7a4f';
+    verdict = `TSAT ${tsat}% (target ≥${tsatTarget}%) and Ferritin ${ferritin} ng/mL (target ≥${ferritinTarget} ng/mL) — both at target. Iron status is adequate. If anemia persists with adequate iron, the cause is likely EPO deficiency requiring ESA therapy, or another co-existing cause (B12, folate deficiency, inflammation, hemolysis).`;
+    action = 'No iron supplementation needed at this time. If Hgb remains below target (100–115 g/L) despite adequate iron, discuss ESA (erythropoietin stimulating agent) initiation or dose adjustment with your nephrologist.';
+  }
+
+  res.style.display='block';
+  res.style.background=bg; res.style.borderColor=borderColor;
+  document.getElementById('a-tsat-val').textContent=tsat+'%';
+  document.getElementById('a-tsat-val').style.color=tsat>=tsatTarget?'#2d7a4f':'#c0392b';
+  document.getElementById('a-tsat-badge').textContent='Target ≥'+tsatTarget+'% ('+(dialysis==='hd'?'HD':'CKD')+')';
+  document.getElementById('a-tsat-badge').style.color=tsat>=tsatTarget?'#2d7a4f':'#c0392b';
+  document.getElementById('a-ferritin-val').textContent=ferritin;
+  document.getElementById('a-ferritin-val').style.color=ferritin>=ferritinTarget&&ferritin<=ferritinUpper?'#2d7a4f':(ferritin>ferritinUpper?'#c0392b':'#c0392b');
+  document.getElementById('a-ferritin-badge').textContent='Target '+ferritinTarget+'–'+ferritinUpper;
+  document.getElementById('a-ferritin-badge').style.color=ferritin>=ferritinTarget&&ferritin<=ferritinUpper?'#2d7a4f':'#c0392b';
+  document.getElementById('a-type-val').textContent=type;
+  document.getElementById('a-type-val').style.color=typeColor;
+  document.getElementById('a-type-badge').textContent='KDIGO 2024';
+  document.getElementById('a-type-badge').style.color=typeColor;
+  document.getElementById('a-verdict').innerHTML='<strong style="color:'+typeColor+'">'+type+'</strong> — '+verdict;
+  document.getElementById('a-action').innerHTML='<strong style="color:'+typeColor+'">Recommended action:</strong> '+action;
+}
+</script>
+</body>
+</html>

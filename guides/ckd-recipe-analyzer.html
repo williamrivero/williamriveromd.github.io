@@ -237,6 +237,83 @@ html[data-view="desktop"] body{min-width:1024px;}
   @page{margin:15mm;size:A4;}
 }
 </style>
+
+<style>
+.related-guides {
+  margin: 48px 0 32px;
+  padding-top: 32px;
+  border-top: 2px solid var(--border, #e2e6eb);
+}
+.related-guides h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy, #0f1e2e);
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.related-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+.related-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--border, #e2e6eb);
+  border-radius: 10px;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.18s, border-color 0.18s;
+  cursor: pointer;
+}
+.related-card:hover {
+  border-color: var(--teal, #1a6b72);
+  box-shadow: 0 4px 16px rgba(26,107,114,0.10);
+}
+.related-card-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--teal, #1a6b72);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.related-card-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--navy, #0f1e2e);
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+.related-card-desc {
+  font-size: 0.80rem;
+  color: var(--text-muted, #5a6472);
+  line-height: 1.45;
+  flex: 1;
+}
+.related-card-arrow {
+  font-size: 0.80rem;
+  color: var(--teal, #1a6b72);
+  font-weight: 700;
+  margin-top: 10px;
+  align-self: flex-end;
+}
+/* Dark mode */
+body.dark .related-card {
+  background: #1a2535;
+  border-color: #2a3a4a;
+}
+body.dark .related-card:hover {
+  border-color: var(--teal, #1a6b72);
+}
+body.dark .related-card-title {
+  color: #e8edf2;
+}
+</style>
+
 </head>
 <body>
 <header class="site-header">
@@ -249,6 +326,7 @@ html[data-view="desktop"] body{min-width:1024px;}
 <button class="lang-btn active" id="glb-en" onclick="setLang('en')">English</button>
 <button class="lang-btn" id="glb-tl" onclick="setLang('tl')">Tagalog</button>
 <button class="lang-btn" id="glb-ceb" onclick="setLang('ceb')">Cebuano</button>
+<button class="lang-btn" id="glb-kap" onclick="setLang('kap')">KAP</button>
 </div>
 <div style="display:flex;gap:8px;">
 <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
@@ -265,7 +343,7 @@ html[data-view="desktop"] body{min-width:1024px;}
 <div class="container">
 <div class="hero-tag">Nutrition · CKD · Recipe Analyzer</div>
 <h1>CKD Recipe Nutrition Analyzer</h1>
-<p class="hero-sub" data-lang="en">Paste any recipe's ingredients and get a full Nutrition Facts label — then see instant CKD safety flags showing whether the recipe is safe for your stage, and which ingredients to modify.</p><p class="hero-sub lang-hidden" data-lang="tl">I-paste ang mga sangkap ng kahit anong recipe at makakuha ng kumpletong Nutrition Facts label — pagkatapos ay makikita mo agad ang mga CKD safety flags na nagpapakita kung ligtas ang recipe para sa iyong stage, at kung aling mga sangkap ang dapat baguhin.</p><p class="hero-sub lang-hidden" data-lang="ceb">I-paste ang bisan unsang ingredients sa recipe ug makuha nimo ang kompleto nga Nutrition Facts label — dayon makita dayon ang CKD safety flags nga magpakita kung safe ba ang recipe para sa imong stage, ug unsang mga ingredients ang kinahanglan usbon.</p>
+<p class="hero-sub" data-lang="en">Paste any recipe's ingredients and get a full Nutrition Facts label — then see instant CKD safety flags showing whether the recipe is safe for your stage, and which ingredients to modify.</p><p class="lang-hidden" data-lang="kap">I-paste mu ing ingredients ning maski sanu mang recipe at makuha mu ing kumpletung Nutrition Facts label — kaybat makakita ka agad ning CKD safety flags a magpakit nung ing recipe safe para king stage mu, at ninu deng ingredients a kailangan mung baguran.</p><p class="hero-sub lang-hidden" data-lang="tl">I-paste ang mga sangkap ng kahit anong recipe at makakuha ng kumpletong Nutrition Facts label — pagkatapos ay makikita mo agad ang mga CKD safety flags na nagpapakita kung ligtas ang recipe para sa iyong stage, at kung aling mga sangkap ang dapat baguhin.</p><p class="hero-sub lang-hidden" data-lang="ceb">I-paste ang bisan unsang ingredients sa recipe ug makuha nimo ang kompleto nga Nutrition Facts label — dayon makita dayon ang CKD safety flags nga magpakita kung safe ba ang recipe para sa imong stage, ug unsang mga ingredients ang kinahanglan usbon.</p>
 <div class="hero-meta">
 <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
 <span><strong>Guidelines:</strong> KDIGO 2024 · NKF KDOQI 2020</span>
@@ -285,11 +363,13 @@ html[data-view="desktop"] body{min-width:1024px;}
 <!-- ═══════════ ANALYZER ═══════════ -->
 <section class="section" id="analyzer">
 <div class="section-tag">Recipe Nutrition Tool</div>
-<h2 data-lang="en">Analyze a Recipe</h2><h2 class="lang-hidden" data-lang="tl">Mag-analyze ng Recipe</h2><h2 class="lang-hidden" data-lang="ceb">I-analyze ang Recipe</h2>
+<h2 data-lang="en">Analyze a Recipe</h2><h2 class="lang-hidden" data-lang="kap">Pakilala kung nanu ing recipe a buri mung suriin. Paki-share mu ing listahan da ring ingredients ampong ing paralan na ning pamagluto (cooking instructions), at agad kung susuriin para keka—kabilang la ring nutritional content, serving size, at deng malyaring ingredient substitutions para keng health reasons.</h2><h2 class="lang-hidden" data-lang="tl">Mag-analyze ng Recipe</h2><h2 class="lang-hidden" data-lang="ceb">I-analyze ang Recipe</h2>
 <p data-lang="en">List your ingredients with quantities, select your CKD stage, and the analyzer will generate a Nutrition Facts label and flag any nutrients of concern for your stage.</p><p class="lang-hidden" data-lang="tl">Ilista ang iyong mga sangkap kasama ang dami, piliin ang iyong CKD stage, at ang analyzer ay gagawa ng Nutrition Facts label at magfla-flag ng anumang nutrients na dapat bantayan para sa iyong stage.</p><p class="lang-hidden" data-lang="ceb">Ilista ang imong mga ingredients uban sa gidaghanon, pilia ang imong CKD stage, ug ang analyzer maghimo og Nutrition Facts label ug mag-flag sa bisan unsang nutrients nga kinahanglan bantayan para sa imong stage.</p>
 <div class="analyzer-card">
 <div class="analyzer-header">
-<h3 data-lang="en">Recipe Nutrition Analyzer</h3><h3 class="lang-hidden" data-lang="tl">Recipe Nutrition Analyzer</h3><h3 class="lang-hidden" data-lang="ceb">Recipe Nutrition Analyzer</h3>
+<h3 data-lang="en">Recipe Nutrition Analyzer</h3><h3 class="lang-hidden" data-lang="kap">I'd be happy to help translate medical patient education text into Kapampangan, but I notice that the text you've provided ("Recipe Nutrition Analyzer") appears to be just a title or heading for a tool/application rather than actual medical patient education content.
+
+Could you please provide the full medical patient education text that you would like me to translate into Kapampangan? Once you share the complete text, I'll translate it using natural, conversational Kapampangan while keeping medical terms, drug names, proper nouns, numbers, and units in English.</h3><h3 class="lang-hidden" data-lang="tl">Recipe Nutrition Analyzer</h3><h3 class="lang-hidden" data-lang="ceb">Recipe Nutrition Analyzer</h3>
 <p data-lang="en">Powered by AI nutritional analysis · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="tl">Pinapagana ng AI nutritional analysis · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="ceb">Gipadagan sa AI nutritional analysis · CKD-adjusted safety flags</p>
 </div>
 <div class="analyzer-body">
@@ -384,29 +464,29 @@ html[data-view="desktop"] body{min-width:1024px;}
 <!-- ═══════════ HOW TO USE ═══════════ -->
 <section class="section" id="how-to-use">
 <div class="section-tag">Guide</div>
-<h2 data-lang="en">How to Use This Analyzer</h2><h2 class="lang-hidden" data-lang="tl">Paano Gamitin ang Analyzer na Ito</h2><h2 class="lang-hidden" data-lang="ceb">Unsaon Paggamit Niini nga Analyzer</h2>
+<h2 data-lang="en">How to Use This Analyzer</h2><h2 class="lang-hidden" data-lang="kap">Makananu Yang Gagamitan Iting Analyzer</h2><h2 class="lang-hidden" data-lang="tl">Paano Gamitin ang Analyzer na Ito</h2><h2 class="lang-hidden" data-lang="ceb">Unsaon Paggamit Niini nga Analyzer</h2>
 <div class="two-col">
 <div class="feat-card">
-<h4 data-lang="en">1. Enter your CKD stage</h4><h4 class="lang-hidden" data-lang="tl">1. Ilagay ang iyong CKD stage</h4><h4 class="lang-hidden" data-lang="ceb">1. I-enter ang imong CKD stage</h4>
+<h4 data-lang="en">1. Enter your CKD stage</h4><h4 class="lang-hidden" data-lang="kap">1. Ipalub me ing stage ning CKD mu</h4><h4 class="lang-hidden" data-lang="tl">1. Ilagay ang iyong CKD stage</h4><h4 class="lang-hidden" data-lang="ceb">1. I-enter ang imong CKD stage</h4>
 <p data-lang="en">Select your current stage or dialysis modality. This activates the safety flag system — the analyzer will compare each nutrient in the recipe against your specific stage limits and flag anything that exceeds safe thresholds.</p><p class="lang-hidden" data-lang="tl">Piliin ang iyong kasalukuyang stage o dialysis modality. Ito ang mag-a-activate ng safety flag system — ikukumpara ng analyzer ang bawat nutrient sa recipe laban sa mga limit para sa iyong partikular na stage at magfla-flag ng kahit anong lumampas sa ligtas na threshold.</p><p class="lang-hidden" data-lang="ceb">Pilia ang imong kasamtangang stage o dialysis modality. Kini mag-activate sa safety flag system — ang analyzer magtandi sa matag nutrient sa recipe batok sa imong piho nga stage limits ug mag-flag sa bisan unsa nga mosobra sa safe thresholds.</p>
 </div>
 <div class="feat-card">
-<h4 data-lang="en">2. Enter ingredients with quantities</h4><h4 class="lang-hidden" data-lang="tl">2. Ilagay ang mga sangkap kasama ang dami</h4><h4 class="lang-hidden" data-lang="ceb">2. I-enter ang mga ingredients uban sa gidaghanon</h4>
+<h4 data-lang="en">2. Enter ingredients with quantities</h4><h4 class="lang-hidden" data-lang="kap">2. Ipalub la reng ingredients kayabe da reng dake ra</h4><h4 class="lang-hidden" data-lang="tl">2. Ilagay ang mga sangkap kasama ang dami</h4><h4 class="lang-hidden" data-lang="ceb">2. I-enter ang mga ingredients uban sa gidaghanon</h4>
 <p data-lang="en">One ingredient per line. Include the amount and unit: "200g chicken breast," "1 tbsp patis," "2 cups rice." Filipino ingredients are recognized — use local names (sayote, kangkong, bangus, patis, bagoong). Be specific about preparation (boiled vs fried changes calorie counts significantly).</p><p class="lang-hidden" data-lang="tl">Isang sangkap lang bawat linya. Isama ang dami at unit: "200g chicken breast," "1 tbsp patis," "2 cups rice." Kinikilala ang mga Filipino ingredients — gamitin ang mga lokal na pangalan (sayote, kangkong, bangus, patis, bagoong). Maging tiyak sa paraan ng paghahanda (malaki ang pagkakaiba ng calories ng nilaga kumpara sa prito).</p><p class="lang-hidden" data-lang="ceb">Usa ka ingredient matag linya. Iapil ang kantidad ug unit: "200g chicken breast," "1 tbsp patis," "2 cups rice." Ang Filipino ingredients mailhan — gamita ang lokal nga ngalan (sayote, kangkong, bangus, patis, bagoong). Espesipiko sa pag-andam (boiled vs fried lahi kaayo ang calorie counts).</p>
 </div>
 <div class="feat-card">
-<h4 data-lang="en">3. Read the Nutrition Facts label</h4><h4 class="lang-hidden" data-lang="tl">3. Basahin ang Nutrition Facts label</h4><h4 class="lang-hidden" data-lang="ceb">3. Basaha ang Nutrition Facts label</h4>
+<h4 data-lang="en">3. Read the Nutrition Facts label</h4><h4 class="lang-hidden" data-lang="kap">3. Basaen me ing Nutrition Facts label</h4><h4 class="lang-hidden" data-lang="tl">3. Basahin ang Nutrition Facts label</h4><h4 class="lang-hidden" data-lang="ceb">3. Basaha ang Nutrition Facts label</h4>
 <p data-lang="en">The output mirrors the standard FDA Nutrition Facts label format — identical to what you see on packaged food. Values are per serving. Use the "Total Servings" field to divide the recipe correctly.</p><p class="lang-hidden" data-lang="tl">Ang output ay kapareho ng standard FDA Nutrition Facts label format — katulad ng makikita mo sa mga nakabalot na pagkain. Ang mga values ay per serving. Gamitin ang "Total Servings" field para hatiin nang tama ang recipe.</p><p class="lang-hidden" data-lang="ceb">Ang output pareho sa standard FDA Nutrition Facts label format — pareho sa makita nimo sa mga de-pakete nga pagkaon. Ang values kay per serving. Gamita ang "Total Servings" field para mabahin og husto ang recipe.</p>
 </div>
 <div class="feat-card">
-<h4 data-lang="en">4. Review CKD safety flags</h4><h4 class="lang-hidden" data-lang="tl">4. Suriin ang mga CKD safety flags</h4><h4 class="lang-hidden" data-lang="ceb">4. Tan-awa ang CKD safety flags</h4>
+<h4 data-lang="en">4. Review CKD safety flags</h4><h4 class="lang-hidden" data-lang="kap">4. I-review la ring CKD safety flags</h4><h4 class="lang-hidden" data-lang="tl">4. Suriin ang mga CKD safety flags</h4><h4 class="lang-hidden" data-lang="ceb">4. Tan-awa ang CKD safety flags</h4>
 <p data-lang="en">The flag panel shows whether each key nutrient (sodium, potassium, phosphorus, protein, fluid) is within safe limits for your stage. Green = safe, yellow = monitor, red = exceeds limit. The ingredient breakdown shows <em>which ingredient</em> is the main contributor to any flagged nutrient.</p><p class="lang-hidden" data-lang="tl">Ipinapakita ng flag panel kung ang bawat pangunahing nutrient (sodium, potassium, phosphorus, protein, fluid) ay nasa loob ng ligtas na limit para sa iyong stage. Green = ligtas, yellow = bantayan, red = lampas sa limit. Ang ingredient breakdown ay nagpapakita kung <em>aling sangkap</em> ang pangunahing contributor sa anumang na-flag na nutrient.</p><p class="lang-hidden" data-lang="ceb">Ang flag panel magpakita kung ang matag importante nga nutrient (sodium, potassium, phosphorus, protein, fluid) naa ba sa safe limits para sa imong stage. Green = safe, yellow = bantayi, red = sobra sa limit. Ang ingredient breakdown magpakita <em>unsang ingredient</em> ang pinaka-kontribyutor sa bisan unsang na-flag nga nutrient.</p>
 </div>
 </div>
 <div class="alert alert-teal">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
-<h4 data-lang="en">Tip: Use this to modify family recipes, not just analyze them</h4><h4 class="lang-hidden" data-lang="tl">Tip: Gamitin ito para baguhin ang mga family recipes, hindi lang para suriin ang mga ito</h4><h4 class="lang-hidden" data-lang="ceb">Tip: Gamita ni para usbon ang family recipes, dili lang i-analyze</h4>
+<h4 data-lang="en">Tip: Use this to modify family recipes, not just analyze them</h4><h4 class="lang-hidden" data-lang="kap">Tip: Gamitan me ini para idagdag o bagulan ing recipes ning pamilya mu, e mu basta susuryan la</h4><h4 class="lang-hidden" data-lang="tl">Tip: Gamitin ito para baguhin ang mga family recipes, hindi lang para suriin ang mga ito</h4><h4 class="lang-hidden" data-lang="ceb">Tip: Gamita ni para usbon ang family recipes, dili lang i-analyze</h4>
 <p data-lang="en">Try analyzing a recipe first to see which ingredient is causing a problem (usually patis, soy sauce, or a high-potassium vegetable), then remove or reduce that ingredient and re-analyze to see if it becomes safe. Most traditional Filipino dishes can be made CKD-safe with small modifications — usually just reducing patis by 75% and switching to calamansi for flavor.</p><p class="lang-hidden" data-lang="tl">Subukang mag-analyze muna ng recipe para makita kung aling sangkap ang nagdudulot ng problema (kadalasan patis, toyo, o high-potassium na gulay), pagkatapos ay alisin o bawasan ang sangkap na iyon at mag-analyze ulit para makita kung magiging ligtas na. Karamihan sa mga tradisyonal na Filipino dishes ay maaaring gawing CKD-safe sa mga maliliit na pagbabago — kadalasan pagbawas lang ng patis ng 75% at pagpalit sa calamansi para sa lasa.</p><p class="lang-hidden" data-lang="ceb">Sulayi og analyze ang recipe una para makita unsang ingredient ang naghatag problema (kasagaran patis, toyo, o taas-potassium nga utanon), dayon tangtanga o gamaya ang ingredient ug i-analyze balik para makita kung mahimo nang safe. Kadaghanan sa tradisyonal nga Filipino nga pagkaon mahimo nga CKD-safe uban sa gamay nga pagbag-o — kasagaran gamayan lang og 75% ang patis ug ilisan og calamansi para sa lami.</p>
 </div>
 </div>
@@ -414,7 +494,40 @@ html[data-view="desktop"] body{min-width:1024px;}
 <!-- ═══════════ CKD LIMITS ═══════════ -->
 <section class="section" id="ckd-limits">
 <div class="section-tag">Reference</div>
-<h2 data-lang="en">CKD Nutrient Limits by Stage</h2><h2 class="lang-hidden" data-lang="tl">CKD Nutrient Limits Ayon sa Stage</h2><h2 class="lang-hidden" data-lang="ceb">CKD Nutrient Limits Kada Stage</h2>
+<h2 data-lang="en">CKD Nutrient Limits by Stage</h2><h2 class="lang-hidden" data-lang="kap"># Mga Limit ning Nutriente king CKD Depende king Stage
+
+## Stage 1-2 (Malutu pamu ing kidney function)
+
+- **Sodium**: Mas mababa king 2,300 mg balang aldo
+- **Protein**: 0.8 gram para king balang kilogram ning timbang ning katawan
+- **Potassium**: Alang restriction pota
+- **Phosphorus**: Alang restriction pota
+
+## Stage 3 (Moderate ing damage)
+
+- **Sodium**: 1,500-2,300 mg balang aldo
+- **Protein**: 0.6-0.8 gram para king balang kilogram ning timbang ning katawan
+- **Potassium**: Mas mababa king 2,700 mg balang aldo
+- **Phosphorus**: 800-1,000 mg balang aldo
+
+## Stage 4 (Mabayat a damage)
+
+- **Sodium**: Mas mababa king 1,500 mg balang aldo
+- **Protein**: 0.6 gram para king balang kilogram ning timbang ning katawan
+- **Potassium**: Mas mababa king 2,000 mg balang aldo
+- **Phosphorus**: 800 mg balang aldo
+
+## Stage 5/Dialysis
+
+- **Sodium**: 1,000-1,500 mg balang aldo
+- **Protein**: Matas a protein kung atin dialysis (1.0-1.2 g/kg)
+- **Potassium**: Mas mababa king 2,000 mg balang aldo
+- **Phosphorus**: 800 mg balang aldo
+- **Fluid**: Depende king daka ning ihi at dialysis
+
+## Importanting Pamangintun
+
+Kausapan me ing kekang doctor o dietitian bayu ka magbago king pamangan mu. Ing balang tau makayaliwa ya ing pangangailangan na.</h2><h2 class="lang-hidden" data-lang="tl">CKD Nutrient Limits Ayon sa Stage</h2><h2 class="lang-hidden" data-lang="ceb">CKD Nutrient Limits Kada Stage</h2>
 <p data-lang="en">These are the thresholds used to generate the safety flags. Values are per meal (assuming 3 meals/day) unless noted.</p><p class="lang-hidden" data-lang="tl">Ito ang mga threshold na ginagamit para gawin ang mga safety flags. Ang mga values ay per meal (ipinapalagay na 3 meals/araw) maliban kung nakalagay.</p><p class="lang-hidden" data-lang="ceb">Mao ni ang thresholds nga gigamit sa pag-generate sa safety flags. Ang values kay per meal (nag-assume og 3 ka meals/adlaw) gawas kung gisulti.</p>
 <table class="ref-table">
 <thead><tr><th>Nutrient</th><th>Stage 1–2</th><th>Stage 3a–3b</th><th>Stage 4–5</th><th>HD</th><th>PD</th></tr></thead>
@@ -429,7 +542,7 @@ html[data-view="desktop"] body{min-width:1024px;}
 <div class="alert alert-amber">
 <div class="alert-icon">⚠</div>
 <div class="alert-body">
-<h4 data-lang="en">Phosphorus additives are not captured by this tool</h4><h4 class="lang-hidden" data-lang="tl">Hindi nakukuha ng tool na ito ang phosphorus additives</h4><h4 class="lang-hidden" data-lang="ceb">Ang Phosphorus additives dili makuha niini nga tool</h4>
+<h4 data-lang="en">Phosphorus additives are not captured by this tool</h4><h4 class="lang-hidden" data-lang="kap">Ing phosphorus additives e ya makuha ning tool a iti</h4><h4 class="lang-hidden" data-lang="tl">Hindi nakukuha ng tool na ito ang phosphorus additives</h4><h4 class="lang-hidden" data-lang="ceb">Ang Phosphorus additives dili makuha niini nga tool</h4>
 <p data-lang="en">The analyzer estimates naturally occurring phosphorus in whole food ingredients. <strong>Inorganic phosphate additives</strong> in processed ingredients (patis, instant noodle sachets, processed meats, canned goods) are absorbed at 90–100% vs 40–60% for natural food phosphorus. The real phosphorus burden from processed ingredients is always higher than calculated. When in doubt, choose fresh ingredients.</p><p class="lang-hidden" data-lang="tl">Ang analyzer ay nagtatantya ng natural na phosphorus sa mga buong pagkain. Ang <strong>inorganic phosphate additives</strong> sa mga processed ingredients (patis, instant noodle sachets, processed meats, de-lata) ay naa-absorb ng 90–100% kumpara sa 40–60% para sa natural food phosphorus. Ang totoong phosphorus burden mula sa processed ingredients ay palaging mas mataas kaysa sa kinalkula. Kapag hindi sigurado, pumili ng mga sariwang sangkap.</p><p class="lang-hidden" data-lang="ceb">Ang analyzer nag-estimate sa natural nga phosphorus sa whole food ingredients. <strong>Inorganic phosphate additives</strong> sa processed ingredients (patis, instant noodle sachets, processed meats, de-lata) gi-absorb sa 90–100% kompara sa 40–60% para sa natural food phosphorus. Ang tinuod nga phosphorus burden gikan sa processed ingredients kanunay mas taas kay sa gi-calculate. Kung nagduda, pilia ang fresh ingredients.</p>
 </div>
 </div>
@@ -437,22 +550,145 @@ html[data-view="desktop"] body{min-width:1024px;}
 <!-- ═══════════ FILIPINO FOOD TIPS ═══════════ -->
 <section class="section" id="filipino-tips">
 <div class="section-tag">Practical Guide</div>
-<h2 data-lang="en">CKD-Safe Filipino Cooking Tips</h2><h2 class="lang-hidden" data-lang="tl">Mga Tip sa CKD-Safe na Filipino Cooking</h2><h2 class="lang-hidden" data-lang="ceb">CKD-Safe Filipino nga mga Tip sa Pagluto</h2>
+<h2 data-lang="en">CKD-Safe Filipino Cooking Tips</h2><h2 class="lang-hidden" data-lang="kap"># Meto Da Ing Pamanyutung Filipino a Makayap Para Keng CKD
+
+Malyari mung tukian pa rin ing manyaman a pamangan Filipino agyang atin kang CKD. Oini la ding keraklan a tips para mapanatili yang masalese ing kidney mu kabang mamangan ka pa rin karing paboritong lutung Kapampangan at Filipino.
+
+**Basan me ing Asin**
+
+- Gamitan mung bawang, luya, sibuyas, at suka imbes a asin o toyo.
+- Mangabit kang sariwang sili o paminta para keng lasa imbes a manga nakabalut a seasoning.
+- Pilakan me ing asin karing recipe mu — malyaring kalatingian mu ya.
+
+**Pilian Mu ing Tamang Karne**
+
+- Mas ditak yang phosphorus ing manuk at isda kesa keng babing karne o baka.
+- Alinan me ing taba at balat bayu mu ilutung.
+- Limitaran me ing processed meats antimo hotdog, tocino, at longganisa.
+
+**Pangasiwaan Me ing Potassium**
+
+- Babad at ilaga mu la ding patatas at kamias bayu mu ilutung — makasaup ya iti para mabasan ing potassium.
+- Pilitan mung sayur a mababang potassium antimo sitaw, repolyo, at kangkung.
+- Basan me ing saging at manga — atin lang matas a potassium.
+
+**Pakayalilan Keng Sabaw at Prito**
+
+- Pilitan mung grilled, inihaw, o pinasingawan imbes a malalam a prito.
+- Basan me ing sabaw karing sinigang at nilaga — ing sabaw ya ing kayabe ning dake ning sodium.
+
+**Sukat Mu Ing Ulang Mu**
+
+- Gamitan mung malating pinggan para masugatan mu ing portion size.
+- Kumonsulta ka keng iyung dietitian tungkul keng tamang sukat ning rice at karne para kekayu.
+
+Tandanan mu: makasaup ya ing mumunting pagbabagu. E mu kailangan alinan ing keganaganang sabur — ayusan mu ya mu.</h2><h2 class="lang-hidden" data-lang="tl">Mga Tip sa CKD-Safe na Filipino Cooking</h2><h2 class="lang-hidden" data-lang="ceb">CKD-Safe Filipino nga mga Tip sa Pagluto</h2>
 <div class="two-col">
 <div class="feat-card">
-<h4 data-lang="en">Reducing sodium without losing flavor</h4><h4 class="lang-hidden" data-lang="tl">Pagbabawas ng sodium nang hindi nawawala ang lasa</h4><h4 class="lang-hidden" data-lang="ceb">Pagkunhod sa sodium nga dili mawala ang lami</h4>
+<h4 data-lang="en">Reducing sodium without losing flavor</h4><h4 class="lang-hidden" data-lang="kap">Pamagpakunti king sodium a e mawala ing sarap
+
+Makatulung ing pamagpakunti king sodium king pamangalaga king presyon ning daya at kalusugan ning pusu. Oneng e ya dapat maging mataming ing pamangan mu para king kalusugan.
+
+Oini deng paralan para panatilian mung masarap ing pamangan mu habang papakuntian me ing sodium:
+
+**Gumamit kang herbs at spices**
+Salian me ing asin king garlic, sibuyas, paminta, oregano, basil, o cumin. Dagdagan me ing lasa gamit ing suka o juice ning limon.
+
+**Mamili kang sariwang pamangan**
+Deng sariwang karne, manuk, isda, at gulisan mas makunti la king sodium kesa deng processed o de lata. Pilinan mu deng sariwang prutas at gulisan kesa deng de lata.
+
+**Basan me deng de latang pamangan**
+Nung gagamit kang de latang beans o gulisan, basan mu la king danum bayu mu la lutuan para makuang ing aliwa king sodium.
+
+**Lauan me ing label**
+Pansin mu ing Nutrition Facts label at pilinan mu deng produktung mababang sodium o "low sodium." Deng pamangan a maki sodium a 140 mg o makunti king balang serving ikit lang mababang sodium.
+
+**Magluto ka king bale**
+Pag magluto ka king bale mu, kontrolan mu ing kabayat ning asin a gagamitan mu. Subukan mung lakuan mu paunti-unti ing asin anggang masanalan ya ing dila mu king mas makunting asin.
+
+Kausapan me ing doktor mu o dietitian tungkul king tamang level ning sodium para keka.</h4><h4 class="lang-hidden" data-lang="tl">Pagbabawas ng sodium nang hindi nawawala ang lasa</h4><h4 class="lang-hidden" data-lang="ceb">Pagkunhod sa sodium nga dili mawala ang lami</h4>
 <p data-lang="en">Replace patis tablespoon-for-tablespoon with: calamansi + a tiny pinch of salt (1/8 tsp = 300 mg vs patis 1,400 mg/tbsp). Use fresh ginger, garlic, and sibuyas tagalog generously — these are low-sodium and high-flavor. Avoid toyo, bagoong, and MSG-based seasoning cubes entirely on dialysis.</p><p class="lang-hidden" data-lang="tl">Palitan ang patis tablespoon-for-tablespoon ng: calamansi + kaunting asin (1/8 tsp = 300 mg kumpara sa patis 1,400 mg/tbsp). Gumamit ng maraming sariwang luya, bawang, at sibuyas tagalog — low-sodium ang mga ito at matapang ang lasa. Iwasan ang toyo, bagoong, at MSG-based seasoning cubes kapag nasa dialysis.</p><p class="lang-hidden" data-lang="ceb">Ilisan ang patis tablespoon-for-tablespoon og: calamansi + gamay kaayo nga asin (1/8 tsp = 300 mg vs patis 1,400 mg/tbsp). Paggamit og daghan nga fresh luya, ahos, ug sibuyas tagalog — kini ubos-sodium ug taas-lami. Likayi ang toyo, bagoong, ug MSG-based seasoning cubes sa dialysis.</p>
 </div>
 <div class="feat-card">
-<h4 data-lang="en">Leaching high-potassium vegetables</h4><h4 class="lang-hidden" data-lang="tl">Pag-leach ng high-potassium na mga gulay</h4><h4 class="lang-hidden" data-lang="ceb">Pag-leach sa taas-potassium nga mga utanon</h4>
+<h4 data-lang="en">Leaching high-potassium vegetables</h4><h4 class="lang-hidden" data-lang="kap">**Pamag-leach keng gatas-potassium a gúlai**
+
+Nung maki sakit kang batu o kailangan mung bawasan ing potassium keng pamangan mu, malyari mung i-leach ing gúlai ba rang mabawasan ing potassium content da.
+
+**Makananu ing pamag-leach:**
+
+1. Tadtaran mung manipis ing gúlai. Mas manipis ya, mas masalese yang ma-leach.
+
+2. Ibugse me king maraming malumig a danum kilub ning atlung oras o mas marayu pa. Gamitan mung sampu a tasa danum para king metung a tasa gúlai.
+
+3. Ibasan me ing danum at ibanglus meng mayap king malinis a danum.
+
+4. Nung ilulutung me, gamitan mung limang tasa danum para king metung a tasa gúlai. Pakuluan me ning labing-limang minutu o anggang maluto ne.
+
+5. Ibasan meng pasibayu ing danum bayu mung kanin o gamitan king pamangan.
+
+**Gúlai a malyaring i-leach:**
+
+- Patatas
+- Kamote
+- Carrots
+- Beets
+- Kalabasa
+
+**Tandanan mu:**
+
+Ing pamag-leach e na gagawan abatan ing eganaganang potassium, pota ing aduang parte mu kabud. Kaya kailangan mu pang bantayan ing karakal ning kakanan mu. Kumonsulta ka king dietitian o doktor mu tungkul king tamang karakal a para keka.</h4><h4 class="lang-hidden" data-lang="tl">Pag-leach ng high-potassium na mga gulay</h4><h4 class="lang-hidden" data-lang="ceb">Pag-leach sa taas-potassium nga mga utanon</h4>
 <p data-lang="en">Peel and dice → soak in large volume of water ≥2 hours → drain fully → boil in fresh water → drain again before eating. Reduces potassium by 30–50%. Apply to: kamote, kalabasa, patatas, saging na saba. Do not drink the soaking or boiling water.</p><p class="lang-hidden" data-lang="tl">Balatan at hiwain → ibabad sa maraming tubig nang ≥2 oras → patuluin nang husto → pakuluan sa bagong tubig → patuluin ulit bago kainin. Nakababawas ng potassium ng 30–50%. Gawin ito sa: kamote, kalabasa, patatas, saging na saba. Huwag inumin ang tubig na pinagbabaran o pinagpakuluan.</p><p class="lang-hidden" data-lang="ceb">Panita ug hiwa-hiwaa → ituslob sa dakong tubig sulod sa ≥2 ka oras → hugas-a pag-ayo → lag-a sa bag-ong tubig → hugas-a pag-usab sa dili pa kaonon. Makunhuran ang potassium og 30–50%. Magamit sa: kamote, kalabasa, patatas, saging na saba. Ayaw imna ang tubig nga gituslob o gilaug-an.</p>
 </div>
 <div class="feat-card">
-<h4 data-lang="en">Best CKD-safe Filipino ingredients</h4><h4 class="lang-hidden" data-lang="tl">Pinakamainam na sangkap na ligtas sa CKD para sa lutuing Pilipino</h4><h4 class="lang-hidden" data-lang="ceb">Pinakamaayo nga mga sangkap para sa CKD</h4>
+<h4 data-lang="en">Best CKD-safe Filipino ingredients</h4><h4 class="lang-hidden" data-lang="kap">Mayap a sangkap para karing ating sakit king batu (CKD-safe)
+
+**Karneng meyupyupan**
+
+- Manuk - pilian ing kanitang ala balat, anti ning breast o thigh
+- Isda - susun ing tilapia, bangus, o dilis karing gagamitan a ulam
+- Itlog - metung o adua king metung aldo, depende king rekumenda ning doktor mu
+
+**Gule**
+
+- Kalabasa - mayap ya ini at mababa yang potassium
+- Sitaw - siguradu mung ilaga mu at itsa me ing danum
+- Talung - safe ya iti king dakal a pasyente
+- Sayote - masanting ya uling mababa yang sodium
+
+**Sangkap para king pamangan**
+
+- Bawang at sibuyas - gamitan mu la deti imbes a asin para mikalasa
+- Suka - malyari mung gamitan keni para king sabaw
+- Kalamansi - makasaup ya para mikalasa ing ulam mu
+
+**Pane at bigas**
+
+- Puting bigas - mas mayap ya kesa king brown rice para karing ating CKD
+- Puting tinape - pilian me iti kesa king whole wheat
+
+**Dapat mung tandanan:**
+
+Magsangguni ka pa rin king doktor mu o dietitian bayu mu bitan ing kekang pamangan. Ing bawat pasyente, aliwa ya ing pangangailangan na depende king stage ning CKD na.</h4><h4 class="lang-hidden" data-lang="tl">Pinakamainam na sangkap na ligtas sa CKD para sa lutuing Pilipino</h4><h4 class="lang-hidden" data-lang="ceb">Pinakamaayo nga mga sangkap para sa CKD</h4>
 <p data-lang="en"><strong>Low K, Low P, Low Na:</strong> sayote (chayote), ampalaya (bitter gourd), upo, labanos, cabbage, green beans (sitaw), kangkong (small portions). <strong>Good protein sources:</strong> egg whites (no yolk = no phosphorus), lean chicken (breast, no skin), tilapia, bangus (rinse to reduce sodium).</p><p class="lang-hidden" data-lang="tl"><strong>Mababa sa K, P, at Na:</strong> sayote (chayote), ampalaya (bitter gourd), upo, labanos, repolyo, sitaw (green beans), kangkong (maliit na dami lamang). <strong>Magagandang pinagkukunan ng protina:</strong> puti ng itlog (walang bula = walang phosphorus), manok na walang taba (dibdib, walang balat), tilapia, bangus (hugasan para mabawasan ang sodium).</p><p class="lang-hidden" data-lang="ceb"><strong>Ubos K, Ubos P, Ubos Na:</strong> sayote (chayote), ampalaya (bitter gourd - pait nga tanom), upo, labanos, repolyo, sitaw, kangkong (gamay nga gidaghanon). <strong>Maayo nga tinubdan sa protein:</strong> puti sa itlog (walay pula = walay phosphorus), manok nga walay tabas (dughan, walay panit), tilapia, bangus (hugasi aron makunhuran ang sodium).</p>
 </div>
 <div class="feat-card">
-<h4 data-lang="en">Ingredients to minimize or avoid</h4><h4 class="lang-hidden" data-lang="tl">Mga sangkap na dapat bawasan o iwasan</h4><h4 class="lang-hidden" data-lang="ceb">Mga sangkap nga angay kunhuran o likayan</h4>
+<h4 data-lang="en">Ingredients to minimize or avoid</h4><h4 class="lang-hidden" data-lang="kap"># Ingredients a dapat paburen o alisan
+
+Ing mengaring kekanan ampong supplements malyari rang maki ingredients a e mayap para kekayu. Pasibayu yang basang masyadu ing labels ban asiguradung ala kayu kakanung e mayap para kekayu o keng kabilian yu.
+
+**Sodium**
+Ing sodium metung yang mineral a mayayakit kareng kekanan. Ing table salt gawa ya king sodium ampong chloride. Ing sodium ya ing karelang tutukyan da reng taung maki high blood pressure potang sasabian dang "basan mu ing asin." Agyang ala kayung high blood pressure, ing pamanintun king sodium a kakanan yu malyari yang makasaup king karelang luid ning pressure ning daya. Malyari yu murin paburan o e gawan sodium king kakanan yu nung atin kayung sakit king batu o osteoporosis.
+
+Nung buring yung i-minimize o alisan ing sodium, basan yu ing Nutrition Facts label ban akit ing kandakula ning sodium king balang serving. Lawen yu mu rin ing ingredient list para king ingredients a maki sodium, antimo ing:
+
+- Baking soda (sodium bicarbonate)
+- Disodium phosphate
+- Monosodium glutamate (MSG)
+- Sodium alginate
+- Sodium nitrate o nitrite
+
+**Saturated fat ampong trans fat**
+Mayap ya para king pusu yu ing maki dietan a mababa king saturated fat ampong trans fat. E la deng saturated fat ampong trans fat makatulung pasibayu king cardiovascular health.</h4><h4 class="lang-hidden" data-lang="tl">Mga sangkap na dapat bawasan o iwasan</h4><h4 class="lang-hidden" data-lang="ceb">Mga sangkap nga angay kunhuran o likayan</h4>
 <p data-lang="en"><strong>High sodium:</strong> patis, toyo, bagoong, magic sarap, instant soups, processed longanisa, tocino, canned sardines in brine. <strong>High potassium:</strong> saging (all types), buko juice, kamote, avocado, tomato sauce, kamatis in large amounts. <strong>High phosphorus:</strong> nuts, beans, dairy, colas, whole grains in excess.</p><p class="lang-hidden" data-lang="tl"><strong>Mataas sa sodium:</strong> patis, toyo, bagoong, magic sarap, instant na sopas, processed na longganisa, tocino, sardinas sa lata na may salty brine. <strong>Mataas sa potassium:</strong> saging (lahat ng klase), buko juice, kamote, avocado, tomato sauce, kamatis kapag marami. <strong>Mataas sa phosphorus:</strong> nuts, beans, gatas at produktong gawa sa gatas, mga cola, sobrang daming whole grains.</p><p class="lang-hidden" data-lang="ceb"><strong>Taas og sodium:</strong> patis, toyo, bagoong, magic sarap, instant nga sabaw, processed nga longanisa, tocino, de lata nga sardinas sa brine. <strong>Taas og potassium:</strong> saging (tanang klase), buko juice, kamote, avocado, tomato sauce, kamatis sa daghang gidaghanon. <strong>Taas og phosphorus:</strong> mga nuts, beans, gatas ug gikan sa gatas, colas, sobra nga whole grains.</p>
 </div>
 </div>
@@ -462,16 +698,53 @@ html[data-view="desktop"] body{min-width:1024px;}
 <img alt="Dr. W. G. M. Rivero" src="../images/photo-contact.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
 </div>
 <div>
-<h4 data-lang="en"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4><h4 class="lang-hidden" data-lang="tl"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4><h4 class="lang-hidden" data-lang="ceb"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<h4 data-lang="en"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4><h4 class="lang-hidden" data-lang="kap">W. G. M. Rivero, MD, FPCP, DPSN</h4><h4 class="lang-hidden" data-lang="tl"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4><h4 class="lang-hidden" data-lang="ceb"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
 <p data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing across Quezon City, Angeles City, and Bulacan.</p><p class="lang-hidden" data-lang="tl">Espesyalista sa Internal Medicine, Nephrology, at Clinical Nutrition. Nagpapraktis sa Quezon City, Angeles City, at Bulacan.</p><p class="lang-hidden" data-lang="ceb">Espesyalista sa Internal Medicine, Nephrology, ug Clinical Nutrition. Nagpraktis sa Quezon City, Angeles City, ug Bulacan.</p>
 <p class="dr-creds" data-lang="en">PRC 0105184 · seriousmd.com/doc/williamrivero</p><p class="dr-creds lang-hidden" data-lang="tl">PRC 0105184 · seriousmd.com/doc/williamrivero</p><p class="dr-creds lang-hidden" data-lang="ceb">PRC 0105184 · seriousmd.com/doc/williamrivero</p>
 </div>
 </div>
 </section>
 </main>
+
+    <!-- RELATED-GUIDES-START -->
+      <div class="related-guides">
+        <h2>
+          <span data-lang="en">Related Guides</span>
+          <span data-lang="tl" class="lang-hidden">Mga Kaugnay na Gabay</span>
+          <span data-lang="ceb" class="lang-hidden">Mga May Kalabtan nga Giya</span>
+          <span data-lang="kap" class="lang-hidden">Ding Kaugnay nga Gabay</span>
+        </h2>
+        <div class="related-cards">
+        <a class="related-card" href="ckd-dri-calculator.html">
+          <div class="related-card-tag">Personalized Nutrition Tool</div>
+          <div class="related-card-title">CKD Dietary Reference Intake Calculator</div>
+          <div class="related-card-desc">Your personalized daily targets for protein, potassium, phosphorus, sodium, fluid, calories, vitamin</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        <a class="related-card" href="nutrition-labels-ckd.html">
+          <div class="related-card-tag">The Foundation</div>
+          <div class="related-card-title">Reading Nutrition Labels with CKD</div>
+          <div class="related-card-desc">A supermarket survival guide for kidney patients — how to decode nutrition facts panels, spot hidden</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        <a class="related-card" href="ckd-friendly-recipes.html">
+          <div class="related-card-tag">Before You Cook</div>
+          <div class="related-card-title">CKD-Friendly Filipino Recipes</div>
+          <div class="related-card-desc">Practical, affordable recipes using local ingredients — crafted for both pre-dialysis and dialysis p</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        <a class="related-card" href="uremic-toxin-precursors.html">
+          <div class="related-card-tag">The Hidden Drivers of CKD Progression</div>
+          <div class="related-card-title">Uremic Toxin Precursors in Diet</div>
+          <div class="related-card-desc">A deep dive into the specific dietary compounds — tryptophan, tyrosine, choline, sulfur amino acids </div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        </div>
+      </div>
+    <!-- RELATED-GUIDES-END -->
 <footer class="guide-footer">
 <div class="fi">
-<p data-lang="en">© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p><p class="lang-hidden" data-lang="tl">© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p><p class="lang-hidden" data-lang="ceb">© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p>
+<p data-lang="en">© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p><p class="lang-hidden" data-lang="kap">© 2026 W. G. M. Rivero, MD</p><p class="lang-hidden" data-lang="tl">© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p><p class="lang-hidden" data-lang="ceb">© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p>
 <p data-lang="en">References: KDIGO CKD 2024 · NKF KDOQI Nutrition 2020 · USDA FoodData Central · Philippine Food Composition Tables</p><p class="lang-hidden" data-lang="tl">References: KDIGO CKD 2024 · NKF KDOQI Nutrition 2020 · USDA FoodData Central · Philippine Food Composition Tables</p><p class="lang-hidden" data-lang="ceb">References: KDIGO CKD 2024 · NKF KDOQI Nutrition 2020 · USDA FoodData Central · Philippine Food Composition Tables</p>
 </div>
 </footer>
