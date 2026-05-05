@@ -445,6 +445,13 @@
     .stat-grid { grid-template-columns: 1fr; }
     .bar-label { width: 100px; font-size: 12px; }
   }
+
+  /* ── SVG TEXT DARK MODE ─────────────────────────────────────────────────── */
+  html[data-theme="dark"] .illus-wrap svg text[fill="#0f1e2e"] { fill: #e8eaf0 !important; }
+  html[data-theme="dark"] .illus-wrap svg text[fill="#4a5568"] { fill: #8a97a8 !important; }
+  html[data-theme="dark"] .illus-wrap svg text[fill="#2c3340"] { fill: #8a97a8 !important; }
+  html[data-theme="dark"] .illus-wrap svg rect[fill="#fff0f0"] { fill: #2a1010 !important; }
+  html[data-theme="dark"] .illus-wrap svg rect[fill="#f0f4f8"] { fill: #1a2535 !important; }
 </style>
 </head>
 <body>
@@ -707,35 +714,29 @@
 <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;width:100%;">
   <text x="280" y="18" text-anchor="middle" font-size="13" font-weight="600" fill="#0f1e2e">Age Distribution of CKD Patients — Philippines (NKTI/PRDR 2024–2025)</text>
 
-  <!-- Age groups as horizontal stacked segments -->
-  <!-- Total = 100%, bar width = 480px starting at x=40 -->
-  <!-- 0-10: 1.11%, 11-19: 0.62%, 20-59: 57.44%, 60+: 40.82% -->
-
-  <!-- Labels top -->
-  <text x="46" y="45" font-size="10" fill="#0f1e2e" font-weight="500">≤10 yrs</text>
-  <text x="84" y="45" font-size="10" fill="#0f1e2e" font-weight="500">11–19</text>
-  <text x="145" y="45" font-size="10" fill="#ffffff" font-weight="600">20–59 years old (57.44%)</text>
-  <text x="395" y="45" font-size="10" fill="#ffffff" font-weight="600">60+ (40.82%)</text>
+  <!-- Age group labels — using background pill for visibility in both modes -->
+  <rect x="38" y="32" width="44" height="16" rx="3" fill="#0f1e2e" opacity=".08"/>
+  <text x="60" y="44" text-anchor="middle" font-size="10" fill="#4a5568" font-weight="600">≤10 yrs</text>
+  <rect x="86" y="32" width="36" height="16" rx="3" fill="#0f1e2e" opacity=".08"/>
+  <text x="104" y="44" text-anchor="middle" font-size="10" fill="#4a5568" font-weight="600">11–19</text>
 
   <!-- Bar segments -->
-  <!-- 0-10: 1.11% = 5.3px -->
   <rect x="40" y="55" width="5" height="36" fill="#d4af4f" rx="3"/>
-  <!-- 11-19: 0.62% = 3px -->
   <rect x="46" y="55" width="3" height="36" fill="#b8962e"/>
-  <!-- 20-59: 57.44% = 276px — the majority -->
   <rect x="50" y="55" width="276" height="36" fill="#1a6b72"/>
-  <!-- 60+: 40.82% = 196px -->
   <rect x="327" y="55" width="196" height="36" fill="#0f1e2e" rx="0"/>
-  <!-- round right end -->
   <rect x="519" y="55" width="3" height="36" fill="#0f1e2e" rx="3"/>
 
-  <!-- Percentage labels inside bars -->
+  <!-- Percentage labels inside bars — white always readable -->
   <text x="188" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="white">57.44%</text>
   <text x="425" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="white">40.82%</text>
-  <text x="43" y="78" text-anchor="middle" font-size="8" fill="#0f1e2e">1.1%</text>
 
-  <!-- Bottom annotation -->
-  <text x="188" y="112" text-anchor="middle" font-size="11" fill="#1a6b72" font-weight="600">Young adults now the MAJORITY</text>
+  <!-- Small % for tiny segments — white text on gold bar -->
+  <rect x="38" y="57" width="14" height="12" rx="2" fill="rgba(0,0,0,0.4)"/>
+  <text x="45" y="67" text-anchor="middle" font-size="8" fill="white" font-weight="600">1.1%</text>
+
+  <!-- Bottom annotation labels — use explicit colors that work on white bg -->
+  <text x="188" y="112" text-anchor="middle" font-size="11" fill="#1a6b72" font-weight="700">Young adults now the MAJORITY</text>
   <text x="188" y="126" text-anchor="middle" font-size="10" fill="#4a5568">Working-age Filipinos most affected</text>
   <text x="425" y="112" text-anchor="middle" font-size="11" fill="#0f1e2e" font-weight="600">Previously the majority</text>
   <text x="425" y="126" text-anchor="middle" font-size="10" fill="#4a5568">Now second</text>
@@ -744,6 +745,12 @@
   <rect x="40" y="145" width="480" height="36" fill="#fff0f0" rx="6"/>
   <text x="280" y="162" text-anchor="middle" font-size="11" fill="#b91c1c" font-weight="600">⚠ Pediatric CKD doubled: 144 cases (2023) → 301 cases (2024) — a 109% increase in one year</text>
   <text x="280" y="176" text-anchor="middle" font-size="10" fill="#b91c1c">Source: NKTI Pediatric Nephrology, Dr. Ana Katherine Alas, 2025</text>
+
+  <defs>
+    <marker id="arrowR2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3 z" fill="#1a6b72"/>
+    </marker>
+  </defs>
 </svg>
 <span class="illus-caption">
 <span data-lang="en">Age distribution of kidney disease patients in the Philippines. Young adults (20–59) now constitute the majority. Pediatric CKD more than doubled in a single year.</span>
