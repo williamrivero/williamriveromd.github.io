@@ -401,6 +401,7 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
     <a class="nav-pill md-pill" href="#hd-params">HD Parameters</a>
     <a class="nav-pill md-pill" href="#pd-params">PD Parameters</a>
     <a class="nav-pill md-pill" href="#adequacy">Adequacy</a>
+    <a class="nav-pill md-pill" href="#calculators">Calculators</a>
     <a class="nav-pill md-pill" href="#adjustment">Dose Adjustment</a>
     <a class="nav-pill md-pill" href="#special">Special Populations</a>
   </nav>
@@ -1391,6 +1392,266 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
              rGFR<5?'<div style="padding:12px 16px;background:#f0f9f8;border-top:1px solid rgba(26,107,114,.2);font-size:13px;">✅ Measurable residual function. Credit applicable to total Kt/V. Monitor every 3 months or when urine output drops &gt;25%.</div>':
              '<div style="padding:12px 16px;background:#f0f9f8;border-top:1px solid rgba(26,107,114,.2);font-size:13px;">✅ Significant RKF. Consider incremental dialysis (HD: 2×/week; PD: reduced exchange volume) per KDOQI 2015 if combined weekly Kt/V ≥1.7 is achievable. Protect RKF — avoid NSAIDs, aminoglycosides, IV contrast.</div>';
       el.innerHTML=html+note;el.style.display='block';
+    }
+    </script>
+  </div>
+</section>
+
+<!-- SECTION: Calculators -->
+<section class="section" id="calculators">
+  <div class="container">
+    <p class="section-tag">Tools</p>
+    <h2>Prescription Calculators</h2>
+    <p>Five interactive tools for HD and PD prescription work. All formulae per KDOQI 2015 / ISPD 2014. Results support clinical decision-making — verify with your dialysis software before adjusting prescriptions.</p>
+
+    <!-- ── CALC 1: spKt/V + URR + eKt/V ── -->
+    <div style="background:#f0f9f8;border:1px solid rgba(26,107,114,.35);border-radius:12px;padding:24px 28px;margin-top:32px;">
+      <h3 style="color:#1a6b72;margin:0 0 4px;">1 — spKt/V, URR &amp; eKt/V</h3>
+      <p style="font-size:13px;color:#3a4a5c;margin:0 0 18px;">Daugirdas 2nd-generation formula for spKt/V; KDOQI conversion for eKt/V. Targets: spKt/V ≥1.4, eKt/V ≥1.2, URR ≥65%.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:13px;margin-bottom:15px;">
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">Pre-dialysis BUN (mg/dL)</label>
+          <input type="number" id="sp-pre" placeholder="e.g. 75" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">Post-dialysis BUN (mg/dL)</label>
+          <input type="number" id="sp-post" placeholder="e.g. 22" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">Session duration (hours)</label>
+          <input type="number" id="sp-t" placeholder="e.g. 4" step="0.25" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">UF volume removed (L)</label>
+          <input type="number" id="sp-uf" placeholder="e.g. 2.5" step="0.1" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">Post-dialysis weight (kg)</label>
+          <input type="number" id="sp-wpost" placeholder="e.g. 58" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+      </div>
+      <button onclick="calcSpKtV()" style="padding:10px 22px;background:#1a6b72;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Calculate</button>
+      <div id="sp-result" style="display:none;background:white;border-radius:8px;border:1px solid rgba(26,107,114,.3);overflow:hidden;margin-top:14px;"></div>
+    </div>
+
+    <!-- ── CALC 2: UFR Limit ── -->
+    <div style="background:#fef9f0;border:1px solid rgba(184,150,46,.4);border-radius:12px;padding:24px 28px;margin-top:24px;">
+      <h3 style="color:#7a4800;margin:0 0 4px;">2 — Ultrafiltration Rate (UFR) Limit</h3>
+      <p style="font-size:13px;color:#3a4a5c;margin:0 0 18px;">UFR &gt;13 mL/hr/kg is independently associated with increased cardiovascular mortality (KDOQI). Target &lt;10 mL/hr/kg; maximum 13 mL/hr/kg.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:13px;margin-bottom:15px;">
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#7a4800;display:block;margin-bottom:5px;">Pre-dialysis weight (kg)</label>
+          <input type="number" id="ufr-wpre" placeholder="e.g. 61.5" step="0.1" style="width:100%;padding:9px 10px;border:1px solid #d4b87a;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#7a4800;display:block;margin-bottom:5px;">Dry weight / target weight (kg)</label>
+          <input type="number" id="ufr-wpost" placeholder="e.g. 59" step="0.1" style="width:100%;padding:9px 10px;border:1px solid #d4b87a;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#7a4800;display:block;margin-bottom:5px;">Session duration (hours)</label>
+          <input type="number" id="ufr-t" placeholder="e.g. 4" step="0.25" style="width:100%;padding:9px 10px;border:1px solid #d4b87a;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+      </div>
+      <button onclick="calcUFR()" style="padding:10px 22px;background:#b8962e;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Calculate UFR</button>
+      <div id="ufr-result" style="display:none;background:white;border-radius:8px;border:1px solid rgba(184,150,46,.4);overflow:hidden;margin-top:14px;"></div>
+    </div>
+
+    <!-- ── CALC 3: nPCR ── -->
+    <div style="background:#f5f0fb;border:1px solid rgba(110,60,180,.3);border-radius:12px;padding:24px 28px;margin-top:24px;">
+      <h3 style="color:#4a2080;margin:0 0 4px;">3 — Normalized Protein Catabolic Rate (nPCR)</h3>
+      <p style="font-size:13px;color:#3a4a5c;margin:0 0 4px;">Two-session method (Depner-Daugirdas): requires post-BUN from the preceding session. Target nPCR ≥1.0 g/kg/day (KDOQI); 1.0–1.2 optimal.</p>
+      <p style="font-size:12px;color:#6b7a8d;margin:0 0 16px;">Formula: UNA = [(C<sub>pre2</sub> − C<sub>post1</sub>) × V + C<sub>pre2</sub> × ΔW] ÷ (t<sub>id</sub> × 100) g N/day &nbsp;→&nbsp; PCR = 6.25 × UNA + 0.031 × W &nbsp;→&nbsp; nPCR = PCR ÷ W</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:13px;margin-bottom:15px;">
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#4a2080;display:block;margin-bottom:5px;">Pre-BUN, current session (mg/dL)</label>
+          <input type="number" id="npcr-cpre" placeholder="e.g. 80" style="width:100%;padding:9px 10px;border:1px solid #c4a8e0;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#4a2080;display:block;margin-bottom:5px;">Post-BUN, previous session (mg/dL)</label>
+          <input type="number" id="npcr-cpost" placeholder="e.g. 25" style="width:100%;padding:9px 10px;border:1px solid #c4a8e0;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#4a2080;display:block;margin-bottom:5px;">Post-dialysis weight (kg)</label>
+          <input type="number" id="npcr-wpost" placeholder="e.g. 60" style="width:100%;padding:9px 10px;border:1px solid #c4a8e0;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#4a2080;display:block;margin-bottom:5px;">Sex</label>
+          <select id="npcr-sex" style="width:100%;padding:9px 10px;border:1px solid #c4a8e0;border-radius:7px;font-size:14px;box-sizing:border-box;">
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#4a2080;display:block;margin-bottom:5px;">Interdialytic weight gain (kg)</label>
+          <input type="number" id="npcr-dw" placeholder="e.g. 2.0" step="0.1" style="width:100%;padding:9px 10px;border:1px solid #c4a8e0;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#4a2080;display:block;margin-bottom:5px;">Interdialytic interval (days)</label>
+          <select id="npcr-tid" style="width:100%;padding:9px 10px;border:1px solid #c4a8e0;border-radius:7px;font-size:14px;box-sizing:border-box;">
+            <option value="2">2 days (Mon→Wed, Wed→Fri)</option>
+            <option value="3">3 days (Fri→Mon weekend gap)</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="calcNPCR()" style="padding:10px 22px;background:#6e3cb4;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Calculate nPCR</button>
+      <div id="npcr-result" style="display:none;background:white;border-radius:8px;border:1px solid rgba(110,60,180,.3);overflow:hidden;margin-top:14px;"></div>
+    </div>
+
+    <!-- ── CALC 4: PD Weekly Kt/V ── -->
+    <div style="background:#f0f4fb;border:1px solid rgba(26,60,114,.3);border-radius:12px;padding:24px 28px;margin-top:24px;">
+      <h3 style="color:#1a3c72;margin:0 0 4px;">4 — PD Weekly Kt/V (Adequacy)</h3>
+      <p style="font-size:13px;color:#3a4a5c;margin:0 0 18px;">Collects 24-hour dialysate effluent simultaneously with a mid-collection blood draw. Combines dialysate + residual clearance. Target total weekly Kt/V ≥1.7 (ISPD 2014).</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:13px;margin-bottom:15px;">
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a3c72;display:block;margin-bottom:5px;">24h dialysate effluent volume (L)</label>
+          <input type="number" id="pd-dvol" placeholder="e.g. 9.5" step="0.1" style="width:100%;padding:9px 10px;border:1px solid #8aaad4;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a3c72;display:block;margin-bottom:5px;">Dialysate BUN (mg/dL)</label>
+          <input type="number" id="pd-dbun" placeholder="e.g. 35" style="width:100%;padding:9px 10px;border:1px solid #8aaad4;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a3c72;display:block;margin-bottom:5px;">Serum BUN (mg/dL)</label>
+          <input type="number" id="pd-sbun" placeholder="e.g. 55" style="width:100%;padding:9px 10px;border:1px solid #8aaad4;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a3c72;display:block;margin-bottom:5px;">Body weight (kg)</label>
+          <input type="number" id="pd-wt" placeholder="e.g. 60" style="width:100%;padding:9px 10px;border:1px solid #8aaad4;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a3c72;display:block;margin-bottom:5px;">Sex</label>
+          <select id="pd-sex" style="width:100%;padding:9px 10px;border:1px solid #8aaad4;border-radius:7px;font-size:14px;box-sizing:border-box;">
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a3c72;display:block;margin-bottom:5px;">Residual Kru (mL/min) <span style="font-weight:400;color:#6b7a8d;">0 if anuric</span></label>
+          <input type="number" id="pd-kru" placeholder="e.g. 1.5" step="0.1" value="0" style="width:100%;padding:9px 10px;border:1px solid #8aaad4;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+      </div>
+      <button onclick="calcPDAdequacy()" style="padding:10px 22px;background:#1a3c72;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Calculate PD Kt/V</button>
+      <div id="pd-result" style="display:none;background:white;border-radius:8px;border:1px solid rgba(26,60,114,.3);overflow:hidden;margin-top:14px;"></div>
+    </div>
+
+    <script>
+    /* ── helpers ── */
+    function mkRow(label,formula,val,i){return'<tr style="background:'+(i%2?'#f8fbfb':'white')+'"><td style="padding:10px 14px;font-weight:600;">'+label+'</td><td style="padding:10px 14px;color:#6b7a8d;font-family:monospace;font-size:12px;">'+formula+'</td><td style="padding:10px 14px;text-align:right;font-weight:700;color:#1a6b72;">'+val+'</td></tr>';}
+    function mkTable(rows,note){var h='<table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr style="background:#1a6b72;color:white;"><th style="padding:10px 14px;text-align:left;">Parameter</th><th style="padding:10px 14px;text-align:left;">Formula</th><th style="padding:10px 14px;text-align:right;">Result</th></tr></thead><tbody>';rows.forEach(function(r,i){h+=mkRow(r[0],r[1],r[2],i);});h+='</tbody></table>';if(note)h+=note;return h;}
+    function badge(ok,warn){return ok?'<span style="background:#d1fae5;color:#065f46;font-weight:700;padding:2px 8px;border-radius:4px;font-size:12px;">✓ On target</span>':'<span style="background:#fee2e2;color:#7f1d1d;font-weight:700;padding:2px 8px;border-radius:4px;font-size:12px;">✗ Below target</span>';}
+    function noteBox(col,msg){return'<div style="padding:12px 16px;background:'+col+';border-top:1px solid rgba(0,0,0,.08);font-size:13px;">'+msg+'</div>';}
+    function err(elId,msg){var el=document.getElementById(elId);el.innerHTML='<div style="padding:14px 18px;color:#c0392b;">'+msg+'</div>';el.style.display='block';}
+
+    /* ── 1. spKt/V + eKt/V ── */
+    function calcSpKtV(){
+      var pre=parseFloat(document.getElementById('sp-pre').value);
+      var post=parseFloat(document.getElementById('sp-post').value);
+      var t=parseFloat(document.getElementById('sp-t').value);
+      var uf=parseFloat(document.getElementById('sp-uf').value);
+      var w=parseFloat(document.getElementById('sp-wpost').value);
+      var el=document.getElementById('sp-result');
+      if([pre,post,t,uf,w].some(isNaN)||pre<=0||w<=0||t<=0){err('sp-result','Please complete all fields with valid values.');return;}
+      var R=post/pre;
+      var spKtV=-Math.log(R-0.008*t)+(4-3.5*R)*uf/w;
+      var eKtV=spKtV-0.6*(spKtV/t)+0.03;
+      var URR=(1-R)*100;
+      var spOk=spKtV>=1.4, eOk=eKtV>=1.2, urrOk=URR>=65;
+      var rows=[
+        ['URR','(1 − C_post/C_pre) × 100%',URR.toFixed(1)+'% '+badge(urrOk)],
+        ['spKt/V (Daugirdas 2nd gen)','−ln(R − 0.008t) + (4 − 3.5R) × UF/W',spKtV.toFixed(2)+' '+badge(spOk)],
+        ['eKt/V (KDOQI)','spKt/V − 0.6 × (spKt/V/t) + 0.03',eKtV.toFixed(2)+' '+badge(eOk)],
+      ];
+      var all3=spOk&&eOk&&urrOk;
+      var note=all3?noteBox('#f0fdf4','✅ All three adequacy metrics on target. Continue current prescription.'):
+        noteBox('#fef9ec','⚠️ One or more metrics below target. Consider: extending session time (most effective), increasing Qb, verifying access flow, or checking for early needle removal. Confirm actual session length vs prescribed.');
+      el.innerHTML=mkTable(rows,note);el.style.display='block';
+    }
+
+    /* ── 2. UFR ── */
+    function calcUFR(){
+      var wpre=parseFloat(document.getElementById('ufr-wpre').value);
+      var wpost=parseFloat(document.getElementById('ufr-wpost').value);
+      var t=parseFloat(document.getElementById('ufr-t').value);
+      var el=document.getElementById('ufr-result');
+      if([wpre,wpost,t].some(isNaN)||wpost<=0||t<=0){err('ufr-result','Please complete all fields with valid values.');return;}
+      var ufL=wpre-wpost;
+      if(ufL<0){err('ufr-result','Pre-dialysis weight cannot be less than dry weight.');return;}
+      var ufmL=ufL*1000;
+      var ufr=ufmL/(t*wpost);
+      var maxUF10=10*t*wpost/1000, maxUF13=13*t*wpost/1000;
+      var col=ufr<10?'#1a6b72':ufr<13?'#b8962e':'#b91c1c';
+      var rows=[
+        ['Fluid to remove (UF volume)','Pre-weight − Dry weight',ufL.toFixed(2)+' L ('+ufmL.toFixed(0)+' mL)'],
+        ['UFR','UF_mL ÷ (session_hr × dry_weight_kg)',ufr.toFixed(1)+' mL/hr/kg'],
+        ['Max UF for UFR ≤10 mL/hr/kg (preferred)','10 × t × W_dry ÷ 1000',maxUF10.toFixed(2)+' L'],
+        ['Max UF for UFR ≤13 mL/hr/kg (absolute)','13 × t × W_dry ÷ 1000',maxUF13.toFixed(2)+' L'],
+      ];
+      var verdict=ufr<10?noteBox('#f0fdf4','✅ UFR is within the preferred safe range (&lt;10 mL/hr/kg). Cardiovascular risk from ultrafiltration rate is low.'):
+        ufr<13?noteBox('#fef9ec','⚠️ UFR is in the caution zone (10–13 mL/hr/kg). Associated with increased intradialytic hypotension and long-term cardiac risk. Consider extending session time or reducing interdialytic fluid intake.'):
+        noteBox('#fef2f2','🔴 UFR exceeds 13 mL/hr/kg — independently associated with increased cardiovascular mortality (KDOQI). Action required: extend session (each 30 min reduces UFR ~10–15%), add a session, counsel strict sodium and fluid restriction, or reassess dry weight.');
+      el.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr style="background:#b8962e;color:white;"><th style="padding:10px 14px;text-align:left;">Parameter</th><th style="padding:10px 14px;text-align:left;">Formula</th><th style="padding:10px 14px;text-align:right;color:'+col+';">Result</th></tr></thead><tbody>'+rows.map(function(r,i){return'<tr style="background:'+(i%2?'#fdf8f0':'white')+'"><td style="padding:10px 14px;font-weight:600;">'+r[0]+'</td><td style="padding:10px 14px;color:#6b7a8d;font-family:monospace;font-size:12px;">'+r[1]+'</td><td style="padding:10px 14px;text-align:right;font-weight:700;color:'+col+';">'+r[2]+'</td></tr>';}).join('')+'</tbody></table>'+verdict;
+      el.style.display='block';
+    }
+
+    /* ── 3. nPCR ── */
+    function calcNPCR(){
+      var cpre=parseFloat(document.getElementById('npcr-cpre').value);
+      var cpost=parseFloat(document.getElementById('npcr-cpost').value);
+      var w=parseFloat(document.getElementById('npcr-wpost').value);
+      var sex=document.getElementById('npcr-sex').value;
+      var dw=parseFloat(document.getElementById('npcr-dw').value);
+      var tid=parseFloat(document.getElementById('npcr-tid').value);
+      var el=document.getElementById('npcr-result');
+      if([cpre,cpost,w,dw].some(isNaN)||w<=0||cpre<=0){err('npcr-result','Please complete all fields with valid values.');return;}
+      var V=(sex==='M'?0.58:0.49)*w;
+      var UNA=((cpre-cpost)*V+cpre*dw)/(tid*100);
+      var PCR=6.25*UNA+0.031*w;
+      var nPCR=PCR/w;
+      var ok=nPCR>=1.0;
+      var rows=[
+        ['Estimated V (TBW)','0.'+(sex==='M'?'58':'49')+' × W',V.toFixed(1)+' L'],
+        ['UNA (urea N appearance)','[(C_pre−C_post)×V + C_pre×ΔW] ÷ (t_id×100)',UNA.toFixed(2)+' g N/day'],
+        ['PCR','6.25 × UNA + 0.031 × W',PCR.toFixed(1)+' g/day'],
+        ['nPCR','PCR ÷ W',nPCR.toFixed(2)+' g/kg/day '+badge(ok)],
+      ];
+      var note=nPCR<0.8?noteBox('#fef2f2','🔴 nPCR &lt;0.8 g/kg/day: severely low protein intake. Assess malnutrition, inadequate prescription, or protein-wasting state. Dietitian referral indicated.'):
+        nPCR<1.0?noteBox('#fef9ec','⚠️ nPCR 0.8–1.0 g/kg/day: below KDOQI minimum of 1.0. Review dietary protein intake and assess for hypercatabolism or inadequate dialysis dose.'):
+        nPCR<=1.4?noteBox('#f0fdf4','✅ nPCR 1.0–1.4 g/kg/day: within the target range. Nutritional status is adequate.'):
+        noteBox('#fef9ec','⚠️ nPCR &gt;1.4 g/kg/day: consider hypercatabolism (infection, access-related inflammation) or very high protein intake. Verify BUN sampling technique.');
+      el.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr style="background:#6e3cb4;color:white;"><th style="padding:10px 14px;text-align:left;">Parameter</th><th style="padding:10px 14px;text-align:left;">Formula</th><th style="padding:10px 14px;text-align:right;">Result</th></tr></thead><tbody>'+rows.map(function(r,i){return'<tr style="background:'+(i%2?'#f8f5fd':'white')+'"><td style="padding:10px 14px;font-weight:600;">'+r[0]+'</td><td style="padding:10px 14px;color:#6b7a8d;font-family:monospace;font-size:12px;">'+r[1]+'</td><td style="padding:10px 14px;text-align:right;font-weight:700;">'+r[2]+'</td></tr>';}).join('')+'</tbody></table>'+note;
+      el.style.display='block';
+    }
+
+    /* ── 4. PD Weekly Kt/V ── */
+    function calcPDAdequacy(){
+      var dvol=parseFloat(document.getElementById('pd-dvol').value);
+      var dbun=parseFloat(document.getElementById('pd-dbun').value);
+      var sbun=parseFloat(document.getElementById('pd-sbun').value);
+      var wt=parseFloat(document.getElementById('pd-wt').value);
+      var sex=document.getElementById('pd-sex').value;
+      var kru=parseFloat(document.getElementById('pd-kru').value)||0;
+      var el=document.getElementById('pd-result');
+      if([dvol,dbun,sbun,wt].some(isNaN)||sbun<=0||wt<=0){err('pd-result','Please complete all required fields.');return;}
+      var V=(sex==='M'?0.58:0.49)*wt;
+      var dp=dbun/sbun;
+      var ktv_day=(dbun*dvol)/(sbun*V);
+      var ktv_wk_dial=7*ktv_day;
+      var ktv_wk_renal=kru*10.08/V;
+      var ktv_total=ktv_wk_dial+ktv_wk_renal;
+      var ok=ktv_total>=1.7;
+      var rows=[
+        ['Estimated V (TBW)','0.'+(sex==='M'?'58':'49')+' × W',V.toFixed(1)+' L'],
+        ['D/P urea ratio','D_BUN ÷ S_BUN',dp.toFixed(3)],
+        ['Daily dialysate Kt/V','(D_BUN × D_vol) ÷ (S_BUN × V)',ktv_day.toFixed(3)],
+        ['Weekly dialysate Kt/V','Daily × 7',ktv_wk_dial.toFixed(2)],
+        ['Weekly renal Kt/V','Kru × 10080 ÷ (V × 1000)',ktv_wk_renal.toFixed(2)],
+        ['Total weekly Kt/V','Dialysate + Renal',ktv_total.toFixed(2)+' '+badge(ok)],
+      ];
+      var deficit=ok?0:((1.7-ktv_total)/7*V/dbun*sbun);
+      var note=ok?noteBox('#f0fdf4','✅ Total weekly Kt/V ≥1.7. Adequacy target met per ISPD 2014. Continue current prescription and measure every 6 months or after exchange volume changes.'):
+        noteBox('#fef9ec','⚠️ Total weekly Kt/V &lt;1.7. Consider: increasing number of exchanges (most effective), increasing fill volume, switching from CAPD to APD, or reassessing residual function. Each additional 1 L of fill volume per day increases weekly Kt/V by ~0.1.');
+      el.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr style="background:#1a3c72;color:white;"><th style="padding:10px 14px;text-align:left;">Parameter</th><th style="padding:10px 14px;text-align:left;">Formula</th><th style="padding:10px 14px;text-align:right;">Result</th></tr></thead><tbody>'+rows.map(function(r,i){return'<tr style="background:'+(i%2?'#f0f4fb':'white')+'"><td style="padding:10px 14px;font-weight:600;">'+r[0]+'</td><td style="padding:10px 14px;color:#6b7a8d;font-family:monospace;font-size:12px;">'+r[1]+'</td><td style="padding:10px 14px;text-align:right;font-weight:700;">'+r[2]+'</td></tr>';}).join('')+'</tbody></table>'+note;
+      el.style.display='block';
     }
     </script>
   </div>
