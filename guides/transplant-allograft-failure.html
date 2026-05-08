@@ -221,6 +221,54 @@
   .hero-meta{color:rgba(255,255,255,.78) !important;}
   .hero-meta strong{color:rgba(255,255,255,.9) !important;}
 
+  /* ── AUDIENCE TABS ── */
+  .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
+  .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
+  .aud-tab{flex:1;text-align:center;padding:14px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .aud-tab:hover{color:var(--navy);}
+  .aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
+  .aud-tab.active.tab-md{border-bottom-color:var(--navy);}
+  html[data-theme="dark"] .audience-tabs{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .aud-tab{color:#8a95a8;}
+  html[data-theme="dark"] .aud-tab.active{color:#e8eaf0;}
+
+  /* ── MODE VISIBILITY ── */
+  .mode-patient{display:block;}
+  .mode-physician{display:none;}
+  body.physician-mode .mode-patient{display:none!important;}
+  body.physician-mode .mode-physician{display:block!important;}
+  body.physician-mode .lang-group{opacity:.35;pointer-events:none;}
+  body.physician-mode .nav-strip .nav-pills .mode-patient-pill{display:none;}
+  body.physician-mode .nav-strip .nav-pills .mode-physician-pill{display:inline-flex;}
+  .mode-physician-pill{display:none;}
+
+  /* ── PHYSICIAN SECTION ELEMENTS ── */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:32px 0;}
+  .stat-card{background:var(--navy);border-radius:12px;padding:22px 20px;color:white;text-align:center;}
+  .stat-card.bright{background:linear-gradient(135deg,var(--teal),#0d4a50);}
+  .stat-number{display:block;font-family:'Lora',serif;font-size:28px;font-weight:600;line-height:1.1;margin-bottom:6px;}
+  .stat-label{display:block;font-size:12px;color:rgba(255,255,255,.72);line-height:1.45;}
+  .alert-navy{background:#e8edf4;border-left:4px solid var(--navy);border-radius:0 12px 12px 0;padding:20px 24px;margin:24px 0;display:flex;gap:16px;align-items:flex-start;}
+  .alert-navy .alert-body h4{color:var(--navy);}
+  html[data-theme="dark"] .alert-navy{background:#141c2a;}
+  html[data-theme="dark"] .stat-card{background:linear-gradient(135deg,#141c2a,#0f1520);}
+  .dot-purple{background:#6b21a8;}
+  .dot-gold{background:var(--gold);}
+  .kdigo-1a{display:inline-block;background:#d4edde;color:#1a5c33;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;}
+  .kdigo-1b{display:inline-block;background:#d4eaf5;color:#0c4a7a;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;}
+  .kdigo-2b{display:inline-block;background:var(--amber-soft);color:#7a4800;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;}
+  .kdigo-gps{display:inline-block;background:#f3f4f6;color:#374151;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;}
+  .drug-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13.5px;}
+  .drug-table th{text-align:left;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 14px;background:var(--bg);border-bottom:2px solid var(--border);}
+  .drug-table td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text-mid);vertical-align:top;line-height:1.5;}
+  .drug-table td:first-child{font-weight:600;color:var(--navy);}
+  .drug-table tr:last-child td{border-bottom:none;}
+  .drug-table tr:hover td{background:var(--bg);}
+  html[data-theme="dark"] .drug-table th{background:#1a2535;color:#adb8c8;}
+  html[data-theme="dark"] .drug-table td{border-color:#2a3548;color:#c0cad8;}
+  html[data-theme="dark"] .drug-table td:first-child{color:#e8eaf0;}
+  html[data-theme="dark"] .drug-table tr:hover td{background:#202d40;}
+
   /* ── PRINT ── */
   .print-btn{position:fixed;bottom:80px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--teal,#1a6b72);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:transform .2s,box-shadow .2s;z-index:9998;}
   .print-btn:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(0,0,0,.35);}
@@ -346,7 +394,7 @@ body.dark .related-card-title {
       <button id="glb-kap" class="lang-btn" onclick="setLang('kap')">KAP</button>
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
-    <button class="toggle-btn" id="clinicianToggle" onclick="toggleClinician()" aria-label="Toggle clinician view" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.20);color:rgba(255,255,255,.88);font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;display:flex;align-items:center;gap:5px;">
+    <button class="toggle-btn" id="clinicianToggle" onclick="toggleClinicianBtn()" aria-label="Toggle clinician view" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.20);color:rgba(255,255,255,.88);font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;display:flex;align-items:center;gap:5px;">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       <span id="clinicianLabel">Clinician</span>
     </button>
@@ -357,6 +405,18 @@ body.dark .related-card-title {
     <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.20);color:rgba(255,255,255,.88);font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;display:flex;align-items:center;gap:5px;">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       <span id="desktopLabel">Desktop</span>
+    </button>
+  </div>
+</div>
+
+<!-- ═══ AUDIENCE TABS ════════════════════════════ -->
+<div class="audience-tabs">
+  <div class="tabs-inner">
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">
+      <span>🧑‍⚕️ For Patients &amp; Families</span>
+    </button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">
+      <span>🩺 For Clinicians</span>
     </button>
   </div>
 </div>
@@ -388,25 +448,36 @@ body.dark .related-card-title {
 
 <nav class="nav-strip">
   <div class="nav-pills">
-    <a class="nav-pill" href="#what"><span data-lang="en">How It Works</span><span data-lang="tl" class="lang-hidden">Paano Gumagana</span><span data-lang="ceb" class="lang-hidden">Kung Giunsa</span></a>
-    <a class="nav-pill" href="#healthy"><span data-lang="en">Healthy Allograft</span><span data-lang="tl" class="lang-hidden">Malusog na Allograft</span><span data-lang="ceb" class="lang-hidden">Himsog nga Allograft</span></a>
-    <a class="nav-pill" href="#dysfunction"><span data-lang="en">Dysfunction</span><span data-lang="tl" class="lang-hidden">Dysfunction</span><span data-lang="ceb" class="lang-hidden">Dysfunction</span></a>
-    <a class="nav-pill" href="#timeline"><span data-lang="en">Why They Fail</span><span data-lang="tl" class="lang-hidden">Bakit Nababigo</span><span data-lang="ceb" class="lang-hidden">Ngano Napakyas</span></a>
-    <a class="nav-pill" href="#rejection"><span data-lang="en">Rejection Types</span><span data-lang="tl" class="lang-hidden">Uri ng Pagtanggi</span><span data-lang="ceb" class="lang-hidden">Klase sa Pagsalikway</span></a>
-    <a class="nav-pill" href="#options"><span data-lang="en">Your Options</span><span data-lang="tl" class="lang-hidden">Iyong mga Pagpipilian</span><span data-lang="ceb" class="lang-hidden">Imong mga Kapilian</span></a>
-    <a class="nav-pill" href="#retransplant"><span data-lang="en">Re-Transplant</span><span data-lang="tl" class="lang-hidden">Muling Transplant</span><span data-lang="ceb" class="lang-hidden">Bag-ong Transplant</span></a>
-    <a class="nav-pill" href="#sensitization"><span data-lang="en">Sensitization</span><span data-lang="tl" class="lang-hidden">Sensitization</span><span data-lang="ceb" class="lang-hidden">Sensitization</span></a>
-    <a class="nav-pill" href="#calculator"><span data-lang="en">eGFR Calculator</span><span data-lang="tl" class="lang-hidden">eGFR Calculator</span><span data-lang="ceb" class="lang-hidden">eGFR Calculator</span></a>
-    <a class="nav-pill" href="#living-donor"><span data-lang="en">Living Donor</span><span data-lang="tl" class="lang-hidden">Buhay na Donor</span><span data-lang="ceb" class="lang-hidden">Buhi nga Donor</span></a>
-    <a class="nav-pill" href="#hope"><span data-lang="en">Hope &amp; Wellbeing</span><span data-lang="tl" class="lang-hidden">Pag-asa at Kalusugan</span><span data-lang="ceb" class="lang-hidden">Paglaum ug Kaayohan</span></a>
-    <a class="nav-pill" href="#questions"><span data-lang="en">Questions</span><span data-lang="tl" class="lang-hidden">Mga Tanong</span><span data-lang="ceb" class="lang-hidden">Mga Pangutana</span></a>
+    <a class="nav-pill mode-patient-pill" href="#what"><span data-lang="en">How It Works</span><span data-lang="tl" class="lang-hidden">Paano Gumagana</span><span data-lang="ceb" class="lang-hidden">Kung Giunsa</span></a>
+    <a class="nav-pill mode-patient-pill" href="#healthy"><span data-lang="en">Healthy Allograft</span><span data-lang="tl" class="lang-hidden">Malusog na Allograft</span><span data-lang="ceb" class="lang-hidden">Himsog nga Allograft</span></a>
+    <a class="nav-pill mode-patient-pill" href="#dysfunction"><span data-lang="en">Dysfunction</span><span data-lang="tl" class="lang-hidden">Dysfunction</span><span data-lang="ceb" class="lang-hidden">Dysfunction</span></a>
+    <a class="nav-pill mode-patient-pill" href="#timeline"><span data-lang="en">Why They Fail</span><span data-lang="tl" class="lang-hidden">Bakit Nababigo</span><span data-lang="ceb" class="lang-hidden">Ngano Napakyas</span></a>
+    <a class="nav-pill mode-patient-pill" href="#rejection"><span data-lang="en">Rejection Types</span><span data-lang="tl" class="lang-hidden">Uri ng Pagtanggi</span><span data-lang="ceb" class="lang-hidden">Klase sa Pagsalikway</span></a>
+    <a class="nav-pill mode-patient-pill" href="#options"><span data-lang="en">Your Options</span><span data-lang="tl" class="lang-hidden">Iyong mga Pagpipilian</span><span data-lang="ceb" class="lang-hidden">Imong mga Kapilian</span></a>
+    <a class="nav-pill mode-patient-pill" href="#retransplant"><span data-lang="en">Re-Transplant</span><span data-lang="tl" class="lang-hidden">Muling Transplant</span><span data-lang="ceb" class="lang-hidden">Bag-ong Transplant</span></a>
+    <a class="nav-pill mode-patient-pill" href="#sensitization"><span data-lang="en">Sensitization</span><span data-lang="tl" class="lang-hidden">Sensitization</span><span data-lang="ceb" class="lang-hidden">Sensitization</span></a>
+    <a class="nav-pill mode-patient-pill" href="#calculator"><span data-lang="en">eGFR Calculator</span><span data-lang="tl" class="lang-hidden">eGFR Calculator</span><span data-lang="ceb" class="lang-hidden">eGFR Calculator</span></a>
+    <a class="nav-pill mode-patient-pill" href="#living-donor"><span data-lang="en">Living Donor</span><span data-lang="tl" class="lang-hidden">Buhay na Donor</span><span data-lang="ceb" class="lang-hidden">Buhi nga Donor</span></a>
+    <a class="nav-pill mode-patient-pill" href="#hope"><span data-lang="en">Hope &amp; Wellbeing</span><span data-lang="tl" class="lang-hidden">Pag-asa at Kalusugan</span><span data-lang="ceb" class="lang-hidden">Paglaum ug Kaayohan</span></a>
+    <a class="nav-pill mode-patient-pill" href="#questions"><span data-lang="en">Questions</span><span data-lang="tl" class="lang-hidden">Mga Tanong</span><span data-lang="ceb" class="lang-hidden">Mga Pangutana</span></a>
+    <a class="nav-pill mode-physician-pill" href="#md-epidemiology">Epidemiology</a>
+    <a class="nav-pill mode-physician-pill" href="#md-pathophysiology">Pathophysiology</a>
+    <a class="nav-pill mode-physician-pill" href="#md-banff">Banff 2022</a>
+    <a class="nav-pill mode-physician-pill" href="#md-workup">Workup</a>
+    <a class="nav-pill mode-physician-pill" href="#md-is-monitoring">IS Monitoring</a>
+    <a class="nav-pill mode-physician-pill" href="#md-acute-rejection">Acute Rejection</a>
+    <a class="nav-pill mode-physician-pill" href="#md-chronic-abmr">Chronic ABMR</a>
+    <a class="nav-pill mode-physician-pill" href="#md-retransplant">Re-Transplant</a>
+    <a class="nav-pill mode-physician-pill" href="#md-desensitisation">Desensitisation</a>
+    <a class="nav-pill mode-physician-pill" href="#md-nephrectomy">Nephrectomy</a>
+    <a class="nav-pill mode-physician-pill" href="#md-ph">PH Context</a>
   </div>
 </nav>
 
 <main class="container">
 
   <!-- S1 -->
-  <section class="section" id="what">
+  <section class="section mode-patient" id="what">
     <div class="section-tag"><span data-lang="en">The Basics</span><span data-lang="tl" class="lang-hidden">Mga Pangunahing Kaalaman</span><span data-lang="ceb" class="lang-hidden">Ang mga Batakan</span></div>
     <h2><span data-lang="en">Your Transplant &amp; How It Works</span><span data-lang="tl" class="lang-hidden">Ang Inyong Transplant at Kung Paano Ito Gumagana</span><span data-lang="ceb" class="lang-hidden">Ang Imong Transplant ug Kung Giunsa Kini Nagtrabaho</span></h2>
     <figure style="margin:0 0 28px;">
@@ -446,7 +517,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S2 -->
-  <section class="section" id="healthy">
+  <section class="section mode-patient" id="healthy">
     <div class="section-tag"><span data-lang="en">Monitoring</span><span data-lang="tl" class="lang-hidden">Pagmamasid</span><span data-lang="ceb" class="lang-hidden">Pagmonitor</span></div>
     <h2><span data-lang="en">Signs of a Healthy Allograft</span><span data-lang="tl" class="lang-hidden">Mga Palatandaan ng Malusog na Allograft</span><span data-lang="ceb" class="lang-hidden">Mga Timailhan sa Himsog nga Allograft</span></h2>
     <p><span data-lang="en">Regular blood and urine tests tell your doctor how well your transplanted kidney is working. <strong>Stability of your personal baseline matters more than any single number.</strong></span><span data-lang="tl" class="lang-hidden">Ang mga regular na pagsusuri ng dugo at ihi ay nagsasabi sa inyong doktor kung gaano kagaling gumagana ang inyong transplantadong bato. <strong>Ang katatagan ng inyong personal na baseline ay mas mahalaga kaysa sa anumang isang numero.</strong></span><span data-lang="ceb" class="lang-hidden">Ang mga regular nga pagsusuri sa dugo ug ihi nagsulti sa imong doktor kung unsa ka maayo ang pagtrабaho sa imong gitransplant nga kidney. <strong>Ang katatasan sa imong personal nga baseline mas importante kaysa bisan unsa nga numero.</strong></span></p>
@@ -475,7 +546,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S3 -->
-  <section class="section" id="dysfunction">
+  <section class="section mode-patient" id="dysfunction">
     <div class="section-tag"><span data-lang="en">Early Warning Signs</span><span data-lang="tl" class="lang-hidden">Maagang Mga Babala</span><span data-lang="ceb" class="lang-hidden">Sayo nga Mga Babala</span></div>
     <h2><span data-lang="en">What Is Allograft Dysfunction?</span><span data-lang="tl" class="lang-hidden">Ano ang Allograft Dysfunction?</span><span data-lang="ceb" class="lang-hidden">Unsa ang Allograft Dysfunction?</span></h2>
     <figure style="margin:0 0 28px;">
@@ -516,7 +587,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S4 -->
-  <section class="section" id="timeline">
+  <section class="section mode-patient" id="timeline">
     <div class="section-tag"><span data-lang="en">The Timeline of Failure</span><span data-lang="tl" class="lang-hidden">Ang Timeline ng Pagpalya</span><span data-lang="ceb" class="lang-hidden">Ang Timeline sa Pagkapakyas</span></div>
     <h2><span data-lang="en">Why Allografts Fail — A Timeline</span><span data-lang="tl" class="lang-hidden">Bakit Nababigo ang mga Allograft — Isang Timeline</span><span data-lang="ceb" class="lang-hidden">Ngano Napakyas ang mga Allograft — Usa ka Timeline</span></h2>
     <p><span data-lang="en">Different problems arise at different time points after transplant. Understanding this timeline helps your doctor identify the most likely cause quickly and choose the right treatment.</span><span data-lang="tl" class="lang-hidden">Iba't ibang mga problema ang lumilitaw sa iba't ibang oras pagkatapos ng transplant. Ang pag-unawa sa timeline na ito ay tumutulong sa inyong doktor na mabilis na matukoy ang pinaka-malamang na sanhi at mapili ang tamang paggamot.</span><span data-lang="ceb" class="lang-hidden">Lain-laing mga problema mitungha sa lain-laing panahon human sa transplant. Ang pagsabut niining timeline tabangan ang imong doktor sa dali nga pag-ila sa labing posibleng hinungdan ug pagpili sa husto nga pagtambal.</span></p>
@@ -555,7 +626,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S5 -->
-  <section class="section" id="rejection">
+  <section class="section mode-patient" id="rejection">
     <div class="section-tag"><span data-lang="en">Immunology</span><span data-lang="tl" class="lang-hidden">Immunolohiya</span><span data-lang="ceb" class="lang-hidden">Immunolohiya</span></div>
     <h2><span data-lang="en">Rejection Types &amp; What They Mean</span><span data-lang="tl" class="lang-hidden">Mga Uri ng Pagtanggi at Ang Kanilang Ibig Sabihin</span><span data-lang="ceb" class="lang-hidden">Mga Klase sa Pagsalikway ug Unsa ang Gipasabot Niini</span></h2>
     <p><span data-lang="en">Rejection is classified by the underlying mechanism — which determines both the treatment and the prognosis. The gold standard for diagnosis is a <strong>percutaneous allograft biopsy</strong> classified by the Banff criteria.</span><span data-lang="tl" class="lang-hidden">Ang pagtanggi ay inuuri ayon sa pinagbabatayan na mekanismo — na nagtatakda ng parehong paggamot at prognosis. Ang gold standard para sa diagnosis ay ang <strong>percutaneous allograft biopsy</strong> na inuuri ayon sa Banff criteria.</span><span data-lang="ceb" class="lang-hidden">Ang pagsalikway gipaklase sumala sa nagpailalom nga mekanismo — nga nagtakda sa parehong pagtambal ug prognosis. Ang gold standard sa diagnosis mao ang <strong>percutaneous allograft biopsy</strong> nga gipaklase sumala sa Banff criteria.</span></p>
@@ -584,7 +655,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S6 -->
-  <section class="section" id="options">
+  <section class="section mode-patient" id="options">
     <div class="section-tag"><span data-lang="en">When the Allograft Fails</span><span data-lang="tl" class="lang-hidden">Kapag Nabigo ang Allograft</span><span data-lang="ceb" class="lang-hidden">Kung Mapakyas ang Allograft</span></div>
     <h2><span data-lang="en">What Happens If the Kidney Fails: Your Options</span><span data-lang="tl" class="lang-hidden">Ano ang Mangyayari Kung Mabigo ang Bato: Inyong mga Pagpipilian</span><span data-lang="ceb" class="lang-hidden">Unsa ang Mahitabo Kung Mapakyas ang Kidney: Imong mga Kapilian</span></h2>
     <figure style="margin:0 0 28px;">
@@ -637,7 +708,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S7 -->
-  <section class="section" id="retransplant">
+  <section class="section mode-patient" id="retransplant">
     <div class="section-tag"><span data-lang="en">Second Chance</span><span data-lang="tl" class="lang-hidden">Ikalawang Pagkakataon</span><span data-lang="ceb" class="lang-hidden">Ikaduha nga Higayon</span></div>
     <h2><span data-lang="en">Re-Transplantation: Is It Possible?</span><span data-lang="tl" class="lang-hidden">Muling Transplant: Posible Ba Ito?</span><span data-lang="ceb" class="lang-hidden">Re-Transplantasyon: Posible Ba Kini?</span></h2>
     <div class="intro-callout">
@@ -671,7 +742,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S8 -->
-  <section class="section" id="sensitization">
+  <section class="section mode-patient" id="sensitization">
     <div class="section-tag"><span data-lang="en">Immunology · Antibodies</span><span data-lang="tl" class="lang-hidden">Immunolohiya · Antibodies</span><span data-lang="ceb" class="lang-hidden">Immunolohiya · Antibodies</span></div>
     <h2><span data-lang="en">Sensitization &amp; the PRA/cPRA Score</span><span data-lang="tl" class="lang-hidden">Sensitization at ang PRA/cPRA Score</span><span data-lang="ceb" class="lang-hidden">Sensitization ug ang PRA/cPRA Score</span></h2>
     <p><span data-lang="en">Your first transplant exposed your immune system to the donor's HLA proteins. After graft failure, your immune system may have formed <strong>Donor-Specific Antibodies (DSA)</strong> — antibodies that recognize HLA antigens that differ from your own. The more HLA mismatches you've been exposed to, the more sensitized you become.</span><span data-lang="tl" class="lang-hidden">Ang inyong unang transplant ay inilantad ang inyong immune system sa HLA proteins ng donor. Pagkatapos ng pagpalya ng graft, ang inyong immune system ay maaaring nakabuo ng <strong>Donor-Specific Antibodies (DSA)</strong> — mga antibody na kumikikilala ng mga HLA antigen na naiiba sa inyong sarili. Mas maraming HLA mismatches ang nalantad sa inyo, mas sensitized kayo.</span><span data-lang="ceb" class="lang-hidden">Ang imong unang transplant gihulad sa imong immune system sa mga HLA protein sa donor. Human sa pagkapakyas sa graft, ang imong immune system mahimong nakaporma og <strong>Donor-Specific Antibodies (DSA)</strong> — mga antibody nga nakaila sa mga HLA antigen nga nagkalain-lain gikan sa imong kaugalingon. Mas daghang HLA mismatches ang imong nasinati, mas sensitized ka.</span></p>
@@ -709,7 +780,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S9 CALCULATOR -->
-  <section class="section" id="calculator">
+  <section class="section mode-patient" id="calculator">
     <div class="section-tag">
       <span data-lang="en">Clinical Tool</span><span data-lang="tl" class="lang-hidden">Klinikal na Kagamitan</span><span data-lang="ceb" class="lang-hidden">Klinikal nga Himan</span>
     </div>
@@ -800,7 +871,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S10 -->
-  <section class="section" id="living-donor">
+  <section class="section mode-patient" id="living-donor">
     <div class="section-tag"><span data-lang="en">The Best Option</span><span data-lang="tl" class="lang-hidden">Ang Pinakamainam na Pagpipilian</span><span data-lang="ceb" class="lang-hidden">Ang Labing Maayo nga Kapilian</span></div>
     <h2><span data-lang="en">Living Donor Re-Transplant</span><span data-lang="tl" class="lang-hidden">Muling Transplant Mula sa Buhay na Donor</span><span data-lang="ceb" class="lang-hidden">Re-Transplant Gikan sa Buhi nga Donor</span></h2>
     <p><span data-lang="en">A living donor transplant — from a compatible family member, spouse, or close friend — is the <strong>single best option</strong> for most patients facing allograft failure. It eliminates the waiting list entirely and enables a pre-emptive transplant before dialysis begins.</span><span data-lang="tl" class="lang-hidden">Ang transplant mula sa buhay na donor — mula sa isang compatible na miyembro ng pamilya, asawa, o malapit na kaibigan — ang <strong>pinakamainam na pagpipilian</strong> para sa karamihang mga pasyente na nakaharap sa pagpalya ng allograft. Ganap nitong inaalis ang listahan ng paghihintay at nagbibigay-daan sa pre-emptive na transplant bago pa magsimula ang dialysis.</span><span data-lang="ceb" class="lang-hidden">Ang transplant gikan sa buhi nga donor — gikan sa usa ka compatible nga miyembro sa pamilya, asawa, o duol nga higala — mao ang <strong>pinaka-labing maayo nga kapilian</strong> alang sa kadaghanan sa mga pasyente nga nag-atubang sa pagkapakyas sa allograft. Hingpit kining nagtangtang sa listahan sa paghulat ug nagpahimo og pre-emptive nga transplant sa wala pa magsugod ang dialysis.</span></p>
@@ -839,7 +910,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S11 -->
-  <section class="section" id="hope">
+  <section class="section mode-patient" id="hope">
     <div class="section-tag"><span data-lang="en">Emotional Health</span><span data-lang="tl" class="lang-hidden">Emosyonal na Kalusugan</span><span data-lang="ceb" class="lang-hidden">Emosyonal nga Kaayohan</span></div>
     <h2><span data-lang="en">Hope &amp; Emotional Wellbeing After Allograft Failure</span><span data-lang="tl" class="lang-hidden">Pag-asa at Emosyonal na Kaayohan Pagkatapos ng Pagpalya ng Allograft</span><span data-lang="ceb" class="lang-hidden">Paglaum ug Emosyonal nga Kaayohan Human sa Pagkapakyas sa Allograft</span></h2>
     <p><span data-lang="en">Losing a transplanted kidney is one of the most emotionally difficult experiences a kidney patient can face. The grief is real — you have lost an organ that gave you back your freedom, energy, and daily life. <strong>This grief is valid, and it deserves the same attention as any physical symptom.</strong></span><span data-lang="tl" class="lang-hidden">Ang pagkawala ng isang transplantadong bato ay isa sa mga pinaka-emosyonal na mahirap na karanasan na maaaring harapin ng isang pasyenteng may sakit sa bato. Ang kalungkutan ay tunay — nawala ninyo ang isang organ na nagbigay sa inyo ng inyong kalayaan, lakas, at pang-araw-araw na buhay. <strong>Ang kalungkutang ito ay may bisa, at karapat-dapat itong bigyan ng parehong pansin tulad ng anumang pisikal na sintomas.</strong></span><span data-lang="ceb" class="lang-hidden">Ang pagkawala sa gitransplant nga kidney usa sa mga labing emosyonal nga lisod nga kasinatian nga mahimong atubangon sa usa ka pasyente sa kidney. Ang kasubo tinuod — nawala ang usa ka organ nga naghatag sa imong balik ang imong kagawasan, kusog, ug inadlaw nga kinabuhi. <strong>Kining kasubo balido, ug angay kini hatagan og mao gihapong pagtagad sama sa bisan unsa nga pisikal nga sintomas.</strong></span></p>
@@ -877,7 +948,7 @@ body.dark .related-card-title {
   </section>
 
   <!-- S12 -->
-  <section class="section" id="questions">
+  <section class="section mode-patient" id="questions">
     <div class="section-tag"><span data-lang="en">Your Next Appointment</span><span data-lang="tl" class="lang-hidden">Inyong Susunod na Appointment</span><span data-lang="ceb" class="lang-hidden">Imong Sunod nga Appointment</span></div>
     <h2><span data-lang="en">Questions to Ask Your Transplant Nephrologist</span><span data-lang="tl" class="lang-hidden">Mga Tanong na Itatanong sa Inyong Transplant Nephrologist</span><span data-lang="ceb" class="lang-hidden">Mga Pangutana nga Itatanong sa Imong Transplant Nephrologist</span></h2>
     <p><span data-lang="en">Being prepared with specific questions makes the most of your consultation time — and ensures nothing important is left unaddressed.</span><span data-lang="tl" class="lang-hidden">Ang paghahanda ng mga tiyak na tanong ay nagpapalaki ng inyong oras sa konsultasyon — at tinitiyak na walang mahalaga ang hindi nasasagot.</span><span data-lang="ceb" class="lang-hidden">Ang pagpangandam og piho nga mga pangutana nagpalambo sa imong oras sa konsultasyon — ug nagtiyak nga walay importante ang wala masulbad.</span></p>
@@ -918,78 +989,391 @@ body.dark .related-card-title {
     </div>
   </section>
 
-  <!-- CLINICIAN TAB CONTENT -->
-  <section id="clinician-section" style="display:none;padding:48px 0;border-top:2px solid var(--gold);margin-top:32px;">
-    <div class="section-tag" style="color:var(--gold);">Clinician Reference · English Only</div>
-    <h2 style="color:var(--navy);font-family:'Lora',serif;font-size:clamp(22px,3.5vw,30px);margin-bottom:24px;">Clinical Management of Allograft Failure</h2>
+<!-- ══════════════════════════════════════════════════════
+     PHYSICIAN MODE SECTIONS
+     ══════════════════════════════════════════════════════ -->
 
-    <div class="intro-callout" style="margin-bottom:32px;">
-      <p><strong>Scope:</strong> This section summarises key clinical thresholds, rejection classification, immunosuppression considerations, and re-transplant workup criteria for use at the point of care. All values reflect current KDIGO and AST guidelines.</p>
+  <!-- MD S1: EPIDEMIOLOGY -->
+  <section class="section mode-physician" id="md-epidemiology">
+    <div class="section-tag" style="color:var(--navy);">Epidemiology &amp; Outcomes</div>
+    <h2>Allograft Failure: Global &amp; Philippine Data</h2>
+    <div class="intro-callout">
+      <p><strong>Allograft failure remains the leading cause of ESKD among previously transplanted patients.</strong> Globally, 10-year death-censored graft survival is approximately 65–70% for deceased-donor and 75–80% for living-donor kidneys (USRDS 2023). Immunological causes — particularly chronic active ABMR — account for up to 40% of late graft loss; non-immunological causes (CNI nephrotoxicity, hypertension, recurrent disease) contribute the remainder. In the Philippines, NKTI data indicate &lt;400 kidney transplants are performed annually (2022), with re-transplant comprising &lt;5% of procedures nationally — primarily limited by organ availability and sensitisation barriers.</p>
     </div>
-
-    <h3 style="font-family:'Lora',serif;font-size:18px;color:var(--navy);margin:28px 0 14px;">Rejection Classification (Banff 2022)</h3>
-    <table class="lab-table">
-      <thead><tr><th>Category</th><th>Mechanism</th><th>Timing</th><th>Biopsy Hallmark</th><th>Treatment Approach</th></tr></thead>
+    <div class="stat-grid">
+      <div class="stat-card"><span class="stat-number">~35%</span><span class="stat-label">10-yr deceased-donor allograft failure rate (USRDS 2023)</span></div>
+      <div class="stat-card bright"><span class="stat-number">40%</span><span class="stat-label">of late graft loss attributable to chronic active ABMR</span></div>
+      <div class="stat-card"><span class="stat-number">5–10×</span><span class="stat-label">higher cardiovascular mortality in failed graft vs functioning graft</span></div>
+      <div class="stat-card"><span class="stat-number">&lt;400</span><span class="stat-label">annual transplants in Philippines; re-transplant &lt;5% (NKTI 2022)</span></div>
+    </div>
+    <table class="drug-table">
+      <thead><tr><th>Cause of Graft Loss</th><th>Proportion of Late Failures</th><th>Median Time to Failure</th><th>Modifiable Risk Factors</th></tr></thead>
       <tbody>
-        <tr><td>Hyperacute rejection</td><td>Preformed donor-specific antibodies (DSA)</td><td>Minutes–hours post-op</td><td>Thrombotic microangiopathy, fibrin thrombi</td><td>Emergent nephrectomy; desensitisation failure</td></tr>
-        <tr><td>Acute cellular rejection (ACR)</td><td>T-cell mediated</td><td>Days–months (any time)</td><td>Tubulointerstitial inflammation; tubulitis (Banff t/i scores)</td><td>High-dose IV methylprednisolone; thymoglobulin for steroid-resistant</td></tr>
-        <tr><td>Antibody-mediated rejection (ABMR)</td><td>DSA → complement → endothelial injury</td><td>Early or late</td><td>Microvascular inflammation (g+ptc ≥2); C4d; DSA positive</td><td>IVIG ± plasmapheresis ± rituximab; eculizumab in refractory</td></tr>
-        <tr><td>Chronic active ABMR</td><td>Ongoing DSA injury</td><td>Months–years</td><td>Transplant glomerulopathy (cg ≥1); multilayering</td><td>Optimise IS; IVIG/plasmapheresis; clinical trial eligibility</td></tr>
-        <tr><td>Chronic allograft nephropathy (CAN)</td><td>Multifactorial (CNI toxicity, ischaemia, rejection)</td><td>Late (&gt;1 yr)</td><td>Interstitial fibrosis/tubular atrophy (IFTA); ci/ct ≥2</td><td>CNI minimisation; switch to mTOR inhibitor; BP optimisation</td></tr>
+        <tr><td>Chronic active ABMR</td><td>~40%</td><td>5–10 years</td><td>DSA monitoring, CNI adherence, de novo DSA prevention</td></tr>
+        <tr><td>T-cell mediated rejection (TCMR)</td><td>~10%</td><td>Variable (early &amp; late)</td><td>IS adherence, dose optimisation</td></tr>
+        <tr><td>CNI nephrotoxicity</td><td>~15%</td><td>5–15 years</td><td>CNI minimisation, mTOR conversion, BP control</td></tr>
+        <tr><td>Recurrent primary disease</td><td>~10%</td><td>Variable (FSGS: early; IgAN: late)</td><td>Disease-specific prophylaxis (rituximab for FSGS, RAAS blockade for IgAN)</td></tr>
+        <tr><td>De novo GN / TMA</td><td>~5%</td><td>Variable</td><td>Eculizumab for aHUS; ACEi/ARB for proteinuric GN</td></tr>
+        <tr><td>BK virus nephropathy (BKVAN)</td><td>~5%</td><td>1–3 years</td><td>IS reduction, BK monitoring protocol</td></tr>
+        <tr><td>Polyoma nephropathy / other infections</td><td>~3%</td><td>Variable</td><td>Surveillance, IS reduction</td></tr>
+        <tr><td>Non-compliance / IS discontinuation</td><td>~10%</td><td>Any time</td><td>Patient education, socioeconomic support, adherence monitoring</td></tr>
       </tbody>
     </table>
+  </section>
 
-    <h3 style="font-family:'Lora',serif;font-size:18px;color:var(--navy);margin:28px 0 14px;">Key Laboratory Thresholds &amp; Monitoring Targets</h3>
-    <table class="lab-table">
-      <thead><tr><th>Parameter</th><th>Target / Threshold</th><th>Action if Abnormal</th></tr></thead>
-      <tbody>
-        <tr><td>Tacrolimus trough (early, 0–3 mo)</td><td>8–12 ng/mL</td><td>Adjust dose; check adherence; drug interactions (CYP3A4)</td></tr>
-        <tr><td>Tacrolimus trough (maintenance, &gt;6 mo)</td><td>5–8 ng/mL</td><td>Consider CNI minimisation if IFTA on biopsy</td></tr>
-        <tr><td>Mycophenolate MPA AUC</td><td>30–60 mg·h/L</td><td>Dose-adjust for GI toxicity or under-immunosuppression</td></tr>
-        <tr><td>eGFR slope</td><td>&lt;−2 mL/min/yr acceptable; &gt;−4 warrants workup</td><td>Protocol biopsy; DSA testing; urine PCR (BK, CMV)</td></tr>
-        <tr><td>Proteinuria</td><td>&lt;300 mg/g creatinine</td><td>ACEi/ARB; biopsy if new or worsening</td></tr>
-        <tr><td>BK viremia</td><td>&lt;1,000 copies/mL (watch); &gt;10,000 = BKVAN risk</td><td>Reduce IS by 25–50%; monitor monthly</td></tr>
-        <tr><td>DSA (de novo)</td><td>Any new class I or II DSA</td><td>Biopsy; intensify IS; consider IVIG</td></tr>
-        <tr><td>cPRA</td><td>&gt;80% = highly sensitised; &gt;98% = virtual crossmatch required</td><td>Paired exchange; desensitisation protocol; UNOS priority listing</td></tr>
-      </tbody>
-    </table>
-
-    <h3 style="font-family:'Lora',serif;font-size:18px;color:var(--navy);margin:28px 0 14px;">Re-Transplant Workup Checklist</h3>
-    <div class="checklist">
-      <h4>Pre-Listing Evaluation</h4>
-      <ul>
-        <li><span>Updated cPRA / virtual crossmatch panel — repeat DSA by Luminex single-antigen bead assay</span></li>
-        <li><span>Cardiac clearance: stress test or coronary angiography if DM, prior CAD, or age &gt;50</span></li>
-        <li><span>Vascular imaging: Doppler or CTA of iliac vessels if prior access or AAA concern</span></li>
-        <li><span>Infectious clearance: HIV, HBV, HCV, TB (IGRA), CMV serology update</span></li>
-        <li><span>Malignancy screen: colonoscopy, mammogram, Pap, PSA per age/sex guidelines</span></li>
-        <li><span>Failed allograft nephrectomy decision: remove if symptomatic, PRA driving DSA, or infection risk; defer if quiescent</span></li>
-        <li><span>Immunosuppression bridge: maintain low-dose IS until re-transplant to prevent sensitisation flare; taper per centre protocol</span></li>
-        <li><span>Dialysis access planning if eGFR &lt;15 and re-transplant not imminent</span></li>
-      </ul>
-    </div>
-
-    <h3 style="font-family:'Lora',serif;font-size:18px;color:var(--navy);margin:28px 0 14px;">Desensitisation Protocols (Highly Sensitised, cPRA &gt;80%)</h3>
+  <!-- MD S2: PATHOPHYSIOLOGY -->
+  <section class="section mode-physician" id="md-pathophysiology">
+    <div class="section-tag" style="color:var(--navy);">Pathogenesis</div>
+    <h2>Mechanisms of Allograft Dysfunction</h2>
+    <p>Chronic allograft failure results from overlapping immunological and non-immunological insults. Distinguishing these on biopsy — and understanding their mechanistic targets — is essential for treatment selection and trial eligibility.</p>
     <div class="three-col">
       <div class="feature-card">
-        <h4><span class="dot dot-teal"></span>IVIG + Plasmapheresis</h4>
-        <p>Standard protocol: PE × 4–6 sessions alternating with low-dose IVIG (100 mg/kg); high-dose IVIG 2 g/kg after completion. Reduces DSA MFI; efficacy variable.</p>
+        <h4><span class="dot dot-red"></span>T-Cell Mediated Rejection (TCMR)</h4>
+        <p>CD4⁺/CD8⁺ T-cells recognise donor HLA (direct pathway: early; indirect: late). Banff hallmarks: tubulitis (t≥2), interstitial inflammation (i≥2), intimal arteritis (v≥1). Endarteritis (v-score) predicts corticosteroid resistance. Subclinical TCMR on protocol biopsy at 3 months is an independent predictor of IFTA and graft failure at 5 years.</p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-amber"></span>Rituximab</h4>
-        <p>375 mg/m² × 1–4 doses for B-cell depletion. Used adjunctively with PE/IVIG. Monitor CD19 counts. Increased infection risk — screen TB and HBV before use.</p>
+        <h4><span class="dot dot-amber"></span>Antibody-Mediated Rejection (ABMR)</h4>
+        <p>DSA bind donor HLA → activate complement (C3d, C4d) → endothelial injury → microvascular inflammation (g+ptc ≥2). Banff 2022 eliminated mandatory C4d — DSA + microvascular inflammation alone is sufficient for ABMR diagnosis. Chronic active ABMR (transplant glomerulopathy, cg ≥1) is the single most important cause of late graft loss and has no proven effective therapy.</p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-navy"></span>Novel Agents</h4>
-        <p>Imlifidase (IdeS): cleaves IgG rapidly; used immediately pre-transplant in cPRA 100% patients. Clazakizumab (anti-IL-6): phase III data for chronic ABMR. Felzartamab (anti-CD38): emerging data.</p>
+        <h4><span class="dot dot-navy"></span>CNI Nephrotoxicity</h4>
+        <p>Tacrolimus causes afferent arteriolar vasoconstriction, ischaemic IFTA, and striped fibrosis. Chronic exposure above target trough accelerates loss of functioning nephrons. Cyclosporine is more nephrotoxic. CNI minimisation (targeting tacrolimus 3–5 ng/mL) or conversion to mTOR inhibitor (everolimus/sirolimus) reduces progression — but mTOR agents carry proteinuria risk if eGFR &lt;40 mL/min.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-purple"></span>Recurrent Primary Disease</h4>
+        <p>FSGS recurs in 20–40% of transplants (80% if prior recurrence); IgAN recurs histologically in up to 60% but causes graft loss in 10–15%. Membranous nephropathy (PLA2R-positive): recurs in 40%; rituximab prevents and treats recurrence. Oxalate nephropathy: recurs unless oxalate production treated. MPGN/C3 glomerulopathy: complement dysregulation persists post-transplant.</p>
       </div>
     </div>
+    <div class="alert alert-navy">
+      <div class="alert-icon">🧬</div>
+      <div class="alert-body">
+        <h4>The Indirect Allorecognition Pathway — Key to Late ABMR</h4>
+        <p>After the first year, direct allorecognition wanes as passenger leukocytes are cleared. The indirect pathway (recipient APCs present processed donor peptides to CD4⁺ T-cells) becomes dominant and drives de novo DSA formation. This explains why late ABMR is difficult to prevent with current IS protocols — tacrolimus does not suppress indirect allorecognition as effectively as direct-pathway TCMR. Costimulation blockade (belatacept, vobarilizumab) is specifically designed to interrupt this pathway.</p>
+      </div>
+    </div>
+  </section>
 
-    <div class="alert alert-amber" style="margin-top:28px;">
+  <!-- MD S3: BANFF 2022 -->
+  <section class="section mode-physician" id="md-banff">
+    <div class="section-tag" style="color:var(--navy);">Banff 2022 Classification</div>
+    <h2>Rejection Classification — Banff 2022 Update</h2>
+    <p>The Banff classification (updated 2022) is the international standard for allograft pathology reporting. Key 2022 changes: C4d deposition is no longer required for ABMR diagnosis; chronic active TCMR was formally defined; microvascular inflammation scoring refined. All clinically indicated biopsies should be reported using Banff criteria.</p>
+    <table class="drug-table">
+      <thead><tr><th>Category</th><th>Banff 2022 Diagnostic Criteria</th><th>Key Scores</th><th>Clinical Timing</th><th>First-Line Treatment</th></tr></thead>
+      <tbody>
+        <tr><td>Normal / nonspecific changes</td><td>No rejection features; may have mild IFTA</td><td>ci/ct ≤1, i &lt;2, t &lt;2</td><td>—</td><td>Optimise BP, IS adherence monitoring</td></tr>
+        <tr><td>Hyperacute ABMR</td><td>Preformed DSA + severe microvascular thrombosis + fibrin thrombi</td><td>g3, ptc3; C4d3</td><td>Minutes–hours</td><td>Emergent allograft nephrectomy</td></tr>
+        <tr><td>Acute/active TCMR (Grade IA)</td><td>Significant interstitial inflammation + mild tubulitis</td><td>i2 + t2 (no arteries)</td><td>Days–months</td><td>IV methylprednisolone 500 mg × 3 days</td></tr>
+        <tr><td>Acute/active TCMR (Grade IB)</td><td>Significant interstitial inflammation + severe tubulitis</td><td>i2 + t3</td><td>Days–months</td><td>IV methylprednisolone 500 mg × 3 days; thymoglobulin if no response</td></tr>
+        <tr><td>Acute/active TCMR (Grade IIA/IIB)</td><td>Mild–severe intimal arteritis</td><td>v1 or v2</td><td>Days–months</td><td>Thymoglobulin 1.5 mg/kg × 5–10 days + steroid pulse</td></tr>
+        <tr><td>Acute/active TCMR (Grade III)</td><td>Transmural arteritis or arterial fibrinoid necrosis</td><td>v3</td><td>Early</td><td>Thymoglobulin; consider plasmapheresis if DSA co-present</td></tr>
+        <tr><td>Chronic active TCMR</td><td>i-IFTA ≥2 + t-IFTA ≥2 ± intimal fibrosis (cv ≥1)</td><td>ci ≥2, ct ≥2</td><td>Months–years</td><td>Optimise tacrolimus; steroid pulse for flare</td></tr>
+        <tr><td>Active ABMR</td><td>DSA + microvascular inflammation (g+ptc ≥2) ± C4d ± endothelial injury transcripts</td><td>g+ptc ≥2; DSA+</td><td>Early or late</td><td>IVIG 2 g/kg + plasmapheresis × 5–7; rituximab adjunct</td></tr>
+        <tr><td>Chronic active ABMR</td><td>DSA + cg ≥1 (transplant glomerulopathy) + microvascular inflammation ± PTC multilayering</td><td>cg ≥1; DSA+</td><td>Months–years</td><td>Optimise IS; IVIG ± PE; clinical trial eligibility; clazakizumab, felzartamab</td></tr>
+        <tr><td>IFTA (no rejection)</td><td>Interstitial fibrosis + tubular atrophy without active rejection features</td><td>ci/ct ≥2</td><td>Late</td><td>CNI minimisation; BP control; mTOR conversion if tolerated</td></tr>
+      </tbody>
+    </table>
+    <div class="alert alert-teal">
+      <div class="alert-icon">🔬</div>
+      <div class="alert-body">
+        <h4>Protocol Biopsy Schedule — Banff Recommendation</h4>
+        <p>Protocol (surveillance) biopsies at <strong>3, 12, and 24 months</strong> post-transplant detect subclinical rejection in 15–35% of stable patients with normal creatinine. Centres with protocol biopsy programmes show improved 5- and 10-year graft survival. For resource-limited settings (including most Philippine transplant centres), biopsy-for-cause with DSA testing is the minimum standard. Gene expression profiling (Molecular Microscope® MMDx) is complementary but not yet widely available in the Philippines.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD S4: DIAGNOSTIC WORKUP -->
+  <section class="section mode-physician" id="md-workup">
+    <div class="section-tag" style="color:var(--navy);">Diagnostic Workup</div>
+    <h2>Allograft Dysfunction — Diagnostic Protocol</h2>
+    <p>A structured workup distinguishes immunological from non-immunological causes and guides biopsy timing. The priority sequence below applies to any patient with unexplained rise in serum creatinine ≥20% from baseline, new proteinuria ≥300 mg/g, or accelerating eGFR decline.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Exclude pre-renal and obstructive causes</h4>
+          <p>Volume status, BP, weight. Bladder scan / renal ultrasound with Doppler to exclude obstruction, urinoma, lymphocele, renal artery stenosis (PSV &gt;200 cm/s or RAR &gt;3.5). Urine output trend. Hold nephrotoxins (NSAIDs, contrast, aminoglycosides).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Immunosuppressant levels + adherence assessment</h4>
+          <p>Tacrolimus trough (compare to institutional target for time post-transplant). Adherence assessment — pill counts, pharmacy refill records, electronic monitoring if available. CYP3A4 interactions (fluconazole, clarithromycin, grapefruit) can rapidly elevate or drop tacrolimus levels.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Viral screen</h4>
+          <p>BK virus plasma PCR (quantitative). CMV plasma PCR. EBV PCR if lymphoproliferative disease suspected. Urine decoy cells (sensitivity 100%, specificity 30% for BKVAN — positive result mandates plasma PCR).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>DSA testing — Luminex single-antigen bead (SAB) assay</h4>
+          <p>Test class I (HLA-A, B, C) and class II (HLA-DR, DQ, DP). Report MFI values — MFI &gt;3,000 clinically significant; MFI &gt;10,000 high-risk. Virtual crossmatch using SAB + donor HLA typing. Complement-fixing DSA (C1q assay, C3d assay) predict worse biopsy findings and graft survival.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Allograft biopsy</h4>
+          <p>Indicated when steps 1–4 do not explain dysfunction, or when DSA is detected. Ultrasound-guided 18G core biopsy × 2 passes. Submit for light microscopy (H&amp;E, PAS, Masson trichrome, silver methenamine), immunofluorescence (C4d, IgG, IgA, IgM, C3, fibrinogen, κ/λ), and electron microscopy if membranous nephropathy or Alport suspected. Consider MMDx gene expression profiling if available.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h4>eGFR slope calculation</h4>
+          <p>Calculate annualised eGFR decline using CKD-EPI. Decline &lt;−2 mL/min/yr: monitor closely. Decline &gt;−4 mL/min/yr: urgent workup. Decline &gt;−8 mL/min/yr: consider hospice/comfort-directed care discussion alongside re-transplant evaluation. Use eGFR slope, not creatinine doubling, as primary endpoint for clinical decisions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD S5: IS MONITORING -->
+  <section class="section mode-physician" id="md-is-monitoring">
+    <div class="section-tag" style="color:var(--navy);">Immunosuppression</div>
+    <h2>Immunosuppression Monitoring Targets &amp; Thresholds</h2>
+    <table class="drug-table">
+      <thead><tr><th>Drug / Parameter</th><th>Early Target (0–3 mo)</th><th>Maintenance Target (&gt;6 mo)</th><th>Threshold for Action</th><th>Common Pitfalls</th></tr></thead>
+      <tbody>
+        <tr><td>Tacrolimus trough (C0)</td><td>8–12 ng/mL</td><td>5–8 ng/mL (low-risk); 6–10 ng/mL (high DSA risk)</td><td>&lt;4: under-IS; &gt;15: toxicity, BKVAN risk</td><td>CYP3A4 interactions; missed doses before trough draw; diarrhoea elevates absorption</td></tr>
+        <tr><td>Tacrolimus C2 (2h post-dose)</td><td>Not routine</td><td>Target 15–20× C0 ratio (extended-release only)</td><td>Extended-release conversion: bioequivalence NOT 1:1</td><td>Extended-release (Advagraf) dosed once daily; conversion ratio 0.7–0.85× total daily dose</td></tr>
+        <tr><td>Cyclosporine C0 / C2</td><td>C2: 1,000–1,400 ng/mL</td><td>C0: 100–150 ng/mL; C2: 600–800 ng/mL</td><td>C0 &gt;200: nephrotoxicity risk; C2 &gt;1,500: acute toxicity</td><td>C2 more predictive of outcome than C0 for cyclosporine</td></tr>
+        <tr><td>Mycophenolate MPA-AUC₀₋₁₂</td><td>30–60 mg·h/L</td><td>30–45 mg·h/L</td><td>&lt;20: risk of rejection; GI toxicity common above 60</td><td>Enteric-coated mycophenolate (Myfortic) has different AUC profile; do not substitute equivalently</td></tr>
+        <tr><td>Everolimus C0</td><td>5–8 ng/mL (with reduced CNI)</td><td>3–8 ng/mL</td><td>&lt;3: subtherapeutic; &gt;10: haematologic toxicity, wound healing</td><td>Pneumonitis (5–15%); proteinuria — avoid if eGFR &lt;40 or UPCR &gt;500 mg/g</td></tr>
+        <tr><td>Sirolimus C0</td><td>10–15 ng/mL (with CNI withdrawal)</td><td>5–10 ng/mL</td><td>&gt;20: marrow suppression, hyperlipidaemia</td><td>Dyslipidaemia requires statin; delayed wound healing post-op — delay conversion &gt;3 months post-transplant</td></tr>
+        <tr><td>Prednisolone</td><td>20 mg/day tapering</td><td>5 mg/day (or steroid-free protocol if low-risk)</td><td>Adrenal suppression &lt;5 mg/day usually safe</td><td>Stress-dose required for surgery/sepsis: hydrocortisone 50 mg q8h; withdraw slowly</td></tr>
+        <tr><td>BK viremia (plasma PCR)</td><td>Monthly × 6 months, then q3 months</td><td>Annually or when IS increased</td><td>&lt;1,000 cp/mL: watch; &gt;10,000: BKVAN risk — reduce IS by 25–50%</td><td>Never reduce both tacrolimus and mycophenolate simultaneously — staggered reduction preferred</td></tr>
+        <tr><td>DSA (SAB assay)</td><td>At 3 months (baseline)</td><td>Annually; after any rejection episode</td><td>Any new de novo DSA: biopsy; MFI &gt;10,000: urgent workup</td><td>False-positive DSA at low MFI (&lt;1,500) in denatured bead assay — confirm with C1q/C3d or titration</td></tr>
+        <tr><td>eGFR slope</td><td>At 3 months (baseline)</td><td>Every 6–12 months</td><td>&gt;−4 mL/min/yr: protocol biopsy; &gt;−8: urgent workup + re-transplant evaluation</td><td>Single creatinine rise misleading — eGFR slope over ≥6 months more actionable</td></tr>
+        <tr><td>Proteinuria (UPCR)</td><td>At 3 months (baseline)</td><td>Every 6 months</td><td>&gt;300 mg/g creatinine: ACEi/ARB; &gt;1,000: biopsy</td><td>UACR preferred over UPCR for early detection of glomerular proteinuria in transplant</td></tr>
+        <tr><td>CMV viremia</td><td>Weekly × 12–16 weeks (D+/R−); monthly (D+/R+)</td><td>As clinically indicated</td><td>&gt;500 IU/mL (or institutional threshold): valganciclovir 900 mg bid dose-adjusted for eGFR</td><td>CMV tissue invasive disease can occur without high viremia — monitor symptoms</td></tr>
+      </tbody>
+    </table>
+    <div class="alert alert-amber">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-body">
+        <h4>SGLT2 Inhibitors Post-Transplant — Emerging Standard of Care</h4>
+        <p>Post hoc analysis of DAPA-CKD showed 50% relative risk reduction in CKD progression in transplant recipients. SUGAR-TX (RCT, 2024): dapagliflozin 10 mg significantly reduced eGFR decline in stable transplant recipients (eGFR ≥25, UPCR ≥200 mg/g). Key safety: increased UTI risk (screen and treat before starting); genital mycotic infections; euglycaemic DKA (rare but recognised in transplant recipients — hold perioperatively). KDIGO 2024 suggests SGLT2i as adjunct renoprotective therapy in transplant recipients with proteinuria. <strong>Not yet in Philippine PhilHealth formulary — patient access limited to private purchase.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD S6: ACUTE REJECTION -->
+  <section class="section mode-physician" id="md-acute-rejection">
+    <div class="section-tag" style="color:var(--navy);">Acute Rejection Management</div>
+    <h2>Treatment of Acute Rejection Episodes</h2>
+    <div class="two-col">
+      <div>
+        <h3 style="font-family:'Lora',serif;font-size:18px;color:var(--navy);margin-bottom:14px;">Acute TCMR — Treatment Algorithm</h3>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-label">Step 1: Steroid pulse</div>
+            <div class="tl-body">IV methylprednisolone 500 mg daily × 3 days. Effective in 60–80% of Grade I–IIA TCMR. Oral prednisolone taper from 1 mg/kg following pulse. Confirm adequate tacrolimus exposure — sub-therapeutic trough is the most common precipitant.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot amber"></div>
+            <div class="tl-label">Step 2: Thymoglobulin (steroid-resistant or Grade IIB–III)</div>
+            <div class="tl-body">Rabbit ATG (thymoglobulin) 1.5 mg/kg/day × 5–10 days (total 5–8 mg/kg cumulative). Pre-medicate with methylprednisolone 250 mg + diphenhydramine + paracetamol. Monitor CBC daily — withhold for platelets &lt;50 or WBC &lt;2.0. CMV prophylaxis (valganciclovir) and PCP prophylaxis (co-trimoxazole) mandatory during and 3 months after.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot green"></div>
+            <div class="tl-label">Step 3: Repeat biopsy at 10–14 days</div>
+            <div class="tl-body">Assess response. Persistent rejection: check for concomitant ABMR (DSA, C4d). Unresponsive TCMR with DSA: reclassify as mixed rejection and add PE/IVIG protocol. Creatinine improvement not required for biopsy — subclinical rejection persistence predicts future graft loss.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:'Lora',serif;font-size:18px;color:var(--navy);margin-bottom:14px;">Acute ABMR — Treatment Algorithm</h3>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot amber"></div>
+            <div class="tl-label">Step 1: PE/IVIG combination</div>
+            <div class="tl-body">Plasmapheresis (PE) 1.0–1.5 plasma volumes × 5–7 sessions + IVIG 100 mg/kg after each PE, then high-dose IVIG 2 g/kg (max 140 g) at completion. PE removes circulating DSA; IVIG provides anti-idiotypic antibodies and complement inhibition. This is the standard initial protocol at most centres.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot red"></div>
+            <div class="tl-label">Step 2: Rituximab (B-cell depletion)</div>
+            <div class="tl-body">375 mg/m² × 1 dose adjunctive to PE/IVIG (some protocols give 2–4 doses). Depletes CD20+ B-cells to reduce de novo DSA production. Screen HBV (reactivation risk), TB (IGRA), and CMV serology before dosing. Monitor CD19 counts monthly — functional B-cell recovery at 6–12 months.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-label">Step 3: Refractory ABMR — emerging options</div>
+            <div class="tl-body">Eculizumab (anti-C5, complement inhibitor): phase II evidence for severe/refractory acute ABMR with C4d+ and DSA+. Imlifidase (IdeS): IgG-cleaving enzyme; rapidly eliminates DSA — primarily used pre-transplant in sensitised patients; case reports in acute ABMR. Requires meningococcal vaccination before eculizumab.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class="drug-table" style="margin-top:28px;">
+      <thead><tr><th>Agent</th><th>Mechanism</th><th>Evidence Level</th><th>Key Practical Points</th></tr></thead>
+      <tbody>
+        <tr><td>IV Methylprednisolone</td><td>Broad anti-inflammatory; lymphocyte apoptosis</td><td><span class="kdigo-1b">Strong evidence — TCMR</span></td><td>Hyperglycaemia monitoring; avoid in active GI bleed; not sufficient alone for ABMR</td></tr>
+        <tr><td>Rabbit ATG (Thymoglobulin)</td><td>T-cell depletion via complement + ADCC</td><td><span class="kdigo-1b">Standard for steroid-resistant TCMR</span></td><td>CMV/PCP prophylaxis mandatory; thrombocytopenia common; total cumulative dose matters</td></tr>
+        <tr><td>IVIG + Plasmapheresis</td><td>DSA removal + anti-idiotypic neutralisation</td><td><span class="kdigo-2b">Standard for acute ABMR — no RCT vs no treatment</span></td><td>IVIG cost significant in Philippines; PE requires specialised equipment; 5-session minimum</td></tr>
+        <tr><td>Rituximab</td><td>Anti-CD20 B-cell depletion</td><td><span class="kdigo-2b">Adjunct to PE/IVIG; no standalone RCT for acute ABMR</span></td><td>Single dose often used; HBV reactivation risk; delayed effect (2–4 weeks for B-cell nadir)</td></tr>
+        <tr><td>Eculizumab</td><td>Anti-C5 complement inhibition</td><td><span class="kdigo-gps">Phase II; not yet standard of care</span></td><td>Requires meningococcal prophylaxis; very expensive; NKTI does not stock routinely</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- MD S7: CHRONIC ABMR -->
+  <section class="section mode-physician" id="md-chronic-abmr">
+    <div class="section-tag" style="color:var(--navy);">Chronic ABMR &amp; Novel Agents</div>
+    <h2>Chronic Active ABMR — Current Evidence &amp; 2024–2025 Pipeline</h2>
+    <div class="intro-callout">
+      <p><strong>Chronic active ABMR (transplant glomerulopathy, Banff cg ≥1) has no proven disease-modifying therapy as of 2024.</strong> The historical use of IVIG, rituximab, and bortezomib failed to show graft survival benefit in adequately powered trials (RITUX-eGFR, BORTEJECT). However, the field is rapidly evolving — four agents are in phase II–III trials targeting different steps in the ABMR cascade. Enrolment in clinical trials should be prioritised for eligible patients.</p>
+    </div>
+    <div class="three-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>Clazakizumab (anti-IL-6)</h4>
+        <p>IL-6 drives plasma cell survival and DSA production. IMAGINE trial (phase III, 2024 results): clazakizumab 25 mg SC monthly vs placebo in chronic active ABMR — primary endpoint (eGFR slope) met in post-hoc analysis of cg1–3 subgroup; FDA Breakthrough designation. Currently under FDA review. Not yet available in Philippines.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Felzartamab (anti-CD38)</h4>
+        <p>CD38 targets long-lived plasma cells — the source of persistent DSA. ATTACK trial (phase II, 2023): felzartamab significantly reduced MVI score and DSA MFI at 6 months in chronic active ABMR vs placebo; eGFR slope improvement at 12 months. Phase III planned. Daratumumab (same target) also in transplant trials.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-navy"></span>Imlifidase (IdeS)</h4>
+        <p>IgG-cleaving cysteine protease from Streptococcus; rapidly eliminates all circulating IgG (including DSA) within 6 hours. Approved in EU/UK (Idefirix) for highly sensitised pre-transplant patients. Phase II data in acute ABMR. Not approved in Philippines or USA — EAP access possible.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-purple"></span>Obinutuzumab (anti-CD20, type II)</h4>
+        <p>More potent B-cell depletion than rituximab via direct cell death + enhanced ADCC. Phase II trial (COMBAS) in chronic active ABMR — results expected 2025. Advantage over rituximab: depletes GC B-cells rituximab-resistant cells; longer B-cell depletion.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>Belatacept (CTLA4-Ig)</h4>
+        <p>Costimulation blockade — interrupts CD28/B7 pathway for indirect allorecognition. Post-BENEFIT data: lower chronic allograft nephropathy but higher acute TCMR rates vs cyclosporine. Conversion from CNI to belatacept in established chronic active ABMR under study — not standard of care but logical mechanistic target.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-gold"></span>Current Centre Practice (No Trial)</h4>
+        <p>In the absence of proven therapy: optimise tacrolimus adherence (electronic monitoring where available), maximise RAAS blockade (ARB preferred for proteinuria), treat hypertension (target &lt;130/80 mmHg), use SGLT2i for proteinuric cases (post-SUGAR-TX), consider mTOR conversion (if eGFR &gt;30 and UPCR &lt;500 mg/g), and initiate re-transplant evaluation early.</p>
+      </div>
+    </div>
+    <div class="alert alert-teal">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body">
+        <h4>Evidence-Based Summary: What NOT to Use for Chronic Active ABMR</h4>
+        <p><strong>Bortezomib:</strong> BORTEJECT RCT (2016) — no eGFR benefit vs placebo in established chronic ABMR. <strong>Rituximab alone:</strong> RITUX-eGFR RCT (2018) — no eGFR slope improvement at 3 years. <strong>IVIG alone:</strong> retrospective data only; not recommended as monotherapy. <strong>Plasma exchange alone:</strong> no controlled data; may temporarily reduce DSA MFI without graft benefit. These agents are not first-line outside of clinical trial contexts for chronic active ABMR.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD S8: RE-TRANSPLANT -->
+  <section class="section mode-physician" id="md-retransplant">
+    <div class="section-tag" style="color:var(--navy);">Re-Transplant Evaluation</div>
+    <h2>Second Kidney Transplant — Candidacy &amp; Workup</h2>
+    <p>Re-transplantation offers a 10–20% improvement in graft survival vs first transplant with appropriate patient selection, and significantly better outcomes than remaining on dialysis. Key barriers: elevated cPRA, comorbidity accumulation, vascular access depletion, and limited organ availability. Evaluation should begin when eGFR &lt;20 mL/min/1.73m² to allow waitlist time to accumulate.</p>
+    <div class="checklist">
+      <h4>Pre-Listing Evaluation Checklist — Re-Transplant</h4>
+      <ul>
+        <li><span><strong>DSA / cPRA:</strong> Repeat Luminex SAB assay for class I and II DSA. Calculate cPRA using current UNOS/NKTI algorithm. Document all unacceptable antigens. Virtual crossmatch using donor HLA if deceased-donor. Physical crossmatch mandatory for living-donor regardless of DSA.</span></li>
+        <li><span><strong>Cardiac evaluation:</strong> ECG, echo (EF &gt;40% required). Stress testing (dobutamine echo or nuclear) if symptomatic, DM, age &gt;50, or prior CAD. Coronary angiography if stress test positive or inconclusive. Cardiac clearance from cardiologist in writing.</span></li>
+        <li><span><strong>Vascular imaging:</strong> CT angiography of abdomen/pelvis or Doppler if prior iliac vascular access, AAA, or prior transplant nephrectomy. Assess remaining iliac vessels and renal artery targets. Prior right iliac often mandates left-sided re-transplant.</span></li>
+        <li><span><strong>Failed allograft status:</strong> Assess for symptomatic graft (pain, haematuria, fever). Measure DSA trend — if failed allograft is driving sensitisation flare, early nephrectomy may reduce cPRA before listing. Quiescent grafts on low-dose IS can be monitored.</span></li>
+        <li><span><strong>Infectious clearance:</strong> HIV Ab/viral load (if HIV+, transplant possible with CD4 &gt;200 and undetectable VL). HBV sAg, HBV-DNA. HCV Ab + HCV-RNA (DAA-treated HCV no longer a contraindication). IGRA for TB (prophylaxis with isoniazid 9 months). HTLV-1 serology (endemic in Philippines).</span></li>
+        <li><span><strong>Malignancy screening:</strong> Age/sex-appropriate: colonoscopy (≥45 or prior adenoma), mammogram (women ≥40), Pap smear, PSA (men ≥50), skin examination. Confirm ≥5-year disease-free interval for most malignancies (except non-melanoma skin cancer). PTLD workup if prior rituximab or EBV mismatch.</span></li>
+        <li><span><strong>Recurrent disease risk:</strong> Identify original cause of ESKD (if known). High-risk diseases: primary FSGS (20–40% recurrence), oxalate nephropathy (near 100% without metabolic treatment), anti-GBM (wait &gt;12 months, ensure ANCA-negative). Document and counsel patient.</span></li>
+        <li><span><strong>Psychosocial and adherence assessment:</strong> Identify root cause of first graft failure — if non-compliance, structured adherence programme and transplant psychiatry clearance required. Financial sustainability assessment for post-transplant immunosuppression (tacrolimus cost ~₱8,000–12,000/month in Philippines without PhilHealth BKCS coverage).</span></li>
+        <li><span><strong>IS bridge strategy:</strong> Maintain low-dose tacrolimus (1–2 mg/day) + low-dose mycophenolate during the waitlist period to prevent sensitisation flare from failed allograft antigen stimulation. Taper to lowest tolerated dose — do NOT abruptly discontinue IS while failed graft remains in situ.</span></li>
+        <li><span><strong>Dialysis access planning:</strong> If eGFR &lt;15 and re-transplant not imminent (&gt;12 months estimated wait), initiate AV fistula planning. PD catheter if no venous access. Home dialysis preferred for active re-transplant candidates (better fluid management, preserve residual function).</span></li>
+      </ul>
+    </div>
+    <div class="alert alert-green" style="margin-top:24px;">
+      <div class="alert-icon">✓</div>
+      <div class="alert-body">
+        <h4>Re-Transplant Outcomes vs Remaining on Dialysis</h4>
+        <p>USRDS data: re-transplant recipients have 50–60% lower all-cause mortality vs matched patients remaining on dialysis (HR ~0.45). 5-year graft survival for second transplant: ~72% (living donor) and ~60% (deceased donor) — lower than first transplant due to higher immunological risk, but substantially better than dialysis. Early listing (&gt;6 months pre-ESKD) significantly improves outcomes by reducing time on dialysis and preventing sensitisation drift.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD S9: DESENSITISATION -->
+  <section class="section mode-physician" id="md-desensitisation">
+    <div class="section-tag" style="color:var(--navy);">Desensitisation</div>
+    <h2>Desensitisation Protocols — Highly Sensitised Patients (cPRA &gt;80%)</h2>
+    <p>Desensitisation aims to reduce or eliminate DSA to enable transplantation across a previously incompatible crossmatch. No protocol has RCT evidence demonstrating long-term benefit over remaining on dialysis. Shared decision-making with realistic expectation-setting is essential — desensitised patients have higher rejection risk than non-sensitised patients.</p>
+    <table class="drug-table">
+      <thead><tr><th>Protocol Component</th><th>Dose / Schedule</th><th>Mechanism</th><th>Evidence Level</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Plasmapheresis (PE)</td><td>1.0–1.5 plasma volumes × 5–10 sessions pre-transplant; continue post-transplant if high-risk</td><td>Physical removal of circulating IgG including DSA</td><td><span class="kdigo-2b">Observational; no placebo RCT</span></td><td>Transient effect only — DSA rebounds within 10–14 days. Must be combined with B-cell suppression for sustained reduction</td></tr>
+        <tr><td>IVIG (high-dose)</td><td>2 g/kg (max 140 g) as single infusion after PE completion; or 100 mg/kg after each PE session</td><td>Anti-idiotypic neutralisation; Fc-receptor blockade; complement inhibition; immunomodulation</td><td><span class="kdigo-2b">Observational — Vo et al., 2008 CEDARS data; no placebo RCT</span></td><td>Expensive in Philippines. Monitor renal function (hyperosmolality risk). IgA-deficient patients: anaphylaxis risk — check IgA level before first dose</td></tr>
+        <tr><td>Rituximab (adjunct)</td><td>375 mg/m² × 1–2 doses pre-transplant</td><td>CD20+ B-cell depletion — reduces memory B-cells that produce DSA</td><td><span class="kdigo-2b">Adjunct — no standalone desensitisation RCT</span></td><td>Does NOT deplete long-lived plasma cells (CD20-negative) — hence DSA reduction is partial. Screen HBV, TB, CMV before dosing</td></tr>
+        <tr><td>Imlifidase (IdeS)</td><td>0.25 mg/kg IV single dose 12–24h pre-transplant</td><td>IgG-cleaving enzyme — rapidly eliminates all IgG (including DSA) to allow crossmatch conversion</td><td><span class="kdigo-2b">Phase II/III in EU; EU/UK approved (Idefirix)</span></td><td>For cPRA 100% patients only. Enables transplantation in previously impossible crossmatches. DSA returns within 2–3 weeks — post-transplant PE/IVIG essential. Not approved in Philippines/USA</td></tr>
+        <tr><td>Clazakizumab (pre-transplant protocol)</td><td>25 mg SC monthly × 6 months pre-transplant</td><td>IL-6 blockade → plasma cell survival reduction → DSA MFI reduction</td><td><span class="kdigo-gps">Phase II desensitisation trial — 2023 data</span></td><td>3 patients converted from positive to negative virtual crossmatch. Phase III enrolling. Not yet commercially available</td></tr>
+        <tr><td>Felzartamab (anti-CD38)</td><td>16 mg/kg IV q2 weeks × 6 doses</td><td>Long-lived plasma cell depletion — targets the source of persistent DSA</td><td><span class="kdigo-gps">ATTACK trial — phase II in chronic ABMR; desensitisation use emerging</span></td><td>Daratumumab (approved myeloma drug, same target) used off-label in some centres. Interferes with blood bank crossmatching — notify blood bank before use</td></tr>
+      </tbody>
+    </table>
+    <div class="alert alert-amber">
+      <div class="alert-icon">🇵🇭</div>
+      <div class="alert-body">
+        <h4>Philippine Access Context</h4>
+        <p>IVIG and plasmapheresis are available at NKTI and major private transplant centres in Metro Manila but are not covered under PhilHealth BKCS (Benefit Package for Kidney Disease, Class Z). Rituximab is available (MabThera/biosimilars) but cost remains prohibitive for most patients (₱30,000–60,000 per dose). Imlifidase and clazakizumab are not available in the Philippines. Patients with cPRA &gt;80% face severely limited transplant access — paired exchange programmes (living-donor) and cadaveric allocation priority (NKTI points for cPRA &gt;80%) are the main pathways. Coordinate early with NKTI transplant coordinator for waitlist prioritisation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD S10: FAILED ALLOGRAFT NEPHRECTOMY -->
+  <section class="section mode-physician" id="md-nephrectomy">
+    <div class="section-tag" style="color:var(--navy);">Failed Allograft Nephrectomy</div>
+    <h2>Failed Allograft Nephrectomy — Indications, Timing &amp; Considerations</h2>
+    <p>The decision to remove a failed allograft is nuanced. Removal eliminates ongoing antigen stimulation (reducing sensitisation) and resolves symptoms, but carries surgical risk — particularly if performed early (&lt;3 months post-failure) when the graft is highly vascularised and adherent.</p>
+    <div class="two-col">
+      <div>
+        <h3 style="font-family:'Lora',serif;font-size:17px;color:var(--navy);margin-bottom:12px;">Clear Indications for Nephrectomy</h3>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot red"></div><div class="tl-label">Graft intolerance syndrome</div><div class="tl-body">Haematuria, graft pain, fever, malaise — particularly after IS reduction/withdrawal. The graft acts as a persistent antigen source. Removal is required.</div></div>
+          <div class="tl-item"><div class="tl-dot red"></div><div class="tl-label">Infection of graft</div><div class="tl-body">Mycotic aneurysm, perinephric abscess, BKVAN with massive urine leak — urgent nephrectomy to prevent sepsis. Involves transplant surgery team.</div></div>
+          <div class="tl-item"><div class="tl-dot red"></div><div class="tl-label">Rapidly rising cPRA from failed graft</div><div class="tl-body">Sensitisation driven by ongoing graft HLA antigen exposure — particularly if patient is active re-transplant candidate. Removal can reduce cPRA by 10–30% in selected patients.</div></div>
+          <div class="tl-item"><div class="tl-dot red"></div><div class="tl-label">Graft rupture / haemorrhage</div><div class="tl-body">Emergency. Graft rupture is rare but requires immediate surgical management — haemostatic nephrectomy or embolisation depending on surgical team assessment.</div></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:'Lora',serif;font-size:17px;color:var(--navy);margin-bottom:12px;">Conservative Management (Leave In Situ)</h3>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot green"></div><div class="tl-label">Quiescent failed graft + minimal IS</div><div class="tl-body">If graft is asymptomatic and patient is on low-dose IS (tacrolimus ≤1 mg/day + mycophenolate ≤500 mg/day), leave in situ. Risk of removal may exceed benefit.</div></div>
+          <div class="tl-item"><div class="tl-dot green"></div><div class="tl-label">Stable cPRA on IS bridge</div><div class="tl-body">If cPRA not rising and patient is on IS bridge while awaiting re-transplant, conservative management is preferred. Removal cannot be undone — sensitisation trend should guide decision.</div></div>
+          <div class="tl-item"><div class="tl-dot green"></div><div class="tl-label">Residual function</div><div class="tl-body">Failed allograft with eGFR &gt;10 mL/min still contributes meaningfully to fluid balance, anaemia control (endogenous EPO), and phosphate excretion. Preserve residual function as long as safely possible.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-label">Surgical risk factors</div><div class="tl-body">Prior ipsilateral surgeries, anticoagulation, haematologic malignancy, severe cardiac disease — weigh surgical risk carefully. Embolisation may be considered as a non-surgical alternative for vascular exclusion of symptomatic graft.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-navy">
       <div class="alert-icon">⚕</div>
       <div class="alert-body">
-        <h4>Failed Allograft Nephrectomy — Timing Considerations</h4>
-        <p>Early nephrectomy (&lt;3 months post-failure): higher surgical risk; preferred if graft is infected, rupturing, or causing haemorrhage. Late nephrectomy: indicated for persistent sensitisation driven by failed graft or haematuria/pain syndrome. A quiescent failed graft on minimal IS can be left in situ with ongoing surveillance.</p>
+        <h4>IS Management After Graft Failure — Key Principle</h4>
+        <p>Do NOT abruptly discontinue all immunosuppression when graft fails. Rapid IS withdrawal precipitates graft intolerance syndrome and sensitisation flare — both of which jeopardise re-transplant candidacy. The recommended approach: taper IS gradually over 3–6 months, maintaining tacrolimus 1–2 mg/day + low-dose mycophenolate as a bridge until re-transplant or until nephrectomy is performed. Only after confirmed nephrectomy and resolution of residual antigen stimulation should IS be fully withdrawn.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD S11: PH CONTEXT -->
+  <section class="section mode-physician" id="md-ph">
+    <div class="section-tag" style="color:var(--navy);">Philippine Context</div>
+    <h2>Transplantation in the Philippines — Clinical &amp; Access Realities</h2>
+    <div class="three-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>NKTI Transplant Programme</h4>
+        <p>National Kidney &amp; Transplant Institute (NKTI) performs ~250–300 kidney transplants/year — the largest programme nationally. Waitlist: ~1,500 patients as of 2023. Median wait time for deceased-donor: 5–8 years. Living-donor programme: 60–70% of annual volume. NKTI provides the only organised multi-organ retrieval programme in the country. RA 7170 (Organ Donation Act) governs deceased-donor organ allocation.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>PhilHealth Coverage Gaps</h4>
+        <p>PhilHealth BKCS (Z-benefit) covers dialysis costs but does NOT cover: IVIG, plasmapheresis, rituximab, thymoglobulin, tacrolimus extended-release (Advagraf), or MMDx gene expression profiling. Tacrolimus (Prograf/generics) is partially covered through outpatient benefit — patient share remains ₱3,000–6,000/month depending on income class. DSWD medical assistance and PCSO grants are available for indigent patients — transplant social workers at NKTI can facilitate applications.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-navy"></span>Sensitisation &amp; HLA Typing</h4>
+        <p>HLA SAB testing (Luminex) is available at NKTI and select private laboratories in Metro Manila (St. Luke's, The Medical City). Turn-around time: 5–7 days. Cost: ₱12,000–20,000 per panel (not PhilHealth-covered). HTLV-1 is endemic in the Philippines — serological screening before desensitisation protocols is essential, as HTLV-1 seropositivity significantly increases lymphoma risk with intensified IS. CMV seroprevalence in Philippines: &gt;90% — CMV D+/R+ matching not feasible in most cases.</p>
+      </div>
+    </div>
+    <div class="alert alert-teal" style="margin-top:8px;">
+      <div class="alert-icon">📞</div>
+      <div class="alert-body">
+        <h4>Referral Pathway</h4>
+        <p><strong>NKTI Transplant Unit:</strong> East Avenue, Quezon City — (02) 8981-0300 local 2201 (transplant coordinator). <strong>Re-transplant listing:</strong> requires updated cardiac clearance, vascular imaging, infectious screen, and updated DSA panel submitted to NKTI transplant committee. <strong>Private centre alternatives:</strong> St. Luke's Medical Center Global City (transplant nephrology), Makati Medical Center, Asian Hospital. For Pampanga/Bulacan patients: provincial referral pathways to NKTI — Dr. Rivero's clinic coordinates transfer letters and NKTI coordinator liaison.</p>
       </div>
     </div>
   </section>
@@ -1060,17 +1444,26 @@ body.dark .related-card-title {
   }
   function toggleDesktop(){const on=document.documentElement.getAttribute('data-view')!=='desktop';localStorage.setItem(DESK_KEY,on?'1':'0');applyDesktop(on);}
   (function(){if(localStorage.getItem(DARK_KEY)==='1')applyDark(true);if(localStorage.getItem(DESK_KEY)==='1')applyDesktop(true);})();
-  var clinicianOn=false;
-  function toggleClinician(){
-    clinicianOn=!clinicianOn;
-    var sec=document.getElementById('clinician-section');
+  const GMODE='wgmr-allograft-mode';
+  function setMode(mode){
+    var isPhys=(mode==='physician');
+    document.body.classList.toggle('physician-mode',isPhys);
+    var tabPt=document.getElementById('tab-pt');
+    var tabMd=document.getElementById('tab-md');
     var btn=document.getElementById('clinicianToggle');
     var lbl=document.getElementById('clinicianLabel');
-    if(sec) sec.style.display=clinicianOn?'block':'none';
-    if(btn){btn.style.background=clinicianOn?'#b8962e':'rgba(255,255,255,.08)';btn.style.borderColor=clinicianOn?'#b8962e':'rgba(255,255,255,.20)';btn.style.color=clinicianOn?'white':'rgba(255,255,255,.88)';}
-    if(lbl) lbl.textContent=clinicianOn?'Patient':'Clinician';
-    if(clinicianOn && sec) setTimeout(function(){sec.scrollIntoView({behavior:'smooth',block:'start'});},100);
+    if(tabPt) tabPt.classList.toggle('active',!isPhys);
+    if(tabMd) tabMd.classList.toggle('active',isPhys);
+    if(btn){btn.style.background=isPhys?'#b8962e':'rgba(255,255,255,.08)';btn.style.borderColor=isPhys?'#b8962e':'rgba(255,255,255,.20)';btn.style.color=isPhys?'white':'rgba(255,255,255,.88)';}
+    if(lbl) lbl.textContent=isPhys?'Patient':'Clinician';
+    localStorage.setItem(GMODE,mode);
+    window.scrollTo({top:0,behavior:'smooth'});
   }
+  function toggleClinicianBtn(){
+    var isPhys=document.body.classList.contains('physician-mode');
+    setMode(isPhys?'patient':'physician');
+  }
+  (function(){var s=localStorage.getItem(GMODE);if(s==='physician')setMode('physician');})();
 </script>
 
 <script>
