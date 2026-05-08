@@ -440,7 +440,7 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
       <div class="vcard vc-green">
         <div class="vcard-icon">⚖️</div>
         <h4>Two goals every session</h4>
-        <p>Every dialysis session does two things: removes waste products (like urea and creatinine) and removes excess fluid your kidneys can no longer excrete.</p>
+        <p>Every dialysis session does two things: removes waste products and removes excess fluid your kidneys can no longer excrete. Waste products fall into two categories — <strong>small solutes</strong> that dissolve freely in water (urea, creatinine, uric acid, potassium, sodium) and <strong>larger uremic toxins</strong> that require a high-flux filter to remove (β₂-microglobulin, FGF-23, PTH fragments). Standard dialysis targets small solutes; your filter type determines how well the larger ones are cleared.</p>
       </div>
     </div>
 
@@ -776,6 +776,37 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
         <p>The pre- and post-dialysis blood draw for Kt/V must be done correctly — pre-draw before your session starts, post-draw within 15–30 seconds of stopping the blood pump. If the nurse skips it or draws it at the wrong time, your adequacy result will be inaccurate and your prescription may not be adjusted when it should be.</p>
       </div>
     </div>
+
+    <!-- PATIENT RKF CALCULATOR -->
+    <div style="background:#f0f9f8;border:1px solid rgba(26,107,114,.35);border-radius:12px;padding:24px 28px;margin-top:28px;">
+      <h3 style="color:#1a6b72;margin:0 0 8px;">Does My Remaining Urine Still Count?</h3>
+      <p style="margin-bottom:20px;color:#3a4a5c;">If you still produce urine, your own kidneys are still contributing to waste removal — and your nephrologist can credit this in your dialysis dose calculation. Enter how much urine you collected over 24 hours to see what it means.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:16px;">
+        <div style="flex:1;min-width:180px;">
+          <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px;color:#1a6b72;">Urine output in 24 hours (mL)</label>
+          <input type="number" id="pt-urine-vol" placeholder="e.g. 400" min="0" max="3500" style="width:100%;padding:10px 12px;border:1px solid #b0c4ce;border-radius:8px;font-size:15px;box-sizing:border-box;">
+          <small style="color:#6b7a8d;display:block;margin-top:4px;">Tip: 1 cup ≈ 240 mL. Ask your nurse for a graduated jug if unsure.</small>
+        </div>
+        <div>
+          <button onclick="calcRkfPatient()" style="padding:11px 24px;background:#1a6b72;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap;">Check</button>
+        </div>
+      </div>
+      <div id="rkf-pt-result" style="display:none;border-radius:8px;padding:16px 20px;border-left:4px solid #1a6b72;background:white;"></div>
+    </div>
+    <script>
+    function calcRkfPatient(){
+      var vol=parseFloat(document.getElementById('pt-urine-vol').value)||0;
+      var el=document.getElementById('rkf-pt-result');
+      var msg,color,icon;
+      if(vol<=0){msg='Please enter a urine volume greater than 0.';color='#e67e22';icon='⚠️';}
+      else if(vol<100){msg='<strong>Minimal residual function (&lt;100 mL/day).</strong> Your kidneys contribute very little at this level. Your full dialysis target must be met by your sessions alone. Protect what remains — avoid NSAIDs, ibuprofen, and IV contrast dye.';color='#c0392b';icon='🔴';}
+      else if(vol<300){msg='<strong>Low but measurable residual function (100–299 mL/day).</strong> Small contribution to waste removal. Tell your nephrologist — they will measure your residual GFR every 3 months with a timed urine collection. Avoid dehydration and nephrotoxic drugs.';color='#e67e22';icon='🟡';}
+      else if(vol<800){msg='<strong>Moderate residual function (300–799 mL/day).</strong> Your kidneys are still doing meaningful work. Your nephrologist can formally measure this and may credit it toward your Kt/V. This is worth protecting — stay well hydrated and skip NSAIDs.';color='#1a6b72';icon='🟢';}
+      else{msg='<strong>Significant residual function (≥800 mL/day).</strong> Your kidneys are still contributing substantially to your clearance. Your nephrologist may consider incremental dialysis (fewer or shorter sessions) based on your full residual GFR measurement. This is a major asset — protect it carefully.';color='#1a6b72';icon='✅';}
+      el.innerHTML='<span style="font-size:22px;vertical-align:middle;margin-right:8px;">'+icon+'</span><span style="vertical-align:middle;">'+msg+'</span>';
+      el.style.borderLeftColor=color;el.style.display='block';
+    }
+    </script>
   </div>
 </section>
 
@@ -909,7 +940,7 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
 
     <div class="dr-card">
       <div class="dr-avatar">
-        <img src="../images/dr-rivero-portrait.webp" onerror="this.style.display='none'" alt="Dr. Rivero" width="64" height="64" style="width:100%;height:100%;object-fit:cover;">
+        <img alt="Dr. W. G. M. Rivero" src="../images/photo-contact.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
       </div>
       <div>
         <h4>A note from Dr. Rivero</h4>
@@ -988,16 +1019,16 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
       </thead>
       <tbody>
         <tr>
-          <td>Small solute clearance</td>
+          <td>Small solute clearance <small style="display:block;color:#6b7a8d;margin-top:3px;">urea, creatinine, uric acid, K⁺, Na⁺, HCO₃⁻</small></td>
           <td>Qb, Qd, time, membrane KoA</td>
           <td>Exchange volume, dwell time, number of exchanges</td>
           <td>Kt/V (spKt/V or eKt/V); URR</td>
         </tr>
         <tr>
-          <td>Middle molecule clearance</td>
+          <td>Middle molecule clearance <small style="display:block;color:#6b7a8d;margin-top:3px;">β₂-microglobulin (11.8 kDa), FGF-23, PTH fragments, indoxyl sulfate; <em>phosphate behaves as a middle molecule in vivo due to its hydration shell and compartmental redistribution</em></small></td>
           <td>Membrane flux (high-flux / HCO / HDF)</td>
           <td>PET transport status; membrane surface</td>
-          <td>β₂-microglobulin; FGF-23</td>
+          <td>β₂-microglobulin; FGF-23; serum phosphorus</td>
         </tr>
         <tr>
           <td>Volume control</td>
@@ -1263,9 +1294,105 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
       <div class="alert-icon">📊</div>
       <div class="alert-body">
         <h4>Beyond Kt/V — Limitations of Small-Solute Surrogates</h4>
-        <p>Kt/V measures urea clearance exclusively. It does not capture middle-molecule toxins (β₂-microglobulin, FGF-23, PTH fragments) that correlate independently with mortality. High-flux membranes and HDF reduce these toxins. Clinical assessment — nutritional status (nPCR ≥0.9 g/kg/day), fluid status, symptom burden, blood pressure control, and hospitalization rate — must complement Kt/V when evaluating prescription adequacy.</p>
+        <p>Kt/V measures urea clearance exclusively. It does not capture middle-molecule toxins — β₂-microglobulin (11.8 kDa), FGF-23, intact PTH fragments, and indoxyl sulfate — that correlate independently with mortality. <strong>Phosphate deserves special mention:</strong> although its MW is low (95 Da), phosphate behaves kinetically as a middle molecule in vivo because of its large intracellular compartment and post-dialysis rebound; a single standard HD session removes only ~800 mg despite targets of &lt;1.78 mmol/L. High-flux membranes and HDF improve clearance of true middle molecules. Clinical assessment — nutritional status (nPCR ≥0.9 g/kg/day), fluid status, symptom burden, blood pressure control, and hospitalization rate — must complement Kt/V when evaluating prescription adequacy.</p>
       </div>
     </div>
+
+    <!-- CLINICIAN RKF CALCULATOR -->
+    <div style="background:#f0f9f8;border:1px solid rgba(26,107,114,.35);border-radius:12px;padding:24px 28px;margin-top:28px;">
+      <h3 style="color:#1a6b72;margin:0 0 6px;">Residual Kidney Function (RKF) Calculator</h3>
+      <p style="margin-bottom:18px;font-size:14px;color:#3a4a5c;">Calculates residual urea clearance (Kru), residual creatinine clearance (Krcr), mean rGFR, and the Kt/V credit applicable to HD or PD prescriptions. Requires simultaneous 24-h urine collection and mid-collection blood draw. Formulae per KDOQI 2015 / ISPD 2014.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:16px;">
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">Urine volume (mL/24h)</label>
+          <input type="number" id="rkf-vol" placeholder="e.g. 600" min="0" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">Urine urea nitrogen (mg/dL)</label>
+          <input type="number" id="rkf-uun" placeholder="e.g. 800" min="0" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">Serum BUN (mg/dL)</label>
+          <input type="number" id="rkf-bun" placeholder="e.g. 55" min="0" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">Urine creatinine (mg/dL)</label>
+          <input type="number" id="rkf-ucr" placeholder="e.g. 35" min="0" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">Serum creatinine (mg/dL)</label>
+          <input type="number" id="rkf-scr" placeholder="e.g. 9" min="0" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;display:block;margin-bottom:5px;">Body weight (kg)</label>
+          <input type="number" id="rkf-wt" placeholder="e.g. 60" min="20" style="width:100%;padding:9px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-bottom:16px;">
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;margin-right:8px;">Sex:</label>
+          <select id="rkf-sex" style="padding:8px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;">
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#1a6b72;margin-right:8px;">Modality:</label>
+          <select id="rkf-mod" style="padding:8px 10px;border:1px solid #b0c4ce;border-radius:7px;font-size:14px;">
+            <option value="HD">HD (3×/week)</option>
+            <option value="PD">PD</option>
+          </select>
+        </div>
+        <button onclick="calcRkfClinician()" style="padding:10px 22px;background:#1a6b72;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Calculate Kru</button>
+      </div>
+      <div id="rkf-clin-result" style="display:none;background:white;border-radius:8px;border:1px solid rgba(26,107,114,.3);overflow:hidden;"></div>
+    </div>
+    <script>
+    function calcRkfClinician(){
+      var vol=parseFloat(document.getElementById('rkf-vol').value);
+      var uun=parseFloat(document.getElementById('rkf-uun').value);
+      var bun=parseFloat(document.getElementById('rkf-bun').value);
+      var ucr=parseFloat(document.getElementById('rkf-ucr').value);
+      var scr=parseFloat(document.getElementById('rkf-scr').value);
+      var wt=parseFloat(document.getElementById('rkf-wt').value);
+      var sex=document.getElementById('rkf-sex').value;
+      var mod=document.getElementById('rkf-mod').value;
+      var el=document.getElementById('rkf-clin-result');
+      if(isNaN(vol)||isNaN(uun)||isNaN(bun)||isNaN(ucr)||isNaN(scr)||isNaN(wt)||bun<=0||scr<=0){
+        el.innerHTML='<div style="padding:14px 18px;color:#c0392b;">Please fill in all fields with valid values.</div>';
+        el.style.display='block';return;
+      }
+      var Kru=(uun*vol)/(bun*1440);
+      var Krcr=(ucr*vol)/(scr*1440);
+      var rGFR=(Kru+Krcr)/2;
+      var V=(sex==='M'?0.58:0.49)*wt*1000;
+      var ktv_credit,ktv_label;
+      if(mod==='HD'){
+        ktv_credit=Kru*3360/V;
+        ktv_label='Residual Kt/V credit per session (HD 3×/week, avg inter-session interval 3360 min)';
+      } else {
+        ktv_credit=Kru*10080/V;
+        ktv_label='Residual weekly Kt/V contribution (PD)';
+      }
+      var rows=[
+        ['Residual urea clearance (Kru)','Kru = (UUN × V<sub>urine</sub>) / (BUN<sub>serum</sub> × 1440)',Kru.toFixed(2)+' mL/min'],
+        ['Residual creatinine clearance (Krcr)','Krcr = (U<sub>Cr</sub> × V<sub>urine</sub>) / (S<sub>Cr</sub> × 1440)',Krcr.toFixed(2)+' mL/min'],
+        ['Mean residual GFR (rGFR)','(Kru + Krcr) / 2',rGFR.toFixed(2)+' mL/min'],
+        ['Estimated total body water (V)','V ≈ '+(sex==='M'?'0.58':'0.49')+' × weight (simplified)',( V/1000).toFixed(1)+' L'],
+        [ktv_label,'Kru × '+(mod==='HD'?'3360':'10080')+' / V',ktv_credit.toFixed(3)],
+      ];
+      var html='<table style="width:100%;border-collapse:collapse;font-size:13px;">';
+      html+='<thead><tr style="background:#1a6b72;color:white;"><th style="padding:10px 14px;text-align:left;">Parameter</th><th style="padding:10px 14px;text-align:left;">Formula</th><th style="padding:10px 14px;text-align:right;">Result</th></tr></thead><tbody>';
+      rows.forEach(function(r,i){
+        html+='<tr style="background:'+(i%2?'#f8fbfb':'white')+'"><td style="padding:10px 14px;font-weight:600;">'+r[0]+'</td><td style="padding:10px 14px;color:#6b7a8d;font-family:monospace;font-size:12px;">'+r[1]+'</td><td style="padding:10px 14px;text-align:right;font-weight:700;color:#1a6b72;">'+r[2]+'</td></tr>';
+      });
+      html+='</tbody></table>';
+      var note=rGFR<2?'<div style="padding:12px 16px;background:#fef9ec;border-top:1px solid #f0d87a;font-size:13px;">⚠️ rGFR &lt;2 mL/min — residual contribution is minimal. Full dialytic dose must meet targets independently.</div>':
+             rGFR<5?'<div style="padding:12px 16px;background:#f0f9f8;border-top:1px solid rgba(26,107,114,.2);font-size:13px;">✅ Measurable residual function. Credit applicable to total Kt/V. Monitor every 3 months or when urine output drops &gt;25%.</div>':
+             '<div style="padding:12px 16px;background:#f0f9f8;border-top:1px solid rgba(26,107,114,.2);font-size:13px;">✅ Significant RKF. Consider incremental dialysis (HD: 2×/week; PD: reduced exchange volume) per KDOQI 2015 if combined weekly Kt/V ≥1.7 is achievable. Protect RKF — avoid NSAIDs, aminoglycosides, IV contrast.</div>';
+      el.innerHTML=html+note;el.style.display='block';
+    }
+    </script>
   </div>
 </section>
 
@@ -1378,7 +1505,7 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
 
     <div class="dr-card">
       <div class="dr-avatar">
-        <img src="../images/dr-rivero-portrait.webp" onerror="this.style.display='none'" alt="Dr. Rivero" width="64" height="64" style="width:100%;height:100%;object-fit:cover;">
+        <img alt="Dr. W. G. M. Rivero" src="../images/photo-contact.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
       </div>
       <div>
         <h4>Clinical Commentary — W. G. M. Rivero, MD</h4>
