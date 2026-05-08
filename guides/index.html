@@ -45,6 +45,7 @@
   .gc-illus{width:52px;height:52px;border-radius:12px;background:var(--teal-light);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden;}
   .gc-illus svg{width:34px;height:34px;opacity:.85;}
   .gc-new-pill{position:absolute;top:14px;right:14px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--gold);color:white;padding:3px 8px;border-radius:10px;}
+  .gc-updated-pill{position:absolute;top:14px;right:14px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:#1a6b72;color:white;padding:3px 8px;border-radius:10px;}
   .guide-card:hover{box-shadow:0 6px 28px rgba(0,0,0,.09);border-color:#c0c8d2;transform:translateY(-2px);}
   .badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;width:fit-content;}
   .bn{background:var(--teal-light);color:var(--teal);border:1px solid rgba(26,107,114,.18);}
@@ -285,6 +286,7 @@
   <div class="jump-inner">
     <a class="jump-pill jactive" href="#" onclick="scrollToTop(event)">All Guides</a>
     <div class="jump-divider"></div>
+    <a class="jump-pill" href="#sec-updated" onclick="jumpTo(event,'sec-updated')">Recently Updated</a>
     <a class="jump-pill" href="#sec-latest" onclick="jumpTo(event,'sec-latest')">Recently Added</a>
     <a class="jump-pill" href="#sec-nephrology" onclick="jumpTo(event,'sec-nephrology')">Nephrology</a>
     <a class="jump-pill" href="#sec-internal" onclick="jumpTo(event,'sec-internal')">Internal Medicine</a>
@@ -307,7 +309,8 @@
     <button class="filter-chip" data-filter="dialysis" onclick="setFilter('dialysis',this)">Dialysis</button>
     <button class="filter-chip" data-filter="nutrition" onclick="setFilter('nutrition',this)">Nutrition</button>
     <button class="filter-chip" data-filter="philippines" onclick="setFilter('philippines',this)">Philippines</button>
-    
+    <button class="filter-chip" data-filter="updated" onclick="setFilter('updated',this)">Recently Updated</button>
+
   </div>
 </div>
 
@@ -383,6 +386,42 @@
   <div id="calc-detail" style="display:none;background:#fef9ec;border:1px solid rgba(245,166,35,.3);border-left:3px solid #f5a623;border-radius:8px;padding:10px 14px;margin-top:4px;">
     <p style="font-size:12px;color:#5a4200;line-height:1.65;margin:0;">Calculator results are computed locally in your browser and are <strong>never stored, transmitted, or saved</strong>. Closing or refreshing the page clears all values. All calculators are for <strong>patient education and clinical reference only</strong> — results should always be reviewed with your nephrologist or primary care physician before any treatment change is made.</p>
   </div>
+</div>
+
+<!-- RECENTLY UPDATED -->
+<div class="section-header" id="sec-updated">
+  <div class="section-label">Recently Updated <span class="sect-count">2</span></div>
+</div>
+<div class="guides-grid" id="grid-updated">
+
+  <a href="transplant-allograft-failure.html" class="guide-card">
+    <span class="gc-updated-pill">Updated</span>
+    <div class="gc-illus"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <circle cx="32" cy="32" r="18" fill="#1a6b72" opacity=".15"/>
+      <path d="M22 32c0-10 5-18 11-18 2 0 4 2 3 6-1 3-2 6-2 10s2 6 2 10c0 6-3 10-7 10s-7-6-7-18z" fill="#1a6b72"/>
+      <path d="M26 20 Q32 26 38 20" stroke="#2d7a4f" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M20 38 L44 38 M32 38 L32 50" stroke="#1a6b72" stroke-width="2" stroke-linecap="round"/>
+    </svg></div>
+    <span class="badge bt">Transplant</span>
+    <h2>Hope After Allograft Failure: From Decline to a Second Chance</h2>
+    <p>Understanding why transplanted kidneys decline, what comes next, and how to pursue a second chance — with a clinician tab covering Banff 2022 criteria, desensitisation protocols, and re-transplant checklists.</p>
+    <div class="card-footer"><span class="card-tags">Transplant · Allograft · Second Transplant · Clinician</span><span class="card-link">Read →</span></div>
+  </a>
+
+  <a href="dialysis-access-care.html" class="guide-card">
+    <span class="gc-updated-pill">Updated</span>
+    <div class="gc-illus"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <rect x="14" y="10" width="26" height="44" rx="4" fill="#1a6b72"/>
+      <rect x="18" y="16" width="18" height="10" rx="2" fill="white" opacity=".4"/>
+      <circle cx="27" cy="38" r="6" stroke="white" stroke-width="2" fill="none" opacity=".6"/>
+      <path d="M40 24 Q54 24 54 32 Q54 40 40 40" stroke="#1a6b72" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg></div>
+    <span class="badge bn">Nephrology · ESKD</span>
+    <h2>Dialysis Access Care: Your Lifeline — Protect It Every Day</h2>
+    <p>Now with a full PD catheter section: Tenckhoff types, break-in period, exit-site care, peritonitis recognition, and multilingual guidance (EN/TL/CEB/KAP).</p>
+    <div class="card-footer"><span class="card-tags">Access · Fistula · Catheter · PD · Tenckhoff</span><span class="card-link">Read →</span></div>
+  </a>
+
 </div>
 
 <!-- RECENTLY ADDED -->
@@ -656,20 +695,22 @@
   </a>
 
   <a href="transplant-allograft-failure.html" class="guide-card">
-        <div class="gc-illus"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <span class="gc-updated-pill">Updated</span>
+    <div class="gc-illus"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true">
       <circle cx="32" cy="32" r="18" fill="#1a6b72" opacity=".15"/>
       <path d="M22 32c0-10 5-18 11-18 2 0 4 2 3 6-1 3-2 6-2 10s2 6 2 10c0 6-3 10-7 10s-7-6-7-18z" fill="#1a6b72"/>
       <path d="M26 20 Q32 26 38 20" stroke="#2d7a4f" stroke-width="2" fill="none" stroke-linecap="round"/>
       <path d="M20 38 L44 38 M32 38 L32 50" stroke="#1a6b72" stroke-width="2" stroke-linecap="round"/>
     </svg></div>
     <span class="badge bt">Transplant</span>
-    <h2>Hope After Allograft Failure</h2>
-    <p>Understanding why transplanted kidneys decline, what comes next, and how to pursue a second chance — with a clear plan and renewed purpose.</p>
-    <div class="card-footer"><span class="card-tags">Transplant · Allograft · Second Transplant</span><span class="card-link">Read →</span></div>
+    <h2>Hope After Allograft Failure: From Decline to a Second Chance</h2>
+    <p>Understanding why transplanted kidneys decline, what comes next, and how to pursue a second chance — with a clinician tab covering Banff 2022 criteria, desensitisation protocols, and re-transplant checklists.</p>
+    <div class="card-footer"><span class="card-tags">Transplant · Allograft · Second Transplant · Clinician</span><span class="card-link">Read →</span></div>
   </a>
 
   <a href="dialysis-access-care.html" class="guide-card">
-        <div class="gc-illus"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <span class="gc-updated-pill">Updated</span>
+    <div class="gc-illus"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true">
       <rect x="14" y="10" width="26" height="44" rx="4" fill="#1a6b72"/>
       <rect x="18" y="16" width="18" height="10" rx="2" fill="white" opacity=".4"/>
       <circle cx="27" cy="38" r="6" stroke="white" stroke-width="2" fill="none" opacity=".6"/>
@@ -677,8 +718,8 @@
     </svg></div>
     <span class="badge bn">Nephrology · ESKD</span>
     <h2>Dialysis Access Care: Your Lifeline — Protect It Every Day</h2>
-    <p>Understanding fistulas, grafts, and catheters — daily care routines and how to recognize complications before they become emergencies.</p>
-    <div class="card-footer"><span class="card-tags">Access · Fistula · Catheter</span><span class="card-link">Read →</span></div>
+    <p>Understanding fistulas, grafts, and catheters — daily care routines and how to recognize complications before they become emergencies. Now with full PD catheter guidance.</p>
+    <div class="card-footer"><span class="card-tags">Access · Fistula · Catheter · PD · Tenckhoff</span><span class="card-link">Read →</span></div>
   </a>
 
   <a href="anemia-management.html" class="guide-card">
@@ -1685,6 +1726,12 @@ const NEW_HREFS = [
   'ckd-mental-health-sleep.html',
 ];
 
+// UPDATED guides: card hrefs for the "Recently Updated" filter
+const UPDATED_HREFS = [
+  'transplant-allograft-failure.html',
+  'dialysis-access-care.html',
+];
+
 let activeFilter = 'all';
 let activeSearch = '';
 
@@ -1702,8 +1749,8 @@ function applyFilters() {
   const q = activeSearch.toLowerCase();
   const words = q ? q.split(/\s+/).filter(Boolean) : [];
 
-  // Special "new" filter
-  const isNew = activeFilter === 'calculator nutrition';
+  const isNew     = activeFilter === 'calculator nutrition';
+  const isUpdated = activeFilter === 'updated';
 
   let shown = 0;
   cards.forEach(card => {
@@ -1717,6 +1764,8 @@ function applyFilters() {
     let filterOk = true;
     if (isNew) {
       filterOk = NEW_HREFS.some(h => href.includes(h.toLowerCase()));
+    } else if (isUpdated) {
+      filterOk = UPDATED_HREFS.some(h => href.includes(h.toLowerCase()));
     } else if (activeFilter !== 'all' && FILTER_MAP[activeFilter]) {
       filterOk = FILTER_MAP[activeFilter].some(term => txt.includes(term));
     }
