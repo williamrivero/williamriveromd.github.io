@@ -204,8 +204,69 @@
   .related-card-desc{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:10px;}
   .related-card-arrow{font-size:12px;font-weight:600;color:var(--teal);}
 
+  /* AUDIENCE MODE */
+  .audience-tabs{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08);padding:0;display:flex;justify-content:center;}
+  .tabs-inner{display:flex;gap:0;max-width:880px;width:100%;}
+  .aud-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:rgba(255,255,255,.45);background:transparent;border:none;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;}
+  .aud-tab:hover{color:rgba(255,255,255,.7);}
+  .aud-tab.active{color:#fff;border-bottom-color:var(--gold-light);}
+  .aud-tab .tab-icon{font-size:16px;}
+  .mode-patient{display:block;}
+  .mode-physician{display:none;}
+  body.physician-mode .mode-patient{display:none!important;}
+  body.physician-mode .mode-physician{display:block!important;}
+  body.physician-mode .lang-group{opacity:.35;pointer-events:none;}
+  body.physician-mode .nav-strip .nav-pills .mode-patient-pill{display:none;}
+  body.physician-mode .nav-strip .nav-pills .mode-physician-pill{display:inline-flex;}
+  .mode-physician-pill{display:none;}
+
+  /* ALGO CARD (physician) */
+  .algo-card{border:2px solid var(--border);border-radius:14px;overflow:hidden;margin:24px 0;}
+  .algo-header{background:var(--navy);color:white;padding:16px 22px;font-family:'Lora',serif;font-size:16px;font-weight:600;}
+  .algo-body{padding:0;}
+  .algo-row{display:flex;gap:0;border-bottom:1px solid var(--border);align-items:stretch;}
+  .algo-row:last-child{border-bottom:none;}
+  .algo-step-num{width:56px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--teal);background:var(--bg);border-right:1px solid var(--border);flex-shrink:0;}
+  .algo-content{padding:16px 20px;flex:1;}
+  .algo-content h5{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .algo-content p{font-size:13px;color:var(--text-muted);margin:0;line-height:1.65;}
+  .algo-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:8px;margin-left:8px;}
+  .b-all{background:var(--teal-light);color:var(--teal);}
+  .b-urgent{background:var(--red-soft);color:var(--red);}
+  .b-cond{background:var(--amber-soft);color:#9a6500;}
+
+  /* STAT GRID (physician) */
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0;}
+  @media(max-width:640px){.stat-grid{grid-template-columns:1fr 1fr;}}
+  .stat-card{background:linear-gradient(135deg,var(--bg),var(--white));border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;}
+  .stat-number{font-family:'Lora',serif;font-size:28px;font-weight:700;color:var(--teal);display:block;margin-bottom:4px;}
+  .stat-label{font-size:11px;color:var(--text-muted);line-height:1.4;}
+
+  /* DRUG TABLE (physician) */
+  .drug-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px;}
+  .drug-table th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 14px;background:var(--bg);border-bottom:2px solid var(--border);}
+  .drug-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-muted);vertical-align:top;}
+  .drug-table td:first-child{font-weight:600;color:var(--navy);}
+  .drug-table tr:last-child td{border-bottom:none;}
+  .drug-table tr:hover td{background:var(--bg);}
+
+  /* DARK MODE physician additions */
+  html[data-theme="dark"] .audience-tabs{background:#080d16;}
+  html[data-theme="dark"] .aud-tab{color:rgba(255,255,255,.35);}
+  html[data-theme="dark"] .aud-tab.active{color:#e8eaf0;}
+  html[data-theme="dark"] .algo-card{border-color:#2a3548;}
+  html[data-theme="dark"] .algo-row{border-color:#2a3548;}
+  html[data-theme="dark"] .algo-step-num{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .algo-content p{color:#c0cad8;}
+  html[data-theme="dark"] .algo-content h5{color:#e8eaf0;}
+  html[data-theme="dark"] .stat-card{background:linear-gradient(135deg,#141c2a,#0f1520);}
+  html[data-theme="dark"] .drug-table th{background:#1a2535;color:#8a95a8;}
+  html[data-theme="dark"] .drug-table td{border-color:#2a3548;color:#c0cad8;}
+  html[data-theme="dark"] .drug-table td:first-child{color:#e8eaf0;}
+  html[data-theme="dark"] .drug-table tr:hover td{background:#202d40;}
+
   /* PRINT */
-  @media print{.site-header,.nav-strip,.guide-toggle-bar,.print-btn,.float-controls,.guide-footer{display:none!important;}body{font-size:13px;color:#000;background:#fff;}.hero{background:#fff!important;color:#000!important;padding:24px 0 16px!important;}.hero h1{color:#0f1e2e!important;font-size:22px!important;}.container{max-width:100%;padding:0 24px;}.section{padding:20px 0;border-bottom:1px solid #ddd;}.intro-callout{background:#f0f4f8!important;color:#000!important;border:1px solid #ccc;}.intro-callout p{color:#222!important;}.alert{border:1px solid #ccc!important;background:#f9f9f9!important;}.illus-wrap{border:1px solid #ccc;background:#f9f9f9!important;page-break-inside:avoid;}@page{margin:18mm 15mm;size:A4;}}
+  @media print{.site-header,.nav-strip,.guide-toggle-bar,.print-btn,.float-controls,.guide-footer,.audience-tabs{display:none!important;}.mode-patient,.mode-physician{display:block!important;}body.physician-mode .mode-patient{display:none!important;}body{font-size:13px;color:#000;background:#fff;}.hero{background:#fff!important;color:#000!important;padding:24px 0 16px!important;}.hero h1{color:#0f1e2e!important;font-size:22px!important;}.container{max-width:100%;padding:0 24px;}.section{padding:20px 0;border-bottom:1px solid #ddd;}.intro-callout{background:#f0f4f8!important;color:#000!important;border:1px solid #ccc;}.intro-callout p{color:#222!important;}.alert{border:1px solid #ccc!important;background:#f9f9f9!important;}.illus-wrap{border:1px solid #ccc;background:#f9f9f9!important;page-break-inside:avoid;}@page{margin:18mm 15mm;size:A4;}}
 
   /* LIGHT MODE OVERRIDES */
   .section > .container > p, .section p:not(.hero-sub):not(.intro-callout p){color:#2c3340;}
@@ -278,6 +339,23 @@
   <button class="lang-btn-g" id="glb-kap" onclick="setGuideLang('kap')">KAP</button>
 </div>
 
+<div class="audience-tabs">
+  <div class="tabs-inner">
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">
+      <span class="tab-icon">🧑‍⚕️</span>
+      <span>
+        <span data-lang="en">For Patients &amp; Families</span>
+        <span class="lang-hidden" data-lang="tl">Para sa Pasyente at Pamilya</span>
+        <span class="lang-hidden" data-lang="ceb">Para sa Pasyente ug Pamilya</span>
+        <span class="lang-hidden" data-lang="kap">Para king Pasyente at Pamilya</span>
+      </span>
+    </button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">
+      <span class="tab-icon">🩺</span> For Clinicians
+    </button>
+  </div>
+</div>
+
 <section class="hero">
   <div class="container">
     <div class="hero-tag">
@@ -309,20 +387,32 @@
 
 <nav class="nav-strip">
   <div class="nav-pills">
-    <a class="nav-pill" href="#what"><span data-lang="en">What Is It?</span><span data-lang="tl" class="lang-hidden">Ano Ito?</span><span data-lang="ceb" class="lang-hidden">Unsa Kini?</span><span data-lang="kap" class="lang-hidden">Nanu Iti?</span></a>
-    <a class="nav-pill" href="#mechanism"><span data-lang="en">Kidney Damage</span><span data-lang="tl" class="lang-hidden">Pinsala sa Bato</span><span data-lang="ceb" class="lang-hidden">Kadaot sa Kidney</span><span data-lang="kap" class="lang-hidden">Sakit king Kidney</span></a>
-    <a class="nav-pill" href="#phases"><span data-lang="en">Phases &amp; Symptoms</span><span data-lang="tl" class="lang-hidden">Mga Yugto at Sintomas</span><span data-lang="ceb" class="lang-hidden">Mga Phase ug Sintomas</span><span data-lang="kap" class="lang-hidden">Ding Phase at Sintomas</span></a>
-    <a class="nav-pill" href="#redflags"><span data-lang="en">When to Go to ER</span><span data-lang="tl" class="lang-hidden">Kailan Pumunta sa ER</span><span data-lang="ceb" class="lang-hidden">Kanus-a Moadto sa ER</span><span data-lang="kap" class="lang-hidden">Kailan Lumakad king ER</span></a>
-    <a class="nav-pill" href="#prevention"><span data-lang="en">Prevention</span><span data-lang="tl" class="lang-hidden">Pag-iwas</span><span data-lang="ceb" class="lang-hidden">Paglikay</span><span data-lang="kap" class="lang-hidden">Pag-iwas</span></a>
-    <a class="nav-pill" href="#treatment"><span data-lang="en">Treatment</span><span data-lang="tl" class="lang-hidden">Paggamot</span><span data-lang="ceb" class="lang-hidden">Pagtambal</span><span data-lang="kap" class="lang-hidden">Paggamot</span></a>
-    <a class="nav-pill" href="#labs"><span data-lang="en">Lab Tests</span><span data-lang="tl" class="lang-hidden">Mga Lab Test</span><span data-lang="ceb" class="lang-hidden">Ding Lab Test</span><span data-lang="kap" class="lang-hidden">Ding Lab Test</span></a>
-    <a class="nav-pill" href="#recovery"><span data-lang="en">Recovery</span><span data-lang="tl" class="lang-hidden">Pagbawi</span><span data-lang="ceb" class="lang-hidden">Pagbawi</span><span data-lang="kap" class="lang-hidden">Pagbawi</span></a>
-    <a class="nav-pill" href="#ph-context"><span data-lang="en">PH Context</span><span data-lang="tl" class="lang-hidden">Konteksto sa PH</span><span data-lang="ceb" class="lang-hidden">Konteksto sa PH</span><span data-lang="kap" class="lang-hidden">Konteksto king PH</span></a>
+    <!-- Patient pills -->
+    <a class="nav-pill mode-patient-pill" href="#what"><span data-lang="en">What Is It?</span><span data-lang="tl" class="lang-hidden">Ano Ito?</span><span data-lang="ceb" class="lang-hidden">Unsa Kini?</span><span data-lang="kap" class="lang-hidden">Nanu Iti?</span></a>
+    <a class="nav-pill mode-patient-pill" href="#mechanism"><span data-lang="en">Kidney Damage</span><span data-lang="tl" class="lang-hidden">Pinsala sa Bato</span><span data-lang="ceb" class="lang-hidden">Kadaot sa Kidney</span><span data-lang="kap" class="lang-hidden">Sakit king Kidney</span></a>
+    <a class="nav-pill mode-patient-pill" href="#phases"><span data-lang="en">Phases &amp; Symptoms</span><span data-lang="tl" class="lang-hidden">Mga Yugto at Sintomas</span><span data-lang="ceb" class="lang-hidden">Mga Phase ug Sintomas</span><span data-lang="kap" class="lang-hidden">Ding Phase at Sintomas</span></a>
+    <a class="nav-pill mode-patient-pill" href="#redflags"><span data-lang="en">When to Go to ER</span><span data-lang="tl" class="lang-hidden">Kailan Pumunta sa ER</span><span data-lang="ceb" class="lang-hidden">Kanus-a Moadto sa ER</span><span data-lang="kap" class="lang-hidden">Kailan Lumakad king ER</span></a>
+    <a class="nav-pill mode-patient-pill" href="#prevention"><span data-lang="en">Prevention</span><span data-lang="tl" class="lang-hidden">Pag-iwas</span><span data-lang="ceb" class="lang-hidden">Paglikay</span><span data-lang="kap" class="lang-hidden">Pag-iwas</span></a>
+    <a class="nav-pill mode-patient-pill" href="#treatment"><span data-lang="en">Treatment</span><span data-lang="tl" class="lang-hidden">Paggamot</span><span data-lang="ceb" class="lang-hidden">Pagtambal</span><span data-lang="kap" class="lang-hidden">Paggamot</span></a>
+    <a class="nav-pill mode-patient-pill" href="#labs"><span data-lang="en">Lab Tests</span><span data-lang="tl" class="lang-hidden">Mga Lab Test</span><span data-lang="ceb" class="lang-hidden">Ding Lab Test</span><span data-lang="kap" class="lang-hidden">Ding Lab Test</span></a>
+    <a class="nav-pill mode-patient-pill" href="#recovery"><span data-lang="en">Recovery</span><span data-lang="tl" class="lang-hidden">Pagbawi</span><span data-lang="ceb" class="lang-hidden">Pagbawi</span><span data-lang="kap" class="lang-hidden">Pagbawi</span></a>
+    <a class="nav-pill mode-patient-pill" href="#ph-context"><span data-lang="en">PH Context</span><span data-lang="tl" class="lang-hidden">Konteksto sa PH</span><span data-lang="ceb" class="lang-hidden">Konteksto sa PH</span><span data-lang="kap" class="lang-hidden">Konteksto king PH</span></a>
+    <!-- Physician pills -->
+    <a class="nav-pill mode-physician-pill" href="#md-severity">Severity</a>
+    <a class="nav-pill mode-physician-pill" href="#md-algorithm">ER Algorithm</a>
+    <a class="nav-pill mode-physician-pill" href="#md-antibiotics">Antibiotics</a>
+    <a class="nav-pill mode-physician-pill" href="#md-dialysis">Dialysis</a>
+    <a class="nav-pill mode-physician-pill" href="#md-fluids">Fluids &amp; Lytes</a>
+    <a class="nav-pill mode-physician-pill" href="#md-monitoring">Monitoring</a>
+    <a class="nav-pill mode-physician-pill" href="#md-pulmonary">Pulm Hemorrhage</a>
+    <a class="nav-pill mode-physician-pill" href="#md-discharge">Discharge</a>
+    <a class="nav-pill mode-physician-pill" href="#md-prophylaxis">Prophylaxis</a>
+    <a class="nav-pill mode-physician-pill" href="#md-special">Special Populations</a>
   </div>
 </nav>
 
 <!-- WHAT IS IT -->
-<section class="section" id="what">
+<section class="section mode-patient" id="what">
   <div class="container">
     <div class="section-tag">
       <span data-lang="en">Understanding the Infection</span>
@@ -407,7 +497,7 @@
 </section>
 
 <!-- MECHANISM -->
-<section class="section" id="mechanism">
+<section class="section mode-patient" id="mechanism">
   <div class="container">
     <div class="section-tag">
       <span data-lang="en">How the Kidneys Are Damaged</span>
@@ -503,7 +593,7 @@
 </section>
 
 <!-- PHASES & SYMPTOMS -->
-<section class="section" id="phases">
+<section class="section mode-patient" id="phases">
   <div class="container">
     <div class="section-tag">
       <span data-lang="en">Clinical Presentation</span>
@@ -601,7 +691,7 @@
 </section>
 
 <!-- WHEN TO GO TO ER -->
-<section class="section" id="redflags">
+<section class="section mode-patient" id="redflags">
   <div class="container">
     <div class="section-tag">
       <span data-lang="en">Emergency Recognition</span>
@@ -689,7 +779,7 @@
 </section>
 
 <!-- PREVENTION -->
-<section class="section" id="prevention">
+<section class="section mode-patient" id="prevention">
   <div class="container">
     <div class="section-tag">
       <span data-lang="en">Stop It Before It Starts</span>
@@ -814,7 +904,7 @@
 </section>
 
 <!-- TREATMENT -->
-<section class="section" id="treatment">
+<section class="section mode-patient" id="treatment">
   <div class="container">
     <div class="section-tag">
       <span data-lang="en">Hospital Management</span>
@@ -894,7 +984,7 @@
 </section>
 
 <!-- LAB TESTS -->
-<section class="section" id="labs">
+<section class="section mode-patient" id="labs">
   <div class="container">
     <div class="section-tag">
       <span data-lang="en">Diagnosis &amp; Monitoring</span>
@@ -954,7 +1044,7 @@
 </section>
 
 <!-- RECOVERY -->
-<section class="section" id="recovery">
+<section class="section mode-patient" id="recovery">
   <div class="container">
     <div class="section-tag">
       <span data-lang="en">Kidney Outcomes</span>
@@ -1030,7 +1120,7 @@
 </section>
 
 <!-- PH CONTEXT -->
-<section class="section" id="ph-context">
+<section class="section mode-patient" id="ph-context">
   <div class="container">
     <div class="section-tag">
       <span data-lang="en">Philippines Context</span>
@@ -1098,6 +1188,433 @@
   </div>
 </section>
 
+<!-- CLINICIAN INTRO -->
+<div class="mode-physician" style="padding:40px 0 0;">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">
+      <span data-lang="en">For Clinicians</span>
+      <span data-lang="tl" class="lang-hidden">Para sa mga Doktor</span>
+      <span data-lang="ceb" class="lang-hidden">Para sa mga Doktor</span>
+      <span data-lang="kap" class="lang-hidden">Para king ding Doktor</span>
+    </div>
+    <h2>
+      <span data-lang="en">Clinical Decision Tools &amp; Management Recommendations</span>
+      <span data-lang="tl" class="lang-hidden">Mga Klinikal na Decision Tool at Rekomendasyon sa Pamamahala</span>
+      <span data-lang="ceb" class="lang-hidden">Mga Klinikal nga Decision Tool ug Rekomendasyon sa Pagdumala</span>
+      <span data-lang="kap" class="lang-hidden">Ding Klinikal a Decision Tool at Rekomendasyon king Pamamahala</span>
+    </h2>
+    <div class="intro-callout">
+      <p>
+        <span data-lang="en">This section is designed for physicians, residents, and emergency medicine practitioners managing suspected or confirmed leptospirosis. It provides structured clinical decision algorithms, severity scoring, antibiotic selection guidance, dialysis initiation criteria, and discharge planning — aligned with WHO, IDSA, DOH Philippines, and KDIGO AKI 2024 guidelines.</span>
+        <span data-lang="tl" class="lang-hidden">Ang seksyon na ito ay dinisenyo para sa mga doktor, resident, at emergency medicine practitioner na namamahala ng suspected o kumpirmadong leptospirosis. Nagbibigay ito ng mga structured clinical decision algorithm, severity scoring, gabay sa pagpili ng antibiotic, pamantayan sa pagsisimula ng dialysis, at discharge planning — naaayon sa WHO, IDSA, DOH Philippines, at KDIGO AKI 2024 guidelines.</span>
+        <span data-lang="ceb" class="lang-hidden">Kini nga seksyon gidesinyo para sa mga doktor, resident, ug emergency medicine practitioner nga nagdumala sa suspected o nakumpirmahang leptospirosis. Naghatag kini sa mga structured clinical decision algorithm, severity scoring, gabay sa pagpili sa antibiotic, criteria sa pagsugod sa dialysis, ug discharge planning — nahiuyon sa WHO, IDSA, DOH Philippines, ug KDIGO AKI 2024 guidelines.</span>
+        <span data-lang="kap" class="lang-hidden">Ing seksyon a iti gawa para king ding doktor, resident, at emergency medicine practitioner a mamahalaga king suspected o kumpirmadong leptospirosis. Nagbibigay iti ning mga structured clinical decision algorithm, severity scoring, gabay king pagpili ning antibiotic, pamantayan king pagsimula ning dialysis, at discharge planning — naaayon king WHO, IDSA, DOH Philippines, at KDIGO AKI 2024 guidelines.</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- SEVERITY CLASSIFICATION -->
+<section class="section mode-physician" id="md-severity">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">Severity Classification</div>
+    <h2>
+      <span data-lang="en">Modified WHO Severity Classification</span>
+      <span data-lang="tl" class="lang-hidden">Binagong WHO Severity Classification</span>
+      <span data-lang="ceb" class="lang-hidden">Giusab nga WHO Severity Classification</span>
+      <span data-lang="kap" class="lang-hidden">Binagung WHO Severity Classification</span>
+    </h2>
+    <p>
+      <span data-lang="en">Classify on admission. Reassess every 12 hours — patients can transition from mild to severe within 24–48 hours.</span>
+      <span data-lang="tl" class="lang-hidden">I-classify sa admission. Suriin muli tuwing 12 oras — ang mga pasyente ay maaaring lumipat mula sa banayad patungo sa malubha sa loob ng 24–48 oras.</span>
+      <span data-lang="ceb" class="lang-hidden">I-classify sa admission. I-reassess matag 12 ka oras — ang mga pasyente mahimong mobalhin gikan sa hinay ngadto sa grabe sulod sa 24–48 ka oras.</span>
+      <span data-lang="kap" class="lang-hidden">I-classify king admission. I-reassess tuwing 12 oras — ding pasyente malyaring lumipat tikid malumo patungo king mabigat kilub ning 24–48 oras.</span>
+    </p>
+    <table class="lab-table">
+      <thead>
+        <tr><th>Severity</th><th>Clinical Criteria</th><th>Disposition</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge-green">Mild</span></td>
+          <td>Fever + myalgia + conjunctival suffusion. No jaundice. Cr &lt;1.5 mg/dL. Platelets &gt;100k. No hemorrhage. Hemodynamically stable.</td>
+          <td>Outpatient with oral doxycycline. Daily follow-up &times;3 days. Clear return precautions.</td>
+        </tr>
+        <tr>
+          <td><span class="badge-amber">Moderate</span></td>
+          <td>Any of: Cr 1.5–3.0 mg/dL, platelets 50–100k, mild jaundice (TB &lt;5), transaminitis &gt;3&times; ULN, persistent vomiting/dehydration, oliguria responding to fluids.</td>
+          <td>Admit. IV antibiotics. Q6h vitals. Q12h Cr/K+/CBC. Nephrology consult if Cr rising.</td>
+        </tr>
+        <tr>
+          <td><span class="badge-red">Severe (Weil's)</span></td>
+          <td>Any of: Cr &gt;3.0 or anuria, TB &gt;5, platelets &lt;50k, pulmonary infiltrates/hemoptysis, altered sensorium, shock (MAP &lt;65), DIC.</td>
+          <td>ICU. IV penicillin G or ceftriaxone. Urgent nephrology + pulmonology. Dialysis standby.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ER CLINICAL DECISION ALGORITHM -->
+<section class="section mode-physician" id="md-algorithm">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">ER Algorithm</div>
+    <h2>
+      <span data-lang="en">ER Clinical Decision Algorithm</span>
+      <span data-lang="tl" class="lang-hidden">ER Clinical Decision Algorithm</span>
+      <span data-lang="ceb" class="lang-hidden">ER Clinical Decision Algorithm</span>
+      <span data-lang="kap" class="lang-hidden">ER Clinical Decision Algorithm</span>
+    </h2>
+    <p>
+      <span data-lang="en">For patients presenting with acute febrile illness and flood exposure within the preceding 4 weeks.</span>
+      <span data-lang="tl" class="lang-hidden">Para sa mga pasyenteng nagpapakita ng talamak na lagnat at pagkakalantad sa baha sa nakaraang 4 na linggo.</span>
+      <span data-lang="ceb" class="lang-hidden">Para sa mga pasyente nga nagpakita sa kalit nga hilanat ug pagkaladlad sa baha sulod sa miagi nga 4 ka semana.</span>
+      <span data-lang="kap" class="lang-hidden">Para king ding pasyente a nagpapakita ning talamak na lagnat at pagkakalantad king baha king nakaraang 4 a linggo.</span>
+    </p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-teal">1</div>
+        <div class="tl-body">
+          <h4>Screen: Faine's Modified Criteria (≥26 = presumptive)</h4>
+          <p>Part A (clinical, max 26): fever (2), headache (2), myalgia (4 if calf tenderness), conjunctival suffusion (4), meningism (4), jaundice (1), albuminuria/azotemia (2). Part B (epidemiological, max 10): rainfall/flood (5), animal contact (1), high-risk occupation (1). Part C (bacteriological, max 15): IgM ELISA positive (15), culture positive (25). Score ≥26 from Part A+B alone is sufficient to start empiric therapy.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-amber">2</div>
+        <div class="tl-body">
+          <h4>Stat labs: CBC, Cr/BUN, K+, Na+, LFTs (TB/DB/AST/ALT), CPK, PT/INR, urinalysis, blood culture &times;2</h4>
+          <p>Add Leptospira IgM ELISA (may be negative &lt;Day 5 — do not withhold treatment for result). Dengue NS1 + IgM if concurrent dengue season. Blood smear for malaria if from endemic area. Chest X-ray if any respiratory symptoms or SpO₂ &lt;95%.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-red">3</div>
+        <div class="tl-body">
+          <h4>Identify red flags requiring ICU admission</h4>
+          <p>SpO₂ &lt;92% or respiratory distress. MAP &lt;65 mmHg or requiring vasopressors. GCS &lt;14. Creatinine &gt;3.0 mg/dL or anuria &gt;6 hours. Active hemorrhage (hemoptysis, melena, petechiae). Platelet &lt;30,000. K+ &lt;2.5 mEq/L with ECG changes.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-green">4</div>
+        <div class="tl-body">
+          <h4>Start empiric antibiotics within 4 hours of presentation</h4>
+          <p>Do not delay for serological confirmation. Even if initiated after Day 5, antibiotics reduce leptospiremia, organ damage, and shedding. Mortality benefit persists even in late-presenting severe disease.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANTIBIOTIC SELECTION -->
+<section class="section mode-physician" id="md-antibiotics">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">Antibiotics</div>
+    <h2>
+      <span data-lang="en">Antibiotic Selection by Severity</span>
+      <span data-lang="tl" class="lang-hidden">Pagpili ng Antibiotic Ayon sa Severity</span>
+      <span data-lang="ceb" class="lang-hidden">Pagpili sa Antibiotic Base sa Severity</span>
+      <span data-lang="kap" class="lang-hidden">Pagpili ning Antibiotic Depende king Severity</span>
+    </h2>
+    <table class="lab-table">
+      <thead>
+        <tr><th>Severity</th><th>First-Line</th><th>Alternative</th><th>Duration</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge-green">Mild</span></td>
+          <td>Doxycycline 100 mg PO BID</td>
+          <td>Amoxicillin 500 mg PO TID<br>Azithromycin 500 mg PO OD (if pregnant)</td>
+          <td>7 days</td>
+          <td>Doxycycline contraindicated in pregnancy, age &lt;8. Can give with food to reduce GI effects.</td>
+        </tr>
+        <tr>
+          <td><span class="badge-amber">Moderate</span></td>
+          <td>Penicillin G 1.5 MU IV Q6H</td>
+          <td>Ceftriaxone 1 g IV OD<br>Ampicillin 1 g IV Q6H</td>
+          <td>7 days</td>
+          <td>Step down to oral doxycycline when afebrile &times;48h, tolerating PO, and Cr trending down.</td>
+        </tr>
+        <tr>
+          <td><span class="badge-red">Severe</span></td>
+          <td>Penicillin G 1.5 MU IV Q6H<br><strong>or</strong> Ceftriaxone 1 g IV OD</td>
+          <td>Meropenem 1 g IV Q8H (if co-infection suspected)</td>
+          <td>7–10 days</td>
+          <td>Ceftriaxone preferred if renal dose adjustment needed. No evidence for combination therapy. Jarisch-Herxheimer reaction possible in first 4–6h — monitor closely, do not discontinue.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="alert alert-teal">
+      <div class="alert-icon">💡</div>
+      <div class="alert-body">
+        <h4><span data-lang="en">Jarisch-Herxheimer Reaction</span><span data-lang="tl" class="lang-hidden">Jarisch-Herxheimer Reaction</span><span data-lang="ceb" class="lang-hidden">Jarisch-Herxheimer Reaction</span><span data-lang="kap" class="lang-hidden">Jarisch-Herxheimer Reaction</span></h4>
+        <p><span data-lang="en">Occurs in ~15% of treated patients within 4–6 hours of first antibiotic dose — rigors, transient hypotension, high fever. It is caused by endotoxin release from dying spirochetes. <strong>Do not discontinue antibiotics.</strong> Manage with IV fluids, antipyretics, and hemodynamic support. Pre-treatment with a single dose of IV hydrocortisone 100 mg may attenuate the reaction in severe cases.</span><span data-lang="tl" class="lang-hidden">Nangyayari sa ~15% ng ginagamot na pasyente sa loob ng 4–6 oras pagkatapos ng unang dosis ng antibiotic — rigors, panandaliang hypotension, matinding lagnat. Dahil ito sa paglabas ng endotoxin mula sa namamatay na spirochetes. <strong>Huwag itigil ang antibiotics.</strong> Pamahalaan sa IV fluids, antipyretics, at hemodynamic support.</span><span data-lang="ceb" class="lang-hidden">Mahitabo sa ~15% sa gitratar nga pasyente sulod sa 4–6 ka oras human sa una nga dosis sa antibiotic — rigors, mubo nga hypotension, taas nga hilanat. Gipahinabo ni sa paggawas sa endotoxin gikan sa namatay nga spirochetes. <strong>Ayaw ihunong ang antibiotics.</strong> Dumalahi sa IV fluids, antipyretics, ug hemodynamic support.</span><span data-lang="kap" class="lang-hidden">Mangyayari king ~15% ning ginagamot a pasyente kilub ning 4–6 oras kasumpal ning unang dosis ning antibiotic — rigors, panandaliang hypotension, mataas na lagnat. Dahil iti king paglabas ning endotoxin tikid namamatay na spirochetes. <strong>Eya itigil ding antibiotics.</strong> Pamahalaan king IV fluids, antipyretics, at hemodynamic support.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIALYSIS INITIATION -->
+<section class="section mode-physician" id="md-dialysis">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">Dialysis</div>
+    <h2>
+      <span data-lang="en">Dialysis Initiation Criteria in Leptospiral AKI</span>
+      <span data-lang="tl" class="lang-hidden">Pamantayan sa Pagsisimula ng Dialysis sa Leptospiral AKI</span>
+      <span data-lang="ceb" class="lang-hidden">Criteria sa Pagsugod sa Dialysis sa Leptospiral AKI</span>
+      <span data-lang="kap" class="lang-hidden">Pamantayan king Pagsimula ning Dialysis king Leptospiral AKI</span>
+    </h2>
+    <p>
+      <span data-lang="en">Leptospiral AKI is typically non-oliguric and hypokalemic — unlike most other causes of AKI. This changes the urgency pattern. Volume overload develops faster than expected because of capillary leak. Do not delay dialysis waiting for creatinine thresholds alone.</span>
+      <span data-lang="tl" class="lang-hidden">Ang leptospiral AKI ay karaniwang non-oliguric at hypokalemic — hindi katulad ng karamihan sa iba pang sanhi ng AKI. Binabago nito ang pattern ng urgency. Mas mabilis na nagde-develop ang volume overload kaysa sa inaasahan dahil sa capillary leak. Huwag ipagpaliban ang dialysis na naghihintay lamang ng creatinine thresholds.</span>
+      <span data-lang="ceb" class="lang-hidden">Ang leptospiral AKI kasagaran non-oliguric ug hypokalemic — dili sama sa kadaghanan sa ubang hinungdan sa AKI. Giusab niini ang pattern sa urgency. Mas paspas ang paglambo sa volume overload kaysa gilauman tungod sa capillary leak. Ayaw ilangan ang dialysis nga naghuwat lang sa creatinine thresholds.</span>
+      <span data-lang="kap" class="lang-hidden">Ing leptospiral AKI karaniwang non-oliguric at hypokalemic — eya katulad ning karamiyan king aliwa pang sanhi ning AKI. Babaguhin niti ing pattern ning urgency. Mas mabilis na nagde-develop ing volume overload kaysa sa inaasahan dahil king capillary leak. Eya ipagpaliban ing dialysis a naghihintay ning creatinine thresholds bueng.</span>
+    </p>
+    <div class="redflag-grid" style="grid-template-columns:repeat(2,1fr);">
+      <div class="redflag-item" style="background:var(--amber-soft);border-color:#fde8c0;">
+        <div class="rf-icon">🔬</div>
+        <h5 style="color:#9a6500;">Absolute Indications (initiate immediately)</h5>
+        <p style="color:#6a4a00;">
+          • Anuria &gt;12 hours or oliguria &lt;0.3 mL/kg/h &times;6h despite adequate fluid resuscitation<br>
+          • K+ &gt;6.5 mEq/L or ECG changes (peaked T, widened QRS)<br>
+          • Refractory metabolic acidosis (pH &lt;7.15)<br>
+          • Pulmonary edema / fluid overload unresponsive to diuretics<br>
+          • Uremic encephalopathy or pericarditis<br>
+          • BUN &gt;100 mg/dL with clinical uremia
+        </p>
+      </div>
+      <div class="redflag-item" style="background:var(--green-soft);border-color:#b2d8c4;">
+        <div class="rf-icon">📋</div>
+        <h5 style="color:var(--green);">Relative Indications (clinical judgment)</h5>
+        <p style="color:#2a5a3a;">
+          • Cr &gt;5.0 mg/dL and still rising despite treatment<br>
+          • Volume overload with deteriorating SpO₂ despite IV furosemide 1–2 mg/kg<br>
+          • Rapidly rising K+ despite correction (leptospiral tubular K+ loss may paradoxically reverse)<br>
+          • Need for IV nutrition/blood products in oliguric patient<br>
+          • Co-existing pulmonary hemorrhage (early CRRT may improve outcomes)
+        </p>
+      </div>
+    </div>
+    <div class="alert alert-amber">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-body">
+        <h4><span data-lang="en">Dialysis Modality Selection</span><span data-lang="tl" class="lang-hidden">Pagpili ng Dialysis Modality</span><span data-lang="ceb" class="lang-hidden">Pagpili sa Dialysis Modality</span><span data-lang="kap" class="lang-hidden">Pagpili ning Dialysis Modality</span></h4>
+        <p><span data-lang="en"><strong>Hemodynamically stable:</strong> Intermittent hemodialysis (IHD) via temporary non-cuffed catheter (right internal jugular preferred). Standard 3–4 hour sessions. Avoid heparin if platelet &lt;50k or active bleeding — use citrate or heparin-free protocol.<br><br><strong>Hemodynamically unstable / ICU:</strong> CRRT (CVVHDF preferred) — better tolerated in patients with capillary leak syndrome, pulmonary hemorrhage, or requiring vasopressors. Blood flow 150–200 mL/min, effluent dose 25–30 mL/kg/h. Consider higher dose (35 mL/kg/h) in septic presentations. Anticoagulation: regional citrate if available, otherwise heparin-free.<br><br><strong>Resource-limited settings:</strong> Acute peritoneal dialysis is an acceptable alternative when HD/CRRT are unavailable — evidence supports equivalent outcomes in leptospiral AKI. Use rigid or Tenckhoff catheter, 2L exchanges Q4–6h, 1.5–2.5% dextrose.</span><span data-lang="tl" class="lang-hidden"><strong>Hemodynamically stable:</strong> Intermittent hemodialysis (IHD) sa temporary non-cuffed catheter. Standard 3–4 oras na session. Iwasan ang heparin kung platelet &lt;50k.<br><br><strong>Hemodynamically unstable / ICU:</strong> CRRT (CVVHDF preferred). Mas mabuting tinitiis sa mga pasyente na may capillary leak syndrome o pulmonary hemorrhage.<br><br><strong>Resource-limited:</strong> Ang acute peritoneal dialysis ay isang katanggap-tanggap na alternatibo kapag hindi available ang HD/CRRT.</span><span data-lang="ceb" class="lang-hidden"><strong>Hemodynamically stable:</strong> Intermittent hemodialysis (IHD) sa temporary non-cuffed catheter. Standard 3–4 ka oras nga session. Likayi ang heparin kung platelet &lt;50k.<br><br><strong>Hemodynamically unstable / ICU:</strong> CRRT (CVVHDF preferred). Mas matugkad sa mga pasyente nga adunay capillary leak syndrome o pulmonary hemorrhage.<br><br><strong>Resource-limited:</strong> Ang acute peritoneal dialysis usa ka katanggap-tanggap nga alternatibo kung dili available ang HD/CRRT.</span><span data-lang="kap" class="lang-hidden"><strong>Hemodynamically stable:</strong> Intermittent hemodialysis (IHD) king temporary non-cuffed catheter. Standard 3–4 oras a session. Iwasan ing heparin nung platelet &lt;50k.<br><br><strong>Hemodynamically unstable / ICU:</strong> CRRT (CVVHDF preferred). Mas mabuting tinitiis king ding pasyente a adwang capillary leak syndrome o pulmonary hemorrhage.<br><br><strong>Resource-limited:</strong> Ing acute peritoneal dialysis metung yang katanggap-tanggap a alternatibo nung eya available ing HD/CRRT.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLUID & ELECTROLYTE MANAGEMENT -->
+<section class="section mode-physician" id="md-fluids">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">Fluids &amp; Lytes</div>
+    <h2>
+      <span data-lang="en">Fluid &amp; Electrolyte Management Protocol</span>
+      <span data-lang="tl" class="lang-hidden">Protocol sa Pamamahala ng Fluid at Electrolyte</span>
+      <span data-lang="ceb" class="lang-hidden">Protocol sa Pagdumala sa Fluid ug Electrolyte</span>
+      <span data-lang="kap" class="lang-hidden">Protocol king Pamamahala ning Fluid at Electrolyte</span>
+    </h2>
+    <div class="two-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>IV fluid resuscitation</h4>
+        <p><strong>Initial bolus:</strong> NS or LR 20 mL/kg over 1 hour if hypotensive or severely dehydrated. Reassess. Target MAP ≥65 mmHg, UOP ≥0.5 mL/kg/h.<br><br><strong>Maintenance:</strong> Isotonic crystalloid at 1.5–2 mL/kg/h, titrated to clinical response. Avoid over-resuscitation — capillary leak syndrome in severe leptospirosis means aggressive fluids rapidly cause pulmonary edema. Use lung ultrasound (B-lines) or IVC collapsibility index to guide volume status.<br><br><strong>Vasopressors:</strong> If MAP &lt;65 after 30 mL/kg crystalloid, start norepinephrine 0.05–0.3 mcg/kg/min. Consider vasopressin 0.04 U/min as adjunct in refractory shock.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>Potassium replacement protocol</h4>
+        <p><strong>Leptospiral AKI is uniquely hypokalemic.</strong> Unlike most AKI, tubular damage causes massive renal K+ wasting. Monitor K+ every 6 hours minimum.<br><br>
+        <strong>K+ 3.0–3.5:</strong> Oral KCl 40 mEq Q6h + IV KCl 10 mEq/h in NS via central line.<br>
+        <strong>K+ 2.5–3.0:</strong> IV KCl 20 mEq/h via central line + continuous infusion 10 mEq/h. Cardiac monitor mandatory.<br>
+        <strong>K+ &lt;2.5:</strong> IV KCl 40 mEq/h via central line with continuous cardiac monitoring. ICU. Check Mg²+ — correct hypomagnesemia simultaneously (MgSO₄ 2 g IV over 2h) as refractory hypokalemia is often due to concurrent Mg depletion.<br><br>
+        <strong>Never infuse &gt;40 mEq/h KCl peripherally.</strong> Central access required for rates &gt;10 mEq/h.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MONITORING PROTOCOL -->
+<section class="section mode-physician" id="md-monitoring">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">Monitoring</div>
+    <h2>
+      <span data-lang="en">Inpatient Monitoring Protocol</span>
+      <span data-lang="tl" class="lang-hidden">Protocol sa Pagsubaybay ng Inpatient</span>
+      <span data-lang="ceb" class="lang-hidden">Protocol sa Pagsubay sa Inpatient</span>
+      <span data-lang="kap" class="lang-hidden">Protocol king Pagsubaybay ning Inpatient</span>
+    </h2>
+    <table class="lab-table">
+      <thead>
+        <tr><th>Parameter</th><th>Mild</th><th>Moderate</th><th>Severe / ICU</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Vitals (HR/BP/RR/SpO₂/Temp)</td><td>Q8h</td><td>Q4–6h</td><td>Continuous</td></tr>
+        <tr><td>Urine output</td><td>Q shift</td><td>Hourly (Foley)</td><td>Hourly (Foley)</td></tr>
+        <tr><td>Cr / BUN / K+ / Na+</td><td>Daily</td><td>Q12h</td><td>Q6–8h</td></tr>
+        <tr><td>CBC with platelet</td><td>Daily</td><td>Q12–24h</td><td>Q8–12h</td></tr>
+        <tr><td>LFTs (TB/DB/AST/ALT)</td><td>On admission, Day 3</td><td>Daily</td><td>Daily</td></tr>
+        <tr><td>PT/INR</td><td>On admission</td><td>Daily if &lt;50k plt</td><td>Q12h if bleeding</td></tr>
+        <tr><td>ABG / lactate</td><td>If SpO₂ &lt;94%</td><td>Q12h</td><td>Q6–8h</td></tr>
+        <tr><td>Chest X-ray</td><td>On admission</td><td>Q48h or if SpO₂ drops</td><td>Daily or PRN</td></tr>
+        <tr><td>ECG</td><td>If K+ &lt;3.0</td><td>Daily</td><td>Continuous telemetry</td></tr>
+        <tr><td>Fluid balance (I&O)</td><td>Q shift</td><td>Q6h</td><td>Hourly</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PULMONARY HEMORRHAGE -->
+<section class="section mode-physician" id="md-pulmonary">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">Pulm Hemorrhage</div>
+    <h2>
+      <span data-lang="en">Pulmonary Hemorrhage Management</span>
+      <span data-lang="tl" class="lang-hidden">Pamamahala ng Pulmonary Hemorrhage</span>
+      <span data-lang="ceb" class="lang-hidden">Pagdumala sa Pulmonary Hemorrhage</span>
+      <span data-lang="kap" class="lang-hidden">Pamamahala ning Pulmonary Hemorrhage</span>
+    </h2>
+    <p>
+      <span data-lang="en">SPHS (Severe Pulmonary Hemorrhage Syndrome) carries 50–70% mortality. Suspect when SpO₂ drops acutely with hemoptysis or bilateral infiltrates on CXR without fluid overload.</span>
+      <span data-lang="tl" class="lang-hidden">Ang SPHS (Severe Pulmonary Hemorrhage Syndrome) ay may 50–70% mortality. I-suspect kapag bumaba ang SpO₂ nang bigla na may hemoptysis o bilateral infiltrates sa CXR nang walang fluid overload.</span>
+      <span data-lang="ceb" class="lang-hidden">Ang SPHS (Severe Pulmonary Hemorrhage Syndrome) adunay 50–70% mortality. I-suspect kung mopaubos ang SpO₂ sa kalit uban ang hemoptysis o bilateral infiltrates sa CXR nga walay fluid overload.</span>
+      <span data-lang="kap" class="lang-hidden">Ing SPHS (Severe Pulmonary Hemorrhage Syndrome) adwang 50–70% mortality. I-suspect nung bumaba ing SpO₂ nang bigla a adwang hemoptysis o bilateral infiltrates king CXR a ala fluid overload.</span>
+    </p>
+    <div class="checklist">
+      <h4>Pulmonary Hemorrhage Stepwise Protocol</h4>
+      <ul>
+        <li>Secure airway — intubate early if SpO₂ &lt;90% despite high-flow nasal cannula (HFNC). Do not wait for overt respiratory failure.</li>
+        <li>Ventilator strategy: lung-protective (Vt 6 mL/kg IBW, PEEP 10–15 cmH₂O, plateau &lt;30). Higher PEEP may tamponade alveolar bleeding.</li>
+        <li>Correct coagulopathy: transfuse platelets if &lt;50k + active bleeding. FFP if INR &gt;1.5. Cryoprecipitate if fibrinogen &lt;150.</li>
+        <li>IV methylprednisolone 250 mg Q6h &times;3 days — limited evidence but used in severe SPHS. Taper over 7–10 days if clinical response.</li>
+        <li>Consider cyclophosphamide 500 mg IV single dose in refractory cases (case reports/series only — no RCT evidence).</li>
+        <li>Plasmapheresis (TPE) with 1.5&times; plasma volume &times;3–5 sessions — consider if no response to steroids within 24–48h. Requires higher-level center.</li>
+        <li>ECMO as rescue in refractory hypoxemia — available at select tertiary centers (PGH, SLMC, NKTI). Discuss early if trajectory suggests need.</li>
+        <li>Continue IV antibiotics throughout. Penicillin G or ceftriaxone are not affected by TPE timing.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DISCHARGE CRITERIA & FOLLOW-UP -->
+<section class="section mode-physician" id="md-discharge">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">Discharge</div>
+    <h2>
+      <span data-lang="en">Discharge Criteria &amp; Follow-Up Protocol</span>
+      <span data-lang="tl" class="lang-hidden">Pamantayan sa Discharge at Follow-Up Protocol</span>
+      <span data-lang="ceb" class="lang-hidden">Criteria sa Discharge ug Follow-Up Protocol</span>
+      <span data-lang="kap" class="lang-hidden">Pamantayan king Discharge at Follow-Up Protocol</span>
+    </h2>
+    <div class="phase-grid">
+      <div class="phase-card phase-1">
+        <div class="phase-label">Safe for Discharge When</div>
+        <h4>Discharge Criteria</h4>
+        <ul>
+          <li>Afebrile ≥48 hours without antipyretics</li>
+          <li>Creatinine trending down on 2 consecutive measurements and below 2.0 mg/dL (or at pre-admission baseline if known)</li>
+          <li>K+ stable &gt;3.5 mEq/L without IV supplementation &times;24h</li>
+          <li>Platelets &gt;100k and rising</li>
+          <li>Tolerating oral antibiotics and diet</li>
+          <li>Bilirubin trending down</li>
+          <li>SpO₂ &gt;95% on room air</li>
+          <li>Adequate urine output (&gt;1 mL/kg/h) without diuretics</li>
+        </ul>
+      </div>
+      <div class="phase-card phase-2">
+        <div class="phase-label">Post-Discharge Monitoring</div>
+        <h4>Follow-Up Schedule</h4>
+        <ul>
+          <li><strong>Week 1:</strong> Cr/K+/CBC — confirm continued renal recovery. Complete oral antibiotic course.</li>
+          <li><strong>Week 2:</strong> Cr/urinalysis — check for persistent proteinuria or hematuria. LFTs if jaundice was present.</li>
+          <li><strong>Month 1:</strong> Cr, eGFR calculation, urinalysis, BP. Assess for residual CKD (eGFR &lt;60 = referral to nephrology).</li>
+          <li><strong>Month 3:</strong> Cr, eGFR, urine ACR. ~95% will have full recovery. Refer the 5% with persistent dysfunction.</li>
+          <li><strong>Month 6–12:</strong> Ophthalmology referral if eye symptoms (uveitis can present weeks to months later). Annual Cr if AKI was severe.</li>
+          <li><strong>Counsel:</strong> Re-exposure during next flood season — advise boots, prophylactic doxycycline 200 mg weekly if high-risk.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHEMOPROPHYLAXIS DECISION TOOL -->
+<section class="section mode-physician" id="md-prophylaxis">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">Prophylaxis</div>
+    <h2>
+      <span data-lang="en">Post-Exposure Chemoprophylaxis Decision Tool</span>
+      <span data-lang="tl" class="lang-hidden">Post-Exposure Chemoprophylaxis Decision Tool</span>
+      <span data-lang="ceb" class="lang-hidden">Post-Exposure Chemoprophylaxis Decision Tool</span>
+      <span data-lang="kap" class="lang-hidden">Post-Exposure Chemoprophylaxis Decision Tool</span>
+    </h2>
+    <p>
+      <span data-lang="en">For asymptomatic individuals presenting after flood exposure. Based on DOH Philippines HPTA Advisory 2012, WHO recommendations, and local epidemiological data.</span>
+      <span data-lang="tl" class="lang-hidden">Para sa mga walang sintomas na indibidwal na nagpresenta pagkatapos ng pagkakalantad sa baha. Batay sa DOH Philippines HPTA Advisory 2012, WHO recommendations, at lokal na epidemiological data.</span>
+      <span data-lang="ceb" class="lang-hidden">Para sa mga walay sintomas nga indibidwal nga nagpresenta human sa pagkaladlad sa baha. Base sa DOH Philippines HPTA Advisory 2012, WHO recommendations, ug lokal nga epidemiological data.</span>
+      <span data-lang="kap" class="lang-hidden">Para king ding ala sintomas a indibidwal a nagpresenta kasumpal ning pagkakalantad king baha. Base king DOH Philippines HPTA Advisory 2012, WHO recommendations, at lokal a epidemiological data.</span>
+    </p>
+    <table class="lab-table">
+      <thead>
+        <tr><th>Risk Level</th><th>Exposure</th><th>Recommendation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge-red">High</span></td>
+          <td>Waded through floodwater &gt;30 min with skin breaks/wounds. Urban flooding with visible rodent activity. Rescue workers, utility crews, clean-up teams.</td>
+          <td>Doxycycline 200 mg PO single dose as soon as possible (ideally &lt;72h post-exposure). If continued exposure: 200 mg PO once weekly for duration of flood season.</td>
+        </tr>
+        <tr>
+          <td><span class="badge-amber">Moderate</span></td>
+          <td>Brief floodwater contact (&lt;30 min). Intact skin. Recreational water exposure in endemic area. Agricultural workers during rainy season.</td>
+          <td>Doxycycline 200 mg PO single dose. Monitor for symptoms &times;14 days. Return immediately if fever develops.</td>
+        </tr>
+        <tr>
+          <td><span class="badge-green">Low</span></td>
+          <td>No direct floodwater contact. Indoor flooding only. Wearing protective footwear throughout.</td>
+          <td>No chemoprophylaxis. Symptom surveillance only. Counsel on signs to watch for &times;14 days.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="alert alert-red">
+      <div class="alert-icon">🚨</div>
+      <div class="alert-body">
+        <h4><span data-lang="en">Contraindications to Doxycycline Prophylaxis</span><span data-lang="tl" class="lang-hidden">Mga Contraindication sa Doxycycline Prophylaxis</span><span data-lang="ceb" class="lang-hidden">Mga Contraindication sa Doxycycline Prophylaxis</span><span data-lang="kap" class="lang-hidden">Ding Contraindication king Doxycycline Prophylaxis</span></h4>
+        <p><span data-lang="en">Pregnancy (all trimesters), breastfeeding, children &lt;8 years old, known tetracycline allergy, severe hepatic impairment. <strong>Alternative:</strong> Amoxicillin 500 mg PO TID &times;5–7 days or azithromycin 500 mg PO OD &times;3 days. No single-dose alternative has equivalent evidence.</span><span data-lang="tl" class="lang-hidden">Pagbubuntis (lahat ng trimester), pagpapasuso, mga bata &lt;8 taong gulang, kilalang tetracycline allergy, matinding hepatic impairment. <strong>Alternatibo:</strong> Amoxicillin 500 mg PO TID &times;5–7 araw o azithromycin 500 mg PO OD &times;3 araw.</span><span data-lang="ceb" class="lang-hidden">Pagmabdos (tanan nga trimester), pagpasuso, mga bata &lt;8 anyos, nahibaloan nga tetracycline allergy, grabe nga hepatic impairment. <strong>Alternatibo:</strong> Amoxicillin 500 mg PO TID &times;5–7 ka adlaw o azithromycin 500 mg PO OD &times;3 ka adlaw.</span><span data-lang="kap" class="lang-hidden">Pagbubuntis (eganaganang trimester), pagpapasuso, ding anak a &lt;8 banwa gulang, kilalang tetracycline allergy, mabigat na hepatic impairment. <strong>Alternatibo:</strong> Amoxicillin 500 mg PO TID &times;5–7 aldaw o azithromycin 500 mg PO OD &times;3 aldaw.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIAL POPULATIONS -->
+<section class="section mode-physician" id="md-special">
+  <div class="container">
+    <div class="section-tag" style="color:var(--navy);">Special Populations</div>
+    <h2>
+      <span data-lang="en">Special Populations</span>
+      <span data-lang="tl" class="lang-hidden">Mga Espesyal na Populasyon</span>
+      <span data-lang="ceb" class="lang-hidden">Mga Espesyal nga Populasyon</span>
+      <span data-lang="kap" class="lang-hidden">Ding Espesyal a Populasyon</span>
+    </h2>
+    <div class="three-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>Pre-existing CKD</h4>
+        <p>Patients with baseline eGFR &lt;60 are at highest risk for dialysis-requiring AKI and incomplete renal recovery. Lower threshold for admission (Cr rise &gt;0.3 mg/dL from baseline). Adjust antibiotic doses to current eGFR. Avoid volume depletion — these kidneys cannot concentrate urine adequately. If already on HD/PD, admit for IV antibiotics and monitor for access-site infection.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Pregnancy</h4>
+        <p>Leptospirosis in pregnancy carries higher fetal mortality (miscarriage, stillbirth, preterm labor). Doxycycline is contraindicated — use ampicillin 1 g IV Q6H or amoxicillin 500 mg PO TID. Ceftriaxone 1 g IV OD is safe in all trimesters. Monitor fetal heart tones. Ob-Gyn co-management mandatory. Thrombocytopenia must be differentiated from HELLP syndrome.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>Pediatric (&lt;14 years)</h4>
+        <p>Doxycycline is avoided in &lt;8 years. Use amoxicillin 25–50 mg/kg/day PO divided TID, or penicillin G 50,000–100,000 U/kg/day IV divided Q6H for severe cases. Ceftriaxone 50–80 mg/kg/day IV (max 2 g). Fluid resuscitation: 20 mL/kg NS bolus. Weight-based electrolyte replacement. Hypokalemia may present as ileus or weakness before ECG changes.</p>
+      </div>
+    </div>
+    <div class="alert alert-teal">
+      <div class="alert-icon">📖</div>
+      <div class="alert-body">
+        <h4><span data-lang="en">Key References</span><span data-lang="tl" class="lang-hidden">Mga Pangunahing Sanggunian</span><span data-lang="ceb" class="lang-hidden">Mga Nag-una nga Sanggunian</span><span data-lang="kap" class="lang-hidden">Ding Pangunahing Sanggunian</span></h4>
+        <p><span data-lang="en">WHO Human Leptospirosis: Guidance for Diagnosis, Surveillance, and Control (2003, updated 2023) · IDSA Guidelines on Leptospirosis · DOH Philippines HPTA Advisory on Leptospirosis Prophylaxis · KDIGO Clinical Practice Guideline for AKI 2024 · Andrade et al., <em>Kidney International</em> 2007 (Leptospiral AKI outcomes in developing countries) · Seguro et al., <em>JASN</em> 2013 (Tubular dysfunction in leptospirosis) · Bharti et al., <em>Lancet Infect Dis</em> 2003 (Comprehensive review)</span><span data-lang="tl" class="lang-hidden">WHO Human Leptospirosis: Guidance for Diagnosis, Surveillance, and Control (2003, updated 2023) · IDSA Guidelines on Leptospirosis · DOH Philippines HPTA Advisory · KDIGO AKI 2024 · Andrade et al., Kidney International 2007 · Seguro et al., JASN 2013 · Bharti et al., Lancet Infect Dis 2003</span><span data-lang="ceb" class="lang-hidden">WHO Human Leptospirosis: Guidance for Diagnosis, Surveillance, and Control (2003, updated 2023) · IDSA Guidelines on Leptospirosis · DOH Philippines HPTA Advisory · KDIGO AKI 2024 · Andrade et al., Kidney International 2007 · Seguro et al., JASN 2013 · Bharti et al., Lancet Infect Dis 2003</span><span data-lang="kap" class="lang-hidden">WHO Human Leptospirosis: Guidance for Diagnosis, Surveillance, and Control (2003, updated 2023) · IDSA Guidelines on Leptospirosis · DOH Philippines HPTA Advisory · KDIGO AKI 2024 · Andrade et al., Kidney International 2007 · Seguro et al., JASN 2013 · Bharti et al., Lancet Infect Dis 2003</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- RELATED GUIDES -->
 <div class="related-guides">
   <div class="container">
@@ -1144,6 +1661,9 @@
 </button>
 
 <script>
+const GMODE='wgmr-mode';
+function setMode(mode){const isPhys=mode==='physician';document.body.classList.toggle('physician-mode',isPhys);document.getElementById('tab-pt').classList.toggle('active',!isPhys);document.getElementById('tab-md').classList.toggle('active',isPhys);document.querySelector('.lang-group').style.opacity=isPhys?'.35':'1';document.querySelector('.lang-group').style.pointerEvents=isPhys?'none':'auto';localStorage.setItem(GMODE,mode);window.scrollTo({top:document.querySelector('.audience-tabs').offsetTop-60,behavior:'smooth'});}
+(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 const DARK_KEY='wgmr-dark',DESK_KEY='wgmr-desktop';
 function applyDark(on){document.documentElement.setAttribute('data-theme',on?'dark':'light');const btn=document.getElementById('darkToggle');const lbl=document.getElementById('darkLabel');const ico=document.getElementById('darkIcon');if(btn)btn.classList.toggle('active',on);if(lbl)lbl.textContent=on?'Light':'Dark';if(ico)ico.innerHTML=on?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';}
 function toggleDark(){const on=document.documentElement.getAttribute('data-theme')!=='dark';localStorage.setItem(DARK_KEY,on?'1':'0');applyDark(on);}

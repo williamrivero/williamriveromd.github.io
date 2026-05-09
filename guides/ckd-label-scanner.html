@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CKD Nutrition Label Scanner — W. G. M. Rivero, MD</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+    --navy:       #0f1e2e;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;
+    --purple-soft:#faf5ff;
+  }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.7;font-size:16px;}
+
+.site-header{background:var(--navy);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+.site-header a.brand{font-size:16px;font-weight:400;color:white;text-decoration:none;}
+.site-header a.brand strong{font-weight:600;color:#d4af4f;}
+.site-header a.back{font-size:12px;color:rgba(255,255,255,.55);text-decoration:none;}
+.guide-toggle-bar{display:flex;align-items:center;padding:6px 32px;background:rgba(10,18,32,.96);border-bottom:1px solid rgba(255,255,255,.08);justify-content:space-between;}
+.lang-label{font-size:11px;color:rgba(255,255,255,.35);margin-right:4px;}
+.lang-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;transition:all .2s;}
+.lang-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+.toggle-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s;}
+.toggle-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+.toggle-btn svg{width:12px;height:12px;}
+[data-lang].lang-hidden{display:none !important;}
+
+.hero{background:var(--navy);color:white;padding:64px 0 72px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;border-radius:50%;border:1px solid rgba(184,150,46,.15);}
+.container{max-width:900px;margin:0 auto;padding:0 32px;}
+.hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);border:1px solid rgba(184,150,46,.4);padding:5px 14px;border-radius:20px;margin-bottom:20px;}
+.hero h1{font-family:'Lora',serif;font-size:clamp(28px,4.5vw,46px);font-weight:600;line-height:1.2;margin-bottom:16px;}
+.hero h1 em{color:var(--gold-light);font-style:italic;}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.85);max-width:620px;line-height:1.65;margin-bottom:32px;}
+.hero-sub em{color:var(--gold-light);font-style:italic;}
+.hero-meta{display:flex;gap:28px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.55);}
+.hero-meta strong{color:rgba(255,255,255,.88);font-weight:500;}
+
+.nav-strip{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100;}
+.nav-pills{display:flex;gap:4px;padding:10px 32px;max-width:900px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
+.nav-pills::-webkit-scrollbar{display:none;}
+.nav-pill{white-space:nowrap;font-size:13px;font-weight:500;color:var(--text-muted);text-decoration:none;padding:5px 14px;border-radius:20px;border:1px solid transparent;transition:all .2s;}
+.nav-pill:hover{color:var(--navy);border-color:var(--border);background:var(--bg);}
+
+.section{padding:60px 0;border-bottom:1px solid var(--border);}
+.section:last-of-type{border-bottom:none;}
+.section-tag{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+.section h2{font-family:'Lora',serif;font-size:clamp(22px,3.2vw,30px);font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:18px;}
+.section p{color:#2c3340;margin-bottom:14px;}
+
+/* ── ANALYZER CARD ── */
+.analyzer-card{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin:24px 0;}
+.analyzer-header{background:var(--navy);padding:22px 28px;}
+.analyzer-header h3{font-family:'Lora',serif;font-size:19px;font-weight:600;color:white;margin:0 0 4px;}
+.analyzer-header p{font-size:13px;color:rgba(255,255,255,.5);margin:0;}
+.analyzer-body{padding:28px;}
+
+/* Stage selector */
+.stage-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.stage-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);color:var(--text-muted);cursor:pointer;transition:all .18s;white-space:nowrap;}
+.stage-btn:hover{border-color:var(--teal);color:var(--teal);}
+.stage-btn.active{color:white;border-color:transparent;}
+.stage-btn[data-stage="1"].active,.stage-btn[data-stage="2"].active{background:#2d7a4f;}
+.stage-btn[data-stage="3a"].active{background:#9a6500;}
+.stage-btn[data-stage="3b"].active{background:#b45309;}
+.stage-btn[data-stage="4"].active{background:#c0392b;}
+.stage-btn[data-stage="5"].active{background:#9f1239;}
+.stage-btn[data-stage="HD"].active{background:#075985;}
+.stage-btn[data-stage="PD"].active{background:#166534;}
+
+/* Form */
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.form-group input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.form-group input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+.ingredient-label{font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:block;}
+
+/* Drop zone */
+.drop-zone{border:2px dashed var(--border);border-radius:12px;padding:40px 24px;text-align:center;cursor:pointer;transition:all .25s;background:var(--white);margin-bottom:20px;}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--teal);background:var(--teal-light);}
+.drop-zone-icon{font-size:40px;margin-bottom:12px;opacity:.6;}
+.drop-zone-text{font-size:14px;color:var(--text-muted);margin-bottom:8px;}
+.drop-zone-sub{font-size:12px;color:var(--text-faint);}
+.drop-zone-btns{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
+.drop-zone-btns label{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.drop-zone-btns label.primary{background:var(--navy);color:white;}
+.drop-zone-btns label.primary:hover{background:var(--teal);}
+.drop-zone-btns label.secondary{background:var(--white);color:var(--navy);border:1.5px solid var(--border);}
+.drop-zone-btns label.secondary:hover{border-color:var(--teal);color:var(--teal);}
+.drop-zone-btns input[type="file"]{display:none;}
+
+/* Preview */
+.preview-wrap{margin-bottom:20px;display:none;text-align:center;}
+.preview-wrap.show{display:block;}
+.preview-wrap img{max-width:100%;max-height:340px;border-radius:10px;border:1px solid var(--border);object-fit:contain;}
+.preview-actions{margin-top:10px;display:flex;gap:10px;justify-content:center;}
+.preview-clear{font-size:12px;color:var(--red);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;}
+
+/* Analyze button */
+.analyze-btn{background:var(--navy);color:white;border:none;border-radius:8px;padding:13px 36px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s;margin-top:8px;display:flex;align-items:center;gap:10px;}
+.analyze-btn:hover{background:var(--teal);}
+.analyze-btn:disabled{background:#9aa3b0;cursor:not-allowed;}
+
+/* Progress bar */
+.progress-wrap{display:none;margin:16px 0;}
+.progress-wrap.show{display:block;}
+.progress-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;width:0%;background:var(--teal);border-radius:4px;transition:width .3s;}
+.progress-text{font-size:12px;color:var(--text-muted);margin-top:5px;text-align:center;}
+
+/* Extracted fields */
+.extracted-fields{display:none;margin-top:24px;}
+.extracted-fields.show{display:block;}
+.ef-header{font-family:'Lora',serif;font-size:17px;font-weight:600;color:var(--navy);margin-bottom:4px;}
+.ef-sub{font-size:12px;color:var(--text-muted);margin-bottom:16px;}
+.ef-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 16px;}
+@media(max-width:520px){.ef-grid{grid-template-columns:1fr 1fr;}}
+.ef-field label{display:block;font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.ef-field input{width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+.ef-field input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+.ef-field.full{grid-column:1/-1;}
+.reassess-btn{background:var(--teal);color:white;border:none;border-radius:8px;padding:10px 28px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s;margin-top:16px;}
+.reassess-btn:hover{background:var(--navy);}
+
+/* Spinner */
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.spinner.show{display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── RESULTS ── */
+#results-wrap{display:none;margin-top:32px;}
+#results-wrap.show{display:block;}
+
+.results-grid{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start;}
+@media(max-width:640px){.results-grid{grid-template-columns:1fr;}}
+
+/* Score gauge */
+.score-wrap{text-align:center;margin-bottom:24px;}
+.score-gauge{position:relative;width:120px;height:120px;margin:0 auto 8px;}
+.score-gauge svg{transform:rotate(-90deg);}
+.score-gauge .bg{fill:none;stroke:var(--border);stroke-width:8;}
+.score-gauge .fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .8s ease;}
+.score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Lora',serif;font-size:32px;font-weight:700;}
+.score-label{font-size:12px;color:var(--text-muted);font-weight:500;}
+
+/* CKD FLAGS PANEL */
+.ckd-flags{flex:1;}
+.flags-header{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:4px;}
+.flags-sub{font-size:13px;color:var(--text-muted);margin-bottom:16px;}
+.flag-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.flag-row:last-child{border-bottom:none;}
+.flag-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:2px;}
+.flag-ok .flag-icon{background:var(--green-soft);color:var(--green);}
+.flag-warn .flag-icon{background:var(--amber-soft);color:#7a4a00;}
+.flag-danger .flag-icon{background:var(--red-soft);color:var(--red);}
+.flag-info .flag-icon{background:var(--teal-light);color:var(--teal);}
+.flag-body h4{font-size:13.5px;font-weight:600;color:#0f1e2e;margin-bottom:3px;}
+.flag-body p{font-size:12.5px;color:#2c3340;margin:0;line-height:1.55;}
+.flag-body .flag-values{font-size:12px;color:var(--text-muted);margin-top:3px;}
+.flag-body .flag-values strong{color:#0f1e2e;}
+
+/* Alternatives */
+.alt-panel{margin-top:24px;background:var(--teal-light);border:1px solid rgba(26,107,114,.15);border-radius:10px;padding:18px 22px;}
+.alt-panel h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:12px;}
+.alt-item{margin-bottom:12px;}
+.alt-item:last-child{margin-bottom:0;}
+.alt-item h5{font-size:13px;font-weight:600;color:var(--teal);margin-bottom:4px;}
+.alt-item ul{margin:0 0 0 16px;font-size:12.5px;color:#2c3340;line-height:1.6;}
+.alt-item ul li{margin-bottom:2px;}
+
+/* Error */
+.api-error{background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:10px;padding:16px 20px;margin-top:20px;font-size:14px;color:var(--red);display:none;}
+.api-error.show{display:block;}
+
+/* Alert */
+.alert{border-radius:10px;padding:18px 22px;margin:20px 0;display:flex;gap:14px;align-items:flex-start;}
+.alert-amber{background:var(--amber-soft);border-left:3px solid var(--amber);}
+.alert-teal{background:var(--teal-light);border-left:3px solid var(--teal);}
+.alert-red{background:var(--red-soft);border-left:3px solid var(--red);}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:2px;}
+.alert-body h4{font-size:14px;font-weight:600;color:#0f1e2e;margin-bottom:5px;}
+.alert-body p,.alert-body ul{font-size:13.5px;color:#2c3340;margin:0;line-height:1.6;}
+.alert-body ul{margin-left:16px;}
+.alert-body ul li{margin-bottom:3px;}
+
+/* Two col */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0;}
+@media(max-width:600px){.two-col{grid-template-columns:1fr;}}
+.feat-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:18px;}
+.feat-card h4{font-size:13.5px;font-weight:600;color:#0f1e2e;margin-bottom:8px;}
+.feat-card p{font-size:13px;color:#2c3340;margin:0;line-height:1.6;}
+
+/* Ref table */
+.ref-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px;overflow-x:auto;display:block;}
+.ref-table th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);padding:9px 14px;background:var(--bg);border-bottom:1px solid var(--border);white-space:nowrap;}
+.ref-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:#2c3340;vertical-align:top;white-space:nowrap;}
+.ref-table td:first-child{font-weight:600;color:#0f1e2e;}
+.ref-table tr:last-child td{border-bottom:none;}
+.ref-table tr:hover td{background:var(--bg);}
+
+.dr-card{background:#0f1e2e;color:white;border-radius:14px;padding:28px;display:flex;gap:20px;align-items:flex-start;margin-top:48px;}
+.dr-card h4{font-size:15px;font-weight:600;color:white;margin-bottom:4px;}
+.dr-card p{font-size:13.5px;color:rgba(255,255,255,.85);line-height:1.6;}
+.dr-creds{font-size:11.5px;color:rgba(255,255,255,.45);margin-top:8px;}
+.guide-footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0;margin-top:64px;}
+.guide-footer .fi{max-width:900px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.guide-footer p{font-size:12.5px;color:#4a5260;}
+.guide-footer a{color:var(--teal);text-decoration:none;font-weight:500;}
+.disclaimer{background:var(--amber-soft);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:14px 18px;margin:36px 0 0;font-size:12.5px;color:#2c3340;line-height:1.6;}
+.disclaimer strong{color:var(--navy);}
+.print-btn{position:fixed;bottom:76px;right:22px;width:42px;height:42px;border-radius:50%;background:var(--teal);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:transform .2s;z-index:9998;}
+.print-btn:hover{transform:scale(1.1);}
+.print-btn svg{width:17px;height:17px;}
+
+/* Related guides */
+.related-guides{margin:48px 0 32px;padding-top:32px;border-top:2px solid var(--border);}
+.related-guides h2{font-size:1.15rem;font-weight:700;color:var(--navy);margin-bottom:18px;text-transform:uppercase;letter-spacing:0.04em;}
+.related-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.related-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;text-decoration:none;color:inherit;transition:box-shadow .18s,border-color .18s;cursor:pointer;}
+.related-card:hover{border-color:var(--teal);box-shadow:0 4px 16px rgba(26,107,114,.10);}
+.related-card-tag{font-size:.68rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.related-card-title{font-size:.92rem;font-weight:600;color:var(--navy);line-height:1.35;margin-bottom:6px;}
+.related-card-desc{font-size:.80rem;color:var(--text-muted);line-height:1.45;flex:1;}
+.related-card-arrow{font-size:.80rem;color:var(--teal);font-weight:700;margin-top:10px;align-self:flex-end;}
+
+/* ── DARK MODE ── */
+html[data-theme="dark"]{--navy:#0f1e2e;--teal:#25949d;--teal-light:#0e2f32;--gold-light:#d4af4f;--text:#e8eaf0;--text-muted:#8a95a8;--border:#2a3548;--bg:#141c2a;--white:#1a2030;--red:#e55050;--red-soft:#2a1515;--amber:#f5a623;--amber-soft:#2a1f0a;--green:#3d9a6a;--green-soft:#0e2a1c;}
+html[data-theme="dark"] body{background:#0f1520;color:#e8eaf0;}
+html[data-theme="dark"] .site-header{background:#080d16;}
+html[data-theme="dark"] .nav-strip{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .hero{background:#080d16;}
+html[data-theme="dark"] .section{border-color:#2a3548;}
+html[data-theme="dark"] .analyzer-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .analyzer-header{background:#080d16;}
+html[data-theme="dark"] .form-group input{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+html[data-theme="dark"] .ef-field input{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+html[data-theme="dark"] .form-group label,.html[data-theme="dark"] .ingredient-label{color:#25949d;}
+html[data-theme="dark"] .stage-btn{background:#141c2a;border-color:#2a3548;color:#8a95a8;}
+html[data-theme="dark"] .section p,.html[data-theme="dark"] .feat-card p,.html[data-theme="dark"] .alert-body p,.html[data-theme="dark"] .flag-body p{color:#c0cad8 !important;}
+html[data-theme="dark"] .drop-zone{background:#141c2a;border-color:#2a3548;color:#8a95a8;}
+html[data-theme="dark"] .drop-zone:hover,html[data-theme="dark"] .drop-zone.dragover{border-color:#25949d;background:#0e2f32;}
+html[data-theme="dark"] .drop-zone-btns label.secondary{background:#141c2a;border-color:#2a3548;color:#8a95a8;}
+html[data-theme="dark"] .flag-body h4{color:#e8eaf0;}
+html[data-theme="dark"] .flag-row{border-color:#2a3548;}
+html[data-theme="dark"] .ref-table th{background:#1a2535;color:#8a95a8;}
+html[data-theme="dark"] .ref-table td{color:#c0cad8;border-color:#2a3548;}
+html[data-theme="dark"] .ref-table td:first-child{color:#e8eaf0;}
+html[data-theme="dark"] .feat-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .feat-card h4{color:#e8eaf0;}
+html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .disclaimer{background:#2a1f0a;}
+html[data-theme="dark"] .alt-panel{background:#0e2f32;border-color:rgba(37,148,157,.2);}
+html[data-theme="dark"] .alt-panel h4{color:#e8eaf0;}
+html[data-theme="dark"] .alt-item h5{color:#25949d;}
+html[data-theme="dark"] .alt-item ul li{color:#c0cad8;}
+html[data-theme="dark"] .alert-teal{background:#0e2f32;}
+html[data-theme="dark"] .alert-amber{background:#2a1f0a;}
+html[data-theme="dark"] .alert-red{background:#2a1515;}
+html[data-theme="dark"] .dr-card{background:#080d16;}
+html[data-theme="dark"] .related-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .related-card:hover{border-color:#25949d;}
+html[data-theme="dark"] .related-card-title{color:#e8eaf0;}
+html[data-theme="dark"] .score-num{color:#e8eaf0;}
+html[data-theme="dark"] .ef-header{color:#e8eaf0;}
+html[data-theme="dark"] .preview-wrap img{border-color:#2a3548;}
+
+html[data-view="desktop"]{min-width:1024px;}
+html[data-view="desktop"] body{min-width:1024px;}
+
+@media print{
+  .site-header,.nav-strip,.guide-toggle-bar,.print-btn,.guide-footer,.analyze-btn,.reassess-btn,.stage-row,.drop-zone,.preview-wrap,.progress-wrap,.extracted-fields,.drop-zone-btns{display:none !important;}
+  body{font-size:12px;color:#000;background:#fff;}
+  .hero{background:#fff !important;color:#000 !important;padding:16px 0 !important;}
+  @page{margin:15mm;size:A4;}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+<a class="brand" href="https://williamriveromd.com">W. G. M. <strong>Rivero</strong>, MD</a>
+<a class="back" href="https://williamriveromd.com/guides/index.html">← All Guides</a>
+</header>
+<div class="guide-toggle-bar">
+<div style="display:flex;gap:8px;align-items:center;">
+<span class="lang-label">Language:</span>
+<button class="lang-btn active" id="glb-en" onclick="setGuideLang('en')">English</button>
+<button class="lang-btn" id="glb-tl" onclick="setGuideLang('tl')">Tagalog</button>
+<button class="lang-btn" id="glb-ceb" onclick="setGuideLang('ceb')">Cebuano</button>
+<button class="lang-btn" id="glb-kap" onclick="setGuideLang('kap')">KAP</button>
+</div>
+<div style="display:flex;gap:8px;">
+<button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+<svg fill="none" id="darkIcon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+<span id="darkLabel">Dark</span>
+</button>
+<button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="14" rx="2" width="20" x="2" y="3"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg>
+<span id="desktopLabel">Desktop</span>
+</button>
+</div>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag" data-lang="en">Nutrition · CKD · Label Scanner</div>
+<div class="hero-tag lang-hidden" data-lang="tl">Nutrition · CKD · Label Scanner</div>
+<div class="hero-tag lang-hidden" data-lang="ceb">Nutrition · CKD · Label Scanner</div>
+<div class="hero-tag lang-hidden" data-lang="kap">Nutrition · CKD · Label Scanner</div>
+<h1 data-lang="en">CKD Nutrition <em>Label Scanner</em></h1>
+<h1 class="lang-hidden" data-lang="tl">CKD Nutrition <em>Label Scanner</em></h1>
+<h1 class="lang-hidden" data-lang="ceb">CKD Nutrition <em>Label Scanner</em></h1>
+<h1 class="lang-hidden" data-lang="kap">CKD Nutrition <em>Label Scanner</em></h1>
+<p class="hero-sub" data-lang="en">Upload or photograph any packaged food's Nutrition Facts label — get instant CKD safety flags showing whether this product is safe for your kidney stage.</p>
+<p class="hero-sub lang-hidden" data-lang="tl">Mag-upload o kumuha ng litrato ng kahit anong Nutrition Facts label ng pagkain — makakuha ka agad ng CKD safety flags na magpapakita kung ligtas ba ang produktong ito para sa iyong kidney stage.</p>
+<p class="hero-sub lang-hidden" data-lang="ceb">Pag-upload o pagkuha og litrato sa bisan unsang Nutrition Facts label sa pagkaon — makakuha ka dayon og CKD safety flags nga magpakita kung safe ba kini nga produkto para sa imong kidney stage.</p>
+<p class="hero-sub lang-hidden" data-lang="kap">Mag-upload o kunan mung litrato ing Nutrition Facts label ning maski sanu mang pagkain — makuha mu agad ing CKD safety flags a magpakit nung safe ya ing produktung ini para king kidney stage mu.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Guidelines:</strong> KDIGO 2024 · NKF KDOQI 2020</span>
+<span><strong>Updated:</strong> 2026</span>
+</div>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#scanner" data-lang="en">Scanner</a><a class="nav-pill lang-hidden" href="#scanner" data-lang="tl">Scanner</a><a class="nav-pill lang-hidden" href="#scanner" data-lang="ceb">Scanner</a><a class="nav-pill lang-hidden" href="#scanner" data-lang="kap">Scanner</a>
+<a class="nav-pill" href="#how-it-works" data-lang="en">How It Works</a><a class="nav-pill lang-hidden" href="#how-it-works" data-lang="tl">Paano Gumagana</a><a class="nav-pill lang-hidden" href="#how-it-works" data-lang="ceb">Giunsa Paglihok</a><a class="nav-pill lang-hidden" href="#how-it-works" data-lang="kap">Makananu Ya</a>
+<a class="nav-pill" href="#ckd-limits" data-lang="en">CKD Limits</a><a class="nav-pill lang-hidden" href="#ckd-limits" data-lang="tl">CKD Limits</a><a class="nav-pill lang-hidden" href="#ckd-limits" data-lang="ceb">CKD Limits</a><a class="nav-pill lang-hidden" href="#ckd-limits" data-lang="kap">CKD Limits</a>
+<a class="nav-pill" href="#tips" data-lang="en">Tips</a><a class="nav-pill lang-hidden" href="#tips" data-lang="tl">Mga Tip</a><a class="nav-pill lang-hidden" href="#tips" data-lang="ceb">Mga Tip</a><a class="nav-pill lang-hidden" href="#tips" data-lang="kap">Mga Tip</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- ═══════════ SCANNER ═══════════ -->
+<section class="section" id="scanner">
+<div class="section-tag" data-lang="en">Label Scanning Tool</div><div class="section-tag lang-hidden" data-lang="tl">Tool para sa Label Scanning</div><div class="section-tag lang-hidden" data-lang="ceb">Label Scanning Tool</div><div class="section-tag lang-hidden" data-lang="kap">Label Scanning Tool</div>
+<h2 data-lang="en">Scan a Nutrition Label</h2><h2 class="lang-hidden" data-lang="tl">Mag-scan ng Nutrition Label</h2><h2 class="lang-hidden" data-lang="ceb">Pag-scan sa Nutrition Label</h2><h2 class="lang-hidden" data-lang="kap">Mag-scan Nutrition Label</h2>
+<p data-lang="en">Take a photo or upload an image of any Nutrition Facts label. The scanner will extract the nutrient values and flag anything concerning for your CKD stage.</p>
+<p class="lang-hidden" data-lang="tl">Kumuha ng litrato o mag-upload ng imahe ng kahit anong Nutrition Facts label. I-e-extract ng scanner ang mga halaga ng nutrients at ifa-flag ang kahit anong nakababahala para sa iyong CKD stage.</p>
+<p class="lang-hidden" data-lang="ceb">Pagkuha og litrato o pag-upload og imahe sa bisan unsang Nutrition Facts label. Ang scanner mag-extract sa nutrient values ug mag-flag sa bisan unsa nga makapabalaka para sa imong CKD stage.</p>
+<p class="lang-hidden" data-lang="kap">Kunan mung litrato o mag-upload kang larawan ning maski sanu mang Nutrition Facts label. I-extract ning scanner deng halaga da ring nutrients at i-flag na ing maski nanu mang makabahala para king CKD stage mu.</p>
+
+<div class="analyzer-card">
+<div class="analyzer-header">
+<h3 data-lang="en">Nutrition Label Scanner</h3><h3 class="lang-hidden" data-lang="tl">Nutrition Label Scanner</h3><h3 class="lang-hidden" data-lang="ceb">Nutrition Label Scanner</h3><h3 class="lang-hidden" data-lang="kap">Nutrition Label Scanner</h3>
+<p data-lang="en">Powered by Tesseract OCR · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="tl">Pinapagana ng Tesseract OCR · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="ceb">Gipadagan sa Tesseract OCR · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="kap">Powered by Tesseract OCR · CKD-adjusted safety flags</p>
+</div>
+<div class="analyzer-body">
+
+<!-- Stage selector -->
+<div style="margin-bottom:6px;">
+<span class="ingredient-label" data-lang="en">Your CKD Stage (for safety flags)</span>
+<span class="ingredient-label lang-hidden" data-lang="tl">Ang iyong CKD Stage (para sa safety flags)</span>
+<span class="ingredient-label lang-hidden" data-lang="ceb">Imong CKD Stage (para sa safety flags)</span>
+<span class="ingredient-label lang-hidden" data-lang="kap">Ing CKD Stage mu (para king safety flags)</span>
+</div>
+<div class="stage-row" id="stage-row">
+<button class="stage-btn active" data-stage="none" onclick="setStage('none',this)" data-lang="en">No CKD / General</button>
+<button class="stage-btn" data-stage="1" onclick="setStage('1',this)">Stage 1-2</button>
+<button class="stage-btn" data-stage="3a" onclick="setStage('3a',this)">Stage 3a</button>
+<button class="stage-btn" data-stage="3b" onclick="setStage('3b',this)">Stage 3b</button>
+<button class="stage-btn" data-stage="4" onclick="setStage('4',this)">Stage 4</button>
+<button class="stage-btn" data-stage="5" onclick="setStage('5',this)">Stage 5</button>
+<button class="stage-btn" data-stage="HD" onclick="setStage('HD',this)">Hemodialysis</button>
+<button class="stage-btn" data-stage="PD" onclick="setStage('PD',this)">Peritoneal Dialysis</button>
+</div>
+
+<!-- Image input -->
+<span class="ingredient-label" data-lang="en">Upload or capture a Nutrition Facts label</span>
+<span class="ingredient-label lang-hidden" data-lang="tl">Mag-upload o kumuha ng litrato ng Nutrition Facts label</span>
+<span class="ingredient-label lang-hidden" data-lang="ceb">Pag-upload o pagkuha og litrato sa Nutrition Facts label</span>
+<span class="ingredient-label lang-hidden" data-lang="kap">Mag-upload o kunan mung litrato ing Nutrition Facts label</span>
+
+<div class="drop-zone" id="drop-zone">
+<div class="drop-zone-icon">📷</div>
+<div class="drop-zone-text" data-lang="en">Drag and drop a label image here</div>
+<div class="drop-zone-text lang-hidden" data-lang="tl">I-drag at i-drop ang imahe ng label dito</div>
+<div class="drop-zone-text lang-hidden" data-lang="ceb">I-drag ug i-drop ang imahe sa label dinhi</div>
+<div class="drop-zone-text lang-hidden" data-lang="kap">I-drag at i-drop ing larawan ning label keni</div>
+<div class="drop-zone-sub" data-lang="en">or use the buttons below</div>
+<div class="drop-zone-sub lang-hidden" data-lang="tl">o gamitin ang mga button sa ibaba</div>
+<div class="drop-zone-sub lang-hidden" data-lang="ceb">o gamita ang mga button sa ubos</div>
+<div class="drop-zone-sub lang-hidden" data-lang="kap">o gamitan mu ring buttons king lalam</div>
+<div class="drop-zone-btns">
+<label class="primary"><input type="file" accept="image/*" capture="environment" id="camera-input"/> Take Photo</label>
+<label class="secondary"><input type="file" accept="image/*" id="upload-input"/> Upload Image</label>
+</div>
+</div>
+
+<!-- Preview -->
+<div class="preview-wrap" id="preview-wrap">
+<img id="preview-img" alt="Label preview" src=""/>
+<div class="preview-actions">
+<button class="preview-clear" onclick="clearImage()" data-lang="en">Remove image</button>
+<button class="preview-clear lang-hidden" onclick="clearImage()" data-lang="tl">Alisin ang imahe</button>
+<button class="preview-clear lang-hidden" onclick="clearImage()" data-lang="ceb">Tangtanga ang imahe</button>
+<button class="preview-clear lang-hidden" onclick="clearImage()" data-lang="kap">Ilako ing larawan</button>
+</div>
+</div>
+
+<canvas id="preprocess-canvas" style="display:none;"></canvas>
+
+<button class="analyze-btn" id="scan-btn" onclick="scanLabel()" disabled>
+<div class="spinner" id="spinner"></div>
+<span id="btn-text" data-lang="en">Scan Label</span>
+<span id="btn-text-tl" class="lang-hidden" data-lang="tl">I-scan ang Label</span>
+<span id="btn-text-ceb" class="lang-hidden" data-lang="ceb">I-scan ang Label</span>
+<span id="btn-text-kap" class="lang-hidden" data-lang="kap">I-scan ing Label</span>
+</button>
+
+<!-- Progress -->
+<div class="progress-wrap" id="progress-wrap">
+<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+<div class="progress-text" id="progress-text" data-lang="en">Initializing OCR...</div>
+</div>
+
+<div class="api-error" id="api-error"></div>
+
+<!-- Extracted fields -->
+<div class="extracted-fields" id="extracted-fields">
+<div class="ef-header" data-lang="en">Extracted Nutrient Values</div><div class="ef-header lang-hidden" data-lang="tl">Na-extract na Nutrient Values</div><div class="ef-header lang-hidden" data-lang="ceb">Na-extract nga Nutrient Values</div><div class="ef-header lang-hidden" data-lang="kap">Na-extract a Nutrient Values</div>
+<div class="ef-sub" data-lang="en">Review and correct any OCR errors before assessing</div><div class="ef-sub lang-hidden" data-lang="tl">Suriin at itama ang mga OCR errors bago mag-assess</div><div class="ef-sub lang-hidden" data-lang="ceb">Tan-awa ug tul-ira ang mga OCR errors sa dili pa mag-assess</div><div class="ef-sub lang-hidden" data-lang="kap">I-review at itumpak la ring OCR errors bayu mag-assess</div>
+<div class="ef-grid">
+<div class="ef-field full"><label>Serving Size</label><input type="text" id="ef-serving" placeholder="e.g. 1 cup (240g)"/></div>
+<div class="ef-field"><label>Calories</label><input type="number" id="ef-cal" placeholder="0"/></div>
+<div class="ef-field"><label>Total Fat (g)</label><input type="number" id="ef-fat" step="0.1" placeholder="0"/></div>
+<div class="ef-field"><label>Saturated Fat (g)</label><input type="number" id="ef-satfat" step="0.1" placeholder="0"/></div>
+<div class="ef-field"><label>Trans Fat (g)</label><input type="number" id="ef-transfat" step="0.1" placeholder="0"/></div>
+<div class="ef-field"><label>Cholesterol (mg)</label><input type="number" id="ef-chol" placeholder="0"/></div>
+<div class="ef-field"><label>Sodium (mg)</label><input type="number" id="ef-sodium" placeholder="0"/></div>
+<div class="ef-field"><label>Total Carbs (g)</label><input type="number" id="ef-carbs" placeholder="0"/></div>
+<div class="ef-field"><label>Dietary Fiber (g)</label><input type="number" id="ef-fiber" step="0.1" placeholder="0"/></div>
+<div class="ef-field"><label>Sugars (g)</label><input type="number" id="ef-sugars" step="0.1" placeholder="0"/></div>
+<div class="ef-field"><label>Protein (g)</label><input type="number" id="ef-protein" step="0.1" placeholder="0"/></div>
+<div class="ef-field"><label>Potassium (mg)</label><input type="number" id="ef-potassium" placeholder="0"/></div>
+<div class="ef-field"><label>Phosphorus (mg)</label><input type="number" id="ef-phosphorus" placeholder="0"/></div>
+<div class="ef-field"><label>Calcium (mg)</label><input type="number" id="ef-calcium" placeholder="0"/></div>
+<div class="ef-field"><label>Iron (mg)</label><input type="number" id="ef-iron" step="0.1" placeholder="0"/></div>
+</div>
+<button class="reassess-btn" onclick="runAssessment()" data-lang="en">Re-assess CKD Safety</button>
+<button class="reassess-btn lang-hidden" onclick="runAssessment()" data-lang="tl">I-assess Ulit ang CKD Safety</button>
+<button class="reassess-btn lang-hidden" onclick="runAssessment()" data-lang="ceb">I-assess Balik ang CKD Safety</button>
+<button class="reassess-btn lang-hidden" onclick="runAssessment()" data-lang="kap">I-assess Pasibayu ing CKD Safety</button>
+</div>
+
+<!-- ═══ RESULTS ═══ -->
+<div id="results-wrap">
+<div class="results-grid">
+<!-- SCORE GAUGE -->
+<div>
+<div class="score-wrap">
+<div class="score-gauge" id="score-gauge">
+<svg width="120" height="120" viewBox="0 0 120 120">
+<circle class="bg" cx="60" cy="60" r="52"/>
+<circle class="fill" id="score-arc" cx="60" cy="60" r="52" stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
+</svg>
+<div class="score-num" id="score-num">--</div>
+</div>
+<div class="score-label" data-lang="en">CKD Safety Score</div>
+<div class="score-label lang-hidden" data-lang="tl">CKD Safety Score</div>
+<div class="score-label lang-hidden" data-lang="ceb">CKD Safety Score</div>
+<div class="score-label lang-hidden" data-lang="kap">CKD Safety Score</div>
+</div>
+</div>
+<!-- CKD FLAGS -->
+<div class="ckd-flags">
+<div class="flags-header" id="flags-header">CKD Safety Assessment</div>
+<div class="flags-sub" id="flags-sub" data-lang="en">Per serving</div>
+<div id="flags-list"></div>
+</div>
+</div>
+
+<!-- ALTERNATIVES -->
+<div id="alt-wrap"></div>
+
+</div><!-- /results-wrap -->
+</div><!-- /analyzer-body -->
+</div><!-- /analyzer-card -->
+
+<div class="disclaimer" data-lang="en"><strong>Educational tool only.</strong> OCR accuracy depends on image quality, label formatting, and lighting conditions. Extracted values may contain errors — always verify the numbers before relying on the assessment. Consult your nephrologist and renal dietitian before making dietary changes. Not a substitute for professional medical or dietary advice.</div>
+<div class="disclaimer lang-hidden" data-lang="tl"><strong>Pang-edukasyon lamang.</strong> Ang katumpakan ng OCR ay depende sa kalidad ng imahe, format ng label, at kondisyon ng ilaw. Ang mga na-extract na halaga ay maaaring may mga error — palaging i-verify ang mga numero bago umasa sa assessment. Kumonsulta sa iyong nephrologist at renal dietitian bago gumawa ng mga pagbabago sa pagkain. Hindi ito pamalit sa propesyonal na medikal o dietary advice.</div>
+<div class="disclaimer lang-hidden" data-lang="ceb"><strong>Alang ra sa pagtuon.</strong> Ang katukma sa OCR nagdepende sa kalidad sa imahe, format sa label, ug kahimtang sa suga. Ang na-extract nga mga kantidad mahimong may mga sayop — kanunay i-verify ang mga numero sa dili pa magsalig sa assessment. Pakigsulti sa imong nephrologist ug renal dietitian sa dili pa maghimo og mga pagbag-o sa pagkaon. Dili ni kapuli sa propesyonal nga medical o dietary advice.</div>
+<div class="disclaimer lang-hidden" data-lang="kap"><strong>Para king edukasyon mu.</strong> Ing katumpakan ning OCR depende ya king kalidad ning larawan, format ning label, at kondisyon ning sulu. Deng na-extract a halaga malyari rang maki error — pasibayu yang i-verify la ring numero bayu mu paniwalan ing assessment. Makipagsalita ka king nephrologist at renal dietitian mu bayu ka gumawang pagbabago king pamangan mu. Ali ya ini kapalit ning propesyonal a medikal o dietary advice.</div>
+</section>
+
+<!-- ═══════════ HOW IT WORKS ═══════════ -->
+<section class="section" id="how-it-works">
+<div class="section-tag" data-lang="en">Guide</div><div class="section-tag lang-hidden" data-lang="tl">Gabay</div><div class="section-tag lang-hidden" data-lang="ceb">Giya</div><div class="section-tag lang-hidden" data-lang="kap">Gabay</div>
+<h2 data-lang="en">How It Works</h2><h2 class="lang-hidden" data-lang="tl">Paano Ito Gumagana</h2><h2 class="lang-hidden" data-lang="ceb">Giunsa Kini Paglihok</h2><h2 class="lang-hidden" data-lang="kap">Makananu Ya Gagana</h2>
+<div class="two-col">
+<div class="feat-card">
+<h4 data-lang="en">1. Take a photo or upload</h4><h4 class="lang-hidden" data-lang="tl">1. Kumuha ng litrato o mag-upload</h4><h4 class="lang-hidden" data-lang="ceb">1. Pagkuha og litrato o pag-upload</h4><h4 class="lang-hidden" data-lang="kap">1. Kunan mung litrato o mag-upload</h4>
+<p data-lang="en">Point your phone at any Nutrition Facts label or upload a photo from your gallery. The scanner works with most standard US and Philippine FDA label formats. Lay the package flat and ensure the full label is visible.</p>
+<p class="lang-hidden" data-lang="tl">I-point ang iyong phone sa kahit anong Nutrition Facts label o mag-upload ng litrato mula sa gallery mo. Gumagana ang scanner sa karamihan ng standard na US at Philippine FDA label formats. Ipatag ang pakete at siguraduhing buo ang makikitang label.</p>
+<p class="lang-hidden" data-lang="ceb">I-point ang imong phone sa bisan unsang Nutrition Facts label o pag-upload og litrato gikan sa imong gallery. Ang scanner naglihok sa kadaghanan sa standard nga US ug Philippine FDA label formats. Ipatag ang pakete ug siguruha nga kompleto ang makita nga label.</p>
+<p class="lang-hidden" data-lang="kap">I-point me ing phone mu king maski sanu mang Nutrition Facts label o mag-upload kang litrato ibat king gallery mu. Gagana ya ing scanner kareng kadaklang standard US at Philippine FDA label formats. Ipatag me ing pakete at siguraduen mung makasaup ing malilikas a label.</p>
+</div>
+<div class="feat-card">
+<h4 data-lang="en">2. AI reads the label</h4><h4 class="lang-hidden" data-lang="tl">2. Binabasa ng AI ang label</h4><h4 class="lang-hidden" data-lang="ceb">2. Gibasa sa AI ang label</h4><h4 class="lang-hidden" data-lang="kap">2. Babasan ne ning AI ing label</h4>
+<p data-lang="en">Tesseract OCR extracts nutrient values directly from the image. The scanner pre-processes the image for better contrast and accuracy. All processing happens in your browser — no data is sent to any server.</p>
+<p class="lang-hidden" data-lang="tl">I-e-extract ng Tesseract OCR ang mga halaga ng nutrients mula sa imahe. Pino-proseso ng scanner ang imahe para sa mas magandang contrast at accuracy. Lahat ng proseso ay nangyayari sa browser mo — walang data na pinapadala sa anumang server.</p>
+<p class="lang-hidden" data-lang="ceb">Ang Tesseract OCR mag-extract sa nutrient values gikan sa imahe. Ang scanner mag-pre-process sa imahe para sa mas maayo nga contrast ug accuracy. Tanan nga pagproseso nahitabo sa imong browser — walay data nga gipadala sa bisan unsang server.</p>
+<p class="lang-hidden" data-lang="kap">I-extract ne ning Tesseract OCR deng halaga da ring nutrients ibat king larawan. I-pre-process ne ning scanner ing larawan para king mas mayap a contrast at accuracy. Ing eganaganang processing malyari ya king browser mu — alang data a ipapadala king maski sanu mang server.</p>
+</div>
+<div class="feat-card">
+<h4 data-lang="en">3. Check and correct</h4><h4 class="lang-hidden" data-lang="tl">3. Suriin at itama</h4><h4 class="lang-hidden" data-lang="ceb">3. Susiha ug tul-ira</h4><h4 class="lang-hidden" data-lang="kap">3. I-check at itumpak</h4>
+<p data-lang="en">Review the extracted values and fix any OCR errors. Sometimes the scanner might misread a "3" as an "8" or miss a decimal point. Simply correct the values in the editable fields — accuracy matters for CKD assessment.</p>
+<p class="lang-hidden" data-lang="tl">Suriin ang mga na-extract na halaga at itama ang kahit anong OCR errors. Minsan maaaring mali ang pagbasa ng scanner sa "3" bilang "8" o makaligtaan ang decimal point. Itama lang ang mga halaga sa editable fields — mahalaga ang accuracy para sa CKD assessment.</p>
+<p class="lang-hidden" data-lang="ceb">Tan-awa ang na-extract nga mga kantidad ug tul-ira ang bisan unsang OCR errors. Usahay ang scanner mahimong masayop sa pagbasa sa "3" isip "8" o mawala ang decimal point. Tul-ira lang ang mga kantidad sa editable fields — importante ang accuracy para sa CKD assessment.</p>
+<p class="lang-hidden" data-lang="kap">I-review la ring na-extract a halaga at itumpak la ring maski sanu mang OCR errors. Kaukulan, malyaring masala ya ing scanner king pamasa king "3" bilang "8" o mawala ya ing decimal point. Itumpak mu la ring halaga kareng editable fields — mahalaga ing accuracy para king CKD assessment.</p>
+</div>
+<div class="feat-card">
+<h4 data-lang="en">4. Get your CKD assessment</h4><h4 class="lang-hidden" data-lang="tl">4. Kunin ang iyong CKD assessment</h4><h4 class="lang-hidden" data-lang="ceb">4. Kuhaa ang imong CKD assessment</h4><h4 class="lang-hidden" data-lang="kap">4. Kunan me ing CKD assessment mu</h4>
+<p data-lang="en">Instant safety flags for your specific CKD stage. See a 0-100 score, color-coded nutrient flags (green/amber/red), and practical suggestions for lower-risk alternatives if any nutrients are elevated.</p>
+<p class="lang-hidden" data-lang="tl">Instant safety flags para sa iyong partikular na CKD stage. Makikita mo ang 0-100 na score, color-coded na nutrient flags (green/amber/red), at praktikal na mga suhestiyon para sa mga alternatibong may mas mababang panganib kung may elevated na nutrients.</p>
+<p class="lang-hidden" data-lang="ceb">Instant safety flags para sa imong piho nga CKD stage. Makita nimo ang 0-100 nga score, color-coded nga nutrient flags (green/amber/red), ug praktikal nga mga suhestiyon para sa mas ubos-risgo nga mga alternatibo kung adunay taas nga nutrients.</p>
+<p class="lang-hidden" data-lang="kap">Instant safety flags para king piho mung CKD stage. Makasaup kang 0-100 a score, color-coded a nutrient flags (green/amber/red), at praktikal a mga suhestiyon para kareng alternatives a mas mababa ing panganib nung atin kayung elevated a nutrients.</p>
+</div>
+</div>
+</section>
+
+<!-- ═══════════ CKD LIMITS ═══════════ -->
+<section class="section" id="ckd-limits">
+<div class="section-tag" data-lang="en">Reference</div><div class="section-tag lang-hidden" data-lang="tl">Sanggunian</div><div class="section-tag lang-hidden" data-lang="ceb">Reperensiya</div><div class="section-tag lang-hidden" data-lang="kap">Sanggunian</div>
+<h2 data-lang="en">CKD Nutrient Limits by Stage</h2><h2 class="lang-hidden" data-lang="tl">CKD Nutrient Limits Ayon sa Stage</h2><h2 class="lang-hidden" data-lang="ceb">CKD Nutrient Limits Matag Stage</h2><h2 class="lang-hidden" data-lang="kap">CKD Nutrient Limits Depende King Stage</h2>
+<p data-lang="en">Daily limits based on KDIGO 2024 and NKF KDOQI 2020 guidelines. The scanner divides these by 6 (assuming roughly 3 meals plus 3 snacks) to flag individual food items.</p>
+<p class="lang-hidden" data-lang="tl">Araw-araw na limits batay sa KDIGO 2024 at NKF KDOQI 2020 guidelines. Hinahati ng scanner ang mga ito sa 6 (halos 3 kainan at 3 merienda) para i-flag ang mga indibidwal na pagkain.</p>
+<p class="lang-hidden" data-lang="ceb">Adlaw-adlaw nga limits base sa KDIGO 2024 ug NKF KDOQI 2020 guidelines. Gibahin sa scanner kini sa 6 (mga 3 ka kainan ug 3 ka merienda) para mag-flag sa mga indibidwal nga pagkaon.</p>
+<p class="lang-hidden" data-lang="kap">Aldo-aldo a limits base king KDIGO 2024 at NKF KDOQI 2020 guidelines. Babagin ne ning scanner deti king 6 (manga 3 pamangan at 3 merienda) ban i-flag la ring indibidwal a pagkain.</p>
+<table class="ref-table">
+<thead><tr>
+<th data-lang="en">Stage</th><th data-lang="en">Sodium (mg/day)</th><th data-lang="en">Potassium (mg/day)</th><th data-lang="en">Phosphorus (mg/day)</th>
+</tr></thead>
+<tbody>
+<tr><td>No CKD / General</td><td>&lt; 2,300</td><td>No limit</td><td>&lt; 1,200</td></tr>
+<tr><td>Stage 1-2</td><td>&lt; 2,300</td><td>No limit</td><td>&lt; 1,200</td></tr>
+<tr><td>Stage 3a</td><td>&lt; 2,300</td><td>&lt; 3,000</td><td>&lt; 1,000</td></tr>
+<tr><td>Stage 3b</td><td>&lt; 2,300</td><td>&lt; 2,700</td><td>&lt; 1,000</td></tr>
+<tr><td>Stage 4</td><td>&lt; 2,300</td><td>&lt; 2,400</td><td>&lt; 900</td></tr>
+<tr><td>Stage 5</td><td>&lt; 2,300</td><td>&lt; 2,000</td><td>&lt; 900</td></tr>
+<tr><td>Hemodialysis</td><td>&lt; 2,000</td><td>&lt; 2,000</td><td>&lt; 900</td></tr>
+<tr><td>Peritoneal Dialysis</td><td>&lt; 2,000</td><td>&lt; 2,250</td><td>&lt; 900</td></tr>
+</tbody>
+</table>
+<div class="alert alert-teal">
+<div class="alert-icon">ℹ️</div>
+<div class="alert-body">
+<h4 data-lang="en">Per-item thresholds</h4><h4 class="lang-hidden" data-lang="tl">Mga threshold bawat item</h4><h4 class="lang-hidden" data-lang="ceb">Mga threshold matag item</h4><h4 class="lang-hidden" data-lang="kap">Mga threshold balang item</h4>
+<p data-lang="en">The scanner flags individual food items, not full meals. It divides daily limits by 6 to estimate a per-food-item threshold — assuming 3 meals plus 3 snacks. If a single food item exceeds this threshold, it may consume too large a share of your daily allowance.</p>
+<p class="lang-hidden" data-lang="tl">Ini-flag ng scanner ang mga indibidwal na pagkain, hindi buong kainan. Hinahati nito ang mga daily limits sa 6 para tantiyahin ang per-food-item threshold — assuming 3 kainan at 3 merienda. Kung ang isang pagkain ay lumampas sa threshold na ito, maaaring sobra na ang bahagi nito sa daily allowance mo.</p>
+<p class="lang-hidden" data-lang="ceb">Ang scanner nag-flag sa indibidwal nga mga pagkaon, dili tibuok kainan. Gibahin niini ang daily limits sa 6 para tantiyahon ang per-food-item threshold — assuming 3 ka kainan ug 3 ka merienda. Kung usa ka pagkaon mosobra sa threshold, mahimong sobra na ang bahin niini sa imong daily allowance.</p>
+<p class="lang-hidden" data-lang="kap">I-flag ne ning scanner deng indibidwal a pagkain, aliwa ing misan a pamangan. Babagin na deti king 6 ban tantiyaen ing per-food-item threshold — assuming 3 pamangan at 3 merienda. Nung ing metung a pagkain lumampas ya king threshold a ini, malyaring masyadu nang dacal ing bahagi na king daily allowance mu.</p>
+</div>
+</div>
+</section>
+
+<!-- ═══════════ TIPS ═══════════ -->
+<section class="section" id="tips">
+<div class="section-tag" data-lang="en">Practical Tips</div><div class="section-tag lang-hidden" data-lang="tl">Mga Praktikal na Tip</div><div class="section-tag lang-hidden" data-lang="ceb">Praktikal nga mga Tip</div><div class="section-tag lang-hidden" data-lang="kap">Mga Praktikal a Tip</div>
+<h2 data-lang="en">Getting the Best Results</h2><h2 class="lang-hidden" data-lang="tl">Pagkuha ng Pinakamagandang Resulta</h2><h2 class="lang-hidden" data-lang="ceb">Pagkuha sa Pinakamaayo nga Resulta</h2><h2 class="lang-hidden" data-lang="kap">Pangakuha king Pinakamagaling a Resulta</h2>
+<div class="two-col">
+<div class="feat-card">
+<h4 data-lang="en">Getting the best scan</h4><h4 class="lang-hidden" data-lang="tl">Pagkuha ng pinakamagandang scan</h4><h4 class="lang-hidden" data-lang="ceb">Pagkuha sa pinakamaayo nga scan</h4><h4 class="lang-hidden" data-lang="kap">Pangakuha king pinakamagaling a scan</h4>
+<p data-lang="en"><strong>Lay the package flat</strong> on a surface rather than holding it. <strong>Use good lighting</strong> — natural light works best, avoid shadows falling on the label. <strong>Avoid glare</strong> — tilt the package slightly to avoid reflections from glossy packaging. <strong>Fill the frame</strong> — get close enough so the Nutrition Facts panel fills most of the image. <strong>Keep it straight</strong> — the text should be level, not tilted or skewed.</p>
+<p class="lang-hidden" data-lang="tl"><strong>Ipatag ang pakete</strong> sa ibabaw ng mesa kaysa hawakan ito. <strong>Gumamit ng magandang ilaw</strong> — pinakamaganda ang natural na liwanag, iwasang may anino sa label. <strong>Iwasan ang glare</strong> — bahagyang ikiling ang pakete para maiwasan ang reflections mula sa makintab na packaging. <strong>Punuin ang frame</strong> — lumapit nang sapat para ang Nutrition Facts panel ay pumuno ng karamihan ng imahe. <strong>Panatilihing tuwid</strong> — ang teksto ay dapat pantay, hindi nakatagilid o baluktot.</p>
+<p class="lang-hidden" data-lang="ceb"><strong>Ipatag ang pakete</strong> sa ibabaw sa lamesa kaysa gunitan. <strong>Gamita ang maayo nga suga</strong> — pinakamaayo ang natural nga kahayag, likayi nga adunay anino sa label. <strong>Likayi ang glare</strong> — gamay nga ikiling ang pakete para malikayan ang reflections gikan sa glossy packaging. <strong>Pun-a ang frame</strong> — paduol og igo para ang Nutrition Facts panel mopuno sa kadaghanan sa imahe. <strong>Panatilihi nga tul-id</strong> — ang teksto kinahanglan pantay, dili nakatakilid o baluktot.</p>
+<p class="lang-hidden" data-lang="kap"><strong>Ipatag me ing pakete</strong> king ibabaw ning mesa kaysa ka ita. <strong>Gumamit kang mayap a sulu</strong> — pinakamagaling ya ing natural a ilaw, alisan la ring anino king label. <strong>Alisan me ing glare</strong> — bahagya mung ikiling ing pakete ban alisan la ring reflections ibat king makintab a packaging. <strong>Punuan me ing frame</strong> — lumapit kang sapat ban ing Nutrition Facts panel pumuno ya king kadaklang larawan. <strong>Panatilieng matuwid</strong> — ing teksto kailangan pantay ya, ali nakatagilid o baluktot.</p>
+</div>
+<div class="feat-card">
+<h4 data-lang="en">What to look for on labels</h4><h4 class="lang-hidden" data-lang="tl">Ano ang hahanapin sa mga label</h4><h4 class="lang-hidden" data-lang="ceb">Unsa ang tan-awon sa mga label</h4><h4 class="lang-hidden" data-lang="kap">Nanu ing lawen mu kareng label</h4>
+<p data-lang="en"><strong>Sodium</strong> is usually the biggest concern in CKD — check this first. Anything above 400 mg per serving deserves scrutiny. <strong>Phosphorus</strong> is often hidden — look for phosphate additives in the ingredient list (E338-E452, sodium phosphate, calcium phosphate). <strong>Potassium</strong> is not always listed on labels — if absent, check the USDA database for that food. <strong>Serving size</strong> matters — a "low sodium" food may have a small serving size to make the numbers look better.</p>
+<p class="lang-hidden" data-lang="tl"><strong>Sodium</strong> ang karaniwang pinakamalalaking alalahanin sa CKD — suriin ito muna. Anumang higit sa 400 mg bawat serving ay kailangang pag-aralan. <strong>Phosphorus</strong> ay madalas nakatago — hanapin ang phosphate additives sa ingredient list (E338-E452, sodium phosphate, calcium phosphate). <strong>Potassium</strong> ay hindi laging nakalista sa labels — kung wala, suriin ang USDA database para sa pagkaing iyon. <strong>Serving size</strong> ang mahalaga — ang "low sodium" na pagkain ay maaaring may maliit na serving size para mas magandang tingnan ang mga numero.</p>
+<p class="lang-hidden" data-lang="ceb"><strong>Sodium</strong> kasagaran ang pinakadako nga kabalaka sa CKD — susiha kini una. Bisan unsa nga sobra sa 400 mg matag serving kinahanglan hatagan og pagtagad. <strong>Phosphorus</strong> kasagaran natago — pangitaa ang phosphate additives sa ingredient list (E338-E452, sodium phosphate, calcium phosphate). <strong>Potassium</strong> dili kanunay nakalista sa labels — kung wala, susiha ang USDA database alang nianang pagkaona. <strong>Serving size</strong> importante — ang "low sodium" nga pagkaon mahimong adunay gamay nga serving size aron mas maayo tan-awon ang mga numero.</p>
+<p class="lang-hidden" data-lang="kap"><strong>Sodium</strong> ya ing karaniwang pinakamalaking pag-aalala king CKD — suryan me ini muna. Maski nanu mang mas matas king 400 mg balang serving kailangan mung suryan. <strong>Phosphorus</strong> madalas nakatago ya — lawen la ring phosphate additives king ingredient list (E338-E452, sodium phosphate, calcium phosphate). <strong>Potassium</strong> ali ya parating nakalista kareng labels — nung ala, lawen me king USDA database para king pagkain a iyan. <strong>Serving size</strong> mahalaga ya — ing "low sodium" a pagkain malyaring maki malating serving size ban mas mayap lawen deng numero.</p>
+</div>
+</div>
+
+<div class="dr-card">
+<div style="width:60px;height:60px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid rgba(184,150,46,.5);background:#0f1e2e;">
+<img alt="Dr. W. G. M. Rivero" src="../images/photo-contact.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
+</div>
+<div>
+<h4 data-lang="en"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<h4 class="lang-hidden" data-lang="tl"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<h4 class="lang-hidden" data-lang="ceb"><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<h4 class="lang-hidden" data-lang="kap">W. G. M. Rivero, MD, FPCP, DPSN</h4>
+<p data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing across Quezon City, Angeles City, and Bulacan.</p>
+<p class="lang-hidden" data-lang="tl">Espesyalista sa Internal Medicine, Nephrology, at Clinical Nutrition. Nagpapraktis sa Quezon City, Angeles City, at Bulacan.</p>
+<p class="lang-hidden" data-lang="ceb">Espesyalista sa Internal Medicine, Nephrology, ug Clinical Nutrition. Nagpraktis sa Quezon City, Angeles City, ug Bulacan.</p>
+<p class="lang-hidden" data-lang="kap">Espesyalista king Internal Medicine, Nephrology, at Clinical Nutrition. Nagpraktis king Quezon City, Angeles City, at Bulacan.</p>
+<p class="dr-creds" data-lang="en">PRC 0105184 · seriousmd.com/doc/williamrivero</p>
+<p class="dr-creds lang-hidden" data-lang="tl">PRC 0105184 · seriousmd.com/doc/williamrivero</p>
+<p class="dr-creds lang-hidden" data-lang="ceb">PRC 0105184 · seriousmd.com/doc/williamrivero</p>
+<p class="dr-creds lang-hidden" data-lang="kap">PRC 0105184 · seriousmd.com/doc/williamrivero</p>
+</div>
+</div>
+</section>
+</main>
+
+<!-- RELATED-GUIDES-START -->
+<div class="related-guides">
+<h2>
+<span data-lang="en">Related Guides</span>
+<span data-lang="tl" class="lang-hidden">Mga Kaugnay na Gabay</span>
+<span data-lang="ceb" class="lang-hidden">Mga May Kalabtan nga Giya</span>
+<span data-lang="kap" class="lang-hidden">Ding Kaugnay nga Gabay</span>
+</h2>
+<div class="related-cards">
+<a class="related-card" href="ckd-recipe-analyzer.html">
+<div class="related-card-tag">Recipe Tool</div>
+<div class="related-card-title">CKD Recipe Nutrition Analyzer</div>
+<div class="related-card-desc">Paste any recipe's ingredients and get a full Nutrition Facts label with CKD safety flags for your stage.</div>
+<div class="related-card-arrow">Read →</div>
+</a>
+<a class="related-card" href="nutrition-labels-ckd.html">
+<div class="related-card-tag">The Foundation</div>
+<div class="related-card-title">Reading Nutrition Labels with CKD</div>
+<div class="related-card-desc">A supermarket survival guide for kidney patients — how to decode nutrition facts panels and spot hidden dangers.</div>
+<div class="related-card-arrow">Read →</div>
+</a>
+<a class="related-card" href="ckd-friendly-recipes.html">
+<div class="related-card-tag">Before You Cook</div>
+<div class="related-card-title">CKD-Friendly Filipino Recipes</div>
+<div class="related-card-desc">Practical, affordable recipes using local ingredients — crafted for both pre-dialysis and dialysis patients.</div>
+<div class="related-card-arrow">Read →</div>
+</a>
+<a class="related-card" href="nutrition-kidney-patients.html">
+<div class="related-card-tag">Nutrition Basics</div>
+<div class="related-card-title">Nutrition for Kidney Patients</div>
+<div class="related-card-desc">Understanding what to eat and what to avoid when you have CKD — a comprehensive guide to renal nutrition.</div>
+<div class="related-card-arrow">Read →</div>
+</a>
+</div>
+</div>
+<!-- RELATED-GUIDES-END -->
+
+<footer class="guide-footer">
+<div class="fi">
+<p data-lang="en">&copy; 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p>
+<p class="lang-hidden" data-lang="tl">&copy; 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p>
+<p class="lang-hidden" data-lang="ceb">&copy; 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p>
+<p class="lang-hidden" data-lang="kap">&copy; 2026 W. G. M. Rivero, MD</p>
+<p data-lang="en">References: KDIGO CKD 2024 · NKF KDOQI Nutrition 2020 · USDA FoodData Central · Philippine Food Composition Tables</p>
+<p class="lang-hidden" data-lang="tl">References: KDIGO CKD 2024 · NKF KDOQI Nutrition 2020 · USDA FoodData Central · Philippine Food Composition Tables</p>
+<p class="lang-hidden" data-lang="ceb">References: KDIGO CKD 2024 · NKF KDOQI Nutrition 2020 · USDA FoodData Central · Philippine Food Composition Tables</p>
+<p class="lang-hidden" data-lang="kap">References: KDIGO CKD 2024 · NKF KDOQI Nutrition 2020 · USDA FoodData Central · Philippine Food Composition Tables</p>
+</div>
+</footer>
+
+<button aria-label="Print" class="print-btn" onclick="window.print()">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
+</svg>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+// ── THEME / LANG ──────────────────────────────────────────────────────
+const DK='wgmr-dark',DSK='wgmr-desktop',GLK='wgmr-lang';
+function applyDark(on){
+  document.documentElement.setAttribute('data-theme',on?'dark':'light');
+  var b=document.getElementById('darkToggle'),l=document.getElementById('darkLabel'),i=document.getElementById('darkIcon');
+  if(b)b.classList.toggle('active',on);
+  if(l)l.textContent=on?'Light':'Dark';
+  if(i)i.innerHTML=on?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+function toggleDark(){var on=document.documentElement.getAttribute('data-theme')!=='dark';localStorage.setItem(DK,on?'1':'0');applyDark(on);}
+function applyDesktop(on){
+  var vp=document.querySelector('meta[name="viewport"]');
+  if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+  else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width,initial-scale=1.0');}
+  var b=document.getElementById('desktopToggle'),l=document.getElementById('desktopLabel');
+  if(b)b.classList.toggle('active',on);if(l)l.textContent=on?'Mobile':'Desktop';
+}
+function toggleDesktop(){var on=document.documentElement.getAttribute('data-view')!=='desktop';localStorage.setItem(DSK,on?'1':'0');applyDesktop(on);}
+function setGuideLang(lang){
+  localStorage.setItem(GLK,lang);
+  ['en','tl','ceb','kap'].forEach(function(l){
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(function(el){el.classList.toggle('lang-hidden',l!==lang);});
+    var btn=document.getElementById('glb-'+l);if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  if(localStorage.getItem(DK)==='1')applyDark(true);
+  if(localStorage.getItem(DSK)==='1')applyDesktop(true);
+  var lang=localStorage.getItem(GLK)||'en';if(lang!=='en')setGuideLang(lang);
+})();
+
+// ── STAGE ─────────────────────────────────────────────────────────────
+var selectedStage = 'none';
+function setStage(s, el){
+  selectedStage = s;
+  document.querySelectorAll('.stage-btn').forEach(function(b){b.classList.remove('active');});
+  el.classList.add('active');
+  // If results are visible, re-run assessment with new stage
+  if(document.getElementById('results-wrap').classList.contains('show')){
+    runAssessment();
+  }
+}
+
+// ── CKD LIMITS ────────────────────────────────────────────────────────
+var CKD_LIMITS = {
+  'none': { na: 2300, k: null,  p: 1200 },
+  '1':    { na: 2300, k: null,  p: 1200 },
+  '3a':   { na: 2300, k: 3000, p: 1000 },
+  '3b':   { na: 2300, k: 2700, p: 1000 },
+  '4':    { na: 2300, k: 2400, p: 900 },
+  '5':    { na: 2300, k: 2000, p: 900 },
+  'HD':   { na: 2000, k: 2000, p: 900 },
+  'PD':   { na: 2000, k: 2250, p: 900 }
+};
+
+// ── ALTERNATIVES ──────────────────────────────────────────────────────
+var ALTERNATIVES = {
+  sodium: {
+    flag: 'High sodium',
+    suggestions: [
+      'Choose "no salt added" or "low sodium" versions of this product',
+      'Season with herbs, garlic, calamansi, or pepper instead of salt',
+      'Rinse canned foods under running water before eating to reduce sodium by 30-40%',
+      'Compare brands — sodium can vary 2-3x between similar products'
+    ]
+  },
+  potassium: {
+    flag: 'High potassium',
+    suggestions: [
+      'Switch to lower-potassium alternatives (apple vs banana, cabbage vs kamote tops)',
+      'Leach vegetables before cooking — soak in water 2+ hours, boil in fresh water, drain',
+      'Choose canned fruits (drained) over fresh — canning reduces potassium by ~50%',
+      'Limit portion size rather than avoiding the food entirely'
+    ]
+  },
+  phosphorus: {
+    flag: 'High phosphorus',
+    suggestions: [
+      'Avoid items with phosphate additives in the ingredient list (E338-E452)',
+      'Choose fresh over processed — processed foods contain added inorganic phosphorus',
+      'Take your phosphate binder with this food if prescribed by your doctor',
+      'Choose white rice/bread over whole grain — lower in phosphorus'
+    ]
+  }
+};
+
+// ── IMAGE HANDLING ────────────────────────────────────────────────────
+var currentImageData = null;
+var dropZone = document.getElementById('drop-zone');
+var previewWrap = document.getElementById('preview-wrap');
+var previewImg = document.getElementById('preview-img');
+var scanBtn = document.getElementById('scan-btn');
+var cameraInput = document.getElementById('camera-input');
+var uploadInput = document.getElementById('upload-input');
+
+function handleFile(file){
+  if(!file || !file.type.startsWith('image/')) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    currentImageData = e.target.result;
+    previewImg.src = currentImageData;
+    previewWrap.classList.add('show');
+    dropZone.style.display = 'none';
+    scanBtn.disabled = false;
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearImage(){
+  currentImageData = null;
+  previewImg.src = '';
+  previewWrap.classList.remove('show');
+  dropZone.style.display = '';
+  scanBtn.disabled = true;
+  cameraInput.value = '';
+  uploadInput.value = '';
+  document.getElementById('extracted-fields').classList.remove('show');
+  document.getElementById('results-wrap').classList.remove('show');
+}
+
+cameraInput.addEventListener('change', function(e){ if(e.target.files[0]) handleFile(e.target.files[0]); });
+uploadInput.addEventListener('change', function(e){ if(e.target.files[0]) handleFile(e.target.files[0]); });
+
+// Drag and drop
+dropZone.addEventListener('dragover', function(e){ e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', function(){ dropZone.classList.remove('dragover'); });
+dropZone.addEventListener('drop', function(e){
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+
+// ── IMAGE PREPROCESSING ──────────────────────────────────────────────
+function preprocessImage(img){
+  var canvas = document.getElementById('preprocess-canvas');
+  var ctx = canvas.getContext('2d');
+  canvas.width = img.naturalWidth;
+  canvas.height = img.naturalHeight;
+  ctx.drawImage(img, 0, 0);
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var data = imageData.data;
+  for(var i = 0; i < data.length; i += 4){
+    var gray = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
+    gray = gray < 128 ? gray * 0.7 : 128 + (gray - 128) * 1.5;
+    gray = Math.max(0, Math.min(255, gray));
+    data[i] = data[i+1] = data[i+2] = gray;
+  }
+  ctx.putImageData(imageData, 0, 0);
+  return canvas.toDataURL('image/png');
+}
+
+// ── NUTRIENT EXTRACTION ──────────────────────────────────────────────
+function extractNutrients(text){
+  var get = function(patterns){
+    for(var j = 0; j < patterns.length; j++){
+      var m = text.match(patterns[j]);
+      if(m) return parseFloat(m[1].replace(',',''));
+    }
+    return null;
+  };
+  return {
+    serving_size: (text.match(/serving\s*size[:\s]*([^\n]+)/i) || [])[1]?.trim() || '',
+    calories: get([/calories\s*(\d+)/i, /(\d+)\s*calories/i, /energy\s*(\d+)/i]),
+    total_fat: get([/total\s*fat\s*(\d+\.?\d*)\s*g/i, /total\s*fat\s*(\d+\.?\d*)/i]),
+    sat_fat: get([/saturated\s*fat\s*(\d+\.?\d*)\s*g/i, /sat\.?\s*fat\s*(\d+\.?\d*)\s*g/i]),
+    trans_fat: get([/trans\s*fat\s*(\d+\.?\d*)\s*g/i]),
+    cholesterol: get([/cholesterol\s*(\d+\.?\d*)\s*m?g/i]),
+    sodium: get([/sodium\s*(\d[\d,]*\.?\d*)\s*m?g/i]),
+    total_carbs: get([/total\s*carb(?:ohydrate)?s?\s*(\d+\.?\d*)\s*g/i, /carb(?:ohydrate)?s?\s*(\d+\.?\d*)\s*g/i]),
+    fiber: get([/(?:dietary\s*)?fiber\s*(\d+\.?\d*)\s*g/i]),
+    sugars: get([/(?:total\s*)?sugars?\s*(\d+\.?\d*)\s*g/i]),
+    protein: get([/protein\s*(\d+\.?\d*)\s*g/i]),
+    potassium: get([/potassium\s*(\d[\d,]*\.?\d*)\s*m?g/i]),
+    phosphorus: get([/phosphor(?:us|ous)\s*(\d[\d,]*\.?\d*)\s*m?g/i]),
+    calcium: get([/calcium\s*(\d[\d,]*\.?\d*)\s*m?g/i]),
+    iron: get([/iron\s*(\d+\.?\d*)\s*m?g/i])
+  };
+}
+
+// ── POPULATE FIELDS ──────────────────────────────────────────────────
+function populateFields(n){
+  document.getElementById('ef-serving').value = n.serving_size || '';
+  document.getElementById('ef-cal').value = n.calories || '';
+  document.getElementById('ef-fat').value = n.total_fat || '';
+  document.getElementById('ef-satfat').value = n.sat_fat || '';
+  document.getElementById('ef-transfat').value = n.trans_fat || '';
+  document.getElementById('ef-chol').value = n.cholesterol || '';
+  document.getElementById('ef-sodium').value = n.sodium || '';
+  document.getElementById('ef-carbs').value = n.total_carbs || '';
+  document.getElementById('ef-fiber').value = n.fiber || '';
+  document.getElementById('ef-sugars').value = n.sugars || '';
+  document.getElementById('ef-protein').value = n.protein || '';
+  document.getElementById('ef-potassium').value = n.potassium || '';
+  document.getElementById('ef-phosphorus').value = n.phosphorus || '';
+  document.getElementById('ef-calcium').value = n.calcium || '';
+  document.getElementById('ef-iron').value = n.iron || '';
+}
+
+function readFields(){
+  return {
+    sodium: parseFloat(document.getElementById('ef-sodium').value) || 0,
+    potassium: parseFloat(document.getElementById('ef-potassium').value) || 0,
+    phosphorus: parseFloat(document.getElementById('ef-phosphorus').value) || 0,
+    protein: parseFloat(document.getElementById('ef-protein').value) || 0,
+    calories: parseFloat(document.getElementById('ef-cal').value) || 0,
+    total_fat: parseFloat(document.getElementById('ef-fat').value) || 0,
+    sat_fat: parseFloat(document.getElementById('ef-satfat').value) || 0,
+    trans_fat: parseFloat(document.getElementById('ef-transfat').value) || 0,
+    cholesterol: parseFloat(document.getElementById('ef-chol').value) || 0,
+    total_carbs: parseFloat(document.getElementById('ef-carbs').value) || 0,
+    fiber: parseFloat(document.getElementById('ef-fiber').value) || 0,
+    sugars: parseFloat(document.getElementById('ef-sugars').value) || 0,
+    calcium: parseFloat(document.getElementById('ef-calcium').value) || 0,
+    iron: parseFloat(document.getElementById('ef-iron').value) || 0
+  };
+}
+
+// ── SCORE CALCULATION ────────────────────────────────────────────────
+function calculateScore(nutrients, stage){
+  var lim = CKD_LIMITS[stage] || CKD_LIMITS['none'];
+  var score = 100;
+  // Sodium (30% weight)
+  var naMax = lim.na / 6;
+  var na = nutrients.sodium || 0;
+  if(na > naMax) score -= Math.min(30, ((na - naMax) / naMax) * 30);
+  // Potassium (25% weight)
+  if(lim.k){
+    var kMax = lim.k / 6;
+    var k = nutrients.potassium || 0;
+    if(k > kMax) score -= Math.min(25, ((k - kMax) / kMax) * 25);
+  }
+  // Phosphorus (25% weight)
+  var pMax = lim.p / 6;
+  var p = nutrients.phosphorus || 0;
+  if(p > pMax) score -= Math.min(25, ((p - pMax) / pMax) * 25);
+  // Protein (20% weight) — for pre-dialysis high protein is bad, for dialysis low is bad
+  var prot = nutrients.protein || 0;
+  if(stage === 'HD' || stage === 'PD'){
+    // No protein penalty for dialysis — they need high protein
+  } else if(['3b','4','5'].indexOf(stage) !== -1){
+    if(prot > 15) score -= Math.min(20, ((prot - 15) / 15) * 20);
+  }
+  return Math.max(0, Math.round(score));
+}
+
+// ── BUILD FLAGS ──────────────────────────────────────────────────────
+function buildFlags(nutrients, stage){
+  var lim = CKD_LIMITS[stage] || CKD_LIMITS['none'];
+  var flags = [];
+  var stageLabels = {none:'General',1:'Stage 1-2','3a':'Stage 3a','3b':'Stage 3b',4:'Stage 4',5:'Stage 5',HD:'Hemodialysis',PD:'Peritoneal Dialysis'};
+  var stageName = stageLabels[stage] || 'General';
+
+  // Sodium
+  var naThresh = lim.na / 6;
+  var na = nutrients.sodium || 0;
+  if(na > naThresh * 1.5){
+    flags.push({cls:'danger',icon:'🚨',title:'High Sodium — '+Math.round(na)+' mg',body:'Exceeds safe per-item threshold for '+stageName+'. This single food item uses more than 25% of your daily sodium allowance. '+(stage==='HD'||stage==='PD'?'Excess sodium directly worsens fluid retention and inter-dialytic weight gain.':'High sodium accelerates CKD progression and raises blood pressure.'),values:'This item: '+Math.round(na)+' mg · Threshold: <'+Math.round(naThresh)+' mg',nutrient:'sodium'});
+  } else if(na > naThresh){
+    flags.push({cls:'warn',icon:'⚠️',title:'Sodium Elevated — '+Math.round(na)+' mg',body:'Approaching the per-item sodium threshold for '+stageName+'. Consider a lower-sodium alternative or reduce your portion size.',values:'This item: '+Math.round(na)+' mg · Threshold: <'+Math.round(naThresh)+' mg',nutrient:'sodium'});
+  } else {
+    flags.push({cls:'ok',icon:'✓',title:'Sodium OK — '+Math.round(na)+' mg',body:'Within safe limits for '+stageName+'.',values:Math.round(na)+' mg of '+Math.round(naThresh)+' mg threshold'});
+  }
+
+  // Potassium
+  if(lim.k){
+    var kThresh = lim.k / 6;
+    var k = nutrients.potassium || 0;
+    if(k > kThresh * 1.5){
+      flags.push({cls:'danger',icon:'🚨',title:'High Potassium — '+Math.round(k)+' mg',body:'Exceeds safe per-item threshold for '+stageName+'. Hyperkalemia risk (serum K >5.5 mmol/L). '+(stage==='HD'?'Potassium accumulates between dialysis sessions — particularly dangerous before your next treatment.':'Monitor serum potassium closely with your nephrologist.'),values:'This item: '+Math.round(k)+' mg · Threshold: <'+Math.round(kThresh)+' mg',nutrient:'potassium'});
+    } else if(k > kThresh){
+      flags.push({cls:'warn',icon:'⚠️',title:'Potassium Elevated — '+Math.round(k)+' mg',body:'Approaching potassium threshold for '+stageName+'. Consider a lower-potassium alternative.',values:'This item: '+Math.round(k)+' mg · Threshold: <'+Math.round(kThresh)+' mg',nutrient:'potassium'});
+    } else {
+      flags.push({cls:'ok',icon:'✓',title:'Potassium OK — '+Math.round(k)+' mg',body:'Within safe limits for '+stageName+'.',values:Math.round(k)+' mg of '+Math.round(kThresh)+' mg threshold'});
+    }
+  } else {
+    flags.push({cls:'info',icon:'ℹ',title:'Potassium — '+Math.round(nutrients.potassium||0)+' mg',body:'No potassium restriction needed at '+stageName+'. Monitor if labs show elevated serum K.',values:''});
+  }
+
+  // Phosphorus
+  var pThresh = lim.p / 6;
+  var phos = nutrients.phosphorus || 0;
+  if(phos > pThresh * 1.5){
+    flags.push({cls:'danger',icon:'🚨',title:'High Phosphorus — '+Math.round(phos)+' mg',body:'Exceeds safe per-item threshold for '+stageName+'. Elevated phosphorus drives vascular calcification and cardiovascular risk. '+(stage==='HD'||stage==='PD'?'Take your phosphate binder with this food as prescribed.':'Discuss phosphate binders with your nephrologist.'),values:'This item: '+Math.round(phos)+' mg · Threshold: <'+Math.round(pThresh)+' mg',nutrient:'phosphorus'});
+  } else if(phos > pThresh){
+    flags.push({cls:'warn',icon:'⚠️',title:'Phosphorus Elevated — '+Math.round(phos)+' mg',body:'Approaching phosphorus threshold for '+stageName+'. Check the ingredient list for phosphate additives (E338-E452) — actual phosphorus burden may be higher.',values:'This item: '+Math.round(phos)+' mg · Threshold: <'+Math.round(pThresh)+' mg',nutrient:'phosphorus'});
+  } else {
+    flags.push({cls:'ok',icon:'✓',title:'Phosphorus OK — '+Math.round(phos)+' mg',body:'Within safe limits for '+stageName+'. Still take phosphate binder with meals if prescribed.',values:Math.round(phos)+' mg of '+Math.round(pThresh)+' mg threshold'});
+  }
+
+  // Protein note
+  var prot = nutrients.protein || 0;
+  if(stage === 'HD' || stage === 'PD'){
+    if(prot < 5){
+      flags.push({cls:'info',icon:'ℹ',title:'Low Protein — '+prot.toFixed(1)+' g',body:'Dialysis patients need 1.0-1.5 g/kg/day. This food is low in protein — pair it with a high biological value protein source (egg white, lean chicken, tilapia).',values:''});
+    }
+  } else if(['3b','4','5'].indexOf(stage) !== -1){
+    if(prot > 20){
+      flags.push({cls:'warn',icon:'⚠️',title:'High Protein — '+prot.toFixed(1)+' g per serving',body:'Pre-dialysis CKD patients are advised to moderate protein (0.6-0.8 g/kg/day). This food is relatively high in protein for a single item. Consider a smaller portion.',values:''});
+    }
+  }
+
+  return flags;
+}
+
+// ── SCORE GAUGE ──────────────────────────────────────────────────────
+function updateGauge(score){
+  var arc = document.getElementById('score-arc');
+  var num = document.getElementById('score-num');
+  var circumference = 2 * Math.PI * 52; // ~326.73
+  var offset = circumference - (score / 100) * circumference;
+  arc.style.strokeDashoffset = offset;
+  var color;
+  if(score >= 70) color = 'var(--green)';
+  else if(score >= 40) color = 'var(--amber)';
+  else color = 'var(--red)';
+  arc.style.stroke = color;
+  num.textContent = score;
+  num.style.color = color;
+}
+
+// ── RUN ASSESSMENT ───────────────────────────────────────────────────
+function runAssessment(){
+  var nutrients = readFields();
+  var score = calculateScore(nutrients, selectedStage);
+  var flags = buildFlags(nutrients, selectedStage);
+  var stageLabels = {none:'General Population','1':'CKD Stage 1-2','3a':'CKD Stage 3a','3b':'CKD Stage 3b','4':'CKD Stage 4','5':'CKD Stage 5','HD':'Hemodialysis','PD':'Peritoneal Dialysis'};
+
+  // Update gauge
+  updateGauge(score);
+
+  // Update flags
+  document.getElementById('flags-header').textContent = 'CKD Safety — ' + (stageLabels[selectedStage] || 'General');
+  document.getElementById('flags-sub').textContent = 'Per serving of scanned product';
+  document.getElementById('flags-list').innerHTML = flags.map(function(f){
+    return '<div class="flag-row flag-'+f.cls+'">'+
+      '<div class="flag-icon">'+f.icon+'</div>'+
+      '<div class="flag-body">'+
+        '<h4>'+f.title+'</h4>'+
+        '<p>'+f.body+'</p>'+
+        (f.values ? '<div class="flag-values">'+f.values+'</div>' : '')+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  // Alternatives panel
+  var flaggedNutrients = flags.filter(function(f){ return f.nutrient && (f.cls === 'danger' || f.cls === 'warn'); });
+  var altHtml = '';
+  if(flaggedNutrients.length > 0){
+    var items = flaggedNutrients.map(function(f){
+      var alt = ALTERNATIVES[f.nutrient];
+      if(!alt) return '';
+      return '<div class="alt-item"><h5>'+alt.flag+'</h5><ul>'+
+        alt.suggestions.map(function(s){ return '<li>'+s+'</li>'; }).join('')+
+      '</ul></div>';
+    }).join('');
+    if(items){
+      altHtml = '<div class="alt-panel"><h4>Suggestions to Reduce Risk</h4>'+items+'</div>';
+    }
+  }
+  document.getElementById('alt-wrap').innerHTML = altHtml;
+
+  // Show results
+  document.getElementById('results-wrap').classList.add('show');
+  document.getElementById('results-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── SCAN LABEL ───────────────────────────────────────────────────────
+async function scanLabel(){
+  if(!currentImageData) return;
+
+  var btn = document.getElementById('scan-btn');
+  var spinner = document.getElementById('spinner');
+  var btnText = document.getElementById('btn-text');
+  var progressWrap = document.getElementById('progress-wrap');
+  var progressFill = document.getElementById('progress-fill');
+  var progressText = document.getElementById('progress-text');
+  var errorEl = document.getElementById('api-error');
+
+  errorEl.classList.remove('show');
+  btn.disabled = true;
+  spinner.classList.add('show');
+  btnText.textContent = 'Scanning...';
+  progressWrap.classList.add('show');
+  progressFill.style.width = '0%';
+  progressText.textContent = 'Loading OCR engine...';
+
+  try {
+    // Preprocess image
+    var tempImg = new Image();
+    await new Promise(function(resolve, reject){
+      tempImg.onload = resolve;
+      tempImg.onerror = reject;
+      tempImg.src = currentImageData;
+    });
+    var processedSrc = preprocessImage(tempImg);
+
+    progressText.textContent = 'Initializing Tesseract OCR...';
+    progressFill.style.width = '10%';
+
+    var result = await Tesseract.recognize(processedSrc, 'eng', {
+      logger: function(m){
+        if(m.status === 'recognizing text'){
+          var pct = Math.round(10 + m.progress * 80);
+          progressFill.style.width = pct + '%';
+          progressText.textContent = 'Reading label... ' + Math.round(m.progress * 100) + '%';
+        } else if(m.status === 'loading language traineddata'){
+          progressFill.style.width = '5%';
+          progressText.textContent = 'Loading language data...';
+        } else if(m.status === 'initializing api'){
+          progressFill.style.width = '8%';
+          progressText.textContent = 'Initializing OCR...';
+        }
+      }
+    });
+
+    progressFill.style.width = '95%';
+    progressText.textContent = 'Extracting nutrients...';
+
+    var ocrText = result.data.text;
+    if(!ocrText || ocrText.trim().length < 10){
+      throw new Error('Could not read any text from the image. Please try a clearer photo with better lighting.');
+    }
+
+    var nutrients = extractNutrients(ocrText);
+    populateFields(nutrients);
+
+    progressFill.style.width = '100%';
+    progressText.textContent = 'Done — review values below';
+
+    document.getElementById('extracted-fields').classList.add('show');
+
+    // Auto-run assessment
+    runAssessment();
+
+  } catch(e){
+    errorEl.textContent = 'Scan failed: ' + e.message + '. Please try a clearer photo.';
+    errorEl.classList.add('show');
+  } finally {
+    btn.disabled = false;
+    spinner.classList.remove('show');
+    btnText.textContent = 'Scan Label';
+    setTimeout(function(){ progressWrap.classList.remove('show'); }, 3000);
+  }
+}
+</script>
+</body>
+</html>
