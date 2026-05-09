@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Your Amazing Kidneys — Normal Physiology · W. G. M. Rivero, MD</title>
+<meta name="description" content="An immersive, scrolling meditation on what the normal kidneys do — filtration, reabsorption, balance, signal, blood pressure regulation, and the silent astonishments most people never learn.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-0:       #02060a;
+    --bg-1:       #06121f;
+    --navy:       #0f1e2e;
+    --ink:        #e8f4f8;
+    --ink-mid:    rgba(232,244,248,.62);
+    --ink-low:    rgba(232,244,248,.32);
+    --teal:       #1a6b72;
+    --teal-light: #2c97a3;
+    --gold:       #d4af4f;
+    --gold-soft:  rgba(212,175,79,.18);
+    --cyan:       #7be3ff;
+    --warm:       #ffb88a;
+    --line:       rgba(232,244,248,.07);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:var(--bg-0);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none;}
+  body{min-height:100vh;}
+  a{color:inherit;text-decoration:none;cursor:none;}
+  button{cursor:none;}
+
+  #webgl{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;}
+
+  .bg-vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 78% 65% at 50% 45%, transparent 0%, rgba(2,6,10,.5) 65%, rgba(2,6,10,.94) 100%),
+      radial-gradient(circle at 18% 28%, rgba(123,227,255,.06), transparent 45%),
+      radial-gradient(circle at 82% 78%, rgba(26,107,114,.07), transparent 50%);
+  }
+
+  /* Cursor */
+  .cursor{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--gold);pointer-events:none;z-index:1000;mix-blend-mode:screen;will-change:transform;}
+  .cursor-ring{position:fixed;width:38px;height:38px;border-radius:50%;border:1px solid rgba(212,175,79,.45);pointer-events:none;z-index:999;transition:width .35s,height .35s,border-color .25s;will-change:transform;}
+  .cursor-ring.is-hover{width:72px;height:72px;border-color:var(--gold);}
+
+  /* Layout */
+  main{position:relative;z-index:2;}
+  .container{max-width:1240px;margin:0 auto;padding:0 48px;}
+
+  /* Site header — minimalist, matches williamriveromd.com brand on dark background */
+  .site-header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;mix-blend-mode:screen;}
+  .site-header .brand{font-family:'Lora',serif;font-weight:400;font-size:16px;letter-spacing:.02em;color:var(--ink);}
+  .site-header .brand strong{color:var(--gold);font-weight:600;}
+  .site-header .back{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mid);transition:color .25s;}
+  .site-header .back:hover{color:var(--gold);}
+
+  /* Floating sound toggle */
+  .sound-toggle{position:fixed;bottom:32px;right:32px;z-index:60;display:inline-flex;align-items:center;gap:9px;background:rgba(15,30,46,.55);backdrop-filter:blur(8px);border:1px solid rgba(212,175,79,.3);color:var(--ink-mid);padding:9px 16px;border-radius:24px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:all .3s;}
+  .sound-toggle:hover{border-color:var(--gold);color:var(--gold);}
+  .sound-toggle.is-on{background:var(--gold-soft);border-color:var(--gold);color:var(--gold);}
+  .sound-toggle .sound-icon{font-size:14px;line-height:1;font-style:italic;}
+
+  /* HERO */
+  .hero{height:100vh;min-height:780px;display:flex;align-items:center;position:relative;}
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:32px;width:100%;padding-top:80px;}
+  .eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:14px;}
+  .eyebrow::before{content:'';width:42px;height:1px;background:var(--gold);}
+  .hero h1{font-family:'Lora',serif;font-weight:400;font-size:clamp(40px,6.5vw,108px);line-height:1.04;letter-spacing:-.018em;margin-top:24px;max-width:18ch;}
+  .hero h1 em{font-style:italic;font-weight:500;color:var(--gold);}
+  .hero h1 .num{font-style:italic;font-weight:500;color:var(--warm);}
+  .hero-sub{margin-top:36px;font-size:17px;line-height:1.7;color:var(--ink-mid);max-width:54ch;font-weight:300;}
+  .hero-sub em{color:var(--gold);font-style:italic;}
+  .hero-meta{display:flex;gap:48px;margin-top:56px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-low);}
+  .hero-meta div strong{display:block;color:var(--ink);font-family:'Lora',serif;font-style:italic;font-size:18px;letter-spacing:0;text-transform:none;font-weight:500;margin-top:4px;}
+
+  .scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--ink-low);font-size:10px;letter-spacing:.3em;text-transform:uppercase;}
+  .scroll-cue::after{content:'';width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);animation:cuedrop 2.4s ease-in-out infinite;}
+  @keyframes cuedrop{0%,100%{transform:scaleY(.4);transform-origin:top;opacity:.3;}50%{transform:scaleY(1);opacity:1;}}
+
+  /* CAPABILITIES */
+  .capabilities{padding:200px 0 160px;position:relative;}
+  .cap-head{margin-bottom:120px;}
+  .cap-head h2{font-family:'Lora',serif;font-weight:400;font-size:clamp(36px,5vw,72px);line-height:1.08;letter-spacing:-.018em;max-width:18ch;}
+  .cap-head h2 em{font-style:italic;color:var(--gold);font-weight:500;}
+  .cap-head p{margin-top:24px;color:var(--ink-mid);max-width:54ch;font-size:16px;line-height:1.75;}
+
+  .cap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  .cap-card{background:rgba(6,18,31,.55);backdrop-filter:blur(12px);padding:60px 44px 52px;position:relative;overflow:hidden;transition:background .4s;}
+  .cap-card::before{content:'';position:absolute;top:0;left:0;width:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent);transition:width .7s cubic-bezier(.2,.8,.2,1);}
+  .cap-card:hover::before{width:100%;}
+  .cap-card:hover{background:rgba(11,28,46,.7);}
+  .cap-num{font-family:'Lora',serif;font-style:italic;font-size:14px;color:var(--gold);letter-spacing:.05em;}
+  .cap-title{font-family:'Lora',serif;font-weight:400;font-size:28px;line-height:1.2;margin-top:22px;letter-spacing:-.005em;}
+  .cap-title em{font-style:italic;color:var(--gold);font-weight:500;}
+  .cap-body{margin-top:18px;color:var(--ink-mid);font-size:14.5px;line-height:1.78;}
+  .cap-tag{margin-top:30px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-low);}
+
+  /* MORE THAN A FILTER — secondary capability list */
+  .more-than{padding:160px 0;position:relative;}
+  .more-head{margin-bottom:80px;text-align:center;}
+  .more-head h2{font-family:'Lora',serif;font-weight:400;font-size:clamp(34px,4.5vw,62px);line-height:1.1;letter-spacing:-.015em;max-width:24ch;margin:0 auto;}
+  .more-head h2 em{font-style:italic;color:var(--gold);font-weight:500;}
+  .more-head p{margin-top:20px;color:var(--ink-mid);max-width:50ch;margin-left:auto;margin-right:auto;font-size:15.5px;line-height:1.75;}
+  .more-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .more-item{padding:32px 24px;border-top:1px solid rgba(212,175,79,.25);position:relative;transition:border-color .4s;}
+  .more-item:hover{border-color:var(--gold);}
+  .more-icon{font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--gold);letter-spacing:.05em;margin-bottom:12px;}
+  .more-name{font-family:'Lora',serif;font-weight:500;font-size:20px;line-height:1.25;margin-bottom:14px;letter-spacing:-.005em;color:var(--ink);}
+  .more-body{font-size:13.5px;line-height:1.75;color:var(--ink-mid);}
+  .more-body strong{color:var(--ink);font-weight:500;}
+
+  /* THREE ASTONISHMENTS — big stat-style row */
+  .astonish{padding:160px 0;position:relative;}
+  .astonish-head{margin-bottom:80px;text-align:center;}
+  .astonish-head .eyebrow{justify-content:center;}
+  .astonish-head h2{font-family:'Lora',serif;font-weight:400;font-size:clamp(36px,5vw,72px);line-height:1.08;letter-spacing:-.018em;margin-top:18px;max-width:22ch;margin-left:auto;margin-right:auto;}
+  .astonish-head h2 em{font-style:italic;color:var(--gold);font-weight:500;}
+  .astonish-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .astonish-cell{background:rgba(6,18,31,.5);padding:64px 36px;text-align:center;}
+  .astonish-num{font-family:'Lora',serif;font-weight:300;font-size:clamp(64px,8vw,128px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 20%,#d4af4f 80%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .astonish-num.short{font-size:clamp(40px,5vw,72px);font-style:italic;font-weight:400;background:linear-gradient(180deg,#ffffff 20%,#7be3ff 80%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .astonish-cap{margin-top:28px;color:var(--ink-mid);font-family:'Lora',serif;font-style:italic;font-weight:400;font-size:16px;line-height:1.55;max-width:24ch;margin-left:auto;margin-right:auto;}
+
+  /* STAT */
+  .stat-band{padding:160px 0;text-align:center;position:relative;}
+  .stat-band .stat-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:48px;}
+  .stat-band .stat-number{font-family:'Lora',serif;font-weight:300;font-size:clamp(96px,18vw,280px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 18%,#d4af4f 55%,rgba(212,175,79,0) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .stat-band .stat-caption{margin-top:32px;color:var(--ink-mid);font-size:18px;font-family:'Lora',serif;font-style:italic;font-weight:400;letter-spacing:.01em;max-width:46ch;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+  /* CTA */
+  .cta{padding:160px 0 200px;text-align:center;position:relative;}
+  .cta h3{font-family:'Lora',serif;font-weight:400;font-size:clamp(40px,5.5vw,84px);line-height:1.08;letter-spacing:-.018em;margin-bottom:36px;max-width:20ch;margin-left:auto;margin-right:auto;}
+  .cta h3 em{font-style:italic;color:var(--gold);font-weight:500;}
+  .cta p{color:var(--ink-mid);max-width:50ch;margin:0 auto 48px;font-size:16px;line-height:1.75;font-weight:300;}
+  .cta-btn{display:inline-flex;align-items:center;gap:16px;padding:22px 44px;border:1px solid var(--gold);color:var(--ink);background:transparent;font-size:11px;letter-spacing:.32em;text-transform:uppercase;font-family:'Inter',sans-serif;font-weight:500;position:relative;overflow:hidden;transition:color .3s;}
+  .cta-btn::before{content:'';position:absolute;inset:0;background:var(--gold);transform:translateY(101%);transition:transform .55s cubic-bezier(.2,.8,.2,1);z-index:-1;}
+  .cta-btn:hover::before{transform:translateY(0);}
+  .cta-btn:hover{color:var(--bg-0);}
+  .cta-btn .arrow{display:inline-block;transition:transform .35s;}
+  .cta-btn:hover .arrow{transform:translateX(6px);}
+
+  footer{padding:48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-low);position:relative;z-index:2;flex-wrap:wrap;gap:12px;}
+
+  /* Reveal */
+  [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity 1.2s cubic-bezier(.2,.8,.2,1),transform 1.2s cubic-bezier(.2,.8,.2,1);}
+  [data-reveal].in{opacity:1;transform:none;}
+  [data-reveal][data-delay="1"]{transition-delay:.08s;}
+  [data-reveal][data-delay="2"]{transition-delay:.16s;}
+  [data-reveal][data-delay="3"]{transition-delay:.24s;}
+  [data-reveal][data-delay="4"]{transition-delay:.32s;}
+
+  @media (max-width:980px){
+    .more-grid{grid-template-columns:repeat(2,1fr);}
+    .astonish-row{grid-template-columns:1fr;}
+  }
+  @media (max-width:780px){
+    .container,.site-header,footer{padding-left:24px;padding-right:24px;}
+    .cap-grid{grid-template-columns:1fr;}
+    .cap-card{padding:48px 32px 40px;}
+    .hero-meta{flex-direction:column;gap:24px;}
+    .more-grid{grid-template-columns:1fr;}
+    .sound-toggle{bottom:20px;right:20px;padding:7px 12px;font-size:10px;}
+    body{cursor:auto;}
+    .cursor,.cursor-ring{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="webgl"></canvas>
+<div class="bg-vignette"></div>
+<div class="cursor"></div>
+<div class="cursor-ring"></div>
+
+<header class="site-header">
+  <a class="brand" href="https://williamriveromd.com">W. G. M. <strong>Rivero</strong>, MD</a>
+  <a class="back" href="index.html" data-magnetic>← All Guides</a>
+</header>
+
+<button class="sound-toggle" id="sound-toggle" aria-label="Toggle ambient sound">
+  <span class="sound-icon">♪</span>
+  <span class="sound-label">Sound</span>
+</button>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="eyebrow" data-reveal>Your Amazing Kidneys · Normal Physiology</div>
+      <h1 data-reveal data-delay="1">
+        Every twenty-four hours,<br>
+        <em>one hundred and eighty litres</em><br>
+        of you pass through filters<br>
+        the size of a fist.
+      </h1>
+      <p class="hero-sub" data-reveal data-delay="2">There is no sound. There is no signal. The body's most demanding labour is also its quietest. <em>This is a meditation on what the normal kidneys do</em> — and on the silent astonishments that almost no one is taught.</p>
+      <div class="hero-meta" data-reveal data-delay="3">
+        <div>Filtered<strong>180 L / day</strong></div>
+        <div>Reabsorbed<strong>~99 percent</strong></div>
+        <div>Passed<strong>1.5 L / day</strong></div>
+      </div>
+    </div>
+    <div class="scroll-cue" data-reveal data-delay="4">Scroll</div>
+  </section>
+
+  <!-- CAPABILITIES — 4 core movements -->
+  <section class="capabilities">
+    <div class="container">
+      <div class="cap-head">
+        <div class="eyebrow" data-reveal>Four movements, repeated forever</div>
+        <h2 data-reveal data-delay="1">A constant <em>refining</em> of what flows through.</h2>
+        <p data-reveal data-delay="2">Two organs, smaller than your hands, doing in silence what no engineered membrane has matched. The numbers below are not metaphor — they are arithmetic, repeating itself, every minute, for as long as you live.</p>
+      </div>
+      <div class="cap-grid">
+        <div class="cap-card" data-reveal data-magnetic>
+          <div class="cap-num">01 — <em>filtration</em></div>
+          <div class="cap-title">A <em>million</em> tiny filters per kidney.</div>
+          <div class="cap-body">Each <em>nephron</em> contains a tuft of capillaries called the glomerulus. Pressure drives plasma across its wall, separating water, salts, sugars, and small wastes from the cells and proteins that must stay behind. Two million glomeruli, working in parallel, in real time.</div>
+          <div class="cap-tag">180 L filtered every day</div>
+        </div>
+        <div class="cap-card" data-reveal data-delay="1" data-magnetic>
+          <div class="cap-num">02 — <em>reabsorption</em></div>
+          <div class="cap-title">Almost <em>all of it</em> is taken back.</div>
+          <div class="cap-body">If the kidneys filtered without recovering, you would empty in thirty minutes. Instead, the proximal tubule reclaims most of the water, glucose, amino acids, and bicarbonate — returning them to the blood before they are lost. Ninety-nine percent recovered. One percent released.</div>
+          <div class="cap-tag">99% reabsorbed</div>
+        </div>
+        <div class="cap-card" data-reveal data-delay="2" data-magnetic>
+          <div class="cap-num">03 — <em>balance</em></div>
+          <div class="cap-title">The <em>tides</em> of sodium, potassium, acid.</div>
+          <div class="cap-body">More than a sieve, the kidney is a thermostat for the blood's chemistry — adjusting sodium minute by minute, holding potassium within the range a heart can beat in, excreting the day's metabolic acid so the lungs and bones do not have to. Hormones reach for the dial. The dial responds.</div>
+          <div class="cap-tag">Electrolyte homeostasis</div>
+        </div>
+        <div class="cap-card" data-reveal data-delay="3" data-magnetic>
+          <div class="cap-num">04 — <em>signal</em></div>
+          <div class="cap-title">An organ that <em>speaks</em> in chemistry.</div>
+          <div class="cap-body">The kidney releases erythropoietin to ask the marrow for red cells. It activates vitamin D so the skeleton can take in calcium. It produces renin to defend blood pressure when volume falls. It is not only a filter — it is an endocrine organ, listening, adjusting, replying.</div>
+          <div class="cap-tag">EPO · calcitriol · renin</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MORE THAN A FILTER — additional roles -->
+  <section class="more-than">
+    <div class="container">
+      <div class="more-head">
+        <div class="eyebrow" data-reveal style="justify-content:center;">More than a filter</div>
+        <h2 data-reveal data-delay="1">The roles <em>almost no one</em> learns about.</h2>
+        <p data-reveal data-delay="2">Behind the famous job of making urine, the kidney quietly carries on five other careers — each of them critical, each of them invisible to the person they are saving.</p>
+      </div>
+      <div class="more-grid">
+        <div class="more-item" data-reveal>
+          <div class="more-icon">i.</div>
+          <div class="more-name">Blood pressure</div>
+          <div class="more-body">Renin sets in motion the <strong>renin–angiotensin–aldosterone</strong> cascade — narrowing vessels, holding salt, lifting pressure when it falls. The kidney is the body's blood-pressure regulator, and the first organ to suffer when pressure runs too high for too long.</div>
+        </div>
+        <div class="more-item" data-reveal data-delay="1">
+          <div class="more-icon">ii.</div>
+          <div class="more-name">Red blood cells</div>
+          <div class="more-body">Almost all of the body's <strong>erythropoietin</strong> — the hormone that tells the bone marrow to make red blood cells — is produced by the kidney. When the kidney fails, anemia is rarely far behind.</div>
+        </div>
+        <div class="more-item" data-reveal data-delay="2">
+          <div class="more-icon">iii.</div>
+          <div class="more-name">Bone strength</div>
+          <div class="more-body">Vitamin D from sun and food is inactive until the kidney converts it to <strong>calcitriol</strong>. Without that final activation, calcium cannot enter the bone, and the skeleton begins to soften.</div>
+        </div>
+        <div class="more-item" data-reveal data-delay="3">
+          <div class="more-icon">iv.</div>
+          <div class="more-name">Blood sugar</div>
+          <div class="more-body">Few are taught this: the kidney itself <strong>manufactures glucose</strong>. Together with the liver, it sustains your blood sugar overnight, contributing roughly a quarter of the body's fasting glucose production.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THREE ASTONISHMENTS -->
+  <section class="astonish">
+    <div class="container">
+      <div class="astonish-head">
+        <div class="eyebrow" data-reveal>Three astonishments, rarely told</div>
+        <h2 data-reveal data-delay="1">Numbers that should make you <em>pause</em>.</h2>
+      </div>
+      <div class="astonish-row">
+        <div class="astonish-cell" data-reveal>
+          <div class="astonish-num">25%</div>
+          <div class="astonish-cap">of every heartbeat is sent to organs that make up only half a percent of your body weight.</div>
+        </div>
+        <div class="astonish-cell" data-reveal data-delay="1">
+          <div class="astonish-num short">a tennis court</div>
+          <div class="astonish-cap">of microscopic tubule surface, packed inside two organs the size of fists.</div>
+        </div>
+        <div class="astonish-cell" data-reveal data-delay="2">
+          <div class="astonish-num">±0.04</div>
+          <div class="astonish-cap">the band of pH the blood is held within, every minute, for as long as you live.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAT -->
+  <section class="stat-band">
+    <div class="container">
+      <div class="stat-eyebrow" data-reveal>What is held in reserve</div>
+      <div class="stat-number" data-reveal data-delay="1">2,000,000</div>
+      <div class="stat-caption" data-reveal data-delay="2">— nephrons in two kidneys at birth, irreplaceable, slowly counted down across a lifetime.</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <div class="eyebrow" data-reveal style="justify-content:center;">There is one thing left to do</div>
+      <h3 data-reveal data-delay="1">Now that you know what they <em>do</em> —<br>learn how to <em>protect</em> them.</h3>
+      <p data-reveal data-delay="2">A serum creatinine and a urine protein test cost less than a meal and take less than ten minutes. They are the only way to know whether the silent organ is still keeping its count. Beyond the tests, there are eighty kidney-health guides on this site — written for patients, caregivers, and clinicians.</p>
+      <a href="index.html" class="cta-btn" data-magnetic data-reveal data-delay="3">
+        <span>Read the kidney guides</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div>Your Amazing Kidneys · Normal Physiology · W. G. M. Rivero, MD</div>
+  <div>An immersive feature page · williamriveromd.com</div>
+</footer>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer }  from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass }      from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass }      from 'three/addons/postprocessing/OutputPass.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* ════════════════════════════════════════════════
+   RENDERER + SCENE
+   ════════════════════════════════════════════════ */
+const canvas = document.getElementById('webgl');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, powerPreference:'high-performance' });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, innerWidth/innerHeight, 0.1, 100);
+camera.position.set(0, 0, 5.6);
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+/* ════════════════════════════════════════════════
+   CAUSTIC BACKDROP
+   ════════════════════════════════════════════════ */
+const causticGeo = new THREE.PlaneGeometry(40, 25, 1, 1);
+const causticMat = new THREE.ShaderMaterial({
+  uniforms: {
+    uTime:      { value: 0 },
+    uColor:     { value: new THREE.Color('#7be3ff') },
+    uColorDeep: { value: new THREE.Color('#0a3d4a') },
+  },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `
+    uniform float uTime;
+    uniform vec3  uColor;
+    uniform vec3  uColorDeep;
+    varying vec2  vUv;
+    vec2 hash2(vec2 p){ p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3))); return fract(sin(p)*43758.5453); }
+    float caustic(vec2 uv, float t){
+      vec2 p = uv * 6.0; vec2 i = floor(p), f = fract(p); float minDist = 1.0;
+      for(int y=-1;y<=1;y++){ for(int x=-1;x<=1;x++){
+        vec2 g = vec2(float(x), float(y)); vec2 o = hash2(i + g);
+        o = 0.5 + 0.5 * sin(t + 6.2831 * o);
+        vec2 r = g + o - f; float d = dot(r, r); minDist = min(minDist, d);
+      }} return sqrt(minDist);
+    }
+    void main(){
+      vec2 uv = vUv;
+      float c1 = caustic(uv * 1.0,        uTime * 0.35);
+      float c2 = caustic(uv * 1.7 + 5.0,  uTime * 0.22);
+      float c  = pow(1.0 - min(c1, c2), 6.0);
+      vec2 d = vUv - 0.5; float vignette = smoothstep(0.55, 0.05, length(d));
+      vec3 col = mix(uColorDeep, uColor, c) * (0.10 + c * 1.4);
+      col *= vignette * 0.85;
+      gl_FragColor = vec4(col, 1.0);
+    }`,
+  depthWrite: false,
+});
+const caustic = new THREE.Mesh(causticGeo, causticMat);
+caustic.position.z = -6;
+scene.add(caustic);
+
+/* ════════════════════════════════════════════════
+   BILATERAL KIDNEYS
+   Procedural bean shape used as fallback; auto-upgrades
+   to assets/kidney.glb if present (provided alongside this guide)
+   ════════════════════════════════════════════════ */
+const dropletGeo = new THREE.IcosahedronGeometry(1.25, 64);
+{
+  const pos = dropletGeo.attributes.position;
+  const v = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i).normalize();
+    const n =
+      Math.sin(v.x * 2.4 + v.y * 1.6) * 0.08 +
+      Math.cos(v.y * 3.1 + v.z * 2.3) * 0.06 +
+      Math.sin(v.z * 4.0 + v.x * 1.1) * 0.04;
+    v.multiplyScalar(1.25 + n);
+    pos.setXYZ(i, v.x, v.y, v.z);
+  }
+  dropletGeo.computeVertexNormals();
+}
+
+// Refined kidney-bean morph target
+const kidneyPositions = new Float32Array(dropletGeo.attributes.position.count * 3);
+{
+  const src = dropletGeo.attributes.position;
+  const v = new THREE.Vector3();
+  for (let i = 0; i < src.count; i++) {
+    v.fromBufferAttribute(src, i).normalize();
+    let kx = v.x * 1.10, ky = v.y * 1.85, kz = v.z * 0.55;
+    const dist = Math.sqrt(ky * ky + kz * kz);
+    if (kx < 0 && dist < 1.0) {
+      const yBand = Math.exp(-Math.abs(ky) * 0.9);
+      const zBand = Math.exp(-Math.abs(kz) * 1.2);
+      kx += yBand * zBand * 0.85;
+    }
+    const yNorm = Math.min(1, Math.abs(ky) / 1.85);
+    const taper = 1 - yNorm * yNorm * 0.20;
+    kx *= taper; kz *= taper;
+    kx += Math.sin(ky * 0.70) * 0.05;
+    const surf = Math.sin(kx * 3.1 + ky * 2.4) * 0.025
+               + Math.cos(ky * 2.8 + kz * 3.6) * 0.020
+               + Math.sin(kz * 4.1)            * 0.012;
+    kx += v.x * surf; ky += v.y * surf; kz += v.z * surf;
+    kidneyPositions[i*3] = kx; kidneyPositions[i*3+1] = ky; kidneyPositions[i*3+2] = kz;
+  }
+}
+dropletGeo.morphAttributes.position = [ new THREE.BufferAttribute(kidneyPositions, 3) ];
+
+const dropletMat = new THREE.MeshPhysicalMaterial({
+  color: 0xffffff, metalness: 0.0, roughness: 0.08,
+  transmission: 1.0, thickness: 1.5, ior: 1.33,
+  attenuationColor: new THREE.Color('#7be3ff'), attenuationDistance: 1.4,
+  envMapIntensity: 1.4, clearcoat: 1.0, clearcoatRoughness: 0.08,
+});
+
+const droplet  = new THREE.Mesh(dropletGeo, dropletMat);
+const droplet2 = new THREE.Mesh(dropletGeo, dropletMat);
+droplet.morphTargetInfluences  = [0];
+droplet2.morphTargetInfluences = [0];
+droplet.position.set(0, 0, 0);
+droplet2.position.set(0, 0, 0);
+droplet2.rotation.set(0.2, Math.PI, 0);
+scene.add(droplet, droplet2);
+
+// Auto-upgrade to .glb if present
+(async function tryUpgradeKidney(){
+  try {
+    const probe = await fetch('assets/kidney.glb', { method:'HEAD' });
+    if (!probe.ok) return;
+  } catch { return; }
+  try {
+    const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+    const loader = new GLTFLoader();
+    const gltf = await new Promise((res, rej) => loader.load('assets/kidney.glb', res, undefined, rej));
+    let foundMesh = null;
+    gltf.scene.traverse(o => { if (o.isMesh && !foundMesh) foundMesh = o; });
+    if (!foundMesh) return;
+    const newGeo = foundMesh.geometry.clone();
+    newGeo.computeBoundingBox();
+    const sz = newGeo.boundingBox.getSize(new THREE.Vector3());
+    const scale = 2.4 / Math.max(sz.x, sz.y, sz.z);
+    newGeo.scale(scale, scale, scale);
+    newGeo.center();
+    newGeo.computeVertexNormals();
+    droplet.geometry.dispose(); droplet2.geometry.dispose();
+    droplet.geometry  = newGeo; droplet2.geometry = newGeo;
+    droplet.morphTargetInfluences  = null;
+    droplet2.morphTargetInfluences = null;
+    console.info('[your-amazing-kidneys] Loaded kidney.glb');
+  } catch (e) { console.warn('Failed to load kidney.glb, keeping procedural:', e); }
+})();
+
+const rimLight  = new THREE.DirectionalLight(0x7be3ff, 1.2); rimLight.position.set(-3, 2, -2); scene.add(rimLight);
+const fillLight = new THREE.DirectionalLight(0xffffff, 0.4); fillLight.position.set(3, 1, 3); scene.add(fillLight);
+
+/* ════════════════════════════════════════════════
+   BUBBLES
+   ════════════════════════════════════════════════ */
+const BUBBLE_COUNT = 800;
+const bubblePos  = new Float32Array(BUBBLE_COUNT * 3);
+const bubbleSize = new Float32Array(BUBBLE_COUNT);
+const bubbleSeed = new Float32Array(BUBBLE_COUNT);
+for (let i = 0; i < BUBBLE_COUNT; i++) {
+  bubblePos[i*3]   = (Math.random() - 0.5) * 18;
+  bubblePos[i*3+1] = (Math.random() - 0.5) * 14;
+  bubblePos[i*3+2] = (Math.random() - 0.5) * 8 - 1;
+  bubbleSize[i]    = Math.random() * 0.05 + 0.008;
+  bubbleSeed[i]    = Math.random() * 6.28;
+}
+const bubbleGeo = new THREE.BufferGeometry();
+bubbleGeo.setAttribute('position', new THREE.BufferAttribute(bubblePos, 3));
+bubbleGeo.setAttribute('size',     new THREE.BufferAttribute(bubbleSize, 1));
+bubbleGeo.setAttribute('seed',     new THREE.BufferAttribute(bubbleSeed, 1));
+const bubbleMat = new THREE.ShaderMaterial({
+  uniforms: { uTime: { value: 0 }, uPixel: { value: renderer.getPixelRatio() } },
+  vertexShader: `attribute float size; attribute float seed; uniform float uTime; uniform float uPixel; varying float vAlpha;
+    void main(){ vec3 p = position; p.y += mod(uTime * 0.18 + seed * 1.4, 14.0) - 7.0; p.x += sin(uTime * 0.4 + seed) * 0.18;
+      vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_PointSize = size * 380.0 * uPixel / -mv.z;
+      vAlpha = clamp(1.0 / -mv.z * 5.0, 0.04, 0.85); gl_Position = projectionMatrix * mv; }`,
+  fragmentShader: `varying float vAlpha;
+    void main(){ vec2 c = gl_PointCoord - 0.5; float d = length(c);
+      float rim = smoothstep(0.50, 0.40, d) - smoothstep(0.40, 0.30, d);
+      float core = smoothstep(0.50, 0.0, d) * 0.18;
+      float a = (rim * 0.85 + core) * vAlpha;
+      gl_FragColor = vec4(0.78, 0.93, 1.0, a); }`,
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+});
+const bubbles = new THREE.Points(bubbleGeo, bubbleMat);
+scene.add(bubbles);
+
+/* ════════════════════════════════════════════════
+   FILTRATION STREAMS
+   ════════════════════════════════════════════════ */
+const FILT_PER_STREAM = 220;
+const FILT_TOTAL = FILT_PER_STREAM * 2;
+const filtPos    = new Float32Array(FILT_TOTAL * 3);
+const filtPhase  = new Float32Array(FILT_TOTAL);
+const filtSeed   = new Float32Array(FILT_TOTAL);
+const filtStream = new Float32Array(FILT_TOTAL);
+for (let i = 0; i < FILT_TOTAL; i++) {
+  filtStream[i] = i < FILT_PER_STREAM ? 0 : 1;
+  filtPhase[i]  = Math.random();
+  filtSeed[i]   = Math.random() * 6.2831;
+}
+const filtGeo = new THREE.BufferGeometry();
+filtGeo.setAttribute('position', new THREE.BufferAttribute(filtPos,    3));
+filtGeo.setAttribute('phase',    new THREE.BufferAttribute(filtPhase,  1));
+filtGeo.setAttribute('seed',     new THREE.BufferAttribute(filtSeed,   1));
+filtGeo.setAttribute('stream',   new THREE.BufferAttribute(filtStream, 1));
+const filtMat = new THREE.ShaderMaterial({
+  uniforms: {
+    uTime: { value: 0 }, uPixel: { value: renderer.getPixelRatio() },
+    uIntensity: { value: 0 },
+    uLeft:  { value: new THREE.Vector3() },
+    uRight: { value: new THREE.Vector3() },
+  },
+  vertexShader: `attribute float phase; attribute float seed; attribute float stream;
+    uniform float uTime; uniform float uPixel; uniform float uIntensity;
+    uniform vec3 uLeft; uniform vec3 uRight;
+    varying float vPhase; varying float vAlpha;
+    void main(){
+      float speed = 0.13 + (sin(seed)*0.5 + 0.5) * 0.06;
+      float p = mod(phase + uTime * speed, 1.0); vPhase = p;
+      vec3 center = stream < 0.5 ? uLeft : uRight;
+      float pathY = mix(2.6, -2.6, p);
+      float convergence = max(0.0, 1.0 - 4.5 * abs(p - 0.5));
+      float wobbleX = sin(uTime * 1.6 + seed * 3.0) * 0.55;
+      float wobbleZ = cos(uTime * 1.4 + seed * 2.5) * 0.40;
+      wobbleX *= 1.0 - convergence * 0.92;
+      wobbleZ *= 1.0 - convergence * 0.92;
+      vec3 pos = center; pos.y += pathY; pos.x += wobbleX; pos.z += wobbleZ;
+      float visibility = 1.0; if (p > 0.42 && p < 0.58) visibility = 0.18;
+      float endFade = smoothstep(0.0, 0.08, p) * smoothstep(1.0, 0.92, p);
+      vAlpha = visibility * endFade * uIntensity * 0.85;
+      vec4 mv = modelViewMatrix * vec4(pos, 1.0);
+      gl_PointSize = 4.5 * uPixel * (1.0 / -mv.z * 6.0);
+      gl_Position  = projectionMatrix * mv;
+    }`,
+  fragmentShader: `varying float vPhase; varying float vAlpha;
+    void main(){
+      vec2 c = gl_PointCoord - 0.5; float d = length(c);
+      float a = smoothstep(0.5, 0.0, d) * vAlpha;
+      vec3 colArt  = vec3(1.00, 0.55, 0.40);
+      vec3 colMid  = vec3(1.00, 0.98, 0.92);
+      vec3 colVein = vec3(0.55, 0.85, 1.00);
+      float midMix = smoothstep(0.36, 0.5, vPhase) * (1.0 - smoothstep(0.5, 0.64, vPhase));
+      vec3 col = mix(colArt, colVein, smoothstep(0.4, 0.6, vPhase));
+      col = mix(col, colMid, midMix);
+      gl_FragColor = vec4(col, a);
+    }`,
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+});
+const filtration = new THREE.Points(filtGeo, filtMat);
+scene.add(filtration);
+
+/* ════════════════════════════════════════════════
+   POSTPROCESSING
+   ════════════════════════════════════════════════ */
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.55, 0.7, 0.20);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+function onResize(){
+  const w = innerWidth, h = innerHeight;
+  camera.aspect = w/h; camera.updateProjectionMatrix();
+  renderer.setSize(w, h); composer.setSize(w, h); bloom.setSize(w, h);
+}
+addEventListener('resize', onResize);
+
+/* ════════════════════════════════════════════════
+   MOUSE
+   ════════════════════════════════════════════════ */
+const mouse = { x:0, y:0, tx:0, ty:0 };
+addEventListener('pointermove', e => {
+  mouse.tx = (e.clientX / innerWidth)  * 2 - 1;
+  mouse.ty = (e.clientY / innerHeight) * 2 - 1;
+});
+
+/* ════════════════════════════════════════════════
+   RENDER LOOP
+   ════════════════════════════════════════════════ */
+let dropletScaleMul = 1.0;
+let pulseEnv        = 0.0;
+const clock = new THREE.Clock();
+function tick(){
+  const t = clock.getElapsedTime();
+  causticMat.uniforms.uTime.value = t;
+  bubbleMat.uniforms.uTime.value  = t;
+  filtMat.uniforms.uTime.value    = t;
+  filtMat.uniforms.uLeft.value.copy(droplet.position);
+  filtMat.uniforms.uRight.value.copy(droplet2.position);
+
+  pulseEnv *= 0.92;
+  const pulseScale = 1 + pulseEnv * 0.025;
+
+  const breath  = 1 + Math.sin(t * 0.7)        * 0.015;
+  const breath2 = 1 + Math.sin(t * 0.7 + 1.2)  * 0.015;
+  droplet.scale.setScalar (breath  * dropletScaleMul * pulseScale);
+  droplet2.scale.setScalar(breath2 * dropletScaleMul * pulseScale);
+
+  droplet.rotation.y  += 0.0017; droplet.rotation.x  += 0.0008;
+  droplet2.rotation.y -= 0.0014; droplet2.rotation.x += 0.0010;
+
+  mouse.x += (mouse.tx - mouse.x) * 0.05;
+  mouse.y += (mouse.ty - mouse.y) * 0.05;
+  droplet.rotation.y  +=  mouse.x * 0.0025;
+  droplet.rotation.x  += -mouse.y * 0.0025;
+  droplet2.rotation.y +=  mouse.x * 0.0025;
+  droplet2.rotation.x += -mouse.y * 0.0025;
+  bubbles.rotation.y = mouse.x * 0.05;
+  bubbles.rotation.x = -mouse.y * 0.05;
+  caustic.position.x = mouse.x * 0.3;
+  caustic.position.y = -mouse.y * 0.2;
+
+  composer.render();
+  requestAnimationFrame(tick);
+}
+tick();
+
+/* ════════════════════════════════════════════════
+   SCROLL CHOREOGRAPHY
+   ════════════════════════════════════════════════ */
+gsap.to(droplet.position,  { x: -1.15, y: -0.6,
+  scrollTrigger: { trigger: '.capabilities', start: 'top bottom', end: 'top top', scrub: 1 } });
+gsap.to(droplet2.position, { x:  1.15, y: -0.6,
+  scrollTrigger: { trigger: '.capabilities', start: 'top bottom', end: 'top top', scrub: 1 } });
+gsap.to(camera.position, { z: 7.6,
+  scrollTrigger: { trigger: '.capabilities', start: 'top bottom', end: 'bottom top', scrub: 1 } });
+gsap.to(droplet.morphTargetInfluences,  { 0: 1,
+  scrollTrigger: { trigger: '.stat-band', start: 'top 80%', end: 'center 50%', scrub: 1.2 } });
+gsap.to(droplet2.morphTargetInfluences, { 0: 1,
+  scrollTrigger: { trigger: '.stat-band', start: 'top 80%', end: 'center 50%', scrub: 1.2 } });
+gsap.to(filtMat.uniforms.uIntensity, { value: 1.0,
+  scrollTrigger: { trigger: '.capabilities', start: 'top 70%', end: 'top 10%', scrub: 1 } });
+gsap.to(filtMat.uniforms.uIntensity, { value: 0.55,
+  scrollTrigger: { trigger: '.cta', start: 'top 60%', end: 'top 0%', scrub: 1.2 } });
+const sizeProxy = { v: 1.0 };
+gsap.to(sizeProxy, { v: 1.45,
+  scrollTrigger: { trigger: '.stat-band', start: 'top bottom', end: 'bottom top', scrub: 1.2 },
+  onUpdate: () => { dropletScaleMul = sizeProxy.v; } });
+gsap.to(dropletMat, { thickness: 2.6,
+  scrollTrigger: { trigger: '.stat-band', start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
+gsap.to(droplet.rotation,  { z:  0.25,
+  scrollTrigger: { trigger: '.stat-band', start: 'top bottom', end: 'center center', scrub: 1.2 } });
+gsap.to(droplet2.rotation, { z: -0.25,
+  scrollTrigger: { trigger: '.stat-band', start: 'top bottom', end: 'center center', scrub: 1.2 } });
+gsap.to(droplet.position,  { x: -0.55, y: 0,
+  scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'top top', scrub: 1 } });
+gsap.to(droplet2.position, { x:  0.55, y: 0,
+  scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'top top', scrub: 1 } });
+gsap.to(caustic.material.uniforms.uColor.value, { r: 1, g: 0.72, b: 0.55,
+  scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
+
+/* ════════════════════════════════════════════════
+   REVEAL ON SCROLL
+   ════════════════════════════════════════════════ */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+
+/* ════════════════════════════════════════════════
+   CUSTOM CURSOR + MAGNETIC HOVERS
+   ════════════════════════════════════════════════ */
+const cursor = document.querySelector('.cursor');
+const ring   = document.querySelector('.cursor-ring');
+let cx = innerWidth/2, cy = innerHeight/2, rx = cx, ry = cy;
+addEventListener('pointermove', e => { cx = e.clientX; cy = e.clientY; });
+function cursorTick(){
+  cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%,-50%)`;
+  rx += (cx - rx) * 0.18; ry += (cy - ry) * 0.18;
+  ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+  requestAnimationFrame(cursorTick);
+}
+cursorTick();
+
+document.querySelectorAll('[data-magnetic], button, a').forEach(el => {
+  el.addEventListener('pointerenter', () => ring.classList.add('is-hover'));
+  el.addEventListener('pointerleave', () => { ring.classList.remove('is-hover'); el.style.transform = ''; });
+});
+document.querySelectorAll('[data-magnetic]').forEach(el => {
+  el.addEventListener('pointermove', e => {
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - (r.left + r.width/2);
+    const y = e.clientY - (r.top  + r.height/2);
+    el.style.transform = `translate(${x*0.18}px, ${y*0.18}px)`;
+  });
+});
+
+/* ════════════════════════════════════════════════
+   AMBIENT AUDIO
+   ════════════════════════════════════════════════ */
+const Audio = {
+  ctx: null, master: null, enabled: false,
+  init(){
+    if (this.ctx) return;
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    this.ctx = new Ctx();
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.value = 720; filter.Q.value = 0.55;
+    this.master = this.ctx.createGain(); this.master.gain.value = 0;
+    filter.connect(this.master); this.master.connect(this.ctx.destination);
+    const voices = [
+      { freq: 55.00, type: 'sine'    , gain: 0.085, lfoRate: 0.07, lfoDepth: 0.25 },
+      { freq: 82.41, type: 'sine'    , gain: 0.060, lfoRate: 0.09, lfoDepth: 0.30 },
+      { freq:110.00, type: 'sine'    , gain: 0.045, lfoRate: 0.11, lfoDepth: 0.35 },
+      { freq:164.81, type: 'triangle', gain: 0.025, lfoRate: 0.13, lfoDepth: 0.40 },
+    ];
+    voices.forEach(v => {
+      const osc = this.ctx.createOscillator();
+      osc.type = v.type; osc.frequency.value = v.freq;
+      osc.detune.value = (Math.random() - 0.5) * 8;
+      const lfo = this.ctx.createOscillator();
+      const lfoGain = this.ctx.createGain();
+      lfo.frequency.value = v.lfoRate; lfoGain.gain.value = v.lfoDepth;
+      lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+      const g = this.ctx.createGain(); g.gain.value = v.gain;
+      osc.connect(g); g.connect(filter);
+      osc.start(); lfo.start();
+    });
+  },
+  toggle(){
+    if (!this.ctx) this.init();
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+    this.enabled = !this.enabled;
+    const now = this.ctx.currentTime;
+    const target = this.enabled ? 1.0 : 0.0;
+    this.master.gain.cancelScheduledValues(now);
+    this.master.gain.linearRampToValueAtTime(this.master.gain.value, now);
+    this.master.gain.linearRampToValueAtTime(target, now + 1.8);
+    return this.enabled;
+  },
+  chime(freq){
+    if (!this.enabled || !this.ctx) return;
+    const ctx = this.ctx, now = ctx.currentTime;
+    const make = (f, peak, dur, type='sine') => {
+      const o = ctx.createOscillator(); const g = ctx.createGain();
+      o.type = type; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(peak,   now + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+      o.connect(g); g.connect(this.master); o.start(now); o.stop(now + dur + 0.05);
+    };
+    make(freq, 0.16, 2.6, 'sine');
+    make(freq * 2.0, 0.05, 1.2, 'sine');
+    make(freq * 3.01, 0.025, 0.7, 'triangle');
+  },
+  pulse(){
+    if (!this.enabled || !this.ctx) return;
+    const ctx = this.ctx, now = ctx.currentTime;
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(85, now);
+    o.frequency.exponentialRampToValueAtTime(32, now + 0.18);
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.exponentialRampToValueAtTime(0.32,   now + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.30);
+    o.connect(g); g.connect(this.master); o.start(now); o.stop(now + 0.32);
+  },
+};
+document.getElementById('sound-toggle').addEventListener('click', function(){
+  const on = Audio.toggle();
+  this.classList.toggle('is-on', on);
+  this.querySelector('.sound-label').textContent = on ? 'On' : 'Sound';
+});
+const chimeFreqs = [440.00, 523.25, 587.33, 698.46];
+document.querySelectorAll('.cap-card').forEach((card, i) => {
+  card.addEventListener('pointerenter', () => Audio.chime(chimeFreqs[i % chimeFreqs.length]));
+});
+setInterval(() => { pulseEnv = 1.0; Audio.pulse(); }, 1000);
+</script>
+</body>
+</html>
