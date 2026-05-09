@@ -142,6 +142,29 @@
 
   footer{padding:48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-low);position:relative;z-index:2;flex-wrap:wrap;gap:12px;}
 
+  /* ── Mode toggle (Full / Lite) in site header ── */
+  .mode-toggle{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid rgba(212,175,79,.3);color:var(--ink-mid);padding:5px 12px;border-radius:14px;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;transition:border-color .25s,color .25s,background .25s;margin-right:14px;}
+  .mode-toggle:hover{border-color:var(--gold);color:var(--gold);}
+  .mode-toggle .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);}
+
+  /* ── LITE MODE — drops WebGL, audio, custom cursor for slow connections ── */
+  html.lite-mode #webgl,
+  html.lite-mode .cursor,
+  html.lite-mode .cursor-ring,
+  html.lite-mode .sound-toggle{display:none !important;}
+  html.lite-mode body{cursor:auto;}
+  html.lite-mode a,
+  html.lite-mode button{cursor:pointer;}
+  html.lite-mode .cap-card{background:rgba(15,30,46,.85);backdrop-filter:none;}
+  html.lite-mode .astonish-cell{background:rgba(15,30,46,.7);}
+  html.lite-mode .bg-vignette{
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 38%, rgba(15,30,46,.6) 0%, rgba(2,6,10,.85) 60%, rgba(2,6,10,1) 100%),
+      radial-gradient(circle at 22% 28%, rgba(123,227,255,.10), transparent 45%),
+      radial-gradient(circle at 78% 78%, rgba(26,107,114,.10), transparent 50%);
+  }
+  html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to bottom,var(--gold),transparent);}
+
   /* Reveal */
   [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity 1.2s cubic-bezier(.2,.8,.2,1),transform 1.2s cubic-bezier(.2,.8,.2,1);}
   [data-reveal].in{opacity:1;transform:none;}
@@ -175,7 +198,13 @@
 
 <header class="site-header">
   <a class="brand" href="https://williamriveromd.com">W. G. M. <strong>Rivero</strong>, MD</a>
-  <a class="back" href="index.html" data-magnetic>← All Guides</a>
+  <div style="display:flex;align-items:center;gap:0;">
+    <button class="mode-toggle" id="mode-toggle" aria-label="Switch between full and lite experience">
+      <span class="dot"></span>
+      <span id="mode-label">Full</span>
+    </button>
+    <a class="back" href="index.html" data-magnetic>← All Guides</a>
+  </div>
 </header>
 
 <button class="sound-toggle" id="sound-toggle" aria-label="Toggle ambient sound">
@@ -340,12 +369,85 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <script type="module">
-import * as THREE from 'three';
-import { EffectComposer }  from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass }      from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { OutputPass }      from 'three/addons/postprocessing/OutputPass.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+/* ════════════════════════════════════════════════
+   LITE MODE DETECTION
+   ════════════════════════════════════════════════
+   Order of precedence (highest to lowest):
+     1. URL ?mode=lite or ?mode=full
+     2. localStorage user preference (set by the toggle)
+     3. Auto-detect from connection + reduced-motion preference
+
+   Lite mode skips the entire WebGL stack (Three.js, .glb model,
+   GSAP scroll triggers, audio synthesis, custom cursor) — saving
+   ~8 MB of asset weight + ~250 KB of library code on slow networks.
+*/
+const LITE_KEY = 'kidney-physiology-mode';
+const urlMode  = new URLSearchParams(location.search).get('mode');
+const stored   = localStorage.getItem(LITE_KEY);
+
+let liteMode;
+if (urlMode === 'lite' || urlMode === 'full') {
+  liteMode = (urlMode === 'lite');
+  localStorage.setItem(LITE_KEY, urlMode);                  // sync URL choice into storage
+} else if (stored === 'lite' || stored === 'full') {
+  liteMode = (stored === 'lite');
+} else {
+  // Auto-detect
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const slowConn = conn && (
+       conn.saveData === true
+    || conn.effectiveType === 'slow-2g'
+    || conn.effectiveType === '2g'
+    || (typeof conn.downlink === 'number' && conn.downlink < 0.7)
+  );
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  liteMode = slowConn || reducedMotion;
+}
+
+document.documentElement.classList.toggle('lite-mode', liteMode);
+
+// Update toggle button label + behavior (always wired, regardless of mode)
+const modeBtn   = document.getElementById('mode-toggle');
+const modeLabel = document.getElementById('mode-label');
+modeLabel.textContent = liteMode ? 'Lite' : 'Full';
+modeBtn.title = liteMode
+  ? 'Lite mode active (faster loading). Click to switch to the full 3D experience.'
+  : 'Full experience active. Click to switch to the lighter version (no 3D, faster loading).';
+modeBtn.addEventListener('click', () => {
+  const next = liteMode ? 'full' : 'lite';
+  localStorage.setItem(LITE_KEY, next);
+  // Reload so the JS re-evaluates from a clean state (necessary because
+  // we'd otherwise need to tear down/rebuild the entire WebGL context)
+  const u = new URL(location.href);
+  u.searchParams.delete('mode');     // url param overrides storage; remove so storage wins
+  location.href = u.toString();
+});
+
+/* Reveal-on-scroll runs in BOTH modes — IntersectionObserver is cheap */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+
+/* ════════════════════════════════════════════════
+   FULL EXPERIENCE — everything below only runs when liteMode === false
+   ════════════════════════════════════════════════ */
+if (!liteMode) {
+import('three').then(THREE_NS => {
+const THREE = THREE_NS;
+Promise.all([
+  import('three/addons/postprocessing/EffectComposer.js'),
+  import('three/addons/postprocessing/RenderPass.js'),
+  import('three/addons/postprocessing/UnrealBloomPass.js'),
+  import('three/addons/postprocessing/OutputPass.js'),
+  import('three/addons/environments/RoomEnvironment.js'),
+]).then(([
+  { EffectComposer },
+  { RenderPass },
+  { UnrealBloomPass },
+  { OutputPass },
+  { RoomEnvironment },
+]) => {
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -704,14 +806,6 @@ gsap.to(caustic.material.uniforms.uColor.value, { r: 1, g: 0.72, b: 0.55,
   scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
 
 /* ════════════════════════════════════════════════
-   REVEAL ON SCROLL
-   ════════════════════════════════════════════════ */
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-}, { threshold: 0.15 });
-document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
-
-/* ════════════════════════════════════════════════
    CUSTOM CURSOR + MAGNETIC HOVERS
    ════════════════════════════════════════════════ */
 const cursor = document.querySelector('.cursor');
@@ -820,6 +914,10 @@ document.querySelectorAll('.cap-card').forEach((card, i) => {
   card.addEventListener('pointerenter', () => Audio.chime(chimeFreqs[i % chimeFreqs.length]));
 });
 setInterval(() => { pulseEnv = 1.0; Audio.pulse(); }, 1000);
+
+}); // close addons Promise.all
+}); // close THREE dynamic import
+} // close if (!liteMode)
 </script>
 </body>
 </html>
