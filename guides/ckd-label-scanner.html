@@ -87,6 +87,28 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);
 .stage-btn[data-stage="HD"].active{background:#075985;}
 .stage-btn[data-stage="PD"].active{background:#166534;}
 
+/* Comorbidity toggles */
+.comorbidity-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.comorbidity-label-row{font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;margin-top:4px;}
+.comorbid-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:5px 13px;border-radius:20px;border:1.5px dashed var(--border);background:var(--white);color:var(--text-muted);cursor:pointer;transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.comorbid-btn:hover{border-color:var(--navy);color:var(--navy);}
+.comorbid-btn.active{border-style:solid;color:white;}
+.comorbid-btn[data-key="dm"].active{background:#7c3aed;border-color:#7c3aed;}
+.comorbid-btn[data-key="htn"].active{background:#b91c1c;border-color:#b91c1c;}
+.comorbid-btn[data-key="gout"].active{background:#b45309;border-color:#b45309;}
+.comorbid-btn[data-key="dyslipidemia"].active{background:#0369a1;border-color:#0369a1;}
+.comorbid-btn[data-key="cvd"].active{background:#9f1239;border-color:#9f1239;}
+.comorbid-btn[data-key="obesity"].active{background:#166534;border-color:#166534;}
+.comorbid-tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 5px;border-radius:6px;color:white;margin-left:2px;}
+
+/* Clinical callout */
+.clinical-note{background:linear-gradient(135deg,rgba(15,30,46,.97),rgba(26,107,114,.15));border:1px solid rgba(26,107,114,.3);border-radius:12px;padding:20px 24px;margin-bottom:28px;display:flex;gap:16px;align-items:flex-start;}
+.clinical-note-icon{font-size:28px;flex-shrink:0;margin-top:2px;}
+.clinical-note-body h4{font-size:14px;font-weight:600;color:var(--gold-light);margin-bottom:6px;}
+.clinical-note-body p{font-size:13.5px;color:rgba(255,255,255,.82);line-height:1.6;margin:0;}
+html[data-theme="dark"] .comorbid-btn{background:#141c2a;border-color:#2a3548;color:#8a95a8;}
+html[data-theme="dark"] .clinical-note{background:linear-gradient(135deg,rgba(8,16,26,.98),rgba(26,107,114,.12));}
+
 /* Form */
 .form-group{margin-bottom:16px;}
 .form-group label{display:block;font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
@@ -356,10 +378,18 @@ html[data-view="desktop"] body{min-width:1024px;}
 <section class="section" id="scanner">
 <div class="section-tag" data-lang="en">Label Scanning Tool</div><div class="section-tag lang-hidden" data-lang="tl">Tool para sa Label Scanning</div><div class="section-tag lang-hidden" data-lang="ceb">Label Scanning Tool</div><div class="section-tag lang-hidden" data-lang="kap">Label Scanning Tool</div>
 <h2 data-lang="en">Scan a Nutrition Label</h2><h2 class="lang-hidden" data-lang="tl">Mag-scan ng Nutrition Label</h2><h2 class="lang-hidden" data-lang="ceb">Pag-scan sa Nutrition Label</h2><h2 class="lang-hidden" data-lang="kap">Mag-scan Nutrition Label</h2>
-<p data-lang="en">Take a photo or upload an image of any Nutrition Facts label. The scanner will extract the nutrient values and flag anything concerning for your CKD stage.</p>
-<p class="lang-hidden" data-lang="tl">Kumuha ng litrato o mag-upload ng imahe ng kahit anong Nutrition Facts label. I-e-extract ng scanner ang mga halaga ng nutrients at ifa-flag ang kahit anong nakababahala para sa iyong CKD stage.</p>
-<p class="lang-hidden" data-lang="ceb">Pagkuha og litrato o pag-upload og imahe sa bisan unsang Nutrition Facts label. Ang scanner mag-extract sa nutrient values ug mag-flag sa bisan unsa nga makapabalaka para sa imong CKD stage.</p>
-<p class="lang-hidden" data-lang="kap">Kunan mung litrato o mag-upload kang larawan ning maski sanu mang Nutrition Facts label. I-extract ning scanner deng halaga da ring nutrients at i-flag na ing maski nanu mang makabahala para king CKD stage mu.</p>
+<p data-lang="en">Take a photo or upload an image of any Nutrition Facts label. The scanner will extract the nutrient values and flag anything concerning for your CKD stage and comorbidities.</p>
+<p class="lang-hidden" data-lang="tl">Kumuha ng litrato o mag-upload ng imahe ng kahit anong Nutrition Facts label. I-e-extract ng scanner ang mga halaga ng nutrients at ifa-flag ang kahit anong nakababahala para sa iyong CKD stage at mga comorbidities.</p>
+<p class="lang-hidden" data-lang="ceb">Pagkuha og litrato o pag-upload og imahe sa bisan unsang Nutrition Facts label. Ang scanner mag-extract sa nutrient values ug mag-flag sa bisan unsa nga makapabalaka para sa imong CKD stage ug mga comorbidities.</p>
+<p class="lang-hidden" data-lang="kap">Kunan mung litrato o mag-upload kang larawan ning maski sanu mang Nutrition Facts label. I-extract ning scanner deng halaga da ring nutrients at i-flag na ing maski nanu mang makabahala para king CKD stage at comorbidities mu.</p>
+
+<div class="clinical-note">
+  <div class="clinical-note-icon">🩺</div>
+  <div class="clinical-note-body">
+    <h4>A note from Dr. Rivero</h4>
+    <p>During clinic consultations, patients almost always hand me a list — sometimes a shopping bag — of foods they've been eating or plan to buy, asking one by one: <em>"Doc, pwede ba ito?"</em> This tool was built for exactly that moment. Set the patient's CKD stage and any other conditions below, scan the label, and get an instant structured answer — so we can spend consultation time on what matters most.</p>
+  </div>
+</div>
 
 <div class="analyzer-card">
 <div class="analyzer-header">
@@ -384,6 +414,20 @@ html[data-view="desktop"] body{min-width:1024px;}
 <button class="stage-btn" data-stage="5" onclick="setStage('5',this)">Stage 5</button>
 <button class="stage-btn" data-stage="HD" onclick="setStage('HD',this)">Hemodialysis</button>
 <button class="stage-btn" data-stage="PD" onclick="setStage('PD',this)">Peritoneal Dialysis</button>
+</div>
+
+<!-- Comorbidity toggles -->
+<div class="comorbidity-label-row" data-lang="en">Other Conditions (select all that apply — flags adjust automatically)</div>
+<div class="comorbidity-label-row lang-hidden" data-lang="tl">Iba pang Kondisyon (piliin lahat ng naaangkop — awtomatikong mag-a-adjust ang mga flags)</div>
+<div class="comorbidity-label-row lang-hidden" data-lang="ceb">Ubang mga Kondisyon (pilia tanan nga magamit — awtomatiko nga mag-adjust ang mga flags)</div>
+<div class="comorbidity-label-row lang-hidden" data-lang="kap">Aliwa pang Kondisyon (pilien la ring lahat a naaangkop — awtomatiko yang mag-a-adjust da ring flags)</div>
+<div class="comorbidity-row" id="comorbidity-row">
+  <button class="comorbid-btn" data-key="dm" onclick="toggleComorbidity('dm',this)">🩸 Diabetes / DM</button>
+  <button class="comorbid-btn" data-key="htn" onclick="toggleComorbidity('htn',this)">💉 Hypertension</button>
+  <button class="comorbid-btn" data-key="gout" onclick="toggleComorbidity('gout',this)">🦶 Gout / Hyperuricemia</button>
+  <button class="comorbid-btn" data-key="dyslipidemia" onclick="toggleComorbidity('dyslipidemia',this)">🫀 Dyslipidemia</button>
+  <button class="comorbid-btn" data-key="cvd" onclick="toggleComorbidity('cvd',this)">❤️ Heart Disease / CVD</button>
+  <button class="comorbid-btn" data-key="obesity" onclick="toggleComorbidity('obesity',this)">⚖️ Obesity / Overweight</button>
 </div>
 
 <!-- Image input -->
@@ -712,6 +756,14 @@ function setGuideLang(lang){
 
 // ── STAGE ─────────────────────────────────────────────────────────────
 var selectedStage = 'none';
+var selectedComorbidities = [];
+
+function toggleComorbidity(key, el){
+  var idx = selectedComorbidities.indexOf(key);
+  if(idx === -1){ selectedComorbidities.push(key); el.classList.add('active'); }
+  else { selectedComorbidities.splice(idx,1); el.classList.remove('active'); }
+  if(document.getElementById('results-wrap').classList.contains('show')) runAssessment();
+}
 function setStage(s, el){
   selectedStage = s;
   document.querySelectorAll('.stage-btn').forEach(function(b){b.classList.remove('active');});
@@ -980,6 +1032,105 @@ function buildFlags(nutrients, stage){
     }
   }
 
+  // ── COMORBIDITY FLAGS ────────────────────────────────────────────────
+  var combos = arguments[2] || [];
+  var sugars = nutrients.sugars || 0;
+  var carbs  = nutrients.total_carbs || 0;
+  var satFat = nutrients.sat_fat || 0;
+  var transFat = nutrients.trans_fat || 0;
+  var chol   = nutrients.cholesterol || 0;
+  var cals   = nutrients.calories || 0;
+  var naVal  = nutrients.sodium || 0;
+
+  if(combos.indexOf('dm') !== -1){
+    if(sugars > 12){
+      flags.push({cls:'danger',icon:'🩸',title:'DM — Very High Added Sugars — '+sugars.toFixed(1)+' g',body:'Added sugars cause rapid postprandial glucose spikes. Limit to <6 g per serving for diabetes. This item contains '+sugars.toFixed(1)+' g — significantly above target.',values:'Threshold: <6 g/serving · This item: '+sugars.toFixed(1)+' g',nutrient:'sugars'});
+    } else if(sugars > 6){
+      flags.push({cls:'warn',icon:'🩸',title:'DM — Elevated Sugars — '+sugars.toFixed(1)+' g',body:'Above the per-serving sugar target for diabetes. Choose a lower-sugar version or reduce portion size.',values:'Threshold: <6 g/serving · This item: '+sugars.toFixed(1)+' g',nutrient:'sugars'});
+    } else {
+      flags.push({cls:'ok',icon:'🩸',title:'DM — Sugars Acceptable — '+sugars.toFixed(1)+' g',body:'Within per-serving sugar target for diabetes management.',values:''});
+    }
+    if(carbs > 60){
+      flags.push({cls:'warn',icon:'🩸',title:'DM — High Total Carbs — '+carbs.toFixed(0)+' g',body:'Per-meal carbohydrate limit for most diabetic patients is 45–60 g. This single item provides '+carbs.toFixed(0)+' g — leaves little room for the rest of the meal.',values:'Recommended per meal: 45–60 g · This item: '+carbs.toFixed(0)+' g'});
+    }
+    if(satFat > 4){
+      flags.push({cls:'warn',icon:'🩸',title:'DM — Elevated Saturated Fat — '+satFat.toFixed(1)+' g',body:'Saturated fat worsens insulin resistance and cardiovascular risk, which is already elevated in diabetes. Aim for <4 g/serving.',values:'Threshold: <4 g/serving · This item: '+satFat.toFixed(1)+' g'});
+    }
+  }
+
+  if(combos.indexOf('htn') !== -1){
+    // Stricter sodium for HTN (AHA target 1500mg/day → ~500mg/meal)
+    var htnNaWarn = 500, htnNaDanger = 750;
+    if(naVal > htnNaDanger){
+      flags.push({cls:'danger',icon:'💉',title:'HTN — Very High Sodium — '+Math.round(naVal)+' mg',body:'AHA recommends ≤1500 mg/day for hypertension. This item alone contains '+Math.round(naVal)+' mg — more than half a day\'s allowance. Excess sodium raises blood pressure directly.',values:'HTN threshold: <500 mg/serving · This item: '+Math.round(naVal)+' mg',nutrient:'sodium'});
+    } else if(naVal > htnNaWarn){
+      flags.push({cls:'warn',icon:'💉',title:'HTN — Sodium Elevated — '+Math.round(naVal)+' mg',body:'Above the per-meal sodium target for hypertension. Consider a low-sodium alternative.',values:'HTN threshold: <500 mg/serving · This item: '+Math.round(naVal)+' mg',nutrient:'sodium'});
+    } else {
+      flags.push({cls:'ok',icon:'💉',title:'HTN — Sodium Acceptable — '+Math.round(naVal)+' mg',body:'Within per-serving sodium target for hypertension management.',values:''});
+    }
+  }
+
+  if(combos.indexOf('gout') !== -1){
+    // Fructose (via sugars) is the #1 dietary driver of gout; high animal protein = purines
+    if(sugars > 10){
+      flags.push({cls:'danger',icon:'🦶',title:'Gout — High Sugar / Fructose Risk — '+sugars.toFixed(1)+' g',body:'Fructose is the primary dietary driver of hyperuricemia and gout flares. Sugars on the label include fructose from sweeteners (HFCS, fruit juice concentrate). Limit sugar-sweetened products strictly.',values:'Target: <5 g/serving · This item: '+sugars.toFixed(1)+' g',nutrient:'sugars'});
+    } else if(sugars > 5){
+      flags.push({cls:'warn',icon:'🦶',title:'Gout — Moderate Sugar / Fructose — '+sugars.toFixed(1)+' g',body:'Moderate fructose content. Check the ingredient list for high-fructose corn syrup or fruit juice concentrate.',values:'Target: <5 g/serving · This item: '+sugars.toFixed(1)+' g',nutrient:'sugars'});
+    }
+    if(prot > 20){
+      flags.push({cls:'warn',icon:'🦶',title:'Gout — High Animal Protein / Purine Risk — '+prot.toFixed(1)+' g',body:'High-protein animal foods (organ meats, shellfish, red meat) are high in purines that convert to uric acid. If this is an animal-protein source, limit to one moderate serving per meal.',values:'This item: '+prot.toFixed(1)+' g protein'});
+    }
+    if(sugars <= 5 && prot <= 20){
+      flags.push({cls:'ok',icon:'🦶',title:'Gout — Low Fructose & Purine Risk',body:'Sugar and protein content are within acceptable limits for gout management.',values:''});
+    }
+  }
+
+  if(combos.indexOf('dyslipidemia') !== -1){
+    if(transFat > 0){
+      flags.push({cls:'danger',icon:'🫀',title:'Dyslipidemia — Trans Fat Detected — '+transFat.toFixed(1)+' g',body:'There is NO safe level of trans fat. Trans fats raise LDL, lower HDL, and dramatically increase cardiovascular risk. Avoid this product entirely if trans fat >0 g.',values:'Target: 0 g · This item: '+transFat.toFixed(1)+' g',nutrient:'trans_fat'});
+    }
+    if(satFat > 5){
+      flags.push({cls:'danger',icon:'🫀',title:'Dyslipidemia — High Saturated Fat — '+satFat.toFixed(1)+' g',body:'Saturated fat raises LDL-C directly. AHA limit is 13 g/day; this item alone provides '+satFat.toFixed(1)+' g. Choose a lower-fat version or reduce portion.',values:'Threshold: <5 g/serving · This item: '+satFat.toFixed(1)+' g',nutrient:'sat_fat'});
+    } else if(satFat > 3){
+      flags.push({cls:'warn',icon:'🫀',title:'Dyslipidemia — Elevated Saturated Fat — '+satFat.toFixed(1)+' g',body:'Approaching saturated fat limit for lipid management. Consider lower-fat alternatives.',values:'Threshold: <3 g/serving · This item: '+satFat.toFixed(1)+' g',nutrient:'sat_fat'});
+    } else if(transFat === 0){
+      flags.push({cls:'ok',icon:'🫀',title:'Dyslipidemia — Fats Acceptable',body:'Saturated fat and trans fat are within limits for lipid management.',values:''});
+    }
+    if(chol > 100){
+      flags.push({cls:'warn',icon:'🫀',title:'Dyslipidemia — High Dietary Cholesterol — '+Math.round(chol)+' mg',body:'Limit dietary cholesterol to <200–300 mg/day. This item alone contains '+Math.round(chol)+' mg.',values:'Daily limit: 200–300 mg · This item: '+Math.round(chol)+' mg'});
+    }
+  }
+
+  if(combos.indexOf('cvd') !== -1){
+    if(transFat > 0){
+      flags.push({cls:'danger',icon:'❤️',title:'CVD — Trans Fat — '+transFat.toFixed(1)+' g',body:'Trans fat directly promotes plaque formation and cardiovascular events. Eliminate completely from diet with established CVD.',values:'Target: 0 g · This item: '+transFat.toFixed(1)+' g'});
+    }
+    if(satFat > 4){
+      flags.push({cls:'warn',icon:'❤️',title:'CVD — Elevated Saturated Fat — '+satFat.toFixed(1)+' g',body:'For secondary CVD prevention, keep saturated fat <7% of calories. This item is high for a single serving.',values:'Threshold: <4 g/serving · This item: '+satFat.toFixed(1)+' g'});
+    }
+    if(naVal > 600){
+      flags.push({cls:'warn',icon:'❤️',title:'CVD — Sodium Elevated — '+Math.round(naVal)+' mg',body:'High sodium worsens hypertension and cardiac workload. For CVD, aim for <1500–2000 mg/day total.',values:'Threshold: <600 mg/serving · This item: '+Math.round(naVal)+' mg'});
+    }
+    if(transFat === 0 && satFat <= 4 && naVal <= 600){
+      flags.push({cls:'ok',icon:'❤️',title:'CVD — Heart-Safe Profile',body:'Sodium, saturated fat, and trans fat are within cardiovascular-safe limits for this serving.',values:''});
+    }
+  }
+
+  if(combos.indexOf('obesity') !== -1){
+    if(cals > 400){
+      flags.push({cls:'warn',icon:'⚖️',title:'Obesity — High Calorie Density — '+Math.round(cals)+' kcal',body:'A single serving provides '+Math.round(cals)+' kcal. For weight management, keep individual food items under 300–400 kcal/serving. Consider a smaller portion or lower-calorie alternative.',values:'Threshold: <400 kcal/serving · This item: '+Math.round(cals)+' kcal'});
+    }
+    if(sugars > 8){
+      flags.push({cls:'warn',icon:'⚖️',title:'Obesity — High Added Sugars — '+sugars.toFixed(1)+' g',body:'Added sugars contribute excess calories without satiety, promoting weight gain and insulin resistance.',values:'Threshold: <8 g/serving · This item: '+sugars.toFixed(1)+' g'});
+    }
+    if(satFat > 4){
+      flags.push({cls:'warn',icon:'⚖️',title:'Obesity — Elevated Saturated Fat — '+satFat.toFixed(1)+' g',body:'Saturated fat is calorie-dense (9 kcal/g) and promotes adiposity and metabolic syndrome.',values:'Threshold: <4 g/serving · This item: '+satFat.toFixed(1)+' g'});
+    }
+    if(cals <= 400 && sugars <= 8 && satFat <= 4){
+      flags.push({cls:'ok',icon:'⚖️',title:'Obesity — Calorie & Fat Profile Acceptable',body:'Calories, added sugars, and saturated fat are within limits for weight management at this serving size.',values:''});
+    }
+  }
+
   return flags;
 }
 
@@ -1003,15 +1154,17 @@ function updateGauge(score){
 function runAssessment(){
   var nutrients = readFields();
   var score = calculateScore(nutrients, selectedStage);
-  var flags = buildFlags(nutrients, selectedStage);
+  var flags = buildFlags(nutrients, selectedStage, selectedComorbidities);
   var stageLabels = {none:'General Population','1':'CKD Stage 1-2','3a':'CKD Stage 3a','3b':'CKD Stage 3b','4':'CKD Stage 4','5':'CKD Stage 5','HD':'Hemodialysis','PD':'Peritoneal Dialysis'};
+  var comorbidLabels = {dm:'DM',htn:'HTN',gout:'Gout',dyslipidemia:'Dyslipidemia',cvd:'CVD',obesity:'Obesity'};
 
   // Update gauge
   updateGauge(score);
 
-  // Update flags
-  document.getElementById('flags-header').textContent = 'CKD Safety — ' + (stageLabels[selectedStage] || 'General');
-  document.getElementById('flags-sub').textContent = 'Per serving of scanned product';
+  // Update flags header with active conditions
+  var condStr = selectedComorbidities.map(function(k){ return comorbidLabels[k]||k; }).join(' · ');
+  document.getElementById('flags-header').textContent = 'Safety Assessment — ' + (stageLabels[selectedStage] || 'General');
+  document.getElementById('flags-sub').textContent = condStr ? 'Per serving · Also flagged: ' + condStr : 'Per serving of scanned product';
   document.getElementById('flags-list').innerHTML = flags.map(function(f){
     return '<div class="flag-row flag-'+f.cls+'">'+
       '<div class="flag-icon">'+f.icon+'</div>'+
