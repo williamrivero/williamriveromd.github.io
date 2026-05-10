@@ -571,15 +571,32 @@ document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
 
 /* ════════════════════════════════════════════════
    CINEMA MODE — opt-in auto-scroll through every section
-   • Click "▶ Cinema" → smooth-scrolls top→bottom, ~8s per section
+   • Click "▶ Cinema" → smooth-scrolls top→bottom at a cinematic pace
+   • Each section gets reading-time-appropriate dwell (10–22 s)
+   • Scroll transitions use a custom 2.4 s ease-in-out for film-like feel
+   • Total cycle: ~2 min 35 s — built for kiosk/screen-share/social
    • Any wheel / touch / keypress / non-button click cancels immediately
    • Hidden when prefers-reduced-motion is set (CSS handles this)
    ════════════════════════════════════════════════ */
 const Cinema = {
   active: false,
   timer: null,
-  dwell: 8000,
-  sections: ['hero','capabilities','more-than','decision','fails','astonish','stat-band','superpowers','cta'],
+  rafId: null,
+  scrollDuration: 2400,    // ms — slow, cinematic scroll between sections
+
+  // Per-section dwell tuned to actual reading time of the content within each.
+  // Total = 14+22+22+18+24+14+10+24+12 = 160s ≈ 2 min 40 s
+  sections: [
+    { id: 'hero',         dwell: 14000 },   // title + subhead + 3 stats
+    { id: 'capabilities', dwell: 22000 },   // 4 long cards
+    { id: 'more-than',    dwell: 22000 },   // 4 endocrine-role cards
+    { id: 'decision',     dwell: 18000 },   // paragraph + pull quote
+    { id: 'fails',        dwell: 24000 },   // 6-row table — needs scanning time
+    { id: 'astonish',     dwell: 14000 },   // 3 short stats
+    { id: 'stat-band',    dwell: 10000 },   // one big number + caption
+    { id: 'superpowers',  dwell: 24000 },   // 10 numbered lines
+    { id: 'cta',          dwell: 12000 },   // headline + button
+  ],
 
   start(){
     if (this.active) return;
@@ -587,7 +604,6 @@ const Cinema = {
     document.getElementById('cinema-btn').classList.add('is-on');
     document.getElementById('cinema-icon').textContent = '⏸';
     document.getElementById('cinema-label').textContent = 'Stop';
-    // Programmatic scrolls don't fire wheel events, so user wheel/touch/key reliably cancels
     addEventListener('wheel',      Cinema._onCancel, { passive: true, capture: true });
     addEventListener('touchstart', Cinema._onCancel, { passive: true, capture: true });
     addEventListener('keydown',    Cinema._onCancel, { capture: true });
@@ -599,6 +615,7 @@ const Cinema = {
     if (!this.active) return;
     this.active = false;
     clearTimeout(this.timer);
+    if (this.rafId) cancelAnimationFrame(this.rafId);
     document.getElementById('cinema-btn').classList.remove('is-on');
     document.getElementById('cinema-icon').textContent = '▶';
     document.getElementById('cinema-label').textContent = 'Cinema';
@@ -608,19 +625,36 @@ const Cinema = {
     removeEventListener('click',      Cinema._onCancel, { capture: true });
   },
 
+  // Custom slow scroll with cubic ease-in-out — the browser's built-in
+  // smooth-scroll is too fast (and varies with distance). This one always
+  // takes ~scrollDuration ms, regardless of distance, for consistent feel.
+  smoothScrollTo(targetY){
+    const startY  = window.scrollY;
+    const dist    = targetY - startY;
+    const start   = performance.now();
+    const easeInOutCubic = (t) => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+    const step = (now) => {
+      if (!this.active) return;
+      const t = Math.min((now - start) / this.scrollDuration, 1);
+      window.scrollTo(0, startY + dist * easeInOutCubic(t));
+      if (t < 1) this.rafId = requestAnimationFrame(step);
+    };
+    this.rafId = requestAnimationFrame(step);
+  },
+
   advance(idx){
     if (!this.active) return;
     if (idx >= this.sections.length) { this.stop(); return; }
-    const el = document.querySelector('section.' + this.sections[idx]);
+    const sec = this.sections[idx];
+    const el  = document.querySelector('section.' + sec.id);
     if (el) {
-      const top = el.getBoundingClientRect().top + scrollY - 40;  // slight headroom
-      window.scrollTo({ top, behavior: 'smooth' });
+      const top = el.getBoundingClientRect().top + scrollY - 40;   // slight headroom
+      this.smoothScrollTo(top);
     }
-    this.timer = setTimeout(() => this.advance(idx + 1), this.dwell);
+    this.timer = setTimeout(() => this.advance(idx + 1), sec.dwell);
   },
 
   _onCancel(e){
-    // Ignore the user's click on the Cinema button itself (so it can toggle off)
     if (e.target && e.target.closest && e.target.closest('#cinema-btn')) return;
     Cinema.stop();
   },
