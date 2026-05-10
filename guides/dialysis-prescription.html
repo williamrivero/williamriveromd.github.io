@@ -39,7 +39,7 @@ header{background:rgba(15,30,46,.97);backdrop-filter:blur(8px);position:sticky;t
 .header-back{font-size:12px;color:rgba(255,255,255,.65);text-decoration:none;transition:color .2s;}
 .header-back:hover{color:white;}
 
-.toggle-bar{display:flex;gap:8px;align-items:center;padding:6px 32px;background:rgba(10,18,32,.96);border-bottom:1px solid rgba(255,255,255,.08);justify-content:flex-end;flex-wrap:wrap;}
+.toggle-bar{display:flex;gap:8px;align-items:center;padding:6px 32px;background:rgba(10,18,32,.96);border-bottom:1px solid rgba(255,255,255,.08);justify-content:space-between;flex-wrap:wrap;}
 .ctrl-group{display:flex;gap:8px;align-items:center;}
 .ctrl-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .ctrl-btn:hover{background:rgba(255,255,255,.15);color:white;}
@@ -329,6 +329,10 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
   .mode-patient,.mode-physician{display:block!important;}
   body.physician-mode .mode-patient{display:none!important;}
 }
+[data-lang].lang-hidden{display:none !important;}
+.lang-btn{font-family:inherit;font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;margin-right:3px;}
+.lang-btn:hover{color:white;}
+.lang-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
 </style>
 </head>
 <body>
@@ -343,6 +347,12 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
 
 <!-- TOGGLE BAR -->
 <div class="toggle-bar">
+  <div class="ctrl-group">
+    <button class="lang-btn active" id="glb-en" onclick="setLang('en')">English</button>
+    <button class="lang-btn" id="glb-tl" onclick="setLang('tl')">Tagalog</button>
+    <button class="lang-btn" id="glb-ceb" onclick="setLang('ceb')">Cebuano</button>
+    <button class="lang-btn" id="glb-kap" onclick="setLang('kap')">KAP</button>
+  </div>
   <div class="ctrl-group">
     <button class="ctrl-btn" onclick="toggleDark()"><svg fill="none" height="12" id="darkIcon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="12"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><span id="darkLabel">Dark</span></button>
     <button class="ctrl-btn" onclick="window.print()"><svg fill="none" height="12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="12"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Print</button>
@@ -373,13 +383,29 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
     </svg>
   </div>
   <div class="container">
-    <div class="hero-tag"><span>💊</span> Nephrology &middot; Dialysis &middot; Patient Education &middot; Clinical Reference</div>
-    <h1>Understanding Your<br><em>Dialysis Prescription</em></h1>
-    <p class="hero-sub">Every number on your dialysis order means something. This guide explains what your nephrologist is targeting — and why each parameter matters for how you feel and how long you live.</p>
+    <div class="hero-tag">
+      <span>💊</span>
+      <span data-lang="en">Nephrology &middot; Dialysis &middot; Patient Education &middot; Clinical Reference</span>
+      <span data-lang="tl" class="lang-hidden">Nepyrolohiya &middot; Diyalisis &middot; Edukasyong Pang-Pasyente &middot; Klinikal na Sanggunian</span>
+      <span data-lang="ceb" class="lang-hidden">Nepyrolohiya &middot; Dialysis &middot; Edukasyon sa Pasyente &middot; Klinikal nga Tugkaranan</span>
+      <span data-lang="kap" class="lang-hidden">Nepyrolohiya &middot; Diyalisis &middot; Edukasyon king Pasyente &middot; Klinikal a Sanggunian</span>
+    </div>
+    <h1>
+      <span data-lang="en">Understanding your<br><em>dialysis prescription</em></span>
+      <span data-lang="tl" class="lang-hidden">Pag-unawa sa iyong<br><em>reseta sa diyalisis</em></span>
+      <span data-lang="ceb" class="lang-hidden">Pagsabot sa imong<br><em>reseta sa dialysis</em></span>
+      <span data-lang="kap" class="lang-hidden">Pamakaintindi king kekang<br><em>reseta king diyalisis</em></span>
+    </h1>
+    <p class="hero-sub">
+      <span data-lang="en">Every number on your dialysis order means something. This guide explains what your nephrologist is <em>targeting</em> &mdash; and why each parameter matters for how you feel and how long you live.</span>
+      <span data-lang="tl" class="lang-hidden">May ibig sabihin ang bawat numero sa iyong dialysis order. Ipapaliwanag ng gabay na ito kung ano ang <em>tinatamaan</em> ng iyong nephrologist &mdash; at kung bakit mahalaga ang bawat parameter sa kung paano ka pakiramdam at kung gaano ka katagal mabubuhay.</span>
+      <span data-lang="ceb" class="lang-hidden">Adunay gipasabot ang matag numero sa imong dialysis order. Ipasabot niining giya kung unsa ang <em>gipasagdan</em> sa imong nephrologist &mdash; ug nganong importante ang matag parameter alang sa imong gibati ug sa imong gitas-on sa kinabuhi.</span>
+      <span data-lang="kap" class="lang-hidden">Atin buring sabian ing balang numero king kekang dialysis order. Ipapaliwanag ning giya iti nung nanu ya ing <em>tinatama</em> ning kekang nephrologist &mdash; at bakit importante ing balang parameter para king pakiramdam mu at king gaano ka katagal mabuhi.</span>
+    </p>
     <div class="hero-meta">
-      <span><strong>Author</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
-      <span><strong>Updated</strong> May 2026</span>
-      <span><strong>Audience</strong> Patients &amp; Clinicians</span>
+      <span><strong><span data-lang="en">Author</span><span data-lang="tl" class="lang-hidden">May-akda</span><span data-lang="ceb" class="lang-hidden">Awtor</span><span data-lang="kap" class="lang-hidden">Manunulat</span></strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+      <span><strong><span data-lang="en">Updated</span><span data-lang="tl" class="lang-hidden">Na-update</span><span data-lang="ceb" class="lang-hidden">Na-update</span><span data-lang="kap" class="lang-hidden">Na-update</span></strong> May 2026</span>
+      <span><strong><span data-lang="en">Audience</span><span data-lang="tl" class="lang-hidden">Tagapakinig</span><span data-lang="ceb" class="lang-hidden">Tagapaminaw</span><span data-lang="kap" class="lang-hidden">Tagapakinig</span></strong> <span data-lang="en">Patients &amp; Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Doktor</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Doktor</span><span data-lang="kap" class="lang-hidden">Deng Pasyente at Doktor</span></span>
     </div>
   </div>
 </section>
@@ -2185,6 +2211,20 @@ function setMode(mode){
   window.scrollTo({top:document.querySelector('.audience-tabs').offsetTop-60,behavior:'smooth'});
 }
 (function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
+
+// Language toggle (EN/TL/CEB/KAP)
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  document.querySelectorAll('[data-lang]').forEach(el=>{
+    el.classList.toggle('lang-hidden', el.getAttribute('data-lang')!==lang);
+  });
+  ['en','tl','ceb','kap'].forEach(l=>{
+    const btn=document.getElementById('glb-'+l);
+    if(btn) btn.classList.toggle('active', l===lang);
+  });
+  localStorage.setItem(LANG_KEY, lang);
+}
+(function(){const s=localStorage.getItem(LANG_KEY)||'en';if(s!=='en')setLang(s);})();
 
 const pills=document.querySelectorAll('.nav-pill');
 const observer=new IntersectionObserver(entries=>{
