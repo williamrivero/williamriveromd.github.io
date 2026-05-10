@@ -21,8 +21,34 @@
   .nav-cta{background:var(--gold);color:white !important;font-weight:600 !important;padding:9px 20px;border-radius:6px;}
   .nav-cta:hover{background:var(--gold-light) !important;color:var(--navy) !important;}
   .hero{background:#0f1e2e;color:white;padding:0;position:relative;overflow:hidden;}
-  .hero-banner{width:100%;line-height:0;display:block;}
-  .hero-banner img{width:100%;height:auto;display:block;}
+  /* Text-based animated hero (lightweight: pure CSS, no images, no JS) */
+  .hero-banner{position:relative;background:linear-gradient(135deg,#0f1e2e 0%,#16273b 50%,#0f1e2e 100%);background-size:220% 220%;animation:hb-drift 26s ease-in-out infinite;padding:72px 32px 80px;overflow:hidden;}
+  .hero-banner::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 32%,rgba(184,150,46,.10),transparent 40%),radial-gradient(circle at 86% 72%,rgba(26,107,114,.12),transparent 45%);}
+  @keyframes hb-drift{0%,100%{background-position:0% 0%;}50%{background-position:100% 100%;}}
+  .hb-inner{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:56px;align-items:center;position:relative;z-index:1;}
+  .hb-eyebrow{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#d4af4f;border-left:2px solid #d4af4f;padding-left:14px;margin-bottom:24px;opacity:0;animation:hb-fade .9s .1s ease forwards;}
+  .hb-title{font-family:'Lora',serif;font-weight:600;font-size:clamp(38px,5.6vw,76px);line-height:1.04;letter-spacing:-.02em;color:white;margin:0 0 26px;}
+  .hb-line{display:block;}
+  .hb-word{display:inline-block;overflow:hidden;vertical-align:top;margin-right:.18em;}
+  .hb-word > span{display:inline-block;transform:translateY(110%);opacity:0;animation:hb-rise 1s cubic-bezier(.2,.8,.2,1) forwards;}
+  .hb-line:nth-child(1) .hb-word:nth-of-type(1) > span{animation-delay:.18s;}
+  .hb-line:nth-child(1) .hb-word:nth-of-type(2) > span{animation-delay:.30s;}
+  .hb-line:nth-child(2) .hb-word:nth-of-type(1) > span{animation-delay:.50s;color:#d4af4f;}
+  .hb-line:nth-child(2) .hb-word:nth-of-type(2) > span{animation-delay:.62s;color:#d4af4f;}
+  @keyframes hb-rise{to{transform:translateY(0);opacity:1;}}
+  @keyframes hb-fade{to{opacity:1;}}
+  .hb-sub{font-size:clamp(15px,1.6vw,18px);color:rgba(255,255,255,.78);max-width:540px;margin:0 0 18px;font-weight:300;line-height:1.6;opacity:0;animation:hb-fade 1s .85s ease forwards;}
+  .hb-sub em{font-style:italic;color:#d4af4f;}
+  .hb-byline{font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.04em;display:flex;align-items:center;gap:14px;opacity:0;animation:hb-fade 1s 1.0s ease forwards;}
+  .hb-byline::before{content:'';width:32px;height:1px;background:rgba(212,175,79,.6);}
+  .hb-mark{width:160px;height:200px;flex-shrink:0;opacity:0;animation:hb-fade 1.4s .5s ease forwards;}
+  .hb-mark svg{width:100%;height:100%;}
+  .hb-mark .km-stroke{stroke:rgba(212,175,79,.55);stroke-width:1.5;fill:none;}
+  .hb-mark .km-fill{fill:rgba(212,175,79,.06);stroke:rgba(212,175,79,.5);stroke-width:1.5;}
+  .hb-mark .km-pulse{transform-origin:100px 110px;animation:hb-pulse 4.5s ease-in-out infinite;}
+  @keyframes hb-pulse{0%,100%{transform:scale(1);opacity:.92;}50%{transform:scale(1.04);opacity:1;}}
+  @media (prefers-reduced-motion:reduce){.hero-banner,.hb-eyebrow,.hb-word > span,.hb-sub,.hb-byline,.hb-mark,.hb-mark .km-pulse{animation:none;opacity:1;transform:none;}}
+  @media (max-width:760px){.hero-banner{padding:48px 24px 56px;}.hb-inner{grid-template-columns:1fr;gap:32px;}.hb-mark{width:120px;height:140px;justify-self:start;opacity:.7;}}
   .hero-inner{max-width:1100px;margin:0 auto;padding:28px 48px 36px;}
   .hero-tag{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-light);margin-bottom:16px;}
   .hero h1{font-family:'Lora',serif;font-size:clamp(36px,5vw,54px);font-weight:600;color:white;line-height:1.15;letter-spacing:-.02em;margin-bottom:20px;}
@@ -315,12 +341,43 @@
 </div>
 
 <div class="hero">
-  <div class="hero-banner">
-    <picture>
-      <source srcset="../images/guides-hero-banner.webp" type="image/webp">
-      <img src="../images/guides-hero-banner.png" loading="eager" width="2172" height="724"
-           alt="Expert Guides. Real Answers. — W. G. M. Rivero, MD, Internal Medicine &amp; Nephrology">
-    </picture>
+  <div class="hero-banner" role="banner" aria-label="Expert Guides. Real Answers. — W. G. M. Rivero, MD, Internal Medicine and Nephrology">
+    <div class="hb-inner">
+      <div class="hb-text">
+        <div class="hb-eyebrow">Internal Medicine · Nephrology · Philippines</div>
+        <h1 class="hb-title">
+          <span class="hb-line">
+            <span class="hb-word"><span>Expert</span></span>
+            <span class="hb-word"><span>Guides.</span></span>
+          </span>
+          <span class="hb-line">
+            <span class="hb-word"><span>Real</span></span>
+            <span class="hb-word"><span>Answers.</span></span>
+          </span>
+        </h1>
+        <p class="hb-sub">Evidence-based guides written by a practising nephrologist — in <em>plain language</em>, for patients and their families.</p>
+        <p class="hb-byline">W. G. M. Rivero, MD, FPCP, DPSN — Internal Medicine &amp; Nephrology</p>
+      </div>
+      <div class="hb-mark" aria-hidden="true">
+        <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+          <g class="km-pulse">
+            <!-- Stylized bilateral kidney pair -->
+            <path class="km-fill" d="M62 70 C50 70 38 88 38 122 C38 156 50 184 70 188 C84 191 92 184 94 168 C96 152 88 138 90 122 C92 106 88 92 84 82 C80 72 74 70 62 70 Z"/>
+            <path class="km-fill" d="M138 70 C150 70 162 88 162 122 C162 156 150 184 130 188 C116 191 108 184 106 168 C104 152 112 138 110 122 C108 106 112 92 116 82 C120 72 126 70 138 70 Z"/>
+            <!-- Hilum dots -->
+            <circle cx="78" cy="128" r="2.5" fill="rgba(212,175,79,.7)"/>
+            <circle cx="122" cy="128" r="2.5" fill="rgba(212,175,79,.7)"/>
+            <!-- Central caduceus rod (subtle) -->
+            <line class="km-stroke" x1="100" y1="36" x2="100" y2="216"/>
+            <!-- Crown circle -->
+            <circle class="km-stroke" cx="100" cy="36" r="7"/>
+            <!-- Wing glyphs -->
+            <path class="km-stroke" d="M100 50 Q86 56 88 70 Q100 64 100 70"/>
+            <path class="km-stroke" d="M100 50 Q114 56 112 70 Q100 64 100 70"/>
+          </g>
+        </svg>
+      </div>
+    </div>
   </div>
   <div class="hero-inner">
     <div class="hero-search-box">
