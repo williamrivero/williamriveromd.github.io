@@ -344,6 +344,9 @@
     <button class="filter-chip" data-filter="nutrition" onclick="setFilter('nutrition',this)">Nutrition</button>
     <button class="filter-chip" data-filter="philippines" onclick="setFilter('philippines',this)">Philippines</button>
     <button class="filter-chip" data-filter="updated" onclick="setFilter('updated',this)">Recently Updated</button>
+    <button class="filter-chip" data-filter="handout" onclick="setFilter('handout',this)">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-.1em;margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>Has Handout
+    </button>
 
   </div>
 </div>
@@ -2140,6 +2143,15 @@ const UPDATED_HREFS = [
   'dialysis-access-care.html',
 ];
 
+// HANDOUT guides: guides with downloadable PDF handouts
+const HANDOUT_HREFS = [
+  'sodium-salt-reduction-ckd.html',
+  'potassium-hyperkalemia-ckd.html',
+  'phosphorus-ckd.html',
+  'gout-uric-acid.html',
+  'meal-prep-fastfood-ckd.html',
+];
+
 let activeFilter = 'all';
 let activeSearch = '';
 
@@ -2157,8 +2169,9 @@ function applyFilters() {
   const q = activeSearch.toLowerCase();
   const words = q ? q.split(/\s+/).filter(Boolean) : [];
 
-  const isNew     = activeFilter === 'calculator nutrition';
-  const isUpdated = activeFilter === 'updated';
+  const isNew      = activeFilter === 'calculator nutrition';
+  const isUpdated  = activeFilter === 'updated';
+  const isHandout  = activeFilter === 'handout';
 
   let shown = 0;
   cards.forEach(card => {
@@ -2174,6 +2187,8 @@ function applyFilters() {
       filterOk = NEW_HREFS.some(h => href.includes(h.toLowerCase()));
     } else if (isUpdated) {
       filterOk = UPDATED_HREFS.some(h => href.includes(h.toLowerCase()));
+    } else if (isHandout) {
+      filterOk = HANDOUT_HREFS.some(h => href.includes(h.toLowerCase()));
     } else if (activeFilter !== 'all' && FILTER_MAP[activeFilter]) {
       filterOk = FILTER_MAP[activeFilter].some(term => txt.includes(term));
     }
