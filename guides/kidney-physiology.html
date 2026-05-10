@@ -1075,6 +1075,28 @@ const Audio = {
       osc.connect(g); g.connect(filter);
       osc.start(); lfo.start();
     });
+    // Pre-generate pink noise once so flow() doesn't allocate a new buffer per beat
+    this._flowBuffer = this._makePinkNoise(2.0);
+  },
+
+  // Pink noise via Paul Kellet's filter — warmer than white, evokes water flow
+  _makePinkNoise(durationSec){
+    const len = Math.floor(this.ctx.sampleRate * durationSec);
+    const buffer = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+    const d = buffer.getChannelData(0);
+    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for (let i = 0; i < len; i++) {
+      const w = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + w * 0.0555179;
+      b1 = 0.99332 * b1 + w * 0.0750759;
+      b2 = 0.96900 * b2 + w * 0.1538520;
+      b3 = 0.86650 * b3 + w * 0.3104856;
+      b4 = 0.55000 * b4 + w * 0.5329522;
+      b5 = -0.7616 * b5 - w * 0.0168980;
+      d[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11;
+      b6 = w * 0.115926;
+    }
+    return buffer;
   },
   toggle(){
     if (!this.ctx) this.init();
@@ -1114,6 +1136,35 @@ const Audio = {
     g.gain.exponentialRampToValueAtTime(0.0001, now + 0.30);
     o.connect(g); g.connect(this.master); o.start(now); o.stop(now + 0.32);
   },
+  // Fluid flow — pre-generated pink noise through a bandpass that sweeps
+  // 200 → 420 → 220 Hz, like blood arriving in a kidney after each heartbeat.
+  // Schedule with `delaySec` (default 0.18 s) so it follows the kick naturally.
+  // Pitch and buffer offset are randomized each beat so no two flows sound alike.
+  flow(delaySec = 0.18){
+    if (!this.enabled || !this.ctx || !this._flowBuffer) return;
+    const ctx = this.ctx, t0 = ctx.currentTime + delaySec;
+
+    const src = ctx.createBufferSource();
+    src.buffer = this._flowBuffer;
+    src.playbackRate.value = 0.85 + Math.random() * 0.30;   // pitch variation per beat
+    const offset = Math.random() * 0.6;                     // start somewhere different in the buffer
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.Q.value = 2.2;
+    filter.frequency.setValueAtTime(200, t0);
+    filter.frequency.exponentialRampToValueAtTime(420, t0 + 0.50);
+    filter.frequency.exponentialRampToValueAtTime(220, t0 + 1.00);
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, t0);
+    gain.gain.linearRampToValueAtTime(0.055, t0 + 0.18);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.20);
+
+    src.connect(filter); filter.connect(gain); gain.connect(this.master);
+    src.start(t0, offset);
+    src.stop(t0 + 1.30);
+  },
 };
 document.getElementById('sound-toggle').addEventListener('click', function(){
   const on = Audio.toggle();
@@ -1124,7 +1175,10 @@ const chimeFreqs = [440.00, 523.25, 587.33, 698.46];
 document.querySelectorAll('.cap-card').forEach((card, i) => {
   card.addEventListener('pointerenter', () => Audio.chime(chimeFreqs[i % chimeFreqs.length]));
 });
-setInterval(() => { pulseEnv = 1.0; Audio.pulse(); }, 1000);
+// 60 BPM heartbeat → kick drum + visual scale pulse + delayed fluid flow.
+// The flow follows the kick by ~180 ms (about the time blood would
+// physically reach the renal arteries from the aortic root).
+setInterval(() => { pulseEnv = 1.0; Audio.pulse(); Audio.flow(); }, 1000);
 
 }); // close addons Promise.all
 }); // close THREE dynamic import
