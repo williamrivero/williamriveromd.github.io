@@ -570,11 +570,11 @@ const io = new IntersectionObserver((entries) => {
 document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
 
 /* ════════════════════════════════════════════════
-   CINEMA MODE — opt-in auto-scroll through every section
+   CINEMA MODE — opt-in auto-scroll through every section, on loop
    • Click "▶ Cinema" → smooth-scrolls top→bottom at a cinematic pace
-   • Each section gets reading-time-appropriate dwell (10–22 s)
+   • Each section gets reading-time-appropriate dwell (10–24 s)
    • Scroll transitions use a custom 2.4 s ease-in-out for film-like feel
-   • Total cycle: ~2 min 35 s — built for kiosk/screen-share/social
+   • One cycle ≈ 2 min 40 s; loops back to top indefinitely until cancelled
    • Any wheel / touch / keypress / non-button click cancels immediately
    • Hidden when prefers-reduced-motion is set (CSS handles this)
    ════════════════════════════════════════════════ */
@@ -644,7 +644,10 @@ const Cinema = {
 
   advance(idx){
     if (!this.active) return;
-    if (idx >= this.sections.length) { this.stop(); return; }
+    // End of cycle → loop back to the top and replay (kiosk / waiting-room mode).
+    // The user's cancel handlers still fire on any interaction, so the loop
+    // only continues so long as no one is touching the page.
+    if (idx >= this.sections.length) idx = 0;
     const sec = this.sections[idx];
     const el  = document.querySelector('section.' + sec.id);
     if (el) {
