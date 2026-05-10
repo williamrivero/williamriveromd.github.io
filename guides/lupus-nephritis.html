@@ -233,6 +233,47 @@ body.dark .related-card:hover {
 body.dark .related-card-title {
   color: #e8edf2;
 }
+
+/* ── DUAL-AUDIENCE PATTERN (Patient / Clinician) ── */
+.audience-tabs{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08);padding:0;display:flex;justify-content:center;}
+.tabs-inner{display:flex;gap:0;max-width:880px;width:100%;}
+.aud-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.04em;color:rgba(255,255,255,.55);background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .25s;}
+.aud-tab:hover{color:rgba(255,255,255,.85);}
+.aud-tab.active{color:#fff;border-bottom-color:#d4af4f;background:rgba(212,175,79,.08);}
+.aud-tab .tab-icon{font-size:16px;line-height:1;}
+.mode-patient{display:block;}
+.mode-physician{display:none;}
+body.physician-mode .mode-patient{display:none !important;}
+body.physician-mode .mode-physician{display:block !important;}
+body.physician-mode .lang-group{opacity:.35;pointer-events:none;}
+body.physician-mode .nav-strip .nav-pills .mode-patient-pill{display:none;}
+body.physician-mode .nav-strip .nav-pills .mode-physician-pill{display:inline-flex;}
+.mode-physician-pill{display:none;}
+
+/* Clinician-specific component styles */
+.algo-card{background:var(--bg,#f9fafb);border:1px solid var(--border,#e2e6eb);border-radius:14px;padding:24px 28px;margin:24px 0;}
+.algo-header{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy,#0f1e2e);margin-bottom:14px;}
+.algo-row{display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--border,#e2e6eb);}
+.algo-row:first-of-type{border-top:0;}
+.algo-step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--teal,#1a6b72);color:white;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.algo-content{flex:1;font-size:14.5px;line-height:1.65;color:var(--text-mid,#2c3a4a);}
+.algo-content strong{color:var(--navy,#0f1e2e);}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:24px 0;}
+.stat-card{background:var(--navy,#0f1e2e);color:white;border-radius:12px;padding:22px 20px;text-align:center;}
+.stat-card .stat-num{font-family:'Lora',serif;font-size:32px;font-weight:600;color:#d4af4f;line-height:1;margin-bottom:6px;}
+.stat-card .stat-label{font-size:12.5px;color:rgba(255,255,255,.78);line-height:1.45;}
+.drug-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:13.5px;}
+.drug-table th{background:var(--navy,#0f1e2e);color:white;font-weight:500;text-align:left;padding:11px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;}
+.drug-table td{padding:12px 14px;border-bottom:1px solid var(--border,#e2e6eb);color:var(--text-mid,#2c3a4a);vertical-align:top;}
+.drug-table .drug-name{font-weight:600;color:var(--navy,#0f1e2e);}
+body.dark .algo-card{background:#1a2535;border-color:#2a3a4a;}
+body.dark .algo-row{border-color:#2a3a4a;}
+body.dark .algo-content{color:#c0cad8;}
+body.dark .algo-content strong,body.dark .algo-header{color:#e8edf2;}
+body.dark .stat-card{background:#0a121e;}
+body.dark .drug-table td{color:#c0cad8;border-color:#2a3a4a;}
+body.dark .drug-table .drug-name{color:#e8edf2;}
+@media print{.audience-tabs,.aud-tab{display:none !important;}.mode-patient,.mode-physician{display:block !important;}}
 </style>
 
 </head>
@@ -242,7 +283,7 @@ body.dark .related-card-title {
   <a href="https://williamriveromd.com/guides/index.html" class="back"><span data-lang="en">← All Guides</span><span data-lang="tl" class="lang-hidden">← Lahat ng Gabay</span><span data-lang="ceb" class="lang-hidden">← Tanan nga Giya</span></a>
 </header>
 <div class="guide-toggle-bar" style="justify-content:space-between;">
-  <div style="display:flex;gap:8px;align-items:center;">
+  <div class="lang-group" style="display:flex;gap:8px;align-items:center;">
     <span class="lang-label">Language:</span>
     <button class="lang-btn active" id="glb-en" onclick="setLang('en')">English</button>
     <button class="lang-btn" id="glb-tl" onclick="setLang('tl')">Tagalog</button>
@@ -260,6 +301,21 @@ body.dark .related-card-title {
     </button>
   </div>
 </div>
+
+<!-- AUDIENCE TABS — Patient / Clinician toggle -->
+<div class="audience-tabs">
+  <div class="tabs-inner">
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">
+      <span class="tab-icon">🧑‍⚕️</span>
+      <span>For Patients &amp; Families</span>
+    </button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">
+      <span class="tab-icon">🩺</span>
+      <span>For Clinicians</span>
+    </button>
+  </div>
+</div>
+
 <section class="hero">
   <div class="container">
     <div class="hero-tag">
@@ -281,21 +337,29 @@ body.dark .related-card-title {
 </section>
 <nav class="nav-strip">
   <div class="nav-pills">
-    <a class="nav-pill" href="#what">What Is Lupus Nephritis</a>
-    <a class="nav-pill" href="#mechanism">How It Damages Kidneys</a>
-    <a class="nav-pill" href="#classes">ISN/RPS Classes</a>
-    <a class="nav-pill" href="#symptoms">Symptoms</a>
-    <a class="nav-pill" href="#diagnosis">Diagnosis</a>
-    <a class="nav-pill" href="#treatment">Treatment</a>
-    <a class="nav-pill" href="#new-drugs">New Therapies</a>
-    <a class="nav-pill" href="#monitoring">Monitoring</a>
-    <a class="nav-pill" href="#pregnancy">Pregnancy</a>
-    <a class="nav-pill" href="#living">Living with LN</a>
+    <a class="nav-pill mode-patient-pill" href="#what">What Is Lupus Nephritis</a>
+    <a class="nav-pill mode-patient-pill" href="#mechanism">How It Damages Kidneys</a>
+    <a class="nav-pill mode-patient-pill" href="#classes">ISN/RPS Classes</a>
+    <a class="nav-pill mode-patient-pill" href="#symptoms">Symptoms</a>
+    <a class="nav-pill mode-patient-pill" href="#diagnosis">Diagnosis</a>
+    <a class="nav-pill mode-patient-pill" href="#treatment">Treatment</a>
+    <a class="nav-pill mode-patient-pill" href="#new-drugs">New Therapies</a>
+    <a class="nav-pill mode-patient-pill" href="#monitoring">Monitoring</a>
+    <a class="nav-pill mode-patient-pill" href="#pregnancy">Pregnancy</a>
+    <a class="nav-pill mode-patient-pill" href="#living">Living with LN</a>
+    <a class="nav-pill mode-physician-pill" href="#md-epi">Epidemiology</a>
+    <a class="nav-pill mode-physician-pill" href="#md-decision">Decision Algorithm</a>
+    <a class="nav-pill mode-physician-pill" href="#md-induction">Induction</a>
+    <a class="nav-pill mode-physician-pill" href="#md-maintenance">Maintenance</a>
+    <a class="nav-pill mode-physician-pill" href="#md-refractory">Refractory Disease</a>
+    <a class="nav-pill mode-physician-pill" href="#md-rebiopsy">Repeat Biopsy</a>
+    <a class="nav-pill mode-physician-pill" href="#md-special">Special Populations</a>
+    <a class="nav-pill mode-physician-pill" href="#md-emerging">Emerging Research</a>
   </div>
 </nav>
 <main class="container">
 
-  <section class="section" id="what">
+  <section class="section mode-patient" id="what">
     <div class="section-tag">Overview</div>
     <h2>What Is Lupus Nephritis?</h2>
     <div class="intro-callout">
@@ -342,7 +406,7 @@ body.dark .related-card-title {
       <p class="illus-caption">Lupus nephritis disproportionately affects Filipino women — and Filipino patients with SLE tend to have more aggressive disease than their Western counterparts, making early nephrology involvement essential.</p>
   </section>
 
-  <section class="section" id="mechanism">
+  <section class="section mode-patient" id="mechanism">
     <div class="section-tag">Pathophysiology</div>
     <h2>How SLE Damages the Kidney</h2>
 
@@ -387,7 +451,7 @@ body.dark .related-card-title {
       <p class="illus-caption">Lupus nephritis is driven by immune complex deposition — the autoantibodies bind to the kidney's glomerular structures, triggering complement activation and inflammatory cell infiltration that progressively destroy nephrons.</p>
   </section>
 
-  <section class="section" id="classes">
+  <section class="section mode-patient" id="classes">
     <div class="section-tag">ISN/RPS 2018 Classification</div>
     <h2>The Six Classes of Lupus Nephritis</h2>
     <p>Kidney biopsy remains essential — clinical features alone cannot determine the class of lupus nephritis, and the class determines the treatment intensity. The ISN/RPS 2018 classification is the current standard.</p>
@@ -447,7 +511,7 @@ body.dark .related-card-title {
     </div>
   </section>
 
-  <section class="section" id="symptoms">
+  <section class="section mode-patient" id="symptoms">
     <div class="section-tag">Clinical Features</div>
     <h2>How Lupus Nephritis Presents — Red Flags</h2>
 
@@ -471,7 +535,7 @@ body.dark .related-card-title {
     </div>
   </section>
 
-  <section class="section" id="diagnosis">
+  <section class="section mode-patient" id="diagnosis">
     <div class="section-tag">Workup</div>
     <h2>Diagnosing and Classifying Lupus Nephritis</h2>
 
@@ -490,7 +554,7 @@ body.dark .related-card-title {
     </table>
   </section>
 
-  <section class="section" id="treatment">
+  <section class="section mode-patient" id="treatment">
     <div class="section-tag">Treatment Protocol</div>
     <h2>Treating Lupus Nephritis — Induction and Maintenance</h2>
 
@@ -534,7 +598,7 @@ body.dark .related-card-title {
     </div>
   </section>
 
-  <section class="section" id="new-drugs">
+  <section class="section mode-patient" id="new-drugs">
     <div class="section-tag">Emerging Therapies — 2024</div>
     <h2>New Targeted Therapies for Lupus Nephritis</h2>
 
@@ -562,7 +626,7 @@ body.dark .related-card-title {
     </div>
   </section>
 
-  <section class="section" id="monitoring">
+  <section class="section mode-patient" id="monitoring">
     <div class="section-tag">Long-term Follow-up</div>
     <h2>Monitoring Lupus Nephritis — What, When, and Why</h2>
 
@@ -582,7 +646,7 @@ body.dark .related-card-title {
     </table>
   </section>
 
-  <section class="section" id="pregnancy">
+  <section class="section mode-patient" id="pregnancy">
     <div class="section-tag">Special Situation</div>
     <h2>Lupus Nephritis and Pregnancy</h2>
 
@@ -598,7 +662,7 @@ body.dark .related-card-title {
     </div>
   </section>
 
-  <section class="section" id="living">
+  <section class="section mode-patient" id="living">
     <div class="section-tag">Daily Life</div>
     <h2>Living with Lupus Nephritis</h2>
 
@@ -628,6 +692,293 @@ body.dark .related-card-title {
       </div>
     </div>
   </section>
+
+  <!-- ════════════════════════════════════════════════
+       CLINICIAN-FACING SECTIONS (mode-physician)
+       ════════════════════════════════════════════════ -->
+
+  <section class="section mode-physician" id="md-epi">
+    <div class="section-tag" style="color:var(--navy);">For Clinicians · Epidemiology</div>
+    <h2>Lupus Nephritis — Epidemiology &amp; Burden</h2>
+    <p>SLE prevalence varies fivefold by ancestry, and lupus nephritis (LN) follows the same gradient — Asian, Hispanic, and African ancestries carry both higher prevalence and worse renal outcomes than European-ancestry cohorts. Filipino patients sit firmly in the high-burden, high-severity quadrant.</p>
+
+    <h3 style="font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin:24px 0 12px;">International estimates</h3>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num">30–50</div><div class="stat-label">SLE cases per 100,000 globally (2–3× higher in Asian/Hispanic populations)</div></div>
+      <div class="stat-card"><div class="stat-num">30–60%</div><div class="stat-label">of SLE patients develop lupus nephritis within 5 years of diagnosis</div></div>
+      <div class="stat-card"><div class="stat-num">10–30%</div><div class="stat-label">progress to ESKD within 10 years despite modern induction therapy</div></div>
+      <div class="stat-card"><div class="stat-num">9 : 1</div><div class="stat-label">female-to-male ratio in adult-onset SLE; LN is more aggressive in males</div></div>
+    </div>
+
+    <h3 style="font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin:32px 0 12px;">Philippines-specific data</h3>
+    <p>Robust nationwide registry data is limited (the Philippine Society of Nephrology and the Philippine Rheumatology Association have ongoing efforts), but cohort studies from PGH, NKTI, St. Luke's, and Makati Medical Center give a consistent picture:</p>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num">~50–70%</div><div class="stat-label">LN prevalence among Filipino SLE patients — among the highest globally</div></div>
+      <div class="stat-card"><div class="stat-num">~50%</div><div class="stat-label">of biopsied Filipino LN cases are Class IV (proliferative) at presentation</div></div>
+      <div class="stat-card"><div class="stat-num">25–35%</div><div class="stat-label">5-year ESKD risk in proliferative LN at Philippine tertiary centers</div></div>
+      <div class="stat-card"><div class="stat-num">~15–20%</div><div class="stat-label">5-year mortality, with infection accounting for the majority of deaths</div></div>
+    </div>
+
+    <div class="alert alert-amber" style="background:#fffbeb;border:1px solid #fde7a7;border-radius:12px;padding:18px 22px;margin:24px 0;">
+      <h4 style="font-family:'Lora',serif;font-size:16px;font-weight:600;color:#92400e;margin-bottom:8px;">The four Philippine drivers of worse outcomes</h4>
+      <ol style="margin:0 0 0 20px;font-size:14.5px;line-height:1.7;color:#7a3700;">
+        <li><strong>Delayed presentation</strong> — many patients are referred only after Cr is &gt;3 or with established nephrotic syndrome.</li>
+        <li><strong>Infection-related mortality</strong> — TB reactivation, fungal infections, and bacterial sepsis under triple immunosuppression are the leading killers, not the disease itself.</li>
+        <li><strong>Limited access to biologics</strong> — voclosporin (~₱120,000/month), belimumab (~₱80,000/month), and rituximab (~₱150,000 per induction) remain out of reach for most patients without HMO coverage.</li>
+        <li><strong>Adherence cliffs</strong> — MMF cost (₱5,000–8,000/month) and steroid side effects drive interruption; flares almost always follow non-adherence rather than drug failure.</li>
+      </ol>
+    </div>
+
+    <p>Drug-cost reality (Manila NKTI/PGH benchmarks, 2024–2025):</p>
+    <table class="drug-table">
+      <thead><tr><th>Therapy</th><th>Approximate monthly cost</th><th>PhilHealth / Z-benefit coverage</th></tr></thead>
+      <tbody>
+        <tr><td class="drug-name">Cyclophosphamide IV (Eurolupus)</td><td>~₱500–800 / pulse</td><td>Partial — covered under SLE Z-package in select hospitals</td></tr>
+        <tr><td class="drug-name">Mycophenolate mofetil (MMF)</td><td>~₱5,000–8,000</td><td>Not covered; generics available since 2019 reduced cost ~50%</td></tr>
+        <tr><td class="drug-name">Hydroxychloroquine</td><td>~₱600–1,200</td><td>Not covered; widely available generic</td></tr>
+        <tr><td class="drug-name">Voclosporin</td><td>~₱120,000+</td><td>Not covered; PMAP application possible</td></tr>
+        <tr><td class="drug-name">Belimumab IV</td><td>~₱80,000+</td><td>Not covered; PMAP application possible</td></tr>
+        <tr><td class="drug-name">Rituximab (off-label LN)</td><td>~₱150,000 / induction</td><td>Not covered for LN indication</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section mode-physician" id="md-decision">
+    <div class="section-tag" style="color:var(--navy);">For Clinicians · Decision Algorithm</div>
+    <h2>Clinical Decision Algorithm — From Suspicion to Induction</h2>
+    <p>The single highest-leverage clinical decision in LN is whether and when to biopsy. The second is choosing the right induction regimen. The decision tree below condenses KDIGO 2024 + ACR 2024 guidance into a Philippine-applicable workflow.</p>
+
+    <div class="algo-card">
+      <div class="algo-header">When to biopsy a known SLE patient</div>
+      <div class="algo-row"><div class="algo-step-num">1</div><div class="algo-content"><strong>Persistent proteinuria ≥0.5 g/day</strong> (UPCR ≥0.5) on at least two occasions — biopsy. Even sub-nephrotic proteinuria may represent Class III/IV.</div></div>
+      <div class="algo-row"><div class="algo-step-num">2</div><div class="algo-content"><strong>Active urine sediment</strong> (dysmorphic RBCs, RBC casts) — biopsy regardless of proteinuria level.</div></div>
+      <div class="algo-row"><div class="algo-step-num">3</div><div class="algo-content"><strong>Unexplained AKI</strong> (Cr rise &gt;0.3 or 1.5× baseline) in an SLE patient — biopsy unless contraindicated.</div></div>
+      <div class="algo-row"><div class="algo-step-num">4</div><div class="algo-content"><strong>Refractory to first-line induction at 6 months</strong> — repeat biopsy to distinguish active disease from chronic damage and reclassify.</div></div>
+    </div>
+
+    <div class="algo-card">
+      <div class="algo-header">Risk stratification at biopsy (factors driving more aggressive induction)</div>
+      <div class="algo-row"><div class="algo-step-num">!</div><div class="algo-content"><strong>Histologic high-risk features:</strong> crescents &gt;25% of glomeruli, fibrinoid necrosis, thrombotic microangiopathy, interstitial fibrosis &gt;25%, mixed Class III/IV + V.</div></div>
+      <div class="algo-row"><div class="algo-step-num">!</div><div class="algo-content"><strong>Clinical/serologic high-risk:</strong> Cr ≥1.5 mg/dL or eGFR &lt;60, nephrotic-range proteinuria, low complement (C3/C4), high anti-dsDNA, anti-C1q positivity.</div></div>
+      <div class="algo-row"><div class="algo-step-num">!</div><div class="algo-content"><strong>Demographic high-risk:</strong> male sex, African or Hispanic ancestry, age &lt;25 at SLE onset. Filipino patients are intermediate-to-high risk by ancestry alone.</div></div>
+    </div>
+
+    <div class="algo-card">
+      <div class="algo-header">Goals of therapy (KDIGO 2024)</div>
+      <div class="algo-row"><div class="algo-step-num">A</div><div class="algo-content"><strong>Complete renal response (CRR) by 12 months:</strong> UPCR &lt;0.5, stable serum Cr (within 10% of baseline), inactive sediment.</div></div>
+      <div class="algo-row"><div class="algo-step-num">B</div><div class="algo-content"><strong>Partial renal response (PRR) by 6 months:</strong> ≥50% reduction in proteinuria, UPCR &lt;3 if previously nephrotic, stable Cr. Failure to achieve PRR by 6 months → escalation or switch.</div></div>
+      <div class="algo-row"><div class="algo-step-num">C</div><div class="algo-content"><strong>Steroid minimization:</strong> taper to ≤7.5 mg/day prednisone equivalent by 3–6 months. KDIGO 2024 explicitly calls out steroid-toxicity reduction as a primary goal.</div></div>
+    </div>
+  </section>
+
+  <section class="section mode-physician" id="md-induction">
+    <div class="section-tag" style="color:var(--navy);">For Clinicians · Induction</div>
+    <h2>Induction Therapy — Class-Specific Regimens</h2>
+    <p>All proliferative LN (Class III, IV, mixed III/V or IV/V) requires <strong>combination immunosuppression: glucocorticoids + a steroid-sparing agent ± a third-line biologic</strong>. KDIGO 2024 endorses triple therapy from the start in moderate-to-high risk disease, marking a departure from older sequential approaches.</p>
+
+    <table class="drug-table">
+      <thead><tr><th>Class</th><th>Recommended induction</th><th>Notes for Filipino practice</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="drug-name">Class I / II<br>(minimal mesangial / mesangial proliferative)</td>
+          <td>HCQ + RAAS blockade. Steroids only if extrarenal SLE activity demands. No cytotoxic immunosuppression for the kidney indication alone.</td>
+          <td>Common in early presentations. Watch for evolution to proliferative class — repeat biopsy if proteinuria rises.</td>
+        </tr>
+        <tr>
+          <td class="drug-name">Class III / IV<br>(focal / diffuse proliferative)</td>
+          <td><strong>Pulse methylprednisolone 0.25–0.5 g IV × 3 days</strong>, followed by oral prednisone 0.5 mg/kg/day, taper to ≤7.5 mg by 3–6 months.<br><br><strong>Plus one of:</strong><br>• MMF 2–3 g/day × 6 months (preferred — equivalent efficacy, fewer infections, preserves fertility)<br>• Cyclophosphamide IV (Eurolupus regimen: 500 mg q2wk × 6 doses) — preferred over high-dose NIH regimen<br><br><strong>Plus a third agent for high-risk:</strong><br>• Voclosporin 23.7 mg BID OR<br>• Belimumab 10 mg/kg IV q4wk</td>
+          <td>MMF generic (Cellcept generic, Mycept) is the practical first-line in PH due to cost and infection profile. Eurolupus &gt; NIH for cumulative cyclophosphamide dose (3 g vs 9 g) — significant fertility implications in young Filipino women. Triple therapy with voclosporin or belimumab is reserved for high-risk patients with insurance/PMAP support.</td>
+        </tr>
+        <tr>
+          <td class="drug-name">Class V<br>(membranous LN)</td>
+          <td>Pure membranous: HCQ + RAAS blockade. If nephrotic-range proteinuria persists → MMF 2–3 g/day + low-dose prednisone. Calcineurin inhibitor (tacrolimus or voclosporin) is increasingly preferred per KDIGO 2024.</td>
+          <td>Pure Class V is uncommon in Filipinos (~10% of LN). When seen, tacrolimus 0.05–0.1 mg/kg/day BID is more accessible than voclosporin and has comparable efficacy.</td>
+        </tr>
+        <tr>
+          <td class="drug-name">Mixed Class III/V or IV/V</td>
+          <td>Treat as proliferative — same induction as Class III/IV with steroid + MMF (or CYC) + consider triple therapy from the start.</td>
+          <td>Often missed when biopsy is read as "predominantly Class V." Always look at the LM, IF, and EM together.</td>
+        </tr>
+        <tr>
+          <td class="drug-name">Class VI<br>(advanced sclerotic, &gt;90% globally sclerotic)</td>
+          <td>Supportive care; immunosuppression does not reverse damage. Prepare for KRT.</td>
+          <td>Often a missed Class IV that progressed unrecognized. Highest mortality cohort.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-teal" style="background:#e1f5f0;border:1px solid #b9dcd9;border-radius:12px;padding:18px 22px;margin:24px 0;">
+      <h4 style="font-family:'Lora',serif;font-size:16px;font-weight:600;color:#1a6b72;margin-bottom:8px;">Adjuncts mandated for every LN patient regardless of class</h4>
+      <ul style="margin:0 0 0 20px;font-size:14.5px;line-height:1.75;color:#0f4a52;">
+        <li><strong>Hydroxychloroquine 5 mg/kg/day</strong> (max 400 mg) — reduces flares, improves renal response, reduces thrombotic risk. Annual ophthalmology screening after year 5.</li>
+        <li><strong>RAAS blockade</strong> (ACEi or ARB) titrated to BP &lt;130/80, even in normotensive proteinuria.</li>
+        <li><strong>Statin</strong> if LDL &gt;100 (or any nephrotic-range proteinuria).</li>
+        <li><strong>Pneumocystis jirovecii prophylaxis</strong> (cotrimoxazole 800/160 mg 3×/week or daily) for any patient on prednisone ≥20 mg/day for &gt;4 weeks combined with another immunosuppressant.</li>
+        <li><strong>Latent TB screen</strong> before biologic initiation. PHL has high TB prevalence — IGRA preferred over TST due to BCG.</li>
+        <li><strong>Vaccinations</strong>: pneumococcal (PCV13 + PPSV23), influenza annual, HBV, HPV, COVID-19, shingles (recombinant) — ideally before starting B-cell depletion.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section mode-physician" id="md-maintenance">
+    <div class="section-tag" style="color:var(--navy);">For Clinicians · Maintenance</div>
+    <h2>Maintenance Therapy — Duration, Tapering, Withdrawal</h2>
+    <p>Maintenance immunosuppression must continue for <strong>at least 36 months after achieving complete renal response</strong> (KDIGO 2024). Earlier withdrawal is the strongest single predictor of flare and progression to ESKD.</p>
+
+    <div class="algo-card">
+      <div class="algo-header">Maintenance regimen options</div>
+      <div class="algo-row"><div class="algo-step-num">1°</div><div class="algo-content"><strong>MMF 1–2 g/day</strong> — first-line. Continue for 3–5 years minimum after CRR; many patients stay on MMF indefinitely at 0.5–1 g/day if previously had severe disease.</div></div>
+      <div class="algo-row"><div class="algo-step-num">2°</div><div class="algo-content"><strong>Azathioprine 1.5–2 mg/kg/day</strong> — alternative if MMF intolerance, GI toxicity, or pregnancy planning. Check TPMT before starting (heterozygotes need lower dose).</div></div>
+      <div class="algo-row"><div class="algo-step-num">3°</div><div class="algo-content"><strong>Belimumab 200 mg SC weekly or 10 mg/kg IV monthly</strong> — added on top of MMF or AZA per BLISS-LN. Reduces flare rate ~50% in CRR maintenance.</div></div>
+      <div class="algo-row"><div class="algo-step-num">+</div><div class="algo-content"><strong>Hydroxychloroquine continued indefinitely</strong> in all SLE patients. Lifetime drug — do not discontinue even if "in remission."</div></div>
+    </div>
+
+    <h3 style="font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin:24px 0 12px;">Steroid taper schedule (proliferative LN)</h3>
+    <table class="drug-table">
+      <thead><tr><th>Time from induction</th><th>Prednisone-equivalent dose</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Days 1–3</td><td>Pulse methylprednisolone 0.25–0.5 g IV daily</td><td>For Class III/IV; not all clinicians use pulse for Class V.</td></tr>
+        <tr><td>Weeks 1–4</td><td>0.5 mg/kg/day (max 40–60 mg)</td><td>KDIGO 2024 supports lower starting dose (0.4 mg/kg) when triple therapy is used.</td></tr>
+        <tr><td>Weeks 5–8</td><td>Taper by 5 mg every 1–2 weeks</td><td>Watch for flare with rapid taper.</td></tr>
+        <tr><td>Months 3–6</td><td>≤10 mg/day</td><td>Goal: ≤7.5 mg by month 6.</td></tr>
+        <tr><td>Months 6–12</td><td>5–7.5 mg/day</td><td>If CRR sustained, can attempt 2.5 mg or full taper.</td></tr>
+        <tr><td>Beyond 12 months</td><td>0–5 mg/day</td><td>Some patients tolerate full withdrawal; many require maintenance 2.5–5 mg.</td></tr>
+      </tbody>
+    </table>
+
+    <p>Considering immunosuppression withdrawal? KDIGO 2024 supports a slow attempted withdrawal in patients with all of: complete renal response sustained ≥3 years, low SLE activity, normal complement, negative anti-dsDNA, and no extrarenal flares in &gt;1 year. Withdraw MMF first, then steroids, then HCQ last (often never). Re-flare risk is approximately 25% over 5 years.</p>
+  </section>
+
+  <section class="section mode-physician" id="md-refractory">
+    <div class="section-tag" style="color:var(--navy);">For Clinicians · Refractory Disease</div>
+    <h2>Refractory and Relapsing Lupus Nephritis</h2>
+    <p>Approximately 20–30% of LN patients fail first-line induction (no PRR by 6 months, or no CRR by 12 months). The cause is roughly equally split between <strong>true drug failure, undertreatment due to dose reduction or non-adherence, and chronic damage misdiagnosed as active disease</strong>. The decision tree must distinguish these before escalation.</p>
+
+    <div class="algo-card">
+      <div class="algo-header">Step 1 — Confirm true failure (not undertreatment or non-adherence)</div>
+      <div class="algo-row"><div class="algo-step-num">a</div><div class="algo-content">Verify <strong>MMF level</strong> if available (target trough 1.5–4 mg/L, AUC &gt;30 mg·h/L). Many "MMF failures" are subtherapeutic.</div></div>
+      <div class="algo-row"><div class="algo-step-num">b</div><div class="algo-content">Confirm adherence — refill history, family interview. Non-adherence is the #1 cause of "treatment failure" in PH practice.</div></div>
+      <div class="algo-row"><div class="algo-step-num">c</div><div class="algo-content">Rule out concurrent contributors: <strong>infection, drug toxicity (CNI nephrotoxicity), thrombotic microangiopathy, APS-related disease</strong>.</div></div>
+      <div class="algo-row"><div class="algo-step-num">d</div><div class="algo-content"><strong>Repeat biopsy</strong> — distinguishes active inflammation (worth escalating immunosuppression) from chronic damage (not).</div></div>
+    </div>
+
+    <div class="algo-card">
+      <div class="algo-header">Step 2 — Escalation options if true refractory disease confirmed</div>
+      <div class="algo-row"><div class="algo-step-num">A</div><div class="algo-content"><strong>Switch MMF ↔ cyclophosphamide</strong> (or vice versa). About 40% of MMF non-responders respond to CYC and vice versa. Quickest, cheapest escalation.</div></div>
+      <div class="algo-row"><div class="algo-step-num">B</div><div class="algo-content"><strong>Add belimumab</strong> on top of MMF (BLISS-LN protocol). Adds ~10–15 percentage points to renal response rate at 2 years.</div></div>
+      <div class="algo-row"><div class="algo-step-num">C</div><div class="algo-content"><strong>Add voclosporin</strong> on top of MMF + low-dose steroid (AURORA-1, AURORA-2). 41% CRR vs 23% with placebo at 1 year. Watch eGFR for CNI nephrotoxicity (drop &gt;20% from baseline → reduce dose).</div></div>
+      <div class="algo-row"><div class="algo-step-num">D</div><div class="algo-content"><strong>Rituximab 1 g IV × 2 doses (days 0 and 14)</strong> — off-label but in KDIGO 2024 as third-line. CALIBRATE and LUNAR trials were technically negative but post-hoc suggest benefit in the subset with persistent serologic activity.</div></div>
+      <div class="algo-row"><div class="algo-step-num">E</div><div class="algo-content"><strong>Obinutuzumab</strong> (anti-CD20, glycoengineered) — REGENCY trial 2024 showed benefit over rituximab profile in B-cell depletion. Not yet PHL-available outside trials.</div></div>
+      <div class="algo-row"><div class="algo-step-num">F</div><div class="algo-content"><strong>Plasma exchange</strong> — reserved for fulminant disease with severe AKI, RPGN, alveolar hemorrhage, or refractory APS-related TMA.</div></div>
+    </div>
+
+    <p>Relapses are managed similarly to initial induction but with a lower threshold for adding biologics — relapsed patients have higher progression risk, and the cumulative cyclophosphamide ceiling (&lt;9–12 g lifetime, ideally &lt;6 g in young women) often limits CYC re-use.</p>
+  </section>
+
+  <section class="section mode-physician" id="md-rebiopsy">
+    <div class="section-tag" style="color:var(--navy);">For Clinicians · Repeat Biopsy</div>
+    <h2>The Case for Repeat Biopsy — When and Why</h2>
+    <p>Repeat (per-protocol or for-cause) kidney biopsy in LN remains one of the most underused diagnostic tools in PH nephrology. Its yield is high enough that KDIGO 2024 explicitly endorses it in three scenarios.</p>
+
+    <div class="algo-card">
+      <div class="algo-header">Three indications for repeat biopsy</div>
+      <div class="algo-row"><div class="algo-step-num">1</div><div class="algo-content"><strong>Refractory disease at 6 months</strong> — if no PRR despite confirmed adherence and adequate dosing. Repeat biopsy reclassifies up to 30% of cases (e.g., from "active Class IV" to "predominantly chronic damage with limited active inflammation" — changing the management entirely).</div></div>
+      <div class="algo-row"><div class="algo-step-num">2</div><div class="algo-content"><strong>Renal flare after sustained remission</strong> — distinguishes recurrent active disease (escalate immunosuppression) from chronic damage progression with proteinuria (escalate RAAS, do not increase IS).</div></div>
+      <div class="algo-row"><div class="algo-step-num">3</div><div class="algo-content"><strong>Per-protocol after 18–24 months of remission</strong> — increasingly endorsed. About 30% of clinically silent patients show ongoing histologic activity ("silent active disease"); withdrawing IS in these patients carries high flare risk.</div></div>
+    </div>
+
+    <p>Practical PH considerations: ultrasound-guided percutaneous biopsy at PGH, NKTI, St. Luke's, MMC, and most regional tertiary centers is now routine with &lt;1% major complication rate. Cost is approximately ₱8,000–25,000 depending on facility. Coordinate with renal pathology (NKTI, PGH, and a small number of private labs offer immunofluorescence and electron microscopy) — without IF and EM, LN classification is unreliable.</p>
+  </section>
+
+  <section class="section mode-physician" id="md-special">
+    <div class="section-tag" style="color:var(--navy);">For Clinicians · Special Populations</div>
+    <h2>Special Populations — Pregnancy, Pediatric, Transplant</h2>
+
+    <h3 style="font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin:24px 0 12px;">Pregnancy in LN</h3>
+    <p>The single most important rule: <strong>plan the pregnancy around remission, not the other way around.</strong> Preconception counseling should aim for ≥6 months of stable CRR before conception. Active LN at conception triples the rates of pre-eclampsia, preterm delivery, and fetal loss.</p>
+    <ul style="margin:0 0 18px 24px;font-size:14.5px;line-height:1.78;color:var(--text-mid);">
+      <li><strong>Continue:</strong> hydroxychloroquine (mandatory throughout pregnancy — withdrawal triggers flare), low-dose aspirin (reduces pre-eclampsia in APS-positive patients), prednisone at lowest effective dose.</li>
+      <li><strong>Continue if needed:</strong> azathioprine 1.5–2 mg/kg/day (pregnancy-compatible), tacrolimus, cyclosporine.</li>
+      <li><strong>Stop ≥6 weeks before conception:</strong> MMF (teratogenic — facial cleft, microtia), cyclophosphamide (teratogenic + gonadotoxic), methotrexate, ACEi/ARB (replace with labetalol or methyldopa for BP).</li>
+      <li><strong>Belimumab:</strong> use throughout pregnancy now considered acceptable (registry data reassuring), although discontinuation is still common practice.</li>
+      <li><strong>Anti-Ro/La positive mothers:</strong> fetal echo at 16, 18, and 22 weeks for congenital heart block; HCQ reduces risk.</li>
+      <li><strong>Co-management mandatory:</strong> high-risk OB + nephrology + rheumatology. Filipino practice: aim for tertiary center delivery (PGH, NKTI, MMC, St. Luke's, or major regional med center).</li>
+    </ul>
+
+    <h3 style="font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin:32px 0 12px;">Pediatric and adolescent LN</h3>
+    <p>Pediatric SLE (onset &lt;18 years) carries higher LN prevalence (~80% will develop LN) and worse renal outcomes than adult-onset disease. Filipino pediatric LN cohorts show a particularly high rate of Class IV with crescents at presentation.</p>
+    <ul style="margin:0 0 18px 24px;font-size:14.5px;line-height:1.78;color:var(--text-mid);">
+      <li>Induction is the same as adult Class III/IV (MMF or CYC + steroids), but cyclophosphamide gonadotoxicity is a bigger consideration — Eurolupus regimen strongly preferred.</li>
+      <li>Steroid impact on growth and bone is severe — use steroid-sparing strategies aggressively from day one.</li>
+      <li>Adherence is the biggest single challenge in adolescents. Engage the patient directly, not just the parent.</li>
+      <li>Refer to pediatric nephrology (PGH, NKTI, Philippine Children's Medical Center) for biopsy and induction.</li>
+    </ul>
+
+    <h3 style="font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin:32px 0 12px;">LN in dialysis and post-transplant</h3>
+    <p>Once LN reaches ESKD, immunosuppression is generally minimized — clinical SLE activity often quiets dramatically on dialysis. Maintain hydroxychloroquine; minimize chronic steroids unless extrarenal disease demands.</p>
+    <p><strong>Transplantation:</strong> LN is a good kidney transplant indication. Outcomes mirror non-LN ESKD patients when lupus is in remission ≥6–12 months pre-transplant. Recurrent LN in the allograft is uncommon (~10%) and usually mild. Living-donor transplant from a sibling carries a small concern about shared genetic predisposition but is not a contraindication.</p>
+  </section>
+
+  <section class="section mode-physician" id="md-emerging">
+    <div class="section-tag" style="color:var(--navy);">For Clinicians · Emerging Research</div>
+    <h2>Emerging Research and the Future of LN Therapy</h2>
+    <p>The therapeutic landscape for LN has expanded more in the last 5 years than in the previous 30. Below is a clinician's-eye summary of the agents and concepts most likely to reach Philippine practice in the next 1–5 years, organized by mechanism.</p>
+
+    <h3 style="font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin:24px 0 12px;">B-cell directed therapies — beyond rituximab</h3>
+    <table class="drug-table">
+      <thead><tr><th>Agent / Trial</th><th>Mechanism</th><th>Status &amp; relevance</th></tr></thead>
+      <tbody>
+        <tr><td class="drug-name">Obinutuzumab (REGENCY, NOBILITY)</td><td>Glycoengineered anti-CD20 — deeper, more durable B-cell depletion than rituximab</td><td>Phase III REGENCY positive 2024 (CRR 47% vs 33%). Likely first-line biologic if FDA-approved for LN. PHL access via PMAP only initially.</td></tr>
+        <tr><td class="drug-name">Anti-CD19 CAR-T (multiple Phase I/II)</td><td>Autologous CAR-T directed at CD19, deep B-cell reset</td><td>Single-infusion drug-free remission in &gt;30 refractory SLE patients (Schett group, Erlangen). Game-changing if reproducible. Cost &gt;$500,000 currently.</td></tr>
+        <tr><td class="drug-name">Ianalumab (anti-BAFF receptor)</td><td>Depletes B cells AND blocks BAFF signaling — two mechanisms in one molecule</td><td>Phase III SIRIUS-LN ongoing. Expected readout 2026–2027.</td></tr>
+        <tr><td class="drug-name">Telitacicept</td><td>BAFF + APRIL dual inhibitor</td><td>Approved in China (2021) for SLE; Phase III LN data emerging. Likely cheaper biologic option for PH if approved here.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin:32px 0 12px;">Type I interferon pathway</h3>
+    <table class="drug-table">
+      <thead><tr><th>Agent / Trial</th><th>Mechanism</th><th>Status &amp; relevance</th></tr></thead>
+      <tbody>
+        <tr><td class="drug-name">Anifrolumab (TULIP-LN1, IRIS)</td><td>Anti-IFNAR1 — blocks all type I interferons</td><td>FDA-approved for SLE 2021. Phase III LN trial ongoing (IRIS). Promising in patients with high IFN signature.</td></tr>
+        <tr><td class="drug-name">Litifilimab (anti-BDCA2)</td><td>Targets plasmacytoid dendritic cells (the major IFN producers)</td><td>Phase II positive in cutaneous SLE. LN trials beginning.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin:32px 0 12px;">Cereblon modulators &amp; intracellular targets</h3>
+    <table class="drug-table">
+      <thead><tr><th>Agent / Trial</th><th>Mechanism</th><th>Status &amp; relevance</th></tr></thead>
+      <tbody>
+        <tr><td class="drug-name">Iberdomide (Phase II/III)</td><td>Cereblon E3 ligase modulator — degrades Ikaros and Aiolos transcription factors</td><td>Reduces SLE flares and SLEDAI. Phase III LN ongoing.</td></tr>
+        <tr><td class="drug-name">Deucravacitinib</td><td>TYK2 allosteric inhibitor — targets type I IFN, IL-12, IL-23 signaling</td><td>Phase II PAISLEY-LN positive. Oral, accessible — could be first-line oral biologic if confirmed.</td></tr>
+        <tr><td class="drug-name">Baricitinib</td><td>JAK1/2 inhibitor</td><td>Phase III SLE-BRAVE-1 negative (2022). LN-specific trials de-prioritized.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin:32px 0 12px;">Other notable directions</h3>
+    <ul style="margin:0 0 18px 24px;font-size:14.5px;line-height:1.78;color:var(--text-mid);">
+      <li><strong>Treat-to-target trials</strong> — analogous to RA. Ongoing efforts to define and validate "lupus low disease activity state" (LLDAS) as the routine clinical target.</li>
+      <li><strong>Liquid biopsy / urinary biomarkers</strong> — urinary CD11c, CXCL13, soluble TWEAK, IFN-induced proteins. Goal: replace repeat kidney biopsy with non-invasive monitoring.</li>
+      <li><strong>Microbiome modulation</strong> — gut dysbiosis (specifically Ruminococcus gnavus expansion) implicated in LN flare risk; trials of dietary and probiotic intervention.</li>
+      <li><strong>Steroid-free induction protocols</strong> — increasing evidence that triple therapy (MMF + voclosporin/belimumab + low-dose or no steroid) achieves CRR with substantially less steroid exposure.</li>
+      <li><strong>Genetic risk scoring</strong> — Asian-population GWAS data growing; Filipino-specific HLA and risk allele profiling underway at PGH and a few private labs.</li>
+    </ul>
+
+    <p>For the Philippine clinician: the next 3 years will likely bring obinutuzumab and possibly telitacicept into routine reach, anifrolumab in high-resource settings, and CAR-T as the eventual rescue therapy for the few patients who fail everything else. Voclosporin and belimumab will remain the mainstay biologics through this transition.</p>
+
+    <div class="dr-card" style="margin-top:48px;">
+      <div class="dr-avatar">🩺</div>
+      <div>
+        <h4><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+        <p>Internal Medicine · Nephrology · Clinical Nutrition. Joint LN management with rheumatology across Quezon City, Pampanga, and Bulacan. Professional consultation requests through the contact page.</p>
+        <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero · Fellow, PCP · Diplomate, PSN</p>
+      </div>
+    </div>
+
+    <div class="disclaimer" style="margin-top:24px;">
+      <strong>For clinicians:</strong> This guide condenses KDIGO 2024 and ACR 2024 LN guidelines, BLISS-LN (NEJM 2020), AURORA-1/2 (Lancet 2021/2023), REGENCY (NEJM 2024), and Philippine cohort data. Specific drug doses are reference-only — always verify with current product information and individualize for renal function, comorbidities, and patient preferences. The author holds no industry relationships with the manufacturers of any drug discussed.
+    </div>
+  </section>
+
 </main>
 
     <!-- RELATED-GUIDES-START -->
@@ -681,6 +1032,20 @@ function toggleDark(){const on=document.documentElement.getAttribute('data-theme
 function applyDesktop(on){const vp=document.querySelector('meta[name="viewport"]');if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}const btn=document.getElementById('desktopToggle');if(btn)btn.classList.toggle('active',on);}
 function toggleDesktop(){const on=document.documentElement.getAttribute('data-view')!=='desktop';localStorage.setItem(DESK_KEY,on?'1':'0');applyDesktop(on);}
 (function(){if(localStorage.getItem(DARK_KEY)==='1')applyDark(true);if(localStorage.getItem(DESK_KEY)==='1')applyDesktop(true);})();
+
+// Audience-mode toggle (Patient / Clinician)
+const GMODE='wgmr-mode';
+function setMode(mode){
+  const isPhys = mode==='physician';
+  document.body.classList.toggle('physician-mode',isPhys);
+  document.getElementById('tab-pt').classList.toggle('active',!isPhys);
+  document.getElementById('tab-md').classList.toggle('active',isPhys);
+  localStorage.setItem(GMODE,mode);
+  // Scroll back to the audience tabs so the user sees the change
+  const aud = document.querySelector('.audience-tabs');
+  if (aud) window.scrollTo({top: aud.offsetTop - 56, behavior:'smooth'});
+}
+(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 </script>
 <script>
 const LANG_KEY='wgmr-lang';
