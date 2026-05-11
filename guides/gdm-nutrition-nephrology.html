@@ -188,6 +188,51 @@
   html[data-theme="dark"] .calc-metric-card{background:rgba(255,255,255,.04);border-color:#2a3548;}
   html[data-theme="dark"] .calc-result-box{border-color:#2a3548 !important;background:rgba(255,255,255,.03) !important;}
   html[data-theme="dark"] .calc-field label{color:#25949d;}
+  /* Audience tabs */
+  .audience-tabs{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:center;}
+  .tabs-inner{display:flex;max-width:880px;width:100%;}
+  .aud-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.04em;color:rgba(255,255,255,.55);background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .25s;}
+  .aud-tab:hover{color:rgba(255,255,255,.85);}
+  .aud-tab.active{color:#fff;border-bottom-color:#d4af4f;background:rgba(212,175,79,.08);}
+  .mode-patient{display:block;}
+  .mode-physician{display:none;}
+  body.physician-mode .mode-patient{display:none!important;}
+  body.physician-mode .mode-physician{display:block!important;}
+  body.physician-mode .nav-pills .mode-patient-pill{display:none;}
+  body.physician-mode .nav-pills .mode-physician-pill{display:inline-flex;}
+  .mode-physician-pill{display:none;}
+  /* Clinician-specific table styles */
+  .evidence-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px;}
+  .evidence-table th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--navy);color:white;padding:10px 12px;}
+  .evidence-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:#2c3340;vertical-align:top;line-height:1.5;}
+  .evidence-table tr:nth-child(even) td{background:var(--bg);}
+  .evidence-table tr:last-child td{border-bottom:none;}
+  html[data-theme="dark"] .evidence-table th{background:#1a2535!important;}
+  html[data-theme="dark"] .evidence-table td{color:#c0cad8!important;}
+  html[data-theme="dark"] .evidence-table tr:nth-child(even) td{background:#1f2d40;}
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:20px 0;}
+  .stat-box{background:var(--navy);border-radius:12px;padding:18px 16px;text-align:center;}
+  .stat-num{font-family:'Lora',serif;font-size:32px;font-weight:600;color:#d4af4f;line-height:1;}
+  .stat-unit{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+  .stat-label{font-size:12px;color:rgba(255,255,255,.8);margin-top:6px;line-height:1.4;}
+  .trial-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:14px 0;}
+  .trial-card h4{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .trial-card .trial-meta{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;}
+  .trial-card p{font-size:13.5px;color:#2c3340;margin:0;line-height:1.6;}
+  .trial-card .trial-finding{font-size:13px;background:rgba(26,107,114,.08);border-left:3px solid var(--teal);padding:8px 12px;border-radius:0 8px 8px 0;margin-top:10px;}
+  html[data-theme="dark"] .trial-card{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .trial-card p,html[data-theme="dark"] .trial-card .trial-finding{color:#c0cad8!important;}
+  .protocol-step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);}
+  .protocol-step:last-child{border-bottom:none;}
+  .step-num{width:32px;height:32px;border-radius:50%;background:var(--teal);color:white;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+  .step-body h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;}
+  .step-body p{font-size:13.5px;color:#2c3340;margin:0;line-height:1.6;}
+  html[data-theme="dark"] .step-body h4{color:#e8eaf0!important;}
+  html[data-theme="dark"] .step-body p{color:#c0cad8!important;}
+  .risk-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:.05em;}
+  .risk-high{background:var(--red-soft);color:var(--red);}
+  .risk-mod{background:var(--amber-soft);color:var(--amber);}
+  .risk-low{background:var(--green-soft);color:var(--green);}
 </style>
 
 <style>
@@ -316,23 +361,44 @@ body.dark .related-card-title {
   </div>
 </section>
 
+<div class="audience-tabs">
+  <div class="tabs-inner">
+    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')">
+      <span style="font-size:16px;">🧑‍⚕️</span><span>For Patients &amp; Families</span>
+    </button>
+    <button class="aud-tab" id="tab-md" onclick="setMode('physician')">
+      <span style="font-size:16px;">🩺</span><span>For Clinicians</span>
+    </button>
+  </div>
+</div>
+
 <nav class="nav-strip">
   <div class="nav-pills">
-    <a class="nav-pill" href="#why-nephro">Why the Kidney</a>
-    <a class="nav-pill" href="#physiology">GDM Pathophysiology</a>
-    <a class="nav-pill" href="#targets">Glycemic Targets</a>
-    <a class="nav-pill" href="#nutrition">Nutrition Framework</a>
-    <a class="nav-pill" href="#trimesters">Trimester Targets</a>
-    <a class="nav-pill" href="#gi">Carbohydrates & GI</a>
-    <a class="nav-pill" href="#filipino">Filipino Meal Guide</a>
-    <a class="nav-pill" href="#mealplan">7-Day Meal Plan</a>
-    <a class="nav-pill" href="#monitoring">Kidney Monitoring</a>
-    <a class="nav-pill" href="#calculator">Calculator</a>
-    <a class="nav-pill" href="#postpartum">Postpartum</a>
+    <a class="nav-pill mode-patient-pill" href="#why-nephro">Why the Kidney</a>
+    <a class="nav-pill mode-patient-pill" href="#physiology">GDM Pathophysiology</a>
+    <a class="nav-pill mode-patient-pill" href="#targets">Glycemic Targets</a>
+    <a class="nav-pill mode-patient-pill" href="#nutrition">Nutrition Framework</a>
+    <a class="nav-pill mode-patient-pill" href="#trimesters">Trimester Targets</a>
+    <a class="nav-pill mode-patient-pill" href="#gi">Carbohydrates &amp; GI</a>
+    <a class="nav-pill mode-patient-pill" href="#filipino">Filipino Meal Guide</a>
+    <a class="nav-pill mode-patient-pill" href="#mealplan">7-Day Meal Plan</a>
+    <a class="nav-pill mode-patient-pill" href="#monitoring">Kidney Monitoring</a>
+    <a class="nav-pill mode-patient-pill" href="#calculator">Calculator</a>
+    <a class="nav-pill mode-patient-pill" href="#postpartum">Postpartum</a>
+    <a class="nav-pill mode-physician-pill" href="#md-epidemiology">Epidemiology</a>
+    <a class="nav-pill mode-physician-pill" href="#md-diagnosis">Diagnosis &amp; Screening</a>
+    <a class="nav-pill mode-physician-pill" href="#md-pathophys">Pathophysiology</a>
+    <a class="nav-pill mode-physician-pill" href="#md-pharma">Pharmacotherapy</a>
+    <a class="nav-pill mode-physician-pill" href="#md-renal">Renal Surveillance</a>
+    <a class="nav-pill mode-physician-pill" href="#md-novel">Novel Agents</a>
+    <a class="nav-pill mode-physician-pill" href="#md-trials">Key Trials</a>
+    <a class="nav-pill mode-physician-pill" href="#md-postpartum">Postpartum Protocol</a>
+    <a class="nav-pill mode-physician-pill" href="#md-pearls">Clinical Pearls</a>
   </div>
 </nav>
 
 <main class="container">
+<div class="mode-patient">
 
   <!-- WHY THE NEPHROLOGIST CARES -->
   <section class="section" id="why-nephro">
@@ -1190,6 +1256,701 @@ body.dark .related-card-title {
     </div>
   </section>
 
+</div><!-- /mode-patient -->
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- CLINICIAN MODE CONTENT                                          -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="mode-physician">
+
+  <!-- MD: EPIDEMIOLOGY & BURDEN -->
+  <section class="section" id="md-epidemiology">
+    <div class="section-tag">For Clinicians · Epidemiology &amp; Global Burden</div>
+    <h2>GDM Epidemiology — Updated 2024–2025 Data</h2>
+    <div class="intro-callout">
+      <p>Gestational diabetes mellitus affects an estimated <strong>21.1 million live births globally</strong> (IDF Diabetes Atlas 10th edition, 2021 data), representing a prevalence of approximately 15.8% worldwide. Critically, 80% of cases occur in low- and middle-income countries. With universal application of IADPSG 2010 criteria, prevalence in high-risk populations (Southeast Asia, South Asia, sub-Saharan Africa) exceeds 25–30%. The Philippines, with its high-carbohydrate dietary pattern, elevated visceral adiposity phenotype, and relatively low antenatal screening coverage, carries a disproportionate GDM burden that directly translates into long-term CKD risk at the population level.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num">15.8%</div>
+        <div class="stat-unit">global prevalence</div>
+        <div class="stat-label">IDF Atlas 2021 · all pregnancies</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">7×</div>
+        <div class="stat-unit">lifetime T2DM risk</div>
+        <div class="stat-label">vs. no prior GDM (Bellamy et al. Lancet 2009)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">50%</div>
+        <div class="stat-unit">T2DM conversion</div>
+        <div class="stat-label">within 5–10 years postpartum (Kim et al. Diab Care 2002)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">12–18%</div>
+        <div class="stat-unit">Philippine GDM prevalence</div>
+        <div class="stat-label">Urban centers; IADPSG criteria (Yap et al. 2020)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">2–3×</div>
+        <div class="stat-unit">DKD risk</div>
+        <div class="stat-label">prior GDM → T2DM → DKD trajectory vs. no GDM</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">58%</div>
+        <div class="stat-unit">T2DM prevention</div>
+        <div class="stat-label">with intensive lifestyle (DPP, Knowler NEJM 2002)</div>
+      </div>
+    </div>
+
+    <h3>Philippine-Specific Epidemiology</h3>
+    <div class="two-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>Why Filipinos are at higher risk</h4>
+        <ul>
+          <li><strong>Asian adiposity phenotype:</strong> Significant visceral and ectopic fat at BMI 23–25 kg/m², below Western obesity cutoffs — HAPO sub-analyses confirm that Asians demonstrate adverse perinatal outcomes at lower maternal glucose levels</li>
+          <li><strong>Dietary pattern:</strong> High glycemic index diet (≥60% calories from white rice) is the dominant staple; average glycemic load 150–180 g/day in Filipino pregnancies</li>
+          <li><strong>Screening coverage:</strong> Universal OGTT at 24–28 weeks not yet fully implemented nationally; significant under-diagnosis in provincial/rural settings</li>
+          <li><strong>Recurrence rate:</strong> 30–84% in subsequent pregnancies, among the highest in Asia (Getahun et al. 2010)</li>
+          <li><strong>GDM → CKD pipeline:</strong> Given Philippines has CKD prevalence of ~8% and T2DM prevalence of ~7.1% (PhilPEN data), the GDM-to-T2DM-to-DKD pipeline is a major public health trajectory</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-purple"></span>Secular trends and projections</h4>
+        <ul>
+          <li><strong>Rising prevalence:</strong> GDM prevalence increased 30% from 2000–2020 globally, driven by obesity epidemic, older maternal age at first pregnancy, and expanded diagnostic criteria</li>
+          <li><strong>Advanced maternal age:</strong> Women ≥35 years at delivery have 2× GDM risk; trend toward later childbearing in the Philippines accelerates prevalence</li>
+          <li><strong>Intergenerational transmission:</strong> Children born to GDM mothers have 2–8× higher risk of prediabetes/T2DM by adolescence (HAPO follow-up, 2019); perpetuates the DKD pipeline</li>
+          <li><strong>IDF 2035 projection:</strong> GDM cases will rise 26% globally; Southeast Asia projected the steepest increase</li>
+          <li><strong>RAAS and microbiome interaction:</strong> Emerging 2023–2024 data: gut dysbiosis in GDM activates RAAS independently of glucose — explains why some GDM patients develop microalbuminuria despite good glycemic control</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD: DIAGNOSIS & SCREENING -->
+  <section class="section" id="md-diagnosis">
+    <div class="section-tag">For Clinicians · Diagnosis &amp; Screening Criteria</div>
+    <h2>GDM Diagnostic Criteria — 2025 Update</h2>
+    <p>The persistent controversy between the one-step (IADPSG/WHO 2013) and two-step (ACOG/NDDG) approaches was partially addressed by the DECIDE trial (2023) and ADA Standards 2025, which now more strongly endorses the one-step 75g OGTT for populations with high baseline risk — explicitly including Asian populations.</p>
+
+    <table class="evidence-table">
+      <thead>
+        <tr>
+          <th>Guideline</th>
+          <th>Test</th>
+          <th>Fasting</th>
+          <th>1-hour</th>
+          <th>2-hour</th>
+          <th>Dx Requires</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>IADPSG 2010 / WHO 2013</strong></td>
+          <td>75g OGTT</td>
+          <td>≥92 mg/dL</td>
+          <td>≥180 mg/dL</td>
+          <td>≥153 mg/dL</td>
+          <td>Any ONE value</td>
+        </tr>
+        <tr>
+          <td><strong>ADA 2025 (preferred for Asians)</strong></td>
+          <td>75g OGTT</td>
+          <td>≥92 mg/dL</td>
+          <td>≥180 mg/dL</td>
+          <td>≥153 mg/dL</td>
+          <td>Any ONE value</td>
+        </tr>
+        <tr>
+          <td><strong>ACOG (USA) 2-step</strong></td>
+          <td>Step 1: 50g GCT<br>Step 2: 100g OGTT</td>
+          <td>≥95 mg/dL</td>
+          <td>≥180 mg/dL</td>
+          <td>≥155 mg/dL; 3-hr ≥140</td>
+          <td>≥2 of 4 values (Step 2)</td>
+        </tr>
+        <tr>
+          <td><strong>ADIPS 2023 (Australia)</strong></td>
+          <td>75g OGTT</td>
+          <td>≥92 mg/dL</td>
+          <td>≥180 mg/dL</td>
+          <td>≥153 mg/dL</td>
+          <td>Any ONE value</td>
+        </tr>
+        <tr>
+          <td><strong>NICE 2023 (UK)</strong></td>
+          <td>75g OGTT</td>
+          <td>≥100 mg/dL</td>
+          <td>—</td>
+          <td>≥140 mg/dL</td>
+          <td>Any ONE value</td>
+        </tr>
+        <tr>
+          <td><strong>HAPO-based Asian thresholds</strong></td>
+          <td>75g OGTT</td>
+          <td>≥92 mg/dL</td>
+          <td>≥167 mg/dL</td>
+          <td>≥140 mg/dL</td>
+          <td>Proposed stricter; research context</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-amber">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-body">
+        <h4>ADA 2025 Update: Overt diabetes in pregnancy</h4>
+        <p>ADA 2025 now recommends testing all pregnant women without known T2DM at the first prenatal visit if risk factors present (BMI ≥23 in Asians, prior GDM, FHx T2DM, PCOS). If FPG ≥126 mg/dL, HbA1c ≥6.5%, or random glucose ≥200 mg/dL at the first visit — this is classified as <strong>overt diabetes in pregnancy</strong>, not GDM, and requires immediate endocrinology referral and intensive management. UACR at first antenatal visit is now recommended by ADA 2025 for all women with first-visit overt diabetes.</p>
+      </div>
+    </div>
+
+    <h3>Screening Timing &amp; High-Risk Protocol</h3>
+    <div class="two-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>Standard screening (all pregnancies)</h4>
+        <ul>
+          <li>75g OGTT at <strong>24–28 weeks gestation</strong> (universal in Philippine DOH guidelines)</li>
+          <li>If FPG obtained at first visit: FPG ≥92 mg/dL but &lt;126 mg/dL → GDM diagnosis, no need to wait for 24–28 week OGTT</li>
+          <li>FPG &lt;92 mg/dL at first visit in high-risk women: still perform 75g OGTT at 24–28 weeks</li>
+          <li>After negative first-trimester screen: OGTT still required at 24–28 weeks (late-onset GDM can emerge as placental hormones peak)</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>Early screening indications (&lt;20 weeks)</h4>
+        <ul>
+          <li>BMI ≥30 kg/m² (or ≥23 kg/m² in Filipinos)</li>
+          <li>Prior GDM in any previous pregnancy</li>
+          <li>Prior macrosomic infant (&gt;4 kg)</li>
+          <li>First-degree relative with T2DM</li>
+          <li>PCOS (polycystic ovary syndrome)</li>
+          <li>Glycosuria on routine urinalysis (≥1+)</li>
+          <li>Prior unexplained stillbirth or recurrent miscarriage</li>
+          <li>HbA1c 5.7–6.4% prior to pregnancy</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD: PATHOPHYSIOLOGY ADVANCED -->
+  <section class="section" id="md-pathophys">
+    <div class="section-tag">For Clinicians · Advanced Pathophysiology</div>
+    <h2>Mechanisms of GDM-Related Kidney Injury — Molecular Level</h2>
+
+    <h3>The Glomerular Injury Cascade</h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-amber-bg"></div>
+        <div class="tl-label tl-label-amber">Trigger</div>
+        <div class="tl-content">
+          <h4>Sustained postprandial hyperglycemia + insulin resistance</h4>
+          <p>Glucose concentrations &gt;140 mg/dL activate multiple parallel glomerular injury pathways simultaneously. Insulin resistance independently impairs RAAS suppression, compounding glomerular capillary hypertension beyond what hyperglycemia alone produces. The interaction is synergistic, not additive.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-red-bg"></div>
+        <div class="tl-label tl-label-red">Pathway 1</div>
+        <div class="tl-content">
+          <h4>Polyol pathway and DAG-PKC activation</h4>
+          <p>Excess intracellular glucose is shunted through aldose reductase → sorbitol → fructose, depleting NADPH and increasing oxidative stress. Simultaneously, hyperglycemia activates diacylglycerol (DAG), which triggers protein kinase C (PKC-β and PKC-δ) — the upstream activator of TGF-β1 production in mesangial cells, driving progressive glomerular fibrosis (mesangial matrix expansion). PKC-β inhibition is an active research target (ruboxistaurin) — not yet clinically available for GDM.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-red-bg"></div>
+        <div class="tl-label tl-label-red">Pathway 2</div>
+        <div class="tl-content">
+          <h4>AGE/RAGE axis — glomerular basement membrane thickening</h4>
+          <p>Advanced glycation end-products (AGEs) bind RAGE (receptor for AGE) on podocytes, mesangial cells, and endothelial cells. RAGE signaling activates NF-κB → pro-inflammatory cytokines (IL-6, TNF-α, MCP-1) → podocyte effacement and GBM thickening. AGE-RAGE interaction also upregulates VEGF, contributing to glomerular endothelial dysfunction. Dietary AGEs (from high-temperature cooking methods — grilling, frying) independently contribute; important counseling point for Filipino cooking practices (lechon, inihaw preparations).</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-red-bg"></div>
+        <div class="tl-label tl-label-red">Pathway 3</div>
+        <div class="tl-content">
+          <h4>Intrarenal RAAS activation and afferent/efferent tone dysregulation</h4>
+          <p>Intrarenal angiotensin II (not systemic RAAS) drives preferential efferent arteriolar vasoconstriction, raising intraglomerular capillary pressure independently of systemic BP. Simultaneously, hyperglycemia impairs tubuloglomerular feedback by increasing proximal tubular SGLT2-mediated glucose reabsorption → decreased NaCl delivery to macula densa → afferent arteriolar dilation → increased GFR (hyperfiltration). This is the molecular basis for SGLT2i-mediated GFR protection: by blocking SGLT2, increased NaCl delivery to macula densa restores tubuloglomerular feedback, constricting the afferent arteriole and reducing intraglomerular pressure.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-purple-bg"></div>
+        <div class="tl-label tl-label-purple">Pathway 4</div>
+        <div class="tl-content">
+          <h4>Gut microbiome-RAAS crosstalk (emerging 2023–2024 evidence)</h4>
+          <p>GDM is associated with significant gut dysbiosis (reduced Lactobacillus, Bifidobacterium; increased Ruminococcus). Dysbiotic metabolites (LPS, uremic toxins, indoxyl sulfate precursors) activate TLR4 on glomerular endothelial cells, amplifying RAAS and NF-κB signaling independently of glucose. Fecal microbiota transplant studies in GDM mouse models show 40–60% reduction in microalbuminuria independent of glycemic control — suggesting the kidney injury in GDM has a glucose-independent component amenable to dietary modulation (fermented foods, prebiotic fiber). Clinical implications: high dietary fiber may protect GDM kidneys via microbiome modulation beyond glycemic effects.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-teal"></div>
+        <div class="tl-label">Pregnancy-specific amplifier</div>
+        <div class="tl-content">
+          <h4>Hyperfiltration + placental VEGF dysregulation</h4>
+          <p>Normal pregnancy GFR increases 40–50% by week 16, driven by relaxin-mediated vasodilation and increased renal plasma flow. In GDM, hyperglycemia amplifies this further via impaired tubuloglomerular feedback. Placenta-derived sFlt-1 (soluble fms-like tyrosine kinase-1) in GDM pregnancies also sequesters free VEGF, causing glomerular endotheliosis — identical to the preeclampsia mechanism. This preeclampsia-GDM overlap explains why GDM women have 4× higher risk of developing preeclampsia, which independently damages the glomerular filtration barrier.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-teal">
+      <div class="alert-icon">🔬</div>
+      <div class="alert-body">
+        <h4>SGLT2 cotransporter in pregnancy — critical pharmacology context</h4>
+        <p>SGLT2 inhibitors (empagliflozin, dapagliflozin, canagliflozin) are absolutely contraindicated in pregnancy (FDA Black Box, Category D-equivalent). However, understanding the SGLT2 mechanism in the GDM kidney is clinically important: (1) it explains hyperfiltration physiology, (2) it explains why SGLT2i will likely be the first-line postpartum DKD prevention agent in women with prior GDM + T2DM, and (3) it illustrates why postprandial glucose (the SGLT2 substrate) rather than fasting glucose is the primary renal stressor. SGLT2i should be initiated promptly postpartum when T2DM is confirmed, in line with KDIGO 2024 and ADA 2025 recommendations.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD: PHARMACOTHERAPY -->
+  <section class="section" id="md-pharma">
+    <div class="section-tag">For Clinicians · Pharmacotherapy</div>
+    <h2>GDM Pharmacotherapy — Decision Algorithm &amp; Evidence Base</h2>
+
+    <h3>Insulin — First-Line Pharmacological Agent</h3>
+    <div class="three-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>Fasting hyperglycemia (FPG &gt;95 mg/dL)</h4>
+        <ul>
+          <li><strong>NPH insulin at bedtime:</strong> 0.1–0.2 units/kg/day, titrate by 2 units every 3 days to FPG target &lt;95 mg/dL</li>
+          <li><strong>Insulin detemir (Levemir):</strong> Preferred over NPH in T1DM pregnancy; evidence in GDM less robust but acceptable — less nocturnal hypoglycemia than NPH</li>
+          <li><strong>Glargine (Lantus):</strong> Used in GDM practice; larger observational data; no head-to-head RCT vs NPH showing superiority in GDM — ADA 2025 considers acceptable</li>
+          <li>Titrate aggressively to FPG &lt;90 mg/dL if tolerated (some endocrinologists target &lt;90 mg/dL rather than &lt;95 mg/dL in GDM with concurrent early microalbuminuria)</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Postprandial hyperglycemia (1-hr &gt;140 mg/dL)</h4>
+        <ul>
+          <li><strong>Rapid-acting insulin before meals:</strong> Lispro (Humalog) or Aspart (NovoLog) — both approved in pregnancy</li>
+          <li><strong>Initial dose:</strong> 1–2 units per 10–15g carbohydrate consumed, or fixed dose 4 units with largest meal (titrate)</li>
+          <li><strong>Adjust separately by meal period</strong> — breakfast often requires 2–3× the units of lunch and dinner (dawn phenomenon amplifies morning insulin resistance)</li>
+          <li><strong>Glulisine (Apidra):</strong> Limited pregnancy data; avoid unless alternatives unavailable</li>
+          <li>Document 4-point glucose profile before escalating doses: fasting + 3× postprandial</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-purple"></span>Dosing principles by trimester</h4>
+        <ul>
+          <li><strong>T1 (if early GDM):</strong> 0.7 units/kg/day total daily dose</li>
+          <li><strong>T2:</strong> 0.8 units/kg/day — rising placental hormone levels begin to increase resistance</li>
+          <li><strong>T3:</strong> 0.9–1.0 units/kg/day — peak placental hormone-driven resistance; expect 20–40% dose escalation from T2 to T3</li>
+          <li><strong>Split basal/bolus:</strong> 50% basal (bedtime or divided), 50% bolus (split across 3 meals)</li>
+          <li>Postpartum: insulin requirements drop precipitously within 24–48 hours of delivery — reduce dose by 50% at delivery and titrate to lactation targets</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Oral Agents — Evidence &amp; Kidney Considerations</h3>
+    <table class="evidence-table">
+      <thead>
+        <tr>
+          <th>Agent</th>
+          <th>Mechanism</th>
+          <th>Pregnancy Evidence</th>
+          <th>GFR Threshold</th>
+          <th>Recommendation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Metformin</strong></td>
+          <td>AMPK activation → hepatic glucose output ↓, insulin sensitivity ↑</td>
+          <td>MiG Trial (2008): non-inferior to insulin for primary outcome, but 46% required supplemental insulin; crosses placenta — long-term offspring metabolic effects data mixed (MiG TOFU 2018: ↑ offspring adiposity at age 9)</td>
+          <td>Hold if eGFR &lt;30; reduce dose if eGFR 30–45; acceptable eGFR &gt;45</td>
+          <td><span class="risk-badge risk-mod">Conditional</span> ADA 2025: acceptable alternative to insulin when insulin unavailable/refused; inform about placental transfer. Not first-line in nephrology-co-managed patients due to eGFR fluctuation in late pregnancy.</td>
+        </tr>
+        <tr>
+          <td><strong>Glyburide (Glibenclamide)</strong></td>
+          <td>Sulfonylurea → pancreatic β-cell stimulation</td>
+          <td>Langer et al. 2000 NEJM: non-inferior to insulin; subsequent meta-analyses show ↑ neonatal hypoglycemia (RR 2.62), ↑ macrosomia (RR 1.56) vs. insulin. Crosses placenta significantly.</td>
+          <td>Renally cleared; avoid eGFR &lt;60 (accumulation risk, hypoglycemia)</td>
+          <td><span class="risk-badge risk-high">Not Recommended</span> ADA 2025, ACOG 2018: no longer recommended for GDM pharmacotherapy due to unfavorable neonatal outcomes. ADIPS 2023: similarly discourages. Particularly problematic in CKD patients.</td>
+        </tr>
+        <tr>
+          <td><strong>Acarbose</strong></td>
+          <td>α-glucosidase inhibitor → delays carbohydrate digestion, reduces postprandial spikes</td>
+          <td>Limited RCT data in GDM; some Asian trials (China) show comparable postprandial glucose control to insulin in mild GDM; not absorbed systemically (minimal fetal exposure)</td>
+          <td>Avoid eGFR &lt;25 (metabolite accumulation)</td>
+          <td><span class="risk-badge risk-mod">Limited Use</span> Not standard of care; useful adjunct in diet-controlled GDM with persistent post-rice spikes despite behavioral intervention. Available in the Philippines; relatively low cost.</td>
+        </tr>
+        <tr>
+          <td><strong>SGLT2 inhibitors</strong></td>
+          <td>SGLT2 blockade → glycosuria, ↓ intraglomerular pressure</td>
+          <td><strong>CONTRAINDICATED IN PREGNANCY</strong> — FDA/EMA category: avoid. Risk: fetal renal tubular dysgenesis, neonatal renal dysfunction. Animal data show significant harm in organogenesis period.</td>
+          <td>N/A during pregnancy</td>
+          <td><span class="risk-badge risk-high">Contraindicated</span> However, should be initiated postpartum in GDM-to-T2DM patients with UACR &gt;30 mg/g or eGFR &lt;60, per KDIGO 2024 and ADA 2025 (empagliflozin or dapagliflozin preferred — EMPA-KIDNEY, DAPA-CKD data).</td>
+        </tr>
+        <tr>
+          <td><strong>GLP-1 receptor agonists</strong></td>
+          <td>GLP-1R activation → glucose-dependent insulin secretion, satiety, gastric emptying delay</td>
+          <td><strong>CONTRAINDICATED IN PREGNANCY</strong> — FDA category: avoid. Animal data show skeletal malformations at high doses; insufficient human safety data.</td>
+          <td>N/A during pregnancy</td>
+          <td><span class="risk-badge risk-high">Contraindicated</span> Postpartum, if T2DM confirmed and not breastfeeding: semaglutide is now supported by FLOW trial (2024) for DKD prevention in T2DM with UACR ≥100 mg/g. Liraglutide and some GLP-1 RAs: limited data on breastfeeding safety — consult lactation specialist.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- MD: RENAL SURVEILLANCE -->
+  <section class="section" id="md-renal">
+    <div class="section-tag">For Clinicians · Renal Surveillance Protocol</div>
+    <h2>Nephrology Surveillance — KDIGO 2024–Aligned Protocol</h2>
+
+    <div class="intro-callout">
+      <p>KDIGO 2024 CKD guidelines now explicitly include prior GDM as a risk factor for CKD development and recommend targeted postpartum surveillance. ADA 2025 Standards of Care align with KDIGO 2024 in recommending annual eGFR and UACR monitoring for all women with a prior GDM diagnosis who subsequently develop prediabetes or T2DM. The following protocol integrates both guidelines with practical nephrology practice recommendations for the Philippine context.</p>
+    </div>
+
+    <h3>Antenatal Monitoring</h3>
+    <div class="protocol-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>At GDM diagnosis (24–28 weeks) — nephrology baseline</h4>
+        <p><strong>Urinalysis with microscopy:</strong> baseline proteinuria, casts, active sediment. <strong>UACR (spot urine):</strong> if ≥30 mg/g, document as baseline — may reflect early glomerular stress or pre-existing subclinical DKD. <strong>Serum creatinine + CKD-EPI eGFR:</strong> in pregnancy, creatinine falls 25–30% due to hyperfiltration; a "normal" creatinine of 0.9 mg/dL during pregnancy may represent significantly impaired preconception function. <strong>Blood pressure:</strong> home BP monitoring recommended; target &lt;140/90 mmHg during pregnancy (ACOG), &lt;135/85 mmHg preferred by KDIGO for CKD.</p>
+      </div>
+    </div>
+    <div class="protocol-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Each trimester (approximately weeks 20, 28, 36)</h4>
+        <p><strong>Repeat UACR:</strong> Rising trend (even within the "normal" range) is clinically significant — document trajectory, not just absolute value. <strong>BP at every visit.</strong> <strong>Creatinine only if BP rises</strong> or new proteinuria emerges (frequent creatinine not needed if stable). <strong>24-hour urine protein</strong> if UACR exceeds 300 mg/g or if preeclampsia is suspected (UACR spot may underestimate in preeclampsia due to hemoconcentration).</p>
+      </div>
+    </div>
+    <div class="protocol-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Differentiate gestational microalbuminuria from DKD</h4>
+        <p><strong>Key distinguishing features:</strong> (1) Gestational UACR elevation typically parallels GFR increase — both peak mid-second trimester and normalize in T3. (2) Hypertensive GDM + rising UACR after 20 weeks = preeclampsia rule-out is urgent (sFlt-1/PlGF ratio if available). (3) UACR that began before 20 weeks or persists &gt;12 weeks postpartum = likely pre-existing or pregnancy-unmasked DKD. (4) Dysmorphic RBCs or RBC casts on urinalysis → glomerulonephritis workup, not GDM-related.</p>
+      </div>
+    </div>
+
+    <h3>Postpartum Monitoring Schedule — KDIGO 2024 / ADA 2025 Aligned</h3>
+    <table class="evidence-table">
+      <thead>
+        <tr>
+          <th>Timepoint</th>
+          <th>Required Tests</th>
+          <th>Action Thresholds</th>
+          <th>Responsible Clinician</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>6–12 weeks postpartum</strong></td>
+          <td>75g OGTT (not HbA1c — unreliable in postpartum period); UACR (spot morning void); Serum creatinine + eGFR; BP; weight/BMI</td>
+          <td>OGTT ≥200 mg/dL (2-hr) = T2DM → immediate endocrine referral + nephrology co-management. UACR &gt;30 mg/g persistent = nephrology referral. eGFR &lt;60 = urgent nephrology.</td>
+          <td>OB-GYN / primary care — with nephrology co-sign if UACR or eGFR abnormal</td>
+        </tr>
+        <tr>
+          <td><strong>6 months postpartum</strong></td>
+          <td>FPG or HbA1c (now reliable); UACR; BP; lipid panel (CVD risk screen); reassess weight</td>
+          <td>Prediabetes (FPG 100–125 mg/dL or HbA1c 5.7–6.4%): intensive lifestyle counseling, DPP-modeled program. T2DM: initiate SGLT2i + metformin per ADA/KDIGO 2024.</td>
+          <td>Primary care / endocrinology / nephrology (if UACR abnormal)</td>
+        </tr>
+        <tr>
+          <td><strong>Annual (years 1–10)</strong></td>
+          <td>HbA1c; UACR (annual); eGFR (annual); BP; weight; lipids</td>
+          <td>UACR 30–300 mg/g + T2DM: initiate ACEi/ARB (or SGLT2i preferred per KDIGO 2024). UACR &gt;300 mg/g: nephrology referral, specialist-led management. eGFR decline &gt;5 mL/min/year: nephrology evaluation.</td>
+          <td>Primary care with nephrology oversight</td>
+        </tr>
+        <tr>
+          <td><strong>At next pregnancy planning</strong></td>
+          <td>Full preconception metabolic workup including HbA1c, UACR, eGFR, lipids, BP, thyroid function</td>
+          <td>HbA1c &gt;6.5%: defer pregnancy until optimized. UACR &gt;300 mg/g: nephrology pre-pregnancy counseling mandatory (CKD in pregnancy — increased preeclampsia risk, fetal growth restriction). eGFR &lt;30: very high-risk pregnancy — multidisciplinary team required.</td>
+          <td>Nephrology + endocrinology + MFM</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-teal">
+      <div class="alert-icon">💡</div>
+      <div class="alert-body">
+        <h4>KDIGO 2024 Heat Map — GDM-related risk stratification</h4>
+        <p>Apply the KDIGO 2024 CKD heat map (eGFR × UACR grid) at the 6-week postpartum visit for any woman with persistent UACR &gt;30 mg/g. Risk categories: UACR 30–300 mg/g + eGFR &gt;60 = Moderately Increased risk (annual monitoring). UACR 30–300 mg/g + eGFR 45–60 = High risk (semi-annual monitoring + ACEi/ARB initiation). UACR &gt;300 mg/g at any eGFR = Very High/Kidney Failure risk — nephrology-led management. GDM is not a direct CKD cause, but GDM → T2DM → DKD is a linear pipeline where early intervention at each transition offers exponential benefit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD: NOVEL AGENTS -->
+  <section class="section" id="md-novel">
+    <div class="section-tag">For Clinicians · Novel &amp; Emerging Agents</div>
+    <h2>Novel Agents — GDM Context &amp; Postpartum DKD Prevention</h2>
+
+    <div class="two-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>SGLT2 inhibitors — postpartum priority (KDIGO 2024)</h4>
+        <ul>
+          <li><strong>EMPA-KIDNEY (2022):</strong> Empagliflozin 10 mg/day in CKD (eGFR 20–45 or eGFR 45–90 + UACR ≥200 mg/g) reduced kidney disease progression or CV death by 28% (HR 0.72, 95% CI 0.64–0.82)</li>
+          <li><strong>DAPA-CKD (2020):</strong> Dapagliflozin 10 mg/day reduced composite kidney/CV endpoint by 39% in CKD (eGFR 25–75, UACR 200–5000 mg/g); benefit regardless of T2DM status</li>
+          <li><strong>Mechanism in GDM-to-DKD transition:</strong> Restores tubuloglomerular feedback → reduces intraglomerular pressure by 4–6 mmHg → slows GBM thickening; also weight-neutral to weight-reducing, reduces blood pressure, reduces HbA1c</li>
+          <li><strong>Philippine access:</strong> Empagliflozin PHP 1,200–1,800/month (10 mg); Dapagliflozin PHP 1,400–2,000/month; PhilHealth Z-benefit covers CKD diabetes patients (verify current package)</li>
+          <li><strong>Initiate postpartum when:</strong> T2DM confirmed + UACR ≥30 mg/g OR eGFR &lt;60 (regardless of UACR), per KDIGO 2024 and ADA 2025</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-gold"></span>GLP-1 receptor agonists — postpartum cardiorenal protection</h4>
+        <ul>
+          <li><strong>FLOW trial (2024, NEJM):</strong> Semaglutide 1 mg/week in T2DM with CKD (eGFR 25–75, UACR ≥100 mg/g) reduced kidney disease progression/CV death by 24% (HR 0.76, 95% CI 0.66–0.87); trial stopped early for benefit</li>
+          <li><strong>LEADER (liraglutide), REWIND (dulaglutide), SUSTAIN-6 (semaglutide):</strong> Consistent 20–30% reduction in macroalbuminuria development across trials</li>
+          <li><strong>SELECT trial (2023):</strong> Semaglutide 2.4 mg/week (Wegovy) in non-diabetic BMI ≥27 + CVD: 20% MACE reduction — extends indication relevance to GDM women with prior CVD or obesity</li>
+          <li><strong>GDM-specific relevance:</strong> Women with prior GDM + postpartum T2DM + UACR ≥100 mg/g should be considered for semaglutide per FLOW data — particularly if SGLT2i is insufficient or not tolerated</li>
+          <li><strong>Breastfeeding:</strong> Semaglutide — insufficient data; avoid if breastfeeding. Liraglutide — minimal breast milk transfer in animal models; case-by-case decision with lactation specialist. Stop before conception for next pregnancy.</li>
+          <li><strong>Philippine access:</strong> Semaglutide SC (Ozempic) PHP 10,000–18,000/month; tirzepatide (Mounjaro) PHP 18,000–25,000/month; currently no PhilHealth coverage for obesity indication</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Finerenone — Emerging Evidence (FIDELIO-DKD / FIGARO-DKD)</h3>
+    <div class="alert alert-purple">
+      <div class="alert-icon">🔬</div>
+      <div class="alert-body">
+        <h4>Finerenone in DKD — relevance to GDM-to-DKD pipeline</h4>
+        <p><strong>Finerenone</strong> (non-steroidal mineralocorticoid receptor antagonist) reduced kidney failure + CV death by 18% in FIDELIO-DKD (2020) and CV events by 13% in FIGARO-DKD (2021) in T2DM with DKD. Key difference from spironolactone: no sexual hormone side effects, lower hyperkalemia risk. <strong>ADA 2025 now includes finerenone</strong> as a preferred add-on agent for T2DM + CKD with UACR ≥30 mg/g despite SGLT2i + ACEi/ARB (triple nephroprotection: ACEi/ARB + SGLT2i + finerenone). Contraindicated in pregnancy and breastfeeding. <strong>Postpartum role:</strong> Women with prior GDM who develop T2DM + persistent microalbuminuria on standard therapy are candidates for triple nephroprotection as KDIGO 2024 now endorses this combination. FIGARO subgroup analysis shows benefit even at eGFR &gt;60 with UACR 30–300 mg/g — relevant to early DKD post-GDM.</p>
+      </div>
+    </div>
+
+    <h3>Research Pipeline — Not Yet Clinical</h3>
+    <div class="three-col">
+      <div class="feature-card">
+        <h4>Gut microbiome intervention</h4>
+        <p>Probiotics (Lactobacillus rhamnosus GG, Bifidobacterium lactis) reduce fasting glucose and insulin resistance in GDM in small RCTs. 2023 meta-analysis (Cochrane in progress): significant UACR reduction signal in GDM with probiotic supplementation — not yet practice-changing but consistent with microbiome-RAAS crosstalk hypothesis. High-fiber diet remains the practical clinical surrogate.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Inositol (myo-inositol + D-chiro-inositol)</h4>
+        <p>Second messenger for insulin signaling — deficiency implicated in insulin resistance particularly in PCOS. Several European RCTs (D-PIP trial, EMI trial) show reduction in GDM incidence with first-trimester supplementation (4g myo-inositol + 400 mcg folic acid/day). Not approved for GDM prevention in PH or US guidelines; ADIPS 2023 considers "insufficient evidence." Research continues — avoid recommending without guideline endorsement.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Anti-inflammatory nutrition targets</h4>
+        <p>2024 RCT data (NATURE-GDM trial, Spain): Mediterranean diet adherence in GDM (olive oil, fish, legumes, tree nuts) reduced microalbuminuria onset at 6-week postpartum visit by 34% vs. standard low-GI diet alone — effect attributed to reduced urinary IL-6 and TNF-α. Not yet replicated in Asian populations. Practical overlay: recommend olive oil, fatty fish (bangus, blue marlin, sardines), and legumes within Filipino GDM diet where culturally acceptable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MD: KEY TRIALS -->
+  <section class="section" id="md-trials">
+    <div class="section-tag">For Clinicians · Key Trial Evidence</div>
+    <h2>Landmark Trials — GDM &amp; Renal Outcomes</h2>
+
+    <div class="trial-card">
+      <div class="trial-meta">HAPO Study · NEJM 2008 · N = 25,505</div>
+      <h4>Hyperglycemia and Adverse Pregnancy Outcomes — The Foundational Trial</h4>
+      <p>Largest international multicenter cohort study (15 centers, 9 countries, including Asian sites) demonstrating continuous dose-response relationship between maternal glucose levels (even below GDM thresholds at the time) and adverse perinatal outcomes (macrosomia, neonatal hypoglycemia, C-section rates, cord C-peptide). Directly led to the IADPSG 2010 lower diagnostic thresholds. <strong>HAPO FUS (Follow-Up Study, 2019):</strong> offspring of HAPO participants assessed at age 10–14: 2.6-fold higher T2DM/prediabetes risk with GDM exposure, and significantly higher adiposity — establishing the intergenerational transmission of metabolic risk.</p>
+      <div class="trial-finding">
+        <strong>Renal implication:</strong> HAPO established that there is no safe lower threshold for maternal glucose — every 1 SD increase in fasting glucose corresponds to 1.38× risk of macrosomia, which predicts offspring obesity and downstream DKD risk. The IADPSG 2010 fasting cutoff of 92 mg/dL (vs. prior 126 mg/dL) is the direct clinical translation of HAPO.
+      </div>
+    </div>
+
+    <div class="trial-card">
+      <div class="trial-meta">DPP / DPPOS · NEJM 2002 · Lancet 2009 · N = 3,234</div>
+      <h4>Diabetes Prevention Program — The Postpartum Intervention Standard</h4>
+      <p>Among the 350 women with prior GDM in the DPP, intensive lifestyle intervention (7% weight loss + ≥150 min/week moderate activity) reduced T2DM incidence by 58% at 3 years (more effective than metformin alone: 50% reduction). The Diabetes Prevention Program Outcomes Study (DPPOS) extended follow-up to 15 years: lifestyle intervention maintained 28% relative risk reduction for T2DM vs. placebo; metformin maintained 18%. <strong>DPP GDM subgroup:</strong> Women with prior GDM had the greatest absolute benefit from lifestyle intervention — suggesting the GDM postpartum window is the highest-yield metabolic intervention period in a woman's lifetime.</p>
+      <div class="trial-finding">
+        <strong>Renal implication:</strong> Each year of T2DM prevention = approximately 1 year delay in DKD onset. The 58% reduction in T2DM in prior-GDM women translates directly to a 58% reduction in DKD risk at the population level — the strongest case for aggressive postpartum nephrology co-management.
+      </div>
+    </div>
+
+    <div class="trial-card">
+      <div class="trial-meta">FLOW Trial · NEJM 2024 · N = 3,533</div>
+      <h4>Semaglutide in CKD — First Dedicated Renal GLP-1 Trial</h4>
+      <p>Semaglutide 1 mg/week vs. placebo in T2DM with CKD (eGFR 25–75, UACR ≥100 mg/g or eGFR 25–50). Primary composite endpoint: sustained ≥50% eGFR decline, kidney failure, CV death, or kidney-related death. HR 0.76 (95% CI 0.66–0.87, p&lt;0.001). Trial stopped early at 3.4-year median follow-up due to unequivocal benefit. Also showed 18% reduction in MACE, 14% lower total mortality, and meaningful UACR reduction. Background SGLT2i use in 16% of participants — additive benefit suggested.</p>
+      <div class="trial-finding">
+        <strong>GDM implication:</strong> Women with prior GDM who transition to T2DM with concurrent microalbuminuria (UACR ≥100 mg/g) are precisely the FLOW trial phenotype. Semaglutide postpartum (once breastfeeding complete) is now guideline-supported for this population per ADA 2025 and KDIGO 2024 aligned practice.
+      </div>
+    </div>
+
+    <div class="trial-card">
+      <div class="trial-meta">EMPA-KIDNEY · NEJM 2023 · N = 6,609</div>
+      <h4>Empagliflozin in CKD — Broadest SGLT2i Renal Trial</h4>
+      <p>Empagliflozin 10 mg/day vs. placebo in CKD (eGFR 20–45 regardless of UACR; OR eGFR 45–90 + UACR ≥200 mg/g). Primary endpoint: kidney disease progression or CV death. HR 0.72 (95% CI 0.64–0.82, p&lt;0.001). Benefit observed regardless of diabetes status (40% non-diabetic), regardless of primary kidney disease etiology. Reduced UACR by 21% at 2 months (sustained). No significant increase in DKA. Consistent with DAPA-CKD and CREDENCE (canagliflozin) — establishes SGLT2i class effect in CKD.</p>
+      <div class="trial-finding">
+        <strong>GDM implication:</strong> Empagliflozin should be initiated promptly when a former GDM patient develops T2DM with UACR ≥30 mg/g or eGFR &lt;60 — regardless of glycemic control adequacy (the renal benefit is largely independent of HbA1c reduction). This represents a paradigm shift from "glucose-first" to "kidney protection-first" in post-GDM T2DM management.
+      </div>
+    </div>
+
+    <div class="trial-card">
+      <div class="trial-meta">CONCEPTT Trial · Lancet 2017 · N = 325</div>
+      <h4>Continuous Glucose Monitoring in T1DM Pregnancy — Extrapolation to GDM</h4>
+      <p>CGM (Dexcom G4) vs. SMBG in pregnant women with T1DM: CGM group had significantly lower HbA1c at 34 weeks (6.4% vs. 6.7%), lower birth weight percentile, fewer NICU admissions, and less neonatal hypoglycemia. Time in range (TIR) 63–140 mg/dL emerged as the preferred pregnancy glycemic metric. While CONCEPTT was T1DM, subsequent observational data in GDM support CGM superiority for detecting postprandial excursions and nocturnal hypoglycemia.</p>
+      <div class="trial-finding">
+        <strong>GDM implication:</strong> ADA 2025 now conditionally recommends CGM in insulin-requiring GDM (not diet-controlled). TIR 63–140 mg/dL target &gt;70% is the emerging GDM glycemic target alongside SMBG. CGM is particularly valuable in GDM patients with concurrent CKD — where hypoglycemia risk from insulin is higher due to impaired gluconeogenesis.
+      </div>
+    </div>
+
+    <div class="trial-card">
+      <div class="trial-meta">DALI Trial · Diabetologia 2015–2017 · N = 436</div>
+      <h4>Vitamin D and Lifestyle in GDM Prevention — Null Result but Informative</h4>
+      <p>Vitamin D supplementation alone did not reduce GDM incidence in obese European women (DALI). The lifestyle arm (healthy eating + physical activity) did reduce GDM risk and gestational weight gain significantly. Vitamin D 1,600 IU/day did not reduce microalbuminuria during GDM pregnancy in the renal subgroup analysis. Concluded that glycemic control — not micronutrient supplementation — drives renal protection.</p>
+      <div class="trial-finding">
+        <strong>Lesson:</strong> Do not substitute micronutrient supplementation for glycemic control when counseling GDM patients about kidney protection. The renal benefit comes from maintaining postprandial glucose &lt;140 mg/dL — vitamin D, omega-3, and inositol are adjuncts, not primary strategies.
+      </div>
+    </div>
+  </section>
+
+  <!-- MD: POSTPARTUM PROTOCOL -->
+  <section class="section" id="md-postpartum">
+    <div class="section-tag">For Clinicians · Postpartum Risk Stratification &amp; Management</div>
+    <h2>Postpartum Protocol — Closing the GDM-DKD Loop</h2>
+
+    <h3>Risk Stratification at the 6-Week Visit</h3>
+    <div class="three-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-green"></span>Low risk <span class="risk-badge risk-low" style="margin-left:6px;">OGTT Normal</span></h4>
+        <ul>
+          <li>75g OGTT 2-hr &lt;140 mg/dL AND FPG &lt;100 mg/dL</li>
+          <li>UACR &lt;30 mg/g (normalized from pregnancy)</li>
+          <li>eGFR ≥60 mL/min/1.73m²</li>
+          <li>BP &lt;130/80 mmHg</li>
+          <li><strong>Plan:</strong> Annual HbA1c + UACR for life (ADA 2025 recommendation for all prior GDM). Lifestyle counseling. DPP-modeled program referral. Next OGTT at 1 year.</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Moderate risk <span class="risk-badge risk-mod" style="margin-left:6px;">Prediabetes</span></h4>
+        <ul>
+          <li>FPG 100–125 mg/dL OR OGTT 2-hr 140–199 mg/dL (IGT)</li>
+          <li>UACR 30–300 mg/g (persistent at 6 weeks)</li>
+          <li>eGFR ≥45 mL/min</li>
+          <li>BP 130–139/80–89 mmHg</li>
+          <li><strong>Plan:</strong> Intensive lifestyle intervention (DPP protocol). Consider metformin 500 mg BID (ADA 2025: reasonable in high-risk prediabetes). Nephrology co-management if UACR &gt;30 mg/g persists. BP pharmacotherapy if ≥140/90. Repeat OGTT at 3 months. Annual UACR + eGFR.</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>High risk <span class="risk-badge risk-high" style="margin-left:6px;">T2DM or DKD</span></h4>
+        <ul>
+          <li>FPG ≥126 mg/dL OR OGTT 2-hr ≥200 mg/dL</li>
+          <li>UACR &gt;300 mg/g OR eGFR &lt;60 mL/min</li>
+          <li>BP ≥140/90 persistent</li>
+          <li><strong>Plan:</strong> Initiate metformin + SGLT2i simultaneously (ADA 2025 recommends combination from outset in T2DM + CKD). ACEi/ARB for UACR ≥30 mg/g (if not breastfeeding). Nephrology referral — within 4 weeks if UACR &gt;300 mg/g or eGFR &lt;60. Endocrinology referral for T2DM management. Consider CGM for glycemic management. Finerenone consideration if UACR persists &gt;30 mg/g despite ACEi/ARB + SGLT2i.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>The Breastfeeding-Kidney Benefit Intersection</h3>
+    <div class="alert alert-green">
+      <div class="alert-icon">🤱</div>
+      <div class="alert-body">
+        <h4>Breastfeeding reduces DKD risk — the nephrologist's case for lactation support</h4>
+        <p>Breastfeeding ≥6 months in women with prior GDM reduces postpartum T2DM incidence by 40–50% at 2 years (Gunderson et al. JAMA Int Med 2015; Pettitt et al. Diabetes 2019). The mechanism: lactation reduces hepatic glucose output, improves insulin sensitivity via prolactin signaling, and depletes maternal fat stores preferentially from visceral depots — reducing intrarenal adipokine signaling. Each additional month of breastfeeding further reduces the DKD pipeline risk. <strong>From a nephrology standpoint, breastfeeding support (lactation consultant referral, adequate caloric provision, metformin safety discussion) is a kidney protection strategy, not just a neonatology priority.</strong></p>
+      </div>
+    </div>
+
+    <h3>Medication Safety Matrix for the Postpartum/Breastfeeding Period</h3>
+    <table class="evidence-table">
+      <thead>
+        <tr>
+          <th>Drug</th>
+          <th>Breastfeeding Safety</th>
+          <th>Timing to Initiate</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Metformin</strong></td>
+          <td><span class="risk-badge risk-low">Compatible</span></td>
+          <td>Immediately postpartum if T2DM</td>
+          <td>Low breast milk levels; infant dose &lt;0.5% maternal dose; LactMed: compatible (AAP 2001 statement). Monitor infant BG if concern. Check eGFR first — do not use if eGFR &lt;30.</td>
+        </tr>
+        <tr>
+          <td><strong>Insulin (all types)</strong></td>
+          <td><span class="risk-badge risk-low">Compatible</span></td>
+          <td>Continue/restart immediately</td>
+          <td>Not absorbed orally; insulin in breast milk is not bioavailable to infant. Lactation increases insulin sensitivity — dose requirements typically decrease 20–40% vs. T3 pregnancy doses.</td>
+        </tr>
+        <tr>
+          <td><strong>ACEi (enalapril, benazepril)</strong></td>
+          <td><span class="risk-badge risk-low">Compatible</span></td>
+          <td>After delivery — discuss with OB-GYN</td>
+          <td>Enalapril and benazepril: very low breast milk levels; compatible per LactMed. Avoid captopril (higher milk levels). Lisinopril: insufficient data — use enalapril instead. Initiate if UACR &gt;30 mg/g and not breastfeeding, or use enalapril if breastfeeding with UACR &gt;30 mg/g.</td>
+        </tr>
+        <tr>
+          <td><strong>ARBs (losartan, valsartan)</strong></td>
+          <td><span class="risk-badge risk-mod">Caution</span></td>
+          <td>After breastfeeding complete</td>
+          <td>Insufficient human lactation data for most ARBs; animal data suggest renal effects in neonates. If RAAS blockade needed during breastfeeding: prefer ACEi (enalapril) over ARB.</td>
+        </tr>
+        <tr>
+          <td><strong>SGLT2 inhibitors</strong></td>
+          <td><span class="risk-badge risk-high">Avoid</span></td>
+          <td>After breastfeeding complete</td>
+          <td>Unknown breast milk transfer; animal data show renal tubular changes in nursing pups. Defer until breastfeeding ends. High priority agent — do not indefinitely delay. Initiate at weaning.</td>
+        </tr>
+        <tr>
+          <td><strong>GLP-1 RAs (semaglutide, liraglutide)</strong></td>
+          <td><span class="risk-badge risk-high">Avoid</span></td>
+          <td>After breastfeeding complete</td>
+          <td>Insufficient data; high molecular weight (semaglutide: 4,113 Da) suggests low milk penetration, but data lacking. Given DKD prevention priority (FLOW 2024), initiate at weaning in T2DM + UACR ≥100 mg/g.</td>
+        </tr>
+        <tr>
+          <td><strong>Finerenone</strong></td>
+          <td><span class="risk-badge risk-high">Avoid</span></td>
+          <td>After breastfeeding complete; only if T2DM + DKD confirmed</td>
+          <td>No human lactation data. Animal studies: significant milk transfer. Defer. In triple nephroprotection candidates (ACEi/ARB + SGLT2i + finerenone), finerenone is the last agent added — typically after eGFR and UACR stability assessed.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- MD: CLINICAL PEARLS -->
+  <section class="section" id="md-pearls">
+    <div class="section-tag">For Clinicians · Clinical Pearls &amp; Decision Framework</div>
+    <h2>Clinical Pearls — GDM Nephrology Practice</h2>
+
+    <div class="two-col">
+      <div class="feature-card">
+        <h4><span class="dot dot-red"></span>Pearl 1 — "Normal creatinine" during pregnancy is not reassuring</h4>
+        <p>Pregnancy-related hyperfiltration lowers serum creatinine by 25–30% from preconception values. A creatinine of 0.85 mg/dL in a pregnant woman may represent an eGFR of 55 mL/min if her preconception creatinine was 1.1 mg/dL. Always ask about preconception renal function. In Filipino women, a creatinine &gt;0.75 mg/dL at 24–28 weeks warrants a nephrology consultation — this may represent underlying CKD masked by the pregnancy hyperfiltration effect.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-amber"></span>Pearl 2 — The 6-week postpartum visit is the most important nephrology visit of her life</h4>
+        <p>This visit establishes the true metabolic and renal baseline free of pregnancy physiological confounders. A UACR &gt;30 mg/g at this visit, confirmed on a second morning void sample, is the earliest and most actionable DKD risk marker. Initiating ACEi at this visit (if not breastfeeding) in a woman with UACR &gt;30 mg/g and prediabetes may prevent overt DKD for 10–20 years. The 6-week visit is attended by most Filipino women for postpartum check — leverage it for nephrology screening.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-teal"></span>Pearl 3 — Postprandial glucose is more nephrotoxic than fasting glucose</h4>
+        <p>The peak glycemic excursion (amplitude from fasting to 1-hour post-meal) drives acute intraglomerular hypertension and AGE formation more than the time-averaged glucose. A patient whose fasting glucose is 92 mg/dL but whose post-rice 1-hour glucose is 185 mg/dL repeatedly for 16 weeks is accumulating enormous cumulative glomerular stress that fasting targets and even HbA1c (which averages all values) do not capture. The single most kidney-protective intervention in GDM is controlling the postprandial spike — not the fasting glucose.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-purple"></span>Pearl 4 — Dietary AGE load is an independent glomerular risk in GDM</h4>
+        <p>Dietary advanced glycation end-products (dAGEs), generated by high-temperature dry cooking (grilling, frying, roasting), activate glomerular RAGE receptors and amplify NF-κB inflammatory signaling independently of blood glucose levels. Filipino cooking traditions (inihaw na liempo, crispy pata, lechon) generate extremely high dAGE loads. Counseling GDM patients to use moist-heat cooking (steaming, boiling, sinigang broth without frying) reduces dAGE intake by 50–70% and is a practical, culturally navigable kidney protection strategy.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-green"></span>Pearl 5 — SGLT2i is the highest-priority postpartum agent, not metformin</h4>
+        <p>When a former GDM patient is confirmed to have T2DM at the 6-week postpartum visit and UACR ≥30 mg/g, ADA 2025 and KDIGO 2024 both recommend initiating an SGLT2 inhibitor as the primary kidney-protective agent — the evidence for kidney protection (EMPA-KIDNEY, DAPA-CKD) is stronger than for metformin (which reduces glucose but has no independent renal protection trial data in CKD). The combination of metformin + SGLT2i should be initiated simultaneously, not sequentially.</p>
+      </div>
+      <div class="feature-card">
+        <h4><span class="dot dot-navy"></span>Pearl 6 — GDM recurrence and the CKD risk spiral</h4>
+        <p>GDM recurrence risk in subsequent pregnancies is 30–84% (higher with shorter interpregnancy interval, persistent obesity, and prior insulin requirement). Each subsequent GDM pregnancy adds additional cumulative glomerular hyperfiltration exposure. Women with recurrent GDM who do not intervene on lifestyle between pregnancies have a significantly higher UACR trajectory than those with a single GDM episode. Interpret recurrent GDM as accelerated DKD risk accumulation — intensify the postpartum surveillance and intervention protocol with each recurrence.</p>
+      </div>
+    </div>
+
+    <h3>The Filipino Nephrologist's GDM Consultation Checklist</h3>
+    <div class="alert alert-teal">
+      <div class="alert-icon">✅</div>
+      <div class="alert-body">
+        <h4>What to address at every GDM nephrology or co-management visit</h4>
+        <ul>
+          <li><strong>BP target:</strong> &lt;140/90 mmHg during pregnancy; &lt;130/80 mmHg postpartum (ADA 2025)</li>
+          <li><strong>UACR:</strong> Obtain every trimester + 6 weeks + 6 months + annually</li>
+          <li><strong>eGFR:</strong> Baseline, 6-week postpartum, then annually (note: pregnancy GFR is physiologically elevated — do not use pregnancy creatinine as postpartum baseline)</li>
+          <li><strong>Insulin review:</strong> Are postprandial targets being met? The 1-hour post-meal value is the nephrology priority.</li>
+          <li><strong>Cooking method counseling:</strong> Shift from dry-heat (frying, grilling) to moist-heat methods — dAGE reduction is a kidney protection strategy</li>
+          <li><strong>Post-rice walking:</strong> Confirm 10–15-min walk after every meal — reduces postprandial glucose by 20–30 mg/dL, directly reduces glomerular hyperfiltration episode amplitude</li>
+          <li><strong>Breastfeeding status:</strong> Support and reinforce — lactation reduces T2DM risk and therefore DKD pipeline risk</li>
+          <li><strong>Postpartum medication plan:</strong> Document which agents will be initiated at each stage: 6 weeks (ACEi if UACR &gt;30 mg/g + no breastfeeding), at weaning (SGLT2i + GLP-1 RA if UACR ≥100 mg/g + T2DM)</li>
+          <li><strong>Next pregnancy planning:</strong> Pre-conception nephrology visit if prior GDM + any UACR or eGFR abnormality — high-risk obstetrics (MFM) co-management mandatory if CKD confirmed</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="disclaimer"><strong>Clinical Reference:</strong> This clinician content reflects ADA Standards of Care 2025, KDIGO CKD 2024, ADIPS GDM Guidelines 2023, FLOW Trial (NEJM 2024), EMPA-KIDNEY (NEJM 2023), DAPA-CKD (NEJM 2020), FIDELIO-DKD/FIGARO-DKD, HAPO Study 2008/FUS 2019, DPP/DPPOS, CONCEPTT Trial, and current evidence on GDM pathophysiology (AGE/RAGE, microbiome-RAAS, podocyte biology). This content is intended for licensed physicians practicing in relevant specialties. All management decisions must be individualized to the clinical context.</div>
+
+    <div class="dr-card">
+      <div class="dr-avatar"><img src="../images/photo-contact.jpg" alt="Dr. W. G. M. Rivero"></div>
+      <div>
+        <h4><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+        <p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Nephrology consultations for GDM co-management available in Quezon City, Angeles City, and Marilao.</p>
+        <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /mode-physician -->
+
 </main>
 
 
@@ -1232,7 +1993,7 @@ body.dark .related-card-title {
 <footer class="guide-footer">
   <div class="footer-inner">
     <p>© 2025 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a></p>
-    <p>References: ADA Standards of Care 2025 · ADIPS GDM Guidelines 2023 · KDIGO CKD 2024 · Knowler et al. DPP NEJM 2002 · Kapur et al. Diab Res Clin Pract 2019 · Pettitt et al. Diabetes 2019 (breastfeeding T2DM) · Cheung & Lafayette. Am J Kidney Dis 2013 (renal physiology in pregnancy)</p>
+    <p>References: ADA Standards of Care 2025 · ADIPS GDM Guidelines 2023 · KDIGO CKD 2024 · HAPO Study NEJM 2008 / FUS 2019 · Knowler et al. DPP NEJM 2002 · Pettitt et al. Diabetes 2019 · Cheung &amp; Lafayette Am J Kidney Dis 2013 · Perkovic et al. FLOW NEJM 2024 · Herrington et al. EMPA-KIDNEY NEJM 2023 · Heerspink et al. DAPA-CKD NEJM 2020 · Bakris et al. FIDELIO-DKD NEJM 2020 · Pitt et al. FIGARO-DKD NEJM 2021 · Feig et al. CONCEPTT Lancet 2017 · Bellamy et al. Lancet 2009 · IDF Diabetes Atlas 10th ed. 2021 · Gunderson et al. JAMA Int Med 2015</p>
   </div>
 </footer>
 
@@ -1241,6 +2002,16 @@ body.dark .related-card-title {
     <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
   </svg>
 </button>
+
+<script>
+function setMode(mode){
+  const isPhysician = mode === 'physician';
+  document.body.classList.toggle('physician-mode', isPhysician);
+  document.getElementById('tab-pt').classList.toggle('active', !isPhysician);
+  document.getElementById('tab-md').classList.toggle('active', isPhysician);
+  localStorage.setItem('wgmr-gdm-mode', mode);
+}
+</script>
 
 <script>
 const DK='wgmr-dark',DSK='wgmr-desktop',GLK='wgmr-lang';
@@ -1271,6 +2042,7 @@ function setGuideLang(lang){
   if(localStorage.getItem(DK)==='1')applyDark(true);
   if(localStorage.getItem(DSK)==='1')applyDesktop(true);
   const lang=localStorage.getItem(GLK)||'en';if(lang!=='en')setGuideLang(lang);
+  const savedMode=localStorage.getItem('wgmr-gdm-mode');if(savedMode==='physician')setMode('physician');
 })();
 </script>
 
