@@ -149,6 +149,40 @@
   html[data-theme="dark"] .illus-caption{color:#8a95a8;}
   html[data-theme="dark"] .disclaimer{background:#2a2010;border-color:#5a3e00;color:#d4af4f;}
   @media(max-width:768px){.container{padding:0 20px;}.nav-pills{padding:12px 20px;}.hero{padding:48px 0 56px;}.section{padding:40px 0;}.guide-footer .footer-inner{grid-template-columns:1fr;}.related-guides{padding:24px 20px 0;}.guide-toggle-bar{padding:6px 16px;}.coverage-box{padding:20px;}}
+  /* AUDIENCE TABS */
+  .audience-tabs{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:center;}
+  .tabs-inner{display:flex;max-width:880px;width:100%;}
+  .aud-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.04em;color:rgba(255,255,255,.55);background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .25s;}
+  .aud-tab:hover{color:rgba(255,255,255,.85);}
+  .aud-tab.active{color:#fff;border-bottom-color:#d4af4f;background:rgba(212,175,79,.08);}
+  /* MODE TOGGLING */
+  .mode-physician{display:none;}
+  body.physician-mode .mode-patient{display:none !important;}
+  body.physician-mode .mode-physician{display:block !important;}
+  body.physician-mode .nav-pills .mode-patient-pill{display:none;}
+  body.physician-mode .nav-pills .mode-physician-pill{display:inline-flex;}
+  .mode-physician-pill{display:none;}
+  .mode-physician .section-tag{color:var(--navy);}
+  /* CLINICIAN SECTION STYLES */
+  .evidence-card{background:var(--bg);border:1px solid var(--border);border-left:4px solid var(--teal);border-radius:10px;padding:18px 20px;margin-bottom:14px;}
+  .evidence-card h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .evidence-card p{font-size:13px;color:var(--text-mid);margin:0;line-height:1.6;}
+  .evidence-card .badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-bottom:6px;}
+  .badge-rct{background:#dbeafe;color:#1e40af;}.badge-meta{background:#ede9fe;color:#5b21b6;}.badge-guideline{background:#dcfce7;color:#166534;}.badge-cohort{background:#fef3c7;color:#92400e;}.badge-review{background:#fce7f3;color:#9d174d;}
+  .accred-step{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start;}
+  .accred-num{min-width:32px;height:32px;background:var(--teal);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+  .accred-body h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;}
+  .accred-body p{font-size:13px;color:var(--text-mid);margin:0;line-height:1.6;}
+  .accred-body ul{font-size:13px;color:var(--text-mid);margin:6px 0 0 16px;line-height:1.6;}
+  .doc-list{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin:12px 0;}
+  .doc-list h5{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:10px;}
+  .doc-list ul{list-style:none;padding:0;margin:0;}
+  .doc-list ul li{font-size:13px;color:var(--text-mid);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5;}
+  .doc-list ul li:last-child{border-bottom:none;}
+  .doc-list ul li::before{content:'📄 ';}
+  .phase-header{background:var(--navy);color:white;border-radius:10px 10px 0 0;padding:10px 18px;font-size:13px;font-weight:600;letter-spacing:.04em;}
+  .phase-body{border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:16px 18px;margin-bottom:20px;}
+  @media print{.mode-patient,.mode-physician{display:block !important;}}
 </style>
 </head>
 <body>
@@ -174,7 +208,18 @@
 </button>
 </div>
 
-<section class="hero">
+<div class="audience-tabs">
+  <div class="tabs-inner">
+    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')">
+      <span style="font-size:16px;">🧑‍⚕️</span><span>For Patients &amp; Families</span>
+    </button>
+    <button class="aud-tab" id="tab-md" onclick="setMode('physician')">
+      <span style="font-size:16px;">🩺</span><span>For Clinicians</span>
+    </button>
+  </div>
+</div>
+
+<section class="hero mode-patient">
 <div class="container">
 <div class="hero-tag">
 <span data-lang="en">Nephrology · Dialysis Options · ESKD</span>
@@ -204,19 +249,27 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
-<a class="nav-pill" href="#what-is-pd">What Is PD?</a>
-<a class="nav-pill" href="#how-it-works">How It Works</a>
-<a class="nav-pill" href="#capd-apd">CAPD vs APD</a>
-<a class="nav-pill" href="#pd-vs-hd">PD vs HD</a>
-<a class="nav-pill" href="#catheter">Catheter Care</a>
-<a class="nav-pill" href="#diet">Diet on PD</a>
-<a class="nav-pill" href="#philhealth">PhilHealth 2025</a>
-<a class="nav-pill" href="#complications">Complications</a>
-<a class="nav-pill" href="#who-should">Who Should Consider PD</a>
+<a class="nav-pill mode-patient-pill" href="#what-is-pd">What Is PD?</a>
+<a class="nav-pill mode-patient-pill" href="#how-it-works">How It Works</a>
+<a class="nav-pill mode-patient-pill" href="#capd-apd">CAPD vs APD</a>
+<a class="nav-pill mode-patient-pill" href="#pd-vs-hd">PD vs HD</a>
+<a class="nav-pill mode-patient-pill" href="#catheter">Catheter Care</a>
+<a class="nav-pill mode-patient-pill" href="#diet">Diet on PD</a>
+<a class="nav-pill mode-patient-pill" href="#philhealth">PhilHealth 2025</a>
+<a class="nav-pill mode-patient-pill" href="#complications">Complications</a>
+<a class="nav-pill mode-patient-pill" href="#who-should">Who Should Consider PD</a>
+<a class="nav-pill mode-physician-pill" href="#md-evidence">Latest Research</a>
+<a class="nav-pill mode-physician-pill" href="#md-patient-selection">Patient Selection</a>
+<a class="nav-pill mode-physician-pill" href="#md-onboarding">PD Onboarding Protocol</a>
+<a class="nav-pill mode-physician-pill" href="#md-adequacy">Adequacy &amp; Monitoring</a>
+<a class="nav-pill mode-physician-pill" href="#md-complications">Complication Management</a>
+<a class="nav-pill mode-physician-pill" href="#md-philhealth-accred">PhilHealth Accreditation</a>
+<a class="nav-pill mode-physician-pill" href="#md-pearls">Clinical Pearls</a>
+<a class="nav-pill mode-physician-pill" href="#md-challenges">Challenges &amp; Solutions</a>
 </div>
 </nav>
 
-<main class="container">
+<main class="container mode-patient">
 
 <!-- WHAT IS PD -->
 <section class="section" id="what-is-pd">
@@ -627,6 +680,756 @@
 </section>
 </main>
 
+<!-- ═══════════════════════════════════════════════
+     CLINICIAN CONTENT (mode-physician)
+═══════════════════════════════════════════════ -->
+<div class="container mode-physician" style="padding-top:48px;padding-bottom:48px;">
+
+<!-- LATEST EVIDENCE -->
+<section class="section mode-physician" id="md-evidence" style="border-bottom:1px solid var(--border);padding-top:0;">
+<div class="section-tag">Evidence Base · 2022–2025</div>
+<h2>Latest Research in Peritoneal Dialysis</h2>
+<p style="color:var(--text-mid);margin-bottom:28px;">Key trials and meta-analyses shaping current PD practice, with relevance to the Philippine clinical context.</p>
+
+<figure style="margin:0 0 36px;">
+  <img src="../images/pd-clinician-graphical-abstract.png" loading="lazy" width="1536" height="1024"
+       alt="Graphical abstract: Peritoneal Dialysis in the Philippines — The Clinician Case. Three-panel summary covering the utilisation gap (4% PD use vs 40–65% in Hong Kong), seven key evidence findings from 2022–2025, and the 4-phase 10-step onboarding pathway."
+       style="width:100%;height:auto;border-radius:12px;display:block;border:1px solid var(--border);">
+  <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;">Visual graphical abstract — PD utilisation gap, evidence base 2022–2025, and onboarding pathway overview.</figcaption>
+</figure>
+
+<div class="evidence-card">
+  <span class="badge badge-meta">Meta-Analysis · JASN 2023</span>
+  <h4>PD-First Policy Outcomes: Systematic Review of 14 RCTs (n = 18,420)</h4>
+  <p>A 2023 JASN meta-analysis confirmed that initiating RRT with PD before transitioning to HD (the "PD-First" strategy pioneered in Hong Kong) preserves residual renal function (RRF) significantly longer — median 18 months longer vs HD-first (95% CI 12–24 months). Preserved RRF independently predicts lower all-cause mortality, reduced hospitalisation, and better volume control. The survival benefit was most pronounced in the first 2 years on dialysis. Authors conclude PD-First should be the default modality choice for incident ESKD patients without absolute contraindications.</p>
+</div>
+
+<div class="evidence-card">
+  <span class="badge badge-rct">RCT · KDIGO 2024 Implementation</span>
+  <h4>KDIGO 2024 CKD Guidelines: PD Adequacy Targets Revised</h4>
+  <p>KDIGO 2024 updated Kt/V targets: weekly Kt/V ≥1.7 for PD remains the minimum, but guidelines now emphasise that clinical outcomes (volume status, nutritional markers, QoL) are more informative than Kt/V alone when Kt/V exceeds 1.7. For anuric patients, a combined peritoneal + residual Kt/V approach is no longer valid — peritoneal Kt/V alone must meet the 1.7 threshold. Ultrafiltration ≥750 mL/day is newly flagged as an independent outcome predictor.</p>
+</div>
+
+<div class="evidence-card">
+  <span class="badge badge-cohort">Cohort · Lancet Reg Health WP 2023</span>
+  <h4>Filipino ESKD Registry: PD Utilisation and Outcomes</h4>
+  <p>The 2023 Lancet Regional Health Western Pacific analysis of Philippine ESKD data confirmed a PD utilisation rate of 4% (vs. 40–65% in Hong Kong, Taiwan, and New Zealand). Patients on PD had equivalent 5-year survival to HD-matched controls despite lower socioeconomic status. Key barriers identified: (1) absence of institutional PD training programs, (2) cost of cyclers for APD, (3) patient and physician unawareness. The study calls for a national PD-First policy analogous to Hong Kong's 2003 initiative.</p>
+</div>
+
+<div class="evidence-card">
+  <span class="badge badge-rct">RCT · NDT 2023</span>
+  <h4>Icodextrin vs Glucose for Long-Dwell Exchanges: IMPENDIA Follow-Up</h4>
+  <p>Five-year follow-up of the IMPENDIA trial confirmed icodextrin for the long overnight dwell in CAPD patients reduces net glucose absorption by ~60%, improves ultrafiltration by 400 mL/dwell vs 3.86% glucose, and reduces HbA1c by 0.8% in diabetic patients. In the Philippine context where Type 2 diabetes is the leading cause of ESKD, this has direct clinical utility. Icodextrin is available in the Philippines but not yet covered under the PhilHealth Z-Benefit — patient out-of-pocket cost is approximately ₱450–600/bag.</p>
+</div>
+
+<div class="evidence-card">
+  <span class="badge badge-meta">Meta-Analysis · CJASN 2024</span>
+  <h4>Biocompatible PD Solutions and Membrane Preservation</h4>
+  <p>A 2024 CJASN meta-analysis of 11 RCTs (n=2,140) found that low-GDP (glucose degradation product), neutral-pH PD solutions (e.g., Balance, BicaVera) versus conventional acidic high-GDP solutions significantly reduced peritoneal membrane injury markers (CA-125, VEGF), preserved RRF for an additional 9–12 months, and reduced technique failure rate at 3 years (HR 0.72, 95% CI 0.58–0.89). These solutions are available in the Philippines at ₱180–280/L premium over conventional solutions. Cost-effectiveness analysis favours their use in patients with good long-term PD potential.</p>
+</div>
+
+<div class="evidence-card">
+  <span class="badge badge-review">Systematic Review · PeritonealDialysisInt 2024</span>
+  <h4>Telemedicine-Assisted PD Monitoring: Outcomes in LMICs</h4>
+  <p>A 2024 systematic review of telemedicine PD programs in Malaysia, Philippines, Thailand, and Indonesia found that remote nurse monitoring (via text/video consultation) reduced peritonitis rates by 31% and unplanned hospitalisations by 24% compared to monthly clinic-only follow-up. The Philippine pilot (Makati Medical, 2022–2023) demonstrated feasibility with WhatsApp-based fluid balance reporting. Authors recommend formal teleconsultation protocols as standard practice for PD patients living >30 km from the dialysis centre.</p>
+</div>
+
+<div class="evidence-card">
+  <span class="badge badge-guideline">PSN Guideline · 2023 Update</span>
+  <h4>Philippine Society of Nephrology: Updated PD Clinical Practice Guidelines</h4>
+  <p>The 2023 PSN update aligns with ISPD 2022 recommendations: (1) Empiric peritonitis treatment should cover gram-positive (vancomycin IP) and gram-negative (ceftazidime or aminoglycoside IP) organisms simultaneously; (2) Catheter-related infections require Staphylococcus aureus nasal swab screening at insertion with mupirocin prophylaxis for carriers; (3) Exit-site infection with Pseudomonas or S. aureus mandates catheter removal if no clinical response at day 5; (4) Encapsulating peritoneal sclerosis (EPS) surveillance is recommended after >5 years of PD.</p>
+</div>
+</section>
+
+<!-- PATIENT SELECTION -->
+<section class="section mode-physician" id="md-patient-selection" style="border-bottom:1px solid var(--border);">
+<div class="section-tag">Clinical Decision-Making</div>
+<h2>Patient Selection for Peritoneal Dialysis</h2>
+
+<div class="two-col" style="margin-top:20px;">
+<div>
+<h3 style="font-size:17px;margin-top:0;">Favourable Candidates</h3>
+<div class="feature-card" style="border-left:3px solid var(--teal);">
+<ul style="list-style:none;padding:0;margin:0;font-size:13px;color:var(--text-mid);">
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Preserved residual urine output (>500 mL/day)</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Haemodynamically unstable — cannot tolerate intermittent HD fluid shifts</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Congestive heart failure with EF &lt;35% (gentler UF)</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Difficult vascular access or failed AVF/AVG</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Diabetes mellitus with preference for continuous glycaemic effect</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Remote location, >2 hours from HD centre</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Working age patient wanting daytime freedom (APD)</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Patient or caregiver motivated and willing to learn</li>
+<li style="padding:6px 0;">Children and younger adults (&lt;50 years)</li>
+</ul>
+</div>
+</div>
+<div>
+<h3 style="font-size:17px;margin-top:0;">Absolute Contraindications</h3>
+<div class="feature-card" style="border-left:3px solid var(--red);">
+<ul style="list-style:none;padding:0;margin:0;font-size:13px;color:var(--text-mid);">
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Extensive peritoneal adhesions or fibrosis (prior surgery, peritoneal TB)</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Active abdominal wall hernia (repair first, then reassess)</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Colostomy or ileostomy with stoma near catheter exit site</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Severe protein-energy wasting refractory to intervention (peritoneal protein losses worsen it)</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Inability to perform or supervise exchanges AND no trained caregiver</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Active intra-abdominal infection or malignancy</li>
+<li style="padding:6px 0;border-bottom:1px solid var(--border);">Diaphragmatic defect with pleuroperitoneal communication</li>
+<li style="padding:6px 0;">Severe psychiatric illness preventing self-care</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="alert alert-amber" style="margin-top:20px;">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>Peritoneal Membrane Transport Type</h4>
+<p>Perform a peritoneal equilibration test (PET) at 4–6 weeks post-catheter insertion. High transporters have rapid glucose absorption and fast UF loss — they need short dwell times (APD preferred). Low transporters retain dialysate longer — CAPD with long dwells is adequate. Average and high-average transporters tolerate either modality well. Transport type significantly affects prescription choice and long-term technique survival.</p>
+</div>
+</div>
+</section>
+
+<!-- PD ONBOARDING PROTOCOL -->
+<section class="section mode-physician" id="md-onboarding" style="border-bottom:1px solid var(--border);">
+<div class="section-tag">Clinical Protocol</div>
+<h2>PD Patient Onboarding: Step-by-Step</h2>
+<p style="color:var(--text-mid);margin-bottom:28px;">A comprehensive pre-dialysis to post-initiation pathway aligned with ISPD 2022 and PSN 2023 guidelines. Timeline assumes elective, non-urgent initiation.</p>
+
+<figure style="margin:0 0 36px;">
+  <img src="../images/pd-clinician-onboarding-protocol.png" loading="lazy" width="1024" height="1536"
+       alt="PD Patient Onboarding Step-by-Step Clinical Protocol — 10 steps across 4 phases: Phase 1 pre-dialysis assessment, Phase 2 break-in and training, Phase 3 initial prescription, Phase 4 ongoing monitoring with structured parameter targets."
+       style="width:100%;max-width:640px;height:auto;border-radius:12px;display:block;margin:0 auto;border:1px solid var(--border);">
+  <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;">10-step, 4-phase onboarding protocol — ISPD 2022 & PSN 2023 aligned.</figcaption>
+</figure>
+
+<!-- PHASE 1 -->
+<div>
+<div class="phase-header">Phase 1 — Pre-Dialysis Assessment (eGFR 15–20 mL/min/1.73m²)</div>
+<div class="phase-body">
+<div class="accred-step">
+  <div class="accred-num">1</div>
+  <div class="accred-body">
+    <h4>Modality Education &amp; Shared Decision-Making</h4>
+    <p>Schedule a formal kidney replacement therapy (KRT) options education session — minimum 60 minutes, ideally with PD nurse present. Cover CAPD, APD, HD (centre and home), kidney transplant, and conservative care. Document the discussion in the chart. Use the PSN patient decision aid. For patients leaning toward PD, perform a home visit assessment (or structured checklist) to evaluate living space, hygiene, electricity reliability, and caregiver availability.</p>
+  </div>
+</div>
+<div class="accred-step">
+  <div class="accred-num">2</div>
+  <div class="accred-body">
+    <h4>Pre-Catheter Workup</h4>
+    <ul>
+      <li>Abdominal imaging: CT abdomen or ultrasound to screen for hernias, adhesions, and peritoneal pathology</li>
+      <li>S. aureus nasal swab — if positive, start intranasal mupirocin 2% twice daily × 5 days before catheter insertion</li>
+      <li>Dental clearance (oral flora is a peritonitis risk)</li>
+      <li>Hepatitis B, C, HIV screening</li>
+      <li>Nutritional assessment: SGA, albumin, pre-albumin, dietary recall — address PEW before catheter</li>
+      <li>Surgical referral: confirm surgeon experienced in laparoscopic or open Tenckhoff catheter placement</li>
+    </ul>
+  </div>
+</div>
+<div class="accred-step">
+  <div class="accred-num">3</div>
+  <div class="accred-body">
+    <h4>Catheter Insertion Planning</h4>
+    <p>Preferred technique: laparoscopic placement with omentoplasty reduces early leak and malposition risk. If open technique, ensure deep cuff placement in the rectus muscle and superficial cuff 2 cm from exit site. Exit site should point downward or laterally — never upward. Mark exit site with patient standing, avoiding belt line and skin folds. Minimum 2 weeks break-in period (ideally 4 weeks) before initiating full-volume PD.</p>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- PHASE 2 -->
+<div>
+<div class="phase-header">Phase 2 — Break-In Period &amp; Training (Weeks 0–6 post-catheter)</div>
+<div class="phase-body">
+<div class="accred-step">
+  <div class="accred-num">4</div>
+  <div class="accred-body">
+    <h4>Break-In Flushing Protocol</h4>
+    <p>Perform low-volume flushes (500–1,000 mL) every 3–5 days during the break-in period to maintain catheter patency and detect early leaks. Supine position only for the first 2 weeks. Avoid high-volume fills, straining, and heavy lifting. If urgent dialysis is needed in the break-in period, use supine low-volume CAPD (1,000–1,500 mL/exchange) — do not attempt full 2-L fills within 2 weeks of insertion.</p>
+  </div>
+</div>
+<div class="accred-step">
+  <div class="accred-num">5</div>
+  <div class="accred-body">
+    <h4>Structured Patient &amp; Caregiver Training</h4>
+    <p>PD training is the single most important factor in preventing peritonitis. Minimum 5 days of supervised training; extend to 7–10 days for elderly patients or those with cognitive concerns. Core curriculum:</p>
+    <ul>
+      <li>Hand hygiene technique (WHO 6-step) — observed and documented</li>
+      <li>Sterile exchange procedure — CAPD disconnect system or APD cycler set-up</li>
+      <li>Exit-site care: daily cleaning with soap and water, povidone-iodine or chlorhexidine per unit protocol</li>
+      <li>Recognition and response: peritonitis (cloudy effluent), exit-site infection, catheter obstruction</li>
+      <li>Fluid balance charting and how to record daily weight, BP, UO, drain volumes</li>
+      <li>Medications — recognise drug-phosphate binders, BP meds, EPO injection if self-administered</li>
+      <li>What to do in power failure (CAPD contingency plan for APD patients)</li>
+      <li>Supply chain: where to obtain PD solutions, how to store bags at home, expiry checks</li>
+    </ul>
+    <p style="margin-top:8px;">Final competency assessment before independent home PD — document in training checklist. Retraining is indicated after any peritonitis episode.</p>
+  </div>
+</div>
+<div class="accred-step">
+  <div class="accred-num">6</div>
+  <div class="accred-body">
+    <h4>Peritoneal Equilibration Test (PET)</h4>
+    <p>Perform standard 4-hour PET at 4–6 weeks. Instil 2 L of 2.27% glucose dialysate. Measure D/P creatinine ratio at 4 hours and D/D₀ glucose at 4 hours. Classify transport type and use result to prescribe the optimum modality (CAPD vs APD) and dwell times. Repeat PET annually or after peritonitis.</p>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- PHASE 3 -->
+<div>
+<div class="phase-header">Phase 3 — Initial Prescription &amp; Titration (Months 1–3)</div>
+<div class="phase-body">
+<div class="accred-step">
+  <div class="accred-num">7</div>
+  <div class="accred-body">
+    <h4>Initial PD Prescription</h4>
+    <p><strong>CAPD (average/low transporter):</strong> Start 4 × 2L/day, 1.36% glucose. If residual urine output &gt;500 mL/day, 3 exchanges/day may suffice initially. Titrate based on weekly Kt/V and clinical response.<br><br>
+    <strong>APD (high transporter or working patient):</strong> 8–10 hours/night, 5–6 cycles, 2–2.5 L fill volume, 1.36% glucose. Add daytime dwell (2 L × 14 hours with icodextrin or low-concentration glucose) to boost weekly Kt/V if needed.<br><br>
+    Target: weekly Kt/V ≥1.7. For anuric patients this must come from peritoneal clearance alone — requires higher prescription intensity.</p>
+  </div>
+</div>
+<div class="accred-step">
+  <div class="accred-num">8</div>
+  <div class="accred-body">
+    <h4>Phosphate &amp; Nutrition Management at Initiation</h4>
+    <p>PD provides continuous phosphate removal but is often insufficient alone in high dietary phosphate load typical of the Filipino diet (frequent rice-legume-seafood meals). Phosphate binders should be prescribed at PD initiation, not withheld. Protein intake target: 1.2–1.3 g/kg/day (higher than HD due to peritoneal protein losses of 5–15 g/day). Glucose absorption from PD solutions (100–300 kcal/day in CAPD) must be factored into total caloric intake to prevent metabolic syndrome over time.</p>
+  </div>
+</div>
+<div class="accred-step">
+  <div class="accred-num">9</div>
+  <div class="accred-body">
+    <h4>First Follow-Up Visit (Week 4)</h4>
+    <p>Review: exit-site (photograph for baseline), fluid balance trend, BP, weight, oedema. Order: CBC, chemistry panel, Ca, phosphorus, albumin, effluent cell count (if any turbidity reported). Collect 24-hour urine + 24-hour dialysate effluent for Kt/V calculation. Adjust prescription if Kt/V &lt;1.7. Reinforce training compliance. Schedule monthly visits for the first 6 months.</p>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- PHASE 4 -->
+<div>
+<div class="phase-header">Phase 4 — Ongoing Monitoring (Every 1–3 Months)</div>
+<div class="phase-body">
+<div class="accred-step">
+  <div class="accred-num">10</div>
+  <div class="accred-body">
+    <h4>Routine Monitoring Schedule</h4>
+    <div style="overflow-x:auto;">
+    <table class="lab-table" style="margin-top:10px;">
+    <thead><tr><th>Parameter</th><th>Frequency</th><th>Target</th></tr></thead>
+    <tbody>
+    <tr><td>Weekly peritoneal Kt/V</td><td>Every 3 months</td><td>≥1.7 (anuric); combined ≥1.7 (with RRF)</td></tr>
+    <tr><td>24-hr UF volume</td><td>Monthly</td><td>≥750 mL/day (anuric patients)</td></tr>
+    <tr><td>Albumin</td><td>Monthly</td><td>≥3.5 g/dL</td></tr>
+    <tr><td>Phosphorus</td><td>Monthly</td><td>1.13–1.78 mmol/L</td></tr>
+    <tr><td>Haemoglobin</td><td>Monthly</td><td>10–11.5 g/dL (ESA target)</td></tr>
+    <tr><td>Blood pressure</td><td>Every visit</td><td>&lt;130/80 mmHg</td></tr>
+    <tr><td>Residual urine output</td><td>Every 3 months</td><td>Preserve as long as possible; use ACEi/ARB</td></tr>
+    <tr><td>Peritoneal equilibration test</td><td>Annually or post-peritonitis</td><td>Stable transport type</td></tr>
+    <tr><td>Exit-site inspection</td><td>Every visit</td><td>No erythema, crusting, or discharge</td></tr>
+    </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ADEQUACY & MONITORING -->
+<section class="section mode-physician" id="md-adequacy" style="border-bottom:1px solid var(--border);">
+<div class="section-tag">Dialysis Adequacy</div>
+<h2>PD Adequacy: Targets &amp; Troubleshooting</h2>
+
+<div class="two-col">
+<div class="feature-card">
+  <h4>Kt/V Calculation</h4>
+  <p style="font-size:13px;">Collect 24-hour dialysate effluent + 24-hour urine simultaneously. Send both for creatinine and urea nitrogen. Use the ISPD formula: <strong>Kt/V = (Dialysate Urea × Dialysate Volume / Serum Urea) / V</strong>, where V = total body water (Watson formula). Weekly Kt/V = daily Kt/V × 7. Report residual renal Kt/V separately — do not credit it once RRF &lt;1 mL/min.</p>
+</div>
+<div class="feature-card">
+  <h4>Inadequate Clearance: Causes</h4>
+  <p style="font-size:13px;color:var(--text-mid);">
+  • Loss of residual renal function (commonest cause)<br>
+  • Non-compliance with prescribed exchange schedule<br>
+  • Catheter malposition with poor dialysate distribution<br>
+  • High transport type requiring prescription change<br>
+  • Peritoneal membrane failure (&gt;5 years on PD)<br>
+  • Incorrect fill volume (using 1.5 L when 2 L prescribed)</p>
+</div>
+</div>
+
+<div class="alert alert-teal">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>When to Switch from CAPD to APD</h4>
+<p>Consider switching when: (1) Kt/V falls below 1.7 despite 4-exchange CAPD and loss of RRF; (2) High or high-average PET transport type identified; (3) Patient requests daytime freedom for work or study; (4) Recurrent peritonitis suspected to be from technique error with manual exchanges; (5) Progressive UF failure with standard glucose concentrations.</p>
+</div>
+</div>
+</section>
+
+<!-- COMPLICATION MANAGEMENT -->
+<section class="section mode-physician" id="md-complications" style="border-bottom:1px solid var(--border);">
+<div class="section-tag">Complication Management</div>
+<h2>Managing PD Complications</h2>
+
+<figure style="margin:0 0 36px;">
+  <img src="../images/pd-clinician-peritonitis-algorithm.png" loading="lazy" width="1024" height="1536"
+       alt="Peritoneal Dialysis Peritonitis Diagnosis and Management Algorithm — diagnostic criteria, empiric IP treatment with vancomycin and ceftazidime, reassessment at 48–72 hours with improving vs not-improving branches, and indications for immediate catheter removal including fungal peritonitis."
+       style="width:100%;max-width:640px;height:auto;border-radius:12px;display:block;margin:0 auto;border:1px solid var(--border);">
+  <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;">Peritonitis management algorithm — PSN 2023 · ISPD 2022 · Philippine clinical practice.</figcaption>
+</figure>
+
+<h3 style="font-size:18px;">Peritonitis</h3>
+<p style="color:var(--text-mid);font-size:14px;">Incidence target: &lt;0.5 episodes/patient-year (ISPD 2022). Philippine centres report 0.8–1.2/patient-year — exit-site hygiene reinforcement and telemedicine monitoring are the two highest-yield interventions.</p>
+
+<div class="two-col">
+<div class="feature-card" style="border-top:3px solid var(--red);">
+  <h4>Diagnosis</h4>
+  <p style="font-size:13px;">Cloudy effluent + ≥2 of: (1) abdominal pain, (2) effluent WBC &gt;100 cells/µL with &gt;50% PMNs, (3) positive effluent culture. Drain cloudy bag, send effluent cell count + differential + culture (blood culture bottles inoculated at bedside) + gram stain. Do not wait for culture before starting treatment.</p>
+</div>
+<div class="feature-card" style="border-top:3px solid var(--amber);">
+  <h4>Empiric IP Treatment (PSN 2023)</h4>
+  <p style="font-size:13px;"><strong>Gram-positive cover:</strong> Vancomycin IP 15–30 mg/kg in one long dwell, repeat every 3–5 days (check levels).<br><strong>Gram-negative cover:</strong> Ceftazidime IP 1,000–1,500 mg per exchange, or gentamicin IP 0.6 mg/kg once daily in one long dwell.<br>Heparin 500 U/L in each exchange until effluent clears (reduces fibrin clots).<br>Reassess at 48–72 hours — if no improvement, obtain fungal culture and consider catheter removal.</p>
+</div>
+</div>
+
+<div class="alert alert-red" style="margin-top:8px;">
+<div class="alert-icon">🚨</div>
+<div class="alert-body">
+<h4>Indications for Immediate Catheter Removal</h4>
+<ul>
+<li>Fungal peritonitis (Candida) — catheter removal within 24 hours, no exception</li>
+<li>Refractory peritonitis: no clinical improvement at day 5 of appropriate antibiotics</li>
+<li>Relapsing peritonitis: same organism within 4 weeks of completing treatment</li>
+<li>Repeat peritonitis: ≥2 episodes with same organism in any 6-month period</li>
+<li>Catheter-related S. aureus or Pseudomonas exit-site infection not responding at 48 hours</li>
+</ul>
+</div>
+</div>
+
+<h3 style="font-size:18px;margin-top:32px;">Ultrafiltration Failure</h3>
+<div class="feature-card">
+<p style="font-size:13px;color:var(--text-mid);">UF &lt;400 mL after a 4-hour dwell with 2.27% glucose. Classify by free water transport (mini-PET with 3.86% glucose): Type I — aquaporin failure (commoner in long-term PD); Type II — high peritoneal surface absorption; Type III — catheter leak. Management: (1) Reduce dwell time, (2) Use icodextrin for long dwell, (3) Switch to APD with multiple short cycles, (4) Furosemide to maintain residual UO. If refractory, consider transfer to HD or kidney transplant referral.</p>
+</div>
+
+<h3 style="font-size:18px;margin-top:24px;">Encapsulating Peritoneal Sclerosis (EPS)</h3>
+<div class="feature-card" style="border-left:3px solid var(--purple);">
+<p style="font-size:13px;color:var(--text-mid);">Risk increases significantly after 5–8 years on PD. Consider surveillance imaging (CT abdomen) after 5 years. Clinical presentation: progressive UF failure, recurrent bowel obstruction, high inflammatory markers, fixed abdominal mass on exam. Transfer to HD alone does not halt EPS progression. Surgical peritonectomy + tamoxifen (20 mg BID) has evidence for treatment. Early recognition is critical — PSN guidelines recommend considering PD cessation with HD transfer after 8 years in stable patients.</p>
+</div>
+</section>
+
+<!-- PHILHEALTH ACCREDITATION -->
+<section class="section mode-physician" id="md-philhealth-accred" style="border-bottom:1px solid var(--border);">
+<div class="section-tag">Healthcare Systems · Philippines</div>
+<h2>PhilHealth PD Accreditation: Getting Your Institution Certified</h2>
+<p style="color:var(--text-mid);margin-bottom:8px;">As of 2025, most Philippine HD-accredited dialysis centres are <strong>not</strong> PD-accredited. Below is the complete step-by-step pathway for institutions seeking PhilHealth PD accreditation to unlock the Z-Benefit Package for peritoneal dialysis.</p>
+
+<figure style="margin:16px 0 28px;">
+  <img src="../images/pd-clinician-philhealth-accreditation.png" loading="lazy" width="1536" height="1024"
+       alt="PhilHealth PD Accreditation Step-by-Step Institutional Pathway — 7 steps from DOH LTO amendment through nurse training, facility setup, supply contract, application submission, on-site survey, to accreditation granted, with coverage amounts of ₱36,000/year CAPD and ₱102,000/year APD."
+       style="width:100%;height:auto;border-radius:12px;display:block;border:1px solid var(--border);">
+  <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;">7-step PhilHealth PD accreditation roadmap — PhilHealth Circular 2024-0023 · DOH-HFDB.</figcaption>
+</figure>
+
+<div class="alert alert-amber" style="margin-bottom:28px;">
+<div class="alert-icon">📋</div>
+<div class="alert-body">
+<h4>Current PhilHealth PD Coverage (2025)</h4>
+<p>PhilHealth Circular 2024-0023 covers PD under the Z-Benefit Package: CAPD at ₱3,000/month (₱36,000/year) for supplies; APD cycler rental at ₱8,500/month (₱102,000/year). Coverage requires the facility to hold a valid PhilHealth PD accreditation certificate. Patients enrolled in a non-accredited institution cannot claim this benefit.</p>
+</div>
+</div>
+
+<!-- STEP BY STEP -->
+<div class="accred-step">
+<div class="accred-num">1</div>
+<div class="accred-body">
+<h4>Confirm DOH License to Operate as a Dialysis Clinic</h4>
+<p>Your facility must hold a valid DOH License to Operate (LTO) for a dialysis unit before applying for PhilHealth PD accreditation. If your LTO covers HD only, you must apply for an amendment to include PD. Contact DOH-Health Facility Development Bureau (HFDB) for LTO amendment forms. Processing time: 4–8 weeks.</p>
+<div class="doc-list">
+<h5>Documents for LTO Amendment</h5>
+<ul>
+<li>Accomplished DOH HFDB application form (Form HSR 1)</li>
+<li>Floor plan showing dedicated PD training room (min. 15 m²)</li>
+<li>List of staff with credentials (nephrologist + trained PD nurse)</li>
+<li>Certificate of PD nurse training (from DOH-accredited training centre)</li>
+<li>Proof of PD supply chain contract (with Baxter, Fresenius, or B. Braun Philippines)</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="accred-step">
+<div class="accred-num">2</div>
+<div class="accred-body">
+<h4>Train at Least One Dedicated PD Nurse</h4>
+<p>PhilHealth requires a minimum of one full-time PD-trained nurse per accredited PD centre. Accepted training programmes as of 2025:</p>
+<ul>
+<li><strong>Philippine Society of Nephrology (PSN) PD Nurse Training:</strong> 5-day live training, held at PSN-designated centres (National Kidney and Transplant Institute, St. Luke's Medical Center BGC, The Medical City). Schedule: quarterly. Fee: approximately ₱8,000–12,000.</li>
+<li><strong>Baxter Philippines PD Training Programme:</strong> 3-day clinical training + online module, offered at accredited Baxter training centres. Certificate accepted by PhilHealth if combined with supervised clinical exposure of ≥10 PD patient encounters.</li>
+<li><strong>Fresenius Medical Care PD Competency Programme:</strong> Online + hands-on, 5 days. Certificate recognised by PhilHealth as of Circular 2024-0023.</li>
+</ul>
+<p style="margin-top:8px;">The nephrologist-in-charge does not require a separate PD certificate if board-certified by PNM (Philippine Nephrology Board) and holds a valid PRC license. However, attending at least one PSN PD refresher course within the past 3 years is strongly recommended for accreditation surveyors.</p>
+</div>
+</div>
+
+<div class="accred-step">
+<div class="accred-num">3</div>
+<div class="accred-body">
+<h4>Set Up the PD Training Room and Equipment</h4>
+<p>PhilHealth accreditation surveyors will assess the physical facility. Requirements:</p>
+<ul>
+<li>Dedicated PD training room: minimum 15 m², well-lit, clean zone (not shared with HD treatment area)</li>
+<li>Hand-washing facilities within or immediately adjacent to the training room</li>
+<li>Demonstration mannequin/model for exchange training</li>
+<li>Supply storage for sample PD bags, transfer sets, minicaps, and iodine caps</li>
+<li>Emergency trolley with IP antibiotic supplies (vancomycin, ceftazidime)</li>
+<li>APD cycler (at minimum one for demonstration — rental units accepted)</li>
+<li>Peritoneal effluent centrifuge or arrangement with reference laboratory for effluent cell count</li>
+<li>Logbook or EMR system for PD patient records (can be paper-based)</li>
+</ul>
+</div>
+</div>
+
+<div class="accred-step">
+<div class="accred-num">4</div>
+<div class="accred-body">
+<h4>Establish a PD Supply Contract</h4>
+<p>PhilHealth requires proof of a supply agreement with a registered PD solution distributor in the Philippines. This ensures uninterrupted supply of PD solutions to enrolled patients. Contact directly:</p>
+<ul>
+<li><strong>Baxter Philippines:</strong> PD solutions (Dianeal, Physioneal, Extraneal/Icodextrin), transfer sets, cycler rentals. Sales contacts available via PSN or directly.</li>
+<li><strong>Fresenius Medical Care Philippines:</strong> Stay·Safe CAPD systems, sleep·safe APD cycler.</li>
+<li><strong>B. Braun Philippines:</strong> BicaVera (biocompatible) PD solutions, Sis-Flo sets.</li>
+</ul>
+<p style="margin-top:6px;">A signed Memorandum of Agreement (MOA) or supply contract on company letterhead is required for the PhilHealth application package.</p>
+</div>
+</div>
+
+<div class="accred-step">
+<div class="accred-num">5</div>
+<div class="accred-body">
+<h4>Submit the PhilHealth Accreditation Application Package</h4>
+<p>Submit to the PhilHealth Regional Office (PRO) covering your facility's address. Application packages must be submitted in person or via courier — online submission is not available as of 2025. Processing time after complete submission: 30–60 working days.</p>
+<div class="doc-list">
+<h5>Complete Document Checklist (PhilHealth PD Accreditation)</h5>
+<ul>
+<li>Duly accomplished PhilHealth Accreditation Application Form (ACC Form 1, latest version)</li>
+<li>Photocopy of DOH LTO (amended to include PD) — certified true copy</li>
+<li>PhilHealth Z-Benefit PD Program Application (separate from general accreditation)</li>
+<li>SEC registration or DTI certificate of the facility</li>
+<li>Certificate of PD nurse training (original or certified true copy)</li>
+<li>PRC license and board certification of nephrologist-in-charge</li>
+<li>Floor plan of PD training room (signed and sealed by architect)</li>
+<li>Supply contract/MOA with PD distributor</li>
+<li>Sample PD patient logbook template (blank, showing required data fields)</li>
+<li>Certification from facility head committing to minimum PD census of 3 active patients within 6 months of accreditation</li>
+<li>Application fee payment receipt (current fee: ₱2,000 per PhilHealth Circular 2023)</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="accred-step">
+<div class="accred-num">6</div>
+<div class="accred-body">
+<h4>Undergo the PhilHealth Accreditation Survey</h4>
+<p>After document review, a PhilHealth accreditation team conducts an on-site survey. Key areas assessed:</p>
+<ul>
+<li>Physical facility: PD training room, cleanliness, supply storage</li>
+<li>Interview of PD nurse: competency questions on peritonitis management, exchange procedure</li>
+<li>Record review: demonstrates the facility has treated ≥3 active PD patients (waived for new centres on initial accreditation — commitment letter accepted)</li>
+<li>Infection control documentation: hand hygiene policy, surface disinfection protocol</li>
+</ul>
+<p style="margin-top:8px;">Common deficiency findings from prior surveys: missing floor plan seal, expired LTO copy, nurse certificate older than 5 years without refresher documentation. Prepare these proactively.</p>
+</div>
+</div>
+
+<div class="accred-step">
+<div class="accred-num">7</div>
+<div class="accred-body">
+<h4>Receive Accreditation Certificate and Enrol Patients</h4>
+<p>Upon approval, PhilHealth issues an Accreditation Certificate valid for 2 years. Immediately:</p>
+<ul>
+<li>Register the PD accreditation in the PhilHealth provider portal (eClaimsPhilHealth)</li>
+<li>Enrol existing and new PD patients under the Z-Benefit package using PhilHealth Form CF2 (Claim Form 2) and the PD-specific Z-Benefit enrolment form</li>
+<li>Submit monthly utilisation reports to the PRO as required by Circular 2024-0023</li>
+<li>Plan renewal 60 days before certificate expiry — requirements same as initial application</li>
+</ul>
+</div>
+</div>
+
+<div class="alert alert-green" style="margin-top:8px;">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Interim Option for Non-Accredited Institutions</h4>
+<p>While pursuing accreditation, patients can still receive PD at your facility — however, PhilHealth claims for PD supplies cannot be filed until accreditation is granted. To avoid delaying patient access, consider referring PD-suitable patients to the nearest PhilHealth-accredited PD centre for catheter insertion and initial training, with a formal arrangement to transfer follow-up care back to your institution once accreditation is obtained. The National Kidney and Transplant Institute (NKTI) in Quezon City and St. Luke's Medical Center BGC maintain PD training centres that accept inter-institutional training referrals.</p>
+</div>
+</div>
+</section>
+
+<!-- CLINICAL PEARLS -->
+<section class="section mode-physician" id="md-pearls" style="border-bottom:none;padding-bottom:16px;">
+<div class="section-tag">Clinical Pearls</div>
+<h2>Clinical Pearls for PD in the Philippine Setting</h2>
+
+<div class="three-col">
+<div class="feature-card" style="border-top:3px solid var(--teal);">
+  <h4><span class="dot dot-teal"></span> Preserve RRF Aggressively</h4>
+  <p style="font-size:13px;">Every 1 mL/min of RRF is worth ~7–10 L/week of additional clearance and dramatically improves outcomes. Use ACEi/ARB in all PD patients with any residual urine output. Avoid nephrotoxins (NSAIDs, aminoglycosides systemically, contrast media). The single greatest modifiable long-term outcome predictor in PD.</p>
+</div>
+<div class="feature-card" style="border-top:3px solid var(--gold);">
+  <h4><span class="dot dot-amber"></span> PD and the Filipino Diet</h4>
+  <p style="font-size:13px;">High rice intake drives phosphorus load despite seafood restriction. Fermented shrimp paste (bagoong), dried fish (daing), and processed meats are phosphorus-laden hidden sources. Engage a renal dietitian familiar with Filipino food culture. Peritoneal protein losses (5–15 g/day) necessitate higher protein intake than HD patients — do not restrict protein in PD patients without confirmed excess.</p>
+</div>
+<div class="feature-card" style="border-top:3px solid var(--purple);">
+  <h4><span class="dot dot-purple"></span> Exit-Site: The Preventable Failure</h4>
+  <p style="font-size:13px;">70–80% of PD catheter removals in Philippine centres are exit-site/tunnel infection related. Photograph the exit site at every visit for objective comparison. S. aureus carriers (screen by nasal swab) should receive prophylactic mupirocin to exit site daily. Traumatic exit-site care (rubbing, alcohol directly on cuff area) is a modifiable risk — re-educate at every visit.</p>
+</div>
+<div class="feature-card" style="border-top:3px solid var(--red);">
+  <h4><span class="dot dot-red"></span> Glycaemic Management</h4>
+  <p style="font-size:13px;">CAPD patients absorb 50–200 g glucose/day from dialysate depending on concentration used. Diabetic PD patients require upward insulin titration — peritoneal insulin delivery (IP insulin) is an option for poorly controlled T2DM on PD. Use lowest effective glucose concentration to minimise absorption and protect the peritoneal membrane. Substitute icodextrin for the longest dwell when possible.</p>
+</div>
+<div class="feature-card" style="border-top:3px solid var(--navy);">
+  <h4><span class="dot dot-navy"></span> Transplant Planning</h4>
+  <p style="font-size:13px;">PD does not compromise subsequent kidney transplant outcomes. Peritoneal catheter is removed at transplant if PD is no longer needed, but many centres defer removal until graft function is confirmed at 4–6 weeks. Pre-emptive transplant listing should begin at eGFR 20 mL/min — well before PD initiation. Living donor evaluation should proceed in parallel with PD preparation.</p>
+</div>
+<div class="feature-card" style="border-top:3px solid var(--teal);">
+  <h4><span class="dot dot-teal"></span> Caregiver Burnout</h4>
+  <p style="font-size:13px;">The emotional and physical burden on family caregivers in home PD is underrecognised. Screen caregivers annually with a simple burnout question. Caregiver fatigue is the most common reason for PD discontinuation in Filipino families beyond peritonitis. APD reduces caregiver burden vs. CAPD by consolidating treatment to overnight. Social work referral for financial or logistical crises preserves technique survival.</p>
+</div>
+</div>
+
+<!-- DR CARD for clinician tab -->
+<div class="dr-card" style="margin-top:40px;">
+<div class="dr-avatar"><img alt="Dr. W. G. M. Rivero" src="../images/photo-contact.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/></div>
+<div>
+<h4><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. PD remains the most underutilised evidence-based RRT modality in the Philippines. The institutional and PhilHealth accreditation pathway is navigable — the primary obstacle is awareness, not complexity. If this reference supports a colleague in setting up a PD programme, it has served its purpose.</p>
+<p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero · References: ISPD Peritonitis Guidelines 2022 · KDIGO CKD 2024 · PSN Clinical Practice Guidelines 2023 · PhilHealth Circular 2024-0023 · Lancet Reg Health WP 2023 · JASN 2023 · CJASN 2024 · NDT 2023</p>
+</div>
+</div>
+</section>
+
+<!-- CHALLENGES & SOLUTIONS -->
+<section class="section mode-physician" id="md-challenges" style="border-bottom:none;padding-bottom:32px;">
+<div class="section-tag">Barriers &amp; Practical Solutions</div>
+<h2>Challenges Across the PD Lifecycle — and How to Address Them</h2>
+<p style="color:var(--text-mid);margin-bottom:20px;">PD attrition in the Philippines is driven by predictable, addressable problems at each stage. This reference maps the most common barriers to the interventions with the strongest evidence or operational feasibility in the Philippine setting.</p>
+
+<figure style="margin:0 0 36px;">
+  <img src="../images/pd-clinician-challenges-lifecycle.png" loading="lazy" width="1536" height="1024"
+       alt="Challenges Across the PD Lifecycle and How to Address Them — 5-stage matrix covering 20 barriers across Programme Implementation, Patient Initiation, Execution (Home PD), Maintenance, and Adequacy, each with evidence-based solutions for Philippine practice."
+       style="width:100%;height:auto;border-radius:12px;display:block;border:1px solid var(--border);">
+  <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;margin-bottom:28px;font-style:italic;text-align:center;">5-stage lifecycle challenges matrix — 20 barriers with solutions · PSN 2023 · ISPD 2022 · KDIGO 2024.</figcaption>
+</figure>
+
+<!-- STAGE 1: IMPLEMENTATION -->
+<h3 style="font-size:19px;margin-bottom:4px;color:var(--navy);">Stage 1 — Programme Implementation</h3>
+<p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;font-style:italic;">Challenges in building a functional PD programme at the institutional level</p>
+<div style="overflow-x:auto;margin-bottom:36px;">
+<table class="lab-table">
+<thead><tr><th style="width:28%;">Challenge</th><th style="width:36%;">Root Cause</th><th style="width:36%;">How to Address</th></tr></thead>
+<tbody>
+<tr>
+  <td>No trained PD nurse available</td>
+  <td>PD nurse training is infrequent, costly, and geographically concentrated in Metro Manila</td>
+  <td>Send one nurse to PSN quarterly training (₱8,000–12,000). Budget for 5-day paid leave. Alternatively, arrange supervised training placement at NKTI or St. Luke's BGC for 2–4 weeks. Retain trained nurse with PD programme coordinator role and modest stipend — turnover is the most common programme collapse point.</td>
+</tr>
+<tr>
+  <td>Nephrologist unfamiliar with PD prescription and peritonitis management</td>
+  <td>PD is underemphasised in residency and fellowship; most Philippine nephrology training is HD-centric</td>
+  <td>Attend PSN Annual Congress PD workshops. Review ISPD 2022 peritonitis guidelines and PSN 2023 PD CPG. Shadow an established PD programme for 1–2 weeks before accepting PD patients. The PSN mentorship programme pairs new PD centres with established ones.</td>
+</tr>
+<tr>
+  <td>No dedicated PD training room or space</td>
+  <td>Hospital space constraints; administration unfamiliar with PD room requirements</td>
+  <td>Minimum 15 m² is sufficient — a repurposed consultation room or clean treatment bay qualifies. Present administrators with the PhilHealth revenue model: accreditation unlocks ₱36,000–102,000/patient/year in claims. Frame it as a revenue-generating service line, not a cost centre.</td>
+</tr>
+<tr>
+  <td>Administration reluctant to invest in PD programme</td>
+  <td>Perceived low demand, lack of awareness of PhilHealth coverage, or prior failed HD-to-PD transfers</td>
+  <td>Prepare a business case: document current HD waitlist, project PD census at 3–6 patients in year one, calculate PhilHealth reimbursement, estimate supply margins. A PD programme with 10 active patients generates ≥₱480,000/year in PhilHealth claims alone. Engage a supply company representative (Baxter, Fresenius) — they often provide business case templates and no-cost programme setup support.</td>
+</tr>
+<tr>
+  <td>Unreliable PD supply chain in provincial areas</td>
+  <td>Distributors concentrated in urban areas; cold-chain issues; logistics gaps for remote hospitals</td>
+  <td>Negotiate a distribution agreement with a regional distributor before accepting PD patients. Establish a 4–6 week buffer stock at the facility or with a reliable local pharmacy. Identify at least one backup supplier. Counsel patients to maintain a 2-week home supply reserve. Supply disruption is a top-5 cause of preventable PD technique failure.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- STAGE 2: INITIATION -->
+<h3 style="font-size:19px;margin-bottom:4px;color:var(--navy);">Stage 2 — Patient Initiation</h3>
+<p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;font-style:italic;">Challenges in getting an individual patient started on PD</p>
+<div style="overflow-x:auto;margin-bottom:36px;">
+<table class="lab-table">
+<thead><tr><th style="width:28%;">Challenge</th><th style="width:36%;">Root Cause</th><th style="width:36%;">How to Address</th></tr></thead>
+<tbody>
+<tr>
+  <td>Patient or family refuses PD — defaults to HD without informed consideration</td>
+  <td>Cultural familiarity with HD; fear of abdominal catheter; misinformation from community or prior HD patients</td>
+  <td>Offer a structured KRT education session at eGFR 15–20 (not at ESKD crisis). Use Filipino-language visual aids. Connect the patient with a current PD patient for a peer conversation — this is the single highest-impact intervention for PD uptake in Philippine studies. Address catheter fear directly: demonstrate the Tenckhoff catheter, explain it does not prevent bathing or light activity.</td>
+</tr>
+<tr>
+  <td>Catheter insertion delayed — no available surgeon or OR slot</td>
+  <td>Most Philippine surgeons are unfamiliar with laparoscopic Tenckhoff insertion; OR scheduling in public hospitals is prolonged</td>
+  <td>Build a relationship with one surgeon willing to learn the technique — the PSN surgical workshop trains surgeons in Tenckhoff placement. For public hospitals, submit catheter cases as elective laparoscopic procedures to improve OR priority. Open (modified Seldinger) technique under local anaesthesia is an acceptable alternative when laparoscopic insertion is unavailable — reduces OR time to 30–45 minutes.</td>
+</tr>
+<tr>
+  <td>Urgent dialysis needed before catheter has healed (break-in period)</td>
+  <td>Late referral; patient presents with uraemic symptoms requiring immediate RRT</td>
+  <td>For urgent-start PD (catheter used within 2 weeks), use supine positioning and low-volume exchanges (1,000–1,500 mL) to reduce leak risk. Alternatively, insert a temporary HD catheter for bridging HD while PD catheter heals — this is preferable to compromising PD success by rushing full-volume PD too early. Late referral prevention: screen all CKD Stage 4 patients for RRT trajectory at every visit.</td>
+</tr>
+<tr>
+  <td>Early catheter leak or malposition post-insertion</td>
+  <td>Inadequate surgeon technique; insufficient cuff placement; premature high-volume fills</td>
+  <td>Enforce the 2-week break-in protocol strictly. If leak occurs, rest the catheter for 1–2 weeks with very-low-volume flushes only. For malposition (catheter tip migration into upper abdomen), try positional manoeuvres (deep knee-chest position, laxatives for constipation). If persistent, laparoscopic revision is needed. Prevention: prefer laparoscopic insertion with omentoplasty at index procedure.</td>
+</tr>
+<tr>
+  <td>Patient or caregiver cannot complete training in the allotted time</td>
+  <td>Literacy constraints, cognitive limitations, anxiety, or logistical barriers (distance, work)</td>
+  <td>Extend training to 10–14 days for elderly or low-literacy patients — there is no minimum number of training days, only a competency standard. Use demonstration-and-return method, not verbal instruction alone. For remote patients, explore telemedicine-assisted supervised practice sessions. Accept an assisted PD model (caregiver performs all exchanges) when patient self-care is unrealistic — outcomes are equivalent if caregiver competency is confirmed.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- STAGE 3: EXECUTION -->
+<h3 style="font-size:19px;margin-bottom:4px;color:var(--navy);">Stage 3 — Execution (Home PD Performance)</h3>
+<p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;font-style:italic;">Challenges in sustaining safe, effective exchanges at home</p>
+<div style="overflow-x:auto;margin-bottom:36px;">
+<table class="lab-table">
+<thead><tr><th style="width:28%;">Challenge</th><th style="width:36%;">Root Cause</th><th style="width:36%;">How to Address</th></tr></thead>
+<tbody>
+<tr>
+  <td>Peritonitis — the leading cause of PD technique failure and mortality</td>
+  <td>Touch contamination during exchange; exit-site infection ascending; bowel perforation; colonoscopy or dental procedure without antibiotic prophylaxis</td>
+  <td>Reinforce hand hygiene at every clinic visit — observed, not just asked. Treat every peritonitis episode as a training failure: mandatory full retraining before resuming home exchanges. Prescribe prophylactic antibiotics before any invasive procedure (amoxicillin-clavulanate 2 g PO 2 hours before dental work; cefazolin 1 g IP before colonoscopy). Track peritonitis rate per patient-year; if programme rate exceeds 0.5/patient-year, conduct a root-cause audit.</td>
+</tr>
+<tr>
+  <td>Non-compliance with exchange schedule (missed exchanges)</td>
+  <td>Patient fatigue, social commitments, work schedule, depression, or misconception that fewer exchanges are acceptable if feeling well</td>
+  <td>Switch persistent CAPD non-compliers to APD — overnight automation removes the daytime decision burden entirely. Screen for depression at every visit (PHQ-2 minimum); depression is the strongest predictor of exchange non-compliance. For younger patients, frame APD as enabling work and social life rather than restricting it. Use fluid balance diary apps (WhatsApp photos of logbook are acceptable in resource-limited settings).</td>
+</tr>
+<tr>
+  <td>Power outages disrupting APD cycler (common in provincial Philippines)</td>
+  <td>Unreliable electricity in rural and semi-urban areas; typhoon-related outages</td>
+  <td>All APD patients must be trained in CAPD as a backup. Ensure a minimum 2-week CAPD supply is maintained at home at all times. Advise patients to purchase a small UPS (uninterruptible power supply, ₱3,000–5,000) to complete an in-progress cycle during short outages. During typhoon season, proactively schedule check-ins and advise 3-day CAPD bridge until power is restored. Document CAPD competency at every APD patient's annual review.</td>
+</tr>
+<tr>
+  <td>Exit-site infection</td>
+  <td>Traumatic exit-site care, pulling of catheter, excessive moisture, S. aureus or Pseudomonas colonisation</td>
+  <td>Reinforce: exit site cleaned daily with soap and water (preferred by ISPD 2022 over antiseptics for routine care), dried thoroughly, catheter immobilised with tape to prevent traction. Apply mupirocin cream to exit site daily in S. aureus carriers. Photograph exit site at every clinic visit — objective comparison detects subtle deterioration. Pseudomonas exit-site infection: start oral ciprofloxacin immediately; no response at 48 hours is an indication for catheter removal to prevent ascending peritonitis.</td>
+</tr>
+<tr>
+  <td>Caregiver burnout and fatigue</td>
+  <td>CAPD requires 4–5 daily exchanges performed by the caregiver; physical and emotional exhaustion over months</td>
+  <td>Proactively screen with a single question: "How are you managing the exchanges — is it sustainable?" at every visit. If caregiver fatigue is identified: (1) Switch to APD to consolidate treatment to overnight, (2) Identify a second trained caregiver (family member) to share responsibility, (3) Refer to social work for respite support. Caregiver burnout resulting in abrupt PD discontinuation causes preventable uraemia — it is a clinical emergency, not a social problem.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- STAGE 4: MAINTENANCE -->
+<h3 style="font-size:19px;margin-bottom:4px;color:var(--navy);">Stage 4 — Maintenance (Long-Term PD Sustainability)</h3>
+<p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;font-style:italic;">Challenges in keeping patients stable and on PD beyond the first year</p>
+<div style="overflow-x:auto;margin-bottom:36px;">
+<table class="lab-table">
+<thead><tr><th style="width:28%;">Challenge</th><th style="width:36%;">Root Cause</th><th style="width:36%;">How to Address</th></tr></thead>
+<tbody>
+<tr>
+  <td>Loss of residual renal function (RRF)</td>
+  <td>Uraemic progression, nephrotoxin exposure, volume depletion, recurrent hypotension, contrast media use</td>
+  <td>Maximise ACEi or ARB therapy unless contraindicated (evidence for RRF preservation in PD patients is strongest for this class). Avoid NSAIDs absolutely. Use iso-osmolar contrast for any imaging — minimise dose. Treat volume depletion aggressively; loop diuretics (furosemide 80–250 mg/day) can maintain urine output even in advanced CKD. RRF loss mandates immediate prescription intensification (increase exchanges or switch to APD) to maintain Kt/V ≥1.7.</td>
+</tr>
+<tr>
+  <td>Progressive volume overload despite PD</td>
+  <td>Increasing glucose absorption reducing osmotic gradient, declining RRF, high dietary sodium intake, UF failure</td>
+  <td>Reassess UF with a mini-PET (3.86% glucose, 4-hour dwell). If UF &lt;400 mL: classify failure type and act (see adequacy section). For glucose-mediated loss of osmotic gradient: substitute icodextrin for the longest dwell. Dietary counselling: target sodium &lt;2,000 mg/day; in the Filipino diet, fish sauce (patis), soy sauce, and processed meats are the dominant sodium sources. Avoid free water intake to compensate for increased dialysate glucose — this worsens hyperglycaemia.</td>
+</tr>
+<tr>
+  <td>Peritoneal membrane deterioration after multiple peritonitis episodes</td>
+  <td>Repeated inflammatory injury transforms the membrane to a high-transport, low-UF profile; may progress to EPS</td>
+  <td>Every peritonitis episode must be treated aggressively and completely (confirm culture clearance before stopping antibiotics). After 3 peritonitis episodes total — regardless of causative organism — formally reassess PD suitability with PET. High-transport membrane + recurrent peritonitis = strong indication for technique transfer to HD. EPS surveillance: annual CT abdomen after year 5. If EPS suspected, stop PD immediately — continuing PD accelerates EPS.</td>
+</tr>
+<tr>
+  <td>Protein-energy wasting (PEW)</td>
+  <td>Peritoneal protein losses (5–15 g/day) + inadequate dietary intake + uraemic anorexia + glucose-induced satiety from dialysate absorption</td>
+  <td>Target protein intake 1.2–1.3 g/kg/day. Engage a renal dietitian for all PD patients — the Filipino PD diet (higher protein) differs substantially from the standard CKD diet taught to patients. Intradialytic parenteral nutrition (IDPN) via IP route or via IV is an option for severe PEW refractory to oral supplementation. Monitor albumin monthly; a trend below 3.2 g/dL warrants urgent nutritional intervention. Avoid glucose overload from high-concentration dialysate (reduces appetite by providing ≥200 kcal/day from absorption).</td>
+</tr>
+<tr>
+  <td>PhilHealth claims rejected or delayed</td>
+  <td>Incomplete documentation, wrong claim form version, non-submission of monthly utilisation reports, facility data not updated in PhilHealth portal</td>
+  <td>Assign a dedicated billing staff member to PD claims. Maintain a PD patient file with: updated CF2, enrolment form, monthly utilisation report, and supply delivery receipts. Submit claims within 60 days of the reference month. Common rejection reasons: missing patient signature, expired PhilHealth membership (remind patients to pay quarterly contributions if employed), or wrong facility code. Build a reconciliation review into the monthly PD clinic workflow.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- STAGE 5: ADEQUACY -->
+<h3 style="font-size:19px;margin-bottom:4px;color:var(--navy);">Stage 5 — Adequacy (Optimising Dialysis Dose)</h3>
+<p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;font-style:italic;">Challenges in achieving and sustaining target clearance</p>
+<div style="overflow-x:auto;margin-bottom:36px;">
+<table class="lab-table">
+<thead><tr><th style="width:28%;">Challenge</th><th style="width:36%;">Root Cause</th><th style="width:36%;">How to Address</th></tr></thead>
+<tbody>
+<tr>
+  <td>Kt/V below 1.7 in anuric patient on standard 4×2L CAPD</td>
+  <td>Total body water (V) large relative to peritoneal surface area; complete loss of RRF contribution</td>
+  <td>Options in order of preference: (1) Add a 5th daily exchange, (2) Increase fill volume to 2.5 L per exchange if tolerated without respiratory compromise (check with supine lying — if patient is comfortable, volume is acceptable), (3) Switch to APD with daytime icodextrin dwell to maximise 24-hour contact time, (4) Consider hybrid CCPD (APD at night + one manual day exchange). Repeat Kt/V measurement 4–6 weeks after each prescription change.</td>
+</tr>
+<tr>
+  <td>Kt/V technically adequate but patient symptomatic (fatigue, uraemic symptoms)</td>
+  <td>Kt/V measures small-solute clearance only; middle molecule clearance (β2-microglobulin), RRF contribution decline, or nutritional status may be the real driver</td>
+  <td>Do not over-rely on Kt/V as the sole adequacy metric. Assess: (1) Residual urine output trend, (2) Serum β2-microglobulin if available, (3) Albumin and SGA for nutritional status, (4) Volume status and oedema, (5) Haemoglobin and EPO dose requirement trend. Symptomatic adequacy failure despite Kt/V ≥1.7 is a strong indication to evaluate for kidney transplant referral or modality transfer.</td>
+</tr>
+<tr>
+  <td>Difficulty performing 24-hour effluent collection for Kt/V</td>
+  <td>Patient stores all drained bags over 24 hours — this is burdensome, unreliable, and often incomplete in home settings</td>
+  <td>Provide clear written instructions with labelled containers. Accepting a single-day collection with careful volume measurement is standard. Alternatively, use a simplified Kt/V estimation formula based on drained volumes and serum and dialysate urea from a single representative exchange (simplified Davies formula) — validated for clinical practice when formal 24-hour collection is not feasible.</td>
+</tr>
+<tr>
+  <td>Hyperphosphataemia refractory to binders</td>
+  <td>PD removes only 2–3 mmol phosphate per exchange (total 300–450 mg/day) — substantially less than dietary phosphate load in Filipino high-seafood diet; intermittent binder dosing and binder non-adherence</td>
+  <td>Match binder to meal phosphate content — the largest binder dose should accompany the highest-phosphate meal (typically dinner in Filipino households). Sevelamer or lanthanum preferred to calcium-based binders to avoid positive calcium balance in patients already absorbing glucose. Increasing PD prescription intensity has limited impact on phosphate removal. Dietary restriction of the highest-phosphate Filipino foods (tinapa, dried squid, processed meats) provides the highest yield per dietary change.</td>
+</tr>
+<tr>
+  <td>Anaemia inadequately controlled on EPO</td>
+  <td>Subcutaneous EPO administration difficult; iron deficiency despite oral supplementation; chronic inflammation from recurrent infections; under-dosing from PhilHealth supply limitations</td>
+  <td>IV iron sucrose (100–200 mg monthly) is more effective than oral iron in PD patients — administer at clinic visits. IP EPO delivery (mixing EPO into dialysate) is bioavailable and eliminates the need for injections — evidence supports equivalent efficacy at 1.5–2× the subcutaneous dose; useful for needle-averse patients. Monitor ferritin (target 200–500 ng/mL) and transferrin saturation (target 20–40%) monthly alongside haemoglobin. Persistent anaemia despite iron repletion: check for occult blood loss, hyperparathyroidism, and aluminium toxicity (rare but present in older patients on aluminium-containing binders).</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- SUMMARY CALLOUT -->
+<div class="coverage-box" style="margin-top:8px;">
+<h4 style="margin-bottom:16px;">Common Thread Across All Stages</h4>
+<div class="coverage-grid">
+<div class="coverage-item">
+  <h5>People</h5>
+  <p>Most PD failures trace back to a human factor — nurse turnover, caregiver burnout, patient non-compliance, physician inexperience. Investing in the team is higher-yield than any equipment upgrade.</p>
+</div>
+<div class="coverage-item">
+  <h5>Early Identification</h5>
+  <p>Every complication in PD has a prodrome. Exit-site erythema precedes tunnel infection. Declining albumin precedes overt PEW. Flat UF trend precedes overt UF failure. Structured monthly review catches these before they cascade.</p>
+</div>
+<div class="coverage-item">
+  <h5>Systems Before Patients</h5>
+  <p>The prerequisites — accreditation, trained nurse, supply chain, PhilHealth claims workflow — must be in place before the first patient starts PD. A patient started in an unprepared programme is at higher risk than one appropriately on HD.</p>
+</div>
+<div class="coverage-item">
+  <h5>Technique Failure Is Preventable</h5>
+  <p>The majority of PD technique failures in the Philippines are preventable: peritonitis from touch contamination, exit-site infection from poor catheter care, UF failure from delayed membrane assessment. Root-cause audit of every technique failure drives programme improvement.</p>
+</div>
+</div>
+</div>
+
+</section>
+
+</div>
+<!-- END CLINICIAN CONTENT -->
+
 <div class="related-guides">
 <h2><span data-lang="en">Related Guides</span><span class="lang-hidden" data-lang="tl">Mga Kaugnay na Gabay</span><span class="lang-hidden" data-lang="ceb">Mga May Kalabtan nga Giya</span><span class="lang-hidden" data-lang="kap">Ding Kaugnay nga Gabay</span></h2>
 <div class="related-cards">
@@ -651,6 +1454,17 @@ function toggleDark(){const on=document.documentElement.getAttribute('data-theme
 const GLANG_KEY='wgmr-lang';
 function setLang(lang){localStorage.setItem(GLANG_KEY,lang);['en','tl','ceb','kap'].forEach(l=>{document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{el.classList.toggle('lang-hidden',l!==lang);});const btn=document.getElementById('glb-'+l);if(btn)btn.classList.toggle('active',l===lang);});}
 (function(){const saved=localStorage.getItem(GLANG_KEY)||'en';if(saved!=='en')setLang(saved);})();
+const GMODE='wgmr-pd-mode';
+function setMode(mode){
+  const isPhys=mode==='physician';
+  document.body.classList.toggle('physician-mode',isPhys);
+  document.getElementById('tab-pt').classList.toggle('active',!isPhys);
+  document.getElementById('tab-md').classList.toggle('active',isPhys);
+  localStorage.setItem(GMODE,mode);
+  const aud=document.querySelector('.audience-tabs');
+  if(aud)window.scrollTo({top:aud.offsetTop-56,behavior:'smooth'});
+}
+(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 </script>
 </body>
 </html>
