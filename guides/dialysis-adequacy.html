@@ -180,6 +180,36 @@
     .dr-card h4,.dr-card p{color:#222!important;}
     @page{margin:18mm 15mm;size:A4;}
   }
+
+/* AUDIENCE TABS */
+.audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:200;}
+.tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
+.aud-tab{flex:1;text-align:center;padding:14px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.aud-tab:hover{color:var(--navy);}
+.aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
+.aud-tab.active.tab-md{border-bottom-color:var(--navy);}
+.tab-icon{font-size:18px;}
+.mode-patient{display:block;}
+.mode-physician{display:none;}
+body.physician-mode .mode-patient{display:none!important;}
+body.physician-mode .mode-physician{display:block!important;}
+body.physician-mode .nav-strip .nav-pill.pt-pill{display:none;}
+body.physician-mode .nav-strip .nav-pill.md-pill{display:inline-block;}
+.md-pill{display:none;}
+.clin-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13.5px;}
+.clin-table th{text-align:left;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 14px;background:var(--bg);border-bottom:2px solid var(--border);}
+.clin-table td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text-mid);vertical-align:top;line-height:1.5;}
+.clin-table td:first-child{font-weight:600;color:var(--navy);}
+.clin-table tr:last-child td{border-bottom:none;}
+.clin-table tr:hover td{background:var(--bg);}
+html[data-theme="dark"] .audience-tabs{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .aud-tab{color:#8a95a8;}
+html[data-theme="dark"] .aud-tab.active{color:#e8eaf0;}
+html[data-theme="dark"] .clin-table th{background:#1a2535;color:#8a95a8;}
+html[data-theme="dark"] .clin-table td{border-color:#2a3548;color:#c0cad8;}
+html[data-theme="dark"] .clin-table td:first-child{color:#e8eaf0;}
+html[data-theme="dark"] .clin-table tr:hover td{background:#202d40;}
+@media print{.audience-tabs{display:none!important;}.mode-patient,.mode-physician{display:block!important;}body.physician-mode .mode-patient{display:none!important;}}
 </style>
 
 <style>
@@ -292,6 +322,18 @@ body.dark .related-card-title {
   </div>
 </div>
 
+<!-- AUDIENCE TABS -->
+<div class="audience-tabs">
+  <div class="tabs-inner">
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">
+      <span class="tab-icon">🧑‍⚕️</span> For Patients &amp; Families
+    </button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">
+      <span class="tab-icon">🩺</span> For Clinicians
+    </button>
+  </div>
+</div>
+
 <!-- HERO -->
 <section class="hero">
   <div class="container">
@@ -317,18 +359,25 @@ body.dark .related-card-title {
 <!-- NAV -->
 <nav class="nav-strip">
   <div class="nav-pills">
-    <a class="nav-pill" href="#why-it-matters">Why It Matters</a>
-    <a class="nav-pill" href="#what-is-ktv">What is Kt/V?</a>
-    <a class="nav-pill" href="#calculator">Adequacy Calculator</a>
-    <a class="nav-pill" href="#targets">Targets</a>
-    <a class="nav-pill" href="#improving">Improving Adequacy</a>
-    <a class="nav-pill" href="#symptoms">Symptoms of Inadequacy</a>
-    <a class="nav-pill" href="#pd">Peritoneal Dialysis</a>
-    <a class="nav-pill" href="#faq">FAQ</a>
+    <a class="nav-pill pt-pill" href="#why-it-matters">Why It Matters</a>
+    <a class="nav-pill pt-pill" href="#what-is-ktv">What is Kt/V?</a>
+    <a class="nav-pill pt-pill" href="#calculator">Adequacy Calculator</a>
+    <a class="nav-pill pt-pill" href="#targets">Targets</a>
+    <a class="nav-pill pt-pill" href="#improving">Improving Adequacy</a>
+    <a class="nav-pill pt-pill" href="#symptoms">Symptoms of Inadequacy</a>
+    <a class="nav-pill pt-pill" href="#pd">Peritoneal Dialysis</a>
+    <a class="nav-pill pt-pill" href="#faq">FAQ</a>
+    <a class="nav-pill md-pill" href="#clin-overview">Overview</a>
+    <a class="nav-pill md-pill" href="#clin-formulas">Formulas</a>
+    <a class="nav-pill md-pill" href="#clin-targets">Targets</a>
+    <a class="nav-pill md-pill" href="#clin-prescription">Prescription Adjustment</a>
+    <a class="nav-pill md-pill" href="#clin-troubleshoot">Troubleshooting</a>
+    <a class="nav-pill md-pill" href="#clin-pd">PD Adequacy</a>
   </div>
 </nav>
 
 <main class="container">
+<div class="mode-patient">
 
 <!-- ══ SECTION 1: WHY IT MATTERS ══════════════════════════════════════════ -->
 <section class="section" id="why-it-matters">
@@ -937,7 +986,272 @@ body.dark .related-card-title {
   </div>
 </section>
 
-</main>
+</div><!-- end .mode-patient -->
+
+<div class="mode-physician">
+<div class="container">
+
+<!-- CLIN SECTION 1: OVERVIEW -->
+<section class="section" id="clin-overview">
+  <div class="section-tag">Clinician Reference · KDIGO 2024</div>
+  <h2>Dialysis Adequacy: Clinical Overview</h2>
+
+  <div class="intro-callout">
+    <p><strong>Core principle:</strong> Kt/V is a dimensionless index representing the fractional urea clearance per session. The single-pool Kt/V (spKt/V) of ≥1.4 per session (TIW) is the KDIGO 2024 minimum; an equilibrated Kt/V (eKt/V) ≥1.2 is its physiological equivalent. Standardized Kt/V (stdKt/V) ≥2.0/week is required when comparing across different dialysis schedules.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="feature-card">
+      <h4><span class="dot dot-teal"></span> Key Adequacy Indices</h4>
+      <p><strong>spKt/V</strong> — single-pool, urea kinetic model; most commonly used. Target ≥1.4/session (TIW).<br><br>
+      <strong>eKt/V</strong> — equilibrated; accounts for cardiopulmonary recirculation. eKt/V ≈ spKt/V − 0.6(spKt/V)/t (Daugirdas correction). Target ≥1.2.<br><br>
+      <strong>URR</strong> — urea reduction ratio; simpler but less accurate. Target ≥65%. Does not account for UF-driven convective clearance or urea generation.<br><br>
+      <strong>stdKt/V</strong> — normalizes for any schedule; enables comparison of TIW vs incremental HD vs SDHD. Target ≥2.0/week.</p>
+    </div>
+    <div class="feature-card">
+      <h4><span class="dot dot-amber"></span> Clinical Implications of Sub-target Kt/V</h4>
+      <p>Kt/V &lt;1.2 per session → ~50–80% higher all-cause mortality (HEMO study, DOPPS).<br><br>
+      Persistent sub-target Kt/V → uremic toxin accumulation, accelerated cardiovascular disease, EPO hypo-responsiveness, malnutrition, and cognitive decline.<br><br>
+      Every 0.1 reduction in Kt/V below 1.4 is associated with a 6–9% increase in relative mortality risk (meta-analysis, Jadoul et al.).<br><br>
+      URR alone misses patients with high ultrafiltration volumes (overestimates true clearance) or low urea generation rates.</p>
+    </div>
+  </div>
+
+  <table class="clin-table" style="margin:20px 0;">
+    <thead><tr><th>Parameter</th><th>KDIGO 2024 Target</th><th>KDOQI 2015</th><th>Comment</th></tr></thead>
+    <tbody>
+      <tr><td>spKt/V (HD, TIW)</td><td>≥1.4/session</td><td>≥1.4/session</td><td>Minimum; target 1.6–1.8 for added benefit</td></tr>
+      <tr><td>eKt/V (HD, TIW)</td><td>≥1.2/session</td><td>≥1.2/session</td><td>Use when comparing with PD or SDHD</td></tr>
+      <tr><td>URR (HD, TIW)</td><td>≥65%</td><td>≥65%</td><td>Surrogate only; Kt/V preferred</td></tr>
+      <tr><td>stdKt/V (any schedule)</td><td>≥2.0/week</td><td>—</td><td>Enables schedule-agnostic comparison</td></tr>
+      <tr><td>Weekly Kt/V (PD)</td><td>≥1.7/week</td><td>≥1.7/week</td><td>Residual renal Kt/V may count</td></tr>
+      <tr><td>CCr weekly (PD, CAPD)</td><td>≥50 L/1.73 m²</td><td>≥50 L/1.73 m²</td><td>For high/average transporters</td></tr>
+      <tr><td>Monitoring frequency</td><td>Monthly</td><td>Monthly</td><td>After prescription change: recheck in 4–6 wk</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- CLIN SECTION 2: FORMULAS -->
+<section class="section" id="clin-formulas">
+  <div class="section-tag">Formulas &amp; Kinetics</div>
+  <h2>Kt/V Calculation Methods</h2>
+
+  <h3>Daugirdas 2nd-Generation spKt/V</h3>
+  <div class="alert alert-teal">
+    <div class="alert-icon">📐</div>
+    <div class="alert-body">
+      <h4>spKt/V = −ln(R − 0.008 × t) + (4 − 3.5 × R) × UF/V</h4>
+      <p>Where: <strong>R</strong> = post-BUN / pre-BUN &nbsp;·&nbsp; <strong>t</strong> = session time in hours &nbsp;·&nbsp; <strong>UF</strong> = ultrafiltrate volume (L) &nbsp;·&nbsp; <strong>V</strong> = estimated urea distribution volume (L)</p>
+      <p style="margin-top:8px;"><strong>V estimation:</strong> Watson formula (preferred) or simplified: V ≈ 0.60 × post-HD weight (males), 0.55 × post-HD weight (females). Use actual DEXA or bioimpedance if available.</p>
+    </div>
+  </div>
+
+  <h3>Equilibrated eKt/V (Daugirdas–Schneditz)</h3>
+  <div class="alert alert-amber">
+    <div class="alert-icon">🔬</div>
+    <div class="alert-body">
+      <h4>eKt/V ≈ spKt/V − 0.6(spKt/V)/t + 0.03</h4>
+      <p>Where <strong>t</strong> = session time in hours. The post-dialysis rebound (cardiopulmonary + regional) averages 12–15 min; eKt/V corrects for this without requiring a delayed post-BUN sample.</p>
+      <p style="margin-top:8px;">Alternative: draw true eKt/V blood 30–60 min post-session if access allows.</p>
+    </div>
+  </div>
+
+  <h3>URR</h3>
+  <div class="alert alert-green">
+    <div class="alert-icon">📊</div>
+    <div class="alert-body">
+      <h4>URR (%) = [(pre-BUN − post-BUN) / pre-BUN] × 100</h4>
+      <p>Simple, widely available, but does not account for convective urea removal (UF effect) or urea generation during dialysis. URR ≥65% ≈ spKt/V ≥1.2 in most patients, not ≥1.4. Always compute Kt/V in addition to URR.</p>
+    </div>
+  </div>
+
+  <h3>Standardized Kt/V</h3>
+  <div class="alert alert-teal">
+    <div class="alert-icon">📅</div>
+    <div class="alert-body">
+      <h4>stdKt/V = (N × Kt/V) / [1 + (t_off/t_on) × (1 − e^(−Kt/V))]</h4>
+      <p>Where <strong>N</strong> = number of sessions per week, <strong>t_off</strong> = interdialytic interval, <strong>t_on</strong> = session duration. Most nephrologists use published nomograms or software (e.g., NxStage, Fresenius) for this calculation.</p>
+    </div>
+  </div>
+
+  <table class="clin-table">
+    <thead><tr><th>Lab Sampling Requirement</th><th>Specification</th></tr></thead>
+    <tbody>
+      <tr><td>Pre-dialysis BUN</td><td>Drawn immediately before session (within 5 min); slow pump start method (&lt;100 mL/min × 15 sec, then arterial draw) to avoid UF dilution</td></tr>
+      <tr><td>Post-dialysis BUN</td><td>Slow-flow method: reduce Qb to 50–100 mL/min × 15–20 sec, then draw from arterial line. Do NOT stop UF during post-draw; stop dialysate flow only.</td></tr>
+      <tr><td>Session time (t)</td><td>Actual on-dialysis time (clock start to clock stop); exclude setup/teardown. Missed minutes must be documented.</td></tr>
+      <tr><td>Ultrafiltration volume</td><td>Total UF volume recorded by machine (L). Include any saline given for hypotension.</td></tr>
+      <tr><td>Post-dialysis weight</td><td>Dry weight assessment required monthly; use for V estimation.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- CLIN SECTION 3: TARGETS -->
+<section class="section" id="clin-targets">
+  <div class="section-tag">Evidence-Based Targets</div>
+  <h2>Adequacy Targets by Guideline &amp; Population</h2>
+
+  <table class="clin-table">
+    <thead><tr><th>Population</th><th>Modality</th><th>Target Kt/V</th><th>Evidence / Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Standard HD (TIW)</td><td>IHD</td><td>spKt/V ≥1.4; eKt/V ≥1.2</td><td>KDIGO 2024; no mortality benefit shown above 1.7 in HEMO trial</td></tr>
+      <tr><td>High-flux HD</td><td>HF-HD</td><td>spKt/V ≥1.4 + β2M clearance</td><td>MPO study: β2M reduction ≥75% target for middle-molecule clearance</td></tr>
+      <tr><td>Incremental HD (1–2×/wk)</td><td>Incremental</td><td>stdKt/V ≥2.0/wk</td><td>Residual kidney function (RKF) can be counted; document with 24-h urine</td></tr>
+      <tr><td>Short daily HD (6×/wk)</td><td>SDHD</td><td>stdKt/V ≥2.0/wk</td><td>FHN trial: SDHD improved LVH, BP, phosphate control</td></tr>
+      <tr><td>Nocturnal HD (3–6×/wk)</td><td>NHD</td><td>stdKt/V ≥2.0/wk</td><td>Superior middle-molecule clearance; Kt/V ≤1.2/session due to long slow sessions</td></tr>
+      <tr><td>CAPD</td><td>PD</td><td>Weekly Kt/V ≥1.7</td><td>KDIGO 2022; residual GFR counted (measure 24-h urine Kt/V every 2 months)</td></tr>
+      <tr><td>APD (cycler)</td><td>PD</td><td>Weekly Kt/V ≥1.7</td><td>Measure both daytime dwell and nocturnal drain; total 24-h collection</td></tr>
+      <tr><td>Pediatric HD</td><td>IHD</td><td>spKt/V ≥1.8</td><td>Higher target due to higher metabolic rate; KDIGO 2019 pediatric guidelines</td></tr>
+      <tr><td>Large-volume patients (V &gt;50 L)</td><td>IHD</td><td>spKt/V ≥1.4 but may need extended sessions</td><td>V underestimated in obesity; consider bioimpedance</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <h4>Limitations of Kt/V as Adequacy Marker</h4>
+      <ul>
+        <li>Urea is a small molecule surrogate — middle molecules (β2M, indoxyl sulfate) and protein-bound toxins are not captured</li>
+        <li>Kt/V does not account for residual kidney function without urine collection</li>
+        <li>Single-pool model overestimates true clearance (corrected by eKt/V)</li>
+        <li>Gender and body composition affect V — Watson formula may underestimate V in obese patients</li>
+        <li>Adequate Kt/V does not ensure adequate fluid, electrolyte, or nutritional management</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CLIN SECTION 4: PRESCRIPTION ADJUSTMENT -->
+<section class="section" id="clin-prescription">
+  <div class="section-tag">Prescription Management</div>
+  <h2>Prescription Adjustment Based on Kt/V</h2>
+
+  <div class="intro-callout">
+    <p>Kt/V is determined by four modifiable variables: <strong>session time (t)</strong>, <strong>blood flow rate (Qb)</strong>, <strong>dialyzer clearance (K)</strong>, and <strong>urea distribution volume (V)</strong>. V is fixed by patient size; optimize the other three to increase Kt/V.</p>
+  </div>
+
+  <table class="clin-table">
+    <thead><tr><th>Variable</th><th>Typical Range</th><th>Effect on Kt/V</th><th>Optimization Strategy</th></tr></thead>
+    <tbody>
+      <tr><td>Session time (t)</td><td>180–270 min</td><td>+10–15% per 30 min added</td><td>First-line: extend session time before increasing Qb. Target ≥240 min for high-V patients.</td></tr>
+      <tr><td>Blood flow (Qb)</td><td>250–400 mL/min</td><td>+5–10% per 50 mL/min increase</td><td>Limited by access; recirculation increases at higher Qb with AV grafts/fistulaes. Check access function first.</td></tr>
+      <tr><td>Dialysate flow (Qd)</td><td>500–800 mL/min</td><td>Minimal above 500 for low-flux HD; relevant for HHD</td><td>Increase to 600–800 mL/min if Qb >300 mL/min to maintain Qd:Qb ratio ≥1.5</td></tr>
+      <tr><td>Dialyzer (KoA)</td><td>KoA 600–1400 mL/min</td><td>High-flux dialyzer adds 5–10%</td><td>Upsize dialyzer membrane area if all other variables optimized. Consider HDF for middle-molecule benefit.</td></tr>
+      <tr><td>Access recirculation</td><td>Target &lt;10%</td><td>Reduces effective Qb</td><td>Measure via thermodilution or ultrasound dilution. &gt;15% → access evaluation required.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Prescription Response Algorithm</h3>
+  <table class="clin-table">
+    <thead><tr><th>Kt/V Result</th><th>Interpretation</th><th>Immediate Action</th></tr></thead>
+    <tbody>
+      <tr><td>≥1.6</td><td>Optimal</td><td>Maintain prescription. Confirm at next monthly check.</td></tr>
+      <tr><td>1.4–1.59</td><td>At target minimum</td><td>Maintain. Consider extending session time to target ≥1.6. Monitor UFR — if &gt;13 mL/h/kg, address fluid management.</td></tr>
+      <tr><td>1.2–1.39</td><td>Below target</td><td>Audit session time and Qb. Rule out access recirculation. Increase session time by 30 min as first step. Recheck Kt/V in 4–6 weeks.</td></tr>
+      <tr><td>&lt;1.2</td><td>Critically inadequate</td><td>Urgent review. Investigate access function, session adherence, sampling error, and machine performance. Escalate frequency or duration. Admit if symptomatic.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-red">
+    <div class="alert-icon">🚨</div>
+    <div class="alert-body">
+      <h4>Common Causes of Spuriously High Kt/V</h4>
+      <ul>
+        <li>Pre-BUN drawn with blood pump off or after heparin flush (dilutional error)</li>
+        <li>Post-BUN drawn without slow-flow technique (post-rebound underestimate)</li>
+        <li>Session time recorded as scheduled, not actual (especially with early terminations)</li>
+        <li>V underestimated in malnourished/amputee patients (overestimates Kt/V)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CLIN SECTION 5: TROUBLESHOOTING -->
+<section class="section" id="clin-troubleshoot">
+  <div class="section-tag">Clinical Problem-Solving</div>
+  <h2>Troubleshooting Low Kt/V</h2>
+
+  <table class="clin-table">
+    <thead><tr><th>Root Cause</th><th>Clue</th><th>Corrective Action</th></tr></thead>
+    <tbody>
+      <tr><td>Access recirculation</td><td>High Qb but low Kt/V; access thrill/bruit change</td><td>Thermodilution or HD01/Transonic access flow measurement; fistulogram if flow &lt;600 mL/min</td></tr>
+      <tr><td>Shortened sessions</td><td>Audit log shows early terminations (cramps, hypotension, patient request)</td><td>Address intradialytic hypotension (IDH): adjust dry weight, UF rate, sodium profiling, cooled dialysate</td></tr>
+      <tr><td>Low blood flow rate</td><td>Qb consistently &lt;250 mL/min</td><td>Access stenosis evaluation; needle positioning change; upsize needle gauge (15→14G AVF)</td></tr>
+      <tr><td>Dialyzer clotting</td><td>High transmembrane pressure (TMP), visible clotting on inspection</td><td>Optimize anticoagulation (UFH bolus/infusion adjustment); consider citrate regional anticoagulation</td></tr>
+      <tr><td>Missed sessions</td><td>Attendance log &lt;3×/week</td><td>Social work referral; transportation assistance; consider home dialysis transition</td></tr>
+      <tr><td>Large V (obesity)</td><td>BMI &gt;35; V calculated as &gt;50 L</td><td>Consider extended session time; SDHD or NHD referral; bioimpedance for true V</td></tr>
+      <tr><td>Sampling error</td><td>Unexplained improvement without prescription change</td><td>Re-educate nursing staff on slow-flow post-BUN technique; audit pre-BUN collection protocol</td></tr>
+      <tr><td>Machine malfunction</td><td>Conductivity alarms, UF calibration errors</td><td>Biomedical engineering inspection; calibrate UF accuracy (±3% per AAMI standard)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-teal">
+    <div class="alert-icon">💡</div>
+    <div class="alert-body">
+      <h4>Intradialytic Hypotension (IDH) — Most Common Cause of Session Shortening</h4>
+      <p>IDH (&gt;20 mmHg SBP drop or SBP &lt;90 mmHg) affects 20–30% of HD sessions in the Philippines. Management: target UFR &lt;10 mL/h/kg (KDIGO), reassess dry weight monthly, use 35–36°C dialysate, sodium profiling, midodrine 10 mg pre-HD for refractory cases. Avoid excessive food intake pre-session.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLIN SECTION 6: PD ADEQUACY -->
+<section class="section" id="clin-pd">
+  <div class="section-tag">Peritoneal Dialysis</div>
+  <h2>PD Adequacy Assessment</h2>
+
+  <div class="intro-callout">
+    <p>PD adequacy is expressed as <strong>total weekly Kt/V ≥1.7</strong> (peritoneal + residual renal). Unlike HD, both components must be measured together every 1–2 months. Loss of RKF (GFR &lt;2 mL/min) is the most common reason for PD inadequacy and necessitates prescription intensification.</p>
+  </div>
+
+  <h3>PD Kt/V Calculation</h3>
+  <div class="alert alert-green">
+    <div class="alert-icon">📐</div>
+    <div class="alert-body">
+      <h4>Weekly Kt/V (PD) = Peritoneal Kt/V + Renal Kt/V</h4>
+      <p><strong>Peritoneal Kt/V</strong> = (Drain volume × Dialysate BUN/serum BUN × 7) / V<br>
+      <strong>Renal Kt/V</strong> = (24-h urine volume × urine BUN/serum BUN × 7) / V<br>
+      <strong>V</strong> = Watson formula (from height, weight, age, sex)</p>
+    </div>
+  </div>
+
+  <table class="clin-table">
+    <thead><tr><th>PD Modality</th><th>Typical Exchanges</th><th>Weekly Kt/V Target</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>CAPD (4-bag)</td><td>4 × 2L / day</td><td>≥1.7/week</td><td>Standard; increase bag volume or add 5th exchange if inadequate</td></tr>
+      <tr><td>CAPD (5-bag)</td><td>5 × 2L / day</td><td>≥1.7/week</td><td>Use for high-average or high transporters with large V</td></tr>
+      <tr><td>APD (cycler-only)</td><td>Nocturnal + 1 daytime</td><td>≥1.7/week</td><td>Add daytime dwell for high transporters; total 24-h PET required</td></tr>
+      <tr><td>APD + 1 day exchange</td><td>Nocturnal + 1–2 day</td><td>≥1.7/week</td><td>Most APD patients in PH require day exchange for target</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Peritoneal Equilibration Test (PET)</h3>
+  <table class="clin-table">
+    <thead><tr><th>Transport Type</th><th>D/P Creatinine at 4h</th><th>D/D₀ Glucose at 4h</th><th>PD Suitability</th></tr></thead>
+    <tbody>
+      <tr><td>High</td><td>&gt;0.81</td><td>&lt;0.26</td><td>Good solute clearance; risk of glucose reabsorption; APD preferred</td></tr>
+      <tr><td>High-average</td><td>0.65–0.81</td><td>0.26–0.38</td><td>Excellent for CAPD or APD</td></tr>
+      <tr><td>Low-average</td><td>0.50–0.64</td><td>0.38–0.49</td><td>CAPD with longer dwell times; APD requires modified regimen</td></tr>
+      <tr><td>Low</td><td>&lt;0.50</td><td>&gt;0.49</td><td>Poor clearance; consider HD transfer; high-dose CAPD may be needed</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <h4>PD Adequacy Pitfalls in Philippine Practice</h4>
+      <ul>
+        <li>Many patients perform 3-bag CAPD instead of 4-bag — below-target Kt/V is common</li>
+        <li>Residual renal Kt/V should be measured every 2 months; patients often lose RKF rapidly in first 2 years</li>
+        <li>Ultrafiltration failure (UFF): if UF &lt;400 mL/4h with 2.5% glucose, perform modified PET; consider icodextrin for long dwell</li>
+        <li>Encapsulating peritoneal sclerosis risk after &gt;8 years on PD — reassess HD transfer before membrane failure</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</div><!-- end .container -->
+</div><!-- end .mode-physician -->
+
 
 
     <!-- RELATED-GUIDES-START -->
@@ -1127,6 +1441,19 @@ function setLang(lang){
   });
 }
 (function(){const saved=localStorage.getItem(LANG_KEY)||'en';if(saved!=='en')setLang(saved);})();
+</script>
+<script>
+const GMODE='wgmr-mode-adequacy';
+function setMode(mode){
+  const isPhys=mode==='physician';
+  document.body.classList.toggle('physician-mode',isPhys);
+  document.getElementById('tab-pt').classList.toggle('active',!isPhys);
+  document.getElementById('tab-md').classList.toggle('active',isPhys);
+  localStorage.setItem(GMODE,mode);
+  const tabs=document.querySelector('.audience-tabs');
+  if(tabs)window.scrollTo({top:tabs.offsetTop-60,behavior:'smooth'});
+}
+(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 </script>
 </body>
 </html>
