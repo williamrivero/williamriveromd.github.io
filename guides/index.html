@@ -467,53 +467,9 @@
 
 <!-- RECENTLY UPDATED -->
 <div class="section-header" id="sec-updated">
-  <div class="section-label">Recently Updated <span class="sect-count">3</span></div>
+  <div class="section-label">Recently Updated <span class="sect-count" id="sc-updated"></span></div>
 </div>
 <div class="guides-grid" id="grid-updated">
-
-  <a href="lupus-nephritis.html" class="guide-card" data-top="1">
-    <span class="gc-updated-pill">Updated</span>
-    <div class="gc-illus"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <path d="M22 14c-5 0-9 4-9 12 0 6 1 12 4 18 2 4 5 8 9 8 3 0 5-2 6-5 1-3 1-7 1-11 0-5 0-10-2-15-1-4-4-7-9-7z" fill="rgba(192,57,43,.18)" stroke="#c0392b" stroke-width="1.8"/>
-      <path d="M42 14c5 0 9 4 9 12 0 6-1 12-4 18-2 4-5 8-9 8-3 0-5-2-6-5-1-3-1-7-1-11 0-5 0-10 2-15 1-4 4-7 9-7z" fill="rgba(192,57,43,.18)" stroke="#c0392b" stroke-width="1.8"/>
-      <circle cx="20" cy="22" r="2.5" fill="#b8962e"/>
-      <circle cx="44" cy="22" r="2.5" fill="#b8962e"/>
-      <circle cx="32" cy="42" r="2.5" fill="#b8962e"/>
-    </svg></div>
-    <span class="badge bn">Nephrology · Autoimmune · Glomerular Disease</span>
-    <h2>Lupus Nephritis &mdash; Patient Guide + Clinician Tab</h2>
-    <p>Full dual-audience refactor: the patient guide explains SLE kidney involvement, ISN/RPS classes, treatment, monitoring, and pregnancy. The new <strong>For Clinicians</strong> tab adds Philippine and international epidemiology, KDIGO 2024 + ACR 2024 induction/maintenance algorithms, refractory disease escalation, repeat biopsy criteria, special populations, and an emerging-research review (CAR-T, obinutuzumab, anifrolumab, deucravacitinib, telitacicept).</p>
-    <div class="card-footer"><span class="card-tags">SLE &middot; ISN/RPS &middot; KDIGO 2024 &middot; Clinician Tab &middot; Emerging Therapies</span><span class="card-link">Read &rarr;</span></div>
-  </a>
-
-  <a href="transplant-allograft-failure.html" class="guide-card" data-top="1">
-    <span class="gc-updated-pill">Updated</span>
-    <div class="gc-illus"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <circle cx="32" cy="32" r="18" fill="#1a6b72" opacity=".15"/>
-      <path d="M22 32c0-10 5-18 11-18 2 0 4 2 3 6-1 3-2 6-2 10s2 6 2 10c0 6-3 10-7 10s-7-6-7-18z" fill="#1a6b72"/>
-      <path d="M26 20 Q32 26 38 20" stroke="#2d7a4f" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M20 38 L44 38 M32 38 L32 50" stroke="#1a6b72" stroke-width="2" stroke-linecap="round"/>
-    </svg></div>
-    <span class="badge bt">Transplant</span>
-    <h2>Hope After Allograft Failure: From Decline to a Second Chance</h2>
-    <p>Understanding why transplanted kidneys decline, what comes next, and how to pursue a second chance — with a clinician tab covering Banff 2022 criteria, desensitisation protocols, and re-transplant checklists.</p>
-    <div class="card-footer"><span class="card-tags">Transplant · Allograft · Second Transplant · Clinician</span><span class="card-link">Read →</span></div>
-  </a>
-
-  <a href="dialysis-access-care.html" class="guide-card" data-top="1">
-    <span class="gc-updated-pill">Updated</span>
-    <div class="gc-illus"><svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <rect x="14" y="10" width="26" height="44" rx="4" fill="#1a6b72"/>
-      <rect x="18" y="16" width="18" height="10" rx="2" fill="white" opacity=".4"/>
-      <circle cx="27" cy="38" r="6" stroke="white" stroke-width="2" fill="none" opacity=".6"/>
-      <path d="M40 24 Q54 24 54 32 Q54 40 40 40" stroke="#1a6b72" stroke-width="2" fill="none" stroke-linecap="round"/>
-    </svg></div>
-    <span class="badge bn">Nephrology · ESKD</span>
-    <h2>Dialysis Access Care: Your Lifeline — Protect It Every Day</h2>
-    <p>Now with a full PD catheter section: Tenckhoff types, break-in period, exit-site care, peritonitis recognition, and multilingual guidance (EN/TL/CEB/KAP).</p>
-    <div class="card-footer"><span class="card-tags">Access · Fistula · Catheter · PD · Tenckhoff</span><span class="card-link">Read →</span></div>
-  </a>
-
 </div>
 
 <!-- RECENTLY ADDED -->
@@ -2013,6 +1969,30 @@ window.addEventListener('scroll', () => {
   if (active) setActiveJumpPill(active);
 }, { passive: true });
 
+// ── RECENTLY UPDATED — dynamic, max 3 ──────────────────────────────────
+function populateRecentlyUpdated() {
+  const grid = document.getElementById('grid-updated');
+  if (!grid) return;
+
+  const allCards = document.querySelectorAll('.guide-card:not([data-top])');
+  const updatedCards = [];
+  allCards.forEach(card => {
+    if (updatedCards.length < 3 && card.querySelector('.gc-updated-pill')) {
+      updatedCards.push(card);
+    }
+  });
+
+  grid.innerHTML = '';
+  updatedCards.forEach(card => {
+    const clone = card.cloneNode(true);
+    clone.setAttribute('data-top', '1');
+    grid.appendChild(clone);
+  });
+
+  const countEl = document.getElementById('sc-updated');
+  if (countEl) countEl.textContent = updatedCards.length;
+}
+
 // ── RECENTLY ADDED — dynamic, max 6 ────────────────────────────────────
 function populateRecentlyAdded() {
   const grid = document.getElementById('grid-latest');
@@ -2042,6 +2022,7 @@ function populateRecentlyAdded() {
 
 // ── INIT FILTER COUNT ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  populateRecentlyUpdated();
   populateRecentlyAdded();
   // Count only non-top cards to avoid counting duplicates in showcase sections
   const total = document.querySelectorAll('.guide-card:not([data-top])').length;
