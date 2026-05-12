@@ -888,6 +888,41 @@
     transition: opacity 0.2s;
   }
   .guide-card:hover .guide-card-illus { opacity: 0.18; }
+  /* ── Library card — full-width hero treatment ── */
+  .library-card {
+    grid-column: 1 / -1;
+    padding: 40px 44px;
+    border-radius: 16px;
+    border-width: 1px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto;
+    align-items: center;
+    gap: 0 48px;
+  }
+  .library-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(212,175,79,.18); }
+  .library-card .lib-left { grid-column: 1; }
+  .library-card .lib-right { grid-column: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .library-card .guide-card-illus { position: static; opacity: .22; width: 110px; height: 110px; }
+  .library-card:hover .guide-card-illus { opacity: .35; }
+  .library-card h3 { font-size: 26px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 10px; line-height: 1.2; }
+  .library-card p { font-size: 14.5px; line-height: 1.65; max-width: 580px; }
+  .library-card .guide-meta { max-width: 580px; }
+  .lib-stats { display: flex; gap: 28px; margin: 18px 0 0; }
+  .lib-stat { display: flex; flex-direction: column; }
+  .lib-stat-num { font-size: 28px; font-weight: 700; color: #d4af4f; line-height: 1; }
+  .lib-stat-label { font-size: 11px; color: rgba(232,244,248,.55); letter-spacing: .04em; margin-top: 3px; text-transform: uppercase; }
+  .lib-cta { display: inline-flex; align-items: center; gap: 8px; background: rgba(212,175,79,.15); border: 1px solid rgba(212,175,79,.45); color: #d4af4f; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 8px; text-decoration: none; transition: background .2s; white-space: nowrap; }
+  .library-card:hover .lib-cta { background: rgba(212,175,79,.25); }
+  .lib-specialties { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+  .lib-spec-pill { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: rgba(232,244,248,.7); letter-spacing: .02em; }
+  @media (max-width: 680px) {
+    .library-card { grid-template-columns: 1fr; padding: 28px 24px; gap: 0; }
+    .library-card .lib-right { display: none; }
+    .library-card h3 { font-size: 20px; }
+    .lib-stats { gap: 20px; }
+    .lib-stat-num { font-size: 22px; }
+  }
   .guide-tag {
     display: inline-block;
     font-size: 10px;
@@ -1370,16 +1405,38 @@
     </div>
     <div class="guides-grid" id="home-guides-grid">
       <!-- Distinguished Library card: navy background, gold accents -->
-      <a href="guides/index.html" class="guide-card library-card" style="background:linear-gradient(135deg,#0f1e2e 0%,#1a3050 100%);border-color:rgba(212,175,79,.35);color:#e8f4f8;">
-        <svg class="guide-card-illus" width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="opacity:.18;">
-          <path d="M10 20 C10 17 12 15 15 15 L40 15 C43 15 45 17 45 20 L45 70 C45 70 35 66 25 66 C18 66 10 70 10 70 Z" fill="#d4af4f"/>
-          <path d="M80 20 C80 17 78 15 75 15 L50 15 C47 15 45 17 45 20 L45 70 C45 70 55 66 65 66 C72 66 80 70 80 70 Z" fill="#d4af4f"/>
-          <line x1="45" y1="15" x2="45" y2="70" stroke="#fff" stroke-width="2" opacity=".5"/>
-        </svg>
-        <span class="guide-tag" style="background:rgba(212,175,79,.18);color:#d4af4f;border:1px solid rgba(212,175,79,.35);">Browse All Guides</span>
-        <h3 style="color:#fff;">Patient Education Library</h3>
-        <p style="color:rgba(232,244,248,.72);">All in-depth patient guides — organized by condition, stage, and date. Multilingual where translated.</p>
-        <div class="guide-meta" style="border-top-color:rgba(212,175,79,.2);"><span style="color:rgba(232,244,248,.55);">Updated regularly</span><span style="color:#d4af4f;">View all &rarr;</span></div>
+      <a href="guides/index.html" class="guide-card library-card" style="background:linear-gradient(135deg,#0d1b2a 0%,#152640 60%,#1a3050 100%);border-color:rgba(212,175,79,.3);color:#e8f4f8;">
+        <!-- Left column -->
+        <div class="lib-left">
+          <span class="guide-tag" style="background:rgba(212,175,79,.15);color:#d4af4f;border:1px solid rgba(212,175,79,.35);">Browse All Guides</span>
+          <h3 style="color:#fff;">Patient Education Library</h3>
+          <p style="color:rgba(232,244,248,.75);">All in-depth patient guides — written by Dr. Rivero and grounded in current guidelines (KDIGO 2024, ADA 2025, ACC/AHA 2026). Organized by condition, stage, and date. Multilingual where translated.</p>
+          <!-- Stats row -->
+          <div class="lib-stats">
+            <div class="lib-stat"><span class="lib-stat-num">88</span><span class="lib-stat-label">Patient Guides</span></div>
+            <div class="lib-stat"><span class="lib-stat-num">12</span><span class="lib-stat-label">Specialties</span></div>
+            <div class="lib-stat"><span class="lib-stat-num">3</span><span class="lib-stat-label">Languages</span></div>
+          </div>
+          <!-- Specialty pills -->
+          <div class="lib-specialties">
+            <span class="lib-spec-pill">Nephrology</span>
+            <span class="lib-spec-pill">Cardiology</span>
+            <span class="lib-spec-pill">Nutrition &amp; Diet</span>
+            <span class="lib-spec-pill">Dialysis</span>
+            <span class="lib-spec-pill">Hypertension</span>
+            <span class="lib-spec-pill">Diabetes</span>
+            <span class="lib-spec-pill">Infectious Disease</span>
+          </div>
+        </div>
+        <!-- Right column -->
+        <div class="lib-right">
+          <svg class="guide-card-illus" width="110" height="110" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10 20 C10 17 12 15 15 15 L40 15 C43 15 45 17 45 20 L45 70 C45 70 35 66 25 66 C18 66 10 70 10 70 Z" fill="#d4af4f"/>
+            <path d="M80 20 C80 17 78 15 75 15 L50 15 C47 15 45 17 45 20 L45 70 C45 70 55 66 65 66 C72 66 80 70 80 70 Z" fill="#d4af4f"/>
+            <line x1="45" y1="15" x2="45" y2="70" stroke="#fff" stroke-width="2" opacity=".6"/>
+          </svg>
+          <span class="lib-cta">View all guides &nbsp;→</span>
+        </div>
       </a>
       <!-- Dynamically-loaded "Recently Added" cards from guides/index.html appear here -->
     </div>
