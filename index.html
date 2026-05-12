@@ -889,6 +889,15 @@
   }
   .guide-card:hover .guide-card-illus { opacity: 0.18; }
   /* ── Library card — full-width hero treatment ── */
+  @keyframes lib-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+  @keyframes lib-stat-pop {
+    0%   { transform: scale(1); }
+    45%  { transform: scale(1.12); }
+    100% { transform: scale(1); }
+  }
   .library-card {
     grid-column: 1 / -1;
     padding: 40px 44px;
@@ -899,29 +908,45 @@
     grid-template-rows: auto;
     align-items: center;
     gap: 0 48px;
+    position: relative;
+    overflow: hidden;
+    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease, border-color .35s ease;
   }
-  .library-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(212,175,79,.18); }
+  /* shimmer sweep */
+  .library-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(212,175,79,.08) 50%, transparent 65%);
+    transform: translateX(-100%);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  .library-card:hover { transform: translateY(-5px) scale(1.007); box-shadow: 0 24px 64px rgba(212,175,79,.26), 0 0 0 1px rgba(212,175,79,.55); border-color: rgba(212,175,79,.65) !important; }
+  .library-card:hover::after { animation: lib-shimmer .7s ease forwards; }
   .library-card .lib-left { grid-column: 1; }
   .library-card .lib-right { grid-column: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
-  .library-card .guide-card-illus { position: static; opacity: .22; width: 110px; height: 110px; }
-  .library-card:hover .guide-card-illus { opacity: .35; }
-  .library-card h3 { font-size: 26px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 10px; line-height: 1.2; }
+  .library-card .guide-card-illus { position: static; opacity: .22; width: 110px; height: 110px; transition: opacity .35s ease, transform .35s ease; }
+  .library-card:hover .guide-card-illus { opacity: .45; transform: scale(1.08) rotate(3deg); }
+  .library-card h3 { font-size: 31px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 10px; line-height: 1.2; }
   .library-card p { font-size: 14.5px; line-height: 1.65; max-width: 580px; }
   .library-card .guide-meta { max-width: 580px; }
-  .lib-stats { display: flex; gap: 28px; margin: 18px 0 0; }
+  .lib-stats { display: flex; gap: 28px; flex-wrap: wrap; margin: 18px 0 0; }
   .lib-stat { display: flex; flex-direction: column; }
-  .lib-stat-num { font-size: 28px; font-weight: 700; color: #d4af4f; line-height: 1; }
+  .lib-stat-num { font-size: 30px; font-weight: 700; color: #d4af4f; line-height: 1; display: inline-block; }
   .lib-stat-label { font-size: 11px; color: rgba(232,244,248,.55); letter-spacing: .04em; margin-top: 3px; text-transform: uppercase; }
-  .lib-cta { display: inline-flex; align-items: center; gap: 8px; background: rgba(212,175,79,.15); border: 1px solid rgba(212,175,79,.45); color: #d4af4f; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 8px; text-decoration: none; transition: background .2s; white-space: nowrap; }
-  .library-card:hover .lib-cta { background: rgba(212,175,79,.25); }
+  .library-card:hover .lib-stat-num { animation: lib-stat-pop .4s ease-out; }
+  .lib-cta { display: inline-flex; align-items: center; gap: 8px; background: rgba(212,175,79,.15); border: 1px solid rgba(212,175,79,.45); color: #d4af4f; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 8px; text-decoration: none; transition: background .2s, box-shadow .2s; white-space: nowrap; }
+  .library-card:hover .lib-cta { background: rgba(212,175,79,.28); box-shadow: 0 0 16px rgba(212,175,79,.25); }
   .lib-specialties { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
-  .lib-spec-pill { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: rgba(232,244,248,.7); letter-spacing: .02em; }
+  .lib-spec-pill { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: rgba(232,244,248,.7); letter-spacing: .02em; transition: background .2s, border-color .2s; }
+  .library-card:hover .lib-spec-pill { background: rgba(255,255,255,.11); border-color: rgba(255,255,255,.2); }
   @media (max-width: 680px) {
     .library-card { grid-template-columns: 1fr; padding: 28px 24px; gap: 0; }
     .library-card .lib-right { display: none; }
-    .library-card h3 { font-size: 20px; }
+    .library-card h3 { font-size: 24px; }
     .lib-stats { gap: 20px; }
-    .lib-stat-num { font-size: 22px; }
+    .lib-stat-num { font-size: 24px; }
   }
   .guide-tag {
     display: inline-block;
@@ -1409,13 +1434,14 @@
         <!-- Left column -->
         <div class="lib-left">
           <span class="guide-tag" style="background:rgba(212,175,79,.15);color:#d4af4f;border:1px solid rgba(212,175,79,.35);">Browse All Guides</span>
-          <h3 style="color:#fff;">Patient Education Library</h3>
+          <h3 style="color:#fff;">Patient &amp; Clinician Resource Library</h3>
           <p style="color:rgba(232,244,248,.75);">All in-depth patient guides — written by Dr. Rivero and grounded in current guidelines (KDIGO 2024, ADA 2025, ACC/AHA 2026). Organized by condition, stage, and date. Multilingual where translated.</p>
           <!-- Stats row -->
           <div class="lib-stats">
-            <div class="lib-stat"><span class="lib-stat-num">88</span><span class="lib-stat-label">Patient Guides</span></div>
-            <div class="lib-stat"><span class="lib-stat-num">12</span><span class="lib-stat-label">Specialties</span></div>
-            <div class="lib-stat"><span class="lib-stat-num">3</span><span class="lib-stat-label">Languages</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-guide-count">88</span><span class="lib-stat-label">Patient Guides</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-tools-count">13+</span><span class="lib-stat-label">Interactive Tools</span></div>
+            <div class="lib-stat"><span class="lib-stat-num">9</span><span class="lib-stat-label">Specialties</span></div>
+            <div class="lib-stat"><span class="lib-stat-num">4</span><span class="lib-stat-label">Languages</span></div>
           </div>
           <!-- Specialty pills -->
           <div class="lib-specialties">
@@ -2369,6 +2395,11 @@ function emailAction(key, btnEl, variant) {
     .then(r => r.ok ? r.text() : Promise.reject(r.status))
     .then(html => {
       const doc = new DOMParser().parseFromString(html, 'text/html');
+      // Update library card guide count dynamically
+      const hstatNum = doc.querySelector('.hstat-num');
+      const libCount = document.getElementById('lib-guide-count');
+      if (hstatNum && libCount) libCount.textContent = hstatNum.textContent.trim();
+
       const cards = doc.querySelectorAll('#grid-latest > a.guide-card');
       if (!cards.length) throw new Error('no recent cards found');
       const take = Array.from(cards).slice(0, 5);
