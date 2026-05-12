@@ -845,14 +845,10 @@ const dropletMat = new THREE.MeshPhysicalMaterial({
   envMapIntensity: 1.4, clearcoat: 1.0, clearcoatRoughness: 0.08,
 });
 
-const droplet  = new THREE.Mesh(dropletGeo, dropletMat);
-const droplet2 = new THREE.Mesh(dropletGeo, dropletMat);
-droplet.morphTargetInfluences  = [0];
-droplet2.morphTargetInfluences = [0];
+const droplet = new THREE.Mesh(dropletGeo, dropletMat);
+droplet.morphTargetInfluences = [0];
 droplet.position.set(0, 0, 0);
-droplet2.position.set(0, 0, 0);
-droplet2.rotation.set(0.2, Math.PI, 0);
-scene.add(droplet, droplet2);
+scene.add(droplet);
 
 const rimLight  = new THREE.DirectionalLight(0x7be3ff, 1.2); rimLight.position.set(-3, 2, -2); scene.add(rimLight);
 const fillLight = new THREE.DirectionalLight(0xffffff, 0.4); fillLight.position.set(3, 1, 3); scene.add(fillLight);
@@ -994,25 +990,20 @@ function tick(){
   bubbleMat.uniforms.uTime.value  = t;
   filtMat.uniforms.uTime.value    = t;
   filtMat.uniforms.uLeft.value.copy(droplet.position);
-  filtMat.uniforms.uRight.value.copy(droplet2.position);
+  filtMat.uniforms.uRight.value.copy(droplet.position);
 
   pulseEnv *= 0.92;
   const pulseScale = 1 + pulseEnv * 0.025;
 
-  const breath  = 1 + Math.sin(t * 0.7)        * 0.015;
-  const breath2 = 1 + Math.sin(t * 0.7 + 1.2)  * 0.015;
-  droplet.scale.setScalar (breath  * dropletScaleMul * pulseScale);
-  droplet2.scale.setScalar(breath2 * dropletScaleMul * pulseScale);
+  const breath = 1 + Math.sin(t * 0.7) * 0.015;
+  droplet.scale.setScalar(breath * dropletScaleMul * pulseScale);
 
-  droplet.rotation.y  += 0.0017; droplet.rotation.x  += 0.0008;
-  droplet2.rotation.y -= 0.0014; droplet2.rotation.x += 0.0010;
+  droplet.rotation.y += 0.0017; droplet.rotation.x += 0.0008;
 
   mouse.x += (mouse.tx - mouse.x) * 0.05;
   mouse.y += (mouse.ty - mouse.y) * 0.05;
-  droplet.rotation.y  +=  mouse.x * 0.0025;
-  droplet.rotation.x  += -mouse.y * 0.0025;
-  droplet2.rotation.y +=  mouse.x * 0.0025;
-  droplet2.rotation.x += -mouse.y * 0.0025;
+  droplet.rotation.y +=  mouse.x * 0.0025;
+  droplet.rotation.x += -mouse.y * 0.0025;
   bubbles.rotation.y = mouse.x * 0.05;
   bubbles.rotation.x = -mouse.y * 0.05;
   caustic.position.x = mouse.x * 0.3;
@@ -1026,15 +1017,11 @@ tick();
 /* ════════════════════════════════════════════════
    SCROLL CHOREOGRAPHY
    ════════════════════════════════════════════════ */
-gsap.to(droplet.position,  { x: -1.15, y: -0.6,
-  scrollTrigger: { trigger: '.capabilities', start: 'top bottom', end: 'top top', scrub: 1 } });
-gsap.to(droplet2.position, { x:  1.15, y: -0.6,
+gsap.to(droplet.position, { x: 0, y: -0.6,
   scrollTrigger: { trigger: '.capabilities', start: 'top bottom', end: 'top top', scrub: 1 } });
 gsap.to(camera.position, { z: 7.6,
   scrollTrigger: { trigger: '.capabilities', start: 'top bottom', end: 'bottom top', scrub: 1 } });
-gsap.to(droplet.morphTargetInfluences,  { 0: 1,
-  scrollTrigger: { trigger: '.stat-band', start: 'top 80%', end: 'center 50%', scrub: 1.2 } });
-gsap.to(droplet2.morphTargetInfluences, { 0: 1,
+gsap.to(droplet.morphTargetInfluences, { 0: 1,
   scrollTrigger: { trigger: '.stat-band', start: 'top 80%', end: 'center 50%', scrub: 1.2 } });
 gsap.to(filtMat.uniforms.uIntensity, { value: 1.0,
   scrollTrigger: { trigger: '.capabilities', start: 'top 70%', end: 'top 10%', scrub: 1 } });
@@ -1046,13 +1033,9 @@ gsap.to(sizeProxy, { v: 1.45,
   onUpdate: () => { dropletScaleMul = sizeProxy.v; } });
 gsap.to(dropletMat, { thickness: 2.6,
   scrollTrigger: { trigger: '.stat-band', start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
-gsap.to(droplet.rotation,  { z:  0.25,
+gsap.to(droplet.rotation, { z: 0.25,
   scrollTrigger: { trigger: '.stat-band', start: 'top bottom', end: 'center center', scrub: 1.2 } });
-gsap.to(droplet2.rotation, { z: -0.25,
-  scrollTrigger: { trigger: '.stat-band', start: 'top bottom', end: 'center center', scrub: 1.2 } });
-gsap.to(droplet.position,  { x: -0.55, y: 0,
-  scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'top top', scrub: 1 } });
-gsap.to(droplet2.position, { x:  0.55, y: 0,
+gsap.to(droplet.position, { x: 0, y: 0,
   scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'top top', scrub: 1 } });
 gsap.to(caustic.material.uniforms.uColor.value, { r: 1, g: 0.72, b: 0.55,
   scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
