@@ -363,6 +363,14 @@
 
   /* ── CALCULATOR SHARED STYLES ── */
   .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+  .unit-btn:not(.active):hover{background:rgba(26,107,114,.08);}
+  html[data-theme="dark"] .unit-btn.active{background:var(--teal);}
+  html[data-theme="dark"] .unit-btn:not(.active){color:#8899aa;}
   .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
   @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
   .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
@@ -877,21 +885,28 @@ body.dark .related-card-title {
     <h2><span data-lang="en">Iron Deficit &amp; IV Replacement Calculator</span><span data-lang="tl" class="lang-hidden">Kalkulator ng Iron Deficit at IV Replacement</span><span data-lang="ceb" class="lang-hidden">Kalkulator sa Iron Deficit ug IV Replacement</span></h2>
     <p><span data-lang="en">Calculate the total iron deficit and estimated IV iron replacement dose. This uses the Ganzoni formula — the standard method used to determine IV iron sucrose (Ferrofer) dosing in CKD and dialysis patients.</span><span data-lang="tl" class="lang-hidden">Kalkulahin ang kabuuang iron deficit at tinatantiyang IV iron replacement dose. Ginagamit nito ang Ganzoni formula — ang pamantayang pamamaraan na ginagamit upang matukoy ang IV iron sucrose (Ferrofer) dosing sa mga pasyente ng CKD at dialysis.</span><span data-lang="ceb" class="lang-hidden">Kalkulahon ang tibuok iron deficit ug tinatayang IV iron replacement dose. Kini naggamit sa Ganzoni formula — ang standard nga pamaagi nga gigamit aron matino ang IV iron sucrose (Ferrofer) dosing sa mga pasyente sa CKD ug dialysis.</span></p>
     <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="iron-btn-conv" onclick="switchIronUnit('conv')">Conventional (g/dL · kg)</button>
+          <button class="unit-btn" id="iron-btn-si" onclick="switchIronUnit('si')">SI (g/L · kg)</button>
+        </div>
+      </div>
       <div class="calc-grid">
         <div class="calc-field">
-          <label><span data-lang="en">Body Weight (kg)</span><span data-lang="tl" class="lang-hidden">Timbang ng Katawan (kg)</span><span data-lang="ceb" class="lang-hidden">Timbang sa Lawas (kg)</span></label>
+          <label id="iron-lbl-wt"><span data-lang="en">Body Weight (kg)</span><span data-lang="tl" class="lang-hidden">Timbang ng Katawan (kg)</span><span data-lang="ceb" class="lang-hidden">Timbang sa Lawas (kg)</span></label>
           <input id="ir-wt" type="number" min="20" max="200" step="0.1" placeholder="e.g. 58" oninput="calcIron()">
-          <div class="field-hint"><span data-lang="en">Actual body weight. Use dry weight for dialysis patients</span><span data-lang="tl" class="lang-hidden">Tunay na timbang ng katawan. Gamitin ang dry weight para sa mga pasyente ng dialysis</span><span data-lang="ceb" class="lang-hidden">Tinuod nga timbang sa lawas. Gamiton ang dry weight alang sa mga pasyente sa dialysis</span></div>
+          <div class="field-hint" id="iron-hint-wt"><span data-lang="en">Actual body weight in kg. Use dry weight for dialysis patients</span><span data-lang="tl" class="lang-hidden">Tunay na timbang ng katawan. Gamitin ang dry weight para sa mga pasyente ng dialysis</span><span data-lang="ceb" class="lang-hidden">Tinuod nga timbang sa lawas. Gamiton ang dry weight alang sa mga pasyente sa dialysis</span></div>
         </div>
         <div class="calc-field">
-          <label><span data-lang="en">Current Hemoglobin (g/dL)</span><span data-lang="tl" class="lang-hidden">Kasalukuyang Hemoglobin (g/dL)</span><span data-lang="ceb" class="lang-hidden">Karon nga Hemoglobin (g/dL)</span></label>
+          <label id="iron-lbl-hgb"><span data-lang="en">Actual Hemoglobin (g/dL)</span><span data-lang="tl" class="lang-hidden">Kasalukuyang Hemoglobin (g/dL)</span><span data-lang="ceb" class="lang-hidden">Karon nga Hemoglobin (g/dL)</span></label>
           <input id="ir-hgb" type="number" min="4" max="18" step="0.1" placeholder="e.g. 8.5" oninput="calcIron()">
-          <div class="field-hint"><span data-lang="en">Most recent Hgb result. Normal for CKD target: 100–115 g/L = 10–11.5 g/dL</span><span data-lang="tl" class="lang-hidden">Pinakabagong resulta ng Hgb. Normal na target para sa CKD: 100–115 g/L = 10–11.5 g/dL</span><span data-lang="ceb" class="lang-hidden">Labing bag-ong resulta sa Hgb. Normal nga target alang sa CKD: 100–115 g/L = 10–11.5 g/dL</span></div>
+          <div class="field-hint" id="iron-hint-hgb"><span data-lang="en">Current Hgb from CBC. Normal: 12–16 g/dL (F), 13.5–17.5 g/dL (M)</span><span data-lang="tl" class="lang-hidden">Pinakabagong resulta ng Hgb. Normal na target para sa CKD: 100–115 g/L = 10–11.5 g/dL</span><span data-lang="ceb" class="lang-hidden">Labing bag-ong resulta sa Hgb. Normal nga target alang sa CKD: 100–115 g/L = 10–11.5 g/dL</span></div>
         </div>
         <div class="calc-field">
-          <label><span data-lang="en">Target Hemoglobin (g/dL)</span><span data-lang="tl" class="lang-hidden">Target na Hemoglobin (g/dL)</span><span data-lang="ceb" class="lang-hidden">Target nga Hemoglobin (g/dL)</span></label>
+          <label id="iron-lbl-target"><span data-lang="en">Target Hemoglobin (g/dL)</span><span data-lang="tl" class="lang-hidden">Target na Hemoglobin (g/dL)</span><span data-lang="ceb" class="lang-hidden">Target nga Hemoglobin (g/dL)</span></label>
           <input id="ir-target" type="number" min="8" max="14" step="0.1" placeholder="e.g. 11.0" oninput="calcIron()">
-          <div class="field-hint"><span data-lang="en">KDIGO 2024 target: 10.0–11.5 g/dL for CKD/dialysis. Enter 11.0 if unsure</span><span data-lang="tl" class="lang-hidden">KDIGO 2024 target: 10.0–11.5 g/dL para sa CKD/dialysis. Ilagay ang 11.0 kung hindi sigurado</span><span data-lang="ceb" class="lang-hidden">KDIGO 2024 target: 10.0–11.5 g/dL alang sa CKD/dialysis. Isulod ang 11.0 kung dili sigurado</span></div>
+          <div class="field-hint" id="iron-hint-target"><span data-lang="en">CKD/dialysis target: 10–11.5 g/dL. Non-dialysis CKD: 10–12 g/dL</span><span data-lang="tl" class="lang-hidden">KDIGO 2024 target: 10.0–11.5 g/dL para sa CKD/dialysis. Ilagay ang 11.0 kung hindi sigurado</span><span data-lang="ceb" class="lang-hidden">KDIGO 2024 target: 10.0–11.5 g/dL alang sa CKD/dialysis. Isulod ang 11.0 kung dili sigurado</span></div>
         </div>
         <div class="calc-field">
           <label><span data-lang="en">Route of Iron Replacement</span><span data-lang="tl" class="lang-hidden">Paraan ng Iron Replacement</span><span data-lang="ceb" class="lang-hidden">Pamaagi sa Iron Replacement</span></label>
@@ -1091,45 +1106,91 @@ function setLang(lang){
 </script>
 
 <script>
+function switchIronUnit(u) {
+  const isSI = u === 'si';
+  document.getElementById('iron-btn-conv').classList.toggle('active', !isSI);
+  document.getElementById('iron-btn-si').classList.toggle('active', isSI);
+  const hgb = document.getElementById('ir-hgb');
+  const tgt = document.getElementById('ir-target');
+  const wt = document.getElementById('ir-wt');
+  if (isSI) {
+    document.getElementById('iron-lbl-hgb').textContent = 'Actual Hemoglobin (g/L)';
+    hgb.placeholder = 'e.g. 85'; hgb.min = '40'; hgb.max = '180'; hgb.step = '1';
+    document.getElementById('iron-hint-hgb').textContent = 'Current Hgb from CBC. Example: 85 g/L = 8.5 g/dL';
+    document.getElementById('iron-lbl-target').textContent = 'Target Hemoglobin (g/L)';
+    tgt.placeholder = 'e.g. 110'; tgt.min = '80'; tgt.max = '140'; tgt.step = '1';
+    document.getElementById('iron-hint-target').textContent = 'CKD/dialysis target: 100–115 g/L. Non-dialysis CKD: 100–120 g/L';
+    document.getElementById('iron-lbl-wt').textContent = 'Body Weight (kg)';
+    wt.placeholder = 'e.g. 58'; wt.min = '20'; wt.max = '200'; wt.step = '0.1';
+    document.getElementById('iron-hint-wt').textContent = 'Actual body weight in kg';
+  } else {
+    document.getElementById('iron-lbl-hgb').textContent = 'Actual Hemoglobin (g/dL)';
+    hgb.placeholder = 'e.g. 8.5'; hgb.min = '4'; hgb.max = '18'; hgb.step = '0.1';
+    document.getElementById('iron-hint-hgb').textContent = 'Current Hgb from CBC. Normal: 12–16 g/dL (F), 13.5–17.5 g/dL (M)';
+    document.getElementById('iron-lbl-target').textContent = 'Target Hemoglobin (g/dL)';
+    tgt.placeholder = 'e.g. 11.0'; tgt.min = '8'; tgt.max = '14'; tgt.step = '0.1';
+    document.getElementById('iron-hint-target').textContent = 'CKD/dialysis target: 10–11.5 g/dL. Non-dialysis CKD: 10–12 g/dL';
+    document.getElementById('iron-lbl-wt').textContent = 'Body Weight (kg)';
+    wt.placeholder = 'e.g. 58'; wt.min = '20'; wt.max = '200'; wt.step = '0.1';
+    document.getElementById('iron-hint-wt').textContent = 'Actual body weight in kg. Use dry weight for dialysis patients';
+  }
+  ['ir-hgb', 'ir-target', 'ir-wt'].forEach(id => document.getElementById(id).value = '');
+  const res = document.querySelector('#calculator .calc-result-box');
+  if (res) res.style.display = 'none';
+}
+
 function calcIron() {
-  const wt = parseFloat(document.getElementById('ir-wt').value);
-  const hgb = parseFloat(document.getElementById('ir-hgb').value);
-  const target = parseFloat(document.getElementById('ir-target').value);
+  const wtRaw = parseFloat(document.getElementById('ir-wt').value);
+  const hgbRaw = parseFloat(document.getElementById('ir-hgb').value);
+  const targetRaw = parseFloat(document.getElementById('ir-target').value);
   const route = document.getElementById('ir-route').value;
   const res = document.getElementById('iron-result');
-  if ([wt,hgb,target].some(isNaN) || !route || target<=hgb) { res.style.display='none'; return; }
 
-  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
-  // Ganzoni formula
-  const deficit = Math.round(wt*(target-hgb)*0.24*100)/100 + 500;
+  const isSI = document.getElementById('iron-btn-si').classList.contains('active');
+  // Convert to g/dL and kg for Ganzoni formula
+  const hgb    = isSI ? hgbRaw / 10    : hgbRaw;     // g/L → g/dL
+  const target = isSI ? targetRaw / 10 : targetRaw;  // g/L → g/dL
+  const wt     = wtRaw;  // weight always in kg
+
+  if ([wt, hgb, target].some(isNaN) || !route || target <= hgb) { res.style.display = 'none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+  // Helper: display Hgb values in the chosen unit
+  const dHgb = v => isSI ? (v * 10).toFixed(0) + ' g/L' : v.toFixed(1) + ' g/dL';
+
+  // Ganzoni formula (always uses g/dL and kg)
+  const deficit = Math.round(wt * (target - hgb) * 0.24 * 100) / 100 + 500;
   const deficitTotal = Math.round(deficit);
-  const sessions = Math.ceil(deficitTotal/100);
-  const hgbGap = Math.round((target-hgb)*10)/10;
+  const sessions = Math.ceil(deficitTotal / 100);
+  const hgbGap = Math.round((target - hgb) * 10) / 10;
+  const hgbGapDisplay = isSI ? (hgbGap * 10).toFixed(0) : hgbGap.toFixed(1);
+  const hgbGapUnit = isSI ? 'g/L' : 'g/dL';
 
-  const borderColor='#1a6b72';
-  const bg = isDark?'rgba(26,107,114,.08)':'#e1f5f0';
-  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+  const borderColor = '#1a6b72';
+  const bg = isDark ? 'rgba(26,107,114,.08)' : '#e1f5f0';
+  res.style.display = 'block'; res.style.background = bg; res.style.borderColor = borderColor;
 
-  document.getElementById('ir-deficit-val').textContent=deficitTotal;
-  document.getElementById('ir-deficit-val').style.color='#1a6b72';
-  document.getElementById('ir-deficit-badge').textContent='Total iron needed';
-  document.getElementById('ir-sessions-val').textContent=route==='iv'?sessions:'Oral';
-  document.getElementById('ir-sessions-val').style.color='#1a6b72';
-  document.getElementById('ir-sessions-badge').textContent=route==='iv'?'100mg/session × '+sessions:'Daily for 3 months';
-  document.getElementById('ir-hgb-gap-val').textContent=hgbGap;
-  document.getElementById('ir-hgb-gap-val').style.color=hgbGap<=2?'#9a6500':'#c0392b';
-  document.getElementById('ir-hgb-gap-badge').textContent=hgb+' → '+target+' g/dL';
+  document.getElementById('ir-deficit-val').textContent = deficitTotal;
+  document.getElementById('ir-deficit-val').style.color = '#1a6b72';
+  document.getElementById('ir-deficit-badge').textContent = 'Total iron needed';
+  document.getElementById('ir-sessions-val').textContent = route === 'iv' ? sessions : 'Oral';
+  document.getElementById('ir-sessions-val').style.color = '#1a6b72';
+  document.getElementById('ir-sessions-badge').textContent = route === 'iv' ? '100mg/session × ' + sessions : 'Daily for 3 months';
+  document.getElementById('ir-hgb-gap-val').textContent = hgbGapDisplay;
+  document.getElementById('ir-hgb-gap-val').style.color = hgbGap <= 2 ? '#9a6500' : '#c0392b';
+  document.getElementById('ir-hgb-gap-badge').textContent = dHgb(hgb) + ' → ' + dHgb(target);
 
-  let verdict='', action='';
-  if (route==='iv') {
-    verdict='Estimated iron deficit of '+deficitTotal+' mg (Ganzoni formula). This requires approximately '+sessions+' IV iron sucrose sessions at 100 mg per session, given over '+sessions+' dialysis sessions. Hgb is '+hgbGap+' g/dL below target ('+target+' g/dL).';
-    action='IV iron sucrose (Ferrofer) 100–200 mg per infusion administered into the venous side of the dialysis circuit during the last hour of the session. Check TSAT and ferritin before starting — do not give IV iron if ferritin >800 ng/mL. Recheck CBC and iron panel after completing the repletion course (4–6 weeks after last dose).';
+  let verdict = '', action = '';
+  if (route === 'iv') {
+    verdict = 'Estimated iron deficit of ' + deficitTotal + ' mg (Ganzoni formula). This requires approximately ' + sessions + ' IV iron sucrose sessions at 100 mg per session, given over ' + sessions + ' dialysis sessions. Hgb is ' + hgbGapDisplay + ' ' + hgbGapUnit + ' below target (' + dHgb(target) + ').';
+    action = 'IV iron sucrose (Ferrofer) 100–200 mg per infusion administered into the venous side of the dialysis circuit during the last hour of the session. Check TSAT and ferritin before starting — do not give IV iron if ferritin >800 ng/mL. Recheck CBC and iron panel after completing the repletion course (4–6 weeks after last dose).';
   } else {
-    verdict='Estimated iron deficit of '+deficitTotal+' mg. For non-dialysis CKD, oral iron is first-line if tolerated. Iron absorption from oral supplements is typically 10–20 mg/day — repletion of '+deficitTotal+' mg deficit takes approximately '+Math.ceil(deficitTotal/15)+' days (2–4 months) of consistent therapy.';
-    action='Ferrous sulfate 325 mg (65 mg elemental iron) on empty stomach for best absorption, or with food if causing GI upset. Take 2 hours apart from phosphate binders, antacids, and calcium supplements — these block iron absorption. IV iron (ferric carboxymaltose or iron sucrose) if oral is not tolerated or TSAT is critically low.';
+    verdict = 'Estimated iron deficit of ' + deficitTotal + ' mg. For non-dialysis CKD, oral iron is first-line if tolerated. Iron absorption from oral supplements is typically 10–20 mg/day — repletion of ' + deficitTotal + ' mg deficit takes approximately ' + Math.ceil(deficitTotal / 15) + ' days (2–4 months) of consistent therapy.';
+    action = 'Ferrous sulfate 325 mg (65 mg elemental iron) on empty stomach for best absorption, or with food if causing GI upset. Take 2 hours apart from phosphate binders, antacids, and calcium supplements — these block iron absorption. IV iron (ferric carboxymaltose or iron sucrose) if oral is not tolerated or TSAT is critically low.';
   }
-  document.getElementById('ir-verdict').innerHTML='<strong style="color:'+borderColor+'">Iron Deficit: '+deficitTotal+' mg</strong> — '+verdict;
-  document.getElementById('ir-action').innerHTML='<strong style="color:'+borderColor+'">Treatment protocol:</strong> '+action;
+  document.getElementById('ir-verdict').innerHTML = '<strong style="color:' + borderColor + '">Iron Deficit: ' + deficitTotal + ' mg</strong> — ' + verdict;
+  document.getElementById('ir-action').innerHTML = '<strong style="color:' + borderColor + '">Treatment protocol:</strong> ' + action;
 }
 </script>
 </body>

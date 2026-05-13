@@ -89,6 +89,14 @@
   .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
   @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
   .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+  .unit-btn:not(.active):hover{background:rgba(26,107,114,.08);}
+  html[data-theme="dark"] .unit-btn.active{background:var(--teal);}
+  html[data-theme="dark"] .unit-btn:not(.active){color:#8899aa;}
   .calc-field input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
   .calc-field input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
   .calc-field .field-hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.4;}
@@ -561,28 +569,35 @@ body.dark .related-card-title {
   </p>
 
   <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="dial-btn-conv" onclick="switchDialUnit('conv')">Conventional (BUN mg/dL)</button>
+          <button class="unit-btn" id="dial-btn-si" onclick="switchDialUnit('si')">SI (Urea mmol/L)</button>
+        </div>
+      </div>
     <div class="calc-grid">
       <div class="calc-field">
-        <label for="c-bun-pre">
+        <label id="dialysis-lbl-bunpre" for="c-bun-pre">
           <span data-lang="en">Pre-Dialysis BUN (mg/dL)</span>
           <span data-lang="tl" class="lang-hidden">Pre-Dialysis BUN (mg/dL)</span>
           <span data-lang="ceb" class="lang-hidden">Pre-Dialysis BUN (mg/dL)</span>
         </label>
         <input id="c-bun-pre" type="number" min="10" max="300" step="0.1" placeholder="e.g. 75" oninput="calcAdequacy()">
-        <div class="field-hint">
+        <div class="field-hint" id="dialysis-hint-bunpre">
           <span data-lang="en">BUN drawn before session starts (arterial line, before pump on)</span>
           <span data-lang="tl" class="lang-hidden">BUN na kinuha bago magsimula ang sesyon</span>
           <span data-lang="ceb" class="lang-hidden">BUN nga nakuha sa wala pa magsugod ang sesyon</span>
         </div>
       </div>
       <div class="calc-field">
-        <label for="c-bun-post">
+        <label id="dialysis-lbl-bunpost" for="c-bun-post">
           <span data-lang="en">Post-Dialysis BUN (mg/dL)</span>
           <span data-lang="tl" class="lang-hidden">Post-Dialysis BUN (mg/dL)</span>
           <span data-lang="ceb" class="lang-hidden">Post-Dialysis BUN (mg/dL)</span>
         </label>
         <input id="c-bun-post" type="number" min="1" max="200" step="0.1" placeholder="e.g. 22" oninput="calcAdequacy()">
-        <div class="field-hint">
+        <div class="field-hint" id="dialysis-hint-bunpost">
           <span data-lang="en">BUN drawn within 30 sec of stopping dialysis (before rinse-back)</span>
           <span data-lang="tl" class="lang-hidden">BUN na kinuha sa loob ng 30 segundo pagkatapos ihinto ang dialysis</span>
           <span data-lang="ceb" class="lang-hidden">BUN nga nakuha sulod sa 30 segundo human mohunong ang dialysis</span>
@@ -1327,12 +1342,22 @@ body.dark .related-card-title {
 <script>
 /* ── DIALYSIS ADEQUACY CALCULATOR ── Daugirdas 2nd generation spKt/V ── */
 function calcAdequacy() {
-  const preBUN  = parseFloat(document.getElementById('c-bun-pre').value);
-  const postBUN = parseFloat(document.getElementById('c-bun-post').value);
+  const bunPreRaw  = parseFloat(document.getElementById('c-bun-pre').value);
+  const bunPostRaw = parseFloat(document.getElementById('c-bun-post').value);
   const time    = parseFloat(document.getElementById('c-time').value);   // minutes
   const uf      = parseFloat(document.getElementById('c-uf').value);     // litres
   const wt      = parseFloat(document.getElementById('c-wt').value);     // kg post-dialysis
   const sex     = document.getElementById('c-sex').value;
+
+  const isSI = document.getElementById('dial-btn-si').classList.contains('active');
+  // For Kt/V: ratio R = post/pre is unit-independent — no conversion needed for formula
+  // But record the raw display values in chosen units
+  const bunPreDisp  = isSI ? bunPreRaw.toFixed(1)+' mmol/L'  : bunPreRaw.toFixed(1)+' mg/dL';
+  const bunPostDisp = isSI ? bunPostRaw.toFixed(1)+' mmol/L' : bunPostRaw.toFixed(1)+' mg/dL';
+
+  // Use raw values directly — ratio R = post/pre cancels units
+  const preBUN  = bunPreRaw;
+  const postBUN = bunPostRaw;
 
   const res = document.getElementById('calc-result');
 
@@ -1423,6 +1448,31 @@ function calcAdequacy() {
 
   document.getElementById('r-verdict').innerHTML = '<strong style="color:' + borderColor + ';">' + (ktvR>=1.4?'Adequate':'Inadequate') + ' Dialysis</strong> — ' + verdict;
   document.getElementById('r-action').innerHTML = '<strong style="color:' + borderColor + ';">Recommended action:</strong> ' + action;
+}
+
+function switchDialUnit(u){
+  const isSI=u==='si';
+  document.getElementById('dial-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('dial-btn-si').classList.toggle('active',isSI);
+  const pre=document.getElementById('c-bun-pre'), post=document.getElementById('c-bun-post');
+  if(isSI){
+    document.getElementById('dialysis-lbl-bunpre').textContent='Pre-dialysis Urea (mmol/L)';
+    pre.placeholder='e.g. 26.8'; pre.min='3.6'; pre.max='107.1'; pre.step='0.1';
+    document.getElementById('dialysis-hint-bunpre').textContent='Urea in mmol/L. Taken immediately before dialysis session';
+    document.getElementById('dialysis-lbl-bunpost').textContent='Post-dialysis Urea (mmol/L)';
+    post.placeholder='e.g. 7.9'; post.min='0.4'; post.max='71.4'; post.step='0.1';
+    document.getElementById('dialysis-hint-bunpost').textContent='Urea in mmol/L. Taken within 5 minutes after dialysis ends';
+  } else {
+    document.getElementById('dialysis-lbl-bunpre').textContent='Pre-dialysis BUN (mg/dL)';
+    pre.placeholder='e.g. 75'; pre.min='10'; pre.max='300'; pre.step='0.1';
+    document.getElementById('dialysis-hint-bunpre').textContent='Blood urea nitrogen. Taken immediately before dialysis session';
+    document.getElementById('dialysis-lbl-bunpost').textContent='Post-dialysis BUN (mg/dL)';
+    post.placeholder='e.g. 22'; post.min='1'; post.max='200'; post.step='0.1';
+    document.getElementById('dialysis-hint-bunpost').textContent='Taken within 5 min of dialysis end. The ratio R = post/pre BUN is what matters for Kt/V';
+  }
+  ['c-bun-pre','c-bun-post'].forEach(id=>document.getElementById(id).value='');
+  const res=document.querySelector('#calculator .calc-result-box');
+  if(res) res.style.display='none';
 }
 </script>
 <script>

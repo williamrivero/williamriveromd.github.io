@@ -692,6 +692,14 @@
   html[data-theme="dark"] #egfr-calc-wrap select { background: #141c2a; border-color: #2a3548; color: #e8eaf0; }
   html[data-theme="dark"] #egfr-calc-wrap label { color: #25949d; }
   @media(max-width:480px){ #egfr-calc-wrap > div:first-child { grid-template-columns: 1fr !important; } }
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+  .unit-btn:not(.active):hover{background:rgba(26,107,114,.08);}
+  html[data-theme="dark"] .unit-btn.active{background:var(--teal);}
+  html[data-theme="dark"] .unit-btn:not(.active){color:#8899aa;}
   html[data-theme="dark"] .illus-wrap { background: #1a2535; }
   .illus-wrap-light { background: #f9fafb !important; border: 1px solid #e2e6eb; border-radius: 14px; }
   html[data-theme="dark"] .illus-wrap-light { background: #f9fafb !important; }
@@ -1040,6 +1048,13 @@ body.dark .related-card-title {
 <span data-lang="kap" class="lang-hidden">Ilagyan mu ing pinakabayu mong resulta ning serum creatinine para matuklas ing tungkul ning kidney mu. Gagamitan ning calculator ini ing <strong>CKD-EPI 2021 equation</strong> — ing kasalukuyung internasyonal na pamantayan a inirekomenda ng KDIGO, walang lahi at napatunayang angkop para king mga pasyenteng Filipino.</span>
 </p>
 <div id="egfr-calc-wrap" style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;max-width:580px;">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="egfr-btn-conv" onclick="switchEgfrUnit('conv')">Conventional (mg/dL)</button>
+          <button class="unit-btn" id="egfr-btn-si" onclick="switchEgfrUnit('si')">SI (µmol/L)</button>
+        </div>
+      </div>
 <!-- Inputs -->
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
 <div>
@@ -1074,7 +1089,7 @@ body.dark .related-card-title {
 <input id="calc-age" max="110" min="18" oninput="calcEgfr()" placeholder="e.g. 55" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;" type="number"/>
 </div>
 <div>
-<label for="calc-cr" style="display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">
+<label id="egfr-cr-label" for="calc-cr" style="display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">
 <span data-lang="en">Serum Creatinine (mg/dL)</span>
 <span class="lang-hidden" data-lang="tl">Serum Creatinine (mg/dL)</span>
 <span class="lang-hidden" data-lang="ceb">Serum Creatinine (mg/dL)</span>
@@ -1083,7 +1098,7 @@ body.dark .related-card-title {
 <input id="calc-cr" max="30" min="0.1" oninput="calcEgfr()" placeholder="e.g. 1.20" step="0.01" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;" type="number"/>
 </div>
 <div style="display:flex;flex-direction:column;justify-content:flex-end;">
-<div style="font-size:11px;color:var(--text-muted);line-height:1.5;padding-bottom:4px;">
+<div id="egfr-cr-hint" style="font-size:11px;color:var(--text-muted);line-height:1.5;padding-bottom:4px;">
 <span data-lang="en">Find your creatinine on your recent blood test results (CBC/chemistry panel). Usually labeled "SCr" or "Creatinine."</span>
 <span class="lang-hidden" data-lang="tl">Hanapin ang inyong creatinine sa inyong mga kamakailang resulta ng pagsusuri ng dugo. Karaniwang may label na "SCr" o "Creatinine."</span>
 <span class="lang-hidden" data-lang="ceb">Pangitaa ang imong creatinine sa imong mga bag-o nga resulta sa pagsusuri sa dugo. Kasagarang may label nga "SCr" o "Creatinine."</span>
@@ -1560,7 +1575,9 @@ function setLang(lang){
 function calcEgfr() {
   const sex = document.getElementById('calc-sex').value;
   const age = parseFloat(document.getElementById('calc-age').value);
-  const cr  = parseFloat(document.getElementById('calc-cr').value);
+  const crRaw = parseFloat(document.getElementById('calc-cr').value);
+  const isSI  = document.getElementById('egfr-btn-si').classList.contains('active');
+  const cr    = isSI ? crRaw / 88.4 : crRaw;
   const res = document.getElementById('egfr-result');
   if (!sex || isNaN(age) || isNaN(cr) || age < 1 || cr <= 0) { res.style.display='none'; return; }
 
@@ -1614,6 +1631,23 @@ function calcEgfr() {
   document.getElementById('egfr-label').textContent = stageLabel;
   document.getElementById('egfr-interp').textContent = interp;
   document.getElementById('egfr-action').innerHTML = '<strong style="color:'+color+'">What this means for your care:</strong> ' + action;
+}
+
+function switchEgfrUnit(u){
+  const isSI = u==='si';
+  document.getElementById('egfr-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('egfr-btn-si').classList.toggle('active',isSI);
+  const inp = document.getElementById('calc-cr');
+  if(isSI){
+    inp.placeholder='e.g. 106'; inp.min='9'; inp.max='2650'; inp.step='1';
+    document.getElementById('egfr-cr-hint').textContent='Enter in µmol/L. Normal: ~62–106 µmol/L';
+  } else {
+    inp.placeholder='e.g. 1.20'; inp.min='0.1'; inp.max='30'; inp.step='0.01';
+    document.getElementById('egfr-cr-hint').textContent='Find your creatinine on your recent blood test results (CBC/chemistry panel). Usually labeled "SCr" or "Creatinine."';
+  }
+  inp.value='';
+  const res = document.getElementById('egfr-result');
+  if(res) res.style.display='none';
 }
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"2dc38f135a634aa6b33afc0ddfcff929","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>

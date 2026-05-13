@@ -351,6 +351,14 @@
 
 
   /* ── CALCULATOR SHARED STYLES ── */
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+  .unit-btn:not(.active):hover{background:rgba(26,107,114,.08);}
+  html[data-theme="dark"] .unit-btn.active{background:var(--teal);}
+  html[data-theme="dark"] .unit-btn:not(.active){color:#8899aa;}
   .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
   .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
   @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
@@ -827,19 +835,26 @@ body.dark .related-card-title {
 <h2><span data-lang="en">Iron Status Calculator — TSAT &amp; Iron Deficiency Classifier</span><span data-lang="tl" class="lang-hidden">Kalkulador ng Katayuan ng Iron — TSAT at Iron Deficiency Classifier</span><span data-lang="ceb" class="lang-hidden">Kalkulador sa Kahimtang sa Iron — TSAT ug Iron Deficiency Classifier</span></h2>
 <p><span data-lang="en">Enter your iron panel results to calculate TSAT and determine your iron deficiency type. Your doctor uses this to decide whether IV iron, oral iron, or no iron therapy is appropriate for you.</span><span data-lang="tl" class="lang-hidden">Ilagay ang inyong mga resulta ng iron panel upang kalkulahin ang TSAT at matukoy ang uri ng inyong kakulangan sa iron. Ginagamit ito ng inyong doktor upang magpasiya kung ang IV iron, oral iron, o walang iron therapy ang angkop para sa inyo.</span><span data-lang="ceb" class="lang-hidden">Isulod ang inyong mga resulta sa iron panel aron makalkula ang TSAT ug matino ang matang sa inyong kakulang sa iron. Gigamit kini sa inyong doktor aron magdesisyon kon ang IV iron, oral iron, o walay iron therapy ang angay alang kaninyo.</span></p>
 <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="anem-btn-conv" onclick="switchAnemUnit('conv')">Conventional (µg/dL)</button>
+          <button class="unit-btn" id="anem-btn-si" onclick="switchAnemUnit('si')">SI (µmol/L)</button>
+        </div>
+      </div>
 <div class="calc-grid">
 <div class="calc-field">
-<label>Serum Iron (μg/dL)</label>
+<label id="anem-lbl-si">Serum Iron (μg/dL)</label>
 <input id="a-si" max="300" min="1" oninput="calcAnemia()" placeholder="e.g. 45" step="0.1" type="number"/>
-<div class="field-hint">Found on your blood chemistry panel. Normal: 60–170 μg/dL</div>
+<div class="field-hint" id="anem-hint-si">Normal: 60–160 µg/dL. Low in iron deficiency and ACD</div>
 </div>
 <div class="calc-field">
-<label>TIBC (μg/dL)</label>
+<label id="anem-lbl-tibc">TIBC (μg/dL)</label>
 <input id="a-tibc" max="600" min="100" oninput="calcAnemia()" placeholder="e.g. 280" step="0.1" type="number"/>
-<div class="field-hint">Total iron-binding capacity. Normal: 250–370 μg/dL. If TIBC not available, enter transferrin × 25.1</div>
+<div class="field-hint" id="anem-hint-tibc">Total Iron Binding Capacity. Normal: 250–390 µg/dL. Elevated in iron deficiency</div>
 </div>
 <div class="calc-field">
-<label>Serum Ferritin (ng/mL)</label>
+<label id="anem-lbl-ferritin">Serum Ferritin (ng/mL)</label>
 <input id="a-ferritin" max="5000" min="1" oninput="calcAnemia()" placeholder="e.g. 120" step="0.1" type="number"/>
 <div class="field-hint">Iron storage marker. Also reflects inflammation — unreliable in acute illness</div>
 </div>
@@ -1025,12 +1040,21 @@ function setLang(lang){
 </script>
 <script>
 function calcAnemia() {
-  const si = parseFloat(document.getElementById('a-si').value);
-  const tibc = parseFloat(document.getElementById('a-tibc').value);
+  const siRaw = parseFloat(document.getElementById('a-si').value);
+  const tibcRaw = parseFloat(document.getElementById('a-tibc').value);
   const ferritin = parseFloat(document.getElementById('a-ferritin').value);
   const dialysis = document.getElementById('a-dialysis').value;
   const res = document.getElementById('anemia-result');
-  if ([si,tibc,ferritin].some(isNaN) || !dialysis || tibc<=0) { res.style.display='none'; return; }
+  if ([siRaw,tibcRaw,ferritin].some(isNaN) || !dialysis || tibcRaw<=0) { res.style.display='none'; return; }
+
+  const isSI = document.getElementById('anem-btn-si').classList.contains('active');
+  const IRON_CONV = 0.1791; // µg/dL × 0.1791 = µmol/L
+  // convert to µg/dL for threshold logic
+  const si   = isSI ? siRaw/IRON_CONV   : siRaw;
+  const tibc = isSI ? tibcRaw/IRON_CONV : tibcRaw;
+  // ferritin: ng/mL = µg/L, same in both — use as-is
+  // helper: display iron values in chosen unit
+  const dIron = v => isSI ? (v*IRON_CONV).toFixed(1)+' µmol/L' : Math.round(v)+' µg/dL';
 
   const tsat = Math.round((si/tibc)*1000)/10;
   const isDark = document.documentElement.getAttribute('data-theme')==='dark';
@@ -1091,6 +1115,31 @@ function calcAnemia() {
   document.getElementById('a-type-badge').style.color=typeColor;
   document.getElementById('a-verdict').innerHTML='<strong style="color:'+typeColor+'">'+type+'</strong> — '+verdict;
   document.getElementById('a-action').innerHTML='<strong style="color:'+typeColor+'">Recommended action:</strong> '+action;
+}
+
+function switchAnemUnit(u){
+  const isSI=u==='si';
+  document.getElementById('anem-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('anem-btn-si').classList.toggle('active',isSI);
+  const si=document.getElementById('a-si'), tibc=document.getElementById('a-tibc');
+  if(isSI){
+    document.getElementById('anem-lbl-si').textContent='Serum Iron (µmol/L)';
+    si.placeholder='e.g. 8.1'; si.min='0.2'; si.max='53.7'; si.step='0.1';
+    document.getElementById('anem-hint-si').textContent='Normal: 10.7–28.6 µmol/L. Low in iron deficiency and ACD';
+    document.getElementById('anem-lbl-tibc').textContent='TIBC (µmol/L)';
+    tibc.placeholder='e.g. 50.1'; tibc.min='17.9'; tibc.max='107.5'; tibc.step='0.1';
+    document.getElementById('anem-hint-tibc').textContent='Total Iron Binding Capacity. Normal: 45–70 µmol/L. Elevated in iron deficiency';
+  } else {
+    document.getElementById('anem-lbl-si').textContent='Serum Iron (µg/dL)';
+    si.placeholder='e.g. 45'; si.min='1'; si.max='300'; si.step='0.1';
+    document.getElementById('anem-hint-si').textContent='Normal: 60–160 µg/dL. Low in iron deficiency and ACD';
+    document.getElementById('anem-lbl-tibc').textContent='TIBC (µg/dL)';
+    tibc.placeholder='e.g. 280'; tibc.min='100'; tibc.max='600'; tibc.step='0.1';
+    document.getElementById('anem-hint-tibc').textContent='Total Iron Binding Capacity. Normal: 250–390 µg/dL. Elevated in iron deficiency';
+  }
+  ['a-si','a-tibc'].forEach(id=>document.getElementById(id).value='');
+  const res=document.querySelector('#calculator .calc-result-box');
+  if(res) res.style.display='none';
 }
 </script>
 </body>

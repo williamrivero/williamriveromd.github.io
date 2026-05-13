@@ -342,6 +342,14 @@
 
   /* ── CALCULATOR SHARED STYLES ── */
   .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+  .unit-btn:not(.active):hover{background:rgba(26,107,114,.08);}
+  html[data-theme="dark"] .unit-btn.active{background:var(--teal);}
+  html[data-theme="dark"] .unit-btn:not(.active){color:#8899aa;}
   .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
   @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
   .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
@@ -880,16 +888,23 @@ body.dark .related-card-title {
     <h2><span data-lang="en">Proteinuria Calculator — UACR Staging, PCR &amp; CKD Risk Classification</span><span data-lang="tl" class="lang-hidden">Kalkulator ng Proteinuria — UACR Staging, PCR at CKD Risk Classification</span><span data-lang="ceb" class="lang-hidden">Kalkulator sa Proteinuria — UACR Staging, PCR ug CKD Risk Classification</span></h2>
     <p><span data-lang="en">Enter your urine protein or albumin results to determine your KDIGO albuminuria category, cross-reference it with your eGFR stage, and understand what your combined risk classification means for monitoring and treatment.</span><span data-lang="tl" class="lang-hidden">Ilagay ang inyong mga resulta ng urine protein o albumin upang matukoy ang inyong KDIGO albuminuria category, i-cross-reference ito sa inyong eGFR stage, at maunawaan kung ano ang ibig sabihin ng inyong combined risk classification para sa pagsubaybay at paggamot.</span><span data-lang="ceb" class="lang-hidden">Isulod ang inyong mga resulta sa urine protein o albumin aron matino ang inyong KDIGO albuminuria category, i-cross-reference kini sa inyong eGFR stage, ug masabtan kung unsa ang kahulogan sa inyong combined risk classification alang sa pagsubay ug pagtambal.</span></p>
     <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="prot-btn-conv" onclick="switchProtUnit('conv')">Conventional (mg/g)</button>
+          <button class="unit-btn" id="prot-btn-si" onclick="switchProtUnit('si')">SI (mg/mmol)</button>
+        </div>
+      </div>
       <div class="calc-grid">
         <div class="calc-field">
-          <label><span data-lang="en">UACR — Urine Albumin:Creatinine Ratio (mg/g)</span><span data-lang="tl" class="lang-hidden">UACR — Urine Albumin:Creatinine Ratio (mg/g)</span><span data-lang="ceb" class="lang-hidden">UACR — Urine Albumin:Creatinine Ratio (mg/g)</span></label>
+          <label id="prot-lbl-uacr"><span data-lang="en">UACR — Urine Albumin:Creatinine Ratio (mg/g)</span><span data-lang="tl" class="lang-hidden">UACR — Urine Albumin:Creatinine Ratio (mg/g)</span><span data-lang="ceb" class="lang-hidden">UACR — Urine Albumin:Creatinine Ratio (mg/g)</span></label>
           <input id="pr-uacr" type="number" min="0" max="20000" step="1" placeholder="e.g. 185" oninput="calcProt()">
-          <div class="field-hint"><span data-lang="en">From spot urine (random sample). Most common test for CKD screening and monitoring. Normal &lt;30 mg/g</span><span data-lang="tl" class="lang-hidden">Mula sa spot urine (random sample). Pinakakaraniwang pagsusuri para sa CKD screening at pagsubaybay. Normal na &lt;30 mg/g</span><span data-lang="ceb" class="lang-hidden">Gikan sa spot urine (random sample). Labing kasagarang pagsusi alang sa CKD screening ug pagsubay. Normal nga &lt;30 mg/g</span></div>
+          <div class="field-hint" id="prot-hint-uacr"><span data-lang="en">From spot urine (random sample). Most common test for CKD screening and monitoring. Normal &lt;30 mg/g</span><span data-lang="tl" class="lang-hidden">Mula sa spot urine (random sample). Pinakakaraniwang pagsusuri para sa CKD screening at pagsubaybay. Normal na &lt;30 mg/g</span><span data-lang="ceb" class="lang-hidden">Gikan sa spot urine (random sample). Labing kasagarang pagsusi alang sa CKD screening ug pagsubay. Normal nga &lt;30 mg/g</span></div>
         </div>
         <div class="calc-field">
-          <label><span data-lang="en">PCR — Protein:Creatinine Ratio (mg/g) — optional</span><span data-lang="tl" class="lang-hidden">PCR — Protein:Creatinine Ratio (mg/g) — opsyonal</span><span data-lang="ceb" class="lang-hidden">PCR — Protein:Creatinine Ratio (mg/g) — opsyonal</span></label>
+          <label id="prot-lbl-pcr"><span data-lang="en">PCR — Protein:Creatinine Ratio (mg/g) — optional</span><span data-lang="tl" class="lang-hidden">PCR — Protein:Creatinine Ratio (mg/g) — opsyonal</span><span data-lang="ceb" class="lang-hidden">PCR — Protein:Creatinine Ratio (mg/g) — opsyonal</span></label>
           <input id="pr-pcr" type="number" min="0" max="30000" step="1" placeholder="e.g. 450" oninput="calcProt()">
-          <div class="field-hint"><span data-lang="en">If PCR is reported instead of UACR. PCR ≈ 24-hour urine protein in g/day. Enter one or both.</span><span data-lang="tl" class="lang-hidden">Kung ang PCR ang naiulat sa halip ng UACR. Ang PCR ≈ 24-oras na urine protein sa g/araw. Ilagay ang isa o pareho.</span><span data-lang="ceb" class="lang-hidden">Kung ang PCR ang gi-report imbes sa UACR. Ang PCR ≈ 24-oras nga urine protein sa g/adlaw. Isulod ang usa o pareho.</span></div>
+          <div class="field-hint" id="prot-hint-pcr"><span data-lang="en">If PCR is reported instead of UACR. PCR ≈ 24-hour urine protein in g/day. Enter one or both.</span><span data-lang="tl" class="lang-hidden">Kung ang PCR ang naiulat sa halip ng UACR. Ang PCR ≈ 24-oras na urine protein sa g/araw. Ilagay ang isa o pareho.</span><span data-lang="ceb" class="lang-hidden">Kung ang PCR ang gi-report imbes sa UACR. Ang PCR ≈ 24-oras nga urine protein sa g/adlaw. Isulod ang usa o pareho.</span></div>
         </div>
         <div class="calc-field">
           <label><span data-lang="en">eGFR (mL/min/1.73m²)</span><span data-lang="tl" class="lang-hidden">eGFR (mL/min/1.73m²)</span><span data-lang="ceb" class="lang-hidden">eGFR (mL/min/1.73m²)</span></label>
@@ -1098,15 +1113,50 @@ function setLang(lang){
 </script>
 
 <script>
+function switchProtUnit(u) {
+  const isSI = u === 'si';
+  document.getElementById('prot-btn-conv').classList.toggle('active', !isSI);
+  document.getElementById('prot-btn-si').classList.toggle('active', isSI);
+  const uacr = document.getElementById('pr-uacr'), pcr = document.getElementById('pr-pcr');
+  if (isSI) {
+    document.getElementById('prot-lbl-uacr').textContent = 'UACR (mg/mmol)';
+    uacr.placeholder = 'e.g. 20.9'; uacr.min = '0'; uacr.max = '2260'; uacr.step = '0.1';
+    document.getElementById('prot-hint-uacr').textContent = 'Urine albumin-creatinine ratio. Normal: <3 mg/mmol. Microalbuminuria: 3–30. Macroalbuminuria: >30 mg/mmol';
+    document.getElementById('prot-lbl-pcr').textContent = 'PCR (mg/mmol) — optional';
+    pcr.placeholder = 'e.g. 50.8'; pcr.min = '0'; pcr.max = '3390'; pcr.step = '0.1';
+    document.getElementById('prot-hint-pcr').textContent = 'Protein-creatinine ratio. Normal: <15 mg/mmol. Significant proteinuria: >50 mg/mmol';
+  } else {
+    document.getElementById('prot-lbl-uacr').textContent = 'UACR (mg/g)';
+    uacr.placeholder = 'e.g. 185'; uacr.min = '0'; uacr.max = '20000'; uacr.step = '1';
+    document.getElementById('prot-hint-uacr').textContent = 'Urine albumin-creatinine ratio. Normal: <30 mg/g. Microalbuminuria: 30–300. Macroalbuminuria: >300 mg/g';
+    document.getElementById('prot-lbl-pcr').textContent = 'PCR (mg/g) — optional';
+    pcr.placeholder = 'e.g. 450'; pcr.min = '0'; pcr.max = '30000'; pcr.step = '1';
+    document.getElementById('prot-hint-pcr').textContent = 'Protein-creatinine ratio. Normal: <150 mg/g. Significant proteinuria: >500 mg/g';
+  }
+  ['pr-uacr', 'pr-pcr'].forEach(id => document.getElementById(id).value = '');
+  const res = document.querySelector('#calculator .calc-result-box');
+  if (res) res.style.display = 'none';
+}
+
 function calcProt() {
-  const uacr = parseFloat(document.getElementById('pr-uacr').value);
-  const pcr  = parseFloat(document.getElementById('pr-pcr').value);
-  const egfr = parseFloat(document.getElementById('pr-egfr').value);
-  const raas = document.getElementById('pr-raas').value;
-  const res  = document.getElementById('prot-result');
-  const hasUACR = !isNaN(uacr);
-  const hasPCR  = !isNaN(pcr);
+  const uacrRaw = parseFloat(document.getElementById('pr-uacr').value);
+  const pcrRaw  = parseFloat(document.getElementById('pr-pcr').value);
+  const egfr    = parseFloat(document.getElementById('pr-egfr').value);
+  const raas    = document.getElementById('pr-raas').value;
+  const res     = document.getElementById('prot-result');
+  const hasUACR = !isNaN(uacrRaw);
+  const hasPCR  = !isNaN(pcrRaw);
   if ((!hasUACR && !hasPCR) || isNaN(egfr) || !raas) { res.style.display='none'; return; }
+
+  const isSI = document.getElementById('prot-btn-si').classList.contains('active');
+  // convert to mg/g for threshold logic (KDIGO stages are in mg/g)
+  const uacr = isSI ? uacrRaw / 0.1130 : uacrRaw;  // mg/mmol → mg/g
+  const pcr  = isSI ? pcrRaw  / 0.1130 : pcrRaw;   // mg/mmol → mg/g
+  // eGFR: no conversion
+
+  // Display helpers — convert back for output
+  const dUACR = v => isSI ? (v * 0.1130).toFixed(1) + ' mg/mmol' : Math.round(v) + ' mg/g';
+  const dPCR  = v => isSI ? (v * 0.1130).toFixed(1) + ' mg/mmol' : Math.round(v) + ' mg/g';
 
   const isDark = document.documentElement.getAttribute('data-theme')==='dark';
 
@@ -1172,8 +1222,10 @@ function calcProt() {
   document.getElementById('pr-freq-badge').style.color=riskColor;
 
   const est24hr = hasUACR ? Math.round(uacr/1000*10)/10 : Math.round(pcr/1000*10)/10;
+  const dispUACR = hasUACR ? dUACR(uacr) : null;
+  const dispPCR  = hasPCR  ? dPCR(pcr)   : null;
   let verdict='KDIGO category '+gCat+'/'+aCat+' — '+riskLevel+' risk of CKD progression and cardiovascular events. '+
-    (hasUACR?'UACR of '+uacr+' mg/g':hasPCR?'PCR of '+pcr+' mg/g':'')+' (≈'+est24hr+' g/day protein in urine). '+
+    (hasUACR?'UACR of '+dispUACR:hasPCR?'PCR of '+dispPCR:'')+' (≈'+est24hr+' g/day protein in urine). '+
     'Combined '+gCat+'×'+aCat+' requires monitoring '+freq+' times per year (every '+(freq>2?'3':12/freq)+' months).';
 
   let action='';

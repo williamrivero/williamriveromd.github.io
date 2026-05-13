@@ -339,6 +339,14 @@
 
   /* ── CALCULATOR SHARED STYLES ── */
   .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+  .unit-btn:not(.active):hover{background:rgba(26,107,114,.08);}
+  html[data-theme="dark"] .unit-btn.active{background:var(--teal);}
+  html[data-theme="dark"] .unit-btn:not(.active){color:#8899aa;}
   .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
   @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
   .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
@@ -777,16 +785,23 @@ body.dark .related-card-title {
     <h2><span data-lang="en">Lab Interpretation Calculator — BUN:Creatinine Ratio, Anion Gap &amp; Key Ratios</span><span data-lang="tl" class="lang-hidden">Calculator para sa Interpretasyon ng Lab — BUN:Creatinine Ratio, Anion Gap at Mga Pangunahing Ratio</span><span data-lang="ceb" class="lang-hidden">Calculator para sa Interpretasyon sa Lab — BUN:Creatinine Ratio, Anion Gap ug Mga Importante nga Ratio</span></h2>
     <p><span data-lang="en">Enter your metabolic panel values to calculate and interpret the most clinically useful derived ratios. These calculations help explain the <em>why</em> behind your kidney lab results — not just the numbers themselves.</span><span data-lang="tl" class="lang-hidden">Ilagay ang inyong mga halaga ng metabolic panel para kalkulahin at bigyang-kahulugan ang mga pinaka-kapaki-pakinabang na ratio. Ang mga kalkulasyong ito ay tumutulong na ipaliwanag ang <em>dahilan</em> sa likod ng inyong mga resulta sa laboratoryo — hindi lamang ang mga bilang mismo.</span><span data-lang="ceb" class="lang-hidden">Isulod ang inyong mga kantidad sa metabolic panel aron makalkula ug mabig-on ang mga labing mapuslanon nga ratio. Kini nga mga kalkulasyon nagtabang sa pagpasabut sa <em>hinungdan</em> sa luyo sa inyong mga resulta sa laboratoryo — dili lang ang mga numero mismo.</span></p>
     <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="lab-btn-conv" onclick="switchLabUnit('conv')">Conventional (mg/dL)</button>
+          <button class="unit-btn" id="lab-btn-si" onclick="switchLabUnit('si')">SI (mmol/L)</button>
+        </div>
+      </div>
       <div class="calc-grid">
         <div class="calc-field">
-          <label>BUN — Blood Urea Nitrogen (mg/dL)</label>
+          <label id="lab-lbl-bun">BUN (mg/dL)</label>
           <input id="lb-bun" type="number" min="1" max="300" step="0.1" placeholder="e.g. 42" oninput="calcLabs()">
-          <div class="field-hint">Also reported as Urea Nitrogen or Serum Urea. Normal: 7–25 mg/dL</div>
+          <div class="field-hint" id="lab-hint-bun">Blood urea nitrogen. Normal: 7–25 mg/dL</div>
         </div>
         <div class="calc-field">
-          <label>Serum Creatinine (mg/dL)</label>
+          <label id="lab-lbl-cr">Serum Creatinine (mg/dL)</label>
           <input id="lb-cr" type="number" min="0.3" max="20" step="0.01" placeholder="e.g. 2.1" oninput="calcLabs()">
-          <div class="field-hint">Normal: 0.6–1.2 mg/dL (male); 0.5–1.1 mg/dL (female)</div>
+          <div class="field-hint" id="lab-hint-cr">Normal: 0.7–1.2 mg/dL</div>
         </div>
         <div class="calc-field">
           <label>Sodium (mEq/L)</label>
@@ -804,16 +819,16 @@ body.dark .related-card-title {
           <div class="field-hint">Also reported as CO₂ or Total CO₂. Normal: 22–26 mEq/L. CKD target: ≥22</div>
         </div>
         <div class="calc-field">
-          <label>Albumin (g/dL)</label>
+          <label id="lab-lbl-alb">Serum Albumin (g/dL)</label>
           <input id="lb-alb" type="number" min="1" max="6" step="0.1" placeholder="e.g. 3.4" oninput="calcLabs()">
-          <div class="field-hint">Normal: 3.5–5.0 g/dL. Used for albumin-corrected anion gap</div>
+          <div class="field-hint" id="lab-hint-alb">Normal: 3.5–5.0 g/dL. Used to correct anion gap for hypoalbuminemia</div>
         </div>
       </div>
       <div class="calc-result-box" id="labs-result">
         <div class="calc-metrics-row">
           <div class="calc-metric-card">
             <div class="cmv" id="lb-buncr-val">—</div>
-            <div class="cml">BUN:Cr Ratio</div>
+            <div class="cml" id="lb-buncr-lbl">BUN:Cr Ratio</div>
             <div class="cmt" id="lb-buncr-badge">Normal: 10–20</div>
           </div>
           <div class="calc-metric-card">
@@ -1013,14 +1028,21 @@ function setLang(lang){
 
 <script>
 function calcLabs() {
-  const bun  = parseFloat(document.getElementById('lb-bun').value);
-  const cr   = parseFloat(document.getElementById('lb-cr').value);
+  const bunRaw = parseFloat(document.getElementById('lb-bun').value);
+  const crRaw  = parseFloat(document.getElementById('lb-cr').value);
   const na   = parseFloat(document.getElementById('lb-na').value);
   const cl   = parseFloat(document.getElementById('lb-cl').value);
   const hco3 = parseFloat(document.getElementById('lb-hco3').value);
-  const alb  = parseFloat(document.getElementById('lb-alb').value);
+  const albRaw = parseFloat(document.getElementById('lb-alb').value);
   const res  = document.getElementById('labs-result');
-  if ([bun,cr,na,cl,hco3,alb].some(isNaN) || cr<=0) { res.style.display='none'; return; }
+  if ([bunRaw,crRaw,na,cl,hco3,albRaw].some(isNaN) || crRaw<=0) { res.style.display='none'; return; }
+
+  const isSI = document.getElementById('lab-btn-si').classList.contains('active');
+  // convert to mg/dL equivalents for threshold logic
+  const bun = isSI ? bunRaw/0.357 : bunRaw;   // SI urea mmol/L → BUN mg/dL
+  const cr  = isSI ? crRaw/88.4   : crRaw;    // µmol/L → mg/dL
+  const alb = isSI ? albRaw/10    : albRaw;   // g/L → g/dL
+  // na, cl, hco3 are mEq/L = mmol/L in both systems — use as-is
 
   const isDark = document.documentElement.getAttribute('data-theme')==='dark';
 
@@ -1059,6 +1081,11 @@ function calcLabs() {
 
   res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
 
+  // Display BUN and Cr in the user's chosen units
+  const bunDisplay = isSI ? (bun*0.357).toFixed(1)+' mmol/L' : bun.toFixed(1)+' mg/dL';
+  const crDisplay  = isSI ? (cr*88.4).toFixed(0)+' µmol/L'  : cr.toFixed(2)+' mg/dL';
+
+  document.getElementById('lb-buncr-lbl').textContent=isSI?'Urea:Cr Ratio':'BUN:Cr Ratio';
   document.getElementById('lb-buncr-val').textContent=buncr;
   document.getElementById('lb-buncr-val').style.color=buncr>=10&&buncr<=20?'#2d7a4f':buncrColor;
   document.getElementById('lb-buncr-badge').textContent=buncr>=10&&buncr<=20?'✓ Normal range':'Outside 10–20';
@@ -1085,10 +1112,11 @@ function calcLabs() {
 
   let verdict='', action='';
 
+  const bunLabel = isSI ? 'Urea' : 'BUN';
   const parts=[];
-  if (buncr>20) parts.push('BUN:Cr ratio of '+buncr+' is elevated (>20) — this suggests a pre-renal component (dehydration, bleeding, high protein intake, or steroid use) is raising BUN disproportionately to creatinine. In the context of CKD, it may also reflect inadequate fluid intake or recent dietary protein excess.');
-  else if (buncr<10) parts.push('BUN:Cr ratio of '+buncr+' is low (<10) — this may suggest low protein intake (malnutrition), liver disease (reduced urea synthesis), or over-hydration diluting BUN. In dialysis patients, very low pre-dialysis BUN may indicate inadequate dietary protein intake.');
-  else parts.push('BUN:Cr ratio of '+buncr+' is in the normal intrinsic renal range (10–20), consistent with chronic kidney disease as the primary driver of elevated urea and creatinine.');
+  if (buncr>20) parts.push(bunLabel+':Cr ratio of '+buncr+' is elevated (>20) — this suggests a pre-renal component (dehydration, bleeding, high protein intake, or steroid use) is raising '+bunLabel+' disproportionately to creatinine. In the context of CKD, it may also reflect inadequate fluid intake or recent dietary protein excess.');
+  else if (buncr<10) parts.push(bunLabel+':Cr ratio of '+buncr+' is low (<10) — this may suggest low protein intake (malnutrition), liver disease (reduced urea synthesis), or over-hydration diluting '+bunLabel+'. In dialysis patients, very low pre-dialysis '+bunLabel+' may indicate inadequate dietary protein intake.');
+  else parts.push(bunLabel+':Cr ratio of '+buncr+' is in the normal intrinsic renal range (10–20), consistent with chronic kidney disease as the primary driver of elevated urea and creatinine.');
 
   if (cag>12) parts.push('Corrected anion gap of '+cag+' mEq/L is elevated — indicates unmeasured anions (MUDPILES mnemonic: Methanol, Uremia, DKA, Propylene glycol, Isoniazid, Lactic acidosis, Ethylene glycol, Salicylates). In CKD, uremic acidosis is a common cause of elevated AG.');
   else parts.push('Corrected anion gap of '+cag+' mEq/L is normal — if acidosis is present, it is a normal-gap (hyperchloremic) metabolic acidosis, which in CKD suggests tubular acidosis or early renal bicarbonate wasting.');
@@ -1105,6 +1133,38 @@ function calcLabs() {
 
   document.getElementById('lb-verdict').innerHTML='<strong style="color:'+borderColor+'">'+(issues===0?'Derived ratios within range':issues+' finding'+(issues>1?'s':'')+' to review')+'</strong> — '+verdict;
   document.getElementById('lb-action').innerHTML='<strong style="color:'+borderColor+'">Clinical interpretation:</strong> '+actionParts.join(' ');
+}
+
+function switchLabUnit(u){
+  const isSI=u==='si';
+  document.getElementById('lab-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('lab-btn-si').classList.toggle('active',isSI);
+  const bun=document.getElementById('lb-bun'), cr=document.getElementById('lb-cr');
+  const alb=document.getElementById('lb-alb');
+  if(isSI){
+    document.getElementById('lab-lbl-bun').textContent='Blood Urea (Urea, mmol/L)';
+    bun.placeholder='e.g. 15.0'; bun.min='0.4'; bun.max='107'; bun.step='0.1';
+    document.getElementById('lab-hint-bun').textContent='SI labs report urea in mmol/L. Normal: 2.5–8.0 mmol/L';
+    document.getElementById('lab-lbl-cr').textContent='Serum Creatinine (µmol/L)';
+    cr.placeholder='e.g. 186'; cr.min='27'; cr.max='1770'; cr.step='1';
+    document.getElementById('lab-hint-cr').textContent='Normal: ~62–106 µmol/L. Divide by 88.4 to get mg/dL equivalent';
+    document.getElementById('lab-lbl-alb').textContent='Serum Albumin (g/L)';
+    alb.placeholder='e.g. 34'; alb.min='10'; alb.max='60'; alb.step='1';
+    document.getElementById('lab-hint-alb').textContent='Normal: 35–50 g/L. Used to correct anion gap for hypoalbuminemia';
+  } else {
+    document.getElementById('lab-lbl-bun').textContent='BUN (mg/dL)';
+    bun.placeholder='e.g. 42'; bun.min='1'; bun.max='300'; bun.step='0.1';
+    document.getElementById('lab-hint-bun').textContent='Blood urea nitrogen. Normal: 7–25 mg/dL';
+    document.getElementById('lab-lbl-cr').textContent='Serum Creatinine (mg/dL)';
+    cr.placeholder='e.g. 2.1'; cr.min='0.3'; cr.max='20'; cr.step='0.01';
+    document.getElementById('lab-hint-cr').textContent='Normal: 0.7–1.2 mg/dL';
+    document.getElementById('lab-lbl-alb').textContent='Serum Albumin (g/dL)';
+    alb.placeholder='e.g. 3.4'; alb.min='1'; alb.max='6'; alb.step='0.1';
+    document.getElementById('lab-hint-alb').textContent='Normal: 3.5–5.0 g/dL. Used to correct anion gap for hypoalbuminemia';
+  }
+  ['lb-bun','lb-cr','lb-alb'].forEach(id=>document.getElementById(id).value='');
+  const res=document.querySelector('#calculator .calc-result-box');
+  if(res) res.style.display='none';
 }
 </script>
 </body>

@@ -242,6 +242,14 @@
   .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
   .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
   @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+  .unit-btn:not(.active):hover{background:rgba(26,107,114,.08);}
+  html[data-theme="dark"] .unit-btn.active{background:var(--teal);}
+  html[data-theme="dark"] .unit-btn:not(.active){color:#8899aa;}
   .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
   .calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;}
   .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
@@ -510,15 +518,22 @@ Tawagan me ing doktor mu nung akit mu ing alin man karing symptoms a ating sulat
 <h2>CI-AKI Risk Calculator — Mehran Score &amp; Maximum Safe Contrast Volume</h2>
 <p>Calculate the Mehran risk score for contrast-induced acute kidney injury before any procedure involving iodinated contrast dye (CT scan with contrast, coronary angiogram, angioplasty). Also calculates the maximum safe contrast volume for your kidney function.</p>
 <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="ci-btn-conv" onclick="switchCIUnit('conv')">Conventional (mg/dL)</button>
+          <button class="unit-btn" id="ci-btn-si" onclick="switchCIUnit('si')">SI (µmol/L)</button>
+        </div>
+      </div>
 <div class="calc-grid">
 <div class="calc-field">
 <label>eGFR (mL/min/1.73m²)</label>
 <input id="ci-egfr" max="120" min="1" oninput="calcCI()" placeholder="e.g. 38" step="0.1" type="number"/>
 </div>
 <div class="calc-field">
-<label>Serum Creatinine (mg/dL)</label>
+<label id="ci-lbl-cr">Serum Creatinine (mg/dL)</label>
 <input id="ci-cr" max="15" min="0.3" oninput="calcCI()" placeholder="e.g. 1.8" step="0.01" type="number"/>
-<div class="field-hint">Used for max contrast volume formula: 5 mL × body weight ÷ creatinine</div>
+<div class="field-hint" id="ci-hint-cr">Used for max contrast volume formula: 5 mL × body weight ÷ creatinine</div>
 </div>
 <div class="calc-field">
 <label>Body Weight (kg)</label>
@@ -706,12 +721,33 @@ function setGuideLang(lang) {
 
 </script>
 <script>
+function switchCIUnit(u){
+  const isSI=u==='si';
+  document.getElementById('ci-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('ci-btn-si').classList.toggle('active',isSI);
+  const cr=document.getElementById('ci-cr');
+  if(isSI){
+    document.getElementById('ci-lbl-cr').textContent='Serum Creatinine (µmol/L)';
+    cr.placeholder='e.g. 159'; cr.min='27'; cr.max='1326'; cr.step='1';
+    document.getElementById('ci-hint-cr').textContent='Enter in µmol/L. Used for maximum safe contrast volume calculation';
+  } else {
+    document.getElementById('ci-lbl-cr').textContent='Serum Creatinine (mg/dL)';
+    cr.placeholder='e.g. 1.8'; cr.min='0.3'; cr.max='15'; cr.step='0.01';
+    document.getElementById('ci-hint-cr').textContent='Used for max contrast volume formula: 5 mL × body weight ÷ creatinine';
+  }
+  cr.value='';
+  const res=document.querySelector('#calculator .calc-result-box');
+  if(res) res.style.display='none';
+}
+
 function calcCI() {
-  const egfr = parseFloat(document.getElementById('ci-egfr').value);
-  const cr   = parseFloat(document.getElementById('ci-cr').value);
-  const wt   = parseFloat(document.getElementById('ci-wt').value);
-  const res  = document.getElementById('ci-result');
-  if ([egfr,cr,wt].some(isNaN)) { res.style.display='none'; return; }
+  const egfr  = parseFloat(document.getElementById('ci-egfr').value);
+  const crRaw = parseFloat(document.getElementById('ci-cr').value);
+  const wt    = parseFloat(document.getElementById('ci-wt').value);
+  const res   = document.getElementById('ci-result');
+  if ([egfr,crRaw,wt].some(isNaN)) { res.style.display='none'; return; }
+  const isSI = document.getElementById('ci-btn-si').classList.contains('active');
+  const cr   = isSI ? crRaw/88.4 : crRaw;  // convert µmol/L → mg/dL for formula
 
   const isDark = document.documentElement.getAttribute('data-theme')==='dark';
 
@@ -756,10 +792,11 @@ function calcCI() {
   document.getElementById('ci-risk-badge').style.color=riskColor;
   document.getElementById('ci-maxvol-val').textContent=maxVol;
   document.getElementById('ci-maxvol-val').style.color=maxVol<100?'#c0392b':(maxVol<200?'#9a6500':'#2d7a4f');
-  document.getElementById('ci-maxvol-badge').textContent='5 × '+wt+'kg ÷ '+cr+' mg/dL';
+  const crDisp = isSI ? (cr*88.4).toFixed(0)+' µmol/L' : cr.toFixed(2)+' mg/dL';
+  document.getElementById('ci-maxvol-badge').textContent='5 × '+wt+'kg ÷ '+cr.toFixed(2)+' mg/dL';
 
   let verdict='Mehran score of '+score+' — '+riskLabel+' risk of contrast-induced AKI (probability: '+riskPct+'). '+
-    'Maximum safe iodinated contrast volume for eGFR '+egfr+' and creatinine '+cr+': <strong>'+maxVol+' mL</strong>. '+
+    'Maximum safe iodinated contrast volume for eGFR '+egfr+' and creatinine '+crDisp+': <strong>'+maxVol+' mL</strong>. '+
     (maxVol<150?'This is a very restricted volume — low-osmolar or iso-osmolar contrast (iodixanol) should be used, and the minimum necessary volume only. ':'');
 
   let action='';

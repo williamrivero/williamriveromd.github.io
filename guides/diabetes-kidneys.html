@@ -462,6 +462,14 @@
 
   /* ── CALCULATOR SHARED STYLES ── */
   .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+  .unit-btn:not(.active):hover{background:rgba(26,107,114,.08);}
+  html[data-theme="dark"] .unit-btn.active{background:var(--teal);}
+  html[data-theme="dark"] .unit-btn:not(.active){color:#8899aa;}
   .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
   @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
   .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
@@ -1077,6 +1085,13 @@ body.dark .related-card-title {
     <h2><span data-lang="en">DKD Risk &amp; Treatment Calculator — SGLT2i Eligibility, HbA1c, UACR</span><span data-lang="tl" class="lang-hidden">Calculator ng Panganib at Paggamot ng DKD — SGLT2i Eligibility, HbA1c, UACR</span><span data-lang="ceb" class="lang-hidden">Calculator sa Risgo ug Pagtambal sa DKD — SGLT2i Eligibility, HbA1c, UACR</span></h2>
     <p><span data-lang="en">Enter your most recent lab results to check whether you qualify for kidney-protective SGLT2 inhibitor therapy, see what your HbA1c means in average daily glucose, and understand your UACR risk category.</span><span data-lang="tl" class="lang-hidden">Ilagay ang inyong pinakabagong mga resulta sa laboratoryo upang suriin kung kwalipikado kayo para sa kidney-protective SGLT2 inhibitor therapy, makita kung ano ang ibig sabihin ng inyong HbA1c sa average daily glucose, at maunawaan ang inyong UACR risk category.</span><span data-lang="ceb" class="lang-hidden">Isulod ang inyong pinakabag-o nga mga resulta sa laboratoryo aron susihon kon kwalipikado kamo alang sa kidney-protective SGLT2 inhibitor therapy, makita kon unsa ang kahulogan sa inyong HbA1c sa average daily glucose, ug masabtan ang inyong UACR risk category.</span></p>
     <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="dkd-btn-conv" onclick="switchDKDUnit('conv')">Conventional</button>
+          <button class="unit-btn" id="dkd-btn-si" onclick="switchDKDUnit('si')">SI (IFCC / mmol)</button>
+        </div>
+      </div>
       <div class="calc-grid">
         <div class="calc-field">
           <label>eGFR (mL/min/1.73m²)</label>
@@ -1084,14 +1099,14 @@ body.dark .related-card-title {
           <div class="field-hint">Your most recent kidney function result. Used to determine SGLT2i eligibility and dosing</div>
         </div>
         <div class="calc-field">
-          <label>HbA1c (%)</label>
+          <label id="dkd-lbl-hba1c">HbA1c (% — NGSP)</label>
           <input id="d-hba1c" type="number" min="4" max="18" step="0.1" placeholder="e.g. 7.8" oninput="calcDKD()">
-          <div class="field-hint">3-month average blood sugar control marker. Target: 7–8% for most CKD-DM patients</div>
+          <div class="field-hint" id="dkd-hint-hba1c">NGSP/DCCT scale (%). Target in DKD: 7.0–7.5%. Avoid &lt;7% in CKD (hypoglycemia risk)</div>
         </div>
         <div class="calc-field">
-          <label>UACR (mg/g)</label>
+          <label id="dkd-lbl-uacr">UACR (mg/g)</label>
           <input id="d-uacr" type="number" min="0" max="10000" step="1" placeholder="e.g. 185" oninput="calcDKD()">
-          <div class="field-hint">Urine albumin-to-creatinine ratio from spot urine. Normal &lt;30 mg/g</div>
+          <div class="field-hint" id="dkd-hint-uacr">Urine albumin-to-creatinine ratio from spot urine. Normal &lt;30 mg/g. Microalbuminuria: 30–300 mg/g. Macroalbuminuria: &gt;300 mg/g</div>
         </div>
         <div class="calc-field">
           <label>Current SGLT2 inhibitor?</label>
@@ -1308,13 +1323,48 @@ function setLang(lang){
 </script>
 
 <script>
+function switchDKDUnit(u){
+  const isSI=u==='si';
+  document.getElementById('dkd-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('dkd-btn-si').classList.toggle('active',isSI);
+  const hba=document.getElementById('d-hba1c'), uacr=document.getElementById('d-uacr');
+  if(isSI){
+    document.getElementById('dkd-lbl-hba1c').textContent='HbA1c (mmol/mol — IFCC)';
+    hba.placeholder='e.g. 62'; hba.min='20'; hba.max='164'; hba.step='1';
+    document.getElementById('dkd-hint-hba1c').textContent='IFCC scale (mmol/mol). Target in DKD: 53–58 mmol/mol. To convert: NGSP% = (IFCC÷10.929)+2.15';
+    document.getElementById('dkd-lbl-uacr').textContent='UACR (mg/mmol)';
+    uacr.placeholder='e.g. 20.9'; uacr.min='0'; uacr.max='1130'; uacr.step='0.1';
+    document.getElementById('dkd-hint-uacr').textContent='Normal: <3 mg/mmol. Microalbuminuria: 3–30 mg/mmol. Macroalbuminuria: >30 mg/mmol';
+  } else {
+    document.getElementById('dkd-lbl-hba1c').textContent='HbA1c (% — NGSP)';
+    hba.placeholder='e.g. 7.8'; hba.min='4'; hba.max='18'; hba.step='0.1';
+    document.getElementById('dkd-hint-hba1c').textContent='NGSP/DCCT scale (%). Target in DKD: 7.0–7.5%. Avoid <7% in CKD (hypoglycemia risk)';
+    document.getElementById('dkd-lbl-uacr').textContent='UACR (mg/g)';
+    uacr.placeholder='e.g. 185'; uacr.min='0'; uacr.max='10000'; uacr.step='1';
+    document.getElementById('dkd-hint-uacr').textContent='Normal: <30 mg/g. Microalbuminuria: 30–300 mg/g. Macroalbuminuria: >300 mg/g';
+  }
+  ['d-hba1c','d-uacr'].forEach(id=>document.getElementById(id).value='');
+  const res=document.querySelector('#calculator .calc-result-box');
+  if(res) res.style.display='none';
+}
+
 function calcDKD() {
   const egfr = parseFloat(document.getElementById('d-egfr').value);
-  const hba1c = parseFloat(document.getElementById('d-hba1c').value);
-  const uacr = parseFloat(document.getElementById('d-uacr').value);
+  const hba1cRaw = parseFloat(document.getElementById('d-hba1c').value);
+  const uacrRaw = parseFloat(document.getElementById('d-uacr').value);
   const sglt2 = document.getElementById('d-sglt2').value;
   const res = document.getElementById('dkd-result');
-  if ([egfr,hba1c,uacr].some(isNaN) || !sglt2) { res.style.display='none'; return; }
+  if ([egfr,hba1cRaw,uacrRaw].some(isNaN) || !sglt2) { res.style.display='none'; return; }
+
+  const isSI = document.getElementById('dkd-btn-si').classList.contains('active');
+  // convert to NGSP% and mg/g for threshold logic
+  const hba1c = isSI ? (hba1cRaw/10.929)+2.15 : hba1cRaw;  // IFCC mmol/mol → NGSP%
+  const uacr  = isSI ? uacrRaw/0.1130          : uacrRaw;   // mg/mmol → mg/g
+  // eGFR: no conversion
+
+  // display values (unit-aware)
+  const hbaDisp  = isSI ? hba1cRaw.toFixed(0)+' mmol/mol' : hba1c.toFixed(1)+'%';
+  const uacrDisp = isSI ? uacrRaw.toFixed(1)+' mg/mmol'   : Math.round(uacr)+' mg/g';
 
   const isDark = document.documentElement.getAttribute('data-theme')==='dark';
   const eag = Math.round(28.7*hba1c-46.7);
@@ -1332,7 +1382,7 @@ function calcDKD() {
   } else {
     sglt2Status='Eligible'; sglt2Color='#2d7a4f';
     sglt2Msg=sglt2==='none'
-      ? 'eGFR '+egfr+' qualifies for both dapagliflozin and empagliflozin. '+(uacr>=200?'With UACR '+uacr+' mg/g, you have a strong indication — SGLT2i reduce proteinuria by 30–40% and slow GFR decline independently of glucose control.':'SGLT2 inhibitors are kidney-protective regardless of HbA1c. Discuss initiation with your nephrologist.')
+      ? 'eGFR '+egfr+' qualifies for both dapagliflozin and empagliflozin. '+(uacr>=200?'With UACR '+uacrDisp+', you have a strong indication — SGLT2i reduce proteinuria by 30–40% and slow GFR decline independently of glucose control.':'SGLT2 inhibitors are kidney-protective regardless of HbA1c. Discuss initiation with your nephrologist.')
       : 'You are already taking an SGLT2i — continue unless eGFR falls below threshold or AKI occurs. Note: the kidney-protective effect persists even at eGFR as low as 20–25; do not stop without physician guidance.';
   }
 
@@ -1346,10 +1396,10 @@ function calcDKD() {
   const hba1cOk = hba1c >= 7.0 && hba1c <= 8.0;
   const hba1cLow = hba1c < 7.0;
   let hba1cMsg = hba1cOk
-    ? 'HbA1c '+hba1c+'% is within the recommended 7–8% range for CKD-DM patients ('+eag+' mg/dL average glucose). Tight control &lt;7% risks hypoglycemia which independently worsens kidney outcomes.'
+    ? 'HbA1c '+hbaDisp+' is within the recommended range for CKD-DM patients ('+eag+' mg/dL average glucose). Tight control &lt;7% (53 mmol/mol) risks hypoglycemia which independently worsens kidney outcomes.'
     : hba1cLow
-    ? 'HbA1c '+hba1c+'% ('+eag+' mg/dL average glucose) is below the 7% lower limit for CKD patients — hypoglycemia risk is elevated. Discuss liberalizing glycemic targets slightly with your nephrologist, especially if on insulin or sulfonylurea.'
-    : 'HbA1c '+hba1c+'% ('+eag+' mg/dL average glucose) is above target (7–8%). Each 1% reduction in HbA1c reduces DKD progression risk by 25–30%. Consider medication review, dietary carbohydrate reduction, and physical activity.';
+    ? 'HbA1c '+hbaDisp+' ('+eag+' mg/dL average glucose) is below the lower limit for CKD patients — hypoglycemia risk is elevated. Discuss liberalizing glycemic targets slightly with your nephrologist, especially if on insulin or sulfonylurea.'
+    : 'HbA1c '+hbaDisp+' ('+eag+' mg/dL average glucose) is above target. Each 1% (11 mmol/mol) reduction in HbA1c reduces DKD progression risk by 25–30%. Consider medication review, dietary carbohydrate reduction, and physical activity.';
 
   // Overall
   const problems = [!dapaOk||!empaOk, !hba1cOk, uacr>=300].filter(Boolean).length;
@@ -1366,14 +1416,14 @@ function calcDKD() {
   document.getElementById('d-sglt2-badge').style.color=sglt2Color;
   document.getElementById('d-eag-val').textContent=eag;
   document.getElementById('d-eag-val').style.color=hba1cOk?'#2d7a4f':(hba1cLow?'#9a6500':'#c0392b');
-  document.getElementById('d-eag-badge').textContent='HbA1c '+hba1c+'% → '+eag+' mg/dL';
+  document.getElementById('d-eag-badge').textContent='HbA1c '+hbaDisp+' → '+eag+' mg/dL';
   document.getElementById('d-eag-badge').style.color=hba1cOk?'#2d7a4f':'#c0392b';
   document.getElementById('d-uacr-status').textContent=uacrCat; document.getElementById('d-uacr-status').style.color=uacrColor;
-  document.getElementById('d-uacr-badge').textContent=uacr<30?'Normal (<30 mg/g)':(uacr<300?'Microalbuminuria':'Macroalbuminuria');
+  document.getElementById('d-uacr-badge').textContent=uacrDisp+(uacr<30?' — Normal':(uacr<300?' — Microalbuminuria':' — Macroalbuminuria'));
   document.getElementById('d-uacr-badge').style.color=uacrColor;
 
   document.getElementById('d-verdict').innerHTML='<strong style="color:'+borderColor+'">Summary</strong> — '+sglt2Msg+' '+hba1cMsg;
-  document.getElementById('d-action').innerHTML='<strong style="color:'+borderColor+'">Key actions:</strong> '+(uacr>=30?'RAAS blockade (ACE inhibitor or ARB) is indicated for UACR ≥30 mg/g with DM. ':'')+(sglt2==='none'&&dapaOk?'Initiate SGLT2i (dapagliflozin 10mg OD — Catania or Rhea brand available in Philippines). ':'')+(uacr>=300?'With UACR ≥300, target BP &lt;130/80 mmHg and consider finerenone (Firialta) if not already on it. ':'')+'Monitor eGFR and UACR every 3–6 months.';
+  document.getElementById('d-action').innerHTML='<strong style="color:'+borderColor+'">Key actions:</strong> '+(uacr>=30?'RAAS blockade (ACE inhibitor or ARB) is indicated for UACR ≥30 mg/g (≥3.4 mg/mmol) with DM. ':'')+(sglt2==='none'&&dapaOk?'Initiate SGLT2i (dapagliflozin 10mg OD — Catania or Rhea brand available in Philippines). ':'')+(uacr>=300?'With UACR '+uacrDisp+', target BP &lt;130/80 mmHg and consider finerenone (Firialta) if not already on it. ':'')+'Monitor eGFR and UACR every 3–6 months.';
 }
 </script>
 </body>

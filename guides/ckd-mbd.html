@@ -346,6 +346,14 @@
 
   /* ── CALCULATOR SHARED STYLES ── */
   .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+  .unit-btn:not(.active):hover{background:rgba(26,107,114,.08);}
+  html[data-theme="dark"] .unit-btn.active{background:var(--teal);}
+  html[data-theme="dark"] .unit-btn:not(.active){color:#8899aa;}
   .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
   @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
   .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
@@ -787,26 +795,33 @@ Paki-paste mu pu ing original English text, at i-translate ke king natural a Kap
 <h2>CKD-MBD Lab Calculator — Ca×P Product, Corrected Calcium &amp; PTH Staging</h2>
 <p>Enter your mineral metabolism lab results to calculate the calcium-phosphorus product, correct your calcium for albumin, and see whether your PTH is within the KDIGO 2024 target range for your dialysis status.</p>
 <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="mbd-btn-conv" onclick="switchMBDUnit('conv')">Conventional</button>
+          <button class="unit-btn" id="mbd-btn-si" onclick="switchMBDUnit('si')">SI</button>
+        </div>
+      </div>
 <div class="calc-grid">
 <div class="calc-field">
-<label>Total Calcium (mg/dL)</label>
+<label id="mbd-lbl-ca">Total Calcium (mg/dL)</label>
 <input id="m-ca" max="15" min="4" oninput="calcMBD()" placeholder="e.g. 8.8" step="0.1" type="number"/>
-<div class="field-hint">Normal: 8.4–10.2 mg/dL. This is the raw value — we correct it for albumin below</div>
+<div class="field-hint" id="mbd-hint-ca">Normal: 8.4–10.2 mg/dL. CKD target: 8.4–10.2 mg/dL</div>
 </div>
 <div class="calc-field">
-<label>Phosphorus (mg/dL)</label>
+<label id="mbd-lbl-phos">Serum Phosphorus (mg/dL)</label>
 <input id="m-phos" max="15" min="1" oninput="calcMBD()" placeholder="e.g. 5.2" step="0.1" type="number"/>
-<div class="field-hint">Pre-dialysis or fasting value. HD target: 3.5–5.5 mg/dL</div>
+<div class="field-hint" id="mbd-hint-phos">Normal: 2.5–4.5 mg/dL. CKD-MBD target: &lt;4.5 mg/dL</div>
 </div>
 <div class="calc-field">
-<label>Albumin (g/dL)</label>
+<label id="mbd-lbl-alb">Serum Albumin (g/dL)</label>
 <input id="m-alb" max="6" min="1" oninput="calcMBD()" placeholder="e.g. 3.2" step="0.1" type="number"/>
-<div class="field-hint">Used to correct calcium. Normal: 3.5–5.0 g/dL. Dialysis patients often have low albumin</div>
+<div class="field-hint" id="mbd-hint-alb">Normal: 3.5–5.0 g/dL. Used for corrected calcium calculation</div>
 </div>
 <div class="calc-field">
-<label>iPTH (pg/mL)</label>
+<label id="mbd-lbl-pth">Intact PTH (pg/mL)</label>
 <input id="m-pth" max="3000" min="1" oninput="calcMBD()" placeholder="e.g. 450" step="1" type="number"/>
-<div class="field-hint">Intact parathyroid hormone. Lab may report as PTH or iPTH</div>
+<div class="field-hint" id="mbd-hint-pth">CKD-MBD target range varies by stage — see KDIGO 2017 targets below</div>
 </div>
 <div class="calc-field">
 <label>Dialysis Status</label>
@@ -991,25 +1006,77 @@ function setLang(lang){
 })();
 </script>
 <script>
+function switchMBDUnit(u){
+  const isSI=u==='si';
+  document.getElementById('mbd-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('mbd-btn-si').classList.toggle('active',isSI);
+  const ca=document.getElementById('m-ca'), ph=document.getElementById('m-phos');
+  const alb=document.getElementById('m-alb'), pth=document.getElementById('m-pth');
+  if(isSI){
+    document.getElementById('mbd-lbl-ca').textContent='Serum Calcium (mmol/L)';
+    ca.placeholder='e.g. 2.20'; ca.min='1.0'; ca.max='3.75'; ca.step='0.01';
+    document.getElementById('mbd-hint-ca').textContent='Normal: 2.10–2.55 mmol/L. CKD target: 2.10–2.54 mmol/L';
+    document.getElementById('mbd-lbl-phos').textContent='Serum Phosphorus (mmol/L)';
+    ph.placeholder='e.g. 1.68'; ph.min='0.32'; ph.max='4.84'; ph.step='0.01';
+    document.getElementById('mbd-hint-phos').textContent='Normal: 0.81–1.45 mmol/L. CKD-MBD target: <1.45 mmol/L';
+    document.getElementById('mbd-lbl-alb').textContent='Serum Albumin (g/L)';
+    alb.placeholder='e.g. 32'; alb.min='10'; alb.max='60'; alb.step='1';
+    document.getElementById('mbd-hint-alb').textContent='Normal: 35–50 g/L. Used for corrected calcium calculation';
+    document.getElementById('mbd-lbl-pth').textContent='Intact PTH (pmol/L)';
+    pth.placeholder='e.g. 47'; pth.min='1'; pth.max='315'; pth.step='1';
+    document.getElementById('mbd-hint-pth').textContent='CKD-MBD target range varies by stage — see KDIGO 2017 targets below';
+  } else {
+    document.getElementById('mbd-lbl-ca').textContent='Serum Calcium (mg/dL)';
+    ca.placeholder='e.g. 8.8'; ca.min='4'; ca.max='15'; ca.step='0.1';
+    document.getElementById('mbd-hint-ca').textContent='Normal: 8.4–10.2 mg/dL. CKD target: 8.4–10.2 mg/dL';
+    document.getElementById('mbd-lbl-phos').textContent='Serum Phosphorus (mg/dL)';
+    ph.placeholder='e.g. 5.2'; ph.min='1'; ph.max='15'; ph.step='0.1';
+    document.getElementById('mbd-hint-phos').textContent='Normal: 2.5–4.5 mg/dL. CKD-MBD target: <4.5 mg/dL';
+    document.getElementById('mbd-lbl-alb').textContent='Serum Albumin (g/dL)';
+    alb.placeholder='e.g. 3.2'; alb.min='1'; alb.max='6'; alb.step='0.1';
+    document.getElementById('mbd-hint-alb').textContent='Normal: 3.5–5.0 g/dL. Used for corrected calcium calculation';
+    document.getElementById('mbd-lbl-pth').textContent='Intact PTH (pg/mL)';
+    pth.placeholder='e.g. 450'; pth.min='1'; pth.max='3000'; pth.step='1';
+    document.getElementById('mbd-hint-pth').textContent='CKD-MBD target range varies by stage — see KDIGO 2017 targets below';
+  }
+  ['m-ca','m-phos','m-alb','m-pth'].forEach(id=>document.getElementById(id).value='');
+  const res=document.querySelector('#calculator .calc-result-box');
+  if(res) res.style.display='none';
+}
+
 function calcMBD() {
-  const ca = parseFloat(document.getElementById('m-ca').value);
-  const phos = parseFloat(document.getElementById('m-phos').value);
-  const alb = parseFloat(document.getElementById('m-alb').value);
-  const pth = parseFloat(document.getElementById('m-pth').value);
+  const caRaw = parseFloat(document.getElementById('m-ca').value);
+  const phosRaw = parseFloat(document.getElementById('m-phos').value);
+  const albRaw = parseFloat(document.getElementById('m-alb').value);
+  const pthRaw = parseFloat(document.getElementById('m-pth').value);
   const dial = document.getElementById('m-dialysis').value;
   const res = document.getElementById('mbd-result');
-  if ([ca,phos,alb,pth].some(isNaN) || !dial) { res.style.display='none'; return; }
+  if ([caRaw,phosRaw,albRaw,pthRaw].some(isNaN) || !dial) { res.style.display='none'; return; }
+
+  const isSI = document.getElementById('mbd-btn-si').classList.contains('active');
+  // convert all to mg/dL / g/dL / pg/mL for threshold logic
+  const ca   = isSI ? caRaw/0.2495  : caRaw;
+  const phos = isSI ? phosRaw/0.3229 : phosRaw;
+  const alb  = isSI ? albRaw/10      : albRaw;
+  const pth  = isSI ? pthRaw*9.524   : pthRaw;
+
+  // Display formatters — convert back for display
+  const dCa   = v => isSI ? (v*0.2495).toFixed(2)+' mmol/L' : v.toFixed(1)+' mg/dL';
+  const dPhos = v => isSI ? (v*0.3229).toFixed(2)+' mmol/L' : v.toFixed(1)+' mg/dL';
+  const dAlb  = v => isSI ? (v*10).toFixed(0)+' g/L'        : v.toFixed(1)+' g/dL';
+  const dPTH  = v => isSI ? (v/9.524).toFixed(1)+' pmol/L'  : Math.round(v)+' pg/mL';
 
   const isDark = document.documentElement.getAttribute('data-theme')==='dark';
   const corrCa = Math.round((ca + 0.8*(4.0-alb))*100)/100;
+  // Ca×P product always in mg²/dL² (standard clinical convention)
   const caprod = Math.round(corrCa*phos*10)/10;
 
-  // PTH targets by stage
+  // PTH targets by stage (always in pg/mL internally)
   let pthLow, pthHigh, pthLabel;
-  if (dial==='hd'||dial==='pd') { pthLow=130; pthHigh=600; pthLabel='HD/PD target: 130–600 pg/mL'; }
-  else if (dial==='ckd3') { pthLow=35; pthHigh=70; pthLabel='CKD 3 target: 35–70 pg/mL'; }
-  else if (dial==='ckd4') { pthLow=70; pthHigh=110; pthLabel='CKD 4 target: 70–110 pg/mL'; }
-  else { pthLow=110; pthHigh=300; pthLabel='CKD 5 target: 110–300 pg/mL'; }
+  if (dial==='hd'||dial==='pd') { pthLow=130; pthHigh=600; pthLabel='HD/PD target: '+dPTH(130)+'–'+dPTH(600); }
+  else if (dial==='ckd3') { pthLow=35; pthHigh=70; pthLabel='CKD 3 target: '+dPTH(35)+'–'+dPTH(70); }
+  else if (dial==='ckd4') { pthLow=70; pthHigh=110; pthLabel='CKD 4 target: '+dPTH(70)+'–'+dPTH(110); }
+  else { pthLow=110; pthHigh=300; pthLabel='CKD 5 target: '+dPTH(110)+'–'+dPTH(300); }
 
   const capOk = caprod < 55;
   const corrCaOk = corrCa >= 8.4 && corrCa <= 10.2;
@@ -1026,19 +1093,19 @@ function calcMBD() {
 
   res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
 
-  // Ca×P
-  document.getElementById('m-cap-val').textContent=caprod;
+  // Ca×P (always mg²/dL²)
+  document.getElementById('m-cap-val').textContent=caprod.toFixed(0)+' mg²/dL²';
   document.getElementById('m-cap-val').style.color=capOk?'#2d7a4f':'#c0392b';
   document.getElementById('m-cap-badge').textContent=capOk?'✓ Safe (<55)':'✗ High risk (≥55)';
   document.getElementById('m-cap-badge').style.color=capOk?'#2d7a4f':'#c0392b';
 
-  // Corrected Ca
-  document.getElementById('m-cca-val').textContent=corrCa;
-  document.getElementById('m-cca-val').style.color=corrCaOk?'#2d7a4f':(corrCa<8.4?'#c0392b':'#c0392b');
-  document.getElementById('m-cca-badge').textContent=corrCaOk?'✓ Normal (8.4–10.2)':(corrCa<8.4?'✗ Hypocalcemia':'✗ Hypercalcemia');
+  // Corrected Ca (displayed in selected unit)
+  document.getElementById('m-cca-val').textContent=dCa(corrCa);
+  document.getElementById('m-cca-val').style.color=corrCaOk?'#2d7a4f':'#c0392b';
+  document.getElementById('m-cca-badge').textContent=corrCaOk?'✓ Normal':(corrCa<8.4?'✗ Hypocalcemia':'✗ Hypercalcemia');
   document.getElementById('m-cca-badge').style.color=corrCaOk?'#2d7a4f':'#c0392b';
 
-  // PTH
+  // PTH (displayed in selected unit)
   const pthStatusEl=document.getElementById('m-pth-status');
   pthStatusEl.textContent=pthOk?'In range':pthHigh_?'Elevated':'Suppressed';
   pthStatusEl.style.color=pthOk?'#2d7a4f':(pthHigh_?'#c0392b':'#9a6500');
@@ -1047,14 +1114,14 @@ function calcMBD() {
 
   // Verdict
   let verdictParts=[], actionParts=[];
-  if (!capOk) { verdictParts.push('Ca×P product of '+caprod+' mg²/dL² exceeds 55 — vascular calcification risk is elevated.'); actionParts.push('Phosphate binder review urgently: ensure patient is taking binders with every meal and snack. Check dietary phosphorus compliance. Consider switching to a non-calcium binder — sevelamer carbonate (Renvela), lanthanum carbonate (Fosrenol), or sucroferric oxyhydroxide (Velphoro, now available in PH) — to avoid further calcium load. Velphoro preferred if pill burden is limiting adherence.'); }
+  if (!capOk) { verdictParts.push('Ca×P product of '+caprod.toFixed(0)+' mg²/dL² exceeds 55 — vascular calcification risk is elevated.'); actionParts.push('Phosphate binder review urgently: ensure patient is taking binders with every meal and snack. Check dietary phosphorus compliance. Consider switching to a non-calcium binder — sevelamer carbonate (Renvela), lanthanum carbonate (Fosrenol), or sucroferric oxyhydroxide (Velphoro, now available in PH) — to avoid further calcium load. Velphoro preferred if pill burden is limiting adherence.'); }
   if (!corrCaOk) {
-    if (corrCa<8.4) { verdictParts.push('Corrected calcium '+corrCa+' mg/dL is low (hypocalcemia) — risk of muscle cramps, arrhythmia, and tetany.'); actionParts.push('Review active vitamin D (calcitriol/alfacalcidol) dose. Check dialysate calcium concentration if on HD. Symptomatic hypocalcemia requires IV calcium — do not delay.'); }
-    else { verdictParts.push('Corrected calcium '+corrCa+' mg/dL is elevated (hypercalcemia) — risk of calcification, arrhythmia, and adynamic bone disease.'); actionParts.push('Hold calcium-containing phosphate binders and active vitamin D. Switch to a non-calcium binder: sevelamer (Renvela), lanthanum (Fosrenol), or sucroferric oxyhydroxide (Velphoro). Review calcium concentration in dialysate. Persistent hypercalcemia may indicate tertiary hyperparathyroidism requiring cinacalcet or parathyroidectomy.'); }
+    if (corrCa<8.4) { verdictParts.push('Corrected calcium '+dCa(corrCa)+' is low (hypocalcemia) — risk of muscle cramps, arrhythmia, and tetany.'); actionParts.push('Review active vitamin D (calcitriol/alfacalcidol) dose. Check dialysate calcium concentration if on HD. Symptomatic hypocalcemia requires IV calcium — do not delay.'); }
+    else { verdictParts.push('Corrected calcium '+dCa(corrCa)+' is elevated (hypercalcemia) — risk of calcification, arrhythmia, and adynamic bone disease.'); actionParts.push('Hold calcium-containing phosphate binders and active vitamin D. Switch to a non-calcium binder: sevelamer (Renvela), lanthanum (Fosrenol), or sucroferric oxyhydroxide (Velphoro). Review calcium concentration in dialysate. Persistent hypercalcemia may indicate tertiary hyperparathyroidism requiring cinacalcet or parathyroidectomy.'); }
   }
   if (!pthOk) {
-    if (pthHigh_) { verdictParts.push('PTH '+pth+' pg/mL is above target ('+pthHigh+') — secondary hyperparathyroidism is under-treated.'); actionParts.push('Escalate phosphate control, correct vitamin D deficiency, and consider calcimimetic (cinacalcet) or active vitamin D analogue. PTH >600 pg/mL in HD patients significantly elevates fracture and cardiovascular risk.'); }
-    else { verdictParts.push('PTH '+pth+' pg/mL is suppressed below target ('+pthLow+') — adynamic bone disease risk.'); actionParts.push('Reduce or hold active vitamin D. Review calcium-containing binder load. Adynamic bone disease has a high fracture risk despite normal-looking X-rays. Discuss with nephrologist before adjusting cinacalcet or parathyroidectomy status.'); }
+    if (pthHigh_) { verdictParts.push('PTH '+dPTH(pth)+' is above target ('+dPTH(pthHigh)+') — secondary hyperparathyroidism is under-treated.'); actionParts.push('Escalate phosphate control, correct vitamin D deficiency, and consider calcimimetic (cinacalcet) or active vitamin D analogue. PTH >600 pg/mL in HD patients significantly elevates fracture and cardiovascular risk.'); }
+    else { verdictParts.push('PTH '+dPTH(pth)+' is suppressed below target ('+dPTH(pthLow)+') — adynamic bone disease risk.'); actionParts.push('Reduce or hold active vitamin D. Review calcium-containing binder load. Adynamic bone disease has a high fracture risk despite normal-looking X-rays. Discuss with nephrologist before adjusting cinacalcet or parathyroidectomy status.'); }
   }
   if (problems===0) { verdictParts=['All three mineral metabolism parameters are within KDIGO 2024 target ranges. Well-managed CKD-MBD significantly reduces fracture, vascular calcification, and cardiovascular mortality risk.']; actionParts=['Continue current phosphate binder and vitamin D regimen. Maintain dietary phosphorus restriction. Recheck labs monthly (HD) or every 3 months (CKD stages 3–5).']; }
 
