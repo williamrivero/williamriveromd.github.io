@@ -258,6 +258,48 @@
   /* ── Guide panels ── */
   .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
   .illus-caption{font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;line-height:1.5;padding:0 8px;}
+
+  /* ── Paediatric eGFR calculator ── */
+  .peds-egfr{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px 26px;margin:24px 0 32px;}
+  .peds-egfr h4{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .peds-egfr .peds-egfr-sub{font-size:13px;color:var(--text-muted);margin-bottom:18px;line-height:1.55;}
+  .peds-egfr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px 16px;margin-bottom:16px;}
+  .peds-egfr-field{display:flex;flex-direction:column;}
+  .peds-egfr-field label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+  .peds-egfr-field input,.peds-egfr-field select{font-family:'DM Sans',sans-serif;font-size:14px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);transition:border-color .15s;}
+  .peds-egfr-field input:focus,.peds-egfr-field select:focus{outline:none;border-color:var(--teal);}
+  .peds-egfr-btnrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:6px;}
+  .peds-egfr-btn{background:var(--navy);color:white;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:10px 22px;border-radius:8px;cursor:pointer;transition:background .15s;}
+  .peds-egfr-btn:hover{background:#1a2e4a;}
+  .peds-egfr-reset{background:transparent;color:var(--text-muted);border:1px solid var(--border);}
+  .peds-egfr-reset:hover{background:var(--bg);color:var(--navy);}
+  .peds-egfr-result{margin-top:18px;padding:18px 20px;background:var(--white);border:1px solid var(--border);border-radius:10px;display:none;}
+  .peds-egfr-result.show{display:block;}
+  .peds-egfr-result.error{border-color:var(--red);background:var(--red-soft);}
+  .peds-egfr-result .res-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px dashed var(--border);flex-wrap:wrap;}
+  .peds-egfr-result .res-row:last-of-type{border-bottom:none;}
+  .peds-egfr-result .res-label{font-size:13px;color:var(--text-mid);font-weight:500;}
+  .peds-egfr-result .res-label .res-formula{display:block;font-size:11px;color:var(--text-muted);font-weight:400;margin-top:2px;}
+  .peds-egfr-result .res-value{font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--navy);}
+  .peds-egfr-result .res-value .res-unit{font-size:11px;color:var(--text-muted);font-weight:500;margin-left:4px;font-family:'DM Sans',sans-serif;}
+  .peds-egfr-stage{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:5px 11px;border-radius:14px;margin-top:12px;}
+  .peds-egfr-stage.s-g1{background:#edf7f2;color:var(--green);}
+  .peds-egfr-stage.s-g2{background:#d4eaf5;color:#0c4a7a;}
+  .peds-egfr-stage.s-g3a{background:#fef9ec;color:#8a5000;}
+  .peds-egfr-stage.s-g3b{background:#fef0e0;color:#a0530f;}
+  .peds-egfr-stage.s-g4{background:#fdf0ef;color:var(--red);}
+  .peds-egfr-stage.s-g5{background:#2a0c0c;color:#fff;}
+  .peds-egfr-note{font-size:12px;color:var(--text-muted);line-height:1.55;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+  .peds-egfr-warn{background:var(--amber-soft);border-left:3px solid var(--amber);padding:10px 14px;border-radius:6px;margin-top:12px;font-size:12px;color:var(--text-mid);line-height:1.5;}
+  .peds-egfr-err{font-size:13px;color:var(--red);font-weight:500;}
+  html[data-theme="dark"] .peds-egfr{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .peds-egfr-field input,html[data-theme="dark"] .peds-egfr-field select{background:#0f1520;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .peds-egfr-result{background:#0f1520;border-color:#2a3548;}
+  html[data-theme="dark"] .peds-egfr-result .res-value{color:#e8eaf0;}
+  html[data-theme="dark"] .peds-egfr-stage.s-g1{background:#0e2a1c;}
+  html[data-theme="dark"] .peds-egfr-stage.s-g2{background:#0c2238;color:#9cc6e5;}
+  html[data-theme="dark"] .peds-egfr-stage.s-g3a,html[data-theme="dark"] .peds-egfr-stage.s-g3b{background:#2a1f0a;}
+  html[data-theme="dark"] .peds-egfr-stage.s-g4{background:#2a1515;}
 </style>
 </head>
 <body>
@@ -656,6 +698,65 @@
   </div>
 </div>
 
+<div class="peds-egfr" data-variant="patient">
+  <h4>
+    <span data-lang="en">Check Your eGFR (Kidney Function Number)</span>
+    <span class="lang-hidden" data-lang="tl">Tingnan ang Iyong eGFR (Numero ng Kidney Function)</span>
+    <span class="lang-hidden" data-lang="ceb">Susiha ang Imong eGFR (Numero sa Kidney Function)</span>
+    <span class="lang-hidden" data-lang="kap">Lawen Yung eGFR (Numero ning Kidney Function)</span>
+  </h4>
+  <p class="peds-egfr-sub">
+    <span data-lang="en">eGFR is the number your nephrologist uses to know how well your kidneys are filtering. For children and young adults (ages 1–25), the formula is different from adults. Enter the values from your most recent lab result. This is for learning — always confirm with your doctor.</span>
+    <span class="lang-hidden" data-lang="tl">Ang eGFR ay ang numerong ginagamit ng iyong nephrologist upang malaman kung gaano kahusay ang pag-filter ng iyong mga bato. Para sa mga bata at kabataang adulto (edad 1–25), iba ang formula kaysa sa mga adulto. Ilagay ang mga halaga mula sa iyong pinakahuling resulta ng laboratoryo. Pang-edukasyon lamang ito — palaging kumpirmahin sa iyong doktor.</span>
+    <span class="lang-hidden" data-lang="ceb">Ang eGFR mao ang numero nga gigamit sa imong nephrologist aron mahibal-an kung unsa kamaayo ang pag-filter sa imong mga kidney. Alang sa mga bata ug batan-ong hamtong (edad 1–25), lahi ang formula sa mga hamtong. Isulod ang mga value gikan sa imong pinakabag-ong resulta sa lab. Alang sa edukasyon ra kini — kanunay kumpirmahi sa imong doktor.</span>
+    <span class="lang-hidden" data-lang="kap">Ing eGFR iyang numero a gagamiten ning yung nephrologist para abalu na nung makanyanu ing pag-filter da ring kidney mu. Para king deng bata at batan a adulto (edad 1–25), iba ing formula kesa king deng adulto. Ilage la deng value ibat king pekamalating resulta ning lab mu. Para king edukasyon yamu — palaging tanungan mo ing doktor mu.</span>
+  </p>
+  <div class="peds-egfr-grid">
+    <div class="peds-egfr-field">
+      <label>Units</label>
+      <select class="peds-units">
+        <option value="hybrid">Hybrid — cm, mg/dL</option>
+        <option value="us">US/Conventional — in, mg/dL</option>
+        <option value="si">SI/Metric — cm, µmol/L</option>
+      </select>
+    </div>
+    <div class="peds-egfr-field">
+      <label>Sex</label>
+      <select class="peds-sex">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+    <div class="peds-egfr-field">
+      <label>Age (years)</label>
+      <input class="peds-age" type="number" min="1" max="25" step="0.1" placeholder="1–25" inputmode="decimal">
+    </div>
+    <div class="peds-egfr-field">
+      <label class="peds-height-label">Height (cm)</label>
+      <input class="peds-height" type="number" min="30" max="220" step="0.1" placeholder="e.g. 142" inputmode="decimal">
+    </div>
+    <div class="peds-egfr-field">
+      <label class="peds-scr-label">Serum creatinine (mg/dL)</label>
+      <input class="peds-scr" type="number" min="0.05" max="20" step="0.01" placeholder="e.g. 0.8" inputmode="decimal">
+    </div>
+  </div>
+  <div class="peds-egfr-btnrow">
+    <button type="button" class="peds-egfr-btn" data-peds-action="calc">
+      <span data-lang="en">Calculate eGFR</span>
+      <span class="lang-hidden" data-lang="tl">Kalkulahin ang eGFR</span>
+      <span class="lang-hidden" data-lang="ceb">Kuwentaha ang eGFR</span>
+      <span class="lang-hidden" data-lang="kap">Kalkulahin ya ing eGFR</span>
+    </button>
+    <button type="button" class="peds-egfr-btn peds-egfr-reset" data-peds-action="reset">
+      <span data-lang="en">Reset</span>
+      <span class="lang-hidden" data-lang="tl">I-reset</span>
+      <span class="lang-hidden" data-lang="ceb">I-reset</span>
+      <span class="lang-hidden" data-lang="kap">I-reset</span>
+    </button>
+  </div>
+  <div class="peds-egfr-result" aria-live="polite"></div>
+</div>
+
 <div class="steps">
 <div class="step">
 <div class="step-num">1</div>
@@ -955,6 +1056,46 @@
 </div>
 
 <figure style="margin:24px 0;"><picture><source srcset="../images/ckd-children-md-staging-growth.webp" type="image/webp"><img src="../images/ckd-children-md-staging-growth.png" alt="Paediatric CKD reference card showing the Revised Schwartz eGFR formula, KDIGO 2024 G1-G5 staging thresholds with paediatric modification for children under 2 years, and growth management quick-reference grid covering rhGH, bicarbonate, anaemia, CKD-MBD, and nutrition targets" style="width:100%;border-radius:10px;display:block;"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">The Revised Schwartz equation (2009) is the standard for paediatric GFR estimation. Children under 2 years: eGFR <60 may be physiologically normal — always compare against age-adjusted norms. Growth management requires simultaneous correction of acidosis, anaemia, and nutrition before considering rhGH.</figcaption></figure>
+
+<div class="peds-egfr" data-variant="clinician">
+  <h4>Paediatric eGFR Calculator</h4>
+  <p class="peds-egfr-sub">Revised Bedside Schwartz (Schwartz et al., JASN 2009) for ages 1–17. CKiD U25 creatinine equation (Pierce et al., Kidney Int 2021) extends estimation through age 25 and is preferred for serial monitoring in CKD G2–G5. Adult CKD-EPI 2021 is invalid below age 18.</p>
+  <div class="peds-egfr-grid">
+    <div class="peds-egfr-field">
+      <label>Units</label>
+      <select class="peds-units">
+        <option value="hybrid">Hybrid — cm, mg/dL</option>
+        <option value="us">US/Conventional — in, mg/dL</option>
+        <option value="si">SI/Metric — cm, µmol/L</option>
+      </select>
+    </div>
+    <div class="peds-egfr-field">
+      <label>Sex</label>
+      <select class="peds-sex">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+    <div class="peds-egfr-field">
+      <label>Age (years)</label>
+      <input class="peds-age" type="number" min="1" max="25" step="0.1" placeholder="1–25" inputmode="decimal">
+    </div>
+    <div class="peds-egfr-field">
+      <label class="peds-height-label">Height (cm)</label>
+      <input class="peds-height" type="number" min="30" max="220" step="0.1" placeholder="e.g. 142" inputmode="decimal">
+    </div>
+    <div class="peds-egfr-field">
+      <label class="peds-scr-label">Serum creatinine (mg/dL)</label>
+      <input class="peds-scr" type="number" min="0.05" max="20" step="0.01" placeholder="e.g. 0.8" inputmode="decimal">
+    </div>
+  </div>
+  <div class="peds-egfr-btnrow">
+    <button type="button" class="peds-egfr-btn" data-peds-action="calc">Calculate eGFR</button>
+    <button type="button" class="peds-egfr-btn peds-egfr-reset" data-peds-action="reset">Reset</button>
+  </div>
+  <div class="peds-egfr-result" aria-live="polite"></div>
+</div>
+
 <h3>CKD Staging in Children — KDIGO 2024</h3>
 <p>KDIGO 2024 applies the same G1–G5 eGFR staging to children as adults, with one critical paediatric modification: a GFR &lt;60 mL/min/1.73m² in children under 2 years may be physiologically normal (renal maturation continues until ~2 years). In children under 2, GFR must be interpreted against age-adjusted normative values.</p>
 
@@ -1215,6 +1356,111 @@ function setMode(mode){
   window.scrollTo({top:document.querySelector('.audience-tabs').offsetTop-60,behavior:'smooth'});
 }
 (function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
+
+/* ── PAEDIATRIC eGFR CALCULATOR ─────────────────── */
+(function(){
+  const HEIGHT_LABELS={hybrid:'Height (cm)',us:'Height (in)',si:'Height (cm)'};
+  const SCR_LABELS={hybrid:'Serum creatinine (mg/dL)',us:'Serum creatinine (mg/dL)',si:'Serum creatinine (µmol/L)'};
+  const HEIGHT_PLACEHOLDER={hybrid:'e.g. 142',us:'e.g. 56',si:'e.g. 142'};
+  const SCR_PLACEHOLDER={hybrid:'e.g. 0.8',us:'e.g. 0.8',si:'e.g. 70'};
+  const HEIGHT_LIMITS={hybrid:{min:30,max:220,step:0.1},us:{min:12,max:86,step:0.1},si:{min:30,max:220,step:0.1}};
+  const SCR_LIMITS={hybrid:{min:0.05,max:20,step:0.01},us:{min:0.05,max:20,step:0.01},si:{min:4,max:1770,step:0.1}};
+
+  function applyUnits(root){
+    const u=root.querySelector('.peds-units').value;
+    const hL=root.querySelector('.peds-height-label');
+    const sL=root.querySelector('.peds-scr-label');
+    const hI=root.querySelector('.peds-height');
+    const sI=root.querySelector('.peds-scr');
+    if(hL) hL.textContent=HEIGHT_LABELS[u];
+    if(sL) sL.textContent=SCR_LABELS[u];
+    if(hI){hI.placeholder=HEIGHT_PLACEHOLDER[u];hI.min=HEIGHT_LIMITS[u].min;hI.max=HEIGHT_LIMITS[u].max;hI.step=HEIGHT_LIMITS[u].step;}
+    if(sI){sI.placeholder=SCR_PLACEHOLDER[u];sI.min=SCR_LIMITS[u].min;sI.max=SCR_LIMITS[u].max;sI.step=SCR_LIMITS[u].step;}
+  }
+
+  function calc(root){
+    const u=root.querySelector('.peds-units').value;
+    const sex=root.querySelector('.peds-sex').value;
+    const age=parseFloat(root.querySelector('.peds-age').value);
+    let ht=parseFloat(root.querySelector('.peds-height').value);
+    let scr=parseFloat(root.querySelector('.peds-scr').value);
+    const box=root.querySelector('.peds-egfr-result');
+    box.className='peds-egfr-result show';
+    if(!(age>0)||!(ht>0)||!(scr>0)){
+      box.classList.add('error');
+      box.innerHTML='<div class="peds-egfr-err">Enter age, height, and serum creatinine as positive numbers.</div>';
+      return;
+    }
+    if(age<1||age>25){
+      box.classList.add('error');
+      box.innerHTML='<div class="peds-egfr-err">This calculator is validated for ages 1–25. For age ≥18 the adult CKD-EPI 2021 equation may also be used; for infants &lt;1 yr use age-specific reference values.</div>';
+      return;
+    }
+    if(u==='us') ht=ht*2.54;
+    if(u==='si') scr=scr/88.4;
+    let rows='';
+    if(age<18){
+      const schwartz=0.413*ht/scr;
+      rows+='<div class="res-row"><div class="res-label">Revised Bedside Schwartz<span class="res-formula">0.413 × height (cm) / Scr (mg/dL)</span></div>'+
+            '<div class="res-value">'+schwartz.toFixed(1)+'<span class="res-unit">mL/min/1.73 m²</span></div></div>';
+    }
+    const htm=ht/100;
+    let k;
+    if(sex==='male'){
+      if(age<12) k=39.0*Math.pow(1.008,age-12);
+      else if(age<18) k=39.0*Math.pow(1.045,age-12);
+      else k=50.8;
+    }else{
+      if(age<12) k=36.1*Math.pow(1.008,age-12);
+      else if(age<18) k=36.1*Math.pow(1.023,age-12);
+      else k=41.4;
+    }
+    const u25=k*htm/scr;
+    rows+='<div class="res-row"><div class="res-label">CKiD U25 (creatinine)<span class="res-formula">k(age,sex) × height (m) / Scr (mg/dL) — k = '+k.toFixed(2)+'</span></div>'+
+          '<div class="res-value">'+u25.toFixed(1)+'<span class="res-unit">mL/min/1.73 m²</span></div></div>';
+    const primary=u25;
+    let stage,sclass,desc;
+    if(primary>=90){stage='G1';sclass='s-g1';desc='Normal or high GFR — CKD only if other markers of kidney damage are present.';}
+    else if(primary>=60){stage='G2';sclass='s-g2';desc='Mildly decreased — CKD only if other markers of kidney damage are present.';}
+    else if(primary>=45){stage='G3a';sclass='s-g3a';desc='Mild-to-moderate decrease.';}
+    else if(primary>=30){stage='G3b';sclass='s-g3b';desc='Moderate-to-severe decrease.';}
+    else if(primary>=15){stage='G4';sclass='s-g4';desc='Severely decreased — prepare for kidney replacement therapy.';}
+    else{stage='G5';sclass='s-g5';desc='Kidney failure — dialysis or transplant typically required.';}
+    rows+='<div style="margin-top:10px;"><span class="peds-egfr-stage '+sclass+'">KDIGO Stage '+stage+'</span> <span style="font-size:12px;color:var(--text-muted);margin-left:8px;">'+desc+'</span></div>';
+    let notes='';
+    if(age<2){
+      notes+='<div class="peds-egfr-warn"><strong>Age &lt;2 years:</strong> renal maturation is incomplete until ~24 months. An eGFR &lt;60 may be physiologically normal — interpret against age-adjusted normative values, not adult KDIGO cut-offs.</div>';
+    }
+    if(age>=18){
+      notes+='<div class="peds-egfr-warn"><strong>Age ≥18:</strong> CKiD U25 is appropriate for young adults followed since paediatric care. For incident adult-onset CKD, the adult CKD-EPI 2021 (race-free) creatinine ± cystatin C equation is preferred.</div>';
+    }
+    notes+='<div class="peds-egfr-note"><strong>Caveats.</strong> Creatinine-based eGFR is unreliable when muscle mass is atypical for height — growth failure, severe malnutrition, limb amputation, prolonged immobility, neuromuscular disease, or anabolic-steroid use. In these settings add cystatin C (CKiD U25 cystatin or combined equations). A single eGFR ≥60 cannot diagnose CKD without persistent (≥3 mo) markers of kidney damage. For paediatric drug dosing, prefer measured GFR or weight-based protocols. Not a substitute for clinical judgment.</div>';
+    box.innerHTML=rows+notes;
+  }
+
+  function reset(root){
+    root.querySelector('.peds-age').value='';
+    root.querySelector('.peds-height').value='';
+    root.querySelector('.peds-scr').value='';
+    root.querySelector('.peds-sex').value='male';
+    root.querySelector('.peds-units').value='hybrid';
+    applyUnits(root);
+    const box=root.querySelector('.peds-egfr-result');
+    box.className='peds-egfr-result';
+    box.innerHTML='';
+  }
+
+  document.querySelectorAll('.peds-egfr').forEach(function(root){
+    applyUnits(root);
+    root.querySelector('.peds-units').addEventListener('change',function(){applyUnits(root);});
+    root.addEventListener('click',function(e){
+      const a=e.target.closest('[data-peds-action]');
+      if(!a) return;
+      if(a.dataset.pedsAction==='calc') calc(root);
+      else if(a.dataset.pedsAction==='reset') reset(root);
+    });
+  });
+})();
 </script>
 </body>
 </html>
