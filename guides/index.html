@@ -2043,6 +2043,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const total = document.querySelectorAll('.guide-card:not([data-top])').length;
   const el = document.getElementById('fc-all');
   if (el) el.textContent = total;
+
+  // ── Dynamic section counts ──────────────────────────────────────────
+  // For each section-header, count the guide-cards in the adjacent guides-grid
+  // and update the sect-count span. Skip spans that have an id (sc-updated,
+  // sc-latest) since those are populated by their own async functions.
+  document.querySelectorAll('.section-header').forEach(header => {
+    const countEl = header.querySelector('.sect-count:not([id])');
+    if (!countEl) return;
+    // Walk forward siblings to find the next guides-grid
+    let sib = header.nextElementSibling;
+    while (sib && !sib.classList.contains('guides-grid')) {
+      sib = sib.nextElementSibling;
+    }
+    if (sib) {
+      const n = sib.querySelectorAll('a.guide-card').length;
+      if (n > 0) countEl.textContent = n;
+    }
+  });
 });
 </script>
 
