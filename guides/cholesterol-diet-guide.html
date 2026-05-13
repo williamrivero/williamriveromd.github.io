@@ -109,6 +109,14 @@
   .disclaimer{background:var(--amber-soft);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:16px 20px;margin:40px 0 0;font-size:13px;color:#2c3340;line-height:1.6;}
   .disclaimer strong{color:var(--navy);}
   .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;}
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+  .unit-btn:not(.active):hover{background:rgba(26,107,114,.08);}
+  html[data-theme="dark"] .unit-btn.active{background:var(--teal);}
+  html[data-theme="dark"] .unit-btn:not(.active){color:#8899aa;}
   .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
   @media(max-width:520px){.calc-grid{grid-template-columns:1fr;}}
   .calc-field label{display:block;font-size:12px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
@@ -869,26 +877,33 @@
     <h2>Lipid Panel Interpreter</h2>
     <p>Enter your fasting lipid values to receive a plain-language interpretation, non-HDL-C calculation, TG/HDL ratio, and a summary of your lipid profile pattern.</p>
     <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="btn-conv" onclick="switchLipidUnit('conv')">Conventional (mg/dL)</button>
+          <button class="unit-btn" id="btn-si" onclick="switchLipidUnit('si')">SI (mmol/L)</button>
+        </div>
+      </div>
       <div class="calc-grid">
         <div class="calc-field">
-          <label>Total Cholesterol (mg/dL)</label>
+          <label id="lbl-tc">Total Cholesterol (mg/dL)</label>
           <input id="c-tc" type="number" min="50" max="600" placeholder="e.g. 210">
-          <div class="field-hint">From fasting lipid panel. Normal: &lt;200 mg/dL</div>
+          <div class="field-hint" id="hint-tc">From fasting lipid panel. Normal: &lt;200 mg/dL</div>
         </div>
         <div class="calc-field">
-          <label>LDL-Cholesterol (mg/dL)</label>
+          <label id="lbl-ldl">LDL-Cholesterol (mg/dL)</label>
           <input id="c-ldl" type="number" min="10" max="500" placeholder="e.g. 130">
-          <div class="field-hint">Primary atherogenic target. Optimal: &lt;100 mg/dL</div>
+          <div class="field-hint" id="hint-ldl">Primary atherogenic target. Optimal: &lt;100 mg/dL</div>
         </div>
         <div class="calc-field">
-          <label>HDL-Cholesterol (mg/dL)</label>
+          <label id="lbl-hdl">HDL-Cholesterol (mg/dL)</label>
           <input id="c-hdl" type="number" min="10" max="150" placeholder="e.g. 45">
-          <div class="field-hint">Protective. Low if &lt;40 (M) or &lt;50 (F)</div>
+          <div class="field-hint" id="hint-hdl">Protective. Low if &lt;40 (M) or &lt;50 (F) mg/dL</div>
         </div>
         <div class="calc-field">
-          <label>Triglycerides (mg/dL)</label>
+          <label id="lbl-tg">Triglycerides (mg/dL)</label>
           <input id="c-tg" type="number" min="30" max="5000" placeholder="e.g. 180">
-          <div class="field-hint">Normal: &lt;150 mg/dL. Fasting required for accuracy</div>
+          <div class="field-hint" id="hint-tg">Normal: &lt;150 mg/dL. Fasting required for accuracy</div>
         </div>
         <div class="calc-field">
           <label>Sex</label>
@@ -931,7 +946,7 @@
         <div class="calc-verdict-text" id="r-verdict"></div>
         <div class="calc-action-text" id="r-action"></div>
       </div>
-      <p class="calc-disclaimer">⚕ Non-HDL-C = Total Cholesterol − HDL-C. TG/HDL ratio in mg/dL: &lt;3.5 = low insulin resistance risk; &gt;5.0 = likely insulin resistance and small-dense LDL pattern. This tool provides general educational interpretation only — individual targets depend on your full cardiovascular risk profile. Consult your physician for personalized management.</p>
+      <p class="calc-disclaimer">⚕ Non-HDL-C = Total Cholesterol − HDL-C. TG/HDL ratio is calculated and interpreted in mg/dL equivalents (thresholds: &lt;3.5 = low IR risk; &gt;5.0 = likely insulin resistance / small-dense LDL pattern). SI inputs are converted internally before classification. All interpretation thresholds per ACC/AHA guidelines. This tool provides general educational interpretation only — individual targets depend on your full cardiovascular risk profile. Consult your physician for personalized management.</p>
     </div>
   </div>
 </section>
@@ -1094,70 +1109,121 @@ function toggleDesktop(){
 })();
 
 // Lipid Calculator
-function calcLipid(){
-  const tc  = parseFloat(document.getElementById('c-tc').value);
-  const ldl = parseFloat(document.getElementById('c-ldl').value);
-  const hdl = parseFloat(document.getElementById('c-hdl').value);
-  const tg  = parseFloat(document.getElementById('c-tg').value);
-  const sex = document.getElementById('c-sex').value;
-  const res = document.getElementById('lipid-result');
+function switchLipidUnit(u){
+  const isSI = u==='si';
+  document.getElementById('btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('btn-si').classList.toggle('active',isSI);
+  // labels
+  const cu = isSI ? 'mmol/L' : 'mg/dL';
+  document.getElementById('lbl-tc').textContent  = 'Total Cholesterol ('+cu+')';
+  document.getElementById('lbl-ldl').textContent = 'LDL-Cholesterol ('+cu+')';
+  document.getElementById('lbl-hdl').textContent = 'HDL-Cholesterol ('+cu+')';
+  document.getElementById('lbl-tg').textContent  = 'Triglycerides ('+cu+')';
+  // inputs & hints
+  const tc=document.getElementById('c-tc'), ldl=document.getElementById('c-ldl');
+  const hdl=document.getElementById('c-hdl'), tg=document.getElementById('c-tg');
+  if(isSI){
+    tc.placeholder='e.g. 5.43';  tc.min='1.3';  tc.max='15.5';
+    ldl.placeholder='e.g. 3.36'; ldl.min='0.26'; ldl.max='12.9';
+    hdl.placeholder='e.g. 1.17'; hdl.min='0.26'; hdl.max='3.9';
+    tg.placeholder='e.g. 2.03';  tg.min='0.34'; tg.max='56.5';
+    document.getElementById('hint-tc').textContent  = 'From fasting lipid panel. Normal: <5.18 mmol/L';
+    document.getElementById('hint-ldl').textContent = 'Primary atherogenic target. Optimal: <2.59 mmol/L';
+    document.getElementById('hint-hdl').textContent = 'Protective. Low if <1.04 (M) or <1.30 (F) mmol/L';
+    document.getElementById('hint-tg').textContent  = 'Normal: <1.70 mmol/L. Fasting required for accuracy';
+  } else {
+    tc.placeholder='e.g. 210';  tc.min='50';  tc.max='600';
+    ldl.placeholder='e.g. 130'; ldl.min='10'; ldl.max='500';
+    hdl.placeholder='e.g. 45';  hdl.min='10'; hdl.max='150';
+    tg.placeholder='e.g. 180';  tg.min='30';  tg.max='5000';
+    document.getElementById('hint-tc').textContent  = 'From fasting lipid panel. Normal: <200 mg/dL';
+    document.getElementById('hint-ldl').textContent = 'Primary atherogenic target. Optimal: <100 mg/dL';
+    document.getElementById('hint-hdl').textContent = 'Protective. Low if <40 (M) or <50 (F) mg/dL';
+    document.getElementById('hint-tg').textContent  = 'Normal: <150 mg/dL. Fasting required for accuracy';
+  }
+  // clear previous result when switching units
+  tc.value=''; ldl.value=''; hdl.value=''; tg.value='';
+  document.getElementById('lipid-result').style.display='none';
+}
 
-  if([tc,ldl,hdl,tg].some(isNaN) || !sex){ res.style.display='none'; return; }
+function calcLipid(){
+  const isSI = document.getElementById('btn-si').classList.contains('active');
+  // conversion factors: cholesterol mg/dL ÷ 38.67 = mmol/L; TG mg/dL ÷ 88.57 = mmol/L
+  const CHOL=38.67, TGC=88.57;
+  const tcR  = parseFloat(document.getElementById('c-tc').value);
+  const ldlR = parseFloat(document.getElementById('c-ldl').value);
+  const hdlR = parseFloat(document.getElementById('c-hdl').value);
+  const tgR  = parseFloat(document.getElementById('c-tg').value);
+  const sex  = document.getElementById('c-sex').value;
+  const res  = document.getElementById('lipid-result');
+
+  if([tcR,ldlR,hdlR,tgR].some(isNaN)||!sex){res.style.display='none';return;}
+
+  // work in mg/dL for all threshold logic
+  const tc  = isSI ? tcR*CHOL  : tcR;
+  const ldl = isSI ? ldlR*CHOL : ldlR;
+  const hdl = isSI ? hdlR*CHOL : hdlR;
+  const tg  = isSI ? tgR*TGC   : tgR;
 
   const nonHDL = tc - hdl;
-  const ratio  = Math.round((tg/hdl)*10)/10;
+  const ratio  = Math.round((tg/hdl)*10)/10; // always mg/dL ratio
 
-  // LDL classify
-  let ldlClass, ldlColor;
-  if(ldl < 100){ ldlClass='Optimal'; ldlColor='#166534'; }
-  else if(ldl < 130){ ldlClass='Near Optimal'; ldlColor='#166534'; }
-  else if(ldl < 160){ ldlClass='Borderline High'; ldlColor='#92400e'; }
-  else if(ldl < 190){ ldlClass='High'; ldlColor='#b91c1c'; }
-  else { ldlClass='Very High'; ldlColor='#b91c1c'; }
+  // display helpers — show back in chosen unit
+  const unit = isSI ? ' mmol/L' : ' mg/dL';
+  const dC = v => isSI ? (v/CHOL).toFixed(2)+unit : Math.round(v)+unit;
+  const dT = v => isSI ? (v/TGC).toFixed(2)+unit  : Math.round(v)+unit;
+
+  // LDL classify (mg/dL thresholds)
+  let ldlClass,ldlColor;
+  if(ldl<100){ldlClass='Optimal';ldlColor='#166534';}
+  else if(ldl<130){ldlClass='Near Optimal';ldlColor='#166534';}
+  else if(ldl<160){ldlClass='Borderline High';ldlColor='#92400e';}
+  else if(ldl<190){ldlClass='High';ldlColor='#b91c1c';}
+  else{ldlClass='Very High';ldlColor='#b91c1c';}
 
   // HDL classify
-  const hdlLow = sex==='m' ? 40 : 50;
-  let hdlClass, hdlColor;
-  if(hdl >= 60){ hdlClass='Protective'; hdlColor='#166534'; }
-  else if(hdl >= hdlLow){ hdlClass='Acceptable'; hdlColor='#92400e'; }
-  else { hdlClass='Low (risk factor)'; hdlColor='#b91c1c'; }
+  const hdlLow=sex==='m'?40:50;
+  let hdlClass,hdlColor;
+  if(hdl>=60){hdlClass='Protective';hdlColor='#166534';}
+  else if(hdl>=hdlLow){hdlClass='Acceptable';hdlColor='#92400e';}
+  else{hdlClass='Low (risk factor)';hdlColor='#b91c1c';}
 
   // TG classify
-  let tgClass, tgColor;
-  if(tg < 150){ tgClass='Normal'; tgColor='#166534'; }
-  else if(tg < 200){ tgClass='Borderline'; tgColor='#92400e'; }
-  else if(tg < 500){ tgClass='High'; tgColor='#b91c1c'; }
-  else { tgClass='Very High'; tgColor='#b91c1c'; }
+  let tgClass,tgColor;
+  if(tg<150){tgClass='Normal';tgColor='#166534';}
+  else if(tg<200){tgClass='Borderline';tgColor='#92400e';}
+  else if(tg<500){tgClass='High';tgColor='#b91c1c';}
+  else{tgClass='Very High';tgColor='#b91c1c';}
 
   // Non-HDL classify
-  let nClass, nColor;
-  if(nonHDL < 130){ nClass='Optimal'; nColor='#166534'; }
-  else if(nonHDL < 160){ nClass='Borderline'; nColor='#92400e'; }
-  else { nClass='High'; nColor='#b91c1c'; }
+  let nClass,nColor;
+  if(nonHDL<130){nClass='Optimal';nColor='#166534';}
+  else if(nonHDL<160){nClass='Borderline';nColor='#92400e';}
+  else{nClass='High';nColor='#b91c1c';}
 
-  // TG/HDL ratio
-  let rClass, rColor;
-  if(ratio < 3.5){ rClass='Low IR risk'; rColor='#166534'; }
-  else if(ratio <= 5.0){ rClass='Borderline'; rColor='#92400e'; }
-  else { rClass='Insulin resistance likely'; rColor='#b91c1c'; }
+  // TG/HDL ratio (mg/dL-based thresholds per ACC/AHA)
+  let rClass,rColor;
+  if(ratio<3.5){rClass='Low IR risk';rColor='#166534';}
+  else if(ratio<=5.0){rClass='Borderline';rColor='#92400e';}
+  else{rClass='Insulin resistance likely';rColor='#b91c1c';}
 
   // Fill metrics
-  document.getElementById('r-ldl').textContent   = ldl + ' mg/dL';
+  document.getElementById('r-ldl').textContent   = dC(ldl);
   document.getElementById('r-ldl').style.color   = ldlColor;
   document.getElementById('r-ldl-b').textContent = ldlClass;
   document.getElementById('r-ldl-b').style.color = ldlColor;
 
-  document.getElementById('r-hdl').textContent   = hdl + ' mg/dL';
+  document.getElementById('r-hdl').textContent   = dC(hdl);
   document.getElementById('r-hdl').style.color   = hdlColor;
   document.getElementById('r-hdl-b').textContent = hdlClass;
   document.getElementById('r-hdl-b').style.color = hdlColor;
 
-  document.getElementById('r-tg').textContent   = tg + ' mg/dL';
-  document.getElementById('r-tg').style.color   = tgColor;
-  document.getElementById('r-tg-b').textContent = tgClass;
-  document.getElementById('r-tg-b').style.color = tgColor;
+  document.getElementById('r-tg').textContent    = dT(tg);
+  document.getElementById('r-tg').style.color    = tgColor;
+  document.getElementById('r-tg-b').textContent  = tgClass;
+  document.getElementById('r-tg-b').style.color  = tgColor;
 
-  document.getElementById('r-nonhdl').textContent   = nonHDL.toFixed(0) + ' mg/dL';
+  document.getElementById('r-nonhdl').textContent   = dC(nonHDL);
   document.getElementById('r-nonhdl').style.color   = nColor;
   document.getElementById('r-nonhdl-b').textContent = nClass;
   document.getElementById('r-nonhdl-b').style.color = nColor;
@@ -1168,42 +1234,42 @@ function calcLipid(){
   document.getElementById('r-ratio-b').style.color = rColor;
 
   // Verdict
-  let issues = [];
-  if(ldl >= 160) issues.push('significantly elevated LDL-C');
-  else if(ldl >= 130) issues.push('borderline to high LDL-C');
-  if(hdl < hdlLow) issues.push('low HDL-C');
-  if(tg >= 200) issues.push('elevated triglycerides');
-  else if(tg >= 150) issues.push('borderline triglycerides');
-  if(ratio > 5) issues.push('TG/HDL pattern suggesting insulin resistance and small-dense LDL');
+  let issues=[];
+  if(ldl>=160) issues.push('significantly elevated LDL-C');
+  else if(ldl>=130) issues.push('borderline to high LDL-C');
+  if(hdl<hdlLow) issues.push('low HDL-C');
+  if(tg>=200) issues.push('elevated triglycerides');
+  else if(tg>=150) issues.push('borderline triglycerides');
+  if(ratio>5) issues.push('TG/HDL pattern suggesting insulin resistance and small-dense LDL');
 
-  let verdict = '';
-  if(issues.length === 0){
-    verdict = 'Your lipid panel is within desirable ranges. Continue your current diet and lifestyle, and recheck annually or as directed by your physician.';
+  let verdict='';
+  if(issues.length===0){
+    verdict='Your lipid panel is within desirable ranges. Continue your current diet and lifestyle, and recheck annually or as directed by your physician.';
   } else {
-    verdict = 'Your lipid panel shows: <strong>' + issues.join('; ') + '</strong>. ';
-    if(tg >= 500) verdict += '<strong>⚠ Triglycerides ≥500 mg/dL carry a risk of acute pancreatitis — urgent medical consultation is warranted.</strong> ';
+    verdict='Your lipid panel shows: <strong>'+issues.join('; ')+'</strong>. ';
+    if(tg>=500) verdict+='<strong>⚠ Triglycerides ≥500 mg/dL (≥5.65 mmol/L) carry a risk of acute pancreatitis — urgent medical consultation is warranted.</strong> ';
   }
-  document.getElementById('r-verdict').innerHTML = verdict;
+  document.getElementById('r-verdict').innerHTML=verdict;
 
   // Action text
-  let actions = [];
-  if(ldl >= 130) actions.push('Reduce saturated fat intake — replace coconut oil, lard, and fatty meats with canola oil and lean protein');
-  if(ldl >= 130) actions.push('Add soluble fiber: oatmeal, monggo, okra, psyllium husk');
-  if(tg >= 150) actions.push('Reduce refined carbohydrates, white rice portions, sugary drinks, and fruit juices');
-  if(tg >= 150) actions.push('Eat fatty fish (sardines, galunggong) at least twice per week for omega-3');
-  if(hdl < hdlLow) actions.push('Increase aerobic exercise — 150 min/week of brisk walking raises HDL by 3–9%');
-  if(ratio > 5) actions.push('The TG/HDL pattern here suggests insulin resistance — carbohydrate restriction and weight loss are the most impactful interventions');
-  if(tg >= 200 || ldl >= 160) actions.push('Consult your physician — medication may be warranted depending on your overall cardiovascular risk profile');
+  let actions=[];
+  if(ldl>=130) actions.push('Reduce saturated fat intake — replace coconut oil, lard, and fatty meats with canola oil and lean protein');
+  if(ldl>=130) actions.push('Add soluble fiber: oatmeal, monggo, okra, psyllium husk');
+  if(tg>=150)  actions.push('Reduce refined carbohydrates, white rice portions, sugary drinks, and fruit juices');
+  if(tg>=150)  actions.push('Eat fatty fish (sardines, galunggong) at least twice per week for omega-3');
+  if(hdl<hdlLow) actions.push('Increase aerobic exercise — 150 min/week of brisk walking raises HDL by 3–9%');
+  if(ratio>5)  actions.push('The TG/HDL pattern here suggests insulin resistance — carbohydrate restriction and weight loss are the most impactful interventions');
+  if(tg>=200||ldl>=160) actions.push('Consult your physician — medication may be warranted depending on your overall cardiovascular risk profile');
 
-  document.getElementById('r-action').innerHTML = actions.length
-    ? '<strong>Suggested focus areas:</strong><ul style="margin:8px 0 0 16px;">' + actions.map(a=>'<li style="margin-bottom:4px;font-size:13px;color:#2c3340;">'+a+'</li>').join('') + '</ul>'
-    : '';
+  document.getElementById('r-action').innerHTML=actions.length
+    ?'<strong>Suggested focus areas:</strong><ul style="margin:8px 0 0 16px;">'+actions.map(a=>'<li style="margin-bottom:4px;font-size:13px;color:#2c3340;">'+a+'</li>').join('')+'</ul>'
+    :'';
 
   // Style result box
-  const allGood = issues.length === 0;
-  res.style.display = 'block';
-  res.style.background = allGood ? 'var(--green-soft)' : (tg>=500 ? 'var(--red-soft)' : 'var(--amber-soft)');
-  res.style.borderColor = allGood ? 'var(--green)' : (tg>=500 ? 'var(--red)' : 'var(--amber)');
+  const allGood=issues.length===0;
+  res.style.display='block';
+  res.style.background=allGood?'var(--green-soft)':(tg>=500?'var(--red-soft)':'var(--amber-soft)');
+  res.style.borderColor=allGood?'var(--green)':(tg>=500?'var(--red)':'var(--amber)');
 }
 </script>
 </body>
