@@ -839,6 +839,139 @@
     @page { margin: 18mm 15mm; size: A4; }
   }
 </style>
+<style>
+/* Restored per-guide CSS */
+.calc-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+@media print{
+  header,.nav-strip,.guide-toggle-bar,.calc-actions{display:none!important;}}
+.calc-band{padding:12px 16px;margin-bottom:14px;border-radius:10px;text-align:center;font-weight:700;font-size:14px;border:2px solid var(--border);background:var(--bg);transition:all .25s;}
+.calc-band.cb-ok{background:var(--green-bg);color:var(--green);border-color:var(--green-bd);}
+.calc-band.cb-caution{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd);}
+.calc-band.cb-hazard{background:var(--orange-bg);color:var(--orange);border-color:var(--orange-bd);}
+.calc-band.cb-severe{background:var(--red-bg);color:var(--red);border-color:var(--red-bd);animation:pulseRedBand 1.8s ease-in-out infinite;}
+.calc-band .cb-icon{font-size:18px;margin-right:6px;}
+.calc-band .cb-sub{display:block;font-size:12px;font-weight:500;margin-top:4px;opacity:.85;}
+.calc-body{padding:20px 22px;}
+html[data-theme="dark"] .calc-body{background:#141c2a;}
+@media(max-width:600px){
+  .calc-body{padding:14px;}}
+.calc-header .calc-brand{font-size:10px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:4px;}
+.calc-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--white);color:var(--navy);font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .15s;}
+.calc-btn:hover{background:var(--bg);border-color:var(--navy);}
+html[data-theme="dark"] .calc-btn{background:#1a2535;color:#c0cad8;border-color:#2a3548;}
+.calc-btn-primary{background:var(--navy);color:#fff;border-color:var(--navy);}
+.calc-btn-primary:hover{background:var(--navy-light);color:#fff;}
+.calc-context-row{display:flex;flex-wrap:wrap;gap:14px;margin:6px 0 16px;padding:12px 14px;background:var(--bg);border-radius:8px;}
+html[data-theme="dark"] .calc-context-row{background:#1a2535;}
+.calc-ctx-check{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--navy);cursor:pointer;font-weight:500;}
+.calc-ctx-check input{cursor:pointer;width:15px;height:15px;accent-color:var(--teal);}
+html[data-theme="dark"] .calc-ctx-check{color:#c0cad8;}
+.calc-header{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;padding:18px 22px;}
+.calc-header h3{font-family:var(--font-display);font-size:20px;font-weight:700;color:#fff!important;margin:0 0 4px;}
+.calc-header .calc-sub{font-size:12px;color:rgba(255,255,255,.6);}
+.calc-period{display:flex;gap:6px;margin:0 0 12px;}
+.calc-period button{flex:1;padding:7px;border:1px solid var(--border);background:var(--white);color:var(--text);font-family:var(--font-body);font-size:12px;font-weight:600;border-radius:6px;cursor:pointer;transition:all .15s;}
+.calc-period button.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+html[data-theme="dark"] .calc-period button{background:#1a2535;color:#9aa5b8;border-color:#2a3548;}
+.calc-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0 4px;}
+@media(max-width:600px){
+  .calc-summary{grid-template-columns:1fr;}}
+.calc-tips{margin-top:14px;padding:12px 14px;background:#fdf6e7;border-left:3px solid var(--gold);border-radius:6px;font-size:12.5px;color:var(--text);line-height:1.6;}
+.calc-tips strong{color:var(--navy);}
+html[data-theme="dark"] .calc-tips{background:#241b0e;color:#d4c5a0;}
+/* ── Standard Drink Calculator ── */
+.calc-wrapper{margin:24px 0 32px;border:1px solid var(--border);border-radius:14px;background:var(--white);overflow:hidden;box-shadow:0 4px 24px rgba(26,46,74,.08);}
+html[data-theme="dark"] .calc-wrapper{background:#141c2a;border-color:#2a3548;}
+@media print{
+  .calc-wrapper{border:1px solid #ccc!important;box-shadow:none!important;}}
+.callout{border-radius:12px;padding:18px 22px;margin:18px 0;border-left:3px solid;}
+.callout p{font-size:14px;color:#1e2a38;margin:0 0 8px;line-height:1.7;}
+.callout p:last-child{margin-bottom:0;}
+.callout strong{color:var(--navy);}
+html[data-theme="dark"] .callout p{color:#c0cad8;}
+.callout-amber{background:var(--amber-bg);border-color:var(--amber-bd);}
+html[data-theme="dark"] .callout-amber{background:#2a1f0a;}
+.callout-blue{background:#eef4ff;border-color:#4a7abf;}
+html[data-theme="dark"] .callout-blue{background:#0f1f38;}
+.callout-red{background:var(--red-bg);border-color:var(--red);}
+html[data-theme="dark"] .callout-red{background:#2a1515;}
+.callout-teal{background:#edf7f7;border-color:var(--teal);}
+html[data-theme="dark"] .callout-teal{background:#0e2f32;}
+.verdict-card.caution{background:var(--amber-bg);border-color:var(--amber-bd);}
+.verdict-card.caution .verdict-badge{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);}
+html[data-theme="dark"] .verdict-card.caution{background:#2a1f0a;border-color:#d97f00;}
+.verdict-card.danger{background:var(--red-bg);border-color:var(--red-bd);}
+.verdict-card.danger .verdict-badge{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);}
+html[data-theme="dark"] .verdict-card.danger{background:#2a1515;border-color:#c82020;}
+.drink-input .di-name span.di-detail{display:block;font-size:11px;color:var(--muted);font-weight:400;}
+.drink-input .di-name{font-size:12.5px;color:var(--navy);font-weight:600;}
+html[data-theme="dark"] .drink-input .di-name{color:#e8eaf0;}
+.drink-input .di-units{font-size:11px;color:var(--muted);text-align:left;}
+@media(max-width:600px){
+  .drink-input .di-units{display:none;}}
+.dr-card-body h3{font-family:'Lora',serif;font-size:18px;font-weight:600;color:white;margin-bottom:8px;}
+.dr-card-body h3 a{color:var(--gold-light);text-decoration:none;}
+.dr-card-body p{font-size:14px;color:rgba(255,255,255,.72);line-height:1.6;margin-bottom:6px;}
+.drink-input{display:grid;grid-template-columns:1.4fr 80px 1fr;gap:10px;align-items:center;padding:9px 11px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;}
+.drink-input input[type=number]{width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:var(--font-body);background:#fff;color:var(--text);outline:none;text-align:right;}
+html[data-theme="dark"] .drink-input{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .drink-input input{background:#0f1520;border-color:#2a3548;color:#e8eaf0;}
+@media(max-width:600px){
+  .drink-input{grid-template-columns:1fr 70px;}
+  .drink-input .di-units{display:none;}}
+/* Drink equivalents table */
+.drink-table{width:100%;border-collapse:collapse;margin:14px 0 22px;font-size:13.5px;border-radius:10px;overflow:hidden;}
+.drink-table th{background:var(--navy);color:#fff;padding:10px 12px;text-align:left;font-weight:600;font-size:12.5px;letter-spacing:.02em;}
+.drink-table td{padding:10px 12px;border-bottom:1px solid var(--border);background:var(--white);vertical-align:top;}
+.drink-table tr:nth-child(even) td{background:var(--bg);}
+.drink-table .tc-g{color:var(--green);font-weight:600;}
+.drink-table .tc-a{color:var(--amber);font-weight:600;}
+.drink-table .tc-r{color:var(--red);font-weight:600;}
+html[data-theme="dark"] .drink-table th{background:#1a2535;}
+html[data-theme="dark"] .drink-table td{background:#141c2a;border-color:#2a3548;color:#c0cad8;}
+html[data-theme="dark"] .drink-table tr:nth-child(even) td{background:#1a2535;}
+/* How-to-grid (steps) */
+.how-to-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 24px;}
+@media(max-width:600px){
+  .how-to-grid,.calc-grid{grid-template-columns:1fr;}}
+.how-to-step{display:flex;gap:13px;align-items:flex-start;padding:13px 15px;background:#f8fafc;border-radius:10px;border:1px solid #dce3ed;}
+html[data-theme="dark"] .how-to-step{background:#1a2535;border-color:#2a3548;}
+.legal{background:#fdf5ed;border-left:3px solid var(--gold);border-radius:8px;padding:14px 18px;margin:20px 0;font-size:13px;line-height:1.65;color:var(--text);}
+.legal strong{color:var(--navy);}
+html[data-theme="dark"] .legal{background:#241b0e;color:#d4c5a0;}
+.related-card .read-more{font-size:13px;font-weight:600;color:var(--teal);}
+.related-card .related-badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px;background:var(--teal-light);color:var(--teal);margin-bottom:8px;letter-spacing:.04em;}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+/* Decline scripts */
+.script-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
+.script-card .script-context{font-size:11px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+.script-card .script-line{font-size:14px;color:var(--text);font-style:italic;line-height:1.55;margin-bottom:4px;}
+.script-card .script-en{font-size:12px;color:var(--muted);font-style:normal;}
+html[data-theme="dark"] .script-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .script-card .script-line{color:#e8eaf0;}
+html[data-theme="dark"] .script-card .script-en{color:#8a95a8;}
+.summary-stat .ss-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+.summary-stat .ss-value{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);line-height:1.2;}
+html[data-theme="dark"] .summary-stat .ss-value{color:#e8eaf0;}
+.summary-stat{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
+html[data-theme="dark"] .summary-stat{background:#1a2535;border-color:#2a3548;}
+.verdict-badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase;}
+.verdict-card.ok .verdict-badge{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);}
+.verdict-card.info .verdict-badge{background:#eef4ff;color:#1a4485;border:1px solid #4a7abf;}
+.verdict-card{border-radius:14px;padding:18px 22px;border:1px solid var(--border);background:var(--white);}
+.verdict-card.ok{background:var(--green-bg);border-color:var(--green-bd);}
+.verdict-card.info{background:#eef4ff;border-color:#4a7abf;}
+.verdict-card h4{font-family:var(--font-body);font-size:15px;color:var(--navy);margin-bottom:6px;}
+.verdict-card p{font-size:13.5px;color:var(--text);margin-bottom:6px;line-height:1.6;}
+.verdict-card p:last-child{margin-bottom:0;}
+html[data-theme="dark"] .verdict-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .verdict-card.ok{background:#0d2a1c;border-color:#2a7a50;}
+html[data-theme="dark"] .verdict-card.info{background:#0f1f38;border-color:#4a7abf;}
+html[data-theme="dark"] .verdict-card h4{color:#e8eaf0;}
+html[data-theme="dark"] .verdict-card p{color:#c0cad8;}
+/* Verdict cards — myth-busting style from buko-juice guide */
+.verdict-grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0 24px;}
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
