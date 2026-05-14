@@ -262,6 +262,26 @@
     opacity:0;pointer-events:none;transition:opacity .15s;
   }
   .print-btn:hover .p-tip{opacity:1;}
+  .download-btn{
+    position:fixed;bottom:28px;right:24px;
+    width:44px;height:44px;border-radius:50%;
+    background:#166534;color:white;
+    border:none;cursor:pointer;display:flex;
+    align-items:center;justify-content:center;
+    box-shadow:0 4px 16px rgba(0,0,0,.25);
+    transition:transform .2s,box-shadow .2s;
+    z-index:9998;
+  }
+  .download-btn:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(0,0,0,.35);}
+  .download-btn svg{width:18px;height:18px;}
+  .download-btn .p-tip{
+    position:absolute;right:54px;
+    background:rgba(15,30,46,.9);color:white;
+    font-size:12px;font-weight:500;white-space:nowrap;
+    padding:5px 10px;border-radius:6px;
+    opacity:0;pointer-events:none;transition:opacity .15s;
+  }
+  .download-btn:hover .p-tip{opacity:1;}
   @media print{
     .site-header,.nav-strip,.guide-toggle-bar,.print-btn,
     .float-controls,.guide-footer{display:none!important;}
@@ -1548,6 +1568,12 @@ function setGuideLang(lang) {
     <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
   </svg>
 </button>
+<button class="download-btn" onclick="downloadHandout()" aria-label="Download BP log handout as PDF">
+  <span class="p-tip">Download Handout PDF</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+  </svg>
+</button>
 <script>
 const LANG_KEY='wgmr-lang';
 function setLang(lang){
@@ -1785,6 +1811,190 @@ document.addEventListener('DOMContentLoaded', () => {
   buildBPLog();
   loadHoutFields();
 });
+
+/* ── DOWNLOAD HANDOUT — opens clean popup and auto-prints ── */
+function downloadHandout() {
+  // Sync current input values into a data map
+  const vals = {};
+  document.querySelectorAll('#bp-log input').forEach(inp => {
+    const k = inp.dataset.key || inp.id;
+    if (k) vals[k] = inp.value;
+  });
+
+  const name = vals['hout-name'] || '';
+  const doctor = vals['hout-doctor'] || '';
+  const target = vals['hout-target'] || '';
+  const period = vals['hout-period'] || '';
+
+  // Build log rows HTML
+  let logRows = '';
+  for (let day = 1; day <= 7; day++) {
+    ['AM','PM'].forEach(sess => {
+      const rk = 'd' + day + sess;
+      const get = f => vals[rk + '-' + f] || '';
+      logRows += `<tr>
+        ${sess==='AM' ? `<td rowspan="2" style="vertical-align:middle;"><input type="text" value="${get('date')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>` : ''}
+        <td style="font-size:9px;font-weight:700;color:#1a6b72;letter-spacing:.05em;">${sess}</td>
+        <td><input type="text" value="${get('r1s')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
+        <td><input type="text" value="${get('r1d')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
+        <td><input type="text" value="${get('r2s')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
+        <td><input type="text" value="${get('r2d')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
+        <td><input type="text" value="${get('avgs')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;font-weight:700;padding:3px 0;"></td>
+        <td><input type="text" value="${get('avgd')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;font-weight:700;padding:3px 0;"></td>
+        <td><input type="text" value="${get('pulse')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
+        <td><input type="text" value="${get('arm')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
+        <td><input type="text" value="${get('meds')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
+        <td><input type="text" value="${get('notes')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;font-size:10px;padding:3px 0;"></td>
+      </tr>`;
+    });
+  }
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BP Monitoring Log${name ? ' — ' + name : ''}</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;color:#1e2a38;background:#fff;padding:22px 28px;font-size:13px;line-height:1.6;}
+  h2{font-family:'Lora',serif;font-size:22px;font-weight:600;color:#0f1e2e;margin-bottom:10px;}
+  h3{font-family:'Lora',serif;font-size:15px;font-weight:600;color:#0f1e2e;margin:20px 0 8px;}
+  p{color:#4a5568;margin-bottom:10px;font-size:12px;}
+  .tag{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#1a6b72;margin-bottom:6px;}
+  .hdr{background:#0f1e2e;color:white;border-radius:8px;padding:14px 18px;margin:12px 0;display:grid;grid-template-columns:1fr 1fr;gap:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .hdr-field label{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);display:block;margin-bottom:2px;}
+  .hdr-field .val{font-size:13px;color:white;border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:2px;min-height:20px;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;}
+  .step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+  .snum{width:24px;height:24px;background:#1a6b72;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .sbody h4{font-size:11.5px;font-weight:700;color:#0f1e2e;margin-bottom:2px;}
+  .sbody p{font-size:10.5px;color:#4a5568;margin:0;}
+  .bp-class{width:100%;border-collapse:collapse;font-size:11.5px;border:1px solid #ddd;margin:8px 0;}
+  .bp-class thead th{padding:7px 9px;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:#0f1e2e;color:white;text-align:center;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .bp-class thead th:first-child{text-align:left;}
+  .bp-class td{padding:7px 9px;border-bottom:1px solid rgba(0,0,0,.07);font-size:11px;}
+  .bp-class td:first-child{font-weight:700;white-space:nowrap;}
+  .bp-class td:not(:first-child){text-align:center;}
+  .bp-class td:last-child{text-align:left;font-size:10.5px;color:#4a5568;}
+  .bpc-normal{background:#f0fdf4;border-left:4px solid #16a34a;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .bpc-elevated{background:#fefce8;border-left:4px solid #ca8a04;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .bpc-s1{background:#fff7ed;border-left:4px solid #ea580c;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .bpc-s2{background:#fff0f0;border-left:4px solid #dc2626;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .bpc-crisis{background:#1c0000;border-left:4px solid #7f1d1d;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .bpc-crisis td{color:#ffbbbb!important;}
+  .log{width:100%;border-collapse:collapse;font-size:11px;}
+  .log th{background:#0f1e2e;color:white;padding:5px 4px;font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:center;border:1px solid rgba(255,255,255,.1);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .log td{padding:1px 2px;border:1px solid #ddd;text-align:center;vertical-align:middle;}
+  .log tr:nth-child(odd) td{background:#f6f6f6;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .log input{width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-family:'DM Sans',sans-serif;font-size:11px;color:#1e2a38;padding:3px 1px;}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:#666;margin-top:6px;}
+  .rflags{background:#fff0f0;border:1px solid rgba(185,28,28,.2);border-radius:8px;padding:14px 18px;margin-top:18px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .rflags h3{color:#b91c1c;font-size:13px;margin-bottom:10px;}
+  .rflags-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+  .rfitem{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:#4a5568;}
+  .rfdot{width:5px;height:5px;border-radius:50%;background:#b91c1c;flex-shrink:0;margin-top:5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .credits{font-size:9px;color:#aaa;text-align:center;margin-top:14px;padding-top:10px;border-top:1px solid #eee;}
+  figure{margin:10px 0;}
+  figure img{width:100%;border-radius:6px;display:block;}
+  figcaption{font-size:10px;color:#888;text-align:center;margin-top:4px;font-style:italic;}
+  @media print{body{padding:14px 18px;} .log input{font-size:10px;}}
+</style>
+</head>
+<body>
+<div class="tag">Patient Handout &mdash; williamriveromd.com</div>
+<h2>Blood Pressure Monitoring Log &amp; Reference Guide</h2>
+
+<div class="hdr">
+  <div class="hdr-field"><label>Patient Name</label><div class="val">${name}</div></div>
+  <div class="hdr-field"><label>Physician / Clinic</label><div class="val">${doctor}</div></div>
+  <div class="hdr-field"><label>My BP Target (set by doctor)</label><div class="val">${target}</div></div>
+  <div class="hdr-field"><label>Monitoring Period</label><div class="val">${period}</div></div>
+</div>
+
+<figure>
+  <img src="https://williamriveromd.com/images/hypertension-bp-measurement-technique-infographic.png"
+       alt="7-step blood pressure measurement technique infographic">
+  <figcaption>Follow all 7 steps every time. Skipping even one step can shift your reading by 5&ndash;15 mmHg.</figcaption>
+</figure>
+
+<h3>How to Take an Accurate Reading &mdash; 7 Steps</h3>
+<div class="two-col">
+  <div>
+    <div class="step"><div class="snum">1</div><div class="sbody"><h4>Empty bladder &mdash; rest 5 minutes in silence</h4><p>No talking, no phone. A full bladder adds ~10 mmHg.</p></div></div>
+    <div class="step"><div class="snum">2</div><div class="sbody"><h4>No caffeine, exercise, or smoking &mdash; 30 min before</h4><p>These temporarily raise BP and produce falsely elevated readings.</p></div></div>
+    <div class="step"><div class="snum">3</div><div class="sbody"><h4>Sit: back fully supported, feet flat, legs uncrossed</h4><p>Crossing your legs adds 2&ndash;8 mmHg to systolic.</p></div></div>
+    <div class="step"><div class="snum">4</div><div class="sbody"><h4>Rest arm on a flat surface at heart level</h4><p>A hanging unsupported arm raises readings by 10+ mmHg.</p></div></div>
+  </div>
+  <div>
+    <div class="step"><div class="snum">5</div><div class="sbody"><h4>Cuff on bare skin, 1 inch above elbow crease</h4><p>Over clothing = 5&ndash;50 mmHg error. Arrow marker over brachial artery.</p></div></div>
+    <div class="step"><div class="snum">6</div><div class="sbody"><h4>Confirm cuff size: bladder covers 80&ndash;100% of arm</h4><p>Too small = falsely high. Standard adult: 27&ndash;34 cm.</p></div></div>
+    <div class="step"><div class="snum">7</div><div class="sbody"><h4>Take 2 readings, 1 minute apart &mdash; record both, use the average</h4><p>First reading is often 5&ndash;10 mmHg higher. Measure morning (before meds) and evening.</p></div></div>
+  </div>
+</div>
+
+<h3>Blood Pressure Categories</h3>
+<table class="bp-class">
+  <thead><tr><th style="text-align:left;">Category</th><th>Systolic</th><th></th><th>Diastolic</th><th style="text-align:left;">Action</th></tr></thead>
+  <tbody>
+    <tr class="bpc-normal"><td>&#x1F7E2; Normal</td><td>&lt;120</td><td style="font-size:9px;color:#888;">AND</td><td>&lt;80</td><td>Maintain healthy habits. Recheck annually.</td></tr>
+    <tr class="bpc-elevated"><td>&#x1F7E1; Elevated</td><td>120&ndash;129</td><td style="font-size:9px;color:#888;">AND</td><td>&lt;80</td><td>Lifestyle changes. Recheck 3&ndash;6 months.</td></tr>
+    <tr class="bpc-s1"><td>&#x1F7E0; Stage 1 HTN</td><td>130&ndash;139</td><td style="font-size:9px;color:#888;">OR</td><td>80&ndash;89</td><td>Lifestyle + consider medication. Follow up 1&ndash;3 months.</td></tr>
+    <tr class="bpc-s2"><td>&#x1F534; Stage 2 HTN</td><td>&#x2265;140</td><td style="font-size:9px;color:#888;">OR</td><td>&#x2265;90</td><td>Medication required. Follow up within 1 month.</td></tr>
+    <tr class="bpc-crisis"><td>&#x1F6A8; Crisis</td><td>&gt;180</td><td style="font-size:9px;color:rgba(255,150,150,.7);">AND/OR</td><td>&gt;120</td><td><strong>Go to ER immediately.</strong> Call 911 / 143.</td></tr>
+  </tbody>
+</table>
+<p style="font-size:10px;color:#888;margin-top:4px;">PSH/PHA threshold for hypertension: &#x2265;140/90 mmHg. High-risk patients (CKD, diabetes, prior CVD): target &lt;130/80 mmHg. Follow your doctor&rsquo;s individualized target.</p>
+
+<h3>7-Day Blood Pressure Log</h3>
+<p style="font-size:11px;margin-bottom:6px;">Measure twice daily: morning (before medications) and evening. Two readings per session, 1 minute apart. Record both; average is calculated for you.</p>
+<table class="log">
+  <thead>
+    <tr>
+      <th rowspan="2" style="width:62px;">Date</th>
+      <th rowspan="2" style="width:36px;">AM/PM</th>
+      <th colspan="2">Reading 1</th>
+      <th colspan="2">Reading 2</th>
+      <th colspan="2">Average</th>
+      <th rowspan="2" style="width:38px;">Pulse</th>
+      <th rowspan="2" style="width:30px;">Arm</th>
+      <th rowspan="2" style="width:32px;">Meds</th>
+      <th rowspan="2" style="width:70px;">Notes</th>
+    </tr>
+    <tr><th style="width:30px;">SBP</th><th style="width:30px;">DBP</th><th style="width:30px;">SBP</th><th style="width:30px;">DBP</th><th style="width:30px;">SBP</th><th style="width:30px;">DBP</th></tr>
+  </thead>
+  <tbody>${logRows}</tbody>
+</table>
+<div class="legend">
+  <span>SBP = Systolic (top number)</span>
+  <span>DBP = Diastolic (bottom number)</span>
+  <span>Arm: L = Left &nbsp; R = Right</span>
+  <span>Meds: Y = Yes &nbsp; N = No</span>
+</div>
+
+<div class="rflags">
+  <h3>&#x1F6A8; When to Go to the Emergency Room Immediately</h3>
+  <div class="rflags-grid">
+    <div class="rfitem"><div class="rfdot"></div>BP &gt; 180/120 mmHg &mdash; with or without symptoms</div>
+    <div class="rfitem"><div class="rfdot"></div>Sudden severe headache &mdash; worst you have ever felt</div>
+    <div class="rfitem"><div class="rfdot"></div>Sudden blurred vision or vision loss</div>
+    <div class="rfitem"><div class="rfdot"></div>Chest pain, tightness, or pressure</div>
+    <div class="rfitem"><div class="rfdot"></div>Shortness of breath at rest</div>
+    <div class="rfitem"><div class="rfdot"></div>Weakness, numbness, or facial drooping (stroke signs)</div>
+  </div>
+  <p style="margin-top:10px;font-size:11px;color:#b91c1c;font-weight:600;">&#x1F4DE; Philippine Red Cross 143 &nbsp;&middot;&nbsp; National Emergency Hotline 911</p>
+</div>
+
+<div class="credits">Generated from williamriveromd.com/guides/managing-hypertension.html &nbsp;&middot;&nbsp; W. G. M. Rivero, MD &nbsp;&middot;&nbsp; For educational use only &mdash; not a substitute for medical advice.</div>
+<script>window.onload=function(){window.print();};<\/script>
+</body>
+</html>`;
+
+  const w = window.open('', '_blank', 'width=960,height=750,scrollbars=yes');
+  if (!w) { alert('Please allow pop-ups for this site to download the handout.'); return; }
+  w.document.write(html);
+  w.document.close();
+}
 </script>
 
 </body>
