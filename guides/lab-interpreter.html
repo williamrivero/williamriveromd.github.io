@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Laboratory Interpreter — W. G. M. Rivero, MD</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root {
+  --navy:#1a2e4a; --navy-light:#243d5e; --teal:#1d7a7a; --teal-light:#e0f0f0;
+  --gold:#b8912a; --white:#ffffff; --bg:#f0f3f7; --border:#dce3ed;
+  --text:#1a2032; --muted:#6b7a94;
+  --green:#1a6e3e; --green-bg:#e8f5ee; --green-bd:#2e9e5e;
+  --amber:#a05c00; --amber-bg:#fff4e0; --amber-bd:#d97f00;
+  --red:#a01818; --red-bg:#fdecea; --red-bd:#c82020;
+  --gray:#888; --gray-bg:#f5f5f5; --gray-bd:#ccc;
+  --radius:8px; --shadow:0 2px 8px rgba(0,0,0,0.08);
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'Source Sans 3',Georgia,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;}
+
+/* ── Header ── */
+.li-header{background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:12px;padding:20px;margin-bottom:12px;color:#fff;}
+.li-header .brand{font-size:10px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:4px;}
+.li-header h1{font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:0.3px;margin-bottom:2px;}
+.li-header .subtitle{font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:14px;}
+.patient-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.patient-field label{font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:3px;}
+.patient-field label span{font-weight:400;}
+.patient-input{width:100%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:6px;padding:7px 10px;font-size:13px;color:#fff;font-family:var(--font-body);outline:none;transition:border 0.2s;}
+.patient-input::placeholder{color:rgba(255,255,255,0.35);}
+.patient-input:focus{border-color:rgba(255,255,255,0.5);}
+.patient-input[type=date]{color-scheme:dark;}
+.patient-banner{padding:7px 11px;background:rgba(255,255,255,0.1);border-radius:6px;font-size:12px;color:rgba(255,255,255,0.9);display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;}
+.summary-badges{display:flex;gap:7px;flex-wrap:wrap;}
+.badge-pill{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;}
+.bp-neutral{background:rgba(255,255,255,0.15);color:#fff;}
+.bp-flag{background:var(--red-bg);color:var(--red);}
+.bp-watch{background:var(--amber-bg);color:var(--amber);}
+.bp-derived{background:var(--teal-light);color:var(--teal);}
+
+/* ── Settings card ── */
+.settings-card{background:var(--white);border-radius:10px;padding:14px 16px;margin-bottom:10px;border:1px solid var(--border);}
+.settings-section-label{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.unit-toggle{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
+.unit-btn{padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all 0.15s;}
+.unit-btn.active{background:var(--teal);border-color:var(--teal);color:#fff;}
+.unit-desc{font-size:10px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
+.settings-divider{border:none;border-top:1px solid var(--border);margin:12px 0;}
+.ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.ctx-label{font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px;}
+.sex-toggle{display:flex;gap:6px;}
+.sex-btn{flex:1;padding:6px;border-radius:6px;border:1px solid var(--border);background:var(--white);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all 0.15s;}
+.sex-btn.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.ctx-input{width:100%;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;font-family:var(--font-body);outline:none;color:var(--text);}
+.ctx-input:focus{border-color:var(--teal);}
+.ctx-checks{display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+.ctx-check{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;}
+.ctx-check input{cursor:pointer;}
+.hd-duration{display:flex;align-items:center;gap:6px;}
+.hd-duration input{width:62px;border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:12px;font-family:var(--font-body);}
+.hd-duration span{font-size:11px;color:var(--muted);}
+
+/* ── Tabs ── */
+.tab-bar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.tab-btn{padding:6px 11px;border-radius:8px;border:1px solid var(--border);background:var(--white);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:4px;transition:all 0.15s;}
+.tab-btn:hover{border-color:var(--navy);}
+.tab-btn.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.tab-count{font-size:10px;padding:1px 5px;border-radius:10px;font-weight:700;}
+.tab-btn .tab-count{background:rgba(255,255,255,0.25);color:#fff;}
+.tab-btn:not(.active) .tab-count{background:var(--teal);color:#fff;}
+
+/* ── Panel ── */
+.panel{background:var(--white);border-radius:10px;padding:14px 16px;border:1px solid var(--border);}
+.section-header{margin:4px 0 13px;padding-bottom:8px;border-bottom:2px solid var(--navy);display:flex;align-items:center;gap:8px;}
+.section-header .sh-icon{font-size:20px;}
+.section-header .sh-title{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--navy);}
+.section-header .sh-sub{font-size:11px;color:var(--muted);}
+
+/* ── Lab Input ── */
+.lab-input{margin-bottom:9px;padding:9px 11px;border-radius:8px;border:1px solid var(--border);background:var(--white);transition:all 0.2s;}
+.lab-input.status-NORMAL{background:var(--green-bg);border-color:var(--green-bd);}
+.lab-input.status-WATCH{background:var(--amber-bg);border-color:var(--amber-bd);}
+.lab-input.status-FLAG{background:var(--red-bg);border-color:var(--red-bd);}
+.li-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.li-label{font-size:12px;font-weight:600;color:var(--navy);flex:1;padding-right:8px;}
+.li-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:0.5px;white-space:nowrap;}
+.badge-NORMAL{color:var(--green);background:var(--green-bg);border:1px solid var(--green-bd);}
+.badge-WATCH{color:var(--amber);background:var(--amber-bg);border:1px solid var(--amber-bd);}
+.badge-FLAG{color:var(--red);background:var(--red-bg);border:1px solid var(--red-bd);}
+.badge-EMPTY{color:var(--gray);background:var(--gray-bg);border:1px solid var(--gray-bd);}
+.li-input-row{display:flex;align-items:center;gap:8px;}
+.li-input-row input[type=number]{flex:1;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;font-family:var(--font-body);outline:none;background:#fff;color:var(--text);}
+.li-input-row input[type=number]:focus{border-color:var(--teal);}
+.li-unit{font-size:11px;color:var(--muted);white-space:nowrap;min-width:52px;text-align:right;}
+.li-note{font-size:11px;font-style:italic;margin-top:4px;line-height:1.4;}
+.note-NORMAL{color:var(--green);}
+.note-WATCH{color:var(--amber);}
+.note-FLAG{color:var(--red);}
+
+/* ── Hint ── */
+.hint{font-size:11px;color:var(--teal);margin-top:8px;padding:7px 10px;background:#edf7f7;border-radius:6px;border-left:3px solid var(--teal);line-height:1.5;}
+
+/* ── Derived ── */
+.derived-domain-label{font-size:10px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid var(--teal-light);}
+.derived-domain{margin-bottom:16px;}
+.derived-card{padding:10px 13px;border-radius:8px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.derived-card.dc-NORMAL{background:var(--green-bg);border:1px solid var(--green-bd);}
+.derived-card.dc-WATCH{background:var(--amber-bg);border:1px solid var(--amber-bd);}
+.derived-card.dc-FLAG{background:var(--red-bg);border:1px solid var(--red-bd);}
+.derived-card.dc-EMPTY{background:var(--gray-bg);border:1px solid var(--gray-bd);}
+.dc-left{flex:1;}
+.dc-domain{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px;}
+.dc-label{font-size:13px;font-weight:700;color:var(--navy);}
+.dc-note{font-size:11px;margin-top:3px;line-height:1.4;}
+.dc-NORMAL .dc-note{color:var(--green);}
+.dc-WATCH .dc-note{color:var(--amber);}
+.dc-FLAG .dc-note{color:var(--red);}
+.dc-EMPTY .dc-note{color:var(--gray);}
+.dc-right{text-align:right;flex-shrink:0;}
+.dc-value{font-size:20px;font-weight:800;}
+.dc-NORMAL .dc-value{color:var(--green);}
+.dc-WATCH .dc-value{color:var(--amber);}
+.dc-FLAG .dc-value{color:var(--red);}
+.dc-EMPTY .dc-value{color:var(--gray);}
+.dc-unit{font-size:10px;color:var(--muted);}
+
+/* ── Empty derived ── */
+.derived-empty{text-align:center;padding:28px 16px;color:var(--muted);}
+.derived-empty .de-icon{font-size:32px;margin-bottom:8px;}
+.derived-empty .de-title{font-size:13px;font-weight:600;color:var(--navy);}
+.derived-empty .de-sub{font-size:12px;margin-top:4px;}
+.derived-list{margin-top:12px;font-size:11px;color:var(--teal);text-align:left;background:#edf7f7;border-radius:8px;padding:10px 12px;line-height:1.8;}
+
+/* ── PDF Button ── */
+.pdf-bar{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:10px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border);}
+.pdf-bar-label{font-size:11px;color:var(--muted);font-style:italic;flex:1;padding-right:10px;}
+.pdf-btn{display:flex;align-items:center;gap:7px;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:12px;font-weight:700;font-family:var(--font-body);cursor:pointer;transition:background 0.15s;letter-spacing:0.3px;white-space:nowrap;flex-shrink:0;}
+.pdf-btn:hover{background:var(--navy-light);}
+.pdf-btn:disabled{background:var(--muted);cursor:not-allowed;}
+.pdf-btn svg{flex-shrink:0;}
+
+
+/* ── Sample data bar ── */
+.sample-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:9px 12px;background:linear-gradient(90deg,#f0f6ff,#edf7f7);border-radius:8px;border:1px solid #c8dff0;}
+.sample-bar-label{font-size:11px;color:#4a5e7a;line-height:1.4;flex:1;padding-right:10px;}
+.sample-bar-label strong{color:#1a2e4a;}
+.sample-btn{display:flex;align-items:center;gap:5px;background:#fff;color:#1d7a7a;border:1.5px solid #1d7a7a;border-radius:7px;padding:6px 13px;font-size:12px;font-weight:700;font-family:var(--font-body);cursor:pointer;transition:all 0.15s;white-space:nowrap;flex-shrink:0;}
+.sample-btn:hover{background:#1d7a7a;color:#fff;}
+.clear-btn{display:flex;align-items:center;gap:5px;background:#fff;color:#888;border:1.5px solid #ccc;border-radius:7px;padding:6px 11px;font-size:12px;font-weight:600;font-family:var(--font-body);cursor:pointer;transition:all 0.15s;white-space:nowrap;flex-shrink:0;margin-left:6px;}
+.clear-btn:hover{background:#fdecea;color:#a01818;border-color:#c82020;}
+
+/* ── Footer ── */
+.li-footer{margin-top:10px;padding:10px 14px;background:var(--navy);border-radius:10px;color:rgba(255,255,255,0.5);font-size:10px;line-height:1.7;}
+.li-footer strong{color:#fff;}
+
+/* ── Hidden panel ── */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+@media(max-width:480px){
+  .patient-row,.ctx-grid{grid-template-columns:1fr;}
+  .ctx-checks{flex-direction:column;align-items:flex-start;gap:10px;}
+}
+</style>
+</head>
+<body>
+<div id="li-root">
+
+<!-- HEADER -->
+<div class="li-header">
+  <div class="brand">W. G. M. Rivero, MD · Nephrology &amp; Internal Medicine</div>
+  <h1>Laboratory Interpreter</h1>
+  <div class="subtitle">KDIGO 2024 · ACC/AHA 2026 · ADA 2025 — with derived calculations</div>
+
+  <!-- Patient fields -->
+  <div class="patient-row">
+    <div class="patient-field">
+      <label>Patient Name <span>(optional)</span></label>
+      <input class="patient-input" type="text" id="pt-name" placeholder="e.g. Juan Dela Cruz" oninput="updateHeader()"/>
+    </div>
+    <div class="patient-field">
+      <label>Date of Lab Results <span>(optional)</span></label>
+      <input class="patient-input" type="date" id="pt-date" oninput="updateHeader()"/>
+    </div>
+  </div>
+
+  <!-- Active patient banner -->
+  <div class="patient-banner" id="pt-banner" style="display:none;"></div>
+
+  <!-- Summary badges -->
+  <div class="summary-badges" id="summary-badges"></div>
+</div>
+
+<!-- SETTINGS -->
+<div class="settings-card">
+  <div class="settings-section-label">Unit System</div>
+  <div class="unit-toggle">
+    <button class="unit-btn active" onclick="setUnit('Conventional (US)',this)">Conventional (US)</button>
+    <button class="unit-btn" onclick="setUnit('SI',this)">SI</button>
+    <button class="unit-btn" onclick="setUnit('Hybrid',this)">Hybrid</button>
+  </div>
+  <div class="unit-desc" id="unit-desc">mg/dL for glucose, cholesterol, creatinine · g/dL for albumin · g/L for Hgb · µIU/mL for insulin</div>
+
+  <hr class="settings-divider"/>
+  <div class="settings-section-label">Clinical Context</div>
+  <div class="ctx-grid">
+    <div>
+      <span class="ctx-label">Sex</span>
+      <div class="sex-toggle">
+        <button class="sex-btn active" id="sex-M" onclick="setSex('M')">Male</button>
+        <button class="sex-btn" id="sex-F" onclick="setSex('F')">Female</button>
+      </div>
+    </div>
+    <div>
+      <span class="ctx-label">Age (for CKD-EPI eGFR)</span>
+      <input class="ctx-input" type="number" id="ctx-age" placeholder="e.g. 58" oninput="reinterpAll()"/>
+    </div>
+  </div>
+  <div class="ctx-checks">
+    <label class="ctx-check">
+      <input type="checkbox" id="ctx-hd" onchange="onHDChange()"/>
+      On Hemodialysis
+    </label>
+    <label class="ctx-check">
+      <input type="checkbox" id="ctx-vhr" onchange="reinterpAll()"/>
+      Very High ASCVD Risk (CKD+DM / prior event)
+    </label>
+    <div class="hd-duration" id="hd-dur-row" style="display:none;">
+      <span style="font-size:11px;color:var(--muted);">HD session:</span>
+      <input type="number" id="ctx-hd-duration" value="240" oninput="reinterpAll()"/>
+      <span>min</span>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar" id="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('kidney',this)">🫘 Kidney</button>
+  <button class="tab-btn" onclick="switchTab('cbc',this)">🩸 CBC / Iron</button>
+  <button class="tab-btn" onclick="switchTab('metabolic',this)">⚡ Metabolic</button>
+  <button class="tab-btn" onclick="switchTab('lipids',this)">❤️ Lipids</button>
+  <button class="tab-btn" onclick="switchTab('diabetes',this)">🍬 Diabetes</button>
+  <button class="tab-btn" onclick="switchTab('ckdmbd',this)">🦴 CKD-MBD</button>
+  <button class="tab-btn" id="tab-hd" onclick="switchTab('hdadequacy',this)" style="display:none;">🔄 HD Adequacy</button>
+  <button class="tab-btn" id="tab-derived" onclick="switchTab('derived',this)">📐 Derived <span class="tab-count" id="derived-count" style="display:none;"></span></button>
+</div>
+
+<!-- PANELS -->
+<div class="panel">
+
+  <!-- KIDNEY -->
+  <div class="tab-panel active" id="panel-kidney">
+    <div class="section-header"><span class="sh-icon">🫘</span><div><div class="sh-title">Kidney Function</div><div class="sh-sub">eGFR · Creatinine · Albuminuria markers</div></div></div>
+    <div class="sample-bar"><span class="sample-bar-label"><strong>Sample data:</strong> CKD Stage 3b patient (Cr 2.1, eGFR 32, microalbuminuria)</span><button class="clear-btn" onclick="clearPanel('kidney')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button><button class="sample-btn" onclick="loadSample('kidney')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>Try Sample Data</button></div>
+    <div id="inp-creatinine"></div>
+    <div id="inp-egfr"></div>
+    <div id="inp-bun"></div>
+    <div id="inp-uacr"></div>
+    <div id="inp-upcr"></div>
+    <div class="hint">💡 Creatinine + Age + Sex → <strong>CKD-EPI eGFR</strong> and <strong>BUN:Cr ratio</strong> in Derived tab.</div>
+    <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
+  </div>
+
+  <!-- CBC -->
+  <div class="tab-panel" id="panel-cbc">
+    <div class="section-header"><span class="sh-icon">🩸</span><div><div class="sh-title">CBC &amp; Iron Studies</div><div class="sh-sub">Anemia of CKD · KDIGO iron/Hgb targets</div></div></div>
+    <div class="sample-bar"><span class="sample-bar-label"><strong>Sample data:</strong> Anemia of CKD with iron deficiency (Hgb 98, TSAT 17%, microcytic)</span><button class="clear-btn" onclick="clearPanel('cbc')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button><button class="sample-btn" onclick="loadSample('cbc')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>Try Sample Data</button></div>
+    <div id="inp-hgb"></div>
+    <div id="inp-hct"></div>
+    <div id="inp-rbc"></div>
+    <div id="inp-mcv"></div>
+    <div id="inp-rdw"></div>
+    <div id="inp-reticulocyte"></div>
+    <div id="inp-ferritin"></div>
+    <div id="inp-tsat"></div>
+    <div id="inp-wbc"></div>
+    <div id="inp-platelets"></div>
+    <div class="hint">💡 MCV + RBC + RDW → <strong>Mentzer Index</strong>; Hct + Retic → <strong>Corrected Retic Count</strong>; Ferritin + TSAT → <strong>Iron Status Pattern</strong> in Derived tab.</div>
+    <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
+  </div>
+
+  <!-- METABOLIC -->
+  <div class="tab-panel" id="panel-metabolic">
+    <div class="section-header"><span class="sh-icon">⚡</span><div><div class="sh-title">Electrolytes &amp; Metabolic</div><div class="sh-sub">Acid-base · Nutrition · Organ function</div></div></div>
+    <div class="sample-bar"><span class="sample-bar-label"><strong>Sample data:</strong> CKD with metabolic acidosis, hyperuricemia, hypoalbuminemia</span><button class="clear-btn" onclick="clearPanel('metabolic')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button><button class="sample-btn" onclick="loadSample('metabolic')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>Try Sample Data</button></div>
+    <div id="inp-sodium"></div>
+    <div id="inp-potassium"></div>
+    <div id="inp-bicarb"></div>
+    <div id="inp-chloride"></div>
+    <div id="inp-magnesium"></div>
+    <div id="inp-albumin"></div>
+    <div id="inp-alt"></div>
+    <div id="inp-ast"></div>
+    <div id="inp-uricacid"></div>
+    <div class="hint">💡 Na + Cl + HCO₃ + Albumin → <strong>Anion Gap + Corrected AG</strong>; ALT + AST → <strong>AST:ALT (De Ritis)</strong> in Derived tab.</div>
+    <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
+  </div>
+
+  <!-- LIPIDS -->
+  <div class="tab-panel" id="panel-lipids">
+    <div class="section-header"><span class="sh-icon">❤️</span><div><div class="sh-title">Lipid Panel</div><div class="sh-sub">ACC/AHA 2026 · Very-high-risk targets for CKD+DM</div></div></div>
+    <div class="sample-bar"><span class="sample-bar-label"><strong>Sample data:</strong> Diabetic dyslipidemia (TG 245, HDL 38, elevated Lp(a))</span><button class="clear-btn" onclick="clearPanel('lipids')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button><button class="sample-btn" onclick="loadSample('lipids')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>Try Sample Data</button></div>
+    <div id="inp-totalchol"></div>
+    <div id="inp-ldl"></div>
+    <div id="inp-hdl"></div>
+    <div id="inp-tg"></div>
+    <div id="inp-lpa"></div>
+    <div class="hint">💡 Lipids → <strong>Non-HDL, TC:HDL, TG:HDL, AIP, Friedewald LDL</strong>; TG + FBS → <strong>TyG Index</strong> in Derived tab.</div>
+    <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
+  </div>
+
+  <!-- DIABETES -->
+  <div class="tab-panel" id="panel-diabetes">
+    <div class="section-header"><span class="sh-icon">🍬</span><div><div class="sh-title">Diabetes &amp; Glucose</div><div class="sh-sub">ADA 2025 · KDIGO HbA1c 7–8% target for CKD/dialysis</div></div></div>
+    <div class="sample-bar"><span class="sample-bar-label"><strong>Sample data:</strong> Poorly controlled T2DM on CKD (FBS 138, HbA1c 8.2%, IR)</span><button class="clear-btn" onclick="clearPanel('diabetes')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button><button class="sample-btn" onclick="loadSample('diabetes')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>Try Sample Data</button></div>
+    <div id="inp-fbs"></div>
+    <div id="inp-hba1c"></div>
+    <div id="inp-fasting_insulin"></div>
+    <div class="hint">💡 FBS + Fasting Insulin → <strong>HOMA-IR</strong>; FBS + TG (from Lipids tab) → <strong>TyG Index</strong> in Derived tab.</div>
+    <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
+  </div>
+
+  <!-- CKD-MBD -->
+  <div class="tab-panel" id="panel-ckdmbd">
+    <div class="section-header"><span class="sh-icon">🦴</span><div><div class="sh-title">CKD-MBD: Mineral &amp; Bone Disorder</div><div class="sh-sub">KDIGO 2024 · Calcium · Phosphorus · PTH · Vitamin D</div></div></div>
+    <div class="sample-bar"><span class="sample-bar-label"><strong>Sample data:</strong> CKD-MBD with vitamin D deficiency and elevated phosphorus</span><button class="clear-btn" onclick="clearPanel('ckdmbd')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button><button class="sample-btn" onclick="loadSample('ckdmbd')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>Try Sample Data</button></div>
+    <div id="inp-calcium"></div>
+    <div id="inp-phosphorus"></div>
+    <div id="inp-ipth"></div>
+    <div id="inp-vitd"></div>
+    <div id="inp-alp"></div>
+    <div class="hint">💡 Ca × P → <strong>Calcium-Phosphorus Product</strong> with vascular calcification risk flag in Derived tab.</div>
+    <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
+  </div>
+
+  <!-- HD ADEQUACY -->
+  <div class="tab-panel" id="panel-hdadequacy">
+    <div class="section-header"><span class="sh-icon">🔄</span><div><div class="sh-title">HD Adequacy</div><div class="sh-sub">Daugirdas spKt/V · URR · nPCR — KDIGO targets</div></div></div>
+    <div class="sample-bar"><span class="sample-bar-label"><strong>Sample data:</strong> HD adequacy values for Daugirdas spKt/V calculation</span><button class="clear-btn" onclick="clearPanel('hdadequacy')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button><button class="sample-btn" onclick="loadSample('hdadequacy')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>Try Sample Data</button></div>
+    <div id="inp-bun_pre"></div>
+    <div id="inp-bun_post"></div>
+    <div id="inp-uf_volume"></div>
+    <div id="inp-weight_post"></div>
+    <div id="inp-spktv"></div>
+    <div id="inp-urr"></div>
+    <div id="inp-npcrHD"></div>
+    <div class="hint">💡 Pre+Post BUN + UF volume + weight → <strong>Calculated URR, spKt/V (Daugirdas 2nd gen.), estimated nPCR</strong> in Derived tab.</div>
+    <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
+  </div>
+
+  <!-- DERIVED -->
+  <div class="tab-panel" id="panel-derived">
+    <div class="section-header"><span class="sh-icon">📐</span><div><div class="sh-title">Derived &amp; Calculated Values</div><div class="sh-sub">Auto-computed from entered lab data</div></div></div>
+    <div id="derived-content"></div>
+    <div class="pdf-bar" id="derived-pdf-bar" style="margin-top:14px;"><span class="pdf-bar-label">Generates a full report combining all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
+  </div>
+
+</div><!-- /panel -->
+
+<!-- FOOTER -->
+<div class="li-footer">
+  <strong>W. G. M. Rivero, MD, FPCP, DPSN</strong> · Internal Medicine · Nephrology · Clinical Nutrition<br/>
+  PRC 0105184 · seriousmd.com/doc/williamrivero · williamriveromd.com<br/>
+  <em>For patient education only. All results must be interpreted in clinical context by a qualified physician. Not a substitute for medical consultation.</em>
+</div>
+
+</div><!-- /li-root -->
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════════
+var STATE = {
+  unitSys: 'Conventional (US)',
+  sex: 'M',
+  age: '',
+  isHD: false,
+  ckdVeryHigh: false,
+  hdDuration: 240,
+  fields: {}   // key -> raw string as entered
+};
+
+// ════════════════════════════════════════════════════════════════════
+// FIELD METADATA  (label, unit, placeholder, toConv, fromConv)
+// toConv: entered value → conventional (mg/dL-based)
+// ════════════════════════════════════════════════════════════════════
+var FIELD_META = {
+  // ── Kidney ──────────────────────────────────────────────────────
+  creatinine:{
+    'Conventional (US)':{label:'Serum Creatinine',unit:'mg/dL',ph:'e.g. 1.2',toConv:function(v){return v;}},
+    'SI':{label:'Serum Creatinine',unit:'µmol/L',ph:'e.g. 106',toConv:function(v){return v/88.4;}},
+    'Hybrid':{label:'Serum Creatinine',unit:'mg/dL',ph:'e.g. 1.2',toConv:function(v){return v;}}
+  },
+  egfr:{
+    'Conventional (US)':{label:'eGFR (lab-reported)',unit:'mL/min/1.73m²',ph:'e.g. 48',toConv:function(v){return v;}},
+    'SI':{label:'eGFR (lab-reported)',unit:'mL/min/1.73m²',ph:'e.g. 48',toConv:function(v){return v;}},
+    'Hybrid':{label:'eGFR (lab-reported)',unit:'mL/min/1.73m²',ph:'e.g. 48',toConv:function(v){return v;}}
+  },
+  bun:{
+    'Conventional (US)':{label:'BUN',unit:'mg/dL',ph:'e.g. 22',toConv:function(v){return v;}},
+    'SI':{label:'Urea (BUN)',unit:'mmol/L',ph:'e.g. 7.9',toConv:function(v){return v*2.8;}},
+    'Hybrid':{label:'BUN',unit:'mg/dL',ph:'e.g. 22',toConv:function(v){return v;}}
+  },
+  uacr:{
+    'Conventional (US)':{label:'UACR',unit:'mg/g',ph:'e.g. 85',toConv:function(v){return v;}},
+    'SI':{label:'UACR',unit:'mg/mmol',ph:'e.g. 9.6',toConv:function(v){return v*8.84;}},
+    'Hybrid':{label:'UACR',unit:'mg/g',ph:'e.g. 85',toConv:function(v){return v;}}
+  },
+  upcr:{
+    'Conventional (US)':{label:'UPCR',unit:'g/g',ph:'e.g. 0.4',toConv:function(v){return v;}},
+    'SI':{label:'UPCR',unit:'g/g',ph:'e.g. 0.4',toConv:function(v){return v;}},
+    'Hybrid':{label:'UPCR',unit:'g/g',ph:'e.g. 0.4',toConv:function(v){return v;}}
+  },
+  // ── CBC ─────────────────────────────────────────────────────────
+  hgb:{
+    'Conventional (US)':{label:'Hemoglobin (Hgb)',unit:'g/L',ph:'e.g. 108',toConv:function(v){return v;}},
+    'SI':{label:'Hemoglobin (Hgb)',unit:'g/L',ph:'e.g. 108',toConv:function(v){return v;}},
+    'Hybrid':{label:'Hemoglobin (Hgb)',unit:'g/L',ph:'e.g. 108',toConv:function(v){return v;}}
+  },
+  hct:{
+    'Conventional (US)':{label:'Hematocrit (Hct)',unit:'%',ph:'e.g. 33',toConv:function(v){return v;}},
+    'SI':{label:'Hematocrit (Hct)',unit:'L/L',ph:'e.g. 0.33',toConv:function(v){return v*100;}},
+    'Hybrid':{label:'Hematocrit (Hct)',unit:'%',ph:'e.g. 33',toConv:function(v){return v;}}
+  },
+  rbc:{
+    'Conventional (US)':{label:'RBC Count',unit:'×10⁶/µL',ph:'e.g. 4.2',toConv:function(v){return v;}},
+    'SI':{label:'RBC Count',unit:'×10¹²/L',ph:'e.g. 4.2',toConv:function(v){return v;}},
+    'Hybrid':{label:'RBC Count',unit:'×10⁶/µL',ph:'e.g. 4.2',toConv:function(v){return v;}}
+  },
+  mcv:{
+    'Conventional (US)':{label:'MCV',unit:'fL',ph:'e.g. 76',toConv:function(v){return v;}},
+    'SI':{label:'MCV',unit:'fL',ph:'e.g. 76',toConv:function(v){return v;}},
+    'Hybrid':{label:'MCV',unit:'fL',ph:'e.g. 76',toConv:function(v){return v;}}
+  },
+  rdw:{
+    'Conventional (US)':{label:'RDW',unit:'%',ph:'e.g. 14.2',toConv:function(v){return v;}},
+    'SI':{label:'RDW',unit:'%',ph:'e.g. 14.2',toConv:function(v){return v;}},
+    'Hybrid':{label:'RDW',unit:'%',ph:'e.g. 14.2',toConv:function(v){return v;}}
+  },
+  reticulocyte:{
+    'Conventional (US)':{label:'Reticulocyte Count',unit:'%',ph:'e.g. 1.2',toConv:function(v){return v;}},
+    'SI':{label:'Reticulocyte Count',unit:'%',ph:'e.g. 1.2',toConv:function(v){return v;}},
+    'Hybrid':{label:'Reticulocyte Count',unit:'%',ph:'e.g. 1.2',toConv:function(v){return v;}}
+  },
+  ferritin:{
+    'Conventional (US)':{label:'Serum Ferritin',unit:'ng/mL',ph:'e.g. 180',toConv:function(v){return v;}},
+    'SI':{label:'Serum Ferritin',unit:'µg/L',ph:'e.g. 180',toConv:function(v){return v;}},
+    'Hybrid':{label:'Serum Ferritin',unit:'ng/mL',ph:'e.g. 180',toConv:function(v){return v;}}
+  },
+  tsat:{
+    'Conventional (US)':{label:'Transferrin Saturation (TSAT)',unit:'%',ph:'e.g. 22',toConv:function(v){return v;}},
+    'SI':{label:'Transferrin Saturation (TSAT)',unit:'%',ph:'e.g. 22',toConv:function(v){return v;}},
+    'Hybrid':{label:'Transferrin Saturation (TSAT)',unit:'%',ph:'e.g. 22',toConv:function(v){return v;}}
+  },
+  wbc:{
+    'Conventional (US)':{label:'WBC Count',unit:'×10³/µL',ph:'e.g. 7.2',toConv:function(v){return v;}},
+    'SI':{label:'WBC Count',unit:'×10⁹/L',ph:'e.g. 7.2',toConv:function(v){return v;}},
+    'Hybrid':{label:'WBC Count',unit:'×10³/µL',ph:'e.g. 7.2',toConv:function(v){return v;}}
+  },
+  platelets:{
+    'Conventional (US)':{label:'Platelets',unit:'×10³/µL',ph:'e.g. 220',toConv:function(v){return v;}},
+    'SI':{label:'Platelets',unit:'×10⁹/L',ph:'e.g. 220',toConv:function(v){return v;}},
+    'Hybrid':{label:'Platelets',unit:'×10³/µL',ph:'e.g. 220',toConv:function(v){return v;}}
+  },
+  // ── Metabolic ────────────────────────────────────────────────────
+  sodium:{
+    'Conventional (US)':{label:'Sodium (Na)',unit:'mEq/L',ph:'e.g. 138',toConv:function(v){return v;}},
+    'SI':{label:'Sodium (Na)',unit:'mmol/L',ph:'e.g. 138',toConv:function(v){return v;}},
+    'Hybrid':{label:'Sodium (Na)',unit:'mmol/L',ph:'e.g. 138',toConv:function(v){return v;}}
+  },
+  potassium:{
+    'Conventional (US)':{label:'Potassium (K)',unit:'mEq/L',ph:'e.g. 4.8',toConv:function(v){return v;}},
+    'SI':{label:'Potassium (K)',unit:'mmol/L',ph:'e.g. 4.8',toConv:function(v){return v;}},
+    'Hybrid':{label:'Potassium (K)',unit:'mmol/L',ph:'e.g. 4.8',toConv:function(v){return v;}}
+  },
+  bicarb:{
+    'Conventional (US)':{label:'Bicarbonate / HCO₃',unit:'mEq/L',ph:'e.g. 20',toConv:function(v){return v;}},
+    'SI':{label:'Bicarbonate / HCO₃',unit:'mmol/L',ph:'e.g. 20',toConv:function(v){return v;}},
+    'Hybrid':{label:'Bicarbonate / HCO₃',unit:'mmol/L',ph:'e.g. 20',toConv:function(v){return v;}}
+  },
+  chloride:{
+    'Conventional (US)':{label:'Chloride (Cl)',unit:'mEq/L',ph:'e.g. 102',toConv:function(v){return v;}},
+    'SI':{label:'Chloride (Cl)',unit:'mmol/L',ph:'e.g. 102',toConv:function(v){return v;}},
+    'Hybrid':{label:'Chloride (Cl)',unit:'mmol/L',ph:'e.g. 102',toConv:function(v){return v;}}
+  },
+  magnesium:{
+    'Conventional (US)':{label:'Magnesium (Mg)',unit:'mg/dL',ph:'e.g. 2.0',toConv:function(v){return v/0.4114;}},
+    'SI':{label:'Magnesium (Mg)',unit:'mmol/L',ph:'e.g. 0.85',toConv:function(v){return v;}},
+    'Hybrid':{label:'Magnesium (Mg)',unit:'mmol/L',ph:'e.g. 0.85',toConv:function(v){return v;}}
+  },
+  albumin:{
+    'Conventional (US)':{label:'Serum Albumin',unit:'g/dL',ph:'e.g. 3.8',toConv:function(v){return v;}},
+    'SI':{label:'Serum Albumin',unit:'g/L',ph:'e.g. 38',toConv:function(v){return v/10;}},
+    'Hybrid':{label:'Serum Albumin',unit:'g/dL',ph:'e.g. 3.8',toConv:function(v){return v;}}
+  },
+  alt:{
+    'Conventional (US)':{label:'ALT / SGPT',unit:'U/L',ph:'e.g. 35',toConv:function(v){return v;}},
+    'SI':{label:'ALT / SGPT',unit:'U/L',ph:'e.g. 35',toConv:function(v){return v;}},
+    'Hybrid':{label:'ALT / SGPT',unit:'U/L',ph:'e.g. 35',toConv:function(v){return v;}}
+  },
+  ast:{
+    'Conventional (US)':{label:'AST / SGOT',unit:'U/L',ph:'e.g. 28',toConv:function(v){return v;}},
+    'SI':{label:'AST / SGOT',unit:'U/L',ph:'e.g. 28',toConv:function(v){return v;}},
+    'Hybrid':{label:'AST / SGOT',unit:'U/L',ph:'e.g. 28',toConv:function(v){return v;}}
+  },
+  uricacid:{
+    'Conventional (US)':{label:'Uric Acid',unit:'mg/dL',ph:'e.g. 7.2',toConv:function(v){return v;}},
+    'SI':{label:'Uric Acid',unit:'µmol/L',ph:'e.g. 428',toConv:function(v){return v/59.48;}},
+    'Hybrid':{label:'Uric Acid',unit:'mg/dL',ph:'e.g. 7.2',toConv:function(v){return v;}}
+  },
+  // ── Lipids ──────────────────────────────────────────────────────
+  totalchol:{
+    'Conventional (US)':{label:'Total Cholesterol',unit:'mg/dL',ph:'e.g. 195',toConv:function(v){return v;}},
+    'SI':{label:'Total Cholesterol',unit:'mmol/L',ph:'e.g. 5.0',toConv:function(v){return v*38.67;}},
+    'Hybrid':{label:'Total Cholesterol',unit:'mg/dL',ph:'e.g. 195',toConv:function(v){return v;}}
+  },
+  ldl:{
+    'Conventional (US)':{label:'LDL-C (direct)',unit:'mg/dL',ph:'e.g. 88',toConv:function(v){return v;}},
+    'SI':{label:'LDL-C (direct)',unit:'mmol/L',ph:'e.g. 2.3',toConv:function(v){return v*38.67;}},
+    'Hybrid':{label:'LDL-C (direct)',unit:'mg/dL',ph:'e.g. 88',toConv:function(v){return v;}}
+  },
+  hdl:{
+    'Conventional (US)':{label:'HDL Cholesterol',unit:'mg/dL',ph:'e.g. 42',toConv:function(v){return v;}},
+    'SI':{label:'HDL Cholesterol',unit:'mmol/L',ph:'e.g. 1.1',toConv:function(v){return v*38.67;}},
+    'Hybrid':{label:'HDL Cholesterol',unit:'mg/dL',ph:'e.g. 42',toConv:function(v){return v;}}
+  },
+  tg:{
+    'Conventional (US)':{label:'Triglycerides (fasting)',unit:'mg/dL',ph:'e.g. 210',toConv:function(v){return v;}},
+    'SI':{label:'Triglycerides (fasting)',unit:'mmol/L',ph:'e.g. 2.4',toConv:function(v){return v*88.57;}},
+    'Hybrid':{label:'Triglycerides (fasting)',unit:'mg/dL',ph:'e.g. 210',toConv:function(v){return v;}}
+  },
+  lpa:{
+    'Conventional (US)':{label:'Lipoprotein(a) — Lp(a)',unit:'mg/dL',ph:'e.g. 45',toConv:function(v){return v;}},
+    'SI':{label:'Lipoprotein(a) — Lp(a)',unit:'nmol/L',ph:'e.g. 112',toConv:function(v){return v*0.357;}},
+    'Hybrid':{label:'Lipoprotein(a) — Lp(a)',unit:'mg/dL',ph:'e.g. 45',toConv:function(v){return v;}}
+  },
+  // ── Diabetes ─────────────────────────────────────────────────────
+  fbs:{
+    'Conventional (US)':{label:'Fasting Blood Sugar (FBS)',unit:'mg/dL',ph:'e.g. 118',toConv:function(v){return v;}},
+    'SI':{label:'Fasting Blood Sugar (FBS)',unit:'mmol/L',ph:'e.g. 6.6',toConv:function(v){return v*18.02;}},
+    'Hybrid':{label:'Fasting Blood Sugar (FBS)',unit:'mg/dL',ph:'e.g. 118',toConv:function(v){return v;}}
+  },
+  hba1c:{
+    'Conventional (US)':{label:'HbA1c',unit:'%',ph:'e.g. 7.4',toConv:function(v){return v;}},
+    'SI':{label:'HbA1c',unit:'mmol/mol',ph:'e.g. 57',toConv:function(v){return (v/10.929)+2.15;}},
+    'Hybrid':{label:'HbA1c',unit:'%',ph:'e.g. 7.4',toConv:function(v){return v;}}
+  },
+  fasting_insulin:{
+    'Conventional (US)':{label:'Fasting Insulin',unit:'µIU/mL',ph:'e.g. 14',toConv:function(v){return v;}},
+    'SI':{label:'Fasting Insulin',unit:'pmol/L',ph:'e.g. 97',toConv:function(v){return v/6.945;}},
+    'Hybrid':{label:'Fasting Insulin',unit:'µIU/mL',ph:'e.g. 14',toConv:function(v){return v;}}
+  },
+  // ── CKD-MBD ─────────────────────────────────────────────────────
+  calcium:{
+    'Conventional (US)':{label:'Serum Calcium (total)',unit:'mg/dL',ph:'e.g. 9.0',toConv:function(v){return v;}},
+    'SI':{label:'Serum Calcium (total)',unit:'mmol/L',ph:'e.g. 2.25',toConv:function(v){return v*4.008;}},
+    'Hybrid':{label:'Serum Calcium (total)',unit:'mg/dL',ph:'e.g. 9.0',toConv:function(v){return v;}}
+  },
+  phosphorus:{
+    'Conventional (US)':{label:'Serum Phosphorus',unit:'mg/dL',ph:'e.g. 5.8',toConv:function(v){return v;}},
+    'SI':{label:'Serum Phosphorus',unit:'mmol/L',ph:'e.g. 1.87',toConv:function(v){return v*3.097;}},
+    'Hybrid':{label:'Serum Phosphorus',unit:'mg/dL',ph:'e.g. 5.8',toConv:function(v){return v;}}
+  },
+  ipth:{
+    'Conventional (US)':{label:'iPTH (Intact PTH)',unit:'pg/mL',ph:'e.g. 380',toConv:function(v){return v;}},
+    'SI':{label:'iPTH (Intact PTH)',unit:'ng/L',ph:'e.g. 380',toConv:function(v){return v;}},
+    'Hybrid':{label:'iPTH (Intact PTH)',unit:'pg/mL',ph:'e.g. 380',toConv:function(v){return v;}}
+  },
+  vitd:{
+    'Conventional (US)':{label:'25-OH Vitamin D',unit:'ng/mL',ph:'e.g. 18',toConv:function(v){return v;}},
+    'SI':{label:'25-OH Vitamin D',unit:'nmol/L',ph:'e.g. 45',toConv:function(v){return v*0.4006;}},
+    'Hybrid':{label:'25-OH Vitamin D',unit:'nmol/L',ph:'e.g. 45',toConv:function(v){return v*0.4006;}}
+  },
+  alp:{
+    'Conventional (US)':{label:'Alkaline Phosphatase (ALP)',unit:'U/L',ph:'e.g. 110',toConv:function(v){return v;}},
+    'SI':{label:'Alkaline Phosphatase (ALP)',unit:'U/L',ph:'e.g. 110',toConv:function(v){return v;}},
+    'Hybrid':{label:'Alkaline Phosphatase (ALP)',unit:'U/L',ph:'e.g. 110',toConv:function(v){return v;}}
+  },
+  // ── HD ──────────────────────────────────────────────────────────
+  bun_pre:{
+    'Conventional (US)':{label:'Pre-HD BUN',unit:'mg/dL',ph:'e.g. 65',toConv:function(v){return v;}},
+    'SI':{label:'Pre-HD Urea',unit:'mmol/L',ph:'e.g. 23.2',toConv:function(v){return v*2.8;}},
+    'Hybrid':{label:'Pre-HD BUN',unit:'mg/dL',ph:'e.g. 65',toConv:function(v){return v;}}
+  },
+  bun_post:{
+    'Conventional (US)':{label:'Post-HD BUN',unit:'mg/dL',ph:'e.g. 18',toConv:function(v){return v;}},
+    'SI':{label:'Post-HD Urea',unit:'mmol/L',ph:'e.g. 6.4',toConv:function(v){return v*2.8;}},
+    'Hybrid':{label:'Post-HD BUN',unit:'mg/dL',ph:'e.g. 18',toConv:function(v){return v;}}
+  },
+  uf_volume:{
+    'Conventional (US)':{label:'Ultrafiltration Volume',unit:'mL',ph:'e.g. 2200',toConv:function(v){return v;}},
+    'SI':{label:'Ultrafiltration Volume',unit:'L',ph:'e.g. 2.2',toConv:function(v){return v*1000;}},
+    'Hybrid':{label:'Ultrafiltration Volume',unit:'mL',ph:'e.g. 2200',toConv:function(v){return v;}}
+  },
+  weight_post:{
+    'Conventional (US)':{label:'Post-HD Dry Weight',unit:'kg',ph:'e.g. 58',toConv:function(v){return v;}},
+    'SI':{label:'Post-HD Dry Weight',unit:'kg',ph:'e.g. 58',toConv:function(v){return v;}},
+    'Hybrid':{label:'Post-HD Dry Weight',unit:'kg',ph:'e.g. 58',toConv:function(v){return v;}}
+  },
+  spktv:{
+    'Conventional (US)':{label:'spKt/V (machine-reported)',unit:'',ph:'e.g. 1.38',toConv:function(v){return v;}},
+    'SI':{label:'spKt/V (machine-reported)',unit:'',ph:'e.g. 1.38',toConv:function(v){return v;}},
+    'Hybrid':{label:'spKt/V (machine-reported)',unit:'',ph:'e.g. 1.38',toConv:function(v){return v;}}
+  },
+  urr:{
+    'Conventional (US)':{label:'URR (machine-reported)',unit:'%',ph:'e.g. 68',toConv:function(v){return v;}},
+    'SI':{label:'URR (machine-reported)',unit:'%',ph:'e.g. 68',toConv:function(v){return v;}},
+    'Hybrid':{label:'URR (machine-reported)',unit:'%',ph:'e.g. 68',toConv:function(v){return v;}}
+  },
+  npcrHD:{
+    'Conventional (US)':{label:'nPCR (if reported)',unit:'g/kg/day',ph:'e.g. 1.1',toConv:function(v){return v;}},
+    'SI':{label:'nPCR (if reported)',unit:'g/kg/day',ph:'e.g. 1.1',toConv:function(v){return v;}},
+    'Hybrid':{label:'nPCR (if reported)',unit:'g/kg/day',ph:'e.g. 1.1',toConv:function(v){return v;}}
+  }
+};
+
+// ════════════════════════════════════════════════════════════════════
+// INTERPRETATION ENGINE  (always in conventional units)
+// ════════════════════════════════════════════════════════════════════
+function toConv(key, rawVal) {
+  var v = parseFloat(rawVal);
+  if (isNaN(v)) return NaN;
+  var m = FIELD_META[key] && FIELD_META[key][STATE.unitSys];
+  if (!m) return v;
+  return m.toConv(v);
+}
+
+function interpKey(key) {
+  var raw = STATE.fields[key];
+  if (!raw && raw !== 0) return {status:'EMPTY', note:''};
+  var v = toConv(key, raw);
+  if (isNaN(v)) return {status:'EMPTY', note:''};
+  var hd = STATE.isHD, f = STATE.sex==='F', vhr = STATE.ckdVeryHigh || STATE.isHD;
+
+  var rules = {
+    creatinine: f ? (v<=1.1?['NORMAL','Normal range']:v<=1.8?['WATCH','Mildly elevated — track trend']:['FLAG','Significantly elevated'])
+                  : (v<=1.3?['NORMAL','Normal range']:v<=2.0?['WATCH','Mildly elevated — track trend']:['FLAG','Significantly elevated']),
+    egfr: v>=90?['NORMAL','G1 — normal or hyperfiltration']:v>=60?['WATCH','G2 — mildly reduced, monitor']:v>=45?['WATCH','G3a — nephrology follow-up']:v>=30?['FLAG','G3b — advanced CKD care']:v>=15?['FLAG','G4 — RRT planning']:['FLAG','G5/ESKD — RRT indicated'],
+    bun: v<=20?['NORMAL','Normal']:v<=30?['WATCH','Mildly elevated — assess hydration/protein']:['FLAG','Elevated — assess for uremia'],
+    uacr: v<30?['NORMAL','A1 — no significant albuminuria']:v<=300?['WATCH','A2 microalbuminuria — optimize RAAS blockade']:['FLAG','A3 macroalbuminuria — active kidney damage'],
+    upcr: v<0.2?['NORMAL','Normal']:v<=0.5?['WATCH','Borderline — confirm with UACR']:v<=3.5?['FLAG','Significant proteinuria']:['FLAG','Nephrotic-range (>3.5 g/g)'],
+    hgb: hd ? (v>=100&&v<=115?['NORMAL','KDIGO HD target 100–115 g/L']:v<100?['FLAG','Below KDIGO target — review ESA/iron']:['WATCH','Above target — HTN/thrombosis risk'])
+            : (f ? (v>=120?['NORMAL','Normal']:v>=100?['WATCH','Mild anemia']:['FLAG','Significant anemia'])
+                 : (v>=130?['NORMAL','Normal']:v>=100?['WATCH','Mild anemia']:['FLAG','Significant anemia'])),
+    hct: f?(v>=36&&v<=46?['NORMAL','Normal']:['WATCH','Outside normal range']):(v>=40&&v<=50?['NORMAL','Normal']:['WATCH','Outside normal range']),
+    mcv: v>=80&&v<=100?['NORMAL','Normocytic']:v<80?['WATCH','Microcytic — IDA or thalassemia']:['WATCH','Macrocytic — B12/folate or medication'],
+    rdw: v<=14.5?['NORMAL','Normal — homogeneous RBC population']:['WATCH','Elevated — favors IDA over thalassemia trait'],
+    rbc: f?(v>=4.2&&v<=5.4?['NORMAL','Normal']:['WATCH','Outside normal range']):(v>=4.7&&v<=6.1?['NORMAL','Normal']:['WATCH','Outside normal range']),
+    ferritin: hd?(v>=200&&v<=500?['NORMAL','KDIGO target 200–500 ng/mL']:v<200?['FLAG','Iron depleted — IV iron indicated']:['WATCH','High — inflammation? Check TSAT'])
+               :(v>=12&&v<=300?['NORMAL','Normal']:v<12?['FLAG','Iron deficiency']:['WATCH','Elevated — likely inflammatory']),
+    tsat: hd?(v>=30?['NORMAL','KDIGO target >30%']:v>=20?['WATCH','Borderline']:['FLAG','Functional iron deficiency — IV iron per KDIGO'])
+            :(v>=20?['NORMAL','Normal']:['WATCH','Reduced — iron-restricted erythropoiesis']),
+    reticulocyte: v>=0.5&&v<=2.5?['NORMAL','Normal marrow response']:v<0.5?['FLAG','Hypoproliferative — ESA resistance or marrow suppression']:['WATCH','Elevated — blood loss or recovery'],
+    wbc: v>=4.5&&v<=11?['NORMAL','Normal']:v<3?['FLAG','Leukopenia — review meds/marrow']:v<=15?['WATCH','Mildly elevated — infection/inflammation']:['FLAG','Significantly elevated — active infection likely'],
+    platelets: v>=150&&v<=400?['NORMAL','Normal']:v<100?['FLAG','Thrombocytopenia — bleeding risk']:v<150?['WATCH','Borderline low']:v<=600?['WATCH','Mildly elevated — reactive']:['FLAG','Thrombocytosis — evaluate'],
+    sodium: v>=136&&v<=145?['NORMAL','Normal']:v<130?['FLAG','Significant hyponatremia — urgent']:v<136?['WATCH','Mild hyponatremia — assess volume']:v<=150?['WATCH','Mild hypernatremia']:['FLAG','Significant hypernatremia'],
+    potassium: hd?(v>=3.5&&v<=5.5?['NORMAL','KDIGO pre-HD target 3.5–5.5']:v>6.0?['FLAG','DANGER — cardiac emergency']:v>5.5?['FLAG','Hyperkalemia — restrict diet + patiromer']:['FLAG','Hypokalemia'])
+                 :(v>=3.5&&v<=5.0?['NORMAL','Normal']:v<3.0?['FLAG','Significant hypokalemia']:v<3.5?['WATCH','Mild hypokalemia']:v<=5.5?['WATCH','High-normal — restrict dietary K']:['FLAG','Hyperkalemia']),
+    bicarb: hd?(v>=22&&v<=26?['NORMAL','KDIGO target 22–26']:v<18?['FLAG','Severe acidosis — NaHCO₃ or dialysate change']:v<22?['WATCH','Acidosis — consider NaHCO₃']:['WATCH','Elevated — check for alkalosis'])
+              :(v>=22&&v<=29?['NORMAL','Normal']:v<18?['FLAG','Significant metabolic acidosis']:v<22?['WATCH','Mild acidosis']:['WATCH','Elevated bicarb']),
+    chloride: v>=98&&v<=107?['NORMAL','Normal']:['WATCH','Interpret alongside Na and HCO₃'],
+    magnesium: v>=0.75&&v<=1.0?['NORMAL','Normal']:v<0.7?['FLAG','Hypomagnesemia — supplementation needed']:['WATCH','Elevated — reduce supplements'],
+    albumin: hd?(v>=4.0?['NORMAL','KDIGO target ≥4.0 g/dL']:v>=3.5?['WATCH','Borderline — nutritional optimization']:['FLAG','Hypoalbuminemia — malnutrition/losses'])
+               :(v>=3.5?['NORMAL','Normal']:['FLAG','Low — malnutrition or liver disease']),
+    alt: v<=40?['NORMAL','Normal']:v<=120?['WATCH','Mildly elevated (1–3×) — monitor']:['FLAG','Significant (>3×) — hepatocellular stress'],
+    ast: v<=40?['NORMAL','Normal']:v<=120?['WATCH','Mildly elevated — check AST:ALT ratio']:['FLAG','Significant elevation'],
+    uricacid: v<=6.0?['NORMAL','At CKD target (<6.0 mg/dL)']:v<=7.0?['WATCH','Borderline — dietary modification']:v<=8.0?['WATCH','Elevated — consider febuxostat 80 mg OD']:['FLAG','Significant hyperuricemia — pharmacotherapy indicated'],
+    ldl: vhr?(v<55?['NORMAL','ACC/AHA 2026 very-high-risk target <55 mg/dL']:v<70?['WATCH','Near target — intensify therapy']:['FLAG','Above target — statin → ezetimibe → PCSK9i'])
+            :(v<100?['NORMAL','At goal']:v<130?['WATCH','Borderline']:['FLAG','Elevated — pharmacotherapy indicated']),
+    hdl: f?(v>=50?['NORMAL','Cardioprotective']:v>=40?['WATCH','Borderline low']:['FLAG','Low HDL — ASCVD risk; exercise/Omacor'])
+          :(v>=40?['NORMAL','Normal']:['FLAG','Low HDL — ASCVD risk factor']),
+    tg: v<150?['NORMAL','Normal']:v<500?['WATCH','Elevated — restrict carbs/alcohol; consider Omacor']:['FLAG','Severe — pancreatitis risk; fibrate + Omacor'],
+    totalchol: v<200?['NORMAL','Desirable']:v<240?['WATCH','Borderline high']:['FLAG','High'],
+    lpa: v<50?['NORMAL','Normal (measure once in lifetime)']:['FLAG','Elevated Lp(a) — independent ASCVD risk; statins do not lower Lp(a)'],
+    fbs: v<100?['NORMAL','Normal fasting glucose']:v<126?['WATCH','Impaired fasting — pre-diabetes range']:['FLAG','Diagnostic of diabetes (≥126 on 2 occasions)'],
+    hba1c: hd?(v>=7&&v<=8?['NORMAL','KDIGO CKD/dialysis target 7–8%']:v<6.5?['FLAG','Too low — hypoglycemia risk in CKD/dialysis']:v<7?['WATCH','Below CKD target range — hypoglycemia risk']:v<=9?['WATCH','Above CKD target — optimize']:['FLAG','Poor control — high organ damage risk'])
+              :(v<5.7?['NORMAL','Normal']:v<6.5?['WATCH','Pre-diabetes']:v<=7?['WATCH','At/near ADA target']:v<=9?['WATCH','Above target — optimize']:['FLAG','Poor glycemic control']),
+    fasting_insulin: v<=10?['NORMAL','Normal']:v<=20?['WATCH','Borderline elevated — IR likely']:['FLAG','Elevated — overt insulin resistance'],
+    calcium: v>=8.4&&v<=10.2?['NORMAL','KDIGO target 8.4–10.2 mg/dL']:v<7.5?['FLAG','Symptomatic hypocalcemia risk']:v<8.4?['WATCH','Low-normal — optimize vit D/calcium']:v<=10.5?['WATCH','High-normal — monitor for vit D toxicity']:['FLAG','Hypercalcemia — hold active vitamin D'],
+    phosphorus: hd?(v>=3.5&&v<=5.5?['NORMAL','KDIGO target 3.5–5.5 mg/dL']:v<3.5?['WATCH','Hypophosphatemia — review binder dose']:['FLAG','Elevated — dietary restriction + binder adjustment'])
+                  :(v>=2.5&&v<=4.5?['NORMAL','Normal']:v>4.5?['WATCH','Elevated — dietary phosphate restriction']:['WATCH','Low']),
+    ipth: hd?(v>=130&&v<=600?['NORMAL','KDIGO dialysis target 130–600 pg/mL']:v<130?['WATCH','Low — adynamic bone disease risk']:v<=1000?['FLAG','Elevated — secondary HPT; active vit D or calcimimetic']:['FLAG','Severely elevated — tertiary HPT? Surgical review'])
+            :(v<=70?['NORMAL','Normal (non-dialysis)']:v<=110?['WATCH','Mildly elevated — CKD-MBD developing']:['FLAG','Elevated — active CKD-MBD management needed']),
+    vitd: v>=30?['NORMAL','Optimal 30–60 ng/mL']:v>=20?['WATCH','Insufficiency — cholecalciferol supplementation']:['FLAG','Deficiency (<20 ng/mL) — higher-dose repletion needed'],
+    alp: v>=44&&v<=147?['NORMAL','Normal']:v>147?['WATCH','Elevated — bone disease if iPTH also high']:['WATCH','Low-normal'],
+    spktv: v>=1.4?['NORMAL','Adequate spKt/V ≥1.4']:v>=1.2?['WATCH','Borderline — increase time or blood flow']:['FLAG','Inadequate — urgent prescription review'],
+    urr: v>=65?['NORMAL','Adequate URR ≥65%']:v>=55?['WATCH','Borderline — optimize prescription']:['FLAG','Inadequate — review HD prescription'],
+    npcrHD: v>=1.0&&v<=1.4?['NORMAL','Adequate nPCR 1.0–1.4 g/kg/day']:v<1.0?['FLAG','Low — protein-energy wasting; nutritional intervention']:['WATCH','High nPCR — monitor phosphorus']
+  };
+
+  var r = rules[key];
+  if (!r) return {status:'EMPTY', note:''};
+  return {status:r[0], note:r[1]};
+}
+
+// ════════════════════════════════════════════════════════════════════
+// DERIVED CALCULATIONS
+// ════════════════════════════════════════════════════════════════════
+function getConv(key) {
+  var raw = STATE.fields[key];
+  if (!raw && raw !== 0) return NaN;
+  return toConv(key, raw);
+}
+function hasConv() {
+  for (var i=0;i<arguments.length;i++) { if (isNaN(getConv(arguments[i]))) return false; }
+  return true;
+}
+
+function calcDerived() {
+  var res = [];
+  var hd = STATE.isHD, f = STATE.sex==='F', vhr = STATE.ckdVeryHigh || STATE.isHD;
+
+  // BUN:Cr
+  if (hasConv('bun','creatinine')) {
+    var r = getConv('bun')/getConv('creatinine');
+    var rStr = r.toFixed(1);
+    res.push({domain:'Kidney', label:'BUN:Creatinine Ratio', value:rStr, unit:'',
+      status: r>20||r<10?'WATCH':'NORMAL',
+      note: r>20?'Pre-renal / dehydration / high-protein state':r<10?'Low protein, liver disease, or over-hydration':'Consistent with intrinsic renal disease'});
+  }
+
+  // CKD-EPI eGFR
+  if (hasConv('creatinine') && STATE.age) {
+    var scr=getConv('creatinine'), age=parseFloat(STATE.age), isFem=STATE.sex==='F';
+    var kappa=isFem?0.7:0.9, alpha=isFem?-0.241:-0.302;
+    var ratio=scr/kappa;
+    var eg=142*Math.pow(Math.min(ratio,1),alpha)*Math.pow(Math.max(ratio,1),-1.200)*Math.pow(0.9938,age)*(isFem?1.012:1);
+    var stage=eg>=90?'G1':eg>=60?'G2':eg>=45?'G3a':eg>=30?'G3b':eg>=15?'G4':'G5/ESKD';
+    res.push({domain:'Kidney', label:'Calculated eGFR (CKD-EPI 2021)', value:eg.toFixed(0), unit:'mL/min/1.73m²',
+      status:eg>=60?'NORMAL':eg>=30?'WATCH':'FLAG',
+      note:'CKD Stage '+stage+(eg>=90?' — Normal/hyperfiltration':eg>=60?' — Mildly reduced':eg>=45?' — G3a moderate':eg>=30?' — G3b moderate-severe':eg>=15?' — G4 severe':' — ESKD')});
+  }
+
+  // Anion Gap
+  if (hasConv('sodium','chloride','bicarb')) {
+    var ag=getConv('sodium')-(getConv('chloride')+getConv('bicarb'));
+    res.push({domain:'Acid-Base', label:'Anion Gap', value:ag.toFixed(1), unit:'mEq/L',
+      status:ag>12?'FLAG':ag<8?'WATCH':'NORMAL',
+      note:ag>12?'Elevated AG — MUDPILES: Methanol/Metformin, Uremia, DKA, Propylene glycol, INH, Lactic acidosis, Ethylene glycol, Salicylates':ag<8?'Low AG — check albumin, paraprotein, or lab error':'Normal anion gap'});
+    // Corrected AG
+    if (hasConv('albumin')) {
+      var cag=ag+2.5*(4.0-getConv('albumin'));
+      res.push({domain:'Acid-Base', label:'Corrected AG (albumin-adjusted)', value:cag.toFixed(1), unit:'mEq/L',
+        status:cag>12?'FLAG':'NORMAL',
+        note:cag>ag+1.5?'Albumin correction unmasked elevated AG — true HAGMA likely':'No significant change after albumin correction'});
+    }
+  }
+
+  // Non-HDL
+  if (hasConv('totalchol','hdl')) {
+    var nhdl=getConv('totalchol')-getConv('hdl');
+    res.push({domain:'Lipids', label:'Non-HDL Cholesterol', value:nhdl.toFixed(0), unit:'mg/dL',
+      status:vhr?(nhdl<85?'NORMAL':nhdl<130?'WATCH':'FLAG'):(nhdl<130?'NORMAL':nhdl<160?'WATCH':'FLAG'),
+      note:'Target: '+(vhr?'<85 mg/dL (ACC/AHA 2026 very-high-risk)':'<130 mg/dL')});
+    // TC:HDL
+    var tchdl=getConv('totalchol')/getConv('hdl');
+    res.push({domain:'Lipids', label:'TC:HDL Ratio', value:tchdl.toFixed(1), unit:'',
+      status:tchdl<4?'NORMAL':tchdl<5?'WATCH':'FLAG',
+      note:tchdl>=5?'Atherogenic ratio — elevated CV risk':tchdl>=4?'Borderline':'Favorable'});
+  }
+
+  // Friedewald LDL
+  if (hasConv('totalchol','hdl','tg') && !hasConv('ldl') && getConv('tg')<400) {
+    var ldl=getConv('totalchol')-getConv('hdl')-(getConv('tg')/5);
+    res.push({domain:'Lipids', label:'LDL-C (Friedewald, estimated)', value:ldl.toFixed(0), unit:'mg/dL',
+      status:vhr?(ldl<55?'NORMAL':ldl<70?'WATCH':'FLAG'):(ldl<100?'NORMAL':'WATCH'),
+      note:'Calculated estimate — direct LDL preferred when TG is elevated'});
+  }
+
+  // TG:HDL + AIP
+  if (hasConv('tg','hdl')) {
+    var tghdl=getConv('tg')/getConv('hdl');
+    res.push({domain:'Lipids / Insulin Resistance', label:'TG:HDL Ratio', value:tghdl.toFixed(2), unit:'',
+      status:tghdl<2?'NORMAL':tghdl<3?'WATCH':'FLAG',
+      note:tghdl>=3?'Insulin resistance surrogate — atherogenic dyslipidemia (small dense LDL)':tghdl>=2?'Borderline — metabolic syndrome risk':'Favorable lipid pattern'});
+    var aip=Math.log10(getConv('tg')/getConv('hdl'));
+    res.push({domain:'Lipids / Insulin Resistance', label:'Atherogenic Index of Plasma (AIP)', value:aip.toFixed(3), unit:'log(TG/HDL)',
+      status:aip<0.11?'NORMAL':aip<0.21?'WATCH':'FLAG',
+      note:aip>=0.21?'High AIP — significant CV risk; small dense LDL predominance':aip>=0.11?'Intermediate AIP':'Low cardiovascular risk by AIP'});
+  }
+
+  // TyG Index
+  if (hasConv('tg','fbs')) {
+    var tyg=Math.log(getConv('tg')*getConv('fbs')/2);
+    res.push({domain:'Insulin Resistance', label:'TyG Index (Triglyceride-Glucose)', value:tyg.toFixed(2), unit:'',
+      status:tyg<8.5?'NORMAL':tyg<9.0?'WATCH':'FLAG',
+      note:tyg>=9.0?'High TyG — strong surrogate for IR and metabolic syndrome; SGLT2i/GLP-1 RA consideration (check eGFR)':tyg>=8.5?'Borderline — insulin resistance possible':'Low — insulin resistance unlikely'});
+  }
+
+  // HOMA-IR
+  if (hasConv('fbs','fasting_insulin')) {
+    var homa=(getConv('fbs')*getConv('fasting_insulin'))/405;
+    res.push({domain:'Insulin Resistance', label:'HOMA-IR', value:homa.toFixed(2), unit:'',
+      status:homa<2.0?'NORMAL':homa<3.0?'WATCH':'FLAG',
+      note:homa>=3.0?'Significant insulin resistance — metabolic syndrome likely; SGLT2i/GLP-1 RA (check eGFR threshold)':homa>=2.0?'Borderline insulin resistance':'Normal insulin sensitivity'});
+  }
+
+  // CaxP
+  if (hasConv('calcium','phosphorus')) {
+    var caxp=getConv('calcium')*getConv('phosphorus');
+    res.push({domain:'CKD-MBD', label:'Ca × P Product', value:caxp.toFixed(1), unit:'mg²/dL²',
+      status:caxp<55?'NORMAL':'FLAG',
+      note:caxp>=55?'Exceeds KDIGO limit of 55 — vascular calcification risk; optimize phosphate binders + dietary restriction':'Within safe range (<55)'});
+  }
+
+  // Mentzer Index
+  if (hasConv('mcv','rbc')) {
+    var mentzer=getConv('mcv')/getConv('rbc');
+    var mStatus='EMPTY', mNote='';
+    if (getConv('mcv')<80) {
+      mStatus=mentzer<13?'WATCH':'FLAG';
+      mNote=mentzer<13
+        ?'Mentzer <13 — favors thalassemia trait (RBC count preserved). Confirm with Hb electrophoresis.'
+        :'Mentzer >13 — favors iron deficiency anemia. Correlate with ferritin and TSAT.';
+      if (hasConv('rdw') && getConv('rdw')>14.5 && mentzer<13) mNote+=' Elevated RDW partially contradicts thalassemia — mixed IDA/thal possible.';
+    } else {
+      mNote='Mentzer Index applies only when MCV <80 fL (microcytic anemia). Current MCV is normocytic/macrocytic.';
+    }
+    res.push({domain:'Anemia Differential', label:'Mentzer Index (MCV ÷ RBC)', value:mentzer.toFixed(1), unit:'', status:mStatus, note:mNote});
+  }
+
+  // Corrected Reticulocyte Count
+  if (hasConv('reticulocyte','hct')) {
+    var normalHct=STATE.sex==='F'?41:45;
+    var crc=(getConv('reticulocyte')*getConv('hct'))/normalHct;
+    res.push({domain:'Anemia Differential', label:'Corrected Reticulocyte Count', value:crc.toFixed(1), unit:'%',
+      status:crc>=2?'NORMAL':'FLAG',
+      note:crc>=2?'Adequate marrow response to anemia':'Hypoproliferative — marrow not responding; ESA resistance, B12/folate, or marrow disorder?'});
+  }
+
+  // Iron Status Pattern
+  if (hasConv('ferritin','tsat')) {
+    var fer=getConv('ferritin'), ts=getConv('tsat');
+    var pattern='', ps='NORMAL';
+    if(fer<200&&ts<20){pattern='Absolute iron deficiency (low ferritin + low TSAT)';ps='FLAG';}
+    else if(fer>=200&&ts<20){pattern='Functional iron deficiency (stores adequate but TSAT low) — IV iron trial per KDIGO';ps='WATCH';}
+    else if(fer>=200&&ts>=30){pattern='Iron replete — adequate for erythropoiesis';ps='NORMAL';}
+    else{pattern='Borderline iron status — monitor closely';ps='WATCH';}
+    res.push({domain:'Anemia Differential', label:'Iron Status Pattern (Ferritin + TSAT)', value:'', unit:'', status:ps, note:pattern});
+  }
+
+  // AST:ALT
+  if (hasConv('alt','ast')) {
+    var deritis=getConv('ast')/getConv('alt');
+    res.push({domain:'Liver', label:'AST:ALT Ratio (De Ritis)', value:deritis.toFixed(2), unit:'',
+      status:deritis>2?'FLAG':deritis>1.5?'WATCH':'NORMAL',
+      note:deritis>2?'AST:ALT >2 — alcoholic liver disease pattern':deritis>1.5?'Borderline elevated — monitor trend':'Normal; if both elevated, favors non-alcoholic hepatocellular injury'});
+  }
+
+  // HD Adequacy derived
+  if (hd && hasConv('bun_pre','bun_post')) {
+    var Rval=getConv('bun_post')/getConv('bun_pre');
+    var urr=(1-Rval)*100;
+    res.push({domain:'HD Adequacy', label:'URR (calculated)', value:urr.toFixed(1), unit:'%',
+      status:urr>=65?'NORMAL':urr>=55?'WATCH':'FLAG',
+      note:urr>=65?'Adequate URR ≥65%':'Inadequate — review HD prescription (time, blood flow, access)'});
+    if (hasConv('uf_volume','weight_post') && STATE.hdDuration) {
+      var UF=getConv('uf_volume')/1000, V=getConv('weight_post')*0.55, t=parseFloat(STATE.hdDuration);
+      var spktv=-Math.log(Rval-0.008*(t/60))+(4-3.5*Rval)*(UF/V);
+      res.push({domain:'HD Adequacy', label:'spKt/V (Daugirdas 2nd generation)', value:spktv.toFixed(2), unit:'',
+        status:spktv>=1.4?'NORMAL':spktv>=1.2?'WATCH':'FLAG',
+        note:spktv>=1.4?'Adequate dialysis dose (≥1.4)':spktv>=1.2?'Borderline — increase treatment time or blood flow':'Inadequate — urgent prescription optimization'});
+    }
+    var npcr=getConv('bun_pre')*0.045+0.17;
+    res.push({domain:'HD Adequacy', label:'Estimated nPCR', value:npcr.toFixed(2), unit:'g/kg/day',
+      status:npcr>=1.0&&npcr<=1.4?'NORMAL':npcr<1.0?'FLAG':'WATCH',
+      note:npcr<1.0?'Low — protein-energy wasting; nutritional consult + consider IDPN':npcr>1.4?'High protein intake — monitor phosphorus':'Adequate protein intake'});
+  }
+
+  return res;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// DOM RENDERING
+// ════════════════════════════════════════════════════════════════════
+var ALL_KEYS = Object.keys(FIELD_META);
+
+function renderInput(key) {
+  var container = document.getElementById('inp-'+key);
+  if (!container) return;
+  var meta = FIELD_META[key][STATE.unitSys] || FIELD_META[key]['Conventional (US)'];
+  var raw = STATE.fields[key] || '';
+  var ir = interpKey(key);
+  var hasVal = raw !== '';
+  var LABELS = {NORMAL:'At Goal',WATCH:'Watch',FLAG:'Flag',EMPTY:'\u2014'};
+
+  // First render: scaffold the structure with a persistent input element
+  if (!container.querySelector('.lab-input')) {
+    var unit = meta.unit || '';
+    container.innerHTML =
+      '<div class="lab-input">' +
+        '<div class="li-row"><span class="li-label"></span><span class="li-badge" style="display:none"></span></div>' +
+        '<div class="li-input-row">' +
+          '<input type="number" step="any" inputmode="decimal" autocomplete="off" placeholder=""/>' +
+          (unit ? '<span class="li-unit"></span>' : '') +
+        '</div>' +
+        '<div class="li-note" style="display:none"></div>' +
+      '</div>';
+    // Bind input event once — avoids re-binding on every re-render
+    var inp = container.querySelector('input');
+    inp._liKey = key;
+    inp.addEventListener('input', function() { onFieldInput(this._liKey, this.value); });
+  }
+
+  var wrapper = container.querySelector('.lab-input');
+  var labelEl = container.querySelector('.li-label');
+  var badgeEl = container.querySelector('.li-badge');
+  var inp     = container.querySelector('input');
+  var noteEl  = container.querySelector('.li-note');
+  var unitEl  = container.querySelector('.li-unit');
+
+  // Always update label and unit (may change on unit-system switch)
+  labelEl.textContent = meta.label;
+  if (unitEl) unitEl.textContent = meta.unit || '';
+  inp.placeholder = meta.ph;
+
+  // Wrapper status class
+  wrapper.className = 'lab-input' + (hasVal ? ' status-' + ir.status : '');
+
+  // Badge
+  if (hasVal) {
+    badgeEl.className = 'li-badge badge-' + ir.status;
+    badgeEl.textContent = LABELS[ir.status];
+    badgeEl.style.display = '';
+  } else {
+    badgeEl.style.display = 'none';
+  }
+
+  // Input value — only set if different to preserve decimal in-progress typing
+  if (inp.value !== raw) inp.value = raw;
+
+  // Note
+  if (hasVal && ir.note) {
+    noteEl.className = 'li-note note-' + ir.status;
+    noteEl.textContent = ir.note;
+    noteEl.style.display = '';
+  } else {
+    noteEl.style.display = 'none';
+  }
+}
+function renderAllInputs() {
+  ALL_KEYS.forEach(function(k){ renderInput(k); });
+}
+
+function renderDerived() {
+  var items = calcDerived();
+  var container = document.getElementById('derived-content');
+  var countEl = document.getElementById('derived-count');
+
+  if (items.length === 0) {
+    container.innerHTML = '<div class="derived-empty">'+
+      '<div class="de-icon">🧮</div>'+
+      '<div class="de-title">No calculations yet</div>'+
+      '<div class="de-sub">Enter values in the other tabs to populate derived results.</div>'+
+      '<div class="derived-list"><strong>Available derivations:</strong><br/>'+
+      'BUN:Cr ratio · CKD-EPI eGFR · Anion Gap · Corrected AG · Non-HDL · Friedewald LDL · TC:HDL · TG:HDL · AIP · TyG Index · HOMA-IR · Ca×P product · Mentzer Index · Corrected Reticulocyte Count · Iron Status Pattern · AST:ALT (De Ritis) · URR · spKt/V (Daugirdas) · Estimated nPCR</div>'+
+      '</div>';
+    countEl.style.display='none';
+    return;
+  }
+
+  countEl.textContent = items.length;
+  countEl.style.display='inline';
+
+  // Group by domain
+  var domains = [];
+  var byDomain = {};
+  items.forEach(function(item){
+    if (!byDomain[item.domain]){ byDomain[item.domain]=[]; domains.push(item.domain); }
+    byDomain[item.domain].push(item);
+  });
+
+  var html = '';
+  domains.forEach(function(domain){
+    html += '<div class="derived-domain"><div class="derived-domain-label">'+domain+'</div>';
+    byDomain[domain].forEach(function(item){
+      var s = item.status==='EMPTY'?'EMPTY':item.status;
+      html += '<div class="derived-card dc-'+s+'">'+
+        '<div class="dc-left">'+
+        '<div class="dc-domain">'+item.domain+'</div>'+
+        '<div class="dc-label">'+item.label+'</div>'+
+        (item.note?'<div class="dc-note">'+item.note+'</div>':'')+
+        '</div>'+
+        '<div class="dc-right">'+
+        (item.value?'<div class="dc-value">'+item.value+'</div>':'')+
+        (item.unit?'<div class="dc-unit">'+item.unit+'</div>':'')+
+        '<div style="margin-top:4px"><span class="li-badge badge-'+s+'">'+{NORMAL:'At Goal',WATCH:'Watch',FLAG:'Flag',EMPTY:'—'}[s]+'</span></div>'+
+        '</div></div>';
+    });
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function updateSummaryBadges() {
+  var filled=0, flags=0, watches=0;
+  ALL_KEYS.forEach(function(k){
+    if (STATE.fields[k] && STATE.fields[k]!=='') {
+      filled++;
+      var ir = interpKey(k);
+      if (ir.status==='FLAG') flags++;
+      else if (ir.status==='WATCH') watches++;
+    }
+  });
+  var derived = calcDerived();
+  var html = '';
+  if (filled>0) html += '<span class="badge-pill bp-neutral">'+filled+' values</span>';
+  if (flags>0) html += '<span class="badge-pill bp-flag">⚠ '+flags+' Flag'+(flags>1?'s':'')+'</span>';
+  if (watches>0) html += '<span class="badge-pill bp-watch">👁 '+watches+' Watch</span>';
+  if (derived.length>0) html += '<span class="badge-pill bp-derived">📐 '+derived.length+' calculated</span>';
+  document.getElementById('summary-badges').innerHTML = html;
+}
+
+function reinterpAll() {
+  STATE.age = document.getElementById('ctx-age').value;
+  STATE.hdDuration = parseFloat(document.getElementById('ctx-hd-duration').value) || 240;
+  STATE.ckdVeryHigh = document.getElementById('ctx-vhr').checked;
+  renderAllInputs();
+  renderDerived();
+  updateSummaryBadges();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// EVENT HANDLERS
+// ════════════════════════════════════════════════════════════════════
+function onFieldInput(key, val) {
+  STATE.fields[key] = val;
+  renderInput(key);
+  renderDerived();
+  updateSummaryBadges();
+}
+
+function setUnit(u, btn) {
+  STATE.unitSys = u;
+  // Clear entered values on unit switch to avoid misinterpretation
+  STATE.fields = {};
+  document.querySelectorAll('.unit-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  var descs = {
+    'Conventional (US)':'mg/dL for glucose, cholesterol, creatinine, Ca/Phos · g/dL for albumin · g/L for Hgb · µIU/mL for insulin',
+    'SI':'mmol/L for glucose, lipids, electrolytes · µmol/L for creatinine & uric acid · g/L for Hgb/albumin · nmol/L for vitamin D · pmol/L for insulin · mmol/mol for HbA1c',
+    'Hybrid':'mmol/L for electrolytes, glucose & Mg · mg/dL for lipids, creatinine, Ca/Phos · nmol/L for vitamin D · g/L for Hgb'
+  };
+  document.getElementById('unit-desc').textContent = descs[u];
+  renderAllInputs();
+  renderDerived();
+  updateSummaryBadges();
+}
+
+function setSex(s) {
+  STATE.sex = s;
+  document.getElementById('sex-M').classList.toggle('active', s==='M');
+  document.getElementById('sex-F').classList.toggle('active', s==='F');
+  reinterpAll();
+}
+
+function onHDChange() {
+  STATE.isHD = document.getElementById('ctx-hd').checked;
+  var hdTab = document.getElementById('tab-hd');
+  var hdDurRow = document.getElementById('hd-dur-row');
+  hdTab.style.display = STATE.isHD ? '' : 'none';
+  hdDurRow.style.display = STATE.isHD ? 'flex' : 'none';
+  reinterpAll();
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function updateHeader() {
+  var name = document.getElementById('pt-name').value.trim();
+  var date = document.getElementById('pt-date').value;
+  var banner = document.getElementById('pt-banner');
+  if (!name && !date) { banner.style.display='none'; return; }
+  var parts = [];
+  if (name) parts.push('👤 <strong>'+name+'</strong>');
+  if (date) {
+    var d = new Date(date+'T00:00');
+    parts.push('📅 '+d.toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}));
+  }
+  banner.innerHTML = parts.join('');
+  banner.style.display='flex';
+}
+
+// ════════════════════════════════════════════════════════════════════
+// PDF EXPORT
+// ════════════════════════════════════════════════════════════════════
+function exportPDF(triggerBtn) {
+  var allBtns = document.querySelectorAll('.pdf-btn');
+  allBtns.forEach(function(b){ b.disabled=true; b.textContent='Generating…'; });
+
+  // Small timeout so the UI updates before heavy PDF work
+  setTimeout(function() {
+  try {
+    var { jsPDF } = window.jspdf;
+    var doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
+    var W = 210, margin = 14, colW = W - margin*2;
+    var y = 0;
+
+    // Palette
+    var NAVY = [26,46,74], TEAL = [29,122,122], GREEN = [26,110,62], AMBER = [160,92,0], RED = [160,24,24], GRAY = [130,130,130];
+    var GREEN_BG = [232,245,238], AMBER_BG = [255,244,224], RED_BG = [253,236,234], GRAY_BG = [245,245,245];
+    var WHITE = [255,255,255], LIGHT_BG = [240,243,247];
+
+    function setFont(style, size, color) {
+      doc.setFont('helvetica', style||'normal');
+      doc.setFontSize(size||10);
+      doc.setTextColor.apply(doc, color||[30,32,50]);
+    }
+    function fillRect(x,yy,w,h,color) { doc.setFillColor.apply(doc, color); doc.rect(x,yy,w,h,'F'); }
+    function drawRect(x,yy,w,h,color) { doc.setDrawColor.apply(doc, color); doc.rect(x,yy,w,h,'S'); }
+    function text(str, x, yy, opts) { doc.text(str+'', x, yy, opts||{}); }
+
+    function checkPage(needed) {
+      if (y + needed > 275) { doc.addPage(); y = 14; }
+    }
+
+    // ── Header ────────────────────────────────────────────────────
+    fillRect(0,0,W,38,NAVY);
+    setFont('bold',16,WHITE); text('Laboratory Interpreter Report',margin,12);
+    setFont('normal',8,[180,200,220]); text('W. G. M. Rivero, MD, FPCP, DPSN · Internal Medicine · Nephrology · Clinical Nutrition',margin,18);
+    setFont('normal',7,[150,170,190]); text('KDIGO 2024 · ACC/AHA 2026 · ADA 2025',margin,23);
+
+    var ptName = document.getElementById('pt-name').value.trim();
+    var ptDate = document.getElementById('pt-date').value;
+    if (ptName || ptDate) {
+      setFont('bold',9,WHITE); if (ptName) text('Patient: '+ptName, margin, 30);
+      setFont('normal',8,[180,200,220]);
+      if (ptDate) {
+        var d = new Date(ptDate+'T00:00');
+        text('Lab Date: '+d.toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}), ptName?margin+80:margin, 30);
+      }
+    }
+    // Context
+    var ctxParts = ['Sex: '+(STATE.sex==='M'?'Male':'Female')];
+    if (STATE.age) ctxParts.push('Age: '+STATE.age);
+    if (STATE.isHD) ctxParts.push('On Hemodialysis');
+    if (STATE.ckdVeryHigh) ctxParts.push('Very High ASCVD Risk');
+    setFont('normal',7,[150,170,190]); text(ctxParts.join(' · '), margin, 35);
+    y = 44;
+
+    // Generated
+    setFont('italic',7,GRAY);
+    text('Generated: '+new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}), W-margin, y, {align:'right'});
+    text('Unit System: '+STATE.unitSys, margin, y);
+    y += 6;
+
+    // ── Section renderer ──────────────────────────────────────────
+    function drawSectionTitle(icon, title) {
+      checkPage(12);
+      fillRect(margin, y, colW, 8, [235,240,248]);
+      doc.setDrawColor.apply(doc, NAVY); doc.setLineWidth(0.4); doc.line(margin, y, margin, y+8);
+      setFont('bold',10,NAVY); text(icon+' '+title, margin+3, y+5.5);
+      y += 10;
+    }
+
+    function statusColors(s) {
+      if (s==='NORMAL') return {bg:GREEN_BG, text:GREEN, badge:'At Goal'};
+      if (s==='WATCH')  return {bg:AMBER_BG, text:AMBER, badge:'Watch'};
+      if (s==='FLAG')   return {bg:RED_BG,   text:RED,   badge:'Flag'};
+      return {bg:GRAY_BG, text:GRAY, badge:'—'};
+    }
+
+    function drawLabRow(label, rawVal, unit, ir) {
+      if (!rawVal && rawVal!==0) return; // skip empty
+      checkPage(14);
+      var sc = statusColors(ir.status);
+      fillRect(margin, y, colW, ir.note?14:8, sc.bg);
+      drawRect(margin, y, colW, ir.note?14:8, sc.bg);
+      // Label
+      setFont('bold',8,NAVY); text(label, margin+2, y+5);
+      // Value + unit
+      var valStr = rawVal + (unit?' '+unit:'');
+      setFont('normal',8,sc.text); text(valStr, W-margin-30, y+5, {align:'right'});
+      // Badge
+      doc.setFillColor.apply(doc, sc.text); doc.roundedRect(W-margin-26, y+1.5, 22, 5, 1, 1, 'F');
+      setFont('bold',7,WHITE); text(sc.badge, W-margin-15, y+5.3, {align:'center'});
+      // Note
+      if (ir.note) { setFont('italic',7,sc.text); text(ir.note, margin+2, y+11, {maxWidth:colW-32}); }
+      y += (ir.note?15:9);
+    }
+
+    function drawDerivedRow(item) {
+      checkPage(16);
+      var sc = statusColors(item.status);
+      var rowH = item.note ? 16 : 10;
+      fillRect(margin, y, colW, rowH, sc.bg);
+      drawRect(margin, y, colW, rowH, sc.bg);
+      // Domain tag
+      setFont('bold',6,GRAY); text(item.domain.toUpperCase(), margin+2, y+4);
+      // Label
+      setFont('bold',8,NAVY); text(item.label, margin+2, y+9);
+      // Value
+      if (item.value) { setFont('bold',10,sc.text); text(item.value+(item.unit?' '+item.unit:''), W-margin-30, y+8, {align:'right'}); }
+      // Badge
+      doc.setFillColor.apply(doc, sc.text); doc.roundedRect(W-margin-26, y+2, 22, 5, 1, 1, 'F');
+      setFont('bold',7,WHITE); text(sc.badge, W-margin-15, y+5.8, {align:'center'});
+      // Note
+      if (item.note) { setFont('italic',7,sc.text); text(item.note, margin+2, y+13.5, {maxWidth:colW-30}); }
+      y += rowH+1;
+    }
+
+    // ── Sections ─────────────────────────────────────────────────
+    var sections = [
+      {title:'Kidney Function', icon:'KIDNEY', keys:['creatinine','egfr','bun','uacr','upcr']},
+      {title:'CBC & Iron Studies', icon:'CBC', keys:['hgb','hct','rbc','mcv','rdw','reticulocyte','ferritin','tsat','wbc','platelets']},
+      {title:'Electrolytes & Metabolic', icon:'METABOLIC', keys:['sodium','potassium','bicarb','chloride','magnesium','albumin','alt','ast','uricacid']},
+      {title:'Lipid Panel', icon:'LIPIDS', keys:['totalchol','ldl','hdl','tg','lpa']},
+      {title:'Diabetes & Glucose', icon:'DIABETES', keys:['fbs','hba1c','fasting_insulin']},
+      {title:'CKD-MBD: Mineral & Bone', icon:'CKD-MBD', keys:['calcium','phosphorus','ipth','vitd','alp']}
+    ];
+    if (STATE.isHD) sections.push({title:'HD Adequacy', icon:'HD', keys:['bun_pre','bun_post','uf_volume','weight_post','spktv','urr','npcrHD']});
+
+    sections.forEach(function(sec){
+      var filledKeys = sec.keys.filter(function(k){ return STATE.fields[k] && STATE.fields[k]!==''; });
+      if (filledKeys.length===0) return;
+      drawSectionTitle(sec.icon, sec.title);
+      filledKeys.forEach(function(k){
+        var meta = FIELD_META[k][STATE.unitSys] || FIELD_META[k]['Conventional (US)'];
+        var ir = interpKey(k);
+        drawLabRow(meta.label, STATE.fields[k], meta.unit, ir);
+      });
+      y += 3;
+    });
+
+    // ── Derived ──────────────────────────────────────────────────
+    var derived = calcDerived();
+    if (derived.length>0) {
+      checkPage(14);
+      drawSectionTitle('DERIVED', 'Calculated & Derived Values');
+      derived.forEach(function(item){ drawDerivedRow(item); });
+      y += 3;
+    }
+
+    // ── Legend ───────────────────────────────────────────────────
+    checkPage(20);
+    y += 2;
+    fillRect(margin, y, colW, 18, LIGHT_BG);
+    setFont('bold',8,NAVY); text('Interpretation Guide', margin+2, y+5);
+    var lx = margin+2;
+    [[GREEN,'At Goal — within target range'],[AMBER,'Watch — borderline; monitor closely'],[RED,'Flag — requires medical attention']].forEach(function(pair){
+      doc.setFillColor.apply(doc, pair[0]); doc.roundedRect(lx, y+8, 16, 4, 1, 1, 'F');
+      setFont('bold',6,WHITE); text({[GREEN]:'At Goal',[AMBER]:'Watch',[RED]:'Flag'}[pair[0].join(',')]||'', lx+8, y+10.8, {align:'center'});
+      setFont('normal',7,NAVY); text(pair[1], lx+18, y+11);
+      lx += 66;
+    });
+    y += 22;
+
+    // ── Footer ───────────────────────────────────────────────────
+    var pageCount = doc.getNumberOfPages();
+    for (var i=1;i<=pageCount;i++) {
+      doc.setPage(i);
+      fillRect(0, 287, W, 10, NAVY);
+      setFont('normal',7,[160,180,200]);
+      text('W. G. M. Rivero, MD · PRC 0105184 · seriousmd.com/doc/williamrivero · williamriveromd.com', margin, 292);
+      text('Page '+i+' of '+pageCount, W-margin, 292, {align:'right'});
+    }
+    // Disclaimer on last page
+    doc.setPage(pageCount);
+    setFont('italic',6,GRAY);
+    doc.text('For patient education only. All results must be interpreted in clinical context by a qualified physician. Not a substitute for medical consultation.',
+      margin, 283, {maxWidth:colW});
+
+    // ── Save ─────────────────────────────────────────────────────
+    var ptName2 = document.getElementById('pt-name').value.trim();
+    var fname = ptName2
+      ? 'LabReport-'+ptName2.replace(/\s+/g,'-')+'-'+new Date().toISOString().slice(0,10)+'.pdf'
+      : 'LabReport-'+new Date().toISOString().slice(0,10)+'.pdf';
+    doc.save(fname);
+
+  } catch(e) {
+    alert('PDF generation failed: '+e.message);
+    console.error(e);
+  }
+
+  var svgIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+  allBtns.forEach(function(b){ b.disabled=false; b.innerHTML=svgIcon+'Download PDF Report'; });
+  }, 60);
+}
+
+
+// ════════════════════════════════════════════════════════════════════
+// SAMPLE DATA  (realistic CKD Stage 3b + DM + anemia of CKD patient)
+// ════════════════════════════════════════════════════════════════════
+var SAMPLE_DATA = {
+  kidney: {
+    creatinine: '2.1',
+    egfr: '32',
+    bun: '38',
+    uacr: '285',
+    upcr: '0.8'
+  },
+  cbc: {
+    hgb: '98',
+    hct: '30',
+    rbc: '3.4',
+    mcv: '74',
+    rdw: '16.2',
+    reticulocyte: '0.4',
+    ferritin: '95',
+    tsat: '17',
+    wbc: '7.8',
+    platelets: '210'
+  },
+  metabolic: {
+    sodium: '138',
+    potassium: '5.4',
+    bicarb: '19',
+    chloride: '104',
+    magnesium: '0.72',
+    albumin: '3.4',
+    alt: '28',
+    ast: '24',
+    uricacid: '8.1'
+  },
+  lipids: {
+    totalchol: '198',
+    ldl: '',        // left blank so Friedewald gets calculated
+    hdl: '38',
+    tg: '245',
+    lpa: '62'
+  },
+  diabetes: {
+    fbs: '138',
+    hba1c: '8.2',
+    fasting_insulin: '22'
+  },
+  ckdmbd: {
+    calcium: '8.6',
+    phosphorus: '5.9',
+    ipth: '210',
+    vitd: '14',
+    alp: '118'
+  },
+  hdadequacy: {
+    bun_pre: '68',
+    bun_post: '22',
+    uf_volume: '2100',
+    weight_post: '61',
+    spktv: '',
+    urr: '',
+    npcrHD: ''
+  }
+};
+
+function loadSample(panelId) {
+  var data = SAMPLE_DATA[panelId];
+  if (!data) return;
+  Object.keys(data).forEach(function(k) {
+    if (data[k] !== '') {
+      STATE.fields[k] = data[k];
+    }
+  });
+  renderAllInputs();
+  renderDerived();
+  updateSummaryBadges();
+}
+
+function clearPanel(panelId) {
+  var data = SAMPLE_DATA[panelId];
+  if (!data) return;
+  Object.keys(data).forEach(function(k) {
+    delete STATE.fields[k];
+  });
+  renderAllInputs();
+  renderDerived();
+  updateSummaryBadges();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════════
+renderAllInputs();
+renderDerived();
+</script>
+</body>
+</html>
