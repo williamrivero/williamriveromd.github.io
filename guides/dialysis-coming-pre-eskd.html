@@ -98,6 +98,33 @@
   }
   .site-header .back:hover { color: #ffffff; }
 
+    /* ── LEGACY ALIASES (12 guides ship a non-standard lang bar markup) ──────────── */
+  .guide-lang-bar {
+    display: flex; gap: 6px; align-items: center;
+    padding: 6px 32px;
+    background: rgba(10, 18, 32, 0.96);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    flex-wrap: wrap;
+  }
+  .lang-lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,.6);
+    margin-right: 4px;
+    letter-spacing: .06em;
+  }
+  .lang-btn-g {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 500;
+    padding: 4px 12px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.2);
+    background: transparent;
+    color: rgba(255,255,255,.75);
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .lang-btn-g:hover { color: white; border-color: rgba(255,255,255,.5); }
+  .lang-btn-g.active { background: #b8962e; border-color: #b8962e; color: white; }
+
   /* ── AUDIENCE TABS (Patient ↔ Clinician — used by a subset of guides) ───────── */
   .audience-tabs {
     background: var(--navy);
@@ -2002,6 +2029,7 @@ function setLang(lang){
       pd:          { name:'PD monthly package (Adult CAPD, higher volume)', cost:42512, cov:42512, unit:'/month', months:12, notes:'PC 2024-0036 (Jan 2025): Adult CAPD higher volume up to ₱510,140/year. Lower volume = ₱389,640/year. Pediatric APD up to ₱1.27M/year. Includes solutions, exit-site care, peritonitis treatment, catheter, labs, drugs.', stages:['pd'] },
       esa:         { name:'ESA (erythropoietin) — pre-dialysis or PD',cost:2200,  cov:1000,  unit:'/dose',    notes:'Partial coverage for CKD pre-dialysis and PD. For HD patients, ESA is bundled into the ₱6,350/session HD package — do not double-count.', stages:['s4','s5','pd'] },
       iron:        { name:'IV iron infusion — pre-dialysis or PD',    cost:2500,  cov:1200,  unit:'/dose',    notes:'Partial coverage. For HD patients, IV iron is bundled into the ₱6,350/session HD package — do not double-count.', stages:['s4','s5','pd'] },
+      transfusion: { name:'Packed RBC transfusion (per unit)',         cost:4500,  cov:1500,  unit:'/unit',    notes:'When ESA + iron fail to correct anemia. Typical PRC unit ₱4,000–5,000 (PRC/PBC or private blood bank); PhilHealth partial outpatient coverage. Bundled into inpatient case rate if confined.', stages:['s4','s5','hd','pd'] },
       aki:         { name:'Inpatient AKI / CKD admission',           cost:50000, cov:30000, unit:'/admission', notes:'ACR varies by case mix; uncomplicated AKI ~₱30k',  stages:['s3','s4','s5'] },
       tx_workup:   { name:'Transplant pre-op workup (now bundled)',   cost:80000, cov:80000, unit:'once',     notes:'Pre-transplant evaluation now included in the KT Z-benefit (PC 2024-0035, Jan 2025). Listed separately for users who want to see it itemised.', stages:['s5','hd','pd'] },
       tx_surgery:  { name:'Kidney transplant (Z-benefit, living donor lap)', cost:993000, cov:993000, unit:'once', notes:'PC 2024-0035 (Jan 2025): Living donor laparoscopic ₱993,000. Living donor open ₱865,000. Deceased donor + rATG + machine perfusion up to ₱2,146,000. Covers workup + surgery + induction.', stages:['s5','hd','pd'] },
