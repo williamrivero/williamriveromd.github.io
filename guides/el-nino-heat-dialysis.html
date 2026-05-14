@@ -895,6 +895,219 @@
   }
 }
 </script>
+
+<style>
+/* EL NINO HEAT DIALYSIS CUSTOM CSS — restored from commit 38d0ea2 */
+:root {
+    --navy:#0f1e2e; --gold:#b8962e; --gold-light:#d4af4f;
+    --teal:#1a6b72; --teal-light:#e1f5f0;
+    --text:#1e2a38; --text-mid:#2c3a4a; --text-muted:#4a5568;
+    --bg:#f9fafb; --white:#ffffff; --border:#e2e6eb;
+    --red:#b91c1c; --red-soft:#fff0f0;
+    --amber:#92400e; --amber-soft:#fffbeb;
+    --green:#166534; --green-soft:#f0fdf4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.7;font-size:16px;}
+
+  .site-header{background:var(--navy);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+  .site-header a.brand{font-size:16px;font-weight:400;color:white;text-decoration:none;}
+  .site-header a.brand strong{font-weight:600;color:#d4af4f;}
+  .site-header a.back{font-size:12px;color:rgba(255,255,255,.7);text-decoration:none;letter-spacing:.04em;}
+  .guide-toggle-bar{background:rgba(10,18,32,.96);padding:6px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);}
+  .lang-label{font-size:11px;color:rgba(255,255,255,.5);margin-right:8px;letter-spacing:.04em;}
+  .lang-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.72);cursor:pointer;transition:all .2s;margin-right:4px;}
+  .lang-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+  .lang-btn.disabled{opacity:.4;cursor:not-allowed;}
+  .toggle-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s;}
+  .toggle-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+  .toggle-btn svg{width:12px;height:12px;}
+
+  /* Audience tabs */
+  .audience-tabs{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:center;}
+  .tabs-inner{display:flex;max-width:880px;width:100%;}
+  .aud-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.04em;color:rgba(255,255,255,.55);background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .25s;}
+  .aud-tab:hover{color:rgba(255,255,255,.85);}
+  .aud-tab.active{color:#fff;border-bottom-color:#d4af4f;background:rgba(212,175,79,.08);}
+  .mode-patient{display:block;}
+  .mode-physician{display:none;}
+  body.physician-mode .mode-patient{display:none !important;}
+  body.physician-mode .mode-physician{display:block !important;}
+  body.physician-mode .nav-pills .mode-patient-pill{display:none;}
+  body.physician-mode .nav-pills .mode-physician-pill{display:inline-flex;}
+  .mode-physician-pill{display:none;}
+
+  .hero{background:var(--navy);color:white;padding:64px 0 72px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;border-radius:50%;border:1px solid rgba(184,150,46,.15);}
+  .hero::after{content:'';position:absolute;bottom:-80px;left:-60px;width:280px;height:280px;border-radius:50%;border:1px solid rgba(192,57,43,.12);}
+  .container{max-width:860px;margin:0 auto;padding:0 32px;}
+  .hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#fc8d3a;border:1px solid rgba(252,141,58,.45);padding:5px 14px;border-radius:20px;margin-bottom:22px;}
+  .hero h1{font-family:'Lora',serif;font-size:clamp(28px,4.6vw,46px);font-weight:600;line-height:1.18;margin-bottom:18px;letter-spacing:-.01em;}
+  .hero h1 em{font-style:italic;color:#fc8d3a;}
+  .hero-sub{font-size:18px;color:rgba(255,255,255,.82);max-width:620px;line-height:1.65;margin-bottom:32px;}
+  .hero-sub em{font-style:italic;color:var(--gold-light);}
+  .hero-meta{display:flex;gap:28px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.6);}
+  .hero-meta strong{color:rgba(255,255,255,.95);font-weight:600;}
+  .urgent-banner{background:rgba(192,57,43,.18);border:1px solid rgba(252,141,58,.4);border-radius:10px;padding:12px 18px;margin-top:24px;font-size:13.5px;color:#ffd9c4;}
+  .urgent-banner strong{color:#ffb892;}
+
+  .nav-strip{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100;}
+  .nav-pills{display:flex;gap:4px;padding:10px 32px;max-width:1100px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
+  .nav-pills::-webkit-scrollbar{display:none;}
+  .nav-pill{flex-shrink:0;font-size:12px;font-weight:500;padding:7px 14px;border-radius:14px;color:var(--text-muted);background:transparent;text-decoration:none;border:1px solid transparent;transition:all .2s;white-space:nowrap;}
+  .nav-pill:hover{background:var(--bg);color:var(--text);}
+
+  .section{padding:56px 0;border-bottom:1px solid var(--border);}
+  .section-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
+  .mode-physician .section-tag{color:var(--navy);}
+  .section h2{font-family:'Lora',serif;font-size:clamp(24px,3.4vw,32px);font-weight:600;line-height:1.22;color:var(--navy);margin-bottom:18px;letter-spacing:-.01em;}
+  .section h2 em{font-style:italic;color:#c0392b;}
+  .section h3{font-family:'Lora',serif;font-size:21px;font-weight:600;color:var(--navy);margin:28px 0 12px;}
+  .section p{color:var(--text-mid);margin-bottom:16px;}
+  .section p:last-child{margin-bottom:0;}
+
+  .intro-callout{background:var(--navy);color:white;border-radius:14px;padding:26px 32px;margin:24px 0;}
+  .intro-callout p{color:rgba(255,255,255,.92);font-size:16px;line-height:1.75;margin:0;}
+  .intro-callout p strong{color:white;}
+  .intro-callout p em{color:#fc8d3a;font-style:italic;}
+  .intro-callout p + p{margin-top:14px;}
+
+  .two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:24px 0;}
+  .three-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0;}
+  .feature-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:22px 24px;}
+  .feature-card h4{font-family:'Lora',serif;font-size:17px;font-weight:600;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+  .feature-card p{font-size:14.5px;color:var(--text-muted);line-height:1.7;margin:0;}
+  .feature-card ul{margin:8px 0 0 22px;font-size:14.5px;color:var(--text-muted);line-height:1.7;}
+  .feature-card li{margin-bottom:5px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;}
+  .dot-teal{background:var(--teal);}.dot-gold{background:var(--gold);}.dot-red{background:#c0392b;}
+  .dot-amber{background:#e6a03c;}.dot-green{background:#2d7a4f;}.dot-navy{background:var(--navy);}
+  .dot-orange{background:#fc8d3a;}
+
+  .lab-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px;}
+  .lab-table th{background:var(--navy);color:white;font-weight:500;text-align:left;padding:11px 14px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;}
+  .lab-table td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text-mid);vertical-align:top;}
+  .lab-table tr:hover td{background:var(--bg);}
+
+  .alert{display:flex;gap:16px;padding:20px 22px;border-radius:12px;margin:24px 0;align-items:flex-start;}
+  .alert-icon{font-size:24px;flex-shrink:0;line-height:1;}
+  .alert-body{flex:1;}
+  .alert-body h4{font-family:'Lora',serif;font-size:17px;font-weight:600;margin-bottom:8px;}
+  .alert-body p{font-size:14.5px;line-height:1.7;color:var(--text-mid);margin:0;}
+  .alert-body ul{font-size:14.5px;line-height:1.75;color:var(--text-mid);margin:8px 0 0 24px;padding:0;}
+  .alert-body li{margin-bottom:5px;}
+  .alert-red{background:var(--red-soft);border:1px solid #fcc;}
+  .alert-red h4{color:var(--red);}
+  .alert-amber{background:var(--amber-soft);border:1px solid #fde7a7;}
+  .alert-amber h4{color:var(--amber);}
+  .alert-green{background:var(--green-soft);border:1px solid #c0e3cd;}
+  .alert-green h4{color:var(--green);}
+  .alert-teal{background:var(--teal-light);border:1px solid #b9dcd9;}
+  .alert-teal h4{color:var(--teal);}
+  .alert-orange{background:#fff4ec;border:1px solid #ffd1ad;}
+  .alert-orange h4{color:#b9450b;}
+
+  .checklist{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:24px 0;}
+  .checklist h4{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:14px;}
+  .checklist ul{list-style:none;padding:0;margin:0;}
+  .checklist li{position:relative;padding-left:30px;margin-bottom:10px;color:var(--text-mid);font-size:14.5px;line-height:1.7;}
+  .checklist li::before{content:'';position:absolute;left:0;top:8px;width:18px;height:18px;border:2px solid var(--teal);border-radius:4px;}
+  .checklist li::after{content:'✓';position:absolute;left:3px;top:5px;color:var(--teal);font-weight:700;font-size:14px;}
+
+  /* Calculator */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:26px;margin:24px 0;}
+  .calc-row{display:grid;grid-template-columns:1fr 130px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+  .calc-row:last-of-type{border-bottom:0;}
+  .calc-row label{font-size:14px;color:var(--text-mid);font-weight:500;}
+  .calc-row label .meta{display:block;font-size:11.5px;color:var(--text-muted);font-weight:400;margin-top:2px;}
+  .calc-row input,.calc-row select{width:100%;padding:9px 12px;font-family:inherit;font-size:14px;border:1px solid var(--border);border-radius:8px;background:white;}
+  .calc-row input{text-align:right;}
+  .calc-row input:focus,.calc-row select:focus{outline:none;border-color:var(--teal);}
+  .calc-result{margin-top:24px;padding:24px;background:white;border-radius:12px;border:2px solid var(--border);text-align:center;transition:border-color .3s;}
+  .calc-result.low{border-color:var(--green);}
+  .calc-result.moderate{border-color:#e6a03c;}
+  .calc-result.high{border-color:#fc8d3a;}
+  .calc-result.severe{border-color:var(--red);}
+  .calc-result-num{font-family:'Lora',serif;font-size:48px;font-weight:600;line-height:1;color:var(--navy);}
+  .calc-result.low .calc-result-num{color:var(--green);}
+  .calc-result.moderate .calc-result-num{color:#92400e;}
+  .calc-result.high .calc-result-num{color:#b9450b;}
+  .calc-result.severe .calc-result-num{color:var(--red);}
+  .calc-result-label{font-size:13px;color:var(--text-muted);margin-top:6px;letter-spacing:.04em;text-transform:uppercase;}
+  .calc-verdict{margin-top:18px;font-size:15px;line-height:1.65;color:var(--text-mid);text-align:left;}
+
+  /* Clinician-specific */
+  .algo-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:24px 0;}
+  .algo-header{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:14px;}
+  .algo-row{display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--border);}
+  .algo-row:first-of-type{border-top:0;}
+  .algo-step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--teal);color:white;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .algo-content{flex:1;font-size:14.5px;line-height:1.65;color:var(--text-mid);}
+  .algo-content strong{color:var(--navy);}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:24px 0;}
+  .stat-card{background:var(--navy);color:white;border-radius:12px;padding:22px 20px;text-align:center;}
+  .stat-card .stat-num{font-family:'Lora',serif;font-size:32px;font-weight:600;color:#fc8d3a;line-height:1;margin-bottom:6px;}
+  .stat-card .stat-label{font-size:12.5px;color:rgba(255,255,255,.78);line-height:1.45;}
+
+  .dr-card{background:var(--navy);color:white;border-radius:16px;padding:28px;display:flex;gap:22px;align-items:flex-start;margin-top:48px;}
+  .dr-photo{width:64px;height:64px;border-radius:50%;border:2px solid rgba(184,150,46,.5);object-fit:cover;flex-shrink:0;}
+  .dr-card h4{font-family:'Lora',serif;font-size:17px;font-weight:600;color:white;margin-bottom:4px;}
+  .dr-card p{font-size:14px;color:rgba(255,255,255,.78);line-height:1.6;margin-bottom:8px;}
+  .dr-creds{font-size:12px;color:rgba(255,255,255,.55);}
+
+  .related-guides{padding:48px 0 32px;border-bottom:1px solid var(--border);background:var(--bg);}
+  .related-guides h2{font-family:'Lora',serif;font-size:21px;font-weight:600;color:var(--navy);margin-bottom:20px;}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+  .related-card{background:white;border:1px solid var(--border);border-radius:12px;padding:20px;text-decoration:none;color:inherit;transition:all .2s;display:block;}
+  .related-card:hover{border-color:var(--teal);transform:translateY(-2px);}
+  .related-card-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;}
+  .related-card-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--navy);margin-bottom:6px;line-height:1.35;}
+  .related-card-desc{font-size:13px;color:var(--text-muted);line-height:1.55;}
+
+  .guide-footer{background:var(--bg);border-top:1px solid var(--border);padding:32px;}
+  .footer-inner{max-width:860px;margin:0 auto;font-size:12px;color:var(--text-muted);line-height:1.7;}
+  .footer-inner a{color:var(--teal);text-decoration:none;}
+  .translation-notice{background:#fff4dd;border:1px solid #fde7a7;border-radius:8px;padding:10px 16px;margin:16px 0 0;font-size:13px;color:var(--amber);text-align:center;}
+
+  /* Print */
+  @media print{
+    .nav-strip,.guide-toggle-bar,.audience-tabs,.print-btn,.related-guides,.translation-notice{display:none!important;}
+    .mode-patient,.mode-physician{display:block !important;}
+    .hero{background:white!important;color:black!important;border-bottom:2px solid #ccc;padding:24px 0;}
+    .hero h1,.hero-sub,.hero-meta,.hero-tag{color:black!important;border-color:#999!important;}
+    .section{page-break-inside:avoid;}
+    .alert,.feature-card,.checklist,.calc-wrap,.algo-card{border:1px solid #999!important;background:white!important;}
+    .lab-table th,.stat-card{background:#eee!important;color:black!important;}
+    .stat-card .stat-num{color:#333!important;}
+    .intro-callout,.dr-card{background:white!important;color:black!important;border:2px solid #333;}
+    .intro-callout p,.dr-card h4,.dr-card p{color:black!important;}
+  }
+
+  /* Dark mode */
+  html[data-theme="dark"]{
+    --navy:#0e1929;--text:#e8eaf0;--text-mid:#c0cad8;--text-muted:#9aa5b8;
+    --bg:#141c2a;--white:#0a121e;--border:#2a3548;
+    --red-soft:#2a1515;--amber-soft:#2a1f0a;--green-soft:#0e2a1c;--teal-light:#0e2f32;
+  }
+  html[data-theme="dark"] body{background:#0a121e;color:#e8eaf0;}
+  html[data-theme="dark"] .section{border-color:#2a3548;}
+  html[data-theme="dark"] .feature-card,html[data-theme="dark"] .checklist,html[data-theme="dark"] .calc-wrap,html[data-theme="dark"] .algo-card{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .feature-card h4,html[data-theme="dark"] .checklist h4,html[data-theme="dark"] .section h2,html[data-theme="dark"] .section h3,html[data-theme="dark"] .algo-header{color:#e8eaf0;}
+  html[data-theme="dark"] .feature-card p,html[data-theme="dark"] .feature-card li,html[data-theme="dark"] .checklist li,html[data-theme="dark"] .section p,html[data-theme="dark"] .algo-content{color:#c0cad8 !important;}
+  html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select,html[data-theme="dark"] .calc-result{background:#0a121e;color:#e8eaf0;border-color:#2a3548;}
+  html[data-theme="dark"] .related-guides,html[data-theme="dark"] .guide-footer{background:#0e1929;border-color:#2a3548;}
+  html[data-theme="dark"] .related-card{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .related-card-title{color:#e8eaf0;}
+  html[data-theme="dark"] .lab-table td{border-color:#2a3548;color:#c0cad8;}
+  html[data-theme="dark"] .lab-table tr:hover td{background:#1a2535;}
+  html[data-theme="dark"] .stat-card{background:#0a121e;}
+  html[data-theme="dark"] .alert-red{background:#2a1515;}
+  html[data-theme="dark"] .alert-amber,html[data-theme="dark"] .alert-orange{background:#2a1f0a;}
+  html[data-theme="dark"] .alert-green{background:#0e2a1c;}
+  html[data-theme="dark"] .alert-teal{background:#0e2f32;}
+  html[data-theme="dark"] .alert-body p,html[data-theme="dark"] .alert-body li{color:#c0cad8;}
+  html[data-theme="dark"] .translation-notice{background:#2a1f0a;border-color:#3a2a0e;color:#e6a03c;}
+</style>
 </head>
 <body>
 
@@ -1183,7 +1396,7 @@
     <tbody>
       <tr>
         <td>
-          <strong><span data-lang="en">Heat exhaustion</span><span data-lang="tl" class="lang-hidden">Heat exhaustion (pagkapagod sa init)</span><span data-lang="ceb" class="lang-hidden">Heat exhaustion (kakapoy sa init)</span></strong>
+          <strong><span data-lang="en">Heat exhaustion</span><span data-lang="tl" class="lang-hidden">Heat exhaustion (pagkapagod sa init)</span><span data-lang="ceb" class="lang-hidden">Heat exhaustion (kakapoy sa init)</span><span class="lang-hidden" data-lang="kap">Heat exhaustion (pagnungod sa init)</span></strong>
         </td>
         <td>
           <span data-lang="en">Cool, clammy skin. Heavy sweating. Weakness, headache, nausea, muscle cramps. The patient is still alert and oriented.</span>
@@ -1198,7 +1411,7 @@
       </tr>
       <tr>
         <td>
-          <strong><span data-lang="en">Heat stroke</span><span data-lang="tl" class="lang-hidden">Heat stroke</span><span data-lang="ceb" class="lang-hidden">Heat stroke</span></strong>
+          <strong><span data-lang="en">Heat stroke</span><span data-lang="tl" class="lang-hidden">Heat stroke</span><span data-lang="ceb" class="lang-hidden">Heat stroke</span><span class="lang-hidden" data-lang="kap">Heat stroke</span></strong>
         </td>
         <td>
           <span data-lang="en"><em>Hot, dry skin</em> (sweating has stopped). Body temperature &gt;40°C. <em>Confusion, slurred speech, agitation, or unconsciousness.</em> Often follows untreated heat exhaustion.</span>
@@ -1213,7 +1426,7 @@
       </tr>
       <tr>
         <td>
-          <strong><span data-lang="en">Severe hyperkalemia</span><span data-lang="tl" class="lang-hidden">Matinding hyperkalemia (mataas na potassium)</span><span data-lang="ceb" class="lang-hidden">Grabe nga hyperkalemia (taas nga potassium)</span></strong>
+          <strong><span data-lang="en">Severe hyperkalemia</span><span data-lang="tl" class="lang-hidden">Matinding hyperkalemia (mataas na potassium)</span><span data-lang="ceb" class="lang-hidden">Grabe nga hyperkalemia (taas nga potassium)</span><span class="lang-hidden" data-lang="kap">Matinding hyperkalemia (matas a potassium)</span></strong>
         </td>
         <td>
           <span data-lang="en">Heat causes dehydration, which makes potassium harder to excrete. Symptoms: muscle weakness or paralysis, slow or irregular pulse, palpitations, tingling around the mouth.</span>
@@ -1228,7 +1441,7 @@
       </tr>
       <tr>
         <td>
-          <strong><span data-lang="en">Symptomatic hypotension</span><span data-lang="tl" class="lang-hidden">May sintomas na hypotension (mababang BP)</span><span data-lang="ceb" class="lang-hidden">Adunay sintomas nga hypotension (ubos nga BP)</span></strong>
+          <strong><span data-lang="en">Symptomatic hypotension</span><span data-lang="tl" class="lang-hidden">May sintomas na hypotension (mababang BP)</span><span data-lang="ceb" class="lang-hidden">Adunay sintomas nga hypotension (ubos nga BP)</span><span class="lang-hidden" data-lang="kap">May sintomas na hypotension (mababang BP)</span></strong>
         </td>
         <td>
           <span data-lang="en">Often during or right after dialysis: dizziness, nausea, cramps, vomiting, blurred vision, fainting. More common in heat because of pre-dialysis dehydration plus aggressive ultrafiltration.</span>
@@ -1462,45 +1675,45 @@
   </h3>
   <table class="lab-table">
     <thead><tr>
-      <th><span data-lang="en">Strategy</span><span data-lang="tl" class="lang-hidden">Estratehiya</span><span data-lang="ceb" class="lang-hidden">Estratehiya</span></th>
-      <th><span data-lang="en">How it works</span><span data-lang="tl" class="lang-hidden">Paano ito gumagana</span><span data-lang="ceb" class="lang-hidden">Unsaon kini molihok</span></th>
-      <th><span data-lang="en">Practical tip</span><span data-lang="tl" class="lang-hidden">Praktikal na tip</span><span data-lang="ceb" class="lang-hidden">Praktikal nga tip</span></th>
+      <th><span data-lang="en">Strategy</span><span data-lang="tl" class="lang-hidden">Estratehiya</span><span data-lang="ceb" class="lang-hidden">Estratehiya</span><span class="lang-hidden" data-lang="kap">Estratehiya</span></th>
+      <th><span data-lang="en">How it works</span><span data-lang="tl" class="lang-hidden">Paano ito gumagana</span><span data-lang="ceb" class="lang-hidden">Unsaon kini molihok</span><span class="lang-hidden" data-lang="kap">Paano ini gumagana</span></th>
+      <th><span data-lang="en">Practical tip</span><span data-lang="tl" class="lang-hidden">Praktikal na tip</span><span data-lang="ceb" class="lang-hidden">Praktikal nga tip</span><span class="lang-hidden" data-lang="kap">Praktikal na tip</span></th>
     </tr></thead>
     <tbody>
       <tr>
-        <td><strong><span data-lang="en">Wet cloth on neck, wrists, ankles</span><span data-lang="tl" class="lang-hidden">Basang tela sa leeg, pulso, bukung-bukong</span><span data-lang="ceb" class="lang-hidden">Basa nga panapton sa liog, pulso, buol</span></strong></td>
-        <td><span data-lang="en">Large blood vessels run close to the skin at these sites. Cooling the blood here cools the entire core within minutes.</span><span data-lang="tl" class="lang-hidden">Malalapit sa balat ang malalaking ugat sa mga lugar na ito. Pinapalamig ang dugo dito at sa loob ng ilang minuto ay lumalamig na rin ang buong loob ng katawan.</span><span data-lang="ceb" class="lang-hidden">Duol sa panit ang dagkong ugat sa mga lugar nga kini. Pinaagi sa pagpabugnaw sa dugo dinhi, sulod sa pipila ka minuto mobugnaw na ang tibuok sulod sa lawas.</span></td>
-        <td><span data-lang="en">Keep three cool wet cloths in the refrigerator. Rotate one onto the neck, replace with a fresh cold one every 5–10 minutes.</span><span data-lang="tl" class="lang-hidden">Magtago ng tatlong malamig na basang tela sa ref. Ipalit-palit sa leeg, papalitan ng bagong malamig kada 5–10 minuto.</span><span data-lang="ceb" class="lang-hidden">Tipigi ang tulo ka bugnaw nga basa nga panapton sa ref. Ilis-ilis sa liog, pulihan og bag-ong bugnaw matag 5–10 minuto.</span></td>
+        <td><strong><span data-lang="en">Wet cloth on neck, wrists, ankles</span><span data-lang="tl" class="lang-hidden">Basang tela sa leeg, pulso, bukung-bukong</span><span data-lang="ceb" class="lang-hidden">Basa nga panapton sa liog, pulso, buol</span><span class="lang-hidden" data-lang="kap">Basang tela sa leeg, pulso, bunung-bukong</span></strong></td>
+        <td><span data-lang="en">Large blood vessels run close to the skin at these sites. Cooling the blood here cools the entire core within minutes.</span><span data-lang="tl" class="lang-hidden">Malalapit sa balat ang malalaking ugat sa mga lugar na ito. Pinapalamig ang dugo dito at sa loob ng ilang minuto ay lumalamig na rin ang buong loob ng katawan.</span><span data-lang="ceb" class="lang-hidden">Duol sa panit ang dagkong ugat sa mga lugar nga kini. Pinaagi sa pagpabugnaw sa dugo dinhi, sulod sa pipila ka minuto mobugnaw na ang tibuok sulod sa lawas.</span><span class="lang-hidden" data-lang="kap">Malalapit sa balat ing malalaking ugat sa deng lugar na ini. Pinapalamig ining daya dini at sa loob ning ilang minuto ya lumalamig na rin ing buong loob nining bangkî.</span></td>
+        <td><span data-lang="en">Keep three cool wet cloths in the refrigerator. Rotate one onto the neck, replace with a fresh cold one every 5–10 minutes.</span><span data-lang="tl" class="lang-hidden">Magtago ng tatlong malamig na basang tela sa ref. Ipalit-palit sa leeg, papalitan ng bagong malamig kada 5–10 minuto.</span><span data-lang="ceb" class="lang-hidden">Tipigi ang tulo ka bugnaw nga basa nga panapton sa ref. Ilis-ilis sa liog, pulihan og bag-ong bugnaw matag 5–10 minuto.</span><span class="lang-hidden" data-lang="kap">Magtago ning tatlong malamig na basang tela sa ref. Ipalit-palit sa leeg, papalitan ning bagong malamig kada 5–10 minuto.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">Cool foot soak</span><span data-lang="tl" class="lang-hidden">Pagbabad ng paa sa malamig na tubig</span><span data-lang="ceb" class="lang-hidden">Pagtuslob sa tiil sa bugnaw nga tubig</span></strong></td>
-        <td><span data-lang="en">Feet have a large surface area and abundant blood flow. Soaking them in cool (not ice) water for 15–20 minutes drops core temperature noticeably.</span><span data-lang="tl" class="lang-hidden">Malaki ang surface area ng paa at maraming dugo ang dumadaloy. Ang pagbabad sa malamig (hindi yelo) na tubig ng 15–20 minuto ay malaking pagbaba ng pangunahing temperatura.</span><span data-lang="ceb" class="lang-hidden">Dako ang surface area sa tiil ug daghan ang dugo nga nagdagayday. Ang pagtuslob sa bugnaw (dili yelo) nga tubig sa 15–20 minuto makamenos sa sentral nga temperatura.</span></td>
-        <td><span data-lang="en">A basin of cool tap water plus a dialysis-appropriate towel. No need for ice.</span><span data-lang="tl" class="lang-hidden">Isang palanggana ng malamig na tubig sa gripo at toalyang angkop sa dialysis. Hindi kailangan ng yelo.</span><span data-lang="ceb" class="lang-hidden">Usa ka palanggana sa bugnaw nga tubig sa gripo ug toalya nga angay sa dialysis. Walay kinahanglan nga yelo.</span></td>
+        <td><strong><span data-lang="en">Cool foot soak</span><span data-lang="tl" class="lang-hidden">Pagbabad ng paa sa malamig na tubig</span><span data-lang="ceb" class="lang-hidden">Pagtuslob sa tiil sa bugnaw nga tubig</span><span class="lang-hidden" data-lang="kap">Pagbabad ning paa sa malamig na danum</span></strong></td>
+        <td><span data-lang="en">Feet have a large surface area and abundant blood flow. Soaking them in cool (not ice) water for 15–20 minutes drops core temperature noticeably.</span><span data-lang="tl" class="lang-hidden">Malaki ang surface area ng paa at maraming dugo ang dumadaloy. Ang pagbabad sa malamig (hindi yelo) na tubig ng 15–20 minuto ay malaking pagbaba ng pangunahing temperatura.</span><span data-lang="ceb" class="lang-hidden">Dako ang surface area sa tiil ug daghan ang dugo nga nagdagayday. Ang pagtuslob sa bugnaw (dili yelo) nga tubig sa 15–20 minuto makamenos sa sentral nga temperatura.</span><span class="lang-hidden" data-lang="kap">Malaki ing surface area ning paa at maramining daya ing dumadaloy. Ing pagbabad sa malamig (ali yelo) na danum ning 15–20 minuto ya malda a pagbaba ning pangunahing temperatura.</span></td>
+        <td><span data-lang="en">A basin of cool tap water plus a dialysis-appropriate towel. No need for ice.</span><span data-lang="tl" class="lang-hidden">Isang palanggana ng malamig na tubig sa gripo at toalyang angkop sa dialysis. Hindi kailangan ng yelo.</span><span data-lang="ceb" class="lang-hidden">Usa ka palanggana sa bugnaw nga tubig sa gripo ug toalya nga angay sa dialysis. Walay kinahanglan nga yelo.</span><span class="lang-hidden" data-lang="kap">Isang palanggana ning malamig na danum sa gripo at toalyang angkop king dialysis. Ali kailangan ning yelo.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">Spray bottle + electric fan</span><span data-lang="tl" class="lang-hidden">Spray bottle + electric fan</span><span data-lang="ceb" class="lang-hidden">Spray bottle + electric fan</span></strong></td>
-        <td><span data-lang="en">Mist on skin + moving air = evaporative cooling. The same physics as sweating, without the fluid loss.</span><span data-lang="tl" class="lang-hidden">Mist sa balat + gumagalaw na hangin = evaporative cooling. Pareho ng pisika sa pagpapawis, pero walang nawawalang likido.</span><span data-lang="ceb" class="lang-hidden">Mist sa panit + naglihok nga hangin = evaporative cooling. Susama nga pisika sa pagsingot, apan walay nawala nga likido.</span></td>
-        <td><span data-lang="en">Keep a spray bottle of plain water near a desk fan. Mist arms and face every 20 minutes during the hottest hours.</span><span data-lang="tl" class="lang-hidden">Maglagay ng spray bottle na may plain water malapit sa desk fan. Mist sa braso at mukha bawat 20 minuto sa pinakamainit na oras.</span><span data-lang="ceb" class="lang-hidden">Pagbutang og spray bottle nga adunay plain water duol sa desk fan. Mist sa bukton ug nawong matag 20 minuto sa pinakainit nga oras.</span></td>
+        <td><strong><span data-lang="en">Spray bottle + electric fan</span><span data-lang="tl" class="lang-hidden">Spray bottle + electric fan</span><span data-lang="ceb" class="lang-hidden">Spray bottle + electric fan</span><span class="lang-hidden" data-lang="kap">Spray bottle + electric fan</span></strong></td>
+        <td><span data-lang="en">Mist on skin + moving air = evaporative cooling. The same physics as sweating, without the fluid loss.</span><span data-lang="tl" class="lang-hidden">Mist sa balat + gumagalaw na hangin = evaporative cooling. Pareho ng pisika sa pagpapawis, pero walang nawawalang likido.</span><span data-lang="ceb" class="lang-hidden">Mist sa panit + naglihok nga hangin = evaporative cooling. Susama nga pisika sa pagsingot, apan walay nawala nga likido.</span><span class="lang-hidden" data-lang="kap">Mist sa balat + gumagalaw na hangin = evaporative cooling. Pareho ning pisika sa pagpapawis, pero alang nawaalang likido.</span></td>
+        <td><span data-lang="en">Keep a spray bottle of plain water near a desk fan. Mist arms and face every 20 minutes during the hottest hours.</span><span data-lang="tl" class="lang-hidden">Maglagay ng spray bottle na may plain water malapit sa desk fan. Mist sa braso at mukha bawat 20 minuto sa pinakamainit na oras.</span><span data-lang="ceb" class="lang-hidden">Pagbutang og spray bottle nga adunay plain water duol sa desk fan. Mist sa bukton ug nawong matag 20 minuto sa pinakainit nga oras.</span><span class="lang-hidden" data-lang="kap">Maglagay ning spray bottle na may plain water malapit sa desk fan. Mist sa braso at mukha bawat 20 minuto sa pinakamainit na oras.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">Cool shower (under 5 minutes)</span><span data-lang="tl" class="lang-hidden">Malamig na paliligo (mababa sa 5 minuto)</span><span data-lang="ceb" class="lang-hidden">Bugnaw nga paligo (ubos sa 5 minuto)</span></strong></td>
-        <td><span data-lang="en">Drops skin temperature dramatically. Negligible fluid is absorbed.</span><span data-lang="tl" class="lang-hidden">Malaki ang pagbaba ng temperatura ng balat. Maliit ang likidong nakukuha.</span><span data-lang="ceb" class="lang-hidden">Dako ang pagkubos sa temperatura sa panit. Gamay ra ang likido nga masuyop.</span></td>
-        <td><span data-lang="en">Two short cool showers a day (mid-morning and late afternoon) are more effective and water-efficient than one long one.</span><span data-lang="tl" class="lang-hidden">Dalawang maikling malamig na paliligo sa isang araw (mid-morning at late afternoon) ay mas epektibo at mas water-efficient kaysa sa isang mahabang paliligo.</span><span data-lang="ceb" class="lang-hidden">Duha ka mubo nga bugnaw nga paligo kada adlaw (mid-morning ug late afternoon) mas epektibo ug mas water-efficient kay sa usa ka taas nga paligo.</span></td>
+        <td><strong><span data-lang="en">Cool shower (under 5 minutes)</span><span data-lang="tl" class="lang-hidden">Malamig na paliligo (mababa sa 5 minuto)</span><span data-lang="ceb" class="lang-hidden">Bugnaw nga paligo (ubos sa 5 minuto)</span><span class="lang-hidden" data-lang="kap">Malamig na paliligo (mababa sa 5 minuto)</span></strong></td>
+        <td><span data-lang="en">Drops skin temperature dramatically. Negligible fluid is absorbed.</span><span data-lang="tl" class="lang-hidden">Malaki ang pagbaba ng temperatura ng balat. Maliit ang likidong nakukuha.</span><span data-lang="ceb" class="lang-hidden">Dako ang pagkubos sa temperatura sa panit. Gamay ra ang likido nga masuyop.</span><span class="lang-hidden" data-lang="kap">Malaki ing pagbaba ning temperatura ning balat. Maliit ing likidong nakukuha.</span></td>
+        <td><span data-lang="en">Two short cool showers a day (mid-morning and late afternoon) are more effective and water-efficient than one long one.</span><span data-lang="tl" class="lang-hidden">Dalawang maikling malamig na paliligo sa isang araw (mid-morning at late afternoon) ay mas epektibo at mas water-efficient kaysa sa isang mahabang paliligo.</span><span data-lang="ceb" class="lang-hidden">Duha ka mubo nga bugnaw nga paligo kada adlaw (mid-morning ug late afternoon) mas epektibo ug mas water-efficient kay sa usa ka taas nga paligo.</span><span class="lang-hidden" data-lang="kap">Dalawang maikling malamig na paliligo sa metung a aldo (mid-morning at late afternoon) ya mas epektibo at mas water-efficient kaysa sa metung a mahabang paliligo.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">Wet sheet over a fan ("DIY swamp cooler")</span><span data-lang="tl" class="lang-hidden">Basang kumot sa harap ng bentilador ("DIY swamp cooler")</span><span data-lang="ceb" class="lang-hidden">Basa nga habol sa atubangan sa bentilador ("DIY swamp cooler")</span></strong></td>
-        <td><span data-lang="en">Air pushed through a damp cloth becomes cooler by evaporation. A working refrigerator-style cooler with no electricity beyond the fan.</span><span data-lang="tl" class="lang-hidden">Ang hanging dumadaan sa basang tela ay lumalamig dahil sa evaporation. Tulad ng isang refrigerator-style cooler na walang dagdag na kuryente bukod sa fan.</span><span data-lang="ceb" class="lang-hidden">Ang hangin nga moagi sa basa nga panapton mobugnaw tungod sa evaporation. Sama sa refrigerator-style cooler nga walay dugang nga kuryente gawas sa fan.</span></td>
-        <td><span data-lang="en">Hang a damp bedsheet between you and the fan. Re-wet every 30 minutes.</span><span data-lang="tl" class="lang-hidden">Magsabit ng basang kumot sa pagitan mo at ng fan. Basain ulit kada 30 minuto.</span><span data-lang="ceb" class="lang-hidden">Pagsab-it og basa nga habol tali kanimo ug sa fan. Basaa pag-usab matag 30 minuto.</span></td>
+        <td><strong><span data-lang="en">Wet sheet over a fan ("DIY swamp cooler")</span><span data-lang="tl" class="lang-hidden">Basang kumot sa harap ng bentilador ("DIY swamp cooler")</span><span data-lang="ceb" class="lang-hidden">Basa nga habol sa atubangan sa bentilador ("DIY swamp cooler")</span><span class="lang-hidden" data-lang="kap">Basang kumot sa harap ning bentilador ("DIY swamp cooler")</span></strong></td>
+        <td><span data-lang="en">Air pushed through a damp cloth becomes cooler by evaporation. A working refrigerator-style cooler with no electricity beyond the fan.</span><span data-lang="tl" class="lang-hidden">Ang hanging dumadaan sa basang tela ay lumalamig dahil sa evaporation. Tulad ng isang refrigerator-style cooler na walang dagdag na kuryente bukod sa fan.</span><span data-lang="ceb" class="lang-hidden">Ang hangin nga moagi sa basa nga panapton mobugnaw tungod sa evaporation. Sama sa refrigerator-style cooler nga walay dugang nga kuryente gawas sa fan.</span><span class="lang-hidden" data-lang="kap">Ing hanging dumadaan sa basang tela ya lumalamig dahil king evaporation. Tulad ning metung a refrigerator-style cooler na alang dagdag na kuryente bukod sa fan.</span></td>
+        <td><span data-lang="en">Hang a damp bedsheet between you and the fan. Re-wet every 30 minutes.</span><span data-lang="tl" class="lang-hidden">Magsabit ng basang kumot sa pagitan mo at ng fan. Basain ulit kada 30 minuto.</span><span data-lang="ceb" class="lang-hidden">Pagsab-it og basa nga habol tali kanimo ug sa fan. Basaa pag-usab matag 30 minuto.</span><span class="lang-hidden" data-lang="kap">Magsabit ning basang kumot sa pagitan mo at ning fan. Basain ulit kada 30 minuto.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">Loose, light, light-coloured cotton</span><span data-lang="tl" class="lang-hidden">Maluwag, magaan, mapusyaw na cotton</span><span data-lang="ceb" class="lang-hidden">Luag, gaan, lumigaw nga cotton</span></strong></td>
-        <td><span data-lang="en">Reflects sunlight, allows evaporation. Tight or dark clothing traps heat.</span><span data-lang="tl" class="lang-hidden">Sumasalamin sa sikat ng araw, pinapayagan ang evaporation. Ang masikip o madilim na damit ay nagdadala ng init.</span><span data-lang="ceb" class="lang-hidden">Mosalamin sa silaw sa adlaw, motugot sa evaporation. Ang sikip o ngitngit nga sinina nagpadala og init.</span></td>
-        <td><span data-lang="en">Plain white t-shirt and loose pants are better than any "cooling fabric" marketed in malls.</span><span data-lang="tl" class="lang-hidden">Plain na white t-shirt at maluwag na pantalon ay mas magaling kaysa sa anumang "cooling fabric" na ipinagbebenta sa mall.</span><span data-lang="ceb" class="lang-hidden">Plain nga white t-shirt ug luag nga pantalon mas maayo kay sa bisan unsang "cooling fabric" nga gibaligya sa mall.</span></td>
+        <td><strong><span data-lang="en">Loose, light, light-coloured cotton</span><span data-lang="tl" class="lang-hidden">Maluwag, magaan, mapusyaw na cotton</span><span data-lang="ceb" class="lang-hidden">Luag, gaan, lumigaw nga cotton</span><span class="lang-hidden" data-lang="kap">Maluwag, magaan, mapusyaw na cotton</span></strong></td>
+        <td><span data-lang="en">Reflects sunlight, allows evaporation. Tight or dark clothing traps heat.</span><span data-lang="tl" class="lang-hidden">Sumasalamin sa sikat ng araw, pinapayagan ang evaporation. Ang masikip o madilim na damit ay nagdadala ng init.</span><span data-lang="ceb" class="lang-hidden">Mosalamin sa silaw sa adlaw, motugot sa evaporation. Ang sikip o ngitngit nga sinina nagpadala og init.</span><span class="lang-hidden" data-lang="kap">Sumasalamin sa sikat nining aldo, pinapayagan ing evaporation. Ing masikip o madilim na damit ya nagdadala ning init.</span></td>
+        <td><span data-lang="en">Plain white t-shirt and loose pants are better than any "cooling fabric" marketed in malls.</span><span data-lang="tl" class="lang-hidden">Plain na white t-shirt at maluwag na pantalon ay mas magaling kaysa sa anumang "cooling fabric" na ipinagbebenta sa mall.</span><span data-lang="ceb" class="lang-hidden">Plain nga white t-shirt ug luag nga pantalon mas maayo kay sa bisan unsang "cooling fabric" nga gibaligya sa mall.</span><span class="lang-hidden" data-lang="kap">Plain na white t-shirt at maluwag na pantalon ya mas magaling kaysa sa anumang "cooling fabric" na ipinagbebenta sa mall.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">Stay out of direct sun 10am–4pm</span><span data-lang="tl" class="lang-hidden">Iwasan ang direktang araw 10am–4pm</span><span data-lang="ceb" class="lang-hidden">Likayi ang direktang adlaw 10am–4pm</span></strong></td>
-        <td><span data-lang="en">The most basic and most underused intervention. Direct sun adds 5–8°C to perceived temperature.</span><span data-lang="tl" class="lang-hidden">Ang pinaka-pangunahin at pinaka-hindi nagagamit na hakbang. Ang direktang araw ay nagdaragdag ng 5–8°C sa nararamdamang temperatura.</span><span data-lang="ceb" class="lang-hidden">Ang pinaka-base ug pinaka-walay gigamit nga lakang. Ang direktang adlaw nagdugang og 5–8°C sa gibati nga temperatura.</span></td>
-        <td><span data-lang="en">Reschedule errands to early morning or after sunset. If you must go out, umbrella.</span><span data-lang="tl" class="lang-hidden">Ilipat ang mga lakad sa madaling-araw o pagkalubog ng araw. Kung kailangan lumabas, magdala ng payong.</span><span data-lang="ceb" class="lang-hidden">Ibalhin ang mga lakaw sa sayong-buntag o human salop sa adlaw. Kung kinahanglan mogawas, magdala og payong.</span></td>
+        <td><strong><span data-lang="en">Stay out of direct sun 10am–4pm</span><span data-lang="tl" class="lang-hidden">Iwasan ang direktang araw 10am–4pm</span><span data-lang="ceb" class="lang-hidden">Likayi ang direktang adlaw 10am–4pm</span><span class="lang-hidden" data-lang="kap">Iwasan ing direktaning aldo 10am–4pm</span></strong></td>
+        <td><span data-lang="en">The most basic and most underused intervention. Direct sun adds 5–8°C to perceived temperature.</span><span data-lang="tl" class="lang-hidden">Ang pinaka-pangunahin at pinaka-hindi nagagamit na hakbang. Ang direktang araw ay nagdaragdag ng 5–8°C sa nararamdamang temperatura.</span><span data-lang="ceb" class="lang-hidden">Ang pinaka-base ug pinaka-walay gigamit nga lakang. Ang direktang adlaw nagdugang og 5–8°C sa gibati nga temperatura.</span><span class="lang-hidden" data-lang="kap">Ing pinaka-pangunahin at pinaka-ali nagagamit na hakbang. Ing direktaning aldo ya nagdaragdag ning 5–8°C sa nararamdamang temperatura.</span></td>
+        <td><span data-lang="en">Reschedule errands to early morning or after sunset. If you must go out, umbrella.</span><span data-lang="tl" class="lang-hidden">Ilipat ang mga lakad sa madaling-araw o pagkalubog ng araw. Kung kailangan lumabas, magdala ng payong.</span><span data-lang="ceb" class="lang-hidden">Ibalhin ang mga lakaw sa sayong-buntag o human salop sa adlaw. Kung kinahanglan mogawas, magdala og payong.</span><span class="lang-hidden" data-lang="kap">Ilipat deng lakad sa madaling-aldo o pagkalubog nining aldo. Nung kailangan lumabas, magdala ning payong.</span></td>
       </tr>
     </tbody>
   </table>
@@ -1651,12 +1864,12 @@
       <span data-lang="ceb" class="lang-hidden">Mga base nga andam-pang-brownout</span>
     </h4>
     <ul>
-      <li><span data-lang="en">Phone fully charged each evening; spare power bank charged.</span><span data-lang="tl" class="lang-hidden">Punong-puno ang charge ng phone tuwing gabi; may charged na spare power bank.</span><span data-lang="ceb" class="lang-hidden">Puno og charge ang phone matag gabii; adunay charged nga spare power bank.</span></li>
-      <li><span data-lang="en">Headlamp or flashlight in a known location (avoid candles — fire risk).</span><span data-lang="tl" class="lang-hidden">Headlamp o flashlight sa alam na lokasyon (iwasan ang kandila — sunog risk).</span><span data-lang="ceb" class="lang-hidden">Headlamp o flashlight sa nahibal-an nga lokasyon (likayi ang kandila — risgo sa sunog).</span></li>
-      <li><span data-lang="en">Battery-powered fan if at all possible (₱1,000–3,000 for a USB-rechargeable fan).</span><span data-lang="tl" class="lang-hidden">Battery-powered fan kung kaya (₱1,000–3,000 para sa USB-rechargeable fan).</span><span data-lang="ceb" class="lang-hidden">Battery-powered fan kung mahimo (₱1,000–3,000 alang sa USB-rechargeable fan).</span></li>
-      <li><span data-lang="en">List of dialysis center, nephrologist, and two backup centers — printed AND in phone contacts.</span><span data-lang="tl" class="lang-hidden">Listahan ng dialysis center, nephrologist, at dalawang backup center — naka-print AT nasa phone contacts.</span><span data-lang="ceb" class="lang-hidden">Listahan sa dialysis center, nephrologist, ug duha ka backup center — naka-print UG anaa sa phone contacts.</span></li>
-      <li><span data-lang="en">Emergency contact who can drive you if you cannot drive yourself.</span><span data-lang="tl" class="lang-hidden">Emergency contact na pwedeng magmaneho para sa iyo kung hindi mo kayang magmaneho.</span><span data-lang="ceb" class="lang-hidden">Emergency contact nga makahimong momaneho para kanimo kung dili ka makamaneho.</span></li>
-      <li><span data-lang="en">If on insulin: insulated bag with cool packs, ready to go in the freezer.</span><span data-lang="tl" class="lang-hidden">Kung naka-insulin: insulated bag na may cool packs, handa nang ipasok sa freezer.</span><span data-lang="ceb" class="lang-hidden">Kung naka-insulin: insulated bag nga adunay cool packs, andam na ibutang sa freezer.</span></li>
+      <li><span data-lang="en">Phone fully charged each evening; spare power bank charged.</span><span data-lang="tl" class="lang-hidden">Punong-puno ang charge ng phone tuwing gabi; may charged na spare power bank.</span><span data-lang="ceb" class="lang-hidden">Puno og charge ang phone matag gabii; adunay charged nga spare power bank.</span><span class="lang-hidden" data-lang="kap">Punong-puno ing charge ning phone tuwing gabi; may charged na spare power bank.</span></li>
+      <li><span data-lang="en">Headlamp or flashlight in a known location (avoid candles — fire risk).</span><span data-lang="tl" class="lang-hidden">Headlamp o flashlight sa alam na lokasyon (iwasan ang kandila — sunog risk).</span><span data-lang="ceb" class="lang-hidden">Headlamp o flashlight sa nahibal-an nga lokasyon (likayi ang kandila — risgo sa sunog).</span><span class="lang-hidden" data-lang="kap">Headlamp o flashlight sa alam na lokasyon (iwasan ing kandila — sunog risk).</span></li>
+      <li><span data-lang="en">Battery-powered fan if at all possible (₱1,000–3,000 for a USB-rechargeable fan).</span><span data-lang="tl" class="lang-hidden">Battery-powered fan kung kaya (₱1,000–3,000 para sa USB-rechargeable fan).</span><span data-lang="ceb" class="lang-hidden">Battery-powered fan kung mahimo (₱1,000–3,000 alang sa USB-rechargeable fan).</span><span class="lang-hidden" data-lang="kap">Battery-powered fan nung kaya (₱1,000–3,000 para king USB-rechargeable fan).</span></li>
+      <li><span data-lang="en">List of dialysis center, nephrologist, and two backup centers — printed AND in phone contacts.</span><span data-lang="tl" class="lang-hidden">Listahan ng dialysis center, nephrologist, at dalawang backup center — naka-print AT nasa phone contacts.</span><span data-lang="ceb" class="lang-hidden">Listahan sa dialysis center, nephrologist, ug duha ka backup center — naka-print UG anaa sa phone contacts.</span><span class="lang-hidden" data-lang="kap">Listahan ning dialysis center, nephrologist, at dalawang backup center — naka-print AT nasa phone contacts.</span></li>
+      <li><span data-lang="en">Emergency contact who can drive you if you cannot drive yourself.</span><span data-lang="tl" class="lang-hidden">Emergency contact na pwedeng magmaneho para sa iyo kung hindi mo kayang magmaneho.</span><span data-lang="ceb" class="lang-hidden">Emergency contact nga makahimong momaneho para kanimo kung dili ka makamaneho.</span><span class="lang-hidden" data-lang="kap">Emergency contact na pwedeng magmaneho para king iyo nung ali mo kayang magmaneho.</span></li>
+      <li><span data-lang="en">If on insulin: insulated bag with cool packs, ready to go in the freezer.</span><span data-lang="tl" class="lang-hidden">Kung naka-insulin: insulated bag na may cool packs, handa nang ipasok sa freezer.</span><span data-lang="ceb" class="lang-hidden">Kung naka-insulin: insulated bag nga adunay cool packs, andam na ibutang sa freezer.</span><span class="lang-hidden" data-lang="kap">Nung naka-insulin: insulated bag na may cool packs, handa nang ipasok sa freezer.</span></li>
     </ul>
   </div>
 </section>
@@ -1749,40 +1962,40 @@
 
   <table class="lab-table">
     <thead><tr>
-      <th><span data-lang="en">Medication</span><span data-lang="tl" class="lang-hidden">Gamot</span><span data-lang="ceb" class="lang-hidden">Tambal</span></th>
-      <th><span data-lang="en">Storage requirement</span><span data-lang="tl" class="lang-hidden">Kinakailangan sa pag-iimbak</span><span data-lang="ceb" class="lang-hidden">Kinahanglan sa pagtipig</span></th>
-      <th><span data-lang="en">What to do during brownouts</span><span data-lang="tl" class="lang-hidden">Ano ang gagawin sa brownout</span><span data-lang="ceb" class="lang-hidden">Unsay buhaton sa brownout</span></th>
+      <th><span data-lang="en">Medication</span><span data-lang="tl" class="lang-hidden">Gamot</span><span data-lang="ceb" class="lang-hidden">Tambal</span><span class="lang-hidden" data-lang="kap">Gamut</span></th>
+      <th><span data-lang="en">Storage requirement</span><span data-lang="tl" class="lang-hidden">Kinakailangan sa pag-iimbak</span><span data-lang="ceb" class="lang-hidden">Kinahanglan sa pagtipig</span><span class="lang-hidden" data-lang="kap">Kinakailangan sa pag-iimbak</span></th>
+      <th><span data-lang="en">What to do during brownouts</span><span data-lang="tl" class="lang-hidden">Ano ang gagawin sa brownout</span><span data-lang="ceb" class="lang-hidden">Unsay buhaton sa brownout</span><span class="lang-hidden" data-lang="kap">Ano ing gagawin sa brownout</span></th>
     </tr></thead>
     <tbody>
       <tr>
-        <td><strong><span data-lang="en">Insulin (vials, pens, cartridges)</span><span data-lang="tl" class="lang-hidden">Insulin (vial, pen, cartridge)</span><span data-lang="ceb" class="lang-hidden">Insulin (vial, pen, cartridge)</span></strong></td>
-        <td><span data-lang="en">Refrigerated 2–8°C if unopened. Once opened, room temperature &lt;30°C is acceptable for 28 days.</span><span data-lang="tl" class="lang-hidden">Naka-refrigerator sa 2–8°C kung hindi pa nabubuksan. Pagkabukas, ok ang room temperature &lt;30°C ng 28 araw.</span><span data-lang="ceb" class="lang-hidden">Naka-refrigerator sa 2–8°C kung wala pa abrihi. Human abrihi, ok ang room temperature &lt;30°C sulod sa 28 ka adlaw.</span></td>
-        <td><span data-lang="en">Move to insulated bag with cool packs (frozen overnight). Never freeze. Replace cool packs every 4–6 hours during prolonged outages. If insulin reaches &gt;30°C for &gt;24 hours, contact your endocrinologist about replacement.</span><span data-lang="tl" class="lang-hidden">Ilipat sa insulated bag na may cool packs (frozen overnight). Huwag i-freeze. Palitan ang cool packs kada 4–6 oras sa matagal na brownout. Kung umabot sa &gt;30°C ng &gt;24 oras ang insulin, tawagan ang endocrinologist tungkol sa palit.</span><span data-lang="ceb" class="lang-hidden">Ibalhin sa insulated bag nga adunay cool packs (frozen overnight). Ayaw i-freeze. Pulihi ang cool packs matag 4–6 oras sa dugay nga brownout. Kung moabot sa &gt;30°C sulod sa &gt;24 oras ang insulin, tawagi ang endocrinologist bahin sa puli.</span></td>
+        <td><strong><span data-lang="en">Insulin (vials, pens, cartridges)</span><span data-lang="tl" class="lang-hidden">Insulin (vial, pen, cartridge)</span><span data-lang="ceb" class="lang-hidden">Insulin (vial, pen, cartridge)</span><span class="lang-hidden" data-lang="kap">Insulin (vial, pen, cartridge)</span></strong></td>
+        <td><span data-lang="en">Refrigerated 2–8°C if unopened. Once opened, room temperature &lt;30°C is acceptable for 28 days.</span><span data-lang="tl" class="lang-hidden">Naka-refrigerator sa 2–8°C kung hindi pa nabubuksan. Pagkabukas, ok ang room temperature &lt;30°C ng 28 araw.</span><span data-lang="ceb" class="lang-hidden">Naka-refrigerator sa 2–8°C kung wala pa abrihi. Human abrihi, ok ang room temperature &lt;30°C sulod sa 28 ka adlaw.</span><span class="lang-hidden" data-lang="kap">Naka-refrigerator sa 2–8°C nung ali pa nabubuksan. Pagkabukas, ok ing room temperature &lt;30°C ning 28 aldo.</span></td>
+        <td><span data-lang="en">Move to insulated bag with cool packs (frozen overnight). Never freeze. Replace cool packs every 4–6 hours during prolonged outages. If insulin reaches &gt;30°C for &gt;24 hours, contact your endocrinologist about replacement.</span><span data-lang="tl" class="lang-hidden">Ilipat sa insulated bag na may cool packs (frozen overnight). Huwag i-freeze. Palitan ang cool packs kada 4–6 oras sa matagal na brownout. Kung umabot sa &gt;30°C ng &gt;24 oras ang insulin, tawagan ang endocrinologist tungkol sa palit.</span><span data-lang="ceb" class="lang-hidden">Ibalhin sa insulated bag nga adunay cool packs (frozen overnight). Ayaw i-freeze. Pulihi ang cool packs matag 4–6 oras sa dugay nga brownout. Kung moabot sa &gt;30°C sulod sa &gt;24 oras ang insulin, tawagi ang endocrinologist bahin sa puli.</span><span class="lang-hidden" data-lang="kap">Ilipat sa insulated bag na may cool packs (frozen overnight). Eka i-freeze. Palitan ing cool packs kada 4–6 oras sa matagal na brownout. Nung umabot sa &gt;30°C ning &gt;24 oras ing insulin, tawagan ing endocrinologist tungkol sa palit.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">Erythropoietin / Aranesp</span><span data-lang="tl" class="lang-hidden">Erythropoietin / Aranesp</span><span data-lang="ceb" class="lang-hidden">Erythropoietin / Aranesp</span></strong></td>
-        <td><span data-lang="en">Strict refrigeration 2–8°C. Loses potency rapidly above 25°C.</span><span data-lang="tl" class="lang-hidden">Mahigpit na refrigeration 2–8°C. Mabilis nawawala ang bisa sa lampas 25°C.</span><span data-lang="ceb" class="lang-hidden">Hugot nga refrigeration 2–8°C. Paspas mawala ang bisa sa labaw sa 25°C.</span></td>
-        <td><span data-lang="en">If your center provides EPO at dialysis sessions, this is their problem, not yours. If you self-administer at home: insulated container, cool packs, use within hours of any temperature breach.</span><span data-lang="tl" class="lang-hidden">Kung ang center mo ang nagbibigay ng EPO sa dialysis sessions, sila ang may problema, hindi ikaw. Kung self-administer ka sa bahay: insulated container, cool packs, gamitin sa loob ng ilang oras kung lumampas sa temperatura.</span><span data-lang="ceb" class="lang-hidden">Kung ang center nimo ang naghatag og EPO sa dialysis sessions, sila ang naa'y problema, dili ikaw. Kung self-administer ka sa balay: insulated container, cool packs, gamita sulod sa pipila ka oras kung milabaw sa temperatura.</span></td>
+        <td><strong><span data-lang="en">Erythropoietin / Aranesp</span><span data-lang="tl" class="lang-hidden">Erythropoietin / Aranesp</span><span data-lang="ceb" class="lang-hidden">Erythropoietin / Aranesp</span><span class="lang-hidden" data-lang="kap">Erythropoietin / Aranesp</span></strong></td>
+        <td><span data-lang="en">Strict refrigeration 2–8°C. Loses potency rapidly above 25°C.</span><span data-lang="tl" class="lang-hidden">Mahigpit na refrigeration 2–8°C. Mabilis nawawala ang bisa sa lampas 25°C.</span><span data-lang="ceb" class="lang-hidden">Hugot nga refrigeration 2–8°C. Paspas mawala ang bisa sa labaw sa 25°C.</span><span class="lang-hidden" data-lang="kap">Mahigpit na refrigeration 2–8°C. Mabilis nawaala ing bisa king lampas 25°C.</span></td>
+        <td><span data-lang="en">If your center provides EPO at dialysis sessions, this is their problem, not yours. If you self-administer at home: insulated container, cool packs, use within hours of any temperature breach.</span><span data-lang="tl" class="lang-hidden">Kung ang center mo ang nagbibigay ng EPO sa dialysis sessions, sila ang may problema, hindi ikaw. Kung self-administer ka sa bahay: insulated container, cool packs, gamitin sa loob ng ilang oras kung lumampas sa temperatura.</span><span data-lang="ceb" class="lang-hidden">Kung ang center nimo ang naghatag og EPO sa dialysis sessions, sila ang naa'y problema, dili ikaw. Kung self-administer ka sa balay: insulated container, cool packs, gamita sulod sa pipila ka oras kung milabaw sa temperatura.</span><span class="lang-hidden" data-lang="kap">Nung ing center mo ing nagbibigay ning EPO king dialysis sessions, sila ing may problema, ali ikaw. Nung self-administer ka king bale: insulated container, cool packs, gamitin sa loob ning ilang oras nung lumampas sa temperatura.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">Phosphate binders</span><span data-lang="tl" class="lang-hidden">Phosphate binders</span><span data-lang="ceb" class="lang-hidden">Phosphate binders</span></strong> (sevelamer, calcium acetate, lanthanum)</td>
-        <td><span data-lang="en">Room temperature stable. Heat-tolerant.</span><span data-lang="tl" class="lang-hidden">Stable sa room temperature. Kayang-kaya ang init.</span><span data-lang="ceb" class="lang-hidden">Stable sa room temperature. Makaagwanta sa init.</span></td>
-        <td><span data-lang="en">No special precautions.</span><span data-lang="tl" class="lang-hidden">Walang espesyal na pag-iingat.</span><span data-lang="ceb" class="lang-hidden">Walay espesyal nga pag-amping.</span></td>
+        <td><strong><span data-lang="en">Phosphate binders</span><span data-lang="tl" class="lang-hidden">Phosphate binders</span><span data-lang="ceb" class="lang-hidden">Phosphate binders</span><span class="lang-hidden" data-lang="kap">Phosphate binders</span></strong> (sevelamer, calcium acetate, lanthanum)</td>
+        <td><span data-lang="en">Room temperature stable. Heat-tolerant.</span><span data-lang="tl" class="lang-hidden">Stable sa room temperature. Kayang-kaya ang init.</span><span data-lang="ceb" class="lang-hidden">Stable sa room temperature. Makaagwanta sa init.</span><span class="lang-hidden" data-lang="kap">Stable sa room temperature. Kayang-kaya ing init.</span></td>
+        <td><span data-lang="en">No special precautions.</span><span data-lang="tl" class="lang-hidden">Walang espesyal na pag-iingat.</span><span data-lang="ceb" class="lang-hidden">Walay espesyal nga pag-amping.</span><span class="lang-hidden" data-lang="kap">Alang espesyal na pag-iingat.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">ACE inhibitors / ARBs</span><span data-lang="tl" class="lang-hidden">ACE inhibitors / ARBs</span><span data-lang="ceb" class="lang-hidden">ACE inhibitors / ARBs</span></strong></td>
-        <td><span data-lang="en">Room temperature stable.</span><span data-lang="tl" class="lang-hidden">Stable sa room temperature.</span><span data-lang="ceb" class="lang-hidden">Stable sa room temperature.</span></td>
-        <td><span data-lang="en">No special precautions.</span><span data-lang="tl" class="lang-hidden">Walang espesyal na pag-iingat.</span><span data-lang="ceb" class="lang-hidden">Walay espesyal nga pag-amping.</span></td>
+        <td><strong><span data-lang="en">ACE inhibitors / ARBs</span><span data-lang="tl" class="lang-hidden">ACE inhibitors / ARBs</span><span data-lang="ceb" class="lang-hidden">ACE inhibitors / ARBs</span><span class="lang-hidden" data-lang="kap">ACE inhibinirs / ARBs</span></strong></td>
+        <td><span data-lang="en">Room temperature stable.</span><span data-lang="tl" class="lang-hidden">Stable sa room temperature.</span><span data-lang="ceb" class="lang-hidden">Stable sa room temperature.</span><span class="lang-hidden" data-lang="kap">Stable sa room temperature.</span></td>
+        <td><span data-lang="en">No special precautions.</span><span data-lang="tl" class="lang-hidden">Walang espesyal na pag-iingat.</span><span data-lang="ceb" class="lang-hidden">Walay espesyal nga pag-amping.</span><span class="lang-hidden" data-lang="kap">Alang espesyal na pag-iingat.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">Diuretics</span><span data-lang="tl" class="lang-hidden">Diuretics</span><span data-lang="ceb" class="lang-hidden">Diuretics</span></strong> (furosemide etc., <span data-lang="en">if still residual urine</span><span data-lang="tl" class="lang-hidden">kung may natitirang ihi pa</span><span data-lang="ceb" class="lang-hidden">kung adunay nahabilin nga ihi</span>)</td>
-        <td><span data-lang="en">Room temperature stable.</span><span data-lang="tl" class="lang-hidden">Stable sa room temperature.</span><span data-lang="ceb" class="lang-hidden">Stable sa room temperature.</span></td>
-        <td><span data-lang="en">No special precautions, but the dose may need adjustment in heat — discuss with your nephrologist.</span><span data-lang="tl" class="lang-hidden">Walang espesyal na pag-iingat, pero baka kailangang i-adjust ang dose sa init — pag-usapan sa nephrologist.</span><span data-lang="ceb" class="lang-hidden">Walay espesyal nga pag-amping, apan mahimong kinahanglan i-adjust ang dose sa init — istorya sa imong nephrologist.</span></td>
+        <td><strong><span data-lang="en">Diuretics</span><span data-lang="tl" class="lang-hidden">Diuretics</span><span data-lang="ceb" class="lang-hidden">Diuretics</span><span class="lang-hidden" data-lang="kap">Diuretics</span></strong> (furosemide etc., <span data-lang="en">if still residual urine</span><span data-lang="tl" class="lang-hidden">kung may natitirang ihi pa</span><span data-lang="ceb" class="lang-hidden">kung adunay nahabilin nga ihi</span><span class="lang-hidden" data-lang="kap">nung may natitirang ihi pa</span>)</td>
+        <td><span data-lang="en">Room temperature stable.</span><span data-lang="tl" class="lang-hidden">Stable sa room temperature.</span><span data-lang="ceb" class="lang-hidden">Stable sa room temperature.</span><span class="lang-hidden" data-lang="kap">Stable sa room temperature.</span></td>
+        <td><span data-lang="en">No special precautions, but the dose may need adjustment in heat — discuss with your nephrologist.</span><span data-lang="tl" class="lang-hidden">Walang espesyal na pag-iingat, pero baka kailangang i-adjust ang dose sa init — pag-usapan sa nephrologist.</span><span data-lang="ceb" class="lang-hidden">Walay espesyal nga pag-amping, apan mahimong kinahanglan i-adjust ang dose sa init — istorya sa imong nephrologist.</span><span class="lang-hidden" data-lang="kap">Alang espesyal na pag-iingat, pero baka kailangang i-adjust ing dose sa init — pag-usapan sa nephrologist.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">Some biologics</span><span data-lang="tl" class="lang-hidden">Ilang biologics</span><span data-lang="ceb" class="lang-hidden">Pipila ka biologics</span></strong> (e.g. denosumab <span data-lang="en">for CKD-MBD bone health</span><span data-lang="tl" class="lang-hidden">para sa kalusugan ng buto sa CKD-MBD</span><span data-lang="ceb" class="lang-hidden">para sa kahimsog sa bukog sa CKD-MBD</span>)</td>
-        <td><span data-lang="en">Strict refrigeration.</span><span data-lang="tl" class="lang-hidden">Mahigpit na refrigeration.</span><span data-lang="ceb" class="lang-hidden">Hugot nga refrigeration.</span></td>
-        <td><span data-lang="en">Same insulated-bag protocol as insulin.</span><span data-lang="tl" class="lang-hidden">Pareho ng insulated-bag protocol ng insulin.</span><span data-lang="ceb" class="lang-hidden">Susama nga insulated-bag protocol sa insulin.</span></td>
+        <td><strong><span data-lang="en">Some biologics</span><span data-lang="tl" class="lang-hidden">Ilang biologics</span><span data-lang="ceb" class="lang-hidden">Pipila ka biologics</span><span class="lang-hidden" data-lang="kap">Ilang biologics</span></strong> (e.g. denosumab <span data-lang="en">for CKD-MBD bone health</span><span data-lang="tl" class="lang-hidden">para sa kalusugan ng buto sa CKD-MBD</span><span data-lang="ceb" class="lang-hidden">para sa kahimsog sa bukog sa CKD-MBD</span><span class="lang-hidden" data-lang="kap">para king kalusugan ning buto sa CKD-MBD</span>)</td>
+        <td><span data-lang="en">Strict refrigeration.</span><span data-lang="tl" class="lang-hidden">Mahigpit na refrigeration.</span><span data-lang="ceb" class="lang-hidden">Hugot nga refrigeration.</span><span class="lang-hidden" data-lang="kap">Mahigpit na refrigeration.</span></td>
+        <td><span data-lang="en">Same insulated-bag protocol as insulin.</span><span data-lang="tl" class="lang-hidden">Pareho ng insulated-bag protocol ng insulin.</span><span data-lang="ceb" class="lang-hidden">Susama nga insulated-bag protocol sa insulin.</span><span class="lang-hidden" data-lang="kap">Pareho ning insulated-bag protocol ning insulin.</span></td>
       </tr>
     </tbody>
   </table>
@@ -1899,16 +2112,16 @@
         <span data-lang="ceb" class="lang-hidden">Adto dayon sa ER kung mahitabo ang bisan unsa niini</span>
       </h4>
       <ul>
-        <li><span data-lang="en"><strong>Confusion, difficulty thinking, slurred speech, or unconsciousness</strong> — even briefly. This is heat stroke or severe hyperkalemia until proven otherwise.</span><span data-lang="tl" class="lang-hidden"><strong>Pagkalito, hirap mag-isip, pagputol-putol ng salita, o pagkawala ng malay</strong> — kahit sandali. Heat stroke o matinding hyperkalemia ito hanggang mapatunayang hindi.</span><span data-lang="ceb" class="lang-hidden"><strong>Kalibog, kalisod sa paghunahuna, pagkagubot sa pagsulti, o pagkawala sa pagkahibalo</strong> — bisan sandali. Heat stroke o grabe nga hyperkalemia kini hangtod mapamatud-i nga dili.</span></li>
-        <li><span data-lang="en"><strong>Body temperature &gt;40°C</strong> on a thermometer.</span><span data-lang="tl" class="lang-hidden"><strong>Temperatura ng katawan &gt;40°C</strong> sa thermometer.</span><span data-lang="ceb" class="lang-hidden"><strong>Temperatura sa lawas &gt;40°C</strong> sa thermometer.</span></li>
-        <li><span data-lang="en"><strong>Hot, dry skin in a hot environment</strong> — sweating has stopped but the heat hasn't.</span><span data-lang="tl" class="lang-hidden"><strong>Mainit at tuyong balat sa mainit na paligid</strong> — huminto na ang pagpapawis pero hindi pa ang init.</span><span data-lang="ceb" class="lang-hidden"><strong>Init, uga nga panit sa init nga palibot</strong> — mihunong na ang pagsingot apan ang init wala pa.</span></li>
-        <li><span data-lang="en"><strong>Severe muscle weakness, paralysis, or inability to lift the arm or stand.</strong></span><span data-lang="tl" class="lang-hidden"><strong>Matinding panghihina ng kalamnan, pagkaparalisa, o hindi makapagtaas ng braso o makatayo.</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Grabe nga kaluya sa kaunoran, pagkaparalisa, o dili makahimong mopataas sa bukton o motindog.</strong></span></li>
-        <li><span data-lang="en"><strong>Chest pain, severe palpitations, or fainting.</strong></span><span data-lang="tl" class="lang-hidden"><strong>Sakit sa dibdib, matinding palpitasyon, o pagkahimatay.</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Sakit sa dughan, grabe nga palpitasyon, o pagkahanaw.</strong></span></li>
-        <li><span data-lang="en"><strong>Severe vomiting</strong> — cannot keep anything down for &gt;6 hours.</span><span data-lang="tl" class="lang-hidden"><strong>Matinding pagsusuka</strong> — walang kayang panatilihin ang anumang naiinom o nakakain ng &gt;6 oras.</span><span data-lang="ceb" class="lang-hidden"><strong>Grabe nga pagsuka</strong> — walay mahimong tipigan og bisan unsa sulod sa &gt;6 ka oras.</span></li>
-        <li><span data-lang="en"><strong>Active bleeding from your dialysis access</strong> that does not stop with 10 minutes of firm pressure.</span><span data-lang="tl" class="lang-hidden"><strong>Aktibong pagdurugo sa dialysis access</strong> na hindi tumitigil sa 10 minutong matibay na pagdiin.</span><span data-lang="ceb" class="lang-hidden"><strong>Aktibong pag-agas sa dugo gikan sa dialysis access</strong> nga dili mohunong sa 10 ka minuto nga lig-on nga pagpit-os.</span></li>
-        <li><span data-lang="en"><strong>Sudden swelling, redness, or pus at the catheter or fistula site.</strong></span><span data-lang="tl" class="lang-hidden"><strong>Biglaang pamamaga, pamumula, o nana sa catheter o fistula site.</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Kalit nga panas, pula, o nana sa catheter o fistula site.</strong></span></li>
-        <li><span data-lang="en"><strong>A fever &gt;38.5°C</strong> in a patient with a tunneled catheter.</span><span data-lang="tl" class="lang-hidden"><strong>Lagnat &gt;38.5°C</strong> sa pasyenteng may tunneled catheter.</span><span data-lang="ceb" class="lang-hidden"><strong>Hilanat &gt;38.5°C</strong> sa pasyente nga adunay tunneled catheter.</span></li>
-        <li><span data-lang="en"><strong>Difficulty breathing</strong> at rest, unable to lie flat, or pink frothy sputum (pulmonary edema).</span><span data-lang="tl" class="lang-hidden"><strong>Hirap sa paghinga</strong> kahit nakapahinga, hindi makahiga nang patag, o pink na bulang plema (pulmonary edema).</span><span data-lang="ceb" class="lang-hidden"><strong>Kalisod sa pagginhawa</strong> bisan nagpahuway, dili makahigda nga patag, o pink nga bula nga sip-on (pulmonary edema).</span></li>
+        <li><span data-lang="en"><strong>Confusion, difficulty thinking, slurred speech, or unconsciousness</strong> — even briefly. This is heat stroke or severe hyperkalemia until proven otherwise.</span><span data-lang="tl" class="lang-hidden"><strong>Pagkalito, hirap mag-isip, pagputol-putol ng salita, o pagkawala ng malay</strong> — kahit sandali. Heat stroke o matinding hyperkalemia ito hanggang mapatunayang hindi.</span><span data-lang="ceb" class="lang-hidden"><strong>Kalibog, kalisod sa paghunahuna, pagkagubot sa pagsulti, o pagkawala sa pagkahibalo</strong> — bisan sandali. Heat stroke o grabe nga hyperkalemia kini hangtod mapamatud-i nga dili.</span><span class="lang-hidden" data-lang="kap"><strong>Pagkalini, hirap mag-isip, pagputol-putol ning salita, o pagkaala ning malay</strong> — kahit sandali. Heat stroke o matinding hyperkalemia ini anggang mapatunayang ali.</span></li>
+        <li><span data-lang="en"><strong>Body temperature &gt;40°C</strong> on a thermometer.</span><span data-lang="tl" class="lang-hidden"><strong>Temperatura ng katawan &gt;40°C</strong> sa thermometer.</span><span data-lang="ceb" class="lang-hidden"><strong>Temperatura sa lawas &gt;40°C</strong> sa thermometer.</span><span class="lang-hidden" data-lang="kap"><strong>Temperatura nining bangkî &gt;40°C</strong> sa thermometer.</span></li>
+        <li><span data-lang="en"><strong>Hot, dry skin in a hot environment</strong> — sweating has stopped but the heat hasn't.</span><span data-lang="tl" class="lang-hidden"><strong>Mainit at tuyong balat sa mainit na paligid</strong> — huminto na ang pagpapawis pero hindi pa ang init.</span><span data-lang="ceb" class="lang-hidden"><strong>Init, uga nga panit sa init nga palibot</strong> — mihunong na ang pagsingot apan ang init wala pa.</span><span class="lang-hidden" data-lang="kap"><strong>Mainit at tuyong balat sa mainit na paligid</strong> — huminto na ing pagpapawis pero ali pa ing init.</span></li>
+        <li><span data-lang="en"><strong>Severe muscle weakness, paralysis, or inability to lift the arm or stand.</strong></span><span data-lang="tl" class="lang-hidden"><strong>Matinding panghihina ng kalamnan, pagkaparalisa, o hindi makapagtaas ng braso o makatayo.</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Grabe nga kaluya sa kaunoran, pagkaparalisa, o dili makahimong mopataas sa bukton o motindog.</strong></span><span class="lang-hidden" data-lang="kap"><strong>Matinding panghihina ning kalamnan, pagkaparalisa, o ali manungtaas ning braso o makaita.</strong></span></li>
+        <li><span data-lang="en"><strong>Chest pain, severe palpitations, or fainting.</strong></span><span data-lang="tl" class="lang-hidden"><strong>Sakit sa dibdib, matinding palpitasyon, o pagkahimatay.</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Sakit sa dughan, grabe nga palpitasyon, o pagkahanaw.</strong></span><span class="lang-hidden" data-lang="kap"><strong>Sakit sa dibdib, matinding palpitasyon, o pagkahimatay.</strong></span></li>
+        <li><span data-lang="en"><strong>Severe vomiting</strong> — cannot keep anything down for &gt;6 hours.</span><span data-lang="tl" class="lang-hidden"><strong>Matinding pagsusuka</strong> — walang kayang panatilihin ang anumang naiinom o nakakain ng &gt;6 oras.</span><span data-lang="ceb" class="lang-hidden"><strong>Grabe nga pagsuka</strong> — walay mahimong tipigan og bisan unsa sulod sa &gt;6 ka oras.</span><span class="lang-hidden" data-lang="kap"><strong>Matinding pagsusuka</strong> — alang kayang panatilihin ing anumang naiinom o nakakain ning &gt;6 oras.</span></li>
+        <li><span data-lang="en"><strong>Active bleeding from your dialysis access</strong> that does not stop with 10 minutes of firm pressure.</span><span data-lang="tl" class="lang-hidden"><strong>Aktibong pagdurugo sa dialysis access</strong> na hindi tumitigil sa 10 minutong matibay na pagdiin.</span><span data-lang="ceb" class="lang-hidden"><strong>Aktibong pag-agas sa dugo gikan sa dialysis access</strong> nga dili mohunong sa 10 ka minuto nga lig-on nga pagpit-os.</span><span class="lang-hidden" data-lang="kap"><strong>Aktibong pagdurugo king dialysis access</strong> na ali tumitigil sa 10 minutong matibay na pagdiin.</span></li>
+        <li><span data-lang="en"><strong>Sudden swelling, redness, or pus at the catheter or fistula site.</strong></span><span data-lang="tl" class="lang-hidden"><strong>Biglaang pamamaga, pamumula, o nana sa catheter o fistula site.</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Kalit nga panas, pula, o nana sa catheter o fistula site.</strong></span><span class="lang-hidden" data-lang="kap"><strong>Biglaang pamamaga, pamumula, o nana sa catheter o fistula site.</strong></span></li>
+        <li><span data-lang="en"><strong>A fever &gt;38.5°C</strong> in a patient with a tunneled catheter.</span><span data-lang="tl" class="lang-hidden"><strong>Lagnat &gt;38.5°C</strong> sa pasyenteng may tunneled catheter.</span><span data-lang="ceb" class="lang-hidden"><strong>Hilanat &gt;38.5°C</strong> sa pasyente nga adunay tunneled catheter.</span><span class="lang-hidden" data-lang="kap"><strong>Lagnat &gt;38.5°C</strong> sa pasyenteng may tunneled catheter.</span></li>
+        <li><span data-lang="en"><strong>Difficulty breathing</strong> at rest, unable to lie flat, or pink frothy sputum (pulmonary edema).</span><span data-lang="tl" class="lang-hidden"><strong>Hirap sa paghinga</strong> kahit nakapahinga, hindi makahiga nang patag, o pink na bulang plema (pulmonary edema).</span><span data-lang="ceb" class="lang-hidden"><strong>Kalisod sa pagginhawa</strong> bisan nagpahuway, dili makahigda nga patag, o pink nga bula nga sip-on (pulmonary edema).</span><span class="lang-hidden" data-lang="kap"><strong>Hirap sa paghinga</strong> kahit nakapahinga, ali makahiga nang patag, o pink na bulang plema (pulmonary edema).</span></li>
       </ul>
       <p style="margin-top:12px;">
         <span data-lang="en"><strong>Bring with you:</strong> dialysis ID, medication list, recent lab results if available, the phone number of your dialysis center, your PhilHealth card, a family member who can advocate for you.</span>
@@ -1944,10 +2157,10 @@
         <span data-lang="ceb" class="lang-hidden">Heat index karon <span class="meta">Susiha sa PAGASA app o weather.com — ang "feels like" nga temperatura</span></span>
       </label>
       <select id="r-heat" onchange="calcRisk()">
-        <option value="0"><span data-lang="en">Below 32°C (caution)</span><span data-lang="tl" class="lang-hidden">Mababa sa 32°C (caution)</span><span data-lang="ceb" class="lang-hidden">Ubos sa 32°C (caution)</span></option>
-        <option value="1"><span data-lang="en">32–41°C (extreme caution)</span><span data-lang="tl" class="lang-hidden">32–41°C (extreme caution)</span><span data-lang="ceb" class="lang-hidden">32–41°C (extreme caution)</span></option>
-        <option value="2" selected><span data-lang="en">42–51°C (danger)</span><span data-lang="tl" class="lang-hidden">42–51°C (panganib)</span><span data-lang="ceb" class="lang-hidden">42–51°C (peligro)</span></option>
-        <option value="3"><span data-lang="en">52°C or higher (extreme danger)</span><span data-lang="tl" class="lang-hidden">52°C o higit pa (matinding panganib)</span><span data-lang="ceb" class="lang-hidden">52°C o labaw pa (grabe nga peligro)</span></option>
+        <option value="0"><span data-lang="en">Below 32°C (caution)</span><span data-lang="tl" class="lang-hidden">Mababa sa 32°C (caution)</span><span data-lang="ceb" class="lang-hidden">Ubos sa 32°C (caution)</span><span class="lang-hidden" data-lang="kap">Mababa sa 32°C (caution)</span></option>
+        <option value="1"><span data-lang="en">32–41°C (extreme caution)</span><span data-lang="tl" class="lang-hidden">32–41°C (extreme caution)</span><span data-lang="ceb" class="lang-hidden">32–41°C (extreme caution)</span><span class="lang-hidden" data-lang="kap">32–41°C (extreme caution)</span></option>
+        <option value="2" selected><span data-lang="en">42–51°C (danger)</span><span data-lang="tl" class="lang-hidden">42–51°C (panganib)</span><span data-lang="ceb" class="lang-hidden">42–51°C (peligro)</span><span class="lang-hidden" data-lang="kap">42–51°C (panganib)</span></option>
+        <option value="3"><span data-lang="en">52°C or higher (extreme danger)</span><span data-lang="tl" class="lang-hidden">52°C o higit pa (matinding panganib)</span><span data-lang="ceb" class="lang-hidden">52°C o labaw pa (grabe nga peligro)</span><span class="lang-hidden" data-lang="kap">52°C o higit pa (matinding panganib)</span></option>
       </select>
     </div>
     <div class="calc-row">
@@ -1957,10 +2170,10 @@
         <span data-lang="ceb" class="lang-hidden">Oras gikan sa katapusang dialysis session</span>
       </label>
       <select id="r-hours" onchange="calcRisk()">
-        <option value="0"><span data-lang="en">Less than 24 hours</span><span data-lang="tl" class="lang-hidden">Mas mababa sa 24 oras</span><span data-lang="ceb" class="lang-hidden">Ubos sa 24 oras</span></option>
-        <option value="1" selected><span data-lang="en">24–48 hours</span><span data-lang="tl" class="lang-hidden">24–48 oras</span><span data-lang="ceb" class="lang-hidden">24–48 oras</span></option>
-        <option value="2"><span data-lang="en">48–72 hours</span><span data-lang="tl" class="lang-hidden">48–72 oras</span><span data-lang="ceb" class="lang-hidden">48–72 oras</span></option>
-        <option value="3"><span data-lang="en">More than 72 hours</span><span data-lang="tl" class="lang-hidden">Higit sa 72 oras</span><span data-lang="ceb" class="lang-hidden">Labaw sa 72 oras</span></option>
+        <option value="0"><span data-lang="en">Less than 24 hours</span><span data-lang="tl" class="lang-hidden">Mas mababa sa 24 oras</span><span data-lang="ceb" class="lang-hidden">Ubos sa 24 oras</span><span class="lang-hidden" data-lang="kap">Mas mababa sa 24 oras</span></option>
+        <option value="1" selected><span data-lang="en">24–48 hours</span><span data-lang="tl" class="lang-hidden">24–48 oras</span><span data-lang="ceb" class="lang-hidden">24–48 oras</span><span class="lang-hidden" data-lang="kap">24–48 oras</span></option>
+        <option value="2"><span data-lang="en">48–72 hours</span><span data-lang="tl" class="lang-hidden">48–72 oras</span><span data-lang="ceb" class="lang-hidden">48–72 oras</span><span class="lang-hidden" data-lang="kap">48–72 oras</span></option>
+        <option value="3"><span data-lang="en">More than 72 hours</span><span data-lang="tl" class="lang-hidden">Higit sa 72 oras</span><span data-lang="ceb" class="lang-hidden">Labaw sa 72 oras</span><span class="lang-hidden" data-lang="kap">Higit sa 72 oras</span></option>
       </select>
     </div>
     <div class="calc-row">
@@ -1970,8 +2183,8 @@
         <span data-lang="ceb" class="lang-hidden">Misaka ba ang imong timbang og labaw sa 2 kg gikan sa katapusang sesyon?</span>
       </label>
       <select id="r-weight" onchange="calcRisk()">
-        <option value="0" selected><span data-lang="en">No</span><span data-lang="tl" class="lang-hidden">Hindi</span><span data-lang="ceb" class="lang-hidden">Wala</span></option>
-        <option value="2"><span data-lang="en">Yes</span><span data-lang="tl" class="lang-hidden">Oo</span><span data-lang="ceb" class="lang-hidden">Oo</span></option>
+        <option value="0" selected><span data-lang="en">No</span><span data-lang="tl" class="lang-hidden">Hindi</span><span data-lang="ceb" class="lang-hidden">Wala</span><span class="lang-hidden" data-lang="kap">Ali</span></option>
+        <option value="2"><span data-lang="en">Yes</span><span data-lang="tl" class="lang-hidden">Oo</span><span data-lang="ceb" class="lang-hidden">Oo</span><span class="lang-hidden" data-lang="kap">Oo</span></option>
       </select>
     </div>
     <div class="calc-row">
@@ -1981,10 +2194,10 @@
         <span data-lang="ceb" class="lang-hidden">Aduna ka bay nasinati nga sintomas karon?<span class="meta">Pilia ang pinakagrabe</span></span>
       </label>
       <select id="r-symptoms" onchange="calcRisk()">
-        <option value="0" selected><span data-lang="en">None — feeling normal</span><span data-lang="tl" class="lang-hidden">Wala — pakiramdam normal</span><span data-lang="ceb" class="lang-hidden">Wala — gibati normal</span></option>
-        <option value="1"><span data-lang="en">Mild thirst, slight tiredness, mild headache</span><span data-lang="tl" class="lang-hidden">Bahagyang uhaw, kaunting pagod, bahagyang sakit ng ulo</span><span data-lang="ceb" class="lang-hidden">Gamay nga kauhaw, gamay nga kaluya, gamay nga sakit sa ulo</span></option>
-        <option value="2"><span data-lang="en">Significant headache, weakness, nausea, muscle cramps</span><span data-lang="tl" class="lang-hidden">Matinding sakit ng ulo, panghihina, pagduduwal, pulikat sa kalamnan</span><span data-lang="ceb" class="lang-hidden">Grabe nga sakit sa ulo, kaluya, kalibre, kalambre sa kaunoran</span></option>
-        <option value="4"><span data-lang="en">Confusion, fainting, hot dry skin, palpitations</span><span data-lang="tl" class="lang-hidden">Pagkalito, pagkahimatay, mainit at tuyong balat, palpitasyon</span><span data-lang="ceb" class="lang-hidden">Kalibog, pagkahanaw, init ug uga nga panit, palpitasyon</span></option>
+        <option value="0" selected><span data-lang="en">None — feeling normal</span><span data-lang="tl" class="lang-hidden">Wala — pakiramdam normal</span><span data-lang="ceb" class="lang-hidden">Wala — gibati normal</span><span class="lang-hidden" data-lang="kap">Ala — pakiramdam normal</span></option>
+        <option value="1"><span data-lang="en">Mild thirst, slight tiredness, mild headache</span><span data-lang="tl" class="lang-hidden">Bahagyang uhaw, kaunting pagod, bahagyang sakit ng ulo</span><span data-lang="ceb" class="lang-hidden">Gamay nga kauhaw, gamay nga kaluya, gamay nga sakit sa ulo</span><span class="lang-hidden" data-lang="kap">Bahagyang uhaw, kaunting pagod, bahagyaning sakit ning ulo</span></option>
+        <option value="2"><span data-lang="en">Significant headache, weakness, nausea, muscle cramps</span><span data-lang="tl" class="lang-hidden">Matinding sakit ng ulo, panghihina, pagduduwal, pulikat sa kalamnan</span><span data-lang="ceb" class="lang-hidden">Grabe nga sakit sa ulo, kaluya, kalibre, kalambre sa kaunoran</span><span class="lang-hidden" data-lang="kap">Matindining sakit ning ulo, panghihina, pagduduwal, pulikat sa kalamnan</span></option>
+        <option value="4"><span data-lang="en">Confusion, fainting, hot dry skin, palpitations</span><span data-lang="tl" class="lang-hidden">Pagkalito, pagkahimatay, mainit at tuyong balat, palpitasyon</span><span data-lang="ceb" class="lang-hidden">Kalibog, pagkahanaw, init ug uga nga panit, palpitasyon</span><span class="lang-hidden" data-lang="kap">Pagkalini, pagkahimatay, mainit at tuyong balat, palpitasyon</span></option>
       </select>
     </div>
     <div class="calc-row">
@@ -1994,9 +2207,9 @@
         <span data-lang="ceb" class="lang-hidden">Personal nga risk factors <span class="meta">Pilia ang pinakataas nga moangay</span></span>
       </label>
       <select id="r-risk" onchange="calcRisk()">
-        <option value="0" selected><span data-lang="en">None of the below</span><span data-lang="tl" class="lang-hidden">Wala sa mga nasa ibaba</span><span data-lang="ceb" class="lang-hidden">Wala sa mga nasa ubos</span></option>
-        <option value="1"><span data-lang="en">Age &gt;70, or diabetic, or significant heart disease</span><span data-lang="tl" class="lang-hidden">Edad &gt;70, o may diabetes, o may seryosong sakit sa puso</span><span data-lang="ceb" class="lang-hidden">Edad &gt;70, o adunay diabetes, o adunay seryoso nga sakit sa kasingkasing</span></option>
-        <option value="2"><span data-lang="en">Frail, lives alone, or unable to recognise heat distress</span><span data-lang="tl" class="lang-hidden">Mahina, nag-iisa, o hindi makakikilala ng heat distress</span><span data-lang="ceb" class="lang-hidden">Luya, nag-inusara, o dili makaila sa heat distress</span></option>
+        <option value="0" selected><span data-lang="en">None of the below</span><span data-lang="tl" class="lang-hidden">Wala sa mga nasa ibaba</span><span data-lang="ceb" class="lang-hidden">Wala sa mga nasa ubos</span><span class="lang-hidden" data-lang="kap">Ala sa deng nasa ibaba</span></option>
+        <option value="1"><span data-lang="en">Age &gt;70, or diabetic, or significant heart disease</span><span data-lang="tl" class="lang-hidden">Edad &gt;70, o may diabetes, o may seryosong sakit sa puso</span><span data-lang="ceb" class="lang-hidden">Edad &gt;70, o adunay diabetes, o adunay seryoso nga sakit sa kasingkasing</span><span class="lang-hidden" data-lang="kap">Edad &gt;70, o may diabetes, o may seryosoning sakit sa pusu</span></option>
+        <option value="2"><span data-lang="en">Frail, lives alone, or unable to recognise heat distress</span><span data-lang="tl" class="lang-hidden">Mahina, nag-iisa, o hindi makakikilala ng heat distress</span><span data-lang="ceb" class="lang-hidden">Luya, nag-inusara, o dili makaila sa heat distress</span><span class="lang-hidden" data-lang="kap">Mahina, nag-iisa, o ali makakikilala ning heat distress</span></option>
       </select>
     </div>
     <div class="calc-row">
@@ -2006,8 +2219,8 @@
         <span data-lang="ceb" class="lang-hidden">Aduna ka bay access sa bugnaw nga indoor space (fan o aircon) sa kasagaran sa adlaw karon?</span>
       </label>
       <select id="r-cool" onchange="calcRisk()">
-        <option value="0" selected><span data-lang="en">Yes</span><span data-lang="tl" class="lang-hidden">Oo</span><span data-lang="ceb" class="lang-hidden">Oo</span></option>
-        <option value="2"><span data-lang="en">No</span><span data-lang="tl" class="lang-hidden">Hindi</span><span data-lang="ceb" class="lang-hidden">Wala</span></option>
+        <option value="0" selected><span data-lang="en">Yes</span><span data-lang="tl" class="lang-hidden">Oo</span><span data-lang="ceb" class="lang-hidden">Oo</span><span class="lang-hidden" data-lang="kap">Oo</span></option>
+        <option value="2"><span data-lang="en">No</span><span data-lang="tl" class="lang-hidden">Hindi</span><span data-lang="ceb" class="lang-hidden">Wala</span><span class="lang-hidden" data-lang="kap">Ali</span></option>
       </select>
     </div>
 
@@ -2056,10 +2269,10 @@
       <span data-lang="ceb" class="lang-hidden">Semana 1 — Pakigsulti sa imong team</span>
     </h4>
     <ul>
-      <li><span data-lang="en">Call your dialysis center and ask about generator backup, water reserves, and contingency plans for prolonged brownouts.</span><span data-lang="tl" class="lang-hidden">Tawagan ang iyong dialysis center at itanong tungkol sa generator backup, water reserves, at mga contingency plans para sa matagal na brownout.</span><span data-lang="ceb" class="lang-hidden">Tawagi ang imong dialysis center ug pangutan-a bahin sa generator backup, water reserves, ug mga contingency plans para sa dugay nga brownout.</span></li>
-      <li><span data-lang="en">Ask your nephrologist for your specific daily fluid target, in writing.</span><span data-lang="tl" class="lang-hidden">Hingiin sa iyong nephrologist ang iyong tiyak na araw-araw na fluid target, nakasulat.</span><span data-lang="ceb" class="lang-hidden">Pangayoa sa imong nephrologist ang imong tukma nga adlaw-adlaw nga fluid target, naka-sulat.</span></li>
-      <li><span data-lang="en">Identify two backup dialysis centers near you and save their contacts.</span><span data-lang="tl" class="lang-hidden">Tukuyin ang dalawang backup dialysis center malapit sa iyo at i-save ang kanilang contact.</span><span data-lang="ceb" class="lang-hidden">Ila-ila ang duha ka backup dialysis center duol kanimo ug tigumi ang ilang contact.</span></li>
-      <li><span data-lang="en">Update your emergency contact list — print one copy and keep one in your phone.</span><span data-lang="tl" class="lang-hidden">I-update ang iyong emergency contact list — mag-print ng isang kopya at magtago ng isa sa iyong phone.</span><span data-lang="ceb" class="lang-hidden">I-update ang imong emergency contact list — pag-print og usa ka kopya ug pagtipig og usa sa imong phone.</span></li>
+      <li><span data-lang="en">Call your dialysis center and ask about generator backup, water reserves, and contingency plans for prolonged brownouts.</span><span data-lang="tl" class="lang-hidden">Tawagan ang iyong dialysis center at itanong tungkol sa generator backup, water reserves, at mga contingency plans para sa matagal na brownout.</span><span data-lang="ceb" class="lang-hidden">Tawagi ang imong dialysis center ug pangutan-a bahin sa generator backup, water reserves, ug mga contingency plans para sa dugay nga brownout.</span><span class="lang-hidden" data-lang="kap">Tawagan ing iyung dialysis center at itanong tungkol sa generator backup, water reserves, at deng contingency plans para king matagal na brownout.</span></li>
+      <li><span data-lang="en">Ask your nephrologist for your specific daily fluid target, in writing.</span><span data-lang="tl" class="lang-hidden">Hingiin sa iyong nephrologist ang iyong tiyak na araw-araw na fluid target, nakasulat.</span><span data-lang="ceb" class="lang-hidden">Pangayoa sa imong nephrologist ang imong tukma nga adlaw-adlaw nga fluid target, naka-sulat.</span><span class="lang-hidden" data-lang="kap">Hingiin king ka nephrologist ing iyung tiyak na aldo-aldo na fluid target, nakasulat.</span></li>
+      <li><span data-lang="en">Identify two backup dialysis centers near you and save their contacts.</span><span data-lang="tl" class="lang-hidden">Tukuyin ang dalawang backup dialysis center malapit sa iyo at i-save ang kanilang contact.</span><span data-lang="ceb" class="lang-hidden">Ila-ila ang duha ka backup dialysis center duol kanimo ug tigumi ang ilang contact.</span><span class="lang-hidden" data-lang="kap">Tukuyin ing dalawang backup dialysis center malapit king ka at i-save ing kanilang contact.</span></li>
+      <li><span data-lang="en">Update your emergency contact list — print one copy and keep one in your phone.</span><span data-lang="tl" class="lang-hidden">I-update ang iyong emergency contact list — mag-print ng isang kopya at magtago ng isa sa iyong phone.</span><span data-lang="ceb" class="lang-hidden">I-update ang imong emergency contact list — pag-print og usa ka kopya ug pagtipig og usa sa imong phone.</span><span class="lang-hidden" data-lang="kap">I-update ing iyung emergency contact list — mag-print ning metung a kopya at magtago ning isa king iyung phone.</span></li>
     </ul>
   </div>
 
@@ -2070,11 +2283,11 @@
       <span data-lang="ceb" class="lang-hidden">Semana 2 — Pagtipig ug pag-store</span>
     </h4>
     <ul>
-      <li><span data-lang="en">Buy or check: thermometer (digital), home weighing scale (same one to use daily), spray bottle, three small towels for the cool-cloth rotation.</span><span data-lang="tl" class="lang-hidden">Bumili o tingnan: thermometer (digital), home weighing scale (parehong gagamitin araw-araw), spray bottle, tatlong maliliit na toalya para sa cool-cloth rotation.</span><span data-lang="ceb" class="lang-hidden">Palit o susiha: thermometer (digital), home weighing scale (sama nga gamiton adlaw-adlaw), spray bottle, tulo ka gagmay nga toalya para sa cool-cloth rotation.</span></li>
-      <li><span data-lang="en">Buy at least two cool packs (gel ice packs) for the medication cooler bag.</span><span data-lang="tl" class="lang-hidden">Bumili ng kahit dalawang cool packs (gel ice packs) para sa medication cooler bag.</span><span data-lang="ceb" class="lang-hidden">Palit og labing menos duha ka cool packs (gel ice packs) para sa medication cooler bag.</span></li>
-      <li><span data-lang="en">If on insulin or EPO: insulated lunch bag for outage transport.</span><span data-lang="tl" class="lang-hidden">Kung naka-insulin o EPO: insulated lunch bag para sa outage transport.</span><span data-lang="ceb" class="lang-hidden">Kung naka-insulin o EPO: insulated lunch bag para sa outage transport.</span></li>
-      <li><span data-lang="en">If on PD: confirm 14-day stockpile minimum; reorder if under.</span><span data-lang="tl" class="lang-hidden">Kung nasa PD: tiyakin ang 14-araw na minimum stockpile; mag-reorder kung kulang.</span><span data-lang="ceb" class="lang-hidden">Kung anaa sa PD: pamatud-i ang 14-adlaw nga minimum stockpile; pag-reorder kung kulang.</span></li>
-      <li><span data-lang="en">If on APD: speak with your PD nurse about manual exchange training as a brownout backup.</span><span data-lang="tl" class="lang-hidden">Kung nasa APD: kausapin ang iyong PD nurse tungkol sa manual exchange training bilang brownout backup.</span><span data-lang="ceb" class="lang-hidden">Kung anaa sa APD: pakigsulti sa imong PD nurse bahin sa manual exchange training isip brownout backup.</span></li>
+      <li><span data-lang="en">Buy or check: thermometer (digital), home weighing scale (same one to use daily), spray bottle, three small towels for the cool-cloth rotation.</span><span data-lang="tl" class="lang-hidden">Bumili o tingnan: thermometer (digital), home weighing scale (parehong gagamitin araw-araw), spray bottle, tatlong maliliit na toalya para sa cool-cloth rotation.</span><span data-lang="ceb" class="lang-hidden">Palit o susiha: thermometer (digital), home weighing scale (sama nga gamiton adlaw-adlaw), spray bottle, tulo ka gagmay nga toalya para sa cool-cloth rotation.</span><span class="lang-hidden" data-lang="kap">Bumili o tingnan: thermometer (digital), home weighing scale (parehong gagamitin aldo-aldo), spray bottle, tatlong maliliit na toalya para king cool-cloth rotation.</span></li>
+      <li><span data-lang="en">Buy at least two cool packs (gel ice packs) for the medication cooler bag.</span><span data-lang="tl" class="lang-hidden">Bumili ng kahit dalawang cool packs (gel ice packs) para sa medication cooler bag.</span><span data-lang="ceb" class="lang-hidden">Palit og labing menos duha ka cool packs (gel ice packs) para sa medication cooler bag.</span><span class="lang-hidden" data-lang="kap">Bumili ning kahit dalawang cool packs (gel ice packs) para king medication cooler bag.</span></li>
+      <li><span data-lang="en">If on insulin or EPO: insulated lunch bag for outage transport.</span><span data-lang="tl" class="lang-hidden">Kung naka-insulin o EPO: insulated lunch bag para sa outage transport.</span><span data-lang="ceb" class="lang-hidden">Kung naka-insulin o EPO: insulated lunch bag para sa outage transport.</span><span class="lang-hidden" data-lang="kap">Nung naka-insulin o EPO: insulated lunch bag para king outage transport.</span></li>
+      <li><span data-lang="en">If on PD: confirm 14-day stockpile minimum; reorder if under.</span><span data-lang="tl" class="lang-hidden">Kung nasa PD: tiyakin ang 14-araw na minimum stockpile; mag-reorder kung kulang.</span><span data-lang="ceb" class="lang-hidden">Kung anaa sa PD: pamatud-i ang 14-adlaw nga minimum stockpile; pag-reorder kung kulang.</span><span class="lang-hidden" data-lang="kap">Nung nasa PD: tiyakin ing 14-aldo na minimum stockpile; mag-reorder nung kulang.</span></li>
+      <li><span data-lang="en">If on APD: speak with your PD nurse about manual exchange training as a brownout backup.</span><span data-lang="tl" class="lang-hidden">Kung nasa APD: kausapin ang iyong PD nurse tungkol sa manual exchange training bilang brownout backup.</span><span data-lang="ceb" class="lang-hidden">Kung anaa sa APD: pakigsulti sa imong PD nurse bahin sa manual exchange training isip brownout backup.</span><span class="lang-hidden" data-lang="kap">Nung nasa APD: kausapin ing iyung PD nurse tungkol sa manual exchange training bilang brownout backup.</span></li>
     </ul>
   </div>
 
@@ -2085,11 +2298,11 @@
       <span data-lang="ceb" class="lang-hidden">Semana 3 — Pabugnaw sa balay</span>
     </h4>
     <ul>
-      <li><span data-lang="en">Identify the coolest room in the house (usually north-facing, ground floor). This is your daytime base.</span><span data-lang="tl" class="lang-hidden">Tukuyin ang pinakamalamig na silid sa bahay (kadalasan nakaharap sa hilaga, ground floor). Ito ang iyong base sa araw.</span><span data-lang="ceb" class="lang-hidden">Ila-ila ang pinakabugnaw nga kwarto sa balay (kasagaran nag-atubang sa amihanan, ground floor). Kini ang imong base sa adlaw.</span></li>
-      <li><span data-lang="en">Service or clean any electric fans. Confirm aircon (if you have one) is working and freon-charged.</span><span data-lang="tl" class="lang-hidden">I-service o linisin ang mga electric fan. Tiyakin na gumagana ang aircon (kung mayroon) at may freon.</span><span data-lang="ceb" class="lang-hidden">I-service o hinloi ang mga electric fan. Pamatud-i nga naglihok ang aircon (kung naa) ug naa'y freon.</span></li>
-      <li><span data-lang="en">If feasible, install a basic UPS for the PD cycler.</span><span data-lang="tl" class="lang-hidden">Kung kaya, mag-install ng basic UPS para sa PD cycler.</span><span data-lang="ceb" class="lang-hidden">Kung mahimo, pag-install og basic UPS para sa PD cycler.</span></li>
-      <li><span data-lang="en">Buy a small battery-powered or USB-rechargeable fan as backup for brownouts.</span><span data-lang="tl" class="lang-hidden">Bumili ng maliit na battery-powered o USB-rechargeable na fan bilang backup sa brownout.</span><span data-lang="ceb" class="lang-hidden">Palit og gamay nga battery-powered o USB-rechargeable nga fan isip backup sa brownout.</span></li>
-      <li><span data-lang="en">Hang light cotton curtains over sun-facing windows.</span><span data-lang="tl" class="lang-hidden">Magsabit ng magaan na cotton curtain sa mga bintanang nakatapat sa araw.</span><span data-lang="ceb" class="lang-hidden">Pagsab-it og gaan nga cotton curtain sa mga bintana nga nag-atubang sa adlaw.</span></li>
+      <li><span data-lang="en">Identify the coolest room in the house (usually north-facing, ground floor). This is your daytime base.</span><span data-lang="tl" class="lang-hidden">Tukuyin ang pinakamalamig na silid sa bahay (kadalasan nakaharap sa hilaga, ground floor). Ito ang iyong base sa araw.</span><span data-lang="ceb" class="lang-hidden">Ila-ila ang pinakabugnaw nga kwarto sa balay (kasagaran nag-atubang sa amihanan, ground floor). Kini ang imong base sa adlaw.</span><span class="lang-hidden" data-lang="kap">Tukuyin ing pinakamalamig na silid king bale (kadalasan nakaharap sa hilaga, ground floor). Ini ing iyung base sa aldo.</span></li>
+      <li><span data-lang="en">Service or clean any electric fans. Confirm aircon (if you have one) is working and freon-charged.</span><span data-lang="tl" class="lang-hidden">I-service o linisin ang mga electric fan. Tiyakin na gumagana ang aircon (kung mayroon) at may freon.</span><span data-lang="ceb" class="lang-hidden">I-service o hinloi ang mga electric fan. Pamatud-i nga naglihok ang aircon (kung naa) ug naa'y freon.</span><span class="lang-hidden" data-lang="kap">I-service o linisin deng electric fan. Tiyakin na gumagana ing aircon (nung mayroon) at may freon.</span></li>
+      <li><span data-lang="en">If feasible, install a basic UPS for the PD cycler.</span><span data-lang="tl" class="lang-hidden">Kung kaya, mag-install ng basic UPS para sa PD cycler.</span><span data-lang="ceb" class="lang-hidden">Kung mahimo, pag-install og basic UPS para sa PD cycler.</span><span class="lang-hidden" data-lang="kap">Nung kaya, mag-install ning basic UPS para king PD cycler.</span></li>
+      <li><span data-lang="en">Buy a small battery-powered or USB-rechargeable fan as backup for brownouts.</span><span data-lang="tl" class="lang-hidden">Bumili ng maliit na battery-powered o USB-rechargeable na fan bilang backup sa brownout.</span><span data-lang="ceb" class="lang-hidden">Palit og gamay nga battery-powered o USB-rechargeable nga fan isip backup sa brownout.</span><span class="lang-hidden" data-lang="kap">Bumili ning maliit na battery-powered o USB-rechargeable na fan bilang backup sa brownout.</span></li>
+      <li><span data-lang="en">Hang light cotton curtains over sun-facing windows.</span><span data-lang="tl" class="lang-hidden">Magsabit ng magaan na cotton curtain sa mga bintanang nakatapat sa araw.</span><span data-lang="ceb" class="lang-hidden">Pagsab-it og gaan nga cotton curtain sa mga bintana nga nag-atubang sa adlaw.</span><span class="lang-hidden" data-lang="kap">Magsabit ning magaan na cotton curtain sa deng bintanang nakatapat sa aldo.</span></li>
     </ul>
   </div>
 
@@ -2100,11 +2313,11 @@
       <span data-lang="ceb" class="lang-hidden">Semana 4 — Bansaya ang rutina</span>
     </h4>
     <ul>
-      <li><span data-lang="en">Weigh yourself daily for one week to establish a baseline.</span><span data-lang="tl" class="lang-hidden">Timbangin ang sarili araw-araw sa isang linggo para magtatag ng baseline.</span><span data-lang="ceb" class="lang-hidden">Timbanga ang kaugalingon adlaw-adlaw sulod sa usa ka semana aron makahatag og baseline.</span></li>
-      <li><span data-lang="en">Practice the cool-cloth rotation, the spray-bottle-and-fan combo, and the foot soak — so they are reflexes, not new ideas, when the heat begins.</span><span data-lang="tl" class="lang-hidden">Sanayin ang cool-cloth rotation, ang spray-bottle-at-fan combo, at ang foot soak — para maging reflex na, hindi bagong ideya, pagdating ng init.</span><span data-lang="ceb" class="lang-hidden">Bansaya ang cool-cloth rotation, ang spray-bottle-ug-fan combo, ug ang foot soak — aron mahimong reflex na, dili bag-ong ideya, kung mosugod ang init.</span></li>
-      <li><span data-lang="en">Walk through one mock brownout: phones charged, flashlight located, cool packs in freezer, insulated bag ready.</span><span data-lang="tl" class="lang-hidden">Maglakad sa isang mock brownout: charged ang phone, alam kung nasaan ang flashlight, naka-freezer ang cool packs, handa ang insulated bag.</span><span data-lang="ceb" class="lang-hidden">Lakaw sa usa ka mock brownout: naka-charge ang phone, nahibal-an asa ang flashlight, naa sa freezer ang cool packs, andam ang insulated bag.</span></li>
-      <li><span data-lang="en">Review the "When to Go to the ER" list with one family member so they can recognise the warning signs.</span><span data-lang="tl" class="lang-hidden">Repasuhin ang "When to Go to the ER" list kasama ng isang miyembro ng pamilya para makilala nila ang mga warning sign.</span><span data-lang="ceb" class="lang-hidden">Tan-awa pag-usab ang "When to Go to the ER" list uban sa usa ka miyembro sa pamilya aron mailhan nila ang mga warning sign.</span></li>
-      <li><span data-lang="en">Bookmark this guide on your phone for quick re-reading during the season.</span><span data-lang="tl" class="lang-hidden">I-bookmark ang gabay na ito sa iyong phone para mabilis mabasa muli sa season.</span><span data-lang="ceb" class="lang-hidden">I-bookmark kining giya sa imong phone aron paspas mabasa pag-usab sa season.</span></li>
+      <li><span data-lang="en">Weigh yourself daily for one week to establish a baseline.</span><span data-lang="tl" class="lang-hidden">Timbangin ang sarili araw-araw sa isang linggo para magtatag ng baseline.</span><span data-lang="ceb" class="lang-hidden">Timbanga ang kaugalingon adlaw-adlaw sulod sa usa ka semana aron makahatag og baseline.</span><span class="lang-hidden" data-lang="kap">Timbangin ing sarili aldo-aldo sa metung a lutu para magtatag ning baseline.</span></li>
+      <li><span data-lang="en">Practice the cool-cloth rotation, the spray-bottle-and-fan combo, and the foot soak — so they are reflexes, not new ideas, when the heat begins.</span><span data-lang="tl" class="lang-hidden">Sanayin ang cool-cloth rotation, ang spray-bottle-at-fan combo, at ang foot soak — para maging reflex na, hindi bagong ideya, pagdating ng init.</span><span data-lang="ceb" class="lang-hidden">Bansaya ang cool-cloth rotation, ang spray-bottle-ug-fan combo, ug ang foot soak — aron mahimong reflex na, dili bag-ong ideya, kung mosugod ang init.</span><span class="lang-hidden" data-lang="kap">Sanayin ing cool-cloth rotation, ing spray-bottle-at-fan combo, at ing foot soak — para maging reflex na, ali bagong ideya, pagdating ning init.</span></li>
+      <li><span data-lang="en">Walk through one mock brownout: phones charged, flashlight located, cool packs in freezer, insulated bag ready.</span><span data-lang="tl" class="lang-hidden">Maglakad sa isang mock brownout: charged ang phone, alam kung nasaan ang flashlight, naka-freezer ang cool packs, handa ang insulated bag.</span><span data-lang="ceb" class="lang-hidden">Lakaw sa usa ka mock brownout: naka-charge ang phone, nahibal-an asa ang flashlight, naa sa freezer ang cool packs, andam ang insulated bag.</span><span class="lang-hidden" data-lang="kap">Maglakad sa metung a mock brownout: charged ing phone, alam nung nasaan ing flashlight, naka-freezer ing cool packs, handa ing insulated bag.</span></li>
+      <li><span data-lang="en">Review the "When to Go to the ER" list with one family member so they can recognise the warning signs.</span><span data-lang="tl" class="lang-hidden">Repasuhin ang "When to Go to the ER" list kasama ng isang miyembro ng pamilya para makilala nila ang mga warning sign.</span><span data-lang="ceb" class="lang-hidden">Tan-awa pag-usab ang "When to Go to the ER" list uban sa usa ka miyembro sa pamilya aron mailhan nila ang mga warning sign.</span><span class="lang-hidden" data-lang="kap">Repasuhin ing "When to Go to the ER" list kasama ning metung a miyembro ning pamilya para makilala nila deng warning sign.</span></li>
+      <li><span data-lang="en">Bookmark this guide on your phone for quick re-reading during the season.</span><span data-lang="tl" class="lang-hidden">I-bookmark ang gabay na ito sa iyong phone para mabilis mabasa muli sa season.</span><span data-lang="ceb" class="lang-hidden">I-bookmark kining giya sa imong phone aron paspas mabasa pag-usab sa season.</span><span class="lang-hidden" data-lang="kap">I-bookmark ing gabay na ini king ka phone para mabilis mabasa muli sa season.</span></li>
     </ul>
   </div>
 
