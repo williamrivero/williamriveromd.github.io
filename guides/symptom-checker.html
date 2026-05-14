@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Symptom Checker — When to Worry · W. G. M. Rivero, MD</title>
+<meta name="description" content="Interactive symptom triage for Filipino kidney, heart, and diabetes patients. Tick what you feel and get an instant ER / same-day / urgent / routine recommendation — privacy-first, runs entirely in your browser."/>
+<meta property="og:title" content="Symptom Checker — When to Worry · W. G. M. Rivero, MD"/>
+<meta property="og:description" content="Tick your symptoms and get instant triage: ER now, same-day, within a few days, or next visit. Built for Filipino CKD, cardiac, and diabetes patients."/>
+<meta property="og:image" content="../images/labs-interpreter-hero.png"/>
+<meta property="og:locale" content="en_PH"/>
+<meta property="og:site_name" content="William Gregory M. Rivero, MD"/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://williamriveromd.com/guides/symptom-checker.html"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Symptom Checker — W. G. M. Rivero, MD"/>
+<meta name="twitter:description" content="Interactive triage tool for kidney, cardiac, and diabetes patients. ER / same-day / urgent / routine."/>
+<link rel="canonical" href="https://williamriveromd.com/guides/symptom-checker.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --navy:#0f1e2e; --navy-light:#1a2e4a;
+  --teal:#1a6b72; --teal-light:#e1f5f0;
+  --gold:#b8962e; --gold-light:#d4af4f;
+  --white:#ffffff; --bg:#f9fafb; --border:#e2e6eb;
+  --text:#1e2a38; --muted:#4a5568;
+  --green:#1a6e3e; --green-bg:#e8f5ee; --green-bd:#2e9e5e;
+  --amber:#a05c00; --amber-bg:#fff4e0; --amber-bd:#d97f00;
+  --orange:#b04a00; --orange-bg:#ffe8d6; --orange-bd:#d2691e;
+  --red:#b91c1c; --red-bg:#fdecea; --red-bd:#c82020;
+  --gray:#888; --gray-bg:#f5f5f5; --gray-bd:#ccc;
+  --radius:8px; --shadow:0 2px 8px rgba(0,0,0,0.08);
+  --font-display:'Lora',Georgia,serif;
+  --font-body:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.7;font-size:16px;}
+
+/* ── Triage band display (sticky banner) ── */
+.triage-banner{position:sticky;top:56px;z-index:90;padding:14px 20px;border-radius:0;text-align:center;font-weight:700;letter-spacing:.02em;transition:all .25s;border-bottom:2px solid transparent;}
+.triage-banner.tb-routine{background:var(--green-bg);color:var(--green);border-color:var(--green-bd);}
+.triage-banner.tb-urgent{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd);}
+.triage-banner.tb-sameday{background:var(--orange-bg);color:var(--orange);border-color:var(--orange-bd);}
+.triage-banner.tb-er{background:var(--red-bg);color:var(--red);border-color:var(--red-bd);animation:pulseRed 1.6s ease-in-out infinite;}
+.triage-banner .tb-icon{font-size:18px;margin-right:8px;}
+.triage-banner .tb-sub{display:block;font-size:12px;font-weight:500;margin-top:3px;opacity:.85;}
+@keyframes pulseRed{0%,100%{box-shadow:inset 0 0 0 0 rgba(184,28,28,0);}50%{box-shadow:inset 0 0 0 3px rgba(184,28,28,.18);}}
+
+/* ── Patient context card ── */
+.ctx-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:16px 0 24px;}
+.ctx-title{font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+.ctx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px 16px;}
+.ctx-check{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text);cursor:pointer;line-height:1.45;user-select:none;}
+.ctx-check input{margin-top:3px;flex-shrink:0;cursor:pointer;width:16px;height:16px;accent-color:var(--teal);}
+.ctx-check .ctx-sub{display:block;font-size:11px;color:var(--muted);font-weight:400;}
+.ctx-check strong{font-weight:600;color:var(--navy);}
+
+/* ── Symptom group ── */
+.sym-group{margin-bottom:20px;}
+.sym-group h3{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--navy);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--navy);display:flex;align-items:center;gap:8px;}
+.sym-group h3 .sg-icon{font-size:18px;}
+.sym-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+
+/* ── Symptom card ── */
+.sym-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:all .2s;}
+.sym-card.selected{border-color:var(--teal);background:#f5fbfb;box-shadow:0 0 0 3px rgba(26,107,114,.08);}
+.sym-card.tier-er{border-color:var(--red-bd);background:var(--red-bg);}
+.sym-card.tier-sameday{border-color:var(--orange-bd);background:var(--orange-bg);}
+.sym-card.tier-urgent{border-color:var(--amber-bd);background:var(--amber-bg);}
+.sym-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;cursor:pointer;}
+.sym-name{font-size:14px;font-weight:600;color:var(--navy);flex:1;}
+.sym-name .sym-tag-tl{display:block;font-size:11px;font-weight:400;color:var(--muted);font-style:italic;margin-top:2px;}
+.sym-toggle{flex-shrink:0;}
+.sym-toggle input[type=checkbox]{display:none;}
+.sym-toggle label{display:inline-block;padding:5px 14px;border-radius:14px;border:1px solid var(--border);background:var(--white);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.sym-toggle input[type=checkbox]:checked+label{background:var(--teal);border-color:var(--teal);color:#fff;}
+.sym-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);}
+.sym-card.selected .sym-detail{display:block;}
+.sym-desc{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.55;}
+.sym-mod-label{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin:8px 0 4px;}
+.sym-mod-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;}
+.sym-mod-row input[type=radio],.sym-mod-row input[type=checkbox]{display:none;}
+.sym-mod-row label{padding:4px 11px;border-radius:14px;border:1px solid var(--border);background:var(--white);color:var(--text);font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;}
+.sym-mod-row input[type=radio]:checked+label,.sym-mod-row input[type=checkbox]:checked+label{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+/* tier hidden by default - shown when condition checkbox sets visibility */
+.sym-card[data-show-if]{display:none;}
+.sym-card[data-show-if].shown{display:block;}
+
+/* ── Output panel ── */
+.output-panel{margin-top:32px;border-radius:14px;padding:24px;border:2px solid var(--border);background:var(--white);}
+.output-panel.out-routine{background:var(--green-bg);border-color:var(--green-bd);}
+.output-panel.out-urgent{background:var(--amber-bg);border-color:var(--amber-bd);}
+.output-panel.out-sameday{background:var(--orange-bg);border-color:var(--orange-bd);}
+.output-panel.out-er{background:var(--red-bg);border-color:var(--red-bd);}
+.out-band{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.out-emoji{font-size:32px;}
+.out-headline{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);}
+.out-headline.text-red{color:var(--red);}
+.out-headline.text-orange{color:var(--orange);}
+.out-headline.text-amber{color:var(--amber);}
+.out-headline.text-green{color:var(--green);}
+.out-msg{font-size:15px;line-height:1.6;color:var(--text);margin-bottom:16px;}
+.out-msg strong{color:var(--navy);}
+.out-list{list-style:none;padding:0;margin:12px 0;}
+.out-list li{padding:8px 0 8px 28px;font-size:13px;line-height:1.55;position:relative;color:var(--text);}
+.out-list li::before{content:'✓';position:absolute;left:0;top:8px;color:var(--teal);font-weight:700;}
+.out-list.out-list-warn li::before{content:'⚠';color:var(--red);}
+.out-list.out-list-er li::before{content:'🚨';font-size:13px;top:6px;}
+.out-subtitle{font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin:16px 0 8px;}
+.out-triggers{background:rgba(255,255,255,.5);border-radius:8px;padding:12px 14px;font-size:12px;line-height:1.7;color:var(--text);}
+.out-triggers strong{color:var(--navy);}
+.out-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.btn-action{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:8px;border:1px solid var(--navy);background:var(--white);color:var(--navy);font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;font-family:var(--font-body);transition:all .15s;}
+.btn-action:hover{background:var(--navy);color:#fff;}
+.btn-primary{background:var(--navy);color:#fff;}
+.btn-primary:hover{background:var(--navy-light);color:#fff;}
+
+/* ── Tool wrapper ── */
+.tool-wrapper{margin:24px 0;border-radius:12px;border:1px solid var(--border);background:var(--white);padding:24px;box-shadow:0 4px 24px rgba(26,46,74,.08);}
+
+/* ── Reset banner ── */
+.reset-bar{display:flex;justify-content:space-between;align-items:center;margin:12px 0 0;padding:10px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border);}
+.reset-bar-text{font-size:12px;color:var(--muted);}
+.clear-btn{background:var(--white);color:var(--muted);border:1px solid var(--gray-bd);border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .15s;}
+.clear-btn:hover{background:var(--red-bg);color:var(--red);border-color:var(--red-bd);}
+
+/* ── Disclaimer ── */
+.legal{background:#fdf5ed;border-left:3px solid var(--gold);border-radius:8px;padding:14px 18px;margin:20px 0;font-size:13px;line-height:1.65;color:var(--text);}
+.legal strong{color:var(--navy);}
+
+/* ── Site shell (copied from lab-interpreter conventions) ── */
+.guide-toggle-bar{display:flex;gap:8px;align-items:center;padding:6px 32px;background:rgba(0,0,0,.22);border-bottom:1px solid rgba(255,255,255,.07);justify-content:space-between;flex-wrap:wrap;}
+.lang-label{font-size:11px;color:rgba(255,255,255,.35);margin-right:4px;letter-spacing:.06em;}
+.lang-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;transition:all .2s;}
+.lang-btn:hover{color:white;border-color:rgba(255,255,255,.4);}
+.lang-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+.toggle-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.toggle-btn:hover{background:rgba(255,255,255,.15);color:white;}
+.toggle-btn svg{width:12px;height:12px;flex-shrink:0;}
+
+.hero{background:var(--navy);color:white;padding:64px 0 72px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-80px;width:420px;height:420px;border-radius:50%;border:1px solid rgba(184,150,46,.15);}
+.container{max-width:900px;margin:0 auto;padding:0 32px;}
+.hero .container{position:relative;z-index:1;}
+.hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);border:1px solid rgba(184,150,46,.4);padding:5px 14px;border-radius:20px;margin-bottom:24px;}
+.hero h1{font-family:'Lora',serif;font-size:clamp(28px,5vw,46px);font-weight:600;line-height:1.2;margin-bottom:20px;letter-spacing:-.02em;color:white;}
+.hero h1 em{font-style:italic;color:var(--gold-light);}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.72);max-width:640px;line-height:1.65;margin-bottom:32px;}
+.hero-sub em{font-style:italic;color:var(--gold-light);}
+.hero-meta{display:flex;gap:28px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.5);}
+.hero-meta strong{color:rgba(255,255,255,.8);font-weight:500;}
+
+.nav-strip{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100;}
+.nav-pills{display:flex;gap:4px;padding:12px 32px;max-width:900px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
+.nav-pills::-webkit-scrollbar{display:none;}
+.nav-pill{white-space:nowrap;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:20px;border:1px solid transparent;transition:all .2s;}
+.nav-pill:hover{color:var(--navy);border-color:var(--border);background:var(--bg);}
+
+.section{padding:60px 0;border-bottom:1px solid var(--border);}
+.section:last-of-type{border-bottom:none;}
+.section h2{font-family:'Lora',serif;font-size:clamp(22px,3.5vw,32px);font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:20px;}
+.section h3{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:12px;}
+.section p{color:var(--muted);margin-bottom:16px;}
+
+.guide-intro-box{background:linear-gradient(135deg,#e8f5ee 0%,#edf7f7 100%);border:1px solid #2e9e5e;border-left:4px solid #1d7a7a;border-radius:10px;padding:18px 20px;margin:20px 0 24px;}
+.guide-intro-box p{margin:0;font-size:14px;line-height:1.75;color:#1a2032;}
+
+.callout{border-radius:12px;padding:20px 24px;margin:20px 0;border-left:3px solid;}
+.callout-teal{background:#edf7f7;border-color:var(--teal);}
+.callout-blue{background:#eef4ff;border-color:#4a7abf;}
+.callout-red{background:var(--red-bg);border-color:var(--red);}
+.callout p{font-size:14px;color:#1e2a38;margin:0;line-height:1.7;}
+.callout p strong{color:var(--navy);}
+
+.how-to-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 24px;}
+.how-to-step{display:flex;gap:13px;align-items:flex-start;padding:13px 15px;background:#f8fafc;border-radius:10px;border:1px solid #dce3ed;}
+.step-num{background:#1a2e4a;color:#fff;font-weight:800;font-size:14px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Lora',serif;}
+.step-body strong{display:block;font-size:13px;color:#1a2e4a;margin-bottom:3px;}
+.step-body span{font-size:12px;color:#6b7a94;line-height:1.5;}
+
+.band-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 24px;}
+.band-card{padding:14px 16px;border-radius:10px;text-align:center;}
+.band-card.b-r{background:var(--green-bg);border:1px solid var(--green-bd);}
+.band-card.b-u{background:var(--amber-bg);border:1px solid var(--amber-bd);}
+.band-card.b-s{background:var(--orange-bg);border:1px solid var(--orange-bd);}
+.band-card.b-e{background:var(--red-bg);border:1px solid var(--red-bd);}
+.band-pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;letter-spacing:.5px;margin-bottom:8px;}
+.b-r .band-pill{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);}
+.b-u .band-pill{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);}
+.b-s .band-pill{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-bd);}
+.b-e .band-pill{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);}
+.band-card h4{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;font-family:var(--font-body);}
+.band-card p{font-size:11.5px;color:var(--muted);margin:0;line-height:1.5;}
+
+.related-guides{padding:48px 0;}
+.related-guides h2{font-family:'Lora',serif;font-size:clamp(20px,3vw,28px);font-weight:600;color:var(--navy);margin-bottom:20px;}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+.related-card{display:block;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;text-decoration:none;color:inherit;transition:all .2s;}
+.related-card:hover{border-color:var(--teal);box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.related-card .related-badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px;background:var(--teal-light);color:var(--teal);margin-bottom:8px;letter-spacing:.04em;}
+.related-card h3{font-family:'Lora',serif;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;line-height:1.4;}
+.related-card p{font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 10px;}
+.related-card .read-more{font-size:13px;font-weight:600;color:var(--teal);}
+
+.dr-card{background:var(--navy);color:white;border-radius:16px;padding:32px;display:flex;gap:24px;align-items:flex-start;margin:48px 0;}
+.dr-card img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid rgba(184,150,46,.4);flex-shrink:0;}
+.dr-card-body h3{font-family:'Lora',serif;font-size:18px;font-weight:600;color:white;margin-bottom:8px;}
+.dr-card-body h3 a{color:var(--gold-light);text-decoration:none;}
+.dr-card-body p{font-size:14px;color:rgba(255,255,255,.72);line-height:1.6;margin-bottom:6px;}
+
+.guide-footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0;}
+.guide-footer .footer-inner{max-width:900px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.guide-footer p{font-size:13px;color:var(--muted);}
+.guide-footer a{color:var(--teal);text-decoration:none;font-weight:500;}
+
+/* Dark mode */
+html[data-theme="dark"]{
+  --navy:#0f1e2e;--navy-light:#1a2e4a;
+  --teal:#25949d;--teal-light:#0e2f32;
+  --text:#e8eaf0;--muted:#8a95a8;
+  --border:#2a3548;--bg:#141c2a;--white:#1a2030;
+  --green:#3d9a6a;--green-bg:#0d2a1c;--green-bd:#2a7a50;
+  --amber:#d97f00;--amber-bg:#2a1f0a;--amber-bd:#d97f00;
+  --orange:#e07a3a;--orange-bg:#2a1810;--orange-bd:#d2691e;
+  --red:#e55;--red-bg:#2a1515;--red-bd:#c82020;
+  --gray:#777;--gray-bg:#252525;--gray-bd:#3a3a3a;
+}
+html[data-theme="dark"] body{background:#0f1520;color:#e8eaf0;}
+html[data-theme="dark"] .nav-strip{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .hero{background:#080d16;}
+html[data-theme="dark"] .section{border-color:#2a3548;}
+html[data-theme="dark"] .section h2,html[data-theme="dark"] .section h3{color:#e8eaf0;}
+html[data-theme="dark"] .section p{color:#9aa5b8;}
+html[data-theme="dark"] .nav-pill{color:#8a95a8;}
+html[data-theme="dark"] .nav-pill:hover{background:#1a2535;color:#e8eaf0;border-color:#2a3548;}
+html[data-theme="dark"] .tool-wrapper{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .ctx-card{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .sym-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .sym-card.selected{background:#0e2426;}
+html[data-theme="dark"] .sym-name{color:#e8eaf0;}
+html[data-theme="dark"] .sym-toggle label{background:#1a2535;border-color:#2a3548;color:#8a95a8;}
+html[data-theme="dark"] .sym-mod-row label{background:#1a2535;border-color:#2a3548;color:#c0cad8;}
+html[data-theme="dark"] .reset-bar{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .related-guides h2{color:#e8eaf0;}
+html[data-theme="dark"] .related-card{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .related-card:hover{border-color:var(--teal);}
+html[data-theme="dark"] .related-card h3{color:#e8eaf0;}
+html[data-theme="dark"] .related-card p{color:#8a95a8;}
+html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .guide-footer p{color:#8a95a8;}
+html[data-theme="dark"] .guide-intro-box{background:linear-gradient(135deg,#0d2a1c,#0d2a2a);border-color:#2a7a50;}
+html[data-theme="dark"] .guide-intro-box p{color:#c0cad8;}
+html[data-theme="dark"] .how-to-step{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .step-body strong{color:#e8eaf0;}
+html[data-theme="dark"] .step-body span{color:#9aa5b8;}
+html[data-theme="dark"] .callout-teal{background:#0e2f32;}
+html[data-theme="dark"] .callout-blue{background:#0f1f38;}
+html[data-theme="dark"] .callout-red{background:#2a1515;}
+html[data-theme="dark"] .callout p{color:#c0cad8;}
+html[data-theme="dark"] .legal{background:#241b0e;color:#d4c5a0;}
+html[data-theme="dark"] .output-panel{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .out-headline{color:#e8eaf0;}
+html[data-theme="dark"] .out-msg,html[data-theme="dark"] .out-list li,html[data-theme="dark"] .out-triggers{color:#c0cad8;}
+html[data-theme="dark"] .btn-action{background:#1a2535;color:#c0cad8;border-color:#2a3548;}
+html[data-theme="dark"] .btn-action:hover{background:var(--teal);border-color:var(--teal);color:#fff;}
+
+html[data-view="desktop"]{min-width:1024px;}
+
+@media print{
+  header,.nav-strip,.guide-toggle-bar,.reset-bar,.triage-banner,.btn-action{display:none!important;}
+  body{font-size:13px;line-height:1.6;color:#000;background:#fff;}
+  .hero{background:#fff!important;color:#000!important;padding:20px 0 12px!important;}
+  .hero h1{color:#0f1e2e!important;font-size:22px!important;}
+  .hero h1 em,.hero-sub em{color:#8a6820!important;}
+  .hero-sub{color:#444!important;font-size:13px!important;}
+  .hero-tag,.hero-meta{color:#666!important;}
+  .container{max-width:100%;padding:0 20px;}
+  .section{padding:16px 0;border-bottom:1px solid #ddd;}
+  .section h2{color:#0f1e2e!important;font-size:18px!important;}
+  .tool-wrapper{border:1px solid #ccc!important;box-shadow:none!important;}
+  .guide-footer{background:#f9f9f9!important;border-top:1px solid #ddd!important;}
+  @page{margin:18mm 15mm;size:A4;}
+}
+
+@media(max-width:600px){
+  .container{padding:0 20px;}
+  .nav-pills{padding:10px 20px;}
+  .dr-card{flex-direction:column;gap:16px;}
+  .how-to-grid{grid-template-columns:1fr;}
+  .band-row{grid-template-columns:1fr 1fr;}
+  .ctx-grid{grid-template-columns:1fr;}
+  .tool-wrapper{padding:16px;}
+}
+@media(max-width:400px){
+  .band-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- SITE HEADER -->
+<header style="background:var(--navy);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,0.08);">
+  <a href="https://williamriveromd.com" style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:400;color:white;text-decoration:none;letter-spacing:0.01em;">W. G. M. <strong style="font-weight:600;color:#d4af4f;">Rivero</strong>, MD</a>
+  <a href="https://williamriveromd.com/guides/index.html" style="font-size:12px;color:rgba(255,255,255,0.55);text-decoration:none;letter-spacing:0.04em;"><span class="lang-en">← All Guides</span><span class="lang-tl" style="display:none;">← Lahat ng Gabay</span><span class="lang-ceb" style="display:none;">← Tanan nga Giya</span></a>
+</header>
+
+<div class="guide-toggle-bar">
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="lang-label">Language:</span>
+    <button class="lang-btn active" id="glb-en" onclick="setLang('en')">English</button>
+    <button class="lang-btn" id="glb-tl" onclick="setLang('tl')">Tagalog</button>
+    <button class="lang-btn" id="glb-ceb" onclick="setLang('ceb')">Cebuano</button>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button class="toggle-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">
+      <svg id="darkIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span id="darkLabel">Dark</span>
+    </button>
+    <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span id="desktopLabel">Desktop</span>
+    </button>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">Nephrology &amp; Internal Medicine · Patient Safety Tool</div>
+    <h1>
+      <span class="lang-en">Symptom Checker — <em>When Should You Worry?</em></span>
+      <span class="lang-tl" style="display:none;">Pagsusuri ng Sintomas — <em>Kailan Dapat Mag-alala?</em></span>
+      <span class="lang-ceb" style="display:none;">Pagsusi sa Sintomas — <em>Kanus-a Angay Mabalaka?</em></span>
+    </h1>
+    <p class="hero-sub">
+      <span class="lang-en">Tick what you feel and your patient context, and get an instant triage recommendation: <em>routine, within days, same-day, or emergency room now.</em> Built for Filipino kidney, heart, and diabetes patients — runs entirely in your browser.</span>
+      <span class="lang-tl" style="display:none;">Lagyan ng tsek ang inyong nararamdaman at konteksto, at makakakuha ng instant na triage na rekomendasyon: <em>regular check-up, sa loob ng ilang araw, ngayong araw, o emergency room agad.</em> Ginawa para sa mga Pilipinong pasyente sa bato, puso, at diabetes — gumagana lahat sa loob ng inyong browser.</span>
+      <span class="lang-ceb" style="display:none;">I-check ang imong gibati ug konteksto, ug makakuha og instant nga triage nga rekomendasyon: <em>regular nga check-up, sulod sa pipila ka adlaw, karon dayon, o emergency room dayon.</em> Gibuhat alang sa Pilipino nga mga pasyente sa kidney, kasingkasing, ug diabetes — modagan sa imong browser.</span>
+    </p>
+    <div class="hero-meta">
+      <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+      <span><strong>Approach:</strong> Conservative triage · err toward escalation</span>
+      <span><strong>Updated:</strong> 2026</span>
+    </div>
+  </div>
+</section>
+
+<nav class="nav-strip">
+  <div class="nav-pills">
+    <a class="nav-pill" href="#how-to-use"><span class="lang-en">How to Use</span><span class="lang-tl" style="display:none;">Paano Gamitin</span><span class="lang-ceb" style="display:none;">Unsaon Paggamit</span></a>
+    <a class="nav-pill" href="#triage-bands"><span class="lang-en">Triage Bands</span><span class="lang-tl" style="display:none;">Mga Triage Band</span><span class="lang-ceb" style="display:none;">Mga Triage Band</span></a>
+    <a class="nav-pill" href="#checker">🩺 <span class="lang-en">The Tool</span><span class="lang-tl" style="display:none;">Ang Kasangkapan</span><span class="lang-ceb" style="display:none;">Ang Himan</span></a>
+    <a class="nav-pill" href="#what-to-bring"><span class="lang-en">What to Bring</span><span class="lang-tl" style="display:none;">Ano ang Dadalhin</span><span class="lang-ceb" style="display:none;">Unsa ang Dad-on</span></a>
+    <a class="nav-pill" href="#limits"><span class="lang-en">Important Limits</span><span class="lang-tl" style="display:none;">Mga Limitasyon</span><span class="lang-ceb" style="display:none;">Mga Limitasyon</span></a>
+  </div>
+</nav>
+
+<main class="container">
+
+<!-- HOW TO USE -->
+<section class="section" id="how-to-use">
+<h2><span class="lang-en">How to Use This Tool</span><span class="lang-tl" style="display:none;">Paano Gamitin ang Tool na Ito</span><span class="lang-ceb" style="display:none;">Unsaon Paggamit Niining Himan</span></h2>
+
+<div class="guide-intro-box">
+<p>
+<span class="lang-en"><strong>Tick first what describes you</strong> (on dialysis, diabetic, hypertensive, etc.), then tick the symptoms you feel right now. The recommended action updates in real time at the top of the tool. Scroll down for the full plan — what to do, what to bring.</span>
+<span class="lang-tl" style="display:none;"><strong>I-tsek muna kung ano ang naglalarawan sa inyo</strong> (naka-dialysis, may diabetes, alta presyon, atbp.), tapos i-tsek ang mga sintomas na nararamdaman ninyo ngayon. Ang rekomendasyon ay nag-aapdeyt agad sa itaas. Mag-scroll pababa para sa kompletong plano — ano ang gagawin, ano ang dadalhin.</span>
+<span class="lang-ceb" style="display:none;"><strong>I-check una kung unsa ang naghulagway nimo</strong> (naka-dialysis, may diabetes, taas presyon, ubp.), unya i-check ang mga sintomas nga gibati nimo karon. Ang rekomendasyon mag-update dayon sa ibabaw. Mag-scroll paubos alang sa kompleto nga plano — unsa ang himuon, unsa ang dad-on.</span>
+</p>
+</div>
+
+<div class="how-to-grid">
+  <div class="how-to-step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <strong><span class="lang-en">Set your context</span><span class="lang-tl" style="display:none;">Itakda ang inyong konteksto</span><span class="lang-ceb" style="display:none;">Itakda ang imong konteksto</span></strong>
+      <span><span class="lang-en">Tick the boxes that apply: on hemodialysis, on peritoneal dialysis, CKD without dialysis, diabetes, hypertension, heart failure, recent transplant. The same symptom can mean very different urgency depending on your context.</span><span class="lang-tl" style="display:none;">I-tsek ang mga kahon na akma: naka-hemodialysis, naka-peritoneal dialysis, may CKD walang dialysis, diabetes, alta presyon, atake sa puso, kakatransplant. Ang parehong sintomas ay magkaiba ng pagka-urgent depende sa konteksto.</span><span class="lang-ceb" style="display:none;">I-check ang mga kahon nga angay: naka-hemodialysis, naka-peritoneal dialysis, may CKD walay dialysis, diabetes, taas presyon, atake sa kasingkasing, bag-ong transplant. Ang parehas nga sintomas lahi og ka-urgent depende sa konteksto.</span></span>
+    </div>
+  </div>
+  <div class="how-to-step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <strong><span class="lang-en">Tick what you feel</span><span class="lang-tl" style="display:none;">I-tsek ang nararamdaman ninyo</span><span class="lang-ceb" style="display:none;">I-check ang gibati nimo</span></strong>
+      <span><span class="lang-en">Go through each symptom and tap "Yes" if it applies. Some symptoms ask for more detail (severity, duration, how it started). The more accurately you describe what you feel, the better the triage.</span><span class="lang-tl" style="display:none;">Tingnan ang bawat sintomas at i-tap ang "Yes" kung naaayon. Ang ilan ay magtatanong ng detalye (gaano kalala, gaano katagal). Mas tumpak ang paglarawan, mas tama ang triage.</span><span class="lang-ceb" style="display:none;">Tan-awa ang matag sintomas ug i-tap ang "Yes" kung angay. Ang uban mangutana og detalye (unsa ka grabe, unsa ka dugay). Mas tukma ang paghulagway, mas tama ang triage.</span></span>
+    </div>
+  </div>
+  <div class="how-to-step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <strong><span class="lang-en">Read the banner</span><span class="lang-tl" style="display:none;">Basahin ang banner</span><span class="lang-ceb" style="display:none;">Basaha ang banner</span></strong>
+      <span><span class="lang-en">A coloured banner above the tool shows the recommended action level. It updates instantly with every change. The strictest selected symptom wins — this tool errs on the side of caution.</span><span class="lang-tl" style="display:none;">Ang may kulay na banner sa itaas ng tool ay nagpapakita ng rekomendasyon. Nag-aapdeyt agad sa bawat pagbabago. Ang pinaka-strict na sintomas ay nananaig — mas pipiliin nito ang ligtas na opsyon.</span><span class="lang-ceb" style="display:none;">Ang kulur nga banner sa ibabaw sa himan nagpakita sa rekomendasyon. Mag-update dayon sa matag pagbag-o. Ang pinaka-strict nga sintomas magdaog — pilion niini ang luwas nga opsyon.</span></span>
+    </div>
+  </div>
+  <div class="how-to-step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <strong><span class="lang-en">Read the full plan</span><span class="lang-tl" style="display:none;">Basahin ang buong plano</span><span class="lang-ceb" style="display:none;">Basaha ang tibuok plano</span></strong>
+      <span><span class="lang-en">Below the symptoms, the tool generates specific action steps and a "what to bring" list (your ID, PhilHealth, current meds, recent labs). Print it or screenshot it before you leave.</span><span class="lang-tl" style="display:none;">Sa ibaba ng mga sintomas, gumagawa ang tool ng partikular na aksyon at "ano ang dadalhin" list (ID, PhilHealth, gamot, mga resulta ng lab). I-print o i-screenshot bago umalis.</span><span class="lang-ceb" style="display:none;">Sa ubos sa mga sintomas, ang himan magbuhat og piho nga aksyon ug "unsa ang dad-on" list (ID, PhilHealth, tambal, mga resulta sa lab). I-print o i-screenshot sa wala pa molakaw.</span></span>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-red">
+  <p>🚨 <strong><span class="lang-en">If you have crushing chest pain, severe difficulty breathing, sudden weakness on one side, seizure, or a major bleed — do not use this tool. Call 911 or go to the nearest emergency room now.</span><span class="lang-tl" style="display:none;">Kung may matinding sakit sa dibdib, hirap sa paghinga, biglaang panghihina ng isang panig, seizure, o malakas na pagdurugo — huwag gamitin ang tool na ito. Tumawag agad sa 911 o magpunta sa pinakamalapit na ER.</span><span class="lang-ceb" style="display:none;">Kung adunay grabe nga sakit sa dughan, lisod nga pagginhawa, kalit nga pagluya sa usa ka kilid, seizure, o grabe nga pagdugo — ayaw gamita kining himan. Tawag dayon sa 911 o adto sa pinakaduol nga ER.</span></strong></p>
+</div>
+</section>
+
+
+<!-- TRIAGE BAND EXPLAINER -->
+<section class="section" id="triage-bands">
+<h2><span class="lang-en">The Four Triage Bands</span><span class="lang-tl" style="display:none;">Ang Apat na Triage Band</span><span class="lang-ceb" style="display:none;">Ang Upat ka Triage Band</span></h2>
+
+<p><span class="lang-en">Every combination of symptoms and context is mapped to one of four bands. The strictest band wins — if you have one ER-level symptom and ten routine ones, the recommendation is ER.</span><span class="lang-tl" style="display:none;">Bawat kombinasyon ng sintomas ay nakatakda sa isa sa apat na banda. Ang pinaka-strict ang mananaig — kung may isang ER-level na sintomas at sampung regular, ang rekomendasyon ay ER.</span><span class="lang-ceb" style="display:none;">Matag kombinasyon sa sintomas gi-map sa usa sa upat ka banda. Ang pinaka-strict modaog — kung adunay usa ka ER-level nga sintomas ug napulo ka regular, ang rekomendasyon kay ER.</span></p>
+
+<div class="band-row">
+  <div class="band-card b-r">
+    <span class="band-pill">Routine</span>
+    <h4><span class="lang-en">Next visit</span><span class="lang-tl" style="display:none;">Susunod na bisita</span><span class="lang-ceb" style="display:none;">Sunod nga bisita</span></h4>
+    <p><span class="lang-en">Mention at your next regular consultation. No new tests needed urgently.</span><span class="lang-tl" style="display:none;">Banggitin sa susunod na regular na konsultasyon. Walang kailangang bagong eksamen.</span><span class="lang-ceb" style="display:none;">Hisgoti sa sunod nga regular nga konsultasyon. Walay kinahanglan nga bag-ong eksamen.</span></p>
+  </div>
+  <div class="band-card b-u">
+    <span class="band-pill">Urgent</span>
+    <h4><span class="lang-en">Within a few days</span><span class="lang-tl" style="display:none;">Sa loob ng ilang araw</span><span class="lang-ceb" style="display:none;">Sulod sa pipila ka adlaw</span></h4>
+    <p><span class="lang-en">Schedule a visit within 2–3 days. Call your doctor's clinic to fast-track.</span><span class="lang-tl" style="display:none;">Mag-schedule ng bisita sa loob ng 2–3 araw. Tumawag sa klinika.</span><span class="lang-ceb" style="display:none;">Mag-schedule og bisita sulod sa 2–3 ka adlaw. Tawag sa klinika.</span></p>
+  </div>
+  <div class="band-card b-s">
+    <span class="band-pill">Same-day</span>
+    <h4><span class="lang-en">Today</span><span class="lang-tl" style="display:none;">Ngayong araw</span><span class="lang-ceb" style="display:none;">Karong adlawa</span></h4>
+    <p><span class="lang-en">Same-day clinic, telehealth, or your dialysis unit. Don't wait until tomorrow.</span><span class="lang-tl" style="display:none;">Same-day clinic, telehealth, o dialysis unit. Huwag hintayin bukas.</span><span class="lang-ceb" style="display:none;">Same-day clinic, telehealth, o dialysis unit. Ayaw paghulat ugma.</span></p>
+  </div>
+  <div class="band-card b-e">
+    <span class="band-pill">ER now</span>
+    <h4><span class="lang-en">Emergency room</span><span class="lang-tl" style="display:none;">Emergency room</span><span class="lang-ceb" style="display:none;">Emergency room</span></h4>
+    <p><span class="lang-en">Go to the nearest ER immediately. If you cannot drive, have someone bring you or call for help.</span><span class="lang-tl" style="display:none;">Pumunta agad sa pinakamalapit na ER. Kung hindi makapag-drive, magpasama o tumawag ng tulong.</span><span class="lang-ceb" style="display:none;">Adto dayon sa pinakaduol nga ER. Kung dili kamakadrayb, pasamahi o tawag og tabang.</span></p>
+  </div>
+</div>
+
+<div class="callout callout-blue">
+  <p>💡 <strong><span class="lang-en">Why "conservative" triage?</span><span class="lang-tl" style="display:none;">Bakit "conservative" na triage?</span><span class="lang-ceb" style="display:none;">Ngano "conservative" nga triage?</span></strong><br/>
+  <span class="lang-en">When the same symptom could mean two different things, this tool picks the more urgent one. Sending a worried-well patient to a same-day clinic is annoying but safe. Telling a real emergency to wait three days can be fatal. This bias is intentional and matches what your nephrologist would tell you over the phone.</span>
+  <span class="lang-tl" style="display:none;">Kung ang isang sintomas ay maaaring may dalawang ibig sabihin, pinipili nito ang mas urgent. Mas mabuti nang dumalo ng konsultasyon kaysa magkamali. Ito ay sinadyang diskarte.</span>
+  <span class="lang-ceb" style="display:none;">Kung ang usa ka sintomas mahimong adunay duha ka kahulugan, pilion niini ang mas urgent. Mas maayo na ang pagkonsulta kaysa magsayop. Tinuyo kini nga estratehiya.</span></p>
+</div>
+</section>
+
+
+<!-- THE TOOL -->
+<section class="section" id="checker">
+<h2><span class="lang-en">The Symptom Checker</span><span class="lang-tl" style="display:none;">Ang Symptom Checker</span><span class="lang-ceb" style="display:none;">Ang Symptom Checker</span></h2>
+
+<p><span class="lang-en">Tick your context, then tick what you feel. All data stays in your browser — nothing is sent to any server.</span><span class="lang-tl" style="display:none;">I-tsek ang inyong konteksto, tapos ang nararamdaman. Lahat ng data ay nananatili sa inyong browser — walang ipinapadala sa server.</span><span class="lang-ceb" style="display:none;">I-check ang imong konteksto, unya ang gibati. Tanan nga data magpabilin sa imong browser — walay ipadala sa server.</span></p>
+
+<div class="triage-banner tb-routine" id="triageBanner">
+  <span class="tb-icon">🟢</span>
+  <span id="triageHeadline"><span class="lang-en">No urgent symptoms ticked yet</span><span class="lang-tl" style="display:none;">Walang urgent na sintomas pa</span><span class="lang-ceb" style="display:none;">Wala pay urgent nga sintomas</span></span>
+  <span class="tb-sub" id="triageSub"><span class="lang-en">Tick your context and symptoms below — the recommendation will update here.</span><span class="lang-tl" style="display:none;">I-tsek ang konteksto at sintomas sa ibaba — mag-aapdeyt dito.</span><span class="lang-ceb" style="display:none;">I-check ang konteksto ug sintomas sa ubos — mag-update diri.</span></span>
+</div>
+
+<div class="tool-wrapper">
+
+<!-- Patient context -->
+<div class="ctx-card">
+  <div class="ctx-title"><span class="lang-en">1. Your Context</span><span class="lang-tl" style="display:none;">1. Inyong Konteksto</span><span class="lang-ceb" style="display:none;">1. Imong Konteksto</span></div>
+  <div class="ctx-grid">
+    <label class="ctx-check"><input type="checkbox" id="ctx-hd" data-ctx="hd"><span><strong><span class="lang-en">On hemodialysis</span><span class="lang-tl" style="display:none;">Naka-hemodialysis</span><span class="lang-ceb" style="display:none;">Naka-hemodialysis</span></strong><span class="ctx-sub"><span class="lang-en">Regular HD 2–3× per week</span><span class="lang-tl" style="display:none;">Regular HD 2–3× kada linggo</span><span class="lang-ceb" style="display:none;">Regular HD 2–3× kada semana</span></span></span></label>
+    <label class="ctx-check"><input type="checkbox" id="ctx-pd" data-ctx="pd"><span><strong><span class="lang-en">On peritoneal dialysis</span><span class="lang-tl" style="display:none;">Naka-peritoneal dialysis</span><span class="lang-ceb" style="display:none;">Naka-peritoneal dialysis</span></strong><span class="ctx-sub"><span class="lang-en">CAPD or APD at home</span><span class="lang-tl" style="display:none;">CAPD o APD sa bahay</span><span class="lang-ceb" style="display:none;">CAPD o APD sa balay</span></span></span></label>
+    <label class="ctx-check"><input type="checkbox" id="ctx-ckd" data-ctx="ckd"><span><strong><span class="lang-en">CKD, not on dialysis</span><span class="lang-tl" style="display:none;">May CKD, hindi naka-dialysis</span><span class="lang-ceb" style="display:none;">May CKD, dili naka-dialysis</span></strong><span class="ctx-sub"><span class="lang-en">Stage 3–5 not yet started dialysis</span><span class="lang-tl" style="display:none;">Stage 3–5, hindi pa nagsisimula</span><span class="ctx-sub"></span></span></span></label>
+    <label class="ctx-check"><input type="checkbox" id="ctx-dm" data-ctx="dm"><span><strong><span class="lang-en">Diabetes</span><span class="lang-tl" style="display:none;">May diabetes</span><span class="lang-ceb" style="display:none;">May diabetes</span></strong><span class="ctx-sub"><span class="lang-en">Type 1 or Type 2, on medication</span><span class="lang-tl" style="display:none;">Type 1 o 2, may gamot</span><span class="lang-ceb" style="display:none;">Type 1 o 2, adunay tambal</span></span></span></label>
+    <label class="ctx-check"><input type="checkbox" id="ctx-htn" data-ctx="htn"><span><strong><span class="lang-en">Hypertension</span><span class="lang-tl" style="display:none;">May alta presyon</span><span class="lang-ceb" style="display:none;">May taas presyon</span></strong><span class="ctx-sub"><span class="lang-en">On BP medication</span><span class="lang-tl" style="display:none;">May BP medication</span><span class="ctx-sub"></span></span></span></label>
+    <label class="ctx-check"><input type="checkbox" id="ctx-hf" data-ctx="hf"><span><strong><span class="lang-en">Heart failure / cardiac</span><span class="lang-tl" style="display:none;">Sakit sa puso / cardiac</span><span class="lang-ceb" style="display:none;">Sakit sa kasingkasing / cardiac</span></strong><span class="ctx-sub"><span class="lang-en">Known HF, prior MI, or LV dysfunction</span><span class="lang-tl" style="display:none;">May HF, dating MI, o LV dysfunction</span><span class="lang-ceb" style="display:none;">May HF, kanhi MI, o LV dysfunction</span></span></span></label>
+    <label class="ctx-check"><input type="checkbox" id="ctx-tx" data-ctx="tx"><span><strong><span class="lang-en">Recent transplant</span><span class="lang-tl" style="display:none;">Kakatransplant</span><span class="lang-ceb" style="display:none;">Bag-ong transplant</span></strong><span class="ctx-sub"><span class="lang-en">Kidney transplant, on immunosuppression</span><span class="lang-tl" style="display:none;">Kidney transplant, may immunosuppression</span><span class="ctx-sub"></span></span></span></label>
+    <label class="ctx-check"><input type="checkbox" id="ctx-preg" data-ctx="preg"><span><strong><span class="lang-en">Pregnant</span><span class="lang-tl" style="display:none;">Buntis</span><span class="lang-ceb" style="display:none;">Mabdos</span></strong><span class="ctx-sub"><span class="lang-en">Any trimester</span><span class="lang-tl" style="display:none;">Anong trimester</span><span class="lang-ceb" style="display:none;">Bisan asang trimester</span></span></span></label>
+  </div>
+</div>
+
+<!-- Symptoms -->
+<div class="ctx-title" style="margin-top:8px;"><span class="lang-en">2. What You Feel Right Now</span><span class="lang-tl" style="display:none;">2. Ano ang Inyong Nararamdaman Ngayon</span><span class="lang-ceb" style="display:none;">2. Unsa ang Imong Gibati Karon</span></div>
+
+<!-- Cardiovascular / Respiratory -->
+<div class="sym-group">
+  <h3><span class="sg-icon">❤️</span> <span class="lang-en">Heart &amp; Breathing</span><span class="lang-tl" style="display:none;">Puso at Paghinga</span><span class="lang-ceb" style="display:none;">Kasingkasing ug Pagginhawa</span></h3>
+  <div class="sym-grid">
+
+    <div class="sym-card" data-sym="chest-pain">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Chest pain or pressure</span><span class="lang-tl" style="display:none;">Sakit o presyon sa dibdib</span><span class="lang-ceb" style="display:none;">Sakit o presyon sa dughan</span><span class="sym-tag-tl"><span class="lang-en">Squeezing, heavy, or radiating discomfort</span><span class="lang-tl" style="display:none;">Pumipiga, mabigat, o kumakalat na sakit</span><span class="lang-ceb" style="display:none;">Mipuga, bug-at, o mikatag nga sakit</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-chest-pain-cb" onchange="toggleSelect(this)"><label for="sym-chest-pain-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-label"><span class="lang-en">When does it happen?</span><span class="lang-tl" style="display:none;">Kailan nangyayari?</span><span class="lang-ceb" style="display:none;">Kanus-a mahitabo?</span></div>
+        <div class="sym-mod-row" data-mod-name="chest-pain-when">
+          <input type="radio" name="chest-pain-when" id="cp-rest" value="rest"><label for="cp-rest"><span class="lang-en">At rest</span><span class="lang-tl" style="display:none;">Habang nakapahinga</span><span class="lang-ceb" style="display:none;">Samtang nagpahuway</span></label>
+          <input type="radio" name="chest-pain-when" id="cp-exert" value="exertion"><label for="cp-exert"><span class="lang-en">Only with effort</span><span class="lang-tl" style="display:none;">Sa effort lang</span><span class="lang-ceb" style="display:none;">Sa paningkamot lang</span></label>
+        </div>
+        <div class="sym-mod-label"><span class="lang-en">Any of these too?</span><span class="lang-tl" style="display:none;">May iba pa?</span><span class="lang-ceb" style="display:none;">Aduna pay uban?</span></div>
+        <div class="sym-mod-row" data-mod-name="chest-pain-features">
+          <input type="checkbox" id="cp-radiate" value="radiate"><label for="cp-radiate"><span class="lang-en">Spreads to arm/jaw/back</span><span class="lang-tl" style="display:none;">Kumakalat sa braso/panga/likod</span><span class="lang-ceb" style="display:none;">Mikatag sa bukton/sag-ang/likod</span></label>
+          <input type="checkbox" id="cp-sweat" value="diaphoresis"><label for="cp-sweat"><span class="lang-en">Cold sweat / nausea</span><span class="lang-tl" style="display:none;">Pawis ng malamig / hilo</span><span class="lang-ceb" style="display:none;">Bugnaw nga singot / hilo</span></label>
+          <input type="checkbox" id="cp-dyspnea" value="dyspnea"><label for="cp-dyspnea"><span class="lang-en">Shortness of breath</span><span class="lang-tl" style="display:none;">Hirap sa paghinga</span><span class="lang-ceb" style="display:none;">Lisod nga pagginhawa</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sym-card" data-sym="dyspnea">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Shortness of breath / hard to breathe</span><span class="lang-tl" style="display:none;">Hirap sa paghinga</span><span class="lang-ceb" style="display:none;">Lisod nga pagginhawa</span><span class="sym-tag-tl"><span class="lang-en">Feeling of not getting enough air</span><span class="lang-tl" style="display:none;">Pakiramdam na kulang ang hangin</span><span class="lang-ceb" style="display:none;">Pamati nga kulang ang hangin</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-dyspnea-cb" onchange="toggleSelect(this)"><label for="sym-dyspnea-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-label"><span class="lang-en">How bad?</span><span class="lang-tl" style="display:none;">Gaano kalala?</span><span class="lang-ceb" style="display:none;">Unsa ka grabe?</span></div>
+        <div class="sym-mod-row" data-mod-name="dyspnea-severity">
+          <input type="radio" name="dyspnea-severity" id="d-mild" value="mild"><label for="d-mild"><span class="lang-en">Only with walking / stairs</span><span class="lang-tl" style="display:none;">Sa paglalakad / hagdan lang</span><span class="lang-ceb" style="display:none;">Sa paglakaw / hagdanan ra</span></label>
+          <input type="radio" name="dyspnea-severity" id="d-rest" value="rest"><label for="d-rest"><span class="lang-en">Even at rest</span><span class="lang-tl" style="display:none;">Kahit nakapahinga</span><span class="lang-ceb" style="display:none;">Bisan nagpahuway</span></label>
+          <input type="radio" name="dyspnea-severity" id="d-talk" value="cannot-talk"><label for="d-talk"><span class="lang-en">Can't speak full sentences</span><span class="lang-tl" style="display:none;">Hindi makapagsalita ng buong pangungusap</span><span class="lang-ceb" style="display:none;">Dili makasulti og kompleto nga pulong</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sym-card" data-sym="fluid">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Orthopnea / sudden weight gain</span><span class="lang-tl" style="display:none;">Hirap humiga / biglang pagtaas ng timbang</span><span class="lang-ceb" style="display:none;">Lisod paghigda / kalit nga pagtaas sa timbang</span><span class="sym-tag-tl"><span class="lang-en">Need to prop up on pillows to breathe, or +2 kg overnight</span><span class="lang-tl" style="display:none;">Kailangan ng unan para makahinga, o +2 kg sa isang gabi</span><span class="lang-ceb" style="display:none;">Kinahanglan og unlan aron maginhawa, o +2 kg sa usa ka gabii</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-fluid-cb" onchange="toggleSelect(this)"><label for="sym-fluid-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-label"><span class="lang-en">Which describes it?</span><span class="lang-tl" style="display:none;">Alin ang naglalarawan?</span><span class="lang-ceb" style="display:none;">Hain ang naghulagway?</span></div>
+        <div class="sym-mod-row" data-mod-name="fluid-features">
+          <input type="checkbox" id="f-orthop" value="orthopnea"><label for="f-orthop"><span class="lang-en">Wake up at night gasping</span><span class="lang-tl" style="display:none;">Nagigising sa gabi na hingal</span><span class="lang-ceb" style="display:none;">Magmata sa gabii nga hangak</span></label>
+          <input type="checkbox" id="f-wgt" value="weight-2kg"><label for="f-wgt"><span class="lang-en">+2 kg or more overnight</span><span class="lang-tl" style="display:none;">+2 kg o higit sa isang gabi</span><span class="lang-ceb" style="display:none;">+2 kg o sobra sa usa ka gabii</span></label>
+          <input type="checkbox" id="f-pillows" value="multiple-pillows"><label for="f-pillows"><span class="lang-en">Sleep on 2+ pillows</span><span class="lang-tl" style="display:none;">Natutulog sa 2+ unan</span><span class="lang-ceb" style="display:none;">Matulog sa 2+ unlan</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sym-card" data-sym="palpitations">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Palpitations / irregular heartbeat</span><span class="lang-tl" style="display:none;">Kabog ng puso / hindi pantay na tibok</span><span class="lang-ceb" style="display:none;">Pitik sa kasingkasing / dili patas nga tibok</span><span class="sym-tag-tl"><span class="lang-en">Heart racing, fluttering, or skipping</span><span class="lang-tl" style="display:none;">Mabilis na tibok, kumakaba, lumalaktaw</span><span class="lang-ceb" style="display:none;">Paspas nga tibok, mikuyaw, milukso</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-palpitations-cb" onchange="toggleSelect(this)"><label for="sym-palpitations-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-label"><span class="lang-en">Anything else?</span><span class="lang-tl" style="display:none;">May iba pa?</span><span class="lang-ceb" style="display:none;">Aduna pay uban?</span></div>
+        <div class="sym-mod-row" data-mod-name="palp-features">
+          <input type="checkbox" id="p-faint" value="near-faint"><label for="p-faint"><span class="lang-en">Almost fainted</span><span class="lang-tl" style="display:none;">Halos mahimatay</span><span class="lang-ceb" style="display:none;">Hapit makuyapan</span></label>
+          <input type="checkbox" id="p-cp" value="chest"><label for="p-cp"><span class="lang-en">With chest pain</span><span class="lang-tl" style="display:none;">May sakit sa dibdib</span><span class="lang-ceb" style="display:none;">Adunay sakit sa dughan</span></label>
+          <input type="checkbox" id="p-long" value="hours"><label for="p-long"><span class="lang-en">Lasting hours</span><span class="lang-tl" style="display:none;">Tumatagal ng oras</span><span class="lang-ceb" style="display:none;">Mga oras ang paglungtad</span></label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Urinary / Renal -->
+<div class="sym-group">
+  <h3><span class="sg-icon">💧</span> <span class="lang-en">Urine &amp; Kidneys</span><span class="lang-tl" style="display:none;">Ihi at Bato</span><span class="lang-ceb" style="display:none;">Ihi ug Kidney</span></h3>
+  <div class="sym-grid">
+
+    <div class="sym-card" data-sym="urine-output">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Change in how much urine</span><span class="lang-tl" style="display:none;">Pagbabago sa dami ng ihi</span><span class="lang-ceb" style="display:none;">Pagbag-o sa kantidad sa ihi</span><span class="sym-tag-tl"><span class="lang-en">Much less, or none at all</span><span class="lang-tl" style="display:none;">Kakaunti o wala</span><span class="lang-ceb" style="display:none;">Gamay ra o wala gyud</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-urine-output-cb" onchange="toggleSelect(this)"><label for="sym-urine-output-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-label"><span class="lang-en">How much in the last 12 hours?</span><span class="lang-tl" style="display:none;">Gaano sa nakaraang 12 oras?</span><span class="lang-ceb" style="display:none;">Pila sa miaging 12 oras?</span></div>
+        <div class="sym-mod-row" data-mod-name="urine-amount">
+          <input type="radio" name="urine-amount" id="u-less" value="less"><label for="u-less"><span class="lang-en">Less than usual</span><span class="lang-tl" style="display:none;">Mas kaunti kaysa dati</span><span class="lang-ceb" style="display:none;">Mas gamay kay sa naandan</span></label>
+          <input type="radio" name="urine-amount" id="u-very-little" value="very-little"><label for="u-very-little"><span class="lang-en">Very little (small cup all day)</span><span class="lang-tl" style="display:none;">Konti lang (maliit na tasa buong araw)</span><span class="lang-ceb" style="display:none;">Gamay lang (gamay nga tasa tibuok adlaw)</span></label>
+          <input type="radio" name="urine-amount" id="u-none" value="none"><label for="u-none"><span class="lang-en">None at all</span><span class="lang-tl" style="display:none;">Wala talaga</span><span class="lang-ceb" style="display:none;">Wala gyud</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sym-card" data-sym="hematuria">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Visible blood in urine</span><span class="lang-tl" style="display:none;">Nakikitang dugo sa ihi</span><span class="lang-ceb" style="display:none;">Makita nga dugo sa ihi</span><span class="sym-tag-tl"><span class="lang-en">Red, pink, or cola-coloured urine</span><span class="lang-tl" style="display:none;">Pula, kulay rosas, o kulay cola</span><span class="lang-ceb" style="display:none;">Pula, rosas, o kulay cola</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-hematuria-cb" onchange="toggleSelect(this)"><label for="sym-hematuria-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-label"><span class="lang-en">Anything else?</span><span class="lang-tl" style="display:none;">May iba pa?</span><span class="lang-ceb" style="display:none;">Aduna pay uban?</span></div>
+        <div class="sym-mod-row" data-mod-name="hem-features">
+          <input type="checkbox" id="h-pain" value="pain"><label for="h-pain"><span class="lang-en">With back/side pain</span><span class="lang-tl" style="display:none;">May sakit sa likod/tagiliran</span><span class="lang-ceb" style="display:none;">Sakit sa likod/kilid</span></label>
+          <input type="checkbox" id="h-clots" value="clots"><label for="h-clots"><span class="lang-en">Visible clots</span><span class="lang-tl" style="display:none;">May namumuong dugo</span><span class="lang-ceb" style="display:none;">May nag-pundo nga dugo</span></label>
+          <input type="checkbox" id="h-fever" value="fever"><label for="h-fever"><span class="lang-en">With fever</span><span class="lang-tl" style="display:none;">May lagnat</span><span class="lang-ceb" style="display:none;">May hilanat</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sym-card" data-sym="foamy">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Foamy / bubbly urine</span><span class="lang-tl" style="display:none;">Mabula na ihi</span><span class="lang-ceb" style="display:none;">Bumbula nga ihi</span><span class="sym-tag-tl"><span class="lang-en">Persistent foam that doesn't disappear</span><span class="lang-tl" style="display:none;">Tumatagal na bula na hindi nawawala</span><span class="lang-ceb" style="display:none;">Magpadayon nga bumbula nga dili mawala</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-foamy-cb" onchange="toggleSelect(this)"><label for="sym-foamy-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <p class="sym-desc"><span class="lang-en">Foamy urine often means protein leak. Usually not an emergency but worth flagging for your next visit so a urinalysis can be checked.</span><span class="lang-tl" style="display:none;">Ang mabulang ihi ay madalas tanda ng protein leak. Hindi madalas emergency pero banggitin sa susunod na bisita para sa urinalysis.</span><span class="lang-ceb" style="display:none;">Ang bumbula nga ihi kasagaran timailhan sa protein leak. Dili kasagaran emergency apan hisgoti sa sunod nga bisita para sa urinalysis.</span></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Edema -->
+<div class="sym-group">
+  <h3><span class="sg-icon">🫧</span> <span class="lang-en">Swelling</span><span class="lang-tl" style="display:none;">Pamamaga</span><span class="lang-ceb" style="display:none;">Pamanas</span></h3>
+  <div class="sym-grid">
+
+    <div class="sym-card" data-sym="edema">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">New or worse swelling</span><span class="lang-tl" style="display:none;">Bagong o lumalalang pamamaga</span><span class="lang-ceb" style="display:none;">Bag-o o nigrabe nga pamanas</span><span class="sym-tag-tl"><span class="lang-en">Face, legs, hands, or abdomen</span><span class="lang-tl" style="display:none;">Mukha, binti, kamay, o tiyan</span><span class="lang-ceb" style="display:none;">Nawong, paa, kamot, o tiyan</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-edema-cb" onchange="toggleSelect(this)"><label for="sym-edema-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-label"><span class="lang-en">Where?</span><span class="lang-tl" style="display:none;">Saan?</span><span class="lang-ceb" style="display:none;">Asa?</span></div>
+        <div class="sym-mod-row" data-mod-name="edema-where">
+          <input type="checkbox" id="e-face" value="face"><label for="e-face"><span class="lang-en">Face / eyelids (morning)</span><span class="lang-tl" style="display:none;">Mukha / mata (umaga)</span><span class="lang-ceb" style="display:none;">Nawong / mata (buntag)</span></label>
+          <input type="checkbox" id="e-legs" value="legs"><label for="e-legs"><span class="lang-en">Legs / feet</span><span class="lang-tl" style="display:none;">Binti / paa</span><span class="lang-ceb" style="display:none;">Paa / lapalapa</span></label>
+          <input type="checkbox" id="e-leg1" value="one-leg"><label for="e-leg1"><span class="lang-en">One leg only</span><span class="lang-tl" style="display:none;">Isang binti lang</span><span class="lang-ceb" style="display:none;">Usa ka paa ra</span></label>
+          <input type="checkbox" id="e-abd" value="abdomen"><label for="e-abd"><span class="lang-en">Abdomen / belly</span><span class="lang-tl" style="display:none;">Tiyan</span><span class="lang-ceb" style="display:none;">Tiyan</span></label>
+          <input type="checkbox" id="e-all" value="generalized"><label for="e-all"><span class="lang-en">Whole body</span><span class="lang-tl" style="display:none;">Buong katawan</span><span class="lang-ceb" style="display:none;">Tibuok lawas</span></label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- GI / Neuro -->
+<div class="sym-group">
+  <h3><span class="sg-icon">🤢</span> <span class="lang-en">Stomach &amp; Nerve Symptoms</span><span class="lang-tl" style="display:none;">Tiyan at Nerve Symptoms</span><span class="lang-ceb" style="display:none;">Tiyan ug Nerve Symptoms</span></h3>
+  <div class="sym-grid">
+
+    <div class="sym-card" data-sym="vomiting">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Persistent vomiting or blood in vomit/stool</span><span class="lang-tl" style="display:none;">Walang humpay na pagsusuka o dugo sa suka/dumi</span><span class="lang-ceb" style="display:none;">Padayon nga pagsuka o dugo sa suka/tae</span><span class="sym-tag-tl"><span class="lang-en">Vomiting that won't stop, or black stools</span><span class="lang-tl" style="display:none;">Walang patid na suka, o itim na dumi</span><span class="lang-ceb" style="display:none;">Wala mihunong nga suka, o itom nga tae</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-vomiting-cb" onchange="toggleSelect(this)"><label for="sym-vomiting-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-label"><span class="lang-en">Which?</span><span class="lang-tl" style="display:none;">Alin?</span><span class="lang-ceb" style="display:none;">Hain?</span></div>
+        <div class="sym-mod-row" data-mod-name="vomit-features">
+          <input type="checkbox" id="v-blood" value="hematemesis"><label for="v-blood"><span class="lang-en">Blood in vomit</span><span class="lang-tl" style="display:none;">Dugo sa suka</span><span class="lang-ceb" style="display:none;">Dugo sa suka</span></label>
+          <input type="checkbox" id="v-melena" value="melena"><label for="v-melena"><span class="lang-en">Black tarry stools</span><span class="lang-tl" style="display:none;">Itim na dumi</span><span class="lang-ceb" style="display:none;">Itom nga tae</span></label>
+          <input type="checkbox" id="v-24h" value="prolonged"><label for="v-24h"><span class="lang-en">Can't keep fluids for 24h</span><span class="lang-tl" style="display:none;">Hindi makainom 24 oras</span><span class="lang-ceb" style="display:none;">Dili makainom 24 oras</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sym-card" data-sym="abdpain">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Severe abdominal pain</span><span class="lang-tl" style="display:none;">Matinding sakit sa tiyan</span><span class="lang-ceb" style="display:none;">Grabe nga sakit sa tiyan</span><span class="sym-tag-tl"><span class="lang-en">Worst-ever or rapidly getting worse</span><span class="lang-tl" style="display:none;">Pinaka-malala o lalong lumalala</span><span class="lang-ceb" style="display:none;">Pinakagrabe o nagkagrabe</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-abdpain-cb" onchange="toggleSelect(this)"><label for="sym-abdpain-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <p class="sym-desc"><span class="lang-en">⚠ For peritoneal dialysis patients, severe abdominal pain or cloudy PD fluid is peritonitis until proven otherwise — this is always an ER visit.</span><span class="lang-tl" style="display:none;">⚠ Para sa PD patients, ang matinding sakit sa tiyan o malabong PD fluid ay peritonitis hanggang sa mapatunayan ang kabaligtaran — laging ER visit.</span><span class="lang-ceb" style="display:none;">⚠ Para sa PD patients, ang grabe nga sakit sa tiyan o aslom nga PD fluid kay peritonitis hangtod mapamatud-an ang lahi — kanunay ER visit.</span></p>
+        <div class="sym-mod-row" data-mod-name="abd-features">
+          <input type="checkbox" id="a-cloudy" value="cloudy-pd"><label for="a-cloudy"><span class="lang-en">Cloudy PD fluid (if on PD)</span><span class="lang-tl" style="display:none;">Malabong PD fluid (kung PD)</span><span class="lang-ceb" style="display:none;">Aslom nga PD fluid (kung PD)</span></label>
+          <input type="checkbox" id="a-rigid" value="rigid"><label for="a-rigid"><span class="lang-en">Rigid / board-like</span><span class="lang-tl" style="display:none;">Matigas / parang tabla</span><span class="lang-ceb" style="display:none;">Tig-a / mura'g tabla</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sym-card" data-sym="neuro">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Severe headache, confusion, or seizure</span><span class="lang-tl" style="display:none;">Matinding sakit ng ulo, pagkalito, o seizure</span><span class="lang-ceb" style="display:none;">Grabe nga sakit ulo, kalibog, o seizure</span><span class="sym-tag-tl"><span class="lang-en">Worst headache ever, sudden confusion, new weakness, or convulsion</span><span class="lang-tl" style="display:none;">Pinaka-malala na sakit ng ulo, biglang kalituhan, bagong panghihina, o convulsion</span><span class="lang-ceb" style="display:none;">Pinakagrabe nga sakit ulo, kalit nga kalibog, bag-ong kaluya, o convulsion</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-neuro-cb" onchange="toggleSelect(this)"><label for="sym-neuro-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-row" data-mod-name="neuro-features">
+          <input type="checkbox" id="n-confuse" value="confusion"><label for="n-confuse"><span class="lang-en">New confusion</span><span class="lang-tl" style="display:none;">Bagong kalituhan</span><span class="lang-ceb" style="display:none;">Bag-ong kalibog</span></label>
+          <input type="checkbox" id="n-seizure" value="seizure"><label for="n-seizure"><span class="lang-en">Had a seizure</span><span class="lang-tl" style="display:none;">May seizure</span><span class="lang-ceb" style="display:none;">Adunay seizure</span></label>
+          <input type="checkbox" id="n-weak" value="weakness"><label for="n-weak"><span class="lang-en">New weakness on one side</span><span class="lang-tl" style="display:none;">Bagong panghihina sa isang panig</span><span class="lang-ceb" style="display:none;">Bag-ong kaluya sa usa ka kilid</span></label>
+          <input type="checkbox" id="n-worst" value="worst-ever"><label for="n-worst"><span class="lang-en">Worst headache ever</span><span class="lang-tl" style="display:none;">Pinaka-malalang sakit ng ulo</span><span class="lang-ceb" style="display:none;">Pinakagrabe nga sakit ulo</span></label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Constitutional -->
+<div class="sym-group">
+  <h3><span class="sg-icon">🌡️</span> <span class="lang-en">Fever &amp; General</span><span class="lang-tl" style="display:none;">Lagnat at Pangkalahatan</span><span class="lang-ceb" style="display:none;">Hilanat ug Kinatibuk-an</span></h3>
+  <div class="sym-grid">
+
+    <div class="sym-card" data-sym="fever">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Fever (≥38°C / 100.4°F)</span><span class="lang-tl" style="display:none;">Lagnat (≥38°C)</span><span class="lang-ceb" style="display:none;">Hilanat (≥38°C)</span><span class="sym-tag-tl"><span class="lang-en">Measured temperature, not just feeling warm</span><span class="lang-tl" style="display:none;">Nasukat na temperatura, hindi lang pakiramdam ng init</span><span class="lang-ceb" style="display:none;">Gisukod nga temperatura, dili lang pamati nga init</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-fever-cb" onchange="toggleSelect(this)"><label for="sym-fever-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <p class="sym-desc"><span class="lang-en">⚠ Fever in a dialysis or post-transplant patient is treated as a serious infection until proven otherwise.</span><span class="lang-tl" style="display:none;">⚠ Ang lagnat sa dialysis o post-transplant ay seryosong impeksyon hanggang sa mapatunayan ang kabaligtaran.</span><span class="lang-ceb" style="display:none;">⚠ Ang hilanat sa dialysis o post-transplant kay seryoso nga impeksyon hangtod mapamatud-an ang lahi.</span></p>
+        <div class="sym-mod-label"><span class="lang-en">How high?</span><span class="lang-tl" style="display:none;">Gaano kataas?</span><span class="lang-ceb" style="display:none;">Unsa ka taas?</span></div>
+        <div class="sym-mod-row" data-mod-name="fever-temp">
+          <input type="radio" name="fever-temp" id="ft-low" value="low"><label for="ft-low"><span class="lang-en">38–38.9°C</span></label>
+          <input type="radio" name="fever-temp" id="ft-high" value="high"><label for="ft-high"><span class="lang-en">39°C or higher</span><span class="lang-tl" style="display:none;">39°C o mas mataas</span><span class="lang-ceb" style="display:none;">39°C o mas taas</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sym-card" data-sym="syncope">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Fainted or near-fainted</span><span class="lang-tl" style="display:none;">Nahimatay o halos mahimatay</span><span class="lang-ceb" style="display:none;">Nakuyapan o hapit makuyapan</span><span class="sym-tag-tl"><span class="lang-en">Lost consciousness briefly, or felt about to</span><span class="lang-tl" style="display:none;">Sandaling nawalan ng malay o halos</span><span class="lang-ceb" style="display:none;">Mubo nga pagkawalay panimuot o hapit</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-syncope-cb" onchange="toggleSelect(this)"><label for="sym-syncope-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-row" data-mod-name="syncope-features">
+          <input type="checkbox" id="s-exer" value="during-exertion"><label for="s-exer"><span class="lang-en">During exertion</span><span class="lang-tl" style="display:none;">Habang nag-effort</span><span class="lang-ceb" style="display:none;">Atol sa paningkamot</span></label>
+          <input type="checkbox" id="s-cp" value="with-chest"><label for="s-cp"><span class="lang-en">With chest pain</span><span class="lang-tl" style="display:none;">May sakit sa dibdib</span><span class="lang-ceb" style="display:none;">Adunay sakit sa dughan</span></label>
+          <input type="checkbox" id="s-injured" value="head-injury"><label for="s-injured"><span class="lang-en">Hit head when fell</span><span class="lang-tl" style="display:none;">Naumpog ulo nang bumagsak</span><span class="lang-ceb" style="display:none;">Nahasakot ulo dihang nahulog</span></label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Diabetes specific (shown when DM ticked) -->
+<div class="sym-group">
+  <h3><span class="sg-icon">🍬</span> <span class="lang-en">Diabetes Symptoms</span><span class="lang-tl" style="display:none;">Mga Sintomas ng Diabetes</span><span class="lang-ceb" style="display:none;">Mga Sintomas sa Diabetes</span></h3>
+  <div class="sym-grid">
+
+    <div class="sym-card" data-sym="hypo" data-show-if="dm">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Hypoglycemia signs</span><span class="lang-tl" style="display:none;">Mga tanda ng mababang asukal</span><span class="lang-ceb" style="display:none;">Mga timailhan sa ubos nga asukal</span><span class="sym-tag-tl"><span class="lang-en">Shakiness, sweating, hunger, confusion, often before meals</span><span class="lang-tl" style="display:none;">Pangangatog, pagpapawis, gutom, kalituhan, madalas bago kumain</span><span class="lang-ceb" style="display:none;">Pangurog, panginhas, kagutom, kalibog, kasagaran sa wala pa mokaon</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-hypo-cb" onchange="toggleSelect(this)"><label for="sym-hypo-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <p class="sym-desc"><span class="lang-en">First step: eat 15 g fast carbs (juice, soda, candy). Re-check sugar in 15 min. If still low or you can't keep fluids down, this becomes ER.</span><span class="lang-tl" style="display:none;">Una: kumain ng 15g mabilis na carbs (juice, softdrink, kendi). I-check ulit sa 15 min. Kung mababa pa, ER na.</span><span class="lang-ceb" style="display:none;">Una: mokaon og 15g paspas nga carbs (juice, softdrink, kendi). I-check usab sa 15 min. Kung ubos pa, ER na.</span></p>
+        <div class="sym-mod-row" data-mod-name="hypo-features">
+          <input type="checkbox" id="hy-confuse" value="confusion"><label for="hy-confuse"><span class="lang-en">Confused / can't take sugar</span><span class="lang-tl" style="display:none;">Litong-lito / di makainom</span><span class="lang-ceb" style="display:none;">Naglibog / dili makainom</span></label>
+          <input type="checkbox" id="hy-repeat" value="recurrent"><label for="hy-repeat"><span class="lang-en">Happens repeatedly today</span><span class="lang-tl" style="display:none;">Paulit-ulit ngayong araw</span><span class="lang-ceb" style="display:none;">Sublay karong adlawa</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sym-card" data-sym="dka" data-show-if="dm">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Very high sugar signs (DKA)</span><span class="lang-tl" style="display:none;">Sobrang taas na asukal (DKA)</span><span class="lang-ceb" style="display:none;">Sobra taas nga asukal (DKA)</span><span class="sym-tag-tl"><span class="lang-en">Severe thirst, frequent urination, fruity breath, deep breathing, vomiting</span><span class="lang-tl" style="display:none;">Matinding uhaw, madalas umihi, fruity na hininga, malalim na paghinga, suka</span><span class="lang-ceb" style="display:none;">Grabe nga kauhaw, sublay nga pag-ihi, fruity nga gininhawa, lawom nga pagginhawa, suka</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-dka-cb" onchange="toggleSelect(this)"><label for="sym-dka-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <p class="sym-desc"><span class="lang-en">DKA is always an emergency. Go to the ER even if you feel "mostly fine" — the danger is the metabolic state, not how you feel.</span><span class="lang-tl" style="display:none;">Ang DKA ay laging emergency. Pumunta sa ER kahit "okay lang" pakiramdam — ang panganib ay metabolic state.</span><span class="lang-ceb" style="display:none;">Ang DKA kanunay emergency. Adto sa ER bisan "okay ra" ang pamati — ang peligro kay metabolic state.</span></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Dialysis specific (HD/PD) -->
+<div class="sym-group">
+  <h3><span class="sg-icon">🩸</span> <span class="lang-en">Dialysis-Specific</span><span class="lang-tl" style="display:none;">Para sa Dialysis</span><span class="lang-ceb" style="display:none;">Para sa Dialysis</span></h3>
+  <div class="sym-grid">
+
+    <div class="sym-card" data-sym="access" data-show-if="hd">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Problem with your dialysis access</span><span class="lang-tl" style="display:none;">Problema sa dialysis access</span><span class="lang-ceb" style="display:none;">Problema sa dialysis access</span><span class="sym-tag-tl"><span class="lang-en">AVF, AVG, or catheter</span><span class="lang-tl" style="display:none;">AVF, AVG, o catheter</span><span class="lang-ceb" style="display:none;">AVF, AVG, o catheter</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-access-cb" onchange="toggleSelect(this)"><label for="sym-access-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-row" data-mod-name="access-features">
+          <input type="checkbox" id="ac-bleed" value="bleeding"><label for="ac-bleed"><span class="lang-en">Bleeding that won't stop</span><span class="lang-tl" style="display:none;">Walang humpay na dugo</span><span class="lang-ceb" style="display:none;">Wala mihunong nga dugo</span></label>
+          <input type="checkbox" id="ac-thrill" value="no-thrill"><label for="ac-thrill"><span class="lang-en">No more thrill / buzz</span><span class="lang-tl" style="display:none;">Walang thrill / buzz na</span><span class="lang-ceb" style="display:none;">Walay thrill / buzz</span></label>
+          <input type="checkbox" id="ac-hot" value="hot-red"><label for="ac-hot"><span class="lang-en">Hot, red, painful</span><span class="lang-tl" style="display:none;">Mainit, mapula, masakit</span><span class="lang-ceb" style="display:none;">Init, pula, sakit</span></label>
+          <input type="checkbox" id="ac-swell" value="swollen"><label for="ac-swell"><span class="lang-en">Newly swollen arm</span><span class="lang-tl" style="display:none;">Bagong namamagang braso</span><span class="lang-ceb" style="display:none;">Bag-ong nanghubag nga bukton</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sym-card" data-sym="missed" data-show-if="hd">
+      <div class="sym-head" onclick="toggleSym(this, event)">
+        <div class="sym-name"><span class="lang-en">Missed your dialysis session</span><span class="lang-tl" style="display:none;">Nakaligtaan ang dialysis</span><span class="lang-ceb" style="display:none;">Nasayloan ang dialysis</span><span class="sym-tag-tl"><span class="lang-en">Skipped a scheduled HD run</span><span class="lang-tl" style="display:none;">Hindi nakapasok sa HD</span><span class="lang-ceb" style="display:none;">Wala makasulod sa HD</span></span></div>
+        <div class="sym-toggle"><input type="checkbox" id="sym-missed-cb" onchange="toggleSelect(this)"><label for="sym-missed-cb"><span class="lang-en">Yes</span><span class="lang-tl" style="display:none;">Oo</span><span class="lang-ceb" style="display:none;">Oo</span></label></div>
+      </div>
+      <div class="sym-detail">
+        <div class="sym-mod-row" data-mod-name="missed-features">
+          <input type="checkbox" id="m-2" value="multiple"><label for="m-2"><span class="lang-en">Missed 2 or more in a row</span><span class="lang-tl" style="display:none;">Sunod-sunod 2 o higit</span><span class="lang-ceb" style="display:none;">Sunod-sunod 2 o sobra</span></label>
+          <input type="checkbox" id="m-symp" value="symptoms"><label for="m-symp"><span class="lang-en">With shortness of breath / swelling</span><span class="lang-tl" style="display:none;">May hirap sa hinga / pamamaga</span><span class="lang-ceb" style="display:none;">Adunay lisod sa pagginhawa / pamanas</span></label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="reset-bar">
+  <span class="reset-bar-text"><span class="lang-en">Done? Read the recommended plan below. To start over:</span><span class="lang-tl" style="display:none;">Tapos na? Basahin ang plano sa ibaba. Para magsimulang muli:</span><span class="lang-ceb" style="display:none;">Human na? Basaha ang plano sa ubos. Aron magsugod usab:</span></span>
+  <button class="clear-btn" onclick="resetAll()">↺ <span class="lang-en">Clear all</span><span class="lang-tl" style="display:none;">Burahin lahat</span><span class="lang-ceb" style="display:none;">Hawan tanan</span></button>
+</div>
+
+<!-- Output panel -->
+<div class="output-panel out-routine" id="outputPanel">
+  <div class="out-band">
+    <span class="out-emoji" id="outEmoji">🟢</span>
+    <div>
+      <div class="out-headline text-green" id="outHeadline"><span class="lang-en">No urgent concerns yet</span><span class="lang-tl" style="display:none;">Walang urgent na alalahanin pa</span><span class="lang-ceb" style="display:none;">Wala pa'y urgent nga kabalaka</span></div>
+    </div>
+  </div>
+  <div class="out-msg" id="outMessage"><span class="lang-en">Tick your context and any symptoms you feel above. Recommendations will appear here.</span><span class="lang-tl" style="display:none;">I-tsek ang konteksto at sintomas sa itaas. Lalabas ang mga rekomendasyon dito.</span><span class="lang-ceb" style="display:none;">I-check ang konteksto ug sintomas sa ibabaw. Motungha ang mga rekomendasyon diri.</span></div>
+  <div id="outDetail"></div>
+</div>
+
+</div><!-- /tool-wrapper -->
+
+</section>
+
+
+<!-- WHAT TO BRING -->
+<section class="section" id="what-to-bring">
+<h2><span class="lang-en">What to Bring to the ER or Clinic</span><span class="lang-tl" style="display:none;">Ano ang Dadalhin sa ER o Klinika</span><span class="lang-ceb" style="display:none;">Unsa ang Dad-on sa ER o Klinika</span></h2>
+
+<p><span class="lang-en">Whether you're going to the ER or a same-day clinic, bring these. It saves time and prevents repeated tests.</span><span class="lang-tl" style="display:none;">Sa ER o klinika, dalhin ito. Nakaka-save ng oras at iwas sa paulit-ulit na eksamen.</span><span class="lang-ceb" style="display:none;">Sa ER o klinika, dad-a kini. Maka-save og oras ug iwas sa balikbalik nga eksamen.</span></p>
+
+<div class="callout callout-teal">
+  <p>📋 <strong><span class="lang-en">Quick-grab checklist</span><span class="lang-tl" style="display:none;">Mabilis na checklist</span><span class="lang-ceb" style="display:none;">Paspas nga checklist</span></strong></p>
+  <ul class="out-list" style="margin-top:8px;">
+    <li><span class="lang-en"><strong>Valid ID + PhilHealth MDR</strong> — for admission and Z-Benefit claims if applicable.</span><span class="lang-tl" style="display:none;"><strong>ID + PhilHealth MDR</strong> — para sa admission at Z-Benefit.</span><span class="lang-ceb" style="display:none;"><strong>ID + PhilHealth MDR</strong> — para sa admission ug Z-Benefit.</span></li>
+    <li><span class="lang-en"><strong>Current medication list</strong> with doses and times. Photo of the pill bottles is acceptable.</span><span class="lang-tl" style="display:none;"><strong>Listahan ng kasalukuyang gamot</strong> kasama ang doses at oras. Larawan ng bote ay tanggap.</span><span class="lang-ceb" style="display:none;"><strong>Listahan sa kasamtangan nga tambal</strong> uban ang doses ug oras. Litrato sa botelya angay.</span></li>
+    <li><span class="lang-en"><strong>Most recent labs</strong> (last 1–3 months) — printout or PDF on your phone.</span><span class="lang-tl" style="display:none;"><strong>Pinakahuling labs</strong> (1–3 buwan) — print o PDF.</span><span class="lang-ceb" style="display:none;"><strong>Pinakaulahing labs</strong> (1–3 ka bulan) — print o PDF.</span></li>
+    <li><span class="lang-en"><strong>Dialysis log / record</strong> if on HD or PD — last 3 sessions' weights, BPs, and notes.</span><span class="lang-tl" style="display:none;"><strong>Dialysis log</strong> kung HD/PD — huling 3 sessions' timbang, BP, mga note.</span><span class="lang-ceb" style="display:none;"><strong>Dialysis log</strong> kung HD/PD — ulahing 3 sessions' timbang, BP, mga note.</span></li>
+    <li><span class="lang-en"><strong>Doctor's name &amp; contact</strong> — nephrologist or cardiologist if applicable.</span><span class="lang-tl" style="display:none;"><strong>Pangalan at contact ng doktor</strong> — nephrologist o cardiologist.</span><span class="lang-ceb" style="display:none;"><strong>Ngalan ug contact sa doktor</strong> — nephrologist o cardiologist.</span></li>
+    <li><span class="lang-en"><strong>This summary</strong> — print it or screenshot before you leave.</span><span class="lang-tl" style="display:none;"><strong>Buod na ito</strong> — i-print o i-screenshot.</span><span class="lang-ceb" style="display:none;"><strong>Kining buod</strong> — i-print o i-screenshot.</span></li>
+  </ul>
+</div>
+
+<div class="callout callout-blue">
+  <p>📞 <strong><span class="lang-en">Don't drive yourself</span><span class="lang-tl" style="display:none;">Huwag mag-drive ng mag-isa</span><span class="lang-ceb" style="display:none;">Ayaw pagdrayb og mag-inusara</span></strong><br/>
+  <span class="lang-en">If you have chest pain, severe dyspnea, weakness on one side, confusion, or a seizure — call someone or call for transport. Sudden loss of consciousness while driving is dangerous for you and everyone on the road.</span>
+  <span class="lang-tl" style="display:none;">Kung may sakit sa dibdib, hirap sa paghinga, panghihina, kalituhan, o seizure — magpatulong. Mapanganib magmaneho sa kondisyong ito.</span>
+  <span class="lang-ceb" style="display:none;">Kung adunay sakit sa dughan, lisod nga pagginhawa, kaluya, kalibog, o seizure — pangayo og tabang. Peligro magmaneho sa kini nga kondisyon.</span></p>
+</div>
+</section>
+
+
+<!-- IMPORTANT LIMITS -->
+<section class="section" id="limits">
+<h2><span class="lang-en">Important Limits of This Tool</span><span class="lang-tl" style="display:none;">Mahahalagang Limitasyon ng Tool na Ito</span><span class="lang-ceb" style="display:none;">Importanteng Limitasyon Niining Himan</span></h2>
+
+<div class="legal">
+<p><strong><span class="lang-en">This is decision support, not a diagnosis.</span><span class="lang-tl" style="display:none;">Ito ay decision support, hindi diagnosis.</span><span class="lang-ceb" style="display:none;">Kini decision support, dili diagnosis.</span></strong><br/><br/>
+<span class="lang-en">This tool helps you decide <em>where</em> to seek care and <em>how urgently</em>. It does not name your condition. The triage recommendation is based on conservative pattern matching from common red-flag combinations — it cannot account for your full history, exam findings, vitals, or labs. A real assessment by a physician is always more accurate.</span>
+<span class="lang-tl" style="display:none;">Ang tool ay tumutulong sa inyong magdesisyon <em>kung saan</em> at <em>kung gaano kabilis</em>. Hindi nito sinasabi ang sakit. Pinakamatumpak pa rin ang pagsusuri ng doktor.</span>
+<span class="lang-ceb" style="display:none;">Ang himan motabang nimo sa pagdesisyon <em>kung asa</em> ug <em>unsa ka paspas</em>. Wala niini gisulti ang sakit. Pinakatukma gihapon ang pagsusi sa doktor.</span><br/><br/>
+<strong><span class="lang-en">Trust your instincts.</span><span class="lang-tl" style="display:none;">Pagtiwala sa inyong intuwisyon.</span><span class="lang-ceb" style="display:none;">Salig sa imong gibati.</span></strong>
+<span class="lang-en">If something feels wrong and the tool says "routine," <em>still call your doctor or go to the ER.</em> No checklist can capture every situation. This tool will never tell you "don't seek care" — its lowest band is "mention at your next visit."</span>
+<span class="lang-tl" style="display:none;">Kung pakiramdam ninyo ay mali kahit sabihin ng tool na "routine," <em>tumawag pa rin sa doktor o pumunta sa ER.</em></span>
+<span class="lang-ceb" style="display:none;">Kung gibati nimo nga sayop bisan og "routine" sa tool, <em>tawag gihapon sa doktor o adto sa ER.</em></span><br/><br/>
+<strong><span class="lang-en">Not for pediatrics.</span><span class="lang-tl" style="display:none;">Hindi para sa bata.</span><span class="lang-ceb" style="display:none;">Dili para sa bata.</span></strong>
+<span class="lang-en">Symptom thresholds in this tool are for adults. Children present differently — bring them to a pediatrician.</span>
+<span class="lang-tl" style="display:none;">Ang threshold dito ay para sa matatanda. Iba ang bata — dalhin sa pediatrician.</span>
+<span class="lang-ceb" style="display:none;">Ang threshold diri para sa hamtong. Lahi ang bata — dad-a sa pediatrician.</span></p>
+</div>
+</section>
+
+
+<!-- DR CARD + RELATED -->
+<div class="dr-card">
+  <img src="../images/photo-contact.jpg" alt="Dr. W. G. M. Rivero">
+  <div class="dr-card-body">
+    <h3><a href="https://williamriveromd.com">W. G. M. Rivero, MD, FPCP, DPSN</a></h3>
+    <p><span class="lang-en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition.</span><span class="lang-tl" style="display:none;">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon.</span><span class="lang-ceb" style="display:none;">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon.</span></p>
+    <p>Available for consultation at four clinic locations across Metro Manila, Pampanga, and Bulacan.</p>
+    <p>PRC 0105184 · <a href="https://www.seriousmd.com/doc/williamrivero">seriousmd.com/doc/williamrivero</a></p>
+  </div>
+</div>
+
+<section class="related-guides">
+  <h2><span class="lang-en">Related Guides</span><span class="lang-tl" style="display:none;">Kaugnay na Gabay</span><span class="lang-ceb" style="display:none;">May Kalabtan nga Giya</span></h2>
+  <div class="related-grid">
+    <a href="lab-interpreter-guide.html" class="related-card">
+      <span class="related-badge">Interactive</span>
+      <h3>Lab Results Interpreter</h3>
+      <p>Enter your lab values for instant colour-coded interpretation against KDIGO, ACC/AHA, and ADA targets.</p>
+      <span class="read-more">Read →</span>
+    </a>
+    <a href="understanding-ckd.html" class="related-card">
+      <span class="related-badge">The Basics</span>
+      <h3>Understanding Chronic Kidney Disease</h3>
+      <p>What CKD means, how it progresses, and what you can do today to protect your remaining kidney function.</p>
+      <span class="read-more">Read →</span>
+    </a>
+    <a href="hemodialysis-complications.html" class="related-card">
+      <span class="related-badge">Dialysis</span>
+      <h3>Hemodialysis Complications</h3>
+      <p>Common HD problems and how to recognize them — cramps, hypotension, arrhythmia, access trouble.</p>
+      <span class="read-more">Read →</span>
+    </a>
+    <a href="peritoneal-dialysis-ckd.html" class="related-card">
+      <span class="related-badge">Dialysis</span>
+      <h3>Peritoneal Dialysis Guide</h3>
+      <p>How PD works at home, when to call your nurse, and warning signs you should not ignore.</p>
+      <span class="read-more">Read →</span>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer class="guide-footer">
+  <div class="footer-inner">
+    <p>© 2026 <a href="https://williamriveromd.com">W. G. M. Rivero, MD</a> · <a href="https://williamriveromd.com">williamriveromd.com</a></p>
+    <p><span class="lang-en">Triage logic based on KDIGO 2024, AHA ACS protocols, ADA 2025, and ISPD peritonitis guidelines.</span><span class="lang-tl" style="display:none;">Sinanggunian: KDIGO 2024, AHA ACS protocols, ADA 2025, ISPD peritonitis guidelines.</span><span class="lang-ceb" style="display:none;">Gigikanan: KDIGO 2024, AHA ACS protocols, ADA 2025, ISPD peritonitis guidelines.</span></p>
+  </div>
+</footer>
+
+<script>
+// ────────────────────────────────────────────────────────────────
+// Site shell JS (dark mode, desktop view, language toggle)
+// ────────────────────────────────────────────────────────────────
+function toggleDark(){
+  var on=document.documentElement.getAttribute('data-theme')!=='dark';
+  document.documentElement.setAttribute('data-theme',on?'dark':'light');
+  var lbl=document.getElementById('darkLabel');
+  if(lbl)lbl.textContent=on?'Light':'Dark';
+  try{localStorage.setItem('wgmr-dark',on?'1':'0');}catch(e){}
+}
+function toggleDesktop(){
+  var on=document.documentElement.getAttribute('data-view')!=='desktop';
+  document.documentElement.setAttribute('data-view',on?'desktop':'mobile');
+  var lbl=document.getElementById('desktopLabel');
+  if(lbl)lbl.textContent=on?'Mobile':'Desktop';
+  try{localStorage.setItem('wgmr-desktop',on?'1':'0');}catch(e){}
+}
+function setLang(lang){
+  ['en','tl','ceb'].forEach(function(l){
+    var btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+    document.querySelectorAll('.lang-'+l).forEach(function(el){
+      el.style.display=(l===lang)?'':'none';
+    });
+  });
+  try{localStorage.setItem('wgmr-lang',lang);}catch(e){}
+}
+(function(){
+  try{
+    var d=localStorage.getItem('wgmr-dark');
+    if(d==='1'){document.documentElement.setAttribute('data-theme','dark');var lbl=document.getElementById('darkLabel');if(lbl)lbl.textContent='Light';}
+    var v=localStorage.getItem('wgmr-desktop');
+    if(v==='1'){document.documentElement.setAttribute('data-view','desktop');var vlbl=document.getElementById('desktopLabel');if(vlbl)vlbl.textContent='Mobile';}
+    var l=localStorage.getItem('wgmr-lang');
+    if(l&&l!=='en'){setLang(l);}else{
+      document.querySelectorAll('.lang-en').forEach(function(el){el.style.display='';});
+      document.querySelectorAll('.lang-tl,.lang-ceb').forEach(function(el){el.style.display='none';});
+    }
+  }catch(e){
+    document.querySelectorAll('.lang-en').forEach(function(el){el.style.display='';});
+    document.querySelectorAll('.lang-tl,.lang-ceb').forEach(function(el){el.style.display='none';});
+  }
+})();
+
+// ────────────────────────────────────────────────────────────────
+// Triage engine
+// ────────────────────────────────────────────────────────────────
+const TIER = { ROUTINE: 1, URGENT: 2, SAMEDAY: 3, ER: 4 };
+const TIER_NAME = { 1:'routine', 2:'urgent', 3:'sameday', 4:'er' };
+
+// State - what ctx + symptoms + modifiers are selected
+const state = {
+  ctx: {},          // ctx-hd, ctx-pd, ctx-ckd, etc → bool
+  syms: {},         // sym key → { mods: { modName: [values] } }
+};
+
+// Per-symptom rule functions. Each returns { tier, reason } based on state.
+const RULES = {
+  'chest-pain': function(s, ctx){
+    var when = (s.mods['chest-pain-when']||[])[0];
+    var feats = s.mods['chest-pain-features']||[];
+    // ER if at rest, or with diaphoresis, dyspnea, or radiation
+    if(when==='rest' || feats.indexOf('diaphoresis')>=0 || feats.indexOf('dyspnea')>=0 || feats.indexOf('radiate')>=0){
+      return {tier:TIER.ER, reason:'Chest pain at rest or with concerning features (radiation, sweating, breathlessness) — possible ACS until proven otherwise.'};
+    }
+    if(when==='exertion'){
+      return {tier:TIER.SAMEDAY, reason:'Chest pain only with exertion — possible stable angina, needs same-day cardiac evaluation.'};
+    }
+    return {tier:TIER.SAMEDAY, reason:'Chest pain reported. Conservative triage: same-day evaluation.'};
+  },
+  'dyspnea': function(s, ctx){
+    var sev = (s.mods['dyspnea-severity']||[])[0];
+    if(sev==='cannot-talk') return {tier:TIER.ER, reason:'Severe dyspnea — cannot speak full sentences.'};
+    if(sev==='rest') return {tier:TIER.ER, reason:'Dyspnea at rest — needs immediate evaluation for pulmonary edema, PE, or ACS.'};
+    if(sev==='mild') return {tier:TIER.SAMEDAY, reason:'New exertional dyspnea — same-day evaluation, especially with kidney/heart history.'};
+    return {tier:TIER.SAMEDAY, reason:'Dyspnea reported — same-day evaluation.'};
+  },
+  'fluid': function(s, ctx){
+    var feats = s.mods['fluid-features']||[];
+    if(feats.indexOf('orthopnea')>=0 || feats.indexOf('weight-2kg')>=0){
+      return {tier:TIER.ER, reason:'Acute fluid overload signs (orthopnea or +2 kg overnight) — likely pulmonary congestion.'};
+    }
+    if(feats.indexOf('multiple-pillows')>=0){
+      return {tier:TIER.SAMEDAY, reason:'Needing extra pillows to breathe is early fluid overload — same-day review.'};
+    }
+    return {tier:TIER.SAMEDAY, reason:'Possible fluid overload — same-day review.'};
+  },
+  'palpitations': function(s, ctx){
+    var feats = s.mods['palp-features']||[];
+    if(feats.indexOf('near-faint')>=0 || feats.indexOf('chest')>=0){
+      return {tier:TIER.ER, reason:'Palpitations with near-syncope or chest pain — concerning for malignant arrhythmia.'};
+    }
+    if(feats.indexOf('hours')>=0){
+      return {tier:TIER.SAMEDAY, reason:'Prolonged palpitations — same-day ECG, especially in CKD/dialysis patients (electrolyte risk).'};
+    }
+    return {tier:TIER.URGENT, reason:'Palpitations noted — schedule ECG within a few days.'};
+  },
+  'urine-output': function(s, ctx){
+    var amt = (s.mods['urine-amount']||[])[0];
+    // Anuria in non-anuric patients (i.e. not chronic dialysis) is ER
+    if(amt==='none'){
+      if(ctx.hd) return {tier:TIER.URGENT, reason:'Anuria — common if anuric on HD already, but report at next dialysis session if new.'};
+      return {tier:TIER.ER, reason:'No urine output for many hours — possible obstruction or severe AKI.'};
+    }
+    if(amt==='very-little'){
+      return {tier:TIER.SAMEDAY, reason:'Marked oliguria — same-day evaluation for AKI, obstruction, or volume depletion.'};
+    }
+    if(amt==='less'){
+      return {tier:TIER.URGENT, reason:'Reduced urine output — urgent visit within days for AKI workup.'};
+    }
+    return {tier:TIER.URGENT, reason:'Urine output change noted — urgent review.'};
+  },
+  'hematuria': function(s, ctx){
+    var feats = s.mods['hem-features']||[];
+    if(feats.indexOf('clots')>=0) return {tier:TIER.ER, reason:'Blood clots in urine — risk of clot retention; needs urgent urology evaluation.'};
+    if(feats.indexOf('fever')>=0) return {tier:TIER.SAMEDAY, reason:'Hematuria with fever — possible complicated UTI or pyelonephritis.'};
+    if(feats.indexOf('pain')>=0) return {tier:TIER.SAMEDAY, reason:'Hematuria with flank pain — possible stone or pyelonephritis.'};
+    return {tier:TIER.SAMEDAY, reason:'Visible blood in urine — same-day evaluation; never normal.'};
+  },
+  'foamy': function(s, ctx){
+    return {tier:TIER.URGENT, reason:'Persistent foamy urine — possible proteinuria; urinalysis within days.'};
+  },
+  'edema': function(s, ctx){
+    var where = s.mods['edema-where']||[];
+    if(where.indexOf('one-leg')>=0){
+      return {tier:TIER.ER, reason:'Unilateral leg swelling — DVT until proven otherwise.'};
+    }
+    if(where.indexOf('generalized')>=0 || where.indexOf('abdomen')>=0){
+      return {tier:TIER.SAMEDAY, reason:'Generalized or abdominal swelling — same-day evaluation for fluid overload or nephrotic syndrome.'};
+    }
+    if(where.indexOf('face')>=0){
+      return {tier:TIER.URGENT, reason:'Facial / periorbital swelling — possible nephrotic syndrome; visit within days.'};
+    }
+    if(where.indexOf('legs')>=0){
+      // For HF/CKD patients, leg edema often worse fluid status
+      if(ctx.hf || ctx.hd || ctx.pd){
+        return {tier:TIER.SAMEDAY, reason:'New or worse leg swelling in cardiac/dialysis patient — same-day review for fluid status.'};
+      }
+      return {tier:TIER.URGENT, reason:'New leg swelling — urgent evaluation.'};
+    }
+    return {tier:TIER.URGENT, reason:'New swelling — urgent evaluation.'};
+  },
+  'vomiting': function(s, ctx){
+    var feats = s.mods['vomit-features']||[];
+    if(feats.indexOf('hematemesis')>=0 || feats.indexOf('melena')>=0){
+      return {tier:TIER.ER, reason:'GI bleeding (blood in vomit or black stools) — needs immediate evaluation, especially on CKD/dialysis.'};
+    }
+    if(feats.indexOf('prolonged')>=0){
+      return {tier:TIER.SAMEDAY, reason:'Persistent vomiting >24h — risk of dehydration, electrolyte derangement, missed medications.'};
+    }
+    return {tier:TIER.URGENT, reason:'Vomiting — urgent visit if it continues.'};
+  },
+  'abdpain': function(s, ctx){
+    var feats = s.mods['abd-features']||[];
+    if(ctx.pd){
+      // PD patient with abdominal pain is peritonitis until proven otherwise
+      return {tier:TIER.ER, reason:'Severe abdominal pain on PD — peritonitis until proven otherwise. Go to ER; do not start a new exchange.'};
+    }
+    if(feats.indexOf('cloudy-pd')>=0) return {tier:TIER.ER, reason:'Cloudy PD effluent — peritonitis.'};
+    if(feats.indexOf('rigid')>=0) return {tier:TIER.ER, reason:'Rigid abdomen — possible peritonitis or surgical abdomen.'};
+    return {tier:TIER.SAMEDAY, reason:'Severe abdominal pain — same-day evaluation.'};
+  },
+  'neuro': function(s, ctx){
+    var feats = s.mods['neuro-features']||[];
+    if(feats.length>0){
+      return {tier:TIER.ER, reason:'Neurologic red flag — seizure, new confusion, focal weakness, or thunderclap headache all require immediate evaluation.'};
+    }
+    return {tier:TIER.ER, reason:'Severe neurologic symptoms reported — go to the ER.'};
+  },
+  'fever': function(s, ctx){
+    var temp = (s.mods['fever-temp']||[])[0];
+    // Dialysis / transplant / very high fever → ER
+    if(ctx.hd || ctx.pd || ctx.tx){
+      return {tier:TIER.ER, reason:'Fever in a dialysis or transplant patient is treated as sepsis / line infection until proven otherwise.'};
+    }
+    if(temp==='high'){
+      return {tier:TIER.SAMEDAY, reason:'High fever (≥39°C) — same-day evaluation, especially with comorbidities.'};
+    }
+    return {tier:TIER.URGENT, reason:'Fever — urgent visit if persists >48 h or with new symptoms.'};
+  },
+  'syncope': function(s, ctx){
+    var feats = s.mods['syncope-features']||[];
+    if(feats.indexOf('with-chest')>=0 || feats.indexOf('during-exertion')>=0 || feats.indexOf('head-injury')>=0){
+      return {tier:TIER.ER, reason:'Syncope with chest pain, during exertion, or with head injury — needs immediate evaluation.'};
+    }
+    return {tier:TIER.SAMEDAY, reason:'Syncope or near-syncope — same-day workup for arrhythmia, hypotension, or electrolyte cause.'};
+  },
+  'hypo': function(s, ctx){
+    var feats = s.mods['hypo-features']||[];
+    if(feats.indexOf('confusion')>=0){
+      return {tier:TIER.ER, reason:'Hypoglycemia with confusion or inability to take sugar by mouth — give IV glucose.'};
+    }
+    if(feats.indexOf('recurrent')>=0){
+      return {tier:TIER.SAMEDAY, reason:'Recurrent hypoglycemia — same-day medication review.'};
+    }
+    return {tier:TIER.URGENT, reason:'Hypoglycemia episode — treat with 15g carbs now, see doctor within days to adjust meds.'};
+  },
+  'dka': function(s, ctx){
+    return {tier:TIER.ER, reason:'Possible diabetic ketoacidosis — always an emergency, even if you feel okay.'};
+  },
+  'access': function(s, ctx){
+    var feats = s.mods['access-features']||[];
+    if(feats.indexOf('bleeding')>=0) return {tier:TIER.ER, reason:'Uncontrolled bleeding from access — apply firm pressure and go to ER.'};
+    if(feats.indexOf('no-thrill')>=0) return {tier:TIER.ER, reason:'Loss of thrill — access likely thrombosed; urgent intervention needed to save it.'};
+    if(feats.indexOf('hot-red')>=0) return {tier:TIER.SAMEDAY, reason:'Hot, red, painful access — likely infection; needs same-day antibiotics + culture.'};
+    if(feats.indexOf('swollen')>=0) return {tier:TIER.SAMEDAY, reason:'Newly swollen arm — possible central vein stenosis or thrombosis.'};
+    return {tier:TIER.SAMEDAY, reason:'Access problem — same-day review at your dialysis unit.'};
+  },
+  'missed': function(s, ctx){
+    var feats = s.mods['missed-features']||[];
+    if(feats.indexOf('multiple')>=0 || feats.indexOf('symptoms')>=0){
+      return {tier:TIER.ER, reason:'Missed multiple HD sessions or with overload symptoms — risk of hyperkalemia and pulmonary edema.'};
+    }
+    return {tier:TIER.SAMEDAY, reason:'Missed dialysis — contact your unit today to reschedule or get make-up run.'};
+  }
+};
+
+// Triage band labels (per locale via lang-XX spans, output is icon + key)
+const BAND_INFO = {
+  4: {emoji:'🔴', cls:'tb-er', outCls:'out-er', textCls:'text-red',
+      en_head:'Go to the emergency room now',
+      tl_head:'Pumunta sa ER ngayon na',
+      ceb_head:'Adto sa ER karon dayon',
+      en_sub:'One or more red-flag symptoms detected. Do not wait.',
+      tl_sub:'May red-flag na sintomas. Huwag maghintay.',
+      ceb_sub:'Adunay red-flag nga sintomas. Ayaw paghulat.'},
+  3: {emoji:'🟠', cls:'tb-sameday', outCls:'out-sameday', textCls:'text-orange',
+      en_head:'Same-day consultation today',
+      tl_head:'Same-day consultation ngayon',
+      ceb_head:'Same-day consultation karon',
+      en_sub:'Call your doctor today or visit a same-day clinic / telehealth.',
+      tl_sub:'Tumawag sa doktor ngayong araw o magpa-telehealth.',
+      ceb_sub:'Tawag sa doktor karon o telehealth.'},
+  2: {emoji:'🟡', cls:'tb-urgent', outCls:'out-urgent', textCls:'text-amber',
+      en_head:'Urgent visit within 2–3 days',
+      tl_head:'Urgent na bisita sa 2–3 araw',
+      ceb_head:'Urgent nga bisita sa 2–3 ka adlaw',
+      en_sub:'Call the clinic to fast-track an appointment.',
+      tl_sub:'Tumawag sa klinika para mas mabilis.',
+      ceb_sub:'Tawag sa klinika para mas paspas.'},
+  1: {emoji:'🟢', cls:'tb-routine', outCls:'out-routine', textCls:'text-green',
+      en_head:'Mention at next routine visit',
+      tl_head:'Banggitin sa susunod na bisita',
+      ceb_head:'Hisgoti sa sunod nga bisita',
+      en_sub:'No urgent escalation needed based on what you ticked.',
+      tl_sub:'Walang urgent na kailangan base sa inyong sagot.',
+      ceb_sub:'Walay urgent nga kinahanglan base sa imong tubag.'}
+};
+
+// Action steps per band, multilingual
+const ACTIONS = {
+  4: {
+    en:[
+      '<strong>Go to the nearest emergency room immediately.</strong> If chest pain, severe dyspnea, weakness on one side, seizure, or major bleeding — call for someone to bring you. Do not drive yourself.',
+      'Have someone <strong>call ahead</strong> to your hospital ER or your nephrologist/cardiologist so they expect you.',
+      '<strong>Bring</strong>: ID, PhilHealth MDR, current medication list, recent labs (last 1–3 months), dialysis log if applicable, and this checklist (print or screenshot).',
+      'If you suspect chest pain (ACS): <strong>chew one aspirin 325 mg</strong> on the way, unless you are allergic, on warfarin/DOAC with active bleeding, or have been told not to.',
+      'On the way: do not eat or drink — you may need urgent procedures.'
+    ],
+    tl:[
+      '<strong>Pumunta agad sa pinakamalapit na emergency room.</strong> Kung sakit sa dibdib, hirap sa paghinga, panghihina, seizure, o pagdurugo — magpasama. Huwag mag-drive nang mag-isa.',
+      'Magpatawag muna sa hospital ER o sa doktor para may handa.',
+      '<strong>Dalhin</strong>: ID, PhilHealth MDR, listahan ng gamot, mga huling lab (1–3 buwan), dialysis log, at ang summary na ito.',
+      'Kung hinala ang sakit sa dibdib: <strong>nguyain ang isang aspirin 325 mg</strong> habang papunta, maliban kung allergic, naka-warfarin/DOAC, o pinagbawal.',
+      'Sa daan: huwag kumain o uminom — maaaring may agarang procedure.'
+    ],
+    ceb:[
+      '<strong>Adto dayon sa pinakaduol nga emergency room.</strong> Kung sakit sa dughan, lisod nga pagginhawa, kaluya, seizure, o pagdugo — pasamahi. Ayaw pagdrayb nga mag-inusara.',
+      'Patawag sa hospital ER o sa doktor aron andam sila.',
+      '<strong>Dad-a</strong>: ID, PhilHealth MDR, listahan sa tambal, ulahing labs (1–3 ka bulan), dialysis log, ug kining summary.',
+      'Kung gidudahan nga sakit sa dughan: <strong>kuhaa ang aspirin 325 mg</strong> samtang paingon, gawas kung allergic, naka-warfarin/DOAC, o gidili.',
+      'Sa dalan: ayaw mokaon o moinom — basin adunay urgent procedure.'
+    ]
+  },
+  3: {
+    en:[
+      '<strong>Call your doctor today.</strong> Ask for a same-day clinic slot, a telehealth call, or — if you are on dialysis — call your dialysis unit and ask to be seen.',
+      'If your symptoms get worse before you are seen (chest pain, severe dyspnea, fainting, confusion), <strong>upgrade to ER immediately.</strong>',
+      'Write down a quick log: when symptoms started, what makes them better/worse, what you have taken so far.',
+      'Bring your current medication list, recent labs, dialysis log if applicable, and this summary.'
+    ],
+    tl:[
+      '<strong>Tumawag sa doktor ngayong araw.</strong> Hilingin ang same-day clinic slot, telehealth, o tumawag sa dialysis unit.',
+      'Kung lumala ang sintomas (sakit sa dibdib, hirap sa hinga, hilo, kalituhan), <strong>pumunta agad sa ER.</strong>',
+      'Magsulat ng quick log: kailan nagsimula, ano ang nakakabuti/nakakalala, ano na ang ininom.',
+      'Dalhin ang listahan ng gamot, mga labs, dialysis log, at summary na ito.'
+    ],
+    ceb:[
+      '<strong>Tawag sa doktor karong adlawa.</strong> Pangayo og same-day clinic slot, telehealth, o tawag sa dialysis unit.',
+      'Kung mograbe ang sintomas (sakit sa dughan, lisod nga pagginhawa, hilo, kalibog), <strong>adto dayon sa ER.</strong>',
+      'Pagsulat og quick log: kanus-a nagsugod, unsa ang makapaayo/makapagrabe, unsa ang giinom.',
+      'Dad-a ang listahan sa tambal, labs, dialysis log, ug kining summary.'
+    ]
+  },
+  2: {
+    en:[
+      '<strong>Schedule a visit within the next 2–3 days.</strong> Call the clinic to fast-track if needed.',
+      'In the meantime, monitor: keep a daily log of symptom severity (1–10), BP, weight (if you have a scale), and any new triggers.',
+      'If new red-flag symptoms appear (chest pain, severe dyspnea, fainting, confusion, severe bleeding), <strong>do not wait — go to the ER.</strong>',
+      'Bring current medications, recent labs, and this summary to your visit.'
+    ],
+    tl:[
+      '<strong>Mag-schedule ng bisita sa loob ng 2–3 araw.</strong> Tumawag sa klinika para mas mabilis kung kailangan.',
+      'Habang naghihintay, magsulat ng daily log: sintomas (1–10), BP, timbang, anong nagiging trigger.',
+      'Kung may bagong red-flag (sakit sa dibdib, hirap sa hinga, hilo, kalituhan, pagdurugo), <strong>huwag maghintay — pumunta sa ER.</strong>',
+      'Dalhin ang gamot, labs, at summary.'
+    ],
+    ceb:[
+      '<strong>Mag-schedule og bisita sulod sa 2–3 ka adlaw.</strong> Tawag sa klinika para mas paspas.',
+      'Samtang naghulat, pagsulat og daily log: sintomas (1–10), BP, timbang, unsay trigger.',
+      'Kung adunay bag-ong red-flag (sakit sa dughan, lisod nga pagginhawa, hilo, kalibog, pagdugo), <strong>ayaw paghulat — adto sa ER.</strong>',
+      'Dad-a ang tambal, labs, ug summary.'
+    ]
+  },
+  1: {
+    en:[
+      '<strong>Mention this at your next regular consultation.</strong> No urgent action needed based on what you ticked.',
+      'Keep your usual medications, diet, and dialysis schedule. Continue any BP / sugar monitoring you already do.',
+      'Watch for changes — if any new symptom appears or an existing one gets worse, re-run this checker.',
+      'Reminder: this tool errs on the side of caution. If something feels wrong even with a "routine" recommendation, call your doctor anyway.'
+    ],
+    tl:[
+      '<strong>Banggitin sa susunod na regular na konsultasyon.</strong> Walang urgent na kailangan base sa inyong sagot.',
+      'Ipagpatuloy ang regular na gamot, diet, at dialysis schedule. Tuluy-tuloy ang BP / sugar monitoring.',
+      'Bantayan: kung may bagong sintomas o mas lumala, balikan ang checker na ito.',
+      'Paalala: ang tool ay maingat. Kung pakiramdam ninyo ay mali kahit "routine," tumawag pa rin sa doktor.'
+    ],
+    ceb:[
+      '<strong>Hisgoti sa sunod nga regular nga konsultasyon.</strong> Walay urgent nga kinahanglan base sa imong tubag.',
+      'Padayuna ang regular nga tambal, diet, ug dialysis schedule. Padayuna ang BP / sugar monitoring.',
+      'Bantayi: kung adunay bag-ong sintomas o mograbe, balika kining checker.',
+      'Pahinumdum: maampingon ang himan. Kung gibati nimo nga sayop bisan og "routine," tawag gihapon sa doktor.'
+    ]
+  }
+};
+
+// ────────────────────────────────────────────────────────────────
+// Wire up event handlers
+// ────────────────────────────────────────────────────────────────
+function toggleSym(headEl, ev){
+  // Make the whole head row a click target for the symptom toggle,
+  // but skip if the click was on the toggle button itself (label/input
+  // already handle that — otherwise we'd double-flip).
+  if(ev && ev.target && ev.target.closest('.sym-toggle')) return;
+  var cb = headEl.querySelector('.sym-toggle input[type=checkbox]');
+  if(!cb) return;
+  cb.checked = !cb.checked;
+  toggleSelect(cb);
+}
+
+function toggleSelect(cb){
+  var card = cb.closest('.sym-card');
+  card.classList.toggle('selected', cb.checked);
+  if(!cb.checked){
+    // Clear all modifier selections inside this card
+    card.querySelectorAll('input[type=radio],input[type=checkbox]').forEach(function(inp){
+      if(inp!==cb) inp.checked=false;
+    });
+  }
+  recompute();
+}
+
+function onCtxChange(){
+  // Refresh ctx state
+  state.ctx = {};
+  document.querySelectorAll('.ctx-check input[type=checkbox]').forEach(function(cb){
+    if(cb.checked) state.ctx[cb.dataset.ctx] = true;
+  });
+  // Show/hide conditional symptom cards
+  document.querySelectorAll('.sym-card[data-show-if]').forEach(function(card){
+    var need = card.dataset.showIf.split(',');
+    var show = need.some(function(k){ return state.ctx[k]; });
+    card.classList.toggle('shown', show);
+    if(!show){
+      // Uncheck if hidden
+      var cb = card.querySelector('.sym-toggle input[type=checkbox]');
+      if(cb && cb.checked){ cb.checked=false; toggleSelect(cb); }
+    }
+  });
+  recompute();
+}
+
+function readSymState(){
+  state.syms = {};
+  document.querySelectorAll('.sym-card').forEach(function(card){
+    var key = card.dataset.sym;
+    var cb = card.querySelector('.sym-toggle input[type=checkbox]');
+    if(!cb || !cb.checked) return;
+    var mods = {};
+    card.querySelectorAll('.sym-mod-row').forEach(function(row){
+      var name = row.dataset.modName;
+      if(!name) return;
+      var values = [];
+      row.querySelectorAll('input[type=radio]:checked,input[type=checkbox]:checked').forEach(function(inp){
+        values.push(inp.value);
+      });
+      if(values.length) mods[name] = values;
+    });
+    state.syms[key] = { mods: mods };
+  });
+}
+
+function recompute(){
+  readSymState();
+  var results = [];
+  Object.keys(state.syms).forEach(function(key){
+    var rule = RULES[key];
+    if(!rule) return;
+    var r = rule(state.syms[key], state.ctx);
+    if(r) results.push({ key: key, tier: r.tier, reason: r.reason });
+  });
+
+  // Combo escalation rules
+  var keys = results.map(function(r){return r.key;});
+  function has(k){ return keys.indexOf(k)>=0; }
+  if(has('dyspnea') && has('edema') && (has('fluid') || keys.length>=3)){
+    results.push({key:'_combo_pulm_edema', tier:TIER.ER, reason:'Dyspnea + edema + fluid signs together suggest acute pulmonary edema — go to ER.'});
+  }
+  if(state.ctx.pd && has('fever') && has('abdpain')){
+    results.push({key:'_combo_pd_peritonitis', tier:TIER.ER, reason:'PD patient with fever + abdominal pain = peritonitis until ruled out.'});
+  }
+
+  var maxTier = results.reduce(function(m,r){return Math.max(m,r.tier);}, TIER.ROUTINE);
+  if(results.length===0) maxTier = 0; // sentinel: nothing ticked
+
+  renderBanner(maxTier);
+  renderOutput(maxTier, results);
+
+  // Apply tier styling to individual sym cards
+  document.querySelectorAll('.sym-card').forEach(function(card){
+    card.classList.remove('tier-er','tier-sameday','tier-urgent');
+  });
+  results.forEach(function(r){
+    if(r.key.indexOf('_combo')===0) return;
+    var card = document.querySelector('.sym-card[data-sym="'+r.key+'"]');
+    if(!card) return;
+    if(r.tier===TIER.ER) card.classList.add('tier-er');
+    else if(r.tier===TIER.SAMEDAY) card.classList.add('tier-sameday');
+    else if(r.tier===TIER.URGENT) card.classList.add('tier-urgent');
+  });
+}
+
+function renderBanner(tier){
+  var banner = document.getElementById('triageBanner');
+  banner.className = 'triage-banner';
+  if(tier===0){
+    banner.classList.add('tb-routine');
+    document.getElementById('triageHeadline').innerHTML =
+      '<span class="lang-en">No symptoms ticked yet</span>' +
+      '<span class="lang-tl" style="display:none;">Walang sintomas pa</span>' +
+      '<span class="lang-ceb" style="display:none;">Wala pay sintomas</span>';
+    document.getElementById('triageSub').innerHTML =
+      '<span class="lang-en">Tick what you feel below — the recommendation will update here.</span>' +
+      '<span class="lang-tl" style="display:none;">I-tsek ang nararamdaman sa ibaba.</span>' +
+      '<span class="lang-ceb" style="display:none;">I-check ang gibati sa ubos.</span>';
+    syncLang();
+    return;
+  }
+  var info = BAND_INFO[tier];
+  banner.classList.add(info.cls);
+  document.getElementById('triageHeadline').innerHTML =
+    '<span class="lang-en">'+info.en_head+'</span>' +
+    '<span class="lang-tl" style="display:none;">'+info.tl_head+'</span>' +
+    '<span class="lang-ceb" style="display:none;">'+info.ceb_head+'</span>';
+  document.getElementById('triageSub').innerHTML =
+    '<span class="lang-en">'+info.en_sub+'</span>' +
+    '<span class="lang-tl" style="display:none;">'+info.tl_sub+'</span>' +
+    '<span class="lang-ceb" style="display:none;">'+info.ceb_sub+'</span>';
+  syncLang();
+}
+
+function renderOutput(tier, results){
+  var panel = document.getElementById('outputPanel');
+  var emoji = document.getElementById('outEmoji');
+  var headline = document.getElementById('outHeadline');
+  var msg = document.getElementById('outMessage');
+  var detail = document.getElementById('outDetail');
+
+  panel.className = 'output-panel';
+  if(tier===0){
+    panel.classList.add('out-routine');
+    emoji.textContent = '🟢';
+    headline.className = 'out-headline text-green';
+    headline.innerHTML =
+      '<span class="lang-en">No urgent concerns yet</span>' +
+      '<span class="lang-tl" style="display:none;">Walang urgent na alalahanin pa</span>' +
+      '<span class="lang-ceb" style="display:none;">Wala pa\'y urgent nga kabalaka</span>';
+    msg.innerHTML =
+      '<span class="lang-en">Tick your context and any symptoms you feel above. Recommendations will appear here.</span>' +
+      '<span class="lang-tl" style="display:none;">I-tsek ang konteksto at sintomas sa itaas. Lalabas ang mga rekomendasyon dito.</span>' +
+      '<span class="lang-ceb" style="display:none;">I-check ang konteksto ug sintomas sa ibabaw. Motungha ang mga rekomendasyon diri.</span>';
+    detail.innerHTML = '';
+    syncLang();
+    return;
+  }
+
+  var info = BAND_INFO[tier];
+  panel.classList.add(info.outCls);
+  emoji.textContent = info.emoji;
+  headline.className = 'out-headline ' + info.textCls;
+  headline.innerHTML =
+    '<span class="lang-en">'+info.en_head+'</span>' +
+    '<span class="lang-tl" style="display:none;">'+info.tl_head+'</span>' +
+    '<span class="lang-ceb" style="display:none;">'+info.ceb_head+'</span>';
+  msg.innerHTML =
+    '<span class="lang-en">'+info.en_sub+'</span>' +
+    '<span class="lang-tl" style="display:none;">'+info.tl_sub+'</span>' +
+    '<span class="lang-ceb" style="display:none;">'+info.ceb_sub+'</span>';
+
+  // Build detail block
+  var actions = ACTIONS[tier];
+  var html = '<div class="out-subtitle"><span class="lang-en">What to do now</span><span class="lang-tl" style="display:none;">Ano ang gagawin ngayon</span><span class="lang-ceb" style="display:none;">Unsa ang himuon karon</span></div>';
+  html += '<ul class="out-list ' + (tier===TIER.ER?'out-list-er':'') + '">';
+  for(var i=0;i<actions.en.length;i++){
+    html += '<li>';
+    html += '<span class="lang-en">'+actions.en[i]+'</span>';
+    html += '<span class="lang-tl" style="display:none;">'+actions.tl[i]+'</span>';
+    html += '<span class="lang-ceb" style="display:none;">'+actions.ceb[i]+'</span>';
+    html += '</li>';
+  }
+  html += '</ul>';
+
+  // Triggers
+  var triggers = results.filter(function(r){return r.key.indexOf('_combo')!==0;});
+  var combos = results.filter(function(r){return r.key.indexOf('_combo')===0;});
+  if(triggers.length || combos.length){
+    html += '<div class="out-subtitle"><span class="lang-en">What triggered this</span><span class="lang-tl" style="display:none;">Bakit ganito</span><span class="lang-ceb" style="display:none;">Ngano kini</span></div>';
+    html += '<div class="out-triggers">';
+    triggers.concat(combos).sort(function(a,b){return b.tier-a.tier;}).forEach(function(r){
+      var tn = TIER_NAME[r.tier].toUpperCase();
+      html += '<div style="margin-bottom:6px;"><strong>'+tn+'</strong> — '+r.reason+'</div>';
+    });
+    html += '</div>';
+  }
+
+  html += '<div class="out-actions">';
+  html += '<button class="btn-action btn-primary" onclick="window.print()">🖨️ <span class="lang-en">Print this plan</span><span class="lang-tl" style="display:none;">I-print ito</span><span class="lang-ceb" style="display:none;">I-print kini</span></button>';
+  html += '<a class="btn-action" href="#what-to-bring"><span class="lang-en">What to bring →</span><span class="lang-tl" style="display:none;">Ano ang dadalhin →</span><span class="lang-ceb" style="display:none;">Unsa ang dad-on →</span></a>';
+  html += '</div>';
+
+  detail.innerHTML = html;
+  syncLang();
+}
+
+function syncLang(){
+  // Reapply current language to any newly-inserted lang-XX spans
+  var l = 'en';
+  try{ var s = localStorage.getItem('wgmr-lang'); if(s) l = s; }catch(e){}
+  ['en','tl','ceb'].forEach(function(code){
+    document.querySelectorAll('.lang-'+code).forEach(function(el){
+      el.style.display = (code===l)?'':'none';
+    });
+  });
+}
+
+function resetAll(){
+  document.querySelectorAll('.ctx-check input[type=checkbox]').forEach(function(cb){ cb.checked=false; });
+  document.querySelectorAll('.sym-card .sym-toggle input[type=checkbox]').forEach(function(cb){
+    cb.checked=false;
+    var card=cb.closest('.sym-card');
+    card.classList.remove('selected','tier-er','tier-sameday','tier-urgent');
+  });
+  document.querySelectorAll('.sym-card input[type=radio]').forEach(function(r){ r.checked=false; });
+  document.querySelectorAll('.sym-card .sym-detail input[type=checkbox]').forEach(function(r){ r.checked=false; });
+  onCtxChange();
+}
+
+// Attach listeners
+document.querySelectorAll('.ctx-check input[type=checkbox]').forEach(function(cb){
+  cb.addEventListener('change', onCtxChange);
+});
+document.querySelectorAll('.sym-card .sym-detail input').forEach(function(inp){
+  inp.addEventListener('change', recompute);
+});
+
+// Initial render
+onCtxChange();
+</script>
+
+<script src="../assets/symptom-checker-widget.js" defer></script>
+</body>
+</html>
