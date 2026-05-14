@@ -71,7 +71,60 @@
   }
 
   /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
-  /* Header is inline-styled, just ensure anchor legibility */
+  .site-header {
+    background: var(--navy);
+    padding: 0 32px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .site-header .brand {
+    font-size: 16px;
+    font-weight: 400;
+    color: #ffffff;
+    text-decoration: none;
+  }
+  .site-header .brand strong { font-weight: 600; color: #d4af4f; }
+  .site-header .back {
+    font-size: 12px;
+    color: rgba(255,255,255,.7);
+    text-decoration: none;
+    letter-spacing: .04em;
+  }
+  .site-header .back:hover { color: #ffffff; }
+
+  /* ── AUDIENCE TABS (Patient ↔ Clinician — used by a subset of guides) ───────── */
+  .audience-tabs {
+    background: var(--navy);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex;
+    justify-content: center;
+  }
+  .tabs-inner { display: flex; max-width: 880px; width: 100%; }
+  .aud-tab {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; letter-spacing: .04em;
+    color: rgba(255,255,255,.55);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all .25s;
+  }
+  .aud-tab:hover { color: rgba(255,255,255,.85); }
+  .aud-tab.active {
+    color: #ffffff;
+    border-bottom-color: #d4af4f;
+    background: rgba(212,175,79,.08);
+  }
 
   /* ── TOGGLE BAR ──────────────────────────────────────────────────────────── */
   .guide-toggle-bar {
@@ -1582,7 +1635,7 @@ html[data-theme="dark"] #decision-tools .dt-region-info{background:#0f1f38;color
   <div class="dt-panel" data-dt-panel="cost">
     <div class="dt-panel-head">
       <h3>🧮 <span data-lang="en">PhilHealth Cost Estimator</span><span data-lang="tl" class="lang-hidden">PhilHealth Cost Estimator</span><span data-lang="ceb" class="lang-hidden">PhilHealth Cost Estimator</span></h3>
-      <p class="dt-panel-sub"><span data-lang="en">Pre-filled from your earlier tab answers where possible. Pick your membership tier and region, tick the services you need, and see an <em>estimated</em> coverage + out-of-pocket. <strong>Peso amounts are approximations as of 2025–2026 — verify with your social worker or PhilHealth.</strong></span><span data-lang="tl" class="lang-hidden">May pre-fill mula sa naunang tab. Pumili ng membership tier at rehiyon, lagyan ng tsek ang services, makakakita ng <em>tinatayang</em> coverage at out-of-pocket. <strong>Tinatayang halaga lamang noong 2025–2026 — i-verify sa PhilHealth.</strong></span><span data-lang="ceb" class="lang-hidden">May pre-fill gikan sa nauna nga tab. Pagpili og membership tier ug rehiyon, i-check ang services, makakita og <em>banabana</em> nga coverage ug out-of-pocket. <strong>Banabana lamang ang halaga sa 2025–2026 — i-verify sa PhilHealth.</strong></span></p>
+      <p class="dt-panel-sub"><span data-lang="en">Pre-filled from your earlier tab answers where possible. Pick your membership tier and region, tick the services you need, and see an <em>estimated</em> coverage + out-of-pocket. Rates reflect PC 2024-0023 (HD, Oct 2024), PC 2024-0035 &amp; 2024-0036 (KT &amp; PD, Jan 2025), and PC 2025-0011 &amp; 2025-0012 (Post-KT, July 2025). For the full benefit breakdown see <a href="philhealth-z-packages.html" style="color:var(--teal);font-weight:600;">PhilHealth Z Packages</a>. <strong>Verify current rates with your social worker.</strong></span><span data-lang="tl" class="lang-hidden">May pre-fill mula sa naunang tab. Saklaw na ng PC 2024-0023 (HD), PC 2024-0035/0036 (KT/PD), at PC 2025-0011/0012 (Post-KT). Buong detalye: <a href="philhealth-z-packages.html" style="color:var(--teal);font-weight:600;">PhilHealth Z Packages</a>. <strong>I-verify sa social worker.</strong></span><span data-lang="ceb" class="lang-hidden">May pre-fill gikan sa nauna nga tab. Nakasakop na sa PC 2024-0023 (HD), PC 2024-0035/0036 (KT/PD), ug PC 2025-0011/0012 (Post-KT). Detalye: <a href="philhealth-z-packages.html" style="color:var(--teal);font-weight:600;">PhilHealth Z Packages</a>. <strong>I-verify sa social worker.</strong></span></p>
     </div>
 
     <div class="dt-cost-grid">
@@ -1945,15 +1998,17 @@ function setLang(lang){
       biopsy:      { name:'Kidney biopsy (one-time)',                cost:30000, cov:22000, unit:'once',  notes:'All Case Rate (ACR); inpatient', stages:['s3','s4'] },
       avf:         { name:'AVF/AVG creation surgery',                cost:40000, cov:35000, unit:'once',  notes:'Z-benefit "vascular access for HD" package', stages:['s5','hd'] },
       catheter:    { name:'Temporary HD catheter insertion',         cost:15000, cov:8000,  unit:'once',  notes:'ACR; bridge access, infection-risk discussion needed', stages:['s5','hd'] },
-      hd:          { name:'HD sessions (144 per year)',              cost:4500,  cov:4000,  unit:'/session', sessions:144, notes:'Z-benefit Y2024+; ~144 sessions/year cap', stages:['hd'] },
-      pd:          { name:'PD monthly package (CAPD/APD)',           cost:35000, cov:30000, unit:'/month',   months:12, notes:'PD Z-benefit covers solutions + supplies + monthly nephro', stages:['pd'] },
-      esa:         { name:'ESA (erythropoietin) injections',         cost:2200,  cov:1000,  unit:'/dose',    notes:'Partial; dose frequency by Hb response',     stages:['s4','s5','hd','pd'] },
-      iron:        { name:'IV iron infusion',                        cost:2500,  cov:1200,  unit:'/dose',    notes:'Partial; iron sucrose or carboxymaltose',     stages:['s4','s5','hd','pd'] },
+      hd:          { name:'HD sessions (156 per year)',              cost:6350,  cov:6350,  unit:'/session', sessions:156, notes:'PC 2024-0023 Rev.2 (Oct 2024): ₱6,350/session × 156 sessions = ₱990,600/year. Includes facility, dialyzer, ESA, IV iron, labs, professional fees. NBB applies at accredited centres.', stages:['hd'] },
+      pd:          { name:'PD monthly package (Adult CAPD, higher volume)', cost:42512, cov:42512, unit:'/month', months:12, notes:'PC 2024-0036 (Jan 2025): Adult CAPD higher volume up to ₱510,140/year. Lower volume = ₱389,640/year. Pediatric APD up to ₱1.27M/year. Includes solutions, exit-site care, peritonitis treatment, catheter, labs, drugs.', stages:['pd'] },
+      esa:         { name:'ESA (erythropoietin) — pre-dialysis or PD',cost:2200,  cov:1000,  unit:'/dose',    notes:'Partial coverage for CKD pre-dialysis and PD. For HD patients, ESA is bundled into the ₱6,350/session HD package — do not double-count.', stages:['s4','s5','pd'] },
+      iron:        { name:'IV iron infusion — pre-dialysis or PD',    cost:2500,  cov:1200,  unit:'/dose',    notes:'Partial coverage. For HD patients, IV iron is bundled into the ₱6,350/session HD package — do not double-count.', stages:['s4','s5','pd'] },
       aki:         { name:'Inpatient AKI / CKD admission',           cost:50000, cov:30000, unit:'/admission', notes:'ACR varies by case mix; uncomplicated AKI ~₱30k',  stages:['s3','s4','s5'] },
-      tx_workup:   { name:'Transplant workup labs + imaging',        cost:80000, cov:30000, unit:'once',     notes:'Partial; tissue typing, cardiac workup, infection screen', stages:['s5','hd','pd'] },
-      tx_surgery:  { name:'Kidney transplant surgery (Z-benefit)',   cost:600000,cov:600000,unit:'once',     notes:'Z-benefit covers most of the surgical episode',   stages:['s5','hd','pd'] },
-      tx_immuno:   { name:'Post-tx immunosuppression (lifetime)',    cost:12000, cov:6000,  unit:'/month',   months:12, notes:'Tacrolimus + MMF + steroid; partial PhilHealth + Lingap coverage', stages:['tx'] },
-      tx_monitor:  { name:'Post-transplant monitoring labs',         cost:3500,  cov:1500,  unit:'/month',   months:12, notes:'Drug levels, BMP, infection markers', stages:['tx'] },
+      tx_workup:   { name:'Transplant pre-op workup (now bundled)',   cost:80000, cov:80000, unit:'once',     notes:'Pre-transplant evaluation now included in the KT Z-benefit (PC 2024-0035, Jan 2025). Listed separately for users who want to see it itemised.', stages:['s5','hd','pd'] },
+      tx_surgery:  { name:'Kidney transplant (Z-benefit, living donor lap)', cost:993000, cov:993000, unit:'once', notes:'PC 2024-0035 (Jan 2025): Living donor laparoscopic ₱993,000. Living donor open ₱865,000. Deceased donor + rATG + machine perfusion up to ₱2,146,000. Covers workup + surgery + induction.', stages:['s5','hd','pd'] },
+      tx_immuno:   { name:'Post-KT maintenance immunosuppressants',   cost:40725, cov:40725, unit:'/month',   months:12, notes:'PC 2025-0012 Adult Post-KT Z027A (July 2025): ₱40,725/month covering tacrolimus + MMF + steroid for life. Pediatric PC 2025-0011 available.', stages:['tx'] },
+      tx_prophylaxis:{ name:'Post-KT drug prophylaxis (INH, valacyclovir, cotrimox, nystatin)', cost:18932, cov:18932, unit:'/6mo', months:2, notes:'PC 2025-0012 Z027B: ₱18,932 per 6-month bundle. Two cycles/year ≈ ₱37,864/year.', stages:['tx'] },
+      tx_monitor:  { name:'Post-KT drug-level monitoring + labs',     cost:5000,  cov:5000,  unit:'/month',   months:12, notes:'PC 2025-0012 Z027C+Z027D: Year 1 ≈ ₱76,000 (drug levels max 10× + quarterly labs). Year 2+ ≈ ₱44,900/year. Average ~₱5,000/month.', stages:['tx'] },
+      tx_graft:    { name:'Post-KT annual graft biopsy + Doppler + imaging', cost:84400, cov:84400, unit:'once', notes:'PC 2025-0012 Z027E (biopsy ₱77,000) + Z027F (CXR + abdo US ₱4,000) + Z027G (graft Doppler ₱3,400). Annual if indicated.', stages:['tx'] },
     },
     tiers: {
       formal:   { label:'Formal / Employed',     nbb:false, factor:1.0 },
@@ -2382,7 +2437,8 @@ function setLang(lang){
       const s = PHL.services[key];
       const qty = s.sessions || s.months || 1;
       const cost = s.cost * qty;
-      let cov = s.cov * qty;
+      // Cap coverage at actual cost — PhilHealth never reimburses more than billed
+      let cov = Math.min(s.cov * qty, cost);
       // NBB-eligible tiers and case-rate services → cap OOP at zero in govt HCIs
       const oopRaw = Math.max(0, cost - cov);
       const oop = tierData.nbb ? Math.max(0, oopRaw * tierData.factor) : oopRaw;
@@ -2437,9 +2493,11 @@ function setLang(lang){
     if(accR && (accR.choice === 'avf' || accR.choice === 'avf-now')) $('#dt-services-grid input[data-svc="avf"]').checked = true;
     if(accR && accR.choice === 'catheter-bridge') $('#dt-services-grid input[data-svc="catheter"]').checked = true;
     if(txR && (txR.choice === 'preemptive' || txR.choice === 'after-stabilize')){
-      $('#dt-services-grid input[data-svc="tx_workup"]').checked = true;
       $('#dt-services-grid input[data-svc="tx_surgery"]').checked = true;
       $('#dt-services-grid input[data-svc="tx_immuno"]').checked = true;
+      $('#dt-services-grid input[data-svc="tx_prophylaxis"]').checked = true;
+      $('#dt-services-grid input[data-svc="tx_monitor"]').checked = true;
+      $('#dt-services-grid input[data-svc="tx_graft"]').checked = true;
     }
     renderCost();
   }
