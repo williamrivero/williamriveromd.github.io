@@ -1,0 +1,96 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## What this site is
+
+`williamriveromd.com` is a static patient-education website for Dr. William Gregory M. Rivero, MD (Nephrology, Internal Medicine, Philippines). It consists of ~90 standalone HTML guides on kidney disease topics, a homepage (`index.html`), and a small Node.js proxy server for an AI feature.
+
+## Development commands
+
+```bash
+# Local preview server (serves the static site at localhost:3000)
+npm start                         # runs williamriveromd-server/server.js
+
+# Install server dependencies (only needed once)
+npm run install-server
+
+# Python patch scripts — run from the repo root
+python3 patch_master_css.py               # apply master CSS to all guides
+python3 patch_master_css.py --dry-run     # preview changes without writing
+python3 patch_master_css.py --guide anemia-management.html  # single guide
+
+python3 patch_kdigo2026.py                # apply KDIGO 2026 terminology fixes
+python3 patch_kdigo2026.py --dry-run
+
+python3 add_kap_toggle.py                 # add Kapampangan language button
+python3 add_kap_toggle.py --dry-run
+
+python3 fix_setlang_kap.py                # patch setLang() JS to support 'kap'
+python3 fix_setlang_kap.py --dry-run
+```
+
+The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.
+
+There are no automated tests or linters.
+
+## Architecture
+
+### Static HTML guides (`guides/*.html`)
+
+Each of the 90 guide files is a self-contained HTML document with:
+- **Inline `<style>`** — all CSS lives inside the file, not in an external stylesheet
+- **Inline `<script>`** — all JS at the bottom of the file
+- **Multi-language content** — English, Tagalog, Cebuano, and Kapampangan text coexisting in the DOM, toggled by class
+
+**Do not edit CSS directly in guide files.** The master CSS is maintained in `patch_master_css.py` (`MASTER_CSS` string near the top of the file) and batch-applied with the script. One-off edits to a guide's `<style>` block will be overwritten on the next `patch_master_css.py` run.
+
+### Language system
+
+All pages use the same in-DOM multilingual pattern:
+
+```html
+<span data-lang="en">English text</span>
+<span data-lang="tl" class="lang-hidden">Tagalog text</span>
+<span data-lang="ceb" class="lang-hidden">Cebuano text</span>
+<span data-lang="kap" class="lang-hidden">Kapampangan text</span>
+```
+
+`setLang(lang)` iterates `['en','tl','ceb','kap']`, toggling `lang-hidden` on all `[data-lang]` elements, then persists the selection to `localStorage`. The active language button gets the `active` CSS class.
+
+- **Homepage** (`index.html`): button IDs `lb-en`, `lb-tl`, `lb-ceb`, `lb-kap`
+- **Guides** (`guides/*.html`): button IDs `glb-en`, `glb-tl`, `glb-ceb`, `glb-kap`
+
+When adding new translatable text to a guide, always add sibling `data-lang` spans for all four languages; omitting one causes that language to show no content in that section.
+
+### CSS color tokens
+
+Two token sets exist — **do not mix them**:
+
+| Token | Homepage (`index.html`) | Guides (master CSS) |
+|---|---|---|
+| Body text | `--text: #111827` | `--text: #1e2a38` |
+| Background | `--cream: #f4f6f9` | `--bg: #f9fafb` |
+| Accent | `--teal: #145c63` | `--teal: #1a6b72` |
+
+Guides also expose `--text-mid`, `--text-muted`, `--text-faint`, `--red`, `--red-soft`, `--amber`, `--amber-soft`, `--green`, `--green-soft`, `--purple`, `--purple-soft`. All foreground/background combinations are WCAG AA verified (≥4.5:1 normal text, ≥3:1 large text).
+
+Dark mode on the homepage is `html[data-theme="dark"]`. Guides do not currently have dark mode.
+
+### Node.js proxy server (`williamriveromd-server/`)
+
+An Express server that:
+1. Serves the static site (fallback: `index.html` for any unknown route)
+2. Exposes `POST /api/analyze` — proxies to `https://api.anthropic.com/v1/messages`, hard-codes model to `claude-haiku-4-5-20251001` and caps `max_tokens` at 2000, rate-limited to 20 req / 15 min
+
+This server is not used in GitHub Pages production (which serves only static files). It supports local development and any alternative hosting where server-side API key protection is needed.
+
+### Supporting data files
+
+- `related_guides.json` — maps each guide filename to an array of related guide filenames; consumed by the "Related Guides" section rendered in each guide
+- `sitemap.xml` — manually maintained; update when adding or removing guides
+- `downloads/` — PDF patient handouts; referenced from guides and the homepage
+
+### Deployment
+
+GitHub Pages via `CNAME` pointing to `williamriveromd.com`. There is no build step — commit HTML files directly. The `sitemap.xml` and `robots.txt` are static files in the repo root.
