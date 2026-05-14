@@ -210,6 +210,101 @@
   html[data-theme="dark"] .alert-body p,html[data-theme="dark"] .alert-body li{color:#c0cad8;}
   [data-lang].lang-hidden{display:none !important;}
 </style>
+<style>
+
+/* ── DECISION TOOLS — scoped .dt- prefix to avoid conflicts ── */
+#decision-tools .dt-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 14px;padding:6px;background:var(--bg);border-radius:10px;border:1px solid var(--border,#e2e6eb);}
+#decision-tools .dt-tab{padding:8px 14px;border-radius:7px;border:1px solid transparent;background:transparent;color:var(--text-muted,#5b6a82);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;}
+#decision-tools .dt-tab:hover{background:rgba(26,107,114,.06);color:var(--text,#1e2a38);}
+#decision-tools .dt-tab.active{background:#0f1e2e;color:#fff;border-color:#0f1e2e;}
+#decision-tools .dt-tab-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.18);font-size:11px;font-weight:700;}
+#decision-tools .dt-tab:not(.active) .dt-tab-num{background:rgba(15,30,46,.08);color:#0f1e2e;}
+
+#decision-tools .dt-panel{display:none;padding:20px 4px;}
+#decision-tools .dt-panel.active{display:block;}
+#decision-tools .dt-panel-head h3{font-family:'Lora',serif;font-size:20px;color:#0f1e2e;margin-bottom:6px;}
+#decision-tools .dt-panel-head .dt-panel-sub{font-size:13.5px;color:var(--text-muted,#5b6a82);line-height:1.6;margin-bottom:18px;}
+
+#decision-tools .dt-q{margin-bottom:14px;padding:14px 16px;background:#fff;border:1px solid var(--border,#e2e6eb);border-radius:10px;}
+#decision-tools .dt-q.dt-q-ph{background:#fdf6e7;border-color:rgba(184,150,46,.4);}
+#decision-tools .dt-q-label{display:block;font-size:13px;font-weight:600;color:#0f1e2e;margin-bottom:9px;line-height:1.45;}
+#decision-tools .dt-radio-row,#decision-tools .dt-check-row{display:flex;flex-wrap:wrap;gap:6px;}
+#decision-tools .dt-radio-row.dt-radio-col{flex-direction:column;}
+#decision-tools .dt-q input[type=radio],#decision-tools .dt-q input[type=checkbox]{display:none;}
+#decision-tools .dt-q input[type=radio]+label,#decision-tools .dt-q .dt-check{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border,#e2e6eb);background:#fff;color:var(--text,#1e2a38);border-radius:6px;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .12s;line-height:1.4;}
+#decision-tools .dt-q .dt-check input[type=checkbox]{display:none;}
+#decision-tools .dt-q input[type=radio]:checked+label,#decision-tools .dt-q .dt-check input[type=checkbox]:checked~span:first-of-type,#decision-tools .dt-q .dt-check:has(input:checked){background:#0f1e2e;color:#fff;border-color:#0f1e2e;}
+#decision-tools .dt-q select{width:100%;padding:8px 10px;border:1px solid var(--border,#e2e6eb);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13.5px;background:#fff;color:var(--text,#1e2a38);outline:none;}
+#decision-tools .dt-q select:focus{border-color:#1a6b72;}
+
+#decision-tools .dt-output{margin-top:18px;}
+#decision-tools .dt-out-band{padding:14px 18px;border-radius:10px;border:2px solid;font-weight:600;line-height:1.55;}
+#decision-tools .dt-out-band.dt-out-empty{background:#f5f5f5;border-color:#d0d0d0;color:#666;font-weight:500;}
+#decision-tools .dt-out-band.dt-out-green{background:#e8f5ee;border-color:#2e9e5e;color:#1a6e3e;}
+#decision-tools .dt-out-band.dt-out-amber{background:#fff4e0;border-color:#d97f00;color:#a05c00;}
+#decision-tools .dt-out-band.dt-out-orange{background:#ffe8d6;border-color:#d2691e;color:#b04a00;}
+#decision-tools .dt-out-band.dt-out-red{background:#fdecea;border-color:#c82020;color:#b91c1c;}
+#decision-tools .dt-out-band.dt-out-blue{background:#eef4ff;border-color:#4a7abf;color:#1a4485;}
+#decision-tools .dt-out-band .dt-out-icon{font-size:18px;margin-right:6px;}
+#decision-tools .dt-out-band .dt-out-head{font-family:'Lora',serif;font-size:16px;font-weight:600;display:inline-block;}
+#decision-tools .dt-out-band .dt-out-sub{display:block;font-size:13px;margin-top:6px;font-weight:400;line-height:1.55;}
+#decision-tools .dt-out-reasons{margin-top:10px;padding:12px 14px;background:rgba(255,255,255,.55);border-radius:8px;font-size:12.5px;color:var(--text,#1e2a38);line-height:1.6;}
+#decision-tools .dt-out-reasons strong{color:#0f1e2e;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;font-weight:700;}
+#decision-tools .dt-out-reasons ul{margin:0 0 0 18px;padding:0;}
+
+#decision-tools .dt-cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+#decision-tools .dt-services-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+#decision-tools .dt-services-grid .dt-check{justify-content:flex-start;padding:7px 10px;font-size:12.5px;background:#fff;color:var(--text,#1e2a38);border:1px solid var(--border,#e2e6eb);border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:7px;}
+#decision-tools .dt-services-grid .dt-check:has(input:checked){background:#0f1e2e;color:#fff;border-color:#0f1e2e;}
+#decision-tools .dt-services-grid .dt-check small{color:var(--text-muted,#5b6a82);font-size:11px;display:block;margin-top:1px;}
+#decision-tools .dt-services-grid .dt-check:has(input:checked) small{color:rgba(255,255,255,.7);}
+
+#decision-tools .dt-cost-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px;background:#fff;border-radius:8px;overflow:hidden;}
+#decision-tools .dt-cost-table th{background:#0f1e2e;color:#fff;padding:8px 10px;text-align:left;font-weight:600;font-size:11.5px;}
+#decision-tools .dt-cost-table td{padding:7px 10px;border-bottom:1px solid var(--border,#e2e6eb);}
+#decision-tools .dt-cost-table tr:last-child td{border-bottom:none;font-weight:700;background:#fdf6e7;}
+#decision-tools .dt-cost-table .dt-c-cost{text-align:right;}
+#decision-tools .dt-cost-table .dt-c-cov{text-align:right;color:#1a6e3e;}
+#decision-tools .dt-cost-table .dt-c-oop{text-align:right;color:#b91c1c;font-weight:600;}
+#decision-tools .dt-cost-table .dt-c-nbb{text-align:center;}
+#decision-tools .dt-cost-table tr.dt-nbb-row .dt-c-oop{color:#1a6e3e;}
+
+#decision-tools .dt-region-info{margin-top:14px;padding:14px 16px;background:#eef4ff;border-left:3px solid #4a7abf;border-radius:6px;font-size:12.5px;line-height:1.6;}
+#decision-tools .dt-region-info strong{color:#0f1e2e;}
+#decision-tools .dt-region-info a{color:#1a4485;font-weight:600;}
+
+#decision-tools .dt-actions{display:flex;gap:8px;margin:20px 0 0;flex-wrap:wrap;}
+#decision-tools .dt-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:7px;border:1px solid #0f1e2e;background:#fff;color:#0f1e2e;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
+#decision-tools .dt-btn:hover{background:var(--bg);}
+#decision-tools .dt-btn-primary{background:#0f1e2e;color:#fff;}
+#decision-tools .dt-btn-primary:hover{background:#1a2e4a;}
+
+@media (max-width: 600px){
+  #decision-tools .dt-cost-grid,#decision-tools .dt-services-grid{grid-template-columns:1fr;}
+  #decision-tools .dt-cost-table{font-size:11.5px;}
+  #decision-tools .dt-cost-table th,#decision-tools .dt-cost-table td{padding:6px 7px;}
+}
+
+html[data-theme="dark"] #decision-tools .dt-tabs{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] #decision-tools .dt-q{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] #decision-tools .dt-q.dt-q-ph{background:#241b0e;border-color:rgba(184,150,46,.5);}
+html[data-theme="dark"] #decision-tools .dt-q-label{color:#e8eaf0;}
+html[data-theme="dark"] #decision-tools .dt-q input[type=radio]+label,html[data-theme="dark"] #decision-tools .dt-q .dt-check{background:#0f1520;border-color:#2a3548;color:#c0cad8;}
+html[data-theme="dark"] #decision-tools .dt-q select{background:#0f1520;border-color:#2a3548;color:#e8eaf0;}
+html[data-theme="dark"] #decision-tools .dt-out-reasons{background:rgba(255,255,255,.08);color:#e8eaf0;}
+html[data-theme="dark"] #decision-tools .dt-cost-table{background:#1a2535;}
+html[data-theme="dark"] #decision-tools .dt-cost-table td{border-color:#2a3548;color:#c0cad8;}
+html[data-theme="dark"] #decision-tools .dt-cost-table tr:last-child td{background:#241b0e;color:#e8eaf0;}
+html[data-theme="dark"] #decision-tools .dt-services-grid .dt-check{background:#0f1520;border-color:#2a3548;color:#c0cad8;}
+html[data-theme="dark"] #decision-tools .dt-region-info{background:#0f1f38;color:#c0cad8;}
+
+@media print{
+  #decision-tools .dt-tabs,#decision-tools .dt-actions{display:none;}
+  #decision-tools .dt-panel{display:block!important;break-inside:avoid;page-break-inside:avoid;margin-bottom:18px;border-top:2px solid #0f1e2e;padding-top:10px;}
+  #decision-tools .dt-q input:not(:checked)+label{opacity:.4;}
+}
+
+</style>
 </head>
 <body>
 
@@ -284,6 +379,7 @@
     <a class="nav-pill mode-patient-pill" href="#philhealth">PhilHealth Z-Benefit</a>
     <a class="nav-pill mode-patient-pill" href="#timeline">Decision Timeline</a>
     <a class="nav-pill mode-patient-pill" href="#questions">Questions to Ask</a>
+    <a class="nav-pill mode-patient-pill" href="#decision-tools">🧩 Decision Tools</a>
     <a class="nav-pill mode-physician-pill" href="#md-window">Pre-ESKD Window</a>
     <a class="nav-pill mode-physician-pill" href="#md-modality">Modality Education</a>
     <a class="nav-pill mode-physician-pill" href="#md-access">Vascular Access Algorithm</a>
@@ -654,6 +750,309 @@
   </div>
 </section>
 
+<!-- ═══════════════════════ INTERACTIVE DECISION TOOLS ═══════════════════════ -->
+<section class="section mode-patient" id="decision-tools">
+  <div class="section-tag"><span data-lang="en">For Patients · Interactive Decision Tools</span><span data-lang="tl" class="lang-hidden">Para sa mga Pasyente · Mga Interactive na Decision Tool</span><span data-lang="ceb" class="lang-hidden">Alang sa mga Pasyente · Mga Interactive nga Decision Tool</span></div>
+  <h2><span data-lang="en">Work through the questions yourself — <em>then bring it to your doctor.</em></span><span data-lang="tl" class="lang-hidden">Sagutan ninyo mismo ang mga tanong — <em>tapos dalhin sa inyong doktor.</em></span><span data-lang="ceb" class="lang-hidden">Tubaga mismo ang mga pangutana — <em>unya dad-a sa imong doktor.</em></span></h2>
+
+  <p><span data-lang="en">Five short interactive tools below help you organize your own thinking on the biggest decisions of this period: <em>whether to start dialysis, which access type, which modality, whether to consider transplant, and how PhilHealth will cover the cost.</em> They are <strong>decision support, not a decision.</strong> Every output ends with "discuss with your nephrology team." All data stays in your browser — nothing is sent anywhere.</span><span data-lang="tl" class="lang-hidden">Limang maikling interactive tool sa ibaba ang tutulong sa inyo na ayusin ang sarili ninyong pag-iisip sa pinakamahalagang desisyon ng panahong ito: <em>kung magsisimula ng dialysis, anong uri ng access, anong modalidad, kung mag-iisip ng transplant, at paano sasaklawin ng PhilHealth.</em> Ito ay <strong>decision support, hindi desisyon.</strong> Bawat output ay nagtatapos sa "usapan kasama ang inyong nephrology team." Lahat ng data ay nananatili sa inyong browser.</span><span data-lang="ceb" class="lang-hidden">Lima ka mubo nga interactive tools sa ubos motabang nimo nga organisahon ang imong kaugalingong panghunahuna sa pinakaimportante nga mga desisyon karon: <em>kung mosugod ba og dialysis, unsang matang sa access, unsang modalidad, kung mohunahuna ba og transplant, ug unsaon pag-cover sa PhilHealth.</em> Kini <strong>decision support, dili desisyon.</strong> Matag output mahuman sa "hisgoti uban sa imong nephrology team." Tanan nga data magpabilin sa imong browser.</span></p>
+
+  <!-- TAB BAR -->
+  <div class="dt-tabs">
+    <button type="button" class="dt-tab active" data-dt-tab="dialysis-or-not"><span class="dt-tab-num">1</span> <span data-lang="en">Dialysis or CKM?</span><span data-lang="tl" class="lang-hidden">Dialysis o CKM?</span><span data-lang="ceb" class="lang-hidden">Dialysis o CKM?</span></button>
+    <button type="button" class="dt-tab" data-dt-tab="access"><span class="dt-tab-num">2</span> <span data-lang="en">Access type</span><span data-lang="tl" class="lang-hidden">Uri ng access</span><span data-lang="ceb" class="lang-hidden">Klase sa access</span></button>
+    <button type="button" class="dt-tab" data-dt-tab="modality"><span class="dt-tab-num">3</span> <span data-lang="en">HD or PD?</span><span data-lang="tl" class="lang-hidden">HD o PD?</span><span data-lang="ceb" class="lang-hidden">HD o PD?</span></button>
+    <button type="button" class="dt-tab" data-dt-tab="transplant"><span class="dt-tab-num">4</span> <span data-lang="en">Transplant?</span><span data-lang="tl" class="lang-hidden">Transplant?</span><span data-lang="ceb" class="lang-hidden">Transplant?</span></button>
+    <button type="button" class="dt-tab" data-dt-tab="cost"><span class="dt-tab-num">5</span> 🧮 <span data-lang="en">PhilHealth cost</span><span data-lang="tl" class="lang-hidden">Gastos sa PhilHealth</span><span data-lang="ceb" class="lang-hidden">Gasto sa PhilHealth</span></button>
+  </div>
+
+  <!-- ────────────────────────── TAB 1: DIALYSIS OR CKM ────────────────────────── -->
+  <div class="dt-panel active" data-dt-panel="dialysis-or-not">
+    <div class="dt-panel-head">
+      <h3><span data-lang="en">Should I start dialysis — or choose Conservative Kidney Management?</span><span data-lang="tl" class="lang-hidden">Magsisimula ba ng dialysis — o piliin ang Conservative Kidney Management?</span><span data-lang="ceb" class="lang-hidden">Mosugod ba og dialysis — o pilion ang Conservative Kidney Management?</span></h3>
+      <p class="dt-panel-sub"><span data-lang="en">CKM is a real, dignified choice — it means maximum medical management without dialysis, with palliative-care support. KDIGO 2024 endorses it as a co-equal option for selected patients. This tool helps you weigh the trade-off honestly.</span><span data-lang="tl" class="lang-hidden">Ang CKM ay totoo at dignified na pagpipilian — pinakamataas na medikal na pamamahala nang walang dialysis, may palliative care. Sinasang-ayunan ito ng KDIGO 2024 bilang co-equal na option. Tinutulungan kayo nito na timbangin nang tapat.</span><span data-lang="ceb" class="lang-hidden">Ang CKM tinuod ug dignidad nga pagpili — pinakataas nga medikal nga pagdumala nga walay dialysis, adunay palliative care. Gisuportahan kini sa KDIGO 2024 isip co-equal nga option. Motabang kini nimo nga timbangon nang tinuod.</span></p>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">1. Your most recent eGFR</span><span data-lang="tl" class="lang-hidden">1. Inyong huling eGFR</span><span data-lang="ceb" class="lang-hidden">1. Imong ulahing eGFR</span></label>
+      <div class="dt-radio-row">
+        <input type="radio" name="dor-egfr" id="dor-egfr-h" value="high"><label for="dor-egfr-h">&gt; 15</label>
+        <input type="radio" name="dor-egfr" id="dor-egfr-m" value="mid"><label for="dor-egfr-m">11&ndash;15</label>
+        <input type="radio" name="dor-egfr" id="dor-egfr-l" value="low"><label for="dor-egfr-l">7&ndash;10</label>
+        <input type="radio" name="dor-egfr" id="dor-egfr-vl" value="vlow"><label for="dor-egfr-vl">&le; 6</label>
+      </div>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">2. Symptoms you actually have right now (tick all that apply)</span><span data-lang="tl" class="lang-hidden">2. Mga sintomas na talagang nararamdaman ngayon (lagyan ng tsek)</span><span data-lang="ceb" class="lang-hidden">2. Mga sintomas nga gibati gyud karon (i-check tanan nga angay)</span></label>
+      <div class="dt-check-row">
+        <label class="dt-check"><input type="checkbox" name="dor-sym" value="nausea"><span data-lang="en">Persistent nausea or vomiting</span><span data-lang="tl" class="lang-hidden">Tuluy-tuloy na pagsusuka</span><span data-lang="ceb" class="lang-hidden">Padayon nga pagsuka</span></label>
+        <label class="dt-check"><input type="checkbox" name="dor-sym" value="pruritus"><span data-lang="en">Severe itching, sleep-disrupting</span><span data-lang="tl" class="lang-hidden">Matinding kati, di makatulog</span><span data-lang="ceb" class="lang-hidden">Grabe nga katol, dili makatulog</span></label>
+        <label class="dt-check"><input type="checkbox" name="dor-sym" value="dyspnea"><span data-lang="en">Shortness of breath at rest or lying flat</span><span data-lang="tl" class="lang-hidden">Hirap huminga, lalo nakahiga</span><span data-lang="ceb" class="lang-hidden">Lisod ginhawa, ilabi na naghigda</span></label>
+        <label class="dt-check"><input type="checkbox" name="dor-sym" value="edema"><span data-lang="en">Leg/face swelling despite diuretics</span><span data-lang="tl" class="lang-hidden">Pamamaga kahit may gamot</span><span data-lang="ceb" class="lang-hidden">Hubag bisan adunay tambal</span></label>
+        <label class="dt-check"><input type="checkbox" name="dor-sym" value="encephalo"><span data-lang="en">New confusion or memory problems</span><span data-lang="tl" class="lang-hidden">Bagong pagkalito o kalimutan</span><span data-lang="ceb" class="lang-hidden">Bag-ong kalibog o pagkalimot</span></label>
+        <label class="dt-check"><input type="checkbox" name="dor-sym" value="adls"><span data-lang="en">Cannot do daily activities alone</span><span data-lang="tl" class="lang-hidden">Di na kayang gumawa ng karaniwang gawain</span><span data-lang="ceb" class="lang-hidden">Dili na kaya ang adlaw-adlaw nga buluhaton</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">3. Lab problems that are NOT responding to medicine + diet</span><span data-lang="tl" class="lang-hidden">3. Mga lab na hindi gumagaling sa gamot + diyeta</span><span data-lang="ceb" class="lang-hidden">3. Mga lab nga wala mouli sa tambal + diyeta</span></label>
+      <div class="dt-check-row">
+        <label class="dt-check"><input type="checkbox" name="dor-lab" value="hyperk"><span data-lang="en">Potassium &gt; 5.5</span><span data-lang="tl" class="lang-hidden">Potassium &gt; 5.5</span><span data-lang="ceb" class="lang-hidden">Potassium &gt; 5.5</span></label>
+        <label class="dt-check"><input type="checkbox" name="dor-lab" value="acidosis"><span data-lang="en">Bicarbonate &lt; 18</span><span data-lang="tl" class="lang-hidden">Bicarbonate &lt; 18</span><span data-lang="ceb" class="lang-hidden">Bicarbonate &lt; 18</span></label>
+        <label class="dt-check"><input type="checkbox" name="dor-lab" value="phos"><span data-lang="en">Phosphate &gt; 5.5</span><span data-lang="tl" class="lang-hidden">Phosphate &gt; 5.5</span><span data-lang="ceb" class="lang-hidden">Phosphate &gt; 5.5</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">4. Your age</span><span data-lang="tl" class="lang-hidden">4. Inyong edad</span><span data-lang="ceb" class="lang-hidden">4. Imong edad</span></label>
+      <div class="dt-radio-row">
+        <input type="radio" name="dor-age" id="dor-age-y" value="young"><label for="dor-age-y">&lt; 65</label>
+        <input type="radio" name="dor-age" id="dor-age-o" value="old"><label for="dor-age-o">65&ndash;79</label>
+        <input type="radio" name="dor-age" id="dor-age-vo" value="vold"><label for="dor-age-vo">&ge; 80</label>
+      </div>
+    </div>
+
+    <div class="dt-q dt-q-ph">
+      <label class="dt-q-label">🇵🇭 <span data-lang="en">5. Family caregiver support</span><span data-lang="tl" class="lang-hidden">5. Suporta ng pamilya bilang caregiver</span><span data-lang="ceb" class="lang-hidden">5. Suporta sa pamilya isip caregiver</span></label>
+      <div class="dt-radio-row">
+        <input type="radio" name="dor-fam" id="dor-fam-f" value="full"><label for="dor-fam-f"><span data-lang="en">Full</span><span data-lang="tl" class="lang-hidden">Buo</span><span data-lang="ceb" class="lang-hidden">Tibuok</span></label>
+        <input type="radio" name="dor-fam" id="dor-fam-s" value="some"><label for="dor-fam-s"><span data-lang="en">Some</span><span data-lang="tl" class="lang-hidden">Konti</span><span data-lang="ceb" class="lang-hidden">Gamay</span></label>
+        <input type="radio" name="dor-fam" id="dor-fam-l" value="limited"><label for="dor-fam-l"><span data-lang="en">Limited / none</span><span data-lang="tl" class="lang-hidden">Limitado / wala</span><span data-lang="ceb" class="lang-hidden">Limitado / wala</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q dt-q-ph">
+      <label class="dt-q-label">🇵🇭 <span data-lang="en">6. Patient preference, if asked openly</span><span data-lang="tl" class="lang-hidden">6. Personal na pagpipilian, kung tatanungin</span><span data-lang="ceb" class="lang-hidden">6. Personal nga pagpili, kung pangutan-on</span></label>
+      <div class="dt-radio-row dt-radio-col">
+        <input type="radio" name="dor-pref" id="dor-pref-d" value="dialysis"><label for="dor-pref-d"><span data-lang="en">Live as long as possible — willing to accept dialysis schedule</span><span data-lang="tl" class="lang-hidden">Mabuhay hangga't kaya — tatanggapin ang schedule ng dialysis</span><span data-lang="ceb" class="lang-hidden">Mabuhi sa kutob kaya — dawaton ang schedule sa dialysis</span></label>
+        <input type="radio" name="dor-pref" id="dor-pref-c" value="comfort"><label for="dor-pref-c"><span data-lang="en">Comfort and time at home matter more</span><span data-lang="tl" class="lang-hidden">Mas mahalaga ang ginhawa at oras sa bahay</span><span data-lang="ceb" class="lang-hidden">Mas importante ang kahupayan ug oras sa balay</span></label>
+        <input type="radio" name="dor-pref" id="dor-pref-u" value="unsure"><label for="dor-pref-u"><span data-lang="en">Not sure yet — need more information</span><span data-lang="tl" class="lang-hidden">Hindi pa sigurado — kailangan ng impormasyon</span><span data-lang="ceb" class="lang-hidden">Wala pa sigurado — kinahanglan og impormasyon</span></label>
+      </div>
+    </div>
+
+    <div class="dt-output" id="dor-output">
+      <div class="dt-out-band dt-out-empty"><span class="dt-out-icon">📝</span> <span class="dt-out-head"><span data-lang="en">Answer the 6 questions above to see your guidance.</span><span data-lang="tl" class="lang-hidden">Sagutan ang 6 na tanong sa itaas.</span><span data-lang="ceb" class="lang-hidden">Tubaga ang 6 ka pangutana sa ibabaw.</span></span></div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────── TAB 2: ACCESS TYPE ────────────────────────── -->
+  <div class="dt-panel" data-dt-panel="access">
+    <div class="dt-panel-head">
+      <h3><span data-lang="en">AVF, AVG, or temporary catheter?</span><span data-lang="tl" class="lang-hidden">AVF, AVG, o pansamantalang catheter?</span><span data-lang="ceb" class="lang-hidden">AVF, AVG, o temporaryo nga catheter?</span></h3>
+      <p class="dt-panel-sub"><span data-lang="en">If you are planning hemodialysis, your <em>access</em> determines a huge part of your long-term outcome. AVF (your own vessels) is the gold standard but needs time to mature. AVG (graft) is faster. Catheter is fastest but carries the highest infection risk and should be a bridge, not a destination.</span><span data-lang="tl" class="lang-hidden">Kung magpapa-hemodialysis, ang <em>access</em> ang nagde-determine ng malaking bahagi ng pangmatagalang resulta. AVF (sariling ugat) ang gold standard pero kailangan ng oras. AVG (graft) mas mabilis. Catheter ang pinakamabilis pero may pinakamataas na panganib ng impeksyon.</span><span data-lang="ceb" class="lang-hidden">Kung mag-hemodialysis ka, ang <em>access</em> magdetermina sa dakong bahin sa imong dugay nga resulta. AVF (kaugalingong ugat) gold standard apan kinahanglan og panahon. AVG (graft) mas paspas. Catheter pinakapaspas apan adunay pinakataas nga peligro sa impeksyon.</span></p>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">1. How soon will you likely need dialysis?</span><span data-lang="tl" class="lang-hidden">1. Kailan kayo malamang na magsisimula ng dialysis?</span><span data-lang="ceb" class="lang-hidden">1. Kanus-a ka tingali magsugod sa dialysis?</span></label>
+      <div class="dt-radio-row dt-radio-col">
+        <input type="radio" name="acc-time" id="acc-t-far" value="far"><label for="acc-t-far"><span data-lang="en">&gt; 6 months</span><span data-lang="tl" class="lang-hidden">&gt; 6 buwan</span><span data-lang="ceb" class="lang-hidden">&gt; 6 ka bulan</span></label>
+        <input type="radio" name="acc-time" id="acc-t-mid" value="mid"><label for="acc-t-mid"><span data-lang="en">3&ndash;6 months</span><span data-lang="tl" class="lang-hidden">3&ndash;6 buwan</span><span data-lang="ceb" class="lang-hidden">3&ndash;6 ka bulan</span></label>
+        <input type="radio" name="acc-time" id="acc-t-near" value="near"><label for="acc-t-near"><span data-lang="en">1&ndash;3 months</span><span data-lang="tl" class="lang-hidden">1&ndash;3 buwan</span><span data-lang="ceb" class="lang-hidden">1&ndash;3 ka bulan</span></label>
+        <input type="radio" name="acc-time" id="acc-t-now" value="now"><label for="acc-t-now"><span data-lang="en">Urgent — within weeks</span><span data-lang="tl" class="lang-hidden">Urgent — sa loob ng linggo</span><span data-lang="ceb" class="lang-hidden">Urgent — sulod sa pipila ka semana</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">2. Vessel quality assessment (Doppler/ultrasound done?)</span><span data-lang="tl" class="lang-hidden">2. Vessel quality (may Doppler/ultrasound?)</span><span data-lang="ceb" class="lang-hidden">2. Vessel quality (adunay Doppler/ultrasound?)</span></label>
+      <div class="dt-radio-row dt-radio-col">
+        <input type="radio" name="acc-vessel" id="acc-v-good" value="good"><label for="acc-v-good"><span data-lang="en">Good — surgeon says AVF is possible</span><span data-lang="tl" class="lang-hidden">Maganda — sabi ng surgeon kayang AVF</span><span data-lang="ceb" class="lang-hidden">Maayo — surgeon nag-ingon nga AVF puwede</span></label>
+        <input type="radio" name="acc-vessel" id="acc-v-bord" value="borderline"><label for="acc-v-bord"><span data-lang="en">Borderline — surgeon is unsure</span><span data-lang="tl" class="lang-hidden">Borderline — di sigurado ang surgeon</span><span data-lang="ceb" class="lang-hidden">Borderline — dili sigurado ang surgeon</span></label>
+        <input type="radio" name="acc-vessel" id="acc-v-poor" value="poor"><label for="acc-v-poor"><span data-lang="en">Poor — surgeon said AVF unlikely</span><span data-lang="tl" class="lang-hidden">Mahina — sabi ng surgeon di malamang ang AVF</span><span data-lang="ceb" class="lang-hidden">Hina — surgeon nag-ingon nga dili malagmit ang AVF</span></label>
+        <input type="radio" name="acc-vessel" id="acc-v-na" value="unknown"><label for="acc-v-na"><span data-lang="en">Not yet assessed</span><span data-lang="tl" class="lang-hidden">Hindi pa nasuri</span><span data-lang="ceb" class="lang-hidden">Wala pa nasusi</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">3. Risk factors</span><span data-lang="tl" class="lang-hidden">3. Mga risk factor</span><span data-lang="ceb" class="lang-hidden">3. Mga risk factor</span></label>
+      <div class="dt-check-row">
+        <label class="dt-check"><input type="checkbox" name="acc-risk" value="elderly"><span data-lang="en">Age &ge; 65</span><span data-lang="tl" class="lang-hidden">Edad &ge; 65</span><span data-lang="ceb" class="lang-hidden">Edad &ge; 65</span></label>
+        <label class="dt-check"><input type="checkbox" name="acc-risk" value="diabetic"><span data-lang="en">Long-standing diabetes</span><span data-lang="tl" class="lang-hidden">Matagal nang diabetes</span><span data-lang="ceb" class="lang-hidden">Dugay nga diabetes</span></label>
+        <label class="dt-check"><input type="checkbox" name="acc-risk" value="prior-failed"><span data-lang="en">Prior access failed</span><span data-lang="tl" class="lang-hidden">Nabigong access dati</span><span data-lang="ceb" class="lang-hidden">Napakyas ang access kaniadto</span></label>
+        <label class="dt-check"><input type="checkbox" name="acc-risk" value="needle"><span data-lang="en">Severe needle fear</span><span data-lang="tl" class="lang-hidden">Sobrang takot sa karayom</span><span data-lang="ceb" class="lang-hidden">Grabe nga kahadlok sa dagom</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q dt-q-ph">
+      <label class="dt-q-label">🇵🇭 <span data-lang="en">4. Does your job/income require heavy use of both arms?</span><span data-lang="tl" class="lang-hidden">4. Kailangan ba ng trabaho ninyo ang dalawang braso ng malakas?</span><span data-lang="ceb" class="lang-hidden">4. Kinahanglan ba sa imong trabaho ang duha ka bukton nga kusgan?</span></label>
+      <div class="dt-radio-row">
+        <input type="radio" name="acc-work" id="acc-w-y" value="manual"><label for="acc-w-y"><span data-lang="en">Yes — manual labor</span><span data-lang="tl" class="lang-hidden">Oo — manual</span><span data-lang="ceb" class="lang-hidden">Oo — manual</span></label>
+        <input type="radio" name="acc-work" id="acc-w-n" value="office"><label for="acc-w-n"><span data-lang="en">No — light work</span><span data-lang="tl" class="lang-hidden">Hindi — magaan</span><span data-lang="ceb" class="lang-hidden">Dili — magaan</span></label>
+        <input type="radio" name="acc-work" id="acc-w-r" value="retired"><label for="acc-w-r"><span data-lang="en">Retired / not working</span><span data-lang="tl" class="lang-hidden">Retirado</span><span data-lang="ceb" class="lang-hidden">Retirado</span></label>
+      </div>
+    </div>
+
+    <div class="dt-output" id="acc-output">
+      <div class="dt-out-band dt-out-empty"><span class="dt-out-icon">📝</span> <span class="dt-out-head"><span data-lang="en">Answer the questions to see your access guidance.</span><span data-lang="tl" class="lang-hidden">Sagutan ang mga tanong.</span><span data-lang="ceb" class="lang-hidden">Tubaga ang mga pangutana.</span></span></div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────── TAB 3: HD or PD ────────────────────────── -->
+  <div class="dt-panel" data-dt-panel="modality">
+    <div class="dt-panel-head">
+      <h3><span data-lang="en">Hemodialysis or peritoneal dialysis?</span><span data-lang="tl" class="lang-hidden">Hemodialysis o peritoneal dialysis?</span><span data-lang="ceb" class="lang-hidden">Hemodialysis o peritoneal dialysis?</span></h3>
+      <p class="dt-panel-sub"><span data-lang="en">Both are effective. The right modality depends on your life, your home, your family, and your medical situation. This tool weighs the practical factors that matter most in Filipino households.</span><span data-lang="tl" class="lang-hidden">Pareho silang effective. Ang tamang modalidad ay depende sa inyong buhay, bahay, pamilya, at medikal na sitwasyon. Tinitimbang nito ang mga praktikal na factor sa Pilipinong bahay.</span><span data-lang="ceb" class="lang-hidden">Parehas silang effective. Ang husto nga modalidad nagdepende sa imong kinabuhi, balay, pamilya, ug medikal nga kahimtang. Gitimbang niini ang mga praktikal nga butang sa Pilipinong panimalay.</span></p>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">1. Home space for clean PD setup</span><span data-lang="tl" class="lang-hidden">1. Lugar sa bahay para sa malinis na PD setup</span><span data-lang="ceb" class="lang-hidden">1. Espasyo sa balay para sa hinlo nga PD setup</span></label>
+      <div class="dt-radio-row">
+        <input type="radio" name="mod-space" id="mod-sp-y" value="good"><label for="mod-sp-y"><span data-lang="en">Yes — clean, dust-free room</span><span data-lang="tl" class="lang-hidden">Oo — malinis na kwarto</span><span data-lang="ceb" class="lang-hidden">Oo — hinlo nga kwarto</span></label>
+        <input type="radio" name="mod-space" id="mod-sp-t" value="tight"><label for="mod-sp-t"><span data-lang="en">Cramped but possible</span><span data-lang="tl" class="lang-hidden">Masikip pero kaya</span><span data-lang="ceb" class="lang-hidden">Sigpit apan kaya</span></label>
+        <input type="radio" name="mod-space" id="mod-sp-n" value="no"><label for="mod-sp-n"><span data-lang="en">No suitable space</span><span data-lang="tl" class="lang-hidden">Walang lugar</span><span data-lang="ceb" class="lang-hidden">Walay lugar</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q dt-q-ph">
+      <label class="dt-q-label">🇵🇭 <span data-lang="en">2. Family caregiver willing &amp; able to help with PD exchanges</span><span data-lang="tl" class="lang-hidden">2. Pamilyang caregiver na pwedeng tumulong sa PD</span><span data-lang="ceb" class="lang-hidden">2. Pamilya nga caregiver nga makatabang sa PD</span></label>
+      <div class="dt-radio-row">
+        <input type="radio" name="mod-fam" id="mod-fam-y" value="yes"><label for="mod-fam-y"><span data-lang="en">Yes</span><span data-lang="tl" class="lang-hidden">Oo</span><span data-lang="ceb" class="lang-hidden">Oo</span></label>
+        <input type="radio" name="mod-fam" id="mod-fam-s" value="some"><label for="mod-fam-s"><span data-lang="en">Sometimes</span><span data-lang="tl" class="lang-hidden">Minsan</span><span data-lang="ceb" class="lang-hidden">Usahay</span></label>
+        <input type="radio" name="mod-fam" id="mod-fam-n" value="no"><label for="mod-fam-n"><span data-lang="en">No / I will do it alone</span><span data-lang="tl" class="lang-hidden">Wala / mag-isa lang</span><span data-lang="ceb" class="lang-hidden">Wala / mag-isa lang</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">3. Travel to nearest HD centre, 3 days/week</span><span data-lang="tl" class="lang-hidden">3. Pagpunta sa HD center, 3x/linggo</span><span data-lang="ceb" class="lang-hidden">3. Pag-adto sa HD center, 3x/semana</span></label>
+      <div class="dt-radio-row">
+        <input type="radio" name="mod-travel" id="mod-tr-e" value="easy"><label for="mod-tr-e"><span data-lang="en">Easy &lt; 30 min</span><span data-lang="tl" class="lang-hidden">Madali &lt; 30 min</span><span data-lang="ceb" class="lang-hidden">Dali &lt; 30 min</span></label>
+        <input type="radio" name="mod-travel" id="mod-tr-m" value="mid"><label for="mod-tr-m"><span data-lang="en">30&ndash;60 min</span><span data-lang="tl" class="lang-hidden">30&ndash;60 min</span><span data-lang="ceb" class="lang-hidden">30&ndash;60 min</span></label>
+        <input type="radio" name="mod-travel" id="mod-tr-h" value="hard"><label for="mod-tr-h"><span data-lang="en">&gt; 60 min / hard</span><span data-lang="tl" class="lang-hidden">&gt; 60 min / mahirap</span><span data-lang="ceb" class="lang-hidden">&gt; 60 min / lisod</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">4. Medical contraindications to PD</span><span data-lang="tl" class="lang-hidden">4. Medikal na sagabal sa PD</span><span data-lang="ceb" class="lang-hidden">4. Medikal nga sagabal sa PD</span></label>
+      <div class="dt-check-row">
+        <label class="dt-check"><input type="checkbox" name="mod-ci" value="surgery"><span data-lang="en">Multiple abdominal surgeries</span><span data-lang="tl" class="lang-hidden">Maraming operasyon sa tiyan</span><span data-lang="ceb" class="lang-hidden">Daghang operasyon sa tiyan</span></label>
+        <label class="dt-check"><input type="checkbox" name="mod-ci" value="hernia"><span data-lang="en">Unrepaired hernia</span><span data-lang="tl" class="lang-hidden">Bukol na hindi pa naoperahan</span><span data-lang="ceb" class="lang-hidden">Bukol nga wala pa maoperahi</span></label>
+        <label class="dt-check"><input type="checkbox" name="mod-ci" value="dexterity"><span data-lang="en">Poor manual dexterity</span><span data-lang="tl" class="lang-hidden">Mahinang lakas ng kamay</span><span data-lang="ceb" class="lang-hidden">Huyang nga kusog sa kamot</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q dt-q-ph">
+      <label class="dt-q-label">🇵🇭 <span data-lang="en">5. Reliable electricity at home (for APD)?</span><span data-lang="tl" class="lang-hidden">5. Maaasahang kuryente sa bahay (para sa APD)?</span><span data-lang="ceb" class="lang-hidden">5. Kasaligang kuryente sa balay (para sa APD)?</span></label>
+      <div class="dt-radio-row">
+        <input type="radio" name="mod-power" id="mod-pw-y" value="yes"><label for="mod-pw-y"><span data-lang="en">Yes</span><span data-lang="tl" class="lang-hidden">Oo</span><span data-lang="ceb" class="lang-hidden">Oo</span></label>
+        <input type="radio" name="mod-power" id="mod-pw-i" value="intermittent"><label for="mod-pw-i"><span data-lang="en">Frequent brownouts</span><span data-lang="tl" class="lang-hidden">Madalas na brownout</span><span data-lang="ceb" class="lang-hidden">Sublay nga brownout</span></label>
+      </div>
+    </div>
+
+    <div class="dt-output" id="mod-output">
+      <div class="dt-out-band dt-out-empty"><span class="dt-out-icon">📝</span> <span class="dt-out-head"><span data-lang="en">Answer the questions to see your modality guidance.</span><span data-lang="tl" class="lang-hidden">Sagutan ang mga tanong.</span><span data-lang="ceb" class="lang-hidden">Tubaga ang mga pangutana.</span></span></div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────── TAB 4: TRANSPLANT ────────────────────────── -->
+  <div class="dt-panel" data-dt-panel="transplant">
+    <div class="dt-panel-head">
+      <h3><span data-lang="en">Should I consider kidney transplant?</span><span data-lang="tl" class="lang-hidden">Dapat ba akong mag-isip ng transplant?</span><span data-lang="ceb" class="lang-hidden">Angay ba ako mohunahuna og transplant?</span></h3>
+      <p class="dt-panel-sub"><span data-lang="en">Transplant gives the best long-term survival and quality of life of any kidney replacement therapy. <strong>Preemptive</strong> transplant (before starting dialysis) is best. Living donor &gt; deceased donor. The Philippines has a strong family-donor culture, and RA 7170 governs the legal framework. Cost is real — both surgery (often covered by Z-benefit) and lifetime immunosuppression.</span><span data-lang="tl" class="lang-hidden">Ang transplant ang nagbibigay ng pinakamagandang long-term survival at quality of life. <strong>Preemptive</strong> transplant (bago mag-dialysis) ang pinakamabuti. Living donor &gt; deceased. Malakas ang family-donor culture sa Pilipinas, may RA 7170. Real ang gastos — surgery (Z-benefit) at lifetime immunosuppression.</span><span data-lang="ceb" class="lang-hidden">Ang transplant naghatag sa pinakamaayong long-term survival ug quality of life. <strong>Preemptive</strong> transplant (sa wala pa magdialysis) ang pinakamaayo. Living donor &gt; deceased. Kusgan ang family-donor culture sa Pilipinas, RA 7170. Tinuod ang gasto — surgery (Z-benefit) ug lifetime immunosuppression.</span></p>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">1. Your age</span><span data-lang="tl" class="lang-hidden">1. Inyong edad</span><span data-lang="ceb" class="lang-hidden">1. Imong edad</span></label>
+      <div class="dt-radio-row">
+        <input type="radio" name="tx-age" id="tx-age-y" value="young"><label for="tx-age-y">&lt; 50</label>
+        <input type="radio" name="tx-age" id="tx-age-m" value="mid"><label for="tx-age-m">50&ndash;65</label>
+        <input type="radio" name="tx-age" id="tx-age-o" value="old"><label for="tx-age-o">&gt; 65</label>
+      </div>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">2. Conditions you have (potential contraindications)</span><span data-lang="tl" class="lang-hidden">2. Mga kondisyong meron kayo (mga posibleng sagabal)</span><span data-lang="ceb" class="lang-hidden">2. Mga kondisyon nga aduna ka (potensyal nga sagabal)</span></label>
+      <div class="dt-check-row">
+        <label class="dt-check"><input type="checkbox" name="tx-comorb" value="cancer"><span data-lang="en">Active cancer / recent malignancy</span><span data-lang="tl" class="lang-hidden">Active na cancer</span><span data-lang="ceb" class="lang-hidden">Active nga cancer</span></label>
+        <label class="dt-check"><input type="checkbox" name="tx-comorb" value="severe-cvd"><span data-lang="en">Severe heart disease (recent MI, severe HF)</span><span data-lang="tl" class="lang-hidden">Malubhang sakit sa puso</span><span data-lang="ceb" class="lang-hidden">Grabe nga sakit sa kasingkasing</span></label>
+        <label class="dt-check"><input type="checkbox" name="tx-comorb" value="severe-pulm"><span data-lang="en">Severe COPD / lung disease</span><span data-lang="tl" class="lang-hidden">Malubhang COPD</span><span data-lang="ceb" class="lang-hidden">Grabe nga COPD</span></label>
+        <label class="dt-check"><input type="checkbox" name="tx-comorb" value="frail"><span data-lang="en">Frail / dependent for daily activities</span><span data-lang="tl" class="lang-hidden">Mahina / nakadepende</span><span data-lang="ceb" class="lang-hidden">Huyang / nagdepende</span></label>
+        <label class="dt-check"><input type="checkbox" name="tx-comorb" value="uncontrolled"><span data-lang="en">Uncontrolled infection or psychiatric illness</span><span data-lang="tl" class="lang-hidden">Hindi kontroladong impeksyon o psychiatric</span><span data-lang="ceb" class="lang-hidden">Dili kontrolado nga impeksyon o psychiatric</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q dt-q-ph">
+      <label class="dt-q-label">🇵🇭 <span data-lang="en">3. Potential living donor in your family</span><span data-lang="tl" class="lang-hidden">3. Posibleng living donor sa pamilya</span><span data-lang="ceb" class="lang-hidden">3. Mahimong living donor sa pamilya</span></label>
+      <div class="dt-radio-row dt-radio-col">
+        <input type="radio" name="tx-donor" id="tx-don-y" value="yes"><label for="tx-don-y"><span data-lang="en">Yes — willing first-degree relative (parent / sibling / adult child)</span><span data-lang="tl" class="lang-hidden">Oo — handang kapamilya</span><span data-lang="ceb" class="lang-hidden">Oo — andam nga paryente</span></label>
+        <input type="radio" name="tx-donor" id="tx-don-m" value="maybe"><label for="tx-don-m"><span data-lang="en">Maybe — not yet asked</span><span data-lang="tl" class="lang-hidden">Siguro — di pa nakausap</span><span data-lang="ceb" class="lang-hidden">Tingali — wala pa kasulti</span></label>
+        <input type="radio" name="tx-donor" id="tx-don-n" value="no"><label for="tx-don-n"><span data-lang="en">No — would need deceased donor (NKTI list)</span><span data-lang="tl" class="lang-hidden">Wala — kailangan ng deceased donor (NKTI)</span><span data-lang="ceb" class="lang-hidden">Wala — kinahanglan deceased donor (NKTI)</span></label>
+      </div>
+    </div>
+
+    <div class="dt-q dt-q-ph">
+      <label class="dt-q-label">🇵🇭 <span data-lang="en">4. Financial capacity for lifetime immunosuppression (~&#8369;5&ndash;15k/month with PhilHealth)</span><span data-lang="tl" class="lang-hidden">4. Kakayahang pinansyal para sa habambuhay na immunosuppression</span><span data-lang="ceb" class="lang-hidden">4. Kapasidad pinansyal para sa habambuhay nga immunosuppression</span></label>
+      <div class="dt-radio-row">
+        <input type="radio" name="tx-fin" id="tx-fin-y" value="ok"><label for="tx-fin-y"><span data-lang="en">Manageable</span><span data-lang="tl" class="lang-hidden">Kaya naman</span><span data-lang="ceb" class="lang-hidden">Kaya ra</span></label>
+        <input type="radio" name="tx-fin" id="tx-fin-h" value="hard"><label for="tx-fin-h"><span data-lang="en">Hard but possible</span><span data-lang="tl" class="lang-hidden">Mahirap pero kaya</span><span data-lang="ceb" class="lang-hidden">Lisod apan kaya</span></label>
+        <input type="radio" name="tx-fin" id="tx-fin-n" value="cant"><label for="tx-fin-n"><span data-lang="en">Not sustainable</span><span data-lang="tl" class="lang-hidden">Hindi kaya</span><span data-lang="ceb" class="lang-hidden">Dili kaya</span></label>
+      </div>
+    </div>
+
+    <div class="dt-output" id="tx-output">
+      <div class="dt-out-band dt-out-empty"><span class="dt-out-icon">📝</span> <span class="dt-out-head"><span data-lang="en">Answer the questions to see your transplant guidance.</span><span data-lang="tl" class="lang-hidden">Sagutan ang mga tanong.</span><span data-lang="ceb" class="lang-hidden">Tubaga ang mga pangutana.</span></span></div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────── TAB 5: PHILHEALTH COST ────────────────────────── -->
+  <div class="dt-panel" data-dt-panel="cost">
+    <div class="dt-panel-head">
+      <h3>🧮 <span data-lang="en">PhilHealth Cost Estimator</span><span data-lang="tl" class="lang-hidden">PhilHealth Cost Estimator</span><span data-lang="ceb" class="lang-hidden">PhilHealth Cost Estimator</span></h3>
+      <p class="dt-panel-sub"><span data-lang="en">Pre-filled from your earlier tab answers where possible. Pick your membership tier and region, tick the services you need, and see an <em>estimated</em> coverage + out-of-pocket. <strong>Peso amounts are approximations as of 2025–2026 — verify with your social worker or PhilHealth.</strong></span><span data-lang="tl" class="lang-hidden">May pre-fill mula sa naunang tab. Pumili ng membership tier at rehiyon, lagyan ng tsek ang services, makakakita ng <em>tinatayang</em> coverage at out-of-pocket. <strong>Tinatayang halaga lamang noong 2025–2026 — i-verify sa PhilHealth.</strong></span><span data-lang="ceb" class="lang-hidden">May pre-fill gikan sa nauna nga tab. Pagpili og membership tier ug rehiyon, i-check ang services, makakita og <em>banabana</em> nga coverage ug out-of-pocket. <strong>Banabana lamang ang halaga sa 2025–2026 — i-verify sa PhilHealth.</strong></span></p>
+    </div>
+
+    <div class="dt-cost-grid">
+      <div class="dt-q">
+        <label class="dt-q-label"><span data-lang="en">PhilHealth membership tier</span><span data-lang="tl" class="lang-hidden">PhilHealth membership tier</span><span data-lang="ceb" class="lang-hidden">PhilHealth membership tier</span></label>
+        <select id="dt-cost-tier">
+          <option value="formal">Formal Sector (Employed)</option>
+          <option value="informal">Informal Sector / Self-employed</option>
+          <option value="indigent">Indigent / Sponsored (4Ps)</option>
+          <option value="senior">Senior Citizen (60+)</option>
+          <option value="pwd">PWD</option>
+        </select>
+      </div>
+      <div class="dt-q">
+        <label class="dt-q-label"><span data-lang="en">Region</span><span data-lang="tl" class="lang-hidden">Rehiyon</span><span data-lang="ceb" class="lang-hidden">Rehiyon</span></label>
+        <select id="dt-cost-region">
+          <option value="ncr">NCR / Metro Manila</option>
+          <option value="cl">Central Luzon (Pampanga / Bulacan / etc.)</option>
+          <option value="cb">Calabarzon</option>
+          <option value="vis">Visayas</option>
+          <option value="min">Mindanao</option>
+          <option value="other">Other / unspecified</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="dt-q">
+      <label class="dt-q-label"><span data-lang="en">Services you expect to need (tick all that apply)</span><span data-lang="tl" class="lang-hidden">Mga services na kakailanganin</span><span data-lang="ceb" class="lang-hidden">Mga serbisyo nga kinahanglan</span></label>
+      <div class="dt-services-grid" id="dt-services-grid">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <div class="dt-output" id="cost-output">
+      <div class="dt-out-band dt-out-empty"><span class="dt-out-icon">📝</span> <span class="dt-out-head"><span data-lang="en">Pick your tier, region, and services to see estimates.</span><span data-lang="tl" class="lang-hidden">Piliin ang tier, rehiyon, at services.</span><span data-lang="ceb" class="lang-hidden">Pilia ang tier, rehiyon, ug services.</span></span></div>
+    </div>
+
+    <div class="dt-region-info" id="dt-region-info"></div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="dt-actions">
+    <button type="button" class="dt-btn dt-btn-primary" onclick="window.print()">🖨️ <span data-lang="en">Print my answers</span><span data-lang="tl" class="lang-hidden">I-print ang sagot</span><span data-lang="ceb" class="lang-hidden">I-print ang tubag</span></button>
+    <button type="button" class="dt-btn" onclick="dtResetAll()">↺ <span data-lang="en">Clear all</span><span data-lang="tl" class="lang-hidden">Burahin lahat</span><span data-lang="ceb" class="lang-hidden">Hawan tanan</span></button>
+  </div>
+
+  <div class="legal" style="margin-top:24px;">
+    <p><strong><span data-lang="en">Important.</span><span data-lang="tl" class="lang-hidden">Mahalaga.</span><span data-lang="ceb" class="lang-hidden">Importante.</span></strong>
+    <span data-lang="en">These tools are decision support, not a decision. Every output ends with "discuss with your nephrology team." Peso amounts in the cost estimator are <em>approximations as of 2025–2026</em> — PhilHealth Z-benefit packages, case rates, and accreditation lists change; verify current coverage with your social worker or directly with PhilHealth before financial planning. Regional anchor institutions are listed for orientation only — many other PhilHealth-accredited centres exist in each region.</span>
+    <span data-lang="tl" class="lang-hidden">Decision support lamang ang mga tool na ito, hindi desisyon. I-verify ang halaga sa PhilHealth.</span>
+    <span data-lang="ceb" class="lang-hidden">Decision support lamang kining mga tool, dili desisyon. I-verify ang halaga sa PhilHealth.</span></p>
+  </div>
+</section>
+
+
 <!-- ═══════════════════════ CLINICIAN SECTIONS ═══════════════════════ -->
 
 <section class="section mode-physician" id="md-window">
@@ -940,5 +1339,562 @@ function setLang(lang){
 </script>
 
 <script src="../assets/symptom-checker-widget.js" defer></script>
+<script>
+
+// ─────────────────────────────────────────────────────────────
+// DECISION TOOLS ENGINE
+// Cross-tab state, decision logic, PhilHealth cost calculator
+// All amounts are APPROXIMATIONS as of 2025–2026 — centralized below
+// for easy updates.
+// ─────────────────────────────────────────────────────────────
+(function(){
+  // ── Shared state ───────────────────────────────────────────
+  const dtState = { dor:{}, acc:{}, mod:{}, tx:{}, cost:{tier:'formal', region:'ncr', services:{}} };
+
+  // ── PhilHealth data table (centralized for future updates) ──
+  // Approximate as of 2025-2026. Verify with current PhilHealth circulars.
+  const PHL = {
+    services: {
+      konsulta:    { name:'Pre-dialysis Konsulta visits (annual)', cost:6000,  cov:6000,  unit:'/yr', notes:'PhilHealth Konsulta primary care package; outpatient nephro under PCB1', stages:['s3','s4','s5'] },
+      labs:        { name:'Routine labs (Cr, BUN, K, UA, CBC)',     cost:2500,  cov:1500,  unit:'/quarter', notes:'Partial coverage via Konsulta or All Case Rates', stages:['s3','s4','s5'] },
+      biopsy:      { name:'Kidney biopsy (one-time)',                cost:30000, cov:22000, unit:'once',  notes:'All Case Rate (ACR); inpatient', stages:['s3','s4'] },
+      avf:         { name:'AVF/AVG creation surgery',                cost:40000, cov:35000, unit:'once',  notes:'Z-benefit "vascular access for HD" package', stages:['s5','hd'] },
+      catheter:    { name:'Temporary HD catheter insertion',         cost:15000, cov:8000,  unit:'once',  notes:'ACR; bridge access, infection-risk discussion needed', stages:['s5','hd'] },
+      hd:          { name:'HD sessions (144 per year)',              cost:4500,  cov:4000,  unit:'/session', sessions:144, notes:'Z-benefit Y2024+; ~144 sessions/year cap', stages:['hd'] },
+      pd:          { name:'PD monthly package (CAPD/APD)',           cost:35000, cov:30000, unit:'/month',   months:12, notes:'PD Z-benefit covers solutions + supplies + monthly nephro', stages:['pd'] },
+      esa:         { name:'ESA (erythropoietin) injections',         cost:2200,  cov:1000,  unit:'/dose',    notes:'Partial; dose frequency by Hb response',     stages:['s4','s5','hd','pd'] },
+      iron:        { name:'IV iron infusion',                        cost:2500,  cov:1200,  unit:'/dose',    notes:'Partial; iron sucrose or carboxymaltose',     stages:['s4','s5','hd','pd'] },
+      aki:         { name:'Inpatient AKI / CKD admission',           cost:50000, cov:30000, unit:'/admission', notes:'ACR varies by case mix; uncomplicated AKI ~₱30k',  stages:['s3','s4','s5'] },
+      tx_workup:   { name:'Transplant workup labs + imaging',        cost:80000, cov:30000, unit:'once',     notes:'Partial; tissue typing, cardiac workup, infection screen', stages:['s5','hd','pd'] },
+      tx_surgery:  { name:'Kidney transplant surgery (Z-benefit)',   cost:600000,cov:600000,unit:'once',     notes:'Z-benefit covers most of the surgical episode',   stages:['s5','hd','pd'] },
+      tx_immuno:   { name:'Post-tx immunosuppression (lifetime)',    cost:12000, cov:6000,  unit:'/month',   months:12, notes:'Tacrolimus + MMF + steroid; partial PhilHealth + Lingap coverage', stages:['tx'] },
+      tx_monitor:  { name:'Post-transplant monitoring labs',         cost:3500,  cov:1500,  unit:'/month',   months:12, notes:'Drug levels, BMP, infection markers', stages:['tx'] },
+    },
+    tiers: {
+      formal:   { label:'Formal / Employed',     nbb:false, factor:1.0 },
+      informal: { label:'Informal / Self-employed', nbb:false, factor:1.0 },
+      indigent: { label:'Indigent / Sponsored (4Ps)', nbb:true,  factor:0.15, notes:'NBB applies in govt + accredited HCIs' },
+      senior:   { label:'Senior Citizen (60+)',  nbb:true,  factor:0.20, notes:'RA 9994; NBB in govt HCIs + 20% discount on meds' },
+      pwd:      { label:'PWD',                   nbb:true,  factor:0.20, notes:'RA 10754; NBB in govt HCIs + 20% discount' },
+    },
+    regions: {
+      ncr: {
+        name: 'NCR / Metro Manila',
+        notes_en: 'Over 200 PhilHealth-accredited dialysis centres. Anchor public institutions: National Kidney and Transplant Institute (NKTI, Quezon City), Philippine General Hospital (PGH, Manila), National Center for Mental Health—not nephro but useful for psychiatric clearance for transplant. Many private centres also accredited.',
+        notes_tl: 'Mahigit 200 accredited dialysis centre. Pinaka-kilala: NKTI (QC), PGH (Manila). Maraming pribadong accredited centre din.',
+        notes_ceb: 'Sobra sa 200 accredited dialysis centre. Pinaka-bantog: NKTI (QC), PGH (Manila). Daghan usab nga pribadong accredited centre.'
+      },
+      cl: {
+        name: 'Central Luzon (Pampanga / Bulacan / Tarlac)',
+        notes_en: 'Multiple accredited centres in San Fernando (Pampanga), Malolos (Bulacan), Angeles, and Tarlac City. Limited transplant capacity locally — most transplant patients referred to NKTI or PGH in NCR. PhilHealth Z-benefit accreditation list updated quarterly.',
+        notes_tl: 'Maraming accredited centre sa Pampanga at Bulacan. Karamihan ng transplant ay sa NKTI/PGH (NCR). I-verify ang lokal na accreditation.',
+        notes_ceb: 'Daghang accredited centre sa Pampanga ug Bulacan. Kasagaran sa transplant kay sa NKTI/PGH (NCR). I-verify ang lokal nga accreditation.'
+      },
+      cb: {
+        name: 'Calabarzon (Cavite / Laguna / Batangas / Rizal / Quezon)',
+        notes_en: 'Strong dialysis network. Anchor institutions: Asian Hospital (Muntinlupa, near Cavite border), De La Salle University Medical Center (Cavite), Calamba Medical Center. Transplant typically referred to NCR.',
+        notes_tl: 'Mahusay na dialysis network. Asian Hospital, DLSU Medical Center, Calamba Medical Center. Transplant sa NCR.',
+        notes_ceb: 'Maayong dialysis network. Asian Hospital, DLSU Medical Center, Calamba Medical Center. Transplant sa NCR.'
+      },
+      vis: {
+        name: 'Visayas (Cebu / Iloilo / Bacolod)',
+        notes_en: 'Cebu is the regional hub: Vicente Sotto Memorial Medical Center, Chong Hua Hospital, Cebu Doctors\' Hospital. Iloilo and Bacolod also have accredited centres. Transplant service available at Vicente Sotto.',
+        notes_tl: 'Cebu ang hub: VSMMC, Chong Hua, Cebu Doctors. May transplant sa VSMMC.',
+        notes_ceb: 'Ang Cebu mao ang hub: VSMMC, Chong Hua, Cebu Doctors. Adunay transplant sa VSMMC.'
+      },
+      min: {
+        name: 'Mindanao (Davao / Cagayan de Oro / Zamboanga)',
+        notes_en: 'Southern Philippines Medical Center (Davao) is the main public anchor. Davao Doctors and Brokenshire (Davao) also accredited. CDO and Zamboanga have regional accredited centres. Transplant capacity is limited; most referred to Cebu, Manila, or abroad.',
+        notes_tl: 'SPMC (Davao) ang pangunahing public. Limitado ang transplant — karamihan sa Cebu/Manila.',
+        notes_ceb: 'SPMC (Davao) ang nag-unang public. Limitado ang transplant — kasagaran sa Cebu/Manila.'
+      },
+      other: {
+        name: 'Other / unspecified',
+        notes_en: 'Use the PhilHealth HCI directory to find accredited dialysis centres near you.',
+        notes_tl: 'Gamitin ang PhilHealth HCI directory.',
+        notes_ceb: 'Gamita ang PhilHealth HCI directory.'
+      }
+    }
+  };
+  const HCI_DIRECTORY_URL = 'https://www.philhealth.gov.ph/partners/accreditedHCI.php';
+
+  // ── Helpers ────────────────────────────────────────────────
+  function $(sel, root){ return (root||document).querySelector(sel); }
+  function $$(sel, root){ return Array.from((root||document).querySelectorAll(sel)); }
+  function PHP(n){ return '₱' + Math.round(n).toLocaleString('en-PH'); }
+  function currentLang(){
+    try { return (localStorage.getItem('lang') || localStorage.getItem('wgmr-lang') || 'en'); } catch(e){ return 'en'; }
+  }
+  function trans(en, tl, ceb){
+    const l = currentLang();
+    if(l === 'tl' && tl) return tl;
+    if(l === 'ceb' && ceb) return ceb;
+    return en;
+  }
+  function readCheckedValues(name){
+    return $$(`input[name="${name}"]:checked`).map(el => el.value);
+  }
+  function readRadio(name){
+    const el = $(`input[name="${name}"]:checked`);
+    return el ? el.value : null;
+  }
+
+  // ── Tab switching ─────────────────────────────────────────
+  function switchTab(name){
+    $$('#decision-tools .dt-tab').forEach(b => b.classList.toggle('active', b.dataset.dtTab === name));
+    $$('#decision-tools .dt-panel').forEach(p => p.classList.toggle('active', p.dataset.dtPanel === name));
+    if(name === 'cost') renderCost();
+  }
+  $$('#decision-tools .dt-tab').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.dtTab)));
+
+  // ── TAB 1: Dialysis or CKM ────────────────────────────────
+  function computeDor(){
+    const eGFR = readRadio('dor-egfr');
+    const sym  = readCheckedValues('dor-sym');
+    const labs = readCheckedValues('dor-lab');
+    const age  = readRadio('dor-age');
+    const fam  = readRadio('dor-fam');
+    const pref = readRadio('dor-pref');
+
+    // If nothing answered, empty state
+    if(!eGFR && sym.length === 0 && labs.length === 0 && !age && !fam && !pref) return null;
+
+    let dialysisScore = 0;
+    let ckmScore = 0;
+    const reasons = [];
+
+    // eGFR
+    if(eGFR === 'vlow'){ dialysisScore += 3; reasons.push(trans('Very low eGFR (≤6) — physiologic threshold for dialysis','Sobrang baba ng eGFR (≤6)','Sobra ka-ubos nga eGFR (≤6)')); }
+    else if(eGFR === 'low'){ dialysisScore += 2; reasons.push(trans('Low eGFR (7–10) — typical dialysis-initiation range','Mababang eGFR (7–10)','Ubos nga eGFR (7–10)')); }
+    else if(eGFR === 'mid'){ dialysisScore += 1; ckmScore += 1; }
+    else if(eGFR === 'high'){ ckmScore += 2; reasons.push(trans('eGFR >15 — still room for medical optimization','eGFR >15 — may oras pa para sa optimization','eGFR >15 — naa pay luna sa optimization')); }
+
+    // Symptoms
+    if(sym.length >= 3){ dialysisScore += 2; reasons.push(trans(`${sym.length} active uremic symptoms — strong indication`,`${sym.length} uremic symptoms — malakas na indikasyon`,`${sym.length} uremic symptoms — kusgan nga indikasyon`)); }
+    else if(sym.length >= 1){ dialysisScore += 1; }
+
+    // Labs
+    if(labs.length >= 2){ dialysisScore += 2; reasons.push(trans(`${labs.length} refractory lab problems`,`${labs.length} lab na di gumagaling`,`${labs.length} lab nga wala mouli`)); }
+    else if(labs.length === 1){ dialysisScore += 1; }
+
+    // Age + frailty cue
+    if(age === 'vold'){ ckmScore += 2; reasons.push(trans('Age ≥80 — CKM is a recognized option','Edad ≥80 — CKM ay valid','Edad ≥80 — CKM angay'));}
+    else if(age === 'old'){ ckmScore += 1; }
+
+    // Family (Filipino factor)
+    if(fam === 'limited'){ ckmScore += 1; reasons.push(trans('Limited caregiver support raises practical burden of dialysis','Limitadong caregiver — mas mabigat ang dialysis','Limitado nga caregiver — mas bug-at ang dialysis')); }
+    else if(fam === 'full'){ dialysisScore += 1; }
+
+    // Preference (Filipino factor — patient-centered)
+    if(pref === 'dialysis'){ dialysisScore += 3; reasons.push(trans('Patient stated preference for dialysis','Sinabi ng pasyenteng gusto ang dialysis','Gisulti sa pasyente nga gusto ang dialysis')); }
+    else if(pref === 'comfort'){ ckmScore += 3; reasons.push(trans('Patient stated preference for comfort-focused care (CKM)','Sinabi ng pasyenteng gusto ang comfort care (CKM)','Gisulti sa pasyente nga gusto ang comfort care (CKM)')); }
+
+    let band, head_en, head_tl, head_ceb, sub_en, sub_tl, sub_ceb;
+    if(dialysisScore >= ckmScore + 3){
+      band = 'green';
+      head_en = 'Lean toward starting dialysis'; head_tl = 'Iminumungkahi ang pagsisimula ng dialysis'; head_ceb = 'Gisugyot ang pagsugod sa dialysis';
+      sub_en = 'Your answers point toward dialysis being the better fit. Discuss timing and modality with your nephrologist at your next visit.';
+      sub_tl = 'Ang inyong mga sagot ay nagtuturo sa dialysis. Usapan ang timing at modality sa inyong doktor.';
+      sub_ceb = 'Ang imong mga tubag nagtumong sa dialysis. Hisgoti ang timing ug modality sa imong doktor.';
+    } else if(ckmScore >= dialysisScore + 2){
+      band = 'orange';
+      head_en = 'Conservative Kidney Management is a valid choice for you';
+      head_tl = 'Ang CKM ay valid na pagpipilian para sa inyo';
+      head_ceb = 'Ang CKM angay nga pagpili alang nimo';
+      sub_en = 'CKM means maximum medical management without dialysis, with palliative-care support. Many patients in your situation choose this and live well. Discuss with your nephrology and palliative team.';
+      sub_tl = 'Ang CKM ay maximum medical management nang walang dialysis, may palliative care. Maraming pasyente sa inyong sitwasyon ang pumipili nito.';
+      sub_ceb = 'Ang CKM mao ang maximum medical management nga walay dialysis, adunay palliative care. Daghang pasyente sa imong sitwasyon ang mopili niini.';
+    } else {
+      band = 'blue';
+      head_en = 'Either choice is reasonable — needs a deeper conversation';
+      head_tl = 'Pareho ay validong pagpipilian — kailangan ng usapan';
+      head_ceb = 'Parehas nga angay nga pagpili — kinahanglan og pag-istoryahanay';
+      sub_en = 'Your situation is balanced. A structured visit with your nephrologist (and ideally your family) to weigh both options carefully is the next step.';
+      sub_tl = 'Balansyado ang sitwasyon. Mag-schedule ng pormal na pag-uusap kasama ang doktor at pamilya.';
+      sub_ceb = 'Balanse ang sitwasyon. Mag-schedule og pormal nga pag-istoryahanay uban sa doktor ug pamilya.';
+    }
+
+    return { band, head_en, head_tl, head_ceb, sub_en, sub_tl, sub_ceb, reasons, choice:(band==='green'?'dialysis':band==='orange'?'ckm':'unclear') };
+  }
+
+  // ── TAB 2: Access type ───────────────────────────────────
+  function computeAcc(){
+    const time = readRadio('acc-time');
+    const vessel = readRadio('acc-vessel');
+    const risks = readCheckedValues('acc-risk');
+    const work = readRadio('acc-work');
+    if(!time && !vessel && risks.length === 0 && !work) return null;
+
+    let band, head_en, head_tl, head_ceb, sub_en, sub_tl, sub_ceb, reasons = [], choice = null;
+
+    if(time === 'now' || time === 'near'){
+      if(vessel === 'good'){
+        band = 'amber'; choice = 'avf-now';
+        head_en = 'Plan AVF urgently — but you may need a temporary catheter as a bridge';
+        head_tl = 'Mabilis na AVF — pero baka kailangan ng pansamantalang catheter';
+        head_ceb = 'Paspas nga AVF — apan tingali kinahanglan og temporaryo nga catheter';
+        sub_en = 'Refer to vascular surgery this week. AVF takes 6–12 weeks to mature; if dialysis is needed sooner, a temporary catheter bridges the gap. Goal: catheter time ≤ 90 days.';
+        sub_tl = 'Pumunta sa vascular surgery ngayong linggo. Catheter pansamantala lang.';
+        sub_ceb = 'Adto sa vascular surgery karong semana. Catheter temporaryo ra.';
+      } else {
+        band = 'red'; choice = 'catheter-bridge';
+        head_en = 'Temporary catheter as bridge — plan permanent access in parallel';
+        head_tl = 'Pansamantalang catheter — habang ginagawa ang permanente';
+        head_ceb = 'Temporaryo nga catheter — samtang gihimo ang permanente';
+        sub_en = 'You need access soon and vessels may not support AVF. Catheter starts now, vascular surgery referral for AVG or AVF planning. Discuss infection prevention.';
+        sub_tl = 'Mag-start ng catheter, ireferral sa vascular surgery para sa AVG/AVF.';
+        sub_ceb = 'Magsugod og catheter, ireferral sa vascular surgery para sa AVG/AVF.';
+      }
+    } else if(time === 'mid'){
+      if(vessel === 'good'){
+        band = 'green'; choice = 'avf';
+        head_en = 'AVF is the preferred access — refer for creation now';
+        head_tl = 'AVF ang pinakamabuting access — refer na para gawin';
+        head_ceb = 'AVF ang pinakamaayong access — refer na aron buhaton';
+        sub_en = 'You have time for an AVF to mature before dialysis is needed. Refer to vascular surgery within 1 month. Protect the planned arm from blood draws and IVs from now on.';
+        sub_tl = 'May oras para sa AVF. I-refer sa vascular surgery sa loob ng 1 buwan. Protektahan ang braso.';
+        sub_ceb = 'Adunay panahon para sa AVF. I-refer sa vascular surgery sulod sa 1 ka bulan. Protektahan ang bukton.';
+      } else {
+        band = 'amber'; choice = 'avg';
+        head_en = 'AVG (graft) is likely the best option';
+        head_tl = 'AVG (graft) ang pinakamaganda';
+        head_ceb = 'AVG (graft) ang pinakamaayo';
+        sub_en = 'AVG matures in ~4–6 weeks vs AVF\'s 12 weeks, fits your timeline. Discuss with vascular surgery; consider repeat Doppler if vessel assessment was older than 3 months.';
+        sub_tl = 'Mas mabilis ang AVG. Usapan sa vascular surgery.';
+        sub_ceb = 'Mas paspas ang AVG. Hisgoti sa vascular surgery.';
+      }
+    } else if(time === 'far'){
+      band = 'green'; choice = 'avf';
+      head_en = 'AVF — the gold standard, and you have plenty of time';
+      head_tl = 'AVF — ang gold standard';
+      head_ceb = 'AVF — ang gold standard';
+      sub_en = 'Refer to vascular surgery in the next 3 months. Begin arm protection now (no IVs, no blood draws on the planned access arm).';
+      sub_tl = 'I-refer sa vascular surgery sa susunod na 3 buwan. Protektahan na ang braso.';
+      sub_ceb = 'I-refer sa vascular surgery sa sunod 3 ka bulan. Protektahan na ang bukton.';
+    } else {
+      band = 'blue'; choice = 'unclear';
+      head_en = 'Get a vessel assessment first';
+      head_tl = 'Magpa-assess muna ng ugat';
+      head_ceb = 'Magpa-assess una sa ugat';
+      sub_en = 'A Doppler ultrasound of your forearm vessels is the first step. Once your surgeon assesses vessels, return to this tool.';
+      sub_tl = 'Mag-Doppler ultrasound muna. Bumalik dito pagkatapos.';
+      sub_ceb = 'Mag-Doppler ultrasound una. Balik diri pagkahuman.';
+    }
+
+    if(risks.includes('elderly')) reasons.push(trans('Age ≥65 — slightly longer AVF maturation typical','Edad ≥65 — mas matagal ang AVF maturation','Edad ≥65 — mas dugay ang AVF maturation'));
+    if(risks.includes('diabetic')) reasons.push(trans('Diabetes — vessel calcification may limit AVF; surgeon will assess','Diabetes — posibleng calcification, susuriin ng surgeon','Diabetes — posibleng calcification, susihon sa surgeon'));
+    if(risks.includes('prior-failed')) reasons.push(trans('Prior failed access — vascular mapping is essential before next attempt','Nabigong access dati — kailangan ng vascular mapping','Napakyas nga access kaniadto — kinahanglan og vascular mapping'));
+    if(risks.includes('needle')) reasons.push(trans('Needle fear — discuss buttonhole technique or PD','Takot sa karayom — usapan ang buttonhole o PD','Kahadlok sa dagom — hisgoti ang buttonhole o PD'));
+    if(work === 'manual') reasons.push(trans('Manual labor — pick the non-dominant arm; surgeon to advise','Manual labor — gawin sa non-dominant na braso','Manual labor — buhaton sa non-dominant nga bukton'));
+
+    return { band, head_en, head_tl, head_ceb, sub_en, sub_tl, sub_ceb, reasons, choice };
+  }
+
+  // ── TAB 3: HD or PD ──────────────────────────────────────
+  function computeMod(){
+    const space = readRadio('mod-space');
+    const fam = readRadio('mod-fam');
+    const travel = readRadio('mod-travel');
+    const ci = readCheckedValues('mod-ci');
+    const power = readRadio('mod-power');
+    if(!space && !fam && !travel && ci.length === 0 && !power) return null;
+
+    // Score
+    let pdScore = 0, hdScore = 0;
+    const reasons = [];
+
+    if(space === 'good'){ pdScore += 2; reasons.push(trans('Clean home space supports PD','Malinis na bahay para sa PD','Hinlo nga balay alang sa PD')); }
+    else if(space === 'no'){ hdScore += 3; reasons.push(trans('No PD-suitable space — HD is the practical choice','Walang lugar sa PD — HD ang praktikal','Walay lugar sa PD — HD ang praktikal')); }
+
+    if(fam === 'yes'){ pdScore += 1; }
+    else if(fam === 'no'){ hdScore += 1; }
+
+    if(travel === 'hard'){ pdScore += 2; reasons.push(trans('Hard to travel 3×/week — PD reduces transport burden','Mahirap pumunta 3x/linggo — PD nagbabawas sa pasanin','Lisod magtravel 3x/semana — PD nagminus sa pabug-at')); }
+    else if(travel === 'easy'){ hdScore += 1; }
+
+    if(ci.includes('surgery')){ hdScore += 3; reasons.push(trans('Multiple abdominal surgeries — PD is medically risky','Maraming operasyon — risky ang PD','Daghang operasyon — risky ang PD')); }
+    if(ci.includes('hernia')){ hdScore += 2; reasons.push(trans('Unrepaired hernia — PD will worsen it','Bukol — lalala sa PD','Bukol — modugang sa PD')); }
+    if(ci.includes('dexterity')){ hdScore += 1; }
+
+    if(power === 'intermittent'){ pdScore -= 1; reasons.push(trans('Frequent brownouts — CAPD (manual) better than APD (machine)','Madalas na brownout — CAPD mas akma','Sublay nga brownout — CAPD mas angay')); }
+
+    let band, head_en, head_tl, head_ceb, sub_en, sub_tl, sub_ceb, choice;
+    if(pdScore >= hdScore + 2){
+      band = 'green'; choice = 'pd';
+      head_en = 'PD is a strong fit for your situation';
+      head_tl = 'PD ang pinakamabuti sa inyong sitwasyon';
+      head_ceb = 'PD ang pinakamaayo sa imong sitwasyon';
+      sub_en = 'Discuss PD training schedule with your nephrologist. PD gives flexibility, no needles, and preserves residual kidney function longer.';
+      sub_tl = 'Usapan ang PD training. May flexibility, walang karayom.';
+      sub_ceb = 'Hisgoti ang PD training. Adunay flexibility, walay dagom.';
+    } else if(hdScore >= pdScore + 2){
+      band = 'green'; choice = 'hd';
+      head_en = 'HD is a better fit for your situation';
+      head_tl = 'HD ang mas angkop sa inyo';
+      head_ceb = 'HD ang mas angay nimo';
+      sub_en = 'Begin vascular access planning (see Tab 2). HD at a centre means structured care by the team, no home equipment, and you can rest during sessions.';
+      sub_tl = 'Simulan ang access planning. Walang gamit sa bahay.';
+      sub_ceb = 'Sugdan ang access planning. Walay gamit sa balay.';
+    } else {
+      band = 'blue'; choice = 'either';
+      head_en = 'Both PD and HD are reasonable — pick what fits your life';
+      head_tl = 'Parehong PD at HD ay valid — piliin batay sa buhay ninyo';
+      head_ceb = 'Parehas PD ug HD angay — pilia base sa imong kinabuhi';
+      sub_en = 'Visit both modality counselling sessions if your nephrology centre offers them. The right choice often comes from talking to actual PD and HD patients about real life.';
+      sub_tl = 'Pumunta sa modality counselling. Kausapin ang mga pasyenteng PD at HD.';
+      sub_ceb = 'Adto sa modality counselling. Pakigsulti sa mga pasyente sa PD ug HD.';
+    }
+
+    return { band, head_en, head_tl, head_ceb, sub_en, sub_tl, sub_ceb, reasons, choice };
+  }
+
+  // ── TAB 4: Transplant ────────────────────────────────────
+  function computeTx(){
+    const age = readRadio('tx-age');
+    const cm = readCheckedValues('tx-comorb');
+    const donor = readRadio('tx-donor');
+    const fin = readRadio('tx-fin');
+    if(!age && cm.length === 0 && !donor && !fin) return null;
+
+    const reasons = [];
+
+    // Absolute / strong contraindications
+    if(cm.includes('cancer')) reasons.push(trans('Active cancer — transplant on hold until cancer-free for 2–5 yrs (cancer-type dependent)','Active cancer — hindi pa pwede','Active nga cancer — dili pa puwede'));
+    if(cm.includes('severe-cvd')) reasons.push(trans('Severe heart disease — requires cardiac optimization before listing','Malubhang sakit sa puso — kailangan ng cardiac optimization','Grabe nga sakit sa kasingkasing — kinahanglan og cardiac optimization'));
+    if(cm.includes('severe-pulm')) reasons.push(trans('Severe lung disease — anesthesia risk; may exclude from transplant','Malubhang baga — anesthesia risk','Grabe nga baga — anesthesia risk'));
+    if(cm.includes('uncontrolled')) reasons.push(trans('Uncontrolled infection / psychiatric illness — needs resolution first','Hindi kontroladong impeksyon/psychiatric — kailangang matugunan','Dili kontrolado nga impeksyon/psychiatric — kinahanglan masulbad'));
+    if(cm.includes('frail')) reasons.push(trans('Frailty / dependence — transplant survival depends on functional status','Mahina — depende sa functional status','Huyang — depende sa functional status'));
+
+    const hardCI = cm.includes('cancer') || cm.includes('uncontrolled');
+    const softCI = cm.includes('severe-cvd') || cm.includes('severe-pulm') || cm.includes('frail');
+
+    let band, head_en, head_tl, head_ceb, sub_en, sub_tl, sub_ceb, choice;
+
+    if(hardCI){
+      band = 'red'; choice = 'not-yet';
+      head_en = 'Transplant is on hold until the contraindication resolves';
+      head_tl = 'Hindi pa pwede ang transplant';
+      head_ceb = 'Dili pa puwede ang transplant';
+      sub_en = 'Continue dialysis or CKM. Re-evaluate when the contraindication clears (cancer-free interval met, infection treated, psychiatric stable).';
+      sub_tl = 'Magpatuloy muna sa dialysis o CKM. I-re-evaluate kapag clear na.';
+      sub_ceb = 'Padayon una sa dialysis o CKM. I-re-evaluate kung clear na.';
+    } else if(age === 'old' && softCI){
+      band = 'amber'; choice = 'conditional';
+      head_en = 'Conditional candidate — needs comorbidity optimization first';
+      head_tl = 'Conditional — kailangan ng optimization muna';
+      head_ceb = 'Conditional — kinahanglan og optimization una';
+      sub_en = 'Older age combined with comorbidity makes transplant less straightforward. A formal transplant evaluation visit will weigh the risks against your projected dialysis trajectory.';
+      sub_tl = 'Pormal na transplant evaluation ang susunod.';
+      sub_ceb = 'Pormal nga transplant evaluation ang sunod.';
+    } else if(age === 'young' && donor === 'yes' && fin !== 'cant'){
+      band = 'green'; choice = 'preemptive';
+      head_en = 'Strong candidate for preemptive transplant — pursue before dialysis if possible';
+      head_tl = 'Strong candidate para sa preemptive transplant';
+      head_ceb = 'Strong candidate alang sa preemptive transplant';
+      sub_en = 'Preemptive (before-dialysis) transplant has the best long-term survival. Refer to NKTI or your nearest transplant centre as soon as eGFR <20 to begin workup.';
+      sub_tl = 'Preemptive transplant ang pinakamabuti. Mag-refer sa NKTI kapag eGFR <20.';
+      sub_ceb = 'Preemptive transplant ang pinakamaayo. Mag-refer sa NKTI kung eGFR <20.';
+    } else if((age === 'young' || age === 'mid') && (donor === 'yes' || donor === 'maybe')){
+      band = 'green'; choice = 'after-stabilize';
+      head_en = 'Candidate — pursue workup; transplant after dialysis stabilization';
+      head_tl = 'Candidate — workup at transplant pagkatapos mag-stabilize sa dialysis';
+      head_ceb = 'Candidate — workup ug transplant human magstabilize sa dialysis';
+      sub_en = 'Begin transplant workup labs now. Many Filipino patients receive a kidney from a family donor 6–18 months into dialysis once both donor and recipient are evaluated.';
+      sub_tl = 'Simulan ang workup. Maraming Pilipino ang nakakakuha ng kidney sa pamilya 6–18 buwan pagkatapos magsimula sa dialysis.';
+      sub_ceb = 'Sugdan ang workup. Daghang Pilipino nakakuha og kidney sa pamilya 6–18 ka bulan human magsugod sa dialysis.';
+    } else if(donor === 'no'){
+      band = 'amber'; choice = 'deceased';
+      head_en = 'Candidate for the deceased-donor pathway via NKTI';
+      head_tl = 'Candidate sa deceased-donor pathway sa NKTI';
+      head_ceb = 'Candidate sa deceased-donor pathway sa NKTI';
+      sub_en = 'NKTI maintains the national deceased-donor registry. Wait times in the Philippines remain long; meanwhile, exploring extended family donors (spouse, cousins) is reasonable.';
+      sub_tl = 'Mahabang waiting list sa NKTI. Tingnan ang extended family donors.';
+      sub_ceb = 'Taas nga waiting list sa NKTI. Tan-awa ang extended family donors.';
+    } else if(fin === 'cant'){
+      band = 'amber'; choice = 'financial-first';
+      head_en = 'Financial planning first — immunosuppression is a lifelong cost';
+      head_tl = 'Financial planning muna';
+      head_ceb = 'Financial planning una';
+      sub_en = 'Lifetime immunosuppression typically runs ₱5,000–15,000/month after PhilHealth contribution. Speak with NKTI social services about Lingap-pagkalinga and other assistance programmes before commiting to transplant.';
+      sub_tl = 'Magtanong sa NKTI social services tungkol sa Lingap-pagkalinga.';
+      sub_ceb = 'Pangutana sa NKTI social services bahin sa Lingap-pagkalinga.';
+    } else {
+      band = 'blue'; choice = 'unclear';
+      head_en = 'Get a formal transplant evaluation visit';
+      head_tl = 'Magpa-formal evaluation sa transplant centre';
+      head_ceb = 'Magpa-formal evaluation sa transplant centre';
+      sub_en = 'Your candidacy depends on a complete evaluation — labs, cardiac workup, infection screen, surgical assessment. The centre will tell you definitively.';
+      sub_tl = 'Ang centre ang magsasabi ng tiyak.';
+      sub_ceb = 'Ang centre ang mosulti og tinuod.';
+    }
+
+    return { band, head_en, head_tl, head_ceb, sub_en, sub_tl, sub_ceb, reasons, choice };
+  }
+
+  // ── Output rendering ─────────────────────────────────────
+  function renderBand(containerId, result){
+    const container = document.getElementById(containerId);
+    if(!container) return;
+    if(!result){
+      container.innerHTML = `<div class="dt-out-band dt-out-empty"><span class="dt-out-icon">📝</span> <span class="dt-out-head">${trans('Answer the questions to see your guidance.','Sagutan ang mga tanong.','Tubaga ang mga pangutana.')}</span></div>`;
+      return;
+    }
+    const icons = { green:'🟢', amber:'🟡', orange:'🟠', red:'🔴', blue:'🔵' };
+    let html = `<div class="dt-out-band dt-out-${result.band}">`;
+    html += `<span class="dt-out-icon">${icons[result.band]||'📝'}</span>`;
+    html += `<span class="dt-out-head"><span data-lang="en">${result.head_en}</span><span data-lang="tl" class="lang-hidden">${result.head_tl}</span><span data-lang="ceb" class="lang-hidden">${result.head_ceb}</span></span>`;
+    html += `<span class="dt-out-sub"><span data-lang="en">${result.sub_en}</span><span data-lang="tl" class="lang-hidden">${result.sub_tl}</span><span data-lang="ceb" class="lang-hidden">${result.sub_ceb}</span></span>`;
+    html += `</div>`;
+    if(result.reasons && result.reasons.length){
+      html += `<div class="dt-out-reasons"><strong>${trans('Factors that drove this','Mga factor','Mga factor')}</strong><ul>`;
+      result.reasons.forEach(r => html += `<li>${r}</li>`);
+      html += `</ul></div>`;
+    }
+    container.innerHTML = html;
+    // Reapply current lang
+    const lang = currentLang();
+    container.querySelectorAll('[data-lang]').forEach(el => {
+      el.classList.toggle('lang-hidden', el.getAttribute('data-lang') !== lang);
+    });
+  }
+
+  // ── TAB 5: PhilHealth cost calculator ────────────────────
+  function buildServicesGrid(){
+    const grid = document.getElementById('dt-services-grid');
+    if(!grid) return;
+    const services = PHL.services;
+    let html = '';
+    Object.keys(services).forEach(k => {
+      const s = services[k];
+      html += `<label class="dt-check"><input type="checkbox" data-svc="${k}"><span>${s.name}<small>${PHP(s.cost)}${s.unit}</small></span></label>`;
+    });
+    grid.innerHTML = html;
+    grid.querySelectorAll('input[data-svc]').forEach(cb => cb.addEventListener('change', renderCost));
+  }
+
+  function renderCost(){
+    const tier = document.getElementById('dt-cost-tier').value;
+    const region = document.getElementById('dt-cost-region').value;
+    const tierData = PHL.tiers[tier];
+    const services = $$('#dt-services-grid input[data-svc]:checked').map(el => el.dataset.svc);
+    const container = document.getElementById('cost-output');
+    const regionContainer = document.getElementById('dt-region-info');
+
+    // Render regional info
+    const r = PHL.regions[region];
+    const regNotes = r['notes_' + currentLang()] || r.notes_en;
+    regionContainer.innerHTML = `<strong>${r.name}.</strong> ${regNotes} <br><br><a href="${HCI_DIRECTORY_URL}" target="_blank" rel="noopener">${trans('PhilHealth HCI directory (find an accredited centre)','PhilHealth HCI directory','PhilHealth HCI directory')} →</a>`;
+
+    if(services.length === 0){
+      container.innerHTML = `<div class="dt-out-band dt-out-empty"><span class="dt-out-icon">📝</span> <span class="dt-out-head">${trans('Tick the services you expect to need.','Lagyan ng tsek ang services.','I-check ang mga serbisyo.')}</span></div>`;
+      return;
+    }
+
+    // Compute totals
+    let totalCost = 0, totalCov = 0, totalOOP = 0;
+    let rows = '';
+    services.forEach(key => {
+      const s = PHL.services[key];
+      const qty = s.sessions || s.months || 1;
+      const cost = s.cost * qty;
+      let cov = s.cov * qty;
+      // NBB-eligible tiers and case-rate services → cap OOP at zero in govt HCIs
+      const oopRaw = Math.max(0, cost - cov);
+      const oop = tierData.nbb ? Math.max(0, oopRaw * tierData.factor) : oopRaw;
+      const oopFmt = tierData.nbb ? `${PHP(oop)} <small>(NBB in govt HCI: ₱0)</small>` : PHP(oop);
+      const nbbLabel = tierData.nbb ? '✓' : '—';
+      const trClass = tierData.nbb ? 'dt-nbb-row' : '';
+      rows += `<tr class="${trClass}">
+        <td>${s.name}${qty>1?` <small>(×${qty})</small>`:''}</td>
+        <td class="dt-c-cost">${PHP(cost)}</td>
+        <td class="dt-c-cov">${PHP(cov)}</td>
+        <td class="dt-c-oop">${oopFmt}</td>
+        <td class="dt-c-nbb">${nbbLabel}</td>
+      </tr>`;
+      totalCost += cost;
+      totalCov += cov;
+      totalOOP += oop;
+    });
+
+    rows += `<tr><td><strong>${trans('Annual total (estimate)','Kabuuang tinatayang halaga','Tibuok banabana')}</strong></td><td class="dt-c-cost">${PHP(totalCost)}</td><td class="dt-c-cov">${PHP(totalCov)}</td><td class="dt-c-oop">${PHP(totalOOP)}</td><td>&nbsp;</td></tr>`;
+
+    let html = `<div class="dt-out-band dt-out-blue">
+      <span class="dt-out-icon">💰</span>
+      <span class="dt-out-head"><span data-lang="en">Estimated cost summary for ${tierData.label}</span><span data-lang="tl" class="lang-hidden">Tinatayang gastos para sa ${tierData.label}</span><span data-lang="ceb" class="lang-hidden">Banabana sa gasto para sa ${tierData.label}</span></span>
+      <span class="dt-out-sub"><span data-lang="en">${tierData.nbb ? 'No Balance Billing (NBB) applies for case-rate services in government and accredited private HCIs.' : 'Out-of-pocket reflects standard balance billing — actual co-pay varies by facility.'} <em>All peso amounts are approximations as of 2025–2026 — verify with your social worker.</em></span><span data-lang="tl" class="lang-hidden">Tinatayang halaga lamang. I-verify sa social worker.</span><span data-lang="ceb" class="lang-hidden">Banabana lamang. I-verify sa social worker.</span></span>
+    </div>`;
+    html += `<table class="dt-cost-table"><thead><tr>
+      <th>${trans('Service','Serbisyo','Serbisyo')}</th>
+      <th class="dt-c-cost">${trans('Est. cost','Gastos','Gasto')}</th>
+      <th class="dt-c-cov">${trans('PhilHealth','PhilHealth','PhilHealth')}</th>
+      <th class="dt-c-oop">${trans('Out-of-pocket','Out-of-pocket','Out-of-pocket')}</th>
+      <th>${trans('NBB?','NBB?','NBB?')}</th>
+    </tr></thead><tbody>${rows}</tbody></table>`;
+    container.innerHTML = html;
+
+    // Reapply current lang
+    const lang = currentLang();
+    container.querySelectorAll('[data-lang]').forEach(el => {
+      el.classList.toggle('lang-hidden', el.getAttribute('data-lang') !== lang);
+    });
+  }
+
+  // ── Pre-fill cost tab from earlier tabs ──────────────────
+  function prefillCost(){
+    // If user picked PD in modality tab, tick PD service; HD → HD service & AVF
+    const modR = computeMod();
+    const accR = computeAcc();
+    const dorR = computeDor();
+    const txR  = computeTx();
+    $$('#dt-services-grid input[data-svc]').forEach(cb => { /* don't reset; only add */ });
+    if(modR && modR.choice === 'hd') $('#dt-services-grid input[data-svc="hd"]').checked = true;
+    if(modR && modR.choice === 'pd') $('#dt-services-grid input[data-svc="pd"]').checked = true;
+    if(accR && (accR.choice === 'avf' || accR.choice === 'avf-now')) $('#dt-services-grid input[data-svc="avf"]').checked = true;
+    if(accR && accR.choice === 'catheter-bridge') $('#dt-services-grid input[data-svc="catheter"]').checked = true;
+    if(txR && (txR.choice === 'preemptive' || txR.choice === 'after-stabilize')){
+      $('#dt-services-grid input[data-svc="tx_workup"]').checked = true;
+      $('#dt-services-grid input[data-svc="tx_surgery"]').checked = true;
+      $('#dt-services-grid input[data-svc="tx_immuno"]').checked = true;
+    }
+    renderCost();
+  }
+
+  // ── Reset ─────────────────────────────────────────────────
+  window.dtResetAll = function(){
+    $$('#decision-tools input[type=radio]').forEach(el => el.checked = false);
+    $$('#decision-tools input[type=checkbox]').forEach(el => el.checked = false);
+    document.getElementById('dt-cost-tier').value = 'formal';
+    document.getElementById('dt-cost-region').value = 'ncr';
+    ['dor','acc','mod','tx','cost'].forEach(t => {
+      const c = document.getElementById(t + '-output');
+      if(c) c.innerHTML = `<div class="dt-out-band dt-out-empty"><span class="dt-out-icon">📝</span> <span class="dt-out-head">${trans('Answer the questions to see your guidance.','Sagutan ang mga tanong.','Tubaga ang mga pangutana.')}</span></div>`;
+    });
+    document.getElementById('dt-region-info').innerHTML = '';
+    switchTab('dialysis-or-not');
+  };
+
+  // ── Hook everything up ───────────────────────────────────
+  function recomputeAll(){
+    renderBand('dor-output', computeDor());
+    renderBand('acc-output', computeAcc());
+    renderBand('mod-output', computeMod());
+    renderBand('tx-output',  computeTx());
+  }
+  $$('#decision-tools input[type=radio], #decision-tools input[type=checkbox]').forEach(el => {
+    if(el.closest('#dt-services-grid')) return;
+    el.addEventListener('change', recomputeAll);
+  });
+  document.getElementById('dt-cost-tier').addEventListener('change', renderCost);
+  document.getElementById('dt-cost-region').addEventListener('change', renderCost);
+
+  // When user switches to cost tab, prefill
+  document.querySelector('#decision-tools .dt-tab[data-dt-tab="cost"]').addEventListener('click', prefillCost);
+
+  // Initial setup
+  buildServicesGrid();
+  recomputeAll();
+})();
+
+</script>
 </body>
 </html>
