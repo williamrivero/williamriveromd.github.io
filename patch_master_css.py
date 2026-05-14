@@ -551,7 +551,9 @@ MASTER_CSS = """
     background: rgba(184,150,46,.25); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; flex-shrink: 0; border: 2px solid rgba(184,150,46,.4);
+    overflow: hidden;
   }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
   .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
   .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; } /* 13.1:1 ✓ */
   .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
