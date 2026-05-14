@@ -775,6 +775,182 @@
     @page { margin: 18mm 15mm; size: A4; }
   }
 </style>
+<style>
+  /* ── Stat cards ── */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
+  .stat-card{background:var(--navy);border-radius:14px;padding:22px 24px;color:white;text-align:center;}
+  .stat-number{font-family:'Lora',serif;font-size:clamp(24px,4vw,34px);font-weight:600;color:#d4af4f;line-height:1.1;margin-bottom:8px;}
+  .stat-label{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;}
+
+  /* ── Age bands ── */
+  .age-band{border-radius:14px;padding:22px 26px;margin-bottom:16px;border-left:4px solid;}
+  .age-band.child{border-color:var(--teal);background:var(--teal-light);}
+  .age-band.teen{border-color:var(--purple);background:var(--purple-soft);}
+  .age-band.young-adult{border-color:var(--amber);background:var(--amber-soft);}
+  .age-band h4{font-size:14px;font-weight:700;margin-bottom:8px;}
+  .age-band.child h4{color:var(--teal);}
+  .age-band.teen h4{color:var(--purple);}
+  .age-band.young-adult h4{color:#92400e;}
+  .age-band p{font-size:14px;color:var(--text-mid);margin:0;line-height:1.6;}
+  html[data-theme="dark"] .age-band.child{background:#0e2f32;}
+  html[data-theme="dark"] .age-band.teen{background:#1a1030;}
+  html[data-theme="dark"] .age-band.young-adult{background:#2a1f0a;}
+
+  /* ── Cause comparison bar charts ── */
+  .cause-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0;}
+  .cause-compare-card{border-radius:12px;padding:20px 22px;border:1px solid var(--border);background:var(--bg);}
+  .cause-compare-card h5{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+  .cause-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .cause-bar-label{font-size:12px;color:var(--text-mid);width:130px;flex-shrink:0;line-height:1.3;}
+  .cause-bar-track{flex:1;height:8px;background:rgba(0,0,0,.07);border-radius:4px;overflow:hidden;}
+  .cause-bar-fill{height:100%;border-radius:4px;}
+  .cause-bar-pct{font-size:11px;font-weight:600;color:var(--text-muted);width:40px;text-align:right;flex-shrink:0;}
+  @media(max-width:600px){.cause-compare{grid-template-columns:1fr;}}
+  html[data-theme="dark"] .cause-compare-card{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .cause-bar-track{background:rgba(255,255,255,.08);}
+
+  /* ── Age causes grid ── */
+  .age-causes{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0;}
+  .age-cause-col{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+  .age-cause-col h5{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase;}
+  .age-cause-col ul{list-style:none;padding:0;margin:0;}
+  .age-cause-col ul li{font-size:12px;color:var(--text-mid);padding:4px 0;border-bottom:1px solid var(--border);line-height:1.4;}
+  .age-cause-col ul li:last-child{border-bottom:none;}
+  .age-cause-col ul li::before{content:'• ';color:var(--teal);}
+  @media(max-width:600px){.age-causes{grid-template-columns:1fr 1fr;}}
+  html[data-theme="dark"] .age-cause-col{background:#1a2535;border-color:#2a3548;}
+
+  /* ── Transition timeline ── */
+  .transition-timeline{position:relative;margin:28px 0 36px;}
+  .tt-line{position:absolute;top:24px;left:18px;right:18px;height:3px;background:linear-gradient(90deg,var(--teal),var(--green));z-index:0;border-radius:2px;}
+  .tt-items{display:flex;justify-content:space-between;position:relative;z-index:1;}
+  .tt-item{display:flex;flex-direction:column;align-items:center;width:19%;}
+  .tt-dot{width:36px;height:36px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:10px;border:3px solid white;box-shadow:0 0 0 2px var(--teal);flex-shrink:0;}
+  .tt-age{font-size:11px;font-weight:700;color:var(--teal);text-align:center;margin-bottom:4px;}
+  .tt-desc{font-size:11px;color:var(--text-mid);text-align:center;line-height:1.4;}
+  @media(max-width:600px){.tt-line{display:none;}.tt-items{flex-direction:column;gap:16px;}.tt-item{flex-direction:row;width:100%;gap:12px;align-items:flex-start;}.tt-dot{flex-shrink:0;}.tt-age{font-size:12px;min-width:64px;}.tt-desc{text-align:left;}}
+
+  /* ── Mental health comparison bars ── */
+  .mental-compare{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+  .mc-row{display:flex;align-items:center;gap:12px;}
+  .mc-label{font-size:13px;color:var(--text-mid);width:170px;flex-shrink:0;line-height:1.3;}
+  .mc-bar-track{flex:1;height:14px;background:rgba(0,0,0,.07);border-radius:7px;overflow:hidden;}
+  .mc-bar-fill{height:100%;border-radius:7px;}
+  .mc-bar-fill.mc-ckd{background:var(--red);}
+  .mc-bar-fill.mc-healthy{background:var(--teal);}
+  .mc-pct{font-size:12px;font-weight:700;width:45px;text-align:right;flex-shrink:0;}
+  html[data-theme="dark"] .mc-bar-track{background:rgba(255,255,255,.08);}
+
+  /* ── Dialysis treatment week visualizer ── */
+  .dtv-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:12px 0;}
+  .dtv-day{border-radius:8px;padding:10px 4px;text-align:center;}
+  .dtv-treatment{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.2);}
+  .dtv-free{background:var(--teal-light);border:1px solid rgba(26,107,114,.15);}
+  .dtv-day-name{font-size:9px;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;}
+  .dtv-icon{font-size:18px;line-height:1;}
+  .dtv-note{font-size:9px;color:var(--text-muted);margin-top:4px;line-height:1.3;}
+  .dtv-legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;font-size:12px;color:var(--text-muted);}
+  html[data-theme="dark"] .dtv-free{background:#0e2f32;border-color:#1a4040;}
+
+  /* ── Audience tab system ── */
+  .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
+  .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
+  .aud-tab{flex:1;text-align:center;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .aud-tab:hover{color:var(--navy);}
+  .aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
+  .aud-tab.active.tab-md{border-bottom-color:var(--navy);}
+  .tab-icon{font-size:17px;}
+  .mode-patient{display:block;}
+  .mode-physician{display:none;}
+  body.physician-mode .mode-patient{display:none!important;}
+  body.physician-mode .mode-physician{display:block!important;}
+  body.physician-mode .lang-group-wrap{opacity:.3;pointer-events:none;}
+  body.physician-mode .nav-strip .mode-patient-pill{display:none;}
+  body.physician-mode .nav-strip .mode-physician-pill{display:inline-flex;}
+  .mode-physician-pill{display:none;}
+  html[data-theme="dark"] .audience-tabs{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .aud-tab{color:#8a95a8;}
+  html[data-theme="dark"] .aud-tab.active{color:#e8eaf0;}
+
+  /* ── KDIGO / evidence grade badges ── */
+  .kdigo-badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;background:var(--navy);color:var(--gold-light);padding:2px 8px;border-radius:4px;margin-left:6px;vertical-align:middle;}
+  .ev-grade{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:6px;vertical-align:middle;}
+  .ev-1a{background:#edf7f2;color:var(--green);border:1px solid rgba(45,122,79,.2);}
+  .ev-1b{background:#d4eaf5;color:#0c4a7a;border:1px solid rgba(26,86,219,.2);}
+  .ev-2b{background:#fef9ec;color:#8a5000;border:1px solid rgba(245,166,35,.2);}
+  .ev-2c{background:#f4eefa;color:var(--purple);border:1px solid rgba(123,78,160,.2);}
+
+  /* ── Transition highlight box ── */
+  .transition-highlight{background:linear-gradient(135deg,#0f1e2e 55%,#1a2e4a);color:white;border-radius:16px;padding:28px 32px;margin:28px 0;}
+  .transition-highlight h4{color:var(--gold-light)!important;font-size:15px;font-weight:700;margin-bottom:10px;}
+  .transition-highlight p{color:rgba(255,255,255,.9)!important;font-size:14px;line-height:1.7;margin-bottom:10px;}
+  .transition-highlight p:last-child{margin-bottom:0;}
+  .transition-highlight strong{color:white!important;}
+
+  /* ── Clinical table ── */
+  .clin-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px;}
+  .clin-table th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--border);}
+  .clin-table td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text-mid);vertical-align:top;line-height:1.5;}
+  .clin-table td:first-child{font-weight:600;color:var(--navy);}
+  .clin-table tr:last-child td{border-bottom:none;}
+  .clin-table tr:hover td{background:var(--bg);}
+  html[data-theme="dark"] .clin-table th{background:#1a2535;color:#8a95a8;}
+  html[data-theme="dark"] .clin-table td{border-color:#2a3548;}
+  html[data-theme="dark"] .clin-table td:first-child{color:#e8eaf0;}
+  html[data-theme="dark"] .clin-table tr:hover td{background:#202d40;}
+
+  /* ── Reference list ── */
+  .ref-list{font-size:12px;color:var(--text-muted);line-height:1.7;margin:24px 0 0;padding:16px 20px;background:var(--bg);border:1px solid var(--border);border-radius:10px;}
+  .ref-list p{margin-bottom:6px;color:var(--text-muted)!important;}
+  .ref-list p:last-child{margin-bottom:0;}
+  html[data-theme="dark"] .ref-list{background:#1a2535;border-color:#2a3548;}
+
+  /* ── Illustration panel ── */
+  .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+  .illus-caption{font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;line-height:1.5;padding:0 8px;}
+
+  /* ── Paediatric eGFR calculator ── */
+  .peds-egfr{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px 26px;margin:24px 0 32px;}
+  .peds-egfr h4{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .peds-egfr .peds-egfr-sub{font-size:13px;color:var(--text-muted);margin-bottom:18px;line-height:1.55;}
+  .peds-egfr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px 16px;margin-bottom:16px;}
+  .peds-egfr-field{display:flex;flex-direction:column;}
+  .peds-egfr-field label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+  .peds-egfr-field input,.peds-egfr-field select{font-family:'DM Sans',sans-serif;font-size:14px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);transition:border-color .15s;}
+  .peds-egfr-field input:focus,.peds-egfr-field select:focus{outline:none;border-color:var(--teal);}
+  .peds-egfr-btnrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:6px;}
+  .peds-egfr-btn{background:var(--navy);color:white;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:10px 22px;border-radius:8px;cursor:pointer;transition:background .15s;}
+  .peds-egfr-btn:hover{background:#1a2e4a;}
+  .peds-egfr-reset{background:transparent;color:var(--text-muted);border:1px solid var(--border);}
+  .peds-egfr-reset:hover{background:var(--bg);color:var(--navy);}
+  .peds-egfr-result{margin-top:18px;padding:18px 20px;background:var(--white);border:1px solid var(--border);border-radius:10px;display:none;}
+  .peds-egfr-result.show{display:block;}
+  .peds-egfr-result.error{border-color:var(--red);background:var(--red-soft);}
+  .peds-egfr-result .res-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px dashed var(--border);flex-wrap:wrap;}
+  .peds-egfr-result .res-row:last-of-type{border-bottom:none;}
+  .peds-egfr-result .res-label{font-size:13px;color:var(--text-mid);font-weight:500;}
+  .peds-egfr-result .res-label .res-formula{display:block;font-size:11px;color:var(--text-muted);font-weight:400;margin-top:2px;}
+  .peds-egfr-result .res-value{font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--navy);}
+  .peds-egfr-result .res-value .res-unit{font-size:11px;color:var(--text-muted);font-weight:500;margin-left:4px;font-family:'DM Sans',sans-serif;}
+  .peds-egfr-stage{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:5px 11px;border-radius:14px;margin-top:12px;}
+  .peds-egfr-stage.s-g1{background:#edf7f2;color:var(--green);}
+  .peds-egfr-stage.s-g2{background:#d4eaf5;color:#0c4a7a;}
+  .peds-egfr-stage.s-g3a{background:#fef9ec;color:#8a5000;}
+  .peds-egfr-stage.s-g3b{background:#fef0e0;color:#a0530f;}
+  .peds-egfr-stage.s-g4{background:#fdf0ef;color:var(--red);}
+  .peds-egfr-stage.s-g5{background:#2a0c0c;color:#fff;}
+  .peds-egfr-note{font-size:12px;color:var(--text-muted);line-height:1.55;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+  .peds-egfr-warn{background:var(--amber-soft);border-left:3px solid var(--amber);padding:10px 14px;border-radius:6px;margin-top:12px;font-size:12px;color:var(--text-mid);line-height:1.5;}
+  .peds-egfr-err{font-size:13px;color:var(--red);font-weight:500;}
+  html[data-theme="dark"] .peds-egfr{background:#1a2535;border-color:#2a3548;}
+  html[data-theme="dark"] .peds-egfr-field input,html[data-theme="dark"] .peds-egfr-field select{background:#0f1520;border-color:#2a3548;color:#e8eaf0;}
+  html[data-theme="dark"] .peds-egfr-result{background:#0f1520;border-color:#2a3548;}
+  html[data-theme="dark"] .peds-egfr-result .res-value{color:#e8eaf0;}
+  html[data-theme="dark"] .peds-egfr-stage.s-g1{background:#0e2a1c;}
+  html[data-theme="dark"] .peds-egfr-stage.s-g2{background:#0c2238;color:#9cc6e5;}
+  html[data-theme="dark"] .peds-egfr-stage.s-g3a,html[data-theme="dark"] .peds-egfr-stage.s-g3b{background:#2a1f0a;}
+  html[data-theme="dark"] .peds-egfr-stage.s-g4{background:#2a1515;color:#e55;}
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
