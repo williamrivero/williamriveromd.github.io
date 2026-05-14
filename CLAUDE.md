@@ -28,6 +28,10 @@ python3 add_kap_toggle.py --dry-run
 
 python3 fix_setlang_kap.py                # patch setLang() JS to support 'kap'
 python3 fix_setlang_kap.py --dry-run
+
+python3 patch_last_reviewed.py            # add/update Last Reviewed badges + JSON-LD on all guides
+python3 patch_last_reviewed.py --dry-run
+python3 patch_last_reviewed.py --guide anemia-management.html  # single guide
 ```
 
 The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.

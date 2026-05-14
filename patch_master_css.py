@@ -747,6 +747,20 @@ MASTER_CSS = """
   /* Desktop mode */
   html[data-view="desktop"] { min-width: 1024px; }
 
+  /* ── MOBILE LAYOUT (≤ 480 px / 375 px phones) ───────────────────────────── */
+  /* Tighter side padding on narrow viewports */
+  @media(max-width: 480px) {
+    .container { padding: 0 20px; }
+    .guide-footer .footer-inner { padding: 0 20px; }
+    .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .hero-meta { gap: 14px; }
+  }
+
+  /* Tables: horizontal scroll to prevent content overflow on phones */
+  @media(max-width: 640px) {
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  }
+
   /* ═══════════════════════════════════════════════════════════════════════════
      PRINT
   ═══════════════════════════════════════════════════════════════════════════ */
