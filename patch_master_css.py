@@ -653,6 +653,29 @@ MASTER_CSS = """
   }
   .print-btn:hover .p-tip { opacity: 1; }
 
+  /* ── SCROLL-TO-TOP BUTTON ────────────────────────────────────────────────── */
+  .scroll-top-btn {
+    position: fixed; bottom: 80px; right: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996;
+    opacity: 0; pointer-events: none;
+  }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #1a2e4a; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip {
+    position: absolute; right: 54px;
+    background: rgba(15,30,46,.9); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+
   /* ═══════════════════════════════════════════════════════════════════════════
      DARK MODE OVERRIDES
      Applied when html[data-theme="dark"] is set by toggleDark().
@@ -911,7 +934,7 @@ MASTER_CSS = """
      PRINT
   ═══════════════════════════════════════════════════════════════════════════ */
   @media print {
-    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .dl-fab, .guide-footer { display: none !important; }
+    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .dl-fab, .scroll-top-btn, .guide-footer { display: none !important; }
     body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; }
     .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; }
     .hero h1 { color: #0f1e2e !important; font-size: 22px !important; }
