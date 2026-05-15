@@ -501,24 +501,6 @@
   .related-card-desc  { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
   .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
 
-  /* ── RELATED GUIDES — LEGACY ALIASES (12 guides ship variant markup) ─────── */
-  .related-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;
-  }
-  .related-badge {
-    display: inline-block;
-    font-size: .68rem; font-weight: 700; color: var(--teal);
-    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px;
-  }
-  .related-card h3 {
-    font-size: .92rem; font-weight: 600; color: var(--navy);
-    line-height: 1.35; margin: 0 0 6px 0;
-  }
-  .related-card p {
-    font-size: .80rem; color: var(--text-muted); line-height: 1.45;
-    margin: 0; flex: 1;
-  }
-
   /* ── DR CARD (dark panel) ────────────────────────────────────────────────── */
   .dr-card {
     background: var(--navy); color: white;
@@ -530,9 +512,7 @@
     background: rgba(184,150,46,.25); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; flex-shrink: 0; border: 2px solid rgba(184,150,46,.4);
-    overflow: hidden;
   }
-  .dr-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
   .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
   .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; } /* 13.1:1 ✓ */
   .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
@@ -708,9 +688,6 @@
   /* Related guides */
   html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
   html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
-  html[data-theme="dark"] .related-card h3 { color: var(--text); }
-  html[data-theme="dark"] .related-card p { color: var(--text-muted); }
-  html[data-theme="dark"] .related-badge { color: var(--teal); }
 
   /* Food grids */
   html[data-theme="dark"] .food-ok    { background: var(--green-soft); border-color: rgba(74,222,128,.15); }
@@ -859,9 +836,6 @@
     .nav-pill { display: none; }
     @page { margin: 18mm 15mm; size: A4; }
   }
-
-.hero h1 em{font-style:italic;color:var(--gold-light);}
-.hero-sub em{font-style:italic;color:var(--gold-light);}
 </style>
 
 <style>
@@ -985,30 +959,26 @@ body.dark .related-card-title {
 </script>
 </head>
 <body>
-
-<!-- SITE HEADER -->
-<header style="background:var(--navy);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,0.08);">
-  <a href="https://williamriveromd.com" style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:400;color:white;text-decoration:none;letter-spacing:0.01em;">W. G. M. <strong style="font-weight:600;color:#d4af4f;">Rivero</strong>, MD</a>
-  <a href="https://williamriveromd.com/guides/index.html" style="font-size:12px;color:rgba(255,255,255,0.55);text-decoration:none;letter-spacing:0.04em;"><span data-lang="en">← All Guides</span><span data-lang="tl" class="lang-hidden">← Lahat ng Gabay</span><span data-lang="ceb" class="lang-hidden">← Tanan nga Giya</span><span class="lang-hidden" data-lang="kap">← Lahat ning Gabay</span></a>
+<header class="site-header">
+  <a href="https://williamriveromd.com" class="brand">W. G. M. <strong>Rivero</strong>, MD</a>
+  <a href="https://williamriveromd.com/guides/index.html" class="back">← All Guides</a>
 </header>
-<div class="guide-toggle-bar" style="justify-content:space-between;">
-  <div style="display:flex;gap:8px;align-items:center;">
-    <span class="lang-label">Language:</span>
-    <button class="lang-btn active" id="glb-en" onclick="setLang('en')">English</button>
-    <button class="lang-btn" id="glb-tl" onclick="setLang('tl')">Tagalog</button>
-    <button class="lang-btn" id="glb-ceb" onclick="setLang('ceb')">Cebuano</button>
-      <button id="glb-kap" class="lang-btn" onclick="setLang('kap')">KAP</button>
-  </div>
-  <div style="display:flex;gap:8px;align-items:center;">
-    <button class="toggle-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;display:flex;align-items:center;gap:5px;">
-      <svg id="darkIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      <span id="darkLabel">Dark</span>
-    </button>
-    <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;display:flex;align-items:center;gap:5px;">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      <span id="desktopLabel">Desktop</span>
-    </button>
-  </div>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setGuideLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setGuideLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setGuideLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setGuideLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
 </div>
 
 <section class="hero">
@@ -1017,7 +987,7 @@ body.dark .related-card-title {
     <h1>Dialysis Access Care:<br><em style="color:var(--gold-light);">Your Lifeline — Protect It Every Day</em></h1>
     <p class="hero-sub">Understanding the different types of dialysis access, how to care for your fistula or catheter at home, and how to recognize problems before they become emergencies.</p>
     <div class="hero-meta">
-      <span><strong><span data-lang="en">Author</span><span data-lang="tl" class="lang-hidden">May-akda</span><span data-lang="ceb" class="lang-hidden">Awtor</span><span class="lang-hidden" data-lang="kap">May-akda</span>:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+      <span><strong><span data-lang="en">Author</span><span data-lang="tl" class="lang-hidden">May-akda</span><span data-lang="ceb" class="lang-hidden">Awtor</span>:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
       <span><strong>Specialty:</strong> Nephrology · ESKD</span>
       <span><strong><span data-lang="en">Last Reviewed</span><span class="lang-hidden" data-lang="tl">Huling Na-review</span><span class="lang-hidden" data-lang="ceb">Katapusang Na-review</span><span class="lang-hidden" data-lang="kap">Karinan Na-review</span>:</strong> <time datetime="2025-05-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2025</time></span>
     </div>
@@ -1670,7 +1640,7 @@ body.dark .related-card-title {
       </div>
     </div>
 
-    <div class="disclaimer"><strong><span data-lang="en">Important</span><span data-lang="tl" class="lang-hidden">Mahalagang Paalala</span><span data-lang="ceb" class="lang-hidden">Importante nga Pahibalo</span><span class="lang-hidden" data-lang="kap">Mahalagang Paalala</span>:</strong> This guide is for educational purposes only. Always follow the specific access care instructions provided by your nephrologist and dialysis care team.</div>
+    <div class="disclaimer"><strong><span data-lang="en">Important</span><span data-lang="tl" class="lang-hidden">Mahalagang Paalala</span><span data-lang="ceb" class="lang-hidden">Importante nga Pahibalo</span>:</strong> This guide is for educational purposes only. Always follow the specific access care instructions provided by your nephrologist and dialysis care team.</div>
 
     <div class="dr-card">
       <div class="dr-avatar" style="width:64px;height:64px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid rgba(184,150,46,0.5);background:#0f1e2e;">
@@ -1678,7 +1648,7 @@ body.dark .related-card-title {
   </div>
       <div>
         <h4><a href="https://williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
-        <p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon.</span><span class="lang-hidden" data-lang="kap">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon.</span> Medical Director, St. John Biocare Center and St. Josef Renal Care Foundation.</p>
+        <p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon.</span> Medical Director, St. John Biocare Center and St. Josef Renal Care Foundation.</p>
         <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero · <span id="eml17"></span><script>(function(){var p=["will","iamr","iver","o@gm","ail.","com"];var e=p.join("");var el=document.getElementById("eml17");if(el)el.innerHTML='<a href="mailto:'+e+'" style="color:rgba(255,255,255,.45);">'+e+'</a>';})();
 // Language toggle for guide pages
 const GLANG_KEY = 'wgmr-lang';
