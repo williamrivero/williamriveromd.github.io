@@ -98,3 +98,7 @@ This server is not used in GitHub Pages production (which serves only static fil
 ### Deployment
 
 GitHub Pages via `CNAME` pointing to `williamriveromd.com`. There is no build step — commit HTML files directly. The `sitemap.xml` and `robots.txt` are static files in the repo root.
+
+## Git workflow
+
+**Commit directly to `main`.** Do not create feature branches, do not open PRs, do not ask about PRs. Edit files in place and push straight to `main`. Only use a branch + PR workflow if the user explicitly asks for "review mode" or a PR.
