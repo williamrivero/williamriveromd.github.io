@@ -2342,11 +2342,72 @@ function setGuideLang(lang) {
   <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Pre-dialysis Hb, iron studies, ESA dose tracker, ERI calculator. Printable one-page form.</p>
   <span style="display:inline-block;padding:8px 18px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-muted);">Coming soon</span>
 </div>
-<div class="feature-card" style="text-align:center;padding:28px;">
-  <div style="font-size:32px;margin-bottom:12px;">⚖️</div>
-  <h4 style="margin-bottom:8px;">ESA Resistance Index Calculator</h4>
-  <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Weekly ESA IU/kg ÷ Hb g/dL. Flag ERI &gt;10 for hyporesponsiveness workup.</p>
-  <span style="display:inline-block;padding:8px 18px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-muted);">Coming soon</span>
+<div class="feature-card" style="padding:28px;grid-column:1/-1;">
+  <h4 style="margin-bottom:4px;font-size:16px;color:var(--navy);">⚖️ ESA Resistance Index (ERI) Calculator</h4>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:20px;">ERI = Weekly ESA dose (IU/kg/week) ÷ Hemoglobin (g/dL). ERI &gt;10 indicates hyporesponsiveness — investigate before escalating dose.</p>
+  <div class="calc-wrap" id="eri-calc-wrap">
+    <div class="calc-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
+      <div class="calc-field">
+        <label>ESA Type</label>
+        <select id="eri-esa-type" onchange="calcERI()">
+          <option value="">Select ESA…</option>
+          <option value="epoetin">Epoetin Alfa (IU)</option>
+          <option value="darbe">Darbepoetin Alfa (µg)</option>
+          <option value="cera">CERA / Mircera (µg)</option>
+        </select>
+        <div class="field-hint">Darbepoetin and CERA are converted to IU equivalents (1 µg = 200 IU)</div>
+      </div>
+      <div class="calc-field">
+        <label id="eri-dose-label">Dose per Administration</label>
+        <input id="eri-dose" type="number" min="1" max="100000" step="0.1" placeholder="e.g. 4000" oninput="calcERI()">
+        <div class="field-hint" id="eri-dose-hint">Enter dose in IU (epoetin) or µg (darbepoetin/CERA)</div>
+      </div>
+      <div class="calc-field">
+        <label>Dosing Frequency</label>
+        <select id="eri-freq" onchange="calcERI()">
+          <option value="">Select frequency…</option>
+          <option value="3">3× per week (TIW)</option>
+          <option value="2">2× per week (BIW)</option>
+          <option value="1">Once weekly (QW)</option>
+          <option value="0.5">Every 2 weeks (Q2W)</option>
+          <option value="0.25">Once monthly (Q4W)</option>
+        </select>
+        <div class="field-hint">Used to calculate weekly IU equivalent</div>
+      </div>
+      <div class="calc-field">
+        <label>Patient Weight (kg)</label>
+        <input id="eri-weight" type="number" min="20" max="200" step="0.1" placeholder="e.g. 60" oninput="calcERI()">
+        <div class="field-hint">Dry weight preferred in dialysis patients</div>
+      </div>
+      <div class="calc-field">
+        <label>Current Hemoglobin (g/dL)</label>
+        <input id="eri-hgb" type="number" min="4" max="18" step="0.1" placeholder="e.g. 10.2" oninput="calcERI()">
+        <div class="field-hint">Pre-dialysis Hgb for HD patients; most recent value</div>
+      </div>
+    </div>
+    <div class="calc-result-box" id="eri-result" style="display:none;">
+      <div class="calc-metrics-row">
+        <div class="calc-metric-card">
+          <div class="cmv" id="eri-weekly-val">—</div>
+          <div class="cml">Weekly IU/kg</div>
+          <div class="cmt" id="eri-weekly-badge">IU/kg/week</div>
+        </div>
+        <div class="calc-metric-card">
+          <div class="cmv" id="eri-val">—</div>
+          <div class="cml">ERI</div>
+          <div class="cmt">IU/kg/week/g/dL</div>
+        </div>
+        <div class="calc-metric-card">
+          <div class="cmv" id="eri-status-val" style="font-size:14px;line-height:1.3;">—</div>
+          <div class="cml">Responsiveness</div>
+          <div class="cmt" id="eri-status-badge">—</div>
+        </div>
+      </div>
+      <div class="calc-verdict-text" id="eri-verdict"></div>
+      <div class="calc-action-text" id="eri-action"></div>
+    </div>
+    <p class="calc-disclaimer">⚕ ERI = (Total weekly ESA dose in IU ÷ weight in kg) ÷ Hgb in g/dL. Darbepoetin and CERA converted using 1 µg = 200 IU epoetin equivalent. ERI &gt;10 IU/kg/week/g/dL is associated with increased cardiovascular mortality and hospitalizations (Kalantar-Zadeh et al.). Interpret alongside clinical context. For educational use only — dosing decisions require physician assessment.</p>
+  </div>
 </div>
 <div class="feature-card" style="text-align:center;padding:28px;">
   <div style="font-size:32px;margin-bottom:12px;">💊</div>
@@ -2666,6 +2727,94 @@ function calcAnemia() {
   document.getElementById('a-type-badge').style.color=typeColor;
   document.getElementById('a-verdict').innerHTML='<strong style="color:'+typeColor+'">'+type+'</strong> — '+verdict;
   document.getElementById('a-action').innerHTML='<strong style="color:'+typeColor+'">Recommended action:</strong> '+action;
+}
+
+function calcERI(){
+  const esaType = document.getElementById('eri-esa-type').value;
+  const dose    = parseFloat(document.getElementById('eri-dose').value);
+  const freq    = parseFloat(document.getElementById('eri-freq').value);
+  const weight  = parseFloat(document.getElementById('eri-weight').value);
+  const hgb     = parseFloat(document.getElementById('eri-hgb').value);
+  const res     = document.getElementById('eri-result');
+
+  // Update dose label / hint based on ESA type
+  const doseLabel = document.getElementById('eri-dose-label');
+  const doseHint  = document.getElementById('eri-dose-hint');
+  if (esaType === 'epoetin') {
+    doseLabel.textContent = 'Dose per Administration (IU)';
+    doseHint.textContent  = 'Enter dose in International Units (IU). E.g. 4000 IU';
+  } else if (esaType === 'darbe' || esaType === 'cera') {
+    doseLabel.textContent = 'Dose per Administration (µg)';
+    doseHint.textContent  = 'Enter dose in micrograms (µg). Will be converted to IU (×200)';
+  }
+
+  // Need all fields to proceed
+  if (!esaType || isNaN(dose) || isNaN(freq) || isNaN(weight) || isNaN(hgb)) {
+    res.style.display = 'none';
+    return;
+  }
+
+  // Convert to IU equivalents
+  const iu_per_admin = (esaType === 'epoetin') ? dose : dose * 200;
+
+  // Weekly IU total
+  const weekly_iu = iu_per_admin * freq;
+
+  // Weekly IU per kg
+  const weekly_iu_kg = weekly_iu / weight;
+
+  // ERI = weekly IU/kg ÷ Hgb (g/dL)
+  const eri = weekly_iu_kg / hgb;
+
+  // Interpretation
+  let statusLabel, statusColor, bg, borderColor, verdict, action;
+  if (eri < 5) {
+    statusLabel = 'Low / Excellent Response';
+    statusColor = '#2d7a4f';
+    bg = '#edf7f2'; borderColor = '#2d7a4f';
+    verdict = `ERI of <strong>${eri.toFixed(2)}</strong> IU/kg/week/g/dL is <strong style="color:#2d7a4f;">low</strong> — the patient is responding well to ESA therapy. This is a favorable finding: bone marrow is producing red cells efficiently relative to the ESA dose given.`;
+    action = 'Continue current ESA regimen. Ensure iron status is maintained (TSAT ≥20%, Ferritin ≥100 ng/mL). If Hgb exceeds target (115 g/L), consider dose reduction by 25%. Monitor monthly.';
+  } else if (eri < 10) {
+    statusLabel = 'Normal Response';
+    statusColor = '#1a6b72';
+    bg = '#edf5f6'; borderColor = '#1a6b72';
+    verdict = `ERI of <strong>${eri.toFixed(2)}</strong> IU/kg/week/g/dL is within the <strong style="color:#1a6b72;">normal range</strong>. ESA dose is appropriate for the current Hgb level. This range reflects adequate erythropoietic response.`;
+    action = 'Maintain current ESA dose. Review iron studies at each visit — iron deficiency is the most common cause of deteriorating ERI. Titrate ESA by 25% if Hgb drifts outside 100–115 g/L.';
+  } else if (eri < 14) {
+    statusLabel = 'Elevated — Hyporesponsive';
+    statusColor = '#c07a00';
+    bg = '#fef9ec'; borderColor = '#f5a623';
+    verdict = `ERI of <strong>${eri.toFixed(2)}</strong> IU/kg/week/g/dL exceeds the threshold of 10 — this indicates <strong style="color:#c07a00;">ESA hyporesponsiveness</strong>. KDIGO 2024 recommends investigating modifiable causes before escalating ESA dose further, as high ERI is independently associated with cardiovascular mortality.`;
+    action = 'Investigate: (1) Iron status — TSAT <20% or Ferritin <100 ng/mL → give IV iron before increasing ESA. (2) Active infection or inflammation — CRP elevated? (3) Malnutrition — albumin, B12, folate. (4) Dialysis adequacy — Kt/V ≥1.2 (HD). (5) Undercorrected secondary hyperparathyroidism. (6) Occult blood loss. Do NOT escalate ESA dose until causes are addressed.';
+  } else {
+    statusLabel = 'High — Severe Hyporesponsiveness';
+    statusColor = '#c0392b';
+    bg = '#fdf0ef'; borderColor = '#c0392b';
+    verdict = `ERI of <strong>${eri.toFixed(2)}</strong> IU/kg/week/g/dL is <strong style="color:#c0392b;">markedly elevated</strong>. This level of hyporesponsiveness carries the highest cardiovascular risk. ESA dose escalation without addressing the root cause is unlikely to improve Hgb and may cause harm.`;
+    action = 'Priority workup: rule out anti-EPO antibody-mediated Pure Red Cell Aplasia (PRCA) — if Hgb drops suddenly on ESA with worsening reticulocytopenia, stop ESA immediately and refer for bone marrow biopsy. Otherwise: comprehensive investigation for all reversible causes (iron, infection, hyperparathyroidism, hemolysis, blood loss, malnutrition, inadequate dialysis). Consider HIF-PHI as alternative if available and appropriate. Discuss with nephrologist.';
+  }
+
+  // Populate metric cards
+  document.getElementById('eri-weekly-val').textContent = Math.round(weekly_iu_kg).toLocaleString();
+  document.getElementById('eri-weekly-badge').textContent = 'IU/kg/week';
+  document.getElementById('eri-weekly-badge').style.color = statusColor;
+
+  document.getElementById('eri-val').textContent = eri.toFixed(2);
+  document.getElementById('eri-val').style.color  = statusColor;
+
+  document.getElementById('eri-status-val').textContent = statusLabel;
+  document.getElementById('eri-status-val').style.color  = statusColor;
+  document.getElementById('eri-status-badge').textContent = eri >= 10 ? 'Investigate — do not escalate' : 'Within acceptable range';
+  document.getElementById('eri-status-badge').style.color  = statusColor;
+
+  // Result box styling
+  res.style.display     = 'block';
+  res.style.background  = bg;
+  res.style.borderColor = borderColor;
+
+  // Verdict and action
+  document.getElementById('eri-verdict').innerHTML = '<strong style="color:' + statusColor + '">' + statusLabel + '</strong> — ' + verdict;
+  document.getElementById('eri-action').innerHTML  = '<strong style="color:' + statusColor + '">Recommended action:</strong> ' + action;
 }
 
 function switchAnemUnit(u){
