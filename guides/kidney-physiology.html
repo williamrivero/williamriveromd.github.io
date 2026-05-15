@@ -503,6 +503,24 @@
   .related-card-desc  { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
   .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
 
+  /* ── RELATED GUIDES — LEGACY ALIASES (12 guides ship variant markup) ─────── */
+  .related-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;
+  }
+  .related-badge {
+    display: inline-block;
+    font-size: .68rem; font-weight: 700; color: var(--teal);
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px;
+  }
+  .related-card h3 {
+    font-size: .92rem; font-weight: 600; color: var(--navy);
+    line-height: 1.35; margin: 0 0 6px 0;
+  }
+  .related-card p {
+    font-size: .80rem; color: var(--text-muted); line-height: 1.45;
+    margin: 0; flex: 1;
+  }
+
   /* ── DR CARD (dark panel) ────────────────────────────────────────────────── */
   .dr-card {
     background: var(--navy); color: white;
@@ -514,7 +532,9 @@
     background: rgba(184,150,46,.25); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; flex-shrink: 0; border: 2px solid rgba(184,150,46,.4);
+    overflow: hidden;
   }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
   .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
   .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; } /* 13.1:1 ✓ */
   .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
@@ -690,6 +710,9 @@
   /* Related guides */
   html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
   html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
+  html[data-theme="dark"] .related-card h3 { color: var(--text); }
+  html[data-theme="dark"] .related-card p { color: var(--text-muted); }
+  html[data-theme="dark"] .related-badge { color: var(--teal); }
 
   /* Food grids */
   html[data-theme="dark"] .food-ok    { background: var(--green-soft); border-color: rgba(74,222,128,.15); }
@@ -1011,7 +1034,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 /* STAT */
   .stat-band{padding:160px 0;text-align:center;position:relative;}
 .stat-band .stat-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:48px;}
-.stat-band .stat-number{font-family:'Lora',serif;font-weight:300;font-size:clamp(96px,18vw,280px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 18%,#d4af4f 55%,rgba(212,175,79,0) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat-band .stat-number{font-family:'Lora',serif;font-weight:300;font-size:clamp(72px,13vw,200px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 18%,#d4af4f 55%,rgba(212,175,79,0) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .stat-band .stat-caption{margin-top:32px;color:var(--ink-mid);font-size:18px;font-family:'Lora',serif;font-style:italic;font-weight:400;letter-spacing:.01em;max-width:46ch;margin-left:auto;margin-right:auto;line-height:1.55;}
 /* SUPERPOWERS */
   .superpowers{padding:160px 0;position:relative;}
@@ -1036,6 +1059,189 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   }
 }
 </script>
+
+<style>
+/* KIDNEY PHYSIOLOGY CUSTOM CSS — restored from commit b2d9cb3 */
+:root {
+    --bg-0:       #02060a;
+    --bg-1:       #06121f;
+    --navy:       #0f1e2e;
+    --ink:        #e8f4f8;
+    --ink-mid:    rgba(232,244,248,.62);
+    --ink-low:    rgba(232,244,248,.32);
+    --teal:       #1a6b72;
+    --teal-light: #2c97a3;
+    --gold:       #d4af4f;
+    --gold-soft:  rgba(212,175,79,.18);
+    --cyan:       #7be3ff;
+    --warm:       #ffb88a;
+    --line:       rgba(232,244,248,.07);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:var(--bg-0);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none;}
+  body{min-height:100vh;}
+  a{color:inherit;text-decoration:none;cursor:none;}
+  button{cursor:none;}
+
+  #webgl{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;}
+
+  .bg-vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 78% 65% at 50% 45%, transparent 0%, rgba(2,6,10,.5) 65%, rgba(2,6,10,.94) 100%),
+      radial-gradient(circle at 18% 28%, rgba(123,227,255,.06), transparent 45%),
+      radial-gradient(circle at 82% 78%, rgba(26,107,114,.07), transparent 50%);
+  }
+
+  /* Cursor */
+  .cursor{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--gold);pointer-events:none;z-index:1000;mix-blend-mode:screen;will-change:transform;}
+  .cursor-ring{position:fixed;width:38px;height:38px;border-radius:50%;border:1px solid rgba(212,175,79,.45);pointer-events:none;z-index:999;transition:width .35s,height .35s,border-color .25s;will-change:transform;}
+  .cursor-ring.is-hover{width:72px;height:72px;border-color:var(--gold);}
+
+  /* Layout */
+  main{position:relative;z-index:2;}
+  .container{max-width:1240px;margin:0 auto;padding:0 48px;}
+
+  /* Site header — minimalist, matches williamriveromd.com brand on dark background */
+  .site-header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;mix-blend-mode:screen;}
+  .site-header .brand{font-family:'Lora',serif;font-weight:400;font-size:16px;letter-spacing:.02em;color:var(--ink);}
+  .site-header .brand strong{color:var(--gold);font-weight:600;}
+  .site-header .back{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mid);transition:color .25s;}
+  .site-header .back:hover{color:var(--gold);}
+
+  /* Floating sound toggle — left side so symptom-checker FAB (bottom-right) can't cover it */
+  .sound-toggle{position:fixed;bottom:32px;left:32px;right:auto;z-index:60;display:inline-flex;align-items:center;gap:9px;background:rgba(15,30,46,.55);backdrop-filter:blur(8px);border:1px solid rgba(212,175,79,.3);color:var(--ink-mid);padding:9px 16px;border-radius:24px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:all .3s;}
+  .sound-toggle:hover{border-color:var(--gold);color:var(--gold);}
+  .sound-toggle.is-on{background:var(--gold-soft);border-color:var(--gold);color:var(--gold);}
+  .sound-toggle .sound-icon{font-size:14px;line-height:1;font-style:italic;}
+  /* Cinema toggle — also left side, stacked above sound toggle */
+  .cinema-toggle{position:fixed;bottom:84px;left:32px;right:auto;z-index:60;}
+
+  /* HERO — override master CSS background/overflow/padding that block WebGL canvas */
+  .hero{height:100vh;min-height:780px;display:flex;align-items:center;position:relative;background:transparent !important;overflow:visible !important;padding:0 !important;}
+  .hero::before{content:none !important;}
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:32px;width:100%;padding-top:80px;}
+  .eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:14px;}
+  .eyebrow::before{content:'';width:42px;height:1px;background:var(--gold);}
+  .hero h1{font-family:'Lora',serif;font-weight:400;font-size:clamp(40px,6.5vw,108px);line-height:1.04;letter-spacing:-.018em;margin-top:24px;max-width:18ch;}
+  .hero h1 em{font-style:italic;font-weight:500;color:var(--gold);}
+  .hero h1 .num{font-style:italic;font-weight:500;color:var(--warm);}
+  .hero-sub{margin-top:36px;font-size:17px;line-height:1.7;color:var(--ink-mid);max-width:54ch;font-weight:300;}
+  .hero-sub em{color:var(--gold);font-style:italic;}
+  .hero-meta{display:flex;gap:48px;margin-top:56px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-low);}
+  .hero-meta div strong{display:block;color:var(--ink);font-family:'Lora',serif;font-style:italic;font-size:18px;letter-spacing:0;text-transform:none;font-weight:500;margin-top:4px;}
+
+  .scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--ink-low);font-size:10px;letter-spacing:.3em;text-transform:uppercase;}
+  .scroll-cue::after{content:'';width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);animation:cuedrop 2.4s ease-in-out infinite;}
+  @keyframes cuedrop{0%,100%{transform:scaleY(.4);transform-origin:top;opacity:.3;}50%{transform:scaleY(1);opacity:1;}}
+  @keyframes kg-breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.055);}}
+
+  /* ── scroll progress bar ── */
+  #scroll-bar{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--gold),rgba(212,175,79,.35));z-index:9999;pointer-events:none;}
+
+  /* ── section nav dots ── */
+  #sec-nav{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:14px;padding:10px 6px;}
+  @media(max-width:780px){#sec-nav{display:none;}}
+  .sec-dot{width:7px;height:7px;border-radius:50%;border:1.5px solid rgba(212,175,79,0.35);background:transparent;cursor:pointer;padding:0;transition:background .3s,border-color .3s,transform .25s;position:relative;}
+  .sec-dot::after{content:attr(title);position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(212,175,79,.75);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;}
+  .sec-dot:hover::after,.sec-dot.is-active::after{opacity:1;}
+  .sec-dot.is-active{background:var(--gold);border-color:var(--gold);transform:scale(1.5);}
+  .sec-dot:hover{border-color:var(--gold);}
+
+  /* ── kidney genesis stage label ── */
+  #kg-label{position:fixed;right:48vmin;bottom:20vmin;z-index:2;pointer-events:none;text-align:right;opacity:0;transition:opacity .7s;}
+  #kg-label.is-visible{opacity:1;}
+  #kg-label-stage{display:block;font-family:'Lora',serif;font-style:italic;font-size:11.5px;color:rgba(212,175,79,.9);letter-spacing:.04em;line-height:1.3;}
+  #kg-label-week{display:block;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:3px;}
+  @media(max-width:900px){#kg-label{display:none;}}
+
+  /* CAPABILITIES */
+  .capabilities{padding:200px 0 160px;position:relative;}
+  .cap-head{margin-bottom:120px;}
+  .cap-head h2{font-family:'Lora',serif;font-weight:400;font-size:clamp(36px,5vw,72px);line-height:1.08;letter-spacing:-.018em;max-width:18ch;}
+  .cap-head h2 em{font-style:italic;color:var(--gold);font-weight:500;}
+  .cap-head p{margin-top:24px;color:var(--ink-mid);max-width:54ch;font-size:16px;line-height:1.75;}
+
+  .cap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  .cap-card{background:rgba(6,18,31,.55);backdrop-filter:blur(12px);padding:60px 44px 52px;position:relative;overflow:hidden;transition:background .4s;}
+  .cap-card::before{content:'';position:absolute;top:0;left:0;width:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent);transition:width .7s cubic-bezier(.2,.8,.2,1);}
+  .cap-card:hover::before{width:100%;}
+  .cap-card:hover{background:rgba(11,28,46,.7);}
+  .cap-num{font-family:'Lora',serif;font-style:italic;font-size:14px;color:var(--gold);letter-spacing:.05em;}
+  .cap-title{font-family:'Lora',serif;font-weight:400;font-size:28px;line-height:1.2;margin-top:22px;letter-spacing:-.005em;}
+  .cap-title em{font-style:italic;color:var(--gold);font-weight:500;}
+  .cap-body{margin-top:18px;color:var(--ink-mid);font-size:14.5px;line-height:1.78;}
+  .cap-tag{margin-top:30px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-low);}
+
+  /* MORE THAN A FILTER — secondary capability list */
+  .more-than{padding:160px 0;position:relative;}
+  .more-head{margin-bottom:80px;text-align:center;}
+  .more-head h2{font-family:'Lora',serif;font-weight:400;font-size:clamp(34px,4.5vw,62px);line-height:1.1;letter-spacing:-.015em;max-width:24ch;margin:0 auto;}
+  .more-head h2 em{font-style:italic;color:var(--gold);font-weight:500;}
+  .more-head p{margin-top:20px;color:var(--ink-mid);max-width:50ch;margin-left:auto;margin-right:auto;font-size:15.5px;line-height:1.75;}
+  .more-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .more-item{padding:32px 24px;border-top:1px solid rgba(212,175,79,.25);position:relative;transition:border-color .4s;}
+  .more-item:hover{border-color:var(--gold);}
+  .more-icon{font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--gold);letter-spacing:.05em;margin-bottom:12px;}
+  .more-name{font-family:'Lora',serif;font-weight:500;font-size:20px;line-height:1.25;margin-bottom:14px;letter-spacing:-.005em;color:var(--ink);}
+  .more-body{font-size:13.5px;line-height:1.75;color:var(--ink-mid);}
+  .more-body strong{color:var(--ink);font-weight:500;}
+
+  /* THREE ASTONISHMENTS — big stat-style row */
+  .astonish{padding:160px 0;position:relative;}
+  .astonish-head{margin-bottom:80px;text-align:center;}
+  .astonish-head .eyebrow{justify-content:center;}
+  .astonish-head h2{font-family:'Lora',serif;font-weight:400;font-size:clamp(36px,5vw,72px);line-height:1.08;letter-spacing:-.018em;margin-top:18px;max-width:22ch;margin-left:auto;margin-right:auto;}
+  .astonish-head h2 em{font-style:italic;color:var(--gold);font-weight:500;}
+  .astonish-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .astonish-cell{background:rgba(6,18,31,.5);padding:64px 36px;text-align:center;}
+  .astonish-num{font-family:'Lora',serif;font-weight:300;font-size:clamp(64px,8vw,128px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 20%,#d4af4f 80%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .astonish-num.short{font-size:clamp(40px,5vw,72px);font-style:italic;font-weight:400;background:linear-gradient(180deg,#ffffff 20%,#7be3ff 80%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .astonish-cap{margin-top:28px;color:var(--ink-mid);font-family:'Lora',serif;font-style:italic;font-weight:400;font-size:16px;line-height:1.55;max-width:24ch;margin-left:auto;margin-right:auto;}
+
+  /* STAT */
+  .stat-band{padding:160px 0;text-align:center;position:relative;}
+  .stat-band .stat-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:48px;}
+  .stat-band .stat-number{font-family:'Lora',serif;font-weight:300;font-size:clamp(72px,13vw,200px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 18%,#d4af4f 55%,rgba(212,175,79,0) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .stat-band .stat-caption{margin-top:32px;color:var(--ink-mid);font-size:18px;font-family:'Lora',serif;font-style:italic;font-weight:400;letter-spacing:.01em;max-width:46ch;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+  /* CTA */
+  .cta{padding:160px 0 200px;text-align:center;position:relative;}
+  .cta h3{font-family:'Lora',serif;font-weight:400;font-size:clamp(40px,5.5vw,84px);line-height:1.08;letter-spacing:-.018em;margin-bottom:36px;max-width:20ch;margin-left:auto;margin-right:auto;}
+  .cta h3 em{font-style:italic;color:var(--gold);font-weight:500;}
+  .cta p{color:var(--ink-mid);max-width:50ch;margin:0 auto 48px;font-size:16px;line-height:1.75;font-weight:300;}
+  .cta-btn{display:inline-flex;align-items:center;gap:16px;padding:22px 44px;border:1px solid var(--gold);color:var(--ink);background:transparent;font-size:11px;letter-spacing:.32em;text-transform:uppercase;font-family:'Inter',sans-serif;font-weight:500;position:relative;overflow:hidden;transition:color .3s;}
+  .cta-btn::before{content:'';position:absolute;inset:0;background:var(--gold);transform:translateY(101%);transition:transform .55s cubic-bezier(.2,.8,.2,1);z-index:-1;}
+  .cta-btn:hover::before{transform:translateY(0);}
+  .cta-btn:hover{color:var(--bg-0);}
+  .cta-btn .arrow{display:inline-block;transition:transform .35s;}
+  .cta-btn:hover .arrow{transform:translateX(6px);}
+
+  footer{padding:48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-low);position:relative;z-index:2;flex-wrap:wrap;gap:12px;}
+
+  /* Reveal */
+  [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity 1.2s cubic-bezier(.2,.8,.2,1),transform 1.2s cubic-bezier(.2,.8,.2,1);}
+  [data-reveal].in{opacity:1;transform:none;}
+  [data-reveal][data-delay="1"]{transition-delay:.08s;}
+  [data-reveal][data-delay="2"]{transition-delay:.16s;}
+  [data-reveal][data-delay="3"]{transition-delay:.24s;}
+  [data-reveal][data-delay="4"]{transition-delay:.32s;}
+
+  @media (max-width:980px){
+    .more-grid{grid-template-columns:repeat(2,1fr);}
+    .astonish-row{grid-template-columns:1fr;}
+  }
+  @media (max-width:780px){
+    .container,.site-header,footer{padding-left:24px;padding-right:24px;}
+    .cap-grid{grid-template-columns:1fr;}
+    .cap-card{padding:48px 32px 40px;}
+    .hero-meta{flex-direction:column;gap:24px;}
+    .more-grid{grid-template-columns:1fr;}
+    .sound-toggle{bottom:20px;left:20px;right:auto;padding:7px 12px;font-size:10px;}
+    .cinema-toggle{bottom:68px;left:20px;right:auto;padding:7px 12px;font-size:10px;}
+    body{cursor:auto;}
+    .cursor,.cursor-ring{display:none;}
+  }
+</style>
 </head>
 <body>
 
@@ -1050,31 +1256,67 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 <div class="kidney-genesis" aria-hidden="true">
   <div class="kg-breath">
     <svg viewBox="0 0 200 240" preserveAspectRatio="xMidYMax meet">
-      <path class="kg-anim" d="M 101.92,120.79 C 101.92,120.79 101.75,120.44 101.77,119.95 C 101.75,119.46 101.92,119.12 101.92,119.12 C 99.51,118.51 99.51,111.18 104.41,112.08 C 109.28,112.96 109.75,118.14 109.76,119.95 C 109.75,121.76 109.28,126.95 104.41,127.83 C 99.51,128.72 99.51,121.39 101.92,120.79 Z">
-        <animate attributeName="d"
-                 dur="6s"
-                 fill="freeze"
-                 calcMode="spline"
-                 keyTimes="0; 0.25; 0.55; 0.9; 1"
-                 keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.4 0 0.2 1; 0 0 1 1"
-                 values="M 101.92,120.79 C 101.92,120.79 101.75,120.44 101.77,119.95 C 101.75,119.46 101.92,119.12 101.92,119.12 C 99.51,118.51 99.51,111.18 104.41,112.08 C 109.28,112.96 109.75,118.14 109.76,119.95 C 109.75,121.76 109.28,126.95 104.41,127.83 C 99.51,128.72 99.51,121.39 101.92,120.79 Z;
-                         M 97.74,122.36 C 97.74,122.36 97.26,121.33 97.31,119.86 C 97.26,118.39 97.74,117.36 97.74,117.36 C 90.52,115.54 90.52,93.55 105.22,96.22 C 119.83,98.88 121.24,114.43 121.27,119.86 C 121.24,125.29 119.83,140.85 105.22,143.49 C 90.52,146.16 90.52,124.18 97.74,122.36 Z;
-                         M 91.48,124.71 C 91.48,124.71 90.52,122.65 90.62,119.72 C 90.52,116.78 91.48,114.73 91.48,114.73 C 77.04,111.08 77.04,67.10 106.45,72.45 C 135.66,77.75 138.47,108.86 138.55,119.72 C 138.47,130.58 135.66,161.69 106.45,166.99 C 77.04,172.33 77.04,128.36 91.48,124.71 Z;
-                         M 83.14,127.85 C 83.14,127.85 81.53,124.42 81.70,119.53 C 81.53,114.63 83.14,111.21 83.14,111.21 C 59.07,105.13 59.07,31.84 108.08,40.75 C 156.76,49.59 161.45,101.43 161.58,119.53 C 161.45,137.64 156.76,189.49 108.08,198.31 C 59.07,207.21 59.07,133.94 83.14,127.85 Z;
-                         M 83.14,127.85 C 83.14,127.85 81.53,124.42 81.70,119.53 C 81.53,114.63 83.14,111.21 83.14,111.21 C 59.07,105.13 59.07,31.84 108.08,40.75 C 156.76,49.59 161.45,101.43 161.58,119.53 C 161.45,137.64 156.76,189.49 108.08,198.31 C 59.07,207.21 59.07,133.94 83.14,127.85 Z"/>
-        <animate attributeName="opacity"
-                 dur="6s"
-                 fill="freeze"
-                 keyTimes="0; 0.08; 1"
-                 values="0; 1; 1"/>
-      </path>
-      <path class="kg-static" d="M 83.14,127.85 C 83.14,127.85 81.53,124.42 81.70,119.53 C 81.53,114.63 83.14,111.21 83.14,111.21 C 59.07,105.13 59.07,31.84 108.08,40.75 C 156.76,49.59 161.45,101.43 161.58,119.53 C 161.45,137.64 156.76,189.49 108.08,198.31 C 59.07,207.21 59.07,133.94 83.14,127.85 Z"/>
+      <defs>
+        <!-- outer glow -->
+        <filter id="kg-glow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="4.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <!-- 3D lit fill: light source upper-left; dark edges fade to transparent (screen-mode friendly) -->
+        <radialGradient id="kg-fill" cx="32%" cy="26%" r="72%">
+          <stop offset="0%"   stop-color="#c8f0f8" stop-opacity="0.88"/>
+          <stop offset="30%"  stop-color="#5dc8d4" stop-opacity="0.60"/>
+          <stop offset="65%"  stop-color="#1a6b72" stop-opacity="0.20"/>
+          <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+        </radialGradient>
+        <!-- specular highlight -->
+        <radialGradient id="kg-spec" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.72"/>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- ghost adult outline: target silhouette the kidney is growing toward -->
+      <path class="kg-static"
+            d="M 83.14,127.85 C 83.14,127.85 81.53,124.42 81.70,119.53 C 81.53,114.63 83.14,111.21 83.14,111.21 C 59.07,105.13 59.07,31.84 108.08,40.75 C 156.76,49.59 161.45,101.43 161.58,119.53 C 161.45,137.64 156.76,189.49 108.08,198.31 C 59.07,207.21 59.07,133.94 83.14,127.85 Z"
+            fill="none" stroke="rgba(212,175,79,0.14)" stroke-width="0.7" stroke-dasharray="3 4.5"/>
+
+      <!-- main morphing shape with 3D gradient + edge glow -->
+      <path class="kg-anim"
+            d="M 102,130 C 102,130 102,123 102,118 C 102,116 102,114 102,112 C 102,108 105,106 108,106 C 112,106 117,110 117,118 C 117,126 113,132 108,132 C 105,132 102,132 102,130 Z"
+            fill="url(#kg-fill)"
+            stroke="rgba(93,200,212,0.65)"
+            stroke-width="0.9"
+            filter="url(#kg-glow)"/>
+
+      <!-- specular highlight: upper-left bright spot, interpolated by JS -->
+      <ellipse id="kg-spec-el" cx="106" cy="112" rx="3" ry="4.5"
+               fill="url(#kg-spec)" opacity="0.9"
+               transform="rotate(-15, 106, 112)"/>
     </svg>
   </div>
 </div>
 <div class="bg-vignette"></div>
 <div class="cursor"></div>
 <div class="cursor-ring"></div>
+
+<!-- scroll progress bar -->
+<div id="scroll-bar"></div>
+
+<!-- section nav dots -->
+<nav id="sec-nav" aria-label="Page sections">
+  <button class="sec-dot" data-target=".hero"         title="Introduction"  aria-label="Jump to Introduction"></button>
+  <button class="sec-dot" data-target=".capabilities" title="Capabilities"  aria-label="Jump to Capabilities"></button>
+  <button class="sec-dot" data-target=".stat-band"    title="2,000,000"     aria-label="Jump to Nephron count"></button>
+  <button class="sec-dot" data-target=".superpowers"  title="Superpowers"   aria-label="Jump to Superpowers"></button>
+  <button class="sec-dot" data-target=".cta"          title="Take action"   aria-label="Jump to CTA"></button>
+</nav>
+
+<!-- kidney genesis stage label -->
+<div id="kg-label" aria-live="polite">
+  <span id="kg-label-stage">Pronephros</span>
+  <span id="kg-label-week">Week 3–4</span>
+</div>
 
 <header class="site-header">
   <a class="brand" href="https://williamriveromd.com">W. G. M. <strong>Rivero</strong>, MD</a>
@@ -1083,7 +1325,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
       <span class="dot"></span>
       <span id="mode-label">Full</span>
     </button>
-    <a class="back" href="index.html" data-magnetic><span data-lang="en">← All Guides</span><span data-lang="tl" class="lang-hidden">← Lahat ng Gabay</span><span data-lang="ceb" class="lang-hidden">← Tanan nga Giya</span></a>
+    <a class="back" href="index.html" data-magnetic><span data-lang="en">← All Guides</span><span data-lang="tl" class="lang-hidden">← Lahat ng Gabay</span><span data-lang="ceb" class="lang-hidden">← Tanan nga Giya</span><span data-lang="kap" class="lang-hidden">← Lahat ning Gabay</span></a>
   </div>
 </header>
 
@@ -1102,7 +1344,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   <!-- HERO -->
   <section class="hero">
     <div class="container hero-grid">
-      <div class="eyebrow" data-reveal><span data-lang="en">Your Amazing Kidneys · Normal Physiology</span><span data-lang="tl" class="lang-hidden">Ang Inyong Kahanga-hangang Bato · Normal na Pisyolohiya</span><span data-lang="ceb" class="lang-hidden">Ang Imong Katingalahang Kidney · Normal nga Pisyolohiya</span></div>
+      <div class="eyebrow" data-reveal><span data-lang="en">Your Amazing Kidneys · Normal Physiology</span><span data-lang="tl" class="lang-hidden">Ang Inyong Kahanga-hangang Bato · Normal na Pisyolohiya</span><span data-lang="ceb" class="lang-hidden">Ang Imong Katingalahang Kidney · Normal nga Pisyolohiya</span><span data-lang="kap" class="lang-hidden">Ing Inyong Kahanga-hangang Batu · Normal na Pisyolohiya</span></div>
       <h1 data-reveal data-delay="1">
         <span data-lang="en">Every twenty-four hours,<br>
         <em>one hundred and eighty litres</em><br>
@@ -1113,51 +1355,54 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
         na kasing laki ng kamao.</span><span data-lang="ceb" class="lang-hidden">Sa matag kawhaan ug upat ka oras,<br>
         <em>usa ka gatus ug kawaloan ka litro</em><br>
         sa imong lawas ang moagi sa mga salaan<br>
-        nga sukaranan sa gidak-on sa kamot.</span>
+        nga sukaranan sa gidak-on sa kamot.</span><span data-lang="kap" class="lang-hidden">Sa bawat dalawampu't apat na oras,<br>
+        <em>metung a daan at walumpung litro</em><br>
+        ning inyoning daya ya dumadaan sa deng salaan<br>
+        na kasing laki ning kamao.</span>
       </h1>
-      <p class="hero-sub" data-reveal data-delay="2"><span data-lang="en">There is no sound. There is no signal. The body's most demanding labour is also its quietest. <em>This is a meditation on what the normal kidneys do</em> — and on the silent astonishments that almost no one is taught.</span><span data-lang="tl" class="lang-hidden">Walang tunog. Walang signal. Ang pinaka-mapaghanap na gawain ng katawan ay pati na rin ang pinaka-tahimik. <em>Ito ay isang pagmumuni-muni sa ginagawa ng normal na mga bato</em> — at sa mga tahimik na kataka-takang halos walang sinumang itinuro.</span><span data-lang="ceb" class="lang-hidden">Walay tingog. Walay signal. Ang labing grabe nga trabaho sa lawas mao usab ang labing hilom. <em>Kini usa ka pagpamalandong sa gibuhat sa normal nga mga kidney</em> — ug sa mga hilom nga katingalahan nga halos wala'y nakatudlo.</span></p>
+      <p class="hero-sub" data-reveal data-delay="2"><span data-lang="en">There is no sound. There is no signal. The body's most demanding labour is also its quietest. <em>This is a meditation on what the normal kidneys do</em> — and on the silent astonishments that almost no one is taught.</span><span data-lang="tl" class="lang-hidden">Walang tunog. Walang signal. Ang pinaka-mapaghanap na gawain ng katawan ay pati na rin ang pinaka-tahimik. <em>Ito ay isang pagmumuni-muni sa ginagawa ng normal na mga bato</em> — at sa mga tahimik na kataka-takang halos walang sinumang itinuro.</span><span data-lang="ceb" class="lang-hidden">Walay tingog. Walay signal. Ang labing grabe nga trabaho sa lawas mao usab ang labing hilom. <em>Kini usa ka pagpamalandong sa gibuhat sa normal nga mga kidney</em> — ug sa mga hilom nga katingalahan nga halos wala'y nakatudlo.</span><span data-lang="kap" class="lang-hidden">Alang tunog. Alang signal. Ing pinaka-mapaghanap na gawain nining bangkî ya pati na rin ing pinaka-tahimik. <em>Ini ya metung a pagmumuni-muni sa ginagawa ning normal na dening batu</em> — at sa deng tahimik a kataka-takang halos alang sinumang itinuro.</span></p>
       <div class="hero-meta" data-reveal data-delay="3">
         <span><strong><span data-lang="en">Last Reviewed</span><span class="lang-hidden" data-lang="tl">Huling Na-review</span><span class="lang-hidden" data-lang="ceb">Katapusang Na-review</span><span class="lang-hidden" data-lang="kap">Karinan Na-review</span>:</strong> <time datetime="2025-05-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2025</time></span>
-        <div><span data-lang="en">Filtered</span><span data-lang="tl" class="lang-hidden">Na-filter</span><span data-lang="ceb" class="lang-hidden">Na-filter</span><strong>180 L / day</strong></div>
-        <div><span data-lang="en">Reabsorbed</span><span data-lang="tl" class="lang-hidden">Na-reabsorb</span><span data-lang="ceb" class="lang-hidden">Na-reabsorb</span><strong>~99 percent</strong></div>
-        <div><span data-lang="en">Passed</span><span data-lang="tl" class="lang-hidden">Inilabas</span><span data-lang="ceb" class="lang-hidden">Gipagawas</span><strong>1.5 L / day</strong></div>
+        <div><span data-lang="en">Filtered</span><span data-lang="tl" class="lang-hidden">Na-filter</span><span data-lang="ceb" class="lang-hidden">Na-filter</span><span data-lang="kap" class="lang-hidden">Na-filter</span><strong>180 L / day</strong></div>
+        <div><span data-lang="en">Reabsorbed</span><span data-lang="tl" class="lang-hidden">Na-reabsorb</span><span data-lang="ceb" class="lang-hidden">Na-reabsorb</span><span data-lang="kap" class="lang-hidden">Na-reabsorb</span><strong>~99 percent</strong></div>
+        <div><span data-lang="en">Passed</span><span data-lang="tl" class="lang-hidden">Inilabas</span><span data-lang="ceb" class="lang-hidden">Gipagawas</span><span data-lang="kap" class="lang-hidden">Inilabas</span><strong>1.5 L / day</strong></div>
       </div>
     </div>
-    <div class="scroll-cue" data-reveal data-delay="4"><span data-lang="en">Scroll</span><span data-lang="tl" class="lang-hidden">Mag-scroll</span><span data-lang="ceb" class="lang-hidden">Mag-scroll</span></div>
+    <div class="scroll-cue" data-reveal data-delay="4"><span data-lang="en">Scroll</span><span data-lang="tl" class="lang-hidden">Mag-scroll</span><span data-lang="ceb" class="lang-hidden">Mag-scroll</span><span data-lang="kap" class="lang-hidden">Mag-scroll</span></div>
   </section>
 
   <!-- CAPABILITIES — 4 core movements -->
   <section class="capabilities">
     <div class="container">
       <div class="cap-head">
-        <div class="eyebrow" data-reveal><span data-lang="en">Four movements, repeated forever</span><span data-lang="tl" class="lang-hidden">Apat na galaw, paulit-ulit magpakailanman</span><span data-lang="ceb" class="lang-hidden">Upat ka lihok, gisubli-subli hangtod sa kahangturan</span></div>
-        <h2 data-reveal data-delay="1"><span data-lang="en">A constant <em>refining</em> of what flows through.</span><span data-lang="tl" class="lang-hidden">Isang patuloy na <em>pagsasala</em> ng lahat ng dumadaan.</span><span data-lang="ceb" class="lang-hidden">Usa ka kanunay nga <em>pagsala</em> sa tanan nga moagi.</span></h2>
-        <p data-reveal data-delay="2"><span data-lang="en">Two organs, smaller than your hands, doing in silence what no engineered membrane has matched. The numbers below are not metaphor — they are arithmetic, repeating itself, every minute, for as long as you live.</span><span data-lang="tl" class="lang-hidden">Dalawang organ, mas maliit kaysa sa inyong mga kamay, gumagawa nang tahimik ng isang bagay na hindi pa naabot ng anumang artipisyal na membrane. Ang mga bilang sa ibaba ay hindi metapora — ito ay aritmetika, paulit-ulit, bawat minuto, habang kayo ay nabubuhay.</span><span data-lang="ceb" class="lang-hidden">Duha ka organ, mas gamay kay sa imong mga kamot, nagtrabaho sa hilom sa usa ka butang wala pa naabot sa bisan unsang artipisyal nga membrane. Ang mga numero sa ubos dili metapora — kini aritmetika, gisubli-subli, matag minuto, samtang buhi ka.</span></p>
+        <div class="eyebrow" data-reveal><span data-lang="en">Four movements, repeated forever</span><span data-lang="tl" class="lang-hidden">Apat na galaw, paulit-ulit magpakailanman</span><span data-lang="ceb" class="lang-hidden">Upat ka lihok, gisubli-subli hangtod sa kahangturan</span><span data-lang="kap" class="lang-hidden">Apat na galaw, paulit-ulit magpakailanman</span></div>
+        <h2 data-reveal data-delay="1"><span data-lang="en">A constant <em>refining</em> of what flows through.</span><span data-lang="tl" class="lang-hidden">Isang patuloy na <em>pagsasala</em> ng lahat ng dumadaan.</span><span data-lang="ceb" class="lang-hidden">Usa ka kanunay nga <em>pagsala</em> sa tanan nga moagi.</span><span data-lang="kap" class="lang-hidden">Isang patuloy na <em>pagsasala</em> ning lahat ning dumadaan.</span></h2>
+        <p data-reveal data-delay="2"><span data-lang="en">Two organs, smaller than your hands, doing in silence what no engineered membrane has matched. The numbers below are not metaphor — they are arithmetic, repeating itself, every minute, for as long as you live.</span><span data-lang="tl" class="lang-hidden">Dalawang organ, mas maliit kaysa sa inyong mga kamay, gumagawa nang tahimik ng isang bagay na hindi pa naabot ng anumang artipisyal na membrane. Ang mga bilang sa ibaba ay hindi metapora — ito ay aritmetika, paulit-ulit, bawat minuto, habang kayo ay nabubuhay.</span><span data-lang="ceb" class="lang-hidden">Duha ka organ, mas gamay kay sa imong mga kamot, nagtrabaho sa hilom sa usa ka butang wala pa naabot sa bisan unsang artipisyal nga membrane. Ang mga numero sa ubos dili metapora — kini aritmetika, gisubli-subli, matag minuto, samtang buhi ka.</span><span data-lang="kap" class="lang-hidden">Dalawang organ, mas maliit kaysa king ka deng kamay, gumagawa nang tahimik ning metung a bagay na ali pa naabot ning anumang artipisyal na membrane. Deng bilang sa ibaba ya ali metapora — ini ya aritmetika, paulit-ulit, bawat minuto, habang kayu ya nabubiye.</span></p>
       </div>
       <div class="cap-grid">
         <div class="cap-card" data-reveal data-magnetic>
-          <div class="cap-num"><span data-lang="en">01 — <em>filtration</em></span><span data-lang="tl" class="lang-hidden">01 — <em>pagsasala</em></span><span data-lang="ceb" class="lang-hidden">01 — <em>pagsala</em></span></div>
-          <div class="cap-title"><span data-lang="en">A <em>million</em> tiny filters per kidney.</span><span data-lang="tl" class="lang-hidden">Isang <em>milyong</em> maliit na salaan sa bawat bato.</span><span data-lang="ceb" class="lang-hidden">Usa ka <em>milyon</em> ka gagmayng salaan sa matag kidney.</span></div>
-          <div class="cap-body"><span data-lang="en">Each <em>nephron</em> contains a tuft of capillaries called the glomerulus. Pressure drives plasma across its wall, separating water, salts, sugars, and small wastes from the cells and proteins that must stay behind. Two million glomeruli, working in parallel, in real time.</span><span data-lang="tl" class="lang-hidden">Ang bawat <em>nephron</em> ay naglalaman ng isang pangkat ng mga capillary na tinatawag na glomerulus. Ang presyon ay nagpapadala ng plasma sa pamamagitan ng dingding nito, hinahiwalay ang tubig, asin, asukal, at maliliit na basura mula sa mga selula at protina na dapat manatili. Dalawang milyong glomeruli, nagtatrabaho nang sabay-sabay, sa totoong oras.</span><span data-lang="ceb" class="lang-hidden">Ang matag <em>nephron</em> adunay grupo sa mga capillary nga gitawag og glomerulus. Ang presyon nagpadala sa plasma tabok sa iyang dingding, gibulag ang tubig, asin, asukar, ug gagmayng basura gikan sa mga selula ug protina nga kinahanglan magpabilin. Duha ka milyong glomeruli, nagtrabaho nga dungan, sa tinuod nga panahon.</span></div>
-          <div class="cap-tag"><span data-lang="en">180 L filtered every day</span><span data-lang="tl" class="lang-hidden">180 L na nasasala araw-araw</span><span data-lang="ceb" class="lang-hidden">180 L ang nasala matag adlaw</span></div>
+          <div class="cap-num"><span data-lang="en">01 — <em>filtration</em></span><span data-lang="tl" class="lang-hidden">01 — <em>pagsasala</em></span><span data-lang="ceb" class="lang-hidden">01 — <em>pagsala</em></span><span data-lang="kap" class="lang-hidden">01 — <em>pagsasala</em></span></div>
+          <div class="cap-title"><span data-lang="en">A <em>million</em> tiny filters per kidney.</span><span data-lang="tl" class="lang-hidden">Isang <em>milyong</em> maliit na salaan sa bawat bato.</span><span data-lang="ceb" class="lang-hidden">Usa ka <em>milyon</em> ka gagmayng salaan sa matag kidney.</span><span data-lang="kap" class="lang-hidden">Isang <em>milyong</em> maliit na salaan king bawat batu.</span></div>
+          <div class="cap-body"><span data-lang="en">Each <em>nephron</em> contains a tuft of capillaries called the glomerulus. Pressure drives plasma across its wall, separating water, salts, sugars, and small wastes from the cells and proteins that must stay behind. Two million glomeruli, working in parallel, in real time.</span><span data-lang="tl" class="lang-hidden">Ang bawat <em>nephron</em> ay naglalaman ng isang pangkat ng mga capillary na tinatawag na glomerulus. Ang presyon ay nagpapadala ng plasma sa pamamagitan ng dingding nito, hinahiwalay ang tubig, asin, asukal, at maliliit na basura mula sa mga selula at protina na dapat manatili. Dalawang milyong glomeruli, nagtatrabaho nang sabay-sabay, sa totoong oras.</span><span data-lang="ceb" class="lang-hidden">Ang matag <em>nephron</em> adunay grupo sa mga capillary nga gitawag og glomerulus. Ang presyon nagpadala sa plasma tabok sa iyang dingding, gibulag ang tubig, asin, asukar, ug gagmayng basura gikan sa mga selula ug protina nga kinahanglan magpabilin. Duha ka milyong glomeruli, nagtrabaho nga dungan, sa tinuod nga panahon.</span><span data-lang="kap" class="lang-hidden">Ing bawat <em>nephron</em> ya naglalaman ning metung a pangkat ning deng capillary na tinatawag na glomerulus. Ining presyon ya nagpapadala ning plasma sa pamamagitan ning dingding nini, hinahialay ining danum, asin, asukal, at maliliit na basura mula sa deng selula at protina na dapat manatili. Dalawang milyong glomeruli, nagtaobran nang sabay-sabay, sa totoong oras.</span></div>
+          <div class="cap-tag"><span data-lang="en">180 L filtered every day</span><span data-lang="tl" class="lang-hidden">180 L na nasasala araw-araw</span><span data-lang="ceb" class="lang-hidden">180 L ang nasala matag adlaw</span><span data-lang="kap" class="lang-hidden">180 L na nasasala aldo-aldo</span></div>
         </div>
         <div class="cap-card" data-reveal data-delay="1" data-magnetic>
-          <div class="cap-num"><span data-lang="en">02 — <em>reabsorption</em></span><span data-lang="tl" class="lang-hidden">02 — <em>reabsorption</em></span><span data-lang="ceb" class="lang-hidden">02 — <em>reabsorption</em></span></div>
-          <div class="cap-title"><span data-lang="en">Almost <em>all of it</em> is taken back.</span><span data-lang="tl" class="lang-hidden">Halos <em>lahat</em> ay naibabalik.</span><span data-lang="ceb" class="lang-hidden">Halos <em>tanan</em> gibalik.</span></div>
-          <div class="cap-body"><span data-lang="en">If the kidneys filtered without recovering, you would empty in thirty minutes. Instead, the proximal tubule reclaims most of the water, glucose, amino acids, and bicarbonate — returning them to the blood before they are lost. Ninety-nine percent recovered. One percent released.</span><span data-lang="tl" class="lang-hidden">Kung ang mga bato ay nagsasala nang hindi nagbabawi, mauubos kayo sa loob ng tatlumpung minuto. Sa halip, ang proximal tubule ay nagbabawi ng karamihan sa tubig, glucose, amino acids, at bicarbonate — ibinabalik ang mga ito sa dugo bago mawala. Siyamnapu't siyam na porsyento ang nabawi. Isang porsyento ang inilabas.</span><span data-lang="ceb" class="lang-hidden">Kung ang mga kidney nagsala nga wala magbalik, maubos ka sulod sa katloan ka minuto. Hinuon, ang proximal tubule nagbalik sa kadaghanan sa tubig, glucose, amino acids, ug bicarbonate — gibalik kini sa dugo sa dili pa mawala. Siyamnaput siyam ka porsyento ang nabalik. Usa ka porsyento ang gipagawas.</span></div>
-          <div class="cap-tag"><span data-lang="en">99% reabsorbed</span><span data-lang="tl" class="lang-hidden">99% na na-reabsorb</span><span data-lang="ceb" class="lang-hidden">99% na na-reabsorb</span></div>
+          <div class="cap-num"><span data-lang="en">02 — <em>reabsorption</em></span><span data-lang="tl" class="lang-hidden">02 — <em>reabsorption</em></span><span data-lang="ceb" class="lang-hidden">02 — <em>reabsorption</em></span><span data-lang="kap" class="lang-hidden">02 — <em>reabsorption</em></span></div>
+          <div class="cap-title"><span data-lang="en">Almost <em>all of it</em> is taken back.</span><span data-lang="tl" class="lang-hidden">Halos <em>lahat</em> ay naibabalik.</span><span data-lang="ceb" class="lang-hidden">Halos <em>tanan</em> gibalik.</span><span data-lang="kap" class="lang-hidden">Halos <em>lahat</em> ya naibabalik.</span></div>
+          <div class="cap-body"><span data-lang="en">If the kidneys filtered without recovering, you would empty in thirty minutes. Instead, the proximal tubule reclaims most of the water, glucose, amino acids, and bicarbonate — returning them to the blood before they are lost. Ninety-nine percent recovered. One percent released.</span><span data-lang="tl" class="lang-hidden">Kung ang mga bato ay nagsasala nang hindi nagbabawi, mauubos kayo sa loob ng tatlumpung minuto. Sa halip, ang proximal tubule ay nagbabawi ng karamihan sa tubig, glucose, amino acids, at bicarbonate — ibinabalik ang mga ito sa dugo bago mawala. Siyamnapu't siyam na porsyento ang nabawi. Isang porsyento ang inilabas.</span><span data-lang="ceb" class="lang-hidden">Kung ang mga kidney nagsala nga wala magbalik, maubos ka sulod sa katloan ka minuto. Hinuon, ang proximal tubule nagbalik sa kadaghanan sa tubig, glucose, amino acids, ug bicarbonate — gibalik kini sa dugo sa dili pa mawala. Siyamnaput siyam ka porsyento ang nabalik. Usa ka porsyento ang gipagawas.</span><span data-lang="kap" class="lang-hidden">Nung dening batu ya nagsasala nang ali nagbabawi, mauubos kayu sa loob ning tatlumpung minuto. Sa halip, ing proximal tubule ya nagbabawi ning karamihan sa danum, glucose, amino acids, at bicarbonate — ibinabalik deng ini sa daya bago maala. Yamnapu't yam na porsyento ing nabawi. Isang porsyento ing inilabas.</span></div>
+          <div class="cap-tag"><span data-lang="en">99% reabsorbed</span><span data-lang="tl" class="lang-hidden">99% na na-reabsorb</span><span data-lang="ceb" class="lang-hidden">99% na na-reabsorb</span><span data-lang="kap" class="lang-hidden">99% na na-reabsorb</span></div>
         </div>
         <div class="cap-card" data-reveal data-delay="2" data-magnetic>
-          <div class="cap-num"><span data-lang="en">03 — <em>balance</em></span><span data-lang="tl" class="lang-hidden">03 — <em>balanse</em></span><span data-lang="ceb" class="lang-hidden">03 — <em>balanse</em></span></div>
-          <div class="cap-title"><span data-lang="en">The <em>tides</em> of sodium, potassium, acid.</span><span data-lang="tl" class="lang-hidden">Ang <em>mga alon</em> ng sodium, potassium, asido.</span><span data-lang="ceb" class="lang-hidden">Ang <em>mga balud</em> sa sodium, potassium, asido.</span></div>
-          <div class="cap-body"><span data-lang="en">More than a sieve, the kidney is a thermostat for the blood's chemistry — adjusting sodium minute by minute, holding potassium within the range a heart can beat in, excreting the day's metabolic acid so the lungs and bones do not have to. Hormones reach for the dial. The dial responds.</span><span data-lang="tl" class="lang-hidden">Higit pa sa isang salaan, ang bato ay isang thermostat para sa kimika ng dugo — inaayos ang sodium minuto sa minuto, pinananatili ang potassium sa hanay na maaaring tumibok ang puso, inilalabas ang metabolic acid ng araw para hindi na kailangang gawin ng mga baga at buto. Ang mga hormone ay umaabot sa dial. Ang dial ay sumasagot.</span><span data-lang="ceb" class="lang-hidden">Labaw pa sa usa ka salaan, ang kidney usa ka thermostat alang sa kimika sa dugo — gi-adjust ang sodium minuto matag minuto, gipadayon ang potassium sulod sa hanay nga makatuktok ang kasingkasing, gipagawas ang metabolic acid sa adlaw aron ang mga baga ug bukog dili na kinahanglan. Ang mga hormone moabot sa dial. Ang dial motubag.</span></div>
-          <div class="cap-tag"><span data-lang="en">Electrolyte homeostasis</span><span data-lang="tl" class="lang-hidden">Homeostasis ng electrolyte</span><span data-lang="ceb" class="lang-hidden">Homeostasis sa electrolyte</span></div>
+          <div class="cap-num"><span data-lang="en">03 — <em>balance</em></span><span data-lang="tl" class="lang-hidden">03 — <em>balanse</em></span><span data-lang="ceb" class="lang-hidden">03 — <em>balanse</em></span><span data-lang="kap" class="lang-hidden">03 — <em>balanse</em></span></div>
+          <div class="cap-title"><span data-lang="en">The <em>tides</em> of sodium, potassium, acid.</span><span data-lang="tl" class="lang-hidden">Ang <em>mga alon</em> ng sodium, potassium, asido.</span><span data-lang="ceb" class="lang-hidden">Ang <em>mga balud</em> sa sodium, potassium, asido.</span><span data-lang="kap" class="lang-hidden">Ing <em>mga alon</em> ning sodium, potassium, asido.</span></div>
+          <div class="cap-body"><span data-lang="en">More than a sieve, the kidney is a thermostat for the blood's chemistry — adjusting sodium minute by minute, holding potassium within the range a heart can beat in, excreting the day's metabolic acid so the lungs and bones do not have to. Hormones reach for the dial. The dial responds.</span><span data-lang="tl" class="lang-hidden">Higit pa sa isang salaan, ang bato ay isang thermostat para sa kimika ng dugo — inaayos ang sodium minuto sa minuto, pinananatili ang potassium sa hanay na maaaring tumibok ang puso, inilalabas ang metabolic acid ng araw para hindi na kailangang gawin ng mga baga at buto. Ang mga hormone ay umaabot sa dial. Ang dial ay sumasagot.</span><span data-lang="ceb" class="lang-hidden">Labaw pa sa usa ka salaan, ang kidney usa ka thermostat alang sa kimika sa dugo — gi-adjust ang sodium minuto matag minuto, gipadayon ang potassium sulod sa hanay nga makatuktok ang kasingkasing, gipagawas ang metabolic acid sa adlaw aron ang mga baga ug bukog dili na kinahanglan. Ang mga hormone moabot sa dial. Ang dial motubag.</span><span data-lang="kap" class="lang-hidden">Higit pa sa metung a salaan, ining batu ya metung a thermostat para king kimika nining daya — inaayos ing sodium minuto sa minuto, pinananatili ing potassium sa hanay na maaaring tumibok ining pusu, inilalabas ing metabolic acid nining aldo para ali na kailangang gawin ning deng baga at buto. Deng hormone ya umaabot sa dial. Ing dial ya sumasagot.</span></div>
+          <div class="cap-tag"><span data-lang="en">Electrolyte homeostasis</span><span data-lang="tl" class="lang-hidden">Homeostasis ng electrolyte</span><span data-lang="ceb" class="lang-hidden">Homeostasis sa electrolyte</span><span data-lang="kap" class="lang-hidden">Homeostasis ning electrolyte</span></div>
         </div>
         <div class="cap-card" data-reveal data-delay="3" data-magnetic>
-          <div class="cap-num"><span data-lang="en">04 — <em>signal</em></span><span data-lang="tl" class="lang-hidden">04 — <em>signal</em></span><span data-lang="ceb" class="lang-hidden">04 — <em>signal</em></span></div>
-          <div class="cap-title"><span data-lang="en">An organ that <em>speaks</em> in chemistry.</span><span data-lang="tl" class="lang-hidden">Isang organ na <em>nagsasalita</em> sa pamamagitan ng kimika.</span><span data-lang="ceb" class="lang-hidden">Usa ka organ nga <em>nagsulti</em> pinaagi sa kimika.</span></div>
-          <div class="cap-body"><span data-lang="en">The kidney releases erythropoietin to ask the marrow for red cells. It activates vitamin D so the skeleton can take in calcium. It produces renin to defend blood pressure when volume falls. It is not only a filter — it is an endocrine organ, listening, adjusting, replying.</span><span data-lang="tl" class="lang-hidden">Ang bato ay naglalabas ng erythropoietin upang humingi sa bone marrow ng mga pulang selula. Ina-activate nito ang vitamin D para matanggap ng kalansay ang calcium. Gumagawa ito ng renin upang ipagtanggol ang blood pressure kapag bumagsak ang dami ng dugo. Hindi lamang ito isang salaan — ito ay isang endocrine organ, nakikinig, umaayos, sumasagot.</span><span data-lang="ceb" class="lang-hidden">Ang kidney nagpagawas sa erythropoietin aron mangayo sa bone marrow og mga pulang selula. Gi-activate niini ang vitamin D aron ang kalansayan makadawat og calcium. Nagprodyus kini og renin aron depensahan ang blood pressure kon mohulog ang dami. Dili lamang kini salaan — kini endocrine organ, namati, nag-adjust, nagtubag.</span></div>
-          <div class="cap-tag"><span data-lang="en">EPO · calcitriol · renin</span><span data-lang="tl" class="lang-hidden">EPO · calcitriol · renin</span><span data-lang="ceb" class="lang-hidden">EPO · calcitriol · renin</span></div>
+          <div class="cap-num"><span data-lang="en">04 — <em>signal</em></span><span data-lang="tl" class="lang-hidden">04 — <em>signal</em></span><span data-lang="ceb" class="lang-hidden">04 — <em>signal</em></span><span data-lang="kap" class="lang-hidden">04 — <em>signal</em></span></div>
+          <div class="cap-title"><span data-lang="en">An organ that <em>speaks</em> in chemistry.</span><span data-lang="tl" class="lang-hidden">Isang organ na <em>nagsasalita</em> sa pamamagitan ng kimika.</span><span data-lang="ceb" class="lang-hidden">Usa ka organ nga <em>nagsulti</em> pinaagi sa kimika.</span><span data-lang="kap" class="lang-hidden">Isang organ na <em>nagsasalita</em> sa pamamagitan ning kimika.</span></div>
+          <div class="cap-body"><span data-lang="en">The kidney releases erythropoietin to ask the marrow for red cells. It activates vitamin D so the skeleton can take in calcium. It produces renin to defend blood pressure when volume falls. It is not only a filter — it is an endocrine organ, listening, adjusting, replying.</span><span data-lang="tl" class="lang-hidden">Ang bato ay naglalabas ng erythropoietin upang humingi sa bone marrow ng mga pulang selula. Ina-activate nito ang vitamin D para matanggap ng kalansay ang calcium. Gumagawa ito ng renin upang ipagtanggol ang blood pressure kapag bumagsak ang dami ng dugo. Hindi lamang ito isang salaan — ito ay isang endocrine organ, nakikinig, umaayos, sumasagot.</span><span data-lang="ceb" class="lang-hidden">Ang kidney nagpagawas sa erythropoietin aron mangayo sa bone marrow og mga pulang selula. Gi-activate niini ang vitamin D aron ang kalansayan makadawat og calcium. Nagprodyus kini og renin aron depensahan ang blood pressure kon mohulog ang dami. Dili lamang kini salaan — kini endocrine organ, namati, nag-adjust, nagtubag.</span><span data-lang="kap" class="lang-hidden">Ining batu ya naglalabas ning erythropoietin para humingi sa bone marrow ning deng pulang selula. Ina-activate nini ing vitamin D para matanggap ning kalansay ing calcium. Gumagawa ini ning renin para ipagtanggol ing blood pressure nung bumagsak ing dami nining daya. Ali lamang ini metung a salaan — ini ya metung a endocrine organ, nakikinig, umaayos, sumasagot.</span></div>
+          <div class="cap-tag"><span data-lang="en">EPO · calcitriol · renin</span><span data-lang="tl" class="lang-hidden">EPO · calcitriol · renin</span><span data-lang="ceb" class="lang-hidden">EPO · calcitriol · renin</span><span data-lang="kap" class="lang-hidden">EPO · calcitriol · renin</span></div>
         </div>
       </div>
     </div>
@@ -1167,30 +1412,30 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   <section class="more-than">
     <div class="container">
       <div class="more-head">
-        <div class="eyebrow" data-reveal style="justify-content:center;"><span data-lang="en">More than a filter</span><span data-lang="tl" class="lang-hidden">Higit pa sa isang salaan</span><span data-lang="ceb" class="lang-hidden">Labaw pa sa usa ka salaan</span></div>
-        <h2 data-reveal data-delay="1"><span data-lang="en">The roles <em>almost no one</em> learns about.</span><span data-lang="tl" class="lang-hidden">Ang mga tungkulin na <em>halos walang nakakaalam</em>.</span><span data-lang="ceb" class="lang-hidden">Ang mga papel nga <em>halos walay nahibalo</em>.</span></h2>
-        <p data-reveal data-delay="2"><span data-lang="en">Behind the famous job of making urine, the kidney quietly carries on five other careers — each of them critical, each of them invisible to the person they are saving.</span><span data-lang="tl" class="lang-hidden">Sa likod ng sikat na trabaho ng paggawa ng ihi, ang bato ay tahimik na gumaganap ng limang iba pang papel — bawat isa ay kritikal, bawat isa ay hindi nakikita ng taong kanilang iniligtas.</span><span data-lang="ceb" class="lang-hidden">Sa likod sa bantog nga trabaho sa paghimo og ihi, ang kidney hilom nga nagpadayon sa lima pa ka papel — ang matag usa kritikal, ang matag usa dili makita sa tawo nga ilang giluwas.</span></p>
+        <div class="eyebrow" data-reveal style="justify-content:center;"><span data-lang="en">More than a filter</span><span data-lang="tl" class="lang-hidden">Higit pa sa isang salaan</span><span data-lang="ceb" class="lang-hidden">Labaw pa sa usa ka salaan</span><span data-lang="kap" class="lang-hidden">Higit pa sa metung a salaan</span></div>
+        <h2 data-reveal data-delay="1"><span data-lang="en">The roles <em>almost no one</em> learns about.</span><span data-lang="tl" class="lang-hidden">Ang mga tungkulin na <em>halos walang nakakaalam</em>.</span><span data-lang="ceb" class="lang-hidden">Ang mga papel nga <em>halos walay nahibalo</em>.</span><span data-lang="kap" class="lang-hidden">Deng tungkulin na <em>halos alang nakakaalam</em>.</span></h2>
+        <p data-reveal data-delay="2"><span data-lang="en">Behind the famous job of making urine, the kidney quietly carries on five other careers — each of them critical, each of them invisible to the person they are saving.</span><span data-lang="tl" class="lang-hidden">Sa likod ng sikat na trabaho ng paggawa ng ihi, ang bato ay tahimik na gumaganap ng limang iba pang papel — bawat isa ay kritikal, bawat isa ay hindi nakikita ng taong kanilang iniligtas.</span><span data-lang="ceb" class="lang-hidden">Sa likod sa bantog nga trabaho sa paghimo og ihi, ang kidney hilom nga nagpadayon sa lima pa ka papel — ang matag usa kritikal, ang matag usa dili makita sa tawo nga ilang giluwas.</span><span data-lang="kap" class="lang-hidden">Sa likod ning sikat na obran ning paggawa ning ihi, ining batu ya tahimik a gumaganap ning limang iba pang papel — bawat isa ya kritikal, bawat isa ya ali nakikita nining banuag kanilang iniligtas.</span></p>
       </div>
       <div class="more-grid">
         <div class="more-item" data-reveal>
           <div class="more-icon">i.</div>
-          <div class="more-name"><span data-lang="en">Blood pressure</span><span data-lang="tl" class="lang-hidden">Presyon ng dugo</span><span data-lang="ceb" class="lang-hidden">Presyon sa dugo</span></div>
-          <div class="more-body"><span data-lang="en">Renin sets in motion the <strong>renin–angiotensin–aldosterone</strong> cascade — narrowing vessels, holding salt, lifting pressure when it falls. The kidney is the body's blood-pressure regulator, and the first organ to suffer when pressure runs too high for too long.</span><span data-lang="tl" class="lang-hidden">Ang renin ay nagpapagalaw ng <strong>renin–angiotensin–aldosterone</strong> cascade — pinipigilan ang mga daluyan, pinananatili ang asin, itinaas ang presyon kapag bumagsak. Ang bato ay ang regulator ng blood pressure ng katawan, at ang unang organ na magdurusa kapag masyadong mataas ang presyon nang masyadong matagal.</span><span data-lang="ceb" class="lang-hidden">Ang renin nagsugod sa <strong>renin–angiotensin–aldosterone</strong> cascade — nagpakitid sa mga ugat, nagpabilin sa asin, nagpatib-og sa presyon kon mohulog. Ang kidney mao ang regulator sa blood pressure sa lawas, ug ang unang organ nga magsagos kon taas kaayo ang presyon sa dugay nga panahon.</span></div>
+          <div class="more-name"><span data-lang="en">Blood pressure</span><span data-lang="tl" class="lang-hidden">Presyon ng dugo</span><span data-lang="ceb" class="lang-hidden">Presyon sa dugo</span><span data-lang="kap" class="lang-hidden">Presyon nining daya</span></div>
+          <div class="more-body"><span data-lang="en">Renin sets in motion the <strong>renin–angiotensin–aldosterone</strong> cascade — narrowing vessels, holding salt, lifting pressure when it falls. The kidney is the body's blood-pressure regulator, and the first organ to suffer when pressure runs too high for too long.</span><span data-lang="tl" class="lang-hidden">Ang renin ay nagpapagalaw ng <strong>renin–angiotensin–aldosterone</strong> cascade — pinipigilan ang mga daluyan, pinananatili ang asin, itinaas ang presyon kapag bumagsak. Ang bato ay ang regulator ng blood pressure ng katawan, at ang unang organ na magdurusa kapag masyadong mataas ang presyon nang masyadong matagal.</span><span data-lang="ceb" class="lang-hidden">Ang renin nagsugod sa <strong>renin–angiotensin–aldosterone</strong> cascade — nagpakitid sa mga ugat, nagpabilin sa asin, nagpatib-og sa presyon kon mohulog. Ang kidney mao ang regulator sa blood pressure sa lawas, ug ang unang organ nga magsagos kon taas kaayo ang presyon sa dugay nga panahon.</span><span data-lang="kap" class="lang-hidden">Ing renin ya nagpapagalaw ning <strong>renin–angiotensin–aldosterone</strong> cascade — pinipigilan deng daluyan, pinananatili ing asin, itinaas ining presyon nung bumagsak. Ining batu ya ing regulator ning blood pressure nining bangkî, at ing unang organ na magdurusa nung masyadong mataas ining presyon nang masyadong matagal.</span></div>
         </div>
         <div class="more-item" data-reveal data-delay="1">
           <div class="more-icon">ii.</div>
-          <div class="more-name"><span data-lang="en">Red blood cells</span><span data-lang="tl" class="lang-hidden">Mga pulang selula ng dugo</span><span data-lang="ceb" class="lang-hidden">Mga pulang selula sa dugo</span></div>
-          <div class="more-body"><span data-lang="en">Almost all of the body's <strong>erythropoietin</strong> — the hormone that tells the bone marrow to make red blood cells — is produced by the kidney. When the kidney fails, anemia is rarely far behind.</span><span data-lang="tl" class="lang-hidden">Halos lahat ng <strong>erythropoietin</strong> ng katawan — ang hormone na nagpapagawa sa bone marrow ng mga pulang selula ng dugo — ay ginagawa ng bato. Kapag nabigo ang bato, ang anemia ay bihirang malayo.</span><span data-lang="ceb" class="lang-hidden">Halos tanan nga <strong>erythropoietin</strong> sa lawas — ang hormone nga nagsulti sa bone marrow nga maghimo og mga pulang selula sa dugo — gihimo sa kidney. Kon mapalpak ang kidney, ang anemia halos dili malayo.</span></div>
+          <div class="more-name"><span data-lang="en">Red blood cells</span><span data-lang="tl" class="lang-hidden">Mga pulang selula ng dugo</span><span data-lang="ceb" class="lang-hidden">Mga pulang selula sa dugo</span><span data-lang="kap" class="lang-hidden">Deng pulang selula nining daya</span></div>
+          <div class="more-body"><span data-lang="en">Almost all of the body's <strong>erythropoietin</strong> — the hormone that tells the bone marrow to make red blood cells — is produced by the kidney. When the kidney fails, anemia is rarely far behind.</span><span data-lang="tl" class="lang-hidden">Halos lahat ng <strong>erythropoietin</strong> ng katawan — ang hormone na nagpapagawa sa bone marrow ng mga pulang selula ng dugo — ay ginagawa ng bato. Kapag nabigo ang bato, ang anemia ay bihirang malayo.</span><span data-lang="ceb" class="lang-hidden">Halos tanan nga <strong>erythropoietin</strong> sa lawas — ang hormone nga nagsulti sa bone marrow nga maghimo og mga pulang selula sa dugo — gihimo sa kidney. Kon mapalpak ang kidney, ang anemia halos dili malayo.</span><span data-lang="kap" class="lang-hidden">Halos lahat ning <strong>erythropoietin</strong> nining bangkî — ing hormone na nagpapagawa sa bone marrow ning deng pulang selula nining daya — ya ginagawa nining batu. Nung nabigo ining batu, ing anemia ya bihirang malayo.</span></div>
         </div>
         <div class="more-item" data-reveal data-delay="2">
           <div class="more-icon">iii.</div>
-          <div class="more-name"><span data-lang="en">Bone strength</span><span data-lang="tl" class="lang-hidden">Lakas ng buto</span><span data-lang="ceb" class="lang-hidden">Kusog sa bukog</span></div>
-          <div class="more-body"><span data-lang="en">Vitamin D from sun and food is inactive until the kidney converts it to <strong>calcitriol</strong>. Without that final activation, calcium cannot enter the bone, and the skeleton begins to soften.</span><span data-lang="tl" class="lang-hidden">Ang vitamin D mula sa araw at pagkain ay hindi aktibo hanggang hindi ito ginagawang <strong>calcitriol</strong> ng bato. Kung wala ang huling pag-activate na iyon, hindi makapasok ang calcium sa buto, at nagsisimulang lumambot ang kalansay.</span><span data-lang="ceb" class="lang-hidden">Ang vitamin D gikan sa adlaw ug pagkaon dili aktibo hangtod kini ipretso sa <strong>calcitriol</strong> sa kidney. Kung wala kana nga katapusang pag-activate, dili makapasok ang calcium sa bukog, ug ang kalansayan magsugod sa paglumo.</span></div>
+          <div class="more-name"><span data-lang="en">Bone strength</span><span data-lang="tl" class="lang-hidden">Lakas ng buto</span><span data-lang="ceb" class="lang-hidden">Kusog sa bukog</span><span data-lang="kap" class="lang-hidden">Lakas ning buto</span></div>
+          <div class="more-body"><span data-lang="en">Vitamin D from sun and food is inactive until the kidney converts it to <strong>calcitriol</strong>. Without that final activation, calcium cannot enter the bone, and the skeleton begins to soften.</span><span data-lang="tl" class="lang-hidden">Ang vitamin D mula sa araw at pagkain ay hindi aktibo hanggang hindi ito ginagawang <strong>calcitriol</strong> ng bato. Kung wala ang huling pag-activate na iyon, hindi makapasok ang calcium sa buto, at nagsisimulang lumambot ang kalansay.</span><span data-lang="ceb" class="lang-hidden">Ang vitamin D gikan sa adlaw ug pagkaon dili aktibo hangtod kini ipretso sa <strong>calcitriol</strong> sa kidney. Kung wala kana nga katapusang pag-activate, dili makapasok ang calcium sa bukog, ug ang kalansayan magsugod sa paglumo.</span><span data-lang="kap" class="lang-hidden">Ing vitamin D mula sa aldo at pamangan ya ali aktibo anggang ali ini ginagawang <strong>calcitriol</strong> nining batu. Nung ala ing huling pag-activate na iyun, ali makapasok ing calcium sa buto, at nagsisimulang lumambot ing kalansay.</span></div>
         </div>
         <div class="more-item" data-reveal data-delay="3">
           <div class="more-icon">iv.</div>
-          <div class="more-name"><span data-lang="en">Blood sugar</span><span data-lang="tl" class="lang-hidden">Asukal sa dugo</span><span data-lang="ceb" class="lang-hidden">Asukar sa dugo</span></div>
-          <div class="more-body"><span data-lang="en">Few are taught this: the kidney itself <strong>manufactures glucose</strong>. Together with the liver, it sustains your blood sugar overnight, contributing roughly a quarter of the body's fasting glucose production.</span><span data-lang="tl" class="lang-hidden">Kakaunti ang nagtuturo nito: ang bato mismo ay <strong>gumagawa ng glucose</strong>. Kasama ang atay, pinapanatili nito ang inyong asukal sa dugo sa gabi, nag-aambag ng halos isang kapat ng produksyon ng fasting glucose ng katawan.</span><span data-lang="ceb" class="lang-hidden">Pipila ang nagtudlo niini: ang kidney mismo <strong>naghimo og glucose</strong>. Kauban ang atay, gipadayon niini ang imong asukar sa dugo sa gabii, nagamit og halos usa ka kapat sa produksyon sa fasting glucose sa lawas.</span></div>
+          <div class="more-name"><span data-lang="en">Blood sugar</span><span data-lang="tl" class="lang-hidden">Asukal sa dugo</span><span data-lang="ceb" class="lang-hidden">Asukar sa dugo</span><span data-lang="kap" class="lang-hidden">Asukal sa daya</span></div>
+          <div class="more-body"><span data-lang="en">Few are taught this: the kidney itself <strong>manufactures glucose</strong>. Together with the liver, it sustains your blood sugar overnight, contributing roughly a quarter of the body's fasting glucose production.</span><span data-lang="tl" class="lang-hidden">Kakaunti ang nagtuturo nito: ang bato mismo ay <strong>gumagawa ng glucose</strong>. Kasama ang atay, pinapanatili nito ang inyong asukal sa dugo sa gabi, nag-aambag ng halos isang kapat ng produksyon ng fasting glucose ng katawan.</span><span data-lang="ceb" class="lang-hidden">Pipila ang nagtudlo niini: ang kidney mismo <strong>naghimo og glucose</strong>. Kauban ang atay, gipadayon niini ang imong asukar sa dugo sa gabii, nagamit og halos usa ka kapat sa produksyon sa fasting glucose sa lawas.</span><span data-lang="kap" class="lang-hidden">Kakaunti ing nagtuturo nini: ining batu mismo ya <strong>gumagawa ning glucose</strong>. Kasama ing atay, pinapanatili nini ing inyong asukal sa daya sa gabi, nag-aambag ning halos metung a kapat ning produksyon ning fasting glucose nining bangkî.</span></div>
         </div>
       </div>
     </div>
@@ -1200,11 +1445,11 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   <section class="decision">
     <div class="container">
       <div class="dec-head">
-        <div class="eyebrow" data-reveal><span data-lang="en">A different way to see it</span><span data-lang="tl" class="lang-hidden">Isang naiibang paraan ng pagtingin</span><span data-lang="ceb" class="lang-hidden">Usa ka lain nga paagi sa pagtan-aw</span></div>
-        <h2 data-reveal data-delay="1"><span data-lang="en">Not a <em>drain</em>.<br>A <em>decision-maker</em>.</span><span data-lang="tl" class="lang-hidden">Hindi isang <em>daluyan</em>.<br>Isang <em>gumagawa ng desisyon</em>.</span><span data-lang="ceb" class="lang-hidden">Dili usa ka <em>drain</em>.<br>Usa ka <em>magdedesisyon</em>.</span></h2>
+        <div class="eyebrow" data-reveal><span data-lang="en">A different way to see it</span><span data-lang="tl" class="lang-hidden">Isang naiibang paraan ng pagtingin</span><span data-lang="ceb" class="lang-hidden">Usa ka lain nga paagi sa pagtan-aw</span><span data-lang="kap" class="lang-hidden">Isang naiibang paraan ning pagtingin</span></div>
+        <h2 data-reveal data-delay="1"><span data-lang="en">Not a <em>drain</em>.<br>A <em>decision-maker</em>.</span><span data-lang="tl" class="lang-hidden">Hindi isang <em>daluyan</em>.<br>Isang <em>gumagawa ng desisyon</em>.</span><span data-lang="ceb" class="lang-hidden">Dili usa ka <em>drain</em>.<br>Usa ka <em>magdedesisyon</em>.</span><span data-lang="kap" class="lang-hidden">Ali metung a <em>daluyan</em>.<br>Isang <em>gumagawa ning desisyon</em>.</span></h2>
       </div>
-      <p class="dec-body" data-reveal data-delay="2"><span data-lang="en">Every minute, the kidney decides what must <em>leave</em>, what must <em>stay</em>, what must be <em>recycled</em>, and what must be <em>signaled</em> to the rest of the body. It is not a passive sieve. It is the most discriminating organ you have — analyzing each litre of plasma against the body's running ledger of need, and editing it accordingly. Filtration is only the first step. Reabsorption is the recycling. Hormones are the signals it sends back. Acid-base and mineral balance are the running adjustments. The kidney's real work is <em>judgment</em>.</span><span data-lang="tl" class="lang-hidden">Sa bawat minuto, ang bato ay nagdedesisyon kung ano ang dapat <em>lumabas</em>, kung ano ang dapat <em>manatili</em>, kung ano ang dapat <em>i-recycle</em>, at kung ano ang dapat <em>i-signal</em> sa natitirang bahagi ng katawan. Hindi ito isang pasibong salaan. Ito ang pinaka-mapanuri na organ na mayroon kayo — sinusuri ang bawat litro ng plasma laban sa patuloy na listahan ng pangangailangan ng katawan, at ine-edit ito nang naaangkop. Ang pagsasala ay unang hakbang lamang. Ang reabsorption ay ang pag-recycle. Ang mga hormone ay ang mga signal na ipinapadala nito. Ang acid-base at mineral balance ay ang mga patuloy na pag-aayos. Ang tunay na gawain ng bato ay <em>paghatol</em>.</span><span data-lang="ceb" class="lang-hidden">Sa matag minuto, ang kidney nagdesisyon kung unsa ang kinahanglan <em>mogawas</em>, unsa ang kinahanglan <em>magpabilin</em>, unsa ang kinahanglan <em>i-recycle</em>, ug unsa ang kinahanglan <em>i-signal</em> sa nahibilin nga bahin sa lawas. Dili kini pasibo nga salaan. Kini ang labing mahukmanon nga organ nga anaa kanimo — gianalisa ang matag litro sa plasma batok sa nagpadayon nga listahan sa panginahanglan sa lawas, ug gi-edit kini sumala. Ang pagsala unang lakang lamang. Ang reabsorption mao ang pag-recycle. Ang mga hormone mao ang mga signal nga ipadala niini. Ang acid-base ug mineral balance mao ang nagpadayon nga mga pag-adjust. Ang tinuod nga trabaho sa kidney mao ang <em>paghukom</em>.</span></p>
-      <blockquote class="dec-quote" data-reveal data-delay="3"><span data-lang="en">It decides what must leave, what must stay, what must be balanced, and what must be signaled to the rest of the body.</span><span data-lang="tl" class="lang-hidden">Nagdesisyon ito kung ano ang dapat lumabas, kung ano ang dapat manatili, kung ano ang dapat balansehin, at kung ano ang dapat i-signal sa natitirang bahagi ng katawan.</span><span data-lang="ceb" class="lang-hidden">Nagdesisyon kini kung unsa ang kinahanglan mogawas, unsa ang kinahanglan magpabilin, unsa ang kinahanglan ibalanse, ug unsa ang kinahanglan i-signal sa nahibilin nga bahin sa lawas.</span></blockquote>
+      <p class="dec-body" data-reveal data-delay="2"><span data-lang="en">Every minute, the kidney decides what must <em>leave</em>, what must <em>stay</em>, what must be <em>recycled</em>, and what must be <em>signaled</em> to the rest of the body. It is not a passive sieve. It is the most discriminating organ you have — analyzing each litre of plasma against the body's running ledger of need, and editing it accordingly. Filtration is only the first step. Reabsorption is the recycling. Hormones are the signals it sends back. Acid-base and mineral balance are the running adjustments. The kidney's real work is <em>judgment</em>.</span><span data-lang="tl" class="lang-hidden">Sa bawat minuto, ang bato ay nagdedesisyon kung ano ang dapat <em>lumabas</em>, kung ano ang dapat <em>manatili</em>, kung ano ang dapat <em>i-recycle</em>, at kung ano ang dapat <em>i-signal</em> sa natitirang bahagi ng katawan. Hindi ito isang pasibong salaan. Ito ang pinaka-mapanuri na organ na mayroon kayo — sinusuri ang bawat litro ng plasma laban sa patuloy na listahan ng pangangailangan ng katawan, at ine-edit ito nang naaangkop. Ang pagsasala ay unang hakbang lamang. Ang reabsorption ay ang pag-recycle. Ang mga hormone ay ang mga signal na ipinapadala nito. Ang acid-base at mineral balance ay ang mga patuloy na pag-aayos. Ang tunay na gawain ng bato ay <em>paghatol</em>.</span><span data-lang="ceb" class="lang-hidden">Sa matag minuto, ang kidney nagdesisyon kung unsa ang kinahanglan <em>mogawas</em>, unsa ang kinahanglan <em>magpabilin</em>, unsa ang kinahanglan <em>i-recycle</em>, ug unsa ang kinahanglan <em>i-signal</em> sa nahibilin nga bahin sa lawas. Dili kini pasibo nga salaan. Kini ang labing mahukmanon nga organ nga anaa kanimo — gianalisa ang matag litro sa plasma batok sa nagpadayon nga listahan sa panginahanglan sa lawas, ug gi-edit kini sumala. Ang pagsala unang lakang lamang. Ang reabsorption mao ang pag-recycle. Ang mga hormone mao ang mga signal nga ipadala niini. Ang acid-base ug mineral balance mao ang nagpadayon nga mga pag-adjust. Ang tinuod nga trabaho sa kidney mao ang <em>paghukom</em>.</span><span data-lang="kap" class="lang-hidden">Sa bawat minuto, ining batu ya nagdedesisyon nung ano ing dapat <em>lumabas</em>, nung ano ing dapat <em>manatili</em>, nung ano ing dapat <em>i-recycle</em>, at nung ano ing dapat <em>i-signal</em> sa natitirang bahagi nining bangkî. Ali ini metung a pasibong salaan. Ini ing pinaka-mapanuri na organ na mayroon kayu — sinusuri ing bawat litro ning plasma laban sa patuloy na listahan ning pangangailangan nining bangkî, at ine-edit ini nang naaangkop. Ing pagsasala ya unang hakbang lamang. Ing reabsorption ya ing pag-recycle. Deng hormone ya deng signal na ipinapadala nini. Ing acid-base at mineral balance ya deng patuloy na pag-aayos. Ing tunay na gawain nining batu ya <em>paghatol</em>.</span></p>
+      <blockquote class="dec-quote" data-reveal data-delay="3"><span data-lang="en">It decides what must leave, what must stay, what must be balanced, and what must be signaled to the rest of the body.</span><span data-lang="tl" class="lang-hidden">Nagdesisyon ito kung ano ang dapat lumabas, kung ano ang dapat manatili, kung ano ang dapat balansehin, at kung ano ang dapat i-signal sa natitirang bahagi ng katawan.</span><span data-lang="ceb" class="lang-hidden">Nagdesisyon kini kung unsa ang kinahanglan mogawas, unsa ang kinahanglan magpabilin, unsa ang kinahanglan ibalanse, ug unsa ang kinahanglan i-signal sa nahibilin nga bahin sa lawas.</span><span data-lang="kap" class="lang-hidden">Nagdesisyon ini nung ano ing dapat lumabas, nung ano ing dapat manatili, nung ano ing dapat balansehin, at nung ano ing dapat i-signal sa natitirang bahagi nining bangkî.</span></blockquote>
     </div>
   </section>
 
@@ -1212,45 +1457,45 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   <section class="fails">
     <div class="container">
       <div class="fails-head">
-        <div class="eyebrow" data-reveal><span data-lang="en">When the work breaks down</span><span data-lang="tl" class="lang-hidden">Kapag bumasag ang trabaho</span><span data-lang="ceb" class="lang-hidden">Kon mapalpak ang trabaho</span></div>
-        <h2 data-reveal data-delay="1"><span data-lang="en">What you would <em>feel</em><br>if each quiet labor stopped.</span><span data-lang="tl" class="lang-hidden">Ang mararamdaman ninyo<br>kung huminto ang bawat tahimik na gawain.</span><span data-lang="ceb" class="lang-hidden">Ang imong <em>mabati</em><br>kon mohunong ang matag hilom nga trabaho.</span></h2>
-        <p data-reveal data-delay="2"><span data-lang="en">Most people do not know which symptom belongs to which kidney role. The table below makes the connection explicit — physiology on the left, the symptom you would actually notice on the right. It is also why early detection matters: the kidney has so much reserve that the symptoms are usually the last thing to arrive.</span><span data-lang="tl" class="lang-hidden">Karamihan sa mga tao ay hindi alam kung aling sintomas ang naaangkop sa aling tungkulin ng bato. Ang talahanayan sa ibaba ay nagpapakita ng koneksyon nang malinaw — ang pisyolohiya sa kaliwa, ang sintomas na talagang mapapansin ninyo sa kanan. Ito rin ang dahilan kung bakit mahalaga ang maagang pagtuklas: napakaraming reserba ng bato kaya ang mga sintomas ay karaniwang huli na darating.</span><span data-lang="ceb" class="lang-hidden">Kadaghanan sa mga tawo wala mahibalo kung unsang sintomas ang iya sa unsang papel sa kidney. Ang lamesa sa ubos nagpakita sa koneksyon nga klaro — ang pisyolohiya sa wala, ang sintomas nga tinuod ninyong mapansin sa tuo. Mao usab kini ang hinungdan nga ang sayo nga pagkakita importante: daghan kaayo og reserba ang kidney mao nga ang mga sintomas sagad ang katapusang moabot.</span></p>
+        <div class="eyebrow" data-reveal><span data-lang="en">When the work breaks down</span><span data-lang="tl" class="lang-hidden">Kapag bumasag ang trabaho</span><span data-lang="ceb" class="lang-hidden">Kon mapalpak ang trabaho</span><span data-lang="kap" class="lang-hidden">Nung bumasag ing obran</span></div>
+        <h2 data-reveal data-delay="1"><span data-lang="en">What you would <em>feel</em><br>if each quiet labor stopped.</span><span data-lang="tl" class="lang-hidden">Ang mararamdaman ninyo<br>kung huminto ang bawat tahimik na gawain.</span><span data-lang="ceb" class="lang-hidden">Ang imong <em>mabati</em><br>kon mohunong ang matag hilom nga trabaho.</span><span data-lang="kap" class="lang-hidden">Ing mararamdaman ninyo<br>nung huminto ing bawat tahimik a gawain.</span></h2>
+        <p data-reveal data-delay="2"><span data-lang="en">Most people do not know which symptom belongs to which kidney role. The table below makes the connection explicit — physiology on the left, the symptom you would actually notice on the right. It is also why early detection matters: the kidney has so much reserve that the symptoms are usually the last thing to arrive.</span><span data-lang="tl" class="lang-hidden">Karamihan sa mga tao ay hindi alam kung aling sintomas ang naaangkop sa aling tungkulin ng bato. Ang talahanayan sa ibaba ay nagpapakita ng koneksyon nang malinaw — ang pisyolohiya sa kaliwa, ang sintomas na talagang mapapansin ninyo sa kanan. Ito rin ang dahilan kung bakit mahalaga ang maagang pagtuklas: napakaraming reserba ng bato kaya ang mga sintomas ay karaniwang huli na darating.</span><span data-lang="ceb" class="lang-hidden">Kadaghanan sa mga tawo wala mahibalo kung unsang sintomas ang iya sa unsang papel sa kidney. Ang lamesa sa ubos nagpakita sa koneksyon nga klaro — ang pisyolohiya sa wala, ang sintomas nga tinuod ninyong mapansin sa tuo. Mao usab kini ang hinungdan nga ang sayo nga pagkakita importante: daghan kaayo og reserba ang kidney mao nga ang mga sintomas sagad ang katapusang moabot.</span><span data-lang="kap" class="lang-hidden">Karamihan sa deng tao ya ali alam nung aling sintomas ing naaangkop sa aling tungkulin nining batu. Ing talahanayan sa ibaba ya nagpapakita ning koneksyon nang malinaw — ing pisyolohiya sa kaliwa, ing sintomas na talagang mapapansin ninyo sa kanan. Ini rin ing dahilan nung bakit mahalaga ing maagang pagtuklas: napakaraming reserba nining batu kaya deng sintomas ya karaniwang huli na darating.</span></p>
       </div>
       <div class="fails-table" data-reveal data-delay="3">
         <div class="ft-row ft-head">
-          <div><span data-lang="en">Kidney role</span><span data-lang="tl" class="lang-hidden">Tungkulin ng bato</span><span data-lang="ceb" class="lang-hidden">Papel sa kidney</span></div>
-          <div><span data-lang="en">What it does</span><span data-lang="tl" class="lang-hidden">Ano ang ginagawa nito</span><span data-lang="ceb" class="lang-hidden">Unsa ang gibuhat niini</span></div>
-          <div><span data-lang="en">What you may feel when it fails</span><span data-lang="tl" class="lang-hidden">Ano ang mararamdaman kapag nabigo ito</span><span data-lang="ceb" class="lang-hidden">Unsa ang imong mabati kon mapalpak kini</span></div>
+          <div><span data-lang="en">Kidney role</span><span data-lang="tl" class="lang-hidden">Tungkulin ng bato</span><span data-lang="ceb" class="lang-hidden">Papel sa kidney</span><span data-lang="kap" class="lang-hidden">Tungkulin nining batu</span></div>
+          <div><span data-lang="en">What it does</span><span data-lang="tl" class="lang-hidden">Ano ang ginagawa nito</span><span data-lang="ceb" class="lang-hidden">Unsa ang gibuhat niini</span><span data-lang="kap" class="lang-hidden">Ano ing ginagawa nini</span></div>
+          <div><span data-lang="en">What you may feel when it fails</span><span data-lang="tl" class="lang-hidden">Ano ang mararamdaman kapag nabigo ito</span><span data-lang="ceb" class="lang-hidden">Unsa ang imong mabati kon mapalpak kini</span><span data-lang="kap" class="lang-hidden">Ano ing mararamdaman nung nabigo ini</span></div>
         </div>
         <div class="ft-row">
-          <div class="ft-fn"><span data-lang="en">Removes excess water</span><span data-lang="tl" class="lang-hidden">Nag-aalis ng sobrang tubig</span><span data-lang="ceb" class="lang-hidden">Nagkuha sa sobrang tubig</span></div>
-          <div class="ft-do"><span data-lang="en">Prevents fluid overload.</span><span data-lang="tl" class="lang-hidden">Pinipigilan ang labis na likido sa katawan.</span><span data-lang="ceb" class="lang-hidden">Nagpugong sa sobrang likido sa lawas.</span></div>
-          <div class="ft-fail"><span data-lang="en">Leg swelling, shortness of breath, rising blood pressure.</span><span data-lang="tl" class="lang-hidden">Pamamaga ng binti, hirap sa paghinga, pagtaas ng blood pressure.</span><span data-lang="ceb" class="lang-hidden">Pamaga sa tiil, kakulba sa pagginhawa, pagtaas sa blood pressure.</span></div>
+          <div class="ft-fn"><span data-lang="en">Removes excess water</span><span data-lang="tl" class="lang-hidden">Nag-aalis ng sobrang tubig</span><span data-lang="ceb" class="lang-hidden">Nagkuha sa sobrang tubig</span><span data-lang="kap" class="lang-hidden">Nag-aalis ning sobraning danum</span></div>
+          <div class="ft-do"><span data-lang="en">Prevents fluid overload.</span><span data-lang="tl" class="lang-hidden">Pinipigilan ang labis na likido sa katawan.</span><span data-lang="ceb" class="lang-hidden">Nagpugong sa sobrang likido sa lawas.</span><span data-lang="kap" class="lang-hidden">Pinipigilan ing labis na likido sa bangkî.</span></div>
+          <div class="ft-fail"><span data-lang="en">Leg swelling, shortness of breath, rising blood pressure.</span><span data-lang="tl" class="lang-hidden">Pamamaga ng binti, hirap sa paghinga, pagtaas ng blood pressure.</span><span data-lang="ceb" class="lang-hidden">Pamaga sa tiil, kakulba sa pagginhawa, pagtaas sa blood pressure.</span><span data-lang="kap" class="lang-hidden">Pamamaga ning binti, hirap sa paghinga, pagtaas ning blood pressure.</span></div>
         </div>
         <div class="ft-row">
-          <div class="ft-fn"><span data-lang="en">Controls potassium</span><span data-lang="tl" class="lang-hidden">Kinokontrol ang potassium</span><span data-lang="ceb" class="lang-hidden">Nagkontrol sa potassium</span></div>
-          <div class="ft-do"><span data-lang="en">Protects heart rhythm.</span><span data-lang="tl" class="lang-hidden">Nagpoprotekta sa ritmo ng puso.</span><span data-lang="ceb" class="lang-hidden">Nagpanalipod sa ritmo sa kasingkasing.</span></div>
-          <div class="ft-fail"><span data-lang="en">Palpitations, weakness, dangerous arrhythmia — sometimes the first symptom.</span><span data-lang="tl" class="lang-hidden">Palpitation, kahinaan, mapanganib na arrhythmia — minsan ang unang sintomas.</span><span data-lang="ceb" class="lang-hidden">Palpitation, kahuyang, delikadong arrhythmia — usahay ang unang sintomas.</span></div>
+          <div class="ft-fn"><span data-lang="en">Controls potassium</span><span data-lang="tl" class="lang-hidden">Kinokontrol ang potassium</span><span data-lang="ceb" class="lang-hidden">Nagkontrol sa potassium</span><span data-lang="kap" class="lang-hidden">Kinokontrol ing potassium</span></div>
+          <div class="ft-do"><span data-lang="en">Protects heart rhythm.</span><span data-lang="tl" class="lang-hidden">Nagpoprotekta sa ritmo ng puso.</span><span data-lang="ceb" class="lang-hidden">Nagpanalipod sa ritmo sa kasingkasing.</span><span data-lang="kap" class="lang-hidden">Nagpoprotekta sa ritmo nining pusu.</span></div>
+          <div class="ft-fail"><span data-lang="en">Palpitations, weakness, dangerous arrhythmia — sometimes the first symptom.</span><span data-lang="tl" class="lang-hidden">Palpitation, kahinaan, mapanganib na arrhythmia — minsan ang unang sintomas.</span><span data-lang="ceb" class="lang-hidden">Palpitation, kahuyang, delikadong arrhythmia — usahay ang unang sintomas.</span><span data-lang="kap" class="lang-hidden">Palpitation, kahinaan, mapanganib na arrhythmia — misan ing unang sintomas.</span></div>
         </div>
         <div class="ft-row">
-          <div class="ft-fn"><span data-lang="en">Removes acid</span><span data-lang="tl" class="lang-hidden">Nag-aalis ng asido</span><span data-lang="ceb" class="lang-hidden">Nagkuha sa asido</span></div>
-          <div class="ft-do"><span data-lang="en">Keeps blood chemistry stable.</span><span data-lang="tl" class="lang-hidden">Pinapanatiling matatag ang kimika ng dugo.</span><span data-lang="ceb" class="lang-hidden">Nagpadayon og lig-on sa kimika sa dugo.</span></div>
-          <div class="ft-fail"><span data-lang="en">Fatigue, muscle wasting, slow bone weakening.</span><span data-lang="tl" class="lang-hidden">Pagod, pagkawala ng kalamnan, mabagal na pagmamahina ng buto.</span><span data-lang="ceb" class="lang-hidden">Kakapoy, pagkawala sa kaunoran, hinay-hinay nga paghuyang sa bukog.</span></div>
+          <div class="ft-fn"><span data-lang="en">Removes acid</span><span data-lang="tl" class="lang-hidden">Nag-aalis ng asido</span><span data-lang="ceb" class="lang-hidden">Nagkuha sa asido</span><span data-lang="kap" class="lang-hidden">Nag-aalis ning asido</span></div>
+          <div class="ft-do"><span data-lang="en">Keeps blood chemistry stable.</span><span data-lang="tl" class="lang-hidden">Pinapanatiling matatag ang kimika ng dugo.</span><span data-lang="ceb" class="lang-hidden">Nagpadayon og lig-on sa kimika sa dugo.</span><span data-lang="kap" class="lang-hidden">Pinapanatiling matatag ing kimika nining daya.</span></div>
+          <div class="ft-fail"><span data-lang="en">Fatigue, muscle wasting, slow bone weakening.</span><span data-lang="tl" class="lang-hidden">Pagod, pagkawala ng kalamnan, mabagal na pagmamahina ng buto.</span><span data-lang="ceb" class="lang-hidden">Kakapoy, pagkawala sa kaunoran, hinay-hinay nga paghuyang sa bukog.</span><span data-lang="kap" class="lang-hidden">Pagod, pagkaala ning kalamnan, mabagal na pagmamahina ning buto.</span></div>
         </div>
         <div class="ft-row">
-          <div class="ft-fn"><span data-lang="en">Makes erythropoietin</span><span data-lang="tl" class="lang-hidden">Gumagawa ng erythropoietin</span><span data-lang="ceb" class="lang-hidden">Naghimo og erythropoietin</span></div>
-          <div class="ft-do"><span data-lang="en">Tells the marrow to produce red blood cells.</span><span data-lang="tl" class="lang-hidden">Sinasabi sa bone marrow na gumawa ng mga pulang selula ng dugo.</span><span data-lang="ceb" class="lang-hidden">Nagsulti sa bone marrow nga maghimo og mga pulang selula sa dugo.</span></div>
-          <div class="ft-fail"><span data-lang="en">Anemia, fatigue, poor exercise tolerance.</span><span data-lang="tl" class="lang-hidden">Anemia, pagod, mahinang toleransya sa ehersisyo.</span><span data-lang="ceb" class="lang-hidden">Anemia, kakapoy, huyang nga toleransya sa ehersisyo.</span></div>
+          <div class="ft-fn"><span data-lang="en">Makes erythropoietin</span><span data-lang="tl" class="lang-hidden">Gumagawa ng erythropoietin</span><span data-lang="ceb" class="lang-hidden">Naghimo og erythropoietin</span><span data-lang="kap" class="lang-hidden">Gumagawa ning erythropoietin</span></div>
+          <div class="ft-do"><span data-lang="en">Tells the marrow to produce red blood cells.</span><span data-lang="tl" class="lang-hidden">Sinasabi sa bone marrow na gumawa ng mga pulang selula ng dugo.</span><span data-lang="ceb" class="lang-hidden">Nagsulti sa bone marrow nga maghimo og mga pulang selula sa dugo.</span><span data-lang="kap" class="lang-hidden">Sinasabi sa bone marrow na gumawa ning deng pulang selula nining daya.</span></div>
+          <div class="ft-fail"><span data-lang="en">Anemia, fatigue, poor exercise tolerance.</span><span data-lang="tl" class="lang-hidden">Anemia, pagod, mahinang toleransya sa ehersisyo.</span><span data-lang="ceb" class="lang-hidden">Anemia, kakapoy, huyang nga toleransya sa ehersisyo.</span><span data-lang="kap" class="lang-hidden">Anemia, pagod, mahinang toleransya sa ehersisyo.</span></div>
         </div>
         <div class="ft-row">
-          <div class="ft-fn"><span data-lang="en">Activates vitamin D</span><span data-lang="tl" class="lang-hidden">Ina-activate ang vitamin D</span><span data-lang="ceb" class="lang-hidden">Nag-activate sa vitamin D</span></div>
-          <div class="ft-do"><span data-lang="en">Lets calcium enter the bone.</span><span data-lang="tl" class="lang-hidden">Pinapayagan ang calcium na pumasok sa buto.</span><span data-lang="ceb" class="lang-hidden">Nagpahintulot sa calcium nga mosulod sa bukog.</span></div>
-          <div class="ft-fail"><span data-lang="en">Bone pain, fractures, rising parathyroid hormone.</span><span data-lang="tl" class="lang-hidden">Sakit ng buto, bali, pagtaas ng parathyroid hormone.</span><span data-lang="ceb" class="lang-hidden">Sakit sa bukog, bali, pagtaas sa parathyroid hormone.</span></div>
+          <div class="ft-fn"><span data-lang="en">Activates vitamin D</span><span data-lang="tl" class="lang-hidden">Ina-activate ang vitamin D</span><span data-lang="ceb" class="lang-hidden">Nag-activate sa vitamin D</span><span data-lang="kap" class="lang-hidden">Ina-activate ing vitamin D</span></div>
+          <div class="ft-do"><span data-lang="en">Lets calcium enter the bone.</span><span data-lang="tl" class="lang-hidden">Pinapayagan ang calcium na pumasok sa buto.</span><span data-lang="ceb" class="lang-hidden">Nagpahintulot sa calcium nga mosulod sa bukog.</span><span data-lang="kap" class="lang-hidden">Pinapayagan ing calcium na pumasok sa buto.</span></div>
+          <div class="ft-fail"><span data-lang="en">Bone pain, fractures, rising parathyroid hormone.</span><span data-lang="tl" class="lang-hidden">Sakit ng buto, bali, pagtaas ng parathyroid hormone.</span><span data-lang="ceb" class="lang-hidden">Sakit sa bukog, bali, pagtaas sa parathyroid hormone.</span><span data-lang="kap" class="lang-hidden">Sakit ning buto, bali, pagtaas ning parathyroid hormone.</span></div>
         </div>
         <div class="ft-row">
-          <div class="ft-fn"><span data-lang="en">Holds albumin in blood</span><span data-lang="tl" class="lang-hidden">Pinapanatili ang albumin sa dugo</span><span data-lang="ceb" class="lang-hidden">Nagpabilin sa albumin sa dugo</span></div>
-          <div class="ft-do"><span data-lang="en">Preserves vascular and nutritional health.</span><span data-lang="tl" class="lang-hidden">Pinoprotektahan ang kalusugan ng mga daluyan at nutrisyon.</span><span data-lang="ceb" class="lang-hidden">Nagpreserba sa kahimsog sa mga ugat ug nutrisyon.</span></div>
-          <div class="ft-fail"><span data-lang="en">Proteinuria, edema, higher cardiovascular risk over time.</span><span data-lang="tl" class="lang-hidden">Proteinuria, edema, mas mataas na panganib sa cardiovascular sa paglipas ng panahon.</span><span data-lang="ceb" class="lang-hidden">Proteinuria, edema, mas taas nga cardiovascular risk sa paglabay sa panahon.</span></div>
+          <div class="ft-fn"><span data-lang="en">Holds albumin in blood</span><span data-lang="tl" class="lang-hidden">Pinapanatili ang albumin sa dugo</span><span data-lang="ceb" class="lang-hidden">Nagpabilin sa albumin sa dugo</span><span data-lang="kap" class="lang-hidden">Pinapanatili ing albumin sa daya</span></div>
+          <div class="ft-do"><span data-lang="en">Preserves vascular and nutritional health.</span><span data-lang="tl" class="lang-hidden">Pinoprotektahan ang kalusugan ng mga daluyan at nutrisyon.</span><span data-lang="ceb" class="lang-hidden">Nagpreserba sa kahimsog sa mga ugat ug nutrisyon.</span><span data-lang="kap" class="lang-hidden">Pinoprotektahan ing kalusugan ning deng daluyan at nutrisyon.</span></div>
+          <div class="ft-fail"><span data-lang="en">Proteinuria, edema, higher cardiovascular risk over time.</span><span data-lang="tl" class="lang-hidden">Proteinuria, edema, mas mataas na panganib sa cardiovascular sa paglipas ng panahon.</span><span data-lang="ceb" class="lang-hidden">Proteinuria, edema, mas taas nga cardiovascular risk sa paglabay sa panahon.</span><span data-lang="kap" class="lang-hidden">Proteinuria, edema, mas matas a panganib sa cardiovascular sa paglipas ning panahon.</span></div>
         </div>
       </div>
     </div>
@@ -1260,8 +1505,8 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   <section class="astonish">
     <div class="container">
       <div class="astonish-head">
-        <div class="eyebrow" data-reveal><span data-lang="en">Three astonishments, rarely told</span><span data-lang="tl" class="lang-hidden">Tatlong kataka-taka, bihirang isinasalaysay</span><span data-lang="ceb" class="lang-hidden">Tulo ka katingalahan, bihirang ikasulti</span></div>
-        <h2 data-reveal data-delay="1"><span data-lang="en">Numbers that should make you <em>pause</em>.</span><span data-lang="tl" class="lang-hidden">Mga bilang na dapat magpahinto sa inyo.</span><span data-lang="ceb" class="lang-hidden">Mga numero nga angay nga magpahunong kanimo.</span></h2>
+        <div class="eyebrow" data-reveal><span data-lang="en">Three astonishments, rarely told</span><span data-lang="tl" class="lang-hidden">Tatlong kataka-taka, bihirang isinasalaysay</span><span data-lang="ceb" class="lang-hidden">Tulo ka katingalahan, bihirang ikasulti</span><span data-lang="kap" class="lang-hidden">Tatlong kataka-taka, bihirang isinasalaysay</span></div>
+        <h2 data-reveal data-delay="1"><span data-lang="en">Numbers that should make you <em>pause</em>.</span><span data-lang="tl" class="lang-hidden">Mga bilang na dapat magpahinto sa inyo.</span><span data-lang="ceb" class="lang-hidden">Mga numero nga angay nga magpahunong kanimo.</span><span data-lang="kap" class="lang-hidden">Deng bilang na dapat magpahinto sa inyo.</span></h2>
       </div>
       <img src="../images/kidney-physiology-three-astonishments.png" alt="Three astonishments about kidney physiology — 25% of every heartbeat goes to organs that are 0.5% of body weight; the tubules inside your kidneys laid end to end would span a tennis court; blood pH held within ±0.04 every minute of your life" loading="lazy" width="1536" height="1024" style="width:100%;height:auto;margin:0 0 8px;display:block;">
     </div>
@@ -1270,9 +1515,9 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   <!-- STAT -->
   <section class="stat-band">
     <div class="container">
-      <div class="stat-eyebrow" data-reveal><span data-lang="en">What is held in reserve</span><span data-lang="tl" class="lang-hidden">Ang nakaimbak na reserba</span><span data-lang="ceb" class="lang-hidden">Ang gipugngan nga reserba</span></div>
+      <div class="stat-eyebrow" data-reveal><span data-lang="en">What is held in reserve</span><span data-lang="tl" class="lang-hidden">Ang nakaimbak na reserba</span><span data-lang="ceb" class="lang-hidden">Ang gipugngan nga reserba</span><span data-lang="kap" class="lang-hidden">Ing nakaimbak na reserba</span></div>
       <div class="stat-number" data-reveal data-delay="1">2,000,000</div>
-      <div class="stat-caption" data-reveal data-delay="2"><span data-lang="en">— nephrons in two kidneys at birth, irreplaceable, slowly counted down across a lifetime.</span><span data-lang="tl" class="lang-hidden">— mga nephron sa dalawang bato sa kapanganakan, hindi mapapalitan, dahan-dahang nabibilang pababa sa buong buhay.</span><span data-lang="ceb" class="lang-hidden">— mga nephron sa duha ka kidney sa pagkatawo, dili mapulihan, hinay-hinay nga nabibilang paubos sa tibuok kinabuhi.</span></div>
+      <div class="stat-caption" data-reveal data-delay="2"><span data-lang="en">— nephrons in two kidneys at birth, irreplaceable, slowly counted down across a lifetime.</span><span data-lang="tl" class="lang-hidden">— mga nephron sa dalawang bato sa kapanganakan, hindi mapapalitan, dahan-dahang nabibilang pababa sa buong buhay.</span><span data-lang="ceb" class="lang-hidden">— mga nephron sa duha ka kidney sa pagkatawo, dili mapulihan, hinay-hinay nga nabibilang paubos sa tibuok kinabuhi.</span><span data-lang="kap" class="lang-hidden">— deng nephron sa dalawaning batu sa kapanganakan, ali mapapalitan, dahan-dahang nabibilang pababa sa buoning biye.</span></div>
     </div>
   </section>
 
@@ -1280,8 +1525,8 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   <section class="superpowers">
     <div class="container">
       <div class="sp-head">
-        <div class="eyebrow" data-reveal><span data-lang="en">A summary, in awe</span><span data-lang="tl" class="lang-hidden">Isang buod, sa pagkamangha</span><span data-lang="ceb" class="lang-hidden">Usa ka buod, sa pagkatingala</span></div>
-        <h2 data-reveal data-delay="1"><span data-lang="en">Ten <em>quiet superpowers</em>,<br>in one organ.</span><span data-lang="tl" class="lang-hidden">Sampung <em>tahimik na superpower</em>,<br>sa isang organ.</span><span data-lang="ceb" class="lang-hidden">Napulo ka <em>hilom nga superpower</em>,<br>sa usa ka organ.</span></h2>
+        <div class="eyebrow" data-reveal><span data-lang="en">A summary, in awe</span><span data-lang="tl" class="lang-hidden">Isang buod, sa pagkamangha</span><span data-lang="ceb" class="lang-hidden">Usa ka buod, sa pagkatingala</span><span data-lang="kap" class="lang-hidden">Isang buod, sa pagkamangha</span></div>
+        <h2 data-reveal data-delay="1"><span data-lang="en">Ten <em>quiet superpowers</em>,<br>in one organ.</span><span data-lang="tl" class="lang-hidden">Sampung <em>tahimik na superpower</em>,<br>sa isang organ.</span><span data-lang="ceb" class="lang-hidden">Napulo ka <em>hilom nga superpower</em>,<br>sa usa ka organ.</span><span data-lang="kap" class="lang-hidden">Sampung <em>tahimik a superpower</em>,<br>sa metung a organ.</span></h2>
       </div>
       <img src="../images/kidney-physiology-ten-superpowers.png" alt="Ten quiet superpowers of the kidney — filters 180 litres of plasma daily, returns 99% of filtered water, holds blood pressure 24/7, protects the heart from potassium shifts, removes metabolic acid, activates vitamin D, signals bone marrow to make red blood cells, clears medications and toxins, keeps albumin in the bloodstream, coordinates with heart, bone, marrow, gut, lungs, and brain" loading="lazy" width="1536" height="1024" style="width:100%;height:auto;margin:0;display:block;">
     </div>
@@ -1290,11 +1535,11 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   <!-- CTA -->
   <section class="cta">
     <div class="container">
-      <div class="eyebrow" data-reveal style="justify-content:center;"><span data-lang="en">There is one thing left to do</span><span data-lang="tl" class="lang-hidden">May isang bagay pa na dapat gawin</span><span data-lang="ceb" class="lang-hidden">Adunay usa pa ka butang kinahanglan buhaton</span></div>
-      <h3 data-reveal data-delay="1"><span data-lang="en">Now that you know what they <em>do</em> —<br>learn how to <em>protect</em> them.</span><span data-lang="tl" class="lang-hidden">Ngayon na alam ninyo kung ano ang <em>ginagawa</em> nila —<br>alamin kung paano sila <em>pangalagaan</em>.</span><span data-lang="ceb" class="lang-hidden">Karon nga nahibalo na kamo kung unsa ang ilang <em>gibuhat</em> —<br>pagkat-on kung unsaon sila <em>pagpanalipod</em>.</span></h3>
-      <p data-reveal data-delay="2"><span data-lang="en">A serum creatinine and a urine protein test cost less than a meal and take less than ten minutes. They are the only way to know whether the silent organ is still keeping its count. Beyond the tests, there are eighty kidney-health guides on this site — written for patients, caregivers, and clinicians.</span><span data-lang="tl" class="lang-hidden">Ang serum creatinine at urine protein test ay mas mura kaysa sa isang pagkain at tumatagal ng wala pang sampung minuto. Ito ang tanging paraan upang malaman kung ang tahimik na organ ay patuloy pa ring nagbibilang. Bukod sa mga pagsusuri, mayroon itong walumpung gabay sa kalusugan ng bato sa site na ito — isinulat para sa mga pasyente, tagapag-alaga, at mga klinisyan.</span><span data-lang="ceb" class="lang-hidden">Ang serum creatinine ug urine protein test mas barato pa kay sa usa ka pagkaon ug mokabat og wala'y napulo ka minuto. Kini ang bugtong paagi aron mahibalo kung ang hilom nga organ nagpadayon pa sa pagbilang. Labaw pa sa mga pagsusi, adunay kawaloan ka giya sa kahimsog sa kidney sa site nga kini — gisulat alang sa mga pasyente, mga nagtatambal, ug mga klinisyan.</span></p>
+      <div class="eyebrow" data-reveal style="justify-content:center;"><span data-lang="en">There is one thing left to do</span><span data-lang="tl" class="lang-hidden">May isang bagay pa na dapat gawin</span><span data-lang="ceb" class="lang-hidden">Adunay usa pa ka butang kinahanglan buhaton</span><span data-lang="kap" class="lang-hidden">May metung a bagay pa na dapat gawin</span></div>
+      <h3 data-reveal data-delay="1"><span data-lang="en">Now that you know what they <em>do</em> —<br>learn how to <em>protect</em> them.</span><span data-lang="tl" class="lang-hidden">Ngayon na alam ninyo kung ano ang <em>ginagawa</em> nila —<br>alamin kung paano sila <em>pangalagaan</em>.</span><span data-lang="ceb" class="lang-hidden">Karon nga nahibalo na kamo kung unsa ang ilang <em>gibuhat</em> —<br>pagkat-on kung unsaon sila <em>pagpanalipod</em>.</span><span data-lang="kap" class="lang-hidden">Ngayon na alam ninyo nung ano ing <em>ginagawa</em> nila —<br>alamin nung paano sila <em>pangalagaan</em>.</span></h3>
+      <p data-reveal data-delay="2"><span data-lang="en">A serum creatinine and a urine protein test cost less than a meal and take less than ten minutes. They are the only way to know whether the silent organ is still keeping its count. Beyond the tests, there are eighty kidney-health guides on this site — written for patients, caregivers, and clinicians.</span><span data-lang="tl" class="lang-hidden">Ang serum creatinine at urine protein test ay mas mura kaysa sa isang pagkain at tumatagal ng wala pang sampung minuto. Ito ang tanging paraan upang malaman kung ang tahimik na organ ay patuloy pa ring nagbibilang. Bukod sa mga pagsusuri, mayroon itong walumpung gabay sa kalusugan ng bato sa site na ito — isinulat para sa mga pasyente, tagapag-alaga, at mga klinisyan.</span><span data-lang="ceb" class="lang-hidden">Ang serum creatinine ug urine protein test mas barato pa kay sa usa ka pagkaon ug mokabat og wala'y napulo ka minuto. Kini ang bugtong paagi aron mahibalo kung ang hilom nga organ nagpadayon pa sa pagbilang. Labaw pa sa mga pagsusi, adunay kawaloan ka giya sa kahimsog sa kidney sa site nga kini — gisulat alang sa mga pasyente, mga nagtatambal, ug mga klinisyan.</span><span data-lang="kap" class="lang-hidden">Ing serum creatinine at urine protein test ya mas mura kaysa sa metung a pamangan at tumatagal ning ala pang sampung minuto. Ini ing tanging paraan para malaman nung ing tahimik a organ ya patuloy pa ring nagbibilang. Bukod sa deng pagsusuri, mayroon ining walumpung gabay sa kalusugan nining batu sa site na ini — isinulat para king deng pasyente, tagapag-alaga, at deng klinisyan.</span></p>
       <a href="index.html" class="cta-btn" data-magnetic data-reveal data-delay="3">
-        <span><span data-lang="en">Read the kidney guides</span><span data-lang="tl" class="lang-hidden">Basahin ang mga gabay sa bato</span><span data-lang="ceb" class="lang-hidden">Basaha ang mga giya sa kidney</span></span>
+        <span><span data-lang="en">Read the kidney guides</span><span data-lang="tl" class="lang-hidden">Basahin ang mga gabay sa bato</span><span data-lang="ceb" class="lang-hidden">Basaha ang mga giya sa kidney</span><span data-lang="kap" class="lang-hidden">Basahin deng gabay sa batu</span></span>
         <span class="arrow">→</span>
       </a>
     </div>
@@ -1303,8 +1548,8 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 </main>
 
 <footer>
-  <div><span data-lang="en">Your Amazing Kidneys · Normal Physiology · W. G. M. Rivero, MD</span><span data-lang="tl" class="lang-hidden">Ang Inyong Kahanga-hangang Bato · Normal na Pisyolohiya · W. G. M. Rivero, MD</span><span data-lang="ceb" class="lang-hidden">Ang Imong Katingalahang Kidney · Normal nga Pisyolohiya · W. G. M. Rivero, MD</span></div>
-  <div><span data-lang="en">An immersive feature page · williamriveromd.com</span><span data-lang="tl" class="lang-hidden">Isang immersive na pahina · williamriveromd.com</span><span data-lang="ceb" class="lang-hidden">Usa ka immersive nga pahina · williamriveromd.com</span></div>
+  <div><span data-lang="en">Your Amazing Kidneys · Normal Physiology · W. G. M. Rivero, MD</span><span data-lang="tl" class="lang-hidden">Ang Inyong Kahanga-hangang Bato · Normal na Pisyolohiya · W. G. M. Rivero, MD</span><span data-lang="ceb" class="lang-hidden">Ang Imong Katingalahang Kidney · Normal nga Pisyolohiya · W. G. M. Rivero, MD</span><span data-lang="kap" class="lang-hidden">Ing Inyong Kahanga-hangang Batu · Normal na Pisyolohiya · W. G. M. Rivero, MD</span></div>
+  <div><span data-lang="en">An immersive feature page · williamriveromd.com</span><span data-lang="tl" class="lang-hidden">Isang immersive na pahina · williamriveromd.com</span><span data-lang="ceb" class="lang-hidden">Usa ka immersive nga pahina · williamriveromd.com</span><span data-lang="kap" class="lang-hidden">Isang immersive na pahina · williamriveromd.com</span></div>
 </footer>
 
 <script type="importmap">
@@ -1810,6 +2055,67 @@ gsap.to(caustic.material.uniforms.uColor.value, { r: 1, g: 0.72, b: 0.55,
   scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
 
 /* ════════════════════════════════════════════════
+   KIDNEY GENESIS — scroll-driven embryological development
+   Pronephros → Mesonephros → Metanephros → Adult Kidney
+   ════════════════════════════════════════════════ */
+(function(){
+  const kgEl = document.querySelector('.kidney-genesis .kg-anim');
+  const kgContainer = document.querySelector('.kidney-genesis');
+  if (!kgEl || !kgContainer) return;
+  /* 4 embryological stages — genuinely distinct morphologies, same 6-segment topology:
+     Anchor order: medial-lower → hilum-lower → upper-medial → superior-pole → lateral → inferior-pole → close */
+  const kgStages = [
+    /* PRONEPHROS (wk 3-4): narrow vertical oval ~16×26, no hilum */
+    [102,130, 102,130, 102,123, 102,118, 102,116, 102,114, 102,112, 102,108, 105,106, 108,106, 112,106, 117,110, 117,118, 117,126, 113,132, 108,132, 105,132, 102,132, 102,130],
+    /* MESONEPHROS (wk 4-6): elongated oval ~36×68, still symmetric */
+    [94,138, 94,138, 94,128, 94,118, 94,110, 94,104, 95,98, 95,88, 101,82, 108,82, 118,82, 130,93, 130,118, 130,143, 121,158, 108,158, 97,158, 94,148, 94,138],
+    /* METANEPHROS (wk 5-8): ~63×122, forming hilum notch */
+    [90,132, 90,132, 87,124, 87,116, 87,108, 90,103, 90,97, 90,78, 100,60, 108,60, 130,60, 150,88, 150,118, 150,150, 130,178, 108,178, 87,178, 90,148, 90,132],
+    /* ADULT KIDNEY (wk 9+): classic bean ~79×157, deep hilum */
+    [83.14,127.85, 83.14,127.85, 81.53,124.42, 81.70,119.53, 81.53,114.63, 83.14,111.21, 83.14,111.21, 59.07,105.13, 59.07,31.84, 108.08,40.75, 156.76,49.59, 161.45,101.43, 161.58,119.53, 161.45,137.64, 156.76,189.49, 108.08,198.31, 59.07,207.21, 59.07,133.94, 83.14,127.85]
+  ];
+  /* specular highlight position/size per stage (upper-left lit area) */
+  const kgSpec = [
+    {cx:106, cy:112, rx:3,  ry:4.5},
+    {cx:103, cy:97,  rx:7,  ry:10 },
+    {cx:98,  cy:74,  rx:12, ry:16 },
+    {cx:95,  cy:67,  rx:16, ry:22 }
+  ];
+  const kgSpecEl = document.getElementById('kg-spec-el');
+  function buildPath(n){
+    return `M ${n[0]},${n[1]} C ${n[2]},${n[3]} ${n[4]},${n[5]} ${n[6]},${n[7]} C ${n[8]},${n[9]} ${n[10]},${n[11]} ${n[12]},${n[13]} C ${n[14]},${n[15]} ${n[16]},${n[17]} ${n[18]},${n[19]} C ${n[20]},${n[21]} ${n[22]},${n[23]} ${n[24]},${n[25]} C ${n[26]},${n[27]} ${n[28]},${n[29]} ${n[30]},${n[31]} C ${n[32]},${n[33]} ${n[34]},${n[35]} ${n[36]},${n[37]} Z`;
+  }
+  function lerpArr(a, b, t){ return a.map((v, i) => v + (b[i] - v) * t); }
+  function lerpN(a, b, t){ return a + (b - a) * t; }
+  kgEl.setAttribute('d', buildPath(kgStages[0]));
+  kgEl.style.opacity = '0';
+  const proxy = { p: 0 };
+  gsap.to(proxy, {
+    p: 1, ease: 'none',
+    scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1.5 },
+    onUpdate(){
+      const raw  = proxy.p * (kgStages.length - 1);
+      const idx  = Math.min(Math.floor(raw), kgStages.length - 2);
+      const frac = raw - idx;
+      const nums = lerpArr(kgStages[idx], kgStages[idx + 1], frac);
+      kgEl.setAttribute('d', buildPath(nums));
+      /* tissue opacity: starts almost invisible, grows with development */
+      const op = 0.06 + proxy.p * 0.16;
+      kgEl.style.opacity = String(op);
+      kgContainer.style.opacity = String(op);
+      /* specular ellipse follows the lit upper-left area */
+      if (kgSpecEl) {
+        const s0 = kgSpec[idx], s1 = kgSpec[idx + 1];
+        kgSpecEl.setAttribute('cx', lerpN(s0.cx, s1.cx, frac));
+        kgSpecEl.setAttribute('cy', lerpN(s0.cy, s1.cy, frac));
+        kgSpecEl.setAttribute('rx', lerpN(s0.rx, s1.rx, frac));
+        kgSpecEl.setAttribute('ry', lerpN(s0.ry, s1.ry, frac));
+      }
+    }
+  });
+})();
+
+/* ════════════════════════════════════════════════
    CUSTOM CURSOR + MAGNETIC HOVERS
    ════════════════════════════════════════════════ */
 const cursor = document.querySelector('.cursor');
@@ -1849,6 +2155,7 @@ const Audio = {
     const filter = this.ctx.createBiquadFilter();
     filter.type = 'lowpass'; filter.frequency.value = 720; filter.Q.value = 0.55;
     this.master = this.ctx.createGain(); this.master.gain.value = 0;
+    this._filter = filter;
     filter.connect(this.master); this.master.connect(this.ctx.destination);
     const voices = [
       { freq: 55.00, type: 'sine'    , gain: 0.085, lfoRate: 0.07, lfoDepth: 0.25 },
@@ -1959,6 +2266,7 @@ const Audio = {
     src.stop(t0 + 1.30);
   },
 };
+window._kpAudio = Audio;
 document.getElementById('sound-toggle').addEventListener('click', function(){
   const on = Audio.toggle();
   this.classList.toggle('is-on', on);
@@ -1997,5 +2305,94 @@ function setPhysLang(lang) {
 })();
 </script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
+
+<script>
+/* ════════════════════════════════════════════════
+   SCROLL PROGRESS BAR
+   ════════════════════════════════════════════════ */
+const scrollBar = document.getElementById('scroll-bar');
+function updateScrollBar(){
+  const p = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  scrollBar.style.width = (Math.min(p,1)*100).toFixed(2)+'%';
+}
+window.addEventListener('scroll', updateScrollBar, {passive:true});
+
+/* ════════════════════════════════════════════════
+   SECTION NAV DOTS
+   ════════════════════════════════════════════════ */
+const secDots    = [...document.querySelectorAll('.sec-dot')];
+const secTargets = secDots.map(d => document.querySelector(d.dataset.target));
+let kbSecIdx = 0;
+
+const dotObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const i = secTargets.indexOf(e.target);
+      if(i !== -1){ kbSecIdx = i; secDots.forEach((d,j) => d.classList.toggle('is-active', i===j)); }
+    }
+  });
+}, {threshold:0.35});
+secTargets.forEach(t => t && dotObserver.observe(t));
+
+secDots.forEach((dot,i) => {
+  dot.addEventListener('click', () => secTargets[i]?.scrollIntoView({behavior:'smooth',block:'start'}));
+});
+
+/* ════════════════════════════════════════════════
+   KEYBOARD SECTION JUMPING  (↓/↑ or J/K)
+   ════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key==='ArrowDown'||e.key==='j'||e.key==='J'){
+    e.preventDefault();
+    kbSecIdx = Math.min(kbSecIdx+1, secTargets.length-1);
+    secTargets[kbSecIdx]?.scrollIntoView({behavior:'smooth',block:'start'});
+  } else if(e.key==='ArrowUp'||e.key==='k'||e.key==='K'){
+    e.preventDefault();
+    kbSecIdx = Math.max(kbSecIdx-1, 0);
+    secTargets[kbSecIdx]?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+});
+
+/* ════════════════════════════════════════════════
+   KIDNEY GENESIS STAGE LABEL
+   ════════════════════════════════════════════════ */
+const kgLabel      = document.getElementById('kg-label');
+const kgLabelStage = document.getElementById('kg-label-stage');
+const kgLabelWeek  = document.getElementById('kg-label-week');
+const kgStageNames = [
+  {stage:'Pronephros',   week:'Week 3–4'},
+  {stage:'Mesonephros',  week:'Week 4–6'},
+  {stage:'Metanephros',  week:'Week 5–8'},
+  {stage:'Adult Kidney', week:'Week 9+' },
+];
+let lastKgIdx = -1;
+function updateKgLabel(){
+  const p   = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  const idx = Math.min(Math.floor(p*4), 3);
+  if(idx !== lastKgIdx){
+    lastKgIdx = idx;
+    kgLabelStage.textContent = kgStageNames[idx].stage;
+    kgLabelWeek.textContent  = kgStageNames[idx].week;
+  }
+  kgLabel.classList.toggle('is-visible', p > 0.01 && p < 0.90);
+}
+window.addEventListener('scroll', updateKgLabel, {passive:true});
+
+/* ════════════════════════════════════════════════
+   SECTION-REACTIVE AUDIO — filter opens at stat-band
+   ════════════════════════════════════════════════ */
+const statBand = document.querySelector('.stat-band');
+if(statBand){
+  new IntersectionObserver(([e]) => {
+    const A = window._kpAudio;
+    if(!A || !A._filter || !A.enabled) return;
+    const now = A.ctx.currentTime;
+    A._filter.frequency.cancelScheduledValues(now);
+    A._filter.frequency.setValueAtTime(A._filter.frequency.value, now);
+    A._filter.frequency.linearRampToValueAtTime(e.isIntersecting ? 1800 : 720, now + 3.5);
+  }, {threshold:0.45}).observe(statBand);
+}
+</script>
 </body>
 </html>

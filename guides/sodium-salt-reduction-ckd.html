@@ -503,6 +503,24 @@
   .related-card-desc  { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
   .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
 
+  /* ── RELATED GUIDES — LEGACY ALIASES (12 guides ship variant markup) ─────── */
+  .related-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;
+  }
+  .related-badge {
+    display: inline-block;
+    font-size: .68rem; font-weight: 700; color: var(--teal);
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px;
+  }
+  .related-card h3 {
+    font-size: .92rem; font-weight: 600; color: var(--navy);
+    line-height: 1.35; margin: 0 0 6px 0;
+  }
+  .related-card p {
+    font-size: .80rem; color: var(--text-muted); line-height: 1.45;
+    margin: 0; flex: 1;
+  }
+
   /* ── DR CARD (dark panel) ────────────────────────────────────────────────── */
   .dr-card {
     background: var(--navy); color: white;
@@ -514,7 +532,9 @@
     background: rgba(184,150,46,.25); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; flex-shrink: 0; border: 2px solid rgba(184,150,46,.4);
+    overflow: hidden;
   }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
   .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
   .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; } /* 13.1:1 ✓ */
   .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
@@ -690,6 +710,9 @@
   /* Related guides */
   html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
   html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
+  html[data-theme="dark"] .related-card h3 { color: var(--text); }
+  html[data-theme="dark"] .related-card p { color: var(--text-muted); }
+  html[data-theme="dark"] .related-badge { color: var(--teal); }
 
   /* Food grids */
   html[data-theme="dark"] .food-ok    { background: var(--green-soft); border-color: rgba(74,222,128,.15); }
@@ -900,6 +923,208 @@ html[data-theme="dark"] .translation-notice{background:#2a1f0a;border-color:#3a2
   }
 }
 </script>
+
+<style>
+/* SODIUM SALT REDUCTION CKD CUSTOM CSS — restored from commit 625f401 */
+:root {
+    --navy:       #0f1e2e;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.7;font-size:16px;}
+
+  .site-header{background:var(--navy);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+  .site-header a.brand{font-size:16px;font-weight:400;color:white;text-decoration:none;}
+  .site-header a.brand strong{font-weight:600;color:#d4af4f;}
+  .site-header a.back{font-size:12px;color:rgba(255,255,255,.7);text-decoration:none;letter-spacing:.04em;}
+  .guide-toggle-bar{background:rgba(10,18,32,.96);padding:6px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);}
+  .lang-label{font-size:11px;color:rgba(255,255,255,.5);margin-right:8px;letter-spacing:.04em;}
+  .lang-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.72);cursor:pointer;transition:all .2s;margin-right:4px;}
+  .lang-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+  .lang-btn.disabled{opacity:.4;cursor:not-allowed;}
+  .toggle-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:16px;cursor:pointer;transition:all .2s;}
+  .toggle-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
+  .toggle-btn svg{width:12px;height:12px;}
+
+  .hero{background:var(--navy);color:white;padding:72px 0 80px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;border-radius:50%;border:1px solid rgba(184,150,46,.15);}
+  .hero::after{content:'';position:absolute;bottom:-80px;left:-60px;width:300px;height:300px;border-radius:50%;border:1px solid rgba(192,57,43,.1);}
+  .container{max-width:860px;margin:0 auto;padding:0 32px;}
+  .hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light);border:1px solid rgba(184,150,46,.4);padding:5px 14px;border-radius:20px;margin-bottom:24px;}
+  .hero h1{font-family:'Lora',serif;font-size:clamp(28px,4.6vw,46px);font-weight:600;line-height:1.18;margin-bottom:20px;letter-spacing:-.015em;}
+  .hero h1 em{font-style:italic;color:var(--gold-light);}
+  .hero-sub{font-size:18px;color:rgba(255,255,255,.78);max-width:620px;line-height:1.65;margin-bottom:36px;}
+  .hero-sub em{font-style:italic;color:var(--gold-light);}
+  .hero-meta{display:flex;gap:28px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.55);}
+  .hero-meta strong{color:rgba(255,255,255,.92);font-weight:500;}
+
+  .nav-strip{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100;}
+  .nav-pills{display:flex;gap:4px;padding:10px 32px;max-width:1100px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
+  .nav-pills::-webkit-scrollbar{display:none;}
+  .nav-pill{flex-shrink:0;font-size:12px;font-weight:500;padding:7px 14px;border-radius:14px;color:var(--text-muted);background:transparent;text-decoration:none;border:1px solid transparent;transition:all .2s;white-space:nowrap;}
+  .nav-pill:hover{background:var(--bg);color:var(--text);}
+
+  .section{padding:64px 0;border-bottom:1px solid var(--border);}
+  .section-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
+  .section h2{font-family:'Lora',serif;font-size:clamp(24px,3.4vw,34px);font-weight:600;line-height:1.22;color:var(--navy);margin-bottom:18px;letter-spacing:-.01em;}
+  .section h2 em{font-style:italic;color:var(--gold);}
+  .section p{color:var(--text-mid);margin-bottom:16px;}
+  .section p:last-child{margin-bottom:0;}
+  .section h3{font-family:'Lora',serif;font-size:21px;font-weight:600;color:var(--navy);margin:28px 0 12px;}
+
+  .intro-callout{background:var(--navy);color:white;border-radius:14px;padding:28px 32px;margin:24px 0;}
+  .intro-callout p{color:rgba(255,255,255,.92);font-size:16px;line-height:1.75;margin:0;}
+  .intro-callout p strong{color:white;}
+  .intro-callout p em{color:var(--gold-light);font-style:italic;}
+  .intro-callout p + p{margin-top:14px;}
+
+  .two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:24px 0;}
+  .three-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0;}
+  .feature-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:22px 24px;}
+  .feature-card h4{font-family:'Lora',serif;font-size:17px;font-weight:600;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+  .feature-card p{font-size:14.5px;color:var(--text-muted);line-height:1.7;margin:0;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;}
+  .dot-teal{background:var(--teal);}.dot-gold{background:var(--gold);}.dot-red{background:#c0392b;}
+  .dot-amber{background:#e6a03c;}.dot-green{background:#2d7a4f;}.dot-navy{background:var(--navy);}
+
+  .lab-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px;}
+  .lab-table th{background:var(--navy);color:white;font-weight:500;text-align:left;padding:11px 14px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;}
+  .lab-table td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text-mid);vertical-align:top;}
+  .lab-table tr:hover td{background:var(--bg);}
+  .lab-table tr.row-section td{background:var(--teal-light);font-weight:600;color:var(--teal);font-size:11px;text-transform:uppercase;letter-spacing:.1em;padding:8px 14px;}
+
+  .badge-red{background:#fee;color:var(--red);font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;letter-spacing:.04em;display:inline-block;}
+  .badge-amber{background:#fff4dd;color:var(--amber);font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;letter-spacing:.04em;display:inline-block;}
+  .badge-green{background:#dffce7;color:var(--green);font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;letter-spacing:.04em;display:inline-block;}
+
+  .alert{display:flex;gap:16px;padding:20px 22px;border-radius:12px;margin:24px 0;align-items:flex-start;}
+  .alert-icon{font-size:24px;flex-shrink:0;line-height:1;}
+  .alert-body{flex:1;}
+  .alert-body h4{font-family:'Lora',serif;font-size:17px;font-weight:600;margin-bottom:8px;}
+  .alert-body p{font-size:14.5px;line-height:1.7;color:var(--text-mid);margin:0;}
+  .alert-body ul{font-size:14.5px;line-height:1.75;color:var(--text-mid);margin:8px 0 0 24px;padding:0;}
+  .alert-body li{margin-bottom:5px;}
+  .alert-red{background:var(--red-soft);border:1px solid #fcc;}
+  .alert-red h4{color:var(--red);}
+  .alert-amber{background:var(--amber-soft);border:1px solid #fde7a7;}
+  .alert-amber h4{color:var(--amber);}
+  .alert-green{background:var(--green-soft);border:1px solid #c0e3cd;}
+  .alert-green h4{color:var(--green);}
+  .alert-teal{background:var(--teal-light);border:1px solid #b9dcd9;}
+  .alert-teal h4{color:var(--teal);}
+
+  .checklist{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:24px 0;}
+  .checklist h4{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:14px;}
+  .checklist ul{list-style:none;padding:0;margin:0;}
+  .checklist li{position:relative;padding-left:30px;margin-bottom:10px;color:var(--text-mid);font-size:14.5px;line-height:1.7;}
+  .checklist li::before{content:'';position:absolute;left:0;top:8px;width:18px;height:18px;border:2px solid var(--teal);border-radius:4px;}
+  .checklist li::after{content:'✓';position:absolute;left:3px;top:5px;color:var(--teal);font-weight:700;font-size:14px;}
+
+  /* Calculator */
+  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px;margin:24px 0;}
+  .calc-row{display:grid;grid-template-columns:1fr 110px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+  .calc-row:last-of-type{border-bottom:0;}
+  .calc-row label{font-size:14px;color:var(--text-mid);font-weight:500;}
+  .calc-row label .meta{display:block;font-size:11.5px;color:var(--text-faint);font-weight:400;margin-top:2px;}
+  .calc-row input{width:100%;padding:9px 12px;font-family:inherit;font-size:14px;border:1px solid var(--border);border-radius:8px;text-align:right;background:white;}
+  .calc-row input:focus{outline:none;border-color:var(--teal);}
+  .calc-result{margin-top:24px;padding:24px;background:white;border-radius:12px;border:2px solid var(--border);text-align:center;transition:border-color .3s;}
+  .calc-result.under{border-color:var(--green);}
+  .calc-result.near{border-color:var(--amber);}
+  .calc-result.over{border-color:var(--red);}
+  .calc-result-num{font-family:'Lora',serif;font-size:48px;font-weight:600;line-height:1;color:var(--navy);}
+  .calc-result.under .calc-result-num{color:var(--green);}
+  .calc-result.near .calc-result-num{color:var(--amber);}
+  .calc-result.over .calc-result-num{color:var(--red);}
+  .calc-result-label{font-size:13px;color:var(--text-muted);margin-top:6px;letter-spacing:.04em;text-transform:uppercase;}
+  .calc-bar{height:10px;background:var(--border);border-radius:5px;margin-top:18px;overflow:hidden;position:relative;}
+  .calc-bar-fill{height:100%;background:var(--green);border-radius:5px;transition:width .4s,background-color .4s;}
+  .calc-bar-fill.near{background:var(--amber);}
+  .calc-bar-fill.over{background:var(--red);}
+  .calc-bar-target{position:absolute;top:-4px;width:2px;height:18px;background:var(--navy);}
+  .calc-verdict{margin-top:18px;font-size:15px;line-height:1.65;color:var(--text-mid);}
+
+  .swap-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px;}
+  .swap-table td{padding:14px 16px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .swap-table tr:hover td{background:var(--bg);}
+  .swap-table .from{color:var(--red);text-decoration:line-through;font-weight:500;}
+  .swap-table .arrow{color:var(--text-faint);text-align:center;}
+  .swap-table .to{color:var(--green);font-weight:500;}
+
+  .dr-card{background:var(--navy);color:white;border-radius:16px;padding:28px;display:flex;gap:22px;align-items:flex-start;margin-top:48px;}
+  .dr-photo{width:64px;height:64px;border-radius:50%;border:2px solid rgba(184,150,46,.5);object-fit:cover;flex-shrink:0;}
+  .dr-card h4{font-family:'Lora',serif;font-size:17px;font-weight:600;color:white;margin-bottom:4px;}
+  .dr-card p{font-size:14px;color:rgba(255,255,255,.78);line-height:1.6;margin-bottom:8px;}
+  .dr-creds{font-size:12px;color:rgba(255,255,255,.55);}
+
+  .related-guides{padding:48px 0 32px;border-bottom:1px solid var(--border);background:var(--bg);}
+  .related-guides h2{font-family:'Lora',serif;font-size:21px;font-weight:600;color:var(--navy);margin-bottom:20px;}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+  .related-card{background:white;border:1px solid var(--border);border-radius:12px;padding:20px;text-decoration:none;color:inherit;transition:all .2s;display:block;}
+  .related-card:hover{border-color:var(--teal);transform:translateY(-2px);}
+  .related-card-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;}
+  .related-card-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--navy);margin-bottom:6px;line-height:1.35;}
+  .related-card-desc{font-size:13px;color:var(--text-muted);line-height:1.55;}
+
+  .guide-footer{background:var(--bg);border-top:1px solid var(--border);padding:32px;}
+  .footer-inner{max-width:860px;margin:0 auto;font-size:12px;color:var(--text-muted);line-height:1.7;}
+  .footer-inner a{color:var(--teal);text-decoration:none;}
+
+  .translation-notice{background:#fff4dd;border:1px solid #fde7a7;border-radius:8px;padding:10px 16px;margin:16px 0 0;font-size:13px;color:var(--amber);text-align:center;}
+
+  /* Print styles */
+  @media print {
+    .nav-strip,.guide-toggle-bar,.print-btn,.related-guides,.translation-notice{display:none!important;}
+    .hero{background:white!important;color:black!important;border-bottom:2px solid #ccc;padding:24px 0;}
+    .hero h1,.hero-sub,.hero-meta,.hero-tag{color:black!important;border-color:#999!important;}
+    .section{page-break-inside:avoid;}
+    .alert,.feature-card,.checklist,.calc-wrap{border:1px solid #999!important;background:white!important;}
+    .lab-table th{background:#eee!important;color:black!important;}
+    .intro-callout{background:white!important;color:black!important;border:2px solid #333;}
+    .intro-callout p{color:black!important;}
+  }
+
+  /* Dark mode */
+  html[data-theme="dark"]{
+    --navy:#0e1929;--text:#e8eaf0;--text-mid:#c0cad8;--text-muted:#9aa5b8;--text-faint:#7a8699;
+    --bg:#141c2a;--white:#0a121e;--border:#2a3548;
+    --red-soft:#2a1515;--amber-soft:#2a1f0a;--green-soft:#0e2a1c;--teal-light:#0e2f32;
+  }
+  html[data-theme="dark"] body{background:#0a121e;color:#e8eaf0;}
+  html[data-theme="dark"] .section{border-color:#2a3548;}
+  html[data-theme="dark"] .feature-card,html[data-theme="dark"] .checklist,html[data-theme="dark"] .calc-wrap{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .feature-card h4,html[data-theme="dark"] .checklist h4,html[data-theme="dark"] .section h2,html[data-theme="dark"] .section h3{color:#e8eaf0;}
+  html[data-theme="dark"] .feature-card p,html[data-theme="dark"] .checklist li,html[data-theme="dark"] .section p{color:#c0cad8!important;}
+  html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-result{background:#0a121e;color:#e8eaf0;border-color:#2a3548;}
+  html[data-theme="dark"] .related-guides,html[data-theme="dark"] .guide-footer{background:#0e1929;border-color:#2a3548;}
+  html[data-theme="dark"] .related-card{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .related-card-title{color:#e8eaf0;}
+  html[data-theme="dark"] .lab-table td{border-color:#2a3548;color:#c0cad8;}
+  html[data-theme="dark"] .lab-table tr:hover td{background:#1a2535;}
+  html[data-theme="dark"] .swap-table td{border-color:#2a3548;}
+  html[data-theme="dark"] .alert-red{background:#2a1515;}
+  html[data-theme="dark"] .alert-amber{background:#2a1f0a;}
+  html[data-theme="dark"] .alert-green{background:#0e2a1c;}
+  html[data-theme="dark"] .alert-teal{background:#0e2f32;}
+  html[data-theme="dark"] .alert-body p,html[data-theme="dark"] .alert-body li{color:#c0cad8;}
+  html[data-theme="dark"] .translation-notice{background:#2a1f0a;border-color:#3a2a0e;color:#e6a03c;}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -1798,17 +2023,17 @@ html[data-theme="dark"] .translation-notice{background:#2a1f0a;border-color:#3a2
     <div class="section-tag">
       <span data-lang="en">A 7-Day Reduction Plan</span>
       <span data-lang="tl" class="lang-hidden">Plano sa Pagbabawas sa 7 Araw</span>
-      <span data-lang="ceb" class="lang-hidden">Plano sa Pagpaminus sa 7 ka Adlaw</span>
+      <span data-lang="ceb" class="lang-hidden">Plano sa Pagpaminus sa 7 ka Adlaw</span><span data-lang="kap" class="lang-hidden">Plano sa Pagbabawas sa 7 Aldo</span>
     </div>
     <h2>
       <span data-lang="en">One change per day. By Sunday, you will be well under target.</span>
       <span data-lang="tl" class="lang-hidden">Isang pagbabago kada araw. Pagdating ng Linggo, malayo ka na sa target.</span>
-      <span data-lang="ceb" class="lang-hidden">Usa ka pag-usab matag adlaw. Pag-abot sa Domingo, layo na ka sa target.</span>
+      <span data-lang="ceb" class="lang-hidden">Usa ka pag-usab matag adlaw. Pag-abot sa Domingo, layo na ka sa target.</span><span data-lang="kap" class="lang-hidden">Isang pagbabago kada aldo. Pagdating ning Lutu, malayo ka na sa target.</span>
     </h2>
     <p>
       <span data-lang="en">Going from a 5-gram day to a 2-gram day overnight sets most people up for failure. The following gradual plan replaces the highest-impact sources first, in an order that builds momentum.</span>
       <span data-lang="tl" class="lang-hidden">Ang biglang pagbabago mula sa 5-gramong araw papuntang 2-gramong araw ay madalas humantong sa pagkabigo. Ang sumusunod na unti-unting plano ay pinapalitan muna ang pinaka-mataas na pinagmumulan, sa pagkasunod-sunod na nagdadala ng momentum.</span>
-      <span data-lang="ceb" class="lang-hidden">Ang kalit nga pag-usab gikan sa 5-gramong adlaw padulong sa 2-gramong adlaw kasagaran modangat sa pagkapakyas. Ang mosunod nga inanay-anay nga plano nag-ilis una sa labing taas-impact nga gigikanan, sa han-ay nga magdala og momentum.</span>
+      <span data-lang="ceb" class="lang-hidden">Ang kalit nga pag-usab gikan sa 5-gramong adlaw padulong sa 2-gramong adlaw kasagaran modangat sa pagkapakyas. Ang mosunod nga inanay-anay nga plano nag-ilis una sa labing taas-impact nga gigikanan, sa han-ay nga magdala og momentum.</span><span data-lang="kap" class="lang-hidden">Ing biglang pagbabago mula sa 5-gramoning aldo papuntang 2-gramoning aldo ya madalas humantong sa pagkabigo. Ing sumusunod na unti-unting plano ya pinapalitan muna ing pinaka-matas a pinagmumulan, sa pagkasunod-sunod na nagdadala ning momentum.</span>
     </p>
     <div class="three-col">
       <div class="feature-card">
@@ -1846,12 +2071,12 @@ html[data-theme="dark"] .translation-notice{background:#2a1f0a;border-color:#3a2
         <h4>
           <span data-lang="en">By the end of Week 1</span>
           <span data-lang="tl" class="lang-hidden">Pagdating ng katapusan ng Linggo 1</span>
-          <span data-lang="ceb" class="lang-hidden">Pag-abot sa kataposan sa Semana 1</span>
+          <span data-lang="ceb" class="lang-hidden">Pag-abot sa kataposan sa Semana 1</span><span data-lang="kap" class="lang-hidden">Pagdating ning katapusan ning Lutu 1</span>
         </h4>
         <p>
           <span data-lang="en">Most patients who follow this plan land at 2,000–2,500 mg/day — already a meaningful improvement over the typical 5,000 mg starting point. Two more weeks of consistency, and the new pattern becomes the default. Blood pressure responds within 3–4 weeks. Proteinuria responds within 6–8 weeks.</span>
           <span data-lang="tl" class="lang-hidden">Karamihan sa mga pasyenteng sumusunod sa planong ito ay umaabot sa 2,000–2,500 mg/araw — malaking pag-unlad mula sa karaniwang 5,000 mg simula. Dalawang linggo pa ng pagiging matibay, at ang bagong pattern ay nagiging pangkaraniwan. Ang presyon ng dugo ay tumutugon sa loob ng 3–4 na linggo. Ang proteinuria ay tumutugon sa loob ng 6–8 linggo.</span>
-          <span data-lang="ceb" class="lang-hidden">Kadaghanan sa mga pasyente nga mosunod sa planong kini moabot sa 2,000–2,500 mg/adlaw — dako na nga pag-uswag gikan sa kasagaran nga 5,000 mg sinugdanan. Duha pa ka semana sa pagkamalig-on, ug ang bag-ong pattern mahimong default. Ang presyur sa dugo motubag sulod sa 3–4 ka semana. Ang proteinuria motubag sulod sa 6–8 ka semana.</span>
+          <span data-lang="ceb" class="lang-hidden">Kadaghanan sa mga pasyente nga mosunod sa planong kini moabot sa 2,000–2,500 mg/adlaw — dako na nga pag-uswag gikan sa kasagaran nga 5,000 mg sinugdanan. Duha pa ka semana sa pagkamalig-on, ug ang bag-ong pattern mahimong default. Ang presyur sa dugo motubag sulod sa 3–4 ka semana. Ang proteinuria motubag sulod sa 6–8 ka semana.</span><span data-lang="kap" class="lang-hidden">Karamihan sa deng pasyenteng sumusunod sa planong ini ya umaabot sa 2,000–2,500 mg/aldo — malda a pag-unlad mula sa karaniwang 5,000 mg simula. Dalawaning lutu pa ning pagiging matibay, at ing bagong pattern ya nagiging pangkaraniwan. Ining presyon nining daya ya tumutugon sa loob ning 3–4 na lutu. Ing proteinuria ya tumutugon sa loob ning 6–8 lutu.</span>
         </p>
       </div>
     </div>
@@ -1867,7 +2092,7 @@ html[data-theme="dark"] .translation-notice{background:#2a1f0a;border-color:#3a2
         <p>Nephrology · Internal Medicine · Philippines<br>
         <span data-lang="en">Questions about sodium reduction, BP control, or building a CKD-safe Filipino meal plan can be directed through the contact page.</span>
         <span data-lang="tl" class="lang-hidden">Ang mga tanong tungkol sa pagbabawas ng sodium, kontrol ng presyon, o paggawa ng CKD-safe na Filipino meal plan ay maaaring ipadala sa pamamagitan ng contact page.</span>
-        <span data-lang="ceb" class="lang-hidden">Ang mga pangutana mahitungod sa pagpaminus sa sodium, kontrol sa presyur, o pagbuhat og CKD-safe nga Filipino meal plan mahimong ipadala pinaagi sa contact page.</span></p>
+        <span data-lang="ceb" class="lang-hidden">Ang mga pangutana mahitungod sa pagpaminus sa sodium, kontrol sa presyur, o pagbuhat og CKD-safe nga Filipino meal plan mahimong ipadala pinaagi sa contact page.</span><span data-lang="kap" class="lang-hidden">Deng tanong tungkol sa pagbabawas ning sodium, kontrol nining presyon, o paggawa ning CKD-safe na Filipino meal plan ya maaaring ipadala sa pamamagitan ning contact page.</span></p>
         <div class="dr-creds">Fellow, Philippine College of Physicians · Diplomate, Philippine Society of Nephrology</div>
       </div>
     </div>
@@ -1879,7 +2104,7 @@ html[data-theme="dark"] .translation-notice{background:#2a1f0a;border-color:#3a2
     <h2>
       <span data-lang="en">Related Guides</span>
       <span data-lang="tl" class="lang-hidden">Kaugnay na Gabay</span>
-      <span data-lang="ceb" class="lang-hidden">Kalambigit nga Giya</span>
+      <span data-lang="ceb" class="lang-hidden">Kalambigit nga Giya</span><span data-lang="kap" class="lang-hidden">Kaugnay na Gabay</span>
     </h2>
     <div class="related-grid">
       <a class="related-card" href="nutrition-kidney-patients.html">
