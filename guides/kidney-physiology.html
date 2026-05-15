@@ -1105,14 +1105,17 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .site-header .back{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mid);transition:color .25s;}
   .site-header .back:hover{color:var(--gold);}
 
-  /* Floating sound toggle */
-  .sound-toggle{position:fixed;bottom:32px;right:32px;z-index:60;display:inline-flex;align-items:center;gap:9px;background:rgba(15,30,46,.55);backdrop-filter:blur(8px);border:1px solid rgba(212,175,79,.3);color:var(--ink-mid);padding:9px 16px;border-radius:24px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:all .3s;}
+  /* Floating sound toggle — left side so symptom-checker FAB (bottom-right) can't cover it */
+  .sound-toggle{position:fixed;bottom:32px;left:32px;right:auto;z-index:60;display:inline-flex;align-items:center;gap:9px;background:rgba(15,30,46,.55);backdrop-filter:blur(8px);border:1px solid rgba(212,175,79,.3);color:var(--ink-mid);padding:9px 16px;border-radius:24px;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:all .3s;}
   .sound-toggle:hover{border-color:var(--gold);color:var(--gold);}
   .sound-toggle.is-on{background:var(--gold-soft);border-color:var(--gold);color:var(--gold);}
   .sound-toggle .sound-icon{font-size:14px;line-height:1;font-style:italic;}
+  /* Cinema toggle — also left side, stacked above sound toggle */
+  .cinema-toggle{position:fixed;bottom:84px;left:32px;right:auto;z-index:60;}
 
-  /* HERO */
-  .hero{height:100vh;min-height:780px;display:flex;align-items:center;position:relative;}
+  /* HERO — override master CSS background/overflow/padding that block WebGL canvas */
+  .hero{height:100vh;min-height:780px;display:flex;align-items:center;position:relative;background:transparent !important;overflow:visible !important;padding:0 !important;}
+  .hero::before{content:none !important;}
   .hero-grid{display:grid;grid-template-columns:1fr;gap:32px;width:100%;padding-top:80px;}
   .eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:14px;}
   .eyebrow::before{content:'';width:42px;height:1px;background:var(--gold);}
@@ -1210,7 +1213,8 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
     .cap-card{padding:48px 32px 40px;}
     .hero-meta{flex-direction:column;gap:24px;}
     .more-grid{grid-template-columns:1fr;}
-    .sound-toggle{bottom:20px;right:20px;padding:7px 12px;font-size:10px;}
+    .sound-toggle{bottom:20px;left:20px;right:auto;padding:7px 12px;font-size:10px;}
+    .cinema-toggle{bottom:68px;left:20px;right:auto;padding:7px 12px;font-size:10px;}
     body{cursor:auto;}
     .cursor,.cursor-ring{display:none;}
   }
