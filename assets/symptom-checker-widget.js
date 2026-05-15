@@ -40,7 +40,7 @@
     '.sc-fab:hover{background:#1a2e4a;transform:translateY(-1px);',
       'box-shadow:0 10px 28px rgba(15,30,46,.35),0 3px 8px rgba(15,30,46,.22);}',
     '.sc-fab:active{transform:translateY(0);}',
-    '.sc-fab-icon{font-size:18px;line-height:1;}',
+    '.sc-fab-icon{display:flex;align-items:center;flex-shrink:0;}',
     '.sc-fab-text{font-size:13px;}',
     '.sc-fab-pulse{position:absolute;top:0;right:0;width:10px;height:10px;',
       'border-radius:50%;background:#d4af4f;box-shadow:0 0 0 0 rgba(212,175,79,.6);',
@@ -67,7 +67,7 @@
       '.sc-modal-frame{width:100%;height:100%;border-radius:0;}',
       '.sc-fab{bottom:16px;right:16px;padding:10px 14px;}',
       '.sc-fab-text{display:none;}',
-      '.sc-fab-icon{font-size:20px;}',
+      '.sc-fab-icon svg{width:22px;height:22px;}',
     '}',
     '@media print{.sc-fab,.sc-modal{display:none!important;}}',
     'html[data-theme="dark"] .sc-modal-frame{background:#0f1520;}'
@@ -81,7 +81,7 @@
     btn.className = 'sc-fab';
     btn.setAttribute('aria-label', LABELS[lang].title);
     btn.innerHTML =
-      '<span class="sc-fab-icon" aria-hidden="true">🩺</span>' +
+      '<span class="sc-fab-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg></span>' +
       '<span class="sc-fab-text">' + LABELS[lang].btn + '</span>' +
       '<span class="sc-fab-pulse" aria-hidden="true"></span>';
     btn.addEventListener('click', openModal);
