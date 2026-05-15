@@ -1031,7 +1031,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 /* STAT */
   .stat-band{padding:160px 0;text-align:center;position:relative;}
 .stat-band .stat-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:48px;}
-.stat-band .stat-number{font-family:'Lora',serif;font-weight:300;font-size:clamp(96px,18vw,280px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 18%,#d4af4f 55%,rgba(212,175,79,0) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat-band .stat-number{font-family:'Lora',serif;font-weight:300;font-size:clamp(72px,13vw,200px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 18%,#d4af4f 55%,rgba(212,175,79,0) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .stat-band .stat-caption{margin-top:32px;color:var(--ink-mid);font-size:18px;font-family:'Lora',serif;font-style:italic;font-weight:400;letter-spacing:.01em;max-width:46ch;margin-left:auto;margin-right:auto;line-height:1.55;}
 /* SUPERPOWERS */
   .superpowers{padding:160px 0;position:relative;}
@@ -1129,6 +1129,25 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   @keyframes cuedrop{0%,100%{transform:scaleY(.4);transform-origin:top;opacity:.3;}50%{transform:scaleY(1);opacity:1;}}
   @keyframes kg-breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.055);}}
 
+  /* ── scroll progress bar ── */
+  #scroll-bar{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--gold),rgba(212,175,79,.35));z-index:9999;pointer-events:none;}
+
+  /* ── section nav dots ── */
+  #sec-nav{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:14px;padding:10px 6px;}
+  @media(max-width:780px){#sec-nav{display:none;}}
+  .sec-dot{width:7px;height:7px;border-radius:50%;border:1.5px solid rgba(212,175,79,0.35);background:transparent;cursor:pointer;padding:0;transition:background .3s,border-color .3s,transform .25s;position:relative;}
+  .sec-dot::after{content:attr(title);position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(212,175,79,.75);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;}
+  .sec-dot:hover::after,.sec-dot.is-active::after{opacity:1;}
+  .sec-dot.is-active{background:var(--gold);border-color:var(--gold);transform:scale(1.5);}
+  .sec-dot:hover{border-color:var(--gold);}
+
+  /* ── kidney genesis stage label ── */
+  #kg-label{position:fixed;right:48vmin;bottom:20vmin;z-index:2;pointer-events:none;text-align:right;opacity:0;transition:opacity .7s;}
+  #kg-label.is-visible{opacity:1;}
+  #kg-label-stage{display:block;font-family:'Lora',serif;font-style:italic;font-size:11.5px;color:rgba(212,175,79,.9);letter-spacing:.04em;line-height:1.3;}
+  #kg-label-week{display:block;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:3px;}
+  @media(max-width:900px){#kg-label{display:none;}}
+
   /* CAPABILITIES */
   .capabilities{padding:200px 0 160px;position:relative;}
   .cap-head{margin-bottom:120px;}
@@ -1176,7 +1195,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   /* STAT */
   .stat-band{padding:160px 0;text-align:center;position:relative;}
   .stat-band .stat-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:48px;}
-  .stat-band .stat-number{font-family:'Lora',serif;font-weight:300;font-size:clamp(96px,18vw,280px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 18%,#d4af4f 55%,rgba(212,175,79,0) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .stat-band .stat-number{font-family:'Lora',serif;font-weight:300;font-size:clamp(72px,13vw,200px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 18%,#d4af4f 55%,rgba(212,175,79,0) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .stat-band .stat-caption{margin-top:32px;color:var(--ink-mid);font-size:18px;font-family:'Lora',serif;font-style:italic;font-weight:400;letter-spacing:.01em;max-width:46ch;margin-left:auto;margin-right:auto;line-height:1.55;}
 
   /* CTA */
@@ -1273,6 +1292,24 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 <div class="bg-vignette"></div>
 <div class="cursor"></div>
 <div class="cursor-ring"></div>
+
+<!-- scroll progress bar -->
+<div id="scroll-bar"></div>
+
+<!-- section nav dots -->
+<nav id="sec-nav" aria-label="Page sections">
+  <button class="sec-dot" data-target=".hero"         title="Introduction"  aria-label="Jump to Introduction"></button>
+  <button class="sec-dot" data-target=".capabilities" title="Capabilities"  aria-label="Jump to Capabilities"></button>
+  <button class="sec-dot" data-target=".stat-band"    title="2,000,000"     aria-label="Jump to Nephron count"></button>
+  <button class="sec-dot" data-target=".superpowers"  title="Superpowers"   aria-label="Jump to Superpowers"></button>
+  <button class="sec-dot" data-target=".cta"          title="Take action"   aria-label="Jump to CTA"></button>
+</nav>
+
+<!-- kidney genesis stage label -->
+<div id="kg-label" aria-live="polite">
+  <span id="kg-label-stage">Pronephros</span>
+  <span id="kg-label-week">Week 3–4</span>
+</div>
 
 <header class="site-header">
   <a class="brand" href="https://williamriveromd.com">W. G. M. <strong>Rivero</strong>, MD</a>
@@ -2111,6 +2148,7 @@ const Audio = {
     const filter = this.ctx.createBiquadFilter();
     filter.type = 'lowpass'; filter.frequency.value = 720; filter.Q.value = 0.55;
     this.master = this.ctx.createGain(); this.master.gain.value = 0;
+    this._filter = filter;
     filter.connect(this.master); this.master.connect(this.ctx.destination);
     const voices = [
       { freq: 55.00, type: 'sine'    , gain: 0.085, lfoRate: 0.07, lfoDepth: 0.25 },
@@ -2221,6 +2259,7 @@ const Audio = {
     src.stop(t0 + 1.30);
   },
 };
+window._kpAudio = Audio;
 document.getElementById('sound-toggle').addEventListener('click', function(){
   const on = Audio.toggle();
   this.classList.toggle('is-on', on);
@@ -2259,5 +2298,94 @@ function setPhysLang(lang) {
 })();
 </script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
+
+<script>
+/* ════════════════════════════════════════════════
+   SCROLL PROGRESS BAR
+   ════════════════════════════════════════════════ */
+const scrollBar = document.getElementById('scroll-bar');
+function updateScrollBar(){
+  const p = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  scrollBar.style.width = (Math.min(p,1)*100).toFixed(2)+'%';
+}
+window.addEventListener('scroll', updateScrollBar, {passive:true});
+
+/* ════════════════════════════════════════════════
+   SECTION NAV DOTS
+   ════════════════════════════════════════════════ */
+const secDots    = [...document.querySelectorAll('.sec-dot')];
+const secTargets = secDots.map(d => document.querySelector(d.dataset.target));
+let kbSecIdx = 0;
+
+const dotObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const i = secTargets.indexOf(e.target);
+      if(i !== -1){ kbSecIdx = i; secDots.forEach((d,j) => d.classList.toggle('is-active', i===j)); }
+    }
+  });
+}, {threshold:0.35});
+secTargets.forEach(t => t && dotObserver.observe(t));
+
+secDots.forEach((dot,i) => {
+  dot.addEventListener('click', () => secTargets[i]?.scrollIntoView({behavior:'smooth',block:'start'}));
+});
+
+/* ════════════════════════════════════════════════
+   KEYBOARD SECTION JUMPING  (↓/↑ or J/K)
+   ════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key==='ArrowDown'||e.key==='j'||e.key==='J'){
+    e.preventDefault();
+    kbSecIdx = Math.min(kbSecIdx+1, secTargets.length-1);
+    secTargets[kbSecIdx]?.scrollIntoView({behavior:'smooth',block:'start'});
+  } else if(e.key==='ArrowUp'||e.key==='k'||e.key==='K'){
+    e.preventDefault();
+    kbSecIdx = Math.max(kbSecIdx-1, 0);
+    secTargets[kbSecIdx]?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+});
+
+/* ════════════════════════════════════════════════
+   KIDNEY GENESIS STAGE LABEL
+   ════════════════════════════════════════════════ */
+const kgLabel      = document.getElementById('kg-label');
+const kgLabelStage = document.getElementById('kg-label-stage');
+const kgLabelWeek  = document.getElementById('kg-label-week');
+const kgStageNames = [
+  {stage:'Pronephros',   week:'Week 3–4'},
+  {stage:'Mesonephros',  week:'Week 4–6'},
+  {stage:'Metanephros',  week:'Week 5–8'},
+  {stage:'Adult Kidney', week:'Week 9+' },
+];
+let lastKgIdx = -1;
+function updateKgLabel(){
+  const p   = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  const idx = Math.min(Math.floor(p*4), 3);
+  if(idx !== lastKgIdx){
+    lastKgIdx = idx;
+    kgLabelStage.textContent = kgStageNames[idx].stage;
+    kgLabelWeek.textContent  = kgStageNames[idx].week;
+  }
+  kgLabel.classList.toggle('is-visible', p > 0.01 && p < 0.90);
+}
+window.addEventListener('scroll', updateKgLabel, {passive:true});
+
+/* ════════════════════════════════════════════════
+   SECTION-REACTIVE AUDIO — filter opens at stat-band
+   ════════════════════════════════════════════════ */
+const statBand = document.querySelector('.stat-band');
+if(statBand){
+  new IntersectionObserver(([e]) => {
+    const A = window._kpAudio;
+    if(!A || !A._filter || !A.enabled) return;
+    const now = A.ctx.currentTime;
+    A._filter.frequency.cancelScheduledValues(now);
+    A._filter.frequency.setValueAtTime(A._filter.frequency.value, now);
+    A._filter.frequency.linearRampToValueAtTime(e.isIntersecting ? 1800 : 720, now + 3.5);
+  }, {threshold:0.45}).observe(statBand);
+}
+</script>
 </body>
 </html>
