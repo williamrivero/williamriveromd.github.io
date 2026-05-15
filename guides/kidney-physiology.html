@@ -1127,6 +1127,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--ink-low);font-size:10px;letter-spacing:.3em;text-transform:uppercase;}
   .scroll-cue::after{content:'';width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);animation:cuedrop 2.4s ease-in-out infinite;}
   @keyframes cuedrop{0%,100%{transform:scaleY(.4);transform-origin:top;opacity:.3;}50%{transform:scaleY(1);opacity:1;}}
+  @keyframes kg-breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.055);}}
 
   /* CAPABILITIES */
   .capabilities{padding:200px 0 160px;position:relative;}
@@ -1229,25 +1230,43 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 <div class="kidney-genesis" aria-hidden="true">
   <div class="kg-breath">
     <svg viewBox="0 0 200 240" preserveAspectRatio="xMidYMax meet">
-      <path class="kg-anim" d="M 101.92,120.79 C 101.92,120.79 101.75,120.44 101.77,119.95 C 101.75,119.46 101.92,119.12 101.92,119.12 C 99.51,118.51 99.51,111.18 104.41,112.08 C 109.28,112.96 109.75,118.14 109.76,119.95 C 109.75,121.76 109.28,126.95 104.41,127.83 C 99.51,128.72 99.51,121.39 101.92,120.79 Z">
-        <animate attributeName="d"
-                 dur="6s"
-                 fill="freeze"
-                 calcMode="spline"
-                 keyTimes="0; 0.25; 0.55; 0.9; 1"
-                 keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.4 0 0.2 1; 0 0 1 1"
-                 values="M 101.92,120.79 C 101.92,120.79 101.75,120.44 101.77,119.95 C 101.75,119.46 101.92,119.12 101.92,119.12 C 99.51,118.51 99.51,111.18 104.41,112.08 C 109.28,112.96 109.75,118.14 109.76,119.95 C 109.75,121.76 109.28,126.95 104.41,127.83 C 99.51,128.72 99.51,121.39 101.92,120.79 Z;
-                         M 97.74,122.36 C 97.74,122.36 97.26,121.33 97.31,119.86 C 97.26,118.39 97.74,117.36 97.74,117.36 C 90.52,115.54 90.52,93.55 105.22,96.22 C 119.83,98.88 121.24,114.43 121.27,119.86 C 121.24,125.29 119.83,140.85 105.22,143.49 C 90.52,146.16 90.52,124.18 97.74,122.36 Z;
-                         M 91.48,124.71 C 91.48,124.71 90.52,122.65 90.62,119.72 C 90.52,116.78 91.48,114.73 91.48,114.73 C 77.04,111.08 77.04,67.10 106.45,72.45 C 135.66,77.75 138.47,108.86 138.55,119.72 C 138.47,130.58 135.66,161.69 106.45,166.99 C 77.04,172.33 77.04,128.36 91.48,124.71 Z;
-                         M 83.14,127.85 C 83.14,127.85 81.53,124.42 81.70,119.53 C 81.53,114.63 83.14,111.21 83.14,111.21 C 59.07,105.13 59.07,31.84 108.08,40.75 C 156.76,49.59 161.45,101.43 161.58,119.53 C 161.45,137.64 156.76,189.49 108.08,198.31 C 59.07,207.21 59.07,133.94 83.14,127.85 Z;
-                         M 83.14,127.85 C 83.14,127.85 81.53,124.42 81.70,119.53 C 81.53,114.63 83.14,111.21 83.14,111.21 C 59.07,105.13 59.07,31.84 108.08,40.75 C 156.76,49.59 161.45,101.43 161.58,119.53 C 161.45,137.64 156.76,189.49 108.08,198.31 C 59.07,207.21 59.07,133.94 83.14,127.85 Z"/>
-        <animate attributeName="opacity"
-                 dur="6s"
-                 fill="freeze"
-                 keyTimes="0; 0.08; 1"
-                 values="0; 1; 1"/>
-      </path>
-      <path class="kg-static" d="M 83.14,127.85 C 83.14,127.85 81.53,124.42 81.70,119.53 C 81.53,114.63 83.14,111.21 83.14,111.21 C 59.07,105.13 59.07,31.84 108.08,40.75 C 156.76,49.59 161.45,101.43 161.58,119.53 C 161.45,137.64 156.76,189.49 108.08,198.31 C 59.07,207.21 59.07,133.94 83.14,127.85 Z"/>
+      <defs>
+        <!-- outer glow -->
+        <filter id="kg-glow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="4.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <!-- 3D lit fill: light source upper-left; dark edges fade to transparent (screen-mode friendly) -->
+        <radialGradient id="kg-fill" cx="32%" cy="26%" r="72%">
+          <stop offset="0%"   stop-color="#c8f0f8" stop-opacity="0.88"/>
+          <stop offset="30%"  stop-color="#5dc8d4" stop-opacity="0.60"/>
+          <stop offset="65%"  stop-color="#1a6b72" stop-opacity="0.20"/>
+          <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+        </radialGradient>
+        <!-- specular highlight -->
+        <radialGradient id="kg-spec" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.72"/>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- ghost adult outline: target silhouette the kidney is growing toward -->
+      <path class="kg-static"
+            d="M 83.14,127.85 C 83.14,127.85 81.53,124.42 81.70,119.53 C 81.53,114.63 83.14,111.21 83.14,111.21 C 59.07,105.13 59.07,31.84 108.08,40.75 C 156.76,49.59 161.45,101.43 161.58,119.53 C 161.45,137.64 156.76,189.49 108.08,198.31 C 59.07,207.21 59.07,133.94 83.14,127.85 Z"
+            fill="none" stroke="rgba(212,175,79,0.14)" stroke-width="0.7" stroke-dasharray="3 4.5"/>
+
+      <!-- main morphing shape with 3D gradient + edge glow -->
+      <path class="kg-anim"
+            d="M 102,130 C 102,130 102,123 102,118 C 102,116 102,114 102,112 C 102,108 105,106 108,106 C 112,106 117,110 117,118 C 117,126 113,132 108,132 C 105,132 102,132 102,130 Z"
+            fill="url(#kg-fill)"
+            stroke="rgba(93,200,212,0.65)"
+            stroke-width="0.9"
+            filter="url(#kg-glow)"/>
+
+      <!-- specular highlight: upper-left bright spot, interpolated by JS -->
+      <ellipse id="kg-spec-el" cx="106" cy="112" rx="3" ry="4.5"
+               fill="url(#kg-spec)" opacity="0.9"
+               transform="rotate(-15, 106, 112)"/>
     </svg>
   </div>
 </div>
@@ -1990,6 +2009,67 @@ gsap.to(droplet.position, { x: 0, y: 0,
   scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'top top', scrub: 1 } });
 gsap.to(caustic.material.uniforms.uColor.value, { r: 1, g: 0.72, b: 0.55,
   scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
+
+/* ════════════════════════════════════════════════
+   KIDNEY GENESIS — scroll-driven embryological development
+   Pronephros → Mesonephros → Metanephros → Adult Kidney
+   ════════════════════════════════════════════════ */
+(function(){
+  const kgEl = document.querySelector('.kidney-genesis .kg-anim');
+  const kgContainer = document.querySelector('.kidney-genesis');
+  if (!kgEl || !kgContainer) return;
+  /* 4 embryological stages — genuinely distinct morphologies, same 6-segment topology:
+     Anchor order: medial-lower → hilum-lower → upper-medial → superior-pole → lateral → inferior-pole → close */
+  const kgStages = [
+    /* PRONEPHROS (wk 3-4): narrow vertical oval ~16×26, no hilum */
+    [102,130, 102,130, 102,123, 102,118, 102,116, 102,114, 102,112, 102,108, 105,106, 108,106, 112,106, 117,110, 117,118, 117,126, 113,132, 108,132, 105,132, 102,132, 102,130],
+    /* MESONEPHROS (wk 4-6): elongated oval ~36×68, still symmetric */
+    [94,138, 94,138, 94,128, 94,118, 94,110, 94,104, 95,98, 95,88, 101,82, 108,82, 118,82, 130,93, 130,118, 130,143, 121,158, 108,158, 97,158, 94,148, 94,138],
+    /* METANEPHROS (wk 5-8): ~63×122, forming hilum notch */
+    [90,132, 90,132, 87,124, 87,116, 87,108, 90,103, 90,97, 90,78, 100,60, 108,60, 130,60, 150,88, 150,118, 150,150, 130,178, 108,178, 87,178, 90,148, 90,132],
+    /* ADULT KIDNEY (wk 9+): classic bean ~79×157, deep hilum */
+    [83.14,127.85, 83.14,127.85, 81.53,124.42, 81.70,119.53, 81.53,114.63, 83.14,111.21, 83.14,111.21, 59.07,105.13, 59.07,31.84, 108.08,40.75, 156.76,49.59, 161.45,101.43, 161.58,119.53, 161.45,137.64, 156.76,189.49, 108.08,198.31, 59.07,207.21, 59.07,133.94, 83.14,127.85]
+  ];
+  /* specular highlight position/size per stage (upper-left lit area) */
+  const kgSpec = [
+    {cx:106, cy:112, rx:3,  ry:4.5},
+    {cx:103, cy:97,  rx:7,  ry:10 },
+    {cx:98,  cy:74,  rx:12, ry:16 },
+    {cx:95,  cy:67,  rx:16, ry:22 }
+  ];
+  const kgSpecEl = document.getElementById('kg-spec-el');
+  function buildPath(n){
+    return `M ${n[0]},${n[1]} C ${n[2]},${n[3]} ${n[4]},${n[5]} ${n[6]},${n[7]} C ${n[8]},${n[9]} ${n[10]},${n[11]} ${n[12]},${n[13]} C ${n[14]},${n[15]} ${n[16]},${n[17]} ${n[18]},${n[19]} C ${n[20]},${n[21]} ${n[22]},${n[23]} ${n[24]},${n[25]} C ${n[26]},${n[27]} ${n[28]},${n[29]} ${n[30]},${n[31]} C ${n[32]},${n[33]} ${n[34]},${n[35]} ${n[36]},${n[37]} Z`;
+  }
+  function lerpArr(a, b, t){ return a.map((v, i) => v + (b[i] - v) * t); }
+  function lerpN(a, b, t){ return a + (b - a) * t; }
+  kgEl.setAttribute('d', buildPath(kgStages[0]));
+  kgEl.style.opacity = '0';
+  const proxy = { p: 0 };
+  gsap.to(proxy, {
+    p: 1, ease: 'none',
+    scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1.5 },
+    onUpdate(){
+      const raw  = proxy.p * (kgStages.length - 1);
+      const idx  = Math.min(Math.floor(raw), kgStages.length - 2);
+      const frac = raw - idx;
+      const nums = lerpArr(kgStages[idx], kgStages[idx + 1], frac);
+      kgEl.setAttribute('d', buildPath(nums));
+      /* tissue opacity: starts almost invisible, grows with development */
+      const op = 0.06 + proxy.p * 0.16;
+      kgEl.style.opacity = String(op);
+      kgContainer.style.opacity = String(op);
+      /* specular ellipse follows the lit upper-left area */
+      if (kgSpecEl) {
+        const s0 = kgSpec[idx], s1 = kgSpec[idx + 1];
+        kgSpecEl.setAttribute('cx', lerpN(s0.cx, s1.cx, frac));
+        kgSpecEl.setAttribute('cy', lerpN(s0.cy, s1.cy, frac));
+        kgSpecEl.setAttribute('rx', lerpN(s0.rx, s1.rx, frac));
+        kgSpecEl.setAttribute('ry', lerpN(s0.ry, s1.ry, frac));
+      }
+    }
+  });
+})();
 
 /* ════════════════════════════════════════════════
    CUSTOM CURSOR + MAGNETIC HOVERS
