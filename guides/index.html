@@ -1218,7 +1218,6 @@
   <div class="jump-inner">
     <a class="jump-pill jactive" href="#" onclick="scrollToTop(event)">All Guides</a>
     <div class="jump-divider"></div>
-    <a class="jump-pill" href="#sec-updated" onclick="jumpTo(event,'sec-updated')">Recently Updated</a>
     <a class="jump-pill" href="#sec-latest" onclick="jumpTo(event,'sec-latest')">Recently Added</a>
     <a class="jump-pill" href="#sec-nephrology" onclick="jumpTo(event,'sec-nephrology')">Nephrology</a>
     <a class="jump-pill" href="#sec-internal" onclick="jumpTo(event,'sec-internal')">Internal Medicine</a>
@@ -1241,7 +1240,6 @@
     <button class="filter-chip" data-filter="dialysis" onclick="setFilter('dialysis',this)">Dialysis</button>
     <button class="filter-chip" data-filter="nutrition" onclick="setFilter('nutrition',this)">Nutrition</button>
     <button class="filter-chip" data-filter="philippines" onclick="setFilter('philippines',this)">Philippines</button>
-    <button class="filter-chip" data-filter="updated" onclick="setFilter('updated',this)">Recently Updated</button>
     <button class="filter-chip" data-filter="handout" onclick="setFilter('handout',this)">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-.1em;margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>Has Handout
     </button>
@@ -1361,13 +1359,6 @@
   <div id="calc-detail" style="display:none;background:#fef9ec;border:1px solid rgba(245,166,35,.3);border-left:3px solid #f5a623;border-radius:8px;padding:10px 14px;margin-top:4px;">
     <p style="font-size:12px;color:#5a4200;line-height:1.65;margin:0;">Calculator results are computed locally in your browser and are <strong>never stored, transmitted, or saved</strong>. Closing or refreshing the page clears all values. All calculators are for <strong>patient education and clinical reference only</strong> — results should always be reviewed with your nephrologist or primary care physician before any treatment change is made.</p>
   </div>
-</div>
-
-<!-- RECENTLY UPDATED -->
-<div class="section-header" id="sec-updated">
-  <div class="section-label">Recently Updated <span class="sect-count" id="sc-updated"></span></div>
-</div>
-<div class="guides-grid" id="grid-updated">
 </div>
 
 <!-- RECENTLY ADDED -->
@@ -2948,30 +2939,6 @@ window.addEventListener('scroll', () => {
   if (active) setActiveJumpPill(active);
 }, { passive: true });
 
-// ── RECENTLY UPDATED — dynamic, max 3 ──────────────────────────────────
-function populateRecentlyUpdated() {
-  const grid = document.getElementById('grid-updated');
-  if (!grid) return;
-
-  const allCards = document.querySelectorAll('.guide-card:not([data-top])');
-  const updatedCards = [];
-  allCards.forEach(card => {
-    if (updatedCards.length < 3 && card.querySelector('.gc-updated-pill')) {
-      updatedCards.push(card);
-    }
-  });
-
-  grid.innerHTML = '';
-  updatedCards.forEach(card => {
-    const clone = card.cloneNode(true);
-    clone.setAttribute('data-top', '1');
-    grid.appendChild(clone);
-  });
-
-  const countEl = document.getElementById('sc-updated');
-  if (countEl) countEl.textContent = updatedCards.length;
-}
-
 // ── RECENTLY ADDED — dynamic, max 6 ────────────────────────────────────
 function populateRecentlyAdded() {
   const grid = document.getElementById('grid-latest');
@@ -3001,7 +2968,6 @@ function populateRecentlyAdded() {
 
 // ── INIT FILTER COUNT ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  populateRecentlyUpdated();
   populateRecentlyAdded();
   // Count only non-top cards to avoid counting duplicates in showcase sections
   const total = document.querySelectorAll('.guide-card:not([data-top])').length;
