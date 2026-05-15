@@ -2336,11 +2336,167 @@ function setGuideLang(lang) {
   </picture>
 </figure>
 <div class="two-col">
-<div class="feature-card" style="text-align:center;padding:28px;">
-  <div style="font-size:32px;margin-bottom:12px;">📋</div>
-  <h4 style="margin-bottom:8px;">Monthly HD Anemia Checklist</h4>
-  <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Pre-dialysis Hb, iron studies, ESA dose tracker, ERI calculator. Printable one-page form.</p>
-  <span style="display:inline-block;padding:8px 18px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-muted);">Coming soon</span>
+<div class="feature-card" style="padding:28px;grid-column:1/-1;">
+  <figure class="illus-panel" style="max-width:680px;margin:0 auto 24px;">
+    <picture>
+      <source srcset="../images/anemia-hd-checklist.webp" type="image/webp">
+      <img src="../images/anemia-hd-checklist.png" loading="lazy" width="1024" height="1024" alt="Monthly HD Anemia Checklist — lab targets, ESA tracking, IV iron log, clinical review" style="border-radius:12px;display:block;width:100%;height:auto;">
+    </picture>
+  </figure>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
+    <div>
+      <h4 style="margin-bottom:4px;font-size:17px;color:var(--navy);">📋 Monthly HD Anemia Checklist</h4>
+      <p style="font-size:12px;color:var(--text-muted);margin:0;">Pre-dialysis labs, ESA tracking, IV iron log, clinical review. Complete monthly — print to PDF for patient chart.</p>
+    </div>
+    <button onclick="window.print()" class="download-btn" style="font-size:13px;padding:9px 18px;white-space:nowrap;">🖨 Print / Save PDF</button>
+  </div>
+
+  <!-- Patient Info -->
+  <div style="background:var(--bg);border-radius:10px;padding:16px 20px;margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;">Patient Information</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;">
+      <div class="calc-field"><label>Date</label><input type="date" id="chk-date"></div>
+      <div class="calc-field"><label>Patient (optional)</label><input type="text" id="chk-name" placeholder="Initials or leave blank"></div>
+      <div class="calc-field"><label>Dry Weight (kg)</label><input type="number" id="chk-wt" min="20" max="200" step="0.1" placeholder="e.g. 58" oninput="updateChecklist()"></div>
+      <div class="calc-field"><label>HD Duration (hrs)</label><input type="number" id="chk-dur" min="2" max="6" step="0.5" placeholder="e.g. 4"></div>
+    </div>
+  </div>
+
+  <!-- Labs -->
+  <div style="margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.07em;border-bottom:2px solid var(--teal);padding-bottom:6px;margin-bottom:14px;">🔬 Labs This Month</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+      <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;margin-bottom:6px;">Pre-Dialysis Hemoglobin</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="number" id="chk-hgb" min="4" max="18" step="0.1" placeholder="g/dL e.g. 10.8" oninput="updateChecklist()" style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--text);">
+          <div id="chk-hgb-dot" style="width:12px;height:12px;border-radius:50%;background:#d1d5db;flex-shrink:0;"></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Target: <strong>10.0–11.5 g/dL</strong> (100–115 g/L)</div>
+        <div id="chk-hgb-status" style="font-size:11px;font-weight:600;margin-top:3px;min-height:15px;"></div>
+      </div>
+      <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;margin-bottom:6px;">TSAT</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="number" id="chk-tsat" min="0" max="100" step="0.1" placeholder="% e.g. 24" oninput="updateChecklist()" style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--text);">
+          <div id="chk-tsat-dot" style="width:12px;height:12px;border-radius:50%;background:#d1d5db;flex-shrink:0;"></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Target: <strong>≥20%</strong>; hold IV iron if &gt;50%</div>
+        <div id="chk-tsat-status" style="font-size:11px;font-weight:600;margin-top:3px;min-height:15px;"></div>
+      </div>
+      <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;margin-bottom:6px;">Serum Ferritin</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="number" id="chk-fer" min="0" max="2000" step="1" placeholder="ng/mL e.g. 280" oninput="updateChecklist()" style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--text);">
+          <div id="chk-fer-dot" style="width:12px;height:12px;border-radius:50%;background:#d1d5db;flex-shrink:0;"></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Target: <strong>200–500 ng/mL</strong>; hold IV iron &gt;800</div>
+        <div id="chk-fer-status" style="font-size:11px;font-weight:600;margin-top:3px;min-height:15px;"></div>
+      </div>
+      <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;margin-bottom:6px;">Reticulocyte % <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+        <input type="number" id="chk-retic" min="0" max="10" step="0.01" placeholder="% e.g. 1.2" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--text);">
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Normal 0.5–1.5%. Sudden drop + falling Hgb on ESA → rule out PRCA</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESA Log -->
+  <div style="margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.07em;border-bottom:2px solid var(--teal);padding-bottom:6px;margin-bottom:14px;">💉 ESA Dose Log</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:10px;">
+      <div class="calc-field">
+        <label>ESA Type</label>
+        <select id="chk-esa-type" onchange="updateChecklist()">
+          <option value="">Select…</option>
+          <option value="epoetin">Epoetin Alfa (IU)</option>
+          <option value="darbe">Darbepoetin Alfa (µg)</option>
+          <option value="cera">CERA / Mircera (µg)</option>
+          <option value="none">Not on ESA</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label id="chk-esa-dose-lbl">Dose per Administration</label>
+        <input type="number" id="chk-esa-dose" min="1" max="100000" step="0.1" placeholder="e.g. 4000" oninput="updateChecklist()">
+        <div class="field-hint">IU for epoetin; µg for darbe/CERA</div>
+      </div>
+      <div class="calc-field">
+        <label>Frequency</label>
+        <select id="chk-esa-freq" onchange="updateChecklist()">
+          <option value="">Select…</option>
+          <option value="3">3× / week (TIW)</option>
+          <option value="2">2× / week (BIW)</option>
+          <option value="1">Once weekly (QW)</option>
+          <option value="0.5">Every 2 weeks (Q2W)</option>
+          <option value="0.25">Monthly (Q4W)</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label>Weekly IU/kg</label>
+        <div id="chk-eri-weekly" style="padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text-muted);">Enter above →</div>
+      </div>
+      <div class="calc-field">
+        <label>ERI (IU/kg/wk/g/dL)</label>
+        <div id="chk-eri-val" style="padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text-muted);">—</div>
+        <div class="field-hint">ERI &gt;10 → investigate hyporesponsiveness</div>
+      </div>
+    </div>
+    <div id="chk-eri-alert" style="display:none;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.5;"></div>
+  </div>
+
+  <!-- IV Iron Log -->
+  <div style="margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.07em;border-bottom:2px solid var(--teal);padding-bottom:6px;margin-bottom:14px;">🩸 IV Iron Log (This Month)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;">
+      <div class="calc-field">
+        <label>Formulation Given</label>
+        <select id="chk-iron-form">
+          <option value="none">None given this month</option>
+          <option value="is">Iron Sucrose (Ferrofer)</option>
+          <option value="fcm">Ferric Carboxymaltose (Ferinject)</option>
+          <option value="lmwid">LMW Iron Dextran</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label>Total Dose Given (mg)</label>
+        <input type="number" id="chk-iron-dose" min="0" max="5000" step="50" placeholder="e.g. 400">
+        <div class="field-hint">Sum of all doses this month</div>
+      </div>
+      <div class="calc-field">
+        <label>Sessions Iron Given</label>
+        <input type="number" id="chk-iron-sess" min="0" max="20" step="1" placeholder="e.g. 4">
+      </div>
+      <div class="calc-field">
+        <label>Next IV Iron Due</label>
+        <input type="date" id="chk-iron-next">
+      </div>
+    </div>
+  </div>
+
+  <!-- Clinical Review -->
+  <div style="margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.07em;border-bottom:2px solid var(--teal);padding-bottom:6px;margin-bottom:14px;">✅ Clinical Review</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:8px;">
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#2c3340;"><input type="checkbox" style="margin-top:2px;accent-color:var(--teal);"> Dialysis adequacy confirmed this month (Kt/V ≥1.2)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#2c3340;"><input type="checkbox" style="margin-top:2px;accent-color:var(--teal);"> Blood pressure consistently controlled (&lt;140/90 mmHg)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#2c3340;"><input type="checkbox" style="margin-top:2px;accent-color:var(--teal);"> No active bacterial infection (fever, positive cultures)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#2c3340;"><input type="checkbox" style="margin-top:2px;accent-color:var(--teal);"> No signs of GI or occult bleeding (melena, hematuria, low retic)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#2c3340;"><input type="checkbox" style="margin-top:2px;accent-color:var(--teal);"> Nutritional status reviewed (albumin ≥3.5 g/dL, dietary intake adequate)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#2c3340;"><input type="checkbox" style="margin-top:2px;accent-color:var(--teal);"> B12 and folate checked (if macrocytosis or unexplained low Hgb)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#2c3340;"><input type="checkbox" style="margin-top:2px;accent-color:var(--teal);"> PTH and Ca-PO₄ reviewed (hyperPTH impairs ESA response)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#2c3340;"><input type="checkbox" style="margin-top:2px;accent-color:var(--teal);"> Vascular access functioning (no thrombosis, recirculation, low flow)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#2c3340;"><input type="checkbox" style="margin-top:2px;accent-color:var(--teal);"> Medications reviewed (ACEi/ARB dose, phosphate binders, iron timing)</label>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#2c3340;"><input type="checkbox" style="margin-top:2px;accent-color:var(--teal);"> Patient-reported fatigue, dyspnea, or QOL change documented</label>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="calc-field" style="margin-bottom:16px;">
+    <label>Assessment &amp; Plan for Next Month</label>
+    <textarea id="chk-notes" rows="3" placeholder="Clinical notes, dose adjustments, follow-up plan…" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);resize:vertical;"></textarea>
+  </div>
+  <p class="calc-disclaimer">⚕ Targets per KDIGO Anemia 2024. Hgb 100–115 g/L; TSAT ≥20%; Ferritin 200–500 ng/mL (HD). Adapt to individual patient context. For clinical use by licensed physicians only.</p>
 </div>
 <div class="feature-card" style="padding:28px;grid-column:1/-1;">
   <h4 style="margin-bottom:4px;font-size:16px;color:var(--navy);">⚖️ ESA Resistance Index (ERI) Calculator</h4>
@@ -2409,17 +2565,292 @@ function setGuideLang(lang) {
     <p class="calc-disclaimer">⚕ ERI = (Total weekly ESA dose in IU ÷ weight in kg) ÷ Hgb in g/dL. Darbepoetin and CERA converted using 1 µg = 200 IU epoetin equivalent. ERI &gt;10 IU/kg/week/g/dL is associated with increased cardiovascular mortality and hospitalizations (Kalantar-Zadeh et al.). Interpret alongside clinical context. For educational use only — dosing decisions require physician assessment.</p>
   </div>
 </div>
-<div class="feature-card" style="text-align:center;padding:28px;">
-  <div style="font-size:32px;margin-bottom:12px;">💊</div>
-  <h4 style="margin-bottom:8px;">IV Iron Protocol Reference Card</h4>
-  <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Formulations, doses, infusion rates, monitoring requirements. Pocket-card format.</p>
-  <span style="display:inline-block;padding:8px 18px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-muted);">Coming soon</span>
+<div class="feature-card" style="padding:28px;grid-column:1/-1;">
+  <figure class="illus-panel" style="max-width:680px;margin:0 auto 24px;">
+    <picture>
+      <source srcset="../images/anemia-iv-iron-card.webp" type="image/webp">
+      <img src="../images/anemia-iv-iron-card.png" loading="lazy" width="1024" height="1024" alt="IV Iron Protocol Reference Card — Philippines formulary guide with dosing, infusion rates, and monitoring for iron sucrose, ferric carboxymaltose, and iron dextran" style="border-radius:12px;display:block;width:100%;height:auto;">
+    </picture>
+  </figure>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
+    <div>
+      <h4 style="margin-bottom:4px;font-size:17px;color:var(--navy);">💊 IV Iron Protocol Reference Card</h4>
+      <p style="font-size:12px;color:var(--text-muted);margin:0;">Philippines formulary guide — formulations, doses, infusion rates, and monitoring requirements.</p>
+    </div>
+    <button onclick="window.print()" class="download-btn" style="font-size:13px;padding:9px 18px;white-space:nowrap;">🖨 Print Reference Card</button>
+  </div>
+
+  <!-- Contraindications -->
+  <div style="background:#fdf0ef;border-left:4px solid #b91c1c;border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:700;color:#b91c1c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">🚫 Absolute Contraindications — Withhold IV Iron If:</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:4px 20px;font-size:13px;color:#2c3340;line-height:1.7;">
+      <span>• Active bacterial infection (sepsis, bacteremia)</span>
+      <span>• Known hypersensitivity to any IV iron formulation</span>
+      <span>• Serum ferritin &gt;800 ng/mL</span>
+      <span>• Iron overload (hemochromatosis, hemosiderosis)</span>
+      <span>• First trimester of pregnancy (relative — seek specialist advice)</span>
+    </div>
+  </div>
+
+  <!-- Formulations Table -->
+  <div style="overflow-x:auto;margin-bottom:20px;border-radius:10px;border:1px solid var(--border);">
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <thead>
+        <tr style="background:var(--navy);color:white;">
+          <th style="padding:12px 14px;text-align:left;font-weight:700;font-size:11px;letter-spacing:.05em;white-space:nowrap;">FORMULATION</th>
+          <th style="padding:12px 14px;text-align:left;font-weight:700;font-size:11px;letter-spacing:.05em;">DOSE (HD)</th>
+          <th style="padding:12px 14px;text-align:left;font-weight:700;font-size:11px;letter-spacing:.05em;white-space:nowrap;">INFUSION RATE</th>
+          <th style="padding:12px 14px;text-align:left;font-weight:700;font-size:11px;letter-spacing:.05em;white-space:nowrap;">TEST DOSE</th>
+          <th style="padding:12px 14px;text-align:left;font-weight:700;font-size:11px;letter-spacing:.05em;">NOTES (Philippines)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:13px 14px;vertical-align:top;">
+            <div style="font-weight:700;color:var(--navy);">Iron Sucrose</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Ferrofer®, Venofer® (generics available)</div>
+          </td>
+          <td style="padding:13px 14px;vertical-align:top;">
+            <div style="font-weight:600;color:#2c3340;">100–200 mg / session</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Loading: 100 mg ×10 sessions<br>Maintenance: 100 mg/1–2 sessions</div>
+          </td>
+          <td style="padding:13px 14px;vertical-align:top;color:#2c3340;">Slow IV push 15 min<br><span style="font-size:11px;color:var(--text-muted);">or dilute in 100 mL NS, infuse 30 min</span></td>
+          <td style="padding:13px 14px;vertical-align:top;"><span style="color:#2d7a4f;font-weight:700;">Not required</span></td>
+          <td style="padding:13px 14px;vertical-align:top;font-size:12px;color:#2c3340;">First-line PH formulary. Available at most dialysis centers. Low anaphylaxis risk. Observe 30 min post-infusion.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);background:#fafbfc;">
+          <td style="padding:13px 14px;vertical-align:top;">
+            <div style="font-weight:700;color:var(--navy);">Ferric Carboxymaltose</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Ferinject® (Vifor/CSL Behring)</div>
+          </td>
+          <td style="padding:13px 14px;vertical-align:top;">
+            <div style="font-weight:600;color:#2c3340;">500–1000 mg single dose</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Max 1000 mg/week; repeat at 4–8 weeks if still deficient</div>
+          </td>
+          <td style="padding:13px 14px;vertical-align:top;color:#2c3340;">15–60 min IV infusion<br><span style="font-size:11px;color:var(--text-muted);">Dilute in ≥100 mL NS</span></td>
+          <td style="padding:13px 14px;vertical-align:top;"><span style="color:#2d7a4f;font-weight:700;">Not required</span></td>
+          <td style="padding:13px 14px;vertical-align:top;font-size:12px;color:#2c3340;">Preferred for non-dialysis CKD (single high-dose visit). Monitor for hypophosphatemia: check PO₄ at 1–2 weeks post-infusion. Higher cost than iron sucrose.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:13px 14px;vertical-align:top;">
+            <div style="font-weight:700;color:var(--navy);">LMW Iron Dextran</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">CosmoFer® / INFeD® (generics)</div>
+          </td>
+          <td style="padding:13px 14px;vertical-align:top;">
+            <div style="font-weight:600;color:#2c3340;">25 mg test → 100 mg maintenance</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Or total dose infusion (TDI) in selected cases</div>
+          </td>
+          <td style="padding:13px 14px;vertical-align:top;color:#2c3340;">25 mg test over 15 min → wait 60 min → main dose over 1 hr</td>
+          <td style="padding:13px 14px;vertical-align:top;"><span style="color:#b91c1c;font-weight:700;">Required</span><br><span style="font-size:11px;color:var(--text-muted);">Anaphylaxis risk</span></td>
+          <td style="padding:13px 14px;vertical-align:top;font-size:12px;color:#2c3340;">Higher anaphylaxis risk vs iron sucrose/FCM. Premedicate: antihistamine + hydrocortisone. Resuscitation equipment at bedside. Second-line only.</td>
+        </tr>
+        <tr style="background:#fafbfc;">
+          <td style="padding:13px 14px;vertical-align:top;">
+            <div style="font-weight:700;color:var(--navy);">Ferumoxytol</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Rienso® / Feraheme®</div>
+          </td>
+          <td style="padding:13px 14px;vertical-align:top;">
+            <div style="font-weight:600;color:#2c3340;">510 mg; repeat at 3–8 days</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Max 1,020 mg per course</div>
+          </td>
+          <td style="padding:13px 14px;vertical-align:top;color:#2c3340;">15 min IV infusion<br><span style="font-size:11px;color:var(--text-muted);">Monitor BP closely during infusion</span></td>
+          <td style="padding:13px 14px;vertical-align:top;"><span style="color:#2d7a4f;font-weight:700;">Not required</span></td>
+          <td style="padding:13px 14px;vertical-align:top;font-size:12px;color:var(--text-muted);">⚠ Limited PH availability as of 2025 — verify FDA-PH registration before prescribing. Interferes with MRI interpretation for up to 3 months.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Targets and Monitoring -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:16px;">
+    <div style="background:#edf5f6;border-left:4px solid var(--teal);border-radius:0 10px 10px 0;padding:14px 18px;">
+      <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">🎯 Iron Repletion Targets (KDIGO 2024)</div>
+      <div style="font-size:13px;color:#2c3340;line-height:1.85;">
+        <div>TSAT: <strong>≥20%</strong> (upper safety limit: 50%)</div>
+        <div>Ferritin (HD): <strong>200–500 ng/mL</strong> (withhold IV iron &gt;800)</div>
+        <div>Ferritin (ND-CKD): <strong>100–300 ng/mL</strong></div>
+        <div>Hgb target: <strong>100–115 g/L</strong></div>
+        <div>Recheck labs: every <strong>1–3 months</strong> on ESA; monthly if adjusting</div>
+      </div>
+    </div>
+    <div style="background:#fef9ec;border-left:4px solid #f5a623;border-radius:0 10px 10px 0;padding:14px 18px;">
+      <div style="font-size:11px;font-weight:700;color:#9a6500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">⚠ Post-Infusion Monitoring (All Formulations)</div>
+      <div style="font-size:13px;color:#2c3340;line-height:1.85;">
+        <div>Observe patient minimum <strong>30 min</strong> after infusion completion</div>
+        <div>Monitor: BP, HR, urticaria, wheezing, facial flushing, chest tightness</div>
+        <div>FCM-specific: check PO₄ at 1–2 weeks post-infusion (hypophosphatemia)</div>
+        <div>Recheck TSAT + ferritin <strong>4–8 weeks</strong> after completing loading dose</div>
+      </div>
+    </div>
+    <div style="background:#edf7f2;border-left:4px solid #2d7a4f;border-radius:0 10px 10px 0;padding:14px 18px;">
+      <div style="font-size:11px;font-weight:700;color:#2d7a4f;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">✅ When to Give IV vs Oral Iron</div>
+      <div style="font-size:13px;color:#2c3340;line-height:1.85;">
+        <div><strong>IV iron preferred:</strong> HD patients (all), CKD + oral iron intolerance, TSAT critically low (&lt;15%), significant hepcidin elevation</div>
+        <div style="margin-top:6px;"><strong>Oral iron OK:</strong> ND-CKD Stages 1–3, mild deficiency, compliant patient, no absorption failure</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="calc-disclaimer">⚕ Dosing based on KDIGO Anemia 2024 and Philippine Society of Nephrology consensus. Adapt to local formulary availability and patient clinical status. For clinical use by licensed physicians only.</p>
 </div>
-<div class="feature-card" style="text-align:center;padding:28px;">
-  <div style="font-size:32px;margin-bottom:12px;">🧑‍⚕️</div>
-  <h4 style="margin-bottom:8px;">Patient Handout</h4>
-  <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Plain-language anemia explainer (EN/TL/CEB/KAP). Print-ready for clinic use.</p>
-  <button class="toggle-btn" onclick="setMode('patient')" style="font-size:12px;padding:8px 18px;">View Patient Tab</button>
+<div class="feature-card" style="padding:28px;grid-column:1/-1;">
+  <figure class="illus-panel" style="max-width:680px;margin:0 auto 24px;">
+    <picture>
+      <source srcset="../images/anemia-patient-handout.webp" type="image/webp">
+      <img src="../images/anemia-patient-handout.png" loading="lazy" width="1024" height="1024" alt="Patient Handout — Understanding Your Anemia: kidney EPO connection, symptoms, treatment options, and when to call your doctor" style="border-radius:12px;display:block;width:100%;height:auto;">
+    </picture>
+  </figure>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
+    <div>
+      <h4 style="margin-bottom:4px;font-size:17px;color:var(--navy);">🧑‍⚕️ Patient Handout — Understanding Your Anemia</h4>
+      <p style="font-size:12px;color:var(--text-muted);margin:0;">Plain-language guide in English, Tagalog, and Cebuano. Print for clinic use — may be freely photocopied for patients.</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <div style="display:flex;gap:4px;">
+        <button onclick="setHandoutLang('en')" id="hl-btn-en" class="toggle-btn" style="font-size:12px;padding:6px 14px;background:var(--navy);color:white;border-color:var(--navy);">EN</button>
+        <button onclick="setHandoutLang('tl')" id="hl-btn-tl" class="toggle-btn" style="font-size:12px;padding:6px 14px;">TL</button>
+        <button onclick="setHandoutLang('ceb')" id="hl-btn-ceb" class="toggle-btn" style="font-size:12px;padding:6px 14px;">CEB</button>
+      </div>
+      <button onclick="window.print()" class="download-btn" style="font-size:13px;padding:9px 18px;white-space:nowrap;">🖨 Print Handout</button>
+    </div>
+  </div>
+
+  <!-- EN -->
+  <div class="handout-lang" id="hl-en">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
+      <div style="background:#edf5f6;border-radius:12px;padding:20px 22px;">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px;">🫘 What Is Anemia?</div>
+        <p style="font-size:13px;color:#2c3340;line-height:1.75;margin:0 0 10px;">Your kidneys normally make a hormone called <strong>erythropoietin (EPO)</strong> that tells your bone marrow to produce red blood cells. In CKD, damaged kidneys make less EPO — without this signal, your body makes fewer red blood cells. Fewer red blood cells means less oxygen reaches your organs.</p>
+        <div style="background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--teal);font-weight:600;text-align:center;">1 in 3 people with CKD has anemia</div>
+      </div>
+      <div style="background:#f8f9fb;border-radius:12px;padding:20px 22px;">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px;">😴 How You May Feel</div>
+        <ul style="font-size:13px;color:#2c3340;line-height:2;margin:0;padding-left:18px;">
+          <li>Unusual tiredness or weakness</li>
+          <li>Pale or yellowish skin</li>
+          <li>Feeling cold all the time</li>
+          <li>Dizziness or lightheadedness</li>
+          <li>Shortness of breath with activity</li>
+          <li>Fast or fluttering heartbeat</li>
+          <li>Difficulty concentrating</li>
+        </ul>
+      </div>
+      <div style="background:#edf7f2;border-radius:12px;padding:20px 22px;">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px;">💊 Your Treatment Plan</div>
+        <div style="font-size:13px;color:#2c3340;line-height:1.8;">
+          <p style="margin:0 0 8px;"><strong style="color:var(--teal);">Iron supplements</strong> — Oral iron tablets or IV iron drip given at dialysis. Iron feeds your red blood cells.</p>
+          <p style="margin:0 0 8px;"><strong style="color:var(--teal);">EPO injections (ESA)</strong> — A medicine that signals your bone marrow to make red blood cells, replacing what your kidneys can't produce.</p>
+          <p style="margin:0;"><strong style="color:var(--teal);">Iron-rich foods</strong> — Red meat, dark leafy greens, beans, fortified cereals. Ask your dietitian for a kidney-safe food list.</p>
+        </div>
+      </div>
+      <div style="background:#fdf0ef;border-radius:12px;padding:20px 22px;border:1px solid #fca5a5;">
+        <div style="font-size:14px;font-weight:700;color:#b91c1c;margin-bottom:10px;">📞 Call Your Doctor If:</div>
+        <ul style="font-size:13px;color:#2c3340;line-height:2;margin:0;padding-left:18px;">
+          <li>You feel much more tired than usual</li>
+          <li>Chest pain or shortness of breath at rest</li>
+          <li>You appear unusually pale</li>
+          <li>Fever, chills, or signs of infection</li>
+          <li>Dark or bloody stools</li>
+          <li>Dizziness or fainting</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:16px;background:var(--navy);color:white;border-radius:10px;padding:14px 20px;font-size:13px;line-height:1.6;text-align:center;">
+      <strong>Regular blood tests are key.</strong> Your hemoglobin, iron levels, and EPO response are checked monthly. Work closely with your nephrologist — managing anemia protects your heart and kidneys.
+    </div>
+  </div>
+
+  <!-- TL -->
+  <div class="handout-lang" id="hl-tl" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
+      <div style="background:#edf5f6;border-radius:12px;padding:20px 22px;">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px;">🫘 Ano ang Anemia?</div>
+        <p style="font-size:13px;color:#2c3340;line-height:1.75;margin:0 0 10px;">Karaniwang gumagawa ang iyong mga bato ng hormone na tinatawag na <strong>erythropoietin (EPO)</strong> na nagsasabi sa iyong bone marrow na gumawa ng mga pulang selula ng dugo. Sa CKD, ang sirang bato ay gumagawa ng mas kaunting EPO — nang wala ang senyales na ito, gumagawa ang iyong katawan ng mas kaunting mga pulang selula ng dugo. Mas kaunting mga pulang selula ang ibig sabihin ay mas kaunting oxygen ang umabot sa iyong mga organo.</p>
+        <div style="background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--teal);font-weight:600;text-align:center;">1 sa 3 taong may CKD ay nagkakaroon ng anemia</div>
+      </div>
+      <div style="background:#f8f9fb;border-radius:12px;padding:20px 22px;">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px;">😴 Paano Ka Mararamdaman</div>
+        <ul style="font-size:13px;color:#2c3340;line-height:2;margin:0;padding-left:18px;">
+          <li>Hindi pangkaraniwang pagod o panghihina</li>
+          <li>Maputla o madilaw na balat</li>
+          <li>Pakiramdam na laging malamig</li>
+          <li>Pagkahilo o pagsisimula ng pagkahilo</li>
+          <li>Hirap sa paghinga sa panahon ng aktibidad</li>
+          <li>Mabilis o hindi regular na tibok ng puso</li>
+          <li>Hirap sa pag-concentrate</li>
+        </ul>
+      </div>
+      <div style="background:#edf7f2;border-radius:12px;padding:20px 22px;">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px;">💊 Ang Iyong Plano sa Paggamot</div>
+        <div style="font-size:13px;color:#2c3340;line-height:1.8;">
+          <p style="margin:0 0 8px;"><strong style="color:var(--teal);">Mga supplement ng iron</strong> — Oral na tablet ng iron o IV drip ng iron sa dialysis. Pinakain ng iron ang iyong mga pulang selula.</p>
+          <p style="margin:0 0 8px;"><strong style="color:var(--teal);">Mga iniksyon ng EPO (ESA)</strong> — Gamot na nagsasabi sa iyong bone marrow na gumawa ng mga pulang selula, pinapalitan ang hindi na magawa ng iyong mga bato.</p>
+          <p style="margin:0;"><strong style="color:var(--teal);">Mga pagkaing mayaman sa iron</strong> — Pulang karne, madilim na gulay, beans, fortified na cereal. Humingi sa iyong diyetisyano ng ligtas na listahan para sa bato.</p>
+        </div>
+      </div>
+      <div style="background:#fdf0ef;border-radius:12px;padding:20px 22px;border:1px solid #fca5a5;">
+        <div style="font-size:14px;font-weight:700;color:#b91c1c;margin-bottom:10px;">📞 Tumawag sa Iyong Doktor Kung:</div>
+        <ul style="font-size:13px;color:#2c3340;line-height:2;margin:0;padding-left:18px;">
+          <li>Nakaramdam ka ng mas matinding pagod kaysa dati</li>
+          <li>Sakit sa dibdib o hirap sa paghinga kahit nagpapahinga</li>
+          <li>Lubhang pamumutla ng kutis</li>
+          <li>Lagnat, panginginig, o mga palatandaan ng impeksyon</li>
+          <li>Madilim o may dugo ang dumi</li>
+          <li>Pagkahilo o pagkaraos</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:16px;background:var(--navy);color:white;border-radius:10px;padding:14px 20px;font-size:13px;line-height:1.6;text-align:center;">
+      <strong>Mahalaga ang regular na pagsusuri ng dugo.</strong> Sinusuri ang iyong hemoglobin, antas ng iron, at tugon sa EPO bawat buwan. Makipagtulungan nang mabuti sa iyong nephrologist — ang pamamahala ng anemia ay nagpoprotekta sa iyong puso at mga bato.
+    </div>
+  </div>
+
+  <!-- CEB -->
+  <div class="handout-lang" id="hl-ceb" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
+      <div style="background:#edf5f6;border-radius:12px;padding:20px 22px;">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px;">🫘 Unsa ang Anemia?</div>
+        <p style="font-size:13px;color:#2c3340;line-height:1.75;margin:0 0 10px;">Ang imong mga kidney karaniwang naghimo og hormone nga gitawag og <strong>erythropoietin (EPO)</strong> nga nagsinyas sa imong bone marrow nga maghimo og mga pulang selula sa dugo. Sa CKD, ang nangadaot nga mga kidney naghimo og gamay nga EPO — kung wala kining senyales, ang imong lawas naghimo og dili igo nga mga pulang selula. Mas gamay nga mga pulang selula nagpasabot nga mas gamay nga oxygen ang moabot sa imong mga organo.</p>
+        <div style="background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--teal);font-weight:600;text-align:center;">1 sa 3 tawo nga adunay CKD nakakuha og anemia</div>
+      </div>
+      <div style="background:#f8f9fb;border-radius:12px;padding:20px 22px;">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px;">😴 Unsay Imong Maramdaman</div>
+        <ul style="font-size:13px;color:#2c3340;line-height:2;margin:0;padding-left:18px;">
+          <li>Dili kasagarang pagkapagal o kahuyangan</li>
+          <li>Puti o dalag nga panit</li>
+          <li>Pirme nga pakiramdam og kabugnaw</li>
+          <li>Pagkahilo o pagkalisya</li>
+          <li>Kakulbaan sa pagginhawa panahon sa kalihokan</li>
+          <li>Paspas o dili regular nga tibok sa kasingkasing</li>
+          <li>Kalisod sa pagkonsentra</li>
+        </ul>
+      </div>
+      <div style="background:#edf7f2;border-radius:12px;padding:20px 22px;">
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px;">💊 Ang Imong Plano sa Pagtambal</div>
+        <div style="font-size:13px;color:#2c3340;line-height:1.8;">
+          <p style="margin:0 0 8px;"><strong style="color:var(--teal);">Mga supplement sa iron</strong> — Oral nga tablet sa iron o IV drip sa iron sa dialysis. Ang iron nagpakaon sa imong mga pulang selula.</p>
+          <p style="margin:0 0 8px;"><strong style="color:var(--teal);">Mga injection sa EPO (ESA)</strong> — Tambal nga nagsinyas sa imong bone marrow nga maghimo og mga pulang selula, nagpuli sa dili na mahimo sa imong mga kidney.</p>
+          <p style="margin:0;"><strong style="color:var(--teal);">Mga pagkaon nga dato sa iron</strong> — Pula nga karne, mapurog nga dahon, beans, fortified nga cereal. Pangayo sa imong diyetisyan og listahan nga luwas alang sa kidney.</p>
+        </div>
+      </div>
+      <div style="background:#fdf0ef;border-radius:12px;padding:20px 22px;border:1px solid #fca5a5;">
+        <div style="font-size:14px;font-weight:700;color:#b91c1c;margin-bottom:10px;">📞 Tawagi ang Imong Doktor Kung:</div>
+        <ul style="font-size:13px;color:#2c3340;line-height:2;margin:0;padding-left:18px;">
+          <li>Mas kapoy ka kaysa naandan</li>
+          <li>Sakit sa dughan o kalisod sa pagginhawa bisan nagpahulay</li>
+          <li>Labihan ka nga pagkaulaw sa panit</li>
+          <li>Hilanat, pangtag-ok, o mga timaan sa impeksyon</li>
+          <li>Itom o may dugo ang tae</li>
+          <li>Pagkahilo o pagkahulog</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:16px;background:var(--navy);color:white;border-radius:10px;padding:14px 20px;font-size:13px;line-height:1.6;text-align:center;">
+      <strong>Ang regular nga mga pagsusuri sa dugo mahinungdanon.</strong> Ang imong hemoglobin, lebel sa iron, ug tubag sa EPO gisusi matag buwan. Nagtinabangay pag-ayo sa imong nephrologist — ang pagdumala sa anemia nagprotekta sa imong kasingkasing ug mga kidney.
+    </div>
+  </div>
+
+  <p class="calc-disclaimer" style="margin-top:16px;">⚕ For patient education only. Based on KDIGO Anemia 2024 guidelines. May be freely photocopied for patient distribution in clinic settings. Content does not replace a consultation with your physician.</p>
 </div>
 </div>
 </section>
@@ -2727,6 +3158,88 @@ function calcAnemia() {
   document.getElementById('a-type-badge').style.color=typeColor;
   document.getElementById('a-verdict').innerHTML='<strong style="color:'+typeColor+'">'+type+'</strong> — '+verdict;
   document.getElementById('a-action').innerHTML='<strong style="color:'+typeColor+'">Recommended action:</strong> '+action;
+}
+
+/* ── Monthly HD Checklist ─────────────────────────────────────────────── */
+function updateChecklist(){
+  const hgb    = parseFloat(document.getElementById('chk-hgb').value);
+  const tsat   = parseFloat(document.getElementById('chk-tsat').value);
+  const fer    = parseFloat(document.getElementById('chk-fer').value);
+  const wt     = parseFloat(document.getElementById('chk-wt').value);
+  const esaT   = document.getElementById('chk-esa-type').value;
+  const dose   = parseFloat(document.getElementById('chk-esa-dose').value);
+  const freq   = parseFloat(document.getElementById('chk-esa-freq').value);
+
+  // Helper: set dot + status text
+  function setStatus(dotId, statusId, val, low, high, lowLabel, okLabel, highLabel, lowColor, okColor, highColor){
+    const dot = document.getElementById(dotId);
+    const st  = document.getElementById(statusId);
+    if(isNaN(val)){ dot.style.background='#d1d5db'; st.textContent=''; return; }
+    if(val < low){  dot.style.background=lowColor;  st.style.color=lowColor;  st.textContent=lowLabel; }
+    else if(val > high){ dot.style.background=highColor; st.style.color=highColor; st.textContent=highLabel; }
+    else { dot.style.background=okColor; st.style.color=okColor; st.textContent=okLabel; }
+  }
+
+  setStatus('chk-hgb-dot','chk-hgb-status', hgb, 10.0, 11.5,
+    '▼ Below target — assess ESA and iron', '✔ In target range', '▲ Above target — consider ESA reduction',
+    '#b91c1c','#2d7a4f','#c07a00');
+  setStatus('chk-tsat-dot','chk-tsat-status', tsat, 20, 50,
+    '▼ Below target — iron-restricted erythropoiesis risk', '✔ In target range', '▲ High — hold IV iron; recheck in 3 months',
+    '#b91c1c','#2d7a4f','#c07a00');
+  setStatus('chk-fer-dot','chk-fer-status', fer, 200, 800,
+    '▼ Below target — iron stores depleted', '✔ In target range', '▲ Elevated — withhold IV iron until ≤800',
+    '#b91c1c','#2d7a4f','#b91c1c');
+
+  // ERI calculation
+  const eriWeeklyEl = document.getElementById('chk-eri-weekly');
+  const eriValEl    = document.getElementById('chk-eri-val');
+  const eriAlert    = document.getElementById('chk-eri-alert');
+
+  if(esaT && esaT !== 'none' && !isNaN(dose) && !isNaN(freq) && !isNaN(wt) && !isNaN(hgb) && wt > 0 && hgb > 0){
+    const iuPerAdmin = (esaT === 'epoetin') ? dose : dose * 200;
+    const weeklyIuKg = (iuPerAdmin * freq) / wt;
+    const eri        = weeklyIuKg / hgb;
+    eriWeeklyEl.textContent = Math.round(weeklyIuKg).toLocaleString() + ' IU/kg/wk';
+    eriWeeklyEl.style.color = '#2c3340';
+    eriValEl.textContent = eri.toFixed(2);
+    if(eri >= 14){
+      eriValEl.style.color = '#b91c1c';
+      eriAlert.style.display = 'block';
+      eriAlert.style.background = '#fdf0ef';
+      eriAlert.style.borderLeft = '4px solid #b91c1c';
+      eriAlert.style.color = '#2c3340';
+      eriAlert.innerHTML = '<strong style="color:#b91c1c;">⚠ ERI ' + eri.toFixed(2) + ' — Severe Hyporesponsiveness:</strong> Do not escalate ESA. Rule out PRCA (anti-EPO antibodies) if Hgb dropping acutely with low reticulocytes — stop ESA and refer for bone marrow biopsy if suspected. Otherwise investigate all reversible causes: iron deficiency, infection, hyperPTH, hemolysis, blood loss, malnutrition, dialysis adequacy.';
+    } else if(eri >= 10){
+      eriValEl.style.color = '#c07a00';
+      eriAlert.style.display = 'block';
+      eriAlert.style.background = '#fef9ec';
+      eriAlert.style.borderLeft = '4px solid #f5a623';
+      eriAlert.style.color = '#2c3340';
+      eriAlert.innerHTML = '<strong style="color:#c07a00;">⚠ ERI ' + eri.toFixed(2) + ' — Hyporesponsive (KDIGO threshold &gt;10):</strong> Investigate before increasing ESA dose. Check: TSAT/ferritin (iron deficiency?), CRP (inflammation?), albumin (malnutrition?), Kt/V (dialysis adequacy?), PTH, occult bleeding, B12/folate.';
+    } else {
+      eriValEl.style.color = '#2d7a4f';
+      eriAlert.style.display = 'none';
+    }
+  } else {
+    eriWeeklyEl.textContent = 'Enter above →';
+    eriWeeklyEl.style.color = '';
+    eriValEl.textContent = '—';
+    eriValEl.style.color = '';
+    eriAlert.style.display = 'none';
+  }
+}
+
+/* ── Patient Handout Language Toggle ──────────────────────────────────── */
+function setHandoutLang(lang){
+  ['en','tl','ceb'].forEach(function(l){
+    document.getElementById('hl-' + l).style.display = (l === lang) ? 'block' : 'none';
+    const btn = document.getElementById('hl-btn-' + l);
+    if(l === lang){
+      btn.style.background = 'var(--navy)'; btn.style.color = 'white'; btn.style.borderColor = 'var(--navy)';
+    } else {
+      btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = '';
+    }
+  });
 }
 
 function calcERI(){
