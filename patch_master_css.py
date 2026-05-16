@@ -1068,7 +1068,7 @@ def main():
         print(f"{args.guide}: {result}")
         return
 
-    files = sorted(f for f in guides_dir.glob("*.html"))
+    files = sorted(f for f in guides_dir.glob("*.html") if f.name != "index.html")
     patched = skipped = 0
 
     for f in files:
