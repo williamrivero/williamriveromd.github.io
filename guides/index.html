@@ -224,7 +224,7 @@
 
   /* ── LEARNING PATH ── */
   .learning-path {
-    background: white;
+    background: var(--white);
     border-bottom: 1px solid var(--border);
     padding: 16px 24px;
   }
@@ -299,7 +299,7 @@
   .sidebar {
     position: sticky;
     top: 68px;
-    background: white;
+    background: var(--white);
     border-radius: 10px;
     border: 1px solid var(--border);
     overflow: hidden;
@@ -368,7 +368,7 @@
 
   /* Featured spotlight */
   .spotlight {
-    background: white;
+    background: var(--white);
     border-radius: 10px;
     border: 1px solid var(--border);
     padding: 14px 16px;
@@ -435,7 +435,7 @@
     align-items: center;
     gap: 10px;
     padding: 10px 14px;
-    background: white;
+    background: var(--white);
     border: 1px solid var(--border);
     border-radius: 8px 8px 0 0;
     cursor: pointer;
@@ -473,7 +473,7 @@
   .section-header.collapsed .section-chevron { transform: rotate(-90deg); }
 
   .section-body {
-    background: white;
+    background: var(--white);
     border: 1px solid var(--border);
     border-top: none;
     border-radius: 0 0 8px 8px;
@@ -579,7 +579,7 @@
   .mobile-filter-bar {
     display: none;
     padding: 10px 16px;
-    background: white;
+    background: var(--white);
     border-bottom: 1px solid var(--border);
     gap: 8px;
     overflow-x: auto;
@@ -661,7 +661,7 @@
 
   /* ── START HERE PATHWAYS ── */
   .pathways-section {
-    background: white;
+    background: var(--white);
     border-top: 1px solid var(--border);
     border-bottom: 3px solid var(--navy);
     padding: 20px 24px 24px;
@@ -713,7 +713,7 @@
   }
   .pathway-tile:hover {
     border-color: transparent;
-    background: white;
+    background: var(--white);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(31,56,100,0.13);
   }
@@ -804,7 +804,7 @@
     pointer-events: all;
   }
   .modal-drawer {
-    background: white;
+    background: var(--white);
     width: 100%;
     max-width: 580px;
     max-height: 88vh;
@@ -987,32 +987,60 @@
   .modal-dismiss:hover { background: var(--navy-mid); }
 
   /* ── DARK MODE ── */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0f1623;
-      --white: #1a2236;
-      --ink: #e2e8f0;
-      --ink-soft: #94a3b8;
-      --ink-muted: #64748b;
-      --border: #1e2d47;
-      --teal-light: #0d2f32;
-      --orange-light: #2a1a0e;
-      --purple-light: #1a1030;
-      --green-light: #0d1f14;
-    }
-  }
+  /* Controlled by body.dark-mode class only — no auto OS dark mode */
   body.dark-mode {
     --bg: #0f1623;
     --white: #1a2236;
     --ink: #e2e8f0;
-    --ink-soft: #94a3b8;
-    --ink-muted: #64748b;
+    --ink-soft: #c4ccd8;
+    --ink-muted: #8a95a8;
     --border: #1e2d47;
     --teal-light: #0d2f32;
     --orange-light: #2a1a0e;
     --purple-light: #1a1030;
     --green-light: #0d1f14;
   }
+
+  /* Dark mode component overrides */
+  body.dark-mode .learning-path { border-color: #1e2d47; }
+  body.dark-mode .section-header:hover { background: #1e2d47; }
+  body.dark-mode .guide-tile { color: var(--ink); }
+  body.dark-mode .guide-tile:hover { background: #1a2843; }
+  body.dark-mode .tile-icon.read { background: rgba(255,255,255,.07); color: #94a3b8; }
+  body.dark-mode .tile-icon.ph { background: rgba(255,255,255,.07); color: #94a3b8; }
+  body.dark-mode .tile-title { color: var(--ink); }
+  body.dark-mode .tile-teaser { color: var(--ink-muted); }
+  body.dark-mode .tag-new { background: rgba(197,90,17,.2); color: #fb923c; border-color: rgba(197,90,17,.3); }
+  body.dark-mode .tag-ph { background: rgba(197,90,17,.15); color: #fb923c; }
+  body.dark-mode .tag-clinician { background: rgba(75,50,128,.3); color: #c4b5fd; }
+  body.dark-mode .tag-updated { background: rgba(26,107,114,.25); color: #5eead4; border-color: rgba(26,107,114,.3); }
+  body.dark-mode .tag-calc { background: rgba(26,107,114,.2); color: #5eead4; }
+  body.dark-mode .spotlight { background: #111c30; }
+  body.dark-mode .spotlight-label { color: var(--ink-muted); }
+  body.dark-mode .section-name { color: var(--ink); }
+  body.dark-mode .section-count { background: #1e2d47; color: var(--ink-muted); }
+  body.dark-mode .pathways-section { background: #111c30; border-top-color: #1e2d47; border-bottom-color: #2a8a93; }
+  body.dark-mode .pathways-label { color: var(--ink); }
+  body.dark-mode .pathways-sub { color: var(--ink-muted); }
+  body.dark-mode .pathway-tile { background: #1a2535; border-color: #2a3a54; }
+  body.dark-mode .pathway-tile:hover { background: #1e2d47; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+  body.dark-mode .pathway-icon { color: #5eead4; }
+  body.dark-mode .pathway-condition { color: var(--ink-muted); }
+  body.dark-mode .pathway-title { color: var(--ink); }
+  body.dark-mode .pathway-count { color: var(--ink-muted); }
+  body.dark-mode .pathway-arrow { color: var(--ink-muted); }
+  body.dark-mode .modal-drawer { background: #1a2535; }
+  body.dark-mode .jump-link { color: var(--ink-muted); }
+  body.dark-mode .jump-link:hover { background: #1a2843; color: var(--ink); }
+  body.dark-mode .no-results { color: var(--ink-muted); }
+  body.dark-mode .results-bar { color: var(--ink-muted); }
+  body.dark-mode .results-count { color: var(--teal-mid); }
+  body.dark-mode #guide-search {
+    background: #0d2535;
+    border-color: rgba(42,138,147,.4);
+    color: var(--ink);
+  }
+  body.dark-mode #guide-search::placeholder { color: var(--ink-muted); }
 
   /* ── ACTIVE NAV ── */
   .nav-active {
@@ -1107,7 +1135,7 @@
   <div class="nav-links">
     <a href="https://williamriveromd.com#about" class="hide-mobile">About</a>
     <a href="https://williamriveromd.com#specialties" class="hide-mobile">Specialties</a>
-    <a href="/guides/" class="nav-active">Patient Guides</a>
+    <a href="/guides/" class="nav-active">Health Guides</a>
     <a href="https://williamriveromd.com#contact" class="hide-mobile">Clinics</a>
     <button class="dark-toggle" id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">Dark</button>
     <a href="https://seriousmd.com/doc/williamrivero" class="nav-cta" target="_blank" rel="noopener">Book</a>
@@ -2795,9 +2823,11 @@ function toggleDark() {
   btn.textContent = isDark ? 'Light' : 'Dark';
   try { localStorage.setItem('wgmr-dark', isDark ? '1' : '0'); } catch(e) {}
 }
-// Restore preference
+// Restore preference — explicit toggle wins; fall back to OS preference only on first visit
 try {
-  if (localStorage.getItem('wgmr-dark') === '1') {
+  const saved = localStorage.getItem('wgmr-dark');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (saved === '1' || (saved === null && prefersDark)) {
     document.body.classList.add('dark-mode');
     document.addEventListener('DOMContentLoaded', () => {
       const btn = document.getElementById('dark-toggle');
