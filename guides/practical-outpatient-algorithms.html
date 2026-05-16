@@ -1187,6 +1187,29 @@ html[data-theme="dark"] .clin-banner { background: rgba(180,83,9,.18); color: #f
   .algo-nav-inner { padding: 0 16px; }
   .algo-subtitle { margin-left: 0; }
 }
+
+/* Unit toggles */
+.unit-toggle {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 14px; flex-wrap: wrap;
+  padding: 10px 14px;
+  background: rgba(26,107,114,.05);
+  border: 1px solid rgba(26,107,114,.18);
+  border-radius: 8px;
+}
+.unit-toggle-lbl {
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+}
+.ut-sep { width: 1px; height: 16px; background: var(--border); margin: 0 6px; }
+.ut-btn {
+  background: var(--white); border: 1px solid var(--border); border-radius: 5px;
+  padding: 3px 11px; font-size: 11px; font-weight: 700; cursor: pointer;
+  color: var(--text-muted); transition: background .12s, color .12s, border-color .12s;
+  line-height: 1.7;
+}
+.ut-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+.ut-btn:hover:not(.active) { border-color: var(--teal); color: var(--teal); }
 </style>
 </head>
 <body>
@@ -1911,6 +1934,15 @@ html[data-theme="dark"] .clin-banner { background: rgba(180,83,9,.18); color: #f
   <div class="algo-calc">
     <div class="algo-calc-hdr">FeNa / FeUrea Calculator — Pre-renal vs Intrinsic AKI</div>
     <div class="calc-wrap">
+      <div class="unit-toggle">
+        <span class="unit-toggle-lbl">Creatinine:</span>
+        <button class="ut-btn active" id="fena-cr-mgdl" onclick="setFenaCrUnit('mgdl',this)">mg/dL</button>
+        <button class="ut-btn" id="fena-cr-umol" onclick="setFenaCrUnit('umol',this)">μmol/L</button>
+        <div class="ut-sep"></div>
+        <span class="unit-toggle-lbl">Urea nitrogen:</span>
+        <button class="ut-btn active" id="fena-bun-bun" onclick="setFenaBunUnit('bun',this)">BUN mg/dL</button>
+        <button class="ut-btn" id="fena-bun-mmol" onclick="setFenaBunUnit('urea',this)">Urea mmol/L</button>
+      </div>
       <div class="calc-grid">
         <div class="calc-field">
           <label>Serum Na⁺ (mEq/L)</label>
@@ -2047,6 +2079,11 @@ html[data-theme="dark"] .clin-banner { background: rgba(180,83,9,.18); color: #f
   <div class="algo-calc">
     <div class="algo-calc-hdr">CKD-EPI 2021 eGFR Calculator</div>
     <div class="calc-wrap">
+      <div class="unit-toggle">
+        <span class="unit-toggle-lbl">Creatinine units:</span>
+        <button class="ut-btn active" onclick="setEgfrCrUnit('mgdl',this)">mg/dL</button>
+        <button class="ut-btn" onclick="setEgfrCrUnit('umol',this)">μmol/L</button>
+      </div>
       <div class="calc-grid">
         <div class="calc-field">
           <label>Serum Creatinine (mg/dL)</label>
@@ -2187,6 +2224,11 @@ html[data-theme="dark"] .clin-banner { background: rgba(180,83,9,.18); color: #f
   <div class="algo-calc">
     <div class="algo-calc-hdr">IV Iron Dose Calculator — Ganzoni Formula</div>
     <div class="calc-wrap">
+      <div class="unit-toggle">
+        <span class="unit-toggle-lbl">Haemoglobin units:</span>
+        <button class="ut-btn active" onclick="setIronHgbUnit('gdl',this)">g/dL</button>
+        <button class="ut-btn" onclick="setIronHgbUnit('gl',this)">g/L</button>
+      </div>
       <div class="calc-grid">
         <div class="calc-field">
           <label>Patient weight (kg)</label>
@@ -2477,6 +2519,11 @@ Delta-delta ratio (if high AG present):
   <div class="algo-calc">
     <div class="algo-calc-hdr">Anion Gap, Delta-Delta &amp; Bicarbonate Deficit Calculator</div>
     <div class="calc-wrap">
+      <div class="unit-toggle">
+        <span class="unit-toggle-lbl">Albumin units:</span>
+        <button class="ut-btn active" onclick="setAgAlbUnit('gdl',this)">g/dL</button>
+        <button class="ut-btn" onclick="setAgAlbUnit('gl',this)">g/L</button>
+      </div>
       <div class="calc-grid">
         <div class="calc-field">
           <label>Serum Na⁺ (mEq/L)</label>
@@ -2581,6 +2628,67 @@ algos.forEach(s => observer.observe(s));
   window.addEventListener('scroll', function() { b.classList.toggle('visible', window.scrollY > 300); }, { passive: true });
 })();
 
+// ── UNIT STATE & TOGGLES ────────────────────────────────────────────────────
+const unitState = { 'fena-cr': 'mgdl', 'fena-bun': 'bun', 'egfr-cr': 'mgdl', 'iron-hgb': 'gdl', 'ag-alb': 'gdl' };
+
+function _activateBtn(btn) {
+  btn.closest('.unit-toggle').querySelectorAll('.ut-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function setFenaCrUnit(unit, btn) {
+  unitState['fena-cr'] = unit; _activateBtn(btn);
+  const isMg = unit === 'mgdl';
+  document.getElementById('fena-scr').closest('.calc-field').querySelector('label').textContent = `Serum Creatinine (${isMg ? 'mg/dL' : 'μmol/L'})`;
+  document.getElementById('fena-scr').placeholder = isMg ? 'e.g. 2.4' : 'e.g. 212';
+  document.getElementById('fena-ucr').closest('.calc-field').querySelector('label').textContent = `Urine Creatinine (${isMg ? 'mg/dL' : 'μmol/L'})`;
+  document.getElementById('fena-ucr').placeholder = isMg ? 'e.g. 95' : 'e.g. 8400';
+}
+
+function setFenaBunUnit(unit, btn) {
+  unitState['fena-bun'] = unit; _activateBtn(btn);
+  const isBun = unit === 'bun';
+  const sbunLabel = document.getElementById('fena-sbun').closest('.calc-field').querySelector('label');
+  sbunLabel.innerHTML = `Serum ${isBun ? 'BUN (mg/dL)' : 'Urea (mmol/L)'} <em style="font-weight:400;font-style:normal;font-size:11px;">(optional)</em>`;
+  document.getElementById('fena-sbun').placeholder = isBun ? 'e.g. 45' : 'e.g. 16';
+  const ubunLabel = document.getElementById('fena-ubun').closest('.calc-field').querySelector('label');
+  ubunLabel.innerHTML = `Urine ${isBun ? 'BUN (mg/dL)' : 'Urea (mmol/L)'} <em style="font-weight:400;font-style:normal;font-size:11px;">(optional)</em>`;
+  document.getElementById('fena-ubun').placeholder = isBun ? 'e.g. 480' : 'e.g. 171';
+}
+
+function setEgfrCrUnit(unit, btn) {
+  unitState['egfr-cr'] = unit; _activateBtn(btn);
+  const isMg = unit === 'mgdl';
+  document.getElementById('egfr-cr').closest('.calc-field').querySelector('label').textContent = `Serum Creatinine (${isMg ? 'mg/dL' : 'μmol/L'})`;
+  document.getElementById('egfr-cr').placeholder = isMg ? 'e.g. 1.8' : 'e.g. 159';
+  document.getElementById('egfr-cr').step = isMg ? '0.01' : '1';
+}
+
+function setIronHgbUnit(unit, btn) {
+  unitState['iron-hgb'] = unit; _activateBtn(btn);
+  const isGdl = unit === 'gdl';
+  document.getElementById('iron-hgb').closest('.calc-field').querySelector('label').textContent = `Current Haemoglobin (${isGdl ? 'g/dL' : 'g/L'})`;
+  document.getElementById('iron-hgb').placeholder = isGdl ? 'e.g. 8.5' : 'e.g. 85';
+  document.getElementById('iron-hgb').step = isGdl ? '0.1' : '1';
+  const tgtField = document.getElementById('iron-tgt');
+  tgtField.closest('.calc-field').querySelector('label').textContent = `Target Haemoglobin (${isGdl ? 'g/dL' : 'g/L'})`;
+  tgtField.placeholder = isGdl ? 'e.g. 11' : 'e.g. 110';
+  tgtField.value = isGdl ? '11' : '110';
+  tgtField.step = isGdl ? '0.1' : '1';
+  const hint = tgtField.closest('.calc-field').querySelector('.field-hint');
+  if (hint) hint.textContent = isGdl ? 'KDIGO 2024 target: 10–11.5 g/dL' : 'KDIGO 2024 target: 100–115 g/L';
+}
+
+function setAgAlbUnit(unit, btn) {
+  unitState['ag-alb'] = unit; _activateBtn(btn);
+  const isGdl = unit === 'gdl';
+  document.getElementById('ag-alb').closest('.calc-field').querySelector('label').textContent = `Serum Albumin (${isGdl ? 'g/dL' : 'g/L'})`;
+  document.getElementById('ag-alb').placeholder = isGdl ? 'e.g. 3.2' : 'e.g. 32';
+  document.getElementById('ag-alb').step = isGdl ? '0.1' : '1';
+  const hint = document.getElementById('ag-alb').closest('.calc-field').querySelector('.field-hint');
+  if (hint) hint.textContent = isGdl ? 'For corrected AG. Normal = 4.0 g/dL.' : 'For corrected AG. Normal = 40 g/L.';
+}
+
 // ── CALCULATOR HELPERS ──────────────────────────────────────────────────────
 function showCalcResult(el, html) {
   el.innerHTML = html;
@@ -2657,7 +2765,7 @@ function calcFeNA() {
 
 // Algo 6 — CKD-EPI 2021 eGFR
 function calcEGFR() {
-  const cr = parseFloat(document.getElementById('egfr-cr').value);
+  let cr = parseFloat(document.getElementById('egfr-cr').value);
   const age = parseFloat(document.getElementById('egfr-age').value);
   const sex = document.getElementById('egfr-sex').value;
   const el = document.getElementById('egfr-result');
@@ -2665,6 +2773,7 @@ function calcEGFR() {
     showCalcResult(el, '<p style="color:var(--red);font-size:13px;">Enter valid creatinine (>0) and age (≥18).</p>');
     return;
   }
+  if (unitState['egfr-cr'] === 'umol') cr = cr / 88.4;
   let egfr;
   if (sex === 'female') {
     egfr = cr <= 0.7
@@ -2699,9 +2808,10 @@ function calcEGFR() {
 // Algo 7 — Ganzoni IV iron dose
 function calcIronDose() {
   const wt = parseFloat(document.getElementById('iron-wt').value);
-  const hgb = parseFloat(document.getElementById('iron-hgb').value);
-  const tgt = parseFloat(document.getElementById('iron-tgt').value);
+  let hgb = parseFloat(document.getElementById('iron-hgb').value);
+  let tgt = parseFloat(document.getElementById('iron-tgt').value);
   const stores = parseFloat(document.getElementById('iron-stores').value);
+  if (unitState['iron-hgb'] === 'gl') { hgb = hgb / 10; tgt = tgt / 10; }
   const el = document.getElementById('iron-result');
   if (isNaN(wt) || isNaN(hgb) || isNaN(tgt) || wt < 20) {
     showCalcResult(el, '<p style="color:var(--red);font-size:13px;">Enter valid weight and haemoglobin values.</p>');
@@ -2735,7 +2845,8 @@ function calcAG() {
   const na = parseFloat(document.getElementById('ag-na').value);
   const cl = parseFloat(document.getElementById('ag-cl').value);
   const hco3 = parseFloat(document.getElementById('ag-hco3').value);
-  const alb = parseFloat(document.getElementById('ag-alb').value);
+  let alb = parseFloat(document.getElementById('ag-alb').value);
+  if (unitState['ag-alb'] === 'gl') alb = alb / 10;
   const pco2 = parseFloat(document.getElementById('ag-pco2').value);
   const wt = parseFloat(document.getElementById('ag-wt').value);
   const el = document.getElementById('ag-result');
