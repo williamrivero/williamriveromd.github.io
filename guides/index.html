@@ -2743,6 +2743,35 @@ function highlight(text, words) {
     applyFilters();
     searchInput.focus();
   });
+
+  // Derive all filter counts from actual DOM tiles so they never go stale
+  (function syncFilterCounts() {
+    const tiles = [...document.querySelectorAll('.guide-tile')];
+    const total = tiles.length;
+
+    document.querySelectorAll('.filter-btn[data-filter], .mf-pill[data-filter]').forEach(btn => {
+      const f = btn.dataset.filter;
+      if (f === 'all') {
+        const span = btn.querySelector('.count');
+        if (span) span.textContent = total;
+        if (btn.classList.contains('mf-pill')) btn.textContent = `All ${total}`;
+      } else {
+        const n = tiles.filter(t => (t.dataset.tags || '').toLowerCase().includes(f)).length;
+        const span = btn.querySelector('.count');
+        if (span) span.textContent = n;
+      }
+    });
+
+    // Sync search placeholder, results counter, and hero stat
+    searchInput.placeholder = `Search ${total} guides — try "potassium" or "dialysis"`;
+    resultsCount.textContent = total;
+    document.querySelectorAll('.stat').forEach(s => {
+      if (s.querySelector('.stat-label')?.textContent.trim() === 'Guides') {
+        s.querySelector('.stat-num').textContent = total;
+      }
+    });
+  })();
+
 }); // end DOMContentLoaded
 
 function toggleDark() {
