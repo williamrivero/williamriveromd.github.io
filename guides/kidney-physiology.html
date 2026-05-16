@@ -9,15 +9,18 @@
 <meta property="article:modified_time" content="2025-05-01T00:00:00+08:00">
 <meta property="og:site_name" content="William Gregory M. Rivero, MD">
 <meta property="og:title" content="Your Amazing Kidneys — Normal Physiology · W. G. M. Rivero, MD">
-<meta property="og:description" content="An immersive, scrolling meditation on what the normal kidneys do — filtration, reabsorption, balance, signal, blood pressure regulation, and the silent astonishments most people never learn.">
+<meta property="og:description" content="How your kidneys work — filtration, reabsorption, hormone production, blood pressure regulation, and electrolyte balance explained in plain language for patients.">
 <meta property="og:url" content="https://williamriveromd.com/guides/kidney-physiology.html">
 <meta property="og:image" content="https://williamriveromd.com/images/photo-hero.jpg">
 <meta property="og:locale" content="en_PH">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Your Amazing Kidneys — Normal Physiology · W. G. M. Rivero, MD">
-<meta name="twitter:description" content="An immersive, scrolling meditation on what the normal kidneys do — filtration, reabsorption, balance, signal, blood pressure regulation, and the silent astonishments most people never learn.">
+<meta name="twitter:description" content="How your kidneys work — filtration, reabsorption, hormone production, blood pressure regulation, and electrolyte balance explained in plain language for patients.">
 <meta name="twitter:image" content="https://williamriveromd.com/images/photo-hero.jpg">
-<meta name="description" content="An immersive, scrolling meditation on what the normal kidneys do — filtration, reabsorption, balance, signal, blood pressure regulation, and the silent astonishments most people never learn.">
+<meta name="description" content="How your kidneys work — filtration, reabsorption, hormone production, blood pressure regulation, and electrolyte balance explained in plain language for patients.">
+<meta name="keywords" content="how kidneys work Philippines, kidney physiology patient, kidney function explained, glomerular filtration, kidney tubule function, GFR kidney, erythropoietin kidney production, kidney blood pressure regulation, renin kidney, kidney electrolyte balance, kidney urine production, nephron function, kidney anatomy Philippines, kidney hormone production, kidney filtration explained, kidney acid base balance, creatinine clearance, kidney vitamin D, kidney phosphorus regulation, bato function Philippines">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -634,6 +637,29 @@
   }
   .print-btn:hover .p-tip { opacity: 1; }
 
+  /* ── SCROLL-TO-TOP BUTTON ────────────────────────────────────────────────── */
+  .scroll-top-btn {
+    position: fixed; bottom: 80px; right: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996;
+    opacity: 0; pointer-events: none;
+  }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #1a2e4a; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip {
+    position: absolute; right: 54px;
+    background: rgba(15,30,46,.9); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+
   /* ═══════════════════════════════════════════════════════════════════════════
      DARK MODE OVERRIDES
      Applied when html[data-theme="dark"] is set by toggleDark().
@@ -837,15 +863,42 @@
   html[data-theme="dark"] .audience-tabs{background:#141c2a;border-color:#2a3548;}
   html[data-theme="dark"] .aud-tab.active{color:#e8eaf0;}
 
-
+  /* ── GUIDE LANGUAGE BAR (regional recipes / multilingual tools) ──────────── */
+  .guide-lang-bar{display:flex;align-items:center;gap:8px;padding:8px 0 16px;flex-wrap:wrap;}
+  .lang-lbl{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-right:4px;}
+  .lang-btn-g{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;}
+  .lang-btn-g:hover{border-color:var(--teal);color:var(--teal);}
+  .lang-btn-g.active{background:var(--teal);border-color:var(--teal);color:white;}
 
   /* ── DOT COLOR VARIANTS ──────────────────────────────────────────────────── */
   .dot-gold{background:var(--gold);}
   .dot-orange{background:#e07b00;}
 
-  /* ── DOWNLOAD BUTTON ─────────────────────────────────────────────────────── */
+  /* ── DOWNLOAD BUTTON (inline variant) ───────────────────────────────────── */
   .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
   .download-btn:hover{background:#1a2e4a;}
+
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left) ─────────── */
+  .dl-fab {
+    position: fixed; bottom: 24px; left: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s; z-index: 9997;
+    text-decoration: none;
+  }
+  .dl-fab:hover { background: #1a2e4a; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .dl-fab svg { width: 18px; height: 18px; }
+  .dl-fab .p-tip {
+    position: absolute; left: 54px;
+    background: rgba(15,30,46,.9); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .dl-fab:hover .p-tip { opacity: 1; }
 
   /* ── MOBILE LAYOUT (≤ 480 px / 375 px phones) ───────────────────────────── */
   /* Tighter side padding on narrow viewports */
@@ -865,7 +918,7 @@
      PRINT
   ═══════════════════════════════════════════════════════════════════════════ */
   @media print {
-    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .guide-footer { display: none !important; }
+    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .dl-fab, .scroll-top-btn, .guide-footer { display: none !important; }
     body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; }
     .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; }
     .hero h1 { color: #0f1e2e !important; font-size: 22px !important; }
@@ -1133,7 +1186,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .container{max-width:1240px;margin:0 auto;padding:0 48px;}
 
   /* Site header — minimalist, matches williamriveromd.com brand on dark background */
-  .site-header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;mix-blend-mode:screen;}
+  .site-header{position:fixed;top:36px;left:0;right:0;z-index:190;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;mix-blend-mode:screen;}
   .site-header .brand{font-family:'Lora',serif;font-weight:400;font-size:16px;letter-spacing:.02em;color:var(--ink);}
   .site-header .brand strong{color:var(--gold);font-weight:600;}
   .site-header .back{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mid);transition:color .25s;}
@@ -2335,6 +2388,22 @@ function setPhysLang(lang) {
   if (saved !== 'en') setPhysLang(saved);
 })();
 </script>
+
+<button class="print-btn" onclick="window.print()" aria-label="Print this guide">
+  <span class="p-tip">Print / Save PDF</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+  </svg>
+</button>
+
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
 
 <script>

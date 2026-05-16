@@ -653,6 +653,29 @@ MASTER_CSS = """
   }
   .print-btn:hover .p-tip { opacity: 1; }
 
+  /* ── SCROLL-TO-TOP BUTTON ────────────────────────────────────────────────── */
+  .scroll-top-btn {
+    position: fixed; bottom: 80px; right: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996;
+    opacity: 0; pointer-events: none;
+  }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #1a2e4a; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip {
+    position: absolute; right: 54px;
+    background: rgba(15,30,46,.9); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+
   /* ═══════════════════════════════════════════════════════════════════════════
      DARK MODE OVERRIDES
      Applied when html[data-theme="dark"] is set by toggleDark().
@@ -867,9 +890,31 @@ MASTER_CSS = """
   .dot-gold{background:var(--gold);}
   .dot-orange{background:#e07b00;}
 
-  /* ── DOWNLOAD BUTTON ─────────────────────────────────────────────────────── */
+  /* ── DOWNLOAD BUTTON (inline variant) ───────────────────────────────────── */
   .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
   .download-btn:hover{background:#1a2e4a;}
+
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left) ─────────── */
+  .dl-fab {
+    position: fixed; bottom: 24px; left: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s; z-index: 9997;
+    text-decoration: none;
+  }
+  .dl-fab:hover { background: #1a2e4a; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .dl-fab svg { width: 18px; height: 18px; }
+  .dl-fab .p-tip {
+    position: absolute; left: 54px;
+    background: rgba(15,30,46,.9); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .dl-fab:hover .p-tip { opacity: 1; }
 
   /* ── MOBILE LAYOUT (≤ 480 px / 375 px phones) ───────────────────────────── */
   /* Tighter side padding on narrow viewports */
@@ -889,7 +934,7 @@ MASTER_CSS = """
      PRINT
   ═══════════════════════════════════════════════════════════════════════════ */
   @media print {
-    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .guide-footer { display: none !important; }
+    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .dl-fab, .scroll-top-btn, .guide-footer { display: none !important; }
     body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; }
     .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; }
     .hero h1 { color: #0f1e2e !important; font-size: 22px !important; }
