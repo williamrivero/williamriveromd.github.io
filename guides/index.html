@@ -11,6 +11,16 @@
 <meta property="og:description" content="94 evidence-based guides on CKD, dialysis, diabetes, hypertension, and nutrition. Written by a practising nephrologist for patients and their families.">
 <meta property="og:url" content="https://williamriveromd.com/guides/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:locale" content="en_PH">
+<meta property="og:image" content="https://williamriveromd.com/images/guides-hero-banner.png">
+<meta property="og:image:width" content="2172">
+<meta property="og:image:height" content="724">
+<meta property="og:image:alt" content="Patient Guides by W. G. M. Rivero, MD">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Patient Guides – W. G. M. Rivero, MD">
+<meta name="twitter:description" content="94 evidence-based guides on CKD, dialysis, diabetes, hypertension, and nutrition. Written by a practising nephrologist for patients and their families.">
+<meta name="twitter:image" content="https://williamriveromd.com/images/guides-hero-banner.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -1110,7 +1120,7 @@
     <h1>Expert Guides.<br><em>Real answers, plain language.</em></h1>
     <p class="hero-sub">Evidence-based guides by a practising nephrologist — for patients and their families.</p>
     <div class="stats-row">
-      <div class="stat"><span class="stat-num">94</span><span class="stat-label">Guides</span></div>
+      <div class="stat"><span class="stat-num">95</span><span class="stat-label">Guides</span></div>
       <div class="stat-divider"></div>
       <div class="stat"><span class="stat-num">4</span><span class="stat-label">Languages</span></div>
       <div class="stat-divider"></div>
@@ -1120,7 +1130,7 @@
     </div>
     <div class="search-wrap">
       <span class="search-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-      <input type="text" id="guide-search" placeholder='Search 94 guides — try "potassium" or "dialysis"' autocomplete="off" spellcheck="false">
+      <input type="text" id="guide-search" placeholder='Search 95 guides — try "potassium" or "dialysis"' autocomplete="off" spellcheck="false">
       <button class="search-clear" id="search-clear" title="Clear search">✕</button>
     </div>
   </div>
@@ -1271,6 +1281,7 @@
   <button class="mf-pill active" data-filter="all">All 95</button>
   <button class="mf-pill" data-filter="calculator">Calculator</button>
   <button class="mf-pill" data-filter="new">New</button>
+  <button class="mf-pill" data-filter="updated">Updated</button>
   <button class="mf-pill" data-filter="philippines">Philippines</button>
   <button class="mf-pill" data-filter="dialysis">Dialysis</button>
   <button class="mf-pill" data-filter="clinician">Clinician</button>
@@ -1284,13 +1295,16 @@
     <div class="sidebar-section">
       <div class="sidebar-heading">Filter by type</div>
       <button class="filter-btn active" data-filter="all">
-        <span class="filter-dot" style="background:#cbd5e1"></span>All guides<span class="count">94</span>
+        <span class="filter-dot" style="background:#cbd5e1"></span>All guides<span class="count">95</span>
       </button>
       <button class="filter-btn" data-filter="calculator">
         <span class="filter-dot" style="background:var(--teal)"></span>Has Calculator<span class="count">28</span>
       </button>
       <button class="filter-btn" data-filter="new">
         <span class="filter-dot" style="background:var(--orange)"></span>New<span class="count">10</span>
+      </button>
+      <button class="filter-btn" data-filter="updated">
+        <span class="filter-dot" style="background:var(--teal)"></span>Updated<span class="count">4</span>
       </button>
       <button class="filter-btn" data-filter="philippines">
         <span class="filter-dot" style="background:#f59e0b"></span>Philippines<span class="count">18</span>
@@ -1349,7 +1363,7 @@
     </div>
 
     <div class="results-bar">
-      <span class="results-count" id="results-count">94</span>
+      <span class="results-count" id="results-count">95</span>
       <span>guides</span>
       <span id="filter-label"></span>
     </div>
@@ -2729,6 +2743,35 @@ function highlight(text, words) {
     applyFilters();
     searchInput.focus();
   });
+
+  // Derive all filter counts from actual DOM tiles so they never go stale
+  (function syncFilterCounts() {
+    const tiles = [...document.querySelectorAll('.guide-tile')];
+    const total = tiles.length;
+
+    document.querySelectorAll('.filter-btn[data-filter], .mf-pill[data-filter]').forEach(btn => {
+      const f = btn.dataset.filter;
+      if (f === 'all') {
+        const span = btn.querySelector('.count');
+        if (span) span.textContent = total;
+        if (btn.classList.contains('mf-pill')) btn.textContent = `All ${total}`;
+      } else {
+        const n = tiles.filter(t => (t.dataset.tags || '').toLowerCase().includes(f)).length;
+        const span = btn.querySelector('.count');
+        if (span) span.textContent = n;
+      }
+    });
+
+    // Sync search placeholder, results counter, and hero stat
+    searchInput.placeholder = `Search ${total} guides — try "potassium" or "dialysis"`;
+    resultsCount.textContent = total;
+    document.querySelectorAll('.stat').forEach(s => {
+      if (s.querySelector('.stat-label')?.textContent.trim() === 'Guides') {
+        s.querySelector('.stat-num').textContent = total;
+      }
+    });
+  })();
+
 }); // end DOMContentLoaded
 
 function toggleDark() {
