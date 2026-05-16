@@ -1113,6 +1113,94 @@ html[data-theme="dark"] .deq { background: #1a2535; border-color: #2a3548; }
   .tl-week { min-width: 64px; }
   .k-level { min-width: 88px; font-size: 12px; }
 }
+
+/* ── SIDEBAR TOC ────────────────────────────────────────────────────────── */
+.toc-layout {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1160px;
+  margin: 0 auto;
+  gap: 0;
+}
+.toc-layout .container {
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+}
+.toc-sidebar {
+  width: 210px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 110px;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+  padding: 20px 12px 20px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.toc-sidebar::-webkit-scrollbar { width: 3px; }
+.toc-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.toc-sidebar-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0 10px 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.toc-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 11.5px;
+  line-height: 1.35;
+  transition: background .15s, color .15s;
+  margin-bottom: 2px;
+}
+.toc-link:hover {
+  background: rgba(26,107,114,.07);
+  color: var(--teal);
+}
+.toc-link.toc-active {
+  background: rgba(26,107,114,.10);
+  color: var(--teal);
+  font-weight: 600;
+}
+.toc-num {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--text-muted);
+  font-size: 9px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s, color .15s;
+}
+.toc-link.toc-active .toc-num {
+  background: var(--teal);
+  color: white;
+}
+@media (max-width: 1100px) {
+  .toc-sidebar { display: none; }
+  .toc-layout { display: block; }
+  .toc-layout .container { max-width: 860px; margin: 0 auto; }
+}
+@media print {
+  .toc-sidebar { display: none !important; }
+  .toc-layout { display: block !important; }
+  .toc-layout .container { max-width: 100% !important; margin: 0 !important; }
+}
 </style>
 </head>
 <body>
@@ -1178,6 +1266,26 @@ html[data-theme="dark"] .deq { background: #1a2535; border-color: #2a3548; }
 </nav>
 
 <!-- ═══ MAIN CONTENT ═════════════════════════════════════════════════════ -->
+<div class="toc-layout">
+
+<aside class="toc-sidebar" aria-label="Module navigation">
+  <div class="toc-sidebar-title">Modules</div>
+  <a class="toc-link" href="#mod-1"><span class="toc-num">1</span>SGLT2 Start</a>
+  <a class="toc-link" href="#mod-2"><span class="toc-num">2</span>ACEi/ARB Cr Rise</a>
+  <a class="toc-link" href="#mod-3"><span class="toc-num">3</span>RAASi + Hyperkalemia</a>
+  <a class="toc-link" href="#mod-4"><span class="toc-num">4</span>GLP-1 Titration</a>
+  <a class="toc-link" href="#mod-5"><span class="toc-num">5</span>Diuretic Sequencing</a>
+  <a class="toc-link" href="#mod-6"><span class="toc-num">6</span>Binder Timing</a>
+  <a class="toc-link" href="#mod-7"><span class="toc-num">7</span>ESA Adjustment</a>
+  <a class="toc-link" href="#mod-8"><span class="toc-num">8</span>MRA / Finerenone</a>
+  <a class="toc-link" href="#mod-9"><span class="toc-num">9</span>Anticoagulation</a>
+  <a class="toc-link" href="#mod-10"><span class="toc-num">10</span>DM Meds → Dialysis</a>
+  <a class="toc-link" href="#mod-11"><span class="toc-num">11</span>Sleep Disturbance</a>
+  <a class="toc-link" href="#mod-12"><span class="toc-num">12</span>Antibiotic Stewardship</a>
+  <a class="toc-link" href="#mod-13"><span class="toc-num">13</span>Anti-TB in CKD/ESKD</a>
+  <a class="toc-link" href="#mod-14"><span class="toc-num">14</span>HIV ARVs in CKD/ESKD</a>
+</aside>
+
 <div class="container">
 
 <div class="intro-callout" style="margin-top:28px;">
@@ -3817,6 +3925,7 @@ html[data-theme="dark"] .deq { background: #1a2535; border-color: #2a3548; }
 </div>
 
 </div><!-- /container -->
+</div><!-- /toc-layout -->
 
 <!-- ═══ FOOTER ═══════════════════════════════════════════════════════════ -->
 <footer class="guide-footer">
@@ -3856,20 +3965,36 @@ function toggleDark() {
   }
 })();
 
-// Active nav highlight on scroll
+// Active nav + sidebar TOC highlight on scroll
 const sections = document.querySelectorAll('.algo-section[id]');
 const navLinks = document.querySelectorAll('.anl');
+const tocLinks = document.querySelectorAll('.toc-link');
 const scrollTopBtn = document.getElementById('scrollTopBtn');
 
-window.addEventListener('scroll', () => {
+function syncActive() {
   const scrollY = window.scrollY;
   if (scrollTopBtn) scrollTopBtn.classList.toggle('visible', scrollY > 400);
   let current = '';
-  sections.forEach(s => { if (scrollY >= s.offsetTop - 140) current = s.id; });
-  navLinks.forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  sections.forEach(s => { if (scrollY >= s.offsetTop - 160) current = s.id; });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  tocLinks.forEach(a => {
+    const active = a.getAttribute('href') === '#' + current;
+    a.classList.toggle('toc-active', active);
+    if (active) {
+      const sidebar = document.querySelector('.toc-sidebar');
+      if (sidebar) {
+        const aTop = a.offsetTop - sidebar.offsetTop;
+        const sCenter = sidebar.scrollTop + sidebar.clientHeight / 2;
+        if (aTop < sidebar.scrollTop || aTop > sidebar.scrollTop + sidebar.clientHeight) {
+          sidebar.scrollTo({ top: aTop - sidebar.clientHeight / 2, behavior: 'smooth' });
+        }
+      }
+    }
   });
-}, { passive: true });
+}
+
+window.addEventListener('scroll', syncActive, { passive: true });
+syncActive();
 
 // Lang stub
 const GLANG_KEY = 'wgmr-lang';
