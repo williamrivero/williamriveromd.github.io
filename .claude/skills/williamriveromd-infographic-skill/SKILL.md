@@ -14,180 +14,238 @@ description: >-
   williamriveromd.com house style.
 ---
 
-# WILLIAM RIVERO MD — CHATGPT IMAGE PROMPT SYSTEM (v5)
+# WILLIAM RIVERO MD - ADVANCED MEDICAL INFOGRAPHIC + IMAGE GENERATOR GPT SYSTEM v5
 
-This skill does **not** render images. It writes the **exact prompt text** to
-paste into **ChatGPT's Image Generator 2** (GPT-image / GPT-4o native image
-generation — *not* legacy DALL·E 3). That model renders text/labels well and
-follows long instructions closely, but still has **no** negative-prompt flag,
-no weights, and no style-reference parameter — so every control must live
-*inside the prompt text*. This system encodes that control to fix the three
-recurring failures: **flat/non-photorealistic output, anatomical/medical
-errors, and inconsistent style across guides.**
+## PURPOSE
 
-## How to use
+This skill creates production-ready prompts and visual plans for medical images and infographics for williamriveromd.com/guides.
 
-1. Pick the archetype (§4).
-2. Assemble the prompt in this exact order:
-   **STYLE LOCK (§1) → DO-NOT CLAUSE (§2) → ANATOMY SPEC (§3, only if anatomy appears) → ARCHETYPE TEMPLATE (§4) → TEXT RULES (§5).**
-3. Fill every `[BRACKET]`. Delete nothing from the verbatim blocks.
-4. Paste into ChatGPT as one message. Generate.
-5. Run the QC checklist (§7). If it fails, iterate with the §7 phrasing — do **not** start a fresh prompt (you lose consistency).
+It is designed to work with ChatGPT image-generation workflows, including the custom Image Generator GPT:
+https://chatgpt.com/g/g-pmuQfob8d-image-generator
 
-The STYLE LOCK and DO-NOT CLAUSE are **pasted verbatim in every single prompt** — that repetition *is* the consistency engine, since the tool has no `--sref`.
+Use this skill to convert guide content into:
+- photorealistic editorial hero images
+- patient education infographics
+- clinician reference cards
+- clinical algorithms and flowcharts
+- dialysis workflow graphics
+- pathophysiology mechanism posters
+- food and nutrition matrices
+- case snapshot graphics
+- circular workflow diagrams
+- 2D/3D component-based medical graphics
 
-## 1. STYLE LOCK — paste verbatim, every prompt
+## DEFAULT EXECUTION TARGET
 
-> Style: premium medical-publication editorial illustration in the visual
-> language of KDIGO, AJKD, and NEJM. Clean, calm, authoritative, modern.
-> Color palette strictly limited to: deep teal #1a6b72 (primary), dark slate
-> #1e2a38 (text/structure), near-white #f9fafb (background), with restrained
-> medical accents — clinical red #c0392b (danger/escalation), amber #e0a800
-> (caution), green #2e7d57 (safe/recommended), violet #6b4fa1 (specialist).
-> Generous negative space. Soft, even, diffused studio lighting. Subtle
-> depth, no heavy drop shadows, no gradients-as-decoration. Flat-plus-dimensional
-> hybrid: 2D layout discipline with semi-photorealistic 3D medical elements.
-> Filipino clinical context where people or settings appear. Crisp,
-> mobile-first legibility. Photographed on a full-frame camera, 50mm lens,
-> f/4, high dynamic range, ultra-detailed, sharp focus, professional medical
-> photography quality. No stock-photo cheesiness, no AI sheen, no neon, no
-> sci-fi, no cartoon.
+When the user says apply this skill, generate prompts, batch generate image prompts, make image-generator prompts, use Image Generator, use the Image Generator GPT, or use /generate-image, assume the output should be formatted for the ChatGPT Image Generator GPT unless another tool is specified.
 
-## 2. DO-NOT CLAUSE — paste verbatim, every prompt
+The skill should produce copy-ready prompts that can be pasted directly into:
+https://chatgpt.com/g/g-pmuQfob8d-image-generator
 
-> Do not include: garbled, misspelled, or invented text/labels; lorem-ipsum;
-> watermarks or signatures; duplicated, fused, or extra anatomical structures;
-> anatomically impossible organs or vessels; distorted hands or faces; more
-> than the specified number of people; clutter or decorative noise; rainbow or
-> neon colors; heavy bokeh; surreal or fantastical elements. Every anatomical
-> structure must be medically accurate and correctly positioned. If you cannot
-> render a label with correct spelling, render no label there.
+## CORE VISUAL PHILOSOPHY
 
-## 3. ANATOMY SPEC — include the relevant lines whenever anatomy is shown
+All visuals should feel like part of a single premium nephrology education system.
 
-- **Kidney:** bean-shaped, ~11–12 cm, smooth capsule, deep red-brown,
-  retroperitoneal; concave hilum medial; renal artery/vein/ureter exiting the
-  hilum in correct order. Two kidneys only. No liver/spleen substitution.
-- **Glomerulus:** tuft of capillary loops inside Bowman's capsule, afferent
-  arteriole wider than efferent, podocytes wrapping capillaries.
-- **Nephron:** glomerulus → proximal tubule → loop of Henle → distal tubule →
-  collecting duct, in correct sequence.
-- **AV fistula (AVF):** native artery-to-vein anastomosis at the wrist or
-  elbow, dilated superficial vein, no synthetic tubing.
-- **AV graft (AVG):** synthetic loop/straight conduit connecting artery to vein.
-- **Central venous catheter (CVC):** dual-lumen catheter in internal jugular,
-  tip at cavoatrial junction.
-- **Hemodialysis circuit:** access → arterial line → blood pump → dialyzer →
-  venous line → return, directionally correct.
-- Append: "Anatomically accurate, medically correct, suitable for a
-  peer-reviewed nephrology publication."
+The visual language should combine:
+- photorealistic Filipino medical editorial imagery
+- clean 2D infographic architecture
+- semi-photorealistic 3D medical component rendering
+- publication-grade medical illustration
+- KDIGO/AJKD/NEJM-style educational hierarchy
+- mobile-friendly website composition
+- algorithmic clarity for clinician tabs
 
-## 4. ARCHETYPE TEMPLATES
+Avoid:
+- generic AI art
+- cartoon educational style
+- cluttered Canva-style templates
+- tiny unreadable labels
+- noisy social media graphic aesthetics
+- excessive gloss or neon gradients
+- unrealistic anatomy
+- stock-photo blandness
 
-Each: when to use · aspect ratio · fill-in template.
+## MASTER STYLE SYSTEM
 
-### A. Editorial Hero — guide top banner
-Ratio 16:9 (or 1200×630 for share). People/scene, minimal/no text.
-> A photorealistic editorial photograph for a nephrology patient guide on
-> [TOPIC]. Scene: [e.g., a Filipino nephrologist in a modern Manila clinic
-> reviewing results with an older Filipino patient]. Composition: subject
-> right third, clean negative space left for headline overlay. Warm,
-> reassuring, dignified mood. No text in the image.
+Color palette:
+- Primary navy: #0f1e2e
+- Clinical teal: #1a6b72
+- Renal green: #1f7a4d
+- Amber/gold: #b8860b
+- Clinical red: #b91c1c
+- Soft gray: #f3f4f6
+- Off-white: #fafafa
 
-### B. Pathophysiology Poster
-Ratio 4:5 or 1:1. One mechanism, labeled.
-> A clean medical pathophysiology illustration explaining [MECHANISM, e.g.,
-> how hypertension damages the glomerulus]. Central semi-photorealistic 3D
-> [STRUCTURE]; 3–5 stages left-to-right with short callouts: [STAGE 1] /
-> [STAGE 2] / [STAGE 3]. Each label ≤4 words, exact spelling provided below.
+Typography direction:
+- Large bold condensed sans-serif titles
+- Strong visual hierarchy
+- Short educational phrases
+- Mobile-readable labels
+- Avoid paragraph-heavy text
+- Avoid excessive microtext
 
-### C. Clinical Algorithm / Flowchart
-Ratio 4:5 portrait. KDIGO/ADA/ESC-style.
-> A clean clinical decision algorithm for [DECISION, e.g., managing
-> hyperkalemia in CKD]. Vertical flow, max 3–5 branch levels, rounded nodes,
-> straight orthogonal connectors. Teal = recommended path, red = escalate/
-> emergency, amber = caution. Nodes contain only the exact text listed below.
-> No spaghetti crossings.
+Composition:
+- Prefer 16:9 landscape for guide graphics
+- Use 4:3 when density requires it
+- Use portrait only for reference cards or vertical algorithms
+- Preserve negative space
+- Maintain clean modular sections
+- Use rounded cards and panels
+- Avoid overcrowding
 
-### D. Multi-panel Educational Infographic
-Ratio 4:5 or 9:16. 3–6 panels.
-> A [N]-panel patient-education infographic on [TOPIC]. Even grid, each panel
-> = one icon-style semi-realistic illustration + ≤6-word caption (exact text
-> below). Consistent icon weight and panel size. Calm, uncluttered.
+## IMAGE GENERATOR GPT ADAPTER
 
-### E. Clinician Reference Card
-Ratio 1:1 or 4:5. Dense but ordered.
-> A clinician quick-reference card for [TOPIC]. Structured table/zoned layout,
-> clear hierarchy, dosing/targets in a monospaced-style block. Professional,
-> dense, legible at mobile size. All values exactly as listed below.
+When writing prompts for the Image Generator GPT, use this structure:
 
-### F. Food Matrix
-Ratio 1:1. Grid of foods by a metric.
-> A kidney-diet food matrix for [NUTRIENT, e.g., potassium]. Photorealistic
-> Filipino foods ([LIST]) arranged in a grid, color-coded green=low /
-> amber=moderate / red=high. Each cell: realistic food photo + name (exact
-> spelling below) + a small badge.
+FILE NAME:
+[recommended file name]
 
-### G. Case Snapshot
-Ratio 4:5. One patient vignette.
-> A single-case clinical snapshot for [SCENARIO]. Left: semi-realistic patient
-> figure; right: 3–4 vitals/labs in a clean stat stack (exact numbers below).
-> One takeaway banner at the bottom.
+IMAGE TYPE:
+[archetype]
 
-### H. Circular Workflow
-Ratio 1:1. Cyclical process.
-> A circular workflow diagram of [CYCLE, e.g., the dialysis treatment cycle].
-> 4–6 evenly spaced stages around a ring, directional arrows, central title
-> hub. Each stage: icon + ≤3-word label (exact below).
+ASPECT RATIO:
+[16:9, 4:3, 1:1, or portrait]
 
-### I. Access / Procedural Education
-Ratio 4:5. Stepwise procedure/anatomy.
-> A patient-education illustration of [PROCEDURE/ACCESS, e.g., an AV fistula
-> for hemodialysis]. Semi-photorealistic 3D anatomy with the §3 spec,
-> 2–4 numbered steps, clean leader lines to correctly spelled labels (below).
+AUDIENCE:
+[patients, clinicians, dialysis nurses, renal dietitians, mixed]
 
-## 5. TEXT-IN-IMAGE RULES
+VISUAL GOAL:
+[one-sentence purpose]
 
-Image Generator 2 renders text **well** — this is its big advantage over
-legacy DALL·E. Use that strength; don't avoid labels.
+PROMPT:
+[full production prompt]
 
-- **Always list every on-image word verbatim at the end of the prompt** so
-  spelling is exact, e.g.:
-  `All text spelled exactly as: "Stage 1", "eGFR ≥ 90", "Monitor closely".`
-- Multi-panel infographics, algorithms, and reference cards **may carry full,
-  accurate labels** — the model handles them reliably when listed verbatim.
-- Still keep on-image copy purposeful (headlines/labels/short captions), not
-  paragraphs — legibility and mobile scale, not a model limitation.
-- Hero images (archetype A): **"No text in the image."** This is a *design*
-  choice (headlines are overlaid in HTML), not a tool limitation.
-- If a specific label still renders wrong, re-roll in the same chat with §7
-  phrasing ("change only the text to read exactly …"); don't drop to "no
-  label" — this model can get it right.
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation.
 
-## 6. CONSISTENCY PROTOCOL (whole-site cohesion)
+QUALITY CHECK:
+Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com.
 
-- STYLE LOCK + DO-NOT CLAUSE pasted **identically** every time — never paraphrase.
-- Fixed aspect ratio per archetype (above) — don't vary within a type.
-- To match an existing approved image, append: *"Match the exact palette,
-  lighting, line weight, and composition discipline of my established
-  williamriveromd.com series."*
-- One archetype change at a time when iterating.
-- File naming: `[guide-slug]-[archetype]-[short-desc].png` (e.g.
-  `aki-on-ckd-hero-clinic-consult.png`) so the set stays auditable.
+## MIXED-MEDIA RENDERING SYSTEM
 
-## 7. QC CHECKLIST — reject & iterate
+Use these rendering modes intelligently:
 
-Reject if any: anatomy wrong/duplicated · misspelled or invented text ·
-palette drift (colors outside §1) · >specified people · cartoonish/AI-sheen ·
-clutter / lost negative space · style mismatch vs the series.
+A. Photorealistic Editorial Models
+Use for guide hero images, clinician and patient scenes, family conversations, dialysis unit scenes, social share cards, and emotional trust-building visuals.
 
-Iterate **in the same chat**, never from scratch:
-> "Keep the composition, palette, lighting, and style **exactly** the same.
-> Only change: [the kidney shape is wrong — make it bean-shaped with the hilum
-> medial] / [fix the label to read exactly 'eGFR']. Change nothing else."
+Preferred:
+- Filipino nephrologists
+- Filipino CKD patients
+- Filipino dialysis patients
+- Filipino families and caregivers
+- dialysis nurses and multidisciplinary renal teams
 
-## QUALITY BAR
+Style:
+- premium healthcare editorial photography
+- realistic lighting
+- natural skin texture
+- calm facial expressions
+- cinematic but restrained
+- clean clinical or home setting
+- shallow depth of field when appropriate
 
-Publication-grade for a peer-reviewed nephrology journal · medically accurate ·
-photorealistic where photographic · unified williamriveromd.com identity ·
-mobile-first legible · zero gibberish.
+B. 2D Infographic System
+Use for structured education, patient teaching, comparisons, checklists, food categories, and practical tips.
+
+C. 3D Medical Component Rendering
+Use for kidneys, nephrons, glomeruli, vascular access, dialysis machines, blood vessels, stenosis, thrombus, syringes, lab tubes, medications, inflammation, or fibrosis pathways.
+
+## ARCHETYPES
+
+1. PHOTOREALISTIC EDITORIAL HERO
+Use for guide headers, website hero banners, social sharing cards, and section introductions.
+
+Prompt scaffold:
+Photorealistic medical editorial hero image for a nephrology education guide. Show [scene]. Include realistic Filipino [doctor/patient/family/nurse] in a [clinic/home/dialysis unit] environment. Premium healthcare publication aesthetic, cinematic but restrained lighting, natural skin texture, calm trustworthy mood, clean background, navy and teal accents, negative space preserved for title overlay, mobile-safe crop, no text embedded unless explicitly requested.
+
+2. PATHOPHYSIOLOGY MECHANISM POSTER
+Use for CKD progression, proteinuria, hyperfiltration, cardiorenal syndrome, inflammation/fibrosis, and dialysis physiology.
+
+Prompt scaffold:
+Medical pathophysiology infographic poster, AJKD/NEJM graphical abstract style. Explain [mechanism] using a central semi-photorealistic 3D medical diagram, modular explanatory cards, color-coded arrows, normal vs disease comparison when useful, and bottom clinical implications. White or soft-gray background, navy/teal/amber/red accents, highly readable, publication-grade nephrology educational design.
+
+3. CLINICAL ALGORITHM / FLOWCHART
+Use for treatment escalation, diagnostic pathways, dialysis workflows, ESA/iron titration, hyperkalemia, AKI workup, CKD progression intervention maps, referral timing, and vascular access planning.
+
+Prompt scaffold:
+Clinical nephrology algorithm infographic, premium KDIGO/ADA/ESC guideline flowchart aesthetic. Create a structured [top-to-bottom/left-to-right] pathway for [topic]. Use rounded decision nodes, action nodes, monitoring nodes, escalation nodes, contraindication nodes, and endpoint nodes. Navy structure lines, teal recommendation boxes, amber caution nodes, red escalation nodes, green optimal pathway nodes. Maximum 3-5 branching levels, avoid spaghetti flowchart, preserve whitespace, mobile-readable.
+
+4. MULTI-PANEL EDUCATIONAL INFOGRAPHIC
+Use for CKD lifestyle, dialysis access care, dialysis self-care, BP/diabetes control, medication adherence, and patient action plans.
+
+Prompt scaffold:
+Patient education infographic poster, landscape 16:9, modern nephrology clinic aesthetic. Include a top hero header, 5-8 modular educational panels, practical tips, warning signs, monitoring targets, and a bottom take-home message. Combine photorealistic Filipino patient/doctor scenes, 2D icons, and selected 3D medical components. Clean white background, navy/teal/green palette, rounded cards, readable on mobile.
+
+5. CLINICIAN REFERENCE CARD
+Use for laboratory interpretation, medication comparisons, dialysis adequacy, transplant nephrology, CKD staging, and anemia management.
+
+Prompt scaffold:
+Clinical reference infographic card for clinicians, publication-grade nephrology design. Include concise overview, definitions, diagnostic considerations, evaluation approach, management principles, and key takeaways. Use modular cards, selected 3D medical components, clean icons, and compact tables. White background, navy/teal headings, high readability, not cluttered.
+
+6. FOOD MATRIX / NUTRITION INFOGRAPHIC
+Use for potassium, phosphorus, sodium, protein, dialysis diet, uric acid, and Filipino renal diet education.
+
+Prompt scaffold:
+CKD/dialysis nutrition infographic, clean educational food matrix. Show recommended foods, foods to limit, serving guidance, rationale, and practical tips. Include Filipino-relevant foods, realistic food rendering, clean category cards, navy/teal/green/amber palette, mobile-readable labels, not cluttered.
+
+7. CASE SNAPSHOT
+Use for anemia examples, dialysis cases, AKI examples, acid-base cases, transplant cases, and teaching pearls.
+
+Prompt scaffold:
+Clinical case snapshot infographic, nephrology conference teaching style. Create [number] modular case cards, each with patient context, key lab values, one visual component, and a teaching pearl. Use clean tables, 3D medical objects, bold headings, and concise clinical interpretation. Publication-grade, mobile-readable.
+
+8. CIRCULAR WORKFLOW / CYCLE
+Use for monthly HD anemia workflow, CKD monitoring loops, dialysis quality cycles, medication review cycles, and nutrition monitoring cycles.
+
+Prompt scaffold:
+Circular clinical workflow infographic, polished nephrology systems diagram. Center object: [dialysis machine/kidney/lab panel]. Around it, show sequential steps with arrows: [steps]. Use 3D medical components, clean labels, navy/teal/gold accents, strong hierarchy, mobile-readable.
+
+9. ACCESS / PROCEDURAL EDUCATION
+Use for AV fistula, AV graft, tunneled dialysis catheter, cannulation, thrill assessment, vascular access complications, and access planning.
+
+Prompt scaffold:
+Dialysis access education infographic, mixed-media medical visual system. Combine 3D vascular access diagrams, photorealistic Filipino dialysis patient or nurse scenes, step-by-step care panels, warning signs, and comparison tables. Use navy/teal/green/red color logic, clean annotations, realistic anatomy, and mobile-readable design.
+
+## CONTENT ANALYSIS PIPELINE
+
+Before generating image prompts:
+1. Read the guide or section content.
+2. Identify audience: patient, clinician, dialysis nurse, renal dietitian, or mixed.
+3. Extract key educational targets.
+4. Decide where photorealism is useful.
+5. Decide where 3D components are needed.
+6. Decide where algorithmic flow is needed.
+7. Assign archetype.
+8. Generate batch-ready Image Generator GPT prompts.
+
+## OUTPUT FORMAT FOR BATCH PROMPTS
+
+For each image:
+
+IMAGE NUMBER:
+SECTION PLACEMENT:
+FILE NAME:
+ARCHETYPE:
+AUDIENCE:
+VISUAL MIX:
+- photorealistic models:
+- 2D infographic:
+- 3D component graphics:
+- algorithm/flowchart:
+
+PURPOSE:
+KEY CONCEPTS:
+DIMENSIONS:
+COPY-READY IMAGE GENERATOR GPT PROMPT:
+
+## MASTER DIRECTIVE
+
+All prompts must create visuals that belong to a single, premium williamriveromd.com nephrology education ecosystem.
+
+Use mixed media when useful:
+- photorealistic Filipino medical models for human trust and relatability
+- 2D modular infographic cards for clarity
+- 3D medical components for anatomy, devices, and mechanisms
+- algorithmic pathways for clinician decision-making
+
+Never sacrifice clinical clarity for visual complexity.
