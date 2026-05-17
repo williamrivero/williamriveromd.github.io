@@ -1,7 +1,8 @@
 ---
 name: williamriveromd-infographic-skill
 description: >-
-  Produces ready-to-paste ChatGPT (DALL·E 3 / GPT-image) prompts for the
+  Produces ready-to-paste ChatGPT Image Generator 2 (GPT-image / GPT-4o
+  native image generation) prompts for the
   williamriveromd.com nephrology patient-education site. Use whenever creating
   or designing ANY visual asset for these guides — editorial hero images,
   pathophysiology posters, clinical algorithms/flowcharts, multi-panel
@@ -16,11 +17,13 @@ description: >-
 # WILLIAM RIVERO MD — CHATGPT IMAGE PROMPT SYSTEM (v5)
 
 This skill does **not** render images. It writes the **exact prompt text** to
-paste into ChatGPT's image generator (DALL·E 3 / GPT-image). That tool has
-**no** negative-prompt flag, no weights, no style-reference parameter — so
-every control must live *inside the prompt text*. This system encodes that
-control to fix the three recurring failures: **flat/non-photorealistic
-output, anatomical/medical errors, and inconsistent style across guides.**
+paste into **ChatGPT's Image Generator 2** (GPT-image / GPT-4o native image
+generation — *not* legacy DALL·E 3). That model renders text/labels well and
+follows long instructions closely, but still has **no** negative-prompt flag,
+no weights, and no style-reference parameter — so every control must live
+*inside the prompt text*. This system encodes that control to fix the three
+recurring failures: **flat/non-photorealistic output, anatomical/medical
+errors, and inconsistent style across guides.**
 
 ## How to use
 
@@ -145,14 +148,21 @@ Ratio 4:5. Stepwise procedure/anatomy.
 
 ## 5. TEXT-IN-IMAGE RULES
 
-- GPT-image renders short text fairly well but still errs. **List every word
-  that must appear, verbatim, at the end of the prompt**, e.g.:
-  `Exact labels, spelled exactly: "Stage 1", "eGFR ≥ 90", "Monitor".`
-- Keep on-image text minimal — prefer ≤6 words per element.
-- Hero images (archetype A): **"No text in the image."** Headlines are
-  overlaid in HTML later.
-- If a render still garbles text, switch that label to "no label" and add it
-  in HTML instead of fighting the model.
+Image Generator 2 renders text **well** — this is its big advantage over
+legacy DALL·E. Use that strength; don't avoid labels.
+
+- **Always list every on-image word verbatim at the end of the prompt** so
+  spelling is exact, e.g.:
+  `All text spelled exactly as: "Stage 1", "eGFR ≥ 90", "Monitor closely".`
+- Multi-panel infographics, algorithms, and reference cards **may carry full,
+  accurate labels** — the model handles them reliably when listed verbatim.
+- Still keep on-image copy purposeful (headlines/labels/short captions), not
+  paragraphs — legibility and mobile scale, not a model limitation.
+- Hero images (archetype A): **"No text in the image."** This is a *design*
+  choice (headlines are overlaid in HTML), not a tool limitation.
+- If a specific label still renders wrong, re-roll in the same chat with §7
+  phrasing ("change only the text to read exactly …"); don't drop to "no
+  label" — this model can get it right.
 
 ## 6. CONSISTENCY PROTOCOL (whole-site cohesion)
 
