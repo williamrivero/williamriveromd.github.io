@@ -1,3 +1,18 @@
+---
+name: williamriveromd-infographic-skill
+description: >-
+  Publication-grade medical infographic and editorial visual system for the
+  williamriveromd.com nephrology patient-education site. Use whenever creating,
+  designing, or generating any visual asset for these guides — editorial hero
+  images, pathophysiology posters, clinical algorithms/flowcharts, multi-panel
+  educational infographics, clinician reference cards, food matrices, case
+  snapshots, circular workflows, dialysis access/procedural diagrams, or 3D
+  medical component renderings (kidneys, glomeruli, vessels, dialysis access,
+  machines, stenosis, thrombus). Applies KDIGO/AJKD/NEJM visual language,
+  photorealistic Filipino clinical environments, and the unified
+  williamriveromd.com aesthetic.
+---
+
 # WILLIAM RIVERO MD — ADVANCED MEDICAL INFOGRAPHIC + EDITORIAL VISUAL SYSTEM
 
 Includes:
