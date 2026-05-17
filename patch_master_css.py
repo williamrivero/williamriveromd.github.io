@@ -409,7 +409,7 @@ MASTER_CSS = """
   .steps { margin: 24px 0; }
   .step { display: flex; gap: 20px; margin-bottom: 24px; align-items: flex-start; }
   .step-num {
-    width: 36px; height: 36px; background: var(--navy); color: white;
+    width: 36px; height: 36px; background: var(--teal); color: white;
     border-radius: 50%; display: flex; align-items: center; justify-content: center;
     font-size: 14px; font-weight: 600; flex-shrink: 0;
   }
