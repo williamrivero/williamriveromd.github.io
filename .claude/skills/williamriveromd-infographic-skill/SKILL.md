@@ -1,79 +1,193 @@
-# WILLIAM RIVERO MD — ADVANCED MEDICAL INFOGRAPHIC + EDITORIAL VISUAL SYSTEM
+---
+name: williamriveromd-infographic-skill
+description: >-
+  Produces ready-to-paste ChatGPT Image Generator 2 (GPT-image / GPT-4o
+  native image generation) prompts for the
+  williamriveromd.com nephrology patient-education site. Use whenever creating
+  or designing ANY visual asset for these guides — editorial hero images,
+  pathophysiology posters, clinical algorithms/flowcharts, multi-panel
+  educational infographics, clinician reference cards, food matrices, case
+  snapshots, circular workflows, dialysis access/procedural diagrams, or 3D
+  medical component renderings (kidneys, glomeruli, vessels, dialysis access,
+  machines, stenosis, thrombus). Outputs a single copy-paste prompt block
+  engineered for photorealism, medical/anatomical accuracy, and a unified
+  williamriveromd.com house style.
+---
 
-Includes:
-- photorealistic editorial hero archetype
-- clinical algorithm archetype
-- 2D infographic archetype
-- 3D medical component rendering system
-- mixed-media infographic architecture
-- case snapshot archetype
-- circular workflow archetype
-- dialysis access/procedural archetype
-- Filipino nephrologist and patient editorial model system
+# WILLIAM RIVERO MD — CHATGPT IMAGE PROMPT SYSTEM (v5)
 
+This skill does **not** render images. It writes the **exact prompt text** to
+paste into **ChatGPT's Image Generator 2** (GPT-image / GPT-4o native image
+generation — *not* legacy DALL·E 3). That model renders text/labels well and
+follows long instructions closely, but still has **no** negative-prompt flag,
+no weights, and no style-reference parameter — so every control must live
+*inside the prompt text*. This system encodes that control to fix the three
+recurring failures: **flat/non-photorealistic output, anatomical/medical
+errors, and inconsistent style across guides.**
 
-CORE PRINCIPLES:
-- KDIGO / AJKD / NEJM visual language
-- premium nephrology publication aesthetic
-- modular educational hierarchy
-- mobile readability
-- publication-grade infographic composition
-- photorealistic Filipino clinical environments
-- semi-photorealistic 3D medical rendering
-- unified williamriveromd.com visual ecosystem
+## How to use
 
-MIXED MEDIA SYSTEM:
-The system intelligently combines:
-1. Photorealistic editorial photography
-2. 2D infographic layouts
-3. 3D medical component rendering
-4. Clinical algorithms
-5. Educational card systems
+1. Pick the archetype (§4).
+2. Assemble the prompt in this exact order:
+   **STYLE LOCK (§1) → DO-NOT CLAUSE (§2) → ANATOMY SPEC (§3, only if anatomy appears) → ARCHETYPE TEMPLATE (§4) → TEXT RULES (§5).**
+3. Fill every `[BRACKET]`. Delete nothing from the verbatim blocks.
+4. Paste into ChatGPT as one message. Generate.
+5. Run the QC checklist (§7). If it fails, iterate with the §7 phrasing — do **not** start a fresh prompt (you lose consistency).
 
-ARCHETYPES INCLUDED:
-1. Editorial Hero
-2. Pathophysiology Poster
-3. Clinical Algorithm / Flowchart
-4. Multi-panel Educational Infographic
-5. Clinician Reference Card
-6. Food Matrix
-7. Case Snapshot
-8. Circular Workflow
-9. Access / Procedural Education
+The STYLE LOCK and DO-NOT CLAUSE are **pasted verbatim in every single prompt** — that repetition *is* the consistency engine, since the tool has no `--sref`.
 
-EDITORIAL HERO RULES:
-- realistic Filipino nephrologists
-- realistic Filipino CKD patients
-- cinematic but restrained lighting
-- negative space preserved
-- premium healthcare publication aesthetic
+## 1. STYLE LOCK — paste verbatim, every prompt
 
-ALGORITHM RULES:
-- KDIGO/ADA/ESC-style pathways
-- maximum 3–5 branching levels
-- avoid spaghetti flowcharts
-- teal recommendation nodes
-- red escalation nodes
-- clean arrows
-- publication-grade readability
+> Style: premium medical-publication editorial illustration in the visual
+> language of KDIGO, AJKD, and NEJM. Clean, calm, authoritative, modern.
+> Color palette strictly limited to: deep teal #1a6b72 (primary), dark slate
+> #1e2a38 (text/structure), near-white #f9fafb (background), with restrained
+> medical accents — clinical red #c0392b (danger/escalation), amber #e0a800
+> (caution), green #2e7d57 (safe/recommended), violet #6b4fa1 (specialist).
+> Generous negative space. Soft, even, diffused studio lighting. Subtle
+> depth, no heavy drop shadows, no gradients-as-decoration. Flat-plus-dimensional
+> hybrid: 2D layout discipline with semi-photorealistic 3D medical elements.
+> Filipino clinical context where people or settings appear. Crisp,
+> mobile-first legibility. Photographed on a full-frame camera, 50mm lens,
+> f/4, high dynamic range, ultra-detailed, sharp focus, professional medical
+> photography quality. No stock-photo cheesiness, no AI sheen, no neon, no
+> sci-fi, no cartoon.
 
-3D COMPONENT SYSTEM:
-Use premium semi-photorealistic medical rendering for:
-- kidneys
-- glomeruli
-- vessels
-- dialysis access
-- dialysis machines
-- stenosis
-- thrombus
-- laboratory objects
-- syringes
-- inflammation pathways
+## 2. DO-NOT CLAUSE — paste verbatim, every prompt
 
-QUALITY CONTROL:
-- avoid clutter
-- avoid AI gibberish labels
-- maintain medically plausible anatomy
-- preserve whitespace
-- mobile-first readability
-- publication-grade composition
+> Do not include: garbled, misspelled, or invented text/labels; lorem-ipsum;
+> watermarks or signatures; duplicated, fused, or extra anatomical structures;
+> anatomically impossible organs or vessels; distorted hands or faces; more
+> than the specified number of people; clutter or decorative noise; rainbow or
+> neon colors; heavy bokeh; surreal or fantastical elements. Every anatomical
+> structure must be medically accurate and correctly positioned. If you cannot
+> render a label with correct spelling, render no label there.
+
+## 3. ANATOMY SPEC — include the relevant lines whenever anatomy is shown
+
+- **Kidney:** bean-shaped, ~11–12 cm, smooth capsule, deep red-brown,
+  retroperitoneal; concave hilum medial; renal artery/vein/ureter exiting the
+  hilum in correct order. Two kidneys only. No liver/spleen substitution.
+- **Glomerulus:** tuft of capillary loops inside Bowman's capsule, afferent
+  arteriole wider than efferent, podocytes wrapping capillaries.
+- **Nephron:** glomerulus → proximal tubule → loop of Henle → distal tubule →
+  collecting duct, in correct sequence.
+- **AV fistula (AVF):** native artery-to-vein anastomosis at the wrist or
+  elbow, dilated superficial vein, no synthetic tubing.
+- **AV graft (AVG):** synthetic loop/straight conduit connecting artery to vein.
+- **Central venous catheter (CVC):** dual-lumen catheter in internal jugular,
+  tip at cavoatrial junction.
+- **Hemodialysis circuit:** access → arterial line → blood pump → dialyzer →
+  venous line → return, directionally correct.
+- Append: "Anatomically accurate, medically correct, suitable for a
+  peer-reviewed nephrology publication."
+
+## 4. ARCHETYPE TEMPLATES
+
+Each: when to use · aspect ratio · fill-in template.
+
+### A. Editorial Hero — guide top banner
+Ratio 16:9 (or 1200×630 for share). People/scene, minimal/no text.
+> A photorealistic editorial photograph for a nephrology patient guide on
+> [TOPIC]. Scene: [e.g., a Filipino nephrologist in a modern Manila clinic
+> reviewing results with an older Filipino patient]. Composition: subject
+> right third, clean negative space left for headline overlay. Warm,
+> reassuring, dignified mood. No text in the image.
+
+### B. Pathophysiology Poster
+Ratio 4:5 or 1:1. One mechanism, labeled.
+> A clean medical pathophysiology illustration explaining [MECHANISM, e.g.,
+> how hypertension damages the glomerulus]. Central semi-photorealistic 3D
+> [STRUCTURE]; 3–5 stages left-to-right with short callouts: [STAGE 1] /
+> [STAGE 2] / [STAGE 3]. Each label ≤4 words, exact spelling provided below.
+
+### C. Clinical Algorithm / Flowchart
+Ratio 4:5 portrait. KDIGO/ADA/ESC-style.
+> A clean clinical decision algorithm for [DECISION, e.g., managing
+> hyperkalemia in CKD]. Vertical flow, max 3–5 branch levels, rounded nodes,
+> straight orthogonal connectors. Teal = recommended path, red = escalate/
+> emergency, amber = caution. Nodes contain only the exact text listed below.
+> No spaghetti crossings.
+
+### D. Multi-panel Educational Infographic
+Ratio 4:5 or 9:16. 3–6 panels.
+> A [N]-panel patient-education infographic on [TOPIC]. Even grid, each panel
+> = one icon-style semi-realistic illustration + ≤6-word caption (exact text
+> below). Consistent icon weight and panel size. Calm, uncluttered.
+
+### E. Clinician Reference Card
+Ratio 1:1 or 4:5. Dense but ordered.
+> A clinician quick-reference card for [TOPIC]. Structured table/zoned layout,
+> clear hierarchy, dosing/targets in a monospaced-style block. Professional,
+> dense, legible at mobile size. All values exactly as listed below.
+
+### F. Food Matrix
+Ratio 1:1. Grid of foods by a metric.
+> A kidney-diet food matrix for [NUTRIENT, e.g., potassium]. Photorealistic
+> Filipino foods ([LIST]) arranged in a grid, color-coded green=low /
+> amber=moderate / red=high. Each cell: realistic food photo + name (exact
+> spelling below) + a small badge.
+
+### G. Case Snapshot
+Ratio 4:5. One patient vignette.
+> A single-case clinical snapshot for [SCENARIO]. Left: semi-realistic patient
+> figure; right: 3–4 vitals/labs in a clean stat stack (exact numbers below).
+> One takeaway banner at the bottom.
+
+### H. Circular Workflow
+Ratio 1:1. Cyclical process.
+> A circular workflow diagram of [CYCLE, e.g., the dialysis treatment cycle].
+> 4–6 evenly spaced stages around a ring, directional arrows, central title
+> hub. Each stage: icon + ≤3-word label (exact below).
+
+### I. Access / Procedural Education
+Ratio 4:5. Stepwise procedure/anatomy.
+> A patient-education illustration of [PROCEDURE/ACCESS, e.g., an AV fistula
+> for hemodialysis]. Semi-photorealistic 3D anatomy with the §3 spec,
+> 2–4 numbered steps, clean leader lines to correctly spelled labels (below).
+
+## 5. TEXT-IN-IMAGE RULES
+
+Image Generator 2 renders text **well** — this is its big advantage over
+legacy DALL·E. Use that strength; don't avoid labels.
+
+- **Always list every on-image word verbatim at the end of the prompt** so
+  spelling is exact, e.g.:
+  `All text spelled exactly as: "Stage 1", "eGFR ≥ 90", "Monitor closely".`
+- Multi-panel infographics, algorithms, and reference cards **may carry full,
+  accurate labels** — the model handles them reliably when listed verbatim.
+- Still keep on-image copy purposeful (headlines/labels/short captions), not
+  paragraphs — legibility and mobile scale, not a model limitation.
+- Hero images (archetype A): **"No text in the image."** This is a *design*
+  choice (headlines are overlaid in HTML), not a tool limitation.
+- If a specific label still renders wrong, re-roll in the same chat with §7
+  phrasing ("change only the text to read exactly …"); don't drop to "no
+  label" — this model can get it right.
+
+## 6. CONSISTENCY PROTOCOL (whole-site cohesion)
+
+- STYLE LOCK + DO-NOT CLAUSE pasted **identically** every time — never paraphrase.
+- Fixed aspect ratio per archetype (above) — don't vary within a type.
+- To match an existing approved image, append: *"Match the exact palette,
+  lighting, line weight, and composition discipline of my established
+  williamriveromd.com series."*
+- One archetype change at a time when iterating.
+- File naming: `[guide-slug]-[archetype]-[short-desc].png` (e.g.
+  `aki-on-ckd-hero-clinic-consult.png`) so the set stays auditable.
+
+## 7. QC CHECKLIST — reject & iterate
+
+Reject if any: anatomy wrong/duplicated · misspelled or invented text ·
+palette drift (colors outside §1) · >specified people · cartoonish/AI-sheen ·
+clutter / lost negative space · style mismatch vs the series.
+
+Iterate **in the same chat**, never from scratch:
+> "Keep the composition, palette, lighting, and style **exactly** the same.
+> Only change: [the kidney shape is wrong — make it bean-shaped with the hilum
+> medial] / [fix the label to read exactly 'eGFR']. Change nothing else."
+
+## QUALITY BAR
+
+Publication-grade for a peer-reviewed nephrology journal · medically accurate ·
+photorealistic where photographic · unified williamriveromd.com identity ·
+mobile-first legible · zero gibberish.
