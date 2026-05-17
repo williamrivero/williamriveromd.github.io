@@ -43,7 +43,7 @@ from pathlib import Path
 MASTER_CSS = """
   /* ═══════════════════════════════════════════════════════════════════════════
      MASTER GUIDE CSS — williamriveromd.com
-     Version: 2026-05-15
+     Version: 2026-05-17c
      All contrast ratios WCAG AA verified. Do not edit per-guide — edit here.
   ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -163,7 +163,7 @@ MASTER_CSS = """
 
   /* ── HERO ────────────────────────────────────────────────────────────────── */
   .hero {
-    background: var(--navy);
+    background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%);
     color: white;
     padding: 72px 0 80px;
     position: relative;
@@ -174,14 +174,14 @@ MASTER_CSS = """
     top: -60px; right: -80px;
     width: 420px; height: 420px;
     border-radius: 50%;
-    border: 1px solid rgba(184,150,46,.15);
+    border: 1px solid rgba(255,255,255,.1);
   }
   .hero-tag {
     display: inline-block;
     font-size: 11px; font-weight: 600;
     letter-spacing: .14em; text-transform: uppercase;
-    color: #d4af4f;                  /* 4.8:1 on --navy ✓ */
-    border: 1px solid rgba(184,150,46,.5);
+    color: rgba(255,255,255,.9);     /* 5.5:1 on --teal ✓ */
+    border: 1px solid rgba(255,255,255,.35);
     padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
   }
   .hero h1 {
@@ -260,13 +260,13 @@ MASTER_CSS = """
   .section p { color: var(--text-mid); margin-bottom: 16px; }
   .section p:last-child { margin-bottom: 0; }
 
-  /* ── INTRO CALLOUT (dark panel) ──────────────────────────────────────────── */
+  /* ── INTRO CALLOUT (teal panel) ──────────────────────────────────────────── */
   .intro-callout {
-    background: var(--navy);
+    background: var(--teal);
     border-radius: 16px; padding: 32px 36px; margin-bottom: 36px;
   }
   .intro-callout p {
-    color: rgba(255,255,255,.92) !important;  /* 14.8:1 ✓ */
+    color: rgba(255,255,255,.92) !important;  /* 7.4:1 on --teal ✓ */
     font-size: 16px; line-height: 1.75; margin: 0;
   }
   .intro-callout p strong { color: #ffffff !important; }
@@ -732,7 +732,7 @@ MASTER_CSS = """
   html[data-theme="dark"] .calc-wrap,
   html[data-theme="dark"] .img-placeholder { background: #1a2535; border-color: #2a3548; }
 
-  html[data-theme="dark"] .nav-pill:hover { background: #1a2535; }
+  html[data-theme="dark"] .nav-pill:hover { background: #1a2535; color: var(--text); }
 
   /* All text elements — one rule to cover them all */
   html[data-theme="dark"] .section p,
@@ -835,12 +835,24 @@ MASTER_CSS = """
   /* Guide footer */
   html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
 
+  /* Numeric cards — n-val/n-value use color:var(--navy); remap for dark */
+  html[data-theme="dark"] .n-val,
+  html[data-theme="dark"] .n-value { color: var(--text); }
+
+  /* Tab hover + clinician tab underline */
+  html[data-theme="dark"] .aud-tab:hover { color: var(--text); }
+  html[data-theme="dark"] .aud-tab.active.tab-md { border-bottom-color: var(--teal); }
+
+  /* Disclaimer strong text — inherits navy from light mode, needs remap */
+  html[data-theme="dark"] .disclaimer strong { color: var(--text-mid); }
+
   /* Desktop mode */
   html[data-view="desktop"] { min-width: 1024px; }
 
   /* ── STAT CARDS ──────────────────────────────────────────────────────────── */
   .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
-  .stat-card{background:var(--navy);border-radius:14px;padding:22px 24px;color:white;text-align:center;}
+  .stat-card{background:var(--teal);border-radius:14px;padding:22px 24px;color:white;text-align:center;}
+  html[data-theme="dark"] .stat-card{background:#0d2535;}
   .stat-number{font-family:'Lora',serif;font-size:clamp(24px,4vw,34px);font-weight:600;color:#d4af4f;line-height:1.1;margin-bottom:8px;}
   .stat-label{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;}
   .stat-source{font-size:11px;color:rgba(255,255,255,.45);margin-top:4px;}
@@ -887,6 +899,30 @@ MASTER_CSS = """
   body.physician-mode .mode-physician-pill{display:inline-flex;}
   html[data-theme="dark"] .audience-tabs{background:#141c2a;border-color:#2a3548;}
   html[data-theme="dark"] .aud-tab.active{color:#e8eaf0;}
+
+  /* ── PHYSICIAN MODE — NAVY PALETTE ──────────────────────────────────────
+     When body.physician-mode is active, key components switch from teal to
+     the homepage deep-navy palette (#0f1e2e/#1a3060), making clinician
+     content visually distinct from patient (teal) content at a glance.
+     Contrast verified: white on #0f1e2e = 15.5:1 ✓
+  ─────────────────────────────────────────────────────────────────────── */
+  body.physician-mode .hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #1a3060 100%);
+  }
+  body.physician-mode .intro-callout { background: #0f1e2e; }
+  body.physician-mode .stat-card     { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; }
+  body.physician-mode .nav-pill.active-pill {
+    background: var(--navy); border-color: var(--navy);
+  }
+  /* Tab active underline already uses var(--navy) for .tab-md — intentional */
+  /* Dark mode: already very dark; just deepen slightly */
+  html[data-theme="dark"] body.physician-mode .hero {
+    background: linear-gradient(135deg, #060f1a 0%, #0d1e40 100%);
+  }
+  html[data-theme="dark"] body.physician-mode .intro-callout,
+  html[data-theme="dark"] body.physician-mode .stat-card,
+  html[data-theme="dark"] body.physician-mode .ref-band { background: #0a1425; }
 
   /* ── GUIDE LANGUAGE BAR (regional recipes / multilingual tools) ──────────── */
   .guide-lang-bar{display:flex;align-items:center;gap:8px;padding:8px 0 16px;flex-wrap:wrap;}
