@@ -545,7 +545,7 @@ MASTER_CSS = """
 
   /* ── RELATED GUIDES SECTION ──────────────────────────────────────────────── */
   .related-guides {
-    margin: 48px 0 32px; padding-top: 32px;
+    max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0;
     border-top: 2px solid var(--border);
   }
   .related-guides h2 {
@@ -965,6 +965,7 @@ MASTER_CSS = """
   /* Tighter side padding on narrow viewports */
   @media(max-width: 480px) {
     .container { padding: 0 20px; }
+    .related-guides { padding-left: 20px; padding-right: 20px; }
     .guide-footer .footer-inner { padding: 0 20px; }
     .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
     .hero-meta { gap: 14px; }
