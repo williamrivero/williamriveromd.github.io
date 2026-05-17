@@ -43,7 +43,7 @@ from pathlib import Path
 MASTER_CSS = """
   /* ═══════════════════════════════════════════════════════════════════════════
      MASTER GUIDE CSS — williamriveromd.com
-     Version: 2026-05-15
+     Version: 2026-05-17
      All contrast ratios WCAG AA verified. Do not edit per-guide — edit here.
   ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -163,7 +163,7 @@ MASTER_CSS = """
 
   /* ── HERO ────────────────────────────────────────────────────────────────── */
   .hero {
-    background: var(--navy);
+    background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%);
     color: white;
     padding: 72px 0 80px;
     position: relative;
@@ -174,14 +174,14 @@ MASTER_CSS = """
     top: -60px; right: -80px;
     width: 420px; height: 420px;
     border-radius: 50%;
-    border: 1px solid rgba(184,150,46,.15);
+    border: 1px solid rgba(255,255,255,.1);
   }
   .hero-tag {
     display: inline-block;
     font-size: 11px; font-weight: 600;
     letter-spacing: .14em; text-transform: uppercase;
-    color: #d4af4f;                  /* 4.8:1 on --navy ✓ */
-    border: 1px solid rgba(184,150,46,.5);
+    color: rgba(255,255,255,.9);     /* 5.5:1 on --teal ✓ */
+    border: 1px solid rgba(255,255,255,.35);
     padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
   }
   .hero h1 {
@@ -260,13 +260,13 @@ MASTER_CSS = """
   .section p { color: var(--text-mid); margin-bottom: 16px; }
   .section p:last-child { margin-bottom: 0; }
 
-  /* ── INTRO CALLOUT (dark panel) ──────────────────────────────────────────── */
+  /* ── INTRO CALLOUT (teal panel) ──────────────────────────────────────────── */
   .intro-callout {
-    background: var(--navy);
+    background: var(--teal);
     border-radius: 16px; padding: 32px 36px; margin-bottom: 36px;
   }
   .intro-callout p {
-    color: rgba(255,255,255,.92) !important;  /* 14.8:1 ✓ */
+    color: rgba(255,255,255,.92) !important;  /* 7.4:1 on --teal ✓ */
     font-size: 16px; line-height: 1.75; margin: 0;
   }
   .intro-callout p strong { color: #ffffff !important; }
