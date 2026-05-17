@@ -42,7 +42,7 @@ OUT.mkdir(exist_ok=True)
 IMAGES = [
     {
         "filename": "el-nino-heat-dialysis-hero",
-        "size": "1792x1024",
+        "size": "1536x1024",
         "prompt": """Photorealistic medical editorial hero image for a Philippine nephrology patient-education guide. Split-scene composition, two atmospheric zones bleeding together through a heat-haze transition.
 
 LEFT ZONE (45% of frame): Filipino urban street at blazing noon El Niño season. Cracked concrete pavement, blinding white sky, shimmer heat-haze lines rising off asphalt. A motionless ceiling fan on an exterior wall — power is out. LED weather signboard in background showing "42.5°C HEAT INDEX >42°C". Bleached amber, burnt orange, dusty off-white palette. No people.
@@ -59,7 +59,7 @@ Style: Premium Philippine healthcare editorial photography. NEJM/Lancet feature 
     },
     {
         "filename": "el-nino-eskd-thermoregulation-pathophys",
-        "size": "1344x1024",
+        "size": "1536x1024",
         "prompt": """Medical pathophysiology infographic poster, AJKD/NEJM graphical abstract style. White background with soft gray section panels. Navy (#1f3864) and teal (#1a6b72) headers, amber (#b8962e) caution callouts, red (#b91c1c) danger indicators.
 
 TITLE BAR (navy background, white text): "Why Heat Is Dangerous in Dialysis — The ESKD Thermoregulation Crisis"
@@ -82,7 +82,7 @@ Style: Publication-grade AJKD/NEJM. Modular clean layout. Semi-photorealistic 3D
     },
     {
         "filename": "el-nino-four-heat-emergencies-patient",
-        "size": "1792x1024",
+        "size": "1536x1024",
         "prompt": """Patient education infographic poster, landscape 16:9. Modern Philippine nephrology clinic aesthetic. Clean white background, rounded card panels, navy (#1f3864) headers, teal (#1a6b72) action boxes, amber (#b8962e) warning, red (#b91c1c) emergency.
 
 TOP HEADER (navy, full width): White bold title: "4 HEAT EMERGENCIES — RECOGNIZE FAST, ACT FAST" Teal subtitle: "For dialysis patients and families · El Niño Season"
@@ -137,7 +137,7 @@ Style: KDIGO guideline reference card. Clean large readable values. Vertical flo
     },
     {
         "filename": "el-nino-brownout-water-rationing-dialysis",
-        "size": "1792x1024",
+        "size": "1536x1024",
         "prompt": """Patient education infographic poster, landscape 16:9. Clean white background. Navy (#1f3864) and amber (#b8962e) headers, teal (#1a6b72) action boxes, red (#b91c1c) danger callouts. Modern Philippine clinic aesthetic, rounded cards.
 
 TOP HEADER (navy, full width): White bold: "SURVIVING BROWNOUTS & WATER RATIONING ON DIALYSIS" Teal: "Practical steps for HD and PD patients — El Niño 2026" Inset right: small photorealistic Filipino family (parents + adult child) with generator and water storage container, calm and organized. Circle crop thumbnail.
@@ -181,7 +181,7 @@ Style: Practical action-oriented. Filipino family thumbnail. Three 3D objects gr
     },
     {
         "filename": "el-nino-fluid-management-heat-paradox",
-        "size": "1792x1024",
+        "size": "1536x1024",
         "prompt": """Patient education infographic poster, landscape 16:9. White background. Warm amber (#b8962e) and red (#b91c1c) on danger side, teal (#1a6b72) and green (#166534) on safe strategy side. Navy (#1f3864) structural headers. Rounded card panels.
 
 TOP HEADER (navy, full width): White bold: "THE HEAT PARADOX — You Are Thirsty AND Fluid-Overloaded" Teal: "How to cool down without endangering yourself · Fluid management in extreme heat"
