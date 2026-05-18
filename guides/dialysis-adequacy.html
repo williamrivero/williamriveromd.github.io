@@ -74,7 +74,8 @@
   /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
   .site-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 32px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 32px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -893,7 +894,7 @@
   }
   body.physician-mode .intro-callout { background: #0f1e2e; }
   body.physician-mode .stat-card     { background: #0f1e2e; }
-  body.physician-mode .ref-band      { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
   body.physician-mode .nav-pill.active-pill {
     background: var(--navy); border-color: var(--navy);
   }
@@ -1155,7 +1156,7 @@ body.dark .related-card-title {
     </div>
     <figure style="margin:40px 0 0;border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.35);">
       <source srcset="../images/da-hero.webp" type="image/webp">
-      <img src="../images/da-hero.png" alt="Dialysis Adequacy hero — clock showing 12 of 168 hours, Kt/V target 1.4, pre/post BUN sampling" loading="eager" width="1024" height="1024" style="width:100%;height:auto;display:block;">
+      <img fetchpriority="high" loading="eager" src="../images/da-hero.png" alt="Dialysis Adequacy hero — clock showing 12 of 168 hours, Kt/V target 1.4, pre/post BUN sampling" width="1024" height="1024" style="width:100%;height:auto;display:block;">
     </figure>
   </div>
 </section>
@@ -2402,7 +2403,6 @@ function setMode(mode){
   const tabs=document.querySelector('.audience-tabs');
   if(tabs)window.scrollTo({top:tabs.offsetTop-60,behavior:'smooth'});
 }
-(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 </script>
 
 <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">

@@ -74,7 +74,8 @@
   /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
   .site-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 32px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 32px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -893,7 +894,7 @@
   }
   body.physician-mode .intro-callout { background: #0f1e2e; }
   body.physician-mode .stat-card     { background: #0f1e2e; }
-  body.physician-mode .ref-band      { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
   body.physician-mode .nav-pill.active-pill {
     background: var(--navy); border-color: var(--navy);
   }
@@ -1264,7 +1265,7 @@ html[data-theme="dark"] .alert-navy{background:#101a2e;}
     <h2><span data-lang="en">Cardiorenal Syndrome — Two Organs, One Battle</span><span data-lang="tl" class="lang-hidden">Cardiorenal Syndrome — Dalawang Organo, Isang Labanan</span><span data-lang="ceb" class="lang-hidden">Cardiorenal Syndrome — Duha ka Organo, Usa ka Pakig-away</span>
       <span data-lang="kap" class="lang-hidden">Cardiorenal Syndrome — Dalawang Organo, Metung a Labanan</span></h2>
     <figure style="margin:0 0 32px;">
-      <img src="../images/heart-kidney-cardiorenal-overview.webp" loading="lazy" width="1536" height="1024" alt="Cardiorenal Syndrome — Two Organs, One Battle: definition of CRS, the cardiorenal vicious cycle in 4 steps, the five types of cardiorenal syndrome (acute cardiorenal, chronic cardiorenal, acute renocardiac, chronic renocardiac, secondary CRS), common causes, signs and symptoms from the heart and kidneys, treatment options, lifestyle and diet tips, possible complications, and key reassurances" style="border-radius:12px;display:block;width:100%;height:auto;">
+      <img fetchpriority="high" loading="eager" src="../images/heart-kidney-cardiorenal-overview.webp" width="1536" height="1024" alt="Cardiorenal Syndrome — Two Organs, One Battle: definition of CRS, the cardiorenal vicious cycle in 4 steps, the five types of cardiorenal syndrome (acute cardiorenal, chronic cardiorenal, acute renocardiac, chronic renocardiac, secondary CRS), common causes, signs and symptoms from the heart and kidneys, treatment options, lifestyle and diet tips, possible complications, and key reassurances" style="border-radius:12px;display:block;width:100%;height:auto;">
     </figure>
     <div class="intro-callout">
       <p><span data-lang="en">The cardiorenal syndrome means that heart failure worsens kidney disease and kidney disease worsens heart failure — a reinforcing cycle. <strong>SGLT2 inhibitors are the first drug class proven to interrupt both sides simultaneously</strong>, with RAAS blockade as the established backbone.</span><span data-lang="tl" class="lang-hidden">Ang cardiorenal syndrome ay nangangahulugang ang heart failure ay nagpapalala ng sakit sa bato at ang sakit sa bato ay nagpapalala ng heart failure — isang nagpapatibay na siklo. <strong>Ang mga SGLT2 inhibitor ay ang unang klase ng gamot na napatunayang nakakaputol sa magkabilang panig nang sabay-sabay</strong>, na ang RAAS blockade ang naitatag na pundasyon.</span><span data-lang="ceb" class="lang-hidden">Ang cardiorenal syndrome nagpasabot nga ang heart failure nagpagrabe sa sakit sa bato ug ang sakit sa bato nagpagrabe sa heart failure — usa ka nagpalig-on nga siklo. <strong>Ang mga SGLT2 inhibitor mao ang unang klase sa medisina nga napatunayang makaputol sa duha ka bahin sa dungan</strong>, nga ang RAAS blockade ang naitatag nga pundasyon.</span>
@@ -2424,9 +2425,7 @@ function setGuideLang(lang) {
     localStorage.setItem(GMODE,mode);
     window.scrollTo({top:document.querySelector('.audience-tabs').offsetTop-60,behavior:'smooth'});
   }
-  (function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
-
-  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
   function applyDark(on){
     document.documentElement.setAttribute('data-theme',on?'dark':'light');
     const btn=document.getElementById('darkToggle');
@@ -2498,7 +2497,6 @@ function setMode(mode){
   const tabs=document.querySelector('.audience-tabs');
   if(tabs)window.scrollTo({top:tabs.offsetTop-60,behavior:'smooth'});
 }
-(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 </script>
 
 <script>

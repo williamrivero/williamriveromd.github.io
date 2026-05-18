@@ -76,7 +76,8 @@
   /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
   .site-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 32px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 32px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -895,7 +896,7 @@
   }
   body.physician-mode .intro-callout { background: #0f1e2e; }
   body.physician-mode .stat-card     { background: #0f1e2e; }
-  body.physician-mode .ref-band      { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
   body.physician-mode .nav-pill.active-pill {
     background: var(--navy); border-color: var(--navy);
   }
@@ -1381,7 +1382,7 @@ html[data-theme="dark"] .stat-card,html[data-theme="dark"] .ref-band{background:
   <figure style="margin:0;">
     <picture>
       <source srcset="../images/obesity-ckd-hero-editorial.webp" type="image/webp">
-      <img src="../images/obesity-ckd-hero-editorial.png" loading="lazy" width="1024" height="1024" alt="Filipino nephrologist consulting with overweight dialysis patient in a Philippine dialysis center — a clinical encounter that prompted a critical re-examination of the obesity paradox" style="display:block;width:100%;max-width:680px;height:auto;margin:0 auto;">
+      <img fetchpriority="high" loading="eager" src="../images/obesity-ckd-hero-editorial.png" width="1024" height="1024" alt="Filipino nephrologist consulting with overweight dialysis patient in a Philippine dialysis center — a clinical encounter that prompted a critical re-examination of the obesity paradox" style="display:block;width:100%;max-width:680px;height:auto;margin:0 auto;">
     </picture>
   </figure>
 </div>
@@ -2919,8 +2920,6 @@ function setMode(mode){
   const aud=document.querySelector('.audience-tabs');
   if(aud)window.scrollTo({top:aud.offsetTop-56,behavior:'smooth'});
 }
-(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
-
 const LANG_KEY='wgmr-lang';
 function setLang(lang){
   document.querySelectorAll('[data-lang]').forEach(el=>{

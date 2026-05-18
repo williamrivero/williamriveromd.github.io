@@ -35,7 +35,29 @@ python3 patch_last_reviewed.py --guide anemia-management.html  # single guide
 
 python3 generate_sitemap.py               # regenerate sitemap.xml from files on disk
 python3 generate_sitemap.py --dry-run     # preview added/removed URLs without writing
+
+python3 patch_hero_fetchpriority.py             # make each guide's hero (LCP) image load eager + high priority
+python3 patch_hero_fetchpriority.py --dry-run   # preview changes without writing
+python3 patch_hero_fetchpriority.py --guide understanding-ckd.html  # single guide
 ```
+
+Run `patch_hero_fetchpriority.py` after adding any new guide so its first
+(LCP) image ships with `fetchpriority="high" loading="eager"`. The script is
+idempotent — a guide whose hero is already patched is skipped.
+
+```bash
+python3 patch_mode_cls.py                 # remove physician-mode restore-on-load (CLS fix)
+python3 patch_mode_cls.py --dry-run       # preview changes without writing
+python3 patch_mode_cls.py --guide el-nino-heat-dialysis.html  # single guide
+```
+
+`patch_mode_cls.py` strips the bottom-of-page IIFE that restored physician
+mode from `localStorage` *after first paint* — that post-render patient→
+physician swap was the Cloudflare-RUM CLS of 0.364 on
+`body.physician-mode>div.mode-physician`. Dual-mode guides must always start
+in patient mode (the default CSS state). `setMode()` still writes the choice
+to `localStorage`, so in-page tab toggling is unaffected. Never reintroduce a
+restore-on-load; run this script after adding any new dual-mode guide.
 
 The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.
 
