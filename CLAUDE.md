@@ -35,7 +35,15 @@ python3 patch_last_reviewed.py --guide anemia-management.html  # single guide
 
 python3 generate_sitemap.py               # regenerate sitemap.xml from files on disk
 python3 generate_sitemap.py --dry-run     # preview added/removed URLs without writing
+
+python3 patch_hero_fetchpriority.py             # make each guide's hero (LCP) image load eager + high priority
+python3 patch_hero_fetchpriority.py --dry-run   # preview changes without writing
+python3 patch_hero_fetchpriority.py --guide understanding-ckd.html  # single guide
 ```
+
+Run `patch_hero_fetchpriority.py` after adding any new guide so its first
+(LCP) image ships with `fetchpriority="high" loading="eager"`. The script is
+idempotent — a guide whose hero is already patched is skipped.
 
 The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.
 
