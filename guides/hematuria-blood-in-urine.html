@@ -1124,6 +1124,64 @@
     .nav-pill { display: none; }
     @page { margin: 18mm 15mm; size: A4; }
   }
+
+  /* ── CLINICIAN TOC SIDEBAR ───────────────────────────────────────────────── */
+  .md-toc { display: none; }
+  @media (min-width: 1300px) {
+    body.physician-mode .md-toc {
+      display: block;
+      position: fixed;
+      top: 68px;
+      left: max(8px, calc(50vw - 642px));
+      width: 196px;
+      max-height: calc(100vh - 116px);
+      overflow-y: auto;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 12px;
+      z-index: 90;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+      scrollbar-width: thin;
+    }
+  }
+  .md-toc-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .md-toc-list { list-style: none; margin: 0; padding: 0; }
+  .md-toc-list li a {
+    display: block;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 5px 8px;
+    border-radius: 6px;
+    border-left: 2px solid transparent;
+    transition: color .15s, background .15s, border-color .15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .md-toc-list li a:hover { color: var(--teal); background: var(--teal-light); }
+  .md-toc-list li a.toc-active {
+    color: var(--teal);
+    border-left-color: var(--teal);
+    background: var(--teal-light);
+    font-weight: 600;
+  }
+  .md-toc-list .toc-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 6px 0;
+  }
 </style>
 <style>
 /* Restored per-guide CSS */
@@ -1279,6 +1337,7 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
     <a class="nav-pill mode-physician-pill" href="#md-cystoscopy">Cystoscopy &amp; Imaging</a>
     <a class="nav-pill mode-physician-pill" href="#md-referral">Referral Thresholds</a>
     <a class="nav-pill mode-physician-pill" href="#md-followup">Follow-Up Protocol</a>
+    <a class="nav-pill mode-physician-pill" href="#md-summary">Summary</a>
   </div>
 </nav>
 
@@ -2091,6 +2150,27 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
 <!-- ═══ CLINICIAN TAB CONTENT ════════════════════════════════════════════ -->
 <div class="mode-physician">
 
+<nav class="md-toc" id="md-toc" aria-label="Clinician sections">
+  <div class="md-toc-title">Contents</div>
+  <ul class="md-toc-list">
+    <li><a href="#md-overview">Overview</a></li>
+    <div class="toc-divider"></div>
+    <li><a href="#md-workup">Step 1 · Glom vs. Non-Glom</a></li>
+    <li><a href="#md-evaluation">Step 2 · Eval Algorithm</a></li>
+    <li><a href="#md-gn-workup">Step 3 · GN Serology</a></li>
+    <li><a href="#md-igan">Step 4 · IgAN / KDIGO</a></li>
+    <li><a href="#md-biopsy">Step 5 · Kidney Biopsy</a></li>
+    <div class="toc-divider"></div>
+    <li><a href="#md-urothelial">Step 6 · Urothelial Risk</a></li>
+    <li><a href="#md-cystoscopy">Step 7 · Cystoscopy</a></li>
+    <div class="toc-divider"></div>
+    <li><a href="#md-referral">Step 8 · Referral</a></li>
+    <li><a href="#md-followup">Step 9 · Follow-Up</a></li>
+    <div class="toc-divider"></div>
+    <li><a href="#md-summary">Summary</a></li>
+  </ul>
+</nav>
+
 <!-- ── CLINICIAN HERO ──────────────────────────────────────────────────── -->
 <div class="md-hero">
   <div class="container">
@@ -2117,10 +2197,10 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
     </div>
     <figure style="margin:28px 0;">
       <picture>
-        <source srcset="../images/hematuria-clinician-visual-abstract.webp" type="image/webp">
-        <img src="../images/hematuria-clinician-visual-abstract.png" loading="lazy" width="1672" height="941" alt="Hematuria Evaluation Framework — visual abstract for clinicians: glomerular vs. non-glomerular bifurcation, nephrology and urology workup overview · williamriveromd.com" style="border-radius:12px;display:block;width:100%;height:auto;">
+        <source srcset="../images/hematuria-clin-00-hero.webp" type="image/webp">
+        <img src="../images/hematuria-clin-00-hero.png" loading="lazy" width="1536" height="1024" alt="Hematuria evaluation framework — clinician hero: systematic approach to blood in urine, glomerular vs. non-glomerular bifurcation, nephrology and urology pathways · williamriveromd.com" style="border-radius:12px;display:block;width:100%;height:auto;">
       </picture>
-      <figcaption style="font-size:12px;color:var(--text-muted);margin-top:10px;font-style:italic;text-align:center;">Hematuria evaluation framework — clinician visual abstract · williamriveromd.com</figcaption>
+      <figcaption style="font-size:12px;color:var(--text-muted);margin-top:10px;font-style:italic;text-align:center;">Hematuria evaluation framework — clinician overview · williamriveromd.com</figcaption>
     </figure>
   </div>
 </div>
@@ -3109,6 +3189,21 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
   </div>
 </section>
 
+<!-- MD SUMMARY: VISUAL ABSTRACT -->
+<section class="section" id="md-summary">
+  <div class="container">
+    <div class="section-tag" style="color:var(--teal);">Summary · Visual Abstract</div>
+    <h2>Hematuria Evaluation — Summary Visual Abstract</h2>
+    <figure style="margin:28px 0;">
+      <picture>
+        <source srcset="../images/hematuria-clinician-visual-abstract.webp" type="image/webp">
+        <img src="../images/hematuria-clinician-visual-abstract.png" loading="lazy" width="1672" height="941" alt="Hematuria evaluation framework — visual abstract for clinicians: glomerular vs. non-glomerular bifurcation, nephrology and urology workup overview · williamriveromd.com" style="border-radius:12px;display:block;width:100%;height:auto;">
+      </picture>
+      <figcaption style="font-size:12px;color:var(--text-muted);margin-top:10px;font-style:italic;text-align:center;">Hematuria evaluation framework — clinician visual abstract · williamriveromd.com</figcaption>
+    </figure>
+  </div>
+</section>
+
 </div><!-- /mode-physician -->
 
 <footer class="guide-footer">
@@ -3125,7 +3220,7 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
 </button>
 
 <script>
-const GMODE='wgmr-mode';
+const GMODE='wgmr-hem-mode';
 function setMode(mode){
   const isPhys=mode==='physician';
   document.body.classList.toggle('physician-mode',isPhys);
@@ -3134,6 +3229,7 @@ function setMode(mode){
   localStorage.setItem(GMODE,mode);
   window.scrollTo({top:document.querySelector('.audience-tabs').offsetTop-60,behavior:'smooth'});
 }
+(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 const DARK_KEY='wgmr-dark';
 function applyDark(on){
   document.documentElement.setAttribute('data-theme',on?'dark':'light');
@@ -3170,5 +3266,42 @@ function setGuideLang(lang){
 </button>
 <script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
+<script>
+// TOC scroll spy + hero-aware positioning — physician mode
+(function(){
+  var toc=document.getElementById('md-toc');
+  if(!toc)return;
+  var hero=document.querySelector('.md-hero');
+  var ids=['md-overview','md-workup','md-evaluation','md-gn-workup','md-igan','md-biopsy','md-urothelial','md-cystoscopy','md-referral','md-followup','md-summary'];
+  var links={};
+  ids.forEach(function(id){
+    var a=toc.querySelector('a[href="#'+id+'"]');
+    if(a)links[id]=a;
+  });
+  function positionToc(){
+    if(!document.body.classList.contains('physician-mode'))return;
+    var minTop=68;
+    if(hero){
+      var bottom=hero.getBoundingClientRect().bottom;
+      toc.style.top=Math.max(minTop,bottom+8)+'px';
+    }
+  }
+  function activate(){
+    if(!document.body.classList.contains('physician-mode'))return;
+    var y=window.scrollY+120;
+    var active=ids[0];
+    ids.forEach(function(id){
+      var el=document.getElementById(id);
+      if(el&&el.offsetTop<=y)active=id;
+    });
+    Object.values(links).forEach(function(a){a.classList.remove('toc-active');});
+    if(links[active])links[active].classList.add('toc-active');
+  }
+  window.addEventListener('scroll',function(){activate();positionToc();},{passive:true});
+  document.addEventListener('DOMContentLoaded',function(){activate();positionToc();});
+  activate();
+  positionToc();
+})();
+</script>
 </body>
 </html>
