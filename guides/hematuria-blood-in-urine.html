@@ -869,6 +869,73 @@
   /* ── ILLUSTRATION PANEL ──────────────────────────────────────────────────── */
   .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
 
+  /* ── CLINICIAN SECTION HERO (.md-hero) ───────────────────────────────────── */
+  .md-hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
+    padding: 60px 0 56px; position: relative; overflow: hidden;
+  }
+  .md-hero::before {
+    content: ''; position: absolute; right: -80px; top: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(212,175,79,.1); pointer-events: none;
+  }
+  .md-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: #d4af4f; border: 1px solid rgba(212,175,79,.45);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .md-hero h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
+    color: white; margin-bottom: 14px; letter-spacing: -.02em;
+  }
+  .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.82);
+    max-width: 580px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .md-stat {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 10px; padding: 12px 20px;
+  }
+  .md-stat-val {
+    font-family: 'Lora', serif; font-size: 22px; font-weight: 600;
+    color: #d4af4f; line-height: 1; display: block;
+  }
+  .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
+  .md-hero .illus-wrap {
+    background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.14);
+  }
+  .md-hero .img-placeholder { background: transparent; border-color: rgba(255,255,255,.2); margin: 0; }
+  .md-hero .img-placeholder p,
+  .md-hero .img-placeholder .img-ph-icon { color: rgba(255,255,255,.55); }
+
+  /* ── CLINICIAN PATHWAY BANNERS ───────────────────────────────────────────── */
+  .pathway-banner {
+    padding: 20px 0 0;
+  }
+  .pathway-banner-inner {
+    padding: 14px 20px; border-radius: 0 8px 8px 0;
+  }
+  .pathway-banner-inner.neph {
+    border-left: 4px solid var(--teal); background: var(--teal-light);
+  }
+  .pathway-banner-inner.urol {
+    border-left: 4px solid var(--gold); background: #fdf8ec;
+  }
+  .pathway-banner-inner.synth {
+    border-left: 4px solid var(--purple); background: var(--purple-soft);
+  }
+  .pathway-banner-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; margin: 0 0 4px;
+  }
+  .pathway-banner-label.neph { color: var(--teal); }
+  .pathway-banner-label.urol { color: var(--gold); }
+  .pathway-banner-label.synth { color: var(--purple); }
+  .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
   .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
@@ -1171,8 +1238,8 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
     <a class="nav-pill mode-patient-pill" href="#causes">Major Causes</a>
     <a class="nav-pill mode-patient-pill" href="#referral">When to Refer</a>
     <a class="nav-pill mode-patient-pill" href="#red-flags">Red Flags</a>
+    <a class="nav-pill mode-physician-pill" href="#md-workup">Glom vs. Non-Glom</a>
     <a class="nav-pill mode-physician-pill" href="#md-evaluation">Evaluation Algorithm</a>
-    <a class="nav-pill mode-physician-pill" href="#md-workup">Glomerular vs. Non-Glomerular</a>
     <a class="nav-pill mode-physician-pill" href="#md-gn-workup">GN Serology Panel</a>
     <a class="nav-pill mode-physician-pill" href="#md-igan">IgAN / KDIGO 2024</a>
     <a class="nav-pill mode-physician-pill" href="#md-biopsy">Kidney Biopsy</a>
@@ -1990,15 +2057,127 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
 </div><!-- /mode-patient -->
 
 <!-- ═══ CLINICIAN TAB CONTENT ════════════════════════════════════════════ -->
-<div class="mode-physician" style="padding:40px 0 0;">
+<div class="mode-physician">
 
-<!-- MD S1: EVALUATION ALGORITHM -->
+<!-- ── CLINICIAN HERO ──────────────────────────────────────────────────── -->
+<div class="md-hero">
+  <div class="container">
+    <div class="md-hero-badge">🩺 Clinical Reference · Nephrology / Urology</div>
+    <h2>Hematuria — Evaluation Framework</h2>
+    <p class="md-hero-sub">A systematic, evidence-based guide for the clinician encountering hematuria in primary care or a specialist setting. Covers the critical glomerular/non-glomerular bifurcation, nephrology and urology pathways, risk stratification, biopsy protocol, and long-term follow-up. Philippine practice context throughout.</p>
+    <div class="md-stats">
+      <div class="md-stat">
+        <span class="md-stat-val">&gt;85%</span>
+        <span class="md-stat-lbl">of bladder cancers present with hematuria</span>
+      </div>
+      <div class="md-stat">
+        <span class="md-stat-val">30–40%</span>
+        <span class="md-stat-lbl">of primary GN biopsies in PH are IgAN</span>
+      </div>
+      <div class="md-stat">
+        <span class="md-stat-val">5%</span>
+        <span class="md-stat-lbl">acanthocytes = 98% specificity for GN</span>
+      </div>
+      <div class="md-stat">
+        <span class="md-stat-val">≤8 wks</span>
+        <span class="md-stat-lbl">C3 normalises in PSGN; persisting = re-evaluate</span>
+      </div>
+    </div>
+    <div class="illus-wrap">
+      <div class="img-placeholder">
+        <div class="img-ph-icon">📊</div>
+        <p><strong>[Hero Visual: Hematuria Evaluation Framework]</strong><br>Overview flowchart — gross vs. microscopic bifurcation → glomerular/non-glomerular split → nephrology and urology pathways diverging. Two-column layout. Navy/gold palette.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MD S1: GLOMERULAR VS NON-GLOMERULAR (moved first — conceptual pivot) -->
+<section class="section" id="md-workup">
+  <div class="container">
+    <div class="section-tag" style="color:var(--teal);">Step 1 · The Pivotal Distinction</div>
+    <h2>Glomerular vs. Non-Glomerular — The Critical Distinction</h2>
+    <div class="intro-callout">
+      <p><strong>Every hematuria evaluation pivots on a single question: is the bleeding from the glomerulus or from the urothelium?</strong> The answer determines the entire subsequent pathway — nephrology (biopsy + immunology) vs. urology (cystoscopy + CT urography). Phase contrast urine microscopy is the most powerful triage test; acanthocytes &gt;5% have 98% specificity for glomerulonephritis. In the Philippines, this is available at NKTI and most university nephrology centres. When unavailable, proteinuria ≥1+ on dipstick with dysmorphic RBCs on bright-field microscopy is a sufficient trigger for nephrology referral.</p>
+    </div>
+
+    <div class="illus-wrap" style="margin-bottom:24px;">
+      <div class="img-placeholder">
+        <div class="img-ph-icon">🔬</div>
+        <p><strong>[Diagram: Glomerular vs. Non-Glomerular RBC Morphology]</strong><br>Side-by-side phase contrast micrograph — left panel: dysmorphic acanthocytes (glomerular origin); right panel: uniform isomorphic biconcave discs (non-glomerular). Annotated with key morphologic features.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Glomerular (→ Nephrology)</th>
+            <th>Non-Glomerular (→ Urology)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>RBC morphology</strong></td>
+            <td>Dysmorphic (&gt;80%), acanthocytes (&gt;5%) — phase contrast microscopy</td>
+            <td>Eumorphic (isomorphic), uniform biconcave discs</td>
+          </tr>
+          <tr>
+            <td><strong>RBC casts</strong></td>
+            <td>Present — pathognomonic of glomerulonephritis</td>
+            <td>Absent</td>
+          </tr>
+          <tr>
+            <td><strong>Proteinuria</strong></td>
+            <td>Usually ≥500 mg/day; often ≥1 g/day in active GN</td>
+            <td>Minimal or absent; if present, likely contamination</td>
+          </tr>
+          <tr>
+            <td><strong>Blood clots</strong></td>
+            <td>Absent — glomerular filtration breaks up clots</td>
+            <td>Present in bladder/ureteral lesions, stones, tumor</td>
+          </tr>
+          <tr>
+            <td><strong>Pain pattern</strong></td>
+            <td>Usually painless; flank pain suggests IgAN synpharyngitic episode or cortical necrosis</td>
+            <td>Colicky (stone), steady flank (obstruction), suprapubic (bladder)</td>
+          </tr>
+          <tr>
+            <td><strong>BP / eGFR</strong></td>
+            <td>Hypertension common; eGFR may be declining</td>
+            <td>Usually normal unless bilateral obstruction</td>
+          </tr>
+          <tr>
+            <td><strong>Systemic features</strong></td>
+            <td>Rash (SLE, HSP), sinusitis/hemoptysis (ANCA), edema (nephrotic overlap)</td>
+            <td>Absent systemic features; symptoms localise to urinary tract</td>
+          </tr>
+          <tr>
+            <td><strong>Key initial tests</strong></td>
+            <td>ANA, ANCA, anti-GBM, C3/C4, SPEP, cryoglobulins, Hep B sAg, anti-HCV, HIV; UPCR</td>
+            <td>Urine cytology; CT urography; cystoscopy</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- MD S2: EVALUATION ALGORITHM -->
 <section class="section" id="md-evaluation">
   <div class="container">
-    <div class="section-tag" style="color:var(--teal);">AUA 2020 · EAU 2024</div>
+    <div class="section-tag" style="color:var(--teal);">Step 2 · AUA 2020 · EAU 2024</div>
     <h2>Hematuria Evaluation Algorithm</h2>
     <div class="intro-callout">
       <p><strong>Hematuria is a symptom, not a diagnosis.</strong> The evaluation pathway bifurcates immediately on two axes: <strong>gross vs. microscopic</strong>, and <strong>glomerular vs. non-glomerular origin.</strong> Getting this distinction right at first contact determines whether the patient goes to urology (cystoscopy + CT urography) or nephrology (biopsy + immunology). Conflating the two pathways delays cancer diagnosis in one direction and delays immunosuppression in the other.</p>
+    </div>
+
+    <div class="illus-wrap" style="margin-bottom:24px;">
+      <div class="img-placeholder">
+        <div class="img-ph-icon">🗂️</div>
+        <p><strong>[Algorithm Flowchart: Hematuria Initial Triage]</strong><br>Decision tree starting at "confirmed hematuria" → gross vs. microscopic branch → UTI excluded? → glomerular features present? → nephrology vs. urology pathway. Risk-stratification tiers for microscopic hematuria annotated (AUA low / intermediate / high).</p>
+      </div>
     </div>
 
     <div class="table-wrap">
@@ -2055,91 +2234,31 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
   </div>
 </section>
 
-<!-- MD S2: GLOMERULAR VS NON-GLOMERULAR -->
-<section class="section" id="md-workup">
-  <div class="container">
-    <div class="section-tag" style="color:var(--teal);">Differential Diagnosis</div>
-    <h2>Glomerular vs. Non-Glomerular — The Critical Distinction</h2>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th>Glomerular (→ Nephrology)</th>
-            <th>Non-Glomerular (→ Urology)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>RBC morphology</strong></td>
-            <td>Dysmorphic (&gt;80%), acanthocytes (&gt;5%) — phase contrast microscopy</td>
-            <td>Eumorphic (isomorphic), uniform biconcave discs</td>
-          </tr>
-          <tr>
-            <td><strong>RBC casts</strong></td>
-            <td>Present — pathognomonic of glomerulonephritis</td>
-            <td>Absent</td>
-          </tr>
-          <tr>
-            <td><strong>Proteinuria</strong></td>
-            <td>Usually ≥500 mg/day; often ≥1 g/day in active GN</td>
-            <td>Minimal or absent; if present, likely contamination</td>
-          </tr>
-          <tr>
-            <td><strong>Blood clots</strong></td>
-            <td>Absent — glomerular filtration breaks up clots</td>
-            <td>Present in bladder/ureteral lesions, stones, tumor</td>
-          </tr>
-          <tr>
-            <td><strong>Pain pattern</strong></td>
-            <td>Usually painless; flank pain suggests IgAN synpharyngitic episode or cortical necrosis</td>
-            <td>Colicky (stone), steady flank (obstruction), suprapubic (bladder)</td>
-          </tr>
-          <tr>
-            <td><strong>BP / eGFR</strong></td>
-            <td>Hypertension common; eGFR may be declining</td>
-            <td>Usually normal unless bilateral obstruction</td>
-          </tr>
-          <tr>
-            <td><strong>Systemic features</strong></td>
-            <td>Rash (SLE, HSP), sinusitis/hemoptysis (ANCA), edema (nephrotic overlap)</td>
-            <td>Absent systemic features; symptoms localise to urinary tract</td>
-          </tr>
-          <tr>
-            <td><strong>Key initial tests</strong></td>
-            <td>ANA, ANCA, anti-GBM, C3/C4, SPEP, cryoglobulins, Hep B sAg, anti-HCV, HIV; UPCR</td>
-            <td>Urine cytology; CT urography; cystoscopy</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="intro-callout" style="margin-top:24px;">
-      <p><strong>Phase contrast urine microscopy</strong> is the single most powerful triage test for separating glomerular from non-glomerular hematuria. In the Philippines, this is available at NKTI and most university nephrology centers. Acanthocytes (&gt;5% of RBCs) have 98% specificity for glomerulonephritis. When phase contrast is unavailable, proteinuria ≥1+ on dipstick combined with dysmorphic-appearing RBCs on bright-field microscopy is a sufficient trigger for nephrology referral.</p>
-    </div>
-
-  </div>
-</section>
-
 <!-- ── NEPHROLOGY PATHWAY ──────────────────────────────────────────────── -->
-<div style="padding:16px 0 0;">
+<div class="pathway-banner">
   <div class="container">
-    <div style="border-left:4px solid var(--teal);padding:14px 20px;background:var(--teal-light);border-radius:0 8px 8px 0;">
-      <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--teal);margin:0 0 4px;">Nephrology Pathway — Sections 3–5</p>
-      <p style="font-size:13px;color:var(--text-muted);margin:0;">Apply when glomerular origin is confirmed: dysmorphic RBCs &gt;80%, acanthocytes &gt;5%, RBC casts, or proteinuria ≥500 mg/day. Direct to serology → disease-specific management → biopsy.</p>
+    <div class="pathway-banner-inner neph">
+      <p class="pathway-banner-label neph">Nephrology Pathway — Steps 3–5</p>
+      <p class="pathway-banner-desc">Apply when glomerular origin is confirmed: dysmorphic RBCs &gt;80%, acanthocytes &gt;5%, RBC casts, or proteinuria ≥500 mg/day. Proceed to syndrome-driven serology → disease-specific management → biopsy when management will change.</p>
     </div>
   </div>
 </div>
 
-<!-- GN SEROLOGY PANEL -->
+<!-- MD S3: GN SEROLOGY PANEL -->
 <section class="section" id="md-gn-workup">
   <div class="container">
-    <div class="section-tag" style="color:var(--teal);">Glomerulonephritis Workup</div>
+    <div class="section-tag" style="color:var(--teal);">Step 3 · Glomerulonephritis Workup</div>
     <h2>GN Serology Panel — Organized by Clinical Syndrome</h2>
 
     <div class="intro-callout">
-      <p>Once glomerular hematuria is established (dysmorphic RBCs, RBC casts, or proteinuria ≥500 mg/day), the serologic workup should be syndrome-driven — not shotgun. Ordering every autoimmune test simultaneously delays interpretation and increases false-positive noise. The table below organizes the panel by the presenting clinical syndrome.</p>
+      <p>Once glomerular hematuria is established (dysmorphic RBCs, RBC casts, or proteinuria ≥500 mg/day), the serologic workup should be <strong>syndrome-driven — not shotgun.</strong> Ordering every autoimmune test simultaneously delays interpretation and increases false-positive noise. The table below organizes the panel by the presenting clinical syndrome.</p>
+    </div>
+
+    <div class="illus-wrap" style="margin-bottom:24px;">
+      <div class="img-placeholder">
+        <div class="img-ph-icon">🧪</div>
+        <p><strong>[Diagram: GN Serology Ladder by Clinical Syndrome]</strong><br>Vertical ladder graphic — each rung = one clinical syndrome (isolated hematuria → nephritic → pulmonary-renal → hypocomplementemic → SLE → IgA vasculitis). First-tier and second-tier tests shown as branching off each rung. Teal accent colour.</p>
+      </div>
     </div>
 
     <div class="table-wrap">
@@ -2211,14 +2330,21 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
   </div>
 </section>
 
-<!-- MD S6: IGA NEPHROPATHY — KDIGO 2024 -->
+<!-- MD S4: IGA NEPHROPATHY — KDIGO 2024 -->
 <section class="section" id="md-igan">
   <div class="container">
-    <div class="section-tag" style="color:var(--teal);">KDIGO 2021 · KDIGO 2024 Controversies Conference</div>
+    <div class="section-tag" style="color:var(--teal);">Step 4 · KDIGO 2021 · KDIGO 2024 Controversies Conference</div>
     <h2>IgA Nephropathy — Diagnosis, Oxford MEST-C Scoring &amp; Treatment Algorithm</h2>
 
     <div class="intro-callout">
-      <p>IgAN is the most common primary glomerulonephritis worldwide and disproportionately affects Asian populations. It accounts for an estimated 30–40% of primary GN biopsies in the Philippines. The therapeutic landscape changed dramatically in 2021–2024 with SGLT2 inhibitors, sparsentan, and targeted-release budesonide reaching approval — making updated risk stratification essential before any treatment decision.</p>
+      <p>IgAN is the most common primary glomerulonephritis worldwide and disproportionately affects Asian populations. It accounts for an estimated <strong>30–40% of primary GN biopsies in the Philippines.</strong> The therapeutic landscape changed dramatically in 2021–2024 with SGLT2 inhibitors, sparsentan, and targeted-release budesonide reaching approval — making updated risk stratification essential before any treatment decision.</p>
+    </div>
+
+    <div class="illus-wrap" style="margin-bottom:24px;">
+      <div class="img-placeholder">
+        <div class="img-ph-icon">🏥</div>
+        <p><strong>[Diagram: Oxford MEST-C Scoring Visual Guide]</strong><br>Five-panel histologic schematic — one panel per MEST-C variable (M, E, S, T, C). Each panel shows score 0 vs. score 1 (or 2 for T/C) with simple glomerulus/tubule line drawings. Prognostic weight noted below each variable. Clean clinical illustration style.</p>
+      </div>
     </div>
 
     <h3 style="margin:32px 0 16px;">Oxford MEST-C Scoring</h3>
@@ -2331,14 +2457,21 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
   </div>
 </section>
 
-<!-- MD S7: KIDNEY BIOPSY -->
+<!-- MD S5: KIDNEY BIOPSY -->
 <section class="section" id="md-biopsy">
   <div class="container">
-    <div class="section-tag" style="color:var(--teal);">Procedural Guide</div>
+    <div class="section-tag" style="color:var(--teal);">Step 5 · Procedural Guide</div>
     <h2>Kidney Biopsy — Indications, Contraindications &amp; Pre-Procedural Protocol</h2>
 
     <div class="intro-callout">
-      <p>Renal biopsy is the definitive diagnostic tool for glomerular hematuria — but it carries a 1–3% risk of clinically significant bleeding and a &lt;0.1% risk of nephrectomy or death. It should be reserved for situations where the histologic result will change management. Isolated hematuria with no proteinuria, normal eGFR, and normal BP rarely requires biopsy; the yield is low and the result (usually TBMN) rarely changes management.</p>
+      <p>Renal biopsy is the definitive diagnostic tool for glomerular hematuria — but it carries a <strong>1–3% risk of clinically significant bleeding</strong> and a &lt;0.1% risk of nephrectomy or death. It should be reserved for situations where the histologic result will change management. Isolated hematuria with no proteinuria, normal eGFR, and normal BP rarely requires biopsy; the yield is low and the result (usually TBMN) rarely changes management.</p>
+    </div>
+
+    <div class="illus-wrap" style="margin-bottom:24px;">
+      <div class="img-placeholder">
+        <div class="img-ph-icon">📍</div>
+        <p><strong>[Diagram: Ultrasound-Guided Percutaneous Kidney Biopsy]</strong><br>Sagittal cross-section illustration — needle trajectory into the lower pole of the left kidney under USS guidance. Annotations: biopsy needle, lower pole cortex, 12th rib, patient prone position. Inset: 16G core biopsy needle tip. Clean anatomic line-art style.</p>
+      </div>
     </div>
 
     <h3 style="margin:24px 0 12px;">Indications (biopsy is likely to change management)</h3>
@@ -2466,23 +2599,30 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
 </section>
 
 <!-- ── UROLOGY PATHWAY ────────────────────────────────────────────────── -->
-<div style="padding:16px 0 0;">
+<div class="pathway-banner">
   <div class="container">
-    <div style="border-left:4px solid var(--gold);padding:14px 20px;background:#fdf8ec;border-radius:0 8px 8px 0;">
-      <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin:0 0 4px;">Urology Pathway — Sections 6–7</p>
-      <p style="font-size:13px;color:var(--text-muted);margin:0;">Apply when non-glomerular origin is suspected: eumorphic RBCs, no casts, absent or trace proteinuria, gross hematuria, or urological risk factors (smoking, age ≥35, occupational exposure). Proceed to risk stratification → cystoscopy + upper tract imaging.</p>
+    <div class="pathway-banner-inner urol">
+      <p class="pathway-banner-label urol">Urology Pathway — Steps 6–7</p>
+      <p class="pathway-banner-desc">Apply when non-glomerular origin is suspected: eumorphic RBCs, no casts, absent or trace proteinuria, gross hematuria, or urological risk factors (smoking, age ≥35, occupational exposure). Proceed to AUA risk stratification → cystoscopy + upper tract imaging.</p>
     </div>
   </div>
 </div>
 
-<!-- UROTHELIAL MALIGNANCY RISK STRATIFICATION -->
+<!-- MD S6: UROTHELIAL MALIGNANCY RISK STRATIFICATION -->
 <section class="section" id="md-urothelial">
   <div class="container">
-    <div class="section-tag" style="color:var(--teal);">AUA 2020 · Philippine Oncology Context</div>
+    <div class="section-tag" style="color:var(--teal);">Step 6 · AUA 2020 · Philippine Oncology Context</div>
     <h2>Urothelial Malignancy — Risk Stratification &amp; Workup Pathway</h2>
 
     <div class="intro-callout">
-      <p>Bladder cancer is the 10th most common cancer in the Philippines (GLOBOCAN 2022). Hematuria — gross or microscopic — is the presenting symptom in &gt;85% of bladder cancers. The AUA 2020 Microhematuria Guidelines introduced a formal three-tier risk stratification that replaces the previous binary (low-risk vs. all others) model. Philippine clinicians should also be aware of aristolochic acid nephropathy as a local risk factor for urothelial carcinoma.</p>
+      <p>Bladder cancer is the <strong>10th most common cancer in the Philippines</strong> (GLOBOCAN 2022). Hematuria — gross or microscopic — is the presenting symptom in &gt;85% of bladder cancers. The AUA 2020 Microhematuria Guidelines introduced a formal three-tier risk stratification replacing the previous binary model. Philippine clinicians should be aware of aristolochic acid nephropathy as a locally significant risk factor for upper tract urothelial carcinoma.</p>
+    </div>
+
+    <div class="illus-wrap" style="margin-bottom:24px;">
+      <div class="img-placeholder">
+        <div class="img-ph-icon">⚠️</div>
+        <p><strong>[Diagram: AUA 3-Tier Urothelial Risk Stratification Pyramid]</strong><br>Inverted pyramid — top (widest) = High Risk (gross hematuria / age ≥60 / ≥10 pack-years / &gt;25 RBC/hpf); middle = Intermediate Risk; bottom (narrow) = Low Risk. Each tier lists defining criteria and recommended workup timeline. Red / amber / green colour-coding matching site palette.</p>
+      </div>
     </div>
 
     <div class="table-wrap">
@@ -2587,11 +2727,22 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
   </div>
 </section>
 
-<!-- CYSTOSCOPY & UPPER TRACT IMAGING -->
+<!-- MD S7: CYSTOSCOPY & UPPER TRACT IMAGING -->
 <section class="section" id="md-cystoscopy">
   <div class="container">
-    <div class="section-tag" style="color:var(--teal);">AUA 2020 Criteria</div>
+    <div class="section-tag" style="color:var(--teal);">Step 7 · AUA 2020 Criteria</div>
     <h2>Cystoscopy &amp; Upper Tract Imaging — When and Which</h2>
+
+    <div class="intro-callout">
+      <p>Cystoscopy and CT urography are <strong>complementary, not interchangeable.</strong> Cystoscopy visualises the urothelium from the bladder neck to the ureteral orifices; CT urography evaluates the upper tracts (renal parenchyma, renal pelvis, ureters). In the Philippines, CT urography (triple-phase) is available at most provincial hospitals; when unavailable, retrograde pyelography at cystoscopy is an acceptable substitute for the excretory phase. Blue-light cystoscopy, which improves carcinoma in situ (CIS) detection by ~25%, is available at NKTI and select private tertiary centres.</p>
+    </div>
+
+    <div class="illus-wrap" style="margin-bottom:24px;">
+      <div class="img-placeholder">
+        <div class="img-ph-icon">🔭</div>
+        <p><strong>[Diagram: Cystoscopy Anatomy &amp; CT Urography Phases]</strong><br>Left panel: flexible cystoscope navigating the urethra into the bladder — annotated cross-section showing ureteral orifices, posterior wall, trigone. Right panel: three-phase CT urography timeline (unenhanced → nephrographic → excretory), highlighting what each phase detects (stones / parenchymal lesions / urothelial filling defects).</p>
+      </div>
+    </div>
 
     <div class="table-wrap">
       <table>
@@ -2648,21 +2799,32 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
   </div>
 </section>
 
-<!-- ── SYNTHESIS — REFERRAL & LONG-TERM MANAGEMENT ──────────────────────── -->
-<div style="padding:16px 0 0;">
+<!-- ── SYNTHESIS ───────────────────────────────────────────────────────── -->
+<div class="pathway-banner">
   <div class="container">
-    <div style="border-left:4px solid var(--purple);padding:14px 20px;background:var(--purple-soft);border-radius:0 8px 8px 0;">
-      <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--purple);margin:0 0 4px;">Synthesis — Sections 8–9</p>
-      <p style="font-size:13px;color:var(--text-muted);margin:0;">Referral thresholds integrating both pathways, followed by the long-term monitoring protocol for patients without a definitive diagnosis after full workup.</p>
+    <div class="pathway-banner-inner synth">
+      <p class="pathway-banner-label synth">Synthesis — Steps 8–9</p>
+      <p class="pathway-banner-desc">Referral thresholds integrating both the nephrology and urology pathways, followed by the long-term monitoring protocol for patients who remain without a definitive diagnosis after full workup.</p>
     </div>
   </div>
 </div>
 
-<!-- REFERRAL THRESHOLDS & SPECIAL SITUATIONS -->
+<!-- MD S8: REFERRAL THRESHOLDS & SPECIAL SITUATIONS -->
 <section class="section" id="md-referral">
   <div class="container">
-    <div class="section-tag" style="color:var(--teal);">Philippine Practice Context</div>
+    <div class="section-tag" style="color:var(--teal);">Step 8 · Philippine Practice Context</div>
     <h2>Referral Thresholds &amp; Special Situations</h2>
+
+    <div class="intro-callout">
+      <p>Referral decisions depend on <strong>urgency</strong> (emergency vs. elective), <strong>pathway</strong> (nephrology vs. urology vs. both), and <strong>local resource availability.</strong> The table below integrates findings from both pathways into actionable referral triggers. In the Philippine context: phase contrast microscopy and blue-light cystoscopy are available at NKTI, PGH, and select private tertiary centres. CT urography (₱6,000–₱14,000) remains a barrier in provincial settings — renal USS + IVP + cystoscopy is an acceptable substitute.</p>
+    </div>
+
+    <div class="illus-wrap" style="margin-bottom:24px;">
+      <div class="img-placeholder">
+        <div class="img-ph-icon">🔀</div>
+        <p><strong>[Flowchart: Integrated Referral Algorithm]</strong><br>Two-column layout — left column: "Nephrology Triggers" (RBC casts / dysmorphic RBCs / AKI / pulmonary-renal syndrome / synpharyngitic pattern); right column: "Urology Triggers" (gross hematuria / risk factors / clot retention). Each trigger connects to urgency tier (Emergency / Same-day / 2–4 weeks / 4–8 weeks). Teal vs. gold colour-coding.</p>
+      </div>
+    </div>
 
     <div class="table-wrap">
       <table>
@@ -2725,14 +2887,21 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
   </div>
 </section>
 
-<!-- FOLLOW-UP PROTOCOL -->
+<!-- MD S9: FOLLOW-UP PROTOCOL -->
 <section class="section" id="md-followup">
   <div class="container">
-    <div class="section-tag" style="color:var(--teal);">Long-Term Monitoring</div>
+    <div class="section-tag" style="color:var(--teal);">Step 9 · Long-Term Monitoring</div>
     <h2>Follow-Up Protocol — Persistent Microscopic Hematuria &amp; Thin Basement Membrane Nephropathy</h2>
 
     <div class="intro-callout">
-      <p>A significant proportion of patients with microscopic hematuria will complete a full urological and nephrological workup and remain without a definitive diagnosis. In this group, the most likely underlying entity is thin basement membrane nephropathy (TBMN) / Alport spectrum disease — a largely benign condition in heterozygotes but with a minority risk of progression. The challenge is identifying the progressor early.</p>
+      <p>A significant proportion of patients with microscopic hematuria will complete a full urological and nephrological workup and <strong>remain without a definitive diagnosis.</strong> In this group, the most likely underlying entity is thin basement membrane nephropathy (TBMN) / Alport spectrum disease — largely benign in heterozygotes but with a minority risk of progression. The clinical challenge is identifying the progressor before irreversible proteinuria or eGFR decline develops.</p>
+    </div>
+
+    <div class="illus-wrap" style="margin-bottom:24px;">
+      <div class="img-placeholder">
+        <div class="img-ph-icon">📅</div>
+        <p><strong>[Timeline: Long-Term Hematuria Follow-Up Protocol]</strong><br>Horizontal timeline — baseline → 6 months → 12 months → annually (years 2–5). Each timepoint shows tests (UA / UPCR / eGFR / BP) as checklist items below the timeline. Action triggers appear as red/amber callout flags branching up from each timepoint (e.g., "UPCR &gt;0.5 → nephrology referral"). Discharge criteria noted at 3 consecutive negative UAs.</p>
+      </div>
     </div>
 
     <h3 style="margin:24px 0 12px;">Thin Basement Membrane Nephropathy &amp; Alport Spectrum — Clinical Framework</h3>
