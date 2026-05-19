@@ -3220,7 +3220,7 @@ html[data-theme="dark"] .tube-card p{color:#c0cad8;}
 </button>
 
 <script>
-const GMODE='wgmr-mode';
+const GMODE='wgmr-hem-mode';
 function setMode(mode){
   const isPhys=mode==='physician';
   document.body.classList.toggle('physician-mode',isPhys);
@@ -3229,6 +3229,7 @@ function setMode(mode){
   localStorage.setItem(GMODE,mode);
   window.scrollTo({top:document.querySelector('.audience-tabs').offsetTop-60,behavior:'smooth'});
 }
+(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 const DARK_KEY='wgmr-dark';
 function applyDark(on){
   document.documentElement.setAttribute('data-theme',on?'dark':'light');

@@ -3468,7 +3468,7 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
 </button>
 
 <script>
-const DK='wgmr-dk', GMODE='wgmr-mode';
+const DK='wgmr-dk', GMODE='wgmr-dpx-mode';
 
 (function(){const s=localStorage.getItem(DK);if(s==='1'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('darkLabel').textContent='Light';}})();
 function toggleDark(){const on=document.documentElement.getAttribute('data-theme')!=='dark';document.documentElement.setAttribute('data-theme',on?'dark':'');document.getElementById('darkLabel').textContent=on?'Light':'Dark';localStorage.setItem(DK,on?'1':'0');}
@@ -3481,6 +3481,7 @@ function setMode(mode){
   localStorage.setItem(GMODE,mode);
   window.scrollTo({top:document.querySelector('.audience-tabs').offsetTop-60,behavior:'smooth'});
 }
+(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 // Language toggle (EN/TL/CEB/KAP)
 const LANG_KEY='wgmr-lang';
 function setLang(lang){
