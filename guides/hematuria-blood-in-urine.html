@@ -1131,7 +1131,7 @@
     body.physician-mode .md-toc {
       display: block;
       position: fixed;
-      top: 100px;
+      top: 68px;
       left: max(8px, calc(50vw - 642px));
       width: 196px;
       max-height: calc(100vh - 116px);
@@ -3265,17 +3265,27 @@ function setGuideLang(lang){
   </svg>
 </button>
 <script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
-<script src="../assets/symptom-checker-widget.js" defer>
-// TOC scroll spy — physician mode
+<script src="../assets/symptom-checker-widget.js" defer></script>
+<script>
+// TOC scroll spy + hero-aware positioning — physician mode
 (function(){
   var toc=document.getElementById('md-toc');
   if(!toc)return;
+  var hero=document.querySelector('.md-hero');
   var ids=['md-overview','md-workup','md-evaluation','md-gn-workup','md-igan','md-biopsy','md-urothelial','md-cystoscopy','md-referral','md-followup','md-summary'];
   var links={};
   ids.forEach(function(id){
     var a=toc.querySelector('a[href="#'+id+'"]');
     if(a)links[id]=a;
   });
+  function positionToc(){
+    if(!document.body.classList.contains('physician-mode'))return;
+    var minTop=68;
+    if(hero){
+      var bottom=hero.getBoundingClientRect().bottom;
+      toc.style.top=Math.max(minTop,bottom+8)+'px';
+    }
+  }
   function activate(){
     if(!document.body.classList.contains('physician-mode'))return;
     var y=window.scrollY+120;
@@ -3287,9 +3297,10 @@ function setGuideLang(lang){
     Object.values(links).forEach(function(a){a.classList.remove('toc-active');});
     if(links[active])links[active].classList.add('toc-active');
   }
-  window.addEventListener('scroll',activate,{passive:true});
-  document.addEventListener('DOMContentLoaded',activate);
+  window.addEventListener('scroll',function(){activate();positionToc();},{passive:true});
+  document.addEventListener('DOMContentLoaded',function(){activate();positionToc();});
   activate();
+  positionToc();
 })();
 </script>
 </body>
