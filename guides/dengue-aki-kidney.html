@@ -2325,13 +2325,15 @@ function setGuideLang(lang) {
 }
 
 // ── MODE SYSTEM (patient / physician) ───────────────────────────────────────
+var GMODE = 'wgmr-dengue-mode';
 function setMode(mode) {
   document.body.classList.toggle('physician-mode', mode === 'physician');
   document.querySelectorAll('.aud-tab').forEach((t, i) => {
     t.classList.toggle('active', (i === 0 && mode === 'patient') || (i === 1 && mode === 'physician'));
   });
-  try { localStorage.setItem('guideMode', mode); } catch(e) {}
+  try { localStorage.setItem(GMODE, mode); } catch(e) {}
 }
+(function(){var s=localStorage.getItem('wgmr-dengue-mode')||'patient';if(s==='physician')setMode('physician');})();
 
 // ── CALCULATOR ────────────────────────────────────────────────────────────────
 function calcDengueAKI() {
