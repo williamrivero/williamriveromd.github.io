@@ -1287,10 +1287,10 @@ html[data-theme="dark"] .verdict-card p{color:#c0cad8;}
 </header>
 <div class="guide-lang-bar">
   <span class="lang-lbl">Lang:</span>
-  <button class="lang-btn-g active" id="glb-en" onclick="setGuideLang('en')">EN</button>
-  <button class="lang-btn-g" id="glb-tl" onclick="setGuideLang('tl')">TL</button>
-  <button class="lang-btn-g" id="glb-ceb" onclick="setGuideLang('ceb')">CEB</button>
-  <button class="lang-btn-g" id="glb-kap" onclick="setGuideLang('kap')">KAP</button>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
 </div>
 <div class="guide-toggle-bar">
   <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
@@ -1955,7 +1955,7 @@ function toggleDesktop(){
   try{localStorage.setItem('wgmr-desktop',on?'1':'0');}catch(e){}
 }
 function setLang(lang){
-  ['en','tl','ceb'].forEach(function(l){
+  ['en','tl','ceb','kap'].forEach(function(l){
     var btn=document.getElementById('glb-'+l);
     if(btn)btn.classList.toggle('active',l===lang);
     document.querySelectorAll('.lang-'+l).forEach(function(el){
@@ -1973,11 +1973,11 @@ function setLang(lang){
     var l=localStorage.getItem('wgmr-lang');
     if(l&&l!=='en'){setLang(l);}else{
       document.querySelectorAll('.lang-en').forEach(function(el){el.style.display='';});
-      document.querySelectorAll('.lang-tl,.lang-ceb').forEach(function(el){el.style.display='none';});
+      document.querySelectorAll('.lang-tl,.lang-ceb,.lang-kap').forEach(function(el){el.style.display='none';});
     }
   }catch(e){
     document.querySelectorAll('.lang-en').forEach(function(el){el.style.display='';});
-    document.querySelectorAll('.lang-tl,.lang-ceb').forEach(function(el){el.style.display='none';});
+    document.querySelectorAll('.lang-tl,.lang-ceb,.lang-kap').forEach(function(el){el.style.display='none';});
   }
 })();
 
