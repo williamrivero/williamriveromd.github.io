@@ -1153,7 +1153,7 @@
     <h1>Expert Guides.<br><em>Real answers, plain language.</em></h1>
     <p class="hero-sub">Evidence-based guides by a practising nephrologist — for patients and their families.</p>
     <div class="stats-row">
-      <div class="stat"><span class="stat-num">96</span><span class="stat-label">Guides</span></div>
+      <div class="stat"><span class="stat-num">98</span><span class="stat-label">Guides</span></div>
       <div class="stat-divider"></div>
       <div class="stat"><span class="stat-num">4</span><span class="stat-label">Languages</span></div>
       <div class="stat-divider"></div>
@@ -1306,7 +1306,7 @@
 
 <!-- MOBILE FILTER BAR -->
 <div class="mobile-filter-bar" id="mobile-filter-bar">
-  <button class="mf-pill active" data-filter="all">All 93</button>
+  <button class="mf-pill active" data-filter="all">All 98</button>
   <button class="mf-pill" data-filter="calculator">Calculator</button>
   <button class="mf-pill" data-filter="new">New</button>
   <button class="mf-pill" data-filter="updated">Updated</button>
@@ -1324,7 +1324,7 @@
     <div class="sidebar-section">
       <div class="sidebar-heading">Filter by type</div>
       <button class="filter-btn active" data-filter="all">
-        <span class="filter-dot" style="background:#cbd5e1"></span>All guides<span class="count">104</span>
+        <span class="filter-dot" style="background:#cbd5e1"></span>All guides<span class="count">98</span>
       </button>
       <button class="filter-btn" data-filter="calculator">
         <span class="filter-dot" style="background:var(--teal)"></span>Has Calculator<span class="count">28</span>
@@ -2879,8 +2879,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const teaserEl = tile.querySelector('.tile-teaser');
       const fullText = (titleEl?.textContent || '') + ' ' + (teaserEl?.textContent || '') + ' ' + text;
 
-      // Filter match
-      const filterMatch = activeFilter === 'all' || tags.includes(activeFilter);
+      // Filter match — "all" excludes download tiles (Downloads has its own filter)
+      const filterMatch = activeFilter === 'all'
+        ? !tags.includes('download')
+        : tags.includes(activeFilter);
 
       // Search match
       let searchMatch = true;
@@ -2947,17 +2949,17 @@ function highlight(text, words) {
   (function syncFilterCounts() {
     const tiles = [...document.querySelectorAll('.guide-tile')];
     const total = tiles.length;
-    // "Guides" excludes PDF download tiles (they have their own Downloads filter)
+    // "Guides" excludes PDF download tiles (Downloads has its own filter)
     const guideTotal = tiles.filter(
-      t => (t.getAttribute('href') || '').endsWith('.html')
+      t => !(t.dataset.tags || '').toLowerCase().includes('download')
     ).length;
 
     document.querySelectorAll('.filter-btn[data-filter], .mf-pill[data-filter]').forEach(btn => {
       const f = btn.dataset.filter;
       if (f === 'all') {
         const span = btn.querySelector('.count');
-        if (span) span.textContent = total;
-        if (btn.classList.contains('mf-pill')) btn.textContent = `All ${total}`;
+        if (span) span.textContent = guideTotal;
+        if (btn.classList.contains('mf-pill')) btn.textContent = `All ${guideTotal}`;
       } else {
         const n = tiles.filter(t => (t.dataset.tags || '').toLowerCase().includes(f)).length;
         const span = btn.querySelector('.count');
@@ -2967,7 +2969,7 @@ function highlight(text, words) {
 
     // Sync search placeholder, results counter, and hero stat
     searchInput.placeholder = `Search ${guideTotal} guides — try "potassium" or "dialysis"`;
-    resultsCount.textContent = total;
+    resultsCount.textContent = guideTotal;
     document.querySelectorAll('.stat').forEach(s => {
       if (s.querySelector('.stat-label')?.textContent.trim() === 'Guides') {
         s.querySelector('.stat-num').textContent = guideTotal;
