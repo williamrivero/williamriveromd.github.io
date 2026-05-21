@@ -74,7 +74,8 @@
   /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
   .site-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 32px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 32px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -313,6 +314,30 @@
   .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
 
   /* ── TABLES ──────────────────────────────────────────────────────────────── */
+
+  /* Generic table wrapper — used throughout guide and clinician sections */
+  .table-wrap {
+    overflow-x: auto; margin: 20px 0;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th {
+    text-align: left; padding: 11px 16px;
+    background: var(--navy); color: rgba(255,255,255,.92);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    border-bottom: none;
+  }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td {
+    padding: 13px 16px; vertical-align: top; line-height: 1.55;
+    border-bottom: 1px solid var(--border); color: var(--text-mid);
+  }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
   .lab-table, .drug-table, .schedule-table {
     width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;
   }
@@ -724,6 +749,12 @@
   html[data-theme="dark"] .alert-body ul li,
   html[data-theme="dark"] .step-body p,
   html[data-theme="dark"] .ladder-body p,
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-theme="dark"] .table-wrap tbody tr:hover td { background: #1e3040; }
+
   html[data-theme="dark"] .lab-table td,
   html[data-theme="dark"] .drug-table td,
   html[data-theme="dark"] .schedule-table td,
@@ -865,6 +896,73 @@
   /* ── ILLUSTRATION PANEL ──────────────────────────────────────────────────── */
   .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
 
+  /* ── CLINICIAN SECTION HERO (.md-hero) ───────────────────────────────────── */
+  .md-hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
+    padding: 60px 0 56px; position: relative; overflow: hidden;
+  }
+  .md-hero::before {
+    content: ''; position: absolute; right: -80px; top: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(212,175,79,.1); pointer-events: none;
+  }
+  .md-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: #d4af4f; border: 1px solid rgba(212,175,79,.45);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .md-hero h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
+    color: white; margin-bottom: 14px; letter-spacing: -.02em;
+  }
+  .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.82);
+    max-width: 580px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .md-stat {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 10px; padding: 12px 20px;
+  }
+  .md-stat-val {
+    font-family: 'Lora', serif; font-size: 22px; font-weight: 600;
+    color: #d4af4f; line-height: 1; display: block;
+  }
+  .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
+  .md-hero .illus-wrap {
+    background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.14);
+  }
+  .md-hero .img-placeholder { background: transparent; border-color: rgba(255,255,255,.2); margin: 0; }
+  .md-hero .img-placeholder p,
+  .md-hero .img-placeholder .img-ph-icon { color: rgba(255,255,255,.55); }
+
+  /* ── CLINICIAN PATHWAY BANNERS ───────────────────────────────────────────── */
+  .pathway-banner {
+    padding: 20px 0 0;
+  }
+  .pathway-banner-inner {
+    padding: 14px 20px; border-radius: 0 8px 8px 0;
+  }
+  .pathway-banner-inner.neph {
+    border-left: 4px solid var(--teal); background: var(--teal-light);
+  }
+  .pathway-banner-inner.urol {
+    border-left: 4px solid var(--gold); background: #fdf8ec;
+  }
+  .pathway-banner-inner.synth {
+    border-left: 4px solid var(--purple); background: var(--purple-soft);
+  }
+  .pathway-banner-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; margin: 0 0 4px;
+  }
+  .pathway-banner-label.neph { color: var(--teal); }
+  .pathway-banner-label.urol { color: var(--gold); }
+  .pathway-banner-label.synth { color: var(--purple); }
+  .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
   .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
@@ -893,7 +991,7 @@
   }
   body.physician-mode .intro-callout { background: #0f1e2e; }
   body.physician-mode .stat-card     { background: #0f1e2e; }
-  body.physician-mode .ref-band      { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
   body.physician-mode .nav-pill.active-pill {
     background: var(--navy); border-color: var(--navy);
   }
@@ -1008,6 +1106,9 @@
     .feature-card { border: 1px solid #ccc !important; background: #fff !important; }
     .feature-card h4 { color: #1f3864 !important; }
     .feature-card p { color: #333 !important; }
+    .table-wrap { box-shadow: none !important; border: 1px solid #ccc !important; }
+    .table-wrap thead th { background: #eee !important; color: #333 !important; }
+    .table-wrap tbody td { color: #333 !important; }
     .lab-table th { background: #eee !important; color: #333 !important; }
     .lab-table td { color: #333 !important; }
     .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
@@ -1151,16 +1252,20 @@ body.dark .related-card-title {
       <span data-lang="en">CKD · Nutrition · Meal Planning · Philippines</span>
       <span data-lang="tl" class="lang-hidden">CKD · Nutrisyon · Pagpaplano ng Pagkain · Pilipinas</span>
       <span data-lang="ceb" class="lang-hidden">CKD · Nutrisyon · Pagplano sa Pagkaon · Pilipinas</span>
+    
+      <span data-lang="kap" class="lang-hidden">CKD · Nutrisyon · Pagpaplano ning Pamangan · Pilipinas</span>
     </div>
     <h1>
       <span data-lang="en">Meal Prep &amp; Fast Food for <em>CKD Patients</em> on the Go</span>
       <span data-lang="tl" class="lang-hidden">Meal Prep at Fast Food para sa mga Pasyenteng may CKD</span>
       <span data-lang="ceb" class="lang-hidden">Meal Prep ug Fast Food para sa mga Pasyente nga adunay CKD</span>
+          <span data-lang="kap" class="lang-hidden">Meal Prep &amp; Fast Food para king mga Pasyente a maki CKD</span>
     </h1>
     <p class="hero-sub">
       <span data-lang="en">A practical system for kidney patients with busy lives — advanced meal preparation techniques, Filipino fast food survival guides with traffic-light ratings, convenience store options, and a full weekly meal prep plan by CKD stage.</span>
       <span data-lang="tl" class="lang-hidden">Isang praktikal na sistema para sa mga pasyenteng may CKD na abala — mga teknik sa meal prep, gabay sa fast food na may traffic-light ratings, at lingguhang meal plan ayon sa stage ng CKD.</span>
       <span data-lang="ceb" class="lang-hidden">Usa ka praktikal nga sistema para sa mga pasyente nga adunay CKD nga busy — mga teknik sa meal prep, gabay sa fast food nga adunay traffic-light ratings, ug weekly meal plan sumala sa stage sa CKD.</span>
+          <span data-lang="kap" class="lang-hidden">Metung a praktikal a sistema para king mga pasyente a maki CKD a abala — deng advanced meal preparation techniques, safe fast food selections, at at-a-glance nutrient guides para king Pilipinas.</span>
     </p>
     <div class="hero-meta">
       <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
@@ -1198,7 +1303,7 @@ body.dark .related-card-title {
       <div class="intro-callout">
         <p><span data-lang="en">In healthy people, a single fast food meal is a minor inconvenience. In a dialysis patient, a single high-potassium, high-phosphorus meal can spike serum potassium by 1–2 mEq/L and trigger <strong>cardiac arrhythmia within hours</strong>. Phosphate from processed food additives is absorbed at nearly 100% — far more dangerous than natural food phosphorus. <strong>Meal preparation is not a lifestyle preference for CKD patients — it is a clinical intervention.</strong></span><span data-lang="tl" class="lang-hidden">Sa mga malusog na tao, ang isang fast food meal ay isang maliit na abala lamang. Sa isang pasyenteng naka-dialysis, ang isang pagkaing mataas sa potassium at phosphorus ay maaaring magpataas ng serum potassium ng 1–2 mEq/L at mag-trigger ng <strong>cardiac arrhythmia sa loob ng ilang oras</strong>. Ang phosphate mula sa mga processed food additive ay nasisipsip ng halos 100% — mas mapanganib kaysa sa natural na phosphorus mula sa pagkain. <strong>Ang paghahanda ng pagkain ay hindi isang kagustuhan sa pamumuhay para sa mga pasyenteng may CKD — ito ay isang klinikal na interbensyon.</strong></span><span data-lang="ceb" class="lang-hidden">Sa mga himsog nga tawo, ang usa ka fast food meal usa ka gamay nga abala lamang. Sa usa ka pasyente nga naka-dialysis, ang usa ka pagkaon nga taas sa potassium ug phosphorus makapataas sa serum potassium og 1–2 mEq/L ug makapukaw og <strong>cardiac arrhythmia sulod sa pipila ka oras</strong>. Ang phosphate gikan sa mga processed food additive nasipsip sa halos 100% — mas mapeligro kay sa natural nga phosphorus gikan sa pagkaon. <strong>Ang paghimo sa pagkaon dili usa ka kagustuhan sa kinabuhi alang sa mga pasyente nga adunay CKD — kini usa ka klinikal nga interbensyon.</strong></span><span data-lang="kap" class="lang-hidden">Sa deng malusog na tao, ing metung a fast food meal ya metung a maliit na abala lamang. Sa metung a pasyenteng naka-dialysis, ing metung a pamangang mataas sa potassium at phosphorus ya maaaring magpataas ning serum potassium ning 1–2 mEq/L at mag-trigger ning <strong>cardiac arrhythmia sa loob ning ilang oras</strong>. Ing phosphate mula sa deng processed food additive ya nasisipsip ning halos 100% — mas mapanganib kaysa sa natural na phosphorus mula king pamangan. <strong>Ing paghahanda nining pamangan ya ali metung a kagustuhan sa pamumuhay para king deng pasyenteng may CKD — ini ya metung a klinikal na interbensyon.</strong></span></p>
       </div>
-      <img src="../images/meal-prep-fastfood-ckd-overview-infographic.png" alt="Meal Prep and Fast Food for CKD Patients infographic — why planning matters, the CKD plate by stage, the Sunday prep system, leaching technique, fast food traffic-light ratings, and the go-bag kit" style="width:100%;border-radius:12px;margin:24px 0;box-shadow:0 4px 24px rgba(15,30,46,.12);">
+      <img fetchpriority="high" loading="eager" src="../images/meal-prep-fastfood-ckd-overview-infographic.png" alt="Meal Prep and Fast Food for CKD Patients infographic — why planning matters, the CKD plate by stage, the Sunday prep system, leaching technique, fast food traffic-light ratings, and the go-bag kit" style="width:100%;border-radius:12px;margin:24px 0;box-shadow:0 4px 24px rgba(15,30,46,.12);">
 
       <h3><span data-lang="en">The Three Major Threats in Unplanned CKD Eating</span><span data-lang="tl" class="lang-hidden">Ang Tatlong Pangunahing Banta sa Pagkain nang Walang Plano sa CKD</span><span data-lang="ceb" class="lang-hidden">Ang Tulo ka Pangunahing Hulga sa Pagkaon nga Walay Plano sa CKD</span><span data-lang="kap" class="lang-hidden">Ing Tatlong Pangunahing Banta sa Pagkain nang Alang Plano sa CKD</span></h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:20px 0 28px;">

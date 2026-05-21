@@ -74,7 +74,8 @@
   /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
   .site-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 32px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 32px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -313,6 +314,30 @@
   .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
 
   /* ── TABLES ──────────────────────────────────────────────────────────────── */
+
+  /* Generic table wrapper — used throughout guide and clinician sections */
+  .table-wrap {
+    overflow-x: auto; margin: 20px 0;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th {
+    text-align: left; padding: 11px 16px;
+    background: var(--navy); color: rgba(255,255,255,.92);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    border-bottom: none;
+  }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td {
+    padding: 13px 16px; vertical-align: top; line-height: 1.55;
+    border-bottom: 1px solid var(--border); color: var(--text-mid);
+  }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
   .lab-table, .drug-table, .schedule-table {
     width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;
   }
@@ -724,6 +749,12 @@
   html[data-theme="dark"] .alert-body ul li,
   html[data-theme="dark"] .step-body p,
   html[data-theme="dark"] .ladder-body p,
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-theme="dark"] .table-wrap tbody tr:hover td { background: #1e3040; }
+
   html[data-theme="dark"] .lab-table td,
   html[data-theme="dark"] .drug-table td,
   html[data-theme="dark"] .schedule-table td,
@@ -865,6 +896,73 @@
   /* ── ILLUSTRATION PANEL ──────────────────────────────────────────────────── */
   .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
 
+  /* ── CLINICIAN SECTION HERO (.md-hero) ───────────────────────────────────── */
+  .md-hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
+    padding: 60px 0 56px; position: relative; overflow: hidden;
+  }
+  .md-hero::before {
+    content: ''; position: absolute; right: -80px; top: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(212,175,79,.1); pointer-events: none;
+  }
+  .md-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: #d4af4f; border: 1px solid rgba(212,175,79,.45);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .md-hero h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
+    color: white; margin-bottom: 14px; letter-spacing: -.02em;
+  }
+  .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.82);
+    max-width: 580px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .md-stat {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 10px; padding: 12px 20px;
+  }
+  .md-stat-val {
+    font-family: 'Lora', serif; font-size: 22px; font-weight: 600;
+    color: #d4af4f; line-height: 1; display: block;
+  }
+  .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
+  .md-hero .illus-wrap {
+    background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.14);
+  }
+  .md-hero .img-placeholder { background: transparent; border-color: rgba(255,255,255,.2); margin: 0; }
+  .md-hero .img-placeholder p,
+  .md-hero .img-placeholder .img-ph-icon { color: rgba(255,255,255,.55); }
+
+  /* ── CLINICIAN PATHWAY BANNERS ───────────────────────────────────────────── */
+  .pathway-banner {
+    padding: 20px 0 0;
+  }
+  .pathway-banner-inner {
+    padding: 14px 20px; border-radius: 0 8px 8px 0;
+  }
+  .pathway-banner-inner.neph {
+    border-left: 4px solid var(--teal); background: var(--teal-light);
+  }
+  .pathway-banner-inner.urol {
+    border-left: 4px solid var(--gold); background: #fdf8ec;
+  }
+  .pathway-banner-inner.synth {
+    border-left: 4px solid var(--purple); background: var(--purple-soft);
+  }
+  .pathway-banner-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; margin: 0 0 4px;
+  }
+  .pathway-banner-label.neph { color: var(--teal); }
+  .pathway-banner-label.urol { color: var(--gold); }
+  .pathway-banner-label.synth { color: var(--purple); }
+  .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
   .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
@@ -893,7 +991,7 @@
   }
   body.physician-mode .intro-callout { background: #0f1e2e; }
   body.physician-mode .stat-card     { background: #0f1e2e; }
-  body.physician-mode .ref-band      { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
   body.physician-mode .nav-pill.active-pill {
     background: var(--navy); border-color: var(--navy);
   }
@@ -1008,6 +1106,9 @@
     .feature-card { border: 1px solid #ccc !important; background: #fff !important; }
     .feature-card h4 { color: #1f3864 !important; }
     .feature-card p { color: #333 !important; }
+    .table-wrap { box-shadow: none !important; border: 1px solid #ccc !important; }
+    .table-wrap thead th { background: #eee !important; color: #333 !important; }
+    .table-wrap tbody td { color: #333 !important; }
     .lab-table th { background: #eee !important; color: #333 !important; }
     .lab-table td { color: #333 !important; }
     .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
@@ -1340,7 +1441,7 @@ html[data-theme="dark"] .doc-info h4{color:#a8c4e8;}
 <figure style="margin:24px 0;">
   <picture>
     <source srcset="../images/advance-care-planning-overview-infographic.webp" type="image/webp">
-    <img src="../images/advance-care-planning-overview-infographic.png" loading="lazy" width="1495" height="1056" alt="Advance Care Planning for Dialysis Patients — what ACP is, why it matters in dialysis (mortality, planned withdrawal, CPR survival), 5 questions to think about, 4 key decisions to document (surrogate, CPR, ICU/ventilator/tube feeding, dialysis goals), three care pathways (continue dialysis, conservative kidney management, time-limited trial), comfort care after withdrawal, and the Philippine context (family, faith, financial reality, legal note)" style="border-radius:12px;display:block;width:100%;height:auto;">
+    <img fetchpriority="high" loading="eager" src="../images/advance-care-planning-overview-infographic.png" width="1495" height="1056" alt="Advance Care Planning for Dialysis Patients — what ACP is, why it matters in dialysis (mortality, planned withdrawal, CPR survival), 5 questions to think about, 4 key decisions to document (surrogate, CPR, ICU/ventilator/tube feeding, dialysis goals), three care pathways (continue dialysis, conservative kidney management, time-limited trial), comfort care after withdrawal, and the Philippine context (family, faith, financial reality, legal note)" style="border-radius:12px;display:block;width:100%;height:auto;">
   </picture>
   <figcaption class="illus-caption" style="margin-top:8px;text-align:center;font-size:13px;color:#5a6472;"><span data-lang="en">A complete picture of advance care planning for dialysis patients &mdash; the choices, the decisions to document, and the care pathways available to you.</span><span class="lang-hidden" data-lang="tl">Isang buong larawan ng advance care planning para sa mga pasyenteng nasa dialysis &mdash; ang mga pagpipilian, ang mga desisyong dapat idokumento, at ang mga landas ng pangangalaga.</span><span class="lang-hidden" data-lang="ceb">Usa ka kompletong hulagway sa advance care planning alang sa mga pasyente sa dialysis.</span><span class="lang-hidden" data-lang="kap">Metung a kompletong larawan ning advance care planning para king deng pasyente sa dialysis.</span></figcaption>
 </figure>

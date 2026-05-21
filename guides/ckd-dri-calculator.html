@@ -75,7 +75,8 @@
   /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
   .site-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 32px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 32px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -314,6 +315,30 @@
   .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
 
   /* ── TABLES ──────────────────────────────────────────────────────────────── */
+
+  /* Generic table wrapper — used throughout guide and clinician sections */
+  .table-wrap {
+    overflow-x: auto; margin: 20px 0;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th {
+    text-align: left; padding: 11px 16px;
+    background: var(--navy); color: rgba(255,255,255,.92);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    border-bottom: none;
+  }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td {
+    padding: 13px 16px; vertical-align: top; line-height: 1.55;
+    border-bottom: 1px solid var(--border); color: var(--text-mid);
+  }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
   .lab-table, .drug-table, .schedule-table {
     width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;
   }
@@ -725,6 +750,12 @@
   html[data-theme="dark"] .alert-body ul li,
   html[data-theme="dark"] .step-body p,
   html[data-theme="dark"] .ladder-body p,
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-theme="dark"] .table-wrap tbody tr:hover td { background: #1e3040; }
+
   html[data-theme="dark"] .lab-table td,
   html[data-theme="dark"] .drug-table td,
   html[data-theme="dark"] .schedule-table td,
@@ -866,6 +897,73 @@
   /* ── ILLUSTRATION PANEL ──────────────────────────────────────────────────── */
   .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
 
+  /* ── CLINICIAN SECTION HERO (.md-hero) ───────────────────────────────────── */
+  .md-hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
+    padding: 60px 0 56px; position: relative; overflow: hidden;
+  }
+  .md-hero::before {
+    content: ''; position: absolute; right: -80px; top: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(212,175,79,.1); pointer-events: none;
+  }
+  .md-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: #d4af4f; border: 1px solid rgba(212,175,79,.45);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .md-hero h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
+    color: white; margin-bottom: 14px; letter-spacing: -.02em;
+  }
+  .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.82);
+    max-width: 580px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .md-stat {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 10px; padding: 12px 20px;
+  }
+  .md-stat-val {
+    font-family: 'Lora', serif; font-size: 22px; font-weight: 600;
+    color: #d4af4f; line-height: 1; display: block;
+  }
+  .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
+  .md-hero .illus-wrap {
+    background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.14);
+  }
+  .md-hero .img-placeholder { background: transparent; border-color: rgba(255,255,255,.2); margin: 0; }
+  .md-hero .img-placeholder p,
+  .md-hero .img-placeholder .img-ph-icon { color: rgba(255,255,255,.55); }
+
+  /* ── CLINICIAN PATHWAY BANNERS ───────────────────────────────────────────── */
+  .pathway-banner {
+    padding: 20px 0 0;
+  }
+  .pathway-banner-inner {
+    padding: 14px 20px; border-radius: 0 8px 8px 0;
+  }
+  .pathway-banner-inner.neph {
+    border-left: 4px solid var(--teal); background: var(--teal-light);
+  }
+  .pathway-banner-inner.urol {
+    border-left: 4px solid var(--gold); background: #fdf8ec;
+  }
+  .pathway-banner-inner.synth {
+    border-left: 4px solid var(--purple); background: var(--purple-soft);
+  }
+  .pathway-banner-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; margin: 0 0 4px;
+  }
+  .pathway-banner-label.neph { color: var(--teal); }
+  .pathway-banner-label.urol { color: var(--gold); }
+  .pathway-banner-label.synth { color: var(--purple); }
+  .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
   .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
@@ -894,7 +992,7 @@
   }
   body.physician-mode .intro-callout { background: #0f1e2e; }
   body.physician-mode .stat-card     { background: #0f1e2e; }
-  body.physician-mode .ref-band      { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
   body.physician-mode .nav-pill.active-pill {
     background: var(--navy); border-color: var(--navy);
   }
@@ -1009,6 +1107,9 @@
     .feature-card { border: 1px solid #ccc !important; background: #fff !important; }
     .feature-card h4 { color: #1f3864 !important; }
     .feature-card p { color: #333 !important; }
+    .table-wrap { box-shadow: none !important; border: 1px solid #ccc !important; }
+    .table-wrap thead th { background: #eee !important; color: #333 !important; }
+    .table-wrap tbody td { color: #333 !important; }
     .lab-table th { background: #eee !important; color: #333 !important; }
     .lab-table td { color: #333 !important; }
     .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
@@ -1243,7 +1344,7 @@ body.dark .related-card-title {
 <figure class="illus-panel" aria-label="CKD DRI Calculator overview — how it works, example patient, daily requirements, and food sources">
   <picture>
     <source srcset="../images/ckd-dri-calculator-overview.webp" type="image/webp">
-    <img src="../images/ckd-dri-calculator-overview.png" loading="lazy" width="1536" height="1024"
+    <img fetchpriority="high" loading="eager" src="../images/ckd-dri-calculator-overview.png" width="1536" height="1024"
          alt="CKD DRI Calculator for children and young adults: shows how the calculator works, an example 12-year-old boy with CKD Stage 2 (1,800 kcal, 40g protein, 1,700mL fluids, 1,500mg sodium, 2,000mg potassium, 800mg phosphorus), DRI calculation methods, and kidney-friendly food sources."
          style="width:100%;display:block;border-radius:14px;">
   </picture>
@@ -1284,9 +1385,9 @@ body.dark .related-card-title {
 <div class="form-group">
 <label><span data-lang="en">Biological Sex</span><span class="lang-hidden" data-lang="tl">Kasarian</span><span class="lang-hidden" data-lang="ceb">Kasarian</span><span class="lang-hidden" data-lang="kap">Kasarian</span></label>
 <select id="f-sex">
-<option value=""><span data-lang="en">Select…</span></option>
-<option value="M"><span data-lang="en">Male</span></option>
-<option value="F"><span data-lang="en">Female</span></option>
+<option value=""><span data-lang="en">Select…</span><span class="lang-hidden" data-lang="tl">Piliin…</span><span class="lang-hidden" data-lang="ceb">Pilia…</span><span class="lang-hidden" data-lang="kap">Pilian…</span></option>
+<option value="M"><span data-lang="en">Male</span><span class="lang-hidden" data-lang="tl">Lalaki</span><span class="lang-hidden" data-lang="ceb">Lalaki</span><span class="lang-hidden" data-lang="kap">Lalaki</span></option>
+<option value="F"><span data-lang="en">Female</span><span class="lang-hidden" data-lang="tl">Babae</span><span class="lang-hidden" data-lang="ceb">Babae</span><span class="lang-hidden" data-lang="kap">Babai</span></option>
 </select>
 </div>
 <div class="form-group">
@@ -1706,6 +1807,51 @@ Agyang "natural" o "herbal" la ding supplement, e mu buring sabyan a ligtas la p
 <li><strong>Vitamin A / Retinol supplements:</strong> Accumulates to toxic levels in CKD</li>
 <li><strong>Vitamin K2 supplements:</strong> Emerging evidence in CKD but also potential vascular calcification interactions — discuss with nephrologist first</li>
 <li><strong>Buko juice, banana heart supplements, coconut water concentrate:</strong> Very high potassium — fatal in anuric dialysis patients</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="lang-hidden" data-lang="tl">
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Huwag kailanman uminom ng mga over-the-counter supplements na ito nang walang pahintulot ng nephrologist sa CKD</h4>
+<ul>
+<li><strong>Mga herbal supplements / barley grass / wheatgrass / moringa powders:</strong> Madalas mataas sa potassium, phosphorus, o oxalate — maaaring magdulot ng fatal na hyperkalemia sa mga pasyenteng nasa dialysis</li>
+<li><strong>Mataas na dosis ng Vitamin C</strong> (&gt;100 mg/araw): Oxalate nephropathy</li>
+<li><strong>Vitamin A / Retinol supplements:</strong> Nag-iipon sa nakakalason na antas sa CKD</li>
+<li><strong>Vitamin K2 supplements:</strong> Lumalabas na ebidensya sa CKD ngunit may posibleng vascular calcification interactions — talakayin muna sa nephrologist</li>
+<li><strong>Buko juice, banana heart supplements, coconut water concentrate:</strong> Napaka-taas ng potassium — nakamamatay sa mga pasyenteng may anuric na dialysis</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="lang-hidden" data-lang="ceb">
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Ayaw gayud moinum niini nga over-the-counter supplements nga walay pagtugot sa nephrologist sa CKD</h4>
+<ul>
+<li><strong>Mga herbal supplements / barley grass / wheatgrass / moringa powders:</strong> Kasagaran taas sa potassium, phosphorus, o oxalate — makapahinabo sa fatal nga hyperkalemia sa mga pasyente sa dialysis</li>
+<li><strong>Taas nga dosis sa Vitamin C</strong> (&gt;100 mg/adlaw): Oxalate nephropathy</li>
+<li><strong>Vitamin A / Retinol supplements:</strong> Nagtipon sa makahilo nga lebel sa CKD</li>
+<li><strong>Vitamin K2 supplements:</strong> Nagpakita nga ebidensya sa CKD apan adunay posibleng vascular calcification interactions — hisgoti una sa nephrologist</li>
+<li><strong>Buko juice, banana heart supplements, coconut water concentrate:</strong> Labihan ka-taas og potassium — nakamamatay sa mga pasyente sa anuric dialysis</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="lang-hidden" data-lang="kap">
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>E kailanman uminum kareng over-the-counter supplements a iti nang e pinayagan ning nephrologist king CKD</h4>
+<ul>
+<li><strong>Mga herbal supplements / barley grass / wheatgrass / moringa powders:</strong> Madalas mataas king potassium, phosphorus, o oxalate — malyaring magdulot ning fatal a hyperkalemia king mga pasyente king dialysis</li>
+<li><strong>Mataas a dosis ning Vitamin C</strong> (&gt;100 mg/aldo): Oxalate nephropathy</li>
+<li><strong>Vitamin A / Retinol supplements:</strong> Nag-iipon king nakakalason a antas king CKD</li>
+<li><strong>Vitamin K2 supplements:</strong> Lumalabas a ebidensya king CKD ngunit may posibleng vascular calcification interactions — talakayin muna king nephrologist</li>
+<li><strong>Buko juice, banana heart supplements, coconut water concentrate:</strong> Napaka-taas ning potassium — nakamamatay king mga pasyente a anuric dialysis</li>
 </ul>
 </div>
 </div>

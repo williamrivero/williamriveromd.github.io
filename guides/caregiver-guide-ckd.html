@@ -74,7 +74,8 @@
   /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
   .site-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 32px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 32px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -313,6 +314,30 @@
   .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
 
   /* ── TABLES ──────────────────────────────────────────────────────────────── */
+
+  /* Generic table wrapper — used throughout guide and clinician sections */
+  .table-wrap {
+    overflow-x: auto; margin: 20px 0;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th {
+    text-align: left; padding: 11px 16px;
+    background: var(--navy); color: rgba(255,255,255,.92);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    border-bottom: none;
+  }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td {
+    padding: 13px 16px; vertical-align: top; line-height: 1.55;
+    border-bottom: 1px solid var(--border); color: var(--text-mid);
+  }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
   .lab-table, .drug-table, .schedule-table {
     width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;
   }
@@ -724,6 +749,12 @@
   html[data-theme="dark"] .alert-body ul li,
   html[data-theme="dark"] .step-body p,
   html[data-theme="dark"] .ladder-body p,
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-theme="dark"] .table-wrap tbody tr:hover td { background: #1e3040; }
+
   html[data-theme="dark"] .lab-table td,
   html[data-theme="dark"] .drug-table td,
   html[data-theme="dark"] .schedule-table td,
@@ -865,6 +896,73 @@
   /* ── ILLUSTRATION PANEL ──────────────────────────────────────────────────── */
   .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
 
+  /* ── CLINICIAN SECTION HERO (.md-hero) ───────────────────────────────────── */
+  .md-hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
+    padding: 60px 0 56px; position: relative; overflow: hidden;
+  }
+  .md-hero::before {
+    content: ''; position: absolute; right: -80px; top: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(212,175,79,.1); pointer-events: none;
+  }
+  .md-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: #d4af4f; border: 1px solid rgba(212,175,79,.45);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .md-hero h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
+    color: white; margin-bottom: 14px; letter-spacing: -.02em;
+  }
+  .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.82);
+    max-width: 580px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .md-stat {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 10px; padding: 12px 20px;
+  }
+  .md-stat-val {
+    font-family: 'Lora', serif; font-size: 22px; font-weight: 600;
+    color: #d4af4f; line-height: 1; display: block;
+  }
+  .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
+  .md-hero .illus-wrap {
+    background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.14);
+  }
+  .md-hero .img-placeholder { background: transparent; border-color: rgba(255,255,255,.2); margin: 0; }
+  .md-hero .img-placeholder p,
+  .md-hero .img-placeholder .img-ph-icon { color: rgba(255,255,255,.55); }
+
+  /* ── CLINICIAN PATHWAY BANNERS ───────────────────────────────────────────── */
+  .pathway-banner {
+    padding: 20px 0 0;
+  }
+  .pathway-banner-inner {
+    padding: 14px 20px; border-radius: 0 8px 8px 0;
+  }
+  .pathway-banner-inner.neph {
+    border-left: 4px solid var(--teal); background: var(--teal-light);
+  }
+  .pathway-banner-inner.urol {
+    border-left: 4px solid var(--gold); background: #fdf8ec;
+  }
+  .pathway-banner-inner.synth {
+    border-left: 4px solid var(--purple); background: var(--purple-soft);
+  }
+  .pathway-banner-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; margin: 0 0 4px;
+  }
+  .pathway-banner-label.neph { color: var(--teal); }
+  .pathway-banner-label.urol { color: var(--gold); }
+  .pathway-banner-label.synth { color: var(--purple); }
+  .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
   .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
@@ -893,7 +991,7 @@
   }
   body.physician-mode .intro-callout { background: #0f1e2e; }
   body.physician-mode .stat-card     { background: #0f1e2e; }
-  body.physician-mode .ref-band      { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
   body.physician-mode .nav-pill.active-pill {
     background: var(--navy); border-color: var(--navy);
   }
@@ -1008,6 +1106,9 @@
     .feature-card { border: 1px solid #ccc !important; background: #fff !important; }
     .feature-card h4 { color: #1f3864 !important; }
     .feature-card p { color: #333 !important; }
+    .table-wrap { box-shadow: none !important; border: 1px solid #ccc !important; }
+    .table-wrap thead th { background: #eee !important; color: #333 !important; }
+    .table-wrap tbody td { color: #333 !important; }
     .lab-table th { background: #eee !important; color: #333 !important; }
     .lab-table td { color: #333 !important; }
     .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
@@ -1343,7 +1444,7 @@ html[data-theme="dark"] .neglect-card.active{background:#2a1515;}
 <figure class="illus-panel" style="max-width:600px;margin:0 auto 28px;" aria-label="CKD Caregiver Guide infographic — daily care checklist, meals, medication, emotional support, when to seek help, and self-care">
   <picture>
     <source srcset="../images/ckd-caregiver-overview.webp" type="image/webp">
-    <img src="../images/ckd-caregiver-overview.png" loading="lazy" width="1024" height="1536"
+    <img fetchpriority="high" loading="eager" src="../images/ckd-caregiver-overview.png" width="1024" height="1536"
          alt="CKD Caregiver Guide: daily care checklist (medications, meal plan, blood pressure, appointments), kidney-friendly meal basics, medication support, emotional support, when to seek emergency help, appointment tracker, and care for yourself. Key message: teamwork between you, your loved one, and the healthcare team leads to better outcomes."
          style="width:100%;height:auto;display:block;border-radius:14px;">
   </picture>
@@ -1758,7 +1859,7 @@ html[data-theme="dark"] .neglect-card.active{background:#2a1515;}
 
 <div class="three-col">
 <div class="feature-card">
-<h4><span class="dot dot-teal"></span><span data-lang="en">DSWD Sustainable Livelihood Program (SLP)</span></h4>
+<h4><span class="dot dot-teal"></span><span data-lang="en">DSWD Sustainable Livelihood Program (SLP)</span><span class="lang-hidden" data-lang="tl">DSWD Sustainable Livelihood Program (SLP)</span><span class="lang-hidden" data-lang="ceb">DSWD Sustainable Livelihood Program (SLP)</span><span class="lang-hidden" data-lang="kap">DSWD Sustainable Livelihood Program (SLP)</span></h4>
 <p><span data-lang="en">The DSWD offers livelihood grants and microenterprise support for low-income households. CKD caregivers who have left or reduced employment to provide care may qualify. Apply at your city or municipal DSWD office &mdash; state caregiver status explicitly as the reason for income reduction. A referral letter from the dialysis center social worker strengthens the application.</span>
 <span class="lang-hidden" data-lang="tl">Ang DSWD ay nag-aalok ng mga livelihood grants at suporta sa microenterprise para sa mga mababang kita na sambahayan. Ang mga tagapag-alaga ng CKD na umalis o nabawasan ang trabaho upang magbigay ng pag-aalaga ay maaaring maging karapat-dapat. Mag-apply sa iyong lungsod o munisipal na tanggapan ng DSWD &mdash; hayagang sabihin ang katayuang tagapag-alaga bilang dahilan ng pagbabago ng kita. Ang referral letter mula sa social worker ng dialysis center ay nagpapatibay ng aplikasyon.</span>
 <span class="lang-hidden" data-lang="ceb">Ang DSWD nagtanyag og mga livelihood grants ug suporta sa microenterprise alang sa mga ubos-kita nga panimalay. Ang mga caregiver sa CKD nga mibiya o nabawasan ang trabaho aron makahatag og pag-atiman mahimong kwalipikado. Mag-apply sa imong lungsod o munisipal nga opisina sa DSWD &mdash; hayag nga isulti ang katayoan sa caregiver ingon ang rason sa kausaban sa kita. Ang referral letter gikan sa social worker sa dialysis center nagpakusog sa aplikasyon.</span>
@@ -1766,7 +1867,7 @@ html[data-theme="dark"] .neglect-card.active{background:#2a1515;}
 </p></div>
 
 <div class="feature-card">
-<h4><span class="dot dot-navy"></span><span data-lang="en">SSS Sickness Benefit &amp; Voluntary Membership</span></h4>
+<h4><span class="dot dot-navy"></span><span data-lang="en">SSS Sickness Benefit &amp; Voluntary Membership</span><span class="lang-hidden" data-lang="tl">SSS Sickness Benefit &amp; Voluntary Membership</span><span class="lang-hidden" data-lang="ceb">SSS Sickness Benefit &amp; Voluntary Membership</span><span class="lang-hidden" data-lang="kap">SSS Sickness Benefit &amp; Voluntary Membership</span></h4>
 <p><span data-lang="en">If your own health has suffered due to caregiving &mdash; and it may have &mdash; document it and file a sickness benefit claim with SSS. Keep your SSS membership active as a voluntary member even if you have left formal employment; this preserves your maternity, sickness, and disability benefits. Your nephrologist can issue a certificate noting caregiver-related health burden if needed for claims.</span>
 <span class="lang-hidden" data-lang="tl">Kung ang iyong sariling kalusugan ay naapektuhan dahil sa pag-aalaga &mdash; at malamang na naapektuhan &mdash; idokumento ito at mag-file ng sickness benefit claim sa SSS. Panatilihing aktibo ang iyong membership sa SSS bilang boluntaryong miyembro kahit umalis ka na sa pormal na trabaho; pinapanatili nito ang iyong mga benepisyo. Ang iyong nephrologist ay maaaring maglabas ng sertipiko na nagtatala ng pasanin sa kalusugan na may kaugnayan sa pag-aalaga kung kinakailangan para sa mga claim.</span>
 <span class="lang-hidden" data-lang="ceb">Kung ang imong kaugalingon nga kahimsog naaapektohan tungod sa pag-atiman &mdash; ug mahimo nga naaapektohan &mdash; idokumento kini ug mag-file og sickness benefit claim sa SSS. Ipadayon ang imong SSS membership isip boluntaryong miyembro bisan migbiya ka na sa pormal nga trabaho; kini nagpreserba sa imong mga benepisyo. Ang imong nephrologist mahimong mohatag og sertipiko nga nagasulti sa burden sa kahimsog nga may kalabtan sa pag-atiman kung gikinahanglan alang sa mga claim.</span>
@@ -1774,7 +1875,7 @@ html[data-theme="dark"] .neglect-card.active{background:#2a1515;}
 </p></div>
 
 <div class="feature-card">
-<h4><span class="dot dot-amber"></span><span data-lang="en">OFW Families: Remittance &amp; Overseas Caregiver Recognition</span></h4>
+<h4><span class="dot dot-amber"></span><span data-lang="en">OFW Families: Remittance &amp; Overseas Caregiver Recognition</span><span class="lang-hidden" data-lang="tl">Mga Pamilya ng OFW: Remittance &amp; Pagkilala sa Overseas Caregiver</span><span class="lang-hidden" data-lang="ceb">Mga Pamilya sa OFW: Remittance &amp; Pagila sa Overseas Caregiver</span><span class="lang-hidden" data-lang="kap">Mga Pamilya ning OFW: Remittance &amp; Pagkilala king Overseas Caregiver</span></h4>
 <p><span data-lang="en">If family members abroad fund your loved one&rsquo;s care through remittances, those contributions are caregiving at a distance. In Canada, the UK, Australia, and EU countries, there are formal caregiver tax credits and overseas dependent allowances. Encourage OFW family members to ask their employer&rsquo;s HR or a local tax advisor about dependent care deductions &mdash; this can meaningfully increase what is available to you. OWWA (Overseas Workers Welfare Administration) also offers repatriation and welfare support for OFWs who return home specifically to provide family care.</span>
 <span class="lang-hidden" data-lang="tl">Kung ang mga miyembro ng pamilya sa ibang bansa ay nagpopondo ng pag-aalaga ng iyong mahal sa buhay sa pamamagitan ng mga remittance, ang mga kontribusyon na iyon ay pag-aalaga sa malayo. Sa Canada, UK, Australia, at mga bansa sa EU, may mga pormal na caregiver tax credits at overseas dependent allowances. Hikayatin ang mga miyembro ng pamilya na OFW na itanong sa HR ng kanilang employer o sa isang lokal na tax advisor tungkol sa mga dependent care deductions. Ang OWWA ay nag-aalok din ng welfare support para sa mga OFW na bumabalik upang magbigay ng pag-aalaga ng pamilya.</span>
 <span class="lang-hidden" data-lang="ceb">Kung ang mga miyembro sa pamilya sa gawas sa nasud nagpondohan sa pag-atiman sa imong minahal pinaagi sa mga remittance, kini nga mga kontribusyon pag-atiman sa layog. Sa Canada, UK, Australia, ug EU nga mga nasud, adunay mga pormal nga caregiver tax credits ug overseas dependent allowances. Dasiga ang mga OFW nga miyembro sa pamilya sa pagpangutana sa HR sa ilang amo o sa usa ka lokal nga tax advisor bahin sa dependent care deductions. Ang OWWA nagtanyag usab og welfare support alang sa mga OFW nga mopauli aron maghatag og pag-atiman sa pamilya.</span>
@@ -1782,7 +1883,7 @@ html[data-theme="dark"] .neglect-card.active{background:#2a1515;}
 </p></div>
 
 <div class="feature-card">
-<h4><span class="dot dot-green"></span><span data-lang="en">Peer Support &amp; Caregiver Communities</span></h4>
+<h4><span class="dot dot-green"></span><span data-lang="en">Peer Support &amp; Caregiver Communities</span><span class="lang-hidden" data-lang="tl">Peer Support &amp; Mga Komunidad ng Caregiver</span><span class="lang-hidden" data-lang="ceb">Peer Support &amp; Mga Komunidad sa Caregiver</span><span class="lang-hidden" data-lang="kap">Peer Support &amp; Mga Komunidad ning Caregiver</span></h4>
 <p><span data-lang="en">The Philippine Society of Nephrology and NKTI support patient and family groups through accredited dialysis centers. Ask the dialysis center&rsquo;s social worker about active caregiver groups &mdash; even an informal gathering of caregivers in the same waiting area can be transformative. Online communities: the <em>CKD Philippines Support Group</em> on Facebook is active. Being genuinely understood by someone who knows what a Wednesday morning dialysis trip feels like is not a small thing.</span>
 <span class="lang-hidden" data-lang="tl">Ang Philippine Society of Nephrology at NKTI ay sumusuporta sa mga grupo ng pasyente at pamilya sa pamamagitan ng mga akreditadong dialysis center. Tanungin ang social worker ng dialysis center tungkol sa mga aktibong grupo ng suporta para sa mga tagapag-alaga. Online: aktibo ang <em>CKD Philippines Support Group</em> sa Facebook. Ang tunay na maunawaan ng isang taong alam kung ano ang pakiramdam ng isang biyahe sa dialysis sa Miyerkules ng umaga ay hindi maliit na bagay.</span>
 <span class="lang-hidden" data-lang="ceb">Ang Philippine Society of Nephrology ug NKTI nagsuporta sa mga grupo sa pasyente ug pamilya pinaagi sa mga akreditadong dialysis center. Pangutana ang social worker sa dialysis center bahin sa mga aktibong grupo sa suporta sa caregiver. Online: aktibo ang <em>CKD Philippines Support Group</em> sa Facebook. Ang tinuod nga masabtan sa usa ka tawo nga nahibalo kung unsa ang pagbati sa usa ka byahe sa dialysis sa Miyerkules sa buntag dili gamay nga butang.</span>
@@ -1790,7 +1891,7 @@ html[data-theme="dark"] .neglect-card.active{background:#2a1515;}
 </p></div>
 
 <div class="feature-card">
-<h4><span class="dot dot-purple"></span><span data-lang="en">Mental Health Access</span></h4>
+<h4><span class="dot dot-purple"></span><span data-lang="en">Mental Health Access</span><span class="lang-hidden" data-lang="tl">Access sa Mental Health</span><span class="lang-hidden" data-lang="ceb">Access sa Mental Health</span><span class="lang-hidden" data-lang="kap">Access king Mental Health</span></h4>
 <p><span data-lang="en">NCMH crisis hotline: <strong>1553</strong> (free, 24 hours). Government hospitals with psychiatry departments are required to provide services at low or no cost to PhilHealth members. If you are experiencing persistent hopelessness, emotional numbness, or rage &mdash; tell the nephrologist. A referral to mental health support is part of comprehensive CKD family care. Private counselling: many licensed Filipino counsellors now offer reduced rates for caregivers &mdash; ask directly when making first contact.</span>
 <span class="lang-hidden" data-lang="tl">NCMH crisis hotline: <strong>1553</strong> (libre, 24 oras). Ang mga pampublikong ospital na may mga departamento ng psychiatry ay kinakailangang magbigay ng serbisyo sa mababang halaga o libre sa mga miyembro ng PhilHealth. Kung nakakaranas ka ng patuloy na kawalan ng pag-asa, emosyonal na numbness, o galit &mdash; sabihin sa nephrologist. Ang referral sa suportang mental health ay bahagi ng komprehensibong pag-aalaga ng pamilya ng CKD. Maraming lisensyadong Pilipinong counsellor ang nag-aalok na ngayon ng mga nabawasang rate para sa mga tagapag-alaga &mdash; itanong nang direkta sa unang pakikipag-ugnayan.</span>
 <span class="lang-hidden" data-lang="ceb">NCMH crisis hotline: <strong>1553</strong> (libre, 24 oras). Ang mga pampublikong ospital nga adunay mga departamento sa psychiatry gikinahanglan maghatag og mga serbisyo sa ubos o walay bayad sa mga miyembro sa PhilHealth. Kung nakasinati ka og padayon nga kawad-on sa paglaum, emosyonal nga numbness, o kasuko &mdash; suginlan ang nephrologist. Ang referral sa suporta sa mental health parte sa komprehensibong pag-atiman sa pamilya sa CKD. Daghang lisensyadong Pilipinong counsellor ang nagtanyag na karon og mga nabawasan nga rate alang sa mga caregiver &mdash; pangutana direkta sa unang pakigkontak.</span>
@@ -1798,7 +1899,7 @@ html[data-theme="dark"] .neglect-card.active{background:#2a1515;}
 </p></div>
 
 <div class="feature-card">
-<h4><span class="dot dot-red"></span><span data-lang="en">When It Feels Impossible</span></h4>
+<h4><span class="dot dot-red"></span><span data-lang="en">When It Feels Impossible</span><span class="lang-hidden" data-lang="tl">Kapag Parang Imposible Na</span><span class="lang-hidden" data-lang="ceb">Kon Daw Imposible Na</span><span class="lang-hidden" data-lang="kap">Nung Maragdag Nang Imposible</span></h4>
 <p><span data-lang="en">If you are considering stopping your loved one&rsquo;s treatment because the burden is unbearable, speak to the nephrologist before any decision. There are clinical options &mdash; palliative nephrology, conservative kidney management, home dialysis modalities &mdash; that can substantially reduce the caregiving burden while preserving quality of life. No family should reach that point in silence. Your nephrologist needs to know what is happening at home.</span>
 <span class="lang-hidden" data-lang="tl">Kung iniisip mong itigil ang paggamot ng iyong mahal sa buhay dahil hindi na matiis ang pasanin, makipag-usap sa nephrologist bago ang anumang desisyon. Mayroon mga klinikal na opsyon &mdash; palliative nephrology, conservative kidney management, home dialysis modalities &mdash; na maaaring malaki ang mababawas ng pasanin ng pag-aalaga habang pinapanatili ang kalidad ng buhay. Walang pamilya ang dapat makarating sa puntong iyon nang walang salita. Kailangan malaman ng iyong nephrologist kung ano ang nangyayari sa bahay.</span>
 <span class="lang-hidden" data-lang="ceb">Kung gihunahuna nimo ang paghunong sa pagtambal sa imong minahal kay dili na mabata ang burden, makig-istorya sa nephrologist sa wala pa ang bisan unsang desisyon. Adunay mga klinikal nga opsyon &mdash; palliative nephrology, conservative kidney management, home dialysis modalities &mdash; nga mahimong mapagamay pag-ayo ang burden sa pag-atiman samtang gipreserba ang kalidad sa kinabuhi. Walay pamilya ang angay moabot sa puntong iyon nga hilum. Ang imong nephrologist kinahanglan mahibalo kung unsa ang nahitabo sa balay.</span>

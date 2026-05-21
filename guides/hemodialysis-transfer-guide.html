@@ -76,7 +76,8 @@
   /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
   .site-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 32px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 32px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -315,6 +316,30 @@
   .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
 
   /* ── TABLES ──────────────────────────────────────────────────────────────── */
+
+  /* Generic table wrapper — used throughout guide and clinician sections */
+  .table-wrap {
+    overflow-x: auto; margin: 20px 0;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th {
+    text-align: left; padding: 11px 16px;
+    background: var(--navy); color: rgba(255,255,255,.92);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    border-bottom: none;
+  }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td {
+    padding: 13px 16px; vertical-align: top; line-height: 1.55;
+    border-bottom: 1px solid var(--border); color: var(--text-mid);
+  }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
   .lab-table, .drug-table, .schedule-table {
     width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;
   }
@@ -726,6 +751,12 @@
   html[data-theme="dark"] .alert-body ul li,
   html[data-theme="dark"] .step-body p,
   html[data-theme="dark"] .ladder-body p,
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-theme="dark"] .table-wrap tbody tr:hover td { background: #1e3040; }
+
   html[data-theme="dark"] .lab-table td,
   html[data-theme="dark"] .drug-table td,
   html[data-theme="dark"] .schedule-table td,
@@ -867,6 +898,73 @@
   /* ── ILLUSTRATION PANEL ──────────────────────────────────────────────────── */
   .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
 
+  /* ── CLINICIAN SECTION HERO (.md-hero) ───────────────────────────────────── */
+  .md-hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
+    padding: 60px 0 56px; position: relative; overflow: hidden;
+  }
+  .md-hero::before {
+    content: ''; position: absolute; right: -80px; top: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(212,175,79,.1); pointer-events: none;
+  }
+  .md-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: #d4af4f; border: 1px solid rgba(212,175,79,.45);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .md-hero h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
+    color: white; margin-bottom: 14px; letter-spacing: -.02em;
+  }
+  .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.82);
+    max-width: 580px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .md-stat {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 10px; padding: 12px 20px;
+  }
+  .md-stat-val {
+    font-family: 'Lora', serif; font-size: 22px; font-weight: 600;
+    color: #d4af4f; line-height: 1; display: block;
+  }
+  .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
+  .md-hero .illus-wrap {
+    background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.14);
+  }
+  .md-hero .img-placeholder { background: transparent; border-color: rgba(255,255,255,.2); margin: 0; }
+  .md-hero .img-placeholder p,
+  .md-hero .img-placeholder .img-ph-icon { color: rgba(255,255,255,.55); }
+
+  /* ── CLINICIAN PATHWAY BANNERS ───────────────────────────────────────────── */
+  .pathway-banner {
+    padding: 20px 0 0;
+  }
+  .pathway-banner-inner {
+    padding: 14px 20px; border-radius: 0 8px 8px 0;
+  }
+  .pathway-banner-inner.neph {
+    border-left: 4px solid var(--teal); background: var(--teal-light);
+  }
+  .pathway-banner-inner.urol {
+    border-left: 4px solid var(--gold); background: #fdf8ec;
+  }
+  .pathway-banner-inner.synth {
+    border-left: 4px solid var(--purple); background: var(--purple-soft);
+  }
+  .pathway-banner-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; margin: 0 0 4px;
+  }
+  .pathway-banner-label.neph { color: var(--teal); }
+  .pathway-banner-label.urol { color: var(--gold); }
+  .pathway-banner-label.synth { color: var(--purple); }
+  .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
   .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
@@ -895,7 +993,7 @@
   }
   body.physician-mode .intro-callout { background: #0f1e2e; }
   body.physician-mode .stat-card     { background: #0f1e2e; }
-  body.physician-mode .ref-band      { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
   body.physician-mode .nav-pill.active-pill {
     background: var(--navy); border-color: var(--navy);
   }
@@ -1010,6 +1108,9 @@
     .feature-card { border: 1px solid #ccc !important; background: #fff !important; }
     .feature-card h4 { color: #1f3864 !important; }
     .feature-card p { color: #333 !important; }
+    .table-wrap { box-shadow: none !important; border: 1px solid #ccc !important; }
+    .table-wrap thead th { background: #eee !important; color: #333 !important; }
+    .table-wrap tbody td { color: #333 !important; }
     .lab-table th { background: #eee !important; color: #333 !important; }
     .lab-table td { color: #333 !important; }
     .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
@@ -1232,9 +1333,9 @@
 <!-- ═══ HERO ═══════════════════════════════════════════════════════════════ -->
 <section class="hero">
   <div class="container">
-    <div class="hero-tag">Hemodialysis · Patient Rights · Transfer · Continuity of Care</div>
-    <h1>How to transfer dialysis centers or change nephrologists — <em>safely</em>.</h1>
-    <p class="hero-sub">You have the right to change your dialysis center or nephrologist. But hemodialysis is a life-sustaining treatment. This guide explains how to do it properly — with <em>the right documents, the right process, and without missing a single session.</em></p>
+    <div class="hero-tag"><span data-lang="en">Hemodialysis · Patient Rights · Transfer · Continuity of Care</span><span data-lang="tl" class="lang-hidden">Hemodialysis · Karapatan ng Pasyente · Paglipat · Pagpapatuloy ng Pag-aalaga</span><span data-lang="ceb" class="lang-hidden">Hemodialysis · Katungod sa Pasyente · Pagbalhin · Pagpadayon sa Pag-atiman</span><span data-lang="kap" class="lang-hidden">Hemodialysis · Karapatan ning Pasyente · Paglipat · Pagpapatuloy ning Pag-aalaga</span></div>
+    <h1><span data-lang="en">How to transfer dialysis centers or change nephrologists — <em>safely</em>.</span><span data-lang="tl" class="lang-hidden">Paano maglipat ng dialysis center o magpalit ng nephrologist — nang <em>ligtas</em>.</span><span data-lang="ceb" class="lang-hidden">Unsaon sa paglipat sa dialysis center o pagbag-o sa nephrologist — sa <em>luwas</em>.</span><span data-lang="kap" class="lang-hidden">Paano maglipat ning dialysis center o magpalit ning nephrologist — nang <em>ligtas</em>.</span></h1>
+    <p class="hero-sub"><span data-lang="en">You have the right to change your dialysis center or nephrologist. But hemodialysis is a life-sustaining treatment. This guide explains how to do it properly — with <em>the right documents, the right process, and without missing a single session.</em></span><span data-lang="tl" class="lang-hidden">Mayroon kang karapatang palitan ang iyong dialysis center o nephrologist. Ngunit ang hemodialysis ay isang life-sustaining na paggamot. Ipinapaliwanag ng gabay na ito kung paano ito gagawin nang tama — gamit ang <em>tamang mga dokumento, tamang proseso, at nang hindi makaligtaan ang kahit isang sesyon.</em></span><span data-lang="ceb" class="lang-hidden">Adunay kang katungod sa pagbag-o sa imong dialysis center o nephrologist. Apan ang hemodialysis usa ka life-sustaining nga pagtambal. Gipaliwanag niini nga giya kung unsaon ang hustong paghimo niini — gamit ang <em>husto nga mga dokumento, husto nga proseso, ug wala masayop og bisan usa ka sesyon.</em></span><span data-lang="kap" class="lang-hidden">Mayroon kang karapatang palitan ing dialysis center mu o nephrologist mu. Ngem ing hemodialysis ay metung a life-sustaining a paggamot. Ipinapaliwanag ning gabay na iti kung paano iti gagawin nang tama — gamit ing <em>tamang mga dokumento, tamang proseso, at nang hindi makaligtaan ing kahit metung a sesyon.</em></span></p>
     <div class="hero-meta">
       <span><strong>Last Reviewed:</strong> <time datetime="2026-05-15" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">May 2026</time></span>
       <span>Based on <strong>PSN HD Guidelines 3rd Ed. 2024</strong></span>
@@ -1265,17 +1366,17 @@
 <section class="section" id="intro">
   <div class="container">
     <div class="intro-callout">
-      <p>You are <strong>legally and ethically allowed</strong> to change dialysis centers, change nephrologists, seek a second opinion, and request copies of your medical records. However, <strong>abrupt transfers without proper endorsement</strong> may place you at serious risk. The safest transfer is planned, documented, coordinated, and continuous — without missed sessions.</p>
+      <p><span data-lang="en">You are <strong>legally and ethically allowed</strong> to change dialysis centers, change nephrologists, seek a second opinion, and request copies of your medical records. However, <strong>abrupt transfers without proper endorsement</strong> may place you at serious risk. The safest transfer is planned, documented, coordinated, and continuous — without missed sessions.</span><span data-lang="tl" class="lang-hidden">Ikaw ay <strong>legal at etikal na pinahihintulutan</strong> na magpalit ng mga dialysis center, magpalit ng nephrologist, humingi ng pangalawang opinyon, at humiling ng mga kopya ng iyong mga medikal na rekord. Gayunpaman, ang <strong>abrupto na paglilipat nang walang tamang endorsement</strong> ay maaaring maglagay sa iyo sa malubhang panganib. Ang pinakaligtas na paglilipat ay planado, dokumentado, koordinado, at tuloy-tuloy — nang walang naligtaang sesyon.</span><span data-lang="ceb" class="lang-hidden">Ikaw ay <strong>legal ug etikal nga gitugotan</strong> sa pagbag-o sa mga dialysis center, pagbag-o sa nephrologist, pagpangita og ikaduhang opinyon, ug paghangyo og mga kopya sa imong mga medikal nga rekord. Apan, ang <strong>abrupto nga pagbalhin nga wala'y hustong endorsement</strong> mahimong magbutang kanimo sa seryosong peligro. Ang labing luwas nga pagbalhin planado, gi-dokumento, koordinado, ug padayon — nga wala masayop nga sesyon.</span><span data-lang="kap" class="lang-hidden">Ikaw ay <strong>legal at etikal na pinahihintulutan</strong> na magpalit ning mga dialysis center, magpalit ning nephrologist, huminge ning pangalawang opinyon, at humiling ning mga kopya ning iyong mga medikal a rekord. Gayunpaman, ing <strong>abrupto a paglilipat nang wala tamang endorsement</strong> ay malyaring maglagay sa iyo king malubhang panganib. Ing pinakaligas a paglilipat ay planado, dokumentado, koordinado, at tuloy-tuloy — nang wala naligtaang sesyon.</span></p>
     </div>
 
     <div class="section-tag">Introduction</div>
-    <h2>Your transfer, done right.</h2>
-    <p>Hemodialysis patients in the Philippines sometimes need to transfer to a different dialysis center — because of a relocation, a change in the family's financial situation, a referral, or a personal decision to seek a different physician. This is completely normal and entirely within your rights.</p>
-    <p>The problem is not <em>wanting</em> to transfer — it is doing so abruptly, without informing your current team, without proper documentation, and without confirming your receiving center. A missed dialysis session can cause severe fluid overload, dangerously high potassium, and emergency hospitalization within 24–72 hours.</p>
-    <p>This guide walks you through the correct process: what documents you need, what steps to follow, and what to watch out for.</p>
+    <h2><span data-lang="en">Your transfer, done right.</span><span data-lang="tl" class="lang-hidden">Ang iyong paglilipat, ginawa nang tama.</span><span data-lang="ceb" class="lang-hidden">Ang imong pagbalhin, nahimo sa husto.</span><span data-lang="kap" class="lang-hidden">Ing paglilipat mu, ginawa nang tama.</span></h2>
+    <p><span data-lang="en">Hemodialysis patients in the Philippines sometimes need to transfer to a different dialysis center — because of a relocation, a change in the family's financial situation, a referral, or a personal decision to seek a different physician. This is completely normal and entirely within your rights.</span><span data-lang="tl" class="lang-hidden">Ang mga pasyenteng nasa hemodialysis sa Pilipinas ay minsan ay kailangang maglipat sa ibang dialysis center — dahil sa paglipat ng tirahan, pagbabago ng sitwasyon ng pamilya, referral, o personal na desisyon na humanap ng ibang doktor. Ito ay ganap na normal at nasa loob ng iyong mga karapatan.</span><span data-lang="ceb" class="lang-hidden">Ang mga pasyente sa hemodialysis sa Pilipinas usahay kinahanglan mobalhin sa lain nga dialysis center — tungod sa pagbag-o sa lugar, pagbag-o sa sitwasyon sa pamilya, referral, o personal nga desisyon sa pagpangita og laing doktor. Kini normal kaayo ug sulod sa imong mga katungod.</span><span data-lang="kap" class="lang-hidden">Ing mga pasyenteng nasa hemodialysis sa Pilipinas ay minsan ay kailangang maglipat sa ibang dialysis center — dahil sa paglipat ning tirahan, pagbabago ning sitwasyon ning pamilya, referral, o personal a desisyon na humanap ning ibang doktor. Iti ay ganap a normal at nasa loob ning iyong mga karapatan.</span></p>
+    <p><span data-lang="en">The problem is not <em>wanting</em> to transfer — it is doing so abruptly, without informing your current team, without proper documentation, and without confirming your receiving center. A missed dialysis session can cause severe fluid overload, dangerously high potassium, and emergency hospitalization within 24–72 hours.</span><span data-lang="tl" class="lang-hidden">Ang problema ay hindi ang <em>gustong</em> maglipat — ito ay ang paggawa nito nang abrupto, nang hindi inaalam ang iyong kasalukuyang koponan, nang walang tamang dokumentasyon, at nang hindi nakumpirma ang iyong receiving center. Ang isang napalampas na sesyon ng dialysis ay maaaring magdulot ng matinding fluid overload, mapanganib na mataas na potassium, at emergency na hospitalisasyon sa loob ng 24–72 oras.</span><span data-lang="ceb" class="lang-hidden">Ang problema dili ang <em>gustong</em> mobalhin — kini ang paghimo niini nga abrupto, nga wala gipahibalo ang imong kasamtangang koponan, nga wala hustong dokumentasyon, ug nga wala nakumpirma ang imong receiving center. Ang usa ka nasayop nga sesyon sa dialysis mahimong magdulot og grabe nga fluid overload, delikadong taas nga potassium, ug emergency hospitalisasyon sulod sa 24–72 ka oras.</span><span data-lang="kap" class="lang-hidden">Ing problema ay hindi ing <em>gusto</em> maglipat — iti ay ing paggawa niti nang abrupto, nang hindi inaalam ing iyong kasalukuyang koponan, nang wala tamang dokumentasyon, at nang hindi nakumpirma ing iyong receiving center. Ing metung a napalampas a sesyon ning dialysis ay malyaring magdulot ning matinding fluid overload, mapanganib a mataas a potassium, at emergency a hospitalisasyon king loob ning 24–72 oras.</span></p>
+    <p><span data-lang="en">This guide walks you through the correct process: what documents you need, what steps to follow, and what to watch out for.</span><span data-lang="tl" class="lang-hidden">Ginagabayan ka ng gabay na ito sa tamang proseso: kung anong mga dokumento ang kailangan mo, kung anong mga hakbang ang susundin, at kung ano ang dapat bantayan.</span><span data-lang="ceb" class="lang-hidden">Gihimoan ka niini nga giya sa husto nga proseso: kung unsang mga dokumento ang imong gikinahanglan, kung unsang mga lakang ang sundon, ug kung unsa ang bantayan.</span><span data-lang="kap" class="lang-hidden">Ginagabayan ka ning gabay na iti sa tamang proseso: kung anong mga dokumento ing kailangan mu, kung anong mga hakbang ing susundin, at kung nano ing dapat bantayan.</span></p>
 
     <div class="illus-wrap illus-wrap-light" style="margin-top:32px;">
-      <img src="../images/hd-transfer-guide-hero.webp" alt="Filipino nephrologist and dialysis nurse performing a professional patient handoff at a Philippine hemodialysis center" style="width:100%;max-width:860px;border-radius:10px;display:block;margin:0 auto;" loading="lazy"/>
+      <img fetchpriority="high" loading="eager" src="../images/hd-transfer-guide-hero.webp" alt="Filipino nephrologist and dialysis nurse performing a professional patient handoff at a Philippine hemodialysis center" style="width:100%;max-width:860px;border-radius:10px;display:block;margin:0 auto;"/>
       <span class="illus-caption">A planned, documented HD transfer ensures continuity of care — and protects your life. Filipino nephrologist teams coordinating a safe patient endorsement at a Philippine dialysis center.</span>
     </div>
   </div>
@@ -1285,29 +1386,29 @@
 <section class="section" id="rights">
   <div class="container">
     <div class="section-tag">Patient Rights &amp; Responsibilities</div>
-    <h2>What you are entitled to — and what you owe your team.</h2>
+    <h2><span data-lang="en">What you are entitled to — and what you owe your team.</span><span data-lang="tl" class="lang-hidden">Ano ang iyong karapatan — at ano ang iyong obligasyon sa iyong koponan.</span><span data-lang="ceb" class="lang-hidden">Unsa ang imong katungod — ug unsa ang imong obligasyon sa imong koponan.</span><span data-lang="kap" class="lang-hidden">Nano ing iyong karapatan — at nano ing iyong obligasyon sa iyong koponan.</span></h2>
 
     <div class="two-col">
       <div class="feature-card">
-        <h4><span class="dot dot-green" style="margin-right:6px;"></span>You Have the Right To:</h4>
+        <h4><span class="dot dot-green" style="margin-right:6px;"></span><span data-lang="en">You Have the Right To:</span><span data-lang="tl" class="lang-hidden">Mayroon Kang Karapatang:</span><span data-lang="ceb" class="lang-hidden">Adunay Kang Katungod Nga:</span><span data-lang="kap" class="lang-hidden">Mayroon Kang Karapatang:</span></h4>
         <ul>
-          <li>Choose or change your physician</li>
-          <li>Choose or change your dialysis facility</li>
-          <li>Request copies or summaries of your medical records</li>
-          <li>Obtain a medical abstract or endorsement</li>
-          <li>Receive respectful and non-coercive care</li>
-          <li>Seek a second medical opinion</li>
-          <li>Maintain confidentiality of your records</li>
+          <li><span data-lang="en">Choose or change your physician</span><span data-lang="tl" class="lang-hidden">Pumili o magpalit ng iyong doktor</span><span data-lang="ceb" class="lang-hidden">Mopili o mopabag-o sa imong doktor</span><span data-lang="kap" class="lang-hidden">Pumili o magpalit ning iyong doktor</span></li>
+          <li><span data-lang="en">Choose or change your dialysis facility</span><span data-lang="tl" class="lang-hidden">Pumili o magpalit ng iyong dialysis facility</span><span data-lang="ceb" class="lang-hidden">Mopili o mopabag-o sa imong dialysis facility</span><span data-lang="kap" class="lang-hidden">Pumili o magpalit ning iyong dialysis facility</span></li>
+          <li><span data-lang="en">Request copies or summaries of your medical records</span><span data-lang="tl" class="lang-hidden">Humiling ng mga kopya o buod ng iyong mga medikal na rekord</span><span data-lang="ceb" class="lang-hidden">Mohangyo og mga kopya o buod sa imong mga medikal nga rekord</span><span data-lang="kap" class="lang-hidden">Humiling ning mga kopya o buod ning iyong mga medikal a rekord</span></li>
+          <li><span data-lang="en">Obtain a medical abstract or endorsement</span><span data-lang="tl" class="lang-hidden">Makakuha ng medical abstract o endorsement</span><span data-lang="ceb" class="lang-hidden">Makakuha og medical abstract o endorsement</span><span data-lang="kap" class="lang-hidden">Makakuha ning medical abstract o endorsement</span></li>
+          <li><span data-lang="en">Receive respectful and non-coercive care</span><span data-lang="tl" class="lang-hidden">Makatanggap ng magalang at hindi mapanganib na pag-aalaga</span><span data-lang="ceb" class="lang-hidden">Makadawat og marespeto ug dili mapugos nga pag-atiman</span><span data-lang="kap" class="lang-hidden">Makatanggap ning magalang at hindi mapanganib a pag-aalaga</span></li>
+          <li><span data-lang="en">Seek a second medical opinion</span><span data-lang="tl" class="lang-hidden">Humingi ng pangalawang medikal na opinyon</span><span data-lang="ceb" class="lang-hidden">Mangita og ikaduhang medikal nga opinyon</span><span data-lang="kap" class="lang-hidden">Huminge ning pangalawang medikal a opinyon</span></li>
+          <li><span data-lang="en">Maintain confidentiality of your records</span><span data-lang="tl" class="lang-hidden">Panatilihing kumpidensyal ang iyong mga rekord</span><span data-lang="ceb" class="lang-hidden">Ipadayon ang confidentiality sa imong mga rekord</span><span data-lang="kap" class="lang-hidden">Panatilihing kumpidensyal ing iyong mga rekord</span></li>
         </ul>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-amber" style="margin-right:6px;"></span>You Also Have Responsibilities:</h4>
+        <h4><span class="dot dot-amber" style="margin-right:6px;"></span><span data-lang="en">You Also Have Responsibilities:</span><span data-lang="tl" class="lang-hidden">Mayroon Ka Ring mga Responsibilidad:</span><span data-lang="ceb" class="lang-hidden">Adunay Ka Usab nga mga Responsibilidad:</span><span data-lang="kap" class="lang-hidden">Mayroon Ka Rin mga Responsibilidad:</span></h4>
         <ul>
-          <li>Inform your current team properly before leaving</li>
-          <li>Provide accurate and complete medical information</li>
-          <li>Avoid skipping dialysis sessions during the transition</li>
-          <li>Cooperate with transfer documentation requirements</li>
-          <li>Respect the receiving center's scheduling and infection-control rules</li>
+          <li><span data-lang="en">Inform your current team properly before leaving</span><span data-lang="tl" class="lang-hidden">Abisuhan nang maayos ang iyong kasalukuyang koponan bago umalis</span><span data-lang="ceb" class="lang-hidden">Pahibaloa sa husto ang imong kasamtangang koponan sa wala pa mopahawa</span><span data-lang="kap" class="lang-hidden">Abisuhan nang maayos ing iyong kasalukuyang koponan bago umalis</span></li>
+          <li><span data-lang="en">Provide accurate and complete medical information</span><span data-lang="tl" class="lang-hidden">Magbigay ng tumpak at kumpletong medikal na impormasyon</span><span data-lang="ceb" class="lang-hidden">Maghatag og tukma ug kumpleto nga medikal nga impormasyon</span><span data-lang="kap" class="lang-hidden">Magbigay ning tumpak at kumpletong medikal a impormasyon</span></li>
+          <li><span data-lang="en">Avoid skipping dialysis sessions during the transition</span><span data-lang="tl" class="lang-hidden">Iwasang prumahan ang mga sesyon ng dialysis sa panahon ng transisyon</span><span data-lang="ceb" class="lang-hidden">Likayi ang paglaktaw sa mga sesyon sa dialysis sa panahon sa transisyon</span><span data-lang="kap" class="lang-hidden">Iwasan ing paglaktaw ning mga sesyon ning dialysis king panahon ning transisyon</span></li>
+          <li><span data-lang="en">Cooperate with transfer documentation requirements</span><span data-lang="tl" class="lang-hidden">Makipagtulungan sa mga kinakailangan ng transfer documentation</span><span data-lang="ceb" class="lang-hidden">Makigtambayayong sa mga kinahanglanon sa transfer documentation</span><span data-lang="kap" class="lang-hidden">Makipagtulungan king mga kinakailangan ning transfer documentation</span></li>
+          <li><span data-lang="en">Respect the receiving center's scheduling and infection-control rules</span><span data-lang="tl" class="lang-hidden">Igalang ang mga patakaran ng receiving center sa scheduling at infection control</span><span data-lang="ceb" class="lang-hidden">Respetohon ang mga patakaran sa receiving center bahin sa scheduling ug infection control</span><span data-lang="kap" class="lang-hidden">Igalang ing mga patakaran ning receiving center sa scheduling at infection control</span></li>
         </ul>
       </div>
     </div>
@@ -1315,8 +1416,8 @@
     <div class="alert alert-amber">
       <div class="alert-icon">⚠️</div>
       <div class="alert-body">
-        <h4>Rights do not remove the need for proper process.</h4>
-        <p>Having the right to transfer does not mean you can stop dialysis while waiting to transfer, or simply stop attending without telling anyone. Your safety depends on continuity — and continuity requires coordination.</p>
+        <h4><span data-lang="en">Rights do not remove the need for proper process.</span><span data-lang="tl" class="lang-hidden">Ang mga karapatan ay hindi nag-aalis ng pangangailangan para sa tamang proseso.</span><span data-lang="ceb" class="lang-hidden">Ang mga katungod dili magtangtang sa panginahanglan alang sa husto nga proseso.</span><span data-lang="kap" class="lang-hidden">Ing mga karapatan ay hindi nag-aalis ning pangangailangan para king tamang proseso.</span></h4>
+        <p><span data-lang="en">Having the right to transfer does not mean you can stop dialysis while waiting to transfer, or simply stop attending without telling anyone. Your safety depends on continuity — and continuity requires coordination.</span><span data-lang="tl" class="lang-hidden">Ang pagkakaroon ng karapatang maglipat ay hindi nangangahulugang maaari kang huminto sa dialysis habang naghihintay na maglipat, o simpleng huminto sa pag-attend nang hindi sinasabihan ang sinuman. Ang iyong kaligtasan ay nakasalalay sa pagpapatuloy — at ang pagpapatuloy ay nangangailangan ng koordinasyon.</span><span data-lang="ceb" class="lang-hidden">Ang pagkaadunay sa katungod sa pagbalhin dili nagpasabut nga mahimo kang mohunong sa dialysis samtang naghulat sa pagbalhin, o simpleng mohunong sa pag-attend nga wala gipahibalo ang bisan kinsa. Ang imong kaluwasan nagsalalay sa pagpadayon — ug ang pagpadayon nanginahanglan og koordinasyon.</span><span data-lang="kap" class="lang-hidden">Ing pagkakaroon ning karapatang maglipat ay hindi nangangahulugang malyari kang huminto sa dialysis habang naghihintay na maglipat, o simpleng huminto sa pag-attend nang hindi sinasabihan ing sinuman. Ing iyong kaligtasan ay nagsasalalay king pagpapatuloy — at ing pagpapatuloy ay nangangailangan ning koordinasyon.</span></p>
       </div>
     </div>
 
@@ -1331,42 +1432,42 @@
 <section class="section" id="why-critical">
   <div class="container">
     <div class="section-tag">Clinical Risk</div>
-    <h2>Why proper turnover is critical in hemodialysis.</h2>
+    <h2><span data-lang="en">Why proper turnover is critical in hemodialysis.</span><span data-lang="tl" class="lang-hidden">Bakit mahalaga ang tamang paglilipat sa hemodialysis.</span><span data-lang="ceb" class="lang-hidden">Nganong kritikal ang husto nga handover sa hemodialysis.</span><span data-lang="kap" class="lang-hidden">Bakit mahalaga ing tamang paglilipat sa hemodialysis.</span></h2>
 
-    <p>Unlike most medical situations, hemodialysis is <strong>highly individualized</strong>. Every patient has a unique prescription that has been fine-tuned over months or years. The receiving center cannot safely start your dialysis without this information.</p>
+    <p><span data-lang="en">Unlike most medical situations, hemodialysis is <strong>highly individualized</strong>. Every patient has a unique prescription that has been fine-tuned over months or years. The receiving center cannot safely start your dialysis without this information.</span><span data-lang="tl" class="lang-hidden">Hindi tulad ng karamihan sa mga medikal na sitwasyon, ang hemodialysis ay <strong>lubos na inidibidwalisado</strong>. Ang bawat pasyente ay may natatanging prescription na pinino sa loob ng mga buwan o taon. Ang receiving center ay hindi makakapagsimula nang ligtas ng iyong dialysis nang wala ang impormasyong ito.</span><span data-lang="ceb" class="lang-hidden">Dili sama sa kadaghanan sa mga medikal nga sitwasyon, ang hemodialysis <strong>lubos nga individualized</strong>. Ang matag pasyente adunay natatanging prescription nga gipino sulod sa mga bulan o tuig. Ang receiving center dili makapagsugod sa luwas sa imong dialysis nga wala niini nga impormasyon.</span><span data-lang="kap" class="lang-hidden">Hindi tulad ning karamihan sa mga medikal a sitwasyon, ing hemodialysis ay <strong>lubos a inidibidwalisado</strong>. Ing bawat pasyente ay may natatanging prescription na pinino king loob ning mga bulan o taon. Ing receiving center ay hindi makakapagsimula nang ligtas ning iyong dialysis nang wala ing impormasyong iti.</span></p>
 
-    <h3>What the receiving center must know about you</h3>
+    <h3><span data-lang="en">What the receiving center must know about you</span><span data-lang="tl" class="lang-hidden">Ano ang dapat malaman ng receiving center tungkol sa iyo</span><span data-lang="ceb" class="lang-hidden">Unsa ang kinahanglan mahibaw-i sa receiving center mahitungod kanimo</span><span data-lang="kap" class="lang-hidden">Nano ing dapat maalaman ning receiving center tungkol sa iyo</span></h3>
     <div class="three-col">
       <div class="feature-card">
-        <h4>🩺 Your Prescription</h4>
+        <h4>🩺 <span data-lang="en">Your Prescription</span><span data-lang="tl" class="lang-hidden">Ang Iyong Prescription</span><span data-lang="ceb" class="lang-hidden">Ang Imong Prescription</span><span data-lang="kap" class="lang-hidden">Ing Iyong Prescription</span></h4>
         <ul>
-          <li>Dry weight</li>
-          <li>Dialyzer type and reuse protocol</li>
-          <li>Blood flow and dialysate flow rate</li>
-          <li>Dialysate bath composition</li>
-          <li>Heparin or heparin-free protocol</li>
-          <li>Session frequency and duration</li>
+          <li><span data-lang="en">Dry weight</span><span data-lang="tl" class="lang-hidden">Dry weight</span><span data-lang="ceb" class="lang-hidden">Dry weight</span><span data-lang="kap" class="lang-hidden">Dry weight</span></li>
+          <li><span data-lang="en">Dialyzer type and reuse protocol</span><span data-lang="tl" class="lang-hidden">Uri ng dialyzer at reuse protocol</span><span data-lang="ceb" class="lang-hidden">Klase sa dialyzer ug reuse protocol</span><span data-lang="kap" class="lang-hidden">Uri ning dialyzer at reuse protocol</span></li>
+          <li><span data-lang="en">Blood flow and dialysate flow rate</span><span data-lang="tl" class="lang-hidden">Blood flow at dialysate flow rate</span><span data-lang="ceb" class="lang-hidden">Blood flow ug dialysate flow rate</span><span data-lang="kap" class="lang-hidden">Blood flow at dialysate flow rate</span></li>
+          <li><span data-lang="en">Dialysate bath composition</span><span data-lang="tl" class="lang-hidden">Komposisyon ng dialysate bath</span><span data-lang="ceb" class="lang-hidden">Komposisyon sa dialysate bath</span><span data-lang="kap" class="lang-hidden">Komposisyon ning dialysate bath</span></li>
+          <li><span data-lang="en">Heparin or heparin-free protocol</span><span data-lang="tl" class="lang-hidden">Heparin o heparin-free protocol</span><span data-lang="ceb" class="lang-hidden">Heparin o heparin-free protocol</span><span data-lang="kap" class="lang-hidden">Heparin o heparin-free protocol</span></li>
+          <li><span data-lang="en">Session frequency and duration</span><span data-lang="tl" class="lang-hidden">Dalas at tagal ng sesyon</span><span data-lang="ceb" class="lang-hidden">Kasagaran ug tagal sa sesyon</span><span data-lang="kap" class="lang-hidden">Dalas at tagal ning sesyon</span></li>
         </ul>
       </div>
       <div class="feature-card">
-        <h4>💊 Your Medical Profile</h4>
+        <h4>💊 <span data-lang="en">Your Medical Profile</span><span data-lang="tl" class="lang-hidden">Ang Iyong Medikal na Profile</span><span data-lang="ceb" class="lang-hidden">Ang Imong Medikal nga Profile</span><span data-lang="kap" class="lang-hidden">Ing Iyong Medikal a Profile</span></h4>
         <ul>
-          <li>Blood pressure tendencies</li>
-          <li>Ultrafiltration tolerance</li>
-          <li>ESA (erythropoietin) and iron dosing</li>
-          <li>Current medications</li>
-          <li>Allergies</li>
-          <li>Recent hospitalizations</li>
+          <li><span data-lang="en">Blood pressure tendencies</span><span data-lang="tl" class="lang-hidden">Mga tendensya ng blood pressure</span><span data-lang="ceb" class="lang-hidden">Mga tendensya sa blood pressure</span><span data-lang="kap" class="lang-hidden">Mga tendensya ning blood pressure</span></li>
+          <li><span data-lang="en">Ultrafiltration tolerance</span><span data-lang="tl" class="lang-hidden">Ultrafiltration tolerance</span><span data-lang="ceb" class="lang-hidden">Ultrafiltration tolerance</span><span data-lang="kap" class="lang-hidden">Ultrafiltration tolerance</span></li>
+          <li><span data-lang="en">ESA (erythropoietin) and iron dosing</span><span data-lang="tl" class="lang-hidden">ESA (erythropoietin) at iron dosing</span><span data-lang="ceb" class="lang-hidden">ESA (erythropoietin) ug iron dosing</span><span data-lang="kap" class="lang-hidden">ESA (erythropoietin) at iron dosing</span></li>
+          <li><span data-lang="en">Current medications</span><span data-lang="tl" class="lang-hidden">Kasalukuyang mga gamot</span><span data-lang="ceb" class="lang-hidden">Kasamtangang mga gamot</span><span data-lang="kap" class="lang-hidden">Kasalukuyang mga gamut</span></li>
+          <li><span data-lang="en">Allergies</span><span data-lang="tl" class="lang-hidden">Mga allergy</span><span data-lang="ceb" class="lang-hidden">Mga allergy</span><span data-lang="kap" class="lang-hidden">Mga allergy</span></li>
+          <li><span data-lang="en">Recent hospitalizations</span><span data-lang="tl" class="lang-hidden">Kamakailang mga hospitalisasyon</span><span data-lang="ceb" class="lang-hidden">Bag-ong mga hospitalisasyon</span><span data-lang="kap" class="lang-hidden">Kamakaailang mga hospitalisasyon</span></li>
         </ul>
       </div>
       <div class="feature-card">
-        <h4>🔬 Infection &amp; Access</h4>
+        <h4>🔬 <span data-lang="en">Infection &amp; Access</span><span data-lang="tl" class="lang-hidden">Impeksyon at Access</span><span data-lang="ceb" class="lang-hidden">Impeksyon ug Access</span><span data-lang="kap" class="lang-hidden">Impeksyon at Access</span></h4>
         <ul>
-          <li>Hepatitis B and C status</li>
-          <li>Vascular access type and history</li>
-          <li>Known access problems</li>
-          <li>Recent complications</li>
-          <li>PhilHealth utilization status</li>
+          <li><span data-lang="en">Hepatitis B and C status</span><span data-lang="tl" class="lang-hidden">Katayuan ng Hepatitis B at C</span><span data-lang="ceb" class="lang-hidden">Status sa Hepatitis B ug C</span><span data-lang="kap" class="lang-hidden">Katayuan ning Hepatitis B at C</span></li>
+          <li><span data-lang="en">Vascular access type and history</span><span data-lang="tl" class="lang-hidden">Uri at kasaysayan ng vascular access</span><span data-lang="ceb" class="lang-hidden">Klase ug kasaysayan sa vascular access</span><span data-lang="kap" class="lang-hidden">Uri at kasaysayan ning vascular access</span></li>
+          <li><span data-lang="en">Known access problems</span><span data-lang="tl" class="lang-hidden">Mga kilalang problema sa access</span><span data-lang="ceb" class="lang-hidden">Mga nahibaw-ang problema sa access</span><span data-lang="kap" class="lang-hidden">Mga kilalang problema sa access</span></li>
+          <li><span data-lang="en">Recent complications</span><span data-lang="tl" class="lang-hidden">Kamakailang mga komplikasyon</span><span data-lang="ceb" class="lang-hidden">Bag-ong mga komplikasyon</span><span data-lang="kap" class="lang-hidden">Kamakaailang mga komplikasyon</span></li>
+          <li><span data-lang="en">PhilHealth utilization status</span><span data-lang="tl" class="lang-hidden">Katayuan ng paggamit ng PhilHealth</span><span data-lang="ceb" class="lang-hidden">Status sa paggamit sa PhilHealth</span><span data-lang="kap" class="lang-hidden">Katayuan ning paggamit ning PhilHealth</span></li>
         </ul>
       </div>
     </div>
@@ -1376,31 +1477,31 @@
       <span class="illus-caption">Everything the receiving HD center must receive before your first session there — from dry weight to hepatitis status.</span>
     </div>
 
-    <h3>Risks of a poor or abrupt transfer</h3>
+    <h3><span data-lang="en">Risks of a poor or abrupt transfer</span><span data-lang="tl" class="lang-hidden">Mga panganib ng masamang o abrupto na paglilipat</span><span data-lang="ceb" class="lang-hidden">Mga peligro sa dili maayo o abrupto nga pagbalhin</span><span data-lang="kap" class="lang-hidden">Mga panganib ning masamang o abrupto a paglilipat</span></h3>
     <div class="two-col">
       <div class="alert alert-red" style="margin:0;">
         <div class="alert-icon">🚨</div>
         <div class="alert-body">
-          <h4>Immediate risks</h4>
+          <h4><span data-lang="en">Immediate risks</span><span data-lang="tl" class="lang-hidden">Mga agarang panganib</span><span data-lang="ceb" class="lang-hidden">Mga dayon nga peligro</span><span data-lang="kap" class="lang-hidden">Mga agarang panganib</span></h4>
           <ul>
-            <li>Missed dialysis session</li>
-            <li>Severe fluid overload</li>
-            <li>Hyperkalemia (dangerously high potassium)</li>
-            <li>Hypotension from wrong prescription</li>
-            <li>Access thrombosis from inadequate anticoagulation</li>
+            <li><span data-lang="en">Missed dialysis session</span><span data-lang="tl" class="lang-hidden">Napalampas na sesyon ng dialysis</span><span data-lang="ceb" class="lang-hidden">Nasayop nga sesyon sa dialysis</span><span data-lang="kap" class="lang-hidden">Napalampas a sesyon ning dialysis</span></li>
+            <li><span data-lang="en">Severe fluid overload</span><span data-lang="tl" class="lang-hidden">Matinding fluid overload</span><span data-lang="ceb" class="lang-hidden">Grabe nga fluid overload</span><span data-lang="kap" class="lang-hidden">Matinding fluid overload</span></li>
+            <li><span data-lang="en">Hyperkalemia (dangerously high potassium)</span><span data-lang="tl" class="lang-hidden">Hyperkalemia (mapanganib na mataas na potassium)</span><span data-lang="ceb" class="lang-hidden">Hyperkalemia (delikadong taas nga potassium)</span><span data-lang="kap" class="lang-hidden">Hyperkalemia (mapanganib a mataas a potassium)</span></li>
+            <li><span data-lang="en">Hypotension from wrong prescription</span><span data-lang="tl" class="lang-hidden">Hypotension mula sa maling prescription</span><span data-lang="ceb" class="lang-hidden">Hypotension gikan sa sayop nga prescription</span><span data-lang="kap" class="lang-hidden">Hypotension mula sa maling prescription</span></li>
+            <li><span data-lang="en">Access thrombosis from inadequate anticoagulation</span><span data-lang="tl" class="lang-hidden">Access thrombosis mula sa hindi sapat na anticoagulation</span><span data-lang="ceb" class="lang-hidden">Access thrombosis gikan sa dili igo nga anticoagulation</span><span data-lang="kap" class="lang-hidden">Access thrombosis mula sa hindi sapat a anticoagulation</span></li>
           </ul>
         </div>
       </div>
       <div class="alert alert-amber" style="margin:0;">
         <div class="alert-icon">⚠️</div>
         <div class="alert-body">
-          <h4>Delayed or systemic risks</h4>
+          <h4><span data-lang="en">Delayed or systemic risks</span><span data-lang="tl" class="lang-hidden">Mga naantala o sistematikong panganib</span><span data-lang="ceb" class="lang-hidden">Mga nalangan o sistematikong peligro</span><span data-lang="kap" class="lang-hidden">Mga naantala o sistematikong panganib</span></h4>
           <ul>
-            <li>Wrong dialysis settings at receiving center</li>
-            <li>Medication interruption</li>
-            <li>Infection-control breaches</li>
-            <li>Delayed emergency management</li>
-            <li>PhilHealth billing gaps or duplicate claims</li>
+            <li><span data-lang="en">Wrong dialysis settings at receiving center</span><span data-lang="tl" class="lang-hidden">Maling dialysis settings sa receiving center</span><span data-lang="ceb" class="lang-hidden">Sayop nga dialysis settings sa receiving center</span><span data-lang="kap" class="lang-hidden">Maling dialysis settings sa receiving center</span></li>
+            <li><span data-lang="en">Medication interruption</span><span data-lang="tl" class="lang-hidden">Pagkaantala ng gamot</span><span data-lang="ceb" class="lang-hidden">Pagkaputol sa gamot</span><span data-lang="kap" class="lang-hidden">Pagkaantala ning gamut</span></li>
+            <li><span data-lang="en">Infection-control breaches</span><span data-lang="tl" class="lang-hidden">Paglabag sa infection control</span><span data-lang="ceb" class="lang-hidden">Paglabag sa infection control</span><span data-lang="kap" class="lang-hidden">Paglabag sa infection control</span></li>
+            <li><span data-lang="en">Delayed emergency management</span><span data-lang="tl" class="lang-hidden">Naantalang emergency management</span><span data-lang="ceb" class="lang-hidden">Nalangag emergency management</span><span data-lang="kap" class="lang-hidden">Naantalang emergency management</span></li>
+            <li><span data-lang="en">PhilHealth billing gaps or duplicate claims</span><span data-lang="tl" class="lang-hidden">Mga agwat sa PhilHealth billing o duplicate claims</span><span data-lang="ceb" class="lang-hidden">Mga gap sa PhilHealth billing o duplicate claims</span><span data-lang="kap" class="lang-hidden">Mga agwat sa PhilHealth billing o duplicate claims</span></li>
           </ul>
         </div>
       </div>
@@ -1417,100 +1518,100 @@
 <section class="section" id="psn-form">
   <div class="container">
     <div class="section-tag">Official PSN Process</div>
-    <h2>The PSN Hemodialysis Patient's Endorsement Form (HPEF).</h2>
+    <h2><span data-lang="en">The PSN Hemodialysis Patient's Endorsement Form (HPEF).</span><span data-lang="tl" class="lang-hidden">Ang PSN Hemodialysis Patient's Endorsement Form (HPEF).</span><span data-lang="ceb" class="lang-hidden">Ang PSN Hemodialysis Patient's Endorsement Form (HPEF).</span><span data-lang="kap" class="lang-hidden">Ing PSN Hemodialysis Patient's Endorsement Form (HPEF).</span></h2>
 
-    <p>The <strong>Philippine Society of Nephrology (PSN)</strong> officially recommends use of the <em>Hemodialysis Patient's Endorsement Form (HPEF)</em> for all patient transfers between HD centers, temporary dialysis arrangements, changes of nephrologist, and travel dialysis. This form is the standard document for safe medical turnover in the Philippines.</p>
+    <p><span data-lang="en">The <strong>Philippine Society of Nephrology (PSN)</strong> officially recommends use of the <em>Hemodialysis Patient's Endorsement Form (HPEF)</em> for all patient transfers between HD centers, temporary dialysis arrangements, changes of nephrologist, and travel dialysis. This form is the standard document for safe medical turnover in the Philippines.</span><span data-lang="tl" class="lang-hidden">Ang <strong>Philippine Society of Nephrology (PSN)</strong> ay opisyal na inirerekomenda ang paggamit ng <em>Hemodialysis Patient's Endorsement Form (HPEF)</em> para sa lahat ng paglilipat ng pasyente sa pagitan ng mga HD center, pansamantalang dialysis, pagpapalit ng nephrologist, at travel dialysis. Ang form na ito ang karaniwang dokumento para sa ligtas na medikal na paglilipat sa Pilipinas.</span><span data-lang="ceb" class="lang-hidden">Ang <strong>Philippine Society of Nephrology (PSN)</strong> opisyal nga girekomendar ang paggamit sa <em>Hemodialysis Patient's Endorsement Form (HPEF)</em> alang sa tanan nga pagbalhin sa pasyente tali sa mga HD center, temporaryong dialysis, pagbag-o sa nephrologist, ug travel dialysis. Kini nga form ang sumbanan nga dokumento alang sa luwas nga medikal nga handover sa Pilipinas.</span><span data-lang="kap" class="lang-hidden">Ing <strong>Philippine Society of Nephrology (PSN)</strong> ay opisyal na inirerekomenda ing paggamit ning <em>Hemodialysis Patient's Endorsement Form (HPEF)</em> para sa lahat ning paglilipat ning pasyente sa pagitan ning mga HD center, pansamantalang dialysis, pagpapalit ning nephrologist, at travel dialysis. Ing form na iti ing karaniwang dokumento para king ligtas a medikal a paglilipat sa Pilipinas.</span></p>
 
     <div class="psn-box">
       <div class="psn-box-icon">📋</div>
       <div class="psn-box-body">
         <h3>PSN Hemodialysis Patient's Endorsement Form (HPEF)</h3>
-        <p>The official transfer document recommended by the Philippine Society of Nephrology. Use this form whenever transferring between HD centers, changing nephrologists, or arranging temporary dialysis while traveling.</p>
-        <p>A fillable PDF copy of the form is available for download. Bring it to your current nephrologist and ask them to complete it before your transfer.</p>
+        <p><span data-lang="en">The official transfer document recommended by the Philippine Society of Nephrology. Use this form whenever transferring between HD centers, changing nephrologists, or arranging temporary dialysis while traveling.</span><span data-lang="tl" class="lang-hidden">Ang opisyal na transfer document na inirerekomenda ng Philippine Society of Nephrology. Gamitin ang form na ito tuwing maglilipat sa pagitan ng mga HD center, magpapalit ng nephrologist, o mag-aayos ng pansamantalang dialysis habang naglalakbay.</span><span data-lang="ceb" class="lang-hidden">Ang opisyal nga transfer document nga girekomendar sa Philippine Society of Nephrology. Gamiton kini nga form sa matag pagbalhin tali sa mga HD center, pagbag-o sa nephrologist, o pag-arrange og temporaryong dialysis samtang nagbiyahe.</span><span data-lang="kap" class="lang-hidden">Ing opisyal a transfer document na inirerekomenda ning Philippine Society of Nephrology. Gamitin ing form na iti tuwing maglilipat sa pagitan ning mga HD center, magpapalit ning nephrologist, o mag-aayos ning pansamantalang dialysis habang naglalakbay.</span></p>
+        <p><span data-lang="en">A fillable PDF copy of the form is available for download. Bring it to your current nephrologist and ask them to complete it before your transfer.</span><span data-lang="tl" class="lang-hidden">Isang fillable PDF na kopya ng form ay available para i-download. Dalhin ito sa iyong kasalukuyang nephrologist at hilingin sa kanila na kumpletuhin bago ang iyong paglilipat.</span><span data-lang="ceb" class="lang-hidden">Usa ka fillable PDF nga kopya sa form available para i-download. Dad-on kini sa imong kasamtangang nephrologist ug pangayoa nga kumpletuhin sa wala pa ang imong pagbalhin.</span><span data-lang="kap" class="lang-hidden">Metung a fillable PDF a kopya ning form ay available para i-download. Dalhin iti sa iyong kasalukuyang nephrologist at hingin la na kumpletuhin bago ing iyong paglilipat.</span></p>
         <a href="../downloads/psn-hd-endorsement-form.pdf" download target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download PSN Endorsement Form (PDF)
+          <span data-lang="en">Download PSN Endorsement Form (PDF)</span><span data-lang="tl" class="lang-hidden">I-download ang PSN Endorsement Form (PDF)</span><span data-lang="ceb" class="lang-hidden">I-download ang PSN Endorsement Form (PDF)</span><span data-lang="kap" class="lang-hidden">I-download ing PSN Endorsement Form (PDF)</span>
         </a>
       </div>
     </div>
 
-    <h3>What the PSN Endorsement Form covers</h3>
-    <p>The form is comprehensive and structured to communicate everything the receiving center and nephrologist need. It is organized into the following sections:</p>
+    <h3><span data-lang="en">What the PSN Endorsement Form covers</span><span data-lang="tl" class="lang-hidden">Ano ang saklaw ng PSN Endorsement Form</span><span data-lang="ceb" class="lang-hidden">Unsa ang gisangkap sa PSN Endorsement Form</span><span data-lang="kap" class="lang-hidden">Nano ing saklaw ning PSN Endorsement Form</span></h3>
+    <p><span data-lang="en">The form is comprehensive and structured to communicate everything the receiving center and nephrologist need. It is organized into the following sections:</span><span data-lang="tl" class="lang-hidden">Ang form ay komprehensibo at nakaayos upang maiparating ang lahat ng kailangan ng receiving center at nephrologist. Ito ay nakaayos sa mga sumusunod na seksyon:</span><span data-lang="ceb" class="lang-hidden">Ang form komprehensibo ug nastruktura sa pagpaabot sa tanan nga gikinahanglan sa receiving center ug nephrologist. Kini giorganisar sa mosunod nga mga seksyon:</span><span data-lang="kap" class="lang-hidden">Ing form ay komprehensibo at nakaayos upang maiparating ing lahat ning kailangan ning receiving center at nephrologist. Iti ay nakaayos king mga sumusunod a seksyon:</span></p>
 
     <div class="illus-wrap illus-wrap-light" style="margin:20px 0 24px;">
       <img src="../images/psn-hd-endorsement-form-breakdown.webp" alt="Annotated diagram of the PSN Hemodialysis Patient Endorsement Form showing all 11 key sections" style="width:100%;max-width:700px;border-radius:10px;display:block;margin:0 auto;" loading="lazy"/>
-      <span class="illus-caption">The PSN Hemodialysis Patient's Endorsement Form — 11 key sections labeled and explained. Bring this to your nephrologist to complete before your transfer.</span>
+      <span class="illus-caption"><span data-lang="en">The PSN Hemodialysis Patient's Endorsement Form — 11 key sections labeled and explained. Bring this to your nephrologist to complete before your transfer.</span><span data-lang="tl" class="lang-hidden">Ang PSN Hemodialysis Patient's Endorsement Form — 11 pangunahing seksyon na may label at paliwanag. Dalhin ito sa iyong nephrologist para kumpletuhin bago ang iyong paglipat.</span><span data-lang="ceb" class="lang-hidden">Ang PSN Hemodialysis Patient's Endorsement Form — 11 ka nag-unang seksyon nga may label ug katin-awan. Dad-a kini sa imong nephrologist aron mahuman sa wala pa ang imong transfer.</span><span data-lang="kap" class="lang-hidden">Ing PSN Hemodialysis Patient's Endorsement Form — 11 pangunahing seksyon na adwang label at paliwanag. Dalhin iti king iyung nephrologist para kumpletuhin bago king iyung paglipat.</span></span>
     </div>
 
     <div class="form-section-grid">
       <div class="form-section-item">
-        <h5>Patient Information</h5>
+        <h5><span data-lang="en">Patient Information</span><span data-lang="tl" class="lang-hidden">Impormasyon ng Pasyente</span><span data-lang="ceb" class="lang-hidden">Impormasyon sa Pasyente</span><span data-lang="kap" class="lang-hidden">Impormasyon ning Pasyente</span></h5>
         <ul>
-          <li>Full name</li>
-          <li>Date of birth</li>
-          <li>Address and contact details</li>
-          <li>Emergency contact</li>
+          <li><span data-lang="en">Full name</span><span data-lang="tl" class="lang-hidden">Buong pangalan</span><span data-lang="ceb" class="lang-hidden">Tibuok ngalan</span><span data-lang="kap" class="lang-hidden">Buong lagyu</span></li>
+          <li><span data-lang="en">Date of birth</span><span data-lang="tl" class="lang-hidden">Petsa ng kapanganakan</span><span data-lang="ceb" class="lang-hidden">Petsa sa pagkatawo</span><span data-lang="kap" class="lang-hidden">Petsa ning kapanganakan</span></li>
+          <li><span data-lang="en">Address and contact details</span><span data-lang="tl" class="lang-hidden">Address at impormasyon sa pakikipag-ugnayan</span><span data-lang="ceb" class="lang-hidden">Adres ug impormasyon sa kontak</span><span data-lang="kap" class="lang-hidden">Address at impormasyon keng pakikipag-ugnayan</span></li>
+          <li><span data-lang="en">Emergency contact</span><span data-lang="tl" class="lang-hidden">Kontakin sa emerhensya</span><span data-lang="ceb" class="lang-hidden">Kontak sa emerhensya</span><span data-lang="kap" class="lang-hidden">Kontak keng emerhensya</span></li>
         </ul>
       </div>
       <div class="form-section-item">
-        <h5>Medical Information</h5>
+        <h5><span data-lang="en">Medical Information</span><span data-lang="tl" class="lang-hidden">Impormasyong Medikal</span><span data-lang="ceb" class="lang-hidden">Medikal nga Impormasyon</span><span data-lang="kap" class="lang-hidden">Medikal nga Impormasyon</span></h5>
         <ul>
-          <li>Primary diagnosis</li>
-          <li>Comorbid conditions</li>
-          <li>Other attending physicians</li>
+          <li><span data-lang="en">Primary diagnosis</span><span data-lang="tl" class="lang-hidden">Pangunahing diagnosis</span><span data-lang="ceb" class="lang-hidden">Nag-unang diagnosis</span><span data-lang="kap" class="lang-hidden">Pangunahing diagnosis</span></li>
+          <li><span data-lang="en">Comorbid conditions</span><span data-lang="tl" class="lang-hidden">Mga kasamang sakit</span><span data-lang="ceb" class="lang-hidden">Mga kauban nga kondisyon</span><span data-lang="kap" class="lang-hidden">Mga kasamang sakit</span></li>
+          <li><span data-lang="en">Other attending physicians</span><span data-lang="tl" class="lang-hidden">Iba pang mga doktor</span><span data-lang="ceb" class="lang-hidden">Ubang mga attending physician</span><span data-lang="kap" class="lang-hidden">Aliwang mga doktor</span></li>
         </ul>
       </div>
       <div class="form-section-item">
-        <h5>Infection Control</h5>
+        <h5><span data-lang="en">Infection Control</span><span data-lang="tl" class="lang-hidden">Kontrol sa Impeksyon</span><span data-lang="ceb" class="lang-hidden">Kontrol sa Impeksyon</span><span data-lang="kap" class="lang-hidden">Kontrol keng Impeksyon</span></h5>
         <ul>
-          <li>HBsAg status</li>
-          <li>Anti-HBs status</li>
-          <li>Anti-HCV status</li>
-          <li>Hepatitis vaccination history</li>
+          <li><span data-lang="en">HBsAg status</span><span data-lang="tl" class="lang-hidden">Katayuan ng HBsAg</span><span data-lang="ceb" class="lang-hidden">Status sa HBsAg</span><span data-lang="kap" class="lang-hidden">Katayuan ning HBsAg</span></li>
+          <li><span data-lang="en">Anti-HBs status</span><span data-lang="tl" class="lang-hidden">Katayuan ng Anti-HBs</span><span data-lang="ceb" class="lang-hidden">Status sa Anti-HBs</span><span data-lang="kap" class="lang-hidden">Katayuan ning Anti-HBs</span></li>
+          <li><span data-lang="en">Anti-HCV status</span><span data-lang="tl" class="lang-hidden">Katayuan ng Anti-HCV</span><span data-lang="ceb" class="lang-hidden">Status sa Anti-HCV</span><span data-lang="kap" class="lang-hidden">Katayuan ning Anti-HCV</span></li>
+          <li><span data-lang="en">Hepatitis vaccination history</span><span data-lang="tl" class="lang-hidden">Kasaysayan ng bakuna sa hepatitis</span><span data-lang="ceb" class="lang-hidden">Kasaysayan sa bakuna batok hepatitis</span><span data-lang="kap" class="lang-hidden">Kasaysayan ning bakuna keng hepatitis</span></li>
         </ul>
       </div>
       <div class="form-section-item">
-        <h5>Vascular Access</h5>
+        <h5><span data-lang="en">Vascular Access</span><span data-lang="tl" class="lang-hidden">Vascular Access</span><span data-lang="ceb" class="lang-hidden">Vascular Access</span><span data-lang="kap" class="lang-hidden">Vascular Access</span></h5>
         <ul>
-          <li>AV fistula / graft / catheter type</li>
-          <li>Access location</li>
-          <li>Date created</li>
-          <li>Surgeon and hospital</li>
+          <li><span data-lang="en">AV fistula / graft / catheter type</span><span data-lang="tl" class="lang-hidden">Uri ng AV fistula / graft / catheter</span><span data-lang="ceb" class="lang-hidden">Klase sa AV fistula / graft / catheter</span><span data-lang="kap" class="lang-hidden">Klase ning AV fistula / graft / catheter</span></li>
+          <li><span data-lang="en">Access location</span><span data-lang="tl" class="lang-hidden">Lokasyon ng access</span><span data-lang="ceb" class="lang-hidden">Lokasyon sa access</span><span data-lang="kap" class="lang-hidden">Lokasyon ning access</span></li>
+          <li><span data-lang="en">Date created</span><span data-lang="tl" class="lang-hidden">Petsa ng paglikha</span><span data-lang="ceb" class="lang-hidden">Petsa sa paghimo</span><span data-lang="kap" class="lang-hidden">Petsa ning paggawa</span></li>
+          <li><span data-lang="en">Surgeon and hospital</span><span data-lang="tl" class="lang-hidden">Siruhano at ospital</span><span data-lang="ceb" class="lang-hidden">Siruhano ug ospital</span><span data-lang="kap" class="lang-hidden">Siruhano at ospital</span></li>
         </ul>
       </div>
       <div class="form-section-item">
-        <h5>Dialysis Prescription</h5>
+        <h5><span data-lang="en">Dialysis Prescription</span><span data-lang="tl" class="lang-hidden">Reseta ng Dialysis</span><span data-lang="ceb" class="lang-hidden">Prescription sa Dialysis</span><span data-lang="kap" class="lang-hidden">Reseta ning Dialysis</span></h5>
         <ul>
-          <li>Frequency and duration</li>
-          <li>Dialyzer and blood flow rate</li>
-          <li>Dialysate bath and flow</li>
-          <li>Anticoagulation and dry weight</li>
+          <li><span data-lang="en">Frequency and duration</span><span data-lang="tl" class="lang-hidden">Dalas at tagal</span><span data-lang="ceb" class="lang-hidden">Pila ka beses ug gidugayon</span><span data-lang="kap" class="lang-hidden">Pasilalim at tagal</span></li>
+          <li><span data-lang="en">Dialyzer and blood flow rate</span><span data-lang="tl" class="lang-hidden">Dialyzer at bilis ng daloy ng dugo</span><span data-lang="ceb" class="lang-hidden">Dialyzer ug blood flow rate</span><span data-lang="kap" class="lang-hidden">Dialyzer at bilis ning daloy ning daga</span></li>
+          <li><span data-lang="en">Dialysate bath and flow</span><span data-lang="tl" class="lang-hidden">Dialysate bath at daloy</span><span data-lang="ceb" class="lang-hidden">Dialysate bath ug flow</span><span data-lang="kap" class="lang-hidden">Dialysate bath at daloy</span></li>
+          <li><span data-lang="en">Anticoagulation and dry weight</span><span data-lang="tl" class="lang-hidden">Anticoagulation at tuyong timbang</span><span data-lang="ceb" class="lang-hidden">Anticoagulation ug dry weight</span><span data-lang="kap" class="lang-hidden">Anticoagulation at tuyung timbang</span></li>
         </ul>
       </div>
       <div class="form-section-item">
-        <h5>Current Medications</h5>
+        <h5><span data-lang="en">Current Medications</span><span data-lang="tl" class="lang-hidden">Kasalukuyang mga Gamot</span><span data-lang="ceb" class="lang-hidden">Karon nga mga Tambal</span><span data-lang="kap" class="lang-hidden">Kasalukuyang mga Gamot</span></h5>
         <ul>
-          <li>ESA and iron</li>
-          <li>Antihypertensives</li>
-          <li>Phosphate binders</li>
-          <li>Anticoagulants and others</li>
+          <li><span data-lang="en">ESA and iron</span><span data-lang="tl" class="lang-hidden">ESA at bakal</span><span data-lang="ceb" class="lang-hidden">ESA ug iron</span><span data-lang="kap" class="lang-hidden">ESA at iron</span></li>
+          <li><span data-lang="en">Antihypertensives</span><span data-lang="tl" class="lang-hidden">Gamot sa presyon</span><span data-lang="ceb" class="lang-hidden">Gamot batok presyon</span><span data-lang="kap" class="lang-hidden">Gamot keng presyon</span></li>
+          <li><span data-lang="en">Phosphate binders</span><span data-lang="tl" class="lang-hidden">Phosphate binders</span><span data-lang="ceb" class="lang-hidden">Phosphate binders</span><span data-lang="kap" class="lang-hidden">Phosphate binders</span></li>
+          <li><span data-lang="en">Anticoagulants and others</span><span data-lang="tl" class="lang-hidden">Anticoagulants at iba pa</span><span data-lang="ceb" class="lang-hidden">Anticoagulants ug uban pa</span><span data-lang="kap" class="lang-hidden">Anticoagulants at aliwang gamot</span></li>
         </ul>
       </div>
       <div class="form-section-item">
-        <h5>Complications History</h5>
+        <h5><span data-lang="en">Complications History</span><span data-lang="tl" class="lang-hidden">Kasaysayan ng mga Komplikasyon</span><span data-lang="ceb" class="lang-hidden">Kasaysayan sa mga Komplikasyon</span><span data-lang="kap" class="lang-hidden">Kasaysayan ning mga Komplikasyon</span></h5>
         <ul>
-          <li>Intradialytic hypotension</li>
-          <li>Severe cramps or clotting</li>
-          <li>Arrhythmias</li>
-          <li>Poor ultrafiltration tolerance</li>
+          <li><span data-lang="en">Intradialytic hypotension</span><span data-lang="tl" class="lang-hidden">Intradialytic hypotension</span><span data-lang="ceb" class="lang-hidden">Intradialytic hypotension</span><span data-lang="kap" class="lang-hidden">Intradialytic hypotension</span></li>
+          <li><span data-lang="en">Severe cramps or clotting</span><span data-lang="tl" class="lang-hidden">Matinding pulikat o pamumuo ng dugo</span><span data-lang="ceb" class="lang-hidden">Grabe nga pulikat o pagkimbot sa dugo</span><span data-lang="kap" class="lang-hidden">Maragul a pulikat o pamumuo ning daga</span></li>
+          <li><span data-lang="en">Arrhythmias</span><span data-lang="tl" class="lang-hidden">Arrhythmias</span><span data-lang="ceb" class="lang-hidden">Arrhythmias</span><span data-lang="kap" class="lang-hidden">Arrhythmias</span></li>
+          <li><span data-lang="en">Poor ultrafiltration tolerance</span><span data-lang="tl" class="lang-hidden">Mahirap tiisin ang ultrafiltration</span><span data-lang="ceb" class="lang-hidden">Lisod ang pagtolera sa ultrafiltration</span><span data-lang="kap" class="lang-hidden">Mahirap tiisin ing ultrafiltration</span></li>
         </ul>
       </div>
       <div class="form-section-item">
-        <h5>Required Attachments</h5>
+        <h5><span data-lang="en">Required Attachments</span><span data-lang="tl" class="lang-hidden">Mga Kinakailangang Kalakip</span><span data-lang="ceb" class="lang-hidden">Mga Gikinahanglan nga Kalakip</span><span data-lang="kap" class="lang-hidden">Mga Kinakailangang Kalakip</span></h5>
         <ul>
-          <li>Last 3 dialysis treatment sheets</li>
-          <li>Latest laboratory flow sheet</li>
-          <li>Recent laboratory results</li>
+          <li><span data-lang="en">Last 3 dialysis treatment sheets</span><span data-lang="tl" class="lang-hidden">Huling 3 treatment sheets ng dialysis</span><span data-lang="ceb" class="lang-hidden">Katapusang 3 treatment sheets sa dialysis</span><span data-lang="kap" class="lang-hidden">Katapusang 3 treatment sheets ning dialysis</span></li>
+          <li><span data-lang="en">Latest laboratory flow sheet</span><span data-lang="tl" class="lang-hidden">Pinakabagong laboratory flow sheet</span><span data-lang="ceb" class="lang-hidden">Pinakabag-o nga laboratory flow sheet</span><span data-lang="kap" class="lang-hidden">Pinakabagung laboratory flow sheet</span></li>
+          <li><span data-lang="en">Recent laboratory results</span><span data-lang="tl" class="lang-hidden">Mga kamakailanang resulta sa laboratoryo</span><span data-lang="ceb" class="lang-hidden">Bag-o nga mga resulta sa laboratoryo</span><span data-lang="kap" class="lang-hidden">Bag-ung mga resulta keng laboratoryo</span></li>
         </ul>
       </div>
     </div>
@@ -1518,19 +1619,19 @@
     <div class="two-col" style="margin-top:28px;">
       <div class="illus-wrap illus-wrap-light" style="margin:0;">
         <img src="../images/hd-transfer-hepatitis-screening.webp" alt="Infographic showing hepatitis screening and station assignment for HD transfer patients" style="width:100%;border-radius:10px;display:block;" loading="lazy"/>
-        <span class="illus-caption">Hepatitis B and C screening — required on the endorsement form — determines your station assignment at the new center.</span>
+        <span class="illus-caption"><span data-lang="en">Hepatitis B and C screening — required on the endorsement form — determines your station assignment at the new center.</span><span data-lang="tl" class="lang-hidden">Ang pagsusuri para sa Hepatitis B at C — kinakailangan sa endorsement form — ang nagtatakda ng iyong istasyon sa bagong sentro.</span><span data-lang="ceb" class="lang-hidden">Ang screening sa Hepatitis B ug C — gikinahanglan sa endorsement form — nagtino sa imong station assignment sa bag-ong sentro.</span><span data-lang="kap" class="lang-hidden">Ing pagsusuri para keng Hepatitis B at C — kailangan king endorsement form — ing nagtatakda ning iyung station assignment king bagung sentro.</span></span>
       </div>
       <div class="illus-wrap illus-wrap-light" style="margin:0;">
         <img src="../images/hd-transfer-vascular-access.webp" alt="Infographic comparing AV fistula, AV graft, and tunneled catheter vascular access for hemodialysis" style="width:100%;border-radius:10px;display:block;" loading="lazy"/>
-        <span class="illus-caption">Your vascular access type — AV fistula, AV graft, or tunneled catheter — must be documented and communicated to the receiving center.</span>
+        <span class="illus-caption"><span data-lang="en">Your vascular access type — AV fistula, AV graft, or tunneled catheter — must be documented and communicated to the receiving center.</span><span data-lang="tl" class="lang-hidden">Ang uri ng iyong vascular access — AV fistula, AV graft, o tunneled catheter — dapat idokumento at ipaalam sa tatanggap na sentro.</span><span data-lang="ceb" class="lang-hidden">Ang klase sa imong vascular access — AV fistula, AV graft, o tunneled catheter — kinahanglan idokumento ug ipahibalo sa receiving center.</span><span data-lang="kap" class="lang-hidden">Ing klase ning iyung vascular access — AV fistula, AV graft, o tunneled catheter — kailangan idokumento at ipaalam king receiving center.</span></span>
       </div>
     </div>
 
     <div class="alert alert-teal">
       <div class="alert-icon">💡</div>
       <div class="alert-body">
-        <h4>Reference</h4>
-        <p>Based on: <strong>PSN HD Guidelines 3rd Edition 2024</strong> and the official PSN Hemodialysis Patient's Endorsement Form. Visit <a href="https://psn.org.ph" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;">psn.org.ph</a> for the latest guidelines.</p>
+        <h4><span data-lang="en">Reference</span><span data-lang="tl" class="lang-hidden">Sanggunian</span><span data-lang="ceb" class="lang-hidden">Reperensya</span><span data-lang="kap" class="lang-hidden">Sanggunian</span></h4>
+        <p><span data-lang="en">Based on: <strong>PSN HD Guidelines 3rd Edition 2024</strong> and the official PSN Hemodialysis Patient's Endorsement Form. Visit <a href="https://psn.org.ph" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;">psn.org.ph</a> for the latest guidelines.</span><span data-lang="tl" class="lang-hidden">Batay sa: <strong>PSN HD Guidelines 3rd Edition 2024</strong> at ang opisyal na PSN Hemodialysis Patient's Endorsement Form. Bisitahin ang <a href="https://psn.org.ph" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;">psn.org.ph</a> para sa pinakabagong mga alituntunin.</span><span data-lang="ceb" class="lang-hidden">Gibase sa: <strong>PSN HD Guidelines 3rd Edition 2024</strong> ug ang opisyal nga PSN Hemodialysis Patient's Endorsement Form. Bisitaha ang <a href="https://psn.org.ph" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;">psn.org.ph</a> para sa pinakabag-o nga mga guidelines.</span><span data-lang="kap" class="lang-hidden">Batay king: <strong>PSN HD Guidelines 3rd Edition 2024</strong> at ing opisyal na PSN Hemodialysis Patient's Endorsement Form. Bisitahin ing <a href="https://psn.org.ph" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;">psn.org.ph</a> para king pinakabagung mga alituntunin.</span></p>
       </div>
     </div>
   </div>
@@ -1539,13 +1640,13 @@
 <!-- ═══ SECTION 5: STEP-BY-STEP TRANSFER ════════════════════════════════ -->
 <section class="section" id="transfer-steps">
   <div class="container">
-    <div class="section-tag">Step-by-Step Process</div>
-    <h2>How to transfer HD centers: the five steps.</h2>
-    <p>Follow these five steps in order. Do not skip to step 2 before completing step 1 — the most common mistake is informing your current center before confirming a slot at your new center.</p>
+    <div class="section-tag"><span data-lang="en">Step-by-Step Process</span><span data-lang="tl" class="lang-hidden">Sunud-sunod na Proseso</span><span data-lang="ceb" class="lang-hidden">Lakang-sa-Lakang nga Proseso</span><span data-lang="kap" class="lang-hidden">Hakbang-sa-Hakbang na Proseso</span></div>
+    <h2><span data-lang="en">How to transfer HD centers: the five steps.</span><span data-lang="tl" class="lang-hidden">Paano maglipat ng HD center: ang limang hakbang.</span><span data-lang="ceb" class="lang-hidden">Unsaon sa pagbalhin sa HD center: ang lima ka lakang.</span><span data-lang="kap" class="lang-hidden">Pauno maglipat ning HD center: ing limang hakbang.</span></h2>
+    <p><span data-lang="en">Follow these five steps in order. Do not skip to step 2 before completing step 1 — the most common mistake is informing your current center before confirming a slot at your new center.</span><span data-lang="tl" class="lang-hidden">Sundin ang limang hakbang na ito nang sunud-sunod. Huwag lumaktaw sa hakbang 2 bago makumpleto ang hakbang 1 — ang pinakakaraniwang pagkakamali ay ang pagpapaalam sa iyong kasalukuyang sentro bago makumpirma ang slot sa bagong sentro.</span><span data-lang="ceb" class="lang-hidden">Sundon kini nga lima ka lakang sa husto nga pagkasunod. Ayaw prusigiha ang lakang 2 nga wala pa mahuman ang lakang 1 — ang labing kasagarang sayop mao ang pagpahibalo sa imong karon nga sentro sa wala pa makumpirma ang slot sa bag-ong sentro.</span><span data-lang="kap" class="lang-hidden">Sundin ining limang hakbang nang sunud-sunod. E prusigiha ing hakbang 2 bago makumpleto ing hakbang 1 — ing pinaka-karaniwang pagkakamali e ipaalam king iyung kasalukuyang sentro bago makumpirma ing slot king bagung sentro.</span></p>
 
     <div class="illus-wrap illus-wrap-light" style="margin:0 0 28px;">
       <img src="../images/hd-transfer-timeline.webp" alt="5-step timeline infographic for safe hemodialysis center transfer in the Philippines" style="width:100%;max-width:860px;border-radius:10px;display:block;margin:0 auto;" loading="lazy"/>
-      <span class="illus-caption">The five steps to a safe HD transfer — in order. Never skip a step or reverse the sequence.</span>
+      <span class="illus-caption"><span data-lang="en">The five steps to a safe HD transfer — in order. Never skip a step or reverse the sequence.</span><span data-lang="tl" class="lang-hidden">Ang limang hakbang para sa ligtas na paglipat ng HD — sa tamang pagkakasunod. Huwag nilang laktawan o baguhin ang pagkakasunod.</span><span data-lang="ceb" class="lang-hidden">Ang lima ka lakang alang sa luwas nga HD transfer — sa husto nga pagkasunod. Ayaw gayud prilihi o balihon ang pagkasunod.</span><span data-lang="kap" class="lang-hidden">Ing limang hakbang para king ligtas na HD transfer — king tamang pagkakasunod. E laktawan o baguhin ing pagkakasunod.</span></span>
     </div>
 
     <div class="step-list">
@@ -1553,23 +1654,23 @@
       <div class="step-card">
         <div class="step-num">1</div>
         <div class="step-body">
-          <h3>Choose the receiving HD center first.</h3>
-          <p>Before you say anything to your current center, confirm that the new center can actually accept you. Many centers have waitlists or specific requirements.</p>
-          <p><strong>Confirm with the receiving center:</strong></p>
+          <h3><span data-lang="en">Choose the receiving HD center first.</span><span data-lang="tl" class="lang-hidden">Piliin muna ang tatanggap na HD center.</span><span data-lang="ceb" class="lang-hidden">Pagpili una sa receiving HD center.</span><span data-lang="kap" class="lang-hidden">Piliin nung maona ing tatanggap na HD center.</span></h3>
+          <p><span data-lang="en">Before you say anything to your current center, confirm that the new center can actually accept you. Many centers have waitlists or specific requirements.</span><span data-lang="tl" class="lang-hidden">Bago sabihin ang kahit ano sa iyong kasalukuyang sentro, kumpirmahin na ang bagong sentro ay talagang makakatanggap sa iyo. Maraming sentro ang may waitlist o mga tiyak na kinakailangan.</span><span data-lang="ceb" class="lang-hidden">Sa wala ka pa magsulti bisan unsa sa imong karon nga sentro, kumpirmaha nga ang bag-ong sentro makadawat gayud kanimo. Daghan mga sentro ang adunay waitlist o espesipiko nga mga kinakailangan.</span><span data-lang="kap" class="lang-hidden">Bago magsalita keng iyung kasalukuyang sentro, kumpirmahin na ing bagung sentro makakatanggap kanimo. Maranung sentro ing adwang waitlist o tiyak na mga kinakailangan.</span></p>
+          <p><strong><span data-lang="en">Confirm with the receiving center:</span><span data-lang="tl" class="lang-hidden">Kumpirmahin sa tatanggap na sentro:</span><span data-lang="ceb" class="lang-hidden">Kumpirmaha sa receiving center:</span><span data-lang="kap" class="lang-hidden">Kumpirmahin king tatanggap na sentro:</span></strong></p>
           <ul>
-            <li>Available slot and schedule that matches your current frequency</li>
-            <li>Acceptance by a nephrologist at that center</li>
-            <li>PhilHealth accreditation (for Z-Benefit coverage)</li>
-            <li>Ability to handle your specific condition</li>
+            <li><span data-lang="en">Available slot and schedule that matches your current frequency</span><span data-lang="tl" class="lang-hidden">Available na slot at iskedyul na tugma sa iyong kasalukuyang dalas</span><span data-lang="ceb" class="lang-hidden">Available nga slot ug iskedyul nga katugma sa imong karon nga frequency</span><span data-lang="kap" class="lang-hidden">Available na slot at iskedyul na akmang king iyung kasalukuyang dalas</span></li>
+            <li><span data-lang="en">Acceptance by a nephrologist at that center</span><span data-lang="tl" class="lang-hidden">Pagtanggap ng isang nephrologist sa sentrong iyon</span><span data-lang="ceb" class="lang-hidden">Pagdawat sa usa ka nephrologist sa maong sentro</span><span data-lang="kap" class="lang-hidden">Pagtanggap ning metung a nephrologist king manung sentro</span></li>
+            <li><span data-lang="en">PhilHealth accreditation (for Z-Benefit coverage)</span><span data-lang="tl" class="lang-hidden">Akreditasyon sa PhilHealth (para sa saklaw ng Z-Benefit)</span><span data-lang="ceb" class="lang-hidden">Akreditasyon sa PhilHealth (para sa Z-Benefit coverage)</span><span data-lang="kap" class="lang-hidden">Akreditasyon keng PhilHealth (para king Z-Benefit coverage)</span></li>
+            <li><span data-lang="en">Ability to handle your specific condition</span><span data-lang="tl" class="lang-hidden">Kakayahang hawakan ang iyong tiyak na kondisyon</span><span data-lang="ceb" class="lang-hidden">Kakayahan sa pag-atubang sa imong espesipiko nga kondisyon</span><span data-lang="kap" class="lang-hidden">Kakayahan na hawakan ing iyung tiyak na kondisyon</span></li>
           </ul>
-          <p><strong>Verify they can manage your situation if you have:</strong></p>
+          <p><strong><span data-lang="en">Verify they can manage your situation if you have:</span><span data-lang="tl" class="lang-hidden">Tiyakin na kaya nilang hawakan ang iyong sitwasyon kung ikaw ay may:</span><span data-lang="ceb" class="lang-hidden">Pamatud-i nga kaya nila atubangon ang imong sitwasyon kung ikaw adunay:</span><span data-lang="kap" class="lang-hidden">Tiyakin na kaya yang hawakan ing iyung sitwasyon king ika ay adwang:</span></strong></p>
           <ul>
-            <li>Tunneled catheter dialysis</li>
-            <li>AV fistula complications or a recently revised fistula</li>
-            <li>Hepatitis B positive status (requires a dedicated machine or station)</li>
-            <li>High-risk cardiovascular profile or frequent intradialytic hypotension</li>
-            <li>Heparin-free dialysis requirement</li>
-            <li>Elderly or frail status requiring closer monitoring</li>
+            <li><span data-lang="en">Tunneled catheter dialysis</span><span data-lang="tl" class="lang-hidden">Tunneled catheter dialysis</span><span data-lang="ceb" class="lang-hidden">Tunneled catheter dialysis</span><span data-lang="kap" class="lang-hidden">Tunneled catheter dialysis</span></li>
+            <li><span data-lang="en">AV fistula complications or a recently revised fistula</span><span data-lang="tl" class="lang-hidden">Mga komplikasyon ng AV fistula o kamakailan na binagong fistula</span><span data-lang="ceb" class="lang-hidden">Mga komplikasyon sa AV fistula o bag-o lang nga gibag-o nga fistula</span><span data-lang="kap" class="lang-hidden">Mga komplikasyon ning AV fistula o kamakailan binaguhing fistula</span></li>
+            <li><span data-lang="en">Hepatitis B positive status (requires a dedicated machine or station)</span><span data-lang="tl" class="lang-hidden">Positibong Hepatitis B (nangangailangan ng nakatuong makina o istasyon)</span><span data-lang="ceb" class="lang-hidden">Positibo sa Hepatitis B (nanginahanglan og dedikadong makina o estasyon)</span><span data-lang="kap" class="lang-hidden">Positibung Hepatitis B (kailangan ning dedikadong makina o estasyon)</span></li>
+            <li><span data-lang="en">High-risk cardiovascular profile or frequent intradialytic hypotension</span><span data-lang="tl" class="lang-hidden">Mataas na panganib na cardiovascular o madalas na intradialytic hypotension</span><span data-lang="ceb" class="lang-hidden">High-risk nga cardiovascular o kanunay nga intradialytic hypotension</span><span data-lang="kap" class="lang-hidden">High-risk na cardiovascular o madalas na intradialytic hypotension</span></li>
+            <li><span data-lang="en">Heparin-free dialysis requirement</span><span data-lang="tl" class="lang-hidden">Pangangailangan ng dialysis na walang heparin</span><span data-lang="ceb" class="lang-hidden">Kinahanglan sa dialysis nga walay heparin</span><span data-lang="kap" class="lang-hidden">Kailangan ning dialysis nga e heparin</span></li>
+            <li><span data-lang="en">Elderly or frail status requiring closer monitoring</span><span data-lang="tl" class="lang-hidden">Katandaan o kahinaan na nangangailangan ng mas maingat na pagmamatyag</span><span data-lang="ceb" class="lang-hidden">Tigulang o maluya nga kahimtang nga nanginahanglan og mas suod nga pagmonitor</span><span data-lang="kap" class="lang-hidden">Katandaan o kahinaan na kailangan ning mas malapit na pagmamatyag</span></li>
           </ul>
         </div>
       </div>
@@ -1577,20 +1678,20 @@
       <div class="step-card">
         <div class="step-num">2</div>
         <div class="step-body">
-          <h3>Inform your current HD center and nephrologist.</h3>
-          <p>Once you have a confirmed slot at the receiving center, inform your current team. Ideally, give them <strong>at least 1–2 weeks' notice</strong> for non-emergency transfers.</p>
-          <p><strong>Request the following at this point:</strong></p>
+          <h3><span data-lang="en">Inform your current HD center and nephrologist.</span><span data-lang="tl" class="lang-hidden">Ipaalam sa iyong kasalukuyang HD center at nephrologist.</span><span data-lang="ceb" class="lang-hidden">Ipahibalo sa imong karon nga HD center ug nephrologist.</span><span data-lang="kap" class="lang-hidden">Ipaalam king iyung kasalukuyang HD center at nephrologist.</span></h3>
+          <p><span data-lang="en">Once you have a confirmed slot at the receiving center, inform your current team. Ideally, give them <strong>at least 1–2 weeks' notice</strong> for non-emergency transfers.</span><span data-lang="tl" class="lang-hidden">Kapag may nakumpirmang slot ka na sa tatanggap na sentro, ipaalam sa iyong kasalukuyang koponan. Kung maaari, bigyan sila ng <strong>hindi bababa sa 1–2 linggong abiso</strong> para sa mga hindi emergency na paglipat.</span><span data-lang="ceb" class="lang-hidden">Kung aduna na kang nakumpirmang slot sa receiving center, ipahibalo sa imong karon nga team. Sa maayo, hatagi sila og <strong>labing menos 1–2 ka semana nga abiso</strong> para sa dili emergency nga transfer.</span><span data-lang="kap" class="lang-hidden">Kapag adwa na kang nakumpirmang slot king tatanggap na sentro, ipaalam king iyung kasalukuyang koponan. Kung maaari, bigyan la ning <strong>hindi bababa sa 1–2 linggung abiso</strong> para king mga e emergency na paglipat.</span></p>
+          <p><strong><span data-lang="en">Request the following at this point:</span><span data-lang="tl" class="lang-hidden">Humiling ng mga sumusunod sa puntong ito:</span><span data-lang="ceb" class="lang-hidden">Pangayo sa mosunod sa kini nga panahon:</span><span data-lang="kap" class="lang-hidden">Huminge ning mosunod king puntung iti:</span></strong></p>
           <ul>
-            <li>Medical abstract</li>
-            <li>PSN Hemodialysis Patient's Endorsement Form (completed and signed)</li>
-            <li>Dialysis records and last 3 treatment sheets</li>
-            <li>Latest laboratory results</li>
+            <li><span data-lang="en">Medical abstract</span><span data-lang="tl" class="lang-hidden">Medical abstract</span><span data-lang="ceb" class="lang-hidden">Medical abstract</span><span data-lang="kap" class="lang-hidden">Medical abstract</span></li>
+            <li><span data-lang="en">PSN Hemodialysis Patient's Endorsement Form (completed and signed)</span><span data-lang="tl" class="lang-hidden">PSN Hemodialysis Patient's Endorsement Form (kumpleto at napirmahan)</span><span data-lang="ceb" class="lang-hidden">PSN Hemodialysis Patient's Endorsement Form (kompleto ug napirmahan)</span><span data-lang="kap" class="lang-hidden">PSN Hemodialysis Patient's Endorsement Form (kumpleto at napirmahan)</span></li>
+            <li><span data-lang="en">Dialysis records and last 3 treatment sheets</span><span data-lang="tl" class="lang-hidden">Mga rekord ng dialysis at huling 3 treatment sheets</span><span data-lang="ceb" class="lang-hidden">Mga rekord sa dialysis ug katapusang 3 treatment sheets</span><span data-lang="kap" class="lang-hidden">Mga rekord ning dialysis at katapusang 3 treatment sheets</span></li>
+            <li><span data-lang="en">Latest laboratory results</span><span data-lang="tl" class="lang-hidden">Pinakabagong mga resulta sa laboratoryo</span><span data-lang="ceb" class="lang-hidden">Pinakabag-o nga mga resulta sa laboratoryo</span><span data-lang="kap" class="lang-hidden">Pinakabagung mga resulta keng laboratoryo</span></li>
           </ul>
           <div class="alert alert-amber" style="margin-top:14px;margin-bottom:0;">
             <div class="alert-icon">⚠️</div>
             <div class="alert-body">
-              <h4>Do not "disappear" from your current center.</h4>
-              <p>Abruptly stopping without notice is the single most dangerous transfer behavior. It leaves your current team unable to track your status, and leaves the receiving center without your records. It also makes it harder to obtain proper endorsement documents later.</p>
+              <h4><span data-lang="en">Do not "disappear" from your current center.</span><span data-lang="tl" class="lang-hidden">Huwag "mawala" mula sa iyong kasalukuyang sentro.</span><span data-lang="ceb" class="lang-hidden">Ayaw "mawala" gikan sa imong karon nga sentro.</span><span data-lang="kap" class="lang-hidden">E "mawala" king iyung kasalukuyang sentro.</span></h4>
+              <p><span data-lang="en">Abruptly stopping without notice is the single most dangerous transfer behavior. It leaves your current team unable to track your status, and leaves the receiving center without your records. It also makes it harder to obtain proper endorsement documents later.</span><span data-lang="tl" class="lang-hidden">Ang biglang paghinto nang walang abiso ang pinaka-mapanganib na gawi sa paglipat. Iniiwan nito ang iyong kasalukuyang koponan na hindi masusubaybayan ang iyong katayuan, at iniiwan ang tatanggap na sentro nang wala ang iyong mga rekord. Ginagawa rin nitong mas mahirap na makakuha ng tamang mga dokumento ng endorsement sa ibang pagkakataon.</span><span data-lang="ceb" class="lang-hidden">Ang kalit nga paghunong nga walay abiso ang pinakauy-oy nga transfer nga kinaiya. Gibiyaan niini ang imong karon nga team nga dili masubay ang imong kahimtang, ug gibiyaan ang receiving center nga walay imong mga rekord. Gipasamok usab niini ang pagkuha og husto nga mga endorsement documents sa ulahi.</span><span data-lang="kap" class="lang-hidden">Ing biglang paghunong nang e abiso ing pinaka-mapanganib na gawi king paglipat. Iniiwanan nitong iyung kasalukuyang koponan na e masusubaybayan ing iyung katayuan, at iniiwan ing tatanggap na sentro nang wala ring iyung mga rekord. Pinahirapan pa niti ing pagkuha ning tamang mga dokumento ning endorsement mamaya.</span></p>
             </div>
           </div>
         </div>
@@ -1599,49 +1700,49 @@
       <div class="step-card">
         <div class="step-num">3</div>
         <div class="step-body">
-          <h3>Prepare your complete transfer documents.</h3>
-          <p>Gather everything on this list before your first session at the receiving center. Missing documents — especially the endorsement form and recent labs — may delay your acceptance or result in incorrect initial dialysis settings.</p>
+          <h3><span data-lang="en">Prepare your complete transfer documents.</span><span data-lang="tl" class="lang-hidden">Ihanda ang iyong kumpletong mga dokumento sa paglipat.</span><span data-lang="ceb" class="lang-hidden">Pag-andam sa imong kumpleto nga mga dokumento sa transfer.</span><span data-lang="kap" class="lang-hidden">Ihanda ing iyung kumpletong mga dokumento ning paglipat.</span></h3>
+          <p><span data-lang="en">Gather everything on this list before your first session at the receiving center. Missing documents — especially the endorsement form and recent labs — may delay your acceptance or result in incorrect initial dialysis settings.</span><span data-lang="tl" class="lang-hidden">Tipunin ang lahat ng nasa listahang ito bago ang iyong unang sesyon sa tatanggap na sentro. Ang mga nawawalang dokumento — lalo na ang endorsement form at kamakailanang mga lab — maaaring makapagantala sa iyong pagtanggap o magresulta sa maling unang mga setting ng dialysis.</span><span data-lang="ceb" class="lang-hidden">Tipunon ang tanan sa listahan sa wala pa ang imong unang sesyon sa receiving center. Ang mga kulang nga dokumento — labi na ang endorsement form ug bag-o lang nga mga lab — mahimong makapalangan sa imong pagdawat o makaresulta sa maling unang mga setting sa dialysis.</span><span data-lang="kap" class="lang-hidden">Tipunin ing lahat ning adwang king listahang iti bago king iyung unang sesyon king tatanggap na sentro. Ing mga nawawalang dokumento — lalu na ing endorsement form at bag-ung mga lab — maaaring makapag-antala king iyung pagtanggap o magresulta king maling unang mga setting ning dialysis.</span></p>
 
           <div class="two-col" style="margin-top:14px;">
             <div class="feature-card">
-              <h4>📄 Medical Documents</h4>
+              <h4>📄 <span data-lang="en">Medical Documents</span><span data-lang="tl" class="lang-hidden">Mga Medikal na Dokumento</span><span data-lang="ceb" class="lang-hidden">Mga Medikal nga Dokumento</span><span data-lang="kap" class="lang-hidden">Mga Medikal na Dokumento</span></h4>
               <ul>
-                <li>PSN Hemodialysis Patient's Endorsement Form (HPEF)</li>
-                <li>Medical abstract</li>
-                <li>Latest dialysis prescription</li>
-                <li>Last 3 HD treatment sheets</li>
-                <li>Laboratory flow sheet</li>
-                <li>Current medication list</li>
-                <li>Vaccination history</li>
-                <li>Blood type</li>
+                <li><span data-lang="en">PSN Hemodialysis Patient's Endorsement Form (HPEF)</span><span data-lang="tl" class="lang-hidden">PSN Hemodialysis Patient's Endorsement Form (HPEF)</span><span data-lang="ceb" class="lang-hidden">PSN Hemodialysis Patient's Endorsement Form (HPEF)</span><span data-lang="kap" class="lang-hidden">PSN Hemodialysis Patient's Endorsement Form (HPEF)</span></li>
+                <li><span data-lang="en">Medical abstract</span><span data-lang="tl" class="lang-hidden">Medical abstract</span><span data-lang="ceb" class="lang-hidden">Medical abstract</span><span data-lang="kap" class="lang-hidden">Medical abstract</span></li>
+                <li><span data-lang="en">Latest dialysis prescription</span><span data-lang="tl" class="lang-hidden">Pinakabagong reseta ng dialysis</span><span data-lang="ceb" class="lang-hidden">Pinakabag-o nga prescription sa dialysis</span><span data-lang="kap" class="lang-hidden">Pinakabagung reseta ning dialysis</span></li>
+                <li><span data-lang="en">Last 3 HD treatment sheets</span><span data-lang="tl" class="lang-hidden">Huling 3 treatment sheets ng HD</span><span data-lang="ceb" class="lang-hidden">Katapusang 3 treatment sheets sa HD</span><span data-lang="kap" class="lang-hidden">Katapusang 3 treatment sheets ning HD</span></li>
+                <li><span data-lang="en">Laboratory flow sheet</span><span data-lang="tl" class="lang-hidden">Laboratory flow sheet</span><span data-lang="ceb" class="lang-hidden">Laboratory flow sheet</span><span data-lang="kap" class="lang-hidden">Laboratory flow sheet</span></li>
+                <li><span data-lang="en">Current medication list</span><span data-lang="tl" class="lang-hidden">Listahan ng kasalukuyang gamot</span><span data-lang="ceb" class="lang-hidden">Listahan sa karon nga mga tambal</span><span data-lang="kap" class="lang-hidden">Listahan ning kasalukuyang mga gamot</span></li>
+                <li><span data-lang="en">Vaccination history</span><span data-lang="tl" class="lang-hidden">Kasaysayan ng bakuna</span><span data-lang="ceb" class="lang-hidden">Kasaysayan sa bakuna</span><span data-lang="kap" class="lang-hidden">Kasaysayan ning bakuna</span></li>
+                <li><span data-lang="en">Blood type</span><span data-lang="tl" class="lang-hidden">Uri ng dugo</span><span data-lang="ceb" class="lang-hidden">Klase sa dugo</span><span data-lang="kap" class="lang-hidden">Klase ning daga</span></li>
               </ul>
             </div>
             <div class="feature-card">
-              <h4>🧪 Laboratory Results</h4>
+              <h4>🧪 <span data-lang="en">Laboratory Results</span><span data-lang="tl" class="lang-hidden">Mga Resulta sa Laboratoryo</span><span data-lang="ceb" class="lang-hidden">Mga Resulta sa Laboratoryo</span><span data-lang="kap" class="lang-hidden">Mga Resulta keng Laboratoryo</span></h4>
               <ul>
-                <li>CBC (complete blood count)</li>
-                <li>BUN and creatinine</li>
-                <li>Sodium, potassium</li>
-                <li>Calcium, phosphorus</li>
-                <li>Albumin</li>
-                <li>Hepatitis profile (HBsAg, Anti-HBs, Anti-HCV)</li>
+                <li><span data-lang="en">CBC (complete blood count)</span><span data-lang="tl" class="lang-hidden">CBC (kumpletong bilang ng dugo)</span><span data-lang="ceb" class="lang-hidden">CBC (complete blood count)</span><span data-lang="kap" class="lang-hidden">CBC (kumpletong bilang ning daga)</span></li>
+                <li><span data-lang="en">BUN and creatinine</span><span data-lang="tl" class="lang-hidden">BUN at creatinine</span><span data-lang="ceb" class="lang-hidden">BUN ug creatinine</span><span data-lang="kap" class="lang-hidden">BUN at creatinine</span></li>
+                <li><span data-lang="en">Sodium, potassium</span><span data-lang="tl" class="lang-hidden">Sodium, potassium</span><span data-lang="ceb" class="lang-hidden">Sodium, potassium</span><span data-lang="kap" class="lang-hidden">Sodium, potassium</span></li>
+                <li><span data-lang="en">Calcium, phosphorus</span><span data-lang="tl" class="lang-hidden">Calcium, phosphorus</span><span data-lang="ceb" class="lang-hidden">Calcium, phosphorus</span><span data-lang="kap" class="lang-hidden">Calcium, phosphorus</span></li>
+                <li><span data-lang="en">Albumin</span><span data-lang="tl" class="lang-hidden">Albumin</span><span data-lang="ceb" class="lang-hidden">Albumin</span><span data-lang="kap" class="lang-hidden">Albumin</span></li>
+                <li><span data-lang="en">Hepatitis profile (HBsAg, Anti-HBs, Anti-HCV)</span><span data-lang="tl" class="lang-hidden">Hepatitis profile (HBsAg, Anti-HBs, Anti-HCV)</span><span data-lang="ceb" class="lang-hidden">Hepatitis profile (HBsAg, Anti-HBs, Anti-HCV)</span><span data-lang="kap" class="lang-hidden">Hepatitis profile (HBsAg, Anti-HBs, Anti-HCV)</span></li>
               </ul>
             </div>
             <div class="feature-card">
-              <h4>🩺 Access Documents</h4>
+              <h4>🩺 <span data-lang="en">Access Documents</span><span data-lang="tl" class="lang-hidden">Mga Dokumento ng Access</span><span data-lang="ceb" class="lang-hidden">Mga Dokumento sa Access</span><span data-lang="kap" class="lang-hidden">Mga Dokumento ning Access</span></h4>
               <ul>
-                <li>AV fistula operative records (if available)</li>
-                <li>Catheter insertion history</li>
-                <li>Access intervention or angioplasty history</li>
+                <li><span data-lang="en">AV fistula operative records (if available)</span><span data-lang="tl" class="lang-hidden">Mga rekord ng operasyon ng AV fistula (kung available)</span><span data-lang="ceb" class="lang-hidden">Mga rekord sa operasyon sa AV fistula (kung available)</span><span data-lang="kap" class="lang-hidden">Mga rekord ning operasyon ning AV fistula (kung available)</span></li>
+                <li><span data-lang="en">Catheter insertion history</span><span data-lang="tl" class="lang-hidden">Kasaysayan ng paglalagay ng catheter</span><span data-lang="ceb" class="lang-hidden">Kasaysayan sa pagbutang sa catheter</span><span data-lang="kap" class="lang-hidden">Kasaysayan ning paglalagay ning catheter</span></li>
+                <li><span data-lang="en">Access intervention or angioplasty history</span><span data-lang="tl" class="lang-hidden">Kasaysayan ng interbensyon sa access o angioplasty</span><span data-lang="ceb" class="lang-hidden">Kasaysayan sa access intervention o angioplasty</span><span data-lang="kap" class="lang-hidden">Kasaysayan ning interbensyon king access o angioplasty</span></li>
               </ul>
             </div>
             <div class="feature-card">
-              <h4>📋 Administrative</h4>
+              <h4>📋 <span data-lang="en">Administrative</span><span data-lang="tl" class="lang-hidden">Administratibo</span><span data-lang="ceb" class="lang-hidden">Administratibo</span><span data-lang="kap" class="lang-hidden">Administratibo</span></h4>
               <ul>
-                <li>Valid government-issued ID</li>
-                <li>Senior Citizen or PWD ID (if applicable)</li>
-                <li>PhilHealth ID and MDR</li>
-                <li>Consent for release of records</li>
+                <li><span data-lang="en">Valid government-issued ID</span><span data-lang="tl" class="lang-hidden">Valid na ID na ibinigay ng gobyerno</span><span data-lang="ceb" class="lang-hidden">Valid nga government-issued ID</span><span data-lang="kap" class="lang-hidden">Valid na ID mibigay ning gobyerno</span></li>
+                <li><span data-lang="en">Senior Citizen or PWD ID (if applicable)</span><span data-lang="tl" class="lang-hidden">Senior Citizen o PWD ID (kung applicable)</span><span data-lang="ceb" class="lang-hidden">Senior Citizen o PWD ID (kung applicable)</span><span data-lang="kap" class="lang-hidden">Senior Citizen o PWD ID (kung applicable)</span></li>
+                <li><span data-lang="en">PhilHealth ID and MDR</span><span data-lang="tl" class="lang-hidden">PhilHealth ID at MDR</span><span data-lang="ceb" class="lang-hidden">PhilHealth ID ug MDR</span><span data-lang="kap" class="lang-hidden">PhilHealth ID at MDR</span></li>
+                <li><span data-lang="en">Consent for release of records</span><span data-lang="tl" class="lang-hidden">Pahintulot para sa pagpapalabas ng mga rekord</span><span data-lang="ceb" class="lang-hidden">Consent para sa pagpagawas sa mga rekord</span><span data-lang="kap" class="lang-hidden">Pahintulot para king pagpalabas ning mga rekord</span></li>
               </ul>
             </div>
           </div>
@@ -1651,36 +1752,36 @@
       <div class="step-card">
         <div class="step-num">4</div>
         <div class="step-body">
-          <h3>Allow the receiving center to complete their review.</h3>
-          <p>The receiving center and nephrologist will evaluate your documents before confirming acceptance. This typically takes 1–3 days for routine transfers. Allow them time to:</p>
+          <h3><span data-lang="en">Allow the receiving center to complete their review.</span><span data-lang="tl" class="lang-hidden">Hayaan ang tatanggap na sentro na kumpletuhin ang kanilang pagsusuri.</span><span data-lang="ceb" class="lang-hidden">Tugoti ang receiving center nga mahuman ang ilang pagsusi.</span><span data-lang="kap" class="lang-hidden">Pabayan ing tatanggap na sentro na kumpletuhin ing kanilang pagsusuri.</span></h3>
+          <p><span data-lang="en">The receiving center and nephrologist will evaluate your documents before confirming acceptance. This typically takes 1–3 days for routine transfers. Allow them time to:</span><span data-lang="tl" class="lang-hidden">Ang tatanggap na sentro at nephrologist ay susuriin ang iyong mga dokumento bago kumpirmahin ang pagtanggap. Karaniwang tumatagal ito ng 1–3 araw para sa mga karaniwang paglipat. Bigyan sila ng oras para:</span><span data-lang="ceb" class="lang-hidden">Ang receiving center ug nephrologist magsusi sa imong mga dokumento sa wala pa makumpirma ang pagdawat. Kasagaran molungtad kini og 1–3 ka adlaw para sa mga rutina nga transfer. Hatagi sila og panahon para:</span><span data-lang="kap" class="lang-hidden">Ing tatanggap na sentro at nephrologist susuriin ing iyung mga dokumento bago kumpirmahin ing pagtanggap. Karaniwan itong tumatagal 1–3 aldo para king mga karaniwang paglipat. Bigyan la ning oras para:</span></p>
           <ul>
-            <li>Review your clinical stability and current condition</li>
-            <li>Categorize your infection-control status (determines which machine station you use)</li>
-            <li>Plan your dialysis settings based on your prescription</li>
-            <li>Confirm schedule availability and machine/station assignment</li>
-            <li>Review medication compatibility and order continuity</li>
-            <li>Process PhilHealth accreditation and billing enrollment</li>
+            <li><span data-lang="en">Review your clinical stability and current condition</span><span data-lang="tl" class="lang-hidden">Suriin ang iyong klinikal na katatagan at kasalukuyang kondisyon</span><span data-lang="ceb" class="lang-hidden">Susihon ang imong klinikal nga katatag ug karon nga kondisyon</span><span data-lang="kap" class="lang-hidden">Suriin ing iyung klinikal na katatagan at kasalukuyang kondisyon</span></li>
+            <li><span data-lang="en">Categorize your infection-control status (determines which machine station you use)</span><span data-lang="tl" class="lang-hidden">Ikategorya ang iyong katayuan sa kontrol ng impeksyon (nagtatakda kung aling istasyon ng makina ang gagamitin mo)</span><span data-lang="ceb" class="lang-hidden">Kategorohon ang imong infection-control status (nagtino kung unsang machine station ang gamiton nimo)</span><span data-lang="kap" class="lang-hidden">Ikategorya ing iyung katayuan king kontrol ning impeksyon (nagtatakda kung ing-anong estasyon ing gamitin mu)</span></li>
+            <li><span data-lang="en">Plan your dialysis settings based on your prescription</span><span data-lang="tl" class="lang-hidden">Planuhin ang iyong mga setting ng dialysis batay sa iyong reseta</span><span data-lang="ceb" class="lang-hidden">Planuhanon ang imong mga setting sa dialysis base sa imong prescription</span><span data-lang="kap" class="lang-hidden">Planuhin ing iyung mga setting ning dialysis batay king iyung reseta</span></li>
+            <li><span data-lang="en">Confirm schedule availability and machine/station assignment</span><span data-lang="tl" class="lang-hidden">Kumpirmahin ang availability ng iskedyul at assignment ng makina/istasyon</span><span data-lang="ceb" class="lang-hidden">Kumpirmaha ang availability sa iskedyul ug assignment sa makina/estasyon</span><span data-lang="kap" class="lang-hidden">Kumpirmahin ing availability ning iskedyul at assignment ning makina/estasyon</span></li>
+            <li><span data-lang="en">Review medication compatibility and order continuity</span><span data-lang="tl" class="lang-hidden">Suriin ang compatibility ng gamot at pagpapatuloy ng order</span><span data-lang="ceb" class="lang-hidden">Susihon ang compatibility sa tambal ug continuity sa order</span><span data-lang="kap" class="lang-hidden">Suriin ing compatibility ning gamot at pagpapatuloy ning order</span></li>
+            <li><span data-lang="en">Process PhilHealth accreditation and billing enrollment</span><span data-lang="tl" class="lang-hidden">Iproseso ang akreditasyon ng PhilHealth at pagpapatala sa billing</span><span data-lang="ceb" class="lang-hidden">Prosesohon ang PhilHealth accreditation ug billing enrollment</span><span data-lang="kap" class="lang-hidden">Iproseso ing akreditasyon ning PhilHealth at billing enrollment</span></li>
           </ul>
-          <p>Do not skip this step or pressure the receiving center to start you immediately without completing it. A rushed review is a safety risk.</p>
+          <p><span data-lang="en">Do not skip this step or pressure the receiving center to start you immediately without completing it. A rushed review is a safety risk.</span><span data-lang="tl" class="lang-hidden">Huwag laktawan ang hakbang na ito o pilitin ang tatanggap na sentro na simulan ka agad nang hindi kumukumpleto nito. Ang nagmamadaling pagsusuri ay isang panganib sa kaligtasan.</span><span data-lang="ceb" class="lang-hidden">Ayaw prilihi kini nga lakang o piliton ang receiving center nga sugdan ka dayon nga wala niining mahuman. Ang nagdalian nga pagsusi usa ka risgo sa kalamianan.</span><span data-lang="kap" class="lang-hidden">E laktawan ing hakbang na iti o pilitin ing tatanggap na sentro na simulan ka agad nang e kumukumpleto niti. Ing nagmamadaling pagsusuri metung a panganib keng kaligtasan.</span></p>
         </div>
       </div>
 
       <div class="step-card">
         <div class="step-num">5</div>
         <div class="step-body">
-          <h3>Ensure no missed dialysis session.</h3>
-          <p>This is the most critical rule: <strong>your first session at the new center must happen on your next scheduled dialysis day.</strong> There must be zero gap in treatment.</p>
+          <h3><span data-lang="en">Ensure no missed dialysis session.</span><span data-lang="tl" class="lang-hidden">Tiyakin na walang nalaktawang sesyon ng dialysis.</span><span data-lang="ceb" class="lang-hidden">Siguraduha nga walay napuslongan nga sesyon sa dialysis.</span><span data-lang="kap" class="lang-hidden">Tiyakin na wala ning nalaktawang sesyon ning dialysis.</span></h3>
+          <p><span data-lang="en">This is the most critical rule: <strong>your first session at the new center must happen on your next scheduled dialysis day.</strong> There must be zero gap in treatment.</span><span data-lang="tl" class="lang-hidden">Ito ang pinaka-kritikal na patakaran: <strong>ang iyong unang sesyon sa bagong sentro ay dapat maganap sa iyong susunod na nakatakdang araw ng dialysis.</strong> Dapat walang puwang sa paggamot.</span><span data-lang="ceb" class="lang-hidden">Kini ang labing kritikal nga lagda: <strong>ang imong unang sesyon sa bag-ong sentro kinahanglan mahitabo sa imong sunod nga gi-iskedyul nga adlaw sa dialysis.</strong> Kinahanglan walay gab-un sa pagtambal.</span><span data-lang="kap" class="lang-hidden">Iti ing pinaka-kritikal na patakaran: <strong>ing iyung unang sesyon king bagung sentro kailangan mangyari king iyung kasunud na nakatakdang aldo ning dialysis.</strong> Kailangan wala ning puwang king paggamot.</span></p>
           <div class="alert alert-red" style="margin-top:14px;margin-bottom:0;">
             <div class="alert-icon">🚨</div>
             <div class="alert-body">
-              <h4>Never delay dialysis because of transfer logistics.</h4>
+              <h4><span data-lang="en">Never delay dialysis because of transfer logistics.</span><span data-lang="tl" class="lang-hidden">Huwag kailanman antalahin ang dialysis dahil sa mga logistics ng paglipat.</span><span data-lang="ceb" class="lang-hidden">Ayaw gayud palangton ang dialysis tungod sa mga logistics sa transfer.</span><span data-lang="kap" class="lang-hidden">E kailanman antalahin ing dialysis dahil king mga logistics ning paglipat.</span></h4>
               <ul>
-                <li>Potassium can rise to dangerous levels within 24–48 hours of a missed session</li>
-                <li>Fluid overload and pulmonary edema can develop rapidly</li>
-                <li>Uremic symptoms (confusion, nausea, seizure) may appear</li>
-                <li>Emergency hospitalization may be required — and is avoidable</li>
+                <li><span data-lang="en">Potassium can rise to dangerous levels within 24–48 hours of a missed session</span><span data-lang="tl" class="lang-hidden">Maaaring tumaas ang potassium sa mapanganib na antas sa loob ng 24–48 oras ng isang nalaktawang sesyon</span><span data-lang="ceb" class="lang-hidden">Ang potassium mahimong motaas sa delikadong lebel sulod sa 24–48 ka oras sa usa ka napuslongang sesyon</span><span data-lang="kap" class="lang-hidden">Malyari yang tumaas ing potassium king mapanganib na antas sulod 24–48 oras ning metung a nalaktawang sesyon</span></li>
+                <li><span data-lang="en">Fluid overload and pulmonary edema can develop rapidly</span><span data-lang="tl" class="lang-hidden">Maaaring mabilis na mabuo ang fluid overload at pulmonary edema</span><span data-lang="ceb" class="lang-hidden">Ang fluid overload ug pulmonary edema mahimong maunlad paspas</span><span data-lang="kap" class="lang-hidden">Malyari yang mabilis na mabuo ing fluid overload at pulmonary edema</span></li>
+                <li><span data-lang="en">Uremic symptoms (confusion, nausea, seizure) may appear</span><span data-lang="tl" class="lang-hidden">Maaaring lumitaw ang mga sintomas ng uremia (kalituhan, pagduduwal, atake)</span><span data-lang="ceb" class="lang-hidden">Mahimong mogawas ang mga sintomas sa uremia (kalibog, kasukaon, seizure)</span><span data-lang="kap" class="lang-hidden">Malyari yang lumitaw ing mga sintomas ning uremia (kalituhan, pagduduwal, atake)</span></li>
+                <li><span data-lang="en">Emergency hospitalization may be required — and is avoidable</span><span data-lang="tl" class="lang-hidden">Maaaring kailanganin ang emergency na ospitalisasyon — at maaaring maiwasan ito</span><span data-lang="ceb" class="lang-hidden">Mahimong gikinahanglang ospital sa emerhensya — ug malikayan kini</span><span data-lang="kap" class="lang-hidden">Malyaring kailangan ing emergency na ospitalisasyon — at maiwasan iti</span></li>
               </ul>
-              <p style="margin-top:8px;">If your transfer is not ready by your next scheduled session, <strong>continue dialysis at your current center</strong> until the receiving center confirms your start date.</p>
+              <p style="margin-top:8px;"><span data-lang="en">If your transfer is not ready by your next scheduled session, <strong>continue dialysis at your current center</strong> until the receiving center confirms your start date.</span><span data-lang="tl" class="lang-hidden">Kung ang iyong paglipat ay hindi pa handa bago ang iyong susunod na nakatakdang sesyon, <strong>ituloy ang dialysis sa iyong kasalukuyang sentro</strong> hanggang sa kumpirmahin ng tatanggap na sentro ang iyong petsa ng pagsisimula.</span><span data-lang="ceb" class="lang-hidden">Kung ang imong transfer dili pa andam sa imong sunod nga gi-iskedyul nga sesyon, <strong>ipadayon ang dialysis sa imong karon nga sentro</strong> hangtud makumpirma sa receiving center ang imong start date.</span><span data-lang="kap" class="lang-hidden">Kung ing iyung paglipat e pa handa bago king iyung kasunud na nakatakdang sesyon, <strong>ituloy ing dialysis king iyung kasalukuyang sentro</strong> hanggang kumpirmahin ning tatanggap na sentro ing iyung petsa ning pagsisimula.</span></p>
             </div>
           </div>
         </div>
@@ -1693,34 +1794,34 @@
 <!-- ═══ SECTION 6: CHANGING NEPHROLOGIST ONLY ═══════════════════════════ -->
 <section class="section" id="nephrologist-only">
   <div class="container">
-    <div class="section-tag">Partial Transfer</div>
-    <h2>Changing nephrologists — without changing centers.</h2>
-    <p>Sometimes you want to keep your current dialysis center but change your attending nephrologist. This is a separate process with its own requirements.</p>
+    <div class="section-tag"><span data-lang="en">Partial Transfer</span><span data-lang="tl" class="lang-hidden">Bahagyang Paglipat</span><span data-lang="ceb" class="lang-hidden">Partial nga Transfer</span><span data-lang="kap" class="lang-hidden">Bahagyang Paglipat</span></div>
+    <h2><span data-lang="en">Changing nephrologists — without changing centers.</span><span data-lang="tl" class="lang-hidden">Pagpapalit ng nephrologist — nang hindi nagpapalit ng sentro.</span><span data-lang="ceb" class="lang-hidden">Pagbag-o sa nephrologist — nga walay pagbag-o sa sentro.</span><span data-lang="kap" class="lang-hidden">Pagpalit ning nephrologist — nang e nagpapalit ning sentro.</span></h2>
+    <p><span data-lang="en">Sometimes you want to keep your current dialysis center but change your attending nephrologist. This is a separate process with its own requirements.</span><span data-lang="tl" class="lang-hidden">Minsan gusto mong panatilihin ang iyong kasalukuyang sentro ng dialysis ngunit palitan ang iyong attending nephrologist. Ito ay isang hiwalay na proseso na may sariling mga kinakailangan.</span><span data-lang="ceb" class="lang-hidden">Usahay gusto nimo nga pabilin ang imong karon nga sentro sa dialysis apan ilisdan ang imong attending nephrologist. Kini usa ka lain nga proseso nga adunay kaugalingon nga mga kinakailangan.</span><span data-lang="kap" class="lang-hidden">Minsan gustu mung panatilihin ing iyung kasalukuyang sentro ning dialysis pero palitan ing iyung attending nephrologist. Iti metung a hiwalay na proseso na adwang sariling mga kinakailangan.</span></p>
 
     <div class="illus-wrap illus-wrap-light" style="margin:0 0 24px;">
       <img src="../images/hd-transfer-professional-handoff.webp" alt="Photorealistic scene of a professional nephrologist handoff at a Philippine hemodialysis center" style="width:100%;max-width:700px;border-radius:10px;display:block;margin:0 auto;" loading="lazy"/>
-      <span class="illus-caption">A professional nephrologist-to-nephrologist handoff ensures your new attending physician receives your complete clinical history, prescription, and current status.</span>
+      <span class="illus-caption"><span data-lang="en">A professional nephrologist-to-nephrologist handoff ensures your new attending physician receives your complete clinical history, prescription, and current status.</span><span data-lang="tl" class="lang-hidden">Ang propesyonal na handoff mula sa nephrologist patungo sa nephrologist ay tinitiyak na matatanggap ng iyong bagong attending physician ang iyong kumpletong klinikal na kasaysayan, reseta, at kasalukuyang katayuan.</span><span data-lang="ceb" class="lang-hidden">Ang propesyonal nga handoff gikan nephrologist ngadto sa nephrologist nagtino nga ang imong bag-ong attending physician makadawat sa imong kumpletong klinikal nga kasaysayan, prescription, ug karon nga kahimtang.</span><span data-lang="kap" class="lang-hidden">Ing propesyonal na handoff mibigay nephrologist patungo king nephrologist tinitiyak na matatanggap ning iyung bagung attending physician ing iyung kumpletong klinikal na kasaysayan, reseta, at kasalukuyang katayuan.</span></span>
     </div>
 
     <div class="feature-card" style="margin:24px 0;">
-      <h4>Steps if staying in the same HD center</h4>
+      <h4><span data-lang="en">Steps if staying in the same HD center</span><span data-lang="tl" class="lang-hidden">Mga hakbang kung mananatili sa parehong HD center</span><span data-lang="ceb" class="lang-hidden">Mga lakang kung magpabilin sa mao rang HD center</span><span data-lang="kap" class="lang-hidden">Mga hakbang kung mananatili king mismung HD center</span></h4>
       <ul>
-        <li>Inform the center administration of your intent to change physicians</li>
-        <li>Inform your current nephrologist respectfully and in person if possible</li>
-        <li>Ensure formal acceptance by the new nephrologist before considering the change complete</li>
-        <li>Ensure the new nephrologist updates all standing orders, ESA orders, and dialysis prescription</li>
-        <li>Confirm that the center has updated their records with the new attending physician</li>
+        <li><span data-lang="en">Inform the center administration of your intent to change physicians</span><span data-lang="tl" class="lang-hidden">Ipaalam sa administrasyon ng sentro ang iyong intensyon na magpalit ng doktor</span><span data-lang="ceb" class="lang-hidden">Ipahibalo sa administrasyon sa sentro ang imong katuyoan nga magbag-o sa doktor</span><span data-lang="kap" class="lang-hidden">Ipaalam king administrasyon ning sentro ing iyung intensyon na magpalit ning doktor</span></li>
+        <li><span data-lang="en">Inform your current nephrologist respectfully and in person if possible</span><span data-lang="tl" class="lang-hidden">Ipaalam sa iyong kasalukuyang nephrologist nang may respeto at personal kung maaari</span><span data-lang="ceb" class="lang-hidden">Ipahibalo sa imong karon nga nephrologist nga may pagtahod ug personal kung mahimo</span><span data-lang="kap" class="lang-hidden">Ipaalam king iyung kasalukuyang nephrologist nang may respeto at personal kung maaari</span></li>
+        <li><span data-lang="en">Ensure formal acceptance by the new nephrologist before considering the change complete</span><span data-lang="tl" class="lang-hidden">Tiyakin ang pormal na pagtanggap ng bagong nephrologist bago ituring na kumpleto ang pagbabago</span><span data-lang="ceb" class="lang-hidden">Siguraduha ang pormal nga pagdawat sa bag-ong nephrologist sa wala pa isipon nga kompleto ang pagbag-o</span><span data-lang="kap" class="lang-hidden">Tiyakin ing pormal na pagtanggap ning bagung nephrologist bago isipin na kumpleto ing pagbabago</span></li>
+        <li><span data-lang="en">Ensure the new nephrologist updates all standing orders, ESA orders, and dialysis prescription</span><span data-lang="tl" class="lang-hidden">Tiyakin na ia-update ng bagong nephrologist ang lahat ng standing orders, ESA orders, at reseta ng dialysis</span><span data-lang="ceb" class="lang-hidden">Siguraduha nga i-update sa bag-ong nephrologist ang tanan nga standing orders, ESA orders, ug prescription sa dialysis</span><span data-lang="kap" class="lang-hidden">Tiyakin na ia-update ning bagung nephrologist ing lahat ning standing orders, ESA orders, at reseta ning dialysis</span></li>
+        <li><span data-lang="en">Confirm that the center has updated their records with the new attending physician</span><span data-lang="tl" class="lang-hidden">Kumpirmahin na na-update ng sentro ang kanilang mga rekord na may bagong attending physician</span><span data-lang="ceb" class="lang-hidden">Kumpirmaha nga na-update sa sentro ang ilang mga rekord sa bag-ong attending physician</span><span data-lang="kap" class="lang-hidden">Kumpirmahin na na-update ning sentro ing kanilang mga rekord na adwang bagung attending physician</span></li>
       </ul>
     </div>
 
     <div class="alert alert-red">
       <div class="alert-icon">🚫</div>
       <div class="alert-body">
-        <h4>Avoid these common mistakes when changing nephrologists only</h4>
+        <h4><span data-lang="en">Avoid these common mistakes when changing nephrologists only</span><span data-lang="tl" class="lang-hidden">Iwasan ang mga karaniwang pagkakamaling ito kapag nagpapalit lamang ng nephrologist</span><span data-lang="ceb" class="lang-hidden">Likayan kining mga kasagarang sayop sa pagbag-o lang sa nephrologist</span><span data-lang="kap" class="lang-hidden">Iwasan ining mga karaniwang pagkakamali kapag nagpapalit lamang ning nephrologist</span></h4>
         <ul>
-          <li><strong>Silent physician switching</strong> — where you stop attending the current nephrologist's clinic without formally notifying anyone</li>
-          <li><strong>Conflicting physician orders</strong> — if two nephrologists are writing orders for the same patient, nursing staff cannot determine which orders to follow</li>
-          <li><strong>Accountability gap</strong> — the center needs a clearly designated attending nephrologist at all times for emergencies and prescription changes</li>
+          <li><strong><span data-lang="en">Silent physician switching</span><span data-lang="tl" class="lang-hidden">Tahimik na pagpapalit ng doktor</span><span data-lang="ceb" class="lang-hidden">Hilom nga pagbag-o sa doktor</span><span data-lang="kap" class="lang-hidden">Tahimik na pagpapalit ning doktor</span></strong> — <span data-lang="en">where you stop attending the current nephrologist's clinic without formally notifying anyone</span><span data-lang="tl" class="lang-hidden">kung saan humihinto kang pumunta sa klinika ng kasalukuyang nephrologist nang hindi pormal na nagpapaalam sa sinuman</span><span data-lang="ceb" class="lang-hidden">kung mohunong ka sa pag-attend sa klinika sa karon nga nephrologist nga walay pormal nga pagsulti sa bisan kinsa</span><span data-lang="kap" class="lang-hidden">kung saan humihinto kang pumunta king klinika ning kasalukuyang nephrologist nang e pormal na nagpapaalam king sinuman</span></li>
+          <li><strong><span data-lang="en">Conflicting physician orders</span><span data-lang="tl" class="lang-hidden">Nagtatunggaling mga utos ng doktor</span><span data-lang="ceb" class="lang-hidden">Nagkasumpaki nga mga order sa doktor</span><span data-lang="kap" class="lang-hidden">Nagtatunggaling mga utos ning doktor</span></strong> — <span data-lang="en">if two nephrologists are writing orders for the same patient, nursing staff cannot determine which orders to follow</span><span data-lang="tl" class="lang-hidden">kung ang dalawang nephrologist ay nagsusulat ng mga utos para sa iisang pasyente, hindi matutukoy ng mga nars kung aling utos ang susundin</span><span data-lang="ceb" class="lang-hidden">kung duha ka nephrologist ang nagsulat og mga order para sa mao rang pasyente, dili matino sa nursing staff kung unsang mga order ang sundon</span><span data-lang="kap" class="lang-hidden">kung adwa nephrologist ing nagsusulat ning mga utos para king mismung pasyente, e matukoy ning mga nars kung ing-anong mga utos ing susundin</span></li>
+          <li><strong><span data-lang="en">Accountability gap</span><span data-lang="tl" class="lang-hidden">Kakulangan ng pananagutan</span><span data-lang="ceb" class="lang-hidden">Kakulangon sa accountability</span><span data-lang="kap" class="lang-hidden">Kakulangan ning pananagutan</span></strong> — <span data-lang="en">the center needs a clearly designated attending nephrologist at all times for emergencies and prescription changes</span><span data-lang="tl" class="lang-hidden">ang sentro ay nangangailangan ng malinaw na itinalagang attending nephrologist sa lahat ng oras para sa mga emerhensya at pagbabago ng reseta</span><span data-lang="ceb" class="lang-hidden">ang sentro nanginahanglan og klaro nga gitukod nga attending nephrologist sa tanan nga oras alang sa mga emerhensya ug mga pagbag-o sa prescription</span><span data-lang="kap" class="lang-hidden">ing sentro kailangan ning malinaw na itinalagang attending nephrologist king lahat ning oras para king mga emerhensya at pagbabago ning reseta</span></li>
         </ul>
       </div>
     </div>
@@ -1730,31 +1831,31 @@
 <!-- ═══ SECTION 7: CHANGING CENTER ONLY ════════════════════════════════ -->
 <section class="section" id="center-only">
   <div class="container">
-    <div class="section-tag">Partial Transfer</div>
-    <h2>Changing HD centers — without changing nephrologists.</h2>
-    <p>If you want to transfer to a different dialysis center but keep your current nephrologist, there is an important prerequisite you must verify first.</p>
+    <div class="section-tag"><span data-lang="en">Partial Transfer</span><span data-lang="tl" class="lang-hidden">Bahagyang Paglipat</span><span data-lang="ceb" class="lang-hidden">Partial nga Transfer</span><span data-lang="kap" class="lang-hidden">Bahagyang Paglipat</span></div>
+    <h2><span data-lang="en">Changing HD centers — without changing nephrologists.</span><span data-lang="tl" class="lang-hidden">Pagpapalit ng HD center — nang hindi nagpapalit ng nephrologist.</span><span data-lang="ceb" class="lang-hidden">Pagbag-o sa HD center — nga walay pagbag-o sa nephrologist.</span><span data-lang="kap" class="lang-hidden">Pagpalit ning HD center — nang e nagpapalit ning nephrologist.</span></h2>
+    <p><span data-lang="en">If you want to transfer to a different dialysis center but keep your current nephrologist, there is an important prerequisite you must verify first.</span><span data-lang="tl" class="lang-hidden">Kung gusto mong lumipat sa ibang sentro ng dialysis ngunit panatilihin ang iyong kasalukuyang nephrologist, may mahalagang kinakailangan na kailangan mong tiyakin muna.</span><span data-lang="ceb" class="lang-hidden">Kung gusto nimo magbalhin sa lain nga sentro sa dialysis apan pabilin ang imong karon nga nephrologist, adunay hinungdanon nga kinahanglan nga susihon nimo una.</span><span data-lang="kap" class="lang-hidden">Kung gustu mong lumipat king ibang sentro ning dialysis pero panatilihin ing iyung kasalukuyang nephrologist, adwa maimportanteng kinakailangan na kailangan mung tiyakin nung maona.</span></p>
 
     <div class="illus-wrap illus-wrap-light" style="margin:0 0 24px;">
       <img src="../images/hd-transfer-document-checklist.webp" alt="Document checklist infographic for hemodialysis center transfer in the Philippines" style="width:100%;max-width:700px;border-radius:10px;display:block;margin:0 auto;" loading="lazy"/>
-      <span class="illus-caption">All documents you need to bring when transferring — even when your nephrologist stays the same, the receiving center needs complete clinical records.</span>
+      <span class="illus-caption"><span data-lang="en">All documents you need to bring when transferring — even when your nephrologist stays the same, the receiving center needs complete clinical records.</span><span data-lang="tl" class="lang-hidden">Lahat ng mga dokumentong kailangan mong dalhin kapag naglilipat — kahit mananatiling pareho ang iyong nephrologist, ang tatanggap na sentro ay nangangailangan ng kumpletong mga klinikal na rekord.</span><span data-lang="ceb" class="lang-hidden">Tanan nga mga dokumento nga kinahanglan nimo nga dad-on sa pagbalhin — bisan katugma ang imong nephrologist, ang receiving center nanginahanglan og kumpletong mga klinikal nga rekord.</span><span data-lang="kap" class="lang-hidden">Lahat ning mga dokumentong kailangan mung dalhin kapag naglilipat — kahit mananatiling pareho ing iyung nephrologist, ing tatanggap na sentro kailangan ning kumpletong mga klinikal na rekord.</span></span>
     </div>
 
     <div class="alert alert-amber">
       <div class="alert-icon">⚠️</div>
       <div class="alert-body">
-        <h4>Is your nephrologist accredited at the receiving center?</h4>
-        <p>A nephrologist must hold accreditation or clinical privileges at a dialysis center to see patients there. If your nephrologist is not accredited at the receiving center, you will need to either: (a) find a center where they hold accreditation, or (b) accept a new nephrologist at the receiving center.</p>
+        <h4><span data-lang="en">Is your nephrologist accredited at the receiving center?</span><span data-lang="tl" class="lang-hidden">Akreditado ba ang iyong nephrologist sa tatanggap na sentro?</span><span data-lang="ceb" class="lang-hidden">Akreditado ba ang imong nephrologist sa receiving center?</span><span data-lang="kap" class="lang-hidden">Akreditado ba ing iyung nephrologist king tatanggap na sentro?</span></h4>
+        <p><span data-lang="en">A nephrologist must hold accreditation or clinical privileges at a dialysis center to see patients there. If your nephrologist is not accredited at the receiving center, you will need to either: (a) find a center where they hold accreditation, or (b) accept a new nephrologist at the receiving center.</span><span data-lang="tl" class="lang-hidden">Ang isang nephrologist ay dapat may akreditasyon o klinikal na pribilehiyo sa isang sentro ng dialysis upang makita ang mga pasyente doon. Kung ang iyong nephrologist ay hindi akreditado sa tatanggap na sentro, kailangan mong: (a) hanapin ang sentro kung saan sila may akreditasyon, o (b) tanggapin ang bagong nephrologist sa tatanggap na sentro.</span><span data-lang="ceb" class="lang-hidden">Ang usa ka nephrologist kinahanglan adunay accreditation o klinikal nga pribilehiyo sa usa ka sentro sa dialysis aron makita ang mga pasyente didto. Kung ang imong nephrologist dili akreditado sa receiving center, kinahanglan nimo: (a) pangitaon ang sentro diin sila adunay accreditation, o (b) dawaton ang bag-ong nephrologist sa receiving center.</span><span data-lang="kap" class="lang-hidden">Ing metung a nephrologist kailangan adwang akreditasyon o klinikal na pribilehiyo king metung a sentro ning dialysis para makita ing mga pasyente doron. Kung ing iyung nephrologist e akreditado king tatanggap na sentro, kailangan mung: (a) hanapin ing sentro kung sain la adwang akreditasyon, o (b) tanggapin ing bagung nephrologist king tatanggap na sentro.</span></p>
       </div>
     </div>
 
     <div class="feature-card" style="margin:24px 0;">
-      <h4>Steps for center-only transfer with the same nephrologist</h4>
+      <h4><span data-lang="en">Steps for center-only transfer with the same nephrologist</span><span data-lang="tl" class="lang-hidden">Mga hakbang para sa paglipat ng sentro lamang na may parehong nephrologist</span><span data-lang="ceb" class="lang-hidden">Mga lakang alang sa center-only nga transfer nga mao rang nephrologist</span><span data-lang="kap" class="lang-hidden">Mga hakbang para king paglipat ning sentro lamang na adwang mismung nephrologist</span></h4>
       <ul>
-        <li>Ask your nephrologist directly whether they are accredited at your chosen receiving center</li>
-        <li>If not, ask whether they are willing and able to apply for accreditation — this takes time</li>
-        <li>If accreditation at the receiving center is not feasible, ask your nephrologist for a referral to a trusted colleague at that center</li>
-        <li>Ensure the PSN endorsement form is completed regardless of whether the nephrologist changes</li>
-        <li>Ensure proper handover of all clinical information even if the nephrologist is the same person</li>
+        <li><span data-lang="en">Ask your nephrologist directly whether they are accredited at your chosen receiving center</span><span data-lang="tl" class="lang-hidden">Tanungin nang direkta ang iyong nephrologist kung sila ay akreditado sa iyong piniling tatanggap na sentro</span><span data-lang="ceb" class="lang-hidden">Pangutana direkta sa imong nephrologist kung sila akreditado sa imong gipiling receiving center</span><span data-lang="kap" class="lang-hidden">Tanungin nang direkta ing iyung nephrologist kung sila akreditado king iyung piniling tatanggap na sentro</span></li>
+        <li><span data-lang="en">If not, ask whether they are willing and able to apply for accreditation — this takes time</span><span data-lang="tl" class="lang-hidden">Kung hindi, itanong kung handang makipagtulungan at makapag-apply sila para sa akreditasyon — tumatagal ito ng oras</span><span data-lang="ceb" class="lang-hidden">Kung dili, pangutana kung andam ug makahimo silang mag-apply alang sa accreditation — molungtad kini og panahon</span><span data-lang="kap" class="lang-hidden">Kung e, itanong kung handa at makakaya lang mag-apply para keng akreditasyon — tumatagal iti ning oras</span></li>
+        <li><span data-lang="en">If accreditation at the receiving center is not feasible, ask your nephrologist for a referral to a trusted colleague at that center</span><span data-lang="tl" class="lang-hidden">Kung hindi posible ang akreditasyon sa tatanggap na sentro, humingi sa iyong nephrologist ng referral sa pinagkakatiwalaang kasamahan sa sentrong iyon</span><span data-lang="ceb" class="lang-hidden">Kung dili posible ang accreditation sa receiving center, pangayo sa imong nephrologist og referral ngadto sa gisaligan nga kauban sa maong sentro</span><span data-lang="kap" class="lang-hidden">Kung e posible ing akreditasyon king tatanggap na sentro, huminge king iyung nephrologist ning referral king pinagkakatiwalaang kasamahan king manung sentro</span></li>
+        <li><span data-lang="en">Ensure the PSN endorsement form is completed regardless of whether the nephrologist changes</span><span data-lang="tl" class="lang-hidden">Tiyakin na nakumpleto ang PSN endorsement form anuman ang mangyari sa nephrologist</span><span data-lang="ceb" class="lang-hidden">Siguraduha nga nahuman ang PSN endorsement form bisan magbag-o o dili ang nephrologist</span><span data-lang="kap" class="lang-hidden">Tiyakin na nakumpleto ing PSN endorsement form anuman ing mangyari king nephrologist</span></li>
+        <li><span data-lang="en">Ensure proper handover of all clinical information even if the nephrologist is the same person</span><span data-lang="tl" class="lang-hidden">Tiyakin ang wastong paglipat ng lahat ng klinikal na impormasyon kahit ang nephrologist ay iisa pa rin</span><span data-lang="ceb" class="lang-hidden">Siguraduha ang husto nga handover sa tanan nga klinikal nga impormasyon bisan mao rang nephrologist</span><span data-lang="kap" class="lang-hidden">Tiyakin ing wastong paglipat ning lahat ning klinikal na impormasyon kahit ing nephrologist mismung tao pa rin</span></li>
       </ul>
     </div>
   </div>
@@ -1764,40 +1865,40 @@
 <section class="section" id="regulations">
   <div class="container">
     <div class="section-tag">DOH · PSN · PMA · PhilHealth</div>
-    <h2>Regulatory and administrative considerations.</h2>
+    <h2><span data-lang="en">Regulatory and administrative considerations.</span><span data-lang="tl" class="lang-hidden">Mga regulasyon at administratibong konsiderasyon.</span><span data-lang="ceb" class="lang-hidden">Mga regulasyon ug administratibong konsiderasyon.</span><span data-lang="kap" class="lang-hidden">Mga regulasyon at administratibong konsiderasyon.</span></h2>
 
     <div class="reg-card">
-      <h4>DOH (Department of Health) — Dialysis Center Licensing</h4>
-      <p>All hemodialysis facilities in the Philippines must be DOH-licensed under <strong>DOH Administrative Order 2012-0001</strong>, which sets standards for safe and effective hemodialysis care. Before transferring, verify that your receiving center is currently licensed and compliant. A DOH-licensed center will have proper staffing, equipment, and infection-control procedures. Reference: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></p>
+      <h4><span data-lang="en">DOH (Department of Health) — Dialysis Center Licensing</span><span data-lang="tl" class="lang-hidden">DOH (Kagawaran ng Kalusugan) — Lisensya ng Sentro ng Dialysis</span><span data-lang="ceb" class="lang-hidden">DOH (Department of Health) — Lisensya sa Sentro sa Dialysis</span><span data-lang="kap" class="lang-hidden">DOH (Kagawaran ning Kalusugan) — Lisensya ning Sentro ning Dialysis</span></h4>
+      <p><span data-lang="en">All hemodialysis facilities in the Philippines must be DOH-licensed under <strong>DOH Administrative Order 2012-0001</strong>, which sets standards for safe and effective hemodialysis care. Before transferring, verify that your receiving center is currently licensed and compliant. A DOH-licensed center will have proper staffing, equipment, and infection-control procedures. Reference: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span><span data-lang="tl" class="lang-hidden">Lahat ng pasilidad ng hemodialysis sa Pilipinas ay dapat may lisensya ng DOH sa ilalim ng <strong>DOH Administrative Order 2012-0001</strong>, na nagtatakda ng mga pamantayan para sa ligtas at epektibong pag-aalaga ng hemodialysis. Bago lumipat, tiyakin na ang iyong tatanggap na sentro ay may kasalukuyang lisensya at sumusunod. Ang sentro na may lisensya ng DOH ay magkakaroon ng tamang kawani, kagamitan, at mga pamamaraan ng kontrol ng impeksyon. Sanggunian: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span><span data-lang="ceb" class="lang-hidden">Ang tanan nga mga pasilidad sa hemodialysis sa Pilipinas kinahanglan DOH-licensed ubos sa <strong>DOH Administrative Order 2012-0001</strong>, nga nagtakda sa mga pamantayan alang sa luwas ug epektibong pag-atiman sa hemodialysis. Sa wala pa magbalhin, pamatud-i nga ang imong receiving center karon nga adunay lisensya ug compliant. Ang sentro nga DOH-licensed adunay hustong kawani, kagamitan, ug mga pamamaraan sa kontrol sa impeksyon. Reperensya: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span><span data-lang="kap" class="lang-hidden">Lahat ning mga pasilidad ning hemodialysis king Pilipinas kailangan DOH-licensed ubos king <strong>DOH Administrative Order 2012-0001</strong>, na nagtakda ning mga pamantayan para king ligtas at epektibong pag-aalaga ning hemodialysis. Bago lumipat, tiyakin na ing iyung tatanggap na sentro adwang kasalukuyang lisensya at sumusunod. Ing sentro na adwang lisensya ning DOH adwang tamang kawani, kagamitan, at mga pamamaraan ning kontrol ning impeksyon. Sanggunian: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span></p>
     </div>
 
     <div class="reg-card">
-      <h4>PSN (Philippine Society of Nephrology) — Clinical Standards</h4>
-      <p>The PSN HD Guidelines 3rd Edition 2024 emphasize proper nephrologist supervision, formal endorsement documentation, continuity of care, infection-control documentation, and safe dialysis transitions. The PSN Hemodialysis Patient's Endorsement Form is the official PSN-recommended instrument for all patient transfers. Reference: <a href="https://psn.org.ph" target="_blank" rel="noopener">psn.org.ph</a></p>
+      <h4><span data-lang="en">PSN (Philippine Society of Nephrology) — Clinical Standards</span><span data-lang="tl" class="lang-hidden">PSN (Philippine Society of Nephrology) — Mga Klinikal na Pamantayan</span><span data-lang="ceb" class="lang-hidden">PSN (Philippine Society of Nephrology) — Mga Klinikal nga Pamantayan</span><span data-lang="kap" class="lang-hidden">PSN (Philippine Society of Nephrology) — Mga Klinikal na Pamantayan</span></h4>
+      <p><span data-lang="en">The PSN HD Guidelines 3rd Edition 2024 emphasize proper nephrologist supervision, formal endorsement documentation, continuity of care, infection-control documentation, and safe dialysis transitions. The PSN Hemodialysis Patient's Endorsement Form is the official PSN-recommended instrument for all patient transfers. Reference: <a href="https://psn.org.ph" target="_blank" rel="noopener">psn.org.ph</a></span><span data-lang="tl" class="lang-hidden">Ang PSN HD Guidelines 3rd Edition 2024 ay nagbibigay-diin sa wastong pangangasiwa ng nephrologist, pormal na dokumentasyon ng endorsement, pagpapatuloy ng pag-aalaga, dokumentasyon ng kontrol ng impeksyon, at ligtas na paglipat ng dialysis. Ang PSN Hemodialysis Patient's Endorsement Form ay ang opisyal na instrumento na inirerekomenda ng PSN para sa lahat ng paglipat ng pasyente. Sanggunian: <a href="https://psn.org.ph" target="_blank" rel="noopener">psn.org.ph</a></span><span data-lang="ceb" class="lang-hidden">Ang PSN HD Guidelines 3rd Edition 2024 nagpugos sa husto nga pag-atiman sa nephrologist, pormal nga endorsement documentation, continuity of care, infection-control documentation, ug luwas nga mga transition sa dialysis. Ang PSN Hemodialysis Patient's Endorsement Form mao ang opisyal nga instrumento nga gi-rekomendar sa PSN alang sa tanan nga transfer sa pasyente. Reperensya: <a href="https://psn.org.ph" target="_blank" rel="noopener">psn.org.ph</a></span><span data-lang="kap" class="lang-hidden">Ing PSN HD Guidelines 3rd Edition 2024 nagbibigay-diin king wastong pamamahala ning nephrologist, pormal na dokumentasyon ning endorsement, pagpapatuloy ning pag-aalaga, dokumentasyon ning kontrol ning impeksyon, at ligtas na mga paglipat ning dialysis. Ing PSN Hemodialysis Patient's Endorsement Form ing opisyal na instrumento na inirerekomenda ning PSN para king lahat ning paglipat ning pasyente. Sanggunian: <a href="https://psn.org.ph" target="_blank" rel="noopener">psn.org.ph</a></span></p>
     </div>
 
     <div class="reg-card">
-      <h4>PMA (Philippine Medical Association) — Medical Ethics</h4>
-      <p>Transfers should be guided by the ethical principles of <strong>patient welfare, autonomy, safety, continuity of care, and professional cooperation</strong>. Transfers should never be driven by hidden referral fees, coercion, pressure tactics, or financial kickbacks. These constitute violations of the PMA Code of Ethics. Reference: <a href="https://www.pma.com.ph" target="_blank" rel="noopener">pma.com.ph</a></p>
+      <h4><span data-lang="en">PMA (Philippine Medical Association) — Medical Ethics</span><span data-lang="tl" class="lang-hidden">PMA (Philippine Medical Association) — Medikal na Etika</span><span data-lang="ceb" class="lang-hidden">PMA (Philippine Medical Association) — Medikal nga Etika</span><span data-lang="kap" class="lang-hidden">PMA (Philippine Medical Association) — Medikal na Etika</span></h4>
+      <p><span data-lang="en">Transfers should be guided by the ethical principles of <strong>patient welfare, autonomy, safety, continuity of care, and professional cooperation</strong>. Transfers should never be driven by hidden referral fees, coercion, pressure tactics, or financial kickbacks. These constitute violations of the PMA Code of Ethics. Reference: <a href="https://www.pma.com.ph" target="_blank" rel="noopener">pma.com.ph</a></span><span data-lang="tl" class="lang-hidden">Ang mga paglipat ay dapat gabayan ng etikal na mga prinsipyo ng <strong>kapakanan ng pasyente, awtonomiya, kaligtasan, pagpapatuloy ng pag-aalaga, at propesyonal na kooperasyon</strong>. Hindi kailanman dapat itulak ng mga nakatagong bayad sa referral, pamimilit, presyon, o finansyal na kickback ang mga paglipat. Ang mga ito ay bumubuo ng mga paglabag sa PMA Code of Ethics. Sanggunian: <a href="https://www.pma.com.ph" target="_blank" rel="noopener">pma.com.ph</a></span><span data-lang="ceb" class="lang-hidden">Ang mga transfer kinahanglan gabayan sa mga etikal nga prinsipyo sa <strong>kaayuhan sa pasyente, awtonomiya, kalamianan, continuity of care, ug propesyonal nga kooperasyon</strong>. Ang mga transfer dili gayud itulod sa mga tinago nga referral fees, pamugos, mga taktika sa presyon, o mga finansyal na kickback. Kini nagtimangno sa mga paglabag sa PMA Code of Ethics. Reperensya: <a href="https://www.pma.com.ph" target="_blank" rel="noopener">pma.com.ph</a></span><span data-lang="kap" class="lang-hidden">Ing mga paglipat kailangan gabayan ning etikal na mga prinsipyo ning <strong>kapakanan ning pasyente, awtonomiya, kaligtasan, pagpapatuloy ning pag-aalaga, at propesyonal na kooperasyon</strong>. E kailanman dapat itulak ning mga nakatagong bayad king referral, pamimilit, presyon, o finansyal na kickback ing mga paglipat. Iti bumubuo ning mga paglabag king PMA Code of Ethics. Sanggunian: <a href="https://www.pma.com.ph" target="_blank" rel="noopener">pma.com.ph</a></span></p>
     </div>
 
     <div class="illus-wrap illus-wrap-light" style="margin:0 0 20px;">
       <img src="../images/hd-transfer-philhealth-guide.webp" alt="PhilHealth hemodialysis transfer considerations infographic for Filipino patients" style="width:100%;max-width:700px;border-radius:10px;display:block;margin:0 auto;" loading="lazy"/>
-      <span class="illus-caption">PhilHealth coverage, Z-Benefit accreditation requirements, and billing continuity considerations when transferring HD centers in the Philippines.</span>
+      <span class="illus-caption"><span data-lang="en">PhilHealth coverage, Z-Benefit accreditation requirements, and billing continuity considerations when transferring HD centers in the Philippines.</span><span data-lang="tl" class="lang-hidden">Saklaw ng PhilHealth, mga kinakailangan ng akreditasyon ng Z-Benefit, at mga konsiderasyon sa pagpapatuloy ng billing kapag naglilipat ng HD center sa Pilipinas.</span><span data-lang="ceb" class="lang-hidden">PhilHealth coverage, mga kinahanglan sa accreditation sa Z-Benefit, ug mga konsiderasyon sa billing continuity sa pagbalhin sa HD center sa Pilipinas.</span><span data-lang="kap" class="lang-hidden">Saklaw ning PhilHealth, mga kinakailangan ning akreditasyon ning Z-Benefit, at mga konsiderasyon king pagpapatuloy ning billing kapag naglilipat ning HD center king Pilipinas.</span></span>
     </div>
 
     <div class="reg-card">
-      <h4>PhilHealth — Coverage and Billing Continuity</h4>
-      <p>Before transferring, confirm that your receiving center is PhilHealth-accredited. Check your remaining HD package sessions and clarify billing continuity. Ensure there are no duplicate claims issues that could arise from overlapping claims between two centers.</p>
-      <p style="margin-top:8px;">Under <strong>PhilHealth Circular No. 2024-0023</strong>, the HD package covers ₱6,350 per session, inclusive of professional fees (PF). Session limits and co-payment rules may apply — verify current coverage directly with PhilHealth or your center's social worker.</p>
+      <h4><span data-lang="en">PhilHealth — Coverage and Billing Continuity</span><span data-lang="tl" class="lang-hidden">PhilHealth — Saklaw at Pagpapatuloy ng Billing</span><span data-lang="ceb" class="lang-hidden">PhilHealth — Coverage ug Billing Continuity</span><span data-lang="kap" class="lang-hidden">PhilHealth — Saklaw at Pagpapatuloy ning Billing</span></h4>
+      <p><span data-lang="en">Before transferring, confirm that your receiving center is PhilHealth-accredited. Check your remaining HD package sessions and clarify billing continuity. Ensure there are no duplicate claims issues that could arise from overlapping claims between two centers.</span><span data-lang="tl" class="lang-hidden">Bago lumipat, kumpirmahin na ang iyong tatanggap na sentro ay akreditado sa PhilHealth. Suriin ang iyong natitirang mga sesyon ng HD package at linawin ang pagpapatuloy ng billing. Tiyakin na walang mga isyu sa duplicate claims na maaaring lumabas mula sa magkapatong na mga claim sa pagitan ng dalawang sentro.</span><span data-lang="ceb" class="lang-hidden">Sa wala pa magbalhin, kumpirmaha nga ang imong receiving center PhilHealth-accredited. Susihon ang imong nabilin nga mga sesyon sa HD package ug ipatin ang billing continuity. Siguraduha nga walay mga isyu sa duplicate claims nga mahimong motungha gikan sa magkapatong nga mga claim tali sa duha ka sentro.</span><span data-lang="kap" class="lang-hidden">Bago lumipat, kumpirmahin na ing iyung tatanggap na sentro PhilHealth-accredited. Suriin ing iyung natitirang mga sesyon ning HD package at linawin ing pagpapatuloy ning billing. Tiyakin na wala ning mga isyu keng duplicate claims na maaaring lumabas mibigay king magkapatong na mga claim king daragul a sentro.</span></p>
+      <p style="margin-top:8px;"><span data-lang="en">Under <strong>PhilHealth Circular No. 2024-0023</strong>, the HD package covers ₱6,350 per session, inclusive of professional fees (PF). Session limits and co-payment rules may apply — verify current coverage directly with PhilHealth or your center's social worker.</span><span data-lang="tl" class="lang-hidden">Sa ilalim ng <strong>PhilHealth Circular No. 2024-0023</strong>, ang HD package ay sumasaklaw ng ₱6,350 bawat sesyon, kasama ang mga bayad ng propesyonal (PF). Maaaring mag-apply ang mga limitasyon ng sesyon at mga patakaran sa co-payment — tiyakin ang kasalukuyang saklaw nang direkta sa PhilHealth o sa social worker ng iyong sentro.</span><span data-lang="ceb" class="lang-hidden">Ubos sa <strong>PhilHealth Circular No. 2024-0023</strong>, ang HD package nagtabon sa ₱6,350 matag sesyon, lakip ang mga bayad sa propesyonal (PF). Ang mga limitasyon sa sesyon ug mga lagda sa co-payment mahimong mag-apply — pamatud-i ang karon nga coverage direkta sa PhilHealth o sa social worker sa imong sentro.</span><span data-lang="kap" class="lang-hidden">Ubos king <strong>PhilHealth Circular No. 2024-0023</strong>, ing HD package nagtabon king ₱6,350 matyang sesyon, kasama ing mga bayad ning propesyonal (PF). Malyaring mag-apply ing mga limitasyon ning sesyon at mga patakaran king co-payment — tiyakin ing kasalukuyang saklaw nang direkta king PhilHealth o king social worker ning iyung sentro.</span></p>
     </div>
 
 
     <div class="alert alert-amber">
       <div class="alert-icon">💡</div>
       <div class="alert-body">
-        <h4>PhilHealth tip: confirm accreditation before your first session</h4>
-        <p>If you begin dialysis at a center that turns out to be non-accredited (or not yet accredited for you specifically), those sessions may not be reimbursable. Always verify this in advance — do not rely on verbal assurances alone.</p>
+        <h4><span data-lang="en">PhilHealth tip: confirm accreditation before your first session</span><span data-lang="tl" class="lang-hidden">Tip sa PhilHealth: kumpirmahin ang akreditasyon bago ang iyong unang sesyon</span><span data-lang="ceb" class="lang-hidden">Tip sa PhilHealth: kumpirmaha ang accreditation sa wala pa ang imong unang sesyon</span><span data-lang="kap" class="lang-hidden">Tip keng PhilHealth: kumpirmahin ing akreditasyon bago king iyung unang sesyon</span></h4>
+        <p><span data-lang="en">If you begin dialysis at a center that turns out to be non-accredited (or not yet accredited for you specifically), those sessions may not be reimbursable. Always verify this in advance — do not rely on verbal assurances alone.</span><span data-lang="tl" class="lang-hidden">Kung magsimula kang mag-dialysis sa isang sentro na lumalabas na hindi akreditado (o hindi pa akreditado para sa iyo nang partikular), ang mga sesyong iyon ay maaaring hindi maa-reimburse. Palaging tiyakin ito nang maaga — huwag umasa sa mga verbal na katiyakan lamang.</span><span data-lang="ceb" class="lang-hidden">Kung mosugod ka sa dialysis sa sentro nga nahimong non-accredited (o wala pa akreditado para sa iyo labi na), ang mga sesyon mahimong dili ma-reimburse. Kanunay pamatud-i kini sa unahan — ayaw nagtuo sa mga verbal nga pagpapasiguro lamang.</span><span data-lang="kap" class="lang-hidden">Kung magsimula kang mag-dialysis king metung a sentro na lumalabas na e akreditado (o e pa akreditado para kanimo nang partikular), ing mga sesyong iti maaaring e ma-reimburse. Palaging tiyakin iti nang maaga — e umasa king mga verbal na katiyakan lamang.</span></p>
       </div>
     </div>
   </div>
@@ -1806,41 +1907,41 @@
 <!-- ═══ SECTION 9: RED FLAGS ════════════════════════════════════════════ -->
 <section class="section" id="red-flags">
   <div class="container">
-    <div class="section-tag">Stop — Do Not Transfer Now</div>
-    <h2>Red flags: when NOT to transfer abruptly.</h2>
-    <p>If any of the following apply to you <em>right now</em>, do not attempt to transfer. Complete your current episode of care first, stabilize, then plan your transfer properly.</p>
+    <div class="section-tag"><span data-lang="en">Stop — Do Not Transfer Now</span><span data-lang="tl" class="lang-hidden">Huminto — Huwag Lumipat Ngayon</span><span data-lang="ceb" class="lang-hidden">Hunong — Ayaw Mobalhin Karon</span><span data-lang="kap" class="lang-hidden">Magpahunong — E Lumipat Ngunyan</span></div>
+    <h2><span data-lang="en">Red flags: when NOT to transfer abruptly.</span><span data-lang="tl" class="lang-hidden">Mga red flag: kung KAILAN HINDI dapat lumipat nang bigla.</span><span data-lang="ceb" class="lang-hidden">Mga red flag: kung KANUS-A dili angay magbalhin nang kalit.</span><span data-lang="kap" class="lang-hidden">Mga red flag: kung KAILAN E dapat lumipat nang biglaan.</span></h2>
+    <p><span data-lang="en">If any of the following apply to you <em>right now</em>, do not attempt to transfer. Complete your current episode of care first, stabilize, then plan your transfer properly.</span><span data-lang="tl" class="lang-hidden">Kung ang alinman sa mga sumusunod ay naaangkop sa iyo <em>ngayon mismo</em>, huwag subukang lumipat. Kumpletuhin muna ang iyong kasalukuyang pag-aalaga, stabilisahin, pagkatapos ay planuhing maayos ang iyong paglipat.</span><span data-lang="ceb" class="lang-hidden">Kung ang bisan unsa sa mosunod moapply kanimo <em>karon mismo</em>, ayaw sulayi magbalhin. Humana una ang imong karon nga episodyo sa pag-atiman, stable, unya plano ang imong transfer sa husto.</span><span data-lang="kap" class="lang-hidden">Kung ing alinman king mga sumusunod ay naaangkop kanimo <em>ngunyan mismo</em>, e subukan ang lumipat. Kumpletuhin nung maona ing iyung kasalukuyang pag-aalaga, maging stable, pagkatapos planuhin nang maayos ing iyung paglipat.</span></p>
 
     <div class="illus-wrap illus-wrap-light" style="margin:0 0 24px;">
       <img src="../images/hd-transfer-red-flags.webp" alt="Red flag warning infographic for situations when you should not transfer hemodialysis centers" style="width:100%;max-width:700px;border-radius:10px;display:block;margin:0 auto;" loading="lazy"/>
-      <span class="illus-caption">Do not attempt to transfer in any of these situations. Stabilize first — then plan your transfer with your nephrologist.</span>
+      <span class="illus-caption"><span data-lang="en">Do not attempt to transfer in any of these situations. Stabilize first — then plan your transfer with your nephrologist.</span><span data-lang="tl" class="lang-hidden">Huwag subukang lumipat sa alinman sa mga sitwasyong ito. Maging stable muna — pagkatapos ay planuhin ang iyong paglipat kasama ang iyong nephrologist.</span><span data-lang="ceb" class="lang-hidden">Ayaw sulayi magbalhin sa bisan usa niining mga sitwasyon. Mag-stable una — unya plano ang imong transfer uban sa imong nephrologist.</span><span data-lang="kap" class="lang-hidden">E subukan ang lumipat king alinman king mga sitwasyong iti. Maging stable nung maona — pagkatapos planuhin ing iyung paglipat kasama ing iyung nephrologist.</span></span>
     </div>
 
     <div class="two-col">
       <div class="alert alert-red" style="margin:0;">
         <div class="alert-icon">🚨</div>
         <div class="alert-body">
-          <h4>Medical red flags</h4>
+          <h4><span data-lang="en">Medical red flags</span><span data-lang="tl" class="lang-hidden">Mga medikal na red flag</span><span data-lang="ceb" class="lang-hidden">Mga medikal nga red flag</span><span data-lang="kap" class="lang-hidden">Mga medikal na red flag</span></h4>
           <ul>
-            <li>Severe shortness of breath or difficulty breathing</li>
-            <li>Very high potassium (hyperkalemia) confirmed on recent labs</li>
-            <li>Active systemic infection or sepsis</li>
-            <li>Active access infection (fistula, graft, or catheter site)</li>
-            <li>Uncontrolled bleeding</li>
-            <li>Severe or persistent hypotension</li>
-            <li>Recent hospitalization without a formal discharge summary</li>
+            <li><span data-lang="en">Severe shortness of breath or difficulty breathing</span><span data-lang="tl" class="lang-hidden">Matinding hipo ng hininga o hirap sa paghinga</span><span data-lang="ceb" class="lang-hidden">Grabe nga kakulang sa gininhawa o kalisod sa paghinga</span><span data-lang="kap" class="lang-hidden">Maragul a hirap sa paghinga o hirap huminga</span></li>
+            <li><span data-lang="en">Very high potassium (hyperkalemia) confirmed on recent labs</span><span data-lang="tl" class="lang-hidden">Napakataas na potassium (hyperkalemia) na nakumpirma sa kamakailanang mga lab</span><span data-lang="ceb" class="lang-hidden">Kaayo taas nga potassium (hyperkalemia) nga nakumpirma sa bag-o lang nga mga lab</span><span data-lang="kap" class="lang-hidden">Napakataas na potassium (hyperkalemia) na nakumpirma keng bag-ung mga lab</span></li>
+            <li><span data-lang="en">Active systemic infection or sepsis</span><span data-lang="tl" class="lang-hidden">Aktibong impeksyon sa buong katawan o sepsis</span><span data-lang="ceb" class="lang-hidden">Aktibo nga systemic infection o sepsis</span><span data-lang="kap" class="lang-hidden">Aktibong impeksyon king buong katawan o sepsis</span></li>
+            <li><span data-lang="en">Active access infection (fistula, graft, or catheter site)</span><span data-lang="tl" class="lang-hidden">Aktibong impeksyon sa access (fistula, graft, o lugar ng catheter)</span><span data-lang="ceb" class="lang-hidden">Aktibo nga access infection (fistula, graft, o catheter site)</span><span data-lang="kap" class="lang-hidden">Aktibong impeksyon king access (fistula, graft, o lugar ning catheter)</span></li>
+            <li><span data-lang="en">Uncontrolled bleeding</span><span data-lang="tl" class="lang-hidden">Hindi mapigilan na pagdurugo</span><span data-lang="ceb" class="lang-hidden">Dili mapugngan nga pagdugo</span><span data-lang="kap" class="lang-hidden">E mapigilan na pagdurugo</span></li>
+            <li><span data-lang="en">Severe or persistent hypotension</span><span data-lang="tl" class="lang-hidden">Matinding o tuluy-tuloy na hypotension</span><span data-lang="ceb" class="lang-hidden">Grabe o padayon nga hypotension</span><span data-lang="kap" class="lang-hidden">Maragul o tuluy-tuluy na hypotension</span></li>
+            <li><span data-lang="en">Recent hospitalization without a formal discharge summary</span><span data-lang="tl" class="lang-hidden">Kamakailan na ospitalisasyon nang walang pormal na buod ng discharge</span><span data-lang="ceb" class="lang-hidden">Bag-o lang nga ospitalisasyon nga walay pormal nga discharge summary</span><span data-lang="kap" class="lang-hidden">Kamakailan na ospitalisasyon nang wala ring pormal na buod ning discharge</span></li>
           </ul>
         </div>
       </div>
       <div class="alert alert-amber" style="margin:0;">
         <div class="alert-icon">⚠️</div>
         <div class="alert-body">
-          <h4>Administrative red flags</h4>
+          <h4><span data-lang="en">Administrative red flags</span><span data-lang="tl" class="lang-hidden">Mga administratibong red flag</span><span data-lang="ceb" class="lang-hidden">Mga administratibong red flag</span><span data-lang="kap" class="lang-hidden">Mga administratibong red flag</span></h4>
           <ul>
-            <li>No confirmed slot at the receiving center</li>
-            <li>No nephrologist accepted at the receiving center</li>
-            <li>Endorsement form not yet completed</li>
-            <li>PhilHealth accreditation of receiving center not confirmed</li>
-            <li>Transfer would cause a gap in dialysis sessions</li>
+            <li><span data-lang="en">No confirmed slot at the receiving center</span><span data-lang="tl" class="lang-hidden">Walang nakumpirmang slot sa tatanggap na sentro</span><span data-lang="ceb" class="lang-hidden">Walay nakumpirmang slot sa receiving center</span><span data-lang="kap" class="lang-hidden">Wala ring nakumpirmang slot king tatanggap na sentro</span></li>
+            <li><span data-lang="en">No nephrologist accepted at the receiving center</span><span data-lang="tl" class="lang-hidden">Walang nephrologist na tinanggap sa tatanggap na sentro</span><span data-lang="ceb" class="lang-hidden">Walay nephrologist nga gidawat sa receiving center</span><span data-lang="kap" class="lang-hidden">Wala ring nephrologist na tinanggap king tatanggap na sentro</span></li>
+            <li><span data-lang="en">Endorsement form not yet completed</span><span data-lang="tl" class="lang-hidden">Hindi pa kumpleto ang endorsement form</span><span data-lang="ceb" class="lang-hidden">Wala pa mahuman ang endorsement form</span><span data-lang="kap" class="lang-hidden">E pa kumpleto ing endorsement form</span></li>
+            <li><span data-lang="en">PhilHealth accreditation of receiving center not confirmed</span><span data-lang="tl" class="lang-hidden">Hindi pa nakumpirma ang akreditasyon ng PhilHealth ng tatanggap na sentro</span><span data-lang="ceb" class="lang-hidden">PhilHealth accreditation sa receiving center wala pa makumpirma</span><span data-lang="kap" class="lang-hidden">E pa nakumpirma ing akreditasyon ning PhilHealth ning tatanggap na sentro</span></li>
+            <li><span data-lang="en">Transfer would cause a gap in dialysis sessions</span><span data-lang="tl" class="lang-hidden">Ang paglipat ay magdudulot ng agwat sa mga sesyon ng dialysis</span><span data-lang="ceb" class="lang-hidden">Ang transfer magdulot og gab-un sa mga sesyon sa dialysis</span><span data-lang="kap" class="lang-hidden">Ing paglipat magdudulot ning agwat king mga sesyon ning dialysis</span></li>
           </ul>
         </div>
       </div>
@@ -1849,8 +1950,8 @@
     <div class="alert alert-red" style="margin-top:24px;">
       <div class="alert-icon">🚑</div>
       <div class="alert-body">
-        <h4>If you are in a medical crisis, do not transfer — seek emergency care.</h4>
-        <p>Go to the nearest emergency department or call for an ambulance. Transfers are elective processes. They are never appropriate during an acute medical emergency.</p>
+        <h4><span data-lang="en">If you are in a medical crisis, do not transfer — seek emergency care.</span><span data-lang="tl" class="lang-hidden">Kung ikaw ay nasa medikal na krisis, huwag lumipat — humingi ng emergency na pag-aalaga.</span><span data-lang="ceb" class="lang-hidden">Kung naa ka sa medikal nga krisis, ayaw mobalhin — mangita og emergency nga pag-atiman.</span><span data-lang="kap" class="lang-hidden">Kung ika ay nasa medikal na krisis, e lumipat — huminge ning emergency na pag-aalaga.</span></h4>
+        <p><span data-lang="en">Go to the nearest emergency department or call for an ambulance. Transfers are elective processes. They are never appropriate during an acute medical emergency.</span><span data-lang="tl" class="lang-hidden">Pumunta sa pinakamalapit na emergency department o tumawag ng ambulansya. Ang mga paglipat ay mga elektibong proseso. Hindi kailanman angkop ang mga ito sa panahon ng talamak na medikal na emerhensya.</span><span data-lang="ceb" class="lang-hidden">Adto sa pinaka-duol nga emergency department o tawagi og ambulansya. Ang mga transfer mga elective nga proseso. Dili kini angay sa panahon sa usa ka acute nga medikal nga emerhensya.</span><span data-lang="kap" class="lang-hidden">Pumunta king pinakamalapit na emergency department o tumawag ning ambulansya. Ing mga paglipat mga elektibong proseso. E kailanman angkop iti king panahon ning talamak na medikal na emerhensya.</span></p>
       </div>
     </div>
   </div>
@@ -1859,28 +1960,28 @@
 <!-- ═══ SECTION 10: CHECKLIST ════════════════════════════════════════════ -->
 <section class="section" id="checklist">
   <div class="container">
-    <div class="section-tag">Before You Leave</div>
-    <h2>Patient transfer checklist.</h2>
-    <p>Review this checklist before attending your last session at your current center. Every item should be checked before you transfer.</p>
+    <div class="section-tag"><span data-lang="en">Before You Leave</span><span data-lang="tl" class="lang-hidden">Bago Ka Umalis</span><span data-lang="ceb" class="lang-hidden">Sa Wala Ka Pa Mobiya</span><span data-lang="kap" class="lang-hidden">Bago Ka Umalis</span></div>
+    <h2><span data-lang="en">Patient transfer checklist.</span><span data-lang="tl" class="lang-hidden">Checklist para sa paglipat ng pasyente.</span><span data-lang="ceb" class="lang-hidden">Checklist alang sa transfer sa pasyente.</span><span data-lang="kap" class="lang-hidden">Checklist para king paglipat ning pasyente.</span></h2>
+    <p><span data-lang="en">Review this checklist before attending your last session at your current center. Every item should be checked before you transfer.</span><span data-lang="tl" class="lang-hidden">Suriin ang checklist na ito bago pumunta sa iyong huling sesyon sa iyong kasalukuyang sentro. Dapat na nasuri ang bawat aytem bago ka lumipat.</span><span data-lang="ceb" class="lang-hidden">Susihon kini nga checklist sa wala pa moatend sa imong katapusan nga sesyon sa imong karon nga sentro. Matag item kinahanglan masusi sa wala pa magbalhin.</span><span data-lang="kap" class="lang-hidden">Suriin ing checklist na iti bago pumunta king iyung katapusang sesyon king iyung kasalukuyang sentro. Kailangan nasuri ing bawat aytem bago ka lumipat.</span></p>
 
     <div class="checklist">
-      <h4>✅ Transfer Readiness Checklist</h4>
+      <h4>✅ <span data-lang="en">Transfer Readiness Checklist</span><span data-lang="tl" class="lang-hidden">Checklist ng Kahandaan sa Paglipat</span><span data-lang="ceb" class="lang-hidden">Checklist sa Kaandam alang sa Transfer</span><span data-lang="kap" class="lang-hidden">Checklist ning Kahandaan king Paglipat</span></h4>
       <ul>
-        <li>I have confirmed a slot and schedule at the receiving center</li>
-        <li>I have confirmed that a nephrologist has accepted me at the receiving center</li>
-        <li>I have confirmed the receiving center is PhilHealth-accredited</li>
-        <li>I have informed my current nephrologist about the transfer</li>
-        <li>I have informed the current dialysis center administration</li>
-        <li>I have requested and received the PSN Endorsement Form (completed and signed)</li>
-        <li>I have obtained my medical abstract</li>
-        <li>I have my last 3 dialysis treatment sheets</li>
-        <li>I have my latest laboratory results (including hepatitis profile)</li>
-        <li>I have my current medication list</li>
-        <li>I have my vascular access history documents</li>
-        <li>I have my PhilHealth MDR and ID</li>
-        <li>I know my exact first dialysis date at the receiving center</li>
-        <li>My first session at the new center falls on my next scheduled dialysis day — no gap</li>
-        <li>I will NOT miss any dialysis sessions during this transition</li>
+        <li><span data-lang="en">I have confirmed a slot and schedule at the receiving center</span><span data-lang="tl" class="lang-hidden">Nakumpirma ko ang slot at iskedyul sa tatanggap na sentro</span><span data-lang="ceb" class="lang-hidden">Nakumpirma nako ang slot ug iskedyul sa receiving center</span><span data-lang="kap" class="lang-hidden">Nakumpirma ku ing slot at iskedyul king tatanggap na sentro</span></li>
+        <li><span data-lang="en">I have confirmed that a nephrologist has accepted me at the receiving center</span><span data-lang="tl" class="lang-hidden">Nakumpirma ko na tinanggap ako ng isang nephrologist sa tatanggap na sentro</span><span data-lang="ceb" class="lang-hidden">Nakumpirma nako nga gidawat ako sa usa ka nephrologist sa receiving center</span><span data-lang="kap" class="lang-hidden">Nakumpirma ku na tinanggap naku ing metung a nephrologist king tatanggap na sentro</span></li>
+        <li><span data-lang="en">I have confirmed the receiving center is PhilHealth-accredited</span><span data-lang="tl" class="lang-hidden">Nakumpirma ko na ang tatanggap na sentro ay akreditado sa PhilHealth</span><span data-lang="ceb" class="lang-hidden">Nakumpirma nako nga ang receiving center PhilHealth-accredited</span><span data-lang="kap" class="lang-hidden">Nakumpirma ku na ing tatanggap na sentro PhilHealth-accredited</span></li>
+        <li><span data-lang="en">I have informed my current nephrologist about the transfer</span><span data-lang="tl" class="lang-hidden">Naipagbigay-alam ko sa aking kasalukuyang nephrologist ang paglipat</span><span data-lang="ceb" class="lang-hidden">Napahibalo nako sa akong karon nga nephrologist ang transfer</span><span data-lang="kap" class="lang-hidden">Naipaalam ku king iyung kasalukuyang nephrologist ing paglipat</span></li>
+        <li><span data-lang="en">I have informed the current dialysis center administration</span><span data-lang="tl" class="lang-hidden">Naipagbigay-alam ko sa administrasyon ng kasalukuyang sentro ng dialysis</span><span data-lang="ceb" class="lang-hidden">Napahibalo nako sa administrasyon sa karon nga sentro sa dialysis</span><span data-lang="kap" class="lang-hidden">Naipaalam ku king administrasyon ning kasalukuyang sentro ning dialysis</span></li>
+        <li><span data-lang="en">I have requested and received the PSN Endorsement Form (completed and signed)</span><span data-lang="tl" class="lang-hidden">Hiningi ko at natanggap ang PSN Endorsement Form (kumpleto at napirmahan)</span><span data-lang="ceb" class="lang-hidden">Gipangayo nako ug nadawat ang PSN Endorsement Form (kompleto ug napirmahan)</span><span data-lang="kap" class="lang-hidden">Hiningku at natanggap ing PSN Endorsement Form (kumpleto at napirmahan)</span></li>
+        <li><span data-lang="en">I have obtained my medical abstract</span><span data-lang="tl" class="lang-hidden">Nakuha ko ang aking medical abstract</span><span data-lang="ceb" class="lang-hidden">Nakuha nako ang akong medical abstract</span><span data-lang="kap" class="lang-hidden">Nakuha ku ing iyung medical abstract</span></li>
+        <li><span data-lang="en">I have my last 3 dialysis treatment sheets</span><span data-lang="tl" class="lang-hidden">Mayroon akong huling 3 treatment sheets ng dialysis</span><span data-lang="ceb" class="lang-hidden">Naa nako ang akong katapusang 3 treatment sheets sa dialysis</span><span data-lang="kap" class="lang-hidden">Adwu na ku ing katapusang 3 treatment sheets ning dialysis</span></li>
+        <li><span data-lang="en">I have my latest laboratory results (including hepatitis profile)</span><span data-lang="tl" class="lang-hidden">Mayroon akong pinakabagong mga resulta sa laboratoryo (kasama ang hepatitis profile)</span><span data-lang="ceb" class="lang-hidden">Naa nako ang pinakabag-o nga mga resulta sa laboratoryo (lakip ang hepatitis profile)</span><span data-lang="kap" class="lang-hidden">Adwu na ku ing pinakabagung mga resulta keng laboratoryo (kasama ing hepatitis profile)</span></li>
+        <li><span data-lang="en">I have my current medication list</span><span data-lang="tl" class="lang-hidden">Mayroon akong listahan ng kasalukuyang gamot</span><span data-lang="ceb" class="lang-hidden">Naa nako ang akong listahan sa karon nga mga tambal</span><span data-lang="kap" class="lang-hidden">Adwu na ku ing listahan ning kasalukuyang mga gamot</span></li>
+        <li><span data-lang="en">I have my vascular access history documents</span><span data-lang="tl" class="lang-hidden">Mayroon akong mga dokumento ng kasaysayan ng vascular access</span><span data-lang="ceb" class="lang-hidden">Naa nako ang akong mga dokumento sa kasaysayan sa vascular access</span><span data-lang="kap" class="lang-hidden">Adwu na ku ing mga dokumento ning kasaysayan ning vascular access</span></li>
+        <li><span data-lang="en">I have my PhilHealth MDR and ID</span><span data-lang="tl" class="lang-hidden">Mayroon akong PhilHealth MDR at ID</span><span data-lang="ceb" class="lang-hidden">Naa nako ang akong PhilHealth MDR ug ID</span><span data-lang="kap" class="lang-hidden">Adwu na ku ing PhilHealth MDR at ID</span></li>
+        <li><span data-lang="en">I know my exact first dialysis date at the receiving center</span><span data-lang="tl" class="lang-hidden">Alam ko ang aking eksaktong unang petsa ng dialysis sa tatanggap na sentro</span><span data-lang="ceb" class="lang-hidden">Nahibaw-an nako ang akong eksaktong unang petsa sa dialysis sa receiving center</span><span data-lang="kap" class="lang-hidden">Nung ku ing iyung eksaktong unang petsa ning dialysis king tatanggap na sentro</span></li>
+        <li><span data-lang="en">My first session at the new center falls on my next scheduled dialysis day — no gap</span><span data-lang="tl" class="lang-hidden">Ang aking unang sesyon sa bagong sentro ay nahuhulog sa aking susunod na nakatakdang araw ng dialysis — walang agwat</span><span data-lang="ceb" class="lang-hidden">Ang akong unang sesyon sa bag-ong sentro naa sa akong sunod nga gi-iskedyul nga adlaw sa dialysis — walay gab-un</span><span data-lang="kap" class="lang-hidden">Ing iyung unang sesyon king bagung sentro nahuhulog king iyung kasunud na nakatakdang aldo ning dialysis — wala ring agwat</span></li>
+        <li><span data-lang="en">I will NOT miss any dialysis sessions during this transition</span><span data-lang="tl" class="lang-hidden">HINDI ko palalagtasin ang anumang sesyon ng dialysis sa panahon ng transisyong ito</span><span data-lang="ceb" class="lang-hidden">DILI ko puslongan ang bisan unsang sesyon sa dialysis sa panahon sa transisyon</span><span data-lang="kap" class="lang-hidden">E ku lalaktawan ing anumang sesyon ning dialysis king panahon ning transisyon</span></li>
       </ul>
     </div>
   </div>
@@ -1889,11 +1990,11 @@
 <!-- ═══ SECTION 11: SAMPLE TEMPLATES ════════════════════════════════════ -->
 <section class="section" id="templates">
   <div class="container">
-    <div class="section-tag">Sample Documents</div>
-    <h2>Templates you can use.</h2>
-    <p>Copy, customize, and bring these to your current center or send to your receiving center. Fill in the bracketed fields with your own details.</p>
+    <div class="section-tag"><span data-lang="en">Sample Documents</span><span data-lang="tl" class="lang-hidden">Mga Halimbawang Dokumento</span><span data-lang="ceb" class="lang-hidden">Mga Sample nga Dokumento</span><span data-lang="kap" class="lang-hidden">Mga Halimbawang Dokumento</span></div>
+    <h2><span data-lang="en">Templates you can use.</span><span data-lang="tl" class="lang-hidden">Mga template na maaari mong gamitin.</span><span data-lang="ceb" class="lang-hidden">Mga template nga magagamit nimo.</span><span data-lang="kap" class="lang-hidden">Mga template na maaari mung gamitin.</span></h2>
+    <p><span data-lang="en">Copy, customize, and bring these to your current center or send to your receiving center. Fill in the bracketed fields with your own details.</span><span data-lang="tl" class="lang-hidden">Kopyahin, i-customize, at dalhin ang mga ito sa iyong kasalukuyang sentro o ipadala sa iyong tatanggap na sentro. Punan ang mga field sa loob ng bracket gamit ang iyong sariling mga detalye.</span><span data-lang="ceb" class="lang-hidden">Kopyahon, i-customize, ug dad-on kini sa imong karon nga sentro o ipadala sa imong receiving center. Sulaton ang mga field sa sulod sa bracket gamit ang imong kaugalingon nga mga detalye.</span><span data-lang="kap" class="lang-hidden">Kopyahin, i-customize, at dalhin iti king iyung kasalukuyang sentro o ipadala king iyung tatanggap na sentro. Punan ing mga field king loob ning bracket gamit ing iyung sariling mga detalye.</span></p>
 
-    <div class="doc-template-label">Template 1 — Transfer Request Letter (to current center)</div>
+    <div class="doc-template-label"><span data-lang="en">Template 1 — Transfer Request Letter (to current center)</span><span data-lang="tl" class="lang-hidden">Template 1 — Liham ng Kahilingan sa Paglipat (para sa kasalukuyang sentro)</span><span data-lang="ceb" class="lang-hidden">Template 1 — Sulat sa Kahilingan sa Transfer (alang sa karon nga sentro)</span><span data-lang="kap" class="lang-hidden">Template 1 — Liham ning Kahilingan king Paglipat (para king kasalukuyang sentro)</span></div>
     <div class="doc-template">To: The Medical Director / Nurse-in-Charge
 <span class="doc-field">[Name of Current Dialysis Center]</span>
 <span class="doc-field">[Address]</span>
@@ -1927,7 +2028,7 @@ Respectfully yours,
 <span class="doc-field">[Your Full Name]</span>
 <span class="doc-field">[Contact Number]</span></div>
 
-    <div class="doc-template-label">Template 2 — Medical Records Request</div>
+    <div class="doc-template-label"><span data-lang="en">Template 2 — Medical Records Request</span><span data-lang="tl" class="lang-hidden">Template 2 — Kahilingan para sa Medikal na Rekord</span><span data-lang="ceb" class="lang-hidden">Template 2 — Kahilingan alang sa Medikal nga Rekord</span><span data-lang="kap" class="lang-hidden">Template 2 — Kahilingan para king Medikal na Rekord</span></div>
     <div class="doc-template">To: Records Section / Nurse-in-Charge
 <span class="doc-field">[Name of Current Dialysis Center]</span>
 
@@ -1952,7 +2053,7 @@ I understand that a fee may apply for reproduction of records. I authorize relea
 <span class="doc-field">[Your Full Name]</span>
 <span class="doc-field">[Contact Number]</span></div>
 
-    <div class="doc-template-label">Template 3 — Receiving Center Inquiry</div>
+    <div class="doc-template-label"><span data-lang="en">Template 3 — Receiving Center Inquiry</span><span data-lang="tl" class="lang-hidden">Template 3 — Katanungan sa Tatanggap na Sentro</span><span data-lang="ceb" class="lang-hidden">Template 3 — Pangutana sa Receiving Center</span><span data-lang="kap" class="lang-hidden">Template 3 — Katanungan king Tatanggap na Sentro</span></div>
     <div class="doc-template">To: The Admissions / Nurse-in-Charge
 <span class="doc-field">[Name of Receiving Dialysis Center]</span>
 
@@ -1981,7 +2082,7 @@ Thank you for your time. I can be reached at <span class="doc-field">[Your Conta
 Respectfully,
 <span class="doc-field">[Your Full Name]</span></div>
 
-    <div class="doc-template-label">Template 4 — SMS / Message to Current Nephrologist</div>
+    <div class="doc-template-label"><span data-lang="en">Template 4 — SMS / Message to Current Nephrologist</span><span data-lang="tl" class="lang-hidden">Template 4 — SMS / Mensahe sa Kasalukuyang Nephrologist</span><span data-lang="ceb" class="lang-hidden">Template 4 — SMS / Mensahe sa Karon nga Nephrologist</span><span data-lang="kap" class="lang-hidden">Template 4 — SMS / Mensahe king Kasalukuyang Nephrologist</span></div>
     <div class="doc-template">Good day, Dr. <span class="doc-field">[Last Name]</span>.
 
 This is <span class="doc-field">[Your Name]</span>, your HD patient. I hope this message finds you well.
@@ -1997,7 +2098,7 @@ Thank you so much, and I deeply appreciate all the care you have given me.
 <span class="doc-field">[Your Name]</span>
 <span class="doc-field">[Your Number]</span></div>
 
-    <div class="doc-template-label">Template 5 — Authorization for Release of Records</div>
+    <div class="doc-template-label"><span data-lang="en">Template 5 — Authorization for Release of Records</span><span data-lang="tl" class="lang-hidden">Template 5 — Pahintulot para sa Pagpalabas ng mga Rekord</span><span data-lang="ceb" class="lang-hidden">Template 5 — Pahintulot alang sa Pagpagawas sa mga Rekord</span><span data-lang="kap" class="lang-hidden">Template 5 — Pahintulot para king Pagpalabas ning mga Rekord</span></div>
     <div class="doc-template">AUTHORIZATION FOR RELEASE OF MEDICAL RECORDS
 
 I, <span class="doc-field">[Full Name]</span>, born on <span class="doc-field">[Date of Birth]</span>, currently a patient at <span class="doc-field">[Current Dialysis Center]</span>, do hereby authorize the release of my complete medical records — including dialysis treatment records, laboratory results, medical abstract, and related documents — to:
@@ -2026,12 +2127,12 @@ Witnessed by:
 <section class="section" id="final">
   <div class="container">
     <div class="intro-callout">
-      <p><strong>Changing dialysis centers or nephrologists is your right.</strong> The safest transfer is respectful, coordinated, documented, continuous, and medically supervised. <strong>Never stop or delay dialysis while waiting for transfer arrangements.</strong> If your new center is not ready yet, continue your current sessions — your life depends on it.</p>
+      <p><span data-lang="en"><strong>Changing dialysis centers or nephrologists is your right.</strong> The safest transfer is respectful, coordinated, documented, continuous, and medically supervised. <strong>Never stop or delay dialysis while waiting for transfer arrangements.</strong> If your new center is not ready yet, continue your current sessions — your life depends on it.</span><span data-lang="tl" class="lang-hidden"><strong>Ang pagpapalit ng sentro ng dialysis o nephrologist ay iyong karapatan.</strong> Ang pinakaligtas na paglipat ay magalang, koordinado, dokumentado, tuluy-tuloy, at may medikal na pangangasiwa. <strong>Huwag kailanman ihinto o antalahin ang dialysis habang naghihintay sa mga plano ng paglipat.</strong> Kung ang iyong bagong sentro ay hindi pa handa, ituloy ang iyong kasalukuyang mga sesyon — ang iyong buhay ay nakasalalay dito.</span><span data-lang="ceb" class="lang-hidden"><strong>Ang pagbag-o sa sentro sa dialysis o nephrologist mao ang imong katungod.</strong> Ang labing luwas nga transfer maayo og pagtahod, koordinado, dokumentado, padayon, ug adunay medikal nga pag-atiman. <strong>Ayaw gayud hunong o palangton ang dialysis samtang naghulat sa mga plano sa transfer.</strong> Kung ang imong bag-ong sentro dili pa andam, ipadayon ang imong karon nga mga sesyon — ang imong kinabuhi nagdepende niini.</span><span data-lang="kap" class="lang-hidden"><strong>Ing pagpapalit ning sentro ning dialysis o nephrologist ing iyung karapatan.</strong> Ing pinakaligtas na paglipat magalang, koordinado, dokumentado, tuluy-tuloy, at adwang medikal na pangangasiwa. <strong>E kailanman ihunto o antalahin ing dialysis habang naghihintay king mga plano ning paglipat.</strong> Kung ing iyung bagung sentro e pa handa, ituloy ing iyung kasalukuyang mga sesyon — ing iyung buhay nakasalalay keti.</span></p>
     </div>
 
     <div class="illus-wrap illus-wrap-light" style="margin:28px 0;">
       <img src="../images/hd-transfer-continuity-care.webp" alt="Photorealistic image of a hemodialysis patient being welcomed at a new dialysis center with continuity of care" style="width:100%;max-width:860px;border-radius:10px;display:block;margin:0 auto;" loading="lazy"/>
-      <span class="illus-caption">When done right, an HD transfer ensures you arrive at your new center with complete records, a confirmed schedule, and a nephrologist who already knows your case.</span>
+      <span class="illus-caption"><span data-lang="en">When done right, an HD transfer ensures you arrive at your new center with complete records, a confirmed schedule, and a nephrologist who already knows your case.</span><span data-lang="tl" class="lang-hidden">Kapag ginawa nang tama, ang HD transfer ay tinitiyak na darating ka sa iyong bagong sentro na may kumpletong mga rekord, nakumpirmang iskedyul, at nephrologist na kilala na ang iyong kaso.</span><span data-lang="ceb" class="lang-hidden">Kung mahimo sa husto, ang HD transfer nagtino nga moabot ka sa imong bag-ong sentro nga adunay kumpletong mga rekord, nakumpirmang iskedyul, ug nephrologist nga nahibaw-an na ang imong kaso.</span><span data-lang="kap" class="lang-hidden">Kapag ginawa nang tama, ing HD transfer tinitiyak na darating ka king iyung bagung sentro na adwang kumpletong mga rekord, nakumpirmang iskedyul, at nephrologist na nunuku na ing iyung kaso.</span></span>
     </div>
 
     <div class="dr-card">
@@ -2040,7 +2141,7 @@ Witnessed by:
       </div>
       <div>
         <h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
-        <p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Medical Director, St. John Biocare Center and St. Josef Renal Care Foundation.</p>
+        <p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Medical Director, St. John Biocare Center and St. Josef Renal Care Foundation.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Internal Medicine, Nephrology, at Clinical Nutrition. Medical Director, St. John Biocare Center at St. Josef Renal Care Foundation.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal Medicine, Nephrology, ug Clinical Nutrition. Medical Director, St. John Biocare Center ug St. Josef Renal Care Foundation.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Internal Medicine, Nephrology, at Clinical Nutrition. Medical Director, St. John Biocare Center at St. Josef Renal Care Foundation.</span></p>
         <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero</p>
       </div>
     </div>
