@@ -1467,7 +1467,7 @@
           <p style="color:rgba(232,244,248,.75);">All in-depth patient guides — written by Dr. Rivero and grounded in current guidelines (KDIGO 2024, ADA 2025, ACC/AHA 2026). Organized by condition, stage, and date. Multilingual where translated.</p>
           <!-- Stats row -->
           <div class="lib-stats">
-            <div class="lib-stat"><span class="lib-stat-num" id="lib-guide-count">99</span><span class="lib-stat-label">Patient Guides</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-guide-count">100</span><span class="lib-stat-label">Patient Guides</span></div>
             <div class="lib-stat"><span class="lib-stat-num" id="lib-tools-count">14+</span><span class="lib-stat-label">Interactive Tools</span></div>
             <div class="lib-stat"><span class="lib-stat-num">9</span><span class="lib-stat-label">Specialties</span></div>
             <div class="lib-stat"><span class="lib-stat-num">4</span><span class="lib-stat-label">Languages</span></div>
@@ -1493,10 +1493,6 @@
           <span class="lib-cta">View all guides &nbsp;→</span>
         </div>
       </a>
-      <!-- Dynamically-loaded "Recently Added" cards from guides/index.html appear here -->
-    </div>
-    <div id="home-grid-fallback" style="display:none;text-align:center;color:var(--muted);font-size:13px;margin-top:18px;">
-      <a href="guides/index.html" style="color:var(--teal);">See all recently added guides &rarr;</a>
     </div>
   </div>
 
@@ -2411,76 +2407,6 @@ function emailAction(key, btnEl, variant) {
     });
   }
 }
-</script>
-
-<script>
-// Dynamic 'Recently Added' loader — pulls top 5 from guides/index.html
-// so the homepage always reflects the latest published guides.
-(function loadRecentGuides(){
-  const grid = document.getElementById('home-guides-grid');
-  const fallback = document.getElementById('home-grid-fallback');
-  if (!grid) return;
-  fetch('guides/index.html', {cache:'no-cache'})
-    .then(r => r.ok ? r.text() : Promise.reject(r.status))
-    .then(html => {
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      // Update library card guide count dynamically
-      const hstatNum = doc.querySelector('.stat-num');
-      const libCount = document.getElementById('lib-guide-count');
-      if (hstatNum && libCount) libCount.textContent = hstatNum.textContent.trim();
-
-      // Newest guides = tiles tagged "new" (excluding PDF/handout downloads)
-      const cards = Array.from(doc.querySelectorAll('a.guide-tile')).filter(t => {
-        const tags = (t.dataset.tags || '').toLowerCase().split(/\s+/);
-        return tags.includes('new') && !tags.includes('download');
-      });
-      if (!cards.length) throw new Error('no recent cards found');
-      cards.slice(0, 5).forEach(src => {
-        const href = 'guides/' + src.getAttribute('href');
-        const title = (src.querySelector('.tile-title')?.textContent || '').trim();
-        let desc = (src.querySelector('.tile-teaser')?.textContent || '').trim();
-        // Truncate description to ~150 chars on a word boundary
-        if (desc.length > 170) {
-          const cut = desc.lastIndexOf(' ', 160);
-          desc = desc.slice(0, cut > 100 ? cut : 160) + '…';
-        }
-        const category = (src.closest('.guide-section')
-          ?.querySelector('.section-name')?.textContent || 'Guide').trim();
-
-        const card = document.createElement('a');
-        card.href = href;
-        card.className = 'guide-card';
-
-        const tag = document.createElement('span');
-        tag.className = 'guide-tag';
-        tag.style.cssText = 'background:#e1f5f0;color:#1a6b72;';
-        tag.textContent = category;
-
-        const h3 = document.createElement('h3');
-        h3.textContent = title;
-
-        const p = document.createElement('p');
-        p.textContent = desc;
-
-        const meta = document.createElement('div');
-        meta.className = 'guide-meta';
-        const catSpan = document.createElement('span');
-        catSpan.textContent = category;
-        const readSpan = document.createElement('span');
-        readSpan.style.color = 'var(--teal)';
-        readSpan.textContent = 'Read guide →';
-        meta.append(catSpan, readSpan);
-
-        card.append(tag, h3, p, meta);
-        grid.appendChild(card);
-      });
-      if (fallback) fallback.style.display = 'block';
-    })
-    .catch(err => {
-      console.warn('Recent guides loader skipped:', err);
-      if (fallback) fallback.style.display = 'block';
-    });
-})();
 </script>
 
 </body>
