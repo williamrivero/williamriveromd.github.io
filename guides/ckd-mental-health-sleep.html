@@ -2315,6 +2315,298 @@ E ka mangaimu mamutang. Ing pamangutang mu atin la kabaldugan at importanti la p
       <span data-lang="kap" class="lang-hidden"><strong>Importante:</strong> Ing gabay a ini ya para king layuning pang-edukasyon lamang. Ali nini pinapalitan ing indibidwalisadong medikal a payo, diagnosis, o psychiatric a pagsusuri. Nung nakakaranas kayu ning krisis king kalusugang pangisip o deng kaisipan ning pag-aabuso king sarili, makipag-ugnayan agad king <strong>NCMH Crisis Hotline: 1553</strong>. Amin ning desisyon king gamut — kasama ing deng sleep aid at antidepressant king CKD — nangangailangan ning pagsusuri ning doktor at pagsasaayos ning renal a dosis.</span>
     </div>
 </section>
+<!-- S12: MHS CALCULATORS -->
+<section class="section" id="mhs-tools">
+<div class="section-tag"><span data-lang="en">Validated Screening Tools</span><span data-lang="tl" class="lang-hidden">Mga Validated na Kasangkapan sa Pagsusuri</span><span data-lang="ceb" class="lang-hidden">Mga Validated nga Himan sa Pagsusi</span><span data-lang="kap" class="lang-hidden">Deng Validated a Kasangkapan king Pagsusuri</span></div>
+<h2><span data-lang="en">Mental Health &amp; Sleep Screening Calculators</span><span data-lang="tl" class="lang-hidden">Mga Kalkuladora para sa Pagsusuri ng Kalusugang Pangisip at Tulog</span><span data-lang="ceb" class="lang-hidden">Mga Kalkuladora alang sa Pagsusi sa Kalusugan sa Pangisip ug Pagtulog</span><span data-lang="kap" class="lang-hidden">Deng Kalkuladora para king Pagsusuri ning Kalusugang Pangisip at Tulog</span></h2>
+<p><span data-lang="en">These four tools are used by clinicians worldwide to screen for depression (PHQ-9), anxiety (GAD-7), sleep quality (PSQI — covers the past month), and restless leg syndrome severity (IRLS — current symptoms). PHQ-9 and GAD-7 ask about the <strong>past 2 weeks</strong>. Results are for educational purposes only — please share your score with your doctor.</span><span data-lang="tl" class="lang-hidden">Ang apat na kagamitang ito ay ginagamit ng mga clinician sa buong mundo upang mag-screen para sa depresyon (PHQ-9), pagkabalisa (GAD-7), kalidad ng tulog (PSQI — sumasaklaw sa nakaraang buwan), at kalubhaan ng restless leg syndrome (IRLS — kasalukuyang mga sintomas). Ang PHQ-9 at GAD-7 ay nagtatanong tungkol sa <strong>nakaraang 2 linggo</strong>. Ang mga resulta ay para sa layuning pang-edukasyon lamang — mangyaring ibahagi ang inyong puntos sa inyong doktor.</span><span data-lang="ceb" class="lang-hidden">Kining upat nga mga himan gigamit sa mga clinician sa tibuok kalibutan aron mag-screen alang sa depresyon (PHQ-9), kahadlok (GAD-7), kalidad sa pagtulog (PSQI — nagtabon sa miaging buwan), ug grabe sa restless leg syndrome (IRLS — kasamtangang mga sintomas). Ang PHQ-9 ug GAD-7 nagpangutana bahin sa <strong>miaging 2 semana</strong>. Ang mga resulta alang sa mga layuning pang-edukasyon lamang — palihug ipakigbahin ang imong puntos sa imong doktor.</span><span data-lang="kap" class="lang-hidden">Ing apat a kagamitan a ini ya ginagamit ning deng clinician king bilog a mundo upang mag-screen para king depresyon (PHQ-9), pagkabalisa (GAD-7), kalidad ning tulog (PSQI — sumasaklaw king nakaraang bulan), at kalubhaan ning restless leg syndrome (IRLS — kasalukuyang deng sintomas). Ing PHQ-9 at GAD-7 ya nagtatanong tungkul king <strong>nakaraang 2 linggu</strong>. Ing deng resulta ya para king layuning pang-edukasyon lamang — mangyaring ibahagi ing inyu puntos king inyu doktor.</span></p>
+
+<div class="mhs-wrap">
+  <!-- Demographics -->
+  <div class="mhs-demo-grid">
+    <div>
+      <label class="mhs-demo-label" for="mhsDemoName">Name</label>
+      <input class="mhs-demo-input" id="mhsDemoName" type="text" placeholder="Optional">
+    </div>
+    <div>
+      <label class="mhs-demo-label" for="mhsDemoAge">Age</label>
+      <input class="mhs-demo-input" id="mhsDemoAge" type="number" placeholder="years" min="1" max="120">
+    </div>
+    <div>
+      <label class="mhs-demo-label" for="mhsDemoSex">Sex</label>
+      <select class="mhs-demo-input" id="mhsDemoSex">
+        <option value="">—</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div>
+      <label class="mhs-demo-label" for="mhsDemoDate">Date</label>
+      <input class="mhs-demo-input" id="mhsDemoDate" type="date">
+      <label class="mhs-today-wrap"><input id="mhsTodayChk" type="checkbox" onchange="mhsSetToday(this.checked)"> Today</label>
+    </div>
+  </div>
+
+  <!-- Tab nav -->
+  <div class="mhs-tab-nav">
+    <button class="mhs-tab-btn active" onclick="mhsTab('phq9',this)">PHQ-9</button>
+    <button class="mhs-tab-btn" onclick="mhsTab('gad7',this)">GAD-7</button>
+    <button class="mhs-tab-btn" onclick="mhsTab('psqi',this)">PSQI</button>
+    <button class="mhs-tab-btn" onclick="mhsTab('irls',this)">IRLS</button>
+  </div>
+
+  <!-- PHQ-9 Panel -->
+  <div class="mhs-panel active" id="mhs-phq9">
+    <div id="mhsPhq9Questions"></div>
+    <div class="mhs-score-box" id="mhsPhq9Box">
+      <div class="mhs-score-row">
+        <div class="mhs-score-big" id="mhsPhq9Num">—</div>
+        <div class="mhs-score-info">
+          <div class="mhs-score-sev" id="mhsPhq9Sev"></div>
+          <div class="mhs-score-range" id="mhsPhq9Range"></div>
+          <div class="mhs-score-interp" id="mhsPhq9Interp"></div>
+        </div>
+      </div>
+      <div class="mhs-alert-q9" id="mhsQ9Alert">
+        <strong>&#9888; Self-Harm Thoughts Reported</strong>
+        <p>You indicated thoughts of self-harm. Please speak with your doctor immediately.<br><strong>Philippines Crisis Line: NCMH 1553</strong></p>
+      </div>
+    </div>
+    <div class="mhs-ref">Reference: Kroenke K et al. J Gen Intern Med 2001.</div>
+  </div>
+
+  <!-- GAD-7 Panel -->
+  <div class="mhs-panel" id="mhs-gad7">
+    <div id="mhsGad7Questions"></div>
+    <div class="mhs-score-box" id="mhsGad7Box">
+      <div class="mhs-score-row">
+        <div class="mhs-score-big" id="mhsGad7Num">—</div>
+        <div class="mhs-score-info">
+          <div class="mhs-score-sev" id="mhsGad7Sev"></div>
+          <div class="mhs-score-range" id="mhsGad7Range"></div>
+          <div class="mhs-score-interp" id="mhsGad7Interp"></div>
+        </div>
+      </div>
+    </div>
+    <div class="mhs-ref">Reference: Spitzer RL et al. Arch Intern Med 2006.</div>
+  </div>
+
+  <!-- PSQI Panel -->
+  <div class="mhs-panel" id="mhs-psqi">
+    <!-- Group A: Bedtime/Wake/Sleep -->
+    <div class="psqi-q-group">
+      <div class="psqi-q-group-title">Sleep Timing &amp; Duration</div>
+
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">Q1. What time have you usually gone to bed at night?<small>Usual bedtime</small></div>
+        <input class="psqi-field-input" id="psqiQ1" type="time" onchange="mhsPsqiUpdate()">
+      </div>
+
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">Q2. How long (in minutes) has it usually taken you to fall asleep each night?<small>Sleep latency (minutes)</small></div>
+        <input class="psqi-field-input" id="psqiQ2" type="number" min="0" max="300" placeholder="min" onchange="mhsPsqiUpdate()">
+      </div>
+
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">Q3. What time have you usually gotten up in the morning?<small>Usual wake time</small></div>
+        <input class="psqi-field-input" id="psqiQ3" type="time" onchange="mhsPsqiUpdate()">
+      </div>
+
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">Q4. How many hours of actual sleep did you get at night?<small>Hours of sleep (may differ from time in bed)</small></div>
+        <input class="psqi-field-input" id="psqiQ4" type="number" min="0" max="24" step="0.5" placeholder="hrs" onchange="mhsPsqiUpdate()">
+      </div>
+    </div>
+
+    <!-- Group B: Sleep disturbances -->
+    <div class="psqi-q-group">
+      <div class="psqi-q-group-title">Sleep Disturbances (Q5 — During the past month, how often have you had trouble sleeping because you…)</div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">5a. Cannot get to sleep within 30 minutes</div>
+        <select class="psqi-sel" id="psqiQ5a" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">5b. Wake up in the middle of the night or early morning</div>
+        <select class="psqi-sel" id="psqiQ5b" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">5c. Have to get up to use the bathroom</div>
+        <select class="psqi-sel" id="psqiQ5c" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">5d. Cannot breathe comfortably</div>
+        <select class="psqi-sel" id="psqiQ5d" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">5e. Cough or snore loudly</div>
+        <select class="psqi-sel" id="psqiQ5e" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">5f. Feel too cold</div>
+        <select class="psqi-sel" id="psqiQ5f" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">5g. Feel too hot</div>
+        <select class="psqi-sel" id="psqiQ5g" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">5h. Have bad dreams</div>
+        <select class="psqi-sel" id="psqiQ5h" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">5i. Have pain</div>
+        <select class="psqi-sel" id="psqiQ5i" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">5j. Other reason (if applicable)</div>
+        <select class="psqi-sel" id="psqiQ5j" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Group C: Sleep quality / medications / daytime -->
+    <div class="psqi-q-group">
+      <div class="psqi-q-group-title">Sleep Quality, Medications &amp; Daytime Function</div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">Q6. During the past month, how would you rate your sleep quality overall?</div>
+        <select class="psqi-sel" id="psqiQ6" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Very good</option>
+          <option value="1">Fairly good</option>
+          <option value="2">Fairly bad</option>
+          <option value="3">Very bad</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">Q7. During the past month, how often have you taken medicine to help you sleep?</div>
+        <select class="psqi-sel" id="psqiQ7" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not during past month</option>
+          <option value="1">Less than once a week</option>
+          <option value="2">Once or twice a week</option>
+          <option value="3">Three or more times a week</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">Q8. During the past month, how often have you had trouble staying awake while driving, eating meals, or engaging in social activity?</div>
+        <select class="psqi-sel" id="psqiQ8" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not a problem at all</option>
+          <option value="1">Only a very slight problem</option>
+          <option value="2">Somewhat of a problem</option>
+          <option value="3">A very big problem</option>
+        </select>
+      </div>
+      <div class="psqi-field-wrap">
+        <div class="psqi-field-label">Q9. During the past month, how much of a problem has it been for you to keep up enough enthusiasm to get things done?</div>
+        <select class="psqi-sel" id="psqiQ9" onchange="mhsPsqiUpdate()">
+          <option value="">— select —</option>
+          <option value="0">Not a problem at all</option>
+          <option value="1">Only a very slight problem</option>
+          <option value="2">Somewhat of a problem</option>
+          <option value="3">A very big problem</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- PSQI score box -->
+    <div class="mhs-score-box" id="mhsPsqiBox">
+      <div class="mhs-score-row">
+        <div class="mhs-score-big" id="mhsPsqiNum">—</div>
+        <div class="mhs-score-info">
+          <div class="mhs-score-sev" id="mhsPsqiSev"></div>
+          <div class="mhs-score-range" id="mhsPsqiRange">Global PSQI score (0–21); &gt;5 = poor sleeper</div>
+          <div class="mhs-score-interp" id="mhsPsqiInterp"></div>
+        </div>
+      </div>
+      <div class="psqi-comp-grid" id="mhsPsqiComps"></div>
+    </div>
+    <div class="mhs-ref">Reference: Buysse DJ et al. Psychiatry Res 1989.</div>
+  </div>
+
+  <!-- IRLS Panel -->
+  <div class="mhs-panel" id="mhs-irls">
+    <div id="mhsIrlsQuestions"></div>
+    <div class="mhs-score-box" id="mhsIrlsBox">
+      <div class="mhs-score-row">
+        <div class="mhs-score-big" id="mhsIrlsNum">—</div>
+        <div class="mhs-score-info">
+          <div class="mhs-score-sev" id="mhsIrlsSev"></div>
+          <div class="mhs-score-range" id="mhsIrlsRange"></div>
+          <div class="mhs-score-interp" id="mhsIrlsInterp"></div>
+        </div>
+      </div>
+    </div>
+    <div class="mhs-ref">Reference: Walters AS et al. Sleep Med 2003; validated for CKD by Giannaki et al.</div>
+  </div>
+
+  <!-- Action bar -->
+  <div class="mhs-actions">
+    <button class="mhs-btn-reset" onclick="mhsReset()">Reset All</button>
+    <button class="mhs-btn-print" onclick="mhsPrint()">&#128438; Print / Save as PDF</button>
+  </div>
+</div>
+</section>
 </main>
 
     <!-- DR CARD -->
@@ -2375,6 +2667,553 @@ E ka mangaimu mamutang. Ing pamangutang mu atin la kabaldugan at importanti la p
 <p>References: KDIGO 2024 · Jhamb et al., CJASN 2023 (sleep in CKD) · Palmer et al., BMJ 2013 (depression and CKD mortality) · Unruh et al. (RLS in CKD) · NCMH Philippines</p>
 </div>
 </footer>
+<script>
+/* ═══════════════════════════════════════════════════
+   MHS CALCULATORS — PHQ-9, GAD-7, PSQI, IRLS
+   Prefix: mhs  |  Style: var / function (no const/let/arrow)
+   ═══════════════════════════════════════════════════ */
+
+/* ── Shared tab switcher ─────────────────────────── */
+function mhsTab(name, btn) {
+  var panels = document.querySelectorAll('.mhs-panel');
+  for (var i = 0; i < panels.length; i++) { panels[i].classList.remove('active'); }
+  var panel = document.getElementById('mhs-' + name);
+  if (panel) { panel.classList.add('active'); }
+  var btns = document.querySelectorAll('.mhs-tab-btn');
+  for (var j = 0; j < btns.length; j++) { btns[j].classList.remove('active'); }
+  if (btn) { btn.classList.add('active'); }
+}
+
+function mhsSetToday(checked) {
+  var d = document.getElementById('mhsDemoDate');
+  if (checked && d) {
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = String(now.getMonth() + 1).padStart(2, '0');
+    var day = String(now.getDate()).padStart(2, '0');
+    d.value = y + '-' + m + '-' + day;
+  }
+}
+
+/* ─────────────────────────────────────────────────
+   PHQ-9
+───────────────────────────────────────────────── */
+var mhsPhq9Data = [
+  'Little interest or pleasure in doing things',
+  'Feeling down, depressed, or hopeless',
+  'Trouble falling or staying asleep, or sleeping too much',
+  'Feeling tired or having little energy',
+  'Poor appetite or overeating',
+  'Feeling bad about yourself — or that you are a failure or have let yourself or your family down',
+  'Trouble concentrating on things, such as reading the newspaper or watching television',
+  'Moving or speaking so slowly that other people could have noticed; or the opposite — being so fidgety or restless that you have been moving around a lot more than usual',
+  'Thoughts that you would be better off dead, or of hurting yourself in some way'
+];
+var mhsPhq9Opts = ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'];
+var mhsPhq9Sev = [
+  {max:4,  label:'Minimal / No Depression',     color:'var(--green-soft)',  interp:'Your score suggests minimal or no depression. Continue monitoring your mood and report any changes to your doctor.'},
+  {max:9,  label:'Mild Depression',              color:'#fffde7',            interp:'Your score suggests mild depression. Discuss lifestyle strategies and watchful waiting with your doctor.'},
+  {max:14, label:'Moderate Depression',          color:'var(--amber-soft)',  interp:'Your score suggests moderate depression. Discuss treatment options — counseling and/or medication — with your doctor.'},
+  {max:19, label:'Moderately Severe Depression', color:'#fff3e0',            interp:'Your score suggests moderately severe depression. Active treatment — medication and psychotherapy — is recommended.'},
+  {max:27, label:'Severe Depression',            color:'var(--red-soft)',    interp:'Your score suggests severe depression. Please seek prompt medical evaluation and treatment.'}
+];
+
+function mhsPhq9Render() {
+  var c = document.getElementById('mhsPhq9Questions');
+  if (!c) { return; }
+  var html = '';
+  for (var i = 0; i < mhsPhq9Data.length; i++) {
+    html += '<div class="mhs-q-row">';
+    html += '<div class="mhs-q-text"><span class="mhs-q-num">' + (i + 1) + '</span>' + mhsPhq9Data[i] + '</div>';
+    html += '<div class="mhs-opts">';
+    for (var v = 0; v < 4; v++) {
+      html += '<div class="mhs-opt" onclick="mhsPhq9Pick(' + i + ',' + v + ',this)">' +
+              '<strong>' + v + '</strong><br>' + mhsPhq9Opts[v] + '</div>';
+    }
+    html += '</div></div>';
+  }
+  c.innerHTML = html;
+}
+
+var mhsPhq9Answers = [-1,-1,-1,-1,-1,-1,-1,-1,-1];
+
+function mhsPhq9Pick(qIdx, val, el) {
+  mhsPhq9Answers[qIdx] = val;
+  var row = el.parentNode;
+  var opts = row.querySelectorAll('.mhs-opt');
+  for (var i = 0; i < opts.length; i++) { opts[i].classList.remove('selected'); }
+  el.classList.add('selected');
+  mhsPhq9Update();
+}
+
+function mhsPhq9Update() {
+  var total = 0;
+  var answered = 0;
+  for (var i = 0; i < 9; i++) {
+    if (mhsPhq9Answers[i] >= 0) { total += mhsPhq9Answers[i]; answered++; }
+  }
+  if (answered === 0) { return; }
+  var box = document.getElementById('mhsPhq9Box');
+  box.style.display = 'block';
+  document.getElementById('mhsPhq9Num').textContent = total;
+  var sev = mhsPhq9Sev[mhsPhq9Sev.length - 1];
+  for (var j = 0; j < mhsPhq9Sev.length; j++) {
+    if (total <= mhsPhq9Sev[j].max) { sev = mhsPhq9Sev[j]; break; }
+  }
+  box.style.background = sev.color;
+  box.style.borderColor = sev.color === 'var(--red-soft)' ? 'var(--red)' : 'transparent';
+  document.getElementById('mhsPhq9Sev').textContent = sev.label;
+  document.getElementById('mhsPhq9Range').textContent = 'Score: ' + total + ' / 27 (' + answered + ' of 9 answered)';
+  document.getElementById('mhsPhq9Interp').textContent = sev.interp;
+  var alert = document.getElementById('mhsQ9Alert');
+  alert.style.display = (mhsPhq9Answers[8] >= 1) ? 'block' : 'none';
+}
+
+/* ─────────────────────────────────────────────────
+   GAD-7
+───────────────────────────────────────────────── */
+var mhsGad7Data = [
+  'Feeling nervous, anxious, or on edge',
+  'Not being able to stop or control worrying',
+  'Worrying too much about different things',
+  'Trouble relaxing',
+  'Being so restless that it is hard to sit still',
+  'Becoming easily annoyed or irritable',
+  'Feeling afraid as if something awful might happen'
+];
+var mhsGad7Sev = [
+  {max:4,  label:'Minimal Anxiety',  color:'var(--green-soft)', interp:'Minimal anxiety. Continue healthy coping strategies.'},
+  {max:9,  label:'Mild Anxiety',     color:'#fffde7',            interp:'Mild anxiety. Consider discussing with your care team.'},
+  {max:14, label:'Moderate Anxiety', color:'var(--amber-soft)',  interp:'Moderate anxiety. Evaluation and possible treatment recommended.'},
+  {max:21, label:'Severe Anxiety',   color:'var(--red-soft)',    interp:'Severe anxiety. Please seek prompt medical or mental health evaluation.'}
+];
+
+function mhsGad7Render() {
+  var c = document.getElementById('mhsGad7Questions');
+  if (!c) { return; }
+  var html = '';
+  for (var i = 0; i < mhsGad7Data.length; i++) {
+    html += '<div class="mhs-q-row">';
+    html += '<div class="mhs-q-text"><span class="mhs-q-num">' + (i + 1) + '</span>' + mhsGad7Data[i] + '</div>';
+    html += '<div class="mhs-opts">';
+    for (var v = 0; v < 4; v++) {
+      html += '<div class="mhs-opt" onclick="mhsGad7Pick(' + i + ',' + v + ',this)">' +
+              '<strong>' + v + '</strong><br>' + mhsPhq9Opts[v] + '</div>';
+    }
+    html += '</div></div>';
+  }
+  c.innerHTML = html;
+}
+
+var mhsGad7Answers = [-1,-1,-1,-1,-1,-1,-1];
+
+function mhsGad7Pick(qIdx, val, el) {
+  mhsGad7Answers[qIdx] = val;
+  var row = el.parentNode;
+  var opts = row.querySelectorAll('.mhs-opt');
+  for (var i = 0; i < opts.length; i++) { opts[i].classList.remove('selected'); }
+  el.classList.add('selected');
+  mhsGad7Update();
+}
+
+function mhsGad7Update() {
+  var total = 0;
+  var answered = 0;
+  for (var i = 0; i < 7; i++) {
+    if (mhsGad7Answers[i] >= 0) { total += mhsGad7Answers[i]; answered++; }
+  }
+  if (answered === 0) { return; }
+  var box = document.getElementById('mhsGad7Box');
+  box.style.display = 'block';
+  document.getElementById('mhsGad7Num').textContent = total;
+  var sev = mhsGad7Sev[mhsGad7Sev.length - 1];
+  for (var j = 0; j < mhsGad7Sev.length; j++) {
+    if (total <= mhsGad7Sev[j].max) { sev = mhsGad7Sev[j]; break; }
+  }
+  box.style.background = sev.color;
+  box.style.borderColor = sev.color === 'var(--red-soft)' ? 'var(--red)' : 'transparent';
+  document.getElementById('mhsGad7Sev').textContent = sev.label;
+  document.getElementById('mhsGad7Range').textContent = 'Score: ' + total + ' / 21 (' + answered + ' of 7 answered)';
+  document.getElementById('mhsGad7Interp').textContent = sev.interp;
+}
+
+/* ─────────────────────────────────────────────────
+   PSQI
+───────────────────────────────────────────────── */
+function mhsPsqiGetVal(id) {
+  var el = document.getElementById(id);
+  if (!el || el.value === '') { return null; }
+  return parseFloat(el.value);
+}
+
+function mhsPsqiTimeToMins(id) {
+  var el = document.getElementById(id);
+  if (!el || !el.value) { return null; }
+  var parts = el.value.split(':');
+  return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+}
+
+function mhsPsqiUpdate() {
+  /* Component scores */
+  var c1, c2, c3, c4, c5, c6, c7;
+  var components = [];
+
+  /* C1 — subjective sleep quality (Q6) */
+  var q6 = mhsPsqiGetVal('psqiQ6');
+  c1 = (q6 !== null) ? q6 : null;
+
+  /* C2 — sleep latency (Q2 + Q5a) */
+  var q2raw = mhsPsqiGetVal('psqiQ2');
+  var q5a = mhsPsqiGetVal('psqiQ5a');
+  var q2Score = null;
+  if (q2raw !== null) {
+    if (q2raw <= 15) { q2Score = 0; }
+    else if (q2raw <= 30) { q2Score = 1; }
+    else if (q2raw <= 60) { q2Score = 2; }
+    else { q2Score = 3; }
+  }
+  if (q2Score !== null && q5a !== null) {
+    var latSum = q2Score + q5a;
+    if (latSum === 0) { c2 = 0; }
+    else if (latSum <= 2) { c2 = 1; }
+    else if (latSum <= 4) { c2 = 2; }
+    else { c2 = 3; }
+  } else { c2 = null; }
+
+  /* C3 — sleep duration (Q4) */
+  var q4 = mhsPsqiGetVal('psqiQ4');
+  if (q4 !== null) {
+    if (q4 > 7) { c3 = 0; }
+    else if (q4 >= 6) { c3 = 1; }
+    else if (q4 >= 5) { c3 = 2; }
+    else { c3 = 3; }
+  } else { c3 = null; }
+
+  /* C4 — habitual sleep efficiency */
+  var bedMins = mhsPsqiTimeToMins('psqiQ1');
+  var wakeMins = mhsPsqiTimeToMins('psqiQ3');
+  c4 = null;
+  if (bedMins !== null && wakeMins !== null && q4 !== null && q4 > 0) {
+    var inBed = wakeMins - bedMins;
+    if (inBed <= 0) { inBed += 24 * 60; }
+    if (inBed > 0) {
+      var eff = (q4 / (inBed / 60)) * 100;
+      if (eff > 85) { c4 = 0; }
+      else if (eff >= 75) { c4 = 1; }
+      else if (eff >= 65) { c4 = 2; }
+      else { c4 = 3; }
+    }
+  }
+
+  /* C5 — sleep disturbances (Q5b–Q5j) */
+  var distIds = ['psqiQ5b','psqiQ5c','psqiQ5d','psqiQ5e','psqiQ5f','psqiQ5g','psqiQ5h','psqiQ5i','psqiQ5j'];
+  var distSum = 0;
+  var distAnswered = 0;
+  for (var di = 0; di < distIds.length; di++) {
+    var dv = mhsPsqiGetVal(distIds[di]);
+    if (dv !== null) { distSum += dv; distAnswered++; }
+  }
+  if (distAnswered > 0) {
+    if (distSum === 0) { c5 = 0; }
+    else if (distSum <= 9) { c5 = 1; }
+    else if (distSum <= 18) { c5 = 2; }
+    else { c5 = 3; }
+  } else { c5 = null; }
+
+  /* C6 — sleep medication (Q7) */
+  var q7 = mhsPsqiGetVal('psqiQ7');
+  c6 = (q7 !== null) ? q7 : null;
+
+  /* C7 — daytime dysfunction (Q8 + Q9) */
+  var q8 = mhsPsqiGetVal('psqiQ8');
+  var q9psqi = mhsPsqiGetVal('psqiQ9');
+  if (q8 !== null && q9psqi !== null) {
+    var daySum = q8 + q9psqi;
+    if (daySum === 0) { c7 = 0; }
+    else if (daySum <= 2) { c7 = 1; }
+    else if (daySum <= 4) { c7 = 2; }
+    else { c7 = 3; }
+  } else { c7 = null; }
+
+  /* Global score */
+  var comps = [c1,c2,c3,c4,c5,c6,c7];
+  var names = ['C1 Subj. Quality','C2 Sleep Latency','C3 Duration','C4 Efficiency','C5 Disturbances','C6 Sleep Med.','C7 Daytime Fxn'];
+  var global = 0;
+  var nAnswered = 0;
+  for (var ci = 0; ci < comps.length; ci++) {
+    if (comps[ci] !== null) { global += comps[ci]; nAnswered++; }
+  }
+  if (nAnswered === 0) { return; }
+
+  var box = document.getElementById('mhsPsqiBox');
+  box.style.display = 'block';
+  document.getElementById('mhsPsqiNum').textContent = global;
+  var isBad = global > 5;
+  box.style.background = isBad ? 'var(--amber-soft)' : 'var(--green-soft)';
+  box.style.borderColor = 'transparent';
+  document.getElementById('mhsPsqiSev').textContent = isBad ? 'Poor Sleeper' : 'Good Sleeper';
+  document.getElementById('mhsPsqiRange').textContent = 'Global PSQI: ' + global + ' / 21' + (nAnswered < 7 ? ' (' + nAnswered + ' of 7 components scored)' : '') + ' — cutoff >5 = poor sleep';
+  document.getElementById('mhsPsqiInterp').textContent = isBad ?
+    'A score greater than 5 indicates poor sleep quality. Discuss with your nephrologist.' :
+    'Your global score is within the normal range for sleep quality.';
+
+  /* Component grid */
+  var grid = document.getElementById('mhsPsqiComps');
+  var gHtml = '';
+  for (var gi = 0; gi < comps.length; gi++) {
+    var val = comps[gi] !== null ? comps[gi] : '—';
+    gHtml += '<div class="psqi-comp-item"><span class="psqi-comp-name">' + names[gi] + '</span><span class="psqi-comp-val">' + val + '</span></div>';
+  }
+  grid.innerHTML = gHtml;
+}
+
+/* ─────────────────────────────────────────────────
+   IRLS
+───────────────────────────────────────────────── */
+var mhsIrlsData = [
+  {q:'How would you rate the RLS discomfort in your legs or arms?',
+   opts:['None (0)','Mild (1)','Moderate (2)','Severe (3)','Very severe (4)'], rev:false},
+  {q:'How would you rate the need to move around because of your RLS symptoms?',
+   opts:['None (0)','Mild (1)','Moderate (2)','Severe (3)','Very severe (4)'], rev:false},
+  {q:'How much relief of your RLS discomfort do you get from moving around?',
+   opts:['Complete relief (0)','Almost complete relief (1)','Moderate relief (2)','Mild relief (3)','No relief (4)'], rev:true},
+  {q:'How severe is your sleep disturbance due to your RLS symptoms?',
+   opts:['None (0)','Mild (1)','Moderate (2)','Severe (3)','Very severe (4)'], rev:false},
+  {q:'How severe is your tiredness or sleepiness due to your RLS symptoms?',
+   opts:['None (0)','Mild (1)','Moderate (2)','Severe (3)','Very severe (4)'], rev:false},
+  {q:'How severe is your RLS as a whole?',
+   opts:['None (0)','Mild (1)','Moderate (2)','Severe (3)','Very severe (4)'], rev:false},
+  {q:'How often do you get RLS symptoms?',
+   opts:['Never (0)','Occasionally — less than once/week (1)','Sometimes — 1–2 times/week (2)','Often — 3–4 times/week (3)','Very often — 5–7 times/week (4)'], rev:false},
+  {q:'When you have RLS symptoms, how severe are they on a typical day?',
+   opts:['None (0)','Mild (1)','Moderate (2)','Severe (3)','Very severe (4)'], rev:false},
+  {q:'How severe is the impact of your RLS on your ability to carry out daily affairs?',
+   opts:['None (0)','Mild (1)','Moderate (2)','Severe (3)','Very severe (4)'], rev:false},
+  {q:'How severe is your mood disturbance due to your RLS symptoms (e.g. angry, depressed, anxious, irritable)?',
+   opts:['None (0)','Mild (1)','Moderate (2)','Severe (3)','Very severe (4)'], rev:false}
+];
+
+var mhsIrlsSev = [
+  {max:10, label:'Mild RLS',        color:'var(--green-soft)', interp:'Mild RLS symptoms. Lifestyle measures may be sufficient; discuss with your doctor.'},
+  {max:20, label:'Moderate RLS',    color:'#fffde7',            interp:'Moderate RLS. Medical evaluation and possible treatment recommended.'},
+  {max:30, label:'Severe RLS',      color:'var(--amber-soft)',  interp:'Severe RLS. Discuss pharmacologic treatment options with your nephrologist.'},
+  {max:40, label:'Very Severe RLS', color:'var(--red-soft)',    interp:'Very severe RLS. Prompt medical attention recommended.'}
+];
+
+function mhsIrlsRender() {
+  var c = document.getElementById('mhsIrlsQuestions');
+  if (!c) { return; }
+  var html = '';
+  for (var i = 0; i < mhsIrlsData.length; i++) {
+    var item = mhsIrlsData[i];
+    html += '<div class="mhs-q-row">';
+    html += '<div class="mhs-q-text"><span class="mhs-q-num">' + (i + 1) + '</span>' + item.q;
+    if (item.rev) { html += ' <em style="font-size:11px;color:var(--text-muted)">(reverse scored)</em>'; }
+    html += '</div>';
+    html += '<div class="mhs-opts5">';
+    for (var v = 0; v < 5; v++) {
+      var score = item.rev ? v : v; /* scoring value = index always (reverse presentation handled by label) */
+      html += '<div class="mhs-opt" onclick="mhsIrlsPick(' + i + ',' + v + ',this)">' + item.opts[v] + '</div>';
+    }
+    html += '</div></div>';
+  }
+  c.innerHTML = html;
+}
+
+var mhsIrlsAnswers = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
+
+function mhsIrlsPick(qIdx, val, el) {
+  mhsIrlsAnswers[qIdx] = val;
+  var row = el.parentNode;
+  var opts = row.querySelectorAll('.mhs-opt');
+  for (var i = 0; i < opts.length; i++) { opts[i].classList.remove('selected'); }
+  el.classList.add('selected');
+  mhsIrlsUpdate();
+}
+
+function mhsIrlsUpdate() {
+  var total = 0;
+  var answered = 0;
+  for (var i = 0; i < 10; i++) {
+    if (mhsIrlsAnswers[i] >= 0) { total += mhsIrlsAnswers[i]; answered++; }
+  }
+  if (answered === 0) { return; }
+  var box = document.getElementById('mhsIrlsBox');
+  box.style.display = 'block';
+  document.getElementById('mhsIrlsNum').textContent = total;
+  var sev = mhsIrlsSev[mhsIrlsSev.length - 1];
+  for (var j = 0; j < mhsIrlsSev.length; j++) {
+    if (total <= mhsIrlsSev[j].max) { sev = mhsIrlsSev[j]; break; }
+  }
+  box.style.background = sev.color;
+  box.style.borderColor = 'transparent';
+  document.getElementById('mhsIrlsSev').textContent = sev.label;
+  document.getElementById('mhsIrlsRange').textContent = 'Score: ' + total + ' / 40 (' + answered + ' of 10 answered)';
+  document.getElementById('mhsIrlsInterp').textContent = sev.interp;
+}
+
+/* ─────────────────────────────────────────────────
+   Reset & Print
+───────────────────────────────────────────────── */
+function mhsReset() {
+  /* Demographics */
+  var ids = ['mhsDemoName','mhsDemoAge','mhsDemoSex','mhsDemoDate'];
+  for (var i = 0; i < ids.length; i++) {
+    var el = document.getElementById(ids[i]);
+    if (el) { el.value = ''; }
+  }
+  var chk = document.getElementById('mhsTodayChk');
+  if (chk) { chk.checked = false; }
+
+  /* PHQ-9 */
+  mhsPhq9Answers = [-1,-1,-1,-1,-1,-1,-1,-1,-1];
+  mhsPhq9Render();
+  var b9 = document.getElementById('mhsPhq9Box');
+  if (b9) { b9.style.display = 'none'; }
+
+  /* GAD-7 */
+  mhsGad7Answers = [-1,-1,-1,-1,-1,-1,-1];
+  mhsGad7Render();
+  var bg7 = document.getElementById('mhsGad7Box');
+  if (bg7) { bg7.style.display = 'none'; }
+
+  /* PSQI */
+  var psqiIds = ['psqiQ1','psqiQ2','psqiQ3','psqiQ4',
+    'psqiQ5a','psqiQ5b','psqiQ5c','psqiQ5d','psqiQ5e','psqiQ5f','psqiQ5g','psqiQ5h','psqiQ5i','psqiQ5j',
+    'psqiQ6','psqiQ7','psqiQ8','psqiQ9'];
+  for (var pi = 0; pi < psqiIds.length; pi++) {
+    var pel = document.getElementById(psqiIds[pi]);
+    if (pel) { pel.value = ''; }
+  }
+  var bPsqi = document.getElementById('mhsPsqiBox');
+  if (bPsqi) { bPsqi.style.display = 'none'; }
+
+  /* IRLS */
+  mhsIrlsAnswers = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
+  mhsIrlsRender();
+  var bIrls = document.getElementById('mhsIrlsBox');
+  if (bIrls) { bIrls.style.display = 'none'; }
+}
+
+function mhsGetPrintBlock(title, scoreEl, sevEl, rangeEl, interpEl, extra) {
+  var score  = scoreEl  ? (document.getElementById(scoreEl)  || {}).textContent || 'N/A' : 'N/A';
+  var sev    = sevEl    ? (document.getElementById(sevEl)    || {}).textContent || '' : '';
+  var range  = rangeEl  ? (document.getElementById(rangeEl)  || {}).textContent || '' : '';
+  var interp = interpEl ? (document.getElementById(interpEl) || {}).textContent || '' : '';
+  return '<h3 style="margin:0 0 8px;color:#1a6b72">' + title + '</h3>' +
+         '<p style="margin:2px 0"><strong>Score:</strong> ' + score + '</p>' +
+         '<p style="margin:2px 0"><strong>Severity:</strong> ' + (sev || 'N/A') + '</p>' +
+         '<p style="margin:2px 0"><strong>Range:</strong> ' + (range || 'N/A') + '</p>' +
+         '<p style="margin:2px 0"><strong>Interpretation:</strong> ' + (interp || 'N/A') + '</p>' +
+         (extra || '') + '<hr style="margin:18px 0;border:none;border-top:1px solid #e2e6eb">';
+}
+
+function mhsPsqiCompTable() {
+  var names = ['C1 Subj. Quality','C2 Sleep Latency','C3 Duration','C4 Efficiency','C5 Disturbances','C6 Sleep Med.','C7 Daytime Fxn'];
+  var compIds = []; /* Rebuild from current grid */
+  var grid = document.getElementById('mhsPsqiComps');
+  if (!grid || !grid.innerHTML) { return ''; }
+  var items = grid.querySelectorAll('.psqi-comp-item');
+  var rows = '';
+  for (var i = 0; i < items.length; i++) {
+    var n = items[i].querySelector('.psqi-comp-name');
+    var v = items[i].querySelector('.psqi-comp-val');
+    rows += '<tr><td style="padding:4px 10px;border:1px solid #e2e6eb">' + (n ? n.textContent : '') +
+            '</td><td style="padding:4px 10px;border:1px solid #e2e6eb;text-align:center">' + (v ? v.textContent : '') + '</td></tr>';
+  }
+  return rows ? '<table style="border-collapse:collapse;width:100%;margin-top:8px"><tr><th style="padding:4px 10px;border:1px solid #e2e6eb;background:#f4f6f9;text-align:left">Component</th><th style="padding:4px 10px;border:1px solid #e2e6eb;background:#f4f6f9">Score</th></tr>' + rows + '</table>' : '';
+}
+
+function mhsPhq9Table() {
+  var opts = ['Not at all','Several days','More than half the days','Nearly every day'];
+  var rows = '';
+  for (var i = 0; i < mhsPhq9Data.length; i++) {
+    var a = mhsPhq9Answers[i];
+    rows += '<tr><td style="padding:4px 8px;border:1px solid #e2e6eb">' + (i+1) + '. ' + mhsPhq9Data[i] +
+            '</td><td style="padding:4px 8px;border:1px solid #e2e6eb;text-align:center">' + (a >= 0 ? a + ' — ' + opts[a] : '—') + '</td></tr>';
+  }
+  return '<table style="border-collapse:collapse;width:100%;margin-top:8px;font-size:12px"><tr><th style="padding:4px 8px;border:1px solid #e2e6eb;background:#f4f6f9;text-align:left">Question</th><th style="padding:4px 8px;border:1px solid #e2e6eb;background:#f4f6f9">Answer</th></tr>' + rows + '</table>';
+}
+
+function mhsGad7Table() {
+  var opts = ['Not at all','Several days','More than half the days','Nearly every day'];
+  var rows = '';
+  for (var i = 0; i < mhsGad7Data.length; i++) {
+    var a = mhsGad7Answers[i];
+    rows += '<tr><td style="padding:4px 8px;border:1px solid #e2e6eb">' + (i+1) + '. ' + mhsGad7Data[i] +
+            '</td><td style="padding:4px 8px;border:1px solid #e2e6eb;text-align:center">' + (a >= 0 ? a + ' — ' + opts[a] : '—') + '</td></tr>';
+  }
+  return '<table style="border-collapse:collapse;width:100%;margin-top:8px;font-size:12px"><tr><th style="padding:4px 8px;border:1px solid #e2e6eb;background:#f4f6f9;text-align:left">Question</th><th style="padding:4px 8px;border:1px solid #e2e6eb;background:#f4f6f9">Answer</th></tr>' + rows + '</table>';
+}
+
+function mhsIrlsTable() {
+  var rows = '';
+  for (var i = 0; i < mhsIrlsData.length; i++) {
+    var a = mhsIrlsAnswers[i];
+    rows += '<tr><td style="padding:4px 8px;border:1px solid #e2e6eb">' + (i+1) + '. ' + mhsIrlsData[i].q +
+            '</td><td style="padding:4px 8px;border:1px solid #e2e6eb;text-align:center">' + (a >= 0 ? mhsIrlsData[i].opts[a] : '—') + '</td></tr>';
+  }
+  return '<table style="border-collapse:collapse;width:100%;margin-top:8px;font-size:12px"><tr><th style="padding:4px 8px;border:1px solid #e2e6eb;background:#f4f6f9;text-align:left">Question</th><th style="padding:4px 8px;border:1px solid #e2e6eb;background:#f4f6f9">Answer</th></tr>' + rows + '</table>';
+}
+
+function mhsPrint() {
+  var name = (document.getElementById('mhsDemoName') || {}).value || '';
+  var age  = (document.getElementById('mhsDemoAge')  || {}).value || '';
+  var sex  = (document.getElementById('mhsDemoSex')  || {}).value || '';
+  var date = (document.getElementById('mhsDemoDate') || {}).value || '';
+  var demo = '';
+  if (name) { demo += '<strong>Name:</strong> ' + name + ' &nbsp; '; }
+  if (age)  { demo += '<strong>Age:</strong> ' + age + ' &nbsp; '; }
+  if (sex)  { demo += '<strong>Sex:</strong> ' + sex + ' &nbsp; '; }
+  if (date) { demo += '<strong>Date:</strong> ' + date; }
+
+  var q9alert = '';
+  if (mhsPhq9Answers[8] >= 1) {
+    q9alert = '<div style="background:#fff0f0;border:2px solid #c0392b;border-radius:8px;padding:12px 16px;margin-top:10px">' +
+              '<strong style="color:#c0392b">&#9888; Self-Harm Thoughts Reported</strong>' +
+              '<p style="color:#7a1a1a;font-size:13px;margin:4px 0 0">Please speak with your doctor immediately. Philippines Crisis Line: NCMH 1553</p></div>';
+  }
+
+  var html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>MHS Screening Results</title>' +
+    '<style>body{font-family:\'DM Sans\',Arial,sans-serif;padding:32px;max-width:800px;margin:auto;color:#1e2a38}' +
+    'h1{color:#1a6b72;margin-bottom:4px}h3{margin:0 0 8px;color:#1a6b72}hr{margin:18px 0;border:none;border-top:1px solid #e2e6eb}' +
+    '@media print{body{padding:16px}}</style></head><body>' +
+    '<h1>Mental Health &amp; Sleep Screening Results</h1>' +
+    '<p style="font-size:12px;color:#666;margin-bottom:4px">williamriveromd.com — For educational purposes only. Share results with your doctor.</p>' +
+    '<p style="font-size:13px">' + demo + '</p><hr>' +
+    mhsGetPrintBlock('PHQ-9 (Depression)', 'mhsPhq9Num', 'mhsPhq9Sev', 'mhsPhq9Range', 'mhsPhq9Interp', mhsPhq9Table() + q9alert) +
+    mhsGetPrintBlock('GAD-7 (Anxiety)',    'mhsGad7Num', 'mhsGad7Sev', 'mhsGad7Range', 'mhsGad7Interp', mhsGad7Table()) +
+    mhsGetPrintBlock('PSQI (Sleep Quality)', 'mhsPsqiNum', 'mhsPsqiSev', 'mhsPsqiRange', 'mhsPsqiInterp', mhsPsqiCompTable()) +
+    mhsGetPrintBlock('IRLS (Restless Legs)', 'mhsIrlsNum', 'mhsIrlsSev', 'mhsIrlsRange', 'mhsIrlsInterp', mhsIrlsTable()) +
+    '<p style="font-size:11px;color:#888;margin-top:24px">References: Kroenke K et al. J Gen Intern Med 2001 · Spitzer RL et al. Arch Intern Med 2006 · Buysse DJ et al. Psychiatry Res 1989 · Walters AS et al. Sleep Med 2003</p>' +
+    '</body></html>';
+
+  var win = window.open('', '_blank', 'width=860,height=700');
+  if (win) {
+    win.document.write(html);
+    win.document.close();
+    setTimeout(function() { win.print(); }, 400);
+  }
+}
+
+/* ── Init on DOMContentLoaded ───────────────────── */
+(function() {
+  mhsPhq9Render();
+  mhsGad7Render();
+  mhsIrlsRender();
+  /* Pre-fill today's date */
+  var d = document.getElementById('mhsDemoDate');
+  if (d) {
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = String(now.getMonth() + 1).padStart(2, '0');
+    var day = String(now.getDate()).padStart(2, '0');
+    d.value = y + '-' + m + '-' + day;
+    var chk = document.getElementById('mhsTodayChk');
+    if (chk) { chk.checked = true; }
+  }
+})();
+</script>
 <script>
   const DARK_KEY='wgmr-dark',DESK_KEY='wgmr-desktop';
   function applyDark(on){
