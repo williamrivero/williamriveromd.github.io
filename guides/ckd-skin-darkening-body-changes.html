@@ -1120,8 +1120,10 @@ function setMode(mode){
   document.getElementById('tab-pt').classList.toggle('active',!isPhys);
   document.getElementById('tab-md').classList.toggle('active',isPhys);
   localStorage.setItem(GMODE,mode);
+  const tabs=document.querySelector('.audience-tabs');
+  if(tabs)window.scrollTo({top:tabs.offsetTop-60,behavior:'smooth'});
 }
-// Note: intentionally NOT restoring physician-mode on load (avoid CLS — see patch_mode_cls.py).
+(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 </script>
 </body>
 </html>
