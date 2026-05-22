@@ -593,22 +593,27 @@
   }
 
   /* ── DR CARD (dark panel) ────────────────────────────────────────────────── */
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
   .dr-card {
     background: var(--navy); color: white;
     border-radius: 16px; padding: 32px;
-    display: flex; gap: 24px; align-items: flex-start; margin-top: 48px;
+    display: flex; gap: 24px; align-items: flex-start; margin-top: 0;
   }
   .dr-avatar {
-    width: 56px; height: 56px;
-    background: rgba(184,150,46,.25); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0; border: 2px solid rgba(184,150,46,.4);
+    width: 64px; height: 64px;
+    background: #0f1e2e; border-radius: 50%;
+    flex-shrink: 0; border: 2px solid rgba(184,150,46,.5);
     overflow: hidden;
   }
-  .dr-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
   .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
   .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; } /* 13.1:1 ✓ */
   .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
 
   /* ── GUIDE FOOTER ────────────────────────────────────────────────────────── */
   .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
@@ -1048,6 +1053,7 @@
     .related-guides { padding-left: 20px; padding-right: 20px; }
     .guide-footer .footer-inner { padding: 0 20px; }
     .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .dr-card-wrap { padding: 0 20px 40px; }
     .hero-meta { gap: 14px; }
   }
 
@@ -1113,6 +1119,7 @@
     .lab-table td { color: #333 !important; }
     .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
     .dr-card h4, .dr-card p, .dr-card .dr-creds { color: #222 !important; }
+    .dr-qr { display: none !important; }
     .checklist { background: #f0f4f8 !important; border: 1px solid #ccc; }
     .checklist h4, .checklist ul li { color: #222 !important; }
     .disclaimer { background: #fff8e8 !important; border: 1px solid #ccc !important; color: #333 !important; }
@@ -1588,20 +1595,6 @@ html[data-theme="dark"] .doc-info h4{color:#a8c4e8;}
 </ul>
 </div>
 
-<div class="dr-card">
-<div class="dr-avatar"><img alt="Dr. W. G. M. Rivero" src="../images/photo-contact.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/></div>
-<div>
-<h4>W. G. M. Rivero, MD, FPCP, DPSN</h4>
-<p>
-<span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Advance care planning is among the most important conversations I have with patients and families &mdash; and among the most delayed. In my experience, Filipino families are almost always willing to accept a difficult truth if it is delivered with honesty, compassion, and sufficient time. The tragedy is when the conversation never happens, and the decision is made by default in an emergency room, without the patient&rsquo;s voice. <strong>Plan early. Have the conversation.</strong></span>
-<span class="lang-hidden" data-lang="tl">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Ang pagpaplano ng pangangalaga nang maaga ay isa sa mga pinaka-mahalagang pag-uusap na mayroon ako sa mga pasyente at pamilya &mdash; at isa sa mga pinaka-naantala. Sa aking karanasan, ang mga pamilyang Pilipino ay halos laging handa na tanggapin ang isang mahirap na katotohanan kung ito ay ibinibigay nang may katapatan, awa, at sapat na oras. <strong>Magplano nang maaga. Makipag-usap.</strong></span>
-<span class="lang-hidden" data-lang="ceb">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Ang advance care planning usa sa pinaka-importante nga mga pag-istoryahanay nga adunay ako sa mga pasyente ug pamilya &mdash; ug usa sa pinaka-naantala. Sa akong kasinatian, ang mga pamilyang Pilipino halos kanunay andam sa pagdawat sa usa ka alisud nga kamatuoran kung kini gihatag sa pagkamatinuoron, kalooy, ug sapat nga oras. <strong>Magplano daan. Makig-istorya.</strong></span>
-<span class="lang-hidden" data-lang="kap">Espesyalista king Panloob a Medisina, Nefrolohiya, at Klinikal a Nutrisyon. Ing advance care planning metung sa pinaka-importante a deng usapan a maki aku king deng pasyente at pamilya &mdash; at metung sa pinaka-naantala. King karanasan ku, deng pamilyang Pilipino halos laging handa tanggapin ing isang mahirap a katotohanan kung iti ibinibigay nang maki katapatan, awa, at sapat a oras. <strong>Magplanu nang maaga. Mag-usap.</strong></span>
-</p>
-<p class="dr-creds">PRC 0105184 &middot; seriousmd.com/doc/williamrivero &middot; <span id="emled"></span>
-<script>(function(){var p=["will","iamr","iver","o@gm","ail.","com"];document.getElementById("emled").innerHTML='<a href="mailto:'+p.join("")+'" style="color:rgba(255,255,255,.45);">'+p.join("")+'</a>';})();</script></p>
-</div>
-</div>
 
 <div class="disclaimer">
 <strong><span data-lang="en">Medical Disclaimer</span><span class="lang-hidden" data-lang="tl">Medikal na Disclaimer</span><span class="lang-hidden" data-lang="ceb">Medikal nga Disclaimer</span><span class="lang-hidden" data-lang="kap">Medikal a Disclaimer</span>:</strong>
@@ -1611,6 +1604,22 @@ html[data-theme="dark"] .doc-info h4{color:#a8c4e8;}
 <span class="lang-hidden" data-lang="kap"> Iting gabay nilayon para turuan deng pasyente at pamilya, hindi para matukoy kung ing sinumang indibidwal ay dapat itigil ing dialysis. Bawat kaso natatangi. Ing desisyon nangangailangan ning buong klinikal a pagtatasa at shared decision-making kasama ing isang nephrologist a kilala ing pasyente.</span>
 </div>
 </section>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/photo-contact.webp" type="image/webp"><img src="../images/photo-contact.jpg" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label"><span data-lang="en">Scan to save contact</span><span data-lang="tl" class="lang-hidden">I-scan para ma-save</span><span data-lang="ceb" class="lang-hidden">I-scan para ma-save</span><span data-lang="kap" class="lang-hidden">I-scan para ma-save</span></p>
+</div>
+</div>
+</div>
 
 <!-- RELATED GUIDES — inside .container so it respects page margins -->
 <div class="related-guides">

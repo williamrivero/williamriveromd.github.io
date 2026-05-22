@@ -593,22 +593,27 @@
   }
 
   /* ── DR CARD (dark panel) ────────────────────────────────────────────────── */
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
   .dr-card {
     background: var(--navy); color: white;
     border-radius: 16px; padding: 32px;
-    display: flex; gap: 24px; align-items: flex-start; margin-top: 48px;
+    display: flex; gap: 24px; align-items: flex-start; margin-top: 0;
   }
   .dr-avatar {
-    width: 56px; height: 56px;
-    background: rgba(184,150,46,.25); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0; border: 2px solid rgba(184,150,46,.4);
+    width: 64px; height: 64px;
+    background: #0f1e2e; border-radius: 50%;
+    flex-shrink: 0; border: 2px solid rgba(184,150,46,.5);
     overflow: hidden;
   }
-  .dr-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
   .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
   .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; } /* 13.1:1 ✓ */
   .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
 
   /* ── GUIDE FOOTER ────────────────────────────────────────────────────────── */
   .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
@@ -1048,6 +1053,7 @@
     .related-guides { padding-left: 20px; padding-right: 20px; }
     .guide-footer .footer-inner { padding: 0 20px; }
     .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .dr-card-wrap { padding: 0 20px 40px; }
     .hero-meta { gap: 14px; }
   }
 
@@ -1113,6 +1119,7 @@
     .lab-table td { color: #333 !important; }
     .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
     .dr-card h4, .dr-card p, .dr-card .dr-creds { color: #222 !important; }
+    .dr-qr { display: none !important; }
     .checklist { background: #f0f4f8 !important; border: 1px solid #ccc; }
     .checklist h4, .checklist ul li { color: #222 !important; }
     .disclaimer { background: #fff8e8 !important; border: 1px solid #ccc !important; color: #333 !important; }
@@ -2023,14 +2030,7 @@ body.dark .related-card-title {
 
     <div class="disclaimer"><strong><span data-lang="en">Important:</span><span data-lang="tl" class="lang-hidden">Mahalaga:</span><span data-lang="ceb" class="lang-hidden">Importante:</span><span data-lang="kap" class="lang-hidden">Mahalaga:</span></strong> <span data-lang="en">This guide represents a nephrology perspective on GDM management and is intended to complement — not replace — obstetric, endocrinologic, and nutritionist-dietitian care. All dietary, pharmacological, and monitoring decisions during pregnancy must be made collaboratively by the full multidisciplinary team. Individualize all targets based on gestational age, concurrent conditions, and patient response. This guide does not constitute individualized medical advice.</span><span data-lang="tl" class="lang-hidden">Ang gabay na ito ay kumakatawan sa pananaw ng nephrology sa pamamahala ng GDM at nilalayon na dagdagan — hindi palitan — ang obstetric, endocrinologic, at nutritionist-dietitian na pag-aalaga. Lahat ng mga desisyon sa diyeta, pharmacological, at pagsubaybay sa panahon ng pagbubuntis ay dapat gawin nang magkasama ng buong multidisciplinary team. I-individualize ang lahat ng target batay sa gestational age, kasabay na kondisyon, at tugon ng pasyente. Ang gabay na ito ay hindi bumubuo ng indibidwal na medikal na payo.</span><span data-lang="ceb" class="lang-hidden">Kining gabay nagrepresentar sa panan-aw sa nephrology sa pagdumala sa GDM ug gituyo nga magdugang — dili magpuli — sa obstetric, endocrinologic, ug nutritionist-dietitian nga pag-atiman. Ang tanan nga mga desisyon sa diyeta, pharmacological, ug pagmonitor sa panahon sa pagmabdos kinahanglan buhaton nga magkasinabtanay sa tibuok multidisciplinary team. I-individualize ang tanan nga target base sa gestational age, dunay-dunay nga kondisyon, ug tubag sa pasyente. Kining gabay dili naglangkob sa indibidwal nga medikal nga tambag.</span><span data-lang="kap" class="lang-hidden">Ing gabay na ini ya kumabangkî sa pananaw ning nephrology sa pamamahala ning GDM at nilalayon na dagdagan — ali palitan — ing obstetric, endocrinologic, at nutritionist-dietitian na pag-aalaga. Lahat ning deng desisyon king diyeta, pharmacological, at pagsubaybay sa panahon ning pagbubuntis ya dapat gawin nang magkasama ning buong multidisciplinary team. I-individualize ing lahat ning target batay sa gestational age, kasabay na kondisyon, at tugon ning pasyente. Ing gabay na ini ya ali bumubuo ning indibidwal na medikal na payo.</span></div>
 
-    <div class="dr-card">
-      <div class="dr-avatar"><img src="../images/photo-contact.jpg" alt="Dr. W. G. M. Rivero"></div>
-      <div>
-        <h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
-        <p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing in Quezon City, Angeles City, and Marilao.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Internal Medicine, Nephrology, at Clinical Nutrition. Nag-aapraktis sa Quezon City, Angeles City, at Marilao.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal Medicine, Nephrology, ug Clinical Nutrition. Nag-praktis sa Quezon City, Angeles City, ug Marilao.</span><span data-lang="kap" class="lang-hidden">Espesyalista sa Internal Medicine, Nephrology, at Clinical Nutrition. Nag-aapraktis sa Quezon City, Angeles City, at Marilao.</span></p>
-        <p class="dr-creds">PRC 0105184 · seriousmd.com/doc/williamrivero</p>
-      </div>
-    </div>
+    
   </section>
 
 </div><!-- /mode-patient -->
@@ -2781,7 +2781,23 @@ body.dark .related-card-title {
 </main>
 
 
-    <!-- RELATED-GUIDES-START -->
+    <!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/photo-contact.webp" type="image/webp"><img src="../images/photo-contact.jpg" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label"><span data-lang="en">Scan to save contact</span><span data-lang="tl" class="lang-hidden">I-scan para ma-save</span><span data-lang="ceb" class="lang-hidden">I-scan para ma-save</span><span data-lang="kap" class="lang-hidden">I-scan para ma-save</span></p>
+</div>
+</div>
+</div>
+
+<!-- RELATED-GUIDES-START -->
       <div class="related-guides">
         <h2>
           <span data-lang="en">Related Guides</span>

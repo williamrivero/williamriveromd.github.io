@@ -314,6 +314,30 @@
   .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
 
   /* ── TABLES ──────────────────────────────────────────────────────────────── */
+
+  /* Generic table wrapper — used throughout guide and clinician sections */
+  .table-wrap {
+    overflow-x: auto; margin: 20px 0;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th {
+    text-align: left; padding: 11px 16px;
+    background: var(--navy); color: rgba(255,255,255,.92);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    border-bottom: none;
+  }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td {
+    padding: 13px 16px; vertical-align: top; line-height: 1.55;
+    border-bottom: 1px solid var(--border); color: var(--text-mid);
+  }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
   .lab-table, .drug-table, .schedule-table {
     width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;
   }
@@ -569,22 +593,27 @@
   }
 
   /* ── DR CARD (dark panel) ────────────────────────────────────────────────── */
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
   .dr-card {
     background: var(--navy); color: white;
     border-radius: 16px; padding: 32px;
-    display: flex; gap: 24px; align-items: flex-start; margin-top: 48px;
+    display: flex; gap: 24px; align-items: flex-start; margin-top: 0;
   }
   .dr-avatar {
-    width: 56px; height: 56px;
-    background: rgba(184,150,46,.25); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0; border: 2px solid rgba(184,150,46,.4);
+    width: 64px; height: 64px;
+    background: #0f1e2e; border-radius: 50%;
+    flex-shrink: 0; border: 2px solid rgba(184,150,46,.5);
     overflow: hidden;
   }
-  .dr-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
   .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
   .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; } /* 13.1:1 ✓ */
   .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
 
   /* ── GUIDE FOOTER ────────────────────────────────────────────────────────── */
   .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
@@ -725,6 +754,12 @@
   html[data-theme="dark"] .alert-body ul li,
   html[data-theme="dark"] .step-body p,
   html[data-theme="dark"] .ladder-body p,
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-theme="dark"] .table-wrap tbody tr:hover td { background: #1e3040; }
+
   html[data-theme="dark"] .lab-table td,
   html[data-theme="dark"] .drug-table td,
   html[data-theme="dark"] .schedule-table td,
@@ -866,6 +901,73 @@
   /* ── ILLUSTRATION PANEL ──────────────────────────────────────────────────── */
   .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
 
+  /* ── CLINICIAN SECTION HERO (.md-hero) ───────────────────────────────────── */
+  .md-hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
+    padding: 60px 0 56px; position: relative; overflow: hidden;
+  }
+  .md-hero::before {
+    content: ''; position: absolute; right: -80px; top: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(212,175,79,.1); pointer-events: none;
+  }
+  .md-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: #d4af4f; border: 1px solid rgba(212,175,79,.45);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .md-hero h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
+    color: white; margin-bottom: 14px; letter-spacing: -.02em;
+  }
+  .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.82);
+    max-width: 580px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .md-stat {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 10px; padding: 12px 20px;
+  }
+  .md-stat-val {
+    font-family: 'Lora', serif; font-size: 22px; font-weight: 600;
+    color: #d4af4f; line-height: 1; display: block;
+  }
+  .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
+  .md-hero .illus-wrap {
+    background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.14);
+  }
+  .md-hero .img-placeholder { background: transparent; border-color: rgba(255,255,255,.2); margin: 0; }
+  .md-hero .img-placeholder p,
+  .md-hero .img-placeholder .img-ph-icon { color: rgba(255,255,255,.55); }
+
+  /* ── CLINICIAN PATHWAY BANNERS ───────────────────────────────────────────── */
+  .pathway-banner {
+    padding: 20px 0 0;
+  }
+  .pathway-banner-inner {
+    padding: 14px 20px; border-radius: 0 8px 8px 0;
+  }
+  .pathway-banner-inner.neph {
+    border-left: 4px solid var(--teal); background: var(--teal-light);
+  }
+  .pathway-banner-inner.urol {
+    border-left: 4px solid var(--gold); background: #fdf8ec;
+  }
+  .pathway-banner-inner.synth {
+    border-left: 4px solid var(--purple); background: var(--purple-soft);
+  }
+  .pathway-banner-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; margin: 0 0 4px;
+  }
+  .pathway-banner-label.neph { color: var(--teal); }
+  .pathway-banner-label.urol { color: var(--gold); }
+  .pathway-banner-label.synth { color: var(--purple); }
+  .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
   .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
@@ -951,6 +1053,7 @@
     .related-guides { padding-left: 20px; padding-right: 20px; }
     .guide-footer .footer-inner { padding: 0 20px; }
     .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .dr-card-wrap { padding: 0 20px 40px; }
     .hero-meta { gap: 14px; }
   }
 
@@ -1009,10 +1112,14 @@
     .feature-card { border: 1px solid #ccc !important; background: #fff !important; }
     .feature-card h4 { color: #1f3864 !important; }
     .feature-card p { color: #333 !important; }
+    .table-wrap { box-shadow: none !important; border: 1px solid #ccc !important; }
+    .table-wrap thead th { background: #eee !important; color: #333 !important; }
+    .table-wrap tbody td { color: #333 !important; }
     .lab-table th { background: #eee !important; color: #333 !important; }
     .lab-table td { color: #333 !important; }
     .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
     .dr-card h4, .dr-card p, .dr-card .dr-creds { color: #222 !important; }
+    .dr-qr { display: none !important; }
     .checklist { background: #f0f4f8 !important; border: 1px solid #ccc; }
     .checklist h4, .checklist ul li { color: #222 !important; }
     .disclaimer { background: #fff8e8 !important; border: 1px solid #ccc !important; color: #333 !important; }
@@ -1336,16 +1443,7 @@
   <h4><span data-lang="en">My doctor wants me on a blood pressure pill even though my blood pressure seems normal — why?</span><span data-lang="tl" class="lang-hidden">Gusto akong ilagay ng aking doktor sa tableta para sa presyon ng dugo kahit normal ang aking presyon ng dugo — bakit?</span><span data-lang="ceb" class="lang-hidden">Gusto sa akong doktor nga ibutang ko sa tableta sa presyon sa dugo bisan normal ang akong presyon sa dugo — ngano?</span><span data-lang="kap" class="lang-hidden">Gustu ning doktor ku na ipa-ukol aku king tableta para king presyon ning dugu maski normal ing presyon ning dugu ku — bakit?</span></h4>
   <p><span data-lang="en">ACE inhibitors and ARBs are prescribed in HIVAN not just for blood pressure but to reduce protein leakage from damaged kidneys, which slows progression even in patients with normal blood pressure. Take them as prescribed.</span><span data-lang="tl" class="lang-hidden">Ang mga ACE inhibitor at ARB ay iniiresetang sa HIVAN hindi lamang para sa presyon ng dugo kundi para bawasan ang pagtutulog ng protina mula sa mga sirang bato, na nagpapabagal ng pag-unlad kahit sa mga pasyenteng may normal na presyon ng dugo. Inumin ang mga ito ayon sa reseta.</span><span data-lang="ceb" class="lang-hidden">Ang mga ACE inhibitor ug ARB giresetahan sa HIVAN dili lang para sa presyon sa dugo kondili aron makunhuran ang pagawas sa protina gikan sa mga kadaut nga bato, nga nagapahinay sa paglambo bisan sa mga pasyente nga adunay normal nga presyon sa dugo. Kuhaon kini sumala sa reseta.</span><span data-lang="kap" class="lang-hidden">Ing mga ACE inhibitor at ARB irinireseta king HIVAN e la para king presyon ning dugu kundi para bawasan ing pagtutulog ning protina bunga ning sirang bato, a nagpapabagal ning pag-unlad maski king mga pasyenteng may normal a presyon ning dugu. Inumin iti ayon king reseta.</span></p>
 
-  <div class="dr-card">
-    <div class="dr-avatar">
-      <img src="../images/photo-contact.jpg" alt="Dr. W. G. M. Rivero" />
-    </div>
-    <div>
-      <h4>W. G. M. Rivero, MD, FPCP, DPSN</h4>
-      <p><span data-lang="en">This guide was written to help patients living with HIV understand their kidney health — and take control of it. HIVAN is one of the few kidney diseases where starting the right treatment can genuinely reverse damage. You have more power here than you may realize.</span><span data-lang="tl" class="lang-hidden">Ang gabay na ito ay isinulat upang matulungan ang mga pasyenteng may HIV na maunawaan ang kanilang kalusugan ng bato — at makontrol ito. Ang HIVAN ay isa sa ilang sakit sa bato kung saan ang pagsisimula ng tamang paggamot ay maaaring tunay na magbaligtad ng pinsala. Mayroon kang mas maraming kapangyarihan dito kaysa sa iyong naiisip.</span><span data-lang="ceb" class="lang-hidden">Kining giya gisulat aron matabangan ang mga pasyente nga adunay HIV nga masabtan ang ilang kahimsog sa bato — ug makontrol kini. Ang HIVAN usa sa pipila ka sakit sa bato diin ang pagsugod sa husto nga pagtambal mahimong tinuod nga magbalhin sa kadaut. Adunay ka og mas daghan nga gahum dinhi kaysa sa imong gihunahuna.</span><span data-lang="kap" class="lang-hidden">Ing gabay a iti isinulat para matulungan ing mga pasyenteng may HIV a maunawaan ing kalusugan da king bato — at makontrol iti. Ing HIVAN metung kareng kapiranun sakit king bato nung nanung pagsimula ning tamang lunas malyaring tunay a magbaligtad ning pinsala. Mayroon kang mas merakung kapangyarihan diti kaysa sa inyong naiisip.</span></p>
-      <p class="dr-creds">Internal Medicine &middot; Nephrology &middot; Philippines &middot; williamriveromd.com</p>
-    </div>
-  </div>
+  
 
   <div class="disclaimer">
     <span data-lang="en"><strong>Medical Disclaimer:</strong> This guide is for patient education purposes only and does not constitute personalized medical advice. Treatment decisions for HIVAN, HIV medications, and kidney disease management must be made in partnership with your HIV specialist and nephrologist. Medication protocols referenced here reflect current Philippine and international guidelines and may change over time.</span><span data-lang="tl" class="lang-hidden"><strong>Paalala sa Medikal:</strong> Ang gabay na ito ay para sa layunin ng edukasyon ng pasyente lamang at hindi nagbibigay ng personalisadong medikal na payo. Ang mga desisyon sa paggamot para sa HIVAN, mga gamot sa HIV, at pamamahala ng sakit sa bato ay dapat gawin kasama ang inyong espesyalista sa HIV at nephrologist. Ang mga protokol ng gamot na binanggit dito ay sumasalamin sa kasalukuyan ng mga alituntunin ng Pilipinas at internasyonal at maaaring magbago sa paglipas ng panahon.</span><span data-lang="ceb" class="lang-hidden"><strong>Disclaimer sa Medikal:</strong> Kining giya alang sa katuyoan sa edukasyon sa pasyente lamang ug wala maghatag sa personalisado nga medikal nga tambag. Ang mga desisyon sa pagtambal alang sa HIVAN, mga tambal sa HIV, ug pagdumala sa sakit sa bato kinahanglan buhaton kauban sa imong espesyalista sa HIV ug nephrologist. Ang mga protokol sa tambal nga gihisgutan dinhi nagsalamin sa kasamtangan nga mga giya sa Pilipinas ug internasyonal ug mahimong mabag-o sa paglabay sa panahon.</span><span data-lang="kap" class="lang-hidden"><strong>Paalala sa Medikal:</strong> Ing gabay a iti para king layunin ning edukasyon ning pasyente la at e nagbibigay ning personalisadong medikal a payo. Ing mga desisyon sa lunas para king HIVAN, mga gamot king HIV, at pamamahala ning sakit king bato dapat gawin kabarang king espesyalista mu king HIV at nephrologist. Ing mga protokol ning gamot a binanggit diti sumasalamin king kasalukuyang mga alituntunin ning Pilipinas at internasyonal at malyaring magbago sa paglipas ning panahon.</span>
@@ -1922,7 +2020,23 @@
 
 <!-- ═══════════════ RELATED GUIDES (outside mode divs) ═══════════════ -->
 <div class="container">
-  <div class="related-guides">
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/photo-contact.webp" type="image/webp"><img src="../images/photo-contact.jpg" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label"><span data-lang="en">Scan to save contact</span><span data-lang="tl" class="lang-hidden">I-scan para ma-save</span><span data-lang="ceb" class="lang-hidden">I-scan para ma-save</span><span data-lang="kap" class="lang-hidden">I-scan para ma-save</span></p>
+</div>
+</div>
+</div>
+
+<div class="related-guides">
     <h2>Related Guides</h2>
     <div class="related-cards">
       <a class="related-card" href="understanding-ckd.html">
