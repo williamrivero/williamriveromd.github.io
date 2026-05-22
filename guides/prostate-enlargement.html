@@ -1166,6 +1166,18 @@ body.dark .related-card:hover {
 body.dark .related-card-title {
   color: #e8edf2;
 }
+/* ── IPSS demographics & action buttons ─────────────────── */
+.ipss-demo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border,#e2e6eb);}
+.ipss-demo-label{display:block;font-size:11px;font-weight:600;color:var(--teal,#1a6b72);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;}
+.ipss-demo-input{width:100%;padding:8px 10px;border:1px solid var(--border,#e2e6eb);border-radius:8px;font-size:13px;background:white;color:var(--text,#1e2a38);box-sizing:border-box;font-family:'DM Sans',sans-serif;}
+.ipss-today-wrap{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted,#4a5a6a);margin-top:6px;cursor:pointer;}
+.ipss-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+.ipss-btn-reset{padding:9px 22px;border-radius:20px;border:2px solid var(--border,#e2e6eb);background:white;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-mid,#2c3a4a);font-family:'DM Sans',sans-serif;transition:all .18s;}
+.ipss-btn-reset:hover{background:var(--bg,#f9fafb);}
+.ipss-btn-print{padding:9px 22px;border-radius:20px;border:2px solid var(--teal,#1a6b72);background:var(--teal,#1a6b72);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s;}
+.ipss-btn-print:hover{opacity:.88;}
+html[data-theme="dark"] .ipss-demo-input{background:#0f1e2e;border-color:#2a3a4a;color:#e8edf2;}
+html[data-theme="dark"] .ipss-btn-reset{background:#1a2535;border-color:#2a3a4a;color:#c0cad8;}
 </style>
 
 <script type="application/ld+json">
@@ -1342,6 +1354,32 @@ body.dark .related-card-title {
 
     <div id="ipss-wrap" style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0;">
 
+      <!-- Optional demographics -->
+      <div class="ipss-demo-grid">
+        <div class="ipss-demo-field">
+          <label class="ipss-demo-label"><span data-lang="en">Patient Name</span><span data-lang="tl" class="lang-hidden">Pangalan ng Pasyente</span><span data-lang="ceb" class="lang-hidden">Ngalan sa Pasyente</span><span data-lang="kap" class="lang-hidden">Lagyu ning Pasyente</span></label>
+          <input type="text" id="ipss-pname" class="ipss-demo-input" placeholder="Optional">
+        </div>
+        <div class="ipss-demo-field">
+          <label class="ipss-demo-label"><span data-lang="en">Age</span><span data-lang="tl" class="lang-hidden">Edad</span><span data-lang="ceb" class="lang-hidden">Edad</span><span data-lang="kap" class="lang-hidden">Edad</span></label>
+          <input type="number" id="ipss-age" class="ipss-demo-input" min="0" max="120" placeholder="Years">
+        </div>
+        <div class="ipss-demo-field">
+          <label class="ipss-demo-label"><span data-lang="en">Sex</span><span data-lang="tl" class="lang-hidden">Kasarian</span><span data-lang="ceb" class="lang-hidden">Sekso</span><span data-lang="kap" class="lang-hidden">Kasarian</span></label>
+          <select id="ipss-sex" class="ipss-demo-input">
+            <option value="">—</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="ipss-demo-field">
+          <label class="ipss-demo-label"><span data-lang="en">Date of Assessment</span><span data-lang="tl" class="lang-hidden">Petsa ng Pagsusuri</span><span data-lang="ceb" class="lang-hidden">Petsa sa Pagsusi</span><span data-lang="kap" class="lang-hidden">Petsa ning Pagsusuri</span></label>
+          <input type="date" id="ipss-date" class="ipss-demo-input">
+          <label class="ipss-today-wrap"><input type="checkbox" id="ipss-today" onchange="ipssTodayChk()"> <span data-lang="en">Today</span><span data-lang="tl" class="lang-hidden">Ngayon</span><span data-lang="ceb" class="lang-hidden">Karon</span><span data-lang="kap" class="lang-hidden">Ngeni</span></label>
+        </div>
+      </div>
+
       <!-- Answer scale legend -->
       <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:20px;text-align:center;">
         <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;grid-column:1/-1;margin-bottom:6px;">
@@ -1431,11 +1469,13 @@ body.dark .related-card-title {
         <div id="ipss-action" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.1);font-size:13px;line-height:1.65;"></div>
       </div>
 
-      <!-- Reset -->
-      <div style="display:flex;justify-content:flex-end;margin-top:16px;">
-        <button onclick="resetIpss()" style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--teal);background:transparent;border:1px solid var(--teal);border-radius:20px;padding:5px 16px;cursor:pointer;">
-          <span data-lang="en">Reset</span><span data-lang="tl" class="lang-hidden">I-reset</span><span data-lang="ceb" class="lang-hidden">I-reset</span>
-      <span data-lang="kap" class="lang-hidden">I-reset</span>
+      <!-- Actions -->
+      <div class="ipss-actions">
+        <button class="ipss-btn-reset" onclick="resetIpss()">
+          <span data-lang="en">Reset All</span><span data-lang="tl" class="lang-hidden">I-reset Lahat</span><span data-lang="ceb" class="lang-hidden">I-reset Tanan</span><span data-lang="kap" class="lang-hidden">I-reset Amin</span>
+        </button>
+        <button class="ipss-btn-print" onclick="ipssPrint()">
+          <span data-lang="en">Print / Save as PDF</span><span data-lang="tl" class="lang-hidden">I-print / I-save bilang PDF</span><span data-lang="ceb" class="lang-hidden">I-print / I-save isip PDF</span><span data-lang="kap" class="lang-hidden">I-print / I-save bilang PDF</span>
         </button>
       </div>
 
@@ -1938,6 +1978,83 @@ function resetIpss() {
   document.querySelectorAll('.ipss-qol-btn').forEach(el=>el.classList.remove('selected'));
   document.getElementById('ipss-result').style.display='none';
   document.getElementById('ipss-qol-result').style.display='none';
+  // Clear demographics
+  ['ipss-pname','ipss-age','ipss-date'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  var sx=document.getElementById('ipss-sex');if(sx)sx.value='';
+  var tc=document.getElementById('ipss-today');if(tc)tc.checked=false;
+  var dt=document.getElementById('ipss-date');if(dt)dt.readOnly=false;
+}
+
+function ipssTodayChk(){
+  var chk=document.getElementById('ipss-today');
+  var dt=document.getElementById('ipss-date');
+  if(chk&&chk.checked){
+    var now=new Date();
+    dt.value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+    dt.readOnly=true;
+  } else if(dt){
+    dt.readOnly=false;
+  }
+}
+
+function ipssPrint(){
+  var pname=document.getElementById('ipss-pname').value||'—';
+  var age=document.getElementById('ipss-age').value||'—';
+  var sex=document.getElementById('ipss-sex').value||'—';
+  var dt=document.getElementById('ipss-date').value||'—';
+
+  // Only print if all 7 questions answered
+  if(ipssAnswers.some(function(v){return v===null;})){
+    alert('Please answer all 7 IPSS questions before printing.');
+    return;
+  }
+
+  var total=ipssAnswers.reduce(function(a,b){return a+b;},0);
+  var voiding=ipssAnswers[2]+ipssAnswers[4]+ipssAnswers[5];
+  var storage=ipssAnswers[0]+ipssAnswers[1]+ipssAnswers[3]+ipssAnswers[6];
+  var severity=total<=7?'Mild BPH':total<=19?'Moderate BPH':'Severe BPH';
+  var sevColor=total<=7?'#2d7a4f':total<=19?'#9a6500':'#c0392b';
+
+  var scoreEl=document.getElementById('ipss-score');
+  var interpEl=document.getElementById('ipss-interp');
+  var actionEl=document.getElementById('ipss-action');
+  var interpText=interpEl?interpEl.textContent:'';
+  var actionText=actionEl?actionEl.textContent:'';
+
+  var qolLine='Not recorded';
+  if(qolAnswer!==null){
+    var qolLabels=['Delighted','Pleased','Mostly satisfied','Mixed feelings','Mostly dissatisfied','Unhappy','Terrible'];
+    qolLine=qolAnswer+'/6 — '+qolLabels[qolAnswer];
+  }
+
+  var qLabels=['Not at all','< 1 in 5','< Half','~Half','> Half','Almost always'];
+  var q7Labels=['0 times','1 time','2 times','3 times','4 times','5+ times'];
+  var qRows='';
+  IPSS_QS.forEach(function(q,i){
+    var lbl=i===6?q7Labels[ipssAnswers[i]]:qLabels[ipssAnswers[i]];
+    qRows+='<tr><td style="padding:6px 12px;border-bottom:1px solid #e2e6eb;font-size:12px;color:#4a5a6a;">'+(i+1)+'.</td><td style="padding:6px 12px;border-bottom:1px solid #e2e6eb;font-size:12px;">'+q.en+'</td><td style="padding:6px 12px;border-bottom:1px solid #e2e6eb;font-size:12px;font-weight:600;color:#0f1e2e;white-space:nowrap;">'+ipssAnswers[i]+' — '+lbl+'</td></tr>';
+  });
+
+  var win=window.open('','_blank','width=800,height=900');
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>IPSS Report — '+pname+'</title><style>body{font-family:Arial,sans-serif;font-size:13px;color:#1e2a38;max-width:720px;margin:32px auto;padding:0 20px;}h1{font-size:19px;color:#145c63;margin-bottom:4px;}h2{font-size:14px;color:#145c63;margin:22px 0 6px;border-bottom:2px solid #e2e6eb;padding-bottom:5px;}table{width:100%;border-collapse:collapse;margin:8px 0;}th{background:#145c63;color:white;padding:7px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;}.demo{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f9fafb;border-radius:10px;padding:13px;margin-bottom:18px;}.demo-field{font-size:13px;}.demo-label{color:#4a5a6a;font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}.score-box{border-radius:10px;padding:16px 20px;margin:12px 0;}.score-num{font-size:32px;font-weight:700;line-height:1.1;}.score-detail{font-size:12px;margin-top:4px;opacity:.75;}.score-sev{font-size:17px;font-weight:700;margin:4px 0;}.interp{font-size:13px;margin-top:8px;line-height:1.6;}.footer{margin-top:28px;font-size:11px;color:#6b7280;border-top:1px solid #e2e6eb;padding-top:10px;}@media print{button{display:none;}}</style></head><body>');
+  win.document.write('<h1>International Prostate Symptom Score (IPSS) Report</h1>');
+  win.document.write('<p style="font-size:11px;color:#6b7280;margin-bottom:14px;">Generated '+new Date().toLocaleDateString()+' · williamriveromd.com</p>');
+  win.document.write('<div class="demo"><div class="demo-field"><div class="demo-label">Patient</div><div>'+pname+'</div></div><div class="demo-field"><div class="demo-label">Age</div><div>'+age+'</div></div><div class="demo-field"><div class="demo-label">Sex</div><div>'+sex+'</div></div><div class="demo-field"><div class="demo-label">Date of Assessment</div><div>'+dt+'</div></div></div>');
+  win.document.write('<div class="score-box" style="background:'+(total<=7?'#edf7f2':total<=19?'#fef9ec':'#fdf0ef')+';border:2px solid '+sevColor+';">');
+  win.document.write('<div class="score-num" style="color:'+sevColor+';">'+total+' <span style="font-size:16px;font-weight:400;">/ 35</span></div>');
+  win.document.write('<div class="score-sev" style="color:'+sevColor+';">'+severity+'</div>');
+  win.document.write('<div class="score-detail">Voiding score: '+voiding+'/15 &nbsp;·&nbsp; Storage score: '+storage+'/20</div>');
+  win.document.write('<div class="interp">'+interpText+'</div>');
+  win.document.write('<div class="interp" style="margin-top:8px;"><strong>Recommended next step:</strong> '+actionText+'</div>');
+  win.document.write('</div>');
+  win.document.write('<div style="background:#f0f9f9;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13px;"><strong>Quality of Life (QoL) Score:</strong> '+qolLine+'</div>');
+  win.document.write('<h2>Question-by-Question Responses</h2>');
+  win.document.write('<table><tr><th>#</th><th>Question</th><th>Answer</th></tr>'+qRows+'</table>');
+  win.document.write('<div class="footer">IPSS: Barry MJ et al., J Urol 1992. Scoring: 0–7 Mild, 8–19 Moderate, 20–35 Severe BPH. QoL Item: 0=Delighted to 6=Terrible. For clinical reference only — results do not replace professional evaluation.</div>');
+  win.document.write('</body></html>');
+  win.document.close();
+  win.focus();
+  setTimeout(function(){win.print();},400);
 }
 
 // Build on load and on language change
