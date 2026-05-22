@@ -1213,6 +1213,19 @@ html[data-theme="dark"] .dist-check-opt{background:#1a2535;border-color:#2a3548;
 .fived-share-text{font-size:12px;color:rgba(255,255,255,.65);margin-top:8px;font-style:italic;}
 @media(max-width:500px){.fived-total{flex-direction:column;text-align:center;}}
 .scale-ref{font-size:11px;color:var(--text-faint);margin-top:8px;font-style:italic;}
+/* ── PATIENT INFO + PRINT (itch scales) ── */
+.prom-pi-wrap{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;}
+html[data-theme="dark"] .prom-pi-wrap{background:#141c2a;border-color:#2a3548;}
+.prom-pi-title{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.prom-pi-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;}
+@media(max-width:600px){.prom-pi-grid{grid-template-columns:1fr 1fr;}}
+.prom-pi-field label{display:block;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
+.prom-pi-field input,.prom-pi-field select{width:100%;box-sizing:border-box;font-family:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);}
+html[data-theme="dark"] .prom-pi-field input,html[data-theme="dark"] .prom-pi-field select{background:#1a2535;border-color:#2a3548;color:#e8eaf0;}
+.prom-pi-field input::placeholder{color:var(--text-faint);}
+.itch-print-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;background:var(--navy);color:white;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;margin-top:12px;transition:background .15s;}
+.itch-print-btn:hover{background:#162848;}
+.itch-print-btn svg{width:16px;height:16px;flex-shrink:0;}
 </style>
 <script type="application/ld+json">
 {
@@ -1895,6 +1908,16 @@ html[data-theme="dark"] .sc-card{background:#1a2535;border-color:#2a3548;}
   <span class="lang-hidden" data-lang="kap">Aduang napatunayan a kasangkapan ing gagamitan king buong mundo para subaybayan ing uremic pruritus. Ing <strong>WI-NRS</strong> magbigay king mabilis a bilang ning kalubhaan. Ing <strong>5-D Itch Scale</strong> sumasaklaw king limang dimensyon ning karanasan mo king kati at gagawa king iskor a maaaring subaybayan ning nephrologist mo king paglipas ning panahon.</span>
 </p>
 
+<div class="prom-pi-wrap">
+  <div class="prom-pi-title"><span data-lang="en">Patient Information (optional &mdash; for your printed report)</span><span class="lang-hidden" data-lang="tl">Impormasyon ng Pasyente (opsyonal &mdash; para sa iyong naka-print na ulat)</span><span class="lang-hidden" data-lang="ceb">Impormasyon sa Pasyente (opsyonal &mdash; alang sa imong naka-print nga ulat)</span><span class="lang-hidden" data-lang="kap">Impormasyon ning Pasyente (opsyonal &mdash; para king naka-print a ulat mo)</span></div>
+  <div class="prom-pi-grid">
+    <div class="prom-pi-field"><label><span data-lang="en">Name</span><span class="lang-hidden" data-lang="tl">Pangalan</span><span class="lang-hidden" data-lang="ceb">Ngalan</span><span class="lang-hidden" data-lang="kap">Lagyu</span></label><input type="text" id="piName" placeholder="e.g. Juan dela Cruz"></div>
+    <div class="prom-pi-field"><label><span data-lang="en">Age</span><span class="lang-hidden" data-lang="tl">Edad</span><span class="lang-hidden" data-lang="ceb">Edad</span><span class="lang-hidden" data-lang="kap">Edad</span></label><input type="number" id="piAge" placeholder="e.g. 58" min="1" max="120"></div>
+    <div class="prom-pi-field"><label><span data-lang="en">Sex</span><span class="lang-hidden" data-lang="tl">Kasarian</span><span class="lang-hidden" data-lang="ceb">Sekso</span><span class="lang-hidden" data-lang="kap">Kasarian</span></label><select id="piSex"><option value="">&#8212;</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
+    <div class="prom-pi-field"><label><span data-lang="en">Date</span><span class="lang-hidden" data-lang="tl">Petsa</span><span class="lang-hidden" data-lang="ceb">Petsa</span><span class="lang-hidden" data-lang="kap">Petsa</span></label><input type="date" id="piDate"></div>
+  </div>
+</div>
+
 <!-- ── WI-NRS ── -->
 <div class="calc-box">
   <h3>
@@ -1943,6 +1966,7 @@ html[data-theme="dark"] .sc-card{background:#1a2535;border-color:#2a3548;}
     <span class="lang-hidden" data-lang="ceb">Ang mga clinical trial alang sa difelikefalin nag-enroll sa mga pasyente nga adunay WI-NRS ≥ 7. Ang iskor nga ≥ 7 kasagarang giisip nga grabe ug nagkinahanglan og pagrepaso sa pagtambal.</span>
     <span class="lang-hidden" data-lang="kap">Deng clinical trial para king difelikefalin nag-enroll deng pasyente a maki WI-NRS ≥ 7. Ing iskor a ≥ 7 karaniwan itinuturing a malubha at nangangailangan ning pagrepaso ning paggamot.</span>
   </p>
+<button class="itch-print-btn" onclick="itchPrintReport('winrs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span data-lang="en">Download / Print WI-NRS Report</span><span class="lang-hidden" data-lang="tl">I-download / I-print ang WI-NRS Ulat</span><span class="lang-hidden" data-lang="ceb">I-download / I-print ang WI-NRS Ulat</span><span class="lang-hidden" data-lang="kap">I-download / I-print ing WI-NRS Ulat</span></button>
 </div>
 
 <!-- ── 5-D ITCH SCALE ── -->
@@ -2315,6 +2339,8 @@ html[data-theme="dark"] .sc-card{background:#1a2535;border-color:#2a3548;}
     </div>
   </div>
 
+<button class="itch-print-btn" onclick="itchPrintReport('fived')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span data-lang="en">Download / Print 5-D Itch Scale Report</span><span class="lang-hidden" data-lang="tl">I-download / I-print ang 5-D Itch Scale Ulat</span><span class="lang-hidden" data-lang="ceb">I-download / I-print ang 5-D Itch Scale Ulat</span><span class="lang-hidden" data-lang="kap">I-download / I-print ing 5-D Itch Scale Ulat</span></button>
+
   <p class="scale-ref">
     <span data-lang="en">Reference: Elman S et al. The 5-D itch scale: a new measure of pruritus. Br J Dermatol. 2010;162(3):587–93. Adapted for patient self-assessment; not a clinical diagnostic tool.</span>
     <span class="lang-hidden" data-lang="tl">Sanggunian: Elman S et al. Br J Dermatol. 2010;162(3):587–93. Inangkop para sa sariling pagsusuri ng pasyente; hindi isang klinikal na diagnostic na kasangkapan.</span>
@@ -2497,6 +2523,72 @@ function toggleDark(){const on=document.documentElement.getAttribute('data-theme
 const GLANG_KEY='wgmr-lang';
 function setLang(lang){localStorage.setItem(GLANG_KEY,lang);['en','tl','ceb','kap'].forEach(l=>{document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{el.classList.toggle('lang-hidden',l!==lang);});const btn=document.getElementById('glb-'+l);if(btn)btn.classList.toggle('active',l===lang);});}
 (function(){const saved=localStorage.getItem(GLANG_KEY)||'en';if(saved!=='en')setLang(saved);})();
+function itchGetPI(){var n=(document.getElementById('piName')||{}).value||'—';var a=(document.getElementById('piAge')||{}).value||'—';var sx=(document.getElementById('piSex')||{}).value||'—';var de=document.getElementById('piDate');var dt=de&&de.value?new Date(de.value+'T00:00:00').toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}):new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'});return{n:n,a:a,s:sx,d:dt};}
+function itchPrintReport(tool){
+  var pi=itchGetPI();
+  var css='*{box-sizing:border-box;}body{font-family:Arial,sans-serif;font-size:13px;color:#1e2a38;margin:0 auto;padding:28px;max-width:740px;}.rh{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #1a6b72;padding-bottom:14px;margin-bottom:20px;}.rsite{font-size:10px;color:#888;margin-bottom:3px;}.rtitle{font-size:20px;font-weight:800;color:#1a6b72;margin:0;}.rdate{font-size:12px;color:#888;white-space:nowrap;margin-top:4px;}.rpi{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;background:#f4f6f9;border-radius:8px;padding:14px;margin-bottom:20px;}.rpi-i span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:3px;}.rpi-i strong{font-size:15px;}.rscore{color:white;border-radius:10px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px;}.rscore-n{font-size:44px;font-weight:800;line-height:1;min-width:80px;text-align:center;}.rscore-i h3{margin:0 0 4px;font-size:16px;font-weight:700;}.rscore-i p{margin:0;font-size:13px;opacity:.85;line-height:1.5;}.rt{width:100%;border-collapse:collapse;font-size:12px;}.rt th{background:#f4f6f9;font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;text-align:left;border-bottom:2px solid #e2e8f0;}.rt td{padding:6px 10px;border-bottom:1px solid #f0f4f8;}.rt tr:nth-child(even) td{background:#fafbfc;}.rdis{font-size:10px;color:#aaa;margin-top:20px;padding-top:10px;border-top:1px solid #e2e8f0;line-height:1.6;}.rref{font-size:10px;color:#aaa;margin-top:6px;font-style:italic;}@media print{body{padding:0;}@page{margin:15mm;size:A4;}}';
+  var html='';
+  if(tool==='winrs'){
+    var v=parseInt((document.getElementById('winrsSlider')||{value:'0'}).value,10);
+    var interp=v===0?'No itch':v<=3?'Mild':v<=6?'Moderate':'Severe';
+    var bg=v<=3?'#166534':v<=6?'#d97706':'#b91c1c';
+    var note=v>=7?'Score ≥7 matches the clinical trial threshold for severe uremic pruritus (KALM-1/KALM-2 for difelikefalin). This warrants a treatment review with your nephrologist.':'Continue monitoring. Bring this score to your next dialysis review.';
+    html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>WI-NRS Report<\/title><style>'+css+'<\/style><\/head><body>';
+    html+='<div class="rh"><div><div class="rsite">williamriveromd.com · W. G. M. Rivero, MD, FPCP, DPSN · Nephrology<\/div><h1 class="rtitle">WI-NRS — Worst Itch Numeric Rating Scale<\/h1><div class="rsite">Patient Self-Assessment Report<\/div><\/div><div class="rdate">Date: '+pi.d+'<\/div><\/div>';
+    html+='<div class="rpi"><div class="rpi-i"><span>Patient Name<\/span><strong>'+pi.n+'<\/strong><\/div><div class="rpi-i"><span>Age<\/span><strong>'+pi.a+'<\/strong><\/div><div class="rpi-i"><span>Sex<\/span><strong>'+pi.s+'<\/strong><\/div><\/div>';
+    html+='<div class="rscore" style="background:'+bg+'"><div class="rscore-n">'+v+'\/10<\/div><div class="rscore-i"><h3>'+interp+'<\/h3><p>Worst itch in the past 24 hours (0 = no itch, 10 = worst imaginable).<\/p><\/div><\/div>';
+    html+='<table class="rt"><thead><tr><th>Measure<\/th><th>Result<\/th><\/tr><\/thead><tbody>';
+    html+='<tr><td>WI-NRS Score (0–10)<\/td><td><strong>'+v+'<\/strong><\/td><\/tr>';
+    html+='<tr><td>Severity<\/td><td>'+interp+'<\/td><\/tr>';
+    html+='<tr><td>Clinical note<\/td><td>'+note+'<\/td><\/tr>';
+    html+='<\/tbody><\/table>';
+    html+='<p class="rref">Reference: Used in KALM-1, KALM-2 clinical trials. Weisbord SD et al. Clin J Am Soc Nephrol 2019. Adapted for patient self-monitoring.<\/p>';
+    html+='<div class="rdis">This self-assessment was completed by the patient at williamriveromd.com for communication purposes only. Not a medical diagnosis. Please discuss with W. G. M. Rivero, MD, FPCP, DPSN or your attending nephrologist.<\/div><\/body><\/html>';
+  } else if(tool==='fived'){
+    var totalEl=document.getElementById('fivedNum');
+    if(!totalEl||totalEl.textContent==='—'){alert('Please calculate your 5-D score first before printing.');return;}
+    var total=totalEl.textContent;
+    var sev=document.getElementById('fivedSev').textContent;
+    var desc=document.getElementById('fivedDesc').textContent;
+    var box=document.getElementById('fivedTotal');
+    var bg=box.classList.contains('sev-verylow')?'#166534':box.classList.contains('sev-mild')?'#1a6b72':box.classList.contains('sev-moderate')?'#d97706':'#b91c1c';
+    var d1El=document.querySelector('input[name="d1"]:checked');
+    var d2El=document.querySelector('input[name="d2"]:checked');
+    var d3El=document.querySelector('input[name="d3"]:checked');
+    var d1=d1El?parseInt(d1El.value,10):0;
+    var d2=d2El?parseInt(d2El.value,10):0;
+    var d3=d3El?parseInt(d3El.value,10):0;
+    var degL=['—','Absent','Mild','Moderate','Severe','Very Severe'];
+    var durL=['—','None / 0 hrs','Under 2 hrs/day','2–6 hrs/day','6–12 hrs/day','More than 12 hrs/day'];
+    var dirL=['—','Much better','Slightly better','About the same','Slightly worse','Much worse'];
+    var disL=['—','Not at all','A little','Moderately','A lot','Severely'];
+    var acts=['d4-sleep','d4-leisure','d4-housework','d4-work','d4-social'];
+    var actN=['Sleep','Leisure','Housework\/Errands','Work\/School','Social Activities'];
+    var d4sum=0;acts.forEach(function(id){var el=document.getElementById(id);if(el)d4sum+=parseInt(el.value,10);});
+    var d4=Math.round(d4sum\/5);
+    var checked=document.querySelectorAll('input[name="d5"]:checked');
+    var regions=[];checked.forEach(function(c){regions.push(c.value);});
+    var d5Map=[1,2,2,3,3,4,5];var d5=d5Map[Math.min(regions.length,6)];
+    html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>5-D Itch Scale Report<\/title><style>'+css+'<\/style><\/head><body>';
+    html+='<div class="rh"><div><div class="rsite">williamriveromd.com · W. G. M. Rivero, MD, FPCP, DPSN · Nephrology<\/div><h1 class="rtitle">5-D Itch Scale — Full Assessment<\/h1><div class="rsite">Patient Self-Assessment Report<\/div><\/div><div class="rdate">Date: '+pi.d+'<\/div><\/div>';
+    html+='<div class="rpi"><div class="rpi-i"><span>Patient Name<\/span><strong>'+pi.n+'<\/strong><\/div><div class="rpi-i"><span>Age<\/span><strong>'+pi.a+'<\/strong><\/div><div class="rpi-i"><span>Sex<\/span><strong>'+pi.s+'<\/strong><\/div><\/div>';
+    html+='<div class="rscore" style="background:'+bg+'"><div class="rscore-n">'+total+'<\/div><div class="rscore-i"><h3>'+sev+'<\/h3><p>'+desc+'<\/p><\/div><\/div>';
+    html+='<table class="rt"><thead><tr><th>Dimension<\/th><th>Score<\/th><th>Response<\/th><\/tr><\/thead><tbody>';
+    html+='<tr><td><strong>D1 — Degree<\/strong> (intensity)<\/td><td>'+d1+'<\/td><td>'+degL[d1]+'<\/td><\/tr>';
+    html+='<tr><td><strong>D2 — Duration<\/strong> (hrs\/day itching)<\/td><td>'+d2+'<\/td><td>'+durL[d2]+'<\/td><\/tr>';
+    html+='<tr><td><strong>D3 — Direction<\/strong> (vs. 1 wk ago)<\/td><td>'+d3+'<\/td><td>'+dirL[d3]+'<\/td><\/tr>';
+    html+='<tr><td><strong>D4 — Disability<\/strong> (mean of 5 activities)<\/td><td>'+d4+'<\/td><td>'+disL[Math.min(d4,5)]+'<\/td><\/tr>';
+    acts.forEach(function(id,idx){var el=document.getElementById(id);var v=el?parseInt(el.value,10):1;html+='<tr style="color:#666"><td>&nbsp;&nbsp;&nbsp;'+actN[idx]+'<\/td><td>'+v+'<\/td><td>'+disL[Math.min(v,5)]+'<\/td><\/tr>';});
+    html+='<tr><td><strong>D5 — Distribution<\/strong> (body areas)<\/td><td>'+d5+'<\/td><td>'+(regions.length>0?regions.join(', '):'None checked')+'<\/td><\/tr>';
+    html+='<\/tbody><\/table>';
+    html+='<p class="rref">Reference: Elman S et al. Br J Dermatol. 2010;162(3):587–93. Adapted for patient self-monitoring; not a clinical diagnostic tool.<\/p>';
+    html+='<div class="rdis">This self-assessment was completed by the patient at williamriveromd.com for communication purposes only. Not a medical diagnosis. Please discuss with W. G. M. Rivero, MD, FPCP, DPSN or your attending nephrologist.<\/div><\/body><\/html>';
+  }
+  var w=window.open('','_blank','width=820,height=700');
+  if(!w){alert('Please allow pop-ups to download your report.');return;}
+  w.document.write(html);w.document.close();w.focus();setTimeout(function(){w.print();},500);
+}
+
 </script>
 
 <button class="print-btn" onclick="window.print()" aria-label="Print this guide">
