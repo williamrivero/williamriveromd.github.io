@@ -1341,6 +1341,14 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
   <a href="index.html" class="back">← All Guides</a>
 </header>
 
+<div class="guide-lang-bar" style="background:rgba(10,18,32,.96);padding:8px 32px;border-bottom:1px solid rgba(255,255,255,.06);">
+  <span class="lang-lbl">Language:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setGuideLang('en')">English</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setGuideLang('tl')">Filipino</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setGuideLang('ceb')">Cebuano</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setGuideLang('kap')">Kapampangan</button>
+</div>
+
 <!-- ════════════════════════════════════════════════════════════════════════════
      PATIENT / CLINICIAN TOGGLE
 ════════════════════════════════════════════════════════════════════════════ -->
@@ -2577,7 +2585,41 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-30% 0px -60% 0px' });
 document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+
+// ── LANGUAGE SYSTEM ──────────────────────────────────────────────────────────
+function setGuideLang(lang) {
+  const langs = ['en','tl','ceb','kap'];
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    el.classList.toggle('lang-hidden', el.dataset.lang !== lang);
+  });
+  langs.forEach(l => {
+    const btn = document.getElementById('glb-' + l);
+    if (btn) btn.classList.toggle('active', l === lang);
+  });
+  try { localStorage.setItem('guideLang', lang); } catch(e) {}
+}
+(function() {
+  try {
+    const lang = localStorage.getItem('guideLang') || 'en';
+    setGuideLang(lang);
+  } catch(e) { setGuideLang('en'); }
+})();
 </script>
 
+<button class="print-btn" onclick="window.print()" aria-label="Print this guide">
+  <span class="p-tip">Print / Save PDF</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+  </svg>
+</button>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/symptom-checker-widget.js" defer></script>
 </body>
 </html>
