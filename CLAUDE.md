@@ -46,6 +46,17 @@ Run `patch_hero_fetchpriority.py` after adding any new guide so its first
 idempotent — a guide whose hero is already patched is skipped.
 
 ```bash
+python3 patch_hero_fullwidth.py              # make every guide's hero image full-width
+python3 patch_hero_fullwidth.py --dry-run    # preview changes without writing
+python3 patch_hero_fullwidth.py --guide understanding-ckd.html  # single guide
+```
+
+Run `patch_hero_fullwidth.py` after adding any new guide to ensure the hero
+(LCP) image figure has no `max-width` constraint and no centering `auto` margin,
+and that the `<img>` itself has `width:100%;height:auto;display:block`. Safe to
+re-run (idempotent). Run after `patch_hero_fetchpriority.py`.
+
+```bash
 python3 patch_mode_cls.py                 # remove physician-mode restore-on-load (CLS fix)
 python3 patch_mode_cls.py --dry-run       # preview changes without writing
 python3 patch_mode_cls.py --guide el-nino-heat-dialysis.html  # single guide
