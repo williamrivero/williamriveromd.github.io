@@ -1159,6 +1159,21 @@ html[data-theme="dark"] .algo-content strong{color:#e8eaf0;}
 .ref-cell{background:rgba(255,255,255,.06);border-radius:8px;padding:14px;text-align:center;}
 .ref-cell-num{font-family:'Lora',serif;font-size:24px;font-weight:600;color:var(--gold-light);}
 .ref-cell-lbl{font-size:11.5px;color:rgba(255,255,255,.7);margin-top:4px;letter-spacing:.04em;display:block;}
+/* ── FSS CALCULATOR ── */
+.fss-item{margin-bottom:20px;}
+.fss-q{font-size:14.5px;font-weight:500;color:var(--navy);margin-bottom:10px;line-height:1.5;}
+.fss-q span{display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--teal);color:white;font-size:12px;font-weight:700;line-height:22px;text-align:center;margin-right:8px;flex-shrink:0;}
+.fss-scale{display:flex;gap:6px;align-items:stretch;}
+.fss-scale label{flex:1;cursor:pointer;}
+.fss-scale label input{display:none;}
+.fss-scale label span{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1.5px solid var(--border);border-radius:8px;padding:8px 4px;font-size:13px;font-weight:600;color:var(--text-muted);background:var(--bg);transition:all .15s;min-height:48px;text-align:center;line-height:1.2;}
+.fss-scale label input:checked + span{background:var(--teal);border-color:var(--teal);color:white;}
+.fss-scale label:hover span{border-color:var(--teal);color:var(--teal);}
+.fss-anchors{display:flex;justify-content:space-between;font-size:11px;color:var(--text-faint);margin-top:5px;padding:0 2px;}
+html[data-theme="dark"] .fss-scale label span{background:#1a2535;border-color:#2a3548;color:#9baab8;}
+html[data-theme="dark"] .fss-scale label input:checked + span{background:var(--teal);border-color:var(--teal);color:white;}
+html[data-theme="dark"] .fss-q{color:#e8eaf0;}
+@media(max-width:500px){.fss-scale{gap:3px;}.fss-scale label span{font-size:12px;padding:6px 2px;}}
 @media print{.algo-card,.ref-band{border:1px solid #999!important;background:white!important;}
   .ref-band h4,.ref-band p,.ref-cell-lbl{color:black!important;}.ref-cell-num{color:#333!important;}}
 .mechanism-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:28px 0;}
@@ -1272,6 +1287,7 @@ html[data-theme="dark"] .qa-a{border-color:#2a3548;color:#c0cad8;}
   <div class="nav-pills">
     <a class="nav-pill mode-patient-pill" href="#what">What Is It</a>
     <a class="nav-pill mode-patient-pill" href="#mechanisms">Why It Happens</a>
+    <a class="nav-pill mode-patient-pill" href="#fss">FSS Calculator</a>
     <a class="nav-pill mode-patient-pill" href="#treatments">Treatments</a>
     <a class="nav-pill mode-patient-pill" href="#qa">Q&amp;A</a>
     <a class="nav-pill mode-patient-pill" href="#lifestyle">Lifestyle Tips</a>
@@ -1339,6 +1355,22 @@ html[data-theme="dark"] .qa-a{border-color:#2a3548;color:#c0cad8;}
       <h4>Anemia amplifies all five</h4>
       <p>A hemoglobin below 10 g/dL dramatically worsens every mechanism above — less oxygen-carrying capacity means less reserve for every insult. Correcting anemia with erythropoietin and IV iron is the highest-yield single intervention for PDF. KDIGO target: Hgb 10–11.5 g/dL.</p>
     </div>
+  </div>
+</section>
+
+<section class="section mode-patient" id="fss">
+  <div class="section-tag">Self-Assessment Tool</div>
+  <h2>Rate your post-dialysis fatigue — <em>the FSS.</em></h2>
+  <p>The <strong>Fatigue Severity Scale (FSS)</strong> is a validated 9-item questionnaire used in hemodialysis research worldwide. Rate each statement based on how you have felt <em>during the past week, including after your dialysis sessions.</em> A mean score of <strong>4 or higher</strong> meets the clinical threshold for significant fatigue — worth bringing to your nephrologist.</p>
+
+  <div class="calc-wrap" id="fss-calc">
+    <div id="fss-questions"></div>
+    <div style="display:flex;gap:12px;align-items:center;margin-top:24px;flex-wrap:wrap;">
+      <button onclick="calcFSS()" style="background:var(--teal);color:white;border:none;border-radius:8px;padding:11px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background .15s;" onmouseover="this.style.background='#145c63'" onmouseout="this.style.background='var(--teal)'">Calculate My Score</button>
+      <button onclick="resetFSS()" style="background:transparent;color:var(--text-muted);border:1px solid var(--border);border-radius:8px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">Reset</button>
+    </div>
+    <div id="fss-result" class="calc-result-box" style="margin-top:20px;"></div>
+    <p style="font-size:11.5px;color:var(--text-muted);margin-top:16px;line-height:1.6;">FSS developed by Krupp et al. (1989). Validated in hemodialysis populations. This tool is for educational self-assessment only — not a diagnostic instrument. Discuss your result with your nephrologist.</p>
   </div>
 </section>
 
@@ -1778,6 +1810,111 @@ html[data-theme="dark"] .qa-a{border-color:#2a3548;color:#c0cad8;}
 </footer>
 
 <script>
+/* ── FSS CALCULATOR ── */
+(function(){
+  const FSS_ITEMS = [
+    'My motivation is lower when I am fatigued.',
+    'Exercise brings on my fatigue.',
+    'I am easily fatigued.',
+    'Fatigue interferes with my physical functioning.',
+    'Fatigue causes frequent problems for me.',
+    'My fatigue prevents sustained physical functioning.',
+    'Fatigue interferes with carrying out certain duties and responsibilities.',
+    'Fatigue is among my three most disabling symptoms.',
+    'Fatigue interferes with my work, family, or social life.'
+  ];
+
+  const container = document.getElementById('fss-questions');
+  if (!container) return;
+
+  FSS_ITEMS.forEach((q, i) => {
+    const n = i + 1;
+    let scaleHTML = '<div class="fss-scale">';
+    for (let v = 1; v <= 7; v++) {
+      scaleHTML += `<label><input type="radio" name="fss${n}" value="${v}"><span>${v}</span></label>`;
+    }
+    scaleHTML += '</div><div class="fss-anchors"><span>Strongly disagree</span><span>Strongly agree</span></div>';
+    container.insertAdjacentHTML('beforeend',
+      `<div class="fss-item">
+        <div class="fss-q"><span>${n}</span>${q}</div>
+        ${scaleHTML}
+      </div>`
+    );
+  });
+
+  window.calcFSS = function() {
+    const scores = [];
+    for (let i = 1; i <= 9; i++) {
+      const checked = document.querySelector(`input[name="fss${i}"]:checked`);
+      if (!checked) {
+        alert(`Please answer question ${i} before calculating.`);
+        return;
+      }
+      scores.push(parseInt(checked.value));
+    }
+    const total = scores.reduce((a, b) => a + b, 0);
+    const mean = total / 9;
+    const result = document.getElementById('fss-result');
+
+    let color, bg, border, badge, interp, action;
+    if (mean < 3) {
+      color = 'var(--green)'; bg = 'var(--green-soft)'; border = 'var(--green)';
+      badge = 'Below threshold';
+      interp = 'Your fatigue score is below the clinical threshold. This suggests your post-dialysis fatigue is not significantly impacting your daily life at this time.';
+      action = 'Continue monitoring. If fatigue worsens, bring this score to your next nephrology appointment.';
+    } else if (mean < 4) {
+      color = 'var(--amber)'; bg = 'var(--amber-soft)'; border = '#d97706';
+      badge = 'Borderline';
+      interp = 'Your fatigue score is approaching the clinical threshold. Post-dialysis fatigue may be affecting your daily functioning.';
+      action = 'Mention your fatigue at your next nephrology visit. Your team may want to check your hemoglobin, Kt/V, and albumin.';
+    } else if (mean < 5.5) {
+      color = 'var(--red)'; bg = 'var(--red-soft)'; border = 'var(--red)';
+      badge = 'Significant fatigue (FSS ≥ 4)';
+      interp = 'Your score meets the validated clinical threshold for significant post-dialysis fatigue. This level of fatigue is associated with reduced quality of life and often has treatable underlying causes.';
+      action = 'Bring this result to your next nephrology appointment. Ask your team to check your hemoglobin, Kt/V, dialysis adequacy, and consider a sleep screening.';
+    } else {
+      color = '#7f1d1d'; bg = '#fff0f0'; border = '#7f1d1d';
+      badge = 'Severe fatigue';
+      interp = 'Your fatigue score is in the severe range. This significantly exceeds the clinical threshold and warrants prompt evaluation.';
+      action = 'Please discuss this urgently with your nephrologist or dialysis team. Severe fatigue at this level may indicate undertreated anemia, inadequate dialysis, or other correctable causes.';
+    }
+
+    result.style.display = 'block';
+    result.style.background = bg;
+    result.style.borderColor = border;
+    result.innerHTML = `
+      <div class="calc-metrics-row" style="margin-bottom:14px;">
+        <div class="calc-metric-card">
+          <div class="cmv" style="color:${color};font-family:'Lora',serif;font-size:36px;font-weight:600;">${mean.toFixed(1)}</div>
+          <div class="cml">Mean FSS Score</div>
+          <div class="cmt">out of 7.0</div>
+        </div>
+        <div class="calc-metric-card">
+          <div class="cmv" style="color:${color};font-family:'Lora',serif;font-size:36px;font-weight:600;">${total}</div>
+          <div class="cml">Total Score</div>
+          <div class="cmt">out of 63</div>
+        </div>
+        <div class="calc-metric-card">
+          <div class="cmv" style="color:${color};font-family:'Lora',serif;font-size:24px;font-weight:700;margin-top:4px;">${mean >= 4 ? '≥ 4' : '< 4'}</div>
+          <div class="cml">Clinical Threshold</div>
+          <div class="cmt">${mean >= 4 ? 'Met' : 'Not met'}</div>
+        </div>
+      </div>
+      <div style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:8px;background:${color};color:white;margin-bottom:12px;">${badge}</div>
+      <div class="calc-verdict-text">${interp}</div>
+      <div class="calc-action-text"><strong>What to do:</strong> ${action}</div>
+    `;
+    result.scrollIntoView({behavior:'smooth', block:'nearest'});
+  };
+
+  window.resetFSS = function() {
+    document.querySelectorAll('[name^="fss"]').forEach(r => r.checked = false);
+    const result = document.getElementById('fss-result');
+    result.style.display = 'none';
+    result.innerHTML = '';
+  };
+})();
+
 const DARK_KEY='wgmr-dark';
 function applyDark(on){document.documentElement.setAttribute('data-theme',on?'dark':'light');const btn=document.getElementById('darkToggle');const lbl=document.getElementById('darkLabel');const ico=document.getElementById('darkIcon');if(btn)btn.classList.toggle('active',on);if(lbl)lbl.textContent=on?'Light':'Dark';if(ico)ico.innerHTML=on?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';}
 function toggleDark(){const on=document.documentElement.getAttribute('data-theme')!=='dark';localStorage.setItem(DARK_KEY,on?'1':'0');applyDark(on);}
