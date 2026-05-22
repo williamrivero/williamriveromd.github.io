@@ -2409,5 +2409,25 @@ function emailAction(key, btnEl, variant) {
 }
 </script>
 
+<script>
+// Keep the library card's guide count in sync with guides/index.html.
+// Counts guide tiles the same way guides/index does (excludes downloads),
+// so the homepage never drifts as guides are added.
+(function syncLibraryGuideCount(){
+  const libCount = document.getElementById('lib-guide-count');
+  if (!libCount) return;
+  fetch('guides/index.html', {cache:'no-cache'})
+    .then(r => r.ok ? r.text() : Promise.reject(r.status))
+    .then(html => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const guideTotal = Array.from(doc.querySelectorAll('a.guide-tile'))
+        .filter(t => !(t.dataset.tags || '').toLowerCase().includes('download'))
+        .length;
+      if (guideTotal) libCount.textContent = guideTotal;
+    })
+    .catch(err => console.warn('Library guide count sync skipped:', err));
+})();
+</script>
+
 </body>
 </html>
