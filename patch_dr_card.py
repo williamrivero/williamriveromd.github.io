@@ -43,7 +43,7 @@ NEW_DR_CARD = '''\
 </div>
 <div class="dr-qr">
 <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
-<p class="dr-qr-label"><span data-lang="en">Scan to save contact</span><span data-lang="tl" class="lang-hidden">I-scan para ma-save</span><span data-lang="ceb" class="lang-hidden">I-scan para ma-save</span><span data-lang="kap" class="lang-hidden">I-scan para ma-save</span></p>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span><span data-lang="tl" class="lang-hidden">I-scan at i-save</span><span data-lang="ceb" class="lang-hidden">I-scan ug i-save</span><span data-lang="kap" class="lang-hidden">I-scan at i-save</span></p>
 </div>
 </div>
 </div>
