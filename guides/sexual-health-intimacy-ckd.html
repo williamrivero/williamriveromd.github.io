@@ -1218,6 +1218,12 @@
     html[data-theme="dark"] .redflag-list li span{color:#fca5a5;}
 
     /* ── IIEF-5 CALCULATOR ── */
+    .calc-btn{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;background:var(--teal);color:white;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s;}
+    .calc-btn:hover{background:#145c63;}
+    .calc-btn.secondary{background:var(--text-muted);}
+    .calc-btn.secondary:hover{background:#384758;}
+    .calc-btn.print-btn{background:var(--navy);}
+    .calc-btn.print-btn:hover{background:#162848;}
     .iief-item{margin-bottom:24px;}
     .iief-q{font-size:14px;font-weight:500;color:var(--navy);margin-bottom:10px;line-height:1.55;display:flex;gap:8px;align-items:flex-start;}
     .iief-q .iief-num{display:inline-flex;width:22px;height:22px;min-width:22px;border-radius:50%;background:var(--teal);color:white;font-size:12px;font-weight:700;align-items:center;justify-content:center;margin-top:1px;}
@@ -1269,6 +1275,19 @@
     .md-hero p{color:rgba(255,255,255,.82);font-size:15px;line-height:1.75;margin-bottom:0;}
 
     /* img-placeholder styles are in the master CSS block above */
+
+    /* ── IIEF PATIENT INFO ── */
+    .iief-patient-info{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:24px;}
+    .iief-info-label{font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+    .iief-optional-tag{font-weight:500;color:var(--text-faint);text-transform:none;letter-spacing:0;font-size:11px;background:var(--border);padding:2px 8px;border-radius:10px;}
+    .iief-info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
+    .iief-info-field label{display:block;font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
+    .iief-info-field input,.iief-info-field select{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--white);transition:border-color .15s;}
+    .iief-info-field input:focus,.iief-info-field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.1);}
+    .iief-today-row{display:flex;align-items:center;gap:8px;margin-top:6px;}
+    .iief-today-row label{font-size:12px;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;gap:5px;font-weight:500;text-transform:none;letter-spacing:0;}
+    html[data-theme="dark"] .iief-patient-info{background:#1a2535;border-color:#2a3548;}
+    html[data-theme="dark"] .iief-info-field input,html[data-theme="dark"] .iief-info-field select{background:#141c2a;border-color:#2a3548;color:var(--text);}
 
     @media print{.mode-physician,.nav-pill,.guide-toggle-bar,.site-header{display:none!important;}}
   </style>
@@ -1579,11 +1598,45 @@
   </div>
 
   <div class="calc-wrap" id="iief-calc">
-    <div id="iief-questions"></div>
-    <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
-      <button class="calc-btn" onclick="calcIIEF()">Calculate My Score</button>
-      <button class="calc-btn" style="background:var(--text-muted);color:white;" onclick="resetIIEF()">Reset</button>
+
+    <div class="iief-patient-info">
+      <div class="iief-info-label">Patient Information <span class="iief-optional-tag">Optional — appears on printout</span></div>
+      <div class="iief-info-grid">
+        <div class="iief-info-field">
+          <label for="iief-name">Name</label>
+          <input type="text" id="iief-name" placeholder="e.g. Juan dela Cruz" autocomplete="name">
+        </div>
+        <div class="iief-info-field">
+          <label for="iief-age">Age</label>
+          <input type="number" id="iief-age" placeholder="e.g. 52" min="18" max="120">
+        </div>
+        <div class="iief-info-field">
+          <label for="iief-sex">Sex</label>
+          <select id="iief-sex">
+            <option value="">— select —</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div class="iief-info-field">
+          <label for="iief-date">Date</label>
+          <input type="date" id="iief-date">
+          <div class="iief-today-row">
+            <input type="checkbox" id="iief-today" onchange="toggleTodayDate(this)">
+            <label for="iief-today">Use today's date</label>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div id="iief-questions"></div>
+
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;align-items:center;">
+      <button class="calc-btn" onclick="calcIIEF()">Calculate My Score</button>
+      <button class="calc-btn print-btn" id="iief-print-btn" style="display:none;" onclick="printIIEF()">🖨 Print / Save PDF</button>
+      <button class="calc-btn secondary" onclick="resetIIEF()">Reset All</button>
+    </div>
+
     <div id="iief-result" class="calc-result-box" style="display:none;margin-top:18px;"></div>
     <p style="font-size:12px;color:var(--text-faint);margin-top:14px;line-height:1.6;">Rosen RC et al. <em>Urology</em> 1999;49:83-90. This calculator is a clinical screening tool, not a diagnostic instrument. A low score indicates you should discuss erectile function with your nephrologist or urologist.</p>
   </div>
@@ -2122,6 +2175,8 @@ const GUIDE_TITLES = {
     }
   ];
 
+  let lastResult = null; /* stored for printout */
+
   function render(){
     const wrap = document.getElementById('iief-questions');
     if(!wrap) return;
@@ -2143,60 +2198,151 @@ const GUIDE_TITLES = {
     `).join('');
   }
 
-  window.calcIIEF = function(){
+  function getScore(){
     let total = 0;
-    let allAnswered = true;
     for(let i = 0; i < ITEMS.length; i++){
       const sel = document.querySelector(`input[name="iief${i}"]:checked`);
-      if(!sel){ allAnswered = false; break; }
+      if(!sel) return null;
       total += parseInt(sel.value, 10);
     }
+    return total;
+  }
+
+  function getAnswerLabels(){
+    return ITEMS.map((item, i) => {
+      const sel = document.querySelector(`input[name="iief${i}"]:checked`);
+      return {q: item.q, a: sel ? item.opts.find(o => o.v == sel.value).l : '—', v: sel ? sel.value : '—'};
+    });
+  }
+
+  function getCategory(total){
+    if(total >= 22) return {category:'No ED',          color:'#166534', bg:'#f0fdf4', border:'#86efac', advice:'Your score suggests no clinically significant erectile dysfunction. If you still have concerns, discuss them with your nephrologist at your next visit.'};
+    if(total >= 17) return {category:'Mild ED',         color:'#14532d', bg:'#dcfce7', border:'#86efac', advice:'Mild ED is common in kidney disease. Optimising dialysis adequacy, correcting anaemia, and reviewing medications often produces significant improvement. Discuss with your nephrologist.'};
+    if(total >= 12) return {category:'Mild–Moderate ED',color:'#92400e', bg:'#fffbeb', border:'#fcd34d', advice:'This degree of ED warrants a formal evaluation. Your nephrologist can check hormone levels, review your medications, and discuss PDE5 inhibitor therapy (sildenafil/tadalafil) with appropriate cardiovascular clearance.'};
+    if(total >= 8)  return {category:'Moderate ED',     color:'#9a3412', bg:'#fff7ed', border:'#fdba74', advice:'Moderate ED has multiple treatable causes in kidney disease. Please bring this score to your nephrologist. A hormonal panel, medication review, and cardiovascular evaluation are appropriate next steps.'};
+    return               {category:'Severe ED',         color:'#7f1d1d', bg:'#fff1f2', border:'#fecdd3', advice:'Severe ED significantly impacts quality of life and is worth prioritising. Please show this result to your nephrologist. Specialist urology referral may be appropriate alongside nephrology management.'};
+  }
+
+  window.toggleTodayDate = function(cb){
+    const dateField = document.getElementById('iief-date');
+    if(cb.checked){
+      const now = new Date();
+      dateField.value = now.toISOString().split('T')[0];
+      dateField.disabled = true;
+    } else {
+      dateField.disabled = false;
+    }
+  };
+
+  window.calcIIEF = function(){
     const box = document.getElementById('iief-result');
-    if(!allAnswered){
-      box.style.display='block';
-      box.style.background='#fff7ed';
-      box.style.border='1.5px solid #fed7aa';
-      box.style.borderRadius='10px';
-      box.style.padding='14px 16px';
+    const total = getScore();
+    if(total === null){
+      box.style.cssText='display:block;background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:14px 16px;margin-top:18px;';
       box.innerHTML='<strong style="color:#9a3412;">Please answer all 5 questions before calculating.</strong>';
+      document.getElementById('iief-print-btn').style.display='none';
+      lastResult = null;
       return;
     }
-    let category, color, bg, border, advice;
-    if(total >= 22){
-      category='No ED'; color='#166534'; bg='#f0fdf4'; border='#86efac';
-      advice='Your score suggests no clinically significant erectile dysfunction. If you still have concerns, discuss them with your nephrologist at your next visit.';
-    } else if(total >= 17){
-      category='Mild ED'; color='#14532d'; bg='#dcfce7'; border='#86efac';
-      advice='Mild ED is common in kidney disease. Optimising dialysis adequacy, correcting anaemia, and reviewing medications often produces significant improvement. Discuss with your nephrologist.';
-    } else if(total >= 12){
-      category='Mild to Moderate ED'; color='#92400e'; bg='#fffbeb'; border='#fcd34d';
-      advice='This degree of ED warrants a formal evaluation. Your nephrologist can check hormone levels, review your medications, and discuss PDE5 inhibitor therapy (sildenafil/tadalafil) with appropriate cardiovascular clearance.';
-    } else if(total >= 8){
-      category='Moderate ED'; color='#9a3412'; bg='#fff7ed'; border='#fdba74';
-      advice='Moderate ED has multiple treatable causes in kidney disease. Please bring this score to your nephrologist. A hormonal panel, medication review, and cardiovascular evaluation are appropriate next steps.';
-    } else {
-      category='Severe ED'; color='#7f1d1d'; bg='#fff1f2'; border='#fecdd3';
-      advice='Severe ED significantly impacts quality of life and is worth prioritising. Please show this result to your nephrologist. Specialist urology referral may be appropriate alongside nephrology management.';
-    }
-    box.style.display='block';
-    box.style.background=bg;
-    box.style.border=`1.5px solid ${border}`;
-    box.style.borderRadius='10px';
-    box.style.padding='16px 18px';
+    const r = getCategory(total);
+    lastResult = {total, ...r, answers: getAnswerLabels()};
+    box.style.cssText=`display:block;background:${r.bg};border:1.5px solid ${r.border};border-radius:10px;padding:16px 18px;margin-top:18px;`;
     box.innerHTML=`
-      <div style="font-size:13px;color:${color};margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">IIEF-5 Result</div>
-      <div style="font-size:26px;font-weight:800;color:${color};line-height:1;">${total} / 25</div>
-      <div style="font-size:15px;font-weight:700;color:${color};margin:4px 0 10px;">${category}</div>
-      <div style="font-size:13px;color:${color};line-height:1.65;">${advice}</div>
+      <div style="font-size:13px;color:${r.color};margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">IIEF-5 Result</div>
+      <div style="font-size:26px;font-weight:800;color:${r.color};line-height:1;">${total} / 25</div>
+      <div style="font-size:15px;font-weight:700;color:${r.color};margin:4px 0 10px;">${r.category}</div>
+      <div style="font-size:13px;color:${r.color};line-height:1.65;">${r.advice}</div>
     `;
+    document.getElementById('iief-print-btn').style.display='inline-flex';
     box.scrollIntoView({behavior:'smooth',block:'nearest'});
   };
 
+  window.printIIEF = function(){
+    if(!lastResult) return;
+    const name = document.getElementById('iief-name').value.trim();
+    const age  = document.getElementById('iief-age').value.trim();
+    const sex  = document.getElementById('iief-sex').value;
+    const date = document.getElementById('iief-date').value;
+    const dateStr = date ? new Date(date + 'T00:00:00').toLocaleDateString('en-PH', {year:'numeric',month:'long',day:'numeric'}) : '';
+
+    const infoRows = [
+      name && `<tr><td>Name</td><td><strong>${name}</strong></td></tr>`,
+      age  && `<tr><td>Age</td><td><strong>${age} years old</strong></td></tr>`,
+      sex  && `<tr><td>Sex</td><td><strong>${sex}</strong></td></tr>`,
+      dateStr && `<tr><td>Date</td><td><strong>${dateStr}</strong></td></tr>`
+    ].filter(Boolean).join('');
+
+    const answersHtml = lastResult.answers.map((a,i) => `
+      <tr>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#374151;font-size:13px;vertical-align:top;width:60%">${i+1}. ${a.q}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#1f3864;font-weight:600;font-size:13px;text-align:center;">${a.a} (${a.v})</td>
+      </tr>
+    `).join('');
+
+    const win = window.open('','_blank','width=820,height=1000');
+    win.document.write(`<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<title>IIEF-5 Result — williamriveromd.com</title>
+<style>
+  body{font-family:'Segoe UI',Arial,sans-serif;color:#1e2a38;margin:0;padding:0;background:#fff;}
+  .page{max-width:680px;margin:0 auto;padding:40px 36px;}
+  .header{background:#1f3864;color:white;border-radius:12px 12px 0 0;padding:24px 28px;margin-bottom:0;}
+  .header h1{margin:0 0 4px;font-size:18px;font-weight:700;letter-spacing:.01em;}
+  .header p{margin:0;font-size:12px;color:rgba(255,255,255,.7);}
+  .patient-box{background:#f0f4f8;border:1px solid #d1d9e0;border-top:none;padding:16px 28px;margin-bottom:24px;}
+  .patient-box table{border-collapse:collapse;width:100%;}
+  .patient-box td{padding:4px 0;font-size:13px;color:#374151;}
+  .patient-box td:first-child{color:#6b7280;width:80px;}
+  h2{font-size:14px;font-weight:700;color:#1f3864;text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px;}
+  .answers-table{width:100%;border-collapse:collapse;margin-bottom:28px;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;}
+  .answers-table thead th{background:#1f3864;color:white;padding:9px 10px;font-size:12px;font-weight:600;text-align:left;}
+  .answers-table thead th:last-child{text-align:center;width:40%;}
+  .result-box{border-radius:10px;padding:20px 24px;margin-bottom:24px;}
+  .result-score{font-size:32px;font-weight:800;line-height:1;}
+  .result-cat{font-size:17px;font-weight:700;margin:4px 0 12px;}
+  .result-advice{font-size:13px;line-height:1.7;}
+  .footer{font-size:11px;color:#9ca3af;border-top:1px solid #e5e7eb;padding-top:14px;margin-top:8px;line-height:1.6;}
+  .footer strong{color:#6b7280;}
+  @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+</style>
+</head><body><div class="page">
+<div class="header">
+  <h1>IIEF-5 Self-Assessment · Sexual Health &amp; CKD</h1>
+  <p>W. G. M. Rivero, MD, FPCP, DPSN · Nephrology · williamriveromd.com</p>
+</div>
+${infoRows ? `<div class="patient-box"><table>${infoRows}</table></div>` : '<div style="margin-bottom:24px;"></div>'}
+<h2>Questions &amp; Responses</h2>
+<p style="font-size:12px;color:#6b7280;margin:0 0 10px;"><em>Based on your experience over the past 4 weeks.</em></p>
+<table class="answers-table">
+  <thead><tr><th>Question</th><th>Response (score)</th></tr></thead>
+  <tbody>${answersHtml}</tbody>
+</table>
+<h2>Result</h2>
+<div class="result-box" style="background:${lastResult.bg};border:2px solid ${lastResult.border};">
+  <div style="font-size:12px;color:${lastResult.color};font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">IIEF-5 Score</div>
+  <div class="result-score" style="color:${lastResult.color};">${lastResult.total} / 25</div>
+  <div class="result-cat" style="color:${lastResult.color};">${lastResult.category}</div>
+  <div class="result-advice" style="color:${lastResult.color};">${lastResult.advice}</div>
+</div>
+<div class="footer">
+  <strong>Reference:</strong> Rosen RC et al. <em>Urology</em> 1999;49:83-90.<br>
+  This is a validated clinical screening tool, not a diagnostic instrument. Please bring this printout to your consultation with Dr. Rivero or your nephrologist.<br>
+  Generated from <strong>williamriveromd.com/guides/sexual-health-intimacy-ckd.html</strong> · ${new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'})}
+</div>
+</div></body></html>`);
+    win.document.close();
+    setTimeout(()=>{ win.focus(); win.print(); }, 400);
+  };
+
   window.resetIIEF = function(){
-    document.querySelectorAll('input[name^="iief"]').forEach(r => r.checked=false);
+    document.querySelectorAll('input[name^="iief"]').forEach(r => r.checked = false);
+    ['iief-name','iief-age','iief-date'].forEach(id => { const el = document.getElementById(id); if(el){ el.value=''; el.disabled=false; }});
+    const sexEl = document.getElementById('iief-sex'); if(sexEl) sexEl.value='';
+    const todayCb = document.getElementById('iief-today'); if(todayCb) todayCb.checked=false;
     const box = document.getElementById('iief-result');
-    box.style.display='none';
-    box.innerHTML='';
+    box.style.display='none'; box.innerHTML='';
+    document.getElementById('iief-print-btn').style.display='none';
+    lastResult = null;
   };
 
   document.addEventListener('DOMContentLoaded', render);
