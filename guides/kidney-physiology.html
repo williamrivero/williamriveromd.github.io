@@ -1461,11 +1461,18 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .astonish-head .eyebrow{justify-content:center;}
   .astonish-head h2{font-family:'Lora',serif;font-weight:400;font-size:clamp(36px,5vw,72px);line-height:1.08;letter-spacing:-.018em;margin-top:18px;max-width:22ch;margin-left:auto;margin-right:auto;}
   .astonish-head h2 em{font-style:italic;color:var(--gold);font-weight:500;}
-  .astonish-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  .astonish-cell{background:rgba(6,18,31,.5);padding:64px 36px;text-align:center;}
+  .astonish-carousel{position:relative;}
+  .astonish-viewport{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .astonish-track{display:flex;transition:transform .85s cubic-bezier(.2,.8,.2,1);}
+  .astonish-slide{flex:0 0 100%;min-width:0;background:rgba(6,18,31,.5);padding:80px 36px;text-align:center;}
   .astonish-num{font-family:'Lora',serif;font-weight:300;font-size:clamp(64px,8vw,128px);line-height:1;letter-spacing:-.04em;background:linear-gradient(180deg,#ffffff 20%,#d4af4f 80%);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .astonish-num.short{font-size:clamp(40px,5vw,72px);font-style:italic;font-weight:400;background:linear-gradient(180deg,#ffffff 20%,#7be3ff 80%);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .astonish-cap{margin-top:28px;color:var(--ink-mid);font-family:'Lora',serif;font-style:italic;font-weight:400;font-size:16px;line-height:1.55;max-width:24ch;margin-left:auto;margin-right:auto;}
+  .astonish-dots{display:flex;justify-content:center;gap:12px;margin-top:40px;}
+  .astonish-dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--gold);background:transparent;cursor:pointer;padding:0;transition:background .3s,transform .3s;}
+  .astonish-dot:hover{transform:scale(1.2);}
+  .astonish-dot.active{background:var(--gold);}
+  @media (prefers-reduced-motion:reduce){.astonish-track{transition:none;}}
 
   /* STAT */
   .stat-band{padding:160px 0;text-align:center;position:relative;}
@@ -1497,7 +1504,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
   @media (max-width:980px){
     .more-grid{grid-template-columns:repeat(2,1fr);}
-    .astonish-row{grid-template-columns:1fr;}
   }
   @media (max-width:780px){
     .container,.site-header,footer{padding-left:24px;padding-right:24px;}
@@ -1777,7 +1783,33 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
         <div class="eyebrow" data-reveal><span data-lang="en">Three astonishments, rarely told</span><span data-lang="tl" class="lang-hidden">Tatlong kataka-taka, bihirang isinasalaysay</span><span data-lang="ceb" class="lang-hidden">Tulo ka katingalahan, bihirang ikasulti</span><span data-lang="kap" class="lang-hidden">Tatlong kataka-taka, bihirang isinasalaysay</span></div>
         <h2 data-reveal data-delay="1"><span data-lang="en">Numbers that should make you <em>pause</em>.</span><span data-lang="tl" class="lang-hidden">Mga bilang na dapat magpahinto sa inyo.</span><span data-lang="ceb" class="lang-hidden">Mga numero nga angay nga magpahunong kanimo.</span><span data-lang="kap" class="lang-hidden">Deng bilang na dapat magpahinto sa inyo.</span></h2>
       </div>
-      <img fetchpriority="high" loading="eager" src="../images/kidney-physiology-three-astonishments.png" alt="Three astonishments about kidney physiology — 25% of every heartbeat goes to organs that are 0.5% of body weight; the tubules inside your kidneys laid end to end would span a tennis court; blood pH held within ±0.04 every minute of your life" width="1536" height="1024" style="width:100%;height:automargin:0 0 8px;display:block">
+      <div class="astonish-carousel" data-astonish-carousel data-reveal data-delay="2">
+        <div class="astonish-viewport">
+          <div class="astonish-track">
+
+            <div class="astonish-slide" role="group" aria-roledescription="slide" aria-label="1 of 3">
+              <div class="astonish-num">25%</div>
+              <p class="astonish-cap"><span data-lang="en">of every heartbeat is sent to two organs that make up barely 0.5% of your body weight.</span><span data-lang="tl" class="lang-hidden">ng bawat tibok ng puso ang ipinapadala sa dalawang organ na halos 0.5% lamang ng timbang ng inyong katawan.</span><span data-lang="ceb" class="lang-hidden">sa matag pitik sa kasingkasing ang gipadala sa duha ka organ nga halos 0.5% lang sa gibug-aton sa imong lawas.</span><span data-lang="kap" class="lang-hidden">ning balang tibuk ning puso ya ipinapadala king dalawang organ na halos 0.5% mu ning timbang ning katawan.</span></p>
+            </div>
+
+            <div class="astonish-slide" role="group" aria-roledescription="slide" aria-label="2 of 3">
+              <div class="astonish-num short"><span data-lang="en">A tennis court</span><span data-lang="tl" class="lang-hidden">Isang tennis court</span><span data-lang="ceb" class="lang-hidden">Usa ka tennis court</span><span data-lang="kap" class="lang-hidden">Metung a tennis court</span></div>
+              <p class="astonish-cap"><span data-lang="en">the length the tubules inside your kidneys would reach, laid end to end.</span><span data-lang="tl" class="lang-hidden">ang haba na maaabot ng mga tubule sa loob ng inyong mga bato kung pagdudugtungin nang magkakasunod.</span><span data-lang="ceb" class="lang-hidden">ang gitas-on nga maabot sa mga tubule sulod sa imong mga kidney kung isumpay-sumpay.</span><span data-lang="kap" class="lang-hidden">ing kaba na maaabot ding tubule king lalam ding batu nung pagdugtungin la.</span></p>
+            </div>
+
+            <div class="astonish-slide" role="group" aria-roledescription="slide" aria-label="3 of 3">
+              <div class="astonish-num">&plusmn;0.04</div>
+              <p class="astonish-cap"><span data-lang="en">the narrow band your blood pH is held within &mdash; every minute of your life.</span><span data-lang="tl" class="lang-hidden">ang makitid na hanay kung saan pinapanatili ang pH ng inyong dugo &mdash; bawat minuto ng inyong buhay.</span><span data-lang="ceb" class="lang-hidden">ang sigpit nga han-ay diin gipugngan ang pH sa imong dugo &mdash; matag minuto sa imong kinabuhi.</span><span data-lang="kap" class="lang-hidden">ing makitid a hanay nung nokarin pepanatili ing pH ning daya &mdash; balang minutu ning biye mu.</span></p>
+            </div>
+
+          </div>
+        </div>
+        <div class="astonish-dots">
+          <button class="astonish-dot active" type="button" aria-label="Show astonishment 1"></button>
+          <button class="astonish-dot" type="button" aria-label="Show astonishment 2"></button>
+          <button class="astonish-dot" type="button" aria-label="Show astonishment 3"></button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -2694,6 +2726,38 @@ if(statBand){
     A._filter.frequency.linearRampToValueAtTime(e.isIntersecting ? 1800 : 720, now + 3.5);
   }, {threshold:0.45}).observe(statBand);
 }
+</script>
+
+<script>
+/* Three Astonishments — auto-rotating carousel */
+(function astonishCarousel(){
+  const root = document.querySelector('[data-astonish-carousel]');
+  if (!root) return;
+  const track  = root.querySelector('.astonish-track');
+  const slides = root.querySelectorAll('.astonish-slide');
+  const dots   = Array.from(root.querySelectorAll('.astonish-dot'));
+  if (!track || slides.length < 2) return;
+
+  const DELAY  = 4500;
+  const reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let index = 0, timer = null;
+
+  function show(n){
+    index = (n + slides.length) % slides.length;
+    track.style.transform = 'translateX(' + (-100 * index) + '%)';
+    dots.forEach((d, k) => d.classList.toggle('active', k === index));
+  }
+  function play(){ if (reduce || timer) return; timer = setInterval(() => show(index + 1), DELAY); }
+  function pause(){ if (timer){ clearInterval(timer); timer = null; } }
+
+  dots.forEach((d, k) => d.addEventListener('click', () => { show(k); pause(); play(); }));
+  root.addEventListener('mouseenter', pause);
+  root.addEventListener('mouseleave', play);
+  document.addEventListener('visibilitychange', () => document.hidden ? pause() : play());
+
+  show(0);
+  play();
+})();
 </script>
 </body>
 </html>
