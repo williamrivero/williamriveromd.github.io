@@ -1367,6 +1367,13 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
   <div style="font-size:11px;color:rgba(255,255,255,.5);">Updated May 2026 · WHO DON-600/601</div>
 </div>
 
+<div class="audience-tabs">
+  <div class="tabs-inner">
+    <button class="aud-tab active" onclick="setMode('patient')"><span class="tab-icon">🧑‍⚕️</span> Patient Guide</button>
+    <button class="aud-tab tab-md" onclick="setMode('physician')"><span class="tab-icon">⚕️</span> Clinician Tab</button>
+  </div>
+</div>
+
 <!-- ════════════════════════════════════════════════════════════════════════════
      HERO
 ════════════════════════════════════════════════════════════════════════════ -->
@@ -2490,6 +2497,9 @@ function setMode(mode) {
   });
   const activeBtn = document.querySelector(mode === 'patient' ? '.mode-patient-pill' : '.mode-physician-pill');
   if (activeBtn) activeBtn.classList.add('active');
+  document.querySelectorAll('.aud-tab').forEach((t, i) => {
+    t.classList.toggle('active', (i === 0 && mode === 'patient') || (i === 1 && mode === 'physician'));
+  });
   try { localStorage.setItem('guideMode', mode); } catch(e) {}
 }
 
