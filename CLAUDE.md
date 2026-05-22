@@ -70,6 +70,20 @@ in patient mode (the default CSS state). `setMode()` still writes the choice
 to `localStorage`, so in-page tab toggling is unaffected. Never reintroduce a
 restore-on-load; run this script after adding any new dual-mode guide.
 
+```bash
+python3 patch_signature_position.py              # move dr-card + related-guides to right before footer
+python3 patch_signature_position.py --dry-run    # preview changes without writing
+python3 patch_signature_position.py --guide obesity-ckd.html  # single guide
+```
+
+Run `patch_signature_position.py` after adding any new guide or calculator section to ensure
+the canonical page-tail order is: `</main>` → `<!-- DR CARD -->` → `<div class="dr-card-wrap">`
+→ `<div class="related-guides">` → `<footer class="guide-footer">`. Nothing should intervene
+between the signature block and the related-guides block, or between the related-guides block
+and the footer. The script is idempotent. **When building a new guide, always place the
+dr-card-wrap and related-guides immediately before `<footer class="guide-footer">`, outside
+`<main>`, as the very last HTML before the footer.**
+
 The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.
 
 There are no automated tests or linters.
