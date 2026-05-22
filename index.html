@@ -1496,7 +1496,7 @@
       <!-- Dynamically-loaded "Recently Added" cards from guides/index.html appear here -->
     </div>
     <div id="home-grid-fallback" style="display:none;text-align:center;color:var(--muted);font-size:13px;margin-top:18px;">
-      <a href="guides/index.html#sec-latest" style="color:var(--teal);">See all recently added guides &rarr;</a>
+      <a href="guides/index.html" style="color:var(--teal);">See all recently added guides &rarr;</a>
     </div>
   </div>
 
@@ -2429,32 +2429,49 @@ function emailAction(key, btnEl, variant) {
       const libCount = document.getElementById('lib-guide-count');
       if (hstatNum && libCount) libCount.textContent = hstatNum.textContent.trim();
 
-      const cards = doc.querySelectorAll('#grid-latest > a.guide-card');
+      // Newest guides = tiles tagged "new" (excluding PDF/handout downloads)
+      const cards = Array.from(doc.querySelectorAll('a.guide-tile')).filter(t => {
+        const tags = (t.dataset.tags || '').toLowerCase().split(/\s+/);
+        return tags.includes('new') && !tags.includes('download');
+      });
       if (!cards.length) throw new Error('no recent cards found');
-      const take = Array.from(cards).slice(0, 5);
-      take.forEach(src => {
+      cards.slice(0, 5).forEach(src => {
         const href = 'guides/' + src.getAttribute('href');
-        const badgeEl = src.querySelector('.badge');
-        const badge = badgeEl ? badgeEl.textContent.trim().replace(/\s+/g,' ') : 'Guide';
-        const titleEl = src.querySelector('h2');
-        const title = titleEl ? titleEl.innerHTML.trim() : '';
-        const descEl = src.querySelector('p');
-        let desc = descEl ? descEl.innerHTML.trim() : '';
+        const title = (src.querySelector('.tile-title')?.textContent || '').trim();
+        let desc = (src.querySelector('.tile-teaser')?.textContent || '').trim();
         // Truncate description to ~150 chars on a word boundary
         if (desc.length > 170) {
           const cut = desc.lastIndexOf(' ', 160);
-          desc = desc.slice(0, cut > 100 ? cut : 160) + '&hellip;';
+          desc = desc.slice(0, cut > 100 ? cut : 160) + '…';
         }
-        // Simplify badge: take first 2 segments (split on middot)
-        const tagShort = badge.split(/\s*·\s*/).slice(0,2).join(' · ');
+        const category = (src.closest('.guide-section')
+          ?.querySelector('.section-name')?.textContent || 'Guide').trim();
+
         const card = document.createElement('a');
         card.href = href;
         card.className = 'guide-card';
-        card.innerHTML =
-          '<span class="guide-tag" style="background:#e1f5f0;color:#1a6b72;">' + tagShort + '</span>' +
-          '<h3>' + title + '</h3>' +
-          '<p>' + desc + '</p>' +
-          '<div class="guide-meta"><span>' + tagShort.split(' · ')[0] + '</span><span style="color:var(--teal);">Read guide &rarr;</span></div>';
+
+        const tag = document.createElement('span');
+        tag.className = 'guide-tag';
+        tag.style.cssText = 'background:#e1f5f0;color:#1a6b72;';
+        tag.textContent = category;
+
+        const h3 = document.createElement('h3');
+        h3.textContent = title;
+
+        const p = document.createElement('p');
+        p.textContent = desc;
+
+        const meta = document.createElement('div');
+        meta.className = 'guide-meta';
+        const catSpan = document.createElement('span');
+        catSpan.textContent = category;
+        const readSpan = document.createElement('span');
+        readSpan.style.color = 'var(--teal)';
+        readSpan.textContent = 'Read guide →';
+        meta.append(catSpan, readSpan);
+
+        card.append(tag, h3, p, meta);
         grid.appendChild(card);
       });
       if (fallback) fallback.style.display = 'block';
