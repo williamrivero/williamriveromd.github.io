@@ -3489,6 +3489,358 @@ html[data-theme="dark"] .an-actions .an-btn-primary{background:var(--teal,#1a6b7
 </div><!-- end .mode-physician -->
 
 <script>
+/* ===== FATIGUE & QOL CALCULATORS: FACIT-Fatigue + KDQOL-36 ===== */
+
+var AN_FACIT_ITEMS = [
+  {id:'f1',  text:'I feel fatigued.',                                          rev:false},
+  {id:'f2',  text:'I feel weak all over.',                                     rev:false},
+  {id:'f3',  text:'I feel listless ("washed out").',                           rev:false},
+  {id:'f4',  text:'I feel tired.',                                             rev:false},
+  {id:'f5',  text:'I have trouble starting things because I am tired.',        rev:false},
+  {id:'f6',  text:'I have trouble finishing things because I am tired.',       rev:false},
+  {id:'f7',  text:'I have energy.',                                            rev:true},
+  {id:'f8',  text:'I am able to do my usual activities.',                      rev:true},
+  {id:'f9',  text:'I need to sleep during the day.',                           rev:false},
+  {id:'f10', text:'I am too tired to eat.',                                    rev:false},
+  {id:'f11', text:'I need help doing my usual activities.',                    rev:false},
+  {id:'f12', text:'I am frustrated by being too tired to do the things I want to do.', rev:false},
+  {id:'f13', text:'I have to limit my social activity because I am tired.',   rev:false}
+];
+
+var AN_KDQOL_SYMPTOMS = [
+  {id:'ks1',  text:'Muscle soreness'},
+  {id:'ks2',  text:'Chest pain'},
+  {id:'ks3',  text:'Cramps'},
+  {id:'ks4',  text:'Itchy skin'},
+  {id:'ks5',  text:'Dry skin'},
+  {id:'ks6',  text:'Shortness of breath'},
+  {id:'ks7',  text:'Faintness or dizziness'},
+  {id:'ks8',  text:'Lack of appetite'},
+  {id:'ks9',  text:'Worn out or fatigued'},
+  {id:'ks10', text:'Numbness or tingling in your hands or feet'},
+  {id:'ks11', text:'Nausea or upset stomach'}
+];
+var AN_KDQOL_EFFECTS = [
+  {id:'ke1', text:'Kidney disease interferes too much with my life.',           neg:true},
+  {id:'ke2', text:'Too much of my time is spent dealing with my kidney disease.',neg:true},
+  {id:'ke3', text:'I feel frustrated dealing with my kidney disease.',         neg:true},
+  {id:'ke4', text:'I feel like a burden to my family.',                        neg:true},
+  {id:'ke5', text:'Kidney disease bothers me.',                                neg:true},
+  {id:'ke6', text:'Having kidney disease has been a major strain on my family.',neg:true},
+  {id:'ke7', text:'I feel financially strained because of my kidney disease.', neg:true},
+  {id:'ke8', text:'Kidney disease has been a burden on the people I care about.',neg:true}
+];
+var AN_KDQOL_BURDEN = [
+  {id:'kb1', text:'The amount of time I spend on dialysis or medical care.'},
+  {id:'kb2', text:'Fluid restrictions.'},
+  {id:'kb3', text:'Dietary restrictions.'},
+  {id:'kb4', text:'Your ability to work around the house.'}
+];
+
+var AN_SYM_OPTS  = ['Not at all bothered','Somewhat bothered','Moderately bothered','Very much bothered','Extremely bothered'];
+var AN_EFF_OPTS  = ['Strongly disagree','Disagree','Somewhat agree','Agree','Strongly agree'];
+var AN_BURD_OPTS = ['Not a problem','Somewhat of a problem','A moderate problem','A major problem','An extreme problem'];
+
+function anBuildFacit() {
+  var cont = document.getElementById('facit-list');
+  if (!cont) return;
+  var html = '';
+  for (var i = 0; i < AN_FACIT_ITEMS.length; i++) {
+    var it = AN_FACIT_ITEMS[i];
+    html += '<div class="an-q-row">' +
+      '<span class="an-q-num">' + (i+1) + '.</span>' +
+      '<span class="an-q-text">' + it.text + '</span>' +
+      '<div class="an-pills">';
+    for (var v = 0; v <= 4; v++) {
+      html += '<button class="an-pill" id="' + it.id + '-' + v + '" onclick="anFacitPick(\'' + it.id + '\',' + v + ')">' + v + '</button>';
+    }
+    html += '</div></div>';
+  }
+  cont.innerHTML = html;
+}
+
+function anBuildKdqolSection(containerId, items, opts) {
+  var cont = document.getElementById(containerId);
+  if (!cont) return;
+  var html = '';
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i];
+    html += '<div class="an-q-row">' +
+      '<span class="an-q-num">' + (i+1) + '.</span>' +
+      '<span class="an-q-text">' + it.text + '</span>' +
+      '<div class="an-pills">';
+    for (var v = 1; v <= 5; v++) {
+      html += '<button class="an-pill" id="' + it.id + '-' + v + '" title="' + opts[v-1] + '" onclick="anKdqolPick(\'' + it.id + '\',' + v + ')">' + v + '</button>';
+    }
+    html += '</div></div>';
+  }
+  cont.innerHTML = html;
+}
+
+function anTab(which) {
+  document.getElementById('an-panel-facit').style.display = (which==='facit') ? '' : 'none';
+  document.getElementById('an-panel-kdqol').style.display = (which==='kdqol') ? '' : 'none';
+  document.getElementById('an-tab-facit').classList.toggle('active', which==='facit');
+  document.getElementById('an-tab-kdqol').classList.toggle('active', which==='kdqol');
+}
+
+function anTodayChk() {
+  var chk = document.getElementById('an-today');
+  var inp = document.getElementById('an-date');
+  if (chk.checked) {
+    var d = new Date();
+    var mm = ('0'+(d.getMonth()+1)).slice(-2);
+    var dd2 = ('0'+d.getDate()).slice(-2);
+    inp.value = d.getFullYear() + '-' + mm + '-' + dd2;
+    inp.readOnly = true;
+  } else {
+    inp.readOnly = false;
+  }
+}
+
+function anFacitPick(id, val) {
+  for (var v = 0; v <= 4; v++) {
+    var b = document.getElementById(id+'-'+v);
+    if (b) b.classList.toggle('sel', v === val);
+  }
+  anFacitUpdate();
+}
+
+function anFacitUpdate() {
+  var total = 0, answered = 0, unanswered = 0;
+  for (var i = 0; i < AN_FACIT_ITEMS.length; i++) {
+    var it = AN_FACIT_ITEMS[i];
+    var picked = -1;
+    for (var v = 0; v <= 4; v++) {
+      var b = document.getElementById(it.id+'-'+v);
+      if (b && b.classList.contains('sel')) { picked = v; break; }
+    }
+    if (picked >= 0) {
+      answered++;
+      /* negative items (fatigue): scored = 4 - raw; positive items (energy): scored = raw */
+      total += it.rev ? picked : (4 - picked);
+    } else {
+      unanswered++;
+    }
+  }
+  if (unanswered > 0 && answered >= 7) {
+    total = Math.round(total * AN_FACIT_ITEMS.length / answered);
+  } else if (answered < 7) {
+    document.getElementById('facit-result').style.display='none'; return;
+  }
+
+  var res = document.getElementById('facit-result');
+  res.style.display = '';
+  document.getElementById('facit-num').textContent = total + ' / 52';
+  var iv = anFacitInterp(total);
+  var interp = document.getElementById('facit-interp');
+  interp.className = 'an-interp ' + iv.cls;
+  interp.textContent = iv.text;
+  document.getElementById('facit-rec').innerHTML = iv.rec;
+}
+
+function anFacitInterp(s) {
+  if (s >= 40) return {cls:'an-good', text:'Mild Fatigue (score 40–52)', rec:'<strong>Fatigue Level:</strong> Mild. Anemia-related fatigue is likely minimal. Maintain current therapy compliance. Regular aerobic exercise and adequate sleep may further improve energy levels.'};
+  if (s >= 30) return {cls:'an-moderate', text:'Moderate Fatigue (score 30–39)', rec:'<strong>Fatigue Level:</strong> Moderate. Discuss with your nephrologist — consider review of hemoglobin targets, iron status, and ESA dosing. Energy conservation strategies and structured activity may help.'};
+  if (s >= 20) return {cls:'an-caution', text:'Severe Fatigue (score 20–29)', rec:'<strong>Fatigue Level:</strong> Severe. Prompt clinical review recommended. Possible causes include suboptimal hemoglobin, iron deficiency, malnutrition, or depression. Refer for comprehensive anemia evaluation.'};
+  return {cls:'an-poor', text:'Very Severe Fatigue (score 0–19)', rec:'<strong>Fatigue Level:</strong> Very severe. Urgent clinical evaluation indicated. Assess hemoglobin, ferritin, TSAT, nutritional status, and psychological well-being. Consider multidisciplinary care team referral.'};
+}
+
+function anKdqolPick(id, val) {
+  for (var v = 1; v <= 5; v++) {
+    var b = document.getElementById(id+'-'+v);
+    if (b) b.classList.toggle('sel', v === val);
+  }
+  anKdqolUpdate();
+}
+
+function anKdqolUpdate() {
+  var symTotal = 0, symN = 0;
+  for (var i = 0; i < AN_KDQOL_SYMPTOMS.length; i++) {
+    var it = AN_KDQOL_SYMPTOMS[i];
+    for (var v = 1; v <= 5; v++) {
+      var b = document.getElementById(it.id+'-'+v);
+      if (b && b.classList.contains('sel')) {
+        symTotal += (5-v)/4*100;
+        symN++;
+      }
+    }
+  }
+  var effTotal = 0, effN = 0;
+  for (var j = 0; j < AN_KDQOL_EFFECTS.length; j++) {
+    var itE = AN_KDQOL_EFFECTS[j];
+    for (var v2 = 1; v2 <= 5; v2++) {
+      var b2 = document.getElementById(itE.id+'-'+v2);
+      if (b2 && b2.classList.contains('sel')) {
+        effTotal += (5-v2)/4*100;
+        effN++;
+      }
+    }
+  }
+  var burTotal = 0, burN = 0;
+  for (var k = 0; k < AN_KDQOL_BURDEN.length; k++) {
+    var itB = AN_KDQOL_BURDEN[k];
+    for (var v3 = 1; v3 <= 5; v3++) {
+      var b3 = document.getElementById(itB.id+'-'+v3);
+      if (b3 && b3.classList.contains('sel')) {
+        burTotal += (5-v3)/4*100;
+        burN++;
+      }
+    }
+  }
+  if (symN===0 && effN===0 && burN===0) { document.getElementById('kdqol-result').style.display='none'; return; }
+
+  var symScore = symN>0 ? Math.round(symTotal/symN) : null;
+  var effScore = effN>0 ? Math.round(effTotal/effN) : null;
+  var burScore = burN>0 ? Math.round(burTotal/burN) : null;
+
+  var res = document.getElementById('kdqol-result');
+  res.style.display = '';
+  var subHtml = '';
+  if (symScore!==null) subHtml += '<div class="an-sub-card"><div class="an-sub-label">Symptom/Problem List</div><div class="an-sub-val">' + symScore + '</div><div class="an-sub-range">/100</div></div>';
+  if (effScore!==null) subHtml += '<div class="an-sub-card"><div class="an-sub-label">Effects of Kidney Disease</div><div class="an-sub-val">' + effScore + '</div><div class="an-sub-range">/100</div></div>';
+  if (burScore!==null) subHtml += '<div class="an-sub-card"><div class="an-sub-label">Burden of Kidney Disease</div><div class="an-sub-val">' + burScore + '</div><div class="an-sub-range">/100</div></div>';
+  document.getElementById('kdqol-subscores').innerHTML = subHtml;
+
+  var issues = [];
+  if (symScore!==null && symScore < 50) issues.push('significant symptoms (' + symScore + '/100)');
+  if (effScore!==null && effScore < 50) issues.push('high disease impact on daily life (' + effScore + '/100)');
+  if (burScore!==null && burScore < 50) issues.push('high disease burden (' + burScore + '/100)');
+  var recText = '';
+  if (issues.length > 0) {
+    recText = '<strong>Areas of Concern:</strong> Your scores indicate ' + issues.join('; ') + '. Discuss these with your nephrologist. Improving anemia management (optimizing hemoglobin, iron, ESA) has been shown to improve KDQOL scores significantly.';
+  } else {
+    recText = '<strong>Overall QoL:</strong> Scores suggest acceptable kidney disease quality of life. Continue current management and monitoring. Report any worsening symptoms promptly.';
+  }
+  document.getElementById('kdqol-rec').innerHTML = recText;
+}
+
+function anReset() {
+  document.getElementById('an-pname').value = '';
+  document.getElementById('an-age').value = '';
+  document.getElementById('an-sex').value = '';
+  document.getElementById('an-date').value = '';
+  document.getElementById('an-date').readOnly = false;
+  document.getElementById('an-today').checked = false;
+  for (var i = 0; i < AN_FACIT_ITEMS.length; i++) {
+    for (var v = 0; v <= 4; v++) {
+      var b = document.getElementById(AN_FACIT_ITEMS[i].id+'-'+v);
+      if (b) b.classList.remove('sel');
+    }
+  }
+  document.getElementById('facit-result').style.display = 'none';
+  for (var j = 0; j < AN_KDQOL_SYMPTOMS.length; j++) {
+    for (var v2 = 1; v2 <= 5; v2++) {
+      var b2 = document.getElementById(AN_KDQOL_SYMPTOMS[j].id+'-'+v2);
+      if (b2) b2.classList.remove('sel');
+    }
+  }
+  for (var k = 0; k < AN_KDQOL_EFFECTS.length; k++) {
+    for (var v3 = 1; v3 <= 5; v3++) {
+      var b3 = document.getElementById(AN_KDQOL_EFFECTS[k].id+'-'+v3);
+      if (b3) b3.classList.remove('sel');
+    }
+  }
+  for (var m = 0; m < AN_KDQOL_BURDEN.length; m++) {
+    for (var v4 = 1; v4 <= 5; v4++) {
+      var b4 = document.getElementById(AN_KDQOL_BURDEN[m].id+'-'+v4);
+      if (b4) b4.classList.remove('sel');
+    }
+  }
+  document.getElementById('kdqol-result').style.display = 'none';
+  anTab('facit');
+}
+
+function anPrint() {
+  var name = document.getElementById('an-pname').value || '—';
+  var age  = document.getElementById('an-age').value  || '—';
+  var sex  = document.getElementById('an-sex').value  || '—';
+  var date = document.getElementById('an-date').value || '—';
+
+  var facitRows = '', facitTotal = 0, facitN = 0;
+  for (var i = 0; i < AN_FACIT_ITEMS.length; i++) {
+    var it = AN_FACIT_ITEMS[i];
+    var picked = -1;
+    for (var v = 0; v <= 4; v++) {
+      var b = document.getElementById(it.id+'-'+v);
+      if (b && b.classList.contains('sel')) { picked = v; break; }
+    }
+    var scored = picked >= 0 ? (it.rev ? picked : (4-picked)) : null;
+    if (scored !== null) { facitTotal += scored; facitN++; }
+    facitRows += '<tr><td style="padding:4px 8px;border:1px solid #e2e6eb;">' + (i+1) + '. ' + it.text + '</td>' +
+      '<td style="padding:4px 8px;border:1px solid #e2e6eb;text-align:center;">' + (picked>=0?picked:'—') + '</td>' +
+      '<td style="padding:4px 8px;border:1px solid #e2e6eb;text-align:center;">' + (scored!==null?scored:'—') + '</td></tr>';
+  }
+  var facitScore = facitN >= 7 ? (facitN < AN_FACIT_ITEMS.length ? Math.round(facitTotal*AN_FACIT_ITEMS.length/facitN) : facitTotal) : null;
+  var facitIv = facitScore !== null ? anFacitInterp(facitScore) : null;
+  var facitHtml = '<h3 style="margin:0 0 6px;color:#1a6b72;">FACIT-Fatigue Scale</h3>' +
+    '<table style="border-collapse:collapse;width:100%;font-size:12px;margin-bottom:8px;">' +
+    '<thead><tr><th style="padding:4px 8px;border:1px solid #e2e6eb;text-align:left;">Item</th><th style="padding:4px 8px;border:1px solid #e2e6eb;">Raw (0-4)</th><th style="padding:4px 8px;border:1px solid #e2e6eb;">Scored</th></tr></thead>' +
+    '<tbody>' + facitRows + '</tbody></table>' +
+    (facitScore!==null ? '<p style="margin:0 0 4px;"><strong>FACIT-Fatigue Score: ' + facitScore + ' / 52</strong></p><p style="margin:0;">' + (facitIv?facitIv.text+' — '+facitIv.rec:'') + '</p>' : '<p style="margin:0;">Insufficient responses (need ≥7).</p>');
+
+  function kdqolRows(items, opts, scoreArr) {
+    var html = '', total = 0, n = 0;
+    for (var i2 = 0; i2 < items.length; i2++) {
+      var it2 = items[i2]; var picked2 = -1;
+      for (var v2 = 1; v2 <= 5; v2++) {
+        var b2 = document.getElementById(it2.id+'-'+v2);
+        if (b2 && b2.classList.contains('sel')) { picked2 = v2; break; }
+      }
+      var sc2 = picked2>0 ? Math.round((5-picked2)/4*100) : null;
+      if (sc2!==null){total+=sc2;n++;}
+      html += '<tr><td style="padding:3px 8px;border:1px solid #e2e6eb;">' + (i2+1) + '. ' + it2.text + '</td>' +
+        '<td style="padding:3px 8px;border:1px solid #e2e6eb;text-align:center;">' + (picked2>0?opts[picked2-1]:'—') + '</td>' +
+        '<td style="padding:3px 8px;border:1px solid #e2e6eb;text-align:center;">' + (sc2!==null?sc2:'—') + '</td></tr>';
+    }
+    if(n>0) scoreArr.push(Math.round(total/n));
+    return html;
+  }
+  var kdqolScores = [];
+  var symR = kdqolRows(AN_KDQOL_SYMPTOMS, AN_SYM_OPTS, kdqolScores);
+  var effR = kdqolRows(AN_KDQOL_EFFECTS, AN_EFF_OPTS, kdqolScores);
+  var burR = kdqolRows(AN_KDQOL_BURDEN, AN_BURD_OPTS, kdqolScores);
+  var kdqolHtml = '<h3 style="margin:16px 0 6px;color:#1a6b72;">KDQOL-36</h3>' +
+    '<p style="margin:0 0 6px;font-weight:700;font-size:12px;color:#1a6b72;">Symptom/Problem List</p>' +
+    '<table style="border-collapse:collapse;width:100%;font-size:12px;margin-bottom:8px;">' +
+    '<thead><tr><th style="padding:3px 8px;border:1px solid #e2e6eb;text-align:left;">Item</th><th style="padding:3px 8px;border:1px solid #e2e6eb;">Response</th><th style="padding:3px 8px;border:1px solid #e2e6eb;">Score/100</th></tr></thead>' +
+    '<tbody>' + symR + '</tbody></table>' +
+    '<p style="margin:0 0 6px;font-weight:700;font-size:12px;color:#1a6b72;">Effects of Kidney Disease</p>' +
+    '<table style="border-collapse:collapse;width:100%;font-size:12px;margin-bottom:8px;">' +
+    '<thead><tr><th style="padding:3px 8px;border:1px solid #e2e6eb;text-align:left;">Item</th><th style="padding:3px 8px;border:1px solid #e2e6eb;">Response</th><th style="padding:3px 8px;border:1px solid #e2e6eb;">Score/100</th></tr></thead>' +
+    '<tbody>' + effR + '</tbody></table>' +
+    '<p style="margin:0 0 6px;font-weight:700;font-size:12px;color:#1a6b72;">Burden of Kidney Disease</p>' +
+    '<table style="border-collapse:collapse;width:100%;font-size:12px;margin-bottom:8px;">' +
+    '<thead><tr><th style="padding:3px 8px;border:1px solid #e2e6eb;text-align:left;">Item</th><th style="padding:3px 8px;border:1px solid #e2e6eb;">Response</th><th style="padding:3px 8px;border:1px solid #e2e6eb;">Score/100</th></tr></thead>' +
+    '<tbody>' + burR + '</tbody></table>';
+
+  var win = window.open('','_blank','width=820,height=720');
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Fatigue &amp; QoL Assessment — Dr. Rivero</title>' +
+    '<style>body{font-family:Arial,sans-serif;font-size:13px;color:#1e2a38;padding:32px;max-width:780px;margin:0 auto;}' +
+    'h2{color:#1a6b72;margin:0 0 4px;}h3{color:#1a6b72;}' +
+    '.meta{font-size:12px;color:#64748b;margin:0 0 20px;}' +
+    '.section{border:1px solid #e2e6eb;border-radius:8px;padding:16px;margin-bottom:16px;}' +
+    '.disclaimer{font-size:11px;color:#94a3b8;margin-top:20px;border-top:1px solid #e2e6eb;padding-top:12px;}' +
+    '@media print{body{padding:16px;}}</style></head><body>' +
+    '<h2>Fatigue &amp; Quality of Life Assessment</h2>' +
+    '<div class="meta">Patient: ' + name + ' &nbsp;|&nbsp; Age: ' + age + ' &nbsp;|&nbsp; Sex: ' + sex + ' &nbsp;|&nbsp; Date: ' + date + '</div>' +
+    '<div class="section">' + facitHtml + '</div>' +
+    '<div class="section">' + kdqolHtml + '</div>' +
+    '<div class="disclaimer">FACIT-Fatigue: Yellen et al. (1997). KDQOL-36: Ware et al. Higher scores = less fatigue / better QoL. Educational tools only — does not replace individualized physician assessment. williamriveromd.com</div>' +
+    '</body></html>');
+  win.document.close();
+  setTimeout(function(){ win.print(); }, 400);
+}
+
+(function(){
+  anBuildFacit();
+  anBuildKdqolSection('kdqol-symptoms', AN_KDQOL_SYMPTOMS, AN_SYM_OPTS);
+  anBuildKdqolSection('kdqol-effects', AN_KDQOL_EFFECTS, AN_EFF_OPTS);
+  anBuildKdqolSection('kdqol-burden', AN_KDQOL_BURDEN, AN_BURD_OPTS);
+})();
+</script>
+
+<script>
 const GMODE_KEY = 'wgmr-anemia-mode';
 function setMode(m) {
   localStorage.setItem(GMODE_KEY, m);
