@@ -111,16 +111,17 @@ def wire_images(html: str, available: set, dry_run: bool) -> tuple[str, int, int
         nonlocal wired, skipped
         inner = m.group(0)
         fn_match = re.search(r'ph-filename">([^<]+)<', inner)
+        style_match = re.search(r'style="([^"]*)"', inner)
+        style = f' style="{style_match.group(1)}"' if style_match else ''
         if not fn_match:
             return inner
         filename = fn_match.group(1).strip()
         if filename not in available:
             skipped += 1
             return inner
-        loading = "eager" if filename in {ALT_TEXT} else "lazy"
         pic = make_picture_tag(filename)
         wired += 1
-        return f'<div class="card-img-zone">{pic}</div>'
+        return f'<div class="card-img-zone"{style}>{pic}</div>'
 
     # Pattern for wide-card-img placeholder
     def replace_wide_zone(m):
@@ -139,9 +140,9 @@ def wire_images(html: str, available: set, dry_run: bool) -> tuple[str, int, int
         wired += 1
         return f'<div class="wide-card-img"{style}>{pic}</div>'
 
-    # Replace card-img-zone blocks that contain img-overlay
+    # Replace card-img-zone blocks (with or without extra attributes) that contain img-overlay
     html = re.sub(
-        r'<div class="card-img-zone"><div class="img-overlay">.*?</div></div>',
+        r'<div class="card-img-zone"[^>]*><div class="img-overlay">.*?</div></div>',
         replace_card_zone,
         html,
         flags=re.DOTALL
