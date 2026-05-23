@@ -669,6 +669,174 @@ body {
   .header-stats { display: none; }
   .cards-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── THUMBNAIL GRID ─── */
+.thumb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.thumb-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
+  display: flex;
+  flex-direction: column;
+}
+.thumb-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(11,26,46,0.14);
+}
+.thumb-card:hover .thumb-overlay { opacity: 1; }
+.thumb-img-wrap {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: #edf0f6;
+  flex-shrink: 0;
+}
+.thumb-img-wrap picture,
+.thumb-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.thumb-overlay {
+  position: absolute; inset: 0;
+  background: rgba(11,26,46,0.42);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.18s;
+}
+.thumb-zoom-icon {
+  color: #fff; font-size: 2rem; line-height: 1;
+  font-family: 'DM Mono', monospace;
+}
+.thumb-info {
+  padding: 9px 11px 11px;
+  border-top: 1px solid var(--border);
+  flex: 1;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.thumb-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; color: var(--muted); letter-spacing: 0.5px;
+}
+.thumb-title {
+  font-size: 0.77rem; font-weight: 600;
+  color: var(--navy); line-height: 1.3;
+}
+/* accent stripe */
+.thumb-card.accent-teal    .thumb-img-wrap::before,
+.thumb-card.accent-amber   .thumb-img-wrap::before,
+.thumb-card.accent-green   .thumb-img-wrap::before,
+.thumb-card.accent-red     .thumb-img-wrap::before,
+.thumb-card.accent-navy    .thumb-img-wrap::before,
+.thumb-card.accent-purple  .thumb-img-wrap::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px; z-index: 1;
+}
+.thumb-card.accent-teal   .thumb-img-wrap::before { background: var(--teal); }
+.thumb-card.accent-amber  .thumb-img-wrap::before { background: var(--amber); }
+.thumb-card.accent-green  .thumb-img-wrap::before { background: var(--green); }
+.thumb-card.accent-red    .thumb-img-wrap::before { background: var(--red); }
+.thumb-card.accent-navy   .thumb-img-wrap::before { background: var(--navy3); }
+.thumb-card.accent-purple .thumb-img-wrap::before { background: #6b3fa0; }
+
+/* ─── LIGHTBOX ─── */
+#lightbox {
+  position: fixed; inset: 0;
+  background: rgba(5,10,20,0.93);
+  z-index: 9999;
+  display: none; align-items: center; justify-content: center;
+  padding: 16px;
+}
+#lightbox.open { display: flex; }
+.lb-wrap {
+  background: var(--surface);
+  border-radius: 14px;
+  max-width: 980px; width: 100%;
+  max-height: 92vh; overflow-y: auto;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+  display: flex; flex-direction: column;
+}
+.lb-img-panel {
+  background: #0b1a2e;
+  border-radius: 14px 14px 0 0;
+  overflow: hidden; position: relative;
+  flex-shrink: 0;
+}
+.lb-img-panel picture, .lb-img-panel img {
+  width: 100%; max-height: 52vh;
+  object-fit: contain; display: block;
+}
+.lb-attribution {
+  position: absolute; bottom: 6px; right: 10px;
+  font-family: 'DM Mono', monospace; font-size: 8px;
+  color: rgba(255,255,255,0.3);
+}
+.lb-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  color: #fff; font-size: 1.5rem;
+  width: 40px; height: 40px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s; z-index: 2;
+}
+.lb-nav:hover { background: rgba(255,255,255,0.28); }
+.lb-prev { left: 10px; }
+.lb-next { right: 10px; }
+.lb-info-panel { padding: 18px 22px 22px; }
+.lb-toprow {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px; margin-bottom: 12px;
+}
+.lb-title-block { flex: 1; }
+.lb-num {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;
+}
+#lb-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem; font-weight: 700;
+  color: var(--navy); line-height: 1.2;
+}
+.lb-close {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 50%; width: 34px; height: 34px;
+  font-size: 1.1rem; cursor: pointer; color: var(--text);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s; flex-shrink: 0;
+}
+.lb-close:hover { background: #dde3ec; }
+#lb-desc {
+  font-size: 0.86rem; color: var(--muted);
+  line-height: 1.65; margin-bottom: 14px;
+}
+#lb-steps {
+  list-style: none; padding: 0; margin: 0 0 14px;
+}
+#lb-steps li {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 0.83rem; color: var(--text);
+  padding: 5px 0; border-bottom: 1px solid #f0f2f6; line-height: 1.45;
+}
+#lb-steps li:last-child { border-bottom: none; }
+#lb-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.lb-counter {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--muted); text-align: right; margin-top: 8px;
+}
+@media (max-width: 600px) {
+  .thumb-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .lb-wrap { border-radius: 10px; }
+  .lb-img-panel img { max-height: 40vh; }
+  .lb-nav { width: 32px; height: 32px; font-size: 1.1rem; }
+}
+
 </style>
 </head>
 <body>
@@ -698,7 +866,7 @@ body {
     <div class="header-stats">
       <div class="stat-pill"><div class="stat-num">10</div><div class="stat-label">Anatomy</div></div>
       <div class="stat-pill"><div class="stat-num">14</div><div class="stat-label">Conditions</div></div>
-      <div class="stat-pill"><div class="stat-num">11</div><div class="stat-label">Procedures</div></div>
+      <div class="stat-pill"><div class="stat-num">18</div><div class="stat-label">Procedures</div></div>
       <div class="stat-pill"><div class="stat-num">8</div><div class="stat-label">Embryology</div></div>
     </div>
   </div>
@@ -720,7 +888,7 @@ body {
     <button class="tab-btn" onclick="switchTab('procedures', this)">
       <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
       Procedures
-      <span class="tab-count">11</span>
+      <span class="tab-count">18</span>
     </button>
     <button class="tab-btn" onclick="switchTab('embryology', this)">
       <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 8v8M8 12h8"/></svg>
@@ -839,26 +1007,14 @@ body {
         <span class="section-hdr-badge badge-teal">Structural Reference</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="a1">
-          <div class="card-header teal-accent">
-            <span class="card-num">01</span>
-            <span class="card-title">Gross Kidney Anatomy — Coronal Cross-Section</span>
-            <span class="card-render-badge rb-2d">2D</span>
-          </div>
-          <div class="card-img-zone"><picture><source srcset="../images/kidney-gross-anatomy-2d.webp" type="image/webp"><img src="../images/kidney-gross-anatomy-2d.png" alt="Kidney gross anatomy — 2D diagram with labeled cortex, medulla, pelvis and calyces" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-teal" id="a1" data-num="01" data-title="Gross Kidney Anatomy — Coronal Cross-Section" data-webp="../images/kidney-gross-anatomy-2d.webp" data-png="../images/kidney-gross-anatomy-2d.png" data-alt="Kidney gross anatomy — 2D diagram with labeled cortex, medulla, pelvis and calyces" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/kidney-gross-anatomy-2d.webp" type="image/webp"><img src="../images/kidney-gross-anatomy-2d.png" alt="Kidney gross anatomy — 2D diagram with labeled cortex, medulla, pelvis and calyces" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">01</span><span class="thumb-title">Gross Kidney Anatomy — Coronal Cross-Section</span></div></div>
           <div class="card-body">
             <p class="card-desc">Coronal cross-section showing renal capsule, cortex, medullary pyramids, renal columns of Bertin, calyces, pelvis, and hilum. Corticomedullary junction demarcated. Color-coded zones with leader-line labels. Clinical pearl strip: size range, cortical thickness, ultrasound correlate.</p>
             <div class="card-tags"><span class="ctag ct-teal">Cortex/Medulla</span><span class="ctag ct-amber">Hilum Anatomy</span><span class="ctag ct-navy">US Correlate</span></div>
           </div>
         </div>
-        <div class="illus-card" id="a2">
-          <div class="card-header teal-accent">
-            <span class="card-num">02</span>
-            <span class="card-title">Gross Kidney Anatomy — External 3D Render</span>
-            <span class="card-render-badge rb-3d">3D</span>
-          </div>
-          <div class="card-img-zone"><picture><source srcset="../images/kidney-gross-anatomy-3d.webp" type="image/webp"><img src="../images/kidney-gross-anatomy-3d.png" alt="Kidney gross anatomy — 3D rendering showing external surface and cut section" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-teal" id="a2" data-num="02" data-title="Gross Kidney Anatomy — External 3D Render" data-webp="../images/kidney-gross-anatomy-3d.webp" data-png="../images/kidney-gross-anatomy-3d.png" data-alt="Kidney gross anatomy — 3D rendering showing external surface and cut section" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/kidney-gross-anatomy-3d.webp" type="image/webp"><img src="../images/kidney-gross-anatomy-3d.png" alt="Kidney gross anatomy — 3D rendering showing external surface and cut section" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">02</span><span class="thumb-title">Gross Kidney Anatomy — External 3D Render</span></div></div>
           <div class="card-body">
             <p class="card-desc">Anterolateral 3D volumetric render. Semi-transparent fibrous capsule reveals cortical vascular blush. Hilum clearly shows renal artery, vein, and ureter. Right adrenal gland at superior pole. Subsurface scattering gives realistic parenchymal depth. Netter/Gray's 3D upgrade aesthetic.</p>
             <div class="card-tags"><span class="ctag ct-amber">3D Render</span><span class="ctag ct-teal">Hilar Anatomy</span><span class="ctag ct-navy">Adrenal Relation</span></div>
@@ -871,26 +1027,14 @@ body {
         <span class="section-hdr-badge badge-amber">Arterial · Venous · Microvascular</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="a3">
-          <div class="card-header amber-accent">
-            <span class="card-num">03</span>
-            <span class="card-title">Renal Arterial Tree — Hierarchical 2D Schematic</span>
-            <span class="card-render-badge rb-2d">2D</span>
-          </div>
-          <div class="card-img-zone"><picture><source srcset="../images/kidney-vascular-supply-2d.webp" type="image/webp"><img src="../images/kidney-vascular-supply-2d.png" alt="Kidney vascular supply — 2D diagram of renal artery segmental branches" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-amber" id="a3" data-num="03" data-title="Renal Arterial Tree — Hierarchical 2D Schematic" data-webp="../images/kidney-vascular-supply-2d.webp" data-png="../images/kidney-vascular-supply-2d.png" data-alt="Kidney vascular supply — 2D diagram of renal artery segmental branches" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/kidney-vascular-supply-2d.webp" type="image/webp"><img src="../images/kidney-vascular-supply-2d.png" alt="Kidney vascular supply — 2D diagram of renal artery segmental branches" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">03</span><span class="thumb-title">Renal Arterial Tree — Hierarchical 2D Schematic</span></div></div>
           <div class="card-body">
             <p class="card-desc">Complete arterial hierarchy from aorta to afferent arterioles overlaid on kidney cross-section, with paired venous drainage. Five segmental arteries annotated as end-arteries. Afferent-efferent arteriole relationship with RAAS physiology callouts. Clinical table: each vessel level with disease correlate and diuretic/RAAS implications.</p>
             <div class="card-tags"><span class="ctag ct-amber">End-Arteries</span><span class="ctag ct-teal">RAAS Physiology</span><span class="ctag ct-red">RAS / ACEi Risk</span></div>
           </div>
         </div>
-        <div class="illus-card" id="a4">
-          <div class="card-header amber-accent">
-            <span class="card-num">04</span>
-            <span class="card-title">Renal Vascular Corrosion Cast — 3D</span>
-            <span class="card-render-badge rb-3d">3D</span>
-          </div>
-          <div class="card-img-zone"><picture><source srcset="../images/kidney-vascular-supply-3d.webp" type="image/webp"><img src="../images/kidney-vascular-supply-3d.png" alt="Kidney vascular supply — 3D rendering of arcuate and interlobular vessels" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-amber" id="a4" data-num="04" data-title="Renal Vascular Corrosion Cast — 3D" data-webp="../images/kidney-vascular-supply-3d.webp" data-png="../images/kidney-vascular-supply-3d.png" data-alt="Kidney vascular supply — 3D rendering of arcuate and interlobular vessels" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/kidney-vascular-supply-3d.webp" type="image/webp"><img src="../images/kidney-vascular-supply-3d.png" alt="Kidney vascular supply — 3D rendering of arcuate and interlobular vessels" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">04</span><span class="thumb-title">Renal Vascular Corrosion Cast — 3D</span></div></div>
           <div class="card-body">
             <p class="card-desc">Vascular corrosion cast aesthetic: arterial tree in deep crimson, venous in deep blue, glomerular zone in amber-gold, vasa recta as fine medullary striations. Transparent kidney silhouette preserves anatomical context. Arcuate arteries at corticomedullary junction highlighted in teal. Dark navy background with bioluminescent self-illumination.</p>
             <div class="card-tags"><span class="ctag ct-amber">Corrosion Cast</span><span class="ctag ct-teal">Arcuate Arteries</span><span class="ctag ct-green">Glomerular Zone</span></div>
@@ -903,26 +1047,14 @@ body {
         <span class="section-hdr-badge badge-green">Functional · Transport · Pharmacology</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="a5">
-          <div class="card-header green-accent">
-            <span class="card-num">05</span>
-            <span class="card-title">Complete Nephron — Functional Diagram with Transporters</span>
-            <span class="card-render-badge rb-2d">2D</span>
-          </div>
-          <div class="card-img-zone"><picture><source srcset="../images/nephron-anatomy-functional-2d.webp" type="image/webp"><img src="../images/nephron-anatomy-functional-2d.png" alt="Nephron anatomy functional diagram — glomerulus through collecting duct with labeled segments" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-green" id="a5" data-num="05" data-title="Complete Nephron — Functional Diagram with Transporters" data-webp="../images/nephron-anatomy-functional-2d.webp" data-png="../images/nephron-anatomy-functional-2d.png" data-alt="Nephron anatomy functional diagram — glomerulus through collecting duct with labeled segments" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/nephron-anatomy-functional-2d.webp" type="image/webp"><img src="../images/nephron-anatomy-functional-2d.png" alt="Nephron anatomy functional diagram — glomerulus through collecting duct with labeled segments" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">05</span><span class="thumb-title">Complete Nephron — Functional Diagram with Transporters</span></div></div>
           <div class="card-body">
             <p class="card-desc">Full juxtamedullary nephron U-loop with segment-specific transporter callouts: SGLT2 (PCT), NKCC2 (TAL), NCC (DCT), ENaC/ROMK (CD). Osmolality gradient scale 300→1200 mOsm/kg. Diuretic target summary panel. Afferent-efferent arterioles with Starling force arrows. Corticomedullary boundary dashed line.</p>
             <div class="card-tags"><span class="ctag ct-teal">SGLT2i Target</span><span class="ctag ct-amber">Loop Diuretics</span><span class="ctag ct-green">Thiazides</span><span class="ctag ct-navy">Aldosterone</span></div>
           </div>
         </div>
-        <div class="illus-card" id="a6">
-          <div class="card-header green-accent">
-            <span class="card-num">06</span>
-            <span class="card-title">Juxtamedullary Nephron — 3D in Renal Context</span>
-            <span class="card-render-badge rb-3d">3D</span>
-          </div>
-          <div class="card-img-zone"><picture><source srcset="../images/nephron-anatomy-3d.webp" type="image/webp"><img src="../images/nephron-anatomy-3d.png" alt="Nephron anatomy — 3D rendering of tubular segments from Bowman capsule to collecting duct" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-green" id="a6" data-num="06" data-title="Juxtamedullary Nephron — 3D in Renal Context" data-webp="../images/nephron-anatomy-3d.webp" data-png="../images/nephron-anatomy-3d.png" data-alt="Nephron anatomy — 3D rendering of tubular segments from Bowman capsule to collecting duct" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/nephron-anatomy-3d.webp" type="image/webp"><img src="../images/nephron-anatomy-3d.png" alt="Nephron anatomy — 3D rendering of tubular segments from Bowman capsule to collecting duct" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">06</span><span class="thumb-title">Juxtamedullary Nephron — 3D in Renal Context</span></div></div>
           <div class="card-body">
             <p class="card-desc">3D juxtamedullary nephron rendered within a transparent kidney coronal section. Color-coded segments: glomerulus amber, PCT teal, loop of Henle blue gradient, DCT green, collecting duct navy. Afferent and efferent arterioles and vasa recta in red/blue vascular tubes. Cortex/medulla boundary as horizontal plane.</p>
             <div class="card-tags"><span class="ctag ct-amber">3D Render</span><span class="ctag ct-teal">Vasa Recta</span><span class="ctag ct-green">JGA</span></div>
@@ -935,26 +1067,14 @@ body {
         <span class="section-hdr-badge badge-navy">Ultrastructure · Podocyte · GBM</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="a7">
-          <div class="card-header navy-accent">
-            <span class="card-num">07</span>
-            <span class="card-title">Filtration Barrier — Trilaminar Cross-Section</span>
-            <span class="card-render-badge rb-2d">2D</span>
-          </div>
-          <div class="card-img-zone"><picture><source srcset="../images/glomerular-filtration-barrier-2d.webp" type="image/webp"><img src="../images/glomerular-filtration-barrier-2d.png" alt="Glomerular filtration barrier — 2D schematic of endothelium, GBM and podocyte slit diaphragm" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-navy" id="a7" data-num="07" data-title="Filtration Barrier — Trilaminar Cross-Section" data-webp="../images/glomerular-filtration-barrier-2d.webp" data-png="../images/glomerular-filtration-barrier-2d.png" data-alt="Glomerular filtration barrier — 2D schematic of endothelium, GBM and podocyte slit diaphragm" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/glomerular-filtration-barrier-2d.webp" type="image/webp"><img src="../images/glomerular-filtration-barrier-2d.png" alt="Glomerular filtration barrier — 2D schematic of endothelium, GBM and podocyte slit diaphragm" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">07</span><span class="thumb-title">Filtration Barrier — Trilaminar Cross-Section</span></div></div>
           <div class="card-body">
             <p class="card-desc">Three-layer filtration barrier from blood to Bowman's space: fenestrated endothelium (70–100 nm pores, glycocalyx charge barrier), trilaminar GBM (lamina rara interna/densa/externa), podocyte foot processes with slit diaphragm (nephrin/podocin). Normal ACR &lt;30 mg/g. Nephrotic vs nephritic failure patterns annotated.</p>
             <div class="card-tags"><span class="ctag ct-navy">Podocyte</span><span class="ctag ct-teal">GBM Layers</span><span class="ctag ct-red">Nephrotic Syndrome</span></div>
           </div>
         </div>
-        <div class="illus-card" id="a8">
-          <div class="card-header navy-accent">
-            <span class="card-num">08</span>
-            <span class="card-title">Podocyte & Slit Diaphragm — EM-Style 3D Render</span>
-            <span class="card-render-badge rb-3d">3D</span>
-          </div>
-          <div class="card-img-zone"><picture><source srcset="../images/glomerular-barrier-3d.webp" type="image/webp"><img src="../images/glomerular-barrier-3d.png" alt="Glomerular filtration barrier — 3D cross-section of podocyte foot processes and GBM" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-navy" id="a8" data-num="08" data-title="Podocyte &amp; Slit Diaphragm — EM-Style 3D Render" data-webp="../images/glomerular-barrier-3d.webp" data-png="../images/glomerular-barrier-3d.png" data-alt="Glomerular filtration barrier — 3D cross-section of podocyte foot processes and GBM" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/glomerular-barrier-3d.webp" type="image/webp"><img src="../images/glomerular-barrier-3d.png" alt="Glomerular filtration barrier — 3D cross-section of podocyte foot processes and GBM" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">08</span><span class="thumb-title">Podocyte &amp; Slit Diaphragm — EM-Style 3D Render</span></div></div>
           <div class="card-body">
             <p class="card-desc">Electron microscopy-inspired 3D ultrastructure. Podocyte cell body (teal) with interdigitating foot processes. Slit diaphragm as zipper-like nephrin bridge (~40 nm). GBM as translucent amber sheet. Fenestrated endothelium in pale blue below. Dark navy background. Labeled albumin-blocked and water/solute-passing arrows.</p>
             <div class="card-tags"><span class="ctag ct-amber">EM-Style</span><span class="ctag ct-teal">Slit Diaphragm</span><span class="ctag ct-navy">Nephrin/Podocin</span></div>
@@ -967,26 +1087,14 @@ body {
         <span class="section-hdr-badge badge-red">Spatial Anatomy · Clinical Correlates</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="a9">
-          <div class="card-header red-accent">
-            <span class="card-num">09</span>
-            <span class="card-title">Retroperitoneal Relations — Bilateral 3D Spatial Render</span>
-            <span class="card-render-badge rb-3d">3D</span>
-          </div>
-          <div class="card-img-zone"><picture><source srcset="../images/kidney-retroperitoneal-3d.webp" type="image/webp"><img src="../images/kidney-retroperitoneal-3d.png" alt="Kidney retroperitoneal position — 3D anatomy showing T12–L3 vertebral relationship" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-red" id="a9" data-num="09" data-title="Retroperitoneal Relations — Bilateral 3D Spatial Render" data-webp="../images/kidney-retroperitoneal-3d.webp" data-png="../images/kidney-retroperitoneal-3d.png" data-alt="Kidney retroperitoneal position — 3D anatomy showing T12–L3 vertebral relationship" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/kidney-retroperitoneal-3d.webp" type="image/webp"><img src="../images/kidney-retroperitoneal-3d.png" alt="Kidney retroperitoneal position — 3D anatomy showing T12–L3 vertebral relationship" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">09</span><span class="thumb-title">Retroperitoneal Relations — Bilateral 3D Spatial Render</span></div></div>
           <div class="card-body">
             <p class="card-desc">Bilateral kidneys in retroperitoneal context with peritoneum removed. Adjacent structures: adrenal glands, ureters, liver (right), spleen and pancreatic tail (left), psoas muscles, aorta, IVC. Gerota's fascia as translucent envelope. Right kidney lower than left. Left renal vein crossing aorta anteriorly labeled. CT reconstruction aesthetic.</p>
             <div class="card-tags"><span class="ctag ct-red">Gerota's Fascia</span><span class="ctag ct-teal">Psoas Relations</span><span class="ctag ct-amber">Adrenal Position</span></div>
           </div>
         </div>
-        <div class="illus-card" id="a10">
-          <div class="card-header red-accent">
-            <span class="card-num">10</span>
-            <span class="card-title">Collecting System, Ureters & UVJ — Hybrid Panel</span>
-            <span class="card-render-badge rb-hybrid">Hybrid</span>
-          </div>
-          <div class="card-img-zone"><picture><source srcset="../images/kidney-collecting-system-hybrid-v2.webp" type="image/webp"><img src="../images/kidney-collecting-system-hybrid-v2.png" alt="Kidney collecting system — hybrid diagram of calyces, renal pelvis and ureteropelvic junction" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-red" id="a10" data-num="10" data-title="Collecting System, Ureters &amp; UVJ — Hybrid Panel" data-webp="../images/kidney-collecting-system-hybrid-v2.webp" data-png="../images/kidney-collecting-system-hybrid-v2.png" data-alt="Kidney collecting system — hybrid diagram of calyces, renal pelvis and ureteropelvic junction" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/kidney-collecting-system-hybrid-v2.webp" type="image/webp"><img src="../images/kidney-collecting-system-hybrid-v2.png" alt="Kidney collecting system — hybrid diagram of calyces, renal pelvis and ureteropelvic junction" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">10</span><span class="thumb-title">Collecting System, Ureters &amp; UVJ — Hybrid Panel</span></div></div>
           <div class="card-body">
             <p class="card-desc">Left panel: 2D schematic of LEFT kidney collecting system with three physiologic narrowings (UPJ, iliac crossing, UVJ) marked with numbered amber caution markers. Right panel: 3D CT urogram–style bilateral MIP reconstruction. Bottom strip: UPJ obstruction, ureteral stone passage rates, VUR/reflux nephropathy pearls.</p>
             <div class="card-tags"><span class="ctag ct-teal">UPJ Obstruction</span><span class="ctag ct-amber">Stone Narrowings</span><span class="ctag ct-red">UVJ / VUR</span></div>
@@ -1003,30 +1111,20 @@ body {
         <span class="section-hdr-badge badge-teal">5 Illustrations</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="c1">
-          <div class="card-header teal-accent"><span class="card-num">01</span><span class="card-title">Simple vs Complex Kidney Cyst — Bosniak Classification</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/kidney-cyst-simple-vs-complex-hybrid.webp" type="image/webp"><img src="../images/kidney-cyst-simple-vs-complex-hybrid.png" alt="Simple vs complex renal cyst — Bosniak classification hybrid diagram" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-teal" id="c1" data-num="01" data-title="Simple vs Complex Kidney Cyst — Bosniak Classification" data-webp="../images/kidney-cyst-simple-vs-complex-hybrid.webp" data-png="../images/kidney-cyst-simple-vs-complex-hybrid.png" data-alt="Simple vs complex renal cyst — Bosniak classification hybrid diagram" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/kidney-cyst-simple-vs-complex-hybrid.webp" type="image/webp"><img src="../images/kidney-cyst-simple-vs-complex-hybrid.png" alt="Simple vs complex renal cyst — Bosniak classification hybrid diagram" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">01</span><span class="thumb-title">Simple vs Complex Kidney Cyst — Bosniak Classification</span></div></div>
           <div class="card-body"><p class="card-desc">Dual-panel comparison: simple cyst (Bosniak I — thin wall, anechoic, no septations, benign) vs complex cyst (Bosniak III/IV — thick wall, septations, calcification, enhancing nodule, malignant potential). Central Bosniak classification table I→IV color-coded green to red. Ultrasound and CT insets per type.</p><div class="card-tags"><span class="ctag ct-teal">Bosniak 2019</span><span class="ctag ct-amber">US Correlate</span><span class="ctag ct-red">Malignant Potential</span></div></div>
         </div>
-        <div class="illus-card" id="c2">
-          <div class="card-header teal-accent"><span class="card-num">02</span><span class="card-title">Horseshoe Kidney — Fusion Anomaly</span><span class="card-render-badge rb-3d">3D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/horseshoe-kidney-3d.webp" type="image/webp"><img src="../images/horseshoe-kidney-3d.png" alt="Horseshoe kidney — 3D anatomy showing isthmus fusion and malrotation" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-teal" id="c2" data-num="02" data-title="Horseshoe Kidney — Fusion Anomaly" data-webp="../images/horseshoe-kidney-3d.webp" data-png="../images/horseshoe-kidney-3d.png" data-alt="Horseshoe kidney — 3D anatomy showing isthmus fusion and malrotation" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/horseshoe-kidney-3d.webp" type="image/webp"><img src="../images/horseshoe-kidney-3d.png" alt="Horseshoe kidney — 3D anatomy showing isthmus fusion and malrotation" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">02</span><span class="thumb-title">Horseshoe Kidney — Fusion Anomaly</span></div></div>
           <div class="card-body"><p class="card-desc">Lower pole fusion across midline anterior to aorta and IVC. Isthmus at L3–L4, arrested by inferior mesenteric artery. Medially rotated hila facing anteriorly. Ureters crossing anterior to isthmus. Inset comparison: normal vs horseshoe kidney position. Complications: UPJ obstruction, stones, UTI, Wilms tumor risk.</p><div class="card-tags"><span class="ctag ct-navy">IMA Arrest</span><span class="ctag ct-amber">UPJ Obstruction</span><span class="ctag ct-red">Wilms Risk</span></div></div>
         </div>
-        <div class="illus-card" id="c3">
-          <div class="card-header teal-accent"><span class="card-num">03</span><span class="card-title">Unilateral Renal Agenesis — Solitary Kidney</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/renal-agenesis-unilateral-hybrid.webp" type="image/webp"><img src="../images/renal-agenesis-unilateral-hybrid.png" alt="Unilateral renal agenesis — hybrid illustration with compensatory hypertrophy" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-teal" id="c3" data-num="03" data-title="Unilateral Renal Agenesis — Solitary Kidney" data-webp="../images/renal-agenesis-unilateral-hybrid.webp" data-png="../images/renal-agenesis-unilateral-hybrid.png" data-alt="Unilateral renal agenesis — hybrid illustration with compensatory hypertrophy" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/renal-agenesis-unilateral-hybrid.webp" type="image/webp"><img src="../images/renal-agenesis-unilateral-hybrid.png" alt="Unilateral renal agenesis — hybrid illustration with compensatory hypertrophy" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">03</span><span class="thumb-title">Unilateral Renal Agenesis — Solitary Kidney</span></div></div>
           <div class="card-body"><p class="card-desc">2D schematic: absent right kidney, lying-down adrenal sign in empty fossa, hemitrigone. 3D render: enlarged solitary left kidney with compensatory hypertrophy. Management strip: KDIGO G2 equivalent, ACR monitoring, nephrotoxin avoidance, contact sport restriction, accelerated aging-related nephron loss.</p><div class="card-tags"><span class="ctag ct-teal">Compensatory Hypertrophy</span><span class="ctag ct-amber">KDIGO G2</span><span class="ctag ct-navy">Lying-Down Adrenal</span></div></div>
         </div>
-        <div class="illus-card" id="c4">
-          <div class="card-header teal-accent"><span class="card-num">04</span><span class="card-title">ADPKD — Gross Cystic Architecture</span><span class="card-render-badge rb-3d">3D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/adpkd-gross-architecture-3d.webp" type="image/webp"><img src="../images/adpkd-gross-architecture-3d.png" alt="ADPKD gross architecture — 3D bilateral polycystic kidneys with replacing cysts" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-teal" id="c4" data-num="04" data-title="ADPKD — Gross Cystic Architecture" data-webp="../images/adpkd-gross-architecture-3d.webp" data-png="../images/adpkd-gross-architecture-3d.png" data-alt="ADPKD gross architecture — 3D bilateral polycystic kidneys with replacing cysts" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/adpkd-gross-architecture-3d.webp" type="image/webp"><img src="../images/adpkd-gross-architecture-3d.png" alt="ADPKD gross architecture — 3D bilateral polycystic kidneys with replacing cysts" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">04</span><span class="thumb-title">ADPKD — Gross Cystic Architecture</span></div></div>
           <div class="card-body"><p class="card-desc">Massively enlarged bilateral kidneys (30–40 cm) with innumerable cysts replacing all normal parenchyma. Cysts: serous (pale blue), hemorrhagic (dark amber), infected (turbid yellow-green). Liver cysts visible. Normal kidney size comparison inset. Bottom strip: PKD1/PKD2 genetics, TKV monitoring, tolvaptan indication, extrarenal manifestations.</p><div class="card-tags"><span class="ctag ct-red">PKD1/PKD2</span><span class="ctag ct-amber">TKV Monitoring</span><span class="ctag ct-teal">Tolvaptan</span></div></div>
         </div>
-        <div class="illus-card" id="c5">
-          <div class="card-header teal-accent"><span class="card-num">05</span><span class="card-title">Duplex / Bifid Collecting System — Weigert-Meyer Rule</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/duplex-collecting-system-hybrid.webp" type="image/webp"><img src="../images/duplex-collecting-system-hybrid.png" alt="Duplex collecting system — hybrid diagram of bifid ureter and Weigert-Meyer rule" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-teal" id="c5" data-num="05" data-title="Duplex / Bifid Collecting System — Weigert-Meyer Rule" data-webp="../images/duplex-collecting-system-hybrid.webp" data-png="../images/duplex-collecting-system-hybrid.png" data-alt="Duplex collecting system — hybrid diagram of bifid ureter and Weigert-Meyer rule" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/duplex-collecting-system-hybrid.webp" type="image/webp"><img src="../images/duplex-collecting-system-hybrid.png" alt="Duplex collecting system — hybrid diagram of bifid ureter and Weigert-Meyer rule" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">05</span><span class="thumb-title">Duplex / Bifid Collecting System — Weigert-Meyer Rule</span></div></div>
           <div class="card-body"><p class="card-desc">Complete ureteral duplication with Weigert-Meyer rule illustrated: upper moiety ureter inserts ectopically (medial/inferior) → obstruction prone; lower moiety ureter orthotopic → VUR prone. 3D CT urogram MIP shows bilateral ureters. Trigone showing both ureteral orifices. Obstruction and reflux symbols at respective insertions.</p><div class="card-tags"><span class="ctag ct-teal">Weigert-Meyer</span><span class="ctag ct-amber">Upper Obstruction</span><span class="ctag ct-red">Lower VUR</span></div></div>
         </div>
       </div>
@@ -1036,10 +1134,8 @@ body {
         <span class="section-hdr-badge badge-red">RCC · Staging · Paraneoplastic</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="c6">
-          <div class="card-header red-accent"><span class="card-num">06</span><span class="card-title">Renal Cell Carcinoma — Cross-Section & TNM Staging</span><span class="card-render-badge rb-3d">3D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/renal-cell-carcinoma-cross-section-3d.webp" type="image/webp"><img src="../images/renal-cell-carcinoma-cross-section-3d.png" alt="Renal cell carcinoma cross-section — 3D tumor architecture with vascular invasion" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-red" id="c6" data-num="06" data-title="Renal Cell Carcinoma — Cross-Section &amp; TNM Staging" data-webp="../images/renal-cell-carcinoma-cross-section-3d.webp" data-png="../images/renal-cell-carcinoma-cross-section-3d.png" data-alt="Renal cell carcinoma cross-section — 3D tumor architecture with vascular invasion" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/renal-cell-carcinoma-cross-section-3d.webp" type="image/webp"><img src="../images/renal-cell-carcinoma-cross-section-3d.png" alt="Renal cell carcinoma cross-section — 3D tumor architecture with vascular invasion" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">06</span><span class="thumb-title">Renal Cell Carcinoma — Cross-Section &amp; TNM Staging</span></div></div>
           <div class="card-body"><p class="card-desc">Clear cell RCC (75%): golden-yellow lipid-rich cut surface, hemorrhagic and necrotic zones, pseudocapsule. T3a perinephric fat invasion and renal vein thrombus shown. TNM staging diagram T1a→T4. Classic triad present only 10%. Paraneoplastic: polycythemia, hypercalcemia, Stauffer syndrome (↑LFTs).</p><div class="card-tags"><span class="ctag ct-red">VHL Mutation</span><span class="ctag ct-amber">IVC Thrombus</span><span class="ctag ct-navy">TNM Staging</span></div></div>
         </div>
       </div>
@@ -1049,10 +1145,8 @@ body {
         <span class="section-hdr-badge badge-red">RAS · RAAS · Doppler</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid single">
-        <div class="wide-card" id="c7">
-          <div class="card-header red-accent"><span class="card-num">07</span><span class="card-title">Renal Artery Stenosis — Anatomy, Pathophysiology & Clinical Correlates</span><span class="card-render-badge rb-hybrid">Hybrid · Wide Panel</span></div>
-          <div class="wide-card-img"><picture><source srcset="../images/renal-artery-stenosis-anatomy-hybrid-v2.webp" type="image/webp"><img src="../images/renal-artery-stenosis-anatomy-hybrid-v2.png" alt="Renal artery stenosis anatomy — hybrid diagram of atherosclerotic vs FMD lesions" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-red" id="c7" data-num="07" data-title="Renal Artery Stenosis — Anatomy, Pathophysiology &amp; Clinical Correlates" data-webp="../images/renal-artery-stenosis-anatomy-hybrid-v2.webp" data-png="../images/renal-artery-stenosis-anatomy-hybrid-v2.png" data-alt="Renal artery stenosis anatomy — hybrid diagram of atherosclerotic vs FMD lesions" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/renal-artery-stenosis-anatomy-hybrid-v2.webp" type="image/webp"><img src="../images/renal-artery-stenosis-anatomy-hybrid-v2.png" alt="Renal artery stenosis anatomy — hybrid diagram of atherosclerotic vs FMD lesions" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">07</span><span class="thumb-title">Renal Artery Stenosis — Anatomy, Pathophysiology &amp; Clinical Correlates</span></div></div>
           <div class="wide-card-body">
             <p class="card-desc">Four-panel infographic: (1) Normal renal artery with correct arterial wall layers (intima/media/adventitia). (2) Atherosclerotic RAS — eccentric calcified plaque at ostium, crescent-shaped residual lumen, small atrophic kidney, tardus-parvus Doppler, angiographic appearance. (3) FMD — string-of-beads mid-distal artery, no plaque, young women. (4) RAAS cascade → efferent constriction → ACEi/ARB AKI risk.</p>
             <div>
@@ -1076,15 +1170,11 @@ body {
         <span class="section-hdr-badge badge-amber">Parenchymal · Imaging · Comparison</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="c8">
-          <div class="card-header amber-accent"><span class="card-num">08</span><span class="card-title">Bilateral Medical Renal Disease — Parenchymal Pattern</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/bilateral-medical-renal-disease-hybrid.webp" type="image/webp"><img src="../images/bilateral-medical-renal-disease-hybrid.png" alt="Bilateral medical renal disease — hybrid comparison of common nephropathies" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-amber" id="c8" data-num="08" data-title="Bilateral Medical Renal Disease — Parenchymal Pattern" data-webp="../images/bilateral-medical-renal-disease-hybrid.webp" data-png="../images/bilateral-medical-renal-disease-hybrid.png" data-alt="Bilateral medical renal disease — hybrid comparison of common nephropathies" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/bilateral-medical-renal-disease-hybrid.webp" type="image/webp"><img src="../images/bilateral-medical-renal-disease-hybrid.png" alt="Bilateral medical renal disease — hybrid comparison of common nephropathies" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">08</span><span class="thumb-title">Bilateral Medical Renal Disease — Parenchymal Pattern</span></div></div>
           <div class="card-body"><p class="card-desc">Bilateral small echogenic kidneys with loss of corticomedullary differentiation. Gross appearance, ultrasound echogenicity grading scale (0→3), CT density correlate, and schematic microscopy (glomerulosclerosis, tubular atrophy, interstitial fibrosis, arteriosclerosis). Smooth surface = medical nephropathy; scarred/irregular = chronic pyelonephritis.</p><div class="card-tags"><span class="ctag ct-navy">CMJ Loss</span><span class="ctag ct-amber">Echogenicity Grade</span><span class="ctag ct-teal">Cortical Thinning</span></div></div>
         </div>
-        <div class="illus-card" id="c9">
-          <div class="card-header amber-accent"><span class="card-num">09</span><span class="card-title">Kidney Appearance — 7-Disease Comparison Panel</span><span class="card-render-badge rb-hybrid">Hybrid · Wide</span></div>
-          <div class="card-img-zone" style="min-height:260px;"><picture><source srcset="../images/kidney-systemic-disease-comparison-panel.webp" type="image/webp"><img src="../images/kidney-systemic-disease-comparison-panel.png" alt="Systemic disease comparison panel — diabetic nephropathy, lupus nephritis, amyloidosis" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-amber" id="c9" data-num="09" data-title="Kidney Appearance — 7-Disease Comparison Panel" data-webp="../images/kidney-systemic-disease-comparison-panel.webp" data-png="../images/kidney-systemic-disease-comparison-panel.png" data-alt="Systemic disease comparison panel — diabetic nephropathy, lupus nephritis, amyloidosis" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/kidney-systemic-disease-comparison-panel.webp" type="image/webp"><img src="../images/kidney-systemic-disease-comparison-panel.png" alt="Systemic disease comparison panel — diabetic nephropathy, lupus nephritis, amyloidosis" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">09</span><span class="thumb-title">Kidney Appearance — 7-Disease Comparison Panel</span></div></div>
           <div class="card-body"><p class="card-desc">Side-by-side gross + cross-section: Normal · Hypertensive nephrosclerosis (finely granular, leather-grain) · Diabetic nephropathy (enlarged early, Kimmelstiel-Wilson nodules) · Renal TB (putty kidney, caseous necrosis, dystrophic calcification) · HIVAN (enlarged, echogenic, collapsing FSGS) · ADPKD (massively cystic) · End-stage CKD (tiny, fibrotic, featureless). Each column visually distinct.</p><div class="card-tags"><span class="ctag ct-amber">7 Conditions</span><span class="ctag ct-teal">Size Comparison</span><span class="ctag ct-red">Teaching Panel</span></div></div>
         </div>
       </div>
@@ -1094,15 +1184,11 @@ body {
         <span class="section-hdr-badge badge-navy">Nephrocalcinosis · Hydronephrosis</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="c10">
-          <div class="card-header navy-accent"><span class="card-num">10</span><span class="card-title">Nephrocalcinosis — Medullary vs Cortical, Imaging & Causes</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/nephrocalcinosis-anatomy-hybrid.webp" type="image/webp"><img src="../images/nephrocalcinosis-anatomy-hybrid.png" alt="Nephrocalcinosis anatomy — hybrid diagram of cortical and medullary calcium deposits" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-navy" id="c10" data-num="10" data-title="Nephrocalcinosis — Medullary vs Cortical, Imaging &amp; Causes" data-webp="../images/nephrocalcinosis-anatomy-hybrid.webp" data-png="../images/nephrocalcinosis-anatomy-hybrid.png" data-alt="Nephrocalcinosis anatomy — hybrid diagram of cortical and medullary calcium deposits" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/nephrocalcinosis-anatomy-hybrid.webp" type="image/webp"><img src="../images/nephrocalcinosis-anatomy-hybrid.png" alt="Nephrocalcinosis anatomy — hybrid diagram of cortical and medullary calcium deposits" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">10</span><span class="thumb-title">Nephrocalcinosis — Medullary vs Cortical, Imaging &amp; Causes</span></div></div>
           <div class="card-body"><p class="card-desc">Four panels: Normal reference · Medullary nephrocalcinosis (95%: white crystalline deposits exclusively in pyramids, cortex spared, US acoustic shadowing) · Cortical nephrocalcinosis (5%: peripheral rim calcification, cortex only, medulla spared) · Pathophysiology cascade (hypercalciuria route vs distal RTA route). Full cause table + imaging correlation strip (US/KUB/NCCT).</p><div class="card-tags"><span class="ctag ct-navy">Medullary 95%</span><span class="ctag ct-amber">Distal RTA</span><span class="ctag ct-teal">US Shadowing</span><span class="ctag ct-red">Cortical 5%</span></div></div>
         </div>
-        <div class="illus-card" id="c11">
-          <div class="card-header navy-accent"><span class="card-num">11</span><span class="card-title">Hydronephrosis — SFU Grading I–IV, Causes & Management</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/hydronephrosis-anatomy-hybrid.webp" type="image/webp"><img src="../images/hydronephrosis-anatomy-hybrid.png" alt="Hydronephrosis anatomy — hybrid cross-section showing calyceal dilation grades" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-navy" id="c11" data-num="11" data-title="Hydronephrosis — SFU Grading I–IV, Causes &amp; Management" data-webp="../images/hydronephrosis-anatomy-hybrid.webp" data-png="../images/hydronephrosis-anatomy-hybrid.png" data-alt="Hydronephrosis anatomy — hybrid cross-section showing calyceal dilation grades" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/hydronephrosis-anatomy-hybrid.webp" type="image/webp"><img src="../images/hydronephrosis-anatomy-hybrid.png" alt="Hydronephrosis anatomy — hybrid cross-section showing calyceal dilation grades" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">11</span><span class="thumb-title">Hydronephrosis — SFU Grading I–IV, Causes &amp; Management</span></div></div>
           <div class="card-body"><p class="card-desc">SFU grading: Normal + Grades I–IV kidney diagrams (each visually distinct, progressively thinning cortex). Causes mapped by level of obstruction (UPJ/ureteral/bladder outlet). Pathophysiology: acute vs chronic obstruction cascade. Management algorithm including pyohydronephrosis emergency. US, CT, MAG3 imaging correlates. Post-obstructive diuresis warning.</p><div class="card-tags"><span class="ctag ct-navy">SFU I–IV</span><span class="ctag ct-red">Pyohydronephrosis</span><span class="ctag ct-teal">MAG3 Renogram</span><span class="ctag ct-amber">Post-Obstructive Diuresis</span></div></div>
         </div>
       </div>
@@ -1112,10 +1198,8 @@ body {
         <span class="section-hdr-badge badge-green">BPH · Outlet Obstruction · Upstream Effects</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid single">
-        <div class="wide-card" id="c12">
-          <div class="card-header green-accent"><span class="card-num">12</span><span class="card-title">BPH — Prostate Enlargement, Bladder Outlet Obstruction & Upstream Cascade</span><span class="card-render-badge rb-hybrid">Hybrid · Wide</span></div>
-          <div class="wide-card-img" style="min-height:280px;"><picture><source srcset="../images/bph-upstream-obstructive-effects-hybrid.webp" type="image/webp"><img src="../images/bph-upstream-obstructive-effects-hybrid.png" alt="BPH upstream obstructive cascade — hybrid diagram from prostate to bilateral hydronephrosis" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-green" id="c12" data-num="12" data-title="BPH — Prostate Enlargement, Bladder Outlet Obstruction &amp; Upstream Cascade" data-webp="../images/bph-upstream-obstructive-effects-hybrid.webp" data-png="../images/bph-upstream-obstructive-effects-hybrid.png" data-alt="BPH upstream obstructive cascade — hybrid diagram from prostate to bilateral hydronephrosis" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/bph-upstream-obstructive-effects-hybrid.webp" type="image/webp"><img src="../images/bph-upstream-obstructive-effects-hybrid.png" alt="BPH upstream obstructive cascade — hybrid diagram from prostate to bilateral hydronephrosis" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">12</span><span class="thumb-title">BPH — Prostate Enlargement, Bladder Outlet Obstruction &amp; Upstream Cascade</span></div></div>
           <div class="wide-card-body">
             <p class="card-desc">Left-to-right flow: (1) Prostate cross-section — periurethral zone enlargement, compressed slit-like urethra, size comparison normal vs BPH. (2) Bladder — detrusor hypertrophy, trabeculation (coarse muscular ridges), multiple diverticula, elevated PVR. (3) Bilateral dilated hydroureters. (4) Bilateral hydronephrosis with cortical thinning. Connecting arrows show pressure cascade. Treatment summary: IPSS scoring, alpha-blockers, 5-ARIs, TURP.</p>
             <div><div class="card-tags"><span class="ctag ct-navy">Outlet Obstruction</span><span class="ctag ct-amber">Detrusor Hypertrophy</span><span class="ctag ct-red">Post-Renal AKI</span><span class="ctag ct-green">Alpha-Blocker / 5-ARI</span></div></div>
@@ -1133,11 +1217,9 @@ body {
         <span class="section-hdr-badge badge-teal">5 Illustrated Procedures</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid wide">
+      <div class="thumb-grid">
 
-        <div class="illus-card" id="p1">
-          <div class="card-header teal-accent"><span class="card-num">P1</span><span class="card-title">Percutaneous Kidney Biopsy — US-Guided</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/percutaneous-kidney-biopsy-v2.webp" type="image/webp"><img src="../images/percutaneous-kidney-biopsy-v2.png" alt="Percutaneous kidney biopsy — US-guided technique with lower-pole targeting" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-teal" id="p1" data-num="P1" data-title="Percutaneous Kidney Biopsy — US-Guided" data-webp="../images/percutaneous-kidney-biopsy-v2.webp" data-png="../images/percutaneous-kidney-biopsy-v2.png" data-alt="Percutaneous kidney biopsy — US-guided technique with lower-pole targeting" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/percutaneous-kidney-biopsy-v2.webp" type="image/webp"><img src="../images/percutaneous-kidney-biopsy-v2.png" alt="Percutaneous kidney biopsy — US-guided technique with lower-pole targeting" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P1</span><span class="thumb-title">Percutaneous Kidney Biopsy — US-Guided</span></div></div>
           <div class="card-body">
             <p class="card-desc">Three panels: (1) Prone patient clinical scene with small Netter-style kidney inset showing lower pole target. (2) Magnified cross-section: 16G spring-loaded needle through cortex layers, 15–20mm core specimen with labeled glomeruli. (3) Core on ruler, schematic histology (LM/IF/EM jars). Patient must be PRONE. Lower pole targeted — less vascular, away from hilum.</p>
             <ol class="step-list"><li><span class="step-num">1</span>Patient prone; US identifies lower pole cortex</li><li><span class="step-num">2</span>Local anesthesia skin → capsule under real-time US</li><li><span class="step-num">3</span>16G spring-loaded needle; patient holds breath</li><li><span class="step-num">4</span>≥2 cores obtained; target ≥10 glomeruli each</li><li><span class="step-num">5</span>6h bed rest, vital signs, urine color monitoring</li></ol>
@@ -1145,9 +1227,7 @@ body {
           </div>
         </div>
 
-        <div class="illus-card" id="p2">
-          <div class="card-header teal-accent"><span class="card-num">P2</span><span class="card-title">PCN Nephrostomy Tube Insertion — Seldinger</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/nephrostomy-pcn-insertion-v2.webp" type="image/webp"><img src="../images/nephrostomy-pcn-insertion-v2.png" alt="Percutaneous nephrostomy insertion — Seldinger technique with pigtail in renal pelvis" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-teal" id="p2" data-num="P2" data-title="PCN Nephrostomy Tube Insertion — Seldinger" data-webp="../images/nephrostomy-pcn-insertion-v2.webp" data-png="../images/nephrostomy-pcn-insertion-v2.png" data-alt="Percutaneous nephrostomy insertion — Seldinger technique with pigtail in renal pelvis" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/nephrostomy-pcn-insertion-v2.webp" type="image/webp"><img src="../images/nephrostomy-pcn-insertion-v2.png" alt="Percutaneous nephrostomy insertion — Seldinger technique with pigtail in renal pelvis" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P2</span><span class="thumb-title">PCN Nephrostomy Tube Insertion — Seldinger</span></div></div>
           <div class="card-body">
             <p class="card-desc">Three panels: (1) Prone patient clinical scene, C-arm + US probe, kidney anatomy only in small correctly-oriented inset box (NOT on skin). (2) 4-step Seldinger sequence — each with kidney diagram (calyces draining inward to medial pelvis) and fluoroscopy inset. (3) Final position: pigtail coiled in renal pelvis (medial hilum), external drainage bag showing turbid pyonephrosic fluid.</p>
             <ol class="step-list"><li><span class="step-num">1</span>22G Chiba needle → posterior calyx; contrast confirms entry</li><li><span class="step-num">2</span>0.035" J-wire → J-tip coiled in renal pelvis</li><li><span class="step-num">3</span>Serial dilation: 6Fr → 8Fr → 10Fr over wire</li><li><span class="step-num">4</span>8–12Fr pigtail catheter; pigtail in pelvis; drain confirmed</li></ol>
@@ -1155,9 +1235,7 @@ body {
           </div>
         </div>
 
-        <div class="illus-card" id="p3">
-          <div class="card-header teal-accent"><span class="card-num">P3</span><span class="card-title">ESWL — Extracorporeal Shock Wave Lithotripsy</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/eswl-lithotripsy-v2.webp" type="image/webp"><img src="../images/eswl-lithotripsy-v2.png" alt="ESWL lithotripsy — shock wave physics and patient positioning diagram" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-teal" id="p3" data-num="P3" data-title="ESWL — Extracorporeal Shock Wave Lithotripsy" data-webp="../images/eswl-lithotripsy-v2.webp" data-png="../images/eswl-lithotripsy-v2.png" data-alt="ESWL lithotripsy — shock wave physics and patient positioning diagram" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/eswl-lithotripsy-v2.webp" type="image/webp"><img src="../images/eswl-lithotripsy-v2.png" alt="ESWL lithotripsy — shock wave physics and patient positioning diagram" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P3</span><span class="thumb-title">ESWL — Extracorporeal Shock Wave Lithotripsy</span></div></div>
           <div class="card-body">
             <p class="card-desc">Three panels: (1) SUPINE patient on treatment table; generator BELOW and LATERAL; gel coupling cushion pressed against flank; C-arm X-ray source below/receiver above; converging shock wave arcs; small boxed "KIDNEY TARGETING — NOT TO SCALE" inset only. (2) Ellipsoidal F1→F2 physics + 4-frame fragmentation (intact → spallation/cavitation → fragments → gravel &lt;2mm). (3) Candidate selection, success rates, ESWL vs URS vs PCNL.</p>
             <ol class="step-list"><li><span class="step-num">1</span>Stone localized fluoroscopy/US; patient supine</li><li><span class="step-num">2</span>Gel coupling cushion contacts right flank; no air gap</li><li><span class="step-num">3</span>1000–3000 shocks; cardiac-gated R-wave synchronization</li><li><span class="step-num">4</span>Gravel passes days–weeks; strain urine; tamsulosin</li></ol>
@@ -1165,9 +1243,7 @@ body {
           </div>
         </div>
 
-        <div class="illus-card" id="p4">
-          <div class="card-header teal-accent"><span class="card-num">P4</span><span class="card-title">DJ Stent (Double-J) Insertion — Retrograde Cystoscopic</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/dj-stent-insertion-v2.webp" type="image/webp"><img src="../images/dj-stent-insertion-v2.png" alt="Double-J stent insertion — retrograde cystoscopic technique step-by-step" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-teal" id="p4" data-num="P4" data-title="DJ Stent (Double-J) Insertion — Retrograde Cystoscopic" data-webp="../images/dj-stent-insertion-v2.webp" data-png="../images/dj-stent-insertion-v2.png" data-alt="Double-J stent insertion — retrograde cystoscopic technique step-by-step" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/dj-stent-insertion-v2.webp" type="image/webp"><img src="../images/dj-stent-insertion-v2.png" alt="Double-J stent insertion — retrograde cystoscopic technique step-by-step" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P4</span><span class="thumb-title">DJ Stent (Double-J) Insertion — Retrograde Cystoscopic</span></div></div>
           <div class="card-body">
             <p class="card-desc">Three panels: (1) Cystoscopic setup — lithotomy patient, bladder interior, trigone, ureteral orifice, retrograde wire direction. (2) 4-step Seldinger: wire retrograde to renal pelvis → stent loading → proximal J-curl forming in pelvis → distal J-curl in bladder → wire removed. (3) Full urinary tract in situ: both pigtails correctly placed, side holes visible, obstructing stone bypassed. Fluoroscopy insets at each step.</p>
             <ol class="step-list"><li><span class="step-num">1</span>Cystoscopy; ureteral orifice at trigone identified</li><li><span class="step-num">2</span>Wire advanced retrograde to renal pelvis under fluoroscopy</li><li><span class="step-num">3</span>Stent advanced; proximal J in pelvis, distal J in bladder</li><li><span class="step-num">4</span>Wire removed; position confirmed; dwell 3–6 months</li></ol>
@@ -1175,9 +1251,7 @@ body {
           </div>
         </div>
 
-        <div class="illus-card" id="p5">
-          <div class="card-header teal-accent"><span class="card-num">P5</span><span class="card-title">Nephrectomy — Simple, Radical & Partial</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/nephrectomy-procedure-v2.webp" type="image/webp"><img src="../images/nephrectomy-procedure-v2.png" alt="Nephrectomy procedure — VAU ligation order, simple/radical/partial resection types" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-teal" id="p5" data-num="P5" data-title="Nephrectomy — Simple, Radical &amp; Partial" data-webp="../images/nephrectomy-procedure-v2.webp" data-png="../images/nephrectomy-procedure-v2.png" data-alt="Nephrectomy procedure — VAU ligation order, simple/radical/partial resection types" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/nephrectomy-procedure-v2.webp" type="image/webp"><img src="../images/nephrectomy-procedure-v2.png" alt="Nephrectomy procedure — VAU ligation order, simple/radical/partial resection types" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P5</span><span class="thumb-title">Nephrectomy — Simple, Radical &amp; Partial</span></div></div>
           <div class="card-body">
             <p class="card-desc">Four panels: (1) Retroperitoneal anatomy — VAU order (Vein anterior, Artery posterior, Ureter last), artery-first ligation critical step, Gerota's fascia. (2) Three nephrectomy types with resection lines (simple=amber, radical=red, partial=green). (3) Open incisions vs laparoscopic 4-port. (4) Post-nephrectomy nephrology: eGFR drop 25–30%, monitoring protocol, remaining kidney protection.</p>
             <ol class="step-list"><li><span class="step-num">1</span>Retroperitoneal access; Gerota's fascia dissected circumferentially</li><li><span class="step-num">2</span>Renal ARTERY ligated FIRST (reduces engorgement)</li><li><span class="step-num">3</span>Renal VEIN ligated SECOND</li><li><span class="step-num">4</span>Ureter clipped and divided LAST at iliac crossing</li></ol>
@@ -1192,11 +1266,9 @@ body {
         <span class="section-hdr-badge badge-amber">Tenckhoff · PD Exchange · CAPD vs APD</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid wide">
+      <div class="thumb-grid">
 
-        <div class="illus-card" id="p6">
-          <div class="card-header amber-accent"><span class="card-num">P6</span><span class="card-title">Tenckhoff Catheter Insertion — Surgical Technique</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/tenckhoff-catheter-insertion-v2.webp" type="image/webp"><img src="../images/tenckhoff-catheter-insertion-v2.png" alt="Tenckhoff catheter insertion — surgical technique with dual-cuff positioning" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-amber" id="p6" data-num="P6" data-title="Tenckhoff Catheter Insertion — Surgical Technique" data-webp="../images/tenckhoff-catheter-insertion-v2.webp" data-png="../images/tenckhoff-catheter-insertion-v2.png" data-alt="Tenckhoff catheter insertion — surgical technique with dual-cuff positioning" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/tenckhoff-catheter-insertion-v2.webp" type="image/webp"><img src="../images/tenckhoff-catheter-insertion-v2.png" alt="Tenckhoff catheter insertion — surgical technique with dual-cuff positioning" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P6</span><span class="thumb-title">Tenckhoff Catheter Insertion — Surgical Technique</span></div></div>
           <div class="card-body">
             <p class="card-desc">Three panels: (1) Transparent anterior abdominal wall: tip in Douglas pouch, deep cuff in preperitoneal space, subcutaneous tunnel, superficial cuff 2cm from exit, exit site pointing downward. (2) Surgical cross-section 4-steps: minilaparotomy → catheter into pelvis → tunnel creation → cuff positioning. (3) Magnified dual-cuff cross-section: all abdominal wall layers, fibrous ingrowth into Dacron shown.</p>
             <ol class="step-list"><li><span class="step-num">1</span>Exit site: 2cm below umbilicus, left of midline</li><li><span class="step-num">2</span>Peritoneum entered; catheter tip directed to Douglas pouch</li><li><span class="step-num">3</span>Deep cuff anchored in preperitoneal space</li><li><span class="step-num">4</span>Subcutaneous tunnel; superficial cuff 2cm from exit; break-in 2 weeks</li></ol>
@@ -1204,9 +1276,7 @@ body {
           </div>
         </div>
 
-        <div class="illus-card" id="p7">
-          <div class="card-header amber-accent"><span class="card-num">P7</span><span class="card-title">Peritoneal Dialysis — Fluid Exchange Mechanism</span><span class="card-render-badge rb-2d">2D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/peritoneal-dialysis-fluid-exchange-v2.webp" type="image/webp"><img src="../images/peritoneal-dialysis-fluid-exchange-v2.png" alt="Peritoneal dialysis fluid exchange — Fill–Dwell–Drain cycle with membrane transport" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-amber" id="p7" data-num="P7" data-title="Peritoneal Dialysis — Fluid Exchange Mechanism" data-webp="../images/peritoneal-dialysis-fluid-exchange-v2.webp" data-png="../images/peritoneal-dialysis-fluid-exchange-v2.png" data-alt="Peritoneal dialysis fluid exchange — Fill–Dwell–Drain cycle with membrane transport" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/peritoneal-dialysis-fluid-exchange-v2.webp" type="image/webp"><img src="../images/peritoneal-dialysis-fluid-exchange-v2.png" alt="Peritoneal dialysis fluid exchange — Fill–Dwell–Drain cycle with membrane transport" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P7</span><span class="thumb-title">Peritoneal Dialysis — Fluid Exchange Mechanism</span></div></div>
           <div class="card-body">
             <p class="card-desc">Sagittal torso cross-section: peritoneal cavity with 2L dialysate surrounding bowel loops. Peritoneal membrane highlighted. Transport arrows: diffusion (blood→dialysate: urea/Cr/K/PO4), osmosis/UF (water from blood), absorption (glucose/lactate from dialysate). Circular exchange cycle ①Fill②Dwell③Drain. CAPD vs APD comparison. Dextrose concentration vs UF volume table. PET transport type diagram.</p>
             <ol class="step-list"><li><span class="step-num">1</span>Fill: 2L fresh dialysate instilled (10–15 min)</li><li><span class="step-num">2</span>Dwell: diffusion + UF across peritoneal membrane</li><li><span class="step-num">3</span>Drain: spent dialysate by gravity; UF volume measured</li><li><span class="step-num">4</span>CAPD: 4×/day manual · APD: overnight cycler 8–10h</li></ol>
@@ -1221,11 +1291,9 @@ body {
         <span class="section-hdr-badge badge-green">IJ · Permcath · AVF · AVG</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid wide">
+      <div class="thumb-grid">
 
-        <div class="illus-card" id="p8">
-          <div class="card-header green-accent"><span class="card-num">P8</span><span class="card-title">IJ Temporary Catheter (IJCATH) — US-Guided Seldinger</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/ijcath-temporary-insertion-v2.webp" type="image/webp"><img src="../images/ijcath-temporary-insertion-v2.png" alt="IJ temporary catheter insertion — US-guided Seldinger with CXR tip verification" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-green" id="p8" data-num="P8" data-title="IJ Temporary Catheter (IJCATH) — US-Guided Seldinger" data-webp="../images/ijcath-temporary-insertion-v2.webp" data-png="../images/ijcath-temporary-insertion-v2.png" data-alt="IJ temporary catheter insertion — US-guided Seldinger with CXR tip verification" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/ijcath-temporary-insertion-v2.webp" type="image/webp"><img src="../images/ijcath-temporary-insertion-v2.png" alt="IJ temporary catheter insertion — US-guided Seldinger with CXR tip verification" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P8</span><span class="thumb-title">IJ Temporary Catheter (IJCATH) — US-Guided Seldinger</span></div></div>
           <div class="card-body">
             <p class="card-desc">Three panels: (1) Right neck anatomy — IJV lateral to carotid (MUST be correct), SCM overlying, US probe, needle at 45° toward nipple. Axial cross-section inset: IJV lateral/compressible, carotid medial/non-compressible. (2) 4-step Seldinger sequence with US + fluoroscopy insets. (3) Final position + CXR: tip at T4–T5, correct vs too-deep vs too-high positions color-coded.</p>
             <ol class="step-list"><li><span class="step-num">1</span>Patient supine, head turned 30° left; US identifies right IJV lateral to carotid</li><li><span class="step-num">2</span>18G needle at 45°; dark non-pulsatile blood confirms IJV</li><li><span class="step-num">3</span>J-wire → dilator → 12–13Fr dual-lumen catheter</li><li><span class="step-num">4</span>CXR confirms tip T4–T5; heparin lock after each HD</li></ol>
@@ -1233,9 +1301,7 @@ body {
           </div>
         </div>
 
-        <div class="illus-card" id="p9">
-          <div class="card-header green-accent"><span class="card-num">P9</span><span class="card-title">Tunneled Permcath Insertion — Right IJV Approach</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/permcath-tunneled-insertion-v2.webp" type="image/webp"><img src="../images/permcath-tunneled-insertion-v2.png" alt="Tunneled permcath insertion — subcutaneous tunnel and Dacron cuff positioning" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-green" id="p9" data-num="P9" data-title="Tunneled Permcath Insertion — Right IJV Approach" data-webp="../images/permcath-tunneled-insertion-v2.webp" data-png="../images/permcath-tunneled-insertion-v2.png" data-alt="Tunneled permcath insertion — subcutaneous tunnel and Dacron cuff positioning" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/permcath-tunneled-insertion-v2.webp" type="image/webp"><img src="../images/permcath-tunneled-insertion-v2.png" alt="Tunneled permcath insertion — subcutaneous tunnel and Dacron cuff positioning" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P9</span><span class="thumb-title">Tunneled Permcath Insertion — Right IJV Approach</span></div></div>
           <div class="card-body">
             <p class="card-desc">Three panels: (1) Transparent anterior chest: venous entry at neck, intravascular course IJV→SVC, subcutaneous tunnel curving to chest exit, Dacron cuff 1–2cm from exit, dual-lumen ports. (2) Tunnel creation 4-step cross-section: IJV access → exit site marking → trocar tunneling → Dacron cuff positioning (NOT at exit — 1–2cm inside). (3) Magnified cuff cross-section with fibrous ingrowth + CXR tip position.</p>
             <ol class="step-list"><li><span class="step-num">1</span>Right IJV accessed (Seldinger); wire to SVC confirmed</li><li><span class="step-num">2</span>Exit site on anterior chest wall below clavicle</li><li><span class="step-num">3</span>Subcutaneous tunnel created from neck to exit site</li><li><span class="step-num">4</span>Dacron cuff 1–2cm from exit; tip at SVC-RA junction</li></ol>
@@ -1243,9 +1309,7 @@ body {
           </div>
         </div>
 
-        <div class="illus-card" id="p10">
-          <div class="card-header green-accent"><span class="card-num">P10</span><span class="card-title">AV Fistula — Creation, Maturation & Cannulation</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/av-fistula-creation-maturation-v2.webp" type="image/webp"><img src="../images/av-fistula-creation-maturation-v2.png" alt="AV fistula creation and maturation — radiocephalic anastomosis and Rule of 6s" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-green" id="p10" data-num="P10" data-title="AV Fistula — Creation, Maturation &amp; Cannulation" data-webp="../images/av-fistula-creation-maturation-v2.webp" data-png="../images/av-fistula-creation-maturation-v2.png" data-alt="AV fistula creation and maturation — radiocephalic anastomosis and Rule of 6s" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/av-fistula-creation-maturation-v2.webp" type="image/webp"><img src="../images/av-fistula-creation-maturation-v2.png" alt="AV fistula creation and maturation — radiocephalic anastomosis and Rule of 6s" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P10</span><span class="thumb-title">AV Fistula — Creation, Maturation &amp; Cannulation</span></div></div>
           <div class="card-body">
             <p class="card-desc">Four panels: (1) Pre-op vein mapping US. (2) Radiocephalic (wrist) and brachiocephalic (antecubital) anastomoses — radial artery THICK-WALLED (muscular media visible), cephalic vein THIN-WALLED superficial — end-to-side running suture shown. (3) Maturation timeline Week 0→8: vein arterialization, Rule of 6s box. (4) Cannulation: two-needle technique, venous needle pointing AWAY from anastomosis. Complications panel.</p>
             <ol class="step-list"><li><span class="step-num">1</span>Non-dominant left arm; pre-op US vein mapping ≥2.5mm</li><li><span class="step-num">2</span>End-to-side cephalic vein to radial/brachial artery; running suture</li><li><span class="step-num">3</span>Maturation ≥6 weeks; Rule of 6s before first cannulation</li><li><span class="step-num">4</span>Two-needle: arterial toward anastomosis, venous away</li></ol>
@@ -1253,9 +1317,7 @@ body {
           </div>
         </div>
 
-        <div class="illus-card" id="p11">
-          <div class="card-header green-accent"><span class="card-num">P11</span><span class="card-title">AV Graft Placement — PTFE, Anastomoses & Failure Mode</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/av-graft-placement-v2.webp" type="image/webp"><img src="../images/av-graft-placement-v2.png" alt="AV graft placement — PTFE loop configuration and venous anastomosis failure mode" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-green" id="p11" data-num="P11" data-title="AV Graft Placement — PTFE, Anastomoses &amp; Failure Mode" data-webp="../images/av-graft-placement-v2.webp" data-png="../images/av-graft-placement-v2.png" data-alt="AV graft placement — PTFE loop configuration and venous anastomosis failure mode" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/av-graft-placement-v2.webp" type="image/webp"><img src="../images/av-graft-placement-v2.png" alt="AV graft placement — PTFE loop configuration and venous anastomosis failure mode" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P11</span><span class="thumb-title">AV Graft Placement — PTFE, Anastomoses &amp; Failure Mode</span></div></div>
           <div class="card-body">
             <p class="card-desc">Three panels: (1) Loop graft (forearm) and straight graft (upper arm) configurations — PTFE shown as distinct thick-walled gray tube with porous wall texture, NOT a simple line. (2) Magnified anastomoses: arterial (brachial artery thick muscular media, end-to-side) and venous (brachial vein thin-walled, end-to-side) with neointimal hyperplasia shown at venous anastomosis — the primary failure mode. (3) Complications: stenosis, thrombosis, infection, pseudoaneurysm + Doppler surveillance.</p>
             <ol class="step-list"><li><span class="step-num">1</span>Indicated when native vessels inadequate for AVF</li><li><span class="step-num">2</span>PTFE graft tunneled subcutaneously (loop or straight)</li><li><span class="step-num">3</span>Arterial + venous anastomoses end-to-side</li><li><span class="step-num">4</span>Available 2–4 weeks; venous anastomosis stenosis = primary failure</li></ol>
@@ -1263,15 +1325,7 @@ body {
           </div>
         </div>
 
-        <div class="illus-card" id="p12">
-          <div class="card-header green-accent"><span class="card-num">P12</span><span class="card-title">Fistulogram & Percutaneous Declotting — AV Access Salvage</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/fistulogram-declotting-hybrid-v2.webp" type="image/webp"><img src="../images/fistulogram-declotting-hybrid-v2.png" alt="Fistulogram and percutaneous AV access declotting — contrast venogram, balloon angioplasty and pharmacomechanical thrombolysis" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div>
-          <div class="card-body">
-            <p class="card-desc">Diagnostic fistulogram via retrograde venipuncture: contrast injected to map stenosis, outflow occlusion, and aneurysmal segments. Percutaneous transluminal angioplasty (PTA) with 6–8mm balloon targets venous anastomotic stenosis — the commonest failure mode. Thrombosed fistulas treated with pharmacomechanical thrombolysis (tPA + mechanical maceration) or Fogarty catheter declotting before angioplasty.</p>
-            <ol class="step-list"><li><span class="step-num">1</span>Retrograde venipuncture; contrast injection maps stenosis + thrombus</li><li><span class="step-num">2</span>Crossing wire through stenosis / thrombus under fluoroscopy</li><li><span class="step-num">3</span>Balloon PTA at stenotic segment; residual stenosis &lt;30% target</li><li><span class="step-num">4</span>Thrombus: tPA infusion + mechanical maceration; confirm flow with fistulogram</li></ol>
-            <div class="card-tags"><span class="ctag ct-green">PTA Angioplasty</span><span class="ctag ct-teal">Retrograde Access</span><span class="ctag ct-red">Venous Stenosis</span><span class="ctag ct-amber">tPA Thrombolysis</span></div>
-          </div>
-        </div>
+        <div class="thumb-card accent-green" id="p12" data-num="P12" data-title="Fistulogram &amp; Percutaneous Declotting — AV Access Salvage" data-webp="../images/fistulogram-declotting-hybrid-v2.webp" data-png="../images/fistulogram-declotting-hybrid-v2.png" data-alt="Fistulogram and percutaneous AV access declotting — contrast venogram, balloon angioplasty and pharmacomechanical thrombolysis" data-desc="Diagnostic fistulogram via retrograde venipuncture: contrast injected to map stenosis, outflow occlusion, and aneurysmal segments. Percutaneous transluminal angioplasty (PTA) with 6–8mm balloon targets venous anastomotic stenosis — the commonest failure mode. Thrombosed fistulas treated with pharmacomechanical thrombolysis (tPA + mechanical maceration) or Fogarty catheter declotting before angioplasty." data-steps="[&quot;Retrograde venipuncture; contrast injection maps stenosis + thrombus&quot;, &quot;Crossing wire through stenosis / thrombus under fluoroscopy&quot;, &quot;Balloon PTA at stenotic segment; residual stenosis &lt;30% target&quot;, &quot;Thrombus: tPA infusion + mechanical maceration; confirm flow with fistulogram&quot;]" data-tags="[{&quot;cls&quot;: &quot;ct-green&quot;, &quot;text&quot;: &quot;PTA Angioplasty&quot;}, {&quot;cls&quot;: &quot;ct-teal&quot;, &quot;text&quot;: &quot;Retrograde Access&quot;}, {&quot;cls&quot;: &quot;ct-red&quot;, &quot;text&quot;: &quot;Venous Stenosis&quot;}, {&quot;cls&quot;: &quot;ct-amber&quot;, &quot;text&quot;: &quot;tPA Thrombolysis&quot;}]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/fistulogram-declotting-hybrid-v2.webp" type="image/webp"><img src="../images/fistulogram-declotting-hybrid-v2.png" alt="Fistulogram and percutaneous AV access declotting — contrast venogram, balloon angioplasty and pharmacomechanical thrombolysis" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P12</span><span class="thumb-title">Fistulogram &amp; Percutaneous Declotting — AV Access Salvage</span></div></div>
 
       </div>
 
@@ -1280,27 +1334,11 @@ body {
         <span class="section-hdr-badge badge-amber">CRRT · Plasmapheresis</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid wide">
+      <div class="thumb-grid">
 
-        <div class="illus-card" id="p13">
-          <div class="card-header amber-accent"><span class="card-num">P13</span><span class="card-title">CRRT — Continuous Renal Replacement Therapy Circuit</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/crrt-circuit-mechanism-hybrid-v2.webp" type="image/webp"><img src="../images/crrt-circuit-mechanism-hybrid-v2.png" alt="CRRT circuit mechanism — CVVHDF blood pump, hemofilter, effluent and replacement fluid with citrate anticoagulation" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div>
-          <div class="card-body">
-            <p class="card-desc">CVVHDF (continuous veno-venous hemodiafiltration) combines diffusion (dialysate counter-current) and convection (replacement fluid + ultrafiltration) for maximal solute clearance. Blood pump 100–200 mL/min; effluent rate 20–25 mL/kg/hr target dose. Regional citrate anticoagulation chelates ionized calcium at filter; calcium infused post-filter to restore systemic levels — avoids systemic bleeding risk of heparin. Machine alarms: filter clotting (rising TMP), air detection, blood leak.</p>
-            <ol class="step-list"><li><span class="step-num">1</span>Large-bore dual-lumen catheter (IJ or femoral); blood pump 100–200 mL/min</li><li><span class="step-num">2</span>Citrate pre-filter → chelates Ca²⁺ at hemofilter; iCa target &lt;0.4 mmol/L</li><li><span class="step-num">3</span>Effluent = ultrafiltrate + dialysate waste; target 20–25 mL/kg/hr</li><li><span class="step-num">4</span>CaCl₂ post-filter restores systemic iCa; monitor systemic iCa 1.1–1.3 mmol/L</li></ol>
-            <div class="card-tags"><span class="ctag ct-amber">CVVHDF</span><span class="ctag ct-teal">Citrate Anticoag</span><span class="ctag ct-navy">20–25 mL/kg/hr</span><span class="ctag ct-red">AKI Critical Care</span></div>
-          </div>
-        </div>
+        <div class="thumb-card accent-amber" id="p13" data-num="P13" data-title="CRRT — Continuous Renal Replacement Therapy Circuit" data-webp="../images/crrt-circuit-mechanism-hybrid-v2.webp" data-png="../images/crrt-circuit-mechanism-hybrid-v2.png" data-alt="CRRT circuit mechanism — CVVHDF blood pump, hemofilter, effluent and replacement fluid with citrate anticoagulation" data-desc="CVVHDF (continuous veno-venous hemodiafiltration) combines diffusion (dialysate counter-current) and convection (replacement fluid + ultrafiltration) for maximal solute clearance. Blood pump 100–200 mL/min; effluent rate 20–25 mL/kg/hr target dose. Regional citrate anticoagulation chelates ionized calcium at filter; calcium infused post-filter to restore systemic levels — avoids systemic bleeding risk of heparin. Machine alarms: filter clotting (rising TMP), air detection, blood leak." data-steps="[&quot;Large-bore dual-lumen catheter (IJ or femoral); blood pump 100–200 mL/min&quot;, &quot;Citrate pre-filter → chelates Ca²⁺ at hemofilter; iCa target &lt;0.4 mmol/L&quot;, &quot;Effluent = ultrafiltrate + dialysate waste; target 20–25 mL/kg/hr&quot;, &quot;CaCl₂ post-filter restores systemic iCa; monitor systemic iCa 1.1–1.3 mmol/L&quot;]" data-tags="[{&quot;cls&quot;: &quot;ct-amber&quot;, &quot;text&quot;: &quot;CVVHDF&quot;}, {&quot;cls&quot;: &quot;ct-teal&quot;, &quot;text&quot;: &quot;Citrate Anticoag&quot;}, {&quot;cls&quot;: &quot;ct-navy&quot;, &quot;text&quot;: &quot;20–25 mL/kg/hr&quot;}, {&quot;cls&quot;: &quot;ct-red&quot;, &quot;text&quot;: &quot;AKI Critical Care&quot;}]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/crrt-circuit-mechanism-hybrid-v2.webp" type="image/webp"><img src="../images/crrt-circuit-mechanism-hybrid-v2.png" alt="CRRT circuit mechanism — CVVHDF blood pump, hemofilter, effluent and replacement fluid with citrate anticoagulation" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P13</span><span class="thumb-title">CRRT — Continuous Renal Replacement Therapy Circuit</span></div></div>
 
-        <div class="illus-card" id="p14">
-          <div class="card-header amber-accent"><span class="card-num">P14</span><span class="card-title">Therapeutic Plasma Exchange — Centrifugal & Membrane TPE</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/plasmapheresis-therapeutic-hybrid-v2.webp" type="image/webp"><img src="../images/plasmapheresis-therapeutic-hybrid-v2.png" alt="Therapeutic plasma exchange — centrifugal vs membrane separation with replacement fluid and ASFA category I indications" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div>
-          <div class="card-body">
-            <p class="card-desc">TPE removes large-molecular-weight pathogenic substances (antibodies, immune complexes, paraproteins) unachievable by standard dialysis. Centrifugal separation (blood spinning) vs membrane filtration (0.2–0.6μm pore). Replacement fluid: 5% albumin (standard) or FFP (for TTP — provides ADAMTS13). ASFA Category I indications include TTP, anti-GBM disease, Guillain-Barré, myasthenia crisis, and FSGS recurrence post-transplant. One plasma volume (40–60 mL/kg) exchanged per session.</p>
-            <ol class="step-list"><li><span class="step-num">1</span>Central or large peripheral access; anticoagulation with citrate or heparin</li><li><span class="step-num">2</span>1.0–1.5× plasma volume exchanged per session (40–60 mL/kg)</li><li><span class="step-num">3</span>Replacement: albumin 5% (most) or FFP (TTP — replaces ADAMTS13)</li><li><span class="step-num">4</span>Monitor: hypocalcemia (citrate), allergic reactions (FFP), hypotension</li></ol>
-            <div class="card-tags"><span class="ctag ct-amber">ASFA Category I</span><span class="ctag ct-teal">TTP / Anti-GBM</span><span class="ctag ct-red">FSGS Recurrence</span><span class="ctag ct-navy">ADAMTS13</span></div>
-          </div>
-        </div>
+        <div class="thumb-card accent-amber" id="p14" data-num="P14" data-title="Therapeutic Plasma Exchange — Centrifugal &amp; Membrane TPE" data-webp="../images/plasmapheresis-therapeutic-hybrid-v2.webp" data-png="../images/plasmapheresis-therapeutic-hybrid-v2.png" data-alt="Therapeutic plasma exchange — centrifugal vs membrane separation with replacement fluid and ASFA category I indications" data-desc="TPE removes large-molecular-weight pathogenic substances (antibodies, immune complexes, paraproteins) unachievable by standard dialysis. Centrifugal separation (blood spinning) vs membrane filtration (0.2–0.6μm pore). Replacement fluid: 5% albumin (standard) or FFP (for TTP — provides ADAMTS13). ASFA Category I indications include TTP, anti-GBM disease, Guillain-Barré, myasthenia crisis, and FSGS recurrence post-transplant. One plasma volume (40–60 mL/kg) exchanged per session." data-steps="[&quot;Central or large peripheral access; anticoagulation with citrate or heparin&quot;, &quot;1.0–1.5× plasma volume exchanged per session (40–60 mL/kg)&quot;, &quot;Replacement: albumin 5% (most) or FFP (TTP — replaces ADAMTS13)&quot;, &quot;Monitor: hypocalcemia (citrate), allergic reactions (FFP), hypotension&quot;]" data-tags="[{&quot;cls&quot;: &quot;ct-amber&quot;, &quot;text&quot;: &quot;ASFA Category I&quot;}, {&quot;cls&quot;: &quot;ct-teal&quot;, &quot;text&quot;: &quot;TTP / Anti-GBM&quot;}, {&quot;cls&quot;: &quot;ct-red&quot;, &quot;text&quot;: &quot;FSGS Recurrence&quot;}, {&quot;cls&quot;: &quot;ct-navy&quot;, &quot;text&quot;: &quot;ADAMTS13&quot;}]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/plasmapheresis-therapeutic-hybrid-v2.webp" type="image/webp"><img src="../images/plasmapheresis-therapeutic-hybrid-v2.png" alt="Therapeutic plasma exchange — centrifugal vs membrane separation with replacement fluid and ASFA category I indications" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P14</span><span class="thumb-title">Therapeutic Plasma Exchange — Centrifugal &amp; Membrane TPE</span></div></div>
 
       </div>
 
@@ -1309,16 +1347,9 @@ body {
         <span class="section-hdr-badge badge-green">Renal Transplant Anatomy</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid single">
+      <div class="thumb-grid">
 
-        <div class="wide-card" id="p15">
-          <div class="card-header green-accent"><span class="card-num">P15</span><span class="card-title">Kidney Transplant Surgical Anatomy — Iliac Fossa Placement & Vascular Anastomoses</span><span class="card-render-badge rb-hybrid">Hybrid · Wide</span></div>
-          <div class="wide-card-img"><picture><source srcset="../images/kidney-transplant-surgical-anatomy-hybrid-v2.webp" type="image/webp"><img src="../images/kidney-transplant-surgical-anatomy-hybrid-v2.png" alt="Kidney transplant surgical anatomy — iliac fossa placement, external iliac artery and vein anastomoses, ureteroneocystostomy" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div>
-          <div class="wide-card-body">
-            <p class="card-desc">Allograft placed extraperitoneally in the right iliac fossa (preferred — sigmoid colon avoidance). Renal vein anastomosed end-to-side to external iliac vein; renal artery end-to-side to external iliac artery (or end-to-end to internal iliac). Ureteroneocystostomy by Lich-Gregoir technique: ureter tunneled submucosally into bladder dome with anti-reflux flap; JJ stent left in situ 4–6 weeks. Native kidneys remain unless causing persistent hypertension, recurrent infection, or massive polycystic enlargement.</p>
-            <div><div class="card-tags"><span class="ctag ct-green">Lich-Gregoir</span><span class="ctag ct-teal">External Iliac</span><span class="ctag ct-navy">Right Iliac Fossa</span><span class="ctag ct-amber">JJ Stent 4–6 wk</span><span class="ctag ct-red">DGF / ATN</span></div></div>
-          </div>
-        </div>
+        <div class="thumb-card accent-green" id="p15" data-num="P15" data-title="Kidney Transplant Surgical Anatomy — Iliac Fossa Placement &amp; Vascular Anastomoses" data-webp="../images/kidney-transplant-surgical-anatomy-hybrid-v2.webp" data-png="../images/kidney-transplant-surgical-anatomy-hybrid-v2.png" data-alt="Kidney transplant surgical anatomy — iliac fossa placement, external iliac artery and vein anastomoses, ureteroneocystostomy" data-desc="Allograft placed extraperitoneally in the right iliac fossa (preferred — sigmoid colon avoidance). Renal vein anastomosed end-to-side to external iliac vein; renal artery end-to-side to external iliac artery (or end-to-end to internal iliac). Ureteroneocystostomy by Lich-Gregoir technique: ureter tunneled submucosally into bladder dome with anti-reflux flap; JJ stent left in situ 4–6 weeks. Native kidneys remain unless causing persistent hypertension, recurrent infection, or massive polycystic enlargement." data-steps="[]" data-tags="[{&quot;cls&quot;: &quot;ct-green&quot;, &quot;text&quot;: &quot;Lich-Gregoir&quot;}, {&quot;cls&quot;: &quot;ct-teal&quot;, &quot;text&quot;: &quot;External Iliac&quot;}, {&quot;cls&quot;: &quot;ct-navy&quot;, &quot;text&quot;: &quot;Right Iliac Fossa&quot;}, {&quot;cls&quot;: &quot;ct-amber&quot;, &quot;text&quot;: &quot;JJ Stent 4–6 wk&quot;}, {&quot;cls&quot;: &quot;ct-red&quot;, &quot;text&quot;: &quot;DGF / ATN&quot;}]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/kidney-transplant-surgical-anatomy-hybrid-v2.webp" type="image/webp"><img src="../images/kidney-transplant-surgical-anatomy-hybrid-v2.png" alt="Kidney transplant surgical anatomy — iliac fossa placement, external iliac artery and vein anastomoses, ureteroneocystostomy" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P15</span><span class="thumb-title">Kidney Transplant Surgical Anatomy — Iliac Fossa Placement &amp; Vascular Anastomoses</span></div></div>
 
       </div>
 
@@ -1327,37 +1358,13 @@ body {
         <span class="section-hdr-badge badge-teal">Laparoscopic · Robotic · Endoscopic</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid wide">
+      <div class="thumb-grid">
 
-        <div class="illus-card" id="p16">
-          <div class="card-header teal-accent"><span class="card-num">P16</span><span class="card-title">Laparoscopic Renal Cyst Ablation & Anderson-Hynes Pyeloplasty</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/laparoscopic-cyst-ablation-pyeloplasty-hybrid-v2.webp" type="image/webp"><img src="../images/laparoscopic-cyst-ablation-pyeloplasty-hybrid-v2.png" alt="Laparoscopic renal cyst ablation and Anderson-Hynes dismembered pyeloplasty — port placement, cyst deroofing, UPJ resection and anastomosis" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div>
-          <div class="card-body">
-            <p class="card-desc">Cyst ablation: Bosniak II–IIF symptomatic cysts deroofed laparoscopically — cyst wall excised flush with parenchyma, argon beam coagulation of residual epithelium, fat/gel-foam packing. Dismembered pyeloplasty (Anderson-Hynes): UPJ obstruction transected, crossing vessel transposed anterior, spatulated anastomosis over JJ stent. Gold standard for UPJ repair with 95% long-term success.</p>
-            <ol class="step-list"><li><span class="step-num">1</span>3–4 port transperitoneal or retroperitoneoscopic approach</li><li><span class="step-num">2</span>Cyst: deroofing + argon coagulation; Pyeloplasty: UPJ transected, vessel anterior</li><li><span class="step-num">3</span>Spatulated renal pelvis–ureter anastomosis over JJ stent (4-0 Vicryl)</li><li><span class="step-num">4</span>JJ stent removed 4–6 weeks; MAG3 renogram at 3 months confirms drainage</li></ol>
-            <div class="card-tags"><span class="ctag ct-teal">Anderson-Hynes</span><span class="ctag ct-amber">UPJ Obstruction</span><span class="ctag ct-green">95% Success</span><span class="ctag ct-navy">Crossing Vessel</span></div>
-          </div>
-        </div>
+        <div class="thumb-card accent-teal" id="p16" data-num="P16" data-title="Laparoscopic Renal Cyst Ablation &amp; Anderson-Hynes Pyeloplasty" data-webp="../images/laparoscopic-cyst-ablation-pyeloplasty-hybrid-v2.webp" data-png="../images/laparoscopic-cyst-ablation-pyeloplasty-hybrid-v2.png" data-alt="Laparoscopic renal cyst ablation and Anderson-Hynes dismembered pyeloplasty — port placement, cyst deroofing, UPJ resection and anastomosis" data-desc="Cyst ablation: Bosniak II–IIF symptomatic cysts deroofed laparoscopically — cyst wall excised flush with parenchyma, argon beam coagulation of residual epithelium, fat/gel-foam packing. Dismembered pyeloplasty (Anderson-Hynes): UPJ obstruction transected, crossing vessel transposed anterior, spatulated anastomosis over JJ stent. Gold standard for UPJ repair with 95% long-term success." data-steps="[&quot;3–4 port transperitoneal or retroperitoneoscopic approach&quot;, &quot;Cyst: deroofing + argon coagulation; Pyeloplasty: UPJ transected, vessel anterior&quot;, &quot;Spatulated renal pelvis–ureter anastomosis over JJ stent (4-0 Vicryl)&quot;, &quot;JJ stent removed 4–6 weeks; MAG3 renogram at 3 months confirms drainage&quot;]" data-tags="[{&quot;cls&quot;: &quot;ct-teal&quot;, &quot;text&quot;: &quot;Anderson-Hynes&quot;}, {&quot;cls&quot;: &quot;ct-amber&quot;, &quot;text&quot;: &quot;UPJ Obstruction&quot;}, {&quot;cls&quot;: &quot;ct-green&quot;, &quot;text&quot;: &quot;95% Success&quot;}, {&quot;cls&quot;: &quot;ct-navy&quot;, &quot;text&quot;: &quot;Crossing Vessel&quot;}]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/laparoscopic-cyst-ablation-pyeloplasty-hybrid-v2.webp" type="image/webp"><img src="../images/laparoscopic-cyst-ablation-pyeloplasty-hybrid-v2.png" alt="Laparoscopic renal cyst ablation and Anderson-Hynes dismembered pyeloplasty — port placement, cyst deroofing, UPJ resection and anastomosis" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P16</span><span class="thumb-title">Laparoscopic Renal Cyst Ablation &amp; Anderson-Hynes Pyeloplasty</span></div></div>
 
-        <div class="illus-card" id="p17">
-          <div class="card-header teal-accent"><span class="card-num">P17</span><span class="card-title">TURBT — Transurethral Resection of Bladder Tumor</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/turbt-transurethral-resection-hybrid-v2.webp" type="image/webp"><img src="../images/turbt-transurethral-resection-hybrid-v2.png" alt="TURBT transurethral bladder tumor resection — resectoscope loop, detrusor sampling, obturator reflex risk and BCG instillation protocol" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div>
-          <div class="card-body">
-            <p class="card-desc">Cystoscopic resection using monopolar or bipolar resectoscope loop. En-bloc or piecemeal resection must include detrusor muscle (muscularis propria) for accurate T-staging — absence of muscle in specimen is indication for re-TURBT. Lateral wall tumors risk obturator nerve reflex causing leg adduction and bladder perforation — managed with neuromuscular blockade or obturator nerve block. Intravesical mitomycin-C within 6h post-TURBT for NMIBC reduces recurrence 35%.</p>
-            <ol class="step-list"><li><span class="step-num">1</span>Bimanual exam under anesthesia; cystoscopy maps tumor size, location, number</li><li><span class="step-num">2</span>Resectoscope loop resects tumor in layers; deep bite includes detrusor</li><li><span class="step-num">3</span>Lateral wall: NMB or obturator nerve block prevents reflex kick</li><li><span class="step-num">4</span>Mitomycin-C 40mg intravesical within 6h; BCG series for high-grade NMIBC</li></ol>
-            <div class="card-tags"><span class="ctag ct-teal">Detrusor Sampling</span><span class="ctag ct-red">Obturator Reflex</span><span class="ctag ct-amber">Mitomycin-C</span><span class="ctag ct-navy">BCG Immunotherapy</span></div>
-          </div>
-        </div>
+        <div class="thumb-card accent-teal" id="p17" data-num="P17" data-title="TURBT — Transurethral Resection of Bladder Tumor" data-webp="../images/turbt-transurethral-resection-hybrid-v2.webp" data-png="../images/turbt-transurethral-resection-hybrid-v2.png" data-alt="TURBT transurethral bladder tumor resection — resectoscope loop, detrusor sampling, obturator reflex risk and BCG instillation protocol" data-desc="Cystoscopic resection using monopolar or bipolar resectoscope loop. En-bloc or piecemeal resection must include detrusor muscle (muscularis propria) for accurate T-staging — absence of muscle in specimen is indication for re-TURBT. Lateral wall tumors risk obturator nerve reflex causing leg adduction and bladder perforation — managed with neuromuscular blockade or obturator nerve block. Intravesical mitomycin-C within 6h post-TURBT for NMIBC reduces recurrence 35%." data-steps="[&quot;Bimanual exam under anesthesia; cystoscopy maps tumor size, location, number&quot;, &quot;Resectoscope loop resects tumor in layers; deep bite includes detrusor&quot;, &quot;Lateral wall: NMB or obturator nerve block prevents reflex kick&quot;, &quot;Mitomycin-C 40mg intravesical within 6h; BCG series for high-grade NMIBC&quot;]" data-tags="[{&quot;cls&quot;: &quot;ct-teal&quot;, &quot;text&quot;: &quot;Detrusor Sampling&quot;}, {&quot;cls&quot;: &quot;ct-red&quot;, &quot;text&quot;: &quot;Obturator Reflex&quot;}, {&quot;cls&quot;: &quot;ct-amber&quot;, &quot;text&quot;: &quot;Mitomycin-C&quot;}, {&quot;cls&quot;: &quot;ct-navy&quot;, &quot;text&quot;: &quot;BCG Immunotherapy&quot;}]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/turbt-transurethral-resection-hybrid-v2.webp" type="image/webp"><img src="../images/turbt-transurethral-resection-hybrid-v2.png" alt="TURBT transurethral bladder tumor resection — resectoscope loop, detrusor sampling, obturator reflex risk and BCG instillation protocol" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P17</span><span class="thumb-title">TURBT — Transurethral Resection of Bladder Tumor</span></div></div>
 
-        <div class="illus-card" id="p18">
-          <div class="card-header teal-accent"><span class="card-num">P18</span><span class="card-title">Robotic Radical Prostatectomy (RARP) — Da Vinci Technique</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/robotic-radical-prostatectomy-hybrid-v2.webp" type="image/webp"><img src="../images/robotic-radical-prostatectomy-hybrid-v2.png" alt="Robotic radical prostatectomy Da Vinci technique — nerve-sparing dissection, urethrovesical anastomosis and post-prostatectomy continence" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div>
-          <div class="card-body">
-            <p class="card-desc">Transperitoneal 6-port Da Vinci approach. Nerve-sparing dissection preserves neurovascular bundles (NVB) posterolateral to prostate — critical for potency preservation. Bladder neck dissection, seminal vesicle excision, pelvic lymph node dissection (extended for intermediate/high risk). Urethrovesical anastomosis with running 3-0 Monocryl over catheter. Nephrology relevance: post-prostatectomy incontinence and ED; CKD risk from bilateral NVB injury and subsequent voiding dysfunction.</p>
-            <ol class="step-list"><li><span class="step-num">1</span>6-port transperitoneal; bladder dropped, endopelvic fascia incised</li><li><span class="step-num">2</span>Nerve-sparing: NVB preserved posterolateral; athermal dissection</li><li><span class="step-num">3</span>Seminal vesicles + vas deferens divided; prostate pedicles clipped</li><li><span class="step-num">4</span>Urethrovesical anastomosis running suture; catheter 7–10 days; EPLND if indicated</li></ol>
-            <div class="card-tags"><span class="ctag ct-teal">Nerve-Sparing NVB</span><span class="ctag ct-amber">Da Vinci Robotic</span><span class="ctag ct-navy">ED / Incontinence</span><span class="ctag ct-green">RARP</span></div>
-          </div>
-        </div>
+        <div class="thumb-card accent-teal" id="p18" data-num="P18" data-title="Robotic Radical Prostatectomy (RARP) — Da Vinci Technique" data-webp="../images/robotic-radical-prostatectomy-hybrid-v2.webp" data-png="../images/robotic-radical-prostatectomy-hybrid-v2.png" data-alt="Robotic radical prostatectomy Da Vinci technique — nerve-sparing dissection, urethrovesical anastomosis and post-prostatectomy continence" data-desc="Transperitoneal 6-port Da Vinci approach. Nerve-sparing dissection preserves neurovascular bundles (NVB) posterolateral to prostate — critical for potency preservation. Bladder neck dissection, seminal vesicle excision, pelvic lymph node dissection (extended for intermediate/high risk). Urethrovesical anastomosis with running 3-0 Monocryl over catheter. Nephrology relevance: post-prostatectomy incontinence and ED; CKD risk from bilateral NVB injury and subsequent voiding dysfunction." data-steps="[&quot;6-port transperitoneal; bladder dropped, endopelvic fascia incised&quot;, &quot;Nerve-sparing: NVB preserved posterolateral; athermal dissection&quot;, &quot;Seminal vesicles + vas deferens divided; prostate pedicles clipped&quot;, &quot;Urethrovesical anastomosis running suture; catheter 7–10 days; EPLND if indicated&quot;]" data-tags="[{&quot;cls&quot;: &quot;ct-teal&quot;, &quot;text&quot;: &quot;Nerve-Sparing NVB&quot;}, {&quot;cls&quot;: &quot;ct-amber&quot;, &quot;text&quot;: &quot;Da Vinci Robotic&quot;}, {&quot;cls&quot;: &quot;ct-navy&quot;, &quot;text&quot;: &quot;ED / Incontinence&quot;}, {&quot;cls&quot;: &quot;ct-green&quot;, &quot;text&quot;: &quot;RARP&quot;}]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/robotic-radical-prostatectomy-hybrid-v2.webp" type="image/webp"><img src="../images/robotic-radical-prostatectomy-hybrid-v2.png" alt="Robotic radical prostatectomy Da Vinci technique — nerve-sparing dissection, urethrovesical anastomosis and post-prostatectomy continence" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">P18</span><span class="thumb-title">Robotic Radical Prostatectomy (RARP) — Da Vinci Technique</span></div></div>
 
       </div>
     </div>
@@ -1385,15 +1392,11 @@ body {
         <span class="section-hdr-badge badge-purple">Pronephros · Mesonephros · Metanephros</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="e1">
-          <div class="card-header purple-accent"><span class="card-num">E1</span><span class="card-title">Pronephros — Week 3–4</span><span class="card-render-badge rb-2d">2D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/embryo-stage1-pronephros.webp" type="image/webp"><img src="../images/embryo-stage1-pronephros.png" alt="Pronephros — Week 3–4 cervical intermediate mesoderm and Wolffian duct origin" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-purple" id="e1" data-num="E1" data-title="Pronephros — Week 3–4" data-webp="../images/embryo-stage1-pronephros.webp" data-png="../images/embryo-stage1-pronephros.png" data-alt="Pronephros — Week 3–4 cervical intermediate mesoderm and Wolffian duct origin" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/embryo-stage1-pronephros.webp" type="image/webp"><img src="../images/embryo-stage1-pronephros.png" alt="Pronephros — Week 3–4 cervical intermediate mesoderm and Wolffian duct origin" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">E1</span><span class="thumb-title">Pronephros — Week 3–4</span></div></div>
           <div class="card-body"><p class="card-desc">First kidney analog arising from cervical intermediate mesoderm (somites 7–14). Seven to ten paired non-functional nephrotomes. Pronephric duct extends caudally — this persists as the mesonephric (Wolffian) duct. Completely regresses by week 4. Functional in fish; vestigial in mammals. Phylogenetic comparison panel.</p><div class="card-tags"><span class="ctag ct-purple">Cervical Somites</span><span class="ctag ct-navy">Non-Functional</span><span class="ctag ct-teal">Wolffian Duct Origin</span></div></div>
         </div>
-        <div class="illus-card" id="e2">
-          <div class="card-header purple-accent"><span class="card-num">E2</span><span class="card-title">Mesonephros — Week 4–6</span><span class="card-render-badge rb-2d">2D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/embryo-stage2-mesonephros.webp" type="image/webp"><img src="../images/embryo-stage2-mesonephros.png" alt="Mesonephros — Week 4–6 Wolffian duct and male reproductive structure derivatives" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-purple" id="e2" data-num="E2" data-title="Mesonephros — Week 4–6" data-webp="../images/embryo-stage2-mesonephros.webp" data-png="../images/embryo-stage2-mesonephros.png" data-alt="Mesonephros — Week 4–6 Wolffian duct and male reproductive structure derivatives" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/embryo-stage2-mesonephros.webp" type="image/webp"><img src="../images/embryo-stage2-mesonephros.png" alt="Mesonephros — Week 4–6 Wolffian duct and male reproductive structure derivatives" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">E2</span><span class="thumb-title">Mesonephros — Week 4–6</span></div></div>
           <div class="card-body"><p class="card-desc">Interim functional kidney at thoracolumbar level. Mesonephric (Wolffian) duct drains ~40 tubules with primitive glomeruli into cloaca. Temporarily produces urine weeks 6–10. Persistent structures: males → epididymis, vas deferens, seminal vesicle; females → regresses (Gartner's duct remnant only). Ureteric bud will arise from this duct.</p><div class="card-tags"><span class="ctag ct-purple">Wolffian Duct</span><span class="ctag ct-amber">Male Persistence</span><span class="ctag ct-teal">Gartner's Duct</span></div></div>
         </div>
       </div>
@@ -1403,15 +1406,11 @@ body {
         <span class="section-hdr-badge badge-purple">Ureteric Bud · GDNF/RET · Branching</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="e3">
-          <div class="card-header purple-accent"><span class="card-num">E3</span><span class="card-title">Ureteric Bud Emergence & MM Induction — Week 5–6</span><span class="card-render-badge rb-2d">2D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/embryo-stage3-ureteric-bud-induction.webp" type="image/webp"><img src="../images/embryo-stage3-ureteric-bud-induction.png" alt="Ureteric bud induction — GDNF/RET signaling and metanephric mesenchyme Week 5–6" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-purple" id="e3" data-num="E3" data-title="Ureteric Bud Emergence &amp; MM Induction — Week 5–6" data-webp="../images/embryo-stage3-ureteric-bud-induction.webp" data-png="../images/embryo-stage3-ureteric-bud-induction.png" data-alt="Ureteric bud induction — GDNF/RET signaling and metanephric mesenchyme Week 5–6" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/embryo-stage3-ureteric-bud-induction.webp" type="image/webp"><img src="../images/embryo-stage3-ureteric-bud-induction.png" alt="Ureteric bud induction — GDNF/RET signaling and metanephric mesenchyme Week 5–6" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">E3</span><span class="thumb-title">Ureteric Bud Emergence &amp; MM Induction — Week 5–6</span></div></div>
           <div class="card-body"><p class="card-desc">Ureteric bud (UB) sprouts from caudal Wolffian duct at week 5. GDNF from metanephric mesenchyme (MM) activates RET receptor on UB tip → induces invasion. Reciprocal induction begins. Key signals: GDNF→RET (primary), Wnt11 (UB maintains GDNF), PAX2/PAX8/WT1 (MM competence). GDNF/RET failure → renal agenesis. Single vs dual UB → normal vs duplex collecting system.</p><div class="card-tags"><span class="ctag ct-purple">GDNF / RET</span><span class="ctag ct-red">Agenesis if Failed</span><span class="ctag ct-teal">Dual UB → Duplex</span></div></div>
         </div>
-        <div class="illus-card" id="e4">
-          <div class="card-header purple-accent"><span class="card-num">E4</span><span class="card-title">Branching Morphogenesis — Week 6–10</span><span class="card-render-badge rb-2d">2D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/embryo-stage4-branching-morphogenesis.webp" type="image/webp"><img src="../images/embryo-stage4-branching-morphogenesis.png" alt="Branching morphogenesis — 15 rounds of dichotomous ureteric bud branching Week 6–10" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-purple" id="e4" data-num="E4" data-title="Branching Morphogenesis — Week 6–10" data-webp="../images/embryo-stage4-branching-morphogenesis.webp" data-png="../images/embryo-stage4-branching-morphogenesis.png" data-alt="Branching morphogenesis — 15 rounds of dichotomous ureteric bud branching Week 6–10" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/embryo-stage4-branching-morphogenesis.webp" type="image/webp"><img src="../images/embryo-stage4-branching-morphogenesis.png" alt="Branching morphogenesis — 15 rounds of dichotomous ureteric bud branching Week 6–10" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">E4</span><span class="thumb-title">Branching Morphogenesis — Week 6–10</span></div></div>
           <div class="card-body"><p class="card-desc">~15 rounds of dichotomous UB branching: generations 1–5 (renal pelvis + major calyces), 6–11 (minor calyces), 12–15 (collecting ducts). Each ampulla tip induces cap mesenchyme condensation — future nephron progenitor population. ~1 million terminal collecting ducts generated, each inducing one nephron. 3D collecting duct tree inset. Reduced branching → oligonephropathy.</p><div class="card-tags"><span class="ctag ct-purple">15 Generations</span><span class="ctag ct-amber">Cap Mesenchyme</span><span class="ctag ct-red">Oligonephropathy</span></div></div>
         </div>
       </div>
@@ -1421,25 +1420,17 @@ body {
         <span class="section-hdr-badge badge-purple">MET · Ascent · Fetal Kidney</span>
         <div class="section-hdr-line"></div>
       </div>
-      <div class="cards-grid">
-        <div class="illus-card" id="e5">
-          <div class="card-header purple-accent"><span class="card-num">E5</span><span class="card-title">Nephrogenesis — MET Sequence, Week 7–36</span><span class="card-render-badge rb-2d">2D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/embryo-stage5-nephrogenesis-met.webp" type="image/webp"><img src="../images/embryo-stage5-nephrogenesis-met.png" alt="Nephrogenesis MET sequence — cap mesenchyme to mature nephron Week 7–36" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+      <div class="thumb-grid">
+        <div class="thumb-card accent-purple" id="e5" data-num="E5" data-title="Nephrogenesis — MET Sequence, Week 7–36" data-webp="../images/embryo-stage5-nephrogenesis-met.webp" data-png="../images/embryo-stage5-nephrogenesis-met.png" data-alt="Nephrogenesis MET sequence — cap mesenchyme to mature nephron Week 7–36" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/embryo-stage5-nephrogenesis-met.webp" type="image/webp"><img src="../images/embryo-stage5-nephrogenesis-met.png" alt="Nephrogenesis MET sequence — cap mesenchyme to mature nephron Week 7–36" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">E5</span><span class="thumb-title">Nephrogenesis — MET Sequence, Week 7–36</span></div></div>
           <div class="card-body"><p class="card-desc">Seven-stage MET sequence: cap mesenchyme → pretubular aggregate (Wnt9b→Wnt4) → renal vesicle → comma-shaped body → S-shaped body (three segments: future glomerulus/PCT/DCT) → capillary loop (endothelial invasion, podocyte differentiation) → mature nephron. Nephrogenesis ends at 36 weeks. Prematurity/IUGR → permanent nephron deficit → Brenner hypothesis.</p><div class="card-tags"><span class="ctag ct-purple">Wnt9b / Wnt4</span><span class="ctag ct-amber">S-Shaped Body</span><span class="ctag ct-red">36 Week Endpoint</span><span class="ctag ct-navy">Brenner Hypothesis</span></div></div>
         </div>
-        <div class="illus-card" id="e6">
-          <div class="card-header purple-accent"><span class="card-num">E6</span><span class="card-title">Renal Ascent & Rotation — Week 6–9</span><span class="card-render-badge rb-2d">2D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/embryo-stage6-renal-ascent-rotation.webp" type="image/webp"><img src="../images/embryo-stage6-renal-ascent-rotation.png" alt="Renal ascent and rotation — sacral to lumbar L1–L2 with 90° medial rotation Week 6–9" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-purple" id="e6" data-num="E6" data-title="Renal Ascent &amp; Rotation — Week 6–9" data-webp="../images/embryo-stage6-renal-ascent-rotation.webp" data-png="../images/embryo-stage6-renal-ascent-rotation.png" data-alt="Renal ascent and rotation — sacral to lumbar L1–L2 with 90° medial rotation Week 6–9" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/embryo-stage6-renal-ascent-rotation.webp" type="image/webp"><img src="../images/embryo-stage6-renal-ascent-rotation.png" alt="Renal ascent and rotation — sacral to lumbar L1–L2 with 90° medial rotation Week 6–9" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">E6</span><span class="thumb-title">Renal Ascent &amp; Rotation — Week 6–9</span></div></div>
           <div class="card-body"><p class="card-desc">Three ghost kidney positions: sacral (S1–S2, hilum anterior, week 5–6) → iliac (45° rotation, week 7) → final lumbar L1–L2 (90° medial rotation complete, week 9). Sequential vascular acquisition: accessory arteries = persistent embryonic vessels (15–30% adults). Failure points: pelvic ectopia, horseshoe (IMA arrest L3–L4), malrotation (hilum faces anteriorly), crossed fused ectopia.</p><div class="card-tags"><span class="ctag ct-purple">90° Medial Rotation</span><span class="ctag ct-amber">IMA Arrest</span><span class="ctag ct-red">Ectopic Kidney</span><span class="ctag ct-navy">Accessory Arteries</span></div></div>
         </div>
-        <div class="illus-card" id="e7">
-          <div class="card-header purple-accent"><span class="card-num">E7</span><span class="card-title">Mature Fetal Kidney — Week 10 through Birth</span><span class="card-render-badge rb-hybrid">Hybrid</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/embryo-stage7-fetal-kidney-mature.webp" type="image/webp"><img src="../images/embryo-stage7-fetal-kidney-mature.png" alt="Mature fetal kidney — fetal lobulation and urine production from Week 10" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-purple" id="e7" data-num="E7" data-title="Mature Fetal Kidney — Week 10 through Birth" data-webp="../images/embryo-stage7-fetal-kidney-mature.webp" data-png="../images/embryo-stage7-fetal-kidney-mature.png" data-alt="Mature fetal kidney — fetal lobulation and urine production from Week 10" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/embryo-stage7-fetal-kidney-mature.webp" type="image/webp"><img src="../images/embryo-stage7-fetal-kidney-mature.png" alt="Mature fetal kidney — fetal lobulation and urine production from Week 10" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">E7</span><span class="thumb-title">Mature Fetal Kidney — Week 10 through Birth</span></div></div>
           <div class="card-body"><p class="card-desc">Fetal lobulation (surface grooves between lobes — normal, benign in adults). Urine production begins week 10; primary amniotic fluid source from week 16. Fetal urine 10 mL/day at 20 weeks → 500–700 mL/day at term. Nephrogenesis timeline bar (week 7→36). Oligohydramnios → Potter sequence. Antenatal hydronephrosis: 1–5% of pregnancies, most resolve.</p><div class="card-tags"><span class="ctag ct-purple">Fetal Lobulation</span><span class="ctag ct-amber">Amniotic Fluid</span><span class="ctag ct-red">Potter Sequence</span><span class="ctag ct-navy">36 Week Cutoff</span></div></div>
         </div>
-        <div class="illus-card" id="e8">
-          <div class="card-header purple-accent"><span class="card-num">E8</span><span class="card-title">Congenital Anomaly Failure-Point Map</span><span class="card-render-badge rb-2d">2D</span></div>
-          <div class="card-img-zone"><picture><source srcset="../images/embryo-stage8-anomaly-failure-map.webp" type="image/webp"><img src="../images/embryo-stage8-anomaly-failure-map.png" alt="Congenital anomaly failure-point map — developmental timeline with branching defects" loading="lazy" style="width:100%;height:auto;display:block;"></picture></div></div>
+        <div class="thumb-card accent-purple" id="e8" data-num="E8" data-title="Congenital Anomaly Failure-Point Map" data-webp="../images/embryo-stage8-anomaly-failure-map.webp" data-png="../images/embryo-stage8-anomaly-failure-map.png" data-alt="Congenital anomaly failure-point map — developmental timeline with branching defects" data-desc="" data-steps="[]" data-tags="[]" onclick="openLightbox(this)"><div class="thumb-img-wrap"><picture><source srcset="../images/embryo-stage8-anomaly-failure-map.webp" type="image/webp"><img src="../images/embryo-stage8-anomaly-failure-map.png" alt="Congenital anomaly failure-point map — developmental timeline with branching defects" loading="lazy"></picture><div class="thumb-overlay"><span class="thumb-zoom-icon">⊕</span></div></div><div class="thumb-info"><span class="thumb-num">E8</span><span class="thumb-title">Congenital Anomaly Failure-Point Map</span></div></div>
           <div class="card-body">
             <p class="card-desc">Central developmental timeline (week 3→36) with anomalies branching from each failure node: UB failure → bilateral/unilateral agenesis, duplex, dysplasia; branching → oligonephropathy, medullary sponge kidney; MET → ADPKD (post-nephrogenesis, dashed), Denys-Drash (WT1), congenital nephrotic (NPHS1/2); ascent → pelvic kidney, horseshoe, malrotation, crossed ectopia. Color-coded by severity.</p>
             <table class="clin-table">
@@ -1475,13 +1466,18 @@ function switchTab(tab, btn) {
   document.getElementById('panel-' + tab).classList.add('active');
   document.getElementById('index-' + tab).classList.add('active');
   btn.classList.add('active');
-  // Reset first index item as active
+  btn.dataset.tab = tab;
   const firstItem = document.querySelector('#index-' + tab + ' .index-item');
   if (firstItem) {
     document.querySelectorAll('#index-' + tab + ' .index-item').forEach(i => i.classList.remove('active'));
     firstItem.classList.add('active');
   }
 }
+// stamp data-tab on all tab buttons on load
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  const m = btn.getAttribute('onclick').match(/switchTab\('(\w+)'/);
+  if (m) btn.dataset.tab = m[1];
+});
 
 // ─── INDEX ACTIVE STATE ───
 function setActiveIndex(el) {
@@ -1499,7 +1495,6 @@ function filterIndex(input, panelId) {
     item.style.display = text.includes(query) ? '' : 'none';
   });
   panel.querySelectorAll('.index-group-label').forEach(label => {
-    // Hide group label if all following items are hidden
     let next = label.nextElementSibling;
     let anyVisible = false;
     while (next && !next.classList.contains('index-group-label')) {
@@ -1516,11 +1511,10 @@ function highlightStage(chip, targetId) {
   chip.classList.add('active');
   const target = document.getElementById(targetId);
   if (target) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     target.style.outline = '2px solid var(--teal)';
     setTimeout(() => target.style.outline = '', 2000);
   }
-  // Also update sidebar index
   const indexItem = document.querySelector('#index-embryology a[href="#' + targetId + '"]');
   if (indexItem) {
     document.querySelectorAll('#index-embryology .index-item').forEach(i => i.classList.remove('active'));
@@ -1529,29 +1523,138 @@ function highlightStage(chip, targetId) {
 }
 
 // ─── SCROLL SPY ───
-const observer = new IntersectionObserver((entries) => {
+const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const id = entry.target.id;
-      const activeTab = document.querySelector('.tab-btn.active');
-      if (!activeTab) return;
-      const tabName = activeTab.textContent.trim().toLowerCase().replace(/\s+/g, '').replace(/[^a-z]/g,'');
-      const tabMap = { 'anatomy': 'anatomy', 'medicalconditions': 'conditions', 'procedures': 'procedures', 'embryology': 'embryology' };
-      const currentTab = Object.keys(tabMap).find(k => tabName.includes(k.replace(/\s/g,'')));
-      if (!currentTab) return;
-      const indexId = 'index-' + tabMap[currentTab];
-      const link = document.querySelector('#' + indexId + ' a[href="#' + id + '"]');
-      if (link) {
-        document.querySelectorAll('#' + indexId + ' .index-item').forEach(i => i.classList.remove('active'));
-        link.classList.add('active');
-      }
+    if (!entry.isIntersecting) return;
+    const id = entry.target.id;
+    const activeBtn = document.querySelector('.tab-btn.active');
+    if (!activeBtn) return;
+    const tabName = activeBtn.dataset.tab;
+    if (!tabName) return;
+    const link = document.querySelector('#index-' + tabName + ' a[href="#' + id + '"]');
+    if (link) {
+      document.querySelectorAll('#index-' + tabName + ' .index-item').forEach(i => i.classList.remove('active'));
+      link.classList.add('active');
     }
   });
 }, { threshold: 0.3, rootMargin: '-10% 0px -60% 0px' });
-
-document.querySelectorAll('[id^="a"],[id^="c"],[id^="p"],[id^="e"]').forEach(el => {
+document.querySelectorAll('[id]').forEach(el => {
   if (/^[acpe]\d+/.test(el.id)) observer.observe(el);
 });
+
+// ─── LIGHTBOX ───
+let lbTabCards = [];
+let lbCurrentIdx = 0;
+
+function getTabCards() {
+  const activeBtn = document.querySelector('.tab-btn.active');
+  const tab = activeBtn ? activeBtn.dataset.tab : 'anatomy';
+  const panel = document.getElementById('panel-' + tab);
+  return panel ? Array.from(panel.querySelectorAll('.thumb-card')) : [];
+}
+
+function openLightbox(el) {
+  lbTabCards = getTabCards();
+  lbCurrentIdx = lbTabCards.indexOf(el);
+  populate(el);
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function lbBgClick(e) {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+}
+
+function lightboxNav(dir) {
+  if (!lbTabCards.length) return;
+  lbCurrentIdx = (lbCurrentIdx + dir + lbTabCards.length) % lbTabCards.length;
+  populate(lbTabCards[lbCurrentIdx]);
+}
+
+function populate(el) {
+  const d = el.dataset;
+  const img = document.getElementById('lb-img');
+  const src = document.getElementById('lb-source');
+  img.src = d.png; img.alt = d.alt || '';
+  src.srcset = d.webp;
+  document.getElementById('lb-num').textContent = d.num;
+  document.getElementById('lb-title').textContent = d.title;
+  document.getElementById('lb-desc').textContent = d.desc || '';
+
+  const stepsEl = document.getElementById('lb-steps');
+  stepsEl.innerHTML = '';
+  if (d.steps && d.steps !== '[]') {
+    try {
+      JSON.parse(d.steps).forEach((s, i) => {
+        const li = document.createElement('li');
+        const numSpan = document.createElement('span');
+        numSpan.className = 'step-num';
+        numSpan.textContent = i + 1;
+        li.appendChild(numSpan);
+        li.appendChild(document.createTextNode(s));
+        stepsEl.appendChild(li);
+      });
+    } catch(e) {}
+  }
+
+  const tagsEl = document.getElementById('lb-tags');
+  tagsEl.innerHTML = '';
+  if (d.tags && d.tags !== '[]') {
+    try {
+      JSON.parse(d.tags).forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'ctag ' + t.cls;
+        span.textContent = t.text;
+        tagsEl.appendChild(span);
+      });
+    } catch(e) {}
+  }
+
+  document.getElementById('lb-counter').textContent =
+    (lbCurrentIdx + 1) + ' / ' + lbTabCards.length;
+}
+
+document.addEventListener('keydown', e => {
+  const lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') lightboxNav(1);
+  else if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   lightboxNav(-1);
+});
 </script>
+
+<!-- ═══ LIGHTBOX ═══ -->
+<div id="lightbox" onclick="lbBgClick(event)">
+  <div class="lb-wrap" onclick="event.stopPropagation()">
+    <div class="lb-img-panel">
+      <picture id="lb-picture">
+        <source id="lb-source" srcset="" type="image/webp">
+        <img id="lb-img" src="" alt="">
+      </picture>
+      <button class="lb-nav lb-prev" onclick="lightboxNav(-1)">&#8249;</button>
+      <button class="lb-nav lb-next" onclick="lightboxNav(1)">&#8250;</button>
+      <div class="lb-attribution">© williamriveromd.com</div>
+    </div>
+    <div class="lb-info-panel">
+      <div class="lb-toprow">
+        <div class="lb-title-block">
+          <span class="lb-num" id="lb-num"></span>
+          <div id="lb-title"></div>
+        </div>
+        <button class="lb-close" onclick="closeLightbox()" title="Close (Esc)">&#x2715;</button>
+      </div>
+      <div id="lb-desc"></div>
+      <ol id="lb-steps"></ol>
+      <div id="lb-tags"></div>
+      <div class="lb-counter" id="lb-counter"></div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
