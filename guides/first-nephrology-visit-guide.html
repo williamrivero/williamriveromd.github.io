@@ -1251,16 +1251,14 @@
 
 <!-- TOGGLE BAR -->
 <div class="guide-toggle-bar">
-  <div style="display:flex;gap:8px;flex-wrap:wrap;">
-    <button class="toggle-btn" id="dark-btn" onclick="toggleDark()">🌙 Dark</button>
-    <button class="toggle-btn" id="desk-btn" onclick="toggleDesktop()">🖥 Desktop</button>
-  </div>
-  <span style="font-size:11px;color:rgba(255,255,255,.4);margin-left:auto;">
-    <span data-lang="en">Patient Guide</span>
-    <span data-lang="tl" class="lang-hidden">Gabay para sa Pasyente</span>
-    <span data-lang="ceb" class="lang-hidden">Giya alang sa Pasyente</span>
-    <span data-lang="kap" class="lang-hidden">Gabay para king Pasyente</span>
-  </span>
+  <button class="toggle-btn" id="dark-btn" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desk-btn" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
 </div>
 
 <!-- HERO -->
@@ -2306,8 +2304,8 @@ const DARK_KEY  = 'wgmr-dark';
 const DESK_KEY  = 'wgmr-desktop';
 function applyDark(on) {
   document.body.classList.toggle('dark-mode', on);
-  const btn = document.getElementById('dark-btn');
-  if (btn) btn.textContent = on ? '☀ Light' : '🌙 Dark';
+  const lbl = document.getElementById('darkLabel');
+  if (lbl) lbl.textContent = on ? 'Light' : 'Dark';
 }
 function toggleDark() {
   const on = !document.body.classList.contains('dark-mode');
@@ -2316,14 +2314,18 @@ function toggleDark() {
 }
 function applyDesktop(on) {
   document.body.classList.toggle('desktop-mode', on);
-  const btn = document.getElementById('desk-btn');
-  if (btn) btn.textContent = on ? '📱 Mobile' : '🖥 Desktop';
+  const lbl = document.getElementById('desktopLabel');
+  if (lbl) lbl.textContent = on ? 'Mobile' : 'Desktop';
 }
 function toggleDesktop() {
   const on = !document.body.classList.contains('desktop-mode');
   localStorage.setItem(DESK_KEY, on ? '1' : '');
   applyDesktop(on);
 }
+(function() {
+  if (localStorage.getItem(DARK_KEY))  applyDark(true);
+  if (localStorage.getItem(DESK_KEY))  applyDesktop(true);
+})();
 
 /* ── Language system ─────────────────────────────────────────────── */
 const GLANG_KEY = 'wgmr-nephvisit-lang';
@@ -2399,6 +2401,20 @@ function qbClear() {
     .catch(function() {});
 })();
 </script>
+<button aria-label="Print this guide" class="print-btn" onclick="window.print()">
+  <span class="p-tip">Print / Save PDF</span>
+  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+    <polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
+  </svg>
+</button>
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/symptom-checker-widget.js" defer></script>
 </body>
 </html>
 
