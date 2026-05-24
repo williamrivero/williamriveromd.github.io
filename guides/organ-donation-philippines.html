@@ -1410,6 +1410,23 @@ html[data-theme="dark"] .tip-body h4{color:#e8eaf0;}
 html[data-theme="dark"] .tip-body p{color:#9aa5b4;}
 /* STEP BODY (organ donation) */
 
+/* ── PHYSICIAN MODE COMPONENTS ─────────────────────────────────────────── */
+.algo-card{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:24px 0;}
+.algo-title{background:var(--navy);color:white;padding:10px 18px;font-size:13px;font-weight:600;letter-spacing:.04em;}
+.algo-body{padding:16px 18px;}
+.algo-body p{font-size:14px;color:var(--text-mid);margin-bottom:8px;line-height:1.6;}
+.algo-body p:last-child{margin-bottom:0;}
+html[data-theme="dark"] .algo-card{background:#1a2535;border-color:#2a3548;}
+.ref-band{background:linear-gradient(135deg,var(--teal) 0%,#0e4a50 100%);border-radius:14px;padding:24px;margin:12px 0;color:white;}
+.ref-band h3{font-size:15px;font-weight:700;margin:0 0 16px;color:white;opacity:.9;letter-spacing:.02em;}
+body.physician-mode .ref-band{background:#0f1e2e;color:rgba(255,255,255,.88);}
+html[data-theme="dark"] body.physician-mode .ref-band{background:#0a1425;}
+.dose-table{width:100%;border-collapse:collapse;font-size:13px;margin:20px 0;}
+.dose-table th{background:#0e4a50;color:white;padding:9px 12px;text-align:left;font-size:12px;font-weight:600;}
+.dose-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text-mid);vertical-align:top;line-height:1.5;}
+.dose-table tr:nth-child(even) td{background:var(--bg);}
+html[data-theme="dark"] .dose-table td{color:#c8d4e0;border-color:#2a3548;}
+html[data-theme="dark"] .dose-table tr:nth-child(even) td{background:#1a2535;}
 
 
 html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
@@ -1872,6 +1889,13 @@ html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 <h2>Everything you need to know about kidney donation in the Philippines.</h2>
 <p>Kidney disease is the Philippines' silent epidemic — and kidney transplantation is unambiguously the best treatment for end-stage kidney disease (ESKD). Yet only a tiny fraction of Filipinos who need a transplant ever receive one. This section covers the full picture: the statistics, who can donate, the step-by-step process, pros and cons, PhilHealth coverage, and the cultural realities of kidney donation in Filipino families.</p>
 
+<div class="mode-toggle-bar" style="margin:20px 0 28px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1.5px solid var(--border);padding-bottom:18px;">
+  <span style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-right:4px;">View as:</span>
+  <button class="nav-pill mode-patient-pill active-pill" onclick="setMode('patient')">🙋 Patient / Family</button>
+  <button class="nav-pill mode-physician-pill" onclick="setMode('physician')">🩺 Clinician Reference</button>
+</div>
+
+<div class="mode-patient">
 <nav class="kidney-subnav" aria-label="Kidney donation sub-sections">
   <a href="#kd-stats">Philippine Stats</a>
   <a href="#kd-types">Types of Donation</a>
@@ -2185,6 +2209,223 @@ html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 <strong>A note on equity:</strong> Kidney transplantation should not be available only to those with a willing family member or financial resources. Advocacy for a robust deceased-donor programme — the path taken by countries like Spain, which has the world's highest deceased-donor rate — is the only way to make transplantation equitably accessible in the Philippines. Signing your donor card and telling your family your wishes is an act of solidarity with the 120,000 Filipinos on dialysis who are waiting.
 </div>
 
+</div><!-- end .mode-patient -->
+
+<div class="mode-physician">
+
+  <!-- MD HERO -->
+  <div class="md-hero">
+    <div class="md-hero-badge">Clinician Reference</div>
+    <h2>Kidney Transplantation — Philippine Clinical Reference</h2>
+    <p class="md-hero-sub">Living donor evaluation · Immunosuppression · Rejection surveillance · PODRRS allocation · Philippine outcomes data · KDIGO 2021 / AST-ASTS guidelines</p>
+  </div>
+
+  <!-- DONOR EVALUATION PROTOCOL -->
+  <p class="kd-subhead" style="margin-top:32px;" id="md-donor-eval">Living Donor Evaluation Protocol (KDIGO 2021 / AST-ASTS)</p>
+  <p style="font-size:14px;color:var(--text-mid);margin-bottom:16px;">All evaluations must be conducted by the transplant centre's independent team — not the recipient's nephrologist. Components below are the minimum standard; individual centres may require additional studies.</p>
+
+  <table class="dose-table" style="margin-bottom:24px;">
+    <thead>
+      <tr><th>Domain</th><th>Required Studies</th><th>Absolute Contraindications</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Renal function</strong></td>
+        <td>Serum creatinine, eGFR (CKD-EPI), 24h urine protein &amp; creatinine clearance; iohexol GFR if borderline (eGFR 60–89)</td>
+        <td>eGFR &lt; 60 mL/min/1.73m²; proteinuria &gt; 300 mg/24h</td>
+        <td>Some centres accept eGFR ≥ 80 on donor kidney retained; use measured GFR when eGFR is borderline</td>
+      </tr>
+      <tr>
+        <td><strong>Urinary tract</strong></td>
+        <td>Urinalysis + microscopy, urine culture, renal ultrasound</td>
+        <td>Bilateral nephrolithiasis; recurrent stones; staghorn calculi</td>
+        <td>Single history of calcium oxalate stone: evaluate metabolic workup before ruling out</td>
+      </tr>
+      <tr>
+        <td><strong>Vascular anatomy</strong></td>
+        <td>CT angiography (gold standard); duplex ultrasound acceptable if CT contraindicated</td>
+        <td>Single functioning kidney; horseshoe kidney (relative)</td>
+        <td>Multiple renal arteries increase surgical complexity but are not absolute contraindications; left kidney preferred (longer renal vein)</td>
+      </tr>
+      <tr>
+        <td><strong>Cardiovascular</strong></td>
+        <td>ECG, echocardiography (all donors ≥ 40yo or with CV risk); stress test if indicated</td>
+        <td>Uncontrolled hypertension (&gt; 140/90 on &gt; 1 agent); cardiac EF &lt; 40%</td>
+        <td>Well-controlled HTN on a single agent: some centres accept with caution; document BP control over ≥ 3 months</td>
+      </tr>
+      <tr>
+        <td><strong>Metabolic</strong></td>
+        <td>Fasting glucose, HbA1c, lipid panel, uric acid, BMI</td>
+        <td>Diabetes mellitus (any type); BMI &gt; 35 kg/m²</td>
+        <td>Pre-diabetes (HbA1c 5.7–6.4%) warrants counselling and close monitoring; not absolute contraindication at all centres</td>
+      </tr>
+      <tr>
+        <td><strong>Infectious disease</strong></td>
+        <td>HIV Ag/Ab, HBsAg, anti-HBs, HBcAb, anti-HCV (reflex HCVRNA), CMV IgG/IgM, EBV VCA IgG, VDRL, CXR, Mantoux/IGRA for TB</td>
+        <td>HIV (absolute); active HBV or HCV with hepatic dysfunction</td>
+        <td>HBcAb+/HBsAg− (resolved HBV): acceptable with recipient HBV prophylaxis; HCV Ab+ with undetectable RNA: acceptable at experienced centres</td>
+      </tr>
+      <tr>
+        <td><strong>Oncologic</strong></td>
+        <td>Age-appropriate cancer screening (Pap/HPV, breast, colorectal); PSA if indicated</td>
+        <td>Active malignancy; cancer &lt; 5yr remission (most types)</td>
+        <td>Non-melanoma skin cancer in complete remission: generally acceptable; discuss case-by-case with transplant team</td>
+      </tr>
+      <tr>
+        <td><strong>Psychosocial</strong></td>
+        <td>Independent social work + psychiatric evaluation; financial assessment; coercion screening</td>
+        <td>Active psychosis; active substance use disorder; evidence of financial coercion</td>
+        <td>Must be conducted WITHOUT the recipient or family present. Document voluntary, informed consent independently from recipient team.</td>
+      </tr>
+      <tr>
+        <td><strong>Immunologic</strong></td>
+        <td>ABO typing, HLA-A/B/DR typing (donor + recipient), crossmatch (complement-dependent cytotoxicity + flow), Panel Reactive Antibody (PRA) if recipient sensitized</td>
+        <td>Positive CDC crossmatch (absolute)</td>
+        <td>Positive flow crossmatch with low-level DSA: evaluate with transplant immunologist; desensitisation protocols available at NKTI</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- IMMUNOSUPPRESSION -->
+  <p class="kd-subhead" id="md-immunosuppression">Immunosuppression — Philippine Standard Protocol</p>
+  <p style="font-size:14px;color:var(--text-mid);margin-bottom:16px;">Protocols below reflect typical NKTI and Philippine DOH-accredited centre practice. Adjust for sensitisation status, recipient age, and donor type.</p>
+
+  <table class="dose-table" style="margin-bottom:8px;">
+    <thead>
+      <tr><th>Phase</th><th>Agent</th><th>Standard Dose / Target</th><th>High-Risk Modification</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Induction</strong></td>
+        <td>Basiliximab (IL-2R blocker)</td>
+        <td>20 mg IV day 0, 20 mg IV day 4</td>
+        <td>Replace with rATG 1.5 mg/kg/day × 3–5 doses for PRA &gt; 50%, re-transplant, DGF risk</td>
+      </tr>
+      <tr>
+        <td><strong>Calcineurin inhibitor</strong></td>
+        <td>Tacrolimus (preferred) or ciclosporin</td>
+        <td>Start 0.1–0.2 mg/kg/day PO; target trough: Month 1–3: 8–12 ng/mL; Month 4–12: 6–10 ng/mL; Year 2+: 4–8 ng/mL</td>
+        <td>Reduce target if neurotoxicity, DM de novo, or biopsy-proven nephrotoxicity</td>
+      </tr>
+      <tr>
+        <td><strong>Antimetabolite</strong></td>
+        <td>Mycophenolate mofetil (MMF)</td>
+        <td>750–1000 mg PO BID (with meals)</td>
+        <td>Reduce or switch to azathioprine if GI intolerance; hold if WBC &lt; 3.0 × 10⁹/L</td>
+      </tr>
+      <tr>
+        <td><strong>Corticosteroid</strong></td>
+        <td>Methylprednisolone (IV) → Prednisone (PO)</td>
+        <td>500 mg IV intraop; 250 mg IV day 1; 125 mg IV day 2; taper to 5–10 mg/day PO by Month 3</td>
+        <td>Some centres pursue steroid-free maintenance after Month 3 in low-risk recipients</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--text-muted);margin:4px 0 24px;">Prophylaxis: TMP-SMX DS for PCP (6–12 months); valganciclovir for CMV-high-risk (D+/R−, 6 months); nystatin oral for oral candidiasis (3 months). Adjust all doses for renal function.</p>
+
+  <!-- REJECTION SURVEILLANCE -->
+  <p class="kd-subhead" id="md-rejection">Rejection Surveillance &amp; Banff Classification</p>
+  <div class="algo-card" style="margin-bottom:16px;">
+    <div class="algo-title">Creatinine Monitoring Schedule (post-living-donor transplant)</div>
+    <div class="algo-body">
+      <p><strong>Week 1–4:</strong> Daily creatinine while inpatient, then 3×/week outpatient</p>
+      <p><strong>Month 2–3:</strong> Weekly creatinine + tacrolimus trough</p>
+      <p><strong>Month 4–12:</strong> Biweekly; monthly tacrolimus trough</p>
+      <p><strong>Year 2+:</strong> Monthly creatinine; tacrolimus trough every 3 months</p>
+      <p><strong>Threshold for biopsy workup:</strong> Creatinine rise &gt; 20–25% above baseline, unexplained; or new proteinuria &gt; 500 mg/day</p>
+    </div>
+  </div>
+  <table class="dose-table" style="margin-bottom:8px;">
+    <thead>
+      <tr><th>Banff Category</th><th>Histology Key Feature</th><th>First-line Treatment</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>T Cell-Mediated Rejection (TCMR)</strong><br>Banff 1A/1B/2A/2B/3</td>
+        <td>Tubulitis (t score), interstitial inflammation (i score)</td>
+        <td>Methylprednisolone 500 mg IV × 3 days (pulse)</td>
+        <td>Banff 2–3: consider adding rATG; ensure adequate tacrolimus trough</td>
+      </tr>
+      <tr>
+        <td><strong>Active AMR (Antibody-Mediated)</strong></td>
+        <td>Microvascular inflammation (g + ptc ≥ 2), C4d+, DSA present</td>
+        <td>Plasmapheresis × 5–7 sessions + IVIG 2 g/kg + rituximab 375 mg/m²</td>
+        <td>NKTI desensitisation protocol; outcomes for late AMR are poor — early diagnosis critical</td>
+      </tr>
+      <tr>
+        <td><strong>Chronic AMR</strong></td>
+        <td>Transplant glomerulopathy (cg score), GBM duplication</td>
+        <td>Optimise CNI + consider belatacept conversion; plasmapheresis/IVIG if DSA rising</td>
+        <td>Associated with graft loss at 5–10 years; referral to transplant nephrologist mandatory</td>
+      </tr>
+      <tr>
+        <td><strong>Borderline / Subclinical</strong></td>
+        <td>t1 + i1 without meeting full TCMR criteria</td>
+        <td>Optimise tacrolimus trough; treat if clinical worsening</td>
+        <td>Protocol biopsy programs (some NKTI protocols): detect subclinical at 3 and 12 months</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--text-muted);margin:4px 0 24px;">Reference: Banff 2022 Classification. DSA = donor-specific antibodies (Luminex single-antigen bead); C4d by immunofluorescence or IHC. AMR diagnosis requires all three criteria: histology + DSA + C4d or other evidence of endothelial injury.</p>
+
+  <!-- PHILIPPINE OUTCOMES -->
+  <p class="kd-subhead" id="md-outcomes">Philippine Transplant Outcomes — Reference Data</p>
+  <table class="dose-table" style="margin-bottom:24px;">
+    <thead>
+      <tr><th>Outcome Metric</th><th>Living Donor (PH)</th><th>Deceased Donor (PH)</th><th>Best-Practice Benchmark</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1-year graft survival</td><td>~88–92%</td><td>~78–83%</td><td>&gt; 95% (UK, Australia)</td></tr>
+      <tr><td>5-year graft survival</td><td>~70–78%</td><td>~55–65%</td><td>&gt; 85% (USRDS 2022)</td></tr>
+      <tr><td>1-year patient survival</td><td>~95–97%</td><td>~90–94%</td><td>&gt; 97%</td></tr>
+      <tr><td>DGF rate (deceased donor)</td><td>N/A</td><td>~25–35%</td><td>&lt; 20% (opt-in rapid recovery programmes)</td></tr>
+      <tr><td>Acute rejection (1yr)</td><td>~10–15%</td><td>~18–25%</td><td>&lt; 10% (CNI era)</td></tr>
+      <tr><td>Pre-emptive transplant rate</td><td>&lt; 5%</td><td>&lt; 1%</td><td>~20–30% (Norway, Australia)</td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-amber" style="margin-bottom:24px;">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <h4>Data caveat</h4>
+      <p>Philippine transplant outcome data are limited by incomplete registry reporting. NKTI publishes annual centre-specific data; PHTS (Philippine Hereditary Transplant Society) data are more comprehensive for NKTI than for provincial accredited centres. The figures above are best estimates from available literature and NKTI annual reports (2019–2023); individual centre data should be obtained directly.</p>
+    </div>
+  </div>
+
+  <!-- PODRRS ALLOCATION -->
+  <p class="kd-subhead" id="md-podrrs">PODRRS Deceased Donor Allocation (Philippines)</p>
+  <div class="algo-card" style="margin-bottom:24px;">
+    <div class="algo-title">PODRRS Kidney Allocation Priority Algorithm</div>
+    <div class="algo-body">
+      <p><strong>1. HLA Matching:</strong> 0 HLA-A/B/DR mismatches → highest priority regardless of waiting time</p>
+      <p><strong>2. Paediatric recipients (&lt; 18yo):</strong> Prioritised for paediatric donors and jump-listed for adult donors after 6 months on list</p>
+      <p><strong>3. PRA &gt; 80% (highly sensitised):</strong> Priority listing; virtual crossmatch used to expand pool</p>
+      <p><strong>4. Waiting time:</strong> Primary tiebreaker for standard-criteria allocation; accrued from enrolment date at any PODRRS-registered centre</p>
+      <p><strong>5. Same blood group:</strong> ABO-identical preferred over ABO-compatible; ABO-incompatible transplantation available at NKTI with desensitisation</p>
+      <p><strong>6. Geographic proximity:</strong> Cold ischemia time target &lt; 24h; organs offered to the procuring centre first, then regional, then national</p>
+      <p style="margin-top:12px;font-size:12px;color:var(--text-muted);">Source: DOH Administrative Order on PODRRS; NKTI transplant coordinator protocol. As of 2024 data.</p>
+    </div>
+  </div>
+
+  <!-- CLINICAL PEARLS -->
+  <p class="kd-subhead" id="md-pearls">5 Clinical Pearls — Kidney Transplant in the Philippines</p>
+  <div class="ref-band" style="margin-bottom:8px;">
+    <strong>1. Measure GFR, don't estimate it, in borderline donors.</strong> CKD-EPI overestimates GFR in Filipino donors (body habitus, muscle mass). Iohexol clearance or DTPA nuclear scan is the gold standard when eGFR is 60–89 — a donor rejected on eGFR alone may be acceptable on measured GFR.
+  </div>
+  <div class="ref-band" style="margin-bottom:8px;">
+    <strong>2. The independent psychosocial evaluation is the highest-yield step for detecting coercion.</strong> <em>Utang na loob</em> and family hierarchy pressure are real in Philippine living donation. Seeing the donor alone, without the recipient or family, is non-negotiable — not a courtesy. Document that the evaluation was conducted independently.
+  </div>
+  <div class="ref-band" style="margin-bottom:8px;">
+    <strong>3. Pre-emptive transplant is dramatically under-utilised in the Philippines.</strong> ESKD patients who receive a transplant before starting dialysis have 15–25% better 5-year graft survival (USRDS). Referral to transplant workup should begin at eGFR 20–25 mL/min — not after dialysis initiation. Educate your CKD 4 patients about this window.
+  </div>
+  <div class="ref-band" style="margin-bottom:8px;">
+    <strong>4. Late acute rejection and CNI nephrotoxicity present identically on creatinine — biopsy is mandatory.</strong> Do not empirically pulse steroids for unexplained creatinine rise without histology. CNI toxicity treated with steroids worsens; TCMR untreated progresses to chronic allograft nephropathy. The clinical cost of a biopsy is far lower than the cost of a misdiagnosis.
+  </div>
+  <div class="ref-band" style="margin-bottom:24px;">
+    <strong>5. PhilHealth Z14 covers the transplant hospitalisation — not lifetime immunosuppression.</strong> The most common reason for late graft loss in lower-income Filipino recipients is tacrolimus non-adherence due to cost. At the post-transplant visit, assess medication affordability proactively. NKTI has a charity pharmacy; MDRP (Maximum Drug Retail Price) regulations apply to generics. Connect patients to the DOH Medical Assistance Programme if cost is a barrier.
+  </div>
+
+</div><!-- end .mode-physician -->
+
 </section>
 </main>
 
@@ -2225,6 +2466,9 @@ html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 const DK='wgmr-dark';
 function toggleDark(){const on=document.documentElement.getAttribute('data-theme')!=='dark';document.documentElement.setAttribute('data-theme',on?'dark':'');document.getElementById('darkLabel').textContent=on?'Light':'Dark';localStorage.setItem(DK,on?'1':'0');}
 (function(){if(localStorage.getItem(DK)==='1'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('darkLabel').textContent='Light';}})();
+const MODE_KEY='wmd-org-donate-mode';
+function setMode(m){const b=document.body;if(m==='physician'){b.classList.add('physician-mode');}else{b.classList.remove('physician-mode');}localStorage.setItem(MODE_KEY,m);document.querySelectorAll('.mode-patient-pill,.mode-physician-pill').forEach(function(el){el.classList.toggle('active-pill',(m==='patient'&&el.classList.contains('mode-patient-pill'))||(m==='physician'&&el.classList.contains('mode-physician-pill')));});}
+/* always start in patient mode — no restore-on-load */
 const GLANG_KEY='wgmr-lang';
 function setLang(lang){localStorage.setItem(GLANG_KEY,lang);['en','tl','ceb','kap'].forEach(l=>{document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{el.classList.toggle('lang-hidden',l!==lang);});const btn=document.getElementById('glb-'+l);if(btn)btn.classList.toggle('active',l===lang);});}
 (function(){const saved=localStorage.getItem(GLANG_KEY)||'en';if(saved!=='en')setLang(saved);})();
