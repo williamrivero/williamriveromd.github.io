@@ -1432,6 +1432,14 @@ html[data-theme="dark"] .dose-table tr:nth-child(even) td{background:#1a2535;}
 html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 @media(max-width:768px){.related-guides{padding:24px 20px 0;}}
 
+  /* ── MAIN TAB BUTTONS (Organ Donation / Kidney Donation) ─────────────────── */
+  #main-tab-nav{gap:6px;}
+  #main-tab-nav .nav-pill{font-size:14px;font-weight:700;padding:9px 22px;border-radius:24px;border:2px solid var(--border);background:transparent;cursor:pointer;transition:all .18s;letter-spacing:.01em;}
+  #main-tab-nav .nav-pill.active-pill{background:var(--teal);color:#fff;border-color:var(--teal);}
+  #main-tab-nav .nav-pill:not(.active-pill):hover{border-color:var(--teal);color:var(--teal);}
+  html[data-theme="dark"] #main-tab-nav .nav-pill{border-color:#2a3548;color:var(--text-muted);}
+  html[data-theme="dark"] #main-tab-nav .nav-pill.active-pill{background:var(--teal);color:#fff;border-color:var(--teal);}
+
 </style>
 <script type="application/ld+json">
 {
@@ -1507,6 +1515,14 @@ html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 </section>
 
 <nav class="nav-strip">
+<div class="nav-pills" id="main-tab-nav">
+<button class="nav-pill active-pill" id="tab-btn-organ" onclick="switchTab('organ')">🫀 Organ Donation</button>
+<button class="nav-pill" id="tab-btn-kidney" onclick="switchTab('kidney')">🫘 Kidney Donation</button>
+</div>
+</nav>
+
+<!-- sub-nav for Organ Donation tab only -->
+<nav class="nav-strip" id="organ-subnav" style="border-top:1px solid var(--border);background:var(--bg);">
 <div class="nav-pills">
 <a class="nav-pill" href="#crisis">The Crisis</a>
 <a class="nav-pill" href="#pcp-win">&#127942; A Big Win</a>
@@ -1515,13 +1531,12 @@ html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 <a class="nav-pill" href="#myths">Myth Busters</a>
 <a class="nav-pill" href="#how-to">How to Register</a>
 <a class="nav-pill" href="#family">For Families</a>
-<a class="nav-pill" href="#kidney">Kidney Transplant</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- SECTION 1: THE CRISIS -->
+<div id="tab-panel-organ">
 <section class="section" id="crisis">
 <div class="section-tag"><span data-lang="en">The Numbers</span><span class="lang-hidden" data-lang="tl">Ang mga Numero</span><span class="lang-hidden" data-lang="ceb">Ang mga Numero</span><span class="lang-hidden" data-lang="kap">Deng Numero</span></div>
 <h2>
@@ -1883,7 +1898,9 @@ html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 </div>
 </section>
 
-<!-- SECTION 8: KIDNEY TRANSPLANT -->
+</div><!-- end #tab-panel-organ -->
+
+<div id="tab-panel-kidney" style="display:none;">
 <section class="section" id="kidney">
 <div class="section-tag"><span data-lang="en">Kidney Donation — Philippine Context</span><span class="lang-hidden" data-lang="tl">Kidney Donation — Kontekstong Pilipino</span><span class="lang-hidden" data-lang="ceb">Kidney Donation — Konteksto sa Pilipinas</span><span class="lang-hidden" data-lang="kap">Kidney Donation — Kontekstong Pilipino</span></div>
 <h2>Everything you need to know about kidney donation in the Philippines.</h2>
@@ -2427,6 +2444,7 @@ html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 </div><!-- end .mode-physician -->
 
 </section>
+</div><!-- end #tab-panel-kidney -->
 </main>
 
 <!-- DR CARD -->
@@ -2466,6 +2484,18 @@ html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 const DK='wgmr-dark';
 function toggleDark(){const on=document.documentElement.getAttribute('data-theme')!=='dark';document.documentElement.setAttribute('data-theme',on?'dark':'');document.getElementById('darkLabel').textContent=on?'Light':'Dark';localStorage.setItem(DK,on?'1':'0');}
 (function(){if(localStorage.getItem(DK)==='1'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('darkLabel').textContent='Light';}})();
+const TAB_KEY='wmd-org-tab';
+function switchTab(tab){
+  const isKidney=tab==='kidney';
+  document.getElementById('tab-panel-organ').style.display=isKidney?'none':'block';
+  document.getElementById('tab-panel-kidney').style.display=isKidney?'block':'none';
+  document.getElementById('organ-subnav').style.display=isKidney?'none':'block';
+  document.getElementById('tab-btn-organ').classList.toggle('active-pill',!isKidney);
+  document.getElementById('tab-btn-kidney').classList.toggle('active-pill',isKidney);
+  localStorage.setItem(TAB_KEY,tab);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+(function(){const t=localStorage.getItem(TAB_KEY);if(t==='kidney')switchTab('kidney');})();
 const MODE_KEY='wmd-org-donate-mode';
 function setMode(m){const b=document.body;if(m==='physician'){b.classList.add('physician-mode');}else{b.classList.remove('physician-mode');}localStorage.setItem(MODE_KEY,m);document.querySelectorAll('.mode-patient-pill,.mode-physician-pill').forEach(function(el){el.classList.toggle('active-pill',(m==='patient'&&el.classList.contains('mode-patient-pill'))||(m==='physician'&&el.classList.contains('mode-physician-pill')));});}
 /* always start in patient mode — no restore-on-load */
