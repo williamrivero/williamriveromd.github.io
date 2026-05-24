@@ -1432,13 +1432,17 @@ html[data-theme="dark"] .dose-table tr:nth-child(even) td{background:#1a2535;}
 html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 @media(max-width:768px){.related-guides{padding:24px 20px 0;}}
 
-  /* ── MAIN TAB BUTTONS (Organ Donation / Kidney Donation) ─────────────────── */
-  #main-tab-nav{gap:6px;}
-  #main-tab-nav .nav-pill{font-size:14px;font-weight:700;padding:9px 22px;border-radius:24px;border:2px solid var(--border);background:transparent;cursor:pointer;transition:all .18s;letter-spacing:.01em;}
-  #main-tab-nav .nav-pill.active-pill{background:var(--teal);color:#fff;border-color:var(--teal);}
-  #main-tab-nav .nav-pill:not(.active-pill):hover{border-color:var(--teal);color:var(--teal);}
-  html[data-theme="dark"] #main-tab-nav .nav-pill{border-color:#2a3548;color:var(--text-muted);}
-  html[data-theme="dark"] #main-tab-nav .nav-pill.active-pill{background:var(--teal);color:#fff;border-color:var(--teal);}
+  /* ── AUDIENCE TABS (Organ Donation / Kidney Donation) ────────────────────── */
+  .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
+  .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
+  .aud-tab{flex:1;text-align:center;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .aud-tab:hover{color:var(--navy);}
+  .aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
+  .aud-tab.tab-md.active{border-bottom-color:var(--navy);}
+  html[data-theme="dark"] .audience-tabs{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .aud-tab:hover{color:var(--text);}
+  html[data-theme="dark"] .aud-tab.active{color:var(--text);border-bottom-color:var(--teal);}
+  html[data-theme="dark"] .aud-tab.tab-md.active{border-bottom-color:var(--teal);}
 
 </style>
 <script type="application/ld+json">
@@ -1514,12 +1518,12 @@ html[data-theme="dark"] .step-body h4{color:#e8eaf0;}
 </div>
 </section>
 
-<nav class="nav-strip">
-<div class="nav-pills" id="main-tab-nav">
-<button class="nav-pill active-pill" id="tab-btn-organ" onclick="switchTab('organ')">🫀 Organ Donation</button>
-<button class="nav-pill" id="tab-btn-kidney" onclick="switchTab('kidney')">🫘 Kidney Donation</button>
+<div class="audience-tabs">
+  <div class="tabs-inner">
+    <button class="aud-tab active" id="tab-btn-organ" onclick="switchTab('organ')">🫀 Organ Donation</button>
+    <button class="aud-tab tab-md" id="tab-btn-kidney" onclick="switchTab('kidney')">🫘 Kidney Donation</button>
+  </div>
 </div>
-</nav>
 
 <!-- sub-nav for Organ Donation tab only -->
 <nav class="nav-strip" id="organ-subnav" style="border-top:1px solid var(--border);background:var(--bg);">
@@ -2489,9 +2493,9 @@ function switchTab(tab){
   const isKidney=tab==='kidney';
   document.getElementById('tab-panel-organ').style.display=isKidney?'none':'block';
   document.getElementById('tab-panel-kidney').style.display=isKidney?'block':'none';
-  document.getElementById('organ-subnav').style.display=isKidney?'none':'block';
-  document.getElementById('tab-btn-organ').classList.toggle('active-pill',!isKidney);
-  document.getElementById('tab-btn-kidney').classList.toggle('active-pill',isKidney);
+  document.getElementById('organ-subnav').style.display=isKidney?'none':'';
+  document.getElementById('tab-btn-organ').classList.toggle('active',!isKidney);
+  document.getElementById('tab-btn-kidney').classList.toggle('active',isKidney);
   localStorage.setItem(TAB_KEY,tab);
   window.scrollTo({top:0,behavior:'smooth'});
 }
