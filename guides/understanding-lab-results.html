@@ -2432,7 +2432,8 @@ function calcLabs(){
       if(cag>12){vp.push('Corrected anion gap of '+cag+' mEq/L is elevated — indicates unmeasured anions (MUDPILES: uremia, lactic acidosis, DKA, toxic ingestion).');ap.push('Elevated anion gap requires clinical evaluation. In CKD, uremic acidosis is common — discuss with nephrologist.');}
       var hco3Ok=hco3>=22,acidosis=hco3<18;
       var hco3Color=hco3Ok?'#2d7a4f':(acidosis?'#c0392b':'#9a6500');
-      _setCard('lb-hco3-status',hco3,hco3Color,hco3Ok?'✓ At CKD target (≥22)':(acidosis?'✗ Significant acidosis (<18)':'⚠ Mildly low (18–21)'));
+      var hco3El=document.getElementById('lb-hco3-status');if(hco3El){hco3El.textContent=hco3;hco3El.style.color=hco3Color;}
+      var hco3Bdg=document.getElementById('lb-hco3-badge');if(hco3Bdg){hco3Bdg.textContent=hco3Ok?'✓ At CKD target (≥22)':(acidosis?'✗ Significant acidosis (<18)':'⚠ Mildly low (18–21)');hco3Bdg.style.color=hco3Color;}
       if(!hco3Ok){vp.push('Bicarbonate of '+hco3+' mEq/L is below CKD target (≥22) — metabolic acidosis accelerates muscle wasting, bone loss, and CKD progression.');ap.push('Sodium bicarbonate supplementation indicated (target HCO₃ ≥22 mEq/L).'+(acidosis?' Severe acidosis — discuss urgently with nephrologist.':''));}
     }
     var kCard=document.getElementById('k-metric-card');
