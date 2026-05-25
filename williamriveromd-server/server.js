@@ -35,8 +35,14 @@ app.post('/api/analyze', async (req, res) => {
     return res.status(500).json({ error: 'API key not configured.' });
   }
   const { messages, model, max_tokens } = req.body;
-  if (!messages || !Array.isArray(messages)) {
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: 'Invalid request.' });
+  }
+  for (const msg of messages) {
+    const content = typeof msg.content === 'string' ? msg.content.trim() : '';
+    if (!content) {
+      return res.status(400).json({ error: 'Message content must be non-empty.' });
+    }
   }
   const safeModel = 'claude-haiku-4-5-20251001';
   const safeMaxTokens = Math.min(max_tokens || 1200, 2000);
