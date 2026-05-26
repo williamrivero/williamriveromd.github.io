@@ -1264,6 +1264,15 @@ html[data-theme="dark"] .verdict-card h4{color:#e8eaf0;}
 html[data-theme="dark"] .verdict-card p{color:#c0cad8;}
 /* Verdict cards — myth-busting style from buko-juice guide */
 .verdict-grid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0 24px;}
+/* ── 14-day log inline widget ── */
+.log-widget-wrap{margin-top:16px;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .3s;}
+.log-widget-wrap.lw-hidden{display:none;}
+.log-widget-header{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:var(--navy);color:#fff;cursor:pointer;user-select:none;}
+.log-widget-header .lw-title{font-size:13px;font-weight:700;letter-spacing:.04em;display:flex;align-items:center;gap:8px;}
+.log-widget-header .lw-close{font-size:18px;opacity:.7;line-height:1;}
+.log-widget-header:hover .lw-close{opacity:1;}
+.log-widget-frame{display:block;width:100%;border:none;background:#fff;}
+html[data-theme="dark"] .log-widget-frame{background:#0d1420;}
 </style>
 <script type="application/ld+json">
 {
@@ -1634,8 +1643,17 @@ html[data-theme="dark"] .verdict-card p{color:#c0cad8;}
 
     <div class="calc-actions">
       <button type="button" class="calc-btn calc-btn-primary" onclick="window.print()">🖨️ <span class="lang-en">Print result</span><span class="lang-tl" style="display:none;">I-print</span><span class="lang-ceb" style="display:none;">I-print</span><span class="lang-kap" style="display:none;">I-print</span></button>
-      <a class="calc-btn" href="alcohol-drinking-log.html" target="_blank" rel="noopener">📋 <span class="lang-en">14-day drinking log (PDF)</span><span class="lang-tl" style="display:none;">14-araw na drinking log (PDF)</span><span class="lang-ceb" style="display:none;">14-adlaw nga drinking log (PDF)</span><span class="lang-kap" style="display:none;">14-aldo drinking log (PDF)</span></a>
+      <button type="button" class="calc-btn" onclick="toggleLogWidget()">📋 <span class="lang-en">14-day drinking log</span><span class="lang-tl" style="display:none;">14-araw na drinking log</span><span class="lang-ceb" style="display:none;">14-adlaw nga drinking log</span><span class="lang-kap" style="display:none;">14-aldo drinking log</span></button>
       <button type="button" class="calc-btn" onclick="resetCalc()">↺ <span class="lang-en">Clear all</span><span class="lang-tl" style="display:none;">Burahin lahat</span><span class="lang-ceb" style="display:none;">Hawan tanan</span><span class="lang-kap" style="display:none;">Burahin lahat</span></button>
+    </div>
+
+    <!-- 14-day log inline widget -->
+    <div class="log-widget-wrap lw-hidden" id="logWidget">
+      <div class="log-widget-header" onclick="toggleLogWidget()">
+        <span class="lw-title">📋 <span class="lang-en">14-Day Drinking Log — fill, print, or save as PDF</span><span class="lang-tl" style="display:none;">14-Araw na Drinking Log — punan, i-print, o i-save bilang PDF</span><span class="lang-ceb" style="display:none;">14-Adlaw nga Drinking Log — pun-on, i-print, o i-save isip PDF</span><span class="lang-kap" style="display:none;">14-Aldo Drinking Log — punuan, i-print, o i-save bilang PDF</span></span>
+        <span class="lw-close">✕</span>
+      </div>
+      <iframe class="log-widget-frame" id="logFrame" src="" data-src="alcohol-drinking-log.html" height="900" scrolling="yes" title="14-Day Drinking Log"></iframe>
     </div>
   </div>
 </div>
@@ -2213,6 +2231,18 @@ document.getElementById('period-week').addEventListener('click', function(){
 
 // Initial render
 calcRender();
+
+function toggleLogWidget(){
+  var wrap = document.getElementById('logWidget');
+  var frame = document.getElementById('logFrame');
+  var hidden = wrap.classList.toggle('lw-hidden');
+  if(!hidden && !frame.src){
+    frame.src = frame.getAttribute('data-src');
+  }
+  if(!hidden){
+    wrap.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+}
 </script>
 
 <button class="print-btn" onclick="window.print()" aria-label="Print this guide">
