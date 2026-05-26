@@ -1180,6 +1180,18 @@ body.in-iframe .toolbar { display: none !important; }
 }
 .pt-field input:focus { border-bottom-color: var(--gold-light); }
 .pt-field input::placeholder { color: rgba(255,255,255,.2); font-style: italic; }
+.pt-field select {
+  width: 100%; background: transparent; border: none;
+  border-bottom: 1px solid rgba(255,255,255,.25);
+  color: #fff; font-family: 'DM Sans', sans-serif; font-size: 15px;
+  padding: 4px 0; outline: none; cursor: pointer;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 2px center; background-size: 12px;
+  padding-right: 20px;
+}
+.pt-field select:focus { border-bottom-color: var(--gold-light); }
+.pt-field select option { background: #0f1e2e; color: #fff; }
 
 /* Instructions strip */
 .instructions {
@@ -1310,7 +1322,7 @@ body.in-iframe .toolbar { display: none !important; }
     background: #0f1e2e !important; -webkit-print-color-adjust: exact;
     print-color-adjust: exact; padding: 14px 18px !important;
   }
-  .pt-field input { color: #fff !important; border-bottom: 1px solid rgba(255,255,255,.4) !important; }
+  .pt-field input, .pt-field select { color: #fff !important; border-bottom: 1px solid rgba(255,255,255,.4) !important; }
   .pt-field label { color: rgba(255,255,255,.5) !important; }
   .bp-log th {
     background: #0f1e2e !important; -webkit-print-color-adjust: exact;
@@ -1372,6 +1384,24 @@ body.in-iframe .toolbar { display: none !important; }
     <div class="pt-field">
       <label>Monitoring Period</label>
       <input type="text" id="pt-period" placeholder="e.g. May 14–21, 2026" autocomplete="off" oninput="savePt('pt-period',this.value)">
+    </div>
+    <div class="pt-field">
+      <label>My Situation</label>
+      <select id="pt-situation" onchange="savePt('pt-situation',this.value)">
+        <option value="">Select your situation…</option>
+        <option value="Hypertension (no CKD)">Hypertension (no CKD)</option>
+        <option value="Hypertension + Diabetes">Hypertension + Diabetes</option>
+        <option value="CKD Stage 1–2">CKD Stage 1–2</option>
+        <option value="CKD Stage 3a–3b">CKD Stage 3a–3b</option>
+        <option value="CKD Stage 4–5">CKD Stage 4–5</option>
+        <option value="On Dialysis (HD or PD)">On Dialysis (HD or PD)</option>
+        <option value="Post-Kidney Transplant">Post-Kidney Transplant</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="pt-field">
+      <label>Blood Pressure Medications</label>
+      <input type="text" id="pt-meds" placeholder="e.g. Amlodipine 5mg, Losartan 50mg" autocomplete="off" oninput="savePt('pt-meds',this.value)">
     </div>
   </div>
 
@@ -1521,10 +1551,12 @@ function clearSample() {
   /* Remove row color coding */
   document.querySelectorAll('#bpBody td').forEach(function(td) { td.style.background = ''; });
   /* Clear patient info fields that were set from sample */
-  ['pt-name','pt-doc','pt-target','pt-period'].forEach(function(id) {
+  ['pt-name','pt-doc','pt-target','pt-period','pt-meds'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el && !localStorage.getItem(PT_STORE)) el.value = '';
   });
+  var sitEl = document.getElementById('pt-situation');
+  if (sitEl && !localStorage.getItem(PT_STORE)) sitEl.selectedIndex = 0;
   drawChart();
   var banner = document.getElementById('sample-banner');
   if (banner) banner.remove();
@@ -1644,7 +1676,7 @@ function savePt(id, val) {
 
 function loadPt() {
   var data = JSON.parse(localStorage.getItem(PT_STORE) || '{}');
-  ['pt-name','pt-doc','pt-target','pt-period'].forEach(function(id) {
+  ['pt-name','pt-doc','pt-target','pt-period','pt-situation','pt-meds'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el && data[id]) el.value = data[id];
   });
