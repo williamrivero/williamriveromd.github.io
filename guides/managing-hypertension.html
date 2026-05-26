@@ -1155,6 +1155,13 @@
 .bp-row{display:flex;align-items:center;gap:16px;margin-bottom:12px;font-size:14px;}
 .bp-visual{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px;margin:24px 0;}
 .bp-visual h4{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:20px;}
+.log-widget-wrap{border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.log-widget-wrap.lw-hidden{display:none;}
+.log-widget-header{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:var(--navy);color:#fff;cursor:pointer;user-select:none;}
+.log-widget-header .lw-title{font-size:13px;font-weight:700;letter-spacing:.04em;display:flex;align-items:center;gap:8px;}
+.log-widget-header .lw-close{font-size:18px;opacity:.7;line-height:1;}
+.log-widget-header:hover .lw-close{opacity:1;}
+.log-widget-frame{display:block;width:100%;border:none;background:#fff;}
 .hout-dl-btn{display:inline-flex;align-items:center;gap:10px;background:var(--teal);color:white;border:none;padding:11px 22px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s;margin-right:8px;}
 .hout-dl-btn:hover{filter:brightness(1.1);}
 .hout-dl-btn svg{width:17px;height:17px;flex-shrink:0;}
@@ -1751,282 +1758,38 @@ body.dark .related-card-title {
 
 <section class="section" id="bp-log">
   <div class="section-tag">
-    <span data-lang="en">Printable Patient Handout</span>
-    <span data-lang="tl" class="lang-hidden">Napi-print na Handout para sa Pasyente</span>
-    <span data-lang="ceb" class="lang-hidden">Maprintahan nga Handout para sa Pasyente</span>
-      <span data-lang="kap" class="lang-hidden">Napi-print a Handout para king Pasyente</span>
+    <span data-lang="en">Fillable Patient Tool</span>
+    <span data-lang="tl" class="lang-hidden">Kagamitan para sa Pasyente</span>
+    <span data-lang="ceb" class="lang-hidden">Himan para sa Pasyente</span>
+    <span data-lang="kap" class="lang-hidden">Kagamitan para king Pasyente</span>
   </div>
   <h2>
-    <span data-lang="en">Blood Pressure Monitoring Log &amp; Reference Guide</span>
-    <span data-lang="tl" class="lang-hidden">Talaan at Reference Guide ng Pagsubaybay ng Presyon ng Dugo</span>
-    <span data-lang="ceb" class="lang-hidden">Talaan ug Reference Guide sa Pagbantay sa Presyon sa Dugo</span>
-      <span data-lang="kap" class="lang-hidden">Talaan at Reference Guide ning Pagsubaybay ning Presyon ning Daya</span>
+    <span data-lang="en">7-Day Blood Pressure Monitoring Log</span>
+    <span data-lang="tl" class="lang-hidden">7-Araw na Talaan ng Presyon ng Dugo</span>
+    <span data-lang="ceb" class="lang-hidden">7-Adlaw nga Talaan sa Presyon sa Dugo</span>
+    <span data-lang="kap" class="lang-hidden">7-Aldo Talaan ning Presyon ning Daya</span>
   </h2>
-  <p class="no-print">
-    <span data-lang="en">Fill in the patient details below, record your readings in the log, then click <strong>Print / Save as PDF</strong> to generate a clean handout for your records or next clinic visit. Your entries are saved in your browser automatically.</span>
-    <span data-lang="tl" class="lang-hidden">Punan ang mga detalye ng pasyente sa ibaba, itala ang inyong mga pagbabasa sa log, pagkatapos ay i-click ang <strong>I-print / I-save bilang PDF</strong> para gumawa ng malinis na handout para sa inyong mga rekord o susunod na pagbisita sa klinika. Ang inyong mga entry ay awtomatikong nai-save sa inyong browser.</span>
-    <span data-lang="ceb" class="lang-hidden">Pun-a ang mga detalye sa pasyente sa ubos, isulat ang inyong mga pagbasa sa log, unya i-click ang <strong>I-print / I-save isip PDF</strong> para maghimo ug limpyo nga handout para sa inyong mga rekord o sunod nga pagbisita sa klinika. Ang inyong mga entry awtomatiko nga na-save sa inyong browser.</span>
-      <span data-lang="kap" class="lang-hidden">Punan ing deng detalye ning pasyente king ibaba, itala ing inyu deng pagbabasa king log, kapabanuan ya i-click ing <strong>I-print / I-save bilang PDF</strong> para gumawa ning malinis a handout para king inyu deng rekord o susunod a pagbisita king klinika. Ing inyu deng entry ya awtomatikong nai-save king inyu browser.</span>
+  <p>
+    <span data-lang="en">Fill in your AM and evening readings directly in the log below. Averages calculate automatically and the trend chart updates as you type — print or save as PDF to bring to your next consultation.</span>
+    <span data-lang="tl" class="lang-hidden">Punan ang inyong AM at PM na mga pagbabasa sa log sa ibaba. Awtomatiko itong nag-calculate ng average at nag-a-update ang chart — i-print o i-save bilang PDF para sa inyong susunod na pagbisita.</span>
+    <span data-lang="ceb" class="lang-hidden">Pun-a ang inyong AM ug PM nga mga pagbasa sa log sa ubos. Awtomatiko kini nag-calculate sa average ug nag-update ang chart — i-print o i-save isip PDF para sa inyong sunod nga pagbisita.</span>
+    <span data-lang="kap" class="lang-hidden">Punan ing inyu AM at PM a deng pagbabasa king log king ibaba. Awtomatiko itong nag-calculate ning average at nag-a-update ing chart — i-print o i-save bilang PDF para king inyu susunod a pagbisita.</span>
   </p>
+  <button type="button" class="hout-dl-btn" onclick="toggleBPWidget()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+    <span data-lang="en">Open BP Log + Trend Chart</span>
+    <span data-lang="tl" class="lang-hidden">Buksan ang BP Log + Trend Chart</span>
+    <span data-lang="ceb" class="lang-hidden">Ablihi ang BP Log + Trend Chart</span>
+    <span data-lang="kap" class="lang-hidden">Buksan ing BP Log + Trend Chart</span>
+  </button>
 
-  <div style="margin-bottom:20px;" class="no-print">
-    <button class="hout-dl-btn" onclick="window.print()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-      <span data-lang="en">Print / Save as PDF</span>
-      <span data-lang="tl" class="lang-hidden">I-print / I-save bilang PDF</span>
-      <span data-lang="ceb" class="lang-hidden">I-print / I-save isip PDF</span>
-      <span data-lang="kap" class="lang-hidden">I-print / I-save bilang PDF</span>
-    </button>
-    <button class="hout-dl-btn" onclick="clearBPLog()" style="background:var(--red,#b91c1c);">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6M14 11v6"></path><path d="M9 6V4h6v2"></path></svg>
-      <span data-lang="en">Clear Log</span>
-      <span data-lang="tl" class="lang-hidden">I-clear ang Talaan</span>
-      <span data-lang="ceb" class="lang-hidden">I-clear ang Talaan</span>
-      <span data-lang="kap" class="lang-hidden">I-clear ing Talaan</span>
-    </button>
-  </div>
-
-  <!-- ── PATIENT INFO ── -->
-  <div class="hout-header">
-    <div class="hout-field">
-      <label><span data-lang="en">Patient Name</span><span data-lang="tl" class="lang-hidden">Pangalan ng Pasyente</span><span data-lang="ceb" class="lang-hidden">Ngalan sa Pasyente</span>
-      <span data-lang="kap" class="lang-hidden">Pangalan ning Pasyente</span></label>
-      <input type="text" id="hout-name" placeholder="Your full name" autocomplete="off" oninput="saveHoutField('hout-name',this.value)">
+  <div class="log-widget-wrap lw-hidden" id="bpWidget" style="margin-top:16px;">
+    <div class="log-widget-header" onclick="toggleBPWidget()">
+      <span class="lw-title">📋 <span data-lang="en">7-Day Blood Pressure Monitoring Log &amp; Trend Chart</span><span data-lang="tl" class="lang-hidden">7-Araw na Talaan ng Presyon ng Dugo at Trend Chart</span><span data-lang="ceb" class="lang-hidden">7-Adlaw nga Talaan sa Presyon sa Dugo ug Trend Chart</span><span data-lang="kap" class="lang-hidden">7-Aldo Talaan ning Presyon ning Daya at Trend Chart</span></span>
+      <span class="lw-close">✕</span>
     </div>
-    <div class="hout-field">
-      <label><span data-lang="en">Physician / Clinic</span><span data-lang="tl" class="lang-hidden">Doktor / Klinika</span><span data-lang="ceb" class="lang-hidden">Doktor / Klinika</span>
-      <span data-lang="kap" class="lang-hidden">Doktor / Klinika</span></label>
-      <input type="text" id="hout-doctor" placeholder="Your doctor's name" autocomplete="off" oninput="saveHoutField('hout-doctor',this.value)">
-    </div>
-    <div class="hout-field">
-      <label><span data-lang="en">My BP Target (set by doctor)</span><span data-lang="tl" class="lang-hidden">Aking BP Target (itinakda ng doktor)</span><span data-lang="ceb" class="lang-hidden">Akong BP Target (gitakda sa doktor)</span>
-      <span data-lang="kap" class="lang-hidden">Aking BP Target (itinakda ning doktor)</span></label>
-      <input type="text" id="hout-target" placeholder="e.g. Below 130/80 mmHg" autocomplete="off" oninput="saveHoutField('hout-target',this.value)">
-    </div>
-    <div class="hout-field">
-      <label><span data-lang="en">Monitoring Period</span><span data-lang="tl" class="lang-hidden">Panahon ng Pagsubaybay</span><span data-lang="ceb" class="lang-hidden">Panahon sa Pagbantay</span>
-      <span data-lang="kap" class="lang-hidden">Panahon ning Pagsubaybay</span></label>
-      <input type="text" id="hout-period" placeholder="e.g. May 14–21, 2026" autocomplete="off" oninput="saveHoutField('hout-period',this.value)">
-    </div>
+    <iframe class="log-widget-frame" id="bpFrame" data-src="bp-monitoring-log.html" height="1500" title="7-Day Blood Pressure Monitoring Log"></iframe>
   </div>
-
-  <!-- ── MEASUREMENT TECHNIQUE ── -->
-  <h3 style="font-family:'Lora',serif;font-size:20px;color:var(--navy);margin:32px 0 14px;letter-spacing:-.01em;">
-    <span data-lang="en">How to Take an Accurate Reading — 7 Steps</span>
-    <span data-lang="tl" class="lang-hidden">Paano Kumuha ng Tumpak na Pagbabasa — 7 Hakbang</span>
-    <span data-lang="ceb" class="lang-hidden">Unsaon Pagkuha og Tukma nga Pagbasa — 7 Lakang</span>
-      <span data-lang="kap" class="lang-hidden">Paano Kumuha ning Tumpak a Pagbabasa — 7 Hakbang</span>
-  </h3>
-
-  <figure style="margin:0 0 20px;">
-    <picture>
-      <source srcset="../images/hypertension-bp-measurement-technique-infographic.webp" type="image/webp">
-      <img src="../images/hypertension-bp-measurement-technique-infographic.png" loading="lazy" width="1024" height="512"
-           alt="7-step blood pressure measurement technique: rest 5 min, empty bladder, no caffeine/exercise 30 min, sit back supported feet flat, arm at heart level, cuff 1 inch above elbow on bare skin, two readings 1 min apart — with critical errors box showing common mistakes"
-           style="width:100%;border-radius:12px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.1);">
-    </picture>
-    <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:7px;font-style:italic;">
-      <span data-lang="en">Each skipped step can shift your reading by 5–15 mmHg — enough to misclassify your control status or prompt unnecessary medication changes.</span>
-      <span data-lang="tl" class="lang-hidden">Ang bawat naktawang hakbang ay maaaring magbago ng inyong pagbabasa ng 5–15 mmHg — sapat para maling ma-classify ang inyong kontrol o mag-udyok ng hindi kinakailangang pagbabago sa gamot.</span>
-      <span data-lang="ceb" class="lang-hidden">Ang matag gilaktawan nga lakang mahimong magbag-o sa inyong pagbasa og 5–15 mmHg — igo para sayop nga ma-classify ang inyong kontrol o makapukaw og dili kinahanglan nga pagbag-o sa medisina.</span>
-      <span data-lang="kap" class="lang-hidden">Ing bawat naktawang hakbang ya maaaring magbago ning inyu pagbabasa ning 5–15 mmHg — sapat para maling ma-classify ing inyu kontrol o mag-udyok ning ali kinakailangang pagbabago king gamut.</span>
-    </figcaption>
-  </figure>
-
-  <div class="two-col" style="gap:16px;margin-bottom:4px;">
-    <div>
-      <div class="step" style="margin-bottom:12px;"><div class="step-num" style="background:var(--teal);width:32px;height:32px;font-size:13px;">1</div><div class="step-body"><h4 style="font-size:14px;"><span data-lang="en">Empty bladder — rest 5 minutes in silence</span><span data-lang="tl" class="lang-hidden">Alisan ang pantog — magpahinga ng 5 minuto nang tahimik</span><span data-lang="ceb" class="lang-hidden">Pahawak ang pantog — pahulaya og 5 minuto nga hilum</span>
-      <span data-lang="kap" class="lang-hidden">Alisan ing pantog — magpahinga ning 5 minuto nang tahimik</span></h4><p style="font-size:13px;"><span data-lang="en">No talking, no scrolling, no TV. A full bladder adds ~10 mmHg.</span><span data-lang="tl" class="lang-hidden">Walang pagsasalita, pag-scroll, o TV. Ang puno na pantog ay nagdaragdag ng ~10 mmHg.</span><span data-lang="ceb" class="lang-hidden">Walay pagsulti, pag-scroll, o TV. Ang puno nga pantog nagdugang og ~10 mmHg.</span>
-      <span data-lang="kap" class="lang-hidden">Alang pagsasalita, pag-scroll, o TV. Ing puno a pantog ya nagdaragdag ning ~10 mmHg.</span></p></div></div>
-      <div class="step" style="margin-bottom:12px;"><div class="step-num" style="background:var(--teal);width:32px;height:32px;font-size:13px;">2</div><div class="step-body"><h4 style="font-size:14px;"><span data-lang="en">No caffeine, exercise, or smoking — 30 min before</span><span data-lang="tl" class="lang-hidden">Walang kape, ehersisyo, o sigarilyo — 30 min bago</span><span data-lang="ceb" class="lang-hidden">Walay kape, ehersisyo, o sigarilyo — 30 min sa wala pa</span>
-      <span data-lang="kap" class="lang-hidden">Alang kape, ehersisyo, o sigarilyo — 30 min bago</span></h4><p style="font-size:13px;"><span data-lang="en">These temporarily raise BP and produce falsely elevated readings.</span><span data-lang="tl" class="lang-hidden">Pansamantalang itataas nito ang BP at magreresulta sa maling mataas na pagbabasa.</span><span data-lang="ceb" class="lang-hidden">Kini temporaryo nga motaas sa BP ug makahatag og sayop nga taas nga pagbasa.</span>
-      <span data-lang="kap" class="lang-hidden">Pansamantalang itataas nini ing BP at magreresulta king maling matas a pagbabasa.</span></p></div></div>
-      <div class="step" style="margin-bottom:12px;"><div class="step-num" style="background:var(--teal);width:32px;height:32px;font-size:13px;">3</div><div class="step-body"><h4 style="font-size:14px;"><span data-lang="en">Sit: back fully supported, feet flat, legs uncrossed</span><span data-lang="tl" class="lang-hidden">Umupo: ganap na suportado ang likod, patag na mga paa, hindi nakatawid na mga binti</span><span data-lang="ceb" class="lang-hidden">Lingkod: tibuok nga suportado ang likod, patag nga mga tiil, wala mag-krus nga mga bitiis</span>
-      <span data-lang="kap" class="lang-hidden">Umupo: ganap a suportado ing likod, patag a deng paa, ali nakatawid a deng binti</span></h4><p style="font-size:13px;"><span data-lang="en">Crossing your legs adds 2–8 mmHg to systolic. Don't measure sitting on a bed.</span><span data-lang="tl" class="lang-hidden">Ang pagtawid ng mga binti ay nagdaragdag ng 2–8 mmHg sa systolic. Huwag sukatín habang nakaupo sa kama.</span><span data-lang="ceb" class="lang-hidden">Ang pag-krus sa mga bitiis nagdugang og 2–8 mmHg sa systolic. Ayaw sukta samtang naglingkod sa higdaanan.</span>
-      <span data-lang="kap" class="lang-hidden">Ing pagtawid ning deng binti ya nagdaragdag ning 2–8 mmHg king systolic. Eka sukatín habang nakaupo king kama.</span></p></div></div>
-      <div class="step" style="margin-bottom:12px;"><div class="step-num" style="background:var(--teal);width:32px;height:32px;font-size:13px;">4</div><div class="step-body"><h4 style="font-size:14px;"><span data-lang="en">Rest arm on a flat surface at heart level</span><span data-lang="tl" class="lang-hidden">Ipatong ang braso sa patag na ibabaw sa antas ng puso</span><span data-lang="ceb" class="lang-hidden">Ipatunol ang bukton sa patag nga ibabaw sa lebel sa kasingkasing</span>
-      <span data-lang="kap" class="lang-hidden">Ipatong ing braso king patag a ibabaw king antas ning pusu</span></h4><p style="font-size:13px;"><span data-lang="en">A hanging unsupported arm raises readings by 10+ mmHg. Use a table, not your lap.</span><span data-lang="tl" class="lang-hidden">Ang nakabitin na hindi suportadong braso ay nagpapataas ng pagbabasa ng 10+ mmHg. Gumamit ng mesa, hindi ng inyong kandungan.</span><span data-lang="ceb" class="lang-hidden">Ang nakabitay nga walay suporta nga bukton motaas sa pagbasa og 10+ mmHg. Gamiton ang lamesa, dili ang inyong sabakan.</span>
-      <span data-lang="kap" class="lang-hidden">Ing nakabitin a ali suportadong braso ya nagpapataas ning pagbabasa ning 10+ mmHg. Gumamit ning mesa, ali ning inyu kandungan.</span></p></div></div>
-    </div>
-    <div>
-      <div class="step" style="margin-bottom:12px;"><div class="step-num" style="background:var(--teal);width:32px;height:32px;font-size:13px;">5</div><div class="step-body"><h4 style="font-size:14px;"><span data-lang="en">Cuff on bare skin, 1 inch (2.5 cm) above elbow crease</span><span data-lang="tl" class="lang-hidden">Cuff sa hubad na balat, 1 pulgada (2.5 cm) sa itaas ng siko</span><span data-lang="ceb" class="lang-hidden">Cuff sa hubad nga panit, 1 pulgada (2.5 cm) ibabaw sa siko</span>
-      <span data-lang="kap" class="lang-hidden">Cuff king hubad a balat, 1 pulgada (2.5 cm) king itaas ning siko</span></h4><p style="font-size:13px;"><span data-lang="en">Over clothing = 5–50 mmHg error. Arrow marker (▲) over brachial artery (inner arm).</span><span data-lang="tl" class="lang-hidden">Sa ibabaw ng damit = 5–50 mmHg na error. Arrow marker (▲) sa brachial artery (loob ng braso).</span><span data-lang="ceb" class="lang-hidden">Sa ibabaw sa bisti = 5–50 mmHg nga sayop. Arrow marker (▲) sa brachial artery (sulod sa bukton).</span>
-      <span data-lang="kap" class="lang-hidden">King ibabaw ning damit = 5–50 mmHg a error. Arrow marker (▲) king brachial artery (loob ning braso).</span></p></div></div>
-      <div class="step" style="margin-bottom:12px;"><div class="step-num" style="background:var(--teal);width:32px;height:32px;font-size:13px;">6</div><div class="step-body"><h4 style="font-size:14px;"><span data-lang="en">Confirm cuff size: bladder covers 80–100% of arm circumference</span><span data-lang="tl" class="lang-hidden">Kumpirmahin ang laki ng cuff: ang bladder ay sumasaklaw ng 80–100% ng bilog ng braso</span><span data-lang="ceb" class="lang-hidden">Kumpirmaha ang gidak-on sa cuff: ang bladder naglukop og 80–100% sa sirkumperensya sa bukton</span>
-      <span data-lang="kap" class="lang-hidden">Kumpirmahin ing laki ning cuff: ing bladder ya sumasaklaw ning 80–100% ning bilog ning braso</span></h4><p style="font-size:13px;"><span data-lang="en">Too small = falsely high; too large = falsely low. Standard adult: 27–34 cm. Large adult: 35–44 cm.</span><span data-lang="tl" class="lang-hidden">Masyadong maliit = maling mataas; masyadong malaki = maling mababa. Standard adult: 27–34 cm. Large adult: 35–44 cm.</span><span data-lang="ceb" class="lang-hidden">Gamay kaayo = sayop nga taas; dako kaayo = sayop nga ubos. Standard adult: 27–34 cm. Large adult: 35–44 cm.</span>
-      <span data-lang="kap" class="lang-hidden">Masyadong maliit = maling matas; masyadong malaki = maling mababa. Standard adult: 27–34 cm. Large adult: 35–44 cm.</span></p></div></div>
-      <div class="step" style="margin-bottom:12px;"><div class="step-num" style="background:var(--teal);width:32px;height:32px;font-size:13px;">7</div><div class="step-body"><h4 style="font-size:14px;"><span data-lang="en">Take 2 readings, 1 minute apart — record both, use the average</span><span data-lang="tl" class="lang-hidden">Kumuha ng 2 pagbabasa, may 1 minutong pagitan — itala ang pareho, gamitin ang average</span><span data-lang="ceb" class="lang-hidden">Kuha og 2 pagbasa, may 1 minutong gilay-on — isulat ang duha, gamiton ang average</span>
-      <span data-lang="kap" class="lang-hidden">Kumuha ning 2 pagbabasa, atin 1 minutong pagitan — itala ing pareho, gamitin ing average</span></h4><p style="font-size:13px;"><span data-lang="en">The first reading is often 5–10 mmHg higher due to alerting response. Average = more accurate. Measure morning (before medications) and evening.</span><span data-lang="tl" class="lang-hidden">Ang unang pagbabasa ay madalas 5–10 mmHg na mas mataas dahil sa alerting response. Average = mas tumpak. Sukatín sa umaga (bago ang mga gamot) at gabi.</span><span data-lang="ceb" class="lang-hidden">Ang unang pagbasa sagad 5–10 mmHg nga mas taas tungod sa alerting response. Average = mas tukma. Sukta sa buntag (sa wala pa ang mga medisina) ug gabii.</span>
-      <span data-lang="kap" class="lang-hidden">Ing unang pagbabasa ya madalas 5–10 mmHg a mas matas dahil king alerting response. Average = mas tumpak. Sukatín king umaga (bago ing deng gamut) at gabi.</span></p></div></div>
-    </div>
-  </div>
-
-  <!-- ── BP CLASSIFICATION TABLE ── -->
-  <h3 style="font-family:'Lora',serif;font-size:20px;color:var(--navy);margin:32px 0 10px;letter-spacing:-.01em;">
-    <span data-lang="en">Blood Pressure Categories — Reference Chart</span>
-    <span data-lang="tl" class="lang-hidden">Mga Kategorya ng Presyon ng Dugo — Reference Chart</span>
-    <span data-lang="ceb" class="lang-hidden">Mga Kategorya sa Presyon sa Dugo — Reference Chart</span>
-      <span data-lang="kap" class="lang-hidden">Deng Kategorya ning Presyon ning Daya — Reference Chart</span>
-  </h3>
-  <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">
-    <span data-lang="en">Based on ACC/AHA 2017. The Philippine Society of Hypertension (PSH) defines hypertension as ≥ 140/90 mmHg. High-risk patients (CKD, diabetes, prior CVD) target &lt; 130/80 mmHg. Always follow the target your doctor set for you specifically.</span>
-    <span data-lang="tl" class="lang-hidden">Batay sa ACC/AHA 2017. Ang Philippine Society of Hypertension (PSH) ay nagtatakda ng hypertension bilang ≥ 140/90 mmHg. Ang mga high-risk na pasyente (CKD, diabetes, nakaraang CVD) ay nagta-target ng &lt; 130/80 mmHg. Palaging sundin ang target na itinakda ng inyong doktor para sa inyo.</span>
-    <span data-lang="ceb" class="lang-hidden">Base sa ACC/AHA 2017. Ang Philippine Society of Hypertension (PSH) nagtakda sa hypertension isip ≥ 140/90 mmHg. Ang mga high-risk nga pasyente (CKD, diabetes, nangagi nga CVD) nagtarget og &lt; 130/80 mmHg. Kanunay sundon ang target nga gitakda sa inyong doktor para kaninyo.</span>
-      <span data-lang="kap" class="lang-hidden">Batay king ACC/AHA 2017. Ing Philippine Society of Hypertension (PSH) ya nagtatakda ning hypertension bilang ≥ 140/90 mmHg. Ing deng high-risk a pasyente (CKD, diabetes, nakaraang CVD) ya nagta-target ning &lt; 130/80 mmHg. Papirming sundin ing target a itinakda ning inyu doktor para king inyo.</span>
-  </p>
-  <figure style="margin:0 0 16px;">
-    <picture>
-      <source srcset="../images/hypertension-bp-classification-color-chart-infographic.webp" type="image/webp">
-      <img src="../images/hypertension-bp-classification-color-chart-infographic.png" loading="lazy" width="1024" height="512"
-           alt="Blood pressure classification color chart: five color-coded bands — Normal (green, under 120/80), Elevated (yellow, 120-129), Stage 1 HTN (orange, 130-139/80-89), Stage 2 HTN (red, 140+/90+), Hypertensive Crisis (dark red, over 180/120) with Philippine Society of Hypertension annotation"
-           style="width:100%;border-radius:12px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.1);">
-    </picture>
-    <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:7px;font-style:italic;">
-      <span data-lang="en">ACC/AHA 2017 classification. Filipino patients: the Philippine Society of Hypertension sets the treatment threshold at ≥ 140/90 mmHg — ask your doctor which target applies to you.</span>
-      <span data-lang="tl" class="lang-hidden">Klasipikasyon ng ACC/AHA 2017. Mga Pilipinong pasyente: ang Philippine Society of Hypertension ay nagtatakda ng treatment threshold sa ≥ 140/90 mmHg — tanungin ang inyong doktor kung aling target ang naaangkop sa inyo.</span>
-      <span data-lang="ceb" class="lang-hidden">Klasipikasyon sa ACC/AHA 2017. Mga Pilipinong pasyente: ang Philippine Society of Hypertension nagtakda sa treatment threshold sa ≥ 140/90 mmHg — pangutana ang inyong doktor kung unsang target ang angay kaninyo.</span>
-      <span data-lang="kap" class="lang-hidden">Klasipikasyon ning ACC/AHA 2017. Deng Pilipinong pasyente: ing Philippine Society of Hypertension ya nagtatakda ning treatment threshold king ≥ 140/90 mmHg — tanungin ing inyu doktor nung aling target ing naaangkop king inyo.</span>
-    </figcaption>
-  </figure>
-  <table class="bp-class">
-    <thead>
-      <tr>
-        <th style="text-align:left;width:28%;">Category</th>
-        <th>Systolic (mmHg)</th>
-        <th>&nbsp;</th>
-        <th>Diastolic (mmHg)</th>
-        <th style="text-align:left;">Recommended Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="bpc-normal">
-        <td>🟢 Normal</td>
-        <td>&lt; 120</td><td style="font-size:11px;color:#888;">AND</td><td>&lt; 80</td>
-        <td>Maintain healthy habits. Recheck annually.</td>
-      </tr>
-      <tr class="bpc-elevated">
-        <td>🟡 Elevated</td>
-        <td>120–129</td><td style="font-size:11px;color:#888;">AND</td><td>&lt; 80</td>
-        <td>Lifestyle changes. Recheck in 3–6 months.</td>
-      </tr>
-      <tr class="bpc-s1">
-        <td>🟠 Stage 1 HTN</td>
-        <td>130–139</td><td style="font-size:11px;color:#888;">OR</td><td>80–89</td>
-        <td>Lifestyle + consider medication. Follow up 1–3 months.</td>
-      </tr>
-      <tr class="bpc-s2">
-        <td>🔴 Stage 2 HTN</td>
-        <td>≥ 140</td><td style="font-size:11px;color:#888;">OR</td><td>≥ 90</td>
-        <td>Medication required. Follow up within 1 month.</td>
-      </tr>
-      <tr class="bpc-crisis">
-        <td>🚨 Hypertensive Crisis</td>
-        <td>&gt; 180</td><td style="font-size:11px;color:rgba(255,150,150,.7);">AND/OR</td><td>&gt; 120</td>
-        <td><strong>Go to ER immediately.</strong> Call 911 / 143 (Red Cross PH).</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- ── FILLABLE BP LOG ── -->
-  <h3 style="font-family:'Lora',serif;font-size:20px;color:var(--navy);margin:32px 0 10px;letter-spacing:-.01em;">
-    <span data-lang="en">7-Day Blood Pressure Log (Fillable)</span>
-    <span data-lang="tl" class="lang-hidden">7-Araw na Talaan ng Presyon ng Dugo (Napi-fill)</span>
-    <span data-lang="ceb" class="lang-hidden">7-Adlaw nga Talaan sa Presyon sa Dugo (Mapun-an)</span>
-      <span data-lang="kap" class="lang-hidden">7-Aldo a Talaan ning Presyon ning Daya (Napi-fill)</span>
-  </h3>
-  <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">
-    <span data-lang="en">Measure twice daily: <strong>morning</strong> (before medications, before eating) and <strong>evening</strong>. Take 2 readings per session with 1 minute between them. Record both readings and their average. Bring this printed log to every clinic visit.</span>
-    <span data-lang="tl" class="lang-hidden">Sukatín nang dalawang beses araw-araw: <strong>umaga</strong> (bago ang mga gamot, bago kumain) at <strong>gabi</strong>. Kumuha ng 2 pagbabasa bawat session na may 1 minutong pagitan. Itala ang parehong pagbabasa at ang kanilang average. Dalhin ang naka-print na log na ito sa bawat pagbisita sa klinika.</span>
-    <span data-lang="ceb" class="lang-hidden">Sukta og duha ka beses sa matag adlaw: <strong>buntag</strong> (sa wala pa ang mga medisina, sa wala pa mokaon) ug <strong>gabii</strong>. Kuha og 2 pagbasa matag session nga may 1 minutong gilay-on. Isulat ang duha ka pagbasa ug ang ilang average. Dad-on kini nga naka-print nga log sa matag pagbisita sa klinika.</span>
-      <span data-lang="kap" class="lang-hidden">Sukatín nang dalawang beses aldo-aldo: <strong>umaga</strong> (bago ing deng gamut, bago mangan) at <strong>gabi</strong>. Kumuha ning 2 pagbabasa bawat session a atin 1 minutong pagitan. Itala ing parehong pagbabasa at ing kanilang average. Dalhin ing naka-print a log a ini king bawat pagbisita king klinika.</span>
-  </p>
-
-  <div class="bp-log-wrap">
-    <table class="bp-log" id="bpLogTable">
-      <thead>
-        <tr>
-          <th rowspan="2" style="width:72px;">Date</th>
-          <th rowspan="2" style="width:44px;">A.M.<br>P.M.</th>
-          <th colspan="2" style="border-bottom:1px solid rgba(255,255,255,.15);">Reading 1</th>
-          <th colspan="2" style="border-bottom:1px solid rgba(255,255,255,.15);">Reading 2</th>
-          <th colspan="2" style="border-bottom:1px solid rgba(255,255,255,.15);">Average</th>
-          <th rowspan="2" style="width:44px;">Pulse<br>(bpm)</th>
-          <th rowspan="2" style="width:36px;">Arm<br>L / R</th>
-          <th rowspan="2" style="width:40px;">Meds<br>Y / N</th>
-          <th rowspan="2" style="width:88px;">Notes / Symptoms</th>
-        </tr>
-        <tr>
-          <th style="width:36px;">SBP</th><th style="width:36px;">DBP</th>
-          <th style="width:36px;">SBP</th><th style="width:36px;">DBP</th>
-          <th style="width:36px;">SBP</th><th style="width:36px;">DBP</th>
-        </tr>
-      </thead>
-      <tbody id="bpLogBody">
-        <!-- generated by JS -->
-      </tbody>
-    </table>
-  </div>
-
-  <div class="bp-log-legend no-print">
-    <span>SBP = Systolic (top number)</span>
-    <span>DBP = Diastolic (bottom number)</span>
-    <span>Arm: L = Left, R = Right</span>
-    <span>Meds: Y = Yes (took medication), N = No</span>
-  </div>
-  <p class="no-print" style="font-size:12px;color:var(--text-muted);margin-top:4px;text-align:center;">
-    <span data-lang="en">💾 Entries auto-save in your browser. Clearing browser data will reset the log.</span>
-    <span data-lang="tl" class="lang-hidden">💾 Ang mga entry ay awtomatikong nai-save sa inyong browser. Ang pag-clear ng browser data ay ire-reset ang log.</span>
-    <span data-lang="ceb" class="lang-hidden">💾 Ang mga entry awtomatiko nga na-save sa inyong browser. Ang pag-clear sa browser data mag-reset sa log.</span>
-      <span data-lang="kap" class="lang-hidden">💾 Ing deng entry ya awtomatikong nai-save king inyu browser. Ing pag-clear ning browser data ya ire-reset ing log.</span>
-  </p>
-
-  <div style="display:flex;gap:10px;margin:16px 0 32px;flex-wrap:wrap;" class="no-print">
-    <button class="hout-dl-btn" onclick="window.print()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-      <span data-lang="en">Print / Save as PDF</span>
-      <span data-lang="tl" class="lang-hidden">I-print / I-save bilang PDF</span>
-      <span data-lang="ceb" class="lang-hidden">I-print / I-save isip PDF</span>
-      <span data-lang="kap" class="lang-hidden">I-print / I-save bilang PDF</span>
-    </button>
-    <button class="hout-dl-btn" onclick="clearBPLog()" style="background:#b91c1c;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6M14 11v6"></path><path d="M9 6V4h6v2"></path></svg>
-      <span data-lang="en">Clear Log</span>
-      <span data-lang="tl" class="lang-hidden">I-clear ang Talaan</span>
-      <span data-lang="ceb" class="lang-hidden">I-clear ang Talaan</span>
-      <span data-lang="kap" class="lang-hidden">I-clear ing Talaan</span>
-    </button>
-  </div>
-
-  <!-- ── WHEN TO SEEK CARE ── -->
-  <div class="red-flags">
-    <h3>
-      <span data-lang="en">🚨 When to Go to the Emergency Room Immediately</span>
-      <span data-lang="tl" class="lang-hidden">🚨 Kailan Pumunta sa Emergency Room Agad</span>
-      <span data-lang="ceb" class="lang-hidden">🚨 Kanus-a Moadto sa Emergency Room Dayon</span>
-      <span data-lang="kap" class="lang-hidden">🚨 Kailan Pumunta king Emergency Room Agad</span>
-    </h3>
-    <div class="red-flags-grid">
-      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">BP &gt; 180/120 mmHg — with or without symptoms</span><span data-lang="tl" class="lang-hidden">BP &gt; 180/120 mmHg — may o walang sintomas</span><span data-lang="ceb" class="lang-hidden">BP &gt; 180/120 mmHg — may o wala sintomas</span>
-      <span data-lang="kap" class="lang-hidden">BP &gt; 180/120 mmHg — atin o alang sintomas</span></div>
-      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Sudden severe headache — worst you have ever felt</span><span data-lang="tl" class="lang-hidden">Biglang matinding sakit ng ulo — pinaka-masakit na naramdaman ninyo</span><span data-lang="ceb" class="lang-hidden">Kalit nga grabeng sakit sa ulo — pinaka-grabe nga nasinati ninyo</span>
-      <span data-lang="kap" class="lang-hidden">Biglang matinding sakit ning ulo — pinaka-masakit a naramdaman ninyo</span></div>
-      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Sudden blurred vision or vision loss</span><span data-lang="tl" class="lang-hidden">Biglaang malabong paningin o pagkawala ng paningin</span><span data-lang="ceb" class="lang-hidden">Kalit nga mabag-ong panan-aw o pagkawala sa panan-aw</span>
-      <span data-lang="kap" class="lang-hidden">Biglaang malabong paningin o pagkaala ning paningin</span></div>
-      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Chest pain, tightness, or pressure</span><span data-lang="tl" class="lang-hidden">Sakit, pagtightness, o pabigat sa dibdib</span><span data-lang="ceb" class="lang-hidden">Sakit, kapit, o presyon sa dughan</span>
-      <span data-lang="kap" class="lang-hidden">Sakit, pagtightness, o pabigat king dibdib</span></div>
-      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Shortness of breath at rest</span><span data-lang="tl" class="lang-hidden">Hingal kahit walang ginagawa</span><span data-lang="ceb" class="lang-hidden">Hapo bisag walay gibuhat</span>
-      <span data-lang="kap" class="lang-hidden">Hingal kahit alang ginagawa</span></div>
-      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Weakness, numbness, or facial drooping — stroke signs</span><span data-lang="tl" class="lang-hidden">Panghihina, pamamanhid, o pagkalagas ng mukha — tanda ng stroke</span><span data-lang="ceb" class="lang-hidden">Kahuyang, pamamanhid, o pagkahulog sa nawong — tanda sa stroke</span>
-      <span data-lang="kap" class="lang-hidden">Panghihina, pamamanhid, o pagkalagas ning mukha — tanda ning stroke</span></div>
-    </div>
-    <p style="margin-top:14px;font-size:13px;color:var(--red);font-weight:600;">
-      <span data-lang="en">📞 Emergency: Philippine Red Cross 143 &nbsp;·&nbsp; National Emergency Hotline 911</span>
-      <span data-lang="tl" class="lang-hidden">📞 Emergency: Philippine Red Cross 143 &nbsp;·&nbsp; National Emergency Hotline 911</span>
-      <span data-lang="ceb" class="lang-hidden">📞 Emergency: Philippine Red Cross 143 &nbsp;·&nbsp; National Emergency Hotline 911</span>
-      <span data-lang="kap" class="lang-hidden">📞 Emergency: Philippine Red Cross 143 &nbsp;·&nbsp; National Emergency Hotline 911</span>
-    </p>
-  </div>
-
 </section>
 
 
@@ -2415,7 +2178,7 @@ body.dark .related-card-title {
     <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
   </svg>
 </button>
-<button class="download-btn" onclick="downloadHandout()" aria-label="Download BP log handout as PDF">
+<button class="download-btn" onclick="window.open('bp-monitoring-log.html','_blank')" aria-label="Open BP monitoring log">
   <span class="p-tip">Download Handout PDF</span>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
@@ -2526,330 +2289,14 @@ function calcBP() {
 </script>
 
 <script>
-/* ── BP MONITORING LOG — localStorage-backed fillable log ── */
-const BP_KEY = 'wgmr-bp-log-v1';
-const HOUT_KEY = 'wgmr-hout-fields';
-
-function saveHoutField(id, val) {
-  const data = JSON.parse(localStorage.getItem(HOUT_KEY) || '{}');
-  data[id] = val;
-  localStorage.setItem(HOUT_KEY, JSON.stringify(data));
-}
-
-function loadHoutFields() {
-  const data = JSON.parse(localStorage.getItem(HOUT_KEY) || '{}');
-  ['hout-name','hout-doctor','hout-target','hout-period'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el && data[id]) el.value = data[id];
-  });
-}
-
-function buildBPLog() {
-  const tbody = document.getElementById('bpLogBody');
-  if (!tbody) return;
-  const saved = JSON.parse(localStorage.getItem(BP_KEY) || '{}');
-  tbody.innerHTML = '';
-
-  for (let day = 1; day <= 7; day++) {
-    ['AM','PM'].forEach(session => {
-      const rowKey = 'd' + day + session;
-      const fields = ['date','r1s','r1d','r2s','r2d','avgs','avgd','pulse','arm','meds','notes'];
-      const tr = document.createElement('tr');
-
-      // Date cell (only on AM row, rowspan=2)
-      if (session === 'AM') {
-        const tdDate = document.createElement('td');
-        tdDate.rowSpan = 2;
-        tdDate.style.cssText = 'vertical-align:middle;';
-        const inp = document.createElement('input');
-        inp.type = 'text';
-        inp.placeholder = 'mm/dd';
-        inp.className = 'date-input';
-        inp.dataset.key = rowKey + '-date';
-        if (saved[rowKey + '-date']) inp.value = saved[rowKey + '-date'];
-        inp.addEventListener('input', () => saveBPField(rowKey + '-date', inp.value));
-        inp.addEventListener('change', () => autoCalcAvg(rowKey));
-        tdDate.appendChild(inp);
-        tr.appendChild(tdDate);
-      }
-
-      // AM/PM label cell
-      const tdSess = document.createElement('td');
-      tdSess.className = 'ampm-cell';
-      tdSess.textContent = session;
-      tr.appendChild(tdSess);
-
-      // Reading fields
-      ['r1s','r1d','r2s','r2d','avgs','avgd','pulse','arm','meds','notes'].forEach(f => {
-        const fKey = rowKey + '-' + f;
-        const td = document.createElement('td');
-        const inp = document.createElement('input');
-        inp.type = 'text';
-        if (f === 'arm') inp.placeholder = 'L/R';
-        else if (f === 'meds') inp.placeholder = 'Y/N';
-        else if (f === 'notes') { inp.placeholder = '—'; inp.className = 'note-input'; }
-        else inp.placeholder = '—';
-        if (['avgs','avgd'].includes(f)) inp.style.fontWeight = '600';
-        inp.dataset.key = fKey;
-        if (saved[fKey]) inp.value = saved[fKey];
-        inp.addEventListener('input', () => {
-          saveBPField(fKey, inp.value);
-          if (['r1s','r1d','r2s','r2d'].includes(f)) autoCalcAvg(rowKey);
-        });
-        td.appendChild(inp);
-        tr.appendChild(td);
-      });
-
-      // Color the average cells if values exist
-      colorRow(tr, rowKey, saved);
-      tbody.appendChild(tr);
-    });
+function toggleBPWidget() {
+  var wrap = document.getElementById('bpWidget');
+  var frame = document.getElementById('bpFrame');
+  var hidden = wrap.classList.toggle('lw-hidden');
+  if (!hidden && !frame.getAttribute('src')) {
+    frame.src = frame.getAttribute('data-src');
   }
-}
-
-function autoCalcAvg(rowKey) {
-  const saved = JSON.parse(localStorage.getItem(BP_KEY) || '{}');
-  const r1s = parseFloat(saved[rowKey + '-r1s']);
-  const r1d = parseFloat(saved[rowKey + '-r1d']);
-  const r2s = parseFloat(saved[rowKey + '-r2s']);
-  const r2d = parseFloat(saved[rowKey + '-r2d']);
-  if (!isNaN(r1s) && !isNaN(r2s)) {
-    const avgS = Math.round((r1s + r2s) / 2);
-    const avgSInp = document.querySelector('[data-key="' + rowKey + '-avgs"]');
-    if (avgSInp && !avgSInp._manual) { avgSInp.value = avgS; saved[rowKey + '-avgs'] = String(avgS); }
-  }
-  if (!isNaN(r1d) && !isNaN(r2d)) {
-    const avgD = Math.round((r1d + r2d) / 2);
-    const avgDInp = document.querySelector('[data-key="' + rowKey + '-avgd"]');
-    if (avgDInp && !avgDInp._manual) { avgDInp.value = avgD; saved[rowKey + '-avgd'] = String(avgD); }
-  }
-  localStorage.setItem(BP_KEY, JSON.stringify(saved));
-  // Re-color
-  const tr = document.querySelector('[data-key="' + rowKey + '-avgs"]')?.closest('tr');
-  if (tr) colorRow(tr, rowKey, saved);
-}
-
-function colorRow(tr, rowKey, saved) {
-  const avgS = parseFloat(saved[rowKey + '-avgs']);
-  if (isNaN(avgS)) return;
-  let bg = '';
-  if (avgS >= 180) bg = 'rgba(127,29,29,.08)';
-  else if (avgS >= 140) bg = 'rgba(220,38,38,.06)';
-  else if (avgS >= 130) bg = 'rgba(234,88,12,.05)';
-  else if (avgS >= 120) bg = 'rgba(202,138,4,.05)';
-  else bg = 'rgba(22,163,74,.05)';
-  tr.querySelectorAll('td').forEach(td => td.style.background = bg);
-}
-
-function saveBPField(key, val) {
-  const data = JSON.parse(localStorage.getItem(BP_KEY) || '{}');
-  data[key] = val;
-  localStorage.setItem(BP_KEY, JSON.stringify(data));
-}
-
-function clearBPLog() {
-  if (!confirm('Clear all blood pressure log entries? This cannot be undone.')) return;
-  localStorage.removeItem(BP_KEY);
-  buildBPLog();
-}
-
-// Init on load
-document.addEventListener('DOMContentLoaded', () => {
-  buildBPLog();
-  loadHoutFields();
-});
-
-/* ── DOWNLOAD HANDOUT — opens clean popup and auto-prints ── */
-function downloadHandout() {
-  // Sync current input values into a data map
-  const vals = {};
-  document.querySelectorAll('#bp-log input').forEach(inp => {
-    const k = inp.dataset.key || inp.id;
-    if (k) vals[k] = inp.value;
-  });
-
-  const name = vals['hout-name'] || '';
-  const doctor = vals['hout-doctor'] || '';
-  const target = vals['hout-target'] || '';
-  const period = vals['hout-period'] || '';
-
-  // Build log rows HTML
-  let logRows = '';
-  for (let day = 1; day <= 7; day++) {
-    ['AM','PM'].forEach(sess => {
-      const rk = 'd' + day + sess;
-      const get = f => vals[rk + '-' + f] || '';
-      logRows += `<tr>
-        ${sess==='AM' ? `<td rowspan="2" style="vertical-align:middle;"><input type="text" value="${get('date')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>` : ''}
-        <td style="font-size:9px;font-weight:700;color:#1a6b72;letter-spacing:.05em;">${sess}</td>
-        <td><input type="text" value="${get('r1s')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
-        <td><input type="text" value="${get('r1d')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
-        <td><input type="text" value="${get('r2s')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
-        <td><input type="text" value="${get('r2d')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
-        <td><input type="text" value="${get('avgs')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;font-weight:700;padding:3px 0;"></td>
-        <td><input type="text" value="${get('avgd')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;font-weight:700;padding:3px 0;"></td>
-        <td><input type="text" value="${get('pulse')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
-        <td><input type="text" value="${get('arm')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
-        <td><input type="text" value="${get('meds')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-size:11px;padding:3px 0;"></td>
-        <td><input type="text" value="${get('notes')}" style="width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;font-size:10px;padding:3px 0;"></td>
-      </tr>`;
-    });
-  }
-
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>BP Monitoring Log${name ? ' — ' + name : ''}</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  *{box-sizing:border-box;margin:0;padding:0;}
-  
-  h2{font-family:'Lora',serif;font-size:22px;font-weight:600;color:#0f1e2e;margin-bottom:10px;}
-  h3{font-family:'Lora',serif;font-size:15px;font-weight:600;color:#0f1e2e;margin:20px 0 8px;}
-  p{color:#4a5568;margin-bottom:10px;font-size:12px;}
-  .tag{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#1a6b72;margin-bottom:6px;}
-  .hdr{background:#0f1e2e;color:white;border-radius:8px;padding:14px 18px;margin:12px 0;display:grid;grid-template-columns:1fr 1fr;gap:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .hdr-field label{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);display:block;margin-bottom:2px;}
-  .hdr-field .val{font-size:13px;color:white;border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:2px;min-height:20px;}
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;}
-  
-  .snum{width:24px;height:24px;background:#1a6b72;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .sbody h4{font-size:11.5px;font-weight:700;color:#0f1e2e;margin-bottom:2px;}
-  .sbody p{font-size:10.5px;color:#4a5568;margin:0;}
-  .bp-class{width:100%;border-collapse:collapse;font-size:11.5px;border:1px solid #ddd;margin:8px 0;}
-  .bp-class thead th{padding:7px 9px;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:#0f1e2e;color:white;text-align:center;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .bp-class thead th:first-child{text-align:left;}
-  .bp-class td{padding:7px 9px;border-bottom:1px solid rgba(0,0,0,.07);font-size:11px;}
-  .bp-class td:first-child{font-weight:700;white-space:nowrap;}
-  .bp-class td:not(:first-child){text-align:center;}
-  .bp-class td:last-child{text-align:left;font-size:10.5px;color:#4a5568;}
-  .bpc-normal{background:#f0fdf4;border-left:4px solid #16a34a;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .bpc-elevated{background:#fefce8;border-left:4px solid #ca8a04;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .bpc-s1{background:#fff7ed;border-left:4px solid #ea580c;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .bpc-s2{background:#fff0f0;border-left:4px solid #dc2626;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .bpc-crisis{background:#1c0000;border-left:4px solid #7f1d1d;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .bpc-crisis td{color:#ffbbbb!important;}
-  .log{width:100%;border-collapse:collapse;font-size:11px;}
-  .log th{background:#0f1e2e;color:white;padding:5px 4px;font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:center;border:1px solid rgba(255,255,255,.1);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .log td{padding:1px 2px;border:1px solid #ddd;text-align:center;vertical-align:middle;}
-  .log tr:nth-child(odd) td{background:#f6f6f6;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .log input{width:100%;border:none;border-bottom:1px solid #bbb;background:transparent;text-align:center;font-family:'DM Sans',sans-serif;font-size:11px;color:#1e2a38;padding:3px 1px;}
-  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:#666;margin-top:6px;}
-  .rflags{background:#fff0f0;border:1px solid rgba(185,28,28,.2);border-radius:8px;padding:14px 18px;margin-top:18px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .rflags h3{color:#b91c1c;font-size:13px;margin-bottom:10px;}
-  .rflags-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-  .rfitem{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:#4a5568;}
-  .rfdot{width:5px;height:5px;border-radius:50%;background:#b91c1c;flex-shrink:0;margin-top:5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .credits{font-size:9px;color:#aaa;text-align:center;margin-top:14px;padding-top:10px;border-top:1px solid #eee;}
-  figure{margin:10px 0;}
-  figure img{width:100%;border-radius:6px;display:block;}
-  figcaption{font-size:10px;color:#888;text-align:center;margin-top:4px;font-style:italic;}
-  @media print{body{padding:14px 18px;} .log input{font-size:10px;}}
-</style>
-</head>
-<body>
-<div class="tag">Patient Handout &mdash; williamriveromd.com</div>
-<h2>Blood Pressure Monitoring Log &amp; Reference Guide</h2>
-
-<div class="hdr">
-  <div class="hdr-field"><label>Patient Name</label><div class="val">${name}</div></div>
-  <div class="hdr-field"><label>Physician / Clinic</label><div class="val">${doctor}</div></div>
-  <div class="hdr-field"><label>My BP Target (set by doctor)</label><div class="val">${target}</div></div>
-  <div class="hdr-field"><label>Monitoring Period</label><div class="val">${period}</div></div>
-</div>
-
-<figure>
-  <img src="https://www.williamriveromd.com/images/hypertension-bp-measurement-technique-infographic.png"
-       alt="7-step blood pressure measurement technique infographic">
-  <figcaption>Follow all 7 steps every time. Skipping even one step can shift your reading by 5&ndash;15 mmHg.</figcaption>
-</figure>
-
-<h3>How to Take an Accurate Reading &mdash; 7 Steps</h3>
-<div class="two-col">
-  <div>
-    <div class="step"><div class="snum">1</div><div class="sbody"><h4>Empty bladder &mdash; rest 5 minutes in silence</h4><p>No talking, no phone. A full bladder adds ~10 mmHg.</p></div></div>
-    <div class="step"><div class="snum">2</div><div class="sbody"><h4>No caffeine, exercise, or smoking &mdash; 30 min before</h4><p>These temporarily raise BP and produce falsely elevated readings.</p></div></div>
-    <div class="step"><div class="snum">3</div><div class="sbody"><h4>Sit: back fully supported, feet flat, legs uncrossed</h4><p>Crossing your legs adds 2&ndash;8 mmHg to systolic.</p></div></div>
-    <div class="step"><div class="snum">4</div><div class="sbody"><h4>Rest arm on a flat surface at heart level</h4><p>A hanging unsupported arm raises readings by 10+ mmHg.</p></div></div>
-  </div>
-  <div>
-    <div class="step"><div class="snum">5</div><div class="sbody"><h4>Cuff on bare skin, 1 inch above elbow crease</h4><p>Over clothing = 5&ndash;50 mmHg error. Arrow marker over brachial artery.</p></div></div>
-    <div class="step"><div class="snum">6</div><div class="sbody"><h4>Confirm cuff size: bladder covers 80&ndash;100% of arm</h4><p>Too small = falsely high. Standard adult: 27&ndash;34 cm.</p></div></div>
-    <div class="step"><div class="snum">7</div><div class="sbody"><h4>Take 2 readings, 1 minute apart &mdash; record both, use the average</h4><p>First reading is often 5&ndash;10 mmHg higher. Measure morning (before meds) and evening.</p></div></div>
-  </div>
-</div>
-
-<h3>Blood Pressure Categories</h3>
-<table class="bp-class">
-  <thead><tr><th style="text-align:left;">Category</th><th>Systolic</th><th></th><th>Diastolic</th><th style="text-align:left;">Action</th></tr></thead>
-  <tbody>
-    <tr class="bpc-normal"><td>&#x1F7E2; Normal</td><td>&lt;120</td><td style="font-size:9px;color:#888;">AND</td><td>&lt;80</td><td>Maintain healthy habits. Recheck annually.</td></tr>
-    <tr class="bpc-elevated"><td>&#x1F7E1; Elevated</td><td>120&ndash;129</td><td style="font-size:9px;color:#888;">AND</td><td>&lt;80</td><td>Lifestyle changes. Recheck 3&ndash;6 months.</td></tr>
-    <tr class="bpc-s1"><td>&#x1F7E0; Stage 1 HTN</td><td>130&ndash;139</td><td style="font-size:9px;color:#888;">OR</td><td>80&ndash;89</td><td>Lifestyle + consider medication. Follow up 1&ndash;3 months.</td></tr>
-    <tr class="bpc-s2"><td>&#x1F534; Stage 2 HTN</td><td>&#x2265;140</td><td style="font-size:9px;color:#888;">OR</td><td>&#x2265;90</td><td>Medication required. Follow up within 1 month.</td></tr>
-    <tr class="bpc-crisis"><td>&#x1F6A8; Crisis</td><td>&gt;180</td><td style="font-size:9px;color:rgba(255,150,150,.7);">AND/OR</td><td>&gt;120</td><td><strong>Go to ER immediately.</strong> Call 911 / 143.</td></tr>
-  </tbody>
-</table>
-<p style="font-size:10px;color:#888;margin-top:4px;">PSH/PHA threshold for hypertension: &#x2265;140/90 mmHg. High-risk patients (CKD, diabetes, prior CVD): target &lt;130/80 mmHg. Follow your doctor&rsquo;s individualized target.</p>
-
-<h3>7-Day Blood Pressure Log</h3>
-<p style="font-size:11px;margin-bottom:6px;">Measure twice daily: morning (before medications) and evening. Two readings per session, 1 minute apart. Record both; average is calculated for you.</p>
-<table class="log">
-  <thead>
-    <tr>
-      <th rowspan="2" style="width:62px;">Date</th>
-      <th rowspan="2" style="width:36px;">AM/PM</th>
-      <th colspan="2">Reading 1</th>
-      <th colspan="2">Reading 2</th>
-      <th colspan="2">Average</th>
-      <th rowspan="2" style="width:38px;">Pulse</th>
-      <th rowspan="2" style="width:30px;">Arm</th>
-      <th rowspan="2" style="width:32px;">Meds</th>
-      <th rowspan="2" style="width:70px;">Notes</th>
-    </tr>
-    <tr><th style="width:30px;">SBP</th><th style="width:30px;">DBP</th><th style="width:30px;">SBP</th><th style="width:30px;">DBP</th><th style="width:30px;">SBP</th><th style="width:30px;">DBP</th></tr>
-  </thead>
-  <tbody>${logRows}</tbody>
-</table>
-<div class="legend">
-  <span>SBP = Systolic (top number)</span>
-  <span>DBP = Diastolic (bottom number)</span>
-  <span>Arm: L = Left &nbsp; R = Right</span>
-  <span>Meds: Y = Yes &nbsp; N = No</span>
-</div>
-
-<div class="rflags">
-  <h3>&#x1F6A8; When to Go to the Emergency Room Immediately</h3>
-  <div class="rflags-grid">
-    <div class="rfitem"><div class="rfdot"></div>BP &gt; 180/120 mmHg &mdash; with or without symptoms</div>
-    <div class="rfitem"><div class="rfdot"></div>Sudden severe headache &mdash; worst you have ever felt</div>
-    <div class="rfitem"><div class="rfdot"></div>Sudden blurred vision or vision loss</div>
-    <div class="rfitem"><div class="rfdot"></div>Chest pain, tightness, or pressure</div>
-    <div class="rfitem"><div class="rfdot"></div>Shortness of breath at rest</div>
-    <div class="rfitem"><div class="rfdot"></div>Weakness, numbness, or facial drooping (stroke signs)</div>
-  </div>
-  <p style="margin-top:10px;font-size:11px;color:#b91c1c;font-weight:600;">&#x1F4DE; Philippine Red Cross 143 &nbsp;&middot;&nbsp; National Emergency Hotline 911</p>
-</div>
-
-<div class="credits">Generated from williamriveromd.com/guides/managing-hypertension.html &nbsp;&middot;&nbsp; W. G. M. Rivero, MD &nbsp;&middot;&nbsp; For educational use only &mdash; not a substitute for medical advice.</div>
-<script>window.onload=function(){window.print();};<\/script>
-
-<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
-  <span class="p-tip">Back to top</span>
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="18 15 12 9 6 15"/>
-  </svg>
-</button>
-<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
-<script src="../assets/symptom-checker-widget.js" defer></script>
-</body>
-</html>`;
-
-  const w = window.open('', '_blank', 'width=960,height=750,scrollbars=yes');
-  if (!w) { alert('Please allow pop-ups for this site to download the handout.'); return; }
-  w.document.write(html);
-  w.document.close();
+  if (!hidden) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 </script>
 
