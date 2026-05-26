@@ -1274,6 +1274,23 @@ body.in-iframe .toolbar { display: none !important; }
   text-align: center; border-top: 1px solid var(--border); padding-top: 12px;
 }
 
+/* ── SAMPLE BANNER ── */
+.sample-banner {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: linear-gradient(135deg, #92400e 0%, #b8962e 100%);
+  color: #fff; border-radius: 8px; padding: 11px 16px; margin-bottom: 16px;
+  font-size: 12.5px; line-height: 1.5;
+}
+.sample-banner svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+.sample-banner strong { display: block; font-size: 13px; margin-bottom: 2px; }
+.sample-banner em { font-style: normal; opacity: .85; font-size: 12px; }
+.sample-banner-dismiss {
+  margin-left: auto; flex-shrink: 0; background: rgba(255,255,255,.2);
+  border: none; color: #fff; border-radius: 4px; padding: 2px 7px;
+  font-size: 12px; cursor: pointer; align-self: flex-start;
+}
+.sample-banner-dismiss:hover { background: rgba(255,255,255,.35); }
+
 /* ── PRINT ── */
 @media print {
   .toolbar, .no-print { display: none !important; }
@@ -1435,8 +1452,69 @@ body.in-iframe .toolbar { display: none !important; }
 </div><!-- /log-page -->
 
 <script>
-const BP_STORE = 'wgmr-bp-log-v2';
-const PT_STORE = 'wgmr-bp-pt-v1';
+const BP_STORE   = 'wgmr-bp-log-v2';
+const PT_STORE   = 'wgmr-bp-pt-v1';
+const SAMPLE_KEY = 'wgmr-bp-sample';
+
+/* ── Sample data (illustrative readings for a hypertensive patient) ── */
+const SAMPLE_DATA = {
+  /* Day 1 */ 'd1AM-date':'05/19','d1AM-r1s':'148','d1AM-r1d':'92','d1AM-r2s':'145','d1AM-r2d':'90','d1AM-avgs':'147','d1AM-avgd':'91','d1AM-pulse':'78','d1AM-arm':'L','d1AM-meds':'Y','d1AM-notes':'Woke early',
+  'd1PM-r1s':'138','d1PM-r1d':'86','d1PM-r2s':'136','d1PM-r2d':'84','d1PM-avgs':'137','d1PM-avgd':'85','d1PM-pulse':'72','d1PM-arm':'L','d1PM-meds':'Y','d1PM-notes':'',
+  /* Day 2 */ 'd2AM-date':'05/20','d2AM-r1s':'142','d2AM-r1d':'88','d2AM-r2s':'140','d2AM-r2d':'86','d2AM-avgs':'141','d2AM-avgd':'87','d2AM-pulse':'76','d2AM-arm':'L','d2AM-meds':'Y','d2AM-notes':'',
+  'd2PM-r1s':'136','d2PM-r1d':'82','d2PM-r2s':'134','d2PM-r2d':'80','d2PM-avgs':'135','d2PM-avgd':'81','d2PM-pulse':'70','d2PM-arm':'L','d2PM-meds':'Y','d2PM-notes':'',
+  /* Day 3 */ 'd3AM-date':'05/21','d3AM-r1s':'150','d3AM-r1d':'94','d3AM-r2s':'148','d3AM-r2d':'92','d3AM-avgs':'149','d3AM-avgd':'93','d3AM-pulse':'80','d3AM-arm':'L','d3AM-meds':'Y','d3AM-notes':'Stressful day',
+  'd3PM-r1s':'140','d3PM-r1d':'88','d3PM-r2s':'138','d3PM-r2d':'86','d3PM-avgs':'139','d3PM-avgd':'87','d3PM-pulse':'74','d3PM-arm':'L','d3PM-meds':'Y','d3PM-notes':'',
+  /* Day 4 */ 'd4AM-date':'05/22','d4AM-r1s':'138','d4AM-r1d':'84','d4AM-r2s':'136','d4AM-r2d':'82','d4AM-avgs':'137','d4AM-avgd':'83','d4AM-pulse':'74','d4AM-arm':'L','d4AM-meds':'Y','d4AM-notes':'',
+  'd4PM-r1s':'130','d4PM-r1d':'80','d4PM-r2s':'128','d4PM-r2d':'78','d4PM-avgs':'129','d4PM-avgd':'79','d4PM-pulse':'68','d4PM-arm':'L','d4PM-meds':'Y','d4PM-notes':'Rest day',
+  /* Day 5 */ 'd5AM-date':'05/23','d5AM-r1s':'144','d5AM-r1d':'88','d5AM-r2s':'142','d5AM-r2d':'86','d5AM-avgs':'143','d5AM-avgd':'87','d5AM-pulse':'77','d5AM-arm':'L','d5AM-meds':'Y','d5AM-notes':'',
+  'd5PM-r1s':'134','d5PM-r1d':'82','d5PM-r2s':'132','d5PM-r2d':'80','d5PM-avgs':'133','d5PM-avgd':'81','d5PM-pulse':'71','d5PM-arm':'L','d5PM-meds':'Y','d5PM-notes':'',
+  /* Day 6 */ 'd6AM-date':'05/24','d6AM-r1s':'136','d6AM-r1d':'82','d6AM-r2s':'134','d6AM-r2d':'80','d6AM-avgs':'135','d6AM-avgd':'81','d6AM-pulse':'73','d6AM-arm':'L','d6AM-meds':'Y','d6AM-notes':'Morning walk',
+  'd6PM-r1s':'128','d6PM-r1d':'76','d6PM-r2s':'126','d6PM-r2d':'74','d6PM-avgs':'127','d6PM-avgd':'75','d6PM-pulse':'67','d6PM-arm':'L','d6PM-meds':'Y','d6PM-notes':'',
+  /* Day 7 */ 'd7AM-date':'05/25','d7AM-r1s':'132','d7AM-r1d':'80','d7AM-r2s':'130','d7AM-r2d':'78','d7AM-avgs':'131','d7AM-avgd':'79','d7AM-pulse':'72','d7AM-arm':'L','d7AM-meds':'Y','d7AM-notes':'',
+  'd7PM-r1s':'124','d7PM-r1d':'76','d7PM-r2s':'122','d7PM-r2d':'74','d7PM-avgs':'123','d7PM-avgd':'75','d7PM-pulse':'65','d7PM-arm':'L','d7PM-meds':'Y','d7PM-notes':'Feeling better'
+};
+
+function loadSampleData() {
+  localStorage.setItem(BP_STORE, JSON.stringify(SAMPLE_DATA));
+  localStorage.setItem(SAMPLE_KEY, '1');
+  /* Patient info — set DOM only, not PT_STORE, so it doesn't persist */
+  var fields = { 'pt-name':'Juan de la Cruz (Sample)', 'pt-doc':'W. G. M. Rivero, MD', 'pt-target':'< 135/85 mmHg', 'pt-period':'May 19–25, 2026' };
+  Object.keys(fields).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && !el.value) el.value = fields[id];
+  });
+}
+
+function showSampleBanner() {
+  var wrap = document.querySelector('.log-wrap');
+  if (!wrap) return;
+  var banner = document.createElement('div');
+  banner.id = 'sample-banner';
+  banner.className = 'sample-banner no-print';
+  banner.innerHTML =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>' +
+    '<div><strong>Sample data — for illustration only</strong>' +
+    '<em>This shows a completed 7-day log and trend chart. Click any reading field to clear the sample and start your own log.</em></div>' +
+    '<button class="sample-banner-dismiss no-print" onclick="clearSample()" title="Dismiss sample">Clear ×</button>';
+  wrap.parentNode.insertBefore(banner, wrap);
+}
+
+function clearSample() {
+  localStorage.removeItem(BP_STORE);
+  localStorage.removeItem(SAMPLE_KEY);
+  /* Clear input values directly to preserve focus position */
+  document.querySelectorAll('#bpBody input').forEach(function(inp) { inp.value = ''; });
+  /* Remove row color coding */
+  document.querySelectorAll('#bpBody td').forEach(function(td) { td.style.background = ''; });
+  /* Clear patient info fields that were set from sample */
+  ['pt-name','pt-doc','pt-target','pt-period'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && !localStorage.getItem(PT_STORE)) el.value = '';
+  });
+  drawChart();
+  var banner = document.getElementById('sample-banner');
+  if (banner) banner.remove();
+}
 
 /* ── Table ── */
 function buildTable() {
@@ -1536,6 +1614,7 @@ function saveField(key, val) {
 }
 
 function clearLog() {
+  if (localStorage.getItem(SAMPLE_KEY)) { clearSample(); return; }
   if (!confirm('Clear all blood pressure log entries? This cannot be undone.')) return;
   localStorage.removeItem(BP_STORE);
   buildTable();
@@ -1704,9 +1783,26 @@ window.addEventListener('afterprint', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+  /* Load sample if the user has no saved readings yet */
+  var hasRealData = !!localStorage.getItem(BP_STORE);
+  if (!hasRealData) loadSampleData();
+
   buildTable();
   loadPt();
   drawChart();
+
+  if (!hasRealData) showSampleBanner();
+
+  /* Auto-clear sample the moment the user edits any reading field */
+  var tbody = document.getElementById('bpBody');
+  if (tbody) {
+    tbody.addEventListener('focusin', function(e) {
+      if (e.target.tagName === 'INPUT' && localStorage.getItem(SAMPLE_KEY)) {
+        clearSample();
+      }
+    });
+  }
+
   if (window.self !== window.top) document.body.classList.add('in-iframe');
 });
 </script>
