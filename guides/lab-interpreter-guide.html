@@ -2900,12 +2900,47 @@ function switchTab(id, btn) {
 }
 
 // ════════════════════════════════════════════════════════════════════
+// CLINIC LOGO — pre-load to base64 when clinic input matches a known slug
+// ════════════════════════════════════════════════════════════════════
+var CLINIC_LOGO_MAP = {
+  'sjbdc':  '../images/sjbdc-logo.png',
+  'sjrc':   '../images/sjrc-logo.png',
+  'rcuona': '../images/rcuona-logo.png'
+};
+var _clinicLogoCache = {};
+
+function _clinicSlug() {
+  var v = ((document.getElementById('ctx-clinic')||{}).value||'').trim().toLowerCase().replace(/[\s\-_.]/g,'');
+  return CLINIC_LOGO_MAP[v] ? v : null;
+}
+
+function _loadClinicLogo(slug, cb) {
+  if (!slug) { cb(null); return; }
+  if (_clinicLogoCache[slug]) { cb(_clinicLogoCache[slug]); return; }
+  var img = new Image();
+  img.onload = function() {
+    try {
+      var c = document.createElement('canvas');
+      c.width = img.naturalWidth; c.height = img.naturalHeight;
+      c.getContext('2d').drawImage(img, 0, 0);
+      _clinicLogoCache[slug] = c.toDataURL('image/png');
+    } catch(e) { _clinicLogoCache[slug] = null; }
+    cb(_clinicLogoCache[slug]);
+  };
+  img.onerror = function() { _clinicLogoCache[slug] = null; cb(null); };
+  img.src = CLINIC_LOGO_MAP[slug] + '?_=' + Date.now();
+}
+
+// ════════════════════════════════════════════════════════════════════
 // PDF EXPORT
 // ════════════════════════════════════════════════════════════════════
 function exportPDF(triggerBtn) {
   var allBtns = document.querySelectorAll('.pdf-btn');
   allBtns.forEach(function(b){ b.disabled=true; b.textContent='Generating…'; });
-
+  _loadClinicLogo(_clinicSlug(), function(logoDataUrl) { _doExportPDF(logoDataUrl); });
+}
+function _doExportPDF(logoDataUrl) {
+  var allBtns = document.querySelectorAll('.pdf-btn');
   // Small timeout so the UI updates before heavy PDF work
   setTimeout(function() {
   try {
@@ -2936,6 +2971,10 @@ function exportPDF(triggerBtn) {
     fillRect(0,0,W,30,NAVY);
     setFont('bold',16,WHITE); text('Laboratory Interpreter Report',margin,10);
     setFont('normal',7,[150,170,190]); text('KDIGO 2024 · ACC/AHA 2026 · ADA 2025',margin,17);
+    // Clinic logo — top-right of header (26×26 mm, 2 mm padding)
+    if (logoDataUrl) {
+      try { doc.addImage(logoDataUrl,'PNG', W-margin-28, 2, 26, 26); } catch(e) {}
+    }
 
     var ptName = document.getElementById('pt-name').value.trim();
     var ptDate = document.getElementById('pt-date').value;
