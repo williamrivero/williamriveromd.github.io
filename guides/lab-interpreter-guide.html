@@ -1981,9 +1981,15 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
     <input type="number" id="ctx-hd-duration" value="240" oninput="reinterpAll()"/>
     <span>min</span>
   </div>
-  <div style="margin-top:8px;">
-    <span class="ctx-label" style="display:block;margin-bottom:3px;">Validated by <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(appears on PDF export)</span></span>
-    <input class="ctx-input" type="text" id="ctx-validator" placeholder="e.g. J. Santos, MD" style="width:100%;max-width:340px;"/>
+  <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+    <div>
+      <span class="ctx-label" style="display:block;margin-bottom:3px;">Validated by <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(appears on PDF export)</span></span>
+      <input class="ctx-input" type="text" id="ctx-validator" placeholder="e.g. J. Santos, MD" style="width:100%;"/>
+    </div>
+    <div>
+      <span class="ctx-label" style="display:block;margin-bottom:3px;">Clinic <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(appears on PDF export)</span></span>
+      <input class="ctx-input" type="text" id="ctx-clinic" placeholder="e.g. St. Josef Renal Care" style="width:100%;"/>
+    </div>
   </div>
 </div>
 
@@ -3083,21 +3089,21 @@ function exportPDF(triggerBtn) {
     }
 
     // ── Validated by ─────────────────────────────────────────────
-    checkPage(28);
+    var validatorName = ((document.getElementById('ctx-validator')||{}).value || '').trim();
+    var clinicName    = ((document.getElementById('ctx-clinic')||{}).value    || '').trim();
+    var rowH = 22 + (clinicName ? 6 : 0);
+    checkPage(rowH + 6);
     y += 4;
-    var validatorName = (document.getElementById('ctx-validator')||{}).value || '';
-    validatorName = validatorName.trim();
-    fillRect(margin, y, colW, 22, LIGHT_BG);
-    doc.setDrawColor.apply(doc, NAVY); doc.setLineWidth(0.3); doc.rect(margin, y, colW, 22);
+    fillRect(margin, y, colW, rowH, LIGHT_BG);
+    doc.setDrawColor.apply(doc, NAVY); doc.setLineWidth(0.3); doc.rect(margin, y, colW, rowH);
     setFont('bold',8,NAVY); text('Validated by:', margin+3, y+6);
-    if (validatorName) {
-      setFont('normal',8,NAVY); text(validatorName, margin+3, y+13);
-    }
+    if (validatorName) { setFont('normal',8,NAVY); text(validatorName, margin+3, y+13); }
+    if (clinicName)    { setFont('italic',7,GRAY); text(clinicName, margin+3, y+(validatorName?19:13)); }
     // signature line
     doc.setDrawColor(100,100,100); doc.setLineWidth(0.4);
-    doc.line(margin+110, y+16, margin+colW-4, y+16);
-    setFont('italic',6,GRAY); text('Signature / Date', margin+colW-4, y+20, {align:'right'});
-    y += 27;
+    doc.line(margin+110, y+rowH-6, margin+colW-4, y+rowH-6);
+    setFont('italic',6,GRAY); text('Signature / Date', margin+colW-4, y+rowH-2, {align:'right'});
+    y += rowH + 5;
 
     // ── Legend ───────────────────────────────────────────────────
     checkPage(20);
