@@ -67,15 +67,16 @@ Overall composition:
 - Very subtle watercolor-wash vignette at edges
 - The three specimens are lit from above-left with a clean clinical white key light
 - Overall mood: premium medical editorial — the quality of a Nature Medicine or Lancet cover illustration
-- No embedded text, no labels, no logos
+- No embedded labels or large text blocks
 - Negative space at top center for title text overlay (≈ 15% of frame height)
 - Mobile-safe crop: all three specimens clearly visible at small sizes
+- Bottom-right corner: small semi-transparent copyright attribution — "© W. G. M. Rivero, MD · williamriveromd.com" in white, ~10px equivalent, 65% opacity, resting on the dark navy background
 
 Style: photorealistic botanical scientific illustration, premium healthcare publication aesthetic, cinematic but restrained lighting, AJKD/NEJM cover quality, navy and teal/gold accents
 ```
 
 **NEGATIVE INSTRUCTIONS:**
-Avoid cartoon style, avoid clipart, avoid busy background patterns, avoid text or watermarks, avoid neon colors, avoid overprocessed HDR, avoid generic stock-photo look, avoid unrealistic plant anatomy, avoid cutting any specimen at the crop edge.
+Avoid cartoon style, avoid clipart, avoid busy background patterns, avoid large embedded text or titles, avoid neon colors, avoid overprocessed HDR, avoid generic stock-photo look, avoid unrealistic plant anatomy, avoid cutting any specimen at the crop edge. The copyright line must not be omitted.
 
 **QUALITY CHECK:**
 Must be clearly readable at 200 × 200 px thumbnail. All three specimens must be identifiable. Navy background must be deep and consistent. Square crop must feel balanced.
@@ -151,11 +152,13 @@ Bottom strip: Three small supplement summary chips:
 🟢 Paragis — "Tier 1–2 only" (red badge)
 🔵 Spirulina — "Tier 1–4, strongest human preliminary data" (yellow badge)
 
+Bottom-right corner: small semi-transparent copyright line — "© W. G. M. Rivero, MD · williamriveromd.com" in navy or dark gray, ~10px equivalent, 65% opacity
+
 Style: clean 2D infographic, KDIGO guideline document aesthetic, modular, mobile-readable at 375px width, strong visual hierarchy, navy/teal/amber/green color logic
 ```
 
 **NEGATIVE INSTRUCTIONS:**
-Avoid 3D glossy pyramid, avoid cartoon emoji as main visual, avoid cluttered text, avoid font sizes below 12px equivalent, avoid drop shadows everywhere, avoid gradient overuse.
+Avoid 3D glossy pyramid, avoid cartoon emoji as main visual, avoid cluttered text, avoid font sizes below 12px equivalent, avoid drop shadows everywhere, avoid gradient overuse. Copyright attribution must not be omitted.
 
 **QUALITY CHECK:**
 Pyramid tiers must be clearly readable. Supplement placement at each tier must be visible at mobile width. Color coding must be consistent and non-jarring.
@@ -219,6 +222,8 @@ Subtitle: "Cellular antioxidant defense"
 Bottom note: "Activated by MX3 & Spirulina in preclinical models"
 
 Caption area below: "Figure 1. Nrf2 pathway — how xanthones and C-phycocyanin protect kidney cells."
+
+Bottom-right corner: small semi-transparent copyright — "© W. G. M. Rivero, MD · williamriveromd.com" in dark gray, ~10px equivalent, 65% opacity
 
 Color logic: navy cell membrane, teal Nrf2 elements, red/orange ROS elements, green enzyme/protective elements, gold molecular labels
 Style: semi-photorealistic 3D cell diagram, NEJM graphical abstract quality, clean annotations, mobile-readable
@@ -295,6 +300,8 @@ BOTTOM SUMMARY CHIPS (three rounded chips):
 🔵 Spirulina: "Best evidence · Monitor K⁺ & protein"  (green background, white text)
 
 Right side annotation: Source note "Evidence graded by W. G. M. Rivero, MD, 2026 · Based on peer-reviewed literature"
+
+Bottom-right corner: small semi-transparent copyright — "© W. G. M. Rivero, MD · williamriveromd.com" in dark gray, ~10px equivalent, 65% opacity
 
 Style: Clean publication-grade infographic, AJKD/KI Reports visual style, mobile-readable, navy/teal/green/red color logic, no 3D effects, flat design with strong typographic hierarchy
 ```
@@ -380,7 +387,7 @@ For the Paragis G5 and G5D cells, add a small annotation: "Cardiac glycoside ris
 
 BOTTOM FOOTNOTE STRIP (full width, soft gray background):
 "🟢 Acceptable with monitoring · 🟡 Caution, consult nephrologist · 🔴 Not recommended · ⛔ Contraindicated"
-Far right: "W. G. M. Rivero, MD · williamriveromd.com"
+Far right: "© W. G. M. Rivero, MD · williamriveromd.com" (small, semi-transparent, ~10px equivalent)
 
 Style: Clean patient education infographic, mobile-readable, high contrast, Filipino healthcare clinic aesthetic, no overcrowding, rounded cards
 ```
@@ -468,7 +475,7 @@ Visual accent: A red X / stop sign icon
 
 BOTTOM OF IMAGE:
 Left side — A simplified 3D kidney icon in teal, labeled "The goal: protect what remains"
-Right side — Small text attribution: "Based on KDIGO 2024 · ACIP guidelines · W. G. M. Rivero, MD"
+Right side — Copyright attribution: "© W. G. M. Rivero, MD · williamriveromd.com" in small white semi-transparent text (~10px equivalent, 65% opacity) resting on the dark navy background
 
 Far bottom strip (very subtle): 
 "Supplements should complement — never replace — proven therapies. Discuss all supplements with your nephrologist."

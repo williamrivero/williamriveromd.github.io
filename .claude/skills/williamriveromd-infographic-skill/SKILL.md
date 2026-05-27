@@ -93,6 +93,14 @@ Composition:
 - Use rounded cards and panels
 - Avoid overcrowding
 
+Copyright attribution (MANDATORY on every image):
+- Every image must include a subtle copyright attribution line rendered as small, legible text
+- Format: © W. G. M. Rivero, MD · williamriveromd.com
+- Placement: bottom-right corner for landscape/square images; bottom-center for portrait images
+- Style: white or very light gray text, 10–11px equivalent, semi-transparent (60–70% opacity), set against a dark strip, vignette, or the image background — never obscuring clinical content
+- The © symbol must be present; do not omit it or abbreviate to just the URL
+- This attribution must appear in EVERY prompt and EVERY generated image, with no exceptions
+
 ## IMAGE GENERATOR GPT ADAPTER
 
 When writing prompts for the Image Generator GPT, use this structure:
@@ -116,10 +124,10 @@ PROMPT:
 [full production prompt]
 
 NEGATIVE INSTRUCTIONS:
-Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation.
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. Never omit the © W. G. M. Rivero, MD · williamriveromd.com attribution.
 
 QUALITY CHECK:
-Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com.
+Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com. Copyright attribution © W. G. M. Rivero, MD · williamriveromd.com must be visible in the bottom corner.
 
 ## MIXED-MEDIA RENDERING SYSTEM
 
@@ -249,3 +257,5 @@ Use mixed media when useful:
 - algorithmic pathways for clinician decision-making
 
 Never sacrifice clinical clarity for visual complexity.
+
+Every image must carry the copyright attribution **© W. G. M. Rivero, MD · williamriveromd.com** — rendered as small, semi-transparent text in the bottom-right corner (bottom-center for portrait). This is a non-negotiable house rule for all williamriveromd.com visuals.
