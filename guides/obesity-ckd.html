@@ -1457,6 +1457,34 @@ html[data-theme="dark"] .ob-rec{color:#a0aab8;}
 html[data-theme="dark"] .ob-actions button{background:#1a2535;border-color:#2a3a4a;color:#c0cad8;}
 html[data-theme="dark"] .ob-actions .ob-btn-primary{background:var(--teal,#1a6b72);border-color:var(--teal,#1a6b72);color:white;}
 
+/* ── IBW / AdjBW CALCULATOR ─────────────────────────────────────────── */
+.ibw-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+@media(max-width:540px){.ibw-compare{grid-template-columns:1fr;}}
+.ibw-col{border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.ibw-col-header{padding:14px 18px;}
+.ibw-col-header.ibw-western{background:var(--navy);}
+.ibw-col-header.ibw-asian{background:var(--teal);}
+.ibw-col-title{font-size:15px;font-weight:700;color:white;}
+.ibw-col-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
+.ibw-metrics{padding:16px 18px;display:flex;flex-direction:column;gap:14px;}
+.ibw-metric-val{font-family:'Lora',serif;font-size:26px;font-weight:600;color:var(--navy);line-height:1;}
+.ibw-metric-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-top:3px;}
+.ibw-badge{padding:10px 14px;border-radius:8px;font-size:13px;font-weight:600;display:flex;flex-direction:column;gap:3px;}
+.ibw-badge span{font-size:11px;font-weight:400;}
+.ibw-badge-ok{background:var(--green-soft);color:var(--green);}
+.ibw-badge-adj{background:var(--amber-soft);color:#7a5000;}
+.ibw-badge-warn{background:var(--red-soft);color:var(--red);}
+.ibw-note{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-top:4px;}
+html[data-theme="dark"] .ibw-col{border-color:#2a3548;}
+html[data-theme="dark"] .ibw-col-header.ibw-western{background:#0d1e3a;}
+html[data-theme="dark"] .ibw-col-header.ibw-asian{background:#0a3438;}
+html[data-theme="dark"] .ibw-metric-val{color:#e8eaf0;}
+html[data-theme="dark"] .ibw-note{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .ibw-badge-ok{background:rgba(22,163,74,.15);color:#4ade80;}
+html[data-theme="dark"] .ibw-badge-adj{background:rgba(180,120,0,.15);color:#f59e0b;}
+html[data-theme="dark"] .ibw-badge-warn{background:rgba(220,38,38,.15);color:#f87171;}
+@media print{.ibw-col-header.ibw-western,.ibw-col-header.ibw-asian{background:#1f3864!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+
 </style>
 </head>
 <body>
@@ -1550,6 +1578,7 @@ html[data-theme="dark"] .ob-actions .ob-btn-primary{background:var(--teal,#1a6b7
     <a class="nav-pill mode-patient-pill" href="#paradox">The Obesity Paradox</a>
     <a class="nav-pill mode-patient-pill" href="#bmi">BMI Misleads</a>
     <a class="nav-pill mode-patient-pill" href="#calculator">Your BMI</a>
+    <a class="nav-pill mode-patient-pill" href="#ibw-calc">Ideal &amp; Adjusted Weight</a>
     <a class="nav-pill mode-patient-pill" href="#kidney">How Weight Hurts the Kidneys</a>
     <a class="nav-pill mode-patient-pill" href="#targets">Weight-Loss Targets in CKD</a>
     <a class="nav-pill mode-patient-pill" href="#how">How to Lose Weight Safely</a>
@@ -2205,6 +2234,20 @@ html[data-theme="dark"] .ob-actions .ob-btn-primary{background:var(--teal,#1a6b7
       <input type="number" id="bmi-waist" min="40" max="200" step="0.5" value="80" oninput="calcBMI()">
     </div>
 
+    <!-- BMI cutoff toggle -->
+    <div style="display:flex;gap:8px;margin-top:20px;margin-bottom:4px;flex-wrap:wrap;">
+      <span style="font-size:12px;font-weight:600;color:var(--text-muted);align-self:center;">Cutoff standard:</span>
+      <button id="bmi-toggle-ap" onclick="setBMIMode('ap')" style="padding:5px 14px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--teal);background:var(--teal);color:white;cursor:pointer;">
+        <span data-lang="en">Asian-Pacific</span><span data-lang="tl" class="lang-hidden">Asian-Pacific</span><span data-lang="ceb" class="lang-hidden">Asian-Pacific</span><span data-lang="kap" class="lang-hidden">Asian-Pacific</span>
+      </button>
+      <button id="bmi-toggle-who" onclick="setBMIMode('who')" style="padding:5px 14px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;">
+        <span data-lang="en">Western (WHO)</span><span data-lang="tl" class="lang-hidden">Kanluranin (WHO)</span><span data-lang="ceb" class="lang-hidden">Western (WHO)</span><span data-lang="kap" class="lang-hidden">Kanluranin (WHO)</span>
+      </button>
+      <button id="bmi-toggle-both" onclick="setBMIMode('both')" style="padding:5px 14px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;">
+        <span data-lang="en">Compare Both</span><span data-lang="tl" class="lang-hidden">Ikumpara ang Dalawa</span><span data-lang="ceb" class="lang-hidden">Ikumpara ang Duha</span><span data-lang="kap" class="lang-hidden">Ikumpara ing Darua</span>
+      </button>
+    </div>
+
     <div class="calc-result" id="bmi-result">
       <div class="calc-result-num" id="bmi-num">--</div>
       <div class="calc-result-label" id="bmi-label">BMI (Asia-Pacific)</div>
@@ -2214,6 +2257,22 @@ html[data-theme="dark"] .ob-actions .ob-btn-primary{background:var(--teal,#1a6b7
         <span data-lang="ceb" class="lang-hidden">Ibutang ang imong numero sa ibabaw aron makita ang verdict.</span>
         <span data-lang="kap" class="lang-hidden">Ilagye ing kekang numero king babo aron malasin ing verdict.</span>
       </div>
+      <!-- "both" comparison row, hidden by default -->
+      <div id="bmi-both-row" style="display:none;margin-top:16px;display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px;">Asian-Pacific</div>
+            <div style="font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--navy);" id="bmi-ap-num2">—</div>
+            <div style="font-size:13px;margin-top:4px;" id="bmi-ap-label2">—</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px;">Western WHO</div>
+            <div style="font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--navy);" id="bmi-who-num2">—</div>
+            <div style="font-size:13px;margin-top:4px;" id="bmi-who-label2">—</div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin:10px 0 0;line-height:1.5;">Filipinos are classified as overweight at BMI ≥23 (Asian-Pacific) vs ≥25 (Western WHO). This 2-point gap means <strong>you can be normal by Western standards but already at metabolic risk by Filipino/Asian standards</strong>.</p>
+      </div>
     </div>
   </div>
   <p style="font-size:13px;color:var(--text-muted);font-style:italic;margin-top:14px;">
@@ -2221,6 +2280,121 @@ html[data-theme="dark"] .ob-actions .ob-btn-primary{background:var(--teal,#1a6b7
     <span data-lang="tl" class="lang-hidden">Para sa edukasyon lamang. Pag-usapan ang iyong numero at anumang weight-loss plan sa iyong nephrologist bago palitan ang diyeta, gamot, o aktibidad, lalo na kung nasa dialysis ka o may advanced CKD.</span>
     <span data-lang="ceb" class="lang-hidden">Alang lang sa edukasyon. Istorya sa imong nephrologist bahin sa imong numero ug bisan unsang weight-loss plan sa wala pa moilis sa diyeta, tambal, o aktibidad, ilabi na kung anaa ka sa dialysis o adunay advanced CKD.</span>
     <span data-lang="kap" class="lang-hidden">Para king edukasyon mu. Pakipag-istorya king kekang nephrologist tungkul king kekang numero at anumang weight-loss plan bago ipalit ing diyeta, gamot, o aktibidad.</span>
+  </p>
+</section>
+
+<section class="section mode-patient" id="ibw-calc">
+  <div class="section-tag">
+    <span data-lang="en">Body Weight Targets</span>
+    <span data-lang="tl" class="lang-hidden">Mga Target sa Timbang</span>
+    <span data-lang="ceb" class="lang-hidden">Mga Target sa Timbang</span>
+    <span data-lang="kap" class="lang-hidden">Deng Target king Timbang</span>
+  </div>
+  <h2>
+    <span data-lang="en">Ideal &amp; Adjusted Body Weight — Western vs Asian Targets</span>
+    <span data-lang="tl" class="lang-hidden">Ideal at Adjusted na Timbang — Western kumpara Asian</span>
+    <span data-lang="ceb" class="lang-hidden">Ideal ug Adjusted nga Timbang — Western kumpara Asian</span>
+    <span data-lang="kap" class="lang-hidden">Ideal at Adjusted a Timbang — Western kumpara Asian</span>
+  </h2>
+  <p>
+    <span data-lang="en">Ideal Body Weight (IBW) is the weight associated with the best metabolic and kidney outcomes at your height. Adjusted Body Weight (AdjBW) corrects for excess fat mass when actual weight is more than 20% above IBW — it is used for protein targets, dietary reference intakes, and certain drug dosing in obese CKD patients. The two columns show <strong>Western (Devine formula)</strong> and <strong>Asian-Pacific (BMI 22 target)</strong> values side by side.</span>
+    <span data-lang="tl" class="lang-hidden">Ang Ideal Body Weight (IBW) ay ang timbang na may pinakamababang panganib sa iyong taas. Ang Adjusted Body Weight (AdjBW) ay ginagamit kapag ang actual na timbang ay higit sa 20% ng IBW — para sa protein targets at drug dosing. Ang dalawang kolum ay nagpapakita ng Western (Devine) at Asian-Pacific (BMI 22) na mga halaga.</span>
+    <span data-lang="ceb" class="lang-hidden">Ang Ideal Body Weight (IBW) mao ang timbang nga may labing ubos nga risgo sa imong gitas-on. Ang Adjusted Body Weight (AdjBW) gigamit kung ang actual nga timbang labaw sa 20% sa IBW — alang sa protein targets ug drug dosing. Ang duha ka kolum nagpakita sa Western (Devine) ug Asian-Pacific (BMI 22) nga mga kantidad.</span>
+    <span data-lang="kap" class="lang-hidden">Ing Ideal Body Weight (IBW) ining timbang a mibabang panganib king kekang tas. Ing Adjusted Body Weight (AdjBW) gagamitin nung ing actual timbang sobra 20% ning IBW — para king protein targets at drug dosing. Deng darung kolum nagpapakita ning Western (Devine) at Asian-Pacific (BMI 22) a mga halaga.</span>
+  </p>
+
+  <div class="calc-wrap">
+    <div class="calc-row">
+      <label>
+        <span data-lang="en">Actual body weight <span class="meta">In kilograms</span></span>
+        <span data-lang="tl" class="lang-hidden">Aktwal na timbang <span class="meta">Sa kilo</span></span>
+        <span data-lang="ceb" class="lang-hidden">Aktwal nga timbang <span class="meta">Sa kilo</span></span>
+        <span data-lang="kap" class="lang-hidden">Aktwal a timbang <span class="meta">King kilo</span></span>
+      </label>
+      <input type="number" id="ibw-wt" min="20" max="300" step="0.1" placeholder="e.g. 78" oninput="calcIBW()">
+    </div>
+    <div class="calc-row">
+      <label>
+        <span data-lang="en">Height <span class="meta">In centimeters (e.g. 160)</span></span>
+        <span data-lang="tl" class="lang-hidden">Taas <span class="meta">Sa sentimetro (hal. 160)</span></span>
+        <span data-lang="ceb" class="lang-hidden">Gitas-on <span class="meta">Sa sentimetro (pananglit 160)</span></span>
+        <span data-lang="kap" class="lang-hidden">Tas <span class="meta">King sentimetro (hal. 160)</span></span>
+      </label>
+      <input type="number" id="ibw-ht" min="100" max="220" step="0.1" placeholder="e.g. 160" oninput="calcIBW()">
+    </div>
+    <div class="calc-row" style="border-bottom:0;">
+      <label>
+        <span data-lang="en">Sex <span class="meta">Affects Devine formula</span></span>
+        <span data-lang="tl" class="lang-hidden">Kasarian <span class="meta">Nakakaapekto sa Devine formula</span></span>
+        <span data-lang="ceb" class="lang-hidden">Sex <span class="meta">Nakaapekto sa Devine formula</span></span>
+        <span data-lang="kap" class="lang-hidden">Kasarian <span class="meta">Nakaapekto king Devine formula</span></span>
+      </label>
+      <select id="ibw-sex" onchange="calcIBW()">
+        <option value="m">Male</option>
+        <option value="f" selected>Female</option>
+      </select>
+    </div>
+
+    <div id="ibw-result" style="display:none;margin-top:24px;">
+      <div class="ibw-compare">
+
+        <!-- Western (Devine) -->
+        <div class="ibw-col">
+          <div class="ibw-col-header ibw-western">
+            <div class="ibw-col-title">Western</div>
+            <div class="ibw-col-sub">Devine formula (1974)</div>
+          </div>
+          <div class="ibw-metrics">
+            <div class="ibw-metric">
+              <div class="ibw-metric-val" id="ibw-w-ibw">—</div>
+              <div class="ibw-metric-lbl">Ideal Body Weight</div>
+            </div>
+            <div class="ibw-metric">
+              <div class="ibw-metric-val" id="ibw-w-pct">—</div>
+              <div class="ibw-metric-lbl">% of IBW</div>
+            </div>
+            <div class="ibw-metric">
+              <div class="ibw-metric-val" id="ibw-w-adj">—</div>
+              <div class="ibw-metric-lbl" id="ibw-w-adj-lbl">Adjusted BW</div>
+            </div>
+            <div class="ibw-badge" id="ibw-w-badge" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- Asian-Pacific (BMI 22) -->
+        <div class="ibw-col">
+          <div class="ibw-col-header ibw-asian">
+            <div class="ibw-col-title">Asian-Pacific</div>
+            <div class="ibw-col-sub">BMI 22 target (WHO WPRO)</div>
+          </div>
+          <div class="ibw-metrics">
+            <div class="ibw-metric">
+              <div class="ibw-metric-val" id="ibw-a-ibw">—</div>
+              <div class="ibw-metric-lbl">Ideal Body Weight</div>
+            </div>
+            <div class="ibw-metric">
+              <div class="ibw-metric-val" id="ibw-a-pct">—</div>
+              <div class="ibw-metric-lbl">% of IBW</div>
+            </div>
+            <div class="ibw-metric">
+              <div class="ibw-metric-val" id="ibw-a-adj">—</div>
+              <div class="ibw-metric-lbl" id="ibw-a-adj-lbl">Adjusted BW</div>
+            </div>
+            <div class="ibw-badge" id="ibw-a-badge" style="display:none;"></div>
+          </div>
+        </div>
+
+      </div><!-- /.ibw-compare -->
+
+      <div class="ibw-note" id="ibw-note"></div>
+    </div><!-- /#ibw-result -->
+  </div><!-- /.calc-wrap -->
+
+  <p style="font-size:13px;color:var(--text-muted);font-style:italic;margin-top:14px;">
+    <span data-lang="en">For education only. Ideal body weight targets and adjusted body weight calculations guide protein prescriptions and drug dosing — always confirm with your nephrologist or clinical dietitian before changing your diet or medications.</span>
+    <span data-lang="tl" class="lang-hidden">Para sa edukasyon lamang. Ang mga target na IBW at AdjBW ay gabay para sa protein at gamot — palaging kumpirmahin sa inyong nephrologist.</span>
+    <span data-lang="ceb" class="lang-hidden">Alang lang sa edukasyon. Ang IBW ug AdjBW mga giya sa protein ug tambal — kanunay konfirmahon sa imong nephrologist.</span>
+    <span data-lang="kap" class="lang-hidden">Para king edukasyon mu. Ing IBW at AdjBW gabay para king protein at gamot — pirmi kumpirmahin king kekang nephrologist.</span>
   </p>
 </section>
 
@@ -3490,6 +3664,36 @@ function setLang(lang){
 }
 (function(){const s=localStorage.getItem(LANG_KEY)||'en';if(s!=='en')setLang(s);})();
 
+/* ── BMI mode toggle ─────────────────────────────────────────────────── */
+var _bmiMode = 'ap';
+function setBMIMode(mode) {
+  _bmiMode = mode;
+  ['ap','who','both'].forEach(function(m) {
+    var btn = document.getElementById('bmi-toggle-' + m);
+    if (!btn) return;
+    var active = m === mode;
+    btn.style.background = active ? 'var(--teal)' : 'transparent';
+    btn.style.color = active ? 'white' : 'var(--text-muted)';
+    btn.style.borderColor = active ? 'var(--teal)' : 'var(--border)';
+  });
+  calcBMI();
+}
+
+function _bmiClassAP(bmi) {
+  if (bmi < 18.5) return { cls:'severe', label:'Underweight', text:'<strong style="color:var(--red);">Underweight by Asia-Pacific cutoffs.</strong> In CKD this often signals protein-energy wasting. Discuss with your nephrologist — the goal is regaining muscle, not further weight loss.' };
+  if (bmi < 23)  return { cls:'normal',    label:'Normal weight (Asia-Pacific)',   text:'<strong style="color:var(--green);">Normal range by Asia-Pacific cutoffs.</strong> The lowest-risk weight zone for Filipino kidney patients.' };
+  if (bmi < 25)  return { cls:'overweight', label:'Overweight (Asia-Pacific)',      text:'<strong style="color:#92400e;">Overweight by Asia-Pacific cutoffs.</strong> Already associated with increased proteinuria and BP risk in Filipino patients. A 5% weight loss target is reasonable in pre-dialysis CKD.' };
+  if (bmi < 30)  return { cls:'obese',      label:'Obese Class I (Asia-Pacific)',   text:'<strong style="color:#b9450b;">Obese Class I by Asia-Pacific cutoffs.</strong> Weight loss is a priority in pre-dialysis CKD: target 5–10%, slow and supervised. Discuss GLP-1 suitability with your nephrologist.' };
+  return           { cls:'severe',     label:'Obese Class II+ (Asia-Pacific)',  text:'<strong style="color:var(--red);">Obese Class II or higher by Asia-Pacific cutoffs.</strong> Significant weight management is indicated. Discuss GLP-1 agonists and bariatric surgery with your nephrologist.' };
+}
+function _bmiClassWHO(bmi) {
+  if (bmi < 18.5) return { cls:'severe', label:'Underweight (Western WHO)', text:'<strong style="color:var(--red);">Underweight by Western WHO cutoffs.</strong> Note: Filipinos may appear underweight by Western standards but are already at metabolic risk at lower BMI thresholds.' };
+  if (bmi < 25)  return { cls:'normal',    label:'Normal weight (Western WHO)',   text:'<strong style="color:var(--green);">Normal range by Western WHO cutoffs.</strong> However, by Asia-Pacific standards (cutoff: 23) you may already be overweight — Filipino kidney patients are better assessed by Asian cutoffs.' };
+  if (bmi < 30)  return { cls:'overweight', label:'Overweight (Western WHO)',     text:'<strong style="color:#92400e;">Overweight by Western WHO cutoffs.</strong> Weight loss is beneficial in pre-dialysis CKD. Note this is also overweight by Asian-Pacific standards.' };
+  if (bmi < 35)  return { cls:'obese',      label:'Obese Class I (Western WHO)',  text:'<strong style="color:#b9450b;">Obese Class I by Western WHO cutoffs.</strong> Weight loss is a priority. GLP-1 receptor agonists may be appropriate; discuss with your nephrologist.' };
+  return           { cls:'severe',     label:'Obese Class II+ (Western WHO)', text:'<strong style="color:var(--red);">Obese Class II or higher by Western WHO cutoffs.</strong> Significant weight management is indicated. Bariatric surgery may be an option if transplant is being considered (BMI &lt;35 required at most centers).' };
+}
+
 function calcBMI(){
   const wt = parseFloat(document.getElementById('bmi-wt').value);
   const htCm = parseFloat(document.getElementById('bmi-ht').value);
@@ -3499,36 +3703,118 @@ function calcBMI(){
   const labelEl = document.getElementById('bmi-label');
   const verdictEl = document.getElementById('bmi-verdict');
   const resEl = document.getElementById('bmi-result');
-  if (!wt || !htCm) { numEl.textContent = '--'; verdictEl.textContent = 'Enter your numbers above to see your verdict.'; return; }
+  const bothRow = document.getElementById('bmi-both-row');
+  if (!wt || !htCm) { numEl.textContent = '--'; verdictEl.innerHTML = 'Enter your numbers above to see your verdict.'; if(bothRow) bothRow.style.display='none'; return; }
   const htM = htCm / 100;
   const bmi = wt / (htM * htM);
-  numEl.textContent = bmi.toFixed(1);
-  let cls = 'normal', label = 'Normal (Asia-Pacific)', text = '';
   const waistTarget = sex === 'm' ? 90 : 80;
-  const waistOver = waist > waistTarget;
-  if (bmi < 18.5) {
-    cls = 'severe'; label = 'Underweight';
-    text = '<strong style="color:var(--red);">Underweight by Asia-Pacific cutoffs.</strong> In CKD, this often signals protein-energy wasting and is associated with worse outcomes. Discuss with your nephrologist — the goal here is regaining muscle and adequate calories, not further weight loss.';
-  } else if (bmi < 23) {
-    cls = 'normal'; label = 'Normal (Asia-Pacific)';
-    text = '<strong style="color:var(--green);">Normal range by Asia-Pacific cutoffs.</strong> The lowest-risk weight zone for Filipino kidney patients.';
-    if (waistOver) text += ' <strong>However, your waist is above the Filipino target ('+waistTarget+' cm)</strong> &mdash; this is "normal-weight obesity" and still raises kidney and cardiovascular risk. Focus on visceral fat (waist), not just scale weight.';
-  } else if (bmi < 25) {
-    cls = 'overweight'; label = 'Overweight (Asia-Pacific)';
-    text = '<strong style="color:#92400e;">Overweight by Asia-Pacific cutoffs.</strong> Already associated with increased proteinuria and BP risk in Filipino kidney patients. A 5% weight loss target is reasonable in pre-dialysis CKD; discuss with your nephrologist if you are stage 4 or beyond.';
-    if (waistOver) text += ' Your waist is also above the Filipino target ('+waistTarget+' cm) &mdash; visceral fat is the priority.';
-  } else if (bmi < 30) {
-    cls = 'obese'; label = 'Obese Class I (Asia-Pacific)';
-    text = '<strong style="color:#b9450b;">Obese (Class I) by Asia-Pacific cutoffs.</strong> Weight loss is a priority in pre-dialysis CKD: target 5–10% of body weight, slow and supervised. Discuss GLP-1 receptor agonist suitability with your nephrologist. On dialysis, the goal shifts to muscle preservation and metabolic control.';
+  const waistOver = !isNaN(waist) && waist > waistTarget;
+  const waistNote = waistOver ? ' <strong>Your waist ('+waist+' cm) also exceeds the Filipino target ('+waistTarget+' cm)</strong> — visceral fat is the priority here.' : '';
+
+  numEl.textContent = bmi.toFixed(1);
+
+  if (_bmiMode === 'both') {
+    const ap = _bmiClassAP(bmi);
+    const who = _bmiClassWHO(bmi);
+    resEl.className = 'calc-result ' + ap.cls;
+    labelEl.textContent = 'BMI ' + bmi.toFixed(1);
+    verdictEl.innerHTML = '';
+    if (bothRow) {
+      bothRow.style.display = 'block';
+      document.getElementById('bmi-ap-num2').textContent = bmi.toFixed(1);
+      document.getElementById('bmi-ap-label2').innerHTML = ap.text + waistNote;
+      document.getElementById('bmi-who-num2').textContent = bmi.toFixed(1);
+      document.getElementById('bmi-who-label2').innerHTML = who.text;
+    }
   } else {
-    cls = 'severe'; label = 'Obese Class II+ (Asia-Pacific)';
-    text = '<strong style="color:var(--red);">Obese Class II or higher by Asia-Pacific cutoffs.</strong> Significant weight management is indicated. Discuss GLP-1 receptor agonists and bariatric surgery referral with your nephrologist, especially if transplant is on the horizon (BMI &lt;35 is required at most centers).';
+    if (bothRow) bothRow.style.display = 'none';
+    const r = _bmiMode === 'who' ? _bmiClassWHO(bmi) : _bmiClassAP(bmi);
+    resEl.className = 'calc-result ' + r.cls;
+    labelEl.textContent = r.label;
+    verdictEl.innerHTML = r.text + waistNote;
   }
-  resEl.className = 'calc-result ' + cls;
-  labelEl.textContent = label;
-  verdictEl.innerHTML = text;
 }
 calcBMI();
+
+/* ── IBW / AdjBW Calculator ─────────────────────────────────────────── */
+function calcIBW() {
+  var wt = parseFloat(document.getElementById('ibw-wt').value);
+  var htCm = parseFloat(document.getElementById('ibw-ht').value);
+  var sex = document.getElementById('ibw-sex').value;
+  var resEl = document.getElementById('ibw-result');
+  if (!wt || !htCm) { resEl.style.display = 'none'; return; }
+
+  var htM = htCm / 100;
+  var htIn = htCm / 2.54;
+
+  /* Western IBW — Devine (1974) */
+  var ibwW = sex === 'm'
+    ? 50 + 2.3 * (htIn - 60)
+    : 45.5 + 2.3 * (htIn - 60);
+  ibwW = Math.max(ibwW, 20);
+
+  /* Asian IBW — BMI 22 (WHO Western Pacific Regional Office) */
+  var ibwA = 22.0 * htM * htM;
+
+  /* % IBW */
+  var pctW = (wt / ibwW * 100);
+  var pctA = (wt / ibwA * 100);
+
+  /* AdjBW = IBW + 0.4 × (ABW − IBW), only when ABW > IBW */
+  function getAdj(abw, ibw) { return abw > ibw ? ibw + 0.4 * (abw - ibw) : null; }
+  var adjW = getAdj(wt, ibwW);
+  var adjA = getAdj(wt, ibwA);
+
+  /* Dosing weight recommendation */
+  function dosingInfo(abw, ibw, adj) {
+    if (abw < ibw)          return { wt: abw.toFixed(1),  cls: 'ibw-badge-warn', label: 'Use actual weight (below IBW — do not reduce further)' };
+    if (abw <= ibw * 1.2)   return { wt: abw.toFixed(1),  cls: 'ibw-badge-ok',   label: 'Use actual weight (within 20% of IBW)' };
+    return                         { wt: adj.toFixed(1),  cls: 'ibw-badge-adj',  label: 'Use adjusted BW (>120% IBW — actual weight overestimates lean mass)' };
+  }
+  var dosW = dosingInfo(wt, ibwW, adjW);
+  var dosA = dosingInfo(wt, ibwA, adjA);
+
+  /* Render metric cards */
+  document.getElementById('ibw-w-ibw').textContent = ibwW.toFixed(1) + ' kg';
+  document.getElementById('ibw-w-pct').textContent = pctW.toFixed(1) + '%';
+  document.getElementById('ibw-w-adj').textContent = adjW ? adjW.toFixed(1) + ' kg' : 'N/A';
+  document.getElementById('ibw-w-adj-lbl').textContent = adjW ? 'Adjusted BW (AdjBW)' : 'Adjusted BW (not needed)';
+
+  document.getElementById('ibw-a-ibw').textContent = ibwA.toFixed(1) + ' kg';
+  document.getElementById('ibw-a-pct').textContent = pctA.toFixed(1) + '%';
+  document.getElementById('ibw-a-adj').textContent = adjA ? adjA.toFixed(1) + ' kg' : 'N/A';
+  document.getElementById('ibw-a-adj-lbl').textContent = adjA ? 'Adjusted BW (AdjBW)' : 'Adjusted BW (not needed)';
+
+  /* Dosing badges */
+  function renderBadge(id, info) {
+    var el = document.getElementById(id);
+    el.className = 'ibw-badge ' + info.cls;
+    el.innerHTML = '⚖ Dosing weight: <strong>' + info.wt + ' kg</strong><span>' + info.label + '</span>';
+    el.style.display = '';
+  }
+  renderBadge('ibw-w-badge', dosW);
+  renderBadge('ibw-a-badge', dosA);
+
+  /* Clinical interpretation note */
+  var pct = pctA; // use Asian % IBW for the narrative
+  var interp = '';
+  if (pct < 70)       interp = '<strong style="color:var(--red)">Severe protein-energy wasting likely (&lt;70% IBW).</strong> Nutritional rehabilitation is the priority; weight-loss programs are contraindicated.';
+  else if (pct < 80)  interp = '<strong style="color:var(--red)">Moderate wasting (70–79% IBW).</strong> Caloric supplementation is needed; active weight loss is not the goal.';
+  else if (pct < 90)  interp = '<strong style="color:#92400e;">Mild wasting (80–89% IBW).</strong> Focus on maintaining or rebuilding lean mass before pursuing weight loss.';
+  else if (pct <= 120) interp = '<strong style="color:var(--green)">Within normal range (90–120% IBW).</strong> Use actual body weight for protein targets and drug dosing.';
+  else                interp = '<strong style="color:var(--teal)">More than 20% above IBW.</strong> Use Adjusted Body Weight (AdjBW) — not actual weight — for protein prescriptions and aminoglycoside dosing, as actual weight over-estimates lean mass in obese CKD patients.';
+
+  document.getElementById('ibw-note').innerHTML =
+    '<p style="margin:0 0 8px;font-size:14px;line-height:1.65;color:var(--text-mid);">' + interp + '</p>' +
+    '<p style="margin:0;font-size:12.5px;line-height:1.6;color:var(--text-muted);">' +
+    '<strong>Formula notes:</strong> Western IBW uses the Devine formula (standard in Western pharmacokinetic references). ' +
+    'Asian-Pacific IBW targets BMI 22 kg/m² (WHO WPRO), the midpoint of the Asian-Pacific normal range (18.5–23), ' +
+    'which is recommended for Filipino patients because Filipinos carry significantly more metabolic and cardiovascular risk at lower BMI thresholds than Western populations. ' +
+    'AdjBW = IBW + 0.4 × (Actual − IBW); the 0.4 correction factor is the KDOQI/ASPEN standard for obese patients.' +
+    '</p>';
+
+  resEl.style.display = 'block';
+}
 </script>
 
 <button class="print-btn" onclick="window.print()" aria-label="Print this guide">
