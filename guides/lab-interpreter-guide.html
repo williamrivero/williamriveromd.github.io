@@ -1980,6 +1980,10 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
     <input type="number" id="ctx-hd-duration" value="240" oninput="reinterpAll()"/>
     <span>min</span>
   </div>
+  <div style="margin-top:8px;">
+    <span class="ctx-label" style="display:block;margin-bottom:3px;">Validated by <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(appears on PDF export)</span></span>
+    <input class="ctx-input" type="text" id="ctx-validator" placeholder="e.g. J. Santos, MD" style="width:100%;max-width:340px;"/>
+  </div>
 </div>
 
 <!-- PDF UPLOAD -->
@@ -1992,7 +1996,7 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
     </div>
     <div class="upload-zone-text">
-      <strong>Upload Lab Results PDF(s)</strong> <span style="font-size:11px;font-weight:600;color:#1a6b72;background:#e6f4f5;border-radius:4px;padding:1px 6px;vertical-align:middle;">beta</span>
+      <strong>Upload Lab Results PDF(s)</strong> <span style="font-size:11px;font-weight:600;color:#1a6b72;background:#e6f4f5;border-radius:4px;padding:1px 6px;vertical-align:middle;">BETA</span>
       <span>Drop one or several PDFs — values merge automatically · Split CBC + Chemistry PDFs work together · Validated with Hi-Precision and Singapore Diagnostics lab result templates.</span>
     </div>
     <button class="upload-btn" type="button" onclick="event.stopPropagation();document.getElementById('pdfFileInput').click()">
@@ -3030,11 +3034,14 @@ function exportPDF(triggerBtn) {
     // ── Validated by ─────────────────────────────────────────────
     checkPage(28);
     y += 4;
+    var validatorName = (document.getElementById('ctx-validator')||{}).value || '';
+    validatorName = validatorName.trim();
     fillRect(margin, y, colW, 22, LIGHT_BG);
     doc.setDrawColor.apply(doc, NAVY); doc.setLineWidth(0.3); doc.rect(margin, y, colW, 22);
     setFont('bold',8,NAVY); text('Validated by:', margin+3, y+6);
-    setFont('normal',8,NAVY); text('W. G. M. Rivero, MD, FPCP, DPSN', margin+3, y+13);
-    setFont('italic',7,GRAY); text('Internal Medicine · Nephrology · Clinical Nutrition', margin+3, y+19);
+    if (validatorName) {
+      setFont('normal',8,NAVY); text(validatorName, margin+3, y+13);
+    }
     // signature line
     doc.setDrawColor(100,100,100); doc.setLineWidth(0.4);
     doc.line(margin+110, y+16, margin+colW-4, y+16);
@@ -3236,6 +3243,8 @@ function extractPDFPatientInfo(text){
   var NF='(?=[ \\t]*(?:age\\b|sex\\b|gender\\b|dob\\b|date\\b|ref(?:erence)?\\b|mr(?:\\s*no)?\\b|id\\s*[#:]|ward\\b|room\\b|physician\\b|dr\\.[\\t ]|requesting\\b|ordering\\b|\\n|\\||$))';
   var nameRxs=[
     new RegExp('patient(?:\'s)?\\s*name\\s*[:\\-]\\s*([\\w ,.\'-]{3,60}?)'+NF,'i'),
+    // SGD PDF.js truncates "PATIENT NAME" to "TIENT NAME" (first two chars cut off)
+    new RegExp('(?:pa)?tient\\s*name\\s*[:\\-]\\s*([\\w ,.\'-]{3,60}?)'+NF,'i'),
     new RegExp('\\bname\\s*[:\\-]\\s*([\\w ,.\'-]{4,60}?)'+NF,'i'),
     new RegExp('\\bpatient\\s*[:\\-]\\s*([\\w ,.\'-]{4,60}?)'+NF,'i'),
   ];
@@ -3340,11 +3349,18 @@ var FIELD_LABELS = {
 };
 
 function parseLabText(rawText) {
-  /* Normalise: unify line endings, micro signs, collapse multi-spaces */
+  /* Normalise: unify line endings, micro signs, join split decimals, collapse multi-spaces */
   var text = rawText
     .replace(/\r\n?/g, '\n')
     .replace(/µ|μ/g, 'µ')
+    .replace(/(\d+) (\.\d+)/g, '$1$2')   // PDF.js splits "1.713" → "1 .713"; rejoin
     .replace(/[ \t]{2,}/g, ' ');
+  /* Strip SGD critical-flag artifacts: ▲▲ decodes as "14", ▼▼ as "77".
+     These glyphs appear in the PDF text stream immediately before real values,
+     producing e.g. "14 54 mg/dL" or "14 82.0 %" that confuse the number picker.
+     Safe to remove: a real "14" or "77" followed by another digit means
+     the flag, not a value, because actual lab values are followed by units. */
+  text = text.replace(/\b(14|77)\b(?=\s+\d)/g, '');
 
   var fields = {};
   var siVotes = 0, cvVotes = 0;
