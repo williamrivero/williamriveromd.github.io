@@ -2441,7 +2441,8 @@ function interpKey(key) {
     totalchol: v<200?['NORMAL','Desirable']:v<240?['WATCH','Borderline high']:['FLAG','High'],
     lpa: v<50?['NORMAL','Normal (measure once in lifetime)']:['FLAG','Elevated Lp(a) — independent ASCVD risk; statins do not lower Lp(a)'],
     fbs: v<100?['NORMAL','Normal fasting glucose']:v<126?['WATCH','Impaired fasting — pre-diabetes range']:['FLAG','Diagnostic of diabetes (≥126 on 2 occasions)'],
-    hba1c: (hd||hasCKD)?(v>=7&&v<=8?['NORMAL','KDIGO 2024 CKD target 7–8% (avoids hypoglycemia risk)']:v<6.5?['FLAG','Too low — hypoglycemia risk in CKD/dialysis; avoid over-tightening']:v<7?['WATCH','Below KDIGO CKD target range — hypoglycemia risk if on SU/insulin']:v<=9?['WATCH','Above KDIGO CKD target — optimize without risking hypoglycemia']:['FLAG','Poor glycemic control — high CVD and CKD-progression risk'])
+    hba1c: (['ckd-dm','ckd-dm-htn'].indexOf(diag)!==-1||hd)
+              ?(v>=7&&v<=8?['NORMAL','KDIGO 2024 CKD+DM target 7–8% (avoids hypoglycemia risk)']:v<6.5?['FLAG','Too low — hypoglycemia risk in CKD/dialysis; avoid over-tightening']:v<7?['WATCH','Below KDIGO CKD+DM target — hypoglycemia risk if on SU/insulin']:v<=9?['WATCH','Above KDIGO CKD+DM target — optimize without risking hypoglycemia']:['FLAG','Poor glycemic control — high CVD and CKD-progression risk'])
               :(v<5.7?['NORMAL','Normal']:v<6.5?['WATCH','Pre-diabetes — lifestyle modification']:v<=7?['WATCH','At/near ADA target (≤7%)']:v<=9?['WATCH','Above ADA target — optimize']:['FLAG','Poor glycemic control']),
     fasting_insulin: v<=10?['NORMAL','Normal']:v<=20?['WATCH','Borderline elevated — IR likely']:['FLAG','Elevated — overt insulin resistance'],
     calcium: v>=8.4&&v<=10.2?['NORMAL','KDIGO target 8.4–10.2 mg/dL']:v<7.5?['FLAG','Symptomatic hypocalcemia risk']:v<8.4?['WATCH','Low-normal — optimize vit D/calcium']:v<=10.5?['WATCH','High-normal — monitor for vit D toxicity']:['FLAG','Hypercalcemia — hold active vitamin D'],
@@ -2886,19 +2887,18 @@ function exportPDF(triggerBtn) {
     }
 
     // ── Header ────────────────────────────────────────────────────
-    fillRect(0,0,W,38,NAVY);
-    setFont('bold',16,WHITE); text('Laboratory Interpreter Report',margin,12);
-    setFont('normal',8,[180,200,220]); text('W. G. M. Rivero, MD, FPCP, DPSN · Internal Medicine · Nephrology · Clinical Nutrition',margin,18);
-    setFont('normal',7,[150,170,190]); text('KDIGO 2024 · ACC/AHA 2026 · ADA 2025',margin,23);
+    fillRect(0,0,W,30,NAVY);
+    setFont('bold',16,WHITE); text('Laboratory Interpreter Report',margin,10);
+    setFont('normal',7,[150,170,190]); text('KDIGO 2024 · ACC/AHA 2026 · ADA 2025',margin,17);
 
     var ptName = document.getElementById('pt-name').value.trim();
     var ptDate = document.getElementById('pt-date').value;
     if (ptName || ptDate) {
-      setFont('bold',9,WHITE); if (ptName) text('Patient: '+ptName, margin, 30);
+      setFont('bold',9,WHITE); if (ptName) text('Patient: '+ptName, margin, 23);
       setFont('normal',8,[180,200,220]);
       if (ptDate) {
         var d = new Date(ptDate+'T00:00');
-        text('Lab Date: '+d.toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}), ptName?margin+80:margin, 30);
+        text('Lab Date: '+d.toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}), ptName?margin+80:margin, 23);
       }
     }
     // Context
@@ -2911,8 +2911,8 @@ function exportPDF(triggerBtn) {
     if (STATE.ckdStage) ctxParts.push('Stage '+STATE.ckdStage);
     if (STATE.isHD) ctxParts.push('On Hemodialysis');
     if (STATE.ckdVeryHigh) ctxParts.push('Very High ASCVD Risk');
-    setFont('normal',7,[150,170,190]); text(ctxParts.join(' · '), margin, 35);
-    y = 44;
+    setFont('normal',7,[150,170,190]); text(ctxParts.join(' · '), margin, 28);
+    y = 36;
 
     // Generated
     setFont('italic',7,GRAY);
@@ -3007,6 +3007,20 @@ function exportPDF(triggerBtn) {
       y += 3;
     }
 
+    // ── Validated by ─────────────────────────────────────────────
+    checkPage(28);
+    y += 4;
+    fillRect(margin, y, colW, 22, LIGHT_BG);
+    doc.setDrawColor.apply(doc, NAVY); doc.setLineWidth(0.3); doc.rect(margin, y, colW, 22);
+    setFont('bold',8,NAVY); text('Validated by:', margin+3, y+6);
+    setFont('normal',8,NAVY); text('W. G. M. Rivero, MD, FPCP, DPSN', margin+3, y+13);
+    setFont('italic',7,GRAY); text('Internal Medicine · Nephrology · Clinical Nutrition', margin+3, y+19);
+    // signature line
+    doc.setDrawColor(100,100,100); doc.setLineWidth(0.4);
+    doc.line(margin+110, y+16, margin+colW-4, y+16);
+    setFont('italic',6,GRAY); text('Signature / Date', margin+colW-4, y+20, {align:'right'});
+    y += 27;
+
     // ── Legend ───────────────────────────────────────────────────
     checkPage(20);
     y += 2;
@@ -3038,10 +3052,25 @@ function exportPDF(triggerBtn) {
 
     // ── Save ─────────────────────────────────────────────────────
     var ptName2 = document.getElementById('pt-name').value.trim();
-    var fname = ptName2
-      ? 'LabReport-'+ptName2.replace(/\s+/g,'-')+'-'+new Date().toISOString().slice(0,10)+'.pdf'
-      : 'LabReport-'+new Date().toISOString().slice(0,10)+'.pdf';
-    doc.save(fname);
+    var labDateVal = document.getElementById('pt-date').value || new Date().toISOString().slice(0,10);
+    var fnameParts;
+    if (ptName2) {
+      // Accept "Last, First Middle" or plain "Last First Middle"
+      var namePart;
+      if (ptName2.indexOf(',') !== -1) {
+        // "BUENA, ALFRED S P" → "BUENA-ALFRED-S-P"
+        var commaIdx = ptName2.indexOf(',');
+        var last = ptName2.substring(0, commaIdx).trim();
+        var rest = ptName2.substring(commaIdx+1).trim().split(/\s+/);
+        namePart = [last].concat(rest).join('-');
+      } else {
+        namePart = ptName2.replace(/\s+/g, '-');
+      }
+      fnameParts = labDateVal+'-LabReport-'+namePart+'.pdf';
+    } else {
+      fnameParts = labDateVal+'-LabReport.pdf';
+    }
+    doc.save(fnameParts);
 
   } catch(e) {
     alert('PDF generation failed: '+e.message);
@@ -3231,11 +3260,11 @@ function extractPDFPatientInfo(text){
 
 var FIELD_PATTERNS = [
   { key:'creatinine',    rx:/\bcreatinine\b(?![\s\/\-]*(?:ratio|clearance|index))/i, siU:/µmol\/[Ll]|umol\/[Ll]/, cvU:/mg\/d[Ll]/ },
-  { key:'egfr',          rx:/\b(?:e?gfr|estimated\s+gfr|glomerular\s+filtration(?:\s+rate)?)\b/i },
+  { key:'egfr',          rx:/(?<!with )\b(?:e?gfr|estimated\s+gfr|glomerular\s+filtration(?:\s+rate)?)\b/i },
   { key:'bun',           rx:/\b(?:bun\b|urea\s+nitrogen|blood\s+urea\s+nitrogen|urea(?:\s*,?\s*serum)?)\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'uacr',          rx:/\b(?:uacr|albumin[\s\/\-]+creatinine(?:\s+ratio)?|microalbumin\/creatinine|acr\b)/i, cvU:/mg\/g/ },
   { key:'upcr',          rx:/\b(?:upcr|protein[\s\/\-]+creatinine(?:\s+ratio)?|pcr\b)/i },
-  { key:'hgb',           rx:/\b(?:h[ae]moglobin|hgb\b|hb\b)/i },
+  { key:'hgb',           rx:/\b(?:h[ae]moglobin|hgb\b)/i,                               cvU:/g\/[Ll](?![Dd])/ },
   { key:'hct',           rx:/\b(?:h[ae]matocrit|hct\b|pcv\b)/i },
   { key:'rbc',           rx:/\brbc\s*(?:count)?\b/i },
   { key:'mcv',           rx:/\bmcv\b/i },
@@ -3246,8 +3275,8 @@ var FIELD_PATTERNS = [
   { key:'wbc',           rx:/\b(?:wbc\s*(?:count)?|white\s+(?:blood\s+)?(?:cell|blood)\s*(?:count)?|leucocyte\s*(?:count)?|leukocyte\s*(?:count)?)\b/i },
   { key:'platelets',     rx:/\b(?:platelet\s*(?:count)?|plt\b|thrombocyte\s*(?:count)?)\b/i },
   { key:'sodium',        rx:/\b(?:sodium|na\+?)\b/i },
-  { key:'potassium',     rx:/\b(?:potassium|k\+?)\b/i },
-  { key:'bicarb',        rx:/\b(?:bicarbonate|hco3?|total\s+co2|co2\s+(?:total|content))\b/i },
+  { key:'potassium',     rx:/\bpotassium\b/i,                                         cvU:/m[Ee]q\/[Ll]/ },
+  { key:'bicarb',        rx:/\b(?:bicarbonate|hco3?|total\s+co2|co2\s+(?:total|content))\b/i, cvU:/m[Ee]q\/[Ll]/ },
   { key:'chloride',      rx:/\b(?:chloride|cl-?)\b/i },
   { key:'magnesium',     rx:/\bmagnesium\b/i,                            siU:/mmol\/[Ll]/,              cvU:/mg\/d[Ll]/ },
   { key:'albumin',       rx:/\b(?:serum\s+)?albumin\b(?![\s\/\-]*(?:creatinine|ratio|globulin|to\b))/i, siU:/g\/[Ll](?:\s|$)/, cvU:/g\/d[Ll]/ },
@@ -3257,7 +3286,7 @@ var FIELD_PATTERNS = [
   { key:'totalchol',     rx:/\b(?:total\s+cholesterol|cholesterol(?:\s*,?\s*total)?|tc\b)/i,            siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'ldl',           rx:/\bldl[\s\-]?c?\b/i,                        siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'hdl',           rx:/\bhdl[\s\-]?c?\b/i,                        siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
-  { key:'tg',            rx:/\b(?:triglyceride|tg\b|triacylglycerol|triacylglyceride)\b/i,              siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'tg',            rx:/\b(?:triglycerides?\b|tg\b|triacylglycerol|triacylglyceride)\b/i,         siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'fbs',           rx:/\b(?:fasting\s+(?:blood\s+)?(?:glucose|sugar)|fbs\b|fbg\b|plasma\s+glucose|(?:blood\s+)?glucose(?!\s+toleran))\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'hba1c',         rx:/\b(?:hba1c|glycated\s+h[ae]moglobin|glycosylated\s+h[ae]moglobin|a1c\b)/i, siU:/mmol\/mol/, cvU:/%/ },
   { key:'fasting_insulin',rx:/\b(?:fasting\s+insulin|serum\s+insulin)\b/i },
@@ -3296,20 +3325,22 @@ function parseLabText(rawText) {
     var m = rule.rx.exec(text);
     if (!m) return;
 
-    /* 250-char window (wider to reach conventional value in dual-unit reports) */
-    var after = text.substring(m.index + m[0].length, m.index + m[0].length + 250);
-
-    /* Strip parenthetical qualifiers and result-flag symbols (▲▼) */
-    after = after.replace(/\([^)]{1,30}\)/g, ' ').replace(/[▲▼]+/g, ' ');
+    /* Wide window (600 chars) for unit-targeted search — needed for columnar
+       Philippine lab PDFs where the value column may be far from the label.
+       Narrow window (200 chars) for first-number fallback to limit false picks. */
+    var afterWide = text.substring(m.index + m[0].length, m.index + m[0].length + 600);
+    afterWide = afterWide.replace(/\([^)]{1,30}\)/g, ' ').replace(/[▲▼]+/g, ' ');
+    var after = afterWide.substring(0, 200);
 
     var val = null;
 
     /* 1st choice: find number immediately before the conventional unit.
        Philippine dual-unit reports list SI value first, conventional second —
-       targeting the unit string directly avoids grabbing the SI value by mistake. */
+       targeting the unit string directly avoids grabbing the SI value by mistake.
+       Uses the wide window so columnar PDFs (label col far from value col) still work. */
     if (rule.cvU) {
       var cvRx = new RegExp('(\\d+\\.?\\d*)\\s*(?:' + rule.cvU.source + ')', 'i');
-      var cvM = after.match(cvRx);
+      var cvM = afterWide.match(cvRx);
       if (cvM) { val = cvM[1]; cvVotes++; }
     }
 
