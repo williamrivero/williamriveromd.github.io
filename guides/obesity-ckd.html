@@ -1578,7 +1578,6 @@ html[data-theme="dark"] .ibw-badge-warn{background:rgba(220,38,38,.15);color:#f8
     <a class="nav-pill mode-patient-pill" href="#paradox">The Obesity Paradox</a>
     <a class="nav-pill mode-patient-pill" href="#bmi">BMI Misleads</a>
     <a class="nav-pill mode-patient-pill" href="#calculator">Your BMI</a>
-    <a class="nav-pill mode-patient-pill" href="#ibw-calc">Ideal &amp; Adjusted Weight</a>
     <a class="nav-pill mode-patient-pill" href="#kidney">How Weight Hurts the Kidneys</a>
     <a class="nav-pill mode-patient-pill" href="#targets">Weight-Loss Targets in CKD</a>
     <a class="nav-pill mode-patient-pill" href="#how">How to Lose Weight Safely</a>
@@ -2175,114 +2174,104 @@ html[data-theme="dark"] .ibw-badge-warn{background:rgba(220,38,38,.15);color:#f8
 
 <section class="section mode-patient" id="calculator">
   <div class="section-tag">
-    <span data-lang="en">A 30-Second Check</span>
-    <span data-lang="tl" class="lang-hidden">30-Segundong Pagsusuri</span>
-    <span data-lang="ceb" class="lang-hidden">30-Segundo nga Pagsusi</span>
-    <span data-lang="kap" class="lang-hidden">30-Segundong Pagsusuri</span>
+    <span data-lang="en">Body Measurements</span>
+    <span data-lang="tl" class="lang-hidden">Mga Sukat ng Katawan</span>
+    <span data-lang="ceb" class="lang-hidden">Mga Sukod sa Lawas</span>
+    <span data-lang="kap" class="lang-hidden">Deng Sukat ning Katawan</span>
   </div>
   <h2>
-    <span data-lang="en">Your BMI &mdash; calculated with <em>Filipino cutoffs</em>.</span>
-    <span data-lang="tl" class="lang-hidden">Ang iyong BMI &mdash; gamit ang <em>Filipino cutoffs</em>.</span>
-    <span data-lang="ceb" class="lang-hidden">Ang imong BMI &mdash; gigamit ang <em>Filipino cutoffs</em>.</span>
-    <span data-lang="kap" class="lang-hidden">Ing kekang BMI &mdash; gamit ing <em>Filipino cutoffs</em>.</span>
+    <span data-lang="en">BMI, BSA &amp; Body Weight Calculator</span>
+    <span data-lang="tl" class="lang-hidden">BMI, BSA at Body Weight Calculator</span>
+    <span data-lang="ceb" class="lang-hidden">BMI, BSA &amp; Body Weight Calculator</span>
+    <span data-lang="kap" class="lang-hidden">BMI, BSA &amp; Body Weight Calculator</span>
   </h2>
   <p>
-    <span data-lang="en">Type in your weight and height. The verdict uses the WHO Asia-Pacific cutoffs that apply to Filipinos.</span>
-    <span data-lang="tl" class="lang-hidden">I-type ang iyong timbang at taas. Ang verdict ay gumagamit ng WHO Asia-Pacific cutoffs na nababagay sa mga Pilipino.</span>
-    <span data-lang="ceb" class="lang-hidden">I-type ang imong timbang ug gitas-on. Ang verdict naggamit sa WHO Asia-Pacific cutoffs nga moangay sa mga Pilipino.</span>
-    <span data-lang="kap" class="lang-hidden">I-type ing kekang timbang at tas. Ing verdict gagamit ning WHO Asia-Pacific cutoffs a moangay king deng Pilipino.</span>
+    <span data-lang="en">Enter your measurements once — BMI, Body Surface Area, Ideal Body Weight, and Adjusted Body Weight all calculate together. Uses WHO Asia-Pacific cutoffs for Filipinos.</span>
+    <span data-lang="tl" class="lang-hidden">Ilagay ang iyong mga sukat nang isang beses — ang BMI, BSA, IBW, at AdjBW ay sabay na kinukuwenta. Gumagamit ng WHO Asia-Pacific cutoffs para sa mga Pilipino.</span>
+    <span data-lang="ceb" class="lang-hidden">Isulod ang imong mga sukod kausa — ang BMI, BSA, IBW, ug AdjBW magkalkula sa usa ka higayon. Naggamit sa WHO Asia-Pacific cutoffs alang sa mga Pilipino.</span>
+    <span data-lang="kap" class="lang-hidden">Ilagye ing kekang mga sukat kaisa — ing BMI, BSA, IBW, at AdjBW sabay na kinukuwenta. Gagamit ning WHO Asia-Pacific cutoffs para king deng Pilipino.</span>
   </p>
 
   <div class="calc-wrap">
+
+    <!-- ── SHARED INPUTS ──────────────────────────────────────────────── -->
     <div class="calc-row">
       <label>
-        <span data-lang="en">Your weight <span class="meta">In kilograms</span></span>
-        <span data-lang="tl" class="lang-hidden">Iyong timbang <span class="meta">Sa kilo</span></span>
-        <span data-lang="ceb" class="lang-hidden">Imong timbang <span class="meta">Sa kilo</span></span>
-        <span data-lang="kap" class="lang-hidden">Kekang timbang <span class="meta">King kilo</span></span>
+        <span data-lang="en">Weight <span class="meta">kg</span></span>
+        <span data-lang="tl" class="lang-hidden">Timbang <span class="meta">kg</span></span>
+        <span data-lang="ceb" class="lang-hidden">Timbang <span class="meta">kg</span></span>
+        <span data-lang="kap" class="lang-hidden">Timbang <span class="meta">kg</span></span>
       </label>
-      <input type="number" id="bmi-wt" min="20" max="250" step="0.1" value="65" oninput="calcBMI()">
+      <input type="number" id="bmi-wt" min="20" max="300" step="0.1" value="65" oninput="calcAll()">
     </div>
     <div class="calc-row">
       <label>
-        <span data-lang="en">Your height <span class="meta">In centimeters (e.g. 165)</span></span>
-        <span data-lang="tl" class="lang-hidden">Iyong taas <span class="meta">Sa sentimetro (hal. 165)</span></span>
-        <span data-lang="ceb" class="lang-hidden">Imong gitas-on <span class="meta">Sa sentimetro (pananglit 165)</span></span>
-        <span data-lang="kap" class="lang-hidden">Kekang tas <span class="meta">King sentimetro (hal. 165)</span></span>
+        <span data-lang="en">Height <span class="meta">cm (e.g. 160)</span></span>
+        <span data-lang="tl" class="lang-hidden">Taas <span class="meta">cm (hal. 160)</span></span>
+        <span data-lang="ceb" class="lang-hidden">Gitas-on <span class="meta">cm (hal. 160)</span></span>
+        <span data-lang="kap" class="lang-hidden">Tas <span class="meta">cm (hal. 160)</span></span>
       </label>
-      <input type="number" id="bmi-ht" min="100" max="220" step="0.1" value="160" oninput="calcBMI()">
+      <input type="number" id="bmi-ht" min="100" max="220" step="0.1" value="160" oninput="calcAll()">
     </div>
     <div class="calc-row">
-      <label>
-        <span data-lang="en">Sex (for waist target)</span>
-        <span data-lang="tl" class="lang-hidden">Kasarian (para sa waist target)</span>
-        <span data-lang="ceb" class="lang-hidden">Sex (para sa waist target)</span>
-        <span data-lang="kap" class="lang-hidden">Kasarian (para king waist target)</span>
-      </label>
-      <select id="bmi-sex" onchange="calcBMI()">
-        <option value="m"><span data-lang="en">Male</span><span data-lang="tl" class="lang-hidden">Lalaki</span><span data-lang="ceb" class="lang-hidden">Lalaki</span><span data-lang="kap" class="lang-hidden">Lalaki</span></option>
-        <option value="f" selected><span data-lang="en">Female</span><span data-lang="tl" class="lang-hidden">Babae</span><span data-lang="ceb" class="lang-hidden">Babaye</span><span data-lang="kap" class="lang-hidden">Babai</span></option>
+      <label>Sex <span class="meta">For waist target &amp; Devine IBW</span></label>
+      <select id="bmi-sex" onchange="calcAll()">
+        <option value="m">Male</option>
+        <option value="f" selected>Female</option>
       </select>
     </div>
     <div class="calc-row">
       <label>
-        <span data-lang="en">Waist circumference <span class="meta">In centimeters; measured at the navel</span></span>
-        <span data-lang="tl" class="lang-hidden">Circumference ng baywang <span class="meta">Sa sentimetro; sukatin sa pusod</span></span>
-        <span data-lang="ceb" class="lang-hidden">Circumference sa hawak <span class="meta">Sa sentimetro; sukda sa pusod</span></span>
-        <span data-lang="kap" class="lang-hidden">Circumference ning baywang <span class="meta">King sentimetro; sukatan king pusud</span></span>
+        <span data-lang="en">Waist circumference <span class="meta">cm, measured at the navel</span></span>
+        <span data-lang="tl" class="lang-hidden">Circumference ng baywang <span class="meta">cm, sukatin sa pusod</span></span>
+        <span data-lang="ceb" class="lang-hidden">Circumference sa hawak <span class="meta">cm, sukda sa pusod</span></span>
+        <span data-lang="kap" class="lang-hidden">Circumference ning baywang <span class="meta">cm, sukatan king pusud</span></span>
       </label>
-      <input type="number" id="bmi-waist" min="40" max="200" step="0.5" value="80" oninput="calcBMI()">
+      <input type="number" id="bmi-waist" min="40" max="200" step="0.5" value="80" oninput="calcAll()">
     </div>
     <div class="calc-row">
       <label>
-        <span data-lang="en">Target BMI <span class="meta">Optional — calculates your goal weight</span></span>
-        <span data-lang="tl" class="lang-hidden">Target BMI <span class="meta">Opsyonal — kinukuwenta ang target na timbang</span></span>
-        <span data-lang="ceb" class="lang-hidden">Target BMI <span class="meta">Opsyonal — kalkula ang target nga timbang</span></span>
-        <span data-lang="kap" class="lang-hidden">Target BMI <span class="meta">Opsyonal — kinukuwenta ing target a timbang</span></span>
+        <span data-lang="en">Target BMI <span class="meta">Optional — shows goal weight</span></span>
+        <span data-lang="tl" class="lang-hidden">Target BMI <span class="meta">Opsyonal — nagpapakita ng target na timbang</span></span>
+        <span data-lang="ceb" class="lang-hidden">Target BMI <span class="meta">Opsyonal — nagpakita sa target nga timbang</span></span>
+        <span data-lang="kap" class="lang-hidden">Target BMI <span class="meta">Opsyonal — nagpapakita ning target a timbang</span></span>
       </label>
-      <input type="number" id="bmi-target" min="16" max="40" step="0.1" placeholder="e.g. 22.5" oninput="calcBMI()">
+      <input type="number" id="bmi-target" min="16" max="40" step="0.1" placeholder="e.g. 22.5" oninput="calcAll()">
     </div>
-    <div style="display:flex;align-items:center;gap:6px;padding:6px 0 14px;flex-wrap:wrap;">
-      <span style="font-size:11px;color:var(--text-muted);white-space:nowrap;">Quick set:</span>
-      <button type="button" onclick="document.getElementById('bmi-target').value=22;calcBMI()" style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text-mid);cursor:pointer;">22 — Asian optimal</button>
-      <button type="button" onclick="document.getElementById('bmi-target').value=23;calcBMI()" style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text-mid);cursor:pointer;">23 — Asian-Pacific limit</button>
-      <button type="button" onclick="document.getElementById('bmi-target').value=25;calcBMI()" style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text-mid);cursor:pointer;">25 — Western limit</button>
+    <div style="display:flex;align-items:center;gap:6px;padding:4px 0 18px;flex-wrap:wrap;">
+      <span style="font-size:11px;color:var(--text-muted);white-space:nowrap;">Quick set target BMI:</span>
+      <button type="button" onclick="document.getElementById('bmi-target').value=22;calcAll()" style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text-mid);cursor:pointer;">22 — Asian optimal</button>
+      <button type="button" onclick="document.getElementById('bmi-target').value=23;calcAll()" style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text-mid);cursor:pointer;">23 — Asian-Pacific limit</button>
+      <button type="button" onclick="document.getElementById('bmi-target').value=25;calcAll()" style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text-mid);cursor:pointer;">25 — Western limit</button>
     </div>
 
+    <!-- ── BMI / BSA RESULTS ──────────────────────────────────────────── -->
+    <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin:4px 0 12px;">BMI &amp; Body Surface Area</div>
+
     <!-- BMI cutoff toggle -->
-    <div style="display:flex;gap:8px;margin-top:20px;margin-bottom:4px;flex-wrap:wrap;">
-      <span style="font-size:12px;font-weight:600;color:var(--text-muted);align-self:center;">Cutoff standard:</span>
-      <button id="bmi-toggle-ap" onclick="setBMIMode('ap')" style="padding:5px 14px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--teal);background:var(--teal);color:white;cursor:pointer;">
-        <span data-lang="en">Asian-Pacific</span><span data-lang="tl" class="lang-hidden">Asian-Pacific</span><span data-lang="ceb" class="lang-hidden">Asian-Pacific</span><span data-lang="kap" class="lang-hidden">Asian-Pacific</span>
-      </button>
-      <button id="bmi-toggle-who" onclick="setBMIMode('who')" style="padding:5px 14px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;">
-        <span data-lang="en">Western (WHO)</span><span data-lang="tl" class="lang-hidden">Kanluranin (WHO)</span><span data-lang="ceb" class="lang-hidden">Western (WHO)</span><span data-lang="kap" class="lang-hidden">Kanluranin (WHO)</span>
-      </button>
-      <button id="bmi-toggle-both" onclick="setBMIMode('both')" style="padding:5px 14px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;">
-        <span data-lang="en">Compare Both</span><span data-lang="tl" class="lang-hidden">Ikumpara ang Dalawa</span><span data-lang="ceb" class="lang-hidden">Ikumpara ang Duha</span><span data-lang="kap" class="lang-hidden">Ikumpara ing Darua</span>
-      </button>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+      <span style="font-size:12px;font-weight:600;color:var(--text-muted);align-self:center;">Cutoff:</span>
+      <button id="bmi-toggle-ap" onclick="setBMIMode('ap')" style="padding:5px 14px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--teal);background:var(--teal);color:white;cursor:pointer;">Asian-Pacific</button>
+      <button id="bmi-toggle-who" onclick="setBMIMode('who')" style="padding:5px 14px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;">Western (WHO)</button>
+      <button id="bmi-toggle-both" onclick="setBMIMode('both')" style="padding:5px 14px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;">Compare Both</button>
     </div>
 
     <div class="calc-result" id="bmi-result">
       <div class="calc-result-num" id="bmi-num">--</div>
       <div class="calc-result-label" id="bmi-label">BMI (Asia-Pacific)</div>
 
-      <!-- BSA + Target weight metrics — shown once values are entered -->
       <div id="bmi-extra-metrics" style="display:none;margin:16px 0 8px;padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
         <div style="display:flex;gap:0;justify-content:center;flex-wrap:wrap;">
-          <!-- BSA -->
           <div style="text-align:center;padding:0 20px;border-right:1px solid var(--border);">
             <div style="font-family:'Lora',serif;font-size:30px;font-weight:600;color:var(--navy);line-height:1;" id="bsa-val">—</div>
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-top:5px;">BSA (Mosteller)</div>
             <div style="font-size:10px;color:var(--text-faint);margin-top:2px;">m² · √(Ht×Wt÷3600)</div>
           </div>
-          <!-- Target weight (shown only when target BMI entered) -->
           <div id="bmi-target-metric" style="display:none;text-align:center;padding:0 20px;border-right:1px solid var(--border);">
             <div style="font-family:'Lora',serif;font-size:30px;font-weight:600;color:var(--teal);line-height:1;" id="target-wt-val">—</div>
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-top:5px;" id="target-wt-lbl">Target Weight</div>
             <div style="font-size:12px;font-weight:600;margin-top:4px;" id="wt-diff-val"></div>
           </div>
-          <!-- Target BMI shown numerically -->
           <div id="bmi-target-display" style="display:none;text-align:center;padding:0 20px;">
             <div style="font-family:'Lora',serif;font-size:30px;font-weight:600;color:var(--text-mid);line-height:1;" id="target-bmi-disp">—</div>
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-top:5px;">Target BMI</div>
@@ -2292,12 +2281,11 @@ html[data-theme="dark"] .ibw-badge-warn{background:rgba(220,38,38,.15);color:#f8
       </div>
 
       <div class="calc-verdict" id="bmi-verdict">
-        <span data-lang="en">Enter your numbers above to see your verdict.</span>
-        <span data-lang="tl" class="lang-hidden">Ilagay ang iyong numero sa itaas para makita ang verdict.</span>
-        <span data-lang="ceb" class="lang-hidden">Ibutang ang imong numero sa ibabaw aron makita ang verdict.</span>
-        <span data-lang="kap" class="lang-hidden">Ilagye ing kekang numero king babo aron malasin ing verdict.</span>
+        <span data-lang="en">Enter your numbers above to see your results.</span>
+        <span data-lang="tl" class="lang-hidden">Ilagay ang iyong mga numero sa itaas para makita ang mga resulta.</span>
+        <span data-lang="ceb" class="lang-hidden">Isulod ang imong mga numero sa ibabaw aron makita ang mga resulta.</span>
+        <span data-lang="kap" class="lang-hidden">Ilagye ing kekang mga numero king babo para malasin ing mga resulta.</span>
       </div>
-      <!-- "both" comparison row, hidden by default -->
       <div id="bmi-both-row" style="display:none;margin-top:16px;">
         <p style="font-size:13px;color:var(--text-muted);margin:0 0 10px;">Your BMI is <strong id="bmi-both-val" style="color:var(--navy);">—</strong> kg/m² — the number is the same for both systems. Only the <em>cutoffs</em> differ:</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;">
@@ -2317,71 +2305,12 @@ html[data-theme="dark"] .ibw-badge-warn{background:rgba(220,38,38,.15);color:#f8
         <p style="font-size:12px;color:var(--text-muted);margin:10px 0 0;line-height:1.5;">Filipinos reach metabolic risk 2 BMI points earlier than the Western cutoff. <strong>You can be "Normal" by Western standards and already "Overweight" by Filipino/Asian standards</strong> — which is why the Asia-Pacific cutoff matters for your kidney and heart health.</p>
       </div>
     </div>
-  </div>
-  <p style="font-size:13px;color:var(--text-muted);font-style:italic;margin-top:14px;">
-    <span data-lang="en">For education only. Discuss your numbers and any weight-loss plan with your nephrologist before changing diet, medications, or activity, especially if you are on dialysis or have advanced CKD.</span>
-    <span data-lang="tl" class="lang-hidden">Para sa edukasyon lamang. Pag-usapan ang iyong numero at anumang weight-loss plan sa iyong nephrologist bago palitan ang diyeta, gamot, o aktibidad, lalo na kung nasa dialysis ka o may advanced CKD.</span>
-    <span data-lang="ceb" class="lang-hidden">Alang lang sa edukasyon. Istorya sa imong nephrologist bahin sa imong numero ug bisan unsang weight-loss plan sa wala pa moilis sa diyeta, tambal, o aktibidad, ilabi na kung anaa ka sa dialysis o adunay advanced CKD.</span>
-    <span data-lang="kap" class="lang-hidden">Para king edukasyon mu. Pakipag-istorya king kekang nephrologist tungkul king kekang numero at anumang weight-loss plan bago ipalit ing diyeta, gamot, o aktibidad.</span>
-  </p>
-</section>
 
-<section class="section mode-patient" id="ibw-calc">
-  <div class="section-tag">
-    <span data-lang="en">Body Weight Targets</span>
-    <span data-lang="tl" class="lang-hidden">Mga Target sa Timbang</span>
-    <span data-lang="ceb" class="lang-hidden">Mga Target sa Timbang</span>
-    <span data-lang="kap" class="lang-hidden">Deng Target king Timbang</span>
-  </div>
-  <h2>
-    <span data-lang="en">Ideal &amp; Adjusted Body Weight — Western vs Asian Targets</span>
-    <span data-lang="tl" class="lang-hidden">Ideal at Adjusted na Timbang — Western kumpara Asian</span>
-    <span data-lang="ceb" class="lang-hidden">Ideal ug Adjusted nga Timbang — Western kumpara Asian</span>
-    <span data-lang="kap" class="lang-hidden">Ideal at Adjusted a Timbang — Western kumpara Asian</span>
-  </h2>
-  <p>
-    <span data-lang="en">Ideal Body Weight (IBW) is the weight associated with the best metabolic and kidney outcomes at your height. Adjusted Body Weight (AdjBW) corrects for excess fat mass when actual weight is more than 20% above IBW — it is used for protein targets, dietary reference intakes, and certain drug dosing in obese CKD patients. The two columns show <strong>Western (Devine formula)</strong> and <strong>Asian-Pacific (BMI 22 target)</strong> values side by side.</span>
-    <span data-lang="tl" class="lang-hidden">Ang Ideal Body Weight (IBW) ay ang timbang na may pinakamababang panganib sa iyong taas. Ang Adjusted Body Weight (AdjBW) ay ginagamit kapag ang actual na timbang ay higit sa 20% ng IBW — para sa protein targets at drug dosing. Ang dalawang kolum ay nagpapakita ng Western (Devine) at Asian-Pacific (BMI 22) na mga halaga.</span>
-    <span data-lang="ceb" class="lang-hidden">Ang Ideal Body Weight (IBW) mao ang timbang nga may labing ubos nga risgo sa imong gitas-on. Ang Adjusted Body Weight (AdjBW) gigamit kung ang actual nga timbang labaw sa 20% sa IBW — alang sa protein targets ug drug dosing. Ang duha ka kolum nagpakita sa Western (Devine) ug Asian-Pacific (BMI 22) nga mga kantidad.</span>
-    <span data-lang="kap" class="lang-hidden">Ing Ideal Body Weight (IBW) ining timbang a mibabang panganib king kekang tas. Ing Adjusted Body Weight (AdjBW) gagamitin nung ing actual timbang sobra 20% ning IBW — para king protein targets at drug dosing. Deng darung kolum nagpapakita ning Western (Devine) at Asian-Pacific (BMI 22) a mga halaga.</span>
-  </p>
+    <!-- ── IBW / AdjBW RESULTS ────────────────────────────────────────── -->
+    <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin:28px 0 12px;">Ideal &amp; Adjusted Body Weight</div>
 
-  <div class="calc-wrap">
-    <div class="calc-row">
-      <label>
-        <span data-lang="en">Actual body weight <span class="meta">In kilograms</span></span>
-        <span data-lang="tl" class="lang-hidden">Aktwal na timbang <span class="meta">Sa kilo</span></span>
-        <span data-lang="ceb" class="lang-hidden">Aktwal nga timbang <span class="meta">Sa kilo</span></span>
-        <span data-lang="kap" class="lang-hidden">Aktwal a timbang <span class="meta">King kilo</span></span>
-      </label>
-      <input type="number" id="ibw-wt" min="20" max="300" step="0.1" placeholder="e.g. 78" oninput="calcIBW()">
-    </div>
-    <div class="calc-row">
-      <label>
-        <span data-lang="en">Height <span class="meta">In centimeters (e.g. 160)</span></span>
-        <span data-lang="tl" class="lang-hidden">Taas <span class="meta">Sa sentimetro (hal. 160)</span></span>
-        <span data-lang="ceb" class="lang-hidden">Gitas-on <span class="meta">Sa sentimetro (pananglit 160)</span></span>
-        <span data-lang="kap" class="lang-hidden">Tas <span class="meta">King sentimetro (hal. 160)</span></span>
-      </label>
-      <input type="number" id="ibw-ht" min="100" max="220" step="0.1" placeholder="e.g. 160" oninput="calcIBW()">
-    </div>
-    <div class="calc-row" style="border-bottom:0;">
-      <label>
-        <span data-lang="en">Sex <span class="meta">Affects Devine formula</span></span>
-        <span data-lang="tl" class="lang-hidden">Kasarian <span class="meta">Nakakaapekto sa Devine formula</span></span>
-        <span data-lang="ceb" class="lang-hidden">Sex <span class="meta">Nakaapekto sa Devine formula</span></span>
-        <span data-lang="kap" class="lang-hidden">Kasarian <span class="meta">Nakaapekto king Devine formula</span></span>
-      </label>
-      <select id="ibw-sex" onchange="calcIBW()">
-        <option value="m">Male</option>
-        <option value="f" selected>Female</option>
-      </select>
-    </div>
-
-    <div id="ibw-result" style="display:none;margin-top:24px;">
+    <div id="ibw-result" style="display:none;">
       <div class="ibw-compare">
-
-        <!-- Western (Devine) -->
         <div class="ibw-col">
           <div class="ibw-col-header ibw-western">
             <div class="ibw-col-title">Western</div>
@@ -2403,8 +2332,6 @@ html[data-theme="dark"] .ibw-badge-warn{background:rgba(220,38,38,.15);color:#f8
             <div class="ibw-badge" id="ibw-w-badge" style="display:none;"></div>
           </div>
         </div>
-
-        <!-- Asian-Pacific (BMI 22) -->
         <div class="ibw-col">
           <div class="ibw-col-header ibw-asian">
             <div class="ibw-col-title">Asian-Pacific</div>
@@ -2426,18 +2353,18 @@ html[data-theme="dark"] .ibw-badge-warn{background:rgba(220,38,38,.15);color:#f8
             <div class="ibw-badge" id="ibw-a-badge" style="display:none;"></div>
           </div>
         </div>
-
-      </div><!-- /.ibw-compare -->
-
+      </div>
       <div class="ibw-note" id="ibw-note"></div>
-    </div><!-- /#ibw-result -->
+    </div>
+    <p id="ibw-placeholder" style="font-size:13px;color:var(--text-muted);margin:0;">Enter weight and height above to see IBW and AdjBW.</p>
+
   </div><!-- /.calc-wrap -->
 
   <p style="font-size:13px;color:var(--text-muted);font-style:italic;margin-top:14px;">
-    <span data-lang="en">For education only. Ideal body weight targets and adjusted body weight calculations guide protein prescriptions and drug dosing — always confirm with your nephrologist or clinical dietitian before changing your diet or medications.</span>
-    <span data-lang="tl" class="lang-hidden">Para sa edukasyon lamang. Ang mga target na IBW at AdjBW ay gabay para sa protein at gamot — palaging kumpirmahin sa inyong nephrologist.</span>
-    <span data-lang="ceb" class="lang-hidden">Alang lang sa edukasyon. Ang IBW ug AdjBW mga giya sa protein ug tambal — kanunay konfirmahon sa imong nephrologist.</span>
-    <span data-lang="kap" class="lang-hidden">Para king edukasyon mu. Ing IBW at AdjBW gabay para king protein at gamot — pirmi kumpirmahin king kekang nephrologist.</span>
+    <span data-lang="en">For education only. Discuss your numbers and any weight-loss plan with your nephrologist before changing diet, medications, or activity, especially if you are on dialysis or have advanced CKD. IBW and AdjBW guide protein prescriptions and drug dosing — confirm with your nephrologist or dietitian.</span>
+    <span data-lang="tl" class="lang-hidden">Para sa edukasyon lamang. Pag-usapan ang iyong numero at anumang weight-loss plan sa inyong nephrologist bago baguhin ang diyeta, gamot, o aktibidad.</span>
+    <span data-lang="ceb" class="lang-hidden">Alang lang sa edukasyon. Istorya sa imong nephrologist bahin sa imong numero ug bisan unsang weight-loss plan sa wala pa moilis sa diyeta, tambal, o aktibidad.</span>
+    <span data-lang="kap" class="lang-hidden">Para king edukasyon mu. Pakipag-istorya king kekang nephrologist tungkul king kekang numero at anumang weight-loss plan bago ipalit ing diyeta, gamot, o aktibidad.</span>
   </p>
 </section>
 
@@ -3817,15 +3744,23 @@ function calcBMI(){
     verdictEl.innerHTML = r.text + waistNote;
   }
 }
-calcBMI();
+
+function calcAll() { calcBMI(); calcIBW(); }
+calcAll();
 
 /* ── IBW / AdjBW Calculator ─────────────────────────────────────────── */
 function calcIBW() {
-  var wt = parseFloat(document.getElementById('ibw-wt').value);
-  var htCm = parseFloat(document.getElementById('ibw-ht').value);
-  var sex = document.getElementById('ibw-sex').value;
+  var wt = parseFloat(document.getElementById('bmi-wt').value);
+  var htCm = parseFloat(document.getElementById('bmi-ht').value);
+  var sex = document.getElementById('bmi-sex').value;
   var resEl = document.getElementById('ibw-result');
-  if (!wt || !htCm) { resEl.style.display = 'none'; return; }
+  var placeholder = document.getElementById('ibw-placeholder');
+  if (!wt || !htCm) {
+    if (resEl) resEl.style.display = 'none';
+    if (placeholder) placeholder.style.display = '';
+    return;
+  }
+  if (placeholder) placeholder.style.display = 'none';
 
   var htM = htCm / 100;
   var htIn = htCm / 2.54;
