@@ -2193,12 +2193,7 @@ var FIELD_META = {
   },
   // ── CBC ─────────────────────────────────────────────────────────
   hgb:{
-    'Conventional (US)':{label:'Hemoglobin (Hgb)',unit:'g/dL',ph:'e.g. 10.8',
-      toConv:function(v){
-        // v>30 means value was already in g/L (e.g. extracted from PDF SI column — 110 g/L)
-        // v≤30 means value is in g/dL (normal clinical range 6–20 g/dL) → convert to g/L
-        return v>30?v:v*10;
-      }},
+    'Conventional (US)':{label:'Hemoglobin (Hgb)',unit:'g/L',ph:'e.g. 108',toConv:function(v){return v;}},
     'SI':{label:'Hemoglobin (Hgb)',unit:'g/L',ph:'e.g. 108',toConv:function(v){return v;}},
     'Hybrid':{label:'Hemoglobin (Hgb)',unit:'g/L',ph:'e.g. 108',toConv:function(v){return v;}}
   },
@@ -3069,7 +3064,7 @@ function exportPDF(triggerBtn) {
       doc.setPage(i);
       fillRect(0, 287, W, 10, NAVY);
       setFont('normal',7,[160,180,200]);
-      text('W. G. M. Rivero, MD · PRC 0105184 · seriousmd.com/doc/williamrivero · williamriveromd.com', margin, 292);
+      text('williamriveromd.com · Lab Results Interpreter', margin, 292);
       text('Page '+i+' of '+pageCount, W-margin, 292, {align:'right'});
     }
     // Disclaimer on last page
@@ -3277,6 +3272,10 @@ function extractPDFPatientInfo(text){
 
   // ── Date ─────────────────────────────────────────────────────────
   var dateRxs=[
+    // SGD header: "SAMPLE RECEIVED : 11-07-2025 20:18"
+    /\bsample\s+received\s*[:\-]\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2})/i,
+    // SGD body: "Sample Collection Date/Time\nSerum   11-07-2025 19:54:00"
+    /\bsample\s+collection\s+date(?:\/time)?\b[\s\S]{0,35}?(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2})/i,
     /(?:date\s+(?:of\s+)?collect(?:ion|ed)|collect(?:ion|ed)\s+date|date\s+collected|specimen\s+date)\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
     /(?:report\s+date|date\s+(?:of\s+)?report|date\s+(?:of\s+)?result)\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
     /\bdate\s*[:\-]\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
