@@ -1763,7 +1763,7 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
     <div class="step-num">3</div>
     <div class="step-body">
       <strong><span class="lang-en">Navigate panels and enter values</span><span class="lang-tl" style="display:none;">I-navigate ang mga panel at mag-input</span><span class="lang-ceb" style="display:none;">I-navigate ang mga panel ug mag-input</span><span class="lang-kap" style="display:none;">I-navigate ing mga panel at mag-input</span></strong>
-      <span><span class="lang-en">Eight panels cover all major lab groups: <strong>Kidney, CBC/Iron, Metabolic, Lipids, Diabetes, CKD-MBD, Urinalysis,</strong> and <strong>HD Adequacy</strong>. The HD Adequacy panel unlocks automatically when a dialysis lab PDF is uploaded, or when "ESKD on Hemodialysis" is selected as the diagnosis. It accepts pre- and post-HD BUN, ultrafiltration volume, post-HD dry weight, and session duration to calculate dialysis dose. Each field turns green, amber, or red the moment you type. Use <strong>Try Sample Data</strong> to see how a real CKD patient's results look.</span><span class="lang-tl" style="display:none;">Pitong panel ang sumasaklaw sa lahat ng pangunahing grupo ng lab.</span><span class="lang-ceb" style="display:none;">Pito ka panel ang nagtabon sa tanan nga nag-unang grupo sa lab.</span><span class="lang-kap" style="display:none;">Pitong panel ing sumasaklaw king amin nang pangunahing grupo ning lab.</span></span>
+      <span><span class="lang-en">Seven panels cover all major lab groups: <strong>Kidney (including Urinalysis), CBC/Iron, Metabolic, Lipids, Diabetes, CKD-MBD,</strong> and <strong>HD Adequacy</strong>. The HD Adequacy panel unlocks automatically when a dialysis lab PDF is uploaded, or when "ESKD on Hemodialysis" is selected as the diagnosis. It accepts pre- and post-HD BUN, ultrafiltration volume, post-HD dry weight, and session duration to calculate dialysis dose. Each field turns green, amber, or red the moment you type. Use <strong>Try Sample Data</strong> to see how a real CKD patient's results look.</span><span class="lang-tl" style="display:none;">Pitong panel ang sumasaklaw sa lahat ng pangunahing grupo ng lab.</span><span class="lang-ceb" style="display:none;">Pito ka panel ang nagtabon sa tanan nga nag-unang grupo sa lab.</span><span class="lang-kap" style="display:none;">Pitong panel ing sumasaklaw king amin nang pangunahing grupo ning lab.</span></span>
     </div>
   </div>
   <div class="how-to-step">
@@ -2052,7 +2052,6 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
   <button class="tab-btn" onclick="switchTab('lipids',this)">❤️ Lipids</button>
   <button class="tab-btn" onclick="switchTab('diabetes',this)">🍬 Diabetes</button>
   <button class="tab-btn" onclick="switchTab('ckdmbd',this)">🦴 CKD-MBD</button>
-  <button class="tab-btn" onclick="switchTab('urinalysis',this)">🔬 Urinalysis</button>
   <button class="tab-btn" id="tab-hd" onclick="switchTab('hdadequacy',this)" style="display:none;">🔄 HD Adequacy</button>
   <button class="tab-btn" id="tab-derived" onclick="switchTab('derived',this)">📐 Derived <span class="tab-count" id="derived-count" style="display:none;"></span></button>
 </div>
@@ -2069,7 +2068,12 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
     <div id="inp-bun"></div>
     <div id="inp-uacr"></div>
     <div id="inp-upcr"></div>
-    <div class="hint">💡 Creatinine + Age + Sex → <strong>CKD-EPI eGFR</strong> and <strong>BUN:Cr ratio</strong> in Derived tab.</div>
+    <div style="margin:8px 0 4px;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">Urinalysis</div>
+    <div id="inp-urine_sg"></div>
+    <div id="inp-urine_ph"></div>
+    <div id="inp-urine_rbc_hpf"></div>
+    <div id="inp-urine_wbc_hpf"></div>
+    <div class="hint">💡 Creatinine + Age + Sex → <strong>CKD-EPI eGFR</strong> and <strong>BUN:Cr ratio</strong> in Derived tab. Urinalysis microscopy counts are per HPF (high-power field).</div>
     <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
   </div>
 
@@ -2142,18 +2146,6 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
     <div id="inp-vitd"></div>
     <div id="inp-alp"></div>
     <div class="hint">💡 Ca × P → <strong>Calcium-Phosphorus Product</strong> with vascular calcification risk flag in Derived tab.</div>
-    <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
-  </div>
-
-  <!-- URINALYSIS -->
-  <div class="tab-panel" id="panel-urinalysis">
-    <div class="section-header"><span class="sh-icon">🔬</span><div><div class="sh-title">Urinalysis</div><div class="sh-sub">Specific Gravity · pH · Microscopy (RBC &amp; WBC/HPF)</div></div></div>
-    <div class="sample-bar"><span class="sample-bar-label"><strong>Sample data:</strong> CKD with hematuria and reduced concentrating ability</span><button class="clear-btn" onclick="clearPanel('urinalysis')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button><button class="sample-btn" onclick="loadSample('urinalysis')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>Try Sample Data</button></div>
-    <div id="inp-urine_sg"></div>
-    <div id="inp-urine_ph"></div>
-    <div id="inp-urine_rbc_hpf"></div>
-    <div id="inp-urine_wbc_hpf"></div>
-    <div class="hint">💡 Enter microscopy counts per HPF (high-power field). For quantitative proteinuria use UACR/UPCR in the Kidney panel.</div>
     <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
   </div>
 
@@ -3210,13 +3202,12 @@ function _doExportPDF(logoDataUrl) {
 
     // ── Sections ─────────────────────────────────────────────────
     var sections = [
-      {title:'Kidney Function', icon:'KIDNEY', keys:['creatinine','egfr','bun','uacr','upcr']},
+      {title:'Kidney Function & Urinalysis', icon:'KIDNEY', keys:['creatinine','egfr','bun','uacr','upcr','urine_sg','urine_ph','urine_rbc_hpf','urine_wbc_hpf']},
       {title:'CBC & Iron Studies', icon:'CBC', keys:['hgb','hct','rbc','mcv','rdw','reticulocyte','ferritin','tsat','wbc','platelets']},
       {title:'Electrolytes & Metabolic', icon:'METABOLIC', keys:['sodium','potassium','bicarb','chloride','magnesium','albumin','alt','ast','uricacid']},
       {title:'Lipid Panel', icon:'LIPIDS', keys:['totalchol','ldl','hdl','tg','lpa']},
       {title:'Diabetes & Glucose', icon:'DIABETES', keys:['fbs','hba1c','fasting_insulin']},
-      {title:'CKD-MBD: Mineral & Bone', icon:'CKD-MBD', keys:['calcium','phosphorus','ipth','vitd','alp']},
-      {title:'Urinalysis', icon:'UA', keys:['urine_sg','urine_ph','urine_rbc_hpf','urine_wbc_hpf']}
+      {title:'CKD-MBD: Mineral & Bone', icon:'CKD-MBD', keys:['calcium','phosphorus','ipth','vitd','alp']}
     ];
     if (STATE.isHD) sections.push({title:'HD Adequacy', icon:'HD', keys:['bun_pre','bun_post','uf_volume','weight_post','spktv','urr','npcrHD']});
 
@@ -3442,23 +3433,22 @@ function _doExportFlowsheetPDF(logoDataUrl) {
     y+=8;
 
     var FIELD_ORDER=[
-      'creatinine','egfr','bun','uacr','upcr',
+      'creatinine','egfr','bun','uacr','upcr','urine_sg','urine_ph','urine_rbc_hpf','urine_wbc_hpf',
       'hgb','hct','rbc','mcv','rdw','reticulocyte','ferritin','tsat','wbc','platelets',
       'sodium','potassium','bicarb','chloride','magnesium','albumin','alt','ast','uricacid',
       'totalchol','ldl','hdl','tg','lpa',
       'fbs','hba1c','fasting_insulin',
       'calcium','phosphorus','ipth','vitd','alp',
-      'urine_sg','urine_ph','urine_rbc_hpf','urine_wbc_hpf',
       'bun_pre','bun_post','uf_volume','weight_post','spktv','urr','npcrHD'
     ];
     var DOMAINS={
       creatinine:'Kidney',egfr:'Kidney',bun:'Kidney',uacr:'Kidney',upcr:'Kidney',
+      urine_sg:'Kidney',urine_ph:'Kidney',urine_rbc_hpf:'Kidney',urine_wbc_hpf:'Kidney',
       hgb:'CBC & Iron',hct:'CBC & Iron',rbc:'CBC & Iron',mcv:'CBC & Iron',rdw:'CBC & Iron',reticulocyte:'CBC & Iron',ferritin:'CBC & Iron',tsat:'CBC & Iron',wbc:'CBC & Iron',platelets:'CBC & Iron',
       sodium:'Metabolic',potassium:'Metabolic',bicarb:'Metabolic',chloride:'Metabolic',magnesium:'Metabolic',albumin:'Metabolic',alt:'Metabolic',ast:'Metabolic',uricacid:'Metabolic',
       totalchol:'Lipids',ldl:'Lipids',hdl:'Lipids',tg:'Lipids',lpa:'Lipids',
       fbs:'Diabetes',hba1c:'Diabetes',fasting_insulin:'Diabetes',
       calcium:'CKD-MBD',phosphorus:'CKD-MBD',ipth:'CKD-MBD',vitd:'CKD-MBD',alp:'CKD-MBD',
-      urine_sg:'Urinalysis',urine_ph:'Urinalysis',urine_rbc_hpf:'Urinalysis',urine_wbc_hpf:'Urinalysis',
       bun_pre:'HD Adequacy',bun_post:'HD Adequacy',uf_volume:'HD Adequacy',weight_post:'HD Adequacy',spktv:'HD Adequacy',urr:'HD Adequacy',npcrHD:'HD Adequacy'
     };
     var STATUS_RANK={NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
@@ -3480,8 +3470,35 @@ function _doExportFlowsheetPDF(logoDataUrl) {
       y+=thH+1;
     }
 
+    /* ── Sparkline helper ─────────────────────────────────────────── */
+    function drawSparkline(rawVals, x, y, w, h) {
+      /* rawVals: array of field values oldest→newest; draws a mini line chart */
+      var nums = rawVals.map(function(v){ var n=parseFloat(v); return isNaN(n)?null:n; });
+      var valid = nums.filter(function(n){ return n!==null; });
+      if (!valid.length) return;
+      var minV=Math.min.apply(null,valid), maxV=Math.max.apply(null,valid);
+      var range = maxV-minV || 1;
+      var n = nums.length;
+      var pts = nums.map(function(v,i){
+        if (v===null) return null;
+        return {
+          x: x + (n>1 ? (i/(n-1))*w : w/2),
+          y: y + h*0.85 - ((v-minV)/range)*(h*0.75)
+        };
+      });
+      var LINE_C=[80,110,175];
+      doc.setLineWidth(0.4); doc.setDrawColor.apply(doc,LINE_C);
+      var prev=null;
+      pts.forEach(function(p){
+        if(p){if(prev)doc.line(prev.x,prev.y,p.x,p.y);prev=p;}else{prev=null;}
+      });
+      doc.setFillColor.apply(doc,LINE_C);
+      pts.forEach(function(p){ if(p) doc.ellipse(p.x,p.y,0.55,0.55,'F'); });
+    }
+
     drawTableHeader();
     var lastDomain='';
+    var rowIdxFS=0;
 
     FIELD_ORDER.forEach(function(key){
       var hasAny=sorted.some(function(s){return !!s.fields[key];});
@@ -3497,50 +3514,38 @@ function _doExportFlowsheetPDF(logoDataUrl) {
 
       var meta0=FIELD_META[key]&&(FIELD_META[key][STATE.unitSys]||FIELD_META[key]['Conventional (US)']);
       var labelStr=meta0?meta0.label:key, unitStr=meta0?(meta0.unit||''):'';
-      var rowH = unitStr?9:7;
+      var rowH = 7;
       checkPage(rowH);
 
-      /* Collect statuses */
-      var statuses=[];
-      sorted.forEach(function(s){
-        if(!s.fields[key]){statuses.push('EMPTY');return;}
-        var r=interpKeyVal(key,s.fields[key],s.unitSys||'Conventional (US)');
-        statuses.push(r.status);
-      });
-      var worstRank=Math.max.apply(null,statuses.map(function(s){return STATUS_RANK[s]||0;}));
-      var rowBg=worstRank===2?RED_BG:(worstRank===1?AMBER_BG:(worstRank===0?[245,250,246]:[248,250,252]));
-      fillRect(margin,y,colW,rowH,rowBg);
+      /* Subtle alternating row background — no status-based colors */
+      fillRect(margin,y,colW,rowH, rowIdxFS%2===0?[248,250,253]:[255,255,255]);
+      rowIdxFS++;
 
-      setFont('bold',7,NAVY); text(labelStr,margin+2,y+4.5);
-      if(unitStr){ setFont('normal',5.5,GRAY); text('('+unitStr+')',margin+2,y+7.5); }
+      setFont('bold',6.5,NAVY); text(labelStr+(unitStr?' ('+unitStr+')':''),margin+2,y+4.5,{maxWidth:labelColW-3});
 
+      /* Collect values for sparkline (newest→oldest per display, reversed for chart) */
+      var rawVals=[];
       var cx=margin+labelColW;
-      sorted.forEach(function(s,i){
+      sorted.forEach(function(s){
         var val=s.fields[key];
-        if(!val){ setFont('normal',7,GRAY); text('—',cx+dateColW/2,y+4.5,{align:'center'}); }
-        else {
+        rawVals.push(val);
+        if(!val){
+          setFont('normal',6.5,GRAY); text('—',cx+dateColW/2,y+4.5,{align:'center'});
+        } else {
           var r=interpKeyVal(key,val,s.unitSys||'Conventional (US)');
-          var tc=r.status==='FLAG'?RED:(r.status==='WATCH'?AMBER:(r.status==='NORMAL'?GREEN:GRAY));
-          setFont('bold',7.5,tc); text(val,cx+dateColW/2,y+4.5,{align:'center'});
-          doc.setFillColor.apply(doc,tc); doc.roundedRect(cx+dateColW/2-7,y+5.5,14,3,0.5,0.5,'F');
-          setFont('bold',5,WHITE); text(r.status==='NORMAL'?'Goal':(r.status==='WATCH'?'Watch':'Flag'),cx+dateColW/2,y+7.3,{align:'center'});
+          var tc=r.status==='FLAG'?RED:(r.status==='WATCH'?AMBER:(r.status==='NORMAL'?GREEN:NAVY));
+          setFont('bold',7,tc); text(''+val,cx+dateColW/2,y+4.5,{align:'center'});
+          /* Tiny status dot — upper-right corner of cell */
+          if(r.status==='FLAG'||r.status==='WATCH'){
+            doc.setFillColor.apply(doc,r.status==='FLAG'?RED:AMBER);
+            doc.ellipse(cx+dateColW-1.5,y+1.5,1,1,'F');
+          }
         }
         cx+=dateColW;
       });
 
-      /* Trend: newest vs oldest non-empty */
-      var validStatuses=statuses.filter(function(s){return s!=='EMPTY';});
-      var trend='', tColor=GRAY;
-      if(validStatuses.length>=2){
-        var delta=STATUS_RANK[statuses[0]]-STATUS_RANK[statuses[statuses.length-1]];
-        if(delta<0){ trend='Impr'; tColor=GREEN; }
-        else if(delta>0){ trend='Decl'; tColor=RED; }
-        else{ trend='Stbl'; tColor=GRAY; }
-      } else if(validStatuses.length===1){
-        trend=statuses[0]==='NORMAL'?'Goal':(statuses[0]==='WATCH'?'Watch':'Flag');
-        tColor=statuses[0]==='NORMAL'?GREEN:(statuses[0]==='WATCH'?AMBER:RED);
-      }
-      setFont('bold',6.5,tColor); text(trend,cx+trendColW/2,y+4.5,{align:'center'});
+      /* Sparkline — draw chronologically (oldest first = reverse of sorted) */
+      drawSparkline(rawVals.slice().reverse(), cx+1, y+1, trendColW-2, rowH-2);
       y+=rowH;
     });
 
@@ -3597,44 +3602,41 @@ function _doExportFlowsheetPDF(logoDataUrl) {
           y+=6; lastDomD=row.domain;
         }
 
-        /* Worst status across columns for row background */
-        var SRD = {NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
-        var wrD = Math.max.apply(null, row.cols.map(function(c){ return c?SRD[c.status]||0:9; }));
-        var rBg = wrD===2?RED_BG:(wrD===1?AMBER_BG:(wrD===0?[246,252,248]:[250,252,255]));
-        var rH = 8;
+        var rH = 7;
         checkPage(rH);
-        fillRect(margin,y,colW,rH,rBg);
-        doc.setFillColor.apply(doc, wrD===2?RED:(wrD===1?AMBER:(wrD===0?GREEN:GRAY)));
+        fillRect(margin,y,colW,rH,rowIdxFS%2===0?[248,250,253]:[255,255,255]);
+        rowIdxFS++;
+
+        /* Left accent bar color by domain */
+        var SRD={NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
+        var wrD=Math.max.apply(null,row.cols.map(function(c){return c?SRD[c.status]||0:9;}));
+        doc.setFillColor.apply(doc,wrD===2?RED:(wrD===1?AMBER:(wrD===0?GREEN:GRAY)));
         doc.rect(margin,y,1,rH,'F');
 
-        /* Label (truncate to fit column) */
-        setFont('bold',6.5,NAVY); text(lbl, margin+3, y+5, {maxWidth:labelColW-4});
+        /* Label */
+        setFont('bold',6.5,NAVY); text(lbl, margin+3, y+4.5, {maxWidth:labelColW-4});
 
         /* Values per column */
         var cx = margin+labelColW;
-        var statArr = row.cols.map(function(c){ return c?c.status:'EMPTY'; });
-        row.cols.forEach(function(c, ci){
-          if (!c || (!c.value && c.value!=='0')) {
-            setFont('normal',7,GRAY); text('—', cx+dateColW/2, y+5, {align:'center'});
+        var derivRawVals=[];
+        row.cols.forEach(function(c){
+          var dispVal = c && c.value ? c.value+(c.unit?' '+c.unit:'') : null;
+          derivRawVals.push(c ? c.value : null);
+          if (!dispVal) {
+            setFont('normal',6.5,GRAY); text('—', cx+dateColW/2, y+4.5, {align:'center'});
           } else {
-            var tc = c.status==='FLAG'?RED:(c.status==='WATCH'?AMBER:(c.status==='NORMAL'?GREEN:GRAY));
-            setFont('bold',7,tc); text(c.value+(c.unit?' '+c.unit:''), cx+dateColW/2, y+4.5, {align:'center'});
-            doc.setFillColor.apply(doc,tc); doc.roundedRect(cx+dateColW/2-7,y+5.5,14,2.5,0.5,0.5,'F');
-            setFont('bold',4.5,WHITE); text(c.status==='NORMAL'?'Goal':(c.status==='WATCH'?'Watch':'Flag'), cx+dateColW/2, y+7.2, {align:'center'});
+            var tc = c.status==='FLAG'?RED:(c.status==='WATCH'?AMBER:(c.status==='NORMAL'?GREEN:NAVY));
+            setFont('bold',7,tc); text(dispVal, cx+dateColW/2, y+4.5, {align:'center'});
+            if(c.status==='FLAG'||c.status==='WATCH'){
+              doc.setFillColor.apply(doc,c.status==='FLAG'?RED:AMBER);
+              doc.ellipse(cx+dateColW-1.5,y+1.5,1,1,'F');
+            }
           }
           cx += dateColW;
         });
 
-        /* Trend */
-        var nonEmpty = statArr.filter(function(s){return s!=='EMPTY';});
-        var trend='', tC=GRAY;
-        if (nonEmpty.length>=2) {
-          var delta = SRD[statArr[0]] - SRD[statArr[statArr.length-1]];
-          if (delta<0){trend='Impr';tC=GREEN;}
-          else if(delta>0){trend='Decl';tC=RED;}
-          else{trend='Stbl';tC=GRAY;}
-        }
-        setFont('bold',6.5,tC); text(trend, cx+trendColW/2, y+5, {align:'center'});
+        /* Sparkline (oldest first = reverse of derivedMap column order, which mirrors sorted) */
+        drawSparkline(derivRawVals.slice().reverse(), cx+1, y+1, trendColW-2, rH-2);
         y+=rH;
       });
       y+=4;
@@ -3643,17 +3645,17 @@ function _doExportFlowsheetPDF(logoDataUrl) {
     y+=4;
 
     /* Legend */
-    checkPage(32);
+    checkPage(26);
     y+=2;
-    fillRect(margin,y,colW,28,LIGHT_BG);
-    setFont('bold',8,NAVY); text('Interpretation Guide',margin+2,y+5);
-    [[GREEN,'At Goal','At Goal — within target range'],[AMBER,'Watch','Watch — borderline; monitor closely'],[RED,'Flag','Flag — requires medical attention']].forEach(function(item,i){
-      var ry=y+9+i*7;
-      doc.setFillColor.apply(doc,item[0]); doc.roundedRect(margin+2,ry,18,5,1,1,'F');
-      setFont('bold',6.5,WHITE); text(item[1],margin+11,ry+3.5,{align:'center'});
-      setFont('normal',7,NAVY); text(item[2],margin+22,ry+3.5);
+    fillRect(margin,y,colW,22,LIGHT_BG);
+    setFont('bold',8,NAVY); text('Legend',margin+2,y+5);
+    [[GREEN,'At Goal — within target range'],[AMBER,'Watch — borderline; review trend'],[RED,'Flag — out of target; clinical review needed']].forEach(function(item,i){
+      var ry=y+9+i*5;
+      doc.setFillColor.apply(doc,item[0]); doc.ellipse(margin+4,ry+1.5,1.5,1.5,'F');
+      setFont('normal',7,NAVY); text(item[1],margin+8,ry+2.5);
     });
-    y+=32;
+    setFont('italic',6,GRAY); text('Value color = status · Dot in upper-right corner = abnormal · Trend column = sparkline (oldest→newest)',margin+2,y+20);
+    y+=25;
 
     /* Footer */
     var pageCount=doc.getNumberOfPages();
@@ -3695,7 +3697,11 @@ var SAMPLE_DATA = {
     egfr: '32',
     bun: '38',
     uacr: '285',
-    upcr: '0.8'
+    upcr: '0.8',
+    urine_sg: '1.008',
+    urine_ph: '5.5',
+    urine_rbc_hpf: '8',
+    urine_wbc_hpf: '3'
   },
   cbc: {
     hgb: '98',
@@ -3747,12 +3753,6 @@ var SAMPLE_DATA = {
     spktv: '',
     urr: '',
     npcrHD: ''
-  },
-  urinalysis: {
-    urine_sg: '1.008',
-    urine_ph: '5.5',
-    urine_rbc_hpf: '8',
-    urine_wbc_hpf: '3'
   }
 };
 
