@@ -3545,7 +3545,7 @@ function _doExportFlowsheetPDF(logoDataUrl) {
       });
 
       /* Sparkline — draw chronologically (oldest first = reverse of sorted) */
-      drawSparkline(rawVals.slice().reverse(), cx+1, y+1, trendColW-2, rowH-2);
+      drawSparkline(rawVals, cx+1, y+1, trendColW-2, rowH-2);
       y+=rowH;
     });
 
@@ -3636,7 +3636,7 @@ function _doExportFlowsheetPDF(logoDataUrl) {
         });
 
         /* Sparkline (oldest first = reverse of derivedMap column order, which mirrors sorted) */
-        drawSparkline(derivRawVals.slice().reverse(), cx+1, y+1, trendColW-2, rH-2);
+        drawSparkline(derivRawVals, cx+1, y+1, trendColW-2, rH-2);
         y+=rH;
       });
       y+=4;
@@ -3671,7 +3671,7 @@ function _doExportFlowsheetPDF(logoDataUrl) {
     doc.text('For patient education only. All results must be interpreted in clinical context by a qualified physician. Not a substitute for medical consultation.',margin,pageH-12,{maxWidth:colW});
 
     /* Use most recent date among loaded sessions as the reference date */
-    var _refDate = sorted[0] && sorted[0].date ? sorted[0].date : new Date().toISOString().slice(0,10);
+    var _refDate = sorted[sorted.length-1] && sorted[sorted.length-1].date ? sorted[sorted.length-1].date : new Date().toISOString().slice(0,10);
     doc.save(_flowsheetFilename(ptName, _refDate));
 
   } catch(e){
@@ -4217,7 +4217,7 @@ function _groupSessionsByDate(sessions) {
   return order.map(function(k){ return groups[k]; }).sort(function(a,b){
     if (!a.date && !b.date) return 0;
     if (!a.date) return 1; if (!b.date) return -1;
-    return a.date < b.date ? 1 : -1;
+    return a.date < b.date ? -1 : 1;
   });
 }
 
