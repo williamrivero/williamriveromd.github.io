@@ -2181,7 +2181,7 @@ var FIELD_META = {
     'Hybrid':{label:'Hemoglobin (Hgb)',unit:'g/L',ph:'e.g. 108',toConv:function(v){return v;}}
   },
   hct:{
-    'Conventional (US)':{label:'Hematocrit (Hct)',unit:'%',ph:'e.g. 33',toConv:function(v){return v;}},
+    'Conventional (US)':{label:'Hematocrit (Hct)',unit:'%',ph:'e.g. 33',toConv:function(v){return v<=1?v*100:v;}},
     'SI':{label:'Hematocrit (Hct)',unit:'L/L',ph:'e.g. 0.33',toConv:function(v){return v*100;}},
     'Hybrid':{label:'Hematocrit (Hct)',unit:'%',ph:'e.g. 33',toConv:function(v){return v;}}
   },
@@ -3233,7 +3233,7 @@ var FIELD_PATTERNS = [
   { key:'creatinine',    rx:/\bcreatinine\b(?![\s\/\-]*(?:ratio|clearance|index))/i, siU:/µmol\/[Ll]|umol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'egfr',          rx:/\b(?:e?gfr|estimated\s+gfr|glomerular\s+filtration(?:\s+rate)?)\b/i },
   { key:'bun',           rx:/\b(?:bun\b|urea\s+nitrogen|blood\s+urea\s+nitrogen|urea(?:\s*,?\s*serum)?)\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
-  { key:'uacr',          rx:/\b(?:uacr|albumin[\s\/\-]+creatinine(?:\s+ratio)?|microalbumin\/creatinine|acr\b)/i },
+  { key:'uacr',          rx:/\b(?:uacr|albumin[\s\/\-]+creatinine(?:\s+ratio)?|microalbumin\/creatinine|acr\b)/i, cvU:/mg\/g/ },
   { key:'upcr',          rx:/\b(?:upcr|protein[\s\/\-]+creatinine(?:\s+ratio)?|pcr\b)/i },
   { key:'hgb',           rx:/\b(?:h[ae]moglobin|hgb\b|hb\b)/i },
   { key:'hct',           rx:/\b(?:h[ae]matocrit|hct\b|pcv\b)/i },
@@ -3259,7 +3259,7 @@ var FIELD_PATTERNS = [
   { key:'hdl',           rx:/\bhdl[\s\-]?c?\b/i,                        siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'tg',            rx:/\b(?:triglyceride|tg\b|triacylglycerol|triacylglyceride)\b/i,              siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'fbs',           rx:/\b(?:fasting\s+(?:blood\s+)?(?:glucose|sugar)|fbs\b|fbg\b|plasma\s+glucose|(?:blood\s+)?glucose(?!\s+toleran))\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
-  { key:'hba1c',         rx:/\b(?:hba1c|glycated\s+h[ae]moglobin|glycosylated\s+h[ae]moglobin|a1c\b)/i, siU:/mmol\/mol/ },
+  { key:'hba1c',         rx:/\b(?:hba1c|glycated\s+h[ae]moglobin|glycosylated\s+h[ae]moglobin|a1c\b)/i, siU:/mmol\/mol/, cvU:/%/ },
   { key:'fasting_insulin',rx:/\b(?:fasting\s+insulin|serum\s+insulin)\b/i },
   { key:'calcium',       rx:/\b(?:(?:serum\s+)?calcium(?!\s+x))\b/i,   siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'phosphorus',    rx:/\b(?:phosph(?:orus|ate)\b|po4\b|inorganic\s+phosphate)\b/i,                siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
@@ -3296,34 +3296,43 @@ function parseLabText(rawText) {
     var m = rule.rx.exec(text);
     if (!m) return;
 
-    /* Get up to 160 chars after the match */
-    var after = text.substring(m.index + m[0].length, m.index + m[0].length + 160);
+    /* 250-char window (wider to reach conventional value in dual-unit reports) */
+    var after = text.substring(m.index + m[0].length, m.index + m[0].length + 250);
 
-    /* Strip parenthetical qualifiers e.g. (Fasting), (Direct), (Intact) */
-    after = after.replace(/\([^)]{1,30}\)/g, ' ');
+    /* Strip parenthetical qualifiers and result-flag symbols (▲▼) */
+    after = after.replace(/\([^)]{1,30}\)/g, ' ').replace(/[▲▼]+/g, ' ');
 
-    /* Find first plausible numeric value.
-       Uses a negative lookahead to skip "N/A", "> 60" style flags,
-       but allows decimals like 1.25 and values like 108 */
-    var numM = after.match(/[\s:=*]+(\d+\.?\d*)(?!\s*%?\s*[-–]\s*\d)/);
-    if (!numM) numM = after.match(/[\s:=*]+(\d+\.?\d*)/);
-    if (!numM) return;
+    var val = null;
 
-    var val = numM[1];
-    if (parseFloat(val) <= 0) return; /* skip zeroes */
+    /* 1st choice: find number immediately before the conventional unit.
+       Philippine dual-unit reports list SI value first, conventional second —
+       targeting the unit string directly avoids grabbing the SI value by mistake. */
+    if (rule.cvU) {
+      var cvRx = new RegExp('(\\d+\\.?\\d*)\\s*(?:' + rule.cvU.source + ')', 'i');
+      var cvM = after.match(cvRx);
+      if (cvM) { val = cvM[1]; cvVotes++; }
+    }
 
+    /* 2nd choice: first plausible number (used for fields with no separate
+       conventional unit, e.g. electrolytes, CBC counts, U/L enzymes) */
+    if (!val) {
+      var numM = after.match(/[\s:=*]+(\d+\.?\d*)(?!\s*%?\s*[-–]\s*\d)/);
+      if (!numM) numM = after.match(/[\s:=*]+(\d+\.?\d*)/);
+      if (numM) {
+        val = numM[1];
+        var afterNum = after.substring(numM.index + numM[0].length, numM.index + numM[0].length + 25);
+        if (rule.siU && rule.siU.test(afterNum)) siVotes++;
+      }
+    }
+
+    if (!val || parseFloat(val) <= 0) return;
     fields[rule.key] = val;
-
-    /* Unit detection: look at the 25 chars right after the number */
-    var afterNum = after.substring(numM.index + numM[0].length, numM.index + numM[0].length + 25);
-    if (rule.siU && rule.siU.test(afterNum)) siVotes++;
-    if (rule.cvU && rule.cvU.test(afterNum)) cvVotes++;
   });
 
-  var unitSys = null;
-  if (siVotes > 0 || cvVotes > 0) {
-    unitSys = siVotes >= cvVotes ? 'SI' : 'Conventional (US)';
-  }
+  /* If any conventional values were matched directly, treat the whole report
+     as Conventional. Only fall back to SI if no conventional matches at all. */
+  var unitSys = cvVotes > 0 ? 'Conventional (US)' : (siVotes > 0 ? 'SI' : null);
+
   var ptInfo = extractPDFPatientInfo(text);
   return { fields: fields, unitSys: unitSys, name: ptInfo.name, date: ptInfo.date, sex: ptInfo.sex, age: ptInfo.age };
 }
