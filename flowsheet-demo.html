@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Lab Flowsheet PDF Demo — williamriveromd.com</title>
+<style>
+  body{font-family:'Segoe UI',sans-serif;background:#f4f6f9;margin:0;padding:32px;}
+  h1{color:#1a2e4a;font-size:22px;margin-bottom:4px;}
+  p{color:#555;font-size:14px;margin:0 0 28px;}
+  .cards{display:flex;gap:20px;flex-wrap:wrap;}
+  .card{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(26,46,74,.1);padding:24px;min-width:280px;flex:1;}
+  .card h2{color:#1a2e4a;font-size:15px;margin:0 0 8px;}
+  .card p{font-size:13px;color:#666;margin:0 0 18px;}
+  .dates{font-size:12px;color:#1a6b72;font-weight:600;margin-bottom:16px;line-height:1.8;}
+  button{background:#1a6b72;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:filter .15s;}
+  button:hover{filter:brightness(1.1);}
+  button:disabled{opacity:.6;cursor:not-allowed;}
+  .note{font-size:11px;color:#888;margin-top:10px;}
+</style>
+</head>
+<body>
+<h1>Lab Flowsheet PDF Demo</h1>
+<p>Click a button to generate and download a sample lab trend flow sheet PDF. Open in any PDF viewer to inspect the output.</p>
+<div class="cards">
+
+  <div class="card">
+    <h2>2-Date Sample (Portrait)</h2>
+    <p>Patient: DELA CRUZ, JUAN M. · Male, 62 · CKD Stage 3b + DM + Anemia of CKD</p>
+    <div class="dates">
+      📅 Nov 15, 2024 — baseline<br/>
+      📅 May 12, 2025 — 6-month follow-up
+    </div>
+    <button id="btn2" onclick="generate(2)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download 2-Date Flowsheet PDF
+    </button>
+    <div class="note">Landscape not needed for 2 dates — portrait layout</div>
+  </div>
+
+  <div class="card">
+    <h2>4-Date Sample (Landscape)</h2>
+    <p>Patient: DELA CRUZ, JUAN M. · Male, 62 · CKD Stage 3b + DM + Anemia of CKD</p>
+    <div class="dates">
+      📅 Aug 10, 2024 — initial visit<br/>
+      📅 Nov 15, 2024 — 3-month follow-up<br/>
+      📅 Feb 18, 2025 — 6-month follow-up<br/>
+      📅 May 12, 2025 — 9-month follow-up
+    </div>
+    <button id="btn4" onclick="generate(4)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download 4-Date Flowsheet PDF
+    </button>
+    <div class="note">3+ dates → automatically switches to landscape layout</div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ── Sample patient sessions ──────────────────────────────────────────
+var SESSIONS_2 = [
+  {
+    fileName:'DELACRUZ_May2025.pdf', name:'DELA CRUZ, JUAN M.', date:'2025-05-12', sex:'M', age:62, unitSys:'Conventional (US)',
+    fields:{
+      creatinine:'2.1', egfr:'32',  bun:'36',   uacr:'280',
+      hgb:'103',  hct:'31',  rbc:'3.5',  mcv:'82',  rdw:'15.8', ferritin:'310', tsat:'28',
+      wbc:'6.8',  platelets:'210',
+      sodium:'138', potassium:'5.4', bicarb:'20', albumin:'3.7', alt:'22', ast:'24', uricacid:'6.8',
+      totalchol:'165', ldl:'68',  hdl:'38',  tg:'210',
+      fbs:'128', hba1c:'7.4',
+      calcium:'9.0', phosphorus:'5.1', ipth:'380', vitd:'28', alp:'95'
+    }
+  },
+  {
+    fileName:'DELACRUZ_Nov2024.pdf', name:'DELA CRUZ, JUAN M.', date:'2024-11-15', sex:'M', age:62, unitSys:'Conventional (US)',
+    fields:{
+      creatinine:'2.4', egfr:'28',  bun:'44',   uacr:'340',
+      hgb:'98',   hct:'29',  rbc:'3.2',  mcv:'80',  rdw:'16.5', ferritin:'290', tsat:'21',
+      wbc:'7.2',  platelets:'195',
+      sodium:'136', potassium:'5.8', bicarb:'18', albumin:'3.5', alt:'26', ast:'28', uricacid:'7.4',
+      totalchol:'182', ldl:'76',  hdl:'36',  tg:'248',
+      fbs:'148', hba1c:'8.2',
+      calcium:'8.8', phosphorus:'5.8', ipth:'420', vitd:'18', alp:'112'
+    }
+  }
+];
+
+var SESSIONS_4 = [
+  {
+    fileName:'DELACRUZ_May2025.pdf', name:'DELA CRUZ, JUAN M.', date:'2025-05-12', sex:'M', age:62, unitSys:'Conventional (US)',
+    fields:{
+      creatinine:'2.1', egfr:'32',  bun:'36',   uacr:'280',
+      hgb:'103',  hct:'31',  rbc:'3.5',  mcv:'82',  rdw:'15.8', ferritin:'310', tsat:'28',
+      wbc:'6.8',  platelets:'210',
+      sodium:'138', potassium:'5.4', bicarb:'20', albumin:'3.7', alt:'22', ast:'24', uricacid:'6.8',
+      totalchol:'165', ldl:'68',  hdl:'38',  tg:'210',
+      fbs:'128', hba1c:'7.4',
+      calcium:'9.0', phosphorus:'5.1', ipth:'380', vitd:'28', alp:'95'
+    }
+  },
+  {
+    fileName:'DELACRUZ_Feb2025.pdf', name:'DELA CRUZ, JUAN M.', date:'2025-02-18', sex:'M', age:62, unitSys:'Conventional (US)',
+    fields:{
+      creatinine:'2.2', egfr:'30',  bun:'40',   uacr:'305',
+      hgb:'101',  hct:'30',  rbc:'3.3',  mcv:'81',  rdw:'16.1', ferritin:'300', tsat:'25',
+      wbc:'7.0',  platelets:'200',
+      sodium:'137', potassium:'5.5', bicarb:'19', albumin:'3.6', alt:'24', ast:'26', uricacid:'7.1',
+      totalchol:'172', ldl:'72',  hdl:'37',  tg:'228',
+      fbs:'136', hba1c:'7.8',
+      calcium:'8.9', phosphorus:'5.3', ipth:'395', vitd:'22', alp:'104'
+    }
+  },
+  {
+    fileName:'DELACRUZ_Nov2024.pdf', name:'DELA CRUZ, JUAN M.', date:'2024-11-15', sex:'M', age:62, unitSys:'Conventional (US)',
+    fields:{
+      creatinine:'2.4', egfr:'28',  bun:'44',   uacr:'340',
+      hgb:'98',   hct:'29',  rbc:'3.2',  mcv:'80',  rdw:'16.5', ferritin:'290', tsat:'21',
+      wbc:'7.2',  platelets:'195',
+      sodium:'136', potassium:'5.8', bicarb:'18', albumin:'3.5', alt:'26', ast:'28', uricacid:'7.4',
+      totalchol:'182', ldl:'76',  hdl:'36',  tg:'248',
+      fbs:'148', hba1c:'8.2',
+      calcium:'8.8', phosphorus:'5.8', ipth:'420', vitd:'18', alp:'112'
+    }
+  },
+  {
+    fileName:'DELACRUZ_Aug2024.pdf', name:'DELA CRUZ, JUAN M.', date:'2024-08-10', sex:'M', age:61, unitSys:'Conventional (US)',
+    fields:{
+      creatinine:'2.6', egfr:'25',  bun:'50',   uacr:'410',
+      hgb:'92',   hct:'28',  rbc:'3.0',  mcv:'79',  rdw:'17.0', ferritin:'260', tsat:'18',
+      wbc:'7.8',  platelets:'188',
+      sodium:'135', potassium:'6.2', bicarb:'17', albumin:'3.3', alt:'30', ast:'32', uricacid:'8.1',
+      totalchol:'196', ldl:'82',  hdl:'34',  tg:'268',
+      fbs:'162', hba1c:'8.9',
+      calcium:'8.7', phosphorus:'6.2', ipth:'480', vitd:'14', alp:'125'
+    }
+  }
+];
+
+// ── Simplified field metadata ────────────────────────────────────────
+var FIELD_META = {
+  creatinine:{label:'Creatinine',unit:'mg/dL'},  egfr:{label:'eGFR',unit:'mL/min/1.73m²'},
+  bun:{label:'BUN',unit:'mg/dL'},                uacr:{label:'UACR',unit:'mg/g'},
+  hgb:{label:'Hemoglobin',unit:'g/L'},           hct:{label:'Hematocrit',unit:'%'},
+  rbc:{label:'RBC',unit:'×10⁶/µL'},             mcv:{label:'MCV',unit:'fL'},
+  rdw:{label:'RDW',unit:'%'},                    ferritin:{label:'Ferritin',unit:'ng/mL'},
+  tsat:{label:'TSAT',unit:'%'},                  wbc:{label:'WBC',unit:'×10³/µL'},
+  platelets:{label:'Platelets',unit:'×10³/µL'},
+  sodium:{label:'Sodium',unit:'mEq/L'},          potassium:{label:'Potassium',unit:'mEq/L'},
+  bicarb:{label:'Bicarbonate',unit:'mEq/L'},     albumin:{label:'Albumin',unit:'g/dL'},
+  alt:{label:'ALT',unit:'U/L'},                  ast:{label:'AST',unit:'U/L'},
+  uricacid:{label:'Uric Acid',unit:'mg/dL'},
+  totalchol:{label:'Total Cholesterol',unit:'mg/dL'}, ldl:{label:'LDL-C',unit:'mg/dL'},
+  hdl:{label:'HDL-C',unit:'mg/dL'},              tg:{label:'Triglycerides',unit:'mg/dL'},
+  fbs:{label:'Fasting Glucose',unit:'mg/dL'},    hba1c:{label:'HbA1c',unit:'%'},
+  calcium:{label:'Calcium',unit:'mg/dL'},        phosphorus:{label:'Phosphorus',unit:'mg/dL'},
+  ipth:{label:'iPTH',unit:'pg/mL'},              vitd:{label:'25(OH)D',unit:'ng/mL'},
+  alp:{label:'ALP',unit:'U/L'}
+};
+
+// ── Simplified interpretation (CKD stage 3-4 context) ───────────────
+function interpKeyVal(key, val) {
+  var v = parseFloat(val);
+  if (isNaN(v)) return 'EMPTY';
+  switch(key) {
+    case 'creatinine': return v>3.0?'FLAG':v>2.0?'WATCH':'NORMAL';
+    case 'egfr':       return v<20?'FLAG':v<45?'WATCH':'NORMAL';
+    case 'bun':        return v>60?'FLAG':v>35?'WATCH':'NORMAL';
+    case 'uacr':       return v>300?'FLAG':v>30?'WATCH':'NORMAL';
+    case 'hgb':        return v<90?'FLAG':v<110?'WATCH':'NORMAL';
+    case 'hct':        return v<27?'FLAG':v<33?'WATCH':'NORMAL';
+    case 'rbc':        return v<3.0?'FLAG':v<3.8?'WATCH':'NORMAL';
+    case 'mcv':        return v<70?'FLAG':v<80?'WATCH':v>100?'WATCH':'NORMAL';
+    case 'rdw':        return v>17?'FLAG':v>15?'WATCH':'NORMAL';
+    case 'ferritin':   return v<30?'FLAG':v<100?'WATCH':v>800?'WATCH':'NORMAL';
+    case 'tsat':       return v<20?'FLAG':v<30?'WATCH':'NORMAL';
+    case 'wbc':        return v>11?'FLAG':v<4?'FLAG':'NORMAL';
+    case 'platelets':  return v<100?'FLAG':v<150?'WATCH':'NORMAL';
+    case 'sodium':     return v<130?'FLAG':v>150?'FLAG':v<135?'WATCH':v>145?'WATCH':'NORMAL';
+    case 'potassium':  return v>=6.0?'FLAG':v>=5.5?'WATCH':v<3.5?'FLAG':'NORMAL';
+    case 'bicarb':     return v<18?'FLAG':v<22?'WATCH':'NORMAL';
+    case 'albumin':    return v<3.5?'FLAG':v<4.0?'WATCH':'NORMAL';
+    case 'alt':        return v>80?'FLAG':v>40?'WATCH':'NORMAL';
+    case 'ast':        return v>80?'FLAG':v>40?'WATCH':'NORMAL';
+    case 'uricacid':   return v>8.0?'FLAG':v>6.0?'WATCH':'NORMAL';
+    case 'totalchol':  return v>240?'FLAG':v>200?'WATCH':'NORMAL';
+    case 'ldl':        return v>100?'FLAG':v>70?'WATCH':'NORMAL';
+    case 'hdl':        return v<35?'FLAG':v<45?'WATCH':'NORMAL';
+    case 'tg':         return v>500?'FLAG':v>200?'WATCH':'NORMAL';
+    case 'fbs':        return v>200?'FLAG':v>126?'WATCH':'NORMAL';
+    case 'hba1c':      return v>9.0?'FLAG':v>7.0?'WATCH':'NORMAL';
+    case 'calcium':    return v<8.5?'FLAG':v>10.5?'FLAG':v<9.0?'WATCH':'NORMAL';
+    case 'phosphorus': return v>6.0?'FLAG':v>4.5?'WATCH':'NORMAL';
+    case 'ipth':       return v>600?'FLAG':v>300?'WATCH':v<70?'FLAG':v<150?'WATCH':'NORMAL';
+    case 'vitd':       return v<12?'FLAG':v<30?'WATCH':'NORMAL';
+    case 'alp':        return v>150?'FLAG':v>100?'WATCH':'NORMAL';
+    default:           return 'NORMAL';
+  }
+}
+
+var FIELD_ORDER = [
+  'creatinine','egfr','bun','uacr',
+  'hgb','hct','rbc','mcv','rdw','ferritin','tsat','wbc','platelets',
+  'sodium','potassium','bicarb','albumin','alt','ast','uricacid',
+  'totalchol','ldl','hdl','tg',
+  'fbs','hba1c',
+  'calcium','phosphorus','ipth','vitd','alp'
+];
+var DOMAINS = {
+  creatinine:'Kidney Function',egfr:'Kidney Function',bun:'Kidney Function',uacr:'Kidney Function',
+  hgb:'CBC & Iron',hct:'CBC & Iron',rbc:'CBC & Iron',mcv:'CBC & Iron',rdw:'CBC & Iron',ferritin:'CBC & Iron',tsat:'CBC & Iron',wbc:'CBC & Iron',platelets:'CBC & Iron',
+  sodium:'Electrolytes & Metabolic',potassium:'Electrolytes & Metabolic',bicarb:'Electrolytes & Metabolic',albumin:'Electrolytes & Metabolic',alt:'Electrolytes & Metabolic',ast:'Electrolytes & Metabolic',uricacid:'Electrolytes & Metabolic',
+  totalchol:'Lipid Panel',ldl:'Lipid Panel',hdl:'Lipid Panel',tg:'Lipid Panel',
+  fbs:'Diabetes & Glucose',hba1c:'Diabetes & Glucose',
+  calcium:'CKD-MBD',phosphorus:'CKD-MBD',ipth:'CKD-MBD',vitd:'CKD-MBD',alp:'CKD-MBD'
+};
+var STATUS_RANK = {NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
+
+function generate(n) {
+  var btn = document.getElementById('btn'+n);
+  btn.disabled = true; btn.textContent = 'Generating…';
+
+  setTimeout(function(){
+    try {
+      var sessions = n===2 ? SESSIONS_2 : SESSIONS_4;
+      doFlowsheet(sessions, n);
+    } catch(e) {
+      alert('Error: '+e.message); console.error(e);
+    }
+    var svgIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+    btn.disabled=false; btn.innerHTML=svgIcon+' Download '+n+'-Date Flowsheet PDF';
+  }, 60);
+}
+
+function doFlowsheet(sorted, n) {
+  var { jsPDF } = window.jspdf;
+  var orientation = n>=3?'landscape':'portrait';
+  var doc = new jsPDF({orientation:orientation,unit:'mm',format:'a4'});
+  var W = orientation==='landscape'?297:210;
+  var pageH = orientation==='landscape'?210:297;
+  var margin=14, colW=W-margin*2, y=0;
+
+  var NAVY=[26,46,74], GREEN=[26,110,62], AMBER=[160,92,0], RED=[160,24,24], GRAY=[120,120,120];
+  var GREEN_BG=[232,245,238], AMBER_BG=[255,244,224], RED_BG=[253,236,234];
+  var WHITE=[255,255,255], LIGHT_BG=[240,243,247];
+
+  function sf(style,size,color){ doc.setFont('helvetica',style||'normal'); doc.setFontSize(size||10); doc.setTextColor.apply(doc,color||[30,32,50]); }
+  function fr(x,yy,w,h,c){ doc.setFillColor.apply(doc,c); doc.rect(x,yy,w,h,'F'); }
+  function tx(str,x,yy,opts){ doc.text(str+'',x,yy,opts||{}); }
+
+  var labelColW=60, trendColW=18;
+  var dateColW=Math.floor((colW-labelColW-trendColW)/n);
+
+  function fmtDate(iso){ if(!iso) return '—'; var d=new Date(iso+'T00:00'); return d.toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'}); }
+
+  function drawTableHeader(){
+    fr(margin,y,colW,8.5,NAVY);
+    sf('bold',7.5,WHITE); tx('Lab Test / Units',margin+2,y+5.8);
+    var hx=margin+labelColW;
+    sorted.forEach(function(s){
+      sf('bold',6.5,WHITE); tx(fmtDate(s.date),hx+dateColW/2,y+5.8,{align:'center'});
+      hx+=dateColW;
+    });
+    sf('bold',6.5,WHITE); tx('Trend',hx+trendColW/2,y+5.8,{align:'center'});
+    y+=10;
+  }
+
+  function checkPage(needed){
+    if(y+needed>pageH-20){ doc.addPage(); y=14; drawTableHeader(); }
+  }
+
+  var ptName='DELA CRUZ, JUAN M.';
+
+  // ── Header block ─────────────────────────────────────────────
+  fr(0,0,W,32,NAVY);
+  sf('bold',17,WHITE); tx('Lab Trend Flow Sheet',margin,11);
+  sf('normal',7.5,[150,170,190]); tx('KDIGO 2024 · ACC/AHA 2026 · ADA 2025 · '+n+' dates · williamriveromd.com',margin,18);
+  sf('bold',9.5,WHITE); tx('Patient: '+ptName,margin,25);
+  var dateRange=sorted.map(function(s){return fmtDate(s.date);}).join('  ›  ');
+  sf('normal',7,[170,190,210]); tx(dateRange, margin+85, 25);
+  y=37;
+  sf('italic',7,GRAY); tx('Generated: '+new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}),W-margin,y,{align:'right'});
+  y+=8;
+
+  drawTableHeader();
+  var lastDomain='';
+  var domainColors={'Kidney Function':[232,240,255],'CBC & Iron':[240,248,240],'Electrolytes & Metabolic':[255,248,235],'Lipid Panel':[248,240,255],'Diabetes & Glucose':[255,242,242],'CKD-MBD':[240,255,255]};
+
+  FIELD_ORDER.forEach(function(key){
+    var hasAny=sorted.some(function(s){return !!s.fields[key];});
+    if(!hasAny) return;
+    var domain=DOMAINS[key]||'';
+
+    if(domain!==lastDomain){
+      checkPage(7.5);
+      var dBg=domainColors[domain]||[235,240,248];
+      fr(margin,y,colW,6.5,dBg);
+      doc.setDrawColor.apply(doc,NAVY); doc.setLineWidth(0.25);
+      doc.line(margin,y,margin+colW,y); doc.line(margin,y+6.5,margin+colW,y+6.5);
+      sf('bold',7,NAVY); tx(domain.toUpperCase(),margin+3,y+4.6);
+      y+=7; lastDomain=domain;
+    }
+
+    var meta=FIELD_META[key]||{label:key,unit:''};
+    var statuses=sorted.map(function(s){
+      if(!s.fields[key]) return 'EMPTY';
+      return interpKeyVal(key,s.fields[key]);
+    });
+    var worstRank=Math.max.apply(null,statuses.map(function(s){return STATUS_RANK[s]||0;}));
+    var rowBg=worstRank===2?RED_BG:(worstRank===1?AMBER_BG:(worstRank===0?[246,252,248]:[250,252,255]));
+    var rowH=9.5;
+    checkPage(rowH);
+    fr(margin,y,colW,rowH,rowBg);
+    // left border accent
+    doc.setFillColor.apply(doc,worstRank===2?RED:(worstRank===1?AMBER:(worstRank===0?GREEN:GRAY)));
+    doc.rect(margin,y,1,rowH,'F');
+
+    sf('bold',7.5,NAVY); tx(meta.label,margin+3,y+4.5);
+    if(meta.unit){ sf('normal',5.5,GRAY); tx(meta.unit,margin+3,y+8); }
+
+    var cx=margin+labelColW;
+    sorted.forEach(function(s,i){
+      var val=s.fields[key];
+      if(!val){ sf('normal',7.5,GRAY); tx('—',cx+dateColW/2,y+5.5,{align:'center'}); }
+      else {
+        var st=statuses[i];
+        var tc=st==='FLAG'?RED:(st==='WATCH'?AMBER:(st==='NORMAL'?GREEN:GRAY));
+        sf('bold',8,tc); tx(val,cx+dateColW/2,y+4.5,{align:'center'});
+        doc.setFillColor.apply(doc,tc); doc.roundedRect(cx+dateColW/2-8,y+5.8,16,3.5,0.8,0.8,'F');
+        sf('bold',5.5,WHITE); tx(st==='NORMAL'?'Goal':(st==='WATCH'?'Watch':'Flag'),cx+dateColW/2,y+8,{align:'center'});
+      }
+      cx+=dateColW;
+    });
+
+    // Trend
+    var valid=statuses.filter(function(s){return s!=='EMPTY';});
+    var trend='',tColor=GRAY;
+    if(valid.length>=2){
+      var first=statuses[0], last=statuses[statuses.length-1];
+      if(first!=='EMPTY'&&last!=='EMPTY'){
+        var delta=STATUS_RANK[first]-STATUS_RANK[last];
+        if(delta<0){trend='Impr';tColor=GREEN;}
+        else if(delta>0){trend='Decl';tColor=RED;}
+        else{trend='Stbl';tColor=GRAY;}
+      }
+    } else if(valid.length===1){
+      trend=statuses[0]==='NORMAL'?'Goal':(statuses[0]==='WATCH'?'Watch':'Flag');
+      tColor=statuses[0]==='NORMAL'?GREEN:(statuses[0]==='WATCH'?AMBER:RED);
+    }
+    sf('bold',7,tColor); tx(trend,cx+trendColW/2,y+5.5,{align:'center'});
+    y+=rowH;
+  });
+
+  y+=8;
+
+  // ── Legend ───────────────────────────────────────────────────
+  checkPage(32);
+  y+=2;
+  fr(margin,y,colW,28,LIGHT_BG);
+  sf('bold',8,NAVY); tx('Interpretation Guide',margin+2,y+5);
+  [[GREEN,'At Goal','At Goal — within target range'],[AMBER,'Watch','Watch — borderline; monitor closely'],[RED,'Flag','Flag — requires medical attention']].forEach(function(item,i){
+    var ry=y+9+i*7;
+    doc.setFillColor.apply(doc,item[0]); doc.roundedRect(margin+2,ry,18,5,1,1,'F');
+    sf('bold',6.5,WHITE); tx(item[1],margin+11,ry+3.5,{align:'center'});
+    sf('normal',7,NAVY); tx(item[2],margin+22,ry+3.5);
+  });
+  y+=32;
+
+  // ── Footer ───────────────────────────────────────────────────
+  var pc=doc.getNumberOfPages();
+  for(var fi=1;fi<=pc;fi++){
+    doc.setPage(fi);
+    fr(0,pageH-10,W,10,NAVY);
+    sf('normal',7,[160,180,200]);
+    tx('williamriveromd.com · Lab Trend Flow Sheet · SAMPLE DATA',margin,pageH-4);
+    tx('Page '+fi+' of '+pc,W-margin,pageH-4,{align:'right'});
+  }
+  doc.setPage(pc);
+  sf('italic',6,GRAY);
+  doc.text('SAMPLE / DEMO ONLY — For patient education only. All results must be interpreted in clinical context by a qualified physician.',margin,pageH-12,{maxWidth:colW});
+
+  doc.save('SAMPLE-LabFlowSheet-'+n+'dates-DELACRUZ.pdf');
+}
+</script>
+</body>
+</html>
