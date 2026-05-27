@@ -1575,6 +1575,32 @@ html[data-view="desktop"]{min-width:1024px;}
 .upload-status.loading{color:var(--teal);}
 .upload-status.error{color:var(--red);}
 @keyframes spin{to{transform:rotate(360deg);}}
+.pdf-mode-toggle{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.pdf-mode-btn{padding:5px 16px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-muted);transition:background .15s,color .15s,border-color .15s;}
+.pdf-mode-btn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+.compare-wrap{overflow:hidden;}
+.compare-pt{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px;padding:0 2px;}
+.compare-scroll{overflow-x:auto;border-radius:8px;border:1px solid var(--border);}
+.compare-table{width:100%;border-collapse:collapse;font-size:12px;}
+.compare-table th{background:var(--navy);color:#fff;padding:7px 10px;text-align:left;white-space:nowrap;font-size:11px;}
+.compare-table th:first-child{min-width:130px;}
+.compare-table td{padding:5px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.compare-domain-row td{background:#eef2f7;color:var(--navy);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:4px 10px;}
+.compare-field-label{color:var(--text-mid);font-weight:500;white-space:nowrap;}
+.compare-fname{font-size:10px;font-weight:400;opacity:.65;margin-top:2px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.compare-cell{white-space:nowrap;}
+.compare-val{font-weight:700;margin-right:5px;font-size:12.5px;}
+.compare-badge{font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:4px;vertical-align:middle;}
+.compare-normal .compare-badge{background:var(--green-soft);color:var(--green);}
+.compare-watch  .compare-badge{background:var(--amber-soft);color:#7a5000;}
+.compare-flag   .compare-badge{background:var(--red-soft);color:var(--red);}
+.compare-empty{color:var(--text-faint);text-align:center;}
+.compare-trend{font-weight:800;font-size:14px;text-align:center;width:36px;}
+.trend-improve{color:var(--green);}
+.trend-worsen{color:var(--red);}
+.trend-stable{color:var(--text-muted);}
+html[data-theme="dark"] .compare-domain-row td{background:#1e2f45;color:#8fb4d0;}
+html[data-theme="dark"] .compare-table th{background:#1a2d45;}
 .upload-results{margin-top:12px;border-top:1px solid var(--border);padding-top:10px;}
 .upload-results-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:8px;}
 .extract-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;}
@@ -1965,6 +1991,7 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
   </div>
   <div class="upload-status" id="uploadStatus" style="display:none;"></div>
   <div class="upload-results" id="uploadResults" style="display:none;"></div>
+  <div id="comparePanel" style="display:none;"></div>
 </div>
 
 <!-- TABS -->
@@ -3359,9 +3386,22 @@ function applyExtractedFields(parsed) {
   if (parsed.date) ptLine += '<span>📅 ' + parsed.date + '</span> ';
   if (parsed.sex)  ptLine += '<span>' + (parsed.sex === 'M' ? '♂ Male' : '♀ Female') + '</span> ';
   if (parsed.age)  ptLine += '<span>🎂 Age ' + parsed.age + '</span>';
+  /* Reset compare panel and mode */
+  _pdfMode = 'merge';
+  var cp = document.getElementById('comparePanel');
+  if (cp) { cp.style.display = 'none'; cp.innerHTML = ''; }
+
   var unitLabel = unitSys ? ' · Units auto-set to <strong>' + unitSys + '</strong>' : '';
   var srcLabel = _lastPDFFiles.length > 1 ? ' from <strong>' + _lastPDFFiles.length + ' PDFs</strong>' : '';
-  var html = '<div class="upload-results-title">📊 ' + count + ' value' + (count !== 1 ? 's' : '') + ' extracted' + srcLabel + unitLabel + (ptLine ? '<div style="margin-top:6px;font-size:12px;color:var(--text-muted);display:flex;gap:12px;flex-wrap:wrap;">' + ptLine + '</div>' : '') + '</div>';
+  var html = '';
+  /* Mode toggle — only shown when 2+ PDFs loaded */
+  if (_pdfSessions.length >= 2) {
+    html += '<div class="pdf-mode-toggle">' +
+      '<button class="pdf-mode-btn active" id="pdf-mode-merge" onclick="setPDFMode(\'merge\')">🔀 Merge (split same-day reports)</button>' +
+      '<button class="pdf-mode-btn" id="pdf-mode-compare" onclick="setPDFMode(\'compare\')">📈 Compare over time</button>' +
+      '</div>';
+  }
+  html += '<div class="upload-results-title">📊 ' + count + ' value' + (count !== 1 ? 's' : '') + ' extracted' + srcLabel + unitLabel + (ptLine ? '<div style="margin-top:6px;font-size:12px;color:var(--text-muted);display:flex;gap:12px;flex-wrap:wrap;">' + ptLine + '</div>' : '') + '</div>';
   html += '<div class="extract-grid">';
   Object.keys(fields).forEach(function(k) {
     var label = FIELD_LABELS[k] || k;
@@ -3390,8 +3430,122 @@ function showUploadStatus(type, msg) {
   el.style.display = 'flex';
 }
 
+/* ── Compare-mode helpers ────────────────────────────────────────── */
+function interpKeyVal(key, rawVal, unitSys) {
+  var origFields = STATE.fields, origUnit = STATE.unitSys;
+  STATE.fields = {}; STATE.fields[key] = rawVal;
+  if (unitSys) STATE.unitSys = unitSys;
+  var r = interpKey(key);
+  STATE.fields = origFields; STATE.unitSys = origUnit;
+  return r;
+}
+
+function setPDFMode(mode) {
+  _pdfMode = mode;
+  ['merge','compare'].forEach(function(m) {
+    var b = document.getElementById('pdf-mode-' + m);
+    if (b) b.classList.toggle('active', m === mode);
+  });
+  var ur = document.getElementById('uploadResults');
+  var cp = document.getElementById('comparePanel');
+  ur.style.display = mode === 'merge'   ? 'block' : 'none';
+  cp.style.display = mode === 'compare' ? ''      : 'none';
+  if (mode === 'compare') renderCompareTable(_pdfSessions);
+}
+
+function _fmtDate(iso) {
+  if (!iso) return null;
+  var d = new Date(iso + 'T00:00');
+  return d.toLocaleDateString('en-PH', {year:'numeric', month:'short', day:'numeric'});
+}
+
+function renderCompareTable(sessions) {
+  if (!sessions || sessions.length < 2) return;
+
+  /* Sort newest-first by date; fall back to drop order */
+  var sorted = sessions.slice().sort(function(a, b) {
+    if (!a.date && !b.date) return 0;
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return a.date < b.date ? 1 : -1;
+  });
+
+  var FIELD_ORDER = [
+    'creatinine','egfr','bun','uacr','upcr',
+    'hgb','hct','rbc','mcv','rdw','reticulocyte','ferritin','tsat','wbc','platelets',
+    'sodium','potassium','bicarb','chloride','magnesium','albumin','alt','ast','uricacid',
+    'totalchol','ldl','hdl','tg','lpa',
+    'fbs','hba1c','fasting_insulin',
+    'calcium','phosphorus','ipth','vitd','alp'
+  ];
+  var DOMAINS = {
+    creatinine:'Kidney',egfr:'Kidney',bun:'Kidney',uacr:'Kidney',upcr:'Kidney',
+    hgb:'CBC',hct:'CBC',rbc:'CBC',mcv:'CBC',rdw:'CBC',reticulocyte:'CBC',ferritin:'CBC',tsat:'CBC',wbc:'CBC',platelets:'CBC',
+    sodium:'Metabolic',potassium:'Metabolic',bicarb:'Metabolic',chloride:'Metabolic',magnesium:'Metabolic',albumin:'Metabolic',alt:'Metabolic',ast:'Metabolic',uricacid:'Metabolic',
+    totalchol:'Lipids',ldl:'Lipids',hdl:'Lipids',tg:'Lipids',lpa:'Lipids',
+    fbs:'Diabetes',hba1c:'Diabetes',fasting_insulin:'Diabetes',
+    calcium:'CKD-MBD',phosphorus:'CKD-MBD',ipth:'CKD-MBD',vitd:'CKD-MBD',alp:'CKD-MBD'
+  };
+  var STATUS_RANK = {NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
+
+  /* Patient name from first session that has one */
+  var ptName = '';
+  for (var pi = 0; pi < sorted.length; pi++) { if (sorted[pi].name) { ptName = sorted[pi].name; break; } }
+
+  var html = '<div class="compare-wrap">';
+  if (ptName) html += '<div class="compare-pt">👤 ' + ptName + '</div>';
+
+  html += '<div class="compare-scroll"><table class="compare-table"><thead><tr><th>Lab Test</th>';
+  sorted.forEach(function(s, i) {
+    var hdr = _fmtDate(s.date) || ('PDF ' + (i + 1));
+    html += '<th>' + hdr + '<div class="compare-fname">' + s.fileName + '</div></th>';
+  });
+  html += '<th style="text-align:center;">Trend</th></tr></thead><tbody>';
+
+  var lastDomain = '';
+  FIELD_ORDER.forEach(function(key) {
+    var hasAny = sorted.some(function(s) { return !!s.fields[key]; });
+    if (!hasAny) return;
+
+    var domain = DOMAINS[key] || '';
+    if (domain !== lastDomain) {
+      html += '<tr class="compare-domain-row"><td colspan="' + (sorted.length + 2) + '">' + domain + '</td></tr>';
+      lastDomain = domain;
+    }
+
+    html += '<tr><td class="compare-field-label">' + (FIELD_LABELS[key] || key) + '</td>';
+    var statuses = [];
+    sorted.forEach(function(s) {
+      var val = s.fields[key];
+      if (!val) { html += '<td class="compare-empty">—</td>'; statuses.push('EMPTY'); return; }
+      var r = interpKeyVal(key, val, s.unitSys || 'Conventional (US)');
+      statuses.push(r.status);
+      html += '<td class="compare-cell compare-' + r.status.toLowerCase() + '">' +
+        '<span class="compare-val">' + val + '</span>' +
+        '<span class="compare-badge">' + r.status + '</span></td>';
+    });
+
+    /* Trend: newest (index 0) vs oldest (last index), skip EMPTY */
+    var newest = statuses[0], oldest = statuses[statuses.length - 1];
+    var trend = '—', tCls = 'trend-stable';
+    if (newest !== 'EMPTY' && oldest !== 'EMPTY' && newest !== oldest) {
+      var delta = STATUS_RANK[newest] - STATUS_RANK[oldest];
+      if (delta < 0) { trend = '↑'; tCls = 'trend-improve'; }
+      else if (delta > 0) { trend = '↓'; tCls = 'trend-worsen'; }
+    } else if (newest !== 'EMPTY' && oldest !== 'EMPTY') {
+      trend = '→';
+    }
+    html += '<td class="compare-trend ' + tCls + '">' + trend + '</td></tr>';
+  });
+
+  html += '</tbody></table></div></div>';
+  document.getElementById('comparePanel').innerHTML = html;
+}
+
 /* ── Multi-PDF engine ────────────────────────────────────────────── */
 var _lastPDFFiles = [];
+var _pdfSessions  = [];  // [{fileName, fields, unitSys, name, date, sex, age}] one per PDF
+var _pdfMode      = 'merge'; // 'merge' | 'compare'
 
 function openPDF(idx) {
   var f = _lastPDFFiles[idx];
@@ -3441,6 +3595,7 @@ function handlePDFFiles(files) {
   document.getElementById('uploadResults').style.display = 'none';
   showUploadStatus('loading', SPIN + (total > 1 ? 'Loading ' + total + ' PDFs…' : 'Loading PDF reader…'));
 
+  _pdfSessions = [];
   _ensurePDFJS(function() {
     var merged = { fields:{}, unitSys:null, name:null, date:null, sex:null, age:null };
     var errors = 0;
@@ -3461,6 +3616,16 @@ function handlePDFFiles(files) {
       reader.onload = function(e) {
         _readPDFText(e.target.result).then(function(text) {
           var parsed = parseLabText(text);
+          /* Store individual session for compare mode */
+          _pdfSessions.push({
+            fileName: files[idx].name,
+            fields:   parsed.fields,
+            unitSys:  parsed.unitSys,
+            name:     parsed.name,
+            date:     parsed.date,
+            sex:      parsed.sex,
+            age:      parsed.age
+          });
           /* Merge: first-value-wins for duplicate fields; first PDF wins for patient info */
           Object.keys(parsed.fields).forEach(function(k) {
             if (!merged.fields[k]) merged.fields[k] = parsed.fields[k];
