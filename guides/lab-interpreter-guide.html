@@ -2421,8 +2421,9 @@ function interpKey(key) {
   var hasCKD = diag && diag !== 'transplant';  // any CKD diagnosis except transplant
 
   var rules = {
-    creatinine: f ? (v<=1.1?['NORMAL','Normal range']:v<=1.8?['WATCH','Mildly elevated — track trend']:['FLAG','Significantly elevated'])
-                  : (v<=1.3?['NORMAL','Normal range']:v<=2.0?['WATCH','Mildly elevated — track trend']:['FLAG','Significantly elevated']),
+    creatinine: hd ? (v>=11.1?['NORMAL','At nutritional target for HD (≥11.1 mg/dL) — reflects adequate muscle mass']:v>=8.0?['WATCH','Below HD nutritional target — assess protein intake and muscle mass']:['FLAG','Low for HD — likely malnutrition or low muscle mass; creatinine is a nutritional marker on dialysis'])
+                  : f ? (v<=1.1?['NORMAL','Normal range']:v<=1.8?['WATCH','Mildly elevated — track trend']:['FLAG','Significantly elevated'])
+                      : (v<=1.3?['NORMAL','Normal range']:v<=2.0?['WATCH','Mildly elevated — track trend']:['FLAG','Significantly elevated']),
     egfr: v>=90?['NORMAL','G1 — normal or hyperfiltration']:v>=60?['WATCH','G2 — mildly reduced, monitor']:v>=45?['WATCH','G3a — nephrology follow-up']:v>=30?['FLAG','G3b — advanced CKD care']:v>=15?['FLAG','G4 — RRT planning']:['FLAG','G5/ESKD — RRT indicated'],
     bun: v<=20?['NORMAL','Normal']:v<=30?['WATCH','Mildly elevated — assess hydration/protein']:['FLAG','Elevated — assess for uremia'],
     uacr: v<30?['NORMAL','A1 — no significant albuminuria']:v<=300?['WATCH','A2 microalbuminuria — optimize RAAS blockade']:['FLAG','A3 macroalbuminuria — active kidney damage'],
@@ -2519,8 +2520,8 @@ function calcDerived() {
       note: r>20?'Pre-renal / dehydration / high-protein state':r<10?'Low protein, liver disease, or over-hydration':'Consistent with intrinsic renal disease'});
   }
 
-  // CKD-EPI eGFR
-  if (hasConv('creatinine') && STATE.age) {
+  // CKD-EPI eGFR (not applicable in HD — creatinine is a nutritional marker, not a GFR surrogate)
+  if (!hd && hasConv('creatinine') && STATE.age) {
     var scr=getConv('creatinine'), age=parseFloat(STATE.age), isFem=STATE.sex==='F';
     var kappa=isFem?0.7:0.9, alpha=isFem?-0.241:-0.302;
     var ratio=scr/kappa;
