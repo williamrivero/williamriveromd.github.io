@@ -66,9 +66,9 @@ var SESSIONS_2 = [
       creatinine:'2.1', egfr:'32',  bun:'36',   uacr:'280',
       hgb:'103',  hct:'31',  rbc:'3.5',  mcv:'82',  rdw:'15.8', ferritin:'310', tsat:'28',
       wbc:'6.8',  platelets:'210',
-      sodium:'138', potassium:'5.4', bicarb:'20', albumin:'3.7', alt:'22', ast:'24', uricacid:'6.8',
+      sodium:'138', potassium:'5.4', bicarb:'20', chloride:'102', albumin:'3.7', alt:'22', ast:'24', uricacid:'6.8',
       totalchol:'165', ldl:'68',  hdl:'38',  tg:'210',
-      fbs:'128', hba1c:'7.4',
+      fbs:'128', hba1c:'7.4', fasting_insulin:'18',
       calcium:'9.0', phosphorus:'5.1', ipth:'380', vitd:'28', alp:'95'
     }
   },
@@ -78,9 +78,9 @@ var SESSIONS_2 = [
       creatinine:'2.4', egfr:'28',  bun:'44',   uacr:'340',
       hgb:'98',   hct:'29',  rbc:'3.2',  mcv:'80',  rdw:'16.5', ferritin:'290', tsat:'21',
       wbc:'7.2',  platelets:'195',
-      sodium:'136', potassium:'5.8', bicarb:'18', albumin:'3.5', alt:'26', ast:'28', uricacid:'7.4',
+      sodium:'136', potassium:'5.8', bicarb:'18', chloride:'100', albumin:'3.5', alt:'26', ast:'28', uricacid:'7.4',
       totalchol:'182', ldl:'76',  hdl:'36',  tg:'248',
-      fbs:'148', hba1c:'8.2',
+      fbs:'148', hba1c:'8.2', fasting_insulin:'26',
       calcium:'8.8', phosphorus:'5.8', ipth:'420', vitd:'18', alp:'112'
     }
   }
@@ -93,9 +93,9 @@ var SESSIONS_4 = [
       creatinine:'2.1', egfr:'32',  bun:'36',   uacr:'280',
       hgb:'103',  hct:'31',  rbc:'3.5',  mcv:'82',  rdw:'15.8', ferritin:'310', tsat:'28',
       wbc:'6.8',  platelets:'210',
-      sodium:'138', potassium:'5.4', bicarb:'20', albumin:'3.7', alt:'22', ast:'24', uricacid:'6.8',
+      sodium:'138', potassium:'5.4', bicarb:'20', chloride:'102', albumin:'3.7', alt:'22', ast:'24', uricacid:'6.8',
       totalchol:'165', ldl:'68',  hdl:'38',  tg:'210',
-      fbs:'128', hba1c:'7.4',
+      fbs:'128', hba1c:'7.4', fasting_insulin:'18',
       calcium:'9.0', phosphorus:'5.1', ipth:'380', vitd:'28', alp:'95'
     }
   },
@@ -105,9 +105,9 @@ var SESSIONS_4 = [
       creatinine:'2.2', egfr:'30',  bun:'40',   uacr:'305',
       hgb:'101',  hct:'30',  rbc:'3.3',  mcv:'81',  rdw:'16.1', ferritin:'300', tsat:'25',
       wbc:'7.0',  platelets:'200',
-      sodium:'137', potassium:'5.5', bicarb:'19', albumin:'3.6', alt:'24', ast:'26', uricacid:'7.1',
+      sodium:'137', potassium:'5.5', bicarb:'19', chloride:'101', albumin:'3.6', alt:'24', ast:'26', uricacid:'7.1',
       totalchol:'172', ldl:'72',  hdl:'37',  tg:'228',
-      fbs:'136', hba1c:'7.8',
+      fbs:'136', hba1c:'7.8', fasting_insulin:'22',
       calcium:'8.9', phosphorus:'5.3', ipth:'395', vitd:'22', alp:'104'
     }
   },
@@ -117,9 +117,9 @@ var SESSIONS_4 = [
       creatinine:'2.4', egfr:'28',  bun:'44',   uacr:'340',
       hgb:'98',   hct:'29',  rbc:'3.2',  mcv:'80',  rdw:'16.5', ferritin:'290', tsat:'21',
       wbc:'7.2',  platelets:'195',
-      sodium:'136', potassium:'5.8', bicarb:'18', albumin:'3.5', alt:'26', ast:'28', uricacid:'7.4',
+      sodium:'136', potassium:'5.8', bicarb:'18', chloride:'100', albumin:'3.5', alt:'26', ast:'28', uricacid:'7.4',
       totalchol:'182', ldl:'76',  hdl:'36',  tg:'248',
-      fbs:'148', hba1c:'8.2',
+      fbs:'148', hba1c:'8.2', fasting_insulin:'26',
       calcium:'8.8', phosphorus:'5.8', ipth:'420', vitd:'18', alp:'112'
     }
   },
@@ -129,9 +129,9 @@ var SESSIONS_4 = [
       creatinine:'2.6', egfr:'25',  bun:'50',   uacr:'410',
       hgb:'92',   hct:'28',  rbc:'3.0',  mcv:'79',  rdw:'17.0', ferritin:'260', tsat:'18',
       wbc:'7.8',  platelets:'188',
-      sodium:'135', potassium:'6.2', bicarb:'17', albumin:'3.3', alt:'30', ast:'32', uricacid:'8.1',
+      sodium:'135', potassium:'6.2', bicarb:'17', chloride:'98', albumin:'3.3', alt:'30', ast:'32', uricacid:'8.1',
       totalchol:'196', ldl:'82',  hdl:'34',  tg:'268',
-      fbs:'162', hba1c:'8.9',
+      fbs:'162', hba1c:'8.9', fasting_insulin:'32',
       calcium:'8.7', phosphorus:'6.2', ipth:'480', vitd:'14', alp:'125'
     }
   }
@@ -196,6 +196,46 @@ function interpKeyVal(key, val) {
     case 'alp':        return v>150?'FLAG':v>100?'WATCH':'NORMAL';
     default:           return 'NORMAL';
   }
+}
+
+/* Simplified derived calculations matching the main guide logic */
+function calcDerivedForFields(f) {
+  var res = [];
+  function g(k){ return parseFloat(f[k]||''); }
+  function has(){ for(var i=0;i<arguments.length;i++){ var v=parseFloat(f[arguments[i]]||''); if(isNaN(v)||v===0) return false; } return true; }
+
+  // BUN:Cr
+  if(has('bun','creatinine')){ var r=g('bun')/g('creatinine');
+    res.push({domain:'Kidney',label:'BUN:Creatinine Ratio',value:r.toFixed(1),unit:'',status:r>20||r<10?'WATCH':'NORMAL'}); }
+  // Anion Gap
+  if(has('sodium','chloride','bicarb')){ var ag=g('sodium')-(g('chloride')+g('bicarb'));
+    res.push({domain:'Acid-Base',label:'Anion Gap',value:ag.toFixed(1),unit:'mEq/L',status:ag>12?'FLAG':ag<8?'WATCH':'NORMAL'}); }
+  // Non-HDL
+  if(has('totalchol','hdl')){ var nhdl=g('totalchol')-g('hdl');
+    res.push({domain:'Lipids',label:'Non-HDL Cholesterol',value:nhdl.toFixed(0),unit:'mg/dL',status:nhdl<85?'NORMAL':nhdl<130?'WATCH':'FLAG'}); }
+  // TC:HDL
+  if(has('totalchol','hdl')){ var tch=g('totalchol')/g('hdl');
+    res.push({domain:'Lipids',label:'TC:HDL Ratio',value:tch.toFixed(1),unit:'',status:tch<4?'NORMAL':tch<5?'WATCH':'FLAG'}); }
+  // TG:HDL
+  if(has('tg','hdl')){ var tgh=g('tg')/g('hdl');
+    res.push({domain:'Lipids / IR',label:'TG:HDL Ratio',value:tgh.toFixed(2),unit:'',status:tgh<2?'NORMAL':tgh<3?'WATCH':'FLAG'}); }
+  // TyG Index
+  if(has('tg','fbs')){ var tyg=Math.log(g('tg')*g('fbs')/2);
+    res.push({domain:'Insulin Resistance',label:'TyG Index',value:tyg.toFixed(2),unit:'',status:tyg<8.5?'NORMAL':tyg<9?'WATCH':'FLAG'}); }
+  // HOMA-IR
+  if(has('fbs','fasting_insulin')){ var homa=(g('fbs')*g('fasting_insulin'))/405;
+    res.push({domain:'Insulin Resistance',label:'HOMA-IR',value:homa.toFixed(2),unit:'',status:homa<2?'NORMAL':homa<3?'WATCH':'FLAG'}); }
+  // Ca×P
+  if(has('calcium','phosphorus')){ var caxp=g('calcium')*g('phosphorus');
+    res.push({domain:'CKD-MBD',label:'Ca × P Product',value:caxp.toFixed(1),unit:'mg²/dL²',status:caxp<55?'NORMAL':'FLAG'}); }
+  // Mentzer
+  if(has('mcv','rbc')){ var m=g('mcv')/g('rbc');
+    res.push({domain:'Anemia Differential',label:'Mentzer Index (MCV÷RBC)',value:m.toFixed(1),unit:'',status:g('mcv')<80?(m<13?'WATCH':'FLAG'):'EMPTY'}); }
+  // AST:ALT
+  if(has('alt','ast')){ var dr=g('ast')/g('alt');
+    res.push({domain:'Liver',label:'AST:ALT (De Ritis)',value:dr.toFixed(2),unit:'',status:dr>2?'FLAG':dr>1.5?'WATCH':'NORMAL'}); }
+
+  return res;
 }
 
 var FIELD_ORDER = [
@@ -384,7 +424,84 @@ function doFlowsheet(sorted, n) {
     y+=rowH;
   });
 
-  y+=8;
+  y+=4;
+
+  // ── Derived Values section ────────────────────────────────────
+  (function(){
+    var derivedMap={}, derivedOrder=[];
+    sorted.forEach(function(g,ci){
+      calcDerivedForFields(g.fields).forEach(function(item){
+        if(!derivedMap[item.label]){
+          derivedMap[item.label]={domain:item.domain,label:item.label,cols:[]};
+          for(var x=0;x<sorted.length;x++) derivedMap[item.label].cols.push(null);
+          derivedOrder.push(item.label);
+        }
+        derivedMap[item.label].cols[ci]=item;
+      });
+    });
+    if(derivedOrder.length===0) return;
+
+    var DORDER=['Kidney','Acid-Base','Lipids','Lipids / IR','Insulin Resistance','CKD-MBD','Anemia Differential','Liver','HD Adequacy'];
+    derivedOrder.sort(function(a,b){
+      var da=derivedMap[a].domain,db=derivedMap[b].domain;
+      return (DORDER.indexOf(da)<0?99:DORDER.indexOf(da))-(DORDER.indexOf(db)<0?99:DORDER.indexOf(db));
+    });
+
+    // Section title bar
+    checkPage(14);
+    fr(margin,y,colW,8,[235,240,248]);
+    doc.setDrawColor.apply(doc,NAVY); doc.setLineWidth(0.4); doc.line(margin,y,margin,y+8);
+    sf('bold',10,NAVY); tx('DERIVED   Calculated & Derived Values',margin+3,y+5.5);
+    y+=10;
+
+    var SRD={NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
+    var lastDomD='';
+    derivedOrder.forEach(function(lbl){
+      var row=derivedMap[lbl];
+      if(row.domain!==lastDomD){
+        checkPage(7);
+        var dBg=domainColors[row.domain]||[235,240,248];
+        fr(margin,y,colW,6.5,dBg);
+        doc.setDrawColor.apply(doc,NAVY); doc.setLineWidth(0.25);
+        doc.line(margin,y,margin+colW,y); doc.line(margin,y+6.5,margin+colW,y+6.5);
+        sf('bold',7,NAVY); tx(row.domain.toUpperCase(),margin+3,y+4.6);
+        y+=7; lastDomD=row.domain;
+      }
+      var wrD=Math.max.apply(null,row.cols.map(function(c){return c?SRD[c.status]||0:9;}));
+      var rBg=wrD===2?RED_BG:(wrD===1?AMBER_BG:(wrD===0?[246,252,248]:[250,252,255]));
+      var rH=9.5;
+      checkPage(rH);
+      fr(margin,y,colW,rH,rBg);
+      doc.setFillColor.apply(doc,wrD===2?RED:(wrD===1?AMBER:(wrD===0?GREEN:GRAY)));
+      doc.rect(margin,y,1,rH,'F');
+      sf('bold',6.5,NAVY); tx(lbl,margin+3,y+5,{maxWidth:labelColW-5});
+
+      var cx=margin+labelColW;
+      var statArr=row.cols.map(function(c){return c?c.status:'EMPTY';});
+      row.cols.forEach(function(c,ci){
+        if(!c||(!c.value&&c.value!=='0')){sf('normal',7.5,GRAY);tx('—',cx+dateColW/2,y+5.5,{align:'center'});}
+        else{
+          var tc=c.status==='FLAG'?RED:(c.status==='WATCH'?AMBER:(c.status==='NORMAL'?GREEN:GRAY));
+          sf('bold',7.5,tc); tx(c.value+(c.unit?' '+c.unit:''),cx+dateColW/2,y+4.5,{align:'center'});
+          doc.setFillColor.apply(doc,tc); doc.roundedRect(cx+dateColW/2-8,y+5.8,16,3.5,0.8,0.8,'F');
+          sf('bold',5.5,WHITE); tx(c.status==='NORMAL'?'Goal':(c.status==='WATCH'?'Watch':'Flag'),cx+dateColW/2,y+8,{align:'center'});
+        }
+        cx+=dateColW;
+      });
+
+      var nonE=statArr.filter(function(s){return s!=='EMPTY';});
+      var trend='',tC=GRAY;
+      if(nonE.length>=2){
+        var delta=SRD[statArr[0]]-SRD[statArr[statArr.length-1]];
+        if(delta<0){trend='Impr';tC=GREEN;}else if(delta>0){trend='Decl';tC=RED;}else{trend='Stbl';tC=GRAY;}
+      }
+      sf('bold',7,tC); tx(trend,cx+trendColW/2,y+5.5,{align:'center'});
+      y+=rH;
+    });
+    y+=4;
+  })();
+
+  y+=6;
 
   // ── Legend ───────────────────────────────────────────────────
   checkPage(32);

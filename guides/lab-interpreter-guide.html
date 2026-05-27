@@ -3499,7 +3499,103 @@ function _doExportFlowsheetPDF(logoDataUrl) {
       y+=rowH;
     });
 
-    y+=6;
+    y+=4;
+
+    /* ── Derived values section ────────────────────────────────── */
+    (function(){
+      /* Calculate derived values for each column by temporarily swapping STATE.fields */
+      var savedFields = STATE.fields, savedUnit = STATE.unitSys;
+
+      /* Build map: derivedLabel → { domain, cols:[item|null, ...] } */
+      var derivedMap = {}, derivedOrder = [];
+      sorted.forEach(function(g, ci){
+        STATE.fields = g.fields;
+        STATE.unitSys = g.unitSys || 'Conventional (US)';
+        try {
+          calcDerived().forEach(function(item){
+            if (!derivedMap[item.label]) {
+              derivedMap[item.label] = { domain: item.domain, label: item.label, cols: [] };
+              for(var x=0;x<sorted.length;x++) derivedMap[item.label].cols.push(null);
+              derivedOrder.push(item.label);
+            }
+            derivedMap[item.label].cols[ci] = item;
+          });
+        } catch(e){}
+      });
+      STATE.fields = savedFields; STATE.unitSys = savedUnit;
+
+      if (derivedOrder.length === 0) return;
+
+      /* Domain order for grouping */
+      var DORDER = ['Kidney','Acid-Base','Lipids','Lipids / Insulin Resistance','Insulin Resistance','CKD-MBD','Anemia Differential','Liver','HD Adequacy'];
+      derivedOrder.sort(function(a,b){
+        var da = derivedMap[a].domain, db = derivedMap[b].domain;
+        return (DORDER.indexOf(da)<0?99:DORDER.indexOf(da)) - (DORDER.indexOf(db)<0?99:DORDER.indexOf(db));
+      });
+
+      /* Section title */
+      checkPage(14);
+      fillRect(margin, y, colW, 8, [235,240,248]);
+      doc.setDrawColor.apply(doc, NAVY); doc.setLineWidth(0.4); doc.line(margin, y, margin, y+8);
+      setFont('bold',10,NAVY); text('DERIVED  Calculated & Derived Values', margin+3, y+5.5);
+      y += 10;
+
+      var lastDomD = '';
+      derivedOrder.forEach(function(lbl){
+        var row = derivedMap[lbl];
+
+        if (row.domain !== lastDomD) {
+          checkPage(7);
+          fillRect(margin,y,colW,6,[235,240,248]);
+          doc.setDrawColor.apply(doc,NAVY); doc.setLineWidth(0.3); doc.line(margin,y,margin+colW,y);
+          setFont('bold',7,NAVY); text(row.domain.toUpperCase(),margin+2,y+4.2);
+          y+=6; lastDomD=row.domain;
+        }
+
+        /* Worst status across columns for row background */
+        var SRD = {NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
+        var wrD = Math.max.apply(null, row.cols.map(function(c){ return c?SRD[c.status]||0:9; }));
+        var rBg = wrD===2?RED_BG:(wrD===1?AMBER_BG:(wrD===0?[246,252,248]:[250,252,255]));
+        var rH = 8;
+        checkPage(rH);
+        fillRect(margin,y,colW,rH,rBg);
+        doc.setFillColor.apply(doc, wrD===2?RED:(wrD===1?AMBER:(wrD===0?GREEN:GRAY)));
+        doc.rect(margin,y,1,rH,'F');
+
+        /* Label (truncate to fit column) */
+        setFont('bold',6.5,NAVY); text(lbl, margin+3, y+5, {maxWidth:labelColW-4});
+
+        /* Values per column */
+        var cx = margin+labelColW;
+        var statArr = row.cols.map(function(c){ return c?c.status:'EMPTY'; });
+        row.cols.forEach(function(c, ci){
+          if (!c || (!c.value && c.value!=='0')) {
+            setFont('normal',7,GRAY); text('—', cx+dateColW/2, y+5, {align:'center'});
+          } else {
+            var tc = c.status==='FLAG'?RED:(c.status==='WATCH'?AMBER:(c.status==='NORMAL'?GREEN:GRAY));
+            setFont('bold',7,tc); text(c.value+(c.unit?' '+c.unit:''), cx+dateColW/2, y+4.5, {align:'center'});
+            doc.setFillColor.apply(doc,tc); doc.roundedRect(cx+dateColW/2-7,y+5.5,14,2.5,0.5,0.5,'F');
+            setFont('bold',4.5,WHITE); text(c.status==='NORMAL'?'Goal':(c.status==='WATCH'?'Watch':'Flag'), cx+dateColW/2, y+7.2, {align:'center'});
+          }
+          cx += dateColW;
+        });
+
+        /* Trend */
+        var nonEmpty = statArr.filter(function(s){return s!=='EMPTY';});
+        var trend='', tC=GRAY;
+        if (nonEmpty.length>=2) {
+          var delta = SRD[statArr[0]] - SRD[statArr[statArr.length-1]];
+          if (delta<0){trend='Impr';tC=GREEN;}
+          else if(delta>0){trend='Decl';tC=RED;}
+          else{trend='Stbl';tC=GRAY;}
+        }
+        setFont('bold',6.5,tC); text(trend, cx+trendColW/2, y+5, {align:'center'});
+        y+=rH;
+      });
+      y+=4;
+    })();
+
+    y+=4;
 
     /* Legend */
     checkPage(32);
