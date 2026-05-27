@@ -3261,8 +3261,8 @@ function extractPDFPatientInfo(text){
 var FIELD_PATTERNS = [
   { key:'creatinine',    rx:/\bcreatinine\b(?![\s\/\-]*(?:ratio|clearance|index))/i, siU:/µmol\/[Ll]|umol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'egfr',          rx:/(?<!with )\b(?:e?gfr|estimated\s+gfr|glomerular\s+filtration(?:\s+rate)?)\b/i },
-  { key:'bun_pre',       rx:/\bpre[\s\-]*(?:hd[\s\-]*|dialysis[\s\-]*)?(?:bun\b|urea(?:\s+nitrogen)?)\b|\b(?:bun|urea(?:\s+nitrogen)?)\s*[\(\[]\s*pre\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
-  { key:'bun_post',      rx:/\bpost[\s\-]*(?:hd[\s\-]*|dialysis[\s\-]*)?(?:bun\b|urea(?:\s+nitrogen)?)\b|\b(?:bun|urea(?:\s+nitrogen)?)\s*[\(\[]\s*post\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'bun_pre',       rx:/\bpre[\s\-]*(?:hd[\s\-]*|dialysis[\s\-]*)?(?:blood[\s\-]*)?(?:bun\b|urea(?:\s+nitrogen)?)\b|\b(?:bun|urea(?:\s+nitrogen)?)\s*[\(\[]\s*pre\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'bun_post',      rx:/\bpost[\s\-]*(?:hd[\s\-]*|dialysis[\s\-]*)?(?:blood[\s\-]*)?(?:bun\b|urea(?:\s+nitrogen)?)\b|\b(?:bun|urea(?:\s+nitrogen)?)\s*[\(\[]\s*post\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'bun',           rx:/\b(?:bun\b|urea\s+nitrogen|blood\s+urea\s+nitrogen|urea(?:\s*,?\s*serum)?)\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'uacr',          rx:/\b(?:uacr|albumin[\s\/\-]+creatinine(?:\s+ratio)?|microalbumin\/creatinine|acr\b)/i, cvU:/mg\/g/ },
   { key:'upcr',          rx:/\b(?:upcr|protein[\s\/\-]+creatinine(?:\s+ratio)?|pcr\b)/i },
@@ -3297,7 +3297,14 @@ var FIELD_PATTERNS = [
   { key:'ipth',          rx:/\b(?:ipth\b|intact\s+pth|intact\s+parathyroid|pth\b)/i },
   { key:'vitd',          rx:/\b(?:25[-\s]oh\s+(?:vitamin\s*)?d|vitamin\s*d\s*25|25-hydroxyvitamin\s*d|calcidiol)\b/i, siU:/nmol\/[Ll]/, cvU:/ng\/m[Ll]/ },
   { key:'alp',           rx:/\b(?:alp\b|alkaline\s+phosphatase)\b/i },
-  { key:'lpa',           rx:/\blp\s*\(a\)|lipoprotein\s*\(a\)/i }
+  { key:'lpa',           rx:/\blp\s*\(a\)|lipoprotein\s*\(a\)/i },
+  // HD Adequacy fields — machine-reported or extractable from HD kinetics section
+  { key:'spktv',         rx:/\b(?:sp)?kt?\/v\b/i },
+  { key:'urr',           rx:/\b(?:urr\b|urea\s+reduction\s+(?:rate|ratio))\b/i, cvU:/%/ },
+  { key:'uf_volume',     rx:/\b(?:ultra[\s\-]*filtration(?:\s+vol(?:ume)?)?|uf(?:\s+vol(?:ume)?)?)\b/i },
+  { key:'weight_post',   rx:/\bpost[\s\-]*(?:hd[\s\-]*|dialysis[\s\-]*)?(?:dry[\s\-]*)?weight\b|\bweight[\s\-]*post\b/i },
+  // Temporary extraction key — session hours → converted to minutes and written to the HD duration input
+  { key:'_hd_session_hours', rx:/\bdialysis\s+session\s+hours?\b|\bsession\s+(?:duration|hours?|time)\b/i }
 ];
 
 /* human-readable labels for the results panel */
@@ -3385,6 +3392,19 @@ function parseLabText(rawText) {
     fields.bun = fields.bun_pre;
   }
 
+  /* uf_volume unit fix: Hi-Precision (and some labs) report UF volume in liters.
+     FIELD_META Conventional unit is mL, so multiply by 1000 when "Liter" appears near the label. */
+  if (fields.uf_volume) {
+    var ufRx2 = /\b(?:ultra[\s\-]*filtration|uf\s+vol)/i;
+    var ufM2 = ufRx2.exec(text);
+    if (ufM2) {
+      var ufAfter2 = text.substring(ufM2.index, ufM2.index + 80);
+      if (/[Ll]iter/.test(ufAfter2) && parseFloat(fields.uf_volume) < 20) {
+        fields.uf_volume = (parseFloat(fields.uf_volume) * 1000).toFixed(0);
+      }
+    }
+  }
+
   /* If any conventional values were matched directly, treat the whole report
      as Conventional. Only fall back to SI if no conventional matches at all. */
   var unitSys = cvVotes > 0 ? 'Conventional (US)' : (siVotes > 0 ? 'SI' : null);
@@ -3417,10 +3437,26 @@ function applyExtractedFields(parsed) {
     document.getElementById('unit-desc').textContent = descs[unitSys] || '';
   }
 
-  /* Populate STATE.fields */
+  /* Populate STATE.fields (skip temp extraction keys prefixed with _) */
   Object.keys(fields).forEach(function(k) {
-    STATE.fields[k] = fields[k];
+    if (k.charAt(0) !== '_') STATE.fields[k] = fields[k];
   });
+
+  /* Dialysis Session Hours → HD duration input (minutes) */
+  if (fields._hd_session_hours) {
+    var durEl = document.getElementById('ctx-hd-duration');
+    if (durEl) {
+      var extractedMin = Math.round(parseFloat(fields._hd_session_hours) * 60);
+      if (extractedMin > 0) { durEl.value = extractedMin; STATE.hdDuration = extractedMin; }
+    }
+  }
+
+  /* Auto-enable HD mode when HD kinetics fields are detected in the PDF */
+  if (!STATE.isHD && (STATE.fields.bun_pre || STATE.fields.bun_post || STATE.fields.spktv || STATE.fields.urr)) {
+    STATE.isHD = true;
+    document.getElementById('hd-dur-row').style.display = 'flex';
+    document.getElementById('tab-hd').style.display = '';
+  }
 
   /* Fill patient info if found and fields are currently empty */
   if (parsed.name) {
