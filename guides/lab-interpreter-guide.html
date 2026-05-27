@@ -1580,6 +1580,14 @@ html[data-view="desktop"]{min-width:1024px;}
 .pdf-mode-btn{padding:5px 16px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-muted);transition:background .15s,color .15s,border-color .15s;}
 .pdf-mode-btn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
 .compare-wrap{overflow:hidden;}
+.compare-action-bar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.compare-back-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-muted);transition:background .15s,color .15s;}
+.compare-back-btn:hover{background:var(--bg);color:var(--navy);}
+.compare-dl-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.compare-dl-btn{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:filter .15s;white-space:nowrap;}
+.compare-dl-btn:hover{filter:brightness(1.15);}
+.compare-dl-btn:disabled{opacity:.6;cursor:not-allowed;}
+.compare-dl-btn.teal{background:var(--teal);}
 .compare-pt{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px;padding:0 2px;}
 .compare-scroll{overflow-x:auto;border-radius:8px;border:1px solid var(--border);}
 .compare-table{width:100%;border-collapse:collapse;font-size:12px;}
@@ -2934,6 +2942,30 @@ function _loadClinicLogo(slug, cb) {
 // ════════════════════════════════════════════════════════════════════
 // PDF EXPORT
 // ════════════════════════════════════════════════════════════════════
+/* Build flowsheet filename: yyyy-mm-dd-LabFlowSheet-LastName-FirstName-MI.pdf */
+function _flowsheetFilename(ptName, refDate) {
+  var d = refDate || new Date().toISOString().slice(0,10);
+  if (!ptName) return d + '-LabFlowSheet.pdf';
+  var part;
+  if (ptName.indexOf(',') !== -1) {
+    var ci = ptName.indexOf(',');
+    var last = ptName.substring(0, ci).trim().replace(/\s+/g, '-');
+    var rest = ptName.substring(ci + 1).trim().split(/\s+/).join('-');
+    part = last + (rest ? '-' + rest : '');
+  } else {
+    part = ptName.trim().replace(/\s+/g, '-');
+  }
+  part = part.replace(/[^A-Za-z0-9\-]/g, '');
+  return d + '-LabFlowSheet-' + part + '.pdf';
+}
+
+/* Most recent date among loaded sessions (for filename / header) */
+function _latestSessionDate() {
+  if (!_pdfSessions.length) return null;
+  var dates = _pdfSessions.map(function(s){ return s.date; }).filter(Boolean).sort();
+  return dates.length ? dates[dates.length - 1] : null;
+}
+
 function exportPDF(triggerBtn) {
   var allBtns = document.querySelectorAll('.pdf-btn');
   allBtns.forEach(function(b){ b.disabled=true; b.textContent='Generating…'; });
@@ -2944,6 +2976,20 @@ function exportPDF(triggerBtn) {
       _doExportPDF(logoDataUrl);
     }
   });
+}
+
+/* Always generates the single-date snapshot report regardless of mode */
+function exportSinglePDF(triggerBtn) {
+  var allBtns = document.querySelectorAll('.pdf-btn');
+  allBtns.forEach(function(b){ b.disabled=true; b.textContent='Generating…'; });
+  _loadClinicLogo(_clinicSlug(), function(logoDataUrl) { _doExportPDF(logoDataUrl); });
+}
+
+/* Always generates the flowsheet (compare) PDF regardless of mode */
+function exportFlowsheetPDF(triggerBtn) {
+  var allBtns = document.querySelectorAll('.pdf-btn');
+  allBtns.forEach(function(b){ b.disabled=true; b.textContent='Generating…'; });
+  _loadClinicLogo(_clinicSlug(), function(logoDataUrl) { _doExportFlowsheetPDF(logoDataUrl); });
 }
 function _doExportPDF(logoDataUrl) {
   var allBtns = document.querySelectorAll('.pdf-btn');
@@ -3262,7 +3308,8 @@ function _doExportPDF(logoDataUrl) {
 
     // ── Save ─────────────────────────────────────────────────────
     var ptName2 = document.getElementById('pt-name').value.trim();
-    var labDateVal = document.getElementById('pt-date').value || new Date().toISOString().slice(0,10);
+    /* Use most recent session date so multi-PDF loads don't pick the earliest */
+    var labDateVal = _latestSessionDate() || document.getElementById('pt-date').value || new Date().toISOString().slice(0,10);
     var fnameParts;
     if (ptName2) {
       // Accept "Last, First Middle" or plain "Last First Middle"
@@ -3287,8 +3334,12 @@ function _doExportPDF(logoDataUrl) {
     console.error(e);
   }
 
-  var svgIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
-  allBtns.forEach(function(b){ b.disabled=false; b.innerHTML=svgIcon+'Download PDF Report'; });
+  var _svg0='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+  allBtns.forEach(function(b){
+    b.disabled=false;
+    if(b.classList.contains('teal')) b.innerHTML=_svg0+' Download Lab Flow Sheet';
+    else b.innerHTML=_svg0+' Download PDF Report';
+  });
   }, 60);
 }
 
@@ -3476,16 +3527,21 @@ function _doExportFlowsheetPDF(logoDataUrl) {
     setFont('italic',6,GRAY);
     doc.text('For patient education only. All results must be interpreted in clinical context by a qualified physician. Not a substitute for medical consultation.',margin,pageH-12,{maxWidth:colW});
 
-    var safeName=ptName?ptName.replace(/[^A-Za-z0-9]/g,'-'):'FlowSheet';
-    doc.save(new Date().toISOString().slice(0,10)+'-LabFlowSheet-'+safeName+'.pdf');
+    /* Use most recent date among loaded sessions as the reference date */
+    var _refDate = sorted[0] && sorted[0].date ? sorted[0].date : new Date().toISOString().slice(0,10);
+    doc.save(_flowsheetFilename(ptName, _refDate));
 
   } catch(e){
     alert('Flowsheet PDF generation failed: '+e.message);
     console.error(e);
   }
-  var svgIcon2='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+  var _svg='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
   var allBtns2=document.querySelectorAll('.pdf-btn');
-  allBtns2.forEach(function(b){ b.disabled=false; b.innerHTML=svgIcon2+'Download PDF Report'; });
+  allBtns2.forEach(function(b){
+    b.disabled=false;
+    if(b.classList.contains('teal')) b.innerHTML=_svg+' Download Lab Flow Sheet';
+    else b.innerHTML=_svg+' Download PDF Report';
+  });
   }, 60);
 }
 
@@ -4048,8 +4104,20 @@ function renderCompareTable(sessions) {
   var STATUS_RANK = {NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
 
   var ptName = allNames[0] || '';
+  var dlSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
 
   var html = '<div class="compare-wrap">';
+
+  /* ── Action bar: back button + download buttons ── */
+  html += '<div class="compare-action-bar">' +
+    '<button class="compare-back-btn" onclick="setPDFMode(\'merge\')">← Back to single-date view</button>' +
+    '</div>';
+
+  html += '<div class="compare-dl-bar">' +
+    '<button class="compare-dl-btn pdf-btn" onclick="exportSinglePDF(this)">' + dlSvg + ' Download Single-Date Report</button>' +
+    '<button class="compare-dl-btn teal pdf-btn" onclick="exportFlowsheetPDF(this)">' + dlSvg + ' Download Lab Flow Sheet</button>' +
+    '</div>';
+
   if (nameMismatch) {
     html += '<div style="padding:7px 10px;margin-bottom:10px;background:#fff4e0;border:1px solid #d97f00;border-radius:6px;font-size:12px;color:#a05c00;font-weight:600;">⚠ Patient name mismatch across PDFs: ' + allNames.join(' · ') + '. Verify these results belong to the same patient before using this comparison.</div>';
   }
