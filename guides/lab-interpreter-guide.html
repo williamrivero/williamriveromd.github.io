@@ -2138,6 +2138,7 @@ var STATE = {
   isHD: false,
   ckdVeryHigh: false,
   hdDuration: 240,
+  ktvFormula: null,  // 'Lowrie' | 'Daugirdas' | null — detected from PDF note
   ckdDiag: '',   // 'ckd' | 'ckd-dm' | 'ckd-htn' | 'ckd-dm-htn' | 'eskd-hd' | 'eskd-pd' | 'transplant'
   ckdStage: '',  // 'G1'–'G5'
   fields: {}     // key -> raw string as entered
@@ -2459,7 +2460,9 @@ function interpKey(key) {
                   : (v<=70?['NORMAL','Normal iPTH']:v<=110?['WATCH','Mildly elevated — CKD-MBD developing; set CKD stage for stage-specific target']:['FLAG','Elevated — active CKD-MBD management needed; set CKD stage for targeted guidance'])))),
     vitd: v>=30?['NORMAL','Optimal 30–60 ng/mL']:v>=20?['WATCH','Insufficiency — cholecalciferol supplementation']:['FLAG','Deficiency (<20 ng/mL) — higher-dose repletion needed'],
     alp: v>=44&&v<=147?['NORMAL','Normal']:v>147?['WATCH','Elevated — bone disease if iPTH also high']:['WATCH','Low-normal'],
-    spktv: v>=1.4?['NORMAL','Adequate spKt/V ≥1.4']:v>=1.2?['WATCH','Borderline — increase time or blood flow']:['FLAG','Inadequate — urgent prescription review'],
+    spktv: STATE.ktvFormula==='Lowrie'
+      ? (v>=1.4?['NORMAL','Adequate Kt/V ≥1.4 (Lowrie formula, lab-reported)']:v>=1.2?['WATCH','Meets minimum Kt/V ≥1.2 (Lowrie) — optimize toward ≥1.4 if possible']:['FLAG','Inadequate — Kt/V <1.2 (Lowrie formula); urgent prescription review'])
+      : (v>=1.4?['NORMAL','Adequate spKt/V ≥1.4']:v>=1.2?['WATCH','Borderline — increase time or blood flow']:['FLAG','Inadequate — urgent prescription review']),
     urr: v>=65?['NORMAL','Adequate URR ≥65%']:v>=55?['WATCH','Borderline — optimize prescription']:['FLAG','Inadequate — review HD prescription'],
     npcrHD: v>=1.0&&v<=1.4?['NORMAL','Adequate nPCR 1.0–1.4 g/kg/day']:v<1.0?['FLAG','Low — protein-energy wasting; nutritional intervention']:['WATCH','High nPCR — monitor phosphorus']
   };
@@ -2808,7 +2811,7 @@ function onFieldInput(key, val) {
 function setUnit(u, btn) {
   STATE.unitSys = u;
   // Clear entered values on unit switch to avoid misinterpretation
-  STATE.fields = {};
+  STATE.fields = {}; STATE.ktvFormula = null;
   document.querySelectorAll('.unit-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   var descs = {
@@ -3392,6 +3395,10 @@ function parseLabText(rawText) {
     fields.bun = fields.bun_pre;
   }
 
+  /* Detect Kt/V formula from PDF footnote (e.g. "Lowrie Formula" or "Daugirdas") */
+  if (/\blowrie\b/i.test(text)) fields._ktv_formula = 'Lowrie';
+  else if (/\bdaugirdas\b/i.test(text)) fields._ktv_formula = 'Daugirdas';
+
   /* uf_volume unit fix: Hi-Precision (and some labs) report UF volume in liters.
      FIELD_META Conventional unit is mL, so multiply by 1000 when "Liter" appears near the label. */
   if (fields.uf_volume) {
@@ -3441,6 +3448,9 @@ function applyExtractedFields(parsed) {
   Object.keys(fields).forEach(function(k) {
     if (k.charAt(0) !== '_') STATE.fields[k] = fields[k];
   });
+
+  /* Kt/V formula detected from PDF */
+  if (fields._ktv_formula) STATE.ktvFormula = fields._ktv_formula;
 
   /* Dialysis Session Hours → HD duration input (minutes) */
   if (fields._hd_session_hours) {
