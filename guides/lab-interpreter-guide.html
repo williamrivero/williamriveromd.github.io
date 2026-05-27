@@ -3230,7 +3230,7 @@ function extractPDFPatientInfo(text){
 }
 
 var FIELD_PATTERNS = [
-  { key:'creatinine',    rx:/\bcreatinine\b/i,                          siU:/µmol\/[Ll]|umol\/[Ll]/,  cvU:/mg\/d[Ll]/ },
+  { key:'creatinine',    rx:/\bcreatinine\b(?![\s\/\-]*(?:ratio|clearance|index))/i, siU:/µmol\/[Ll]|umol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'egfr',          rx:/\b(?:e?gfr|estimated\s+gfr|glomerular\s+filtration(?:\s+rate)?)\b/i },
   { key:'bun',           rx:/\b(?:bun\b|urea\s+nitrogen|blood\s+urea\s+nitrogen|urea(?:\s*,?\s*serum)?)\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'uacr',          rx:/\b(?:uacr|albumin[\s\/\-]+creatinine(?:\s+ratio)?|microalbumin\/creatinine|acr\b)/i },
@@ -3249,8 +3249,8 @@ var FIELD_PATTERNS = [
   { key:'potassium',     rx:/\b(?:potassium|k\+?)\b/i },
   { key:'bicarb',        rx:/\b(?:bicarbonate|hco3?|total\s+co2|co2\s+(?:total|content))\b/i },
   { key:'chloride',      rx:/\b(?:chloride|cl-?)\b/i },
-  { key:'magnesium',     rx:/\b(?:magnesium|mg\+?)\b/i,                 siU:/mmol\/[Ll]/,              cvU:/mg\/d[Ll]/ },
-  { key:'albumin',       rx:/\b(?:serum\s+)?albumin\b/i,                siU:/g\/[Ll](?:\s|$)/,         cvU:/g\/d[Ll]/ },
+  { key:'magnesium',     rx:/\bmagnesium\b/i,                            siU:/mmol\/[Ll]/,              cvU:/mg\/d[Ll]/ },
+  { key:'albumin',       rx:/\b(?:serum\s+)?albumin\b(?![\s\/\-]*(?:creatinine|ratio|globulin|to\b))/i, siU:/g\/[Ll](?:\s|$)/, cvU:/g\/d[Ll]/ },
   { key:'alt',           rx:/\b(?:alt\b|sgpt\b|alanine\s+(?:amino)?transf)/i },
   { key:'ast',           rx:/\b(?:ast\b|sgot\b|aspartate\s+(?:amino)?transf)/i },
   { key:'uricacid',      rx:/\buric\s*acid\b/i,                         siU:/µmol\/[Ll]|umol\/[Ll]/,  cvU:/mg\/d[Ll]/ },
