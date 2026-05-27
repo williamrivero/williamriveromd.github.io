@@ -1559,6 +1559,35 @@ html[data-view="desktop"]{min-width:1024px;}
   .tab-btn{font-size:11px;padding:5px 9px;}
 }
 </style>
+<style>
+/* ── PDF UPLOAD WIDGET ── */
+.upload-card{background:var(--white);border:1.5px dashed var(--teal);border-radius:12px;padding:14px 18px;margin-bottom:10px;transition:border-color .2s,background .2s;}
+.upload-card.drag-over{background:var(--teal-light);border-color:var(--teal);border-style:solid;}
+.upload-zone{display:flex;align-items:center;gap:14px;cursor:pointer;}
+.upload-zone-icon{width:40px;height:40px;flex-shrink:0;background:var(--teal-light);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.upload-zone-icon svg{width:20px;height:20px;stroke:var(--teal);}
+.upload-zone-text strong{display:block;font-size:14px;color:var(--navy);margin-bottom:2px;}
+.upload-zone-text span{font-size:12px;color:var(--text-muted);}
+.upload-btn{display:inline-flex;align-items:center;gap:6px;background:var(--teal);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-left:auto;flex-shrink:0;transition:filter .15s;}
+.upload-btn:hover{filter:brightness(1.1);}
+.upload-btn svg{width:15px;height:15px;}
+.upload-status{margin-top:10px;font-size:13px;display:flex;align-items:center;gap:8px;}
+.upload-status.loading{color:var(--teal);}
+.upload-status.error{color:var(--red);}
+.upload-results{margin-top:12px;border-top:1px solid var(--border);padding-top:10px;}
+.upload-results-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:8px;}
+.extract-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;}
+.extract-item{background:var(--bg);border-radius:8px;padding:6px 10px;font-size:12px;}
+.extract-item .ei-label{color:var(--text-muted);font-size:11px;margin-bottom:2px;}
+.extract-item .ei-val{font-weight:700;color:var(--navy);}
+.upload-notice{font-size:11.5px;color:var(--text-muted);margin-top:8px;line-height:1.5;}
+html[data-theme="dark"] .upload-card{background:#1a2535;border-color:#2a6b72;}
+html[data-theme="dark"] .upload-card.drag-over{background:#112830;}
+html[data-theme="dark"] .upload-zone-icon{background:#112830;}
+html[data-theme="dark"] .extract-item{background:#141c2a;}
+html[data-theme="dark"] .extract-item .ei-val{color:#c0cad8;}
+html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
+</style>
 
 <script type="application/ld+json">
 {
@@ -1896,6 +1925,29 @@ html[data-view="desktop"]{min-width:1024px;}
       <span>min</span>
     </div>
   </div>
+</div>
+
+<!-- PDF UPLOAD -->
+<div class="upload-card" id="uploadCard"
+     ondragover="event.preventDefault();this.classList.add('drag-over');"
+     ondragleave="this.classList.remove('drag-over');"
+     ondrop="this.classList.remove('drag-over');handlePDFDrop(event);">
+  <div class="upload-zone" onclick="document.getElementById('pdfFileInput').click()">
+    <div class="upload-zone-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+    </div>
+    <div class="upload-zone-text">
+      <strong>Upload Lab Results PDF</strong>
+      <span>Click or drag &amp; drop — values auto-fill the calculator · Works with Philippine &amp; Singapore lab reports</span>
+    </div>
+    <button class="upload-btn" type="button" onclick="event.stopPropagation();document.getElementById('pdfFileInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+      Browse PDF
+    </button>
+    <input type="file" id="pdfFileInput" accept=".pdf" style="display:none" onchange="handlePDFFile(this.files[0]);this.value='';">
+  </div>
+  <div class="upload-status" id="uploadStatus" style="display:none;"></div>
+  <div class="upload-results" id="uploadResults" style="display:none;"></div>
 </div>
 
 <!-- TABS -->
@@ -3040,6 +3092,230 @@ function clearPanel(panelId) {
 renderAllInputs();
 renderDerived();
 </script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   PDF LAB RESULT EXTRACTOR
+   Uses PDF.js (loaded on demand) to extract text, then parses
+   known lab test names with regex and auto-populates the calculator.
+═══════════════════════════════════════════════════════════════════ */
+
+var FIELD_PATTERNS = [
+  { key:'creatinine',    rx:/\bcreatinine\b/i,                          siU:/µmol\/[Ll]|umol\/[Ll]/,  cvU:/mg\/d[Ll]/ },
+  { key:'egfr',          rx:/\b(?:e?gfr|estimated\s+gfr|glomerular\s+filtration(?:\s+rate)?)\b/i },
+  { key:'bun',           rx:/\b(?:bun\b|urea\s+nitrogen|blood\s+urea\s+nitrogen|urea(?:\s*,?\s*serum)?)\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'uacr',          rx:/\b(?:uacr|albumin[\s\/\-]+creatinine(?:\s+ratio)?|microalbumin\/creatinine|acr\b)/i },
+  { key:'upcr',          rx:/\b(?:upcr|protein[\s\/\-]+creatinine(?:\s+ratio)?|pcr\b)/i },
+  { key:'hgb',           rx:/\b(?:h[ae]moglobin|hgb\b|hb\b)/i },
+  { key:'hct',           rx:/\b(?:h[ae]matocrit|hct\b|pcv\b)/i },
+  { key:'rbc',           rx:/\brbc\s*(?:count)?\b/i },
+  { key:'mcv',           rx:/\bmcv\b/i },
+  { key:'rdw',           rx:/\brdw\b/i },
+  { key:'reticulocyte',  rx:/\breticulocyte\b/i },
+  { key:'ferritin',      rx:/\b(?:serum\s+)?ferritin\b/i },
+  { key:'tsat',          rx:/\b(?:transferrin\s+saturation|tsat\b|iron\s+saturation|percent\s+(?:iron\s+)?saturation)\b/i },
+  { key:'wbc',           rx:/\b(?:wbc\s*(?:count)?|white\s+(?:blood\s+)?(?:cell|blood)\s*(?:count)?|leucocyte\s*(?:count)?|leukocyte\s*(?:count)?)\b/i },
+  { key:'platelets',     rx:/\b(?:platelet\s*(?:count)?|plt\b|thrombocyte\s*(?:count)?)\b/i },
+  { key:'sodium',        rx:/\b(?:sodium|na\+?)\b/i },
+  { key:'potassium',     rx:/\b(?:potassium|k\+?)\b/i },
+  { key:'bicarb',        rx:/\b(?:bicarbonate|hco3?|total\s+co2|co2\s+(?:total|content))\b/i },
+  { key:'chloride',      rx:/\b(?:chloride|cl-?)\b/i },
+  { key:'magnesium',     rx:/\b(?:magnesium|mg\+?)\b/i,                 siU:/mmol\/[Ll]/,              cvU:/mg\/d[Ll]/ },
+  { key:'albumin',       rx:/\b(?:serum\s+)?albumin\b/i,                siU:/g\/[Ll](?:\s|$)/,         cvU:/g\/d[Ll]/ },
+  { key:'alt',           rx:/\b(?:alt\b|sgpt\b|alanine\s+(?:amino)?transf)/i },
+  { key:'ast',           rx:/\b(?:ast\b|sgot\b|aspartate\s+(?:amino)?transf)/i },
+  { key:'uricacid',      rx:/\buric\s*acid\b/i,                         siU:/µmol\/[Ll]|umol\/[Ll]/,  cvU:/mg\/d[Ll]/ },
+  { key:'totalchol',     rx:/\b(?:total\s+cholesterol|cholesterol(?:\s*,?\s*total)?|tc\b)/i,            siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'ldl',           rx:/\bldl[\s\-]?c?\b/i,                        siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'hdl',           rx:/\bhdl[\s\-]?c?\b/i,                        siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'tg',            rx:/\b(?:triglyceride|tg\b|triacylglycerol|triacylglyceride)\b/i,              siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'fbs',           rx:/\b(?:fasting\s+(?:blood\s+)?(?:glucose|sugar)|fbs\b|fbg\b|plasma\s+glucose|(?:blood\s+)?glucose(?!\s+toleran))\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'hba1c',         rx:/\b(?:hba1c|glycated\s+h[ae]moglobin|glycosylated\s+h[ae]moglobin|a1c\b)/i, siU:/mmol\/mol/ },
+  { key:'fasting_insulin',rx:/\b(?:fasting\s+insulin|serum\s+insulin)\b/i },
+  { key:'calcium',       rx:/\b(?:(?:serum\s+)?calcium(?!\s+x))\b/i,   siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'phosphorus',    rx:/\b(?:phosph(?:orus|ate)\b|po4\b|inorganic\s+phosphate)\b/i,                siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'ipth',          rx:/\b(?:ipth\b|intact\s+pth|intact\s+parathyroid|pth\b)/i },
+  { key:'vitd',          rx:/\b(?:25[-\s]oh\s+(?:vitamin\s*)?d|vitamin\s*d\s*25|25-hydroxyvitamin\s*d|calcidiol)\b/i, siU:/nmol\/[Ll]/, cvU:/ng\/m[Ll]/ },
+  { key:'alp',           rx:/\b(?:alp\b|alkaline\s+phosphatase)\b/i },
+  { key:'lpa',           rx:/\blp\s*\(a\)|lipoprotein\s*\(a\)/i }
+];
+
+/* human-readable labels for the results panel */
+var FIELD_LABELS = {
+  creatinine:'Creatinine', egfr:'eGFR', bun:'BUN/Urea', uacr:'UACR', upcr:'UPCR',
+  hgb:'Hemoglobin', hct:'Hematocrit', rbc:'RBC', mcv:'MCV', rdw:'RDW',
+  reticulocyte:'Reticulocyte', ferritin:'Ferritin', tsat:'TSAT', wbc:'WBC', platelets:'Platelets',
+  sodium:'Sodium', potassium:'Potassium', bicarb:'Bicarbonate', chloride:'Chloride', magnesium:'Magnesium',
+  albumin:'Albumin', alt:'ALT/SGPT', ast:'AST/SGOT', uricacid:'Uric Acid',
+  totalchol:'Total Cholesterol', ldl:'LDL-C', hdl:'HDL-C', tg:'Triglycerides',
+  fbs:'Glucose', hba1c:'HbA1c', fasting_insulin:'Fasting Insulin',
+  calcium:'Calcium', phosphorus:'Phosphorus', ipth:'iPTH', vitd:'Vitamin D', alp:'ALP', lpa:'Lp(a)'
+};
+
+function parseLabText(rawText) {
+  /* Normalise: unify line endings, micro signs, collapse multi-spaces */
+  var text = rawText
+    .replace(/\r\n?/g, '\n')
+    .replace(/µ|μ/g, 'µ')
+    .replace(/[ \t]{2,}/g, ' ');
+
+  var fields = {};
+  var siVotes = 0, cvVotes = 0;
+
+  FIELD_PATTERNS.forEach(function(rule) {
+    /* Find the test name */
+    var m = rule.rx.exec(text);
+    if (!m) return;
+
+    /* Get up to 160 chars after the match */
+    var after = text.substring(m.index + m[0].length, m.index + m[0].length + 160);
+
+    /* Strip parenthetical qualifiers e.g. (Fasting), (Direct), (Intact) */
+    after = after.replace(/\([^)]{1,30}\)/g, ' ');
+
+    /* Find first plausible numeric value.
+       Uses a negative lookahead to skip "N/A", "> 60" style flags,
+       but allows decimals like 1.25 and values like 108 */
+    var numM = after.match(/[\s:=*]+(\d+\.?\d*)(?!\s*%?\s*[-–]\s*\d)/);
+    if (!numM) numM = after.match(/[\s:=*]+(\d+\.?\d*)/);
+    if (!numM) return;
+
+    var val = numM[1];
+    if (parseFloat(val) <= 0) return; /* skip zeroes */
+
+    fields[rule.key] = val;
+
+    /* Unit detection: look at the 25 chars right after the number */
+    var afterNum = after.substring(numM.index + numM[0].length, numM.index + numM[0].length + 25);
+    if (rule.siU && rule.siU.test(afterNum)) siVotes++;
+    if (rule.cvU && rule.cvU.test(afterNum)) cvVotes++;
+  });
+
+  var unitSys = null;
+  if (siVotes > 0 || cvVotes > 0) {
+    unitSys = siVotes >= cvVotes ? 'SI' : 'Conventional (US)';
+  }
+  return { fields: fields, unitSys: unitSys };
+}
+
+function applyExtractedFields(parsed) {
+  var fields = parsed.fields;
+  var unitSys = parsed.unitSys;
+  var count = Object.keys(fields).length;
+
+  if (count === 0) {
+    showUploadStatus('error', '⚠️ No recognisable lab values found in this PDF. The report may be scanned — try Option B (AI scan) or enter values manually.');
+    return;
+  }
+
+  /* Switch unit system if detected, WITHOUT clearing existing fields */
+  if (unitSys && unitSys !== STATE.unitSys) {
+    STATE.unitSys = unitSys;
+    document.querySelectorAll('.unit-btn').forEach(function(b) {
+      b.classList.toggle('active', b.textContent.trim() === unitSys);
+    });
+    var descs = {
+      'Conventional (US)':'mg/dL for glucose, cholesterol, creatinine · g/dL for albumin · g/L for Hgb · µIU/mL for insulin',
+      'SI':'mmol/L for glucose, lipids, electrolytes · µmol/L for creatinine & uric acid · g/L for Hgb/albumin · nmol/L for vitamin D · pmol/L for insulin · mmol/mol for HbA1c',
+      'Hybrid':'mmol/L for electrolytes, glucose & Mg · mg/dL for lipids, creatinine, Ca/Phos · nmol/L for vitamin D · g/L for Hgb'
+    };
+    document.getElementById('unit-desc').textContent = descs[unitSys] || '';
+  }
+
+  /* Populate STATE.fields */
+  Object.keys(fields).forEach(function(k) {
+    STATE.fields[k] = fields[k];
+  });
+  renderAllInputs();
+  renderDerived();
+  updateSummaryBadges();
+
+  /* Render results panel */
+  var unitLabel = unitSys ? ' · Units auto-set to <strong>' + unitSys + '</strong>' : '';
+  var html = '<div class="upload-results-title">📊 ' + count + ' value' + (count !== 1 ? 's' : '') + ' extracted' + unitLabel + '</div>';
+  html += '<div class="extract-grid">';
+  Object.keys(fields).forEach(function(k) {
+    var label = FIELD_LABELS[k] || k;
+    html += '<div class="extract-item"><div class="ei-label">' + label + '</div><div class="ei-val">' + fields[k] + '</div></div>';
+  });
+  html += '</div>';
+  html += '<p class="upload-notice">⚠️ Always verify extracted values against your original report before interpreting results. Formatting variations between labs may occasionally cause extraction errors.</p>';
+
+  var resultsEl = document.getElementById('uploadResults');
+  resultsEl.innerHTML = html;
+  resultsEl.style.display = 'block';
+  document.getElementById('uploadStatus').style.display = 'none';
+}
+
+function showUploadStatus(type, msg) {
+  var el = document.getElementById('uploadStatus');
+  el.className = 'upload-status ' + type;
+  el.innerHTML = msg;
+  el.style.display = 'flex';
+}
+
+function extractTextFromPDF(arrayBuffer) {
+  showUploadStatus('loading', '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Reading PDF…');
+
+  var loadingTask = window.pdfjsLib.getDocument({ data: arrayBuffer });
+  loadingTask.promise.then(function(pdf) {
+    var numPages = pdf.numPages;
+    var pagePromises = [];
+    for (var i = 1; i <= Math.min(numPages, 6); i++) {
+      pagePromises.push(pdf.getPage(i).then(function(page) {
+        return page.getTextContent().then(function(content) {
+          return content.items.map(function(item) { return item.str; }).join(' ');
+        });
+      }));
+    }
+    return Promise.all(pagePromises);
+  }).then(function(pageTexts) {
+    var fullText = pageTexts.join('\n');
+    var parsed = parseLabText(fullText);
+    applyExtractedFields(parsed);
+  }).catch(function(err) {
+    showUploadStatus('error', '⚠️ Could not read PDF: ' + (err.message || err) + '. The file may be password-protected or corrupted.');
+  });
+}
+
+function handlePDFFile(file) {
+  if (!file || file.type !== 'application/pdf') {
+    showUploadStatus('error', '⚠️ Please upload a PDF file.');
+    return;
+  }
+  document.getElementById('uploadResults').style.display = 'none';
+  showUploadStatus('loading', '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Loading PDF reader…');
+
+  if (window.pdfjsLib) {
+    var reader = new FileReader();
+    reader.onload = function(e) { extractTextFromPDF(e.target.result); };
+    reader.readAsArrayBuffer(file);
+    return;
+  }
+
+  /* Lazy-load PDF.js from CDN */
+  var script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  script.onload = function() {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    var reader = new FileReader();
+    reader.onload = function(e) { extractTextFromPDF(e.target.result); };
+    reader.readAsArrayBuffer(file);
+  };
+  script.onerror = function() {
+    showUploadStatus('error', '⚠️ Could not load PDF reader. Please check your internet connection and try again.');
+  };
+  document.head.appendChild(script);
+}
+
+function handlePDFDrop(event) {
+  event.preventDefault();
+  var file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
+  if (file) handlePDFFile(file);
+}
+</script>
+
 </div><!-- /li-root -->
 </div><!-- /tool-wrapper -->
 </section>
