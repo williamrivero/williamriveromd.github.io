@@ -3298,17 +3298,21 @@ function _doExportFlowsheetPDF(logoDataUrl) {
   try {
     var { jsPDF } = window.jspdf;
 
-    /* Sort sessions newest-first */
-    var sorted = _pdfSessions.slice().sort(function(a,b){
-      if (!a.date&&!b.date) return 0; if (!a.date) return 1; if (!b.date) return -1;
-      return a.date<b.date?1:-1;
-    });
+    /* Group by date pivot, then sort newest-first */
+    var sorted = _groupSessionsByDate(_pdfSessions);
     var nCols = sorted.length;
+
+    /* Collect all patient names; warn if mismatched */
+    var allNames=[];
+    sorted.forEach(function(g){ g.names.forEach(function(n){ if(allNames.indexOf(n)===-1) allNames.push(n); }); });
+    var nameMismatch = allNames.length > 1;
+
     var orientation = nCols>=3?'landscape':'portrait';
     var doc = new jsPDF({orientation:orientation, unit:'mm', format:'a4'});
     var W = orientation==='landscape'?297:210;
     var pageH = orientation==='landscape'?210:297;
     var margin = 14, colW = W-margin*2;
+    var headerH = (nameMismatch ? 38 : 32);
     var y = 0;
 
     var NAVY=[26,46,74],GREEN=[26,110,62],AMBER=[160,92,0],RED=[160,24,24],GRAY=[130,130,130];
@@ -3323,20 +3327,22 @@ function _doExportFlowsheetPDF(logoDataUrl) {
     var labelColW=58, trendColW=18;
     var dateColW = Math.floor((colW-labelColW-trendColW)/nCols);
 
-    var ptName='';
-    for(var pi=0;pi<sorted.length;pi++){ if(sorted[pi].name){ptName=sorted[pi].name;break;} }
+    var ptName = allNames[0] || '';
 
     function fmtDate(iso){ if(!iso) return null; var d=new Date(iso+'T00:00'); return d.toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'}); }
 
     /* Header */
-    fillRect(0,0,W,30,NAVY);
+    fillRect(0,0,W,headerH,NAVY);
     setFont('bold',16,WHITE); text('Lab Trend Flow Sheet',margin,10);
-    setFont('normal',7,[150,170,190]); text('KDIGO 2024 · ACC/AHA 2026 · ADA 2025 · '+nCols+' dates',margin,17);
+    setFont('normal',7,[150,170,190]); text('KDIGO 2024 · ACC/AHA 2026 · ADA 2025 · '+nCols+' visit'+(nCols!==1?'s':''),margin,17);
     if(logoDataUrl){ try{ doc.addImage(logoDataUrl,'PNG',W-margin-28,2,26,26); }catch(e){} }
-    if(ptName){ setFont('bold',9,WHITE); text('Patient: '+ptName,margin,23); }
-    var dateRange = sorted.map(function(s){return fmtDate(s.date)||s.fileName;}).join('  >  ');
-    setFont('normal',7,[170,190,210]); text(dateRange, ptName?margin+80:margin, 23);
-    y=36;
+    if(ptName){ setFont('bold',9,WHITE); text('Patient: '+ptName,margin,24); }
+    var dateRange = sorted.map(function(g){return fmtDate(g.date)||'(no date)';}).join('  ›  ');
+    setFont('normal',7,[170,190,210]); text(dateRange, ptName?margin+80:margin, 24);
+    if(nameMismatch){
+      setFont('bold',7,[255,220,100]); text('! Name mismatch: '+allNames.join(' / ')+' — verify same patient',margin,32);
+    }
+    y = headerH+4;
     setFont('italic',7,GRAY);
     text('Generated: '+new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}),W-margin,y,{align:'right'});
     y+=8;
@@ -3362,16 +3368,20 @@ function _doExportFlowsheetPDF(logoDataUrl) {
     var STATUS_RANK={NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
 
     function drawTableHeader(){
-      fillRect(margin,y,colW,8,NAVY);
-      setFont('bold',7,WHITE); text('Lab Test',margin+2,y+5.5);
+      var thH = 10;
+      fillRect(margin,y,colW,thH,NAVY);
+      setFont('bold',7,WHITE); text('Lab Test / Units',margin+2,y+5.5);
       var hx=margin+labelColW;
-      sorted.forEach(function(s){
-        var hdr=fmtDate(s.date)||s.fileName;
+      sorted.forEach(function(g){
+        var hdr = fmtDate(g.date) || ('Visit');
         setFont('bold',6.5,WHITE); text(hdr,hx+dateColW/2,y+5.5,{align:'center'});
+        if(g.fileNames.length>1){
+          setFont('normal',5,WHITE); text(g.fileNames.length+' PDFs merged',hx+dateColW/2,y+8.5,{align:'center'});
+        }
         hx+=dateColW;
       });
       setFont('bold',6.5,WHITE); text('Trend',hx+trendColW/2,y+5.5,{align:'center'});
-      y+=9;
+      y+=thH+1;
     }
 
     drawTableHeader();
@@ -3977,16 +3987,47 @@ function _fmtDate(iso) {
   return d.toLocaleDateString('en-PH', {year:'numeric', month:'short', day:'numeric'});
 }
 
+/* Group raw sessions by date pivot. Same-date PDFs are merged into one
+   column (first writer wins per field, so complementary panels combine
+   without overwriting). Returns array sorted newest-first. */
+function _groupSessionsByDate(sessions) {
+  var groups = {}, order = [];
+  sessions.forEach(function(s, idx) {
+    var key = s.date || ('__nodate__' + idx);
+    if (!groups[key]) {
+      groups[key] = { date: s.date || null, names: [], fileNames: [], unitSys: s.unitSys || 'Conventional (US)', fields: {} };
+      order.push(key);
+    }
+    var g = groups[key];
+    Object.keys(s.fields).forEach(function(k) {
+      if (s.fields[k] !== '' && s.fields[k] != null && !g.fields[k]) g.fields[k] = s.fields[k];
+    });
+    if (s.name && g.names.indexOf(s.name) === -1) g.names.push(s.name);
+    g.fileNames.push(s.fileName);
+  });
+  return order.map(function(k){ return groups[k]; }).sort(function(a,b){
+    if (!a.date && !b.date) return 0;
+    if (!a.date) return 1; if (!b.date) return -1;
+    return a.date < b.date ? 1 : -1;
+  });
+}
+
 function renderCompareTable(sessions) {
   if (!sessions || sessions.length < 2) return;
 
-  /* Sort newest-first by date; fall back to drop order */
-  var sorted = sessions.slice().sort(function(a, b) {
-    if (!a.date && !b.date) return 0;
-    if (!a.date) return 1;
-    if (!b.date) return -1;
-    return a.date < b.date ? 1 : -1;
-  });
+  var sorted = _groupSessionsByDate(sessions);
+
+  /* Detect patient name mismatch across columns */
+  var allNames = [];
+  sorted.forEach(function(g){ g.names.forEach(function(n){ if(allNames.indexOf(n)===-1) allNames.push(n); }); });
+  var nameMismatch = allNames.length > 1;
+
+  /* If grouping collapsed everything into 1 column, tell the user */
+  if (sorted.length < 2) {
+    document.getElementById('comparePanel').innerHTML =
+      '<div style="padding:14px;color:var(--amber);font-size:13px;font-weight:600;">All loaded PDFs share the same date — their values have been merged into one column. Load PDFs from different dates to see a trend comparison.</div>';
+    return;
+  }
 
   var FIELD_ORDER = [
     'creatinine','egfr','bun','uacr','upcr',
@@ -4006,23 +4047,27 @@ function renderCompareTable(sessions) {
   };
   var STATUS_RANK = {NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
 
-  /* Patient name from first session that has one */
-  var ptName = '';
-  for (var pi = 0; pi < sorted.length; pi++) { if (sorted[pi].name) { ptName = sorted[pi].name; break; } }
+  var ptName = allNames[0] || '';
 
   var html = '<div class="compare-wrap">';
+  if (nameMismatch) {
+    html += '<div style="padding:7px 10px;margin-bottom:10px;background:#fff4e0;border:1px solid #d97f00;border-radius:6px;font-size:12px;color:#a05c00;font-weight:600;">⚠ Patient name mismatch across PDFs: ' + allNames.join(' · ') + '. Verify these results belong to the same patient before using this comparison.</div>';
+  }
   if (ptName) html += '<div class="compare-pt">👤 ' + ptName + '</div>';
 
   html += '<div class="compare-scroll"><table class="compare-table"><thead><tr><th>Lab Test</th>';
-  sorted.forEach(function(s, i) {
-    var hdr = _fmtDate(s.date) || ('PDF ' + (i + 1));
-    html += '<th>' + hdr + '<div class="compare-fname">' + s.fileName + '</div></th>';
+  sorted.forEach(function(g, i) {
+    var hdr = _fmtDate(g.date) || ('Visit ' + (i + 1));
+    var fileLabel = g.fileNames.length > 1
+      ? g.fileNames.length + ' PDFs merged'
+      : g.fileNames[0];
+    html += '<th>' + hdr + '<div class="compare-fname">' + fileLabel + '</div></th>';
   });
   html += '<th style="text-align:center;">Trend</th></tr></thead><tbody>';
 
   var lastDomain = '';
   FIELD_ORDER.forEach(function(key) {
-    var hasAny = sorted.some(function(s) { return !!s.fields[key]; });
+    var hasAny = sorted.some(function(g) { return !!g.fields[key]; });
     if (!hasAny) return;
 
     var domain = DOMAINS[key] || '';
@@ -4033,17 +4078,17 @@ function renderCompareTable(sessions) {
 
     html += '<tr><td class="compare-field-label">' + (FIELD_LABELS[key] || key) + '</td>';
     var statuses = [];
-    sorted.forEach(function(s) {
-      var val = s.fields[key];
+    sorted.forEach(function(g) {
+      var val = g.fields[key];
       if (!val) { html += '<td class="compare-empty">—</td>'; statuses.push('EMPTY'); return; }
-      var r = interpKeyVal(key, val, s.unitSys || 'Conventional (US)');
+      var r = interpKeyVal(key, val, g.unitSys || 'Conventional (US)');
       statuses.push(r.status);
       html += '<td class="compare-cell compare-' + r.status.toLowerCase() + '">' +
         '<span class="compare-val">' + val + '</span>' +
         '<span class="compare-badge">' + r.status + '</span></td>';
     });
 
-    /* Trend: newest (index 0) vs oldest (last index), skip EMPTY */
+    /* Trend: newest (index 0) vs oldest (last), skip EMPTY */
     var newest = statuses[0], oldest = statuses[statuses.length - 1];
     var trend = '—', tCls = 'trend-stable';
     if (newest !== 'EMPTY' && oldest !== 'EMPTY' && newest !== oldest) {

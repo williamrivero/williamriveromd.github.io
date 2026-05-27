@@ -216,14 +216,38 @@ var DOMAINS = {
 };
 var STATUS_RANK = {NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
 
+/* Group sessions by date pivot — same date = one merged column */
+function groupByDate(sessions) {
+  var groups = {}, order = [];
+  sessions.forEach(function(s, idx) {
+    var key = s.date || ('__nodate__' + idx);
+    if (!groups[key]) {
+      groups[key] = { date: s.date||null, names:[], fileNames:[], unitSys: s.unitSys||'Conventional (US)', fields:{} };
+      order.push(key);
+    }
+    var g = groups[key];
+    Object.keys(s.fields).forEach(function(k){
+      if (s.fields[k]!==''&&s.fields[k]!=null&&!g.fields[k]) g.fields[k]=s.fields[k];
+    });
+    if (s.name && g.names.indexOf(s.name)===-1) g.names.push(s.name);
+    g.fileNames.push(s.fileName);
+  });
+  return order.map(function(k){return groups[k];}).sort(function(a,b){
+    if(!a.date&&!b.date) return 0;
+    if(!a.date) return 1; if(!b.date) return -1;
+    return a.date<b.date?1:-1;
+  });
+}
+
 function generate(n) {
   var btn = document.getElementById('btn'+n);
   btn.disabled = true; btn.textContent = 'Generating…';
 
   setTimeout(function(){
     try {
-      var sessions = n===2 ? SESSIONS_2 : SESSIONS_4;
-      doFlowsheet(sessions, n);
+      var rawSessions = n===2 ? SESSIONS_2 : SESSIONS_4;
+      var sorted = groupByDate(rawSessions);
+      doFlowsheet(sorted, sorted.length);
     } catch(e) {
       alert('Error: '+e.message); console.error(e);
     }
@@ -253,32 +277,41 @@ function doFlowsheet(sorted, n) {
 
   function fmtDate(iso){ if(!iso) return '—'; var d=new Date(iso+'T00:00'); return d.toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'}); }
 
+  /* Collect patient names from grouped sessions */
+  var allNames=[];
+  sorted.forEach(function(g){ g.names.forEach(function(nm){ if(allNames.indexOf(nm)===-1) allNames.push(nm); }); });
+  var nameMismatch = allNames.length > 1;
+  var ptName = allNames[0] || 'DELA CRUZ, JUAN M.';
+
   function drawTableHeader(){
-    fr(margin,y,colW,8.5,NAVY);
+    var thH=nameMismatch?11:8.5;
+    fr(margin,y,colW,thH,NAVY);
     sf('bold',7.5,WHITE); tx('Lab Test / Units',margin+2,y+5.8);
     var hx=margin+labelColW;
-    sorted.forEach(function(s){
-      sf('bold',6.5,WHITE); tx(fmtDate(s.date),hx+dateColW/2,y+5.8,{align:'center'});
+    sorted.forEach(function(g){
+      var hdr=fmtDate(g.date)||'(no date)';
+      sf('bold',6.5,WHITE); tx(hdr,hx+dateColW/2,y+5.5,{align:'center'});
+      if(g.fileNames.length>1){ sf('normal',5,WHITE); tx(g.fileNames.length+' PDFs merged',hx+dateColW/2,y+8.5,{align:'center'}); }
       hx+=dateColW;
     });
-    sf('bold',6.5,WHITE); tx('Trend',hx+trendColW/2,y+5.8,{align:'center'});
-    y+=10;
+    sf('bold',6.5,WHITE); tx('Trend',hx+trendColW/2,y+5.5,{align:'center'});
+    y+=thH+1;
   }
 
   function checkPage(needed){
     if(y+needed>pageH-20){ doc.addPage(); y=14; drawTableHeader(); }
   }
 
-  var ptName='DELA CRUZ, JUAN M.';
-
   // ── Header block ─────────────────────────────────────────────
-  fr(0,0,W,32,NAVY);
+  var hdrH = nameMismatch?40:32;
+  fr(0,0,W,hdrH,NAVY);
   sf('bold',17,WHITE); tx('Lab Trend Flow Sheet',margin,11);
-  sf('normal',7.5,[150,170,190]); tx('KDIGO 2024 · ACC/AHA 2026 · ADA 2025 · '+n+' dates · williamriveromd.com',margin,18);
+  sf('normal',7.5,[150,170,190]); tx('KDIGO 2024 · ACC/AHA 2026 · ADA 2025 · '+n+' visit'+(n!==1?'s':'')+' · williamriveromd.com',margin,18);
   sf('bold',9.5,WHITE); tx('Patient: '+ptName,margin,25);
-  var dateRange=sorted.map(function(s){return fmtDate(s.date);}).join('  ›  ');
+  var dateRange=sorted.map(function(g){return fmtDate(g.date)||'(no date)';}).join('  ›  ');
   sf('normal',7,[170,190,210]); tx(dateRange, margin+85, 25);
-  y=37;
+  if(nameMismatch){ sf('bold',7,[255,220,100]); tx('! Name mismatch: '+allNames.join(' / ')+' — verify same patient',margin,33); }
+  y=hdrH+4;
   sf('italic',7,GRAY); tx('Generated: '+new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}),W-margin,y,{align:'right'});
   y+=8;
 
