@@ -2177,7 +2177,12 @@ var FIELD_META = {
   },
   // ── CBC ─────────────────────────────────────────────────────────
   hgb:{
-    'Conventional (US)':{label:'Hemoglobin (Hgb)',unit:'g/L',ph:'e.g. 108',toConv:function(v){return v;}},
+    'Conventional (US)':{label:'Hemoglobin (Hgb)',unit:'g/dL',ph:'e.g. 10.8',
+      toConv:function(v){
+        // v>30 means value was already in g/L (e.g. extracted from PDF SI column — 110 g/L)
+        // v≤30 means value is in g/dL (normal clinical range 6–20 g/dL) → convert to g/L
+        return v>30?v:v*10;
+      }},
     'SI':{label:'Hemoglobin (Hgb)',unit:'g/L',ph:'e.g. 108',toConv:function(v){return v;}},
     'Hybrid':{label:'Hemoglobin (Hgb)',unit:'g/L',ph:'e.g. 108',toConv:function(v){return v;}}
   },
@@ -3269,7 +3274,7 @@ var FIELD_PATTERNS = [
   { key:'bun',           rx:/\b(?:bun\b|urea\s+nitrogen|blood\s+urea\s+nitrogen|urea(?:\s*,?\s*serum)?)\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'uacr',          rx:/\b(?:uacr|albumin[\s\/\-]+creatinine(?:\s+ratio)?|microalbumin\/creatinine|acr\b)/i, cvU:/mg\/g/ },
   { key:'upcr',          rx:/\b(?:upcr|protein[\s\/\-]+creatinine(?:\s+ratio)?|pcr\b)/i },
-  { key:'hgb',           rx:/\b(?:h[ae]moglobin|hgb\b)/i,                               cvU:/g\/[Ll](?![Dd])/ },
+  { key:'hgb',           rx:/\b(?:h[ae]moglobin|hgb\b)/i,                               cvU:/g\/d[Ll]/ },
   { key:'hct',           rx:/\b(?:h[ae]matocrit|hct\b|pcv\b)/i },
   { key:'rbc',           rx:/\brbc\s*(?:count)?\b/i },
   { key:'mcv',           rx:/\bmcv\b/i },
