@@ -1763,7 +1763,7 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
     <div class="step-num">3</div>
     <div class="step-body">
       <strong><span class="lang-en">Navigate panels and enter values</span><span class="lang-tl" style="display:none;">I-navigate ang mga panel at mag-input</span><span class="lang-ceb" style="display:none;">I-navigate ang mga panel ug mag-input</span><span class="lang-kap" style="display:none;">I-navigate ing mga panel at mag-input</span></strong>
-      <span><span class="lang-en">Seven panels cover all major lab groups: <strong>Kidney, CBC/Iron, Metabolic, Lipids, Diabetes, CKD-MBD,</strong> and <strong>HD Adequacy</strong>. The HD Adequacy panel unlocks automatically when a dialysis lab PDF is uploaded, or when "ESKD on Hemodialysis" is selected as the diagnosis. It accepts pre- and post-HD BUN, ultrafiltration volume, post-HD dry weight, and session duration to calculate dialysis dose. Each field turns green, amber, or red the moment you type. Use <strong>Try Sample Data</strong> to see how a real CKD patient's results look.</span><span class="lang-tl" style="display:none;">Pitong panel ang sumasaklaw sa lahat ng pangunahing grupo ng lab.</span><span class="lang-ceb" style="display:none;">Pito ka panel ang nagtabon sa tanan nga nag-unang grupo sa lab.</span><span class="lang-kap" style="display:none;">Pitong panel ing sumasaklaw king amin nang pangunahing grupo ning lab.</span></span>
+      <span><span class="lang-en">Eight panels cover all major lab groups: <strong>Kidney, CBC/Iron, Metabolic, Lipids, Diabetes, CKD-MBD, Urinalysis,</strong> and <strong>HD Adequacy</strong>. The HD Adequacy panel unlocks automatically when a dialysis lab PDF is uploaded, or when "ESKD on Hemodialysis" is selected as the diagnosis. It accepts pre- and post-HD BUN, ultrafiltration volume, post-HD dry weight, and session duration to calculate dialysis dose. Each field turns green, amber, or red the moment you type. Use <strong>Try Sample Data</strong> to see how a real CKD patient's results look.</span><span class="lang-tl" style="display:none;">Pitong panel ang sumasaklaw sa lahat ng pangunahing grupo ng lab.</span><span class="lang-ceb" style="display:none;">Pito ka panel ang nagtabon sa tanan nga nag-unang grupo sa lab.</span><span class="lang-kap" style="display:none;">Pitong panel ing sumasaklaw king amin nang pangunahing grupo ning lab.</span></span>
     </div>
   </div>
   <div class="how-to-step">
@@ -2052,6 +2052,7 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
   <button class="tab-btn" onclick="switchTab('lipids',this)">❤️ Lipids</button>
   <button class="tab-btn" onclick="switchTab('diabetes',this)">🍬 Diabetes</button>
   <button class="tab-btn" onclick="switchTab('ckdmbd',this)">🦴 CKD-MBD</button>
+  <button class="tab-btn" onclick="switchTab('urinalysis',this)">🔬 Urinalysis</button>
   <button class="tab-btn" id="tab-hd" onclick="switchTab('hdadequacy',this)" style="display:none;">🔄 HD Adequacy</button>
   <button class="tab-btn" id="tab-derived" onclick="switchTab('derived',this)">📐 Derived <span class="tab-count" id="derived-count" style="display:none;"></span></button>
 </div>
@@ -2141,6 +2142,18 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
     <div id="inp-vitd"></div>
     <div id="inp-alp"></div>
     <div class="hint">💡 Ca × P → <strong>Calcium-Phosphorus Product</strong> with vascular calcification risk flag in Derived tab.</div>
+    <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
+  </div>
+
+  <!-- URINALYSIS -->
+  <div class="tab-panel" id="panel-urinalysis">
+    <div class="section-header"><span class="sh-icon">🔬</span><div><div class="sh-title">Urinalysis</div><div class="sh-sub">Specific Gravity · pH · Microscopy (RBC &amp; WBC/HPF)</div></div></div>
+    <div class="sample-bar"><span class="sample-bar-label"><strong>Sample data:</strong> CKD with hematuria and reduced concentrating ability</span><button class="clear-btn" onclick="clearPanel('urinalysis')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Clear</button><button class="sample-btn" onclick="loadSample('urinalysis')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>Try Sample Data</button></div>
+    <div id="inp-urine_sg"></div>
+    <div id="inp-urine_ph"></div>
+    <div id="inp-urine_rbc_hpf"></div>
+    <div id="inp-urine_wbc_hpf"></div>
+    <div class="hint">💡 Enter microscopy counts per HPF (high-power field). For quantitative proteinuria use UACR/UPCR in the Kidney panel.</div>
     <div class="pdf-bar"><span class="pdf-bar-label">Generates a full report from all panels with values entered.</span><button class="pdf-btn" onclick="exportPDF(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF Report</button></div>
   </div>
 
@@ -2425,6 +2438,27 @@ var FIELD_META = {
     'Conventional (US)':{label:'nPCR (if reported)',unit:'g/kg/day',ph:'e.g. 1.1',toConv:function(v){return v;}},
     'SI':{label:'nPCR (if reported)',unit:'g/kg/day',ph:'e.g. 1.1',toConv:function(v){return v;}},
     'Hybrid':{label:'nPCR (if reported)',unit:'g/kg/day',ph:'e.g. 1.1',toConv:function(v){return v;}}
+  },
+  // ── Urinalysis ──────────────────────────────────────────────────
+  urine_sg:{
+    'Conventional (US)':{label:'Specific Gravity',unit:'',ph:'e.g. 1.015',toConv:function(v){return v;}},
+    'SI':{label:'Specific Gravity',unit:'',ph:'e.g. 1.015',toConv:function(v){return v;}},
+    'Hybrid':{label:'Specific Gravity',unit:'',ph:'e.g. 1.015',toConv:function(v){return v;}}
+  },
+  urine_ph:{
+    'Conventional (US)':{label:'Urine pH',unit:'',ph:'e.g. 6.0',toConv:function(v){return v;}},
+    'SI':{label:'Urine pH',unit:'',ph:'e.g. 6.0',toConv:function(v){return v;}},
+    'Hybrid':{label:'Urine pH',unit:'',ph:'e.g. 6.0',toConv:function(v){return v;}}
+  },
+  urine_rbc_hpf:{
+    'Conventional (US)':{label:'RBC / HPF (urine)',unit:'/HPF',ph:'e.g. 0–2',toConv:function(v){return v;}},
+    'SI':{label:'RBC / HPF (urine)',unit:'/HPF',ph:'e.g. 0–2',toConv:function(v){return v;}},
+    'Hybrid':{label:'RBC / HPF (urine)',unit:'/HPF',ph:'e.g. 0–2',toConv:function(v){return v;}}
+  },
+  urine_wbc_hpf:{
+    'Conventional (US)':{label:'WBC / HPF (urine)',unit:'/HPF',ph:'e.g. 0–5',toConv:function(v){return v;}},
+    'SI':{label:'WBC / HPF (urine)',unit:'/HPF',ph:'e.g. 0–5',toConv:function(v){return v;}},
+    'Hybrid':{label:'WBC / HPF (urine)',unit:'/HPF',ph:'e.g. 0–5',toConv:function(v){return v;}}
   }
 };
 
@@ -2515,7 +2549,11 @@ function interpKey(key) {
       ? (v>=1.4?['NORMAL','Adequate Kt/V ≥1.4 (Lowrie formula, lab-reported)']:v>=1.2?['WATCH','Meets minimum Kt/V ≥1.2 (Lowrie) — optimize toward ≥1.4 if possible']:['FLAG','Inadequate — Kt/V <1.2 (Lowrie formula); urgent prescription review'])
       : (v>=1.4?['NORMAL','Adequate spKt/V ≥1.4']:v>=1.2?['WATCH','Borderline — increase time or blood flow']:['FLAG','Inadequate — urgent prescription review']),
     urr: v>=65?['NORMAL','Adequate URR ≥65%']:v>=55?['WATCH','Borderline — optimize prescription']:['FLAG','Inadequate — review HD prescription'],
-    npcrHD: v>=1.0&&v<=1.4?['NORMAL','Adequate nPCR 1.0–1.4 g/kg/day']:v<1.0?['FLAG','Low — protein-energy wasting; nutritional intervention']:['WATCH','High nPCR — monitor phosphorus']
+    npcrHD: v>=1.0&&v<=1.4?['NORMAL','Adequate nPCR 1.0–1.4 g/kg/day']:v<1.0?['FLAG','Low — protein-energy wasting; nutritional intervention']:['WATCH','High nPCR — monitor phosphorus'],
+    urine_sg: v>=1.005&&v<=1.025?['NORMAL','Normal concentrating ability']:v<1.005?['WATCH','Hyposthenuric — very dilute; polyuria, overhydration, or reduced concentrating ability']:['WATCH','Highly concentrated urine — assess hydration'],
+    urine_ph: v>=5.0&&v<=7.5?['NORMAL','Normal urine pH']:v<5.0?['WATCH','Very acidic — consider incomplete distal RTA if serum bicarb is low']:['WATCH','Alkaline — urease-splitting organisms (UTI)? or systemic alkalosis'],
+    urine_rbc_hpf: v<=2?['NORMAL','Normal — ≤2 RBCs/HPF']:v<=5?['WATCH','3–5 RBCs/HPF — borderline; repeat urinalysis and correlate with dipstick']:['FLAG','Hematuria (>5 RBCs/HPF) — evaluate for glomerulonephritis, urolithiasis, or malignancy'],
+    urine_wbc_hpf: v<=5?['NORMAL','Normal — ≤5 WBCs/HPF']:v<=10?['WATCH','6–10 WBCs/HPF — sterile pyuria? Consider urine culture']:['FLAG','Pyuria (>10 WBCs/HPF) — UTI or tubulointerstitial nephritis; send urine culture and sensitivity']
   };
 
   var r = rules[key];
@@ -3164,6 +3202,10 @@ function _doExportPDF(logoDataUrl) {
       uf_volume:       'Ultrafiltration volume; fluid removed during the dialysis session',
       weight_post:     'Post-dialysis weight; used to assess dry weight and fluid status',
       npcrHD:          'Normalized protein catabolic rate; reflects dietary protein intake',
+      urine_sg:        'Reflects kidney concentrating ability; fixed ~1.010 in advanced CKD (isosthenuria)',
+      urine_ph:        'Urine acidity; persistently alkaline suggests infection; <5.0 raises distal RTA concern',
+      urine_rbc_hpf:   'RBCs under microscopy; >5/HPF = hematuria — evaluate for GN, stone, or malignancy',
+      urine_wbc_hpf:   'WBCs under microscopy; >10/HPF = pyuria — UTI or tubulointerstitial nephritis',
     };
 
     // ── Sections ─────────────────────────────────────────────────
@@ -3173,7 +3215,8 @@ function _doExportPDF(logoDataUrl) {
       {title:'Electrolytes & Metabolic', icon:'METABOLIC', keys:['sodium','potassium','bicarb','chloride','magnesium','albumin','alt','ast','uricacid']},
       {title:'Lipid Panel', icon:'LIPIDS', keys:['totalchol','ldl','hdl','tg','lpa']},
       {title:'Diabetes & Glucose', icon:'DIABETES', keys:['fbs','hba1c','fasting_insulin']},
-      {title:'CKD-MBD: Mineral & Bone', icon:'CKD-MBD', keys:['calcium','phosphorus','ipth','vitd','alp']}
+      {title:'CKD-MBD: Mineral & Bone', icon:'CKD-MBD', keys:['calcium','phosphorus','ipth','vitd','alp']},
+      {title:'Urinalysis', icon:'UA', keys:['urine_sg','urine_ph','urine_rbc_hpf','urine_wbc_hpf']}
     ];
     if (STATE.isHD) sections.push({title:'HD Adequacy', icon:'HD', keys:['bun_pre','bun_post','uf_volume','weight_post','spktv','urr','npcrHD']});
 
@@ -3405,6 +3448,7 @@ function _doExportFlowsheetPDF(logoDataUrl) {
       'totalchol','ldl','hdl','tg','lpa',
       'fbs','hba1c','fasting_insulin',
       'calcium','phosphorus','ipth','vitd','alp',
+      'urine_sg','urine_ph','urine_rbc_hpf','urine_wbc_hpf',
       'bun_pre','bun_post','uf_volume','weight_post','spktv','urr','npcrHD'
     ];
     var DOMAINS={
@@ -3414,6 +3458,7 @@ function _doExportFlowsheetPDF(logoDataUrl) {
       totalchol:'Lipids',ldl:'Lipids',hdl:'Lipids',tg:'Lipids',lpa:'Lipids',
       fbs:'Diabetes',hba1c:'Diabetes',fasting_insulin:'Diabetes',
       calcium:'CKD-MBD',phosphorus:'CKD-MBD',ipth:'CKD-MBD',vitd:'CKD-MBD',alp:'CKD-MBD',
+      urine_sg:'Urinalysis',urine_ph:'Urinalysis',urine_rbc_hpf:'Urinalysis',urine_wbc_hpf:'Urinalysis',
       bun_pre:'HD Adequacy',bun_post:'HD Adequacy',uf_volume:'HD Adequacy',weight_post:'HD Adequacy',spktv:'HD Adequacy',urr:'HD Adequacy',npcrHD:'HD Adequacy'
     };
     var STATUS_RANK={NORMAL:0,WATCH:1,FLAG:2,EMPTY:9};
@@ -3702,6 +3747,12 @@ var SAMPLE_DATA = {
     spktv: '',
     urr: '',
     npcrHD: ''
+  },
+  urinalysis: {
+    urine_sg: '1.008',
+    urine_ph: '5.5',
+    urine_rbc_hpf: '8',
+    urine_wbc_hpf: '3'
   }
 };
 
@@ -3863,6 +3914,11 @@ var FIELD_PATTERNS = [
   { key:'vitd',          rx:/\b(?:25[-\s]oh\s+(?:vitamin\s*)?d|vitamin\s*d\s*25|25-hydroxyvitamin\s*d|calcidiol)\b/i, siU:/nmol\/[Ll]/, cvU:/ng\/m[Ll]/ },
   { key:'alp',           rx:/\b(?:alp\b|alkaline\s+phosphatase)\b/i },
   { key:'lpa',           rx:/\blp\s*\(a\)|lipoprotein\s*\(a\)/i },
+  // Urinalysis fields
+  { key:'urine_sg',      rx:/\bspecific\s+gravity\b/i },
+  { key:'urine_ph',      rx:/\burine[\s\-]*ph\b|\bph\s*,?\s*urine\b/i },
+  { key:'urine_rbc_hpf', rx:/\b(?:rbc|red\s+(?:blood\s+)?cells?)[\s,\(\/]*(?:per\s+)?h\.?p\.?f\.?\b/i },
+  { key:'urine_wbc_hpf', rx:/\b(?:wbc|white\s+(?:blood\s+)?cells?|pus\s+cells?)[\s,\(\/]*(?:per\s+)?h\.?p\.?f\.?\b/i },
   // HD Adequacy fields — machine-reported or extractable from HD kinetics section
   { key:'spktv',         rx:/\b(?:sp)?kt?\/v\b/i },
   { key:'urr',           rx:/\b(?:urr\b|urea\s+reduction\s+(?:rate|ratio))\b/i, cvU:/%/ },
@@ -3881,7 +3937,8 @@ var FIELD_LABELS = {
   albumin:'Albumin', alt:'ALT/SGPT', ast:'AST/SGOT', uricacid:'Uric Acid',
   totalchol:'Total Cholesterol', ldl:'LDL-C', hdl:'HDL-C', tg:'Triglycerides',
   fbs:'Glucose', hba1c:'HbA1c', fasting_insulin:'Fasting Insulin',
-  calcium:'Calcium', phosphorus:'Phosphorus', ipth:'iPTH', vitd:'Vitamin D', alp:'ALP', lpa:'Lp(a)'
+  calcium:'Calcium', phosphorus:'Phosphorus', ipth:'iPTH', vitd:'Vitamin D', alp:'ALP', lpa:'Lp(a)',
+  urine_sg:'Specific Gravity', urine_ph:'Urine pH', urine_rbc_hpf:'RBC/HPF', urine_wbc_hpf:'WBC/HPF (urine)'
 };
 
 function parseLabText(rawText) {
