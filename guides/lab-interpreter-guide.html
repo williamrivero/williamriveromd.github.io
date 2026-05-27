@@ -3261,6 +3261,8 @@ function extractPDFPatientInfo(text){
 var FIELD_PATTERNS = [
   { key:'creatinine',    rx:/\bcreatinine\b(?![\s\/\-]*(?:ratio|clearance|index))/i, siU:/µmol\/[Ll]|umol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'egfr',          rx:/(?<!with )\b(?:e?gfr|estimated\s+gfr|glomerular\s+filtration(?:\s+rate)?)\b/i },
+  { key:'bun_pre',       rx:/\bpre[\s\-]*(?:hd[\s\-]*|dialysis[\s\-]*)?(?:bun\b|urea(?:\s+nitrogen)?)\b|\b(?:bun|urea(?:\s+nitrogen)?)\s*[\(\[]\s*pre\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
+  { key:'bun_post',      rx:/\bpost[\s\-]*(?:hd[\s\-]*|dialysis[\s\-]*)?(?:bun\b|urea(?:\s+nitrogen)?)\b|\b(?:bun|urea(?:\s+nitrogen)?)\s*[\(\[]\s*post\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'bun',           rx:/\b(?:bun\b|urea\s+nitrogen|blood\s+urea\s+nitrogen|urea(?:\s*,?\s*serum)?)\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'uacr',          rx:/\b(?:uacr|albumin[\s\/\-]+creatinine(?:\s+ratio)?|microalbumin\/creatinine|acr\b)/i, cvU:/mg\/g/ },
   { key:'upcr',          rx:/\b(?:upcr|protein[\s\/\-]+creatinine(?:\s+ratio)?|pcr\b)/i },
@@ -3300,7 +3302,7 @@ var FIELD_PATTERNS = [
 
 /* human-readable labels for the results panel */
 var FIELD_LABELS = {
-  creatinine:'Creatinine', egfr:'eGFR', bun:'BUN/Urea', uacr:'UACR', upcr:'UPCR',
+  creatinine:'Creatinine', egfr:'eGFR', bun:'BUN/Urea', bun_pre:'Pre-HD BUN', bun_post:'Post-HD BUN', uacr:'UACR', upcr:'UPCR',
   hgb:'Hemoglobin', hct:'Hematocrit', rbc:'RBC', mcv:'MCV', rdw:'RDW',
   reticulocyte:'Reticulocyte', ferritin:'Ferritin', tsat:'TSAT', wbc:'WBC', platelets:'Platelets',
   sodium:'Sodium', potassium:'Potassium', bicarb:'Bicarbonate', chloride:'Chloride', magnesium:'Magnesium',
@@ -3359,6 +3361,29 @@ function parseLabText(rawText) {
     if (!val || parseFloat(val) <= 0) return;
     fields[rule.key] = val;
   });
+
+  /* Two-BUN scan: if no explicit pre/post labels were found, scan for two BUN
+     occurrences in the text (same-date dual report — first = pre-HD, second = post-HD).
+     A single unlabeled BUN stays in fields.bun for the kidney panel. */
+  if (!fields.bun_pre && !fields.bun_post) {
+    var bunAllRx = /\b(?:bun\b|urea\s+nitrogen|blood\s+urea\s+nitrogen|urea(?:\s*,?\s*serum)?)\b/gi;
+    var bunVals = [];
+    var bm;
+    while ((bm = bunAllRx.exec(text)) !== null && bunVals.length < 2) {
+      var afterBm = text.substring(bm.index + bm[0].length, bm.index + bm[0].length + 200)
+                        .replace(/\([^)]{1,30}\)/g, ' ').replace(/[▲▼]+/g, ' ');
+      var numBm = afterBm.match(/[\s:=*]+(\d+\.?\d*)(?!\s*%?\s*[-–]\s*\d)/) ||
+                  afterBm.match(/[\s:=*]+(\d+\.?\d*)/);
+      if (numBm && parseFloat(numBm[1]) > 0) bunVals.push(numBm[1]);
+    }
+    if (bunVals.length >= 2) {
+      fields.bun_pre  = bunVals[0];
+      fields.bun_post = bunVals[1];
+      fields.bun = bunVals[0]; // pre-HD BUN populates the kidney panel
+    }
+  } else if (fields.bun_pre && !fields.bun) {
+    fields.bun = fields.bun_pre;
+  }
 
   /* If any conventional values were matched directly, treat the whole report
      as Conventional. Only fall back to SI if no conventional matches at all. */
