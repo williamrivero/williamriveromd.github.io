@@ -2258,20 +2258,23 @@ html[data-theme="dark"] .ibw-badge-warn{background:rgba(220,38,38,.15);color:#f8
         <span data-lang="kap" class="lang-hidden">Ilagye ing kekang numero king babo aron malasin ing verdict.</span>
       </div>
       <!-- "both" comparison row, hidden by default -->
-      <div id="bmi-both-row" style="display:none;margin-top:16px;display:none;">
+      <div id="bmi-both-row" style="display:none;margin-top:16px;">
+        <p style="font-size:13px;color:var(--text-muted);margin:0 0 10px;">Your BMI is <strong id="bmi-both-val" style="color:var(--navy);">—</strong> kg/m² — the number is the same for both systems. Only the <em>cutoffs</em> differ:</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;">
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px;">Asian-Pacific</div>
-            <div style="font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--navy);" id="bmi-ap-num2">—</div>
-            <div style="font-size:13px;margin-top:4px;" id="bmi-ap-label2">—</div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-left:4px solid var(--navy);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:4px;">🌏 Asian-Pacific</div>
+            <div style="font-size:10px;color:var(--text-faint);margin-bottom:8px;">Normal &lt;23 · Overweight 23–25 · Obese ≥25</div>
+            <div style="font-family:'Lora',serif;font-size:18px;font-weight:600;line-height:1.2;margin-bottom:8px;" id="bmi-ap-cls">—</div>
+            <div style="font-size:12.5px;line-height:1.55;" id="bmi-ap-label2"></div>
           </div>
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px;">Western WHO</div>
-            <div style="font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--navy);" id="bmi-who-num2">—</div>
-            <div style="font-size:13px;margin-top:4px;" id="bmi-who-label2">—</div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-left:4px solid var(--teal);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:4px;">🌍 Western WHO</div>
+            <div style="font-size:10px;color:var(--text-faint);margin-bottom:8px;">Normal &lt;25 · Overweight 25–30 · Obese ≥30</div>
+            <div style="font-family:'Lora',serif;font-size:18px;font-weight:600;line-height:1.2;margin-bottom:8px;" id="bmi-who-cls">—</div>
+            <div style="font-size:12.5px;line-height:1.55;" id="bmi-who-label2"></div>
           </div>
         </div>
-        <p style="font-size:12px;color:var(--text-muted);margin:10px 0 0;line-height:1.5;">Filipinos are classified as overweight at BMI ≥23 (Asian-Pacific) vs ≥25 (Western WHO). This 2-point gap means <strong>you can be normal by Western standards but already at metabolic risk by Filipino/Asian standards</strong>.</p>
+        <p style="font-size:12px;color:var(--text-muted);margin:10px 0 0;line-height:1.5;">Filipinos reach metabolic risk 2 BMI points earlier than the Western cutoff. <strong>You can be "Normal" by Western standards and already "Overweight" by Filipino/Asian standards</strong> — which is why the Asia-Pacific cutoff matters for your kidney and heart health.</p>
       </div>
     </div>
   </div>
@@ -3713,17 +3716,24 @@ function calcBMI(){
 
   numEl.textContent = bmi.toFixed(1);
 
+  const clsColor = { normal:'var(--green)', overweight:'#92400e', obese:'#b9450b', severe:'var(--red)' };
+
   if (_bmiMode === 'both') {
     const ap = _bmiClassAP(bmi);
     const who = _bmiClassWHO(bmi);
     resEl.className = 'calc-result ' + ap.cls;
-    labelEl.textContent = 'BMI ' + bmi.toFixed(1);
+    labelEl.textContent = 'BMI ' + bmi.toFixed(1) + ' kg/m²';
     verdictEl.innerHTML = '';
     if (bothRow) {
       bothRow.style.display = 'block';
-      document.getElementById('bmi-ap-num2').textContent = bmi.toFixed(1);
+      document.getElementById('bmi-both-val').textContent = bmi.toFixed(1);
+      const apCls = document.getElementById('bmi-ap-cls');
+      apCls.textContent = ap.label;
+      apCls.style.color = clsColor[ap.cls] || 'var(--navy)';
       document.getElementById('bmi-ap-label2').innerHTML = ap.text + waistNote;
-      document.getElementById('bmi-who-num2').textContent = bmi.toFixed(1);
+      const whoCls = document.getElementById('bmi-who-cls');
+      whoCls.textContent = who.label;
+      whoCls.style.color = clsColor[who.cls] || 'var(--navy)';
       document.getElementById('bmi-who-label2').innerHTML = who.text;
     }
   } else {
