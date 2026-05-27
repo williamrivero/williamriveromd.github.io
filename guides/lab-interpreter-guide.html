@@ -3100,6 +3100,45 @@ renderDerived();
    known lab test names with regex and auto-populates the calculator.
 ═══════════════════════════════════════════════════════════════════ */
 
+/* ── Patient info extraction helpers ─────────────────────────────────── */
+function _pad2(n){ return ('0'+n).slice(-2); }
+function _parseToISODate(str){
+  if(!str) return null;
+  str = str.trim();
+  var m;
+  // YYYY-MM-DD or YYYY/MM/DD
+  m = str.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})$/);
+  if(m) return m[1]+'-'+_pad2(+m[2])+'-'+_pad2(+m[3]);
+  // DD/MM/YYYY or DD-MM-YYYY (Philippine default)
+  m = str.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+  if(m) return m[3]+'-'+_pad2(+m[2])+'-'+_pad2(+m[1]);
+  // DD Mon YYYY  e.g. "15 May 2025"
+  var months={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+  m = str.match(/^(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})$/);
+  if(m){ var mo=months[m[2].toLowerCase().slice(0,3)]; if(mo) return m[3]+'-'+_pad2(mo)+'-'+_pad2(+m[1]); }
+  // Mon DD, YYYY  e.g. "May 15, 2025"
+  m = str.match(/^([A-Za-z]{3,9})\s+(\d{1,2}),?\s+(\d{4})$/);
+  if(m){ var mo2=months[m[1].toLowerCase().slice(0,3)]; if(mo2) return m[3]+'-'+_pad2(mo2)+'-'+_pad2(+m[2]); }
+  return null;
+}
+function extractPDFPatientInfo(text){
+  var result={name:null,date:null};
+  // Name: look for "Patient Name:", "Patient:", "Name:" followed by a proper name
+  var nm=text.match(/(?:patient(?:'s)?\s+name|patient|name)\s*[:\-]\s*([A-Za-z\xc0-\xff][A-Za-z\xc0-\xff .,''-]{2,60})(?=[\r\n]|\s{2,}|age|sex|dob|date|id\b|mr\b|ref|ward|room|physician|dr\.)/i);
+  if(nm) result.name=nm[1].trim().replace(/\s+/g,' ');
+  // Date: prefer collection date, fall back to report date, then bare "Date:"
+  var dateRxs=[
+    /(?:date\s+(?:of\s+)?collect(?:ion|ed)|collect(?:ion|ed)\s+date|date\s+collected|specimen\s+date)\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
+    /(?:report\s+date|date\s+(?:of\s+)?report|date\s+(?:of\s+)?result)\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
+    /\bdate\s*[:\-]\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
+  ];
+  for(var i=0;i<dateRxs.length;i++){
+    var dm=dateRxs[i].exec(text);
+    if(dm){ var iso=_parseToISODate(dm[1]); if(iso){result.date=iso;break;} }
+  }
+  return result;
+}
+
 var FIELD_PATTERNS = [
   { key:'creatinine',    rx:/\bcreatinine\b/i,                          siU:/µmol\/[Ll]|umol\/[Ll]/,  cvU:/mg\/d[Ll]/ },
   { key:'egfr',          rx:/\b(?:e?gfr|estimated\s+gfr|glomerular\s+filtration(?:\s+rate)?)\b/i },
@@ -3195,7 +3234,8 @@ function parseLabText(rawText) {
   if (siVotes > 0 || cvVotes > 0) {
     unitSys = siVotes >= cvVotes ? 'SI' : 'Conventional (US)';
   }
-  return { fields: fields, unitSys: unitSys };
+  var ptInfo = extractPDFPatientInfo(text);
+  return { fields: fields, unitSys: unitSys, name: ptInfo.name, date: ptInfo.date };
 }
 
 function applyExtractedFields(parsed) {
@@ -3226,13 +3266,27 @@ function applyExtractedFields(parsed) {
   Object.keys(fields).forEach(function(k) {
     STATE.fields[k] = fields[k];
   });
+
+  /* Fill patient name & date if found and fields are empty */
+  if (parsed.name) {
+    var nameEl = document.getElementById('pt-name');
+    if (nameEl && !nameEl.value.trim()) { nameEl.value = parsed.name; updateHeader(); }
+  }
+  if (parsed.date) {
+    var dateEl = document.getElementById('pt-date');
+    if (dateEl && !dateEl.value) { dateEl.value = parsed.date; updateHeader(); }
+  }
+
   renderAllInputs();
   renderDerived();
   updateSummaryBadges();
 
   /* Render results panel */
+  var ptLine = '';
+  if (parsed.name) ptLine += '<span>👤 ' + parsed.name + '</span> ';
+  if (parsed.date) ptLine += '<span>📅 ' + parsed.date + '</span>';
   var unitLabel = unitSys ? ' · Units auto-set to <strong>' + unitSys + '</strong>' : '';
-  var html = '<div class="upload-results-title">📊 ' + count + ' value' + (count !== 1 ? 's' : '') + ' extracted' + unitLabel + '</div>';
+  var html = '<div class="upload-results-title">📊 ' + count + ' value' + (count !== 1 ? 's' : '') + ' extracted' + unitLabel + (ptLine ? '<div style="margin-top:6px;font-size:12px;color:var(--text-muted);display:flex;gap:12px;">' + ptLine + '</div>' : '') + '</div>';
   html += '<div class="extract-grid">';
   Object.keys(fields).forEach(function(k) {
     var label = FIELD_LABELS[k] || k;
