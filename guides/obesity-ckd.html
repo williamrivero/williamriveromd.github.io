@@ -2233,6 +2233,21 @@ html[data-theme="dark"] .ibw-badge-warn{background:rgba(220,38,38,.15);color:#f8
       </label>
       <input type="number" id="bmi-waist" min="40" max="200" step="0.5" value="80" oninput="calcBMI()">
     </div>
+    <div class="calc-row">
+      <label>
+        <span data-lang="en">Target BMI <span class="meta">Optional — calculates your goal weight</span></span>
+        <span data-lang="tl" class="lang-hidden">Target BMI <span class="meta">Opsyonal — kinukuwenta ang target na timbang</span></span>
+        <span data-lang="ceb" class="lang-hidden">Target BMI <span class="meta">Opsyonal — kalkula ang target nga timbang</span></span>
+        <span data-lang="kap" class="lang-hidden">Target BMI <span class="meta">Opsyonal — kinukuwenta ing target a timbang</span></span>
+      </label>
+      <input type="number" id="bmi-target" min="16" max="40" step="0.1" placeholder="e.g. 22.5" oninput="calcBMI()">
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;padding:6px 0 14px;flex-wrap:wrap;">
+      <span style="font-size:11px;color:var(--text-muted);white-space:nowrap;">Quick set:</span>
+      <button type="button" onclick="document.getElementById('bmi-target').value=22;calcBMI()" style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text-mid);cursor:pointer;">22 — Asian optimal</button>
+      <button type="button" onclick="document.getElementById('bmi-target').value=23;calcBMI()" style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text-mid);cursor:pointer;">23 — Asian-Pacific limit</button>
+      <button type="button" onclick="document.getElementById('bmi-target').value=25;calcBMI()" style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text-mid);cursor:pointer;">25 — Western limit</button>
+    </div>
 
     <!-- BMI cutoff toggle -->
     <div style="display:flex;gap:8px;margin-top:20px;margin-bottom:4px;flex-wrap:wrap;">
@@ -2251,6 +2266,31 @@ html[data-theme="dark"] .ibw-badge-warn{background:rgba(220,38,38,.15);color:#f8
     <div class="calc-result" id="bmi-result">
       <div class="calc-result-num" id="bmi-num">--</div>
       <div class="calc-result-label" id="bmi-label">BMI (Asia-Pacific)</div>
+
+      <!-- BSA + Target weight metrics — shown once values are entered -->
+      <div id="bmi-extra-metrics" style="display:none;margin:16px 0 8px;padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+        <div style="display:flex;gap:0;justify-content:center;flex-wrap:wrap;">
+          <!-- BSA -->
+          <div style="text-align:center;padding:0 20px;border-right:1px solid var(--border);">
+            <div style="font-family:'Lora',serif;font-size:30px;font-weight:600;color:var(--navy);line-height:1;" id="bsa-val">—</div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-top:5px;">BSA (Mosteller)</div>
+            <div style="font-size:10px;color:var(--text-faint);margin-top:2px;">m² · √(Ht×Wt÷3600)</div>
+          </div>
+          <!-- Target weight (shown only when target BMI entered) -->
+          <div id="bmi-target-metric" style="display:none;text-align:center;padding:0 20px;border-right:1px solid var(--border);">
+            <div style="font-family:'Lora',serif;font-size:30px;font-weight:600;color:var(--teal);line-height:1;" id="target-wt-val">—</div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-top:5px;" id="target-wt-lbl">Target Weight</div>
+            <div style="font-size:12px;font-weight:600;margin-top:4px;" id="wt-diff-val"></div>
+          </div>
+          <!-- Target BMI shown numerically -->
+          <div id="bmi-target-display" style="display:none;text-align:center;padding:0 20px;">
+            <div style="font-family:'Lora',serif;font-size:30px;font-weight:600;color:var(--text-mid);line-height:1;" id="target-bmi-disp">—</div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-top:5px;">Target BMI</div>
+            <div style="font-size:10px;color:var(--text-faint);margin-top:2px;">kg/m²</div>
+          </div>
+        </div>
+      </div>
+
       <div class="calc-verdict" id="bmi-verdict">
         <span data-lang="en">Enter your numbers above to see your verdict.</span>
         <span data-lang="tl" class="lang-hidden">Ilagay ang iyong numero sa itaas para makita ang verdict.</span>
@@ -3707,12 +3747,45 @@ function calcBMI(){
   const verdictEl = document.getElementById('bmi-verdict');
   const resEl = document.getElementById('bmi-result');
   const bothRow = document.getElementById('bmi-both-row');
-  if (!wt || !htCm) { numEl.textContent = '--'; verdictEl.innerHTML = 'Enter your numbers above to see your verdict.'; if(bothRow) bothRow.style.display='none'; return; }
+  const extraMetrics = document.getElementById('bmi-extra-metrics');
+  if (!wt || !htCm) {
+    numEl.textContent = '--';
+    verdictEl.innerHTML = 'Enter your numbers above to see your verdict.';
+    if (bothRow) bothRow.style.display = 'none';
+    if (extraMetrics) extraMetrics.style.display = 'none';
+    return;
+  }
   const htM = htCm / 100;
   const bmi = wt / (htM * htM);
   const waistTarget = sex === 'm' ? 90 : 80;
   const waistOver = !isNaN(waist) && waist > waistTarget;
   const waistNote = waistOver ? ' <strong>Your waist ('+waist+' cm) also exceeds the Filipino target ('+waistTarget+' cm)</strong> — visceral fat is the priority here.' : '';
+
+  /* BSA — Mosteller formula: √(Ht_cm × Wt_kg / 3600) */
+  const bsa = Math.sqrt(htCm * wt / 3600);
+  document.getElementById('bsa-val').textContent = bsa.toFixed(2);
+  if (extraMetrics) extraMetrics.style.display = '';
+
+  /* Target weight */
+  const targetBMI = parseFloat(document.getElementById('bmi-target').value);
+  const targetMetric = document.getElementById('bmi-target-metric');
+  const targetDisplay = document.getElementById('bmi-target-display');
+  if (!isNaN(targetBMI) && targetBMI > 0) {
+    const targetWt = targetBMI * htM * htM;
+    const diff = wt - targetWt;
+    document.getElementById('target-wt-val').textContent = targetWt.toFixed(1) + ' kg';
+    document.getElementById('target-wt-lbl').textContent = 'Weight for BMI ' + targetBMI.toFixed(1);
+    document.getElementById('wt-diff-val').innerHTML =
+      diff > 0.1  ? '<span style="color:var(--red);">↓ lose ' + diff.toFixed(1) + ' kg</span>' :
+      diff < -0.1 ? '<span style="color:var(--green);">↑ gain ' + Math.abs(diff).toFixed(1) + ' kg</span>' :
+                    '<span style="color:var(--green);">✓ At target</span>';
+    document.getElementById('target-bmi-disp').textContent = targetBMI.toFixed(1);
+    if (targetMetric) targetMetric.style.display = '';
+    if (targetDisplay) targetDisplay.style.display = '';
+  } else {
+    if (targetMetric) targetMetric.style.display = 'none';
+    if (targetDisplay) targetDisplay.style.display = 'none';
+  }
 
   numEl.textContent = bmi.toFixed(1);
 
