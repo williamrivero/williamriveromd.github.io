@@ -1574,6 +1574,7 @@ html[data-view="desktop"]{min-width:1024px;}
 .upload-status{margin-top:10px;font-size:13px;display:flex;align-items:center;gap:8px;}
 .upload-status.loading{color:var(--teal);}
 .upload-status.error{color:var(--red);}
+@keyframes spin{to{transform:rotate(360deg);}}
 .upload-results{margin-top:12px;border-top:1px solid var(--border);padding-top:10px;}
 .upload-results-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:8px;}
 .extract-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;}
@@ -1953,14 +1954,14 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
     </div>
     <div class="upload-zone-text">
-      <strong>Upload Lab Results PDF</strong>
-      <span>Click or drag &amp; drop — values auto-fill the calculator · Works with Philippine &amp; Singapore lab reports</span>
+      <strong>Upload Lab Results PDF(s)</strong>
+      <span>Drop one or several PDFs — values merge automatically · Split CBC + Chemistry PDFs work together · Philippine &amp; Singapore lab formats</span>
     </div>
     <button class="upload-btn" type="button" onclick="event.stopPropagation();document.getElementById('pdfFileInput').click()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-      Browse PDF
+      Browse PDF(s)
     </button>
-    <input type="file" id="pdfFileInput" accept=".pdf" style="display:none" onchange="handlePDFFile(this.files[0]);this.value='';">
+    <input type="file" id="pdfFileInput" accept=".pdf" multiple style="display:none" onchange="handlePDFFiles(this.files);this.value='';">
   </div>
   <div class="upload-status" id="uploadStatus" style="display:none;"></div>
   <div class="upload-results" id="uploadResults" style="display:none;"></div>
@@ -3359,7 +3360,8 @@ function applyExtractedFields(parsed) {
   if (parsed.sex)  ptLine += '<span>' + (parsed.sex === 'M' ? '♂ Male' : '♀ Female') + '</span> ';
   if (parsed.age)  ptLine += '<span>🎂 Age ' + parsed.age + '</span>';
   var unitLabel = unitSys ? ' · Units auto-set to <strong>' + unitSys + '</strong>' : '';
-  var html = '<div class="upload-results-title">📊 ' + count + ' value' + (count !== 1 ? 's' : '') + ' extracted' + unitLabel + (ptLine ? '<div style="margin-top:6px;font-size:12px;color:var(--text-muted);display:flex;gap:12px;">' + ptLine + '</div>' : '') + '</div>';
+  var srcLabel = _lastPDFFiles.length > 1 ? ' from <strong>' + _lastPDFFiles.length + ' PDFs</strong>' : '';
+  var html = '<div class="upload-results-title">📊 ' + count + ' value' + (count !== 1 ? 's' : '') + ' extracted' + srcLabel + unitLabel + (ptLine ? '<div style="margin-top:6px;font-size:12px;color:var(--text-muted);display:flex;gap:12px;flex-wrap:wrap;">' + ptLine + '</div>' : '') + '</div>';
   html += '<div class="extract-grid">';
   Object.keys(fields).forEach(function(k) {
     var label = FIELD_LABELS[k] || k;
@@ -3367,8 +3369,11 @@ function applyExtractedFields(parsed) {
   });
   html += '</div>';
   html += '<div style="display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap;">';
-  html += '<button class="upload-btn" type="button" onclick="openLastPDF()" style="font-size:12px;padding:6px 14px;display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>View Original PDF</button>';
-  html += '<span style="font-size:11.5px;color:var(--text-muted);">Opens the uploaded PDF in a new browser tab.</span>';
+  var btnSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>';
+  _lastPDFFiles.forEach(function(f, i) {
+    var lbl = _lastPDFFiles.length > 1 ? 'View PDF ' + (i + 1) + ' — ' + f.name : 'View Original PDF';
+    html += '<button class="upload-btn" type="button" onclick="openPDF(' + i + ')" style="font-size:12px;padding:6px 14px;display:flex;align-items:center;gap:6px;">' + btnSvg + lbl + '</button>';
+  });
   html += '</div>';
   html += '<p class="upload-notice" style="margin-top:6px;">⚠️ Always verify extracted values against your original report before interpreting results. Formatting variations between labs may occasionally cause extraction errors.</p>';
 
@@ -3385,76 +3390,102 @@ function showUploadStatus(type, msg) {
   el.style.display = 'flex';
 }
 
-function extractTextFromPDF(arrayBuffer) {
-  showUploadStatus('loading', '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Reading PDF…');
+/* ── Multi-PDF engine ────────────────────────────────────────────── */
+var _lastPDFFiles = [];
 
-  var loadingTask = window.pdfjsLib.getDocument({ data: arrayBuffer });
-  loadingTask.promise.then(function(pdf) {
-    var numPages = pdf.numPages;
-    var pagePromises = [];
-    for (var i = 1; i <= Math.min(numPages, 6); i++) {
-      pagePromises.push(pdf.getPage(i).then(function(page) {
-        return page.getTextContent().then(function(content) {
-          return content.items.map(function(item) { return item.str; }).join(' ');
-        });
-      }));
-    }
-    return Promise.all(pagePromises);
-  }).then(function(pageTexts) {
-    var fullText = pageTexts.join('\n');
-    var parsed = parseLabText(fullText);
-    applyExtractedFields(parsed);
-  }).catch(function(err) {
-    showUploadStatus('error', '⚠️ Could not read PDF: ' + (err.message || err) + '. The file may be password-protected or corrupted.');
-  });
-}
-
-var _lastPDFFile = null;
-
-function openLastPDF() {
-  if (!_lastPDFFile) return;
-  var url = URL.createObjectURL(_lastPDFFile);
+function openPDF(idx) {
+  var f = _lastPDFFiles[idx];
+  if (!f) return;
+  var url = URL.createObjectURL(f);
   window.open(url, '_blank');
-  // Revoke after a short delay to free memory while still allowing the tab to load
   setTimeout(function(){ URL.revokeObjectURL(url); }, 10000);
 }
 
-function handlePDFFile(file) {
-  if (!file || file.type !== 'application/pdf') {
-    showUploadStatus('error', '⚠️ Please upload a PDF file.');
-    return;
-  }
-  _lastPDFFile = file;
-  document.getElementById('uploadResults').style.display = 'none';
-  showUploadStatus('loading', '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Loading PDF reader…');
-
-  if (window.pdfjsLib) {
-    var reader = new FileReader();
-    reader.onload = function(e) { extractTextFromPDF(e.target.result); };
-    reader.readAsArrayBuffer(file);
-    return;
-  }
-
-  /* Lazy-load PDF.js from CDN */
-  var script = document.createElement('script');
-  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-  script.onload = function() {
+function _ensurePDFJS(callback) {
+  if (window.pdfjsLib) { callback(); return; }
+  var s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  s.onload = function() {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc =
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    var reader = new FileReader();
-    reader.onload = function(e) { extractTextFromPDF(e.target.result); };
-    reader.readAsArrayBuffer(file);
+    callback();
   };
-  script.onerror = function() {
-    showUploadStatus('error', '⚠️ Could not load PDF reader. Please check your internet connection and try again.');
+  s.onerror = function() {
+    showUploadStatus('error', '⚠️ Could not load PDF reader. Check your internet connection.');
   };
-  document.head.appendChild(script);
+  document.head.appendChild(s);
 }
+
+function _readPDFText(arrayBuffer) {
+  return window.pdfjsLib.getDocument({ data: arrayBuffer }).promise.then(function(pdf) {
+    var pp = [];
+    for (var i = 1; i <= Math.min(pdf.numPages, 6); i++) {
+      pp.push(pdf.getPage(i).then(function(pg) {
+        return pg.getTextContent().then(function(c) {
+          return c.items.map(function(it){ return it.str; }).join(' ');
+        });
+      }));
+    }
+    return Promise.all(pp).then(function(pages){ return pages.join('\n'); });
+  });
+}
+
+function handlePDFFiles(files) {
+  if (!files || !files.length) return;
+  files = Array.prototype.filter.call(files, function(f){ return f.type === 'application/pdf'; });
+  if (!files.length) { showUploadStatus('error', '⚠️ Please drop PDF files only.'); return; }
+  _lastPDFFiles = files;
+
+  var total = files.length;
+  var SPIN = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> ';
+  document.getElementById('uploadResults').style.display = 'none';
+  showUploadStatus('loading', SPIN + (total > 1 ? 'Loading ' + total + ' PDFs…' : 'Loading PDF reader…'));
+
+  _ensurePDFJS(function() {
+    var merged = { fields:{}, unitSys:null, name:null, date:null, sex:null, age:null };
+    var errors = 0;
+
+    function next(idx) {
+      if (idx >= total) {
+        if (Object.keys(merged.fields).length === 0 && errors === total) {
+          showUploadStatus('error', '⚠️ Could not read any of the PDFs. They may be scanned images or password-protected.');
+          return;
+        }
+        applyExtractedFields(merged);
+        return;
+      }
+      showUploadStatus('loading', SPIN +
+        (total > 1 ? 'Reading PDF ' + (idx+1) + ' of ' + total + ' — ' + files[idx].name + '…' : 'Reading PDF…'));
+
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        _readPDFText(e.target.result).then(function(text) {
+          var parsed = parseLabText(text);
+          /* Merge: first-value-wins for duplicate fields; first PDF wins for patient info */
+          Object.keys(parsed.fields).forEach(function(k) {
+            if (!merged.fields[k]) merged.fields[k] = parsed.fields[k];
+          });
+          if (!merged.unitSys && parsed.unitSys) merged.unitSys = parsed.unitSys;
+          if (!merged.name && parsed.name) merged.name = parsed.name;
+          if (!merged.date && parsed.date) merged.date = parsed.date;
+          if (!merged.sex  && parsed.sex)  merged.sex  = parsed.sex;
+          if (!merged.age  && parsed.age)  merged.age  = parsed.age;
+          next(idx + 1);
+        }).catch(function() { errors++; next(idx + 1); });
+      };
+      reader.readAsArrayBuffer(files[idx]);
+    }
+    next(0);
+  });
+}
+
+/* backward-compat single-file entry point */
+function handlePDFFile(file) { if (file) handlePDFFiles([file]); }
 
 function handlePDFDrop(event) {
   event.preventDefault();
-  var file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
-  if (file) handlePDFFile(file);
+  var files = event.dataTransfer && event.dataTransfer.files;
+  if (files && files.length) handlePDFFiles(files);
 }
 </script>
 
