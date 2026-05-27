@@ -1866,37 +1866,23 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
   <h1>Laboratory Interpreter</h1>
   <div class="subtitle">KDIGO 2024 · ACC/AHA 2026 · ADA 2025 — with derived calculations</div>
 
-  <!-- Patient fields -->
-  <div class="patient-row">
-    <div class="patient-field">
-      <label>Patient Name <span>(optional)</span></label>
-      <input class="patient-input" type="text" id="pt-name" placeholder="e.g. Juan Dela Cruz" oninput="updateHeader()"/>
-    </div>
-    <div class="patient-field">
-      <label>Date of Lab Results <span>(optional)</span></label>
-      <input class="patient-input" type="date" id="pt-date" oninput="updateHeader()"/>
-    </div>
-  </div>
-
-  <!-- Active patient banner -->
-  <div class="patient-banner" id="pt-banner" style="display:none;"></div>
-
   <!-- Summary badges -->
   <div class="summary-badges" id="summary-badges"></div>
 </div>
 
 <!-- SETTINGS -->
 <div class="settings-card">
-  <div class="settings-section-label">Unit System</div>
-  <div class="unit-toggle">
-    <button class="unit-btn active" onclick="setUnit('Conventional (US)',this)">Conventional (US)</button>
-    <button class="unit-btn" onclick="setUnit('SI',this)">SI</button>
-    <button class="unit-btn" onclick="setUnit('Hybrid',this)">Hybrid</button>
+  <div class="settings-section-label">Patient Info <span style="font-weight:400;color:var(--text-muted);font-size:11px;">— auto-fills from PDF</span></div>
+  <div class="ctx-grid">
+    <div>
+      <span class="ctx-label">Patient Name</span>
+      <input class="ctx-input" type="text" id="pt-name" placeholder="e.g. Juan Dela Cruz"/>
+    </div>
+    <div>
+      <span class="ctx-label">Date of Lab Results</span>
+      <input class="ctx-input" type="date" id="pt-date"/>
+    </div>
   </div>
-  <div class="unit-desc" id="unit-desc">mg/dL for glucose, cholesterol, creatinine · g/dL for albumin · g/L for Hgb · µIU/mL for insulin</div>
-
-  <hr class="settings-divider"/>
-  <div class="settings-section-label">Clinical Context</div>
   <div class="ctx-grid">
     <div>
       <span class="ctx-label">Sex</span>
@@ -1910,24 +1896,18 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
       <input class="ctx-input" type="number" id="ctx-age" placeholder="e.g. 58" oninput="reinterpAll()"/>
     </div>
   </div>
-  <div class="ctx-checks">
-    <label class="ctx-check">
-      <input type="checkbox" id="ctx-hd" onchange="onHDChange()"/>
-      On Hemodialysis
-    </label>
-    <label class="ctx-check">
-      <input type="checkbox" id="ctx-vhr" onchange="reinterpAll()"/>
-      Very High ASCVD Risk (CKD+DM / prior event)
-    </label>
-    <div class="hd-duration" id="hd-dur-row" style="display:none;">
-      <span style="font-size:11px;color:var(--muted);">HD session:</span>
-      <input type="number" id="ctx-hd-duration" value="240" oninput="reinterpAll()"/>
-      <span>min</span>
-    </div>
-  </div>
 
   <hr class="settings-divider"/>
-  <div class="settings-section-label">Patient Diagnosis <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(refines KDIGO targets)</span></div>
+  <div class="settings-section-label">Unit System</div>
+  <div class="unit-toggle">
+    <button class="unit-btn active" onclick="setUnit('Conventional (US)',this)">Conventional (US)</button>
+    <button class="unit-btn" onclick="setUnit('SI',this)">SI</button>
+    <button class="unit-btn" onclick="setUnit('Hybrid',this)">Hybrid</button>
+  </div>
+  <div class="unit-desc" id="unit-desc">mg/dL for glucose, cholesterol, creatinine · g/dL for albumin · g/L for Hgb · µIU/mL for insulin</div>
+
+  <hr class="settings-divider"/>
+  <div class="settings-section-label">Clinical Context <span style="font-weight:400;color:var(--text-muted);font-size:11px;">— refines KDIGO targets</span></div>
   <div class="ctx-grid">
     <div>
       <span class="ctx-label">Diagnosis</span>
@@ -1937,6 +1917,7 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
         <option value="ckd-dm">CKD + Diabetes</option>
         <option value="ckd-htn">CKD + Hypertension</option>
         <option value="ckd-dm-htn">CKD + DM + HTN</option>
+        <option value="ckd-cv">CKD + Prior CV Event</option>
         <option value="eskd-hd">ESKD on Hemodialysis</option>
         <option value="eskd-pd">ESKD on Peritoneal Dialysis</option>
         <option value="transplant">Kidney Transplant</option>
@@ -1954,6 +1935,11 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
         <option value="G5">G5/ESKD — eGFR &lt;15</option>
       </select>
     </div>
+  </div>
+  <div class="hd-duration" id="hd-dur-row" style="display:none;margin-top:8px;">
+    <span style="font-size:11px;color:var(--muted);">HD session:</span>
+    <input type="number" id="ctx-hd-duration" value="240" oninput="reinterpAll()"/>
+    <span>min</span>
   </div>
 </div>
 
@@ -2775,7 +2761,6 @@ function updateSummaryBadges() {
 function reinterpAll() {
   STATE.age = document.getElementById('ctx-age').value;
   STATE.hdDuration = parseFloat(document.getElementById('ctx-hd-duration').value) || 240;
-  STATE.ckdVeryHigh = document.getElementById('ctx-vhr').checked;
   renderAllInputs();
   renderDerived();
   updateSummaryBadges();
@@ -2815,27 +2800,15 @@ function setSex(s) {
   reinterpAll();
 }
 
-function onHDChange() {
-  STATE.isHD = document.getElementById('ctx-hd').checked;
-  var hdTab = document.getElementById('tab-hd');
-  var hdDurRow = document.getElementById('hd-dur-row');
-  hdTab.style.display = STATE.isHD ? '' : 'none';
-  hdDurRow.style.display = STATE.isHD ? 'flex' : 'none';
-  reinterpAll();
-}
+function updateHeader() { /* name/date now in settings card — no separate banner */ }
 
 function onDiagChange() {
   STATE.ckdDiag = document.getElementById('ctx-diag').value;
-  if (STATE.ckdDiag === 'eskd-hd') {
-    STATE.isHD = true;
-    document.getElementById('ctx-hd').checked = true;
-    document.getElementById('tab-hd').style.display = '';
-    document.getElementById('hd-dur-row').style.display = 'flex';
-  }
-  if (STATE.ckdDiag.indexOf('dm') !== -1 || STATE.ckdDiag === 'transplant') {
-    STATE.ckdVeryHigh = true;
-    document.getElementById('ctx-vhr').checked = true;
-  }
+  var diag = STATE.ckdDiag;
+  STATE.isHD = (diag === 'eskd-hd');
+  STATE.ckdVeryHigh = ['ckd-dm','ckd-dm-htn','ckd-cv','eskd-hd','eskd-pd'].indexOf(diag) !== -1;
+  document.getElementById('hd-dur-row').style.display = STATE.isHD ? 'flex' : 'none';
+  document.getElementById('tab-hd').style.display = STATE.isHD ? '' : 'none';
   reinterpAll();
 }
 
@@ -2849,21 +2822,6 @@ function switchTab(id, btn) {
   document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('panel-'+id).classList.add('active');
   btn.classList.add('active');
-}
-
-function updateHeader() {
-  var name = document.getElementById('pt-name').value.trim();
-  var date = document.getElementById('pt-date').value;
-  var banner = document.getElementById('pt-banner');
-  if (!name && !date) { banner.style.display='none'; return; }
-  var parts = [];
-  if (name) parts.push('👤 <strong>'+name+'</strong>');
-  if (date) {
-    var d = new Date(date+'T00:00');
-    parts.push('📅 '+d.toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'}));
-  }
-  banner.innerHTML = parts.join('');
-  banner.style.display='flex';
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -2919,7 +2877,7 @@ function exportPDF(triggerBtn) {
     var ctxParts = ['Sex: '+(STATE.sex==='M'?'Male':'Female')];
     if (STATE.age) ctxParts.push('Age: '+STATE.age);
     if (STATE.ckdDiag) {
-      var diagLabels = {'ckd':'CKD (non-dialysis)','ckd-dm':'CKD + DM','ckd-htn':'CKD + HTN','ckd-dm-htn':'CKD + DM + HTN','eskd-hd':'ESKD on HD','eskd-pd':'ESKD on PD','transplant':'Kidney Transplant'};
+      var diagLabels = {'ckd':'CKD (non-dialysis)','ckd-dm':'CKD + DM','ckd-htn':'CKD + HTN','ckd-dm-htn':'CKD + DM + HTN','ckd-cv':'CKD + Prior CV Event','eskd-hd':'ESKD on HD','eskd-pd':'ESKD on PD','transplant':'Kidney Transplant'};
       ctxParts.push(diagLabels[STATE.ckdDiag] || STATE.ckdDiag);
     }
     if (STATE.ckdStage) ctxParts.push('Stage '+STATE.ckdStage);
@@ -3220,6 +3178,19 @@ function extractPDFPatientInfo(text){
     var dm=dateRxs[i].exec(text);
     if(dm){ var iso=_parseToISODate(dm[1]); if(iso){result.date=iso;break;} }
   }
+  // Sex: "Sex: Male/Female/M/F" or "Gender: …"
+  var sexRxs=[
+    /\b(?:sex|gender)\s*[:\-]\s*(male|female)\b/i,
+    /\b(?:sex|gender)\s*[:\-]\s*(m)\b(?!\s*\d)/i,
+    /\b(?:sex|gender)\s*[:\-]\s*(f)\b/i,
+  ];
+  for(var si=0;si<sexRxs.length;si++){
+    var sm=sexRxs[si].exec(text);
+    if(sm&&sm[1]){ result.sex=sm[1][0].toUpperCase()==='M'?'M':'F'; break; }
+  }
+  // Age: "Age: 58" or "Age: 58 years" or "Age/Sex: 58/M"
+  var am=text.match(/\bage\s*(?:\/\s*sex)?\s*[:\-]\s*(\d{1,3})\s*(?:years?|y(?:rs?)?\.?)?(?:\s|\/|,|\b)/i);
+  if(am&&+am[1]>0&&+am[1]<121) result.age=am[1];
   return result;
 }
 
@@ -3351,14 +3322,23 @@ function applyExtractedFields(parsed) {
     STATE.fields[k] = fields[k];
   });
 
-  /* Fill patient name & date if found and fields are empty */
+  /* Fill patient info if found and fields are currently empty */
   if (parsed.name) {
     var nameEl = document.getElementById('pt-name');
-    if (nameEl && !nameEl.value.trim()) { nameEl.value = parsed.name; updateHeader(); }
+    if (nameEl && !nameEl.value.trim()) nameEl.value = parsed.name;
   }
   if (parsed.date) {
     var dateEl = document.getElementById('pt-date');
-    if (dateEl && !dateEl.value) { dateEl.value = parsed.date; updateHeader(); }
+    if (dateEl && !dateEl.value) dateEl.value = parsed.date;
+  }
+  if (parsed.sex) {
+    STATE.sex = parsed.sex;
+    document.getElementById('sex-M').classList.toggle('active', parsed.sex === 'M');
+    document.getElementById('sex-F').classList.toggle('active', parsed.sex === 'F');
+  }
+  if (parsed.age) {
+    var ageEl = document.getElementById('ctx-age');
+    if (ageEl && !ageEl.value) { ageEl.value = parsed.age; STATE.age = parsed.age; }
   }
 
   renderAllInputs();
@@ -3368,7 +3348,9 @@ function applyExtractedFields(parsed) {
   /* Render results panel */
   var ptLine = '';
   if (parsed.name) ptLine += '<span>👤 ' + parsed.name + '</span> ';
-  if (parsed.date) ptLine += '<span>📅 ' + parsed.date + '</span>';
+  if (parsed.date) ptLine += '<span>📅 ' + parsed.date + '</span> ';
+  if (parsed.sex)  ptLine += '<span>' + (parsed.sex === 'M' ? '♂ Male' : '♀ Female') + '</span> ';
+  if (parsed.age)  ptLine += '<span>🎂 Age ' + parsed.age + '</span>';
   var unitLabel = unitSys ? ' · Units auto-set to <strong>' + unitSys + '</strong>' : '';
   var html = '<div class="upload-results-title">📊 ' + count + ' value' + (count !== 1 ? 's' : '') + ' extracted' + unitLabel + (ptLine ? '<div style="margin-top:6px;font-size:12px;color:var(--text-muted);display:flex;gap:12px;">' + ptLine + '</div>' : '') + '</div>';
   html += '<div class="extract-grid">';
