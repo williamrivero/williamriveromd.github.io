@@ -2956,12 +2956,15 @@ function exportPDF(triggerBtn) {
       return {bg:GRAY_BG, text:GRAY, badge:'—'};
     }
 
-    function drawLabRow(label, rawVal, unit, ir) {
+    function drawLabRow(label, rawVal, unit, ir, desc) {
       if (!rawVal && rawVal!==0) return; // skip empty
-      checkPage(14);
+      var hasDesc = !!(desc && desc.length);
+      var hasNote = !!(ir.note && ir.note.length);
+      var rowH = 8 + (hasDesc ? 5 : 0) + (hasNote ? 6 : 0);
+      checkPage(rowH+2);
       var sc = statusColors(ir.status);
-      fillRect(margin, y, colW, ir.note?14:8, sc.bg);
-      drawRect(margin, y, colW, ir.note?14:8, sc.bg);
+      fillRect(margin, y, colW, rowH, sc.bg);
+      drawRect(margin, y, colW, rowH, sc.bg);
       // Label
       setFont('bold',8,NAVY); text(label, margin+2, y+5);
       // Value + unit
@@ -2970,9 +2973,12 @@ function exportPDF(triggerBtn) {
       // Badge
       doc.setFillColor.apply(doc, sc.text); doc.roundedRect(W-margin-26, y+1.5, 22, 5, 1, 1, 'F');
       setFont('bold',7,WHITE); text(sc.badge, W-margin-15, y+5.3, {align:'center'});
-      // Note
-      if (ir.note) { setFont('italic',7,sc.text); text(ir.note, margin+2, y+11, {maxWidth:colW-32}); }
-      y += (ir.note?15:9);
+      // Description subtitle
+      var lineY = y + 5;
+      if (hasDesc) { lineY += 5; setFont('italic',6.5,GRAY); text(desc, margin+2, lineY, {maxWidth:colW-32}); }
+      // Status note
+      if (hasNote) { lineY += (hasDesc ? 5 : 6); setFont('italic',7,sc.text); text(ir.note, margin+2, lineY, {maxWidth:colW-32}); }
+      y += rowH+1;
     }
 
     function drawDerivedRow(item) {
@@ -2995,6 +3001,54 @@ function exportPDF(triggerBtn) {
       y += rowH+1;
     }
 
+    // ── Lab descriptions (shown in PDF as italic subtitle per row) ────
+    var LAB_DESC = {
+      creatinine:      'Kidney waste filtration marker; rises as GFR falls',
+      egfr:            'Estimated kidney filtration rate; stages CKD severity',
+      bun:             'Blood urea nitrogen; elevated levels signal uremia',
+      bun_pre:         'Pre-dialysis urea nitrogen; used to calculate Kt/V and URR',
+      bun_post:        'Post-dialysis urea nitrogen; used to calculate Kt/V and URR',
+      uacr:            'Urine albumin-to-creatinine ratio; detects and grades kidney damage',
+      upcr:            'Urine protein-to-creatinine ratio; quantifies total protein loss',
+      hgb:             'Hemoglobin; oxygen-carrying capacity of blood',
+      hct:             'Hematocrit; proportion of red cells in blood volume',
+      rbc:             'Red blood cell count; reduced in renal anemia',
+      mcv:             'Mean cell volume; classifies anemia as micro/normo/macrocytic',
+      rdw:             'Red cell size variation; elevated favors iron deficiency over thalassemia',
+      reticulocyte:    'Immature red cells; reflects bone marrow response to ESA therapy',
+      ferritin:        'Iron storage protein; guides IV iron dosing in CKD/HD',
+      tsat:            'Transferrin saturation; functional iron availability for erythropoiesis',
+      wbc:             'White blood cell count; infection and immune surveillance',
+      platelets:       'Platelet count; assesses bleeding and clotting risk',
+      sodium:          'Primary extracellular electrolyte; fluid balance and osmolality',
+      potassium:       'Critical for cardiac rhythm; hyperkalemia risk is high in CKD/HD',
+      bicarb:          'Serum bicarbonate; metabolic acidosis is common in CKD',
+      chloride:        'Anion balance; interpret alongside sodium and bicarbonate',
+      magnesium:       'Enzyme cofactor; deficiency common in dialysis patients',
+      albumin:         'Nutritional and inflammatory marker; low levels predict poor outcomes',
+      alt:             'Liver enzyme; monitors for hepatitis and drug-related liver toxicity',
+      ast:             'Liver enzyme; elevated in liver injury or rhabdomyolysis',
+      uricacid:        'Gout marker; elevated in CKD and may accelerate progression',
+      calcium:         'Bone mineral; regulated by kidneys, PTH, and active vitamin D',
+      phosphorus:      'CKD-MBD marker; kidneys cannot excrete phosphate adequately in ESKD',
+      ipth:            'Parathyroid hormone; drives renal bone disease when chronically elevated',
+      vitd:            'Active vitamin D; deficiency worsens CKD-MBD and suppresses immunity',
+      alp:             'Bone and liver enzyme; elevated in CKD-MBD, Paget\'s, or liver disease',
+      totalchol:       'Total cholesterol; cardiovascular risk is markedly elevated in CKD',
+      ldl:             'LDL cholesterol; primary target of statin therapy in CKD',
+      hdl:             'HDL cholesterol; cardioprotective; often reduced in CKD',
+      tg:              'Triglycerides; elevated in CKD due to insulin resistance and dyslipidemia',
+      lpa:             'Lipoprotein(a); independent cardiovascular risk marker; not reduced by statins',
+      fbs:             'Fasting blood glucose; diabetes diagnosis and glycemic monitoring',
+      hba1c:           'Average 3-month blood glucose; may be falsely low in dialysis anemia',
+      fasting_insulin: 'Fasting insulin; used to assess insulin resistance',
+      spktv:           'Single-pool Kt/V; primary index of hemodialysis dose adequacy',
+      urr:             'Urea reduction ratio; fraction of urea removed in one HD session',
+      uf_volume:       'Ultrafiltration volume; fluid removed during the dialysis session',
+      weight_post:     'Post-dialysis weight; used to assess dry weight and fluid status',
+      npcrHD:          'Normalized protein catabolic rate; reflects dietary protein intake',
+    };
+
     // ── Sections ─────────────────────────────────────────────────
     var sections = [
       {title:'Kidney Function', icon:'KIDNEY', keys:['creatinine','egfr','bun','uacr','upcr']},
@@ -3013,7 +3067,7 @@ function exportPDF(triggerBtn) {
       filledKeys.forEach(function(k){
         var meta = FIELD_META[k][STATE.unitSys] || FIELD_META[k]['Conventional (US)'];
         var ir = interpKey(k);
-        drawLabRow(meta.label, STATE.fields[k], meta.unit, ir);
+        drawLabRow(meta.label, STATE.fields[k], meta.unit, ir, LAB_DESC[k] || '');
       });
       y += 3;
     });
