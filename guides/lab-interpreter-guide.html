@@ -3149,48 +3149,55 @@ function _parseToISODate(str){
   return null;
 }
 function extractPDFPatientInfo(text){
-  var result={name:null,date:null};
-  // Name: try progressively broader patterns
+  var result={name:null,date:null,sex:null,age:null};
+  // PDF.js collapses whitespace within a page — normalise to single spaces + keep newlines
+  var t=text.replace(/\r\n?/g,'\n').replace(/[ \t]{2,}/g,' ');
+
+  // ── Name ─────────────────────────────────────────────────────────
+  // Lazy capture stops at first known "next-field" keyword or newline.
+  // NOTE: comma is NOT in the lookahead — "DELA CRUZ, JUAN" has a comma mid-name.
+  var NF='(?=[ \\t]*(?:age\\b|sex\\b|gender\\b|dob\\b|date\\b|ref(?:erence)?\\b|mr(?:\\s*no)?\\b|id\\s*[#:]|ward\\b|room\\b|physician\\b|dr\\.[\\t ]|requesting\\b|ordering\\b|\\n|\\||$))';
   var nameRxs=[
-    // "Patient Name: Juan Dela Cruz" — lookahead for common label/field separators
-    /patient(?:'s)?\s+name\s*[:\-]\s*([A-Za-z\xc0-\xff][A-Za-z\xc0-\xff .,''\/\-]{2,60})(?=[\r\n]|\s{2,}|\||,\s*[A-Z]|age\b|sex\b|gender\b|dob\b|date\b|id\b|mr\b|ward\b|room\b|physician\b|dr\.|referring\b|requesting\b|birthdate\b|birthday\b|tel\b|address\b|account\b|no\.\b)/i,
-    // "Patient Name: …" — fallback to end of line
-    /patient(?:'s)?\s+name\s*[:\-]\s*([A-Za-z\xc0-\xff][A-Za-z\xc0-\xff .,''\/\-]{2,60}?)(?:\s*[\r\n])/i,
-    // "Name: Juan Dela Cruz" — standalone label
-    /\bname\s*[:\-]\s*([A-Za-z\xc0-\xff][A-Za-z\xc0-\xff .,''\/\-]{4,60})(?=[\r\n]|\s{2,}|\||age\b|sex\b|gender\b|dob\b|date\b|id\b|mr\b)/i,
-    // "Patient: Juan Dela Cruz" — some labs just say "Patient:"
-    /\bpatient\s*[:\-]\s*([A-Za-z\xc0-\xff][A-Za-z\xc0-\xff .,''\/\-]{4,60})(?=[\r\n]|\s{2,}|\||age\b|sex\b|dob\b|date\b|id\b|mr\b)/i,
+    new RegExp('patient(?:\'s)?\\s*name\\s*[:\\-]\\s*([\\w ,.\'-]{3,60}?)'+NF,'i'),
+    new RegExp('\\bname\\s*[:\\-]\\s*([\\w ,.\'-]{4,60}?)'+NF,'i'),
+    new RegExp('\\bpatient\\s*[:\\-]\\s*([\\w ,.\'-]{4,60}?)'+NF,'i'),
   ];
   for(var ni=0;ni<nameRxs.length;ni++){
-    var nm=nameRxs[ni].exec(text);
+    var nm=nameRxs[ni].exec(t);
     if(nm&&nm[1]){
       var cand=nm[1].trim().replace(/\s+/g,' ');
-      if(cand.length>=3&&!/^\d/.test(cand)){result.name=cand;break;}
+      if(cand.length>=3&&!/^\d/.test(cand)&&/[A-Za-z]{2}/.test(cand)){result.name=cand;break;}
     }
   }
-  // Date: prefer collection date, fall back to report date, then bare "Date:"
+
+  // ── Age ──────────────────────────────────────────────────────────
+  // "Age: 58" | "Age: 58 years" | "Age/Sex: 58/M" | "Age/Sex: 58 Years / Female"
+  var ageM=t.match(/\bage(?:[ \t]*\/[ \t]*sex)?[ \t]*[:\-][ \t]*(\d{1,3})[ \t]*(?:years?|y(?:rs?)?\.?)?[ \t]*(?:\/|,|[ \t]|$)/i);
+  if(ageM&&+ageM[1]>0&&+ageM[1]<121) result.age=ageM[1];
+
+  // ── Sex ──────────────────────────────────────────────────────────
+  var sexRxs=[
+    /\b(?:sex|gender)[ \t]*[:\-][ \t]*(male|female)\b/i,
+    /\b(?:sex|gender)[ \t]*[:\-][ \t]*(m|f)\b(?!\w)/i,
+    // Combined "Age/Sex: 58 / Male" or "Age/Sex: 58/M"
+    /\bage[ \t]*\/[ \t]*sex[ \t]*[:\-][ \t]*\d{1,3}[ \t]*(?:years?|yrs?)?[ \t]*\/[ \t]*(male|female)\b/i,
+    /\bage[ \t]*\/[ \t]*sex[ \t]*[:\-][ \t]*\d{1,3}[ \t]*(?:years?|yrs?)?[ \t]*\/[ \t]*(m|f)\b(?!\w)/i,
+  ];
+  for(var si=0;si<sexRxs.length;si++){
+    var sm=sexRxs[si].exec(t);
+    if(sm&&sm[1]){result.sex=sm[1][0].toUpperCase()==='M'?'M':'F';break;}
+  }
+
+  // ── Date ─────────────────────────────────────────────────────────
   var dateRxs=[
     /(?:date\s+(?:of\s+)?collect(?:ion|ed)|collect(?:ion|ed)\s+date|date\s+collected|specimen\s+date)\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
     /(?:report\s+date|date\s+(?:of\s+)?report|date\s+(?:of\s+)?result)\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
     /\bdate\s*[:\-]\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
   ];
   for(var i=0;i<dateRxs.length;i++){
-    var dm=dateRxs[i].exec(text);
-    if(dm){ var iso=_parseToISODate(dm[1]); if(iso){result.date=iso;break;} }
+    var dm=dateRxs[i].exec(t);
+    if(dm){var iso=_parseToISODate(dm[1]);if(iso){result.date=iso;break;}}
   }
-  // Sex: "Sex: Male/Female/M/F" or "Gender: …"
-  var sexRxs=[
-    /\b(?:sex|gender)\s*[:\-]\s*(male|female)\b/i,
-    /\b(?:sex|gender)\s*[:\-]\s*(m)\b(?!\s*\d)/i,
-    /\b(?:sex|gender)\s*[:\-]\s*(f)\b/i,
-  ];
-  for(var si=0;si<sexRxs.length;si++){
-    var sm=sexRxs[si].exec(text);
-    if(sm&&sm[1]){ result.sex=sm[1][0].toUpperCase()==='M'?'M':'F'; break; }
-  }
-  // Age: "Age: 58" or "Age: 58 years" or "Age/Sex: 58/M"
-  var am=text.match(/\bage\s*(?:\/\s*sex)?\s*[:\-]\s*(\d{1,3})\s*(?:years?|y(?:rs?)?\.?)?(?:\s|\/|,|\b)/i);
-  if(am&&+am[1]>0&&+am[1]<121) result.age=am[1];
   return result;
 }
 
@@ -3290,7 +3297,7 @@ function parseLabText(rawText) {
     unitSys = siVotes >= cvVotes ? 'SI' : 'Conventional (US)';
   }
   var ptInfo = extractPDFPatientInfo(text);
-  return { fields: fields, unitSys: unitSys, name: ptInfo.name, date: ptInfo.date };
+  return { fields: fields, unitSys: unitSys, name: ptInfo.name, date: ptInfo.date, sex: ptInfo.sex, age: ptInfo.age };
 }
 
 function applyExtractedFields(parsed) {
