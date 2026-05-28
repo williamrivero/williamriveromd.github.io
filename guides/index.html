@@ -573,6 +573,8 @@
   .tag-ph { background: #fff5e6; color: var(--orange); }
   .tag-clinician { background: var(--purple-light); color: var(--purple); }
   .tag-download { background: #fef9ec; color: #92710a; border: 1px solid #f5d97a; }
+  .tag-pt  { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+  .tag-md  { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
   .tile-icon.dl { background: #fef9ec; color: #92710a; }
 
   .tile-teaser {
@@ -1125,6 +1127,8 @@
   body.dark-mode .tag-updated { background: rgba(26,107,114,.25); color: #5eead4; border-color: rgba(26,107,114,.3); }
   body.dark-mode .tag-calc { background: rgba(26,107,114,.2); color: #5eead4; }
   body.dark-mode .tag-decision { background: rgba(109,63,192,.25); color: #c4b5fd; border-color: rgba(109,63,192,.35); }
+  body.dark-mode .tag-pt  { background: rgba(22,101,52,.25); color: #86efac; border-color: rgba(22,101,52,.35); }
+  body.dark-mode .tag-md  { background: rgba(29,78,216,.2); color: #93c5fd; border-color: rgba(29,78,216,.3); }
   body.dark-mode .spotlight { background: #111c30; }
   body.dark-mode .spotlight-label { color: var(--ink-muted); }
   body.dark-mode .section-name { color: var(--ink); }
@@ -3358,6 +3362,28 @@ try {
     });
   }
 } catch(e) {}
+
+// Audience pills — Patients / Clinicians
+(function() {
+  var dual = new Set(["acute-kidney-injury-on-ckd.html","advance-care-planning-dialysis.html","alcohol-ckd.html","anemia-management.html","avf-aneurysm-and-changes.html","buko-juice-alkaline-water-ckd.html","cardiac-rehab-ckd-post-mi.html","cardiovascular-death-dialysis.html","caregiver-guide-ckd.html","cholesterol-diet-guide.html","ckd-alternative-holistic-medicine.html","ckd-and-pregnancy.html","ckd-children-young-adults.html","ckd-dri-calculator.html","ckd-financial-stress.html","ckd-friendly-recipes-regional.html","ckd-friendly-recipes.html","ckd-label-scanner.html","ckd-mbd.html","ckd-mental-health-sleep.html","ckd-recipe-analyzer.html","ckd-skin-darkening-body-changes.html","ckd-statistics-philippines.html","ckd-top5-mistakes.html","contrast-nephropathy.html","cooking-oils-fats-guide.html","dengue-aki-kidney.html","diabetes-kidneys.html","dialysis-access-care.html","dialysis-access-infection.html","dialysis-adequacy.html","dialysis-coming-pre-eskd.html","dialysis-machine-assignment.html","dialysis-prescription.html","dyslipidemia-2026.html","eating-on-dialysis.html","el-nino-heat-dialysis.html","exercise-guide-ckd.html","filipino-diabetic-diet.html","first-nephrology-visit-guide.html","fluid-management-dialysis.html","food-kidney-toxins.html","gdm-nutrition-nephrology.html","glomerulonephritis.html","glp1-ozempic-ckd.html","gout-uric-acid.html","hantavirus-ckd.html","heart-kidney-connection.html","hematuria-blood-in-urine.html","hemodialysis-complications.html","hemodialysis-elderly.html","hemodialysis-modalities.html","hemodialysis-transfer-guide.html","hemoperfusion-blood-purification.html","herbal-nephropathy.html","hivan-hiv-kidney-disease.html","hypertensive-kidney-disease.html","igan-guide.html","innovative-technologies-ckd.html","kain-pa-rin.html","ketoanalogue-supplementation.html","ketogenic-chrononutrition-ckd.html","kidney-cancers.html","kidney-physiology.html","kidney-transplant.html","lab-interpreter-guide.html","leptospirosis-nephropathy.html","living-with-dialysis.html","lupus-nephritis.html","managing-hypertension.html","managing-kidney-stones.html","meal-prep-fastfood-ckd.html","medication-operational-guide.html","metabolic-acidosis-ckd.html","microbiome-probiotics-health.html","muscle-building-supplements-ckd.html","natural-supplements-kidney.html","new-therapeutic-agents-ckd.html","nsaid-kidney-injury.html","nutrition-kidney-patients.html","nutrition-labels-ckd.html","obesity-ckd.html","organ-donation-philippines.html","pain-management-ckd.html","peritoneal-dialysis-ckd.html","philhealth-z-packages.html","phosphorus-ckd.html","polycystic-kidney-disease.html","post-dialysis-fatigue.html","potassium-hyperkalemia-ckd.html","practical-outpatient-algorithms.html","preventing-uti.html","prostate-enlargement.html","proteins-proteinuria.html","recurrent-uti-ckd.html","sexual-health-intimacy-ckd.html","slowing-ckd-progression.html","sodium-salt-reduction-ckd.html","stem-cells-ckd.html","symptom-checker.html","transplant-allograft-failure.html","travel-dialysis-ckd.html","tuberculosis-kidney-disease.html","typhoon-disaster-preparedness-dialysis.html","understanding-ckd.html","understanding-iron.html","understanding-lab-results.html","uremic-pruritus-ckd.html","uremic-toxin-precursors.html","vinegar-acv-guide.html","viral-infections-vaccinations-ckd.html","zero-balance-billing-philhealth.html"]);
+  document.querySelectorAll('a.guide-tile').forEach(function(tile) {
+    var href = tile.getAttribute('href') || '';
+    if (!href.endsWith('.html')) return;
+    var fname = href.replace(/^.*\//, '');
+    var meta = tile.querySelector('.tile-meta');
+    if (!meta) return;
+    var pt = document.createElement('span');
+    pt.className = 'meta-tag tag-pt';
+    pt.textContent = 'Patients';
+    meta.appendChild(pt);
+    if (dual.has(fname)) {
+      var md = document.createElement('span');
+      md.className = 'meta-tag tag-md';
+      md.textContent = 'Clinicians';
+      meta.appendChild(md);
+    }
+  });
+})();
 
 </script>
 
