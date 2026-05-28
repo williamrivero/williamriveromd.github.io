@@ -62,10 +62,21 @@
   .tile.total{background:#1e2a38;}
 
   /* tabs */
-  .tabs{display:flex;gap:6px;padding:16px 0 0;justify-content:center;flex-wrap:wrap;}
+  .tabs{display:flex;gap:6px;padding:16px 0 0;justify-content:center;flex-wrap:wrap;align-items:center;}
   .tab-btn{padding:7px 18px;border-radius:20px;border:none;background:#e2e8f0;font-size:12px;font-weight:600;cursor:pointer;color:#475569;transition:.15s;}
   .tab-btn.active{background:#1e2a38;color:#fff;}
   .note{font-size:11px;color:#475569;margin:8px 0 20px;padding:0 2px;}
+  .dl-btn{padding:7px 18px;border-radius:20px;border:none;background:#0f766e;color:#fff;font-size:12px;font-weight:700;cursor:pointer;margin-left:12px;display:flex;align-items:center;gap:5px;}
+  .dl-btn:hover{background:#0d6460;}
+
+  @media print {
+    body{background:#fff;padding:0;}
+    h1,.page-sub,.tabs,.note,.dl-btn{display:none!important;}
+    .clinic-section{display:none!important;margin:0;}
+    .clinic-section.printing{display:block!important;}
+    .clinic-label{display:none;}
+    .report-card{box-shadow:none;border-radius:0;max-width:100%;}
+  }
 </style>
 </head>
 <body>
@@ -77,6 +88,9 @@
   <button class="tab-btn active" onclick="show('sjbdc',this)">SJBDC</button>
   <button class="tab-btn" onclick="show('sjrc',this)">SJRC</button>
   <button class="tab-btn" onclick="show('rcuona',this)">RCUONA</button>
+  <button class="dl-btn" onclick="printActive()" title="Save as PDF via browser print dialog">
+    &#8681; Save as PDF
+  </button>
 </div>
 <p class="note" id="clinic-note">St. John Biocare R&amp;Dialysis Center Foundation, Inc. — enter <strong>sjbdc</strong> in the Clinic Name field</p>
 
@@ -280,13 +294,24 @@ var NOTES = {
   sjrc:  'St. Josef Renal Care Foundation, Inc. — enter <strong>sjrc</strong> in the Clinic Name field',
   rcuona:'Renal Care Unit of ONA — enter <strong>rcuona</strong> in the Clinic Name field'
 };
+var _activeSlug = 'sjbdc';
 function show(slug, btn) {
+  _activeSlug = slug;
   ['sjbdc','sjrc','rcuona'].forEach(function(s){
     document.getElementById('preview-'+s).style.display = s===slug?'':'none';
   });
   document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   document.getElementById('clinic-note').innerHTML = NOTES[slug];
+}
+function printActive() {
+  // mark which section is printing so @media print can show it
+  document.querySelectorAll('.clinic-section').forEach(function(el){
+    el.classList.remove('printing');
+  });
+  var active = document.getElementById('preview-' + _activeSlug);
+  if (active) active.classList.add('printing');
+  window.print();
 }
 </script>
 </body>
