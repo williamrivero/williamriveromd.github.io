@@ -3072,9 +3072,8 @@ function _doExportPDF(logo) {
     // Clinic logo — top-right of header, 1 inch constrained, aspect-ratio preserved
     _addLogoToPDF(doc, logo, W, 30, margin);
 
-    var ptName = document.getElementById('pt-name').value.trim()
-              || (_pdfSessions.length && _pdfSessions[0].name ? _pdfSessions[0].name : '');
-    var ptDate = _latestSessionDate() || document.getElementById('pt-date').value;
+    var ptName = document.getElementById('pt-name').value.trim();
+    var ptDate = document.getElementById('pt-date').value;
     if (ptName || ptDate) {
       setFont('bold',9,WHITE); if (ptName) text('Patient: '+ptName, margin, 23);
       setFont('normal',8,[180,200,220]);
@@ -4138,14 +4137,9 @@ function applyExtractedFields(parsed) {
     var nameEl = document.getElementById('pt-name');
     if (nameEl && !nameEl.value.trim()) nameEl.value = parsed.name;
   }
-  /* Always update pt-date to the latest session date so it tracks the most recent upload */
-  var _latestD = _latestSessionDate();
-  if (_latestD) {
+  if (parsed.date) {
     var dateEl = document.getElementById('pt-date');
-    if (dateEl) dateEl.value = _latestD;
-  } else if (parsed.date) {
-    var dateEl2 = document.getElementById('pt-date');
-    if (dateEl2 && !dateEl2.value) dateEl2.value = parsed.date;
+    if (dateEl && !dateEl.value) dateEl.value = parsed.date;
   }
   if (parsed.sex) {
     STATE.sex = parsed.sex;
