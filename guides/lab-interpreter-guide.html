@@ -3401,10 +3401,10 @@ function _doExportFlowsheetPDF(logo) {
     var sorted = _groupSessionsByDate(_pdfSessions);
     var nCols = sorted.length;
 
-    /* Collect all patient names; warn if mismatched */
-    var allNames=[];
-    sorted.forEach(function(g){ g.names.forEach(function(n){ if(allNames.indexOf(n)===-1) allNames.push(n); }); });
-    var nameMismatch = allNames.length > 1;
+    /* Collect all patient names; warn if mismatched (compare Last+First only) */
+    var allNames=[], allNameKeys=[];
+    sorted.forEach(function(g){ g.names.forEach(function(n){ if(allNames.indexOf(n)===-1) allNames.push(n); var k=_normNameKey(n); if(allNameKeys.indexOf(k)===-1) allNameKeys.push(k); }); });
+    var nameMismatch = allNameKeys.length > 1;
 
     var doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
     var W = 210, pageH = 297;
@@ -3808,18 +3808,42 @@ renderDerived();
 
 /* ── Patient info extraction helpers ─────────────────────────────────── */
 function _pad2(n){ return ('0'+n).slice(-2); }
+/* Reduce a patient name to "LASTNAME FIRSTNAME" for mismatch comparison,
+   ignoring middle names and initials. Handles "Last, First Middle" and
+   "First Middle Last" formats. */
+function _normNameKey(name){
+  if(!name) return '';
+  var s=name.toUpperCase().replace(/[^A-Z\s,]/g,'').trim();
+  if(s.indexOf(',')!==-1){
+    var ci=s.indexOf(',');
+    var last=s.substring(0,ci).trim();
+    var first=(s.substring(ci+1).trim().split(/\s+/)[0])||'';
+    return (last+' '+first).trim();
+  }
+  var ws=s.split(/\s+/).filter(Boolean);
+  return ws.length>1 ? ws[0]+' '+ws[ws.length-1] : ws[0]||'';
+}
 function _parseToISODate(str){
   if(!str) return null;
   str = str.trim();
   var m;
+  var months={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
   // YYYY-MM-DD or YYYY/MM/DD
   m = str.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})$/);
   if(m) return m[1]+'-'+_pad2(+m[2])+'-'+_pad2(+m[3]);
-  // DD/MM/YYYY or DD-MM-YYYY (Philippine default)
+  // MMM-DD-YYYY (SGD format: Mar-19-2026)
+  m = str.match(/^([A-Za-z]{3,9})[\/-](\d{1,2})[\/-](\d{4})$/);
+  if(m){ var mo0=months[m[1].toLowerCase().slice(0,3)]; if(mo0) return m[3]+'-'+_pad2(mo0)+'-'+_pad2(+m[2]); }
+  // DD/MM/YYYY or MM/DD/YYYY — disambiguate:
+  // if second number > 12 it must be a day → treat as MM-DD-YYYY (SGD "03-19-2026")
+  // otherwise treat as DD-MM-YYYY (Philippine default)
   m = str.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
-  if(m) return m[3]+'-'+_pad2(+m[2])+'-'+_pad2(+m[1]);
+  if(m){
+    var d1=+m[1], d2=+m[2];
+    if(d2>12) return m[3]+'-'+_pad2(d1)+'-'+_pad2(d2);   // MM-DD-YYYY
+    else      return m[3]+'-'+_pad2(d2)+'-'+_pad2(d1);    // DD-MM-YYYY
+  }
   // DD Mon YYYY  e.g. "15 May 2025"
-  var months={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
   m = str.match(/^(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})$/);
   if(m){ var mo=months[m[2].toLowerCase().slice(0,3)]; if(mo) return m[3]+'-'+_pad2(mo)+'-'+_pad2(+m[1]); }
   // Mon DD, YYYY  e.g. "May 15, 2025"
@@ -3870,14 +3894,16 @@ function extractPDFPatientInfo(text){
   }
 
   // ── Date ─────────────────────────────────────────────────────────
+  // Shared alternation: numeric date OR MMM-DD-YYYY (SGD) OR DD Mon YYYY OR Mon DD YYYY
+  var _D='(?:[A-Za-z]{3,9}[\\/-]\\d{1,2}[\\/-]\\d{4}|\\d{1,2}[\\/-]\\d{1,2}[\\/-]\\d{2,4}|\\d{4}[\\/-]\\d{2}[\\/-]\\d{2}|\\d{1,2}\\s+[A-Za-z]{3,9}\\s+\\d{4}|[A-Za-z]{3,9}\\s+\\d{1,2},?\\s+\\d{4})';
   var dateRxs=[
-    // SGD header: "SAMPLE RECEIVED : 11-07-2025 20:18"
-    /\bsample\s+received\s*[:\-]\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2})/i,
-    // SGD body: "Sample Collection Date/Time\nSerum   11-07-2025 19:54:00"
-    /\bsample\s+collection\s+date(?:\/time)?\b[\s\S]{0,35}?(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2})/i,
-    /(?:date\s+(?:of\s+)?collect(?:ion|ed)|collect(?:ion|ed)\s+date|date\s+collected|specimen\s+date)\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
-    /(?:report\s+date|date\s+(?:of\s+)?report|date\s+(?:of\s+)?result)\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
-    /\bdate\s*[:\-]\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/i,
+    // SGD header: "SAMPLE RECEIVED : 03-19-2026 21:06" or "Mar-19-2026 19:01:00"
+    new RegExp('\\bsample\\s+received\\s*[:\\-]\\s*('+_D+')','i'),
+    // SGD body: "Sample Collection Date/Time\nSerum   Mar-19-2026 19:01:00"
+    new RegExp('\\bsample\\s+collection\\s+date(?:\\/time)?\\b[\\s\\S]{0,35}?('+_D+')','i'),
+    new RegExp('(?:date\\s+(?:of\\s+)?collect(?:ion|ed)|collect(?:ion|ed)\\s+date|date\\s+collected|specimen\\s+date)\\s*[:\\-]?\\s*('+_D+')','i'),
+    new RegExp('(?:report\\s+date|date\\s+(?:of\\s+)?report|date\\s+(?:of\\s+)?result)\\s*[:\\-]?\\s*('+_D+')','i'),
+    new RegExp('\\bdate\\s*[:\\-]\\s*('+_D+')','i'),
   ];
   for(var i=0;i<dateRxs.length;i++){
     var dm=dateRxs[i].exec(t);
@@ -4238,10 +4264,10 @@ function renderCompareTable(sessions) {
 
   var sorted = _groupSessionsByDate(sessions);
 
-  /* Detect patient name mismatch across columns */
-  var allNames = [];
-  sorted.forEach(function(g){ g.names.forEach(function(n){ if(allNames.indexOf(n)===-1) allNames.push(n); }); });
-  var nameMismatch = allNames.length > 1;
+  /* Detect patient name mismatch across columns (compare Last+First only) */
+  var allNames = [], allNameKeys = [];
+  sorted.forEach(function(g){ g.names.forEach(function(n){ if(allNames.indexOf(n)===-1) allNames.push(n); var k=_normNameKey(n); if(allNameKeys.indexOf(k)===-1) allNameKeys.push(k); }); });
+  var nameMismatch = allNameKeys.length > 1;
 
   /* If grouping collapsed everything into 1 column, tell the user */
   if (sorted.length < 2) {
