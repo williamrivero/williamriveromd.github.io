@@ -3823,7 +3823,9 @@ function _normNameKey(name){
   var ws=s.split(/\s+/).filter(Boolean);
   return ws.length>1 ? ws[0]+' '+ws[ws.length-1] : ws[0]||'';
 }
-function _parseToISODate(str){
+/* mmdd=true → treat ambiguous MM?-DD? numeric dates as MM-DD-YYYY (SGD format).
+   mmdd=false (default) → Philippine DD-MM-YYYY fallback for ambiguous dates. */
+function _parseToISODate(str, mmdd){
   if(!str) return null;
   str = str.trim();
   var m;
@@ -3834,14 +3836,15 @@ function _parseToISODate(str){
   // MMM-DD-YYYY (SGD format: Mar-19-2026)
   m = str.match(/^([A-Za-z]{3,9})[\/-](\d{1,2})[\/-](\d{4})$/);
   if(m){ var mo0=months[m[1].toLowerCase().slice(0,3)]; if(mo0) return m[3]+'-'+_pad2(mo0)+'-'+_pad2(+m[2]); }
-  // DD/MM/YYYY or MM/DD/YYYY — disambiguate:
-  // if second number > 12 it must be a day → treat as MM-DD-YYYY (SGD "03-19-2026")
-  // otherwise treat as DD-MM-YYYY (Philippine default)
+  // NN-NN-YYYY: disambiguate MM-DD vs DD-MM
   m = str.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
   if(m){
     var d1=+m[1], d2=+m[2];
-    if(d2>12) return m[3]+'-'+_pad2(d1)+'-'+_pad2(d2);   // MM-DD-YYYY
-    else      return m[3]+'-'+_pad2(d2)+'-'+_pad2(d1);    // DD-MM-YYYY
+    if(d2>12) return m[3]+'-'+_pad2(d1)+'-'+_pad2(d2);        // d2 can't be month → MM-DD
+    if(d1>12) return m[3]+'-'+_pad2(d2)+'-'+_pad2(d1);        // d1 can't be month → DD-MM
+    // Both ≤12: ambiguous — use caller-supplied hint
+    return mmdd ? m[3]+'-'+_pad2(d1)+'-'+_pad2(d2)            // SGD: MM-DD-YYYY
+                : m[3]+'-'+_pad2(d2)+'-'+_pad2(d1);           // Philippine default: DD-MM-YYYY
   }
   // DD Mon YYYY  e.g. "15 May 2025"
   m = str.match(/^(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})$/);
@@ -3907,7 +3910,7 @@ function extractPDFPatientInfo(text){
   ];
   for(var i=0;i<dateRxs.length;i++){
     var dm=dateRxs[i].exec(t);
-    if(dm){var iso=_parseToISODate(dm[1]);if(iso){result.date=iso;break;}}
+    if(dm){var iso=_parseToISODate(dm[1],i<2);if(iso){result.date=iso;break;}}
   }
   return result;
 }
@@ -4139,7 +4142,11 @@ function applyExtractedFields(parsed) {
   }
   if (parsed.date) {
     var dateEl = document.getElementById('pt-date');
-    if (dateEl && !dateEl.value) dateEl.value = parsed.date;
+    if (dateEl) {
+      var latest = _latestSessionDate();
+      if (latest) dateEl.value = latest;
+      else if (!dateEl.value) dateEl.value = parsed.date;
+    }
   }
   if (parsed.sex) {
     STATE.sex = parsed.sex;
