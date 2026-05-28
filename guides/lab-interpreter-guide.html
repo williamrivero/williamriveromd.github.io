@@ -2941,9 +2941,9 @@ function switchTab(id, btn) {
 // CLINIC LOGO — pre-load to base64 when clinic input matches a known slug
 // ════════════════════════════════════════════════════════════════════
 var CLINIC_LOGO_MAP = {
-  'sjbdc':  '../images/sjbdc-logo.png',
-  'sjrc':   '../images/sjrc-logo.png',
-  'rcuona': '../images/rcuona-logo.png'
+  'sjbdc':  '../images/sjbdc-logo.webp',
+  'sjrc':   '../images/sjrc-logo.webp',
+  'rcuona': '../images/rcuona-logo.webp'
 };
 var _clinicLogoCache = {};
 
@@ -2961,12 +2961,28 @@ function _loadClinicLogo(slug, cb) {
       var c = document.createElement('canvas');
       c.width = img.naturalWidth; c.height = img.naturalHeight;
       c.getContext('2d').drawImage(img, 0, 0);
-      _clinicLogoCache[slug] = c.toDataURL('image/png');
+      /* Cache object includes natural dimensions for aspect-ratio rendering */
+      _clinicLogoCache[slug] = { dataUrl: c.toDataURL('image/png'), w: img.naturalWidth, h: img.naturalHeight };
     } catch(e) { _clinicLogoCache[slug] = null; }
     cb(_clinicLogoCache[slug]);
   };
   img.onerror = function() { _clinicLogoCache[slug] = null; cb(null); };
   img.src = CLINIC_LOGO_MAP[slug] + '?_=' + Date.now();
+}
+
+/* Render clinic logo into jsPDF at 1 inch (25.4 mm) constrained size, centred in given header height */
+function _addLogoToPDF(doc, logo, pageW, headerH, margin) {
+  if (!logo || !logo.dataUrl) return;
+  try {
+    var maxSz = 25.4; /* 1 inch in mm */
+    var aspect = logo.w / logo.h;
+    var lw, lh;
+    if (aspect >= 1) { lw = maxSz; lh = maxSz / aspect; }
+    else             { lh = maxSz; lw = maxSz * aspect; }
+    var lx = pageW - margin - lw - 1;
+    var ly = (headerH - lh) / 2;
+    doc.addImage(logo.dataUrl, 'PNG', lx, ly, lw, lh);
+  } catch(e) {}
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -2999,11 +3015,11 @@ function _latestSessionDate() {
 function exportPDF(triggerBtn) {
   var allBtns = document.querySelectorAll('.pdf-btn');
   allBtns.forEach(function(b){ b.disabled=true; b.textContent='Generating…'; });
-  _loadClinicLogo(_clinicSlug(), function(logoDataUrl) {
+  _loadClinicLogo(_clinicSlug(), function(logo) {
     if (_pdfMode === 'compare' && _pdfSessions.length >= 2) {
-      _doExportFlowsheetPDF(logoDataUrl);
+      _doExportFlowsheetPDF(logo);
     } else {
-      _doExportPDF(logoDataUrl);
+      _doExportPDF(logo);
     }
   });
 }
@@ -3012,16 +3028,16 @@ function exportPDF(triggerBtn) {
 function exportSinglePDF(triggerBtn) {
   var allBtns = document.querySelectorAll('.pdf-btn');
   allBtns.forEach(function(b){ b.disabled=true; b.textContent='Generating…'; });
-  _loadClinicLogo(_clinicSlug(), function(logoDataUrl) { _doExportPDF(logoDataUrl); });
+  _loadClinicLogo(_clinicSlug(), function(logo) { _doExportPDF(logo); });
 }
 
 /* Always generates the flowsheet (compare) PDF regardless of mode */
 function exportFlowsheetPDF(triggerBtn) {
   var allBtns = document.querySelectorAll('.pdf-btn');
   allBtns.forEach(function(b){ b.disabled=true; b.textContent='Generating…'; });
-  _loadClinicLogo(_clinicSlug(), function(logoDataUrl) { _doExportFlowsheetPDF(logoDataUrl); });
+  _loadClinicLogo(_clinicSlug(), function(logo) { _doExportFlowsheetPDF(logo); });
 }
-function _doExportPDF(logoDataUrl) {
+function _doExportPDF(logo) {
   var allBtns = document.querySelectorAll('.pdf-btn');
   // Small timeout so the UI updates before heavy PDF work
   setTimeout(function() {
@@ -3053,10 +3069,8 @@ function _doExportPDF(logoDataUrl) {
     fillRect(0,0,W,30,NAVY);
     setFont('bold',16,WHITE); text('Laboratory Interpreter Report',margin,10);
     setFont('normal',7,[150,170,190]); text('KDIGO 2024 · ACC/AHA 2026 · ADA 2025',margin,17);
-    // Clinic logo — top-right of header (26×26 mm, 2 mm padding)
-    if (logoDataUrl) {
-      try { doc.addImage(logoDataUrl,'PNG', W-margin-28, 2, 26, 26); } catch(e) {}
-    }
+    // Clinic logo — top-right of header, 1 inch constrained, aspect-ratio preserved
+    _addLogoToPDF(doc, logo, W, 30, margin);
 
     var ptName = document.getElementById('pt-name').value.trim();
     var ptDate = document.getElementById('pt-date').value;
@@ -3377,7 +3391,7 @@ function _doExportPDF(logoDataUrl) {
   }, 60);
 }
 
-function _doExportFlowsheetPDF(logoDataUrl) {
+function _doExportFlowsheetPDF(logo) {
   var allBtns = document.querySelectorAll('.pdf-btn');
   setTimeout(function() {
   try {
@@ -3420,7 +3434,7 @@ function _doExportFlowsheetPDF(logoDataUrl) {
     fillRect(0,0,W,headerH,NAVY);
     setFont('bold',16,WHITE); text('Lab Trend Flow Sheet',margin,10);
     setFont('normal',7,[150,170,190]); text('KDIGO 2024 · ACC/AHA 2026 · ADA 2025 · '+nCols+' visit'+(nCols!==1?'s':''),margin,17);
-    if(logoDataUrl){ try{ doc.addImage(logoDataUrl,'PNG',W-margin-28,2,26,26); }catch(e){} }
+    _addLogoToPDF(doc, logo, W, headerH, margin);
     if(ptName){ setFont('bold',9,WHITE); text('Patient: '+ptName,margin,24); }
     var dateRange = sorted.map(function(g){return fmtDate(g.date)||'(no date)';}).join('  ›  ');
     setFont('normal',7,[170,190,210]); text(dateRange, ptName?margin+80:margin, 24);
