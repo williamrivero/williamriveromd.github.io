@@ -3898,7 +3898,7 @@ function extractPDFPatientInfo(text){
   // ── Name ─────────────────────────────────────────────────────────
   // Lazy capture stops at first known "next-field" keyword or newline.
   // NOTE: comma is NOT in the lookahead — "DELA CRUZ, JUAN" has a comma mid-name.
-  var NF='(?=[ \\t]*(?:age\\b|sex\\b|gender\\b|dob\\b|date\\b|ref(?:erence)?\\b|mr(?:\\s*no)?\\b|id\\s*[#:]|ward\\b|room\\b|physician\\b|dr\\.[\\t ]|requesting\\b|ordering\\b|\\n|\\||$))';
+  var NF='(?=[ \\t]*(?:age\\b|sex\\b|gender\\b|dob\\b|date\\b|ref(?:erence)?\\b|mr(?:\\s*no)?\\b|id\\s*[#:]|ward\\b|room\\b|physician\\b|dr\\.[\\t ]|requesting\\b|ordering\\b|lab\\b|pid\\b|\\n|\\||$))';
   var nameRxs=[
     new RegExp('patient(?:\'s)?\\s*name\\s*[:\\-]\\s*([\\w ,.\'-]{3,60}?)'+NF,'i'),
     // SGD PDF.js truncates "PATIENT NAME" to "TIENT NAME" (first two chars cut off)
@@ -4058,7 +4058,7 @@ function parseLabText(rawText) {
        targeting the unit string directly avoids grabbing the SI value by mistake.
        Uses the wide window so columnar PDFs (label col far from value col) still work. */
     if (rule.cvU) {
-      var cvRx = new RegExp('(\\d+\\.?\\d*)\\s*(?:' + rule.cvU.source + ')', 'i');
+      var cvRx = new RegExp('(?<![~>])(\\d+\\.?\\d*)\\s*(?:' + rule.cvU.source + ')', 'i');
       var cvM = afterWide.match(cvRx);
       if (cvM) { val = cvM[1]; cvVotes++; }
     }
