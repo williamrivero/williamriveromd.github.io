@@ -3901,6 +3901,10 @@ function extractPDFPatientInfo(text){
   // NOTE: comma is NOT in the lookahead — "DELA CRUZ, JUAN" has a comma mid-name.
   var NF='(?=[ \\t]*(?:age\\b|sex\\b|gender\\b|dob\\b|date\\b|ref(?:erence)?\\b|mr(?:\\s*no)?\\b|id\\s*[#:]|ward\\b|room\\b|physician\\b|dr\\.[\\t ]|requesting\\b|ordering\\b|lab\\b|pid\\b|\\n|\\||$))';
   var nameRxs=[
+    /* Hi-Precision PDF.js: labels and values are in separate groups.
+       e.g. "Name Age Sex GAMMARU, TIBURCIO VINASOY RC058863 60 MALE"
+       Find first ALLCAPS,FIRSTNAME surname pattern after the "Name" label word. */
+    /\bName\b[^\n]*?([A-Z]{2,},[ \t]*[A-Z][A-Z ,.\'-]{2,50}?)(?=[ \t]*(?:[A-Z]{1,3}\d|\d{2,3}\b|\n|$))/,
     // Hi-Precision: "Name : SURNAME, FIRSTNAME  Lab. Number : NNNNN" — same line, Lab. as stop marker
     /\bname\s*[:\-]\s*([\w ,.\'-]{4,60}?)\s+Lab\.\s*(?:No\.?|Number|Num\.?)\b/i,
     // Hi-Precision column-order: "Name : SURNAME, FIRSTNAME" alone on its line (PDF.js column-first output)
