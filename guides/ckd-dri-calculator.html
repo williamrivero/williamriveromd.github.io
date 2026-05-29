@@ -1454,6 +1454,10 @@ html[data-theme="dark"] .nt-ref{color:#8090a0;}
 </div>
 <div class="calc-card-body">
 <div class="form-grid">
+<div class="form-group" style="grid-column:1/-1;">
+<label>Patient Name <span style="font-weight:400;color:var(--text-muted);font-size:12px;">(optional — appears on printed Rx)</span></label>
+<input id="f-name" maxlength="80" placeholder="e.g. Juan dela Cruz" type="text" autocomplete="off"/>
+</div>
 <div class="form-group">
 <label><span data-lang="en">Weight (kg)</span><span class="lang-hidden" data-lang="tl">Timbang (kg)</span><span class="lang-hidden" data-lang="ceb">Timbang (kg)</span><span class="lang-hidden" data-lang="kap">Timbang (kg)</span></label>
 <input id="f-wt" max="200" min="30" placeholder="e.g. 60" step="0.5" type="number"/>
@@ -2742,6 +2746,7 @@ function runCalc(){
   const err=document.getElementById('err-msg');
   err.style.display='none';
 
+  const patName = (document.getElementById('f-name').value || '').trim();
   const wt   = parseFloat(document.getElementById('f-wt').value);
   const ht   = parseFloat(document.getElementById('f-ht').value);
   const age  = parseInt(document.getElementById('f-age').value);
@@ -2900,21 +2905,32 @@ function runCalc(){
   }
 
   // ── FLUID ──
-  let flTarget, flNote, flBadge;
+  // Fluid: weight- and activity-based for healthy/early CKD; strict formula for dialysis
+  const flActMlKg = {sedentary:30, light:33, moderate:36, active:40}[act] || 33;
+  let flTarget, flNote, flBadge, flMlPerDay=0;
   if(isHealthy){
-    flTarget='2,000–3,000 mL/day'; flBadge='<span class="badge-ok">STANDARD</span>';
-    flNote='IOM: ~2,700 mL/day for women, ~3,700 mL/day for men from all sources (beverages + food). Increase with heat, exercise, or fever. Urine should be pale yellow.';
+    flMlPerDay = Math.round(calcWt * flActMlKg / 100) * 100; // round to nearest 100 mL
+    const flMin = flMlPerDay - 200, flMax = flMlPerDay + 200;
+    flTarget = `${flMin}–${flMax} mL/day`;
+    flBadge = '<span class="badge-ok">STANDARD</span>';
+    flNote = `~${flActMlKg} mL/kg based on weight (${calcWt.toFixed(1)} kg) and activity (${actLabel}). Includes all beverages and water content from food. Increase with heat, fever, or sweating. Urine should be pale yellow.`;
   } else if(isHD){
     const uoEst = uo==='anuric' ? 100 : uo==='low' ? 400 : 800;
-    flTarget = (500 + uoEst) + ' mL/day';
+    flMlPerDay = 500 + uoEst;
+    flTarget = `${flMlPerDay} mL/day`;
     flNote='500 mL + urine output. Estimated based on your selected urine output. Inter-dialytic weight gain should not exceed 1 kg/day (2–3 kg max per 2-day interval).';
     flBadge='<span class="badge-restrict">STRICT</span>';
   } else if(isPD){
+    flMlPerDay = 1750;
     flTarget='1,500–2,000 mL/day'; flNote='PD patients have more flexibility due to continuous ultrafiltration, but fluid targets still apply. Discuss with your PD team.'; flBadge='<span class="badge-warn">MONITOR</span>';
   } else if(isPreD){
     flTarget='Individualized'; flNote='Restrict only if oliguric (&lt;500 mL/day) or hypertensive/edematous. Many Stage 4–5 patients are advised to maintain good fluid intake to preserve residual kidney function.'; flBadge='<span class="badge-ok">INDIVIDUALIZE</span>';
   } else {
-    flTarget='2,000–2,500 mL/day'; flNote='Standard intake. Adequate hydration helps preserve eGFR in early CKD and reduces stone risk.'; flBadge='<span class="badge-ok">STANDARD</span>';
+    // Early CKD (Stage 1–3a): weight-based, slightly conservative
+    flMlPerDay = Math.round(calcWt * Math.min(flActMlKg, 35) / 100) * 100;
+    flTarget = `${flMlPerDay - 200}–${flMlPerDay + 200} mL/day`;
+    flNote = `~${Math.min(flActMlKg,35)} mL/kg based on weight (${calcWt.toFixed(1)} kg) and activity. Adequate hydration preserves eGFR and reduces kidney stone risk in early CKD.`;
+    flBadge='<span class="badge-ok">STANDARD</span>';
   }
 
   // ── MAGNESIUM ──
@@ -3038,7 +3054,7 @@ function runCalc(){
 
   document.getElementById('res-h3').textContent = isHealthy ? 'Your Daily Nutrition Prescription' : 'Your CKD Nutrition Prescription';
   document.getElementById('res-sub').textContent=
-    `${sex==='M'?'Male':'Female'}, age ${age} · ${wt} kg · Height ${ht} cm · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]}`;
+    `${patName?patName+' · ':''}${sex==='M'?'Male':'Female'}, age ${age} · ${wt} kg · Height ${ht} cm · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]}`;
 
   // ── Vitamin warnings ──
   const vwList=[];
@@ -3096,8 +3112,9 @@ function runCalc(){
 
   // ── Diet Rx Summary ──
   const today = new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'});
+  const rxPatient = patName ? `${patName} · ` : '';
   document.getElementById('rx-meta').textContent =
-    `${sex==='M'?'Male':'Female'}, ${age} yrs · ${wt} kg · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]} · ${actLabel} · ${today}`;
+    `${rxPatient}${sex==='M'?'Male':'Female'}, ${age} yrs · ${wt} kg · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]} · ${actLabel} · ${today}`;
 
   // Key numeric cells
   const rxCells = [
@@ -3110,7 +3127,7 @@ function runCalc(){
     {label:'Potassium',val:isHealthy?'3,500–4,700':hk||isDialysis?'≤ 2,000':isPreD?'2,000–3,000':'3,000–4,000',unit:'mg / day',cls:hk||isDialysis?'rx-restrict':isHealthy?'rx-increase':''},
     {label:'Phosphorus',val:isHealthy?'700':hp||isDialysis||isPreD?'800–1,000':'800–1,000',unit:'mg / day',cls:(!isHealthy)?'rx-restrict':''},
     {label:'Calcium',val:isHealthy?(age>=51&&sex==='F'?'1,200':'1,000'):'800–1,000',unit:'mg / day',cls:''},
-    {label:'Fluid',val:flTarget,unit:'',cls:isHD?'rx-restrict':''},
+    {label:'Fluid',val:flTarget,unit:'/ day',cls:isHD?'rx-restrict':isHealthy?'rx-increase':''},
   ];
   document.getElementById('rx-grid').innerHTML = rxCells.map(c=>`
     <div class="rx-cell">
