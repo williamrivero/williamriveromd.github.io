@@ -1249,6 +1249,29 @@ html[data-theme="dark"] .section-body p { color: #c0cad8; }
 .vit-warn-box ul{list-style:none;padding:0;margin:0;}
 .vit-warn-box li{font-size:13px;color:rgba(255,255,255,.75);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06);display:flex;gap:8px;line-height:1.5;}
 .vit-warn-box li:last-child{border-bottom:none;}
+/* ── DIET RX SUMMARY ── */
+.diet-rx-box{background:#fff;border:2.5px solid var(--teal,#1a6b72);border-radius:14px;margin-top:22px;overflow:hidden;}
+.diet-rx-header{background:var(--teal,#1a6b72);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:14px;}
+.diet-rx-stamp{font-family:'Lora',serif;font-size:26px;font-weight:700;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.5);border-radius:8px;padding:2px 10px;letter-spacing:.06em;flex-shrink:0;}
+.diet-rx-title{font-size:15px;font-weight:700;letter-spacing:.03em;}
+.diet-rx-sub{font-size:11.5px;opacity:.85;margin-top:2px;}
+.rx-print-btn{margin-left:auto;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.5);color:#fff;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.rx-print-btn:hover{background:rgba(255,255,255,.3);}
+.rx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:0;border-bottom:1px solid #e5e7eb;}
+.rx-cell{padding:14px 18px;border-right:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;}
+.rx-cell:last-child{border-right:none;}
+.rx-cell-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6b7280;margin-bottom:4px;}
+.rx-cell-val{font-size:17px;font-weight:700;color:var(--teal,#1a6b72);line-height:1.2;}
+.rx-cell-unit{font-size:11px;color:#6b7280;margin-top:2px;}
+.rx-restrict{color:#c0392b;}
+.rx-increase{color:#166534;}
+.rx-notes-box{padding:16px 20px;}
+.rx-notes-box ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;}
+.rx-notes-box li{font-size:12.5px;color:#374151;padding:3px 0;display:flex;gap:7px;line-height:1.5;}
+.rx-notes-box li::before{content:'•';color:var(--teal,#1a6b72);font-weight:700;flex-shrink:0;}
+.rx-divider{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;padding:10px 20px 4px;border-top:1px solid #e5e7eb;}
+@media(max-width:560px){.rx-notes-box ul{grid-template-columns:1fr;}.rx-grid{grid-template-columns:1fr 1fr;}}
+@media print{.diet-rx-box{border-color:#000;}.diet-rx-header{background:#000 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
 @media print{
   .vit-warn-box{background:#3a1515 !important;}}
 
@@ -1551,7 +1574,7 @@ html[data-theme="dark"] .nt-ref{color:#8090a0;}
 <tbody id="vit-tbody"></tbody>
 </table>
 <div class="vit-warn-box" style="margin:16px 20px 20px;">
-<h4>⚠ Vitamin Cautions Specific to CKD</h4>
+<h4 id="vit-warn-heading">⚠ Vitamin Cautions Specific to CKD</h4>
 <ul id="vit-warn-list"></ul>
 </div>
 </div>
@@ -1559,6 +1582,20 @@ html[data-theme="dark"] .nt-ref{color:#8090a0;}
 <div class="clin-summary">
 <h4>Clinical Priorities for Your Stage</h4>
 <ul class="clin-list" id="clin-list"></ul>
+</div>
+<!-- DIET RX SUMMARY -->
+<div class="diet-rx-box" id="diet-rx-box">
+  <div class="diet-rx-header">
+    <div class="diet-rx-stamp">Rx</div>
+    <div>
+      <div class="diet-rx-title">Diet Prescription Summary</div>
+      <div class="diet-rx-sub" id="rx-meta"></div>
+    </div>
+    <button class="rx-print-btn" onclick="window.print()">⎙ Print / Save</button>
+  </div>
+  <div class="rx-grid" id="rx-grid"></div>
+  <div class="rx-divider">Key Dietary Instructions</div>
+  <div class="rx-notes-box"><ul id="rx-notes"></ul></div>
 </div>
 <div class="calc-disclaimer">⚕ <strong>Educational estimates only.</strong> Calculated using KDIGO 2024 and NKF KDOQI Nutrition 2020 equations. Actual targets must be individualized by your nephrologist and renal dietitian based on your complete laboratory results (serum potassium, phosphorus, albumin, urine output) and medications. Never start a restrictive diet without professional supervision — protein-energy wasting is common in CKD and is dangerous. Results are not stored.</div>
 </div><!-- /results-panel -->
@@ -3017,6 +3054,7 @@ function runCalc(){
     vwList.push({icon:'☀',text:'<strong>Vitamin D (cholecalciferol) supplementation almost always needed</strong> — deficiency near-universal in Filipino CKD patients due to indoor lifestyle and melanin pigmentation.'});
     vwList.push({icon:'⚠',text:'<strong>Herbal supplements, barley grass, wheatgrass, malunggay powders</strong>: do NOT take without nephrologist clearance — high potassium, phosphorus, or oxalate content can be fatal.'});
   }
+  document.getElementById('vit-warn-heading').textContent = isHealthy ? '💡 Supplement Notes for Healthy Adults' : '⚠ Vitamin Cautions Specific to CKD';
   document.getElementById('vit-warn-list').innerHTML = vwList.map(v=>`<li><span style="flex-shrink:0;">${v.icon}</span><span>${v.text}</span></li>`).join('');
 
   // ── Clinical summary ──
@@ -3055,6 +3093,58 @@ function runCalc(){
   if(pew) clinItems.push({icon:'⬆',text:'<strong>Protein-energy wasting modifier applied</strong> — consult renal dietitian urgently for nutritional rehabilitation plan'});
   clinItems.push({icon:'☀',text:'<strong>Vitamin D: check 25-OH Vit D and supplement</strong> — deficiency near-universal in Filipino CKD patients'});
   document.getElementById('clin-list').innerHTML = clinItems.map(i=>`<li><span class="icon">${i.icon}</span><span>${i.text}</span></li>`).join('');
+
+  // ── Diet Rx Summary ──
+  const today = new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('rx-meta').textContent =
+    `${sex==='M'?'Male':'Female'}, ${age} yrs · ${wt} kg · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]} · ${actLabel} · ${today}`;
+
+  // Key numeric cells
+  const rxCells = [
+    {label:'Energy',val:`${kcalMin}–${kcalMax}`,unit:'kcal / day',cls:''},
+    {label:'Protein',val:protRange,unit:'g / day',cls: isDialysis?'rx-increase': isPreD?'rx-restrict':''},
+    {label:'Carbohydrates',val:`${carbMin}–${carbMax}`,unit:'g / day',cls:''},
+    {label:'Total Fat',val:`${fatMin}–${fatMax}`,unit:'g / day',cls:''},
+    {label:'Dietary Fiber',val:fiberTarget+'',unit:'g / day',cls:''},
+    {label:'Sodium',val:isHealthy?'< 2,300':isDialysis||htn?'< 2,000':'< 2,300',unit:'mg / day',cls:'rx-restrict'},
+    {label:'Potassium',val:isHealthy?'3,500–4,700':hk||isDialysis?'≤ 2,000':isPreD?'2,000–3,000':'3,000–4,000',unit:'mg / day',cls:hk||isDialysis?'rx-restrict':isHealthy?'rx-increase':''},
+    {label:'Phosphorus',val:isHealthy?'700':hp||isDialysis||isPreD?'800–1,000':'800–1,000',unit:'mg / day',cls:(!isHealthy)?'rx-restrict':''},
+    {label:'Calcium',val:isHealthy?(age>=51&&sex==='F'?'1,200':'1,000'):'800–1,000',unit:'mg / day',cls:''},
+    {label:'Fluid',val:flTarget,unit:'',cls:isHD?'rx-restrict':''},
+  ];
+  document.getElementById('rx-grid').innerHTML = rxCells.map(c=>`
+    <div class="rx-cell">
+      <div class="rx-cell-label">${c.label}</div>
+      <div class="rx-cell-val ${c.cls}">${c.val}</div>
+      ${c.unit?`<div class="rx-cell-unit">${c.unit}</div>`:''}
+    </div>`).join('');
+
+  // Key instruction bullets
+  const rxNotes = [];
+  if(isHealthy){
+    rxNotes.push('Emphasize whole grains, vegetables, lean protein, and healthy fats');
+    rxNotes.push('Limit ultra-processed foods, instant noodles, and fast food');
+    rxNotes.push('Distribute protein across 3 meals to support muscle synthesis');
+    rxNotes.push('Sodium &lt;2,300 mg — cook at home, use herbs instead of salt');
+    rxNotes.push('Eat 5+ servings of fruits and vegetables daily');
+    rxNotes.push('Limit added sugars to &lt;10% of total calories');
+    rxNotes.push('Annual kidney screening: eGFR + urine albumin-creatinine ratio');
+    if(dm) rxNotes.push('Choose low-GI carbohydrates; maintain consistent meal timing');
+  } else {
+    if(isDialysis) rxNotes.push('Take phosphate binders with every meal and snack — not before or after');
+    if(isHD) rxNotes.push('Weigh yourself daily; inter-dialytic weight gain must not exceed 2–3 kg');
+    rxNotes.push(`Protein: ${isDialysis?'high-biological-value sources ≥50% (egg, fish, chicken)':isPreD?'limit to '+protMin+'–'+protMax+' g/day; increase to 1.0 g/kg when starting dialysis':'0.8 g/kg from varied sources'}`);
+    rxNotes.push(`Sodium: limit to ${isDialysis||htn?'&lt;2,000':'&lt;2,300'} mg — avoid patis, toyo, bagoong, instant foods`);
+    rxNotes.push(`Potassium: ${hk||isDialysis?'strict 2,000 mg limit — leach all vegetables (soak + boil in fresh water)':isPreD?'moderate restriction — monitor serum K every 1–3 months':'adequate intake supports blood pressure control'}`);
+    rxNotes.push('Avoid phosphate food additives (labels with "PHOS") — absorbed 90–100%');
+    if(isDialysis) rxNotes.push('Daily renal B-complex supplement — dialysis removes water-soluble vitamins');
+    rxNotes.push('Vitamin C maximum 100 mg/day — standard supplements are contraindicated');
+    rxNotes.push('No vitamin A supplements — accumulates to toxic levels in CKD');
+    rxNotes.push('Check Vitamin D (25-OH) level and supplement cholecalciferol as directed');
+    if(dm) rxNotes.push('Low-GI carbohydrates; consistent meal timing; HbA1c target &lt;7%');
+    if(pew) rxNotes.push('Protein-energy wasting present — refer to renal dietitian urgently');
+  }
+  document.getElementById('rx-notes').innerHTML = rxNotes.map(n=>`<li>${n}</li>`).join('');
 
   // ── Show results ──
   const panel = document.getElementById('results-panel');
