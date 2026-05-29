@@ -3489,30 +3489,55 @@ function _doExportFlowsheetPDF(logo) {
       y+=thH+1;
     }
 
-    /* ── Sparkline helper ─────────────────────────────────────────── */
+    /* ── Sparkline helper — smooth Catmull-Rom spline with area fill ── */
     function drawSparkline(rawVals, x, y, w, h) {
-      /* rawVals: array of field values oldest→newest; draws a mini line chart */
-      var nums = rawVals.map(function(v){ var n=parseFloat(v); return isNaN(n)?null:n; });
-      var valid = nums.filter(function(n){ return n!==null; });
-      if (!valid.length) return;
+      var nums=rawVals.map(function(v){var n=parseFloat(v);return isNaN(n)?null:n;});
+      var valid=nums.filter(function(n){return n!==null;});
+      if(!valid.length) return;
+      var pad=1.2, n=nums.length;
       var minV=Math.min.apply(null,valid), maxV=Math.max.apply(null,valid);
-      var range = maxV-minV || 1;
-      var n = nums.length;
-      var pts = nums.map(function(v,i){
-        if (v===null) return null;
-        return {
-          x: x + (n>1 ? (i/(n-1))*w : w/2),
-          y: y + h*0.85 - ((v-minV)/range)*(h*0.75)
+      var range=maxV-minV||1;
+      var effW=w-2*pad, effH=h*0.76, topY=y+h*0.12, baseY=topY+effH;
+      var pts=nums.map(function(v,i){
+        return v===null?null:{
+          x:x+pad+(n>1?(i/(n-1))*effW:effW/2),
+          y:topY+effH-((v-minV)/range)*effH
         };
       });
-      var LINE_C=[80,110,175];
-      doc.setLineWidth(0.4); doc.setDrawColor.apply(doc,LINE_C);
-      var prev=null;
-      pts.forEach(function(p){
-        if(p){if(prev)doc.line(prev.x,prev.y,p.x,p.y);prev=p;}else{prev=null;}
+      var LINE_C=[65,105,185], FILL_C=[228,236,252];
+      /* Build connected runs (null gaps split the line) */
+      var runs=[],cur=[];
+      pts.forEach(function(p){if(p){cur.push(p);}else if(cur.length){runs.push(cur);cur=[];}});
+      if(cur.length) runs.push(cur);
+      /* Catmull-Rom → cubic Bezier: relative-coord commands per segment */
+      function crCmds(run){
+        return run.slice(0,-1).map(function(_,i){
+          var p0=run[Math.max(0,i-1)],p1=run[i],p2=run[i+1],p3=run[Math.min(run.length-1,i+2)];
+          var cp1x=p1.x+(p2.x-p0.x)/6, cp1y=p1.y+(p2.y-p0.y)/6;
+          var cp2x=p2.x-(p3.x-p1.x)/6, cp2y=p2.y-(p3.y-p1.y)/6;
+          return [cp1x-p1.x,cp1y-p1.y,cp2x-p1.x,cp2y-p1.y,p2.x-p1.x,p2.y-p1.y];
+        });
+      }
+      /* Area fill: light blue polygon — vertical edges + curve on top */
+      doc.setFillColor.apply(doc,FILL_C);
+      runs.forEach(function(run){
+        if(run.length<2) return;
+        var last=run[run.length-1];
+        var path=[[0,run[0].y-baseY]].concat(crCmds(run)).concat([[0,baseY-last.y]]);
+        doc.lines(path,run[0].x,baseY,[1,1],'F',true);
       });
+      /* Smooth curve stroke */
+      doc.setLineWidth(0.55);
+      doc.setDrawColor.apply(doc,LINE_C);
+      if(doc.setLineCap) doc.setLineCap('round');
+      if(doc.setLineJoin) doc.setLineJoin('round');
+      runs.forEach(function(run){
+        if(run.length<2) return;
+        doc.lines(crCmds(run),run[0].x,run[0].y,[1,1],'S',false);
+      });
+      /* Data-point dots */
       doc.setFillColor.apply(doc,LINE_C);
-      pts.forEach(function(p){ if(p) doc.ellipse(p.x,p.y,0.55,0.55,'F'); });
+      pts.forEach(function(p){if(p) doc.ellipse(p.x,p.y,0.5,0.5,'F');});
     }
 
     drawTableHeader();
