@@ -3554,11 +3554,6 @@ function _doExportFlowsheetPDF(logo) {
           var r=interpKeyVal(key,val,s.unitSys||'Conventional (US)');
           var tc=r.status==='FLAG'?RED:(r.status==='WATCH'?AMBER:(r.status==='NORMAL'?GREEN:NAVY));
           setFont('bold',7,tc); text(''+val,cx+dateColW/2,y+4.5,{align:'center'});
-          /* Tiny status dot — upper-right corner of cell */
-          if(r.status==='FLAG'||r.status==='WATCH'){
-            doc.setFillColor.apply(doc,r.status==='FLAG'?RED:AMBER);
-            doc.ellipse(cx+dateColW-1.5,y+1.5,1,1,'F');
-          }
         }
         cx+=dateColW;
       });
@@ -3646,10 +3641,6 @@ function _doExportFlowsheetPDF(logo) {
           } else {
             var tc = c.status==='FLAG'?RED:(c.status==='WATCH'?AMBER:(c.status==='NORMAL'?GREEN:NAVY));
             setFont('bold',7,tc); text(dispVal, cx+dateColW/2, y+4.5, {align:'center'});
-            if(c.status==='FLAG'||c.status==='WATCH'){
-              doc.setFillColor.apply(doc,c.status==='FLAG'?RED:AMBER);
-              doc.ellipse(cx+dateColW-1.5,y+1.5,1,1,'F');
-            }
           }
           cx += dateColW;
         });
@@ -3895,6 +3886,8 @@ function extractPDFPatientInfo(text){
   // PDF.js collapses whitespace within a page — normalise to single spaces + keep newlines
   var t=text.replace(/\r\n?/g,'\n').replace(/[ \t]{2,}/g,' ');
   console.log('[PDF-DEBUG] first 400 chars:\n', JSON.stringify(t.slice(0,400)));
+  // Log extracted fields at end of function (patched after result is populated)
+  setTimeout(function(){ console.log('[PDF-DEBUG] extracted:', JSON.stringify({name:result.name,age:result.age,sex:result.sex,date:result.date})); },0);
 
   // ── Name ─────────────────────────────────────────────────────────
   // Lazy capture stops at first known "next-field" keyword or newline.
@@ -3927,6 +3920,11 @@ function extractPDFPatientInfo(text){
   // "Age: 58" | "Age: 58 years" | "Age/Sex: 58/M" | "Age/Sex: 58 Years / Female"
   var ageM=t.match(/\bage(?:[ \t]*\/[ \t]*sex)?[ \t]*[:\-][ \t]*(\d{1,3})[ \t]*(?:years?|y(?:rs?)?\.?)?[ \t]*(?:\/|,|[ \t]|$)/i);
   if(ageM&&+ageM[1]>0&&+ageM[1]<121) result.age=ageM[1];
+  // Hi-Precision PDF.js fallback: labels separated from values — "RC058863 60 MALE"
+  if(!result.age){
+    var ageHP=t.match(/[A-Z]{1,3}\d{5,}\s+(\d{2,3})\s+(?:MALE|FEMALE)/i);
+    if(ageHP&&+ageHP[1]>0&&+ageHP[1]<121) result.age=ageHP[1];
+  }
 
   // ── Sex ──────────────────────────────────────────────────────────
   var sexRxs=[
@@ -3935,6 +3933,8 @@ function extractPDFPatientInfo(text){
     // Combined "Age/Sex: 58 / Male" or "Age/Sex: 58/M"
     /\bage[ \t]*\/[ \t]*sex[ \t]*[:\-][ \t]*\d{1,3}[ \t]*(?:years?|yrs?)?[ \t]*\/[ \t]*(male|female)\b/i,
     /\bage[ \t]*\/[ \t]*sex[ \t]*[:\-][ \t]*\d{1,3}[ \t]*(?:years?|yrs?)?[ \t]*\/[ \t]*(m|f)\b(?!\w)/i,
+    // Hi-Precision PDF.js fallback: standalone MALE/FEMALE after PID+age
+    /[A-Z]{1,3}\d{5,}\s+\d{2,3}\s+(MALE|FEMALE)\b/i,
   ];
   for(var si=0;si<sexRxs.length;si++){
     var sm=sexRxs[si].exec(t);
