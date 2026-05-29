@@ -3900,6 +3900,10 @@ function extractPDFPatientInfo(text){
   // NOTE: comma is NOT in the lookahead — "DELA CRUZ, JUAN" has a comma mid-name.
   var NF='(?=[ \\t]*(?:age\\b|sex\\b|gender\\b|dob\\b|date\\b|ref(?:erence)?\\b|mr(?:\\s*no)?\\b|id\\s*[#:]|ward\\b|room\\b|physician\\b|dr\\.[\\t ]|requesting\\b|ordering\\b|lab\\b|pid\\b|\\n|\\||$))';
   var nameRxs=[
+    // Hi-Precision: "Name : SURNAME, FIRSTNAME  Lab. Number : NNNNN" — same line, Lab. as stop marker
+    /\bname\s*[:\-]\s*([\w ,.\'-]{4,60}?)\s+Lab\.\s*(?:No\.?|Number|Num\.?)\b/i,
+    // Hi-Precision column-order: "Name : SURNAME, FIRSTNAME" alone on its line (PDF.js column-first output)
+    /^Name\s*[:\-]\s*([\w ,.\'-]{4,60}?)[ \t]*$/im,
     new RegExp('patient(?:\'s)?\\s*name\\s*[:\\-]\\s*([\\w ,.\'-]{3,60}?)'+NF,'i'),
     // SGD PDF.js truncates "PATIENT NAME" to "TIENT NAME" (first two chars cut off)
     new RegExp('(?:pa)?tient\\s*name\\s*[:\\-]\\s*([\\w ,.\'-]{3,60}?)'+NF,'i'),
