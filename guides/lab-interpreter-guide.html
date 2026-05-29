@@ -3957,7 +3957,7 @@ function extractPDFPatientInfo(text){
 
 var FIELD_PATTERNS = [
   { key:'creatinine',    rx:/\bcreatinine\b(?![\s\/\-]*(?:ratio|clearance|index))/i, siU:/µmol\/[Ll]|umol\/[Ll]/, cvU:/mg\/d[Ll]/ },
-  { key:'egfr',          rx:/(?<!with )\b(?:e?gfr|estimated\s+gfr|glomerular\s+filtration(?:\s+rate)?)\b/i },
+  { key:'egfr',          rx:/(?<!with )\b(?:e?gfr|estimated\s+gfr|glomerular\s+filtration(?:\s+rate)?)\b(?![\s(]*[>\/]=)/i },
   { key:'bun_pre',       rx:/\bpre[\s\-]*(?:hd[\s\-]*|dialysis[\s\-]*)?(?:blood[\s\-]*)?(?:bun\b|urea(?:\s+nitrogen)?)\b|\b(?:bun|urea(?:\s+nitrogen)?)\s*[\(\[]\s*pre\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'bun_post',      rx:/\bpost[\s\-]*(?:hd[\s\-]*|dialysis[\s\-]*)?(?:blood[\s\-]*)?(?:bun\b|urea(?:\s+nitrogen)?)\b|\b(?:bun|urea(?:\s+nitrogen)?)\s*[\(\[]\s*post\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
   { key:'bun',           rx:/\b(?:bun\b|urea\s+nitrogen|blood\s+urea\s+nitrogen|urea(?:\s*,?\s*serum)?)\b/i, siU:/mmol\/[Ll]/, cvU:/mg\/d[Ll]/ },
@@ -4058,8 +4058,15 @@ function parseLabText(rawText) {
        targeting the unit string directly avoids grabbing the SI value by mistake.
        Uses the wide window so columnar PDFs (label col far from value col) still work. */
     if (rule.cvU) {
-      var cvRx = new RegExp('(?<![~>])(\\d+\\.?\\d*)\\s*(?:' + rule.cvU.source + ')', 'i');
-      var cvM = afterWide.match(cvRx);
+      /* Strip reference-range expressions (e.g. 0.67~1.18, >/=90) so that
+         cvRx only matches the actual result value, not a range boundary.
+         PDF.js sometimes outputs the reference-range row before the result row,
+         which would otherwise cause cvRx to capture the wrong number. */
+      var cvSearch = afterWide
+        .replace(/\d[\d.]*\s*[~–]\s*\d[\d.]*/g, '')   // strip N~M ranges
+        .replace(/[>≥<≤]\s*\/?\s*=?\s*\d[\d.]*/g, ''); // strip >/=N thresholds
+      var cvRx = new RegExp('(\\d+\\.?\\d*)\\s*(?:' + rule.cvU.source + ')', 'i');
+      var cvM = cvSearch.match(cvRx);
       if (cvM) { val = cvM[1]; cvVotes++; }
     }
 
