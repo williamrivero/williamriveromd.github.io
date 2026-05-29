@@ -1467,6 +1467,16 @@ html[data-theme="dark"] .nt-ref{color:#8090a0;}
 </select>
 </div>
 <div class="form-group">
+<label><span data-lang="en">Activity Level</span><span class="lang-hidden" data-lang="tl">Antas ng Aktibidad</span><span class="lang-hidden" data-lang="ceb">Lebel sa Aktibidad</span><span class="lang-hidden" data-lang="kap">Antas ning Aktibidad</span></label>
+<select id="f-act">
+<option value="sedentary"><span data-lang="en">Sedentary — little or no exercise, desk work</span></option>
+<option value="light" selected><span data-lang="en">Lightly active — light exercise 1–3 days/week</span></option>
+<option value="moderate"><span data-lang="en">Moderately active — exercise 3–5 days/week</span></option>
+<option value="active"><span data-lang="en">Very active — hard exercise 6–7 days/week</span></option>
+</select>
+<div class="hint"><span data-lang="en">Most CKD patients are sedentary or lightly active. Activity level adjusts your calorie target.</span><span class="lang-hidden" data-lang="tl">Karamihan sa mga pasyente ng CKD ay sedentary o kaunting aktibo. Ang antas ng aktibidad ay nag-aayos ng iyong calorie target.</span><span class="lang-hidden" data-lang="ceb">Kadaghanan sa mga pasyente sa CKD kay sedentary o gamay aktibo. Ang lebel sa aktibidad nag-usab sa imong calorie target.</span><span class="lang-hidden" data-lang="kap">Karamian deng pasyente ning CKD sedentary o kaunting aktibo. Ing antas ning aktibidad mag-ayus ning calorie target mu.</span></div>
+</div>
+<div class="form-group">
 <label><span data-lang="en">Daily Urine Output</span><span class="lang-hidden" data-lang="tl">Pang-araw-araw na Dami ng Ihi</span><span class="lang-hidden" data-lang="ceb">Adlaw-adlaw nga Dami sa Ihi</span><span class="lang-hidden" data-lang="kap">Araw-araw a Dami ning Ihi</span></label>
 <select id="f-uo">
 <option value="high">&gt;800 mL/day</option>
@@ -2699,6 +2709,7 @@ function runCalc(){
   const age  = parseInt(document.getElementById('f-age').value);
   const sex  = document.getElementById('f-sex').value;
   const stage= document.getElementById('f-stage').value;
+  const act  = document.getElementById('f-act').value;
   const uo   = document.getElementById('f-uo').value;
   const dm   = document.getElementById('c-dm').checked;
   const hk   = document.getElementById('c-hk').checked;
@@ -2739,6 +2750,12 @@ function runCalc(){
   let kcalPerKg = isDialysis ? 33 : (age>=60 ? 30 : 33);
   if(bmi>30) kcalPerKg = 28; // reduce for obesity
   if(pew) kcalPerKg = 35; // increase for PEW
+  // Activity level PAL adjustment (relative to lightly-active baseline)
+  const palMap = {sedentary:0.90, light:1.0, moderate:1.12, active:1.27};
+  const palLabels = {sedentary:'Sedentary (×0.90)', light:'Lightly active (×1.00)', moderate:'Moderately active (×1.12)', active:'Very active (×1.27)'};
+  const pal = palMap[act] || 1.0;
+  const actLabel = palLabels[act] || 'Lightly active (×1.00)';
+  kcalPerKg = Math.round(kcalPerKg * pal * 10) / 10;
   const kcalMin = Math.round(calcWt*(kcalPerKg-2));
   const kcalMax = Math.round(calcWt*(kcalPerKg+2));
 
@@ -2853,7 +2870,7 @@ function runCalc(){
   // ══ BUILD OUTPUT ══
   // Macronutrient rows
   const macroRows = [
-    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`&le;${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',`${kcalPerKg} kcal/kg dry weight. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}`],
+    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`&le;${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',`${kcalPerKg} kcal/kg dry weight. Activity: ${actLabel}. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}`],
     ['Protein',protRange,protMax+'&thinsp;g',protBadge,protNote],
     ['Carbohydrates',`${carbMin}–${carbMax}&thinsp;g`,carbMax+50+'&thinsp;g','<span class="badge-ok">STANDARD</span>',`45–65% of calories. Prefer complex carbs — brown rice, oats, camote. ${dm?'Diabetic: choose low-GI options, monitor portions carefully.':''}`],
     ['Total Fiber',fiberTarget+'&thinsp;g','No UL','<span class="badge-ok">STANDARD</span>','Fiber supports gut health, reduces uremic toxin precursor production (indoxyl sulfate). Filipino sources: okra, ampalaya, malunggay (if K allows).'],
