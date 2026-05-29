@@ -1453,10 +1453,11 @@ html[data-theme="dark"] .nt-ref{color:#8090a0;}
 </select>
 </div>
 <div class="form-group">
-<label><span data-lang="en">CKD Stage / Modality</span><span class="lang-hidden" data-lang="tl">Stage ng CKD / Modality</span><span class="lang-hidden" data-lang="ceb">Stage sa CKD / Modality</span><span class="lang-hidden" data-lang="kap">Stage ning CKD / Modality</span></label>
+<label><span data-lang="en">Kidney Status / CKD Stage</span><span class="lang-hidden" data-lang="tl">Katayuan ng Bato / Stage ng CKD</span><span class="lang-hidden" data-lang="ceb">Status sa Bato / Stage sa CKD</span><span class="lang-hidden" data-lang="kap">Kalagyan ning Batu / Stage ning CKD</span></label>
 <select id="f-stage">
 <option value="">Select…</option>
-<option value="1">Stage 1 — eGFR ≥90</option>
+<option value="healthy">Healthy Adult — No CKD</option>
+<option value="1">CKD Stage 1 — eGFR ≥90</option>
 <option value="2">Stage 2 — eGFR 60–89</option>
 <option value="3a">Stage 3a — eGFR 45–59</option>
 <option value="3b">Stage 3b — eGFR 30–44</option>
@@ -2729,6 +2730,7 @@ function runCalc(){
 
   // ── Derived values ──
   const bmi = wt / ((ht/100)**2);
+  const isHealthy = stage==='healthy';
   const isDialysis = stage==='HD'||stage==='PD';
   const isHD = stage==='HD';
   const isPD = stage==='PD';
@@ -2750,18 +2752,32 @@ function runCalc(){
   let kcalPerKg = isDialysis ? 33 : (age>=60 ? 30 : 33);
   if(bmi>30) kcalPerKg = 28; // reduce for obesity
   if(pew) kcalPerKg = 35; // increase for PEW
-  // Activity level PAL adjustment (relative to lightly-active baseline)
-  const palMap = {sedentary:0.90, light:1.0, moderate:1.12, active:1.27};
-  const palLabels = {sedentary:'Sedentary (×0.90)', light:'Lightly active (×1.00)', moderate:'Moderately active (×1.12)', active:'Very active (×1.27)'};
-  const pal = palMap[act] || 1.0;
-  const actLabel = palLabels[act] || 'Lightly active (×1.00)';
-  kcalPerKg = Math.round(kcalPerKg * pal * 10) / 10;
-  const kcalMin = Math.round(calcWt*(kcalPerKg-2));
-  const kcalMax = Math.round(calcWt*(kcalPerKg+2));
+  // PAL multipliers — full TDEE scale for healthy; relative adjustment for CKD
+  const palFullMap  = {sedentary:1.20, light:1.375, moderate:1.55, active:1.725};
+  const palCkdMap   = {sedentary:0.90, light:1.0,   moderate:1.12, active:1.27};
+  const palLabels   = {sedentary:'Sedentary (×'+(isHealthy?'1.20':'0.90')+')', light:'Lightly active (×'+(isHealthy?'1.375':'1.00')+')', moderate:'Moderately active (×'+(isHealthy?'1.55':'1.12')+')', active:'Very active (×'+(isHealthy?'1.725':'1.27')+')'};
+  const actLabel = {sedentary:'Sedentary', light:'Lightly active', moderate:'Moderately active', active:'Very active'}[act] || 'Lightly active';
+  let kcalMin, kcalMax;
+  if(isHealthy){
+    const tdee = Math.round(bmr * (palFullMap[act] || 1.375));
+    kcalMin = tdee - 100; kcalMax = tdee + 100;
+    kcalPerKg = Math.round(tdee / calcWt * 10) / 10;
+  } else {
+    const pal = palCkdMap[act] || 1.0;
+    kcalPerKg = Math.round(kcalPerKg * pal * 10) / 10;
+    kcalMin = Math.round(calcWt*(kcalPerKg-2));
+    kcalMax = Math.round(calcWt*(kcalPerKg+2));
+  }
 
   // ── PROTEIN ──
   let protMin, protMax, protNote, protBadge;
-  if(isHD){
+  if(isHealthy){
+    const actProtMap = {sedentary:0.8, light:0.9, moderate:1.0, active:1.2};
+    const p = actProtMap[act] || 0.8;
+    protMin = Math.round(calcWt*p*10)/10; protMax = protMin;
+    protNote = `${p} g/kg: standard DRI for healthy adults${act==='active'?' — increased to support muscle repair and adaptation':act==='moderate'?' — slightly elevated for active lifestyle':''}. Aim for varied sources (fish, poultry, legumes, dairy).`;
+    protBadge = '<span class="badge-ok">STANDARD</span>';
+  } else if(isHD){
     protMin=Math.round(calcWt*1.0*10)/10; protMax=Math.round(calcWt*1.2*10)/10;
     protNote='1.0–1.2 g/kg: compensates for amino acid losses each HD session (6–12 g/session). At least 50% HBV sources.';
     protBadge='<span class="badge-more">↑ INCREASE</span>';
@@ -2790,7 +2806,10 @@ function runCalc(){
 
   // ── SODIUM ──
   let naTarget, naUL, naNote, naBadge;
-  if(isDialysis||htn){
+  if(isHealthy){
+    naTarget='&lt;2,300 mg'; naUL='2,300 mg'; naBadge='<span class="badge-ok">STANDARD</span>';
+    naNote='&lt;2,300 mg/day (IOM DRI). Most Filipinos consume 3,000–5,000 mg/day. Reducing sodium lowers blood pressure and long-term cardiovascular risk.';
+  } else if(isDialysis||htn){
     naTarget='&lt;2,000 mg'; naUL='2,000 mg'; naBadge='<span class="badge-restrict">STRICT</span>';
     naNote='&lt;2,000 mg on dialysis — excess sodium = fluid retention + weight gain between sessions. Avoid patis, toyo, bagoong, and all instant/processed foods.';
   } else {
@@ -2800,7 +2819,10 @@ function runCalc(){
 
   // ── POTASSIUM ──
   let kTarget, kUL, kNote, kBadge;
-  if(isEarly && !hk){
+  if(isHealthy){
+    kTarget='3,500–4,700 mg'; kUL='No formal limit from food'; kBadge='<span class="badge-ok">STANDARD</span>';
+    kNote='IOM Adequate Intake: 3,500–4,700 mg/day. Potassium-rich diet (fruits, vegetables, legumes) lowers blood pressure and reduces stroke risk in healthy adults.';
+  } else if(isEarly && !hk){
     kTarget='3,000–4,000 mg'; kUL='No formal limit'; kBadge='<span class="badge-ok">STANDARD</span>';
     kNote='No restriction needed in early CKD unless hyperkalemia develops. Adequate potassium intake supports blood pressure control.';
   } else if(isPreD && !hk){
@@ -2816,7 +2838,10 @@ function runCalc(){
 
   // ── PHOSPHORUS ──
   let pTarget, pUL, pNote, pBadge;
-  if(hp || isDialysis || isPreD){
+  if(isHealthy){
+    pTarget='700 mg'; pUL='4,000 mg'; pBadge='<span class="badge-ok">STANDARD</span>';
+    pNote='RDA 700 mg/day. Healthy kidneys efficiently excrete excess phosphorus. No restriction needed; balanced diet easily meets requirements.';
+  } else if(hp || isDialysis || isPreD){
     pTarget='800–1,000 mg'; pUL='1,000 mg'; pBadge='<span class="badge-restrict">RESTRICT</span>';
     pNote='Limit to 800–1,000 mg. Avoid phosphate food additives (E338–E452) — absorbed 90–100% vs 40–60% for natural phosphorus. Phosphate binders required with all meals if serum P elevated.';
   } else {
@@ -2825,13 +2850,24 @@ function runCalc(){
   }
 
   // ── CALCIUM ──
-  let caTarget='800–1,000 mg dietary', caUL='1,500 mg total (incl. binders)', caNote, caBadge;
-  caNote='KDIGO 2024: total calcium ≤1,500 mg/day including calcium from phosphate binders (CaCO₃). Excess calcium drives vascular calcification.';
-  caBadge='<span class="badge-warn">MONITOR</span>';
+  let caTarget, caUL, caNote, caBadge;
+  if(isHealthy){
+    caTarget = (age>=51 && sex==='F') ? '1,200 mg' : '1,000 mg';
+    caUL = '2,500 mg';
+    caNote = 'IOM RDA. '+(age>=51&&sex==='F'?'Post-menopausal women need 1,200 mg to protect bone density. ':'')+'Dairy, tofu, sardines with bones, and leafy greens are good sources.';
+    caBadge = '<span class="badge-ok">STANDARD</span>';
+  } else {
+    caTarget='800–1,000 mg dietary'; caUL='1,500 mg total (incl. binders)';
+    caNote='KDIGO 2024: total calcium ≤1,500 mg/day including calcium from phosphate binders (CaCO₃). Excess calcium drives vascular calcification.';
+    caBadge='<span class="badge-warn">MONITOR</span>';
+  }
 
   // ── FLUID ──
   let flTarget, flNote, flBadge;
-  if(isHD){
+  if(isHealthy){
+    flTarget='2,000–3,000 mL/day'; flBadge='<span class="badge-ok">STANDARD</span>';
+    flNote='IOM: ~2,700 mL/day for women, ~3,700 mL/day for men from all sources (beverages + food). Increase with heat, exercise, or fever. Urine should be pale yellow.';
+  } else if(isHD){
     const uoEst = uo==='anuric' ? 100 : uo==='low' ? 400 : 800;
     flTarget = (500 + uoEst) + ' mL/day';
     flNote='500 mL + urine output. Estimated based on your selected urine output. Inter-dialytic weight gain should not exceed 1 kg/day (2–3 kg max per 2-day interval).';
@@ -2850,10 +2886,11 @@ function runCalc(){
   // ── IRON ──
   let feTarget, feNote;
   if(isDialysis){ feTarget='IV iron preferred'; feNote='Oral iron poorly absorbed in CKD (high hepcidin). IV iron sucrose (Ferrofer) given during HD sessions. Target: ferritin 200–500, TSAT 20–40%.'; }
+  else if(isHealthy){ feTarget=sex==='M'?'8 mg':'18 mg (27 mg if pregnant)'; feNote=sex==='F'?'Premenopausal women need 18 mg/day due to menstrual losses. Good sources: lean red meat, liver, legumes, dark leafy greens + vitamin C for absorption.':'8 mg/day. Red meat, legumes, and fortified cereals are good sources. Most men easily meet this from diet.'; }
   else { feTarget=sex==='M'?'8 mg':'18 mg'; feNote='Supplement orally if ferritin &lt;100 or TSAT &lt;20%. Consider IV iron if not tolerating oral or if eGFR &lt;30.'; }
 
   // ══ VITAMINS ══
-  const vitDTarget = '25–50 mcg (1,000–2,000 IU) cholecalciferol';
+  const vitDTarget = isHealthy ? '15–20 mcg (600–800 IU) cholecalciferol' : '25–50 mcg (1,000–2,000 IU) cholecalciferol';
   const vitDNote = 'Deficiency near-universal in Filipino CKD patients. Replace to target 25-OH Vit D 30–60 ng/mL. Active Vit D (calcitriol) given separately for PTH suppression — different from storage Vit D.';
   const vitCTarget = '&lt;100 mg';
   const vitCNote = 'CRITICAL LIMIT in CKD. Excess metabolizes to oxalate — oxalate nephropathy and soft-tissue deposits. Standard 500–1,000 mg supplements are DANGEROUS in CKD.';
@@ -2870,7 +2907,7 @@ function runCalc(){
   // ══ BUILD OUTPUT ══
   // Macronutrient rows
   const macroRows = [
-    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`&le;${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',`${kcalPerKg} kcal/kg dry weight. Activity: ${actLabel}. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}`],
+    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`&le;${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',isHealthy?`Mifflin-St Jeor TDEE × PAL (${actLabel}). ${kcalPerKg} kcal/kg. BMI ${bmi.toFixed(1)}.`:`${kcalPerKg} kcal/kg dry weight (KDOQI). Activity: ${actLabel}. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}`],
     ['Protein',protRange,protMax+'&thinsp;g',protBadge,protNote],
     ['Carbohydrates',`${carbMin}–${carbMax}&thinsp;g`,carbMax+50+'&thinsp;g','<span class="badge-ok">STANDARD</span>',`45–65% of calories. Prefer complex carbs — brown rice, oats, camote. ${dm?'Diabetic: choose low-GI options, monitor portions carefully.':''}`],
     ['Total Fiber',fiberTarget+'&thinsp;g','No UL','<span class="badge-ok">STANDARD</span>','Fiber supports gut health, reduces uremic toxin precursor production (indoxyl sulfate). Filipino sources: okra, ampalaya, malunggay (if K allows).'],
@@ -2891,7 +2928,17 @@ function runCalc(){
   ];
 
   // Vitamin rows
-  const vitRows = [
+  const vitRows = isHealthy ? [
+    ['Vitamin D (cholecalciferol)',vitDTarget,'100 mcg (4,000 IU)','<span class="badge-ok">STANDARD</span>','IOM RDA: 600 IU (adults <70), 800 IU (>70). Many Filipinos are deficient due to indoor lifestyle and skin pigmentation — a supplement of 1,000 IU is safe and practical.'],
+    ['Vitamin C','65–90 mg','2,000 mg','<span class="badge-ok">STANDARD</span>','RDA: 75 mg (women), 90 mg (men). Standard supplements up to 500 mg are safe in healthy adults. Citrus, guava, ampalaya, and bell pepper are excellent sources.'],
+    ['Vitamin A (retinol)','700–900 mcg RAE','3,000 mcg RAE','<span class="badge-ok">STANDARD</span>','Standard multivitamin dosing is safe for healthy adults. Avoid megadosing (>3,000 mcg RAE/day). Carotenoids from food (carrots, malunggay) are always safe.'],
+    ['Folate','400 mcg DFE (600 if pregnant)','1,000 mcg','<span class="badge-ok">STANDARD</span>','Adequate intake supports DNA synthesis and reduces neural tube defect risk in pregnancy. Dark green vegetables, legumes, and fortified rice are good sources.'],
+    ['Vitamin E',vitETarget,'1,000 mg','<span class="badge-ok">STANDARD</span>','RDA 15 mg/day. Found in nuts, seeds, and vegetable oils. Standard multivitamin doses are safe.'],
+    ['Vitamin K','90–120 mcg','No established UL','<span class="badge-ok">STANDARD</span>','Adequate intake supports blood clotting and bone health. Dark leafy greens are the best source. Note: high intake interacts with warfarin.'],
+    ['Thiamin (B1)',sex==='M'?'1.2 mg':'1.1 mg','No UL','<span class="badge-ok">STANDARD</span>','Found in whole grains, legumes, pork. Easily met with a balanced diet.'],
+    ['Vitamin B12','2.4 mcg','No UL','<span class="badge-ok">STANDARD</span>','Found in animal products. Vegans and those >50 should consider a B12 supplement or fortified foods, as absorption declines with age.'],
+    ['Niacin',sex==='M'?'16 mg':'14 mg','35 mg','<span class="badge-ok">STANDARD</span>','Easily met from meat, poultry, fish, and peanuts. High-dose niacin (>500 mg) requires physician supervision.'],
+  ] : [
     ['Vitamin D (cholecalciferol)',vitDTarget,'100 mcg (4,000 IU)','<span class="badge-more">SUPPLEMENT</span>',vitDNote],
     ['Active Vitamin D (calcitriol/alfacalcidol)','As prescribed','Individualized','<span class="badge-more">PRESCRIBED</span>','Prescribed for PTH suppression in Stage 4–5 and dialysis. Separate from storage Vit D. Monitor calcium and phosphorus closely — over-supplementation causes hypercalcemia.'],
     ['Vitamin C','&lt;100 mg','100 mg',`<span class="${['HD','PD','4','5','3b'].includes(stage)?'badge-restrict':'badge-warn'}">${['HD','PD','4','5','3b'].includes(stage)?'STRICT LIMIT':'LIMIT'}</span>`,vitCNote],
@@ -2934,10 +2981,11 @@ function runCalc(){
 
   // ── Stage pill ──
   const stageLabels={
-    '1':'CKD Stage 1','2':'CKD Stage 2','3a':'CKD Stage 3a','3b':'CKD Stage 3b',
+    'healthy':'Healthy Adult','1':'CKD Stage 1','2':'CKD Stage 2','3a':'CKD Stage 3a','3b':'CKD Stage 3b',
     '4':'CKD Stage 4','5':'CKD Stage 5 (pre-dialysis)','HD':'Hemodialysis','PD':'Peritoneal Dialysis'
   };
   const stageColors={
+    'healthy':'background:#f0fdf4;color:#166534',
     '1':'background:#edf7f2;color:#2d7a4f',
     '2':'background:#ddf0f2;color:#1a6b72',
     '3a':'background:#fef9ec;color:#9a6500',
@@ -2951,22 +2999,37 @@ function runCalc(){
   sp.textContent=stageLabels[stage]||stage;
   sp.setAttribute('style',stageColors[stage]+';font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;');
 
-  document.getElementById('res-h3').textContent='Your CKD Dietary Reference Intakes';
+  document.getElementById('res-h3').textContent = isHealthy ? 'Your Personalized Daily Nutrition Targets' : 'Your CKD Dietary Reference Intakes';
   document.getElementById('res-sub').textContent=
     `${sex==='M'?'Male':'Female'}, age ${age} · ${wt} kg · Height ${ht} cm · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]}`;
 
   // ── Vitamin warnings ──
   const vwList=[];
-  vwList.push({icon:'🚫',text:'<strong>Vitamin A supplements: do NOT take</strong> — accumulates to toxic levels in CKD. Avoid all multivitamins containing retinol above 100% DV.'});
-  vwList.push({icon:'⚠',text:'<strong>Vitamin C: strict 100 mg/day limit</strong> — metabolizes to oxalate. Standard supplements (500–1,000 mg) are contraindicated in CKD.'});
-  if(isDialysis) vwList.push({icon:'💊',text:'<strong>Renal B-complex required every day</strong> — dialysis removes all water-soluble vitamins each session. Standard multivitamins are insufficient.'});
-  vwList.push({icon:'☀',text:'<strong>Vitamin D (cholecalciferol) supplementation almost always needed</strong> — deficiency near-universal in Filipino CKD patients due to indoor lifestyle and melanin pigmentation.'});
-  vwList.push({icon:'⚠',text:'<strong>Herbal supplements, barley grass, wheatgrass, malunggay powders</strong>: do NOT take without nephrologist clearance — high potassium, phosphorus, or oxalate content can be fatal.'});
+  if(isHealthy){
+    vwList.push({icon:'☀',text:'<strong>Vitamin D:</strong> Most Filipinos are insufficient — an OTC supplement of 1,000 IU/day is safe and practical for adults with limited sun exposure.'});
+    vwList.push({icon:'💊',text:'<strong>A standard multivitamin is safe</strong> for healthy adults and covers most micronutrient gaps without risk of toxicity at standard doses.'});
+    vwList.push({icon:'⚠',text:'<strong>Avoid megadosing single vitamins</strong> without medical indication — high-dose Vitamin A, E, or C at supplemental levels offers no added benefit and may cause harm.'});
+    vwList.push({icon:'🥦',text:'<strong>Food first:</strong> a varied diet with plenty of vegetables, whole grains, and lean protein meets most DRI targets without supplementation.'});
+  } else {
+    vwList.push({icon:'🚫',text:'<strong>Vitamin A supplements: do NOT take</strong> — accumulates to toxic levels in CKD. Avoid all multivitamins containing retinol above 100% DV.'});
+    vwList.push({icon:'⚠',text:'<strong>Vitamin C: strict 100 mg/day limit</strong> — metabolizes to oxalate. Standard supplements (500–1,000 mg) are contraindicated in CKD.'});
+    if(isDialysis) vwList.push({icon:'💊',text:'<strong>Renal B-complex required every day</strong> — dialysis removes all water-soluble vitamins each session. Standard multivitamins are insufficient.'});
+    vwList.push({icon:'☀',text:'<strong>Vitamin D (cholecalciferol) supplementation almost always needed</strong> — deficiency near-universal in Filipino CKD patients due to indoor lifestyle and melanin pigmentation.'});
+    vwList.push({icon:'⚠',text:'<strong>Herbal supplements, barley grass, wheatgrass, malunggay powders</strong>: do NOT take without nephrologist clearance — high potassium, phosphorus, or oxalate content can be fatal.'});
+  }
   document.getElementById('vit-warn-list').innerHTML = vwList.map(v=>`<li><span style="flex-shrink:0;">${v.icon}</span><span>${v.text}</span></li>`).join('');
 
   // ── Clinical summary ──
   const clinItems=[];
-  if(isHD){
+  if(isHealthy){
+    clinItems.push({icon:'🥗',text:`<strong>Energy target: ${kcalMin}–${kcalMax} kcal/day</strong> — based on Mifflin-St Jeor TDEE (${actLabel}). Adjust ±200 kcal to manage weight over time.`});
+    clinItems.push({icon:'🥩',text:`<strong>Protein ${protMin} g/day</strong> — emphasize lean fish, poultry, legumes, and low-fat dairy. Spread across meals to maximize muscle protein synthesis.`});
+    clinItems.push({icon:'🌾',text:'<strong>Carbohydrates: choose complex, high-fiber options</strong> — brown rice, oats, camote, legumes. Aim for at least 25–38 g fiber/day.'});
+    clinItems.push({icon:'🧂',text:'<strong>Sodium &lt;2,300 mg/day</strong> — cook at home, use herbs and spices, limit processed and instant foods.'});
+    clinItems.push({icon:'🍌',text:'<strong>Potassium-rich foods are encouraged</strong> — fruits, vegetables, and legumes support blood pressure control and cardiovascular health.'});
+    clinItems.push({icon:'📊',text:'<strong>Annual health screening</strong> — blood pressure, fasting glucose, lipids, kidney function (eGFR + urine protein). Early CKD is silent.'});
+    if(dm) clinItems.push({icon:'🍚',text:'<strong>Diabetes: low-GI carbohydrates, consistent meal timing</strong> — target HbA1c &lt;7% (ADA 2024). Monitor kidney function annually.'});
+  } else if(isHD){
     clinItems.push({icon:'🥩',text:'<strong>Increase protein to '+protMin+'–'+protMax+' g/day</strong> — dialysis removes amino acids; restriction causes muscle wasting'});
     clinItems.push({icon:'🧂',text:'<strong>Strict sodium &lt;2,000 mg/day</strong> — controls inter-dialytic weight gain and hypertension'});
     clinItems.push({icon:'🍌',text:'<strong>Potassium 2,000 mg limit</strong> — hyperkalemia causes fatal arrhythmia; leach all vegetables'});
