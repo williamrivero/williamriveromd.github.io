@@ -1360,6 +1360,18 @@ html[data-theme="dark"] .nt-sga-pill{background:#141c2a;border-color:#2a3548;col
 html[data-theme="dark"] .nt-sga-pill.nt-selected{background:var(--teal,#1a6b72);color:#fff;}
 .nt-ref{font-size:11px;color:var(--text-muted,#6b7a8d);margin-top:14px;line-height:1.5;}
 html[data-theme="dark"] .nt-ref{color:#8090a0;}
+/* ── WEIGHT GOAL TOGGLE ── */
+.wg-toggle{display:flex;gap:0;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;width:fit-content;flex-wrap:wrap;}
+.wg-btn{background:transparent;border:none;border-right:1.5px solid var(--border);padding:9px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.wg-btn:last-child{border-right:none;}
+.wg-btn.active{background:var(--navy);color:white;}
+.wg-btn.wg-loss.active{background:var(--teal);color:white;}
+.wg-btn.wg-gain.active{background:#166534;color:white;}
+html[data-theme="dark"] .wg-toggle{border-color:#2a3548;}
+html[data-theme="dark"] .wg-btn{border-right-color:#2a3548;color:#8a95a8;}
+html[data-theme="dark"] .wg-btn.active{background:#1f3864;color:#e8eaf0;}
+html[data-theme="dark"] .wg-btn.wg-loss.active{background:#1a4a50;color:#e8eaf0;}
+html[data-theme="dark"] .wg-btn.wg-gain.active{background:#0e2a1c;color:#4ade80;}
 </style>
 
 <script type="application/ld+json">
@@ -1531,6 +1543,16 @@ html[data-theme="dark"] .nt-ref{color:#8090a0;}
 <label class="check-pill"><input id="c-prot" type="checkbox"/><span><span data-lang="en">Heavy proteinuria (&gt;3 g/day)</span><span class="lang-hidden" data-lang="tl">Mabigat na proteinuria (&gt;3 g/araw)</span><span class="lang-hidden" data-lang="ceb">Grabe nga proteinuria (&gt;3 g/adlaw)</span><span class="lang-hidden" data-lang="kap">Mabigat a proteinuria (&gt;3 g/aldo)</span></span></label>
 <label class="check-pill"><input id="c-htn" type="checkbox"/><span><span data-lang="en">Resistant hypertension</span><span class="lang-hidden" data-lang="tl">Resistant na hypertension</span><span class="lang-hidden" data-lang="ceb">Resistant nga hypertension</span><span class="lang-hidden" data-lang="kap">Resistant a hypertension</span></span></label>
 </div>
+<div class="check-section-label"><span data-lang="en">Weight Goal</span><span class="lang-hidden" data-lang="tl">Layunin sa Timbang</span><span class="lang-hidden" data-lang="ceb">Target sa Timbang</span><span class="lang-hidden" data-lang="kap">Layunin king Timbang</span></div>
+<div style="margin-bottom:24px;">
+  <div class="wg-toggle" role="group" aria-label="Weight goal">
+    <button type="button" class="wg-btn wg-loss" onclick="setWG('loss',this)"><span data-lang="en">⬇ Weight Loss</span><span class="lang-hidden" data-lang="tl">⬇ Pagbaba ng Timbang</span><span class="lang-hidden" data-lang="ceb">⬇ Pagbaba sa Timbang</span><span class="lang-hidden" data-lang="kap">⬇ Pagbaba ning Timbang</span></button>
+    <button type="button" class="wg-btn active" onclick="setWG('maintain',this)"><span data-lang="en">= Maintain Weight</span><span class="lang-hidden" data-lang="tl">= Panatilihin ang Timbang</span><span class="lang-hidden" data-lang="ceb">= Ipadayon ang Timbang</span><span class="lang-hidden" data-lang="kap">= Panatilian ing Timbang</span></button>
+    <button type="button" class="wg-btn wg-gain" onclick="setWG('gain',this)"><span data-lang="en">⬆ Weight Gain</span><span class="lang-hidden" data-lang="tl">⬆ Pagtaas ng Timbang</span><span class="lang-hidden" data-lang="ceb">⬆ Pagtaas sa Timbang</span><span class="lang-hidden" data-lang="kap">⬆ Pagtaas ning Timbang</span></button>
+  </div>
+  <div class="hint" id="wg-hint" style="margin-top:6px;">Maintain weight: calorie targets set to your CKD-adjusted baseline needs.</div>
+</div>
+<input type="hidden" id="wg-value" value="maintain"/>
 <button class="calc-btn" onclick="runCalc()"><span data-lang="en">Calculate My Daily Targets →</span><span class="lang-hidden" data-lang="tl">Kalkulahin ang Aking Pang-araw-araw na Target →</span><span class="lang-hidden" data-lang="ceb">Kalkulahon ang Akong Adlaw-adlaw nga Target →</span><span class="lang-hidden" data-lang="kap">Kalkulahin ing Aldo-aldo Kung Target →</span></button>
 <div id="err-msg" style="display:none;color:var(--red);font-size:13px;margin-top:10px;font-weight:600;"></div>
 <!-- ═══ RESULTS PANEL ═══ -->
@@ -2858,6 +2880,20 @@ ${clinList}
   w.document.close();
 }
 
+// ── WEIGHT GOAL TOGGLE ──────────────────────────────────────────────
+function setWG(val, btn){
+  document.getElementById('wg-value').value = val;
+  document.querySelectorAll('.wg-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const hints = {
+    loss: 'Weight loss goal: calorie target reduced ~250–300 kcal/day. Supervised weight loss only — never restrict aggressively in CKD.',
+    maintain: 'Maintain weight: calorie targets set to your CKD-adjusted baseline needs.',
+    gain: 'Weight gain goal: calorie target increased ~250–300 kcal/day. Important for underweight patients and protein-energy wasting.'
+  };
+  const hintEl = document.getElementById('wg-hint');
+  if(hintEl) hintEl.textContent = hints[val];
+}
+
 // ── DRI CALCULATOR ──────────────────────────────────────────────────
 function runCalc(){
   const err=document.getElementById('err-msg');
@@ -2916,6 +2952,8 @@ function runCalc(){
   const palCkdMap   = {sedentary:0.90, light:1.0,   moderate:1.12, active:1.27};
   const palLabels   = {sedentary:'Sedentary (×'+(isHealthy?'1.20':'0.90')+')', light:'Lightly active (×'+(isHealthy?'1.375':'1.00')+')', moderate:'Moderately active (×'+(isHealthy?'1.55':'1.12')+')', active:'Very active (×'+(isHealthy?'1.725':'1.27')+')'};
   const actLabel = {sedentary:'Sedentary', light:'Lightly active', moderate:'Moderately active', active:'Very active'}[act] || 'Lightly active';
+  const wg = document.getElementById('wg-value')?.value || 'maintain';
+  let wgNote = '';
   let kcalMin, kcalMax;
   if(isHealthy){
     const tdee = Math.round(bmr * (palFullMap[act] || 1.375));
@@ -2924,6 +2962,16 @@ function runCalc(){
   } else {
     const pal = palCkdMap[act] || 1.0;
     kcalPerKg = Math.round(kcalPerKg * pal * 10) / 10;
+    if(wg === 'loss' && !pew){
+      kcalPerKg = Math.max(kcalPerKg - 4, 22);
+      wgNote = ' ⬇ Reduced ~250–300 kcal/day for weight loss goal. Supervised weight loss only — avoid aggressive restriction in CKD.';
+      if(bmi < 23) wgNote += ' ⚠ BMI ' + bmi.toFixed(1) + ': weight loss not recommended at this BMI — discuss with your nephrologist first.';
+    } else if(wg === 'gain'){
+      kcalPerKg += 4;
+      wgNote = ' ⬆ Increased ~250–300 kcal/day for weight gain goal. Focus on calorie-dense, kidney-friendly foods.';
+    } else if(wg === 'loss' && pew){
+      wgNote = ' ⚠ Weight loss overridden — protein-energy wasting takes priority. Treat PEW before attempting weight loss.';
+    }
     kcalMin = Math.round(calcWt*(kcalPerKg-2));
     kcalMax = Math.round(calcWt*(kcalPerKg+2));
   }
@@ -3077,7 +3125,7 @@ function runCalc(){
   // ══ BUILD OUTPUT ══
   // Macronutrient rows
   const macroRows = [
-    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`&le;${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',isHealthy?`Mifflin-St Jeor TDEE × PAL (${actLabel}). ${kcalPerKg} kcal/kg. BMI ${bmi.toFixed(1)}.`:`${kcalPerKg} kcal/kg dry weight (KDOQI). Activity: ${actLabel}. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}`],
+    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`&le;${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',isHealthy?`Mifflin-St Jeor TDEE × PAL (${actLabel}). ${kcalPerKg} kcal/kg. BMI ${bmi.toFixed(1)}.`:`${kcalPerKg} kcal/kg dry weight (KDOQI). Activity: ${actLabel}. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}${wgNote}`],
     ['Protein',protRange,protMax+'&thinsp;g',protBadge,protNote],
     ['Carbohydrates',`${carbMin}–${carbMax}&thinsp;g`,carbMax+50+'&thinsp;g','<span class="badge-ok">STANDARD</span>',`45–65% of calories. Prefer complex carbs — brown rice, oats, camote. ${dm?'Diabetic: choose low-GI options, monitor portions carefully.':''}`],
     ['Total Fiber',fiberTarget+'&thinsp;g','No UL','<span class="badge-ok">STANDARD</span>','Fiber supports gut health, reduces uremic toxin precursor production (indoxyl sulfate). Filipino sources: okra, ampalaya, malunggay (if K allows).'],
@@ -3170,8 +3218,9 @@ function runCalc(){
   sp.setAttribute('style',stageColors[stage]+';font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;');
 
   document.getElementById('res-h3').textContent = isHealthy ? 'Your Daily Nutrition Prescription' : 'Your CKD Nutrition Prescription';
+  const wgLabels = {loss:'Weight Loss',maintain:'Maintain Weight',gain:'Weight Gain'};
   document.getElementById('res-sub').textContent=
-    `${patName?patName+' · ':''}${sex==='M'?'Male':'Female'}, age ${age} · ${wt} kg · Height ${ht} cm · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]}`;
+    `${patName?patName+' · ':''}${sex==='M'?'Male':'Female'}, age ${age} · ${wt} kg · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]}${!isHealthy?' · Goal: '+(wgLabels[wg]||'Maintain Weight'):''}`;
 
   // ── Vitamin warnings ──
   const vwList=[];
@@ -3222,6 +3271,9 @@ function runCalc(){
     clinItems.push({icon:'🧂',text:'<strong>Sodium &lt;2,300 mg/day</strong> — controls blood pressure and slows CKD progression'});
     clinItems.push({icon:'📊',text:'<strong>Monitor labs every 3–6 months</strong> — eGFR, potassium, phosphorus, albumin, urine protein'});
   }
+  if(!isHealthy && wg==='loss' && !pew) clinItems.push({icon:'⬇',text:`<strong>Weight loss goal: calorie target reduced ~250–300 kcal/day</strong>. Max 0.5 kg/week. ${bmi<23?'⚠ BMI '+bmi.toFixed(1)+' — weight loss not advised at this BMI; discuss with nephrologist.':'Never restrict below safe minimums — protein-energy wasting is a serious risk in CKD.'}`});
+  else if(!isHealthy && wg==='gain') clinItems.push({icon:'⬆',text:`<strong>Weight gain goal: calorie target increased ~250–300 kcal/day</strong>. ${pew?'PEW modifier active — prioritize high biological value protein and calorie-dense kidney-friendly foods.':'Reassess target weight and progress with your renal dietitian.'}`});
+  else if(!isHealthy && wg==='loss' && pew) clinItems.push({icon:'⚠',text:'<strong>Weight loss goal overridden: protein-energy wasting detected</strong> — nutritional rehabilitation must come before any weight reduction. Refer to renal dietitian urgently.'});
   if(dm) clinItems.push({icon:'🍚',text:'<strong>Diabetes: low-GI carbohydrates, consistent meal timing</strong> — target HbA1c &lt;7% (KDIGO 2024)'});
   if(pew) clinItems.push({icon:'⬆',text:'<strong>Protein-energy wasting modifier applied</strong> — consult renal dietitian urgently for nutritional rehabilitation plan'});
   clinItems.push({icon:'☀',text:'<strong>Vitamin D: check 25-OH Vit D and supplement</strong> — deficiency near-universal in Filipino CKD patients'});
