@@ -16,7 +16,7 @@
 ## Image 001 — Hero Image
 **File:** `fiber-patient-education-hero-market.png`
 **Section:** Hero
-**Dimensions:** 1792 × 1024 px
+**Dimensions:** 1024 × 1024 px (square — OG image)
 **Is OG image:** YES
 
 ### COPY-READY PROMPT

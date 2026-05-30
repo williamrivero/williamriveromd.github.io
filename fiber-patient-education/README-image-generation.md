@@ -20,7 +20,7 @@
 - **File:** `fiber-patient-education-hero-market.png`
 - **Prompt file:** `image-prompts/001-hero-market.md`
 - **Archetype:** Photorealistic Editorial Hero
-- **Dimensions:** 1792 × 1024 px
+- **Dimensions:** 1024 × 1024 px (square — OG image)
 - **Save to:** `generated-images/fiber-patient-education-hero-market.png`
 - **Purpose:** Hero section LCP image + OG image for social sharing
 - **Is OG image:** YES
@@ -112,7 +112,7 @@ Upload images to this Claude Code session. The session will:
 The hero image (001) will be used as the Open Graph image:
 ```html
 <meta property="og:image" content="https://www.williamriveromd.com/images/fiber-patient-education-hero-market.webp"/>
-<meta property="og:image:width" content="1792"/>
+<meta property="og:image:width" content="1024"/>
 <meta property="og:image:height" content="1024"/>
 <meta property="og:image:alt" content="By the way, Fiber Is Not the Same as Vegetables — williamriveromd.com"/>
 ```

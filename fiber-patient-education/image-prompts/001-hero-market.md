@@ -3,8 +3,8 @@ SECTION PLACEMENT: Hero — replaces placeholder hero image at top of guide
 FILE NAME: fiber-patient-education-hero-market.png
 ARCHETYPE: Photorealistic Editorial Hero
 AUDIENCE: Filipino patients, general public, mobile readers
-ASPECT RATIO: 16:9
-PIXEL DIMENSIONS: 1792 × 1024
+ASPECT RATIO: 1:1
+PIXEL DIMENSIONS: 1024 × 1024
 VISUAL MIX:
 - photorealistic models: 60% — Filipino woman, mid-40s, market or home kitchen setting
 - 2D infographic: 0%
@@ -28,15 +28,18 @@ halved to show the seedy interior, a bunch of saging na saba bananas, a bowl of 
 oatmeal, and dark brown muscovado sugar in a small clay dish. Color palette: warm
 amber, deep teal, earthy browns, vivid green of fresh produce. Shallow depth of field,
 bokeh background of a market or kitchen. Shot on a Leica-style 50mm lens. Photorealistic,
-magazine-quality editorial lighting. No text overlays. No watermarks. No journal names,
-guideline acronyms, brand names, or watermarks.
+magazine-quality editorial lighting. No text overlays. Square crop — center the woman
+and food naturally within the frame, with enough negative space above and on the sides
+for a title overlay if needed. Bottom-right corner, small semi-transparent text:
+© W. G. M. Rivero, MD · williamriveromd.com
 
 NEGATIVE INSTRUCTIONS: No supplements, pill bottles, or medicine. No white clinical
 backgrounds. No Western or Asian-American models — Filipino facial features only.
-No stock-photo flatness. No text on image. No logos.
+No stock-photo flatness. No text on image (except attribution). No logos.
 QUALITY CHECK: Woman's expression is warm and confident, not sad or sickly. Foods are
 identifiable as Filipino staples. Image feels editorial, not commercial. Teal and amber
-tones feel cohesive. No visual clutter.
+tones feel cohesive. Square composition is balanced — subject centered with food spread
+naturally across the lower two-thirds of the frame.
 ALT TEXT: Filipino woman at a market stall surrounded by high-fiber local foods — monggo, okra, camote, guava, and oats
-OG WIDTH: 1792
+OG WIDTH: 1024
 OG HEIGHT: 1024
