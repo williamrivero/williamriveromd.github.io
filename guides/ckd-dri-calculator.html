@@ -1562,6 +1562,13 @@ html[data-theme="dark"] .wg-stat-val{color:#e8eaf0;}
   </div>
   <div class="hint" id="wg-hint" style="margin-top:6px;">Maintain weight: calorie targets set to your CKD-adjusted baseline needs.</div>
 </div>
+<div id="wg-bmi-row" style="display:none;margin-bottom:20px;max-width:260px;">
+  <label class="form-group" style="display:block;">
+    <span style="display:block;font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Target BMI <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(optional — overrides IBW)</span></span>
+    <input id="f-target-bmi" type="number" min="16" max="40" step="0.1" placeholder="e.g. 23.0" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'"/>
+    <span style="display:block;font-size:11px;color:var(--text-muted);margin-top:4px;">Leave blank to use Ideal Body Weight (Devine formula). Typical targets: 22–25 kg/m².</span>
+  </label>
+</div>
 <input type="hidden" id="wg-value" value="maintain"/>
 <button class="calc-btn" onclick="runCalc()"><span data-lang="en">Calculate My Daily Targets →</span><span class="lang-hidden" data-lang="tl">Kalkulahin ang Aking Pang-araw-araw na Target →</span><span class="lang-hidden" data-lang="ceb">Kalkulahon ang Akong Adlaw-adlaw nga Target →</span><span class="lang-hidden" data-lang="kap">Kalkulahin ing Aldo-aldo Kung Target →</span></button>
 <div id="err-msg" style="display:none;color:var(--red);font-size:13px;margin-top:10px;font-weight:600;"></div>
@@ -2917,6 +2924,8 @@ function setWG(val, btn){
   };
   const hintEl = document.getElementById('wg-hint');
   if(hintEl) hintEl.textContent = hints[val];
+  const bmiRow = document.getElementById('wg-bmi-row');
+  if(bmiRow) bmiRow.style.display = (val === 'maintain') ? 'none' : 'block';
 }
 
 // ── DRI CALCULATOR ──────────────────────────────────────────────────
@@ -3366,7 +3375,14 @@ function runCalc(){
   const wgPanel = document.getElementById('wg-summary');
   if(wg !== 'maintain' && !isHealthy){
     const ibwR = Math.round(ibw * 10) / 10;
-    const targetWt = wg === 'loss' ? Math.max(ibwR, 40) : ibwR;
+    const tBmiInput = parseFloat(document.getElementById('f-target-bmi')?.value);
+    const usingCustomBmi = !isNaN(tBmiInput) && tBmiInput >= 16 && tBmiInput <= 40;
+    const targetBMI = usingCustomBmi ? tBmiInput : null;
+    const targetWtFromBmi = usingCustomBmi ? Math.round((tBmiInput * (ht/100) * (ht/100)) * 10) / 10 : null;
+    const targetWt = targetWtFromBmi !== null
+      ? targetWtFromBmi
+      : (wg === 'loss' ? Math.max(ibwR, 40) : ibwR);
+    const targetLabel = usingCustomBmi ? `BMI ${tBmiInput}` : 'IBW';
     const wtDiff = Math.round(Math.abs(wt - targetWt) * 10) / 10;
     const deficit = Math.round(4 * calcWt);
     const alreadyThere = wg === 'loss' ? wt <= targetWt : wt >= targetWt;
@@ -3381,18 +3397,21 @@ function runCalc(){
   <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:${color};margin-bottom:10px;">${icon} ${label}</div>
   <div class="wg-summary-grid">
     <div class="wg-stat"><div class="wg-stat-val">${wt}&thinsp;kg</div><div class="wg-stat-lbl">Current Weight</div></div>
-    <div class="wg-stat"><div class="wg-stat-val">${targetWt}&thinsp;kg</div><div class="wg-stat-lbl">Target (IBW)</div></div>
+    <div class="wg-stat"><div class="wg-stat-val">${targetWt}&thinsp;kg</div><div class="wg-stat-lbl">Target (${targetLabel})</div></div>
     <div class="wg-stat"><div class="wg-stat-val">${alreadyThere ? '—' : wtDiff+'&thinsp;kg'}</div><div class="wg-stat-lbl">${wg==='loss'?'To Lose':'To Gain'}</div></div>
     <div class="wg-stat"><div class="wg-stat-val">${alreadyThere ? '—' : weeksEst+'&thinsp;wk'}</div><div class="wg-stat-lbl">Est. Duration</div></div>
     <div class="wg-stat"><div class="wg-stat-val">${deficit}&thinsp;kcal</div><div class="wg-stat-lbl">Daily ${wg==='loss'?'Deficit':'Surplus'}</div></div>
   </div>`;
 
+    if(usingCustomBmi) html += `<p class="wg-summary-note" style="margin-bottom:4px;">Target set to BMI ${tBmiInput} kg/m² = <strong>${targetWt} kg</strong> at your height (${ht} cm). IBW (Devine) = ${ibwR} kg.</p>`;
+
     if(alreadyThere){
-      html += `<p class="wg-summary-note">✓ Current weight (${wt} kg) is already at or below Ideal Body Weight (${ibwR} kg). Consider switching to <strong>Maintain Weight</strong> mode.</p>`;
+      html += `<p class="wg-summary-note">✓ Current weight (${wt} kg) is already at or past the target (${targetWt} kg). Consider switching to <strong>Maintain Weight</strong> mode.</p>`;
     } else if(wg === 'loss'){
       html += `<p class="wg-summary-note">At a safe rate of <strong>0.5 kg/week</strong>, reaching ${targetWt} kg takes approximately <strong>${weeksEst} weeks (~${Math.ceil(weeksEst/4)} months)</strong>. The calorie target has been reduced by ~${deficit} kcal/day (${kcalPerKg} kcal/kg). Never restrict aggressively — protein-energy wasting is a leading cause of death in dialysis patients.</p>`;
-      if(bmi >= 30) html += `<p class="wg-summary-note" style="margin-top:6px;"><strong>BMI ${bmi.toFixed(1)} (Obese)</strong> — weight loss is clinically appropriate. Target BMI 23–25. Calorie target already adjusted for obesity before goal reduction.</p>`;
-      if(bmi < 23) html += `<p class="wg-summary-note" style="margin-top:6px;color:var(--red);"><strong>⚠ BMI ${bmi.toFixed(1)}</strong> — weight loss is not recommended below BMI 23. Discuss with your nephrologist before proceeding.</p>`;
+      if(bmi >= 30) html += `<p class="wg-summary-note" style="margin-top:6px;"><strong>BMI ${bmi.toFixed(1)} (Obese)</strong> — weight loss is clinically appropriate. Calorie target already adjusted for obesity before goal reduction.</p>`;
+      if(bmi < 23 && !usingCustomBmi) html += `<p class="wg-summary-note" style="margin-top:6px;color:var(--red);"><strong>⚠ BMI ${bmi.toFixed(1)}</strong> — weight loss not recommended below BMI 23. Discuss with your nephrologist before proceeding.</p>`;
+      if(usingCustomBmi && targetBMI < 18.5) html += `<p class="wg-summary-note" style="margin-top:6px;color:var(--red);"><strong>⚠ Target BMI ${tBmiInput} is below 18.5 (underweight)</strong> — reconsider target. Discuss with your nephrologist.</p>`;
     } else {
       html += `<p class="wg-summary-note">At a safe rate of <strong>0.25 kg/week</strong>, reaching ${targetWt} kg takes approximately <strong>${weeksEst} weeks (~${Math.ceil(weeksEst/4)} months)</strong>. The calorie target has been increased by ~${deficit} kcal/day. Focus on calorie-dense, kidney-friendly foods and high biological value protein sources.</p>`;
     }
