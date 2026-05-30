@@ -35,10 +35,12 @@ Color coding by tier:
     • Brown rice — 3.5 g | Oatmeal — 4 g | Guava — 5 g | Avocado — 10 g* | Saluyot — 5 g
 
   AMBER background (#f59e0b, dark text) — MODERATE (2–4g):
-    • Okra — 3.2 g | Sitaw — 3 g | Kamote — 3.8 g | Kangkong — 2.5 g | Saba banana — 3.5 g | Malunggay — 3.5 g
+    • Okra — 3.2 g | Sitaw — 3 g | Kamote — 3.8 g | Kangkong — 2.5 g | Sampaloc/Tamarind pulp — 3–5 g* | Malunggay — 3.5 g
 
   LIGHT GRAY background (#e5e7eb, dark text) — LOWER FIBER (1–2g):
     • White rice — 0.6 g | Eggplant — 2.5 g | Papaya — 2.5 g | Pechay — 2.5 g
+
+Sampaloc note (*): "3–5 g only if pulp is eaten. Strained sinigang broth = 0 g fiber."
 
 Footer bar (full width, teal background): "Tip: Replace ½ cup white rice with monggo soup 3× a week → +16–24g fiber"
 

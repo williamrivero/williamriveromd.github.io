@@ -1,7 +1,7 @@
 # Image Generation Prompts
 ## Guide: 30% Lower Risk of Dying — From One Dietary Change
 ## URL: https://www.williamriveromd.com/guides/fiber-patient-education
-## Total images: 9
+## Total images: 10
 
 ---
 
@@ -269,10 +269,12 @@ Color coding by tier:
     • Brown rice — 3.5 g | Oatmeal — 4 g | Guava — 5 g | Avocado — 10 g* | Saluyot — 5 g
 
   AMBER background (#f59e0b, dark text) — MODERATE (2–4g):
-    • Okra — 3.2 g | Sitaw — 3 g | Kamote — 3.8 g | Kangkong — 2.5 g | Saba banana — 3.5 g | Malunggay — 3.5 g
+    • Okra — 3.2 g | Sitaw — 3 g | Kamote — 3.8 g | Kangkong — 2.5 g | Sampaloc/Tamarind pulp — 3–5 g* | Malunggay — 3.5 g
 
   LIGHT GRAY background (#e5e7eb, dark text) — LOWER FIBER (1–2g):
     • White rice — 0.6 g | Eggplant — 2.5 g | Papaya — 2.5 g | Pechay — 2.5 g
+
+Sampaloc note (*): "3–5 g only if pulp is eaten. Strained sinigang broth = 0 g fiber."
 
 Footer bar (full width, teal background): "Tip: Replace ½ cup white rice with monggo soup 3× a week → +16–24g fiber"
 
@@ -282,7 +284,8 @@ No journal names, guideline acronyms, brand names, or watermarks.
 
 NEGATIVE INSTRUCTIONS: No stock-art gradient backgrounds. Do not use more than 4
 background tones — keep color coding strictly to the 4 tiers. Avocado note (*) is
-for a whole avocado, not per tablespoon — include this footnote.
+for a whole avocado, not per tablespoon — include this footnote. Sampaloc note (*)
+must be visible as a small footnote below the grid.
 QUALITY CHECK: Grid is evenly spaced and pixel-balanced. A patient photographing this
 on their phone can read individual food names and gram values. The dark green tier
 immediately communicates "eat more of these." The design is print-friendly.
@@ -486,6 +489,83 @@ salad is readable at a glance. Pinakbet is instantly recognizable as Filipino. T
 banner delivers the actionable take-home. The image reads as a single coherent comparison,
 not two unrelated food photos. Copyright attribution © W. G. M. Rivero, MD ·
 williamriveromd.com visible in the bottom-right corner.
+```
+
+---
+
+## Image 010 — Constipation Comparison
+**File:** `fiber-patient-education-constipation-comparison-infographic.png`
+**Section:** Section 8 — "Special Situations" — Constipation subsection, above the three alert boxes
+**Dimensions:** 1792 × 1024 px
+**Is OG image:** NO
+
+### COPY-READY PROMPT
+
+```
+Clean three-panel educational infographic, 16:9 landscape (1792×1024), white background
+(#f9fafb). Bold header at top center: "Constipation: Which Remedy Actually Works?" in
+dark teal (#1a6b72), 32pt bold. Subheader: "Three common patient questions — answered."
+
+Three equal panels side by side, separated by thin light gray dividers.
+
+PANEL 1 — PRUNES (left, green background tint #f0fff4):
+Photorealistic render of 5–6 dried prunes on a small white ceramic dish — wrinkled,
+dark brown, clearly dried plums. A large bold green checkmark stamp at top right: "✓ WORKS"
+Panel title: "Prunes (Dried Plums)" in bold dark green.
+Two mechanism tags stacked below the food:
+  Tag 1 (green pill): "7 g fiber per 100 g"
+  Tag 2 (teal pill): "Contains sorbitol — softens stool naturally"
+Key message: "Double mechanism: fiber adds bulk AND sorbitol draws water into the colon.
+As effective as psyllium in clinical trials."
+Small caution box at bottom (amber): "CKD: HIGH potassium. Limit to 2–3 pieces/day in
+Stage 4–5 or dialysis."
+
+PANEL 2 — PRUNE JUICE (center, amber/yellow background tint #fffbeb):
+Photorealistic render of a small glass of dark reddish-brown prune juice, with a few
+whole prunes visible beside it. A bold amber partial-check stamp: "△ PARTLY WORKS"
+Panel title: "Prune Juice" in bold amber/dark gold.
+Two mechanism tags:
+  Tag 1 (amber pill): "2–3 g fiber only (much less than whole prunes)"
+  Tag 2 (teal pill): "Sorbitol still present — helps soften stool"
+Key message: "The sorbitol helps, but most of the fiber is removed during juicing.
+Do NOT count prune juice toward your daily fiber target."
+Small caution box at bottom (red): "High sugar + high potassium. Use sparingly in
+diabetes or CKD."
+
+PANEL 3 — MELON MILK (right, light red/pink background tint #fff5f5):
+Photorealistic render of a tall glass of pale orange melon milkshake with a straw,
+with a slice of cantaloupe beside it. A bold red X stamp: "✗ NOT A REMEDY"
+Panel title: "Melon Milk" in bold dark red.
+Two tags:
+  Tag 1 (red pill): "< 1 g fiber per cup"
+  Tag 2 (gray pill): "No sorbitol. No evidence for constipation relief."
+Key message: "Melon is 90% water. Adding milk gives you protein, not fiber.
+It is a nutritious drink — but it will not relieve constipation."
+Small note at bottom (gray): "If constipated: choose prunes, psyllium, or increase
+whole grains and water instead."
+
+Bottom full-width teal banner (#1a6b72, white text):
+"For constipation: whole prunes (5–6 pieces) or psyllium husk (1 tsp in water) are
+your most evidence-based options. Always drink plenty of water."
+
+Small row of icons at right of banner: prune icon (✓), psyllium packet (✓), water glass (✓).
+
+Typography: Inter Bold throughout. Verdict stamps ("✓ WORKS", "△ PARTLY WORKS",
+"✗ NOT A REMEDY") in 28pt bold. Food names in 20pt bold. Body text ≥13pt.
+Tags in pill-shaped labels, high contrast.
+
+Bottom-right corner, small semi-transparent text:
+© W. G. M. Rivero, MD · williamriveromd.com
+
+NEGATIVE INSTRUCTIONS: Do not make any food look disgusting or dangerous — melon milk
+is a good drink, just not a constipation remedy. Do not use cartoon or clipart style.
+No hospital imagery, no stool imagery, no anatomy diagrams. All three panels must show
+appealing food renders. The stamps (✓ / △ / ✗) should read as informational verdicts,
+not aggressive warnings.
+QUALITY CHECK: A patient can read each panel independently. The three verdict stamps
+are the dominant visual — instantly scannable. The CKD caution on prunes is visible but
+not the headline. The bottom banner delivers the actionable take-home. Copyright
+attribution © W. G. M. Rivero, MD · williamriveromd.com visible in the bottom-right corner.
 ```
 
 ---
