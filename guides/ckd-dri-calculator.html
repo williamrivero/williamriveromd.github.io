@@ -1372,6 +1372,16 @@ html[data-theme="dark"] .wg-btn{border-right-color:#2a3548;color:#8a95a8;}
 html[data-theme="dark"] .wg-btn.active{background:#1f3864;color:#e8eaf0;}
 html[data-theme="dark"] .wg-btn.wg-loss.active{background:#1a4a50;color:#e8eaf0;}
 html[data-theme="dark"] .wg-btn.wg-gain.active{background:#0e2a1c;color:#4ade80;}
+/* ── WEIGHT GOAL SUMMARY PANEL ── */
+.wg-summary-panel{padding:16px 20px;border-bottom:1px solid var(--border);background:linear-gradient(to right,rgba(26,107,114,.06),transparent);}
+.wg-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:12px;}
+.wg-stat{text-align:center;padding:10px 8px;background:rgba(255,255,255,.75);border-radius:8px;border:1px solid rgba(0,0,0,.07);}
+.wg-stat-val{font-family:'Lora',serif;font-size:20px;font-weight:600;color:var(--navy);line-height:1.1;margin-bottom:3px;}
+.wg-stat-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);}
+.wg-summary-note{font-size:12.5px;color:var(--text-mid);margin-top:8px;line-height:1.65;}
+html[data-theme="dark"] .wg-summary-panel{background:rgba(26,107,114,.08);}
+html[data-theme="dark"] .wg-stat{background:rgba(255,255,255,.04);border-color:#2a3548;}
+html[data-theme="dark"] .wg-stat-val{color:#e8eaf0;}
 </style>
 
 <script type="application/ld+json">
@@ -1564,6 +1574,8 @@ html[data-theme="dark"] .wg-btn.wg-gain.active{background:#0e2a1c;color:#4ade80;
 </div>
 <span class="stage-pill" id="stage-pill" style="background:rgba(255,255,255,.12);color:white;"></span>
 </div>
+<!-- WEIGHT GOAL SUMMARY (populated by runCalc when wg != maintain) -->
+<div id="wg-summary" style="display:none;"></div>
 <!-- MACRONUTRIENTS TABLE -->
 <div class="dri-section">
 <div class="dri-section-header">Macronutrients &amp; Energy</div>
@@ -3330,7 +3342,54 @@ function runCalc(){
     if(dm) rxNotes.push('Low-GI carbohydrates; consistent meal timing; HbA1c target &lt;7%');
     if(pew) rxNotes.push('Protein-energy wasting present — refer to renal dietitian urgently');
   }
+  if(!isHealthy && wg !== 'maintain' && !pew) rxNotes.push(
+    wg==='loss'
+      ? `Weight loss goal: ~${Math.round(4*calcWt)} kcal/day deficit applied · Target ${Math.round(Math.max(ibw,40)*10)/10} kg (IBW) · safe rate 0.5 kg/week`
+      : `Weight gain goal: ~${Math.round(4*calcWt)} kcal/day surplus applied · Target ${Math.round(Math.min(ibw+2,ibw)*10)/10 || Math.round(ibw*10)/10} kg · safe rate 0.25 kg/week`
+  );
   document.getElementById('rx-notes').innerHTML = rxNotes.map(n=>`<li>${n}</li>`).join('');
+
+  // ── Weight Goal Summary Panel ──
+  const wgPanel = document.getElementById('wg-summary');
+  if(wg !== 'maintain' && !isHealthy){
+    const ibwR = Math.round(ibw * 10) / 10;
+    const targetWt = wg === 'loss' ? Math.max(ibwR, 40) : ibwR;
+    const wtDiff = Math.round(Math.abs(wt - targetWt) * 10) / 10;
+    const deficit = Math.round(4 * calcWt);
+    const alreadyThere = wg === 'loss' ? wt <= targetWt : wt >= targetWt;
+    const weeksEst = alreadyThere ? 0 : wg === 'loss'
+      ? Math.ceil(wtDiff / 0.5)
+      : Math.ceil(wtDiff / 0.25);
+    const color = wg === 'loss' ? 'var(--teal)' : 'var(--green,#166534)';
+    const icon = wg === 'loss' ? '⬇' : '⬆';
+    const label = wg === 'loss' ? 'Weight Loss Plan' : 'Weight Gain Plan';
+
+    let html = `<div class="wg-summary-panel">
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:${color};margin-bottom:10px;">${icon} ${label}</div>
+  <div class="wg-summary-grid">
+    <div class="wg-stat"><div class="wg-stat-val">${wt}&thinsp;kg</div><div class="wg-stat-lbl">Current Weight</div></div>
+    <div class="wg-stat"><div class="wg-stat-val">${targetWt}&thinsp;kg</div><div class="wg-stat-lbl">Target (IBW)</div></div>
+    <div class="wg-stat"><div class="wg-stat-val">${alreadyThere ? '—' : wtDiff+'&thinsp;kg'}</div><div class="wg-stat-lbl">${wg==='loss'?'To Lose':'To Gain'}</div></div>
+    <div class="wg-stat"><div class="wg-stat-val">${alreadyThere ? '—' : weeksEst+'&thinsp;wk'}</div><div class="wg-stat-lbl">Est. Duration</div></div>
+    <div class="wg-stat"><div class="wg-stat-val">${deficit}&thinsp;kcal</div><div class="wg-stat-lbl">Daily ${wg==='loss'?'Deficit':'Surplus'}</div></div>
+  </div>`;
+
+    if(alreadyThere){
+      html += `<p class="wg-summary-note">✓ Current weight (${wt} kg) is already at or below Ideal Body Weight (${ibwR} kg). Consider switching to <strong>Maintain Weight</strong> mode.</p>`;
+    } else if(wg === 'loss'){
+      html += `<p class="wg-summary-note">At a safe rate of <strong>0.5 kg/week</strong>, reaching ${targetWt} kg takes approximately <strong>${weeksEst} weeks (~${Math.ceil(weeksEst/4)} months)</strong>. The calorie target has been reduced by ~${deficit} kcal/day (${kcalPerKg} kcal/kg). Never restrict aggressively — protein-energy wasting is a leading cause of death in dialysis patients.</p>`;
+      if(bmi >= 30) html += `<p class="wg-summary-note" style="margin-top:6px;"><strong>BMI ${bmi.toFixed(1)} (Obese)</strong> — weight loss is clinically appropriate. Target BMI 23–25. Calorie target already adjusted for obesity before goal reduction.</p>`;
+      if(bmi < 23) html += `<p class="wg-summary-note" style="margin-top:6px;color:var(--red);"><strong>⚠ BMI ${bmi.toFixed(1)}</strong> — weight loss is not recommended below BMI 23. Discuss with your nephrologist before proceeding.</p>`;
+    } else {
+      html += `<p class="wg-summary-note">At a safe rate of <strong>0.25 kg/week</strong>, reaching ${targetWt} kg takes approximately <strong>${weeksEst} weeks (~${Math.ceil(weeksEst/4)} months)</strong>. The calorie target has been increased by ~${deficit} kcal/day. Focus on calorie-dense, kidney-friendly foods and high biological value protein sources.</p>`;
+    }
+    html += '</div>';
+    wgPanel.innerHTML = html;
+    wgPanel.style.display = 'block';
+  } else {
+    wgPanel.innerHTML = '';
+    wgPanel.style.display = 'none';
+  }
 
   // ── Show results ──
   const panel = document.getElementById('results-panel');
