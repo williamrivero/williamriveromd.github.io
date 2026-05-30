@@ -2998,8 +2998,11 @@ function runCalc(){
   let kcalMin, kcalMax;
   if(isHealthy){
     const tdee = Math.round(bmr * (palFullMap[act] || 1.375));
-    kcalMin = tdee - 100; kcalMax = tdee + 100;
-    kcalPerKg = Math.round(tdee / calcWt * 10) / 10;
+    let tdeeAdj = tdee;
+    if(wg === 'loss'){ tdeeAdj = tdee - 300; wgNote = ' ⬇ Reduced ~300 kcal/day for weight loss goal. Target rate: 0.5 kg/week.'; }
+    else if(wg === 'gain'){ tdeeAdj = tdee + 300; wgNote = ' ⬆ Increased ~300 kcal/day for weight gain goal. Target rate: 0.25–0.5 kg/week.'; }
+    kcalMin = tdeeAdj - 100; kcalMax = tdeeAdj + 100;
+    kcalPerKg = Math.round(tdeeAdj / calcWt * 10) / 10;
   } else {
     const pal = palCkdMap[act] || 1.0;
     kcalPerKg = Math.round(kcalPerKg * pal * 10) / 10;
@@ -3166,7 +3169,7 @@ function runCalc(){
   // ══ BUILD OUTPUT ══
   // Macronutrient rows
   const macroRows = [
-    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`&le;${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',isHealthy?`Mifflin-St Jeor TDEE × PAL (${actLabel}). ${kcalPerKg} kcal/kg. BMI ${bmi.toFixed(1)}.`:`${kcalPerKg} kcal/kg dry weight (KDOQI). Activity: ${actLabel}. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}${wgNote}`],
+    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`&le;${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',isHealthy?`Mifflin-St Jeor TDEE × PAL (${actLabel}). ${kcalPerKg} kcal/kg. BMI ${bmi.toFixed(1)}.${wgNote}`:`${kcalPerKg} kcal/kg dry weight (KDOQI). Activity: ${actLabel}. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}${wgNote}`],
     ['Protein',protRange,protMax+'&thinsp;g',protBadge,protNote],
     ['Carbohydrates',`${carbMin}–${carbMax}&thinsp;g`,carbMax+50+'&thinsp;g','<span class="badge-ok">STANDARD</span>',`45–65% of calories. Prefer complex carbs — brown rice, oats, camote. ${dm?'Diabetic: choose low-GI options, monitor portions carefully.':''}`],
     ['Total Fiber',fiberTarget+'&thinsp;g','No UL','<span class="badge-ok">STANDARD</span>','Fiber supports gut health, reduces uremic toxin precursor production (indoxyl sulfate). Filipino sources: okra, ampalaya, malunggay (if K allows).'],
@@ -3261,7 +3264,7 @@ function runCalc(){
   document.getElementById('res-h3').textContent = isHealthy ? 'Your Daily Nutrition Prescription' : 'Your CKD Nutrition Prescription';
   const wgLabels = {loss:'Weight Loss',maintain:'Maintain Weight',gain:'Weight Gain'};
   document.getElementById('res-sub').textContent=
-    `${patName?patName+' · ':''}${sex==='M'?'Male':'Female'}, age ${age} · ${wt} kg · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]}${!isHealthy?' · Goal: '+(wgLabels[wg]||'Maintain Weight'):''}`;
+    `${patName?patName+' · ':''}${sex==='M'?'Male':'Female'}, age ${age} · ${wt} kg · BMI ${bmi.toFixed(1)} · ${stageLabels[stage]}${wg!=='maintain'?' · Goal: '+(wgLabels[wg]||'Maintain Weight'):''}`;
 
   // ── Vitamin warnings ──
   const vwList=[];
@@ -3312,9 +3315,13 @@ function runCalc(){
     clinItems.push({icon:'🧂',text:'<strong>Sodium &lt;2,300 mg/day</strong> — controls blood pressure and slows CKD progression'});
     clinItems.push({icon:'📊',text:'<strong>Monitor labs every 3–6 months</strong> — eGFR, potassium, phosphorus, albumin, urine protein'});
   }
-  if(!isHealthy && wg==='loss' && !pew) clinItems.push({icon:'⬇',text:`<strong>Weight loss goal: calorie target reduced ~250–300 kcal/day</strong>. Max 0.5 kg/week. ${bmi<23?'⚠ BMI '+bmi.toFixed(1)+' — weight loss not advised at this BMI; discuss with nephrologist.':'Never restrict below safe minimums — protein-energy wasting is a serious risk in CKD.'}`});
-  else if(!isHealthy && wg==='gain') clinItems.push({icon:'⬆',text:`<strong>Weight gain goal: calorie target increased ~250–300 kcal/day</strong>. ${pew?'PEW modifier active — prioritize high biological value protein and calorie-dense kidney-friendly foods.':'Reassess target weight and progress with your renal dietitian.'}`});
-  else if(!isHealthy && wg==='loss' && pew) clinItems.push({icon:'⚠',text:'<strong>Weight loss goal overridden: protein-energy wasting detected</strong> — nutritional rehabilitation must come before any weight reduction. Refer to renal dietitian urgently.'});
+  if(wg==='loss' && !pew) clinItems.push({icon:'⬇',text:isHealthy
+    ?`<strong>Weight loss goal: ~300 kcal/day deficit applied</strong>. Target rate 0.5 kg/week. Maintain adequate protein intake to preserve lean muscle mass during weight loss.`
+    :`<strong>Weight loss goal: calorie target reduced ~250–300 kcal/day</strong>. Max 0.5 kg/week. ${bmi<23?'⚠ BMI '+bmi.toFixed(1)+' — weight loss not advised at this BMI; discuss with nephrologist.':'Never restrict below safe minimums — protein-energy wasting is a serious risk in CKD.'}`});
+  else if(wg==='gain') clinItems.push({icon:'⬆',text:isHealthy
+    ?`<strong>Weight gain goal: ~300 kcal/day surplus applied</strong>. Target rate 0.25–0.5 kg/week. Combine with resistance exercise to maximize lean mass gain over fat.`
+    :`<strong>Weight gain goal: calorie target increased ~250–300 kcal/day</strong>. ${pew?'PEW modifier active — prioritize high biological value protein and calorie-dense kidney-friendly foods.':'Reassess target weight and progress with your renal dietitian.'}`});
+  else if(wg==='loss' && pew) clinItems.push({icon:'⚠',text:'<strong>Weight loss goal overridden: protein-energy wasting detected</strong> — nutritional rehabilitation must come before any weight reduction. Refer to renal dietitian urgently.'});
   if(dm) clinItems.push({icon:'🍚',text:'<strong>Diabetes: low-GI carbohydrates, consistent meal timing</strong> — target HbA1c &lt;7% (KDIGO 2024)'});
   if(pew) clinItems.push({icon:'⬆',text:'<strong>Protein-energy wasting modifier applied</strong> — consult renal dietitian urgently for nutritional rehabilitation plan'});
   clinItems.push({icon:'☀',text:'<strong>Vitamin D: check 25-OH Vit D and supplement</strong> — deficiency near-universal in Filipino CKD patients'});
@@ -3371,16 +3378,16 @@ function runCalc(){
     if(dm) rxNotes.push('Low-GI carbohydrates; consistent meal timing; HbA1c target &lt;7%');
     if(pew) rxNotes.push('Protein-energy wasting present — refer to renal dietitian urgently');
   }
-  if(!isHealthy && wg !== 'maintain' && !pew) rxNotes.push(
+  if(wg !== 'maintain' && !pew) rxNotes.push(
     wg==='loss'
-      ? `Weight loss goal: ~${Math.round(4*calcWt)} kcal/day deficit applied · Target ${Math.round(Math.max(ibw,40)*10)/10} kg (IBW) · safe rate 0.5 kg/week`
-      : `Weight gain goal: ~${Math.round(4*calcWt)} kcal/day surplus applied · Target ${Math.round(Math.min(ibw+2,ibw)*10)/10 || Math.round(ibw*10)/10} kg · safe rate 0.25 kg/week`
+      ? `Weight loss goal: ~${isHealthy?300:Math.round(4*calcWt)} kcal/day deficit applied · Target ${Math.round(Math.max(ibw,40)*10)/10} kg (IBW) · safe rate 0.5 kg/week`
+      : `Weight gain goal: ~${isHealthy?300:Math.round(4*calcWt)} kcal/day surplus applied · Target ${Math.round(ibw*10)/10} kg (IBW) · safe rate 0.25 kg/week`
   );
   document.getElementById('rx-notes').innerHTML = rxNotes.map(n=>`<li>${n}</li>`).join('');
 
   // ── Weight Goal Summary Panel ──
   const wgPanel = document.getElementById('wg-summary');
-  if(wg !== 'maintain' && !isHealthy){
+  if(wg !== 'maintain'){
     const ibwR = Math.round(ibw * 10) / 10;
     const tBmiInput = parseFloat(document.getElementById('f-target-bmi')?.value);
     const usingCustomBmi = !isNaN(tBmiInput) && tBmiInput >= 16 && tBmiInput <= 40;
