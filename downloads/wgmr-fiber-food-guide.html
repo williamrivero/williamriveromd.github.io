@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fiber-Rich Filipino Food Guide · williamriveromd.com</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:9pt;}
+body{font-family:Arial,'Segoe UI',sans-serif;color:#0f1e2e;background:#fff;line-height:1.35;}
+@page{size:A4;margin:15mm;}
+@media print{
+  .print-btn{display:none!important;}
+  body{font-size:10px;}
+}
+
+/* ── SCREEN WRAPPER ── */
+.page-wrap{max-width:190mm;margin:0 auto;padding:10mm 0;}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#1a6b72 0%,#0f4a50 100%);color:#fff;padding:10px 14px 10px;border-radius:6px 6px 0 0;}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.h-left{}
+.h-tag{display:inline-block;background:rgba(255,255,255,.2);color:#fff;font-size:6.5pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-bottom:5px;}
+.h-title{font-size:17pt;font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:3px;}
+.h-subtitle{font-size:8pt;opacity:.85;max-width:340px;line-height:1.4;margin-bottom:4px;}
+.h-byline{font-size:7pt;opacity:.65;}
+.h-right{text-align:right;flex-shrink:0;}
+.h-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:6px 10px;text-align:center;min-width:90px;}
+.h-circle{width:34px;height:34px;background:linear-gradient(135deg,#a8d8a8,#5cb85c);border-radius:50%;margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:16pt;}
+.h-name{font-size:6pt;font-weight:700;color:#fff;line-height:1.3;}
+.h-date{font-size:5.5pt;opacity:.55;color:#fff;margin-top:2px;}
+
+/* ── TARGET BAND ── */
+.target-band{background:#e8f4f5;border-left:4px solid #1a6b72;padding:6px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:center;}
+.tb-item{text-align:center;}
+.tb-num{font-size:13pt;font-weight:800;color:#1a6b72;line-height:1;}
+.tb-label{font-size:6.5pt;color:#374151;font-weight:600;margin-top:1px;}
+.tb-note{font-size:7pt;color:#6b7280;grid-column:1/-1;text-align:center;margin-top:2px;font-style:italic;}
+
+/* ── SECTION HEADER ── */
+.sec-head{display:flex;align-items:center;gap:6px;margin:8px 0 4px;}
+.sec-num{width:18px;height:18px;background:#1a6b72;color:#fff;border-radius:50%;font-size:7.5pt;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sec-title{font-size:9.5pt;font-weight:800;color:#0f1e2e;}
+
+/* ── FOOD TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:7.5pt;}
+thead th{background:#1a6b72;color:#fff;padding:4px 6px;text-align:left;font-weight:700;font-size:7pt;}
+thead th:last-child{text-align:left;}
+tbody tr td{padding:3px 6px;vertical-align:top;line-height:1.3;}
+tbody tr:nth-child(even){background:rgba(0,0,0,.025);}
+
+/* Tier rows */
+.tier-head td{font-weight:800;font-size:7pt;letter-spacing:.05em;padding:4px 6px 2px;}
+.tier-high .tier-head td{background:#dcfce7;color:#15803d;}
+.tier-good .tier-head td{background:#fef9c3;color:#854d0e;}
+.tier-moderate .tier-head td{background:#ffedd5;color:#9a3412;}
+.tier-low .tier-head td{background:#f3f4f6;color:#4b5563;}
+
+tr.tier-high td{background:#f0fdf4;}
+tr.tier-good td{background:#fefce8;}
+tr.tier-moderate td{background:#fff7ed;}
+tr.tier-low td{background:#f9fafb;}
+
+.fiber-val{font-weight:700;color:#1a6b72;white-space:nowrap;}
+.tier-good .fiber-val{color:#92400e;}
+.tier-moderate .fiber-val{color:#c2410c;}
+.tier-low .fiber-val{color:#6b7280;}
+
+.ckd-ok{color:#15803d;font-weight:600;}
+.ckd-caution{color:#b45309;font-weight:600;}
+.ckd-limit{color:#dc2626;font-weight:600;}
+.ckd-neutral{color:#6b7280;}
+
+.tbl-foot{font-size:6.5pt;color:#6b7280;margin:3px 0 6px;line-height:1.4;}
+
+/* ── SUPPLEMENTS GRID ── */
+.supp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:4px 0;}
+.supp-tile{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:5px;padding:5px 6px;}
+.supp-name{font-size:7.5pt;font-weight:800;color:#15803d;line-height:1.2;margin-bottom:2px;}
+.supp-dose{font-size:6.5pt;font-weight:700;color:#1a6b72;}
+.supp-note{font-size:6pt;color:#374151;margin-top:2px;line-height:1.3;}
+
+/* ── ALERT BOX ── */
+.alert-box{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:5px;padding:6px 10px;margin:6px 0;}
+.alert-box .alert-title{font-size:8pt;font-weight:800;color:#b91c1c;margin-bottom:4px;}
+.alert-box ul{padding-left:14px;}
+.alert-box li{font-size:7pt;color:#374151;line-height:1.45;margin-bottom:2px;}
+.alert-box li strong{color:#b91c1c;}
+
+/* ── MYTH CALLOUT ── */
+.myth-box{background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 5px 5px 0;padding:6px 10px;margin:6px 0;}
+.myth-label{font-size:6.5pt;font-weight:800;color:#1d4ed8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
+.myth-text{font-size:8.5pt;font-weight:700;color:#1e3a8a;line-height:1.4;}
+.myth-text em{color:#1d4ed8;font-style:normal;}
+
+/* ── FOOTER ── */
+.doc-footer{background:#f3f4f6;border-top:2px solid #1a6b72;padding:5px 12px;margin-top:6px;display:flex;justify-content:space-between;align-items:center;font-size:6.5pt;color:#6b7280;border-radius:0 0 6px 6px;}
+.doc-footer a{color:#1a6b72;text-decoration:none;}
+
+/* ── PRINT BUTTON (screen only) ── */
+.print-btn{display:block;margin:10px auto 0;padding:8px 22px;background:#1a6b72;color:#fff;border:none;border-radius:5px;font-size:10pt;font-weight:700;cursor:pointer;letter-spacing:.03em;}
+.print-btn:hover{background:#0f4a50;}
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="h-left">
+      <div class="h-tag">Printable Handout</div>
+      <div class="h-title">Fiber-Rich Filipino Food Guide</div>
+      <div class="h-subtitle">How much fiber is in what you eat — and what to do about it</div>
+      <div class="h-byline">W. G. M. Rivero, MD, FPCP, DPSN &nbsp;·&nbsp; williamriveromd.com</div>
+    </div>
+    <div class="h-right">
+      <div class="h-badge">
+        <div class="h-circle">🌱</div>
+        <div class="h-name">Dr. W. G. M.<br>Rivero, MD</div>
+        <div class="h-date">May 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: DAILY TARGET -->
+<div class="target-band">
+  <div class="tb-item">
+    <div class="tb-num">25 g</div>
+    <div class="tb-label">Women / day</div>
+  </div>
+  <div class="tb-item">
+    <div class="tb-num">38 g</div>
+    <div class="tb-label">Men / day</div>
+  </div>
+  <div class="tb-item">
+    <div class="tb-num">14–18 g</div>
+    <div class="tb-label">Avg. Filipino gets</div>
+  </div>
+  <div class="tb-note">Most Filipinos get only 14–18 g/day — well below the recommended target.</div>
+</div>
+
+<!-- SECTION 2: FOOD TABLE -->
+<div class="sec-head">
+  <span class="sec-num">2</span>
+  <span class="sec-title">Filipino Foods Ranked by Fiber</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:38%">Food</th>
+      <th style="width:22%">Fiber per serving</th>
+      <th style="width:40%">CKD / Dialysis note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- HIGH -->
+    <tr class="tier-head tier-high"><td colspan="3">🟢 HIGH — ≥ 7 g per serving</td></tr>
+    <tr class="tier-high"><td>Black beans (cooked, 1 cup)</td><td class="fiber-val">15 g</td><td class="ckd-caution">Limit in CKD 4–5/dialysis (K↑, P↑)</td></tr>
+    <tr class="tier-high"><td>Garbanzos / chickpeas (1 cup)</td><td class="fiber-val">12 g</td><td class="ckd-caution">Limit in CKD 4–5/dialysis (K↑, P↑)</td></tr>
+    <tr class="tier-high"><td>Chia seeds (2 tbsp)</td><td class="fiber-val">10 g</td><td class="ckd-ok">Kidney-friendly in small doses</td></tr>
+    <tr class="tier-high"><td>Monggo / mung beans (½ cup cooked)</td><td class="fiber-val">8 g</td><td class="ckd-caution">Limit in CKD 4–5/dialysis (K↑, P↑)</td></tr>
+    <!-- GOOD -->
+    <tr class="tier-head tier-good"><td colspan="3">🟡 GOOD — 4–6 g per serving</td></tr>
+    <tr class="tier-good"><td>Guava (1 cup)</td><td class="fiber-val">8 g</td><td class="ckd-caution">Limit in CKD 4–5/dialysis (K↑)</td></tr>
+    <tr class="tier-good"><td>Avocado (1 whole)*</td><td class="fiber-val">10 g*</td><td class="ckd-caution">Very high K — CKD 4–5/dialysis: ½ max</td></tr>
+    <tr class="tier-good"><td>Saluyot / jute leaves (1 cup cooked)</td><td class="fiber-val">5 g</td><td class="ckd-ok">Low K/P — generally safe</td></tr>
+    <tr class="tier-good"><td>Oatmeal (1 serving, 40 g dry)</td><td class="fiber-val">4 g</td><td class="ckd-ok">Kidney-friendly; lowers LDL</td></tr>
+    <tr class="tier-good"><td>Brown rice (1 cup cooked)</td><td class="fiber-val">3.5 g</td><td class="ckd-ok">Slightly more P than white rice</td></tr>
+    <!-- MODERATE -->
+    <tr class="tier-head tier-moderate"><td colspan="3">🟠 MODERATE — 2–4 g per serving</td></tr>
+    <tr class="tier-moderate"><td>Kamote / sweet potato (1 medium)</td><td class="fiber-val">3.8 g</td><td class="ckd-caution">Moderate K — leach before cooking</td></tr>
+    <tr class="tier-moderate"><td>Malunggay leaves (1 cup)</td><td class="fiber-val">3.5 g</td><td class="ckd-ok">Low K/P — generally safe</td></tr>
+    <tr class="tier-moderate"><td>Saba banana (1 medium)</td><td class="fiber-val">3.5 g</td><td class="ckd-caution">Moderate K — limit in CKD 4–5</td></tr>
+    <tr class="tier-moderate"><td>Okra (1 cup cooked)</td><td class="fiber-val">3.2 g</td><td class="ckd-ok">Low K/P — very kidney-friendly</td></tr>
+    <tr class="tier-moderate"><td>Sitaw / yard-long beans (1 cup)</td><td class="fiber-val">3 g</td><td class="ckd-ok">Generally safe; low K</td></tr>
+    <tr class="tier-moderate"><td>Sampaloc / tamarind (100 g pulp)†</td><td class="fiber-val">3–5 g†</td><td class="ckd-caution">Only if pulp is eaten; high K</td></tr>
+    <tr class="tier-moderate"><td>Kangkong / water spinach (1 cup)</td><td class="fiber-val">2.5 g</td><td class="ckd-ok">Low K/P — safe in usual amounts</td></tr>
+    <tr class="tier-moderate"><td>Pako / fern salad (1 cup)</td><td class="fiber-val">2.5 g</td><td class="ckd-ok">Low K — generally safe</td></tr>
+    <!-- LOW -->
+    <tr class="tier-head tier-low"><td colspan="3">⬜ LOW — &lt; 2 g per serving</td></tr>
+    <tr class="tier-low"><td>Pechay / bok choy (1 cup cooked)</td><td class="fiber-val">2.5 g</td><td class="ckd-ok">Low K/P — safe</td></tr>
+    <tr class="tier-low"><td>Eggplant / talong (1 cup)</td><td class="fiber-val">2.5 g</td><td class="ckd-ok">Low K/P — safe</td></tr>
+    <tr class="tier-low"><td>Pineapple (1 cup)</td><td class="fiber-val">2.3 g</td><td class="ckd-ok">Low K — safe in moderation</td></tr>
+    <tr class="tier-low"><td>White rice (1 cup cooked)</td><td class="fiber-val">0.6 g</td><td class="ckd-neutral">Lowest K/P of all staples</td></tr>
+  </tbody>
+</table>
+<div class="tbl-foot">*Whole avocado (full fruit). &nbsp;†Sampaloc pulp only — strained sinigang broth = 0 g fiber.</div>
+
+<!-- SECTION 3: SUPPLEMENTS -->
+<div class="sec-head">
+  <span class="sec-num">3</span>
+  <span class="sec-title">Fiber Supplements</span>
+</div>
+<div class="supp-grid">
+  <div class="supp-tile">
+    <div class="supp-name">Psyllium husk (C-Lium)</div>
+    <div class="supp-dose">3–5 g / serving</div>
+    <div class="supp-note">Best all-round; very kidney-friendly. Drink extra water.</div>
+  </div>
+  <div class="supp-tile">
+    <div class="supp-name">Shirataki rice</div>
+    <div class="supp-dose">~1 g / cup</div>
+    <div class="supp-note">Ultra kidney-friendly; near-zero K &amp; P. Good rice substitute.</div>
+  </div>
+  <div class="supp-tile">
+    <div class="supp-name">Chia seeds</div>
+    <div class="supp-dose">10 g / 2 tbsp</div>
+    <div class="supp-note">Easy to add to lugaw or water. Omega-3 bonus.</div>
+  </div>
+  <div class="supp-tile">
+    <div class="supp-name">Flaxseed (ground)</div>
+    <div class="supp-dose">5–6 g / 2 tbsp</div>
+    <div class="supp-note">Omega-3 bonus. Use ground for absorption.</div>
+  </div>
+  <div class="supp-tile">
+    <div class="supp-name">Oat bran</div>
+    <div class="supp-dose">6–8 g / ½ cup</div>
+    <div class="supp-note">Beta-glucan lowers LDL. Good in porridge.</div>
+  </div>
+</div>
+
+<!-- SECTION 4: CKD NOTES -->
+<div class="sec-head">
+  <span class="sec-num">4</span>
+  <span class="sec-title">CKD &amp; Dialysis Notes</span>
+</div>
+<div class="alert-box">
+  <div class="alert-title">Important for Kidney Patients</div>
+  <ul>
+    <li><strong>Psyllium and shirataki</strong> are the most kidney-friendly options — low potassium, low phosphorus.</li>
+    <li><strong>CKD Stage 4–5 / dialysis:</strong> limit avocado, monggo, and guava due to high potassium and phosphorus — check amounts with your dietitian.</li>
+    <li><strong>Prunes</strong> work well for constipation (7 g fiber + sorbitol effect) but are <strong>HIGH in potassium</strong> — limit to 2–3 pieces in CKD 4–5/dialysis.</li>
+    <li><strong>Sinigang mix powder</strong> contains 0 g fiber. Use fresh sampaloc pulp (eaten, not strained) to get the fiber benefit from tamarind.</li>
+  </ul>
+</div>
+
+<!-- SECTION 5: MYTH -->
+<div class="sec-head">
+  <span class="sec-num">5</span>
+  <span class="sec-title">The Fiber Myth</span>
+</div>
+<div class="myth-box">
+  <div class="myth-label">Common Misconception</div>
+  <div class="myth-text">"A big green salad ≈ <em>2–3 g</em> fiber. &nbsp;Half cup monggo ≈ <em>8 g</em>. &nbsp;&nbsp;Fiber ≠ vegetables."</div>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <span>Full guide: <a href="https://williamriveromd.com/guides/fiber-patient-education">williamriveromd.com/guides/fiber-patient-education</a></span>
+  <span>© 2026 W. G. M. Rivero, MD</span>
+</div>
+
+</div><!-- /page-wrap -->
+
+<button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+
+</body>
+</html>
