@@ -2794,6 +2794,8 @@ function printRx(){
   const clinList  = document.getElementById('clin-list')     ? document.getElementById('clin-list').outerHTML  : '';
   const warnList  = document.getElementById('vit-warn-list') ? document.getElementById('vit-warn-list').outerHTML : '';
   const warnHead  = document.getElementById('vit-warn-heading') ? document.getElementById('vit-warn-heading').textContent : '';
+  const wgSummaryEl = document.getElementById('wg-summary');
+  const wgSummaryHtml = (wgSummaryEl && wgSummaryEl.style.display !== 'none') ? wgSummaryEl.innerHTML : '';
 
   const w = window.open('','_blank','width=900,height=700');
   w.document.write(`<!DOCTYPE html><html><head>
@@ -2853,6 +2855,16 @@ function printRx(){
   .rx-footer{margin-top:14px;padding-top:10px;border-top:1px solid #dde;display:flex;justify-content:space-between;align-items:flex-end;font-size:9.5px;color:#888;}
   .rx-footer strong{color:#1a6b72;}
   .disclaimer{font-size:9px;color:#999;margin-top:8px;line-height:1.5;}
+
+  /* ── Weight Goal Summary ── */
+  .wg-summary-panel{border:1.5px solid #1a6b72;border-radius:8px;padding:12px 14px;margin-bottom:14px;page-break-inside:avoid;}
+  .wg-summary-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#1a6b72;margin-bottom:8px;}
+  .wg-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid #dde;border-radius:6px;overflow:hidden;margin-bottom:8px;}
+  .wg-stat{padding:7px 6px;text-align:center;border-right:1px solid #dde;}
+  .wg-stat:last-child{border-right:none;}
+  .wg-stat-val{font-size:14px;font-weight:700;color:#1a6b72;line-height:1.1;margin-bottom:2px;}
+  .wg-stat-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;}
+  .wg-summary-note{font-size:10px;color:#374151;line-height:1.55;margin-top:4px;}
 </style>
 </head><body>
 
@@ -2870,6 +2882,7 @@ function printRx(){
   <div class="rx-notes">${document.getElementById('rx-notes').outerHTML}</div>
 </div>
 
+${wgSummaryHtml ? `<div class="wg-summary-panel">${wgSummaryHtml}</div>` : ''}
 <div class="section-head">Macronutrients &amp; Energy</div>
 ${macroTbl}
 <div class="section-head">Minerals &amp; Electrolytes</div>
