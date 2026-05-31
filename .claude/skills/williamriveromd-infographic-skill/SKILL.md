@@ -104,10 +104,10 @@ Composition:
 
 Copyright attribution (MANDATORY on every image):
 - Every image must include a subtle copyright attribution line rendered as small, legible text
-- Format: © W. G. M. Rivero, MD · williamriveromd.com
+- Format: williamriveromd.com
 - Placement: bottom-right corner for landscape/square images; bottom-center for portrait images
 - Style: navy (#0f1e2e) or dark teal text, 10–11px equivalent, semi-transparent (70% opacity), set against the light image background — never obscuring clinical content
-- The © symbol must be present; do not omit it or abbreviate to just the URL
+- Render the attribution exactly as williamriveromd.com
 - This attribution must appear in EVERY prompt and EVERY generated image, with no exceptions
 
 ## IMAGE GENERATOR GPT ADAPTER
@@ -153,10 +153,10 @@ PROMPT:
 [full production prompt]
 
 NEGATIVE INSTRUCTIONS:
-Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Never omit the © W. G. M. Rivero, MD · williamriveromd.com attribution.
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Never omit the williamriveromd.com attribution.
 
 QUALITY CHECK:
-Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com. Background must be white, off-white, or soft light gray — never dark. Copyright attribution © W. G. M. Rivero, MD · williamriveromd.com must be visible in the bottom corner.
+Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com. Background must be white, off-white, or soft light gray — never dark. Copyright attribution williamriveromd.com must be visible in the bottom corner.
 
 ## MIXED-MEDIA RENDERING SYSTEM
 
@@ -289,4 +289,4 @@ Never sacrifice clinical clarity for visual complexity.
 
 **LIGHT BACKGROUND RULE — ABSOLUTE:** Every image must have a white, off-white, or soft light gray background. Dark backgrounds (navy, black, charcoal) are never permitted on any image type — including OG cards, heroes, infographics, and 3D renders. Navy and teal are accent and typography colors only.
 
-Every image must carry the copyright attribution **© W. G. M. Rivero, MD · williamriveromd.com** — rendered as small, semi-transparent navy or dark teal text in the bottom-right corner (bottom-center for portrait). This is a non-negotiable house rule for all williamriveromd.com visuals.
+Every image must carry the copyright attribution **williamriveromd.com** — rendered as small, semi-transparent navy or dark teal text in the bottom-right corner (bottom-center for portrait). This is a non-negotiable house rule for all williamriveromd.com visuals.
