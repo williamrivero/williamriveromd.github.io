@@ -170,6 +170,21 @@ Use the PRIMARY image (first image / hero) for the guide.
 Dimensions come from the `OG WIDTH` / `OG HEIGHT` fields in the prompt file,
 which in turn come from the archetype dimension table above.
 
+### Canonical OG / social share image size
+
+**1200 × 630 px (1.91:1 ratio)** is the correct size for any image intended
+as an Open Graph / social share card.
+
+- Facebook treats anything ≥ 600 px wide at 1.91:1 as a "large" link preview
+- 1200 × 630 is the retina sweet spot — sharp without being downscaled oddly
+- Always declare `og:image:width` and `og:image:height` explicitly so the
+  scraper does not have to guess dimensions
+- Square (1:1) images work for Instagram-first assets but will be letterboxed
+  on Facebook/X link previews — prefer 1200 × 630 for guide OG images
+- Guide hero images used **inline on the page** can be any archetype dimension;
+  the **OG image** should be a separate 1200 × 630 card when social sharing
+  is a priority
+
 ---
 
 ## Naming convention

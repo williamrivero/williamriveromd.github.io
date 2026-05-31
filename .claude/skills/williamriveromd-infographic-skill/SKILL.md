@@ -114,6 +114,24 @@ IMAGE TYPE:
 ASPECT RATIO:
 [16:9, 4:3, 1:1, or portrait]
 
+PIXEL DIMENSIONS:
+[W × H — see canonical sizes below]
+
+### Canonical image sizes
+
+| Use case | Dimensions | Ratio | Notes |
+|---|---|---|---|
+| **OG / social share card** | **1200 × 630** | **1.91:1** | **Sweet spot for Facebook, X, LinkedIn, iMessage** |
+| Guide hero (inline LCP) | 1254 × 1254 | 1:1 | Square hero on page; separate from OG card |
+| Wide infographic | 1792 × 1024 | 16:9 | Mechanism posters, multi-panel |
+| Tall infographic | 1024 × 1536 | 2:3 | Clinical algorithms, step-by-step |
+| Food matrix / ref card | 1536 × 1152 | 4:3 | Tables, grids |
+| Circular diagram | 1024 × 1024 | 1:1 | Workflow loops |
+
+**OG image rule:** When a guide needs a social share card, generate it at **1200 × 630 px**.
+Always pair with explicit `og:image:width="1200"` and `og:image:height="630"` meta tags.
+Facebook minimum is 600 px wide at 1.91:1; anything below that renders as a small thumbnail.
+
 AUDIENCE:
 [patients, clinicians, dialysis nurses, renal dietitians, mixed]
 
