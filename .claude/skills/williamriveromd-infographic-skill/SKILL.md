@@ -115,7 +115,7 @@ Copyright attribution (MANDATORY on every image):
 When writing prompts for the Image Generator GPT, use this structure:
 
 FILE NAME:
-[recommended file name]
+[recommended file name — always use .png extension; GPT-4o / gpt-image-1 outputs PNG by default]
 
 IMAGE TYPE:
 [archetype]
@@ -140,6 +140,8 @@ PIXEL DIMENSIONS:
 **OG image rule:** When a guide needs a social share card, generate it at **1200 × 630 px**.
 Always pair with explicit `og:image:width="1200"` and `og:image:height="630"` meta tags.
 Facebook minimum is 600 px wide at 1.91:1; anything below that renders as a small thumbnail.
+
+**File format rule:** All images default to **.png** — this is the native output format of GPT-4o (gpt-image-1) and GPT Image Generator 2. Never recommend .jpg or .jpeg file names unless the user explicitly requests JPEG.
 
 AUDIENCE:
 [patients, clinicians, dialysis nurses, renal dietitians, mixed]
@@ -259,7 +261,7 @@ For each image:
 
 IMAGE NUMBER:
 SECTION PLACEMENT:
-FILE NAME:
+FILE NAME: [always .png]
 ARCHETYPE:
 AUDIENCE:
 VISUAL MIX:
