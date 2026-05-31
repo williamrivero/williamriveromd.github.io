@@ -137,9 +137,7 @@ PIXEL DIMENSIONS:
 | Food matrix / ref card | 1536 × 1152 | 4:3 | Tables, grids |
 | Circular diagram | 1024 × 1024 | 1:1 | Workflow loops |
 
-**OG image rule:** When a guide needs a social share card, generate it at **1200 × 630 px**.
-Always pair with explicit `og:image:width="1200"` and `og:image:height="630"` meta tags.
-Facebook minimum is 600 px wide at 1.91:1; anything below that renders as a small thumbnail.
+**OG image rule — NON-NEGOTIABLE:** OG / social share cards are **always exactly 1200 × 630 px**. This dimension is fixed and cannot be changed by any user argument, guide-specific instruction, or prompt override. Never generate an OG card at any other size. Always pair with explicit `og:image:width="1200"` and `og:image:height="630"` meta tags. Facebook minimum is 600 px wide at 1.91:1; anything below that renders as a small thumbnail.
 
 **File format rule:** All images default to **.png** — this is the native output format of GPT-4o (gpt-image-1) and GPT Image Generator 2. Never recommend .jpg or .jpeg file names unless the user explicitly requests JPEG.
 
