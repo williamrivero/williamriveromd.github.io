@@ -64,20 +64,29 @@ Avoid:
 - excessive gloss or neon gradients
 - unrealistic anatomy
 - stock-photo blandness
+- dark backgrounds of any kind (navy, black, charcoal) — ALL images use light backgrounds only
 
 ## MASTER STYLE SYSTEM
 
+### BACKGROUND RULE (NON-NEGOTIABLE)
+**ALL images — without exception — must use a light background.**
+- Permitted backgrounds: white (#ffffff), off-white (#fafafa), soft gray (#f3f4f6), very light teal tint (#eef6f7), very light warm cream (#f8f5f0)
+- Navy, dark navy, charcoal, black, or any dark-toned background is NEVER permitted
+- For OG social share cards: use white or off-white base with navy/teal/amber typography and accent elements
+- For photorealistic scenes: use bright, airy, naturally lit clinical or home settings — never dark studio or moody lighting
+- Navy (#0f1e2e) is reserved for text, headings, borders, and accent elements ONLY — never as a background fill
+
 Color palette:
-- Primary navy: #0f1e2e
-- Clinical teal: #1a6b72
-- Renal green: #1f7a4d
-- Amber/gold: #b8860b
-- Clinical red: #b91c1c
-- Soft gray: #f3f4f6
-- Off-white: #fafafa
+- Page/canvas background: white #ffffff or off-white #fafafa (MANDATORY)
+- Section/card background: soft gray #f3f4f6 or light teal tint #eef6f7
+- Primary navy: #0f1e2e — text and accents only
+- Clinical teal: #1a6b72 — headings, rules, badges
+- Renal green: #1f7a4d — positive/safe indicators
+- Amber/gold: #b8860b — caution indicators
+- Clinical red: #b91c1c — warning/danger indicators
 
 Typography direction:
-- Large bold condensed sans-serif titles
+- Large bold condensed sans-serif titles in navy (#0f1e2e) on light backgrounds
 - Strong visual hierarchy
 - Short educational phrases
 - Mobile-readable labels
@@ -97,7 +106,7 @@ Copyright attribution (MANDATORY on every image):
 - Every image must include a subtle copyright attribution line rendered as small, legible text
 - Format: © W. G. M. Rivero, MD · williamriveromd.com
 - Placement: bottom-right corner for landscape/square images; bottom-center for portrait images
-- Style: white or very light gray text, 10–11px equivalent, semi-transparent (60–70% opacity), set against a dark strip, vignette, or the image background — never obscuring clinical content
+- Style: navy (#0f1e2e) or dark teal text, 10–11px equivalent, semi-transparent (70% opacity), set against the light image background — never obscuring clinical content
 - The © symbol must be present; do not omit it or abbreviate to just the URL
 - This attribution must appear in EVERY prompt and EVERY generated image, with no exceptions
 
@@ -142,10 +151,10 @@ PROMPT:
 [full production prompt]
 
 NEGATIVE INSTRUCTIONS:
-Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. Never omit the © W. G. M. Rivero, MD · williamriveromd.com attribution.
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Never omit the © W. G. M. Rivero, MD · williamriveromd.com attribution.
 
 QUALITY CHECK:
-Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com. Copyright attribution © W. G. M. Rivero, MD · williamriveromd.com must be visible in the bottom corner.
+Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com. Background must be white, off-white, or soft light gray — never dark. Copyright attribution © W. G. M. Rivero, MD · williamriveromd.com must be visible in the bottom corner.
 
 ## MIXED-MEDIA RENDERING SYSTEM
 
@@ -163,11 +172,11 @@ Preferred:
 
 Style:
 - premium healthcare editorial photography
-- realistic lighting
+- bright, airy, naturally lit clinical or home setting
+- realistic lighting — always bright and clean, never dark or moody
 - natural skin texture
 - calm facial expressions
-- cinematic but restrained
-- clean clinical or home setting
+- light-toned backgrounds (white walls, soft daylight, clean clinical interiors)
 - shallow depth of field when appropriate
 
 B. 2D Infographic System
@@ -276,4 +285,6 @@ Use mixed media when useful:
 
 Never sacrifice clinical clarity for visual complexity.
 
-Every image must carry the copyright attribution **© W. G. M. Rivero, MD · williamriveromd.com** — rendered as small, semi-transparent text in the bottom-right corner (bottom-center for portrait). This is a non-negotiable house rule for all williamriveromd.com visuals.
+**LIGHT BACKGROUND RULE — ABSOLUTE:** Every image must have a white, off-white, or soft light gray background. Dark backgrounds (navy, black, charcoal) are never permitted on any image type — including OG cards, heroes, infographics, and 3D renders. Navy and teal are accent and typography colors only.
+
+Every image must carry the copyright attribution **© W. G. M. Rivero, MD · williamriveromd.com** — rendered as small, semi-transparent navy or dark teal text in the bottom-right corner (bottom-center for portrait). This is a non-negotiable house rule for all williamriveromd.com visuals.
