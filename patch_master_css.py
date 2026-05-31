@@ -1254,7 +1254,9 @@ def main():
         print(f"{args.guide}: {result}")
         return
 
-    files = sorted(f for f in guides_dir.glob("*.html") if f.name != "index.html")
+    # Files with custom CSS appended after the master block — skip to avoid data loss
+    EXCLUDE = {"nephrology-atlas.html"}
+    files = sorted(f for f in guides_dir.glob("*.html") if f.name != "index.html" and f.name not in EXCLUDE)
     patched = skipped = 0
 
     for f in files:
