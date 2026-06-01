@@ -57,6 +57,24 @@ and that the `<img>` itself has `width:100%;height:auto;display:block`. Safe to
 re-run (idempotent). Run after `patch_hero_fetchpriority.py`.
 
 ```bash
+python3 patch_hero_maxwidth.py               # cap every guide's hero image at max-width 600px, centered
+python3 patch_hero_maxwidth.py --dry-run     # preview changes without writing
+python3 patch_hero_maxwidth.py --guide diabetes-kidneys.html  # single guide
+```
+
+Run `patch_hero_maxwidth.py` after adding any new guide (and after
+`patch_hero_fullwidth.py`) to cap the hero (LCP) `<img>` at `max-width:600px`
+and center it (`margin:<top> auto <bot> auto`), so square (1:1) and portrait
+(2:3) heroes don't render magnified at the full ~860px column width. The two
+scripts coexist: `patch_hero_fullwidth.py` keeps the enclosing `<figure>`
+full-width while this script caps and centers the `<img>` inside it (it only
+touches the img's `max-width`/`margin`, which fullwidth never strips). The
+script canonicalizes the hero's inline `style` — preserving `border-radius`,
+`box-shadow`, and any author-set vertical margins, repairing missing-semicolon
+merge bugs (e.g. `height:automax-width`) — and is idempotent. Banners using
+`object-fit:cover` (deliberate fixed-height crops) are skipped.
+
+```bash
 python3 patch_mode_cls.py                 # remove physician-mode restore-on-load (CLS fix)
 python3 patch_mode_cls.py --dry-run       # preview changes without writing
 python3 patch_mode_cls.py --guide el-nino-heat-dialysis.html  # single guide
