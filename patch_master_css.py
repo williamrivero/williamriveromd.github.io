@@ -1182,7 +1182,12 @@ def find_project_dir(script_path: Path) -> Path:
 
 
 def replace_style_block(html: str) -> tuple[str, bool]:
-    """Replace the content of the first <style>...</style> block with MASTER_CSS."""
+    """Replace the content of the first <style>...</style> block with MASTER_CSS.
+
+    Only the first <style> block is touched. Guide-specific CSS belongs in a
+    second <style> block placed after this one (see e.g. managing-hypertension,
+    alcohol-ckd, cardio-kidney-metabolic-syndrome), which this function leaves
+    untouched and is therefore safe across re-runs."""
     pattern = re.compile(r'(<style>)(.*?)(</style>)', re.DOTALL)
     match = pattern.search(html)
     if not match:
