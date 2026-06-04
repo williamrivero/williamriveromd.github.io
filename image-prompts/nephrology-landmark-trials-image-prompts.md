@@ -1,9 +1,9 @@
 # Nephrology Landmark Trials — Image Generator GPT Prompts
 **Guide:** williamriveromd.com/guides/nephrology-atlas (Landmark Trials Poster Series)
 **Generated:** 2026-06-04
-**Total images:** 10 posters · 20 key trials
+**Total images:** 11 posters
 
-> **Series concept:** Each poster is a clinician reference card covering one era or drug class, displaying the pivotal trials, their key populations, primary endpoints, hazard ratios, and clinical takeaways. Style is consistent across all 10 — NEJM/KDIGO publication aesthetic, white background, navy/teal/amber/red palette, highly readable at A3 or mobile screen.
+> **Series concept:** Each poster is a clinician reference card covering one era or drug class, displaying the pivotal trials, their key populations, primary endpoints, hazard ratios, and clinical takeaways. Style is consistent across all 11 — NEJM/KDIGO publication aesthetic, white background, navy/teal/amber/red palette, highly readable at A3 or mobile screen.
 
 ---
 
@@ -21,6 +21,7 @@
 | 8 | `landmark-anemia-trials-choir-create-treat.png` | CHOIR · CREATE · TREAT | 1792 × 1024 |
 | 9 | `landmark-dialysis-trials-hemo-mpo-evolve.png` | HEMO · MPO · EVOLVE | 1792 × 1024 |
 | 10 | `landmark-transplant-milestones-symphony-benefit.png` | SYMPHONY · BENEFIT | 1792 × 1024 |
+| 11 | `landmark-hdf-trials-contrast-eshol-turkish-convince.png` | CONTRAST · ESHOL · Turkish HDF · CONVINCE | 1792 × 1024 |
 
 ---
 
@@ -756,3 +757,129 @@ Bottom-right: small semi-transparent navy "williamriveromd.com" at 70% opacity. 
 **NEGATIVE INSTRUCTIONS:** Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text. NEVER dark backgrounds. Never omit attribution.
 
 **QUALITY CHECK:** Clinically accurate, mobile-readable, publication-grade, white background, attribution visible.
+
+---
+
+## IMAGE 11 — The Case for Hemodiafiltration
+
+**FILE NAME:** `landmark-hdf-trials-contrast-eshol-turkish-convince.png`
+**IMAGE TYPE:** Clinician Reference Card — Landmark Trial Poster
+**ASPECT RATIO:** 16:9
+**PIXEL DIMENSIONS:** 1792 × 1024
+**AUDIENCE:** Clinicians, nephrologists, dialysis nurses, dialysis unit directors
+**VISUAL GOAL:** Present the four pivotal HDF trials (CONTRAST, ESHOL, Turkish HDF Study, CONVINCE) in a single poster showing the progressive evidence arc from inconsistent early signals to the definitive 23% mortality benefit in CONVINCE (2023), and explain the convection volume threshold concept that resolves the apparent contradictions between trials.
+
+**PROMPT:**
+
+Clinical nephrology landmark trial reference poster, NEJM/ERA-EDTA publication style, white background (#ffffff). Series badge top-left: "LANDMARK TRIALS · HEMODIAFILTRATION" in small teal caps. Title in large bold navy: "The Case for Hemodiafiltration (HDF)". Subtitle in teal: "CONTRAST · ESHOL · Turkish HDF · CONVINCE — From Inconsistency to Proof".
+
+LAYOUT: Four trial columns (CONTRAST, ESHOL, Turkish HDF, CONVINCE) left to right in chronological order, with a mechanism panel and convection volume threshold strip at the bottom.
+
+Timeline strip at top (full width, teal): "2012: CONTRAST → 2013: ESHOL → 2013: Turkish HDF → 2023: CONVINCE (definitive)"
+
+---
+
+COLUMN 1 — CONTRAST (CONvective TRAnsport STudy):
+- Trial badge: navy "CONTRAST — 2012 (JASN)"
+- Origin: Netherlands · Multicenter European RCT
+- Population: "714 prevalent HD patients · Online post-dilution HDF vs low-flux HD · 3× weekly"
+- Follow-up: 3 years
+- Primary endpoint: All-cause mortality
+- Key result card (amber background):
+  "ITT analysis: NO significant reduction in all-cause mortality (HR 0.95, 95% CI 0.75–1.20, p=0.65)"
+  "HOWEVER — post-hoc convection volume analysis:"
+  "Patients achieving >21.9 L/session convection volume → 46% ↓mortality vs low-flux HD (HR 0.54, p=0.03)"
+  "Lower convection volume achievers: no benefit"
+- Critical insight callout (amber border): "CONTRAST was underpowered AND many patients did not achieve adequate convection volumes — the null result concealed a dose-response relationship"
+- Schematic: overall survival curves overlapping; subgroup curve (high convection) diverging significantly downward
+- Takeaway chip: "Convection VOLUME is the key variable — not just 'HDF vs HD'"
+
+---
+
+COLUMN 2 — ESHOL (Estudio de Supervivencia de Hemodiafiltración Online):
+- Trial badge: navy "ESHOL — 2013 (JASN)" with green "SIGNIFICANT BENEFIT" ribbon
+- Origin: Spain · 906 patients · Multicenter RCT
+- Population: "906 patients · Online post-dilution HDF vs high-flux HD · Prevalent patients"
+- Follow-up: 3 years
+- Primary endpoint: All-cause mortality
+- Key result card (green background):
+  "HDF → 30% ↓all-cause mortality (HR 0.70, 95% CI 0.53–0.92, p=0.01)"
+  "33% ↓cardiovascular mortality (HR 0.67, CI 0.44–1.02 — trend)"
+  "55% ↓infection-related mortality (HR 0.45, CI 0.21–0.96, p=0.04)"
+  "Mean convection volume achieved: ~23 L/session"
+- Schematic: Kaplan-Meier curves clearly diverging — HDF arm below high-flux HD from year 1 onward
+- Comparison note: "ESHOL achieved higher convection volumes than CONTRAST → explains different outcomes"
+- Takeaway chip: "First large RCT showing significant survival benefit with HDF over high-flux HD"
+
+---
+
+COLUMN 3 — Turkish HDF Study:
+- Trial badge: navy "TURKISH HDF STUDY — 2013 (NDT)"
+- Origin: Turkey · Multicenter RCT
+- Population: "782 patients · Online post-dilution HDF vs high-flux HD · 3× weekly"
+- Follow-up: 2.5 years
+- Primary endpoint: All-cause mortality
+- Key result card (teal background):
+  "HDF → significant reduction in all-cause mortality (HR 0.69, 95% CI 0.52–0.93, p=0.01)"
+  "↓Cardiovascular mortality (HR 0.62, CI 0.40–0.95, p=0.03)"
+  "Mean convection volume: ~21–23 L/session"
+  "Consistent with ESHOL — high-volume HDF confers survival benefit"
+- Schematic: survival curves diverging at ~6 months, sustained to trial end
+- Consistency badge: "Third independent trial confirming survival benefit — when adequate convection volume achieved"
+- Takeaway chip: "Survival benefit replicated independently — strengthens causal inference"
+
+---
+
+COLUMN 4 — CONVINCE (Comparison of Online Haemodiafiltration with High-flux Haemodialysis):
+- Trial badge: navy "CONVINCE — 2023 (NEJM)" with large green "DEFINITIVE TRIAL" ribbon
+- Origin: European multicenter · ERA-sponsored · Largest HDF RCT ever conducted
+- Population: "1,360 patients · Incident and prevalent HD patients · Online post-dilution HDF vs high-flux HD · 20 centers across 8 countries"
+- Follow-up: Median 30 months
+- Primary endpoint: All-cause mortality
+- Key result card (large, green background):
+  "HDF → 23% ↓all-cause mortality (HR 0.77, 95% CI 0.65–0.93, p=0.005)"
+  "NNT: ~14 patients treated for 2.5 years to prevent 1 death"
+  "↓Cardiovascular mortality: HR 0.72 (CI 0.55–0.94, p=0.02)"
+  "↓Infection-related mortality: HR 0.58 (CI 0.37–0.90, p=0.02)"
+  "Target convection volume: ≥23 L/session — achieved in >85% of HDF arm"
+  "Consistent benefit across subgroups: age · sex · diabetic status · baseline eGFR residual"
+  "No excess adverse events in HDF arm · Access complications comparable"
+- Large Kaplan-Meier schematic: HDF arm clearly below high-flux HD arm from ~3 months, diverging steadily to trial end. HR 0.77 displayed in bold green with confidence interval bar.
+- "First trial powered and designed to detect mortality difference with protocol-mandated high-volume HDF"
+- Takeaway chip (bold teal): "CONVINCE settles the debate — high-volume HDF reduces all-cause and CV mortality vs high-flux HD"
+
+---
+
+BOTTOM SECTION — Two-panel strip (full width):
+
+LEFT PANEL (50%) — The Convection Volume Threshold Concept:
+Title: "Why Earlier Trials Disagreed — The Dose-Response Relationship" in bold navy
+- X-axis: Convection volume per session (liters): 0 → 10 → 15 → 20 → 23 → 25+
+- Y-axis: Relative mortality risk (HR): 1.0 (no benefit) → 0.5 (major benefit)
+- Curve: flat above ~19L/session, then steep drop in mortality risk from 20L onward, plateauing at ~23–25L
+- Threshold marker: vertical amber dashed line at "≥23 L/session" labeled "CONVINCE target — minimum for benefit"
+- Data points annotated: CONTRAST low achievers (HR ~0.95, ~17L) · CONTRAST high achievers (HR 0.54, >21.9L) · ESHOL (HR 0.70, ~23L) · Turkish (HR 0.69, ~22L) · CONVINCE (HR 0.77, ≥23L)
+- Key message box (teal): "HDF benefit is CONVECTION-VOLUME DEPENDENT — low-volume HDF ≈ high-flux HD. High-volume HDF (≥23 L/session) = significant survival benefit."
+
+RIGHT PANEL (50%) — HDF vs HD: Mechanism of Benefit + 2026 Position:
+Title: "Why Does HDF Outperform High-Flux HD?" in bold navy
+
+Mechanism cards (4 stacked):
+1. "↑Middle molecule clearance (β2-microglobulin, FGF-23, PTH fragments, κ/λ light chains) — convective transport clears 10–20 kDa molecules that diffusion misses"
+2. "↓Systemic inflammation — ↓circulating uremic toxins · ↓oxidative stress markers (IL-6, CRP)"
+3. "↑Cardiovascular stability — ↓intradialytic hypotension episodes · ↑MAP stability during sessions"
+4. "↑Endothelial function — ↓asymmetric dimethylarginine (ADMA) levels"
+
+2026 Clinical Position box (green border):
+"CONVINCE Evidence Summary — Practice Implications:"
+"• High-volume online post-dilution HDF (≥23 L/session) is now evidence-based standard for eligible HD patients"
+"• ERA/EDTA 2024 guidance update: HDF recommended where infrastructure available"
+"• Requires: Online HDF-capable machine · Ultrapure water · Adequate vascular access flow (>300 mL/min)"
+"• Not all centers have capability — implementation gap remains"
+"• No increased cost of access complications vs high-flux HD in CONVINCE"
+
+Bottom-right: small semi-transparent navy "williamriveromd.com" at 70% opacity. White background. No dark backgrounds. Publication-grade. Mobile-readable.
+
+**NEGATIVE INSTRUCTIONS:** Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid overprocessed HDR. NEVER use dark, navy, charcoal, or black backgrounds. Never omit the williamriveromd.com attribution.
+
+**QUALITY CHECK:** Clinically accurate (HRs and CIs match published data), mobile-readable, publication-grade, white background, attribution visible bottom-right. Convection volume threshold concept must be clearly illustrated.
