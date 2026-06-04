@@ -2109,5 +2109,35 @@ function toggleDark(){
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 <script src="../assets/symptom-checker-widget.js" defer></script>
+<script>/* img-dblclick-open: double-click / double-tap an image to open it full-size in a new tab */
+(function(){
+  function openImg(img){
+    var src=img.currentSrc||img.src;
+    if(!src||src.indexOf("data:")===0)return;
+    window.open(src,"_blank","noopener");
+  }
+  function imgFrom(e){
+    var t=e.target;
+    if(!t||!t.closest)return null;
+    var img=t.closest("img");
+    if(!img||img.closest("a"))return null;
+    return img;
+  }
+  document.addEventListener("dblclick",function(e){
+    var img=imgFrom(e);
+    if(img)openImg(img);
+  });
+  var lastTap=0,lastImg=null;
+  document.addEventListener("touchend",function(e){
+    var img=imgFrom(e);
+    if(!img){lastTap=0;lastImg=null;return;}
+    var now=Date.now();
+    if(now-lastTap<350&&lastImg===img){
+      e.preventDefault();
+      openImg(img);
+      lastTap=0;lastImg=null;
+    }else{lastTap=now;lastImg=img;}
+  },{passive:false});
+})();</script>
 </body>
 </html>

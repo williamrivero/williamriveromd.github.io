@@ -2476,5 +2476,35 @@ function setLang(lang){
 <span class="p-tip">Back to top</span>
 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
 </button>
+<script>/* img-dblclick-open: double-click / double-tap an image to open it full-size in a new tab */
+(function(){
+  function openImg(img){
+    var src=img.currentSrc||img.src;
+    if(!src||src.indexOf("data:")===0)return;
+    window.open(src,"_blank","noopener");
+  }
+  function imgFrom(e){
+    var t=e.target;
+    if(!t||!t.closest)return null;
+    var img=t.closest("img");
+    if(!img||img.closest("a"))return null;
+    return img;
+  }
+  document.addEventListener("dblclick",function(e){
+    var img=imgFrom(e);
+    if(img)openImg(img);
+  });
+  var lastTap=0,lastImg=null;
+  document.addEventListener("touchend",function(e){
+    var img=imgFrom(e);
+    if(!img){lastTap=0;lastImg=null;return;}
+    var now=Date.now();
+    if(now-lastTap<350&&lastImg===img){
+      e.preventDefault();
+      openImg(img);
+      lastTap=0;lastImg=null;
+    }else{lastTap=now;lastImg=img;}
+  },{passive:false});
+})();</script>
 </body>
 </html>

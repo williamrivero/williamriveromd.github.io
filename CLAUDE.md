@@ -102,6 +102,19 @@ and the footer. The script is idempotent. **When building a new guide, always pl
 dr-card-wrap and related-guides immediately before `<footer class="guide-footer">`, outside
 `<main>`, as the very last HTML before the footer.**
 
+```bash
+python3 patch_image_dblclick.py              # add "double-click / double-tap image to open in new tab" handler
+python3 patch_image_dblclick.py --dry-run    # preview changes without writing
+python3 patch_image_dblclick.py --guide understanding-ckd.html  # single guide
+```
+
+Run `patch_image_dblclick.py` after adding any new guide so a double-click
+(desktop) or double-tap (touch) on any `<img>` opens that image at full size in
+a new tab. It injects one self-contained inline `<script>` right before
+`</body>` (guarded by an `img-dblclick-open` marker comment, so it's
+idempotent). Images inside an `<a>` link are left untouched so existing linked
+images keep their normal single-click navigation.
+
 The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.
 
 There are no automated tests or linters.
