@@ -152,12 +152,15 @@ COLUMN 1 — Pre-Renal AKI (soft amber tint background #fffbea):
 
 COLUMN 2 — Intrinsic Renal AKI (soft red tint background #fef2f2):
 - Header badge: red (#b91c1c), bold "INTRINSIC RENAL"
-- Sub-header: "Tubular · Glomerular · Vascular · Interstitial"
-- Central 3D kidney cross-section with cortex and medulla visible. Tubular region highlighted red showing tubular epithelial cell death, granular casts visible in tubular lumen. Medullary stripe pale (ischemic) in ischemic ATN, tubules with cytoplasmic vacuolation in nephrotoxic ATN.
-- Two sub-panels (ischemic ATN vs nephrotoxic ATN):
-  - Ischemic: prolonged prerenal → tubular ischemia → patchy necrosis → medullary cast obstruction
-  - Nephrotoxic: contrast/aminoglycosides/cisplatin → direct tubular toxicity → proximal tubule cell death
-- Key lab card: BUN:Cr <15 · FeNa >2% · Muddy brown granular casts · Tubular epithelial cell casts
+- Sub-header: "Structural damage to renal parenchyma"
+- CRITICAL ILLUSTRATION NOTE: Do NOT show a generic whole-kidney diagram here. Instead show a close-up microscopic cross-section of a renal tubule lumen demonstrating acute tubular necrosis (ATN): the tubular lumen contains muddy brown granular casts rendered as dark amber-brown cylindrical plugs; the tubular epithelium is flat and attenuated with loss of the normal brush border; some cells are shed into the lumen as tubular epithelial cell casts; the basement membrane is preserved but the overlying cells are necrotic or absent; adjacent interstitium shows mild edema. This is a histopathology-style close-up — NOT a whole-kidney silhouette. Render with a pale pink tubular background (hematoxylin-eosin light microscopy aesthetic) with red/brown cast material clearly visible in the lumen. Label: "Muddy brown granular casts in tubular lumen (ATN)" with callout arrows pointing to the cast material and the flattened epithelium.
+- Cause subcategory list (below the illustration, three rows):
+  TUBULAR (most common): "Ischemic ATN (prolonged pre-renal) · Nephrotoxic ATN (contrast, aminoglycosides, cisplatin, myoglobin)"
+  GLOMERULAR: "GN (IgA, lupus, anti-GBM, MPGN)"
+  INTERSTITIAL: "Acute interstitial nephritis (drugs, infections)"
+  VASCULAR: "TMA · Cholesterol emboli · Renal vein thrombosis"
+- Key lab card: BUN:Cr <15 · FeNa >2% · Muddy brown granular casts · Tubular epithelial cell casts · Active urine sediment
+- Pathophysiology note: "Tubules damaged → loss of concentrating ability → isosthenuria · FeNa >2%"
 - Causes chips: Ischemic ATN · Nephrotoxic ATN · Glomerulonephritis · AIN · Vascular
 
 COLUMN 3 — Post-Renal AKI (soft green tint background #f0fdf4):
