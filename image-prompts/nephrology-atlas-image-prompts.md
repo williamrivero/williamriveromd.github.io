@@ -1,7 +1,7 @@
 # Nephrology Atlas — Image Generator GPT Prompts
 **Guide:** williamriveromd.com/guides/nephrology-atlas
 **Generated:** 2026-06-04
-**Total images:** 10
+**Total images:** 11
 
 ---
 
@@ -18,6 +18,8 @@
 | 7 | `diabetic-nephropathy-progression-interventions.png` | Mechanism Poster + Algorithm | 1792 × 1024 |
 | 8 | `cardiorenal-syndrome-five-types-diagram.png` | Mechanism Poster + Multi-Panel | 1792 × 1024 |
 | 9 | `hyperkalemia-management-algorithm.png` | Clinical Algorithm (portrait) | 1024 × 1536 |
+| 10 | `acid-base-disorders-four-quadrant-map.png` | Clinician Reference Card | 1536 × 1152 |
+| 11 | `hyponatremia-management-algorithm.png` | Clinical Algorithm (portrait) | 1024 × 1536 |
 | 10 | `acid-base-disorders-four-quadrant-map.png` | Clinician Reference Card | 1536 × 1152 |
 
 ---
@@ -786,3 +788,136 @@ Bottom-right: small semi-transparent navy "williamriveromd.com" at 70% opacity. 
 **NEGATIVE INSTRUCTIONS:** Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text. NEVER dark backgrounds. Never omit attribution.
 
 **QUALITY CHECK:** Clinically plausible, mobile-readable, publication-grade, white background, attribution visible.
+
+---
+
+## IMAGE 11 — Hyponatremia Management Algorithm
+
+**FILE NAME:** `hyponatremia-management-algorithm.png`
+**IMAGE TYPE:** Clinical Algorithm / Flowchart
+**ASPECT RATIO:** 2:3 (portrait)
+**PIXEL DIMENSIONS:** 1024 × 1536
+**AUDIENCE:** Clinicians, emergency medicine, nephrology trainees
+**VISUAL GOAL:** Guide hyponatremia workup and management from symptom severity assessment through osmolality classification, volume status determination, and treatment selection — including ODS/overcorrection safety rules.
+
+**PROMPT:**
+
+Clinical nephrology management algorithm, premium KDIGO flowchart style, white background (#ffffff). Title in bold navy: "Hyponatremia Management Algorithm". Subtitle in teal: "Symptom Severity · Osmolality Classification · Volume Status · Treatment".
+
+PORTRAIT LAYOUT — top to bottom flow:
+
+SECTION 1 — Severity Assessment (top, full width):
+Title: "Step 1 — Assess Symptom Severity" in bold navy
+Three side-by-side severity cards:
+
+MILD / ASYMPTOMATIC (light teal badge):
+- Na+ typically >125 mEq/L
+- Symptoms: nausea · headache · fatigue · cognitive slowing
+- Label: "Chronic — develop over >48 hours"
+- Action: "Identify and treat underlying cause · Fluid restriction if appropriate · No emergency correction"
+
+MODERATE (amber badge):
+- Na+ typically 120–129 mEq/L
+- Symptoms: vomiting · disorientation · altered gait
+- Action: "Urgent evaluation · Treat cause · Monitor closely · Consider 150 mL 3% saline bolus if worsening"
+
+SEVERE / ACUTE (bold red badge):
+- Na+ often <120 mEq/L OR acute onset <48h at any level
+- Symptoms: seizures · respiratory arrest · GCS <8 · coma · cerebral herniation
+- Action: "IMMEDIATE 3% NaCl — 150 mL IV bolus over 20 min · Repeat up to 3× if symptoms persist · TARGET: +5 mEq/L in first hour to relieve cerebral edema"
+- Red warning: "Acute symptomatic hyponatremia = EMERGENCY — act before full workup"
+
+↓ Arrow: "After stabilizing: classify by osmolality"
+
+SECTION 2 — Osmolality Classification (middle, branching):
+Title: "Step 2 — Serum Osmolality" in bold navy
+
+Three branches:
+
+LEFT — HYPERTONIC (Posm >295) (amber border box):
+- Label: "Hypertonic Hyponatremia"
+- Mechanism: "Osmotically active solute draws water → dilutes Na+"
+- Causes: Hyperglycemia (most common) · Mannitol · IV contrast · Sucrose
+- Correction: "Glucose correction: Na+ rises ~1.6 mEq/L per 100 mg/dL ↓glucose"
+- Note: "Treat the hyperglycemia — Na+ self-corrects"
+
+CENTER — ISOTONIC (Posm 280–295) (gray border box):
+- Label: "Isotonic / Pseudohyponatremia"
+- Mechanism: "Artifact — normal water fraction displaced"
+- Causes: Hyperlipidemia (triglycerides >1500) · Hyperproteinemia (myeloma, IVIG)
+- Note: "True Na+ normal — flame photometry artifact vs ion-selective electrode"
+- No treatment of Na+ needed
+
+RIGHT — HYPOTONIC (Posm <280) (teal border box, main pathway):
+- Label: "True Hyponatremia — hypotonic"
+- Note: "All further steps apply to hypotonic hyponatremia only"
+
+↓ Arrow from Hypotonic box: "Step 3 — Assess Volume Status"
+
+SECTION 3 — Volume Status & Urine Studies (middle-lower):
+Title: "Step 3 — Volume Status + Urine Osmolality + Urine Na" in bold navy
+
+Three volume status columns:
+
+HYPOVOLEMIC (amber tint column):
+- Header: "HYPOVOLEMIC" in amber
+- Clinical signs: ↓skin turgor · dry mucous membranes · ↓BP · ↑HR · flat JVP
+- Urine Osm: >100 mOsm/kg (ADH appropriately ↑)
+- Urine Na:
+  <20 mEq/L → Extrarenal loss: "Diarrhea · Vomiting · Third spacing · Burns"
+  >40 mEq/L → Renal loss: "Diuretics (thiazide!) · Salt-wasting nephropathy · Adrenal insufficiency · Cerebral salt wasting"
+- Key teaching: "Thiazide diuretics → classic hypovolemic hyponatremia — stop thiazide, give NS"
+- Treatment arrow: "Isotonic saline (0.9% NaCl) — restore volume → ADH suppresses → Na+ rises"
+- Caution: "Monitor closely — volume repletion can cause rapid overcorrection"
+
+EUVOLEMIC (teal tint column, central — most common):
+- Header: "EUVOLEMIC" in teal
+- Clinical signs: No edema · No volume depletion · Normal or slightly ↑weight
+- Urine Osm: >100 mOsm/kg (inappropriately concentrated = ADH present)
+- Urine Na: >40 mEq/L (kidneys not conserving Na = not volume depleted)
+- Causes (tiered):
+  SIADH (most common): "Diagnosis of exclusion — ↓Posm · ↑Uosm >100 · ↑UNa >40 · Normal thyroid/adrenal · No diuretics · Euvolemic"
+  SIADH causes: "CNS disease · Pulmonary disease · Malignancy (SCLC) · Drugs (SSRIs · carbamazepine · cyclophosphamide · NSAIDs)"
+  Hypothyroidism: "TSH to exclude"
+  Adrenal insufficiency: "Morning cortisol/ACTH stim to exclude"
+  Psychogenic polydipsia: "UOsm <100 · High free water intake"
+- SIADH treatment options (stacked):
+  First-line: "Free water restriction 500–1000 mL/day"
+  Second-line: "Salt tabs + loop diuretic (furosemide) — ↑solute excretion"
+  Third-line: "Vaptans (tolvaptan/conivaptan) — V2 receptor antagonist → aquaresis · ↑Na+ 4–8 mEq/L/day · Monitoring required · Contraindicated in liver disease"
+  IV option: "3% NaCl (hypertonic saline) — if moderate/severe or refractory"
+
+HYPERVOLEMIC (red tint column):
+- Header: "HYPERVOLEMIC" in red
+- Clinical signs: Edema · Ascites · JVD · S3 gallop · Pulmonary crackles
+- Urine Osm: >100 mOsm/kg
+- Urine Na: <20 mEq/L (kidneys avidly retaining Na → effective arterial blood volume ↓)
+- Causes: Heart failure · Cirrhosis · Nephrotic syndrome · Advanced CKD
+- Mechanism: "↓EABV → ↑ADH → water retention → dilutional hyponatremia"
+- Treatment: "Treat underlying cause · Free water restriction · Loop diuretics · Vaptans (tolvaptan in HF/cirrhosis — with caution in cirrhosis: ↑hepatic risk)"
+
+SECTION 4 — Overcorrection Safety Rules (bottom, full width — RED BORDERED BOX):
+Title: "⚠ Overcorrection Prevention — ODS Risk" in bold red
+
+Two-column layout:
+
+LEFT — Safe Correction Limits:
+"MAXIMUM Na+ correction rate:"
+- First 24 hours: "≤10–12 mEq/L" (bold red)
+- First 48 hours: "≤18 mEq/L total" (bold red)
+- High ODS risk patients: "≤8 mEq/L in 24h" — label: "Alcoholism · Malnutrition · Hypokalemia · Na+ <105 on presentation · Liver disease"
+- "If chronic hyponatremia (>48h) — treat as chronic even if duration uncertain"
+
+RIGHT — Osmotic Demyelination Syndrome (ODS):
+"ODS (central pontine myelinolysis):"
+- Onset: "24–72 hours AFTER overcorrection"
+- Symptoms: "Dysarthria · Dysphagia · Paraparesis · Locked-in syndrome · Coma"
+- Prevention: "Monitor Na+ every 2–4h during active correction"
+- If overcorrecting too fast: "STOP correction · Give D5W or DDAVP (2–4 mcg IV) to slow/reverse rate"
+- DDAVP relowering card: "Desmopressin 2–4 mcg IV + D5W if Na+ rising >10 mEq/L/24h — intentional relowering protocol"
+
+Bottom-center: small semi-transparent navy "williamriveromd.com" at 70% opacity. White background. No dark backgrounds. Mobile-readable. Publication-grade.
+
+**NEGATIVE INSTRUCTIONS:** Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid spaghetti flowchart. NEVER use dark, navy, charcoal, or black backgrounds. Never omit the williamriveromd.com attribution.
+
+**QUALITY CHECK:** Clinically plausible, stepwise logic clear at a glance, mobile-readable, publication-grade, white background, attribution bottom-center (portrait).
