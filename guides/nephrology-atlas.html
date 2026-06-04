@@ -1424,7 +1424,7 @@
         Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
-    <div class="detail-img-zone" id="detail-img-zone">
+    <div class="detail-img-zone" id="detail-img-zone" title="Double-click to open full image in new tab">
       <div class="detail-img-accent" id="detail-img-accent"></div>
       <picture id="detail-picture">
         <source id="detail-source-webp" type="image/webp">
@@ -1862,6 +1862,27 @@ function populateDetail() {
   document.getElementById('btn-prev').disabled = detailIdx === 0;
   document.getElementById('btn-next').disabled = detailIdx === currentItems.length - 1;
 }
+
+// ─── DOUBLE-CLICK / DOUBLE-TAP → open image in new tab ───────────────────────
+(function() {
+  const zone = document.getElementById('detail-img-zone');
+  let lastTap = 0;
+  zone.addEventListener('dblclick', () => {
+    const src = document.getElementById('detail-source-webp').srcset
+             || document.getElementById('detail-img').src;
+    if (src) window.open(src, '_blank', 'noopener');
+  });
+  zone.addEventListener('touchend', e => {
+    const now = Date.now();
+    if (now - lastTap < 350) {
+      e.preventDefault();
+      const src = document.getElementById('detail-source-webp').srcset
+               || document.getElementById('detail-img').src;
+      if (src) window.open(src, '_blank', 'noopener');
+    }
+    lastTap = now;
+  }, { passive: false });
+})();
 
 // ─── KEYBOARD ────────────────────────────────────────────────────────────────
 document.addEventListener('keydown', e => {
