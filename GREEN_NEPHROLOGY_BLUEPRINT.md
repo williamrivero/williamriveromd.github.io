@@ -10,7 +10,7 @@
 > as well as the patient — cutting the carbon, water, energy, and plastic
 > footprint of dialysis and CKD care, while improving access and resilience.
 > For a country that is simultaneously one of the **most climate-vulnerable**
-> nations on Earth and a **high-volume haemodialysis** economy, this is not a
+> nations on Earth and a **high-volume hemodialysis** economy, this is not a
 > luxury topic — it is patient-safety and health-system survival.
 
 ---
@@ -19,10 +19,10 @@
 
 Three facts frame the whole guide:
 
-1. **Haemodialysis (HD) is one of the most resource-intensive therapies in all of medicine.**
+1. **Hemodialysis (HD) is one of the most resource-intensive therapies in all of medicine.**
    - Each HD session consumes roughly **400–500 L of water** at the machine; with reverse-osmosis (RO) reject, total draw can reach **~500 L per treatment**, much of it sent to drain.
    - A patient on thrice-weekly HD is associated with an estimated **~5–7 tonnes CO₂e per year** (facility energy, water, consumables, transport) — comparable to the footprint of a small car driven all year.
-   - HD generates a large stream of **single-use plastic/PVC** (bloodlines, dialysers, bags, packaging).
+   - HD generates a large stream of **single-use plastic/PVC** (bloodlines, dialyzers, bags, packaging).
 
 2. **The Philippines carries a heavy and growing dialysis burden** — driven by diabetes and hypertension — funded substantially through the **PhilHealth dialysis benefit**, delivered mostly via **freestanding/outpatient HD centers**. Volume is large and rising.
 
@@ -46,7 +46,7 @@ GREENEST  ┌──────────────────────�
    │      │ 2. CONSERVE  — conservative kidney management   │  (lowest-carbon KRT alt.)
    │      │ 3. TRANSPLANT— pre-emptive / early transplant   │  (greenest KRT long-term)
    │      │ 4. HOME      — PD & home HD; "PD-First"          │  (less travel, less plant)
-   │      │ 5. GREEN THE │  in-centre HD: the 5 R's         │  (where most patients are)
+   │      │ 5. GREEN THE │  in-center HD: the 5 R's         │  (where most patients are)
    ▼      │ 6. RESILIENCE— climate/disaster-proof the unit  │
 LEAST     └─────────────────────────────────────────────┘
 ```
@@ -58,7 +58,7 @@ manager, and a single patient each find their lever.
 
 ---
 
-## 3. The "5 R's" of Green Dialysis (the in-centre engine room)
+## 3. The "5 R's" of Green Dialysis (the in-center engine room)
 
 For Tier 5 (greening the HD unit), the guide uses the widely taught **5 R framework**:
 
@@ -77,12 +77,13 @@ For Tier 5 (greening the HD unit), the guide uses the widely taught **5 R framew
 The Philippines plan is explicitly built on **proven international programs**.
 These are the anchor case studies to cite in the guide:
 
-- **United Kingdom — "Green Nephrology" programme (Centre for Sustainable Healthcare; Dr. Andrew Connor, ~2009 onward).** The first specialty-wide national sustainability program in medicine; Green Nephrology Fellows and an awards scheme that surfaced hundreds of frontline efficiency projects. Model for **clinical-champion-led** change and the NHS "Net Zero" trajectory.
+- **United Kingdom — "Green Nephrology" program (Centre for Sustainable Healthcare; Dr. Andrew Connor, ~2009 onward).** The first specialty-wide national sustainability program in medicine; Green Nephrology Fellows and an awards scheme that surfaced hundreds of frontline efficiency projects. Model for **clinical-champion-led** change and the NHS "Net Zero" trajectory.
 - **Australia — Geelong / "Green Dialysis" (Prof. John W. M. Agar; Dr. Katherine Barraclough).** Seminal work on **water reclamation** (reusing RO reject water), **solar-assisted dialysis**, and energy/heat recovery. Source of the **Green Dialysis Survey (GDS)** — a free self-assessment **scorecard** units use to benchmark and improve. This is the single most directly transferable toolkit for Philippine units.
 - **International Society of Nephrology (ISN).** Global advocacy linking kidney health, climate, and equity; positions prevention and sustainable KRT as global priorities; relevant to LMIC (low- and middle-income country) contexts like the Philippines.
 - **Choosing Wisely / low-value-care reduction.** Cutting unnecessary imaging, labs, and interventions is a quiet but large carbon saving — and improves care.
 - **Home-therapy & "PD-First" programs (e.g., Hong Kong, Thailand, parts of Latin America).** Demonstrate that a **PD-First** policy can be lower-cost, lower-carbon, and better suited to **archipelagic / remote** populations — directly relevant to the Philippines.
 - **Telenephrology programs** reducing patient and clinician travel emissions while widening access.
+- **KDIGO Green Dialysis Controversies Conference** (Berlin, April 2025; report *"Green Dialysis: Environmentally Sustainable Care, Growth, and Innovation,"* *Kidney International*, 2026). The highest-authority global guideline body's position: greatest gains from earlier detection + slowing progression and **plant-based nutrition**; **personalizing dialysis dose/frequency** via **incremental** (fewer/shorter sessions while residual function persists — incremental PD survival comparable to standard) and **decremental** dialysis (planned dose reduction in recovery/palliative care); plus water reuse, renewable energy, and fewer single-use materials. Calls for moving from variable pilots (UK/EU/Australia) to **widespread adoption**. *(Note: cite from the report PDF; couldn't be fetched in-session due to the network allowlist — verify specifics at build.)*
 
 **The guide's stance:** none of this is theoretical. Every recommendation below
 has a working precedent somewhere in the world; the task is **localization**, not invention.
@@ -115,7 +116,7 @@ example of operationalized green practice the guide can point to:
 
 **How the guide uses this:** ERA 2026 Glasgow is cited in the **§11 world-examples**
 section as the current European mainstreaming of green nephrology, sitting alongside
-the UK programme and Australian green-dialysis work. It reinforces two of the guide's
+the UK program and Australian green-dialysis work. It reinforces two of the guide's
 own levers (cut travel via tele-/hybrid care; refuse single-use plastics) with a
 fresh, high-profile, **2026** example a Filipino reader will recognize as current.
 It also pairs naturally with the field's foundational position papers — the
@@ -127,11 +128,11 @@ action"** and **"Green nephrology in practice."**
 > of a sustainability track/workshop). Do **not** invent specific abstract titles,
 > presenter names, or session-level claims. Because the congress runs **3–6 June
 > 2026**, verify any newly published outputs (late-breaking trials, declarations)
-> against the official programme/abstracts at build time before quoting them.
+> against the official program/abstracts at build time before quoting them.
 
 **Sources (verify at build):**
 - ERA — Glasgow 2026 event & Sustainability pages: `era-online.org/events/glasgow-2026/` and `/sustainability/`
-- ERA — Scientific Programme (theme "Open your mind", tracks): `era-online.org/events/glasgow-2026/scientific-programme/`
+- ERA — Scientific Program (theme "Open your mind", tracks): `era-online.org/events/glasgow-2026/scientific-program/`
 - "Sustainable kidney care delivery and climate change — a call to action" (PMC9351168)
 - "Green nephrology in practice: actions that promote environmental, social, and economic impact" (PMC12172542)
 
@@ -139,7 +140,7 @@ action"** and **"Green nephrology in practice."**
 
 ## 5. Operationalizing in the Philippines — the localization plan
 
-This is the guide's centre of gravity: *how do we actually do this here?*
+This is the guide's center of gravity: *how do we actually do this here?*
 Each lever is mapped to (a) the global precedent and (b) the Philippine adaptation.
 
 ### 5.1 Water — the highest-leverage local fix
@@ -163,7 +164,7 @@ Each lever is mapped to (a) the global precedent and (b) the Philippine adaptati
 - **Action:** Support early/pre-emptive transplant where feasible; acknowledge Philippine donor/access constraints honestly.
 
 ### 5.6 Waste & procurement
-- **Action:** Segregate clean recyclable streams from clinical waste (work within DOH/DENR medical-waste rules); reduce packaging via procurement; refuse unnecessary disposables; explore dialyser reuse policy where safe and regulated.
+- **Action:** Segregate clean recyclable streams from clinical waste (work within DOH/DENR medical-waste rules); reduce packaging via procurement; refuse unnecessary disposables; explore dialyzer reuse policy where safe and regulated.
 
 ### 5.7 Telenephrology
 - **Action:** Tele-consults for stable CKD and PD support to cut travel — especially for remote provinces.
@@ -188,7 +189,7 @@ mode (`section.mode-patient` / `mode-physician`), and the canonical page tail:
 3. `hierarchy` — the green hierarchy diagram (Prevent → … → Resilience); the spine.
 4. `prevention` — *the greenest nephrology* (prevention/slowing progression as #1 lever).
 5. `modality` — conservative care, transplant, PD-First & home therapies (carbon + archipelago logic).
-6. `green-unit` — the **5 R's** in the HD centre (Reduce/Reuse/Recycle/Rethink/Refuse).
+6. `green-unit` — the **5 R's** in the HD center (Reduce/Reuse/Recycle/Rethink/Refuse).
 7. `water` — RO reject reclamation + rainwater harvesting (flagship PH section).
 8. `energy` — rooftop solar + backup + efficiency (green = brownout-proof).
 9. `waste` — segregation, procurement, DOH/DENR rules.
