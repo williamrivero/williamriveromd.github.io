@@ -1,9 +1,9 @@
 # Nephrology Landmark Trials — Image Generator GPT Prompts
 **Guide:** williamriveromd.com/guides/nephrology-atlas (Landmark Trials Poster Series)
 **Generated:** 2026-06-04
-**Total images:** 11 posters
+**Total images:** 13 posters
 
-> **Series concept:** Each poster is a clinician reference card covering one era or drug class, displaying the pivotal trials, their key populations, primary endpoints, hazard ratios, and clinical takeaways. Style is consistent across all 11 — NEJM/KDIGO publication aesthetic, white background, navy/teal/amber/red palette, highly readable at A3 or mobile screen.
+> **Series concept:** Each poster is a clinician reference card covering one era or drug class, displaying the pivotal trials, their key populations, primary endpoints, hazard ratios, and clinical takeaways. Style is consistent across all 13 — NEJM/KDIGO publication aesthetic, white background, navy/teal/amber/red palette, highly readable at A3 or mobile screen.
 
 ---
 
@@ -22,6 +22,8 @@
 | 9 | `landmark-dialysis-trials-hemo-mpo-evolve.png` | HEMO · MPO · EVOLVE | 1792 × 1024 |
 | 10 | `landmark-transplant-milestones-symphony-benefit.png` | SYMPHONY · BENEFIT | 1792 × 1024 |
 | 11 | `landmark-hdf-trials-contrast-eshol-turkish-convince.png` | CONTRAST · ESHOL · Turkish HDF · CONVINCE | 1792 × 1024 |
+| 12 | `landmark-lpd-vlpd-ketoanalogue-trials.png` | MDRD Dietary · Cianciaruso · Garneata sVLPD | 1792 × 1024 |
+| 13 | `landmark-gut-microbiome-fiber-uremic-toxins-ckd.png` | EPPIC-1/2 · Koppe · Sirich · DIET-HD · Prebiotic meta-analyses | 1792 × 1024 |
 
 ---
 
@@ -883,3 +885,265 @@ Bottom-right: small semi-transparent navy "williamriveromd.com" at 70% opacity. 
 **NEGATIVE INSTRUCTIONS:** Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid overprocessed HDR. NEVER use dark, navy, charcoal, or black backgrounds. Never omit the williamriveromd.com attribution.
 
 **QUALITY CHECK:** Clinically accurate (HRs and CIs match published data), mobile-readable, publication-grade, white background, attribution visible bottom-right. Convection volume threshold concept must be clearly illustrated.
+
+---
+
+## IMAGE 12 — Protein Restriction in CKD: LPD, VLPD & Ketoanalogues
+
+**FILE NAME:** `landmark-lpd-vlpd-ketoanalogue-trials.png`
+**IMAGE TYPE:** Clinician Reference Card — Landmark Trial Poster
+**ASPECT RATIO:** 16:9
+**PIXEL DIMENSIONS:** 1792 × 1024
+**AUDIENCE:** Clinicians, nephrologists, renal dietitians
+**VISUAL GOAL:** Present the evidence arc for dietary protein restriction in CKD — from the inconclusive MDRD dietary arm through Cianciaruso's neutral LPD result to Garneata's landmark sVLPD + ketoanalogue trial — explaining why the protein dose and ketoanalogue supplementation are the critical variables that resolve the contradictions.
+
+**PROMPT:**
+
+Clinical nephrology landmark trial reference poster, NEJM/KDIGO publication style, white background (#ffffff). Series badge top-left: "LANDMARK TRIALS · DIETARY PROTEIN RESTRICTION & CKD" in small teal caps. Title in large bold navy: "Protein Restriction in CKD". Subtitle in teal: "MDRD Dietary Arm · Cianciaruso · Garneata — LPD · VLPD · Ketoanalogues".
+
+LAYOUT: Three trial columns left to right in chronological order, plus a right-side mechanism panel (25% width), plus a bottom synthesis strip.
+
+Timeline strip at top (full width, teal): "1994: MDRD Dietary Arm → 2008: Cianciaruso → 2016: Garneata (sVLPD — definitive)"
+
+---
+
+COLUMN 1 — MDRD Dietary Protein Arm (Study A & B):
+- Trial badge: navy "MDRD — Dietary Arm — 1994 (NEJM)"
+- Origin: USA · Klahr et al · Multicenter
+- Population: "Study A: 585 patients · GFR 25–55 · Usual (1.3g/kg/day) vs LPD (0.58g/kg/day)"
+  "Study B: 255 patients · GFR 13–24 · LPD (0.58g/kg/day) vs VLPD (0.28g/kg/day + ketoanalogues)"
+- Primary endpoint: Rate of GFR decline
+- Key result card (amber background):
+  "Study A: LPD vs usual protein → NO significant difference in GFR decline rate (p=0.066 — borderline)"
+  "Study B: VLPD vs LPD → trend toward slower decline but NOT statistically significant"
+  "Secondary analysis (Levey 1999 follow-up): modest renal survival benefit emerged after 3 years"
+  "Protein restriction did reduce phosphorus, uric acid, and acidosis"
+- Schematic: GFR decline curves — nearly parallel in both arms, with marginal divergence in long-term follow-up
+- Reason for inconclusive result box (amber): "Adherence to protein restriction was poor (~50% achieved target) · Trial powered for GFR slope, not hard endpoints · Mixed CKD etiology population"
+- Takeaway chip (amber): "LPD alone at 0.58g/kg/day does not clearly slow CKD progression — but metabolic benefits are real"
+- Legacy badge: "Established CKD dietary protein debate · Prompted need for better-designed trials with ketoanalogues"
+
+---
+
+COLUMN 2 — Cianciaruso et al (Matched LPD vs Normal Protein in CKD 3-4):
+- Trial badge: navy "CIANCIARUSO — 2008/2009 (JASN / NDT)"
+- Origin: Italy · Multicenter RCT · Naples group
+- Population: "423 patients · CKD stage 3b–4 (GFR 25–50 mL/min) · LPD 0.55g/kg/day vs conventional 0.80g/kg/day · 2-year follow-up"
+- Primary endpoint: Composite renal endpoint (dialysis initiation + death + ≥50% GFR decline)
+- Key result card (amber background):
+  "LPD vs conventional: NO significant difference in primary composite (HR 0.87, p=0.46)"
+  "GFR decline rate: similar between groups"
+  "BUT — LPD arm had significantly better:"
+  "↓Serum phosphorus · ↓Uric acid · ↓Metabolic acidosis severity · ↓Proteinuria"
+  "Nutritional status: MAINTAINED in LPD arm (no PEW)"
+- Schematic: event-free survival curves nearly overlapping, but metabolic parameter table showing clear advantage for LPD
+- Clinical teaching note: "LPD 0.55g/kg/day is SAFE — does not cause protein-energy wasting — and improves uremic metabolic complications even without slowing GFR decline"
+- Takeaway chip (amber): "LPD is metabolically beneficial and safe — but 0.55g/kg/day may not be low enough to slow progression. The dose matters."
+- Legacy badge: "Safety of moderate LPD confirmed · Set stage for testing lower protein + ketoanalogues"
+
+---
+
+COLUMN 3 — Garneata et al — Supplemented VLPD + Ketoanalogues (THE KEY TRIAL):
+- Trial badge: navy "GARNEATA — 2016 (JASN)" with large green "DEFINITIVE sVLPD TRIAL" ribbon
+- Origin: Romania · Bucharest · Multicenter RCT · Garneata, Stanescu, Dragomir, Bob, Mircescu
+- Population: "207 patients · CKD G4–5 (eGFR 15–30 mL/min) · Motivated, compliant patients · sVLPD (0.3g/kg/day plant protein + ketoanalogues 1 tab/5 kg/day) vs LPD (0.6g/kg/day) · 15-month follow-up"
+- Primary endpoint: Composite of dialysis initiation OR ≥50% eGFR decline
+- Key result card (large, green background):
+  "sVLPD + ketoanalogues → 13.1% reached primary endpoint vs 42.0% in LPD (p<0.001)"
+  "RRR: 69% reduction in dialysis/progression composite"
+  "NNT: ~3.5 patients treated for 15 months to prevent 1 dialysis start or major progression"
+  "eGFR decline rate: −0.3 mL/min/year (sVLPD) vs −2.0 mL/min/year (LPD)"
+  "Nutritional status: PRESERVED — no difference in albumin, BMI, SGA score"
+  "No protein-energy wasting in sVLPD arm"
+  "Metabolic benefits: ↓phosphorus · ↓PTH · ↓uric acid · ↓metabolic acidosis · ↓proteinuria"
+- Kaplan-Meier schematic: two curves dramatically diverging from 3 months — sVLPD arm far below LPD for composite endpoint
+- Eligibility criteria highlighted: "KEY: Patient selection was strict — motivated, compliant, normal or near-normal nutritional status at baseline. Not suitable for all CKD patients."
+- Ketoanalogue role card (teal border): "Ketoanalogues provide essential amino acid nitrogen without urea generation. Contain calcium salts — also treat hypocalcemia and secondary hyperparathyroidism. Enable ultra-low protein intake without PEW."
+- Takeaway chip (bold teal): "sVLPD (0.3g/kg/day) + ketoanalogues dramatically reduces dialysis initiation in advanced CKD — the protein dose AND ketoanalogue supplementation together are essential"
+- Limitation note: "Single-center expertise setting · Highly selected compliant patients · Generalizability requires careful patient selection"
+
+---
+
+RIGHT MECHANISM PANEL (25% width):
+Title: "The Protein Restriction Ladder" in bold navy
+Visual: vertical ladder graphic with rungs at each protein level:
+
+Rung 1 — Normal: "0.8–1.0 g/kg/day — healthy adults"
+Rung 2 — LPD: "0.6–0.8 g/kg/day — CKD G3–4 standard recommendation"
+  Note: "Safe · Metabolic benefits · May not slow GFR decline"
+Rung 3 — sLPD: "0.55 g/kg/day — Cianciaruso range · Safe · No PEW"
+Rung 4 — VLPD: "0.3–0.4 g/kg/day — REQUIRES ketoanalogue supplementation"
+  Note: "Without KA → PEW risk is high"
+Rung 5 — sVLPD: "0.3 g/kg/day + ketoanalogues — Garneata protocol · Dramatic progression benefit · Strict patient selection required"
+
+Ketoanalogue properties card (teal box):
+"Ketoacid analogues (Ketosteril / EE-KA):"
+"· Provide essential AA carbon skeletons without nitrogen"
+"· Transaminate to essential AAs using retained urea-nitrogen → ↓BUN"
+"· ↓Uremic toxin generation · ↓Phosphorus load · ↓PTH (calcium salts)"
+"· Dose: 1 tablet per 5 kg body weight per day with meals"
+
+---
+
+BOTTOM SYNTHESIS STRIP (full width):
+Title: "Where Does Dietary Protein Restriction Fit in 2026?" in bold navy
+
+Four-column position cards:
+1. "LPD 0.6g/kg/day: KDIGO-endorsed · All CKD G3b–5 not on dialysis · Safe · Improves metabolic parameters" (teal)
+2. "sVLPD + KA: Advanced CKD G4–5 · eGFR <30 · Motivated compliant patients · Expert center recommended" (green)
+3. "Plant-dominant LPD (PLADO): Emerging · ↓Phosphorus bioavailability · ↓TMAO · ↓Acid load · Gut microbiome benefit" (teal)
+4. "On dialysis: Protein INCREASED to ≥1.2g/kg/day — dietary protein restriction ends at dialysis initiation" (amber)
+
+Protein restriction + pharmacotherapy synergy note: "SGLT2i + sVLPD: complementary mechanisms — both ↓intraglomerular pressure + ↓tubular workload. Combination under study."
+
+Bottom-right: small semi-transparent navy "williamriveromd.com" at 70% opacity. White background. No dark backgrounds. Publication-grade. Mobile-readable.
+
+**NEGATIVE INSTRUCTIONS:** Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text. NEVER dark backgrounds. Never omit attribution.
+
+**QUALITY CHECK:** Clinically accurate (Garneata 2016 data correct), mobile-readable, publication-grade, white background, attribution visible.
+
+---
+
+## IMAGE 13 — Gut Microbiome, Uremic Toxins & Dietary Fiber in CKD
+
+**FILE NAME:** `landmark-gut-microbiome-fiber-uremic-toxins-ckd.png`
+**IMAGE TYPE:** Pathophysiology Mechanism Poster + Multi-Panel Educational Infographic
+**ASPECT RATIO:** 16:9
+**PIXEL DIMENSIONS:** 1792 × 1024
+**AUDIENCE:** Clinicians, nephrologists, renal dietitians, nephrology trainees
+**VISUAL GOAL:** Map the gut-kidney axis in CKD — showing how dysbiosis generates indoxyl sulfate and p-cresyl sulfate, why these worsen CKD progression and CV outcomes, and what dietary fiber, prebiotics, and AST-120 trials have shown as therapeutic targets.
+
+**PROMPT:**
+
+Clinical nephrology mechanism and evidence poster, AJKD/NEJM graphical abstract style, white background (#ffffff). Series badge top-left: "LANDMARK TRIALS · GUT MICROBIOME · UREMIC TOXINS · FIBER" in small teal caps. Title in large bold navy: "The Gut-Kidney Axis in CKD". Subtitle in teal: "Dysbiosis · Protein-Bound Uremic Toxins · Fiber Intervention Evidence".
+
+LAYOUT: Left mechanism column (35%) + right trial evidence columns (65%) + bottom dietary fiber and practical recommendations strip.
+
+---
+
+LEFT COLUMN — Gut-Kidney Axis Mechanism (35% width):
+Title: "CKD Dysbiosis → Uremic Toxin Cascade" in bold navy
+
+Step-by-step vertical mechanism cascade (top to bottom):
+
+Step 1 (teal box): "Normal gut microbiome: balanced proteolytic + saccharolytic bacteria"
+3D colon cross-section icon: healthy mucosal layer, diverse microbial community
+
+Step 2 (amber box): "CKD → altered gut environment"
+Causes arrows: "↓Dietary fiber intake (protein-restricted diets) · ↑Urea/uremic solutes in gut lumen · ↑Gut wall edema · Altered motility · Antibiotics/polypharmacy"
+→ Dysbiosis: "↑Proteolytic bacteria (Clostridiales, Bacteroidetes shift) · ↓Saccharolytic bacteria (Lactobacillus, Bifidobacterium)"
+→ ↑Intestinal permeability: "Tight junction disruption → 'leaky gut'"
+
+Step 3 (red box): "Protein fermentation → toxin generation"
+Key precursors:
+"Tryptophan → INDOLE → intestinal wall → INDOXYL SULFATE (IS)"
+"Tyrosine/phenylalanine → p-CRESOL → liver → p-CRESYL SULFATE (pCS)"
+"Choline/carnitine/lecithin → TMAO (trimethylamine N-oxide)"
+3D icon: bacterial fermentation vessel with red toxin molecules emerging
+
+Step 4 (red box): "Protein-bound uremic toxins enter circulation"
+IS and pCS binding: "90%+ protein-bound to albumin → NOT cleared by standard HD or PD"
+"HDF and high-flux HD achieve modest clearance only"
+Toxin effects card:
+"IS: ↑ROS in tubular cells · ↑TGF-β · ↑fibrosis · ↑CKD progression · ↑CV risk"
+"pCS: ↑endothelial dysfunction · ↑oxidative stress · ↑cardiac fibrosis"
+"TMAO: ↑atherosclerosis · ↑platelet aggregation · ↑CV events"
+
+Step 5 (dark amber box): "Gut barrier failure → systemic LPS translocation"
+"LPS (endotoxin) → systemic inflammation → ↑IL-6 · ↑CRP · ↑TNF-α"
+"Amplifies CKD-related inflammation beyond uremic toxins alone"
+
+---
+
+RIGHT SECTION — Trial Evidence (65% width):
+Divided into three horizontal sub-sections.
+
+SUB-SECTION A — AST-120 (Kremezin / Spherical Activated Charcoal) Trials:
+Title: "AST-120 (Oral Adsorbent) — Targeting Indoxyl Sulfate at the Source" in navy
+
+Two side-by-side trial cards:
+
+EPPIC-1 (USA, 2011):
+- Badge: navy "EPPIC-1 — 2011 (CJASN)"
+- Population: "2035 patients · CKD (eGFR 20–35) · AST-120 vs placebo · 144 weeks"
+- Primary: Composite of dialysis + doubling of creatinine + death
+- Result (amber): "NO significant reduction in primary composite (HR 0.97, p=0.61)"
+  "↓Serum indoxyl sulfate confirmed (biomarker effect present)"
+  "No translation to clinical renal endpoint benefit"
+
+EPPIC-2 (Japan/International, 2011):
+- Badge: navy "EPPIC-2 — 2011 (CJASN)"
+- Population: "1729 patients · Similar design · Asia-Pacific cohort"
+- Result (amber): "NO significant benefit on primary composite"
+  "Pooled EPPIC analysis: HR 0.97 — consistent null result"
+- Combined takeaway chip (amber): "AST-120 reduces IS levels but does NOT slow CKD progression in unselected patients. Toxin reduction ≠ endpoint benefit — selection or dose may matter."
+- Research implication: "IS/pCS as biomarkers are valid — their causal role in CKD progression remains debated"
+
+---
+
+SUB-SECTION B — Dietary Fiber Intervention Trials:
+Title: "Fiber, Prebiotics & Synbiotics — Modulating the Microbiome" in navy
+
+Four compact trial/study cards (2×2 grid):
+
+CARD 1 — Koppe et al 2012 (NDT):
+- "Fermentable fiber (inulin/FOS) vs control · CKD patients + healthy controls"
+- Result (teal): "Inulin → ↓fecal p-cresol generation · ↓serum p-cresyl sulfate"
+- Note: "Mechanism: fermentable fiber feeds saccharolytic bacteria → competitive inhibition of proteolytic fermentation → ↓p-cresol production"
+- Takeaway: "First human evidence that dietary fiber directly ↓protein-bound uremic toxin generation"
+
+CARD 2 — Sirich et al 2014 (JASN):
+- "Dietary protein vs fiber ratio study · HD patients · Free-living diet"
+- Result (teal): "↑Fiber intake → ↓serum p-cresyl sulfate and indoxyl sulfate independently of protein intake"
+- "Each 5g/day ↑fiber → measurable ↓in pCS and IS"
+- Takeaway: "Fiber reduces uremic toxins independently of protein restriction — additive effect"
+
+CARD 3 — DIET-HD Study (Smyth et al 2019, Lancet):
+- Badge: navy "DIET-HD — 2019 (Lancet)"
+- Population: "2,680 HD patients · Observational · Mediterranean diet adherence vs Western diet · 3-year follow-up"
+- Result (teal): "Higher Mediterranean diet score → trend toward ↓CV mortality (HR 0.89, CI 0.80–1.00)"
+  "High fruit/vegetable/fiber intake: ↓all-cause mortality signal"
+  "High potassium/phosphorus intake: no significant harm with high-fiber plant foods vs processed foods"
+- Takeaway: "Mediterranean/plant-rich diet is associated with improved survival in HD patients — reframes the K+/PO4 restriction debate"
+
+CARD 4 — Prebiotic/Synbiotic Meta-analyses (2019–2023):
+- "Multiple RCTs: inulin · FOS · lactulose · synbiotics in CKD 3-5 and HD patients"
+- Pooled result (teal): "Prebiotic/synbiotic supplementation → ↓serum indoxyl sulfate (SMD −0.48) · ↓p-cresyl sulfate (SMD −0.39) · ↓BUN in some trials"
+  "Effect on hard endpoints (eGFR decline, dialysis): insufficient data — trials underpowered"
+- Takeaway: "Consistent biomarker benefit — clinical endpoint trials urgently needed"
+
+---
+
+SUB-SECTION C — Plant-Based / PLADO Concept:
+Title: "Plant-Dominant Low-Protein Diet (PLADO) — Emerging Evidence" in navy
+
+One wide card (full width of right section):
+- Kalantar-Zadeh et al concept (2017 JASN / 2022 CJASN editorial + cohort data):
+  "Plant-dominant LPD: ≥70% protein from plant sources + ≤30% animal protein · 0.6–0.8g/kg/day total"
+  Advantages over animal-protein LPD:
+  "↓Phosphorus bioavailability (plant phosphorus = phytate-bound, ~40% absorbed vs ~70% animal)"
+  "↓Acid load (plant protein → net base production vs animal protein → net acid)"
+  "↓TMAO generation (↓carnitine/choline from red meat)"
+  "↑Fiber → ↑saccharolytic microbiome → ↓IS/pCS"
+  "↓Potassium concern: cooking methods reduce K+ by 30–70% — unprocessed plants ≠ dangerous"
+  Cohort data: "Higher plant protein intake associated with ↓CKD progression and ↓mortality in NHANES-CKD cohort"
+  RCT status: "Definitive RCT (PLADO concept) ongoing — no phase 3 data yet as of 2026"
+- Practical badge: "PLADO represents a convergence of LPD + fiber + microbiome benefits in a single dietary pattern"
+
+---
+
+BOTTOM SYNTHESIS STRIP (full width):
+Title: "2026 Practical Recommendations — Gut-Kidney Axis Interventions" in bold navy
+
+Four recommendation cards:
+
+1. "Dietary fiber target: ≥25–30g/day · Preferably fermentable (inulin, pectin, FOS, resistant starch) · Vegetables · Legumes · Fruits (K+ managed by cooking) · Whole grains" (teal)
+2. "Reduce animal protein (especially red/processed meat) · ↓TMAO · ↓Acid load · ↓Phosphorus · Shift to plant sources where possible" (teal)
+3. "AST-120: Not recommended routinely — EPPIC trials showed biomarker benefit without clinical endpoint benefit" (amber)
+4. "Prebiotics/synbiotics: Reasonable add-on · Inulin/FOS 10–15g/day · Evidence growing for ↓IS/pCS · No harm in CKD — await clinical endpoint trial results" (teal)
+
+Bottom-right: small semi-transparent navy "williamriveromd.com" at 70% opacity. White background. No dark backgrounds. Publication-grade. Mobile-readable.
+
+**NEGATIVE INSTRUCTIONS:** Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text. NEVER dark backgrounds. Never omit attribution.
+
+**QUALITY CHECK:** Mechanistically accurate (IS/pCS pathway correct), trial data accurate (EPPIC null result, Koppe IS/pCS reduction), mobile-readable, publication-grade, white background, attribution visible.
