@@ -451,11 +451,11 @@ MASTER_CSS = """
   .checklist ul { list-style: none; margin: 0; padding: 0; }
   .checklist ul li {
     color: rgba(255,255,255,.88) !important;  /* 13.1:1 ✓ */
-    font-size: 14px; padding: 10px 0;
+    font-size: 14px; padding: 10px 0 10px 28px; position: relative;
     border-bottom: 1px solid rgba(255,255,255,.1); line-height: 1.5;
   }
   .checklist ul li:last-child { border-bottom: none; }
-  .checklist ul li::before { content: '✓ '; color: #d4af4f; }
+  .checklist ul li::before { content: '✓'; position: absolute; left: 4px; top: 10px; color: #d4af4f; }
 
   /* ── COMPARE GRID ────────────────────────────────────────────────────────── */
   .compare-grid, .cartridge-compare {
