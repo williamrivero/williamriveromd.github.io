@@ -105,6 +105,13 @@ kidneys."* For the guide, this is the headline takeaway: **the world's largest
 kidney bodies now treat environmental sustainability as core nephrology, not a
 side topic.** That legitimizes a Filipino unit starting its own program today.
 
+**A′. ERA 2026 took up the same green-dialysis themes as KDIGO.** Beyond the
+sustainability track, the congress sessions discussed the same recommendations
+the 2026 KDIGO Green Dialysis report makes — prevention/early detection, water
+and energy savings, personalized and incremental/decremental dialysis, and
+reduced single-use plastics — underscoring a **converging global agenda** the
+guide can cite (reflected in `#world` and `#md-policy`).
+
 **B. The congress models the principles it teaches** — a concrete, quotable
 example of operationalized green practice the guide can point to:
 - **Hybrid + livestreamed** to cut conference-travel carbon (the single biggest
