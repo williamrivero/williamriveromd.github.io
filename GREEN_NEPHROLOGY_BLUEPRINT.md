@@ -89,6 +89,54 @@ has a working precedent somewhere in the world; the task is **localization**, no
 
 ---
 
+## 4A. Insights from the 63rd ERA Congress — Glasgow 2026
+
+The **European Renal Association (ERA) Congress 2026** (Scottish Event Campus,
+**3–6 June 2026**, theme *"Open your mind"* — the largest nephrology congress in
+Europe: ~9,000 attendees, ~250 speakers, 7 scientific tracks, hybrid format) is a
+timely, high-authority anchor for this guide. Two things make it directly useful:
+
+**A. ERA put sustainability on the main stage.** The congress carries a dedicated
+**Sustainability** track/page and includes **sustainability-in-nephrology workshop
+sessions** (Saturday morning), signalling that green nephrology has moved from a
+niche interest to a mainstream European agenda — *"healthy environment for healthy
+kidneys."* For the guide, this is the headline takeaway: **the world's largest
+kidney bodies now treat environmental sustainability as core nephrology, not a
+side topic.** That legitimizes a Filipino unit starting its own program today.
+
+**B. The congress models the principles it teaches** — a concrete, quotable
+example of operationalized green practice the guide can point to:
+- **Hybrid + livestreamed** to cut conference-travel carbon (the single biggest
+  footprint of any congress) — mirrors the guide's **telenephrology** lever.
+- **Sustainable transport** promoted — e.g., rail travel cited as saving **~85% of
+  emissions** vs. flying; **walkable** faculty/staff hotels.
+- **Eco-friendly catering** — locally sourced, vegetarian options, **no single-use
+  plastics** — mirrors the guide's **Refuse/Reduce** (plastics) message.
+
+**How the guide uses this:** ERA 2026 Glasgow is cited in the **§11 world-examples**
+section as the current European mainstreaming of green nephrology, sitting alongside
+the UK programme and Australian green-dialysis work. It reinforces two of the guide's
+own levers (cut travel via tele-/hybrid care; refuse single-use plastics) with a
+fresh, high-profile, **2026** example a Filipino reader will recognize as current.
+It also pairs naturally with the field's foundational position papers — the
+ISN/ERA-aligned **"Sustainable kidney care delivery and climate change — a call to
+action"** and **"Green nephrology in practice."**
+
+> **Author note / guardrail:** Use only the *confirmed* ERA 2026 facts above
+> (dates, venue, theme, the published sustainability commitments, and the existence
+> of a sustainability track/workshop). Do **not** invent specific abstract titles,
+> presenter names, or session-level claims. Because the congress runs **3–6 June
+> 2026**, verify any newly published outputs (late-breaking trials, declarations)
+> against the official programme/abstracts at build time before quoting them.
+
+**Sources (verify at build):**
+- ERA — Glasgow 2026 event & Sustainability pages: `era-online.org/events/glasgow-2026/` and `/sustainability/`
+- ERA — Scientific Programme (theme "Open your mind", tracks): `era-online.org/events/glasgow-2026/scientific-programme/`
+- "Sustainable kidney care delivery and climate change — a call to action" (PMC9351168)
+- "Green nephrology in practice: actions that promote environmental, social, and economic impact" (PMC12172542)
+
+---
+
 ## 5. Operationalizing in the Philippines — the localization plan
 
 This is the guide's centre of gravity: *how do we actually do this here?*
@@ -145,7 +193,7 @@ mode (`section.mode-patient` / `mode-physician`), and the canonical page tail:
 8. `energy` — rooftop solar + backup + efficiency (green = brownout-proof).
 9. `waste` — segregation, procurement, DOH/DENR rules.
 10. `telenephrology` — travel-emission cuts for an archipelago.
-11. `world-examples` — UK / Australia (Agar, GDS) / ISN / PD-First exemplars.
+11. `world-examples` — UK / Australia (Agar, GDS) / ISN / **ERA 2026 Glasgow** (sustainability mainstreamed) / PD-First exemplars.
 12. `ph-roadmap` — phased operational roadmap (below) + GDS scorecard call-to-action.
 13. `patient-role` — what an individual patient/family can do (transport pooling, home modalities, prevention, advocacy).
 14. `physician-block` (`mode-physician`) — unit-manager checklist, metrics, GDS, procurement, policy advocacy (PhilHealth/PD-First).
@@ -195,7 +243,7 @@ When the HTML is authored, run (per `CLAUDE.md`):
 ## 10. SEO scaffolding (draft)
 - **Title:** `Green Nephrology — Sustainable, Climate-Resilient Kidney Care · W. G. M. Rivero, MD`
 - **Description:** *How to make dialysis and CKD care greener and more climate-resilient in the Philippines — saving water, energy, and plastic while protecting patients. Drawing on UK, Australian, and global experience.*
-- **Keywords:** green nephrology Philippines, sustainable dialysis, dialysis water reuse, RO reject water reclamation, solar dialysis, carbon footprint dialysis, PD-first Philippines, climate kidney care, green dialysis survey, eco-friendly dialysis, brownout dialysis resilience.
+- **Keywords:** green nephrology Philippines, sustainable dialysis, dialysis water reuse, RO reject water reclamation, solar dialysis, carbon footprint dialysis, PD-first Philippines, climate kidney care, green dialysis survey, eco-friendly dialysis, brownout dialysis resilience, ERA 2026 Glasgow green nephrology.
 - `og:locale` `en_PH`; hero image `green-nephrology-overview-infographic.png` (use the infographic skill).
 
 ## 11. Image plan (use `williamriveromd-infographic-skill`)
