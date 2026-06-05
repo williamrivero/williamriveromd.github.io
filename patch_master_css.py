@@ -1083,36 +1083,8 @@ MASTER_CSS = """
     table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   }
 
-  /* ── IMAGE LIGHTBOX ─────────────────────────────────────────────────────── */
-  .zoomable { cursor: zoom-in; transition: opacity .15s, transform .15s; display: block; }
-  .zoomable:hover { opacity: .88; transform: scale(1.01); }
-  .lb-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,.92); z-index: 9500;
-    align-items: center; justify-content: center; padding: 16px;
-    cursor: zoom-out;
-  }
-  .lb-overlay.open { display: flex; }
-  .lb-overlay img {
-    max-width: 100%; max-height: 90vh; border-radius: 8px;
-    object-fit: contain; box-shadow: 0 8px 48px rgba(0,0,0,.7);
-    cursor: default;
-  }
-  .lb-close {
-    position: fixed; top: 16px; right: 20px;
-    color: white; font-size: 28px; line-height: 1;
-    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
-    border-radius: 50%; width: 40px; height: 40px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: background .15s;
-  }
-  .lb-close:hover { background: rgba(255,255,255,.25); }
-  .lb-hint {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    color: rgba(255,255,255,.5); font-size: 12px; pointer-events: none;
-    white-space: nowrap;
-  }
-  @media print { .lb-overlay { display: none !important; } }
+  /* ── IMAGE INTERACTION ──────────────────────────────────────────────────── */
+  /* Full image opens in a new tab on double-click / double-tap (assets/image-open.js). */
 
   /* ═══════════════════════════════════════════════════════════════════════════
      PRINT
