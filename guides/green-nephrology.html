@@ -2223,5 +2223,22 @@ function toggleDark(){const on=document.documentElement.getAttribute('data-theme
   </svg>
 </button>
 <script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script>
+/* Double-click / double-tap any in-page infographic → open the full image in a new tab */
+(function(){
+  function openFull(img){ var src = img.getAttribute('src') || img.currentSrc; if(src) window.open(src,'_blank','noopener'); }
+  document.querySelectorAll('main figure img').forEach(function(img){
+    img.style.cursor='zoom-in';
+    if(!img.title) img.title='Double-click (or double-tap) to open the full image';
+    img.addEventListener('dblclick', function(e){ e.preventDefault(); openFull(img); });
+    var lastTap=0;
+    img.addEventListener('touchend', function(e){
+      var now=Date.now();
+      if(now-lastTap<350){ e.preventDefault(); openFull(img); }
+      lastTap=now;
+    }, {passive:false});
+  });
+})();
+</script>
 </body>
 </html>
