@@ -456,6 +456,8 @@ MASTER_CSS = """
   }
   .checklist ul li:last-child { border-bottom: none; }
   .checklist ul li::before { content: '✓'; position: absolute; left: 4px; top: 10px; color: #d4af4f; }
+  .checklist.checklist-green { background: var(--green); }
+  html[data-theme="dark"] .checklist.checklist-green { background: #0e2a1c; }
 
   /* ── COMPARE GRID ────────────────────────────────────────────────────────── */
   .compare-grid, .cartridge-compare {
