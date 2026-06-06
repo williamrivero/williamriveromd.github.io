@@ -258,7 +258,7 @@ MASTER_CSS = """
     font-weight: 600; color: var(--navy);
     line-height: 1.3; margin-bottom: 14px;
   }
-  .section p { color: var(--text-mid); margin-bottom: 16px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
   .section p:last-child { margin-bottom: 0; }
 
   /* ── INTRO CALLOUT (teal panel) ──────────────────────────────────────────── */
