@@ -1083,8 +1083,81 @@ MASTER_CSS = """
     table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   }
 
-  /* ── IMAGE INTERACTION ──────────────────────────────────────────────────── */
-  /* Full image opens in a new tab on double-click / double-tap (assets/image-open.js). */
+  /* ── IMAGE LIGHTBOX (assets/image-lightbox.js) ─────────────────────────── */
+  figure img, .illus-wrap img { cursor: zoom-in; }
+  figure img:hover, .illus-wrap img:hover { opacity: .92; }
+
+  #img-lb.lb-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.93); z-index: 9500;
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px 16px 16px; cursor: pointer; overflow-y: auto;
+  }
+  #img-lb.lb-overlay.open { display: flex; }
+
+  .lb-body {
+    display: flex; flex-direction: column; align-items: center;
+    max-width: min(95vw, 1280px); cursor: default;
+  }
+  .lb-img {
+    max-width: 100%; max-height: 72vh; border-radius: 8px;
+    object-fit: contain; box-shadow: 0 8px 48px rgba(0,0,0,.7);
+    cursor: zoom-in; display: block;
+  }
+  .lb-caption-panel {
+    width: 100%; background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.13); border-top: none;
+    border-radius: 0 0 8px 8px; padding: 14px 18px;
+  }
+  .lb-desc {
+    color: rgba(255,255,255,.88); font-size: 13px; line-height: 1.6;
+    margin: 0 0 10px; font-style: italic;
+  }
+  .lb-desc:last-child { margin-bottom: 0; }
+  .lb-abbrevs {
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 12px; row-gap: 3px; margin: 0;
+    border-top: 1px solid rgba(255,255,255,.1); padding-top: 10px;
+  }
+  .lb-abbrevs dt {
+    color: rgba(255,255,255,.5); font-size: 11px; font-weight: 700;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .lb-abbrevs dd {
+    color: rgba(255,255,255,.72); font-size: 11px; margin: 0;
+  }
+  .lb-close {
+    position: fixed; top: 16px; right: 20px;
+    color: #fff; font-size: 24px; line-height: 1;
+    background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.25);
+    border-radius: 50%; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .15s; z-index: 9501;
+  }
+  .lb-close:hover { background: rgba(255,255,255,.28); }
+  .lb-hint {
+    margin-top: 14px; color: rgba(255,255,255,.3); font-size: 11px;
+    pointer-events: none; text-align: center; letter-spacing: .02em;
+  }
+  @media (max-width: 600px) {
+    .lb-img { max-height: 58vh; }
+    .lb-hint { white-space: normal; font-size: 10px; }
+  }
+  @media print { #img-lb.lb-overlay { display: none !important; } }
+
+  /* Standard figcaption for guide images */
+  figure figcaption, .illus-caption {
+    font-size: 12px; color: var(--text-muted); margin-top: 10px;
+    font-style: italic; text-align: center; line-height: 1.5;
+  }
+  .fig-desc { margin: 0 0 6px; }
+  .fig-abbrevs {
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 10px; row-gap: 2px; margin: 6px 0 0;
+    font-style: normal; text-align: left;
+  }
+  .fig-abbrevs dt { font-weight: 700; color: var(--text-mid); }
+  .fig-abbrevs dd { margin: 0; color: var(--text-muted); }
 
   /* ═══════════════════════════════════════════════════════════════════════════
      PRINT
