@@ -3109,5 +3109,22 @@ function setGuideLang(lang) { localStorage.setItem(GLANG_KEY, lang); }
 </script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
 <script src="../assets/image-open.js" defer></script>
+<script>/* zoomable-dblclick-handler */
+(function(){
+  var _last={el:null,t:0};
+  document.addEventListener('click',function(e){
+    var img=e.target.closest?e.target.closest('img.zoomable'):null;
+    if(!img&&e.target.matches&&e.target.matches('img.zoomable'))img=e.target;
+    if(!img)return;
+    var now=Date.now();
+    if(_last.el===img&&now-_last.t<400){
+      window.open(img.src,'_blank','noopener,noreferrer');
+      _last={el:null,t:0};
+    }else{
+      _last={el:img,t:now};
+    }
+  });
+})();
+</script>
 </body>
 </html>
