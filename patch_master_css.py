@@ -1086,6 +1086,12 @@ MASTER_CSS = """
   /* ── IMAGE LIGHTBOX (assets/image-lightbox.js) ─────────────────────────── */
   figure img, .illus-wrap img { cursor: zoom-in; }
   figure img:hover, .illus-wrap img:hover { opacity: .92; }
+  /* Non-hero inline images: thumbnail size — lightbox handles magnification */
+  figure img:not([fetchpriority="high"]),
+  .illus-wrap img:not([fetchpriority="high"]) {
+    max-width: 480px; width: 100%; height: auto; display: block;
+    margin-left: auto; margin-right: auto;
+  }
 
   #img-lb.lb-overlay {
     display: none; position: fixed; inset: 0;
