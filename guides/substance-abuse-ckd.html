@@ -1363,6 +1363,45 @@ html[data-theme="dark"] .an-actions .an-btn-primary{background:var(--teal,#1a6b7
   }
 }
 </script>
+<style>
+/* ── SBIRT interactive screening tools (clinician) ─────────────────────── */
+.sbirt-tool{border:1px solid var(--border,#e2e6eb);border-radius:16px;padding:22px 24px;margin:18px 0 24px;background:var(--bg,#f9fafb);}
+.sbirt-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+.sbirt-tab{padding:8px 16px;border-radius:20px;border:1.5px solid var(--border,#e2e6eb);background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-mid,#2c3a4a);transition:all .15s;}
+.sbirt-tab.active{background:var(--navy,#0f1e2e);border-color:var(--navy,#0f1e2e);color:#fff;}
+.sbirt-tab:hover:not(.active){background:#eef2f6;}
+.sbirt-lead{font-size:13px;color:var(--text-mid,#2c3a4a);line-height:1.6;margin:0 0 14px;}
+.sbirt-sex{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 16px;font-size:13px;font-weight:600;color:var(--text-mid,#2c3a4a);}
+.sbirt-sex button{padding:5px 14px;border-radius:14px;border:1.5px solid var(--border,#e2e6eb);background:#fff;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-mid,#2c3a4a);}
+.sbirt-sex button.sel{background:var(--teal,#1a6b72);border-color:var(--teal,#1a6b72);color:#fff;}
+.sbirt-q{padding:12px 0;border-bottom:1px solid var(--border,#e2e6eb);}
+.sbirt-q:last-of-type{border-bottom:none;}
+.sbirt-q-text{font-size:13.5px;color:var(--text,#1e2a38);line-height:1.5;margin-bottom:8px;}
+.sbirt-q-num{font-weight:700;color:var(--teal,#1a6b72);margin-right:6px;}
+.sbirt-opts{display:flex;gap:6px;flex-wrap:wrap;}
+.sbirt-opt{padding:6px 12px;border:1.5px solid var(--border,#e2e6eb);border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:#fff;color:var(--text-mid,#2c3a4a);transition:all .12s;}
+.sbirt-opt.sel{background:var(--teal,#1a6b72);border-color:var(--teal,#1a6b72);color:#fff;}
+.sbirt-result{margin-top:18px;border-radius:12px;padding:16px 20px;border:1.5px solid var(--border,#e2e6eb);background:#fff;}
+.sbirt-score{font-size:30px;font-weight:800;line-height:1;}
+.sbirt-score small{font-size:14px;font-weight:600;color:var(--text-muted,#64748b);}
+.sbirt-band{display:inline-block;margin:8px 0 6px;padding:4px 14px;border-radius:14px;font-size:13px;font-weight:700;}
+.sbirt-rec{font-size:13px;color:var(--text-mid,#2c3a4a);line-height:1.55;margin-top:6px;}
+.b-neg{background:var(--green-soft,#dcfce7);color:#166534;}
+.b-low{background:#e0f2fe;color:#075985;}
+.b-mod{background:var(--amber-soft,#fef9c3);color:#92400e;}
+.b-high{background:#ffedd5;color:#9a3412;}
+.b-sev{background:var(--red-soft,#fee2e2);color:#b91c1c;}
+.sbirt-actions{margin-top:14px;}
+.sbirt-actions button{padding:8px 20px;border-radius:20px;border:1.5px solid var(--border,#e2e6eb);background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-mid,#2c3a4a);}
+.sbirt-actions button:hover{background:#eef2f6;}
+.sbirt-note{font-size:11.5px;color:var(--text-muted,#64748b);line-height:1.5;margin-top:12px;font-style:italic;}
+html[data-theme="dark"] .sbirt-tool{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .sbirt-tab,html[data-theme="dark"] .sbirt-opt,html[data-theme="dark"] .sbirt-sex button,html[data-theme="dark"] .sbirt-result,html[data-theme="dark"] .sbirt-actions button{background:#0f1520;border-color:#2a3548;color:#c0cad8;}
+html[data-theme="dark"] .sbirt-tab.active{background:var(--teal,#1a6b72);border-color:var(--teal,#1a6b72);color:#fff;}
+html[data-theme="dark"] .sbirt-opt.sel,html[data-theme="dark"] .sbirt-sex button.sel{background:var(--teal,#1a6b72);border-color:var(--teal,#1a6b72);color:#fff;}
+html[data-theme="dark"] .sbirt-q-text{color:#c0cad8;}
+html[data-theme="dark"] .sbirt-q{border-color:#2a3548;}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -2356,6 +2395,22 @@ html[data-theme="dark"] .an-actions .an-btn-primary{background:var(--teal,#1a6b7
     </table>
   </div>
 
+  <h3 style="font-size:15px;font-weight:700;color:var(--navy);margin:24px 0 12px;">Interactive screening tools</h3>
+  <p class="sbirt-lead">Score validated SBIRT instruments at the point of care. Tap an answer for each item; the score and interpretation update instantly. All scoring runs locally in your browser — nothing is saved or transmitted. These tools support, not replace, a DSM-5-TR diagnostic interview.</p>
+  <div class="sbirt-tool">
+    <div class="sbirt-tabs">
+      <button class="sbirt-tab active" id="sbtab-auditc" onclick="sbirtTab('auditc')">AUDIT-C · Alcohol</button>
+      <button class="sbirt-tab" id="sbtab-dast10" onclick="sbirtTab('dast10')">DAST-10 · Drugs</button>
+      <button class="sbirt-tab" id="sbtab-cageaid" onclick="sbirtTab('cageaid')">CAGE-AID</button>
+      <button class="sbirt-tab" id="sbtab-nida" onclick="sbirtTab('nida')">NIDA Single-Item</button>
+    </div>
+    <div id="sbirt-lead-tool" class="sbirt-lead" style="display:none;"></div>
+    <div id="sbirt-panel"></div>
+    <div class="sbirt-result" id="sbirt-result" style="display:none;"></div>
+    <div class="sbirt-actions"><button type="button" onclick="sbirtReset()">Reset answers</button></div>
+    <p class="sbirt-note">Cutoffs per published validation studies (AUDIT-C: Bush 1998; DAST-10: Skinner 1982; CAGE-AID: Brown &amp; Rounds 1995; NIDA Quick Screen / NM-ASSIST). Sensitivity and specificity vary by population; confirm every positive screen with full clinical assessment.</p>
+  </div>
+
   <div class="pearl-box">
     <h5>🩺 Clinical Pearl</h5>
     <p>The brief intervention is motivational, not confrontational. Use OARS micro-skills — <strong>O</strong>pen questions, <strong>A</strong>ffirmations, <strong>R</strong>eflective listening, <strong>S</strong>ummaries — and roll with resistance rather than arguing. A single empathic statement linking the substance to the kidney finding ("Your kidney numbers and this drug are connected, and stopping can let them recover") leverages the "teachable moment" of an acute renal event, when motivation to change is highest.</p>
@@ -2914,6 +2969,22 @@ html[data-theme="dark"] .an-actions .an-btn-primary{background:var(--teal,#1a6b7
 </section>
 </main>
 
+    <!-- DR CARD (clinician) -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span><span data-lang="tl" class="lang-hidden">I-scan at i-save</span><span data-lang="ceb" class="lang-hidden">I-scan ug i-save</span><span data-lang="kap" class="lang-hidden">I-scan at i-save</span></p>
+</div>
+</div>
+</div>
+
 <footer class="guide-footer">
 <div class="footer-inner">
 <p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
@@ -3000,6 +3071,121 @@ function setLang(lang){
     <polyline points="18 15 12 9 6 15"/>
   </svg>
 </button>
+<script>
+/* ===== SBIRT interactive screening tools (clinician) ===== */
+(function(){
+  var CURRENT='auditc';
+  var STATE={auditc:{},dast10:{},cageaid:{},nida:{},sex:'male'};
+  var TOOLS={
+    auditc:{label:'AUDIT-C',sex:true,kind:'points',max:12,
+      lead:'Alcohol Use Disorders Identification Test — Consumption. Refers to standard drinks (≈1 bottle of beer, 1 shot of spirits, or 1 glass of wine).',
+      items:[
+        {t:'How often do you have a drink containing alcohol?',o:['Never','Monthly or less','2–4 times a month','2–3 times a week','4+ times a week']},
+        {t:'How many standard drinks containing alcohol do you have on a typical day when you are drinking?',o:['1 or 2','3 or 4','5 or 6','7 to 9','10 or more']},
+        {t:'How often do you have six or more drinks on one occasion?',o:['Never','Less than monthly','Monthly','Weekly','Daily or almost daily']}
+      ]},
+    dast10:{label:'DAST-10',kind:'yn',max:10,rev:[2],
+      lead:'Drug Abuse Screening Test (10-item). Answer for the past 12 months, regarding drug use NOT including alcohol (includes non-medical use of prescription drugs).',
+      items:[
+        {t:'Have you used drugs other than those required for medical reasons?'},
+        {t:'Do you use more than one drug at a time?'},
+        {t:'Are you always able to stop using drugs when you want to?'},
+        {t:'Have you had blackouts or flashbacks as a result of drug use?'},
+        {t:'Do you ever feel bad or guilty about your drug use?'},
+        {t:'Does your spouse (or parents) ever complain about your involvement with drugs?'},
+        {t:'Have you neglected your family because of your use of drugs?'},
+        {t:'Have you engaged in illegal activities in order to obtain drugs?'},
+        {t:'Have you experienced withdrawal symptoms (felt sick) when you stopped taking drugs?'},
+        {t:'Have you had medical problems as a result of your drug use (e.g., memory loss, hepatitis, convulsions, bleeding)?'}
+      ]},
+    cageaid:{label:'CAGE-AID',kind:'yn',max:4,
+      lead:'CAGE Adapted to Include Drugs. Consider both alcohol and drug use.',
+      items:[
+        {t:'Have you ever felt you ought to Cut down on your drinking or drug use?'},
+        {t:'Have people Annoyed you by criticizing your drinking or drug use?'},
+        {t:'Have you ever felt bad or Guilty about your drinking or drug use?'},
+        {t:'Have you ever had a drink or used drugs first thing in the morning (Eye-opener) to steady your nerves or get rid of a hangover?'}
+      ]},
+    nida:{label:'NIDA single-item',kind:'single',max:1,
+      lead:'NIDA Quick Screen — single-question drug screen. A positive answer should be followed by the full NM-ASSIST.',
+      items:[
+        {t:'How many times in the past year have you used an illegal drug or used a prescription medication for non-medical reasons?',o:['0 times','1 or more times']}
+      ]}
+  };
+
+  function score(key){
+    var T=TOOLS[key],a=STATE[key],s=0,ans=0,n=T.items.length;
+    for(var i=0;i<n;i++){
+      if(a[i]==null) continue; ans++;
+      if(T.kind==='points'){ s+=a[i]; }
+      else if(T.kind==='yn'){ var rev=(T.rev||[]).indexOf(i)>=0; s+= rev?(a[i]===0?1:0):(a[i]===1?1:0); }
+      else if(T.kind==='single'){ s+= (a[i]===1?1:0); }
+    }
+    return {s:s,ans:ans,n:n};
+  }
+  function interpret(key,s){
+    if(key==='auditc'){ var cut=STATE.sex==='female'?3:4;
+      if(s<cut) return {b:'b-neg',l:'Negative screen',r:'Below the positive threshold ('+cut+' for '+(STATE.sex==='female'?'women':'men')+'). Reinforce low-risk limits and rescreen periodically.'};
+      if(s<=7) return {b:'b-mod',l:'Positive — hazardous / at-risk use',r:'At or above the cutoff ('+cut+'). Deliver a brief motivational intervention and assess for an alcohol use disorder; review interactions with antihypertensives and hepatorenal risk.'};
+      return {b:'b-sev',l:'Positive — high risk, likely AUD',r:'High score strongly suggests an alcohol use disorder. Brief intervention plus referral; assess withdrawal risk, hepatic and renal impact, and medication interactions.'};
+    }
+    if(key==='dast10'){
+      if(s===0) return {b:'b-neg',l:'No problems reported',r:'No drug-related problems reported. Re-screen if clinical suspicion persists.'};
+      if(s<=2) return {b:'b-low',l:'Low level',r:'Brief advice and monitoring. Re-assess at follow-up.'};
+      if(s<=5) return {b:'b-mod',l:'Moderate level',r:'Brief intervention; consider referral for further assessment of a substance use disorder.'};
+      if(s<=8) return {b:'b-high',l:'Substantial level',r:'Intensive assessment indicated; refer to addiction medicine. Screen for nephrotoxic exposures and infection-related complications.'};
+      return {b:'b-sev',l:'Severe level',r:'Intensive assessment and referral strongly indicated. Coordinate addiction-medicine co-management with nephrology.'};
+    }
+    if(key==='cageaid'){
+      if(s===0) return {b:'b-neg',l:'Negative screen',r:'No positive responses. Re-screen if clinical suspicion persists.'};
+      if(s===1) return {b:'b-low',l:'Possible — explore further',r:'One positive response warrants clinical conversation; consider a fuller instrument (AUDIT-C / DAST-10).'};
+      return {b:'b-mod',l:'Positive screen',r:'Two or more positive responses are clinically significant. Proceed to brief intervention and full assessment for a substance use disorder.'};
+    }
+    if(key==='nida'){
+      if(s===0) return {b:'b-neg',l:'Negative screen',r:'No non-medical drug use reported in the past year.'};
+      return {b:'b-mod',l:'Positive screen',r:'Any non-medical use is a positive screen. Proceed to the full NM-ASSIST for substance-specific involvement scoring and risk level.'};
+    }
+  }
+  function render(){
+    var key=CURRENT,T=TOOLS[key];
+    var lead=document.getElementById('sbirt-lead-tool');
+    if(lead){ lead.style.display=''; lead.textContent=T.lead; }
+    var html='';
+    if(T.sex){
+      html+='<div class="sbirt-sex"><span>Sex for cutoff:</span>'+
+        '<button type="button" class="'+(STATE.sex==='male'?'sel':'')+'" onclick="sbirtSex(\'male\')">Male</button>'+
+        '<button type="button" class="'+(STATE.sex==='female'?'sel':'')+'" onclick="sbirtSex(\'female\')">Female</button></div>';
+    }
+    T.items.forEach(function(it,i){
+      var opts = (T.kind==='points')?it.o : (T.kind==='single'? it.o : ['No','Yes']);
+      html+='<div class="sbirt-q"><div class="sbirt-q-text"><span class="sbirt-q-num">'+(i+1)+'.</span>'+it.t+'</div><div class="sbirt-opts">';
+      opts.forEach(function(o,oi){
+        var sel = (STATE[key][i]===oi)?' sel':'';
+        html+='<button type="button" class="sbirt-opt'+sel+'" onclick="sbirtPick(\''+key+'\','+i+','+oi+')">'+o+'</button>';
+      });
+      html+='</div></div>';
+    });
+    document.getElementById('sbirt-panel').innerHTML=html;
+    result();
+  }
+  function result(){
+    var key=CURRENT,T=TOOLS[key],r=score(key),box=document.getElementById('sbirt-result');
+    if(r.ans===0){ box.style.display='none'; return; }
+    var html='<div class="sbirt-score">'+r.s+' <small>/ '+T.max+'</small></div>';
+    if(r.ans===r.n){ var it=interpret(key,r.s); html+='<span class="sbirt-band '+it.b+'">'+it.l+'</span><div class="sbirt-rec">'+it.r+'</div>'; }
+    else { html+='<div class="sbirt-rec">Answer all '+r.n+' items ('+r.ans+'/'+r.n+' done) for the final interpretation.</div>'; }
+    box.style.display=''; box.innerHTML=html;
+  }
+  window.sbirtTab=function(key){ CURRENT=key;
+    ['auditc','dast10','cageaid','nida'].forEach(function(k){ var b=document.getElementById('sbtab-'+k); if(b) b.classList.toggle('active',k===key); });
+    render();
+  };
+  window.sbirtPick=function(key,i,oi){ STATE[key][i]=oi; render(); };
+  window.sbirtSex=function(s){ STATE.sex=s; render(); };
+  window.sbirtReset=function(){ STATE[CURRENT]={}; render(); };
+  if(document.getElementById('sbirt-panel')) render();
+})();
+</script>
 <script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
 <script src="../assets/image-lightbox.js" defer></script>
