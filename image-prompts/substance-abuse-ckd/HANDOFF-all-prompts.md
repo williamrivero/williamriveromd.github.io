@@ -171,6 +171,19 @@
 > NEGATIVE INSTRUCTIONS: Avoid cartoon style, clutter, tiny unreadable cells, AI gibberish text, misspelled drug names, neon colors. NEVER use dark backgrounds. Never omit the williamriveromd.com attribution.
 
 ═══════════════════════════════════════════════════════════════════
+# OPTIONAL — Social Share Card
+
+## IMAGE 15 — Dedicated OG / Social Share Card
+**File:** `substance-abuse-ckd-og.png` · **Type:** OG / social share card · **Size:** 1200×630 (1.91:1, fixed) · **Use:** Facebook / X / LinkedIn / iMessage link previews (the inline hero is 1:1, which crops poorly as a link preview).
+
+**COPY-READY PROMPT:**
+> Social share / Open Graph card, exactly 1200×630 landscape, on a clean off-white `#fafafa` background, premium williamriveromd.com nephrology house style. Left ~60%: bold navy `#0f1e2e` title in a Lora-style serif "Substance Use & Your Kidneys" with a teal `#1a6b72` subtitle in a clean sans-serif "Protecting What You Have — a patient & clinician guide". A small teal rule and a one-line tag: "Tobacco · Stimulants · Painkillers · Recovery". Right ~40%: a calm semi-photorealistic 3D kidney in teal/renal-green `#1f7a4d` tones with a small protective-shield motif and a subtle warm photographic hint of supportive Filipino hands — hopeful, non-stigmatizing, never gory. Generous whitespace, strong hierarchy, mobile-thumbnail legible. Bottom-right: small semi-transparent navy `williamriveromd.com`. Light background only — never dark.
+>
+> NEGATIVE INSTRUCTIONS: Avoid cartoon style, clutter, tiny unreadable text, AI gibberish text, unrealistic anatomy, drug paraphernalia, stigmatizing/scary imagery, neon colors. NEVER use dark backgrounds. Never omit the williamriveromd.com attribution.
+
+**When ready:** push `images/substance-abuse-ckd-og.png`, then I'll generate its WebP and re-point the guide's `og:image` (+ `og:image:width=1200`, `og:image:height=630`) to it.
+
+═══════════════════════════════════════════════════════════════════
 ### After generation (Stage 2)
 1. Save each PNG with the **exact file name** above; export a WebP copy; place both under `images/`.
 2. For each figure, insert `<figure><picture><source srcset="../images/NAME.webp" type="image/webp"><img src="../images/NAME.png" …></picture><figcaption><p class="fig-desc">…</p></figcaption></figure>` into its mapped section. **Patient** figcaptions need 4-language `data-lang` spans (en/tl/ceb/kap); **clinician** figcaptions are English-only.
