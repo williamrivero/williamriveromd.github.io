@@ -2510,7 +2510,7 @@ Agyang "natural" o "herbal" la ding supplement, e mu buring sabyan a ligtas la p
 <div style="background:var(--navy);padding:16px 22px;border-radius:10px 10px 0 0;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
 <div>
 <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55);margin-bottom:3px;">Prototype</div>
-<div style="font-size:17px;font-weight:600;color:white;font-family:'Lora',serif;">7-Day Sample Meal Plan</div>
+<div style="font-size:17px;font-weight:600;color:white;font-family:'Lora',serif;">Sample 7-Day Meal Plan based on Daily Nutrition Prescription</div>
 <div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;">Based on your prescription · Filipino foods · Kidney-safe portions</div>
 </div>
 <div id="mp-allergy-tags" style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;"></div>
@@ -3123,7 +3123,7 @@ ${clinList}
 <div class="warn-head">${warnHead}</div>
 <div class="warn-list">${warnList}</div>
 
-${mealPlanHtml ? `<div class="mp-section-head">7-Day Prototype Meal Plan</div>${mealPlanHtml}` : ''}
+${mealPlanHtml ? `<div class="mp-section-head">Sample 7-Day Meal Plan based on Daily Nutrition Prescription</div>${mealPlanHtml}` : ''}
 <div style="border:1px solid #dde;border-radius:8px;padding:12px 14px;margin-top:14px;margin-bottom:14px;page-break-inside:avoid;">
   <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1a6b72;margin-bottom:10px;">Additional Orders / Plans / Remarks</div>
   <div style="border-bottom:1px solid #bbb;margin-bottom:9px;height:0;"></div>
@@ -3541,7 +3541,7 @@ function _doExportDietPDF(logo) {
   var mpWrap2 = document.getElementById('meal-plan-wrap');
   if (mpWrap2 && mpWrap2.style.display !== 'none') {
     chk(14);
-    fr(margin,y,colW,7,TEAL); sf('bold',8,WHITE); tx('7-Day Prototype Meal Plan',margin+3,y+5); y+=8;
+    fr(margin,y,colW,7,TEAL); sf('bold',8,WHITE); tx('Sample 7-Day Meal Plan based on Daily Nutrition Prescription',margin+3,y+5); y+=8;
 
     document.querySelectorAll('.mp-day').forEach(function(dayEl){
       var dayName = _pdfText((dayEl.querySelector('.mp-day-header')||{textContent:''}).textContent.trim());
@@ -4397,15 +4397,37 @@ function buildMealPlan(p){
   const dnPool = filterPool(dinner);
 
   // Fallback if pool is empty after filtering
-  const safe = pool => pool.length > 0 ? pool : [{name:'Plain Rice + Boiled Chicken',desc:'¾–1 cup rice, 80g boiled chicken, calamansi',allergens:[],hiK:false,hiP:false,note:'All-safe fallback meal'}];
-  const bfF = safe(bfPool), luF = safe(luPool), snF = safe(snPool), dnF = safe(dnPool);
+  const safe = pool => pool.length > 0 ? pool : [{name:'Plain Rice + Boiled Chicken',desc:'¾–1 cup rice, 80g boiled chicken, calamansi',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'All-safe fallback meal'}];
+
+  // Fisher-Yates shuffle — returns a new shuffled array, never mutates the pool
+  function _shuffle(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Pick 7 unique meals from pool; if pool < 7, cycle through shuffled copies to fill
+  function pick7(pool){
+    if(pool.length === 0) return Array(7).fill(pool[0]);
+    let result = [];
+    while(result.length < 7) result = result.concat(_shuffle(pool));
+    return result.slice(0, 7);
+  }
+
+  const bfF = pick7(safe(bfPool));
+  const luF = pick7(safe(luPool));
+  const snF = pick7(safe(snPool));
+  const dnF = pick7(safe(dnPool));
 
   const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   const slots = [
-    {label:'Breakfast',icon:'🌅',pool:bfF},
-    {label:'Lunch',icon:'☀️',pool:luF},
-    {label:'Snack',icon:'🍎',pool:snF},
-    {label:'Dinner',icon:'🌙',pool:dnF},
+    {label:'Breakfast',icon:'🌅',meals:bfF},
+    {label:'Lunch',icon:'☀️',meals:luF},
+    {label:'Snack',icon:'🍎',meals:snF},
+    {label:'Dinner',icon:'🌙',meals:dnF},
   ];
 
   // ── Per-meal protein & calorie targets ──
@@ -4479,8 +4501,8 @@ function buildMealPlan(p){
   let html = '';
   days.forEach((day,di)=>{
     html += `<div class="mp-day"><div class="mp-day-header"><span class="mp-day-label">${day}</span><span>, Day ${di+1}</span></div><div class="mp-meals">`;
-    slots.forEach(({label,icon,pool})=>{
-      const meal = pool[di % pool.length];
+    slots.forEach(({label,icon,meals})=>{
+      const meal = meals[di];
       const frac = slotFracs[label] || {p:0.25,k:0.25};
       const mealProt = totalProt * frac.p;
       const mealKcal = totalKcal * frac.k;
