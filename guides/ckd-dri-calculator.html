@@ -3250,8 +3250,19 @@ function _setUnit(mode) {
 }
 
 function _clinicSlug() {
-  var v = ((document.getElementById('f-clinic')||{}).value||'').trim().toLowerCase().replace(/[\s\-_.]/g,'');
-  return CLINIC_LOGO_MAP[v] ? v : null;
+  var v = ((document.getElementById('f-clinic')||{}).value||'').trim().toLowerCase().replace(/[\s\-_.,&]/g,'');
+  if(CLINIC_LOGO_MAP[v]) return v;
+  // Match full/partial clinic names to slugs
+  var aliases = {
+    rcuona: ['renalcareunit','renalcareunitona','renalcareunitonarlmmc','renalcare','rcu','rlmmc','ona'],
+    sjrc:   ['stjosefrenalcare','stjosef','josefrenalcare','sjrenalcare','stjosefrc'],
+    sjbdc:  ['stjohnbiocare','stjohnbiocaredialysis','johndialysis','sjbdc','biocaredialysis','stjohnbiocare']
+  };
+  for(var slug in aliases){
+    if(aliases[slug].some(function(a){ return v.indexOf(a)!==-1 || a.indexOf(v)!==-1 && v.length>=4; }))
+      return slug;
+  }
+  return null;
 }
 
 function _preloadClinicLogo() {
