@@ -1913,7 +1913,7 @@ Agyang "natural" o "herbal" la ding supplement, e mu buring sabyan a ligtas la p
 </div>
 </div>
 </section>
-<!-- ═══════════════════════════════════════════ -->
+<!-- ============================================================
      NUTRITION SCREENING TOOLS  (SGA / MIS / SNAQ)
      ============================================================ -->
 <section class="section" id="nut-tools">
@@ -2273,8 +2273,9 @@ Agyang "natural" o "herbal" la ding supplement, e mu buring sabyan a ligtas la p
 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
   <span style="font-size:12px;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;">Units</span>
   <div id="unit-toggle" style="display:inline-flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;font-size:13px;font-weight:600;">
-    <button type="button" id="unit-metric" onclick="_setUnit('metric')" style="padding:5px 16px;border:none;cursor:pointer;background:var(--teal);color:#fff;transition:background .15s;">Metric</button>
-    <button type="button" id="unit-imperial" onclick="_setUnit('imperial')" style="padding:5px 16px;border:none;cursor:pointer;background:var(--white);color:var(--text-muted);transition:background .15s;">Imperial</button>
+    <button type="button" id="unit-metric"   onclick="_setUnit('metric')"   style="padding:5px 14px;border:none;cursor:pointer;background:var(--teal);color:#fff;transition:background .15s;">Metric</button>
+    <button type="button" id="unit-hybrid"   onclick="_setUnit('hybrid')"   style="padding:5px 14px;border:none;cursor:pointer;background:var(--white);color:var(--text-muted);transition:background .15s;">Hybrid</button>
+    <button type="button" id="unit-imperial" onclick="_setUnit('imperial')" style="padding:5px 14px;border:none;cursor:pointer;background:var(--white);color:var(--text-muted);transition:background .15s;">Imperial</button>
   </div>
   <span id="unit-hint" style="font-size:11px;color:var(--text-muted);">kg &amp; cm</span>
 </div>
@@ -3118,61 +3119,68 @@ var _clinicLogoCache = {};
 window._unitMode = 'metric';
 
 function _setUnit(mode) {
+  var prev = window._unitMode || 'metric';
   window._unitMode = mode;
-  var isImp = mode === 'imperial';
+  var isImp    = mode === 'imperial';
+  var isHybrid = mode === 'hybrid';
+  var isMet    = mode === 'metric';
 
-  // Toggle button styles
-  document.getElementById('unit-metric').style.background   = isImp ? 'var(--white)' : 'var(--teal)';
-  document.getElementById('unit-metric').style.color        = isImp ? 'var(--text-muted)' : '#fff';
-  document.getElementById('unit-imperial').style.background = isImp ? 'var(--teal)' : 'var(--white)';
-  document.getElementById('unit-imperial').style.color      = isImp ? '#fff' : 'var(--text-muted)';
-  document.getElementById('unit-hint').textContent          = isImp ? 'lbs & ft/in' : 'kg & cm';
+  // Button highlight
+  ['metric','hybrid','imperial'].forEach(function(m){
+    var btn = document.getElementById('unit-'+m);
+    btn.style.background = (m === mode) ? 'var(--teal)' : 'var(--white)';
+    btn.style.color      = (m === mode) ? '#fff'        : 'var(--text-muted)';
+  });
+  var hints = {metric:'kg & cm', hybrid:'kg & ft/in', imperial:'lbs & ft/in'};
+  document.getElementById('unit-hint').textContent = hints[mode];
 
-  // Show/hide height inputs
-  document.getElementById('grp-ht-metric').style.display   = isImp ? 'none' : '';
-  document.getElementById('grp-ht-imperial').style.display = isImp ? '' : 'none';
+  // Show/hide height inputs (metric cm vs ft+in)
+  var useImperialHt = isImp || isHybrid;
+  document.getElementById('grp-ht-metric').style.display   = useImperialHt ? 'none' : '';
+  document.getElementById('grp-ht-imperial').style.display = useImperialHt ? '' : 'none';
 
-  // Update weight label
+  // Weight label
   var wtLabel = document.getElementById('lbl-wt');
   if (wtLabel) {
-    var spans = wtLabel.querySelectorAll('[data-lang]');
-    var unitStr = isImp ? 'lbs' : 'kg';
     var lblMap = {
-      en:  {metric:'Weight (kg)',  imperial:'Weight (lbs)'},
-      tl:  {metric:'Timbang (kg)', imperial:'Timbang (lbs)'},
-      ceb: {metric:'Timbang (kg)', imperial:'Timbang (lbs)'},
-      kap: {metric:'Timbang (kg)', imperial:'Timbang (lbs)'}
+      en:  {metric:'Weight (kg)', hybrid:'Weight (kg)', imperial:'Weight (lbs)'},
+      tl:  {metric:'Timbang (kg)',hybrid:'Timbang (kg)',imperial:'Timbang (lbs)'},
+      ceb: {metric:'Timbang (kg)',hybrid:'Timbang (kg)',imperial:'Timbang (lbs)'},
+      kap: {metric:'Timbang (kg)',hybrid:'Timbang (kg)',imperial:'Timbang (lbs)'}
     };
-    spans.forEach(function(s){
+    wtLabel.querySelectorAll('[data-lang]').forEach(function(s){
       var lang = s.getAttribute('data-lang');
       if (lblMap[lang]) s.textContent = lblMap[lang][mode];
     });
   }
 
-  // Update weight input constraints
+  // Weight input constraints + value conversion
   var wtInput = document.getElementById('f-wt');
+  var curWt = parseFloat(wtInput.value);
+  var prevIsImp = prev === 'imperial';
   if (isImp) {
     wtInput.min = '66'; wtInput.max = '440'; wtInput.step = '1'; wtInput.placeholder = 'e.g. 132';
+    if (!isNaN(curWt) && !prevIsImp) wtInput.value = Math.round(curWt * 2.20462);
   } else {
     wtInput.min = '30'; wtInput.max = '200'; wtInput.step = '0.5'; wtInput.placeholder = 'e.g. 60';
+    if (!isNaN(curWt) && prevIsImp) wtInput.value = parseFloat((curWt * 0.453592).toFixed(1));
   }
 
-  // Convert existing values without data loss
-  var curWt = parseFloat(wtInput.value);
-  if (!isNaN(curWt)) {
-    wtInput.value = isImp ? Math.round(curWt * 2.20462) : parseFloat((curWt * 0.453592).toFixed(1));
-  }
+  // Height value conversion between metric cm and imperial ft/in
   var htMetric = document.getElementById('f-ht');
   var htFt     = document.getElementById('f-ht-ft');
   var htIn     = document.getElementById('f-ht-in');
-  if (isImp) {
+  var prevUsedImpHt = (prev === 'imperial' || prev === 'hybrid');
+  if (useImperialHt && !prevUsedImpHt) {
+    // cm → ft/in
     var cm = parseFloat(htMetric.value);
     if (!isNaN(cm)) {
       var totalIn = cm / 2.54;
       htFt.value = Math.floor(totalIn / 12);
       htIn.value = Math.round(totalIn % 12);
     }
-  } else {
+  } else if (!useImperialHt && prevUsedImpHt) {
+    // ft/in → cm
     var ft = parseInt(htFt.value)||0, ins = parseFloat(htIn.value)||0;
     if (ft || ins) htMetric.value = parseFloat(((ft*12+ins)*2.54).toFixed(1));
   }
@@ -3465,10 +3473,10 @@ function runCalc(){
   const _unit = window._unitMode || 'metric';
   const _wtRaw = parseFloat(document.getElementById('f-wt').value);
   const wt   = _unit === 'imperial' ? _wtRaw * 0.453592 : _wtRaw;
-  const _htRaw = _unit === 'imperial'
+  const _useImpHt = (_unit === 'imperial' || _unit === 'hybrid');
+  const ht   = _useImpHt
     ? ((parseInt(document.getElementById('f-ht-ft').value)||0)*12 + (parseFloat(document.getElementById('f-ht-in').value)||0)) * 2.54
     : parseFloat(document.getElementById('f-ht').value);
-  const ht   = _htRaw;
   const age  = parseInt(document.getElementById('f-age').value);
   const sex  = document.getElementById('f-sex').value;
   const stage= document.getElementById('f-stage').value;
