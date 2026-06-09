@@ -1342,6 +1342,28 @@ html[data-theme="dark"] .section-body p { color: #c0cad8; }
   .vit-warn-box{background:#3a1515 !important;}}
 
 
+/* ── 7-DAY MEAL PLAN ── */
+.mp-day{border:1px solid var(--border);border-top:none;}
+.mp-day:first-child{border-top:1px solid var(--border);}
+.mp-day-header{background:var(--bg);padding:9px 18px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--teal);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.mp-day-header .mp-day-label{font-family:'Lora',serif;font-size:14px;font-weight:600;color:var(--navy);text-transform:none;letter-spacing:0;}
+.mp-meals{display:grid;grid-template-columns:repeat(4,1fr);}
+@media(max-width:640px){.mp-meals{grid-template-columns:1fr 1fr;}}
+@media(max-width:380px){.mp-meals{grid-template-columns:1fr;}}
+.mp-meal{padding:11px 14px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+.mp-meal:last-child{border-right:none;}
+@media(max-width:640px){.mp-meal:nth-child(2n){border-right:none;}}
+.mp-slot-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-muted);margin-bottom:3px;}
+.mp-meal-name{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:3px;line-height:1.3;}
+.mp-meal-desc{font-size:11px;color:var(--text-muted);line-height:1.5;}
+.mp-note{display:inline-block;font-size:9.5px;font-weight:700;background:var(--amber-soft);color:var(--amber);padding:1px 6px;border-radius:5px;margin-top:4px;}
+html[data-theme="dark"] .mp-day-header{background:#1a2535;}
+html[data-theme="dark"] .mp-day-header .mp-day-label{color:#e8eaf0;}
+html[data-theme="dark"] .mp-day{border-color:#2a3548;}
+html[data-theme="dark"] .mp-meal{border-color:#2a3548;}
+html[data-theme="dark"] .mp-meal-name{color:#e8eaf0;}
+html[data-theme="dark"] .mp-meal-desc{color:#8a95a8;}
+
 /* Dark mode */
 body.dark .related-card {
   background: #1a2535;
@@ -1612,6 +1634,22 @@ html[data-theme="dark"] .wg-stat-val{color:#e8eaf0;}
 <label class="check-pill"><input id="c-prot" type="checkbox"/><span><span data-lang="en">Heavy proteinuria (&gt;3 g/day)</span><span class="lang-hidden" data-lang="tl">Mabigat na proteinuria (&gt;3 g/araw)</span><span class="lang-hidden" data-lang="ceb">Grabe nga proteinuria (&gt;3 g/adlaw)</span><span class="lang-hidden" data-lang="kap">Mabigat a proteinuria (&gt;3 g/aldo)</span></span></label>
 <label class="check-pill"><input id="c-htn" type="checkbox"/><span><span data-lang="en">Resistant hypertension</span><span class="lang-hidden" data-lang="tl">Resistant na hypertension</span><span class="lang-hidden" data-lang="ceb">Resistant nga hypertension</span><span class="lang-hidden" data-lang="kap">Resistant a hypertension</span></span></label>
 </div>
+<div class="check-section-label">Food Allergies &amp; Intolerances <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--text-muted);">(used to personalize the 7-day meal plan)</span></div>
+<div class="check-row">
+<label class="check-pill"><input id="a-fish" type="checkbox"/><span>🐟 Fish</span></label>
+<label class="check-pill"><input id="a-shellfish" type="checkbox"/><span>🦐 Shellfish</span></label>
+<label class="check-pill"><input id="a-egg" type="checkbox"/><span>🥚 Eggs</span></label>
+<label class="check-pill"><input id="a-dairy" type="checkbox"/><span>🥛 Dairy / Milk</span></label>
+<label class="check-pill"><input id="a-nuts" type="checkbox"/><span>🥜 Nuts &amp; Peanuts</span></label>
+<label class="check-pill"><input id="a-soy" type="checkbox"/><span>🫘 Soy / Tofu</span></label>
+<label class="check-pill"><input id="a-gluten" type="checkbox"/><span>🌾 Gluten / Wheat</span></label>
+<label class="check-pill"><input id="a-pork" type="checkbox"/><span>🐷 Pork</span></label>
+</div>
+<div class="form-group" style="margin-bottom:24px;max-width:480px;">
+<label>Other allergies / foods to avoid <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(optional)</span></label>
+<input id="f-allergy-other" type="text" placeholder="e.g. mushrooms, ampalaya, okra" maxlength="200" autocomplete="off"/>
+<div class="hint">These will be noted alongside your 7-day meal plan.</div>
+</div>
 <div class="check-section-label"><span data-lang="en">Weight Goal</span><span class="lang-hidden" data-lang="tl">Layunin sa Timbang</span><span class="lang-hidden" data-lang="ceb">Target sa Timbang</span><span class="lang-hidden" data-lang="kap">Layunin king Timbang</span></div>
 <div style="margin-bottom:24px;">
   <div class="wg-toggle" role="group" aria-label="Weight goal">
@@ -1708,6 +1746,21 @@ html[data-theme="dark"] .wg-stat-val{color:#e8eaf0;}
   <div class="rx-grid" id="rx-grid"></div>
   <div class="rx-divider">Key Dietary Instructions</div>
   <div class="rx-notes-box"><ul id="rx-notes"></ul></div>
+</div>
+<!-- 7-DAY MEAL PLAN -->
+<div id="meal-plan-wrap" style="display:none;margin-top:24px;">
+<div style="background:var(--navy);padding:16px 22px;border-radius:10px 10px 0 0;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+<div>
+<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55);margin-bottom:3px;">Prototype</div>
+<div style="font-size:17px;font-weight:600;color:white;font-family:'Lora',serif;">7-Day Sample Meal Plan</div>
+<div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;">Based on your prescription · Filipino foods · Kidney-safe portions</div>
+</div>
+<div id="mp-allergy-tags" style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;"></div>
+</div>
+<div id="meal-plan-content"></div>
+<div style="padding:12px 20px;background:var(--bg);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;font-size:11.5px;color:var(--text-muted);line-height:1.6;">
+⚕ <strong>Prototype only.</strong> Portions are approximate. Actual meal planning must be done with a registered renal dietitian. All vegetables should be leached (soak in water 2–4 hrs, then boil in fresh water and discard cooking water) if you have hyperkalemia or are on dialysis. Allergen filtering is based on your selections above — always verify individual ingredients.
+</div>
 </div>
 <div class="calc-disclaimer">⚕ <strong>Educational estimates only.</strong> Calculated using KDIGO 2024 and NKF KDOQI Nutrition 2020 equations. Actual targets must be individualized by your nephrologist and renal dietitian based on your complete laboratory results (serum potassium, phosphorus, albumin, urine output) and medications. Never start a restrictive diet without professional supervision — protein-energy wasting is common in CKD and is dangerous. Results are not stored.</div>
 </div><!-- /results-panel -->
@@ -3496,10 +3549,152 @@ function runCalc(){
     wgPanel.style.display = 'none';
   }
 
+  // ── Collect allergens ──
+  const allergens = [];
+  if(document.getElementById('a-fish').checked) allergens.push('fish');
+  if(document.getElementById('a-shellfish').checked) allergens.push('shellfish');
+  if(document.getElementById('a-egg').checked) allergens.push('egg');
+  if(document.getElementById('a-dairy').checked) allergens.push('dairy');
+  if(document.getElementById('a-nuts').checked) allergens.push('nuts');
+  if(document.getElementById('a-soy').checked) allergens.push('soy');
+  if(document.getElementById('a-gluten').checked) allergens.push('gluten');
+  if(document.getElementById('a-pork').checked) allergens.push('pork');
+  const otherAllergies = (document.getElementById('f-allergy-other').value||'').trim();
+
+  // ── Build 7-day meal plan ──
+  buildMealPlan({stage,hk,hp,dm,pew,allergens,otherAllergies,protMin,protMax,kcalMin,kcalMax,isDialysis,isPreD,isHD,isPD,isHealthy});
+
   // ── Show results ──
   const panel = document.getElementById('results-panel');
   panel.classList.add('show');
   panel.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function buildMealPlan(p){
+  const {stage,hk,hp,dm,allergens,otherAllergies,protMin,protMax,kcalMin,kcalMax,isDialysis,isPreD,isHD,isPD,isHealthy} = p;
+  const restrictK = hk || isHD || isPD;
+  const restrictP = hp || isDialysis;
+
+  // ── Meal database ──
+  // allergens: array of allergen strings present in this meal
+  // hiK: true = high potassium → exclude if restrictK
+  // hiP: true = high phosphorus → exclude if restrictP
+  // note: warning shown in the plan
+
+  const breakfast = [
+    {name:'Sinangag + Scrambled Egg',desc:'¾ cup fried brown rice, 1 egg scrambled in ½ tsp oil, black pepper',allergens:['egg'],hiK:false,hiP:false,note:''},
+    {name:'Arroz Caldo (Lugaw)',desc:'1 cup chicken rice porridge, 50g shredded chicken, ginger, 1 tsp calamansi',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Grilled Tilapia + Rice',desc:'¾ cup rice, 80g grilled tilapia, calamansi, no fish sauce',allergens:['fish'],hiK:false,hiP:false,note:''},
+    {name:'Plain Oatmeal + Apple',desc:'½ cup oats cooked in water, ½ small apple, 1 tsp brown sugar',allergens:[],hiK:false,hiP:true,note:'Moderate phosphorus — monitor if P restricted'},
+    {name:'Pandesal + Margarine',desc:'2 pcs pandesal, 1 tsp unsalted margarine, black coffee (no milk)',allergens:['gluten'],hiK:false,hiP:false,note:''},
+    {name:'Tofu Scramble + Rice',desc:'¾ cup rice, 80g firm tofu scrambled with onion and garlic, low-sodium seasoning',allergens:['soy'],hiK:false,hiP:true,note:'Tofu — moderate phosphorus'},
+    {name:'Soft-Boiled Egg + Rice',desc:'1 large egg (soft boiled), ¾ cup plain rice, 1 tsp low-sodium soy sauce',allergens:['egg','soy'],hiK:false,hiP:false,note:''},
+    {name:'Corn Grits (Binatog)',desc:'½ cup boiled corn kernels, light salt — traditional Filipino breakfast',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Boiled Chicken + Rice',desc:'80g boiled chicken breast (no skin), ¾ cup rice, calamansi and black pepper',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Tinapa + Rice',desc:'¾ cup rice, 1 pc smoked tinapa (rinsed to reduce sodium), sliced cucumber',allergens:['fish'],hiK:false,hiP:false,note:'Rinse tinapa well to lower sodium'},
+    {name:'Lugaw with Chicken',desc:'1 cup plain rice porridge, 50g chicken, ginger, green onion garnish',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Camote + Egg',desc:'½ cup boiled yellow camote, 1 hard-boiled egg',allergens:['egg'],hiK:true,hiP:false,note:'Camote — moderate K, limit if K restricted'},
+  ];
+
+  const lunch = [
+    {name:'Tinolang Manok',desc:'1 cup rice, 80g chicken, ½ cup sayote, ginger broth — no malunggay if K restricted',allergens:[],hiK:false,hiP:false,note:'Skip malunggay leaves if potassium restricted'},
+    {name:'Steamed Tilapia + Sayote',desc:'1 cup rice, 100g steamed tilapia with ginger, ½ cup stir-fried sayote',allergens:['fish'],hiK:false,hiP:false,note:''},
+    {name:'Chicken Adobo (Low-Sodium)',desc:'1 cup rice, 80g chicken adobo — ½ tsp low-Na soy sauce + vinegar, no patis',allergens:['soy'],hiK:false,hiP:false,note:''},
+    {name:'Ginisang Sayote + Pork',desc:'1 cup rice, ½ cup sayote with 50g lean pork strips, garlic, onion',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Chicken Nilaga',desc:'1 cup rice, 80g boiled chicken, ½ cup sayote / labanos (leached 15 min)',allergens:[],hiK:false,hiP:false,note:'Leach vegetables to reduce potassium'},
+    {name:'Steamed Bangus',desc:'1 cup rice, 100g steamed bangus belly (rinsed), ½ cup stir-fried upo',allergens:['fish'],hiK:false,hiP:false,note:''},
+    {name:'Ginisang Upo + Pork',desc:'1 cup rice, ½ cup bottle gourd (upo) with 50g pork, garlic, low sodium',allergens:[],hiK:false,hiP:false,note:'Upo is low in K and P — ideal CKD vegetable'},
+    {name:'Egg Drop Soup + Rice',desc:'1 cup rice, 1 egg in light low-sodium broth, green onion',allergens:['egg'],hiK:false,hiP:false,note:''},
+    {name:'Grilled Chicken Inasal',desc:'1 cup rice, 100g grilled chicken — calamansi, garlic, turmeric marinade, no patis',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Stir-fried Pork + Cabbage',desc:'1 cup rice, 60g lean pork, ½ cup leached cabbage, garlic, pepper — no soy sauce',allergens:[],hiK:false,hiP:false,note:'Leach cabbage first to reduce K'},
+    {name:'Tokwa\'t Baboy',desc:'1 cup rice, 50g lean pork + 60g firm tofu, low-Na vinegar-onion dip',allergens:['soy'],hiK:false,hiP:true,note:'Tofu — moderate phosphorus'},
+    {name:'Modified Sinigang',desc:'1 cup rice, 60g lean pork, ½ cup sayote in tamarind broth — leach all vegetables',allergens:[],hiK:true,hiP:false,note:'Leach veggies thoroughly; watch K from broth'},
+    {name:'Ginisang Sitaw + Pork',desc:'1 cup rice, ½ cup string beans (leached), 50g lean pork, garlic and onion',allergens:[],hiK:false,hiP:false,note:'Leach sitaw to reduce potassium'},
+    {name:'Chicken Sopas (Modified)',desc:'1 cup rice, 80g chicken, ½ cup sayote in light broth — omit milk, use egg-free pasta',allergens:['gluten'],hiK:false,hiP:false,note:'Omit evaporated milk to avoid dairy/phosphorus'},
+  ];
+
+  const snack = [
+    {name:'Apple or Pear (1 medium)',desc:'Low potassium, good for K-restricted patients',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Unsalted Rice Crackers',desc:'6–8 pcs — low K and P, easy snack',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Boiled Camote (½ cup)',desc:'Yellow or purple camote, moderate and satisfying',allergens:[],hiK:true,hiP:false,note:'Moderate K — limit to ½ cup if K restricted'},
+    {name:'Watermelon (1 cup)',desc:'Hydrating, relatively low K for dialysis patients',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Cucumber Slices',desc:'1 cup sliced cucumber + calamansi — very low K and P',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Canned Pear in Juice',desc:'½ cup canned pear (drained, rinsed) — low K, good for K restriction',allergens:[],hiK:false,hiP:false,note:'Rinse canned fruit to reduce syrup'},
+    {name:'Sagot Gulaman (Light)',desc:'1 cup sago + agar jelly, light syrup — low K and P Filipino snack',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Plain Graham Crackers',desc:'3 pcs plain grahams — moderate snack, check sodium',allergens:['gluten'],hiK:false,hiP:false,note:''},
+    {name:'Diluted Apple Juice',desc:'½ cup unsweetened apple juice diluted 1:1 with water',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Banana ½ pc (Lakatan)',desc:'½ small Lakatan banana — only for non-K-restricted patients',allergens:[],hiK:true,hiP:false,note:'HIGH K — avoid if on dialysis or K restriction'},
+    {name:'Boiled Corn (½ ear)',desc:'½ ear sweet corn — satisfying at this portion',allergens:[],hiK:false,hiP:true,note:'Moderate phosphorus'},
+    {name:'Sliced Papaya (½ cup)',desc:'½ cup ripe papaya — low K, good for CKD patients',allergens:[],hiK:false,hiP:false,note:''},
+  ];
+
+  const dinner = [
+    {name:'Ginisang Sayote + Pork',desc:'1 cup rice, 1 cup stir-fried sayote with 50g pork, garlic',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Grilled Chicken + Sitaw',desc:'1 cup rice, 100g grilled chicken, ½ cup leached string beans, lemon-pepper',allergens:[],hiK:false,hiP:false,note:'Leach sitaw to reduce K'},
+    {name:'Steamed Tilapia + Upo',desc:'1 cup rice, 100g steamed tilapia with ginger, ½ cup bottle gourd (upo)',allergens:['fish'],hiK:false,hiP:false,note:''},
+    {name:'Pork Giniling + Sayote',desc:'1 cup rice, 70g lean ground pork with ½ cup diced sayote, garlic, no patis',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Chicken Tinola (Evening)',desc:'1 cup rice, 80g chicken, ½ cup sayote, clear ginger broth',allergens:[],hiK:false,hiP:false,note:'No malunggay if K restricted'},
+    {name:'Stir-fried Pork + Upo',desc:'1 cup rice, 60g lean pork, ½ cup upo, onion and garlic, white pepper',allergens:[],hiK:false,hiP:false,note:'Upo is very low in K and P'},
+    {name:'Chicken Adobo (Dry)',desc:'1 cup rice, 100g chicken dry adobo — vinegar, garlic, peppercorn, minimal soy',allergens:['soy'],hiK:false,hiP:false,note:''},
+    {name:'Ginisang Sitaw + Pork',desc:'1 cup rice, ½ cup string beans (leached), 60g pork, garlic and onion',allergens:[],hiK:false,hiP:false,note:'Leach sitaw to reduce potassium'},
+    {name:'Steamed Bangus (Evening)',desc:'1 cup rice, 100g steamed bangus (rinsed), ½ cup stir-fried sayote or upo',allergens:['fish'],hiK:false,hiP:false,note:''},
+    {name:'Boiled Chicken Soup',desc:'1 cup rice, 80g boiled chicken, clear soup, leached sayote and labanos',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Steamed Egg + Rice',desc:'1 cup rice, 1 medium egg steamed with ½ tsp low-Na sauce, ginger',allergens:['egg','soy'],hiK:false,hiP:false,note:''},
+    {name:'Roasted Chicken + Upo',desc:'1 cup rice, 100g roasted chicken (skin removed), ½ cup stir-fried upo',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Pork Nilaga',desc:'1 cup rice, 70g lean pork, ½ cup leached cabbage + sayote, clear broth',allergens:[],hiK:false,hiP:false,note:'Leach all vegetables'},
+  ];
+
+  // ── Filter by allergens and K/P ──
+  function filterPool(pool){
+    return pool.filter(m=>{
+      if(m.allergens.some(a=>allergens.includes(a))) return false;
+      if(restrictK && m.hiK) return false;
+      if(restrictP && m.hiP) return false;
+      return true;
+    });
+  }
+
+  const bfPool = filterPool(breakfast);
+  const luPool = filterPool(lunch);
+  const snPool = filterPool(snack);
+  const dnPool = filterPool(dinner);
+
+  // Fallback if pool is empty after filtering
+  const safe = pool => pool.length > 0 ? pool : [{name:'Plain Rice + Boiled Chicken',desc:'¾–1 cup rice, 80g boiled chicken, calamansi',allergens:[],hiK:false,hiP:false,note:'All-safe fallback meal'}];
+  const bfF = safe(bfPool), luF = safe(luPool), snF = safe(snPool), dnF = safe(dnPool);
+
+  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const slots = [
+    {label:'Breakfast',icon:'🌅',pool:bfF},
+    {label:'Lunch',icon:'☀️',pool:luF},
+    {label:'Snack',icon:'🍎',pool:snF},
+    {label:'Dinner',icon:'🌙',pool:dnF},
+  ];
+
+  let html = '';
+  days.forEach((day,di)=>{
+    html += `<div class="mp-day"><div class="mp-day-header"><span class="mp-day-label">${day}</span><span>Day ${di+1}</span></div><div class="mp-meals">`;
+    slots.forEach(({label,icon,pool})=>{
+      const meal = pool[di % pool.length];
+      html += `<div class="mp-meal">
+        <div class="mp-slot-lbl">${icon} ${label}</div>
+        <div class="mp-meal-name">${meal.name}</div>
+        <div class="mp-meal-desc">${meal.desc}</div>
+        ${meal.note ? `<div class="mp-note">⚠ ${meal.note}</div>` : ''}
+      </div>`;
+    });
+    html += '</div></div>';
+  });
+
+  document.getElementById('meal-plan-content').innerHTML = html;
+
+  // ── Allergy tags ──
+  const allergenLabels = {fish:'🐟 Fish-free',shellfish:'🦐 Shellfish-free',egg:'🥚 Egg-free',dairy:'🥛 Dairy-free',nuts:'🥜 Nut-free',soy:'🫘 Soy-free',gluten:'🌾 Gluten-free',pork:'🐷 Pork-free'};
+  let tagsHtml = allergens.map(a=>`<span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.25);">${allergenLabels[a]||a}</span>`).join('');
+  if(otherAllergies) tagsHtml += `<span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);">⚠ Also avoid: ${otherAllergies}</span>`;
+  document.getElementById('mp-allergy-tags').innerHTML = tagsHtml;
+
+  document.getElementById('meal-plan-wrap').style.display = 'block';
 }
 </script>
 
