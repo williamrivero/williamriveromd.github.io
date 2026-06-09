@@ -409,7 +409,8 @@
   }
   .spotlight-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
     gap: 8px;
   }
   .spotlight-card {
@@ -424,15 +425,25 @@
     position: relative;
     overflow: hidden;
   }
+  .spotlight-card--featured {
+    padding: 18px 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--navy) 60%, rgba(26,107,114,0.25));
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+  .spotlight-card--featured .spotlight-badge { font-size: 0.65rem; }
+  .spotlight-card--featured .spotlight-title { font-size: 1.05rem; font-weight: 700; line-height: 1.25; }
   .spotlight-card::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 2px;
   }
+  .spotlight-card--featured::before { height: 3px; }
   .spotlight-card.tool::before { background: var(--teal-mid); }
   .spotlight-card.read::before { background: var(--orange); }
   .spotlight-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,56,100,0.2); }
+  .spotlight-card--featured:hover { box-shadow: 0 8px 24px rgba(26,107,114,0.35); }
   .spotlight-badge {
     font-size: 0.6rem;
     font-weight: 600;
@@ -760,6 +771,7 @@
     .learning-path { padding: 12px 16px; }
     .main-layout { padding: 12px 12px 48px; }
     .spotlight-grid { grid-template-columns: 1fr 1fr; }
+    .spotlight-card--featured .spotlight-title { font-size: 0.9rem; }
     .site-nav { padding: 0 16px; }
     .nav-links .hide-mobile { display: none; }
   }
@@ -1594,15 +1606,15 @@
     <div class="spotlight" id="spotlight-block">
       <div class="spotlight-label">Most-used tools &amp; guides</div>
       <div class="spotlight-grid">
-        <a href="lab-interpreter-guide.html" class="spotlight-card tool">
+        <a href="lab-interpreter-guide.html" class="spotlight-card spotlight-card--featured tool">
           <span class="spotlight-badge">Interactive Tool</span>
           <span class="spotlight-title">Lab Results Interpreter</span>
         </a>
-        <a href="symptom-checker.html" class="spotlight-card tool">
+        <a href="symptom-checker.html" class="spotlight-card spotlight-card--featured tool">
           <span class="spotlight-badge">Symptom Checker</span>
           <span class="spotlight-title">When Should You Worry?</span>
         </a>
-        <a href="ckd-dri-calculator.html" class="spotlight-card tool">
+        <a href="ckd-dri-calculator.html" class="spotlight-card spotlight-card--featured tool">
           <span class="spotlight-badge">Calculator</span>
           <span class="spotlight-title">Nutrition Prescription Calculator</span>
         </a>
