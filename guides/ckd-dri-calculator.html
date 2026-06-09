@@ -36,6 +36,7 @@
 <meta name="twitter:image" content="https://www.williamriveromd.com/images/ckd-dri-calculator-overview.png">
 <meta name="twitter:image:alt" content="Nutrition Prescription Calculator by Dr. William Gregory M. Rivero, MD">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   /* ═══════════════════════════════════════════════════════════════════════════
      MASTER GUIDE CSS — williamriveromd.com
@@ -1667,6 +1668,18 @@ html[data-theme="dark"] .wg-stat-val{color:#e8eaf0;}
   </label>
 </div>
 <input type="hidden" id="wg-value" value="maintain"/>
+<div class="check-section-label" style="margin-top:4px;">PDF Export Options <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--text-muted);">(optional — appear on downloaded PDF)</span></div>
+<div class="form-grid" style="grid-template-columns:1fr 1fr;margin-bottom:20px;">
+<div class="form-group">
+<label>Validated by <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(appears on PDF)</span></label>
+<input id="f-validator" type="text" placeholder="e.g. J. Santos, MD" maxlength="80" autocomplete="off"/>
+</div>
+<div class="form-group">
+<label>Clinic <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(logo shown if rcuona / sjrc / sjbdc)</span></label>
+<input id="f-clinic" type="text" placeholder="e.g. sjrc or St. Josef Renal Care" maxlength="80" autocomplete="off" oninput="_preloadClinicLogo()"/>
+<div class="hint">Type <strong>rcuona</strong>, <strong>sjrc</strong>, or <strong>sjbdc</strong> to show the clinic logo on the PDF header.</div>
+</div>
+</div>
 <button class="calc-btn" onclick="runCalc()"><span data-lang="en">Calculate My Daily Targets →</span><span class="lang-hidden" data-lang="tl">Kalkulahin ang Aking Pang-araw-araw na Target →</span><span class="lang-hidden" data-lang="ceb">Kalkulahon ang Akong Adlaw-adlaw nga Target →</span><span class="lang-hidden" data-lang="kap">Kalkulahin ing Aldo-aldo Kung Target →</span></button>
 <div id="err-msg" style="display:none;color:var(--red);font-size:13px;margin-top:10px;font-weight:600;"></div>
 <!-- ═══ RESULTS PANEL ═══ -->
@@ -1741,7 +1754,8 @@ html[data-theme="dark"] .wg-stat-val{color:#e8eaf0;}
       <div class="diet-rx-title">Diet Prescription Summary</div>
       <div class="diet-rx-sub" id="rx-meta"></div>
     </div>
-    <button class="rx-print-btn" onclick="printRx()">⎙ Print / Save</button>
+    <button class="rx-print-btn" onclick="printRx()">⎙ Print</button>
+    <button class="rx-print-btn rx-pdf-btn" onclick="exportDietPDF(this)" style="background:rgba(255,255,255,.25);margin-left:6px;">⬇ PDF</button>
   </div>
   <div class="rx-grid" id="rx-grid"></div>
   <div class="rx-divider">Key Dietary Instructions</div>
@@ -2907,6 +2921,8 @@ function printRx(){
   const box = document.getElementById('diet-rx-box');
   if(!box) return;
 
+  const validatorName = (document.getElementById('f-validator')||{value:''}).value.trim();
+  const clinicName    = (document.getElementById('f-clinic')||{value:''}).value.trim();
   const macroTbl  = document.getElementById('macro-tbody')  ? document.getElementById('macro-tbody').closest('table').outerHTML  : '';
   const minTbl    = document.getElementById('mineral-tbody') ? document.getElementById('mineral-tbody').closest('table').outerHTML : '';
   const vitTbl    = document.getElementById('vit-tbody')     ? document.getElementById('vit-tbody').closest('table').outerHTML     : '';
@@ -3020,6 +3036,12 @@ ${clinList}
 <div class="warn-head">${warnHead}</div>
 <div class="warn-list">${warnList}</div>
 
+${(validatorName||clinicName)?`<div style="border:1px solid #dde;border-radius:8px;padding:12px 14px;margin-bottom:14px;background:#f4f7fb;page-break-inside:avoid;">
+  <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1a6b72;margin-bottom:8px;">Validated by</div>
+  ${validatorName?`<div style="font-size:13px;font-weight:600;color:#0f1e2e;">${validatorName}</div>`:''}
+  ${clinicName?`<div style="font-size:11px;color:#6b7280;margin-top:3px;">${clinicName}</div>`:''}
+  <div style="margin-top:12px;border-top:1px solid #999;width:60%;padding-top:4px;font-size:9px;color:#999;">Signature / Date</div>
+</div>`:''}
 <div class="rx-footer">
   <div><strong>williamriveromd.com</strong> · W. G. M. Rivero, MD, FPCP, DPSN · Nephrology &amp; Internal Medicine</div>
   <div>${new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'})}</div>
@@ -3029,6 +3051,218 @@ ${clinList}
 <script>window.onload=function(){window.print();}<\/script>
 </body></html>`);
   w.document.close();
+}
+
+// ── CLINIC LOGO (mirrors lab-interpreter-guide) ──────────────────────
+var CLINIC_LOGO_MAP = {
+  'sjbdc':  '../images/sjbdc-logo.webp',
+  'sjrc':   '../images/sjrc-logo.webp',
+  'rcuona': '../images/rcuona-logo.webp'
+};
+var _clinicLogoCache = {};
+
+function _clinicSlug() {
+  var v = ((document.getElementById('f-clinic')||{}).value||'').trim().toLowerCase().replace(/[\s\-_.]/g,'');
+  return CLINIC_LOGO_MAP[v] ? v : null;
+}
+
+function _preloadClinicLogo() {
+  var slug = _clinicSlug();
+  if (slug) _loadClinicLogo(slug, function(){});
+}
+
+function _loadClinicLogo(slug, cb) {
+  if (!slug) { cb(null); return; }
+  if (_clinicLogoCache[slug]) { cb(_clinicLogoCache[slug]); return; }
+  var img = new Image();
+  img.onload = function() {
+    try {
+      var c = document.createElement('canvas');
+      c.width = img.naturalWidth; c.height = img.naturalHeight;
+      c.getContext('2d').drawImage(img, 0, 0);
+      _clinicLogoCache[slug] = { dataUrl: c.toDataURL('image/png'), w: img.naturalWidth, h: img.naturalHeight, slug: slug };
+    } catch(e) { _clinicLogoCache[slug] = null; }
+    cb(_clinicLogoCache[slug]);
+  };
+  img.onerror = function() { _clinicLogoCache[slug] = null; cb(null); };
+  img.src = CLINIC_LOGO_MAP[slug] + '?_=' + Date.now();
+}
+
+function _addLogoToPDF(doc, logo, pageW, headerH, margin) {
+  if (!logo || !logo.dataUrl) return;
+  try {
+    var maxSz = 38.1;
+    if (logo.slug === 'rcuona') maxSz *= 0.75;
+    var aspect = logo.w / logo.h;
+    var lw, lh;
+    if (aspect >= 1) { lw = maxSz; lh = maxSz / aspect; }
+    else             { lh = maxSz; lw = maxSz * aspect; }
+    var lx = pageW - margin - lw - 1;
+    var ly = (headerH - lh) / 2;
+    doc.addImage(logo.dataUrl, 'PNG', lx, ly, lw, lh);
+  } catch(e) {}
+}
+
+// ── PDF EXPORT ────────────────────────────────────────────────────────
+function exportDietPDF(btn) {
+  if (!window.jspdf) { alert('PDF library not loaded — please check your internet connection and try again.'); return; }
+  var allBtns = document.querySelectorAll('.rx-pdf-btn');
+  allBtns.forEach(function(b){ b.disabled=true; b.textContent='Generating…'; });
+  _loadClinicLogo(_clinicSlug(), function(logo) {
+    setTimeout(function(){
+      try { _doExportDietPDF(logo); } catch(e) { alert('PDF export error: '+e.message); }
+      allBtns.forEach(function(b){ b.disabled=false; b.textContent='⬇ PDF'; });
+    }, 60);
+  });
+}
+
+function _doExportDietPDF(logo) {
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
+  var W = 210, margin = 14, colW = W - margin*2;
+  var y = 0;
+
+  var NAVY  = [31,56,100],  TEAL  = [26,107,114], GREEN = [22,101,52];
+  var AMBER = [146,64,14],  RED   = [185,28,28],  GRAY  = [107,114,128];
+  var WHITE = [255,255,255], LIGHT_BG = [240,244,248], BG = [249,250,251];
+
+  function sf(style,size,color){ doc.setFont('helvetica',style||'normal'); doc.setFontSize(size||10); doc.setTextColor.apply(doc,color||[30,42,56]); }
+  function fr(x,yy,w,h,col){ doc.setFillColor.apply(doc,col); doc.rect(x,yy,w,h,'F'); }
+  function tx(str,x,yy,opts){ doc.text(str+'',x,yy,opts||{}); }
+  function chk(n){ if(y+n>275){ doc.addPage(); y=14; } }
+
+  // ── HEADER ──
+  var hH = 32;
+  fr(0,0,W,hH,NAVY);
+  sf('bold',16,WHITE); tx('Daily Nutrition Prescription',margin,11);
+  sf('normal',7,[150,170,200]); tx('KDIGO 2024 · NKF KDOQI Nutrition 2020 · williamriveromd.com',margin,17);
+  _addLogoToPDF(doc,logo,W,hH,margin);
+  var metaText = (document.getElementById('rx-meta')||{textContent:''}).textContent.trim();
+  if(metaText){ sf('bold',8,WHITE); tx(metaText.substring(0,90),margin,24); }
+  var stageTxt = (document.getElementById('stage-pill')||{textContent:''}).textContent.trim();
+  if(stageTxt){ sf('bold',7,[180,200,220]); tx(stageTxt,W-margin,11,{align:'right'}); }
+  y = hH + 5;
+
+  sf('italic',6.5,GRAY);
+  tx('Generated: '+new Date().toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}),W-margin,y,{align:'right'});
+  y += 7;
+
+  // ── RX SUMMARY GRID ──
+  chk(16);
+  fr(margin,y,colW,7,NAVY); sf('bold',8.5,WHITE); tx('Nutrition Targets',margin+3,y+5); y+=7;
+
+  var cells = []; document.querySelectorAll('#rx-grid .rx-cell').forEach(function(cell){
+    var lbl = (cell.querySelector('.rx-cell-label')||{textContent:''}).textContent.trim();
+    var valEl = cell.querySelector('.rx-cell-val');
+    var val = valEl ? valEl.textContent.trim() : '';
+    var unit = (cell.querySelector('.rx-cell-unit')||{textContent:''}).textContent.trim();
+    var isR = valEl && valEl.classList.contains('rx-restrict');
+    var isI = valEl && valEl.classList.contains('rx-increase');
+    cells.push({lbl:lbl,val:val,unit:unit,isR:isR,isI:isI});
+  });
+
+  var cpr = 5, cw = colW/cpr, ch = 17;
+  var totalGridRows = Math.ceil(cells.length/cpr);
+  chk(totalGridRows*ch+2);
+  cells.forEach(function(c,ci){
+    var col=ci%cpr, row=Math.floor(ci/cpr);
+    var cx=margin+col*cw, cy=y+row*ch;
+    fr(cx,cy,cw,ch,BG);
+    doc.setDrawColor(220,225,230); doc.setLineWidth(0.2); doc.rect(cx,cy,cw,ch);
+    sf('bold',6,GRAY); tx(c.lbl.toUpperCase(),cx+2,cy+4.5);
+    var vc = c.isR?RED:c.isI?GREEN:TEAL;
+    sf('bold',9,vc);
+    var vlines = doc.splitTextToSize(c.val,cw-4);
+    doc.text(vlines,cx+2,cy+10);
+    sf('normal',6,GRAY); tx(c.unit,cx+2,cy+ch-2);
+  });
+  y += totalGridRows*ch+5;
+
+  // ── CLINICAL PRIORITIES ──
+  var clinItems=[];
+  document.querySelectorAll('#clin-list li').forEach(function(li){
+    var spans=li.querySelectorAll('span');
+    var txt=spans.length>1?spans[spans.length-1].textContent:li.textContent;
+    var clean=txt.replace(/\s+/g,' ').trim();
+    if(clean) clinItems.push(clean);
+  });
+  if(clinItems.length){
+    chk(14);
+    fr(margin,y,colW,7,[15,30,46]); sf('bold',8,WHITE); tx('Clinical Priorities for Your Stage',margin+3,y+5); y+=8;
+    clinItems.forEach(function(item){
+      var lines=doc.splitTextToSize('• '+item.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&'),colW-4);
+      var rh=lines.length*4.5+3;
+      chk(rh);
+      fr(margin,y,colW,rh,BG);
+      doc.setDrawColor(220,225,230); doc.setLineWidth(0.1); doc.rect(margin,y,colW,rh);
+      sf('normal',7,[44,51,64]); doc.text(lines,margin+3,y+4);
+      y+=rh+1;
+    });
+    y+=3;
+  }
+
+  // ── DIETARY INSTRUCTIONS ──
+  var rxNotes=[]; document.querySelectorAll('#rx-notes li').forEach(function(li){
+    var t=li.textContent.trim().replace(/^•\s*/,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+    if(t) rxNotes.push(t);
+  });
+  if(rxNotes.length){
+    chk(14);
+    fr(margin,y,colW,7,TEAL); sf('bold',8,WHITE); tx('Key Dietary Instructions',margin+3,y+5); y+=8;
+    var half=Math.ceil(rxNotes.length/2);
+    var noteCols=[[],[]];
+    rxNotes.forEach(function(n,i){ noteCols[i<half?0:1].push(n); });
+    var noteColW=colW/2-2;
+    var maxRows=Math.max(noteCols[0].length,noteCols[1].length);
+    var rowH=7;
+    chk(maxRows*rowH+3);
+    [0,1].forEach(function(ci){
+      var nx=margin+ci*(noteColW+4);
+      var ny=y;
+      noteCols[ci].forEach(function(note){
+        var lines=doc.splitTextToSize('• '+note,noteColW-2);
+        sf('normal',7,[44,51,64]);
+        doc.text(lines,nx+2,ny+4);
+        ny+=Math.max(lines.length*4.5,rowH);
+      });
+    });
+    y+=maxRows*rowH+5;
+  }
+
+  // ── VALIDATED BY ──
+  var validatorName=((document.getElementById('f-validator')||{}).value||'').trim();
+  var clinicName=((document.getElementById('f-clinic')||{}).value||'').trim();
+  var vboxH=24+(clinicName?6:0);
+  chk(vboxH+8); y+=4;
+  fr(margin,y,colW,vboxH,LIGHT_BG);
+  doc.setDrawColor.apply(doc,NAVY); doc.setLineWidth(0.3); doc.rect(margin,y,colW,vboxH);
+  sf('bold',8,NAVY); tx('Validated by:',margin+3,y+6);
+  if(validatorName){ sf('normal',9,NAVY); tx(validatorName,margin+3,y+13); }
+  if(clinicName){ sf('italic',7,GRAY); tx(clinicName,margin+3,y+(validatorName?20:13)); }
+  doc.setDrawColor(120,120,120); doc.setLineWidth(0.4);
+  doc.line(margin+110,y+vboxH-5,margin+colW-4,y+vboxH-5);
+  sf('italic',6,GRAY); tx('Signature / Date',margin+colW-4,y+vboxH-1,{align:'right'});
+  y+=vboxH+5;
+
+  // ── DISCLAIMER ──
+  chk(14);
+  var dlines=doc.splitTextToSize('⚕ Educational estimates only. Based on KDIGO 2024 and NKF KDOQI Nutrition 2020. Actual targets must be individualized by your nephrologist and renal dietitian. Not a substitute for professional medical advice.',colW);
+  sf('italic',6.5,GRAY); doc.text(dlines,margin,y);
+
+  // ── FOOTER on every page ──
+  var pc=doc.getNumberOfPages();
+  for(var pi=1;pi<=pc;pi++){
+    doc.setPage(pi);
+    fr(0,287,W,10,NAVY);
+    sf('normal',7,[160,180,200]);
+    tx('williamriveromd.com · W. G. M. Rivero, MD, FPCP, DPSN · Daily Nutrition Prescription',margin,292);
+    tx('Page '+pi+' of '+pc,W-margin,292,{align:'right'});
+  }
+
+  // ── SAVE ──
+  var patName=((document.getElementById('f-name')||{}).value||'').trim().replace(/\s+/g,'-').replace(/[^A-Za-z0-9\-]/g,'')||'Patient';
+  var today=new Date().toISOString().slice(0,10);
+  doc.save(today+'-DietRx-'+patName+'.pdf');
 }
 
 // ── WEIGHT GOAL TOGGLE ──────────────────────────────────────────────
