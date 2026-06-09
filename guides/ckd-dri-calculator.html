@@ -3104,7 +3104,15 @@ ${clinList}
 <div class="warn-list">${warnList}</div>
 
 ${mealPlanHtml ? `<div class="mp-section-head">7-Day Prototype Meal Plan</div>${mealPlanHtml}` : ''}
-${(validatorName||clinicName)?`<div style="border:1px solid #dde;border-radius:8px;padding:12px 14px;margin-top:14px;margin-bottom:14px;background:#f4f7fb;page-break-inside:avoid;">
+<div style="border:1px solid #dde;border-radius:8px;padding:12px 14px;margin-top:14px;margin-bottom:14px;page-break-inside:avoid;">
+  <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1a6b72;margin-bottom:10px;">Additional Orders / Plans / Remarks</div>
+  <div style="border-bottom:1px solid #bbb;margin-bottom:9px;height:0;"></div>
+  <div style="border-bottom:1px solid #bbb;margin-bottom:9px;height:0;"></div>
+  <div style="border-bottom:1px solid #bbb;margin-bottom:9px;height:0;"></div>
+  <div style="border-bottom:1px solid #bbb;margin-bottom:9px;height:0;"></div>
+  <div style="border-bottom:1px solid #bbb;height:0;"></div>
+</div>
+${(validatorName||clinicName)?`<div style="border:1px solid #dde;border-radius:8px;padding:12px 14px;margin-bottom:14px;background:#f4f7fb;page-break-inside:avoid;">
   <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1a6b72;margin-bottom:8px;">Validated by</div>
   ${validatorName?`<div style="font-size:13px;font-weight:600;color:#0f1e2e;">${validatorName}</div>`:''}
   ${clinicName?`<div style="font-size:11px;color:#6b7280;margin-top:3px;">${clinicName}</div>`:''}
@@ -3550,6 +3558,20 @@ function _doExportDietPDF(logo) {
     mpNoteItems.forEach(function(item){ totalNoteH+=doc.splitTextToSize('• '+item,noteColW2-3).length*3.8+2; });
     y+=Math.ceil(totalNoteH/2)+6;
   }
+
+  // ── ADDITIONAL ORDERS / REMARKS ──
+  var remarksH = 36;
+  chk(remarksH + 6); y += 4;
+  fr(margin, y, colW, remarksH, LIGHT_BG);
+  doc.setDrawColor.apply(doc, NAVY); doc.setLineWidth(0.3); doc.rect(margin, y, colW, remarksH);
+  sf('bold', 7, TEAL); tx('Additional Orders / Plans / Remarks', margin + 3, y + 5.5);
+  doc.setDrawColor(160, 170, 185); doc.setLineWidth(0.3);
+  var lineSpacing = (remarksH - 10) / 5;
+  for (var rl = 0; rl < 5; rl++) {
+    var ly3 = y + 11 + rl * lineSpacing;
+    doc.line(margin + 4, ly3, margin + colW - 4, ly3);
+  }
+  y += remarksH + 4;
 
   // ── VALIDATED BY ──
   var validatorName=((document.getElementById('f-validator')||{}).value||'').trim();
