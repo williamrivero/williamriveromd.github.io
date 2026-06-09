@@ -3366,11 +3366,33 @@ function _doExportDietPDF(logo) {
     }
   }
 
+  // helper: strip HTML tags, decode entities, remove emoji for jsPDF Helvetica
+  function _pdfText(str) {
+    if (!str) return '';
+    return str
+      .replace(/<[^>]+>/g, '')                         // strip HTML tags
+      .replace(/&le;/g, '<=').replace(/&ge;/g, '>=')
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ')
+      .replace(/&thinsp;/g, ' ').replace(/&ndash;/g, '-').replace(/&mdash;/g, '--')
+      .replace(/[^\x00-\x7EÀ-ɏ]/g, function(c) {
+        // keep extended Latin; map common symbols; drop the rest
+        var map = {'≤':'<=','≥':'>=','←':'<-','→':'->','↔':'<->',
+                   '↑':'^','↓':'v','×':'x','—':'--','–':'-',
+                   '‘':"'",'’':"'",'“':'"','”':'"','°':'deg',
+                   'μ':'u','α':'alpha','β':'beta','≥':'>=',
+                   'µ':'u','±':'+/-','½':'1/2','¼':'1/4',
+                   '‰':'ppt','≈':'~','®':'(R)','©':'(C)'};
+        return map[c] || '';
+      })
+      .replace(/\s+/g, ' ').trim();
+  }
+
   // helper: render a full data table from a DOM table element
   function _renderTable(tableEl, title, titleColor){
     if(!tableEl) return;
     var rows=[]; tableEl.querySelectorAll('tbody tr').forEach(function(tr){
-      var cells=[]; tr.querySelectorAll('td').forEach(function(td){ cells.push(td.textContent.trim().replace(/\s+/g,' ')); });
+      var cells=[]; tr.querySelectorAll('td').forEach(function(td){ cells.push(_pdfText(td.textContent.trim())); });
       if(cells.length) rows.push(cells);
     });
     var heads=[]; tableEl.querySelectorAll('th').forEach(function(th){ heads.push(th.textContent.trim()); });
@@ -3414,8 +3436,8 @@ function _doExportDietPDF(logo) {
   // ── VITAMIN WARNINGS ──
   var vitWarnEl = document.getElementById('vit-warn-list');
   if(vitWarnEl && vitWarnEl.querySelectorAll('li').length){
-    var warnItems=[]; vitWarnEl.querySelectorAll('li').forEach(function(li){ var t=li.textContent.trim().replace(/\s+/g,' '); if(t) warnItems.push(t); });
-    var warnHead2=document.getElementById('vit-warn-heading') ? document.getElementById('vit-warn-heading').textContent : 'Vitamin Cautions';
+    var warnItems=[]; vitWarnEl.querySelectorAll('li').forEach(function(li){ var t=_pdfText(li.textContent.trim()); if(t) warnItems.push(t); });
+    var warnHead2=_pdfText(document.getElementById('vit-warn-heading') ? document.getElementById('vit-warn-heading').textContent : 'Vitamin Cautions');
     chk(14);
     fr(margin,y,colW,7,RED); sf('bold',8,WHITE); tx(warnHead2||'Vitamin Cautions',margin+3,y+5); y+=7;
     warnItems.forEach(function(item){
@@ -3432,7 +3454,7 @@ function _doExportDietPDF(logo) {
   document.querySelectorAll('#clin-list li').forEach(function(li){
     var spans=li.querySelectorAll('span');
     var txt=spans.length>1?spans[spans.length-1].textContent:li.textContent;
-    var clean=txt.replace(/\s+/g,' ').trim();
+    var clean=_pdfText(txt);
     if(clean) clinItems.push(clean);
   });
   if(clinItems.length){
@@ -3452,7 +3474,7 @@ function _doExportDietPDF(logo) {
 
   // ── DIETARY INSTRUCTIONS ──
   var rxNotes=[]; document.querySelectorAll('#rx-notes li').forEach(function(li){
-    var t=li.textContent.trim().replace(/^•\s*/,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+    var t=_pdfText(li.textContent.trim().replace(/^•\s*/,''));
     if(t) rxNotes.push(t);
   });
   if(rxNotes.length){
@@ -3871,7 +3893,7 @@ function runCalc(){
   // ══ BUILD OUTPUT ══
   // Macronutrient rows
   const macroRows = [
-    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`&le;${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',isHealthy?`Mifflin-St Jeor TDEE × PAL (${actLabel}). ${kcalPerKg} kcal/kg. BMI ${bmi.toFixed(1)}.${wgNote}`:`${kcalPerKg} kcal/kg dry weight (KDOQI). Activity: ${actLabel}. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}${wgNote}`],
+    ['Energy',`${kcalMin}–${kcalMax}&thinsp;kcal`,`<=${kcalMax+200} kcal`,'<span class="badge-ok">CALCULATED</span>',isHealthy?`Mifflin-St Jeor TDEE × PAL (${actLabel}). ${kcalPerKg} kcal/kg. BMI ${bmi.toFixed(1)}.${wgNote}`:`${kcalPerKg} kcal/kg dry weight (KDOQI). Activity: ${actLabel}. ${bmi>30?'Adjusted for obesity (BMI '+bmi.toFixed(1)+').':'BMI '+bmi.toFixed(1)+'.'} ${pew?'Increased for protein-energy wasting.':''}${wgNote}`],
     ['Protein',protRange,protMax+'&thinsp;g',protBadge,protNote],
     ['Carbohydrates',`${carbMin}–${carbMax}&thinsp;g`,carbMax+50+'&thinsp;g','<span class="badge-ok">STANDARD</span>',`45–65% of calories. Prefer complex carbs — brown rice, oats, camote. ${dm?'Diabetic: choose low-GI options, monitor portions carefully.':''}`],
     ['Total Fiber',fiberTarget+'&thinsp;g','No UL','<span class="badge-ok">STANDARD</span>','Fiber supports gut health, reduces uremic toxin precursor production (indoxyl sulfate). Filipino sources: okra, ampalaya, malunggay (if K allows).'],
