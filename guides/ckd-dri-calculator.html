@@ -4416,24 +4416,64 @@ function buildMealPlan(p){
     ? {Breakfast:{p:0.20,k:0.20}, Lunch:{p:0.30,k:0.30}, Snack:{p:0.10,k:0.10}, Dinner:{p:0.30,k:0.30}}
     : {Breakfast:{p:0.25,k:0.25}, Lunch:{p:0.35,k:0.35}, Snack:{p:0.10,k:0.10}, Dinner:{p:0.30,k:0.30}};
 
-  // Rice cup guidance based on per-meal calorie target
-  function riceNote(kcalTarget){
-    // 1 cup cooked rice ≈ 260 kcal; snack slots skip this
-    const cups = kcalTarget / 260;
-    if(cups < 0.6) return null;
-    const c = cups < 0.85 ? '¾' : cups < 1.15 ? '1' : cups < 1.4 ? '1¼' : '1½';
-    return `~${c} cup rice (≈${Math.round(kcalTarget)} kcal target for this meal)`;
+  // Parse protein grams from meal description text
+  // Matches "Xg chicken/tilapia/bangus/pork/isda/manok/fish", eggs, tofu
+  function _parseDescProt(desc){
+    let total = 0;
+    const meat = desc.match(/(\d+)\s*g\s*(chicken|tilapia|bangus|pork|fish|manok|isda|shredded|ground|lean|grilled|boiled|roasted|steamed)/i);
+    if(meat) total += parseInt(meat[1]) * 6.5 / 30; // 30g ≈ 6.5g prot
+    const egg = desc.match(/(\d+)\s*(large\s+)?egg/i);
+    if(egg) total += parseInt(egg[1]) * 6;
+    if(desc.match(/½\s*egg/i)) total += 3;
+    const tofu = desc.match(/(\d+)\s*g\s*(firm\s+)?tofu/i);
+    if(tofu) total += parseInt(tofu[1]) * 0.1; // 60g tofu ≈ 6g prot
+    return Math.round(total * 10) / 10;
   }
 
-  // Protein portion guidance based on per-meal protein target
-  function protNote(protTarget){
-    // Fish/chicken 30g = ~6–7g prot; egg = 6g
-    const g = Math.round(protTarget);
-    const oz = protTarget / 6.5; // 1 oz (30g) = ~6.5g prot
-    if(g <= 0) return null;
-    if(isVLPD) return `Protein target: ~${g} g (very restricted — rely on ketoanalogues for amino acids)`;
-    const ozLabel = oz < 0.8 ? '½ oz (15 g)' : oz < 1.3 ? '1 oz (30 g)' : oz < 1.8 ? '1½ oz (45 g)' : oz < 2.3 ? '2 oz (60 g)' : oz < 2.8 ? '2½ oz (75 g)' : '3 oz (90 g)';
-    return `Protein target: ~${g} g ≈ ${ozLabel} fish/chicken or ${Math.round(protTarget/6)} egg(s)`;
+  // Oz label from grams of protein source
+  function _ozLabel(g){ return g<=20?'½ oz (15 g)':g<=35?'1 oz (30 g)':g<=50?'1½ oz (45 g)':g<=65?'2 oz (60 g)':g<=80?'2½ oz (75 g)':'3 oz (90 g)'; }
+
+  // Generate portion-adjustment callout comparing described base to prescribed target
+  function _portionAdjust(meal, mealProtTarget){
+    const baseProt = _parseDescProt(meal.desc);
+    if(baseProt <= 0) return null;
+    const ratio = mealProtTarget / baseProt;
+    // Only flag if adjustment ≥15% away from standard
+    if(ratio >= 0.85 && ratio <= 1.20) return null;
+    const direction = ratio < 0.85 ? '⬇ Reduce' : '⬆ Increase';
+    const color = ratio < 0.85 ? '#92400e' : '#065f46';
+    const bg    = ratio < 0.85 ? 'rgba(251,191,36,.15)' : 'rgba(16,185,129,.1)';
+    const bdr   = ratio < 0.85 ? 'rgba(251,191,36,.4)'  : 'rgba(16,185,129,.3)';
+
+    // Meat-based meals
+    const meat = meal.desc.match(/(\d+)\s*g\s*(chicken|tilapia|bangus|pork|isda|fish)/i);
+    if(meat){
+      const adjG  = Math.round(mealProtTarget * 30 / 6.5 / 5) * 5;
+      const src   = meat[2].charAt(0).toUpperCase() + meat[2].slice(1).toLowerCase();
+      return {text:`${direction} ${src}: use ${_ozLabel(adjG)} (~${adjG} g) for your ~${Math.round(mealProtTarget)} g protein target`, color, bg, bdr};
+    }
+    // Egg-based meals
+    const egg = meal.desc.match(/(\d+)\s*(large\s+)?egg/i);
+    if(egg){
+      const eggN = mealProtTarget / 6;
+      const lbl  = eggN < 0.6 ? '¼ egg' : eggN < 0.85 ? '½ egg' : eggN < 1.3 ? '1 egg' : eggN < 1.8 ? '1½ eggs' : Math.round(eggN) + ' eggs';
+      return {text:`${direction} Egg: use ${lbl} for your ~${Math.round(mealProtTarget)} g protein target`, color, bg, bdr};
+    }
+    // Tofu-based
+    const tofu = meal.desc.match(/(\d+)\s*g\s*(firm\s+)?tofu/i);
+    if(tofu){
+      const adjG = Math.round(mealProtTarget * 60 / 6 / 10) * 10;
+      return {text:`${direction} Tofu: use ~${adjG} g for your ~${Math.round(mealProtTarget)} g protein target`, color, bg, bdr};
+    }
+    return null;
+  }
+
+  // Rice cup guidance based on per-meal calorie target
+  function riceNote(kcalTarget){
+    const cups = kcalTarget / 260;
+    if(cups < 0.5) return null;
+    const c = cups < 0.65 ? '½' : cups < 0.85 ? '¾' : cups < 1.15 ? '1' : cups < 1.4 ? '1¼' : '1½';
+    return `~${c} cup rice (≈${Math.round(kcalTarget)} kcal target)`;
   }
 
   let html = '';
@@ -4444,16 +4484,21 @@ function buildMealPlan(p){
       const frac = slotFracs[label] || {p:0.25,k:0.25};
       const mealProt = totalProt * frac.p;
       const mealKcal = totalKcal * frac.k;
-      const rn = label !== 'Snack' ? riceNote(mealKcal) : null;
-      const pn = protNote(mealProt);
+      const rn  = label !== 'Snack' ? riceNote(mealKcal) : null;
+      const adj = !isHealthy ? _portionAdjust(meal, mealProt) : null;
+      // General protein target badge (shown when no specific adjustment, or always for context)
+      const baseProt = _parseDescProt(meal.desc);
+      const showGenProt = !adj && baseProt > 0 && !isHealthy;
+      const genProtTxt = isVLPD
+        ? `Protein target ~${Math.round(mealProt)} g — rely on ketoanalogues; keep animal source very small`
+        : `Protein target ~${Math.round(mealProt)} g`;
       html += `<div class="mp-meal">
         <div class="mp-slot-lbl">${icon} ${label}</div>
         <div class="mp-meal-name">${meal.name}</div>
         <div class="mp-meal-desc">${meal.desc}</div>
-        ${rn||pn ? `<div class="mp-targets" style="margin-top:5px;display:flex;flex-wrap:wrap;gap:4px;">
-          ${pn ? `<span style="font-size:10px;background:rgba(26,107,114,.12);color:var(--teal);border:1px solid rgba(26,107,114,.2);padding:2px 7px;border-radius:6px;font-weight:600;">🥩 ${pn}</span>` : ''}
-          ${rn ? `<span style="font-size:10px;background:rgba(26,107,114,.08);color:var(--text-mid);border:1px solid rgba(26,107,114,.12);padding:2px 7px;border-radius:6px;">🍚 ${rn}</span>` : ''}
-        </div>` : ''}
+        ${adj ? `<div style="margin-top:6px;padding:5px 8px;border-radius:6px;font-size:10.5px;font-weight:700;color:${adj.color};background:${adj.bg};border:1px solid ${adj.bdr};line-height:1.4;">${adj.text}</div>` : ''}
+        ${showGenProt ? `<div style="margin-top:5px;font-size:10px;color:var(--teal);font-weight:600;">🥩 ${genProtTxt}</div>` : ''}
+        ${rn ? `<div style="margin-top:3px;font-size:10px;color:var(--text-mid);">🍚 ${rn}</div>` : ''}
         ${meal.note ? `<div class="mp-note">⚠ ${meal.note}</div>` : ''}
       </div>`;
     });
