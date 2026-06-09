@@ -3507,7 +3507,7 @@ function _doExportDietPDF(logo) {
     fr(margin,y,colW,7,TEAL); sf('bold',8,WHITE); tx('7-Day Prototype Meal Plan',margin+3,y+5); y+=8;
 
     document.querySelectorAll('.mp-day').forEach(function(dayEl){
-      var dayName = (dayEl.querySelector('.mp-day-label')||{textContent:''}).textContent.trim();
+      var dayName = _pdfText((dayEl.querySelector('.mp-day-header')||{textContent:''}).textContent.trim());
       var mealEls = dayEl.querySelectorAll('.mp-meal');
       var mealArr=[];
       mealEls.forEach(function(mel){
@@ -4296,7 +4296,7 @@ function buildMealPlan(p){
 
   let html = '';
   days.forEach((day,di)=>{
-    html += `<div class="mp-day"><div class="mp-day-header"><span class="mp-day-label">${day}</span><span>Day ${di+1}</span></div><div class="mp-meals">`;
+    html += `<div class="mp-day"><div class="mp-day-header"><span class="mp-day-label">${day}</span><span>, Day ${di+1}</span></div><div class="mp-meals">`;
     slots.forEach(({label,icon,pool})=>{
       const meal = pool[di % pool.length];
       html += `<div class="mp-meal">
