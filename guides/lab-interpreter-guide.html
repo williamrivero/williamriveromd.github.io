@@ -3028,7 +3028,7 @@ function _loadClinicLogo(slug, cb) {
       c.width = img.naturalWidth; c.height = img.naturalHeight;
       c.getContext('2d').drawImage(img, 0, 0);
       /* Cache object includes natural dimensions for aspect-ratio rendering */
-      _clinicLogoCache[slug] = { dataUrl: c.toDataURL('image/png'), w: img.naturalWidth, h: img.naturalHeight };
+      _clinicLogoCache[slug] = { dataUrl: c.toDataURL('image/png'), w: img.naturalWidth, h: img.naturalHeight, slug: slug };
     } catch(e) { _clinicLogoCache[slug] = null; }
     cb(_clinicLogoCache[slug]);
   };
@@ -3041,6 +3041,7 @@ function _addLogoToPDF(doc, logo, pageW, headerH, margin) {
   if (!logo || !logo.dataUrl) return;
   try {
     var maxSz = 38.1; /* 1.5 inches in mm */
+    if (logo.slug === 'rcuona') maxSz *= 0.75; /* rcuona logo rendered 25% smaller */
     var aspect = logo.w / logo.h;
     var lw, lh;
     if (aspect >= 1) { lw = maxSz; lh = maxSz / aspect; }
