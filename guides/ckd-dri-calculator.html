@@ -3252,15 +3252,34 @@ function _setUnit(mode) {
 function _clinicSlug() {
   var v = ((document.getElementById('f-clinic')||{}).value||'').trim().toLowerCase().replace(/[\s\-_.,&]/g,'');
   if(CLINIC_LOGO_MAP[v]) return v;
-  // Match full/partial clinic names to slugs
-  var aliases = {
-    rcuona: ['renalcareunit','renalcareunitona','renalcareunitonarlmmc','renalcare','rcu','rlmmc','ona'],
-    sjrc:   ['stjosefrenalcare','stjosef','josefrenalcare','sjrenalcare','stjosefrc'],
-    sjbdc:  ['stjohnbiocare','stjohnbiocaredialysis','johndialysis','sjbdc','biocaredialysis','stjohnbiocare']
+  // Exact lookup map — normalized full/alternate names → slug
+  // Keys must be unique substrings that cannot appear in another clinic's name
+  var nameMap = {
+    // rcuona
+    'renalcareunitona':        'rcuona',
+    'renalcareunitonarlmmc':   'rcuona',
+    'renalcareunit':           'rcuona',
+    'rcuonarlmmc':             'rcuona',
+    'rlmmc':                   'rcuona',
+    // sjrc — "stjosef" is unique; avoid bare "renalcare" which appears in other names
+    'stjosefrenalcare':        'sjrc',
+    'stjosef':                 'sjrc',
+    'josefrenalcare':          'sjrc',
+    'stjosefrc':               'sjrc',
+    // sjbdc
+    'stjohnbiocare':           'sjbdc',
+    'stjohnbiocaredialysis':   'sjbdc',
+    'stjohnbiocaredialysiscenter': 'sjbdc',
+    'johnbiocaredialysis':     'sjbdc',
+    'biocaredialysis':         'sjbdc',
   };
-  for(var slug in aliases){
-    if(aliases[slug].some(function(a){ return v.indexOf(a)!==-1 || a.indexOf(v)!==-1 && v.length>=4; }))
-      return slug;
+  // Exact match first
+  if(nameMap[v]) return nameMap[v];
+  // Prefix/contains match — check if v starts with or contains a key (longer keys first to avoid partial hits)
+  var keys = Object.keys(nameMap).sort(function(a,b){ return b.length - a.length; });
+  for(var i=0;i<keys.length;i++){
+    if(v.indexOf(keys[i])===0 || keys[i].indexOf(v)===0 && v.length>=5)
+      return nameMap[keys[i]];
   }
   return null;
 }
