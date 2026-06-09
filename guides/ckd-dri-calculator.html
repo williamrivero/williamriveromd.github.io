@@ -1358,6 +1358,12 @@ html[data-theme="dark"] .section-body p { color: #c0cad8; }
 .mp-meal-name{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:3px;line-height:1.3;}
 .mp-meal-desc{font-size:11px;color:var(--text-muted);line-height:1.5;}
 .mp-note{display:inline-block;font-size:9.5px;font-weight:700;background:var(--amber-soft);color:var(--amber);padding:1px 6px;border-radius:5px;margin-top:4px;}
+.mp-notes{background:var(--bg);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:14px 20px;}
+.mp-notes-head{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.mp-notes-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;}
+.mp-notes-list li{font-size:11px;color:var(--text-mid);padding:3px 0;line-height:1.5;display:flex;gap:6px;}
+.mp-notes-list li::before{content:'•';color:var(--teal);font-weight:700;flex-shrink:0;}
+@media(max-width:600px){.mp-notes-list{grid-template-columns:1fr;}}
 html[data-theme="dark"] .mp-day-header{background:#1a2535;}
 html[data-theme="dark"] .mp-day-header .mp-day-label{color:#e8eaf0;}
 html[data-theme="dark"] .mp-day{border-color:#2a3548;}
@@ -3053,6 +3059,11 @@ function printRx(){
   .mp-meal-name{font-size:9.5px;font-weight:600;color:#0f1e2e;margin-bottom:2px;line-height:1.3;}
   .mp-meal-desc{font-size:8.5px;color:#6b7280;line-height:1.35;}
   .mp-note{font-size:7.5px;font-weight:700;background:#fff8e1;color:#9a6500;padding:1px 4px;border-radius:3px;margin-top:2px;display:inline-block;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .mp-notes{background:#f4f7fb;border:1px solid #dde;border-top:none;padding:10px 14px;page-break-inside:avoid;}
+  .mp-notes-head{font-size:9.5px;font-weight:700;color:#0f1e2e;margin-bottom:6px;letter-spacing:.02em;}
+  .mp-notes-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;}
+  .mp-notes-list li{font-size:9px;color:#374151;padding:2px 0;line-height:1.45;display:flex;gap:5px;}
+  .mp-notes-list li::before{content:'•';color:#1a6b72;font-weight:700;flex-shrink:0;}
 
   /* ── Weight Goal Summary ── */
   .wg-summary-panel{border:1.5px solid #1a6b72;border-radius:8px;padding:12px 14px;margin-bottom:14px;page-break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
@@ -3507,7 +3518,37 @@ function _doExportDietPDF(logo) {
       });
       y+=cellH+1;
     });
-    y+=5;
+
+    // ── MEAL PLAN NOTES ──
+    var mpNoteItems = [
+      'Targets are cumulative per day. Cherry-picking individual meals across days will not achieve your daily goals — follow each day as a complete unit.',
+      'Substitutions: swap a meal for another of the same slot (e.g. one breakfast for another breakfast) within the same CKD stage and allergen restrictions. Do not swap across slots.',
+      'Split the snack if preferred. The single snack per day can be divided into two smaller portions (mid-morning + mid-afternoon) without changing the daily total.',
+      'Hidden calorie sources not counted: cooking oil, condiments (toyo, patis, suka), sugar in beverages, and incidental nibbles. Minimise added fats and avoid sweetened drinks.',
+      'Rice portions matter. Meals assume 1 cup cooked rice (~200 g, ~260 kcal). Adjust your serving to meet — not exceed — your daily calorie target.',
+      'Leaching is mandatory if you have hyperkalemia or are on dialysis: soak vegetables in water ≥2 hrs → drain → boil in fresh water → drain again. Reduces potassium by 30–50%.',
+      'This plan is a prototype, not a prescription. Portion sizes are approximate. Your renal dietitian must review and adjust based on your actual laboratory results and weight trends.'
+    ];
+    chk(10);
+    fr(margin,y,colW,6,[235,241,248]);
+    doc.setDrawColor(200,210,220); doc.setLineWidth(0.15); doc.rect(margin,y,colW,6);
+    sf('bold',7,NAVY); tx('How to Use This Meal Plan',margin+3,y+4.5);
+    y+=6;
+    var noteHalf=Math.ceil(mpNoteItems.length/2), noteColW2=(colW-4)/2;
+    [[0,noteHalf],[noteHalf,mpNoteItems.length]].forEach(function(range,ci){
+      var nx=margin+ci*(noteColW2+4), ny=y+2;
+      for(var ni=range[0];ni<range[1];ni++){
+        var lines=doc.splitTextToSize('• '+mpNoteItems[ni],noteColW2-3);
+        var rh=lines.length*3.8+2;
+        chk(rh);
+        sf('normal',5.8,[50,60,74]); doc.text(lines,nx+2,ny+3.5);
+        ny+=rh;
+      }
+    });
+    // estimate total height for notes block
+    var totalNoteH=0;
+    mpNoteItems.forEach(function(item){ totalNoteH+=doc.splitTextToSize('• '+item,noteColW2-3).length*3.8+2; });
+    y+=Math.ceil(totalNoteH/2)+6;
   }
 
   // ── VALIDATED BY ──
@@ -4206,7 +4247,19 @@ function buildMealPlan(p){
     html += '</div></div>';
   });
 
-  document.getElementById('meal-plan-content').innerHTML = html;
+  const mpNotes = `<div class="mp-notes">
+    <div class="mp-notes-head">📋 How to Use This Meal Plan</div>
+    <ul class="mp-notes-list">
+      <li><strong>Targets are cumulative, not per-meal.</strong> Each day's four meals together are calibrated to approach your daily nutrient targets. Cherry-picking individual meals across different days will not achieve your daily goals — follow each day as a complete unit.</li>
+      <li><strong>Substitutions.</strong> You may swap a meal for another of the same slot (e.g. one breakfast for another breakfast) within the same CKD stage and allergen restrictions. Do not swap across slots (e.g. a dinner for a snack) as portions and nutrient density differ.</li>
+      <li><strong>Split the snack if preferred.</strong> The single snack listed per day can be divided into two smaller portions — one mid-morning and one mid-afternoon — without changing the daily total.</li>
+      <li><strong>Hidden calorie sources not counted.</strong> Cooking oil, condiments (toyo, patis, suka), rice washing water, sugar in beverages, and incidental nibbles are not included in these estimates. Minimise added fats and avoid sweetened drinks to stay within your energy target.</li>
+      <li><strong>Rice portions matter.</strong> Meals that include rice assume 1 cup cooked (approximately 200 g, ~260 kcal). Adjust your rice serving to meet — not exceed — your calorie target for the day.</li>
+      <li><strong>Leaching is mandatory if you have hyperkalemia or are on dialysis.</strong> Peel and cut all vegetables → soak in a large volume of water for at least 2 hours → drain and discard → boil in fresh water → drain again before eating. This reduces potassium by 30–50%.</li>
+      <li><strong>This plan is a prototype, not a prescription.</strong> Portion sizes are approximate estimates based on population-level equations. Your renal dietitian must review and adjust this plan based on your actual laboratory results (serum K, P, albumin, BUN/Cr) and body weight trends.</li>
+    </ul>
+  </div>`;
+  document.getElementById('meal-plan-content').innerHTML = html + mpNotes;
 
   // ── Allergy tags ──
   const allergenLabels = {fish:'🐟 Fish-free',shellfish:'🦐 Shellfish-free',egg:'🥚 Egg-free',dairy:'🥛 Dairy-free',nuts:'🥜 Nut-free',soy:'🫘 Soy-free',gluten:'🌾 Gluten-free',pork:'🐷 Pork-free'};
