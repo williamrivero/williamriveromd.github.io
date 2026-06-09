@@ -2364,6 +2364,19 @@ Agyang "natural" o "herbal" la ding supplement, e mu buring sabyan a ligtas la p
 <label class="check-pill"><input id="c-pew" type="checkbox"/><span><span data-lang="en">Protein-energy wasting / underweight</span><span class="lang-hidden" data-lang="tl">Protein-energy wasting / kulang sa timbang</span><span class="lang-hidden" data-lang="ceb">Protein-energy wasting / kulang sa timbang</span><span class="lang-hidden" data-lang="kap">Protein-energy wasting / kulang king timbang</span></span></label>
 <label class="check-pill"><input id="c-prot" type="checkbox"/><span><span data-lang="en">Heavy proteinuria (&gt;3 g/day)</span><span class="lang-hidden" data-lang="tl">Mabigat na proteinuria (&gt;3 g/araw)</span><span class="lang-hidden" data-lang="ceb">Grabe nga proteinuria (&gt;3 g/adlaw)</span><span class="lang-hidden" data-lang="kap">Mabigat a proteinuria (&gt;3 g/aldo)</span></span></label>
 <label class="check-pill"><input id="c-htn" type="checkbox"/><span><span data-lang="en">Resistant hypertension</span><span class="lang-hidden" data-lang="tl">Resistant na hypertension</span><span class="lang-hidden" data-lang="ceb">Resistant nga hypertension</span><span class="lang-hidden" data-lang="kap">Resistant a hypertension</span></span></label>
+<label class="check-pill"><input id="c-huc" type="checkbox"/><span><span data-lang="en">Hyperuricemia / Gout</span><span class="lang-hidden" data-lang="tl">Hyperuricemia / Gout</span><span class="lang-hidden" data-lang="ceb">Hyperuricemia / Gout</span><span class="lang-hidden" data-lang="kap">Hyperuricemia / Gout</span></span></label>
+<label class="check-pill"><input id="c-ka" type="checkbox" onchange="_toggleKA()"/><span><span data-lang="en">Ketoanalogue supplementation</span><span class="lang-hidden" data-lang="tl">Ketoanalogue supplementation</span><span class="lang-hidden" data-lang="ceb">Ketoanalogue supplementation</span><span class="lang-hidden" data-lang="kap">Ketoanalogue supplementation</span></span></label>
+</div>
+<div id="ka-input-row" style="display:none;margin:8px 0 16px;padding:14px 16px;background:var(--amber-soft);border:1.5px solid var(--amber);border-radius:10px;max-width:560px;">
+  <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:10px;">⚕ Ketoanalogue (KA) Supplementation</div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <div class="form-group" style="margin:0;flex:0 0 180px;">
+      <label style="font-size:11px;margin-bottom:4px;">Tablets per day</label>
+      <input id="f-ka-tabs" type="number" min="1" max="40" step="1" placeholder="e.g. 9" style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:14px;font-weight:700;background:var(--white);color:var(--text);" oninput="_updateKAhint()"/>
+    </div>
+    <div id="ka-hint" style="font-size:11px;color:#92400e;line-height:1.5;flex:1;min-width:160px;"></div>
+  </div>
+  <div style="font-size:10.5px;color:#78350f;margin-top:8px;">Reference: 1 tablet per 5 kg body weight per day. Take with meals (not on empty stomach). KA is not indicated on dialysis.</div>
 </div>
 <div class="check-section-label">Food Allergies &amp; Intolerances <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--text-muted);">(used to personalize the 7-day meal plan)</span></div>
 <div class="check-row">
@@ -2405,7 +2418,7 @@ Agyang "natural" o "herbal" la ding supplement, e mu buring sabyan a ligtas la p
 <input id="f-validator" type="text" placeholder="e.g. J. Santos, MD" maxlength="80" autocomplete="off"/>
 </div>
 <div class="form-group">
-<label>Clinic <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(logo shown if rcuona / sjrc / sjbdc)</span></label>
+<label>Clinic</label>
 <input id="f-clinic" type="text" placeholder="e.g. sjrc or St. Josef Renal Care" maxlength="80" autocomplete="off" oninput="_preloadClinicLogo()"/>
 <div class="hint">Type <strong>rcuona</strong>, <strong>sjrc</strong>, or <strong>sjbdc</strong> to show the clinic logo on the PDF header.</div>
 </div>
@@ -3144,6 +3157,30 @@ var CLINIC_LOGO_MAP = {
 var _clinicLogoCache = {};
 window._unitMode = 'metric';
 
+function _toggleKA() {
+  var checked = document.getElementById('c-ka').checked;
+  document.getElementById('ka-input-row').style.display = checked ? 'block' : 'none';
+  if (checked) _updateKAhint();
+}
+
+function _kaRecommendedRange(calcWt, mode) {
+  // mode: 'lpd' or 'vlpd'
+  if (mode === 'lpd')  return { lo: Math.round(calcWt * 0.10), hi: Math.round(calcWt * 0.13) };
+  if (mode === 'vlpd') return { lo: Math.round(calcWt * 0.15), hi: Math.round(calcWt / 5)   };
+  return { lo: 0, hi: 0 };
+}
+
+function _updateKAhint() {
+  var hint = document.getElementById('ka-hint');
+  if (!hint) return;
+  var wt = parseFloat(document.getElementById('f-wt') ? document.getElementById('f-wt').value : 0) || 0;
+  if (window._unitMode === 'imperial') wt = wt * 0.453592;
+  if (!wt) { hint.textContent = 'Enter weight above to see recommended dose.'; return; }
+  var lpd  = _kaRecommendedRange(wt, 'lpd');
+  var vlpd = _kaRecommendedRange(wt, 'vlpd');
+  hint.innerHTML = '<strong>LPD dose:</strong> ' + lpd.lo + '–' + lpd.hi + ' tabs/day &nbsp;|&nbsp; <strong>VLPD dose:</strong> ' + vlpd.lo + '–' + vlpd.hi + ' tabs/day<br>Protein target adjusts automatically based on tab count &amp; CKD stage.';
+}
+
 function _setUnit(mode) {
   var prev = window._unitMode || 'metric';
   window._unitMode = mode;
@@ -3678,6 +3715,9 @@ function runCalc(){
   const pew  = document.getElementById('c-pew').checked;
   const prot = document.getElementById('c-prot').checked;
   const htn  = document.getElementById('c-htn').checked;
+  const huc  = document.getElementById('c-huc').checked;
+  const kaOn = document.getElementById('c-ka').checked;
+  const kaTabs = kaOn ? (parseInt(document.getElementById('f-ka-tabs').value)||0) : 0;
 
   if(!wt||!ht||!age||!sex||!stage){
     err.textContent='Please fill in all required fields (weight, height, age, sex, and CKD stage).';
@@ -3702,6 +3742,32 @@ function runCalc(){
   // Use adjusted BW if obese
   const adjwt = bmi > 30 ? ibw + 0.4*(wt - ibw) : wt;
   const calcWt = Math.max(adjwt, 30); // safety floor
+
+  // ── KETOANALOGUE MODE ──
+  var kaMode = 'none'; // 'vlpd', 'lpd', 'contraindicated', 'none'
+  var kaWarn = '';
+  if (kaOn) {
+    if (isDialysis) {
+      kaMode = 'contraindicated';
+      kaWarn = 'Ketoanalogues are not indicated on dialysis — dialysis patients require INCREASED protein (1.0–1.5 g/kg). KA supplementation checkbox ignored.';
+    } else if (!isPreD && !['3b','4','5'].includes(stage)) {
+      kaMode = 'none';
+      kaWarn = 'KA supplementation has insufficient evidence in CKD Stage 1–3a. Protein target unchanged.';
+    } else if (kaTabs > 0) {
+      const vlpdLo = Math.round(calcWt * 0.15);
+      const lpdLo  = Math.round(calcWt * 0.10);
+      if (['4','5'].includes(stage) && kaTabs >= vlpdLo) {
+        kaMode = 'vlpd';
+      } else if (['3b','4','5'].includes(stage) && kaTabs >= lpdLo) {
+        kaMode = 'lpd';
+      } else {
+        kaWarn = 'Tab count below LPD threshold (' + lpdLo + ' tabs for ' + Math.round(calcWt) + ' kg). Standard protein target applied. Increase dose to ' + lpdLo + '+ tabs/day for LPD benefit.';
+      }
+    } else {
+      kaWarn = 'Enter tablet count to adjust protein target.';
+    }
+  }
+  const kaCaLoad = kaTabs > 0 ? (kaTabs * 0.05).toFixed(2) : null; // each tab = 0.05 g Ca
 
   // ── ENERGY ──
   // Mifflin-St Jeor BMR
@@ -3769,7 +3835,17 @@ function runCalc(){
     protNote='0.8 g/kg: standard healthy adult target. Restriction not yet beneficial in early CKD.';
     protBadge='<span class="badge-ok">STANDARD</span>';
   }
-  if(pew){ protMin=Math.round(calcWt*1.0*10)/10; protMax=Math.round(calcWt*1.2*10)/10; protNote='PEW modifier: increase to 1.0–1.2 g/kg to replenish lean body mass. Discuss with renal dietitian.'; protBadge='<span class="badge-more">↑ PEW</span>'; }
+  // KA override — applied before PEW (PEW always wins if both active)
+  if(kaMode === 'vlpd'){
+    protMin=Math.round(calcWt*0.3*10)/10; protMax=Math.round(calcWt*0.3*10)/10;
+    protNote='VLPD + Ketoanalogue: 0.3 g/kg/day. KA supplies essential amino acid carbon skeletons; nitrogen is recycled from urea, reducing uremic toxin load. Strict monitoring required — eGFR, serum Ca, albumin monthly. Close renal dietitian supervision essential.';
+    protBadge='<span class="badge-warn">VLPD + KA</span>';
+  } else if(kaMode === 'lpd'){
+    protMin=Math.round(calcWt*0.6*10)/10; protMax=Math.round(calcWt*0.6*10)/10;
+    protNote='LPD + Ketoanalogue: 0.6 g/kg/day. KA supplements essential amino acids without adding nitrogen load. Slows GFR decline; suitable for CKD Stage 3b–5 with adequate KA dosing.';
+    protBadge='<span class="badge-warn">LPD + KA</span>';
+  }
+  if(pew){ protMin=Math.round(calcWt*1.0*10)/10; protMax=Math.round(calcWt*1.2*10)/10; protNote='PEW modifier: increase to 1.0–1.2 g/kg to replenish lean body mass. KA cannot substitute for adequate dietary protein in wasting. Discuss with renal dietitian urgently.'; protBadge='<span class="badge-more">↑ PEW</span>'; }
   if(prot && !isDialysis){ protNote+=' Heavy proteinuria: keep at lower end of range; each g of urinary protein lost = 1 g that must be replaced.'; }
 
   const protRange = protMin===protMax ? protMin+'&thinsp;g' : protMin+'–'+protMax+'&thinsp;g';
@@ -4048,6 +4124,11 @@ function runCalc(){
   else if(wg==='loss' && pew) clinItems.push({icon:'⚠',text:'<strong>Weight loss goal overridden: protein-energy wasting detected</strong> — nutritional rehabilitation must come before any weight reduction. Refer to renal dietitian urgently.'});
   if(dm) clinItems.push({icon:'🍚',text:'<strong>Diabetes: low-GI carbohydrates, consistent meal timing</strong> — target HbA1c &lt;7% (KDIGO 2024)'});
   if(pew) clinItems.push({icon:'⬆',text:'<strong>Protein-energy wasting modifier applied</strong> — consult renal dietitian urgently for nutritional rehabilitation plan'});
+  if(huc) clinItems.push({icon:'🍗',text:'<strong>Hyperuricemia / Gout: limit purine-rich foods</strong> — avoid organ meats (liver, kidney, dinuguan), sardines, anchovies, mackerel, and meat broths / bone broth. Limit red meat to ≤1 serving/day. Choose low-fat dairy, eggs, and plant protein. Avoid alcohol and sweetened beverages (fructose elevates uric acid). Adequate hydration (per fluid allowance) supports uric acid clearance. Discuss urate-lowering therapy (allopurinol/febuxostat) with your nephrologist — dose adjustment required in CKD.'});
+  if(kaMode === 'vlpd') clinItems.push({icon:'💊',text:'<strong>VLPD + Ketoanalogue: ' + kaTabs + ' tabs/day</strong> — Ca load: ' + kaCaLoad + ' g/day (' + Math.round(kaTabs*50) + ' mg). Monitor serum calcium monthly; hypercalcemia risk with concurrent active Vitamin D.'});
+  if(kaMode === 'lpd')  clinItems.push({icon:'💊',text:'<strong>LPD + Ketoanalogue: ' + kaTabs + ' tabs/day</strong> — Ca load: ' + kaCaLoad + ' g/day (' + Math.round(kaTabs*50) + ' mg). Take with meals. Monitor serum calcium.'});
+  if(kaMode === 'contraindicated') clinItems.push({icon:'⚠',text:'<strong>Ketoanalogue not indicated on dialysis</strong> — ' + kaWarn});
+  if(kaWarn && kaMode === 'none' && kaOn) clinItems.push({icon:'ℹ',text:kaWarn});
   clinItems.push({icon:'☀',text:'<strong>Vitamin D: check 25-OH Vit D and supplement</strong> — deficiency near-universal in Filipino CKD patients'});
   document.getElementById('clin-list').innerHTML = clinItems.map(i=>`<li><span class="icon">${i.icon}</span><span>${i.text}</span></li>`).join('');
 
@@ -4080,6 +4161,8 @@ function runCalc(){
     {label:'Phosphorus',val:isHealthy?'700':hp||isDialysis||isPreD?'800–1,000':'800–1,000',unit:'mg / day',cls:(!isHealthy)?'rx-restrict':''},
     {label:'Calcium',val:isHealthy?(age>=51&&sex==='F'?'1,200':'1,000'):'800–1,000',unit:'mg / day',cls:''},
     {label:'Fluid',val:flTarget,unit:'/ day',cls:isHD?'rx-restrict':isHealthy?'rx-increase':''},
+    ...(huc ? [{label:'Purines',val:'Low-purine diet',unit:'Avoid organ meats, tinapa, sardines, alcohol',cls:'rx-restrict'}] : []),
+    ...(kaMode==='vlpd'||kaMode==='lpd' ? [{label:'KA Tablets',val:kaTabs+' tabs/day',unit:'Ca load: '+kaCaLoad+' g/day',cls:'rx-restrict'}] : []),
   ];
   document.getElementById('rx-grid').innerHTML = rxCells.map(c=>`
     <div class="rx-cell">
@@ -4112,6 +4195,10 @@ function runCalc(){
     rxNotes.push('Check Vitamin D (25-OH) level and supplement cholecalciferol as directed');
     if(dm) rxNotes.push('Low-GI carbohydrates; consistent meal timing; HbA1c target &lt;7%');
     if(pew) rxNotes.push('Protein-energy wasting present — refer to renal dietitian urgently');
+    if(huc) rxNotes.push('Hyperuricemia/Gout: avoid organ meats, sardines, anchovies, bone broth, alcohol, fructose-sweetened drinks; limit red meat to ≤1 serving/day; choose eggs and low-fat dairy; adequate hydration per fluid allowance');
+    if(kaMode === 'vlpd') rxNotes.push('Ketoanalogue VLPD: ' + kaTabs + ' tabs/day · protein 0.3 g/kg · Ca load ' + kaCaLoad + ' g/day · monitor serum Ca monthly · take with meals');
+    if(kaMode === 'lpd')  rxNotes.push('Ketoanalogue LPD: ' + kaTabs + ' tabs/day · protein 0.6 g/kg · Ca load ' + kaCaLoad + ' g/day · take with meals · do not take on empty stomach');
+    if(kaMode === 'contraindicated') rxNotes.push('Ketoanalogue: NOT indicated on dialysis — protein target increased per dialysis guidelines');
   }
   if(wg !== 'maintain' && !pew) rxNotes.push(
     wg==='loss'
@@ -4185,7 +4272,7 @@ function runCalc(){
   const otherAllergies = (document.getElementById('f-allergy-other').value||'').trim();
 
   // ── Build 7-day meal plan ──
-  buildMealPlan({stage,hk,hp,dm,pew,allergens,otherAllergies,protMin,protMax,kcalMin,kcalMax,isDialysis,isPreD,isHD,isPD,isHealthy});
+  buildMealPlan({stage,hk,hp,dm,pew,huc,allergens,otherAllergies,protMin,protMax,kcalMin,kcalMax,isDialysis,isPreD,isHD,isPD,isHealthy,kaMode,kaTabs});
 
   // ── Show results ──
   const panel = document.getElementById('results-panel');
@@ -4194,9 +4281,11 @@ function runCalc(){
 }
 
 function buildMealPlan(p){
-  const {stage,hk,hp,dm,allergens,otherAllergies,protMin,protMax,kcalMin,kcalMax,isDialysis,isPreD,isHD,isPD,isHealthy} = p;
+  const {stage,hk,hp,dm,pew,huc,allergens,otherAllergies,protMin,protMax,kcalMin,kcalMax,isDialysis,isPreD,isHD,isPD,isHealthy,kaMode,kaTabs} = p;
   const restrictK = hk || isHD || isPD;
   const restrictP = hp || isDialysis;
+  const isVLPD = kaMode === 'vlpd';
+  const isLPD  = kaMode === 'lpd';
 
   // ── Meal database ──
   // allergens: array of allergen strings present in this meal
@@ -4205,66 +4294,82 @@ function buildMealPlan(p){
   // note: warning shown in the plan
 
   const breakfast = [
-    {name:'Sinangag + Scrambled Egg',desc:'¾ cup fried brown rice, 1 egg scrambled in ½ tsp oil, black pepper',allergens:['egg'],hiK:false,hiP:false,note:''},
-    {name:'Arroz Caldo (Lugaw)',desc:'1 cup chicken rice porridge, 50g shredded chicken, ginger, 1 tsp calamansi',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Grilled Tilapia + Rice',desc:'¾ cup rice, 80g grilled tilapia, calamansi, no fish sauce',allergens:['fish'],hiK:false,hiP:false,note:''},
-    {name:'Plain Oatmeal + Apple',desc:'½ cup oats cooked in water, ½ small apple, 1 tsp brown sugar',allergens:[],hiK:false,hiP:true,note:'Moderate phosphorus — monitor if P restricted'},
-    {name:'Pandesal + Margarine',desc:'2 pcs pandesal, 1 tsp unsalted margarine, black coffee (no milk)',allergens:['gluten'],hiK:false,hiP:false,note:''},
-    {name:'Tofu Scramble + Rice',desc:'¾ cup rice, 80g firm tofu scrambled with onion and garlic, low-sodium seasoning',allergens:['soy'],hiK:false,hiP:true,note:'Tofu — moderate phosphorus'},
-    {name:'Soft-Boiled Egg + Rice',desc:'1 large egg (soft boiled), ¾ cup plain rice, 1 tsp low-sodium soy sauce',allergens:['egg','soy'],hiK:false,hiP:false,note:''},
-    {name:'Corn Grits (Binatog)',desc:'½ cup boiled corn kernels, light salt — traditional Filipino breakfast',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Boiled Chicken + Rice',desc:'80g boiled chicken breast (no skin), ¾ cup rice, calamansi and black pepper',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Tinapa + Rice',desc:'¾ cup rice, 1 pc smoked tinapa (rinsed to reduce sodium), sliced cucumber',allergens:['fish'],hiK:false,hiP:false,note:'Rinse tinapa well to lower sodium'},
-    {name:'Lugaw with Chicken',desc:'1 cup plain rice porridge, 50g chicken, ginger, green onion garnish',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Camote + Egg',desc:'½ cup boiled yellow camote, 1 hard-boiled egg',allergens:['egg'],hiK:true,hiP:false,note:'Camote — moderate K, limit if K restricted'},
+    // hiAnProt: true = ≥70g animal protein per serving (filtered out in VLPD)
+    {name:'Sinangag + Scrambled Egg',desc:'¾ cup fried brown rice, 1 egg scrambled in ½ tsp oil, black pepper',allergens:['egg'],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Arroz Caldo (Lugaw)',desc:'1 cup chicken rice porridge, 50g shredded chicken, ginger, 1 tsp calamansi',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Grilled Tilapia + Rice',desc:'¾ cup rice, 80g grilled tilapia, calamansi, no fish sauce',allergens:['fish'],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Plain Oatmeal + Apple',desc:'½ cup oats cooked in water, ½ small apple, 1 tsp brown sugar',allergens:[],hiK:false,hiP:true,hiAnProt:false,hiPurine:false,note:'Moderate phosphorus — monitor if P restricted'},
+    {name:'Pandesal + Margarine',desc:'2 pcs pandesal, 1 tsp unsalted margarine, black coffee (no milk)',allergens:['gluten'],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Tofu Scramble + Rice',desc:'¾ cup rice, 80g firm tofu scrambled with onion and garlic, low-sodium seasoning',allergens:['soy'],hiK:false,hiP:true,hiAnProt:false,hiPurine:false,note:'Tofu — moderate phosphorus'},
+    {name:'Soft-Boiled Egg + Rice',desc:'1 large egg (soft boiled), ¾ cup plain rice, 1 tsp low-sodium soy sauce',allergens:['egg','soy'],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Corn Grits (Binatog)',desc:'½ cup boiled corn kernels, light salt — traditional Filipino breakfast',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Boiled Chicken + Rice',desc:'80g boiled chicken breast (no skin), ¾ cup rice, calamansi and black pepper',allergens:[],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Tinapa + Rice',desc:'¾ cup rice, 1 pc smoked tinapa (rinsed to reduce sodium), sliced cucumber',allergens:['fish'],hiK:false,hiP:false,hiAnProt:true,hiPurine:true,note:'Rinse tinapa well to lower sodium — high purine; avoid if hyperuricemia'},
+    {name:'Lugaw with Chicken',desc:'1 cup plain rice porridge, 50g chicken, ginger, green onion garnish',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Camote + Egg',desc:'½ cup boiled yellow camote, 1 hard-boiled egg',allergens:['egg'],hiK:true,hiP:false,hiAnProt:false,hiPurine:false,note:'Camote — moderate K, limit if K restricted'},
+    // VLPD-friendly low-protein breakfasts
+    {name:'Lugaw (Plain) + Gulay',desc:'1 cup plain rice porridge with 1 cup mixed leached vegetables, light salt — very low protein',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD: minimal animal protein — fills calorie needs with complex carbohydrate'},
+    {name:'Low-Protein Pancit Miki + Sayote',desc:'1 cup low-protein rice noodles stir-fried with sayote and onion, ½ tsp oil — no meat',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD: use low-protein noodles; adds calories without protein load'},
+    {name:'Camote Rice Porridge',desc:'1 cup rice porridge with ½ cup mashed yellow camote, calamansi — no meat added',allergens:[],hiK:true,hiP:false,hiAnProt:false,hiPurine:false,note:'Moderate K from camote — limit or substitute if K-restricted'},
   ];
 
   const lunch = [
-    {name:'Tinolang Manok',desc:'1 cup rice, 80g chicken, ½ cup sayote, ginger broth — no malunggay if K restricted',allergens:[],hiK:false,hiP:false,note:'Skip malunggay leaves if potassium restricted'},
-    {name:'Steamed Tilapia + Sayote',desc:'1 cup rice, 100g steamed tilapia with ginger, ½ cup stir-fried sayote',allergens:['fish'],hiK:false,hiP:false,note:''},
-    {name:'Chicken Adobo (Low-Sodium)',desc:'1 cup rice, 80g chicken adobo — ½ tsp low-Na soy sauce + vinegar, no patis',allergens:['soy'],hiK:false,hiP:false,note:''},
-    {name:'Ginisang Sayote + Pork',desc:'1 cup rice, ½ cup sayote with 50g lean pork strips, garlic, onion',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Chicken Nilaga',desc:'1 cup rice, 80g boiled chicken, ½ cup sayote / labanos (leached 15 min)',allergens:[],hiK:false,hiP:false,note:'Leach vegetables to reduce potassium'},
-    {name:'Steamed Bangus',desc:'1 cup rice, 100g steamed bangus belly (rinsed), ½ cup stir-fried upo',allergens:['fish'],hiK:false,hiP:false,note:''},
-    {name:'Ginisang Upo + Pork',desc:'1 cup rice, ½ cup bottle gourd (upo) with 50g pork, garlic, low sodium',allergens:[],hiK:false,hiP:false,note:'Upo is low in K and P — ideal CKD vegetable'},
-    {name:'Egg Drop Soup + Rice',desc:'1 cup rice, 1 egg in light low-sodium broth, green onion',allergens:['egg'],hiK:false,hiP:false,note:''},
-    {name:'Grilled Chicken Inasal',desc:'1 cup rice, 100g grilled chicken — calamansi, garlic, turmeric marinade, no patis',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Stir-fried Pork + Cabbage',desc:'1 cup rice, 60g lean pork, ½ cup leached cabbage, garlic, pepper — no soy sauce',allergens:[],hiK:false,hiP:false,note:'Leach cabbage first to reduce K'},
-    {name:'Tokwa\'t Baboy',desc:'1 cup rice, 50g lean pork + 60g firm tofu, low-Na vinegar-onion dip',allergens:['soy'],hiK:false,hiP:true,note:'Tofu — moderate phosphorus'},
-    {name:'Modified Sinigang',desc:'1 cup rice, 60g lean pork, ½ cup sayote in tamarind broth — leach all vegetables',allergens:[],hiK:true,hiP:false,note:'Leach veggies thoroughly; watch K from broth'},
-    {name:'Ginisang Sitaw + Pork',desc:'1 cup rice, ½ cup string beans (leached), 50g lean pork, garlic and onion',allergens:[],hiK:false,hiP:false,note:'Leach sitaw to reduce potassium'},
-    {name:'Chicken Sopas (Modified)',desc:'1 cup rice, 80g chicken, ½ cup sayote in light broth — omit milk, use egg-free pasta',allergens:['gluten'],hiK:false,hiP:false,note:'Omit evaporated milk to avoid dairy/phosphorus'},
+    {name:'Tinolang Manok',desc:'1 cup rice, 80g chicken, ½ cup sayote, ginger broth — no malunggay if K restricted',allergens:[],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:'Skip malunggay leaves if potassium restricted'},
+    {name:'Steamed Tilapia + Sayote',desc:'1 cup rice, 100g steamed tilapia with ginger, ½ cup stir-fried sayote',allergens:['fish'],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Chicken Adobo (Low-Sodium)',desc:'1 cup rice, 80g chicken adobo — ½ tsp low-Na soy sauce + vinegar, no patis',allergens:['soy'],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Ginisang Sayote + Pork',desc:'1 cup rice, ½ cup sayote with 50g lean pork strips, garlic, onion',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Chicken Nilaga',desc:'1 cup rice, 80g boiled chicken, ½ cup sayote / labanos (leached 15 min)',allergens:[],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:'Leach vegetables to reduce potassium'},
+    {name:'Steamed Bangus',desc:'1 cup rice, 100g steamed bangus belly (rinsed), ½ cup stir-fried upo',allergens:['fish'],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Ginisang Upo + Pork',desc:'1 cup rice, ½ cup bottle gourd (upo) with 50g pork, garlic, low sodium',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'Upo is low in K and P — ideal CKD vegetable'},
+    {name:'Egg Drop Soup + Rice',desc:'1 cup rice, 1 egg in light low-sodium broth, green onion',allergens:['egg'],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Grilled Chicken Inasal',desc:'1 cup rice, 100g grilled chicken — calamansi, garlic, turmeric marinade, no patis',allergens:[],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Stir-fried Pork + Cabbage',desc:'1 cup rice, 60g lean pork, ½ cup leached cabbage, garlic, pepper — no soy sauce',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'Leach cabbage first to reduce K'},
+    {name:'Tokwa\'t Baboy',desc:'1 cup rice, 50g lean pork + 60g firm tofu, low-Na vinegar-onion dip',allergens:['soy'],hiK:false,hiP:true,hiAnProt:false,hiPurine:false,note:'Tofu — moderate phosphorus'},
+    {name:'Modified Sinigang',desc:'1 cup rice, 60g lean pork, ½ cup sayote in tamarind broth — leach all vegetables',allergens:[],hiK:true,hiP:false,hiAnProt:false,hiPurine:false,note:'Leach veggies thoroughly; watch K from broth'},
+    {name:'Ginisang Sitaw + Pork',desc:'1 cup rice, ½ cup string beans (leached), 50g lean pork, garlic and onion',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'Leach sitaw to reduce potassium'},
+    {name:'Chicken Sopas (Modified)',desc:'1 cup rice, 80g chicken, ½ cup sayote in light broth — omit milk, use egg-free pasta',allergens:['gluten'],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:'Omit evaporated milk to avoid dairy/phosphorus'},
+    // VLPD/LPD low-protein lunches
+    {name:'Gulay na May Kanin (Veg + Rice)',desc:'1¼ cup rice, 1½ cup mixed leached vegetables (sayote, upo, labanos), garlic, ½ tsp oil — no meat',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD: focus on vegetables and rice to meet calorie targets without protein load'},
+    {name:'Pancit Miki Guisado (Low-Protein)',desc:'1½ cup low-protein rice noodles stir-fried with sayote, cabbage (leached), garlic, low-Na seasoning',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD: use low-protein noodles only; no meat or egg added'},
+    {name:'Rice + Ginisang Upo (No Meat)',desc:'1¼ cup rice, 1½ cup stir-fried bottle gourd (upo) with garlic and onion in ½ tsp oil',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD: upo is ideal — very low K and P; add calamansi for flavor'},
+    {name:'Camote Rice + Leached Sitaw',desc:'1 cup rice with ½ cup mashed camote mixed in, 1 cup leached string beans with garlic',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD: adds variety and calories; leach sitaw to reduce potassium'},
   ];
 
   const snack = [
-    {name:'Apple or Pear (1 medium)',desc:'Low potassium, good for K-restricted patients',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Unsalted Rice Crackers',desc:'6–8 pcs — low K and P, easy snack',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Boiled Camote (½ cup)',desc:'Yellow or purple camote, moderate and satisfying',allergens:[],hiK:true,hiP:false,note:'Moderate K — limit to ½ cup if K restricted'},
-    {name:'Watermelon (1 cup)',desc:'Hydrating, relatively low K for dialysis patients',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Cucumber Slices',desc:'1 cup sliced cucumber + calamansi — very low K and P',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Canned Pear in Juice',desc:'½ cup canned pear (drained, rinsed) — low K, good for K restriction',allergens:[],hiK:false,hiP:false,note:'Rinse canned fruit to reduce syrup'},
-    {name:'Sagot Gulaman (Light)',desc:'1 cup sago + agar jelly, light syrup — low K and P Filipino snack',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Plain Graham Crackers',desc:'3 pcs plain grahams — moderate snack, check sodium',allergens:['gluten'],hiK:false,hiP:false,note:''},
-    {name:'Diluted Apple Juice',desc:'½ cup unsweetened apple juice diluted 1:1 with water',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Banana ½ pc (Lakatan)',desc:'½ small Lakatan banana — only for non-K-restricted patients',allergens:[],hiK:true,hiP:false,note:'HIGH K — avoid if on dialysis or K restriction'},
-    {name:'Boiled Corn (½ ear)',desc:'½ ear sweet corn — satisfying at this portion',allergens:[],hiK:false,hiP:true,note:'Moderate phosphorus'},
-    {name:'Sliced Papaya (½ cup)',desc:'½ cup ripe papaya — low K, good for CKD patients',allergens:[],hiK:false,hiP:false,note:''},
+    {name:'Apple or Pear (1 medium)',desc:'Low potassium, good for K-restricted patients',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Unsalted Rice Crackers',desc:'6–8 pcs — low K and P, easy snack',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Boiled Camote (½ cup)',desc:'Yellow or purple camote, moderate and satisfying',allergens:[],hiK:true,hiP:false,hiAnProt:false,hiPurine:false,note:'Moderate K — limit to ½ cup if K restricted'},
+    {name:'Watermelon (1 cup)',desc:'Hydrating, relatively low K for dialysis patients',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Cucumber Slices',desc:'1 cup sliced cucumber + calamansi — very low K and P',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Canned Pear in Juice',desc:'½ cup canned pear (drained, rinsed) — low K, good for K restriction',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'Rinse canned fruit to reduce syrup'},
+    {name:'Sagot Gulaman (Light)',desc:'1 cup sago + agar jelly, light syrup — low K and P Filipino snack',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Plain Graham Crackers',desc:'3 pcs plain grahams — moderate snack, check sodium',allergens:['gluten'],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Diluted Apple Juice',desc:'½ cup unsweetened apple juice diluted 1:1 with water',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Banana ½ pc (Lakatan)',desc:'½ small Lakatan banana — only for non-K-restricted patients',allergens:[],hiK:true,hiP:false,hiAnProt:false,hiPurine:false,note:'HIGH K — avoid if on dialysis or K restriction'},
+    {name:'Boiled Corn (½ ear)',desc:'½ ear sweet corn — satisfying at this portion',allergens:[],hiK:false,hiP:true,hiAnProt:false,hiPurine:false,note:'Moderate phosphorus'},
+    {name:'Sliced Papaya (½ cup)',desc:'½ cup ripe papaya — low K, good for CKD patients',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Low-Protein Rice Cake (Puto Puti)',desc:'2 pcs plain puto made with low-protein flour — no fillings',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD: low-protein puto provides calories without protein load'},
+    {name:'Prutas Salad (Fruit Salad)',desc:'½ cup mixed low-K fruits (melon, lanzones, canned pear) — no cream',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD-friendly; avoid high-K fruits (mango, banana) if K restricted'},
   ];
 
   const dinner = [
-    {name:'Ginisang Sayote + Pork',desc:'1 cup rice, 1 cup stir-fried sayote with 50g pork, garlic',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Grilled Chicken + Sitaw',desc:'1 cup rice, 100g grilled chicken, ½ cup leached string beans, lemon-pepper',allergens:[],hiK:false,hiP:false,note:'Leach sitaw to reduce K'},
-    {name:'Steamed Tilapia + Upo',desc:'1 cup rice, 100g steamed tilapia with ginger, ½ cup bottle gourd (upo)',allergens:['fish'],hiK:false,hiP:false,note:''},
-    {name:'Pork Giniling + Sayote',desc:'1 cup rice, 70g lean ground pork with ½ cup diced sayote, garlic, no patis',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Chicken Tinola (Evening)',desc:'1 cup rice, 80g chicken, ½ cup sayote, clear ginger broth',allergens:[],hiK:false,hiP:false,note:'No malunggay if K restricted'},
-    {name:'Stir-fried Pork + Upo',desc:'1 cup rice, 60g lean pork, ½ cup upo, onion and garlic, white pepper',allergens:[],hiK:false,hiP:false,note:'Upo is very low in K and P'},
-    {name:'Chicken Adobo (Dry)',desc:'1 cup rice, 100g chicken dry adobo — vinegar, garlic, peppercorn, minimal soy',allergens:['soy'],hiK:false,hiP:false,note:''},
-    {name:'Ginisang Sitaw + Pork',desc:'1 cup rice, ½ cup string beans (leached), 60g pork, garlic and onion',allergens:[],hiK:false,hiP:false,note:'Leach sitaw to reduce potassium'},
-    {name:'Steamed Bangus (Evening)',desc:'1 cup rice, 100g steamed bangus (rinsed), ½ cup stir-fried sayote or upo',allergens:['fish'],hiK:false,hiP:false,note:''},
-    {name:'Boiled Chicken Soup',desc:'1 cup rice, 80g boiled chicken, clear soup, leached sayote and labanos',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Steamed Egg + Rice',desc:'1 cup rice, 1 medium egg steamed with ½ tsp low-Na sauce, ginger',allergens:['egg','soy'],hiK:false,hiP:false,note:''},
-    {name:'Roasted Chicken + Upo',desc:'1 cup rice, 100g roasted chicken (skin removed), ½ cup stir-fried upo',allergens:[],hiK:false,hiP:false,note:''},
-    {name:'Pork Nilaga',desc:'1 cup rice, 70g lean pork, ½ cup leached cabbage + sayote, clear broth',allergens:[],hiK:false,hiP:false,note:'Leach all vegetables'},
+    {name:'Ginisang Sayote + Pork',desc:'1 cup rice, 1 cup stir-fried sayote with 50g pork, garlic',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Grilled Chicken + Sitaw',desc:'1 cup rice, 100g grilled chicken, ½ cup leached string beans, lemon-pepper',allergens:[],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:'Leach sitaw to reduce K'},
+    {name:'Steamed Tilapia + Upo',desc:'1 cup rice, 100g steamed tilapia with ginger, ½ cup bottle gourd (upo)',allergens:['fish'],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Pork Giniling + Sayote',desc:'1 cup rice, 70g lean ground pork with ½ cup diced sayote, garlic, no patis',allergens:[],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Chicken Tinola (Evening)',desc:'1 cup rice, 80g chicken, ½ cup sayote, clear ginger broth',allergens:[],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:'No malunggay if K restricted'},
+    {name:'Stir-fried Pork + Upo',desc:'1 cup rice, 60g lean pork, ½ cup upo, onion and garlic, white pepper',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'Upo is very low in K and P'},
+    {name:'Chicken Adobo (Dry)',desc:'1 cup rice, 100g chicken dry adobo — vinegar, garlic, peppercorn, minimal soy',allergens:['soy'],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Ginisang Sitaw + Pork',desc:'1 cup rice, ½ cup string beans (leached), 60g pork, garlic and onion',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'Leach sitaw to reduce potassium'},
+    {name:'Steamed Bangus (Evening)',desc:'1 cup rice, 100g steamed bangus (rinsed), ½ cup stir-fried sayote or upo',allergens:['fish'],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Boiled Chicken Soup',desc:'1 cup rice, 80g boiled chicken, clear soup, leached sayote and labanos',allergens:[],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Steamed Egg + Rice',desc:'1 cup rice, 1 medium egg steamed with ½ tsp low-Na sauce, ginger',allergens:['egg','soy'],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:''},
+    {name:'Roasted Chicken + Upo',desc:'1 cup rice, 100g roasted chicken (skin removed), ½ cup stir-fried upo',allergens:[],hiK:false,hiP:false,hiAnProt:true,hiPurine:false,note:''},
+    {name:'Pork Nilaga',desc:'1 cup rice, 70g lean pork, ½ cup leached cabbage + sayote, clear broth',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'Leach all vegetables'},
+    // VLPD/LPD low-protein dinners
+    {name:'Gulay Nilaga (Veg Soup + Rice)',desc:'1¼ cup rice, 1½ cup mixed leached vegetables (sayote, upo, labanos) in clear broth — no meat',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD: vegetable-focused dinner; adequate starch from rice meets calorie target'},
+    {name:'Ginisang Upo + Kamote (No Meat)',desc:'1¼ cup rice, 1 cup stir-fried upo with ½ cup kamote, garlic and onion in ½ tsp oil',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD: upo and kamote are low-protein, low-K starchy vegetables'},
+    {name:'Pancit Bihon Guisado (Low-Protein)',desc:'1½ cup low-protein rice vermicelli stir-fried with sayote, cabbage (leached), calamansi',allergens:[],hiK:false,hiP:false,hiAnProt:false,hiPurine:false,note:'VLPD/LPD: use certified low-protein vermicelli; no meat or egg added'},
   ];
 
   // ── Filter by allergens and K/P ──
@@ -4273,8 +4378,17 @@ function buildMealPlan(p){
       if(m.allergens.some(a=>allergens.includes(a))) return false;
       if(restrictK && m.hiK) return false;
       if(restrictP && m.hiP) return false;
+      // VLPD: exclude high-animal-protein items flagged hiAnProt
+      if(isVLPD && m.hiAnProt) return false;
+      // Hyperuricemia: exclude high-purine items
+      if(huc && m.hiPurine) return false;
       return true;
     });
+  }
+
+  // Tag high-animal-protein meals for VLPD exclusion
+  function tagHiAnProt(pool) {
+    return pool.map(m => ({...m, hiAnProt: m.hiAnProt || false}));
   }
 
   const bfPool = filterPool(breakfast);
@@ -4319,6 +4433,9 @@ function buildMealPlan(p){
       <li><strong>Rice portions matter.</strong> Meals that include rice assume 1 cup cooked (approximately 200 g, ~260 kcal). Adjust your rice serving to meet — not exceed — your calorie target for the day.</li>
       <li><strong>Leaching is mandatory if you have hyperkalemia or are on dialysis.</strong> Peel and cut all vegetables → soak in a large volume of water for at least 2 hours → drain and discard → boil in fresh water → drain again before eating. This reduces potassium by 30–50%.</li>
       <li><strong>This plan is a prototype, not a prescription.</strong> Portion sizes are approximate estimates based on population-level equations. Your renal dietitian must review and adjust this plan based on your actual laboratory results (serum K, P, albumin, BUN/Cr) and body weight trends.</li>
+      ${huc ? '<li><strong>Hyperuricemia / Gout:</strong> High-purine meals (tinapa, sardines, organ meats, bone broth) are excluded from this plan. Continue to limit red meat to ≤1 serving/day, avoid alcohol and fructose-sweetened drinks, and stay well-hydrated (per your fluid allowance). Discuss urate-lowering therapy with your nephrologist.</li>' : ''}
+      ${isVLPD ? '<li><strong>VLPD + Ketoanalogue (' + kaTabs + ' tabs/day):</strong> Meals are selected for very low animal protein content (0.3 g/kg target). Take all ketoanalogue tablets with meals — never on an empty stomach. These tablets supply essential amino acid carbon skeletons so your kidneys can recycle nitrogen from urea rather than relying on dietary protein. Serum calcium must be checked monthly (each tablet adds ~50 mg calcium).</li>' : ''}
+      ${isLPD ? '<li><strong>LPD + Ketoanalogue (' + kaTabs + ' tabs/day):</strong> Meals are calibrated to the 0.6 g/kg low-protein target. Take ketoanalogue tablets with meals. Use low-protein rice, noodles, and starchy vegetables to fill calorie needs without increasing protein load. Monitor serum calcium monthly.</li>' : ''}
     </ul>
   </div>`;
   document.getElementById('meal-plan-content').innerHTML = html + mpNotes;
@@ -4327,6 +4444,9 @@ function buildMealPlan(p){
   const allergenLabels = {fish:'🐟 Fish-free',shellfish:'🦐 Shellfish-free',egg:'🥚 Egg-free',dairy:'🥛 Dairy-free',nuts:'🥜 Nut-free',soy:'🫘 Soy-free',gluten:'🌾 Gluten-free',pork:'🐷 Pork-free'};
   let tagsHtml = allergens.map(a=>`<span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.25);">${allergenLabels[a]||a}</span>`).join('');
   if(otherAllergies) tagsHtml += `<span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);">⚠ Also avoid: ${otherAllergies}</span>`;
+  if(huc) tagsHtml += `<span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;background:rgba(255,220,0,.18);color:#92400e;border:1px solid rgba(255,180,0,.4);">🔴 Low-Purine</span>`;
+  if(isVLPD) tagsHtml += `<span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;background:rgba(255,255,255,.18);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.4);">💊 VLPD + KA (${kaTabs} tabs/day)</span>`;
+  if(isLPD)  tagsHtml += `<span style="display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;background:rgba(255,255,255,.18);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.4);">💊 LPD + KA (${kaTabs} tabs/day)</span>`;
   document.getElementById('mp-allergy-tags').innerHTML = tagsHtml;
 
   document.getElementById('meal-plan-wrap').style.display = 'block';
