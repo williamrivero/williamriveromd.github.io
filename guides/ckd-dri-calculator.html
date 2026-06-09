@@ -2474,8 +2474,7 @@ Agyang "natural" o "herbal" la ding supplement, e mu buring sabyan a ligtas la p
       <div class="diet-rx-title">Diet Prescription Summary</div>
       <div class="diet-rx-sub" id="rx-meta"></div>
     </div>
-    <button class="rx-print-btn" onclick="printRx()">⎙ Print</button>
-    <button class="rx-print-btn rx-pdf-btn" onclick="exportDietPDF(this)" style="background:rgba(255,255,255,.25);margin-left:6px;">⬇ PDF</button>
+    <button class="rx-print-btn" onclick="printRx()">⎙ Print / Save</button>
   </div>
   <div class="rx-grid" id="rx-grid"></div>
   <div class="rx-divider">Key Dietary Instructions</div>
@@ -2956,8 +2955,9 @@ function printRx(){
   // Clinic logo for print header
   const slug = _clinicSlug();
   const logoData = slug && _clinicLogoCache[slug] ? _clinicLogoCache[slug].dataUrl : null;
-  const rxSiteHtml = logoData
-    ? `<img src="${logoData}" style="max-height:48px;max-width:140px;object-fit:contain;display:block;" alt="Clinic logo">`
+  const logoSrc  = logoData || (slug ? CLINIC_LOGO_MAP[slug] : null);
+  const rxSiteHtml = logoSrc
+    ? `<img src="${logoSrc}" style="max-height:48px;max-width:140px;object-fit:contain;display:block;" alt="Clinic logo">`
     : '';
 
   // Meal plan
@@ -3210,6 +3210,7 @@ function _loadClinicLogo(slug, cb) {
     cb(_clinicLogoCache[slug]);
   };
   img.onerror = function() { _clinicLogoCache[slug] = null; cb(null); };
+  img.crossOrigin = 'anonymous';
   img.src = CLINIC_LOGO_MAP[slug] + '?_=' + Date.now();
 }
 
