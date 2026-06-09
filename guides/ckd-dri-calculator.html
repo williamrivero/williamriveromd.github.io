@@ -2975,7 +2975,7 @@ function printRx(){
   if(!box) return;
 
   const validatorName = (document.getElementById('f-validator')||{value:''}).value.trim();
-  const clinicName    = (document.getElementById('f-clinic')||{value:''}).value.trim();
+  const clinicName    = _clinicDisplayName((document.getElementById('f-clinic')||{value:''}).value);
 
   // Clinic logo for print header
   const slug = _clinicSlug();
@@ -3154,6 +3154,22 @@ var CLINIC_LOGO_MAP = {
   'sjrc':   '../images/sjrc-logo.webp',
   'rcuona': '../images/rcuona-logo.webp'
 };
+var CLINIC_FULL_NAME = {
+  'rcuona': 'Renal Care Unit, ONA – RLMMC',
+  'sjrc':   'St. Josef Renal Care',
+  'sjbdc':  'St. John Biocare & Dialysis Center'
+};
+// Return the display name for whatever was typed in the Clinic field
+function _clinicDisplayName(rawInput){
+  var raw = (rawInput||'').trim();
+  var slug = _clinicSlug();
+  if(slug && CLINIC_FULL_NAME[slug]){
+    // Only substitute if user typed a shortcode (not the full name already)
+    var normalized = raw.toLowerCase().replace(/[\s\-_.,&]/g,'');
+    if(normalized === slug) return CLINIC_FULL_NAME[slug];
+  }
+  return raw;
+}
 var _clinicLogoCache = {};
 window._unitMode = 'metric';
 
@@ -3671,7 +3687,7 @@ function _doExportDietPDF(logo) {
 
   // ── VALIDATED BY ──
   var validatorName=((document.getElementById('f-validator')||{}).value||'').trim();
-  var clinicName=((document.getElementById('f-clinic')||{}).value||'').trim();
+  var clinicName=_clinicDisplayName((document.getElementById('f-clinic')||{}).value||'');
   var vboxH=24+(clinicName?6:0);
   chk(vboxH+8); y+=4;
   fr(margin,y,colW,vboxH,LIGHT_BG);
