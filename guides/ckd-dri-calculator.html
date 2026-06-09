@@ -3266,7 +3266,7 @@ function _doExportDietPDF(logo) {
   var metaText = (document.getElementById('rx-meta')||{textContent:''}).textContent.trim();
   if(metaText){ sf('bold',8,WHITE); tx(metaText.substring(0,90),margin,24); }
   var stageTxt = (document.getElementById('stage-pill')||{textContent:''}).textContent.trim();
-  if(stageTxt){ sf('bold',7,[180,200,220]); tx(stageTxt,W-margin,11,{align:'right'}); }
+  if(stageTxt){ sf('bold',7,[180,200,220]); tx(stageTxt,margin,29); }
   y = hH + 5;
 
   sf('italic',6.5,GRAY);
@@ -3303,6 +3303,103 @@ function _doExportDietPDF(logo) {
     sf('normal',6,GRAY); tx(c.unit,cx+2,cy+ch-2);
   });
   y += totalGridRows*ch+5;
+
+  // ── WEIGHT GOAL SUMMARY ──
+  var wgSumEl = document.getElementById('wg-summary');
+  if (wgSumEl && wgSumEl.style.display !== 'none') {
+    chk(22);
+    fr(margin,y,colW,1.5,TEAL);
+    y+=2.5;
+    fr(margin,y,colW,7,TEAL); sf('bold',8,WHITE); tx('Weight Goal Summary',margin+3,y+5); y+=7;
+    // stats row
+    var wgStats=[]; wgSumEl.querySelectorAll('.wg-stat').forEach(function(s){
+      var val=(s.querySelector('.wg-stat-val')||{textContent:''}).textContent.trim();
+      var lbl=(s.querySelector('.wg-stat-lbl')||{textContent:''}).textContent.trim();
+      if(val) wgStats.push({val:val,lbl:lbl});
+    });
+    if(wgStats.length){
+      var swW=colW/wgStats.length, swH=14;
+      chk(swH+2);
+      doc.setDrawColor(220,225,230); doc.setLineWidth(0.2);
+      doc.rect(margin,y,colW,swH);
+      wgStats.forEach(function(s,i){
+        var sx=margin+i*swW;
+        fr(sx,y,swW,swH,BG);
+        if(i>0){ doc.setDrawColor(220,225,230); doc.setLineWidth(0.2); doc.line(sx,y,sx,y+swH); }
+        sf('bold',9,TEAL); tx(s.val,sx+swW/2,y+7,{align:'center'});
+        sf('normal',6,GRAY); tx(s.lbl,sx+swW/2,y+12,{align:'center'});
+      });
+      y+=swH+2;
+    }
+    var wgNote=(wgSumEl.querySelector('.wg-summary-note')||{textContent:''}).textContent.trim();
+    if(wgNote){
+      var wgLines=doc.splitTextToSize(wgNote,colW-4);
+      chk(wgLines.length*4.5+4);
+      sf('normal',7,[44,51,64]); doc.text(wgLines,margin+2,y+4.5);
+      y+=wgLines.length*4.5+6;
+    }
+  }
+
+  // helper: render a full data table from a DOM table element
+  function _renderTable(tableEl, title, titleColor){
+    if(!tableEl) return;
+    var rows=[]; tableEl.querySelectorAll('tbody tr').forEach(function(tr){
+      var cells=[]; tr.querySelectorAll('td').forEach(function(td){ cells.push(td.textContent.trim().replace(/\s+/g,' ')); });
+      if(cells.length) rows.push(cells);
+    });
+    var heads=[]; tableEl.querySelectorAll('th').forEach(function(th){ heads.push(th.textContent.trim()); });
+    if(!rows.length) return;
+    chk(14);
+    fr(margin,y,colW,7,titleColor||TEAL); sf('bold',8,WHITE); tx(title,margin+3,y+5); y+=7;
+    // header row
+    var cw2=colW/Math.max(heads.length,1);
+    fr(margin,y,colW,6,[240,242,245]);
+    doc.setDrawColor(210,215,225); doc.setLineWidth(0.15); doc.rect(margin,y,colW,6);
+    heads.forEach(function(h,i){ sf('bold',6,GRAY); tx(h,margin+i*cw2+2,y+4.5); });
+    y+=6;
+    rows.forEach(function(row){
+      // estimate row height from longest cell
+      var maxH=7;
+      row.forEach(function(cell,i){
+        var lines=doc.splitTextToSize(cell||'',cw2-4);
+        var h=lines.length*4.5+3; if(h>maxH) maxH=h;
+      });
+      chk(maxH);
+      doc.setDrawColor(220,225,230); doc.setLineWidth(0.1); doc.rect(margin,y,colW,maxH);
+      row.forEach(function(cell,i){
+        var cx=margin+i*cw2;
+        if(i>0){ doc.setDrawColor(220,225,230); doc.setLineWidth(0.1); doc.line(cx,y,cx,y+maxH); }
+        var lines=doc.splitTextToSize(cell||'',cw2-4);
+        sf('normal',7,[44,51,64]); doc.text(lines,cx+2,y+4);
+      });
+      y+=maxH;
+    });
+    y+=4;
+  }
+
+  // ── FULL MACRO / MINERAL / VITAMIN TABLES ──
+  var macroTbl2 = document.getElementById('macro-tbody') && document.getElementById('macro-tbody').closest('table');
+  var minTbl2   = document.getElementById('mineral-tbody') && document.getElementById('mineral-tbody').closest('table');
+  var vitTbl2   = document.getElementById('vit-tbody') && document.getElementById('vit-tbody').closest('table');
+  _renderTable(macroTbl2, 'Macronutrients & Energy', TEAL);
+  _renderTable(minTbl2,   'Minerals & Electrolytes', NAVY);
+  _renderTable(vitTbl2,   'Vitamins — CKD-Adjusted', [80,50,120]);
+
+  // ── VITAMIN WARNINGS ──
+  var vitWarnEl = document.getElementById('vit-warn-list');
+  if(vitWarnEl && vitWarnEl.querySelectorAll('li').length){
+    var warnItems=[]; vitWarnEl.querySelectorAll('li').forEach(function(li){ var t=li.textContent.trim().replace(/\s+/g,' '); if(t) warnItems.push(t); });
+    var warnHead2=document.getElementById('vit-warn-heading') ? document.getElementById('vit-warn-heading').textContent : 'Vitamin Cautions';
+    chk(14);
+    fr(margin,y,colW,7,RED); sf('bold',8,WHITE); tx(warnHead2||'Vitamin Cautions',margin+3,y+5); y+=7;
+    warnItems.forEach(function(item){
+      var lines=doc.splitTextToSize('⚠ '+item,colW-4); var rh=lines.length*4.5+4;
+      chk(rh); fr(margin,y,colW,rh,[255,245,245]);
+      doc.setDrawColor(252,165,165); doc.setLineWidth(0.15); doc.rect(margin,y,colW,rh);
+      sf('normal',7,[150,30,30]); doc.text(lines,margin+3,y+4); y+=rh+1;
+    });
+    y+=3;
+  }
 
   // ── CLINICAL PRIORITIES ──
   var clinItems=[];
