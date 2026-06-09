@@ -3473,7 +3473,7 @@ function _doExportDietPDF(logo) {
   // ── VITAMIN WARNINGS ──
   var vitWarnEl = document.getElementById('vit-warn-list');
   if(vitWarnEl && vitWarnEl.querySelectorAll('li').length){
-    var warnItems=[]; vitWarnEl.querySelectorAll('li').forEach(function(li){ var t=_pdfText(li.textContent.trim()); if(t) warnItems.push(t); });
+    var warnItems=[]; vitWarnEl.querySelectorAll('li').forEach(function(li){ var spans=li.querySelectorAll('span'); var src=spans.length>1?spans[spans.length-1].innerHTML:li.innerHTML; var t=_pdfText(src); if(t) warnItems.push(t); });
     var warnHead2=_pdfText(document.getElementById('vit-warn-heading') ? document.getElementById('vit-warn-heading').textContent : 'Vitamin Cautions');
     chk(14);
     fr(margin,y,colW,7,RED); sf('bold',8,WHITE); tx(warnHead2||'Vitamin Cautions',margin+3,y+5); y+=7;
@@ -4408,15 +4408,52 @@ function buildMealPlan(p){
     {label:'Dinner',icon:'🌙',pool:dnF},
   ];
 
+  // ── Per-meal protein & calorie targets ──
+  const totalProt  = (protMin + protMax) / 2;
+  const totalKcal  = (kcalMin + kcalMax) / 2;
+  // Distribution fractions per slot
+  const slotFracs = isDialysis
+    ? {Breakfast:{p:0.20,k:0.20}, Lunch:{p:0.30,k:0.30}, Snack:{p:0.10,k:0.10}, Dinner:{p:0.30,k:0.30}}
+    : {Breakfast:{p:0.25,k:0.25}, Lunch:{p:0.35,k:0.35}, Snack:{p:0.10,k:0.10}, Dinner:{p:0.30,k:0.30}};
+
+  // Rice cup guidance based on per-meal calorie target
+  function riceNote(kcalTarget){
+    // 1 cup cooked rice ≈ 260 kcal; snack slots skip this
+    const cups = kcalTarget / 260;
+    if(cups < 0.6) return null;
+    const c = cups < 0.85 ? '¾' : cups < 1.15 ? '1' : cups < 1.4 ? '1¼' : '1½';
+    return `~${c} cup rice (≈${Math.round(kcalTarget)} kcal target for this meal)`;
+  }
+
+  // Protein portion guidance based on per-meal protein target
+  function protNote(protTarget){
+    // Fish/chicken 30g = ~6–7g prot; egg = 6g
+    const g = Math.round(protTarget);
+    const oz = protTarget / 6.5; // 1 oz (30g) = ~6.5g prot
+    if(g <= 0) return null;
+    if(isVLPD) return `Protein target: ~${g} g (very restricted — rely on ketoanalogues for amino acids)`;
+    const ozLabel = oz < 0.8 ? '½ oz (15 g)' : oz < 1.3 ? '1 oz (30 g)' : oz < 1.8 ? '1½ oz (45 g)' : oz < 2.3 ? '2 oz (60 g)' : oz < 2.8 ? '2½ oz (75 g)' : '3 oz (90 g)';
+    return `Protein target: ~${g} g ≈ ${ozLabel} fish/chicken or ${Math.round(protTarget/6)} egg(s)`;
+  }
+
   let html = '';
   days.forEach((day,di)=>{
     html += `<div class="mp-day"><div class="mp-day-header"><span class="mp-day-label">${day}</span><span>, Day ${di+1}</span></div><div class="mp-meals">`;
     slots.forEach(({label,icon,pool})=>{
       const meal = pool[di % pool.length];
+      const frac = slotFracs[label] || {p:0.25,k:0.25};
+      const mealProt = totalProt * frac.p;
+      const mealKcal = totalKcal * frac.k;
+      const rn = label !== 'Snack' ? riceNote(mealKcal) : null;
+      const pn = protNote(mealProt);
       html += `<div class="mp-meal">
         <div class="mp-slot-lbl">${icon} ${label}</div>
         <div class="mp-meal-name">${meal.name}</div>
         <div class="mp-meal-desc">${meal.desc}</div>
+        ${rn||pn ? `<div class="mp-targets" style="margin-top:5px;display:flex;flex-wrap:wrap;gap:4px;">
+          ${pn ? `<span style="font-size:10px;background:rgba(26,107,114,.12);color:var(--teal);border:1px solid rgba(26,107,114,.2);padding:2px 7px;border-radius:6px;font-weight:600;">🥩 ${pn}</span>` : ''}
+          ${rn ? `<span style="font-size:10px;background:rgba(26,107,114,.08);color:var(--text-mid);border:1px solid rgba(26,107,114,.12);padding:2px 7px;border-radius:6px;">🍚 ${rn}</span>` : ''}
+        </div>` : ''}
         ${meal.note ? `<div class="mp-note">⚠ ${meal.note}</div>` : ''}
       </div>`;
     });
@@ -4430,7 +4467,7 @@ function buildMealPlan(p){
       <li><strong>Substitutions.</strong> You may swap a meal for another of the same slot (e.g. one breakfast for another breakfast) within the same CKD stage and allergen restrictions. Do not swap across slots (e.g. a dinner for a snack) as portions and nutrient density differ.</li>
       <li><strong>Split the snack if preferred.</strong> The single snack listed per day can be divided into two smaller portions — one mid-morning and one mid-afternoon — without changing the daily total.</li>
       <li><strong>Hidden calorie sources not counted.</strong> Cooking oil, condiments (toyo, patis, suka), rice washing water, sugar in beverages, and incidental nibbles are not included in these estimates. Minimise added fats and avoid sweetened drinks to stay within your energy target.</li>
-      <li><strong>Rice portions matter.</strong> Meals that include rice assume 1 cup cooked (approximately 200 g, ~260 kcal). Adjust your rice serving to meet — not exceed — your calorie target for the day.</li>
+      <li><strong>Rice portions are calibrated to your calorie target (${Math.round(totalKcal)} kcal/day).</strong> Each meal card shows the recommended rice serving for your prescription. 1 cup cooked rice ≈ 200 g, ~260 kcal. Adjust slightly based on hunger but stay within your daily total.</li>
       <li><strong>Leaching is mandatory if you have hyperkalemia or are on dialysis.</strong> Peel and cut all vegetables → soak in a large volume of water for at least 2 hours → drain and discard → boil in fresh water → drain again before eating. This reduces potassium by 30–50%.</li>
       <li><strong>This plan is a prototype, not a prescription.</strong> Portion sizes are approximate estimates based on population-level equations. Your renal dietitian must review and adjust this plan based on your actual laboratory results (serum K, P, albumin, BUN/Cr) and body weight trends.</li>
       ${huc ? '<li><strong>Hyperuricemia / Gout:</strong> High-purine meals (tinapa, sardines, organ meats, bone broth) are excluded from this plan. Continue to limit red meat to ≤1 serving/day, avoid alcohol and fructose-sweetened drinks, and stay well-hydrated (per your fluid allowance). Discuss urate-lowering therapy with your nephrologist.</li>' : ''}
