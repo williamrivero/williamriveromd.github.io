@@ -5,11 +5,16 @@ Generator: https://chatgpt.com/g/g-pmuQfob8d-image-generator
 
 Image audit summary: the Organ Donation tab currently carries only ONE image
 (`organ-donation-ph-overview.png`, in #what-organs) across seven sections; the
-Kidney Donation tab has three (`kd-01`–`kd-03`). The four prompts below fill the
-visual gaps: the new #not-for-sale section, #myths, #how-to, and #family.
-After generating, place each image with a `<picture>` block (webp + png),
-`loading="lazy"`, explicit width/height, and run
+Kidney Donation tab has three (`kd-01`–`kd-03`). The five prompts below fill the
+visual gaps: the new #not-for-sale section, #myths, #how-to, #family, and a
+dedicated 1200×630 OG social share card (the page currently borrows the inline
+1536×1024 overview infographic for og:image). After generating, place each
+inline image with a `<picture>` block (webp + png), `loading="lazy"`, explicit
+width/height, and run
 `patch_hero_maxwidth.py --guide organ-donation-philippines.html`.
+For Image 5 (OG card), instead update the guide's `<head>`:
+`og:image` / `twitter:image` → `https://www.williamriveromd.com/images/organ-donation-ph-og.png`,
+`og:image:width="1200"`, `og:image:height="630"`, and refresh `og:image:alt`.
 
 ---
 
@@ -114,3 +119,29 @@ Avoid cartoon style, avoid clutter, avoid AI gibberish text, avoid unrealistic a
 
 QUALITY CHECK:
 Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com. Background must be bright and airy — never dark or moody. Copyright attribution williamriveromd.com must be visible in the bottom-right corner.
+
+---
+
+IMAGE NUMBER: 5
+SECTION PLACEMENT: `<head>` — og:image / twitter:image social share card (not placed inline on the page)
+FILE NAME: organ-donation-ph-og.png
+ARCHETYPE: OG / social share card
+AUDIENCE: mixed — social feeds (Facebook, X, LinkedIn, iMessage previews)
+VISUAL MIX:
+- photorealistic models: none
+- 2D infographic: title typography + stat chips
+- 3D component graphics: one semi-photorealistic 3D kidney pair
+- algorithm/flowchart: none
+
+PURPOSE: Make shares of the guide legible and compelling at thumbnail size, replacing the borrowed 1536×1024 inline infographic with a purpose-built card.
+KEY CONCEPTS: guide title; one donor saves up to 8 lives; register today; donation is a gift, never for sale.
+DIMENSIONS: 1200 × 630 (1.91:1 — fixed, non-negotiable for OG cards)
+
+COPY-READY IMAGE GENERATOR GPT PROMPT:
+Social share (Open Graph) card, exactly 1200 × 630 pixels, clean white (#ffffff) background with a very light teal tint (#eef6f7) panel on the right third. LEFT two-thirds: bold condensed sans-serif headline in navy (#0f1e2e), large and thumbnail-legible: "ORGAN & KIDNEY DONATION IN THE PHILIPPINES" with a thin teal (#1a6b72) rule beneath and a smaller teal subline "A Complete Patient & Family Guide". Below the subline, three small rounded chips: a renal-green (#1f7a4d) chip "1 donor = up to 8 lives", a teal chip "How to register", and an amber (#b8860b) chip "A gift — never for sale". RIGHT third: a single semi-photorealistic, anatomically accurate pair of healthy human kidneys floating on the light teal panel with a soft shadow, subtle and premium, no gore. Generous margins so nothing is cropped in platform previews, strong visual hierarchy, maximum 12 words of large text, no paragraph text, no microtext. Premium medical-publication aesthetic consistent with williamriveromd.com. Small semi-transparent attribution "williamriveromd.com" in navy, bottom-right corner.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. No money or price-tag imagery, no surgical scenes. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Never output any size other than 1200 × 630. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Must be legible at small thumbnail size, visually calm, publication-grade, and consistent with williamriveromd.com. Exactly 1200 × 630. Background must be white or very light teal — never dark. Pair with og:image:width="1200" and og:image:height="630" meta tags when wired into the guide. Copyright attribution williamriveromd.com must be visible in the bottom-right corner.
