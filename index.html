@@ -1481,7 +1481,7 @@
           <!-- Stats row -->
           <div class="lib-stats">
             <div class="lib-stat"><span class="lib-stat-num" id="lib-guide-count">119</span><span class="lib-stat-label">Patient Guides</span></div>
-            <div class="lib-stat"><span class="lib-stat-num" id="lib-tools-count">14+</span><span class="lib-stat-label">Interactive Tools</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-tools-count">50+</span><span class="lib-stat-label">Interactive Tools</span></div>
             <div class="lib-stat"><span class="lib-stat-num">9</span><span class="lib-stat-label">Specialties</span></div>
             <div class="lib-stat"><span class="lib-stat-num">4</span><span class="lib-stat-label">Languages</span></div>
           </div>
@@ -2423,12 +2423,14 @@ function emailAction(key, btnEl, variant) {
 </script>
 
 <script>
-// Keep the library card's guide count in sync with guides/index.html.
-// Counts guide tiles the same way guides/index does (excludes downloads),
-// so the homepage never drifts as guides are added.
+// Keep the library card's guide and tools counts in sync with guides/index.html.
+// Counts guide tiles the same way guides/index does (excludes downloads), and
+// mirrors the library header's Tools stat, so the homepage never drifts as
+// guides and tools are added.
 (function syncLibraryGuideCount(){
   const libCount = document.getElementById('lib-guide-count');
-  if (!libCount) return;
+  const libTools = document.getElementById('lib-tools-count');
+  if (!libCount && !libTools) return;
   fetch('guides/index.html', {cache:'no-cache'})
     .then(r => r.ok ? r.text() : Promise.reject(r.status))
     .then(html => {
@@ -2436,7 +2438,11 @@ function emailAction(key, btnEl, variant) {
       const guideTotal = Array.from(doc.querySelectorAll('a.guide-tile'))
         .filter(t => !(t.dataset.tags || '').toLowerCase().includes('download'))
         .length;
-      if (guideTotal) libCount.textContent = guideTotal;
+      if (libCount && guideTotal) libCount.textContent = guideTotal;
+      const toolsStat = Array.from(doc.querySelectorAll('.stat'))
+        .find(s => /tools/i.test(s.querySelector('.stat-label')?.textContent || ''));
+      const toolsNum = toolsStat?.querySelector('.stat-num')?.textContent.trim();
+      if (libTools && toolsNum) libTools.textContent = toolsNum;
     })
     .catch(err => console.warn('Library guide count sync skipped:', err));
 })();
