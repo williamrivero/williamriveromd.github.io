@@ -1576,22 +1576,22 @@
         <span class="filter-dot" style="background:var(--teal)"></span>Has Calculator<span class="count">50</span>
       </button>
       <button class="filter-btn" data-filter="new">
-        <span class="filter-dot" style="background:var(--orange)"></span>New<span class="count">36</span>
+        <span class="filter-dot" style="background:var(--orange)"></span>New<span class="count">35</span>
       </button>
       <button class="filter-btn" data-filter="updated">
         <span class="filter-dot" style="background:var(--teal)"></span>Updated<span class="count">5</span>
       </button>
       <button class="filter-btn" data-filter="philippines">
-        <span class="filter-dot" style="background:#f59e0b"></span>Philippines<span class="count">55</span>
+        <span class="filter-dot" style="background:#f59e0b"></span>Philippines<span class="count">45</span>
       </button>
       <button class="filter-btn" data-filter="dialysis">
-        <span class="filter-dot" style="background:var(--navy)"></span>Dialysis<span class="count">28</span>
+        <span class="filter-dot" style="background:var(--navy)"></span>Dialysis<span class="count">27</span>
       </button>
       <button class="filter-btn" data-filter="clinician">
-        <span class="filter-dot" style="background:var(--purple)"></span>Clinician<span class="count">28</span>
+        <span class="filter-dot" style="background:var(--purple)"></span>Clinician<span class="count">27</span>
       </button>
       <button class="filter-btn" data-filter="download">
-        <span class="filter-dot" style="background:#92710a"></span>Downloads<span class="count">12</span>
+        <span class="filter-dot" style="background:#92710a"></span>Downloads<span class="count">13</span>
       </button>
     </div>
     <div class="sidebar-section">
@@ -1600,16 +1600,16 @@
         <span class="filter-dot" style="background:#166534"></span>Pre-Dialysis<span class="count">22</span>
       </button>
       <button class="filter-btn" data-filter="dialysis">
-        <span class="filter-dot" style="background:var(--navy)"></span>Dialysis<span class="count">28</span>
+        <span class="filter-dot" style="background:var(--navy)"></span>Dialysis<span class="count">27</span>
       </button>
       <button class="filter-btn" data-filter="hypertension">
-        <span class="filter-dot" style="background:#b91c1c"></span>Hypertension<span class="count">7</span>
+        <span class="filter-dot" style="background:#b91c1c"></span>Hypertension<span class="count">6</span>
       </button>
       <button class="filter-btn" data-filter="diabetes">
         <span class="filter-dot" style="background:#b45309"></span>Diabetes<span class="count">7</span>
       </button>
       <button class="filter-btn" data-filter="nutrition">
-        <span class="filter-dot" style="background:#065f46"></span>Nutrition<span class="count">30</span>
+        <span class="filter-dot" style="background:#065f46"></span>Nutrition<span class="count">29</span>
       </button>
       <button class="filter-btn" data-filter="transplant">
         <span class="filter-dot" style="background:#1d4ed8"></span>Transplant<span class="count">4</span>
@@ -3017,7 +3017,7 @@
     <div class="guide-section">
       <div class="section-header" onclick="toggleSection(this)">
         <span class="section-name">Downloads &amp; Companion Guides</span>
-        <span class="section-count">12</span>
+        <span class="section-count">13</span>
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
@@ -3138,6 +3138,16 @@
             <div class="tile-title">Fiber-Rich Filipino Food Guide</div>
             <div class="tile-meta"><span class="meta-tag tag-download">PDF Download</span><span class="meta-tag tag-ph">Philippines</span><span class="meta-tag tag-nutrition">Nutrition</span></div>
             <div class="tile-teaser">Printable handout — Filipino foods ranked by fiber content, CKD/dialysis notes, supplement guide, and the salad myth debunked.</div>
+          </div>
+          <span class="tile-arrow">↓</span>
+        </a>
+
+        <a href="../downloads/wgmr-holiday-kidney-syndrome-guide.pdf" class="guide-tile" target="_blank" rel="noopener" data-tags="download philippines nutrition dialysis" data-text="holiday kidney syndrome patient companion guide fiesta christmas new year noche buena media noche lechon ham keso de bola fruit salad high potassium fruits missed dialysis session alcohol fluid limit ER warning signs wallet card PDF download printable handout Philippines">
+          <div class="tile-icon dl" data-icon="download"></div>
+          <div class="tile-body">
+            <div class="tile-title">Holiday Kidney Syndrome — Patient Companion Guide</div>
+            <div class="tile-meta"><span class="meta-tag tag-download">PDF Download</span><span class="meta-tag tag-ph">Philippines</span><span class="meta-tag tag-nutrition">Nutrition</span></div>
+            <div class="tile-teaser">Printable companion to the fiesta &amp; holiday guide — high-potassium holiday foods, noche buena swaps, missed-session rules, fluid &amp; alcohol limits, and ER warning signs.</div>
           </div>
           <span class="tile-arrow">↓</span>
         </a>
@@ -3539,7 +3549,11 @@ function highlight(text, words) {
         if (span) span.textContent = guideTotal;
         if (btn.classList.contains('mf-pill')) btn.textContent = `All ${guideTotal}`;
       } else {
-        const n = tiles.filter(t => (t.dataset.tags || '').toLowerCase().split(/\s+/).includes(f)).length;
+        // Match the click behavior: whole tags only, and topic filters never show download tiles
+        const n = tiles.filter(t => {
+          const tg = (t.dataset.tags || '').toLowerCase().split(/\s+/);
+          return f === 'download' ? tg.includes('download') : (tg.includes(f) && !tg.includes('download'));
+        }).length;
         const span = btn.querySelector('.count');
         if (span) span.textContent = n;
       }
