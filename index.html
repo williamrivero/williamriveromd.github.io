@@ -1480,10 +1480,10 @@
           <p style="color:rgba(232,244,248,.75);">All in-depth patient guides — written by Dr. Rivero and grounded in current guidelines (KDIGO 2024, ADA 2025, ACC/AHA 2026). Organized by condition, stage, and date. Multilingual where translated.</p>
           <!-- Stats row -->
           <div class="lib-stats">
-            <div class="lib-stat"><span class="lib-stat-num" id="lib-guide-count">119</span><span class="lib-stat-label">Patient Guides</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-guide-count">120</span><span class="lib-stat-label">Patient Guides</span></div>
             <div class="lib-stat"><span class="lib-stat-num" id="lib-tools-count">50+</span><span class="lib-stat-label">Interactive Tools</span></div>
-            <div class="lib-stat"><span class="lib-stat-num">9</span><span class="lib-stat-label">Specialties</span></div>
-            <div class="lib-stat"><span class="lib-stat-num">4</span><span class="lib-stat-label">Languages</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-spec-count">9</span><span class="lib-stat-label">Specialties</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-lang-count">4</span><span class="lib-stat-label">Languages</span></div>
           </div>
           <!-- Specialty pills -->
           <div class="lib-specialties">
@@ -2439,10 +2439,21 @@ function emailAction(key, btnEl, variant) {
         .filter(t => !(t.dataset.tags || '').toLowerCase().includes('download'))
         .length;
       if (libCount && guideTotal) libCount.textContent = guideTotal;
-      const toolsStat = Array.from(doc.querySelectorAll('.stat'))
-        .find(s => /tools/i.test(s.querySelector('.stat-label')?.textContent || ''));
-      const toolsNum = toolsStat?.querySelector('.stat-num')?.textContent.trim();
+      // Mirror the Tools / Specialties / Languages stats from the guides hero
+      // so the homepage card always matches guides/index.html.
+      const heroStat = label => {
+        const stat = Array.from(doc.querySelectorAll('.stat'))
+          .find(s => new RegExp(label, 'i').test(s.querySelector('.stat-label')?.textContent || ''));
+        return stat?.querySelector('.stat-num')?.textContent.trim();
+      };
+      const toolsNum = heroStat('tools');
       if (libTools && toolsNum) libTools.textContent = toolsNum;
+      const specNum = heroStat('specialties');
+      const libSpec = document.getElementById('lib-spec-count');
+      if (libSpec && specNum) libSpec.textContent = specNum;
+      const langNum = heroStat('languages');
+      const libLang = document.getElementById('lib-lang-count');
+      if (libLang && langNum) libLang.textContent = langNum;
     })
     .catch(err => console.warn('Library guide count sync skipped:', err));
 })();
