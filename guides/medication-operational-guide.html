@@ -4490,6 +4490,98 @@ html[data-theme="dark"] .deq { background: #1a2535; border-color: #2a3548; }
   </div>
 </section>
 
+<!-- CRCL (COCKCROFT-GAULT) CALCULATOR -->
+<section class="section" id="crcl-calc">
+<div class="section-tag">Interactive Tool</div>
+<h2><span data-lang="en">Cockcroft-Gault Creatinine Clearance (CrCl) Calculator — for Drug Dosing</span><span data-lang="tl" class="lang-hidden">Calculator ng Creatinine Clearance (CrCl) — Cockcroft-Gault — para sa Dosing ng Gamot</span><span data-lang="ceb" class="lang-hidden">Calculator sa Creatinine Clearance (CrCl) — Cockcroft-Gault — para sa Dosing sa Tambal</span><span data-lang="kap" class="lang-hidden">Calculator ning Creatinine Clearance (CrCl) — Cockcroft-Gault — para king Dosing ning Gamot</span></h2>
+<p><span data-lang="en">Many Philippine drug labels still adjust the dose by creatinine clearance (CrCl), not eGFR. Enter age, sex, weight, and serum creatinine to estimate CrCl for drug dosing and see the dosing band. This is a clearance estimate for prescribing — it is not the same as the CKD-staging eGFR.</span><span data-lang="tl" class="lang-hidden">Maraming label ng gamot sa Pilipinas ang nag-aayos pa rin ng dosis ayon sa creatinine clearance (CrCl), hindi eGFR. Ilagay ang edad, kasarian, timbang, at serum creatinine para matantya ang CrCl para sa dosing ng gamot at makita ang dosing band. Ito ay tantya ng clearance para sa pagrereseta — iba ito sa eGFR na ginagamit sa CKD staging.</span><span data-lang="ceb" class="lang-hidden">Daghang label sa tambal sa Pilipinas nag-adjust gihapon sa dosis pinaagi sa creatinine clearance (CrCl), dili eGFR. Isulod ang edad, sekso, gibug-aton, ug serum creatinine aron banabanaon ang CrCl para sa dosing sa tambal ug makita ang dosing band. Kini usa ka banabana sa clearance para sa pag-reseta — lahi kini sa eGFR nga gigamit sa CKD staging.</span><span data-lang="kap" class="lang-hidden">Dakal a label ning gamot king Pilipinas ing mag-adjust pa ning dosis agpang king creatinine clearance (CrCl), e eGFR. Ilage ya ing edad, kasarian, bayat, at serum creatinine para banaban ya ing CrCl para king dosing ning gamot at akit ya ing dosing band. Ini metung yang banaba ning clearance para king pamag-reseta — aliwa ya king eGFR a gagamitan king CKD staging.</span></p>
+<div class="calc-wrap">
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Weight unit:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="crcl-wbtn-kg" onclick="switchCrClWeightUnit('kg')">kg</button>
+      <button class="unit-btn" id="crcl-wbtn-lb" onclick="switchCrClWeightUnit('lb')">lb</button>
+    </div>
+  </div>
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Creatinine unit:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="crcl-cbtn-conv" onclick="switchCrClCreatUnit('conv')">mg/dL</button>
+      <button class="unit-btn" id="crcl-cbtn-si" onclick="switchCrClCreatUnit('si')">µmol/L</button>
+    </div>
+  </div>
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Height unit:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="crcl-hbtn-cm" onclick="switchCrClHeightUnit('cm')">cm</button>
+      <button class="unit-btn" id="crcl-hbtn-in" onclick="switchCrClHeightUnit('in')">in</button>
+    </div>
+  </div>
+<div class="calc-grid">
+<div class="calc-field">
+<label>Age (years)</label>
+<input id="crcl-age" max="120" min="18" oninput="calcCrCl()" placeholder="e.g. 60" step="1" type="number"/>
+<div class="field-hint">Cockcroft-Gault is validated in adults (≥18 yr)</div>
+</div>
+<div class="calc-field">
+<label>Sex</label>
+<select id="crcl-sex" onchange="calcCrCl()">
+<option value="">Select…</option>
+<option value="m">Male</option>
+<option value="f">Female</option>
+</select>
+<div class="field-hint">Female applies a 0.85 correction factor</div>
+</div>
+<div class="calc-field">
+<label id="crcl-lbl-weight">Actual Body Weight (kg)</label>
+<input id="crcl-weight" max="300" min="20" oninput="calcCrCl()" placeholder="e.g. 70" step="0.1" type="number"/>
+<div class="field-hint" id="crcl-hint-weight">Actual measured weight. At extremes of body habitus, use IBW/adjusted weight (select below).</div>
+</div>
+<div class="calc-field">
+<label id="crcl-lbl-scr">Serum Creatinine (mg/dL)</label>
+<input id="crcl-scr" max="20" min="0.2" oninput="calcCrCl()" placeholder="e.g. 1.0" step="0.01" type="number"/>
+<div class="field-hint" id="crcl-hint-scr">Normal: 0.7–1.3 mg/dL. Use steady-state creatinine, not during AKI.</div>
+</div>
+<div class="calc-field">
+<label id="crcl-lbl-height">Height — optional (cm)</label>
+<input id="crcl-height" max="230" min="120" oninput="calcCrCl()" placeholder="e.g. 170" step="0.1" type="number"/>
+<div class="field-hint" id="crcl-hint-height">Optional — enables Ideal/Adjusted Body Weight (Devine) for obese or low-weight patients.</div>
+</div>
+<div class="calc-field">
+<label>Weight to use in formula</label>
+<select id="crcl-wtype" onchange="calcCrCl()">
+<option value="actual">Actual body weight</option>
+<option value="ideal">Ideal body weight (IBW)</option>
+<option value="adjusted">Adjusted body weight</option>
+</select>
+<div class="field-hint">IBW/Adjusted require height. In obesity, ideal or adjusted weight is preferred.</div>
+</div>
+</div>
+<div class="calc-result-box" id="crcl-result">
+<div class="calc-metrics-row">
+<div class="calc-metric-card">
+<div class="cmv" id="crcl-val">—</div>
+<div class="cml">Creatinine Clearance</div>
+<div class="cmt" id="crcl-band">mL/min</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="crcl-wused" style="font-size:18px;line-height:1.2;">—</div>
+<div class="cml">Weight Used</div>
+<div class="cmt" id="crcl-wused-note">—</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="crcl-ibw" style="font-size:18px;line-height:1.2;">—</div>
+<div class="cml">Ideal Body Weight</div>
+<div class="cmt" id="crcl-ibw-note">Devine formula</div>
+</div>
+</div>
+<div class="calc-verdict-text" id="crcl-verdict"></div>
+<div class="calc-action-text" id="crcl-action"></div>
+</div>
+<p class="calc-disclaimer">⚕ Cockcroft-Gault: CrCl = [(140 − age) × weight(kg) × (0.85 if female)] / (72 × SCr mg/dL). Devine IBW: men 50 + 2.3×(height in − 60); women 45.5 + 2.3×(height in − 60); Adjusted BW = IBW + 0.4×(actual − IBW). Estimates renal clearance for DRUG DOSING only — it is not the CKD-staging eGFR and requires physician confirmation. At extremes of body habitus (obesity or very low weight), use ideal or adjusted body weight. Source: Cockcroft DW, Gault MH. Nephron. 1976;16(1):31–41.</p>
+</div>
+</section>
+
 <!-- ═══ DR CARD ══════════════════════════════════════════════════════════ -->
 
 <!-- ═══ DISCLAIMER ════════════════════════════════════════════════════════ -->
@@ -4623,6 +4715,154 @@ syncActive();
 const GLANG_KEY = 'wgmr-lang';
 function setGuideLang(lang) { localStorage.setItem(GLANG_KEY, lang); }
 (function() { localStorage.getItem(GLANG_KEY) || 'en'; })();
+
+// ─── Cockcroft-Gault CrCl calculator ───────────────────────────────────────
+function switchCrClWeightUnit(u){
+  const isLb = u==='lb';
+  document.getElementById('crcl-wbtn-kg').classList.toggle('active',!isLb);
+  document.getElementById('crcl-wbtn-lb').classList.toggle('active',isLb);
+  const w = document.getElementById('crcl-weight');
+  if(isLb){
+    document.getElementById('crcl-lbl-weight').textContent='Actual Body Weight (lb)';
+    w.placeholder='e.g. 154'; w.min='44'; w.max='660'; w.step='0.1';
+  } else {
+    document.getElementById('crcl-lbl-weight').textContent='Actual Body Weight (kg)';
+    w.placeholder='e.g. 70'; w.min='20'; w.max='300'; w.step='0.1';
+  }
+  w.value='';
+  calcCrCl();
+}
+
+function switchCrClCreatUnit(u){
+  const isSI = u==='si';
+  document.getElementById('crcl-cbtn-conv').classList.toggle('active',!isSI);
+  document.getElementById('crcl-cbtn-si').classList.toggle('active',isSI);
+  const s = document.getElementById('crcl-scr');
+  if(isSI){
+    document.getElementById('crcl-lbl-scr').textContent='Serum Creatinine (µmol/L)';
+    document.getElementById('crcl-hint-scr').textContent='Normal: 62–115 µmol/L. Use steady-state creatinine, not during AKI.';
+    s.placeholder='e.g. 88'; s.min='18'; s.max='1770'; s.step='1';
+  } else {
+    document.getElementById('crcl-lbl-scr').textContent='Serum Creatinine (mg/dL)';
+    document.getElementById('crcl-hint-scr').textContent='Normal: 0.7–1.3 mg/dL. Use steady-state creatinine, not during AKI.';
+    s.placeholder='e.g. 1.0'; s.min='0.2'; s.max='20'; s.step='0.01';
+  }
+  s.value='';
+  calcCrCl();
+}
+
+function switchCrClHeightUnit(u){
+  const isIn = u==='in';
+  document.getElementById('crcl-hbtn-cm').classList.toggle('active',!isIn);
+  document.getElementById('crcl-hbtn-in').classList.toggle('active',isIn);
+  const h = document.getElementById('crcl-height');
+  if(isIn){
+    document.getElementById('crcl-lbl-height').textContent='Height — optional (in)';
+    h.placeholder='e.g. 67'; h.min='47'; h.max='91'; h.step='0.1';
+  } else {
+    document.getElementById('crcl-lbl-height').textContent='Height — optional (cm)';
+    h.placeholder='e.g. 170'; h.min='120'; h.max='230'; h.step='0.1';
+  }
+  h.value='';
+  calcCrCl();
+}
+
+function calcCrCl(){
+  const ageRaw  = parseFloat(document.getElementById('crcl-age').value);
+  const sex     = document.getElementById('crcl-sex').value;
+  const wRaw    = parseFloat(document.getElementById('crcl-weight').value);
+  const scrRaw  = parseFloat(document.getElementById('crcl-scr').value);
+  const hRaw    = parseFloat(document.getElementById('crcl-height').value);
+  const wtype   = document.getElementById('crcl-wtype').value;
+  const res     = document.getElementById('crcl-result');
+
+  // Core inputs required: age, sex, weight, SCr
+  if (isNaN(ageRaw) || !sex || isNaN(wRaw) || isNaN(scrRaw) || ageRaw<=0 || wRaw<=0 || scrRaw<=0) {
+    res.style.display='none'; return;
+  }
+
+  const lbActive = document.getElementById('crcl-wbtn-lb').classList.contains('active');
+  const siCreat  = document.getElementById('crcl-cbtn-si').classList.contains('active');
+  const inHeight = document.getElementById('crcl-hbtn-in').classList.contains('active');
+
+  // Canonicalise to kg, mg/dL, inches
+  const actualKg = lbActive ? wRaw/2.2046 : wRaw;
+  const scr      = siCreat ? scrRaw/88.4 : scrRaw;
+  const heightIn = isNaN(hRaw) ? NaN : (inHeight ? hRaw : hRaw/2.54);
+  const female   = sex==='f';
+
+  // Devine IBW (requires height)
+  let ibw = NaN, adjBw = NaN;
+  if (!isNaN(heightIn)) {
+    const base = female ? 45.5 : 50;
+    ibw = base + 2.3*(heightIn - 60);
+    if (ibw < 0) ibw = 0; // guard very short stature
+    adjBw = ibw + 0.4*(actualKg - ibw);
+  }
+
+  // Choose weight for the formula
+  let weightUsed = actualKg, weightLabel = 'Actual';
+  if (wtype==='ideal') {
+    if (isNaN(ibw)) { weightUsed = actualKg; weightLabel = 'Actual (enter height for IBW)'; }
+    else { weightUsed = ibw; weightLabel = 'Ideal (Devine)'; }
+  } else if (wtype==='adjusted') {
+    if (isNaN(adjBw)) { weightUsed = actualKg; weightLabel = 'Actual (enter height for Adjusted)'; }
+    else { weightUsed = adjBw; weightLabel = 'Adjusted'; }
+  }
+
+  // Cockcroft-Gault
+  const crcl = ((140 - ageRaw) * weightUsed * (female ? 0.85 : 1)) / (72 * scr);
+
+  // Dosing band
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  let borderColor, bg, valColor, bandText, verdict, action;
+  if (crcl >= 50) {
+    borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; valColor='#2d7a4f';
+    bandText='≥50 mL/min — standard dosing';
+    verdict='CrCl ≥50 mL/min: most drugs can be given at standard dose — always verify the per-drug renal threshold.';
+    action='Use the manufacturer renal dosing table for any narrow-therapeutic-index or renally-cleared drug.';
+  } else if (crcl >= 30) {
+    borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; valColor=isDark?'#9a6500':'#f5a623';
+    bandText='30–49 mL/min — many drugs need reduction';
+    verdict='CrCl 30–49 mL/min: many renally-cleared drugs require dose reduction or interval extension.';
+    action='Check each agent against its renal dosing table; reduce dose or extend the interval as labelled.';
+  } else if (crcl >= 15) {
+    borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; valColor=isDark?'#9a6500':'#f5a623';
+    bandText='15–29 mL/min — significant reduction';
+    verdict='CrCl 15–29 mL/min: significant dose reduction needed; avoid nephrotoxins where possible.';
+    action='Apply severe-impairment dosing; avoid NSAIDs, contrast, and other nephrotoxins; monitor closely.';
+  } else {
+    borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; valColor='#c0392b';
+    bandText='<15 mL/min — minimal renal clearance';
+    verdict='CrCl <15 mL/min: minimal renal clearance — many renally-cleared drugs are contraindicated.';
+    action='Use specialist/dialysis dosing; many agents are contraindicated — confirm before prescribing.';
+  }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  const valEl = document.getElementById('crcl-val');
+  valEl.textContent = Math.round(crcl);
+  valEl.style.color = valColor;
+  const bandEl = document.getElementById('crcl-band');
+  bandEl.textContent = bandText;
+  bandEl.style.color = valColor;
+
+  document.getElementById('crcl-wused').textContent = weightUsed.toFixed(1) + ' kg';
+  document.getElementById('crcl-wused-note').textContent = weightLabel;
+
+  const ibwEl = document.getElementById('crcl-ibw');
+  if (!isNaN(ibw)) {
+    ibwEl.textContent = ibw.toFixed(1) + ' kg';
+    document.getElementById('crcl-ibw-note').textContent = 'Devine · Adj ' + adjBw.toFixed(1) + ' kg';
+  } else {
+    ibwEl.textContent = '—';
+    document.getElementById('crcl-ibw-note').textContent = 'Enter height for IBW';
+  }
+
+  document.getElementById('crcl-verdict').textContent =
+    verdict + ' This estimates renal clearance for DRUG DOSING — it is not the CKD-staging eGFR. At extremes of body weight (obesity or very low weight), use ideal or adjusted body weight.';
+  document.getElementById('crcl-action').textContent = action;
+}
 </script>
 <script src="../assets/image-lightbox.js" defer></script>
 </body>

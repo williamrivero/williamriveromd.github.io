@@ -1751,6 +1751,74 @@ body.dark .related-card-title {
     </div>
   </section>
 
+  <section class="section" id="kfre-calc">
+    <div class="section-tag"><span data-lang="en">Interactive Tool</span><span data-lang="tl" class="lang-hidden">Interactive na Kagamitan</span><span data-lang="ceb" class="lang-hidden">Interactive nga Himan</span>
+      <span data-lang="kap" class="lang-hidden">Interactive a Kagamitan</span></div>
+    <h2><span data-lang="en">Kidney Failure Risk Equation (KFRE) — Your 2-Year &amp; 5-Year Risk</span><span data-lang="tl" class="lang-hidden">Kidney Failure Risk Equation (KFRE) — Inyong Panganib sa 2 at 5 Taon</span><span data-lang="ceb" class="lang-hidden">Kidney Failure Risk Equation (KFRE) — Imong Risgo sa 2 ug 5 ka Tuig</span>
+      <span data-lang="kap" class="lang-hidden">Kidney Failure Risk Equation (KFRE) — Inyung Panganib king 2 at 5 Banua</span></h2>
+    <p><span data-lang="en">The validated 4-variable Tangri equation uses your age, sex, eGFR, and urine albumin-to-creatinine ratio (uACR) to estimate the chance that your kidneys will fail — needing dialysis or a transplant — within the next 2 and 5 years. A higher result helps you and your doctor decide when to plan a referral, dialysis access, or transplant work-up.</span><span data-lang="tl" class="lang-hidden">Ginagamit ng napatunayang 4-variable na Tangri equation ang inyong edad, kasarian, eGFR, at urine albumin-to-creatinine ratio (uACR) upang tantiyahin ang posibilidad na mabigo ang inyong mga bato — kailangan ng dialysis o transplant — sa loob ng susunod na 2 at 5 taon. Ang mas mataas na resulta ay tumutulong sa inyo at sa inyong doktor na magpasya kung kailan magpaplano ng referral, dialysis access, o transplant work-up.</span><span data-lang="ceb" class="lang-hidden">Ang napamatud-an nga 4-variable nga Tangri equation naggamit sa imong edad, sekso, eGFR, ug urine albumin-to-creatinine ratio (uACR) aron banabanaon ang posibilidad nga mapakyas ang imong mga kidney — magkinahanglan og dialysis o transplant — sulod sa sunod nga 2 ug 5 ka tuig. Ang mas taas nga resulta makatabang nimo ug sa imong doktor sa pagdesisyon kanus-a magplano og referral, dialysis access, o transplant work-up.</span>
+      <span data-lang="kap" class="lang-hidden">Ing napatunayang 4-variable a Tangri equation gagamit na ning inyung edad, kasarian, eGFR, at urine albumin-to-creatinine ratio (uACR) ban tantiyahin ing posibilidad a mabigu ing inyung deng batu — kailangan ning dialysis o transplant — king lub ning susunod a 2 at 5 banua. Ing mas matas a resulta makatulung kekayu at king inyung doktor a magpasya nung kapilan magplano ning referral, dialysis access, o transplant work-up.</span></p>
+    <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">uACR units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="kfre-btn-mgg" onclick="switchKFREUnit('mgg')">mg/g</button>
+          <button class="unit-btn" id="kfre-btn-mmol" onclick="switchKFREUnit('mmol')">mg/mmol</button>
+        </div>
+      </div>
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Calibration:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="kfre-btn-nonna" onclick="switchKFRECal('nonna')">Non-North American</button>
+          <button class="unit-btn" id="kfre-btn-na" onclick="switchKFRECal('na')">North American</button>
+        </div>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Age (years)</label>
+          <input id="k-age" type="number" min="18" max="110" step="1" placeholder="e.g. 55" oninput="calcKFRE()">
+          <div class="field-hint">Patient's current age in years</div>
+        </div>
+        <div class="calc-field">
+          <label>Sex</label>
+          <select id="k-sex" onchange="calcKFRE()">
+            <option value="">Select…</option>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+          </select>
+          <div class="field-hint">Biological sex at birth</div>
+        </div>
+        <div class="calc-field">
+          <label>eGFR (mL/min/1.73m²)</label>
+          <input id="k-egfr" type="number" min="1" max="60" step="0.1" placeholder="e.g. 25" oninput="calcKFRE()">
+          <div class="field-hint">KFRE is validated for CKD stages 3–5 (eGFR &lt;60)</div>
+        </div>
+        <div class="calc-field">
+          <label id="kfre-lbl-acr">Urine ACR (mg/g)</label>
+          <input id="k-acr" type="number" min="0.1" step="1" placeholder="e.g. 300" oninput="calcKFRE()">
+          <div class="field-hint" id="kfre-hint-acr">Albumin-to-creatinine ratio. Must be a positive value</div>
+        </div>
+      </div>
+      <div class="calc-result-box" id="kfre-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="k-2yr-val">—</div>
+            <div class="cml">2-Year Risk</div>
+            <div class="cmt" id="k-2yr-badge">of kidney failure</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="k-5yr-val">—</div>
+            <div class="cml">5-Year Risk</div>
+            <div class="cmt" id="k-5yr-badge">of kidney failure</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="k-verdict"></div>
+        <div class="calc-action-text" id="k-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ 4-variable Kidney Failure Risk Equation (Tangri et al., JAMA 2011; multinational recalibration, Tangri et al., JAMA 2016). Risk = 1 − S0^exp(L), where L = −0.2201×(age/10 − 7.036) + 0.2467×(male − 0.5642) − 0.5567×(eGFR/5 − 7.222) + 0.4510×(ln(uACR mg/g) − 5.137). Default uses the non-North American calibration (S0 2yr = 0.9832, 5yr = 0.9365); North American calibration uses S0 2yr = 0.9751, 5yr = 0.9240. SI conversion: 1 mg/mmol ≈ 8.84 mg/g. This equation does NOT apply to patients already on dialysis or with a kidney transplant, and predicts kidney failure — not death or cardiovascular events. It is a population-derived estimate and requires physician interpretation in your individual clinical context.</p>
+    </div>
+  </section>
+
   <section class="section" id="monitoring">
     <div class="section-tag"><span data-lang="en">Follow-Up Schedule</span><span data-lang="tl" class="lang-hidden">Iskedyul ng Follow-Up</span><span data-lang="ceb" class="lang-hidden">Iskedyul sa Follow-Up</span>
       <span data-lang="kap" class="lang-hidden">Iskedyul ning Follow-Up</span></div>
@@ -2137,6 +2205,97 @@ function calcSlope() {
   }
   document.getElementById('s-verdict').innerHTML='<strong style="color:'+borderColor+'">'+rateLabel+' progression</strong> — '+verdict;
   document.getElementById('s-action').innerHTML='<strong style="color:'+borderColor+'">Recommended action:</strong> '+action;
+}
+
+/* ── KIDNEY FAILURE RISK EQUATION (4-variable Tangri) ─────────────────────── */
+var kfreUnit = 'mgg';   // 'mgg' | 'mmol'
+var kfreCal  = 'nonna'; // 'nonna' (non-North American) | 'na' (North American)
+
+function switchKFREUnit(u) {
+  kfreUnit = u;
+  document.getElementById('kfre-btn-mgg').classList.toggle('active', u==='mgg');
+  document.getElementById('kfre-btn-mmol').classList.toggle('active', u==='mmol');
+  document.getElementById('kfre-lbl-acr').textContent = (u==='mmol') ? 'Urine ACR (mg/mmol)' : 'Urine ACR (mg/g)';
+  document.getElementById('kfre-hint-acr').textContent = (u==='mmol')
+    ? 'Albumin-to-creatinine ratio in SI units (1 mg/mmol ≈ 8.84 mg/g). Must be a positive value'
+    : 'Albumin-to-creatinine ratio. Must be a positive value';
+  calcKFRE();
+}
+
+function switchKFRECal(c) {
+  kfreCal = c;
+  document.getElementById('kfre-btn-nonna').classList.toggle('active', c==='nonna');
+  document.getElementById('kfre-btn-na').classList.toggle('active', c==='na');
+  calcKFRE();
+}
+
+function calcKFRE() {
+  const age  = parseFloat(document.getElementById('k-age').value);
+  const sexV = document.getElementById('k-sex').value;
+  const egfr = parseFloat(document.getElementById('k-egfr').value);
+  let acr    = parseFloat(document.getElementById('k-acr').value);
+  const res  = document.getElementById('kfre-result');
+
+  // Require all inputs valid; uACR must be strictly positive for ln()
+  if ([age,egfr].some(isNaN) || sexV==='' || isNaN(acr) || acr <= 0) { res.style.display='none'; return; }
+
+  // Convert SI (mg/mmol) → mg/g for the equation (1 mg/mmol ≈ 8.84 mg/g)
+  const acrMgG = (kfreUnit==='mmol') ? acr * 8.84 : acr;
+  if (acrMgG <= 0) { res.style.display='none'; return; }
+
+  const male = (sexV==='1') ? 1 : 0;
+
+  // 4-variable linear predictor (Tangri et al., JAMA 2011)
+  const L = -0.2201*(age/10 - 7.036)
+          +  0.2467*(male - 0.5642)
+          -  0.5567*(egfr/5 - 7.222)
+          +  0.4510*(Math.log(acrMgG) - 5.137);
+
+  // Baseline survival S0 — non-North American recalibration (Tangri 2016) by default
+  const S0 = (kfreCal==='na')
+    ? { y2: 0.9751, y5: 0.9240 }   // North American (original)
+    : { y2: 0.9832, y5: 0.9365 };  // Non-North American recalibration (2016)
+
+  const expL = Math.exp(L);
+  let risk2 = (1 - Math.pow(S0.y2, expL)) * 100;
+  let risk5 = (1 - Math.pow(S0.y5, expL)) * 100;
+  risk2 = Math.min(99.9, Math.max(0, risk2));
+  risk5 = Math.min(99.9, Math.max(0, risk5));
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  // Verdict band keyed on 5-year risk
+  let band, vColor, borderColor, bg, vText, aText;
+  if (risk5 < 5) {
+    band='Low'; vColor='#2d7a4f'; borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2';
+    vText='Your estimated 5-year risk of kidney failure is low (under 5%). Most people with this profile will not progress to dialysis or transplant within 5 years.';
+    aText='Routine nephrology follow-up is appropriate. Keep optimizing the basics — blood pressure under 130/80, RAAS blockade, an SGLT2 inhibitor if eGFR ≥ 20, and good diabetes control — and re-check this estimate as your labs change.';
+  } else if (risk5 <= 15) {
+    band='Intermediate'; vColor='#9a6500'; borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec';
+    vText='Your estimated 5-year risk of kidney failure is intermediate (5–15%). There is a real but not high chance of needing dialysis or a transplant within 5 years.';
+    aText='Closer monitoring is warranted. This is the time to discuss progression openly with your nephrologist, tighten every modifiable risk factor, and begin learning about future treatment options so you are prepared if the trajectory worsens.';
+  } else {
+    band='High'; vColor='#c0392b'; borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef';
+    vText='Your estimated 5-year risk of kidney failure is high (over 15%). A substantial proportion of people with this profile progress to dialysis or transplant within 5 years.';
+    aText='KDIGO suggests a 5-year risk above this range warrants nephrology referral and proactive planning. Discuss dialysis-access creation (an AV fistula well before it is needed), pre-emptive transplant work-up, and a kidney-failure education program with your nephrologist now — early planning leads to far better outcomes than emergency starts.';
+  }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  const fmt = (r) => (r < 1 ? r.toFixed(1) : Math.round(r)) + '%';
+  const v2 = document.getElementById('k-2yr-val');
+  const v5 = document.getElementById('k-5yr-val');
+  v2.textContent = fmt(risk2);
+  v5.textContent = fmt(risk5);
+  v2.style.color = (risk2 < 5) ? '#2d7a4f' : (risk2 <= 15 ? '#9a6500' : '#c0392b');
+  v5.style.color = vColor;
+
+  const calLbl = (kfreCal==='na') ? 'North American calibration' : 'non-North American calibration';
+  document.getElementById('k-2yr-badge').textContent = 'of kidney failure';
+  document.getElementById('k-5yr-badge').textContent = calLbl;
+
+  document.getElementById('k-verdict').innerHTML = '<strong style="color:'+borderColor+'">'+band+' risk</strong> — '+vText;
+  document.getElementById('k-action').innerHTML = '<strong style="color:'+borderColor+'">What this means:</strong> '+aText;
 }
 </script>
 

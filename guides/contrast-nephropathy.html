@@ -1602,6 +1602,80 @@
 </div>
 <div class="disclaimer"><strong><span data-lang="en">Important:</span><span data-lang="tl" class="lang-hidden">Mahalagang Paalala:</span><span data-lang="ceb" class="lang-hidden">Importante nga Pahibalo:</span><span data-lang="kap" class="lang-hidden">Mahalagang Paalala:</span></strong> <span data-lang="en">If you are unsure whether a scheduled procedure uses contrast dye, ask explicitly: "Does this procedure use iodinated contrast?" and "What is my CIN risk, and what precautions will be taken?" You have the right to know and to request nephrology consultation before proceeding.</span><span data-lang="tl" class="lang-hidden">Kung hindi kayo sigurado kung ang nakatakdang pamamaraan ay gumagamit ng contrast dye, tanungin nang tuwiran: "Gumagamit ba ang pamamaraang ito ng iodinated contrast?" at "Ano ang aking panganib sa CIN, at anong mga pag-iingat ang gagawin?" Mayroon kayong karapatang malaman at humiling ng nephrology consultation bago magpatuloy.</span><span data-lang="ceb" class="lang-hidden">Kon dili kamo sigurado kon ang nakatakda nga procedure naggamit ug contrast dye, pangutana dayong tuwiran: "Kini bang procedure naggamit ug iodinated contrast?" ug "Unsa ang akong risk sa CIN, ug unsa nga mga pag-amping ang buhaton?" Naa kamoy katungod sa paghibalo ug sa pagpangayo ug nephrology consultation sa wala pa magpadayon.</span><span data-lang="kap" class="lang-hidden">Nung ali kayu sigurado nung ing nakatakdang pamamaraan ya gumagamit ning contrast dye, tanungin nang tuwiran: "Gumagamit ba ing pamamaraang ini ning iodinated contrast?" at "Ano ing aking panganib sa CIN, at anong deng pag-iingat ing gagawin?" Mayroon kayung karapatang malaman at humiling ning nephrology consultation bago magpatuloy.</span></div>
 </section>
+<section class="section" id="mehran-calc">
+<div class="section-tag">Interactive Tool</div>
+<h2><span data-lang="en">Mehran Score Calculator — Contrast-Induced Nephropathy Risk</span><span data-lang="tl" class="lang-hidden">Mehran Score Calculator — Panganib ng Contrast-Induced Nephropathy</span><span data-lang="ceb" class="lang-hidden">Mehran Score Calculator — Risk sa Contrast-Induced Nephropathy</span><span data-lang="kap" class="lang-hidden">Mehran Score Calculator — Panganib ning Contrast-Induced Nephropathy</span></h2>
+<p><span data-lang="en">Tick the risk factors that apply, enter the planned contrast volume, and choose either serum creatinine or eGFR. The Mehran score (Mehran et al., 2004) estimates the risk of contrast-induced nephropathy and dialysis after a coronary procedure or contrast study, and updates instantly as you type.</span><span data-lang="tl" class="lang-hidden">Lagyan ng tsek ang mga risk factor na naaangkop, ilagay ang planong dami ng contrast, at piliin ang serum creatinine o eGFR. Tinatantya ng Mehran score (Mehran et al., 2004) ang panganib ng contrast-induced nephropathy at dialysis pagkatapos ng coronary procedure o contrast study, at agad na nag-a-update habang nagta-type kayo.</span><span data-lang="ceb" class="lang-hidden">Tseki ang mga risk factor nga mohaom, isulod ang giplano nga gidaghanon sa contrast, ug pilia ang serum creatinine o eGFR. Ang Mehran score (Mehran et al., 2004) nagbanabana sa risk sa contrast-induced nephropathy ug dialysis human sa coronary procedure o contrast study, ug dali nga mag-update samtang nagtype ka.</span><span data-lang="kap" class="lang-hidden">Lagyan ning tsek ing deng risk factor na naaangkop, ilagay ing planong dami ning contrast, at piliin ing serum creatinine o eGFR. Tinatantya ning Mehran score (Mehran et al., 2004) ing panganib ning contrast-induced nephropathy at dialysis kapabanuan ning coronary procedure o contrast study, at agad na nag-a-update habang nagta-type kayu.</span></p>
+<div class="calc-wrap">
+<div class="calc-grid">
+<div class="calc-field">
+<label><input type="checkbox" id="mh-htn" onchange="calcMehran()"/> Hypotension (5 pts)</label>
+<div class="field-hint">SBP &lt;80 mmHg for &gt;1 hr requiring inotropes/vasopressors or IABP within 24 hrs peri-procedure.</div>
+</div>
+<div class="calc-field">
+<label><input type="checkbox" id="mh-iabp" onchange="calcMehran()"/> Intra-aortic balloon pump (5 pts)</label>
+<div class="field-hint">IABP in use peri-procedure.</div>
+</div>
+<div class="calc-field">
+<label><input type="checkbox" id="mh-chf" onchange="calcMehran()"/> Congestive heart failure (5 pts)</label>
+<div class="field-hint">NYHA class III–IV and/or history of pulmonary edema.</div>
+</div>
+<div class="calc-field">
+<label><input type="checkbox" id="mh-anemia" onchange="calcMehran()"/> Anemia (3 pts)</label>
+<div class="field-hint">Baseline Hct &lt;39% (men) or &lt;36% (women).</div>
+</div>
+<div class="calc-field">
+<label><input type="checkbox" id="mh-dm" onchange="calcMehran()"/> Diabetes mellitus (3 pts)</label>
+<div class="field-hint">Any diabetes requiring diet, oral agents, or insulin.</div>
+</div>
+<div class="calc-field">
+<label>Age (years) — 4 pts if &gt;75</label>
+<input id="mh-age" max="120" min="0" oninput="calcMehran()" placeholder="e.g. 78" step="1" type="number"/>
+<div class="field-hint">Age over 75 automatically adds 4 points.</div>
+</div>
+<div class="calc-field">
+<label>Contrast volume (mL) — 1 pt per 100 mL</label>
+<input id="mh-vol" max="1000" min="0" oninput="calcMehran()" placeholder="e.g. 200" step="10" type="number"/>
+<div class="field-hint">Planned or administered iodinated contrast volume.</div>
+</div>
+<div class="calc-field">
+<label>Renal function input</label>
+<select id="mh-renal-mode" onchange="calcMehran()">
+<option value="scr">Serum creatinine (mg/dL)</option>
+<option value="egfr">eGFR (mL/min/1.73m²)</option>
+</select>
+<div class="field-hint">SCr &gt;1.5 mg/dL = 4 pts. eGFR: 40–60 = 2, 20–40 = 4, &lt;20 = 6 pts.</div>
+</div>
+<div class="calc-field">
+<label id="mh-renal-lbl">Serum creatinine (mg/dL)</label>
+<input id="mh-renal-val" max="15" min="0.3" oninput="calcMehran()" placeholder="e.g. 1.8" step="0.01" type="number"/>
+<div class="field-hint" id="mh-renal-hint">Renal impairment scores 4 pts if &gt;1.5 mg/dL.</div>
+</div>
+</div>
+<div class="calc-result-box" id="mehran-result">
+<div class="calc-metrics-row">
+<div class="calc-metric-card">
+<div class="cmv" id="mh-score-val">—</div>
+<div class="cml">Total Mehran Score</div>
+<div class="cmt" id="mh-score-badge">points</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="mh-cin-val">—</div>
+<div class="cml">Predicted CIN Risk</div>
+<div class="cmt" id="mh-cin-badge">—</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="mh-dial-val">—</div>
+<div class="cml">Predicted Dialysis Risk</div>
+<div class="cmt" id="mh-dial-badge">—</div>
+</div>
+</div>
+<div class="calc-verdict-text" id="mh-verdict"></div>
+<div class="calc-action-text" id="mh-action"></div>
+</div>
+<p class="calc-disclaimer">⚕ Mehran score (Mehran et al., <em>J Am Coll Cardiol</em> 2004;44:1393–9): hypotension 5, IABP 5, CHF 5, age &gt;75 = 4, anemia 3, diabetes 3, contrast 1 pt/100 mL, and renal impairment (SCr &gt;1.5 mg/dL = 4, or by eGFR 40–60 = 2 / 20–40 = 4 / &lt;20 = 6). Risk bands: ≤5 ≈ 7.5% CIN (0.04% dialysis); 6–10 ≈ 14% (0.12%); 11–16 ≈ 26.1% (1.09%); ≥16 ≈ 57.3% (12.6%). The score was derived for percutaneous coronary intervention; it requires physician interpretation and is not a substitute for individualized cardiology/radiology assessment.</p>
+</div>
+</section>
 </main>
 
     <!-- DR CARD -->
@@ -1777,6 +1851,101 @@ function calcCI() {
   }
   document.getElementById('ci-verdict').innerHTML='<strong style="color:'+riskColor+'">'+riskLabel+' Risk</strong> — '+verdict;
   document.getElementById('ci-action').innerHTML='<strong style="color:'+riskColor+'">Pre-procedure protocol:</strong> '+action;
+}
+
+function calcMehran() {
+  const res = document.getElementById('mehran-result');
+
+  // Renal-function input: relabel field for the chosen mode
+  const mode = document.getElementById('mh-renal-mode').value;
+  const renalLbl = document.getElementById('mh-renal-lbl');
+  const renalHint = document.getElementById('mh-renal-hint');
+  const renalInp = document.getElementById('mh-renal-val');
+  if (mode === 'egfr') {
+    renalLbl.textContent = 'eGFR (mL/min/1.73m²)';
+    renalInp.placeholder = 'e.g. 35'; renalInp.min = '1'; renalInp.max = '150'; renalInp.step = '1';
+    renalHint.innerHTML = 'eGFR scores: 40–60 = 2 pts, 20–40 = 4 pts, &lt;20 = 6 pts.';
+  } else {
+    renalLbl.textContent = 'Serum creatinine (mg/dL)';
+    renalInp.placeholder = 'e.g. 1.8'; renalInp.min = '0.3'; renalInp.max = '15'; renalInp.step = '0.01';
+    renalHint.innerHTML = 'Renal impairment scores 4 pts if &gt;1.5 mg/dL.';
+  }
+
+  // Read inputs
+  const htn    = document.getElementById('mh-htn').checked    ? 5 : 0;
+  const iabp   = document.getElementById('mh-iabp').checked   ? 5 : 0;
+  const chf    = document.getElementById('mh-chf').checked    ? 5 : 0;
+  const anemia = document.getElementById('mh-anemia').checked ? 3 : 0;
+  const dm     = document.getElementById('mh-dm').checked     ? 3 : 0;
+  const ageRaw = parseFloat(document.getElementById('mh-age').value);
+  const volRaw = parseFloat(document.getElementById('mh-vol').value);
+  const renalRaw = parseFloat(document.getElementById('mh-renal-val').value);
+
+  const agePts = (!isNaN(ageRaw) && ageRaw > 75) ? 4 : 0;
+  const volPts = (!isNaN(volRaw) && volRaw > 0) ? Math.ceil(volRaw / 100) : 0;
+
+  let renalPts = 0, renalEntered = false;
+  if (!isNaN(renalRaw)) {
+    renalEntered = true;
+    if (mode === 'egfr') {
+      if (renalRaw < 20)      renalPts = 6;
+      else if (renalRaw < 40) renalPts = 4;
+      else if (renalRaw < 60) renalPts = 2;
+      else                     renalPts = 0;
+    } else {
+      renalPts = renalRaw > 1.5 ? 4 : 0;
+    }
+  }
+
+  // Show the result once any meaningful field is entered; otherwise hide
+  const anyEntered = htn||iabp||chf||anemia||dm||agePts||(!isNaN(volRaw)&&volRaw>0)||renalEntered;
+  if (!anyEntered) { res.style.display = 'none'; return; }
+
+  const score = htn + iabp + chf + anemia + dm + agePts + volPts + renalPts;
+
+  // Risk band → CIN risk %, dialysis risk %, label, color
+  let cinPct, dialPct, riskLabel, riskColor;
+  if (score <= 5)        { cinPct='7.5%';  dialPct='0.04%'; riskLabel='Low';       riskColor='#2d7a4f'; }
+  else if (score <= 10)  { cinPct='14%';   dialPct='0.12%'; riskLabel='Moderate';  riskColor='#9a6500'; }
+  else if (score <= 15)  { cinPct='26.1%'; dialPct='1.09%'; riskLabel='High';      riskColor='#c0392b'; }
+  else                   { cinPct='57.3%'; dialPct='12.6%'; riskLabel='Very High'; riskColor='#c0392b'; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  let bg;
+  if (riskLabel==='Low')           bg = isDark?'rgba(45,122,79,.08)':'#edf7f2';
+  else if (riskLabel==='Moderate') bg = isDark?'rgba(154,101,0,.08)':'#fef9ec';
+  else                             bg = isDark?'rgba(192,57,43,.08)':'#fdf0ef';
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=riskColor;
+
+  document.getElementById('mh-score-val').textContent = score;
+  document.getElementById('mh-score-val').style.color = riskColor;
+  document.getElementById('mh-score-badge').textContent = riskLabel + ' risk';
+  document.getElementById('mh-score-badge').style.color = riskColor;
+
+  document.getElementById('mh-cin-val').textContent = cinPct;
+  document.getElementById('mh-cin-val').style.color = riskColor;
+  document.getElementById('mh-cin-badge').textContent = 'Contrast nephropathy';
+  document.getElementById('mh-cin-badge').style.color = riskColor;
+
+  document.getElementById('mh-dial-val').textContent = dialPct;
+  document.getElementById('mh-dial-val').style.color = riskColor;
+  document.getElementById('mh-dial-badge').textContent = 'Risk of dialysis';
+  document.getElementById('mh-dial-badge').style.color = riskColor;
+
+  let verdict = 'A total Mehran score of <strong>'+score+'</strong> places this patient in the <strong style="color:'+riskColor+'">'+riskLabel+'</strong> risk category for contrast-induced nephropathy — an estimated <strong>'+cinPct+'</strong> risk of CIN and <strong>'+dialPct+'</strong> risk of requiring dialysis after a contrast procedure.';
+
+  let action;
+  if (score <= 5) {
+    action = 'Standard precautions: ensure adequate IV isotonic hydration (0.9% NaCl), use the lowest necessary contrast volume, and recheck serum creatinine 48–72 hours after the procedure. Hold nephrotoxins and metformin per local protocol.';
+  } else if (score <= 10) {
+    action = 'Maximize IV isotonic (0.9% NaCl) hydration before and after the procedure, minimize contrast volume, hold nephrotoxins and metformin per protocol, and recheck serum creatinine at 48–72 hours. Consider iso-osmolar contrast (iodixanol).';
+  } else {
+    action = 'High-risk pathway: maximize IV isotonic (0.9% NaCl) hydration before and after the procedure, minimize total contrast volume, use iso-osmolar contrast (iodixanol), and hold nephrotoxins and metformin per protocol. Monitor serum creatinine closely at 48–72 hours' + (score > 15 ? ', and discuss with the cardiology/nephrology team whether the procedure can be staged, deferred, or replaced with a non-contrast alternative.' : '.');
+  }
+
+  document.getElementById('mh-verdict').innerHTML = verdict;
+  document.getElementById('mh-action').innerHTML = '<strong style="color:'+riskColor+'">Recommended action:</strong> ' + action;
 }
 </script>
 
