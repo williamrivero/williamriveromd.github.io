@@ -1216,6 +1216,12 @@
 </style>
 </head>
 <body>
+<script>/* pre-paint physician-mode restore — class applied before first paint, zero CLS.
+   Do NOT move this to the bottom of the page or convert it into a
+   post-paint restore — that reintroduces the CLS bug patch_mode_cls.py
+   exists to kill. See CLAUDE.md. */
+try{if(localStorage.getItem('wgmr-mode')==='physician'){document.body.classList.add('physician-mode');document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('tab-pt'),m=document.getElementById('tab-md');if(p)p.classList.remove('active');if(m)m.classList.add('active');});}}catch(e){}</script>
+
 <header style="background:rgba(15,30,46,.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);">
 <div style="max-width:860px;margin:0 auto;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;">
 <a href="https://williamriveromd.com" style="font-size:15px;font-weight:500;color:white;text-decoration:none;">W. G. M. <strong style="color:#c9a84c;">Rivero</strong>, MD</a>
@@ -2122,7 +2128,6 @@ function setMode(mode){
   const tabs=document.querySelector('.audience-tabs');
   if(tabs)window.scrollTo({top:tabs.offsetTop-60,behavior:'smooth'});
 }
-(function(){const s=localStorage.getItem(GMODE)||'patient';if(s==='physician')setMode('physician');})();
 </script>
 <script src="../assets/image-lightbox.js" defer></script>
 </body>

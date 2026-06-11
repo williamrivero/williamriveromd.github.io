@@ -1340,6 +1340,12 @@ html[data-theme="dark"] .nt-ref{color:#8090a0;}
 </script>
 </head>
 <body>
+<script>/* pre-paint physician-mode restore — class applied before first paint, zero CLS.
+   Do NOT move this to the bottom of the page or convert it into a
+   post-paint restore — that reintroduces the CLS bug patch_mode_cls.py
+   exists to kill. See CLAUDE.md. */
+try{if(localStorage.getItem('wgmr-eod-mode')==='physician'){document.body.classList.add('physician-mode');document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('tab-pt'),m=document.getElementById('tab-md');if(p)p.classList.remove('active');if(m)m.classList.add('active');});}}catch(e){}</script>
+
 
 <header class="site-header">
   <a href="https://williamriveromd.com" class="brand">HOME</a>
@@ -3310,7 +3316,6 @@ function setMode(m) {
   if (tabPt) tabPt.classList.toggle('active', m === 'patient');
   if (tabMd) tabMd.classList.toggle('active', m === 'physician');
 }
-(function(){const s=localStorage.getItem(GMODE_KEY)||'patient';if(s==='physician')setMode('physician');})();
 </script>
 
 <script>

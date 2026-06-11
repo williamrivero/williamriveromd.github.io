@@ -83,10 +83,26 @@ python3 patch_mode_cls.py --guide el-nino-heat-dialysis.html  # single guide
 `patch_mode_cls.py` strips the bottom-of-page IIFE that restored physician
 mode from `localStorage` *after first paint* — that post-render patient→
 physician swap was the Cloudflare-RUM CLS of 0.364 on
-`body.physician-mode>div.mode-physician`. Dual-mode guides must always start
-in patient mode (the default CSS state). `setMode()` still writes the choice
+`body.physician-mode>div.mode-physician`. `setMode()` still writes the choice
 to `localStorage`, so in-page tab toggling is unaffected. Never reintroduce a
-restore-on-load; run this script after adding any new dual-mode guide.
+*post-paint* restore-on-load; run this script after adding any new dual-mode
+guide, then run `patch_mode_restore.py` (below) to add the safe restorer.
+
+```bash
+python3 patch_mode_restore.py                 # add pre-paint physician-mode restore (no CLS)
+python3 patch_mode_restore.py --dry-run       # preview changes without writing
+python3 patch_mode_restore.py --guide igan-guide.html  # single guide
+```
+
+`patch_mode_restore.py` makes the clinician-tab choice survive page refresh
+*without* reintroducing the CLS bug: it injects a tiny synchronous script
+immediately after the opening `<body>` tag that applies `physician-mode`
+**before first paint** (zero layout shift), reading the guide's own mode
+localStorage key. Tab-button active states sync on DOMContentLoaded (a
+color-only change). The invariant pair: mode restores are allowed **only**
+pre-paint (this script); post-paint restores are forbidden
+(`patch_mode_cls.py` removes them). Run both, in that order, after adding
+any new dual-mode guide. Idempotent.
 
 ```bash
 python3 patch_signature_position.py              # move dr-card + related-guides to right before footer
