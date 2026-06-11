@@ -145,3 +145,29 @@ Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibbe
 
 QUALITY CHECK:
 Must be legible at small thumbnail size, visually calm, publication-grade, and consistent with williamriveromd.com. Exactly 1200 × 630. Background must be white or very light teal — never dark. Pair with og:image:width="1200" and og:image:height="630" meta tags when wired into the guide. Copyright attribution williamriveromd.com must be visible in the bottom-right corner.
+
+---
+
+IMAGE NUMBER: 6
+SECTION PLACEMENT: Kidney Donation tab, `#kd-stats` — REPLACES the portrait `organ-donation-ph-kd-01-living-donor-consultation.png` (864×1821), which is too tall for the column
+FILE NAME: organ-donation-ph-kd-01b-living-donor-consultation-landscape.png
+ARCHETYPE: Photorealistic editorial hero
+AUDIENCE: patients, families considering living donation
+VISUAL MIX:
+- photorealistic models: Filipino nephrologist/coordinator, donor, recipient
+- 2D infographic: none
+- 3D component graphics: none
+- algorithm/flowchart: none
+
+PURPOSE: Replace the oversized portrait consultation image with a landscape version that sits comfortably in the article column.
+KEY CONCEPTS: a calm, professional living-donor consultation at a Philippine transplant centre; donor and recipient both present; trust and no pressure.
+DIMENSIONS: 1792 × 1024 (16:9 landscape)
+
+COPY-READY IMAGE GENERATOR GPT PROMPT:
+Photorealistic medical editorial photograph for a nephrology education guide, landscape 16:9. A bright, modern consultation room at a Philippine transplant centre with soft natural daylight and white-and-light-wood interior. A Filipina nephrologist in a white coat and a transplant coordinator in a teal-accented uniform sit across a light table from a potential living kidney donor (a healthy Filipino adult in his 30s) and the intended recipient (his older sibling), reviewing a tablet together; open, unhurried body language, warm professional eye contact, gentle smiles, no paperwork being pushed. Premium healthcare publication aesthetic, shallow depth of field, natural skin texture, restrained warm-neutral grading with navy and teal accents, generous negative space at one side, no text embedded. Small semi-transparent attribution "williamriveromd.com" in navy, bottom-right corner.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation, no surgical or hospital-bed imagery, no fearful expressions. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com. Bright, airy lighting — never dark or moody. Copyright attribution williamriveromd.com must be visible in the bottom-right corner.
