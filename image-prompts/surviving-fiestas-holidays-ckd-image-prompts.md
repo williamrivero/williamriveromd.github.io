@@ -467,3 +467,94 @@ Must be mobile-readable, clinically plausible, visually calm, publication-grade,
 | 7 | `surviving-fiestas-holidays-ckd-timing-pearl.png` | Side-by-side comparison | 1792×1024 | `#schedule` |
 
 **Next step:** generate these in the Image Generator GPT, save PNGs (and build WebP copies) into `images/`, then have the og:image meta tags and inline `<figure>` blocks added. The hero is the priority — it is already referenced and currently broken on the live page.
+
+---
+
+# CLINICIAN-TAB ADDENDUM — Generated 2026-06-11
+
+Two visuals for the "For Clinicians" mode of the guide. Same house rules: light
+backgrounds only, williamriveromd.com attribution bottom corner.
+
+---
+
+## IMAGE 8 — PRE-HOLIDAY UNIT PROTOCOL (clinician algorithm)
+
+**SECTION PLACEMENT:** `#md-protocol` — inline figure above or below the 6-step list
+**FILE NAME:** `holiday-kidney-syndrome-md-protocol.png`
+**ARCHETYPE:** Clinical Algorithm / Flowchart (portrait)
+**AUDIENCE:** Clinicians, dialysis-unit staff
+**DIMENSIONS:** 1024 × 1536 px (2:3 portrait)
+
+### COPY-READY IMAGE GENERATOR GPT PROMPT
+
+```
+FILE NAME: holiday-kidney-syndrome-md-protocol.png
+IMAGE TYPE: Clinical algorithm / flowchart — pre-holiday dialysis unit protocol
+ASPECT RATIO: 2:3 portrait
+PIXEL DIMENSIONS: 1024 × 1536
+AUDIENCE: Clinicians and dialysis-unit staff
+VISUAL GOAL: One glanceable top-to-bottom unit protocol that prevents holiday hyperkalemia admissions.
+
+PROMPT:
+Clinical nephrology algorithm infographic, KDIGO-guideline flowchart aesthetic, on a crisp white (#ffffff) background. Title at top in bold navy (#0f1e2e): "Pre-Holiday Dialysis Unit Protocol". Teal (#1a6b72) subtitle: "Goal: no patient's interdialytic gap exceeds 72 hours."
+
+A single top-to-bottom pathway of six rounded nodes connected by bold navy arrows:
+1. TEAL node — "By Dec 1: publish the unit holiday schedule. Default: sessions move EARLIER, never later."
+2. TEAL node — "Early-December chairside counseling: long-gap risk, the fruit trap, post-dialysis celebration timing, star fruit. Hand out the printed checklist + wallet card."
+3. AMBER decision node — "Risk-stratify: pre-HD K+ ≥5.5? Prior hyperkalemic admission? Large IDWG? Anuric? Traveling to the province?" with a YES branch to a green action node: "Add an extra session or schedule Dec 26 / Jan 2."
+4. TEAL node — "Review dialysate K+ for the holiday cycle (consider 2.0 bath if recurrent pre-HD K+ ≥6.0; avoid 1.0 baths)."
+5. TEAL node — "Consider event-coverage K+ binders for recurrent hyperkalemia — an adjunct, never a substitute for the session."
+6. RED escalation node — "Missed holiday-week session → same-day callback + next-morning slot offered."
+
+Use navy structure lines, teal recommendation boxes, amber caution node, green optimal-path node, red escalation node. Maximum visual clarity, generous whitespace, mobile-readable labels, all text real and correctly spelled. Bottom-center: "williamriveromd.com" in small semi-transparent (70%) navy text.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid spaghetti flowchart, avoid tiny unreadable labels, avoid AI gibberish. NEVER use dark backgrounds — white base only. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Six clean nodes, correct color logic, correct spelling, mobile-readable, light background, attribution bottom-center.
+```
+
+---
+
+## IMAGE 9 — HOLIDAY HYPERKALEMIA ER RAPID PROTOCOL (clinician card)
+
+**SECTION PLACEMENT:** `#md-hyperkalemia` — inline figure above the two pearls cards
+**FILE NAME:** `holiday-kidney-syndrome-md-hyperkalemia.png`
+**ARCHETYPE:** Clinician Reference Card
+**AUDIENCE:** ER physicians, IM residents, covering clinicians
+**DIMENSIONS:** 1536 × 1152 px (4:3)
+
+### COPY-READY IMAGE GENERATOR GPT PROMPT
+
+```
+FILE NAME: holiday-kidney-syndrome-md-hyperkalemia.png
+IMAGE TYPE: Clinician reference card — holiday hyperkalemia ER rapid protocol
+ASPECT RATIO: 4:3
+PIXEL DIMENSIONS: 1536 × 1152
+AUDIENCE: ER physicians and covering clinicians
+VISUAL GOAL: A one-look ER reference for the dialysis patient presenting on a holiday with suspected hyperkalemia.
+
+PROMPT:
+Clinical reference infographic card, publication-grade nephrology design, on a crisp white (#ffffff) background. Title at top in bold navy (#0f1e2e): "Holiday Hyperkalemia — ER Rapid Protocol". Teal (#1a6b72) subtitle: "Dialysis patient + holiday date + weakness, chest heaviness, or palpitations = K+ and ECG before anything else."
+
+Four modular rounded cards in a 2×2 grid:
+
+CARD 1 (teal header) — "RECOGNIZE": ECG first but do not be falsely reassured — ECG sensitivity for K+ >6.5 is poor; treat the number and the patient. Ask specifically: fruit quantity (rambutan, lanzones), dinuguan, daily leftovers, missed sessions, star fruit. Include a small semi-photorealistic 3D heart with a peaked-T-wave ECG strip rendered beside it.
+
+CARD 2 (red header) — "STABILIZE": IV calcium gluconate for any ECG change (repeat as needed) · insulin 5–10 U + D50 (halve insulin in malnourished elderly; watch late hypoglycemia) · nebulized salbutamol 10–20 mg adjunct · correct severe acidosis. Cation-exchange resins are too slow to matter acutely.
+
+CARD 3 (green header) — "DEFINITIVE = DIALYSIS": mobilize the unit early — on holidays the rate-limiting step is the machine and staff, not the drugs.
+
+CARD 4 (amber header) — "STAR FRUIT (CARAMBOXIN) TRAP": intractable hiccups, vomiting, agitation, seizures after balimbing → neurotoxicity; urgent dialysis even with normal K+; seizure precautions.
+
+BOTTOM STRIP, soft gray (#f3f4f6): navy text "Before discharge: document the dietary trigger and route the patient back through the pre-holiday protocol — the next fiesta is already on the calendar."
+
+Clean icons, compact readable text, navy/teal/red/green/amber color logic, generous spacing, all text real and correctly spelled. Bottom-right: "williamriveromd.com" small semi-transparent (70%) navy.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish or wrong doses, avoid unrealistic anatomy. NEVER use dark backgrounds — white base only. Keep doses exactly as written. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Four clean cards with correct color logic and exact doses, realistic ECG/heart detail, correct spelling, mobile-readable, light background, attribution bottom-right.
+```

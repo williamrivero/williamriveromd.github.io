@@ -1194,6 +1194,21 @@
 </style>
 
 <style>
+/* Wallet emergency card — fillable form */
+.wc-input {
+  border: none; border-bottom: 1.5px solid var(--teal, #1a6b72);
+  background: transparent; font: inherit; color: inherit;
+  padding: 0 4px; width: 220px; max-width: 100%;
+}
+.wc-input:focus { outline: none; border-bottom-color: var(--navy, #1f3864); background: #eef6f7; }
+.wc-tiny  { width: 52px; text-align: center; }
+.wc-short { width: 150px; }
+.wc-wide  { width: 290px; }
+.wc-check { margin-right: 12px; white-space: nowrap; }
+.wc-check input { accent-color: var(--teal, #1a6b72); }
+@media (max-width: 600px) { .wc-wide { width: 100%; } }
+@media print { .wc-actions { display: none !important; } .wc-input { border-bottom-color: #555; } }
+
 /* Dark mode */
 body.dark .related-card {
   background: #1a2535;
@@ -1658,18 +1673,25 @@ body.dark .related-card-title {
         <li><span data-lang="en">Weigh yourself the morning after — bring the number to your next session</span><span data-lang="tl" class="lang-hidden">Timbangin ang sarili kinaumagahan — dalhin ang numero sa susunod na sesyon</span><span data-lang="ceb" class="lang-hidden">Timbanga ang kaugalingon pagkabuntag — dad-a ang numero sa sunod nga sesyon</span><span data-lang="kap" class="lang-hidden">Timbangan ye ing sarili kabukasan abak — dalan ye ing numero king tutuking sesyon</span></li>
       </ul>
     </div>
-    <div class="feature-card" style="border:2px dashed var(--teal);">
-      <h4>💳 <span data-lang="en">Wallet emergency card — fill out, cut out, laminate</span><span data-lang="tl" class="lang-hidden">Wallet emergency card — sulatan, gupitin, i-laminate</span><span data-lang="ceb" class="lang-hidden">Wallet emergency card — sulati, guntinga, i-laminate</span><span data-lang="kap" class="lang-hidden">Wallet emergency card — sulatan, gupitan, i-laminate</span></h4>
-      <p style="font-size:14px;line-height:2;">
+    <div class="feature-card" id="wallet-card" style="border:2px dashed var(--teal);">
+      <h4>💳 <span data-lang="en">Wallet emergency card — fill out, print, laminate</span><span data-lang="tl" class="lang-hidden">Wallet emergency card — sulatan, i-print, i-laminate</span><span data-lang="ceb" class="lang-hidden">Wallet emergency card — sulati, i-print, i-laminate</span><span data-lang="kap" class="lang-hidden">Wallet emergency card — sulatan, i-print, i-laminate</span></h4>
+      <div id="wc-body" style="font-size:14px;line-height:2.1;">
         <strong>⚕ KIDNEY PATIENT — EMERGENCY CARD</strong><br>
-        Name: ______________________________<br>
-        <span data-lang="en">Diagnosis</span><span data-lang="tl" class="lang-hidden">Diagnosis</span><span data-lang="ceb" class="lang-hidden">Diagnosis</span><span data-lang="kap" class="lang-hidden">Diagnosis</span>: ☐ CKD stage ___ ☐ Hemodialysis ☐ PD<br>
-        <span data-lang="en">Dialysis days</span><span data-lang="tl" class="lang-hidden">Mga araw ng diyalisis</span><span data-lang="ceb" class="lang-hidden">Mga adlaw sa dialysis</span><span data-lang="kap" class="lang-hidden">Deng aldo ning diyalisis</span>: __________ Dry weight: ______ kg<br>
-        <span data-lang="en">Dialysis unit &amp; phone</span><span data-lang="tl" class="lang-hidden">Dialysis unit at telepono</span><span data-lang="ceb" class="lang-hidden">Dialysis unit ug telepono</span><span data-lang="kap" class="lang-hidden">Dialysis unit at telepono</span>: ______________________<br>
-        <span data-lang="en">Nephrologist</span><span data-lang="tl" class="lang-hidden">Nefrologo</span><span data-lang="ceb" class="lang-hidden">Nephrologist</span><span data-lang="kap" class="lang-hidden">Nefrologo</span>: ______________________________<br>
-        <span data-lang="en">Allergies</span><span data-lang="tl" class="lang-hidden">Mga allergy</span><span data-lang="ceb" class="lang-hidden">Mga allergy</span><span data-lang="kap" class="lang-hidden">Deng allergy</span>: ______________________________<br>
+        <label for="wc-name"><span data-lang="en">Name</span><span data-lang="tl" class="lang-hidden">Pangalan</span><span data-lang="ceb" class="lang-hidden">Ngalan</span><span data-lang="kap" class="lang-hidden">Lagyu</span>:</label> <input type="text" class="wc-input wc-wide" id="wc-name" autocomplete="name"><br>
+        <span data-lang="en">Diagnosis</span><span data-lang="tl" class="lang-hidden">Diagnosis</span><span data-lang="ceb" class="lang-hidden">Diagnosis</span><span data-lang="kap" class="lang-hidden">Diagnosis</span>:
+        <label class="wc-check"><input type="checkbox" id="wc-dx-ckd"> CKD stage <input type="text" class="wc-input wc-tiny" id="wc-stage" maxlength="3" aria-label="CKD stage"></label>
+        <label class="wc-check"><input type="checkbox" id="wc-dx-hd"> Hemodialysis</label>
+        <label class="wc-check"><input type="checkbox" id="wc-dx-pd"> PD</label><br>
+        <label for="wc-days"><span data-lang="en">Dialysis days</span><span data-lang="tl" class="lang-hidden">Mga araw ng diyalisis</span><span data-lang="ceb" class="lang-hidden">Mga adlaw sa dialysis</span><span data-lang="kap" class="lang-hidden">Deng aldo ning diyalisis</span>:</label> <input type="text" class="wc-input wc-short" id="wc-days" placeholder="e.g. Tue–Thu–Sat"> <label for="wc-weight">Dry weight:</label> <input type="text" class="wc-input wc-tiny" id="wc-weight" inputmode="decimal"> kg<br>
+        <label for="wc-unit"><span data-lang="en">Dialysis unit &amp; phone</span><span data-lang="tl" class="lang-hidden">Dialysis unit at telepono</span><span data-lang="ceb" class="lang-hidden">Dialysis unit ug telepono</span><span data-lang="kap" class="lang-hidden">Dialysis unit at telepono</span>:</label> <input type="text" class="wc-input wc-wide" id="wc-unit"><br>
+        <label for="wc-neph"><span data-lang="en">Nephrologist</span><span data-lang="tl" class="lang-hidden">Nefrologo</span><span data-lang="ceb" class="lang-hidden">Nephrologist</span><span data-lang="kap" class="lang-hidden">Nefrologo</span>:</label> <input type="text" class="wc-input wc-wide" id="wc-neph"><br>
+        <label for="wc-allergy"><span data-lang="en">Allergies</span><span data-lang="tl" class="lang-hidden">Mga allergy</span><span data-lang="ceb" class="lang-hidden">Mga allergy</span><span data-lang="kap" class="lang-hidden">Deng allergy</span>:</label> <input type="text" class="wc-input wc-wide" id="wc-allergy"><br>
         <strong style="color:var(--red);"><span data-lang="en">IN EMERGENCY: check serum potassium + ECG immediately. Patient may need urgent dialysis.</span><span data-lang="tl" class="lang-hidden">SA EMERGENCY: suriin agad ang serum potassium + ECG. Maaaring kailanganin ng pasyente ang madaliang diyalisis.</span><span data-lang="ceb" class="lang-hidden">SA EMERGENCY: susiha dayon ang serum potassium + ECG. Mahimong magkinahanglan ang pasyente og dinaliang dialysis.</span><span data-lang="kap" class="lang-hidden">KING EMERGENCY: suriin yang agad ing serum potassium + ECG. Malyaring kailanganan ne ning pasyente ing madaliang diyalisis.</span></strong>
-      </p>
+      </div>
+      <div class="wc-actions" style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;align-items:center;">
+        <button type="button" onclick="printWalletCard()" style="background:var(--teal);color:#fff;border:none;border-radius:8px;padding:9px 16px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;">🖨 <span data-lang="en">Print / save card as PDF</span><span data-lang="tl" class="lang-hidden">I-print / i-save ang card bilang PDF</span><span data-lang="ceb" class="lang-hidden">I-print / i-save ang card isip PDF</span><span data-lang="kap" class="lang-hidden">I-print / i-save ing card bilang PDF</span></button>
+        <span style="font-size:12px;color:var(--text-faint);"><span data-lang="en">Your entries save automatically on this device.</span><span data-lang="tl" class="lang-hidden">Awtomatikong nase-save ang inyong sagot sa device na ito.</span><span data-lang="ceb" class="lang-hidden">Awtomatikong ma-save ang imong gisulat niining device.</span><span data-lang="kap" class="lang-hidden">Awtomatikung mise-save ing kekayung pakibat king device a ini.</span></span>
+      </div>
     </div>
   </div>
 
@@ -1825,6 +1847,12 @@ body.dark .related-card-title {
     <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
   </svg>
 </button>
+<a class="dl-fab" href="../downloads/wgmr-holiday-kidney-syndrome-guide.pdf" download aria-label="Download the Holiday Kidney Syndrome companion PDF">
+  <span class="p-tip">Download PDF companion</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+  </svg>
+</a>
 <script>
 const DARK_KEY='wgmr-dark',DESK_KEY='wgmr-desktop';
 function applyDark(on){document.documentElement.setAttribute('data-theme',on?'dark':'light');const btn=document.getElementById('darkToggle');const lbl=document.getElementById('darkLabel');const ico=document.getElementById('darkIcon');if(btn)btn.classList.toggle('active',on);if(lbl)lbl.textContent=on?'Light':'Dark';if(ico)ico.innerHTML=on?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';}
@@ -1843,6 +1871,55 @@ function setMode(mode){
   localStorage.setItem(GMODE,mode);
   const aud=document.querySelector('.audience-tabs');
   if(aud)window.scrollTo({top:aud.offsetTop-56,behavior:'smooth'});
+}
+
+// Wallet emergency card — persistence + card-only printing
+const WC_KEY='wgmr-wallet-card';
+const WC_FIELDS=['wc-name','wc-stage','wc-days','wc-weight','wc-unit','wc-neph','wc-allergy'];
+const WC_CHECKS=['wc-dx-ckd','wc-dx-hd','wc-dx-pd'];
+(function initWalletCard(){
+  let saved={};
+  try{saved=JSON.parse(localStorage.getItem(WC_KEY)||'{}');}catch(e){}
+  WC_FIELDS.forEach(id=>{const el=document.getElementById(id);if(!el)return;if(saved[id])el.value=saved[id];el.addEventListener('input',saveWalletCard);});
+  WC_CHECKS.forEach(id=>{const el=document.getElementById(id);if(!el)return;if(saved[id])el.checked=true;el.addEventListener('change',saveWalletCard);});
+})();
+function saveWalletCard(){
+  const data={};
+  WC_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&el.value)data[id]=el.value;});
+  WC_CHECKS.forEach(id=>{const el=document.getElementById(id);if(el&&el.checked)data[id]=true;});
+  try{localStorage.setItem(WC_KEY,JSON.stringify(data));}catch(e){}
+}
+function printWalletCard(){
+  const v=id=>{const el=document.getElementById(id);return el?(el.value||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])):'';};
+  const c=id=>document.getElementById(id)&&document.getElementById(id).checked;
+  const dx=[c('wc-dx-ckd')?('CKD stage '+(v('wc-stage')||'___')):null,c('wc-dx-hd')?'Hemodialysis':null,c('wc-dx-pd')?'Peritoneal dialysis':null].filter(Boolean).join(' · ')||'____________________';
+  const line=(lbl,val,w)=>'<div class="row"><span class="lbl">'+lbl+':</span><span class="val">'+(val||'')+'</span></div>';
+  const card='<div class="card"><div class="hd">⚕ KIDNEY PATIENT — EMERGENCY CARD</div>'
+    +line('Name',v('wc-name'))
+    +line('Diagnosis',dx)
+    +line('Dialysis days',v('wc-days')+(v('wc-weight')?' · Dry weight: '+v('wc-weight')+' kg':''))
+    +line('Dialysis unit & phone',v('wc-unit'))
+    +line('Nephrologist',v('wc-neph'))
+    +line('Allergies',v('wc-allergy'))
+    +'<div class="alert">IN EMERGENCY: check serum potassium + ECG immediately. Patient may need urgent dialysis.</div>'
+    +'<div class="src">williamriveromd.com/guides/surviving-fiestas-holidays-ckd.html</div></div>';
+  const w=window.open('','_blank','width=760,height=560');
+  if(!w){alert('Please allow pop-ups to print the card.');return;}
+  w.document.write('<!DOCTYPE html><html><head><title>Kidney Patient Emergency Card</title><style>'
+    +'body{font-family:Arial,Helvetica,sans-serif;margin:24px;color:#1e2a38;}'
+    +'p.note{font-size:12px;color:#555;}'
+    +'.card{width:3.6in;border:2px solid #1a6b72;border-radius:10px;padding:10px 12px;margin:0 0 14px;page-break-inside:avoid;}'
+    +'.hd{font-size:11px;font-weight:bold;color:#1f3864;border-bottom:1.5px solid #1a6b72;padding-bottom:4px;margin-bottom:6px;letter-spacing:.02em;}'
+    +'.row{font-size:10.5px;display:flex;gap:4px;border-bottom:1px dotted #b9c4cf;padding:3px 0;}'
+    +'.lbl{font-weight:bold;color:#1a6b72;white-space:nowrap;}'
+    +'.val{flex:1;min-height:12px;}'
+    +'.alert{font-size:9.5px;font-weight:bold;color:#b91c1c;margin-top:6px;line-height:1.35;}'
+    +'.src{font-size:7.5px;color:#8a96a3;margin-top:5px;}'
+    +'@media print{p.note{display:none;}body{margin:0.4in;}}'
+    +'</style></head><body><p class="note">Two copies — one for your wallet, one spare for your bag or a family member. Cut along the borders and laminate if possible.</p>'
+    +card+card+'</body></html>');
+  w.document.close();w.focus();
+  setTimeout(function(){w.print();},300);
 }
 
 // Language toggle for guide pages

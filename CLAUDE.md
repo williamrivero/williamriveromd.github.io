@@ -102,6 +102,15 @@ and the footer. The script is idempotent. **When building a new guide, always pl
 dr-card-wrap and related-guides immediately before `<footer class="guide-footer">`, outside
 `<main>`, as the very last HTML before the footer.**
 
+```bash
+python3 generate_holiday_companion_pdf.py    # rebuild downloads/wgmr-holiday-kidney-syndrome-guide.pdf
+```
+
+Run `generate_holiday_companion_pdf.py` (requires `pip install reportlab pillow`)
+after updating any of the Holiday Kidney Syndrome guide's images — it rebuilds the
+patient companion PDF from `images/holiday-kidney-syndrome-*.png` plus condensed
+guide text.
+
 The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.
 
 There are no automated tests or linters.
