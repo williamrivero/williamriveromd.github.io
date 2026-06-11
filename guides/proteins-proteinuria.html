@@ -1787,7 +1787,59 @@ body.dark .related-card-title {
     <div class="disclaimer"><strong><span data-lang="en">Important</span><span data-lang="tl" class="lang-hidden">Mahalagang Paalala</span><span data-lang="ceb" class="lang-hidden">Importante nga Pahibalo</span>
       <span data-lang="kap" class="lang-hidden">Mahalagang Paalala</span>:</strong> <span data-lang="en">Proteinuria management requires individualized care. Never start medications without physician guidance — the appropriate agent depends on your diagnosis, kidney function, blood pressure, and potassium level.</span><span data-lang="tl" class="lang-hidden">Ang pamamahala ng proteinuria ay nangangailangan ng indibidwalisadong pag-aalaga. Huwag magsimula ng mga gamot nang walang gabay ng doktor — ang angkop na gamot ay nakasalalay sa inyong diagnosis, function ng bato, presyon ng dugo, at antas ng potassium.</span><span data-lang="ceb" class="lang-hidden">Ang pamamahala sa proteinuria nanginahanglan og indibidwalisadong pag-atiman. Ayaw sugdi ang mga tambal nga walay giya sa doktor — ang angay nga tambal nagdepende sa inyong diagnosis, function sa kidney, presyon sa dugo, ug antas sa potassium.</span>
       <span data-lang="kap" class="lang-hidden">Ing pamamahala ning proteinuria ya nangangailangan ning indibidwalisadong pag-aalaga. Eka magsimula ning deng gamut nang alang gabay ning doktor — ing angkop a gamut ya nakasalalay king inyu diagnosis, function ning batu, presyon ning daya, at antas ning potassium.</span></div>
-    
+
+  </section>
+
+  <section class="section" id="acr-pcr-convert">
+    <div class="section-tag"><span data-lang="en">Interactive Tool</span><span data-lang="tl" class="lang-hidden">Interactive na Kasangkapan</span><span data-lang="ceb" class="lang-hidden">Interactive nga Himan</span><span data-lang="kap" class="lang-hidden">Interactive a Kasangkapan</span></div>
+    <h2><span data-lang="en">Albuminuria / Proteinuria Converter — uACR, uPCR &amp; 24-Hour Estimate</span><span data-lang="tl" class="lang-hidden">Albuminuria / Proteinuria Converter — uACR, uPCR at 24-Oras na Tantya</span><span data-lang="ceb" class="lang-hidden">Albuminuria / Proteinuria Converter — uACR, uPCR ug 24-Oras nga Banabana</span><span data-lang="kap" class="lang-hidden">Albuminuria / Proteinuria Converter — uACR, uPCR at 24-Oras a Tantya</span></h2>
+    <p><span data-lang="en">Urine protein can be reported in several ways — albumin-to-creatinine ratio (uACR), protein-to-creatinine ratio (uPCR), or as a 24-hour collection. Enter whichever result you have and this tool will estimate the others, the rough 24-hour protein loss, and your KDIGO albuminuria category (A1, A2, or A3). All conversions are approximations meant to help you understand your numbers — your doctor's interpretation is what counts.</span><span data-lang="tl" class="lang-hidden">Ang protina sa ihi ay maaaring iulat sa iba't ibang paraan — albumin-to-creatinine ratio (uACR), protein-to-creatinine ratio (uPCR), o bilang 24-oras na koleksyon. Ilagay ang anumang resulta na mayroon kayo at tatantyahin ng tool na ito ang iba pa, ang tinatayang 24-oras na pagkawala ng protina, at ang inyong KDIGO albuminuria category (A1, A2, o A3). Lahat ng conversion ay tantya lamang upang matulungan kayong maunawaan ang inyong mga numero — ang interpretasyon ng inyong doktor ang mahalaga.</span><span data-lang="ceb" class="lang-hidden">Ang protina sa ihi mahimong i-report sa lainlaing paagi — albumin-to-creatinine ratio (uACR), protein-to-creatinine ratio (uPCR), o isip 24-oras nga koleksyon. Isulod ang bisan unsang resulta nga aduna kamo ug kini nga himan mobanabana sa uban, sa banabana nga 24-oras nga kawala sa protina, ug sa inyong KDIGO albuminuria category (A1, A2, o A3). Tanan nga conversion banabana lamang aron matabangan kamo nga masabtan ang inyong mga numero — ang interpretasyon sa inyong doktor ang mahinungdanon.</span><span data-lang="kap" class="lang-hidden">Ing protina king ihi ya maaaring iulat king kaiba-ibang paraan — albumin-to-creatinine ratio (uACR), protein-to-creatinine ratio (uPCR), o bilang 24-oras a koleksyon. Ilagay ing anumang resulta a atin kayu at tatantyahin ning tool a ini ing aliwa pa, ing tinatayang 24-oras a pamipawala ning protina, at ing inyu KDIGO albuminuria category (A1, A2, o A3). Amin a conversion ya tantya lamang upang matulungan kayung maintindihan ing inyu deng numero — ing interpretasyon ning inyu doktor ing mahalaga.</span></p>
+    <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="conv-btn-conv" onclick="switchConvUnit('conv')">Conventional (mg/g)</button>
+          <button class="unit-btn" id="conv-btn-si" onclick="switchConvUnit('si')">SI (mg/mmol)</button>
+        </div>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label for="cv-which"><span data-lang="en">Which result do you have?</span><span data-lang="tl" class="lang-hidden">Aling resulta ang mayroon kayo?</span><span data-lang="ceb" class="lang-hidden">Unsang resulta ang aduna kamo?</span><span data-lang="kap" class="lang-hidden">Nung anung resulta ing atin kayu?</span></label>
+          <select id="cv-which" onchange="calcConv()">
+            <option value="acr">uACR — Albumin:Creatinine Ratio</option>
+            <option value="pcr">uPCR — Protein:Creatinine Ratio</option>
+          </select>
+          <div class="field-hint"><span data-lang="en">Pick the ratio your lab reported. uACR measures albumin only; uPCR measures total protein.</span><span data-lang="tl" class="lang-hidden">Piliin ang ratio na iniulat ng inyong lab. Ang uACR ay albumin lamang; ang uPCR ay total protein.</span><span data-lang="ceb" class="lang-hidden">Pilia ang ratio nga gi-report sa inyong lab. Ang uACR albumin lamang; ang uPCR total protein.</span><span data-lang="kap" class="lang-hidden">Piliin ing ratio a iniulat ning inyu lab. Ing uACR ya albumin lamang; ing uPCR ya total protein.</span></div>
+        </div>
+        <div class="calc-field">
+          <label id="cv-lbl-val" for="cv-val">uACR (mg/g)</label>
+          <input id="cv-val" type="number" min="0" max="30000" step="1" placeholder="e.g. 250" oninput="calcConv()">
+          <div class="field-hint" id="cv-hint-val">Enter the value as reported. Spot/random sample. Normal uACR &lt;30 mg/g.</div>
+        </div>
+      </div>
+      <div class="calc-result-box" id="conv-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:22px;" id="cv-kdigo">—</div>
+            <div class="cml">KDIGO Albuminuria Category</div>
+            <div class="cmt" id="cv-kdigo-label">A1 / A2 / A3</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="cv-24h">—</div>
+            <div class="cml">Estimated 24-h Protein</div>
+            <div class="cmt" id="cv-24h-label">grams per day</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:18px;" id="cv-counterpart">—</div>
+            <div class="cml" id="cv-counterpart-label">Estimated counterpart ratio</div>
+            <div class="cmt" id="cv-counterpart-note">approximate</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="cv-verdict"></div>
+        <div class="calc-action-text" id="cv-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ Spot ratios estimate 24-hour excretion assuming adults make ~1 g creatinine/day, so uACR (mg/g) ≈ 24-h albumin (mg/day) and uPCR (mg/g) ≈ 24-h total protein (mg/day); divide by 1000 for g/day. KDIGO albuminuria: A1 &lt;30, A2 30–300, A3 &gt;300 mg/g. The uACR↔uPCR conversion here is a rough estimate (uPCR ≈ uACR ÷ 0.7) because protein and albumin are non-linearly related — a directly measured value is always preferred. A single elevated result should be confirmed with a repeat test before any diagnosis; physician interpretation is required.</p>
+    </div>
   </section>
 </main>
 
@@ -2038,6 +2090,136 @@ function calcProt() {
 
   document.getElementById('pr-verdict').innerHTML='<strong style="color:'+riskColor+'">'+riskLevel+' Risk — '+gCat+'/'+aCat+'</strong> — '+verdict;
   document.getElementById('pr-action').innerHTML='<strong style="color:'+riskColor+'">Recommended action:</strong> '+action;
+}
+</script>
+
+<script>
+// Albuminuria / Proteinuria converter — uACR / uPCR / 24-h estimate / KDIGO category.
+// Canonical unit for all logic is mg/g. SI (mg/mmol) is converted in via ×8.84.
+// ACR<->PCR is a rough estimate (uPCR ≈ uACR ÷ 0.7) — directly measured value preferred.
+const CONV_MGMMOL_TO_MGG = 8.84;
+const ACR_PCR_FACTOR = 0.7; // uACR ≈ uPCR × 0.7  (so uPCR ≈ uACR ÷ 0.7)
+
+function switchConvUnit(u) {
+  const isSI = u === 'si';
+  document.getElementById('conv-btn-conv').classList.toggle('active', !isSI);
+  document.getElementById('conv-btn-si').classList.toggle('active', isSI);
+  const inp = document.getElementById('cv-val');
+  const which = document.getElementById('cv-which').value;
+  if (isSI) {
+    inp.max = '3390'; inp.step = '0.1'; inp.placeholder = which === 'pcr' ? 'e.g. 40' : 'e.g. 28';
+    document.getElementById('cv-hint-val').textContent = 'Enter the value as reported (mg/mmol). Spot/random sample. Normal uACR <3 mg/mmol.';
+  } else {
+    inp.max = '30000'; inp.step = '1'; inp.placeholder = which === 'pcr' ? 'e.g. 350' : 'e.g. 250';
+    document.getElementById('cv-hint-val').textContent = 'Enter the value as reported (mg/g). Spot/random sample. Normal uACR <30 mg/g.';
+  }
+  inp.value = '';
+  document.getElementById('conv-result').style.display = 'none';
+}
+
+function calcConv() {
+  const which = document.getElementById('cv-which').value; // 'acr' or 'pcr'
+  const raw = parseFloat(document.getElementById('cv-val').value);
+  const res = document.getElementById('conv-result');
+  const isSI = document.getElementById('conv-btn-si').classList.contains('active');
+  const unit = isSI ? ' mg/mmol' : ' mg/g';
+
+  // Update field label/hint to match the selected ratio
+  document.getElementById('cv-lbl-val').textContent = (which === 'pcr' ? 'uPCR (' : 'uACR (') + (isSI ? 'mg/mmol)' : 'mg/g)');
+
+  if (isNaN(raw) || raw <= 0) { res.style.display = 'none'; return; }
+
+  // Convert entered value to canonical mg/g
+  const valMgg = isSI ? raw * CONV_MGMMOL_TO_MGG : raw;
+
+  // Derive both ratios in mg/g (canonical)
+  let acrMgg, pcrMgg;
+  if (which === 'acr') { acrMgg = valMgg; pcrMgg = valMgg / ACR_PCR_FACTOR; }
+  else { pcrMgg = valMgg; acrMgg = valMgg * ACR_PCR_FACTOR; }
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+  // KDIGO albuminuria category from uACR (mg/g)
+  let cat, color, label, dipstick;
+  if (acrMgg < 30) {
+    cat = 'A1'; color = '#2d7a4f';
+    label = 'Normal–mildly increased (<30 mg/g)';
+    dipstick = 'usually dipstick-negative or trace';
+  } else if (acrMgg <= 300) {
+    cat = 'A2'; color = isDark ? '#f5a623' : '#9a6500';
+    label = 'Moderately increased (30–300 mg/g)';
+    dipstick = 'often dipstick-negative to 1+ (dipstick misses this range)';
+  } else {
+    cat = 'A3'; color = '#c0392b';
+    label = 'Severely increased (>300 mg/g)';
+    dipstick = 'usually dipstick 1+ or higher';
+  }
+
+  // 24-h estimates (mg/g ≈ mg/day; /1000 → g/day)
+  const alb24 = acrMgg / 1000;   // g/day albumin (from uACR)
+  const prot24 = pcrMgg / 1000;  // g/day total protein (from uPCR)
+
+  // Display value formatter for mg/g <-> mg/mmol
+  const fmt = v => isSI ? (v / CONV_MGMMOL_TO_MGG).toFixed(1) + ' mg/mmol' : Math.round(v) + ' mg/g';
+
+  // Result box colours (band by KDIGO category)
+  const borderColor = color;
+  const bg = cat === 'A1' ? (isDark ? 'rgba(45,122,79,.08)' : '#edf7f2')
+           : cat === 'A2' ? (isDark ? 'rgba(154,101,0,.08)' : '#fef9ec')
+           : (isDark ? 'rgba(192,57,43,.08)' : '#fdf0ef');
+  res.style.display = 'block';
+  res.style.background = bg;
+  res.style.borderColor = borderColor;
+
+  // Metric 1 — KDIGO category
+  const kEl = document.getElementById('cv-kdigo');
+  kEl.textContent = cat; kEl.style.color = color;
+  const klEl = document.getElementById('cv-kdigo-label');
+  klEl.textContent = label; klEl.style.color = color;
+
+  // Metric 2 — estimated 24-h total protein (g/day)
+  const h24 = document.getElementById('cv-24h');
+  h24.textContent = prot24.toFixed(2) + ' g/day'; h24.style.color = color;
+  document.getElementById('cv-24h-label').style.color = color;
+  document.getElementById('cv-24h-label').textContent = 'Total protein (≈ ' + Math.round(alb24 * 100) / 100 + ' g/day albumin)';
+
+  // Metric 3 — converted counterpart ratio
+  const cpEl = document.getElementById('cv-counterpart');
+  const cpLblEl = document.getElementById('cv-counterpart-label');
+  if (which === 'acr') {
+    cpEl.textContent = fmt(pcrMgg);
+    cpLblEl.textContent = 'Estimated uPCR (from uACR)';
+  } else {
+    cpEl.textContent = fmt(acrMgg);
+    cpLblEl.textContent = 'Estimated uACR (from uPCR)';
+  }
+  cpEl.style.color = color;
+  cpLblEl.style.color = color;
+  document.getElementById('cv-counterpart-note').style.color = color;
+
+  // Verdict
+  const entered = (which === 'acr' ? 'uACR ' : 'uPCR ') + fmt(valMgg);
+  let plain;
+  if (cat === 'A1') plain = 'A1 means a normal to only mildly increased amount of albumin in your urine.';
+  else if (cat === 'A2') plain = 'A2 means moderately increased albumin in your urine — an early sign of kidney damage that is often invisible on a standard dipstick.';
+  else plain = 'A3 means severely increased protein in your urine — a marker of significant kidney damage and higher risk of progression.';
+  document.getElementById('cv-verdict').innerHTML =
+    '<strong style="color:' + color + '">KDIGO ' + cat + ' — ' + label + '</strong> — ' +
+    'You entered ' + entered + '. ' + plain +
+    ' Estimated 24-hour loss ≈ ' + prot24.toFixed(2) + ' g/day total protein (≈ ' + alb24.toFixed(2) +
+    ' g/day albumin), assuming roughly 1 g/day of urine creatinine. On dipstick this typically reads as: ' + dipstick + '.';
+
+  // Action
+  let action;
+  if (cat === 'A1') {
+    action = 'No specific albuminuria treatment is triggered by this number alone. If you have diabetes or high blood pressure, keep them well controlled and recheck uACR at least once a year.';
+  } else {
+    action = 'A single elevated result should be confirmed with a repeat test (ideally a first-morning uACR), because hydration, exercise, fever, and infection can raise it temporarily. ' +
+      'Work with your doctor to optimise blood pressure (target <130/80) and blood sugar, and to discuss whether an ACE inhibitor or ARB and/or an SGLT2 inhibitor is appropriate to reduce protein loss and protect your kidneys.';
+    if (cat === 'A3') action += ' At A3 levels, prompt nephrology follow-up is advised.';
+  }
+  document.getElementById('cv-action').innerHTML =
+    '<strong style="color:' + color + '">Recommended action:</strong> ' + action;
 }
 </script>
 

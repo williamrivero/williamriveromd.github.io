@@ -1523,6 +1523,89 @@ body.dark .related-card-title {
 </table>
 <div class="disclaimer" data-lang="en"><strong>Important:</strong> AKI-on-CKD is a medical emergency requiring hospitalization and immediate nephrology consultation. This guide provides educational information only — it does not replace individualized medical management. If you suspect AKI (rising creatinine, reduced urine output, swelling, confusion), go to the emergency department immediately.</div><div class="disclaimer lang-hidden" data-lang="tl"><strong>Mahalaga:</strong> Ang AKI-on-CKD ay isang medical emergency na nangangailangan ng pagpapaospital at agarang konsultasyon sa nephrologist. Ang gabay na ito ay nagbibigay lamang ng pang-edukasyong impormasyon — hindi ito pumapalit sa indibidwal na medikal na pamamahala. Kung pinaghihinalaan mong may AKI (tumataas na creatinine, bumabang urine output, pamamaga, pagkalito), pumunta agad sa emergency department.</div><div class="disclaimer lang-hidden" data-lang="ceb"><strong>Importante:</strong> Ang AKI-on-CKD usa ka medical emergency nga nagkinahanglan og hospitalization ug diha-diha nga nephrology consultation. Kini nga giya naghatag lamang og educational information — dili kini mopuli sa individualized medical management. Kung nagduda ka og AKI (pagtaas sa creatinine, pagkunhod sa urine output, panghupong, kalibog), adto dayon sa emergency department.</div><div class="disclaimer lang-hidden" data-lang="kap"><strong>Mahalaga:</strong> Ing AKI-on-CKD ya metung a medical emergency na nangangailangan ning pagpapaospital at agarang konsultasyon sa nephrologist. Ing gabay na ini ya nagbibigay lamang ning pang-edukasyong impormasyon — ali ini pumapalit sa indibidwal na medikal na pamamahala. Nung pinaghihinalaan mong may AKI (tumatas a creatinine, bumabang urine output, pamamaga, pagkalini), pumunta agad sa emergency department.</div>
 </section>
+<!-- KDIGO AKI STAGING CALCULATOR -->
+<section class="section" id="aki-stage-calc">
+<div class="section-tag">Interactive Tool</div>
+<h2><span data-lang="en">KDIGO AKI Staging Tool — Stage Acute Kidney Injury from Creatinine &amp; Urine Output</span><span data-lang="tl" class="lang-hidden">KDIGO AKI Staging Tool — Tukuyin ang Yugto ng Acute Kidney Injury mula sa Creatinine at Urine Output</span><span data-lang="ceb" class="lang-hidden">KDIGO AKI Staging Tool — Hibal-i ang Stage sa Acute Kidney Injury gikan sa Creatinine ug Urine Output</span><span data-lang="kap" class="lang-hidden">KDIGO AKI Staging Tool — Akakit ya ing Yugto ning Acute Kidney Injury manibat king Creatinine at Urine Output</span></h2>
+<p><span data-lang="en">Enter your baseline (CKD) creatinine and your current creatinine to see whether you meet KDIGO 2012 criteria for acute kidney injury, and at what stage. You can optionally add urine output — the final stage is the worse of the creatinine-based and urine-output-based criteria.</span><span data-lang="tl" class="lang-hidden">Ilagay ang iyong baseline (CKD) creatinine at ang kasalukuyang creatinine upang makita kung naaabot mo ang KDIGO 2012 criteria para sa acute kidney injury, at sa anong yugto. Maaari ring magdagdag ng urine output — ang huling yugto ay ang mas malala sa creatinine at urine-output na pamantayan.</span><span data-lang="ceb" class="lang-hidden">Isulod ang imong baseline (CKD) creatinine ug ang imong karon nga creatinine aron makita kon nakaabot ka ba sa KDIGO 2012 criteria alang sa acute kidney injury, ug sa unsa nga stage. Mahimo ka usab magdugang og urine output — ang kataposang stage mao ang mas grabe sa creatinine ug urine-output nga sukdanan.</span><span data-lang="kap" class="lang-hidden">Ilage ye ing kekang baseline (CKD) creatinine at ing kasalukuyan a creatinine ban akit mo nung makaabot ka king KDIGO 2012 criteria para king acute kidney injury, at king nanu a yugto. Pwede ka mu rin mag-dagdag urine output — ing tauling yugto iya ing mas grabe king creatinine at urine-output a sukdanan.</span></p>
+<div class="calc-wrap">
+<div class="unit-toggle-wrap">
+<span class="ut-label">Units:</span>
+<div class="unit-toggle">
+<button class="unit-btn active" id="aki-btn-conv" onclick="switchAKIUnit('conv')">mg/dL</button>
+<button class="unit-btn" id="aki-btn-si" onclick="switchAKIUnit('si')">µmol/L</button>
+</div>
+</div>
+<div class="calc-grid">
+<div class="calc-field">
+<label id="aki-lbl-base">Baseline Creatinine (mg/dL)</label>
+<input id="aki-base" min="0" oninput="calcAKI()" placeholder="e.g. 1.4" step="0.1" type="number"/>
+<div class="field-hint" id="aki-hint-base">Patient's known stable CKD baseline (best recent value when well)</div>
+</div>
+<div class="calc-field">
+<label id="aki-lbl-curr">Current Creatinine (mg/dL)</label>
+<input id="aki-curr" min="0" oninput="calcAKI()" placeholder="e.g. 2.8" step="0.1" type="number"/>
+<div class="field-hint" id="aki-hint-curr">Most recent / peak value during this episode</div>
+</div>
+<div class="calc-field">
+<label><input type="checkbox" id="aki-rrt" onchange="calcAKI()"/> Started dialysis/RRT for this episode</label>
+<div class="field-hint">Initiation of renal replacement therapy automatically = Stage 3</div>
+</div>
+</div>
+<div class="calc-field" style="margin-top:6px;">
+<label style="font-weight:600;color:var(--navy);">Optional — Urine output criteria</label>
+<div class="field-hint">Stage is the worse of the creatinine and urine-output criteria. Requires accurate hourly measurement.</div>
+</div>
+<div class="calc-grid">
+<div class="calc-field">
+<label>Urine output (mL/kg/h)</label>
+<input id="aki-uo" min="0" oninput="calcAKI()" placeholder="e.g. 0.4" step="0.1" type="number"/>
+<div class="field-hint">Enter directly, OR fill the three fields below and this is computed for you.</div>
+</div>
+<div class="calc-field">
+<label>Urine volume (mL)</label>
+<input id="aki-uo-ml" min="0" oninput="computeAKIuo()" placeholder="e.g. 240" step="1" type="number"/>
+<div class="field-hint">Total urine over the measured period</div>
+</div>
+<div class="calc-field">
+<label>Over how many hours</label>
+<input id="aki-uo-hr" min="0" oninput="computeAKIuo()" placeholder="e.g. 12" step="1" type="number"/>
+<div class="field-hint">Duration of the collection</div>
+</div>
+<div class="calc-field">
+<label>Body weight (kg)</label>
+<input id="aki-uo-wt" min="0" oninput="computeAKIuo()" placeholder="e.g. 60" step="0.5" type="number"/>
+<div class="field-hint">Used to convert mL → mL/kg/h</div>
+</div>
+<div class="calc-field">
+<label>Duration of low urine output (hours)</label>
+<input id="aki-uo-dur" min="0" oninput="calcAKI()" placeholder="e.g. 12" step="1" type="number"/>
+<div class="field-hint">How long the urine output has stayed low (drives UO stage)</div>
+</div>
+<div class="calc-field">
+<label><input type="checkbox" id="aki-anuria" onchange="calcAKI()"/> Anuria (essentially no urine)</label>
+<div class="field-hint">Anuria ≥12 h = Stage 3</div>
+</div>
+</div>
+<div class="calc-result-box" id="aki-result">
+<div class="calc-metrics-row">
+<div class="calc-metric-card">
+<div class="cmv" id="aki-ratio-val">—</div>
+<div class="cml">Creatinine ratio</div>
+<div class="cmt" id="aki-ratio-badge">× baseline</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="aki-stage-val">—</div>
+<div class="cml">AKI Stage</div>
+<div class="cmt" id="aki-stage-badge">KDIGO 2012</div>
+</div>
+</div>
+<div class="calc-verdict-text" id="aki-verdict"></div>
+<div class="calc-action-text" id="aki-action"></div>
+</div>
+<p class="calc-disclaimer">⚕ Staging follows the KDIGO 2012 Clinical Practice Guideline for Acute Kidney Injury. The final stage is the worse of the serum-creatinine and urine-output criteria. In AKI-on-CKD, the same relative criteria are applied against the patient's known CKD baseline creatinine. Urine-output criteria require accurate hourly measurement (usually a catheter) and clinical correlation — this tool is an educational aid and does not replace bedside physician assessment.</p>
+</div>
+</section>
 </main>
 
     <!-- DR CARD -->
@@ -1588,6 +1671,131 @@ body.dark .related-card-title {
 <button class="float-btn" id="darkToggle2" onclick="toggleDark()"><span class="float-tooltip">Dark mode</span><svg fill="none" id="darkIcon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
 <button class="float-btn" id="desktopToggle2" onclick="toggleDesktop()"><span class="float-tooltip">Desktop view</span><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="14" rx="2" width="20" x="2" y="3"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg></button>
 </div>
+<script>
+function switchAKIUnit(u){
+  const isSI=u==='si';
+  document.getElementById('aki-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('aki-btn-si').classList.toggle('active',isSI);
+  const base=document.getElementById('aki-base'), curr=document.getElementById('aki-curr');
+  if(isSI){
+    document.getElementById('aki-lbl-base').textContent='Baseline Creatinine (µmol/L)';
+    document.getElementById('aki-lbl-curr').textContent='Current Creatinine (µmol/L)';
+    base.placeholder='e.g. 124'; base.step='1';
+    curr.placeholder='e.g. 248'; curr.step='1';
+  } else {
+    document.getElementById('aki-lbl-base').textContent='Baseline Creatinine (mg/dL)';
+    document.getElementById('aki-lbl-curr').textContent='Current Creatinine (mg/dL)';
+    base.placeholder='e.g. 1.4'; base.step='0.1';
+    curr.placeholder='e.g. 2.8'; curr.step='0.1';
+  }
+  base.value=''; curr.value='';
+  const res=document.getElementById('aki-result'); if(res) res.style.display='none';
+}
+
+function computeAKIuo(){
+  const ml=parseFloat(document.getElementById('aki-uo-ml').value);
+  const hr=parseFloat(document.getElementById('aki-uo-hr').value);
+  const wt=parseFloat(document.getElementById('aki-uo-wt').value);
+  if(!isNaN(ml)&&!isNaN(hr)&&!isNaN(wt)&&hr>0&&wt>0){
+    document.getElementById('aki-uo').value=(ml/wt/hr).toFixed(2);
+  }
+  calcAKI();
+}
+
+function calcAKI(){
+  const res=document.getElementById('aki-result');
+  let baseRaw=parseFloat(document.getElementById('aki-base').value);
+  let currRaw=parseFloat(document.getElementById('aki-curr').value);
+  if(isNaN(baseRaw)||isNaN(currRaw)||baseRaw<=0||currRaw<0){ res.style.display='none'; return; }
+
+  const isSI=document.getElementById('aki-btn-si').classList.contains('active');
+  // canonical = mg/dL (µmol/L ÷ 88.42)
+  const base=isSI?baseRaw/88.42:baseRaw;
+  const curr=isSI?currRaw/88.42:currRaw;
+  const dCr=v=>isSI?(v*88.42).toFixed(0)+' µmol/L':v.toFixed(1)+' mg/dL';
+
+  const rrt=document.getElementById('aki-rrt').checked;
+  const anuria=document.getElementById('aki-anuria').checked;
+  const uo=parseFloat(document.getElementById('aki-uo').value);   // mL/kg/h
+  const uoDur=parseFloat(document.getElementById('aki-uo-dur').value); // hours
+  const haveUO=!isNaN(uo);
+
+  const ratio=curr/base;
+  const absRise=curr-base; // mg/dL
+
+  // ── Creatinine-based stage ──
+  let crStage=0, crReason='';
+  if(rrt){ crStage=3; crReason='renal replacement therapy (dialysis) was started'; }
+  else if(curr>=4.0){ crStage=3; crReason='current creatinine has risen to ≥4.0 mg/dL ('+dCr(4.0)+')'; }
+  else if(ratio>=3.0){ crStage=3; crReason='creatinine is ≥3.0× baseline'; }
+  else if(ratio>=2.0){ crStage=2; crReason='creatinine is 2.0–2.9× baseline'; }
+  else if(ratio>=1.5){ crStage=1; crReason='creatinine is 1.5–1.9× baseline'; }
+  else if(absRise>=0.3){ crStage=1; crReason='creatinine rose by ≥0.3 mg/dL ('+dCr(0.3)+') within 48 h'; }
+
+  // ── Urine-output-based stage ──
+  let uoStage=0, uoReason='';
+  if(anuria&&!isNaN(uoDur)&&uoDur>=12){ uoStage=3; uoReason='anuria for ≥12 h'; }
+  else if(anuria&&isNaN(uoDur)){ uoStage=3; uoReason='anuria (assumed ≥12 h)'; }
+  else if(haveUO&&!isNaN(uoDur)){
+    if(uo<0.3&&uoDur>=24){ uoStage=3; uoReason='urine output <0.3 mL/kg/h for ≥24 h'; }
+    else if(uo<0.5&&uoDur>=12){ uoStage=2; uoReason='urine output <0.5 mL/kg/h for ≥12 h'; }
+    else if(uo<0.5&&uoDur>=6){ uoStage=1; uoReason='urine output <0.5 mL/kg/h for 6–12 h'; }
+  }
+
+  // ── Final stage = worse of the two ──
+  let stage, driver;
+  if(uoStage>crStage){ stage=uoStage; driver=uoReason; }
+  else { stage=crStage; driver=crReason; }
+
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  let borderColor, bg, stageColor;
+  if(stage===0){ borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; stageColor='#2d7a4f'; }
+  else if(stage===1){ borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; stageColor=isDark?'#f5a623':'#9a6500'; }
+  else if(stage===2){ borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.10)':'#fdf3e3'; stageColor=isDark?'#f5a623':'#9a6500'; }
+  else { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; stageColor='#c0392b'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  // Ratio card
+  const ratioEl=document.getElementById('aki-ratio-val');
+  ratioEl.textContent=ratio.toFixed(2)+'×';
+  ratioEl.style.color=stageColor;
+  document.getElementById('aki-ratio-badge').textContent='Absolute change: '+(absRise>=0?'+':'−')+dCr(Math.abs(absRise));
+
+  // Stage card
+  const stageEl=document.getElementById('aki-stage-val');
+  stageEl.textContent='Stage '+stage;
+  stageEl.style.color=stageColor;
+  const stageBadge=document.getElementById('aki-stage-badge');
+  stageBadge.textContent=stage===0?'No AKI by current criteria':'AKI Stage '+stage+' (KDIGO 2012)';
+  stageBadge.style.color=stageColor;
+
+  // Verdict
+  const verdict=document.getElementById('aki-verdict');
+  const action=document.getElementById('aki-action');
+  let v='';
+  if(stage===0){
+    v='Current creatinine '+dCr(curr)+' versus baseline '+dCr(base)+' gives a ratio of '+ratio.toFixed(2)+'× with an absolute change of '+(absRise>=0?'+':'−')+dCr(Math.abs(absRise))+'. This does not meet KDIGO criteria for AKI'+(haveUO||anuria?' on creatinine or the urine-output data entered.':'. Add urine-output data if oliguria is suspected.');
+  } else {
+    let drivenBy = (uoStage>crStage) ? 'the urine-output criterion ('+driver+')'
+                 : (driver ? 'the creatinine criterion ('+driver+')' : 'the entered data');
+    v='This meets KDIGO Stage '+stage+' acute kidney injury, set by '+drivenBy+'. Creatinine ratio is '+ratio.toFixed(2)+'× baseline (absolute change '+(absRise>=0?'+':'−')+dCr(Math.abs(absRise))+').';
+    if(crStage>0&&uoStage>0&&crStage!==uoStage){
+      v+=' (Creatinine criteria alone = Stage '+crStage+'; urine-output criteria alone = Stage '+uoStage+'; the worse one is reported.)';
+    }
+  }
+  verdict.textContent=v;
+  verdict.style.color=isDark?'#e6e9ef':'#1e2a38';
+
+  let a='';
+  if(stage===0){ a='No AKI by current criteria. Continue routine CKD monitoring and recheck creatinine if symptoms or risk factors change.'; }
+  else if(stage===1){ a='Stage 1: identify and remove the cause — hold nephrotoxins (NSAIDs, contrast, aminoglycosides), review volume status, and recheck creatinine within 24–48 h. Treat the underlying trigger.'; }
+  else if(stage===2){ a='Stage 2: review and stop all nephrotoxins, optimize volume status and renal perfusion, and consider nephrology referral. Monitor creatinine and urine output closely.'; }
+  else { a='Stage 3: urgent nephrology consultation. Stop nephrotoxins, optimize haemodynamics, and assess for indications for renal replacement therapy (RRT): refractory hyperkalemia, severe metabolic acidosis, diuretic-resistant volume overload, or uremic complications (encephalopathy, pericarditis).'; }
+  action.textContent=a;
+  action.style.color=isDark?'#cbd2dd':'#4a5568';
+}
+</script>
 <script>
 const DARK_KEY='wgmr-dark',DESK_KEY='wgmr-desktop',LANG_KEY='wgmr-lang';
 function applyDark(on){document.documentElement.setAttribute('data-theme',on?'dark':'light');['darkToggle','darkToggle2'].forEach(id=>{const b=document.getElementById(id);if(b)b.classList.toggle('active',on);});const i=document.getElementById('darkIcon');if(i)i.innerHTML=on?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';}
