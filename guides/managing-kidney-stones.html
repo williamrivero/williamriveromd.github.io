@@ -1917,7 +1917,85 @@ body.dark .related-card-title {
     <div class="disclaimer"><strong><span data-lang="en">Important</span><span data-lang="tl" class="lang-hidden">Mahalagang Paalala</span><span data-lang="ceb" class="lang-hidden">Importante nga Pahibalo</span>
       <span data-lang="kap" class="lang-hidden">Mahalagang Paalala</span>:</strong> This guide is for educational purposes only. Kidney stone management requires individualized evaluation — stone type, metabolic workup, and treatment must be tailored to each patient. Always consult your nephrologist or urologist.</div>
 
-    
+
+  </section>
+
+  <section class="section" id="stone-score-calc">
+    <div class="section-tag"><span data-lang="en">Interactive Tool</span><span data-lang="tl" class="lang-hidden">Interactive na Kasangkapan</span><span data-lang="ceb" class="lang-hidden">Interactive nga Himan</span>
+      <span data-lang="kap" class="lang-hidden">Interactive a Kasangkapan</span></div>
+    <h2><span data-lang="en">STONE Score — Likelihood of a Ureteral Stone in Acute Flank Pain</span><span data-lang="tl" class="lang-hidden">STONE Score — Posibilidad ng Bato sa Ureter sa Biglaang Sakit sa Tagiliran</span><span data-lang="ceb" class="lang-hidden">STONE Score — Posibilidad sa Bato sa Ureter sa Kalit nga Sakit sa Kilid</span>
+      <span data-lang="kap" class="lang-hidden">STONE Score — Posibilidad ning Batu king Ureter king Biglang Sakit king Tagiliran</span></h2>
+    <p><span data-lang="en">The STONE score (Moore et al., 2014) is a validated clinical tool that estimates the probability that acute flank pain in an adult is caused by an uncomplicated ureteral stone, using five simple variables. It helps your doctor decide how strongly imaging (CT scan or ultrasound) and urology referral are needed. It is a probability aid, not a diagnosis — your physician interprets it alongside your full evaluation.</span><span data-lang="tl" class="lang-hidden">Ang STONE score (Moore et al., 2014) ay isang validated na klinikal na kasangkapan na tinatantya ang posibilidad na ang biglaang sakit sa tagiliran ng isang adulto ay dahil sa simpleng bato sa ureter, gamit ang limang simpleng baryabol. Tumutulong ito sa inyong doktor na magpasya kung gaano kahalaga ang imaging (CT scan o ultrasound) at referral sa urology. Ito ay tulong sa posibilidad, hindi diagnosis — sinusuri ito ng inyong doktor kasama ng inyong buong ebalwasyon.</span><span data-lang="ceb" class="lang-hidden">Ang STONE score (Moore et al., 2014) usa ka validated nga klinikal nga himan nga nagbanabana sa posibilidad nga ang kalit nga sakit sa kilid sa usa ka hamtong gumikan sa yano nga bato sa ureter, gamit ang lima ka yano nga baryabol. Nagtabang kini sa imong doktor sa pagdesisyon kon unsa ka kinahanglan ang imaging (CT scan o ultrasound) ug referral sa urology. Kini usa ka tabang sa posibilidad, dili diagnosis — gihubad kini sa imong doktor uban sa imong tibuok nga ebalwasyon.</span>
+      <span data-lang="kap" class="lang-hidden">Ing STONE score (Moore et al., 2014) metung yang validated a klinikal a kasangkapan a tinatantya ing posibilidad a ing biglang sakit king tagiliran ning metung a adulto ya dahil king simpleng batu king ureter, gamit ing limang simpleng baryabol. Tutulung ya king inyu doktor a magpasya nung makananung kahalaga ing imaging (CT scan o ultrasound) at referral king urology. Ya metung a tulung king posibilidad, ali diagnosis — sinusuri ne ning inyu doktor kayabe ning inyu buung ebalwasyon.</span></p>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Sex</label>
+          <select id="ss-sex" onchange="calcStoneScore()">
+            <option value="2">Male (+2)</option>
+            <option value="0">Female (0)</option>
+          </select>
+          <div class="field-hint">Male sex carries a higher likelihood of ureteral stone.</div>
+        </div>
+        <div class="calc-field">
+          <label>Timing — duration of pain at presentation</label>
+          <select id="ss-timing" onchange="calcStoneScore()">
+            <option value="3">Less than 6 hours (+3)</option>
+            <option value="1">6 to 24 hours (+1)</option>
+            <option value="0">More than 24 hours (0)</option>
+          </select>
+          <div class="field-hint">Shorter, more acute pain onset scores higher.</div>
+        </div>
+        <div class="calc-field">
+          <label>Origin (validated model variable)</label>
+          <select id="ss-origin" onchange="calcStoneScore()">
+            <option value="3" selected>Non-black (+3)</option>
+            <option value="0">Black (0)</option>
+          </select>
+          <div class="field-hint">A variable from the original derivation cohort. Defaulted to non-black for the Philippine population, but selectable.</div>
+        </div>
+        <div class="calc-field">
+          <label>Nausea / vomiting</label>
+          <select id="ss-nausea" onchange="calcStoneScore()">
+            <option value="0">None (0)</option>
+            <option value="1">Nausea alone (+1)</option>
+            <option value="2">Vomiting (+2)</option>
+          </select>
+          <div class="field-hint">Reflects the autonomic response to ureteral colic.</div>
+        </div>
+        <div class="calc-field">
+          <label>Erythrocytes (blood on urinalysis)</label>
+          <select id="ss-rbc" onchange="calcStoneScore()">
+            <option value="0">Absent (0)</option>
+            <option value="3">Present (+3)</option>
+          </select>
+          <div class="field-hint">Microscopic or dipstick hematuria on urinalysis.</div>
+        </div>
+      </div>
+      <div class="calc-result-box" id="ss-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="ss-score-val">—</div>
+            <div class="cml">Total STONE Score</div>
+            <div class="cmt" id="ss-score-badge">0–13</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:18px;line-height:1.2;" id="ss-cat-val">—</div>
+            <div class="cml">Probability Category</div>
+            <div class="cmt" id="ss-cat-badge">Low / Moderate / High</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="ss-prob-val">—</div>
+            <div class="cml">Approx. Stone Likelihood</div>
+            <div class="cmt" id="ss-prob-badge">Validation cohort</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="ss-verdict"></div>
+        <div class="calc-action-text" id="ss-action"></div>
+      </div>
+      <p class="calc-disclaimer"><span data-lang="en">⚕ Based on Moore CL, et al. Derivation and validation of a clinical prediction rule for uncomplicated ureteral stone — the STONE score. BMJ 2014;348:g2191. The "origin" variable derives from the original derivation cohort and is retained here only because it is part of the validated model; the score is a probability aid, not a diagnosis. A low score does not exclude a stone, and a high score does not confirm one or rule out alternative serious causes of flank pain (e.g. abdominal aortic aneurysm, pyelonephritis, appendicitis). Always be evaluated by a physician; imaging and urology referral follow your local clinical pathway.</span><span data-lang="tl" class="lang-hidden">⚕ Batay sa Moore CL, et al. Derivation and validation of a clinical prediction rule for uncomplicated ureteral stone — the STONE score. BMJ 2014;348:g2191. Ang variable na "origin" ay galing sa orihinal na derivation cohort at iniingatan dito dahil bahagi ito ng validated na modelo; ang score ay tulong sa posibilidad, hindi diagnosis. Ang mababang score ay hindi nag-aalis ng bato, at ang mataas na score ay hindi nagpapatunay ng bato o nag-aalis ng ibang seryosong sanhi ng sakit sa tagiliran (hal. abdominal aortic aneurysm, pyelonephritis, appendicitis). Palaging magpasuri sa isang doktor; ang imaging at referral sa urology ay sumusunod sa inyong lokal na clinical pathway.</span><span data-lang="ceb" class="lang-hidden">⚕ Base sa Moore CL, et al. Derivation and validation of a clinical prediction rule for uncomplicated ureteral stone — the STONE score. BMJ 2014;348:g2191. Ang "origin" nga baryabol gikan sa orihinal nga derivation cohort ug gitipigan dinhi tungod kay bahin kini sa validated nga modelo; ang score usa ka tabang sa posibilidad, dili diagnosis. Ang ubos nga score wala magwagtang sa bato, ug ang taas nga score wala magpamatuod sa bato o magwagtang sa ubang seryoso nga hinungdan sa sakit sa kilid (pananglitan abdominal aortic aneurysm, pyelonephritis, appendicitis). Kanunay magpasusi sa usa ka doktor; ang imaging ug referral sa urology mosunod sa imong lokal nga clinical pathway.</span>
+      <span data-lang="kap" class="lang-hidden">⚕ Batay king Moore CL, et al. Derivation and validation of a clinical prediction rule for uncomplicated ureteral stone — the STONE score. BMJ 2014;348:g2191. Ing "origin" a baryabol ya galing king orihinal a derivation cohort at iningatan keni dahil dake ya ning validated a modelo; ing score ya metung a tulung king posibilidad, ali diagnosis. Ing mababang score ya ali nag-aalis ning batu, at ing matas a score ya ali magpapatunay ning batu o nag-aalis ning aliwang seryosong sanhi ning sakit king tagiliran (alimbawa abdominal aortic aneurysm, pyelonephritis, appendicitis). Pirmi kang magpasuri king metung a doktor; ing imaging at referral king urology ya tutuki king inyu lokal a clinical pathway.</span></p>
+    </div>
   </section>
 
 </main>
@@ -2123,6 +2201,59 @@ function calcStone() {
     (uaHigh?'Serum uric acid '+ua+' mg/dL is elevated — uricosuric treatment (febuxostat, dietary purine restriction) is also needed for this stone type. ':'');
   document.getElementById('st-action').innerHTML='<strong style="color:'+borderColor+'">Dietary guidance for '+riskLabel+':</strong> '+dietAdvice;
 }
+
+function calcStoneScore() {
+  const sex = parseInt(document.getElementById('ss-sex').value, 10);
+  const timing = parseInt(document.getElementById('ss-timing').value, 10);
+  const origin = parseInt(document.getElementById('ss-origin').value, 10);
+  const nausea = parseInt(document.getElementById('ss-nausea').value, 10);
+  const rbc = parseInt(document.getElementById('ss-rbc').value, 10);
+  const res = document.getElementById('ss-result');
+  if ([sex,timing,origin,nausea,rbc].some(isNaN)) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const total = sex + timing + origin + nausea + rbc; // 0–13
+
+  // Risk band per Moore CL, et al. BMJ 2014;348:g2191
+  let cat, prob, borderColor, bg, catColor;
+  if (total <= 5) {
+    cat = 'Low'; prob = '~9–10%'; borderColor = '#2d7a4f';
+    bg = isDark ? 'rgba(45,122,79,.08)' : '#edf7f2'; catColor = '#2d7a4f';
+  } else if (total <= 9) {
+    cat = 'Moderate'; prob = '~51%'; borderColor = '#f5a623';
+    bg = isDark ? 'rgba(154,101,0,.08)' : '#fef9ec'; catColor = '#9a6500';
+  } else {
+    cat = 'High'; prob = '~88–89%'; borderColor = '#c0392b';
+    bg = isDark ? 'rgba(192,57,43,.08)' : '#fdf0ef'; catColor = '#c0392b';
+  }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  document.getElementById('ss-score-val').textContent = total;
+  document.getElementById('ss-score-val').style.color = catColor;
+  document.getElementById('ss-score-badge').textContent = 'out of 13';
+  document.getElementById('ss-cat-val').textContent = cat;
+  document.getElementById('ss-cat-val').style.color = catColor;
+  document.getElementById('ss-cat-badge').textContent = cat==='Low' ? 'Score 0–5' : (cat==='Moderate' ? 'Score 6–9' : 'Score 10–13');
+  document.getElementById('ss-prob-val').textContent = prob;
+  document.getElementById('ss-prob-val').style.color = catColor;
+  document.getElementById('ss-prob-badge').textContent = 'Ureteral stone';
+
+  let verdict, action;
+  if (cat === 'Low') {
+    verdict = 'A STONE score of '+total+' falls in the LOW band — an uncomplicated ureteral stone is relatively unlikely (only about 1 in 10 patients in this band actually had a stone). A low score does not exclude a stone, but it should prompt active consideration of alternative causes of flank pain.';
+    action = 'Consider alternative diagnoses (musculoskeletal pain, pyelonephritis, gynaecologic causes, and serious mimics such as abdominal aortic aneurysm). Imaging may still be warranted if symptoms are atypical, severe, or red-flag features are present. Follow your local clinical pathway and re-evaluate if pain persists or worsens.';
+  } else if (cat === 'Moderate') {
+    verdict = 'A STONE score of '+total+' falls in the MODERATE band — roughly half of patients in this group have a ureteral stone. The result is indeterminate and does not confirm or exclude a stone on its own.';
+    action = 'Clinical judgement and selective imaging guide the next step — ultrasound first-line in many local pathways, with low-dose CT reserved for uncertain or complicated presentations. Keep alternative serious diagnoses in mind and arrange urology input if obstruction, infection, or a solitary kidney is suspected.';
+  } else {
+    verdict = 'A STONE score of '+total+' falls in the HIGH band — an uncomplicated ureteral stone is very likely (close to 9 in 10 patients in this band had a stone). A high score still does not rule out other serious causes of flank pain.';
+    action = 'Proceed with imaging (ultrasound or low-dose non-contrast CT) and urology referral per your local pathway. Seek urgent care immediately for fever, single kidney, uncontrolled pain, persistent vomiting, or reduced urine output — these suggest an infected or obstructing stone requiring emergency treatment.';
+  }
+  document.getElementById('ss-verdict').innerHTML = '<strong style="color:'+borderColor+'">'+cat+' probability of a ureteral stone</strong> — '+verdict;
+  document.getElementById('ss-action').innerHTML = '<strong style="color:'+borderColor+'">Suggested next step:</strong> '+action;
+}
+if (document.getElementById('ss-result')) calcStoneScore();
 </script>
 
 <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">

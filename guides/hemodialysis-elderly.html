@@ -2198,6 +2198,94 @@ html[data-theme="dark"] .hd-calc-actions .btn-primary{background:var(--teal,#1a6
 </div>
 </section>
 
+<section class="section" id="charlson-calc">
+<div class="section-tag"><span data-lang="en">Interactive Tool</span><span class="lang-hidden" data-lang="tl">Interaktibong Kasangkapan</span><span class="lang-hidden" data-lang="ceb">Interaktibo nga Himan</span><span class="lang-hidden" data-lang="kap">Interaktibung Kasangkapan</span></div>
+<h2><span data-lang="en">Charlson Comorbidity Index (Age-Adjusted)</span><span class="lang-hidden" data-lang="tl">Charlson Comorbidity Index (Naka-ayon sa Edad)</span><span class="lang-hidden" data-lang="ceb">Charlson Comorbidity Index (Gibase sa Edad)</span><span class="lang-hidden" data-lang="kap">Charlson Comorbidity Index (Akma king Edad)</span></h2>
+<p><span data-lang="en">The <strong>Charlson Comorbidity Index (CCI)</strong> is a validated, weighted summary of a patient's chronic illnesses that estimates long-term survival. In elderly dialysis patients it helps frame realistic <strong>goals-of-care and prognosis conversations</strong> — comparing the benefit and burden of continued hemodialysis against conservative kidney management. Because every dialysis patient already has moderate-to-severe kidney disease, that 2-point item is pre-checked below. This is a clinician reference tool, not an individual prediction.</span><span class="lang-hidden" data-lang="tl">Ang <strong>Charlson Comorbidity Index (CCI)</strong> ay isang validated na timbang na buod ng mga malalang sakit ng pasyente na tumatantya ng pangmatagalang kaligtasan. Sa mga matatandang pasyente sa dialysis, tumutulong ito sa makatotohanang usapan tungkol sa <strong>layunin ng pangangalaga at prognosis</strong> — paghahambing ng benepisyo at pasanin ng patuloy na hemodialysis laban sa konserbatibong pamamahala ng bato. Dahil bawat pasyente sa dialysis ay may katamtaman-hanggang-malubhang sakit sa bato, naka-check na sa ibaba ang 2-puntong item na iyon. Ito ay kasangkapang pang-klinikal, hindi indibidwal na hula.</span><span class="lang-hidden" data-lang="ceb">Ang <strong>Charlson Comorbidity Index (CCI)</strong> usa ka validated nga gibug-aton nga sumada sa mga laygay nga sakit sa pasyente nga nagbanabana sa dugay nga kaluwasan. Sa mga tigulang nga pasyente sa dialysis, makatabang kini sa tinuod nga panaghisgot bahin sa <strong>tumong sa pag-atiman ug prognosis</strong> — pagtandi sa kaayohan ug palas-anon sa padayon nga hemodialysis batok sa konserbatibo nga pagdumala sa kidney. Tungod kay ang matag pasyente sa dialysis adunay kasarangan-hangtod-grabe nga sakit sa kidney, na-check na sa ubos kanang 2-puntos nga item. Kini himan alang sa klinikal nga paggamit, dili indibidwal nga panagna.</span><span class="lang-hidden" data-lang="kap">Ing <strong>Charlson Comorbidity Index (CCI)</strong> metung yang validated a timbang a buod da reng malagad a sakit ning pasyente a manantya king pangmatagal a kaligtasan. Karing matuang pasyente king dialysis, makasaup ya king tutu a pamisabi tungkol king <strong>layun ning pamaglame at prognosis</strong> — pamipantayan ning benepisyu at pasan ning patuloy a hemodialysis laban king konserbatibu a pamanibala king batu. Uli ning balang pasyente king dialysis atin yang katamtaman-anggang-malubha a sakit king batu, naka-check ne king lalam ing 2-puntu a item. Kasangkapan yang pang-klinikal, ali indibidwal a hula.</span></p>
+
+<div class="calc-wrap">
+  <div class="calc-grid">
+    <div class="calc-field" style="grid-column:1/-1;">
+      <label>Patient Age (years)</label>
+      <input type="number" id="ch-age" min="0" max="120" placeholder="e.g. 72" oninput="calcCharlson()">
+      <div class="field-hint">Age points: &lt;50 = 0; 50–59 = 1; 60–69 = 2; 70–79 = 3; 80–89 = 4; +1 per further decade.</div>
+    </div>
+
+    <div class="calc-field" style="grid-column:1/-1;">
+      <label>Renal Disease</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;"><input type="checkbox" id="ch-renal" checked onchange="calcCharlson()" style="width:auto;"> Moderate-to-severe renal disease / dialysis <strong>(2 pts — applies to all dialysis patients)</strong></label>
+    </div>
+
+    <div class="calc-field">
+      <label>1-Point Conditions</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-mi" onchange="calcCharlson()" style="width:auto;"> Myocardial infarction</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-chf" onchange="calcCharlson()" style="width:auto;"> Congestive heart failure</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-pvd" onchange="calcCharlson()" style="width:auto;"> Peripheral vascular disease</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-cvd" onchange="calcCharlson()" style="width:auto;"> Cerebrovascular disease (TIA / stroke)</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-dem" onchange="calcCharlson()" style="width:auto;"> Dementia</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-copd" onchange="calcCharlson()" style="width:auto;"> Chronic pulmonary disease (COPD)</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-rheum" onchange="calcCharlson()" style="width:auto;"> Connective tissue / rheumatic disease</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-pud" onchange="calcCharlson()" style="width:auto;"> Peptic ulcer disease</label>
+    </div>
+
+    <div class="calc-field">
+      <label>2-Point Conditions</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-hemi" onchange="calcCharlson()" style="width:auto;"> Hemiplegia / paraplegia</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-tumor" onchange="calcCharlson()" style="width:auto;"> Any solid tumor (non-metastatic, &lt;5y) / leukemia / lymphoma</label>
+      <div class="field-hint" style="margin-bottom:12px;">If metastatic, leave this unchecked and use the tumor select below (6 pts).</div>
+    </div>
+
+    <div class="calc-field">
+      <label>Liver Disease</label>
+      <select id="ch-liver" onchange="calcCharlson()">
+        <option value="0">None</option>
+        <option value="1">Mild liver disease (1 pt)</option>
+        <option value="3">Moderate-to-severe liver disease (3 pts)</option>
+      </select>
+    </div>
+
+    <div class="calc-field">
+      <label>Diabetes</label>
+      <select id="ch-diabetes" onchange="calcCharlson()">
+        <option value="0">None</option>
+        <option value="1">Diabetes WITHOUT end-organ damage (1 pt)</option>
+        <option value="2">Diabetes WITH end-organ damage (2 pts)</option>
+      </select>
+      <div class="field-hint">Count diabetes once — choose the higher category if both apply.</div>
+    </div>
+
+    <div class="calc-field">
+      <label>Tumor / Malignancy (overrides solid-tumor checkbox)</label>
+      <select id="ch-metast" onchange="calcCharlson()">
+        <option value="0">No metastatic tumor</option>
+        <option value="6">Metastatic solid tumor (6 pts)</option>
+      </select>
+      <div class="field-hint">If metastatic is selected, the 2-pt solid-tumor checkbox is ignored.</div>
+    </div>
+
+    <div class="calc-field">
+      <label>AIDS / HIV</label>
+      <select id="ch-aids" onchange="calcCharlson()">
+        <option value="0">No</option>
+        <option value="6">AIDS / HIV (6 pts)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="calc-result-box" id="ch-result">
+    <div class="calc-metrics-row">
+      <div class="calc-metric-card"><div class="cmv" id="ch-cci">—</div><div class="cml">CCI (comorbidity)</div><div class="cmt" id="ch-cci-t">—</div></div>
+      <div class="calc-metric-card"><div class="cmv" id="ch-total">—</div><div class="cml">Age-adjusted total</div><div class="cmt" id="ch-total-t">—</div></div>
+      <div class="calc-metric-card"><div class="cmv" id="ch-surv">—</div><div class="cml">Est. 10-yr survival</div><div class="cmt" id="ch-surv-t">—</div></div>
+    </div>
+    <div class="calc-verdict-text" id="ch-verdict"></div>
+    <div class="calc-action-text" id="ch-action"></div>
+  </div>
+
+  <p class="calc-disclaimer">⚕ Charlson ME, Pompei P, Ales KL, MacKenzie CR. <em>J Chronic Dis.</em> 1987;40(5):373–83. Age adjustment: Charlson et al., <em>J Clin Epidemiol.</em> 1994. Estimated 10-year survival = 0.983<sup>(e^(score × 0.9))</sup>. This is a population-level prognosis estimate derived from a 1980s medical cohort, not an individual prediction. Always interpret alongside frailty, functional status, dialysis tolerance, and the patient's own goals.</p>
+</div>
+</section>
+
 </main>
 
 <!-- DR CARD -->
@@ -2481,6 +2569,81 @@ function hdPrint(){
   win.focus();
   setTimeout(function(){win.print();},400);
 }
+
+/* ── Charlson Comorbidity Index (age-adjusted) ─────────────────────────────── */
+function calcCharlson() {
+  const res = document.getElementById('ch-result');
+  if (!res) return;
+  const chk = id => { const e = document.getElementById(id); return e && e.checked ? 1 : 0; };
+  const sel = id => { const e = document.getElementById(id); return e ? parseInt(e.value, 10) || 0 : 0; };
+
+  // Comorbidity (non-age) score
+  let cci = 0;
+  // 1-point conditions
+  cci += chk('ch-mi') + chk('ch-chf') + chk('ch-pvd') + chk('ch-cvd')
+       + chk('ch-dem') + chk('ch-copd') + chk('ch-rheum') + chk('ch-pud');
+  // 2-point: renal (pre-checked for dialysis), hemiplegia/paraplegia
+  cci += 2 * chk('ch-renal');
+  cci += 2 * chk('ch-hemi');
+  // Liver: mutually exclusive select (0 / 1 / 3)
+  cci += sel('ch-liver');
+  // Diabetes: mutually exclusive select (0 / 1 / 2)
+  cci += sel('ch-diabetes');
+  // Tumor: metastatic select (6) overrides the 2-pt solid-tumor checkbox
+  const metast = sel('ch-metast');
+  cci += metast > 0 ? metast : 2 * chk('ch-tumor');
+  // AIDS/HIV: select (0 / 6)
+  cci += sel('ch-aids');
+
+  // Age band → points (<50=0; 50-59=1; 60-69=2; 70-79=3; 80-89=4; +1 per decade)
+  const ageRaw = parseFloat(document.getElementById('ch-age').value);
+  let agePts = 0;
+  if (!isNaN(ageRaw) && ageRaw >= 50) agePts = Math.min(Math.floor((ageRaw - 40) / 10), 5);
+
+  const total = cci + agePts;
+  // Classic Charlson 10-year survival = 0.983^(e^(total × 0.9)) × 100%
+  const surv = Math.pow(0.983, Math.exp(total * 0.9)) * 100;
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+  // Color band: green = low burden / high survival, amber = moderate, red = high burden / low survival
+  let borderColor, bg, band;
+  if (total <= 2)      { band = 'low';  borderColor = '#2d7a4f'; bg = isDark ? 'rgba(45,122,79,.08)'  : '#edf7f2'; }
+  else if (total <= 4) { band = 'mod';  borderColor = '#f5a623'; bg = isDark ? 'rgba(154,101,0,.08)'  : '#fef9ec'; }
+  else                 { band = 'high'; borderColor = '#c0392b'; bg = isDark ? 'rgba(192,57,43,.08)'  : '#fdf0ef'; }
+  const valColor = band === 'low' ? '#2d7a4f' : (band === 'mod' ? (isDark ? '#f5a623' : '#9a6500') : '#c0392b');
+
+  res.style.display = 'block';
+  res.style.background = bg;
+  res.style.borderColor = borderColor;
+
+  // Metric cards
+  document.getElementById('ch-cci').textContent = cci;
+  document.getElementById('ch-cci-t').textContent = 'comorbidity points';
+  document.getElementById('ch-total').textContent = total;
+  document.getElementById('ch-total').style.color = valColor;
+  document.getElementById('ch-total-t').textContent = '+' + agePts + ' age points';
+  const survStr = surv >= 10 ? surv.toFixed(0) + '%' : (surv >= 1 ? surv.toFixed(1) + '%' : surv.toFixed(2) + '%');
+  document.getElementById('ch-surv').textContent = survStr;
+  document.getElementById('ch-surv').style.color = valColor;
+  document.getElementById('ch-surv-t').textContent = 'estimated 10-yr';
+
+  // Verdict + goals-of-care action line
+  let verdict, action;
+  if (band === 'low') {
+    verdict = 'Low comorbidity burden (total ' + total + '). The age-adjusted Charlson score corresponds to a relatively favorable estimated 10-year survival (' + survStr + ').';
+    action = 'Reasonable prognosis to support continued dialysis if aligned with the patient’s goals. Reassess if new comorbidities or functional decline emerge.';
+  } else if (band === 'mod') {
+    verdict = 'Moderate comorbidity burden (total ' + total + '). Estimated 10-year survival is intermediate (' + survStr + '); competing risks meaningfully shape prognosis.';
+    action = 'Use this to frame an honest benefit-versus-burden conversation about dialysis. Pair with frailty and functional assessment, and document the patient’s priorities.';
+  } else {
+    verdict = 'High comorbidity burden (total ' + total + '). The age-adjusted score corresponds to a low estimated 10-year survival (' + survStr + '), reflecting heavy competing-mortality risk.';
+    action = 'Prioritize a structured goals-of-care discussion. Explicitly weigh continued hemodialysis against conservative kidney management and advance-care planning, guided by what matters most to the patient.';
+  }
+  document.getElementById('ch-verdict').textContent = verdict;
+  document.getElementById('ch-action').textContent = action;
+}
+document.addEventListener('DOMContentLoaded', calcCharlson);
 </script>
 <script>
 const DK='wgmr-dark';

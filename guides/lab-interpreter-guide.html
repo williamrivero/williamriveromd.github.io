@@ -4708,6 +4708,69 @@ function handlePDFDrop(event) {
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════
+     CKD-EPI 2021 CREATININE–CYSTATIN C eGFR CALCULATOR
+═════════════════════════════════════════════════════════════════ -->
+<section class="section" id="ckdepi-cyst-calc">
+<div class="section-tag">Interactive Tool</div>
+<h2><span class="lang-en">CKD-EPI 2021 Creatinine–Cystatin C eGFR Calculator</span><span class="lang-tl" style="display:none;">CKD-EPI 2021 Creatinine–Cystatin C eGFR Calculator</span><span class="lang-ceb" style="display:none;">CKD-EPI 2021 Creatinine–Cystatin C eGFR Calculator</span><span class="lang-kap" style="display:none;">CKD-EPI 2021 Creatinine–Cystatin C eGFR Calculator</span></h2>
+
+<p><span class="lang-en">This calculator uses the <strong>2021 race-free CKD-EPI creatinine–cystatin C equation</strong> (Inker et al., NEJM 2021). Combining two filtration markers makes it more accurate than creatinine alone — especially when creatinine may be misleading because of unusual muscle mass (very muscular athletes, the frail or elderly, amputees, or people with low muscle bulk). Enter your age, sex, serum creatinine, and cystatin C to estimate your kidney function and CKD stage.</span><span class="lang-tl" style="display:none;">Ginagamit ng kalkulador na ito ang <strong>2021 race-free CKD-EPI creatinine–cystatin C equation</strong> (Inker et al., NEJM 2021). Ang pagsama ng dalawang marker ay mas tumpak kaysa creatinine lamang — lalo na kung ang creatinine ay maaaring maling magbigay-hulà dahil sa hindi pangkaraniwang muscle mass (napaka-muscular na atleta, mahina o matanda, amputee, o taong may mababang muscle bulk). Ilagay ang inyong edad, kasarian, serum creatinine, at cystatin C upang matantya ang inyong kidney function at CKD stage.</span><span class="lang-ceb" style="display:none;">Kining kalkulador naggamit sa <strong>2021 race-free CKD-EPI creatinine–cystatin C equation</strong> (Inker et al., NEJM 2021). Ang paghiusa sa duha ka marker mas tukma kay sa creatinine lamang — ilabi na kon ang creatinine mahimong magpahisalaag tungod sa dili kasagaran nga muscle mass (kusgan kaayo nga atleta, luya o tigulang, amputee, o tawo nga may ubos nga muscle bulk). Isulod ang imong edad, sekso, serum creatinine, ug cystatin C aron banabanaon ang imong kidney function ug CKD stage.</span><span class="lang-kap" style="display:none;">Ining kalkulador gagamit king <strong>2021 race-free CKD-EPI creatinine–cystatin C equation</strong> (Inker et al., NEJM 2021). Ing pamisan ning aduang marker mas tama kesa king creatinine mu — lalu na nung ing creatinine malyaring mali ya pamagbie hula uli ning ali pangkaraniwan a muscle mass (masikan a atleta, maina o matua, amputee, o taung mababa ya muscle bulk). Ilage ya ing inyung edad, kasarian, serum creatinine, at cystatin C para matantya ya ing inyung kidney function at CKD stage.</span></p>
+
+<div class="calc-wrap">
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Creatinine Units:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="cyc-btn-conv" onclick="switchCycUnit('conv')">mg/dL</button>
+      <button class="unit-btn" id="cyc-btn-si" onclick="switchCycUnit('si')">µmol/L</button>
+    </div>
+  </div>
+  <div class="calc-grid">
+    <div class="calc-field">
+      <label for="cyc-age">Age (years)</label>
+      <input id="cyc-age" type="number" min="18" max="110" step="1" placeholder="e.g. 60" oninput="calcCKDEPIcys()"/>
+      <div class="field-hint">Validated in adults (≥18 years)</div>
+    </div>
+    <div class="calc-field">
+      <label for="cyc-sex">Sex</label>
+      <select id="cyc-sex" onchange="calcCKDEPIcys()">
+        <option value="">Select…</option>
+        <option value="female">Female</option>
+        <option value="male">Male</option>
+      </select>
+      <div class="field-hint">Race is not used in the 2021 equation</div>
+    </div>
+    <div class="calc-field">
+      <label for="cyc-scr" id="cyc-lbl-scr">Serum Creatinine (mg/dL)</label>
+      <input id="cyc-scr" type="number" min="0.1" max="20" step="0.01" placeholder="e.g. 1.2" oninput="calcCKDEPIcys()"/>
+      <div class="field-hint" id="cyc-hint-scr">Normal: ~0.6–1.3 mg/dL. Toggle units above if your lab reports µmol/L.</div>
+    </div>
+    <div class="calc-field">
+      <label for="cyc-cys">Cystatin C (mg/L)</label>
+      <input id="cyc-cys" type="number" min="0.2" max="10" step="0.01" placeholder="e.g. 1.2" oninput="calcCKDEPIcys()"/>
+      <div class="field-hint">Normal: ~0.5–1.0 mg/L. A blood test independent of muscle mass.</div>
+    </div>
+  </div>
+  <div class="calc-result-box" id="cyc-result">
+    <div class="calc-metrics-row">
+      <div class="calc-metric-card">
+        <div class="cmv" id="cyc-egfr-val">—</div>
+        <div class="cml">eGFR (cr-cys)</div>
+        <div class="cmt" id="cyc-egfr-unit">mL/min/1.73m²</div>
+      </div>
+      <div class="calc-metric-card">
+        <div class="cmv" id="cyc-stage-val">—</div>
+        <div class="cml">CKD Stage</div>
+        <div class="cmt" id="cyc-stage-desc">—</div>
+      </div>
+    </div>
+    <div class="calc-verdict-text" id="cyc-verdict"></div>
+    <div class="calc-action-text" id="cyc-action"></div>
+  </div>
+  <p class="calc-disclaimer">⚕ Estimate only — interpret in full clinical context. Equation: Inker LA, Eneanya ND, Coresh J, et al. New Creatinine- and Cystatin C–Based Equations to Estimate GFR without Race. <em>N Engl J Med</em> 2021;385:1737–1749. eGFR requires ≥3 months of stability to define chronic CKD; a single value is not a diagnosis. Discuss results with your physician.</p>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
      DR CARD + RELATED GUIDES
 ═════════════════════════════════════════════════════════════════ --></main>
 
@@ -4808,6 +4871,116 @@ function setLang(lang){
     document.querySelectorAll('.lang-tl,.lang-ceb,.lang-kap').forEach(function(el){el.style.display='none';});
   }
 })();
+
+// ════════════════════════════════════════════════════════════════════
+// CKD-EPI 2021 CREATININE–CYSTATIN C eGFR CALCULATOR  (self-contained)
+// Inker LA et al. N Engl J Med 2021;385:1737-1749.
+// ════════════════════════════════════════════════════════════════════
+function switchCycUnit(cycU){
+  var cycIsSI = cycU==='si';
+  document.getElementById('cyc-btn-conv').classList.toggle('active',!cycIsSI);
+  document.getElementById('cyc-btn-si').classList.toggle('active',cycIsSI);
+  var cycScr = document.getElementById('cyc-scr');
+  if(cycIsSI){
+    document.getElementById('cyc-lbl-scr').textContent='Serum Creatinine (µmol/L)';
+    cycScr.placeholder='e.g. 106'; cycScr.min='8'; cycScr.max='1800'; cycScr.step='1';
+    document.getElementById('cyc-hint-scr').textContent='Normal: ~53–115 µmol/L. Toggle units above if your lab reports mg/dL.';
+  } else {
+    document.getElementById('cyc-lbl-scr').textContent='Serum Creatinine (mg/dL)';
+    cycScr.placeholder='e.g. 1.2'; cycScr.min='0.1'; cycScr.max='20'; cycScr.step='0.01';
+    document.getElementById('cyc-hint-scr').textContent='Normal: ~0.6–1.3 mg/dL. Toggle units above if your lab reports µmol/L.';
+  }
+  cycScr.value='';
+  var cycRes0 = document.getElementById('cyc-result');
+  if(cycRes0) cycRes0.style.display='none';
+}
+
+function calcCKDEPIcys(){
+  var cycRes = document.getElementById('cyc-result');
+  var cycAge = parseFloat(document.getElementById('cyc-age').value);
+  var cycSex = document.getElementById('cyc-sex').value;
+  var cycScrRaw = parseFloat(document.getElementById('cyc-scr').value);
+  var cycCys = parseFloat(document.getElementById('cyc-cys').value);
+
+  if(!cycSex || isNaN(cycAge) || cycAge<=0 || isNaN(cycScrRaw) || cycScrRaw<=0 || isNaN(cycCys) || cycCys<=0){
+    cycRes.style.display='none'; return;
+  }
+
+  // Convert creatinine to mg/dL if entered as µmol/L
+  var cycSI = document.getElementById('cyc-btn-si').classList.contains('active');
+  var cycScr = cycSI ? cycScrRaw/88.4 : cycScrRaw;
+
+  var cycFemale = cycSex==='female';
+  var cycKappa = cycFemale ? 0.7 : 0.9;
+  var cycAlpha = cycFemale ? -0.219 : -0.144;
+
+  // CKD-EPI 2021 creatinine–cystatin C (race-free)
+  var cycScrK = cycScr / cycKappa;
+  var cycCysR = cycCys / 0.8;
+  var cycEgfr = 135
+    * Math.pow(Math.min(cycScrK,1), cycAlpha)
+    * Math.pow(Math.max(cycScrK,1), -0.544)
+    * Math.pow(Math.min(cycCysR,1), -0.323)
+    * Math.pow(Math.max(cycCysR,1), -0.778)
+    * Math.pow(0.9961, cycAge)
+    * (cycFemale ? 0.963 : 1);
+
+  var cycEgfrR = Math.round(cycEgfr);
+
+  // CKD G-stage
+  var cycStage, cycStageDesc, cycBand;
+  if(cycEgfr>=90){ cycStage='G1'; cycStageDesc='Normal or high'; cycBand='green'; }
+  else if(cycEgfr>=60){ cycStage='G2'; cycStageDesc='Mildly decreased'; cycBand='green'; }
+  else if(cycEgfr>=45){ cycStage='G3a'; cycStageDesc='Mild–moderate decrease'; cycBand='amber'; }
+  else if(cycEgfr>=30){ cycStage='G3b'; cycStageDesc='Moderate–severe decrease'; cycBand='amber'; }
+  else if(cycEgfr>=15){ cycStage='G4'; cycStageDesc='Severely decreased'; cycBand='amber'; }
+  else { cycStage='G5'; cycStageDesc='Kidney failure'; cycBand='red'; }
+
+  var cycDark = document.documentElement.getAttribute('data-theme')==='dark';
+  var cycBorder, cycBg, cycStageColor;
+  if(cycBand==='green'){ cycBorder='#2d7a4f'; cycBg=cycDark?'rgba(45,122,79,.08)':'#edf7f2'; cycStageColor='#2d7a4f'; }
+  else if(cycBand==='amber'){ cycBorder='#f5a623'; cycBg=cycDark?'rgba(154,101,0,.08)':'#fef9ec'; cycStageColor=cycDark?'#f5a623':'#9a6500'; }
+  else { cycBorder='#c0392b'; cycBg=cycDark?'rgba(192,57,43,.08)':'#fdf0ef'; cycStageColor='#c0392b'; }
+
+  cycRes.style.display='block';
+  cycRes.style.background=cycBg;
+  cycRes.style.borderColor=cycBorder;
+
+  document.getElementById('cyc-egfr-val').textContent=cycEgfrR;
+  document.getElementById('cyc-egfr-val').style.color=cycStageColor;
+  document.getElementById('cyc-stage-val').textContent=cycStage;
+  document.getElementById('cyc-stage-val').style.color=cycStageColor;
+  document.getElementById('cyc-stage-desc').textContent=cycStageDesc;
+
+  // Verdict
+  var cycVerdict='';
+  if(cycStage==='G1'||cycStage==='G2'){
+    cycVerdict='Your estimated GFR of <strong>'+cycEgfrR+' mL/min/1.73m²</strong> places you in stage <strong>'+cycStage+'</strong> ('+cycStageDesc.toLowerCase()+'). At this level kidney function is largely preserved; CKD is only diagnosed if there is also a marker of kidney damage (such as protein in the urine) persisting ≥3 months.';
+  } else if(cycStage==='G3a'||cycStage==='G3b'){
+    cycVerdict='Your estimated GFR of <strong>'+cycEgfrR+' mL/min/1.73m²</strong> places you in stage <strong>'+cycStage+'</strong> ('+cycStageDesc.toLowerCase()+') — moderate chronic kidney disease. This is the stage where active protection of remaining function matters most.';
+  } else if(cycStage==='G4'){
+    cycVerdict='Your estimated GFR of <strong>'+cycEgfrR+' mL/min/1.73m²</strong> places you in stage <strong>G4</strong> (severely decreased) — advanced chronic kidney disease. This is the stage to begin preparing for possible kidney replacement therapy.';
+  } else {
+    cycVerdict='Your estimated GFR of <strong>'+cycEgfrR+' mL/min/1.73m²</strong> places you in stage <strong>G5</strong> (kidney failure). This level usually requires evaluation for dialysis or transplantation.';
+  }
+  cycVerdict+=' <br><br>This result uses the combined <strong>creatinine + cystatin C</strong> equation, which is the preferred estimate when creatinine alone may mislead — for example in people with unusually high or low muscle mass, amputees, the frail or malnourished, or very muscular athletes.';
+  document.getElementById('cyc-verdict').innerHTML=cycVerdict;
+
+  // Action line per stage
+  var cycAction='';
+  if(cycStage==='G1'||cycStage==='G2'){
+    cycAction='<strong>Action:</strong> Maintain blood pressure and blood sugar control, stay hydrated, avoid NSAIDs, and check kidney labs (eGFR + urine ACR) at least yearly.';
+  } else if(cycStage==='G3a'){
+    cycAction='<strong>Action:</strong> Confirm with a urine albumin-to-creatinine ratio, optimize blood pressure (often with an ACE inhibitor or ARB), review medications for kidney safety, and recheck labs every 6 months.';
+  } else if(cycStage==='G3b'){
+    cycAction='<strong>Action:</strong> See a nephrologist if you have not already. Tighten blood pressure and diabetes control, consider SGLT2-inhibitor therapy where indicated, watch potassium/phosphorus, and monitor labs every 3–6 months.';
+  } else if(cycStage==='G4'){
+    cycAction='<strong>Action:</strong> Regular nephrology follow-up is essential. Discuss options for kidney replacement therapy (hemodialysis, peritoneal dialysis, transplant), vaccinate, manage anemia and bone-mineral disease, and recheck labs every 1–3 months.';
+  } else {
+    cycAction='<strong>Action:</strong> Urgent nephrology care. Dialysis or transplantation is usually needed — work closely with your kidney team on access planning and timing.';
+  }
+  document.getElementById('cyc-action').innerHTML=cycAction;
+}
 </script>
 
 <button class="print-btn" onclick="window.print()" aria-label="Print this guide">

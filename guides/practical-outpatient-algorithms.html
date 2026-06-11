@@ -2793,6 +2793,121 @@ Delta-delta ratio (if high AG present):
   </div>
 </section>
 
+<!-- ╔══════════════════════════════════════════════════════════════════════
+     ELECTROLYTE & OSMOLALITY TOOLKIT
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="algo-section" id="osm-electrolyte-calc">
+  <div class="algo-hdr">
+    <div class="algo-badge">＋</div>
+    <h2 class="algo-title">
+      <span data-lang="en">Electrolyte &amp; Osmolality Toolkit</span>
+      <span data-lang="tl" class="lang-hidden">Toolkit sa Electrolyte at Osmolality</span>
+      <span data-lang="ceb" class="lang-hidden">Toolkit sa Electrolyte ug Osmolality</span>
+      <span data-lang="kap" class="lang-hidden">Toolkit para king Electrolyte at Osmolality</span>
+    </h2>
+  </div>
+  <p class="algo-subtitle">
+    <span data-lang="en">Three clinician-facing calculators that complement the algorithms above: serum osmolality with osmolal gap (to flag toxic alcohols and other unmeasured osmoles), free water deficit for hypernatremia correction, and fractional excretion of urea (FEUrea) — the prerenal-vs-intrinsic discriminator of choice when the patient is on diuretics and FENa is unreliable.</span>
+    <span data-lang="tl" class="lang-hidden">Tatlong calculator para sa mga clinician na dumadagdag sa mga algorithm sa itaas: serum osmolality na may osmolal gap (para matukoy ang toxic alcohols at iba pang hindi nasusukat na osmoles), free water deficit para sa pagtatama ng hypernatremia, at fractional excretion of urea (FEUrea) — ang piniling pamantayan ng prerenal-laban-intrinsic kapag ang pasyente ay gumagamit ng diuretics at hindi maaasahan ang FENa.</span>
+    <span data-lang="ceb" class="lang-hidden">Tulo ka calculator para sa mga clinician nga modugang sa mga algorithm sa ibabaw: serum osmolality nga adunay osmolal gap (aron mailhan ang toxic alcohols ug uban pang dili masukod nga osmoles), free water deficit para sa pagtul-id sa hypernatremia, ug fractional excretion of urea (FEUrea) — ang pinili nga timailhan sa prerenal-batok-intrinsic kon ang pasyente naggamit ug diuretics ug dili kasaligan ang FENa.</span>
+    <span data-lang="kap" class="lang-hidden">Atlung calculator para king clinician a midagdag king algorithm a babo: serum osmolality a atin osmolal gap (para mikilala ya ing toxic alcohols at aliwa pang e masukat a osmoles), free water deficit para king pamanutul king hypernatremia, at fractional excretion of urea (FEUrea) — ing piling pamamaran ning prerenal-laban-intrinsic nung ing pasyente maki-diuretics ya at e mapagkatiwalaan ing FENa.</span>
+  </p>
+
+  <!-- ── Tool 1: Serum osmolality + osmolal gap ───────────────────────────── -->
+  <div class="algo-calc">
+    <div class="algo-calc-hdr">Serum Osmolality &amp; Osmolal Gap</div>
+    <div class="calc-wrap">
+      <div class="unit-toggle">
+        <span class="unit-toggle-lbl">Glucose:</span>
+        <button class="ut-btn active" id="osm-glu-mgdl" onclick="setOsmGluUnit('mgdl',this)">mg/dL</button>
+        <button class="ut-btn" id="osm-glu-mmol" onclick="setOsmGluUnit('mmol',this)">mmol/L</button>
+        <div class="ut-sep"></div>
+        <span class="unit-toggle-lbl">Urea nitrogen:</span>
+        <button class="ut-btn active" id="osm-bun-bun" onclick="setOsmBunUnit('bun',this)">BUN mg/dL</button>
+        <button class="ut-btn" id="osm-bun-mmol" onclick="setOsmBunUnit('urea',this)">Urea mmol/L</button>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Serum Na⁺ (mEq/L)</label>
+          <input type="number" id="osm-na" oninput="calcOsmGap()" placeholder="e.g. 140">
+        </div>
+        <div class="calc-field">
+          <label>Glucose (mg/dL)</label>
+          <input type="number" id="osm-glu" oninput="calcOsmGap()" placeholder="e.g. 90">
+        </div>
+        <div class="calc-field">
+          <label>BUN (mg/dL)</label>
+          <input type="number" id="osm-bun" oninput="calcOsmGap()" placeholder="e.g. 14">
+        </div>
+        <div class="calc-field">
+          <label>Measured osmolality (mOsm/kg) <em style="font-weight:400;font-style:normal;font-size:11px;">(optional)</em></label>
+          <input type="number" id="osm-measured" oninput="calcOsmGap()" placeholder="e.g. 295">
+          <div class="field-hint">From the lab (freezing-point depression). Needed for the osmolal gap.</div>
+        </div>
+      </div>
+      <button onclick="calcOsmGap()" style="background:var(--navy);color:white;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;">Calculate</button>
+      <div class="calc-result-box" id="osm-result" style="margin-top:16px;"></div>
+    </div>
+  </div>
+
+  <!-- ── Tool 2: Free water deficit (hypernatremia) ──────────────────────── -->
+  <div class="algo-calc">
+    <div class="algo-calc-hdr">Free Water Deficit — Hypernatremia</div>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Weight (kg)</label>
+          <input type="number" id="fwd-wt" oninput="calcFWD()" placeholder="e.g. 60">
+        </div>
+        <div class="calc-field">
+          <label>Current serum Na⁺ (mEq/L)</label>
+          <input type="number" id="fwd-na" oninput="calcFWD()" placeholder="e.g. 160">
+        </div>
+        <div class="calc-field">
+          <label>Sex / body-water factor</label>
+          <select id="fwd-factor" onchange="calcFWD()">
+            <option value="0.6">Male (TBW 0.6)</option>
+            <option value="0.5">Female (TBW 0.5)</option>
+            <option value="0.5e">Elderly male (TBW 0.5)</option>
+            <option value="0.45">Elderly female (TBW 0.45)</option>
+          </select>
+          <div class="field-hint">TBW fraction × weight. Lower in elderly / females.</div>
+        </div>
+      </div>
+      <button onclick="calcFWD()" style="background:var(--navy);color:white;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;">Calculate</button>
+      <div class="calc-result-box" id="fwd-result" style="margin-top:16px;"></div>
+    </div>
+  </div>
+
+  <!-- ── Tool 3: FEUrea ──────────────────────────────────────────────────── -->
+  <div class="algo-calc">
+    <div class="algo-calc-hdr">FEUrea — Prerenal vs Intrinsic (reliable on diuretics)</div>
+    <div class="calc-wrap">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Urine urea (mg/dL)</label>
+          <input type="number" id="feu-uurea" oninput="calcFEUrea()" placeholder="e.g. 300">
+        </div>
+        <div class="calc-field">
+          <label>Plasma urea / BUN (mg/dL)</label>
+          <input type="number" id="feu-purea" oninput="calcFEUrea()" placeholder="e.g. 60">
+        </div>
+        <div class="calc-field">
+          <label>Urine creatinine (mg/dL)</label>
+          <input type="number" id="feu-ucr" oninput="calcFEUrea()" placeholder="e.g. 80">
+        </div>
+        <div class="calc-field">
+          <label>Plasma creatinine (mg/dL)</label>
+          <input type="number" id="feu-pcr" step="0.1" oninput="calcFEUrea()" placeholder="e.g. 4">
+          <div class="field-hint">Use FEUrea instead of FENa when the patient is on diuretics.</div>
+        </div>
+      </div>
+      <button onclick="calcFEUrea()" style="background:var(--navy);color:white;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;">Calculate</button>
+      <div class="calc-result-box" id="feu-result" style="margin-top:16px;"></div>
+    </div>
+  </div>
+</section>
+
 </div><!-- /container -->
 
 <!-- DR CARD -->
@@ -3178,6 +3293,117 @@ function calcAG() {
     ${winterHtml}
     ${deficitHtml}
     <div class="calc-disclaimer">AG = Na − (Cl + HCO₃) · Corrected AG = AG + 2.5 × (4 − Albumin) · δδ = (AG−12)/(24−HCO₃)</div>
+  `);
+}
+
+// ── ELECTROLYTE & OSMOLALITY TOOLKIT ────────────────────────────────────────
+unitState['osm-glu'] = 'mgdl';
+unitState['osm-bun'] = 'bun';
+
+function setOsmGluUnit(unit, btn) {
+  unitState['osm-glu'] = unit; _activateBtn(btn);
+  const isMg = unit === 'mgdl';
+  document.getElementById('osm-glu').closest('.calc-field').querySelector('label').textContent = `Glucose (${isMg ? 'mg/dL' : 'mmol/L'})`;
+  document.getElementById('osm-glu').placeholder = isMg ? 'e.g. 90' : 'e.g. 5';
+  document.getElementById('osm-glu').step = isMg ? '1' : '0.1';
+  calcOsmGap();
+}
+
+function setOsmBunUnit(unit, btn) {
+  unitState['osm-bun'] = unit; _activateBtn(btn);
+  const isBun = unit === 'bun';
+  document.getElementById('osm-bun').closest('.calc-field').querySelector('label').textContent = isBun ? 'BUN (mg/dL)' : 'Urea (mmol/L)';
+  document.getElementById('osm-bun').placeholder = isBun ? 'e.g. 14' : 'e.g. 5';
+  document.getElementById('osm-bun').step = isBun ? '1' : '0.1';
+  calcOsmGap();
+}
+
+// Toolkit 1 — Serum osmolality + osmolal gap
+function calcOsmGap() {
+  const na = parseFloat(document.getElementById('osm-na').value);
+  let glu = parseFloat(document.getElementById('osm-glu').value);
+  let bun = parseFloat(document.getElementById('osm-bun').value);
+  const measured = parseFloat(document.getElementById('osm-measured').value);
+  const el = document.getElementById('osm-result');
+  if ([na, glu, bun].some(isNaN)) { el.style.display = 'none'; return; }
+  // Convert SI → conventional: glucose mmol/L × 18 = mg/dL; urea mmol/L × 2.8 = BUN mg/dL
+  if (unitState['osm-glu'] === 'mmol') glu = glu * 18;
+  if (unitState['osm-bun'] === 'urea') bun = bun * 2.8;
+  const calc = Math.round((2 * na + glu / 18 + bun / 2.8) * 10) / 10;
+  let calcColor = (calc >= 275 && calc <= 295) ? 'var(--green)' : '#9a6500';
+  let gapCard = '', verdict, vColor;
+  if (!isNaN(measured)) {
+    const gap = Math.round((measured - calc) * 10) / 10;
+    let gapColor;
+    if (gap > 10) {
+      gapColor = 'var(--red)'; vColor = 'var(--red)';
+      verdict = '<strong>Elevated osmolal gap (&gt;10).</strong> Suspect unmeasured osmoles — methanol, ethylene glycol, mannitol, isopropyl/ethyl alcohol, glycerol, or pseudohyponatremia. Send a toxic-alcohol screen and treat empirically if ingestion is plausible.';
+    } else {
+      gapColor = 'var(--green)'; vColor = 'var(--green)';
+      verdict = '<strong>Normal osmolal gap (&lt;10).</strong> No significant unmeasured osmoles. A normal gap does not fully exclude early methanol/ethylene-glycol ingestion — correlate clinically.';
+    }
+    gapCard = `<div class="calc-metric-card"><div class="cmv" style="color:${gapColor}">${gap}</div><div class="cml">Osmolal Gap</div><div class="cmt" style="color:${gapColor}">${gap > 10 ? 'Elevated' : 'Normal'}</div></div>`;
+  } else {
+    vColor = 'var(--text-mid)';
+    verdict = 'Add a lab-measured osmolality to compute the osmolal gap (measured − calculated). A gap &gt;10 suggests unmeasured osmoles (toxic alcohols, mannitol).';
+  }
+  showCalcResult(el, `
+    <div class="calc-metrics-row">
+      <div class="calc-metric-card"><div class="cmv" style="color:${calcColor}">${calc}</div><div class="cml">Calculated Osm (mOsm/kg)</div><div class="cmt">Normal 275–295</div></div>
+      ${gapCard}
+    </div>
+    <div class="calc-verdict-text" style="color:${vColor}">${verdict}</div>
+    <div class="calc-disclaimer">Calculated osm = 2 × Na + glucose/18 + BUN/2.8 · Osmolal gap = measured − calculated (normal &lt;10).</div>
+  `);
+}
+
+// Toolkit 2 — Free water deficit (hypernatremia)
+function calcFWD() {
+  const wt = parseFloat(document.getElementById('fwd-wt').value);
+  const na = parseFloat(document.getElementById('fwd-na').value);
+  const factor = parseFloat(document.getElementById('fwd-factor').value);
+  const el = document.getElementById('fwd-result');
+  if (isNaN(wt) || isNaN(na) || isNaN(factor) || wt <= 0 || na <= 0) { el.style.display = 'none'; return; }
+  if (na <= 140) {
+    showCalcResult(el, '<p style="color:#9a6500;font-size:13px;">Serum Na⁺ is ≤140 mEq/L — no free water deficit by this formula. This tool is for hypernatremia (Na⁺ &gt;145).</p>');
+    return;
+  }
+  const tbw = wt * factor;
+  const deficit = Math.round(tbw * (na / 140 - 1) * 100) / 100;
+  let nColor, note;
+  if (na >= 160) { nColor = 'var(--red)'; note = 'Severe hypernatremia — correct slowly.'; }
+  else { nColor = '#9a6500'; note = 'Hypernatremia.'; }
+  showCalcResult(el, `
+    <div class="calc-metrics-row">
+      <div class="calc-metric-card"><div class="cmv">${Math.round(tbw * 10) / 10}</div><div class="cml">TBW (L)</div><div class="cmt">${factor} × ${wt} kg</div></div>
+      <div class="calc-metric-card"><div class="cmv" style="color:${nColor}">${deficit}</div><div class="cml">Free water deficit (L)</div><div class="cmt" style="color:${nColor}">${note}</div></div>
+    </div>
+    <div class="calc-verdict-text">Replace the deficit <strong>plus ongoing losses</strong>. Lower serum Na⁺ by no more than 8–10 mEq/L per 24 h (≈0.5 mEq/L/h) to avoid cerebral edema; aim to correct the deficit over 48 h.</div>
+    <div class="calc-action-text">Prefer enteral free water when possible; otherwise D5W or hypotonic saline. Recheck Na⁺ every 4–6 h during active correction and adjust the rate.</div>
+    <div class="calc-disclaimer">TBW = weight × factor (male 0.6, female 0.5, elderly 0.5/0.45) · Deficit (L) = TBW × (current Na / 140 − 1).</div>
+  `);
+}
+
+// Toolkit 3 — Fractional excretion of urea (FEUrea)
+function calcFEUrea() {
+  const uUrea = parseFloat(document.getElementById('feu-uurea').value);
+  const pUrea = parseFloat(document.getElementById('feu-purea').value);
+  const uCr = parseFloat(document.getElementById('feu-ucr').value);
+  const pCr = parseFloat(document.getElementById('feu-pcr').value);
+  const el = document.getElementById('feu-result');
+  if ([uUrea, pUrea, uCr, pCr].some(isNaN) || pUrea <= 0 || uCr <= 0) { el.style.display = 'none'; return; }
+  const feu = Math.round(((uUrea * pCr) / (pUrea * uCr)) * 100 * 10) / 10;
+  let txt, color;
+  if (feu < 35)      { txt = 'Prerenal azotemia';                    color = 'var(--green)'; }
+  else if (feu <= 50){ txt = 'Indeterminate — use clinical context'; color = '#9a6500'; }
+  else               { txt = 'Intrinsic AKI (ATN)';                  color = 'var(--red)'; }
+  showCalcResult(el, `
+    <div class="calc-metrics-row">
+      <div class="calc-metric-card"><div class="cmv" style="color:${color}">${feu}%</div><div class="cml">FEUrea</div><div class="cmt" style="color:${color}">${txt}</div></div>
+    </div>
+    <div class="calc-verdict-text" style="color:${color}"><strong>${txt}.</strong></div>
+    <div class="calc-action-text">&lt;35% = prerenal · &gt;50% = intrinsic (ATN). FEUrea stays reliable on diuretics, where FENa is falsely elevated. Less affected by diuretics but altered by osmotic diuresis and urea-handling drugs.</div>
+    <div class="calc-disclaimer">FEUrea = (Urine urea × Plasma Cr) / (Plasma urea × Urine Cr) × 100.</div>
   `);
 }
 

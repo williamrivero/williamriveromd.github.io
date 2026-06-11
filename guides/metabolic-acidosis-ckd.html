@@ -1967,6 +1967,71 @@ html[data-theme="dark"] .stat-card,html[data-theme="dark"] .ref-band{background:
 
 </main>
 
+<!-- ACID-BASE / ANION GAP CALCULATOR -->
+<section class="section" id="acidbase-calc">
+<div class="section-tag">Interactive Tool</div>
+<h2><span data-lang="en">Acid-Base &amp; Anion Gap Calculator — Corrected AG, Delta Ratio &amp; Winter's Formula</span><span data-lang="tl" class="lang-hidden">Calculator ng Acid-Base at Anion Gap — Corrected AG, Delta Ratio at Winter's Formula</span><span data-lang="ceb" class="lang-hidden">Calculator sa Acid-Base ug Anion Gap — Corrected AG, Delta Ratio ug Winter's Formula</span><span data-lang="kap" class="lang-hidden">Calculator ning Acid-Base at Anion Gap — Corrected AG, Delta Ratio at Winter's Formula</span></h2>
+<p><span data-lang="en">Enter your sodium, chloride, and bicarbonate to compute the anion gap and screen for the type of metabolic acidosis. Add albumin to correct the gap (low albumin hides a real gap), and add PaCO₂ to check whether your breathing is compensating appropriately using Winter's formula.</span><span data-lang="tl" class="lang-hidden">Ilagay ang iyong sodium, chloride, at bicarbonate para makuha ang anion gap at masuri ang uri ng metabolic acidosis. Idagdag ang albumin para itama ang gap (ang mababang albumin ay nagtatago ng totoong gap), at idagdag ang PaCO₂ para tingnan kung tama ang compensation ng paghinga gamit ang Winter's formula.</span><span data-lang="ceb" class="lang-hidden">Isulod ang imong sodium, chloride, ug bicarbonate aron makwenta ang anion gap ug masusi ang matang sa metabolic acidosis. Idugang ang albumin aron itarong ang gap (ang ubos nga albumin nagtago sa tinuod nga gap), ug idugang ang PaCO₂ aron susihon kung husto ang compensation sa imong pagginhawa gamit ang Winter's formula.</span><span data-lang="kap" class="lang-hidden">Ilage ya ing kekang sodium, chloride, at bicarbonate para makua ing anion gap at suriin ing uri ning metabolic acidosis. Idagdag ya ing albumin para iyayos ing gap (ing mababang albumin tatago ya king tutung gap), at idagdag ya ing PaCO₂ para tingnan nung tama ing compensation ning panga-ginhawa gamit ing Winter's formula.</span></p>
+<div class="calc-wrap">
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Albumin units:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="ab-btn-gdl" onclick="switchABUnit('gdl')">g/dL</button>
+      <button class="unit-btn" id="ab-btn-gl" onclick="switchABUnit('gl')">g/L</button>
+    </div>
+  </div>
+<div class="calc-grid">
+<div class="calc-field">
+<label>Sodium — Na⁺ (mEq/L)</label>
+<input id="ab-na" max="200" min="100" oninput="calcAcidBase()" placeholder="e.g. 140" step="1" type="number"/>
+<div class="field-hint">Serum sodium. Normal: 135–145 mEq/L (mmol/L)</div>
+</div>
+<div class="calc-field">
+<label>Chloride — Cl⁻ (mEq/L)</label>
+<input id="ab-cl" max="160" min="60" oninput="calcAcidBase()" placeholder="e.g. 100" step="1" type="number"/>
+<div class="field-hint">Serum chloride. Normal: 98–107 mEq/L (mmol/L)</div>
+</div>
+<div class="calc-field">
+<label>Bicarbonate — HCO₃⁻ (mEq/L)</label>
+<input id="ab-hco3" max="50" min="2" oninput="calcAcidBase()" placeholder="e.g. 12" step="0.1" type="number"/>
+<div class="field-hint">Serum HCO₃⁻ (or total CO₂). Normal: 22–28 mEq/L</div>
+</div>
+<div class="calc-field">
+<label id="ab-lbl-alb">Albumin (g/dL) — optional</label>
+<input id="ab-alb" max="6" min="1" oninput="calcAcidBase()" placeholder="e.g. 4.0" step="0.1" type="number"/>
+<div class="field-hint" id="ab-hint-alb">Enables albumin-corrected AG. Normal: 3.5–5.0 g/dL</div>
+</div>
+<div class="calc-field">
+<label>Measured PaCO₂ (mmHg) — optional</label>
+<input id="ab-paco2" max="120" min="5" oninput="calcAcidBase()" placeholder="e.g. 26" step="0.1" type="number"/>
+<div class="field-hint">From ABG. Enables Winter's respiratory compensation check</div>
+</div>
+</div>
+<div class="calc-result-box" id="ab-result">
+<div class="calc-metrics-row">
+<div class="calc-metric-card">
+<div class="cmv" id="ab-ag-val">—</div>
+<div class="cml">Anion Gap</div>
+<div class="cmt" id="ab-ag-badge">Normal 8–12 mEq/L</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="ab-delta-val" style="font-size:20px;line-height:1.2;">—</div>
+<div class="cml">Delta Ratio</div>
+<div class="cmt" id="ab-delta-badge">—</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="ab-winter-val" style="font-size:20px;line-height:1.2;">—</div>
+<div class="cml">Winter's Expected PaCO₂</div>
+<div class="cmt" id="ab-winter-badge">—</div>
+</div>
+</div>
+<div class="calc-verdict-text" id="ab-verdict"></div>
+<div class="calc-action-text" id="ab-action"></div>
+</div>
+<p class="calc-disclaimer">⚕ AG = Na − (Cl + HCO₃). Corrected AG = AG + 2.5 × (4.0 − albumin). Delta ratio = (AG − 12) / (24 − HCO₃), interpreted only when AG &gt; 12. Winter's expected PaCO₂ = 1.5 × HCO₃ + 8 (±2). These bedside formulas screen for mixed disorders but never replace a full ABG with clinical correlation by a physician.</p>
+</div>
+</section>
+
 <!-- DR CARD -->
 <!-- DR CARD -->
 <div class="dr-card-wrap">
@@ -2048,6 +2113,187 @@ function setLang(lang){
   localStorage.setItem(LANG_KEY, lang);
 }
 (function(){const s=localStorage.getItem(LANG_KEY)||'en';if(s!=='en')setLang(s);})();
+
+function switchABUnit(u){
+  const isGL = u==='gl';
+  document.getElementById('ab-btn-gdl').classList.toggle('active',!isGL);
+  document.getElementById('ab-btn-gl').classList.toggle('active',isGL);
+  const alb=document.getElementById('ab-alb');
+  if(isGL){
+    document.getElementById('ab-lbl-alb').textContent='Albumin (g/L) — optional';
+    alb.placeholder='e.g. 40'; alb.min='10'; alb.max='60'; alb.step='1';
+    document.getElementById('ab-hint-alb').textContent='Enables albumin-corrected AG. Normal: 35–50 g/L';
+  } else {
+    document.getElementById('ab-lbl-alb').textContent='Albumin (g/dL) — optional';
+    alb.placeholder='e.g. 4.0'; alb.min='1'; alb.max='6'; alb.step='0.1';
+    document.getElementById('ab-hint-alb').textContent='Enables albumin-corrected AG. Normal: 3.5–5.0 g/dL';
+  }
+  alb.value='';
+  calcAcidBase();
+}
+
+function calcAcidBase(){
+  const na   = parseFloat(document.getElementById('ab-na').value);
+  const cl   = parseFloat(document.getElementById('ab-cl').value);
+  const hco3 = parseFloat(document.getElementById('ab-hco3').value);
+  const albRaw = parseFloat(document.getElementById('ab-alb').value);
+  const paco2  = parseFloat(document.getElementById('ab-paco2').value);
+  const res = document.getElementById('ab-result');
+  // Required inputs: Na, Cl, HCO3
+  if ([na,cl,hco3].some(isNaN)) { res.style.display='none'; return; }
+
+  const isGL = document.getElementById('ab-btn-gl').classList.contains('active');
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const GREEN='#2d7a4f', AMBER='#f5a623', AMBER_TXT=isDark?'#9a6500':'#9a6500', RED='#c0392b';
+
+  // Anion gap
+  const ag = Math.round((na - (cl + hco3))*10)/10;
+  const agHigh = ag > 12;
+
+  // Albumin-corrected AG (optional)
+  let albGdl = NaN, corrAG = NaN, corrAGHigh = false, haveAlb = false;
+  if (!isNaN(albRaw)) {
+    haveAlb = true;
+    albGdl = isGL ? albRaw/10 : albRaw;
+    corrAG = Math.round((ag + 2.5*(4.0 - albGdl))*10)/10;
+    corrAGHigh = corrAG > 12;
+  }
+  // Effective gap used for pattern logic: corrected if available
+  const effAG = haveAlb ? corrAG : ag;
+  const effHigh = haveAlb ? corrAGHigh : agHigh;
+
+  // Delta ratio — only when (effective) AG is elevated
+  let deltaRatio = NaN, deltaLabel='', deltaPattern='';
+  if (effHigh && (24 - hco3) !== 0) {
+    deltaRatio = (effAG - 12) / (24 - hco3);
+    if (deltaRatio < 0.4) { deltaPattern='Pure NAGMA (hyperchloremic)'; }
+    else if (deltaRatio < 1) { deltaPattern='Mixed HAGMA + NAGMA'; }
+    else if (deltaRatio <= 2) { deltaPattern='Pure HAGMA'; }
+    else { deltaPattern='HAGMA + metabolic alkalosis or chronic resp. acidosis'; }
+    deltaLabel = deltaPattern;
+  }
+
+  // Winter's formula — only with measured PaCO2
+  let expCO2=NaN, expLow=NaN, expHigh=NaN, respVerdict='', respStatus='';
+  const haveCO2 = !isNaN(paco2);
+  expCO2 = Math.round((1.5*hco3 + 8)*10)/10;
+  expLow = expCO2 - 2; expHigh = expCO2 + 2;
+  if (haveCO2) {
+    if (paco2 > expHigh) { respStatus='resacid'; respVerdict='Measured PaCO₂ ('+paco2+') exceeds the expected '+expCO2.toFixed(0)+' ±2 — a concurrent respiratory acidosis is present (lungs are not blowing off enough CO₂).'; }
+    else if (paco2 < expLow) { respStatus='resalk'; respVerdict='Measured PaCO₂ ('+paco2+') is below the expected '+expCO2.toFixed(0)+' ±2 — a concurrent respiratory alkalosis is present (over-breathing beyond compensation).'; }
+    else { respStatus='ok'; respVerdict='Measured PaCO₂ ('+paco2+') falls within the expected '+expCO2.toFixed(0)+' ±2 — respiratory compensation is appropriate.'; }
+  }
+
+  // ── Overall color band ──
+  // green: coherent single disorder with appropriate compensation
+  // amber: mixed / uncertain pattern
+  // red: serious combined disturbance
+  let band='green';
+  if (haveCO2 && (respStatus==='resacid' || respStatus==='resalk')) band='red';
+  if (effHigh && !isNaN(deltaRatio)) {
+    if (deltaRatio < 0.4 || deltaRatio > 2) { if (band!=='red') band='amber'; }
+    else if (deltaRatio < 1) { if (band!=='red') band='amber'; } // mixed HAGMA+NAGMA
+    // 1–2 pure HAGMA stays green unless respiratory flagged
+  }
+  // Low HCO3 with normal gap = NAGMA (uncertain w/o more data) → amber
+  if (!effHigh && hco3 < 22) { if (band==='green') band='amber'; }
+
+  let borderColor, bg;
+  if (band==='green') { borderColor=GREEN; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+  else if (band==='amber') { borderColor=AMBER; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor=RED; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  // ── Anion Gap card ──
+  const agEl=document.getElementById('ab-ag-val');
+  agEl.textContent=ag.toFixed(1)+' mEq/L';
+  agEl.style.color = agHigh ? RED : (ag<8 ? AMBER_TXT : GREEN);
+  const agBadge=document.getElementById('ab-ag-badge');
+  if (haveAlb) {
+    agBadge.textContent='Corrected AG: '+corrAG.toFixed(1)+' mEq/L'+(corrAGHigh?' (high)':' (normal)');
+    agBadge.style.color = corrAGHigh ? RED : GREEN;
+  } else {
+    agBadge.textContent = agHigh ? 'Elevated (>12)' : (ag<8 ? 'Low (<8)' : 'Normal (8–12)');
+    agBadge.style.color = agHigh ? RED : (ag<8 ? AMBER_TXT : GREEN);
+  }
+
+  // ── Delta Ratio card ──
+  const dvEl=document.getElementById('ab-delta-val');
+  const dbEl=document.getElementById('ab-delta-badge');
+  if (!isNaN(deltaRatio)) {
+    dvEl.textContent=deltaRatio.toFixed(2);
+    dbEl.textContent=deltaLabel;
+    let dc;
+    if (deltaRatio>=1 && deltaRatio<=2) dc=GREEN;
+    else if (deltaRatio<0.4 || deltaRatio>2) dc=RED;
+    else dc=AMBER_TXT;
+    dvEl.style.color=dc; dbEl.style.color=dc;
+  } else {
+    dvEl.textContent='N/A';
+    dvEl.style.color=isDark?'#9fb0c7':'#6b7280';
+    dbEl.textContent = effHigh ? 'HCO₃ = 24 (cannot divide)' : 'Only computed when AG > 12';
+    dbEl.style.color=isDark?'#9fb0c7':'#6b7280';
+  }
+
+  // ── Winter's card ──
+  const wvEl=document.getElementById('ab-winter-val');
+  const wbEl=document.getElementById('ab-winter-badge');
+  wvEl.textContent=expCO2.toFixed(0)+' ±2 mmHg';
+  if (haveCO2) {
+    let wc, wt;
+    if (respStatus==='ok') { wc=GREEN; wt='Appropriate compensation'; }
+    else if (respStatus==='resacid') { wc=RED; wt='+ Respiratory acidosis'; }
+    else { wc=RED; wt='+ Respiratory alkalosis'; }
+    wvEl.style.color=wc; wbEl.textContent=wt; wbEl.style.color=wc;
+  } else {
+    wvEl.style.color=isDark?'#e6edf6':'#1e2a38';
+    wbEl.textContent='Add PaCO₂ to check compensation';
+    wbEl.style.color=isDark?'#9fb0c7':'#6b7280';
+  }
+
+  // ── Verdict + action ──
+  let verdictParts=[], actionParts=[];
+
+  // Gap description
+  if (effHigh) {
+    verdictParts.push((haveAlb?'Albumin-corrected anion gap of '+corrAG.toFixed(1):'Anion gap of '+ag.toFixed(1))+' mEq/L is elevated — a high-anion-gap process is present.');
+  } else if (haveAlb && agHigh && !corrAGHigh) {
+    verdictParts.push('Measured AG ('+ag.toFixed(1)+') looks high, but after albumin correction it is '+corrAG.toFixed(1)+' mEq/L (normal) — no true high-gap process.');
+  } else if (haveAlb && !agHigh && corrAGHigh) {
+    verdictParts.push('Measured AG ('+ag.toFixed(1)+') looks normal, but low albumin masked it — corrected AG is '+corrAG.toFixed(1)+' mEq/L, revealing a hidden high-anion-gap acidosis.');
+  } else {
+    verdictParts.push('Anion gap of '+ag.toFixed(1)+' mEq/L is '+(ag<8?'low':'within the normal 8–12 range')+'.');
+  }
+  if (haveAlb && albGdl < 3.5) {
+    actionParts.push('Albumin is low ('+(isGL?(albGdl*10).toFixed(0)+' g/L':albGdl.toFixed(1)+' g/dL')+') — always use the corrected gap; the uncorrected gap can hide a real acidosis.');
+  }
+
+  // Delta interpretation
+  if (!isNaN(deltaRatio)) {
+    if (deltaRatio < 0.4) { verdictParts.push('Delta ratio '+deltaRatio.toFixed(2)+' (<0.4) points to a pure non-anion-gap (hyperchloremic) acidosis despite the elevated gap — reconcile the numbers, this combination is unusual.'); actionParts.push('Re-check the labs and consider a coexisting hyperchloremic (NAGMA) process; review for diarrhea, RTA, or saline load.'); }
+    else if (deltaRatio < 1) { verdictParts.push('Delta ratio '+deltaRatio.toFixed(2)+' (0.4–1) indicates a mixed HAGMA + NAGMA — HCO₃ has fallen more than the gap rose.'); actionParts.push('Look for a second buffer-consuming process (e.g. diarrhea, RTA, or saline-related hyperchloremia) layered on the high-gap acidosis.'); }
+    else if (deltaRatio <= 2) { verdictParts.push('Delta ratio '+deltaRatio.toFixed(2)+' (1–2) is consistent with a pure high-anion-gap metabolic acidosis — the rise in gap matches the fall in bicarbonate.'); actionParts.push('Pursue the HAGMA cause (uremia, lactate, ketones, toxins). In CKD, retained organic anions from reduced clearance are common.'); }
+    else { verdictParts.push('Delta ratio '+deltaRatio.toFixed(2)+' (>2) suggests a HAGMA with a concurrent metabolic alkalosis or chronic respiratory acidosis raising the baseline bicarbonate.'); actionParts.push('Check for vomiting, diuretic use, NG suction (alkalosis) or chronic CO₂ retention; a second disorder is masking how low the bicarbonate should be.'); }
+  }
+
+  // Respiratory verdict
+  if (haveCO2) {
+    verdictParts.push(respVerdict);
+    if (respStatus==='resacid') actionParts.push('Concurrent respiratory acidosis is a serious combined disturbance — assess airway, ventilation, and sedation; this is not simple compensation.');
+    else if (respStatus==='resalk') actionParts.push('Concurrent respiratory alkalosis — look for sepsis, salicylate toxicity, pain, anxiety, or hypoxia driving over-ventilation.');
+  } else {
+    actionParts.push('Add a measured PaCO₂ from an ABG to confirm whether respiratory compensation (Winter’s expected '+expCO2.toFixed(0)+' ±2 mmHg) is adequate.');
+  }
+
+  let headline;
+  if (band==='green') headline = (effHigh ? 'Coherent high-gap acidosis with appropriate compensation' : (hco3<22 ? 'Metabolic acidosis — single coherent pattern' : 'Anion gap within normal limits'));
+  else if (band==='amber') headline = 'Mixed or uncertain acid-base pattern';
+  else headline = 'Serious combined acid-base disturbance';
+
+  document.getElementById('ab-verdict').innerHTML='<strong style="color:'+borderColor+'">'+headline+'</strong> — '+verdictParts.join(' ');
+  document.getElementById('ab-action').innerHTML='<strong style="color:'+borderColor+'">Recommended next step:</strong> '+actionParts.join(' ');
+}
 </script>
 
 <button class="print-btn" onclick="window.print()" aria-label="Print this guide">

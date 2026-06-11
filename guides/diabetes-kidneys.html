@@ -2135,6 +2135,57 @@ body.dark .related-card-title {
 
   </div><!-- /mode-physician -->
 
+  <section class="section" id="na-glucose-calc">
+    <div class="section-tag"><span data-lang="en">Interactive Tool</span><span data-lang="tl" class="lang-hidden">Interaktibong Kasangkapan</span><span data-lang="ceb" class="lang-hidden">Interaktibong Himan</span>
+      <span data-lang="kap" class="lang-hidden">Interaktibong Kasangkapan</span></div>
+    <h2><span data-lang="en">Sodium Correction for Hyperglycemia — Is the Low Sodium Real?</span><span data-lang="tl" class="lang-hidden">Pagtatama ng Sodium para sa Mataas na Asukal — Totoo ba ang Mababang Sodium?</span><span data-lang="ceb" class="lang-hidden">Pag-ayo sa Sodium para sa Taas nga Asukal — Tinuod ba ang Ubos nga Sodium?</span>
+      <span data-lang="kap" class="lang-hidden">Pamagtuldu ning Sodium para king Matas a Asukal — Tutu ya ing Mababang Sodium?</span></h2>
+    <p><span data-lang="en">When blood sugar is very high, water is pulled out of your cells and dilutes the sodium in your blood, so the lab reading looks falsely low. This calculator corrects the measured sodium for the glucose level (using both the Katz 1.6 and the more accurate Hillier 2.4 factors) so you and your doctor can tell whether the low sodium is just from the sugar (and will fix itself as glucose comes down) or is a real problem needing its own workup.</span><span data-lang="tl" class="lang-hidden">Kapag napakataas ng asukal sa dugo, hinahatak ang tubig palabas ng inyong mga selula at dinidilute ang sodium sa dugo, kaya mukhang mababa nang mali ang resulta sa lab. Itinatama ng calculator na ito ang sinukat na sodium batay sa antas ng glucose (gamit ang Katz 1.6 at ang mas tumpak na Hillier 2.4 na factor) upang malaman ninyo at ng inyong doktor kung ang mababang sodium ay dahil lang sa asukal (at kusang aayos kapag bumaba ang glucose) o isang tunay na problemang kailangan ng hiwalay na pagsusuri.</span><span data-lang="ceb" class="lang-hidden">Kon taas kaayo ang asukal sa dugo, ginabira ang tubig gawas sa inyong mga selula ug ginadilute ang sodium sa dugo, mao nga morag sayop nga ubos ang resulta sa lab. Kini nga calculator nag-ayo sa nasukod nga sodium base sa lebel sa glucose (gamit ang Katz 1.6 ug ang mas saktong Hillier 2.4 nga factor) aron mahibal-an ninyo ug sa inyong doktor kon ang ubos nga sodium tungod lang sa asukal (ug mo-ayo ra kini kon mokunhod ang glucose) o tinuod nga problema nga nanginahanglan ug kaugalingong pagsusi.</span><span data-lang="kap" class="lang-hidden">Nung matas ya pin ing asukal king daya, gisabit ya ing danum palwal king kekayung selula at didilute ne ing sodium king daya, kaya malyaring mababa yang mali ing resulta king lab. Titulduan ne ning calculator a ini ing sinukat a sodium base king lebel ning glucose (gamit ya ing Katz 1.6 at ing mas tamang Hillier 2.4 a factor) bayu abalu yu at ning kekayung doktor nung ing mababang sodium uli mu ning asukal (at sariling mayayari nung mababa ne ing glucose) o tutung problema a kailangan na ning sariling pamanyiyasat.</span></p>
+    <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="ng-btn-conv" onclick="switchNaGlucoseUnit('conv')">Glucose mg/dL</button>
+          <button class="unit-btn" id="ng-btn-si" onclick="switchNaGlucoseUnit('si')">Glucose mmol/L</button>
+        </div>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>Measured serum sodium (mEq/L)</label>
+          <input id="ng-na" type="number" min="100" max="180" step="0.1" placeholder="e.g. 130" oninput="calcNaGlucose()">
+          <div class="field-hint">The sodium value printed on your lab report (same as mmol/L). Normal range 135–145 mEq/L</div>
+        </div>
+        <div class="calc-field">
+          <label id="ng-lbl-glu">Blood glucose (mg/dL)</label>
+          <input id="ng-glu" type="number" min="40" max="2000" step="1" placeholder="e.g. 600" oninput="calcNaGlucose()">
+          <div class="field-hint" id="ng-hint-glu">Plasma glucose at the same blood draw. Correction only matters when glucose is above ~100 mg/dL (5.6 mmol/L)</div>
+        </div>
+      </div>
+      <div class="calc-result-box" id="ng-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" id="ng-hillier-val">—</div>
+            <div class="cml">Corrected Na — Hillier 2.4</div>
+            <div class="cmt" id="ng-hillier-badge">mEq/L</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="ng-katz-val">—</div>
+            <div class="cml">Corrected Na — Katz 1.6</div>
+            <div class="cmt" id="ng-katz-badge">mEq/L</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;line-height:1.2;" id="ng-status">—</div>
+            <div class="cml">Status</div>
+            <div class="cmt" id="ng-status-badge">—</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="ng-verdict"></div>
+        <div class="calc-action-text" id="ng-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ Corrected Na = measured Na + factor × ((glucose − 100) ÷ 100). Katz factor = 1.6 (classic); Hillier factor = 2.4 (more accurate, especially when glucose &gt;400 mg/dL). This estimate guides interpretation only — it does not replace clinical assessment. Sodium and glucose disturbances need physician evaluation; never correct sodium rapidly on your own.</p>
+    </div>
+  </section>
+
 </main>
 
 
@@ -2377,6 +2428,91 @@ function calcDKD() {
 
   document.getElementById('d-verdict').innerHTML='<strong style="color:'+borderColor+'">Summary</strong> — '+sglt2Msg+' '+hba1cMsg;
   document.getElementById('d-action').innerHTML='<strong style="color:'+borderColor+'">Key actions:</strong> '+(uacr>=30?'RAAS blockade (ACE inhibitor or ARB) is indicated for UACR ≥30 mg/g (≥3.4 mg/mmol) with DM. ':'')+(sglt2==='none'&&dapaOk?'Initiate SGLT2i (dapagliflozin 10mg OD — Catania or Rhea brand available in Philippines). ':'')+(uacr>=300?'With UACR '+uacrDisp+', target BP &lt;130/80 mmHg and consider finerenone (Firialta) if not already on it. ':'')+'Monitor eGFR and UACR every 3–6 months.';
+}
+
+function switchNaGlucoseUnit(u){
+  const isSI=u==='si';
+  document.getElementById('ng-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('ng-btn-si').classList.toggle('active',isSI);
+  const glu=document.getElementById('ng-glu');
+  if(isSI){
+    document.getElementById('ng-lbl-glu').textContent='Blood glucose (mmol/L)';
+    glu.placeholder='e.g. 33.3'; glu.min='2'; glu.max='110'; glu.step='0.1';
+    document.getElementById('ng-hint-glu').textContent='Plasma glucose at the same blood draw. Correction only matters when glucose is above ~5.6 mmol/L (100 mg/dL)';
+  } else {
+    document.getElementById('ng-lbl-glu').textContent='Blood glucose (mg/dL)';
+    glu.placeholder='e.g. 600'; glu.min='40'; glu.max='2000'; glu.step='1';
+    document.getElementById('ng-hint-glu').textContent='Plasma glucose at the same blood draw. Correction only matters when glucose is above ~100 mg/dL (5.6 mmol/L)';
+  }
+  glu.value='';
+  const res=document.querySelector('#na-glucose-calc .calc-result-box');
+  if(res) res.style.display='none';
+}
+
+function calcNaGlucose(){
+  const na = parseFloat(document.getElementById('ng-na').value);
+  const gluRaw = parseFloat(document.getElementById('ng-glu').value);
+  const res = document.getElementById('ng-result');
+  if ([na,gluRaw].some(isNaN)) { res.style.display='none'; return; }
+
+  const isSI = document.getElementById('ng-btn-si').classList.contains('active');
+  const glu = isSI ? gluRaw*18 : gluRaw;   // mmol/L → mg/dL internally
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  const adj = (glu-100)/100;
+  const hillier = na + 2.4*adj;
+  const katz    = na + 1.6*adj;
+
+  // Use the more accurate Hillier value to classify true sodium status
+  const corr = hillier;
+  let status, statusColor, verdict;
+  const lowMeasured = na < 135;
+  if (corr < 135) {
+    status='True hyponatremia'; statusColor='#c0392b';
+    verdict='Even after correcting for the high glucose, the sodium is still low ('+hillier.toFixed(1)+' mEq/L by Hillier). This is genuine hyponatremia — it will not fully resolve just by lowering the blood sugar and needs its own evaluation (volume status, urine sodium/osmolality, medications, and possible SIADH or salt loss).';
+  } else if (corr > 145) {
+    status='Masked hypernatremia'; statusColor='#c0392b';
+    verdict='Once corrected for the high glucose, the true sodium is actually high ('+hillier.toFixed(1)+' mEq/L by Hillier). An underlying water deficit / hypernatremia is being hidden by the dilutional effect of hyperglycemia. As glucose is lowered the measured sodium will rise toward this value — watch for and treat the free-water deficit.';
+  } else if (lowMeasured) {
+    status='Pseudohyponatremia'; statusColor='#2d7a4f';
+    verdict='The measured sodium of '+na.toFixed(1)+' looks low, but once corrected for the high glucose it is normal ('+hillier.toFixed(1)+' mEq/L by Hillier). This is dilutional / translocational pseudohyponatremia — the low reading is driven by the sugar, not by a true sodium problem, and it will correct on its own as the glucose comes down.';
+  } else {
+    status='Normal'; statusColor='#2d7a4f';
+    verdict='Both the measured and the glucose-corrected sodium are in the normal range ('+hillier.toFixed(1)+' mEq/L corrected by Hillier). No sodium derangement is being masked by the hyperglycemia.';
+  }
+
+  // Color band by corrected (Hillier) value
+  let borderColor, bg;
+  if (corr < 125 || corr > 155) { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+  else if (corr < 135 || corr > 145) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  const hVal=document.getElementById('ng-hillier-val');
+  hVal.textContent=hillier.toFixed(1); hVal.style.color=borderColor;
+  document.getElementById('ng-hillier-badge').textContent='mEq/L (factor 2.4)';
+  document.getElementById('ng-katz-val').textContent=katz.toFixed(1);
+  document.getElementById('ng-katz-badge').textContent='mEq/L (factor 1.6)';
+  const sEl=document.getElementById('ng-status');
+  sEl.textContent=status; sEl.style.color=statusColor;
+  document.getElementById('ng-status-badge').textContent='measured '+na.toFixed(1)+' mEq/L';
+  document.getElementById('ng-status-badge').style.color=statusColor;
+
+  document.getElementById('ng-verdict').innerHTML='<strong style="color:'+borderColor+'">'+status+'</strong> — '+verdict;
+
+  let action;
+  if (status==='Pseudohyponatremia') {
+    action='Treat the hyperglycemia (insulin and IV fluids per protocol); the sodium should normalize as glucose falls — no separate sodium therapy is usually needed. Recheck sodium and glucose together as the sugar comes down, and avoid over-rapid sodium correction (aim ≤8–10 mEq/L rise per 24 h).';
+  } else if (status==='True hyponatremia') {
+    action='Treat the hyperglycemia, but also work up the hyponatremia separately (assess volume status, urine sodium and osmolality, serum osmolality, and review medications). Correct sodium slowly — no faster than ~8 mEq/L in 24 hours — to avoid osmotic demyelination.';
+  } else if (status==='Masked hypernatremia') {
+    action='Treat the hyperglycemia and anticipate the measured sodium rising as glucose normalizes. Replace the free-water deficit and recheck sodium frequently so it does not overshoot; correct gradually under physician guidance.';
+  } else {
+    action='No sodium-specific intervention is indicated for the reading itself. Manage the hyperglycemia as clinically appropriate and recheck sodium with the next glucose if the sugar is being actively treated.';
+  }
+  document.getElementById('ng-action').innerHTML='<strong style="color:'+borderColor+'">Next step:</strong> '+action;
 }
 </script>
 

@@ -2638,6 +2638,82 @@ Idala mu ing DRI results mu at 7-day meal plan kapag munta ka king doktor o diet
   </div>
 </section>
 
+<!-- IBW / ADJUSTED BODY WEIGHT CALCULATOR -->
+<section class="section" id="ibw-calc">
+<div class="section-tag">Interactive Tool</div>
+<h2>
+<span data-lang="en">Ideal &amp; Adjusted Body Weight Calculator</span>
+<span class="lang-hidden" data-lang="tl">Kalkulador ng Ideal at Adjusted na Timbang ng Katawan</span>
+<span class="lang-hidden" data-lang="ceb">Kalkulador sa Ideal ug Adjusted nga Timbang sa Lawas</span>
+<span class="lang-hidden" data-lang="kap">Kalkulador ning Ideal at Adjusted a Timbang ning Katawan</span>
+</h2>
+<p>
+<span data-lang="en">CKD nutrition prescriptions usually set protein and energy targets per kilogram of <strong>ideal</strong> or <strong>adjusted</strong> body weight — not actual weight — so that an obese patient is not over-prescribed protein and a very thin patient is not under-fed. Enter your sex, height, and actual weight to estimate your Devine ideal body weight (IBW), adjusted body weight (used in obesity), and BMI, and to see which "dosing weight" your dietitian would likely use to set your 0.6–0.8 g/kg/day protein target.</span>
+<span class="lang-hidden" data-lang="tl">Karaniwang itinatakda ng mga prescription sa nutrisyon sa CKD ang protina at enerhiya kada kilo ng <strong>ideal</strong> o <strong>adjusted</strong> na timbang — hindi ang aktwal na timbang — upang hindi sobrahan sa protina ang isang sobra sa timbang at hindi makulangan ang isang napakapayat. Ilagay ang inyong kasarian, taas, at aktwal na timbang upang tantyahin ang Devine ideal body weight (IBW), adjusted body weight (para sa obesity), at BMI, at makita kung aling "dosing weight" ang gagamitin ng inyong dietitian para sa 0.6–0.8 g/kg/araw na target ng protina.</span>
+<span class="lang-hidden" data-lang="ceb">Kasagaran nga ang mga prescription sa nutrisyon sa CKD nagtakda sa protina ug enerhiya matag kilo sa <strong>ideal</strong> o <strong>adjusted</strong> nga timbang — dili sa aktwal nga timbang — aron dili sobrahan og protina ang usa ka tambok ug dili makulangan ang usa ka niwang. Isulod ang imong kasarian, gitas-on, ug aktwal nga timbang aron banabanaon ang Devine ideal body weight (IBW), adjusted body weight (para sa obesity), ug BMI, ug makita kung asa nga "dosing weight" ang gamiton sa imong dietitian para sa 0.6–0.8 g/kg/adlaw nga target sa protina.</span>
+<span class="lang-hidden" data-lang="kap">Karaniwan a itinatakda ning mga prescription king nutrisyon king CKD ing protina at enerhiya kada kilo ning <strong>ideal</strong> o <strong>adjusted</strong> a timbang — ali ing aktwal a timbang — bang ali masobran king protina ing matabang tao at ali makulangan ing makayatung. Iatûs ya ing kekang kasarian, tayag, at aktwal a timbang bang banabanan ing Devine ideal body weight (IBW), adjusted body weight (para king obesity), at BMI, at akit nung nanu a "dosing weight" ing gamitan ning kekang dietitian para king 0.6–0.8 g/kg/aldo a target ning protina.</span>
+</p>
+<div class="calc-wrap">
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Height units:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="ibw-ht-cm" onclick="switchIBWHeight('cm')">cm</button>
+      <button class="unit-btn" id="ibw-ht-in" onclick="switchIBWHeight('in')">inches</button>
+    </div>
+  </div>
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Weight units:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="ibw-wt-kg" onclick="switchIBWWeight('kg')">kg</button>
+      <button class="unit-btn" id="ibw-wt-lb" onclick="switchIBWWeight('lb')">lb</button>
+    </div>
+  </div>
+<div class="calc-grid">
+<div class="calc-field">
+<label>Biological Sex</label>
+<select id="ibw-sex" onchange="calcIBW()">
+<option value="">Select…</option>
+<option value="M">Male</option>
+<option value="F">Female</option>
+</select>
+<div class="field-hint">Devine IBW uses different baseline constants for men (50 kg) and women (45.5 kg).</div>
+</div>
+<div class="calc-field">
+<label id="ibw-ht-lbl">Height (cm)</label>
+<input id="ibw-ht" max="220" min="120" oninput="calcIBW()" placeholder="e.g. 160" step="0.1" type="number"/>
+<div class="field-hint" id="ibw-ht-hint">Standing height. Devine IBW is defined for heights of 5 ft (60 in) and above.</div>
+</div>
+<div class="calc-field">
+<label id="ibw-wt-lbl">Actual Weight (kg)</label>
+<input id="ibw-wt" max="300" min="25" oninput="calcIBW()" placeholder="e.g. 70" step="0.1" type="number"/>
+<div class="field-hint" id="ibw-wt-hint">Use dry weight if you are on dialysis.</div>
+</div>
+</div>
+<div class="calc-result-box" id="ibw-result">
+<div class="calc-metrics-row">
+<div class="calc-metric-card">
+<div class="cmv" id="ibw-ibw-val">—</div>
+<div class="cml">Ideal Body Wt</div>
+<div class="cmt" id="ibw-ibw-badge">Devine</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="ibw-adj-val">—</div>
+<div class="cml">Adjusted Body Wt</div>
+<div class="cmt" id="ibw-adj-badge">if obese</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="ibw-bmi-val">—</div>
+<div class="cml">BMI</div>
+<div class="cmt" id="ibw-bmi-badge">—</div>
+</div>
+</div>
+<div class="calc-verdict-text" id="ibw-verdict"></div>
+<div class="calc-action-text" id="ibw-action"></div>
+</div>
+<p class="calc-disclaimer">⚕ IBW (Devine 1974): men = 50 + 2.3 × (height in inches − 60) kg; women = 45.5 + 2.3 × (height in inches − 60) kg. Adjusted body weight = IBW + 0.4 × (actual − IBW), used when actual weight exceeds 1.2 × IBW. BMI categories shown are WHO; Asian-Pacific cut-offs are lower (overweight ≥23, obese ≥25). IBW-based dosing is a starting guide only — your nephrologist and renal dietitian must individualize protein and energy targets using your labs, dialysis status, and nutritional assessment.</p>
+</div>
+</section>
+
 </main>
 <!-- RELATED-GUIDES-START -->
 <div class="container"></div><!-- /container -->
@@ -4600,6 +4676,124 @@ function buildMealPlan(p){
   document.getElementById('mp-allergy-tags').innerHTML = tagsHtml;
 
   document.getElementById('meal-plan-wrap').style.display = 'block';
+}
+
+// ── IDEAL & ADJUSTED BODY WEIGHT CALCULATOR (Devine) ────────────────
+function switchIBWHeight(u){
+  const isIn = u==='in';
+  document.getElementById('ibw-ht-cm').classList.toggle('active',!isIn);
+  document.getElementById('ibw-ht-in').classList.toggle('active',isIn);
+  const ht = document.getElementById('ibw-ht');
+  if(isIn){
+    document.getElementById('ibw-ht-lbl').textContent='Height (inches)';
+    ht.placeholder='e.g. 63'; ht.min='47'; ht.max='87'; ht.step='0.1';
+    document.getElementById('ibw-ht-hint').textContent='Standing height. Devine IBW is defined for heights of 60 in (5 ft) and above.';
+  } else {
+    document.getElementById('ibw-ht-lbl').textContent='Height (cm)';
+    ht.placeholder='e.g. 160'; ht.min='120'; ht.max='220'; ht.step='0.1';
+    document.getElementById('ibw-ht-hint').textContent='Standing height. Devine IBW is defined for heights of 5 ft (60 in) and above.';
+  }
+  ht.value='';
+  document.getElementById('ibw-result').style.display='none';
+}
+function switchIBWWeight(u){
+  const isLb = u==='lb';
+  document.getElementById('ibw-wt-kg').classList.toggle('active',!isLb);
+  document.getElementById('ibw-wt-lb').classList.toggle('active',isLb);
+  const wt = document.getElementById('ibw-wt');
+  if(isLb){
+    document.getElementById('ibw-wt-lbl').textContent='Actual Weight (lb)';
+    wt.placeholder='e.g. 154'; wt.min='55'; wt.max='660'; wt.step='0.1';
+  } else {
+    document.getElementById('ibw-wt-lbl').textContent='Actual Weight (kg)';
+    wt.placeholder='e.g. 70'; wt.min='25'; wt.max='300'; wt.step='0.1';
+  }
+  wt.value='';
+  document.getElementById('ibw-result').style.display='none';
+}
+function calcIBW(){
+  const sex = document.getElementById('ibw-sex').value;
+  const htRaw = parseFloat(document.getElementById('ibw-ht').value);
+  const wtRaw = parseFloat(document.getElementById('ibw-wt').value);
+  const res = document.getElementById('ibw-result');
+  if(!sex || isNaN(htRaw) || isNaN(wtRaw)){ res.style.display='none'; return; }
+
+  const htInIn = document.getElementById('ibw-ht-in').classList.contains('active');
+  const wtInLb = document.getElementById('ibw-wt-lb').classList.contains('active');
+  const heightIn = htInIn ? htRaw : htRaw/2.54;
+  const heightM  = (htInIn ? htRaw*2.54 : htRaw)/100;
+  const actualKg = wtInLb ? wtRaw/2.20462 : wtRaw;
+
+  if(heightIn<=0 || heightM<=0 || actualKg<=0){ res.style.display='none'; return; }
+
+  const base = sex==='M' ? 50 : 45.5;
+  // Devine IBW; clamp at the baseline constant for very short heights (<60 in)
+  let ibw = base + 2.3*(heightIn-60);
+  if(ibw<base) ibw = base;
+  const adj = ibw + 0.4*(actualKg-ibw);
+  const bmi = actualKg/(heightM*heightM);
+
+  // BMI WHO category
+  let bmiCat, bmiColor;
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  if(bmi<18.5){ bmiCat='Underweight'; bmiColor='#9a6500'; }
+  else if(bmi<25){ bmiCat='Normal'; bmiColor='#2d7a4f'; }
+  else if(bmi<30){ bmiCat='Overweight'; bmiColor='#9a6500'; }
+  else { bmiCat='Obese'; bmiColor='#c0392b'; }
+
+  // Dosing weight logic
+  const ratio = actualKg/ibw;
+  let dosingKg, dosingLabel, rationale;
+  if(actualKg <= ibw){
+    dosingKg = actualKg; dosingLabel='actual weight';
+    rationale='you are at or below your ideal body weight, so actual weight is used directly.';
+  } else if(actualKg > 1.2*ibw){
+    dosingKg = adj; dosingLabel='adjusted body weight';
+    rationale='your actual weight exceeds 1.2 × IBW, so adjusted body weight avoids over-prescribing protein from excess fat mass.';
+  } else {
+    dosingKg = actualKg; dosingLabel='actual weight';
+    rationale='your weight is close to ideal (within 1.2 × IBW), so actual weight is appropriate.';
+  }
+
+  // Color band on ratio of actual to IBW
+  let borderColor, bg, bandWord;
+  if(ratio < 0.8){ borderColor='#c0392b'; bandWord='markedly underweight'; }
+  else if(ratio > 1.5){ borderColor='#c0392b'; bandWord='markedly over ideal weight'; }
+  else if(ratio < 0.9 || ratio > 1.2){ borderColor='#f5a623'; bandWord='mildly under/over ideal weight'; }
+  else { borderColor='#2d7a4f'; bandWord='near ideal weight'; }
+  if(borderColor==='#2d7a4f') bg = isDark?'rgba(45,122,79,.08)':'#edf7f2';
+  else if(borderColor==='#f5a623') bg = isDark?'rgba(154,101,0,.08)':'#fef9ec';
+  else bg = isDark?'rgba(192,57,43,.08)':'#fdf0ef';
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  document.getElementById('ibw-ibw-val').textContent=ibw.toFixed(1)+' kg';
+  document.getElementById('ibw-ibw-badge').textContent='Devine '+(sex==='M'?'(male)':'(female)');
+
+  const obese = actualKg > 1.2*ibw;
+  document.getElementById('ibw-adj-val').textContent = obese ? adj.toFixed(1)+' kg' : '—';
+  document.getElementById('ibw-adj-val').style.color = obese ? '#9a6500' : '';
+  document.getElementById('ibw-adj-badge').textContent = obese ? 'used (>1.2× IBW)' : 'not needed';
+
+  document.getElementById('ibw-bmi-val').textContent=bmi.toFixed(1);
+  document.getElementById('ibw-bmi-val').style.color=bmiColor;
+  document.getElementById('ibw-bmi-badge').textContent=bmiCat;
+  document.getElementById('ibw-bmi-badge').style.color=bmiColor;
+
+  document.getElementById('ibw-verdict').innerHTML =
+    '<strong style="color:'+borderColor+'">Suggested dosing weight: '+dosingKg.toFixed(1)+' kg ('+dosingLabel+')</strong> — '+
+    'your actual weight is '+actualKg.toFixed(1)+' kg ('+(ratio*100).toFixed(0)+'% of IBW, '+bandWord+'). '+
+    'Use this '+dosingLabel+' when applying per-kilogram targets because '+rationale;
+
+  let action;
+  if(ratio < 0.8){
+    action='Because you are markedly underweight, restricting protein is dangerous — protein-energy wasting is common and harmful in CKD. Do not start a low-protein diet without your nephrologist and renal dietitian; nutritional support may be needed first.';
+  } else if(actualKg > 1.2*ibw){
+    action='For CKD protein targets, multiply '+dosingKg.toFixed(1)+' kg by your stage-specific goal — e.g. 0.6 g/kg/day ≈ '+(dosingKg*0.6).toFixed(0)+' g/day or 0.8 g/kg/day ≈ '+(dosingKg*0.8).toFixed(0)+' g/day of protein. Adjusted body weight is used here to avoid over-prescribing protein from excess fat mass.';
+  } else {
+    action='For CKD protein targets, multiply '+dosingKg.toFixed(1)+' kg by your stage-specific goal — e.g. 0.6 g/kg/day ≈ '+(dosingKg*0.6).toFixed(0)+' g/day or 0.8 g/kg/day ≈ '+(dosingKg*0.8).toFixed(0)+' g/day of protein. Confirm the exact target with your nephrologist and renal dietitian.';
+  }
+  document.getElementById('ibw-action').textContent=action;
 }
 </script>
 
