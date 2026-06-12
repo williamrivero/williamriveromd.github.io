@@ -23,8 +23,10 @@ def fix(path: Path, dry: bool) -> bool:
     m_canon = re.search(r'<link rel="canonical" href="([^"]+)"', html)
     if not m_title or not m_canon or "application/ld+json" not in html:
         return False
-    name = re.sub(r"\s*[–-]\s*W\.\s*G\.\s*M\.\s*Rivero, MD\s*$", "",
+    name = re.sub(r"\s*[–\-·]\s*W\.\s*G\.\s*M\.\s*Rivero,?\s*MD\s*$", "",
                   m_title.group(1).strip())
+    # JSON-LD strings are not HTML — use literal characters, not entities.
+    name = name.replace("&amp;", "&")
     url = m_canon.group(1).strip()
 
     orig = html
