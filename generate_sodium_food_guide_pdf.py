@@ -137,10 +137,13 @@ class Doc:
     def image(self, y: float, name: str, caption: str = None,
               max_h: float = None) -> float:
         img, ratio = jpeg_reader(name)
-        h = CW / ratio
+        w = CW
+        h = w / ratio
         if max_h and h > max_h:
             h = max_h
-        self.c.drawImage(img, M, y - h, width=CW, height=h)
+            w = h * ratio
+        x_offset = M + (CW - w) / 2   # centre narrower images
+        self.c.drawImage(img, x_offset, y - h, width=w, height=h)
         y -= h
         if caption:
             self.c.setFont("DJV-I", 7.5)
