@@ -887,7 +887,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <section class="section" id="initiation">
 <div class="section-tag">Interactive Tool</div>
 <h2>ESA Initiation Calculator — ESA-Naïve Patients</h2>
-<p>For patients <strong>not yet on an ESA</strong>. Enter the agent, body weight, current Hgb, and dialysis status to get the weight-based starting dose and schedule per FDA Epoetin alfa / Darbepoetin alfa labeling and KDIGO 2012. An ESA is generally started only when Hgb is below 10 g/dL and after iron deficiency and other reversible causes have been addressed.</p>
+<p>For patients <strong>not yet on an ESA</strong>. Enter the agent, body weight, current Hgb, and dialysis status to get the weight-based starting dose and schedule per FDA / EMA labeling for epoetin alfa, epoetin beta, darbepoetin alfa, and CERA (methoxy PEG-epoetin beta) and KDIGO 2012. An ESA is generally started only when Hgb is below 10 g/dL and after iron deficiency and other reversible causes have been addressed.</p>
 <div class="calc-wrap">
 <div class="calc-grid">
 <div class="calc-field">
@@ -895,7 +895,9 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <select id="init-agent" onchange="calcESAInit()">
 <option value="">Select agent…</option>
 <option value="epoetin">Epoetin alfa (units)</option>
+<option value="epoetin-beta">Epoetin beta (units)</option>
 <option value="darbepoetin">Darbepoetin alfa (mcg)</option>
+<option value="cera">CERA — methoxy PEG-epoetin beta / Mircera (mcg)</option>
 </select>
 <div class="field-hint">Sets the weight-based starting formula and dose unit.</div>
 </div>
@@ -940,7 +942,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </div>
 <div class="calc-verdict-text" id="init-verdict"></div>
 <div class="calc-action-text" id="init-detail"></div>
-<p class="calc-disclaimer">⚕ Starting doses follow FDA Epoetin alfa / Darbepoetin alfa labeling and KDIGO 2012. Epoetin alfa: 50 units/kg per dose, 3×/week (label range 50–100). Darbepoetin alfa: 0.45 mcg/kg — once weekly on dialysis, every 4 weeks if not on dialysis (0.75 mcg/kg every 2 weeks is a labeled alternative). Round to available vial strengths. Confirm iron repletion before the first dose. Physician confirmation and individualized assessment are required.</p>
+<p class="calc-disclaimer">⚕ Starting doses follow FDA / EMA ESA labeling and KDIGO 2012. Epoetin alfa: 50 units/kg per dose, 3×/week (label range 50–100). Epoetin beta: 20 units/kg per dose, 3×/week SC. Darbepoetin alfa: 0.45 mcg/kg — once weekly on dialysis, every 4 weeks if not on dialysis (0.75 mcg/kg every 2 weeks is a labeled alternative). CERA (methoxy PEG-epoetin beta): 0.6 mcg/kg once every 2 weeks, switching to twice that dose once monthly when stable. Round to available vial strengths. Confirm iron repletion before the first dose. Physician confirmation and individualized assessment are required.</p>
 </div>
 </div>
 </section>
@@ -983,8 +985,10 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <tbody>
 <tr><td>Hgb ≥ 10 g/dL</td><td>DEFER</td><td>Do not routinely start; correct iron deficiency and reversible causes first</td></tr>
 <tr><td>Hgb &lt; 10 g/dL · Epoetin alfa</td><td>INITIATE</td><td>50 units/kg per dose, 3×/week (label range 50–100)</td></tr>
+<tr><td>Hgb &lt; 10 g/dL · Epoetin beta</td><td>INITIATE</td><td>20 units/kg per dose, 3×/week SC</td></tr>
 <tr><td>Hgb &lt; 10 g/dL · Darbepoetin · on dialysis</td><td>INITIATE</td><td>0.45 mcg/kg once weekly</td></tr>
 <tr><td>Hgb &lt; 10 g/dL · Darbepoetin · not on dialysis</td><td>INITIATE</td><td>0.45 mcg/kg every 4 weeks (0.75 mcg/kg q2wk alternative)</td></tr>
+<tr><td>Hgb &lt; 10 g/dL · CERA (methoxy PEG-epoetin beta)</td><td>INITIATE</td><td>0.6 mcg/kg every 2 weeks → 2× monthly once stable</td></tr>
 <tr><td>Hgb &lt; 7 g/dL or symptomatic</td><td>INITIATE + evaluate transfusion</td><td>Start ESA and assess need for red-cell transfusion in parallel</td></tr>
 </tbody>
 </table>
@@ -995,6 +999,8 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <li>US Food and Drug Administration. <em>Epoetin alfa (Epogen/Procrit) and Darbepoetin alfa (Aranesp) Prescribing Information — ESA REMS.</em> Available at: fda.gov/drugs/postmarket-drug-safety-information-patients-and-providers/esa-apprise-oncology-program. Accessed 2026.</li>
 <li>Singh AK, et al. Correction of anemia with epoetin alfa in chronic kidney disease. <em>N Engl J Med.</em> 2006;355(20):2085–2098. (CHOIR trial)</li>
 <li>Pfeffer MA, et al. A trial of darbepoetin alfa in type 2 diabetes and chronic kidney disease. <em>N Engl J Med.</em> 2009;361(21):2019–2032. (TREAT trial)</li>
+<li>Methoxy polyethylene glycol-epoetin beta (Mircera) Prescribing Information. Genentech/Vifor. ESA-naïve correction starting dose 0.6 mcg/kg every 2 weeks. Accessed 2026.</li>
+<li>Epoetin beta (NeoRecormon) Summary of Product Characteristics. Subcutaneous correction-phase starting dose 20 IU/kg three times weekly. Accessed 2026.</li>
 </ol>
 </div>
 </details>
@@ -1279,14 +1285,22 @@ function calcESAInit() {
   var doseVal, doseUnit, freqVal, freqSub, agentLabel, settingLabel;
   settingLabel = setting === 'dialysis' ? 'dialysis-dependent CKD' : 'non-dialysis CKD';
 
-  if (agent === 'epoetin') {
-    agentLabel = 'Epoetin alfa';
-    var perDose = Math.round((weight * 50) / 100) * 100;   // ~50 units/kg, rounded to 100 units
+  if (agent === 'epoetin' || agent === 'epoetin-beta') {
+    var perKg   = agent === 'epoetin' ? 50 : 20;            // alfa 50 U/kg, beta 20 U/kg (SC) per dose
+    agentLabel  = agent === 'epoetin' ? 'Epoetin alfa' : 'Epoetin beta';
+    var perDose = Math.round((weight * perKg) / 100) * 100; // rounded to 100 units
     var weekly  = perDose * 3;
     doseVal  = perDose.toLocaleString();
     doseUnit = 'units/dose · ' + agentLabel;
     freqVal  = '3×/week';
     freqSub  = '≈ ' + weekly.toLocaleString() + ' units/week';
+  } else if (agent === 'cera') {
+    agentLabel = 'CERA (Mircera)';
+    var dc = Math.round(weight * 0.6 * 10) / 10;            // 0.6 mcg/kg, 1 decimal
+    doseVal  = dc.toFixed(1);
+    doseUnit = 'mcg/dose · ' + agentLabel;
+    freqVal  = 'Every 2 weeks';
+    freqSub  = '≈ ' + (Math.round((dc / 2) * 100) / 100).toFixed(2) + ' mcg/week equiv.';
   } else {
     agentLabel = 'Darbepoetin alfa';
     var d = Math.round(weight * 0.45 * 10) / 10;           // 0.45 mcg/kg, 1 decimal
@@ -1314,6 +1328,9 @@ function calcESAInit() {
     decisionSub = (hgb < 9 ? 'Hgb < 9 g/dL' : 'Hgb < 10 g/dL') + ' · ' + (setting === 'dialysis' ? 'dialysis' : 'ND-CKD');
     verdict = 'Hgb ' + hgb.toFixed(1) + ' g/dL is below the 10 g/dL initiation threshold. Starting an ESA is appropriate for ' + settingLabel + ' once iron deficiency and other reversible causes have been addressed. Begin at the weight-based dose above and titrate toward the 10–11.5 g/dL target.';
     detail = 'Before the first dose, confirm iron stores are adequate (TSAT ≥20% and ferritin ≥200 ng/mL in HD; TSAT ≥20% and ferritin ≥100 ng/mL in ND-CKD) and correct absolute iron deficiency — inadequate iron is the leading cause of a poor initial ESA response. Recheck Hgb every 2–4 weeks, do not adjust the dose more often than every 4 weeks, and do not target Hgb >11.5 g/dL.';
+    if (agent === 'cera') {
+      detail += ' Once Hgb is stable, CERA can be switched to once-monthly dosing at twice the every-2-week dose.';
+    }
     if (hgb < 7) {
       detail += ' At Hgb <7 g/dL or with symptomatic anemia, evaluate the need for red-cell transfusion in parallel — ESAs raise Hgb too slowly to manage acute symptomatic anemia.';
     }
