@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>eGFR — CKD-EPI 2021 Creatinine–Cystatin C Calculator – W. G. M. Rivero, MD</title>
+<meta name="description" content="Interactive eGFR calculator using the 2021 race-free CKD-EPI creatinine–cystatin C equation (Inker et al., NEJM 2021). Enter age, sex, serum creatinine and cystatin C to estimate kidney function and CKD stage.">
+<meta name="keywords" content="eGFR calculator, CKD-EPI 2021, cystatin C eGFR, creatinine cystatin c, kidney function calculator, GFR estimate, CKD staging, nephrology calculator Philippines">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-egfr-cystatin.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="eGFR — CKD-EPI 2021 Creatinine–Cystatin C Calculator">
+<meta property="og:description" content="Interactive eGFR calculator using the 2021 race-free CKD-EPI creatinine–cystatin C equation. Enter age, sex, serum creatinine and cystatin C to estimate kidney function and CKD stage.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-egfr-cystatin.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/lab-interpreter-hero.png">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="eGFR — CKD-EPI 2021 Creatinine–Cystatin C Calculator">
+<meta name="twitter:description" content="Interactive eGFR calculator using the 2021 race-free CKD-EPI creatinine–cystatin C equation. Enter age, sex, serum creatinine and cystatin C to estimate kidney function and CKD stage.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/lab-interpreter-hero.png">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  /* ═══════════════════════════════════════════════════════════════════════════
+     MASTER GUIDE CSS — williamriveromd.com
+     Version: 2026-05-17c
+  ═══════════════════════════════════════════════════════════════════════════ */
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;
+    --purple-soft:#faf5ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; font-size: 16px; }
+  .site-header { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 32px; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 200; }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+  .guide-lang-bar { display: flex; align-items: center; gap: 8px; padding: 8px 32px; background: rgba(10,18,32,.96); border-bottom: 1px solid rgba(255,255,255,.06); flex-wrap: wrap; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s; }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .guide-toggle-bar { display: flex; gap: 8px; align-items: center; padding: 6px 32px; background: rgba(10,18,32,.96) !important; border-bottom: 1px solid rgba(255,255,255,.08) !important; justify-content: space-between; flex-wrap: wrap; }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  [data-lang].lang-hidden { display: none !important; }
+  .hero { background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%); color: white; padding: 72px 0 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px, 5vw, 50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section h3 { font-family: 'Lora', serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-purple { background: var(--purple-soft); border-left: 3px solid var(--purple); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+  .lab-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .lab-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); padding: 10px 14px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .lab-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; line-height: 1.5; }
+  .lab-table td:first-child { font-weight: 600; color: var(--navy); }
+  .lab-table tr:last-child td { border-bottom: none; }
+  .lab-table tr:hover td { background: var(--bg); }
+  .calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
+  .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
+  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
+  .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .calc-metric-card { background: rgba(255,255,255,.7); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid rgba(0,0,0,.08); }
+  .calc-metric-card .cmv { font-family: 'Lora', serif; font-size: 28px; font-weight: 600; line-height: 1; color: var(--navy); }
+  .calc-metric-card .cml { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; color: var(--text-muted); }
+  .calc-metric-card .cmt { font-size: 11px; margin-top: 4px; font-weight: 600; color: var(--text-mid); }
+  .calc-verdict-text { font-size: 14px; line-height: 1.7; margin-bottom: 10px; color: var(--text-mid); }
+  .calc-action-text { font-size: 13px; line-height: 1.65; padding-top: 10px; border-top: 1px solid rgba(0,0,0,.08); color: var(--text-mid); }
+  .calc-disclaimer { font-size: 11.5px; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
+  .unit-toggle-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .unit-toggle-wrap .ut-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; }
+  .unit-toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .unit-btn { background: transparent; border: none; padding: 7px 16px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: background .15s, color .15s; }
+  .unit-btn.active { background: var(--teal); color: #fff; }
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .related-card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s; }
+  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
+  .related-card-tag { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+  .related-card-desc { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
+  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; border: none; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 0; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+  .print-btn { position: fixed; bottom: 80px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s; z-index: 9998; }
+  .print-btn:hover { background: #162848; transform: scale(1.1); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip { position: absolute; left: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .print-btn:hover .p-tip { opacity: 1; }
+  .scroll-top-btn { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996; opacity: 0; pointer-events: none; }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #162848; transform: scale(1.1); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip { position: absolute; right: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+  html[data-theme="dark"] { --navy:#1f3864; --gold:#b8962e; --gold-light:#d4af4f; --teal:#2ba8b0; --teal-light:#0a2830; --text:#e8eaf0; --text-mid:#dde3eb; --text-muted:#9baab8; --text-faint:#8090a4; --bg:#141c2a; --white:#1a2030; --border:#2a3548; --red:#f87171; --red-soft:#2a1515; --amber:#fbbf24; --amber-soft:#2a1900; --green:#4ade80; --green-soft:#0e2a1c; --purple:#c084fc; --purple-soft:#1a1030; }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  html[data-theme="dark"] .calc-wrap { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field select { background: #141c2a; border-color: #2a3548; color: var(--text); }
+  html[data-theme="dark"] .calc-metric-card { background: rgba(255,255,255,.04); border-color: #2a3548; }
+  html[data-theme="dark"] .calc-result-box { border-color: #2a3548 !important; background: rgba(255,255,255,.03) !important; }
+  html[data-theme="dark"] .calc-field label { color: var(--teal); }
+  html[data-theme="dark"] .calc-metric-card .cml, html[data-theme="dark"] .calc-disclaimer { color: var(--text-muted); }
+  html[data-theme="dark"] .calc-metric-card .cmv { color: var(--text) !important; }
+  html[data-theme="dark"] .dr-card { background: #080d16; }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
+  html[data-theme="dark"] .related-card-title { color: var(--text) !important; }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .alert-teal { background: #0a2830; }
+  html[data-theme="dark"] .alert-amber { background: #2a1900; }
+  html[data-theme="dark"] .alert-green { background: #0e2a1c; }
+  html[data-theme="dark"] .alert-red { background: #2a1515; }
+  html[data-theme="dark"] .lab-table th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .lab-table td { border-color: #2a3548; }
+  html[data-theme="dark"] .lab-table tr:hover td { background: #202d40; }
+  html[data-view="desktop"] { min-width: 1024px; }
+  @media(max-width: 480px) { .container { padding: 0 20px; } .related-guides { padding-left: 20px; padding-right: 20px; } .guide-footer .footer-inner { padding: 0 20px; } .dr-card { flex-direction: column; padding: 24px; gap: 16px; } .dr-card-wrap { padding: 0 20px 40px; } .hero-meta { gap: 14px; } }
+  @media(max-width: 640px) { table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } }
+  @media print { .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .scroll-top-btn, .guide-footer { display: none !important; } body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; } .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; } .hero h1 { color: #1f3864 !important; font-size: 22px !important; } .container { max-width: 100%; padding: 0 24px; } .section { padding: 20px 0; border-bottom: 1px solid #ddd; } .disclaimer { background: #fff8e8 !important; border: 1px solid #ccc !important; color: #333 !important; } @page { margin: 18mm 15mm; size: A4; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "eGFR — CKD-EPI 2021 Creatinine–Cystatin C Calculator",
+  "url": "https://www.williamriveromd.com/guides/calc-egfr-cystatin.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH",
+  "audience": { "@type": "MedicalAudience", "audienceType": "patient" }
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
+</header>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · eGFR</div>
+<h1>eGFR Calculator <em>CKD-EPI 2021 Creatinine–Cystatin C</em></h1>
+<p class="hero-sub">Enter age, sex, serum creatinine, and cystatin C to estimate glomerular filtration rate using the 2021 race-free combined equation — the most accurate single-lab eGFR estimate available for adults.</p>
+<div class="hero-meta">
+  <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+  <span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+  <span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" style="color:var(--gold-light);text-decoration:none;">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="lab-interpreter-guide.html" style="color:var(--gold-light);text-decoration:none;">Full Lab Interpreter guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+  <a class="nav-pill" href="#when">When to Use</a>
+  <a class="nav-pill" href="#calculator">Calculator</a>
+  <a class="nav-pill" href="#instructions">How to Use</a>
+  <a class="nav-pill" href="#formula">Formula</a>
+  <a class="nav-pill" href="#evidence">Evidence</a>
+  <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- WHEN TO USE -->
+<section class="section" id="when">
+<div class="section-tag">When to Use</div>
+<h2>When to Use This Calculator</h2>
+<p>Use the CKD-EPI 2021 creatinine–cystatin C equation whenever you need the most accurate eGFR from routine bloodwork in an adult (age ≥18). Combining two independent filtration markers substantially reduces the error that affects each marker alone. This calculator is particularly valuable when creatinine-only eGFR is suspected to be unreliable.</p>
+<div class="alert alert-teal">
+  <div class="alert-icon">✅</div>
+  <div class="alert-body">
+    <h4>Best situations to use this combined equation</h4>
+    <ul>
+      <li>Adults with unusually high or low muscle mass: very muscular athletes, bodybuilders, sarcopenic or frail elderly, amputees</li>
+      <li>Patients with neuromuscular diseases, prolonged immobility, or severe malnutrition — conditions where creatinine production is atypically low</li>
+      <li>Confirming a borderline creatinine-only eGFR (e.g., 58–72 mL/min) before a CKD diagnosis is assigned</li>
+      <li>Pre-transplant donor or recipient evaluation requiring the most accurate GFR estimate short of a measured GFR</li>
+      <li>Any setting where race-based correction is not desired — the 2021 equation is fully race-free</li>
+    </ul>
+  </div>
+</div>
+<div class="alert alert-amber">
+  <div class="alert-icon">⚠️</div>
+  <div class="alert-body">
+    <h4>When NOT to use this calculator</h4>
+    <p>Do not apply in acute kidney injury (AKI) — both creatinine and cystatin C lag behind rapidly changing GFR and will systematically underestimate true function. Do not use in children under 18; use the CKiD U25 equation for ages 1–25 instead. A single eGFR value, no matter how accurate, cannot establish CKD — KDIGO requires evidence of structural or functional abnormality persisting for more than three months.</p>
+  </div>
+</div>
+</section>
+
+<!-- WHY USE IT -->
+<section class="section" id="why">
+<div class="section-tag">Why Use It</div>
+<h2>Why the Combined Equation Matters</h2>
+<p>Creatinine is generated by muscle breakdown at a fairly constant rate, making it a reasonable filtration marker in average adults. However, its production varies widely with muscle mass, dietary protein, and certain medications — so creatinine alone can overestimate GFR in highly muscular individuals and underestimate it in the sarcopenic or malnourished.</p>
+<p>Cystatin C is produced at a constant rate by all nucleated cells regardless of muscle mass, making it a more reliable filtration marker in extremes of body composition. Its main limitation is that its production is elevated by corticosteroids, thyroid dysfunction, and malignancy — factors that can cause it to overestimate renal impairment.</p>
+<p>The CKD-EPI 2021 combined equation exploits the strengths of both markers while partially canceling out each one's weaknesses. In the NEJM 2021 derivation and validation study, the combined equation had a mean bias of approximately 0 mL/min/1.73 m² and the tightest P30 accuracy (percentage of estimates within 30% of measured GFR) of any equation tested — outperforming creatinine alone and cystatin C alone across all race groups when race was not included as a variable.</p>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>eGFR — CKD-EPI 2021 Creatinine–Cystatin C</h2>
+<p>Enter the patient's age, sex, serum creatinine, and cystatin C to compute the combined eGFR and CKD stage. Race is not used in this equation.</p>
+<div class="calc-wrap">
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Creatinine Units:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="cyc-btn-conv" onclick="switchCycUnit('conv')">mg/dL</button>
+      <button class="unit-btn" id="cyc-btn-si" onclick="switchCycUnit('si')">µmol/L</button>
+    </div>
+  </div>
+  <div class="calc-grid">
+    <div class="calc-field">
+      <label for="cyc-age">Age (years)</label>
+      <input id="cyc-age" type="number" min="18" max="110" step="1" placeholder="e.g. 60" oninput="calcCKDEPIcys()"/>
+      <div class="field-hint">Validated in adults (≥18 years)</div>
+    </div>
+    <div class="calc-field">
+      <label for="cyc-sex">Sex</label>
+      <select id="cyc-sex" onchange="calcCKDEPIcys()">
+        <option value="">Select…</option>
+        <option value="female">Female</option>
+        <option value="male">Male</option>
+      </select>
+      <div class="field-hint">Race is not used in the 2021 equation</div>
+    </div>
+    <div class="calc-field">
+      <label for="cyc-scr" id="cyc-lbl-scr">Serum Creatinine (mg/dL)</label>
+      <input id="cyc-scr" type="number" min="0.1" max="20" step="0.01" placeholder="e.g. 1.2" oninput="calcCKDEPIcys()"/>
+      <div class="field-hint" id="cyc-hint-scr">Normal: ~0.6–1.3 mg/dL. Toggle units above if your lab reports µmol/L.</div>
+    </div>
+    <div class="calc-field">
+      <label for="cyc-cys">Cystatin C (mg/L)</label>
+      <input id="cyc-cys" type="number" min="0.2" max="10" step="0.01" placeholder="e.g. 1.2" oninput="calcCKDEPIcys()"/>
+      <div class="field-hint">Normal: ~0.5–1.0 mg/L. A blood test independent of muscle mass.</div>
+    </div>
+  </div>
+  <div class="calc-result-box" id="cyc-result">
+    <div class="calc-metrics-row">
+      <div class="calc-metric-card">
+        <div class="cmv" id="cyc-egfr-val">—</div>
+        <div class="cml">eGFR (cr-cys)</div>
+        <div class="cmt" id="cyc-egfr-unit">mL/min/1.73m²</div>
+      </div>
+      <div class="calc-metric-card">
+        <div class="cmv" id="cyc-stage-val">—</div>
+        <div class="cml">CKD Stage</div>
+        <div class="cmt" id="cyc-stage-desc">—</div>
+      </div>
+    </div>
+    <div class="calc-verdict-text" id="cyc-verdict"></div>
+    <div class="calc-action-text" id="cyc-action"></div>
+  </div>
+  <p class="calc-disclaimer">⚕ Estimate only — interpret in full clinical context. Equation: Inker LA, Eneanya ND, Coresh J, et al. New Creatinine- and Cystatin C–Based Equations to Estimate GFR without Race. <em>N Engl J Med</em> 2021;385:1737–1749. eGFR requires ≥3 months of stability to define chronic CKD; a single value is not a diagnosis. Discuss results with your physician.</p>
+</div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="section" id="instructions">
+<div class="section-tag">How to Use</div>
+<h2>Instructions</h2>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+  <li>Select <strong>creatinine units</strong> (mg/dL or µmol/L) to match your lab report. Switching units clears the creatinine field.</li>
+  <li>Enter the patient's <strong>age</strong> in whole years (18–110) and select <strong>sex</strong>. Race is not required.</li>
+  <li>Enter <strong>serum creatinine</strong> from the most recent blood draw.</li>
+  <li>Enter <strong>cystatin C</strong> in mg/L. Normal range is approximately 0.5–1.0 mg/L; values above 1.0 suggest reduced GFR.</li>
+  <li>Results update automatically: combined eGFR (mL/min/1.73 m²), KDIGO CKD stage, a plain-language interpretation, and a stage-specific action recommendation.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</section>
+
+<!-- FORMULA -->
+<section class="section" id="formula">
+<div class="section-tag">Formula</div>
+<h2>Formula &amp; Equations</h2>
+<p>The CKD-EPI 2021 creatinine–cystatin C equation (race-free) is:</p>
+<table class="lab-table">
+<thead><tr><th>Component</th><th>Value / Expression</th></tr></thead>
+<tbody>
+  <tr><td>Full equation</td><td>eGFR = 135 × min(Scr/κ, 1)<sup>α</sup> × max(Scr/κ, 1)<sup>−0.544</sup> × min(CysC/0.8, 1)<sup>−0.323</sup> × max(CysC/0.8, 1)<sup>−0.778</sup> × 0.9961<sup>Age</sup> × (0.963 if female)</td></tr>
+  <tr><td>κ (kappa)</td><td>0.7 for females; 0.9 for males</td></tr>
+  <tr><td>α (alpha)</td><td>−0.219 for females; −0.144 for males</td></tr>
+  <tr><td>Creatinine units</td><td>mg/dL (µmol/L ÷ 88.4 to convert)</td></tr>
+  <tr><td>Cystatin C units</td><td>mg/L</td></tr>
+  <tr><td>Race coefficient</td><td>Not included (race-free, 2021 revision)</td></tr>
+</tbody>
+</table>
+<h3 style="margin-top:24px;">KDIGO CKD Stage Reference</h3>
+<table class="lab-table">
+<thead><tr><th>Stage</th><th>eGFR (mL/min/1.73 m²)</th><th>Description</th></tr></thead>
+<tbody>
+  <tr><td>G1</td><td>≥90</td><td>Normal or high — CKD only if kidney damage markers present ≥3 months</td></tr>
+  <tr><td>G2</td><td>60–89</td><td>Mildly decreased — CKD only if kidney damage markers present ≥3 months</td></tr>
+  <tr><td>G3a</td><td>45–59</td><td>Mild-to-moderate decrease</td></tr>
+  <tr><td>G3b</td><td>30–44</td><td>Moderate-to-severe decrease</td></tr>
+  <tr><td>G4</td><td>15–29</td><td>Severely decreased — prepare for kidney replacement therapy</td></tr>
+  <tr><td>G5</td><td>&lt;15</td><td>Kidney failure</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section" id="evidence">
+<div class="section-tag">Evidence &amp; References</div>
+<h2>Evidence &amp; References</h2>
+<p>The CKD-EPI 2021 creatinine–cystatin C equation was derived and validated in a pooled analysis of 12 studies involving 5,017 participants with measured GFR. The combined equation achieved the highest overall accuracy (P30 = 85–91%) across subgroups defined by race, sex, age, and diabetes status — outperforming both single-marker equations. The 2021 update removed race as a variable following evidence that the race coefficient reflected structural inequity in health-care access rather than a true biological difference in creatinine generation.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+  <li>Inker LA, Eneanya ND, Coresh J, et al. New Creatinine- and Cystatin C–Based Equations to Estimate GFR without Race. <em>N Engl J Med.</em> 2021;385(19):1737–1749.</li>
+  <li>Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. <em>Kidney Int.</em> 2024.</li>
+  <li>Levey AS, Stevens LA, Schmid CH, et al. A new equation to estimate glomerular filtration rate. <em>Ann Intern Med.</em> 2009;150(9):604–612. [Original CKD-EPI creatinine equation]</li>
+  <li>Grubb A, Blirup-Jensen S, Lindstrom V, et al. First certified reference material for cystatin C in human serum. <em>Clin Chem Lab Med.</em> 2010;48(11):1619–1621.</li>
+</ol>
+</section>
+
+<!-- PEARLS -->
+<section class="section" id="pearls">
+<div class="section-tag">Pearls &amp; Pitfalls</div>
+<h2>Pearls &amp; Pitfalls</h2>
+<div class="alert alert-green">
+  <div class="alert-icon">💡</div>
+  <div class="alert-body">
+    <h4>Use the combined equation when creatinine is unreliable</h4>
+    <p>When muscle mass deviates significantly from average — sarcopenic elderly, amputees, bodybuilders, or patients with neuromuscular disease — the combined creatinine + cystatin C eGFR is substantially more accurate than creatinine alone. Adding cystatin C to the workup costs little and eliminates much of the ambiguity in borderline GFR estimates.</p>
+  </div>
+</div>
+<div class="alert alert-teal">
+  <div class="alert-icon">🔬</div>
+  <div class="alert-body">
+    <h4>Cystatin C can be elevated for non-renal reasons</h4>
+    <p>High-dose corticosteroids increase cystatin C production independently of GFR, causing the equation to overestimate renal impairment. Hyperthyroidism also raises cystatin C. When a patient is on systemic steroids or has thyroid disease, interpret the combined eGFR cautiously and consider measured GFR if precision matters.</p>
+  </div>
+</div>
+<div class="alert alert-red">
+  <div class="alert-icon">🚫</div>
+  <div class="alert-body">
+    <h4>Pitfalls</h4>
+    <p>(1) Neither creatinine nor cystatin C tracks acute changes in GFR quickly — both lag by 24–48 hours during AKI or rapid recovery. In AKI, use clinical judgement and serial trends, not eGFR equations. (2) A single eGFR, however accurate, cannot establish CKD — KDIGO requires abnormalities to persist for more than 3 months. (3) Cystatin C assays must be calibrated to the international IFCC reference material (ERM-DA471/IFCC) for the 2021 equation to apply; older assays may produce systematically different values.</p>
+  </div>
+</div>
+</section>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized clinical assessment. eGFR is an estimate, not a measured value. CKD staging, treatment decisions, and medication dosing adjustments must be made in consultation with a qualified physician or nephrologist.</div>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span><span data-lang="tl" class="lang-hidden">I-scan at i-save</span><span data-lang="ceb" class="lang-hidden">I-scan ug i-save</span><span data-lang="kap" class="lang-hidden">I-scan at i-save</span></p>
+</div>
+</div>
+</div>
+
+<!-- RELATED-GUIDES-START -->
+<div class="related-guides">
+  <h2>Related Guides</h2>
+  <div class="related-cards">
+    <a class="related-card" href="lab-interpreter-guide.html">
+      <div class="related-card-tag">Lab Interpretation</div>
+      <div class="related-card-title">Lab Interpreter — Full Guide</div>
+      <div class="related-card-desc">Complete reference for kidney function tests, electrolytes, CBC, and urine studies with plain-language explanations.</div>
+      <div class="related-card-arrow">Read →</div>
+    </a>
+    <a class="related-card" href="understanding-ckd.html">
+      <div class="related-card-tag">The Basics</div>
+      <div class="related-card-title">Understanding Chronic Kidney Disease</div>
+      <div class="related-card-desc">A complete guide to what CKD means, how it progresses through stages, and what you can do today to protect your remaining kidney function.</div>
+      <div class="related-card-arrow">Read →</div>
+    </a>
+    <a class="related-card" href="calc-ckd-mbd.html">
+      <div class="related-card-tag">Calculator</div>
+      <div class="related-card-title">CKD-MBD Calculator</div>
+      <div class="related-card-desc">Calcium–phosphorus product, albumin-corrected calcium, and KDIGO PTH staging for CKD mineral and bone disorder.</div>
+      <div class="related-card-arrow">Use →</div>
+    </a>
+    <a class="related-card" href="anemia-management.html">
+      <div class="related-card-tag">The Basics</div>
+      <div class="related-card-title">Anemia Management in CKD</div>
+      <div class="related-card-desc">Why anemia develops in kidney disease, how to identify its cause, and the targeted treatments including iron and erythropoietin.</div>
+      <div class="related-card-arrow">Read →</div>
+    </a>
+  </div>
+</div>
+<!-- RELATED-GUIDES-END -->
+
+<footer class="guide-footer">
+<div class="footer-inner">
+  <p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+  <p>References: Inker LA et al. NEJM 2021 · KDIGO 2024 CKD Guidelines</p>
+</div>
+</footer>
+
+<script>
+const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+function applyDark(on){
+  document.documentElement.setAttribute('data-theme',on?'dark':'light');
+  const btn=document.getElementById('darkToggle');
+  const lbl=document.getElementById('darkLabel');
+  const ico=document.getElementById('darkIcon');
+  if(btn) btn.classList.toggle('active',on);
+  if(lbl) lbl.textContent=on?'Light':'Dark';
+  if(ico) ico.innerHTML=on
+    ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+    :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+function toggleDark(){
+  const on=document.documentElement.getAttribute('data-theme')!=='dark';
+  localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+}
+function applyDesktop(on){
+  const vp=document.querySelector('meta[name="viewport"]');
+  if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+  else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+  const btn=document.getElementById('desktopToggle');
+  const lbl=document.getElementById('desktopLabel');
+  if(btn) btn.classList.toggle('active',on);
+  if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+}
+function toggleDesktop(){
+  const on=document.documentElement.getAttribute('data-view')!=='desktop';
+  localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+}
+(function(){
+  if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+  if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+})();
+</script>
+
+<button aria-label="Print this guide" class="print-btn" onclick="window.print()">
+<span class="p-tip">Print / Save PDF</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
+</svg>
+</button>
+
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb','kap'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+// CKD-EPI 2021 Creatinine–Cystatin C eGFR Calculator
+// Inker LA et al. N Engl J Med 2021;385:1737-1749.
+function switchCycUnit(cycU){
+  var cycIsSI = cycU==='si';
+  document.getElementById('cyc-btn-conv').classList.toggle('active',!cycIsSI);
+  document.getElementById('cyc-btn-si').classList.toggle('active',cycIsSI);
+  var cycScr = document.getElementById('cyc-scr');
+  if(cycIsSI){
+    document.getElementById('cyc-lbl-scr').textContent='Serum Creatinine (µmol/L)';
+    cycScr.placeholder='e.g. 106'; cycScr.min='8'; cycScr.max='1800'; cycScr.step='1';
+    document.getElementById('cyc-hint-scr').textContent='Normal: ~53–115 µmol/L. Toggle units above if your lab reports mg/dL.';
+  } else {
+    document.getElementById('cyc-lbl-scr').textContent='Serum Creatinine (mg/dL)';
+    cycScr.placeholder='e.g. 1.2'; cycScr.min='0.1'; cycScr.max='20'; cycScr.step='0.01';
+    document.getElementById('cyc-hint-scr').textContent='Normal: ~0.6–1.3 mg/dL. Toggle units above if your lab reports µmol/L.';
+  }
+  cycScr.value='';
+  var cycRes0 = document.getElementById('cyc-result');
+  if(cycRes0) cycRes0.style.display='none';
+}
+
+function calcCKDEPIcys(){
+  var cycRes = document.getElementById('cyc-result');
+  var cycAge = parseFloat(document.getElementById('cyc-age').value);
+  var cycSex = document.getElementById('cyc-sex').value;
+  var cycScrRaw = parseFloat(document.getElementById('cyc-scr').value);
+  var cycCys = parseFloat(document.getElementById('cyc-cys').value);
+
+  if(!cycSex || isNaN(cycAge) || cycAge<=0 || isNaN(cycScrRaw) || cycScrRaw<=0 || isNaN(cycCys) || cycCys<=0){
+    cycRes.style.display='none'; return;
+  }
+
+  var cycSI = document.getElementById('cyc-btn-si').classList.contains('active');
+  var cycScr = cycSI ? cycScrRaw/88.4 : cycScrRaw;
+
+  var cycFemale = cycSex==='female';
+  var cycKappa = cycFemale ? 0.7 : 0.9;
+  var cycAlpha = cycFemale ? -0.219 : -0.144;
+
+  var cycScrK = cycScr / cycKappa;
+  var cycCysR = cycCys / 0.8;
+  var cycEgfr = 135
+    * Math.pow(Math.min(cycScrK,1), cycAlpha)
+    * Math.pow(Math.max(cycScrK,1), -0.544)
+    * Math.pow(Math.min(cycCysR,1), -0.323)
+    * Math.pow(Math.max(cycCysR,1), -0.778)
+    * Math.pow(0.9961, cycAge)
+    * (cycFemale ? 0.963 : 1);
+
+  var cycEgfrR = Math.round(cycEgfr);
+
+  var cycStage, cycStageDesc, cycBand;
+  if(cycEgfr>=90){ cycStage='G1'; cycStageDesc='Normal or high'; cycBand='green'; }
+  else if(cycEgfr>=60){ cycStage='G2'; cycStageDesc='Mildly decreased'; cycBand='green'; }
+  else if(cycEgfr>=45){ cycStage='G3a'; cycStageDesc='Mild–moderate decrease'; cycBand='amber'; }
+  else if(cycEgfr>=30){ cycStage='G3b'; cycStageDesc='Moderate–severe decrease'; cycBand='amber'; }
+  else if(cycEgfr>=15){ cycStage='G4'; cycStageDesc='Severely decreased'; cycBand='amber'; }
+  else { cycStage='G5'; cycStageDesc='Kidney failure'; cycBand='red'; }
+
+  var cycDark = document.documentElement.getAttribute('data-theme')==='dark';
+  var cycBorder, cycBg, cycStageColor;
+  if(cycBand==='green'){ cycBorder='#2d7a4f'; cycBg=cycDark?'rgba(45,122,79,.08)':'#edf7f2'; cycStageColor='#2d7a4f'; }
+  else if(cycBand==='amber'){ cycBorder='#f5a623'; cycBg=cycDark?'rgba(154,101,0,.08)':'#fef9ec'; cycStageColor=cycDark?'#f5a623':'#9a6500'; }
+  else { cycBorder='#c0392b'; cycBg=cycDark?'rgba(192,57,43,.08)':'#fdf0ef'; cycStageColor='#c0392b'; }
+
+  cycRes.style.display='block';
+  cycRes.style.background=cycBg;
+  cycRes.style.borderColor=cycBorder;
+
+  document.getElementById('cyc-egfr-val').textContent=cycEgfrR;
+  document.getElementById('cyc-egfr-val').style.color=cycStageColor;
+  document.getElementById('cyc-stage-val').textContent=cycStage;
+  document.getElementById('cyc-stage-val').style.color=cycStageColor;
+  document.getElementById('cyc-stage-desc').textContent=cycStageDesc;
+
+  var cycVerdict='';
+  if(cycStage==='G1'||cycStage==='G2'){
+    cycVerdict='Your estimated GFR of <strong>'+cycEgfrR+' mL/min/1.73m²</strong> places you in stage <strong>'+cycStage+'</strong> ('+cycStageDesc.toLowerCase()+'). At this level kidney function is largely preserved; CKD is only diagnosed if there is also a marker of kidney damage (such as protein in the urine) persisting ≥3 months.';
+  } else if(cycStage==='G3a'||cycStage==='G3b'){
+    cycVerdict='Your estimated GFR of <strong>'+cycEgfrR+' mL/min/1.73m²</strong> places you in stage <strong>'+cycStage+'</strong> ('+cycStageDesc.toLowerCase()+') — moderate chronic kidney disease. This is the stage where active protection of remaining function matters most.';
+  } else if(cycStage==='G4'){
+    cycVerdict='Your estimated GFR of <strong>'+cycEgfrR+' mL/min/1.73m²</strong> places you in stage <strong>G4</strong> (severely decreased) — advanced chronic kidney disease. This is the stage to begin preparing for possible kidney replacement therapy.';
+  } else {
+    cycVerdict='Your estimated GFR of <strong>'+cycEgfrR+' mL/min/1.73m²</strong> places you in stage <strong>G5</strong> (kidney failure). This level usually requires evaluation for dialysis or transplantation.';
+  }
+  cycVerdict+=' <br><br>This result uses the combined <strong>creatinine + cystatin C</strong> equation, which is the preferred estimate when creatinine alone may mislead — for example in people with unusually high or low muscle mass, amputees, the frail or malnourished, or very muscular athletes.';
+  document.getElementById('cyc-verdict').innerHTML=cycVerdict;
+
+  var cycAction='';
+  if(cycStage==='G1'||cycStage==='G2'){
+    cycAction='<strong>Action:</strong> Maintain blood pressure and blood sugar control, stay hydrated, avoid NSAIDs, and check kidney labs (eGFR + urine ACR) at least yearly.';
+  } else if(cycStage==='G3a'){
+    cycAction='<strong>Action:</strong> Confirm with a urine albumin-to-creatinine ratio, optimize blood pressure (often with an ACE inhibitor or ARB), review medications for kidney safety, and recheck labs every 6 months.';
+  } else if(cycStage==='G3b'){
+    cycAction='<strong>Action:</strong> See a nephrologist if you have not already. Tighten blood pressure and diabetes control, consider SGLT2-inhibitor therapy where indicated, watch potassium/phosphorus, and monitor labs every 3–6 months.';
+  } else if(cycStage==='G4'){
+    cycAction='<strong>Action:</strong> Regular nephrology follow-up is essential. Discuss options for kidney replacement therapy (hemodialysis, peritoneal dialysis, transplant), vaccinate, manage anemia and bone-mineral disease, and recheck labs every 1–3 months.';
+  } else {
+    cycAction='<strong>Action:</strong> Urgent nephrology care. Dialysis or transplantation is usually needed — work closely with your kidney team on access planning and timing.';
+  }
+  document.getElementById('cyc-action').innerHTML=cycAction;
+}
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/image-lightbox.js" defer></script>
+</body>
+</html>
