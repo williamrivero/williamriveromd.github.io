@@ -568,35 +568,50 @@
     margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em;
   }
   .related-cards {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
   }
   .related-card {
-    display: flex; flex-direction: column;
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px 18px;
-    text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s;
+    display: flex; flex-direction: column; gap: 4px;
+    background: var(--navy);
+    border-radius: 8px; padding: 14px 16px;
+    text-decoration: none; color: inherit;
+    transition: transform .15s, box-shadow .15s;
+    position: relative; overflow: hidden;
   }
-  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
-  .related-card-tag   { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
-  .related-card-desc  { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
-  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+  .related-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--teal);
+  }
+  .related-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,56,100,0.28); }
+  .related-card-tag   { font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9); text-transform: uppercase; letter-spacing: .08em; }
+  .related-card-title { font-size: .88rem; font-weight: 600; color: #fff; line-height: 1.3; }
+  .related-card-desc  { display: none; }
+  .related-card-arrow { display: none; }
+  .related-card-thumb {
+    position: absolute; top: 0; right: 0;
+    width: 110px; height: 100%;
+    object-fit: cover; opacity: .82;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 55%);
+    mask-image: linear-gradient(to right, transparent, #000 55%);
+    pointer-events: none;
+  }
+  .related-card.has-thumb { padding-right: 116px; }
 
   /* ── RELATED GUIDES — LEGACY ALIASES (12 guides ship variant markup) ─────── */
   .related-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
   }
   .related-badge {
     display: inline-block;
-    font-size: .68rem; font-weight: 700; color: var(--teal);
-    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px;
+    font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9);
+    text-transform: uppercase; letter-spacing: .08em;
   }
   .related-card h3 {
-    font-size: .92rem; font-weight: 600; color: var(--navy);
-    line-height: 1.35; margin: 0 0 6px 0;
+    font-size: .88rem; font-weight: 600; color: #fff;
+    line-height: 1.3; margin: 0 0 4px 0;
   }
   .related-card p {
-    font-size: .80rem; color: var(--text-muted); line-height: 1.45;
+    font-size: .80rem; color: rgba(255,255,255,.5); line-height: 1.45;
     margin: 0; flex: 1;
   }
 
@@ -780,7 +795,6 @@
   html[data-theme="dark"] .food-ok ul li,
   html[data-theme="dark"] .food-avoid ul li,
   html[data-theme="dark"] .food-limit ul li,
-  html[data-theme="dark"] .related-card-desc,
   html[data-theme="dark"] .calc-verdict-text,
   html[data-theme="dark"] .calc-action-text,
   html[data-theme="dark"] .illus-caption { color: var(--text-mid) !important; }   /* 9.1:1 ✓ */
@@ -795,8 +809,6 @@
   html[data-theme="dark"] .drug-table td:first-child,
   html[data-theme="dark"] .compare-cell strong,
   html[data-theme="dark"] .cart-cell strong,
-  html[data-theme="dark"] .related-card-title,
-  html[data-theme="dark"] .related-card-tag,
   html[data-theme="dark"] .calc-metric-card .cmv { color: var(--text) !important; }  /* 12.4:1 ✓ */
 
   /* Table headers */
@@ -821,12 +833,9 @@
   html[data-theme="dark"] .compare-cell,
   html[data-theme="dark"] .cart-cell { border-color: #2a3548; }
 
-  /* Related guides */
-  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
-  html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
-  html[data-theme="dark"] .related-card h3 { color: var(--text); }
-  html[data-theme="dark"] .related-card p { color: var(--text-muted); }
-  html[data-theme="dark"] .related-badge { color: var(--teal); }
+  /* Related guides — cards are already dark navy, only minor tweak in dark mode */
+  html[data-theme="dark"] .related-card { background: #1a2535; }
+  html[data-theme="dark"] .related-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
 
   /* Food grids */
   html[data-theme="dark"] .food-ok    { background: var(--green-soft); border-color: rgba(74,222,128,.15); }
@@ -2307,10 +2316,14 @@ html[data-theme="dark"] .hd-calc-actions .btn-primary{background:var(--teal,#1a6
 <div class="related-guides">
 <h2><span data-lang="en">Related Guides</span><span class="lang-hidden" data-lang="tl">Mga Kaugnay na Gabay</span><span class="lang-hidden" data-lang="ceb">Mga May Kalabtan nga Giya</span><span class="lang-hidden" data-lang="kap">Ding Kaugnay nga Gabay</span></h2>
 <div class="related-cards">
-<a class="related-card" href="peritoneal-dialysis-ckd.html"><div class="related-card-tag">Dialysis Options</div><div class="related-card-title">Peritoneal Dialysis: Your Complete Guide</div><div class="related-card-desc">How PD works, CAPD vs APD, and why PD may be the better option for many elderly patients.</div><div class="related-card-arrow">Read &rarr;</div></a>
-<a class="related-card" href="uremic-pruritus-ckd.html"><div class="related-card-tag">Symptom Management</div><div class="related-card-title">Uremic Pruritus: The Itch That Should Not Be Scratched</div><div class="related-card-desc">Chronic itch is especially common and dangerous in elderly dialysis patients &mdash; it can be treated.</div><div class="related-card-arrow">Read &rarr;</div></a>
-<a class="related-card" href="fluid-management-dialysis.html"><div class="related-card-tag">Dialysis Safety</div><div class="related-card-title">Fluid Management &amp; Weight Gain Between Sessions</div><div class="related-card-desc">Why fluid management is more critical and more difficult in elderly dialysis patients.</div><div class="related-card-arrow">Read &rarr;</div></a>
-<a class="related-card" href="philhealth-z-packages.html"><div class="related-card-tag">Philippines Coverage</div><div class="related-card-title">PhilHealth Z Benefit Packages</div><div class="related-card-desc">What dialysis coverage is available for elderly patients in the Philippines &mdash; HD, PD, and more.</div><div class="related-card-arrow">Read &rarr;</div></a>
+<a class="related-card has-thumb" href="peritoneal-dialysis-ckd.html"><div class="related-card-tag">Dialysis Options</div><div class="related-card-title">Peritoneal Dialysis: Your Complete Guide</div><div class="related-card-desc">How PD works, CAPD vs APD, and why PD may be the better option for many elderly patients.</div><div class="related-card-arrow">Read &rarr;</div>
+          <img class="related-card-thumb" src="../images/peritoneal-dialysis-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<a class="related-card has-thumb" href="uremic-pruritus-ckd.html"><div class="related-card-tag">Symptom Management</div><div class="related-card-title">Uremic Pruritus: The Itch That Should Not Be Scratched</div><div class="related-card-desc">Chronic itch is especially common and dangerous in elderly dialysis patients &mdash; it can be treated.</div><div class="related-card-arrow">Read &rarr;</div>
+          <img class="related-card-thumb" src="../images/uremic-pruritus-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<a class="related-card has-thumb" href="fluid-management-dialysis.html"><div class="related-card-tag">Dialysis Safety</div><div class="related-card-title">Fluid Management &amp; Weight Gain Between Sessions</div><div class="related-card-desc">Why fluid management is more critical and more difficult in elderly dialysis patients.</div><div class="related-card-arrow">Read &rarr;</div>
+          <img class="related-card-thumb" src="../images/fluid-management-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<a class="related-card has-thumb" href="philhealth-z-packages.html"><div class="related-card-tag">Philippines Coverage</div><div class="related-card-title">PhilHealth Z Benefit Packages</div><div class="related-card-desc">What dialysis coverage is available for elderly patients in the Philippines &mdash; HD, PD, and more.</div><div class="related-card-arrow">Read &rarr;</div>
+          <img class="related-card-thumb" src="../images/philhealth-z-packages-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
 </div>
 </div>
 
