@@ -1275,6 +1275,15 @@ html[data-theme="dark"] .cf-btn.active{color:var(--teal);}
   .cf-btn{width:auto;white-space:nowrap;flex:none;border:1px solid var(--border);border-radius:20px;padding:6px 13px;}
   .cf-btn.active{border-color:var(--teal);}
 }
+/* Favorite (star) toggle on each calculator card */
+.related-card{position:relative;}
+.related-card-tag{padding-right:26px;}
+.cf-fav{position:absolute;top:7px;right:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;padding:0;border:none;background:transparent;color:var(--text-faint);font-size:18px;line-height:1;cursor:pointer;border-radius:6px;transition:color .15s,background .15s,transform .1s;z-index:3;}
+.cf-fav:hover{background:var(--bg);color:#d4af4f;}
+.cf-fav.faved{color:#d4af4f;}
+.cf-fav:active{transform:scale(.82);}
+html[data-theme="dark"] .cf-fav:hover{background:rgba(255,255,255,.06);}
+.cf-btn[data-filter="favorites"] .cf-dot{background:#d4af4f;}
 </style>
 </head>
 <body>
@@ -1313,6 +1322,7 @@ html[data-theme="dark"] .cf-btn.active{color:var(--teal);}
 <div class="cf-search-wrap"><span class="cf-search-icon">⌕</span><input type="search" id="cf-search" class="cf-search" placeholder="Search calculators…" autocomplete="off" aria-label="Search calculators"></div>
 <div class="cf-heading">Categories</div>
 <button class="cf-btn active" data-filter="all"><span class="cf-dot" style="background:#94a3b8"></span>All tools<span class="cf-count">54</span></button>
+<button class="cf-btn" data-filter="favorites"><span class="cf-dot"></span>★ Favorites<span class="cf-count" id="cf-fav-count">0</span></button>
 <button class="cf-btn" data-filter="function"><span class="cf-dot" style="background:#1a6b72"></span>Kidney Function<span class="cf-count">5</span></button>
 <button class="cf-btn" data-filter="pharmacology"><span class="cf-dot" style="background:#0d9488"></span>Pharmacology &amp; Dosing<span class="cf-count">2</span></button>
 <button class="cf-btn" data-filter="risk"><span class="cf-dot" style="background:#b45309"></span>CKD Risk<span class="cf-count">5</span></button>
@@ -2018,26 +2028,58 @@ function calcMBD() {
 <script src="../assets/image-lightbox.js" defer></script>
 <script>
 (function(){
+  const FAV_KEY='wgmr-calc-favs';
   const btns=document.querySelectorAll('.cf-btn');
   const search=document.getElementById('cf-search');
   const sections=document.querySelectorAll('.calc-results > section.section');
+  const cards=document.querySelectorAll('.calc-results .related-card');
   const noRes=document.getElementById('calc-no-results');
+  const favCount=document.getElementById('cf-fav-count');
   let cat='all';
+
+  function getFavs(){try{return new Set(JSON.parse(localStorage.getItem(FAV_KEY)||'[]'));}catch(e){return new Set();}}
+  function saveFavs(s){try{localStorage.setItem(FAV_KEY,JSON.stringify(Array.from(s)));}catch(e){}}
+  let favs=getFavs();
+  function updateFavCount(){if(favCount)favCount.textContent=favs.size;}
+
+  // add a star toggle to every calculator card
+  cards.forEach(function(card){
+    const href=card.getAttribute('href');
+    const b=document.createElement('button');
+    b.type='button'; b.className='cf-fav'+(favs.has(href)?' faved':'');
+    b.setAttribute('aria-label','Save to favorites'); b.title='Save to favorites';
+    b.textContent=favs.has(href)?'★':'☆';
+    b.addEventListener('click',function(e){
+      e.preventDefault(); e.stopPropagation();
+      if(favs.has(href)){favs.delete(href); b.classList.remove('faved'); b.textContent='☆';}
+      else{favs.add(href); b.classList.add('faved'); b.textContent='★';}
+      saveFavs(favs); updateFavCount();
+      if(cat==='favorites') apply();
+    });
+    card.appendChild(b);
+  });
+  updateFavCount();
+
   function apply(){
     const q=(search&&search.value||'').trim().toLowerCase();
     let anyVisible=false;
     sections.forEach(function(sec){
-      const catMatch=(cat==='all'||cat===sec.id);
       let secVisible=false;
       sec.querySelectorAll('.related-card').forEach(function(card){
-        const m=catMatch&&(!q||card.textContent.toLowerCase().indexOf(q)!==-1);
+        const inCat = cat==='all' ? true : (cat==='favorites' ? favs.has(card.getAttribute('href')) : cat===sec.id);
+        const m=inCat&&(!q||card.textContent.toLowerCase().indexOf(q)!==-1);
         card.style.display=m?'':'none';
         if(m)secVisible=true;
       });
       sec.style.display=secVisible?'':'none';
       if(secVisible)anyVisible=true;
     });
-    if(noRes)noRes.style.display=anyVisible?'none':'block';
+    if(noRes){
+      noRes.style.display=anyVisible?'none':'block';
+      if(noRes.firstChild) noRes.firstChild.nodeValue=(cat==='favorites'&&favs.size===0)
+        ? 'No favorites yet — tap the ☆ on any calculator to save it here. '
+        : 'No calculators match your search. ';
+    }
   }
   btns.forEach(function(b){b.addEventListener('click',function(){
     btns.forEach(function(x){x.classList.remove('active');});
