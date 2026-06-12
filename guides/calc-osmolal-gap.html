@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Serum Osmolality &amp; Osmolal Gap Calculator – W. G. M. Rivero, MD</title>
+<meta name="description" content="Calculate serum osmolality and osmolal gap — detect unmeasured osmoles from toxic alcohols, mannitol, or pseudohyponatremia. With glucose and BUN unit toggles.">
+<meta name="keywords" content="osmolal gap calculator, serum osmolality, toxic alcohols, methanol poisoning, ethylene glycol, osmolal gap Philippines, nephrology calculator, pseudohyponatremia">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-osmolal-gap.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="Serum Osmolality &amp; Osmolal Gap Calculator">
+<meta property="og:description" content="Calculate serum osmolality and osmolal gap — detect unmeasured osmoles from toxic alcohols, mannitol, or pseudohyponatremia.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-osmolal-gap.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/poa-aki-triage.webp">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Serum Osmolality &amp; Osmolal Gap Calculator">
+<meta name="twitter:description" content="Calculate serum osmolality and osmolal gap — detect unmeasured osmoles from toxic alcohols, mannitol, or pseudohyponatremia.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/poa-aki-triage.webp">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  /* ═══════════════════════════════════════════════════════════════════════════
+     MASTER GUIDE CSS — williamriveromd.com
+     Version: 2026-05-17c
+  ═══════════════════════════════════════════════════════════════════════════ */
+  :root {
+    --navy:#1f3864; --gold:#b8962e; --gold-light:#d4af4f;
+    --teal:#1a6b72; --teal-light:#e1f5f0;
+    --text:#1e2a38; --text-mid:#2c3a4a; --text-muted:#4a5568; --text-faint:#5c6a7e;
+    --bg:#f9fafb; --white:#ffffff; --border:#e2e6eb;
+    --red:#b91c1c; --red-soft:#fff0f0;
+    --amber:#92400e; --amber-soft:#fffbeb;
+    --green:#166534; --green-soft:#f0fdf4;
+    --purple:#6b21a8; --purple-soft:#faf5ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; font-size: 16px; }
+
+  .site-header { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 32px; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 200; }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+
+  .guide-lang-bar { display: flex; align-items: center; gap: 8px; padding: 8px 32px; background: rgba(10,18,32,.96); border-bottom: 1px solid rgba(255,255,255,.06); flex-wrap: wrap; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s; }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+
+  .guide-toggle-bar { display: flex; gap: 8px; align-items: center; padding: 6px 32px; background: rgba(10,18,32,.96) !important; border-bottom: 1px solid rgba(255,255,255,.08) !important; justify-content: space-between; flex-wrap: wrap; }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  [data-lang].lang-hidden { display: none !important; }
+
+  .hero { background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%); color: white; padding: 72px 0 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px,5vw,50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px,3.5vw,32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section h3 { font-family: 'Lora', serif; font-size: clamp(18px,2.5vw,24px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; }
+
+  .lab-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .lab-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); padding: 10px 14px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .lab-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; line-height: 1.5; }
+  .lab-table td:first-child { font-weight: 600; color: var(--navy); }
+  .lab-table tr:last-child td { border-bottom: none; }
+  .lab-table tr:hover td { background: var(--bg); }
+
+  .unit-toggle-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; padding: 10px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+  .unit-toggle-lbl { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+  .ut-sep { width: 1px; height: 16px; background: var(--border); margin: 0 4px; }
+  .ut-btn { background: var(--white); border: 1px solid var(--border); border-radius: 5px; padding: 3px 11px; font-size: 11px; font-weight: 700; cursor: pointer; color: var(--text-muted); transition: background .12s, color .12s, border-color .12s; line-height: 1.7; font-family: 'DM Sans', sans-serif; }
+  .ut-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+  .ut-btn:hover:not(.active) { border-color: var(--teal); color: var(--teal); }
+
+  .calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
+  .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
+  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
+  .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .calc-metric-card { background: rgba(255,255,255,.7); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid rgba(0,0,0,.08); }
+  .calc-metric-card .cmv { font-family: 'Lora', serif; font-size: 28px; font-weight: 600; line-height: 1; color: var(--navy); }
+  .calc-metric-card .cml { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; color: var(--text-muted); }
+  .calc-metric-card .cmt { font-size: 11px; margin-top: 4px; font-weight: 600; color: var(--text-mid); }
+  .calc-verdict-text { font-size: 14px; line-height: 1.7; margin-bottom: 10px; color: var(--text-mid); }
+  .calc-action-text { font-size: 13px; line-height: 1.65; padding-top: 10px; border-top: 1px solid rgba(0,0,0,.08); color: var(--text-mid); }
+  .calc-disclaimer { font-size: 11.5px; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
+  .calc-btn { background: var(--navy); color: white; border: none; border-radius: 8px; padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background .15s; }
+  .calc-btn:hover { background: #162848; }
+
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .related-card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s; }
+  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
+  .related-card-tag { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+  .related-card-desc { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
+  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; border: none; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 0; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+
+  .print-btn { position: fixed; bottom: 80px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s; z-index: 9998; }
+  .print-btn:hover { background: #162848; transform: scale(1.1); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip { position: absolute; left: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .print-btn:hover .p-tip { opacity: 1; }
+  .scroll-top-btn { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, opacity .2s; z-index: 9996; opacity: 0; pointer-events: none; }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #162848; transform: scale(1.1); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip { position: absolute; right: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+
+  html[data-theme="dark"] { --navy:#1f3864; --gold:#b8962e; --gold-light:#d4af4f; --teal:#2ba8b0; --teal-light:#0a2830; --text:#e8eaf0; --text-mid:#dde3eb; --text-muted:#9baab8; --bg:#141c2a; --white:#1a2030; --border:#2a3548; --red:#f87171; --red-soft:#2a1515; --amber:#fbbf24; --amber-soft:#2a1900; --green:#4ade80; --green-soft:#0e2a1c; }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  html[data-theme="dark"] .calc-wrap { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field select { background: #141c2a; border-color: #2a3548; color: var(--text); }
+  html[data-theme="dark"] .calc-metric-card { background: rgba(255,255,255,.04); border-color: #2a3548; }
+  html[data-theme="dark"] .calc-result-box { border-color: #2a3548 !important; background: rgba(255,255,255,.03) !important; }
+  html[data-theme="dark"] .calc-field label { color: var(--teal); }
+  html[data-theme="dark"] .calc-metric-card .cml, html[data-theme="dark"] .calc-disclaimer { color: var(--text-muted); }
+  html[data-theme="dark"] .calc-metric-card .cmv { color: var(--text) !important; }
+  html[data-theme="dark"] .unit-toggle-row { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .ut-btn { background: #141c2a; border-color: #2a3548; color: var(--text-muted); }
+  html[data-theme="dark"] .ut-btn.active { background: var(--navy); color: white; }
+  html[data-theme="dark"] .alert-teal { background: #0a2830; }
+  html[data-theme="dark"] .alert-amber { background: #2a1900; }
+  html[data-theme="dark"] .alert-green { background: #0e2a1c; }
+  html[data-theme="dark"] .alert-red { background: #2a1515; }
+  html[data-theme="dark"] .lab-table th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .lab-table td { border-color: #2a3548; color: var(--text-mid); }
+  html[data-theme="dark"] .lab-table td:first-child { color: var(--text); }
+  html[data-theme="dark"] .lab-table tr:hover td { background: #202d40; }
+  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .disclaimer strong { color: var(--text-mid); }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-view="desktop"] { min-width: 1024px; }
+
+  @media(max-width: 480px) {
+    .container { padding: 0 20px; }
+    .related-guides { padding-left: 20px; padding-right: 20px; }
+    .guide-footer .footer-inner { padding: 0 20px; }
+    .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .dr-card-wrap { padding: 0 20px 40px; }
+    .hero-meta { gap: 14px; }
+  }
+  @media print {
+    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .scroll-top-btn, .guide-footer { display: none !important; }
+    body { font-size: 13px; color: #000; background: #fff; }
+    .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; }
+    .hero h1 { color: #1f3864 !important; font-size: 22px !important; }
+    .container { max-width: 100%; padding: 0 24px; }
+    @page { margin: 18mm 15mm; size: A4; }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Serum Osmolality & Osmolal Gap Calculator",
+  "url": "https://www.williamriveromd.com/guides/calc-osmolal-gap.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH"
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
+</header>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Electrolytes</div>
+<h1>Serum Osmolality <em>&amp; Osmolal Gap</em></h1>
+<p class="hero-sub">Calculate the estimated serum osmolality and — when a lab-measured osmolality is available — the osmolal gap to detect unmeasured osmoles from toxic alcohols, mannitol, or pseudohyponatremia. Supports mg/dL and mmol/L for glucose and urea.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+<span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" style="color:var(--gold-light);text-decoration:none;">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="practical-outpatient-algorithms.html" style="color:var(--gold-light);text-decoration:none;">Full outpatient algorithms guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#instructions">How to Use</a>
+<a class="nav-pill" href="#formula">Formula</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- WHEN TO USE -->
+<section class="section" id="when">
+<div class="section-tag">When to Use</div>
+<h2>When to Use This Calculator</h2>
+<p>Use this tool in two distinct clinical scenarios: (1) to estimate the serum osmolality when a lab-measured value is not yet available, and (2) to compute the osmolal gap — the difference between the lab-measured osmolality and the calculated value — when you suspect an unmeasured osmole is present.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Key indications for the osmolal gap</h4>
+<ul>
+<li>Unexplained altered mental status or metabolic acidosis — suspect toxic alcohol ingestion (methanol, ethylene glycol, isopropyl alcohol)</li>
+<li>Hyponatremia workup — to distinguish true hyponatremia from pseudohyponatremia (high lipids or protein) or isotonic hyponatremia (mannitol, glycine, sorbitol)</li>
+<li>Suspected mannitol toxicity in neurosurgical or renal patients receiving IV mannitol</li>
+<li>Evaluation of elevated anion gap metabolic acidosis when ethylene glycol or methanol poisoning is in the differential</li>
+</ul>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>When NOT to rely on a normal gap</h4>
+<p>A normal osmolal gap (&lt; 10 mOsm/kg) does not exclude early toxic alcohol ingestion — it may be normal in the first few hours before significant metabolism has occurred, and in very small ingestions. If clinical suspicion is high (history of ingestion, anion gap acidosis, visual symptoms), send a toxic alcohol screen regardless of the gap.</p>
+</div>
+</div>
+</section>
+
+<!-- WHY USE IT -->
+<section class="section" id="why">
+<h2>Why It Matters</h2>
+<p>Serum osmolality reflects the total solute concentration in plasma and is tightly regulated at 275–295 mOsm/kg. The two major measured osmoles are sodium (and its paired anions, which contribute ~2 × Na) and glucose and urea (each contributing a small fraction). The standard formula captures all three. Any additional substance dissolved in plasma — ethanol, methanol, ethylene glycol, mannitol, glycerol — will raise the measured osmolality without appearing in the calculated value, creating an osmolal gap.</p>
+<p>An osmolal gap &gt; 10 mOsm/kg in the appropriate clinical context (unexplained AMS, high anion gap, history of ingestion) should trigger an emergency toxic alcohol screen and empirical antidotal therapy (fomepizole for methanol and ethylene glycol; ethanol infusion where fomepizole is unavailable). Early recognition is critical because the parent compounds are far less toxic than their metabolites — formic acid (from methanol) causes blindness and death, while glycolic and oxalic acid (from ethylene glycol) cause severe AKI and oxalate crystalluria.</p>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>Serum Osmolality &amp; Osmolal Gap Calculator</h2>
+<p>Enter serum sodium, glucose, and BUN/urea. Adding the lab-measured osmolality enables computation of the osmolal gap. Results update automatically on input.</p>
+<div class="calc-wrap">
+<div class="unit-toggle-row">
+  <span class="unit-toggle-lbl">Glucose:</span>
+  <button class="ut-btn active" id="osm-glu-mgdl" onclick="setOsmGluUnit('mgdl',this)">mg/dL</button>
+  <button class="ut-btn" id="osm-glu-mmol" onclick="setOsmGluUnit('mmol',this)">mmol/L</button>
+  <div class="ut-sep"></div>
+  <span class="unit-toggle-lbl">Urea nitrogen:</span>
+  <button class="ut-btn active" id="osm-bun-bun" onclick="setOsmBunUnit('bun',this)">BUN mg/dL</button>
+  <button class="ut-btn" id="osm-bun-mmol" onclick="setOsmBunUnit('urea',this)">Urea mmol/L</button>
+</div>
+<div class="calc-grid">
+<div class="calc-field">
+  <label>Serum Na⁺ (mEq/L)</label>
+  <input type="number" id="osm-na" oninput="calcOsmGap()" placeholder="e.g. 140">
+</div>
+<div class="calc-field">
+  <label>Glucose (mg/dL)</label>
+  <input type="number" id="osm-glu" oninput="calcOsmGap()" placeholder="e.g. 90">
+</div>
+<div class="calc-field">
+  <label>BUN (mg/dL)</label>
+  <input type="number" id="osm-bun" oninput="calcOsmGap()" placeholder="e.g. 14">
+</div>
+<div class="calc-field">
+  <label>Measured osmolality (mOsm/kg) <em style="font-weight:400;font-style:normal;font-size:11px;">(optional)</em></label>
+  <input type="number" id="osm-measured" oninput="calcOsmGap()" placeholder="e.g. 295">
+  <div class="field-hint">From the lab (freezing-point depression). Needed for the osmolal gap.</div>
+</div>
+</div>
+<button class="calc-btn" onclick="calcOsmGap()">Calculate</button>
+<div class="calc-result-box" id="osm-result" style="margin-top:16px;"></div>
+<p class="calc-disclaimer">⚕ The osmolal gap is a screening test only. A normal gap does not exclude toxic alcohol ingestion in the early phase. Always correlate with clinical context and send a toxic alcohol screen when ingestion is plausible.</p>
+</div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="section" id="instructions">
+<div class="section-tag">How to Use</div>
+<h2>Instructions</h2>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Select your glucose units (mg/dL or mmol/L) and your urea-nitrogen units (BUN mg/dL or Urea mmol/L) using the unit toggle buttons. The calculator internally converts all values to mg/dL before applying the standard formula.</li>
+<li>Enter <strong>serum sodium</strong> (mEq/L), <strong>glucose</strong>, and <strong>BUN</strong> (or urea). These three values are sufficient to calculate the estimated osmolality.</li>
+<li>Optionally enter the <strong>lab-measured osmolality</strong> (mOsm/kg, from freezing-point depression). This field enables the osmolal gap calculation.</li>
+<li>Click <strong>Calculate</strong> (or values update automatically on input). Results appear with color coding: green = normal, amber/red = elevated gap requiring further evaluation.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</section>
+
+<!-- FORMULA -->
+<section class="section" id="formula">
+<div class="section-tag">Formula</div>
+<h2>Formula &amp; Interpretation</h2>
+<table class="lab-table">
+<thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
+<tbody>
+<tr><td>Calculated serum osmolality (mOsm/kg)</td><td>2 × Na⁺ (mEq/L) + Glucose (mg/dL) / 18 + BUN (mg/dL) / 2.8</td></tr>
+<tr><td>Osmolal gap (mOsm/kg)</td><td>Measured osmolality − Calculated osmolality</td></tr>
+</tbody>
+</table>
+<h3 style="margin-top:24px;">Unit conversion factors used internally</h3>
+<table class="lab-table">
+<thead><tr><th>Lab value</th><th>Conversion</th></tr></thead>
+<tbody>
+<tr><td>Glucose mmol/L → mg/dL</td><td>multiply by 18</td></tr>
+<tr><td>Urea mmol/L → BUN mg/dL</td><td>multiply by 2.8</td></tr>
+</tbody>
+</table>
+<h3 style="margin-top:24px;">Osmolal gap interpretation</h3>
+<table class="lab-table">
+<thead><tr><th>Osmolal gap</th><th>Interpretation</th><th>Differential</th></tr></thead>
+<tbody>
+<tr><td>Normal (&lt; 10)</td><td>No significant unmeasured osmoles</td><td>Does not fully exclude early toxic alcohol ingestion</td></tr>
+<tr><td>Elevated (≥ 10)</td><td>Unmeasured osmole present</td><td>Methanol · Ethylene glycol · Isopropyl/ethyl alcohol · Mannitol · Glycerol · Pseudohyponatremia (lipid, protein)</td></tr>
+</tbody>
+</table>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The normal calculated osmolality range is 275–295 mOsm/kg. Values outside this range without a clear explanation (hyperglycemia, azotemia) warrant further evaluation. Note that ethanol, if present, is not measured separately in the standard formula — its contribution must be subtracted: gap corrected for ethanol = measured osm − calculated osm − (ethanol mg/dL / 4.6).</p>
+</section>
+
+<!-- EVIDENCE & REFERENCES -->
+<section class="section" id="evidence">
+<div class="section-tag">Evidence &amp; References</div>
+<h2>Evidence &amp; References</h2>
+<p>The standard osmolality formula (2 × Na + glucose/18 + BUN/2.8) and the concept of the osmolal gap were systematically described by Smithline and Gardner in 1976 as a clinical tool to detect unmeasured osmoles. The threshold of 10 mOsm/kg is derived from normal reference ranges observed in healthy individuals and is widely used in clinical practice, though the reference range varies slightly across laboratories (some use &lt; 6, others &lt; 12).</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Smithline N, Gardner KD Jr. Gaps — anionic and osmolal. <em>JAMA.</em> 1976;236(14):1594–1597.</li>
+<li>Kruse JA, Cadnapaphornchai P. The serum osmole gap. <em>J Crit Care.</em> 1994;9(3):185–197.</li>
+<li>Purssell RA, Pudek M, Brubacher J, Abu-Laban RB. Derivation and validation of a formula to calculate the contribution of ethanol to the osmolal gap. <em>Ann Emerg Med.</em> 2001;38(6):653–659.</li>
+</ol>
+</section>
+
+<!-- PEARLS & PITFALLS -->
+<section class="section" id="pearls">
+<div class="section-tag">Pearls &amp; Pitfalls</div>
+<h2>Pearls &amp; Pitfalls</h2>
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Combine with anion gap for toxic alcohol workup</h4>
+<p>Early methanol or ethylene glycol ingestion (within 1–3 hours) will raise the osmolal gap before metabolism to toxic organic acids begins. As metabolism proceeds, the osmolal gap falls and the anion gap rises (from formate and glycolate accumulation). In late presentations, a normal osmolal gap with a high anion gap metabolic acidosis and normal lactate is highly suspicious for methanol or ethylene glycol. Run both gaps together at every stage.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Hyponatremia workup: estimated vs measured osmolality</h4>
+<p>In isotonic and hypertonic hyponatremia (mannitol, sorbitol from TURP, hyperglycemia), the calculated osmolality will be normal or high while the serum sodium is low. An osmolal gap in hyponatremia that cannot be explained by glucose, mannitol, or lipid infusion should prompt a toxicology screen. In pseudohyponatremia from extreme hyperlipidemia or paraproteinemia, the measured osmolality is normal (correcting the gap back to zero) while the flame-photometry sodium reads falsely low.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) A normal osmolal gap does not exclude toxic alcohol ingestion in the early phase — always send a serum toxic alcohol level when ingestion is plausible. (2) Ethanol itself contributes to the osmolal gap — a patient who is intoxicated will have a gap from ethanol alone (~22 mOsm/kg per 100 mg/dL ethanol). Subtract the ethanol contribution (ethanol mg/dL ÷ 4.6) to assess whether an additional osmole is present. (3) The formula assumes conventional (freezing-point) osmometry — vapor-pressure osmometry is not equivalent and will give a different gap. (4) Very high BUN or glucose values normally raise the calculated osmolality; be sure the "gap" is not simply from miscategorized hyperglycemia or severe uremia.</p>
+</div>
+</div>
+</section>
+
+<div class="disclaimer"><strong>Important:</strong> The osmolal gap is a screening tool. A gap &gt; 10 mOsm/kg in a patient with altered mental status, anion gap acidosis, or suspected toxic ingestion requires immediate clinical action — toxic alcohol screen, nephrology and toxicology consultation, and empiric antidotal therapy — without waiting for the formal alcohol assay. Do not defer treatment based solely on this calculator.</div>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label">Scan and save</p>
+</div>
+</div>
+</div>
+
+<!-- RELATED-GUIDES-START -->
+<div class="related-guides">
+  <h2>Related Guides &amp; Calculators</h2>
+  <div class="related-cards">
+  <a class="related-card" href="calc-sodium-correction-rate.html">
+    <div class="related-card-tag">Calculator</div>
+    <div class="related-card-title">Na⁺ Correction Rate — Hyponatremia</div>
+    <div class="related-card-desc">Safe 24h and 48h correction targets for hyponatremia with ODS risk stratification.</div>
+    <div class="related-card-arrow">Use →</div>
+  </a>
+  <a class="related-card" href="calc-fena-feurea.html">
+    <div class="related-card-tag">Calculator</div>
+    <div class="related-card-title">FeNa &amp; FeUrea</div>
+    <div class="related-card-desc">Differentiate prerenal from intrinsic AKI — FeUrea reliable on diuretics.</div>
+    <div class="related-card-arrow">Use →</div>
+  </a>
+  <a class="related-card" href="practical-outpatient-algorithms.html">
+    <div class="related-card-tag">Clinical Guide</div>
+    <div class="related-card-title">Practical Outpatient Algorithms</div>
+    <div class="related-card-desc">Full electrolyte and AKI management algorithms for outpatient nephrology.</div>
+    <div class="related-card-arrow">Read →</div>
+  </a>
+  </div>
+</div>
+<!-- RELATED-GUIDES-END -->
+
+<footer class="guide-footer">
+<div class="footer-inner">
+<p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>References: Smithline &amp; Gardner JAMA 1976 · Kruse &amp; Cadnapaphornchai J Crit Care 1994</p>
+</div>
+</footer>
+
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
+
+<button aria-label="Print this guide" class="print-btn" onclick="window.print()">
+<span class="p-tip">Print / Save PDF</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
+</svg>
+</button>
+
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb','kap'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+const unitState = { 'osm-glu': 'mgdl', 'osm-bun': 'bun' };
+
+function _activateBtn(btn) {
+  btn.closest('.unit-toggle-row').querySelectorAll('.ut-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function setOsmGluUnit(unit, btn) {
+  unitState['osm-glu'] = unit; _activateBtn(btn);
+  const isMg = unit === 'mgdl';
+  document.getElementById('osm-glu').closest('.calc-field').querySelector('label').textContent = `Glucose (${isMg ? 'mg/dL' : 'mmol/L'})`;
+  document.getElementById('osm-glu').placeholder = isMg ? 'e.g. 90' : 'e.g. 5';
+  document.getElementById('osm-glu').step = isMg ? '1' : '0.1';
+  calcOsmGap();
+}
+
+function setOsmBunUnit(unit, btn) {
+  unitState['osm-bun'] = unit; _activateBtn(btn);
+  const isBun = unit === 'bun';
+  document.getElementById('osm-bun').closest('.calc-field').querySelector('label').textContent = isBun ? 'BUN (mg/dL)' : 'Urea (mmol/L)';
+  document.getElementById('osm-bun').placeholder = isBun ? 'e.g. 14' : 'e.g. 5';
+  document.getElementById('osm-bun').step = isBun ? '1' : '0.1';
+  calcOsmGap();
+}
+
+function showCalcResult(el, html) {
+  el.innerHTML = html;
+  el.style.cssText = 'display:block;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px 20px;margin-top:16px;';
+}
+
+function calcOsmGap() {
+  const na = parseFloat(document.getElementById('osm-na').value);
+  let glu = parseFloat(document.getElementById('osm-glu').value);
+  let bun = parseFloat(document.getElementById('osm-bun').value);
+  const measured = parseFloat(document.getElementById('osm-measured').value);
+  const el = document.getElementById('osm-result');
+  if ([na, glu, bun].some(isNaN)) { el.style.display = 'none'; return; }
+  // Convert SI → conventional
+  if (unitState['osm-glu'] === 'mmol') glu = glu * 18;
+  if (unitState['osm-bun'] === 'urea') bun = bun * 2.8;
+  const calc = Math.round((2 * na + glu / 18 + bun / 2.8) * 10) / 10;
+  let calcColor = (calc >= 275 && calc <= 295) ? 'var(--green)' : '#9a6500';
+  let gapCard = '', verdict, vColor;
+  if (!isNaN(measured)) {
+    const gap = Math.round((measured - calc) * 10) / 10;
+    let gapColor;
+    if (gap > 10) {
+      gapColor = 'var(--red)'; vColor = 'var(--red)';
+      verdict = '<strong>Elevated osmolal gap (&gt;10).</strong> Suspect unmeasured osmoles — methanol, ethylene glycol, mannitol, isopropyl/ethyl alcohol, glycerol, or pseudohyponatremia. Send a toxic-alcohol screen and treat empirically if ingestion is plausible.';
+    } else {
+      gapColor = 'var(--green)'; vColor = 'var(--green)';
+      verdict = '<strong>Normal osmolal gap (&lt;10).</strong> No significant unmeasured osmoles. A normal gap does not fully exclude early methanol/ethylene-glycol ingestion — correlate clinically.';
+    }
+    gapCard = `<div class="calc-metric-card"><div class="cmv" style="color:${gapColor}">${gap}</div><div class="cml">Osmolal Gap</div><div class="cmt" style="color:${gapColor}">${gap > 10 ? 'Elevated' : 'Normal'}</div></div>`;
+  } else {
+    vColor = 'var(--text-mid)';
+    verdict = 'Add a lab-measured osmolality to compute the osmolal gap (measured − calculated). A gap &gt;10 suggests unmeasured osmoles (toxic alcohols, mannitol).';
+  }
+  showCalcResult(el, `
+    <div class="calc-metrics-row">
+      <div class="calc-metric-card"><div class="cmv" style="color:${calcColor}">${calc}</div><div class="cml">Calculated Osm (mOsm/kg)</div><div class="cmt">Normal 275–295</div></div>
+      ${gapCard}
+    </div>
+    <div class="calc-verdict-text" style="color:${vColor}">${verdict}</div>
+    <div class="calc-disclaimer">Calculated osm = 2 × Na + glucose/18 + BUN/2.8 · Osmolal gap = measured − calculated (normal &lt;10).</div>
+  `);
+}
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/image-lightbox.js" defer></script>
+</body>
+</html>

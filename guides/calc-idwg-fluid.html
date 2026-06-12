@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Interdialytic Weight Gain &amp; Fluid Removal Calculator – W. G. M. Rivero, MD</title>
+<meta name="description" content="Interactive interdialytic weight gain calculator — assess fluid overload, estimate safe daily fluid allowance, and calculate ultrafiltration rate for dialysis patients. With evidence and clinical pearls.">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-idwg-fluid.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="Interdialytic Weight Gain &amp; Fluid Removal Calculator">
+<meta property="og:description" content="Interactive interdialytic weight gain calculator — assess fluid overload, estimate safe daily fluid allowance, and calculate ultrafiltration rate for dialysis patients.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-idwg-fluid.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/dialysis-fluid-management-overview.png">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Interdialytic Weight Gain &amp; Fluid Removal Calculator">
+<meta name="twitter:description" content="Interactive interdialytic weight gain calculator — assess fluid overload, estimate safe daily fluid allowance, and calculate ultrafiltration rate for dialysis patients.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/dialysis-fluid-management-overview.png">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;
+    --purple-soft:#faf5ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; font-size: 16px; }
+  .site-header { display: flex; align-items: center; justify-content: space-between; height: 56px; box-sizing: border-box; padding: 0 32px; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 200; }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+  .guide-lang-bar { display: flex; align-items: center; gap: 8px; padding: 8px 32px; background: rgba(10,18,32,.96); border-bottom: 1px solid rgba(255,255,255,.06); flex-wrap: wrap; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s; }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .guide-toggle-bar { display: flex; gap: 8px; align-items: center; padding: 6px 32px; background: rgba(10,18,32,.96) !important; border-bottom: 1px solid rgba(255,255,255,.08) !important; justify-content: space-between; flex-wrap: wrap; }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  [data-lang].lang-hidden { display: none !important; }
+  .hero { background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%); color: white; padding: 72px 0 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px, 5vw, 50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section h3 { font-family: 'Lora', serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; }
+  .lab-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .lab-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); padding: 10px 14px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .lab-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; line-height: 1.5; }
+  .lab-table td:first-child { font-weight: 600; color: var(--navy); }
+  .lab-table tr:last-child td { border-bottom: none; }
+  .lab-table tr:hover td { background: var(--bg); }
+  /* Fluid calculator specific styles */
+  .calc-box { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .calc-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+  .calc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media(max-width:520px){.calc-row{grid-template-columns:1fr;}}
+  .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
+  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-btn { background: var(--teal); color: white; border: none; padding: 12px 28px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 8px; transition: background .2s; }
+  .calc-btn:hover { background: #145c63; }
+  .calc-result { margin-top: 24px; display: none; }
+  .calc-result.show { display: block; }
+  .res-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .res-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+  .res-card h4 { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .res-val { font-family: 'Lora', serif; font-size: 26px; font-weight: 600; color: var(--navy); line-height: 1.1; }
+  .res-unit { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .res-alert { display: flex; gap: 14px; align-items: flex-start; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; }
+  .res-ok   { background: var(--green-soft); border-left: 3px solid var(--green); }
+  .res-warn { background: var(--amber-soft); border-left: 3px solid #d97706; }
+  .res-danger { background: var(--red-soft); border-left: 3px solid var(--red); }
+  .res-icon { font-size: 20px; flex-shrink: 0; }
+  .res-body h5 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .res-body p { font-size: 13px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .calc-note { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 12px; }
+  .calc-disclaimer-box { font-size: 11.5px; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 0; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .related-card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s; }
+  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
+  .related-card-tag { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+  .related-card-desc { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
+  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; border: none; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .print-btn { position: fixed; bottom: 80px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s; z-index: 9998; }
+  .print-btn:hover { background: #162848; transform: scale(1.1); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip { position: absolute; left: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .print-btn:hover .p-tip { opacity: 1; }
+  .scroll-top-btn { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996; opacity: 0; pointer-events: none; }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip { position: absolute; right: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+  html[data-theme="dark"] { --teal: #2ba8b0; --teal-light: #0a2830; --text: #e8eaf0; --text-mid: #dde3eb; --text-muted: #9baab8; --bg: #141c2a; --white: #1a2030; --border: #2a3548; --red: #f87171; --red-soft: #2a1515; --amber: #fbbf24; --amber-soft: #2a1900; --green: #4ade80; --green-soft: #0e2a1c; }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .calc-box { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field select { background: #141c2a; border-color: #2a3548; color: var(--text); }
+  html[data-theme="dark"] .res-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .lab-table th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .lab-table td { border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  @media(max-width: 480px) { .container { padding: 0 20px; } .related-guides { padding-left: 20px; padding-right: 20px; } .guide-footer .footer-inner { padding: 0 20px; } .dr-card { flex-direction: column; padding: 24px; gap: 16px; } .dr-card-wrap { padding: 0 20px 40px; } }
+  @media print { .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .scroll-top-btn, .guide-footer { display: none !important; } body { font-size: 13px; color: #000; background: #fff; } .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; } .hero h1 { color: #1f3864 !important; font-size: 22px !important; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Interdialytic Weight Gain & Fluid Removal Calculator",
+  "url": "https://www.williamriveromd.com/guides/calc-idwg-fluid.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH"
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
+</header>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Dialysis</div>
+<h1>Interdialytic Weight Gain <em>Fluid Overload · UFR · Daily Allowance</em></h1>
+<p class="hero-sub">Enter your dry weight, today's weight, days since last dialysis, and urine output to assess fluid overload, estimate your safe daily fluid allowance, and calculate the expected ultrafiltration rate at your next session.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+<span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" style="color:var(--gold-light);text-decoration:none;">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="fluid-management-dialysis.html" style="color:var(--gold-light);text-decoration:none;">Full Fluid Management guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#instructions">How to Use</a>
+<a class="nav-pill" href="#formula">Formula</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- WHEN TO USE -->
+<section class="section" id="when">
+<div class="section-tag">When to Use</div>
+<h2>When to Use This Calculator</h2>
+<p>Use this tool daily — ideally every morning — if you are a hemodialysis patient who wants to know whether your current fluid gain is within safe limits, how much fluid you can still drink today, and what ultrafiltration rate to expect at your next session. It is most useful in the 1–3 days between dialysis treatments.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Appropriate population</h4>
+<p>Adult patients on maintenance hemodialysis (thrice-weekly or twice-weekly schedules) who weigh themselves on a calibrated scale every morning before eating and before their first drink. Also useful for peritoneal dialysis patients monitoring fluid balance, though the UFR estimate applies primarily to hemodialysis sessions. Require your established dry weight from your dialysis team — do not estimate it yourself.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>When to call your dialysis center immediately</h4>
+<p>Do not wait for the calculator result if you have: shortness of breath at rest or lying flat, leg swelling that is new or rapidly worsening, blood pressure above 160/100 mmHg, or a weight gain of more than 3 kg since your last session. These are signs of acute fluid overload requiring urgent assessment — call your center or go to an emergency department now.</p>
+</div>
+</div>
+</section>
+
+<!-- WHY USE IT -->
+<section class="section" id="why">
+<div class="section-tag">Why Use It</div>
+<h2>Why It Matters</h2>
+<p>Interdialytic weight gain (IDWG) is the most directly controllable variable in dialysis management, and its consequences extend far beyond comfort. Every kilogram of excess fluid above dry weight imposes an estimated 13 mmHg rise in systolic blood pressure and requires rapid removal during the next dialysis session. The ultrafiltration rate (UFR) — the speed of fluid removal in mL per kg per hour — is independently associated with mortality when it exceeds 13 mL/kg/hr: at this rate, the cardiac chambers cannot refill fast enough during diastole, triggering intradialytic hypotension, myocardial ischemia, and arrhythmia. Chronic high UFR from repeated large IDWG is a leading cause of left ventricular dysfunction in dialysis patients. This calculator makes both the gain and the UFR visible so patients can act before the session, not after the damage is done.</p>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>Fluid &amp; Weight Status Calculator</h2>
+<p>Enter your details below to calculate your current fluid gain status, safe daily fluid allowance, and how much fluid you need to limit today.</p>
+
+<div class="calc-box">
+<h3 style="font-family:'Lora',serif;font-size:20px;font-weight:600;color:var(--navy);margin-bottom:8px;">&#129518; Interdialytic Weight &amp; Fluid Calculator</h3>
+<p class="calc-sub">For hemodialysis patients. Enter your weight and urine output to get personalized targets.</p>
+
+<div class="calc-row">
+<div class="calc-field">
+<label>Dry Weight (kg)</label>
+<input type="number" id="c_dry" min="30" max="150" step="0.1" placeholder="e.g. 58.5">
+</div>
+<div class="calc-field">
+<label>Today's Weight (kg)</label>
+<input type="number" id="c_today" min="30" max="160" step="0.1" placeholder="e.g. 61.2">
+</div>
+</div>
+<div class="calc-row">
+<div class="calc-field">
+<label>Days Since Last Dialysis</label>
+<select id="c_days">
+<option value="1">1 day (e.g. day after HD)</option>
+<option value="2" selected>2 days (e.g. Tue or Thu)</option>
+<option value="3">3 days (e.g. weekend gap)</option>
+</select>
+</div>
+<div class="calc-field">
+<label>Daily Urine Output</label>
+<select id="c_urine">
+<option value="0">None / Anuric (0 mL)</option>
+<option value="200">Very little (&lt;200 mL/day)</option>
+<option value="400" selected>Small (200–500 mL/day)</option>
+<option value="700">Moderate (500–1000 mL/day)</option>
+<option value="1200">Good (&gt;1000 mL/day)</option>
+</select>
+</div>
+</div>
+<button class="calc-btn" onclick="calcFluid()">&#x1F4CA; Calculate My Fluid Status</button>
+
+<div class="calc-result" id="calc-result">
+<div class="res-grid">
+<div class="res-card">
+<h4>Weight Gained</h4>
+<div class="res-val" id="r_gain">—</div>
+<div class="res-unit" id="r_pct">—</div>
+</div>
+<div class="res-card">
+<h4>Rate per Day</h4>
+<div class="res-val" id="r_rate">—</div>
+<div class="res-unit">kg/day average</div>
+</div>
+<div class="res-card">
+<h4>Daily Fluid Allowance</h4>
+<div class="res-val" id="r_allow">—</div>
+<div class="res-unit">mL per day (today)</div>
+</div>
+<div class="res-card">
+<h4>Ultrafiltration Rate Est.</h4>
+<div class="res-val" id="r_ufr">—</div>
+<div class="res-unit">mL/kg/hr (4-hr session)</div>
+</div>
+</div>
+<div id="r_alert"></div>
+<p class="calc-note" id="r_note"></p>
+</div>
+
+<p class="calc-disclaimer-box" style="margin-top:16px;">&#9888; <strong>This calculator is for educational guidance only.</strong> Your actual fluid allowance must be set by your nephrologist based on your clinical status, residual kidney function, blood pressure, and dialysis prescription. Never restrict fluids to the point of dehydration.</p>
+</div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="section" id="instructions">
+<div class="section-tag">How to Use</div>
+<h2>Instructions</h2>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Weigh yourself on a <strong>calibrated scale every morning</strong> before eating, before drinking, and in light clothing. Use the same scale every day.</li>
+<li>Enter your <strong>dry weight</strong> — the weight your dialysis team has set as your target post-dialysis weight. If you do not know it, ask your nurse or nephrologist.</li>
+<li>Enter <strong>today's weight</strong> in kilograms.</li>
+<li>Select <strong>days since last dialysis</strong> — 1 day (morning after a session), 2 days (typical gap between Monday-Wednesday-Friday sessions), or 3 days (weekend gap).</li>
+<li>Select your approximate <strong>daily urine output</strong>. Anuric patients (no urine) have the strictest fluid limits.</li>
+<li>Press the button — you will see your weight gained, daily rate, estimated fluid allowance, and UFR at the next session, plus a color-coded action recommendation.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</section>
+
+<!-- FORMULA -->
+<section class="section" id="formula">
+<div class="section-tag">Formula</div>
+<h2>Formula &amp; Equations</h2>
+<table class="lab-table">
+<thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
+<tbody>
+<tr><td>Interdialytic Weight Gain (kg)</td><td>Today's weight − Dry weight</td></tr>
+<tr><td>Rate per day (kg/day)</td><td>Weight gain ÷ Days since last dialysis</td></tr>
+<tr><td>% gain of dry weight</td><td>(Weight gain ÷ Dry weight) × 100</td></tr>
+<tr><td>Daily fluid allowance (mL)</td><td>Urine output (mL/day) + 500 mL (insensible losses)</td></tr>
+<tr><td>Ultrafiltration Rate (mL/kg/hr)</td><td>(Weight gain in kg × 1000) ÷ (Dry weight × 4 hours)</td></tr>
+</tbody>
+</table>
+<h3 style="margin-top:24px;">Interpretation Thresholds</h3>
+<table class="lab-table">
+<thead><tr><th>Parameter</th><th>Safe / Target</th><th>Caution</th><th>Danger</th></tr></thead>
+<tbody>
+<tr><td>IDWG per day</td><td>≤1.0 kg/day</td><td>1.0–2.0 kg/day</td><td>&gt;2.0 kg/day</td></tr>
+<tr><td>IDWG as % dry weight</td><td>≤4.5%</td><td>4.5–5.0%</td><td>&gt;5.0%</td></tr>
+<tr><td>UFR (4-hr session)</td><td>&lt;10 mL/kg/hr</td><td>10–13 mL/kg/hr</td><td>&gt;13 mL/kg/hr</td></tr>
+</tbody>
+</table>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The UFR formula assumes all accumulated fluid is removed in a 4-hour session. Session length varies; a longer session lowers the UFR. The insensible loss estimate of 500 mL/day is a clinical convention; actual losses vary with body size, fever, diarrhea, and ambient temperature (higher in tropical climates such as the Philippines).</p>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section" id="evidence">
+<div class="section-tag">Evidence &amp; References</div>
+<h2>Evidence &amp; References</h2>
+<p>The 13 mL/kg/hr UFR threshold derives from prospective observational data in the DOPPS cohort and was formally incorporated into K/DOQI cardiovascular guidelines. The K/DOQI 2005 guideline established the framework for fluid and cardiovascular risk management in dialysis patients that remains foundational today. Subsequent data from Flythe et al. and Obi et al. confirmed that high UFR and the weekend inter-dialytic gap (3-day interval) are the strongest modifiable predictors of intradialytic hypotension and long-term cardiac mortality in hemodialysis.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>National Kidney Foundation. K/DOQI Clinical Practice Guidelines for Cardiovascular Disease in Dialysis Patients. <em>American Journal of Kidney Diseases.</em> 2005;45(4 Suppl 3):S1–S153.</li>
+</ol>
+</section>
+
+<!-- PEARLS -->
+<section class="section" id="pearls">
+<div class="section-tag">Pearls &amp; Pitfalls</div>
+<h2>Pearls &amp; Pitfalls</h2>
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Salt is the real driver — not drinking too much water</h4>
+<p>Every gram of sodium consumed retains approximately 200 mL of water. A dialysis patient who eats 3 g of sodium during the weekend (two salty meals) will gain roughly 600 mL of retained fluid before they drink a single glass of water. Addressing sodium intake is more effective than counting milliliters of fluid.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>The 3-day weekend gap is the highest-risk interval</h4>
+<p>Patients on a Monday-Wednesday-Friday schedule arrive on Monday having gone 3 days without dialysis. The weight gain over this interval is typically 50% higher than the 2-day gain. Planning stricter sodium and fluid control on Thursday–Sunday prevents the Monday crisis. Some centers offer a brief Friday afternoon session to limit the weekend gap for vulnerable patients.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Dry weight must be actively reassessed by your dialysis team — it changes with nutrition, muscle mass, and illness. Using an outdated dry weight makes every calculation inaccurate. (2) The UFR estimate assumes a standard 4-hour session. If your session is shorter, your true UFR is higher. Discuss session duration with your team when IDWG is consistently high. (3) Do not restrict fluids below the estimated allowance without medical guidance — dehydration in dialysis causes cramps, hypotension, and access clotting.</p>
+</div>
+</div>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized medical assessment. Your fluid prescription depends on your dry weight, residual kidney function, blood pressure, and clinical status. Do not make changes to your fluid intake without consulting your nephrologist or dialysis care team.</div>
+</section>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label">Scan and save</p>
+</div>
+</div>
+</div>
+
+<div class="related-guides">
+  <h2>Related Guides</h2>
+  <div class="related-cards">
+  <a class="related-card" href="fluid-management-dialysis.html">
+    <div class="related-card-tag">Dialysis</div>
+    <div class="related-card-title">Fluid Management in Dialysis</div>
+    <div class="related-card-desc">Full guide to dry weight, fluid restriction, thirst management, and preventing fluid overload on dialysis.</div>
+    <div class="related-card-arrow">Read →</div>
+  </a>
+  <a class="related-card" href="living-with-dialysis.html">
+    <div class="related-card-tag">Dialysis Life</div>
+    <div class="related-card-title">Living with Dialysis</div>
+    <div class="related-card-desc">Full guide to daily life on hemodialysis — diet, work, travel, and quality of life.</div>
+    <div class="related-card-arrow">Read →</div>
+  </a>
+  <a class="related-card" href="managing-hypertension.html">
+    <div class="related-card-tag">Blood Pressure</div>
+    <div class="related-card-title">Managing High Blood Pressure in CKD</div>
+    <div class="related-card-desc">How fluid overload and sodium drive hypertension, and the medications used to control it.</div>
+    <div class="related-card-arrow">Read →</div>
+  </a>
+  <a class="related-card" href="calc-bp-map.html">
+    <div class="related-card-tag">Calculator</div>
+    <div class="related-card-title">BP — MAP, Pulse Pressure &amp; CKD Target</div>
+    <div class="related-card-desc">Calculate MAP and pulse pressure and check your BP against the KDIGO 2024 target for your profile.</div>
+    <div class="related-card-arrow">Use →</div>
+  </a>
+  </div>
+</div>
+
+<footer class="guide-footer">
+<div class="footer-inner">
+<p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>References: K/DOQI Cardiovascular Disease in Dialysis Patients 2005 · KDIGO 2024 HD Guidelines</p>
+</div>
+</footer>
+
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
+
+<button aria-label="Print this guide" class="print-btn" onclick="window.print()">
+<span class="p-tip">Print / Save PDF</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
+</svg>
+</button>
+
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb','kap'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+function calcFluid(){
+  const dry = parseFloat(document.getElementById('c_dry').value);
+  const today = parseFloat(document.getElementById('c_today').value);
+  const days = parseInt(document.getElementById('c_days').value);
+  const urineML = parseInt(document.getElementById('c_urine').value);
+
+  if(isNaN(dry)||isNaN(today)||dry<=0||today<=0){
+    alert('Please enter both dry weight and today\'s weight.');
+    return;
+  }
+
+  const gain = today - dry;
+  const gainPerDay = gain / days;
+  const gainPct = (gain / dry) * 100;
+
+  // Daily fluid allowance: urine output + 500 mL (insensible losses)
+  const baseAllow = urineML + 500;
+
+  // UFR estimate assuming all fluid removed in 4-hr session
+  const ufr = gain > 0 ? (gain * 1000) / (dry * 4) : 0;
+
+  // Display
+  document.getElementById('r_gain').textContent = (gain >= 0 ? '+' : '') + gain.toFixed(1) + ' kg';
+  document.getElementById('r_pct').textContent = (gainPct >= 0 ? '+' : '') + gainPct.toFixed(1) + '% of dry weight';
+  document.getElementById('r_rate').textContent = (gainPerDay >= 0 ? '+' : '') + gainPerDay.toFixed(2);
+  document.getElementById('r_allow').textContent = baseAllow.toFixed(0);
+  document.getElementById('r_ufr').textContent = ufr.toFixed(1);
+
+  let alertHTML = '';
+  let noteHTML = '';
+
+  if(gain <= 0){
+    alertHTML = `<div class="res-alert res-ok"><div class="res-icon">&#10003;</div><div class="res-body"><h5>At or below dry weight</h5><p>You are at or below your dry weight. If you are not on a dialysis day, ensure you are not under-hydrated. If you feel well, no action needed. Continue monitoring daily.</p></div></div>`;
+    noteHTML = `Your estimated daily fluid allowance is <strong>${baseAllow} mL/day</strong> (your urine output + 500 mL for insensible losses). Stick to this and your weight should remain stable between sessions.`;
+  } else if(gainPerDay <= 1.0 && gainPct <= 4.5){
+    alertHTML = `<div class="res-alert res-ok"><div class="res-icon">&#10003;</div><div class="res-body"><h5>Good fluid control</h5><p>Your weight gain is within the acceptable range. Continue your current sodium and fluid discipline. Weigh yourself again tomorrow morning and continue tracking.</p></div></div>`;
+    noteHTML = `Weight gain: <strong>${gain.toFixed(1)} kg over ${days} day${days>1?'s':''}</strong> (${gainPerDay.toFixed(2)} kg/day average). Estimated UFR at next session: <strong>${ufr.toFixed(1)} mL/kg/hr</strong> ${ufr > 13 ? '&#x26A0; This exceeds the safe threshold of 13 mL/kg/hr — consider contacting your dialysis center for session adjustment.' : '(within safe range)'}. Daily fluid allowance estimate: ${baseAllow} mL/day.`;
+  } else if(gainPerDay <= 2.0 && gainPct <= 5.0){
+    alertHTML = `<div class="res-alert res-warn"><div class="res-icon">&#9888;</div><div class="res-body"><h5>Approaching the limit — tighten control</h5><p>Your weight gain is above ideal but still manageable. Significantly reduce sodium and fluid intake today. Avoid soups, skip seasoning packets, drink only what your container allows. Weigh again tomorrow. If gaining more than 0.5 kg by tomorrow, call your center.</p></div></div>`;
+    noteHTML = `Weight gain: <strong>${gain.toFixed(1)} kg over ${days} day${days>1?'s':''}</strong> (${gainPerDay.toFixed(2)} kg/day). Estimated UFR: <strong>${ufr.toFixed(1)} mL/kg/hr</strong> ${ufr > 13 ? '&#x26A0; ABOVE 13 mL/kg/hr threshold — discuss session extension or adjustment with your team.' : '(approaching or at limit)'}. Reduce sodium aggressively today. Daily allowance: ${baseAllow} mL, but try to drink only ${Math.max(baseAllow - 300, 300)} mL today to reduce tomorrow&rsquo;s gain.`;
+  } else {
+    alertHTML = `<div class="res-alert res-danger"><div class="res-icon">&#128680;</div><div class="res-body"><h5>Fluid overload — contact your dialysis center today</h5><p>Your weight gain is significantly above safe limits. You should contact your dialysis center now, especially if you feel breathless, have swollen legs, cannot lie flat, or have a BP above 160/100. Do not wait for your scheduled session. You may need an urgent or additional HD session.</p></div></div>`;
+    noteHTML = `Weight gain: <strong>${gain.toFixed(1)} kg over ${days} day${days>1?'s':''}</strong> (${gainPerDay.toFixed(2)} kg/day — above the 2 kg/day safe limit). Estimated UFR: <strong>${ufr.toFixed(1)} mL/kg/hr</strong> &#x26A0; At or above the 13 mL/kg/hr danger threshold. This level of rapid fluid removal carries elevated cardiac risk. Contact your dialysis team. Strictly no sodium today — no salt, no seasoning, no soups. Limit fluids to ${Math.max(urineML, 300)} mL only.`;
+  }
+
+  document.getElementById('r_alert').innerHTML = alertHTML;
+  document.getElementById('r_note').innerHTML = noteHTML;
+  const result = document.getElementById('calc-result');
+  result.classList.add('show');
+  result.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/image-lightbox.js" defer></script>
+</body>
+</html>
