@@ -200,6 +200,24 @@
   "inLanguage": "en-PH"
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -240,21 +258,31 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+  <li>Select the glucose unit that matches your lab report — <strong>mg/dL</strong> (Philippines standard) or <strong>mmol/L</strong> (SI, used in some hospitals). Switching units clears the glucose field.</li>
+  <li>Enter the <strong>measured serum sodium</strong> from the same blood draw (in mEq/L, which equals mmol/L). This is the uncorrected value as printed on the lab report.</li>
+  <li>Enter the <strong>plasma glucose</strong> from the same blood draw. If glucose is below 100 mg/dL (5.6 mmol/L) the correction is negligible and near zero.</li>
+  <li>Results appear automatically: the <strong>Hillier-corrected sodium</strong> (preferred), the <strong>Katz-corrected sodium</strong> (classic reference), and a status badge (Pseudohyponatremia / True hyponatremia / Masked hypernatremia / Normal).</li>
+  <li>Read the plain-language verdict and the recommended next step, then share with your physician for clinical decision-making.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool whenever a patient has a simultaneously elevated blood glucose and a low or borderline serum sodium. Hyperglycemia draws intracellular water into the extracellular space, diluting sodium and producing a falsely low lab reading — a phenomenon called translocational or dilutional pseudohyponatremia. Without correcting for glucose, a low sodium may trigger an unnecessary hyponatremia workup or inappropriate sodium supplementation.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -270,17 +298,44 @@
 <p>If the glucose-corrected sodium is still low (below 135 mEq/L), this is genuine hyponatremia that co-exists with the hyperglycemia — it will not resolve on its own when glucose is treated and needs its own evaluation (volume status, urine studies, medications, SIADH). This calculator does not replace clinical assessment of volume status, urine osmolality, or urine sodium. Never correct sodium rapidly (&gt;8–10 mEq/L per 24 hours) without close physician supervision to avoid osmotic demyelination.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY -->
-<section class="section" id="why">
-<div class="section-tag">Why It Matters</div>
-<h2>Why Glucose-Corrected Sodium Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Use Hillier 2.4 as the primary estimate</h4>
+<p>The Hillier factor of 2.4 is more accurate than the classic Katz 1.6, especially when glucose is above 400 mg/dL (22.2 mmol/L). At extreme hyperglycemia (glucose 800–1200 mg/dL in HHS), using only 1.6 can underestimate the corrected sodium by 5–7 mEq/L — a clinically important error when deciding whether a patient has true hyponatremia or masked hypernatremia.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Watch the sodium rise as glucose is treated</h4>
+<p>In DKA and HHS, the measured sodium typically rises as insulin therapy lowers glucose. If the corrected sodium is already at the high-normal or above-normal range, a rapid fall in glucose may unmask significant hypernatremia — recheck sodium frequently (every 1–2 hours in ICU-level care) and replace free water (hypotonic fluids) appropriately. The target is a gradual sodium correction, not a rapid one.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Do not dismiss a low sodium as "just glucose" without applying the correction — true hyponatremia can co-exist with hyperglycemia (e.g., a patient who has been vomiting and drinking free water). (2) In CKD and dialysis patients, sodium derangements interact with fluid overload and ultrafiltration goals — always involve the nephrology team. (3) Lipemia or severe hyperproteinemia can cause pseudohyponatremia by a different mechanism (exclusion artifact), which this formula does not correct for — use direct-reading (ISE-undiluted) sodium methods when both hyperglycemia and extreme lipemia/protein are present.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Glucose is an osmotically active solute that does not freely cross cell membranes in most tissues. When plasma glucose rises, osmotic pressure draws water out of cells into the extracellular compartment — diluting the serum sodium by roughly 1.6 to 2.4 mEq/L for every 100 mg/dL (5.6 mmol/L) rise in glucose above normal. The original Katz correction factor of 1.6 (from a 1973 case series) has been widely used, but a prospective study by Hillier et al. (1999) found a mean correction factor of 2.4 — with the higher factor being more accurate especially when glucose exceeds 400 mg/dL. Using only the Katz factor can underestimate the true corrected sodium by several mEq/L at very high glucose levels, potentially masking hypernatremia or over-calling hyponatremia in DKA and HHS.</p>
 <p>In CKD patients — who often have diabetes as the primary cause of kidney disease — hyperglycemia-induced pseudohyponatremia is a clinically important electrolyte mirage. Misinterpreting it as true hyponatremia can delay appropriate treatment (insulin and glucose-lowering) and lead to inappropriate fluid or sodium management that further strains the already-limited fluid tolerance of CKD kidneys.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Sodium Correction for Hyperglycemia — Is the Low Sodium Real?</h2>
@@ -330,24 +385,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-  <li>Select the glucose unit that matches your lab report — <strong>mg/dL</strong> (Philippines standard) or <strong>mmol/L</strong> (SI, used in some hospitals). Switching units clears the glucose field.</li>
-  <li>Enter the <strong>measured serum sodium</strong> from the same blood draw (in mEq/L, which equals mmol/L). This is the uncorrected value as printed on the lab report.</li>
-  <li>Enter the <strong>plasma glucose</strong> from the same blood draw. If glucose is below 100 mg/dL (5.6 mmol/L) the correction is negligible and near zero.</li>
-  <li>Results appear automatically: the <strong>Hillier-corrected sodium</strong> (preferred), the <strong>Katz-corrected sodium</strong> (classic reference), and a status badge (Pseudohyponatremia / True hyponatremia / Masked hypernatremia / Normal).</li>
-  <li>Read the plain-language verdict and the recommended next step, then share with your physician for clinical decision-making.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Interpretation</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <div class="table-wrap">
 <table>
 <thead><tr><th>Method</th><th>Correction Factor</th><th>Formula</th></tr></thead>
@@ -372,12 +426,7 @@
 </table>
 </div>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The Hillier value is used for status classification because it is more accurate at glucose levels above 400 mg/dL — the range most commonly seen in DKA and HHS — where the Katz factor consistently underestimates the correction.</p>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The Katz 1.6 correction factor was derived from a small physiological study of healthy subjects given hypertonic glucose infusions and has been the default teaching formula since 1973. Hillier et al. prospectively re-evaluated the correction factor in 2,173 patients with simultaneous glucose and sodium measurements across a broad glycemic range and found a mean factor of 2.4, which better reflects real-world clinical data — particularly at higher glucose concentrations. The 2.4 factor is now endorsed by major endocrinology and nephrology guidelines for DKA/HHS management.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
   <li>Hillier TA, Abbott RD, Barrett EJ. Hyponatremia: evaluating the correction factor for hyperglycemia. <em>Am J Med.</em> 1999;106(4):399–403.</li>
@@ -385,34 +434,8 @@
   <li>Kitabchi AE, Umpierrez GE, Miles JM, Fisher JN. Hyperglycemic crises in adult patients with diabetes. <em>Diabetes Care.</em> 2009;32(7):1335–1343.</li>
   <li>Weisberg LS. Pseudohyponatremia: a reappraisal. <em>Am J Med.</em> 1989;86(3):315–318.</li>
 </ol>
-</section>
-
-<!-- PEARLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Use Hillier 2.4 as the primary estimate</h4>
-<p>The Hillier factor of 2.4 is more accurate than the classic Katz 1.6, especially when glucose is above 400 mg/dL (22.2 mmol/L). At extreme hyperglycemia (glucose 800–1200 mg/dL in HHS), using only 1.6 can underestimate the corrected sodium by 5–7 mEq/L — a clinically important error when deciding whether a patient has true hyponatremia or masked hypernatremia.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Watch the sodium rise as glucose is treated</h4>
-<p>In DKA and HHS, the measured sodium typically rises as insulin therapy lowers glucose. If the corrected sodium is already at the high-normal or above-normal range, a rapid fall in glucose may unmask significant hypernatremia — recheck sodium frequently (every 1–2 hours in ICU-level care) and replace free water (hypotonic fluids) appropriately. The target is a gradual sodium correction, not a rapid one.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Do not dismiss a low sodium as "just glucose" without applying the correction — true hyponatremia can co-exist with hyperglycemia (e.g., a patient who has been vomiting and drinking free water). (2) In CKD and dialysis patients, sodium derangements interact with fluid overload and ultrafiltration goals — always involve the nephrology team. (3) Lipemia or severe hyperproteinemia can cause pseudohyponatremia by a different mechanism (exclusion artifact), which this formula does not correct for — use direct-reading (ISE-undiluted) sodium methods when both hyperglycemia and extreme lipemia/protein are present.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized clinical assessment. Sodium and glucose disturbances — particularly in DKA, HHS, and CKD — require physician evaluation of volume status, urine studies, and the full clinical picture. Never adjust sodium or fluid management based on a calculator result alone without consulting your physician or nephrologist.</div>
 

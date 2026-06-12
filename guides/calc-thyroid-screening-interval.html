@@ -197,6 +197,24 @@
   "inLanguage": "en-PH"
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -237,21 +255,30 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Interval Table</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Select the patient's current <strong>CKD stage or dialysis/transplant status</strong>. For post-transplant patients, also select the time since transplantation — early (0–6 months), mid (7–12 months), or late (&gt;12 months) post-transplant windows each carry different thyroid risk.</li>
+<li>Check any applicable <strong>additional risk factors</strong>: mTOR inhibitor or tacrolimus use, recent iodinated contrast (CT or angiography), female sex, type 2 diabetes, or autoimmune disease history.</li>
+<li>Click <strong>Get Screening Interval</strong> to receive the recommended TSH recheck interval — the tool takes the shortest interval across all applicable risk factors and explains each contributing reason.</li>
+<li>Record the interval and schedule the next TSH accordingly. If the TSH returns abnormal, switch to the TSH Interpreter tool for next steps.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool at every CKD clinic visit when scheduling the patient's next TSH check. Thyroid dysfunction is underdiagnosed in CKD because screening is irregular and many nephrologists rely on general-population annual recommendations that are inadequate for higher-risk subgroups — particularly dialysis patients, transplant recipients on calcineurin inhibitors, and patients with multiple risk factors for thyroid disease.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -267,16 +294,43 @@
 <p>If the patient currently has an abnormal TSH, symptoms of thyroid dysfunction, or a known thyroid condition requiring active management, do not rely on a screening interval — use the TSH Interpreter or the Subclinical Hypothyroidism Decision Aid instead, and follow up as clinically indicated rather than by interval. This tool applies to patients with previously normal or stable thyroid status.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY -->
-<section class="section" id="why">
-<div class="section-tag">Why It Matters</div>
-<h2>Why Thyroid Screening Frequency Differs by CKD Population</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Screen at the first CKD visit and again at any stage transition</h4>
+<p>In addition to the interval returned by this tool, always check TSH at the initial diagnosis of CKD, whenever the patient advances to a new CKD stage (e.g., G3 to G4), when starting a new immunosuppressant (mTOR inhibitor, tacrolimus), and whenever unexplained anemia, bradycardia, fluid retention, or dyslipidemia worsens — all of which can represent thyroid dysfunction.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Iodinated contrast: recheck at 4–8 weeks</h4>
+<p>Iodinated contrast (CT, angiography, cardiac catheterization) causes transient TSH elevation in approximately 20–25% of CKD patients within 4–8 weeks due to iodine-induced thyroid dysfunction (Jod-Basedow or Wolf-Chaikoff effect). A TSH drawn within this window may be falsely elevated and should be repeated before initiating levothyroxine.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Do not rely on a once-yearly TSH for HD patients — the 21% prevalence and rapid disease change in this population warrant 6-monthly checks. (2) Post-transplant patients in the first 6 months need quarterly TSH because mTOR inhibitor de-novo thyroid disease peaks in months 3–6 post-initiation. (3) Symptoms are unreliable in CKD — fatigue, cold intolerance, and constipation are ubiquitous in kidney disease patients regardless of thyroid status. Serial TSH is a better guide to thyroid health than symptoms alone.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Hypothyroidism prevalence rises from approximately 3% in the general adult population to 7–15% in CKD G3–G5 and up to 21% in hemodialysis patients. Post-transplant patients on mTOR inhibitors (sirolimus, everolimus) have a particularly high incidence of de-novo thyroid dysfunction within the first 12 months, and calcineurin inhibitors (tacrolimus) independently alter thyroid hormone metabolism. Iodinated contrast causes transient TSH elevation in 20–25% of exposed patients. Systematically risk-stratifying the screening interval, rather than applying a uniform annual recommendation, ensures early detection without unnecessary testing.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Thyroid Screening Interval Recommender</h2>
@@ -318,23 +372,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Select the patient's current <strong>CKD stage or dialysis/transplant status</strong>. For post-transplant patients, also select the time since transplantation — early (0–6 months), mid (7–12 months), or late (&gt;12 months) post-transplant windows each carry different thyroid risk.</li>
-<li>Check any applicable <strong>additional risk factors</strong>: mTOR inhibitor or tacrolimus use, recent iodinated contrast (CT or angiography), female sex, type 2 diabetes, or autoimmune disease history.</li>
-<li>Click <strong>Get Screening Interval</strong> to receive the recommended TSH recheck interval — the tool takes the shortest interval across all applicable risk factors and explains each contributing reason.</li>
-<li>Record the interval and schedule the next TSH accordingly. If the TSH returns abnormal, switch to the TSH Interpreter tool for next steps.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- INTERVAL TABLE -->
-<section class="section" id="formula">
-<div class="section-tag">Interval Reference Table</div>
-<h2>Screening Interval Reference</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <p>The tool selects the shortest applicable interval across all risk factors. The table below shows all base and modifier intervals.</p>
 <div class="table-wrap">
 <table>
@@ -354,12 +408,7 @@
 </tbody>
 </table>
 </div>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>Screening interval recommendations are synthesized from AACE/ATA clinical practice guidelines for hypothyroidism, nephrology-specific epidemiological studies documenting the CKD-stage-dependent prevalence of thyroid dysfunction, and pharmacological data on immunosuppressant-associated thyroid disease in transplant recipients. No single randomized trial directly addresses optimal TSH screening intervals in CKD; recommendations reflect expert consensus adapted from high-prevalence group data.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Garber JR, Cobin RH, Gharib H, et al. Clinical Practice Guidelines for Hypothyroidism in Adults: AACE/ATA. <em>Endocr Pract.</em> 2012;18(6):988–1028.</li>
@@ -367,34 +416,8 @@
 <li>Kala A, Haugen EN, Chandra SM, et al. Thyroid dysfunction in kidney transplant recipients: prevalence, risk factors, and outcomes. <em>Clin Transplant.</em> 2019;33(8):e13664.</li>
 <li>Spahia N, Rroji M, Barbullushi M, et al. Thyroid dysfunction in chronic kidney disease — a review. <em>Metab Syndr Relat Disord.</em> 2023;21(5):256–263. PMID 37433213.</li>
 </ol>
-</section>
-
-<!-- PEARLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Screen at the first CKD visit and again at any stage transition</h4>
-<p>In addition to the interval returned by this tool, always check TSH at the initial diagnosis of CKD, whenever the patient advances to a new CKD stage (e.g., G3 to G4), when starting a new immunosuppressant (mTOR inhibitor, tacrolimus), and whenever unexplained anemia, bradycardia, fluid retention, or dyslipidemia worsens — all of which can represent thyroid dysfunction.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Iodinated contrast: recheck at 4–8 weeks</h4>
-<p>Iodinated contrast (CT, angiography, cardiac catheterization) causes transient TSH elevation in approximately 20–25% of CKD patients within 4–8 weeks due to iodine-induced thyroid dysfunction (Jod-Basedow or Wolf-Chaikoff effect). A TSH drawn within this window may be falsely elevated and should be repeated before initiating levothyroxine.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Do not rely on a once-yearly TSH for HD patients — the 21% prevalence and rapid disease change in this population warrant 6-monthly checks. (2) Post-transplant patients in the first 6 months need quarterly TSH because mTOR inhibitor de-novo thyroid disease peaks in months 3–6 post-initiation. (3) Symptoms are unreliable in CKD — fatigue, cold intolerance, and constipation are ubiquitous in kidney disease patients regardless of thyroid status. Serial TSH is a better guide to thyroid health than symptoms alone.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This tool provides a screening interval recommendation based on CKD stage, dialysis modality, and risk factors. It does not account for symptoms, previous TSH trend, or specific local guidelines. Adjust intervals based on clinical judgment, patient values, and institutional protocols. All thyroid management decisions require physician oversight.</div>
 

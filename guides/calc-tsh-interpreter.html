@@ -199,6 +199,24 @@
   "inLanguage": "en-PH"
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -239,21 +257,31 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Interpretation Logic</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Tool</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Enter the <strong>TSH value</strong> in mIU/L from a recent laboratory report.</li>
+<li>Select the patient's current <strong>CKD stage</strong> based on the most recent eGFR.</li>
+<li>Check any relevant <strong>clinical context</strong> flags — nephrotic syndrome, recent iodinated contrast, or acute hospitalization all alter TSH interpretation.</li>
+<li>Indicate whether the patient has <strong>symptoms of hypothyroidism</strong> (fatigue, constipation, cold intolerance, myalgia, weight gain, bradycardia, periorbital edema).</li>
+<li>Click <strong>Interpret TSH</strong> to receive a labeled interpretation category and a specific recommended next step.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this interpreter when a CKD patient has a TSH result that needs clinical contextualization. TSH interpretation in CKD is complicated by several factors that do not apply to the general population: iodine retention, urinary TSH loss in nephrotic syndrome, euthyroid sick syndrome in hospitalized patients, and the blunted TRH response seen in advanced kidney disease.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -269,16 +297,43 @@
 <p>This tool does not replace Free T4 measurement, clinical examination, or full clinical judgment. TSH alone can be misleading in acute illness (euthyroid sick syndrome), immediately after amiodarone or iodinated contrast, and in central hypothyroidism (where TSH may be paradoxically low despite true hypothyroidism). Always interpret alongside Free T4 and the clinical picture.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why It Matters</div>
-<h2>Why TSH Interpretation Differs in CKD</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Always check eGFR after starting levothyroxine</h4>
+<p>Treating hypothyroidism in CKD patients can improve eGFR by 5–10 mL/min/1.73 m² — enough to change CKD staging. Recheck serum creatinine and eGFR at 8–12 weeks after initiating or dose-adjusting levothyroxine. This improvement reflects reversal of the hemodynamic and metabolic effects of thyroid deficiency on the kidney.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Euthyroid sick syndrome is common in hospitalized CKD patients</h4>
+<p>Acute illness suppresses TSH and reduces T3 via non-thyroidal illness effect. TSH drawn during hospitalization — especially in ICU, post-operatively, or during sepsis — almost always needs to be repeated 4–6 weeks after recovery before thyroid dysfunction is diagnosed or treated. Initiating levothyroxine in the inpatient setting for a low TSH is almost never appropriate.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Do not treat subclinical hypothyroidism (TSH 4–10) in asymptomatic patients over 80 — the risk of over-replacement (atrial fibrillation, osteoporosis, falls) likely outweighs any benefit. (2) Start levothyroxine at low doses (25–50 mcg) in CKD G4–G5 and elderly patients — the half-life is prolonged and hyperthyroidism develops insidiously. (3) Nephrotic syndrome causes urinary loss of thyroxine-binding globulin, reducing total T4 and occasionally causing a low TSH artifact — always measure Free T4 alongside TSH in this population.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Hypothyroidism occurs in up to 21% of dialysis patients and approximately 10–15% of those with CKD G3–G5. Untreated hypothyroidism in CKD worsens dyslipidemia, hypertension, anemia, and fluid overload — and may reversibly reduce eGFR by 5–10 mL/min/1.73 m², meaning CKD may be incorrectly staged in hypothyroid patients. Conversely, over-treating subclinical hypothyroidism in elderly CKD patients risks atrial fibrillation, bone loss, and falls. Context-sensitive TSH interpretation is therefore essential and guideline-recommended.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>TSH Interpreter for CKD</h2>
@@ -320,24 +375,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Enter the <strong>TSH value</strong> in mIU/L from a recent laboratory report.</li>
-<li>Select the patient's current <strong>CKD stage</strong> based on the most recent eGFR.</li>
-<li>Check any relevant <strong>clinical context</strong> flags — nephrotic syndrome, recent iodinated contrast, or acute hospitalization all alter TSH interpretation.</li>
-<li>Indicate whether the patient has <strong>symptoms of hypothyroidism</strong> (fatigue, constipation, cold intolerance, myalgia, weight gain, bradycardia, periorbital edema).</li>
-<li>Click <strong>Interpret TSH</strong> to receive a labeled interpretation category and a specific recommended next step.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA / INTERPRETATION LOGIC -->
-<section class="section" id="formula">
-<div class="section-tag">Interpretation Logic</div>
-<h2>How Interpretation Works</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <div class="table-wrap">
 <table>
 <thead><tr><th>TSH Range (mIU/L)</th><th>Context Modifier</th><th>Output Category</th></tr></thead>
@@ -353,12 +407,7 @@
 </table>
 </div>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The normal TSH reference range used is 0.4–4.0 mIU/L. Some assay upper limits of normal are 4.5–5.0 mIU/L; always compare against the reporting laboratory's own reference interval. In dialysis patients, mild TSH elevation (4–6 mIU/L) without symptoms may reflect a reset in the HPT axis rather than true hypothyroidism.</p>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>Interpretation thresholds follow the ATA 2014 guidelines for hypothyroidism treatment and are adapted for the CKD population based on epidemiological and clinical studies documenting the high prevalence and unique confounders of thyroid dysfunction in kidney disease. The recommendation to treat TSH &gt;10 mIU/L is consistent across major thyroid and nephrology guidelines.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Jonklaas J, Bianco AC, Bauer AJ, et al. Guidelines for the treatment of hypothyroidism: prepared by the American Thyroid Association Task Force on Thyroid Hormone Replacement. <em>Thyroid.</em> 2014;24(12):1670–1751.</li>
@@ -366,34 +415,8 @@
 <li>Rhee CM, Kalantar-Zadeh K, Streja E, et al. The relationship between thyroid function and estimated glomerular filtration rate in patients with chronic kidney disease. <em>Nephrol Dial Transplant.</em> 2015;30(2):282–287.</li>
 <li>Lo JC, Chertow GM, Go AS, et al. Increased prevalence of subclinical and clinical hypothyroidism in persons with chronic kidney disease. <em>Kidney Int.</em> 2005;67(3):1047–1052.</li>
 </ol>
-</section>
-
-<!-- PEARLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Always check eGFR after starting levothyroxine</h4>
-<p>Treating hypothyroidism in CKD patients can improve eGFR by 5–10 mL/min/1.73 m² — enough to change CKD staging. Recheck serum creatinine and eGFR at 8–12 weeks after initiating or dose-adjusting levothyroxine. This improvement reflects reversal of the hemodynamic and metabolic effects of thyroid deficiency on the kidney.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Euthyroid sick syndrome is common in hospitalized CKD patients</h4>
-<p>Acute illness suppresses TSH and reduces T3 via non-thyroidal illness effect. TSH drawn during hospitalization — especially in ICU, post-operatively, or during sepsis — almost always needs to be repeated 4–6 weeks after recovery before thyroid dysfunction is diagnosed or treated. Initiating levothyroxine in the inpatient setting for a low TSH is almost never appropriate.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Do not treat subclinical hypothyroidism (TSH 4–10) in asymptomatic patients over 80 — the risk of over-replacement (atrial fibrillation, osteoporosis, falls) likely outweighs any benefit. (2) Start levothyroxine at low doses (25–50 mcg) in CKD G4–G5 and elderly patients — the half-life is prolonged and hyperthyroidism develops insidiously. (3) Nephrotic syndrome causes urinary loss of thyroxine-binding globulin, reducing total T4 and occasionally causing a low TSH artifact — always measure Free T4 alongside TSH in this population.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This tool is an educational aid for clinicians and does not replace individualized clinical assessment. Thyroid management in CKD must account for the full clinical picture, medications, comorbidities, and serial trend data. Do not initiate or change levothyroxine dosing based on a single TSH result without physician review.</div>
 

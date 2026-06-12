@@ -230,6 +230,24 @@
   "inLanguage": "en-PH"
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -270,21 +288,31 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Enter the patient's <strong>weight in kg</strong>. Use actual body weight (not ideal body weight).</li>
+<li>Enter the <strong>current serum sodium</strong> in mEq/L. The calculator requires Na⁺ &gt; 140 mEq/L to be applicable; a value ≤ 140 will trigger a warning.</li>
+<li>Select the <strong>sex and age category</strong>. This determines the total body water (TBW) fraction: male 0.60, female 0.50, elderly male 0.50, elderly female 0.45. Lean patients have higher TBW fractions; obese patients have lower fractions (the default categories approximate average composition).</li>
+<li>Click <strong>Calculate</strong> or values update on input. The results show: estimated TBW in liters, the free water deficit in liters, safe volume to give per 24 hours (half the deficit), and a correction rate guidance note.</li>
+<li>Add calculated insensible losses (~500–800 mL/day) and measured urine output to obtain total daily fluid requirement. Adjust the infusion rate every 4–6 hours based on repeat sodium levels.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool when a patient has hypernatremia (serum Na⁺ &gt; 145 mEq/L) and you need to estimate the volume of free water required to return sodium to the normal range, as well as the safe rate of correction to prevent cerebral edema from too-rapid sodium reduction.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -300,16 +328,44 @@
 <p>The free water deficit formula calculates only the volume needed to correct the existing elevation — it does not account for ongoing insensible losses, urine output, or ongoing pathological free water losses (e.g., 10–20 L/day in central DI). In those settings, add estimated ongoing losses to the calculated deficit and re-check sodium every 4–6 hours, adjusting the infusion rate accordingly.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Ongoing losses are the hidden variable</h4>
+<p>The free water deficit formula gives a static snapshot of the electrolyte deficit. In central DI or nephrogenic DI with very high urine output, the hourly free water loss can vastly exceed the calculated deficit. Always measure urine output quantitatively and add it to the replacement volume. In practice this means reassessing and recomputing the plan at 4–6 hour intervals rather than following a single overnight rate.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Route matters — enteral free water is preferred</h4>
+<p>When the gastrointestinal tract is functional, oral free water or water via nasogastric tube is the safest and most physiological replacement. Intravenous D5W requires glucose monitoring and can cause hyperglycemia with subsequent osmotic diuresis, partially counteracting the correction. For volume-depleted hypernatremic patients, give an initial bolus of isotonic saline (for hemodynamic resuscitation), then transition to hypotonic fluids once circulating volume is restored.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Never correct hypernatremia faster than 10 mEq/L in 24 hours — cerebral edema has been reported, particularly in children and in adults with acute rapid rises in sodium. (2) The TBW fraction defaults in this calculator are estimates; obese patients have a lower fraction (use 0.5 for obese males) and very muscular patients have a higher fraction. When in doubt, use a lower fraction to avoid under-estimating the deficit. (3) Hypernatremia from salt poisoning (intake of hypertonic NaCl or enteral feeds) requires a different approach — the excess sodium must be removed (via furosemide + free water replacement or dialysis) rather than simply providing free water. (4) Do not use free water deficit calculation in acute hypernatremia of known onset &lt; 24 hours — the brain has not had time to generate idiogenic osmoles, so a faster initial correction rate (up to 1 mEq/L/hour) may be appropriate.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Hypernatremia causes cerebral cell dehydration and shrinkage. Brain cells adapt by generating intracellular osmoles (idiogenic osmoles or organic osmolytes) over 24–48 hours to partially restore brain volume. If the hypernatremia is corrected too rapidly, brain cells take up the incoming free water faster than they can clear their accumulated idiogenic osmoles, causing cerebral edema, herniation, and death — particularly in children and in adults with acute severe hypernatremia.</p>
 <p>The standard safe correction rate is a maximum reduction of 8–10 mEq/L of serum sodium per 24 hours (approximately 0.5 mEq/L/hour), with the full deficit corrected over 48 hours or longer for severe or chronic hypernatremia. This calculator provides the total volume to give and the approximate volume per 24 hours — the final infusion rate must then be adjusted based on serial sodium measurements every 4–6 hours.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Free Water Deficit Calculator — Hypernatremia</h2>
@@ -341,24 +397,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Enter the patient's <strong>weight in kg</strong>. Use actual body weight (not ideal body weight).</li>
-<li>Enter the <strong>current serum sodium</strong> in mEq/L. The calculator requires Na⁺ &gt; 140 mEq/L to be applicable; a value ≤ 140 will trigger a warning.</li>
-<li>Select the <strong>sex and age category</strong>. This determines the total body water (TBW) fraction: male 0.60, female 0.50, elderly male 0.50, elderly female 0.45. Lean patients have higher TBW fractions; obese patients have lower fractions (the default categories approximate average composition).</li>
-<li>Click <strong>Calculate</strong> or values update on input. The results show: estimated TBW in liters, the free water deficit in liters, safe volume to give per 24 hours (half the deficit), and a correction rate guidance note.</li>
-<li>Add calculated insensible losses (~500–800 mL/day) and measured urine output to obtain total daily fluid requirement. Adjust the infusion rate every 4–6 hours based on repeat sodium levels.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Derivation</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
 <tbody>
@@ -388,46 +443,15 @@
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The formula above (Adrogué–Madias, 2000) derives from the conservation of total body solute: Current Na⁺ × Current TBW = 140 × Desired TBW. The difference in TBW (desired − current) is the free water deficit.</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The free water deficit formula and the safe correction rate limit for hypernatremia are most completely described in the 2000 NEJM review by Adrogué and Madias. The maximum correction rate of 10 mEq/L per 24 hours is based on case series linking faster correction to cerebral edema, particularly in pediatric patients with acute hypernatremia and in adults who develop hypernatremia rapidly. The safe rate is more lenient than the corresponding limit for hyponatremia because the mechanism of harm (cerebral edema from idiogenic osmole clearance lag) is less consistent in adults. Serial sodium monitoring every 4–6 hours is the gold standard for ensuring the calculated rate matches the actual correction being achieved.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Adrogué HJ, Madias NE. Hypernatremia. <em>N Engl J Med.</em> 2000;342(20):1493–1499.</li>
 <li>Sterns RH. Disorders of plasma sodium — causes, consequences, and correction. <em>N Engl J Med.</em> 2015;372(1):55–65.</li>
 <li>Mange K, Matsuura D, Cizman B, et al. Language guiding therapy: the case of dehydration versus volume depletion. <em>Ann Intern Med.</em> 1997;127(9):848–853.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Ongoing losses are the hidden variable</h4>
-<p>The free water deficit formula gives a static snapshot of the electrolyte deficit. In central DI or nephrogenic DI with very high urine output, the hourly free water loss can vastly exceed the calculated deficit. Always measure urine output quantitatively and add it to the replacement volume. In practice this means reassessing and recomputing the plan at 4–6 hour intervals rather than following a single overnight rate.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Route matters — enteral free water is preferred</h4>
-<p>When the gastrointestinal tract is functional, oral free water or water via nasogastric tube is the safest and most physiological replacement. Intravenous D5W requires glucose monitoring and can cause hyperglycemia with subsequent osmotic diuresis, partially counteracting the correction. For volume-depleted hypernatremic patients, give an initial bolus of isotonic saline (for hemodynamic resuscitation), then transition to hypotonic fluids once circulating volume is restored.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Never correct hypernatremia faster than 10 mEq/L in 24 hours — cerebral edema has been reported, particularly in children and in adults with acute rapid rises in sodium. (2) The TBW fraction defaults in this calculator are estimates; obese patients have a lower fraction (use 0.5 for obese males) and very muscular patients have a higher fraction. When in doubt, use a lower fraction to avoid under-estimating the deficit. (3) Hypernatremia from salt poisoning (intake of hypertonic NaCl or enteral feeds) requires a different approach — the excess sodium must be removed (via furosemide + free water replacement or dialysis) rather than simply providing free water. (4) Do not use free water deficit calculation in acute hypernatremia of known onset &lt; 24 hours — the brain has not had time to generate idiogenic osmoles, so a faster initial correction rate (up to 1 mEq/L/hour) may be appropriate.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> The free water deficit formula calculates the volume needed to correct the existing sodium elevation only — it does not account for ongoing losses. All correction plans must include estimated insensible and urinary losses, be monitored with serial sodium measurements every 4–6 hours, and be adjusted accordingly. Do not follow a calculated infusion rate without laboratory monitoring.</div>
 

@@ -194,6 +194,24 @@
   "inLanguage": "en-PH"
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -234,21 +252,33 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
-  <a class="nav-pill" href="#when">When to Use</a>
-  <a class="nav-pill" href="#calculator">Calculator</a>
-  <a class="nav-pill" href="#instructions">How to Use</a>
-  <a class="nav-pill" href="#formula">Formula</a>
-  <a class="nav-pill" href="#evidence">Evidence</a>
-  <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#instructions">Instructions</a>
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.85;">
+  <li style="margin-bottom:12px;"><strong>Select the illness day category.</strong> Day 1–3 is the febrile phase; Day 4–6 is the critical phase when plasma leakage peaks and AKI risk is highest; Day 7+ is the recovery phase when reabsorption begins.</li>
+  <li style="margin-bottom:12px;"><strong>Enter the platelet count</strong> in thousands per microliter (×10³/µL). A falling platelet trend is as important as the absolute value — note whether this is the nadir or a declining trend.</li>
+  <li style="margin-bottom:12px;"><strong>Enter the serum creatinine</strong> in mg/dL. Compare to the patient's known baseline if available. In patients without a recent baseline, use the age-sex-estimated normal range for comparison.</li>
+  <li style="margin-bottom:12px;"><strong>Select the hematocrit trend.</strong> A rise of ≥20% from baseline is the WHO criterion for significant plasma leakage (dengue warning sign). A falling Hct in the recovery phase is reassuring.</li>
+  <li style="margin-bottom:12px;"><strong>Select CKD status</strong> from the most recent available eGFR or creatinine. Pre-existing CKD — especially Stage 3 or higher — significantly amplifies AKI risk and dialysis requirements.</li>
+  <li style="margin-bottom:12px;"><strong>Select the worst warning sign present.</strong> WHO warning signs are defined as: abdominal pain or tenderness, persistent vomiting, clinical fluid accumulation, mucosal bleeding, lethargy or restlessness, liver enlargement &gt;2 cm, and rising Hct with rapid platelet decline. Severe signs include shock, severe bleeding, and organ impairment.</li>
+  <li><strong>Press "Estimate AKI Risk"</strong> to generate a risk tier (Low, Moderate, or High), a plain-language management recommendation, and a list of clinical flags specific to the entered values.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted. Reassess at each clinical review during the hospitalization.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool in any dengue patient aged 12 years or older when assessing for acute kidney injury risk during the current illness. It is most useful at the time of initial ER or clinic evaluation and at each reassessment during the critical phase (Days 4–6 of illness), when the risk of capillary leak, hemoconcentration, and renal hypoperfusion is highest.</p>
 <div class="alert alert-teal">
   <div class="alert-icon">✅</div>
@@ -264,17 +294,51 @@
     <p>This is a decision-support tool, not a diagnostic instrument. It does not replace physician evaluation. A low score does not exclude significant AKI if warning signs subsequently develop. Any patient with shock, active bleeding, altered consciousness, or anuria requires emergency room evaluation regardless of this score. Not validated for pediatric patients under 12 years of age.</p>
   </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why Dengue AKI Risk Stratification Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+  <div class="alert-icon">💡</div>
+  <div class="alert-body">
+    <h4>Creatinine is a late marker — order CPK early</h4>
+    <p>Serum creatinine rises only after significant renal mass has been injured. In dengue patients with severe myalgia, a disproportionately high creatinine rise, or cola-colored urine, creatine phosphokinase (CPK) should be ordered to evaluate for dengue-associated rhabdomyolysis — one of the most common causes of intrinsic AKI in dengue. CPK is not in the standard dengue order set in many Philippine hospitals; actively add it to the workup when creatinine is elevated.</p>
+  </div>
+</div>
+<div class="alert alert-teal">
+  <div class="alert-icon">🔬</div>
+  <div class="alert-body">
+    <h4>The critical phase fluid tightrope — do not over- or under-hydrate</h4>
+    <p>Dengue-AKI management requires balancing two opposing risks: insufficient volume resuscitation causes pre-renal AKI through plasma leakage, while over-resuscitation causes pulmonary edema as third-space fluid reabsorbs in the recovery phase. The WHO fluid algorithm — using small isotonic boluses titrated to urine output — is far safer than empiric aggressive hydration. In CKD patients, start boluses at half the standard rate (3–5 mL/kg instead of 10–20 mL/kg) and reassess every 1–2 hours.</p>
+  </div>
+</div>
+<div class="alert alert-amber">
+  <div class="alert-icon">⚠️</div>
+  <div class="alert-body">
+    <h4>Hold ACEi, ARBs, diuretics, and NSAIDs during the critical phase</h4>
+    <p>ACE inhibitors and ARBs impair the efferent arteriolar constriction that maintains GFR during low perfusion pressure — they should be held at the start of the critical phase in all dengue patients, not just those with CKD. Loop diuretics should also be suspended: a dengue patient with active capillary leak who is simultaneously diuresed can develop severe hypovolemia within hours. NSAIDs carry additional risks of GI bleeding in the setting of thrombocytopenia and must be avoided throughout the illness.</p>
+  </div>
+</div>
+<div class="alert alert-red">
+  <div class="alert-icon">🚫</div>
+  <div class="alert-body">
+    <h4>Pitfalls</h4>
+    <p>(1) A "moderate" score does not mean the patient is safe to remain at home without physician evaluation — moderate risk requires an emergency room or clinic assessment. (2) This estimator does not predict dengue hemorrhagic fever or dengue shock syndrome severity independently of AKI risk. (3) Recovery-phase creatinine that continues to rise (instead of falling) suggests superimposed intrinsic AKI — immune-complex GN or rhabdomyolysis ATN — and requires nephrology consultation even if the initial score was low. (4) Potassium must be monitored every 6–8 hours in CKD patients during the critical phase; fatal hyperkalemia can occur with remarkable speed.</p>
+  </div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Acute kidney injury complicates approximately 4–13% of dengue hospitalizations in Southeast Asia, with higher rates in patients with pre-existing CKD, severe dengue, or dengue shock syndrome. In the Philippine setting, where dengue affects hundreds of thousands annually and nephrology consultations are resource-constrained, early identification of high-risk patients enables timely creatinine monitoring, potassium management, and nephrology involvement before AKI becomes dialysis-dependent.</p>
 <p>Three distinct AKI mechanisms operate in dengue: pre-renal (capillary leak and intravascular volume depletion during the critical phase), intrinsic renal (direct dengue virus tubular injury, immune complex glomerulonephritis, or rhabdomyolysis-associated ATN), and rarely post-renal (retroperitoneal hematoma). Each has a different recovery trajectory and requires different management. The purpose of this estimator is to identify patients who need creatinine monitoring and nephrology co-management, not to replace the clinical workup that distinguishes these mechanisms.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Dengue AKI Risk Estimator</h2>
@@ -344,26 +408,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.85;">
-  <li style="margin-bottom:12px;"><strong>Select the illness day category.</strong> Day 1–3 is the febrile phase; Day 4–6 is the critical phase when plasma leakage peaks and AKI risk is highest; Day 7+ is the recovery phase when reabsorption begins.</li>
-  <li style="margin-bottom:12px;"><strong>Enter the platelet count</strong> in thousands per microliter (×10³/µL). A falling platelet trend is as important as the absolute value — note whether this is the nadir or a declining trend.</li>
-  <li style="margin-bottom:12px;"><strong>Enter the serum creatinine</strong> in mg/dL. Compare to the patient's known baseline if available. In patients without a recent baseline, use the age-sex-estimated normal range for comparison.</li>
-  <li style="margin-bottom:12px;"><strong>Select the hematocrit trend.</strong> A rise of ≥20% from baseline is the WHO criterion for significant plasma leakage (dengue warning sign). A falling Hct in the recovery phase is reassuring.</li>
-  <li style="margin-bottom:12px;"><strong>Select CKD status</strong> from the most recent available eGFR or creatinine. Pre-existing CKD — especially Stage 3 or higher — significantly amplifies AKI risk and dialysis requirements.</li>
-  <li style="margin-bottom:12px;"><strong>Select the worst warning sign present.</strong> WHO warning signs are defined as: abdominal pain or tenderness, persistent vomiting, clinical fluid accumulation, mucosal bleeding, lethargy or restlessness, liver enlargement &gt;2 cm, and rising Hct with rapid platelet decline. Severe signs include shock, severe bleeding, and organ impairment.</li>
-  <li><strong>Press "Estimate AKI Risk"</strong> to generate a risk tier (Low, Moderate, or High), a plain-language management recommendation, and a list of clinical flags specific to the entered values.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted. Reassess at each clinical review during the hospitalization.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Scoring Formula &amp; Risk Bands</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <p>Each clinical variable contributes a weighted point score. Points are summed to produce the total AKI risk score. The weights reflect the relative contribution of each variable to AKI risk based on published dengue cohort data and observational studies.</p>
 <h3 style="margin-top:24px;">Point Assignments</h3>
 <table class="lab-table">
@@ -399,12 +460,7 @@
     <tr><td>≥6</td><td><span class="warn-badge">High</span></td><td>ER admission; creatinine + K+ + CPK; nephrology consult; do not manage at home</td></tr>
   </tbody>
 </table>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The risk variables and clinical thresholds used in this estimator are grounded in published dengue cohort studies and WHO dengue management guidelines. The AKI incidence, risk factors, and outcomes data derive primarily from Southeast Asian retrospective cohorts, including studies from Malaysia, Thailand, and the Philippines. The point weights reflect the relative odds ratios reported in the Mallhi et al. 2015 determinants study and WHO 2009 classification of dengue severity.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
   <li>Mallhi TH, Khan AH, Adnan AS, et al. Incidence, characteristics and risk factors of acute kidney injury among dengue patients: a retrospective analysis. <em>BMC Infect Dis.</em> 2015;15:399.</li>
@@ -412,41 +468,8 @@
   <li>Oliveira JFP, Burdmann EA. Dengue-associated acute kidney injury. <em>Clin Kidney J.</em> 2015;8(6):681–685.</li>
   <li>Lam PK, Ngoc TV, Thu Thuy TT, et al. The value of daily platelet counts for predicting dengue shock syndrome: results from a prospective observational study of 2301 Vietnamese children with dengue. <em>PLoS Negl Trop Dis.</em> 2017;11(4):e0005498.</li>
 </ol>
-</section>
-
-<!-- PEARLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-  <div class="alert-icon">💡</div>
-  <div class="alert-body">
-    <h4>Creatinine is a late marker — order CPK early</h4>
-    <p>Serum creatinine rises only after significant renal mass has been injured. In dengue patients with severe myalgia, a disproportionately high creatinine rise, or cola-colored urine, creatine phosphokinase (CPK) should be ordered to evaluate for dengue-associated rhabdomyolysis — one of the most common causes of intrinsic AKI in dengue. CPK is not in the standard dengue order set in many Philippine hospitals; actively add it to the workup when creatinine is elevated.</p>
-  </div>
 </div>
-<div class="alert alert-teal">
-  <div class="alert-icon">🔬</div>
-  <div class="alert-body">
-    <h4>The critical phase fluid tightrope — do not over- or under-hydrate</h4>
-    <p>Dengue-AKI management requires balancing two opposing risks: insufficient volume resuscitation causes pre-renal AKI through plasma leakage, while over-resuscitation causes pulmonary edema as third-space fluid reabsorbs in the recovery phase. The WHO fluid algorithm — using small isotonic boluses titrated to urine output — is far safer than empiric aggressive hydration. In CKD patients, start boluses at half the standard rate (3–5 mL/kg instead of 10–20 mL/kg) and reassess every 1–2 hours.</p>
-  </div>
-</div>
-<div class="alert alert-amber">
-  <div class="alert-icon">⚠️</div>
-  <div class="alert-body">
-    <h4>Hold ACEi, ARBs, diuretics, and NSAIDs during the critical phase</h4>
-    <p>ACE inhibitors and ARBs impair the efferent arteriolar constriction that maintains GFR during low perfusion pressure — they should be held at the start of the critical phase in all dengue patients, not just those with CKD. Loop diuretics should also be suspended: a dengue patient with active capillary leak who is simultaneously diuresed can develop severe hypovolemia within hours. NSAIDs carry additional risks of GI bleeding in the setting of thrombocytopenia and must be avoided throughout the illness.</p>
-  </div>
-</div>
-<div class="alert alert-red">
-  <div class="alert-icon">🚫</div>
-  <div class="alert-body">
-    <h4>Pitfalls</h4>
-    <p>(1) A "moderate" score does not mean the patient is safe to remain at home without physician evaluation — moderate risk requires an emergency room or clinic assessment. (2) This estimator does not predict dengue hemorrhagic fever or dengue shock syndrome severity independently of AKI risk. (3) Recovery-phase creatinine that continues to rise (instead of falling) suggests superimposed intrinsic AKI — immune-complex GN or rhabdomyolysis ATN — and requires nephrology consultation even if the initial score was low. (4) Potassium must be monitored every 6–8 hours in CKD patients during the critical phase; fatal hyperkalemia can occur with remarkable speed.</p>
-  </div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is a clinical decision-support aid only and does not replace physician evaluation. If you or a family member has dengue with warning signs — abdominal pain, persistent vomiting, mucosal bleeding, no urine, or signs of shock — go to the nearest emergency room immediately. Do not wait for a calculator result.</div>
 

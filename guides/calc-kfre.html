@@ -1229,6 +1229,24 @@ body.dark .related-card-title {
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -1268,20 +1286,30 @@ body.dark .related-card-title {
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Select the <strong>uACR units</strong> (mg/g or mg/mmol) to match the laboratory report, and the <strong>calibration</strong> — use Non-North American outside the U.S. and Canada.</li>
+<li>Enter <strong>age</strong> and select <strong>sex</strong>.</li>
+<li>Enter the most recent <strong>eGFR</strong> (the equation is validated for eGFR &lt; 60).</li>
+<li>Enter the <strong>urine albumin-to-creatinine ratio</strong> (a positive value is required for the logarithm term).</li>
+<li>The 2-year and 5-year risks update live, with a risk band (low / intermediate / high) and suggested next steps.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use the Kidney Failure Risk Equation (KFRE) to quantify the absolute risk that an adult with CKD G3–G5 will progress to kidney failure — defined as dialysis or transplantation — within 2 and 5 years. The 4-variable model uses age, sex, eGFR, and urine albumin-to-creatinine ratio (uACR). It converts a vague clinical impression of "high risk" into a calibrated probability that supports referral timing, vascular-access planning, and transplant work-up, and helps patients understand their trajectory.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -1297,16 +1325,43 @@ body.dark .related-card-title {
 <p>The 4-variable KFRE is not validated and does not apply to patients already on dialysis or with a functioning kidney transplant, to acute kidney injury, or to children. It predicts <em>kidney failure</em> — not death or cardiovascular events, which often occur first in older patients with CKD. A urine ACR is required; using a dipstick or protein-to-creatinine surrogate degrades accuracy. Apply the calibration appropriate to your region.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Risk beats threshold for timing</h4>
+<p>Plan dialysis access and transplant referral by calculated risk, not by a fixed eGFR. A patient with a high 2-year KFRE benefits from early arteriovenous fistula creation even if the eGFR has not yet reached a traditional trigger.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Use the right calibration and a true ACR</h4>
+<p>Apply the non-North American calibration outside the U.S. and Canada, and always use a quantitative urine albumin-to-creatinine ratio. Substituting a dipstick or a protein-to-creatinine ratio reduces accuracy. Re-run the equation as eGFR and albuminuria evolve.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) The KFRE does not apply to dialysis or transplant patients, AKI, or children. (2) It predicts kidney failure only — many older or comorbid patients die of cardiovascular disease before reaching dialysis, so always weigh competing risk. (3) A very low or zero uACR cannot be entered (the model takes the logarithm of uACR); use the lowest measured positive value. (4) The estimate is population-derived and must be individualized.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Two patients with the same eGFR can have very different futures: the one with heavy albuminuria progresses far faster. The KFRE integrates the four strongest, routinely available predictors into a single calibrated risk, which outperforms eGFR alone for timing decisions. Risk-based planning — rather than eGFR-threshold planning — reduces unplanned dialysis starts and central-venous-catheter use, supports earlier pre-emptive transplant referral, and gives patients a concrete, shared basis for decisions. The equation has been externally validated across more than 30 countries and over 700,000 patients.</p>
-</section>
+</div>
+</details>
 
-<!-- KFRE CALCULATOR (interactive) -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Kidney Failure Risk Equation (KFRE) — 2-Year &amp; 5-Year Risk</h2>
@@ -1372,24 +1427,23 @@ body.dark .related-card-title {
     </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Select the <strong>uACR units</strong> (mg/g or mg/mmol) to match the laboratory report, and the <strong>calibration</strong> — use Non-North American outside the U.S. and Canada.</li>
-<li>Enter <strong>age</strong> and select <strong>sex</strong>.</li>
-<li>Enter the most recent <strong>eGFR</strong> (the equation is validated for eGFR &lt; 60).</li>
-<li>Enter the <strong>urine albumin-to-creatinine ratio</strong> (a positive value is required for the logarithm term).</li>
-<li>The 2-year and 5-year risks update live, with a risk band (low / intermediate / high) and suggested next steps.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <p>The 4-variable KFRE estimates risk over time <em>t</em> as <strong>Risk = 1 − S₀(t)<sup>exp(L)</sup></strong>, where L is the linear predictor and S₀(t) is the baseline survival.</p>
 <table class="lab-table">
 <thead><tr><th>Component</th><th>Expression</th></tr></thead>
@@ -1409,46 +1463,15 @@ body.dark .related-card-title {
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The non-North American recalibration (Tangri 2016) corrected systematic miscalibration observed outside North America and is the appropriate default for Philippine practice.</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The KFRE was derived and internally validated by Tangri and colleagues in 2011, then externally validated and recalibrated across more than 30 countries in a 2016 multinational study, which confirmed excellent discrimination and provided region-specific baseline survival. KDIGO 2024 endorses validated risk equations such as the KFRE to guide nephrology referral and kidney-failure planning.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Tangri N, Stevens LA, Griffith J, et al. <em>A Predictive Model for Progression of Chronic Kidney Disease to Kidney Failure.</em> JAMA. 2011;305(15):1553–1559.</li>
 <li>Tangri N, Grams ME, Levey AS, et al. <em>Multinational Assessment of Accuracy of Equations for Predicting Risk of Kidney Failure: A Meta-analysis.</em> JAMA. 2016;315(2):164–174.</li>
 <li>Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. <em>KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.</em> Kidney Int. 2024;105(4S):S117–S314.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Risk beats threshold for timing</h4>
-<p>Plan dialysis access and transplant referral by calculated risk, not by a fixed eGFR. A patient with a high 2-year KFRE benefits from early arteriovenous fistula creation even if the eGFR has not yet reached a traditional trigger.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Use the right calibration and a true ACR</h4>
-<p>Apply the non-North American calibration outside the U.S. and Canada, and always use a quantitative urine albumin-to-creatinine ratio. Substituting a dipstick or a protein-to-creatinine ratio reduces accuracy. Re-run the equation as eGFR and albuminuria evolve.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) The KFRE does not apply to dialysis or transplant patients, AKI, or children. (2) It predicts kidney failure only — many older or comorbid patients die of cardiovascular disease before reaching dialysis, so always weigh competing risk. (3) A very low or zero uACR cannot be entered (the model takes the logarithm of uACR); use the lowest measured positive value. (4) The estimate is population-derived and must be individualized.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for clinicians and patients and does not replace individualized assessment. The KFRE estimates the probability of kidney failure, not death or cardiovascular events, and does not apply to patients on dialysis or with a transplant. Use it to inform — not replace — shared decisions with your nephrologist.</div>
 

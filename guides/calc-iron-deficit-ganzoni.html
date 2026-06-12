@@ -1239,6 +1239,24 @@ body.dark .related-card-title {
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -1278,20 +1296,32 @@ body.dark .related-card-title {
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Choose <strong>Conventional</strong> (g/dL, kg) or <strong>SI</strong> (g/L, kg) units to match your CBC report. Switching units clears the hemoglobin fields.</li>
+<li>Enter the patient's <strong>body weight</strong> in kg. Use the post-dialysis dry weight for hemodialysis patients, not the inter-dialytic weight.</li>
+<li>Enter the <strong>current (actual) hemoglobin</strong> from the most recent CBC.</li>
+<li>Enter the <strong>target hemoglobin</strong>. For most dialysis patients use 10.0–11.5 g/dL (KDIGO 2012/2024); for non-dialysis CKD use 10.0–12.0 g/dL. The calculator requires target &gt; actual Hgb.</li>
+<li>Select the <strong>route of iron replacement</strong>: IV iron sucrose for hemodialysis patients, oral iron for pre-dialysis CKD.</li>
+<li>Results show: total iron deficit in mg, estimated number of IV infusion sessions at 100 mg each, and the hemoglobin gap. Plain-language verdict and treatment protocol appear below the metrics.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool when a CKD or dialysis patient has iron-deficiency anemia and you need to estimate the total amount of iron required to bring hemoglobin from its current value to a defined KDIGO target. It applies the Ganzoni formula — the standard pharmacokinetic method used to calculate IV iron sucrose dosing in renal anemia — and automatically divides the total deficit into individual 100 mg infusion sessions appropriate for the dialysis circuit.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -1307,17 +1337,44 @@ body.dark .related-card-title {
 <p>Do not use this calculator in patients who are iron-replete (ferritin &gt;800 ng/mL or TSAT &gt;30%) — the formula does not apply and further iron loading risks hemosiderosis and oxidative vascular injury. The calculator does not adjust for concurrent erythropoiesis-stimulating agent (ESA) use, ongoing blood loss, or functional iron deficiency (high ferritin with low TSAT in inflammation). Use the result as a starting estimate; recheck CBC and iron studies 4–6 weeks after completing repletion before prescribing a second course.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Check iron studies before prescribing</h4>
+<p>Always confirm iron deficiency with TSAT and ferritin before initiating IV iron. A low hemoglobin alone does not indicate iron deficiency — in inflammation, ferritin is elevated (acute-phase reactant) but TSAT may still be low (functional iron deficiency). The Ganzoni formula gives a total dose estimate; the treating physician must confirm the biochemical indication.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Use dry weight for dialysis patients</h4>
+<p>Hemodialysis patients accumulate several kilograms of fluid between sessions. Always use the post-dialysis dry weight (the weight at which the patient feels well with no signs of fluid overload) when calculating the iron dose — using the pre-dialysis or inter-dialytic weight will overestimate the deficit. Typical dry-weight targets are 0.5–1.0 kg above the estimated normovolemic weight.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Do not give IV iron if ferritin &gt;800 ng/mL — iron overload from excessive repletion causes oxidative stress, endothelial injury, and increased infection risk. (2) The formula assumes no concurrent bleeding; if the patient has ongoing GI or dialysis-access bleeding, the calculated dose will be insufficient and must be re-estimated after the bleeding source is addressed. (3) IV iron sucrose infusions should be administered slowly (100 mg over 15 minutes into the venous return line, or over 30 minutes if given peripherally) to reduce the risk of hypotension and hypersensitivity reactions.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Iron deficiency is the most common correctable cause of anemia in CKD, affecting over 60% of predialysis patients and nearly all hemodialysis patients. Adequate iron stores are a prerequisite for the erythropoietic response to ESA therapy — without iron repletion, ESA doses escalate, costs rise, and hyporesponsiveness persists. The Ganzoni equation converts the hemoglobin gap and body weight into a total iron dose that accounts for both the circulating hemoglobin-bound iron deficit and a 500 mg depot reserve for bone marrow stores.</p>
 <p>In hemodialysis patients, IV iron sucrose (iron sucrose — marketed as Ferrofer in the Philippines) is preferred over oral iron because intestinal absorption is severely impaired by hepcidin upregulation. IV iron delivered directly into the dialysis venous return line at 100–200 mg per session avoids gastrointestinal intolerance and achieves reliable tissue loading. The KDIGO 2012 Anemia Guideline and its 2024 update recommend IV iron for dialysis patients who are iron-deficient and on ESA, targeting ferritin 200–500 ng/mL and TSAT 20–30%.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Iron Deficit &amp; IV Iron Dose — Ganzoni Equation</h2>
@@ -1380,25 +1437,23 @@ body.dark .related-card-title {
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Choose <strong>Conventional</strong> (g/dL, kg) or <strong>SI</strong> (g/L, kg) units to match your CBC report. Switching units clears the hemoglobin fields.</li>
-<li>Enter the patient's <strong>body weight</strong> in kg. Use the post-dialysis dry weight for hemodialysis patients, not the inter-dialytic weight.</li>
-<li>Enter the <strong>current (actual) hemoglobin</strong> from the most recent CBC.</li>
-<li>Enter the <strong>target hemoglobin</strong>. For most dialysis patients use 10.0–11.5 g/dL (KDIGO 2012/2024); for non-dialysis CKD use 10.0–12.0 g/dL. The calculator requires target &gt; actual Hgb.</li>
-<li>Select the <strong>route of iron replacement</strong>: IV iron sucrose for hemodialysis patients, oral iron for pre-dialysis CKD.</li>
-<li>Results show: total iron deficit in mg, estimated number of IV infusion sessions at 100 mg each, and the hemoglobin gap. Plain-language verdict and treatment protocol appear below the metrics.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
 <tbody>
@@ -1420,47 +1475,17 @@ body.dark .related-card-title {
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The constant 0.24 in the Ganzoni formula is a rounded value; some authors use 0.2412 from the original 1970 paper. The 500 mg depot term is a consensus addend; KDIGO notes that this may need adjustment in patients who have received recent partial iron repletion. SI conversion: Hgb in g/L ÷ 10 = g/dL.</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The Ganzoni formula was first described in 1970 and remains the most widely used method to calculate parenteral iron dose for iron-deficiency anemia. Hemoglobin targets and iron repletion thresholds follow the KDIGO 2012 Anemia Guideline and its 2024 update, which specify ferritin and TSAT thresholds for initiating IV iron in CKD and dialysis patients. IV iron sucrose (Ferrofer) is recommended over oral iron in dialysis patients due to hepcidin-mediated suppression of intestinal iron absorption.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Ganzoni AM. Eisen-Dextran intravenös: therapeutische und experimentelle Möglichkeiten. <em>Schweiz Med Wochenschr.</em> 1970;100(7):301–303.</li>
 <li>KDIGO Clinical Practice Guideline for Anemia in CKD. <em>Kidney Int Suppl.</em> 2012;2(4):279–335.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Check iron studies before prescribing</h4>
-<p>Always confirm iron deficiency with TSAT and ferritin before initiating IV iron. A low hemoglobin alone does not indicate iron deficiency — in inflammation, ferritin is elevated (acute-phase reactant) but TSAT may still be low (functional iron deficiency). The Ganzoni formula gives a total dose estimate; the treating physician must confirm the biochemical indication.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Use dry weight for dialysis patients</h4>
-<p>Hemodialysis patients accumulate several kilograms of fluid between sessions. Always use the post-dialysis dry weight (the weight at which the patient feels well with no signs of fluid overload) when calculating the iron dose — using the pre-dialysis or inter-dialytic weight will overestimate the deficit. Typical dry-weight targets are 0.5–1.0 kg above the estimated normovolemic weight.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Do not give IV iron if ferritin &gt;800 ng/mL — iron overload from excessive repletion causes oxidative stress, endothelial injury, and increased infection risk. (2) The formula assumes no concurrent bleeding; if the patient has ongoing GI or dialysis-access bleeding, the calculated dose will be insufficient and must be re-estimated after the bleeding source is addressed. (3) IV iron sucrose infusions should be administered slowly (100 mg over 15 minutes into the venous return line, or over 30 minutes if given peripherally) to reduce the risk of hypotension and hypersensitivity reactions.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for clinicians and patients. The Ganzoni formula provides a starting estimate — actual IV iron prescriptions must be verified against current ferritin, TSAT, hemoglobin, and clinical status by the treating nephrologist. Do not administer IV iron without a physician order and monitoring for infusion reactions.</div>
+
 </main>
 
 

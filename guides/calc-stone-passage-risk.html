@@ -1021,6 +1021,24 @@
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -1060,20 +1078,30 @@
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
-<a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
 <a class="nav-pill" href="#instructions">Instructions</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
+<a class="nav-pill" href="#when">When to Use</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Obtain a brief history: ask about the patient's sex, when the pain started, and whether nausea or vomiting is present.</li>
+<li>Perform a dipstick or microscopic urinalysis and determine whether erythrocytes (blood) are present or absent.</li>
+<li>Select the appropriate option for each of the five variables in the calculator above. Results update automatically — no submit button is needed.</li>
+<li>Interpret the probability category (Low / Moderate / High) in the context of the full clinical picture. A low score should broaden the differential; a high score supports pursuing imaging promptly while keeping serious alternative diagnoses in mind.</li>
+<li>Always arrange physician assessment. The STONE score is a decision-support aid, not a replacement for clinical judgment or imaging.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no patient data is stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use the STONE score when evaluating an adult patient presenting to the emergency department or clinic with acute flank pain in whom an uncomplicated ureteral stone is part of the differential diagnosis. The score stratifies patients into low, moderate, and high probability groups to guide the use of diagnostic imaging and downstream management.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -1089,18 +1117,45 @@
 <p>Do not use the STONE score in isolation when red-flag features are present: fever (suggests infected stone), known solitary kidney, haemodynamic instability, or clinical suspicion for abdominal aortic aneurysm. The score was derived and validated in adults presenting to emergency departments in the United States; its performance in paediatric patients and in settings with very different stone prevalence may differ. A low score does not exclude a stone, and a high score does not confirm one — imaging and physician judgment remain essential.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why the STONE Score Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>A high score supports stone — but don't stop there</h4>
+<p>Even a STONE score of 10–13 (high probability, ~88–89% stone likelihood) means roughly 1 in 10 patients does not have a stone. Always consider serious alternative diagnoses, particularly abdominal aortic aneurysm in older patients with vascular risk factors and atypical pain characteristics. A high score supports prompt imaging; it does not replace it.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Urinalysis timing matters</h4>
+<p>Microscopic hematuria is absent in up to 15–30% of patients with a confirmed ureteral stone. Collect the urine early in the visit, before IV fluids are given, to maximise sensitivity. A negative dipstick does not exclude a stone — it simply scores zero for the erythrocytes variable, shifting the total toward a lower risk band.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Seek emergency care immediately for these features</h4>
+<p>Fever or rigors, a single functioning kidney, uncontrolled pain despite analgesia, persistent vomiting preventing oral hydration, or reduced urine output all indicate a potentially obstructed or infected stone — a urological emergency. Do not wait for imaging results before initiating urgent assessment. These features are exclusions from routine outpatient stone management regardless of the STONE score.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Acute flank pain is one of the most common emergency department presentations, yet the diagnosis of ureteral stone is not always straightforward. CT urography is the gold-standard imaging modality but exposes patients to ionizing radiation, incurs cost, and may not be immediately available in all Philippine settings. Ultrasound has lower sensitivity but avoids radiation and is widely accessible.</p>
 <p>The STONE score (Sex, Timing, Origin, Nausea/vomiting, Erythrocytes) was derived and validated by Moore et al. in a multicenter US emergency department cohort (BMJ 2014). In the validation cohort, a score of 0–5 (low) corresponded to approximately 9–10% stone likelihood, score 6–9 (moderate) to approximately 51%, and score 10–13 (high) to approximately 88–89%. By quantifying pre-imaging probability, the score helps clinicians decide which patients can safely proceed with ultrasound-first protocols versus those who benefit from immediate CT, and which low-probability patients need thorough evaluation for serious alternative causes of flank pain such as aortic aneurysm, pyelonephritis, or gynaecologic pathology.</p>
 <p>In the Philippine context, where radiation exposure, cost, and after-hours CT availability are genuine constraints, a validated pre-test probability tool adds practical value at the point of care.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>STONE Score — Ureteral Stone Likelihood Calculator</h2>
@@ -1175,24 +1230,23 @@
     </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Obtain a brief history: ask about the patient's sex, when the pain started, and whether nausea or vomiting is present.</li>
-<li>Perform a dipstick or microscopic urinalysis and determine whether erythrocytes (blood) are present or absent.</li>
-<li>Select the appropriate option for each of the five variables in the calculator above. Results update automatically — no submit button is needed.</li>
-<li>Interpret the probability category (Low / Moderate / High) in the context of the full clinical picture. A low score should broaden the differential; a high score supports pursuing imaging promptly while keeping serious alternative diagnoses in mind.</li>
-<li>Always arrange physician assessment. The STONE score is a decision-support aid, not a replacement for clinical judgment or imaging.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no patient data is stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>STONE Score Variables &amp; Point Values</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Variable</th><th>Finding</th><th>Points</th></tr></thead>
 <tbody>
@@ -1220,46 +1274,15 @@
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Maximum possible score: 13 (Male +2, timing &lt;6 h +3, non-Black +3, vomiting +2, hematuria present +3). Likelihood estimates are from the validation cohort (Moore et al. 2014, BMJ); actual prevalence may vary by setting and population.</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The STONE score was derived and validated by Moore et al. in a prospective multicenter emergency department study published in the BMJ in 2014. The acronym stands for Sex, Timing, Origin, Nausea/vomiting, and Erythrocytes. The score demonstrated good discrimination (AUC ~0.86) between patients with and without confirmed ureteral stones on CT urography. Subsequent studies have examined stone size and spontaneous passage rates (Coll et al.), and the EAU Urolithiasis Guidelines provide the current international framework for stone management including imaging decision pathways.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Moore CL, Bomann S, Daniels B, et al. Derivation and validation of a clinical prediction rule for uncomplicated ureteral stone — the STONE score: retrospective and prospective observational cohort studies. <em>BMJ.</em> 2014;348:g2191.</li>
 <li>Coll DM, Varanelli MJ, Smith RC. Relationship of spontaneous passage of ureteral calculi to stone size and location as revealed by unenhanced helical CT. <em>AJR Am J Roentgenol.</em> 2002;178(1):101–103.</li>
 <li>EAU Guidelines on Urolithiasis 2024. European Association of Urology; 2024.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>A high score supports stone — but don't stop there</h4>
-<p>Even a STONE score of 10–13 (high probability, ~88–89% stone likelihood) means roughly 1 in 10 patients does not have a stone. Always consider serious alternative diagnoses, particularly abdominal aortic aneurysm in older patients with vascular risk factors and atypical pain characteristics. A high score supports prompt imaging; it does not replace it.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Urinalysis timing matters</h4>
-<p>Microscopic hematuria is absent in up to 15–30% of patients with a confirmed ureteral stone. Collect the urine early in the visit, before IV fluids are given, to maximise sensitivity. A negative dipstick does not exclude a stone — it simply scores zero for the erythrocytes variable, shifting the total toward a lower risk band.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Seek emergency care immediately for these features</h4>
-<p>Fever or rigors, a single functioning kidney, uncontrolled pain despite analgesia, persistent vomiting preventing oral hydration, or reduced urine output all indicate a potentially obstructed or infected stone — a urological emergency. Do not wait for imaging results before initiating urgent assessment. These features are exclusions from routine outpatient stone management regardless of the STONE score.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> The STONE score is a validated clinical prediction aid and is not a substitute for physician assessment, laboratory evaluation, or diagnostic imaging. Individual results depend on accurate history-taking and urinalysis technique. A score in any band does not confirm or exclude a ureteral stone or rule out other serious causes of flank pain. Always consult a physician for diagnosis and management.</div>
 

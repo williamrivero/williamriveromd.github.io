@@ -1226,6 +1226,24 @@ body.dark .related-card-title {
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -1265,19 +1283,29 @@ body.dark .related-card-title {
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 <main class="container">
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Choose <strong>Conventional</strong> (mg/g) or <strong>SI</strong> (mg/mmol) units to match your lab report. Switching units clears the protein fields.</li>
+<li>Enter the <strong>UACR</strong> (preferred) and/or the <strong>PCR</strong>. If only PCR is available, the tool estimates the albuminuria category from it; UACR takes precedence when both are entered.</li>
+<li>Enter the most recent <strong>eGFR</strong> to set the GFR category, and indicate whether the patient is already on <strong>RAAS blockade</strong> (ACE inhibitor or ARB).</li>
+<li>Results update live: the KDIGO albuminuria category (A1–A3), GFR category (G1–G5), the combined risk classification, the recommended monitoring frequency, and a plain-language interpretation with management prompts.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool to classify proteinuria in any adult being screened for or living with chronic kidney disease. It converts a urine albumin-to-creatinine ratio (UACR) or protein-to-creatinine ratio (PCR) into the KDIGO albuminuria category (A1–A3), then intersects that category with the eGFR-derived GFR category (G1–G5) to give the combined KDIGO risk classification — the "heat map" cell that determines how often to monitor and how aggressively to treat.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -1293,16 +1321,43 @@ body.dark .related-card-title {
 <p>A single elevated UACR does not diagnose CKD — KDIGO requires albuminuria be confirmed on at least 2 of 3 samples over ≥3 months. Transient proteinuria from fever, vigorous exercise, urinary tract infection, menstrual contamination, decompensated heart failure, or marked hyperglycemia inflates the ratio. Very low or very high urine creatinine (extremes of muscle mass) distorts the ratio. Do not use in acute kidney injury, where staging categories do not apply.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Albuminuria is a treatment target, not just a stage</h4>
+<p>Lowering albuminuria with RAAS blockade and SGLT2 inhibitors slows GFR decline independently of blood-pressure effect. A 30% or greater reduction in UACR is a recognized surrogate for renoprotection — recheck the ratio after starting or up-titrating therapy.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Prefer UACR and confirm it</h4>
+<p>Use a first-morning or random spot UACR rather than dipstick, which is insensitive at the A2 range and concentration-dependent. Confirm a positive result on 2 of 3 samples over ≥3 months before labeling persistent albuminuria, and avoid testing during fever, UTI, heavy exercise, or menstruation.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) The spot ratio is distorted by urine creatinine extremes — very muscular patients overstate and cachectic/elderly patients understate true excretion. (2) PCR underestimates the albuminuria category when tubular or overflow (e.g. light-chain) proteins dominate; UACR and PCR diverge in those settings. (3) The G×A cell classifies risk but does not identify cause — always pursue the underlying diagnosis. (4) Nephrotic-range proteinuria (UACR &gt; 2200 mg/g or PCR &gt; ~3500 mg/g) warrants prompt nephrology referral regardless of GFR.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Albuminuria is an independent, graded predictor of CKD progression, end-stage kidney disease, cardiovascular events, and all-cause mortality — risk that compounds with declining GFR. KDIGO's two-dimensional G×A staging captures this synergy far better than eGFR alone: a patient with preserved GFR but A3 albuminuria can carry higher absolute risk than one with reduced GFR and A1. Standardizing the UACR/PCR result into the correct category ensures monitoring frequency, RAAS blockade, and SGLT2-inhibitor decisions rest on the validated risk cell rather than a raw number.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR (verbatim from source) -->
 <section class="section" id="calculator">
     <div class="section-tag"><span data-lang="en">Interactive Tool</span><span data-lang="tl" class="lang-hidden">Interactive na Kasangkapan</span><span data-lang="ceb" class="lang-hidden">Interactive nga Himan</span>
       <span data-lang="kap" class="lang-hidden">Interactive a Kasangkapan</span></div>
@@ -1383,23 +1438,23 @@ body.dark .related-card-title {
     </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Choose <strong>Conventional</strong> (mg/g) or <strong>SI</strong> (mg/mmol) units to match your lab report. Switching units clears the protein fields.</li>
-<li>Enter the <strong>UACR</strong> (preferred) and/or the <strong>PCR</strong>. If only PCR is available, the tool estimates the albuminuria category from it; UACR takes precedence when both are entered.</li>
-<li>Enter the most recent <strong>eGFR</strong> to set the GFR category, and indicate whether the patient is already on <strong>RAAS blockade</strong> (ACE inhibitor or ARB).</li>
-<li>Results update live: the KDIGO albuminuria category (A1–A3), GFR category (G1–G5), the combined risk classification, the recommended monitoring frequency, and a plain-language interpretation with management prompts.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Definition / Equation</th></tr></thead>
 <tbody>
@@ -1421,48 +1476,18 @@ body.dark .related-card-title {
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">UACR is preferred over PCR because albumin is the dominant pathological protein in most CKD and the albumin assay is more sensitive at low levels. The G×A heat map is the KDIGO "Cause-GFR-Albuminuria" (CGA) classification; cause should be specified separately.</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The albuminuria categories (A1–A3) and the combined GFR–albuminuria risk heat map are defined by the KDIGO Clinical Practice Guideline for the Evaluation and Management of CKD (2012, updated 2024). The two-dimensional staging arose from the KDIGO controversies conference synthesis of the CKD Prognosis Consortium meta-analyses, which demonstrated that albuminuria predicts mortality and ESKD independently of, and multiplicatively with, eGFR.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. <em>KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.</em> Kidney Int. 2024;105(4S):S117–S314.</li>
 <li>Levey AS, de Jong PE, Coresh J, et al. <em>The definition, classification, and prognosis of chronic kidney disease: a KDIGO Controversies Conference report.</em> Kidney Int. 2011;80(1):17–28.</li>
 <li>Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. <em>KDIGO 2012 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.</em> Kidney Int Suppl. 2013;3(1):1–150.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Albuminuria is a treatment target, not just a stage</h4>
-<p>Lowering albuminuria with RAAS blockade and SGLT2 inhibitors slows GFR decline independently of blood-pressure effect. A 30% or greater reduction in UACR is a recognized surrogate for renoprotection — recheck the ratio after starting or up-titrating therapy.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Prefer UACR and confirm it</h4>
-<p>Use a first-morning or random spot UACR rather than dipstick, which is insensitive at the A2 range and concentration-dependent. Confirm a positive result on 2 of 3 samples over ≥3 months before labeling persistent albuminuria, and avoid testing during fever, UTI, heavy exercise, or menstruation.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) The spot ratio is distorted by urine creatinine extremes — very muscular patients overstate and cachectic/elderly patients understate true excretion. (2) PCR underestimates the albuminuria category when tubular or overflow (e.g. light-chain) proteins dominate; UACR and PCR diverge in those settings. (3) The G×A cell classifies risk but does not identify cause — always pursue the underlying diagnosis. (4) Nephrotic-range proteinuria (UACR &gt; 2200 mg/g or PCR &gt; ~3500 mg/g) warrants prompt nephrology referral regardless of GFR.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for clinicians and patients and does not replace individualized assessment. CKD staging and proteinuria management depend on the full clinical picture, confirmation over time, and the underlying cause. Do not start or adjust RAAS blockers, SGLT2 inhibitors, or other therapy based on a single result without consulting your physician.</div>
+
 </main>
 
     <!-- DR CARD -->

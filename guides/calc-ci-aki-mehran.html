@@ -1310,6 +1310,24 @@
   .float-btn svg{width:18px;height:18px;}
   @media print{.site-header,.nav-strip,.guide-toggle-bar,.print-btn,.float-controls,.guide-footer{display:none!important;}body{font-size:13px;color:#000;background:#fff;}.hero{background:#fff!important;color:#000!important;padding:24px 0 16px!important;}.hero h1{color:#0f1e2e!important;font-size:22px!important;}.container{max-width:100%;padding:0 24px;}.section{padding:20px 0;border-bottom:1px solid #ddd;}.intro-callout{background:#f0f4f8!important;color:#000!important;border:1px solid #ccc;}.intro-callout p{color:#222!important;}.alert{border:1px solid #ccc!important;background:#f9f9f9!important;}.illus-wrap{border:1px solid #ccc;background:#f9f9f9!important;page-break-inside:avoid;}@page{margin:18mm 15mm;size:A4;}}
 </style>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -1349,20 +1367,29 @@
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>In the <strong>CI-AKI Risk Calculator</strong>, choose Conventional (mg/dL) or SI (µmol/L) units, then enter the patient's <strong>eGFR</strong> (which scores 2–6 points by band), <strong>serum creatinine</strong>, and <strong>body weight</strong> — the latter two drive the maximum safe contrast-volume estimate.</li>
+<li>Select each clinical risk factor present — <strong>hypotension, IABP, congestive heart failure, age &gt; 75, anemia,</strong> and <strong>diabetes</strong>. Results update live: the Mehran score, the corresponding CI-AKI risk band, and the maximum safe contrast volume.</li>
+<li>Use the second <strong>Mehran Score Calculator</strong> for a checkbox-style scoring that additionally folds in the <strong>planned contrast volume</strong> (1 point per 100 mL) and lets you enter renal function as either creatinine or eGFR. It reports the predicted CIN risk and dialysis risk for the total score.</li>
+<li>Compare the planned contrast volume against the calculated maximum safe volume, and use the risk band to decide on hydration, contrast minimization, and post-procedure creatinine monitoring.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool before any procedure that uses iodinated contrast — coronary angiography or PCI, contrast-enhanced CT, or peripheral angiography — to quantify a patient's risk of contrast-associated (contrast-induced) acute kidney injury and to set a ceiling on the contrast dose. It pairs the Mehran risk score with a maximum safe contrast volume derived from body weight and serum creatinine.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -1378,16 +1405,43 @@
 <p>The Mehran score was derived and validated in patients undergoing percutaneous coronary intervention; its absolute risk estimates may not transfer exactly to CT or non-coronary angiography. It does not by itself decide whether a needed, potentially life-saving contrast study should proceed — a high score signals the need for precautions, not automatic cancellation. The maximum-volume formula is a guide, not a hard limit, and assumes a stable baseline creatinine.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Hydration and dose minimization do the heavy lifting</h4>
+<p>The most evidence-based preventives are isotonic intravenous volume expansion in at-risk patients and keeping the contrast volume as low as possible — ideally at or below the calculated maximum safe dose. A high Mehran score should prompt these measures and a planned follow-up creatinine, not reflexive cancellation of a needed study.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Watch the contrast-volume–to–kidney-function ratio</h4>
+<p>Both the per-100 mL Mehran points and the Cigarroa dose ceiling reflect the same principle: risk rises with the contrast load relative to renal reserve. In high-risk patients, targeting a contrast-volume–to–eGFR ratio below roughly 3 is a practical operative goal.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) The Mehran score was derived in PCI patients — applying its absolute risk percentages to contrast CT or non-coronary studies is an extrapolation. (2) N-acetylcysteine and isotonic sodium bicarbonate showed no benefit over saline in the large PRESERVE trial; do not substitute them for adequate hydration and dose limitation. (3) The maximum-volume formula assumes a <em>stable</em> baseline creatinine and is invalid in evolving AKI. (4) A "normal" creatinine can still mask substantially reduced GFR in elderly or low-muscle-mass patients — use eGFR.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Contrast-associated AKI prolongs hospital stay and is associated with higher short- and long-term mortality and, rarely, dialysis dependence. Risk is not uniform: a young patient with normal kidneys faces a very low risk, whereas an elderly diabetic with CKD, heart failure, and anemia can exceed a 50% risk after a large contrast load. Stratifying that risk up front lets the team weigh contrast against alternatives, ensure adequate peri-procedural hydration, minimize the dose toward the calculated safe ceiling, hold nephrotoxins, and schedule follow-up creatinine — the interventions that actually reduce harm.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR 1: CI-AKI risk + max volume (verbatim) -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>CI-AKI Risk Calculator — Mehran Score &amp; Maximum Safe Contrast Volume</h2>
@@ -1554,23 +1608,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>In the <strong>CI-AKI Risk Calculator</strong>, choose Conventional (mg/dL) or SI (µmol/L) units, then enter the patient's <strong>eGFR</strong> (which scores 2–6 points by band), <strong>serum creatinine</strong>, and <strong>body weight</strong> — the latter two drive the maximum safe contrast-volume estimate.</li>
-<li>Select each clinical risk factor present — <strong>hypotension, IABP, congestive heart failure, age &gt; 75, anemia,</strong> and <strong>diabetes</strong>. Results update live: the Mehran score, the corresponding CI-AKI risk band, and the maximum safe contrast volume.</li>
-<li>Use the second <strong>Mehran Score Calculator</strong> for a checkbox-style scoring that additionally folds in the <strong>planned contrast volume</strong> (1 point per 100 mL) and lets you enter renal function as either creatinine or eGFR. It reports the predicted CIN risk and dialysis risk for the total score.</li>
-<li>Compare the planned contrast volume against the calculated maximum safe volume, and use the risk band to decide on hydration, contrast minimization, and post-procedure creatinine monitoring.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <h3>Mehran risk score — point assignment</h3>
 <table class="lab-table">
 <thead><tr><th>Risk factor</th><th>Points</th></tr></thead>
@@ -1604,12 +1658,7 @@
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The Mehran integer-weighting scheme and its four risk strata are taken directly from the 2004 derivation/validation cohort. The maximum-contrast-dose rule (Cigarroa formula) caps the iodinated load relative to body size and renal function; many operators further target a contrast-volume–to–eGFR ratio (CV/eGFR) below ~3 in high-risk cases.</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The risk score and its strata are from Mehran and colleagues' 2004 development and validation of a simple integer-weighted model in 8,357 patients undergoing percutaneous coronary intervention. The body-weight/creatinine contrast-dose ceiling is the Cigarroa formula. Preventive measures (volume expansion, contrast minimization) are summarized in the KDIGO AKI guideline and subsequent trials such as PRESERVE.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Mehran R, Aymong ED, Nikolsky E, et al. <em>A simple risk score for prediction of contrast-induced nephropathy after percutaneous coronary intervention: development and initial validation.</em> J Am Coll Cardiol. 2004;44(7):1393–1399.</li>
@@ -1618,34 +1667,8 @@
 <li>Weisbord SD, Gallagher M, Jneid H, et al. <em>Outcomes after angiography with sodium bicarbonate and acetylcysteine (PRESERVE Trial).</em> N Engl J Med. 2018;378(7):603–614.</li>
 <li>Nyman U, Almén T, Aspelin P, et al. <em>Contrast-medium dose-to-GFR ratio: a measure of systemic exposure to predict contrast-induced nephropathy.</em> Acta Radiol. 2008;49(6):658–667.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Hydration and dose minimization do the heavy lifting</h4>
-<p>The most evidence-based preventives are isotonic intravenous volume expansion in at-risk patients and keeping the contrast volume as low as possible — ideally at or below the calculated maximum safe dose. A high Mehran score should prompt these measures and a planned follow-up creatinine, not reflexive cancellation of a needed study.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Watch the contrast-volume–to–kidney-function ratio</h4>
-<p>Both the per-100 mL Mehran points and the Cigarroa dose ceiling reflect the same principle: risk rises with the contrast load relative to renal reserve. In high-risk patients, targeting a contrast-volume–to–eGFR ratio below roughly 3 is a practical operative goal.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) The Mehran score was derived in PCI patients — applying its absolute risk percentages to contrast CT or non-coronary studies is an extrapolation. (2) N-acetylcysteine and isotonic sodium bicarbonate showed no benefit over saline in the large PRESERVE trial; do not substitute them for adequate hydration and dose limitation. (3) The maximum-volume formula assumes a <em>stable</em> baseline creatinine and is invalid in evolving AKI. (4) A "normal" creatinine can still mask substantially reduced GFR in elderly or low-muscle-mass patients — use eGFR.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for clinicians and patients and does not replace individualized assessment. The decision to perform a contrast study, the preventive protocol, and the contrast dose are made by the proceduralist and care team in the full clinical context. Do not change, delay, or cancel a planned procedure based solely on a calculated score without consulting the responsible physician.</div>
 

@@ -371,6 +371,24 @@ html[data-theme="dark"] .tx-actions .tx-btn-primary{background:var(--teal,#1a6b7
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -410,20 +428,31 @@ html[data-theme="dark"] .tx-actions .tx-btn-primary{background:var(--teal,#1a6b7
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Assessment Suite</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 0 20px;padding:0;color:var(--text-mid);font-size:15px;line-height:1.8;">
+  <li style="margin-bottom:12px;"><strong>Optionally fill in the patient demographics</strong> (name, age, sex, date) in the fields at the top — these are used only if you print the report and are never transmitted or stored.</li>
+  <li style="margin-bottom:12px;"><strong>BAASIS (Adherence)</strong>: Ask the patient to think about the past 4 weeks. For each question, select the frequency of non-adherent behavior. Even one "Once" or higher response identifies medication risk. Share the result with the transplant coordinator immediately when significant non-adherence is detected.</li>
+  <li style="margin-bottom:12px;"><strong>KTQ (Quality of Life)</strong>: Ask the patient to rate each item on a 1–7 scale for the past 2 weeks (1 = worst / always, 7 = best / never). Domain scores are expressed 0–100 (higher = better). Domain scores below 50 flag areas needing clinical attention.</li>
+  <li style="margin-bottom:12px;"><strong>PHQ-9 (Depression)</strong>: Patient rates each of the 9 depressive symptom items for the past 2 weeks (0–3). <strong>Item 9 (suicidal ideation)</strong> triggers a crisis hotline alert automatically if answered above zero — address this before proceeding. PHQ-9 ≥ 10 warrants clinical evaluation for major depressive disorder.</li>
+  <li style="margin-bottom:12px;"><strong>GAD-7 (Anxiety)</strong>: Patient rates each of the 7 anxiety symptom items for the past 2 weeks (0–3). GAD-7 ≥ 10 warrants clinical evaluation for generalized anxiety disorder.</li>
+  <li style="margin-bottom:12px;"><strong>Print the report</strong> using the "Print / Save as PDF" button to generate a structured printout for the medical record or to send to the transplant coordinator.</li>
+  <li><strong>Schedule follow-up</strong> based on results: immediate review for BAASIS non-adherence or PHQ-9 item 9 positive; 2–4 week follow-up for PHQ-9 ≥ 10 or GAD-7 ≥ 10; routine monitoring otherwise.</li>
+</ol>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use these tools at every post-transplant clinic visit — ideally at 1, 3, 6, and 12 months, then annually — and at any visit where adherence, quality of life, or mental health are clinical concerns. Patient-reported outcome measures (PROMs) detect problems that clinicians miss in standard history-taking: immunosuppressant non-adherence is estimated at 20–36% of kidney transplant recipients globally, yet it remains undetected in the majority of cases without structured assessment. Depression affects 20–25% of transplant recipients; anxiety is even more prevalent.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -439,18 +468,52 @@ html[data-theme="dark"] .tx-actions .tx-btn-primary{background:var(--teal,#1a6b7
 <p>These are screening and monitoring tools, not diagnostic instruments. A high BAASIS non-adherence score does not establish the reason for non-adherence (cost, side effects, cognitive impairment, health beliefs) — the clinical interview does. PHQ-9 and GAD-7 scores require clinical follow-up for diagnostic confirmation. Never withhold organ function workup, medication adjustment, or referral based solely on a score; always integrate with clinical assessment, medication logs, and drug-level monitoring.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why PROMs Matter After Kidney Transplant</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Non-adherence is treatable when detected</h4>
+<p>The majority of non-adherence in transplant patients is unintentional — forgetting (most common), timing errors, and cost-related omission. Once identified with BAASIS, targeted interventions work: pill organizers reduce forgetting-related non-adherence by 30–40%; pharmacy co-payment assistance programs dramatically reduce cost-driven omission; and motivational interviewing reduces volitional non-adherence. Detecting the problem with BAASIS is the prerequisite for fixing it.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Integrate PROMs with drug-level monitoring</h4>
+<p>BAASIS detects self-reported non-adherence; tacrolimus intra-patient variability (IPV) — the standard deviation or coefficient of variation in serial trough levels — detects objective non-adherence that patients may not disclose. Both measures are complementary. A patient who reports perfect adherence on BAASIS but has high tacrolimus IPV warrants gentle, non-accusatory exploration of barriers. High IPV is independently associated with late rejection and reduced allograft survival.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>Depression and corticosteroids — a diagnostic challenge</h4>
+<p>Corticosteroids can cause PHQ-9 item overlap: insomnia, fatigue, appetite changes, and concentration difficulties may be steroid side effects rather than depression. When PHQ-9 scores are elevated, assess whether symptoms appeared with steroid initiation or dose changes. The PHQ-9 "cognitive" items (worthlessness/guilt, concentration on item 7, suicidality on item 9) are less likely to be steroid-driven and are more diagnostically specific for true depressive disorder. Do not attribute all PHQ-9 elevation to steroids without careful assessment.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>PHQ-9 item 9 — never ignore it</h4>
+<p>A score of 1 or higher on PHQ-9 item 9 ("Thoughts that you would be better off dead, or of hurting yourself") must always be addressed before proceeding. The calculator displays the NCMH Crisis Hotline (1553) automatically. Document the response, perform a brief safety assessment, and contact the patient's psychiatry or mental health contact if one exists. Do not defer this to the next scheduled visit. Transplant patients have elevated suicide risk compared to the general population, particularly in the first year post-transplant and during rejection episodes.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Non-adherence to immunosuppressive therapy is the leading modifiable cause of late allograft failure. Every missed dose raises the risk of donor-specific antibody development, subclinical rejection, and ultimately graft loss. Yet patients consistently underreport non-adherence in unstructured clinical interviews — structured instruments such as the BAASIS elicit 3–4 times more disclosures than open questions alone.</p>
 <p>Quality-of-life assessment with the KTQ identifies domains where patients are suffering but have not volunteered concerns: fatigue (the most common post-transplant symptom, affecting up to 60% at 1 year), anxiety about rejection (which drives both over-adherence behaviors and rejection of follow-up), and appearance changes from corticosteroids and calcineurin inhibitors that significantly impair social functioning and self-esteem.</p>
 <p>Mental health outcomes after transplant directly predict adherence, quality of life, and survival. Depression and anxiety are more prevalent in transplant recipients than in the general population and in pre-dialysis CKD patients, yet are diagnosed in fewer than half of affected patients without routine screening. Untreated depression is independently associated with reduced adherence and allograft loss.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Assessment Suite</div>
 <h2>Transplant PROM Suite — BAASIS · KTQ · PHQ-9 · GAD-7</h2>
@@ -550,26 +613,23 @@ html[data-theme="dark"] .tx-actions .tx-btn-primary{background:var(--teal,#1a6b7
 </div>
 </section>
 
-<!-- HOW TO USE -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Step-by-Step Instructions</h2>
-<ol style="margin:0 0 0 20px;padding:0;color:var(--text-mid);font-size:15px;line-height:1.8;">
-  <li style="margin-bottom:12px;"><strong>Optionally fill in the patient demographics</strong> (name, age, sex, date) in the fields at the top — these are used only if you print the report and are never transmitted or stored.</li>
-  <li style="margin-bottom:12px;"><strong>BAASIS (Adherence)</strong>: Ask the patient to think about the past 4 weeks. For each question, select the frequency of non-adherent behavior. Even one "Once" or higher response identifies medication risk. Share the result with the transplant coordinator immediately when significant non-adherence is detected.</li>
-  <li style="margin-bottom:12px;"><strong>KTQ (Quality of Life)</strong>: Ask the patient to rate each item on a 1–7 scale for the past 2 weeks (1 = worst / always, 7 = best / never). Domain scores are expressed 0–100 (higher = better). Domain scores below 50 flag areas needing clinical attention.</li>
-  <li style="margin-bottom:12px;"><strong>PHQ-9 (Depression)</strong>: Patient rates each of the 9 depressive symptom items for the past 2 weeks (0–3). <strong>Item 9 (suicidal ideation)</strong> triggers a crisis hotline alert automatically if answered above zero — address this before proceeding. PHQ-9 ≥ 10 warrants clinical evaluation for major depressive disorder.</li>
-  <li style="margin-bottom:12px;"><strong>GAD-7 (Anxiety)</strong>: Patient rates each of the 7 anxiety symptom items for the past 2 weeks (0–3). GAD-7 ≥ 10 warrants clinical evaluation for generalized anxiety disorder.</li>
-  <li style="margin-bottom:12px;"><strong>Print the report</strong> using the "Print / Save as PDF" button to generate a structured printout for the medical record or to send to the transplant coordinator.</li>
-  <li><strong>Schedule follow-up</strong> based on results: immediate review for BAASIS non-adherence or PHQ-9 item 9 positive; 2–4 week follow-up for PHQ-9 ≥ 10 or GAD-7 ≥ 10; routine monitoring otherwise.</li>
-</ol>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA / SCORING -->
-<section class="section" id="formula">
-<div class="section-tag">Formula &amp; Scoring</div>
-<h2>Scoring Tables &amp; Interpretation Bands</h2>
-
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <h3 style="font-size:17px;margin:28px 0 12px;">BAASIS — Basel Assessment of Adherence with Immunosuppressive Medication Scale</h3>
 <p style="margin-bottom:12px;">Five items covering forgetting, timing errors, drug holidays, dose reduction, and illness-related omission. Each item is rated on a 4-point frequency scale. Adherent = all five items answered "Never." Any non-"Never" response identifies non-adherence on that dimension.</p>
 <div class="table-wrap">
@@ -625,12 +685,7 @@ html[data-theme="dark"] .tx-actions .tx-btn-primary{background:var(--teal,#1a6b7
 </tbody>
 </table>
 </div>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence Base</div>
-<h2>Evidence &amp; Validation References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>All four instruments have published validation data in general medical and transplant-specific populations. Below are the primary sources.</p>
 <ol style="margin:16px 0 0 20px;padding:0;color:var(--text-mid);font-size:14px;line-height:1.8;">
   <li style="margin-bottom:10px;">De Geest S, Borgermans L, Gemoets H, et al. Incidence, determinants, and consequences of subclinical noncompliance with immunosuppressive therapy in renal transplant recipients. <em>Transplantation.</em> 1995;59(3):340–347. [BAASIS development]</li>
@@ -642,41 +697,8 @@ html[data-theme="dark"] .tx-actions .tx-btn-primary{background:var(--teal,#1a6b7
   <li style="margin-bottom:10px;">Drent G, Moons P, De Geest S, et al. Immunosuppressive medication non-adherence in adult liver transplant recipients: a systematic review of prevalence and risk factors. <em>Transpl Int.</em> 2016;29(11):1175–1191.</li>
   <li style="margin-bottom:10px;">Kidney Disease: Improving Global Outcomes (KDIGO) Transplant Work Group. KDIGO clinical practice guideline for the care of kidney transplant recipients. <em>Am J Transplant.</em> 2009;9(Suppl 3):S1–S155.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Non-adherence is treatable when detected</h4>
-<p>The majority of non-adherence in transplant patients is unintentional — forgetting (most common), timing errors, and cost-related omission. Once identified with BAASIS, targeted interventions work: pill organizers reduce forgetting-related non-adherence by 30–40%; pharmacy co-payment assistance programs dramatically reduce cost-driven omission; and motivational interviewing reduces volitional non-adherence. Detecting the problem with BAASIS is the prerequisite for fixing it.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Integrate PROMs with drug-level monitoring</h4>
-<p>BAASIS detects self-reported non-adherence; tacrolimus intra-patient variability (IPV) — the standard deviation or coefficient of variation in serial trough levels — detects objective non-adherence that patients may not disclose. Both measures are complementary. A patient who reports perfect adherence on BAASIS but has high tacrolimus IPV warrants gentle, non-accusatory exploration of barriers. High IPV is independently associated with late rejection and reduced allograft survival.</p>
-</div>
-</div>
-<div class="alert alert-amber">
-<div class="alert-icon">⚠️</div>
-<div class="alert-body">
-<h4>Depression and corticosteroids — a diagnostic challenge</h4>
-<p>Corticosteroids can cause PHQ-9 item overlap: insomnia, fatigue, appetite changes, and concentration difficulties may be steroid side effects rather than depression. When PHQ-9 scores are elevated, assess whether symptoms appeared with steroid initiation or dose changes. The PHQ-9 "cognitive" items (worthlessness/guilt, concentration on item 7, suicidality on item 9) are less likely to be steroid-driven and are more diagnostically specific for true depressive disorder. Do not attribute all PHQ-9 elevation to steroids without careful assessment.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>PHQ-9 item 9 — never ignore it</h4>
-<p>A score of 1 or higher on PHQ-9 item 9 ("Thoughts that you would be better off dead, or of hurting yourself") must always be addressed before proceeding. The calculator displays the NCMH Crisis Hotline (1553) automatically. Document the response, perform a brief safety assessment, and contact the patient's psychiatry or mental health contact if one exists. Do not defer this to the next scheduled visit. Transplant patients have elevated suicide risk compared to the general population, particularly in the first year post-transplant and during rejection episodes.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> These assessment tools are educational aids for clinicians and patients. They do not establish diagnoses of substance use disorder, major depressive disorder, generalized anxiety disorder, or medication non-adherence as a primary diagnosis — all of which require full clinical evaluation. PROM scores should never be the sole basis for withholding transplantation, discontinuing immunosuppression, or making psychiatric diagnoses. Always integrate scores with the clinical history, examination, drug levels, and specialist input.</div>
 

@@ -203,6 +203,24 @@
   "audience": { "@type": "MedicalAudience", "audienceType": "patient" }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -243,21 +261,32 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
-  <a class="nav-pill" href="#when">When to Use</a>
-  <a class="nav-pill" href="#calculator">Calculator</a>
-  <a class="nav-pill" href="#instructions">How to Use</a>
-  <a class="nav-pill" href="#formula">Formula</a>
-  <a class="nav-pill" href="#evidence">Evidence</a>
-  <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#instructions">Instructions</a>
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+  <li>Select <strong>units</strong>: Hybrid (cm + mg/dL), US (inches + mg/dL), or SI/Metric (cm + µmol/L).</li>
+  <li>Select <strong>sex</strong> (male or female) — the CKiD U25 proportionality constant k is sex- and age-specific.</li>
+  <li>Enter <strong>age</strong> in decimal years (e.g., 8.5 for 8 years 6 months). Valid range is 1–25 years.</li>
+  <li>Enter <strong>height</strong> in the chosen unit (cm or inches).</li>
+  <li>Enter <strong>serum creatinine</strong> from the most recent blood draw. For SI input, enter µmol/L — conversion to mg/dL is done automatically.</li>
+  <li>Click <strong>Calculate eGFR</strong>. Results show eGFR(s) in mL/min/1.73 m², KDIGO staging based on CKiD U25, plus age-specific caveats. Use <strong>Reset</strong> to clear inputs.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this calculator to estimate kidney function in children and young adults from age 1 through age 25. The adult CKD-EPI 2021 equation is not validated below age 18 and substantially overestimates GFR in younger children because it does not account for height-dependent tubular creatinine secretion in growing individuals. For patients aged 1–25, use the height-based equations in this tool instead.</p>
 <div class="alert alert-teal">
   <div class="alert-icon">✅</div>
@@ -277,17 +306,44 @@
     <p>Not validated for infants under 1 year; neonatal and early-infant GFR depends on gestational age and postnatal maturation — use age-specific reference ranges. Creatinine-based eGFR is unreliable when muscle mass is atypical for height (severe malnutrition, neuromuscular disease, amputees) — consider cystatin C-based estimation in those cases.</p>
   </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why Height-Based Equations Are Required in Children</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+  <div class="alert-icon">💡</div>
+  <div class="alert-body">
+    <h4>CKiD U25 is preferred for serial monitoring in pediatric CKD</h4>
+    <p>For children and young adults being followed longitudinally for CKD progression, CKiD U25 provides the most consistent results because its age-sex k constant tracks the normal developmental increase in muscle mass. Use the same equation for all serial measurements to avoid apparent GFR changes caused by switching formulas.</p>
+  </div>
+</div>
+<div class="alert alert-teal">
+  <div class="alert-icon">🔬</div>
+  <div class="alert-body">
+    <h4>Age &lt;2 years: interpret cautiously</h4>
+    <p>Renal maturation is incomplete until approximately 24 months of age. An eGFR below 60 mL/min/1.73 m² in a healthy infant may be physiologically normal — interpret only against age-adjusted normative values, not adult KDIGO cut-offs. Measured GFR is preferred whenever precision is critical in this age group.</p>
+  </div>
+</div>
+<div class="alert alert-red">
+  <div class="alert-icon">🚫</div>
+  <div class="alert-body">
+    <h4>Pitfalls</h4>
+    <p>(1) These equations assume creatinine is measured with an enzymatic or IDMS-traceable Jaffe method. Older non-IDMS Jaffe assays may overestimate creatinine by 10–20%, causing the eGFR to be underestimated. (2) Growth failure in children with CKD causes height to lag behind age — this leads to underestimation of GFR because the numerator (height) is smaller than it should be for the patient's age. Add cystatin C estimation for a second opinion. (3) For drug dosing in children, weight-based protocols or measured GFR (iohexol/inulin) are preferred over estimated GFR wherever precision matters.</p>
+  </div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>In adults, serum creatinine generation reflects muscle mass, which scales roughly with body surface area. In children and adolescents, muscle mass also correlates with height — a taller child has more lean muscle and generates more creatinine, so a given serum creatinine has a different GFR implication than in a shorter child of the same age. Using a height-based equation corrects for this, producing accurate estimates even in children with growth failure or precocious development.</p>
 <p>The original Schwartz formula (1976) used a constant of 0.55 derived from inulin clearance data. The 2009 Revised Bedside Schwartz recalibrated this constant to 0.413 using modern iohexol-measured GFR in the CKiD cohort, removing a systematic upward bias in the original equation. The 2021 CKiD U25 extends the validated age range through 25 years by incorporating age- and sex-specific proportionality constants (k) that account for pubertal muscle-mass gains.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Pediatric eGFR — CKiD U25 &amp; Bedside Schwartz</h2>
@@ -333,25 +389,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-  <li>Select <strong>units</strong>: Hybrid (cm + mg/dL), US (inches + mg/dL), or SI/Metric (cm + µmol/L).</li>
-  <li>Select <strong>sex</strong> (male or female) — the CKiD U25 proportionality constant k is sex- and age-specific.</li>
-  <li>Enter <strong>age</strong> in decimal years (e.g., 8.5 for 8 years 6 months). Valid range is 1–25 years.</li>
-  <li>Enter <strong>height</strong> in the chosen unit (cm or inches).</li>
-  <li>Enter <strong>serum creatinine</strong> from the most recent blood draw. For SI input, enter µmol/L — conversion to mg/dL is done automatically.</li>
-  <li>Click <strong>Calculate eGFR</strong>. Results show eGFR(s) in mL/min/1.73 m², KDIGO staging based on CKiD U25, plus age-specific caveats. Use <strong>Reset</strong> to clear inputs.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Equation</th><th>Formula</th><th>Age range</th></tr></thead>
 <tbody>
@@ -365,46 +419,15 @@
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Unit conversion: 1 mg/dL = 88.4 µmol/L; 1 inch = 2.54 cm. The proportionality constant k in CKiD U25 is derived from age- and sex-specific iohexol-measured GFR in 1,731 CKD participants (CKiD cohort, 2004–2020).</p>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The CKiD U25 equation was derived from iohexol-measured GFR in 1,731 participants aged 1–25 with confirmed CKD from the Chronic Kidney Disease in Children (CKiD) cohort. It outperformed the original Schwartz equation (which was based on inulin clearance and used a constant of 0.55) across all age groups in both derivation and external validation. The Revised Bedside Schwartz (2009) remains the standard of care for clinical estimation in children 1–17 because of its simplicity and well-established normative data.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
   <li>Pierce CB, Muñoz A, Ng DK, Warady BA, Furth SL, Schwartz GJ. Age- and sex-dependent clinical equations to estimate glomerular filtration rates in children and young adults with chronic kidney disease. <em>Kidney Int.</em> 2021;99(4):948–956.</li>
   <li>Schwartz GJ, Muñoz A, Schneider MF, et al. New equations to estimate GFR in children with CKD. <em>J Am Soc Nephrol.</em> 2009;20(3):629–637.</li>
   <li>Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. <em>Kidney Int.</em> 2024.</li>
 </ol>
-</section>
-
-<!-- PEARLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-  <div class="alert-icon">💡</div>
-  <div class="alert-body">
-    <h4>CKiD U25 is preferred for serial monitoring in pediatric CKD</h4>
-    <p>For children and young adults being followed longitudinally for CKD progression, CKiD U25 provides the most consistent results because its age-sex k constant tracks the normal developmental increase in muscle mass. Use the same equation for all serial measurements to avoid apparent GFR changes caused by switching formulas.</p>
-  </div>
 </div>
-<div class="alert alert-teal">
-  <div class="alert-icon">🔬</div>
-  <div class="alert-body">
-    <h4>Age &lt;2 years: interpret cautiously</h4>
-    <p>Renal maturation is incomplete until approximately 24 months of age. An eGFR below 60 mL/min/1.73 m² in a healthy infant may be physiologically normal — interpret only against age-adjusted normative values, not adult KDIGO cut-offs. Measured GFR is preferred whenever precision is critical in this age group.</p>
-  </div>
-</div>
-<div class="alert alert-red">
-  <div class="alert-icon">🚫</div>
-  <div class="alert-body">
-    <h4>Pitfalls</h4>
-    <p>(1) These equations assume creatinine is measured with an enzymatic or IDMS-traceable Jaffe method. Older non-IDMS Jaffe assays may overestimate creatinine by 10–20%, causing the eGFR to be underestimated. (2) Growth failure in children with CKD causes height to lag behind age — this leads to underestimation of GFR because the numerator (height) is smaller than it should be for the patient's age. Add cystatin C estimation for a second opinion. (3) For drug dosing in children, weight-based protocols or measured GFR (iohexol/inulin) are preferred over estimated GFR wherever precision matters.</p>
-  </div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized clinical assessment. Pediatric CKD staging, medication dosing, and treatment decisions must be made in consultation with a pediatric nephrologist. eGFR equations provide estimates — a single value does not establish or exclude CKD.</div>
 

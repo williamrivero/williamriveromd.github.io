@@ -1273,6 +1273,24 @@ body.dark .related-card-title {
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -1312,20 +1330,31 @@ body.dark .related-card-title {
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Select the <strong>weight, creatinine, and height units</strong> to match your records. Switching a unit clears that field.</li>
+<li>Enter <strong>age</strong>, select <strong>sex</strong>, and enter the <strong>actual body weight</strong>.</li>
+<li>Enter the <strong>steady-state serum creatinine</strong> — not a value drawn during acute illness or AKI.</li>
+<li>Optionally enter <strong>height</strong> to compute Devine ideal body weight (IBW) and adjusted body weight.</li>
+<li>Choose the <strong>weight to use in the formula</strong> — actual, ideal, or adjusted. In obesity, ideal or adjusted weight is preferred.</li>
+<li>The result shows CrCl in mL/min, the weight used, the IBW, the dosing band, and a recommended action.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use the Cockcroft-Gault equation to estimate creatinine clearance (CrCl) for renal drug dosing. Many drug labels — and most foundational pharmacokinetic studies — express renal dose thresholds in terms of Cockcroft-Gault CrCl in mL/min, not in eGFR. For any renally cleared or narrow-therapeutic-index agent, the prescribing information's renal-dosing table was usually built on this equation, so matching the label means using this calculator.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -1341,16 +1370,43 @@ body.dark .related-card-title {
 <p>Do not use during acute kidney injury or any non-steady state — Cockcroft-Gault assumes stable creatinine. It is not the CKD-staging tool: for staging and the GFR category, use CKD-EPI eGFR. The result is unindexed (mL/min), not normalized to body-surface area, so do not compare it directly to an eGFR in mL/min/1.73 m². Accuracy degrades at extremes of muscle mass, in amputees, and in unstable renal function. Always confirm against the specific drug's prescribing information.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Match the label's equation</h4>
+<p>When a drug label specifies a dose by creatinine clearance, use Cockcroft-Gault — not eGFR. The label's thresholds were almost always derived with this equation, so reproducing it keeps the patient in the dosing band the manufacturer validated.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Choose the right weight</h4>
+<p>Use actual weight for normal-range patients, but switch to ideal or adjusted body weight in obesity, and consider ideal weight in low-weight patients. Using actual weight in obesity overestimates clearance and can push a dose too high; enter height to enable the Devine options.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Do not use during AKI or any unstable creatinine — the estimate assumes steady state. (2) The result is unindexed (mL/min); do not equate it with an eGFR in mL/min/1.73 m². (3) Accuracy falls at extremes of muscle mass and in amputees. (4) This is a dosing tool, not a CKD-staging tool — use CKD-EPI eGFR for staging. Always confirm against the specific drug's prescribing information.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Substituting eGFR for Cockcroft-Gault CrCl can move a patient into the wrong dosing band for drugs such as direct oral anticoagulants, certain antimicrobials, and chemotherapeutics — risking under-dosing (treatment failure) or over-dosing (toxicity). Because the original safety and efficacy thresholds for many agents were defined using Cockcroft-Gault, reproducing the equation the label intended preserves the validated dosing logic. Using ideal or adjusted body weight where appropriate further protects obese and underweight patients from systematic over- or under-estimation of clearance.</p>
-</section>
+</div>
+</details>
 
-<!-- CrCl CALCULATOR (interactive) -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Cockcroft-Gault Creatinine Clearance (CrCl) Calculator — for Drug Dosing</h2>
@@ -1442,25 +1498,23 @@ body.dark .related-card-title {
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Select the <strong>weight, creatinine, and height units</strong> to match your records. Switching a unit clears that field.</li>
-<li>Enter <strong>age</strong>, select <strong>sex</strong>, and enter the <strong>actual body weight</strong>.</li>
-<li>Enter the <strong>steady-state serum creatinine</strong> — not a value drawn during acute illness or AKI.</li>
-<li>Optionally enter <strong>height</strong> to compute Devine ideal body weight (IBW) and adjusted body weight.</li>
-<li>Choose the <strong>weight to use in the formula</strong> — actual, ideal, or adjusted. In obesity, ideal or adjusted weight is preferred.</li>
-<li>The result shows CrCl in mL/min, the weight used, the IBW, the dosing band, and a recommended action.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
 <tbody>
@@ -1482,46 +1536,15 @@ body.dark .related-card-title {
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Cockcroft-Gault CrCl is unindexed (mL/min) and is not normalized to 1.73 m² body-surface area. These bands are general; always check each drug's prescribing information for its specific renal thresholds.</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The Cockcroft-Gault equation was published in 1976 and remains the reference method for renal drug dosing because the pharmacokinetic dose-adjustment studies and regulatory labels for many drugs were built on it. The Devine formulas (1974) provide the ideal body weight used for dosing in obesity. KDIGO and prescribing references note that creatinine-based clearance and indexed eGFR are not interchangeable for dosing decisions.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Cockcroft DW, Gault MH. <em>Prediction of Creatinine Clearance from Serum Creatinine.</em> Nephron. 1976;16(1):31–41.</li>
 <li>Devine BJ. <em>Gentamicin Therapy.</em> Drug Intell Clin Pharm. 1974;8(11):650–655.</li>
 <li>Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. <em>KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.</em> Kidney Int. 2024;105(4S):S117–S314.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Match the label's equation</h4>
-<p>When a drug label specifies a dose by creatinine clearance, use Cockcroft-Gault — not eGFR. The label's thresholds were almost always derived with this equation, so reproducing it keeps the patient in the dosing band the manufacturer validated.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Choose the right weight</h4>
-<p>Use actual weight for normal-range patients, but switch to ideal or adjusted body weight in obesity, and consider ideal weight in low-weight patients. Using actual weight in obesity overestimates clearance and can push a dose too high; enter height to enable the Devine options.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Do not use during AKI or any unstable creatinine — the estimate assumes steady state. (2) The result is unindexed (mL/min); do not equate it with an eGFR in mL/min/1.73 m². (3) Accuracy falls at extremes of muscle mass and in amputees. (4) This is a dosing tool, not a CKD-staging tool — use CKD-EPI eGFR for staging. Always confirm against the specific drug's prescribing information.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for licensed clinicians and does not replace individualized assessment or current prescribing information. Cockcroft-Gault CrCl estimates renal clearance for drug dosing only — it is not the CKD-staging eGFR. Verify every renal dose against the drug's label before prescribing.</div>
 

@@ -1273,6 +1273,24 @@ body.dark .related-card-title {
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -1312,20 +1330,29 @@ body.dark .related-card-title {
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Choose <strong>Conventional</strong> (mg/dL) or <strong>SI</strong> (µmol/L) units to match the laboratory report. Switching units clears the creatinine field.</li>
+<li>Select <strong>biological sex</strong> and enter <strong>age in years</strong>.</li>
+<li>Enter the <strong>steady-state serum creatinine</strong> — not a value drawn during acute illness or rapidly changing kidney function.</li>
+<li>The result updates live: eGFR in mL/min/1.73 m², the CKD GFR category (G1–G5), and a plain-language interpretation with suggested next steps.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool to estimate glomerular filtration rate (eGFR) from a steady-state serum creatinine in any adult being screened for, or followed with, chronic kidney disease. The CKD-EPI 2021 creatinine equation is the race-free standard endorsed by KDIGO and adopted across U.S. and international laboratories. The resulting eGFR — together with albuminuria — defines the KDIGO GFR category (G1–G5) used for staging, drug review, and referral decisions.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -1341,16 +1368,43 @@ body.dark .related-card-title {
 <p>Do not use during acute kidney injury or any non-steady state (creatinine still rising or falling). Creatinine-based eGFR is unreliable at extremes of muscle mass (amputees, bodybuilders, severe sarcopenia, cachexia, paraplegia), in pregnancy, and with high-meat or creatine-supplement intake. For drug dosing that the label specifies by creatinine clearance, use Cockcroft-Gault instead. When precision matters near a decision threshold, confirm with a cystatin C-based estimate (CKD-EPI 2021 creatinine–cystatin C) or measured GFR.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Stage with G and A together</h4>
+<p>An eGFR is only half of a CKD stage. Always pair the GFR category with a urine albumin-to-creatinine ratio (A1–A3); a patient with eGFR 50 and heavy albuminuria has a far worse prognosis than one with the same eGFR and no albuminuria.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Confirm near thresholds with cystatin C</h4>
+<p>When the eGFR sits near a decision point (drug eligibility, transplant listing, GFR 60), the CKD-EPI 2021 creatinine–cystatin C equation is more accurate than creatinine alone and is less affected by muscle mass. KDIGO 2024 suggests confirming with cystatin C when an accurate estimate will change management.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Never apply this equation during AKI or any non-steady state — the estimate lags real GFR. (2) Extremes of muscle mass distort creatinine-based eGFR: it overestimates GFR in cachexia and amputees and underestimates it in muscular individuals. (3) Do not use eGFR for drug doses the label specifies by creatinine clearance — use Cockcroft-Gault. (4) The equation is not validated in pregnancy or in children.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Serum creatinine alone is a poor index of kidney function because it varies with age, sex, and muscle mass. The CKD-EPI 2021 equation converts creatinine into an estimated GFR standardized to 1.73 m² of body-surface area, allowing consistent staging and comparison over time. Removing the race coefficient eliminated a source of systematic bias that previously assigned higher eGFR values to Black patients, which could delay specialist referral and transplant evaluation. A reliable eGFR underpins CKD staging, complication screening, contrast and drug safety, and the decision of when to plan kidney replacement therapy.</p>
-</section>
+</div>
+</details>
 
-<!-- eGFR CALCULATOR (interactive) -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>eGFR Calculator — CKD-EPI 2021 (race-free)</h2>
@@ -1405,23 +1459,23 @@ body.dark .related-card-title {
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Choose <strong>Conventional</strong> (mg/dL) or <strong>SI</strong> (µmol/L) units to match the laboratory report. Switching units clears the creatinine field.</li>
-<li>Select <strong>biological sex</strong> and enter <strong>age in years</strong>.</li>
-<li>Enter the <strong>steady-state serum creatinine</strong> — not a value drawn during acute illness or rapidly changing kidney function.</li>
-<li>The result updates live: eGFR in mL/min/1.73 m², the CKD GFR category (G1–G5), and a plain-language interpretation with suggested next steps.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <p>The CKD-EPI 2021 creatinine equation has the general form <strong>eGFR = 142 × min(Scr/κ, 1)<sup>α</sup> × max(Scr/κ, 1)<sup>−1.200</sup> × 0.9938<sup>Age</sup> × 1.012 [if female]</strong>, where Scr is serum creatinine in mg/dL.</p>
 <table class="lab-table">
 <thead><tr><th>Term</th><th>Value</th></tr></thead>
@@ -1446,12 +1500,7 @@ body.dark .related-card-title {
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The 2021 equation contains no race coefficient. GFR category alone does not equal CKD stage — KDIGO staging combines the GFR (G) category with the albuminuria (A1–A3) category and requires chronicity (&gt;3 months).</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The CKD-EPI 2021 creatinine equation was developed and validated by Inker and colleagues to estimate GFR without a race variable, and is the equation recommended by the KDIGO 2024 CKD guideline and a joint NKF–ASN task force for U.S. laboratories. It refits the 2009 CKD-EPI model on pooled development cohorts, removing the Black-race coefficient while preserving accuracy.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Inker LA, Eneanya ND, Coresh J, et al. <em>New Creatinine- and Cystatin C–Based Equations to Estimate GFR without Race.</em> N Engl J Med. 2021;385(19):1737–1749.</li>
@@ -1459,34 +1508,8 @@ body.dark .related-card-title {
 <li>Delgado C, Baweja M, Crews DC, et al. <em>A Unifying Approach for GFR Estimation: Recommendations of the NKF-ASN Task Force on Reassessing the Inclusion of Race in Diagnosing Kidney Disease.</em> Am J Kidney Dis. 2022;79(2):268–288.</li>
 <li>Levey AS, Stevens LA, Schmid CH, et al. <em>A New Equation to Estimate Glomerular Filtration Rate (CKD-EPI).</em> Ann Intern Med. 2009;150(9):604–612.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Stage with G and A together</h4>
-<p>An eGFR is only half of a CKD stage. Always pair the GFR category with a urine albumin-to-creatinine ratio (A1–A3); a patient with eGFR 50 and heavy albuminuria has a far worse prognosis than one with the same eGFR and no albuminuria.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Confirm near thresholds with cystatin C</h4>
-<p>When the eGFR sits near a decision point (drug eligibility, transplant listing, GFR 60), the CKD-EPI 2021 creatinine–cystatin C equation is more accurate than creatinine alone and is less affected by muscle mass. KDIGO 2024 suggests confirming with cystatin C when an accurate estimate will change management.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Never apply this equation during AKI or any non-steady state — the estimate lags real GFR. (2) Extremes of muscle mass distort creatinine-based eGFR: it overestimates GFR in cachexia and amputees and underestimates it in muscular individuals. (3) Do not use eGFR for drug doses the label specifies by creatinine clearance — use Cockcroft-Gault. (4) The equation is not validated in pregnancy or in children.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for clinicians and patients and does not replace individualized assessment. eGFR is an estimate; CKD diagnosis and staging require chronicity, albuminuria, and clinical correlation. Do not make treatment, dosing, or referral decisions on a single eGFR value without physician interpretation.</div>
 

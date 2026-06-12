@@ -216,6 +216,24 @@
   "audience": { "@type": "MedicalAudience", "audienceType": "patient" }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -256,21 +274,31 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
-  <a class="nav-pill" href="#when">When to Use</a>
-  <a class="nav-pill" href="#calculator">Calculator</a>
-  <a class="nav-pill" href="#instructions">How to Use</a>
-  <a class="nav-pill" href="#formula">Formula</a>
-  <a class="nav-pill" href="#evidence">Evidence</a>
-  <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#instructions">Instructions</a>
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+  <li>Select <strong>creatinine units</strong> (mg/dL or µmol/L) to match your lab report. Switching units clears the creatinine field.</li>
+  <li>Enter the patient's <strong>age</strong> in whole years (18–110) and select <strong>sex</strong>. Race is not required.</li>
+  <li>Enter <strong>serum creatinine</strong> from the most recent blood draw.</li>
+  <li>Enter <strong>cystatin C</strong> in mg/L. Normal range is approximately 0.5–1.0 mg/L; values above 1.0 suggest reduced GFR.</li>
+  <li>Results update automatically: combined eGFR (mL/min/1.73 m²), KDIGO CKD stage, a plain-language interpretation, and a stage-specific action recommendation.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use the CKD-EPI 2021 creatinine–cystatin C equation whenever you need the most accurate eGFR from routine bloodwork in an adult (age ≥18). Combining two independent filtration markers substantially reduces the error that affects each marker alone. This calculator is particularly valuable when creatinine-only eGFR is suspected to be unreliable.</p>
 <div class="alert alert-teal">
   <div class="alert-icon">✅</div>
@@ -292,18 +320,45 @@
     <p>Do not apply in acute kidney injury (AKI) — both creatinine and cystatin C lag behind rapidly changing GFR and will systematically underestimate true function. Do not use in children under 18; use the CKiD U25 equation for ages 1–25 instead. A single eGFR value, no matter how accurate, cannot establish CKD — KDIGO requires evidence of structural or functional abnormality persisting for more than three months.</p>
   </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why the Combined Equation Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+  <div class="alert-icon">💡</div>
+  <div class="alert-body">
+    <h4>Use the combined equation when creatinine is unreliable</h4>
+    <p>When muscle mass deviates significantly from average — sarcopenic elderly, amputees, bodybuilders, or patients with neuromuscular disease — the combined creatinine + cystatin C eGFR is substantially more accurate than creatinine alone. Adding cystatin C to the workup costs little and eliminates much of the ambiguity in borderline GFR estimates.</p>
+  </div>
+</div>
+<div class="alert alert-teal">
+  <div class="alert-icon">🔬</div>
+  <div class="alert-body">
+    <h4>Cystatin C can be elevated for non-renal reasons</h4>
+    <p>High-dose corticosteroids increase cystatin C production independently of GFR, causing the equation to overestimate renal impairment. Hyperthyroidism also raises cystatin C. When a patient is on systemic steroids or has thyroid disease, interpret the combined eGFR cautiously and consider measured GFR if precision matters.</p>
+  </div>
+</div>
+<div class="alert alert-red">
+  <div class="alert-icon">🚫</div>
+  <div class="alert-body">
+    <h4>Pitfalls</h4>
+    <p>(1) Neither creatinine nor cystatin C tracks acute changes in GFR quickly — both lag by 24–48 hours during AKI or rapid recovery. In AKI, use clinical judgement and serial trends, not eGFR equations. (2) A single eGFR, however accurate, cannot establish CKD — KDIGO requires abnormalities to persist for more than 3 months. (3) Cystatin C assays must be calibrated to the international IFCC reference material (ERM-DA471/IFCC) for the 2021 equation to apply; older assays may produce systematically different values.</p>
+  </div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Creatinine is generated by muscle breakdown at a fairly constant rate, making it a reasonable filtration marker in average adults. However, its production varies widely with muscle mass, dietary protein, and certain medications — so creatinine alone can overestimate GFR in highly muscular individuals and underestimate it in the sarcopenic or malnourished.</p>
 <p>Cystatin C is produced at a constant rate by all nucleated cells regardless of muscle mass, making it a more reliable filtration marker in extremes of body composition. Its main limitation is that its production is elevated by corticosteroids, thyroid dysfunction, and malignancy — factors that can cause it to overestimate renal impairment.</p>
 <p>The CKD-EPI 2021 combined equation exploits the strengths of both markers while partially canceling out each one's weaknesses. In the NEJM 2021 derivation and validation study, the combined equation had a mean bias of approximately 0 mL/min/1.73 m² and the tightest P30 accuracy (percentage of estimates within 30% of measured GFR) of any equation tested — outperforming creatinine alone and cystatin C alone across all race groups when race was not included as a variable.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>eGFR — CKD-EPI 2021 Creatinine–Cystatin C</h2>
@@ -362,24 +417,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-  <li>Select <strong>creatinine units</strong> (mg/dL or µmol/L) to match your lab report. Switching units clears the creatinine field.</li>
-  <li>Enter the patient's <strong>age</strong> in whole years (18–110) and select <strong>sex</strong>. Race is not required.</li>
-  <li>Enter <strong>serum creatinine</strong> from the most recent blood draw.</li>
-  <li>Enter <strong>cystatin C</strong> in mg/L. Normal range is approximately 0.5–1.0 mg/L; values above 1.0 suggest reduced GFR.</li>
-  <li>Results update automatically: combined eGFR (mL/min/1.73 m²), KDIGO CKD stage, a plain-language interpretation, and a stage-specific action recommendation.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <p>The CKD-EPI 2021 creatinine–cystatin C equation (race-free) is:</p>
 <table class="lab-table">
 <thead><tr><th>Component</th><th>Value / Expression</th></tr></thead>
@@ -404,12 +458,7 @@
   <tr><td>G5</td><td>&lt;15</td><td>Kidney failure</td></tr>
 </tbody>
 </table>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The CKD-EPI 2021 creatinine–cystatin C equation was derived and validated in a pooled analysis of 12 studies involving 5,017 participants with measured GFR. The combined equation achieved the highest overall accuracy (P30 = 85–91%) across subgroups defined by race, sex, age, and diabetes status — outperforming both single-marker equations. The 2021 update removed race as a variable following evidence that the race coefficient reflected structural inequity in health-care access rather than a true biological difference in creatinine generation.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
   <li>Inker LA, Eneanya ND, Coresh J, et al. New Creatinine- and Cystatin C–Based Equations to Estimate GFR without Race. <em>N Engl J Med.</em> 2021;385(19):1737–1749.</li>
@@ -417,34 +466,8 @@
   <li>Levey AS, Stevens LA, Schmid CH, et al. A new equation to estimate glomerular filtration rate. <em>Ann Intern Med.</em> 2009;150(9):604–612. [Original CKD-EPI creatinine equation]</li>
   <li>Grubb A, Blirup-Jensen S, Lindstrom V, et al. First certified reference material for cystatin C in human serum. <em>Clin Chem Lab Med.</em> 2010;48(11):1619–1621.</li>
 </ol>
-</section>
-
-<!-- PEARLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-  <div class="alert-icon">💡</div>
-  <div class="alert-body">
-    <h4>Use the combined equation when creatinine is unreliable</h4>
-    <p>When muscle mass deviates significantly from average — sarcopenic elderly, amputees, bodybuilders, or patients with neuromuscular disease — the combined creatinine + cystatin C eGFR is substantially more accurate than creatinine alone. Adding cystatin C to the workup costs little and eliminates much of the ambiguity in borderline GFR estimates.</p>
-  </div>
 </div>
-<div class="alert alert-teal">
-  <div class="alert-icon">🔬</div>
-  <div class="alert-body">
-    <h4>Cystatin C can be elevated for non-renal reasons</h4>
-    <p>High-dose corticosteroids increase cystatin C production independently of GFR, causing the equation to overestimate renal impairment. Hyperthyroidism also raises cystatin C. When a patient is on systemic steroids or has thyroid disease, interpret the combined eGFR cautiously and consider measured GFR if precision matters.</p>
-  </div>
-</div>
-<div class="alert alert-red">
-  <div class="alert-icon">🚫</div>
-  <div class="alert-body">
-    <h4>Pitfalls</h4>
-    <p>(1) Neither creatinine nor cystatin C tracks acute changes in GFR quickly — both lag by 24–48 hours during AKI or rapid recovery. In AKI, use clinical judgement and serial trends, not eGFR equations. (2) A single eGFR, however accurate, cannot establish CKD — KDIGO requires abnormalities to persist for more than 3 months. (3) Cystatin C assays must be calibrated to the international IFCC reference material (ERM-DA471/IFCC) for the 2021 equation to apply; older assays may produce systematically different values.</p>
-  </div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized clinical assessment. eGFR is an estimate, not a measured value. CKD staging, treatment decisions, and medication dosing adjustments must be made in consultation with a qualified physician or nephrologist.</div>
 

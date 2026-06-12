@@ -1581,6 +1581,24 @@ html[data-theme="dark"] .guide-footer{background:#141c2a;border-color:#2a3548;}
   body.physician-mode .mode-patient{display:none!important;}
 }
 </style>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <script>/* pre-paint physician-mode restore — class applied before first paint, zero CLS.
@@ -1627,12 +1645,12 @@ try{if(localStorage.getItem('wgmr-dpx-mode')==='physician'){document.body.classL
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
@@ -1641,10 +1659,20 @@ try{if(localStorage.getItem('wgmr-dpx-mode')==='physician'){document.body.classL
 ════════════════════════════════════════════════ -->
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use These Calculators</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li><strong>Residual kidney function:</strong> enter the measured 24-hour urine volume (mL) and press Check for an interpretation band and protective advice. A formal residual GFR still requires a timed urine collection.</li>
+<li><strong>spKt/V, URR &amp; eKt/V:</strong> enter pre- and post-dialysis BUN, session duration (hours), ultrafiltration volume (L), and post-dialysis weight (kg). Calculate returns URR, single-pool Kt/V (Daugirdas), and equilibrated Kt/V, each with a target badge.</li>
+<li><strong>UFR limit:</strong> enter pre-dialysis weight, dry/target weight, and session hours to get the ultrafiltration rate and the maximum UF volumes that keep UFR ≤ 10 and ≤ 13 mL/h/kg.</li>
+<li><strong>nPCR:</strong> enter the current pre-BUN, the <em>previous</em> session's post-BUN, post-dialysis weight, sex, interdialytic weight gain, and interdialytic interval (2 or 3 days) for the normalized protein catabolic rate.</li>
+<li><strong>PD weekly Kt/V:</strong> enter the 24-hour dialysate volume and BUN, the paired serum BUN, body weight, sex, and residual urea clearance (Kru, 0 if anuric) to get dialysate, renal, and total weekly Kt/V.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted. Verify against your dialysis software before changing any prescription.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>This is a grouped toolset for dialysis prescription work. Use it to estimate residual kidney function (RKF) from a 24-hour urine volume, to compute hemodialysis adequacy (single-pool and equilibrated Kt/V plus URR) and the ultrafiltration-rate (UFR) limit, to derive the normalized protein catabolic rate (nPCR) as a marker of protein intake, and to calculate peritoneal dialysis weekly Kt/V. Together they cover the core numbers reviewed when writing or adjusting an HD or PD prescription.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -1660,16 +1688,43 @@ try{if(localStorage.getItem('wgmr-dpx-mode')==='physician'){document.body.classL
 <p>Single-pool Kt/V overestimates the equilibrated dose; the nPCR two-session method assumes a steady metabolic state and accurate BUN sampling. The RKF urine-volume bands are an educational guide — a formal residual GFR requires a timed urine collection with serum/urine urea and creatinine. Verify every result against your dialysis software before changing a prescription, and interpret in the full clinical context (fluid status, nutrition, comorbidity).</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Time is the most powerful lever</h4>
+<p>When Kt/V is below target, extending session time is usually the most reliable fix and simultaneously lowers the ultrafiltration rate. Each additional 30 minutes meaningfully improves clearance and reduces UFR by roughly 10–15% — often a better first move than chasing higher blood-flow rates alone.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Protect residual kidney function</h4>
+<p>Even a few hundred milliliters of urine per day adds clearance, eases fluid and potassium control, and can justify incremental dialysis. Preserve it by avoiding NSAIDs, aminoglycosides, and iodinated contrast, by controlling blood pressure, and by avoiding repeated intradialytic hypotension from aggressive ultrafiltration.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Single-pool Kt/V overestimates the true equilibrated dose because of urea rebound — use eKt/V when judging borderline adequacy. (2) nPCR is invalid if the previous session's post-BUN is mistimed or the patient is not in a steady metabolic state. (3) The PD calculation requires a complete 24-hour dialysate collection paired with a same-day serum BUN; an incomplete drain underestimates Kt/V. (4) These tools assume accurate, correctly timed BUN sampling — always verify results against your dialysis software before changing a prescription.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Dialysis dose, ultrafiltration rate, protein nutrition, and residual kidney function each independently influence how a dialysis patient feels and survives. Under-dosing (low Kt/V) raises mortality; an excessive ultrafiltration rate (&gt; 13 mL/h/kg) is linked to intradialytic hypotension and cardiovascular death; a low nPCR signals inadequate protein intake or hypercatabolism; and preserved residual kidney function contributes meaningful clearance that can justify incremental dialysis. Quantifying all of these from routine labs turns a prescription review into a series of explicit, target-anchored decisions rather than guesswork.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR GROUP (all five widgets, verbatim) -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tools</div>
 <h2>Dialysis Prescription Calculators</h2>
@@ -1958,24 +2013,23 @@ try{if(localStorage.getItem('wgmr-dpx-mode')==='physician'){document.body.classL
     </script>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li><strong>Residual kidney function:</strong> enter the measured 24-hour urine volume (mL) and press Check for an interpretation band and protective advice. A formal residual GFR still requires a timed urine collection.</li>
-<li><strong>spKt/V, URR &amp; eKt/V:</strong> enter pre- and post-dialysis BUN, session duration (hours), ultrafiltration volume (L), and post-dialysis weight (kg). Calculate returns URR, single-pool Kt/V (Daugirdas), and equilibrated Kt/V, each with a target badge.</li>
-<li><strong>UFR limit:</strong> enter pre-dialysis weight, dry/target weight, and session hours to get the ultrafiltration rate and the maximum UF volumes that keep UFR ≤ 10 and ≤ 13 mL/h/kg.</li>
-<li><strong>nPCR:</strong> enter the current pre-BUN, the <em>previous</em> session's post-BUN, post-dialysis weight, sex, interdialytic weight gain, and interdialytic interval (2 or 3 days) for the normalized protein catabolic rate.</li>
-<li><strong>PD weekly Kt/V:</strong> enter the 24-hour dialysate volume and BUN, the paired serum BUN, body weight, sex, and residual urea clearance (Kru, 0 if anuric) to get dialysate, renal, and total weekly Kt/V.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted. Verify against your dialysis software before changing any prescription.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
 <tbody>
@@ -2003,12 +2057,7 @@ try{if(localStorage.getItem('wgmr-dpx-mode')==='physician'){document.body.classL
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The spKt/V equation is the Daugirdas second-generation formula; eKt/V uses the rate-adjustment approximation that accounts for post-dialysis urea rebound. nPCR uses the two-session (Depner–Daugirdas) urea-kinetic approach. PD weekly Kt/V follows the standard dialysate/serum urea-clearance method with a residual renal term.</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The HD adequacy formulae are the Daugirdas second-generation spKt/V and the KDOQI rate equation for eKt/V; dose targets and the UFR ceiling come from the KDOQI 2015 Hemodialysis Adequacy update, with the UFR–mortality association from observational dialysis cohorts. nPCR is derived from urea-kinetic modeling (Depner, Daugirdas). PD weekly Kt/V targets follow the ISPD adequacy guidance.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Daugirdas JT. <em>Second generation logarithmic estimates of single-pool variable volume Kt/V: an analysis of error.</em> J Am Soc Nephrol. 1993;4(5):1205–1213.</li>
@@ -2018,34 +2067,8 @@ try{if(localStorage.getItem('wgmr-dpx-mode')==='physician'){document.body.classL
 <li>Flythe JE, Kimmel SE, Brunelli SM. <em>Rapid fluid removal during dialysis is associated with cardiovascular morbidity and mortality.</em> Kidney Int. 2011;79(2):250–257.</li>
 <li>Watson PE, Watson ID, Batt RD. <em>Total body water volumes for adult males and females estimated from simple anthropometric measurements.</em> Am J Clin Nutr. 1980;33(1):27–39.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Time is the most powerful lever</h4>
-<p>When Kt/V is below target, extending session time is usually the most reliable fix and simultaneously lowers the ultrafiltration rate. Each additional 30 minutes meaningfully improves clearance and reduces UFR by roughly 10–15% — often a better first move than chasing higher blood-flow rates alone.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Protect residual kidney function</h4>
-<p>Even a few hundred milliliters of urine per day adds clearance, eases fluid and potassium control, and can justify incremental dialysis. Preserve it by avoiding NSAIDs, aminoglycosides, and iodinated contrast, by controlling blood pressure, and by avoiding repeated intradialytic hypotension from aggressive ultrafiltration.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Single-pool Kt/V overestimates the true equilibrated dose because of urea rebound — use eKt/V when judging borderline adequacy. (2) nPCR is invalid if the previous session's post-BUN is mistimed or the patient is not in a steady metabolic state. (3) The PD calculation requires a complete 24-hour dialysate collection paired with a same-day serum BUN; an incomplete drain underestimates Kt/V. (4) These tools assume accurate, correctly timed BUN sampling — always verify results against your dialysis software before changing a prescription.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> These calculators are an educational aid for clinicians and patients and do not replace individualized assessment or dialysis-unit software. Prescription changes depend on the full clinical picture — fluid status, nutrition, comorbidity, access, and serial trends. Do not start, stop, or adjust any dialysis prescription based on a single result without the responsible nephrologist's review.</div>
 

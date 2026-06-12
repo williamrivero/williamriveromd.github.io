@@ -675,6 +675,24 @@ html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field s
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -715,21 +733,31 @@ html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field s
 
 <nav class="nav-strip">
 <div class="nav-pills">
-<a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
 <a class="nav-pill" href="#instructions">Instructions</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
+<a class="nav-pill" href="#when">When to Use</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.85;">
+  <li style="margin-bottom:12px;"><strong>Identify the clinical phase.</strong> Select the phase that best describes the patient's current status. If transitioning between phases (e.g., BP just starting to drop), choose the more severe phase for conservatism.</li>
+  <li style="margin-bottom:12px;"><strong>Enter the most recent serum creatinine</strong> in mg/dL. If the patient's creatinine has been rising over the past 6–12 hours, use the current value rather than a prior result.</li>
+  <li style="margin-bottom:12px;"><strong>Enter the platelet count</strong> (×10³/µL, i.e., thousands per microliter). A falling platelet trend is more concerning than a single value — note the trajectory in your clinical assessment.</li>
+  <li style="margin-bottom:12px;"><strong>Select urine output category.</strong> Use the average over the preceding 4–6 hours if continuous bladder monitoring is in place; otherwise use clinical judgment from the most recent void history.</li>
+  <li style="margin-bottom:12px;"><strong>Press "Calculate"</strong> to generate the severity tier, dialysis risk category, a plain-language management recommendation, and a list of phase-specific clinical flags. All computation is performed locally — no data is transmitted.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">Recalculate at each clinical reassessment or when any parameter changes significantly. The score should inform — not replace — nephrology consultation.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool at admission and at least once daily for any patient with confirmed or suspected hantavirus infection admitted with fever, back pain, and oliguria — particularly those with a history of rodent exposure in an endemic area. The score integrates the six strongest clinical predictors of dialysis requirement and ICU-level deterioration in HFRS to produce a structured severity tier and actionable recommendations.</p>
 <div class="alert alert-teal">
   <div class="alert-icon">✅</div>
@@ -745,18 +773,45 @@ html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field s
     <p>This scoring system is a clinical decision-support aid, not a standalone triage protocol. Do not use it as the sole determinant to withhold or initiate dialysis. The score does not replace serial clinical assessment, nephrology consultation, or individualized judgment. Scores should be recalculated with each clinical change — HFRS can deteriorate within hours. The tool does not account for all causes of AKI; ensure alternative diagnoses (leptospirosis, dengue, sepsis-related AKI) are excluded or co-managed.</p>
   </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY IT MATTERS -->
-<section class="section" id="why">
-<div class="section-tag">Why It Matters</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+  <div class="alert-icon">💡</div>
+  <div class="alert-body">
+    <h4>HFRS is biphasic — oliguric phase peaks at day 3–7</h4>
+    <p>The oliguric phase of HFRS typically begins on day 3–6 of illness and lasts 3–7 days. This is when creatinine peaks, platelet nadir occurs, and dialysis is most often required. A patient who presents in the febrile phase with a score of 1–2 may deteriorate rapidly to a critical score within 24–48 hours. Serial scoring every 12 hours during the first week is essential.</p>
+  </div>
+</div>
+<div class="alert alert-teal">
+  <div class="alert-icon">🔬</div>
+  <div class="alert-body">
+    <h4>Pre-existing CKD dramatically worsens prognosis</h4>
+    <p>Patients with Stage 3–5 CKD who acquire HFRS have significantly higher rates of permanent dialysis dependence after recovery (estimated 25–40% vs. &lt;5% in those without pre-existing CKD). Lower your threshold for early CRRT, hold all nephrotoxins on admission, and begin family counseling regarding long-term renal prognosis early in the hospitalization — not after the patient has already deteriorated to critical severity.</p>
+  </div>
+</div>
+<div class="alert alert-red">
+  <div class="alert-icon">🚫</div>
+  <div class="alert-body">
+    <h4>Pitfall: do not mistake diuretic-phase polyuria for recovery</h4>
+    <p>The diuretic phase (Phase 4) can produce urine outputs of 3–10 liters per day. This is not a sign of renal recovery — it reflects tubular dysfunction with massive free-water and electrolyte losses. Failing to replace these losses aggressively causes severe hypokalemia, hyponatremia, and hypovolemia, which can worsen AKI and precipitate cardiac arrhythmias. Monitor electrolytes every 6–8 hours during the diuretic phase, replace losses volume-for-volume, and maintain strict daily weight monitoring.</p>
+  </div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Hantavirus HFRS is the most common rodent-borne viral hemorrhagic fever globally, causing an estimated 150,000–200,000 cases per year across Asia, Europe, and the Americas. Renal involvement is universal and is the primary determinant of mortality and long-term morbidity. Up to 30–40% of hospitalized HFRS patients require some form of renal replacement therapy during the oliguric phase, with case fatality rates of 1–15% depending on hantavirus species and baseline patient factors.</p>
 <p>Pre-existing CKD dramatically worsens the renal prognosis of HFRS. Patients with CKD Stage 3–5 who develop HFRS face non-recovery rates of 25–40% — meaning nearly one in three may progress to permanent dialysis dependence after the acute illness. Early recognition of severity, timely nephrology involvement, and proactive preparation for renal replacement therapy are the modifiable factors that most improve outcomes.</p>
 <p>This calculator standardizes six bedside parameters into a single severity tier (Mild / Moderate / Severe / Critical) to prompt consistent, evidence-aligned escalation decisions across clinical settings where hantavirus expertise may be limited.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>HFRS Severity &amp; Dialysis Risk Scorer</h2>
@@ -819,24 +874,23 @@ html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field s
     </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.85;">
-  <li style="margin-bottom:12px;"><strong>Identify the clinical phase.</strong> Select the phase that best describes the patient's current status. If transitioning between phases (e.g., BP just starting to drop), choose the more severe phase for conservatism.</li>
-  <li style="margin-bottom:12px;"><strong>Enter the most recent serum creatinine</strong> in mg/dL. If the patient's creatinine has been rising over the past 6–12 hours, use the current value rather than a prior result.</li>
-  <li style="margin-bottom:12px;"><strong>Enter the platelet count</strong> (×10³/µL, i.e., thousands per microliter). A falling platelet trend is more concerning than a single value — note the trajectory in your clinical assessment.</li>
-  <li style="margin-bottom:12px;"><strong>Select urine output category.</strong> Use the average over the preceding 4–6 hours if continuous bladder monitoring is in place; otherwise use clinical judgment from the most recent void history.</li>
-  <li style="margin-bottom:12px;"><strong>Press "Calculate"</strong> to generate the severity tier, dialysis risk category, a plain-language management recommendation, and a list of phase-specific clinical flags. All computation is performed locally — no data is transmitted.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">Recalculate at each clinical reassessment or when any parameter changes significantly. The score should inform — not replace — nephrology consultation.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Scoring System</div>
-<h2>Scoring Formula &amp; Severity Bands</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <p>Each of the six clinical parameters contributes a weighted point value to a cumulative severity score. Points from all six domains are summed to determine the overall severity tier. The weights reflect the relative prognostic impact of each variable as reported in observational HFRS cohort studies and expert consensus.</p>
 
 <h3 style="margin-top:28px;margin-bottom:14px;">Point Assignments by Variable</h3>
@@ -891,12 +945,7 @@ html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field s
   </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Score thresholds and point weights are derived from observational HFRS cohort data and expert clinical consensus. They are not derived from a prospectively validated prediction rule and should be interpreted as structured clinical decision support, not a definitive prognostic instrument.</p>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The scoring variables and clinical thresholds in this tool are grounded in the following key references on hantavirus epidemiology, HFRS clinical course, and AKI outcomes. The HFRS severity framework aligns with WHO case definitions and published Chinese and European clinical series describing the natural history of oliguric and hemorrhagic complications.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
   <li>Jonsson CB, Figueiredo LT, Vapalahti O. A global perspective on hantavirus ecology, epidemiology, and disease. <em>Clin Microbiol Rev.</em> 2010;23(2):412–441.</li>
@@ -904,34 +953,8 @@ html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field s
   <li>Zhang YZ, Zou Y, Fu ZF, Plyusnin A. Hantavirus infections in humans and animals, China. <em>Emerg Infect Dis.</em> 2010;16(8):1195–1203.</li>
   <li>World Health Organization. Hantavirus Disease Outbreaks Notice (DON 600/601). 2026. Available at: <a href="https://www.who.int" target="_blank" rel="noopener" style="color:var(--teal);">www.who.int</a></li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-  <div class="alert-icon">💡</div>
-  <div class="alert-body">
-    <h4>HFRS is biphasic — oliguric phase peaks at day 3–7</h4>
-    <p>The oliguric phase of HFRS typically begins on day 3–6 of illness and lasts 3–7 days. This is when creatinine peaks, platelet nadir occurs, and dialysis is most often required. A patient who presents in the febrile phase with a score of 1–2 may deteriorate rapidly to a critical score within 24–48 hours. Serial scoring every 12 hours during the first week is essential.</p>
-  </div>
 </div>
-<div class="alert alert-teal">
-  <div class="alert-icon">🔬</div>
-  <div class="alert-body">
-    <h4>Pre-existing CKD dramatically worsens prognosis</h4>
-    <p>Patients with Stage 3–5 CKD who acquire HFRS have significantly higher rates of permanent dialysis dependence after recovery (estimated 25–40% vs. &lt;5% in those without pre-existing CKD). Lower your threshold for early CRRT, hold all nephrotoxins on admission, and begin family counseling regarding long-term renal prognosis early in the hospitalization — not after the patient has already deteriorated to critical severity.</p>
-  </div>
-</div>
-<div class="alert alert-red">
-  <div class="alert-icon">🚫</div>
-  <div class="alert-body">
-    <h4>Pitfall: do not mistake diuretic-phase polyuria for recovery</h4>
-    <p>The diuretic phase (Phase 4) can produce urine outputs of 3–10 liters per day. This is not a sign of renal recovery — it reflects tubular dysfunction with massive free-water and electrolyte losses. Failing to replace these losses aggressively causes severe hypokalemia, hyponatremia, and hypovolemia, which can worsen AKI and precipitate cardiac arrhythmias. Monitor electrolytes every 6–8 hours during the diuretic phase, replace losses volume-for-volume, and maintain strict daily weight monitoring.</p>
-  </div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is a clinical decision-support tool intended for use by trained healthcare professionals. It does not replace individualized assessment, nephrology consultation, or clinical judgment. HFRS management depends on the full clinical picture, local laboratory capabilities, and serial trends. Do not initiate or withhold dialysis, ribavirin, or ICU admission based on a calculator score alone without specialist input.</div>
 

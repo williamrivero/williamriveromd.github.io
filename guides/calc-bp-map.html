@@ -195,6 +195,24 @@
   "inLanguage": "en-PH"
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -235,21 +253,31 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Enter your <strong>systolic BP</strong> (upper number) and <strong>diastolic BP</strong> (lower number) in mmHg. Use the average of 2–3 readings taken while seated and rested for at least 5 minutes.</li>
+<li>Select your <strong>CKD or clinical profile</strong> — this determines the evidence-based BP target that applies to you.</li>
+<li>Select the <strong>number of BP medications</strong> you are currently taking — this shapes the therapeutic recommendation.</li>
+<li>Results update automatically: MAP, pulse pressure, your profile-specific BP target, and a plain-language assessment with recommended next steps.</li>
+<li>For home monitoring: measure every morning before medications and before breakfast, in the same arm, for at least 5–7 days. Bring your log to every clinic appointment.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool when reviewing a blood pressure reading in any patient with CKD, diabetes, hypertension, or post-kidney transplant status. It computes mean arterial pressure (MAP) and pulse pressure from a single BP pair, then maps the result to the correct KDIGO 2024 target for the patient's clinical profile.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -265,16 +293,52 @@
 <p>A single BP reading is insufficient for treatment decisions — BP is inherently variable. Do not use this calculator to start or stop antihypertensive therapy without physician evaluation. White-coat hypertension (elevated in clinic, normal at home) and masked hypertension (normal in clinic, elevated at home) are common in CKD and require 24-hour ambulatory BP monitoring for confirmation. If the result shows hypertensive crisis (SBP ≥180 or DBP ≥120), seek immediate medical attention.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Home BP is more reliable than office BP in CKD</h4>
+<p>White-coat effect inflates office readings by 10–15 mmHg in up to 30% of CKD patients. KDIGO 2021 prioritizes standardized office BP (average of two readings on two separate visits) and recommends home BP monitoring to guide treatment. A systolic home BP average &gt;135 mmHg is the home-equivalent of office &gt;140 mmHg.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Sodium restriction amplifies every antihypertensive drug</h4>
+<p>Dietary sodium &gt;2 g/day blunts the effect of ACE inhibitors, ARBs, and even diuretics. In CKD, sodium restriction is not optional — it is pharmacological. Every 1 g/day reduction in sodium intake lowers BP by approximately 3–5 mmHg systolic and reduces proteinuria independently.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>Wide pulse pressure in CKD: do not ignore it</h4>
+<p>Pulse pressure &gt;60 mmHg signals vascular stiffness and calcification — common in dialysis patients and those with long-standing CKD. Even with controlled mean BP, a high pulse pressure is an independent predictor of cardiovascular events. Correcting mineral metabolism (phosphorus, PTH, vitamin D) is the only modifiable driver of vascular calcification in CKD.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">💊</div>
+<div class="alert-body">
+<h4>First-line agents for CKD with proteinuria</h4>
+<p>ACE inhibitors and ARBs are the preferred agents when UACR ≥30 mg/g — they lower intraglomerular pressure beyond their systemic BP effect, reducing proteinuria by 30–50%. Do not combine an ACE inhibitor with an ARB (dual RAAS blockade increases AKI and hyperkalemia risk without additional benefit, per ONTARGET). Monitor serum creatinine and potassium 1–2 weeks after starting or dose-escalating a RAAS blocker.</p>
+</div>
+</div>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized medical assessment. Antihypertensive therapy in CKD requires consideration of eGFR, proteinuria trend, electrolytes, comorbidities, and serial BP measurements. Do not start, stop, or adjust medications based on a single calculation without consulting your physician.</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Hypertension accelerates CKD progression through two mechanisms: systemic hypertension damages the glomerular capillaries directly, and high intraglomerular pressure (worsened by a high MAP) drives proteinuria and podocyte injury independent of systemic BP. For every 10 mmHg reduction in systolic BP, the rate of GFR decline slows by approximately 30% in proteinuric CKD. The pulse pressure — the arithmetic difference between systolic and diastolic — reflects arterial stiffness; a wide pulse pressure (&gt;60 mmHg) in CKD signals vascular calcification driven by disordered calcium-phosphorus metabolism and predicts cardiovascular mortality independently of mean BP. Knowing both MAP and pulse pressure from a single reading allows a more complete cardiovascular risk assessment than systolic BP alone.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Blood Pressure Calculator — MAP, Pulse Pressure &amp; CKD Target Checker</h2>
@@ -344,24 +408,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Enter your <strong>systolic BP</strong> (upper number) and <strong>diastolic BP</strong> (lower number) in mmHg. Use the average of 2–3 readings taken while seated and rested for at least 5 minutes.</li>
-<li>Select your <strong>CKD or clinical profile</strong> — this determines the evidence-based BP target that applies to you.</li>
-<li>Select the <strong>number of BP medications</strong> you are currently taking — this shapes the therapeutic recommendation.</li>
-<li>Results update automatically: MAP, pulse pressure, your profile-specific BP target, and a plain-language assessment with recommended next steps.</li>
-<li>For home monitoring: measure every morning before medications and before breakfast, in the same arm, for at least 5–7 days. Bring your log to every clinic appointment.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
 <tbody>
@@ -382,54 +445,16 @@
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">MAP target: generally &lt;100 mmHg; MAP 70–100 mmHg ensures adequate organ perfusion while limiting glomerular hypertension. The MAP formula shown uses the standard clinical approximation; the exact formula integrates the arterial waveform but gives numerically similar results at normal heart rates.</p>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The BP targets in this calculator follow two landmark guidelines. The KDIGO 2021 Guideline for the Management of Blood Pressure in CKD, which synthesized over 130 randomized trials, provided the first CKD-specific framework distinguishing proteinuric from non-proteinuric patients and explicitly set a &lt;120 mmHg systolic target for eligible individuals following SPRINT data. The 2017 ACC/AHA Hypertension Guideline established the general framework and the universal &lt;130/80 mmHg goal for patients with CKD, diabetes, or established cardiovascular disease.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>KDIGO 2021 Clinical Practice Guideline for the Management of Blood Pressure in Chronic Kidney Disease. <em>Kidney International.</em> 2021;99(3S):S1–S87.</li>
 <li>Whelton PK, Carey RM, Aronow WS, et al. 2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults. <em>Hypertension.</em> 2018;71(6):e13–e115.</li>
 </ol>
-</section>
-
-<!-- PEARLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Home BP is more reliable than office BP in CKD</h4>
-<p>White-coat effect inflates office readings by 10–15 mmHg in up to 30% of CKD patients. KDIGO 2021 prioritizes standardized office BP (average of two readings on two separate visits) and recommends home BP monitoring to guide treatment. A systolic home BP average &gt;135 mmHg is the home-equivalent of office &gt;140 mmHg.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Sodium restriction amplifies every antihypertensive drug</h4>
-<p>Dietary sodium &gt;2 g/day blunts the effect of ACE inhibitors, ARBs, and even diuretics. In CKD, sodium restriction is not optional — it is pharmacological. Every 1 g/day reduction in sodium intake lowers BP by approximately 3–5 mmHg systolic and reduces proteinuria independently.</p>
-</div>
-</div>
-<div class="alert alert-amber">
-<div class="alert-icon">⚠️</div>
-<div class="alert-body">
-<h4>Wide pulse pressure in CKD: do not ignore it</h4>
-<p>Pulse pressure &gt;60 mmHg signals vascular stiffness and calcification — common in dialysis patients and those with long-standing CKD. Even with controlled mean BP, a high pulse pressure is an independent predictor of cardiovascular events. Correcting mineral metabolism (phosphorus, PTH, vitamin D) is the only modifiable driver of vascular calcification in CKD.</p>
-</div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">💊</div>
-<div class="alert-body">
-<h4>First-line agents for CKD with proteinuria</h4>
-<p>ACE inhibitors and ARBs are the preferred agents when UACR ≥30 mg/g — they lower intraglomerular pressure beyond their systemic BP effect, reducing proteinuria by 30–50%. Do not combine an ACE inhibitor with an ARB (dual RAAS blockade increases AKI and hyperkalemia risk without additional benefit, per ONTARGET). Monitor serum creatinine and potassium 1–2 weeks after starting or dose-escalating a RAAS blocker.</p>
-</div>
-</div>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized medical assessment. Antihypertensive therapy in CKD requires consideration of eGFR, proteinuria trend, electrolytes, comorbidities, and serial BP measurements. Do not start, stop, or adjust medications based on a single calculation without consulting your physician.</div>
-</section>
 
 </main>
 

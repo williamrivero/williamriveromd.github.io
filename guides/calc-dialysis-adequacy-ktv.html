@@ -1294,6 +1294,24 @@ html[data-theme="dark"] .prom-pi-field input,html[data-theme="dark"] .prom-pi-fi
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <script>/* pre-paint physician-mode restore — class applied before first paint, zero CLS.
@@ -1340,21 +1358,31 @@ try{if(localStorage.getItem('wgmr-mode-adequacy')==='physician'){document.body.c
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Choose <strong>Conventional</strong> (BUN mg/dL) or <strong>SI</strong> (urea mmol/L) units to match your lab report. The Kt/V ratio is unit-independent; switching units clears the BUN fields.</li>
+<li>Enter the <strong>pre-dialysis BUN</strong> (drawn from the arterial line before the pump starts) and the <strong>post-dialysis BUN</strong> (drawn within ~30 seconds of stopping, before rinse-back, using a slow-flow or stop-pump technique) from the <em>same</em> session.</li>
+<li>Enter the <strong>session duration</strong> in minutes, the <strong>ultrafiltration volume</strong> in liters (usually pre-weight minus post-weight), and the <strong>post-dialysis weight</strong> in kilograms.</li>
+<li>Select <strong>biological sex</strong> so total body water (V) can be estimated (Watson-style coefficient: 0.60 × weight for males, 0.55 × weight for females).</li>
+<li>Results update live: spKt/V, URR, estimated V, and UFR, each with a colored target badge plus a plain-language verdict and recommended action.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool to quantify the delivered dose of a single hemodialysis session. It computes single-pool Kt/V (spKt/V) by the Daugirdas second-generation equation, the urea reduction ratio (URR), an estimate of total body water (V), and the ultrafiltration rate (UFR). It is the calculation done at every monthly adequacy review and whenever a patient feels under-dialyzed.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -1370,16 +1398,43 @@ try{if(localStorage.getItem('wgmr-mode-adequacy')==='physician'){document.body.c
 <p>The single-pool Kt/V overestimates the true (equilibrated) dose because of post-dialysis urea rebound, and it does not apply to peritoneal dialysis (PD uses a weekly Kt/V from dialysate and urine collection). The post-BUN must be drawn correctly — a sample taken after rinse-back, recirculation, or with the pump slowed will falsely inflate Kt/V. Kt/V is one dimension of adequacy; fluid status, nutrition, and symptoms matter too.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Draw the post-BUN correctly</h4>
+<p>The single biggest source of a falsely high Kt/V is a mis-timed post-dialysis sample. Use a slow-flow (≈100 mL/min for 15 s) or stop-pump technique and draw immediately at the end of treatment, before saline rinse-back, to avoid dilution and access recirculation artifacts.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Kt/V is size-normalized — V matters</h4>
+<p>Because Kt/V divides clearance by total body water, a small patient reaches target with a shorter or slower session than a large patient at identical machine settings. When Kt/V is low, increasing time, blood-flow rate (Qb), or dialyzer surface area — or addressing access recirculation — usually raises it more reliably than any single change.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Single-pool Kt/V overestimates the true equilibrated dose by ~0.2 due to urea rebound — a borderline spKt/V of 1.2 may be inadequate. (2) URR ignores ultrafiltration and is less precise than Kt/V; trust the Kt/V when they disagree. (3) This calculator does not apply to peritoneal dialysis, which uses a weekly Kt/V from a 24-hour dialysate and urine collection. (4) A high UFR (&gt; 13 mL/h/kg) is a hemodynamic red flag even when Kt/V is excellent.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Under-dialysis is independently associated with higher mortality, worse uremic symptoms, and poorer quality of life. Kt/V expresses the cleared volume of urea (K×t) relative to the urea distribution volume (V), giving a normalized, body-size-adjusted dose that can be compared to a guideline target (spKt/V ≥ 1.4 for thrice-weekly HD). URR is a simpler, less precise companion metric. Because total body water — and therefore V — scales with weight and sex, the same machine settings deliver a very different dose in a large versus a small patient; computing V makes that explicit. A high ultrafiltration rate (UFR), meanwhile, flags hemodynamic risk independent of solute clearance.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR (verbatim from source) -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Dialysis Adequacy Calculator — spKt/V &amp; URR</h2>
@@ -1461,24 +1516,23 @@ try{if(localStorage.getItem('wgmr-mode-adequacy')==='physician'){document.body.c
   </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Choose <strong>Conventional</strong> (BUN mg/dL) or <strong>SI</strong> (urea mmol/L) units to match your lab report. The Kt/V ratio is unit-independent; switching units clears the BUN fields.</li>
-<li>Enter the <strong>pre-dialysis BUN</strong> (drawn from the arterial line before the pump starts) and the <strong>post-dialysis BUN</strong> (drawn within ~30 seconds of stopping, before rinse-back, using a slow-flow or stop-pump technique) from the <em>same</em> session.</li>
-<li>Enter the <strong>session duration</strong> in minutes, the <strong>ultrafiltration volume</strong> in liters (usually pre-weight minus post-weight), and the <strong>post-dialysis weight</strong> in kilograms.</li>
-<li>Select <strong>biological sex</strong> so total body water (V) can be estimated (Watson-style coefficient: 0.60 × weight for males, 0.55 × weight for females).</li>
-<li>Results update live: spKt/V, URR, estimated V, and UFR, each with a colored target badge plus a plain-language verdict and recommended action.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
 <tbody>
@@ -1499,12 +1553,7 @@ try{if(localStorage.getItem('wgmr-mode-adequacy')==='physician'){document.body.c
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The Daugirdas second-generation logarithmic equation is the KDOQI/KDIGO-endorsed bedside estimate of single-pool variable-volume Kt/V. The (4 − 3.5 × R) × UF/V term accounts for convective urea removal during ultrafiltration. Single-pool Kt/V overestimates the equilibrated Kt/V by roughly 0.2 because of urea rebound; UFR thresholds derive from observational dialysis-cohort data.</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The spKt/V equation is the Daugirdas second-generation formula (1993), adopted as the standard bedside method by KDOQI and KDIGO. The minimum spKt/V ≥ 1.2 and target ≥ 1.4 for thrice-weekly hemodialysis come from the KDOQI 2015 Hemodialysis Adequacy update, informed by the HEMO Study, which found no survival benefit from a dose above this threshold. URR ≥ 65% is the corresponding historical CMS/KDOQI benchmark.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Daugirdas JT. <em>Second generation logarithmic estimates of single-pool variable volume Kt/V: an analysis of error.</em> J Am Soc Nephrol. 1993;4(5):1205–1213.</li>
@@ -1513,34 +1562,8 @@ try{if(localStorage.getItem('wgmr-mode-adequacy')==='physician'){document.body.c
 <li>Watson PE, Watson ID, Batt RD. <em>Total body water volumes for adult males and females estimated from simple anthropometric measurements.</em> Am J Clin Nutr. 1980;33(1):27–39.</li>
 <li>Flythe JE, Kimmel SE, Brunelli SM. <em>Rapid fluid removal during dialysis is associated with cardiovascular morbidity and mortality.</em> Kidney Int. 2011;79(2):250–257.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Draw the post-BUN correctly</h4>
-<p>The single biggest source of a falsely high Kt/V is a mis-timed post-dialysis sample. Use a slow-flow (≈100 mL/min for 15 s) or stop-pump technique and draw immediately at the end of treatment, before saline rinse-back, to avoid dilution and access recirculation artifacts.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Kt/V is size-normalized — V matters</h4>
-<p>Because Kt/V divides clearance by total body water, a small patient reaches target with a shorter or slower session than a large patient at identical machine settings. When Kt/V is low, increasing time, blood-flow rate (Qb), or dialyzer surface area — or addressing access recirculation — usually raises it more reliably than any single change.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Single-pool Kt/V overestimates the true equilibrated dose by ~0.2 due to urea rebound — a borderline spKt/V of 1.2 may be inadequate. (2) URR ignores ultrafiltration and is less precise than Kt/V; trust the Kt/V when they disagree. (3) This calculator does not apply to peritoneal dialysis, which uses a weekly Kt/V from a 24-hour dialysate and urine collection. (4) A high UFR (&gt; 13 mL/h/kg) is a hemodynamic red flag even when Kt/V is excellent.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for clinicians and patients and does not replace individualized assessment by your dialysis team. A single Kt/V or URR is interpreted alongside fluid status, nutrition, symptoms, and serial trends. Do not change your dialysis prescription based on one result without consulting your nephrologist.</div>
 

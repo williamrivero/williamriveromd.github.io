@@ -196,6 +196,24 @@
   "inLanguage": "en-PH"
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -236,21 +254,31 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin-left:20px;color:var(--text-mid);line-height:2;">
+  <li><strong>Measure resting heart rate:</strong> Sit quietly for 5 minutes. Count your pulse at the wrist or neck for 60 full seconds first thing in the morning, before standing or taking medications. Alternatively use a validated wearable device's resting HR average. Normal range: 60–100 bpm; values 40–60 are common in fit or older patients.</li>
+  <li><strong>Enter your age:</strong> The calculator uses the classic Tanaka/220-minus-age formula for estimated maximum heart rate (MHR). Both formulas have standard errors of ±10–12 bpm, so treat zones as guidelines, not hard ceilings.</li>
+  <li><strong>Select your CKD stage or dialysis status:</strong> This determines whether the hard zone is flagged as unsafe and adjusts the target zone recommendation in the output.</li>
+  <li><strong>Enter body weight in kilograms:</strong> Used only for the 30-minute calorie burn estimates. Dry weight (post-dialysis weight for HD patients) is preferred.</li>
+  <li><strong>Read your zones:</strong> Train so your heart rate stays within the light (40–55% HRR) or moderate (55–70% HRR) zone for most sessions. Use the Rate of Perceived Exertion (RPE) check: at the right intensity, you should be able to speak in short sentences but not sing.</li>
+  <li><strong>Use the calorie table:</strong> Estimates assume 30 continuous minutes at your body weight. Actual burn depends on fitness level, terrain, and interruptions.</li>
+</ol>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool to personalize exercise intensity targets for any adult with CKD, including patients on hemodialysis (HD), peritoneal dialysis (PD), or post-kidney transplant. The Karvonen formula uses both maximum heart rate and resting heart rate — accounting for individual cardiovascular fitness in a way that simple percentage-of-maximum-heart-rate formulas cannot. The calculator also estimates calorie burn for six activities commonly accessible in the Philippines using published MET (Metabolic Equivalent of Task) values.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -266,18 +294,65 @@
 <p>Patients with CKD Stage 4–5 or on dialysis should obtain physician clearance before starting any new exercise program. Stop exercise immediately if you experience chest pain, severe shortness of breath, dizziness, muscle cramps, or if your heart rate exceeds the hard zone ceiling. Do not exercise on dialysis days after the session due to post-dialysis hemodynamic instability.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why Personalized Zones Matter in CKD</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>The RPE check is your real-time safety gauge</h4>
+<p>Heart rate monitors can lag or error at high intensities. Train your patients to use the talk test: at the right intensity (RPE 11–14 on the 6–20 Borg scale), they should be able to speak a sentence but not sing. This correlates with 55–70% HRR regardless of HR monitor accuracy.</p>
+</div>
+</div>
+
+<div class="alert alert-teal">
+<div class="alert-icon">🏃</div>
+<div class="alert-body">
+<h4>Intradialytic exercise is safe and effective for HD patients</h4>
+<p>Exercising during the first 2 hours of the hemodialysis session leverages the cardiovascular stimulation of dialysis and actually improves dialysis adequacy (Kt/V). Post-session exercise is not recommended due to post-dialysis fatigue and hemodynamic instability. Stationary cycling on the dialysis bed is the most practical option in Philippine dialysis centers.</p>
+</div>
+</div>
+
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>Resting tachycardia in dialysis patients inflates the zones</h4>
+<p>Patients on HD often have resting HRs of 90–100 bpm due to anemia, residual fluid overload, or autonomic dysfunction. A resting HR of 100 bpm makes the Karvonen light zone appear at a very high absolute HR — but the formula still correctly captures the 40–55% of available aerobic reserve. Address anemia and optimize dry weight before prescribing exercise to ensure accurate zone calculations.</p>
+</div>
+</div>
+
+<div class="alert alert-teal">
+<div class="alert-icon">💊</div>
+<div class="alert-body">
+<h4>Beta-blockers blunt the heart rate response</h4>
+<p>Patients on beta-blockers (carvedilol, metoprolol, bisoprolol — common in CKD for hypertension, heart failure, or arrhythmia management) will not reach their Karvonen-calculated zones at the same perceived effort. For these patients, rely primarily on RPE rather than absolute HR. The Karvonen output remains valid as an upper safety ceiling (avoid exceeding the hard zone) but should not be used as the target to hit.</p>
+</div>
+</div>
+
+<div class="alert alert-green">
+<div class="alert-icon">📈</div>
+<div class="alert-body">
+<h4>Reassess zones every 2–3 months as fitness improves</h4>
+<p>As aerobic fitness improves, the resting heart rate falls — a 5–10 bpm reduction is expected after 3 months of consistent moderate training. This lowers the resting HR input, which widens the heart-rate reserve and increases the absolute BPM in each zone. Re-run the calculator quarterly and adjust the prescription accordingly.</p>
+</div>
+</div>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized medical assessment. Exercise prescription in CKD requires physician clearance, particularly for patients with CKD Stage 4–5, active dialysis, recent cardiovascular events, poorly controlled blood pressure, or severe anemia. Do not exceed the calculated moderate zone without explicit physician guidance. Stop exercise and seek medical attention for chest pain, severe dyspnea, dizziness, syncope, or sustained arrhythmia.</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Physical inactivity is one of the strongest independent predictors of mortality in CKD. Regular aerobic exercise at moderate intensity improves peak oxygen consumption (VO2 peak), reduces fatigue, lowers blood pressure, improves insulin sensitivity, and slows the rate of GFR decline in pre-dialysis CKD. Yet most CKD patients exercise well below their achievable capacity — often because they lack specific, personalized targets.</p>
 <p>The simple formula "target HR = 220 − age × intensity%" consistently underestimates safe training intensity in individuals with a low resting heart rate (well-trained or autonomically affected) and overestimates it in those with resting tachycardia (common in advanced CKD and dialysis due to anemia, fluid overload, and autonomic neuropathy). The Karvonen method corrects for this by using the heart-rate reserve — the difference between maximum and resting HR — as the working range, anchoring intensity relative to where the patient starts rather than an age-only population average.</p>
 <p>For dialysis patients, the maximum safe intensity is typically the light-to-moderate zone (40–70% heart-rate reserve). The hard zone (&gt;70% HRR) is not recommended for HD and PD patients — cardiac arrhythmia risk and hemodynamic instability are substantially elevated at high intensities in end-stage renal disease, particularly on dialysis days.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Exercise Calculator — Target Heart Rate Zones &amp; Energy Expenditure</h2>
@@ -346,25 +421,23 @@
 </div>
 </section>
 
-<!-- HOW TO USE -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Step-by-Step Instructions</h2>
-<ol style="margin-left:20px;color:var(--text-mid);line-height:2;">
-  <li><strong>Measure resting heart rate:</strong> Sit quietly for 5 minutes. Count your pulse at the wrist or neck for 60 full seconds first thing in the morning, before standing or taking medications. Alternatively use a validated wearable device's resting HR average. Normal range: 60–100 bpm; values 40–60 are common in fit or older patients.</li>
-  <li><strong>Enter your age:</strong> The calculator uses the classic Tanaka/220-minus-age formula for estimated maximum heart rate (MHR). Both formulas have standard errors of ±10–12 bpm, so treat zones as guidelines, not hard ceilings.</li>
-  <li><strong>Select your CKD stage or dialysis status:</strong> This determines whether the hard zone is flagged as unsafe and adjusts the target zone recommendation in the output.</li>
-  <li><strong>Enter body weight in kilograms:</strong> Used only for the 30-minute calorie burn estimates. Dry weight (post-dialysis weight for HD patients) is preferred.</li>
-  <li><strong>Read your zones:</strong> Train so your heart rate stays within the light (40–55% HRR) or moderate (55–70% HRR) zone for most sessions. Use the Rate of Perceived Exertion (RPE) check: at the right intensity, you should be able to speak in short sentences but not sing.</li>
-  <li><strong>Use the calorie table:</strong> Estimates assume 30 continuous minutes at your body weight. Actual burn depends on fitness level, terrain, and interruptions.</li>
-</ol>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>The Karvonen Formula — Step by Step</h2>
-
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
   <thead><tr><th>Step</th><th>Calculation</th><th>Notes</th></tr></thead>
   <tbody>
@@ -388,66 +461,16 @@
     <tr><td>Resistance bands</td><td>3.0</td><td>Light resistance training; 2× per week recommended</td></tr>
   </tbody>
 </table>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence Base</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The Karvonen heart-rate reserve method was validated for aerobic exercise prescription in a landmark Finnish study published in 1957 and has since become the basis for personalized exercise intensity prescription in clinical cardiology and nephrology. The American College of Sports Medicine (ACSM) guidelines endorse the HRR method for intensity prescription across all clinical populations, including those with cardiovascular comorbidities. Multiple randomized controlled trials — including the EXERCISE trial and systematic reviews in the Cochrane database — demonstrate that moderate-intensity exercise 3–5 times per week improves VO2 peak, quality of life, and blood pressure in CKD Stage 3–5 and dialysis patients, with no increase in adverse events when appropriate screening is performed.</p>
 <ol style="margin-left:20px;color:var(--text-mid);line-height:2.2;">
   <li>Karvonen MJ, Kentala E, Mustala O. The effects of training on heart rate: a longitudinal study. <em>Ann Med Exp Biol Fenn.</em> 1957;35(3):307–315.</li>
   <li>American College of Sports Medicine. <em>ACSM's Guidelines for Exercise Testing and Prescription.</em> 11th ed. Philadelphia: Wolters Kluwer; 2022.</li>
 </ol>
-</section>
-
-<!-- PEARLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Clinical Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls for Exercise in CKD</h2>
-
-<div class="alert alert-green">
-<div class="alert-icon">✅</div>
-<div class="alert-body">
-<h4>The RPE check is your real-time safety gauge</h4>
-<p>Heart rate monitors can lag or error at high intensities. Train your patients to use the talk test: at the right intensity (RPE 11–14 on the 6–20 Borg scale), they should be able to speak a sentence but not sing. This correlates with 55–70% HRR regardless of HR monitor accuracy.</p>
 </div>
-</div>
-
-<div class="alert alert-teal">
-<div class="alert-icon">🏃</div>
-<div class="alert-body">
-<h4>Intradialytic exercise is safe and effective for HD patients</h4>
-<p>Exercising during the first 2 hours of the hemodialysis session leverages the cardiovascular stimulation of dialysis and actually improves dialysis adequacy (Kt/V). Post-session exercise is not recommended due to post-dialysis fatigue and hemodynamic instability. Stationary cycling on the dialysis bed is the most practical option in Philippine dialysis centers.</p>
-</div>
-</div>
-
-<div class="alert alert-amber">
-<div class="alert-icon">⚠️</div>
-<div class="alert-body">
-<h4>Resting tachycardia in dialysis patients inflates the zones</h4>
-<p>Patients on HD often have resting HRs of 90–100 bpm due to anemia, residual fluid overload, or autonomic dysfunction. A resting HR of 100 bpm makes the Karvonen light zone appear at a very high absolute HR — but the formula still correctly captures the 40–55% of available aerobic reserve. Address anemia and optimize dry weight before prescribing exercise to ensure accurate zone calculations.</p>
-</div>
-</div>
-
-<div class="alert alert-teal">
-<div class="alert-icon">💊</div>
-<div class="alert-body">
-<h4>Beta-blockers blunt the heart rate response</h4>
-<p>Patients on beta-blockers (carvedilol, metoprolol, bisoprolol — common in CKD for hypertension, heart failure, or arrhythmia management) will not reach their Karvonen-calculated zones at the same perceived effort. For these patients, rely primarily on RPE rather than absolute HR. The Karvonen output remains valid as an upper safety ceiling (avoid exceeding the hard zone) but should not be used as the target to hit.</p>
-</div>
-</div>
-
-<div class="alert alert-green">
-<div class="alert-icon">📈</div>
-<div class="alert-body">
-<h4>Reassess zones every 2–3 months as fitness improves</h4>
-<p>As aerobic fitness improves, the resting heart rate falls — a 5–10 bpm reduction is expected after 3 months of consistent moderate training. This lowers the resting HR input, which widens the heart-rate reserve and increases the absolute BPM in each zone. Re-run the calculator quarterly and adjust the prescription accordingly.</p>
-</div>
-</div>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized medical assessment. Exercise prescription in CKD requires physician clearance, particularly for patients with CKD Stage 4–5, active dialysis, recent cardiovascular events, poorly controlled blood pressure, or severe anemia. Do not exceed the calculated moderate zone without explicit physician guidance. Stop exercise and seek medical attention for chest pain, severe dyspnea, dizziness, syncope, or sustained arrhythmia.</div>
-</section>
 
 </main>
 

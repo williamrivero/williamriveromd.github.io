@@ -1363,6 +1363,24 @@ html[data-theme="dark"] .an-actions .an-btn-primary{background:var(--teal,#1a6b7
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -1403,20 +1421,29 @@ html[data-theme="dark"] .an-actions .an-btn-primary{background:var(--teal,#1a6b7
 </section>
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Choose <strong>Conventional (µg/dL)</strong> or <strong>SI (µmol/L)</strong> units to match your iron panel report.</li>
+<li>Enter <strong>serum iron</strong>, <strong>TIBC</strong>, and <strong>ferritin</strong> from the same draw.</li>
+<li>Select the patient's <strong>dialysis status</strong> — TSAT and ferritin targets differ between hemodialysis, peritoneal dialysis, and non-dialysis CKD.</li>
+<li>Results update live: calculated TSAT, the ferritin value, and an iron-status classification (absolute deficiency, functional/iron-restricted deficiency, or iron-replete) — each with a colored badge and a plain-language interpretation and suggested action.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool when interpreting an iron panel in a patient with CKD-related anemia — to compute transferrin saturation from serum iron and TIBC and to decide whether the picture is absolute iron deficiency, functional (iron-restricted) deficiency, or iron repletion. It is the calculation that precedes nearly every decision about oral iron, intravenous iron, or whether iron must be optimized before escalating an erythropoiesis-stimulating agent.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -1432,16 +1459,43 @@ html[data-theme="dark"] .an-actions .an-btn-primary{background:var(--teal,#1a6b7
 <p>Ferritin is an acute-phase reactant — infection, inflammation, or malignancy can raise it independently of true iron stores, so a "normal" ferritin does not exclude deficiency during active inflammation. Serum iron and TSAT vary with recent iron intake, time of day, and fasting state; draw fasting and interpret trends, not single values. Do not give intravenous iron during active bacteremia. This is an educational aid, not a substitute for physician assessment.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Read TSAT and ferritin together</h4>
+<p>A low TSAT with a normal or high ferritin is the classic CKD picture of functional (iron-restricted) erythropoiesis — iron stores exist but cannot be mobilized fast enough. Such patients may still respond to iron, and iron should usually be optimized before escalating an ESA.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Iron before ESA escalation</h4>
+<p>When hemoglobin is below target, correct iron deficiency first: it is cheaper, safer, and often raises hemoglobin or lowers the ESA dose needed. In hemodialysis, intravenous iron is generally preferred over oral because gut absorption is poor and ongoing losses are high.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Ferritin is an acute-phase reactant — a "reassuring" value during infection or inflammation can mask true deficiency. (2) Do not give intravenous iron during active bacteremia. (3) Withhold iron when TSAT &gt; 50% or ferritin &gt; 500 ng/mL to avoid iron overload. (4) Serum iron and TSAT fluctuate with recent intake and time of day — draw fasting and follow the trend rather than acting on one value.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Iron deficiency is the most common and most correctable cause of anemia and of resistance to erythropoiesis-stimulating agents in CKD. Because the kidneys' anemia is often "iron-restricted" — adequate stores that cannot be mobilized fast enough for erythropoiesis — TSAT and ferritin must be read together: a low TSAT with normal or high ferritin signals functional deficiency that may still respond to iron, while a low TSAT with low ferritin signals absolute deficiency. Getting this classification right avoids both untreated deficiency and unnecessary iron loading, and ensures ESA dosing is not escalated when the real problem is iron.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR (copied verbatim from anemia-management.html) -->
 <section class="section" id="calculator">
 <div class="section-tag"><span data-lang="en">08 · Interactive Tool</span><span data-lang="tl" class="lang-hidden">08 · Interactive na Kagamitan</span><span data-lang="ceb" class="lang-hidden">08 · Interactive nga Himan</span>
       <span data-lang="kap" class="lang-hidden">08 · Interactive a Kagamitan</span></div>
@@ -1509,23 +1563,23 @@ html[data-theme="dark"] .an-actions .an-btn-primary{background:var(--teal,#1a6b7
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Choose <strong>Conventional (µg/dL)</strong> or <strong>SI (µmol/L)</strong> units to match your iron panel report.</li>
-<li>Enter <strong>serum iron</strong>, <strong>TIBC</strong>, and <strong>ferritin</strong> from the same draw.</li>
-<li>Select the patient's <strong>dialysis status</strong> — TSAT and ferritin targets differ between hemodialysis, peritoneal dialysis, and non-dialysis CKD.</li>
-<li>Results update live: calculated TSAT, the ferritin value, and an iron-status classification (absolute deficiency, functional/iron-restricted deficiency, or iron-replete) — each with a colored badge and a plain-language interpretation and suggested action.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
 <tbody>
@@ -1545,44 +1599,13 @@ html[data-theme="dark"] .an-actions .an-btn-primary{background:var(--teal,#1a6b7
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">A 2-week trial of IV iron is reasonable in adult CKD anemia when TSAT ≤ 30% and ferritin ≤ 500 ng/mL if an increase in hemoglobin or a decrease in ESA dose is desired. Ferritin should be interpreted in the context of inflammation (e.g., CRP), as it is an acute-phase reactant.</p>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The TSAT and ferritin thresholds and the iron-trial framing follow the KDIGO Clinical Practice Guideline for Anemia in CKD, which sets out when a trial of iron is appropriate and the TSAT/ferritin ceilings above which intravenous iron is generally withheld.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group. <em>KDIGO Clinical Practice Guideline for Anemia in Chronic Kidney Disease.</em> Kidney Int Suppl. 2012;2(4):279–335.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Read TSAT and ferritin together</h4>
-<p>A low TSAT with a normal or high ferritin is the classic CKD picture of functional (iron-restricted) erythropoiesis — iron stores exist but cannot be mobilized fast enough. Such patients may still respond to iron, and iron should usually be optimized before escalating an ESA.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Iron before ESA escalation</h4>
-<p>When hemoglobin is below target, correct iron deficiency first: it is cheaper, safer, and often raises hemoglobin or lowers the ESA dose needed. In hemodialysis, intravenous iron is generally preferred over oral because gut absorption is poor and ongoing losses are high.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Ferritin is an acute-phase reactant — a "reassuring" value during infection or inflammation can mask true deficiency. (2) Do not give intravenous iron during active bacteremia. (3) Withhold iron when TSAT &gt; 50% or ferritin &gt; 500 ng/mL to avoid iron overload. (4) Serum iron and TSAT fluctuate with recent intake and time of day — draw fasting and follow the trend rather than acting on one value.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for clinicians and patients and does not replace individualized assessment. Iron and ESA decisions in CKD depend on hemoglobin trend, inflammation, infection status, and the full clinical picture. Do not start, stop, or adjust iron therapy based on a single result without consulting your nephrologist.</div>
 

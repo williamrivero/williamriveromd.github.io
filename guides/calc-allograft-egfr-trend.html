@@ -572,6 +572,24 @@
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -612,21 +630,31 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 0 1.2em;line-height:2;">
+  <li>Obtain two eGFR results from your transplant follow-up labs — ideally at least 6 months apart and both from stable periods (not during rejection or infection).</li>
+  <li>Enter the earlier eGFR value and its exact date, then the more recent eGFR value and its date.</li>
+  <li>If you have an even newer eGFR that was not part of the paired measurement (e.g., a value from last week), enter it in the "Current eGFR" field — the calculator will use that as your starting point for projecting time to target.</li>
+  <li>Select the target eGFR threshold you want to project toward. The 15 mL/min ESKD threshold is the most common clinical endpoint; 20 mL/min is used for re-listing planning.</li>
+  <li>Click <strong>Calculate eGFR Trend</strong>. Review the GFR slope, projected time to target, and the "if decline slowed 30%" scenario — this scenario illustrates the potential benefit of optimizing blood pressure, immunosuppression adherence, and proteinuria control.</li>
+  <li>Bring the printed or screenshotted result to your next transplant nephrology appointment to guide discussion.</li>
+</ol>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool during any transplant nephrology follow-up visit when you have at least two eGFR values separated by three or more months. The calculator linearizes the decline to estimate the annual GFR slope and — at the current rate — how many years remain before reaching a clinically meaningful eGFR threshold (typically 15–20 mL/min/1.73 m²). It is designed to help time two high-stakes conversations: when to return to the transplant waiting list, and when to begin constructing dialysis access.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -642,9 +670,38 @@
 <p>Do not use during an episode of acute rejection, infection, or other acute illness — the values will not reflect the true chronic trajectory. Do not apply to patients without a transplant, or to those whose eGFR is already below the target threshold. The model assumes a constant linear slope; true allograft decline is non-linear and may accelerate or plateau based on immunosuppression, comorbidities, and adherence.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>The slope matters more than the absolute value</h4>
+<p>An eGFR of 30 mL/min that has been stable for 5 years carries a very different prognosis than an eGFR of 30 mL/min that was 50 one year ago. Always interpret any single eGFR value in the context of its trend. A slope more negative than −3 mL/min/yr is a red flag that requires urgent evaluation for rejection, calcineurin inhibitor toxicity, recurrent disease, or obstruction.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">📅</div>
+<div class="alert-body">
+<h4>Re-list early — ESKD waits for no one</h4>
+<p>KDIGO and the Philippine National Kidney and Transplant Institute recommend re-listing for transplantation when allograft eGFR is projected to reach 20 mL/min within 6–12 months, or when eGFR is already below 20 mL/min and declining. Waiting until dialysis starts resets the waiting-list clock and worsens long-term outcomes. Start the living-donor evaluation conversation while the allograft is still functioning — ideally with eGFR still above 20 mL/min.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Do not use eGFR values drawn during acute illness, dehydration, or hospitalization — they do not represent the chronic trajectory. (2) Creatinine-based eGFR overestimates true GFR in patients with low muscle mass (common in long-term transplant recipients) — a cystatin C-based or combined creatinine–cystatin C eGFR is more accurate. (3) The two-point linear model will underestimate remaining time if the decline is actually accelerating, and overestimate it if the decline is decelerating — serial monitoring every 3 months provides more accurate slope estimation than any single two-point calculation.</p>
+</div>
+</div>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for transplant recipients and clinicians. It does not replace individualized assessment by a transplant nephrologist. eGFR decline in kidney transplant recipients depends on immunological and non-immunological factors that cannot be captured by a two-point linear model. Do not make decisions about re-listing, immunosuppression, or dialysis access based solely on this tool — use it as a starting point for a conversation with your transplant team.</div>
+</div>
+</details>
+
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Allograft eGFR Trend &amp; Time-to-Failure Calculator</h2>
@@ -719,24 +776,23 @@
 </div>
 </section>
 
-<!-- HOW TO USE -->
-<section class="section" id="instructions">
-<div class="section-tag">Instructions</div>
-<h2>How to Use This Calculator</h2>
-<ol style="margin:0 0 0 1.2em;line-height:2;">
-  <li>Obtain two eGFR results from your transplant follow-up labs — ideally at least 6 months apart and both from stable periods (not during rejection or infection).</li>
-  <li>Enter the earlier eGFR value and its exact date, then the more recent eGFR value and its date.</li>
-  <li>If you have an even newer eGFR that was not part of the paired measurement (e.g., a value from last week), enter it in the "Current eGFR" field — the calculator will use that as your starting point for projecting time to target.</li>
-  <li>Select the target eGFR threshold you want to project toward. The 15 mL/min ESKD threshold is the most common clinical endpoint; 20 mL/min is used for re-listing planning.</li>
-  <li>Click <strong>Calculate eGFR Trend</strong>. Review the GFR slope, projected time to target, and the "if decline slowed 30%" scenario — this scenario illustrates the potential benefit of optimizing blood pressure, immunosuppression adherence, and proteinuria control.</li>
-  <li>Bring the printed or screenshotted result to your next transplant nephrology appointment to guide discussion.</li>
-</ol>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
 <tbody>
@@ -747,12 +803,7 @@
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The model assumes a constant linear rate of decline between the two observed data points and projects that rate forward. The "30% slowed" scenario is not a guaranteed clinical outcome; it illustrates that a modest reduction in decline rate — achievable with optimized renin-angiotensin system blockade, blood pressure control, or immunosuppression adjustment — can meaningfully extend the time to ESKD. This is consistent with observations from the KDIGO 2009 transplant guideline that a slope steeper than −2 mL/min/yr warrants urgent evaluation and intensification of nephroprotective therapy.</p>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The linear GFR slope model is the methodological foundation of KDIGO's 2009 Clinical Practice Guideline for the Care of Kidney Transplant Recipients, which recommends monitoring eGFR at least every three months and identifies a chronic slope steeper than −2 mL/min per year as a signal for urgent nephrology review and evaluation for reversible causes. Subsequent analyses confirm that the GFR slope is independently associated with allograft loss and patient mortality, and that pre-emptive re-listing and dialysis access planning at eGFR 15–20 mL/min improves outcomes after allograft failure.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Kidney Disease: Improving Global Outcomes (KDIGO) Transplant Work Group. <em>KDIGO Clinical Practice Guideline for the Care of Kidney Transplant Recipients.</em> Am J Transplant. 2009;9(Suppl 3):S1–S155.</li>
@@ -761,36 +812,10 @@
 <li>Gill JS, Abichandani R, Kausz AT, Pereira BJ. <em>Mortality after kidney transplant failure: the impact of non-immunologic factors.</em> Kidney Int. 2002;62(5):1875–1883.</li>
 <li>Meier-Kriesche HU, Schold JD, Kaplan B. <em>Long-term renal allograft survival: have we made significant progress or is it time to rethink our analytic and therapeutic strategies?</em> Am J Transplant. 2004;4(8):1289–1295.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>The slope matters more than the absolute value</h4>
-<p>An eGFR of 30 mL/min that has been stable for 5 years carries a very different prognosis than an eGFR of 30 mL/min that was 50 one year ago. Always interpret any single eGFR value in the context of its trend. A slope more negative than −3 mL/min/yr is a red flag that requires urgent evaluation for rejection, calcineurin inhibitor toxicity, recurrent disease, or obstruction.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">📅</div>
-<div class="alert-body">
-<h4>Re-list early — ESKD waits for no one</h4>
-<p>KDIGO and the Philippine National Kidney and Transplant Institute recommend re-listing for transplantation when allograft eGFR is projected to reach 20 mL/min within 6–12 months, or when eGFR is already below 20 mL/min and declining. Waiting until dialysis starts resets the waiting-list clock and worsens long-term outcomes. Start the living-donor evaluation conversation while the allograft is still functioning — ideally with eGFR still above 20 mL/min.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Do not use eGFR values drawn during acute illness, dehydration, or hospitalization — they do not represent the chronic trajectory. (2) Creatinine-based eGFR overestimates true GFR in patients with low muscle mass (common in long-term transplant recipients) — a cystatin C-based or combined creatinine–cystatin C eGFR is more accurate. (3) The two-point linear model will underestimate remaining time if the decline is actually accelerating, and overestimate it if the decline is decelerating — serial monitoring every 3 months provides more accurate slope estimation than any single two-point calculation.</p>
-</div>
-</div>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for transplant recipients and clinicians. It does not replace individualized assessment by a transplant nephrologist. eGFR decline in kidney transplant recipients depends on immunological and non-immunological factors that cannot be captured by a two-point linear model. Do not make decisions about re-listing, immunosuppression, or dialysis access based solely on this tool — use it as a starting point for a conversation with your transplant team.</div>
-</section>
 
 </main>
 

@@ -200,6 +200,24 @@
   "inLanguage": "en-PH"
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -240,21 +258,32 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Weigh yourself on a <strong>calibrated scale every morning</strong> before eating, before drinking, and in light clothing. Use the same scale every day.</li>
+<li>Enter your <strong>dry weight</strong> — the weight your dialysis team has set as your target post-dialysis weight. If you do not know it, ask your nurse or nephrologist.</li>
+<li>Enter <strong>today's weight</strong> in kilograms.</li>
+<li>Select <strong>days since last dialysis</strong> — 1 day (morning after a session), 2 days (typical gap between Monday-Wednesday-Friday sessions), or 3 days (weekend gap).</li>
+<li>Select your approximate <strong>daily urine output</strong>. Anuric patients (no urine) have the strictest fluid limits.</li>
+<li>Press the button — you will see your weight gained, daily rate, estimated fluid allowance, and UFR at the next session, plus a color-coded action recommendation.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool daily — ideally every morning — if you are a hemodialysis patient who wants to know whether your current fluid gain is within safe limits, how much fluid you can still drink today, and what ultrafiltration rate to expect at your next session. It is most useful in the 1–3 days between dialysis treatments.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -270,16 +299,45 @@
 <p>Do not wait for the calculator result if you have: shortness of breath at rest or lying flat, leg swelling that is new or rapidly worsening, blood pressure above 160/100 mmHg, or a weight gain of more than 3 kg since your last session. These are signs of acute fluid overload requiring urgent assessment — call your center or go to an emergency department now.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Salt is the real driver — not drinking too much water</h4>
+<p>Every gram of sodium consumed retains approximately 200 mL of water. A dialysis patient who eats 3 g of sodium during the weekend (two salty meals) will gain roughly 600 mL of retained fluid before they drink a single glass of water. Addressing sodium intake is more effective than counting milliliters of fluid.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>The 3-day weekend gap is the highest-risk interval</h4>
+<p>Patients on a Monday-Wednesday-Friday schedule arrive on Monday having gone 3 days without dialysis. The weight gain over this interval is typically 50% higher than the 2-day gain. Planning stricter sodium and fluid control on Thursday–Sunday prevents the Monday crisis. Some centers offer a brief Friday afternoon session to limit the weekend gap for vulnerable patients.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Dry weight must be actively reassessed by your dialysis team — it changes with nutrition, muscle mass, and illness. Using an outdated dry weight makes every calculation inaccurate. (2) The UFR estimate assumes a standard 4-hour session. If your session is shorter, your true UFR is higher. Discuss session duration with your team when IDWG is consistently high. (3) Do not restrict fluids below the estimated allowance without medical guidance — dehydration in dialysis causes cramps, hypotension, and access clotting.</p>
+</div>
+</div>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized medical assessment. Your fluid prescription depends on your dry weight, residual kidney function, blood pressure, and clinical status. Do not make changes to your fluid intake without consulting your nephrologist or dialysis care team.</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Interdialytic weight gain (IDWG) is the most directly controllable variable in dialysis management, and its consequences extend far beyond comfort. Every kilogram of excess fluid above dry weight imposes an estimated 13 mmHg rise in systolic blood pressure and requires rapid removal during the next dialysis session. The ultrafiltration rate (UFR) — the speed of fluid removal in mL per kg per hour — is independently associated with mortality when it exceeds 13 mL/kg/hr: at this rate, the cardiac chambers cannot refill fast enough during diastole, triggering intradialytic hypotension, myocardial ischemia, and arrhythmia. Chronic high UFR from repeated large IDWG is a leading cause of left ventricular dysfunction in dialysis patients. This calculator makes both the gain and the UFR visible so patients can act before the session, not after the damage is done.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Fluid &amp; Weight Status Calculator</h2>
@@ -352,25 +410,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Weigh yourself on a <strong>calibrated scale every morning</strong> before eating, before drinking, and in light clothing. Use the same scale every day.</li>
-<li>Enter your <strong>dry weight</strong> — the weight your dialysis team has set as your target post-dialysis weight. If you do not know it, ask your nurse or nephrologist.</li>
-<li>Enter <strong>today's weight</strong> in kilograms.</li>
-<li>Select <strong>days since last dialysis</strong> — 1 day (morning after a session), 2 days (typical gap between Monday-Wednesday-Friday sessions), or 3 days (weekend gap).</li>
-<li>Select your approximate <strong>daily urine output</strong>. Anuric patients (no urine) have the strictest fluid limits.</li>
-<li>Press the button — you will see your weight gained, daily rate, estimated fluid allowance, and UFR at the next session, plus a color-coded action recommendation.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Equations</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
 <tbody>
@@ -391,46 +447,15 @@
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The UFR formula assumes all accumulated fluid is removed in a 4-hour session. Session length varies; a longer session lowers the UFR. The insensible loss estimate of 500 mL/day is a clinical convention; actual losses vary with body size, fever, diarrhea, and ambient temperature (higher in tropical climates such as the Philippines).</p>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The 13 mL/kg/hr UFR threshold derives from prospective observational data in the DOPPS cohort and was formally incorporated into K/DOQI cardiovascular guidelines. The K/DOQI 2005 guideline established the framework for fluid and cardiovascular risk management in dialysis patients that remains foundational today. Subsequent data from Flythe et al. and Obi et al. confirmed that high UFR and the weekend inter-dialytic gap (3-day interval) are the strongest modifiable predictors of intradialytic hypotension and long-term cardiac mortality in hemodialysis.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>National Kidney Foundation. K/DOQI Clinical Practice Guidelines for Cardiovascular Disease in Dialysis Patients. <em>American Journal of Kidney Diseases.</em> 2005;45(4 Suppl 3):S1–S153.</li>
 </ol>
-</section>
-
-<!-- PEARLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Salt is the real driver — not drinking too much water</h4>
-<p>Every gram of sodium consumed retains approximately 200 mL of water. A dialysis patient who eats 3 g of sodium during the weekend (two salty meals) will gain roughly 600 mL of retained fluid before they drink a single glass of water. Addressing sodium intake is more effective than counting milliliters of fluid.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>The 3-day weekend gap is the highest-risk interval</h4>
-<p>Patients on a Monday-Wednesday-Friday schedule arrive on Monday having gone 3 days without dialysis. The weight gain over this interval is typically 50% higher than the 2-day gain. Planning stricter sodium and fluid control on Thursday–Sunday prevents the Monday crisis. Some centers offer a brief Friday afternoon session to limit the weekend gap for vulnerable patients.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Dry weight must be actively reassessed by your dialysis team — it changes with nutrition, muscle mass, and illness. Using an outdated dry weight makes every calculation inaccurate. (2) The UFR estimate assumes a standard 4-hour session. If your session is shorter, your true UFR is higher. Discuss session duration with your team when IDWG is consistently high. (3) Do not restrict fluids below the estimated allowance without medical guidance — dehydration in dialysis causes cramps, hypotension, and access clotting.</p>
-</div>
-</div>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized medical assessment. Your fluid prescription depends on your dry weight, residual kidney function, blood pressure, and clinical status. Do not make changes to your fluid intake without consulting your nephrologist or dialysis care team.</div>
-</section>
 
 </main>
 

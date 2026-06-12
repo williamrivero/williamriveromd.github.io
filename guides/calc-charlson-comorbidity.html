@@ -298,6 +298,24 @@
   "inLanguage": "en-PH"
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -338,21 +356,31 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Scoring</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Enter the patient's <strong>age in years</strong>. Age points are added automatically according to the Charlson age-adjustment bands.</li>
+<li>The <strong>Renal Disease (2 pts)</strong> checkbox is pre-ticked because all maintenance dialysis patients have moderate-to-severe kidney disease by definition. Uncheck only if calculating CCI for a non-dialysis CKD patient without severe impairment.</li>
+<li>Check all <strong>1-point</strong> and <strong>2-point comorbidities</strong> that are present and documented in the patient's medical record.</li>
+<li>Select the appropriate <strong>liver disease</strong> severity (none / mild / moderate-to-severe), <strong>diabetes</strong> category (with or without end-organ damage), <strong>malignancy</strong> status (metastatic overrides the 2-pt tumor checkbox), and <strong>AIDS/HIV</strong> if present.</li>
+<li>Results update live: CCI comorbidity score, age-adjusted total, estimated 10-year survival, and a plain-language goals-of-care framing statement.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use the age-adjusted Charlson Comorbidity Index (CCI) when structuring a goals-of-care conversation with an elderly patient who has advanced CKD or end-stage kidney disease and is deciding whether to initiate, continue, or withdraw hemodialysis. The CCI is a validated, weighted sum of a patient's chronic illnesses that — together with age points — produces an estimate of long-term survival at a population level.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -368,16 +396,43 @@
 <p>The CCI is a <em>population-level</em> survival estimate derived from a 1980s medical cohort — it is not an individual prediction and should never be used as the sole criterion to recommend for or against dialysis. A high CCI score does not automatically mean dialysis should be withheld; it means prognosis and goals deserve an explicit, informed conversation. Always pair with frailty assessment (Clinical Frailty Scale, Fried Phenotype), functional status, the patient's values, and nephrologist judgment.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Use as a conversation anchor, not a verdict</h4>
+<p>A high CCI score opens the conversation about realistic prognosis — it does not close the conversation about dialysis. Some patients with very high scores choose to proceed with dialysis after an informed discussion; others choose conservative kidney management. The score's value is making the prognosis explicit so the patient can decide from a place of honest information rather than hope or assumption.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Pair with frailty assessment</h4>
+<p>The CCI captures comorbidity burden but not functional reserve or frailty. A patient with a moderate CCI but a Clinical Frailty Scale score of 7 (severely frail) carries a very different dialysis risk profile than a non-frail patient with the same CCI. Use the CCI alongside the CFS and Fried Phenotype (see the <a href="calc-frailty-assessment.html" style="color:var(--teal);">Frailty Assessment calculator</a>) for the most complete picture.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) The diabetes item is mutually exclusive — count only the higher category (with or without end-organ damage), never both. (2) Metastatic tumor (6 pts) overrides the non-metastatic solid-tumor checkbox (2 pts) — do not double-count. (3) The renal disease item should be unchecked if calculating for a non-dialysis patient without moderate-to-severe CKD. (4) The survival estimate is population-derived from a 1980s cohort; absolute percentages should be presented as "approximately" and paired with the clinician's own prognostic assessment.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Elderly patients starting hemodialysis carry a disproportionate comorbidity burden. Kurella Tamura et al. (NEJM 2009) showed that nursing-home patients initiating dialysis lost an average of 3.7 functional tasks within 3 months and had a median survival of 16.1 months — outcomes many patients and families had not anticipated. A structured prognosis tool like the age-adjusted CCI makes it possible to present honest, data-anchored survival estimates and to explore whether conservative kidney management (CKM) might better align with a patient's goals. The CCI has been externally validated in dialysis populations and outperforms unaided clinical impression in predicting 1- and 5-year mortality.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Charlson Comorbidity Index (Age-Adjusted)</h2>
@@ -466,25 +521,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Enter the patient's <strong>age in years</strong>. Age points are added automatically according to the Charlson age-adjustment bands.</li>
-<li>The <strong>Renal Disease (2 pts)</strong> checkbox is pre-ticked because all maintenance dialysis patients have moderate-to-severe kidney disease by definition. Uncheck only if calculating CCI for a non-dialysis CKD patient without severe impairment.</li>
-<li>Check all <strong>1-point</strong> and <strong>2-point comorbidities</strong> that are present and documented in the patient's medical record.</li>
-<li>Select the appropriate <strong>liver disease</strong> severity (none / mild / moderate-to-severe), <strong>diabetes</strong> category (with or without end-organ damage), <strong>malignancy</strong> status (metastatic overrides the 2-pt tumor checkbox), and <strong>AIDS/HIV</strong> if present.</li>
-<li>Results update live: CCI comorbidity score, age-adjusted total, estimated 10-year survival, and a plain-language goals-of-care framing statement.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- SCORING TABLE -->
-<section class="section" id="formula">
-<div class="section-tag">Scoring</div>
-<h2>Scoring Table &amp; Interpretation Bands</h2>
-
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <h3 style="margin-bottom:12px;">Comorbidity items and weights</h3>
 <div class="table-wrap">
 <table>
@@ -539,12 +592,7 @@
 </table>
 </div>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Survival formula: 10-year survival (%) = 0.983^(e^(score × 0.9)) × 100. Derived from Charlson et al., <em>J Clin Epidemiol.</em> 1994. Validation in hemodialysis cohorts confirms predictive validity, though absolute survival percentages reflect historical cohorts and should be interpreted as relative risk estimates rather than precise predictions.</p>
-</section>
-
-<!-- EVIDENCE -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The Charlson Comorbidity Index was originally derived and validated in a 1980s hospitalized medical cohort and has since been validated across multiple dialysis populations worldwide. The age-adjustment was published by Charlson et al. in 1994 and is the standard applied in nephrology studies. KDIGO's 2024 CKD guideline explicitly recognizes the CCI as a useful prognostic tool to support conservative kidney management discussions. The survival formula used here (0.983^(e^(CCI × 0.9))) is the standard published derivation.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Charlson ME, Pompei P, Ales KL, MacKenzie CR. A new method of classifying prognostic comorbidity in longitudinal studies: development and validation. <em>J Chronic Dis.</em> 1987;40(5):373–383.</li>
@@ -553,34 +601,8 @@
 <li>Al-Muhaiteeb A. Conservative kidney management in elderly patients with advanced CKD: an emerging paradigm. <em>Kidney360.</em> 2025 (in press).</li>
 <li>KDIGO. Clinical Practice Guideline for CKD Evaluation and Management (2024). Kidney International, 2024.</li>
 </ol>
-</section>
-
-<!-- PEARLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Use as a conversation anchor, not a verdict</h4>
-<p>A high CCI score opens the conversation about realistic prognosis — it does not close the conversation about dialysis. Some patients with very high scores choose to proceed with dialysis after an informed discussion; others choose conservative kidney management. The score's value is making the prognosis explicit so the patient can decide from a place of honest information rather than hope or assumption.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Pair with frailty assessment</h4>
-<p>The CCI captures comorbidity burden but not functional reserve or frailty. A patient with a moderate CCI but a Clinical Frailty Scale score of 7 (severely frail) carries a very different dialysis risk profile than a non-frail patient with the same CCI. Use the CCI alongside the CFS and Fried Phenotype (see the <a href="calc-frailty-assessment.html" style="color:var(--teal);">Frailty Assessment calculator</a>) for the most complete picture.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) The diabetes item is mutually exclusive — count only the higher category (with or without end-organ damage), never both. (2) Metastatic tumor (6 pts) overrides the non-metastatic solid-tumor checkbox (2 pts) — do not double-count. (3) The renal disease item should be unchecked if calculating for a non-dialysis patient without moderate-to-severe CKD. (4) The survival estimate is population-derived from a 1980s cohort; absolute percentages should be presented as "approximately" and paired with the clinician's own prognostic assessment.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> The Charlson Comorbidity Index is a research and clinical decision-support tool, not a deterministic recommendation for or against dialysis. Individual prognosis depends on many factors beyond what the CCI captures. All goals-of-care conversations should involve the patient, family, and the treating nephrologist. This calculator does not replace individualized clinical judgment.</div>
 

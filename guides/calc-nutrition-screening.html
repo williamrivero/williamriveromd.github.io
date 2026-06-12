@@ -289,6 +289,24 @@
   }
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 
@@ -338,23 +356,55 @@
 <!-- NAV STRIP -->
 <nav class="nav-strip">
 <div class="nav-pills">
-  <a class="nav-pill" href="#when">When to Use</a>
-  <a class="nav-pill" href="#calculator">Calculator</a>
-  <a class="nav-pill" href="#instructions">Instructions</a>
-  <a class="nav-pill" href="#formula">Scoring</a>
-  <a class="nav-pill" href="#evidence">Evidence</a>
-  <a class="nav-pill" href="#pearls">Clinical Pearls</a>
+<a class="nav-pill" href="#instructions">Instructions</a>
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-  <!-- ── SECTION 1: WHEN TO USE ──────────────────────────────── -->
-  <section class="section" id="when">
-    <div class="section-tag">Indications</div>
-    <h2>When to Use These Tools</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<h3>SNAQ (Short Nutritional Assessment Questionnaire)</h3>
+    <ol style="margin:0 0 24px 20px;color:var(--text-mid);line-height:1.8;">
+      <li>Ask each of the three questions verbatim. The patient answers Yes or No.</li>
+      <li>Assign weights: Q1 Yes = 3 pts; Q2 Yes = 2 pts; Q3 Yes = 1 pt. All "No" answers = 0.</li>
+      <li>Sum the three values. Possible range: 0–6.</li>
+      <li>Interpret: 0–1 = not malnourished; 2 = moderate risk (dietary counseling); ≥3 = severe risk (immediate intervention).</li>
+      <li>Complete in under 2 minutes at triage or during nursing assessment.</li>
+    </ol>
 
-    <div class="alert alert-teal">
+    <h3>MIS (Malnutrition-Inflammation Score)</h3>
+    <ol style="margin:0 0 24px 20px;color:var(--text-mid);line-height:1.8;">
+      <li>Obtain dry weight history from the dialysis log or clinic chart for item 1.</li>
+      <li>Assess dietary intake by direct interview using 24-hour recall or food frequency (item 2).</li>
+      <li>Review GI symptoms over the past two weeks (item 3).</li>
+      <li>Assess functional status using ADL history (item 4).</li>
+      <li>Record comorbidities and dialysis vintage for item 5.</li>
+      <li>Perform physical examination for subcutaneous fat (item 6) and muscle wasting (item 7).</li>
+      <li>Calculate BMI from height and post-dialysis dry weight (item 8).</li>
+      <li>Use the most recent serum albumin and TIBC from the laboratory (items 9 and 10).</li>
+      <li>Sum all 10 items (each scored 0–3). Total range: 0–30.</li>
+    </ol>
+
+    <h3>SGA (Subjective Global Assessment)</h3>
+    <ol style="margin:0 0 24px 20px;color:var(--text-mid);line-height:1.8;">
+      <li>Gather weight history for the past 6 months and the 2-week trend (section A).</li>
+      <li>Assess current dietary intake versus usual (section B).</li>
+      <li>Ask about persistent GI symptoms lasting ≥2 weeks (section C).</li>
+      <li>Determine functional capacity — whether the patient works normally, has reduced activity, or is largely bedbound (section D).</li>
+      <li>Examine for subcutaneous fat loss at the triceps and periorbital area; note any muscle wasting at the temples, clavicle, and quadriceps; and assess for edema or ascites (section E).</li>
+      <li>Synthesize all five domains and assign a global rating: A (well nourished), B (mild-to-moderate PEW), or C (severe PEW). The global rating reflects clinical judgment across all components — no formula is used.</li>
+    </ol>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-teal">
       <span class="alert-icon">&#128203;</span>
       <div class="alert-body">
         <h4>Routine Screening Indications</h4>
@@ -382,10 +432,59 @@
     </div>
 
     <p>Protein-energy wasting (PEW) affects 28–54% of CKD patients and up to 75% of those on maintenance hemodialysis. Early identification using validated screening tools enables timely dietary intervention, oral nutritional supplementation, and optimization of dialysis adequacy before severe wasting occurs. Mortality risk rises sharply with MIS &gt;6 and SGA rating B or C.</p>
-  </section>
+</div>
+</details>
 
-  <!-- ── SECTION 2: CALCULATOR ───────────────────────────────── -->
-  <section class="section" id="calculator">
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+      <span class="alert-icon">&#10004;&#65039;</span>
+      <div class="alert-body">
+        <h4>Paired Use: MIS + SGA</h4>
+        <p>Combining MIS and SGA increases diagnostic accuracy. Use MIS for monthly trend monitoring and objective scoring; use SGA for semi-annual clinician-administered assessment. Discordance between the two prompts a deeper investigation for occult inflammation or fluid overload masking true nutritional status.</p>
+      </div>
+    </div>
+
+    <div class="alert alert-teal">
+      <span class="alert-icon">&#128300;</span>
+      <div class="alert-body">
+        <h4>Albumin Interpretation in Dialysis Patients</h4>
+        <p>Serum albumin is a negative acute-phase reactant. In the setting of infection, surgical stress, or fluid overload, albumin may fall independent of nutritional status. An MIS score elevated primarily through items 9 (albumin) and 10 (TIBC) in a patient with normal physical exam and stable weight may reflect inflammation rather than true PEW. Address the inflammatory trigger before escalating nutritional support.</p>
+      </div>
+    </div>
+
+    <div class="alert alert-teal">
+      <span class="alert-icon">&#9881;&#65039;</span>
+      <div class="alert-body">
+        <h4>Dialysis Adequacy and Nutrition Are Linked</h4>
+        <p>Inadequate dialysis (Kt/V &lt;1.2 for HD, Kt &lt;1.7 for PD) causes uremic anorexia, which drives dietary protein intake below target. Before escalating nutritional support in a dialysis patient with PEW, verify and optimize dialysis adequacy. Increasing session frequency or duration often improves appetite and nutritional intake without any dietary change.</p>
+      </div>
+    </div>
+
+    <div class="alert alert-amber">
+      <span class="alert-icon">&#9888;&#65039;</span>
+      <div class="alert-body">
+        <h4>Obesity Does Not Exclude PEW</h4>
+        <p>Patients with high BMI may still have significant muscle wasting (sarcopenic obesity). Do not rely on BMI alone to exclude PEW. A normal or high MIS item 8 (BMI) can coexist with high scores on items 6 (fat loss) and 7 (muscle wasting). Clinical examination and functional assessment are essential.</p>
+      </div>
+    </div>
+
+    <div class="alert alert-green">
+      <span class="alert-icon">&#128203;</span>
+      <div class="alert-body">
+        <h4>Oral Nutritional Supplements (ONS) First</h4>
+        <p>For MIS 6–10 or SGA-B, the first-line intervention is optimization of oral dietary intake with dietitian counseling and renal-specific ONS (high-protein, phosphorus- and potassium-controlled formulas). IDPN is reserved for patients unable to meet ≥50% of their needs orally despite adequate counseling. Enteral and parenteral routes are used only when the GI tract is non-functional or inaccessible.</p>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Clinical Tool Disclaimer:</strong> This calculator is intended for use by trained clinicians as an aid to nutritional assessment — it does not replace a formal dietitian evaluation. Results must be interpreted in the context of the full clinical history, physical examination, laboratory findings, and dialysis parameters. Scores should not be used in isolation to initiate or withhold nutritional interventions. Always involve a registered renal dietitian when protein-energy wasting is identified.
+    </div>
+</div>
+</details>
+
+<section class="section" id="calculator">
     <div class="section-tag">Interactive Tool</div>
     <h2>Nutrition Screening Calculator</h2>
     <p>Enter patient demographics, then select a tool tab. Results appear automatically after all fields are completed (SNAQ, MIS) or after selecting a global rating (SGA). All data remain in the browser — nothing is transmitted.</p>
@@ -714,50 +813,24 @@
 
   </section>
 
-  <!-- ── SECTION 3: INSTRUCTIONS ────────────────────────────── -->
-  <section class="section" id="instructions">
-    <div class="section-tag">How to Administer</div>
-    <h2>Step-by-Step Instructions</h2>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-    <h3>SNAQ (Short Nutritional Assessment Questionnaire)</h3>
-    <ol style="margin:0 0 24px 20px;color:var(--text-mid);line-height:1.8;">
-      <li>Ask each of the three questions verbatim. The patient answers Yes or No.</li>
-      <li>Assign weights: Q1 Yes = 3 pts; Q2 Yes = 2 pts; Q3 Yes = 1 pt. All "No" answers = 0.</li>
-      <li>Sum the three values. Possible range: 0–6.</li>
-      <li>Interpret: 0–1 = not malnourished; 2 = moderate risk (dietary counseling); ≥3 = severe risk (immediate intervention).</li>
-      <li>Complete in under 2 minutes at triage or during nursing assessment.</li>
-    </ol>
-
-    <h3>MIS (Malnutrition-Inflammation Score)</h3>
-    <ol style="margin:0 0 24px 20px;color:var(--text-mid);line-height:1.8;">
-      <li>Obtain dry weight history from the dialysis log or clinic chart for item 1.</li>
-      <li>Assess dietary intake by direct interview using 24-hour recall or food frequency (item 2).</li>
-      <li>Review GI symptoms over the past two weeks (item 3).</li>
-      <li>Assess functional status using ADL history (item 4).</li>
-      <li>Record comorbidities and dialysis vintage for item 5.</li>
-      <li>Perform physical examination for subcutaneous fat (item 6) and muscle wasting (item 7).</li>
-      <li>Calculate BMI from height and post-dialysis dry weight (item 8).</li>
-      <li>Use the most recent serum albumin and TIBC from the laboratory (items 9 and 10).</li>
-      <li>Sum all 10 items (each scored 0–3). Total range: 0–30.</li>
-    </ol>
-
-    <h3>SGA (Subjective Global Assessment)</h3>
-    <ol style="margin:0 0 24px 20px;color:var(--text-mid);line-height:1.8;">
-      <li>Gather weight history for the past 6 months and the 2-week trend (section A).</li>
-      <li>Assess current dietary intake versus usual (section B).</li>
-      <li>Ask about persistent GI symptoms lasting ≥2 weeks (section C).</li>
-      <li>Determine functional capacity — whether the patient works normally, has reduced activity, or is largely bedbound (section D).</li>
-      <li>Examine for subcutaneous fat loss at the triceps and periorbital area; note any muscle wasting at the temples, clavicle, and quadriceps; and assess for edema or ascites (section E).</li>
-      <li>Synthesize all five domains and assign a global rating: A (well nourished), B (mild-to-moderate PEW), or C (severe PEW). The global rating reflects clinical judgment across all components — no formula is used.</li>
-    </ol>
-  </section>
-
-  <!-- ── SECTION 4: FORMULA / SCORING TABLES ────────────────── -->
-  <section class="section" id="formula">
-    <div class="section-tag">Scoring Reference</div>
-    <h2>Score Interpretation Tables</h2>
-
-    <h3>SNAQ Score (range 0–6)</h3>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
+<h3>SNAQ Score (range 0–6)</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Score</th><th>Category</th><th>Action</th></tr></thead>
@@ -812,14 +885,8 @@
         </tbody>
       </table>
     </div>
-  </section>
-
-  <!-- ── SECTION 5: EVIDENCE ─────────────────────────────────── -->
-  <section class="section" id="evidence">
-    <div class="section-tag">Evidence Base</div>
-    <h2>Validation and Evidence</h2>
-
-    <p>Protein-energy wasting (PEW) is a distinct syndrome defined by the International Society of Renal Nutrition and Metabolism (ISRNM) as depletion of body protein and energy stores in kidney disease. PEW is present in 28–54% of non-dialysis CKD patients and rises to 60–75% of maintenance hemodialysis patients. Validated nutritional screening instruments are essential because clinical signs of PEW may not be apparent until advanced depletion has occurred.</p>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
+<p>Protein-energy wasting (PEW) is a distinct syndrome defined by the International Society of Renal Nutrition and Metabolism (ISRNM) as depletion of body protein and energy stores in kidney disease. PEW is present in 28–54% of non-dialysis CKD patients and rises to 60–75% of maintenance hemodialysis patients. Validated nutritional screening instruments are essential because clinical signs of PEW may not be apparent until advanced depletion has occurred.</p>
 
     <p>The Malnutrition-Inflammation Score (MIS) was developed by Kalantar-Zadeh and colleagues specifically for maintenance hemodialysis patients. In the validation cohort of 378 hemodialysis patients followed over 24 months, each 1-point increase in MIS was associated with a 6% rise in mortality risk (hazard ratio 1.06, 95% CI 1.03–1.09). MIS correlated strongly with serum markers of inflammation (CRP, IL-6) and with composite outcomes of hospitalization and death, outperforming serum albumin alone as a prognostic indicator.</p>
 
@@ -836,57 +903,12 @@
       <li>Fouque D, Kalantar-Zadeh K, Kopple J, et al. A proposed nomenclature and diagnostic criteria for protein-energy wasting in acute and chronic kidney disease. <em>Kidney Int.</em> 2008;73(4):391–398. (ISRNM PEW definition)</li>
       <li>KDOQI Clinical Practice Guideline for Nutrition in CKD: 2020 Update. <em>Am J Kidney Dis.</em> 2020;76(3 Suppl 1):S1–S107.</li>
     </ol>
-  </section>
+</div>
+</details>
 
-  <!-- ── SECTION 6: PEARLS ───────────────────────────────────── -->
-  <section class="section" id="pearls">
-    <div class="section-tag">Clinical Pearls</div>
-    <h2>Clinical Pearls</h2>
-
-    <div class="alert alert-green">
-      <span class="alert-icon">&#10004;&#65039;</span>
-      <div class="alert-body">
-        <h4>Paired Use: MIS + SGA</h4>
-        <p>Combining MIS and SGA increases diagnostic accuracy. Use MIS for monthly trend monitoring and objective scoring; use SGA for semi-annual clinician-administered assessment. Discordance between the two prompts a deeper investigation for occult inflammation or fluid overload masking true nutritional status.</p>
-      </div>
-    </div>
-
-    <div class="alert alert-teal">
-      <span class="alert-icon">&#128300;</span>
-      <div class="alert-body">
-        <h4>Albumin Interpretation in Dialysis Patients</h4>
-        <p>Serum albumin is a negative acute-phase reactant. In the setting of infection, surgical stress, or fluid overload, albumin may fall independent of nutritional status. An MIS score elevated primarily through items 9 (albumin) and 10 (TIBC) in a patient with normal physical exam and stable weight may reflect inflammation rather than true PEW. Address the inflammatory trigger before escalating nutritional support.</p>
-      </div>
-    </div>
-
-    <div class="alert alert-teal">
-      <span class="alert-icon">&#9881;&#65039;</span>
-      <div class="alert-body">
-        <h4>Dialysis Adequacy and Nutrition Are Linked</h4>
-        <p>Inadequate dialysis (Kt/V &lt;1.2 for HD, Kt &lt;1.7 for PD) causes uremic anorexia, which drives dietary protein intake below target. Before escalating nutritional support in a dialysis patient with PEW, verify and optimize dialysis adequacy. Increasing session frequency or duration often improves appetite and nutritional intake without any dietary change.</p>
-      </div>
-    </div>
-
-    <div class="alert alert-amber">
-      <span class="alert-icon">&#9888;&#65039;</span>
-      <div class="alert-body">
-        <h4>Obesity Does Not Exclude PEW</h4>
-        <p>Patients with high BMI may still have significant muscle wasting (sarcopenic obesity). Do not rely on BMI alone to exclude PEW. A normal or high MIS item 8 (BMI) can coexist with high scores on items 6 (fat loss) and 7 (muscle wasting). Clinical examination and functional assessment are essential.</p>
-      </div>
-    </div>
-
-    <div class="alert alert-green">
-      <span class="alert-icon">&#128203;</span>
-      <div class="alert-body">
-        <h4>Oral Nutritional Supplements (ONS) First</h4>
-        <p>For MIS 6–10 or SGA-B, the first-line intervention is optimization of oral dietary intake with dietitian counseling and renal-specific ONS (high-protein, phosphorus- and potassium-controlled formulas). IDPN is reserved for patients unable to meet ≥50% of their needs orally despite adequate counseling. Enteral and parenteral routes are used only when the GI tract is non-functional or inaccessible.</p>
-      </div>
-    </div>
-
-    <div class="disclaimer">
+<div class="disclaimer">
       <strong>Clinical Tool Disclaimer:</strong> This calculator is intended for use by trained clinicians as an aid to nutritional assessment — it does not replace a formal dietitian evaluation. Results must be interpreted in the context of the full clinical history, physical examination, laboratory findings, and dialysis parameters. Scores should not be used in isolation to initiate or withhold nutritional interventions. Always involve a registered renal dietitian when protein-energy wasting is identified.
     </div>
-  </section>
 
 </main>
 

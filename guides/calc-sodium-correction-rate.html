@@ -380,6 +380,24 @@
   "inLanguage": "en-PH"
 }
 </script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -420,21 +438,31 @@
 
 <nav class="nav-strip">
 <div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
-<a class="nav-pill" href="#calculator">Calculator</a>
-<a class="nav-pill" href="#instructions">How to Use</a>
-<a class="nav-pill" href="#formula">Formula</a>
-<a class="nav-pill" href="#evidence">Evidence</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
 
 <main class="container">
 
-<!-- WHEN TO USE -->
-<section class="section" id="when">
-<div class="section-tag">When to Use</div>
-<h2>When to Use This Calculator</h2>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Enter the current measured serum Na⁺ in mEq/L from the most recent lab (100–145 mEq/L).</li>
+<li>Select <strong>duration</strong>: Chronic or unknown (&gt;48 h) vs. confirmed acute (&lt;48 h). When in doubt, select chronic — the safer default.</li>
+<li>Select whether any <strong>high-ODS risk factors</strong> are present: alcohol use disorder, malnutrition, serum K⁺ &lt; 3.0 mEq/L, liver disease (cirrhosis), or Na⁺ &lt; 105 mEq/L at baseline.</li>
+<li>Click <strong>Calculate Correction Targets</strong> to see the maximum Na⁺ values at 24 h and 48 h, plus the per-hour rate limit.</li>
+<li>Use the 24-h and 48-h target values as hard ceilings. If any infusion rate would push sodium above these targets, reduce the infusion rate or switch to isotonic saline.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
 <p>Use this tool when managing a patient with hyponatremia (serum Na⁺ &lt; 135 mEq/L) who requires active sodium correction. It computes the maximum safe correction targets at 24 and 48 hours to prevent osmotic demyelination syndrome (ODS), formerly called central pontine myelinolysis.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
@@ -450,17 +478,44 @@
 <p>In acute symptomatic hyponatremia (seizures, respiratory arrest, coma) with onset clearly within 48 hours, faster initial correction of +4–6 mEq/L in the first hour using 3% NaCl 150 mL IV is appropriate regardless of this calculator's output. Do not use this calculator to authorize correction faster than 10 mEq/L per 24 hours without direct expert guidance.</p>
 </div>
 </div>
-</section>
+</div>
+</details>
 
-<!-- WHY USE IT -->
-<section class="section" id="why">
-<div class="section-tag">Why Use It</div>
-<h2>Why It Matters</h2>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>When in doubt, treat as chronic</h4>
+<p>Duration is often uncertain in outpatient or community presentations. Treating an acute hyponatremia as chronic means a slightly slower correction — a small trade-off for avoiding catastrophic ODS. The consequences of over-correction are irreversible; the consequences of slower correction are almost always manageable.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Monitor sodium frequently during active correction</h4>
+<p>Check serum sodium every 2–4 hours during any active correction strategy, especially when using hypertonic saline or when a patient unexpectedly reverses SIADH (e.g., after stopping a causative drug or treating pain). Auto-correction is a real risk — the patient's own kidneys may excrete dilute urine faster than expected once the precipitant resolves, causing the sodium to rise without any infusion change.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Never use this calculator to justify rapid correction "because the duration is uncertain" — when uncertain, always choose the chronic path. (2) Hypokalemia potentiates ODS independently — correct potassium concurrently; potassium infusion itself raises serum sodium via the Gibbs–Donnan effect (1 mEq K⁺ replaces ~1 mEq of Na⁺ shift). (3) If sodium rises faster than planned, do not wait for the next check — act immediately with DDAVP and free water. (4) This calculator does not compute infusion rates or the Adrogue–Madias formula for predicting the effect of a specific fluid; it computes ceilings only.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
 <p>Overcorrection of chronic hyponatremia is one of the most feared iatrogenic neurological injuries in hospital medicine. When serum sodium has been chronically low, brain cells compensate by losing organic osmolytes over 24–48 hours. Rapid re-elevation of serum sodium pulls water out of those cells faster than they can replenish osmolytes, causing osmotic demyelination — a demyelinating injury affecting the pons and extrapontine sites that produces dysarthria, dysphagia, paraparesis, and the locked-in syndrome. ODS is largely irreversible. The threshold of harm is correction exceeding 10–12 mEq/L in 24 hours in the general population and 6 mEq/L in 24 hours in the highest-risk group (alcohol use disorder, malnutrition, hypokalemia, liver disease, or baseline Na⁺ &lt; 105 mEq/L).</p>
 <p>Conversely, under-correction of acute symptomatic hyponatremia leaves the patient at risk of cerebral edema, herniation, and death. This calculator navigates both failure modes by stratifying risk and providing concrete target numbers.</p>
-</section>
+</div>
+</details>
 
-<!-- CALCULATOR -->
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Na⁺ Correction Rate Estimator</h2>
@@ -495,24 +550,23 @@
 </div>
 </section>
 
-<!-- INSTRUCTIONS -->
-<section class="section" id="instructions">
-<div class="section-tag">How to Use</div>
-<h2>Instructions</h2>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Enter the current measured serum Na⁺ in mEq/L from the most recent lab (100–145 mEq/L).</li>
-<li>Select <strong>duration</strong>: Chronic or unknown (&gt;48 h) vs. confirmed acute (&lt;48 h). When in doubt, select chronic — the safer default.</li>
-<li>Select whether any <strong>high-ODS risk factors</strong> are present: alcohol use disorder, malnutrition, serum K⁺ &lt; 3.0 mEq/L, liver disease (cirrhosis), or Na⁺ &lt; 105 mEq/L at baseline.</li>
-<li>Click <strong>Calculate Correction Targets</strong> to see the maximum Na⁺ values at 24 h and 48 h, plus the per-hour rate limit.</li>
-<li>Use the 24-h and 48-h target values as hard ceilings. If any infusion rate would push sodium above these targets, reduce the infusion rate or switch to isotonic saline.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</section>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
 
-<!-- FORMULA -->
-<section class="section" id="formula">
-<div class="section-tag">Formula</div>
-<h2>Formula &amp; Correction Limits</h2>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
 <table class="lab-table">
 <thead><tr><th>Condition</th><th>Max correction per 24 h</th><th>Max correction per 48 h</th></tr></thead>
 <tbody>
@@ -531,12 +585,7 @@
 <tr><td>Overcorrection detected</td><td>Desmopressin 1–2 mcg IV/SC + 3–5 mL/kg D5W over 1–2 h</td><td>Re-lower sodium to below the daily ceiling</td></tr>
 </tbody>
 </table>
-</section>
-
-<!-- EVIDENCE & REFERENCES -->
-<section class="section" id="evidence">
-<div class="section-tag">Evidence &amp; References</div>
-<h2>Evidence &amp; References</h2>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The correction-rate limits derive from retrospective and prospective case series linking rapid correction to ODS and from the landmark 2014 European clinical practice guideline (Spasovski et al.) and the 2015 NEJM review by Sterns. The Adrogué–Madias 2000 NEJM review remains the standard reference for pathophysiology and management targets. The high-risk 6 mEq/L ceiling is supported by multiple case series showing ODS events at rates below 10 mEq/24 h in patients with alcohol use disorder, malnutrition, and severe hypokalemia.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Adrogué HJ, Madias NE. Hyponatremia. <em>N Engl J Med.</em> 2000;342(21):1581–1589.</li>
@@ -544,34 +593,8 @@
 <li>Spasovski G, Vanholder R, Allolio B, et al. Clinical practice guideline on diagnosis and treatment of hyponatraemia. <em>Eur J Endocrinol.</em> 2014;170(3):G1–G47.</li>
 <li>Sterns RH, Hix JK, Silver SM. Treating profound hyponatremia: a strategy for controlled correction. <em>Am J Kidney Dis.</em> 2010;56(4):774–779.</li>
 </ol>
-</section>
-
-<!-- PEARLS & PITFALLS -->
-<section class="section" id="pearls">
-<div class="section-tag">Pearls &amp; Pitfalls</div>
-<h2>Pearls &amp; Pitfalls</h2>
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>When in doubt, treat as chronic</h4>
-<p>Duration is often uncertain in outpatient or community presentations. Treating an acute hyponatremia as chronic means a slightly slower correction — a small trade-off for avoiding catastrophic ODS. The consequences of over-correction are irreversible; the consequences of slower correction are almost always manageable.</p>
 </div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Monitor sodium frequently during active correction</h4>
-<p>Check serum sodium every 2–4 hours during any active correction strategy, especially when using hypertonic saline or when a patient unexpectedly reverses SIADH (e.g., after stopping a causative drug or treating pain). Auto-correction is a real risk — the patient's own kidneys may excrete dilute urine faster than expected once the precipitant resolves, causing the sodium to rise without any infusion change.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Never use this calculator to justify rapid correction "because the duration is uncertain" — when uncertain, always choose the chronic path. (2) Hypokalemia potentiates ODS independently — correct potassium concurrently; potassium infusion itself raises serum sodium via the Gibbs–Donnan effect (1 mEq K⁺ replaces ~1 mEq of Na⁺ shift). (3) If sodium rises faster than planned, do not wait for the next check — act immediately with DDAVP and free water. (4) This calculator does not compute infusion rates or the Adrogue–Madias formula for predicting the effect of a specific fluid; it computes ceilings only.</p>
-</div>
-</div>
-</section>
+</details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator provides safe upper limits for sodium correction in hyponatremia, not infusion rate instructions. All decisions regarding hypertonic saline, fluid choice, and rate must involve direct physician judgment and frequent laboratory monitoring. Do not initiate or modify correction strategy based on this tool alone without clinical assessment.</div>
 
