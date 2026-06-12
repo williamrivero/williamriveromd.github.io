@@ -1343,6 +1343,7 @@ body.dark .related-card-title {
     <a class="nav-pill" href="#red-flags">Red Flags</a>
     <a class="nav-pill" href="#calculator">Calculator</a>
     <a class="nav-pill" href="#bp-log">📋 BP Log</a>
+    <a class="nav-pill" href="#symptom-checker">🩺 Symptom Checker</a>
     <a class="nav-pill" href="#faq">FAQ</a>
   </div>
 </nav>
@@ -2051,10 +2052,10 @@ body.dark .related-card-title {
     <span data-lang="kap" class="lang-hidden">Kagamitan para king Pasyente</span>
   </div>
   <h2>
-    <span data-lang="en">7-Day Blood Pressure Monitoring Log</span>
-    <span data-lang="tl" class="lang-hidden">7-Araw na Talaan ng Presyon ng Dugo</span>
-    <span data-lang="ceb" class="lang-hidden">7-Adlaw nga Talaan sa Presyon sa Dugo</span>
-    <span data-lang="kap" class="lang-hidden">7-Aldo Talaan ning Presyon ning Daya</span>
+    <span data-lang="en">14-Day Blood Pressure Monitoring Log</span>
+    <span data-lang="tl" class="lang-hidden">14-Araw na Talaan ng Presyon ng Dugo</span>
+    <span data-lang="ceb" class="lang-hidden">14-Adlaw nga Talaan sa Presyon sa Dugo</span>
+    <span data-lang="kap" class="lang-hidden">14-Aldo Talaan ning Presyon ning Daya</span>
   </h2>
   <p>
     <span data-lang="en">Fill in your AM and evening readings directly in the log below. Averages calculate automatically and the trend chart updates as you type — print or save as PDF to bring to your next consultation.</span>
@@ -2087,6 +2088,53 @@ body.dark .related-card-title {
       </div>
     </div>
     <iframe class="log-widget-frame" id="bpFrame" data-src="bp-monitoring-log.html" height="1500" title="7-Day Blood Pressure Monitoring Log"></iframe>
+  </div>
+</section>
+
+<section class="section" id="symptom-checker">
+  <div class="section-tag">
+    <span data-lang="en">Interactive Tool</span>
+    <span data-lang="tl" class="lang-hidden">Interactive na Kagamitan</span>
+    <span data-lang="ceb" class="lang-hidden">Interactive nga Himan</span>
+    <span data-lang="kap" class="lang-hidden">Interactive a Kagamitan</span>
+  </div>
+  <h2>
+    <span data-lang="en">Symptom Checker — When to Worry</span>
+    <span data-lang="tl" class="lang-hidden">Symptom Checker — Kailan Mag-aalala</span>
+    <span data-lang="ceb" class="lang-hidden">Symptom Checker — Kanus-a Mag-alala</span>
+    <span data-lang="kap" class="lang-hidden">Symptom Checker — Nung Kailan Mag-aalala</span>
+  </h2>
+  <p>
+    <span data-lang="en">Use this interactive tool to check your current symptoms and get an instant triage recommendation — whether to go to the ER, seek urgent care, or manage at your next scheduled visit.</span>
+    <span data-lang="tl" class="lang-hidden">Gamitin ang interactive na kasangkapan na ito para suriin ang inyong mga kasalukuyang sintomas at makakuha ng agarang rekomendasyon — kung pumunta sa ER, humingi ng agarang pag-aalaga, o pangasiwaan sa inyong susunod na nakatakdang pagbisita.</span>
+    <span data-lang="ceb" class="lang-hidden">Gamitin kining interactive nga himan aron susihon ang inyong karon nga mga sintomas ug makakuha og dayong rekomendasyon sa triage — kon moadto sa ER, mangita og dali nga pag-atiman, o dumalaon sa inyong sunod nga giskedyulan nga pagbisita.</span>
+    <span data-lang="kap" class="lang-hidden">Gamitin ing interactive a kasangkapan a ini para suriin ing inyu kasalukuyang deng sintomas at makakuha ning agarang rekomendasyon — nung pumunta king ER, humingi ning agarang pag-aalaga, o pangasiwaan king inyu susunod a nakatakdang pagbisita.</span>
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+    <button type="button" class="hout-dl-btn" onclick="toggleSymptomWidget()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <span data-lang="en">Open Symptom Checker</span>
+      <span data-lang="tl" class="lang-hidden">Buksan ang Symptom Checker</span>
+      <span data-lang="ceb" class="lang-hidden">Ablihi ang Symptom Checker</span>
+      <span data-lang="kap" class="lang-hidden">Buksan ing Symptom Checker</span>
+    </button>
+    <a href="symptom-checker.html" target="_blank" class="hout-dl-btn" style="background:transparent;border:2px solid var(--teal);color:var(--teal);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span data-lang="en">Open in Full Page</span>
+      <span data-lang="tl" class="lang-hidden">Buksan sa Buong Pahina</span>
+      <span data-lang="ceb" class="lang-hidden">Ablihi sa Tibuok Pahina</span>
+      <span data-lang="kap" class="lang-hidden">Buksan king Buong Pahina</span>
+    </a>
+  </div>
+
+  <div class="log-widget-wrap lw-hidden" id="symptomWidget" style="margin-top:16px;">
+    <div class="log-widget-header" onclick="symptomHeaderClick(event)">
+      <span class="lw-title">🩺 <span data-lang="en">Symptom Checker — When to Worry</span><span data-lang="tl" class="lang-hidden">Symptom Checker — Kailan Mag-aalala</span><span data-lang="ceb" class="lang-hidden">Symptom Checker — Kanus-a Mag-alala</span><span data-lang="kap" class="lang-hidden">Symptom Checker — Nung Kailan Mag-aalala</span></span>
+      <div class="lw-actions">
+        <span class="lw-close" title="Close">✕</span>
+      </div>
+    </div>
+    <iframe class="log-widget-frame" id="symptomFrame" data-src="symptom-checker.html" height="1600" title="Symptom Checker — When to Worry"></iframe>
   </div>
 </section>
 
@@ -2244,12 +2292,12 @@ body.dark .related-card-title {
     <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
   </svg>
 </button>
-<button class="download-btn" onclick="window.open('bp-monitoring-log.html','_blank')" aria-label="Open BP monitoring log">
+<a class="dl-fab" href="bp-log-blank.html" target="_blank" aria-label="Download Handout PDF">
   <span class="p-tip">Download Handout PDF</span>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
   </svg>
-</button>
+</a>
 <script>
 const LANG_KEY='wgmr-lang';
 function setLang(lang){
@@ -2367,6 +2415,19 @@ function toggleBPWidget() {
 function bpHeaderClick(e) {
   if (e.target.closest('.lw-icon-btn')) return;
   toggleBPWidget();
+}
+function toggleSymptomWidget() {
+  var wrap = document.getElementById('symptomWidget');
+  var frame = document.getElementById('symptomFrame');
+  var hidden = wrap.classList.toggle('lw-hidden');
+  if (!hidden && !frame.getAttribute('src')) {
+    frame.src = frame.getAttribute('data-src');
+  }
+  if (!hidden) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function symptomHeaderClick(e) {
+  if (e.target.closest('.lw-icon-btn')) return;
+  toggleSymptomWidget();
 }
 function printBPLog() {
   var f = document.getElementById('bpFrame');
