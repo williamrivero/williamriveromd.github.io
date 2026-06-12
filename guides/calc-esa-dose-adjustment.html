@@ -762,7 +762,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 
 <div class="mdc-instructions" id="instructions"><span class="mdc-instr-label">Instructions</span>
 <ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Select the <strong>ESA agent</strong> — Epoetin alfa (units/week) or Darbepoetin alfa (mcg/week).</li>
+<li>Select the <strong>ESA agent</strong> — Epoetin alfa or beta (units/week), Darbepoetin alfa (mcg/week), or CERA / methoxy PEG-epoetin beta (Mircera, mcg/month).</li>
 <li>Enter the <strong>current hemoglobin</strong> (g/dL) from today's labs.</li>
 <li>Enter the <strong>Hgb change</strong> over the last 2–4 weeks (negative if falling; e.g., −0.5 if Hgb dropped 0.5 g/dL).</li>
 <li>Enter the <strong>current ESA dose</strong> in the units appropriate to the selected agent.</li>
@@ -816,7 +816,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <ul>
 <li>Do not increase the dose more often than every 4 weeks — less-frequent adjustments allow the Hgb response to fully manifest before the next change.</li>
 <li>If there is no Hgb response after a 25% dose increase, evaluate for ESA hyporesponsiveness: iron deficiency (most common), active infection or inflammation, hyperparathyroidism (PTH &gt;500 pg/mL in HD), aluminum toxicity, or occult blood loss.</li>
-<li>Epoetin alfa dosing is typically 3×/week in HD; darbepoetin alfa is dosed weekly or every 2 weeks. This calculator works in units/week or mcg/week — convert your per-visit dose if needed.</li>
+<li>Epoetin alfa/beta are typically dosed 1–3×/week (HD); darbepoetin alfa weekly or every 2 weeks; CERA (Mircera) has a long half-life (~130 h) and is usually given every 2–4 weeks or monthly. Convert your per-visit dose to the displayed unit (weekly for epoetin/darbepoetin, monthly for CERA); titrate longer-acting agents (darbepoetin, CERA) less frequently and more cautiously.</li>
 <li>Unit protocols vary widely — this output is a guide, not a standing order. Physician confirmation is required.</li>
 </ul>
 </div>
@@ -835,7 +835,9 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <select id="esa-agent" onchange="calcESA()">
 <option value="">Select agent…</option>
 <option value="epoetin">Epoetin alfa (units/week)</option>
+<option value="epoetin-beta">Epoetin beta (units/week)</option>
 <option value="darbepoetin">Darbepoetin alfa (mcg/week)</option>
+<option value="cera">CERA — methoxy PEG-epoetin beta / Mircera (mcg/month)</option>
 </select>
 <div class="field-hint">Selects the dose unit displayed in results.</div>
 </div>
@@ -1026,12 +1028,18 @@ function calcESA() {
   if (agent === 'epoetin') {
     doseLabel.textContent = 'Current Epoetin Alfa Dose (units/week)';
     doseHint.textContent  = 'Total weekly dose in units. e.g. HD patients: 3×/week → sum to get weekly total.';
+  } else if (agent === 'epoetin-beta') {
+    doseLabel.textContent = 'Current Epoetin Beta Dose (units/week)';
+    doseHint.textContent  = 'Total weekly dose in units (e.g. NeoRecormon). If dosed less often, convert to a weekly total.';
   } else if (agent === 'darbepoetin') {
     doseLabel.textContent = 'Current Darbepoetin Alfa Dose (mcg/week)';
     doseHint.textContent  = 'Weekly dose in mcg. If dosed every 2 weeks, divide by 2 for weekly equivalent.';
+  } else if (agent === 'cera') {
+    doseLabel.textContent = 'Current CERA Dose (mcg/month)';
+    doseHint.textContent  = 'Methoxy PEG-epoetin beta (Mircera) dose per month. Long half-life — maintenance is usually given monthly (or every 2 weeks).';
   } else {
-    doseLabel.textContent = 'Current ESA Dose (units or mcg/week)';
-    doseHint.textContent  = 'Epoetin: units/week (e.g. 6000). Darbepoetin: mcg/week (e.g. 20).';
+    doseLabel.textContent = 'Current ESA Dose';
+    doseHint.textContent  = 'Select an agent above to set the dose unit.';
   }
 
   // Require all fields
@@ -1041,8 +1049,8 @@ function calcESA() {
   }
 
   var isDark     = document.documentElement.getAttribute('data-theme') === 'dark';
-  var doseUnit   = agent === 'epoetin' ? 'units/week' : 'mcg/week';
-  var agentLabel = agent === 'epoetin' ? 'Epoetin alfa' : 'Darbepoetin alfa';
+  var doseUnit   = (agent === 'epoetin' || agent === 'epoetin-beta') ? 'units/week' : (agent === 'cera' ? 'mcg/month' : 'mcg/week');
+  var agentLabel = agent === 'epoetin' ? 'Epoetin alfa' : (agent === 'epoetin-beta' ? 'Epoetin beta' : (agent === 'cera' ? 'CERA (Mircera)' : 'Darbepoetin alfa'));
 
   // --- Decision algorithm ---
   var action, newDose, actionSub, borderColor, bg, valColor, verdict, actionDetail;
