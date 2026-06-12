@@ -1235,6 +1235,35 @@ body.dark .related-card-title {
   }
 }
 </script>
+<style id="calc-filter-style">
+.calc-layout{display:grid;grid-template-columns:236px 1fr;gap:26px;align-items:start;margin-top:6px;}
+.calc-filter{position:sticky;top:70px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 12px;max-height:calc(100vh - 90px);overflow-y:auto;}
+.cf-search-wrap{position:relative;margin-bottom:12px;}
+.cf-search{width:100%;padding:9px 12px 9px 32px;border:1px solid var(--border);border-radius:8px;font:inherit;font-size:.9rem;background:var(--bg);color:var(--text);}
+.cf-search:focus{outline:none;border-color:var(--teal);}
+.cf-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.9rem;pointer-events:none;}
+.cf-heading{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);margin:4px 6px 6px;}
+.cf-btn{display:flex;align-items:center;gap:9px;width:100%;background:none;border:none;padding:7px 10px;border-radius:8px;cursor:pointer;font:inherit;font-size:.92rem;color:var(--text-mid);text-align:left;}
+.cf-btn:hover{background:var(--bg);}
+.cf-btn.active{background:var(--teal-light);color:var(--teal);font-weight:600;}
+.cf-dot{width:9px;height:9px;border-radius:50%;flex:none;}
+.cf-count{margin-left:auto;font-size:.76rem;color:var(--text-muted);background:var(--bg);border-radius:10px;padding:1px 8px;}
+.cf-btn.active .cf-count{background:rgba(26,107,114,.14);color:var(--teal);}
+.calc-no-results{display:none;padding:34px 10px;text-align:center;color:var(--text-muted);font-size:.95rem;}
+html[data-theme="dark"] .calc-filter{background:var(--white);border-color:var(--border);}
+html[data-theme="dark"] .cf-btn.active{color:var(--teal);}
+.container{max-width:1140px;}
+#intro{max-width:920px;margin-left:auto;margin-right:auto;}
+.hero-sub{max-width:780px;}
+@media(max-width:760px){
+  .calc-layout{grid-template-columns:1fr;gap:14px;}
+  .calc-filter{position:sticky;top:56px;z-index:50;display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;max-height:none;padding:10px 12px;border-radius:0;border-left:0;border-right:0;-webkit-overflow-scrolling:touch;}
+  .calc-filter::-webkit-scrollbar{display:none;}
+  .cf-search-wrap,.cf-heading,.cf-dot,.cf-count{display:none;}
+  .cf-btn{width:auto;white-space:nowrap;flex:none;border:1px solid var(--border);border-radius:20px;padding:6px 13px;}
+  .cf-btn.active{border-color:var(--teal);}
+}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -1272,23 +1301,6 @@ body.dark .related-card-title {
 <p style="margin:14px 0 0;font-size:.9rem;"><a href="/guides/" style="color:var(--gold-light);text-decoration:none;">← All guides</a></p>
 </div>
 </section>
-<nav class="nav-strip">
-<div class="nav-pills">
-<a class="nav-pill" href="#function">Kidney Function</a>
-<a class="nav-pill" href="#risk">CKD Risk</a>
-<a class="nav-pill" href="#dialysis">Dialysis</a>
-<a class="nav-pill" href="#electrolytes">Electrolytes &amp; Acid–Base</a>
-<a class="nav-pill" href="#minerals">Minerals · Anemia · Iron</a>
-<a class="nav-pill" href="#cardiometabolic">Cardiometabolic</a>
-<a class="nav-pill" href="#endocrine">Endocrine</a>
-<a class="nav-pill" href="#nutrition">Nutrition &amp; Lifestyle</a>
-<a class="nav-pill" href="#geriatric">Geriatric</a>
-<a class="nav-pill" href="#screening">Screening &amp; Scores</a>
-<a class="nav-pill" href="#proms">PROMs</a>
-<a class="nav-pill" href="#stones">Stones</a>
-<a class="nav-pill" href="#infection">Infection AKI</a>
-</div>
-</nav>
 <main class="container">
 
 <section class="section" id="intro">
@@ -1297,6 +1309,26 @@ body.dark .related-card-title {
 </div>
 </section>
 
+<div class="calc-layout">
+<aside class="calc-filter">
+<div class="cf-search-wrap"><span class="cf-search-icon">⌕</span><input type="search" id="cf-search" class="cf-search" placeholder="Search calculators…" autocomplete="off" aria-label="Search calculators"></div>
+<div class="cf-heading">Categories</div>
+<button class="cf-btn active" data-filter="all"><span class="cf-dot" style="background:#94a3b8"></span>All tools<span class="cf-count">47</span></button>
+<button class="cf-btn" data-filter="function"><span class="cf-dot" style="background:#1a6b72"></span>Kidney Function<span class="cf-count">5</span></button>
+<button class="cf-btn" data-filter="risk"><span class="cf-dot" style="background:#b45309"></span>CKD Risk<span class="cf-count">5</span></button>
+<button class="cf-btn" data-filter="dialysis"><span class="cf-dot" style="background:#1f3864"></span>Dialysis<span class="cf-count">3</span></button>
+<button class="cf-btn" data-filter="electrolytes"><span class="cf-dot" style="background:#6b21a8"></span>Electrolytes & Acid–Base<span class="cf-count">5</span></button>
+<button class="cf-btn" data-filter="minerals"><span class="cf-dot" style="background:#b91c1c"></span>Minerals · Anemia · Iron<span class="cf-count">4</span></button>
+<button class="cf-btn" data-filter="cardiometabolic"><span class="cf-dot" style="background:#be185d"></span>Cardiometabolic<span class="cf-count">3</span></button>
+<button class="cf-btn" data-filter="endocrine"><span class="cf-dot" style="background:#0e7490"></span>Endocrine<span class="cf-count">4</span></button>
+<button class="cf-btn" data-filter="nutrition"><span class="cf-dot" style="background:#166534"></span>Nutrition & Lifestyle<span class="cf-count">4</span></button>
+<button class="cf-btn" data-filter="geriatric"><span class="cf-dot" style="background:#78350f"></span>Geriatric<span class="cf-count">2</span></button>
+<button class="cf-btn" data-filter="screening"><span class="cf-dot" style="background:#4338ca"></span>Screening & Scores<span class="cf-count">6</span></button>
+<button class="cf-btn" data-filter="proms"><span class="cf-dot" style="background:#9d174d"></span>PROMs<span class="cf-count">2</span></button>
+<button class="cf-btn" data-filter="stones"><span class="cf-dot" style="background:#a16207"></span>Stones<span class="cf-count">2</span></button>
+<button class="cf-btn" data-filter="infection"><span class="cf-dot" style="background:#0f766e"></span>Infection AKI<span class="cf-count">2</span></button>
+</aside>
+<div class="calc-results">
 <section class="section" id="function">
 <div class="section-tag">Kidney Function & GFR</div>
 <h2>Kidney Function &amp; GFR</h2>
@@ -1670,6 +1702,10 @@ body.dark .related-card-title {
 </div>
 </section>
 
+<div class="calc-no-results" id="calc-no-results">No calculators match your search. <a href="#" onclick="document.getElementById('cf-search').value='';return false;" style="color:var(--teal);">Clear</a></div>
+</div>
+</div>
+
 <div class="disclaimer"><strong>Important:</strong> These calculators are educational aids and do not replace clinical judgment, examination, or the advice of your own physician. Reference ranges and thresholds follow current KDIGO/KDOQI and specialty guidelines but must be applied in clinical context. More tools from the guide library are being added to this index over time.</div>
 
 </main>
@@ -1925,5 +1961,38 @@ function calcMBD() {
 <script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
 <script src="../assets/image-lightbox.js" defer></script>
+<script>
+(function(){
+  const btns=document.querySelectorAll('.cf-btn');
+  const search=document.getElementById('cf-search');
+  const sections=document.querySelectorAll('.calc-results > section.section');
+  const noRes=document.getElementById('calc-no-results');
+  let cat='all';
+  function apply(){
+    const q=(search&&search.value||'').trim().toLowerCase();
+    let anyVisible=false;
+    sections.forEach(function(sec){
+      const catMatch=(cat==='all'||cat===sec.id);
+      let secVisible=false;
+      sec.querySelectorAll('.related-card').forEach(function(card){
+        const m=catMatch&&(!q||card.textContent.toLowerCase().indexOf(q)!==-1);
+        card.style.display=m?'':'none';
+        if(m)secVisible=true;
+      });
+      sec.style.display=secVisible?'':'none';
+      if(secVisible)anyVisible=true;
+    });
+    if(noRes)noRes.style.display=anyVisible?'none':'block';
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    btns.forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    cat=b.getAttribute('data-filter');
+    if(window.matchMedia('(max-width:760px)').matches)b.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+    apply();
+  });});
+  if(search)search.addEventListener('input',apply);
+})();
+</script>
 </body>
 </html>
