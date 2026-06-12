@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sodium Intake Estimator (Filipino Foods) – W. G. M. Rivero, MD</title>
+<meta name="description" content="Interactive sodium intake estimator for Filipino foods — tally pandesal, adobo, patis, toyo, sinigang, and more against the 2,000 mg CKD daily target. With evidence and reduction tips.">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-sodium-intake.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="Sodium Intake Estimator (Filipino Foods)">
+<meta property="og:description" content="Interactive sodium intake estimator for Filipino foods — tally pandesal, adobo, patis, toyo, sinigang, and more against the 2,000 mg CKD daily target.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-sodium-intake.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/sodium-salt-reduction-overview.png">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sodium Intake Estimator (Filipino Foods)">
+<meta name="twitter:description" content="Tally your daily sodium from common Filipino foods and see how close you are to the CKD 2,000 mg target.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/sodium-salt-reduction-overview.png">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;
+    --purple-soft:#faf5ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; font-size: 16px; }
+  .site-header { display: flex; align-items: center; justify-content: space-between; height: 56px; box-sizing: border-box; padding: 0 32px; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 200; }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+  .guide-lang-bar { display: flex; align-items: center; gap: 8px; padding: 8px 32px; background: rgba(10,18,32,.96); border-bottom: 1px solid rgba(255,255,255,.06); flex-wrap: wrap; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s; }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .guide-toggle-bar { display: flex; gap: 8px; align-items: center; padding: 6px 32px; background: rgba(10,18,32,.96) !important; border-bottom: 1px solid rgba(255,255,255,.08) !important; justify-content: space-between; flex-wrap: wrap; }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  [data-lang].lang-hidden { display: none !important; }
+  .hero { background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%); color: white; padding: 72px 0 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px, 5vw, 50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section h3 { font-family: 'Lora', serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; }
+  .lab-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .lab-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); padding: 10px 14px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .lab-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; line-height: 1.5; }
+  .lab-table td:first-child { font-weight: 600; color: var(--navy); }
+  .lab-table tr:last-child td { border-bottom: none; }
+  .lab-table tr:hover td { background: var(--bg); }
+  /* Sodium calculator styles */
+  .calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .calc-row { display: grid; grid-template-columns: 1fr 110px; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .calc-row:last-of-type { border-bottom: 0; }
+  .calc-row label { font-size: 14px; color: var(--text-mid); font-weight: 500; }
+  .calc-row label .meta { display: block; font-size: 11.5px; color: var(--text-faint); font-weight: 400; margin-top: 2px; }
+  .calc-row input { width: 100%; padding: 9px 12px; font-family: inherit; font-size: 14px; border: 1px solid var(--border); border-radius: 8px; text-align: right; background: white; }
+  .calc-row input:focus { outline: none; border-color: var(--teal); }
+  .calc-result { margin-top: 24px; padding: 24px; background: white; border-radius: 12px; border: 2px solid var(--border); text-align: center; transition: border-color .3s; }
+  .calc-result.under { border-color: var(--green); }
+  .calc-result.near  { border-color: #d97706; }
+  .calc-result.over  { border-color: var(--red); }
+  .calc-result.under .calc-result-num { color: var(--green); }
+  .calc-result.near  .calc-result-num { color: #d97706; }
+  .calc-result.over  .calc-result-num { color: var(--red); }
+  .calc-result-num { font-family: 'Lora', serif; font-size: 48px; font-weight: 600; line-height: 1; color: var(--navy); }
+  .calc-result-label { font-size: 13px; color: var(--text-muted); margin-top: 6px; letter-spacing: .04em; text-transform: uppercase; }
+  .calc-bar { height: 10px; background: var(--border); border-radius: 5px; margin-top: 18px; overflow: hidden; position: relative; }
+  .calc-bar-fill { height: 100%; background: var(--green); border-radius: 5px; transition: width .4s, background-color .4s; }
+  .calc-bar-fill.near { background: #d97706; }
+  .calc-bar-fill.over { background: var(--red); }
+  .calc-bar-target { position: absolute; top: -4px; width: 2px; height: 18px; background: var(--navy); }
+  .calc-verdict { margin-top: 18px; font-size: 15px; line-height: 1.65; color: var(--text-mid); }
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 0; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .related-card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s; }
+  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
+  .related-card-tag { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+  .related-card-desc { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
+  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; border: none; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .print-btn { position: fixed; bottom: 80px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s; z-index: 9998; }
+  .print-btn:hover { background: #162848; transform: scale(1.1); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip { position: absolute; left: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .print-btn:hover .p-tip { opacity: 1; }
+  .scroll-top-btn { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, opacity .2s; z-index: 9996; opacity: 0; pointer-events: none; }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip { position: absolute; right: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+  html[data-theme="dark"] { --teal: #2ba8b0; --teal-light: #0a2830; --text: #e8eaf0; --text-mid: #dde3eb; --text-muted: #9baab8; --bg: #141c2a; --white: #1a2030; --border: #2a3548; --red: #f87171; --red-soft: #2a1515; --amber: #fbbf24; --amber-soft: #2a1900; --green: #4ade80; --green-soft: #0e2a1c; }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .calc-wrap { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .calc-row input, html[data-theme="dark"] .calc-result { background: #0a121e; color: #e8eaf0; border-color: #2a3548; }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .lab-table th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .lab-table td { border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  @media(max-width: 480px) { .container { padding: 0 20px; } .related-guides { padding-left: 20px; padding-right: 20px; } .guide-footer .footer-inner { padding: 0 20px; } .dr-card { flex-direction: column; padding: 24px; gap: 16px; } .dr-card-wrap { padding: 0 20px 40px; } }
+  @media print { .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .scroll-top-btn, .guide-footer { display: none !important; } body { font-size: 13px; color: #000; background: #fff; } .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; } .hero h1 { color: #1f3864 !important; font-size: 22px !important; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Sodium Intake Estimator (Filipino Foods)",
+  "url": "https://www.williamriveromd.com/guides/calc-sodium-intake.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH"
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
+</header>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Diet &amp; Nutrition</div>
+<h1>Sodium Intake Estimator <em>Filipino Foods · CKD Target · Daily Tally</em></h1>
+<p class="hero-sub">Add up servings of your typical Filipino foods — pandesal, sinigang, adobo, patis, toyo, instant noodles, canned meats — and see your estimated daily sodium against the 2,000 mg CKD target. The number is usually a surprise.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+<span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" style="color:var(--gold-light);text-decoration:none;">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="sodium-salt-reduction-ckd.html" style="color:var(--gold-light);text-decoration:none;">Full Sodium Reduction guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#instructions">How to Use</a>
+<a class="nav-pill" href="#formula">Formula</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- WHEN TO USE -->
+<section class="section" id="when">
+<div class="section-tag">When to Use</div>
+<h2>When to Use This Calculator</h2>
+<p>Use this tool any time you want to understand how much sodium you are consuming from typical Filipino meals. It is especially useful for patients with CKD, hypertension, heart failure, or edema who have been advised to limit sodium but are unsure which foods are the largest contributors.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Appropriate population</h4>
+<p>Adults with CKD (any stage), hypertension, edema, or heart failure who have been counseled on a sodium-restricted diet. Also useful for family members who prepare meals for a patient. Most relevant for Filipinos eating a traditional diet — the food items are calibrated to Philippine commercial product values and standard carinderia portions.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>Limitations to keep in mind</h4>
+<p>This is an estimator, not a precise laboratory measurement. Sodium content varies by brand, recipe, and portion size. A carinderia sinigang may have more or less than the reference value depending on how many sinigang-mix packets were used. Use this as a planning tool to identify your highest-sodium habits — not as an exact daily measurement. For precise dietary analysis, a registered nutritionist-dietitian consultation is recommended.</p>
+</div>
+</div>
+</section>
+
+<!-- WHY USE IT -->
+<section class="section" id="why">
+<div class="section-tag">Why Use It</div>
+<h2>Why It Matters</h2>
+<p>Most Filipinos consume 3,000–5,000 mg of sodium per day — two to three times the 2,000 mg CKD target and well above the WHO recommended maximum of 2,000 mg for any adult. The principal sources are not the salt shaker: they are the hidden sodium in condiments (patis at 1,420 mg per tablespoon, toyo at 900 mg per tablespoon), seasoning packets (Knorr cubes at ~1,400 mg each, Magic Sarap sachets, sinigang mixes at ~1,500 mg per packet), and processed meats (Spam, corned beef, tocino, longganisa). A single fast-food meal delivers roughly 1,000 mg. A patient who eats two tablespoons of patis and a bowl of sinigang with a sinigang-mix packet for lunch has already consumed more than 4,000 mg — twice the daily target — before dinner. Sodium reduction of just 1–2 g/day lowers systolic blood pressure by 3–8 mmHg and reduces proteinuria by 20–30% independently of antihypertensive medications. For dialysis patients, each gram of sodium consumed retains approximately 200 mL of fluid, directly increasing the interdialytic weight gain.</p>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>Add up a typical day. The number is usually a surprise.</h2>
+<p>Enter the number of servings of each food you typically eat in a day (use 0 if you do not eat it). The total updates live and is compared against the standard 2,000 mg CKD target.</p>
+<div class="calc-wrap">
+  <div class="calc-row">
+    <label>Pandesal or sliced bread <span class="meta">120 mg per piece</span></label>
+    <input type="number" id="c-bread" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+  <div class="calc-row">
+    <label>Plate of pancit canton (carinderia or instant) <span class="meta">1,720 mg per serving</span></label>
+    <input type="number" id="c-pancit" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+  <div class="calc-row">
+    <label>Bowl of sinigang (with sinigang mix) <span class="meta">1,500 mg per bowl</span></label>
+    <input type="number" id="c-sinigang" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+  <div class="calc-row">
+    <label>Cup of adobo <span class="meta">1,200 mg per cup</span></label>
+    <input type="number" id="c-adobo" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+  <div class="calc-row">
+    <label>Tablespoons of patis (dipping or cooking) <span class="meta">1,420 mg per tbsp</span></label>
+    <input type="number" id="c-patis" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+  <div class="calc-row">
+    <label>Tablespoons of toyo (dipping or cooking) <span class="meta">900 mg per tbsp</span></label>
+    <input type="number" id="c-toyo" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+  <div class="calc-row">
+    <label>Servings of corned beef, Spam, or luncheon meat <span class="meta">~800 mg per serving</span></label>
+    <input type="number" id="c-canned" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+  <div class="calc-row">
+    <label>Pieces of longganisa, tocino, hotdog, or daing na bangus <span class="meta">~700 mg per piece</span></label>
+    <input type="number" id="c-cured" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+  <div class="calc-row">
+    <label>Knorr cube or Magic Sarap sachet used today <span class="meta">~1,400 mg per cube/sachet</span></label>
+    <input type="number" id="c-cube" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+  <div class="calc-row">
+    <label>Fast-food meal (Jollibee, McDo, KFC) <span class="meta">~1,000 mg per meal</span></label>
+    <input type="number" id="c-fastfood" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+  <div class="calc-row">
+    <label>Snack packs (chips, crackers, Boy Bawang) <span class="meta">~400 mg per pack</span></label>
+    <input type="number" id="c-snacks" min="0" step="1" value="0" oninput="calcSodium()">
+  </div>
+
+  <div class="calc-result" id="calc-result">
+    <div class="calc-result-num" id="calc-num">0</div>
+    <div class="calc-result-label">mg sodium estimated today</div>
+    <div class="calc-bar">
+      <div class="calc-bar-fill" id="calc-bar"></div>
+      <div class="calc-bar-target" style="left:100%;"></div>
+    </div>
+    <div class="calc-verdict" id="calc-verdict">
+      Enter your servings above to see your daily sodium estimate.
+    </div>
+  </div>
+</div>
+<p style="font-size:13.5px;color:var(--text-muted);font-style:italic;margin-top:16px;">Estimates are based on average commercial product values and standard carinderia portions. Individual portions and recipes vary; the calculator is a planning aid, not a precise measurement.</p>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="section" id="instructions">
+<div class="section-tag">How to Use</div>
+<h2>Instructions</h2>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Think back over everything you ate today (or plan to eat today). Enter the number of servings of each item you consumed or will consume.</li>
+<li>Enter <strong>0</strong> for items you did not eat — all fields start at 0, so you only need to update the ones that apply.</li>
+<li>The total sodium estimate updates live as you type. The progress bar turns amber when you approach the 2,000 mg target and red when you exceed it.</li>
+<li>Use the result to identify your <strong>single biggest source</strong> — that is the item to address first. Often one change (replacing patis with calamansi, or skipping the sinigang-mix packet) cuts intake by 1,000–1,500 mg.</li>
+<li>Repeat daily for one week to understand your typical patterns before making changes.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</section>
+
+<!-- FORMULA -->
+<section class="section" id="formula">
+<div class="section-tag">Formula</div>
+<h2>Formula &amp; Sodium Reference Values</h2>
+<p>The calculator multiplies the number of servings entered for each item by its estimated sodium content in mg, then sums all items:</p>
+<p style="font-family:'Lora',serif;font-size:16px;color:var(--navy);background:var(--bg);border-left:3px solid var(--teal);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;">Total sodium (mg) = &sum; [servings &times; sodium per serving] for all items</p>
+<table class="lab-table">
+<thead><tr><th>Food Item</th><th>Reference Sodium</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>Pandesal / sliced bread</td><td>120 mg per piece</td><td>FNRI Philippine Food Composition Tables</td></tr>
+<tr><td>Pancit canton (carinderia or instant)</td><td>1,720 mg per serving</td><td>Instant noodle label; carinderia average</td></tr>
+<tr><td>Sinigang (with sinigang mix)</td><td>1,500 mg per bowl</td><td>Knorr/Mama Sita sinigang mix packet</td></tr>
+<tr><td>Adobo (standard cup)</td><td>1,200 mg per cup</td><td>FNRI recipe estimate; toyo + salt</td></tr>
+<tr><td>Patis (fish sauce)</td><td>1,420 mg per tablespoon</td><td>Rufina Patis label</td></tr>
+<tr><td>Toyo (soy sauce)</td><td>900 mg per tablespoon</td><td>Silver Swan / Kikkoman label</td></tr>
+<tr><td>Corned beef / Spam / luncheon meat</td><td>800 mg per serving (~85g)</td><td>CDO / Purefoods product labels</td></tr>
+<tr><td>Longganisa / tocino / hotdog / daing na bangus</td><td>700 mg per piece/serving</td><td>Local product label averages</td></tr>
+<tr><td>Bouillon cube / Magic Sarap sachet</td><td>1,400 mg per cube/sachet</td><td>Knorr / Ajinomoto label</td></tr>
+<tr><td>Fast-food meal (main + side)</td><td>1,000 mg per meal</td><td>Jollibee / McDonald's Philippines nutritional disclosures</td></tr>
+<tr><td>Snack pack (chips / crackers)</td><td>400 mg per pack</td><td>Oishi / Jack &amp; Jill label averages</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section" id="evidence">
+<div class="section-tag">Evidence &amp; References</div>
+<h2>Evidence &amp; References</h2>
+<p>The 2,000 mg sodium target for CKD patients is supported by two international guidelines. KDIGO 2024 recommends sodium intake below 2 g/day (equivalent to 5 g of table salt) for all adults with CKD based on randomized trial evidence showing benefits for blood pressure, proteinuria, and kidney function trajectory. The World Health Organization 2012 Sodium Guideline set the same &lt;2 g/day target for all adults based on meta-analysis of randomized trials, with renal and cardiovascular outcomes as the primary endpoints. The PURE study data from 18 countries — including the Philippines — confirmed that most populations in Southeast Asia consume 3,000–5,000 mg/day, making this the largest evidence-practice gap in preventive nephrology.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Kidney Disease: Improving Global Outcomes (KDIGO). 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. <em>Kidney International.</em> 2024 (Chapter on lifestyle interventions).</li>
+<li>World Health Organization. Guideline: Sodium Intake for Adults and Children. Geneva: WHO; 2012.</li>
+</ol>
+</section>
+
+<!-- PEARLS -->
+<section class="section" id="pearls">
+<div class="section-tag">Pearls &amp; Pitfalls</div>
+<h2>Pearls &amp; Pitfalls</h2>
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Target the highest-impact source first</h4>
+<p>One tablespoon of patis contributes more sodium than two pandesals. One bowl of sinigang contributes more than three snack packs. The principle of highest-impact-first means eliminating or substituting the single largest source in your typical day will produce more measurable change in BP and weight than eliminating ten small sources. Use this calculator to rank your sources, then replace the top one.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🧂</div>
+<div class="alert-body">
+<h4>Practical swaps that preserve flavor</h4>
+<p>Remove patis → use calamansi + garlic + black pepper as a dipping sauce (~30 mg sodium). Remove sinigang mix → make tamarind broth from sampalok (~80 mg per bowl vs 1,500 mg). Swap corned beef → fresh bangus or tilapia (~80 mg per serving). Remove the seasoning packet from instant noodles entirely and stir-fry the noodles with garlic and vegetables. These four changes alone can reduce a typical Filipino day from 4,500 mg to under 2,000 mg.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) "Low-salt" or "light" soy sauce still contains 600–800 mg per tablespoon — it is lower, not low. (2) Salt substitutes (potassium chloride products such as "Nurture" or "NuSalt") can cause dangerous hyperkalemia in CKD — do not use without nephrology approval. (3) Sodium restriction while on diuretics requires monitoring for hyponatremia, especially in elderly patients or those with low oral intake — tighten restriction gradually and recheck electrolytes after 2–4 weeks.</p>
+</div>
+</div>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for dietary planning and does not replace individualized dietary counseling. If you have CKD, hypertension, or are on dialysis, consult your nephrologist or registered nutritionist-dietitian before making significant dietary changes. Do not use potassium-based salt substitutes without medical supervision.</div>
+</section>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label">Scan and save</p>
+</div>
+</div>
+</div>
+
+<div class="related-guides">
+  <h2>Related Guides</h2>
+  <div class="related-cards">
+  <a class="related-card" href="sodium-salt-reduction-ckd.html">
+    <div class="related-card-tag">Diet</div>
+    <div class="related-card-title">Sodium &amp; Salt Reduction in CKD</div>
+    <div class="related-card-desc">Full guide to sodium targets, hidden sodium in Filipino food, and a 7-day reduction plan.</div>
+    <div class="related-card-arrow">Read →</div>
+  </a>
+  <a class="related-card" href="managing-hypertension.html">
+    <div class="related-card-tag">Hypertension</div>
+    <div class="related-card-title">Managing High Blood Pressure in CKD</div>
+    <div class="related-card-desc">How fluid overload and sodium drive hypertension, and medications used to control it.</div>
+    <div class="related-card-arrow">Read →</div>
+  </a>
+  <a class="related-card" href="nutrition-kidney-patients.html">
+    <div class="related-card-tag">Nutrition</div>
+    <div class="related-card-title">Nutrition for Kidney Patients</div>
+    <div class="related-card-desc">Practical Filipino guide to eating well with CKD — what to limit, what is safe, how to read food labels.</div>
+    <div class="related-card-arrow">Read →</div>
+  </a>
+  <a class="related-card" href="calc-bp-map.html">
+    <div class="related-card-tag">Calculator</div>
+    <div class="related-card-title">BP — MAP &amp; CKD Target</div>
+    <div class="related-card-desc">Check your blood pressure against the KDIGO 2024 target for your CKD profile.</div>
+    <div class="related-card-arrow">Use →</div>
+  </a>
+  </div>
+</div>
+
+<footer class="guide-footer">
+<div class="footer-inner">
+<p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>References: KDIGO 2024 CKD Guideline · WHO Sodium Guideline 2012 · FNRI Philippine Food Composition Tables</p>
+</div>
+</footer>
+
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
+
+<button aria-label="Print this guide" class="print-btn" onclick="window.print()">
+<span class="p-tip">Print / Save PDF</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
+</svg>
+</button>
+
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb','kap'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+const SODIUM = {
+  bread: 120, pancit: 1720, sinigang: 1500, adobo: 1200,
+  patis: 1420, toyo: 900, canned: 800, cured: 700,
+  cube: 1400, fastfood: 1000, snacks: 400
+};
+const TARGET = 2000;
+
+function calcSodium(){
+  let total = 0;
+  for (const k in SODIUM) {
+    const el = document.getElementById('c-' + k);
+    const v = parseFloat(el && el.value) || 0;
+    total += v * SODIUM[k];
+  }
+  document.getElementById('calc-num').textContent = total.toLocaleString();
+  const pct = Math.min(180, (total / TARGET) * 100);
+  const bar = document.getElementById('calc-bar');
+  const result = document.getElementById('calc-result');
+  bar.style.width = Math.min(100, pct) + '%';
+  let cls = 'under', verdict = '';
+  if (total === 0) {
+    verdict = 'Enter your servings above to see your daily sodium estimate.';
+  } else if (total < TARGET * 0.7) {
+    cls = 'under';
+    verdict = '<strong style="color:var(--green);">Under target.</strong> ' + (TARGET - total).toLocaleString() + ' mg of headroom remaining today. Most CKD patients should aim for this zone.';
+  } else if (total < TARGET) {
+    cls = 'near';
+    verdict = '<strong style="color:#d97706;">Approaching target.</strong> ' + (TARGET - total).toLocaleString() + ' mg of remaining budget — be cautious with snacks and any added condiments for the rest of the day.';
+  } else if (total < TARGET * 1.5) {
+    cls = 'over';
+    verdict = '<strong style="color:var(--red);">Over the 2,000 mg target by ' + (total - TARGET).toLocaleString() + ' mg.</strong> Identify the highest-sodium item above and try a swap: replace patis with calamansi, skip the sinigang mix, or avoid the bouillon cube.';
+  } else {
+    cls = 'over';
+    verdict = '<strong style="color:var(--red);">Significantly over target — ' + Math.round((total / TARGET) * 100) + '% of the daily limit.</strong> This is the typical Filipino baseline. Removing just the sinigang mix and patis from tomorrow\'s meals will cut more than 2,500 mg.';
+  }
+  result.className = 'calc-result ' + cls;
+  bar.className = 'calc-bar-fill ' + (cls === 'under' ? '' : cls);
+  document.getElementById('calc-verdict').innerHTML = verdict;
+}
+calcSodium();
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/image-lightbox.js" defer></script>
+</body>
+</html>
