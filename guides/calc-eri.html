@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ESA Resistance Index (ERI) Calculator – W. G. M. Rivero, MD</title>
+<meta name="description" content="Interactive ESA Resistance Index (ERI) Calculator — compute weekly IU/kg/week/g/dL and identify ESA hyporesponsiveness in CKD and dialysis patients. With KDIGO 2024 interpretation, formula, and references.">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-eri.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="ESA Resistance Index (ERI) Calculator">
+<meta property="og:description" content="Calculate the ESA Resistance Index — ERI = weekly IU/kg/week ÷ Hgb — to identify hyporesponsiveness in CKD and dialysis patients. KDIGO 2024-informed interpretation.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-eri.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/anemia-ckd-hero.png">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ESA Resistance Index (ERI) Calculator">
+<meta name="twitter:description" content="Calculate the ESA Resistance Index — ERI = weekly IU/kg/week ÷ Hgb — to identify hyporesponsiveness in CKD and dialysis patients. KDIGO 2024-informed.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/anemia-ckd-hero.png">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;
+    --purple-soft:#faf5ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; font-size: 16px; }
+  .site-header { display: flex; align-items: center; justify-content: space-between; height: 56px; box-sizing: border-box; padding: 0 32px; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 200; }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+  .guide-lang-bar { display: flex; align-items: center; gap: 8px; padding: 8px 32px; background: rgba(10,18,32,.96); border-bottom: 1px solid rgba(255,255,255,.06); flex-wrap: wrap; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s; }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .guide-toggle-bar { display: flex; gap: 8px; align-items: center; padding: 6px 32px; background: rgba(10,18,32,.96) !important; border-bottom: 1px solid rgba(255,255,255,.08) !important; justify-content: space-between; flex-wrap: wrap; }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  [data-lang].lang-hidden { display: none !important; }
+  .hero { background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%); color: white; padding: 72px 0 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px, 5vw, 50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section h3 { font-family: 'Lora', serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th { text-align: left; padding: 11px 16px; background: var(--navy); color: rgba(255,255,255,.92); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-bottom: none; }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td { padding: 13px 16px; vertical-align: top; line-height: 1.55; border-bottom: 1px solid var(--border); color: var(--text-mid); }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+  .calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
+  .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
+  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
+  .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .calc-metric-card { background: rgba(255,255,255,.7); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid rgba(0,0,0,.08); }
+  .calc-metric-card .cmv { font-family: 'Lora', serif; font-size: 28px; font-weight: 600; line-height: 1; color: var(--navy); }
+  .calc-metric-card .cml { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; color: var(--text-muted); }
+  .calc-metric-card .cmt { font-size: 11px; margin-top: 4px; font-weight: 600; color: var(--text-mid); }
+  .calc-verdict-text { font-size: 14px; line-height: 1.7; margin-bottom: 10px; color: var(--text-mid); }
+  .calc-action-text { font-size: 13px; line-height: 1.65; padding-top: 10px; border-top: 1px solid rgba(0,0,0,.08); color: var(--text-mid); }
+  .calc-disclaimer { font-size: 11.5px; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 0; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .related-card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s; }
+  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
+  .related-card-tag { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+  .related-card-desc { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
+  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; border: none; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .scroll-top-btn { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996; opacity: 0; pointer-events: none; }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip { position: absolute; right: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+  .print-btn { position: fixed; bottom: 80px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s; z-index: 9998; }
+  .print-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip { position: absolute; left: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .print-btn:hover .p-tip { opacity: 1; }
+  html[data-theme="dark"] { --teal: #2ba8b0; --teal-light: #0a2830; --text: #e8eaf0; --text-mid: #dde3eb; --text-muted: #9baab8; --bg: #141c2a; --white: #1a2030; --border: #2a3548; --red: #f87171; --red-soft: #2a1515; --amber: #fbbf24; --amber-soft: #2a1900; --green: #4ade80; --green-soft: #0e2a1c; }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  html[data-theme="dark"] .calc-wrap { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field select { background: #141c2a; border-color: #2a3548; color: var(--text); }
+  html[data-theme="dark"] .calc-metric-card { background: rgba(255,255,255,.04); border-color: #2a3548; }
+  html[data-theme="dark"] .calc-result-box { border-color: #2a3548 !important; background: rgba(255,255,255,.03) !important; }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
+  html[data-view="desktop"] { min-width: 1024px; }
+  @media(max-width: 480px) { .container { padding: 0 20px; } .related-guides { padding-left: 20px; padding-right: 20px; } .guide-footer .footer-inner { padding: 0 20px; } .dr-card { flex-direction: column; padding: 24px; gap: 16px; } .dr-card-wrap { padding: 0 20px 40px; } .hero-meta { gap: 14px; } }
+  @media print { .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .scroll-top-btn, .guide-footer { display: none !important; } body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; } .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; } .hero h1 { color: #1f3864 !important; font-size: 22px !important; } .container { max-width: 100%; padding: 0 24px; } .section { padding: 20px 0; border-bottom: 1px solid #ddd; } .disclaimer { background: #fff8e8 !important; border: 1px solid #ccc !important; color: #333 !important; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "ESA Resistance Index (ERI) Calculator",
+  "url": "https://www.williamriveromd.com/guides/calc-eri.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH"
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
+</header>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Anemia &amp; CKD</div>
+<h1>ESA Resistance Index <em>(ERI) Calculator</em></h1>
+<p class="hero-sub">Calculate the Erythropoiesis-Stimulating Agent Resistance Index — ERI = weekly ESA dose (IU/kg/week) ÷ hemoglobin (g/dL) — to quantify ESA responsiveness and identify hyporesponsiveness before escalating dose. Supports epoetin alfa, epoetin beta, darbepoetin alfa, and CERA.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+<span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" style="color:var(--gold-light);text-decoration:none;">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="anemia-management.html" style="color:var(--gold-light);text-decoration:none;">Full Anemia in CKD guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#instructions">How to Use</a>
+<a class="nav-pill" href="#formula">Formula</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- WHEN TO USE -->
+<section class="section" id="when">
+<div class="section-tag">When to Use</div>
+<h2>When to Use This Calculator</h2>
+<p>Use the ERI calculator at every ESA review in a dialysis or CKD anemia patient — particularly when hemoglobin is not reaching or staying within the target range (100–115 g/L) despite what appears to be an adequate ESA dose. The ERI normalizes the ESA dose for body weight and hemoglobin response, allowing objective comparison across visits and between patients.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Appropriate population</h4>
+<p>Adults with CKD G3b–G5 on erythropoiesis-stimulating agent therapy, including hemodialysis and peritoneal dialysis patients on any ESA formulation (epoetin alfa, epoetin beta, darbepoetin alfa, or CERA/methoxy-PEG-epoetin beta). Most useful when Hgb is below target despite escalating ESA doses, or when evaluating whether ESA dose escalation is safe and warranted before investigating underlying causes of hyporesponsiveness.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>When NOT to escalate ESA based on ERI alone</h4>
+<p>KDIGO 2024 recommends that ESA dose should NOT be escalated further in a patient with ERI &gt;10 IU/kg/week/g/dL until modifiable causes of hyporesponsiveness have been evaluated and corrected. Escalating ESA in a hyporesponsive patient increases cardiovascular risk (stroke, thrombosis, hypertension) without meaningfully improving hemoglobin. Investigate first, then re-evaluate.</p>
+</div>
+</div>
+</section>
+
+<!-- WHY -->
+<section class="section" id="why">
+<div class="section-tag">Why It Matters</div>
+<h2>Why ERI Is Clinically Important</h2>
+<p>ERI was developed as a standardized metric to compare ESA requirement across patients and time points, adjusting for both body size (weight) and hemoglobin level. An ERI above 10 IU/kg/week/g/dL is the KDIGO-endorsed threshold for ESA hyporesponsiveness — and patients with high ERI have significantly worse cardiovascular outcomes, independent of the hemoglobin level itself. Multiple large observational studies — including the DOPPS and analyses by Kalantar-Zadeh — have confirmed that high ERI is an independent predictor of all-cause and cardiovascular mortality in dialysis patients. ESA dose escalation in this context confers the risks of high-dose ESA (hypertension, stroke, thrombotic access events) without the benefits.</p>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>ESA Resistance Index (ERI) Calculator</h2>
+<p>Select the ESA type, enter the dose per administration and frequency, patient weight, and current hemoglobin. Results update automatically.</p>
+<div class="calc-wrap" id="eri-calc-wrap">
+    <div class="calc-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
+      <div class="calc-field">
+        <label>ESA Type</label>
+        <select id="eri-esa-type" onchange="calcERI()">
+          <option value="">Select ESA…</option>
+          <option value="epoetin">Epoetin Alfa — Eprex / Eposino (IU)</option>
+          <option value="epo-beta">Epoetin Beta — Recormon (IU)</option>
+          <option value="darbe">Darbepoetin Alfa — Nesp / Aranesp (µg)</option>
+          <option value="cera">CERA — Mircera (µg)</option>
+        </select>
+        <div class="field-hint">Epoetin alfa/beta: enter IU. Darbepoetin and CERA: enter µg → converted to IU (×200)</div>
+      </div>
+      <div class="calc-field">
+        <label id="eri-dose-label">Dose per Administration</label>
+        <input id="eri-dose" type="number" min="1" max="100000" step="0.1" placeholder="e.g. 4000" oninput="calcERI()">
+        <div class="field-hint" id="eri-dose-hint">Enter dose in IU (epoetin) or µg (darbepoetin/CERA)</div>
+      </div>
+      <div class="calc-field">
+        <label>Dosing Frequency</label>
+        <select id="eri-freq" onchange="calcERI()">
+          <option value="">Select frequency…</option>
+          <option value="3">3× per week (TIW)</option>
+          <option value="2">2× per week (BIW)</option>
+          <option value="1">Once weekly (QW)</option>
+          <option value="0.5">Every 2 weeks (Q2W)</option>
+          <option value="0.25">Once monthly (Q4W)</option>
+        </select>
+        <div class="field-hint">Used to calculate weekly IU equivalent</div>
+      </div>
+      <div class="calc-field">
+        <label>Patient Weight (kg)</label>
+        <input id="eri-weight" type="number" min="20" max="200" step="0.1" placeholder="e.g. 60" oninput="calcERI()">
+        <div class="field-hint">Dry weight preferred in dialysis patients</div>
+      </div>
+      <div class="calc-field">
+        <label>Current Hemoglobin (g/dL)</label>
+        <input id="eri-hgb" type="number" min="4" max="18" step="0.1" placeholder="e.g. 10.2" oninput="calcERI()">
+        <div class="field-hint">Pre-dialysis Hgb for HD patients; most recent value</div>
+      </div>
+    </div>
+    <div class="calc-result-box" id="eri-result" style="display:none;">
+      <div class="calc-metrics-row">
+        <div class="calc-metric-card">
+          <div class="cmv" id="eri-weekly-val">—</div>
+          <div class="cml">Weekly IU/kg</div>
+          <div class="cmt" id="eri-weekly-badge">IU/kg/week</div>
+        </div>
+        <div class="calc-metric-card">
+          <div class="cmv" id="eri-val">—</div>
+          <div class="cml">ERI</div>
+          <div class="cmt">IU/kg/week/g/dL</div>
+        </div>
+        <div class="calc-metric-card">
+          <div class="cmv" id="eri-status-val" style="font-size:14px;line-height:1.3;">—</div>
+          <div class="cml">Responsiveness</div>
+          <div class="cmt" id="eri-status-badge">—</div>
+        </div>
+      </div>
+      <div class="calc-verdict-text" id="eri-verdict"></div>
+      <div class="calc-action-text" id="eri-action"></div>
+    </div>
+    <p class="calc-disclaimer">⚕ ERI = (Total weekly ESA dose in IU ÷ weight in kg) ÷ Hgb in g/dL. Epoetin alfa (Eprex, Eposino) and epoetin beta (Recormon) are both IU-based — enter dose directly. Darbepoetin alfa (Nesp, Aranesp) and CERA (Mircera) are entered in µg and converted using 1 µg = 200 IU epoetin equivalent. ERI &gt;10 IU/kg/week/g/dL indicates hyporesponsiveness — investigate before escalating dose. For educational use only — dosing decisions require physician assessment.</p>
+</div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="section" id="instructions">
+<div class="section-tag">How to Use</div>
+<h2>Instructions</h2>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Select the <strong>ESA type</strong>. For epoetin alfa (Eprex, Eposino) and epoetin beta (Recormon), enter the dose in International Units (IU). For darbepoetin alfa (Nesp, Aranesp) and CERA (Mircera), enter the dose in micrograms (µg) — the calculator converts to IU equivalent using the standard factor of 1 µg = 200 IU.</li>
+<li>Enter the <strong>dose per administration</strong> — the amount given at each injection.</li>
+<li>Select the <strong>dosing frequency</strong> (e.g., 3× per week for typical HD epoetin dosing).</li>
+<li>Enter the patient's <strong>dry weight in kg</strong> and the most recent <strong>pre-dialysis hemoglobin in g/dL</strong>.</li>
+<li>The ERI, weekly IU/kg dose, and responsiveness category update automatically. An ERI &gt;10 triggers an investigation checklist.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</section>
+
+<!-- FORMULA -->
+<section class="section" id="formula">
+<div class="section-tag">Formula</div>
+<h2>Formula</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Step</th><th>Calculation</th></tr></thead>
+<tbody>
+<tr><td>Convert to IU equivalent</td><td>Epoetin alfa/beta: use dose in IU directly. Darbepoetin/CERA: dose (µg) × 200 = IU equivalent</td></tr>
+<tr><td>Weekly total IU</td><td>IU per administration × administrations per week</td></tr>
+<tr><td>Weekly IU/kg</td><td>Weekly total IU ÷ patient dry weight (kg)</td></tr>
+<tr><td>ERI</td><td>Weekly IU/kg ÷ hemoglobin (g/dL)</td></tr>
+</tbody>
+</table>
+</div>
+<h3 style="margin-top:24px;">ERI Interpretation Bands</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>ERI (IU/kg/week/g/dL)</th><th>Category</th><th>Clinical Implication</th></tr></thead>
+<tbody>
+<tr><td>&lt;5</td><td>Low / Excellent Response</td><td>Well-responding; ensure iron stores adequate; reduce ESA if Hgb &gt;115 g/L</td></tr>
+<tr><td>5–9.99</td><td>Normal Response</td><td>Adequate response; maintain current dose; monitor iron stores</td></tr>
+<tr><td>10–13.99</td><td>Elevated — Hyporesponsive</td><td>KDIGO threshold exceeded — investigate before escalating dose</td></tr>
+<tr><td>≥14</td><td>High — Severe Hyporesponsiveness</td><td>Highest cardiovascular risk; rule out PRCA; comprehensive workup required</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section" id="evidence">
+<div class="section-tag">Evidence &amp; References</div>
+<h2>Evidence &amp; References</h2>
+<p>The ERI metric was validated in the CKD and dialysis anemia literature, with the threshold of ERI &gt;10 IU/kg/week/g/dL operationalized in large observational cohorts showing a graded relationship between ERI and cardiovascular mortality, independent of hemoglobin. KDIGO 2012 and 2024 guidelines on anemia in CKD incorporate ERI as the recommended metric for detecting and defining ESA hyporesponsiveness, and specifically recommend against ESA dose escalation above this threshold until reversible causes have been excluded.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group. KDIGO Clinical Practice Guideline for Anemia in Chronic Kidney Disease. <em>Kidney Int Suppl.</em> 2012;2(4):279–335.</li>
+<li>KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Anemia in Chronic Kidney Disease. <em>Kidney Int.</em> 2024. (Update in progress)</li>
+<li>Kalantar-Zadeh K, McAllister CJ, Lehn RS, et al. Effect of malnutrition-inflammation complex syndrome on EPO hyporesponsiveness in maintenance hemodialysis patients. <em>Am J Kidney Dis.</em> 2003;42(4):761–773.</li>
+<li>Regidor DL, Kopple JD, Kovesdy CP, et al. Associations between changes in hemoglobin and administered erythropoiesis-stimulating agent and survival in hemodialysis patients. <em>J Am Soc Nephrol.</em> 2006;17(4):1181–1191.</li>
+</ol>
+</section>
+
+<!-- PEARLS -->
+<section class="section" id="pearls">
+<div class="section-tag">Pearls &amp; Pitfalls</div>
+<h2>Pearls &amp; Pitfalls</h2>
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Iron deficiency is the most common reversible cause of high ERI</h4>
+<p>Before any other workup, check TSAT and ferritin. KDIGO 2024 targets TSAT ≥20% and ferritin 200–500 ng/mL in HD patients. Iron-restricted erythropoiesis (TSAT &lt;20%) dramatically impairs ESA responsiveness — IV iron in a functionally iron-deficient patient often drops the ERI faster than any ESA adjustment.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Systematic investigation checklist for ERI &gt;10</h4>
+<p>When ERI exceeds 10: (1) Iron — TSAT, ferritin, reticulocyte hemoglobin content. (2) Inflammation — CRP, albumin; active infection or systemic inflammation blunts EPO response via hepcidin. (3) Dialysis adequacy — Kt/V ≥1.2 for HD; inadequate dialysis impairs marrow response. (4) Nutrition — albumin, B12, folate. (5) Secondary hyperparathyroidism — PTH &gt;600 pg/mL causes marrow fibrosis and EPO resistance. (6) Blood loss — check stool guaiac, menstrual history, access blood loss. (7) Anti-EPO antibodies — suspect if Hgb drops suddenly with worsening reticulocytopenia.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Do not escalate ESA dose in a patient with ERI &gt;10 without investigating — escalation in hyporesponsiveness increases cardiovascular risk without improving hemoglobin. (2) The 1 µg = 200 IU darbepoetin conversion factor is an approximation; it may differ slightly between product labels. (3) Hemoglobin used in ERI should be the pre-dialysis (trough) value for HD patients — post-dialysis values are artificially concentrated. (4) In CERA (monthly dosing), the ERI calculation correctly converts Q4W dosing to a weekly rate; verify the frequency selection carefully.</p>
+</div>
+</div>
+</section>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational tool for clinicians. ERI interpretation must be integrated with the full clinical picture, iron studies, and recent lab trends. Do not adjust ESA doses or IV iron based solely on this output without physician review. All anemia management in CKD requires individualized assessment and ongoing monitoring.</div>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label">Scan and save</p>
+</div>
+</div>
+</div>
+
+<!-- RELATED-GUIDES-START -->
+<div class="related-guides">
+  <h2>Related Guides</h2>
+  <div class="related-cards">
+    <a class="related-card" href="anemia-management.html">
+      <div class="related-card-tag">Full Guide</div>
+      <div class="related-card-title">Anemia in CKD</div>
+      <div class="related-card-desc">KDIGO 2024 iron targets, ESA protocols, HIF-PHI, and ERI interpretation in context.</div>
+      <div class="related-card-arrow">Read →</div>
+    </a>
+    <a class="related-card" href="calc-ckd-mbd.html">
+      <div class="related-card-tag">Related Tool</div>
+      <div class="related-card-title">CKD-MBD Calculator</div>
+      <div class="related-card-desc">Ca×P product, corrected calcium, and PTH staging — secondary hyperparathyroidism causes ESA resistance.</div>
+      <div class="related-card-arrow">Use →</div>
+    </a>
+    <a class="related-card" href="dialysis-adequacy.html">
+      <div class="related-card-tag">Foundation</div>
+      <div class="related-card-title">Dialysis Adequacy</div>
+      <div class="related-card-desc">Kt/V and URR — inadequate dialysis is a major reversible cause of ESA hyporesponsiveness.</div>
+      <div class="related-card-arrow">Read →</div>
+    </a>
+    <a class="related-card" href="understanding-ckd.html">
+      <div class="related-card-tag">Foundation</div>
+      <div class="related-card-title">Understanding CKD</div>
+      <div class="related-card-desc">CKD staging, progression, and the evidence base for slowing kidney disease.</div>
+      <div class="related-card-arrow">Read →</div>
+    </a>
+  </div>
+</div>
+<!-- RELATED-GUIDES-END -->
+
+<footer class="guide-footer">
+<div class="footer-inner">
+<p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>References: KDIGO Anemia in CKD 2012 · KDIGO Anemia 2024 · Kalantar-Zadeh K et al. Am J Kidney Dis 2003 · Regidor DL et al. JASN 2006</p>
+</div>
+</footer>
+
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
+
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb','kap'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+function calcERI(){
+  const esaType = document.getElementById('eri-esa-type').value;
+  const dose    = parseFloat(document.getElementById('eri-dose').value);
+  const freq    = parseFloat(document.getElementById('eri-freq').value);
+  const weight  = parseFloat(document.getElementById('eri-weight').value);
+  const hgb     = parseFloat(document.getElementById('eri-hgb').value);
+  const res     = document.getElementById('eri-result');
+
+  // Update dose label / hint based on ESA type
+  const doseLabel = document.getElementById('eri-dose-label');
+  const doseHint  = document.getElementById('eri-dose-hint');
+  if (esaType === 'epoetin' || esaType === 'epo-beta') {
+    doseLabel.textContent = 'Dose per Administration (IU)';
+    doseHint.textContent  = 'Enter dose in International Units (IU). E.g. 4000 IU (epoetin alfa/beta are both IU-based)';
+  } else if (esaType === 'darbe' || esaType === 'cera') {
+    doseLabel.textContent = 'Dose per Administration (µg)';
+    doseHint.textContent  = 'Enter dose in micrograms (µg). Converted to IU equivalent (×200) for ERI calculation';
+  }
+
+  // Need all fields to proceed
+  if (!esaType || isNaN(dose) || isNaN(freq) || isNaN(weight) || isNaN(hgb)) {
+    res.style.display = 'none';
+    return;
+  }
+
+  // Convert to IU equivalents (epoetin alfa and beta are both IU-based; darbe/CERA in µg ×200)
+  const iu_per_admin = (esaType === 'epoetin' || esaType === 'epo-beta') ? dose : dose * 200;
+
+  // Weekly IU total
+  const weekly_iu = iu_per_admin * freq;
+
+  // Weekly IU per kg
+  const weekly_iu_kg = weekly_iu / weight;
+
+  // ERI = weekly IU/kg ÷ Hgb (g/dL)
+  const eri = weekly_iu_kg / hgb;
+
+  // Interpretation
+  let statusLabel, statusColor, bg, borderColor, verdict, action;
+  if (eri < 5) {
+    statusLabel = 'Low / Excellent Response';
+    statusColor = '#2d7a4f';
+    bg = '#edf7f2'; borderColor = '#2d7a4f';
+    verdict = `ERI of <strong>${eri.toFixed(2)}</strong> IU/kg/week/g/dL is <strong style="color:#2d7a4f;">low</strong> — the patient is responding well to ESA therapy. This is a favorable finding: bone marrow is producing red cells efficiently relative to the ESA dose given.`;
+    action = 'Continue current ESA regimen. Ensure iron status is maintained (TSAT ≥20%, Ferritin ≥100 ng/mL). If Hgb exceeds target (115 g/L), consider dose reduction by 25%. Monitor monthly.';
+  } else if (eri < 10) {
+    statusLabel = 'Normal Response';
+    statusColor = '#1a6b72';
+    bg = '#edf5f6'; borderColor = '#1a6b72';
+    verdict = `ERI of <strong>${eri.toFixed(2)}</strong> IU/kg/week/g/dL is within the <strong style="color:#1a6b72;">normal range</strong>. ESA dose is appropriate for the current Hgb level. This range reflects adequate erythropoietic response.`;
+    action = 'Maintain current ESA dose. Review iron studies at each visit — iron deficiency is the most common cause of deteriorating ERI. Titrate ESA by 25% if Hgb drifts outside 100–115 g/L.';
+  } else if (eri < 14) {
+    statusLabel = 'Elevated — Hyporesponsive';
+    statusColor = '#c07a00';
+    bg = '#fef9ec'; borderColor = '#f5a623';
+    verdict = `ERI of <strong>${eri.toFixed(2)}</strong> IU/kg/week/g/dL exceeds the threshold of 10 — this indicates <strong style="color:#c07a00;">ESA hyporesponsiveness</strong>. KDIGO 2024 recommends investigating modifiable causes before escalating ESA dose further, as high ERI is independently associated with cardiovascular mortality.`;
+    action = 'Investigate: (1) Iron status — TSAT <20% or Ferritin <100 ng/mL → give IV iron before increasing ESA. (2) Active infection or inflammation — CRP elevated? (3) Malnutrition — albumin, B12, folate. (4) Dialysis adequacy — Kt/V ≥1.2 (HD). (5) Undercorrected secondary hyperparathyroidism. (6) Occult blood loss. Do NOT escalate ESA dose until causes are addressed.';
+  } else {
+    statusLabel = 'High — Severe Hyporesponsiveness';
+    statusColor = '#c0392b';
+    bg = '#fdf0ef'; borderColor = '#c0392b';
+    verdict = `ERI of <strong>${eri.toFixed(2)}</strong> IU/kg/week/g/dL is <strong style="color:#c0392b;">markedly elevated</strong>. This level of hyporesponsiveness carries the highest cardiovascular risk. ESA dose escalation without addressing the root cause is unlikely to improve Hgb and may cause harm.`;
+    action = 'Priority workup: rule out anti-EPO antibody-mediated Pure Red Cell Aplasia (PRCA) — if Hgb drops suddenly on ESA with worsening reticulocytopenia, stop ESA immediately and refer for bone marrow biopsy. Otherwise: comprehensive investigation for all reversible causes (iron, infection, hyperparathyroidism, hemolysis, blood loss, malnutrition, inadequate dialysis). Consider HIF-PHI as alternative if available and appropriate. Discuss with nephrologist.';
+  }
+
+  // Populate metric cards
+  document.getElementById('eri-weekly-val').textContent = Math.round(weekly_iu_kg).toLocaleString();
+  document.getElementById('eri-weekly-badge').textContent = 'IU/kg/week';
+  document.getElementById('eri-weekly-badge').style.color = statusColor;
+
+  document.getElementById('eri-val').textContent = eri.toFixed(2);
+  document.getElementById('eri-val').style.color  = statusColor;
+
+  document.getElementById('eri-status-val').textContent = statusLabel;
+  document.getElementById('eri-status-val').style.color  = statusColor;
+  document.getElementById('eri-status-badge').textContent = eri >= 10 ? 'Investigate — do not escalate' : 'Within acceptable range';
+  document.getElementById('eri-status-badge').style.color  = statusColor;
+
+  // Result box styling
+  res.style.display     = 'block';
+  res.style.background  = bg;
+  res.style.borderColor = borderColor;
+
+  // Verdict and action
+  document.getElementById('eri-verdict').innerHTML = '<strong style="color:' + statusColor + '">' + statusLabel + '</strong> — ' + verdict;
+  document.getElementById('eri-action').innerHTML  = '<strong style="color:' + statusColor + '">Recommended action:</strong> ' + action;
+}
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<button aria-label="Print this guide" class="print-btn" onclick="window.print()">
+<span class="p-tip">Print / Save PDF</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect height="8" width="12" x="6" y="14"/>
+</svg>
+</button>
+<script src="../assets/image-lightbox.js" defer></script>
+</body>
+</html>

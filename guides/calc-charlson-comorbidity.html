@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Charlson Comorbidity Index (Age-Adjusted) Calculator – W. G. M. Rivero, MD</title>
+<meta name="description" content="Interactive Charlson Comorbidity Index (age-adjusted) calculator — enter comorbidities and patient age to estimate 10-year survival and guide goals-of-care discussions in CKD and dialysis patients.">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-charlson-comorbidity.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="Charlson Comorbidity Index (Age-Adjusted) Calculator">
+<meta property="og:description" content="Interactive Charlson Comorbidity Index calculator — enter comorbidities and patient age to estimate 10-year survival and guide goals-of-care discussions.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-charlson-comorbidity.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/hd-elderly-decisions-infographic.png">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Charlson Comorbidity Index (Age-Adjusted) Calculator">
+<meta name="twitter:description" content="Interactive Charlson Comorbidity Index calculator — enter comorbidities and patient age to estimate 10-year survival and guide goals-of-care discussions.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/hd-elderly-decisions-infographic.png">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  /* ═══════════════════════════════════════════════════════════════════════════
+     MASTER GUIDE CSS — williamriveromd.com
+     Version: 2026-05-17c
+     All contrast ratios WCAG AA verified. Do not edit per-guide — edit here.
+  ═══════════════════════════════════════════════════════════════════════════ */
+
+  /* ── COLOR TOKENS (light mode) ──────────────────────────────────────────── */
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;
+    --purple-soft:#faf5ff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .site-header {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; box-sizing: border-box;
+    padding: 0 32px;
+    background: var(--navy);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    position: sticky; top: 0; z-index: 200;
+  }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+
+  .guide-lang-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 32px;
+    background: rgba(10,18,32,.96);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    flex-wrap: wrap;
+  }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s; }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+
+  .guide-toggle-bar {
+    display: flex; gap: 8px; align-items: center;
+    padding: 6px 32px;
+    background: rgba(10, 18, 32, 0.96) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  [data-lang].lang-hidden { display: none !important; }
+
+  .hero {
+    background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%);
+    color: white; padding: 72px 0 80px; position: relative; overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px, 5vw, 50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-sub em { font-style: italic; color: #fde68a; font-weight: 500; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section h3 { font-family: 'Lora', serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th { text-align: left; padding: 11px 16px; background: var(--navy); color: rgba(255,255,255,.92); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-bottom: none; }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td { padding: 13px 16px; vertical-align: top; line-height: 1.55; border-bottom: 1px solid var(--border); color: var(--text-mid); }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
+  .lab-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .lab-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); padding: 10px 14px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .lab-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; line-height: 1.5; }
+  .lab-table td:first-child { font-weight: 600; color: var(--navy); }
+  .lab-table tr:last-child td { border-bottom: none; }
+  .lab-table tr:hover td { background: var(--bg); }
+
+  .calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
+  .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
+  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
+  .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .calc-metric-card { background: rgba(255,255,255,.7); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid rgba(0,0,0,.08); }
+  .calc-metric-card .cmv { font-family: 'Lora', serif; font-size: 28px; font-weight: 600; line-height: 1; color: var(--navy); }
+  .calc-metric-card .cml { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; color: var(--text-muted); }
+  .calc-metric-card .cmt { font-size: 11px; margin-top: 4px; font-weight: 600; color: var(--text-mid); }
+  .calc-verdict-text { font-size: 14px; line-height: 1.7; margin-bottom: 10px; color: var(--text-mid); }
+  .calc-action-text { font-size: 13px; line-height: 1.65; padding-top: 10px; border-top: 1px solid rgba(0,0,0,.08); color: var(--text-mid); }
+  .calc-disclaimer { font-size: 11.5px; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
+
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .related-card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s; }
+  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
+  .related-card-tag   { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+  .related-card-desc  { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
+  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; margin-top: 0; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; border: none; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 0; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+
+  .print-btn { position: fixed; bottom: 80px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s; z-index: 9998; }
+  .print-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip { position: absolute; left: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .print-btn:hover .p-tip { opacity: 1; }
+
+  .scroll-top-btn { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996; opacity: 0; pointer-events: none; }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip { position: absolute; right: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+
+  html[data-theme="dark"] {
+    --teal: #2ba8b0; --teal-light: #0a2830;
+    --text: #e8eaf0; --text-mid: #dde3eb; --text-muted: #9baab8; --text-faint: #8090a4;
+    --bg: #141c2a; --white: #1a2030; --border: #2a3548;
+    --red: #f87171; --red-soft: #2a1515; --amber: #fbbf24; --amber-soft: #2a1900;
+    --green: #4ade80; --green-soft: #0e2a1c; --purple: #c084fc; --purple-soft: #1a1030;
+  }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero, html[data-theme="dark"] .dr-card { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  html[data-theme="dark"] .calc-wrap { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field select { background: #141c2a; border-color: #2a3548; color: var(--text); }
+  html[data-theme="dark"] .calc-metric-card { background: rgba(255,255,255,.04); border-color: #2a3548; }
+  html[data-theme="dark"] .calc-result-box { border-color: #2a3548 !important; background: rgba(255,255,255,.03) !important; }
+  html[data-theme="dark"] .calc-field label { color: var(--teal); }
+  html[data-theme="dark"] .calc-metric-card .cml, html[data-theme="dark"] .calc-disclaimer { color: var(--text-muted); }
+  html[data-theme="dark"] .calc-metric-card .cmv { color: var(--text) !important; }
+  html[data-theme="dark"] .section h2, html[data-theme="dark"] .alert-body h4 { color: var(--text); }
+  html[data-theme="dark"] .section p, html[data-theme="dark"] .alert-body p, html[data-theme="dark"] .calc-verdict-text, html[data-theme="dark"] .calc-action-text { color: var(--text-mid) !important; }
+  html[data-theme="dark"] .lab-table th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .lab-table td { color: var(--text-mid); border-color: #2a3548; }
+  html[data-theme="dark"] .lab-table td:first-child { color: var(--text); }
+  html[data-theme="dark"] .lab-table tr:hover td { background: #202d40; }
+  html[data-theme="dark"] .alert-teal { background: #0a2830; }
+  html[data-theme="dark"] .alert-amber { background: #2a1900; }
+  html[data-theme="dark"] .alert-green { background: #0e2a1c; }
+  html[data-theme="dark"] .alert-red   { background: #2a1515; }
+  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .disclaimer strong { color: var(--text-mid); }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-view="desktop"] { min-width: 1024px; }
+
+  @media(max-width: 480px) {
+    .container { padding: 0 20px; }
+    .related-guides { padding-left: 20px; padding-right: 20px; }
+    .guide-footer .footer-inner { padding: 0 20px; }
+    .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .dr-card-wrap { padding: 0 20px 40px; }
+    .hero-meta { gap: 14px; }
+  }
+  @media(max-width: 640px) { table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } }
+  @media print {
+    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .scroll-top-btn, .guide-footer { display: none !important; }
+    body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; }
+    .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; }
+    .hero h1 { color: #1f3864 !important; font-size: 22px !important; }
+    .container { max-width: 100%; padding: 0 24px; }
+    .section { padding: 20px 0; border-bottom: 1px solid #ddd; }
+    .alert { border: 1px solid #ccc !important; background: #f9f9f9 !important; }
+    .alert-body h4, .alert-body p { color: #222 !important; }
+    @page { margin: 18mm 15mm; size: A4; }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Charlson Comorbidity Index (Age-Adjusted) Calculator",
+  "url": "https://www.williamriveromd.com/guides/calc-charlson-comorbidity.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH"
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
+</header>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Geriatric Nephrology</div>
+<h1>Charlson Comorbidity Index <em>Age-Adjusted Prognosis &amp; Goals-of-Care Tool</em></h1>
+<p class="hero-sub">Enter the patient's age and comorbidities to compute the age-adjusted Charlson Comorbidity Index and an estimated 10-year survival — a validated foundation for goals-of-care and dialysis benefit-versus-burden discussions in elderly patients with CKD or ESKD.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+<span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" style="color:var(--gold-light);text-decoration:none;">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="hemodialysis-elderly.html" style="color:var(--gold-light);text-decoration:none;">Full elderly dialysis guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#instructions">How to Use</a>
+<a class="nav-pill" href="#formula">Scoring</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- WHEN TO USE -->
+<section class="section" id="when">
+<div class="section-tag">When to Use</div>
+<h2>When to Use This Calculator</h2>
+<p>Use the age-adjusted Charlson Comorbidity Index (CCI) when structuring a goals-of-care conversation with an elderly patient who has advanced CKD or end-stage kidney disease and is deciding whether to initiate, continue, or withdraw hemodialysis. The CCI is a validated, weighted sum of a patient's chronic illnesses that — together with age points — produces an estimate of long-term survival at a population level.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Appropriate population</h4>
+<p>Adults with CKD G4–G5 or established ESKD on maintenance dialysis, particularly patients aged 65 or older where a realistic long-term prognosis is needed to frame benefit-versus-burden decisions. Also useful for annual prognosis reassessment when new comorbidities are diagnosed, and for structuring advance care planning conversations. The renal disease item (2 points) is pre-checked because dialysis patients have, by definition, moderate-to-severe kidney disease.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>When NOT to rely on it alone</h4>
+<p>The CCI is a <em>population-level</em> survival estimate derived from a 1980s medical cohort — it is not an individual prediction and should never be used as the sole criterion to recommend for or against dialysis. A high CCI score does not automatically mean dialysis should be withheld; it means prognosis and goals deserve an explicit, informed conversation. Always pair with frailty assessment (Clinical Frailty Scale, Fried Phenotype), functional status, the patient's values, and nephrologist judgment.</p>
+</div>
+</div>
+</section>
+
+<!-- WHY USE IT -->
+<section class="section" id="why">
+<div class="section-tag">Why Use It</div>
+<h2>Why It Matters</h2>
+<p>Elderly patients starting hemodialysis carry a disproportionate comorbidity burden. Kurella Tamura et al. (NEJM 2009) showed that nursing-home patients initiating dialysis lost an average of 3.7 functional tasks within 3 months and had a median survival of 16.1 months — outcomes many patients and families had not anticipated. A structured prognosis tool like the age-adjusted CCI makes it possible to present honest, data-anchored survival estimates and to explore whether conservative kidney management (CKM) might better align with a patient's goals. The CCI has been externally validated in dialysis populations and outperforms unaided clinical impression in predicting 1- and 5-year mortality.</p>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>Charlson Comorbidity Index (Age-Adjusted)</h2>
+<p>Check each condition the patient carries and enter the patient's age. The tool computes the comorbidity score, age points, total score, and estimated 10-year survival — and generates a plain-language verdict for goals-of-care framing.</p>
+
+<div class="calc-wrap">
+  <div class="calc-grid">
+    <div class="calc-field" style="grid-column:1/-1;">
+      <label>Patient Age (years)</label>
+      <input type="number" id="ch-age" min="0" max="120" placeholder="e.g. 72" oninput="calcCharlson()">
+      <div class="field-hint">Age points: &lt;50 = 0; 50–59 = 1; 60–69 = 2; 70–79 = 3; 80–89 = 4; +1 per further decade.</div>
+    </div>
+
+    <div class="calc-field" style="grid-column:1/-1;">
+      <label>Renal Disease</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;"><input type="checkbox" id="ch-renal" checked onchange="calcCharlson()" style="width:auto;"> Moderate-to-severe renal disease / dialysis <strong>(2 pts — applies to all dialysis patients)</strong></label>
+    </div>
+
+    <div class="calc-field">
+      <label>1-Point Conditions</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-mi" onchange="calcCharlson()" style="width:auto;"> Myocardial infarction</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-chf" onchange="calcCharlson()" style="width:auto;"> Congestive heart failure</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-pvd" onchange="calcCharlson()" style="width:auto;"> Peripheral vascular disease</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-cvd" onchange="calcCharlson()" style="width:auto;"> Cerebrovascular disease (TIA / stroke)</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-dem" onchange="calcCharlson()" style="width:auto;"> Dementia</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-copd" onchange="calcCharlson()" style="width:auto;"> Chronic pulmonary disease (COPD)</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-rheum" onchange="calcCharlson()" style="width:auto;"> Connective tissue / rheumatic disease</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-pud" onchange="calcCharlson()" style="width:auto;"> Peptic ulcer disease</label>
+    </div>
+
+    <div class="calc-field">
+      <label>2-Point Conditions</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-hemi" onchange="calcCharlson()" style="width:auto;"> Hemiplegia / paraplegia</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400;color:var(--text-mid);text-transform:none;letter-spacing:0;margin-bottom:6px;"><input type="checkbox" id="ch-tumor" onchange="calcCharlson()" style="width:auto;"> Any solid tumor (non-metastatic, &lt;5y) / leukemia / lymphoma</label>
+      <div class="field-hint" style="margin-bottom:12px;">If metastatic, leave this unchecked and use the tumor select below (6 pts).</div>
+    </div>
+
+    <div class="calc-field">
+      <label>Liver Disease</label>
+      <select id="ch-liver" onchange="calcCharlson()">
+        <option value="0">None</option>
+        <option value="1">Mild liver disease (1 pt)</option>
+        <option value="3">Moderate-to-severe liver disease (3 pts)</option>
+      </select>
+    </div>
+
+    <div class="calc-field">
+      <label>Diabetes</label>
+      <select id="ch-diabetes" onchange="calcCharlson()">
+        <option value="0">None</option>
+        <option value="1">Diabetes WITHOUT end-organ damage (1 pt)</option>
+        <option value="2">Diabetes WITH end-organ damage (2 pts)</option>
+      </select>
+      <div class="field-hint">Count diabetes once — choose the higher category if both apply.</div>
+    </div>
+
+    <div class="calc-field">
+      <label>Tumor / Malignancy (overrides solid-tumor checkbox)</label>
+      <select id="ch-metast" onchange="calcCharlson()">
+        <option value="0">No metastatic tumor</option>
+        <option value="6">Metastatic solid tumor (6 pts)</option>
+      </select>
+      <div class="field-hint">If metastatic is selected, the 2-pt solid-tumor checkbox is ignored.</div>
+    </div>
+
+    <div class="calc-field">
+      <label>AIDS / HIV</label>
+      <select id="ch-aids" onchange="calcCharlson()">
+        <option value="0">No</option>
+        <option value="6">AIDS / HIV (6 pts)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="calc-result-box" id="ch-result">
+    <div class="calc-metrics-row">
+      <div class="calc-metric-card"><div class="cmv" id="ch-cci">—</div><div class="cml">CCI (comorbidity)</div><div class="cmt" id="ch-cci-t">—</div></div>
+      <div class="calc-metric-card"><div class="cmv" id="ch-total">—</div><div class="cml">Age-adjusted total</div><div class="cmt" id="ch-total-t">—</div></div>
+      <div class="calc-metric-card"><div class="cmv" id="ch-surv">—</div><div class="cml">Est. 10-yr survival</div><div class="cmt" id="ch-surv-t">—</div></div>
+    </div>
+    <div class="calc-verdict-text" id="ch-verdict"></div>
+    <div class="calc-action-text" id="ch-action"></div>
+  </div>
+
+  <p class="calc-disclaimer">⚕ Charlson ME, Pompei P, Ales KL, MacKenzie CR. <em>J Chronic Dis.</em> 1987;40(5):373–83. Age adjustment: Charlson et al., <em>J Clin Epidemiol.</em> 1994. Estimated 10-year survival = 0.983<sup>(e^(score × 0.9))</sup>. This is a population-level prognosis estimate derived from a 1980s medical cohort, not an individual prediction. Always interpret alongside frailty, functional status, dialysis tolerance, and the patient's own goals.</p>
+</div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="section" id="instructions">
+<div class="section-tag">How to Use</div>
+<h2>Instructions</h2>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Enter the patient's <strong>age in years</strong>. Age points are added automatically according to the Charlson age-adjustment bands.</li>
+<li>The <strong>Renal Disease (2 pts)</strong> checkbox is pre-ticked because all maintenance dialysis patients have moderate-to-severe kidney disease by definition. Uncheck only if calculating CCI for a non-dialysis CKD patient without severe impairment.</li>
+<li>Check all <strong>1-point</strong> and <strong>2-point comorbidities</strong> that are present and documented in the patient's medical record.</li>
+<li>Select the appropriate <strong>liver disease</strong> severity (none / mild / moderate-to-severe), <strong>diabetes</strong> category (with or without end-organ damage), <strong>malignancy</strong> status (metastatic overrides the 2-pt tumor checkbox), and <strong>AIDS/HIV</strong> if present.</li>
+<li>Results update live: CCI comorbidity score, age-adjusted total, estimated 10-year survival, and a plain-language goals-of-care framing statement.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</section>
+
+<!-- SCORING TABLE -->
+<section class="section" id="formula">
+<div class="section-tag">Scoring</div>
+<h2>Scoring Table &amp; Interpretation Bands</h2>
+
+<h3 style="margin-bottom:12px;">Comorbidity items and weights</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Condition</th><th>Points</th></tr></thead>
+<tbody>
+<tr><td>Myocardial infarction</td><td>1</td></tr>
+<tr><td>Congestive heart failure</td><td>1</td></tr>
+<tr><td>Peripheral vascular disease</td><td>1</td></tr>
+<tr><td>Cerebrovascular disease (TIA / stroke)</td><td>1</td></tr>
+<tr><td>Dementia</td><td>1</td></tr>
+<tr><td>Chronic pulmonary disease (COPD / asthma)</td><td>1</td></tr>
+<tr><td>Connective tissue / rheumatic disease</td><td>1</td></tr>
+<tr><td>Peptic ulcer disease</td><td>1</td></tr>
+<tr><td>Mild liver disease (without portal hypertension)</td><td>1</td></tr>
+<tr><td>Diabetes without end-organ damage</td><td>1</td></tr>
+<tr><td>Hemiplegia / paraplegia</td><td>2</td></tr>
+<tr><td>Moderate-to-severe renal disease / dialysis</td><td>2</td></tr>
+<tr><td>Diabetes with end-organ damage (retinopathy, nephropathy, neuropathy)</td><td>2</td></tr>
+<tr><td>Solid tumor (non-metastatic, diagnosed or treated within 5 years) / leukemia / lymphoma</td><td>2</td></tr>
+<tr><td>Moderate-to-severe liver disease (cirrhosis with portal hypertension)</td><td>3</td></tr>
+<tr><td>Metastatic solid tumor</td><td>6</td></tr>
+<tr><td>AIDS / HIV (not just seropositive)</td><td>6</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="margin-top:24px;margin-bottom:12px;">Age adjustment (added to comorbidity score)</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Age band</th><th>Additional points</th></tr></thead>
+<tbody>
+<tr><td>Under 50</td><td>0</td></tr>
+<tr><td>50–59</td><td>1</td></tr>
+<tr><td>60–69</td><td>2</td></tr>
+<tr><td>70–79</td><td>3</td></tr>
+<tr><td>80–89</td><td>4</td></tr>
+<tr><td>90 and above</td><td>5</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="margin-top:24px;margin-bottom:12px;">Interpretation bands (age-adjusted total score)</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Age-adjusted total</th><th>Comorbidity burden</th><th>Approx. 10-yr survival</th><th>Goals-of-care framing</th></tr></thead>
+<tbody>
+<tr><td>0–2</td><td>Low</td><td>&gt; 90%</td><td>Prognosis generally favors continued dialysis if indicated; focus on quality of life and vascular risk</td></tr>
+<tr><td>3–4</td><td>Moderate</td><td>53–77%</td><td>Competing mortality risks are meaningful; frame an honest benefit-versus-burden conversation</td></tr>
+<tr><td>5–6</td><td>High</td><td>21–53%</td><td>High competing mortality; explicitly weigh dialysis burden against conservative kidney management</td></tr>
+<tr><td>≥ 7</td><td>Very high</td><td>&lt; 21%</td><td>Very high 1-year mortality; structured advance-care planning and CKM should be discussed as a genuine alternative</td></tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Survival formula: 10-year survival (%) = 0.983^(e^(score × 0.9)) × 100. Derived from Charlson et al., <em>J Clin Epidemiol.</em> 1994. Validation in hemodialysis cohorts confirms predictive validity, though absolute survival percentages reflect historical cohorts and should be interpreted as relative risk estimates rather than precise predictions.</p>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section" id="evidence">
+<div class="section-tag">Evidence &amp; References</div>
+<h2>Evidence &amp; References</h2>
+<p>The Charlson Comorbidity Index was originally derived and validated in a 1980s hospitalized medical cohort and has since been validated across multiple dialysis populations worldwide. The age-adjustment was published by Charlson et al. in 1994 and is the standard applied in nephrology studies. KDIGO's 2024 CKD guideline explicitly recognizes the CCI as a useful prognostic tool to support conservative kidney management discussions. The survival formula used here (0.983^(e^(CCI × 0.9))) is the standard published derivation.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Charlson ME, Pompei P, Ales KL, MacKenzie CR. A new method of classifying prognostic comorbidity in longitudinal studies: development and validation. <em>J Chronic Dis.</em> 1987;40(5):373–383.</li>
+<li>Charlson M, Szatrowski TP, Peterson J, Gold J. Validation of a combined comorbidity index. <em>J Clin Epidemiol.</em> 1994;47(11):1245–1251.</li>
+<li>Kurella Tamura M, Covinsky KE, Chertow GM, Yaffe K, Landefeld CS, McCulloch CE. Functional status of elderly adults before and after initiation of dialysis. <em>N Engl J Med.</em> 2009;361(16):1539–1547.</li>
+<li>Al-Muhaiteeb A. Conservative kidney management in elderly patients with advanced CKD: an emerging paradigm. <em>Kidney360.</em> 2025 (in press).</li>
+<li>KDIGO. Clinical Practice Guideline for CKD Evaluation and Management (2024). Kidney International, 2024.</li>
+</ol>
+</section>
+
+<!-- PEARLS -->
+<section class="section" id="pearls">
+<div class="section-tag">Pearls &amp; Pitfalls</div>
+<h2>Pearls &amp; Pitfalls</h2>
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Use as a conversation anchor, not a verdict</h4>
+<p>A high CCI score opens the conversation about realistic prognosis — it does not close the conversation about dialysis. Some patients with very high scores choose to proceed with dialysis after an informed discussion; others choose conservative kidney management. The score's value is making the prognosis explicit so the patient can decide from a place of honest information rather than hope or assumption.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Pair with frailty assessment</h4>
+<p>The CCI captures comorbidity burden but not functional reserve or frailty. A patient with a moderate CCI but a Clinical Frailty Scale score of 7 (severely frail) carries a very different dialysis risk profile than a non-frail patient with the same CCI. Use the CCI alongside the CFS and Fried Phenotype (see the <a href="calc-frailty-assessment.html" style="color:var(--teal);">Frailty Assessment calculator</a>) for the most complete picture.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) The diabetes item is mutually exclusive — count only the higher category (with or without end-organ damage), never both. (2) Metastatic tumor (6 pts) overrides the non-metastatic solid-tumor checkbox (2 pts) — do not double-count. (3) The renal disease item should be unchecked if calculating for a non-dialysis patient without moderate-to-severe CKD. (4) The survival estimate is population-derived from a 1980s cohort; absolute percentages should be presented as "approximately" and paired with the clinician's own prognostic assessment.</p>
+</div>
+</div>
+</section>
+
+<div class="disclaimer"><strong>Important:</strong> The Charlson Comorbidity Index is a research and clinical decision-support tool, not a deterministic recommendation for or against dialysis. Individual prognosis depends on many factors beyond what the CCI captures. All goals-of-care conversations should involve the patient, family, and the treating nephrologist. This calculator does not replace individualized clinical judgment.</div>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label">Scan and save</p>
+</div>
+</div>
+</div>
+
+<div class="related-guides">
+<h2>Related Guides</h2>
+<div class="related-cards">
+<a class="related-card" href="calc-frailty-assessment.html">
+  <div class="related-card-tag">Clinical Calculator</div>
+  <div class="related-card-title">Frailty Assessment — CFS &amp; Fried Phenotype</div>
+  <div class="related-card-desc">Clinical Frailty Scale and Fried Frailty Phenotype calculators for elderly dialysis patients.</div>
+  <div class="related-card-arrow">Use tool →</div>
+</a>
+<a class="related-card" href="hemodialysis-elderly.html">
+  <div class="related-card-tag">Patient Guide</div>
+  <div class="related-card-title">Hemodialysis in the Elderly: Benefit, Burden &amp; Decisions</div>
+  <div class="related-card-desc">A guide to dialysis decision-making for elderly patients and their families, including conservative management.</div>
+  <div class="related-card-arrow">Read →</div>
+</a>
+<a class="related-card" href="understanding-ckd.html">
+  <div class="related-card-tag">The Basics</div>
+  <div class="related-card-title">Understanding Chronic Kidney Disease</div>
+  <div class="related-card-desc">A complete guide to what CKD means, how it progresses, and what you can do to protect your kidneys.</div>
+  <div class="related-card-arrow">Read →</div>
+</a>
+<a class="related-card" href="peritoneal-dialysis-ckd.html">
+  <div class="related-card-tag">Dialysis Options</div>
+  <div class="related-card-title">Peritoneal Dialysis: Your Complete Guide</div>
+  <div class="related-card-desc">How peritoneal dialysis works and why it may be a better option for many elderly patients.</div>
+  <div class="related-card-arrow">Read →</div>
+</a>
+</div>
+</div>
+
+<footer class="guide-footer">
+<div class="footer-inner">
+<p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>References: Charlson ME et al. <em>J Chronic Dis.</em> 1987 · Charlson M et al. <em>J Clin Epidemiol.</em> 1994 · KDIGO 2024 CKD Guidelines</p>
+</div>
+</footer>
+
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
+
+<button aria-label="Print this guide" class="print-btn" onclick="window.print()">
+<span class="p-tip">Print / Save PDF</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
+</svg>
+</button>
+
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb','kap'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+/* ── Charlson Comorbidity Index (age-adjusted) ─────────────────────────────── */
+function calcCharlson() {
+  const res = document.getElementById('ch-result');
+  if (!res) return;
+  const chk = id => { const e = document.getElementById(id); return e && e.checked ? 1 : 0; };
+  const sel = id => { const e = document.getElementById(id); return e ? parseInt(e.value, 10) || 0 : 0; };
+
+  let cci = 0;
+  cci += chk('ch-mi') + chk('ch-chf') + chk('ch-pvd') + chk('ch-cvd')
+       + chk('ch-dem') + chk('ch-copd') + chk('ch-rheum') + chk('ch-pud');
+  cci += 2 * chk('ch-renal');
+  cci += 2 * chk('ch-hemi');
+  cci += sel('ch-liver');
+  cci += sel('ch-diabetes');
+  const metast = sel('ch-metast');
+  cci += metast > 0 ? metast : 2 * chk('ch-tumor');
+  cci += sel('ch-aids');
+
+  const ageRaw = parseFloat(document.getElementById('ch-age').value);
+  let agePts = 0;
+  if (!isNaN(ageRaw) && ageRaw >= 50) agePts = Math.min(Math.floor((ageRaw - 40) / 10), 5);
+
+  const total = cci + agePts;
+  const surv = Math.pow(0.983, Math.exp(total * 0.9)) * 100;
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+  let borderColor, bg, band;
+  if (total <= 2)      { band = 'low';  borderColor = '#2d7a4f'; bg = isDark ? 'rgba(45,122,79,.08)'  : '#edf7f2'; }
+  else if (total <= 4) { band = 'mod';  borderColor = '#f5a623'; bg = isDark ? 'rgba(154,101,0,.08)'  : '#fef9ec'; }
+  else                 { band = 'high'; borderColor = '#c0392b'; bg = isDark ? 'rgba(192,57,43,.08)'  : '#fdf0ef'; }
+  const valColor = band === 'low' ? '#2d7a4f' : (band === 'mod' ? (isDark ? '#f5a623' : '#9a6500') : '#c0392b');
+
+  res.style.display = 'block';
+  res.style.background = bg;
+  res.style.borderColor = borderColor;
+
+  document.getElementById('ch-cci').textContent = cci;
+  document.getElementById('ch-cci-t').textContent = 'comorbidity points';
+  document.getElementById('ch-total').textContent = total;
+  document.getElementById('ch-total').style.color = valColor;
+  document.getElementById('ch-total-t').textContent = '+' + agePts + ' age points';
+  const survStr = surv >= 10 ? surv.toFixed(0) + '%' : (surv >= 1 ? surv.toFixed(1) + '%' : surv.toFixed(2) + '%');
+  document.getElementById('ch-surv').textContent = survStr;
+  document.getElementById('ch-surv').style.color = valColor;
+  document.getElementById('ch-surv-t').textContent = 'estimated 10-yr';
+
+  let verdict, action;
+  if (band === 'low') {
+    verdict = 'Low comorbidity burden (total ' + total + '). The age-adjusted Charlson score corresponds to a relatively favorable estimated 10-year survival (' + survStr + ').';
+    action = 'Reasonable prognosis to support continued dialysis if aligned with the patient\'s goals. Reassess if new comorbidities or functional decline emerge.';
+  } else if (band === 'mod') {
+    verdict = 'Moderate comorbidity burden (total ' + total + '). Estimated 10-year survival is intermediate (' + survStr + '); competing risks meaningfully shape prognosis.';
+    action = 'Use this to frame an honest benefit-versus-burden conversation about dialysis. Pair with frailty and functional assessment, and document the patient\'s priorities.';
+  } else {
+    verdict = 'High comorbidity burden (total ' + total + '). The age-adjusted score corresponds to a low estimated 10-year survival (' + survStr + '), reflecting heavy competing-mortality risk.';
+    action = 'Prioritize a structured goals-of-care discussion. Explicitly weigh continued hemodialysis against conservative kidney management and advance-care planning, guided by what matters most to the patient.';
+  }
+  document.getElementById('ch-verdict').textContent = verdict;
+  document.getElementById('ch-action').textContent = action;
+}
+document.addEventListener('DOMContentLoaded', calcCharlson);
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/image-lightbox.js" defer></script>
+</body>
+</html>

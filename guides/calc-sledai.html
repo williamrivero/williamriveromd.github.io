@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SLEDAI-2K &amp; SLICC/ACR Damage Index (Lupus) Calculator – W. G. M. Rivero, MD</title>
+<meta name="description" content="Interactive SLEDAI-2K, SELENA-SLEDAI, and SLICC/ACR Damage Index (SDI) calculator for lupus nephritis — validated disease activity and organ damage scoring with interpretation and clinical guidance.">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-sledai.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="SLEDAI-2K &amp; SLICC/ACR Damage Index (Lupus) Calculator">
+<meta property="og:description" content="Interactive SLEDAI-2K, SELENA-SLEDAI, and SLICC/ACR SDI calculator for lupus nephritis — 24-item disease activity scoring and organ damage index with clinical interpretation.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-sledai.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/lupus-nephritis-01-hero-editorial.png">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SLEDAI-2K &amp; SLICC/ACR Damage Index (Lupus) Calculator">
+<meta name="twitter:description" content="Interactive SLEDAI-2K, SELENA-SLEDAI, and SLICC/ACR SDI calculator for lupus nephritis disease activity and damage scoring.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/lupus-nephritis-01-hero-editorial.png">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  /* ═══════════════════════════════════════════════════════════════════════════
+     MASTER GUIDE CSS — williamriveromd.com
+     Version: 2026-05-17c
+  ═══════════════════════════════════════════════════════════════════════════ */
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;
+    --purple-soft:#faf5ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; font-size: 16px; }
+
+  .site-header { display: flex; align-items: center; justify-content: space-between; height: 56px; box-sizing: border-box; padding: 0 32px; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 200; }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+
+  .guide-lang-bar { display: flex; align-items: center; gap: 8px; padding: 8px 32px; background: rgba(10,18,32,.96); border-bottom: 1px solid rgba(255,255,255,.06); flex-wrap: wrap; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s; }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+
+  .guide-toggle-bar { display: flex; gap: 8px; align-items: center; padding: 6px 32px; background: rgba(10,18,32,.96) !important; border-bottom: 1px solid rgba(255,255,255,.08) !important; justify-content: space-between; flex-wrap: wrap; }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  [data-lang].lang-hidden { display: none !important; }
+
+  .hero { background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%); color: white; padding: 72px 0 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px, 5vw, 50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-sub em { font-style: italic; color: #fde68a; font-weight: 500; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section h3 { font-family: 'Lora', serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th { text-align: left; padding: 11px 16px; background: var(--navy); color: rgba(255,255,255,.92); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-bottom: none; }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td { padding: 13px 16px; vertical-align: top; line-height: 1.55; border-bottom: 1px solid var(--border); color: var(--text-mid); }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
+  /* SLEDAI calculator styles */
+  .ln-calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .ln-info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .ln-info-field label { display: block; font-size: 11px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 5px; }
+  .ln-info-field input, .ln-info-field select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: white; color: var(--text); box-sizing: border-box; }
+  .ln-info-check { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+  .ln-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .ln-tab { padding: 9px 22px; border: 2px solid var(--border); border-radius: 20px; background: white; font-size: 13.5px; font-weight: 600; cursor: pointer; color: var(--text-mid); transition: all .18s; }
+  .ln-tab.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .ln-panel { display: none; } .ln-panel.active { display: block; }
+  .ln-group { margin-bottom: 18px; }
+  .ln-group-hdr { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: rgba(26,107,114,.08); border-radius: 10px; margin-bottom: 8px; }
+  .ln-group-hdr-name { font-weight: 700; font-size: 13px; color: var(--navy); flex: 1; }
+  .ln-wt-badge { font-size: 11px; font-weight: 700; background: var(--teal); color: white; border-radius: 8px; padding: 2px 8px; }
+  .ln-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 10px; border-radius: 8px; cursor: pointer; transition: background .12s; }
+  .ln-item:hover { background: rgba(26,107,114,.06); }
+  .ln-item input[type=checkbox] { margin-top: 2px; accent-color: var(--teal); width: 15px; height: 15px; flex-shrink: 0; }
+  .ln-item-body { flex: 1; }
+  .ln-item-label { font-size: 13.5px; font-weight: 600; color: var(--text); }
+  .ln-item-hint { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+  .ln-pills { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .ln-pill { padding: 4px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 12px; font-weight: 600; cursor: pointer; background: white; color: var(--text-mid); transition: all .12s; }
+  .ln-pill.sel { background: var(--teal); border-color: var(--teal); color: white; }
+  .ln-score-panel { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 18px 22px; margin-top: 24px; }
+  .ln-score-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .ln-score-label { font-size: 13px; font-weight: 600; color: var(--text-mid); }
+  .ln-score-num { font-family: 'Lora', serif; font-size: 28px; font-weight: 700; color: var(--teal); }
+  .ln-interp { margin-top: 12px; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; }
+  .ln-interp.ln-inactive { background: #f3f4f6; color: #6b7280; }
+  .ln-interp.ln-remission { background: var(--green-soft); color: #166534; }
+  .ln-interp.ln-mild { background: var(--amber-soft); color: #92400e; }
+  .ln-interp.ln-moderate { background: #fff3e0; color: #b45309; }
+  .ln-interp.ln-high { background: var(--red-soft); color: #b91c1c; }
+  .ln-interp.ln-very-high { background: #fce7f3; color: #9d174d; }
+  .ln-calc-actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .ln-calc-actions button { padding: 9px 22px; border-radius: 20px; border: 2px solid var(--border); background: white; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-mid); transition: all .18s; }
+  .ln-calc-actions .btn-primary { background: var(--teal); border-color: var(--teal); color: white; }
+  .ln-calc-actions button:hover { opacity: .85; }
+
+  html[data-theme="dark"] .ln-calc-wrap { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .ln-info-field input, html[data-theme="dark"] .ln-info-field select { background: #0f1e2e; border-color: #2a3548; color: #e8edf2; }
+  html[data-theme="dark"] .ln-tab { background: #1a2535; border-color: #2a3548; color: #c0cad8; }
+  html[data-theme="dark"] .ln-tab.active { background: var(--teal); border-color: var(--teal); color: white; }
+  html[data-theme="dark"] .ln-group-hdr { background: rgba(26,107,114,.15); }
+  html[data-theme="dark"] .ln-group-hdr-name { color: #e8edf2; }
+  html[data-theme="dark"] .ln-item-label { color: #e8edf2; }
+  html[data-theme="dark"] .ln-item-hint { color: #8a9ab0; }
+  html[data-theme="dark"] .ln-pill { background: #0f1e2e; border-color: #2a3548; color: #c0cad8; }
+  html[data-theme="dark"] .ln-pill.sel { background: var(--teal); border-color: var(--teal); color: white; }
+  html[data-theme="dark"] .ln-score-panel { background: #0f1e2e; border-color: #2a3548; }
+  html[data-theme="dark"] .ln-score-label { color: #c0cad8; }
+  html[data-theme="dark"] .ln-calc-actions button { background: #1a2535; border-color: #2a3548; color: #c0cad8; }
+  html[data-theme="dark"] .ln-calc-actions .btn-primary { background: var(--teal); border-color: var(--teal); color: white; }
+
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .related-card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s; }
+  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
+  .related-card-tag { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+  .related-card-desc { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
+  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; border: none; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 0; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+
+  .scroll-top-btn { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996; opacity: 0; pointer-events: none; }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip { position: absolute; right: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+
+  .print-btn { position: fixed; bottom: 80px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s; z-index: 9998; }
+  .print-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip { position: absolute; left: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .print-btn:hover .p-tip { opacity: 1; }
+
+  html[data-theme="dark"] { --teal: #2ba8b0; --teal-light: #0a2830; --text: #e8eaf0; --text-mid: #dde3eb; --text-muted: #9baab8; --text-faint: #8090a4; --bg: #141c2a; --white: #1a2030; --border: #2a3548; --red: #f87171; --red-soft: #2a1515; --amber: #fbbf24; --amber-soft: #2a1900; --green: #4ade80; --green-soft: #0e2a1c; --purple: #c084fc; --purple-soft: #1a1030; }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
+  html[data-theme="dark"] .related-card-title { color: var(--text); }
+  html[data-theme="dark"] .alert-teal { background: #0a2830; }
+  html[data-theme="dark"] .alert-amber { background: #2a1900; }
+  html[data-theme="dark"] .alert-green { background: #0e2a1c; }
+  html[data-theme="dark"] .alert-red { background: #2a1515; }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-view="desktop"] { min-width: 1024px; }
+
+  @media(max-width: 480px) {
+    .container { padding: 0 20px; }
+    .related-guides { padding-left: 20px; padding-right: 20px; }
+    .guide-footer .footer-inner { padding: 0 20px; }
+    .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .dr-card-wrap { padding: 0 20px 40px; }
+    .hero-meta { gap: 14px; }
+  }
+  @media print {
+    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .scroll-top-btn, .guide-footer { display: none !important; }
+    body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; }
+    .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; }
+    .hero h1 { color: #1f3864 !important; font-size: 22px !important; }
+    .container { max-width: 100%; padding: 0 24px; }
+    .section { padding: 20px 0; border-bottom: 1px solid #ddd; }
+    @page { margin: 18mm 15mm; size: A4; }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "SLEDAI-2K & SLICC/ACR Damage Index (Lupus) Calculator",
+  "url": "https://www.williamriveromd.com/guides/calc-sledai.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH",
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "patient"
+  }
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
+</header>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Lupus Nephritis</div>
+<h1>SLEDAI-2K &amp; SLICC/ACR <em>Damage Index (Lupus)</em></h1>
+<p class="hero-sub">Combined disease activity and organ damage scoring for systemic lupus erythematosus — the same validated tools used in BLISS-LN, AURORA, and REGENCY trials, now in a single interactive calculator.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+<span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" style="color:var(--gold-light);text-decoration:none;">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="lupus-nephritis.html" style="color:var(--gold-light);text-decoration:none;">Full lupus nephritis patient guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#instructions">How to Use</a>
+<a class="nav-pill" href="#formula">Scoring</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- WHEN TO USE -->
+<section class="section" id="when">
+<div class="section-tag">When to Use</div>
+<h2>When to Use This Calculator</h2>
+<p>Use the SLEDAI-2K and SLICC/ACR Damage Index at every formal disease activity assessment visit in patients with confirmed systemic lupus erythematosus (SLE), especially those with lupus nephritis (ISN/RPS Class III, IV, or V). The SLEDAI-2K quantifies current disease activity; the SDI quantifies irreversible organ damage accrued since diagnosis. Together, they guide decisions about immunosuppression intensity, trial eligibility, and long-term prognosis.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Appropriate population</h4>
+<p>Adults with confirmed SLE (meeting ACR 1997 or SLICC 2012 classification criteria). SLEDAI-2K is used at baseline and at each clinic visit to track activity trends. SDI is typically calculated at 1 year post-diagnosis and annually thereafter, recording cumulative irreversible damage. Both tools are required for most clinical trial eligibility screening (BLISS-LN, AURORA, REGENCY, VOCANO trials).</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>Important limitations</h4>
+<p>SLEDAI-2K scores features as present or absent — it does not weight partial improvement, which is why change scores (delta-SLEDAI) must be tracked across visits rather than relying on any single value. The same 24 descriptors are shared between SLEDAI-2K and SELENA-SLEDAI; SELENA-SLEDAI adds the Physician Global Assessment (PGA, 0–3 VAS). SDI records only damage present for 6 or more months since diagnosis — do not score acute active lesions. Both tools require clinical and laboratory data from the current visit; retrospective scoring is unreliable.</p>
+</div>
+</div>
+</section>
+
+<!-- WHY USE IT -->
+<section class="section" id="why">
+<div class="section-tag">Why Use It</div>
+<h2>Why Structured Scoring Matters in Lupus Nephritis</h2>
+<p>Lupus nephritis affects up to 60% of SLE patients in Southeast Asian populations — a prevalence substantially higher than in Western cohorts, likely driven by genetic factors and delayed diagnosis. Without structured scoring, disease activity is assessed subjectively, leading to under-treatment during flares and over-treatment during remission. SLEDAI-2K score of 6 or higher predicts renal flare and is used as an inclusion criterion for most biologic trials. SDI score of 1 or more at 5 years doubles mortality risk. Integrating both tools into routine practice aligns with the ACR 2024 and EULAR 2023 lupus nephritis guidelines, which explicitly recommend validated activity and damage instruments at every formal assessment.</p>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>SLEDAI-2K / SELENA-SLEDAI &amp; SLICC/ACR Damage Index</h2>
+<p>Check each feature present in the past 10 days (SLEDAI) or since diagnosis (SDI). Use the tabs to switch between the two tools.</p>
+
+<div class="ln-calc-wrap" id="ln-tool">
+  <!-- Demographics -->
+  <div class="ln-info-grid">
+    <div class="ln-info-field">
+      <label>Patient Name</label>
+      <input type="text" id="ln-pname" placeholder="Optional">
+    </div>
+    <div class="ln-info-field">
+      <label>Age</label>
+      <input type="number" id="ln-age" min="0" max="120" placeholder="Years">
+    </div>
+    <div class="ln-info-field">
+      <label>Sex</label>
+      <select id="ln-sex">
+        <option value="">—</option>
+        <option value="Female">Female</option>
+        <option value="Male">Male</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="ln-info-field">
+      <label>Date of Assessment</label>
+      <input type="date" id="ln-date">
+      <label class="ln-info-check"><input type="checkbox" id="ln-today" onchange="lnTodayChk()"> Today</label>
+    </div>
+  </div>
+
+  <!-- Tool tabs -->
+  <div class="ln-tabs">
+    <button class="ln-tab active" id="ln-tab-sledai" onclick="lnTab('sledai')">SLEDAI-2K / SELENA-SLEDAI</button>
+    <button class="ln-tab" id="ln-tab-sdi" onclick="lnTab('sdi')">SLICC/ACR SDI — Damage</button>
+  </div>
+
+  <!-- SLEDAI panel -->
+  <div class="ln-panel active" id="ln-panel-sledai">
+    <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;">Check each feature <strong>present and attributable to active SLE</strong> in the past 10 days. Each item carries the weighted score shown in parentheses. The same 24 descriptors apply to both SLEDAI-2K and SELENA-SLEDAI.</p>
+    <div id="ln-sledai-qs"></div>
+    <!-- PGA -->
+    <div style="background:rgba(26,107,114,.07);border-radius:12px;padding:16px 18px;margin-top:16px;">
+      <div style="font-size:12px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Physician Global Assessment (PGA) — SELENA-SLEDAI</div>
+      <p style="font-size:12px;color:var(--text-muted);margin:0 0 12px;">Rate overall SLE disease activity on a 0–3 visual analogue scale. Required for SELENA-SLEDAI flare classification.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;" id="ln-pga-pills">
+        <button class="ln-pill sel" data-pga="0" onclick="lnPgaClick(this)">0 — None</button>
+        <button class="ln-pill" data-pga="0.5" onclick="lnPgaClick(this)">0.5</button>
+        <button class="ln-pill" data-pga="1" onclick="lnPgaClick(this)">1 — Mild</button>
+        <button class="ln-pill" data-pga="1.5" onclick="lnPgaClick(this)">1.5</button>
+        <button class="ln-pill" data-pga="2" onclick="lnPgaClick(this)">2 — Moderate</button>
+        <button class="ln-pill" data-pga="2.5" onclick="lnPgaClick(this)">2.5</button>
+        <button class="ln-pill" data-pga="3" onclick="lnPgaClick(this)">3 — Severe</button>
+      </div>
+    </div>
+    <div class="ln-score-panel">
+      <div class="ln-score-row">
+        <span class="ln-score-label">SLEDAI-2K / SELENA Score</span>
+        <span class="ln-score-num" id="ln-sledai-score">0</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:12px;color:var(--text-muted);">Physician Global Assessment (PGA)</span>
+        <span style="font-size:16px;font-weight:700;color:var(--text-mid);" id="ln-pga-display">0 / 3</span>
+      </div>
+      <div class="ln-interp ln-inactive" id="ln-sledai-interp">Check applicable items above to calculate disease activity.</div>
+    </div>
+  </div>
+
+  <!-- SDI panel -->
+  <div class="ln-panel" id="ln-panel-sdi">
+    <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;">Record damage <strong>present for ≥6 months since diagnosis</strong> that is not due to active inflammation. Items score 0/1 unless noted (some allow 0/1/2).</p>
+    <div id="ln-sdi-qs"></div>
+    <div class="ln-score-panel">
+      <div class="ln-score-row">
+        <span class="ln-score-label">SDI Total Score</span>
+        <span class="ln-score-num" id="ln-sdi-score">0</span>
+      </div>
+      <div class="ln-interp ln-inactive" id="ln-sdi-interp">Check applicable items above to calculate organ damage score.</div>
+    </div>
+  </div>
+
+  <div class="ln-calc-actions">
+    <button onclick="lnReset()">Reset All</button>
+    <button class="btn-primary" onclick="lnPrint()">Print / Save as PDF</button>
+  </div>
+</div>
+
+<div class="alert alert-teal" style="margin-top:16px;display:block;padding:20px 24px;">
+  <p style="font-size:13px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin:0 0 14px;">About these tools</p>
+  <p style="font-size:13.5px;color:var(--text-mid);margin:0 0 12px;line-height:1.7;"><strong>SLEDAI-2K</strong> (Gladman et al., <em>J Rheumatol</em> 2002) — Modified SLEDAI allowing persistent active disease to be scored, not just new-onset features. Score ≥6 = moderate-to-high activity.</p>
+  <p style="font-size:13.5px;color:var(--text-mid);margin:0 0 12px;line-height:1.7;"><strong>SELENA-SLEDAI</strong> (Petri et al., <em>Arthritis Rheum</em> 2005) — Same 24 descriptors as SLEDAI-2K, plus the Physician Global Assessment (PGA, 0–3 VAS). Used in BLISS-LN, REGENCY, AURORA, and most biologics trials.</p>
+  <p style="font-size:13.5px;color:var(--text-mid);margin:0;line-height:1.7;"><strong>SLICC/ACR Damage Index (SDI)</strong> (Gladman et al., <em>Arthritis Rheum</em> 1996) — Records irreversible organ damage present for ≥6 months since diagnosis. SDI ≥1 predicts increased mortality. These calculators are educational aids — clinical judgement always takes precedence.</p>
+</div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="section" id="instructions">
+<div class="section-tag">How to Use</div>
+<h2>Instructions</h2>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Optionally enter patient demographics — name, age, sex, and date — to appear on the printed report.</li>
+<li>For the <strong>SLEDAI-2K / SELENA-SLEDAI tab:</strong> check each clinical or laboratory feature that is present AND attributable to active SLE in the <strong>past 10 days</strong>. Each item carries a weight (×1 to ×8) shown in parentheses. Rate the Physician Global Assessment (PGA) on the 0–3 scale.</li>
+<li>For the <strong>SLICC/ACR SDI tab:</strong> check each damage item that has been present for <strong>≥6 months since diagnosis</strong>. Items must not be due to active inflammation. Some items allow scoring 0, 1, or 2 (e.g., multiple CVA events).</li>
+<li>Scores update live. Click <strong>Print / Save as PDF</strong> to generate a structured report for the medical record.</li>
+<li>Click <strong>Reset All</strong> to clear all checkboxes and scores.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</section>
+
+<!-- SCORING TABLE -->
+<section class="section" id="formula">
+<div class="section-tag">Scoring</div>
+<h2>Scoring Tables &amp; Interpretation Bands</h2>
+<h3>SLEDAI-2K Score Interpretation</h3>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>SLEDAI-2K Score</th><th>Activity Level</th><th>Clinical Implication</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>Remission / Inactive</td><td>Target for maintenance therapy. Continue HCQ and lowest effective immunosuppression.</td></tr>
+<tr><td>1–5</td><td>Mild Activity</td><td>Close monitoring; HCQ optimization; avoid over-treatment. Consider reducing steroids if stable.</td></tr>
+<tr><td>6–11</td><td>Moderate Activity</td><td>Review induction or escalation of immunosuppression. Nephrology/rheumatology reassessment.</td></tr>
+<tr><td>12–19</td><td>High Activity</td><td>Aggressive induction therapy indicated. Consider pulse steroids, MMF escalation, or biologics.</td></tr>
+<tr><td>≥20</td><td>Very High Activity</td><td>Urgent multidisciplinary management. Hospitalization may be required.</td></tr>
+</tbody>
+</table>
+</div>
+<h3 style="margin-top:28px;">SLICC/ACR SDI Score Interpretation</h3>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>SDI Score</th><th>Damage Level</th><th>Clinical Implication</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>No Damage</td><td>Excellent outlook. Continue therapies that prevent accrual (HCQ, BP control, lipid management).</td></tr>
+<tr><td>1–2</td><td>Mild Damage</td><td>Optimize therapy to prevent further accrual. Modifiable risk factor control is paramount.</td></tr>
+<tr><td>3–4</td><td>Moderate Damage</td><td>SDI ≥1 predicts increased mortality. Aggressive control of CV, renal, and infectious risk factors.</td></tr>
+<tr><td>≥5</td><td>Severe Damage</td><td>High mortality risk. Multidisciplinary approach and specialist review recommended.</td></tr>
+</tbody>
+</table>
+</div>
+<h3 style="margin-top:28px;">SLEDAI-2K Item Weights (24 descriptors)</h3>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>System</th><th>Items</th><th>Weight Each</th></tr>
+</thead>
+<tbody>
+<tr><td>Neuropsychiatric</td><td>Seizure, Psychosis, Organic brain syndrome, Visual disturbance, Cranial nerve disorder, Lupus headache, CVA, Vasculitis</td><td>×8</td></tr>
+<tr><td>Musculoskeletal</td><td>Arthritis, Myositis</td><td>×4</td></tr>
+<tr><td>Renal</td><td>Urinary casts, Hematuria, Proteinuria, Pyuria</td><td>×4</td></tr>
+<tr><td>Skin, Mucosa, Serosae</td><td>New rash, Alopecia, Mucosal ulcers, Pleuritis, Pericarditis</td><td>×2</td></tr>
+<tr><td>Immunologic</td><td>Low complement, Elevated anti-dsDNA</td><td>×2</td></tr>
+<tr><td>Constitutional &amp; Hematologic</td><td>Fever, Thrombocytopenia, Leukopenia</td><td>×1</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section" id="evidence">
+<div class="section-tag">Evidence &amp; References</div>
+<h2>Evidence &amp; References</h2>
+<p>The SLEDAI-2K was validated against its predecessor (SLEDAI 1992) by Gladman and colleagues at the University of Toronto, demonstrating equivalent sensitivity and better reliability for tracking persistent active disease. The SLICC/ACR Damage Index was developed through a multinational collaboration specifically to capture the irreversible end-organ consequences of SLE and its treatment. Both instruments are endorsed by the ACR 2024 and EULAR 2023 lupus nephritis guidelines and are required outcome measures in all major RCTs for biologics used in lupus nephritis.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Gladman DD, Ibañez D, Urowitz MB. Systemic lupus erythematosus disease activity index 2000. <em>J Rheumatol.</em> 2002;29(2):288–291.</li>
+<li>Gladman D, Ginzler E, Goldsmith C, et al. The development and initial validation of the Systemic Lupus International Collaborating Clinics/American College of Rheumatology damage index for systemic lupus erythematosus. <em>Arthritis Rheum.</em> 1996;39(3):363–369.</li>
+<li>Petri M, Kim MY, Kalunian KC, et al. Combined oral contraceptives in women with systemic lupus erythematosus. <em>N Engl J Med.</em> 2005;353(24):2550–2558. [SELENA trial — SELENA-SLEDAI validation]</li>
+<li>Furie R, Rovin BH, Houssiau F, et al. Two-year, randomized, controlled trial of belimumab in lupus nephritis. <em>N Engl J Med.</em> 2020;383(12):1117–1128. [BLISS-LN — uses SELENA-SLEDAI as primary outcome]</li>
+</ol>
+</section>
+
+<!-- PEARLS & PITFALLS -->
+<section class="section" id="pearls">
+<div class="section-tag">Pearls &amp; Pitfalls</div>
+<h2>Pearls &amp; Pitfalls</h2>
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Track the delta, not just the number</h4>
+<p>A SLEDAI-2K score of 6 in a patient whose previous score was 14 represents improvement; the same score rising from 2 signals escalating disease. The SELENA flare definition requires a SLEDAI increase of ≥3 AND a PGA increase of ≥1 — neither criterion alone is sufficient. Always compare to the prior visit value before changing therapy.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>SDI ≥1 at one year is a major prognostic marker</h4>
+<p>Every increment in SDI is associated with an approximately 35% increase in mortality in multivariate analyses. Hydroxychloroquine (HCQ) is the single intervention most consistently shown to reduce SDI accrual over time — ensure every eligible patient is on HCQ (dose-adjusted for weight and renal function) unless truly contraindicated.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Do not score SDI items caused by active lupus — only irreversible damage present ≥6 months counts. Scoring active nephritis as renal damage will overestimate SDI and falsely indicate worse prognosis. (2) Proteinuria in the SLEDAI requires a <em>new onset or increase of &gt;0.5 g/24h</em> — stable, pre-existing proteinuria does not score. (3) SLEDAI does not capture serositis adequately (pleuritis and pericarditis each score 2 regardless of severity) — do not use SLEDAI alone to decide whether to add steroids for severe pericarditis. (4) The SDI renal item for ESRD (dialysis or transplant) scores 3 points — ensure this is captured in all patients with CKD-5D regardless of SLE activity at that visit.</p>
+</div>
+</div>
+</section>
+
+<div class="disclaimer"><strong>Important:</strong> These calculators are educational and clinical documentation aids. SLEDAI-2K and SLICC/ACR SDI scores must be interpreted in the context of the full clinical picture, including medications, comorbidities, and trend data from prior visits. Treatment decisions in lupus nephritis require specialist nephrology or rheumatology input. Do not change immunosuppressive therapy based on a single score without physician assessment.</div>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span><span data-lang="tl" class="lang-hidden">I-scan at i-save</span><span data-lang="ceb" class="lang-hidden">I-scan ug i-save</span><span data-lang="kap" class="lang-hidden">I-scan at i-save</span></p>
+</div>
+</div>
+</div>
+
+<div class="related-guides">
+<h2>Related Guides</h2>
+<div class="related-cards">
+<a class="related-card" href="lupus-nephritis.html">
+<div class="related-card-tag">Autoimmune Nephrology</div>
+<div class="related-card-title">Lupus Nephritis</div>
+<div class="related-card-desc">Complete guide — how SLE damages the kidneys, ISN/RPS biopsy classification, induction and maintenance therapies, and the newer biologics.</div>
+<div class="related-card-arrow">Read →</div>
+</a>
+<a class="related-card" href="glomerulonephritis.html">
+<div class="related-card-tag">Overview</div>
+<div class="related-card-title">What is Glomerulonephritis?</div>
+<div class="related-card-desc">Understanding inflammation of the kidney's filtering units — types, diagnosis, and treatment overview.</div>
+<div class="related-card-arrow">Read →</div>
+</a>
+<a class="related-card" href="proteins-proteinuria.html">
+<div class="related-card-tag">Key Biomarker</div>
+<div class="related-card-title">All About Proteins &amp; Proteinuria</div>
+<div class="related-card-desc">What protein in the urine means, how it is measured, and the proven strategies to reduce it in lupus nephritis.</div>
+<div class="related-card-arrow">Read →</div>
+</a>
+<a class="related-card" href="understanding-ckd.html">
+<div class="related-card-tag">The Basics</div>
+<div class="related-card-title">Understanding Chronic Kidney Disease</div>
+<div class="related-card-desc">CKD fundamentals — staging, progression, and what patients can do to protect kidney function.</div>
+<div class="related-card-arrow">Read →</div>
+</a>
+</div>
+</div>
+
+<footer class="guide-footer">
+<div class="footer-inner">
+<p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>References: SLEDAI-2K Gladman et al. J Rheumatol 2002 · SLICC/ACR SDI Gladman et al. Arthritis Rheum 1996 · SELENA-SLEDAI Petri et al. Arthritis Rheum 2005</p>
+</div>
+</footer>
+
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
+
+<button aria-label="Print this guide" class="print-btn" onclick="window.print()">
+<span class="p-tip">Print / Save PDF</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
+</svg>
+</button>
+
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb','kap'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+// ── SLEDAI-2K / SLICC SDI Calculators ─────────────────────────────────────
+var LN_SLEDAI_GROUPS=[
+  {sys:'Neuropsychiatric',wt:8,items:[
+    {id:'sn1',label:'Seizure',hint:'New-onset; exclude metabolic, infectious, or drug causes'},
+    {id:'sn2',label:'Psychosis',hint:'Severe perceptual disturbance impairing normal function'},
+    {id:'sn3',label:'Organic brain syndrome',hint:'Acute confusion, disorientation, or fluctuating cognition'},
+    {id:'sn4',label:'Visual disturbance',hint:'Retinal changes, cytoid bodies, hemorrhages, or exudate'},
+    {id:'sn5',label:'Cranial nerve disorder',hint:'New sensory or motor neuropathy involving cranial nerves'},
+    {id:'sn6',label:'Lupus headache',hint:'Severe, persistent; not responsive to narcotic analgesia'},
+    {id:'sn7',label:'CVA (new onset)',hint:'New cerebrovascular accident; exclude arteriosclerosis'},
+    {id:'sn8',label:'Vasculitis',hint:'Ulceration, gangrene, periungual infarction, or biopsy-proven'},
+  ]},
+  {sys:'Musculoskeletal',wt:4,items:[
+    {id:'sm1',label:'Arthritis',hint:'>2 joints with pain and signs of inflammation'},
+    {id:'sm2',label:'Myositis',hint:'Proximal weakness + elevated CPK/aldolase or EMG/biopsy'},
+  ]},
+  {sys:'Renal',wt:4,items:[
+    {id:'sr1',label:'Urinary casts',hint:'Heme-granular or RBC casts on urinalysis'},
+    {id:'sr2',label:'Hematuria',hint:'>5 RBC/HPF; exclude stone, infection, or other cause'},
+    {id:'sr3',label:'Proteinuria',hint:'>0.5 g/24h new onset or recent increase >0.5 g/24h'},
+    {id:'sr4',label:'Pyuria',hint:'>5 WBC/HPF; exclude infection'},
+  ]},
+  {sys:'Skin, Mucosa & Serosae',wt:2,items:[
+    {id:'sk1',label:'New rash',hint:'New or recurrent inflammatory rash'},
+    {id:'sk2',label:'Alopecia',hint:'New or recurrent patchy or diffuse hair loss'},
+    {id:'sk3',label:'Mucosal ulcers',hint:'New or recurrent oral or nasal ulcers'},
+    {id:'sk4',label:'Pleuritis',hint:'Pleuritic pain with rub, effusion, or pleural thickening'},
+    {id:'sk5',label:'Pericarditis',hint:'Pericardial pain with rub, effusion, or ECG/echo confirmation'},
+  ]},
+  {sys:'Immunologic',wt:2,items:[
+    {id:'si1',label:'Low complement',hint:'Decreased CH50, C3, or C4 below lab normal range'},
+    {id:'si2',label:'Elevated anti-dsDNA',hint:'Above normal range for testing laboratory'},
+  ]},
+  {sys:'Constitutional & Hematologic',wt:1,items:[
+    {id:'sc1',label:'Fever',hint:'>38°C; exclude infectious causes'},
+    {id:'sc2',label:'Thrombocytopenia',hint:'Platelets <100,000/mm³; exclude drug causes'},
+    {id:'sc3',label:'Leukopenia',hint:'WBC <3,000/mm³; exclude drug causes'},
+  ]},
+];
+
+var LN_SDI_GROUPS=[
+  {sys:'Ocular',items:[
+    {id:'do1',label:'Cataract (any eye)',wt:1},
+    {id:'do2',label:'Retinal change or optic atrophy',wt:1},
+  ]},
+  {sys:'Neuropsychiatric',items:[
+    {id:'dn1',label:'Cognitive impairment or major psychosis',wt:1},
+    {id:'dn2',label:'Seizures requiring treatment ≥6 months',wt:1},
+    {id:'dn3',label:'CVA ever',wt:1,max:2,hint:'Score 2 if >1 event'},
+    {id:'dn4',label:'Cranial or peripheral neuropathy (excluding optic)',wt:1},
+    {id:'dn5',label:'Transverse myelitis',wt:1},
+  ]},
+  {sys:'Renal',items:[
+    {id:'dr1',label:'eGFR <50% of normal (measured or estimated)',wt:1},
+    {id:'dr2',label:'Proteinuria ≥3.5 g/24h',wt:1},
+    {id:'dr3',label:'End-stage renal disease (dialysis or transplant)',wt:3,hint:'Scores 3 points if present'},
+  ]},
+  {sys:'Pulmonary',items:[
+    {id:'dp1',label:'Pulmonary hypertension (RV prominence or loud P2)',wt:1},
+    {id:'dp2',label:'Pulmonary fibrosis (clinical and radiographic)',wt:1},
+    {id:'dp3',label:'Shrinking lung (radiographic)',wt:1},
+    {id:'dp4',label:'Pleural fibrosis (radiographic)',wt:1},
+    {id:'dp5',label:'Pulmonary infarction or resection (non-cancer)',wt:1},
+  ]},
+  {sys:'Cardiovascular',items:[
+    {id:'dc1',label:'Angina or coronary artery bypass surgery',wt:1},
+    {id:'dc2',label:'Myocardial infarction ever',wt:1,max:2,hint:'Score 2 if >1 event'},
+    {id:'dc3',label:'Cardiomyopathy (ventricular dysfunction)',wt:1},
+    {id:'dc4',label:'Valvular disease (murmur >3/6, diastolic or systolic)',wt:1},
+    {id:'dc5',label:'Pericarditis ≥6 months or pericardiectomy',wt:1},
+  ]},
+  {sys:'Peripheral Vascular',items:[
+    {id:'dv1',label:'Claudication ≥6 months',wt:1},
+    {id:'dv2',label:'Minor tissue loss (pulp space)',wt:1},
+    {id:'dv3',label:'Significant tissue loss (loss of digit or limb)',wt:1,max:2,hint:'Score 2 if >1 event'},
+    {id:'dv4',label:'Venous thrombosis with swelling, ulceration, or stasis',wt:1},
+  ]},
+  {sys:'Gastrointestinal',items:[
+    {id:'dg1',label:'Bowel infarction or resection (below duodenum), spleen, liver, or gallbladder ever',wt:1,max:2,hint:'Score 2 if >1 event'},
+    {id:'dg2',label:'Mesenteric insufficiency',wt:1},
+    {id:'dg3',label:'Chronic peritonitis',wt:1},
+    {id:'dg4',label:'Stricture or upper GI surgery ever',wt:1},
+  ]},
+  {sys:'Musculoskeletal',items:[
+    {id:'dms1',label:'Muscle atrophy or weakness',wt:1},
+    {id:'dms2',label:'Deforming or erosive arthritis (excluding reducible deformity)',wt:1},
+    {id:'dms3',label:'Osteoporosis with fracture or vertebral collapse',wt:1},
+    {id:'dms4',label:'Avascular necrosis',wt:1,max:2,hint:'Score 2 if >1 joint affected'},
+    {id:'dms5',label:'Osteomyelitis',wt:1},
+    {id:'dms6',label:'Tendon rupture',wt:1},
+  ]},
+  {sys:'Skin',items:[
+    {id:'ds1',label:'Scarring chronic alopecia',wt:1},
+    {id:'ds2',label:'Extensive scarring or panniculum (excluding scalp and pulp space)',wt:1},
+    {id:'ds3',label:'Skin ulceration (excluding thrombosis) for ≥6 months',wt:1},
+  ]},
+  {sys:'Gonadal / Endocrine / Oncologic',items:[
+    {id:'dx1',label:'Premature gonadal failure',wt:1},
+    {id:'dx2',label:'Diabetes mellitus (requiring treatment)',wt:1},
+    {id:'dx3',label:'Malignancy (excluding dysplasia)',wt:1,max:2,hint:'Score 2 if >1 site'},
+  ]},
+];
+
+function lnBuildSledai(){
+  var c=document.getElementById('ln-sledai-qs');
+  if(!c)return;
+  var html='';
+  LN_SLEDAI_GROUPS.forEach(function(g){
+    html+='<div class="ln-group"><div class="ln-group-hdr"><span class="ln-group-hdr-name">'+g.sys+'</span><span class="ln-wt-badge">&times;'+g.wt+'</span></div>';
+    g.items.forEach(function(it){
+      html+='<label class="ln-item"><input type="checkbox" id="'+it.id+'" onchange="lnSledaiUpdate()"><div class="ln-item-body"><div class="ln-item-label">'+it.label+'<span style="font-size:11px;font-weight:400;margin-left:8px;color:var(--text-muted);">(+'+g.wt+')</span></div>';
+      if(it.hint)html+='<div class="ln-item-hint">'+it.hint+'</div>';
+      html+='</div></label>';
+    });
+    html+='</div>';
+  });
+  c.innerHTML=html;
+}
+
+function lnBuildSdi(){
+  var c=document.getElementById('ln-sdi-qs');
+  if(!c)return;
+  var html='';
+  LN_SDI_GROUPS.forEach(function(g){
+    html+='<div class="ln-group"><div class="ln-group-hdr"><span class="ln-group-hdr-name">'+g.sys+'</span></div>';
+    g.items.forEach(function(it){
+      if(it.max){
+        html+='<div class="ln-item" style="flex-direction:column;align-items:flex-start;cursor:default;"><div class="ln-item-body" style="width:100%;"><div class="ln-item-label">'+it.label+'</div>';
+        if(it.hint)html+='<div class="ln-item-hint">'+it.hint+'</div>';
+        html+='<div class="ln-pills" id="'+it.id+'-pills">';
+        for(var v=0;v<=it.max;v++){
+          html+='<button class="ln-pill'+(v===0?' sel':'')+'" data-id="'+it.id+'" data-val="'+v+'" onclick="lnPillClick(this)">'+v+'</button>';
+        }
+        html+='</div></div></div>';
+      } else {
+        html+='<label class="ln-item"><input type="checkbox" id="'+it.id+'" onchange="lnSdiUpdate()"><div class="ln-item-body"><div class="ln-item-label">'+it.label+'<span style="font-size:11px;font-weight:400;margin-left:8px;color:var(--text-muted);">(+'+(it.wt===3?'3':it.wt)+')</span></div>';
+        if(it.hint)html+='<div class="ln-item-hint">'+it.hint+'</div>';
+        html+='</div></label>';
+      }
+    });
+    html+='</div>';
+  });
+  c.innerHTML=html;
+}
+
+lnBuildSledai();
+lnBuildSdi();
+
+function lnPillClick(btn){
+  var id=btn.getAttribute('data-id');
+  document.querySelectorAll('[data-id="'+id+'"]').forEach(function(p){p.classList.remove('sel');});
+  btn.classList.add('sel');
+  lnSdiUpdate();
+}
+
+function lnPgaClick(btn){
+  document.querySelectorAll('#ln-pga-pills .ln-pill').forEach(function(p){p.classList.remove('sel');});
+  btn.classList.add('sel');
+  var val=parseFloat(btn.getAttribute('data-pga'));
+  var disp=document.getElementById('ln-pga-display');
+  if(disp)disp.textContent=val+' / 3';
+  lnSledaiUpdate();
+}
+
+function lnTab(which){
+  ['sledai','sdi'].forEach(function(t){
+    document.getElementById('ln-tab-'+t).classList.toggle('active',t===which);
+    document.getElementById('ln-panel-'+t).classList.toggle('active',t===which);
+  });
+}
+
+function lnTodayChk(){
+  var chk=document.getElementById('ln-today');
+  var dt=document.getElementById('ln-date');
+  if(chk.checked){
+    var now=new Date();
+    var y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
+    dt.value=y+'-'+m+'-'+d;
+    dt.readOnly=true;
+  } else {
+    dt.readOnly=false;
+  }
+}
+
+function lnGetPga(){
+  var sel=document.querySelector('#ln-pga-pills .ln-pill.sel');
+  return sel?parseFloat(sel.getAttribute('data-pga')):0;
+}
+
+function lnSledaiUpdate(){
+  var score=0;
+  LN_SLEDAI_GROUPS.forEach(function(g){
+    g.items.forEach(function(it){
+      var cb=document.getElementById(it.id);
+      if(cb&&cb.checked)score+=g.wt;
+    });
+  });
+  var pga=lnGetPga();
+  document.getElementById('ln-sledai-score').textContent=score;
+  var disp=document.getElementById('ln-pga-display');
+  if(disp)disp.textContent=pga+' / 3';
+  var r=lnSledaiInterp(score,pga);
+  var box=document.getElementById('ln-sledai-interp');
+  box.className='ln-interp '+r.cls;
+  box.innerHTML=r.text;
+}
+
+function lnSledaiInterp(s,pga){
+  var pgaTxt=pga>0?' · PGA '+pga+(pga<=1?' (mild)':(pga<=2?' (moderate)':' (severe)')):'';
+  if(s===0&&pga===0)return{cls:'ln-remission',text:'<strong>Remission / Inactive</strong> — Score 0, PGA 0. Target for maintenance therapy.'};
+  if(s===0&&pga>0)return{cls:'ln-mild',text:'<strong>SELENA Mild Activity</strong> — SLEDAI 0 but PGA '+pga+'. Physician-detected activity without descriptor criteria; monitor closely.'};
+  if(s<=5)return{cls:'ln-mild',text:'<strong>Mild Activity</strong> — SLEDAI '+s+pgaTxt+'. Close monitoring; consider HCQ optimization.'};
+  if(s<=11)return{cls:'ln-moderate',text:'<strong>Moderate Activity</strong> — SLEDAI '+s+pgaTxt+'. Review induction or escalation of immunosuppression.'};
+  if(s<=19)return{cls:'ln-high',text:'<strong>High Activity</strong> — SLEDAI '+s+pgaTxt+'. Aggressive induction therapy indicated.'};
+  return{cls:'ln-very-high',text:'<strong>Very High Activity</strong> — SLEDAI '+s+pgaTxt+'. Urgent multidisciplinary management.'};
+}
+
+function lnSdiUpdate(){
+  var score=0;
+  LN_SDI_GROUPS.forEach(function(g){
+    g.items.forEach(function(it){
+      if(it.max){
+        var sel=document.querySelector('[data-id="'+it.id+'"].sel');
+        var v=sel?parseInt(sel.getAttribute('data-val')||'0'):0;
+        score+=v;
+      } else {
+        var cb=document.getElementById(it.id);
+        if(cb&&cb.checked)score+=it.wt;
+      }
+    });
+  });
+  document.getElementById('ln-sdi-score').textContent=score;
+  var r=lnSdiInterp(score);
+  var box=document.getElementById('ln-sdi-interp');
+  box.className='ln-interp '+r.cls;
+  box.innerHTML=r.text;
+}
+
+function lnSdiInterp(s){
+  if(s===0)return{cls:'ln-remission',text:'<strong>No Damage</strong> — SDI 0. Excellent outlook; continue therapies that prevent accrual.'};
+  if(s<=2)return{cls:'ln-mild',text:'<strong>Mild Damage</strong> — SDI '+s+'. Optimize therapy to prevent further accrual.'};
+  if(s<=4)return{cls:'ln-moderate',text:'<strong>Moderate Damage</strong> — SDI '+s+'. SDI ≥1 predicts increased mortality. Aggressive control of modifiable risk factors.'};
+  return{cls:'ln-high',text:'<strong>Severe Damage</strong> — SDI '+s+'. High mortality risk. Multidisciplinary approach and specialist review recommended.'};
+}
+
+function lnReset(){
+  document.querySelectorAll('#ln-sledai-qs input[type=checkbox]').forEach(function(cb){cb.checked=false;});
+  document.querySelectorAll('#ln-pga-pills .ln-pill').forEach(function(p,i){p.classList.toggle('sel',i===0);});
+  var pd=document.getElementById('ln-pga-display');if(pd)pd.textContent='0 / 3';
+  var ss=document.getElementById('ln-sledai-score');if(ss)ss.textContent='0';
+  var si=document.getElementById('ln-sledai-interp');if(si){si.className='ln-interp ln-inactive';si.textContent='Check applicable items above to calculate disease activity.';}
+  document.querySelectorAll('#ln-sdi-qs input[type=checkbox]').forEach(function(cb){cb.checked=false;});
+  document.querySelectorAll('.ln-pills').forEach(function(grp){
+    grp.querySelectorAll('.ln-pill').forEach(function(p,i){p.classList.toggle('sel',i===0);});
+  });
+  var ds=document.getElementById('ln-sdi-score');if(ds)ds.textContent='0';
+  var di=document.getElementById('ln-sdi-interp');if(di){di.className='ln-interp ln-inactive';di.textContent='Check applicable items above to calculate organ damage score.';}
+}
+
+function lnPrint(){
+  var pname=document.getElementById('ln-pname').value||'—';
+  var age=document.getElementById('ln-age').value||'—';
+  var sex=document.getElementById('ln-sex').value||'—';
+  var dt=document.getElementById('ln-date').value||'—';
+  var sledaiScore=document.getElementById('ln-sledai-score').textContent;
+  var pgaVal=lnGetPga();
+  var pgaLabel=pgaVal===0?'0 — None':pgaVal<=1?pgaVal+' — Mild':pgaVal<=2?pgaVal+' — Moderate':pgaVal+' — Severe';
+  var sledaiInterp=document.getElementById('ln-sledai-interp').textContent;
+  var sdiScore=document.getElementById('ln-sdi-score').textContent;
+  var sdiInterp=document.getElementById('ln-sdi-interp').textContent;
+
+  var sledaiChecked=[];
+  LN_SLEDAI_GROUPS.forEach(function(g){
+    g.items.forEach(function(it){
+      var cb=document.getElementById(it.id);
+      if(cb&&cb.checked)sledaiChecked.push({label:it.label,wt:g.wt});
+    });
+  });
+
+  var sdiItems=[];
+  LN_SDI_GROUPS.forEach(function(g){
+    g.items.forEach(function(it){
+      if(it.max){
+        var sel=document.querySelector('[data-id="'+it.id+'"].sel');
+        var v=sel?parseInt(sel.getAttribute('data-val')||'0'):0;
+        if(v>0)sdiItems.push({label:it.label,score:v});
+      } else {
+        var cb=document.getElementById(it.id);
+        if(cb&&cb.checked)sdiItems.push({label:it.label,score:it.wt});
+      }
+    });
+  });
+
+  var win=window.open('','_blank','width=800,height=900');
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Lupus Calculators — '+pname+'</title><style>body{font-family:Arial,sans-serif;font-size:13px;color:#1e2a38;max-width:720px;margin:32px auto;padding:0 20px;}h1{font-size:20px;color:#145c63;margin-bottom:4px;}h2{font-size:15px;color:#145c63;margin:24px 0 8px;border-bottom:2px solid #e2e6eb;padding-bottom:6px;}table{width:100%;border-collapse:collapse;margin:10px 0;}th{background:#145c63;color:white;padding:8px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;}td{padding:7px 12px;border-bottom:1px solid #e2e6eb;vertical-align:top;}tr:nth-child(even)td{background:#f9fafb;}.score-box{background:#f0f9f9;border:1.5px solid #1a6b72;border-radius:10px;padding:14px 18px;margin:12px 0;}.score-num{font-size:28px;font-weight:700;color:#1a6b72;line-height:1.2;}.interp{font-size:13px;font-weight:600;margin-top:4px;}.demo{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f9fafb;border-radius:10px;padding:14px;margin-bottom:20px;}.demo-field{font-size:13px;}.demo-label{color:#4a5a6a;font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}.footer{margin-top:32px;font-size:11px;color:#6b7280;border-top:1px solid #e2e6eb;padding-top:12px;}@media print{button{display:none;}}</style></head><body>');
+  win.document.write('<h1>Lupus Nephritis — SLEDAI-2K &amp; SLICC/ACR SDI Results</h1>');
+  win.document.write('<p style="font-size:11px;color:#6b7280;margin-bottom:16px;">Generated '+new Date().toLocaleDateString()+' · williamriveromd.com</p>');
+  win.document.write('<div class="demo"><div class="demo-field"><div class="demo-label">Patient</div><div>'+pname+'</div></div><div class="demo-field"><div class="demo-label">Age</div><div>'+age+'</div></div><div class="demo-field"><div class="demo-label">Sex</div><div>'+sex+'</div></div><div class="demo-field"><div class="demo-label">Date of Assessment</div><div>'+dt+'</div></div></div>');
+  win.document.write('<h2>SLEDAI-2K / SELENA-SLEDAI — Disease Activity</h2>');
+  win.document.write('<div class="score-box"><div style="display:flex;gap:24px;align-items:center;"><div><div style="font-size:10px;color:#4a5a6a;text-transform:uppercase;letter-spacing:.05em;">SLEDAI Score</div><div class="score-num">'+sledaiScore+'</div></div><div><div style="font-size:10px;color:#4a5a6a;text-transform:uppercase;letter-spacing:.05em;">PGA (SELENA)</div><div style="font-size:22px;font-weight:700;color:#145c63;">'+pgaLabel+'</div></div></div><div class="interp" style="margin-top:8px;">'+sledaiInterp+'</div></div>');
+  if(sledaiChecked.length){
+    win.document.write('<table><tr><th>Active Feature</th><th style="text-align:right;width:60px;">Score</th></tr>');
+    sledaiChecked.forEach(function(it){win.document.write('<tr><td>'+it.label+'</td><td style="text-align:right;">+'+it.wt+'</td></tr>');});
+    win.document.write('</table>');
+  } else {
+    win.document.write('<p style="color:#6b7280;font-size:12px;">No active features selected.</p>');
+  }
+  win.document.write('<h2>SLICC/ACR Damage Index (SDI)</h2>');
+  win.document.write('<div class="score-box"><div class="score-num">'+sdiScore+'</div><div class="interp">'+sdiInterp+'</div></div>');
+  if(sdiItems.length){
+    win.document.write('<table><tr><th>Damage Item</th><th style="text-align:right;width:60px;">Score</th></tr>');
+    sdiItems.forEach(function(it){win.document.write('<tr><td>'+it.label+'</td><td style="text-align:right;">'+it.score+'</td></tr>');});
+    win.document.write('</table>');
+  } else {
+    win.document.write('<p style="color:#6b7280;font-size:12px;">No damage items recorded.</p>');
+  }
+  win.document.write('<div class="footer">SLEDAI-2K: Gladman et al., J Rheumatol 2002. SELENA-SLEDAI/PGA: Petri et al., Arthritis Rheum 2005. SLICC/ACR SDI: Gladman et al., Arthritis Rheum 1996. For clinical and educational use only. Interpret results with your physician.</div>');
+  win.document.write('</body></html>');
+  win.document.close();
+  win.focus();
+  setTimeout(function(){win.print();},400);
+}
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/image-lightbox.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Thyroid Screening Interval in CKD – W. G. M. Rivero, MD</title>
+<meta name="description" content="Interactive Thyroid Screening Interval Recommender for CKD — calculates risk-stratified TSH recheck interval based on CKD stage, dialysis modality, transplant status, medications, and additional risk factors.">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-thyroid-screening-interval.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="Thyroid Screening Interval in CKD">
+<meta property="og:description" content="Risk-stratified TSH recheck interval for CKD patients — based on CKD stage, dialysis, transplant, medications, and clinical risk factors.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-thyroid-screening-interval.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/thyroid-ckd-hero.png">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Thyroid Screening Interval in CKD">
+<meta name="twitter:description" content="Risk-stratified TSH recheck interval for CKD patients — based on CKD stage, dialysis, transplant, medications, and clinical risk factors.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/thyroid-ckd-hero.png">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;
+    --purple-soft:#faf5ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; font-size: 16px; }
+  .site-header { display: flex; align-items: center; justify-content: space-between; height: 56px; box-sizing: border-box; padding: 0 32px; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 200; }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+  .guide-lang-bar { display: flex; align-items: center; gap: 8px; padding: 8px 32px; background: rgba(10,18,32,.96); border-bottom: 1px solid rgba(255,255,255,.06); flex-wrap: wrap; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s; }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .guide-toggle-bar { display: flex; gap: 8px; align-items: center; padding: 6px 32px; background: rgba(10,18,32,.96) !important; border-bottom: 1px solid rgba(255,255,255,.08) !important; justify-content: space-between; flex-wrap: wrap; }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  [data-lang].lang-hidden { display: none !important; }
+  .hero { background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%); color: white; padding: 72px 0 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px, 5vw, 50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section h3 { font-family: 'Lora', serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th { text-align: left; padding: 11px 16px; background: var(--navy); color: rgba(255,255,255,.92); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-bottom: none; }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td { padding: 13px 16px; vertical-align: top; line-height: 1.55; border-bottom: 1px solid var(--border); color: var(--text-mid); }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 0; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .related-card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s; }
+  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
+  .related-card-tag { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+  .related-card-desc { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
+  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; border: none; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .scroll-top-btn { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996; opacity: 0; pointer-events: none; }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip { position: absolute; right: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+  .print-btn { position: fixed; bottom: 80px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s; z-index: 9998; }
+  .print-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip { position: absolute; left: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .print-btn:hover .p-tip { opacity: 1; }
+  html[data-theme="dark"] { --teal: #2ba8b0; --teal-light: #0a2830; --text: #e8eaf0; --text-mid: #dde3eb; --text-muted: #9baab8; --bg: #141c2a; --white: #1a2030; --border: #2a3548; --red: #f87171; --red-soft: #2a1515; --amber: #fbbf24; --amber-soft: #2a1900; --green: #4ade80; --green-soft: #0e2a1c; }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
+  html[data-view="desktop"] { min-width: 1024px; }
+  @media(max-width: 480px) { .container { padding: 0 20px; } .related-guides { padding-left: 20px; padding-right: 20px; } .guide-footer .footer-inner { padding: 0 20px; } .dr-card { flex-direction: column; padding: 24px; gap: 16px; } .dr-card-wrap { padding: 0 20px 40px; } .hero-meta { gap: 14px; } }
+  @media print { .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .scroll-top-btn, .guide-footer { display: none !important; } body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; } .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; } .hero h1 { color: #1f3864 !important; font-size: 22px !important; } .container { max-width: 100%; padding: 0 24px; } .section { padding: 20px 0; border-bottom: 1px solid #ddd; } .disclaimer { background: #fff8e8 !important; border: 1px solid #ccc !important; color: #333 !important; } }
+
+  /* Tool widget styles */
+  .tool-box{background:#f9fafb;border:1px solid #e2e6eb;border-radius:14px;padding:28px 32px;margin:28px 0;}
+  .tool-box h3{font-family:'Lora',serif;font-size:18px;font-weight:600;color:#1f3864;margin-bottom:6px;}
+  .tool-box .tool-sub{font-size:13px;color:#4a5568;margin-bottom:18px;}
+  .tool-label{display:block;font-size:13px;font-weight:600;color:#1e2a38;margin-bottom:4px;margin-top:14px;}
+  .tool-input{width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1e2a38;background:#fff;}
+  .tool-input:focus{outline:none;border-color:#1a6b72;box-shadow:0 0 0 2px rgba(26,107,114,.15);}
+  .tool-select{width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1e2a38;background:#fff;cursor:pointer;}
+  .tool-btn{margin-top:18px;padding:10px 24px;background:#1a6b72;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;}
+  .tool-btn:hover{background:#145c63;}
+  .check-group{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+  .check-item{display:flex;align-items:center;gap:8px;font-size:14px;color:#2c3a4a;}
+  .check-item input{accent-color:#1a6b72;width:16px;height:16px;flex-shrink:0;}
+  .two-col-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:480px){.two-col-inputs{grid-template-columns:1fr;}}
+  .interval-output{background:#fff;border:2px solid #1a6b72;border-radius:10px;padding:16px 20px;margin-top:14px;display:none;}
+  .interval-output.show{display:block;}
+  .interval-months{font-size:28px;font-weight:700;color:#1a6b72;}
+  .interval-label{font-size:13px;color:#4a5568;margin-bottom:8px;}
+  .interval-reasons{font-size:13px;color:#2c3a4a;list-style:none;padding:0;margin:8px 0 0;}
+  .interval-reasons li{padding:3px 0 3px 16px;position:relative;}
+  .interval-reasons li::before{content:'•';position:absolute;left:4px;color:#1a6b72;}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Thyroid Screening Interval in CKD",
+  "url": "https://www.williamriveromd.com/guides/calc-thyroid-screening-interval.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH"
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
+</header>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Thyroid &amp; CKD</div>
+<h1>Thyroid Screening Interval <em>in Chronic Kidney Disease</em></h1>
+<p class="hero-sub">Calculate the recommended TSH recheck interval for a CKD patient based on their kidney disease stage, dialysis modality, transplant status, current medications, and additional clinical risk factors — returning the shortest applicable interval with evidence-based rationale.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+<span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" style="color:var(--gold-light);text-decoration:none;">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="thyroid-ckd.html" style="color:var(--gold-light);text-decoration:none;">Full Thyroid &amp; CKD guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#instructions">How to Use</a>
+<a class="nav-pill" href="#formula">Interval Table</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- WHEN TO USE -->
+<section class="section" id="when">
+<div class="section-tag">When to Use</div>
+<h2>When to Use This Calculator</h2>
+<p>Use this tool at every CKD clinic visit when scheduling the patient's next TSH check. Thyroid dysfunction is underdiagnosed in CKD because screening is irregular and many nephrologists rely on general-population annual recommendations that are inadequate for higher-risk subgroups — particularly dialysis patients, transplant recipients on calcineurin inhibitors, and patients with multiple risk factors for thyroid disease.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Appropriate population</h4>
+<p>Adults with CKD G1–G5, on maintenance dialysis (hemodialysis or peritoneal dialysis), or post-kidney transplant who have a normal or previously managed TSH and need a next screening interval. Also applicable when starting a new medication known to affect thyroid function (mTOR inhibitors, tacrolimus) or after iodinated contrast exposure.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>When NOT to use this tool alone</h4>
+<p>If the patient currently has an abnormal TSH, symptoms of thyroid dysfunction, or a known thyroid condition requiring active management, do not rely on a screening interval — use the TSH Interpreter or the Subclinical Hypothyroidism Decision Aid instead, and follow up as clinically indicated rather than by interval. This tool applies to patients with previously normal or stable thyroid status.</p>
+</div>
+</div>
+</section>
+
+<!-- WHY -->
+<section class="section" id="why">
+<div class="section-tag">Why It Matters</div>
+<h2>Why Thyroid Screening Frequency Differs by CKD Population</h2>
+<p>Hypothyroidism prevalence rises from approximately 3% in the general adult population to 7–15% in CKD G3–G5 and up to 21% in hemodialysis patients. Post-transplant patients on mTOR inhibitors (sirolimus, everolimus) have a particularly high incidence of de-novo thyroid dysfunction within the first 12 months, and calcineurin inhibitors (tacrolimus) independently alter thyroid hormone metabolism. Iodinated contrast causes transient TSH elevation in 20–25% of exposed patients. Systematically risk-stratifying the screening interval, rather than applying a uniform annual recommendation, ensures early detection without unnecessary testing.</p>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>Thyroid Screening Interval Recommender</h2>
+<p>Select the patient's CKD stage or dialysis modality and check any applicable risk factors, then click "Get Screening Interval" to receive the recommended TSH recheck interval in months with full rationale.</p>
+<div class="tool-box">
+    <h3>Thyroid Screening Interval Recommender</h3>
+    <p class="tool-sub">Calculates the recommended TSH recheck interval based on clinical profile.</p>
+    <div class="two-col-inputs">
+      <div>
+        <label class="tool-label">CKD Stage</label>
+        <select class="tool-select" id="scr-stage" onchange="toggleTxTime()">
+          <option value="">Select</option>
+          <option value="g1g3">G1–G3</option>
+          <option value="g4g5">G4–G5 (pre-dialysis)</option>
+          <option value="hd">Hemodialysis</option>
+          <option value="pd">Peritoneal dialysis</option>
+          <option value="tx">Post-transplant</option>
+        </select>
+      </div>
+      <div id="tx-time-wrap" style="display:none;">
+        <label class="tool-label">Months since transplant</label>
+        <select class="tool-select" id="scr-tx-time">
+          <option value="early">0–6 months</option>
+          <option value="mid">7–12 months</option>
+          <option value="late">&gt;12 months</option>
+        </select>
+      </div>
+    </div>
+    <label class="tool-label" style="margin-top:14px;">Additional risk factors (check all that apply)</label>
+    <div class="check-group">
+      <label class="check-item"><input type="checkbox" id="scr-mtor"> On mTOR inhibitor or tacrolimus</label>
+      <label class="check-item"><input type="checkbox" id="scr-contrast"> Recent iodinated contrast (past 3 months)</label>
+      <label class="check-item"><input type="checkbox" id="scr-female"> Female sex</label>
+      <label class="check-item"><input type="checkbox" id="scr-dm"> Type 2 diabetes</label>
+      <label class="check-item"><input type="checkbox" id="scr-ai"> Autoimmune disease (Hashimoto's, lupus, RA)</label>
+    </div>
+    <button class="tool-btn" onclick="calcScreening()">Get Screening Interval</button>
+    <div class="interval-output" id="interval-output"></div>
+</div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="section" id="instructions">
+<div class="section-tag">How to Use</div>
+<h2>Instructions</h2>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Select the patient's current <strong>CKD stage or dialysis/transplant status</strong>. For post-transplant patients, also select the time since transplantation — early (0–6 months), mid (7–12 months), or late (&gt;12 months) post-transplant windows each carry different thyroid risk.</li>
+<li>Check any applicable <strong>additional risk factors</strong>: mTOR inhibitor or tacrolimus use, recent iodinated contrast (CT or angiography), female sex, type 2 diabetes, or autoimmune disease history.</li>
+<li>Click <strong>Get Screening Interval</strong> to receive the recommended TSH recheck interval — the tool takes the shortest interval across all applicable risk factors and explains each contributing reason.</li>
+<li>Record the interval and schedule the next TSH accordingly. If the TSH returns abnormal, switch to the TSH Interpreter tool for next steps.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</section>
+
+<!-- INTERVAL TABLE -->
+<section class="section" id="formula">
+<div class="section-tag">Interval Reference Table</div>
+<h2>Screening Interval Reference</h2>
+<p>The tool selects the shortest applicable interval across all risk factors. The table below shows all base and modifier intervals.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>CKD Status / Risk Factor</th><th>Recommended Interval</th><th>Rationale</th></tr></thead>
+<tbody>
+<tr><td>CKD G1–G3 (no additional risk factors)</td><td>12 months</td><td>Annual screening — prevalence ~7%; low individual risk</td></tr>
+<tr><td>CKD G4–G5 (pre-dialysis)</td><td>6 months</td><td>Elevated prevalence, faster disease progression</td></tr>
+<tr><td>Hemodialysis</td><td>6 months</td><td>~21% hypothyroidism prevalence; iodine retention</td></tr>
+<tr><td>Peritoneal dialysis</td><td>12 months</td><td>Lower iodine retention vs HD; annual screening sufficient</td></tr>
+<tr><td>Post-transplant 0–6 months</td><td>3 months</td><td>High-risk window; immunosuppression-induced thyroid changes most common early</td></tr>
+<tr><td>Post-transplant 7–12 months</td><td>6 months</td><td>Stabilization phase; continued mTOR/calcineurin monitoring</td></tr>
+<tr><td>Post-transplant &gt;12 months</td><td>12 months</td><td>Annual monitoring once stable</td></tr>
+<tr><td>On mTOR inhibitor or tacrolimus</td><td>3 months</td><td>Drug-induced thyroid dysfunction risk; recheck 3 months after initiation</td></tr>
+<tr><td>Recent iodinated contrast (&lt;3 months)</td><td>2 months</td><td>Iodine-induced thyroid changes peak at 4–8 weeks post-exposure</td></tr>
+<tr><td>Autoimmune disease (Hashimoto's, lupus, RA)</td><td>6 months</td><td>Higher thyroid autoimmunity prevalence and progression rate</td></tr>
+<tr><td>Female + Type 2 diabetes</td><td>6 months</td><td>Combined female sex and T2DM are dual independent risk factors for thyroid disease in CKD</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section" id="evidence">
+<div class="section-tag">Evidence &amp; References</div>
+<h2>Evidence &amp; References</h2>
+<p>Screening interval recommendations are synthesized from AACE/ATA clinical practice guidelines for hypothyroidism, nephrology-specific epidemiological studies documenting the CKD-stage-dependent prevalence of thyroid dysfunction, and pharmacological data on immunosuppressant-associated thyroid disease in transplant recipients. No single randomized trial directly addresses optimal TSH screening intervals in CKD; recommendations reflect expert consensus adapted from high-prevalence group data.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Garber JR, Cobin RH, Gharib H, et al. Clinical Practice Guidelines for Hypothyroidism in Adults: AACE/ATA. <em>Endocr Pract.</em> 2012;18(6):988–1028.</li>
+<li>Rhee CM, Kalantar-Zadeh K, Streja E, et al. The relationship between thyroid function and estimated glomerular filtration rate in patients with chronic kidney disease. <em>Nephrol Dial Transplant.</em> 2015;30(2):282–287.</li>
+<li>Kala A, Haugen EN, Chandra SM, et al. Thyroid dysfunction in kidney transplant recipients: prevalence, risk factors, and outcomes. <em>Clin Transplant.</em> 2019;33(8):e13664.</li>
+<li>Spahia N, Rroji M, Barbullushi M, et al. Thyroid dysfunction in chronic kidney disease — a review. <em>Metab Syndr Relat Disord.</em> 2023;21(5):256–263. PMID 37433213.</li>
+</ol>
+</section>
+
+<!-- PEARLS -->
+<section class="section" id="pearls">
+<div class="section-tag">Pearls &amp; Pitfalls</div>
+<h2>Pearls &amp; Pitfalls</h2>
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Screen at the first CKD visit and again at any stage transition</h4>
+<p>In addition to the interval returned by this tool, always check TSH at the initial diagnosis of CKD, whenever the patient advances to a new CKD stage (e.g., G3 to G4), when starting a new immunosuppressant (mTOR inhibitor, tacrolimus), and whenever unexplained anemia, bradycardia, fluid retention, or dyslipidemia worsens — all of which can represent thyroid dysfunction.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Iodinated contrast: recheck at 4–8 weeks</h4>
+<p>Iodinated contrast (CT, angiography, cardiac catheterization) causes transient TSH elevation in approximately 20–25% of CKD patients within 4–8 weeks due to iodine-induced thyroid dysfunction (Jod-Basedow or Wolf-Chaikoff effect). A TSH drawn within this window may be falsely elevated and should be repeated before initiating levothyroxine.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Do not rely on a once-yearly TSH for HD patients — the 21% prevalence and rapid disease change in this population warrant 6-monthly checks. (2) Post-transplant patients in the first 6 months need quarterly TSH because mTOR inhibitor de-novo thyroid disease peaks in months 3–6 post-initiation. (3) Symptoms are unreliable in CKD — fatigue, cold intolerance, and constipation are ubiquitous in kidney disease patients regardless of thyroid status. Serial TSH is a better guide to thyroid health than symptoms alone.</p>
+</div>
+</div>
+</section>
+
+<div class="disclaimer"><strong>Important:</strong> This tool provides a screening interval recommendation based on CKD stage, dialysis modality, and risk factors. It does not account for symptoms, previous TSH trend, or specific local guidelines. Adjust intervals based on clinical judgment, patient values, and institutional protocols. All thyroid management decisions require physician oversight.</div>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label">Scan and save</p>
+</div>
+</div>
+</div>
+
+<!-- RELATED-GUIDES-START -->
+<div class="related-guides">
+  <h2>Related Guides</h2>
+  <div class="related-cards">
+    <a class="related-card" href="thyroid-ckd.html">
+      <div class="related-card-tag">Full Guide</div>
+      <div class="related-card-title">Thyroid Disease and CKD</div>
+      <div class="related-card-desc">Complete guide to hypothyroidism screening, levothyroxine dosing, and monitoring in kidney disease.</div>
+      <div class="related-card-arrow">Read →</div>
+    </a>
+    <a class="related-card" href="calc-tsh-interpreter.html">
+      <div class="related-card-tag">Related Tool</div>
+      <div class="related-card-title">TSH Interpreter in CKD</div>
+      <div class="related-card-desc">Context-sensitive TSH interpretation including euthyroid sick syndrome and nephrotic syndrome.</div>
+      <div class="related-card-arrow">Use →</div>
+    </a>
+    <a class="related-card" href="calc-subclinical-hypothyroid.html">
+      <div class="related-card-tag">Related Tool</div>
+      <div class="related-card-title">Subclinical Hypothyroidism Decision Aid</div>
+      <div class="related-card-desc">TREAT / OBSERVE / INDIVIDUALIZE decision for TSH 4–10 mIU/L in CKD patients.</div>
+      <div class="related-card-arrow">Use →</div>
+    </a>
+    <a class="related-card" href="kidney-transplant.html">
+      <div class="related-card-tag">Transplant</div>
+      <div class="related-card-title">Kidney Transplant</div>
+      <div class="related-card-desc">Candidacy, immunosuppression, and long-term post-transplant care including medication effects.</div>
+      <div class="related-card-arrow">Read →</div>
+    </a>
+  </div>
+</div>
+<!-- RELATED-GUIDES-END -->
+
+<footer class="guide-footer">
+<div class="footer-inner">
+<p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>References: Garber JR et al. Endocr Pract 2012 · Rhee CM et al. Nephrol Dial Transplant 2015 · Spahia N et al. Metab Syndr Relat Disord 2023</p>
+</div>
+</footer>
+
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
+
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb','kap'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+function toggleTxTime(){
+  var stage=document.getElementById('scr-stage').value;
+  document.getElementById('tx-time-wrap').style.display=stage==='tx'?'block':'none';
+}
+
+function calcScreening(){
+  var stage=document.getElementById('scr-stage').value;
+  var txTime=document.getElementById('scr-tx-time').value;
+  var mtor=document.getElementById('scr-mtor').checked;
+  var contrast=document.getElementById('scr-contrast').checked;
+  var female=document.getElementById('scr-female').checked;
+  var dm=document.getElementById('scr-dm').checked;
+  var ai=document.getElementById('scr-ai').checked;
+  var out=document.getElementById('interval-output');
+  if(!stage){alert('Please select a CKD stage.');return;}
+  var intervals=[];
+  var reasons=[];
+  if(stage==='hd'){intervals.push(6);reasons.push('Hemodialysis: ~21% hypothyroidism prevalence');}
+  else if(stage==='pd'){intervals.push(12);reasons.push('Peritoneal dialysis: lower iodine retention vs HD');}
+  else if(stage==='g4g5'){intervals.push(6);reasons.push('CKD G4–G5: elevated prevalence, faster progression');}
+  else if(stage==='tx'){
+    if(txTime==='early'){intervals.push(3);reasons.push('Post-transplant 0–6 months: high-risk window for immunosuppression-induced thyroid changes');}
+    else if(txTime==='mid'){intervals.push(6);reasons.push('Post-transplant 7–12 months: stabilization phase monitoring');}
+    else{intervals.push(12);reasons.push('Post-transplant >12 months: annual monitoring');}
+  } else {intervals.push(12);reasons.push('CKD G1–G3: annual baseline screening');}
+  if(mtor){intervals.push(3);reasons.push('mTOR inhibitor / tacrolimus: recheck 3 months after initiation');}
+  if(contrast){intervals.push(2);reasons.push('Recent iodinated contrast: recheck in 4–8 weeks (2-month interval)');}
+  if(ai){intervals.push(6);reasons.push('Autoimmune disease: higher progression risk');}
+  if(female&&dm){intervals.push(6);reasons.push('Female + Type 2 diabetes: dual risk factors for thyroid disease in CKD');}
+  var minInterval=Math.min.apply(null,intervals);
+  out.classList.add('show');
+  out.innerHTML='<div class="interval-label">Recommended TSH recheck in</div>'
+    +'<div class="interval-months">'+minInterval+' month'+(minInterval>1?'s':'')+'</div>'
+    +'<ul class="interval-reasons">'+reasons.map(function(r){return '<li>'+r+'</li>';}).join('')+'</ul>';
+}
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<button aria-label="Print this guide" class="print-btn" onclick="window.print()">
+<span class="p-tip">Print / Save PDF</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect height="8" width="12" x="6" y="14"/>
+</svg>
+</button>
+<script src="../assets/image-lightbox.js" defer></script>
+</body>
+</html>
