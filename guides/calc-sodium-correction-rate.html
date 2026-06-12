@@ -1340,11 +1340,11 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 
 <div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
 <ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Enter the current measured serum Na⁺ in mEq/L from the most recent lab (100–145 mEq/L).</li>
-<li>Select <strong>duration</strong>: Chronic or unknown (&gt;48 h) vs. confirmed acute (&lt;48 h). When in doubt, select chronic — the safer default.</li>
-<li>Select whether any <strong>high-ODS risk factors</strong> are present: alcohol use disorder, malnutrition, serum K⁺ &lt; 3.0 mEq/L, liver disease (cirrhosis), or Na⁺ &lt; 105 mEq/L at baseline.</li>
-<li>Click <strong>Calculate Correction Targets</strong> to see the maximum Na⁺ values at 24 h and 48 h, plus the per-hour rate limit.</li>
-<li>Use the 24-h and 48-h target values as hard ceilings. If any infusion rate would push sodium above these targets, reduce the infusion rate or switch to isotonic saline.</li>
+<li>Enter the current measured serum Na⁺ (mEq/L), body weight, and the total-body-water fraction (sex/age) — these set total body water.</li>
+<li>Enter the <strong>time interval</strong> (hours) over which the sources are given, and set <strong>duration</strong> (chronic vs. acute) and any <strong>high-ODS risk factors</strong> (alcoholism, malnutrition, K⁺ &lt; 3.0, liver disease) — these set the safe ceiling (6 / 8 / 12 mEq/L per 24 h).</li>
+<li>Add up to <strong>three sodium sources</strong> in any combination — IV saline (3% / 2% / 1.5% / NS) and/or oral NaCl / NaHCO₃ tablets — each with its dose (mL for fluids, number of tablets for oral). Leave unused slots on “— none —”.</li>
+<li>Read the live result: the <strong>combined ΔNa⁺</strong> from all sources, predicted serum Na⁺, the correction rate, and the projected 24-h rise versus the safe ceiling (green = within, red = exceeds).</li>
+<li>Treat the ceiling as a hard limit — if exceeded, reduce a source, slow the rate, or extend the interval, and recheck Na⁺ every 2–4 h.</li>
 </ol>
 <p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
 </div>
@@ -1408,7 +1408,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Hyponatremia Correction — Rate &amp; Sodium-Rise Predictor</h2>
-<p>Enter the patient's sodium and weight, choose the sodium source (hypertonic/isotonic saline or oral NaCl / NaHCO₃ tablets) and the time over which it is given. The tool predicts the rise in serum Na⁺, the correction rate, the maximum safe dose per 24 h, and whether the plan stays within the ODS-safe ceiling.</p>
+<p>Enter the patient's sodium and weight, then add up to <strong>three sodium sources</strong> — IV saline (3% / 2% / 1.5% / NS) and/or oral NaCl / NaHCO₃ tablets, in any combination. The tool sums them and predicts the total rise in serum Na⁺, the correction rate, and whether the plan stays within the ODS-safe ceiling.</p>
 <div class="calc-wrap">
 <div class="calc-grid">
 <div class="calc-field">
@@ -1431,25 +1431,9 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
   </select>
 </div>
 <div class="calc-field">
-  <label>Sodium source</label>
-  <select id="hna-source" onchange="onHnaSource()">
-    <option value="513|fluid">3% NaCl (513 mEq/L)</option>
-    <option value="342|fluid">2% NaCl (342 mEq/L)</option>
-    <option value="257|fluid">1.5% NaCl (257 mEq/L)</option>
-    <option value="154|fluid">0.9% NaCl / NS (154 mEq/L)</option>
-    <option value="17.1|tablet">Oral NaCl tablet (1 g = 17 mEq Na)</option>
-    <option value="7.7|tablet">Oral NaHCO₃ tablet (650 mg = 7.7 mEq Na)</option>
-  </select>
-</div>
-<div class="calc-field">
-  <label id="hna-amount-label">Volume infused (mL)</label>
-  <input type="number" id="hna-amount" min="0" step="1" placeholder="e.g. 1000" oninput="calcHNA()">
-  <div class="field-hint" id="hna-amount-hint">Total volume of this fluid given over the interval.</div>
-</div>
-<div class="calc-field">
   <label>Over time interval (hours)</label>
   <input type="number" id="hna-hours" min="0.5" max="48" step="0.5" placeholder="e.g. 24" oninput="calcHNA()">
-  <div class="field-hint">Hours over which the dose above is given.</div>
+  <div class="field-hint">Hours over which the sources below are given.</div>
 </div>
 <div class="calc-field">
   <label>Duration of hyponatremia</label>
@@ -1468,8 +1452,79 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
   <div class="field-hint">High-risk → cap 6 mEq/L per 24 h.</div>
 </div>
 </div>
+
+<div style="margin-top:18px;">
+<label style="display:block;font-family:'Lora',serif;font-size:1rem;font-weight:600;color:var(--navy);margin-bottom:4px;" id="hna-src-heading">Sodium sources — combine IV &amp; oral (up to 3)</label>
+<p style="font-size:.85rem;color:var(--text-muted);margin:0 0 10px;">Pick a source and its dose for each slot. Leave a slot on “— none —” if unused.</p>
+<div class="calc-grid" id="hna-src-grid">
+<div class="calc-field">
+  <label>Source 1</label>
+  <select id="hna-s1-type" onchange="hnaSrcChange(1)">
+    <option value="">— none —</option>
+    <optgroup label="IV fluids">
+    <option value="513|fluid" selected>3% NaCl (513 mEq/L)</option>
+    <option value="342|fluid">2% NaCl (342 mEq/L)</option>
+    <option value="257|fluid">1.5% NaCl (257 mEq/L)</option>
+    <option value="154|fluid">0.9% NaCl / NS (154 mEq/L)</option>
+    </optgroup>
+    <optgroup label="Oral tablets">
+    <option value="17.1|tablet">NaCl tablet (1 g = 17 mEq Na)</option>
+    <option value="7.7|tablet">NaHCO₃ tablet (650 mg = 7.7 mEq Na)</option>
+    </optgroup>
+  </select>
+</div>
+<div class="calc-field">
+  <label id="hna-s1-lbl">Volume (mL)</label>
+  <input type="number" id="hna-s1-amt" min="0" step="1" placeholder="e.g. 500" oninput="calcHNA()">
+  <div class="field-hint" id="hna-s1-hint">Volume of this fluid given over the interval.</div>
+</div>
+<div class="calc-field">
+  <label>Source 2</label>
+  <select id="hna-s2-type" onchange="hnaSrcChange(2)">
+    <option value="" selected>— none —</option>
+    <optgroup label="IV fluids">
+    <option value="513|fluid">3% NaCl (513 mEq/L)</option>
+    <option value="342|fluid">2% NaCl (342 mEq/L)</option>
+    <option value="257|fluid">1.5% NaCl (257 mEq/L)</option>
+    <option value="154|fluid">0.9% NaCl / NS (154 mEq/L)</option>
+    </optgroup>
+    <optgroup label="Oral tablets">
+    <option value="17.1|tablet">NaCl tablet (1 g = 17 mEq Na)</option>
+    <option value="7.7|tablet">NaHCO₃ tablet (650 mg = 7.7 mEq Na)</option>
+    </optgroup>
+  </select>
+</div>
+<div class="calc-field">
+  <label id="hna-s2-lbl">Amount</label>
+  <input type="number" id="hna-s2-amt" min="0" step="1" placeholder="—" oninput="calcHNA()">
+  <div class="field-hint" id="hna-s2-hint">Select a source first.</div>
+</div>
+<div class="calc-field">
+  <label>Source 3</label>
+  <select id="hna-s3-type" onchange="hnaSrcChange(3)">
+    <option value="" selected>— none —</option>
+    <optgroup label="IV fluids">
+    <option value="513|fluid">3% NaCl (513 mEq/L)</option>
+    <option value="342|fluid">2% NaCl (342 mEq/L)</option>
+    <option value="257|fluid">1.5% NaCl (257 mEq/L)</option>
+    <option value="154|fluid">0.9% NaCl / NS (154 mEq/L)</option>
+    </optgroup>
+    <optgroup label="Oral tablets">
+    <option value="17.1|tablet">NaCl tablet (1 g = 17 mEq Na)</option>
+    <option value="7.7|tablet">NaHCO₃ tablet (650 mg = 7.7 mEq Na)</option>
+    </optgroup>
+  </select>
+</div>
+<div class="calc-field">
+  <label id="hna-s3-lbl">Amount</label>
+  <input type="number" id="hna-s3-amt" min="0" step="1" placeholder="—" oninput="calcHNA()">
+  <div class="field-hint" id="hna-s3-hint">Select a source first.</div>
+</div>
+</div>
+</div>
+
 <div class="calc-result-box" id="hna-result"></div>
-<p class="calc-disclaimer">⚕ ΔNa (infusate) = (Infusate Na − Serum Na) × V<sub>L</sub> ÷ (TBW + V<sub>L</sub>); ΔNa (oral solute) = Na added (mEq) ÷ TBW; TBW = weight × fraction. Correction targets are CEILINGS, not goals — monitor Na⁺ every 2–4 h. If overcorrection occurs, give desmopressin (DDAVP) 1–2 mcg IV/SC. Hypertonic (2–3%) saline requires a monitored / ICU setting. Physician judgement required.</p>
+<p class="calc-disclaimer">⚕ Combined ΔNa = (Σ Na delivered − Serum Na × Σ infused volume) ÷ (TBW + Σ infused volume); TBW = weight × fraction. Oral tablets add Na with ~no volume; IV fluids add both. Correction targets are CEILINGS, not goals — monitor Na⁺ every 2–4 h. If overcorrection occurs, give desmopressin (DDAVP) 1–2 mcg IV/SC. Hypertonic (2–3%) saline requires a monitored / ICU setting. Physician judgement required.</p>
 </div>
 </section>
 
@@ -1643,93 +1698,82 @@ function showCalcResult(el, html) {
   el.style.cssText = 'display:block;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px 20px;margin-top:16px;';
 }
 
-function onHnaSource() {
-  const isTab = document.getElementById('hna-source').value.split('|')[1] === 'tablet';
-  document.getElementById('hna-amount-label').textContent = isTab ? 'Number of tablets' : 'Volume infused (mL)';
-  document.getElementById('hna-amount-hint').textContent = isTab ? 'How many tablets given over the interval.' : 'Total volume of this fluid given over the interval.';
-  document.getElementById('hna-amount').placeholder = isTab ? 'e.g. 6' : 'e.g. 1000';
+function hnaSrcChange(n){
+  var sel=document.getElementById('hna-s'+n+'-type').value;
+  var lbl=document.getElementById('hna-s'+n+'-lbl');
+  var hint=document.getElementById('hna-s'+n+'-hint');
+  var amt=document.getElementById('hna-s'+n+'-amt');
+  if(!sel){ lbl.textContent='Amount'; hint.textContent='Select a source first.'; amt.placeholder='—'; }
+  else if(sel.split('|')[1]==='tablet'){ lbl.textContent='Number of tablets'; hint.textContent='Tablets given over the interval.'; amt.placeholder='e.g. 6'; }
+  else { lbl.textContent='Volume (mL)'; hint.textContent='Volume of this fluid given over the interval.'; amt.placeholder='e.g. 500'; }
   calcHNA();
 }
 
-function calcHNA() {
-  const g = id => document.getElementById(id);
-  const cur = parseFloat(g('hna-current').value);
-  const wt  = parseFloat(g('hna-weight').value);
-  const frac = parseFloat(g('hna-tbw').value);
-  const [naStr, srcType] = g('hna-source').value.split('|');
-  const srcNa = parseFloat(naStr);
-  const amount = parseFloat(g('hna-amount').value);
-  const hours  = parseFloat(g('hna-hours').value);
-  const dur = g('hna-duration').value;
-  const risk = g('hna-risk').value;
-  const el = g('hna-result');
+function calcHNA(){
+  var g=function(id){return document.getElementById(id);};
+  var cur=parseFloat(g('hna-current').value);
+  var wt=parseFloat(g('hna-weight').value);
+  var frac=parseFloat(g('hna-tbw').value);
+  var hours=parseFloat(g('hna-hours').value);
+  var dur=g('hna-duration').value, risk=g('hna-risk').value;
+  var el=g('hna-result');
+  if(isNaN(cur)||isNaN(wt)||cur<90||cur>145||wt<=0){ el.style.display='none'; return; }
 
-  if (isNaN(cur) || isNaN(wt) || cur < 90 || cur > 145 || wt <= 0) { el.style.display = 'none'; return; }
+  var tbw=wt*frac;
+  var isHighRisk=risk==='yes'||cur<105;
+  var maxPer24=dur==='acute'?12:(isHighRisk?6:8);
+  var maxPer48=dur==='acute'?24:18;
 
-  const tbw = wt * frac;                                   // total body water (L)
-  const isHighRisk = risk === 'yes' || cur < 105;          // ODS high-risk
-  const maxPer24 = dur === 'acute' ? 12 : (isHighRisk ? 6 : 8);
-  const maxPer48 = dur === 'acute' ? 24 : 18;
-
-  // maximum safe dose over 24 h to stay at the ceiling
-  let maxDoseTxt = '—', maxDoseLbl = 'Max safe dose / 24 h';
-  if (srcType === 'fluid') {
-    const denom = srcNa - cur - maxPer24;
-    if (srcNa <= cur) { maxDoseTxt = 'n/a'; }
-    else if (denom <= 0) { maxDoseTxt = '>10 L'; }
-    else { maxDoseTxt = Math.round(maxPer24 * tbw / denom * 1000) + ' mL'; }
-  } else {
-    maxDoseTxt = Math.max(0, Math.round(maxPer24 * tbw / srcNa)) + ' tabs';
+  // sum up to three sodium sources (IV fluids add Na + volume; tablets add Na only)
+  var totalNa=0, totalVolL=0, anySource=false, parts=[];
+  for(var n=1;n<=3;n++){
+    var sel=g('hna-s'+n+'-type').value;
+    var amt=parseFloat(g('hna-s'+n+'-amt').value);
+    if(!sel||isNaN(amt)||amt<=0) continue;
+    anySource=true;
+    var p=sel.split('|'), srcNa=parseFloat(p[0]), type=p[1];
+    var selEl=g('hna-s'+n+'-type'); var name=selEl.options[selEl.selectedIndex].text.split(' (')[0];
+    if(type==='fluid'){ var vL=amt/1000; totalNa+=srcNa*vL; totalVolL+=vL; parts.push(name+' '+amt+' mL ('+Math.round(srcNa*vL)+' mEq)'); }
+    else { totalNa+=srcNa*amt; parts.push(name+' ×'+amt+' ('+Math.round(srcNa*amt)+' mEq)'); }
   }
 
-  // ΔNa from the entered dose
-  let cards = '', verdict = '', alertBox = '';
-  if (!isNaN(amount) && amount > 0) {
-    let dNa;
-    if (srcType === 'fluid') {
-      const vL = amount / 1000;
-      dNa = (srcNa - cur) * vL / (tbw + vL);
+  var cards='', verdict='', alertBox='';
+  if(anySource){
+    var dNa=(totalNa - cur*totalVolL)/(tbw+totalVolL);
+    var predicted=cur+dNa;
+    var haveHrs=!isNaN(hours)&&hours>0;
+    var rate=haveHrs?dNa/hours:null;
+    var per24=haveHrs?rate*24:dNa;
+    var over=per24>maxPer24+0.05;
+    var dNaColor=dNa<=0?'var(--amber)':(over?'var(--red)':'var(--green)');
+    cards='<div class="calc-metric-card"><div class="cmv" style="color:'+dNaColor+'">'+(dNa>=0?'+':'')+dNa.toFixed(1)+'</div><div class="cml">Total ΔNa⁺</div><div class="cmt">mEq/L (all sources)</div></div>'+
+      '<div class="calc-metric-card"><div class="cmv">'+predicted.toFixed(1)+'</div><div class="cml">Predicted Na⁺</div><div class="cmt">after these doses</div></div>'+
+      (haveHrs?('<div class="calc-metric-card"><div class="cmv">'+rate.toFixed(2)+'</div><div class="cml">Correction rate</div><div class="cmt">mEq/L per hour</div></div>'+
+      '<div class="calc-metric-card"><div class="cmv" style="color:'+(over?'var(--red)':'var(--green)')+'">'+(per24>=0?'+':'')+per24.toFixed(1)+'</div><div class="cml">Projected 24 h rise</div><div class="cmt">cap '+maxPer24+' mEq/L</div></div>'):'');
+    if(dNa<=0){
+      verdict='<strong style="color:var(--amber)">These sources will not raise serum Na⁺.</strong> The combined sodium is at or below the patient’s serum Na⁺ — hypertonic (2–3%) saline and/or sodium tablets are needed in this range.';
+    } else if(over){
+      verdict='<strong style="color:var(--red)">Exceeds the safe ceiling.</strong> The projected '+per24.toFixed(1)+' mEq/L rise per 24 h is above the '+maxPer24+' mEq/L limit'+(haveHrs?'':' (assuming these doses are the day’s total)')+'. Reduce a source, slow the rate, or extend the interval.';
     } else {
-      dNa = (srcNa * amount) / tbw;        // oral solute, negligible water
+      verdict='<strong style="color:var(--green)">Within the safe ceiling.</strong> Projected rise '+per24.toFixed(1)+' mEq/L over 24 h (limit '+maxPer24+'). Recheck serum Na⁺ every 2–4 h and re-plan.';
     }
-    const predicted = cur + dNa;
-    const haveHrs = !isNaN(hours) && hours > 0;
-    const rate = haveHrs ? dNa / hours : null;
-    const per24 = haveHrs ? rate * 24 : dNa;     // projected 24 h rise at this pace
-    const over = per24 > maxPer24 + 0.05;
-    const dNaColor = dNa <= 0 ? 'var(--amber)' : (over ? 'var(--red)' : 'var(--green)');
-
-    cards = `
-      <div class="calc-metric-card"><div class="cmv" style="color:${dNaColor}">${dNa >= 0 ? '+' : ''}${dNa.toFixed(1)}</div><div class="cml">ΔNa⁺ from dose</div><div class="cmt">mEq/L</div></div>
-      <div class="calc-metric-card"><div class="cmv">${predicted.toFixed(1)}</div><div class="cml">Predicted Na⁺</div><div class="cmt">after this dose</div></div>
-      ${haveHrs ? `<div class="calc-metric-card"><div class="cmv">${rate.toFixed(2)}</div><div class="cml">Correction rate</div><div class="cmt">mEq/L per hour</div></div>
-      <div class="calc-metric-card"><div class="cmv" style="color:${over ? 'var(--red)' : 'var(--green)'}">${per24 >= 0 ? '+' : ''}${per24.toFixed(1)}</div><div class="cml">Projected 24 h rise</div><div class="cmt">cap ${maxPer24} mEq/L</div></div>` : ''}`;
-
-    if (dNa <= 0) {
-      verdict = `<strong style="color:var(--amber)">This fluid will not raise serum Na⁺</strong> — its Na⁺ (${srcNa} mEq/L) is at or below the patient's serum Na⁺. Hypertonic (2–3%) saline is needed to raise sodium in this range.`;
-    } else if (over) {
-      verdict = `<strong style="color:var(--red)">Exceeds the safe ceiling.</strong> The projected ${per24.toFixed(1)} mEq/L rise per 24 h is above the ${maxPer24} mEq/L limit${haveHrs ? '' : ' (assuming this dose is the day’s total)'}. Slow the rate, reduce the volume, or extend the interval. Max safe ${srcType === 'fluid' ? 'volume' : 'dose'} ≈ ${maxDoseTxt} per 24 h of this source.`;
-    } else {
-      verdict = `<strong style="color:var(--green)">Within the safe ceiling.</strong> Predicted rise ${per24.toFixed(1)} mEq/L over 24 h (limit ${maxPer24}). Recheck serum Na⁺ every 2–4 h and re-plan.`;
-    }
+    verdict+=' <span style="color:var(--text-muted);">Delivered: '+parts.join(' + ')+(totalVolL>0?' = '+Math.round(totalNa)+' mEq Na in '+(totalVolL*1000).toFixed(0)+' mL':' = '+Math.round(totalNa)+' mEq Na')+'.</span>';
   } else {
-    cards = `<div class="calc-metric-card"><div class="cmv">${maxPer24}</div><div class="cml">Max rise / 24 h</div><div class="cmt">${dur === 'acute' ? 'Acute' : 'Chronic'}${isHighRisk ? ' · high-risk' : ''}</div></div>
-      <div class="calc-metric-card"><div class="cmv">${maxDoseTxt}</div><div class="cml">${maxDoseLbl}</div><div class="cmt">of selected source</div></div>
-      <div class="calc-metric-card"><div class="cmv">${Math.min(cur + maxPer24, 145).toFixed(0)}</div><div class="cml">Na⁺ ceiling 24 h</div><div class="cmt">do not exceed</div></div>`;
-    verdict = `Enter a <strong>dose</strong> (volume or tablets) and a <strong>time interval</strong> to predict the sodium rise and correction rate.`;
+    cards='<div class="calc-metric-card"><div class="cmv">'+maxPer24+'</div><div class="cml">Max rise / 24 h</div><div class="cmt">'+(dur==='acute'?'Acute':'Chronic')+(isHighRisk?' · high-risk':'')+'</div></div>'+
+      '<div class="calc-metric-card"><div class="cmv">'+Math.min(cur+maxPer24,145).toFixed(0)+'</div><div class="cml">Na⁺ ceiling 24 h</div><div class="cmt">do not exceed</div></div>'+
+      '<div class="calc-metric-card"><div class="cmv">'+maxPer48+'</div><div class="cml">Max rise / 48 h</div><div class="cmt">chronic</div></div>';
+    verdict='Add one or more <strong>sodium sources</strong> (IV and/or oral) with a dose, plus a <strong>time interval</strong>, to predict the combined sodium rise and correction rate.';
   }
-
-  if (isHighRisk) {
-    alertBox = '<div style="background:var(--red-soft);border:1px solid rgba(185,28,28,.25);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:13px;color:var(--red);"><strong>High ODS risk:</strong> Limit correction to 6 mEq/L/day; check Na⁺ every ~6 h. Keep desmopressin (DDAVP) 1–2 mcg IV/SC available to halt overcorrection.</div>';
+  if(isHighRisk){
+    alertBox='<div style="background:var(--red-soft);border:1px solid rgba(185,28,28,.25);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:13px;color:var(--red);"><strong>High ODS risk:</strong> Limit correction to 6 mEq/L/day; check Na⁺ every ~6 h. Keep desmopressin (DDAVP) 1–2 mcg IV/SC available to halt overcorrection.</div>';
   }
-
-  showCalcResult(el, `
-    <div class="calc-metrics-row">${cards}</div>
-    <div class="calc-verdict-text">${verdict}</div>
-    <div class="calc-action-text">Limits: ${maxPer24} mEq/L per 24 h, ${maxPer48} mEq/L per 48 h. Na⁺ ceiling at 24 h ≈ ${Math.min(cur + maxPer24, 145).toFixed(0)} mEq/L. Severe symptomatic hyponatremia (seizures/coma): give 100–150 mL of 3% NaCl bolus, repeat to raise Na⁺ 4–6 mEq/L acutely, then slow.</div>
-    ${alertBox}
-    <div class="calc-disclaimer">KDIGO 2024 · Adrogué &amp; Madias, NEJM 2000 · Spasovski et al., Eur J Endocrinol 2014 · Sterns, NEJM 2015. Does not account for ongoing renal/GI losses — monitor and re-measure.</div>
-  `);
+  showCalcResult(el,
+    '<div class="calc-metrics-row">'+cards+'</div>'+
+    '<div class="calc-verdict-text">'+verdict+'</div>'+
+    '<div class="calc-action-text">Limits: '+maxPer24+' mEq/L per 24 h, '+maxPer48+' mEq/L per 48 h. Severe symptomatic hyponatremia (seizures/coma): give 100–150 mL of 3% NaCl bolus, repeat to raise Na⁺ 4–6 mEq/L acutely, then slow.</div>'+
+    alertBox+
+    '<div class="calc-disclaimer">KDIGO 2024 · Adrogué &amp; Madias, NEJM 2000 · Spasovski et al., Eur J Endocrinol 2014 · Sterns, NEJM 2015. Does not account for ongoing renal/GI losses — monitor and re-measure.</div>'
+  );
 }
 </script>
 
