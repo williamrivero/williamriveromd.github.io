@@ -1237,6 +1237,34 @@
 .calc-btn:hover,.calc-run:hover,.tool-btn:hover{background:#155a60;box-shadow:0 5px 16px rgba(26,107,114,.40);}
 .calc-btn:active,.calc-run:active,.tool-btn:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(26,107,114,.30);}
 @media(max-width:600px){.calc-btn,.calc-run,.tool-btn{width:100%;}}
+/* Legacy .tool-* widget system — a few decision-aid calculators were lifted with
+   this guide-specific markup but without its CSS, so the inputs rendered bare.
+   Restyle here (CSS variables for dark-mode safety; radio options as chips). */
+.tool-box{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin:16px 0;}
+.tool-box>h3{font-family:'Lora',serif;font-size:1.05rem;font-weight:600;color:var(--navy);margin:0 0 6px;}
+.tool-box .tool-sub{font-size:13px;color:var(--text-muted);margin:0 0 18px;line-height:1.5;}
+.two-col-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:520px){.two-col-inputs{grid-template-columns:1fr;}}
+.tool-label{display:block;font-size:13px;font-weight:600;color:var(--text);margin:14px 0 5px;}
+.tool-input,.tool-select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--white);box-sizing:border-box;}
+.tool-select{cursor:pointer;}
+.tool-input:focus,.tool-select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.13);}
+.radio-group{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px;}
+.radio-item{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text-mid);cursor:pointer;background:var(--white);transition:border-color .15s;}
+.radio-item:hover{border-color:var(--teal);}
+.radio-item input{accent-color:var(--teal);margin:0;}
+.tool-result{display:none;margin-top:18px;padding:16px 20px;border-radius:10px;border:1px solid var(--border);background:var(--white);}
+.tool-result.show{display:block;}
+html[data-theme="dark"] .tool-box>h3{color:var(--text);}
+/* Non-standard unit-toggle markup (.ut-btn / .unit-toggle-row / .unit-toggle-lbl
+   / .ut-sep) that a few calculators used instead of the master .unit-btn system —
+   style them to match the polished segmented control. */
+.unit-toggle-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 16px;}
+.unit-toggle-lbl{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;}
+.ut-sep{width:1px;height:18px;background:var(--border);display:inline-block;}
+.ut-btn{padding:6px 14px;border:1px solid var(--border);background:var(--white);color:var(--text-mid);font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;border-radius:6px;transition:border-color .15s,background .15s,color .15s;}
+.ut-btn:hover{border-color:var(--teal);}
+.ut-btn.active{background:#1a6b72;border-color:#1a6b72;color:#fff;}
 /* Dark mode: --navy is NOT remapped, so every element the master CSS colors with
    var(--navy) renders dark-on-dark. Some source guides also shipped an older
    master CSS missing these overrides — so recolor them all here (this block is
