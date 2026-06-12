@@ -753,6 +753,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <a class="nav-pill" href="#when">When to Use</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
 <a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#initiation">ESA-Naïve Start</a>
 <a class="nav-pill" href="#nextsteps">Next Steps</a>
 <a class="nav-pill" href="#evidence">Evidence</a>
 </div>
@@ -786,7 +787,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <div class="alert-icon">⚠️</div>
 <div class="alert-body">
 <h4>When NOT to rely on it alone</h4>
-<p>Do not use this calculator for ESA initiation decisions, during acute illness or active infection (which can suppress ESA response), in the setting of uncorrected iron deficiency, or when hemoglobin is acutely changing due to blood loss or transfusion. ESA hyporesponsiveness requires clinical evaluation beyond a dose adjustment. Individual institution protocols and formulary availability may differ — always confirm with local prescribing guidelines.</p>
+<p>This dose-adjustment tool is for patients <strong>already on an ESA</strong> — for ESA-naïve patients, use the <a href="#initiation" style="color:var(--teal);font-weight:600;">ESA Initiation Calculator</a> below. Do not rely on it during acute illness or active infection (which can suppress ESA response), in the setting of uncorrected iron deficiency, or when hemoglobin is acutely changing due to blood loss or transfusion. ESA hyporesponsiveness requires clinical evaluation beyond a dose adjustment. Individual institution protocols and formulary availability may differ — always confirm with local prescribing guidelines.</p>
 </div>
 </div>
 </div>
@@ -883,6 +884,67 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </div>
 </section>
 
+<section class="section" id="initiation">
+<div class="section-tag">Interactive Tool</div>
+<h2>ESA Initiation Calculator — ESA-Naïve Patients</h2>
+<p>For patients <strong>not yet on an ESA</strong>. Enter the agent, body weight, current Hgb, and dialysis status to get the weight-based starting dose and schedule per FDA Epoetin alfa / Darbepoetin alfa labeling and KDIGO 2012. An ESA is generally started only when Hgb is below 10 g/dL and after iron deficiency and other reversible causes have been addressed.</p>
+<div class="calc-wrap">
+<div class="calc-grid">
+<div class="calc-field">
+<label>ESA Agent</label>
+<select id="init-agent" onchange="calcESAInit()">
+<option value="">Select agent…</option>
+<option value="epoetin">Epoetin alfa (units)</option>
+<option value="darbepoetin">Darbepoetin alfa (mcg)</option>
+</select>
+<div class="field-hint">Sets the weight-based starting formula and dose unit.</div>
+</div>
+<div class="calc-field">
+<label>Body Weight (kg)</label>
+<input id="init-weight" type="number" min="20" max="250" step="0.5" placeholder="e.g. 60" oninput="calcESAInit()"/>
+<div class="field-hint">Use actual body weight in kilograms.</div>
+</div>
+<div class="calc-field">
+<label>Current Hgb (g/dL)</label>
+<input id="init-hgb" type="number" min="3" max="18" step="0.1" placeholder="e.g. 9.2" oninput="calcESAInit()"/>
+<div class="field-hint">Pre-treatment hemoglobin. An ESA is usually started when Hgb is &lt;10 g/dL.</div>
+</div>
+<div class="calc-field">
+<label>Dialysis Status</label>
+<select id="init-setting" onchange="calcESAInit()">
+<option value="">Select setting…</option>
+<option value="dialysis">On dialysis (HD or PD)</option>
+<option value="nondialysis">Not on dialysis (ND-CKD)</option>
+</select>
+<div class="field-hint">Sets the recommended starting frequency.</div>
+</div>
+</div>
+
+<div class="calc-result-box" id="init-result">
+<div class="calc-metrics-row">
+<div class="calc-metric-card">
+<div class="cmv" id="init-decision-val">—</div>
+<div class="cml">Initiation Decision</div>
+<div class="cmt" id="init-decision-sub">—</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="init-dose-val" style="font-size:20px;line-height:1.2;">—</div>
+<div class="cml" id="init-dose-lbl">Starting Dose</div>
+<div class="cmt" id="init-dose-unit">—</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="init-freq-val" style="font-size:18px;line-height:1.2;">—</div>
+<div class="cml">Schedule</div>
+<div class="cmt" id="init-freq-sub">—</div>
+</div>
+</div>
+<div class="calc-verdict-text" id="init-verdict"></div>
+<div class="calc-action-text" id="init-detail"></div>
+<p class="calc-disclaimer">⚕ Starting doses follow FDA Epoetin alfa / Darbepoetin alfa labeling and KDIGO 2012. Epoetin alfa: 50 units/kg per dose, 3×/week (label range 50–100). Darbepoetin alfa: 0.45 mcg/kg — once weekly on dialysis, every 4 weeks if not on dialysis (0.75 mcg/kg every 2 weeks is a labeled alternative). Round to available vial strengths. Confirm iron repletion before the first dose. Physician confirmation and individualized assessment are required.</p>
+</div>
+</div>
+</section>
+
 <details class="mdc-acc" id="nextsteps">
 <summary>Next Steps</summary>
 <div class="mdc-acc-body">
@@ -915,6 +977,18 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </tbody>
 </table>
 <p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">All dose changes are approximate (~25%). Unit protocols vary — physician confirmation is required. Never intentionally target Hgb &gt;11.5 g/dL or &gt;13 g/dL.</p>
+<h3 class="mdc-sub">Initiation Logic (ESA-Naïve)</h3>
+<table class="lab-table">
+<thead><tr><th>Condition</th><th>Decision</th><th>Starting Dose</th></tr></thead>
+<tbody>
+<tr><td>Hgb ≥ 10 g/dL</td><td>DEFER</td><td>Do not routinely start; correct iron deficiency and reversible causes first</td></tr>
+<tr><td>Hgb &lt; 10 g/dL · Epoetin alfa</td><td>INITIATE</td><td>50 units/kg per dose, 3×/week (label range 50–100)</td></tr>
+<tr><td>Hgb &lt; 10 g/dL · Darbepoetin · on dialysis</td><td>INITIATE</td><td>0.45 mcg/kg once weekly</td></tr>
+<tr><td>Hgb &lt; 10 g/dL · Darbepoetin · not on dialysis</td><td>INITIATE</td><td>0.45 mcg/kg every 4 weeks (0.75 mcg/kg q2wk alternative)</td></tr>
+<tr><td>Hgb &lt; 7 g/dL or symptomatic</td><td>INITIATE + evaluate transfusion</td><td>Start ESA and assess need for red-cell transfusion in parallel</td></tr>
+</tbody>
+</table>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Confirm adequate iron stores before the first ESA dose. Round computed doses to available vial strengths. Titrate toward the 10–11.5 g/dL target and do not adjust more often than every 4 weeks.</p>
 <h3 class="mdc-sub">References</h3>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group. <em>KDIGO Clinical Practice Guideline for Anemia in Chronic Kidney Disease.</em> Kidney Int Suppl. 2012;2(4):279–335.</li>
@@ -1181,6 +1255,92 @@ function calcESA() {
 
   document.getElementById('esa-verdict').textContent      = verdict;
   document.getElementById('esa-action-detail').textContent = actionDetail;
+}
+
+/* ESA Initiation Calculator — ESA-naïve patients (FDA labeling / KDIGO 2012) */
+function calcESAInit() {
+  var agent   = document.getElementById('init-agent').value;
+  var weight  = parseFloat(document.getElementById('init-weight').value);
+  var hgb     = parseFloat(document.getElementById('init-hgb').value);
+  var setting = document.getElementById('init-setting').value;
+  var res     = document.getElementById('init-result');
+
+  if (!agent || !setting || isNaN(weight) || isNaN(hgb) || weight <= 0 || hgb <= 0) {
+    res.style.display = 'none';
+    return;
+  }
+
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var GREEN = { c: isDark ? '#4ade80' : '#166534', bg: isDark ? 'rgba(14,42,28,.85)' : '#f0fdf4' };
+  var TEAL  = { c: isDark ? '#2ba8b0' : '#1a6b72', bg: isDark ? 'rgba(10,40,48,.85)' : '#e1f5f0' };
+  var AMBER = { c: isDark ? '#fbbf24' : '#92400e', bg: isDark ? 'rgba(42,25,0,.85)' : '#fffbeb' };
+
+  // --- Weight-based starting dose ---
+  var doseVal, doseUnit, freqVal, freqSub, agentLabel, settingLabel;
+  settingLabel = setting === 'dialysis' ? 'dialysis-dependent CKD' : 'non-dialysis CKD';
+
+  if (agent === 'epoetin') {
+    agentLabel = 'Epoetin alfa';
+    var perDose = Math.round((weight * 50) / 100) * 100;   // ~50 units/kg, rounded to 100 units
+    var weekly  = perDose * 3;
+    doseVal  = perDose.toLocaleString();
+    doseUnit = 'units/dose · ' + agentLabel;
+    freqVal  = '3×/week';
+    freqSub  = '≈ ' + weekly.toLocaleString() + ' units/week';
+  } else {
+    agentLabel = 'Darbepoetin alfa';
+    var d = Math.round(weight * 0.45 * 10) / 10;           // 0.45 mcg/kg, 1 decimal
+    doseVal  = d.toFixed(1);
+    doseUnit = 'mcg/dose · ' + agentLabel;
+    if (setting === 'dialysis') {
+      freqVal = 'Once weekly';
+      freqSub = '≈ ' + d.toFixed(1) + ' mcg/week';
+    } else {
+      freqVal = 'Every 4 weeks';
+      freqSub = '≈ ' + (Math.round((d / 4) * 100) / 100).toFixed(2) + ' mcg/week equiv.';
+    }
+  }
+
+  // --- Initiation decision (KDIGO / FDA threshold) ---
+  var decision, decisionSub, col, verdict, detail;
+
+  if (hgb >= 10) {
+    decision = 'DEFER'; decisionSub = 'Hgb ≥ 10 g/dL'; col = AMBER;
+    verdict = 'Hgb ' + hgb.toFixed(1) + ' g/dL is at or above 10 g/dL. KDIGO and FDA labeling advise against routinely starting an ESA at this level — the cardiovascular and thromboembolic risks are not justified when Hgb is ≥10 g/dL. First correct iron deficiency and evaluate other reversible causes, then reassess.';
+    detail = 'If you still choose to initiate (e.g. a rapidly falling Hgb where avoiding transfusion is the goal), the weight-based starting dose for ' + settingLabel + ' is shown above. Otherwise, recheck Hgb and iron indices and defer the ESA.';
+  } else {
+    decision = 'INITIATE';
+    col = (setting === 'dialysis' && hgb < 9) ? TEAL : GREEN;
+    decisionSub = (hgb < 9 ? 'Hgb < 9 g/dL' : 'Hgb < 10 g/dL') + ' · ' + (setting === 'dialysis' ? 'dialysis' : 'ND-CKD');
+    verdict = 'Hgb ' + hgb.toFixed(1) + ' g/dL is below the 10 g/dL initiation threshold. Starting an ESA is appropriate for ' + settingLabel + ' once iron deficiency and other reversible causes have been addressed. Begin at the weight-based dose above and titrate toward the 10–11.5 g/dL target.';
+    detail = 'Before the first dose, confirm iron stores are adequate (TSAT ≥20% and ferritin ≥200 ng/mL in HD; TSAT ≥20% and ferritin ≥100 ng/mL in ND-CKD) and correct absolute iron deficiency — inadequate iron is the leading cause of a poor initial ESA response. Recheck Hgb every 2–4 weeks, do not adjust the dose more often than every 4 weeks, and do not target Hgb >11.5 g/dL.';
+    if (hgb < 7) {
+      detail += ' At Hgb <7 g/dL or with symptomatic anemia, evaluate the need for red-cell transfusion in parallel — ESAs raise Hgb too slowly to manage acute symptomatic anemia.';
+    }
+  }
+
+  // Render
+  res.style.display    = 'block';
+  res.style.background  = col.bg;
+  res.style.borderColor = col.c;
+
+  var dEl = document.getElementById('init-decision-val');
+  dEl.textContent = decision; dEl.style.color = col.c;
+  dEl.style.fontSize = decision.length > 8 ? '20px' : '24px';
+  var dSub = document.getElementById('init-decision-sub');
+  dSub.textContent = decisionSub; dSub.style.color = col.c;
+
+  var doseEl = document.getElementById('init-dose-val');
+  doseEl.textContent = doseVal; doseEl.style.color = col.c;
+  document.getElementById('init-dose-lbl').textContent  = (hgb >= 10) ? 'Dose if Initiated' : 'Starting Dose';
+  document.getElementById('init-dose-unit').textContent = doseUnit;
+
+  var fEl = document.getElementById('init-freq-val');
+  fEl.textContent = freqVal; fEl.style.color = col.c;
+  document.getElementById('init-freq-sub').textContent = freqSub;
+
+  document.getElementById('init-verdict').textContent = verdict;
+  document.getElementById('init-detail').textContent  = detail;
 }
 </script>
 
