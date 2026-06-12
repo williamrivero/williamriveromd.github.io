@@ -2,10 +2,10 @@
 """
 Generate the expanded patient companion PDF for the Sodium & Salt Reduction CKD guide.
 
-Produces downloads/wgmr-sodium-food-guide.pdf — a comprehensive 7-page
-printable handout covering daily targets, the Filipino sodium map, smart
-cooking swaps, label reading, hidden sodium, eating-out rules, the salt-
-substitute warning, and the 7-day reduction plan.
+Produces downloads/wgmr-sodium-food-guide.pdf — a comprehensive printable
+handout covering daily targets, the Filipino sodium map, smart cooking swaps,
+label reading, hidden sodium, eating-out rules, the salt-substitute warning,
+and the 7-day reduction plan.
 
 Usage:
     python3 generate_sodium_food_guide_pdf.py
@@ -44,9 +44,10 @@ TEAL_SOFT   = HexColor("#e1f5f0")
 BG          = HexColor("#f9fafb")
 BORDER      = HexColor("#e2e6eb")
 
-W, H = A4          # 595 × 842 pt
-M    = 40          # page margin
-CW   = W - 2 * M  # content width
+W, H   = A4          # 595 × 842 pt
+M      = 40          # page margin
+CW     = W - 2 * M  # content width
+BOTTOM = 55          # minimum y before footer — nothing drawn below this
 
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
 pdfmetrics.registerFont(TTFont("DJV",   FONT_DIR / "DejaVuSans.ttf"))
@@ -54,8 +55,8 @@ pdfmetrics.registerFont(TTFont("DJV-B", FONT_DIR / "DejaVuSans-Bold.ttf"))
 pdfmetrics.registerFont(TTFont("DJV-I", FONT_DIR / "DejaVuSans.ttf"))   # italic unavailable; use regular
 
 
-# ── Helpers ─────────────────────────────────────────────────────────────────
-def jpeg_reader(name: str, max_w: int = 1200) -> tuple[ImageReader, float]:
+# ── Image helper ─────────────────────────────────────────────────────────────
+def jpeg_reader(name: str, max_w: int = 1200) -> tuple:
     im = Image.open(IMGS / name).convert("RGB")
     if im.width > max_w:
         im = im.resize((max_w, int(im.height * max_w / im.width)), Image.LANCZOS)
@@ -70,7 +71,7 @@ class Doc:
         self.c    = canvas.Canvas(str(OUT), pagesize=A4)
         self.page = 0
 
-    # ── Low-level primitives ─────────────────────────────────────────────
+    # ── Page management ───────────────────────────────────────────────────
     def footer(self):
         self.page += 1
         c = self.c
@@ -84,7 +85,15 @@ class Doc:
         self.footer()
         self.c.showPage()
 
-    def wrap(self, text: str, font: str, size: float, width: float) -> list[str]:
+    def ensure_space(self, y: float, needed: float) -> float:
+        """If fewer than `needed` points remain above BOTTOM, start a new page."""
+        if y - needed < BOTTOM:
+            self.new_page()
+            return H - M - 10
+        return y
+
+    # ── Text helpers ──────────────────────────────────────────────────────
+    def wrap(self, text: str, font: str, size: float, width: float) -> list:
         out, line = [], ""
         for word in text.split():
             t = (line + " " + word).strip()
@@ -101,16 +110,18 @@ class Doc:
     def text_block(self, y: float, text: str, font="DJV", size=9.5,
                    color=TEXT, width=None, x=None, leading=None) -> float:
         c = self.c
-        x = x if x is not None else M
-        width = width if width is not None else CW
+        x       = x       if x       is not None else M
+        width   = width   if width   is not None else CW
         leading = leading if leading is not None else size + 3
         c.setFont(font, size)
         c.setFillColor(color)
         for ln in self.wrap(text, font, size, width):
+            y = self.ensure_space(y, leading + 2)
             c.drawString(x, y, ln)
             y -= leading
         return y - 3
 
+    # ── Section headings ──────────────────────────────────────────────────
     def heading(self, y: float, eyebrow: str, title: str, rule=True) -> float:
         c = self.c
         c.setFont("DJV-B", 8)
@@ -128,17 +139,23 @@ class Doc:
         return y - 10
 
     def subheading(self, y: float, text: str) -> float:
+        y = self.ensure_space(y, 24)
         c = self.c
         c.setFont("DJV-B", 11)
         c.setFillColor(NAVY)
         c.drawString(M, y, text)
         return y - 14
 
-    def image(self, y: float, name: str, caption: str = None,
-              max_h: float = None) -> float:
+    # ── Image ─────────────────────────────────────────────────────────────
+    def image(self, y: float, name: str, caption: str = None) -> float:
         img, ratio = jpeg_reader(name)
         w = CW * 0.8
         h = w / ratio
+        # If the image is taller than available space, scale it down further
+        avail = y - BOTTOM - 10
+        if h > avail:
+            h = avail
+            w = h * ratio
         x_offset = M + (CW - w) / 2
         self.c.drawImage(img, x_offset, y - h, width=w, height=h)
         y -= h
@@ -149,11 +166,13 @@ class Doc:
             self.c.drawString(M, y, caption)
         return y - 8
 
+    # ── Coloured box ──────────────────────────────────────────────────────
     def box(self, y: float, title: str, body: str,
             fill, border, title_color, size=9, pad=10) -> float:
-        c = self.c
         lines = self.wrap(body, "DJV", size, CW - 2 * pad - 4)
         h = pad * 2 + 14 + len(lines) * (size + 3)
+        y = self.ensure_space(y, h + 12)
+        c = self.c
         c.setFillColor(fill)
         c.setStrokeColor(border)
         c.setLineWidth(1.2)
@@ -170,11 +189,11 @@ class Doc:
             ty -= size + 3
         return y - h - 10
 
-    def bullets(self, y: float, items: list[str], size=9, gap=4,
-                bold_lead=True, x=None) -> float:
-        c = self.c
-        x  = x if x is not None else M
-        bw = CW - (x - M) - 14
+    # ── Bullets ───────────────────────────────────────────────────────────
+    def bullets(self, y: float, items: list, size=9, gap=4, x=None) -> float:
+        c   = self.c
+        x   = x if x is not None else M
+        bw  = CW - (x - M) - 14
         for item in items:
             if "|" in item:
                 lead, _, rest = item.partition("|")
@@ -183,6 +202,8 @@ class Doc:
                 lead = None
                 text = item
             lines = self.wrap(text, "DJV", size, bw)
+            item_h = len(lines) * (size + 3) + gap + 2
+            y = self.ensure_space(y, item_h)
             first = True
             for ln in lines:
                 c.setFillColor(TEAL)
@@ -205,56 +226,43 @@ class Doc:
             y -= gap
         return y
 
-    # ── Table helpers ────────────────────────────────────────────────────
-    def _badge(self, x: float, y: float, label: str,
-               fill, color, size=7.5) -> float:
-        """Draw a coloured pill badge; returns right edge x."""
-        bw = pdfmetrics.stringWidth(label, "DJV-B", size) + 8
-        bh = size + 4
-        self.c.setFillColor(fill)
-        self.c.roundRect(x, y - bh + 2, bw, bh, 3, stroke=0, fill=1)
-        self.c.setFillColor(color)
-        self.c.setFont("DJV-B", size)
-        self.c.drawString(x + 4, y - size + 2, label)
-        return x + bw + 4
+    # ── Sodium food table (with mid-table page breaks) ────────────────────
+    def _table_header(self, y: float, c1, c2, c3, c4, size) -> float:
+        pad = 5
+        hh  = 18
+        self.c.setFillColor(NAVY)
+        self.c.rect(M, y - hh, CW, hh, stroke=0, fill=1)
+        self.c.setFillColor(WHITE)
+        self.c.setFont("DJV-B", size - 0.5)
+        for label, cx in [("Food / item",     M + pad),
+                           ("Serving",         M + c1 + pad),
+                           ("Sodium (mg)",     M + c1 + c2 + pad),
+                           ("% of 2,000 mg",  M + c1 + c2 + c3 + pad)]:
+            self.c.drawString(cx, y - 12, label)
+        return y - hh
 
-    def sodium_table(self, y: float, rows: list[tuple], col_widths=None,
+    def sodium_table(self, y: float, rows: list, col_widths=None,
                      size=7.8) -> float:
-        """Generic sodium-value table.
-        rows: list of (food, serving, sodium_mg, pct_str, badge_level)
-        badge_level: 'green' | 'amber' | 'red'
-        """
         c = self.c
         if col_widths is None:
-            c1, c2, c3, c4 = 160, 100, 70, 80  # food, serving, mg, pct
+            c1, c2, c3, c4 = 160, 100, 70, 80
         else:
             c1, c2, c3, c4 = col_widths
         pad = 5
         lh  = size + 2.5
-
         BADGE = {
             "green": (GREEN_SOFT, GREEN),
             "amber": (AMBER_SOFT, AMBER),
             "red":   (RED_SOFT,   RED),
         }
 
-        # header row
-        hh = 18
-        c.setFillColor(NAVY)
-        c.rect(M, y - hh, CW, hh, stroke=0, fill=1)
-        c.setFillColor(WHITE)
-        c.setFont("DJV-B", size - 0.5)
-        for label, cx in [("Food / item", M + pad),
-                           ("Serving", M + c1 + pad),
-                           ("Sodium (mg)", M + c1 + c2 + pad),
-                           ("% of 2,000 mg", M + c1 + c2 + c3 + pad)]:
-            c.drawString(cx, y - 12, label)
-        y -= hh
+        y = self._table_header(y, c1, c2, c3, c4, size)
 
         for i, row in enumerate(rows):
             if len(row) == 1:
                 # section divider
                 sh = lh + 4
+                y = self.ensure_space(y, sh + 20)
                 c.setFillColor(TEAL_SOFT)
                 c.rect(M, y - sh, CW, sh, stroke=0, fill=1)
                 c.setFillColor(TEAL)
@@ -266,6 +274,12 @@ class Doc:
             food, serving, sodium, pct, level = row
             food_lines = self.wrap(food, "DJV", size, c1 - 2 * pad)
             rh = max(1, len(food_lines)) * lh + 2 * pad - 1
+
+            # Page break mid-table: reprint header on new page
+            if y - rh < BOTTOM:
+                self.new_page()
+                y = H - M - 10
+                y = self._table_header(y, c1, c2, c3, c4, size)
 
             fill = HexColor("#ffffff") if i % 2 == 0 else BG
             c.setFillColor(fill)
@@ -281,19 +295,16 @@ class Doc:
                 c.drawString(M + pad, ty, ln)
                 ty -= lh
 
-            # serving
             srv_lines = self.wrap(serving, "DJV", size, c2 - 2 * pad)
             ty = y - pad - size + 1
             for ln in srv_lines:
                 c.drawString(M + c1 + pad, ty, ln)
                 ty -= lh
 
-            # sodium mg — bold
             c.setFont("DJV-B", size)
             c.setFillColor(NAVY)
             c.drawString(M + c1 + c2 + pad, y - pad - size + 1, str(sodium))
 
-            # pct badge
             bf, bc = BADGE.get(level, BADGE["amber"])
             self._badge(M + c1 + c2 + c3 + pad, y - pad - 1, pct, bf, bc, size - 0.5)
 
@@ -301,26 +312,43 @@ class Doc:
 
         return y - 8
 
-    def swap_table(self, y: float, rows: list[tuple], size=8.5) -> float:
-        """Swap table: (from_text, to_text)."""
-        c = self.c
+    def _badge(self, x, y, label, fill, color, size=7.5) -> float:
+        bw = pdfmetrics.stringWidth(label, "DJV-B", size) + 8
+        bh = size + 4
+        self.c.setFillColor(fill)
+        self.c.roundRect(x, y - bh + 2, bw, bh, 3, stroke=0, fill=1)
+        self.c.setFillColor(color)
+        self.c.setFont("DJV-B", size)
+        self.c.drawString(x + 4, y - size + 2, label)
+        return x + bw + 4
+
+    # ── Swap table ────────────────────────────────────────────────────────
+    def swap_table(self, y: float, rows: list, size=8.5) -> float:
+        c  = self.c
         lh = size + 2.5
         c1 = (CW - 20) // 2
         hh = 16
 
-        # header
-        c.setFillColor(NAVY)
-        c.rect(M, y - hh, CW, hh, stroke=0, fill=1)
-        c.setFillColor(WHITE)
-        c.setFont("DJV-B", size - 0.5)
-        c.drawString(M + 6, y - 11, "INSTEAD OF …")
-        c.drawString(M + c1 + 26, y - 11, "TRY THIS …")
-        y -= hh
+        def draw_header(y):
+            c.setFillColor(NAVY)
+            c.rect(M, y - hh, CW, hh, stroke=0, fill=1)
+            c.setFillColor(WHITE)
+            c.setFont("DJV-B", size - 0.5)
+            c.drawString(M + 6, y - 11, "INSTEAD OF …")
+            c.drawString(M + c1 + 26, y - 11, "TRY THIS …")
+            return y - hh
+
+        y = draw_header(y)
 
         for i, (frm, to) in enumerate(rows):
             from_lines = self.wrap(frm, "DJV", size, c1 - 8)
             to_lines   = self.wrap(to,  "DJV", size, c1 - 8)
             rh = max(len(from_lines), len(to_lines)) * lh + 10
+
+            if y - rh < BOTTOM:
+                self.new_page()
+                y = H - M - 10
+                y = draw_header(y)
 
             fill = HexColor("#ffffff") if i % 2 == 0 else BG
             c.setFillColor(fill)
@@ -336,7 +364,6 @@ class Doc:
                 c.drawString(M + 6, ty, ln)
                 ty -= lh
 
-            # arrow
             c.setFillColor(FAINT)
             c.setFont("DJV-B", size + 1)
             c.drawString(M + c1 + 6, y - rh // 2 - 4, "→")
@@ -352,26 +379,36 @@ class Doc:
 
         return y - 8
 
-    def two_col_cards(self, y: float, cards: list[tuple], size=8.5) -> float:
-        """Two-column feature cards: list of (dot_color, title, body)."""
-        c = self.c
-        cw = (CW - 8) // 2
+    # ── Two-column feature cards ──────────────────────────────────────────
+    def two_col_cards(self, y: float, cards: list, size=8.5) -> float:
+        c   = self.c
+        cw  = (CW - 8) // 2
         pad = 10
         lh  = size + 2.5
-
         DOT = {
-            "teal":   TEAL,  "green": GREEN,
-            "amber":  AMBER, "red":   RED,
-            "navy":   NAVY,  "gold":  HexColor("#b8962e"),
+            "teal": TEAL, "green": GREEN, "amber": AMBER,
+            "red":  RED,  "navy":  NAVY,  "gold":  HexColor("#b8962e"),
         }
-
         col_x = [M, M + cw + 8]
         col_y = [y, y]
 
         for i, (dot, title, body) in enumerate(cards):
             col = i % 2
-            cx  = col_x[col]
-            ty  = col_y[col]
+            # At start of each pair (col 0), ensure both cards will fit
+            if col == 0:
+                # measure both cards in this pair
+                def card_h(t, b):
+                    tl = self.wrap(t, "DJV-B", size, cw - 2 * pad - 10)
+                    bl = self.wrap(b, "DJV",   size, cw - 2 * pad - 4)
+                    return pad * 2 + (len(tl) + len(bl)) * lh + 8
+                next_cards = cards[i: i + 2]
+                pair_h = max(card_h(t, b) for _, t, b in next_cards)
+                if col_y[0] - pair_h < BOTTOM:
+                    self.new_page()
+                    col_y = [H - M - 10, H - M - 10]
+
+            cx = col_x[col]
+            ty = col_y[col]
 
             title_lines = self.wrap(title, "DJV-B", size, cw - 2 * pad - 10)
             body_lines  = self.wrap(body,  "DJV",   size, cw - 2 * pad - 4)
@@ -382,14 +419,13 @@ class Doc:
             c.setLineWidth(0.8)
             c.roundRect(cx, ty - h, cw, h, 6, stroke=1, fill=1)
 
-            # dot + title
             ity = ty - pad - size + 1
             dot_color = DOT.get(dot, TEAL)
             c.setFillColor(dot_color)
             c.circle(cx + pad + 4, ity + 3, 4, stroke=0, fill=1)
             c.setFillColor(NAVY)
             c.setFont("DJV-B", size)
-            for j, ln in enumerate(title_lines):
+            for ln in title_lines:
                 c.drawString(cx + pad + 12, ity, ln)
                 ity -= lh
 
@@ -404,18 +440,17 @@ class Doc:
 
         return min(col_y) - 4
 
-    def warning_box(self, y: float, title: str, lines: list[str],
-                    size=9) -> float:
-        """Big red warning box."""
-        c = self.c
+    # ── Warning box ───────────────────────────────────────────────────────
+    def warning_box(self, y: float, title: str, lines: list, size=9) -> float:
+        c   = self.c
         pad = 12
         lh  = size + 3
         all_lines = []
         for ln in lines:
             all_lines += self.wrap(ln, "DJV", size, CW - 2 * pad - 4)
-            all_lines.append("")  # blank separator
-        all_lines = [l for l in all_lines]  # keep
+            all_lines.append("")
         h = pad * 2 + 22 + len(all_lines) * lh + 4
+        y = self.ensure_space(y, h + 12)
         c.setFillColor(RED_SOFT)
         c.setStrokeColor(RED)
         c.setLineWidth(2)
@@ -423,7 +458,7 @@ class Doc:
         ty = y - pad - 10
         c.setFillColor(RED)
         c.setFont("DJV-B", size + 2)
-        c.drawString(M + pad, ty, "🚨  " + title)
+        c.drawString(M + pad, ty, "  " + title)
         ty -= 16
         c.setFillColor(TEXT)
         c.setFont("DJV", size)
@@ -432,38 +467,36 @@ class Doc:
             ty -= lh
         return y - h - 10
 
-    def day_plan_grid(self, y: float, days: list[tuple], size=8.5) -> float:
-        """3-column 7-day plan grid: (day_label, body)."""
-        c  = self.c
-        nc = 3
-        cw = (CW - (nc - 1) * 6) // nc
+    # ── 7-day plan grid ───────────────────────────────────────────────────
+    def day_plan_grid(self, y: float, days: list, size=8.5) -> float:
+        c   = self.c
+        nc  = 3
+        cw  = (CW - (nc - 1) * 6) // nc
         pad = 8
         lh  = size + 2.5
 
-        # measure heights
         cards = []
         for day, body in days:
             body_lines = self.wrap(body, "DJV", size, cw - 2 * pad - 4)
             h = pad * 2 + 14 + len(body_lines) * lh
             cards.append((day, body_lines, h))
 
-        # lay out in rows of 3
         col_x = [M + i * (cw + 6) for i in range(nc)]
         row_i = 0
         while row_i * nc < len(cards):
-            row = cards[row_i * nc: row_i * nc + nc]
-            row_h = max(card[2] for card in row)
+            row    = cards[row_i * nc: row_i * nc + nc]
+            row_h  = max(card[2] for card in row)
+            y = self.ensure_space(y, row_h + 8)
             for col_j, (day, body_lines, _) in enumerate(row):
                 cx = col_x[col_j]
-                cy = y
                 c.setFillColor(TEAL_SOFT)
                 c.setStrokeColor(TEAL)
                 c.setLineWidth(0.8)
-                c.roundRect(cx, cy - row_h, cw, row_h, 6, stroke=1, fill=1)
+                c.roundRect(cx, y - row_h, cw, row_h, 6, stroke=1, fill=1)
                 c.setFillColor(TEAL)
                 c.setFont("DJV-B", size - 0.5)
-                c.drawString(cx + pad, cy - pad - size + 2, day.upper())
-                ity = cy - pad - size - 6
+                c.drawString(cx + pad, y - pad - size + 2, day.upper())
+                ity = y - pad - size - 6
                 c.setFillColor(TEXT)
                 c.setFont("DJV", size)
                 for ln in body_lines:
@@ -504,14 +537,14 @@ def build():
         "W. G. M. Rivero, MD, FPCP, DPSN — Internal Medicine · Nephrology · Clinical Nutrition")
     y -= 16
 
-    y = d.image(y, "sodium-hero.png", max_h=180)
+    y = d.image(y, "sodium-hero.png")
     y -= 4
 
     # Key stats row
     stats = [
-        ("< 2,000 mg", "sodium / day", "CKD target"),
-        ("4,500–6,000 mg", "sodium / day", "Filipino average"),
-        ("1 g salt", "= 400 mg sodium", "The key conversion"),
+        ("< 2,000 mg",    "sodium / day",   "CKD target"),
+        ("4,500–6,000 mg","sodium / day",   "Filipino average"),
+        ("1 g salt",      "= 400 mg sodium","The key conversion"),
     ]
     sw = CW / 3
     for i, (val, unit, label) in enumerate(stats):
@@ -546,7 +579,7 @@ def build():
     y = d.subheading(y, "Daily sodium targets by patient group")
     y -= 2
 
-    # Targets table
+    # Targets table (inline — small enough to always fit)
     target_rows = [
         ("General CKD Stage 1–4",               "< 2,000 mg/day",  "< 5 g salt (1 tsp)"),
         ("CKD with hypertension or proteinuria", "< 1,500 mg/day",  "< 3.75 g (¾ tsp)"),
@@ -555,25 +588,24 @@ def build():
         ("Peritoneal dialysis (PD)",             "2,000–2,500 mg",  "Still far below typical PH intake"),
         ("Per-meal practical target",            "< 600 mg / meal", "3 × 600 + snacks ≤ 200 = ~2,000 mg"),
     ]
-    lh_t = 10.5
-    th   = 16
-    row_cols = [160, 110, CW - 160 - 110]
-    # header
+    lh_t      = 10.5
+    th        = 16
+    row_cols  = [160, 110, CW - 160 - 110]
     c.setFillColor(NAVY)
     c.rect(M, y - th, CW, th, stroke=0, fill=1)
-    c.setFillColor(WHITE)
-    c.setFont("DJV-B", 7.5)
+    c.setFillColor(WHITE); c.setFont("DJV-B", 7.5)
     c.drawString(M + 5, y - 11, "Patient group")
     c.drawString(M + row_cols[0] + 5, y - 11, "Daily sodium target")
     c.drawString(M + row_cols[0] + row_cols[1] + 5, y - 11, "Notes / salt equivalent")
     y -= th
     for i, (grp, tgt, note) in enumerate(target_rows):
         rh = lh_t + 8
+        y = d.ensure_space(y, rh + 4)
         c.setFillColor(WHITE if i % 2 == 0 else BG)
         c.rect(M, y - rh, CW, rh, stroke=0, fill=1)
         c.setStrokeColor(BORDER); c.setLineWidth(0.4)
         c.line(M, y - rh, M + CW, y - rh)
-        c.setFillColor(TEXT);  c.setFont("DJV", 8.5)
+        c.setFillColor(TEXT); c.setFont("DJV", 8.5)
         c.drawString(M + 5, y - rh + 5, grp)
         c.setFont("DJV-B", 8.5); c.setFillColor(NAVY)
         c.drawString(M + row_cols[0] + 5, y - rh + 5, tgt)
@@ -582,64 +614,64 @@ def build():
         y -= rh
     y -= 6
 
-    c.setFont("DJV-I", 8)
-    c.setFillColor(MUTED)
+    y = d.ensure_space(y, 14)
+    c.setFont("DJV-I", 8); c.setFillColor(MUTED)
     c.drawString(M, y,
         "Source: KDIGO 2024 CKD guideline · AHA recommendations · WHO sodium intake guideline 2012")
 
     d.new_page()
 
     # ════════════════════════════════════════════════════════════════════════
-    # PAGE 2 — FILIPINO SODIUM MAP (CONDIMENTS / BOUILLON / INSTANT NOODLES)
+    # PAGE 2 — FILIPINO SODIUM MAP PART 1
     # ════════════════════════════════════════════════════════════════════════
     y = H - M - 4
     y = d.heading(y, "The Filipino Sodium Map — Part 1",
                   "Where the sodium actually hides in Filipino food")
-    y = d.image(y, "sodium-filipino-foods.png", max_h=140)
+    y = d.image(y, "sodium-filipino-foods.png")
     y -= 4
 
-    d.text_block(y,
-        "All values are per typical Filipino serving. The % column shows what fraction of the "
-        "2,000 mg CKD daily target each single serving consumes.",
+    y = d.text_block(y,
+        "All values are per typical Filipino serving. The % column shows what fraction of "
+        "the 2,000 mg CKD daily target each single serving consumes.",
         size=8.5)
-    y -= 26
+    y -= 4
 
     rows_p2 = [
         ("Condiments and sauces",),
-        ("Patis (fish sauce)", "1 tbsp (15 mL)", "1,420", "71%", "red"),
-        ("Bagoong alamang", "1 tbsp", "1,370", "69%", "red"),
-        ("Bagoong isda (sardine paste)", "2 tbsp", "1,500", "75%", "red"),
-        ("Toyo (regular soy sauce)", "1 tbsp", "900", "45%", "red"),
-        ("Toyomansi (toyo + calamansi)", "1 tbsp", "820", "41%", "red"),
-        ("Reduced-sodium toyo", "1 tbsp", "540", "27%", "amber"),
-        ("Banana ketchup", "1 tbsp", "165", "8%", "amber"),
-        ("Vinegar (suka)", "1 tbsp", "2", "< 1%", "green"),
-        ("Calamansi juice", "1 tbsp", "1", "< 1%", "green"),
+        ("Patis (fish sauce)",            "1 tbsp (15 mL)", "1,420", "71%", "red"),
+        ("Bagoong alamang",               "1 tbsp",         "1,370", "69%", "red"),
+        ("Bagoong isda (sardine paste)",  "2 tbsp",         "1,500", "75%", "red"),
+        ("Toyo (regular soy sauce)",      "1 tbsp",         "900",   "45%", "red"),
+        ("Toyomansi (toyo + calamansi)",  "1 tbsp",         "820",   "41%", "red"),
+        ("Reduced-sodium toyo",           "1 tbsp",         "540",   "27%", "amber"),
+        ("Banana ketchup",                "1 tbsp",         "165",   "8%",  "amber"),
+        ("Vinegar (suka)",                "1 tbsp",         "2",     "< 1%","green"),
+        ("Calamansi juice",               "1 tbsp",         "1",     "< 1%","green"),
         ("Bouillon, seasoning powders, instant mixes",),
-        ("Knorr bouillon cube", "1 cube (10 g)", "1,500", "75%", "red"),
-        ("Maggi Magic Sarap", "1 sachet (8 g)", "1,200", "60%", "red"),
-        ("Powdered sinigang mix", "1 sachet (44 g)", "1,540", "77%", "red"),
-        ("Powdered adobo mix", "1 sachet", "1,200", "60%", "red"),
-        ("Pancit canton seasoning packet", "1 packet", "1,720", "86%", "red"),
+        ("Knorr bouillon cube",           "1 cube (10 g)",  "1,500", "75%", "red"),
+        ("Maggi Magic Sarap",             "1 sachet (8 g)", "1,200", "60%", "red"),
+        ("Powdered sinigang mix",         "1 sachet (44 g)","1,540", "77%", "red"),
+        ("Powdered adobo mix",            "1 sachet",       "1,200", "60%", "red"),
+        ("Pancit canton seasoning packet","1 packet",       "1,720", "86%", "red"),
         ("Instant noodles and ready meals",),
-        ("Lucky Me Pancit Canton", "1 pack (80 g)", "1,720", "86%", "red"),
-        ("Nissin Cup Noodles", "1 cup (60 g)", "1,800", "90%", "red"),
-        ("Lucky Me Beef Mami", "1 pack", "1,520", "76%", "red"),
-        ("Nissin Yakisoba", "1 pack", "1,650", "83%", "red"),
+        ("Lucky Me Pancit Canton",        "1 pack (80 g)",  "1,720", "86%", "red"),
+        ("Nissin Cup Noodles",            "1 cup (60 g)",   "1,800", "90%", "red"),
+        ("Lucky Me Beef Mami",            "1 pack",         "1,520", "76%", "red"),
+        ("Nissin Yakisoba",               "1 pack",         "1,650", "83%", "red"),
         ("Canned goods",),
-        ("Corned beef", "½ cup (100 g)", "950", "48%", "red"),
-        ("Spam", "2 oz slice (56 g)", "790", "40%", "amber"),
-        ("Sardines in tomato sauce", "½ can (70 g)", "480", "24%", "amber"),
-        ("Vienna sausage", "4 pieces (60 g)", "470", "24%", "amber"),
-        ("Luncheon meat (CDO / Purefoods)", "1 slice (30 g)", "380", "19%", "amber"),
-        ("Tuna flakes in oil, drained", "½ can (70 g)", "250", "13%", "amber"),
+        ("Corned beef",                   "½ cup (100 g)",  "950",   "48%", "red"),
+        ("Spam",                          "2 oz slice (56 g)","790", "40%", "amber"),
+        ("Sardines in tomato sauce",      "½ can (70 g)",   "480",   "24%", "amber"),
+        ("Vienna sausage",                "4 pieces (60 g)","470",   "24%", "amber"),
+        ("Luncheon meat (CDO / Purefoods)","1 slice (30 g)","380",   "19%", "amber"),
+        ("Tuna flakes in oil, drained",   "½ can (70 g)",   "250",   "13%", "amber"),
     ]
     y = d.sodium_table(y, rows_p2, size=7.8)
 
     d.new_page()
 
     # ════════════════════════════════════════════════════════════════════════
-    # PAGE 3 — FILIPINO SODIUM MAP (CONTINUED)
+    # PAGE 3 — FILIPINO SODIUM MAP PART 2
     # ════════════════════════════════════════════════════════════════════════
     y = H - M - 4
     y = d.heading(y, "The Filipino Sodium Map — Part 2",
@@ -647,39 +679,39 @@ def build():
 
     rows_p3 = [
         ("Cured / processed meats and fish",),
-        ("Daing na bangus", "100 g", "1,200", "60%", "red"),
-        ("Tinapa (smoked fish)", "1 piece (80 g)", "900", "45%", "red"),
-        ("Tapa", "100 g", "850", "43%", "red"),
-        ("Longganisa (sweet)", "2 pieces (80 g)", "750", "38%", "amber"),
-        ("Tocino", "100 g", "670", "34%", "amber"),
-        ("Hotdog (Tender Juicy / Purefoods)", "2 pieces (90 g)", "540", "27%", "amber"),
-        ("Embutido", "1 slice (60 g)", "420", "21%", "amber"),
+        ("Daing na bangus",               "100 g",             "1,200","60%","red"),
+        ("Tinapa (smoked fish)",          "1 piece (80 g)",    "900",  "45%","red"),
+        ("Tapa",                          "100 g",             "850",  "43%","red"),
+        ("Longganisa (sweet)",            "2 pieces (80 g)",   "750",  "38%","amber"),
+        ("Tocino",                        "100 g",             "670",  "34%","amber"),
+        ("Hotdog (Tender Juicy/Purefoods)","2 pieces (90 g)",  "540",  "27%","amber"),
+        ("Embutido",                      "1 slice (60 g)",    "420",  "21%","amber"),
         ("Common ulam and carinderia dishes",),
-        ("Pancit canton (carinderia plate)", "1 plate (~300 g)", "1,800", "90%", "red"),
-        ("Sinigang (with mix sachet)", "1 bowl (~400 mL)", "1,500", "75%", "red"),
-        ("Pancit palabok", "1 plate", "1,400", "70%", "red"),
-        ("Adobo (chicken / pork)", "1 cup (~250 g)", "1,200", "60%", "red"),
-        ("Kare-kare with bagoong", "1 cup + 1 tbsp bagoong", "1,800", "90%", "red"),
-        ("Lugaw with patis", "1 bowl", "800", "40%", "amber"),
-        ("Tinola (no patis added)", "1 bowl", "520", "26%", "amber"),
-        ("Inihaw na liempo (no marinade)", "100 g", "180", "9%", "green"),
+        ("Pancit canton (carinderia plate)","1 plate (~300 g)","1,800","90%","red"),
+        ("Sinigang (with mix sachet)",    "1 bowl (~400 mL)",  "1,500","75%","red"),
+        ("Pancit palabok",                "1 plate",           "1,400","70%","red"),
+        ("Adobo (chicken / pork)",        "1 cup (~250 g)",    "1,200","60%","red"),
+        ("Kare-kare with bagoong",        "1 cup + 1 tbsp bagoong","1,800","90%","red"),
+        ("Lugaw with patis",              "1 bowl",            "800",  "40%","amber"),
+        ("Tinola (no patis added)",       "1 bowl",            "520",  "26%","amber"),
+        ("Inihaw na liempo (no marinade)","100 g",             "180",  "9%", "green"),
         ("Fast food",),
-        ("Jollibee Chickenjoy", "1 piece", "690", "35%", "amber"),
-        ("Jollibee Spaghetti", "1 plate", "1,100", "55%", "red"),
-        ("McDo Crispy Chicken Fillet", "1 piece", "740", "37%", "amber"),
-        ("McDo Big Mac", "1 sandwich", "970", "49%", "red"),
-        ("Mang Inasal (chicken thigh + rice)", "1 meal", "1,250", "63%", "red"),
-        ("KFC Original Recipe", "1 piece", "820", "41%", "amber"),
+        ("Jollibee Chickenjoy",           "1 piece",           "690",  "35%","amber"),
+        ("Jollibee Spaghetti",            "1 plate",           "1,100","55%","red"),
+        ("McDo Crispy Chicken Fillet",    "1 piece",           "740",  "37%","amber"),
+        ("McDo Big Mac",                  "1 sandwich",        "970",  "49%","red"),
+        ("Mang Inasal (chicken + rice)",  "1 meal",            "1,250","63%","red"),
+        ("KFC Original Recipe",           "1 piece",           "820",  "41%","amber"),
         ("Snacks, bread, and safer choices",),
-        ("Boy Bawang (garlic corn nuts)", "1 pack (100 g)", "600", "30%", "amber"),
-        ("Pringles", "1 small can (50 g)", "530", "27%", "amber"),
-        ("Sky Flakes crackers", "4 crackers (30 g)", "260", "13%", "amber"),
-        ("Pandesal", "2 pieces (50 g)", "240", "12%", "amber"),
-        ("Nova multigrain", "1 pack (40 g)", "180", "9%", "green"),
-        ("Plain steamed rice (kanin)", "1 cup", "< 5", "< 1%", "green"),
-        ("Fresh bangus, baked, no salt", "100 g", "75", "4%", "green"),
-        ("Boiled egg, no added salt", "1 large", "70", "4%", "green"),
-        ("Fresh fruit (any)", "per serving", "0–10", "< 1%", "green"),
+        ("Boy Bawang (garlic corn nuts)", "1 pack (100 g)",    "600",  "30%","amber"),
+        ("Pringles",                      "1 small can (50 g)","530",  "27%","amber"),
+        ("Sky Flakes crackers",           "4 crackers (30 g)", "260",  "13%","amber"),
+        ("Pandesal",                      "2 pieces (50 g)",   "240",  "12%","amber"),
+        ("Nova multigrain",               "1 pack (40 g)",     "180",  "9%", "green"),
+        ("Plain steamed rice (kanin)",    "1 cup",             "< 5",  "< 1%","green"),
+        ("Fresh bangus, baked, no salt",  "100 g",             "75",   "4%", "green"),
+        ("Boiled egg, no added salt",     "1 large",           "70",   "4%", "green"),
+        ("Fresh fruit (any)",             "per serving",       "0–10", "< 1%","green"),
     ]
     y = d.sodium_table(y, rows_p3, size=7.8)
 
@@ -699,7 +731,7 @@ def build():
     y = H - M - 4
     y = d.heading(y, "Smart Swaps",
                   "Lower-sodium versions of the food you already cook")
-    y = d.image(y, "sodium-cooking-swaps.png", max_h=130)
+    y = d.image(y, "sodium-cooking-swaps.png")
     y -= 2
 
     swap_rows = [
@@ -708,7 +740,7 @@ def build():
         ("Sinigang mix sachet (1,540 mg)",
          "Fresh sampalok pulp boiled and strained, or kamias, or unripe green mango. Add a small amount of patis at the end only (~150 mg total)."),
         ("Knorr / Maggi cube in soup (1,400–1,500 mg)",
-         "Homemade broth: chicken bones + onion + ginger + leeks, simmered 1 hour, strained and frozen in portions. ~80 mg/cup."),
+         "Homemade broth: chicken bones + onion + ginger + leeks, simmered 1 hour, strained, frozen in portions. ~80 mg/cup."),
         ("Pancit canton with seasoning packet (1,720 mg)",
          "Same noodles — throw out the packet. Sauté with garlic, ginger, cabbage, carrot, light low-sodium toyo (~400 mg total)."),
         ("Corned beef breakfast (950 mg/serving)",
@@ -776,7 +808,7 @@ def build():
          "leaves. Acid sharpens flavour the way salt does — without the sodium load."),
         ("amber", "Use heat and aromatics",
          "Sili labuyo, black pepper, ginger, lots of garlic, sibuyas, kutsay (leeks), "
-         "tanglad, dahon ng laurel, oregano. Bloom them in oil first to release maximum aroma."),
+         "tanglad, dahon ng laurel, oregano. Bloom them in oil first for maximum aroma."),
         ("teal", "Build your own broth",
          "Save bones in the freezer. Simmer 2–3 hrs with onion, ginger, carrot, peppercorns. "
          "Strain, portion into 1-cup containers, freeze. Replaces every Maggi cube."),
@@ -794,41 +826,50 @@ def build():
 
     y -= 6
     y = d.subheading(y, "Hidden sodium — sources you would never suspect")
-    y = d.image(y, "sodium-hidden.png", max_h=90)
+    y = d.image(y, "sodium-hidden.png")
     y -= 2
 
     hidden_rows = [
-        ("Pandesal / sliced bread",      "120–150 mg / piece", "Salt controls yeast — 4–6 pieces a day adds up."),
-        ("Breakfast cereals",            "180–250 mg / cup",   "Cornflakes, Special K — not necessarily low-sodium."),
-        ("Processed cheese (Eden)",      "300–400 mg / slice", "Sodium emulsifies the cheese and extends shelf life."),
-        ("Pickles / atchara",            "500–700 mg / serving","Pickled in salt brine — even 'unsweetened' versions."),
-        ("Frozen pre-marinated fish",    "400–800 mg / piece", "Supermarket bangus soaked in salt water for shelf life."),
-        ("Antacids (Maalox, Kremil, eno)","200–500 mg / dose", "Sodium bicarbonate base — significant if taken several times daily."),
-        ("3-in-1 coffee sachets",        "40–80 mg / sachet",  "Sodium emulsifiers in the creamer; 4 cups = 200+ mg from coffee alone."),
-        ("Bottled salad dressing",       "200–500 mg / tbsp",  "Preservative + flavour. Make your own with calamansi, suka, garlic."),
-        ("Fountain / isotonic drinks",   "40–200 mg / serving","Sodium is added for electrolyte balance. Always read the label."),
+        ("Pandesal / sliced bread",       "120–150 mg/piece",  "Salt controls yeast activity — 4–6 pieces a day adds up."),
+        ("Breakfast cereals",             "180–250 mg/cup",    "Cornflakes, Special K — not necessarily low-sodium."),
+        ("Processed cheese (Eden)",       "300–400 mg/slice",  "Sodium emulsifies the cheese and extends shelf life."),
+        ("Pickles / atchara",             "500–700 mg/serving","Pickled in salt brine — even 'unsweetened' versions."),
+        ("Frozen pre-marinated fish",     "400–800 mg/piece",  "Supermarket bangus often soaked in salt water for shelf life."),
+        ("Antacids (Maalox, Kremil, eno)","200–500 mg/dose",   "Sodium bicarbonate base — significant if taken several times daily."),
+        ("3-in-1 coffee sachets",         "40–80 mg/sachet",   "Sodium emulsifiers in the creamer; 4 cups = 200+ mg from coffee alone."),
+        ("Bottled salad dressing",        "200–500 mg/tbsp",   "Make your own with calamansi, suka, garlic — zero sodium."),
+        ("Isotonic / sports drinks",      "40–200 mg/serving", "Sodium added for electrolyte balance. Always read the label."),
     ]
-    # Compact hidden table
-    hc = [160, 110, CW - 160 - 110]
-    lh8 = 9
+
+    hc  = [160, 110, CW - 160 - 110]
+    sz8 = 7.8
+    lh8 = sz8 + 2.5
     hth = 15
-    c.setFillColor(NAVY); c.rect(M, y - hth, CW, hth, stroke=0, fill=1)
-    c.setFillColor(WHITE); c.setFont("DJV-B", 7.5)
-    c.drawString(M + 4, y - 10, "Hidden source")
-    c.drawString(M + hc[0] + 4, y - 10, "Typical sodium")
-    c.drawString(M + hc[0] + hc[1] + 4, y - 10, "Why it is there")
-    y -= hth
+
+    def draw_hidden_header(y):
+        c.setFillColor(NAVY); c.rect(M, y - hth, CW, hth, stroke=0, fill=1)
+        c.setFillColor(WHITE); c.setFont("DJV-B", 7.5)
+        c.drawString(M + 4, y - 10, "Hidden source")
+        c.drawString(M + hc[0] + 4, y - 10, "Typical sodium")
+        c.drawString(M + hc[0] + hc[1] + 4, y - 10, "Why it is there")
+        return y - hth
+
+    y = draw_hidden_header(y)
     for i, (src, amt, why) in enumerate(hidden_rows):
-        why_lines = d.wrap(why, "DJV", 7.8, hc[2] - 8)
+        why_lines = d.wrap(why, "DJV", sz8, hc[2] - 8)
         rh = max(1, len(why_lines)) * lh8 + 6
+        if y - rh < BOTTOM:
+            d.new_page()
+            y = H - M - 10
+            y = draw_hidden_header(y)
         c.setFillColor(WHITE if i % 2 == 0 else BG)
         c.rect(M, y - rh, CW, rh, stroke=0, fill=1)
         c.setStrokeColor(BORDER); c.setLineWidth(0.4)
         c.line(M, y - rh, M + CW, y - rh)
         ty = y - rh + 4
-        c.setFillColor(TEXT); c.setFont("DJV-B", 7.8)
+        c.setFillColor(TEXT); c.setFont("DJV-B", sz8)
         c.drawString(M + 4, ty, src)
-        c.setFont("DJV", 7.8)
+        c.setFont("DJV", sz8)
         c.drawString(M + hc[0] + 4, ty, amt)
         for ln in why_lines:
             c.drawString(M + hc[0] + hc[1] + 4, ty, ln)
@@ -842,8 +883,8 @@ def build():
          "Inihaw na isda, tinolang manok (no patis), grilled liempo, pinakbet without bagoong, "
          "chopsuey, fresh lumpia, kanin. Typically 300–600 mg per serving."),
         ("red",   "Avoid breaded, brined, and soup-based",
-         "Pancit (any), sinigang (broth holds all the sodium), kare-kare with bagoong, fast-food "
-         "breakfast sets (corned beef / longganisa / tocino / hotdog). Often > 1,000 mg per plate."),
+         "Pancit (any), sinigang (the broth holds all the sodium), kare-kare with bagoong, "
+         "fast-food breakfast sets. Often > 1,000 mg per plate."),
         ("amber", '"Pakitabi lang po ang sauce."',
          "Ask for toyo, bagoong, or gravy on the side and dip lightly. One meal can drop "
          "600–800 mg of sodium by this single change alone."),
@@ -873,8 +914,8 @@ def build():
         "AVOID COMPLETELY in CKD Stage 3b–5, in dialysis patients, and in anyone "
         "on an ACE inhibitor, ARB, or spironolactone.",
         "Safe in early CKD Stage 1–2 ONLY if serum potassium is normal and monitored.",
-        "They are also hidden in many packaged \"low-sodium\" canned goods and sauces — "
-        "always read the ingredient list. If \"potassium chloride\" appears, do not buy.",
+        "Also hidden in many packaged \"low-sodium\" canned goods and sauces — always "
+        "read the ingredient list. If \"potassium chloride\" appears, do not buy.",
     ], size=8.8)
 
     y -= 4
@@ -894,15 +935,15 @@ def build():
 
     day_cards = [
         ("Day 1", "Move the salt shaker off the dining table to a cabinet. Add salt during cooking only. "
-                  "This single change typically cuts ~300 mg per day."),
+                  "Typically cuts ~300 mg per day."),
         ("Day 2", "Replace breakfast patis with calamansi + garlic + pepper on eggs or fried rice. "
-                  "Reclaims ~1,400 mg every morning you would have used patis."),
+                  "Reclaims ~1,400 mg every morning."),
         ("Day 3", "One day without instant noodles. Replace with rice + boiled egg + sautéed kangkong. "
                   "Saves ~1,500 mg."),
         ("Day 4", "If you do eat instant noodles today, throw out the seasoning packet — sauté with "
-                  "garlic, ginger, and low-sodium toyo instead. Saves ~1,000 mg."),
+                  "garlic, ginger, and low-sodium toyo. Saves ~1,000 mg."),
         ("Day 5", "No bouillon cubes. Make a small batch of homemade chicken broth. "
-                  "Use it everywhere a recipe calls for water + Maggi/Knorr. Saves ~1,500 mg per cube avoided."),
+                  "Use it wherever a recipe calls for water + Maggi/Knorr. Saves ~1,500 mg per cube avoided."),
         ("Day 6", "Read every label before buying at the grocery. Avoid anything > 400 mg per serving. "
                   "Check the ingredient list for potassium chloride."),
         ("Day 7", "Eat out only once, choose well: grilled fish, inihaw, or a vegetable dish. "
@@ -921,7 +962,7 @@ def build():
     d.new_page()
 
     # ════════════════════════════════════════════════════════════════════════
-    # PAGE 7 — KITCHEN CHECKLIST + DOCTOR CARD + DISCLAIMER
+    # PAGE 7 — CHECKLIST + DOCTOR CARD + DISCLAIMER
     # ════════════════════════════════════════════════════════════════════════
     y = H - M - 4
     y = d.heading(y, "Quick Reference",
@@ -940,12 +981,12 @@ def build():
     y -= 6
     y = d.subheading(y, "Flavour boosters that add zero sodium")
     zero_na = [
-        ("teal",  "Calamansi juice", "Brightens any dish. Excellent on eggs, fish, rice, lugaw."),
-        ("green", "Suka (vinegar)",  "The foundation of adobo and dipping sauces. Zero sodium."),
-        ("amber", "Garlic & ginger", "Sauté in oil first to build deep base flavour."),
-        ("red",   "Sili (chili)",    "Any variety — labuyo, siling mahaba — adds heat with no sodium."),
-        ("navy",  "Sampalok / kamias", "Natural souring agents for sinigang — skip the mix."),
-        ("gold",  "Black pepper",    "Ground fresh adds intensity. Pairs well with calamansi."),
+        ("teal",  "Calamansi juice",      "Brightens any dish. Excellent on eggs, fish, rice, lugaw."),
+        ("green", "Suka (vinegar)",        "The foundation of adobo and dipping sauces. Zero sodium."),
+        ("amber", "Garlic & ginger",       "Sauté in oil first to build deep base flavour."),
+        ("red",   "Sili (chili)",          "Any variety — labuyo, siling mahaba — adds heat with no sodium."),
+        ("navy",  "Sampalok / kamias",     "Natural souring agents for sinigang — skip the mix."),
+        ("gold",  "Black pepper",          "Ground fresh adds intensity. Pairs well with calamansi."),
     ]
     y = d.two_col_cards(y, zero_na, size=8.5)
 
@@ -961,16 +1002,14 @@ def build():
 
     # Doctor card
     y -= 10
+    y = d.ensure_space(y, 92)
     c.setFillColor(NAVY)
     c.roundRect(M, y - 82, CW, 82, 8, stroke=0, fill=1)
-    c.setFillColor(WHITE)
-    c.setFont("DJV-B", 12)
+    c.setFillColor(WHITE); c.setFont("DJV-B", 12)
     c.drawString(M + 14, y - 18, "W. G. M. Rivero, MD, FPCP, DPSN")
-    c.setFont("DJV", 9)
-    c.setFillColor(HexColor("#c8e8ea"))
+    c.setFont("DJV", 9); c.setFillColor(HexColor("#c8e8ea"))
     c.drawString(M + 14, y - 32, "Internal Medicine · Nephrology · Clinical Nutrition")
-    c.setFont("DJV", 9)
-    c.setFillColor(HexColor("#d0dce8"))
+    c.setFont("DJV", 9); c.setFillColor(HexColor("#d0dce8"))
     for i, line in enumerate([
         "Practicing integrative, evidence-based nephrology",
         "across Quezon City, Pampanga, and Bulacan.",
@@ -981,20 +1020,19 @@ def build():
     y -= 92
 
     # References
-    c.setFont("DJV-I", 7)
-    c.setFillColor(MUTED)
+    y -= 4
+    y = d.ensure_space(y, 20)
+    c.setFont("DJV-I", 7); c.setFillColor(MUTED)
     refs = ("References: KDIGO 2024 CKD Guideline · WHO Sodium Intake Guideline 2012 · "
             "PURE Study, NEJM 2014 · He & MacGregor, Cochrane 2013 · "
             "Philippine FNRI Food Composition Tables.")
     for ln in d.wrap(refs, "DJV-I", 7, CW):
+        y = d.ensure_space(y, 10)
         c.drawString(M, y, ln)
         y -= 9
 
     y -= 6
     # Disclaimer
-    c.setFillColor(AMBER_SOFT)
-    c.setStrokeColor(HexColor("#d97706"))
-    c.setLineWidth(1)
     disc_lines = d.wrap(
         "MEDICAL DISCLAIMER — This handout is patient education material produced by "
         "W. G. M. Rivero, MD for general information only. It does not replace the advice "
@@ -1004,6 +1042,9 @@ def build():
         "explicit approval from your doctor.",
         "DJV", 7.5, CW - 16)
     dh = 10 * 2 + len(disc_lines) * 9.5
+    y = d.ensure_space(y, dh + 4)
+    c.setFillColor(AMBER_SOFT)
+    c.setStrokeColor(HexColor("#d97706")); c.setLineWidth(1)
     c.roundRect(M, y - dh, CW, dh, 6, stroke=1, fill=1)
     ty = y - 10 - 7.5 + 1
     c.setFillColor(AMBER)
