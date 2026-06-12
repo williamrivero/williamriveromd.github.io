@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sodium Correction for Hyperglycemia Calculator – W. G. M. Rivero, MD</title>
+<meta name="description" content="Interactive sodium correction for hyperglycemia calculator — apply Hillier (2.4) and Katz (1.6) correction factors to distinguish true hyponatremia from pseudohyponatremia in diabetic patients. With formula, evidence, and clinical pearls.">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-sodium-glucose-correction.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="Sodium Correction for Hyperglycemia Calculator">
+<meta property="og:description" content="Calculate glucose-corrected sodium using the Hillier 2.4 and Katz 1.6 factors — distinguish pseudohyponatremia from true hyponatremia in hyperglycemic patients.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-sodium-glucose-correction.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/diabetes-kidneys-hero.png">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sodium Correction for Hyperglycemia Calculator">
+<meta name="twitter:description" content="Apply Hillier 2.4 and Katz 1.6 correction factors to measured serum sodium in hyperglycemic patients. Identifies pseudohyponatremia vs. true sodium derangement.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/diabetes-kidneys-hero.png">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;
+    --purple-soft:#faf5ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; font-size: 16px; }
+  .site-header { display: flex; align-items: center; justify-content: space-between; height: 56px; box-sizing: border-box; padding: 0 32px; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 200; }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+  .guide-lang-bar { display: flex; align-items: center; gap: 8px; padding: 8px 32px; background: rgba(10,18,32,.96); border-bottom: 1px solid rgba(255,255,255,.06); flex-wrap: wrap; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s; }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .guide-toggle-bar { display: flex; gap: 8px; align-items: center; padding: 6px 32px; background: rgba(10,18,32,.96) !important; border-bottom: 1px solid rgba(255,255,255,.08) !important; justify-content: space-between; flex-wrap: wrap; }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  [data-lang].lang-hidden { display: none !important; }
+  .hero { background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%); color: white; padding: 72px 0 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px, 5vw, 50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section h3 { font-family: 'Lora', serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th { text-align: left; padding: 11px 16px; background: var(--navy); color: rgba(255,255,255,.92); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-bottom: none; }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td { padding: 13px 16px; vertical-align: top; line-height: 1.55; border-bottom: 1px solid var(--border); color: var(--text-mid); }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+  .calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .unit-toggle-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .ut-label { font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; }
+  .unit-toggle { display: flex; background: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .unit-btn { padding: 7px 16px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; border: none; background: transparent; color: var(--text-muted); cursor: pointer; transition: all .2s; }
+  .unit-btn.active { background: var(--teal); color: white; }
+  .unit-btn:hover:not(.active) { background: var(--bg); color: var(--navy); }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
+  .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
+  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
+  .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .calc-metric-card { background: rgba(255,255,255,.7); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid rgba(0,0,0,.08); }
+  .calc-metric-card .cmv { font-family: 'Lora', serif; font-size: 28px; font-weight: 600; line-height: 1; color: var(--navy); }
+  .calc-metric-card .cml { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; color: var(--text-muted); }
+  .calc-metric-card .cmt { font-size: 11px; margin-top: 4px; font-weight: 600; color: var(--text-mid); }
+  .calc-verdict-text { font-size: 14px; line-height: 1.7; margin-bottom: 10px; color: var(--text-mid); }
+  .calc-action-text { font-size: 13px; line-height: 1.65; padding-top: 10px; border-top: 1px solid rgba(0,0,0,.08); color: var(--text-mid); }
+  .calc-disclaimer { font-size: 11.5px; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 0; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .related-card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s; }
+  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
+  .related-card-tag { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+  .related-card-desc { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
+  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; border: none; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .scroll-top-btn { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996; opacity: 0; pointer-events: none; }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip { position: absolute; right: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+  .print-btn { position: fixed; bottom: 80px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, box-shadow .2s; z-index: 9998; }
+  .print-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip { position: absolute; left: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .print-btn:hover .p-tip { opacity: 1; }
+  html[data-theme="dark"] { --teal: #2ba8b0; --teal-light: #0a2830; --text: #e8eaf0; --text-mid: #dde3eb; --text-muted: #9baab8; --bg: #141c2a; --white: #1a2030; --border: #2a3548; --red: #f87171; --red-soft: #2a1515; --amber: #fbbf24; --amber-soft: #2a1900; --green: #4ade80; --green-soft: #0e2a1c; }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  html[data-theme="dark"] .calc-wrap { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .calc-field input, html[data-theme="dark"] .calc-field select { background: #141c2a; border-color: #2a3548; color: var(--text); }
+  html[data-theme="dark"] .calc-metric-card { background: rgba(255,255,255,.04); border-color: #2a3548; }
+  html[data-theme="dark"] .calc-result-box { border-color: #2a3548 !important; background: rgba(255,255,255,.03) !important; }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
+  html[data-view="desktop"] { min-width: 1024px; }
+  @media(max-width: 480px) { .container { padding: 0 20px; } .related-guides { padding-left: 20px; padding-right: 20px; } .guide-footer .footer-inner { padding: 0 20px; } .dr-card { flex-direction: column; padding: 24px; gap: 16px; } .dr-card-wrap { padding: 0 20px 40px; } .hero-meta { gap: 14px; } }
+  @media print { .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .scroll-top-btn, .guide-footer { display: none !important; } body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; } .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; } .hero h1 { color: #1f3864 !important; font-size: 22px !important; } .container { max-width: 100%; padding: 0 24px; } .section { padding: 20px 0; border-bottom: 1px solid #ddd; } .disclaimer { background: #fff8e8 !important; border: 1px solid #ccc !important; color: #333 !important; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Sodium Correction for Hyperglycemia Calculator",
+  "url": "https://www.williamriveromd.com/guides/calc-sodium-glucose-correction.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH"
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
+</header>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Electrolytes &amp; Diabetes</div>
+<h1>Sodium Correction <em>for Hyperglycemia</em></h1>
+<p class="hero-sub">Enter measured serum sodium and blood glucose to calculate the glucose-corrected sodium using both the Hillier (factor 2.4) and Katz (factor 1.6) methods — distinguishing pseudohyponatremia driven by high glucose from true sodium derangement requiring its own workup.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+<span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" style="color:var(--gold-light);text-decoration:none;">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="diabetes-kidneys.html" style="color:var(--gold-light);text-decoration:none;">Full Diabetes &amp; Kidneys guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#instructions">How to Use</a>
+<a class="nav-pill" href="#formula">Formula</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- WHEN TO USE -->
+<section class="section" id="when">
+<div class="section-tag">When to Use</div>
+<h2>When to Use This Calculator</h2>
+<p>Use this tool whenever a patient has a simultaneously elevated blood glucose and a low or borderline serum sodium. Hyperglycemia draws intracellular water into the extracellular space, diluting sodium and producing a falsely low lab reading — a phenomenon called translocational or dilutional pseudohyponatremia. Without correcting for glucose, a low sodium may trigger an unnecessary hyponatremia workup or inappropriate sodium supplementation.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Appropriate population</h4>
+<p>Any patient with a concurrent hyperglycemia (blood glucose above 100 mg/dL / 5.6 mmol/L) and a measured serum sodium below or at the low-normal range. Most relevant in diabetic ketoacidosis (DKA), hyperosmolar hyperglycemic state (HHS), poorly controlled type 1 or type 2 diabetes, and post-operative patients on glucose-containing fluids. In CKD and dialysis patients, hyperglycemia is common, and the glucose effect on sodium can compound an already complex fluid and electrolyte picture.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>When NOT to rely on correction alone</h4>
+<p>If the glucose-corrected sodium is still low (below 135 mEq/L), this is genuine hyponatremia that co-exists with the hyperglycemia — it will not resolve on its own when glucose is treated and needs its own evaluation (volume status, urine studies, medications, SIADH). This calculator does not replace clinical assessment of volume status, urine osmolality, or urine sodium. Never correct sodium rapidly (&gt;8–10 mEq/L per 24 hours) without close physician supervision to avoid osmotic demyelination.</p>
+</div>
+</div>
+</section>
+
+<!-- WHY -->
+<section class="section" id="why">
+<div class="section-tag">Why It Matters</div>
+<h2>Why Glucose-Corrected Sodium Matters</h2>
+<p>Glucose is an osmotically active solute that does not freely cross cell membranes in most tissues. When plasma glucose rises, osmotic pressure draws water out of cells into the extracellular compartment — diluting the serum sodium by roughly 1.6 to 2.4 mEq/L for every 100 mg/dL (5.6 mmol/L) rise in glucose above normal. The original Katz correction factor of 1.6 (from a 1973 case series) has been widely used, but a prospective study by Hillier et al. (1999) found a mean correction factor of 2.4 — with the higher factor being more accurate especially when glucose exceeds 400 mg/dL. Using only the Katz factor can underestimate the true corrected sodium by several mEq/L at very high glucose levels, potentially masking hypernatremia or over-calling hyponatremia in DKA and HHS.</p>
+<p>In CKD patients — who often have diabetes as the primary cause of kidney disease — hyperglycemia-induced pseudohyponatremia is a clinically important electrolyte mirage. Misinterpreting it as true hyponatremia can delay appropriate treatment (insulin and glucose-lowering) and lead to inappropriate fluid or sodium management that further strains the already-limited fluid tolerance of CKD kidneys.</p>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>Sodium Correction for Hyperglycemia — Is the Low Sodium Real?</h2>
+<p>Enter measured serum sodium and blood glucose (mg/dL or mmol/L). Both the Hillier 2.4 and Katz 1.6 corrected values are shown, with a plain-language interpretation.</p>
+<div class="calc-wrap">
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Units:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="ng-btn-conv" onclick="switchNaGlucoseUnit('conv')">Glucose mg/dL</button>
+      <button class="unit-btn" id="ng-btn-si" onclick="switchNaGlucoseUnit('si')">Glucose mmol/L</button>
+    </div>
+  </div>
+  <div class="calc-grid">
+    <div class="calc-field">
+      <label>Measured serum sodium (mEq/L)</label>
+      <input id="ng-na" type="number" min="100" max="180" step="0.1" placeholder="e.g. 130" oninput="calcNaGlucose()">
+      <div class="field-hint">The sodium value printed on your lab report (same as mmol/L). Normal range 135–145 mEq/L</div>
+    </div>
+    <div class="calc-field">
+      <label id="ng-lbl-glu">Blood glucose (mg/dL)</label>
+      <input id="ng-glu" type="number" min="40" max="2000" step="1" placeholder="e.g. 600" oninput="calcNaGlucose()">
+      <div class="field-hint" id="ng-hint-glu">Plasma glucose at the same blood draw. Correction only matters when glucose is above ~100 mg/dL (5.6 mmol/L)</div>
+    </div>
+  </div>
+  <div class="calc-result-box" id="ng-result">
+    <div class="calc-metrics-row">
+      <div class="calc-metric-card">
+        <div class="cmv" id="ng-hillier-val">—</div>
+        <div class="cml">Corrected Na — Hillier 2.4</div>
+        <div class="cmt" id="ng-hillier-badge">mEq/L</div>
+      </div>
+      <div class="calc-metric-card">
+        <div class="cmv" id="ng-katz-val">—</div>
+        <div class="cml">Corrected Na — Katz 1.6</div>
+        <div class="cmt" id="ng-katz-badge">mEq/L</div>
+      </div>
+      <div class="calc-metric-card">
+        <div class="cmv" style="font-size:14px;line-height:1.2;" id="ng-status">—</div>
+        <div class="cml">Status</div>
+        <div class="cmt" id="ng-status-badge">—</div>
+      </div>
+    </div>
+    <div class="calc-verdict-text" id="ng-verdict"></div>
+    <div class="calc-action-text" id="ng-action"></div>
+  </div>
+  <p class="calc-disclaimer">⚕ Corrected Na = measured Na + factor × ((glucose − 100) ÷ 100). Katz factor = 1.6 (classic); Hillier factor = 2.4 (more accurate, especially when glucose &gt;400 mg/dL). This estimate guides interpretation only — it does not replace clinical assessment. Sodium and glucose disturbances need physician evaluation; never correct sodium rapidly on your own.</p>
+</div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="section" id="instructions">
+<div class="section-tag">How to Use</div>
+<h2>Instructions</h2>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+  <li>Select the glucose unit that matches your lab report — <strong>mg/dL</strong> (Philippines standard) or <strong>mmol/L</strong> (SI, used in some hospitals). Switching units clears the glucose field.</li>
+  <li>Enter the <strong>measured serum sodium</strong> from the same blood draw (in mEq/L, which equals mmol/L). This is the uncorrected value as printed on the lab report.</li>
+  <li>Enter the <strong>plasma glucose</strong> from the same blood draw. If glucose is below 100 mg/dL (5.6 mmol/L) the correction is negligible and near zero.</li>
+  <li>Results appear automatically: the <strong>Hillier-corrected sodium</strong> (preferred), the <strong>Katz-corrected sodium</strong> (classic reference), and a status badge (Pseudohyponatremia / True hyponatremia / Masked hypernatremia / Normal).</li>
+  <li>Read the plain-language verdict and the recommended next step, then share with your physician for clinical decision-making.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</section>
+
+<!-- FORMULA -->
+<section class="section" id="formula">
+<div class="section-tag">Formula</div>
+<h2>Formula &amp; Interpretation</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Method</th><th>Correction Factor</th><th>Formula</th></tr></thead>
+<tbody>
+<tr><td>Hillier (1999) — preferred</td><td>2.4 mEq/L per 100 mg/dL glucose above normal</td><td>Corrected Na = Measured Na + 2.4 × ((Glucose − 100) ÷ 100)</td></tr>
+<tr><td>Katz (1973) — classic</td><td>1.6 mEq/L per 100 mg/dL glucose above normal</td><td>Corrected Na = Measured Na + 1.6 × ((Glucose − 100) ÷ 100)</td></tr>
+<tr><td>SI conversion</td><td>1 mmol/L glucose = 18 mg/dL</td><td>Multiply mmol/L × 18 before applying formula above</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="margin-top:24px;">Corrected sodium interpretation bands</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Corrected Na (Hillier)</th><th>Status</th><th>Clinical Implication</th></tr></thead>
+<tbody>
+<tr><td>&lt; 135 mEq/L</td><td>True hyponatremia</td><td>Low sodium persists after glucose correction — needs independent hyponatremia workup (volume status, urine Na, urine osmolality, medications)</td></tr>
+<tr><td>135–145 mEq/L, measured &lt; 135</td><td>Pseudohyponatremia</td><td>Low lab reading is driven by glucose; sodium will normalize as glucose falls with insulin treatment — no sodium-specific therapy usually needed</td></tr>
+<tr><td>135–145 mEq/L, measured normal</td><td>Normal</td><td>No sodium derangement is being masked; manage hyperglycemia as indicated</td></tr>
+<tr><td>&gt; 145 mEq/L</td><td>Masked hypernatremia</td><td>True free-water deficit hidden by glucose dilution; measured sodium will rise toward corrected value as glucose falls — treat the water deficit</td></tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The Hillier value is used for status classification because it is more accurate at glucose levels above 400 mg/dL — the range most commonly seen in DKA and HHS — where the Katz factor consistently underestimates the correction.</p>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section" id="evidence">
+<div class="section-tag">Evidence &amp; References</div>
+<h2>Evidence &amp; References</h2>
+<p>The Katz 1.6 correction factor was derived from a small physiological study of healthy subjects given hypertonic glucose infusions and has been the default teaching formula since 1973. Hillier et al. prospectively re-evaluated the correction factor in 2,173 patients with simultaneous glucose and sodium measurements across a broad glycemic range and found a mean factor of 2.4, which better reflects real-world clinical data — particularly at higher glucose concentrations. The 2.4 factor is now endorsed by major endocrinology and nephrology guidelines for DKA/HHS management.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+  <li>Hillier TA, Abbott RD, Barrett EJ. Hyponatremia: evaluating the correction factor for hyperglycemia. <em>Am J Med.</em> 1999;106(4):399–403.</li>
+  <li>Katz MA. Hyperglycemia-induced hyponatremia — calculation of expected serum sodium depression. <em>N Engl J Med.</em> 1973;289(16):843–844.</li>
+  <li>Kitabchi AE, Umpierrez GE, Miles JM, Fisher JN. Hyperglycemic crises in adult patients with diabetes. <em>Diabetes Care.</em> 2009;32(7):1335–1343.</li>
+  <li>Weisberg LS. Pseudohyponatremia: a reappraisal. <em>Am J Med.</em> 1989;86(3):315–318.</li>
+</ol>
+</section>
+
+<!-- PEARLS -->
+<section class="section" id="pearls">
+<div class="section-tag">Pearls &amp; Pitfalls</div>
+<h2>Pearls &amp; Pitfalls</h2>
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Use Hillier 2.4 as the primary estimate</h4>
+<p>The Hillier factor of 2.4 is more accurate than the classic Katz 1.6, especially when glucose is above 400 mg/dL (22.2 mmol/L). At extreme hyperglycemia (glucose 800–1200 mg/dL in HHS), using only 1.6 can underestimate the corrected sodium by 5–7 mEq/L — a clinically important error when deciding whether a patient has true hyponatremia or masked hypernatremia.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Watch the sodium rise as glucose is treated</h4>
+<p>In DKA and HHS, the measured sodium typically rises as insulin therapy lowers glucose. If the corrected sodium is already at the high-normal or above-normal range, a rapid fall in glucose may unmask significant hypernatremia — recheck sodium frequently (every 1–2 hours in ICU-level care) and replace free water (hypotonic fluids) appropriately. The target is a gradual sodium correction, not a rapid one.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Do not dismiss a low sodium as "just glucose" without applying the correction — true hyponatremia can co-exist with hyperglycemia (e.g., a patient who has been vomiting and drinking free water). (2) In CKD and dialysis patients, sodium derangements interact with fluid overload and ultrafiltration goals — always involve the nephrology team. (3) Lipemia or severe hyperproteinemia can cause pseudohyponatremia by a different mechanism (exclusion artifact), which this formula does not correct for — use direct-reading (ISE-undiluted) sodium methods when both hyperglycemia and extreme lipemia/protein are present.</p>
+</div>
+</div>
+</section>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized clinical assessment. Sodium and glucose disturbances — particularly in DKA, HHS, and CKD — require physician evaluation of volume status, urine studies, and the full clinical picture. Never adjust sodium or fluid management based on a calculator result alone without consulting your physician or nephrologist.</div>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span><span data-lang="tl" class="lang-hidden">I-scan at i-save</span><span data-lang="ceb" class="lang-hidden">I-scan ug i-save</span><span data-lang="kap" class="lang-hidden">I-scan at i-save</span></p>
+</div>
+</div>
+</div>
+
+<!-- RELATED-GUIDES-START -->
+<div class="related-guides">
+  <h2>
+    <span data-lang="en">Related Guides</span>
+    <span data-lang="tl" class="lang-hidden">Mga Kaugnay na Gabay</span>
+    <span data-lang="ceb" class="lang-hidden">Mga May Kalabtan nga Giya</span>
+    <span data-lang="kap" class="lang-hidden">Ding Kaugnay nga Gabay</span>
+  </h2>
+  <div class="related-cards">
+  <a class="related-card" href="diabetes-kidneys.html">
+    <div class="related-card-tag">Diabetes &amp; CKD</div>
+    <div class="related-card-title">Diabetes and Kidneys (DKD)</div>
+    <div class="related-card-desc">How high blood sugar damages the kidneys, what diabetic kidney disease means, and how to slow its progression.</div>
+    <div class="related-card-arrow">Read →</div>
+  </a>
+  <a class="related-card" href="understanding-ckd.html">
+    <div class="related-card-tag">The Basics</div>
+    <div class="related-card-title">Understanding Chronic Kidney Disease</div>
+    <div class="related-card-desc">A complete guide to what CKD means, how it progresses, and what you can do — today — to protect your kidneys.</div>
+    <div class="related-card-arrow">Read →</div>
+  </a>
+  <a class="related-card" href="fluid-management-ckd.html">
+    <div class="related-card-tag">Fluid Balance</div>
+    <div class="related-card-title">Fluid Management in CKD</div>
+    <div class="related-card-desc">How to manage fluid intake, recognize overload, and understand sodium and water balance with kidney disease.</div>
+    <div class="related-card-arrow">Read →</div>
+  </a>
+  <a class="related-card" href="calculators.html">
+    <div class="related-card-tag">All Tools</div>
+    <div class="related-card-title">Calculators &amp; Clinical Tools</div>
+    <div class="related-card-desc">All nephrology and clinical calculators — ERI, CKD-MBD, TSH interpreter, thyroid screening interval, and more.</div>
+    <div class="related-card-arrow">Browse →</div>
+  </a>
+  </div>
+</div>
+<!-- RELATED-GUIDES-END -->
+
+<footer class="guide-footer">
+<div class="footer-inner">
+<p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>References: Hillier TA et al. Am J Med 1999 · Katz MA. N Engl J Med 1973</p>
+</div>
+</footer>
+
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb','kap'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+function switchNaGlucoseUnit(u){
+  const isSI=u==='si';
+  document.getElementById('ng-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('ng-btn-si').classList.toggle('active',isSI);
+  const glu=document.getElementById('ng-glu');
+  if(isSI){
+    document.getElementById('ng-lbl-glu').textContent='Blood glucose (mmol/L)';
+    glu.placeholder='e.g. 33.3'; glu.min='2'; glu.max='110'; glu.step='0.1';
+    document.getElementById('ng-hint-glu').textContent='Plasma glucose at the same blood draw. Correction only matters when glucose is above ~5.6 mmol/L (100 mg/dL)';
+  } else {
+    document.getElementById('ng-lbl-glu').textContent='Blood glucose (mg/dL)';
+    glu.placeholder='e.g. 600'; glu.min='40'; glu.max='2000'; glu.step='1';
+    document.getElementById('ng-hint-glu').textContent='Plasma glucose at the same blood draw. Correction only matters when glucose is above ~100 mg/dL (5.6 mmol/L)';
+  }
+  glu.value='';
+  const res=document.getElementById('ng-result');
+  if(res) res.style.display='none';
+}
+
+function calcNaGlucose(){
+  const na = parseFloat(document.getElementById('ng-na').value);
+  const gluRaw = parseFloat(document.getElementById('ng-glu').value);
+  const res = document.getElementById('ng-result');
+  if ([na,gluRaw].some(isNaN)) { res.style.display='none'; return; }
+
+  const isSI = document.getElementById('ng-btn-si').classList.contains('active');
+  const glu = isSI ? gluRaw*18 : gluRaw;   // mmol/L → mg/dL internally
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  const adj = (glu-100)/100;
+  const hillier = na + 2.4*adj;
+  const katz    = na + 1.6*adj;
+
+  // Use the more accurate Hillier value to classify true sodium status
+  const corr = hillier;
+  let status, statusColor, verdict;
+  const lowMeasured = na < 135;
+  if (corr < 135) {
+    status='True hyponatremia'; statusColor='#c0392b';
+    verdict='Even after correcting for the high glucose, the sodium is still low ('+hillier.toFixed(1)+' mEq/L by Hillier). This is genuine hyponatremia — it will not fully resolve just by lowering the blood sugar and needs its own evaluation (volume status, urine sodium/osmolality, medications, and possible SIADH or salt loss).';
+  } else if (corr > 145) {
+    status='Masked hypernatremia'; statusColor='#c0392b';
+    verdict='Once corrected for the high glucose, the true sodium is actually high ('+hillier.toFixed(1)+' mEq/L by Hillier). An underlying water deficit / hypernatremia is being hidden by the dilutional effect of hyperglycemia. As glucose is lowered the measured sodium will rise toward this value — watch for and treat the free-water deficit.';
+  } else if (lowMeasured) {
+    status='Pseudohyponatremia'; statusColor='#2d7a4f';
+    verdict='The measured sodium of '+na.toFixed(1)+' looks low, but once corrected for the high glucose it is normal ('+hillier.toFixed(1)+' mEq/L by Hillier). This is dilutional / translocational pseudohyponatremia — the low reading is driven by the sugar, not by a true sodium problem, and it will correct on its own as the glucose comes down.';
+  } else {
+    status='Normal'; statusColor='#2d7a4f';
+    verdict='Both the measured and the glucose-corrected sodium are in the normal range ('+hillier.toFixed(1)+' mEq/L corrected by Hillier). No sodium derangement is being masked by the hyperglycemia.';
+  }
+
+  // Color band by corrected (Hillier) value
+  let borderColor, bg;
+  if (corr < 125 || corr > 155) { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+  else if (corr < 135 || corr > 145) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  const hVal=document.getElementById('ng-hillier-val');
+  hVal.textContent=hillier.toFixed(1); hVal.style.color=borderColor;
+  document.getElementById('ng-hillier-badge').textContent='mEq/L (factor 2.4)';
+  document.getElementById('ng-katz-val').textContent=katz.toFixed(1);
+  document.getElementById('ng-katz-badge').textContent='mEq/L (factor 1.6)';
+  const sEl=document.getElementById('ng-status');
+  sEl.textContent=status; sEl.style.color=statusColor;
+  document.getElementById('ng-status-badge').textContent='measured '+na.toFixed(1)+' mEq/L';
+  document.getElementById('ng-status-badge').style.color=statusColor;
+
+  document.getElementById('ng-verdict').innerHTML='<strong style="color:'+borderColor+'">'+status+'</strong> — '+verdict;
+
+  let action;
+  if (status==='Pseudohyponatremia') {
+    action='Treat the hyperglycemia (insulin and IV fluids per protocol); the sodium should normalize as glucose falls — no separate sodium therapy is usually needed. Recheck sodium and glucose together as the sugar comes down, and avoid over-rapid sodium correction (aim ≤8–10 mEq/L rise per 24 h).';
+  } else if (status==='True hyponatremia') {
+    action='Treat the hyperglycemia, but also work up the hyponatremia separately (assess volume status, urine sodium and osmolality, serum osmolality, and review medications). Correct sodium slowly — no faster than ~8 mEq/L in 24 hours — to avoid osmotic demyelination.';
+  } else if (status==='Masked hypernatremia') {
+    action='Treat the hyperglycemia and anticipate the measured sodium rising as glucose normalizes. Replace the free-water deficit and recheck sodium frequently so it does not overshoot; correct gradually under physician guidance.';
+  } else {
+    action='No sodium-specific intervention is indicated for the reading itself. Manage the hyperglycemia as clinically appropriate and recheck sodium with the next glucose if the sugar is being actively treated.';
+  }
+  document.getElementById('ng-action').innerHTML='<strong style="color:'+borderColor+'">Next step:</strong> '+action;
+}
+</script>
+
+<script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/image-lightbox.js" defer></script>
+</body>
+</html>
