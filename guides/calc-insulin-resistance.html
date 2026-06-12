@@ -500,6 +500,12 @@ html[data-theme="dark"] .calc-action-text{color:var(--text-mid)!important;}
 html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
 html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </style>
+<style id="ir-subcalc-style">
+.ir-subcalc{border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:16px 0;background:var(--white);}
+.ir-subcalc>h3{font-family:'Lora',serif;font-size:1.05rem;color:var(--navy);margin:0 0 4px;}
+.ir-subcalc-sub{font-size:.85rem;color:var(--text-muted);margin:0 0 14px;line-height:1.5;}
+html[data-theme="dark"] .ir-subcalc>h3{color:var(--text);}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -609,62 +615,51 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </details>
 
 <section class="section" id="calculator">
-<div class="section-tag">Interactive Tool</div>
-<h2>Insulin Resistance Calculator — HOMA-IR, HOMA-β, QUICKI &amp; TyG</h2>
-<p>Enter fasting glucose and fasting insulin. Optionally add fasting triglycerides for the TyG index.</p>
-<div class="calc-wrap">
-<div class="unit-toggle-wrap">
-  <span class="ut-label">Glucose unit:</span>
-  <div class="unit-toggle">
-    <button class="unit-btn active" id="ir-gbtn-mg" onclick="switchIRGlucoseUnit('mg')">mg/dL</button>
-    <button class="unit-btn" id="ir-gbtn-mmol" onclick="switchIRGlucoseUnit('mmol')">mmol/L</button>
-  </div>
-</div>
+<div class="section-tag">Interactive Tools</div>
+<h2>Insulin-Resistance Surrogate Calculators</h2>
+<p>Four <strong>independent</strong> calculators — each works on its own inputs. The <strong>TyG index</strong> needs only fasting glucose and triglycerides (a routine lipid + glucose panel) — <strong>no fasting insulin required</strong>. HOMA-IR, HOMA-β, and QUICKI each need a fasting insulin level.</p>
+
+<div class="ir-subcalc">
+<h3>1 · HOMA-IR</h3>
+<p class="ir-subcalc-sub">Homeostatic model assessment of insulin resistance — needs fasting insulin.</p>
 <div class="calc-grid">
-<div class="calc-field">
-<label id="ir-lbl-glucose">Fasting Glucose (mg/dL)</label>
-<input id="ir-glucose" type="number" min="40" max="600" step="0.1" placeholder="e.g. 100" oninput="calcIR()"/>
-<div class="field-hint" id="ir-hint-glucose">Normal fasting: 70–99 mg/dL; Prediabetes: 100–125 mg/dL</div>
+<div class="calc-field"><label>Fasting glucose (mg/dL)</label><input type="number" id="hi-glu" min="40" max="600" step="0.1" placeholder="e.g. 100" oninput="calcHOMAIR()"><div class="field-hint">SI: ÷18 = mmol/L</div></div>
+<div class="calc-field"><label>Fasting insulin (µU/mL)</label><input type="number" id="hi-ins" min="0.5" max="300" step="0.1" placeholder="e.g. 10" oninput="calcHOMAIR()"></div>
 </div>
-<div class="calc-field">
-<label>Fasting Insulin (µU/mL)</label>
-<input id="ir-insulin" type="number" min="0.5" max="300" step="0.1" placeholder="e.g. 10" oninput="calcIR()"/>
-<div class="field-hint">Normal fasting: 2–25 µU/mL (assay-dependent)</div>
+<div class="calc-result-box" id="hi-result" style="display:none;"></div>
 </div>
-<div class="calc-field">
-<label>Fasting Triglycerides (mg/dL) — optional</label>
-<input id="ir-tg" type="number" min="20" max="2000" step="0.1" placeholder="e.g. 150" oninput="calcIR()"/>
-<div class="field-hint">Required for TyG index. Normal: &lt;150 mg/dL</div>
+
+<div class="ir-subcalc">
+<h3>2 · HOMA-β (β-cell function)</h3>
+<p class="ir-subcalc-sub">Estimates pancreatic β-cell function (%) — needs fasting insulin.</p>
+<div class="calc-grid">
+<div class="calc-field"><label>Fasting glucose (mg/dL)</label><input type="number" id="hb-glu" min="40" max="600" step="0.1" placeholder="e.g. 100" oninput="calcHOMAB()"></div>
+<div class="calc-field"><label>Fasting insulin (µU/mL)</label><input type="number" id="hb-ins" min="0.5" max="300" step="0.1" placeholder="e.g. 10" oninput="calcHOMAB()"></div>
 </div>
+<div class="calc-result-box" id="hb-result" style="display:none;"></div>
 </div>
-<div class="calc-result-box" id="ir-result">
-<div class="calc-metrics-row">
-<div class="calc-metric-card">
-<div class="cmv" id="ir-homaIR-val">—</div>
-<div class="cml">HOMA-IR</div>
-<div class="cmt" id="ir-homaIR-label">—</div>
+
+<div class="ir-subcalc">
+<h3>3 · QUICKI</h3>
+<p class="ir-subcalc-sub">Quantitative insulin-sensitivity check index — needs fasting insulin.</p>
+<div class="calc-grid">
+<div class="calc-field"><label>Fasting glucose (mg/dL)</label><input type="number" id="qk-glu" min="40" max="600" step="0.1" placeholder="e.g. 100" oninput="calcQUICKI()"></div>
+<div class="calc-field"><label>Fasting insulin (µU/mL)</label><input type="number" id="qk-ins" min="0.5" max="300" step="0.1" placeholder="e.g. 10" oninput="calcQUICKI()"></div>
 </div>
-<div class="calc-metric-card">
-<div class="cmv" id="ir-homaB-val" style="font-size:20px;line-height:1.2;">—</div>
-<div class="cml">HOMA-β (%)</div>
-<div class="cmt" id="ir-homaB-label">—</div>
+<div class="calc-result-box" id="qk-result" style="display:none;"></div>
 </div>
-<div class="calc-metric-card">
-<div class="cmv" id="ir-quicki-val" style="font-size:22px;line-height:1.2;">—</div>
-<div class="cml">QUICKI</div>
-<div class="cmt" id="ir-quicki-label">—</div>
+
+<div class="ir-subcalc">
+<h3>4 · TyG Index <span style="font-size:.62rem;font-weight:700;letter-spacing:.04em;background:var(--green-soft);color:var(--green);padding:2px 8px;border-radius:10px;vertical-align:middle;">NO INSULIN NEEDED</span></h3>
+<p class="ir-subcalc-sub">Triglyceride–glucose index — an insulin-free surrogate from a routine fasting lipid + glucose panel.</p>
+<div class="calc-grid">
+<div class="calc-field"><label>Fasting glucose (mg/dL)</label><input type="number" id="tg-glu" min="40" max="600" step="0.1" placeholder="e.g. 100" oninput="calcTyG()"></div>
+<div class="calc-field"><label>Fasting triglycerides (mg/dL)</label><input type="number" id="tg-tg" min="20" max="2000" step="0.1" placeholder="e.g. 150" oninput="calcTyG()"></div>
 </div>
-<div class="calc-metric-card" id="ir-tyg-card" style="display:none;">
-<div class="cmv" id="ir-tyg-val" style="font-size:22px;line-height:1.2;">—</div>
-<div class="cml">TyG Index</div>
-<div class="cmt" id="ir-tyg-label">—</div>
+<div class="calc-result-box" id="tg-result" style="display:none;"></div>
 </div>
-</div>
-<div class="calc-verdict-text" id="ir-verdict"></div>
-<div class="calc-action-text" id="ir-action"></div>
-<p class="calc-disclaimer">⚕ HOMA-IR = (glucose mg/dL × insulin µU/mL) / 405. HOMA-β = (360 × insulin) / (glucose mg/dL − 63). QUICKI = 1 / (log₁₀insulin + log₁₀glucose mg/dL). TyG = ln(TG mg/dL × glucose mg/dL / 2). These are research/screening surrogates; cut-offs vary by population and assay. Not diagnostic of diabetes. References: Matthews et al. Diabetologia 1985; Katz et al. JCEM 2000; Simental-Mendía et al. Metab Syndr Relat Disord 2008.</p>
-</div>
-</div>
+
+<p class="calc-disclaimer">⚕ HOMA-IR = glucose×insulin/405 · HOMA-β = 360×insulin/(glucose−63) · QUICKI = 1/(log₁₀ insulin + log₁₀ glucose) · TyG = ln(TG×glucose/2), all in mg/dL. Cut-offs vary by population and insulin assay — these are screening/research surrogates, not diagnostic of diabetes. Physician interpretation required.</p>
 </section>
 
 <details class="mdc-acc" id="nextsteps">
@@ -804,177 +799,45 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </svg>
 </button>
 <script>
-/* Insulin Resistance Calculator — calcIR() */
-
-function switchIRGlucoseUnit(u) {
-  var isMmol = u === 'mmol';
-  document.getElementById('ir-gbtn-mg').classList.toggle('active', !isMmol);
-  document.getElementById('ir-gbtn-mmol').classList.toggle('active', isMmol);
-  var gEl = document.getElementById('ir-glucose');
-  var hintEl = document.getElementById('ir-hint-glucose');
-  var lblEl = document.getElementById('ir-lbl-glucose');
-  if (isMmol) {
-    lblEl.textContent = 'Fasting Glucose (mmol/L)';
-    gEl.placeholder = 'e.g. 5.6';
-    gEl.min = '2.2'; gEl.max = '33'; gEl.step = '0.01';
-    hintEl.textContent = 'Normal fasting: 3.9–5.5 mmol/L; Prediabetes: 5.6–6.9 mmol/L';
-  } else {
-    lblEl.textContent = 'Fasting Glucose (mg/dL)';
-    gEl.placeholder = 'e.g. 100';
-    gEl.min = '40'; gEl.max = '600'; gEl.step = '0.1';
-    hintEl.textContent = 'Normal fasting: 70–99 mg/dL; Prediabetes: 100–125 mg/dL';
-  }
-  gEl.value = '';
-  calcIR();
+function irShow(id, color, val, unit, label, verdict){
+  var el=document.getElementById(id); el.style.display='block';
+  el.innerHTML='<div class="calc-metrics-row"><div class="calc-metric-card"><div class="cmv" style="color:'+color+'">'+val+'</div><div class="cml">'+label+'</div><div class="cmt">'+unit+'</div></div></div><div class="calc-verdict-text">'+verdict+'</div>';
 }
-
-function calcIR() {
-  var glucoseRaw = parseFloat(document.getElementById('ir-glucose').value);
-  var insulin    = parseFloat(document.getElementById('ir-insulin').value);
-  var tgRaw      = parseFloat(document.getElementById('ir-tg').value);
-  var res        = document.getElementById('ir-result');
-
-  if (isNaN(glucoseRaw) || isNaN(insulin) || glucoseRaw <= 0 || insulin <= 0) {
-    res.style.display = 'none'; return;
-  }
-
-  var isMmol = document.getElementById('ir-gbtn-mmol').classList.contains('active');
-  // Convert to mg/dL for HOMA/QUICKI formulas
-  var glucoseMg = isMmol ? glucoseRaw * 18.018 : glucoseRaw;
-
-  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-
-  /* ── HOMA-IR ── */
-  var homaIR = (glucoseMg * insulin) / 405;
-
-  /* ── HOMA-β ── */
-  var homaB = NaN;
-  var homaBNote = '';
-  if (glucoseMg > 63) {
-    homaB = (360 * insulin) / (glucoseMg - 63);
-    if (homaB > 9999) homaB = 9999; // cap runaway values at very high insulin
-  } else {
-    homaBNote = 'Glucose ≤63 mg/dL — HOMA-β unreliable (denominator near zero)';
-  }
-
-  /* ── QUICKI ── */
-  var quicki = 1 / (Math.log10(insulin) + Math.log10(glucoseMg));
-
-  /* ── TyG ── */
-  var hasTyG = !isNaN(tgRaw) && tgRaw > 0;
-  var tyg = NaN;
-  if (hasTyG) {
-    tyg = Math.log(tgRaw * glucoseMg / 2);
-  }
-
-  /* ── HOMA-IR interpretation ── */
-  var irColor, irBg, irBorder;
-  var homaLabel = '';
-  if (homaIR < 1.0) {
-    homaLabel = 'Insulin sensitive';
-    irColor  = isDark ? '#4ade80' : '#166534';
-    irBg     = isDark ? 'rgba(14,42,28,.9)' : '#f0fdf4';
-    irBorder = isDark ? '#4ade80' : '#166534';
-  } else if (homaIR < 2.5) {
-    homaLabel = 'Average / borderline';
-    irColor  = isDark ? '#fbbf24' : '#92400e';
-    irBg     = isDark ? 'rgba(42,25,0,.9)' : '#fffbeb';
-    irBorder = isDark ? '#fbbf24' : '#d97706';
-  } else {
-    homaLabel = 'Insulin resistance likely';
-    irColor  = isDark ? '#f87171' : '#b91c1c';
-    irBg     = isDark ? 'rgba(42,21,21,.9)' : '#fff0f0';
-    irBorder = isDark ? '#f87171' : '#b91c1c';
-  }
-
-  /* ── QUICKI interpretation ── */
-  var quickiLabel = '';
-  if (quicki > 0.357) {
-    quickiLabel = 'Normal sensitivity';
-  } else if (quicki >= 0.339) {
-    quickiLabel = 'Borderline';
-  } else {
-    quickiLabel = 'Insulin resistant';
-  }
-
-  /* ── TyG interpretation ── */
-  var tygLabel = '';
-  if (hasTyG) {
-    if (tyg < 4.5) {
-      tygLabel = 'Lower IR risk';
-    } else if (tyg < 4.65) {
-      tygLabel = 'Borderline elevated';
-    } else {
-      tygLabel = 'Elevated IR risk';
-    }
-  }
-
-  /* ── Render ── */
-  res.style.display = 'block';
-  res.style.background = irBg;
-  res.style.borderColor = irBorder;
-
-  var homaIREl = document.getElementById('ir-homaIR-val');
-  homaIREl.textContent = homaIR.toFixed(2);
-  homaIREl.style.color = irColor;
-  document.getElementById('ir-homaIR-label').textContent = homaLabel;
-  document.getElementById('ir-homaIR-label').style.color = irColor;
-
-  var homaBEl = document.getElementById('ir-homaB-val');
-  if (!isNaN(homaB)) {
-    homaBEl.textContent = homaB.toFixed(0) + '%';
-    var homaBColor = homaB >= 100 ? (isDark ? '#4ade80' : '#166534') : (homaB >= 50 ? (isDark ? '#fbbf24' : '#92400e') : (isDark ? '#f87171' : '#b91c1c'));
-    homaBEl.style.color = homaBColor;
-    document.getElementById('ir-homaB-label').textContent = homaB >= 100 ? 'Normal β-cell function' : (homaB >= 50 ? 'Reduced β-cell function' : 'Significantly reduced');
-  } else {
-    homaBEl.textContent = 'N/A';
-    homaBEl.style.color = isDark ? '#9baab8' : '#4a5568';
-    document.getElementById('ir-homaB-label').textContent = homaBNote || 'Requires glucose >63 mg/dL';
-  }
-
-  var quickiEl = document.getElementById('ir-quicki-val');
-  quickiEl.textContent = quicki.toFixed(3);
-  var quickiColor = quicki > 0.357 ? (isDark ? '#4ade80' : '#166534') : (quicki >= 0.339 ? (isDark ? '#fbbf24' : '#92400e') : (isDark ? '#f87171' : '#b91c1c'));
-  quickiEl.style.color = quickiColor;
-  document.getElementById('ir-quicki-label').textContent = quickiLabel;
-  document.getElementById('ir-quicki-label').style.color = quickiColor;
-
-  var tygCard = document.getElementById('ir-tyg-card');
-  if (hasTyG) {
-    tygCard.style.display = '';
-    var tygEl = document.getElementById('ir-tyg-val');
-    tygEl.textContent = tyg.toFixed(2);
-    var tygColor = tyg < 4.5 ? (isDark ? '#4ade80' : '#166534') : (tyg < 4.65 ? (isDark ? '#fbbf24' : '#92400e') : (isDark ? '#f87171' : '#b91c1c'));
-    tygEl.style.color = tygColor;
-    document.getElementById('ir-tyg-label').textContent = tygLabel;
-    document.getElementById('ir-tyg-label').style.color = tygColor;
-  } else {
-    tygCard.style.display = 'none';
-  }
-
-  /* Verdict */
-  var verdictParts = [];
-  verdictParts.push('HOMA-IR = ' + homaIR.toFixed(2) + ' (' + homaLabel + ').');
-  if (!isNaN(homaB)) {
-    verdictParts.push('HOMA-β = ' + homaB.toFixed(0) + '% beta-cell function.');
-  }
-  verdictParts.push('QUICKI = ' + quicki.toFixed(3) + ' (' + quickiLabel + ').');
-  if (hasTyG) {
-    verdictParts.push('TyG index = ' + tyg.toFixed(2) + ' (' + tygLabel + ').');
-  }
-  verdictParts.push('Cut-offs are population- and assay-dependent. These indices are research/screening surrogates and are not diagnostic of diabetes.');
-  document.getElementById('ir-verdict').textContent = verdictParts.join(' ');
-
-  /* Action */
-  var actionParts = [];
-  if (homaIR >= 2.5) {
-    actionParts.push('HOMA-IR ≥2.5 suggests likely insulin resistance. Consider structured lifestyle intervention (dietary modification, aerobic exercise, weight reduction). Evaluate for metabolic syndrome, prediabetes, NAFLD, and PCOS where clinically applicable. In CKD, assess SGLT2 inhibitor and GLP-1 RA eligibility for cardiometabolic-renal protection.');
-  } else if (homaIR >= 1.0) {
-    actionParts.push('HOMA-IR in the borderline range. Encourage lifestyle optimization and monitor metabolic parameters annually or more frequently if additional risk factors are present.');
-  } else {
-    actionParts.push('HOMA-IR suggests insulin sensitivity. Continue monitoring in the context of overall cardiometabolic risk, particularly if other risk factors are present.');
-  }
-  document.getElementById('ir-action').textContent = actionParts.join(' ');
+function calcHOMAIR(){
+  var g=parseFloat(document.getElementById('hi-glu').value), i=parseFloat(document.getElementById('hi-ins').value);
+  if(isNaN(g)||isNaN(i)||g<=0||i<=0){document.getElementById('hi-result').style.display='none';return;}
+  var v=g*i/405, c, t;
+  if(v<1.0){c='var(--green)';t='Insulin sensitive (HOMA-IR < 1.0).';}
+  else if(v<2.5){c='var(--amber)';t='Average / indeterminate (1.0–2.5) — correlate clinically.';}
+  else{c='var(--red)';t='Insulin resistance likely (> 2.5; many labs use > 2.9). Population/assay-dependent.';}
+  irShow('hi-result',c,v.toFixed(2),'glucose × insulin / 405','HOMA-IR',t);
+}
+function calcHOMAB(){
+  var g=parseFloat(document.getElementById('hb-glu').value), i=parseFloat(document.getElementById('hb-ins').value);
+  if(isNaN(g)||isNaN(i)||g<=63||i<=0){document.getElementById('hb-result').style.display='none';return;}
+  var v=360*i/(g-63), c, t;
+  if(v<50){c='var(--red)';t='Reduced β-cell function (< ~50%).';}
+  else if(v<=200){c='var(--green)';t='Within the broad reference range (~50–200%).';}
+  else{c='var(--amber)';t='High — compensatory hyperinsulinemia (> ~200%).';}
+  irShow('hb-result',c,v.toFixed(0)+'%','360 × insulin / (glucose − 63)','HOMA-β',t+' Requires glucose > 63 mg/dL.');
+}
+function calcQUICKI(){
+  var g=parseFloat(document.getElementById('qk-glu').value), i=parseFloat(document.getElementById('qk-ins').value);
+  if(isNaN(g)||isNaN(i)||g<=0||i<=0){document.getElementById('qk-result').style.display='none';return;}
+  var v=1/((Math.log(i)/Math.LN10)+(Math.log(g)/Math.LN10)), c, t;
+  if(v>0.357){c='var(--green)';t='Normal insulin sensitivity (> 0.357).';}
+  else if(v>=0.339){c='var(--amber)';t='Borderline (0.339–0.357).';}
+  else{c='var(--red)';t='Insulin resistant (< 0.339).';}
+  irShow('qk-result',c,v.toFixed(3),'1 / (log₁₀ insulin + log₁₀ glucose)','QUICKI',t);
+}
+function calcTyG(){
+  var g=parseFloat(document.getElementById('tg-glu').value), tg=parseFloat(document.getElementById('tg-tg').value);
+  if(isNaN(g)||isNaN(tg)||g<=0||tg<=0){document.getElementById('tg-result').style.display='none';return;}
+  var v=Math.log(tg*g/2), c, t;
+  if(v<4.5){c='var(--green)';t='Lower insulin-resistance risk (< 4.5).';}
+  else if(v<4.65){c='var(--amber)';t='Borderline elevated (4.5–4.65).';}
+  else{c='var(--red)';t='Elevated insulin-resistance risk (> 4.65). Cut-offs vary by population.';}
+  irShow('tg-result',c,v.toFixed(2),'ln(TG × glucose / 2)','TyG index',t);
 }
 </script>
 <script>
