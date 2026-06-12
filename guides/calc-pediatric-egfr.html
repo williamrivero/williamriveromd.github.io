@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pediatric eGFR — CKiD U25 &amp; Bedside Schwartz (Ages 1–25) Calculator – W. G. M. Rivero, MD</title>
+<meta name="description" content="Pediatric eGFR calculator using the CKiD U25 creatinine equation (Pierce et al., Kidney Int 2021) and Revised Bedside Schwartz (JASN 2009) for children and young adults ages 1–25. Supports cm/mg/dL and SI units.">
+<meta name="keywords" content="pediatric eGFR calculator, CKiD U25, Bedside Schwartz, children kidney function, pediatric CKD staging, eGFR kids Philippines, young adult kidney function, nephrology pediatric calculator">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-pediatric-egfr.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="Pediatric eGFR — CKiD U25 &amp; Bedside Schwartz (Ages 1–25)">
+<meta property="og:description" content="Pediatric eGFR calculator for ages 1–25 using CKiD U25 and Revised Bedside Schwartz equations. Supports cm/mg/dL and SI units.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-pediatric-egfr.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/ckd-children-hero.png">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pediatric eGFR — CKiD U25 &amp; Bedside Schwartz (Ages 1–25)">
+<meta name="twitter:description" content="Pediatric eGFR calculator for ages 1–25 using CKiD U25 and Revised Bedside Schwartz equations. Supports cm/mg/dL and SI units.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/ckd-children-hero.png">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:#1f3864; --gold:#b8962e; --gold-light:#d4af4f; --teal:#1a6b72; --teal-light:#e1f5f0;
+    --text:#1e2a38; --text-mid:#2c3a4a; --text-muted:#4a5568; --text-faint:#5c6a7e;
+    --bg:#f9fafb; --white:#ffffff; --border:#e2e6eb;
+    --red:#b91c1c; --red-soft:#fff0f0; --amber:#92400e; --amber-soft:#fffbeb;
+    --green:#166534; --green-soft:#f0fdf4; --purple:#6b21a8; --purple-soft:#faf5ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; font-size: 16px; }
+  .site-header { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 32px; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 200; }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+  .guide-lang-bar { display: flex; align-items: center; gap: 8px; padding: 8px 32px; background: rgba(10,18,32,.96); border-bottom: 1px solid rgba(255,255,255,.06); flex-wrap: wrap; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s; }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .guide-toggle-bar { display: flex; gap: 8px; align-items: center; padding: 6px 32px; background: rgba(10,18,32,.96) !important; border-bottom: 1px solid rgba(255,255,255,.08) !important; justify-content: space-between; flex-wrap: wrap; }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  [data-lang].lang-hidden { display: none !important; }
+  .hero { background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%); color: white; padding: 72px 0 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px, 5vw, 50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section h3 { font-family: 'Lora', serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+  .lab-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .lab-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); padding: 10px 14px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .lab-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; line-height: 1.5; }
+  .lab-table td:first-child { font-weight: 600; color: var(--navy); }
+  .lab-table tr:last-child td { border-bottom: none; }
+  .lab-table tr:hover td { background: var(--bg); }
+  /* Pediatric eGFR widget styles */
+  .peds-egfr { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 24px 26px; margin: 24px 0 32px; }
+  .peds-egfr h4 { font-family: 'Lora', serif; font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .peds-egfr .peds-egfr-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.55; }
+  .peds-egfr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 16px; margin-bottom: 16px; }
+  .peds-egfr-field { display: flex; flex-direction: column; }
+  .peds-egfr-field label { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .peds-egfr-field input, .peds-egfr-field select { font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); transition: border-color .15s; }
+  .peds-egfr-field input:focus, .peds-egfr-field select:focus { outline: none; border-color: var(--teal); }
+  .peds-egfr-btnrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 6px; }
+  .peds-egfr-btn { background: var(--navy); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; padding: 10px 22px; border-radius: 8px; cursor: pointer; transition: background .15s; }
+  .peds-egfr-btn:hover { background: #1a2e4a; }
+  .peds-egfr-reset { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+  .peds-egfr-reset:hover { background: var(--bg); color: var(--navy); }
+  .peds-egfr-result { margin-top: 18px; padding: 18px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 10px; display: none; }
+  .peds-egfr-result.show { display: block; }
+  .peds-egfr-result.error { border-color: var(--red); background: var(--red-soft); }
+  .peds-egfr-result .res-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; border-bottom: 1px dashed var(--border); flex-wrap: wrap; }
+  .peds-egfr-result .res-row:last-of-type { border-bottom: none; }
+  .peds-egfr-result .res-label { font-size: 13px; color: var(--text-mid); font-weight: 500; }
+  .peds-egfr-result .res-label .res-formula { display: block; font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 2px; }
+  .peds-egfr-result .res-value { font-family: 'Lora', serif; font-size: 22px; font-weight: 600; color: var(--navy); }
+  .peds-egfr-result .res-value .res-unit { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-left: 4px; font-family: 'DM Sans', sans-serif; }
+  .peds-egfr-stage { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 5px 11px; border-radius: 14px; margin-top: 12px; }
+  .peds-egfr-stage.s-g1 { background: #edf7f2; color: var(--green); }
+  .peds-egfr-stage.s-g2 { background: #d4eaf5; color: #0c4a7a; }
+  .peds-egfr-stage.s-g3a { background: #fef9ec; color: #8a5000; }
+  .peds-egfr-stage.s-g3b { background: #fef0e0; color: #a0530f; }
+  .peds-egfr-stage.s-g4 { background: #fdf0ef; color: var(--red); }
+  .peds-egfr-stage.s-g5 { background: #2a0c0c; color: #fff; }
+  .peds-egfr-note { font-size: 12px; color: var(--text-muted); line-height: 1.55; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .peds-egfr-warn { background: var(--amber-soft); border-left: 3px solid var(--amber); padding: 10px 14px; border-radius: 6px; margin-top: 12px; font-size: 12px; color: var(--text-mid); line-height: 1.5; }
+  .peds-egfr-err { font-size: 13px; color: var(--red); font-weight: 500; }
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .related-card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s; }
+  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
+  .related-card-tag { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+  .related-card-desc { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
+  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 0; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+  .print-btn { position: fixed; bottom: 80px; left: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s; z-index: 9998; }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip { position: absolute; left: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .print-btn:hover .p-tip { opacity: 1; }
+  .scroll-top-btn { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.25); transition: transform .2s, opacity .2s; z-index: 9996; opacity: 0; pointer-events: none; }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip { position: absolute; right: 54px; background: rgba(31,56,100,.92); color: white; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+  html[data-theme="dark"] { --navy:#1f3864; --gold:#b8962e; --gold-light:#d4af4f; --teal:#2ba8b0; --teal-light:#0a2830; --text:#e8eaf0; --text-mid:#dde3eb; --text-muted:#9baab8; --bg:#141c2a; --white:#1a2030; --border:#2a3548; --red:#f87171; --red-soft:#2a1515; --amber:#fbbf24; --amber-soft:#2a1900; --green:#4ade80; --green-soft:#0e2a1c; }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  html[data-theme="dark"] .peds-egfr { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .peds-egfr-field input, html[data-theme="dark"] .peds-egfr-field select { background: #0f1520; border-color: #2a3548; color: #e8eaf0; }
+  html[data-theme="dark"] .peds-egfr-result { background: #0f1520; border-color: #2a3548; }
+  html[data-theme="dark"] .peds-egfr-result .res-value { color: #e8eaf0; }
+  html[data-theme="dark"] .peds-egfr-stage.s-g1 { background: #0e2a1c; }
+  html[data-theme="dark"] .peds-egfr-stage.s-g2 { background: #0c2238; color: #9cc6e5; }
+  html[data-theme="dark"] .peds-egfr-stage.s-g3a, html[data-theme="dark"] .peds-egfr-stage.s-g3b { background: #2a1f0a; }
+  html[data-theme="dark"] .peds-egfr-stage.s-g4 { background: #2a1515; color: #e55; }
+  html[data-theme="dark"] .dr-card { background: #080d16; }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
+  html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
+  html[data-theme="dark"] .related-card-title { color: var(--text) !important; }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .alert-teal { background: #0a2830; }
+  html[data-theme="dark"] .alert-amber { background: #2a1900; }
+  html[data-theme="dark"] .alert-green { background: #0e2a1c; }
+  html[data-theme="dark"] .alert-red { background: #2a1515; }
+  html[data-theme="dark"] .lab-table th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .lab-table td { border-color: #2a3548; }
+  html[data-theme="dark"] .lab-table tr:hover td { background: #202d40; }
+  html[data-view="desktop"] { min-width: 1024px; }
+  @media(max-width: 480px) { .container { padding: 0 20px; } .related-guides { padding-left: 20px; padding-right: 20px; } .guide-footer .footer-inner { padding: 0 20px; } .dr-card { flex-direction: column; padding: 24px; gap: 16px; } .dr-card-wrap { padding: 0 20px 40px; } .hero-meta { gap: 14px; } }
+  @media(max-width: 640px) { table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } }
+  @media print { .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .scroll-top-btn, .guide-footer { display: none !important; } body { font-size: 13px; color: #000; background: #fff; } .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; } .hero h1 { color: #1f3864 !important; font-size: 22px !important; } @page { margin: 18mm 15mm; size: A4; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Pediatric eGFR — CKiD U25 / Bedside Schwartz Calculator (Ages 1–25)",
+  "url": "https://www.williamriveromd.com/guides/calc-pediatric-egfr.html",
+  "author": { "@type": "Physician", "name": "William Gregory M. Rivero, MD, FPCP, DPSN", "url": "https://www.williamriveromd.com/" },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH",
+  "audience": { "@type": "MedicalAudience", "audienceType": "patient" }
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
+</header>
+<div class="guide-lang-bar">
+  <span class="lang-lbl">Lang:</span>
+  <button class="lang-btn-g active" id="glb-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn-g" id="glb-tl" onclick="setLang('tl')">TL</button>
+  <button class="lang-btn-g" id="glb-ceb" onclick="setLang('ceb')">CEB</button>
+  <button class="lang-btn-g" id="glb-kap" onclick="setLang('kap')">KAP</button>
+</div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Pediatric eGFR</div>
+<h1>Pediatric eGFR Calculator <em>CKiD U25 &amp; Bedside Schwartz (Ages 1–25)</em></h1>
+<p class="hero-sub">Enter age, sex, height, and serum creatinine to estimate kidney function in children and young adults (ages 1–25) using the CKiD U25 creatinine equation and — for those under 18 — the Revised Bedside Schwartz equation. Supports cm, inches, mg/dL, and µmol/L.</p>
+<div class="hero-meta">
+  <span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+  <span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
+  <span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" style="color:var(--gold-light);text-decoration:none;">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="ckd-children-young-adults.html" style="color:var(--gold-light);text-decoration:none;">Full Pediatric CKD guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+  <a class="nav-pill" href="#when">When to Use</a>
+  <a class="nav-pill" href="#calculator">Calculator</a>
+  <a class="nav-pill" href="#instructions">How to Use</a>
+  <a class="nav-pill" href="#formula">Formula</a>
+  <a class="nav-pill" href="#evidence">Evidence</a>
+  <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- WHEN TO USE -->
+<section class="section" id="when">
+<div class="section-tag">When to Use</div>
+<h2>When to Use This Calculator</h2>
+<p>Use this calculator to estimate kidney function in children and young adults from age 1 through age 25. The adult CKD-EPI 2021 equation is not validated below age 18 and substantially overestimates GFR in younger children because it does not account for height-dependent tubular creatinine secretion in growing individuals. For patients aged 1–25, use the height-based equations in this tool instead.</p>
+<div class="alert alert-teal">
+  <div class="alert-icon">✅</div>
+  <div class="alert-body">
+    <h4>Appropriate population</h4>
+    <ul>
+      <li>Children ages 1–17: both the CKiD U25 and Revised Bedside Schwartz equations are output</li>
+      <li>Young adults ages 18–25 followed in pediatric-transitional nephrology programs: CKiD U25 is the preferred equation; for incident adult-onset CKD the adult CKD-EPI 2021 creatinine equation may also be considered</li>
+      <li>Any patient aged 1–25 undergoing CKD staging, treatment planning, or drug-dose adjustment based on GFR</li>
+    </ul>
+  </div>
+</div>
+<div class="alert alert-amber">
+  <div class="alert-icon">⚠️</div>
+  <div class="alert-body">
+    <h4>Limitations</h4>
+    <p>Not validated for infants under 1 year; neonatal and early-infant GFR depends on gestational age and postnatal maturation — use age-specific reference ranges. Creatinine-based eGFR is unreliable when muscle mass is atypical for height (severe malnutrition, neuromuscular disease, amputees) — consider cystatin C-based estimation in those cases.</p>
+  </div>
+</div>
+</section>
+
+<!-- WHY USE IT -->
+<section class="section" id="why">
+<div class="section-tag">Why Use It</div>
+<h2>Why Height-Based Equations Are Required in Children</h2>
+<p>In adults, serum creatinine generation reflects muscle mass, which scales roughly with body surface area. In children and adolescents, muscle mass also correlates with height — a taller child has more lean muscle and generates more creatinine, so a given serum creatinine has a different GFR implication than in a shorter child of the same age. Using a height-based equation corrects for this, producing accurate estimates even in children with growth failure or precocious development.</p>
+<p>The original Schwartz formula (1976) used a constant of 0.55 derived from inulin clearance data. The 2009 Revised Bedside Schwartz recalibrated this constant to 0.413 using modern iohexol-measured GFR in the CKiD cohort, removing a systematic upward bias in the original equation. The 2021 CKiD U25 extends the validated age range through 25 years by incorporating age- and sex-specific proportionality constants (k) that account for pubertal muscle-mass gains.</p>
+</section>
+
+<!-- CALCULATOR -->
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>Pediatric eGFR — CKiD U25 &amp; Bedside Schwartz</h2>
+<p>Enter the patient's units, sex, age, height, and serum creatinine. For ages 1–17 both the Revised Bedside Schwartz and CKiD U25 results are shown; for ages 18–25 only CKiD U25 is output. KDIGO staging uses the CKiD U25 result as the primary estimate.</p>
+
+<div class="peds-egfr">
+  <h4>Pediatric eGFR Calculator (Ages 1–25)</h4>
+  <p class="peds-egfr-sub">Revised Bedside Schwartz (Schwartz et al., JASN 2009) for ages 1–17. CKiD U25 creatinine equation (Pierce et al., Kidney Int 2021) extends estimation through age 25 and is preferred for serial monitoring in CKD G2–G5. Adult CKD-EPI 2021 is invalid below age 18.</p>
+  <div class="peds-egfr-grid">
+    <div class="peds-egfr-field">
+      <label>Units</label>
+      <select class="peds-units">
+        <option value="hybrid">Hybrid — cm, mg/dL</option>
+        <option value="us">US — in, mg/dL</option>
+        <option value="si">SI/Metric — cm, µmol/L</option>
+      </select>
+    </div>
+    <div class="peds-egfr-field">
+      <label>Sex</label>
+      <select class="peds-sex">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+    <div class="peds-egfr-field">
+      <label>Age (years)</label>
+      <input class="peds-age" type="number" min="1" max="25" step="0.1" placeholder="1–25" inputmode="decimal">
+    </div>
+    <div class="peds-egfr-field">
+      <label class="peds-height-label">Height (cm)</label>
+      <input class="peds-height" type="number" min="30" max="220" step="0.1" placeholder="e.g. 142" inputmode="decimal">
+    </div>
+    <div class="peds-egfr-field">
+      <label class="peds-scr-label">Serum creatinine (mg/dL)</label>
+      <input class="peds-scr" type="number" min="0.05" max="20" step="0.01" placeholder="e.g. 0.8" inputmode="decimal">
+    </div>
+  </div>
+  <div class="peds-egfr-btnrow">
+    <button type="button" class="peds-egfr-btn" data-peds-action="calc">Calculate eGFR</button>
+    <button type="button" class="peds-egfr-btn peds-egfr-reset" data-peds-action="reset">Reset</button>
+  </div>
+  <div class="peds-egfr-result" aria-live="polite"></div>
+</div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="section" id="instructions">
+<div class="section-tag">How to Use</div>
+<h2>Instructions</h2>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+  <li>Select <strong>units</strong>: Hybrid (cm + mg/dL), US (inches + mg/dL), or SI/Metric (cm + µmol/L).</li>
+  <li>Select <strong>sex</strong> (male or female) — the CKiD U25 proportionality constant k is sex- and age-specific.</li>
+  <li>Enter <strong>age</strong> in decimal years (e.g., 8.5 for 8 years 6 months). Valid range is 1–25 years.</li>
+  <li>Enter <strong>height</strong> in the chosen unit (cm or inches).</li>
+  <li>Enter <strong>serum creatinine</strong> from the most recent blood draw. For SI input, enter µmol/L — conversion to mg/dL is done automatically.</li>
+  <li>Click <strong>Calculate eGFR</strong>. Results show eGFR(s) in mL/min/1.73 m², KDIGO staging based on CKiD U25, plus age-specific caveats. Use <strong>Reset</strong> to clear inputs.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</section>
+
+<!-- FORMULA -->
+<section class="section" id="formula">
+<div class="section-tag">Formula</div>
+<h2>Formula &amp; Equations</h2>
+<table class="lab-table">
+<thead><tr><th>Equation</th><th>Formula</th><th>Age range</th></tr></thead>
+<tbody>
+  <tr><td>Revised Bedside Schwartz</td><td>eGFR = 0.413 × height (cm) / Scr (mg/dL)</td><td>1–17 yr</td></tr>
+  <tr><td>CKiD U25 creatinine (male, age &lt;12)</td><td>eGFR = [39.0 × 1.008<sup>(age−12)</sup>] × height (m) / Scr (mg/dL)</td><td>1–11 yr</td></tr>
+  <tr><td>CKiD U25 creatinine (male, age 12–17)</td><td>eGFR = [39.0 × 1.045<sup>(age−12)</sup>] × height (m) / Scr (mg/dL)</td><td>12–17 yr</td></tr>
+  <tr><td>CKiD U25 creatinine (male, age ≥18)</td><td>eGFR = 50.8 × height (m) / Scr (mg/dL)</td><td>18–25 yr</td></tr>
+  <tr><td>CKiD U25 creatinine (female, age &lt;12)</td><td>eGFR = [36.1 × 1.008<sup>(age−12)</sup>] × height (m) / Scr (mg/dL)</td><td>1–11 yr</td></tr>
+  <tr><td>CKiD U25 creatinine (female, age 12–17)</td><td>eGFR = [36.1 × 1.023<sup>(age−12)</sup>] × height (m) / Scr (mg/dL)</td><td>12–17 yr</td></tr>
+  <tr><td>CKiD U25 creatinine (female, age ≥18)</td><td>eGFR = 41.4 × height (m) / Scr (mg/dL)</td><td>18–25 yr</td></tr>
+</tbody>
+</table>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Unit conversion: 1 mg/dL = 88.4 µmol/L; 1 inch = 2.54 cm. The proportionality constant k in CKiD U25 is derived from age- and sex-specific iohexol-measured GFR in 1,731 CKD participants (CKiD cohort, 2004–2020).</p>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section" id="evidence">
+<div class="section-tag">Evidence &amp; References</div>
+<h2>Evidence &amp; References</h2>
+<p>The CKiD U25 equation was derived from iohexol-measured GFR in 1,731 participants aged 1–25 with confirmed CKD from the Chronic Kidney Disease in Children (CKiD) cohort. It outperformed the original Schwartz equation (which was based on inulin clearance and used a constant of 0.55) across all age groups in both derivation and external validation. The Revised Bedside Schwartz (2009) remains the standard of care for clinical estimation in children 1–17 because of its simplicity and well-established normative data.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+  <li>Pierce CB, Muñoz A, Ng DK, Warady BA, Furth SL, Schwartz GJ. Age- and sex-dependent clinical equations to estimate glomerular filtration rates in children and young adults with chronic kidney disease. <em>Kidney Int.</em> 2021;99(4):948–956.</li>
+  <li>Schwartz GJ, Muñoz A, Schneider MF, et al. New equations to estimate GFR in children with CKD. <em>J Am Soc Nephrol.</em> 2009;20(3):629–637.</li>
+  <li>Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. <em>Kidney Int.</em> 2024.</li>
+</ol>
+</section>
+
+<!-- PEARLS -->
+<section class="section" id="pearls">
+<div class="section-tag">Pearls &amp; Pitfalls</div>
+<h2>Pearls &amp; Pitfalls</h2>
+<div class="alert alert-green">
+  <div class="alert-icon">💡</div>
+  <div class="alert-body">
+    <h4>CKiD U25 is preferred for serial monitoring in pediatric CKD</h4>
+    <p>For children and young adults being followed longitudinally for CKD progression, CKiD U25 provides the most consistent results because its age-sex k constant tracks the normal developmental increase in muscle mass. Use the same equation for all serial measurements to avoid apparent GFR changes caused by switching formulas.</p>
+  </div>
+</div>
+<div class="alert alert-teal">
+  <div class="alert-icon">🔬</div>
+  <div class="alert-body">
+    <h4>Age &lt;2 years: interpret cautiously</h4>
+    <p>Renal maturation is incomplete until approximately 24 months of age. An eGFR below 60 mL/min/1.73 m² in a healthy infant may be physiologically normal — interpret only against age-adjusted normative values, not adult KDIGO cut-offs. Measured GFR is preferred whenever precision is critical in this age group.</p>
+  </div>
+</div>
+<div class="alert alert-red">
+  <div class="alert-icon">🚫</div>
+  <div class="alert-body">
+    <h4>Pitfalls</h4>
+    <p>(1) These equations assume creatinine is measured with an enzymatic or IDMS-traceable Jaffe method. Older non-IDMS Jaffe assays may overestimate creatinine by 10–20%, causing the eGFR to be underestimated. (2) Growth failure in children with CKD causes height to lag behind age — this leads to underestimation of GFR because the numerator (height) is smaller than it should be for the patient's age. Add cystatin C estimation for a second opinion. (3) For drug dosing in children, weight-based protocols or measured GFR (iohexol/inulin) are preferred over estimated GFR wherever precision matters.</p>
+  </div>
+</div>
+</section>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid and does not replace individualized clinical assessment. Pediatric CKD staging, medication dosing, and treatment decisions must be made in consultation with a pediatric nephrologist. eGFR equations provide estimates — a single value does not establish or exclude CKD.</div>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
+<p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span><span data-lang="tl" class="lang-hidden">I-scan at i-save</span><span data-lang="ceb" class="lang-hidden">I-scan ug i-save</span><span data-lang="kap" class="lang-hidden">I-scan at i-save</span></p>
+</div>
+</div>
+</div>
+
+<!-- RELATED-GUIDES-START -->
+<div class="related-guides">
+  <h2>Related Guides</h2>
+  <div class="related-cards">
+    <a class="related-card" href="ckd-children-young-adults.html">
+      <div class="related-card-tag">Pediatric Nephrology</div>
+      <div class="related-card-title">CKD in Children &amp; Young Adults</div>
+      <div class="related-card-desc">A comprehensive guide to pediatric CKD — causes, staging, monitoring, nutrition, growth, and transition to adult care.</div>
+      <div class="related-card-arrow">Read →</div>
+    </a>
+    <a class="related-card" href="calc-egfr-cystatin.html">
+      <div class="related-card-tag">Calculator</div>
+      <div class="related-card-title">eGFR — CKD-EPI 2021 Cr–CysC</div>
+      <div class="related-card-desc">The race-free adult CKD-EPI 2021 combined creatinine–cystatin C eGFR calculator for ages ≥18.</div>
+      <div class="related-card-arrow">Use →</div>
+    </a>
+    <a class="related-card" href="understanding-ckd.html">
+      <div class="related-card-tag">The Basics</div>
+      <div class="related-card-title">Understanding Chronic Kidney Disease</div>
+      <div class="related-card-desc">A complete guide to what CKD means, how it progresses, and what you can do to protect your remaining kidney function.</div>
+      <div class="related-card-arrow">Read →</div>
+    </a>
+    <a class="related-card" href="calc-ckd-mbd.html">
+      <div class="related-card-tag">Calculator</div>
+      <div class="related-card-title">CKD-MBD Calculator</div>
+      <div class="related-card-desc">Calcium–phosphorus product, albumin-corrected calcium, and KDIGO PTH staging for CKD mineral and bone disorder.</div>
+      <div class="related-card-arrow">Use →</div>
+    </a>
+  </div>
+</div>
+<!-- RELATED-GUIDES-END -->
+
+<footer class="guide-footer">
+<div class="footer-inner">
+  <p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+  <p>References: Pierce CB et al. Kidney Int 2021 · Schwartz GJ et al. JASN 2009 · KDIGO 2024 CKD Guidelines</p>
+</div>
+</footer>
+
+<script>
+const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+function applyDark(on){
+  document.documentElement.setAttribute('data-theme',on?'dark':'light');
+  const btn=document.getElementById('darkToggle');
+  const lbl=document.getElementById('darkLabel');
+  const ico=document.getElementById('darkIcon');
+  if(btn) btn.classList.toggle('active',on);
+  if(lbl) lbl.textContent=on?'Light':'Dark';
+  if(ico) ico.innerHTML=on
+    ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+    :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+function toggleDark(){
+  const on=document.documentElement.getAttribute('data-theme')!=='dark';
+  localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+}
+function applyDesktop(on){
+  const vp=document.querySelector('meta[name="viewport"]');
+  if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+  else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+  const btn=document.getElementById('desktopToggle');
+  const lbl=document.getElementById('desktopLabel');
+  if(btn) btn.classList.toggle('active',on);
+  if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+}
+function toggleDesktop(){
+  const on=document.documentElement.getAttribute('data-view')!=='desktop';
+  localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+}
+(function(){
+  if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+  if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+})();
+</script>
+
+<button aria-label="Print this guide" class="print-btn" onclick="window.print()">
+<span class="p-tip">Print / Save PDF</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
+</svg>
+</button>
+
+<script>
+const LANG_KEY='wgmr-lang';
+function setLang(lang){
+  localStorage.setItem(LANG_KEY,lang);
+  document.documentElement.setAttribute('lang',lang);
+  ['en','tl','ceb','kap'].forEach(l=>{
+    document.querySelectorAll('[data-lang="'+l+'"]').forEach(el=>{
+      el.classList.toggle('lang-hidden',l!==lang);
+    });
+    const btn=document.getElementById('glb-'+l);
+    if(btn)btn.classList.toggle('active',l===lang);
+  });
+}
+(function(){
+  const saved=localStorage.getItem(LANG_KEY)||'en';
+  if(saved!=='en')setLang(saved);
+})();
+</script>
+
+<script>
+/* ── PEDIATRIC eGFR CALCULATOR ─────────────────── */
+(function(){
+  const HEIGHT_LABELS={hybrid:'Height (cm)',us:'Height (in)',si:'Height (cm)'};
+  const SCR_LABELS={hybrid:'Serum creatinine (mg/dL)',us:'Serum creatinine (mg/dL)',si:'Serum creatinine (µmol/L)'};
+  const HEIGHT_PLACEHOLDER={hybrid:'e.g. 142',us:'e.g. 56',si:'e.g. 142'};
+  const SCR_PLACEHOLDER={hybrid:'e.g. 0.8',us:'e.g. 0.8',si:'e.g. 70'};
+  const HEIGHT_LIMITS={hybrid:{min:30,max:220,step:0.1},us:{min:12,max:86,step:0.1},si:{min:30,max:220,step:0.1}};
+  const SCR_LIMITS={hybrid:{min:0.05,max:20,step:0.01},us:{min:0.05,max:20,step:0.01},si:{min:4,max:1770,step:0.1}};
+
+  function applyUnits(root){
+    const u=root.querySelector('.peds-units').value;
+    const hL=root.querySelector('.peds-height-label');
+    const sL=root.querySelector('.peds-scr-label');
+    const hI=root.querySelector('.peds-height');
+    const sI=root.querySelector('.peds-scr');
+    if(hL) hL.textContent=HEIGHT_LABELS[u];
+    if(sL) sL.textContent=SCR_LABELS[u];
+    if(hI){hI.placeholder=HEIGHT_PLACEHOLDER[u];hI.min=HEIGHT_LIMITS[u].min;hI.max=HEIGHT_LIMITS[u].max;hI.step=HEIGHT_LIMITS[u].step;}
+    if(sI){sI.placeholder=SCR_PLACEHOLDER[u];sI.min=SCR_LIMITS[u].min;sI.max=SCR_LIMITS[u].max;sI.step=SCR_LIMITS[u].step;}
+  }
+
+  function calc(root){
+    const u=root.querySelector('.peds-units').value;
+    const sex=root.querySelector('.peds-sex').value;
+    const age=parseFloat(root.querySelector('.peds-age').value);
+    let ht=parseFloat(root.querySelector('.peds-height').value);
+    let scr=parseFloat(root.querySelector('.peds-scr').value);
+    const box=root.querySelector('.peds-egfr-result');
+    box.className='peds-egfr-result show';
+    if(!(age>0)||!(ht>0)||!(scr>0)){
+      box.classList.add('error');
+      box.innerHTML='<div class="peds-egfr-err">Enter age, height, and serum creatinine as positive numbers.</div>';
+      return;
+    }
+    if(age<1||age>25){
+      box.classList.add('error');
+      box.innerHTML='<div class="peds-egfr-err">This calculator is validated for ages 1–25. For age ≥18 the adult CKD-EPI 2021 equation may also be used; for infants &lt;1 yr use age-specific reference values.</div>';
+      return;
+    }
+    if(u==='us') ht=ht*2.54;
+    if(u==='si') scr=scr/88.4;
+    let rows='';
+    if(age<18){
+      const schwartz=0.413*ht/scr;
+      rows+='<div class="res-row"><div class="res-label">Revised Bedside Schwartz<span class="res-formula">0.413 × height (cm) / Scr (mg/dL)</span></div>'+
+            '<div class="res-value">'+schwartz.toFixed(1)+'<span class="res-unit">mL/min/1.73 m²</span></div></div>';
+    }
+    const htm=ht/100;
+    let k;
+    if(sex==='male'){
+      if(age<12) k=39.0*Math.pow(1.008,age-12);
+      else if(age<18) k=39.0*Math.pow(1.045,age-12);
+      else k=50.8;
+    }else{
+      if(age<12) k=36.1*Math.pow(1.008,age-12);
+      else if(age<18) k=36.1*Math.pow(1.023,age-12);
+      else k=41.4;
+    }
+    const u25=k*htm/scr;
+    rows+='<div class="res-row"><div class="res-label">CKiD U25 (creatinine)<span class="res-formula">k(age,sex) × height (m) / Scr (mg/dL) — k = '+k.toFixed(2)+'</span></div>'+
+          '<div class="res-value">'+u25.toFixed(1)+'<span class="res-unit">mL/min/1.73 m²</span></div></div>';
+    const primary=u25;
+    let stage,sclass,desc;
+    if(primary>=90){stage='G1';sclass='s-g1';desc='Normal or high GFR — CKD only if other markers of kidney damage are present.';}
+    else if(primary>=60){stage='G2';sclass='s-g2';desc='Mildly decreased — CKD only if other markers of kidney damage are present.';}
+    else if(primary>=45){stage='G3a';sclass='s-g3a';desc='Mild-to-moderate decrease.';}
+    else if(primary>=30){stage='G3b';sclass='s-g3b';desc='Moderate-to-severe decrease.';}
+    else if(primary>=15){stage='G4';sclass='s-g4';desc='Severely decreased — prepare for kidney replacement therapy.';}
+    else{stage='G5';sclass='s-g5';desc='Kidney failure — dialysis or transplant typically required.';}
+    rows+='<div style="margin-top:10px;"><span class="peds-egfr-stage '+sclass+'">KDIGO Stage '+stage+'</span> <span style="font-size:12px;color:var(--text-muted);margin-left:8px;">'+desc+'</span></div>';
+    let notes='';
+    if(age<2){
+      notes+='<div class="peds-egfr-warn"><strong>Age &lt;2 years:</strong> renal maturation is incomplete until ~24 months. An eGFR &lt;60 may be physiologically normal — interpret against age-adjusted normative values, not adult KDIGO cut-offs.</div>';
+    }
+    if(age>=18){
+      notes+='<div class="peds-egfr-warn"><strong>Age ≥18:</strong> CKiD U25 is appropriate for young adults followed since pediatric care. For incident adult-onset CKD, the adult CKD-EPI 2021 (race-free) creatinine ± cystatin C equation is preferred.</div>';
+    }
+    notes+='<div class="peds-egfr-note"><strong>Caveats.</strong> Creatinine-based eGFR is unreliable when muscle mass is atypical for height — growth failure, severe malnutrition, limb amputation, prolonged immobility, neuromuscular disease, or anabolic-steroid use. In these settings add cystatin C (CKiD U25 cystatin or combined equations). A single eGFR ≥60 cannot diagnose CKD without persistent (≥3 mo) markers of kidney damage. For pediatric drug dosing, prefer measured GFR or weight-based protocols. Not a substitute for clinical judgment.</div>';
+    box.innerHTML=rows+notes;
+  }
+
+  function reset(root){
+    root.querySelector('.peds-age').value='';
+    root.querySelector('.peds-height').value='';
+    root.querySelector('.peds-scr').value='';
+    root.querySelector('.peds-sex').value='male';
+    root.querySelector('.peds-units').value='hybrid';
+    applyUnits(root);
+    const box=root.querySelector('.peds-egfr-result');
+    box.className='peds-egfr-result';
+    box.innerHTML='';
+  }
+
+  document.querySelectorAll('.peds-egfr').forEach(function(root){
+    applyUnits(root);
+    root.querySelector('.peds-units').addEventListener('change',function(){applyUnits(root);});
+    root.addEventListener('click',function(e){
+      const a=e.target.closest('[data-peds-action]');
+      if(!a) return;
+      if(a.dataset.pedsAction==='calc') calc(root);
+      else if(a.dataset.pedsAction==='reset') reset(root);
+    });
+  });
+})();
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/image-lightbox.js" defer></script>
+</body>
+</html>
