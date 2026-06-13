@@ -1237,6 +1237,12 @@ body.dark .related-card-title {
 </script>
 </head>
 <body>
+<script>/* pre-paint physician-mode restore — class applied before first paint, zero CLS.
+   Do NOT move this to the bottom of the page or convert it into a
+   post-paint restore — that reintroduces the CLS bug patch_mode_cls.py
+   exists to kill. See CLAUDE.md. */
+try{if(localStorage.getItem('wgmr-tbckd-mode')==='physician'){document.body.classList.add('physician-mode');document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('tab-pt'),m=document.getElementById('tab-md');if(p)p.classList.remove('active');if(m)m.classList.add('active');});}}catch(e){}</script>
+
 <header class="site-header">
   <a href="https://www.williamriveromd.com" class="brand">HOME</a>
   <a href="/guides/" class="back">← All Guides</a>
@@ -1258,6 +1264,20 @@ body.dark .related-card-title {
     <span id="desktopLabel">Desktop</span>
   </button>
 </div>
+
+<div class="audience-tabs">
+  <div class="tabs-inner">
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">
+      <span class="tab-icon">🧑‍⚕️</span> <span data-lang="en">For Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Para sa mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Para sa mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Para king mga Pasyente at Pamilya</span>
+    </button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">
+      <span class="tab-icon">🩺</span> <span data-lang="en">For Clinicians</span><span data-lang="tl" class="lang-hidden">Para sa mga Klinisyan</span><span data-lang="ceb" class="lang-hidden">Para sa mga Klinisyan</span><span data-lang="kap" class="lang-hidden">Para king mga Klinisyan</span>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PATIENT TAB ═══════════════════════ -->
+<div class="mode-patient">
 
 <section class="hero">
   <div class="container">
@@ -1519,6 +1539,260 @@ body.dark .related-card-title {
     
   </section>
 </main>
+</div><!-- end .mode-patient -->
+
+<!-- ═══════════════════════ CLINICIAN TAB ═══════════════════════ -->
+<div class="mode-physician">
+
+<section class="hero">
+<div class="container">
+  <div style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#d4af4f;margin-bottom:8px;">⚕ Clinician Reference</div>
+  <div class="hero-tag">Nephrology · Infectious Disease · Philippine NTP Context</div>
+  <h1><em>Tuberculosis in Kidney Disease</em><br>Clinician Reference</h1>
+  <p class="hero-sub">Program-aligned management of TB across the CKD spectrum — PSMID/DOH NTP DOTS regimens, LTBI screening for dialysis and transplant candidates, MDR-TB and first-line renal dosing, rifampicin interaction management, and an LFT-driven hepatotoxicity algorithm. Drug choices and brand names reflect the Philippine setting.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+    <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 12px;border-radius:14px;background:rgba(212,175,79,.18);border:1px solid rgba(212,175,79,.5);color:#f2e3b8;">PSMID 2020</span>
+    <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 12px;border-radius:14px;background:rgba(212,175,79,.18);border:1px solid rgba(212,175,79,.5);color:#f2e3b8;">DOH NTP / DOTS</span>
+    <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 12px;border-radius:14px;background:rgba(212,175,79,.18);border:1px solid rgba(212,175,79,.5);color:#f2e3b8;">WHO 2022</span>
+    <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 12px;border-radius:14px;background:rgba(212,175,79,.18);border:1px solid rgba(212,175,79,.5);color:#f2e3b8;">KDIGO</span>
+  </div>
+</div>
+</section>
+
+<nav class="nav-strip">
+  <div class="nav-pills">
+    <a class="nav-pill" href="#ntp">NTP / DOTS</a>
+    <a class="nav-pill" href="#ltbi-clin">LTBI Screening</a>
+    <a class="nav-pill" href="#mdr-dosing">MDR-TB Dosing</a>
+    <a class="nav-pill" href="#rif-interactions">Rifampicin Interactions</a>
+    <a class="nav-pill" href="#dili">Hepatotoxicity</a>
+    <a class="nav-pill" href="#ckd-matrix">CKD-Stage Matrix</a>
+  </div>
+</nav>
+
+<main>
+<div class="container">
+
+<!-- CLIN SECTION 1 — NTP / DOTS -->
+<section class="section" id="ntp">
+  <div class="section-tag">Clinician Section 1</div>
+  <h2>PSMID 2020 / NTP Alignment — DOTS &amp; Standard Regimens</h2>
+  <div class="intro-callout">
+    <p>The Philippine NTP adopts WHO-aligned regimens delivered under <strong>DOTS</strong> (Directly Observed Treatment, Short-course). All first-line anti-TB drugs are <strong>free</strong> at DOTS facilities and supplied mainly as <strong>fixed-dose combinations (FDCs)</strong>. Rapid molecular testing (<strong>Xpert MTB/RIF / Ultra</strong>) is the front-line diagnostic and, where available, replaces smear-only triage — establishing rifampicin susceptibility before treatment begins.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table class="lab-table">
+      <thead>
+        <tr><th>NTP category</th><th>Indication</th><th>Intensive phase</th><th>Continuation phase</th><th>Total</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Category I</td><td>New PTB (smear ±), most EPTB</td><td>2 months HRZE (4FDC) daily</td><td>4 months HR (2FDC) daily</td><td>6 months</td></tr>
+        <tr><td>Category Ia (extended)</td><td>CNS TB, miliary, bone/joint TB</td><td>2 months HRZE daily</td><td>10 months HR daily</td><td>12 months</td></tr>
+        <tr><td>Category II</td><td>Retreatment — relapse, treatment after failure or loss to follow-up</td><td>2 months HRZES + 1 month HRZE</td><td>5 months HRE</td><td>8 months</td></tr>
+        <tr><td>RR/MDR-TB</td><td>Rifampicin-resistant on Xpert / confirmed MDR</td><td colspan="2">Enroll in Programmatic Management of Drug-Resistant TB (PMDT) — all-oral longer or BPaLM/shorter regimen per DST</td><td>6–18+ months</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--text-muted);">H = isoniazid · R = rifampicin · Z = pyrazinamide · E = ethambutol · S = streptomycin. 4FDC = HRZE single tablet; 2FDC = HR single tablet.</p>
+
+  <div class="alert alert-teal">
+    <div class="alert-icon">▣</div>
+    <div class="alert-body">
+      <h4>DST-guided shift</h4>
+      <p>WHO and the NTP increasingly favor <strong>universal drug-susceptibility testing up front</strong>. With Xpert available, the empiric Category II "retreatment regimen" is being phased toward <strong>DST-guided</strong> therapy — any rifampicin resistance routes the patient directly to PMDT rather than the 8-month streptomycin-containing regimen.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="feature-card">
+      <h4><span class="dot dot-teal"></span>DOTS essentials</h4>
+      <p>Every dose during the intensive phase is swallowed under observation by a treatment supporter or DOTS facility. NTP provides drugs, monitoring smears, and contact investigation at no cost. Document a treatment supporter and a fixed facility before starting.</p>
+    </div>
+    <div class="feature-card">
+      <h4><span class="dot dot-amber"></span>What changes in CKD</h4>
+      <p>The <strong>drugs</strong> are the same, but <strong>dosing intervals</strong> change: isoniazid and rifampicin are unchanged, whereas pyrazinamide and ethambutol must move to <strong>thrice-weekly</strong> dosing once CrCl &lt; 30 mL/min or on dialysis (see the CKD-Stage Matrix). Daily (not intermittent) dosing of H/R is preferred in advanced immunosuppression.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLIN SECTION 2 — LTBI -->
+<section class="section" id="ltbi-clin">
+  <div class="section-tag">Clinician Section 2</div>
+  <h2>LTBI Screening in CKD — IGRA Preference &amp; Pre-Transplant Workup</h2>
+  <p>Most TB in CKD is reactivation of latent infection. Because uremia causes cutaneous <strong>anergy</strong>, the tuberculin skin test (TST) is unreliable in advanced CKD and dialysis — <strong>IGRA is the preferred test</strong> wherever resources allow.</p>
+
+  <div class="table-wrap">
+    <table class="lab-table">
+      <thead><tr><th>Feature</th><th>TST (Mantoux)</th><th>IGRA (QFT-Plus / T-SPOT)</th></tr></thead>
+      <tbody>
+        <tr><td>Performance in uremia</td><td>High false-negative rate (anergy)</td><td>More reliable; less affected by anergy</td></tr>
+        <tr><td>BCG cross-reactivity</td><td>False-positive after BCG</td><td>Not affected by BCG</td></tr>
+        <tr><td>Visits required</td><td>Two (placement + reading)</td><td>One blood draw — ideal for HD patients</td></tr>
+        <tr><td>Boosting / serial testing</td><td>Boosting confounds repeat tests</td><td>No boosting</td></tr>
+        <tr><td>Positive cut-off</td><td>≥ 10 mm (≥ 5 mm if transplant/immunosuppressed)</td><td>Manufacturer cut-off (interferon-γ)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="two-col">
+    <div class="feature-card">
+      <h4><span class="dot dot-navy"></span>Whom to screen</h4>
+      <p>All CKD G4–G5 and dialysis patients; <strong>all kidney-transplant candidates and living donors</strong>; before starting biologics, high-dose or prolonged corticosteroids, or other potent immunosuppression. Pair every IGRA/TST with a symptom screen and chest radiograph to exclude active disease before calling it "latent."</p>
+    </div>
+    <div class="feature-card">
+      <h4><span class="dot dot-teal"></span>Pre-transplant workup</h4>
+      <p>Screen <strong>recipient and donor</strong> (IGRA + CXR + symptom screen; review for prior TB/contacts and old fibrotic scars). Treat LTBI <strong>before transplant</strong> whenever possible. A living donor with untreated LTBI should complete therapy before donation. Exclude active TB before any immunosuppression.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="lab-table">
+      <thead><tr><th>LTBI regimen</th><th>Schedule</th><th>Use in CKD / transplant</th></tr></thead>
+      <tbody>
+        <tr><td>Isoniazid (9H)</td><td>INH daily × 9 months (+ pyridoxine)</td><td><strong>Preferred peri-transplant</strong> — no rifamycin interaction with calcineurin inhibitors</td></tr>
+        <tr><td>Isoniazid (6H)</td><td>INH daily × 6 months (+ pyridoxine)</td><td>Acceptable alternative; slightly lower efficacy than 9H</td></tr>
+        <tr><td>Rifampicin (4R)</td><td>RIF daily × 4 months</td><td>Shorter, better completion — but rifamycin induces CNI/mTOR metabolism; <strong>avoid around transplant</strong></td></tr>
+        <tr><td>INH + rifapentine (3HP)</td><td>Weekly × 12 doses</td><td>Convenient, but rifapentine is an enzyme inducer — <strong>not preferred peri-transplant</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-body">
+      <h4>Rifamycin vs. calcineurin inhibitors</h4>
+      <p>For LTBI in a transplant candidate or recipient, prefer <strong>isoniazid-based therapy</strong> to avoid the rifamycin–tacrolimus/cyclosporine interaction. If a rifamycin is unavoidable, intensify CNI level monitoring and coordinate with transplant ID. Always co-prescribe <strong>pyridoxine 25–50 mg/day</strong> with isoniazid in CKD (high neuropathy risk).</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLIN SECTION 3 — MDR DOSING -->
+<section class="section" id="mdr-dosing">
+  <div class="section-tag">Clinician Section 3</div>
+  <h2>MDR-TB Renal Dosing — Core Drugs</h2>
+  <p>Renal handling of the WHO Group A/B drugs differs markedly. On dialysis days, give all doses <strong>after</strong> the HD session. Manage MDR-TB within PMDT.</p>
+  <div class="table-wrap">
+    <table class="lab-table">
+      <thead><tr><th>Drug</th><th>Standard dose</th><th>CrCl &lt; 30 / dialysis</th><th>Dialyzed?</th><th>Key cautions</th></tr></thead>
+      <tbody>
+        <tr><td>Bedaquiline (Sirturo)</td><td>400 mg OD × 2 wk, then 200 mg 3×/wk × 22 wk</td><td><strong>No adjustment</strong> (hepatic CYP3A4)</td><td>No (highly protein-bound)</td><td>QT prolongation; hepatotoxicity; avoid with other QT drugs</td></tr>
+        <tr><td>Linezolid (Zyvox)</td><td>600 mg OD</td><td>No PK adjustment, but metabolites accumulate — <strong>dose after HD</strong>; consider 300 mg if toxicity</td><td>Partially (give post-HD)</td><td>Myelosuppression (weekly CBC), peripheral/optic neuropathy, lactic acidosis</td></tr>
+        <tr><td>Levofloxacin (Levox / Tavanic)</td><td>750–1000 mg OD</td><td><strong>750–1000 mg 3×/week</strong> (after HD on dialysis days)</td><td>Yes (post-HD)</td><td>QT prolongation; tendinopathy; dysglycemia</td></tr>
+        <tr><td>Clofazimine (Lamprene)</td><td>100 mg OD</td><td><strong>No adjustment</strong> (lipophilic, fecal/biliary excretion)</td><td>No</td><td>Skin/conjunctival discoloration; QT prolongation; GI intolerance</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="alert alert-red">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-body">
+      <h4>Additive QT risk</h4>
+      <p>Bedaquiline, clofazimine, and the fluoroquinolone together produce <strong>additive QT prolongation</strong>. Obtain a baseline ECG and serial ECGs, keep <strong>K⁺ &gt; 4.0 and Mg²⁺ normal</strong> (electrolyte shifts are routine in dialysis), and review concomitant QT-prolonging drugs (ondansetron, azoles, macrolides).</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLIN SECTION 4 — RIFAMPICIN INTERACTIONS -->
+<section class="section" id="rif-interactions">
+  <div class="section-tag">Clinician Section 4</div>
+  <h2>Rifampicin Drug Interactions — Expanded</h2>
+  <p>Rifampicin is a potent inducer of <strong>CYP3A4, CYP2C9/2C19, P-glycoprotein and UGT</strong>, lowering exposure to a wide range of co-medications within 1–2 weeks and for ~2 weeks after it is stopped. Representative Philippine brand names are shown; verify local availability.</p>
+  <div class="table-wrap">
+    <table class="lab-table">
+      <thead><tr><th>Class / drug (PH brand)</th><th>Effect of rifampicin</th><th>Management</th></tr></thead>
+      <tbody>
+        <tr><td>Tacrolimus (Prograf, Tacroz, Pangraf)</td><td>Levels fall sharply (CYP3A4 + P-gp)</td><td>Avoid if possible; if not, ↑ dose 3–5× with trough monitoring 2–3×/week. <strong>Prefer rifabutin.</strong></td></tr>
+        <tr><td>Cyclosporine (Neoral, Sandimmun)</td><td>Markedly reduced levels</td><td>↑ dose, frequent levels; prefer rifabutin</td></tr>
+        <tr><td>Sirolimus / Everolimus (Rapamune / Certican)</td><td>Profound ↓ exposure</td><td>Generally avoid with rifampicin</td></tr>
+        <tr><td>Prednisone / Methylprednisolone</td><td>Clearance roughly doubles</td><td>Double the corticosteroid dose; monitor for rejection/flare</td></tr>
+        <tr><td>Mycophenolate (Cellcept, Myfortic)</td><td>Modest ↓ MPA exposure</td><td>Monitor; clinical adjustment usually minor</td></tr>
+        <tr><td>Atorvastatin (Lipitor) / Simvastatin (Zocor)</td><td>↓ exposure → reduced LDL lowering (CYP3A4 + OATP1B1)</td><td>Monitor lipids; consider rosuvastatin or higher dose; reassess after ATT</td></tr>
+        <tr><td>Rosuvastatin (Crestor)</td><td>Modest ↓ (transporter effect)</td><td>Often the preferred statin during rifampicin</td></tr>
+        <tr><td>Losartan (Cozaar)</td><td>Variable, often ↓ antihypertensive/renoprotective effect (CYP2C9)</td><td>Monitor BP; up-titrate or use a non-CYP agent (e.g., enalapril)</td></tr>
+        <tr><td>Gliclazide (Diamicron) / Glimepiride (Amaryl)</td><td>↓ levels (CYP2C9) → loss of glycemic control</td><td>Monitor glucose; up-titrate or switch</td></tr>
+        <tr><td>Linagliptin (Trajenta)</td><td>↓ exposure (P-gp/CYP3A4)</td><td>Avoid; use an alternative DPP-4 inhibitor</td></tr>
+        <tr><td>Metformin (Glucophage)</td><td>Not CYP-metabolized — minimal interaction</td><td>Preferred where eGFR permits</td></tr>
+        <tr><td>Warfarin (Coumadin)</td><td>INR falls markedly</td><td>↑ dose with close INR monitoring; re-titrate when rifampicin stops</td></tr>
+        <tr><td>DOACs — apixaban (Eliquis), rivaroxaban (Xarelto), dabigatran (Pradaxa)</td><td>↓ levels (P-gp/CYP3A4) → thrombosis risk</td><td>Avoid co-administration</td></tr>
+        <tr><td>Combined oral contraceptives</td><td>↓ efficacy</td><td>Add or switch to a non-hormonal method</td></tr>
+        <tr><td>Digoxin (Lanoxin)</td><td>↓ levels (P-gp induction)</td><td>Monitor levels/clinical effect</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <figure style="margin:24px 0">
+    <picture>
+      <source srcset="../images/tb-rifampicin-tacrolimus-interaction.webp" type="image/webp">
+      <img loading="lazy" src="../images/tb-rifampicin-tacrolimus-interaction.png" alt="Diagram of rifampicin inducing CYP3A4 metabolism of tacrolimus, lowering tacrolimus levels and risking transplant rejection" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:12px;">
+    </picture>
+    <figcaption style="font-size:13px;color:var(--text-muted);text-align:center;margin-top:10px;line-height:1.5;">Rifampicin induction of CYP3A4 collapses tacrolimus exposure — the prototypical, transplant-threatening interaction. Rifabutin is the lower-potency rifamycin substitute when a rifamycin is essential.</figcaption>
+  </figure>
+  <div class="alert alert-teal">
+    <div class="alert-icon">▣</div>
+    <div class="alert-body">
+      <h4>Transplant strategy</h4>
+      <p>In kidney-transplant recipients with active TB, substitute <strong>rifabutin</strong> for rifampicin (weaker inducer), pre-empt CNI dose increases, monitor levels 2–3×/week, and co-manage with transplant ID. Re-titrate every induced drug when the rifamycin is eventually stopped.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLIN SECTION 5 — DILI -->
+<section class="section" id="dili">
+  <div class="section-tag">Clinician Section 5</div>
+  <h2>Hepatotoxicity Monitoring — LFT-Based Decision Tree</h2>
+  <p>Isoniazid, rifampicin, and pyrazinamide are all hepatotoxic. Obtain <strong>baseline LFTs</strong> in every patient and monitor more closely (2-weekly) in CKD, the elderly, alcohol use, viral hepatitis, or baseline derangement.</p>
+
+  <div class="alert alert-red">
+    <div class="alert-icon">⛔</div>
+    <div class="alert-body">
+      <h4>Stop H / R / Z if any threshold is met (ATS / NTP)</h4>
+      <ul>
+        <li>ALT ≥ <strong>3× ULN</strong> with symptoms (nausea, vomiting, RUQ pain, jaundice), <em>or</em></li>
+        <li>ALT ≥ <strong>5× ULN</strong> regardless of symptoms, <em>or</em></li>
+        <li>Total bilirubin ≥ <strong>2× ULN</strong>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Baseline &amp; monitor</h4><p>Check ALT/AST, bilirubin, ALP before therapy; risk-stratify. Educate on warning symptoms and recheck on schedule or at any new symptom.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Threshold met → STOP hepatotoxic drugs</h4><p>Hold isoniazid, rifampicin, and pyrazinamide. If smear-positive or clinically unstable and treatment cannot wait, bridge with a <strong>non-hepatotoxic regimen</strong>: ethambutol + levofloxacin + an aminoglycoside (renally dosed).</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Investigate other causes</h4><p>Exclude viral hepatitis (A/B/C/E), alcohol, biliary obstruction, and other hepatotoxins before attributing solely to ATT.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Wait for recovery</h4><p>Resume only once ALT &lt; 2× ULN and symptoms resolve, with bilirubin normalizing.</p></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Sequential rechallenge</h4><p>Reintroduce <strong>rifampicin first</strong> (least hepatotoxic, most essential), then isoniazid after 3–7 days, rechecking LFTs at each step. Reintroduce <strong>pyrazinamide last — or omit it</strong> if DILI was severe, extending the regimen (e.g., 2HRE / 7HR = 9 months).</p></div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-body"><h4>Recurrence on rechallenge</h4><p>If ALT rises again, identify and <strong>permanently drop the culprit</strong>, then redesign the regimen (often pyrazinamide-sparing) with ID input.</p></div></div>
+  </div>
+</section>
+
+<!-- CLIN SECTION 6 — CKD MATRIX -->
+<section class="section" id="ckd-matrix">
+  <div class="section-tag">Clinician Section 6</div>
+  <h2>CKD-Stage × First-Line Drug Matrix</h2>
+  <p>The governing principle: <strong>isoniazid and rifampicin need no renal adjustment; pyrazinamide and ethambutol must move to thrice-weekly dosing once CrCl &lt; 30 mL/min or on dialysis.</strong> On HD days, dose all agents after the session. Representative Philippine brands shown.</p>
+  <div class="table-wrap">
+    <table class="lab-table">
+      <thead><tr><th>Drug (PH brand)</th><th>Clearance</th><th>CrCl &gt; 30 / G1–G3</th><th>CrCl &lt; 30 / G4–G5 / dialysis</th><th>HD-removed?</th><th>Renal cautions</th></tr></thead>
+      <tbody>
+        <tr><td>Isoniazid + pyridoxine (Isonex; + vit B6)</td><td>Hepatic acetylation</td><td>5 mg/kg (max 300 mg) daily</td><td>Same dose daily</td><td>Yes — give after HD</td><td>Co-give pyridoxine 25–50 mg/day; peripheral neuropathy risk markedly ↑ in CKD</td></tr>
+        <tr><td>Rifampicin (Rifadin)</td><td>Hepatic / biliary</td><td>10 mg/kg (max 600 mg) daily</td><td>Same dose daily — no adjustment</td><td>No</td><td>Potent enzyme inducer (see interactions); orange secretions; hepatotoxicity</td></tr>
+        <tr><td>Pyrazinamide (Zinastat)</td><td>Hepatic → renally excreted metabolites</td><td>25 mg/kg daily</td><td><strong>25–35 mg/kg 3×/week</strong> (not daily)</td><td>Yes — give after HD</td><td>Hyperuricemia (usually asymptomatic — don't treat without gout); hepatotoxic; accumulates in renal failure</td></tr>
+        <tr><td>Ethambutol (Servambutol)</td><td>~80% renal</td><td>15 mg/kg daily</td><td><strong>15–25 mg/kg 3×/week</strong> (not daily)</td><td>Yes — give after HD</td><td>Optic neuritis risk ↑ with accumulation — baseline + monthly visual acuity / color vision</td></tr>
+        <tr><td>Streptomycin (if used)</td><td>Renal</td><td>Weight-based; avoid where possible</td><td>Avoid; if essential, 12–15 mg/kg 2–3×/week with drug levels</td><td>Yes</td><td>Oto- and nephrotoxic — generally avoid in CKD</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-body">
+      <h4>FDC pitfall in advanced CKD</h4>
+      <p>Fixed-dose combinations (4FDC/2FDC) <strong>cannot be interval-adjusted</strong> — daily FDC dosing over-exposes the patient to pyrazinamide and ethambutol once CrCl &lt; 30. <strong>Switch to individual formulations</strong> so PZA and EMB can be given thrice-weekly while isoniazid and rifampicin continue daily. Always co-prescribe pyridoxine.</p>
+    </div>
+  </div>
+
+  <div class="disclaimer"><strong>Clinician note:</strong> This reference summarizes Philippine NTP/PSMID and WHO/KDIGO guidance for TB across the CKD spectrum and does not replace the full guidelines, programmatic protocols (PMDT), or individualized assessment. Verify doses against renal function, drug levels, local drug availability, and current NTP issuances. Brand names are representative examples only.</div>
+</section>
+
+</div>
+</main>
+</div><!-- end .mode-physician -->
 
     <!-- DR CARD -->
 <div class="dr-card-wrap">
@@ -1601,6 +1875,15 @@ function setGuideLang(lang) {
   if (saved !== 'en') setGuideLang(saved);
 })();
 
+// Audience mode (patient / clinician) toggle
+const GMODE_KEY='wgmr-tbckd-mode';
+function setMode(m){
+  localStorage.setItem(GMODE_KEY,m);
+  document.body.classList.toggle('physician-mode',m==='physician');
+  var p=document.getElementById('tab-pt'),d=document.getElementById('tab-md');
+  if(p)p.classList.toggle('active',m==='patient');
+  if(d)d.classList.toggle('active',m==='physician');
+}
 </script>
 
 <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
