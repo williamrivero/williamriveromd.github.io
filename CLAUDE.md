@@ -119,6 +119,25 @@ dr-card-wrap and related-guides immediately before `<footer class="guide-footer"
 `<main>`, as the very last HTML before the footer.**
 
 ```bash
+python3 add_calc_nav_pill.py               # add floating bottom-center nav pill to all calculator pages
+python3 add_calc_nav_pill.py --dry-run     # preview (shows each page's right-hand guide target)
+python3 add_calc_nav_pill.py --guide calc-kfre.html  # single calculator page
+```
+
+Run `add_calc_nav_pill.py` after adding any new calculator page. It injects a
+floating, fixed bottom-center rounded "pill" (between `<!-- CALC-NAV-PILL-START -->`
+/ `END` markers, just before the final `</body>`) split into two chevron links:
+the left chevron returns to the calculators index, the right chevron opens that
+calculator's primary related guide — auto-detected as the first real content
+guide in the page's Related Guides block (calculators/index/symptom-checker are
+skipped; falls back to `understanding-ckd.html`, with per-page exceptions in the
+script's `OVERRIDES` map). Targets `guides/calc-*.html` plus
+`ckd-dri-calculator.html`. Idempotent — the existing block is stripped and
+re-inserted each run, so right-hand targets refresh if Related Guides change.
+Inserts before the **last** `</body>` so JS print-popup strings
+(`win.document.write('…</body></html>')`) are never touched.
+
+```bash
 python3 generate_holiday_companion_pdf.py    # rebuild downloads/wgmr-holiday-kidney-syndrome-guide.pdf
 ```
 
