@@ -92,6 +92,11 @@ html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav
 {END}'''
 
 
+SYMPTOM_CHECKER_RE = re.compile(
+    r'\n?[ \t]*<script\s+src="[^"]*symptom-checker-widget\.js"[^>]*>\s*</script>[ \t]*'
+)
+
+
 def strip_existing(html):
     return re.sub(re.escape(START) + r'.*?' + re.escape(END) + r'\n?', '', html, flags=re.DOTALL)
 
@@ -102,7 +107,7 @@ def process(path, dry):
     tgt = OVERRIDES.get(name) or related_guide(html)
     target = tgt or FALLBACK_GUIDE
     fb = '' if tgt else ' (FALLBACK)'
-    cleaned = strip_existing(html)
+    cleaned = SYMPTOM_CHECKER_RE.sub('', strip_existing(html))
     # Insert before the LAST </body> — earlier ones may live inside JS strings
     # (e.g. win.document.write('</body></html>') for print popups).
     idx = cleaned.rfind('</body>')
