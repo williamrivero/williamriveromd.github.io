@@ -138,13 +138,36 @@ Inserts before the **last** `</body>` so JS print-popup strings
 (`win.document.write('…</body></html>')`) are never touched.
 
 ```bash
-python3 generate_holiday_companion_pdf.py    # rebuild downloads/wgmr-holiday-kidney-syndrome-guide.pdf
+python3 build_companion_pdfs.py                 # render every downloads/*.html companion to PDF
+python3 build_companion_pdfs.py --list          # list buildable companions
+python3 build_companion_pdfs.py wgmr-gout-uric-acid-guide   # render a single companion
 ```
 
-Run `generate_holiday_companion_pdf.py` (requires `pip install reportlab pillow`)
-after updating any of the Holiday Kidney Syndrome guide's images — it rebuilds the
-patient companion PDF from `images/holiday-kidney-syndrome-*.png` plus condensed
-guide text.
+All downloadable **patient companion PDFs** (the `downloads/` filter on
+`guides/index.html`) share one house style and are built HTML→PDF with WeasyPrint
+(`pip install weasyprint`). The single source of truth for their look is
+`downloads/_companion-style.css` (top-strip → navy hero + doctor badge → yellow
+knowledge band → numbered sections → navy running headers → heat-map/data tables →
+branded footer with page numbers). The canonical reference layout is
+`downloads/wgmr-diabetic-diet-guide.html`.
+
+To add or edit a companion: create/edit `downloads/<name>.html` linking the shared
+stylesheet (`<link rel="stylesheet" href="_companion-style.css">`) — use **only**
+classes defined in that CSS, never an inline `<style>` block — then run
+`build_companion_pdfs.py` to (re)render `downloads/<name>.pdf`. Each `<div class="page">`
+must fit exactly one A4 page; physical PDF page count should equal the number of
+`.page` divs. Adjust shared colours/spacing in `_companion-style.css` only, so the
+whole set stays uniform. Files beginning with `_` are partials and are not rendered.
+
+Standard credential line (top-strip, every companion):
+`W.G.M. Rivero MD · FPCP · DPSN · PRC 0105184 · williamriveromd.com · <year>`.
+
+> The old per-PDF reportlab generators (`generate_holiday_companion_pdf.py`,
+> `generate_sodium_food_guide_pdf.py`) have been **removed** — they produced a
+> different, inconsistent look and would revert those PDFs out of the shared style.
+> Do not reintroduce them; build companions via the shared HTML pipeline above. The
+> PSN HD endorsement form is an official external document and is intentionally left
+> in its original style.
 
 The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.
 
