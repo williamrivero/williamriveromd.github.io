@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSA Interpreter Calculator — W. G. M. Rivero, MD</title>
+<meta name="description" content="Interactive PSA calculator: applies 5-ARI drug correction (finasteride ×2, dutasteride ×2.5), calculates % Free PSA, PSA density, PSA velocity, and generates risk-stratified interpretation.">
+<meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-psa-interpreter.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="PSA Interpreter Calculator">
+<meta property="og:description" content="Interactive PSA calculator with 5-ARI drug correction, % Free PSA, PSA density, velocity, and risk-stratified interpretation.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-psa-interpreter.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/prostate-enlargement-og-card.png">
+<meta property="og:locale" content="en_PH">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1f3864;
+  --teal: #1a6b72;
+  --teal-light: #e1f5f0;
+  --gold-light: #d4af4f;
+  --text: #1e2a38;
+  --text-mid: #2c3a4a;
+  --text-muted: #4a5568;
+  --bg: #f9fafb;
+  --white: #ffffff;
+  --border: #e2e6eb;
+  --red: #b91c1c;
+  --red-soft: #fff0f0;
+  --amber: #92400e;
+  --amber-soft: #fffbeb;
+  --green: #166534;
+  --green-soft: #f0fdf4;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ── HEADER ── */
+.calc-header {
+  background: var(--navy);
+  padding: 0 24px;
+  height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.calc-header .back-link {
+  font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,.7); text-decoration: none; transition: color .2s;
+}
+.calc-header .back-link:hover { color: white; }
+.calc-header .title {
+  font-size: 14px; font-weight: 600;
+  color: rgba(255,255,255,.9);
+}
+.calc-header .brand {
+  font-size: 11px; color: var(--gold-light); font-weight: 500;
+}
+
+/* ── WRAPPER ── */
+.calc-body { max-width: 860px; margin: 0 auto; padding: 24px 20px 48px; }
+
+/* ── FORM CARD ── */
+.form-card {
+  background: var(--white);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+.form-card h2 {
+  font-family: 'Lora', serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--navy); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.form-card h2 .badge {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 700; color: white;
+  background: var(--teal); padding: 2px 10px; border-radius: 10px;
+  letter-spacing: .06em;
+}
+.form-section-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--teal);
+  margin: 20px 0 12px; border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 4px; }
+.field-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 4px; }
+@media(max-width: 560px) { .field-grid, .field-grid-3 { grid-template-columns: 1fr; } }
+.field { margin-bottom: 16px; }
+.field label {
+  display: block; font-size: 12px; font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: .08em; margin-bottom: 6px;
+}
+.field input[type=number], .field input[type=date] {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--white); color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 15px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.field input:focus {
+  outline: none; border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(26,107,114,.12);
+}
+.field .hint {
+  font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4;
+}
+
+/* ── RADIO GROUPS ── */
+.radio-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.radio-group label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500; color: var(--text-mid);
+  padding: 7px 14px; border-radius: 8px;
+  border: 1px solid var(--border); cursor: pointer;
+  transition: all .15s; text-transform: none; letter-spacing: 0;
+  background: var(--bg);
+}
+.radio-group label:has(input:checked) {
+  border-color: var(--teal); background: var(--teal-light); color: var(--teal);
+}
+.radio-group input[type=radio] { width: 14px; height: 14px; accent-color: var(--teal); }
+
+/* ── CHECKBOXES ── */
+.check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+@media(max-width: 560px) { .check-grid { grid-template-columns: 1fr; } }
+.check-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 9px 12px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--bg); cursor: pointer;
+  font-size: 13px; font-weight: 500; color: var(--text-mid);
+  transition: border-color .15s;
+}
+.check-item input[type=checkbox] { margin-top: 2px; flex-shrink: 0; accent-color: var(--red); }
+.check-item:has(input:checked) { border-color: #d97706; background: var(--amber-soft); }
+
+/* ── ACTION BUTTONS ── */
+.btn-row { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+.btn-calc {
+  flex: 1; min-width: 160px; padding: 13px 24px;
+  background: var(--teal); color: white;
+  border: none; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: background .2s, transform .1s;
+}
+.btn-calc:hover { background: #155f65; }
+.btn-calc:active { transform: scale(.98); }
+.btn-reset {
+  padding: 13px 20px;
+  background: transparent; color: var(--text-muted);
+  border: 1px solid var(--border); border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all .2s;
+}
+.btn-reset:hover { border-color: var(--text-muted); color: var(--text); }
+
+/* ── RESULTS ── */
+#ci-results { display: none; margin-top: 20px; }
+
+.note-box {
+  border-radius: 10px; padding: 14px 18px;
+  font-size: 13px; line-height: 1.6; margin-bottom: 12px;
+  display: none;
+}
+.drug-note {
+  background: var(--amber-soft);
+  border-left: 4px solid #d97706;
+  color: var(--text-mid);
+}
+.conf-note {
+  background: var(--red-soft);
+  border-left: 4px solid var(--red);
+  color: var(--text-mid);
+}
+
+.result-card {
+  background: var(--white);
+  border-radius: 16px; border: 1px solid var(--border);
+  padding: 28px 32px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+.result-card h3 {
+  font-family: 'Lora', serif; font-size: 18px; font-weight: 600;
+  color: var(--navy); margin-bottom: 18px;
+}
+
+.risk-badge {
+  display: inline-block;
+  font-size: 13px; font-weight: 700; letter-spacing: .04em;
+  padding: 6px 20px; border-radius: 20px; margin-bottom: 16px;
+  color: white;
+}
+
+/* Metrics table */
+.mtable { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px; }
+.mtable th {
+  text-align: left; padding: 9px 14px;
+  background: var(--navy); color: rgba(255,255,255,.88);
+  font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+}
+.mtable th:first-child { border-radius: 10px 0 0 0; }
+.mtable th:last-child { border-radius: 0 10px 0 0; }
+.mtable td {
+  padding: 11px 14px; border-bottom: 1px solid var(--border);
+  vertical-align: top; line-height: 1.5;
+  color: var(--text-mid);
+}
+.mtable tr:last-child td { border-bottom: none; }
+.mtable tr:nth-child(even) td { background: var(--bg); }
+.mtable .row-label { font-weight: 600; color: var(--navy); white-space: nowrap; }
+
+/* Result color classes */
+.vn { color: #166534; font-weight: 700; }
+.vw { color: #92400e; font-weight: 700; }
+.vh { color: #b91c1c; font-weight: 700; }
+.vi { color: #1a6b72; font-weight: 700; }
+.vm { color: #6b7280; font-style: italic; }
+
+/* Narrative */
+.narr-box {
+  background: var(--bg); border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 16px 20px; margin-bottom: 16px;
+  font-size: 14px; color: var(--text-mid); line-height: 1.7;
+}
+
+/* Recs list */
+.rlist {
+  list-style: none; padding: 0; margin: 0;
+}
+.rlist li {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px; color: var(--text-mid); line-height: 1.55;
+}
+.rlist li:last-child { border-bottom: none; }
+.ri { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+
+/* Disclaimer */
+.calc-disclaimer {
+  background: var(--amber-soft);
+  border: 1px solid rgba(146,64,14,.2);
+  border-radius: 10px; padding: 14px 18px;
+  font-size: 12px; color: var(--text-mid);
+  line-height: 1.6; margin-top: 20px;
+}
+
+/* Footer */
+.calc-footer {
+  background: var(--bg); border-top: 1px solid var(--border);
+  padding: 28px 20px; margin-top: 32px; text-align: center;
+}
+.calc-footer p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.calc-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<header class="calc-header">
+  <a href="prostate-panel-interpreter.html" class="back-link">← Back to Guide</a>
+  <span class="title">PSA Interpreter</span>
+  <span class="brand">williamriveromd.com</span>
+</header>
+
+<div class="calc-body">
+
+<div class="form-card">
+  <h2>PSA Panel Calculator <span class="badge">Interactive</span></h2>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Enter your lab values below. Drug corrections and risk stratification are applied automatically. All fields except Total PSA are optional.</p>
+
+  <form id="calc-form" onsubmit="return false;">
+
+    <div class="form-section-label">Patient Information</div>
+    <div class="field-grid">
+      <div class="field">
+        <label for="ci-age">Age (years)</label>
+        <input type="number" id="ci-age" min="18" max="120" placeholder="e.g. 65">
+        <div class="hint">Used for age-adjusted reference ranges</div>
+      </div>
+      <div class="field" style="grid-column: span 1;"></div>
+    </div>
+
+    <div class="form-section-label">PSA Results</div>
+    <div class="field-grid">
+      <div class="field">
+        <label for="ci-tpsa">Total PSA — ng/mL <span style="color:var(--red);">*</span></label>
+        <input type="number" id="ci-tpsa" min="0" step="0.01" placeholder="e.g. 5.40">
+        <div class="hint">As reported by the laboratory</div>
+      </div>
+      <div class="field">
+        <label for="ci-fpsa">Free PSA — ng/mL</label>
+        <input type="number" id="ci-fpsa" min="0" step="0.01" placeholder="e.g. 0.80">
+        <div class="hint">Optional — needed for % Free PSA</div>
+      </div>
+      <div class="field">
+        <label for="ci-vol">Prostate Volume — mL</label>
+        <input type="number" id="ci-vol" min="0" step="0.1" placeholder="e.g. 45">
+        <div class="hint">From TRUS or bladder ultrasound</div>
+      </div>
+      <div class="field" style="grid-column: span 1;"></div>
+    </div>
+
+    <div class="form-section-label">PSA Velocity (Prior Result)</div>
+    <div class="field-grid-3">
+      <div class="field">
+        <label for="ci-prior">Prior PSA — ng/mL</label>
+        <input type="number" id="ci-prior" min="0" step="0.01" placeholder="e.g. 4.20">
+      </div>
+      <div class="field">
+        <label for="ci-pdate">Date of Prior PSA</label>
+        <input type="date" id="ci-pdate">
+      </div>
+      <div class="field">
+        <label for="ci-cdate">Date of Current PSA</label>
+        <input type="date" id="ci-cdate">
+        <div class="hint">Leave blank for today</div>
+      </div>
+    </div>
+
+    <div class="form-section-label">Medications</div>
+
+    <div class="field">
+      <label>5-Alpha Reductase Inhibitor (5-ARI)</label>
+      <div class="radio-group">
+        <label><input type="radio" name="ci-ari" value="none" checked> None</label>
+        <label><input type="radio" name="ci-ari" value="finasteride"> Finasteride 5mg (×2 correction)</label>
+        <label><input type="radio" name="ci-ari" value="dutasteride"> Dutasteride 0.5mg (×2.5 correction)</label>
+      </div>
+    </div>
+
+    <div class="field-grid" style="margin-top:12px;">
+      <div class="field">
+        <label>Alpha-1 Blocker?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="ci-alpha" value="no" checked> No</label>
+          <label><input type="radio" name="ci-alpha" value="yes"> Yes (tamsulosin, silodosin)</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Daily Tadalafil 5mg?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="ci-pde5" value="none" checked> No</label>
+          <label><input type="radio" name="ci-pde5" value="daily"> Yes</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section-label">Confounding Factors (Check all that apply)</div>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" id="cc-dre"> DRE within 48 hours</label>
+      <label class="check-item"><input type="checkbox" id="cc-bx"> Prostate biopsy within 6 weeks</label>
+      <label class="check-item"><input type="checkbox" id="cc-cath"> Catheterization within 1 week</label>
+      <label class="check-item"><input type="checkbox" id="cc-uti"> Active UTI or prostatitis</label>
+      <label class="check-item"><input type="checkbox" id="cc-ejac"> Ejaculation within 48 hours</label>
+      <label class="check-item"><input type="checkbox" id="cc-ride"> Vigorous cycling within 48 hours</label>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-calc" onclick="ciCalc()">Calculate &amp; Interpret</button>
+      <button class="btn-reset" type="button" onclick="ciReset()">Reset</button>
+    </div>
+
+  </form>
+</div>
+
+<!-- RESULTS -->
+<div id="ci-results">
+  <div id="ci-drug" class="note-box drug-note"></div>
+  <div id="ci-conf" class="note-box conf-note"></div>
+
+  <div class="result-card">
+    <h3>Interpretation Results</h3>
+    <div id="r-badge" class="risk-badge"></div>
+
+    <div style="overflow-x:auto;">
+    <table class="mtable">
+      <thead><tr><th>Metric</th><th>Result &amp; Interpretation</th></tr></thead>
+      <tbody>
+        <tr><td class="row-label">Reported PSA</td><td id="r-rep">—</td></tr>
+        <tr id="r-crow" style="display:none;"><td class="row-label">Corrected PSA (5-ARI)</td><td id="r-cor">—</td></tr>
+        <tr><td class="row-label">Effective PSA</td><td id="r-eff">—</td></tr>
+        <tr id="r-frow" style="display:none;"><td class="row-label">% Free PSA</td><td id="r-fpct">—</td></tr>
+        <tr id="r-drow" style="display:none;"><td class="row-label">PSA Density</td><td id="r-dens">—</td></tr>
+        <tr id="r-vrow" style="display:none;"><td class="row-label">PSA Velocity</td><td id="r-vel">—</td></tr>
+        <tr><td class="row-label">Age-Adjusted Range</td><td id="r-age">—</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="narr-box" id="r-narr"></div>
+
+    <div style="margin-top:16px;">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:10px;">Recommendations</div>
+      <ul class="rlist" id="r-recs"></ul>
+    </div>
+
+    <div class="calc-disclaimer">
+      <strong>Clinical disclaimer:</strong> This calculator is for educational and clinical decision-support purposes only. Results must be interpreted in the context of the full clinical picture including symptoms, DRE findings, imaging, and comorbidities. All biopsy and treatment decisions require physician evaluation. PSA correction factors for 5-ARIs are approximate; individual responses vary. Not a substitute for professional medical judgment.
+    </div>
+  </div>
+</div>
+
+</div><!-- .calc-body -->
+
+<footer class="calc-footer">
+  <p>W. G. M. Rivero, MD, FPCP, DPSN · Internal Medicine · Nephrology<br>
+  PRC 0105184 · <a href="https://www.williamriveromd.com">williamriveromd.com</a> · <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener">Book an Appointment</a><br>
+  References: Oesterling JE, J Urol 1993 · EAU Guidelines 2024 · AUA PSA Best Practice Statement<br>
+  © 2026 · For educational purposes only. Not a substitute for professional medical advice.</p>
+</footer>
+
+<script>
+const AGE_REF = [
+  {min:40,max:49,upper:2.5,label:'40–49 yrs: ≤2.5 ng/mL'},
+  {min:50,max:59,upper:3.5,label:'50–59 yrs: ≤3.5 ng/mL'},
+  {min:60,max:69,upper:4.5,label:'60–69 yrs: ≤4.5 ng/mL'},
+  {min:70,max:79,upper:6.5,label:'70–79 yrs: ≤6.5 ng/mL'},
+  {min:80,max:120,upper:7.2,label:'80+ yrs: ≤7.2 ng/mL'},
+];
+function getAgeRef(a){return AGE_REF.find(r=>a>=r.min&&a<=r.max)||{upper:4.0,label:'≤4.0 ng/mL (default)'};}
+function cc(v,l,m){return v<=l?'vn':v<=m?'vw':'vh';}
+
+function ciCalc(){
+  const age=parseFloat(document.getElementById('ci-age').value);
+  const tpsa=parseFloat(document.getElementById('ci-tpsa').value);
+  const fpsa=parseFloat(document.getElementById('ci-fpsa').value);
+  const vol=parseFloat(document.getElementById('ci-vol').value);
+  const prior=parseFloat(document.getElementById('ci-prior').value);
+  const pd=document.getElementById('ci-pdate').value;
+  const cd=document.getElementById('ci-cdate').value;
+  const ari=document.querySelector('input[name="ci-ari"]:checked').value;
+  const alpha=document.querySelector('input[name="ci-alpha"]:checked').value;
+  const pde5=document.querySelector('input[name="ci-pde5"]:checked').value;
+  const confs=[];
+  if(document.getElementById('cc-dre').checked) confs.push('DRE within 48h');
+  if(document.getElementById('cc-bx').checked)  confs.push('prostate biopsy within 6 weeks');
+  if(document.getElementById('cc-cath').checked)confs.push('urethral catheterization within 1 week');
+  if(document.getElementById('cc-uti').checked) confs.push('active UTI or prostatitis');
+  if(document.getElementById('cc-ejac').checked)confs.push('ejaculation within 48h');
+  if(document.getElementById('cc-ride').checked)confs.push('vigorous perineal pressure within 48h');
+  if(isNaN(tpsa)){alert('Total PSA is required.');return;}
+  let cf=1,cpsa=tpsa,cnote='';
+  if(ari==='finasteride'){cf=2;cpsa=tpsa*2;cnote=`<strong>Finasteride ×2 correction applied:</strong> Reported PSA ${tpsa.toFixed(2)} → Estimated true PSA <strong>${cpsa.toFixed(2)} ng/mL</strong>. Finasteride suppresses PSA ~50% after ≥6 months.`;}
+  else if(ari==='dutasteride'){cf=2.5;cpsa=tpsa*2.5;cnote=`<strong>Dutasteride ×2.5 correction applied:</strong> Reported PSA ${tpsa.toFixed(2)} → Estimated true PSA <strong>${cpsa.toFixed(2)} ng/mL</strong>. Dutasteride suppresses PSA 50–70% after ≥6 months.`;}
+  const eff=cpsa;
+  const hasFp=!isNaN(fpsa)&&fpsa>0;
+  const fpct=hasFp?(fpsa/tpsa)*100:null;
+  const hasVol=!isNaN(vol)&&vol>0;
+  const dens=hasVol?eff/vol:null;
+  let vel=null,velYr=null;
+  if(!isNaN(prior)&&prior>=0&&pd){const d1=new Date(pd),d2=cd?new Date(cd):new Date();velYr=(d2-d1)/(365.25*24*3600*1000);if(velYr>0)vel=(eff-prior)/velYr;}
+  const ar=!isNaN(age)?getAgeRef(age):null;
+  let rl,rbg;
+  if(eff<1){rl='LOW RISK';rbg='#166534';}
+  else if(eff<2.5){rl='LOW–INTERMEDIATE';rbg='#2d7a3a';}
+  else if(eff<4){rl='INTERMEDIATE';rbg='#92400e';}
+  else if(eff<=10){rl='ELEVATED — EVALUATE';rbg='#b45309';}
+  else{rl='HIGH CONCERN — REFER';rbg='#b91c1c';}
+  document.getElementById('ci-results').style.display='block';
+  const dc=document.getElementById('ci-drug');
+  if(cnote){dc.innerHTML=cnote;dc.style.display='block';}else dc.style.display='none';
+  const cc2=document.getElementById('ci-conf');
+  if(confs.length){cc2.innerHTML=`<strong>⚠ PSA may be falsely elevated</strong> due to: ${confs.join('; ')}. Consider repeating PSA in 4–6 weeks before clinical decisions.`;cc2.style.display='block';}else cc2.style.display='none';
+  document.getElementById('r-rep').innerHTML=`<span class="${cc(tpsa,2.5,4)}">${tpsa.toFixed(2)} ng/mL</span>`;
+  if(cf>1){document.getElementById('r-crow').style.display='';document.getElementById('r-cor').innerHTML=`<span class="vw">${cpsa.toFixed(2)} ng/mL (×${cf})</span>`;}else document.getElementById('r-crow').style.display='none';
+  document.getElementById('r-eff').innerHTML=`<span class="${cc(eff,2.5,4)}">${eff.toFixed(2)} ng/mL</span>`;
+  if(hasFp){
+    document.getElementById('r-frow').style.display='';
+    const fc=fpct<10?'vh':fpct<15?'vw':fpct<25?'vi':'vn';
+    const fn=fpct<10?'— High cancer concern':fpct<15?'— Intermediate risk':fpct<25?'— Consider biopsy if other factors present':'— Favors benign';
+    document.getElementById('r-fpct').innerHTML=`<span class="${fc}">${fpct.toFixed(1)}% ${fn}</span>`;
+  }else document.getElementById('r-frow').style.display='none';
+  if(hasVol){
+    document.getElementById('r-drow').style.display='';
+    const dc2=dens<0.10?'vn':dens<0.15?'vi':dens<0.20?'vw':'vh';
+    const dn=dens<0.10?'— Low cancer likelihood':dens<0.15?'— Borderline':dens<0.20?'— Supports biopsy discussion':'— High cancer probability';
+    document.getElementById('r-dens').innerHTML=`<span class="${dc2}">${dens.toFixed(3)} ng/mL/mL ${dn}</span>`;
+  }else document.getElementById('r-drow').style.display='none';
+  if(vel!==null){
+    document.getElementById('r-vrow').style.display='';
+    const vc=vel<0.35?'vn':vel<0.75?'vw':'vh';
+    const vn=vel<0?'— PSA decreased':vel<0.35?'— Stable / reassuring':vel<0.75?'— Intermediate rise; monitor closely':'— Rapid rise; high concern';
+    document.getElementById('r-vel').innerHTML=`<span class="${vc}">${vel.toFixed(2)} ng/mL/yr (over ${velYr.toFixed(1)} yr) ${vn}</span>`;
+  }else document.getElementById('r-vrow').style.display='none';
+  if(ar){const ab=eff>ar.upper;document.getElementById('r-age').innerHTML=`<span class="${ab?'vh':'vn'}">${ar.label} → ${ab?'⚠ ABOVE age-adjusted range':'✓ Within range'}</span>`;}
+  else document.getElementById('r-age').innerHTML=`<span class="vm">Enter age to see reference</span>`;
+  const badge=document.getElementById('r-badge');
+  badge.textContent=rl;badge.style.background=rbg;badge.style.color='#fff';
+  const al=ari==='none'?'not on a 5-ARI':ari==='finasteride'?'on Finasteride 5mg':'on Dutasteride 0.5mg';
+  const cn=confs.length?` <strong>Note:</strong> Confounding factors present — repeat PSA in 4–6 weeks before decisions.`:'';
+  let narr='';
+  if(eff<1)narr=`<p>Effective PSA <strong>${eff.toFixed(2)} ng/mL</strong> (${al}) is very low. Risk of clinically significant prostate cancer is minimal. Routine monitoring appropriate.${cn}</p>`;
+  else if(eff<2.5)narr=`<p>Effective PSA <strong>${eff.toFixed(2)} ng/mL</strong> (${al}) is low-intermediate. BPH or prostatitis most likely. Individualize interval by age and family history.${cn}</p>`;
+  else if(eff<4)narr=`<p>Effective PSA <strong>${eff.toFixed(2)} ng/mL</strong> (${al}) is mildly elevated — gray zone. BPH, prostatitis, and cancer can all produce this level. % Free PSA and PSA density should guide next steps.${cn}</p>`;
+  else if(eff<=10)narr=`<p>Effective PSA <strong>${eff.toFixed(2)} ng/mL</strong> (${al}) is elevated. The 4–10 ng/mL gray zone carries ~25% cancer risk on biopsy. <strong>% Free PSA is critical: &lt;10% → biopsy strongly advised; 10–25% → shared decision; &gt;25% → cancer less likely.</strong> PSA density and velocity add further stratification.${cn}</p>`;
+  else{narr=`<p>Effective PSA <strong>${eff.toFixed(2)} ng/mL</strong> (${al}) is significantly elevated. Risk of prostate cancer — including high-grade disease — is high. Urgent urology referral warranted. Bone scan and mpMRI should be considered.${cn}</p>`;
+  if(alpha==='yes')narr+=`<p><strong>Alpha-blocker note:</strong> Alpha-1 blockers do not lower PSA and do not alter this risk interpretation.</p>`;
+  if(pde5==='daily')narr+=`<p><strong>Daily tadalafil note:</strong> Negligible PSA effect; no numeric correction applied.</p>`;}
+  document.getElementById('r-narr').innerHTML=narr;
+  const recs=[];
+  if(confs.length)recs.push({i:'⚠',t:'Repeat PSA in 4–6 weeks after confounders resolve before making biopsy decisions.'});
+  if(cf>1)recs.push({i:'💊',t:`Always use corrected PSA (×${cf}) for cancer risk assessment. Document 5-ARI medication and duration in records.`});
+  if(hasFp&&fpct<10)recs.push({i:'🔴',t:'% Free PSA <10% → high probability of prostate cancer. Urology referral and biopsy discussion strongly recommended.'});
+  else if(hasFp&&fpct<25&&eff>=4)recs.push({i:'🟡',t:'% Free PSA 10–25% with elevated PSA → intermediate risk. Shared decision-making; consider mpMRI before biopsy.'});
+  else if(hasFp&&fpct>=25)recs.push({i:'🟢',t:'% Free PSA ≥25% is reassuring for benign disease. Active surveillance with serial PSA appropriate if other factors favorable.'});
+  if(hasVol&&dens>=0.15)recs.push({i:'📐',t:`PSA density ≥0.15 (yours: ${dens.toFixed(3)} ng/mL/mL) supports biopsy consideration even in the gray zone.`});
+  if(vel!==null&&vel>=0.75)recs.push({i:'📈',t:`PSA velocity ≥0.75 ng/mL/yr (yours: ${vel.toFixed(2)}) is independently associated with increased cancer risk.`});
+  if(ar&&eff>ar.upper)recs.push({i:'🔶',t:`PSA exceeds age-adjusted upper limit (${ar.label}). Warrants evaluation regardless of absolute value.`});
+  if(eff>=4&&eff<=10&&!hasFp)recs.push({i:'🧪',t:'Order Free PSA (fPSA) — critical for risk stratification in the 4–10 ng/mL gray zone.'});
+  if(eff>=4&&!hasVol)recs.push({i:'📡',t:'Obtain prostate volume (TRUS or bladder scan) to calculate PSA density.'});
+  if(eff>10)recs.push({i:'🏥',t:'Urgent urology referral. Consider mpMRI and bone scan. Do not delay pending repeat PSA.'});
+  else if(eff>=4)recs.push({i:'⚕',t:'Urology referral for biopsy discussion. mpMRI before biopsy reduces unnecessary procedures (EAU 2024, NICE 2019).'});
+  recs.push({i:'📅',t:'PSA monitoring: every 1–2 years if low risk; every 6–12 months if elevated; recheck at 6 months after starting 5-ARI to establish treated baseline.'});
+  document.getElementById('r-recs').innerHTML=recs.map(r=>`<li><span class="ri">${r.i}</span><span>${r.t}</span></li>`).join('');
+  document.getElementById('ci-results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function ciReset(){
+  document.querySelectorAll('#calc-form input[type=number],#calc-form input[type=date]').forEach(e=>e.value='');
+  document.querySelectorAll('#calc-form input[type=radio]').forEach(e=>{if(e.value==='none'||e.value==='no')e.checked=true;});
+  document.querySelectorAll('#calc-form input[type=checkbox]').forEach(e=>e.checked=false);
+  document.getElementById('ci-results').style.display='none';
+}
+</script>
+<!-- CALC-NAV-PILL-START -->
+<style id="calc-nav-pill-style">
+.calc-nav-pill{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;align-items:stretch;z-index:9997;background:#1f3864;border-radius:999px;box-shadow:0 6px 22px rgba(15,30,51,.32);border:1px solid rgba(255,255,255,.14);}
+.calc-nav-pill>a,.calc-nav-pill>.cnp-print{position:relative;display:flex;align-items:center;justify-content:center;width:58px;height:44px;color:#fff;text-decoration:none;transition:background .18s;background:none;border:none;cursor:pointer;}
+.calc-nav-pill>a:first-child{border-radius:999px 0 0 999px;}
+.calc-nav-pill>a:last-child{border-radius:0 999px 999px 0;}
+.calc-nav-pill>a:hover,.calc-nav-pill>.cnp-print:hover{background:#2a4a7f;}
+.calc-nav-pill>a:first-child:hover{border-radius:999px 0 0 999px;}
+.calc-nav-pill>a:last-child:hover{border-radius:0 999px 999px 0;}
+.calc-nav-pill>a:focus-visible,.calc-nav-pill>.cnp-print:focus-visible{outline:2px solid #d4af4f;outline-offset:-3px;}
+.calc-nav-pill .cnp-div{width:1px;background:rgba(255,255,255,.22);align-self:stretch;}
+.calc-nav-pill svg{width:20px;height:20px;}
+.cnp-tip{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);background:rgba(15,30,51,.92);color:#fff;font-size:11.5px;font-weight:500;white-space:nowrap;padding:5px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s;}
+.calc-nav-pill>a:hover .cnp-tip,.calc-nav-pill>.cnp-print:hover .cnp-tip{opacity:1;}
+html[data-theme="dark"] .calc-nav-pill{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav-pill>.cnp-print:hover{background:#243349;}
+.print-fab,.print-btn,.calc-back-btn,.calc-rg-btn{display:none!important;}
+@media print{.calc-nav-pill{display:none!important;}}
+</style>
+<nav class="calc-nav-pill" id="calc-nav-pill" aria-label="Calculator navigation">
+<a href="https://www.williamriveromd.com/guides/calculators.html" aria-label="Back to all calculators"><span class="cnp-tip">All Guides</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
+<span class="cnp-div"></span>
+<button class="cnp-print" onclick="window.print()" aria-label="Print this page"><span class="cnp-tip">Print</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></button>
+<span class="cnp-div"></span>
+<a href="understanding-ckd.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+</nav>
+<!-- CALC-NAV-PILL-END -->
+</body>
+</html>
