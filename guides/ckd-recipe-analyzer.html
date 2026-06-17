@@ -1769,11 +1769,11 @@ function buildNFLabel(n, recipeName, servings, servingDesc){
   <div class="nf-med"></div>
   <div class="nf-dv-header">% Daily Value*</div>
   <div class="nf-thin"></div>
-  <div class="nf-row"><span class="nf-row-label bold">Total Fat</span><span>${n.fat?.toFixed(1)}g</span><span class="nf-row-pct">${pct(n.fat,78)}</span></div>
+  <div class="nf-row"><span class="nf-row-label bold">Total Fat</span><span>${(n.fat||0).toFixed(1)}g</span><span class="nf-row-pct">${pct(n.fat,78)}</span></div>
   <div class="nf-thin"></div>
-  <div class="nf-row nf-row-indent"><span class="nf-row-label">Saturated Fat</span><span>${n.sat_fat?.toFixed(1)}g</span><span class="nf-row-pct">${pct(n.sat_fat,20)}</span></div>
+  <div class="nf-row nf-row-indent"><span class="nf-row-label">Saturated Fat</span><span>${(n.sat_fat||0).toFixed(1)}g</span><span class="nf-row-pct">${pct(n.sat_fat,20)}</span></div>
   <div class="nf-thin"></div>
-  <div class="nf-row nf-row-indent"><span class="nf-row-label"><i>Trans</i> Fat</span><span>${n.trans_fat?.toFixed(1)}g</span><span class="nf-row-pct"></span></div>
+  <div class="nf-row nf-row-indent"><span class="nf-row-label"><i>Trans</i> Fat</span><span>${(n.trans_fat||0).toFixed(1)}g</span><span class="nf-row-pct"></span></div>
   <div class="nf-thin"></div>
   <div class="nf-row"><span class="nf-row-label bold">Cholesterol</span><span>${Math.round(n.cholesterol)}mg</span><span class="nf-row-pct">${pct(n.cholesterol,300)}</span></div>
   <div class="nf-thin"></div>
@@ -1781,11 +1781,11 @@ function buildNFLabel(n, recipeName, servings, servingDesc){
   <div class="nf-thin"></div>
   <div class="nf-row"><span class="nf-row-label bold">Total Carbohydrate</span><span>${Math.round(n.carbs)}g</span><span class="nf-row-pct">${pct(n.carbs,275)}</span></div>
   <div class="nf-thin"></div>
-  <div class="nf-row nf-row-indent"><span class="nf-row-label">Dietary Fiber</span><span>${n.fiber?.toFixed(1)}g</span><span class="nf-row-pct">${pct(n.fiber,28)}</span></div>
+  <div class="nf-row nf-row-indent"><span class="nf-row-label">Dietary Fiber</span><span>${(n.fiber||0).toFixed(1)}g</span><span class="nf-row-pct">${pct(n.fiber,28)}</span></div>
   <div class="nf-thin"></div>
-  <div class="nf-row nf-row-indent"><span class="nf-row-label">Total Sugars</span><span>${n.sugars?.toFixed(1)}g</span><span class="nf-row-pct"></span></div>
+  <div class="nf-row nf-row-indent"><span class="nf-row-label">Total Sugars</span><span>${(n.sugars||0).toFixed(1)}g</span><span class="nf-row-pct"></span></div>
   <div class="nf-thin"></div>
-  <div class="nf-row"><span class="nf-row-label bold">Protein</span><span>${n.protein?.toFixed(1)}g</span><span class="nf-row-pct"></span></div>
+  <div class="nf-row"><span class="nf-row-label bold">Protein</span><span>${(n.protein||0).toFixed(1)}g</span><span class="nf-row-pct"></span></div>
   <div class="nf-med"></div>
   <div class="nf-row"><span class="nf-row-label">Potassium</span><span>${Math.round(n.potassium)}mg</span><span class="nf-row-pct">${pct(n.potassium,4700)}</span></div>
   <div class="nf-thin"></div>
@@ -1793,7 +1793,7 @@ function buildNFLabel(n, recipeName, servings, servingDesc){
   <div class="nf-thin"></div>
   <div class="nf-row"><span class="nf-row-label">Calcium</span><span>${Math.round(n.calcium)}mg</span><span class="nf-row-pct">${pct(n.calcium,1300)}</span></div>
   <div class="nf-thin"></div>
-  <div class="nf-row"><span class="nf-row-label">Iron</span><span>${n.iron?.toFixed(1)}mg</span><span class="nf-row-pct">${pct(n.iron,18)}</span></div>
+  <div class="nf-row"><span class="nf-row-label">Iron</span><span>${(n.iron||0).toFixed(1)}mg</span><span class="nf-row-pct">${pct(n.iron,18)}</span></div>
   <div class="nf-footer">*The % Daily Value tells you how much a nutrient in a serving contributes to a 2,000 calorie daily diet.</div>
   `;
 }
@@ -1845,13 +1845,13 @@ function buildFlags(n, stage){
   // Protein
   if(stage==='HD'||stage==='PD'){
     if(n.protein < 20){
-      flags.push({cls:'warn',icon:'⚠️',title:`Low Protein — ${n.protein?.toFixed(1)} g per serving`,body:`Dialysis patients need 1.0–1.5 g/kg/day. This meal is low in protein — consider adding a high biological value protein source (egg white, lean chicken, tilapia) to meet daily targets.`,values:''});
+      flags.push({cls:'warn',icon:'⚠️',title:`Low Protein — ${(n.protein||0).toFixed(1)} g per serving`,body:`Dialysis patients need 1.0–1.5 g/kg/day. This meal is low in protein — consider adding a high biological value protein source (egg white, lean chicken, tilapia) to meet daily targets.`,values:''});
     } else {
-      flags.push({cls:'ok',icon:'✓',title:`Protein Adequate — ${n.protein?.toFixed(1)} g per serving`,body:`Good protein content for a dialysis patient. Aim for 50%+ high biological value (HBV) sources.`,values:''});
+      flags.push({cls:'ok',icon:'✓',title:`Protein Adequate — ${(n.protein||0).toFixed(1)} g per serving`,body:`Good protein content for a dialysis patient. Aim for 50%+ high biological value (HBV) sources.`,values:''});
     }
   } else if(['4','5','3b'].includes(stage)){
     if(n.protein > 25){
-      flags.push({cls:'warn',icon:'⚠️',title:`Protein — ${n.protein?.toFixed(1)} g per serving`,body:`Pre-dialysis CKD patients are advised to moderate protein intake (0.6–0.8 g/kg/day). This meal is relatively high in protein. Consider reducing meat/fish portion slightly.`,values:''});
+      flags.push({cls:'warn',icon:'⚠️',title:`Protein — ${(n.protein||0).toFixed(1)} g per serving`,body:`Pre-dialysis CKD patients are advised to moderate protein intake (0.6–0.8 g/kg/day). This meal is relatively high in protein. Consider reducing meat/fish portion slightly.`,values:''});
     }
   }
 
@@ -1948,8 +1948,8 @@ function parseLeadingQty(s){
   if((m=s.match(/^(\d+)\s+(\d+)\/(\d+)\s+(.*)$/))) return {qty:+m[1]+(+m[2]/+m[3]),rest:m[4]};
   if((m=s.match(/^(\d+)\/(\d+)\s+(.*)$/)))         return {qty:+m[1]/+m[2],rest:m[3]};
   if((m=s.match(/^(\d+(?:\.\d+)?)\s*[-–]\s*(\d+(?:\.\d+)?)\s+(.*)$/))) return {qty:(+m[1]+ +m[2])/2,rest:m[3]};
-  if((m=s.match(/^(\d+)([¼-¾⅐-⅞])\s+(.*)$/))) return {qty:+m[1]+(UNICODE_FRAC[m[2]]||0),rest:m[3]};
-  if((m=s.match(/^([¼-¾⅐-⅞])\s+(.*)$/)))     return {qty:(UNICODE_FRAC[m[1]]||0.5),rest:m[2]};
+  if((m=s.match(/^(\d+)([½¼¾⅓⅔⅛⅜])\s+(.*)$/))) return {qty:+m[1]+(UNICODE_FRAC[m[2]]||0),rest:m[3]};
+  if((m=s.match(/^([½¼¾⅓⅔⅛⅜])\s+(.*)$/)))     return {qty:(UNICODE_FRAC[m[1]]||0.5),rest:m[2]};
   if((m=s.match(/^(\d+(?:\.\d+)?)\s+(.*)$/)))      return {qty:+m[1],rest:m[2]};
   return {qty:null,rest:s};
 }
@@ -2100,7 +2100,7 @@ async function analyzeRecipe(){
       const rows = n.ingredients.map(ig=>`<tr>
         <td>${ig.name}</td>
         <td>${Math.round(ig.calories)}</td>
-        <td>${ig.protein?.toFixed(1)}g</td>
+        <td>${(ig.protein||0).toFixed(1)}g</td>
         <td>${Math.round(ig.sodium)}mg</td>
         <td>${Math.round(ig.potassium)}mg</td>
         <td>${Math.round(ig.phosphorus)}mg</td>
