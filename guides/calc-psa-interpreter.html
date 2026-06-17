@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PSA Interpreter Calculator — W. G. M. Rivero, MD</title>
-<meta name="description" content="Interactive PSA calculator: applies 5-ARI drug correction (finasteride ×2, dutasteride ×2.5), calculates % Free PSA, PSA density, PSA velocity, and generates risk-stratified interpretation.">
+<meta name="description" content="Interactive PSA calculator: applies 5-ARI drug correction (finasteride ×2, dutasteride ×2.5), calculates % Free PSA, PSA density, PSA velocity, and generates risk-stratified interpretation. With clinical guidance, age-adjusted references, and evidence.">
 <meta name="author" content="W. G. M. Rivero, MD, FPCP, DPSN">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.williamriveromd.com/guides/calc-psa-interpreter.html">
@@ -17,274 +17,431 @@
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="William Gregory M. Rivero, MD">
 <meta property="og:title" content="PSA Interpreter Calculator">
-<meta property="og:description" content="Interactive PSA calculator with 5-ARI drug correction, % Free PSA, PSA density, velocity, and risk-stratified interpretation.">
+<meta property="og:description" content="Interactive PSA calculator with 5-ARI drug correction, % Free PSA, PSA density, velocity, and risk-stratified interpretation. With clinical guidance and evidence.">
 <meta property="og:url" content="https://www.williamriveromd.com/guides/calc-psa-interpreter.html">
 <meta property="og:image" content="https://www.williamriveromd.com/images/prostate-enlargement-og-card.png">
 <meta property="og:locale" content="en_PH">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy: #1f3864;
-  --teal: #1a6b72;
-  --teal-light: #e1f5f0;
-  --gold-light: #d4af4f;
-  --text: #1e2a38;
-  --text-mid: #2c3a4a;
-  --text-muted: #4a5568;
-  --bg: #f9fafb;
-  --white: #ffffff;
-  --border: #e2e6eb;
-  --red: #b91c1c;
-  --red-soft: #fff0f0;
-  --amber: #92400e;
-  --amber-soft: #fffbeb;
-  --green: #166534;
-  --green-soft: #f0fdf4;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  color: var(--text);
-  background: var(--bg);
-  font-size: 15px;
-  line-height: 1.65;
-}
+  /* ═══════════════════════════════════════════════════════════════════════════
+     MASTER GUIDE CSS — williamriveromd.com
+     Version: 2026-05-17c
+  ═══════════════════════════════════════════════════════════════════════════ */
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+    --text:       #1e2a38;
+    --text-mid:   #2c3a4a;
+    --text-muted: #4a5568;
+    --text-faint: #5c6a7e;
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+    --red:        #b91c1c;
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;
+    --amber-soft: #fffbeb;
+    --green:      #166534;
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;
+    --purple-soft:#faf5ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.7; font-size: 16px; }
 
-/* ── HEADER ── */
-.calc-header {
-  background: var(--navy);
-  padding: 0 24px;
-  height: 52px;
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 100;
-}
-.calc-header .back-link {
-  font-size: 12px; font-weight: 500;
-  color: rgba(255,255,255,.7); text-decoration: none; transition: color .2s;
-}
-.calc-header .back-link:hover { color: white; }
-.calc-header .title {
-  font-size: 14px; font-weight: 600;
-  color: rgba(255,255,255,.9);
-}
-.calc-header .brand {
-  font-size: 11px; color: var(--gold-light); font-weight: 500;
-}
+  /* ── SITE HEADER ── */
+  .site-header { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 32px; background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 200; }
+  .site-header .brand { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em; }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
 
-/* ── WRAPPER ── */
-.calc-body { max-width: 860px; margin: 0 auto; padding: 24px 20px 48px; }
+  /* ── TOGGLE BAR ── */
+  .guide-toggle-bar { display: flex; gap: 8px; align-items: center; padding: 6px 32px; background: rgba(10,18,32,.96) !important; border-bottom: 1px solid rgba(255,255,255,.08) !important; justify-content: space-between; flex-wrap: wrap; }
+  .toggle-btn { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.82); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 16px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
 
+  /* ── HERO ── */
+  .hero { background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%); color: white; padding: 72px 0 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -80px; width: 420px; height: 420px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); }
+  .hero-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.35); padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Lora', serif; font-size: clamp(28px, 5vw, 50px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; letter-spacing: -.02em; color: #ffffff; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.92); max-width: 620px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; color: rgba(255,255,255,.75); }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+  .hero-xlink { color: #fff; font-weight: 600; text-decoration: underline; text-decoration-color: var(--gold-light); text-decoration-thickness: 1.5px; text-underline-offset: 3px; border-radius: 6px; padding: 2px 4px; }
+  .hero-xlink:hover { color: var(--gold-light); }
+
+  /* ── CONTAINER ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── NAV STRIP ── */
+  .nav-strip { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 100; }
+  .nav-pills { display: flex; gap: 4px; padding: 12px 32px; max-width: 860px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill { white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+
+  /* ── SECTIONS ── */
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .section h2 { font-family: 'Lora', serif; font-size: clamp(22px, 3.5vw, 32px); font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 20px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; line-height: 1.7; }
+  .section p:last-child { margin-bottom: 0; }
+
+  /* ── ALERT BOXES ── */
+  .alert { border-radius: 12px; padding: 20px 24px; margin: 24px 0; display: flex; gap: 16px; align-items: flex-start; }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-purple { background: var(--purple-soft); border-left: 3px solid var(--purple); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .alert-body p, .alert-body ul, .alert-body ul li { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th { text-align: left; padding: 11px 16px; background: var(--navy); color: rgba(255,255,255,.92); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td { padding: 13px 16px; vertical-align: top; line-height: 1.55; border-bottom: 1px solid var(--border); color: var(--text-mid); }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
+  /* ── RELATED GUIDES ── */
+  .related-guides { max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0; border-top: 2px solid var(--border); }
+  .related-guides h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em; }
+  .related-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+  .related-card { display: flex; flex-direction: column; gap: 4px; background: var(--navy); border-radius: 8px; padding: 14px 16px; text-decoration: none; color: inherit; transition: transform .15s, box-shadow .15s; position: relative; overflow: hidden; }
+  .related-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--teal); }
+  .related-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,56,100,0.28); }
+  .related-card-tag   { font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9); text-transform: uppercase; letter-spacing: .08em; }
+  .related-card-title { font-size: .88rem; font-weight: 600; color: #fff; line-height: 1.3; }
+
+  /* ── DR CARD ── */
+  .dr-card-wrap { max-width: 860px; margin: 2.5rem auto 0; padding: 0 32px 48px; }
+  .dr-card { background: var(--navy); color: white; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .dr-avatar { width: 72px; height: 72px; background: transparent; border-radius: 50%; flex-shrink: 0; border: none; overflow: hidden; }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4 { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p  { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; }
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+
+  /* ── GUIDE FOOTER ── */
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 0; }
+  .guide-footer .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 16px 20px; margin: 40px 0 36px; font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .disclaimer strong { color: var(--navy); }
+
+  /* ── MOBILE ── */
+  @media(max-width: 480px) {
+    .container { padding: 0 20px; }
+    .related-guides { padding-left: 20px; padding-right: 20px; }
+    .guide-footer .footer-inner { padding: 0 20px; }
+    .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .dr-card-wrap { padding: 0 20px 40px; }
+  }
+
+  /* ── DARK MODE ── */
+  html[data-theme="dark"] {
+    --navy: #1f3864; --gold: #b8962e; --gold-light: #d4af4f;
+    --teal: #2ba8b0; --teal-light: #0a2830;
+    --text: #e8eaf0; --text-mid: #dde3eb; --text-muted: #9baab8; --text-faint: #8090a4;
+    --bg: #141c2a; --white: #1a2030; --border: #2a3548;
+    --red: #f87171; --red-soft: #2a1515;
+    --amber: #fbbf24; --amber-soft: #2a1900;
+    --green: #4ade80; --green-soft: #0e2a1c;
+    --purple: #c084fc; --purple-soft: #1a1030;
+  }
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+  html[data-theme="dark"] .hero { background: #080d16; }
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+  html[data-theme="dark"] .nav-pill:hover { background: #1a2535; color: var(--text); }
+  html[data-theme="dark"] .alert-teal   { background: #0a2830; }
+  html[data-theme="dark"] .alert-amber  { background: #2a1900; }
+  html[data-theme="dark"] .alert-green  { background: #0e2a1c; }
+  html[data-theme="dark"] .alert-red    { background: #2a1515; }
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; color: var(--text-mid); }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-theme="dark"] .table-wrap tbody tr:hover td { background: #1e3040; }
+  html[data-theme="dark"] .related-card { background: #1a2535; }
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+  html[data-theme="dark"] .disclaimer strong { color: var(--text-mid); }
+  html[data-theme="dark"] .alert-body h4 { color: var(--text) !important; }
+  html[data-theme="dark"] .alert-body p, html[data-theme="dark"] .alert-body ul li { color: var(--text-mid) !important; }
+  html[data-theme="dark"] .section h2 { color: var(--text) !important; }
+</style>
+
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Lora',serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Lora',serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+html[data-theme="dark"] .mdc-acc>summary,
+html[data-theme="dark"] .mdc-acc-body>h3.mdc-sub{color:var(--text)!important;}
+html[data-theme="dark"] .mdc-acc{background:var(--white);border-color:var(--border);}
+html[data-theme="dark"] .mdc-acc>summary:hover{background:#1e2a3a;}
+html[data-theme="dark"] .mdc-acc[open]>summary{border-bottom-color:var(--border);}
+html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
+html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
+</style>
+
+<style id="calc-style">
 /* ── FORM CARD ── */
-.form-card {
-  background: var(--white);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  padding: 28px 32px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 12px rgba(0,0,0,.06);
-}
-.form-card h2 {
-  font-family: 'Lora', serif;
-  font-size: 20px; font-weight: 600;
-  color: var(--navy); margin-bottom: 20px;
-  display: flex; align-items: center; gap: 10px;
-}
-.form-card h2 .badge {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px; font-weight: 700; color: white;
-  background: var(--teal); padding: 2px 10px; border-radius: 10px;
-  letter-spacing: .06em;
-}
-.form-section-label {
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .1em; color: var(--teal);
-  margin: 20px 0 12px; border-bottom: 1px solid var(--border);
-  padding-bottom: 6px;
-}
+.form-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); padding: 28px 32px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.form-card h2 { font-family: 'Lora', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.form-card h2 .badge { font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700; color: white; background: var(--teal); padding: 2px 10px; border-radius: 10px; letter-spacing: .06em; }
+.form-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--teal); margin: 20px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
 .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 4px; }
 .field-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 4px; }
 @media(max-width: 560px) { .field-grid, .field-grid-3 { grid-template-columns: 1fr; } }
 .field { margin-bottom: 16px; }
-.field label {
-  display: block; font-size: 12px; font-weight: 600;
-  color: var(--text-muted); text-transform: uppercase;
-  letter-spacing: .08em; margin-bottom: 6px;
-}
-.field input[type=number], .field input[type=date] {
-  width: 100%; padding: 10px 12px;
-  border: 1px solid var(--border); border-radius: 8px;
-  background: var(--white); color: var(--text);
-  font-family: 'DM Sans', sans-serif; font-size: 15px;
-  transition: border-color .15s, box-shadow .15s;
-}
-.field input:focus {
-  outline: none; border-color: var(--teal);
-  box-shadow: 0 0 0 3px rgba(26,107,114,.12);
-}
-.field .hint {
-  font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4;
-}
+.field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+.field input[type=number], .field input[type=date] { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; transition: border-color .15s, box-shadow .15s; }
+.field input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.12); }
+.field .hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
 
 /* ── RADIO GROUPS ── */
 .radio-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-.radio-group label {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 13px; font-weight: 500; color: var(--text-mid);
-  padding: 7px 14px; border-radius: 8px;
-  border: 1px solid var(--border); cursor: pointer;
-  transition: all .15s; text-transform: none; letter-spacing: 0;
-  background: var(--bg);
-}
-.radio-group label:has(input:checked) {
-  border-color: var(--teal); background: var(--teal-light); color: var(--teal);
-}
+.radio-group label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-mid); padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: all .15s; text-transform: none; letter-spacing: 0; background: var(--bg); }
+.radio-group label:has(input:checked) { border-color: var(--teal); background: var(--teal-light); color: var(--teal); }
 .radio-group input[type=radio] { width: 14px; height: 14px; accent-color: var(--teal); }
 
 /* ── CHECKBOXES ── */
 .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
 @media(max-width: 560px) { .check-grid { grid-template-columns: 1fr; } }
-.check-item {
-  display: flex; align-items: flex-start; gap: 8px;
-  padding: 9px 12px; border-radius: 8px;
-  border: 1px solid var(--border); background: var(--bg); cursor: pointer;
-  font-size: 13px; font-weight: 500; color: var(--text-mid);
-  transition: border-color .15s;
-}
+.check-item { display: flex; align-items: flex-start; gap: 8px; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-mid); transition: border-color .15s; }
 .check-item input[type=checkbox] { margin-top: 2px; flex-shrink: 0; accent-color: var(--red); }
 .check-item:has(input:checked) { border-color: #d97706; background: var(--amber-soft); }
 
-/* ── ACTION BUTTONS ── */
+/* ── BUTTONS ── */
 .btn-row { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
-.btn-calc {
-  flex: 1; min-width: 160px; padding: 13px 24px;
-  background: var(--teal); color: white;
-  border: none; border-radius: 10px;
-  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
-  cursor: pointer; transition: background .2s, transform .1s;
-}
+.btn-calc { flex: 1; min-width: 160px; padding: 13px 24px; background: var(--teal); color: white; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background .2s, transform .1s; }
 .btn-calc:hover { background: #155f65; }
 .btn-calc:active { transform: scale(.98); }
-.btn-reset {
-  padding: 13px 20px;
-  background: transparent; color: var(--text-muted);
-  border: 1px solid var(--border); border-radius: 10px;
-  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-  cursor: pointer; transition: all .2s;
-}
+.btn-reset { padding: 13px 20px; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all .2s; }
 .btn-reset:hover { border-color: var(--text-muted); color: var(--text); }
 
 /* ── RESULTS ── */
 #ci-results { display: none; margin-top: 20px; }
-
-.note-box {
-  border-radius: 10px; padding: 14px 18px;
-  font-size: 13px; line-height: 1.6; margin-bottom: 12px;
-  display: none;
-}
-.drug-note {
-  background: var(--amber-soft);
-  border-left: 4px solid #d97706;
-  color: var(--text-mid);
-}
-.conf-note {
-  background: var(--red-soft);
-  border-left: 4px solid var(--red);
-  color: var(--text-mid);
-}
-
-.result-card {
-  background: var(--white);
-  border-radius: 16px; border: 1px solid var(--border);
-  padding: 28px 32px;
-  box-shadow: 0 2px 12px rgba(0,0,0,.06);
-}
-.result-card h3 {
-  font-family: 'Lora', serif; font-size: 18px; font-weight: 600;
-  color: var(--navy); margin-bottom: 18px;
-}
-
-.risk-badge {
-  display: inline-block;
-  font-size: 13px; font-weight: 700; letter-spacing: .04em;
-  padding: 6px 20px; border-radius: 20px; margin-bottom: 16px;
-  color: white;
-}
+.note-box { border-radius: 10px; padding: 14px 18px; font-size: 13px; line-height: 1.6; margin-bottom: 12px; display: none; }
+.drug-note { background: var(--amber-soft); border-left: 4px solid #d97706; color: var(--text-mid); }
+.conf-note { background: var(--red-soft); border-left: 4px solid var(--red); color: var(--text-mid); }
+.result-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); padding: 28px 32px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.result-card h3 { font-family: 'Lora', serif; font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 18px; }
+.risk-badge { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .04em; padding: 6px 20px; border-radius: 20px; margin-bottom: 16px; color: white; }
 
 /* Metrics table */
 .mtable { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px; }
-.mtable th {
-  text-align: left; padding: 9px 14px;
-  background: var(--navy); color: rgba(255,255,255,.88);
-  font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-}
+.mtable th { text-align: left; padding: 9px 14px; background: var(--navy); color: rgba(255,255,255,.88); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .mtable th:first-child { border-radius: 10px 0 0 0; }
 .mtable th:last-child { border-radius: 0 10px 0 0; }
-.mtable td {
-  padding: 11px 14px; border-bottom: 1px solid var(--border);
-  vertical-align: top; line-height: 1.5;
-  color: var(--text-mid);
-}
+.mtable td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; color: var(--text-mid); }
 .mtable tr:last-child td { border-bottom: none; }
 .mtable tr:nth-child(even) td { background: var(--bg); }
 .mtable .row-label { font-weight: 600; color: var(--navy); white-space: nowrap; }
-
-/* Result color classes */
 .vn { color: #166534; font-weight: 700; }
 .vw { color: #92400e; font-weight: 700; }
 .vh { color: #b91c1c; font-weight: 700; }
 .vi { color: #1a6b72; font-weight: 700; }
 .vm { color: #6b7280; font-style: italic; }
-
-/* Narrative */
-.narr-box {
-  background: var(--bg); border-radius: 10px;
-  border: 1px solid var(--border);
-  padding: 16px 20px; margin-bottom: 16px;
-  font-size: 14px; color: var(--text-mid); line-height: 1.7;
-}
-
-/* Recs list */
-.rlist {
-  list-style: none; padding: 0; margin: 0;
-}
-.rlist li {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 10px 0; border-bottom: 1px solid var(--border);
-  font-size: 13px; color: var(--text-mid); line-height: 1.55;
-}
+.narr-box { background: var(--bg); border-radius: 10px; border: 1px solid var(--border); padding: 16px 20px; margin-bottom: 16px; font-size: 14px; color: var(--text-mid); line-height: 1.7; }
+.rlist { list-style: none; padding: 0; margin: 0; }
+.rlist li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-mid); line-height: 1.55; }
 .rlist li:last-child { border-bottom: none; }
 .ri { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+.calc-disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 14px 18px; font-size: 12px; color: var(--text-mid); line-height: 1.6; margin-top: 20px; }
 
-/* Disclaimer */
-.calc-disclaimer {
-  background: var(--amber-soft);
-  border: 1px solid rgba(146,64,14,.2);
-  border-radius: 10px; padding: 14px 18px;
-  font-size: 12px; color: var(--text-mid);
-  line-height: 1.6; margin-top: 20px;
-}
-
-/* Footer */
-.calc-footer {
-  background: var(--bg); border-top: 1px solid var(--border);
-  padding: 28px 20px; margin-top: 32px; text-align: center;
-}
-.calc-footer p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
-.calc-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+/* ── DARK MODE (calc elements) ── */
+html[data-theme="dark"] .form-card,
+html[data-theme="dark"] .result-card { background: var(--white); border-color: var(--border); }
+html[data-theme="dark"] .form-card h2,
+html[data-theme="dark"] .result-card h3,
+html[data-theme="dark"] .mtable .row-label { color: var(--text) !important; }
+html[data-theme="dark"] .field input[type=number],
+html[data-theme="dark"] .field input[type=date] { background: #141c2a; border-color: var(--border); color: var(--text); }
+html[data-theme="dark"] .radio-group label { color: var(--text-mid); background: #1a2535; border-color: var(--border); }
+html[data-theme="dark"] .radio-group label:has(input:checked) { color: var(--teal); border-color: var(--teal); background: var(--teal-light); }
+html[data-theme="dark"] .check-item { background: #1a2535; border-color: var(--border); color: var(--text-mid); }
+html[data-theme="dark"] .check-item:has(input:checked) { background: var(--amber-soft); border-color: #d97706; }
+html[data-theme="dark"] .narr-box { background: #1a2535; border-color: var(--border); color: var(--text-mid); }
+html[data-theme="dark"] .mtable td { border-color: var(--border); color: var(--text-mid); }
+html[data-theme="dark"] .mtable tr:nth-child(even) td { background: #1a2535; }
+html[data-theme="dark"] .drug-note { background: var(--amber-soft); }
+html[data-theme="dark"] .conf-note { background: var(--red-soft); }
+html[data-theme="dark"] .rlist li { border-color: var(--border); color: var(--text-mid); }
+html[data-theme="dark"] .calc-disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); color: var(--text-mid); }
+html[data-theme="dark"] .btn-reset { border-color: var(--border); color: var(--text-muted); }
+html[data-theme="dark"] .btn-reset:hover { border-color: var(--text-muted); color: var(--text); }
+@media print { .site-header, .guide-toggle-bar, .nav-strip, .guide-footer, .calc-nav-pill { display: none !important; } body { font-size: 13px; color: #000; background: #fff; } }
 </style>
 </head>
 <body>
 
-<header class="calc-header">
-  <a href="prostate-panel-interpreter.html" class="back-link">← Back to Guide</a>
-  <span class="title">PSA Interpreter</span>
-  <span class="brand">williamriveromd.com</span>
+<script>
+(function(){try{var t=localStorage.getItem('wgmr-psa-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();
+</script>
+
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <a href="/guides/" class="back">← All Guides</a>
 </header>
 
-<div class="calc-body">
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Urology &amp; Oncology · Clinical Calculator · PSA</div>
+<h1>PSA Interpreter <em>Drug-Corrected · Multi-Metric · Risk-Stratified</em></h1>
+<p class="hero-sub">Enter PSA values, prostate volume, prior PSA, and current medications. The calculator applies 5-ARI drug correction automatically, computes % Free PSA, PSA density, and velocity, and generates a risk-stratified clinical interpretation with actionable recommendations.</p>
+<div class="hero-meta">
+<span><strong>Author:</strong> W. G. M. Rivero, MD, FPCP, DPSN</span>
+<span><strong>Specialty:</strong> Internal Medicine · Nephrology</span>
+<span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="prostate-panel-interpreter.html" class="hero-xlink">Full PSA Interpretation Guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+</div>
+</nav>
+
+<main class="container">
+
+<div class="mdc-instructions" id="instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Enter the patient's <strong>age</strong> — required for age-adjusted reference ranges (40–49: ≤2.5, 50–59: ≤3.5, 60–69: ≤4.5, 70–79: ≤6.5, 80+: ≤7.2 ng/mL).</li>
+<li>Enter <strong>Total PSA</strong> (required) and optionally <strong>Free PSA</strong> and <strong>Prostate Volume</strong> (from TRUS or bladder scan).</li>
+<li>For PSA velocity, enter <strong>Prior PSA</strong> value and its <strong>date</strong>, plus the <strong>current PSA date</strong> (leave blank for today).</li>
+<li>Select the current <strong>5-ARI medication</strong> — finasteride (×2 correction) or dutasteride (×2.5 correction) are applied automatically.</li>
+<li>Check any <strong>confounding factors</strong> that may have falsely elevated PSA before the draw.</li>
+<li>Click <strong>Calculate &amp; Interpret</strong> to see drug-corrected PSA, all metrics, risk stratification, and recommendations.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser — no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
+<p>Use this calculator for any man undergoing PSA-based prostate cancer screening or monitoring, especially when the clinical picture requires more than a single total PSA value. It is most valuable in three scenarios:</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>5-ARI drug correction — the most critical use case</h4>
+<p>Men on finasteride 5 mg or dutasteride 0.5 mg (for BPH or hair loss) have PSA suppressed by 50–70% after ≥6 months of therapy. A raw PSA of 2.0 ng/mL on dutasteride represents a corrected (true) PSA of ~5.0 ng/mL — clearly in the elevated range. Without correction, up to half of significant cancers in this group may be missed. Always apply the correction multiplier and use the corrected PSA for all risk decisions.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Gray zone PSA (4–10 ng/mL)</h4>
+<p>Total PSA in the 4–10 ng/mL range carries roughly a 25% prostate cancer risk on biopsy — but BPH and prostatitis account for the other 75%. % Free PSA, PSA density, and PSA velocity help separate benign from malignant causes before proceeding to biopsy. Free PSA &lt;10% strongly favors cancer; ≥25% favors benign. PSA density ≥0.15 ng/mL/mL supports biopsy even with borderline total PSA.</p>
+</div>
+</div>
+<div class="alert alert-green">
+<div class="alert-icon">📅</div>
+<div class="alert-body">
+<h4>Serial PSA monitoring</h4>
+<p>Enter a prior PSA value and date to compute annualized PSA velocity. A velocity ≥0.75 ng/mL/year — even with an absolute PSA below the biopsy threshold — is independently associated with prostate cancer risk and cancer-specific mortality. Use this feature to detect accelerating PSA rise before the threshold is crossed.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>% Free PSA is most useful in the gray zone</h4>
+<p>The ratio of free-to-total PSA adds meaningful discrimination specifically when total (corrected) PSA is between 4 and 10 ng/mL. Below 4 ng/mL or above 10 ng/mL it adds less incremental value. Order free PSA whenever the corrected total PSA sits in this gray zone and you need to decide about biopsy.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">⚖️</div>
+<div class="alert-body">
+<h4>PSA density requires an accurate prostate volume</h4>
+<p>PSA density = Total PSA ÷ Prostate volume (mL). A threshold of ≥0.15 ng/mL/mL is the standard biopsy trigger. Volume must come from TRUS (most accurate) or bladder scan — DRE estimation is unreliable. PSA density is particularly useful when PSA is mildly elevated and the gland is enlarged (large BPH may explain the PSA without cancer).</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>Confounders must be resolved before acting</h4>
+<p>PSA can be transiently elevated by DRE (within 48 hours), prostate biopsy (up to 6 weeks), urethral catheterization (within 1 week), active UTI or prostatitis, ejaculation (within 48 hours), and vigorous perineal pressure (cycling). If any confounders were present before the PSA draw, flag the result and repeat in 4–6 weeks after resolution before making biopsy decisions.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<ul>
+<li><strong>5-ARI correction is mandatory</strong> — uncorrected PSA on 5-ARI is the single most common clinical error. Even a "normal" raw PSA may represent a doubled or 2.5× true PSA.</li>
+<li><strong>Alpha-1 blockers do not lower PSA</strong> — tamsulosin and silodosin have no meaningful effect on PSA and require no correction.</li>
+<li><strong>Daily tadalafil 5 mg</strong> has negligible PSA effect; no numeric correction is applied, but document it in the record.</li>
+<li><strong>PSA alone does not diagnose cancer</strong> — all positive results require confirmatory evaluation (mpMRI, biopsy) and physician assessment before treatment decisions.</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>PSA Panel Calculator</h2>
 
 <div class="form-card">
-  <h2>PSA Panel Calculator <span class="badge">Interactive</span></h2>
+  <h2>Enter Laboratory Values <span class="badge">Interactive</span></h2>
   <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Enter your lab values below. Drug corrections and risk stratification are applied automatically. All fields except Total PSA are optional.</p>
 
   <form id="calc-form" onsubmit="return false;">
@@ -419,13 +576,113 @@ body {
   </div>
 </div>
 
-</div><!-- .calc-body -->
+</section>
 
-<footer class="calc-footer">
-  <p>W. G. M. Rivero, MD, FPCP, DPSN · Internal Medicine · Nephrology<br>
-  PRC 0105184 · <a href="https://www.williamriveromd.com">williamriveromd.com</a> · <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener">Book an Appointment</a><br>
-  References: Oesterling JE, J Urol 1993 · EAU Guidelines 2024 · AUA PSA Best Practice Statement<br>
-  © 2026 · For educational purposes only. Not a substitute for professional medical advice.</p>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong> The interpretation is a starting point; final decisions require the full clinical picture.</p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li><strong>If confounders were present:</strong> Repeat PSA in 4–6 weeks after complete resolution before making any biopsy or referral decisions.</li>
+<li><strong>If on 5-ARI:</strong> Always use the corrected PSA for all cancer-risk decisions. Document the drug, dose, and duration of therapy in the medical record.</li>
+<li><strong>If PSA is in the gray zone (4–10 ng/mL):</strong> Order Free PSA and prostate volume if not already done. PSA density ≥0.15 supports biopsy; % Free PSA &lt;10% strongly favors cancer. Consider mpMRI before biopsy — it reduces unnecessary procedures (EAU 2024, NICE 2019).</li>
+<li><strong>If PSA &gt;10 ng/mL or rapidly rising:</strong> Refer to urology promptly. Do not delay pending a repeat PSA. Bone scan and mpMRI should be discussed.</li>
+<li><strong>For serial monitoring:</strong> Low risk — every 1–2 years. Elevated or borderline — every 6–12 months. After starting a 5-ARI — recheck at 6 months to establish a new treated baseline, then use that value as the comparator (not the pre-treatment PSA).</li>
+<li><strong>Document shared decision-making:</strong> PSA screening is a shared decision between patient and physician. Discuss the benefits and limitations, life expectancy, and individual risk factors (family history, prior biopsy) before any screening or re-screening decision.</li>
+</ul>
+</div>
+</details>
+
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Age-Adjusted PSA Reference Ranges</h3>
+<p>Age-specific PSA norms (Oesterling JE, et al. <em>JAMA</em> 1993) were derived from a community cohort of men without prostate disease. They improve sensitivity in younger men and reduce unnecessary biopsies in older men with BPH.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Age Group</th><th>Upper Reference Limit</th><th>Clinical Implication</th></tr></thead>
+<tbody>
+<tr><td>40–49 years</td><td>≤ 2.5 ng/mL</td><td>PSA above this in a young man warrants evaluation regardless of absolute value</td></tr>
+<tr><td>50–59 years</td><td>≤ 3.5 ng/mL</td><td>Most common screening age; use with free PSA in the gray zone</td></tr>
+<tr><td>60–69 years</td><td>≤ 4.5 ng/mL</td><td>BPH becomes common; PSA density helps distinguish</td></tr>
+<tr><td>70–79 years</td><td>≤ 6.5 ng/mL</td><td>Large prostates common; individualize biopsy decisions</td></tr>
+<tr><td>80+ years</td><td>≤ 7.2 ng/mL</td><td>Shared decision-making with life expectancy context</td></tr>
+</tbody>
+</table>
+</div>
+<h3 class="mdc-sub">5-ARI Correction Factors</h3>
+<p>Finasteride 5 mg (a type-2 5-ARI) suppresses serum PSA by approximately 50% after ≥6 months of therapy (Oesterling JE, et al. <em>Urology</em> 1993). Dutasteride 0.5 mg (a dual type 1+2 5-ARI) suppresses PSA by 50–70% (Andriole GL, et al. <em>Eur Urol</em> 2010). Current AUA and EAU guidelines recommend doubling PSA for finasteride and multiplying by 2.5 for dutasteride as conservative correction factors. Apply the correction to PSA drawn after ≥6 months of therapy; earlier draws reflect incomplete suppression.</p>
+<h3 class="mdc-sub">% Free PSA Thresholds</h3>
+<p>In men with total PSA 4–10 ng/mL and a non-suspicious DRE, % Free PSA refines cancer risk (Catalona WJ, et al. <em>JAMA</em> 1998):</p>
+<ul style="margin:8px 0 12px 1.2em;line-height:1.8;">
+<li><strong>&lt;10%</strong> — cancer probability ~56%; biopsy strongly recommended</li>
+<li><strong>10–15%</strong> — cancer probability ~28%; biopsy generally recommended</li>
+<li><strong>15–25%</strong> — cancer probability ~16%; individualize (PSA density, velocity, age, family history)</li>
+<li><strong>≥25%</strong> — cancer probability &lt;8%; watchful waiting appropriate if other factors favorable</li>
+</ul>
+<h3 class="mdc-sub">PSA Velocity</h3>
+<p>An annual PSA rise ≥0.75 ng/mL/year (in men with PSA &gt;4 ng/mL) is independently associated with prostate cancer risk and cancer-specific mortality (Carter HB, et al. <em>JAMA</em> 1992). Velocity requires at least two measurements over ≥18 months for reliable calculation. A rapid rise even within the "normal" range warrants evaluation.</p>
+<h3 class="mdc-sub">Key References</h3>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Oesterling JE, Jacobsen SJ, Chute CG, et al. <em>Serum prostate-specific antigen in a community-based population of healthy men.</em> JAMA. 1993;270(7):860–864.</li>
+<li>Catalona WJ, Partin AW, Slawin KM, et al. <em>Use of the percentage of free prostate-specific antigen to enhance differentiation of prostate cancer from benign prostatic disease.</em> JAMA. 1998;279(19):1542–1547.</li>
+<li>Carter HB, Morrell CH, Pearson JD, et al. <em>Estimation of prostatic growth using serial prostate-specific antigen measurements in men with and without prostate disease.</em> Cancer Res. 1992;52(12):3323–3328.</li>
+<li>European Association of Urology (EAU). <em>Guidelines on Prostate Cancer.</em> Edn. presented at the EAU Annual Congress Paris 2024. EAU Guidelines Office, Arnhem, The Netherlands.</li>
+<li>American Urological Association (AUA). <em>PSA Testing for the Pretreatment Staging and Posttreatment Management of Prostate Cancer: 2013 Revision of 2009 Best Practice Statement.</em> AUA; 2013.</li>
+<li>Andriole GL, Bostwick DG, Brawley OW, et al. <em>Effect of dutasteride on the risk of prostate cancer.</em> N Engl J Med. 2010;362(13):1192–1202.</li>
+</ol>
+</div>
+</details>
+
+<div class="disclaimer">
+  <strong>Disclaimer:</strong> This calculator is provided for educational and clinical decision-support purposes. It does not constitute medical advice and is not a substitute for professional physician assessment. All screening, biopsy, and treatment decisions must be individualized based on the full clinical context, patient preferences, and current guidelines. PSA correction factors are population-derived estimates; individual responses to 5-ARIs vary.
+</div>
+
+</main>
+
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+  <div class="dr-avatar"><img src="../images/dr-william-rivero-avatar.png" alt="Dr. W. G. M. Rivero, MD" onerror="this.style.display='none'"></div>
+  <div class="dr-card-body">
+    <h4>W. G. M. Rivero, MD, FPCP, DPSN</h4>
+    <p>Internal Medicine · Nephrology · Philippines</p>
+    <p class="dr-creds">PRC 0105184 · Fellow, Philippine College of Physicians · Diplomate, Philippine Society of Nephrology</p>
+  </div>
+  <div class="dr-qr">
+    <img src="../images/qr-appointment.png" alt="QR code for booking" onerror="this.style.display='none'">
+    <div class="dr-qr-label">Book<br>Appointment</div>
+  </div>
+</div>
+</div>
+
+<div class="related-guides">
+<h2>Related Guides &amp; Tools</h2>
+<div class="related-cards">
+  <a href="prostate-panel-interpreter.html" class="related-card">
+    <span class="related-card-tag">Urology</span>
+    <span class="related-card-title">PSA Interpretation Guide</span>
+  </a>
+  <a href="prostate-enlargement.html" class="related-card">
+    <span class="related-card-tag">Urology</span>
+    <span class="related-card-title">Prostate Enlargement (BPH)</span>
+  </a>
+  <a href="prostate-cancer-ckd.html" class="related-card">
+    <span class="related-card-tag">Oncology · Nephrology</span>
+    <span class="related-card-title">Prostate Cancer &amp; CKD</span>
+  </a>
+  <a href="understanding-ckd.html" class="related-card">
+    <span class="related-card-tag">Nephrology</span>
+    <span class="related-card-title">Understanding CKD</span>
+  </a>
+</div>
+</div>
+
+<footer class="guide-footer">
+<div class="footer-inner">
+<p>W. G. M. Rivero, MD, FPCP, DPSN · PRC 0105184 · <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>© 2026 · For educational purposes only · <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener">Book an Appointment</a></p>
+</div>
 </footer>
 
 <script>
@@ -540,6 +797,20 @@ function ciReset(){
   document.querySelectorAll('#calc-form input[type=checkbox]').forEach(e=>e.checked=false);
   document.getElementById('ci-results').style.display='none';
 }
+
+function toggleDark(){
+  const h=document.documentElement;
+  const d=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',d?'light':'dark');
+  try{localStorage.setItem('wgmr-psa-theme',d?'light':'dark');}catch(e){}
+  document.getElementById('darkLabel').textContent=d?'Dark':'Light';
+}
+// Sync dark label on load
+(function(){
+  if(document.documentElement.getAttribute('data-theme')==='dark'){
+    document.getElementById('darkLabel').textContent='Light';
+  }
+})();
 </script>
 <!-- CALC-NAV-PILL-START -->
 <style id="calc-nav-pill-style">
@@ -561,11 +832,11 @@ html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav
 @media print{.calc-nav-pill{display:none!important;}}
 </style>
 <nav class="calc-nav-pill" id="calc-nav-pill" aria-label="Calculator navigation">
-<a href="https://www.williamriveromd.com/guides/calculators.html" aria-label="Back to all calculators"><span class="cnp-tip">All Guides</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
+<a href="https://www.williamriveromd.com/guides/calculators.html" aria-label="Back to all calculators"><span class="cnp-tip">All Calculators</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
 <span class="cnp-div"></span>
 <button class="cnp-print" onclick="window.print()" aria-label="Print this page"><span class="cnp-tip">Print</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></button>
 <span class="cnp-div"></span>
-<a href="understanding-ckd.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+<a href="prostate-panel-interpreter.html" aria-label="Go to related guide"><span class="cnp-tip">PSA Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
 </nav>
 <!-- CALC-NAV-PILL-END -->
 </body>
