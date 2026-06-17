@@ -651,9 +651,14 @@
   .calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
   .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
   @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
-  .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
-  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
-  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-group { margin-bottom: 2px; }
+  .calc-group-wide { grid-column: 1 / -1; }
+  .calc-group-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 14px; padding-bottom: 7px; border-bottom: 1px solid var(--border); }
+  .calc-field { margin-bottom: 14px; }
+  .calc-field:last-child { margin-bottom: 0; }
+  .calc-field > label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; line-height: 1.35; }
+  .calc-field input:not([type="radio"]):not([type="checkbox"]), .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
+  .calc-field input:not([type="radio"]):not([type="checkbox"]):focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
   .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
   .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
   .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
@@ -849,11 +854,12 @@
   html[data-theme="dark"] .illus-wrap-light { background: #f9fafb !important; }
 
   /* Calculator */
-  html[data-theme="dark"] .calc-field input,
+  html[data-theme="dark"] .calc-field input:not([type="radio"]):not([type="checkbox"]),
   html[data-theme="dark"] .calc-field select { background: #141c2a; border-color: #2a3548; color: var(--text); }
+  html[data-theme="dark"] .calc-group-title { color: var(--text); border-color: #2a3548; }
   html[data-theme="dark"] .calc-metric-card { background: rgba(255,255,255,.04); border-color: #2a3548; }
   html[data-theme="dark"] .calc-result-box { border-color: #2a3548 !important; background: rgba(255,255,255,.03) !important; }
-  html[data-theme="dark"] .calc-field label { color: var(--teal); }
+  html[data-theme="dark"] .calc-field > label { color: var(--teal); }
   html[data-theme="dark"] .calc-metric-card .cml,
   html[data-theme="dark"] .calc-disclaimer { color: var(--text-muted); }
 
@@ -1192,12 +1198,22 @@
 .ci-callout{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14px;}
 .ci-drug{background:#fffbeb;border-left:3px solid #d97706;color:#92400e;display:none;}
 .ci-conf{background:#fff0f0;border-left:3px solid #b91c1c;color:#b91c1c;display:none;}
-.ci-radio-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
-.ci-radio-group label{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--text-mid);cursor:pointer;padding:5px 12px;border:1px solid var(--border);border-radius:20px;transition:all .15s;}
-.ci-radio-group label:has(input:checked){background:var(--teal);color:white;border-color:var(--teal);}
-.ci-check-group{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+/* Segmented pill radios */
+.ci-radio-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;}
+.ci-radio-group label{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;line-height:1.2;color:var(--text-mid);cursor:pointer;padding:7px 14px;border:1px solid var(--border);border-radius:22px;background:var(--white);transition:background .15s,border-color .15s,color .15s;text-transform:none;letter-spacing:normal;margin-bottom:0;white-space:nowrap;}
+.ci-radio-group label:hover{border-color:var(--teal);}
+.ci-radio-group input[type="radio"]{width:15px;height:15px;margin:0;flex:0 0 auto;accent-color:var(--teal);cursor:pointer;}
+.ci-radio-group label:has(input:checked){background:var(--teal);color:#fff;border-color:var(--teal);font-weight:600;}
+.ci-radio-group label:has(input:checked) input[type="radio"]{accent-color:#fff;}
+/* When :has() is supported, the pill itself signals selection — hide the dot for a clean segmented control */
+@supports selector(:has(*)){
+  .ci-radio-group input[type="radio"]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;}
+}
+/* Checklist checkboxes */
+.ci-check-group{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;margin-top:2px;}
 @media(max-width:520px){.ci-check-group{grid-template-columns:1fr;}}
-.ci-check-group label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-mid);cursor:pointer;}
+.ci-check-group label{display:flex;align-items:flex-start;gap:9px;font-size:13px;font-weight:500;line-height:1.3;color:var(--text-mid);cursor:pointer;text-transform:none;letter-spacing:normal;margin-bottom:0;}
+.ci-check-group input[type="checkbox"]{width:16px;height:16px;margin:1px 0 0;flex:0 0 auto;accent-color:var(--teal);cursor:pointer;}
 .mtable{width:100%;border-collapse:collapse;margin:16px 0;}
 .mtable tr td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:14px;}
 .mtable tr td:first-child{font-weight:600;color:var(--text-muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em;width:40%;}
@@ -1611,7 +1627,7 @@ try{if(localStorage.getItem('wgmr-mode')==='physician'){document.body.classList.
 </div>
 
 <!-- Confounders -->
-<div class="calc-group">
+<div class="calc-group calc-group-wide">
 <div class="calc-group-title">
 <span data-lang="en">Recent Confounders (check all that apply)</span>
 <span data-lang="tl" class="lang-hidden">Mga Kamakailang Confounder (lagyan ng tsek ang lahat ng naaangkop)</span>
