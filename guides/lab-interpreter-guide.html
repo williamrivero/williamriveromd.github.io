@@ -4125,7 +4125,102 @@ var FIELD_LABELS = {
   urine_sg:'Specific Gravity', urine_ph:'Urine pH', urine_rbc_hpf:'RBC/HPF', urine_wbc_hpf:'WBC/HPF (urine)'
 };
 
+/* ═══════════════════════════════════════════════════════════════════
+   NKTI (National Kidney & Transplant Institute) DEDICATED PARSER
+   NKTI Clinical Chemistry reports store their dual-unit table in a
+   scrambled column order — test names in one block, values in another,
+   with reference ranges interleaved between the SI and Conventional
+   columns. The generic label-then-nearest-number parser fails badly on
+   this layout (e.g. it reads a date fragment "06" as the eGFR, or a
+   reference-range bound "23" as the creatinine). PDF.js extracts the
+   exact digits but in the wrong order; this parser de-scrambles them
+   per section using NKTI's stable token structure. Each PDF page is one
+   newline-separated segment (PDF.js joins page items with spaces, pages
+   with "\n"), so we classify and parse page-by-page.
+   ═══════════════════════════════════════════════════════════════════ */
+function _isNKTIReport(text) {
+  return /National\s+Kidney\s+and\s+Transplant\s+Institute|NKTI\s+Medical\s+Laboratory/i.test(text);
+}
+function _nktiSetF(fields, k, v) {
+  if (v == null) return;
+  var n = parseFloat(v);
+  if (!isFinite(n) || n <= 0) return;
+  if (fields[k] == null) fields[k] = String(v);   // first occurrence wins → latest dated page
+}
+/* Clinical Chemistry renal panel: BUN · Creatinine · eGFR · Mg · K · Na */
+function _nktiChem(P, fields) {
+  /* BUN & Creatinine rows are emitted as "<SIval> <SIunit> <lo> - <hi> <SIunit> <CONVval>".
+     The Conventional value (what PH patients read) is the trailing number on each row. */
+  var reBC = /([\d.]+)\s*(?:mmol|umol|µmol)\/[lL]\s+[\d.]+\s*-\s*[\d.]+\s*(?:mmol|umol|µmol)\/[lL]\s+([\d.]+)/g;
+  var m, idx = 0;
+  while ((m = reBC.exec(P)) !== null) {
+    if (idx === 0) _nktiSetF(fields, 'bun', m[2]);
+    else if (idx === 1) _nktiSetF(fields, 'creatinine', m[2]);
+    idx++;
+  }
+  /* eGFR is the lone number immediately before the "METHOD/RESULT" column header. */
+  var eg = P.match(/([\d.]+)\s+(?:METHOD\b|RESULT\b)/);
+  if (eg) _nktiSetF(fields, 'egfr', eg[1]);
+  /* Mg/K/Na SI values follow eGFR's "1.73 m2 1.73 m2" method tag as a bare triple.
+     Magnesium's SI↔Conv labelling is internally inconsistent on NKTI reports, so it
+     is intentionally skipped; K and Na are numerically identical in SI and meq/L. */
+  var tri = P.match(/1\.73\s*m2\s+1\.73\s*m2\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)/);
+  if (tri) { _nktiSetF(fields, 'potassium', tri[2]); _nktiSetF(fields, 'sodium', tri[3]); }
+}
+/* Hematology (CBC): rows are cleanly aligned "<LABEL> <SI…> <CONV…> <METHOD>". */
+function _nktiHeme(P, fields) {
+  var pats = [
+    ['wbc',       /WBC\s+COUNT\s+[\d.]+\s*x10\^?9?\/L\s+[\d.]+\s*-\s*[\d.]+\s*x10\^?9?\/L\s+([\d.]+)/i],
+    ['rbc',       /RBC\s+COUNT\s+[\d.]+\s*x10\^?9?\/L\s+[\d.]+\s*-\s*[\d.]+\s*x10\^?9?\/L\s+([\d.]+)/i],
+    ['hgb',       /HEMOGLOBIN\s+[\d.]+\s*g\/L\s+[\d.]+\s*-\s*[\d.]+\s*g\/L\s+([\d.]+)\s*g\/dL/i],
+    ['hct',       /HEMATOCRIT\s+[\d.]+\s+[\d.]+\s*-\s*[\d.]+\s+([\d.]+)/i],
+    ['mcv',       /MCV[^\d]*([\d.]+)\s*fL/i],
+    ['rdw',       /RDW\s*\([^)]*\)\s*([\d.]+)/i],
+    ['platelets', /PLATELET\s+COUNT\s+([\d.]+)/i]
+  ];
+  pats.forEach(function(p){ var m = P.match(p[1]); if (m) _nktiSetF(fields, p[0], m[1]); });
+}
+/* Clinical Microscopy / Urinalysis: only the reliably-labelled physical/chemical
+   fields are taken; microscopy HPF counts use an inconsistent layout and are skipped. */
+function _nktiUrine(P, fields) {
+  var sg = P.match(/Spec\.?\s*Gravity\s*:?\s*([\d.]+)/i);
+  if (sg) _nktiSetF(fields, 'urine_sg', sg[1]);
+  var ph = P.match(/\bpH\s*:?\s*([\d.]+)/i);
+  if (ph) { var v = parseFloat(ph[1]); if (v >= 4 && v <= 9) _nktiSetF(fields, 'urine_ph', ph[1]); }
+}
+function parseNKTILabs(rawText) {
+  var text = rawText.replace(/\r\n?/g, '\n').replace(/µ|μ/g, 'µ');
+  var pages = text.split('\n');
+  var fields = {};
+  pages.forEach(function(pg) {
+    var P = pg.replace(/[ \t]{2,}/g, ' ');
+    if (/CLINICAL\s+CHEMISTRY\s+SECTION/i.test(P) && /BLOOD\s+UREA\s+NITROGEN/i.test(P)) _nktiChem(P, fields);
+    else if (/HEMATOLOGY\s+SECTION/i.test(P) && /HEMOGLOBIN/i.test(P)) _nktiHeme(P, fields);
+    else if (/URINALYSIS|CLINICAL\s+MICROSCOPY\s+SECTION/i.test(P)) _nktiUrine(P, fields);
+  });
+  /* Patient info — name/age/sex from the report header, date from the lab's own
+     collection/validation timestamps (MM/DD/YYYY), never the discharge date. */
+  var t = text.replace(/[ \t]{2,}/g, ' ');
+  var info = { name:null, date:null, sex:null, age:null };
+  var nm = t.match(/NAME\s*:?\s*([A-Z][A-Za-z'’\-]+,\s*[A-Z][A-Za-z' .\-]+?)(?=\s+(?:AGE|HOSP|SEX|ADM|ROOM|DOB|DATE)\b)/);
+  if (nm) info.name = nm[1].replace(/\s+/g, ' ').trim();
+  var ag = t.match(/\bAGE\s*:?\s*(\d{1,3})\b/);
+  if (ag && +ag[1] > 0 && +ag[1] < 121) info.age = ag[1];
+  var sx = t.match(/\bSEX\s*:?\s*(MALE|FEMALE|M|F)\b/i);
+  if (sx) info.sex = sx[1][0].toUpperCase() === 'M' ? 'M' : 'F';
+  var dm = t.match(/(?:TEST\s+REQUESTED|SAMPLE\s+SUBMITTED|RESULT\s+VALIDATED|SAMPLE\s+PROCESSED)\s*:?\s*(\d{1,2}\/\d{1,2}\/\d{4})/i);
+  if (dm) { var iso = _parseToISODate(dm[1], true); if (iso) info.date = iso; }
+  return { fields:fields, unitSys: Object.keys(fields).length ? 'Conventional (US)' : null,
+           name:info.name, date:info.date, sex:info.sex, age:info.age };
+}
+
 function parseLabText(rawText) {
+  /* NKTI reports use a scrambled dual-unit column layout the generic parser
+     cannot read; delegate to the dedicated structural parser when detected. */
+  if (_isNKTIReport(rawText)) {
+    var nkti = parseNKTILabs(rawText);
+    if (nkti && Object.keys(nkti.fields).length) return nkti;
+  }
   /* Normalise: unify line endings, micro signs, join split decimals, collapse multi-spaces */
   var text = rawText
     .replace(/\r\n?/g, '\n')
