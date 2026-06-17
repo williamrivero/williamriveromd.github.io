@@ -1417,7 +1417,7 @@ body.dark .related-card-title {
 <div class="analyzer-card">
 <div class="analyzer-header">
 <h3 data-lang="en">Recipe Nutrition Analyzer</h3><h3 class="lang-hidden" data-lang="tl">Recipe Nutrition Analyzer</h3><h3 class="lang-hidden" data-lang="ceb">Recipe Nutrition Analyzer</h3><h3 class="lang-hidden" data-lang="kap">Recipe Nutrition Analyzer</h3>
-<p data-lang="en">Powered by AI nutritional analysis · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="tl">Pinapagana ng AI nutritional analysis · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="ceb">Gipadagan sa AI nutritional analysis · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="kap">Pinapagana ning AI nutritional analysis · CKD-adjusted safety flags</p>
+<p data-lang="en">Estimated from a Filipino &amp; USDA food-composition database · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="tl">Tinatantya mula sa Filipino at USDA food-composition database · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="ceb">Gibana-bana gikan sa Filipino ug USDA food-composition database · CKD-adjusted safety flags</p><p class="lang-hidden" data-lang="kap">Tinatantya ibat king Filipino at USDA food-composition database · CKD-adjusted safety flags</p>
 </div>
 <div class="analyzer-body">
 <!-- Stage selector -->
@@ -1591,7 +1591,7 @@ body.dark .related-card-title {
 <p data-lang="en"><strong>High sodium:</strong> patis, toyo, bagoong, magic sarap, instant soups, processed longanisa, tocino, canned sardines in brine. <strong>High potassium:</strong> saging (all types), buko juice, kamote, avocado, tomato sauce, kamatis in large amounts. <strong>High phosphorus:</strong> nuts, beans, dairy, colas, whole grains in excess.</p><p class="lang-hidden" data-lang="tl"><strong>Mataas sa sodium:</strong> patis, toyo, bagoong, magic sarap, instant na sopas, processed na longganisa, tocino, sardinas sa lata na may salty brine. <strong>Mataas sa potassium:</strong> saging (lahat ng klase), buko juice, kamote, avocado, tomato sauce, kamatis kapag marami. <strong>Mataas sa phosphorus:</strong> nuts, beans, gatas at produktong gawa sa gatas, mga cola, sobrang daming whole grains.</p><p class="lang-hidden" data-lang="ceb"><strong>Taas og sodium:</strong> patis, toyo, bagoong, magic sarap, instant nga sabaw, processed nga longanisa, tocino, de lata nga sardinas sa brine. <strong>Taas og potassium:</strong> saging (tanang klase), buko juice, kamote, avocado, tomato sauce, kamatis sa daghang gidaghanon. <strong>Taas og phosphorus:</strong> mga nuts, beans, gatas ug gikan sa gatas, colas, sobra nga whole grains.</p><p class="lang-hidden" data-lang="kap"><strong>Mataas sa sodium:</strong> patis, toyo, bagoong, magic sarap, instant na sopas, processed na longganisa, tocino, sardinas sa lata na may salty brine. <strong>Mataas sa potassium:</strong> saging (lahat ning klase), buko juice, kamote, avocado, tomato sauce, kamatis nung marami. <strong>Mataas sa phosphorus:</strong> nuts, beans, gatas at produktong gawa sa gatas, deng cola, sobrang daming whole grains.</p>
 </div>
 </div>
-<div class="disclaimer" data-lang="en"><strong>Important:</strong> This analyzer provides educational estimates based on AI nutritional analysis. Nutrient values vary by brand, preparation method, and specific ingredient variety. Always consult your nephrologist and renal dietitian for personalized dietary advice.</div><div class="disclaimer lang-hidden" data-lang="tl"><strong>Mahalaga:</strong> Ang analyzer na ito ay nagbibigay ng tantyang pang-edukasyon batay sa AI nutritional analysis. Nag-iiba ang halaga ng nutrients depende sa brand, paraan ng pagluluto, at klase ng sangkap. Laging kumonsulta sa iyong nephrologist at renal dietitian para sa personalized na payo sa pagkain.</div><div class="disclaimer lang-hidden" data-lang="ceb"><strong>Importante:</strong> Kini nga analyzer naghatag og educational estimates base sa AI nutritional analysis. Ang kantidad sa nutrients lahi-lahi depende sa brand, paagi sa pagluto, ug klase sa sangkap. Kanunay pakigsulti sa imong nephrologist ug renal dietitian para sa personalized nga tambag sa pagkaon.</div><div class="disclaimer lang-hidden" data-lang="kap"><strong>Mahalaga:</strong> Ing analyzer na ini ya nagbibigay ning tantyang pang-edukasyon batay sa AI nutritional analysis. Nag-iiba ing halaga ning nutrients depende sa brand, paraan ning pagluluto, at klase ning sangkap. Pirming kumonsulta king ka nephrologist at renal dietitian para king personalized na payo king pamangan.</div>
+<div class="disclaimer" data-lang="en"><strong>Important:</strong> This analyzer provides educational estimates from a built-in Filipino and USDA food-composition database. Nutrient values vary by brand, preparation method, and specific ingredient variety. Always consult your nephrologist and renal dietitian for personalized dietary advice.</div><div class="disclaimer lang-hidden" data-lang="tl"><strong>Mahalaga:</strong> Ang analyzer na ito ay nagbibigay ng tantyang pang-edukasyon mula sa built-in na Filipino at USDA food-composition database. Nag-iiba ang halaga ng nutrients depende sa brand, paraan ng pagluluto, at klase ng sangkap. Laging kumonsulta sa iyong nephrologist at renal dietitian para sa personalized na payo sa pagkain.</div><div class="disclaimer lang-hidden" data-lang="ceb"><strong>Importante:</strong> Kini nga analyzer naghatag og educational estimates gikan sa built-in nga Filipino ug USDA food-composition database. Ang kantidad sa nutrients lahi-lahi depende sa brand, paagi sa pagluto, ug klase sa sangkap. Kanunay pakigsulti sa imong nephrologist ug renal dietitian para sa personalized nga tambag sa pagkaon.</div><div class="disclaimer lang-hidden" data-lang="kap"><strong>Mahalaga:</strong> Ing analyzer na ini ya nagbibigay ning tantyang pang-edukasyon mula king built-in na Filipino at USDA food-composition database. Nag-iiba ing halaga ning nutrients depende sa brand, paraan ning pagluluto, at klase ning sangkap. Pirming kumonsulta king ka nephrologist at renal dietitian para king personalized na payo king pamangan.</div>
 </section>
 </main>
 
@@ -1863,6 +1863,196 @@ function buildFlags(n, stage){
   return flags;
 }
 
+
+// ── OFFLINE NUTRITION ENGINE ──────────────────────────────────────────
+// Static-site analyzer: estimates per-serving nutrients from a built-in
+// Filipino + USDA ingredient database. No server / API key required.
+// All DB values are per 100 g (edible portion) unless noted. Weight hints:
+// gPiece = grams of one medium piece, gCup = grams per cup, gTbsp/gTsp =
+// grams per tbsp/tsp, density = g per mL for volume measures.
+const NUTRI_DB = [
+  // ---- Proteins ----
+  {keys:['chicken thigh','chicken thighs','chicken leg','chicken drumstick'],kcal:209,pro:17,fat:15,sat:4.1,chol:80,na:80,k:230,p:150,ca:8,fe:0.9,gPiece:120},
+  {keys:['chicken breast','chicken fillet','pechuga'],kcal:165,pro:31,fat:3.6,sat:1,chol:85,na:74,k:256,p:196,ca:15,fe:1,gPiece:170},
+  {keys:['chicken'],kcal:190,pro:19,fat:12,sat:3.3,chol:82,na:82,k:240,p:170,ca:11,fe:0.9,gPiece:140},
+  {keys:['pork belly','liempo'],kcal:518,pro:9.3,fat:53,sat:19,chol:72,na:32,k:185,p:90,ca:5,fe:0.7,gPiece:150},
+  {keys:['pork','baboy','kasim','pork loin'],kcal:242,pro:27,fat:14,sat:5,chol:80,na:62,k:423,p:246,ca:19,fe:0.9,gPiece:150},
+  {keys:['beef','baka'],kcal:250,pro:26,fat:15,sat:6,chol:90,na:72,k:318,p:198,ca:18,fe:2.6,gPiece:150},
+  {keys:['tilapia'],kcal:96,pro:20,fat:1.7,sat:0.6,chol:50,na:52,k:302,p:170,ca:10,fe:0.6,gPiece:150},
+  {keys:['bangus','milkfish'],kcal:148,pro:20,fat:6.7,sat:1.7,chol:52,na:72,k:292,p:162,ca:51,fe:0.3,gPiece:200},
+  {keys:['galunggong','mackerel','tuna','salmon'],kcal:140,pro:23,fat:5,sat:1.3,chol:55,na:60,k:380,p:220,ca:15,fe:1,gPiece:120},
+  {keys:['fish','isda'],kcal:120,pro:20,fat:4,sat:1,chol:50,na:60,k:300,p:200,ca:15,fe:0.8,gPiece:150},
+  {keys:['shrimp','hipon','prawn','sugpo'],kcal:99,pro:24,fat:0.3,sat:0.1,chol:189,na:111,k:259,p:214,ca:70,fe:0.5,gPiece:15},
+  {keys:['egg','itlog'],kcal:143,pro:12.6,fat:9.5,sat:3.1,carb:0.7,sug:0.4,chol:372,na:142,k:138,p:198,ca:56,fe:1.8,gPiece:50},
+  {keys:['tofu','tokwa'],kcal:144,pro:17,fat:9,sat:1.3,carb:3,chol:0,na:14,k:121,p:190,ca:350,fe:2.7,gPiece:120,gCup:250},
+  // ---- Vegetables / starches ----
+  {keys:['sayote','chayote'],kcal:19,pro:0.8,fat:0.1,carb:4.5,fib:1.7,sug:1.7,na:2,k:125,p:18,ca:17,fe:0.3,gPiece:200},
+  {keys:['malunggay','moringa'],kcal:64,pro:9.4,fat:1.4,carb:8.3,fib:2,na:9,k:337,p:112,ca:185,fe:4,gCup:21,gPiece:21},
+  {keys:['kangkong','water spinach','swamp cabbage'],kcal:19,pro:2.6,fat:0.2,carb:3.1,fib:2.1,na:113,k:312,p:39,ca:77,fe:1.7,gCup:25,gPiece:25},
+  {keys:['onion','sibuyas'],kcal:40,pro:1.1,carb:9.3,fib:1.7,sug:4.2,na:4,k:146,p:29,ca:23,fe:0.2,gPiece:110,gCup:160},
+  {keys:['garlic','bawang'],kcal:149,pro:6.4,carb:33,fib:2.1,na:17,k:401,p:153,ca:181,fe:1.7,gPiece:3,gClove:3,gTbsp:8},
+  {keys:['ginger','luya'],kcal:80,pro:1.8,carb:18,fib:2,na:13,k:415,p:34,ca:16,fe:0.6,gPiece:10,gThumb:10,gTbsp:6},
+  {keys:['tomato','kamatis'],kcal:18,pro:0.9,carb:3.9,fib:1.2,sug:2.6,na:5,k:237,p:24,ca:10,fe:0.3,gPiece:120,gCup:180},
+  {keys:['eggplant','talong','aubergine'],kcal:25,pro:1,carb:6,fib:3,sug:3.5,na:2,k:229,p:24,ca:9,fe:0.2,gPiece:110,gCup:80},
+  {keys:['sitaw','green bean','string bean','yardlong','baguio bean'],kcal:47,pro:2.8,carb:8,fib:3.3,na:4,k:240,p:59,ca:50,fe:1,gCup:100},
+  {keys:['labanos','radish','daikon'],kcal:18,pro:0.6,carb:4.1,fib:1.6,na:21,k:227,p:23,ca:27,fe:0.4,gPiece:200,gCup:120},
+  {keys:['kamote','sweet potato'],kcal:86,pro:1.6,carb:20,fib:3,sug:4.2,na:55,k:337,p:47,ca:30,fe:0.6,gPiece:130,gCup:200},
+  {keys:['potato','patatas'],kcal:77,pro:2,carb:17,fib:2.2,na:6,k:425,p:57,ca:12,fe:0.8,gPiece:170,gCup:150},
+  {keys:['squash','kalabasa','pumpkin'],kcal:26,pro:1,carb:6.5,fib:0.5,sug:2.8,na:1,k:340,p:30,ca:21,fe:0.8,gCup:116,gPiece:300},
+  {keys:['ampalaya','bitter melon','bitter gourd'],kcal:17,pro:1,carb:3.7,fib:2.8,na:5,k:296,p:31,ca:19,fe:0.4,gPiece:120,gCup:100},
+  {keys:['okra'],kcal:33,pro:1.9,carb:7,fib:3.2,na:7,k:299,p:61,ca:82,fe:0.6,gCup:100,gPiece:12},
+  {keys:['cabbage','repolyo'],kcal:25,pro:1.3,carb:6,fib:2.5,na:18,k:170,p:26,ca:40,fe:0.5,gCup:90,gPiece:900},
+  {keys:['carrot','karot'],kcal:41,pro:0.9,carb:10,fib:2.8,sug:4.7,na:69,k:320,p:35,ca:33,fe:0.3,gPiece:60,gCup:128},
+  {keys:['pechay','bok choy','pak choy'],kcal:13,pro:1.5,carb:2.2,fib:1,na:65,k:252,p:37,ca:105,fe:0.8,gCup:70,gPiece:100},
+  {keys:['spinach'],kcal:23,pro:2.9,carb:3.6,fib:2.2,na:79,k:558,p:49,ca:99,fe:2.7,gCup:30},
+  {keys:['banana','saging'],kcal:89,pro:1.1,carb:23,fib:2.6,sug:12,na:1,k:358,p:22,ca:5,fe:0.3,gPiece:120},
+  {keys:['calamansi','calamondin','lime','lemon'],kcal:30,pro:0.7,carb:10,fib:1.8,na:2,k:138,p:18,ca:35,fe:0.4,gPiece:8,gTbsp:15,density:1},
+  {keys:['rice','kanin','bigas'],kcal:130,pro:2.7,carb:28,fib:0.4,na:1,k:35,p:43,ca:10,fe:0.2,gCup:158},
+  // ---- Fats / oils / dairy ----
+  {keys:['coconut oil'],kcal:862,fat:100,sat:87,na:0,k:0,p:0,density:0.92,gTbsp:13.6},
+  {keys:['vegetable oil','cooking oil','canola','corn oil','olive oil','soybean oil','oil','mantika'],kcal:884,fat:100,sat:14,na:0,k:0,p:0,density:0.91,gTbsp:13.6},
+  {keys:['coconut milk','gata','coconut cream'],kcal:230,pro:2.3,fat:24,sat:21,carb:6,fib:2.2,na:15,k:263,p:100,ca:16,fe:1.6,density:1,gCup:240,liquid:true,proc:false},
+  {keys:['butter','margarine'],kcal:717,pro:0.9,fat:81,sat:51,chol:215,na:11,k:24,p:24,ca:24,density:0.96,gTbsp:14},
+  {keys:['cheese','keso'],kcal:350,pro:23,fat:28,sat:18,chol:90,na:650,k:95,p:520,ca:700,fe:0.7,proc:true,gPiece:25},
+  {keys:['milk','gatas'],kcal:60,pro:3.2,fat:3.3,sat:1.9,chol:10,carb:4.8,sug:5,na:43,k:150,p:84,ca:113,density:1.03,gCup:244,liquid:true},
+  // ---- Seasonings / processed (high-sodium; phosphate additives) ----
+  {keys:['patis','fish sauce'],kcal:35,pro:5,carb:4,na:7851,k:288,p:7,ca:43,fe:0.7,density:1.2,proc:true},
+  {keys:['soy sauce','toyo','soya sauce'],kcal:53,pro:8,carb:5,na:5493,k:217,p:130,ca:20,fe:2.4,density:1.15,proc:true},
+  {keys:['bagoong','shrimp paste','alamang'],kcal:80,pro:8,carb:5,na:8000,k:200,p:200,ca:150,fe:2,density:1.2,proc:true},
+  {keys:['sampaloc','sinigang mix','tamarind soup','tamarind mix','soup base','sinigang sa'],kcal:200,pro:3,carb:40,na:16000,k:700,p:300,ca:100,fe:1,gTbsp:11,gTsp:4,proc:true},
+  {keys:['bouillon','broth cube','magic sarap','seasoning','knorr cube','maggi'],kcal:230,pro:10,carb:20,na:24000,k:300,p:400,ca:50,fe:1,gPiece:11,gTsp:4,gTbsp:11,proc:true},
+  {keys:['salt','asin','rock salt','sea salt'],kcal:0,na:38758,k:8,ca:24,fe:0.3,gTsp:6,gTbsp:18},
+  {keys:['black pepper','pepper','paminta'],kcal:251,pro:10,carb:64,fib:25,na:20,k:1329,p:158,ca:443,fe:9.7,gTsp:2.3,gTbsp:6.9},
+  {keys:['sugar','asukal'],kcal:387,carb:100,sug:100,na:1,k:2,gTsp:4,gTbsp:12.5},
+  {keys:['vinegar','suka'],kcal:18,carb:0.9,na:5,k:73,p:8,density:1.01,gTbsp:15},
+  // ---- Liquids ----
+  {keys:['broth','stock','sabaw','soup stock'],kcal:10,pro:1,na:300,k:80,p:20,ca:5,density:1,liquid:true,proc:true},
+  {keys:['water','tubig'],kcal:0,na:0,k:0,p:0,density:1,liquid:true},
+];
+const NUTRI_FALLBACK = {keys:[],kcal:35,pro:1.5,fat:0.3,carb:7,fib:2,sug:2,na:8,k:200,p:35,ca:25,fe:0.6,gPiece:100,gCup:120,density:1,unknown:true};
+
+const PREP_WORDS = ['sliced','minced','chopped','cubed','diced','julienned','ground','grated','mashed','crushed','peeled','beaten','whole','fresh','frozen','cooked','raw','boiled','steamed','to taste','bone-in','boneless','skinless','large','medium','small','big','ripe','green','dried','washed','trimmed','halved','quartered'];
+const UNICODE_FRAC = {'½':0.5,'¼':0.25,'¾':0.75,'⅓':1/3,'⅔':2/3,'⅛':0.125,'⅜':0.375};
+const SIZE_MULT = {small:0.7,medium:1,large:1.4,big:1.4};
+const MASS_UNITS = {g:1,gr:1,gram:1,grams:1,kg:1000,kilo:1000,kilos:1000,kilogram:1000,mg:0.001,oz:28.35,ounce:28.35,ounces:28.35,lb:453.6,lbs:453.6,pound:453.6,pounds:453.6};
+const VOL_UNITS = {ml:1,milliliter:1,milliliters:1,l:1000,liter:1000,liters:1000,litre:1000,litres:1000,cup:240,cups:240,tbsp:15,tbs:15,tablespoon:15,tablespoons:15,tsp:5,teaspoon:5,teaspoons:5};
+const COUNT_UNITS = {piece:'piece',pieces:'piece',pc:'piece',pcs:'piece',clove:'clove',cloves:'clove',thumb:'thumb',stalk:'piece',stalks:'piece',bunch:'cup',head:'piece',can:'piece',cans:'piece',sachet:'piece',sachets:'piece',pack:'piece',packs:'piece',slice:'piece',slices:'piece',cube:'piece',cubes:'piece'};
+
+function normalizeName(s){return s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();}
+
+function parseLeadingQty(s){
+  s=s.trim();
+  // split a number glued to its unit, e.g. "300g" -> "300 g", "2tbsp" -> "2 tbsp"
+  s=s.replace(/^(\d+(?:[.\/]\d+)?)([a-zA-Z])/,'$1 $2');
+  let m;
+  if((m=s.match(/^(\d+)\s+(\d+)\/(\d+)\s+(.*)$/))) return {qty:+m[1]+(+m[2]/+m[3]),rest:m[4]};
+  if((m=s.match(/^(\d+)\/(\d+)\s+(.*)$/)))         return {qty:+m[1]/+m[2],rest:m[3]};
+  if((m=s.match(/^(\d+(?:\.\d+)?)\s*[-–]\s*(\d+(?:\.\d+)?)\s+(.*)$/))) return {qty:(+m[1]+ +m[2])/2,rest:m[3]};
+  if((m=s.match(/^(\d+)([¼-¾⅐-⅞])\s+(.*)$/))) return {qty:+m[1]+(UNICODE_FRAC[m[2]]||0),rest:m[3]};
+  if((m=s.match(/^([¼-¾⅐-⅞])\s+(.*)$/)))     return {qty:(UNICODE_FRAC[m[1]]||0.5),rest:m[2]};
+  if((m=s.match(/^(\d+(?:\.\d+)?)\s+(.*)$/)))      return {qty:+m[1],rest:m[2]};
+  return {qty:null,rest:s};
+}
+
+function matchIngredient(workName){
+  let best=null,bestLen=0;
+  for(const item of NUTRI_DB){
+    for(const key of item.keys){
+      if(key.length>bestLen && workName.indexOf(key)!==-1){best=item;bestLen=key.length;}
+    }
+  }
+  return best;
+}
+
+function toGrams(qty,unit,size,item){
+  const ml = (unit && VOL_UNITS[unit]!=null) ? qty*VOL_UNITS[unit] : null;
+  if(unit && MASS_UNITS[unit]!=null) return {g:qty*MASS_UNITS[unit],ml:null};
+  if(unit && VOL_UNITS[unit]!=null){
+    if(unit.indexOf('cup')===0 && item.gCup) return {g:qty*item.gCup,ml};
+    if((unit==='tbsp'||unit==='tbs'||unit.indexOf('tablespoon')===0) && item.gTbsp) return {g:qty*item.gTbsp,ml};
+    if((unit==='tsp'||unit.indexOf('teaspoon')===0) && item.gTsp) return {g:qty*item.gTsp,ml};
+    return {g:ml*(item.density||1),ml};
+  }
+  if(unit==='clove') return {g:qty*(item.gClove||item.gPiece||3),ml:null};
+  if(unit==='thumb') return {g:qty*(item.gThumb||item.gPiece||10),ml:null};
+  // piece / bare count
+  const base = item.gPiece || item.gCup || 100;
+  return {g:qty*base*size,ml:null};
+}
+
+function analyzeLocalRecipe(text,servings){
+  servings = parseInt(servings)||1; if(servings<1) servings=1;
+  const lines = text.split('\n').map(l=>l.trim()).filter(Boolean);
+  const tot = {calories:0,protein:0,fat:0,sat_fat:0,trans_fat:0,carbs:0,fiber:0,sugars:0,cholesterol:0,sodium:0,potassium:0,phosphorus:0,calcium:0,iron:0,fluid_ml:0};
+  const ingOut=[]; let unknownCount=0;
+  for(let line of lines){
+    let toTaste=false;
+    if(/to taste/i.test(line)){toTaste=true; line=line.replace(/,?\s*to taste/ig,'').trim();}
+    const {qty,rest} = parseLeadingQty(line);
+    // strip a leading size word, then an optional unit word
+    let tokens = rest.replace(/thumb[-\s]?sized?/ig,'thumb').replace(/^[-–]\s*/,'').trim().split(/\s+/);
+    let size=1, unit=null, i=0;
+    if(tokens[i] && SIZE_MULT[tokens[i].toLowerCase()]!=null){size=SIZE_MULT[tokens[i].toLowerCase()];i++;}
+    if(tokens[i]){
+      const u=tokens[i].toLowerCase().replace(/[^a-z]/g,'');
+      if(MASS_UNITS[u]!=null||VOL_UNITS[u]!=null){unit=u;i++;}
+      else if(COUNT_UNITS[u]!=null){unit=COUNT_UNITS[u];i++;}
+    }
+    let nameRaw = tokens.slice(i).join(' ').trim() || rest.trim();
+    const displayName = (nameRaw.split(',')[0].trim()) || nameRaw || 'ingredient';
+    const workName = normalizeName(nameRaw);
+    let item = matchIngredient(workName);
+    if(!item){item=NUTRI_FALLBACK; unknownCount++;}
+    // resolve quantity
+    let q = qty;
+    if(q==null) q = toTaste ? (item.keys[0]==='salt'?0.07:0.2) : 1; // "to taste": small pinch
+    if(unit==null && qty==null && toTaste){ unit='__taste__'; }
+    let grams, ml=null;
+    if(unit==='__taste__'){ grams = (item.gTsp? item.gTsp : 1) * q; }
+    else { const r=toGrams(q, unit, size, item); grams=r.g; ml=r.ml; }
+    if(!(grams>0)) grams=0;
+    const f = grams/100;
+    const get=(k)=> (item[k]||0)*f;
+    tot.calories+=get('kcal'); tot.protein+=get('pro'); tot.fat+=get('fat'); tot.sat_fat+=get('sat');
+    tot.trans_fat+=get('trans'); tot.carbs+=get('carb'); tot.fiber+=get('fib'); tot.sugars+=get('sug');
+    tot.cholesterol+=get('chol'); tot.sodium+=get('na'); tot.potassium+=get('k'); tot.phosphorus+=get('p');
+    tot.calcium+=get('ca'); tot.iron+=get('fe');
+    if(item.liquid){ tot.fluid_ml += (ml!=null? ml : grams); }
+    ingOut.push({name:displayName, item, grams, kcal:get('kcal'), pro:get('pro'), na:get('na'), k:get('k'), p:get('p')});
+  }
+  const n = {};
+  for(const key in tot) n[key]=tot[key]/servings;
+  n.ingredients = ingOut.map(o=>({name:o.name, calories:o.kcal/servings, protein:o.pro/servings, sodium:o.na/servings, potassium:o.k/servings, phosphorus:o.p/servings}));
+  n.modifications = buildLocalMods(ingOut, n, servings, unknownCount);
+  return n;
+}
+
+function buildLocalMods(ingOut, n, servings, unknownCount){
+  const mods=[];
+  const byNa = ingOut.slice().sort((a,b)=>b.na-a.na);
+  const topNa = byNa[0];
+  if(topNa && (topNa.na/servings) > 120){
+    mods.push(`Reduce <strong>${topNa.name}</strong> — it adds about ${Math.round(topNa.na/servings)} mg of sodium per serving, the most of any ingredient here. Cut it by half to three-quarters and brighten the dish with calamansi, extra ginger, garlic, or black pepper instead of salt.`);
+  }
+  const plant = ingOut.filter(o=>o.item && !o.item.liquid && o.k>0 && (o.item.pro||0)<6).sort((a,b)=>b.k-a.k)[0];
+  if(plant && (n.potassium > 350) && (plant.k/servings) > 100){
+    mods.push(`To lower potassium, leach high-potassium vegetables such as <strong>${plant.name}</strong>: peel, cut into small pieces, soak in plenty of water for 2+ hours, then boil in fresh water and drain before adding to the dish.`);
+  }
+  if(n.fluid_ml > 200){
+    mods.push(`This is a soupy dish (~${Math.round(n.fluid_ml)} mL of liquid per serving). If you are on a fluid restriction, eat the solid ingredients and limit how much <em>sabaw</em> you drink.`);
+  }
+  if(ingOut.some(o=>o.item && o.item.proc)){
+    mods.push(`Processed/seasoning ingredients (patis, soy sauce, bouillon, sinigang mix, canned goods) contain <strong>inorganic phosphate additives</strong> absorbed at 90–100%. Where possible, season with fresh aromatics so the true phosphorus and sodium load stays lower than the estimate above.`);
+  }
+  if(!mods.length){
+    mods.push(`This recipe already looks relatively kidney-friendly. Keep added salt and patis to a minimum and pair it with plenty of lower-potassium vegetables (sayote, cabbage, green beans) to stay within your targets.`);
+  }
+  if(unknownCount>0){
+    mods.push(`Note: ${unknownCount} ingredient${unknownCount>1?'s were':' was'} not recognized and estimated with a generic profile — values for ${unknownCount>1?'those items':'that item'} are approximate.`);
+  }
+  return mods.slice(0,4);
+}
+
 // ── MAIN ANALYZE FUNCTION ─────────────────────────────────────────────
 async function analyzeRecipe(){
   const ingredients = document.getElementById('f-ingredients').value.trim();
@@ -1882,70 +2072,10 @@ async function analyzeRecipe(){
   const btnText = document.getElementById('btn-text');
   btn.disabled=true; spinner.classList.add('show'); btnText.textContent='Analyzing…';
 
-  const prompt = `You are a clinical nutritionist with expertise in Filipino food. Analyze the following recipe ingredients and return ONLY a valid JSON object — no markdown, no backticks, no explanation.
-
-Recipe: "${recipeName}"
-Total servings: ${servings}
-Ingredients (total recipe):
-${ingredients}
-
-Return this exact JSON structure with numeric values per serving:
-{
-  "calories": number,
-  "protein": number,
-  "fat": number,
-  "sat_fat": number,
-  "trans_fat": number,
-  "carbs": number,
-  "fiber": number,
-  "sugars": number,
-  "cholesterol": number,
-  "sodium": number,
-  "potassium": number,
-  "phosphorus": number,
-  "calcium": number,
-  "iron": number,
-  "fluid_ml": number,
-  "ingredients": [
-    {
-      "name": "ingredient name",
-      "calories": number,
-      "protein": number,
-      "sodium": number,
-      "potassium": number,
-      "phosphorus": number
-    }
-  ],
-  "modifications": [
-    "Specific CKD-safe modification suggestion for this recipe"
-  ]
-}
-
-Rules:
-- All values are PER SERVING (divide total recipe by ${servings})
-- fluid_ml = approximate total liquid content per serving in mL (broth, soup, water in the dish)
-- For Filipino ingredients: patis = fish sauce (~1400mg sodium per tbsp), bagoong = shrimp paste (very high sodium), kangkong = water spinach (~low K), kamote = sweet potato (high K ~450mg/100g), sayote = chayote (low K ~~170mg/100g)
-- Use USDA food composition data and Philippine Food Composition Tables where applicable
-- For ingredients you cannot identify, use reasonable estimates
-- modifications should be specific to this recipe (e.g. "Reduce patis from 1 tbsp to 1 tsp and add calamansi juice for flavor")
-- Return ONLY the JSON object, nothing else`;
-
+  // Offline analysis — computed locally from the built-in nutrition
+  // database; no network/API key required (works on static hosting).
   try {
-    const resp = await fetch('/api/analyze',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1200,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    const data = await resp.json();
-    if(data.error){throw new Error(data.error.message||'API error');}
-
-    const raw = data.content.filter(c=>c.type==='text').map(c=>c.text).join('');
-    const clean = raw.replace(/```json|```/g,'').trim();
-    const n = JSON.parse(clean);
+    const n = analyzeLocalRecipe(ingredients, servings);
 
     // Build NF label
     document.getElementById('nf-label').innerHTML = buildNFLabel(n, recipeName, servings, servingDesc);
