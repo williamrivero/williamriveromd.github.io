@@ -39,6 +39,7 @@ emergencies" + Code Blue guide; ids assigned at wiring time):
 | 9 | PALS Tachycardia | `pals-tachycardia-algorithm` | portrait |
 | 10 | PALS Post-Cardiac-Arrest | `pals-post-rosc-algorithm` | 4:3 |
 | 11 | Dialysis-Unit Code Blue | `dialysis-code-blue-acls-algorithm` | portrait |
+| 12 | Difficult / Failed Intubation | `airway-difficult-failed-intubation-algorithm` | portrait |
 
 ---
 
@@ -454,6 +455,65 @@ pneumothorax."
 
 ---
 
+## 12. Difficult / Failed Tracheal Intubation
+
+```
+Clean 2D clinical decision flowchart, white background, rounded boxes + diamonds,
+navy connectors, navy/teal/amber/red palette, bold sans-serif, mobile-readable,
+no 3D, no org branding/acronyms. Bottom-right: small semi-transparent navy
+"© williamriveromd.com". Portrait.
+
+TITLE: "Unanticipated Difficult / Failed Intubation (Adult)"
+
+TOP BANNER (navy): "Throughout: call for help early · declare the problem to the
+team · maintain oxygenation · ensure full neuromuscular blockade · limit attempts."
+
+TOP-TO-BOTTOM FLOW (Plan A → B → C → D):
+
+PLAN A — Mask ventilation & tracheal intubation (green header):
+- Box: "Optimise: head/neck position (ramped/sniffing), preoxygenation,
+  neuromuscular blockade. Laryngoscopy — videolaryngoscope, external laryngeal
+  manipulation, bougie."
+- Box: "Maximum 3 + 1 attempts (3 by intubator + 1 by a more experienced
+  colleague). Confirm with waveform capnography."
+- Decision diamond: "Tracheal intubation successful (capnography confirms)?"
+  - YES → green box: "Proceed. Confirm tube; ongoing care."
+  - NO → red box: "DECLARE FAILED INTUBATION → Plan B."
+
+PLAN B — Maintain oxygenation via supraglottic airway (amber header):
+- Box: "Insert 2nd-generation supraglottic airway device (SAD). Maximum 3
+  attempts."
+- Decision diamond: "Oxygenation via SAD adequate?"
+  - YES → box (amber): "STOP AND THINK — choose: (1) wake the patient,
+    (2) intubate via the SAD (e.g., fibreoptic-guided), (3) proceed without
+    intubating, or (4) front-of-neck access. (Best option depends on urgency
+    and skills.)"
+  - NO → red box: "→ Plan C."
+
+PLAN C — Final facemask ventilation (amber/red header):
+- Box: "Final attempt at facemask ventilation — 2-person technique, oral +
+  nasal airway adjuncts, ensure full paralysis."
+- Decision diamond: "Facemask oxygenation adequate?"
+  - YES → green box: "WAKE THE PATIENT (then reschedule / awake technique)."
+  - NO → red box: "DECLARE 'Can't Intubate, Can't Oxygenate' (CICO) → Plan D."
+
+PLAN D — Emergency front-of-neck access / eFONA (red header):
+- Box (red): "CICO — life-threatening emergency. Give 100% oxygen; continue
+  attempts to oxygenate."
+- Box (red): "Scalpel cricothyroidotomy — scalpel–bougie–tube technique
+  (transverse stab through cricothyroid membrane, rotate, bougie, railroad a
+  size-6.0 cuffed tube). Confirm with capnography."
+- Box: "Post-procedure: confirm placement, secure airway, ICU / definitive
+  airway, debrief & document."
+
+SIDE NOTE PANEL (teal): "Anticipated difficulty → choose AWAKE intubation
+before induction (awake videolaryngoscopy/flexible scope) rather than entering
+this emergency pathway. In a declared CICO emergency, 'wake the patient' is NOT
+an option — proceed to front-of-neck access."
+```
+
+---
+
 ## Accuracy flags (verified content; confirm verbatim before print)
 
 - **Adult ACLS:** IV access is **preferred over IO** in 2025 (reverses the 2020
@@ -481,6 +541,15 @@ pneumothorax."
   treatment hierarchy is AHA/ILCOR; **empiric calcium in the coding dialysis
   patient is standard practice**, while ILCOR found insufficient evidence to
   formally recommend for/against calcium and **suggests insulin+glucose**.
+- **Difficult / failed intubation figure:** built on the **Difficult Airway
+  Society (DAS) 2015** unanticipated-difficult-intubation algorithm (Plans A–D,
+  ending in scalpel cricothyroidotomy for CICO) — the standard teaching
+  algorithm; this is an **airway/anaesthesia guideline, not part of the AHA CPR
+  guidelines**. The **ASA 2022** difficult-airway update is reflected in the side
+  note (awake-intubation decision before induction; "wake the patient" removed
+  from the CICO emergency). Confirm the scalpel–bougie–tube wording against the
+  DAS/ASA source before print. Sources: DAS 2015 (Br J Anaesth 2015;115:827) ·
+  ASA 2022 Practice Guidelines for Management of the Difficult Airway.
 - Because automated full-text fetch of ahajournals.org / cpr.heart.org was
   blocked, all figures were corroborated across ≥2 sources; **open the official
   2025 algorithm PDFs to confirm exact box wording before finalizing print art.**
