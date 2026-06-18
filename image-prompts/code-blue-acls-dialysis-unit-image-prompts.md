@@ -22,7 +22,7 @@
 | 7 | `code-blue-team-roles-positions.png` | §Team Roles | Multi-panel Educational (positions) | 1792 × 1024 | — |
 | 8 | `code-blue-reversible-causes-hs-ts.png` | §Reversible Causes | Clinician Reference Card | 1536 × 1152 | — |
 | 9 | `code-blue-defib-safety-figure.png` | §First 5 Minutes (single figure) | Simple Safety Figure | 1536 × 1152 | — |
-| 10 | `code-blue-acls-rhythm-recognition-cheatsheet.png` | §ACLS Algorithm (rhythm cheat sheet) | Clinician Reference Card | 1536 × 1152 | — |
+| 10 | `code-blue-acls-rhythm-recognition-cheatsheet.png` | §ACLS Algorithm (rhythm cheat sheet) | Clinician Reference Card | 1280 × 1792 | — |
 
 **Stage-2 note:** the guide currently reuses the hero file for `og:image`. After generation, point the `og:image`/`twitter:image` meta to **Image 1** (`code-blue-acls-dialysis-og.png`, 1200×630) and keep **Image 2** as the inline LCP hero.
 
@@ -220,21 +220,21 @@ Calm, uncluttered layout, large navy (#0f1e2e) heading "Defibrillating Safely Ar
 **ARCHETYPE:** Clinician Reference Card (ECG rhythm grid)
 **AUDIENCE:** Dialysis nurses + residents + physicians
 **VISUAL MIX:** 2D infographic ●●●● · 3D component ○
-**PURPOSE:** A one-glance "cheat sheet" for recognizing every ACLS-relevant cardiac rhythm — each with a clean strip, a one-line recognition cue, and a shockable/non-shockable flag.
-**KEY CONCEPTS:** clean labelled ECG strips; recognition cue per rhythm; shockable vs non-shockable color logic; dialysis-relevant hyperkalemia ECG
-**DIMENSIONS:** 1536 × 1152 (4:3)
+**PURPOSE:** A one-glance "cheat sheet" for recognizing the full spectrum of cardiac rhythms (not just arrest rhythms) — each with a clean strip, a one-line recognition cue, and a shockable / non-shockable / peri-arrest flag.
+**KEY CONCEPTS:** complete rhythm atlas grouped by origin (sinus · atrial · junctional · AV blocks · ventricular · arrest · paced/other); recognition cue per rhythm; shockable vs non-shockable color logic; dialysis-relevant hyperkalemia ECG
+**DIMENSIONS:** 1280 × 1792 (≈5:7 tall poster — extra height for legible strips)
 
 **COPY-READY IMAGE GENERATOR GPT PROMPT:**
-Clean clinician ECG reference card titled "ACLS Cardiac Rhythm Recognition — Cheat Sheet", 4:3, on a white background, premium medical-education style. Lay out a tidy grid of labelled rhythm panels (4 columns × 4 rows), each panel showing one clean, realistic single-lead ECG rhythm strip on a faint pink ECG grid, with a bold navy rhythm name above the strip and one short recognition cue below it, plus a small color-coded corner tag. Use a consistent calm palette: teal/navy for organized rhythms, red tag "SHOCKABLE" only on VF and pulseless VT, grey tag "NON-SHOCKABLE", amber tag "PERI-ARREST". Include these rhythms, each visibly distinct and accurate:
-Row 1 — "Normal Sinus Rhythm" (P before every QRS, regular); "Sinus Bradycardia" (regular, rate <60); "Sinus Tachycardia" (regular, rate >100); "Atrial Fibrillation" (irregularly irregular, no P waves).
-Row 2 — "Atrial Flutter" (saw-tooth flutter waves); "SVT" (narrow, very fast, regular); "1st-degree AV block" (long PR); "2nd-degree Mobitz I (Wenckebach)" (progressive PR lengthening, dropped beat).
-Row 3 — "2nd-degree Mobitz II" (constant PR, sudden dropped QRS); "3rd-degree (complete) AV block" (P and QRS independent); "Monomorphic VT" (wide, regular, fast) tag SHOCKABLE; "Torsades de Pointes" (polymorphic, twisting) tag SHOCKABLE.
-Row 4 — "Ventricular Fibrillation" (chaotic, no organized complexes) tag SHOCKABLE; "Pulseless VT" (wide regular, no pulse) tag SHOCKABLE; "Asystole" (flat line) tag NON-SHOCKABLE; "PEA" (organized rhythm, no pulse) tag NON-SHOCKABLE.
-Add one extra highlighted panel along the bottom margin: "Hyperkalemia (think in dialysis)" showing peaked T-waves → widened QRS → sine-wave progression, amber tag. Large bold navy (#0f1e2e) labels, legible short cues only (no paragraphs), generous whitespace, mobile-readable. No journal names, guideline acronyms, brand names, or watermarks. Small semi-transparent navy "williamriveromd.com" attribution in the bottom-right corner.
+Clean clinician ECG reference poster titled "Cardiac Rhythm Recognition — Complete Cheat Sheet", tall portrait orientation, on a white background, premium medical-education style. Organize ALL rhythms into clearly labelled horizontal category bands; within each band, stack clean, realistic single-lead ECG rhythm strips on a faint pink ECG grid, each with a bold navy rhythm name to the left, the strip in the middle, and one short recognition cue beneath, plus a small color-coded corner tag (red "SHOCKABLE" only on VF and pulseless/sustained VT; grey "NON-SHOCKABLE" on asystole and PEA; amber "PERI-ARREST" on unstable brady/tachy; teal/none on stable organized rhythms). Include every rhythm below, each visibly distinct and morphologically accurate:
+BAND 1 — SINUS &amp; ATRIAL: Normal Sinus Rhythm (P before every QRS, regular); Sinus Bradycardia (regular, rate <60); Sinus Tachycardia (regular, rate >100); Sinus Arrhythmia (rate varies with breathing); Premature Atrial Complex / PAC (early abnormal P); Atrial Tachycardia (fast, abnormal P axis); Multifocal Atrial Tachycardia (≥3 P-wave morphologies, irregular); Supraventricular Tachycardia / SVT (narrow, very fast, regular, no visible P); Atrial Flutter (saw-tooth flutter waves); Atrial Fibrillation (irregularly irregular, no P waves).
+BAND 2 — JUNCTIONAL &amp; AV BLOCKS: Junctional Escape Rhythm (no/inverted P, rate 40–60); 1st-degree AV block (constant long PR); 2nd-degree Mobitz I / Wenckebach (progressive PR lengthening then dropped beat); 2nd-degree Mobitz II (constant PR, sudden dropped QRS); 3rd-degree / Complete AV block (P and QRS independent).
+BAND 3 — VENTRICULAR &amp; ARREST: Premature Ventricular Complex / PVC (early wide QRS); Accelerated Idioventricular Rhythm / AIVR (wide, regular, rate 40–120); Idioventricular / Agonal Rhythm (slow, wide, dying); Monomorphic VT (wide, regular, fast) tag SHOCKABLE; Polymorphic VT / Torsades de Pointes (twisting around baseline) tag SHOCKABLE; Ventricular Fibrillation — coarse and fine (chaotic, no organized complexes) tag SHOCKABLE; Pulseless VT (wide regular, no pulse) tag SHOCKABLE; Asystole (flat line) tag NON-SHOCKABLE; PEA (organized rhythm, no pulse) tag NON-SHOCKABLE.
+BAND 4 — PACED &amp; SPECIAL: Paced Rhythm (vertical pacemaker spikes before complexes); WPW / Pre-excitation (short PR, delta wave); Hyperkalemia — "think in dialysis" (peaked T-waves → widened QRS → sine-wave progression) amber tag.
+Use large bold navy (#0f1e2e) rhythm names and band headers, teal (#1a6b72) band rules, legible short cues only (no paragraphs), generous whitespace so every strip stays readable, mobile-zoom friendly. No journal names, guideline acronyms, brand names, or watermarks. Small semi-transparent navy "williamriveromd.com" attribution in the bottom-right corner.
 
-**NEGATIVE:** Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, fake or scrambled letters, inaccurate or random ECG squiggles, overlapping strips, neon gradients. Keep each strip clean and distinct. NEVER use a dark background — light only. Never omit the williamriveromd.com attribution.
+**NEGATIVE:** Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, fake or scrambled letters, inaccurate or random ECG squiggles, overlapping strips, neon gradients, missing rhythms. Keep each strip clean, distinct, and true to its name. NEVER use a dark background — light only. Never omit the williamriveromd.com attribution.
 
-> **Note on ECG accuracy:** image generators often render imprecise waveforms and microtext. After generating, eyeball each strip against the rhythm name; regenerate if VF/VT/asystole/AV-block morphologies look wrong, and keep cues to a few words so labels stay legible.
+> **Note on ECG accuracy &amp; density:** this is a large, dense atlas — generators often render imprecise waveforms and microtext. Generate at the largest available resolution; eyeball each strip against its rhythm name and regenerate if morphologies look wrong. If the single image becomes too crowded to stay legible, split into two posters (Bands 1–2 "Supraventricular & Blocks" and Bands 3–4 "Ventricular, Arrest & Special").
 
 ---
 
