@@ -40,6 +40,8 @@ emergencies" + Code Blue guide; ids assigned at wiring time):
 | 10 | PALS Post-Cardiac-Arrest | `pals-post-rosc-algorithm` | 4:3 |
 | 11 | Dialysis-Unit Code Blue | `dialysis-code-blue-acls-algorithm` | portrait |
 | 12 | Difficult / Failed Intubation | `airway-difficult-failed-intubation-algorithm` | portrait |
+| 13 | Hands-Only / Lay-Rescuer CPR | `bls-adult-hands-only-cpr-algorithm` | portrait |
+| 14 | Opioid-Associated Emergency | `bls-opioid-associated-emergency-algorithm` | portrait |
 
 ---
 
@@ -514,6 +516,79 @@ an option — proceed to front-of-neck access."
 
 ---
 
+## 13. Hands-Only / Lay-Rescuer CPR (Adult, Community)
+
+```
+Clean 2D clinical decision flowchart, white background, rounded boxes + diamonds,
+navy connectors, navy/teal/amber/red/green palette, bold sans-serif, large
+patient-friendly labels, mobile-readable, no 3D, no org branding/acronyms.
+Bottom-right: small semi-transparent navy "© williamriveromd.com". Portrait.
+
+TITLE: "Hands-Only CPR — What a Bystander Should Do"
+
+TOP-TO-BOTTOM FLOW:
+1. Box: "Check the scene is safe. Tap the person and shout — 'Are you OK?'"
+2. Decision diamond: "Responsive?"
+   - YES → green box: "Stay with them; call for help if needed."
+   - NO → continue.
+3. Box (red): "Shout for help. Phone emergency services (or tell someone to
+   call) and put it on speaker. Send someone for an AED."
+4. Decision diamond: "Breathing normally? (Look ≤10 sec — gasping is NOT normal
+   breathing.)"
+   - YES (breathing normally) → green box: "Monitor; place in recovery position;
+     stay until help arrives."
+   - NO / only gasping → red box: "Start Hands-Only CPR."
+5. Box (red, large): "PUSH HARD & FAST in the centre of the chest."
+6. QUALITY PANEL: "Rate 100–120/min · Depth at least 2 inches (5 cm) · Let the
+   chest come all the way back up · Don't stop (swap every 2 min if someone can
+   help) · (Trained & willing: add 2 breaths after every 30 compressions.)"
+7. Box: "Use an AED as soon as it arrives — turn it on and follow the voice
+   prompts. Resume compressions right after any shock."
+8. Loop arrow: "Continue until the person responds or emergency help takes over."
+
+SIDE NOTE (teal): "Untrained or unsure? Do compression-only (Hands-Only) CPR —
+it saves lives. No pulse check needed for lay rescuers."
+```
+
+---
+
+## 14. Opioid-Associated Life-Threatening Emergency (BLS)
+
+```
+Clean 2D clinical decision flowchart, white background, rounded boxes + diamonds,
+navy connectors, navy/teal/amber/red/green palette, bold sans-serif,
+mobile-readable, no 3D, no org branding/acronyms. Bottom-right: small
+semi-transparent navy "© williamriveromd.com". Portrait.
+
+TITLE: "Opioid-Associated Emergency — BLS with Naloxone"
+
+TOP BANNER (amber): "Suspect opioid emergency: pinpoint pupils, slow/absent
+breathing, unresponsive, known/likely opioid use."
+
+TOP-TO-BOTTOM FLOW:
+1. Box: "Check responsiveness & shout for help. Activate emergency response; get
+   AED + naloxone."
+2. Decision diamond: "Breathing normally? Pulse present? (assess ≤10 sec)"
+   - "Breathing normally" → green box: "Monitor; stay until help arrives."
+   - "NOT breathing normally but PULSE present (respiratory arrest)" → amber box:
+     "Give NALOXONE. Support airway: 1 rescue breath every 6 sec (~10/min).
+     Reassess every 2 min; repeat naloxone every 2–4 min if no response."
+   - "NO breathing/gasping AND NO pulse (cardiac arrest)" → red box: "START CPR
+     (30:2). Use AED. Give NALOXONE; do NOT delay CPR/defibrillation for it."
+3. DOSE PANEL: "Naloxone 4 mg intranasal (one spray), OR 0.4 mg intramuscular.
+   Repeat every 2–4 min until breathing returns or help arrives."
+4. Decision diamond: "Responds / breathing returns?"
+   - YES → green box: "Continue to monitor — naloxone can wear off before the
+     opioid; recurrence is possible. Keep with the patient."
+   - NO → box: "Continue CPR / ventilation; repeat naloxone; await EMS."
+
+SIDE NOTE (teal): "Naloxone is an adjunct — high-quality CPR and ventilation
+(treating the breathing problem) remain the priority. 2025 guidelines integrate
+naloxone into the BLS response."
+```
+
+---
+
 ## Accuracy flags (verified content; confirm verbatim before print)
 
 - **Adult ACLS:** IV access is **preferred over IO** in 2025 (reverses the 2020
@@ -550,6 +625,13 @@ an option — proceed to front-of-neck access."
   from the CICO emergency). Confirm the scalpel–bougie–tube wording against the
   DAS/ASA source before print. Sources: DAS 2015 (Br J Anaesth 2015;115:827) ·
   ASA 2022 Practice Guidelines for Management of the Difficult Airway.
+- **BLS variants:** Hands-Only/lay-rescuer CPR is the AHA community algorithm
+  (compression-only, no pulse check for lay rescuers; trained rescuers may add
+  30:2). The Opioid-Associated Emergency algorithm and **naloxone integration
+  into BLS are a 2025 addition**; naloxone dosing (4 mg intranasal / 0.4 mg IM,
+  repeat q2–4 min) is standard but confirm against the official 2025 BLS &
+  opioid-emergency algorithm before print. Naloxone is an **adjunct** — CPR and
+  ventilation remain primary.
 - Because automated full-text fetch of ahajournals.org / cpr.heart.org was
   blocked, all figures were corroborated across ≥2 sources; **open the official
   2025 algorithm PDFs to confirm exact box wording before finalizing print art.**
