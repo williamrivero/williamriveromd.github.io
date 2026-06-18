@@ -22,6 +22,7 @@
 | 7 | `code-blue-team-roles-positions.png` | §Team Roles | Multi-panel Educational (positions) | 1792 × 1024 | — |
 | 8 | `code-blue-reversible-causes-hs-ts.png` | §Reversible Causes | Clinician Reference Card | 1536 × 1152 | — |
 | 9 | `code-blue-defib-safety-figure.png` | §First 5 Minutes (single figure) | Simple Safety Figure | 1536 × 1152 | — |
+| 10 | `code-blue-acls-rhythm-recognition-cheatsheet.png` | §ACLS Algorithm (rhythm cheat sheet) | Clinician Reference Card | 1536 × 1152 | — |
 
 **Stage-2 note:** the guide currently reuses the hero file for `og:image`. After generation, point the `og:image`/`twitter:image` meta to **Image 1** (`code-blue-acls-dialysis-og.png`, 1200×630) and keep **Image 2** as the inline LCP hero.
 
@@ -210,6 +211,30 @@ Single clean clinical safety figure, 4:3, on a white background, premium nephrol
 Calm, uncluttered layout, large navy (#0f1e2e) heading "Defibrillating Safely Around the Machine", teal/green/red accent logic, realistic device and anatomy, generous whitespace, mobile-readable. No journal names, guideline acronyms, brand names, or watermarks. Small semi-transparent navy "williamriveromd.com" attribution in the bottom-right corner.
 
 **NEGATIVE:** Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, unrealistic anatomy or devices, gore, sparks/electrical arcs, neon gradients. NEVER use a dark background — light only. Never omit the williamriveromd.com attribution.
+
+---
+
+## IMAGE 10  *(via williamriveromd-simple-figure)*
+**SECTION PLACEMENT:** §ACLS Algorithm — supplementary rhythm-recognition reference (also pairs with the downloadable flowsheet's algorithm pages)
+**FILE NAME:** `code-blue-acls-rhythm-recognition-cheatsheet.png`
+**ARCHETYPE:** Clinician Reference Card (ECG rhythm grid)
+**AUDIENCE:** Dialysis nurses + residents + physicians
+**VISUAL MIX:** 2D infographic ●●●● · 3D component ○
+**PURPOSE:** A one-glance "cheat sheet" for recognizing every ACLS-relevant cardiac rhythm — each with a clean strip, a one-line recognition cue, and a shockable/non-shockable flag.
+**KEY CONCEPTS:** clean labelled ECG strips; recognition cue per rhythm; shockable vs non-shockable color logic; dialysis-relevant hyperkalemia ECG
+**DIMENSIONS:** 1536 × 1152 (4:3)
+
+**COPY-READY IMAGE GENERATOR GPT PROMPT:**
+Clean clinician ECG reference card titled "ACLS Cardiac Rhythm Recognition — Cheat Sheet", 4:3, on a white background, premium medical-education style. Lay out a tidy grid of labelled rhythm panels (4 columns × 4 rows), each panel showing one clean, realistic single-lead ECG rhythm strip on a faint pink ECG grid, with a bold navy rhythm name above the strip and one short recognition cue below it, plus a small color-coded corner tag. Use a consistent calm palette: teal/navy for organized rhythms, red tag "SHOCKABLE" only on VF and pulseless VT, grey tag "NON-SHOCKABLE", amber tag "PERI-ARREST". Include these rhythms, each visibly distinct and accurate:
+Row 1 — "Normal Sinus Rhythm" (P before every QRS, regular); "Sinus Bradycardia" (regular, rate <60); "Sinus Tachycardia" (regular, rate >100); "Atrial Fibrillation" (irregularly irregular, no P waves).
+Row 2 — "Atrial Flutter" (saw-tooth flutter waves); "SVT" (narrow, very fast, regular); "1st-degree AV block" (long PR); "2nd-degree Mobitz I (Wenckebach)" (progressive PR lengthening, dropped beat).
+Row 3 — "2nd-degree Mobitz II" (constant PR, sudden dropped QRS); "3rd-degree (complete) AV block" (P and QRS independent); "Monomorphic VT" (wide, regular, fast) tag SHOCKABLE; "Torsades de Pointes" (polymorphic, twisting) tag SHOCKABLE.
+Row 4 — "Ventricular Fibrillation" (chaotic, no organized complexes) tag SHOCKABLE; "Pulseless VT" (wide regular, no pulse) tag SHOCKABLE; "Asystole" (flat line) tag NON-SHOCKABLE; "PEA" (organized rhythm, no pulse) tag NON-SHOCKABLE.
+Add one extra highlighted panel along the bottom margin: "Hyperkalemia (think in dialysis)" showing peaked T-waves → widened QRS → sine-wave progression, amber tag. Large bold navy (#0f1e2e) labels, legible short cues only (no paragraphs), generous whitespace, mobile-readable. No journal names, guideline acronyms, brand names, or watermarks. Small semi-transparent navy "williamriveromd.com" attribution in the bottom-right corner.
+
+**NEGATIVE:** Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, fake or scrambled letters, inaccurate or random ECG squiggles, overlapping strips, neon gradients. Keep each strip clean and distinct. NEVER use a dark background — light only. Never omit the williamriveromd.com attribution.
+
+> **Note on ECG accuracy:** image generators often render imprecise waveforms and microtext. After generating, eyeball each strip against the rhythm name; regenerate if VF/VT/asystole/AV-block morphologies look wrong, and keep cues to a few words so labels stay legible.
 
 ---
 
