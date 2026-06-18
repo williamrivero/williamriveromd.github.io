@@ -6,6 +6,9 @@ description: >-
   Use when the user wants ONE focused visual — a single flowchart, comparison
   panel, mechanism diagram, step sequence, or reference table — not a
   multi-panel infographic batch. Faster and lighter than williamriveromd-infographic-skill.
+  For a review-article-style biomedical mechanism schematic (organ-level panel →
+  magnified functional-unit inset → injury → intervention → benefit flow), defer to
+  williamriveromd-biomedical-mechanism-figure instead.
 ---
 
 # WILLIAM RIVERO MD — SIMPLE FIGURE GENERATOR v1
@@ -26,6 +29,22 @@ Use `williamriveromd-infographic-skill` instead when:
 - the user asks for a multi-panel educational poster
 - the user wants a batch of images for an entire guide section
 - photorealistic editorial heroes or OG cards are needed
+
+Use `williamriveromd-biomedical-mechanism-figure` instead when:
+- the request is a **biomedical mechanism / pathophysiology schematic** in the
+  scientific review-article style (AJKD/NEJM-figure look)
+- the figure needs the signature layout: **organ-level panel → magnified
+  functional-unit inset (nephron / glomerulus / tubule / mitochondria / vessel /
+  cell) in a dashed box → bottom injury → intervention → benefit summary flow**
+- the topic is how a disease damages the kidney at the organ-to-cellular level
+  (e.g. diabetic kidney disease, IgA nephropathy, CKD-MBD cascade, EPO axis,
+  cardiorenal spiral, tubular acid handling)
+
+Even though this skill can render "a single mechanism illustration (one pathway,
+one concept)," that means a *simple* one-pathway diagram. The moment the request
+implies multi-scale anatomy or the organ→inset→injury/intervention/benefit
+structure, **hand off to `williamriveromd-biomedical-mechanism-figure`** and use
+its template rather than producing a generic figure here.
 
 ---
 
