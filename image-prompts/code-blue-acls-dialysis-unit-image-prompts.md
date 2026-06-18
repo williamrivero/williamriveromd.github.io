@@ -23,6 +23,7 @@
 | 8 | `code-blue-reversible-causes-hs-ts.png` | §Reversible Causes | Clinician Reference Card | 1536 × 1152 | — |
 | 9 | `code-blue-defib-safety-figure.png` | §First 5 Minutes (single figure) | Simple Safety Figure | 1536 × 1152 | — |
 | 10 | `code-blue-acls-rhythm-recognition-cheatsheet.png` | §ACLS Algorithm (rhythm cheat sheet) | Clinician Reference Card | 1280 × 1792 | — |
+| 11 | `code-blue-rebound-pulmonary-congestion.png` | §Rebound Congestion | Pathophysiology / Mechanism Poster | 1792 × 1024 | — |
 
 **Stage-2 note:** the guide currently reuses the hero file for `og:image`. After generation, point the `og:image`/`twitter:image` meta to **Image 1** (`code-blue-acls-dialysis-og.png`, 1200×630) and keep **Image 2** as the inline LCP hero.
 
@@ -237,6 +238,27 @@ Use large bold navy (#0f1e2e) rhythm names and band headers, teal (#1a6b72) band
 **NEGATIVE:** Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, fake or scrambled letters, inaccurate or random ECG squiggles, overlapping strips, neon gradients, missing rhythms. Keep each strip clean, distinct, and true to its name. NEVER use a dark background — light only. Never omit the williamriveromd.com attribution.
 
 > **Note on ECG accuracy &amp; density:** this is a large, dense atlas — generators often render imprecise waveforms and microtext. Generate at the largest available resolution; eyeball each strip against its rhythm name and regenerate if morphologies look wrong. If the single image becomes too crowded to stay legible, split into two posters (Bands 1–2 "Supraventricular & Blocks" and Bands 3–4 "Ventricular, Arrest & Special").
+
+---
+
+## IMAGE 11
+**SECTION PLACEMENT:** §Rebound Congestion — "Post-Dialysis Rebound Pulmonary Congestion" (lead graphic, top of section)
+**FILE NAME:** `code-blue-rebound-pulmonary-congestion.png`
+**ARCHETYPE:** Pathophysiology / Mechanism Poster
+**AUDIENCE:** Dialysis nurses + residents + nephrologists
+**VISUAL MIX:** 2D infographic ●●●● · 3D component ●●● · photorealistic ○
+**PURPOSE:** Explain why the lungs re-congest in the hours after an "adequate" dialysis run, and that the fix is to remove fluid again — not diuretics.
+**KEY CONCEPTS:** during UF vs after UF stops; plasma refilling; residual lung water; stiff/weak heart raising left-atrial pressure; B-lines on lung ultrasound; definitive Rx = urgent ultrafiltration
+**DIMENSIONS:** 1792 × 1024 (16:9)
+
+**COPY-READY IMAGE GENERATOR GPT PROMPT:**
+Medical pathophysiology infographic poster, landscape 16:9, on a white / soft-gray background, clean graphical-abstract style. Title in bold navy (#0f1e2e): "Post-Dialysis Rebound Pulmonary Congestion". Two side-by-side phase panels connected by a left-to-right arrow:
+PHASE A (left) "DURING DIALYSIS" — a clean 3D cutaway showing a blood vessel with a downward ultrafiltration arrow pulling fluid out of the bloodstream, while the surrounding tissue/interstitium and a pair of 3D lungs still hold water (label: "fluid pulled from blood faster than tissues can refill — lungs still wet").
+PHASE B (right) "HOURS AFTER UF STOPS" — the same vessel now with multiple inward "plasma refilling" arrows from the tissues re-expanding the circulating volume; a 3D heart drawn slightly enlarged/stiff with an upward "↑ left-atrial pressure" arrow; and 3D lungs filling with fluid at the alveoli (label: "refilling + residual lung water + stiff/weak heart → flash pulmonary edema").
+Top-right inset: a small lung-ultrasound panel contrasting normal horizontal "A-lines" vs pathological vertical "B-lines" (comet-tail) congestion, clearly labelled.
+Bottom full-width takeaway ribbon in teal (#1a6b72) with white text: "Most dialysis patients make no urine — diuretics fail. The fix is to remove fluid again: urgent ultrafiltration." Use a calm color-coded palette (teal/navy structure, amber for caution, red for the alveolar flooding), realistic anatomy, large mobile-readable labels, generous whitespace. No journal names, guideline acronyms, brand names, or watermarks. Small semi-transparent navy "williamriveromd.com" attribution in the bottom-right corner.
+
+**NEGATIVE:** Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, inaccurate anatomy, gore, neon gradients, dark backgrounds. NEVER use a dark background — light only. Never omit the williamriveromd.com attribution.
 
 ---
 
