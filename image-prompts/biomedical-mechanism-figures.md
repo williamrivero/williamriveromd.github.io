@@ -15,7 +15,7 @@ benefit summary box. No photorealism, no shadows, no dark background, no
 cartoonish styling, no excessive icons, no gibberish text. 16:9 aspect ratio,
 labels readable at slide-viewing size. Always flag non-standard therapies as
 "proposed / experimental." **Every figure carries a small semi-transparent navy
-attribution "© W. G. M. Rivero, MD · williamriveromd.com" in the bottom-right
+attribution "© williamriveromd.com" in the bottom-right
 corner, not obscuring any figure element** (house convention, baked into each
 prompt below).
 
@@ -37,7 +37,7 @@ whitespace. Muted clinical palette: light gray-blue anatomy, soft yellow for
 highlighted glomerular/tubular structures, red for injury/ROS, blue for
 therapeutic effects, pale pink pathology box, pale blue benefit box. No
 photorealism, no dark background, no shadows, no clutter. 16:9. Bottom-right corner: small semi-transparent navy text
-"© W. G. M. Rivero, MD · williamriveromd.com", not obscuring the figure.
+"© williamriveromd.com", not obscuring the figure.
 
 TOPIC: How high blood sugar damages the kidney in diabetic kidney disease.
 DISEASE CONTEXT: Type 2 diabetes / diabetic kidney disease (DKD).
@@ -83,7 +83,7 @@ sans-serif labels, thin dashed connectors, generous whitespace. Muted clinical
 palette: light gray-blue anatomy, soft yellow highlights, red for injury, blue
 for therapy, pale pink pathology box, pale blue benefit box. No photorealism, no
 dark background, no clutter. 16:9. Bottom-right corner: small semi-transparent navy text
-"© W. G. M. Rivero, MD · williamriveromd.com", not obscuring the figure.
+"© williamriveromd.com", not obscuring the figure.
 
 TOPIC: The mineral and bone cascade of chronic kidney disease.
 DISEASE CONTEXT: CKD-MBD (mineral and bone disorder of CKD).
@@ -129,7 +129,7 @@ sans-serif labels, thin dashed connectors, generous whitespace. Muted clinical
 palette: light gray-blue anatomy, soft yellow highlights, red for injury, blue
 for therapy, pale pink pathology box, pale blue benefit box. No photorealism, no
 dark background, no clutter. 16:9. Bottom-right corner: small semi-transparent navy text
-"© W. G. M. Rivero, MD · williamriveromd.com", not obscuring the figure.
+"© williamriveromd.com", not obscuring the figure.
 
 TOPIC: How chronic kidney disease causes metabolic acidosis and how it harms the
 body.
@@ -172,7 +172,7 @@ sans-serif labels, thin dashed connectors, generous whitespace. Muted clinical
 palette: light gray-blue anatomy, soft yellow highlights, red for injury, blue
 for therapy, pale pink pathology box, pale blue benefit box. No photorealism, no
 dark background, no clutter. 16:9. Bottom-right corner: small semi-transparent navy text
-"© W. G. M. Rivero, MD · williamriveromd.com", not obscuring the figure.
+"© williamriveromd.com", not obscuring the figure.
 
 TOPIC: Why chronic kidney disease causes anemia (the erythropoietin axis).
 DISEASE CONTEXT: Anemia of CKD.
@@ -213,7 +213,7 @@ sans-serif labels, thin dashed connectors, generous whitespace. Muted clinical
 palette: light gray-blue anatomy, soft yellow highlights, red for injury/
 immune-complex deposition, blue for therapy, pale pink pathology box, pale blue
 benefit box. No photorealism, no dark background, no clutter. 16:9. Bottom-right corner: small semi-transparent navy text
-"© W. G. M. Rivero, MD · williamriveromd.com", not obscuring the figure.
+"© williamriveromd.com", not obscuring the figure.
 
 TOPIC: How IgA nephropathy injures the glomerulus (the four-hit model).
 DISEASE CONTEXT: IgA nephropathy (IgAN).
@@ -254,7 +254,7 @@ sans-serif labels, thin dashed connectors, generous whitespace. Muted clinical
 palette: light gray-blue anatomy, soft yellow highlights, red for arterial
 injury, blue for therapy, pale pink pathology box, pale blue benefit box. No
 photorealism, no dark background, no clutter. 16:9. Bottom-right corner: small semi-transparent navy text
-"© W. G. M. Rivero, MD · williamriveromd.com", not obscuring the figure.
+"© williamriveromd.com", not obscuring the figure.
 
 TOPIC: How chronic high blood pressure scars the kidney.
 DISEASE CONTEXT: Hypertensive nephrosclerosis.
@@ -296,7 +296,7 @@ sans-serif labels, thin dashed connectors, generous whitespace. Muted clinical
 palette: light gray-blue anatomy, soft yellow highlights, red for injury/cardiac
 risk, blue for therapy, pale pink pathology box, pale blue benefit box. No
 photorealism, no dark background, no clutter. 16:9. Bottom-right corner: small semi-transparent navy text
-"© W. G. M. Rivero, MD · williamriveromd.com", not obscuring the figure.
+"© williamriveromd.com", not obscuring the figure.
 
 TOPIC: Why CKD causes high potassium and why it threatens the heart.
 DISEASE CONTEXT: Hyperkalemia in CKD.
@@ -342,7 +342,7 @@ sans-serif labels, thin dashed connectors, generous whitespace. Muted clinical
 palette: light gray-blue anatomy, soft yellow highlights, red for injury, blue
 for therapy/venous, pale pink pathology box, pale blue benefit box. No
 photorealism, no dark background, no clutter. 16:9. Bottom-right corner: small semi-transparent navy text
-"© W. G. M. Rivero, MD · williamriveromd.com", not obscuring the figure.
+"© williamriveromd.com", not obscuring the figure.
 
 TOPIC: How heart failure and kidney disease worsen each other (cardiorenal
 syndrome).
