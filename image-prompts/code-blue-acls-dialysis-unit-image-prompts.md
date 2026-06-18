@@ -139,7 +139,7 @@ A short caption below the wheel in navy: "Keep the timer audible and the access 
 
 **COPY-READY IMAGE GENERATOR GPT PROMPT:**
 Medical pathophysiology / treatment-flow infographic, landscape 16:9, on a white background, clinical graphical-abstract style. Title in navy: "Hyperkalemic Arrest — Stabilize → Shift → Remove". Three large left-to-right stages joined by bold navy arrows:
-Stage 1 (red) "STABILIZE — Calcium chloride 1 g IV (onset 1–3 min)" with a small 3D cardiac-membrane/heart icon and a note "protects the heart · does NOT lower K⁺".
+Stage 1 (red) "STABILIZE — Calcium gluconate 10% 1–2 g IV (onset 1–3 min)" with a small 3D cardiac-membrane/heart icon and a note "protects the heart · does NOT lower K⁺ · calcium chloride 1 g if available".
 Stage 2 (amber) "SHIFT — Insulin 10 U + D50 25 g · Salbutamol neb 10–20 mg · ± Sodium bicarbonate" with a 3D cell/arrow-into-cell icon and a note "drives K⁺ into cells · monitor glucose".
 Stage 3 (green) "REMOVE — Emergency hemodialysis, low-K bath ≈2.0 mEq/L" with a 3D dialysis-machine icon and a note "the only true potassium removal — mobilize a machine early".
 A red caution ribbon along the bottom: "Calcium and bicarbonate must NOT share a line — they precipitate." A small 3D vial/syringe cluster as a tasteful accent. Strong hierarchy, large navy headings, teal/amber/green/red logic, generous whitespace, mobile-readable. No journal names, guideline acronyms, brand names, or watermarks. Small semi-transparent navy "williamriveromd.com" attribution in the bottom-right corner.
