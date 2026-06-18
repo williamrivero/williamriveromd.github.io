@@ -11,7 +11,10 @@ description: >-
   medical component renderings (kidneys, glomeruli, vessels, dialysis access,
   machines, stenosis, thrombus). Outputs a single copy-paste prompt block
   engineered for photorealism, medical/anatomical accuracy, and a unified
-  williamriveromd.com house style.
+  williamriveromd.com house style. For any panel that is a review-article-style
+  biomedical mechanism schematic (organ-level panel → magnified functional-unit
+  inset → injury → intervention → benefit flow), delegate that panel to
+  williamriveromd-biomedical-mechanism-figure to keep the mechanism style consistent.
 ---
 
 # WILLIAM RIVERO MD - ADVANCED MEDICAL INFOGRAPHIC + IMAGE GENERATOR GPT SYSTEM v5
@@ -34,6 +37,25 @@ Use this skill to convert guide content into:
 - case snapshot graphics
 - circular workflow diagrams
 - 2D/3D component-based medical graphics
+
+## DELEGATE: BIOMEDICAL MECHANISM FIGURES
+
+When the requested asset is a **biomedical mechanism / pathophysiology schematic
+in the scientific review-article style** — the signature layout of an
+**organ-level panel → magnified functional-unit inset (nephron / glomerulus /
+tubule / mitochondria / vessel / cell) in a dashed box → bottom injury →
+intervention → benefit summary flow** — use the dedicated
+`williamriveromd-biomedical-mechanism-figure` skill and its template instead of
+the generic "pathophysiology mechanism poster" archetype here.
+
+This applies whether the user invokes this skill directly, or is batching images
+for a whole guide: for any panel that is a review-article mechanism figure,
+generate that panel with the mechanism skill's template (organ→inset→
+injury/intervention/benefit, muted clinical palette, dashed connectors,
+experimental-therapy flagging) so the house mechanism style stays consistent.
+All other panels (heroes, food matrices, OG cards, reference cards, workflows)
+stay in this skill. Keep the shared attribution `© williamriveromd.com` on every
+panel regardless of which skill produced it.
 
 ## DEFAULT EXECUTION TARGET
 

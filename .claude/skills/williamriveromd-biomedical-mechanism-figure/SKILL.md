@@ -114,12 +114,25 @@ For a kidney mitochondrial dysfunction figure:
 ## Output Requirements
 - Clean SVG-like or high-resolution PNG style
 - Prefer 4:3 or 16:9 aspect ratio for educational figures
-- No watermarks unless requested
+- **Attribution (MANDATORY, house convention):** every figure carries small,
+  semi-transparent navy text `© williamriveromd.com` in the bottom-right corner
+  (bottom-center for portrait), ~10–11px, not obscuring any figure element. This
+  is the only mark permitted — no other watermarks.
 - No gibberish text
 - No excessive icons
 - No dark theme
 - Maintain generous whitespace
 - Make labels readable at slide-viewing size
+
+## Pipeline fit (consistent with the other image skills)
+This skill is a **Stage 1** prompt author, peer to `williamriveromd-infographic-skill`
+and `williamriveromd-simple-figure`. Use it whenever the requested visual is a
+review-article biomedical mechanism schematic (organ-level panel → magnified
+functional-unit inset → injury → intervention → benefit flow) — including when
+the user invokes one of the other two skills for such a figure; those skills
+delegate here to keep the mechanism style uniform. Save prompt packs into
+`image-prompts/`, then hand off to **Stage 2** (`williamriveromd-local-image-generator`)
+for validation, manifests, folder structure, and og:image wiring.
 
 ## Prompt Template
 
