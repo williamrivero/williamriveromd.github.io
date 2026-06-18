@@ -215,7 +215,9 @@ Calm, uncluttered layout, large navy (#0f1e2e) heading "Defibrillating Safely Ar
 ---
 
 ## IMAGE 10  *(via williamriveromd-simple-figure)*
-**SECTION PLACEMENT:** §ACLS Algorithm — supplementary rhythm-recognition reference (also pairs with the downloadable flowsheet's algorithm pages)
+> **DELIVERED AS A VECTOR PDF — no AI generation needed.** This cheat sheet now ships as a standalone, hand-built vector reference with accurate ECG strips: `downloads/wgmr-acls-rhythm-recognition-cheatsheet.pdf` (linked from the guide's §ACLS section). The prompt below is kept only as an optional alternative if a photoreal/illustrated rendition is ever wanted — but the vector PDF is the canonical, more accurate version.
+
+**SECTION PLACEMENT:** Standalone downloadable rhythm reference (linked from the guide, NOT embedded inline)
 **FILE NAME:** `code-blue-acls-rhythm-recognition-cheatsheet.png`
 **ARCHETYPE:** Clinician Reference Card (ECG rhythm grid)
 **AUDIENCE:** Dialysis nurses + residents + physicians
