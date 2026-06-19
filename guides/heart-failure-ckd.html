@@ -1203,51 +1203,52 @@
 </style>
 
 <style>
-/* Restored per-guide CSS */
-.utox-card .ut-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
-@media(max-width:600px){
-  .utox-card .ut-body{grid-template-columns:1fr;}}
-.ut-title .ut-chemical{font-size:12px;color:var(--text-muted);font-family:monospace;background:var(--bg);padding:1px 7px;border-radius:4px;display:inline-block;}
-.ut-section.ut-danger h5{color:var(--red);}
-.utox-card .ut-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:14px;}
-.ut-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.ut-icon-amber{background:var(--amber-soft);}
-.ut-icon-red{background:var(--red-soft);}
-.ut-icon-teal{background:var(--teal-light);}
-.ut-section.ut-reduce h5{color:var(--green);}
-.ut-section h5{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
-.ut-section p,.ut-section ul{font-size:13px;color:var(--text-muted);margin:0;line-height:1.6;}
-.ut-section ul{margin-left:14px;}
-.ut-section ul li{margin-bottom:4px;}
-.ut-section.ut-source h5{color:#9a6500;}
-.ut-title h4{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:3px;}
-.utox-card{border-radius:14px;padding:24px;border:1px solid var(--border);background:var(--white);margin-bottom:18px;}
-html[data-theme="dark"] .feature-card,
-  html[data-theme="dark"] .illus-wrap,
-  html[data-theme="dark"] .ex-card,
-  html[data-theme="dark"] .utox-card,
-  html[data-theme="dark"] .modality-card,
-  html[data-theme="dark"] .drug-card,
-  html[data-theme="dark"] .tech-card,
-  html[data-theme="dark"] .toxin-card,
-  html[data-theme="dark"] .verdict-card{ background:#1a2535; border-color:#2a3548; }
-@media print{
-  .ex-card,.feature-card,.toxin-card,.utox-card,.modality-card{
-      border:1px solid #ccc!important;background:#fff!important;page-break-inside:avoid;
-    }}
+/* ── PER-GUIDE CSS (survives patch_master_css; first block only is replaced) ── */
 
+/* Embedded calculator cards (house pattern) */
+.calc-cards-wrap{margin:28px 0 8px;}
+.calc-cards-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--teal);margin-bottom:12px;}
+.calc-card{display:flex;align-items:center;gap:14px;background:rgba(26,107,114,.07);border:1px solid rgba(26,107,114,.2);border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;margin-bottom:10px;transition:border-color .18s,box-shadow .18s;}
+.calc-card:hover{border-color:var(--teal);box-shadow:0 2px 14px rgba(26,107,114,.14);}
+.calc-card-icon{width:36px;height:36px;flex:none;background:var(--teal);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;line-height:1;}
+.calc-card-body{flex:1;min-width:0;}
+.calc-card-title{font-size:.88rem;font-weight:700;color:var(--teal);margin-bottom:2px;}
+.calc-card-desc{font-size:.78rem;color:var(--text-mid,#4b5563);line-height:1.4;}
+.calc-card-arrow{flex:none;font-size:.8rem;font-weight:700;color:var(--teal);white-space:nowrap;padding-left:8px;}
+
+/* Decision-tree / clinical-flow component (matches practical-outpatient-algorithms.html) */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 8px 0 4px; }
+.fs { display: flex; gap: 14px; align-items: flex-start; padding: 15px 0; border-bottom: 1px dashed var(--border); }
+.fs:last-child { border-bottom: none; }
+.fb { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; padding: 4px 9px; border-radius: 5px; white-space: nowrap; flex-shrink: 0; min-width: 72px; text-align: center; margin-top: 1px; }
+.fb-trigger { background: var(--navy); color: white; }
+.fb-decision { background: rgba(26,107,114,.12); color: var(--teal); border: 1px solid rgba(26,107,114,.35); }
+.fb-action { background: var(--green-soft); color: #166534; border: 1px solid rgba(22,101,52,.3); }
+.fb-warn { background: var(--amber-soft); color: #92400e; border: 1px solid rgba(180,83,9,.3); }
+.fb-admit { background: var(--red-soft); color: var(--red); border: 1.5px solid rgba(192,57,43,.35); }
+.fc { flex: 1; min-width: 0; }
+.fq { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; line-height: 1.4; }
+.fd { font-size: 13px; color: var(--text-mid); line-height: 1.65; }
+.fbr { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.br { border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--text-mid); }
+.brl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 5px; }
+.br-yes { background: var(--green-soft); border: 1px solid rgba(22,101,52,.25); }
+.br-yes .brl { color: #166534; }
+.br-no { background: var(--red-soft); border: 1px solid rgba(192,57,43,.25); }
+.br-no .brl { color: var(--red); }
+.br p { margin: 4px 0; }
+.br strong { color: var(--text); }
+@media (max-width: 640px){ .fbr { grid-template-columns: 1fr; } .fb { min-width: 60px; font-size: 8px; } }
 
 /* Dark mode */
-body.dark .related-card {
-  background: #1a2535;
-  border-color: #2a3a4a;
-}
-body.dark .related-card:hover {
-  border-color: var(--teal, #1a6b72);
-}
-body.dark .related-card-title {
-  color: #e8edf2;
-}
+html[data-theme="dark"] .calc-card{ background:rgba(26,107,114,.16); border-color:rgba(26,107,114,.4); }
+html[data-theme="dark"] .br-yes{ background:rgba(22,101,52,.18); }
+html[data-theme="dark"] .br-no{ background:rgba(192,57,43,.18); }
+html[data-theme="dark"] .fq{ color:#e8edf2; }
+body.dark .related-card { background:#1a2535; border-color:#2a3a4a; }
+body.dark .related-card:hover { border-color: var(--teal, #1a6b72); }
+body.dark .related-card-title { color:#e8edf2; }
+@media print{ .calc-cards-wrap{ display:none !important; } }
 </style>
 
 <script type="application/ld+json">
@@ -1482,6 +1483,35 @@ body.dark .related-card-title {
 
     <h3><span data-lang="en">Staging: every person with CKD is already "Stage A" heart failure</span><span data-lang="tl" class="lang-hidden">Pag-stage: bawat taong may CKD ay "Stage A" na heart failure</span><span data-lang="ceb" class="lang-hidden">Pag-stage: matag tawo nga adunay CKD kay "Stage A" na heart failure</span><span data-lang="kap" class="lang-hidden">Pag-stage: balang taung atin CKD "Stage A" neng heart failure</span></h3>
     <p><span data-lang="en">Heart failure is now staged like cancer, from A to D. <strong>Stage A</strong> means "at risk but no damage yet." The 2024 expert panel proposed that <strong>anyone with CKD</strong> (eGFR under 60, or protein in the urine) should automatically be counted as Stage A — a flag to start protecting the heart <em>before</em> symptoms ever appear.</span><span data-lang="tl" class="lang-hidden">Ang heart failure ay nila-stage na ngayon tulad ng kanser, mula A hanggang D. Ang <strong>Stage A</strong> ay nangangahulugang "nasa panganib ngunit wala pang pinsala." Iminungkahi ng 2024 panel ng mga eksperto na <strong>sinumang may CKD</strong> (eGFR mababa sa 60, o may protina sa ihi) ay dapat awtomatikong ibilang na Stage A — isang hudyat para simulan ang pagprotekta sa puso <em>bago</em> pa lumitaw ang sintomas.</span><span data-lang="ceb" class="lang-hidden">Ang heart failure gi-stage na karon sama sa kanser, gikan A hangtod D. Ang <strong>Stage A</strong> nagpasabot "namiligro apan walay kadaot pa." Gisugyot sa 2024 nga panel sa mga eksperto nga <strong>bisan kinsa nga adunay CKD</strong> (eGFR ubos sa 60, o adunay protina sa ihi) angay awtomatikong iphon nga Stage A — usa ka pasidaan aron sugdan ang pagpanalipod sa kasingkasing <em>sa wala pa</em> motungha ang simtomas.</span><span data-lang="kap" class="lang-hidden">Ing heart failure i-stage ne ngeni anti ning kanser, mibat A angga D. Ing <strong>Stage A</strong> retang "atin peligru dapot ala pang pinsala." Sinuyu ne ning 2024 panel da reng eksperto a <strong>ninu mang atin CKD</strong> (eGFR mababa king 60, o atin protina king mih) dapat awtomatikong bilangan a Stage A — metung a senyas bang umpisan ing pamagprotekta king pusu <em>bayu</em> pa lumto ing sintomas.</span></p>
+
+    <div class="calc-cards-wrap">
+      <div class="calc-cards-label"><span data-lang="en">Calculators for these three numbers</span><span data-lang="tl" class="lang-hidden">Mga calculator para sa tatlong numerong ito</span><span data-lang="ceb" class="lang-hidden">Mga calculator alang niini nga tulo ka numero</span><span data-lang="kap" class="lang-hidden">Ding calculator para karing atlung numerong deni</span></div>
+      <a href="calc-egfr-ckd-epi.html" class="calc-card">
+        <div class="calc-card-icon">⌬</div>
+        <div class="calc-card-body"><div class="calc-card-title">eGFR Calculator (CKD-EPI 2021, race-free)</div><div class="calc-card-desc"><span data-lang="en">Estimate kidney filtering speed from a creatinine result.</span><span data-lang="tl" class="lang-hidden">Tantyahin ang bilis ng pagsasala ng bato mula sa creatinine.</span><span data-lang="ceb" class="lang-hidden">Banabanaa ang katulin sa pagsala sa kidney gikan sa creatinine.</span><span data-lang="kap" class="lang-hidden">Tantyan ing bilis ning pamanyala ning batu mibat king creatinine.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+      <a href="calc-egfr-cystatin.html" class="calc-card">
+        <div class="calc-card-icon">⌬</div>
+        <div class="calc-card-body"><div class="calc-card-title">eGFR by Cystatin C</div><div class="calc-card-desc"><span data-lang="en">A more accurate filtering estimate when muscle mass is unusual (very thin or muscular).</span><span data-lang="tl" class="lang-hidden">Mas tumpak na pagtantya kapag hindi pangkaraniwan ang muscle mass (napakapayat o muscular).</span><span data-lang="ceb" class="lang-hidden">Mas tukma nga banabana kung dili kasagaran ang muscle mass (niwang o muscular).</span><span data-lang="kap" class="lang-hidden">Mas tumpak a pagtantya nung ali karaniwan ing muscle mass (makapayat o muscular).</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+      <a href="calc-proteinuria-uacr.html" class="calc-card">
+        <div class="calc-card-icon">🧪</div>
+        <div class="calc-card-body"><div class="calc-card-title">Albuminuria / Proteinuria (UACR, KDIGO staging)</div><div class="calc-card-desc"><span data-lang="en">Convert a urine albumin result into the KDIGO risk category.</span><span data-lang="tl" class="lang-hidden">Gawing KDIGO risk category ang resulta ng albumin sa ihi.</span><span data-lang="ceb" class="lang-hidden">Himoa nga KDIGO risk category ang urine albumin result.</span><span data-lang="kap" class="lang-hidden">Gawan KDIGO risk category ing urine albumin result.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+      <a href="calc-kfre.html" class="calc-card">
+        <div class="calc-card-icon">⚠</div>
+        <div class="calc-card-body"><div class="calc-card-title">Kidney Failure Risk Equation (KFRE)</div><div class="calc-card-desc"><span data-lang="en">Your 2- and 5-year risk of needing dialysis — useful for planning ahead.</span><span data-lang="tl" class="lang-hidden">Ang iyong 2- at 5-taong panganib na mangailangan ng dialysis — para makapagplano.</span><span data-lang="ceb" class="lang-hidden">Ang imong 2- ug 5-tuig nga risgo nga manginahanglan og dialysis — alang sa pagplano.</span><span data-lang="kap" class="lang-hidden">Ing kekang 2- at 5-banua a peligru a mangailangan dialysis — para makapagplano.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+      <a href="calc-hf-staging.html" class="calc-card">
+        <div class="calc-card-icon">♡</div>
+        <div class="calc-card-body"><div class="calc-card-title">Heart Failure Staging (A–D)</div><div class="calc-card-desc"><span data-lang="en">See where you sit on the A-to-D staging system described above.</span><span data-lang="tl" class="lang-hidden">Tingnan kung saan ka sa A-hanggang-D na staging sa itaas.</span><span data-lang="ceb" class="lang-hidden">Tan-awa kung asa ka sa A-ngadto-D nga staging sa ibabaw.</span><span data-lang="kap" class="lang-hidden">Lawen nung nukarin ka king A-angga-D a staging king babo.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+    </div>
   </section>
 
   <!-- ══════════════ 6. THE eGFR DIP ══════════════ -->
@@ -1503,6 +1533,39 @@ body.dark .related-card-title {
     </div>
 
     <p><span data-lang="en">When <strong>should</strong> you worry? When the fall is steeper than 30%, when it keeps dropping instead of settling, or when it comes with red flags like very high potassium, signs of dehydration, or blood/protein storm in the urine. Then your doctor looks for another cause. The skill is telling a harmless "dip" apart from true injury — and not throwing away a good medicine for the former.</span><span data-lang="tl" class="lang-hidden">Kailan ka <strong>dapat</strong> mag-alala? Kapag mas matarik sa 30% ang pagbaba, kapag patuloy itong bumababa sa halip na huminto, o kapag may kasama itong red flag tulad ng napakataas na potassium, palatandaan ng dehydration, o pag-alsa ng dugo/protina sa ihi. Doon hahanapin ng iyong doktor ang ibang sanhi. Ang husay ay ang pagkakaiba ng hindi nakapipinsalang "dip" sa tunay na pinsala — at hindi pagtatapon ng mabuting gamot para sa una.</span><span data-lang="ceb" class="lang-hidden">Kanus-a ka <strong>angay</strong> mabalaka? Kung mas tarik sa 30% ang pagkanaog, kung magpadayon kini sa pagkanaog imbes nga molig-on, o kung adunay kuyog nga red flag sama sa taas kaayo nga potassium, timailhan sa dehydration, o pag-ulbo sa dugo/protina sa ihi. Didto pangitaon sa imong doktor ang laing hinungdan. Ang kahanas mao ang pag-ila sa walay kadaot nga "dip" gikan sa tinuod nga kadaot — ug dili paglabay sa maayong tambal alang sa una.</span><span data-lang="kap" class="lang-hidden">Kapilan ka <strong>dapat</strong> mag-alala? Nung mas matarik king 30% ing pamababa, nung tuloy-tuloy yang kumati imbes a tumuknang, o nung atin kayabe a red flag anti ning masyadong matas a potassium, tanda ning dehydration, o pamag-alsa ning daya/protina king mih. Karin yang panintunan ning kekang doktor ing aliwang sanhi. Ing galing ya ing pikakaiba ning ali makapinsalang "dip" king tutung pinsala — at ali pamagtapun ning mayap a gamut uli ning minuna.</span></p>
+
+    <h3><span data-lang="en">Decision tree: my kidney number dropped after a new heart medicine — now what?</span><span data-lang="tl" class="lang-hidden">Decision tree: bumaba ang numero ng aking bato pagkatapos ng bagong gamot sa puso — ano ngayon?</span><span data-lang="ceb" class="lang-hidden">Decision tree: mikunhod ang numero sa akong kidney human sa bag-ong tambal sa kasingkasing — unsa na?</span><span data-lang="kap" class="lang-hidden">Decision tree: kinati ya ing numero ning kakung batu kaibat ning bayung gamut king pusu — nanu ngeni?</span></h3>
+    <p class="illus-caption" style="text-align:left;margin-bottom:8px"><span data-lang="en">A simplified version of how clinicians think it through. This is for understanding — your doctor makes the final call with your full results.</span><span data-lang="tl" class="lang-hidden">Pinasimpleng bersyon ng iniisip ng mga kliniko. Ito ay para sa pag-unawa — ang iyong doktor ang may huling pasya gamit ang buo mong resulta.</span><span data-lang="ceb" class="lang-hidden">Pinasimple nga bersyon sa gihunahuna sa mga kliniko. Kini alang sa pagsabot — ang imong doktor ang naghimo sa katapusang desisyon gamit ang imong tibuok resulta.</span><span data-lang="kap" class="lang-hidden">Pinasimpleng bersyon ning iisipan da reng kliniko. Iti para king pamag-aintindi — ing kekang doktor ing atin tauling pasya a atin mabilug a resulta mu.</span></p>
+    <div class="flow">
+      <div class="fs"><span class="fb fb-trigger"><span data-lang="en">Start</span><span data-lang="tl" class="lang-hidden">Simula</span><span data-lang="ceb" class="lang-hidden">Sugod</span><span data-lang="kap" class="lang-hidden">Umpisa</span></span>
+        <div class="fc"><div class="fq"><span data-lang="en">A repeat blood test 1–4 weeks after starting an SGLT2 inhibitor, ACEi/ARB/ARNI, or MRA shows your eGFR has fallen.</span><span data-lang="tl" class="lang-hidden">Ang ulit na pagsusuri ng dugo 1–4 linggo pagkatapos magsimula ng SGLT2 inhibitor, ACEi/ARB/ARNI, o MRA ay nagpapakita na bumaba ang iyong eGFR.</span><span data-lang="ceb" class="lang-hidden">Ang balik nga blood test 1–4 ka semana human magsugod og SGLT2 inhibitor, ACEi/ARB/ARNI, o MRA nagpakita nga mikunhod ang imong eGFR.</span><span data-lang="kap" class="lang-hidden">Ing ulit a blood test 1–4 a duminggu kaibat mag-umpisa SGLT2 inhibitor, ACEi/ARB/ARNI, o MRA pakit na a kinati ya ing kekang eGFR.</span></div></div>
+      </div>
+      <div class="fs"><span class="fb fb-decision"><span data-lang="en">Ask</span><span data-lang="tl" class="lang-hidden">Tanong</span><span data-lang="ceb" class="lang-hidden">Pangutana</span><span data-lang="kap" class="lang-hidden">Kutang</span></span>
+        <div class="fc"><div class="fq"><span data-lang="en">How big is the drop, and are there any red flags (potassium too high, signs of dehydration, very low blood pressure, blood/protein newly flooding the urine)?</span><span data-lang="tl" class="lang-hidden">Gaano kalaki ang pagbaba, at may red flag ba (sobrang taas na potassium, palatandaan ng dehydration, napakababang presyon, bago at maraming dugo/protina sa ihi)?</span><span data-lang="ceb" class="lang-hidden">Unsa kadako ang pagkanaog, ug naa bay red flag (taas kaayo nga potassium, timailhan sa dehydration, ubos kaayo nga presyon, bag-o ug daghang dugo/protina sa ihi)?</span><span data-lang="kap" class="lang-hidden">Makananu karagul ing pamababa, at atin red flag (masyadong matas a potassium, tanda ning dehydration, makababang presyon, bayu at dakal a daya/protina king mih)?</span></div>
+          <div class="fbr">
+            <div class="br br-yes"><div class="brl"><span data-lang="en">≤ 30% drop, no red flags</span><span data-lang="tl" class="lang-hidden">≤ 30% pagbaba, walang red flag</span><span data-lang="ceb" class="lang-hidden">≤ 30% pagkanaog, walay red flag</span><span data-lang="kap" class="lang-hidden">≤ 30% pamababa, alang red flag</span></div><p><span data-lang="en">Expected, harmless "dip." <strong>Continue the medicine.</strong> Recheck in a few weeks — it usually stabilises.</span><span data-lang="tl" class="lang-hidden">Inaasahan, hindi nakapipinsalang "dip." <strong>Ituloy ang gamot.</strong> Suriin muli sa loob ng ilang linggo — kadalasang nag-i-stabilize.</span><span data-lang="ceb" class="lang-hidden">Gidahom, walay kadaot nga "dip." <strong>Ipadayon ang tambal.</strong> Susiha pag-usab sa pipila ka semana — kasagaran molig-on.</span><span data-lang="kap" class="lang-hidden">Inaasan, alang pinsalang "dip." <strong>Ituloy ing gamut.</strong> Surian pasibayu king mapilan a duminggu — kadaklan ma-stabilize.</span></p></div>
+            <div class="br br-no"><div class="brl"><span data-lang="en">&gt; 30% drop OR any red flag</span><span data-lang="tl" class="lang-hidden">&gt; 30% pagbaba O may red flag</span><span data-lang="ceb" class="lang-hidden">&gt; 30% pagkanaog O naa red flag</span><span data-lang="kap" class="lang-hidden">&gt; 30% pamababa O atin red flag</span></div><p><span data-lang="en">Don't stop on your own — <strong>call your doctor.</strong> They look for another cause (dehydration, other drugs like NSAIDs, blockage) before deciding to pause or adjust.</span><span data-lang="tl" class="lang-hidden">Huwag itigil nang mag-isa — <strong>tawagan ang iyong doktor.</strong> Hahanapin nila ang ibang sanhi (dehydration, ibang gamot tulad ng NSAIDs, barado) bago magpasyang ihinto o iakma.</span><span data-lang="ceb" class="lang-hidden">Ayaw undanga nga ikaw ra — <strong>tawagi ang imong doktor.</strong> Mangita sila og laing hinungdan (dehydration, ubang tambal sama sa NSAIDs, barahan) sa dili pa magdesisyon nga ihunong o i-adjust.</span><span data-lang="kap" class="lang-hidden">E me itigil a sarili mu — <strong>ausan me ing kekang doktor.</strong> Panintunan da ing aliwang sanhi (dehydration, aliwang gamut anti ning NSAIDs, barat) bayu mamye desisyon a itigil o i-adjust.</span></p></div>
+          </div>
+        </div>
+      </div>
+      <div class="fs"><span class="fb fb-action"><span data-lang="en">Goal</span><span data-lang="tl" class="lang-hidden">Layunin</span><span data-lang="ceb" class="lang-hidden">Tumong</span><span data-lang="kap" class="lang-hidden">Tudtud</span></span>
+        <div class="fc"><div class="fd"><span data-lang="en">Either way, the aim is to <strong>stay on the protective medicine</strong> if it is at all safe — because over months and years it is what protects both your heart and your kidneys. Treatment follows your symptoms and fluid status, not the creatinine number alone.</span><span data-lang="tl" class="lang-hidden">Alinmang paraan, ang layunin ay <strong>manatili sa protektibong gamot</strong> kung ligtas — dahil sa paglipas ng mga buwan at taon, ito ang nagpoprotekta sa puso at bato mo. Sinusunod ng paggamot ang iyong sintomas at lebel ng likido, hindi lang ang numero ng creatinine.</span><span data-lang="ceb" class="lang-hidden">Bisan asa nga paagi, ang tumong mao ang <strong>magpabilin sa panalipod nga tambal</strong> kung luwas — kay sa paglabay sa mga bulan ug tuig, kini ang nagpanalipod sa imong kasingkasing ug kidney. Ang pagtambal nagsunod sa imong simtomas ug lebel sa likido, dili lang ang numero sa creatinine.</span><span data-lang="kap" class="lang-hidden">Nokarin mang paralan, ing tudtud ya ing <strong>manatili king protektibong gamut</strong> nung ligtas — uli king pamilabas da reng bulan at banua, iti ing protektan na ing kekang pusu at batu. Ing panggamut tutuki king kekang sintomas at lebel ning danum, ali mu ing numero ning creatinine.</span></div></div>
+      </div>
+    </div>
+
+    <div class="calc-cards-wrap">
+      <div class="calc-cards-label"><span data-lang="en">Track the numbers yourself</span><span data-lang="tl" class="lang-hidden">Subaybayan mismo ang mga numero</span><span data-lang="ceb" class="lang-hidden">Bantayi mismo ang mga numero</span><span data-lang="kap" class="lang-hidden">Bantayan mu mismo ding numero</span></div>
+      <a href="calc-egfr-ckd-epi.html" class="calc-card">
+        <div class="calc-card-icon">⌬</div>
+        <div class="calc-card-body"><div class="calc-card-title">eGFR Calculator (CKD-EPI 2021)</div><div class="calc-card-desc"><span data-lang="en">Turn a creatinine result into an eGFR so you can see the size of any change.</span><span data-lang="tl" class="lang-hidden">Gawing eGFR ang resulta ng creatinine para makita ang laki ng pagbabago.</span><span data-lang="ceb" class="lang-hidden">Himoa nga eGFR ang creatinine result aron makita ang gidak-on sa kausaban.</span><span data-lang="kap" class="lang-hidden">Gawan eGFR ing creatinine result bang akit ing dagul ning pamagbayu.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+      <a href="calc-ckd-progression-slope.html" class="calc-card">
+        <div class="calc-card-icon">📈</div>
+        <div class="calc-card-body"><div class="calc-card-title">CKD Progression Slope (eGFR trend)</div><div class="calc-card-desc"><span data-lang="en">Plot several eGFR values over time to tell a one-off dip from a real decline.</span><span data-lang="tl" class="lang-hidden">I-plot ang ilang eGFR sa paglipas ng panahon para makilala ang dip sa tunay na pagbaba.</span><span data-lang="ceb" class="lang-hidden">I-plot ang pipila ka eGFR sa paglabay sa panahon aron mailhan ang dip gikan sa tinuod nga pagkanaog.</span><span data-lang="kap" class="lang-hidden">I-plot ding mapilan a eGFR king pamilabas ning panaun bang akilala ing dip king tutung pamababa.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+    </div>
   </section>
 
   <!-- ══════════════ 7. TREATMENT ══════════════ -->
@@ -1544,6 +1607,11 @@ body.dark .related-card-title {
     </div>
     <p class="illus-caption"><span data-lang="en">Thresholds adapted from the 2024 KDIGO Heart Failure &amp; CKD conference and current cardiology/nephrology guidelines. Your own targets depend on your blood pressure, potassium, and how you feel — always individualised by your doctor.</span><span data-lang="tl" class="lang-hidden">Ang mga threshold ay hango sa 2024 KDIGO Heart Failure at CKD conference at kasalukuyang gabay sa cardiology/nephrology. Ang iyong mga target ay nakadepende sa iyong presyon, potassium, at kung ano ang nararamdaman mo — palaging ini-individualize ng iyong doktor.</span><span data-lang="ceb" class="lang-hidden">Ang mga threshold gikan sa 2024 KDIGO Heart Failure ug CKD conference ug karon nga giya sa cardiology/nephrology. Ang imong mga target nagdepende sa imong presyon, potassium, ug giunsa nimo pagbati — kanunay gi-individualize sa imong doktor.</span><span data-lang="kap" class="lang-hidden">Ding threshold mibat king 2024 KDIGO Heart Failure at CKD conference at kasalukuyan a giya king cardiology/nephrology. Ding kekang target nakadepende king kekang presyon, potassium, at nung nanu ing daramdam mu — pirming i-individualize ning kekang doktor.</span></p>
 
+    <div class="alert alert-teal">
+      <div class="alert-icon">📚</div>
+      <div class="alert-body"><span data-lang="en"><strong>See the trial evidence in pictures.</strong> The landmark studies behind these medicines are illustrated in our <a href="nephrology-atlas.html">Nephrology Visual Atlas</a> — see the plates on the <a href="nephrology-atlas.html">SGLT2 Revolution</a> (CREDENCE, DAPA-CKD, EMPA-KIDNEY), the <a href="nephrology-atlas.html">Four Pillars of cardio-kidney-metabolic care</a>, the <a href="nephrology-atlas.html">Finerenone trials</a> (FIDELIO, FIGARO, FIDELITY), and the <a href="nephrology-atlas.html">FLOW trial</a> (semaglutide, 24% reduction in kidney events). The heart-failure-specific SGLT2 trials (DAPA-HF, DELIVER, EMPEROR) and FINEARTS-HF / STEP-HFpEF are discussed in this guide.</span><span data-lang="tl" class="lang-hidden"><strong>Tingnan ang ebidensya ng mga pag-aaral sa larawan.</strong> Ang mga landmark na pag-aaral sa likod ng mga gamot na ito ay nakalarawan sa aming <a href="nephrology-atlas.html">Nephrology Visual Atlas</a> — tingnan ang mga plate sa <a href="nephrology-atlas.html">SGLT2 Revolution</a> (CREDENCE, DAPA-CKD, EMPA-KIDNEY), ang <a href="nephrology-atlas.html">Apat na Haligi ng cardio-kidney-metabolic na pangangalaga</a>, ang <a href="nephrology-atlas.html">Finerenone trials</a> (FIDELIO, FIGARO, FIDELITY), at ang <a href="nephrology-atlas.html">FLOW trial</a> (semaglutide, 24% pagbaba ng kidney events). Ang heart-failure-specific na SGLT2 trials (DAPA-HF, DELIVER, EMPEROR) at FINEARTS-HF / STEP-HFpEF ay tinatalakay sa gabay na ito.</span><span data-lang="ceb" class="lang-hidden"><strong>Tan-awa ang ebidensya sa mga pagsulay sa litrato.</strong> Ang mga landmark nga pagtuon luyo niini nga tambal gihulagway sa among <a href="nephrology-atlas.html">Nephrology Visual Atlas</a> — tan-awa ang mga plate sa <a href="nephrology-atlas.html">SGLT2 Revolution</a> (CREDENCE, DAPA-CKD, EMPA-KIDNEY), ang <a href="nephrology-atlas.html">Upat ka Haligi sa cardio-kidney-metabolic nga pag-atiman</a>, ang <a href="nephrology-atlas.html">Finerenone trials</a> (FIDELIO, FIGARO, FIDELITY), ug ang <a href="nephrology-atlas.html">FLOW trial</a> (semaglutide, 24% pagkunhod sa kidney events). Ang heart-failure-specific nga SGLT2 trials (DAPA-HF, DELIVER, EMPEROR) ug FINEARTS-HF / STEP-HFpEF gihisgotan niini nga giya.</span><span data-lang="kap" class="lang-hidden"><strong>Lawen ing ebidensya da reng pagsulay king larawan.</strong> Ding landmark a pag-aral king tau da reting gamut makalarawan king kekeng <a href="nephrology-atlas.html">Nephrology Visual Atlas</a> — lawen ding plate king <a href="nephrology-atlas.html">SGLT2 Revolution</a> (CREDENCE, DAPA-CKD, EMPA-KIDNEY), ing <a href="nephrology-atlas.html">Apat a Haligi ning cardio-kidney-metabolic a pamanatiman</a>, ding <a href="nephrology-atlas.html">Finerenone trials</a> (FIDELIO, FIGARO, FIDELITY), at ing <a href="nephrology-atlas.html">FLOW trial</a> (semaglutide, 24% pamababa ning kidney events). Ding heart-failure-specific a SGLT2 trials (DAPA-HF, DELIVER, EMPEROR) at FINEARTS-HF / STEP-HFpEF makatalakay la king gabay a ini.</span></div>
+    </div>
+
     <div class="alert alert-red">
       <div class="alert-icon">🛑</div>
       <div class="alert-body"><span data-lang="en"><strong>Never start, stop, or change these medicines on your own.</strong> They interact with each other and with potassium, blood pressure, and dehydration. The goal is to get you on as many of the protective medicines as you can safely tolerate, at the right doses — a job that requires monitoring blood tests. This guide is for understanding, not self-prescribing.</span><span data-lang="tl" class="lang-hidden"><strong>Huwag kailanman simulan, itigil, o baguhin ang mga gamot na ito nang mag-isa.</strong> Nag-iinteraksyon sila sa isa't isa at sa potassium, presyon ng dugo, at dehydration. Ang layunin ay mailagay ka sa kasingdami ng mga protektibong gamot na ligtas mong matitiis, sa tamang dosis — isang trabaho na nangangailangan ng pagsubaybay sa pagsusuri ng dugo. Ang gabay na ito ay para sa pag-unawa, hindi para sa sariling reseta.</span><span data-lang="ceb" class="lang-hidden"><strong>Ayaw gyud pagsugod, paghunong, o pagbag-o niini nga mga tambal nga ikaw ra.</strong> Nag-interaksyon sila sa usag usa ug sa potassium, presyon sa dugo, ug dehydration. Ang tumong mao ang pagbutang kanimo sa kadaghanan sa mga panalipod nga tambal nga luwas nimong maagwanta, sa hustong dosis — usa ka trabaho nga nagkinahanglan og pag-monitor sa blood test. Kini nga giya alang sa pagsabot, dili alang sa kaugalingong reseta.</span><span data-lang="kap" class="lang-hidden"><strong>E me bisan kailan umpisan, itigil, o baryuan deting gamut a sarili mu.</strong> Mag-interaksyon la king metung at metung at king potassium, presyon ning daya, at dehydration. Ing tudtud ya ing milage ka king kataparan da reng protektibong gamut a ligtas mung atiisan, king tamang dosis — metung a dapat a kailangan a pamagbante king pamagsuri ning daya. Ing gabay a ini para king pamag-aintindi, ali para king sariling reseta.</span></div>
@@ -1566,6 +1634,39 @@ body.dark .related-card-title {
     </ul>
 
     <p><span data-lang="en">When the kidneys can no longer remove enough fluid even with maximal drugs (<em>refractory</em> overload), <strong>ultrafiltration</strong> or dialysis can physically pull the water out. For some people with end-stage disease, <strong>peritoneal dialysis</strong> at home is a gentle option — it removes fluid steadily without sharp blood-pressure swings, needs no vascular access, and preserves independence.</span><span data-lang="tl" class="lang-hidden">Kapag hindi na maalis ng bato ang sapat na likido kahit may pinakamataas na gamot (<em>refractory</em> na pag-umapaw), maaaring pisikal na hilahin ng <strong>ultrafiltration</strong> o dialysis ang tubig palabas. Para sa ilang taong may end-stage na sakit, ang <strong>peritoneal dialysis</strong> sa bahay ay isang banayad na opsyon — inaalis nito ang likido nang tuloy-tuloy nang walang matinding pagbabago ng presyon, hindi nangangailangan ng vascular access, at pinapanatili ang kalayaan.</span><span data-lang="ceb" class="lang-hidden">Kung dili na makakuha ang kidney og igo nga likido bisan sa pinakataas nga tambal (<em>refractory</em> nga sobra), ang <strong>ultrafiltration</strong> o dialysis makakuha sa tubig pisikal. Alang sa ubang tawo nga adunay end-stage nga sakit, ang <strong>peritoneal dialysis</strong> sa balay usa ka malumo nga kapilian — gikuha niini ang likido nga makanunayon nga walay hait nga kausaban sa presyon, walay gikinahanglan nga vascular access, ug gipreserbar ang kagawasan.</span><span data-lang="kap" class="lang-hidden">Nung ali na ne maalis ning batu ing igung danum kahit atin pekamatas a gamut (<em>refractory</em> a pamag-apaw), pwede yang pisikal a guyuran ning <strong>ultrafiltration</strong> o dialysis ing danum palwal. Para king mapilan a taung atin end-stage a sakit, ing <strong>peritoneal dialysis</strong> king bale metung yang malumu a opsyon — alisan na ing danum a tuloy-tuloy a alang masikan a pamagbayu ning presyon, ali kailangan vascular access, at panatilian na ing kalayaan.</span></p>
+
+    <h3><span data-lang="en">Decision tree: is the water pill actually working?</span><span data-lang="tl" class="lang-hidden">Decision tree: gumagana ba talaga ang water pill?</span><span data-lang="ceb" class="lang-hidden">Decision tree: naglihok ba gyud ang water pill?</span><span data-lang="kap" class="lang-hidden">Decision tree: tutu yang gagana ing water pill?</span></h3>
+    <p class="illus-caption" style="text-align:left;margin-bottom:8px"><span data-lang="en">A simplified version of how doctors check diuretic response during a flare of congestion (adapted from the European Society of Cardiology / KDIGO approach).</span><span data-lang="tl" class="lang-hidden">Pinasimpleng bersyon ng pagsusuri ng doktor sa tugon sa diuretic sa panahon ng congestion (hango sa ESC / KDIGO).</span><span data-lang="ceb" class="lang-hidden">Pinasimple nga bersyon sa pagsusi sa doktor sa tubag sa diuretic atol sa congestion (gikan sa ESC / KDIGO).</span><span data-lang="kap" class="lang-hidden">Pinasimpleng bersyon ning pamagsuri ning doktor king tugun king diuretic king panaun ning congestion (mibat king ESC / KDIGO).</span></p>
+    <div class="flow">
+      <div class="fs"><span class="fb fb-trigger"><span data-lang="en">Start</span><span data-lang="tl" class="lang-hidden">Simula</span><span data-lang="ceb" class="lang-hidden">Sugod</span><span data-lang="kap" class="lang-hidden">Umpisa</span></span>
+        <div class="fc"><div class="fq"><span data-lang="en">You are congested (breathless, swollen) and a loop diuretic (e.g. furosemide) is given. Low eGFR or high urine protein means you may need a higher dose.</span><span data-lang="tl" class="lang-hidden">Congested ka (hingal, namamaga) at binigyan ng loop diuretic (hal. furosemide). Ang mababang eGFR o mataas na protina sa ihi ay maaaring mangailangan ng mas mataas na dosis.</span><span data-lang="ceb" class="lang-hidden">Congested ka (gakapoy, hubag) ug gihatagan og loop diuretic (pananglitan furosemide). Ang ubos nga eGFR o taas nga protina sa ihi mahimong manginahanglan og mas taas nga dosis.</span><span data-lang="kap" class="lang-hidden">Congested ka (hingal, mamaga) at mibie loop diuretic (alimbawa furosemide). Ing mababang eGFR o matas a protina king mih pwedeng mangailangan mas matas a dosis.</span></div></div>
+      </div>
+      <div class="fs"><span class="fb fb-decision"><span data-lang="en">Check</span><span data-lang="tl" class="lang-hidden">Suriin</span><span data-lang="ceb" class="lang-hidden">Susiha</span><span data-lang="kap" class="lang-hidden">Surian</span></span>
+        <div class="fc"><div class="fq"><span data-lang="en">Is there a good response? (e.g. plenty of urine in the hours after the dose, steady weight loss of ~1–3 kg/day, easier breathing)</span><span data-lang="tl" class="lang-hidden">May magandang tugon ba? (hal. maraming ihi sa mga oras pagkatapos ng dosis, tuloy-tuloy na pagbaba ng timbang ~1–3 kg/araw, mas madaling paghinga)</span><span data-lang="ceb" class="lang-hidden">Adunay maayong tubag? (pananglitan daghang ihi sa mga oras human sa dosis, makanunayong pagkawala sa timbang ~1–3 kg/adlaw, sayon nga pagginhawa)</span><span data-lang="kap" class="lang-hidden">Atin mayap a tugun? (alimbawa dakal a mih king oras kaibat ning dosis, tuloy-tuloy a pamababa ning timbang ~1–3 kg/aldo, mas malagua a pamaginawa)</span></div>
+          <div class="fbr">
+            <div class="br br-yes"><div class="brl"><span data-lang="en">Yes — responding</span><span data-lang="tl" class="lang-hidden">Oo — tumutugon</span><span data-lang="ceb" class="lang-hidden">Oo — nagtubag</span><span data-lang="kap" class="lang-hidden">Wa — tutugun</span></div><p><span data-lang="en">Continue until you reach your dry weight (euvolemia), then step the diuretic back down and keep the protective medicines going.</span><span data-lang="tl" class="lang-hidden">Ituloy hanggang maabot ang dry weight (euvolemia), pagkatapos ibaba ang diuretic at panatilihin ang protektibong gamot.</span><span data-lang="ceb" class="lang-hidden">Ipadayon hangtod maabot ang dry weight (euvolemia), unya hinayhinay ibaba ang diuretic ug ipadayon ang panalipod nga tambal.</span><span data-lang="kap" class="lang-hidden">Ituloy angga abut ing dry weight (euvolemia), kaibat ibaba ing diuretic at panatilian ding protektibong gamut.</span></p></div>
+            <div class="br br-no"><div class="brl"><span data-lang="en">No — resistant</span><span data-lang="tl" class="lang-hidden">Hindi — resistant</span><span data-lang="ceb" class="lang-hidden">Wala — resistant</span><span data-lang="kap" class="lang-hidden">Ali — resistant</span></div><p><span data-lang="en"><strong>Diuretic resistance.</strong> The doctor escalates: double the dose, switch to IV, or add a second diuretic that works elsewhere in the kidney (sequential nephron blockade).</span><span data-lang="tl" class="lang-hidden"><strong>Diuretic resistance.</strong> Ina-escalate ng doktor: doblehin ang dosis, ilipat sa IV, o magdagdag ng pangalawang diuretic (sequential nephron blockade).</span><span data-lang="ceb" class="lang-hidden"><strong>Diuretic resistance.</strong> I-escalate sa doktor: doblehon ang dosis, ibalhin sa IV, o dugangan og ikaduhang diuretic (sequential nephron blockade).</span><span data-lang="kap" class="lang-hidden"><strong>Diuretic resistance.</strong> I-escalate ne ning doktor: doblan ing dosis, ilipat king IV, o magdagdag kaduang diuretic (sequential nephron blockade).</span></p></div>
+          </div>
+        </div>
+      </div>
+      <div class="fs"><span class="fb fb-admit"><span data-lang="en">Refractory</span><span data-lang="tl" class="lang-hidden">Refractory</span><span data-lang="ceb" class="lang-hidden">Refractory</span><span data-lang="kap" class="lang-hidden">Refractory</span></span>
+        <div class="fc"><div class="fd"><span data-lang="en">If still overloaded despite maximal combined diuretics, <strong>ultrafiltration or dialysis</strong> can remove the fluid mechanically — and home peritoneal dialysis is an option for selected people with end-stage disease.</span><span data-lang="tl" class="lang-hidden">Kung sobra pa rin kahit pinakamataas na pinagsamang diuretic, ang <strong>ultrafiltration o dialysis</strong> ay maaaring mag-alis ng likido — at opsyon ang home peritoneal dialysis para sa ilang may end-stage na sakit.</span><span data-lang="ceb" class="lang-hidden">Kung sobra pa bisan sa pinakataas nga hiniusang diuretic, ang <strong>ultrafiltration o dialysis</strong> makakuha sa likido — ug kapilian ang home peritoneal dialysis alang sa pipila nga adunay end-stage nga sakit.</span><span data-lang="kap" class="lang-hidden">Nung sobra pa kahit pekamatas a pisanan a diuretic, ing <strong>ultrafiltration o dialysis</strong> pwedeng mag-alis ning danum — at opsyon ing home peritoneal dialysis para karing mapilan a atin end-stage a sakit.</span></div></div>
+      </div>
+    </div>
+
+    <div class="calc-cards-wrap">
+      <div class="calc-cards-label"><span data-lang="en">Fluid &amp; dialysis calculators</span><span data-lang="tl" class="lang-hidden">Mga calculator sa likido at dialysis</span><span data-lang="ceb" class="lang-hidden">Mga calculator sa likido ug dialysis</span><span data-lang="kap" class="lang-hidden">Ding calculator king danum at dialysis</span></div>
+      <a href="calc-urine-output-fluid-balance.html" class="calc-card">
+        <div class="calc-card-icon">💧</div>
+        <div class="calc-card-body"><div class="calc-card-title">Urine Output &amp; Fluid Balance</div><div class="calc-card-desc"><span data-lang="en">Track intake vs output to gauge how decongestion is going.</span><span data-lang="tl" class="lang-hidden">Subaybayan ang inom vs ihi para masukat ang decongestion.</span><span data-lang="ceb" class="lang-hidden">Bantayi ang inom vs ihi aron masukod ang decongestion.</span><span data-lang="kap" class="lang-hidden">Bantayan ing inum vs mih bang masukat ing decongestion.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+      <a href="calc-ultrafiltration-rate.html" class="calc-card">
+        <div class="calc-card-icon">⚙</div>
+        <div class="calc-card-body"><div class="calc-card-title">Ultrafiltration Rate</div><div class="calc-card-desc"><span data-lang="en">For dialysis patients — checks whether fluid is being removed at a safe rate.</span><span data-lang="tl" class="lang-hidden">Para sa dialysis — tinitingnan kung ligtas ang bilis ng pag-alis ng likido.</span><span data-lang="ceb" class="lang-hidden">Alang sa dialysis — gisusi kung luwas ang katulin sa pagkuha sa likido.</span><span data-lang="kap" class="lang-hidden">Para king dialysis — lalawen nung ligtas ing bilis ning pamag-alis ning danum.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+    </div>
   </section>
 
   <!-- ══════════════ 9. IRON / DIET / EXERCISE ══════════════ -->
@@ -1590,6 +1691,25 @@ body.dark .related-card-title {
         <h4>🚶 <span data-lang="en">Exercise &amp; rehab</span><span data-lang="tl" class="lang-hidden">Ehersisyo at rehab</span><span data-lang="ceb" class="lang-hidden">Ehersisyo ug rehab</span><span data-lang="kap" class="lang-hidden">Ehersisyo at rehab</span></h4>
         <p><span data-lang="en">Both heart and kidney guidelines strongly recommend regular, moderate physical activity for everyone able. It improves strength, mood, and quality of life and helps prevent frailty. Start gently, build slowly, and ask about a supervised cardiac-rehab program if available.</span><span data-lang="tl" class="lang-hidden">Parehong mariing inirerekomenda ng gabay sa puso at bato ang regular at katamtamang pisikal na aktibidad para sa lahat ng may kakayahan. Pinapabuti nito ang lakas, mood, at kalidad ng buhay at tumutulong na maiwasan ang frailty. Magsimula nang dahan-dahan, dahan-dahang itaas, at magtanong tungkol sa supervised cardiac-rehab program kung available.</span><span data-lang="ceb" class="lang-hidden">Ang giya sa kasingkasing ug kidney kusganong nagrekomendar sa regular ug kasarangan nga pisikal nga kalihokan alang sa tanan nga makahimo. Gipaayo niini ang kusog, kahimtang, ug kalidad sa kinabuhi ug makatabang sa paglikay sa frailty. Sugdi og hinay, tukora og hinay, ug pangutana bahin sa supervised cardiac-rehab program kung anaa.</span><span data-lang="kap" class="lang-hidden">Pareho dang masikan a irekomenda ning giya king pusu at batu ing regular at katamtaman a pisikal a aktibidad para king eganagana a atin kayang. Papayapan na ing sikanan, mood, at kalidad ning bie at makasaup yang maiwasan ing frailty. Mag-umpisa kang marimla, marimlang itas, at magkutang tungkul king supervised cardiac-rehab program nung atin.</span></p>
       </div>
+    </div>
+
+    <div class="calc-cards-wrap">
+      <div class="calc-cards-label"><span data-lang="en">Iron &amp; nutrition calculators</span><span data-lang="tl" class="lang-hidden">Mga calculator sa iron at nutrisyon</span><span data-lang="ceb" class="lang-hidden">Mga calculator sa iron ug nutrisyon</span><span data-lang="kap" class="lang-hidden">Ding calculator king iron at nutrisyon</span></div>
+      <a href="calc-iron-status-tsat.html" class="calc-card">
+        <div class="calc-card-icon">🩸</div>
+        <div class="calc-card-body"><div class="calc-card-title">Iron Status (TSAT &amp; ferritin)</div><div class="calc-card-desc"><span data-lang="en">Interpret your iron studies to see if you are iron-deficient.</span><span data-lang="tl" class="lang-hidden">Bigyang-kahulugan ang iron studies para makita kung kulang ka sa iron.</span><span data-lang="ceb" class="lang-hidden">Sabton ang imong iron studies aron makita kung kulang ka sa iron.</span><span data-lang="kap" class="lang-hidden">Iyexplika ing iron studies bang akit nung kulang ka king iron.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+      <a href="calc-iron-deficit-ganzoni.html" class="calc-card">
+        <div class="calc-card-icon">💉</div>
+        <div class="calc-card-body"><div class="calc-card-title">IV Iron Dose (Ganzoni)</div><div class="calc-card-desc"><span data-lang="en">Estimates the total iron needed to correct a deficit.</span><span data-lang="tl" class="lang-hidden">Tinatantya ang kabuuang iron na kailangan para itama ang kakulangan.</span><span data-lang="ceb" class="lang-hidden">Gibanabana ang total nga iron nga gikinahanglan aron matul-id ang kakulang.</span><span data-lang="kap" class="lang-hidden">Tatantyan ing mabilug a iron a kailangan bang itama ing kakulangan.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
+      <a href="calc-ckd-nutrition-rx.html" class="calc-card">
+        <div class="calc-card-icon">🥗</div>
+        <div class="calc-card-body"><div class="calc-card-title">CKD Nutrition Rx</div><div class="calc-card-desc"><span data-lang="en">Personalised protein, sodium, potassium, and phosphorus targets.</span><span data-lang="tl" class="lang-hidden">Personalisadong target ng protina, sodium, potassium, at phosphorus.</span><span data-lang="ceb" class="lang-hidden">Personalisado nga target sa protina, sodium, potassium, ug phosphorus.</span><span data-lang="kap" class="lang-hidden">Personalisadong target ning protina, sodium, potassium, at phosphorus.</span></div></div>
+        <span class="calc-card-arrow">Open →</span>
+      </a>
     </div>
   </section>
 
