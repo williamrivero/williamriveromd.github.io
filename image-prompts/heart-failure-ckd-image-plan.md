@@ -234,3 +234,231 @@ Legible at small thumbnail size, light background, correct 1200×630, attributio
    tags to `heart-failure-ckd-og.png` at 1200×630.
 5. Optionally run Stage 2 — `williamriveromd-local-image-generator` — to build the
    manifest and verify the `og:image` wiring.
+
+---
+---
+
+# Part B — Clinician Mode figures (English only)
+
+Six figures for the **clinician (physician) mode** of the guide. These are denser,
+publication-grade, English-only reference assets — but they still obey the house
+**light-background rule** (navy is heading/accent only, never a fill). Each drops
+into its `mode-physician` section as a `<figure>` with an English
+`<figcaption><p class="fig-desc">…`.
+
+| # | Clinician section | File | Skill | Type | Size |
+|---|---|---|---|---|---|
+| B1 | `#md-epi` | `heart-failure-ckd-md-risk-grid.png` | simple-figure | Heat-grid reference card (E) | 1536×1152 |
+| B2 | `#md-pathophys` | `heart-failure-ckd-md-haemodynamics.png` | mechanism-figure | Review-article mechanism | 1792×1024 |
+| B3 | `#md-dx` | `heart-failure-ckd-md-np-thresholds.png` | simple-figure | Reference card (E) | 1536×1152 |
+| B4 | `#md-gdmt` | `heart-failure-ckd-md-gdmt-matrix.png` | infographic | Clinician reference matrix | 1792×1024 |
+| B5 | `#md-decongest` | `heart-failure-ckd-md-diuretic-algorithm.png` | simple-figure | Algorithm flowchart (A) | 1024×1536 |
+| B6 | `#md-trials` | `heart-failure-ckd-md-trials-matrix.png` | simple-figure | Evidence matrix (E) | 1792×1024 |
+
+> `#md-advanced` is intentionally text-only (no figure). All Part B captions are
+> English-only to match the clinician layer.
+
+---
+
+## B1 · eGFR × albuminuria — graded HF/CV risk grid
+*Skill: williamriveromd-simple-figure · Scaffold E (reference card)*
+
+```
+FILE NAME: heart-failure-ckd-md-risk-grid.png
+IMAGE TYPE: Scaffold E — heat-grid reference card
+ASPECT RATIO: 4:3
+PIXEL DIMENSIONS: 1536 × 1152
+AUDIENCE: clinicians
+VISUAL GOAL: Show the graded, independent contribution of eGFR and albuminuria to heart-failure and cardiovascular risk (KDIGO-style heat map).
+
+PROMPT:
+Clinical reference card, publication-grade nephrology design, white (#ffffff) background. Bold navy (#0f1e2e) title: "eGFR × Albuminuria — Graded Heart-Failure & CV Risk". A KDIGO-style risk heat-map grid. X-axis (columns), albuminuria categories with teal (#1a6b72) headers: "A1 <30 mg/g", "A2 30–300 mg/g", "A3 >300 mg/g". Y-axis (rows), eGFR categories top to bottom: "G1 ≥90", "G2 60–89", "G3a 45–59", "G3b 30–44", "G4 15–29", "G5 <15". Shade each cell on a calm clinical gradient from renal green (#1f7a4d, low) through amber (#b8860b, moderate) to clinical red (#b91c1c, high), with risk rising toward low eGFR and high albuminuria (bottom-right reddest). Keep cell fills soft/desaturated so any overlaid small labels stay legible. Right-side annotation card in navy text: "Lower eGFR and higher UACR are independent predictors of incident HF (especially HFpEF) and of worse outcomes in prevalent HF. UACR's predictive value for HF (re)hospitalisation is comparable to BNP." Footer takeaway in navy: "Measure BOTH eGFR and UACR — yet only ~1 in 5 at-risk patients get a UACR." Mobile-readable, clean axis labels, generous whitespace. Bottom-right: "williamriveromd.com" in small semi-transparent navy text.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, overprocessed HDR, excessive saturation. NEVER use dark/navy/charcoal/black backgrounds — light only. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Mobile-readable, KDIGO-accurate category boundaries, calm desaturated heat map, white background, attribution bottom-right.
+```
+
+---
+
+## B2 · Haemodynamics of cardiorenal GFR decline
+*Skill: williamriveromd-biomedical-mechanism-figure*
+
+```
+FILE NAME: heart-failure-ckd-md-haemodynamics.png
+IMAGE TYPE: Publication-grade biomedical mechanism schematic (review-article style)
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: clinicians
+VISUAL GOAL: Explain how reduced cardiac output and elevated central venous pressure lower GFR via glomerular haemodynamics and tubular sodium avidity.
+
+COPY-READY PROMPT:
+Create a publication-grade biomedical mechanism schematic in scientific review-article style on a pure white background, flat vector illustration with soft semi-3D shading, muted clinical palette, thin dashed connector boxes, clean sans-serif labels, generous whitespace.
+
+Topic: Haemodynamic mechanisms of GFR decline in the cardiorenal syndrome.
+Disease context: Coexisting heart failure and CKD.
+Central mechanism: ↓ cardiac output and ↑ central venous pressure reduce net renal perfusion pressure; neurohormonal activation drives efferent vasoconstriction, raising filtration fraction and proximal sodium reabsorption.
+
+ORGAN-LEVEL PANEL (left):
+Simplified heart and kidney in light gray-blue. Show the heart with a "↓ cardiac output / forward flow" label, and the kidney with an engorged, dilated renal vein labeled "↑ central venous pressure / venous congestion". Thin dashed connector box pointing to the magnified glomerulus.
+
+MAGNIFIED MECHANISM PANEL (center/right, dashed border):
+A single nephron's glomerulus with afferent and efferent arterioles and a proximal tubule. Highlight the efferent arteriole in pale yellow. Concise callouts (red arrows for injury/constriction, blue for protective):
+- Efferent vasoconstriction (Angiotensin II) → ↑ filtration fraction
+- ↑ renal venous/interstitial pressure → ↓ net filtration pressure
+- ↑ proximal tubular Na⁺ reabsorption (Na⁺ avidity)
+- ↓ renal blood flow
+
+BOTTOM SUMMARY FLOW (left → center → right):
+- Left pale-pink box "DRIVERS": ↓ cardiac index · ↑ central venous pressure · ↑ RAAS / ↑ SNS
+- Center box "MECHANISM": ↓ renal perfusion + venous congestion → ↑ filtration fraction, ↑ Na⁺ avidity → ↓ eGFR (often haemodynamic, reversible)
+- Right pale-blue box "INTERVENTION → BENEFIT": effective decongestion + GDMT (SGLT2i, RAASi/ARNI) → ↓ CVP, restored perfusion → eGFR stabilises; "treat volume & haemodynamics, not the creatinine value"
+
+Use a white background, muted clinical colors, clean sans-serif labels, thin dashed connectors, review-article figure style. Small semi-transparent navy "© williamriveromd.com" bottom-right. Avoid photorealism, dark backgrounds, decorative elements, overcrowding.
+
+NEGATIVE INSTRUCTIONS:
+No photorealism, no dark/navy/black backgrounds, no decorative gradients/shadows, no cartoon styling, no gibberish text, no overcrowding. Never omit the © williamriveromd.com attribution.
+
+QUALITY CHECK:
+Anatomically and mechanistically accurate (efferent vasoconstriction, filtration fraction, venous congestion), labels readable at slide size, muted palette, white background, attribution present.
+```
+
+---
+
+## B3 · Diagnosing HF in CKD — natriuretic-peptide thresholds
+*Skill: williamriveromd-simple-figure · Scaffold E (reference card)*
+
+```
+FILE NAME: heart-failure-ckd-md-np-thresholds.png
+IMAGE TYPE: Scaffold E — reference card
+ASPECT RATIO: 4:3
+PIXEL DIMENSIONS: 1536 × 1152
+AUDIENCE: clinicians
+VISUAL GOAL: Give the indication-specific BNP/NT-proBNP cut-points and the CKD caveats for interpreting them.
+
+PROMPT:
+Clinical reference card, publication-grade nephrology design, white (#ffffff) background. Bold navy (#0f1e2e) title: "Natriuretic Peptides in CKD — Interpreting HF". Compact two-row table with teal (#1a6b72) headers on soft gray (#f3f4f6): columns "Setting", "BNP", "NT-proBNP". Rows: "Ambulatory / screening — rule-in HF risk → BNP ≥ 35 pg/mL · NT-proBNP ≥ 125 pg/mL"; "Acute / ED — decompensation → BNP ≥ 100 pg/mL · NT-proBNP ≥ 300 pg/mL". Below the table, three small rounded caveat cards: (amber #b8860b) "↑ with falling eGFR (reduced renal clearance) — no validated CKD-specific cut-points"; (amber) "↓ in obesity and frequently in HFpEF — may mask true HF"; (teal) "In G4/G5/G5D corroborate with echo (E/e′, IVC) or RHC; a NORMAL NP still helps exclude HF". Footer takeaway in navy: "Where feasible, record an individual ambulatory baseline NP and trend it; a fall with decongestion predicts better outcomes even if creatinine rises." Alternating soft row fills, mobile-readable, not cluttered. Bottom-right: "williamriveromd.com" in small semi-transparent navy text.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, overprocessed HDR, excessive saturation. NEVER use dark/navy/charcoal/black backgrounds — light only. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Mobile-readable, correct cut-points, accurate CKD caveats, white background, attribution bottom-right.
+```
+
+---
+
+## B4 · GDMT across the eGFR spectrum — the framework matrix *(flagship)*
+*Skill: williamriveromd-infographic-skill · Archetype 5 (clinician reference) / matrix poster*
+
+```
+FILE NAME: heart-failure-ckd-md-gdmt-matrix.png
+IMAGE TYPE: Clinician reference matrix (conceptual GDMT framework)
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: clinicians
+VISUAL MIX:
+- photorealistic models: none
+- 2D infographic: primary (matrix grid + footnote band)
+- 3D component graphics: small heart + kidney glyphs in the title lockup
+- algorithm/flowchart: none
+
+PURPOSE: One-look conceptual framework for medical management of HFrEF and HFpEF across eGFR strata (after the KDIGO HF&CKD conference, Figure 4).
+KEY CONCEPTS: HFrEF vs HFpEF × eGFR bands · agent selection · initiation rules
+DIMENSIONS: 1792 × 1024
+
+COPY-READY IMAGE GENERATOR GPT PROMPT:
+Clinician reference infographic, landscape 16:9, publication-grade nephrology/cardiology design, white (#ffffff) background. Bold navy (#0f1e2e) title with small heart + kidney glyphs: "Medical Management of HF + CKD — by Ejection Fraction & eGFR". A clean matrix with TWO row-bands and FOUR eGFR columns. Column headers in teal (#1a6b72): "eGFR ≥60", "eGFR 30–59", "eGFR 15–29", "eGFR <15". 
+Row band 1 labeled in navy "HFrEF": 
+- ≥60 → β-blocker · ARNI/ACEi/ARB · SGLT2i · steroidal MRA · vericiguat
+- 30–59 → β-blocker · ARNI/ACEi/ARB · SGLT2i · sMRA · vericiguat
+- 15–29 → β-blocker · SGLT2i (if eGFR >20) · vericiguat
+- <15 → β-blocker · hydralazine/nitrates
+Row band 2 labeled in navy "HFpEF":
+- ≥60 → SGLT2i · nsMRA (finerenone) · ARNI if EF closer to 50%
+- 30–59 → SGLT2i · nsMRA (eGFR ≥25) · ARNI if EF closer to 50%
+- 15–29 → SGLT2i (if eGFR >20)
+- <15 → individualised
+Use soft teal/green cell tints (deeper where more agents apply), rounded cells, readable agent chips. Bottom full-width soft gray (#f3f4f6) footnote band in navy, four short rules: "ACEi/ARB for all CKD with diabetes or proteinuria, regardless of HF status" · "Initiate ACEi/ARB/MRA if K⁺ <5.0; use K-binders, SGLT2i & diet to maintain therapy" · "Diuretics irrespective of eGFR if volume-expanded (higher doses at low eGFR)" · "Never combine ARNI with ACEi/ARB". Generous whitespace, mobile-readable, no clutter. Bottom-right: "williamriveromd.com" in small semi-transparent navy text.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, unrealistic anatomy, overprocessed HDR, excessive saturation. NEVER use dark/navy/charcoal/black backgrounds — light only. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Mobile-readable, agent selection and thresholds accurate to the KDIGO HF&CKD framework, calm palette, white background, attribution bottom-right.
+```
+
+---
+
+## B5 · Diuretic / decongestion algorithm
+*Skill: williamriveromd-simple-figure · Scaffold A (clinical algorithm, portrait)*
+
+```
+FILE NAME: heart-failure-ckd-md-diuretic-algorithm.png
+IMAGE TYPE: Scaffold A — clinical algorithm / flowchart
+ASPECT RATIO: 2:3 portrait
+PIXEL DIMENSIONS: 1024 × 1536
+AUDIENCE: clinicians
+VISUAL GOAL: Stepwise decongestion with process-based response targets and escalation in HF + reduced kidney function.
+
+PROMPT:
+Clinical nephrology algorithm, KDIGO/ESC guideline flowchart aesthetic, single focused pathway for "Decongestion in HF with reduced kidney function". White (#ffffff) background. Bold navy (#0f1e2e) title at top. Top-to-bottom flow with rounded nodes:
+1) Entry node (navy): "Congestion + volume overload; low eGFR or high UACR → expect diuretic resistance".
+2) Action node (navy): "Initial IV loop diuretic ≥ 2.5× the oral home dose (consider torsemide/bumetanide)".
+3) Decision node (teal #1a6b72): "Adequate response?" with the response targets listed beside it in a soft gray card: "1–2 h: spot urine Na >50–70 mEq/L · 6 h: urine output >100–150 mL/h · 24 h: weight ↓ 1–3 kg".
+   - GREEN optimal branch (#1f7a4d) "Yes": "Continue to euvolemia → then resume/initiate GDMT".
+   - AMBER caution branch (#b8860b) "No": "Double loop dose + sequential nephron blockade (thiazide/metolazone, acetazolamide, SGLT2i)".
+4) From the amber branch, a re-check decision back to targets, then a RED escalation node (#b91c1c): "Refractory overload → ultrafiltration or peritoneal dialysis".
+Bold connecting arrows, max 4 branching levels, no spaghetti, generous whitespace, mobile-readable labels. Bottom-right: "williamriveromd.com" in small semi-transparent navy text.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, overprocessed HDR, excessive saturation. NEVER use dark/navy/charcoal/black backgrounds — light only. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Mobile-readable, targets and escalation accurate (ESC/KDIGO), clean top-to-bottom flow, white background, attribution bottom-right.
+```
+
+---
+
+## B6 · Key trials & the kidney-outcome discordance
+*Skill: williamriveromd-simple-figure · Scaffold E (evidence matrix)*
+
+```
+FILE NAME: heart-failure-ckd-md-trials-matrix.png
+IMAGE TYPE: Scaffold E — evidence reference matrix
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: clinicians
+VISUAL GOAL: Summarise the practice-changing trials and explain why kidney-protective drugs underperform on kidney endpoints in HF trials.
+
+PROMPT:
+Clinical evidence reference card, publication-grade design, white (#ffffff) background. Bold navy (#0f1e2e) title: "HF + CKD — Practice-Changing Trials". A clean table with teal (#1a6b72) headers on soft gray (#f3f4f6): columns "Trial(s)", "Population", "Key signal". Rows:
+- "DAPA-HF · DELIVER · EMPEROR-Reduced/Preserved" | "HF across the EF spectrum" | "HR ≈ 0.75 for CV death / HF hospitalisation; benefit regardless of EF or diabetes".
+- "FINEARTS-HF" | "HF, LVEF ≥ 40%" | "↓ total worsening-HF events + CV death; first MRA to benefit HFmrEF/HFpEF".
+- "FLOW" | "T2D + CKD" | "24% ↓ kidney events · 18% ↓ MACE · 20% ↓ all-cause death".
+- "STEP-HFpEF" | "HFpEF + obesity" | "↑ KCCQ, exercise capacity, weight loss (semaglutide 2.4 mg)".
+- "FIDELIO / FIGARO (FIDELITY)" | "T2D + CKD" | "↓ kidney progression and CV events (finerenone)".
+Alternating soft row fills; highlight the headline percentages in amber (#b8860b). Below the table, a teal-bordered call-out box titled "Why kidney-protective drugs underperform on kidney endpoints in HF trials": bullets — "lower baseline CKD-progression risk in unselected, non-albuminuric HF populations" · "eGFR fluctuation is a weak surrogate" · "competing risks of death / worsening HF" · "HF-trial follow-up (~1.5–2.5 yr) too short for slow kidney endpoints". Mobile-readable, not cluttered. Bottom-right: "williamriveromd.com" in small semi-transparent navy text.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, overprocessed HDR, excessive saturation. NEVER use dark/navy/charcoal/black backgrounds — light only. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Mobile-readable, trial figures accurate, clean matrix + discordance call-out, white background, attribution bottom-right.
+```
+
+---
+
+## After generating (clinician figures)
+
+1. Drop the PNGs (+ `.webp`) into `images/`.
+2. Insert each as a `<figure>` in its `mode-physician` section with an **English-only**
+   `<figcaption><p class="fig-desc">…</p></figcaption>` (no `data-lang` spans — the
+   clinician layer is English only).
+3. Re-run `python3 patch_image_lightbox.py --guide heart-failure-ckd.html` (lightbox
+   already present; safe/idempotent). The hero scripts only touch the first image, so
+   they won't disturb these.
+4. These figures live inside `mode-physician` blocks, so they are hidden in patient
+   mode automatically — no extra wiring needed.
