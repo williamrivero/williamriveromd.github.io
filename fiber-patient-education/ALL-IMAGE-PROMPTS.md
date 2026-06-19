@@ -476,7 +476,7 @@ Typography: Bold high-contrast sans-serif throughout. Gram numbers ("2–3 g" an
 in very large type (≥64pt equivalent). Bottom banner text ≥16pt equivalent. All labels
 must be readable on a mobile screen.
 
-Bottom-right corner, small semi-transparent text: © W. G. M. Rivero, MD · williamriveromd.com
+Bottom-right corner, small semi-transparent text: © W Rivero, MD · williamriveromd.com
 
 NEGATIVE INSTRUCTIONS: Do not make either dish look unhealthy, unappetizing, or dirty.
 The salad and pinakbet must both look like real Filipino home food — the message is about
@@ -487,7 +487,7 @@ attribution line.
 QUALITY CHECK: The gram numbers are the dominant visual. The "NOT FIBER" stamp on the
 salad is readable at a glance. Pinakbet is instantly recognizable as Filipino. The bottom
 banner delivers the actionable take-home. The image reads as a single coherent comparison,
-not two unrelated food photos. Copyright attribution © W. G. M. Rivero, MD ·
+not two unrelated food photos. Copyright attribution © W Rivero, MD ·
 williamriveromd.com visible in the bottom-right corner.
 ```
 
@@ -555,7 +555,7 @@ Typography: Inter Bold throughout. Verdict stamps ("✓ WORKS", "△ PARTLY WORK
 Tags in pill-shaped labels, high contrast.
 
 Bottom-right corner, small semi-transparent text:
-© W. G. M. Rivero, MD · williamriveromd.com
+© W Rivero, MD · williamriveromd.com
 
 NEGATIVE INSTRUCTIONS: Do not make any food look disgusting or dangerous — melon milk
 is a good drink, just not a constipation remedy. Do not use cartoon or clipart style.
@@ -565,7 +565,7 @@ not aggressive warnings.
 QUALITY CHECK: A patient can read each panel independently. The three verdict stamps
 are the dominant visual — instantly scannable. The CKD caution on prunes is visible but
 not the headline. The bottom banner delivers the actionable take-home. Copyright
-attribution © W. G. M. Rivero, MD · williamriveromd.com visible in the bottom-right corner.
+attribution © W Rivero, MD · williamriveromd.com visible in the bottom-right corner.
 ```
 
 ---

@@ -160,7 +160,7 @@ must fit exactly one A4 page; physical PDF page count should equal the number of
 whole set stays uniform. Files beginning with `_` are partials and are not rendered.
 
 Standard credential line (top-strip, every companion):
-`W.G.M. Rivero MD · FPCP · DPSN · PRC 0105184 · williamriveromd.com · <year>`.
+`W.G.M. Rivero MD · FPCP · DPSN ·  · williamriveromd.com · <year>`.
 
 > The old per-PDF reportlab generators (`generate_holiday_companion_pdf.py`,
 > `generate_sodium_food_guide_pdf.py`) have been **removed** — they produced a

@@ -70,7 +70,7 @@ Typography: Inter Bold throughout. Verdict stamps ("✓ WORKS", "△ PARTLY WORK
 Tags in pill-shaped labels, high contrast.
 
 Bottom-right corner, small semi-transparent text:
-© W. G. M. Rivero, MD · williamriveromd.com
+© W Rivero, MD · williamriveromd.com
 
 NEGATIVE INSTRUCTIONS: Do not make any food look disgusting or dangerous — melon milk
 is a good drink, just not a constipation remedy. Do not use cartoon or clipart style.
@@ -80,7 +80,7 @@ not aggressive warnings.
 QUALITY CHECK: A patient can read each panel independently. The three verdict stamps
 are the dominant visual — instantly scannable. The CKD caution on prunes is visible but
 not the headline. The bottom banner delivers the actionable take-home. Copyright
-attribution © W. G. M. Rivero, MD · williamriveromd.com visible in the bottom-right corner.
+attribution © W Rivero, MD · williamriveromd.com visible in the bottom-right corner.
 ALT TEXT: Three-panel comparison showing prunes (works — fiber plus sorbitol), prune
 juice (partly works — sorbitol but little fiber), and melon milk (not a remedy — less
 than 1g fiber, no evidence) for constipation relief

@@ -185,7 +185,7 @@ scroll-margin-top on sections: 112px  (56px header + 56px drug nav)
     <h1>Title<br><em>Italic subtitle phrase</em></h1>
     <p class="hero-sub">Lead paragraph...</p>
     <div class="hero-meta-row">
-      <span>W. G. M. Rivero, MD, FPCP, DPSN</span>
+      <span>W Rivero, MD, FPCP, DPSN</span>
       <span>Last reviewed: May 2026</span>
       <span>Internal Medicine · Nephrology</span>
     </div>
@@ -213,7 +213,7 @@ scroll-margin-top on sections: 112px  (56px header + 56px drug nav)
 <!-- FOOTER -->
 <footer class="guide-footer">
   <div class="footer-inner">
-    <p>© 2026 W. G. M. Rivero, MD · <a href="https://williamriveromd.com">williamriveromd.com</a></p>
+    <p>© 2026 W Rivero, MD · <a href="https://williamriveromd.com">williamriveromd.com</a></p>
     <p><a href="index.html">← All Patient Guides</a> · <a href="../index.html">Home</a></p>
   </div>
 </footer>

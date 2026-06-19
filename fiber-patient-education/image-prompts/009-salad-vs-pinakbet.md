@@ -51,7 +51,7 @@ Typography: Bold high-contrast sans-serif throughout. Gram numbers ("2–3 g" an
 in very large type (≥64pt equivalent). Bottom banner text ≥16pt equivalent. All labels
 must be readable on a mobile screen.
 
-Bottom-right corner, small semi-transparent text: © W. G. M. Rivero, MD · williamriveromd.com
+Bottom-right corner, small semi-transparent text: © W Rivero, MD · williamriveromd.com
 
 NEGATIVE INSTRUCTIONS: Do not make either dish look unhealthy, unappetizing, or dirty.
 The salad and pinakbet must both look like real Filipino home food — the message is about
@@ -62,7 +62,7 @@ attribution line.
 QUALITY CHECK: The gram numbers are the dominant visual. The "NOT FIBER" stamp on the
 salad is readable at a glance. Pinakbet is instantly recognizable as Filipino. The bottom
 banner delivers the actionable take-home. The image reads as a single coherent comparison,
-not two unrelated food photos. Copyright attribution © W. G. M. Rivero, MD ·
+not two unrelated food photos. Copyright attribution © W Rivero, MD ·
 williamriveromd.com visible in the bottom-right corner.
 ALT TEXT: Two-panel comparison showing a Filipino green salad labeled "NOT FIBER" with only 2–3g fiber versus a clay pot of pinakbet with 4–6g fiber, with a bottom banner naming monggo, oats, chia, and psyllium as the real fiber tools
 OG WIDTH: 1792

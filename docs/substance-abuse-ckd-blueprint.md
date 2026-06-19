@@ -4,7 +4,7 @@
 **Slug:** `substance-abuse-ckd`
 **Type:** Dual-mode guide (Patient/Family tab + Clinician tab), 4-language (EN/TL/CEB/KAP)
 **Status:** Plan / blueprint — not yet built
-**Author:** W. G. M. Rivero, MD, FPCP, DPSN
+**Author:** W Rivero, MD, FPCP, DPSN
 **Target review tag:** 2026 · KDIGO 2024 · ASAM 2024 · DOH PH advisories
 
 ---
@@ -42,7 +42,7 @@ to do instead / where to get help."
 **Patient hero `<h1>` (EN):** "Substance Use & Your Kidneys — *Protecting What You Have*"
 **Clinician hero `<h1>` (EN):** "Substance Use Disorders in CKD: *Clinical Management Guide*"
 
-**`<title>`:** `Substance Use & Chronic Kidney Disease: Drugs, Tobacco & Recovery · W. G. M. Rivero, MD`
+**`<title>`:** `Substance Use & Chronic Kidney Disease: Drugs, Tobacco & Recovery · W Rivero, MD`
 
 **Meta description (EN):** "How tobacco, stimulants (shabu), opioids, inhalants, and misused
 painkillers and supplements injure the kidneys — and a stigma-free, evidence-based recovery roadmap

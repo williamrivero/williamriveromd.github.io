@@ -212,7 +212,7 @@ AUDIENCE: mixed
 VISUAL GOAL: A crisp, legible social-share card for the guide.
 
 COPY-READY IMAGE GENERATOR GPT PROMPT:
-Open-graph social share card, 1200×630, off-white (#fafafa) background. Left two-thirds: bold condensed navy (#0f1e2e) title "Heart Failure & Chronic Kidney Disease", with a clinical-teal (#1a6b72) subtitle "When two organs fail together — and the medicines that protect both." A thin teal rule under the title. Right third: a clean semi-3D human heart and kidney joined by a single looping vessel with a small two-headed teal arrow (echoing the hero). Small "W. G. M. Rivero, MD · williamriveromd.com" lockup in navy at the bottom-left. Lots of negative space, crisp at thumbnail size, no clutter. Attribution "williamriveromd.com" small semi-transparent navy, bottom-right.
+Open-graph social share card, 1200×630, off-white (#fafafa) background. Left two-thirds: bold condensed navy (#0f1e2e) title "Heart Failure & Chronic Kidney Disease", with a clinical-teal (#1a6b72) subtitle "When two organs fail together — and the medicines that protect both." A thin teal rule under the title. Right third: a clean semi-3D human heart and kidney joined by a single looping vessel with a small two-headed teal arrow (echoing the hero). Small "W Rivero, MD · williamriveromd.com" lockup in navy at the bottom-left. Lots of negative space, crisp at thumbnail size, no clutter. Attribution "williamriveromd.com" small semi-transparent navy, bottom-right.
 
 NEGATIVE INSTRUCTIONS:
 Avoid clutter, tiny text, AI gibberish, dark/navy/black backgrounds (light only), excessive saturation. Never omit the williamriveromd.com attribution. Keep dimensions exactly 1200×630.
