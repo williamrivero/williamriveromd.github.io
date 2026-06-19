@@ -3,7 +3,7 @@
 
 > **How to use:** Paste each `COPY-READY PROMPT` block directly into the [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator). Generate all images, then save using the `FILE NAME` listed for each. Suggested location: `guides/images/cholesterol-diet-guide/`.
 >
-> **House style:** williamriveromd.com nephrology/cardiology education system — clinical teal `#1a6b72`, navy `#0f1e2e` (text/accent only), renal green `#1f7a4d`, amber `#b8860b`, clinical red `#b91c1c`. **All images use light backgrounds (white / off-white / soft gray) — never dark.** Every image carries the copyright line **© W. G. M. Rivero, MD · williamriveromd.com** in the bottom-right corner. Photorealistic elements use Filipino patient, food, and clinic contexts for relatability.
+> **House style:** williamriveromd.com nephrology/cardiology education system — clinical teal `#1a6b72`, navy `#0f1e2e` (text/accent only), renal green `#1f7a4d`, amber `#b8860b`, clinical red `#b91c1c`. **All images use light backgrounds (white / off-white / soft gray) — never dark.** Every image carries the copyright line **© W Rivero, MD · williamriveromd.com** in the bottom-right corner. Photorealistic elements use Filipino patient, food, and clinic contexts for relatability.
 
 ---
 
@@ -37,11 +37,11 @@
 ```text
 COPY-READY PROMPT — IMAGE 1
 
-Photorealistic medical editorial hero image for a Filipino nephrology and cardiology patient education website. Scene: a Filipino male nephrologist in his mid-40s, clean white coat and stethoscope, seated across a bright clinic desk from a Filipino middle-aged couple (around 50, casually dressed, attentive). The doctor calmly points to a printed lipid panel lab result on the desk between them. Bright, airy modern clinic — white walls, natural daylight from a window, minimal decor. Shallow depth of field, cinematic but restrained natural lighting, realistic Filipino skin tones, calm trustworthy mood. Leave open negative space in the upper-left third for a title overlay. No embedded text. Premium healthcare editorial photography aesthetic. Light background only — no dark or moody lighting. Bottom-right corner: small semi-transparent navy text "© W. G. M. Rivero, MD · williamriveromd.com" at ~10px equivalent, not obscuring the subjects.
+Photorealistic medical editorial hero image for a Filipino nephrology and cardiology patient education website. Scene: a Filipino male nephrologist in his mid-40s, clean white coat and stethoscope, seated across a bright clinic desk from a Filipino middle-aged couple (around 50, casually dressed, attentive). The doctor calmly points to a printed lipid panel lab result on the desk between them. Bright, airy modern clinic — white walls, natural daylight from a window, minimal decor. Shallow depth of field, cinematic but restrained natural lighting, realistic Filipino skin tones, calm trustworthy mood. Leave open negative space in the upper-left third for a title overlay. No embedded text. Premium healthcare editorial photography aesthetic. Light background only — no dark or moody lighting. Bottom-right corner: small semi-transparent navy text "© W Rivero, MD · williamriveromd.com" at ~10px equivalent, not obscuring the subjects.
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, clutter, generic stock-photo look, overprocessed HDR, AI gibberish text, dark or navy backgrounds. Never omit the copyright attribution.
 
-QUALITY CHECK: Mobile-safe crop, clinically plausible, publication-grade, bright light background. Copyright attribution © W. G. M. Rivero, MD · williamriveromd.com visible bottom-right.
+QUALITY CHECK: Mobile-safe crop, clinically plausible, publication-grade, bright light background. Copyright attribution © W Rivero, MD · williamriveromd.com visible bottom-right.
 ```
 
 ---
@@ -70,7 +70,7 @@ Card 4 "Vitamin D Production": skin-layer cross-section with UV-B ray; cholester
 Card 5 "Myelin Sheath": 3D nerve fiber wrapped in cream myelin, label "~25% cholesterol by weight." "The insulation around your nerves is one-quarter cholesterol — it speeds nerve signals."
 Card 6 "Lipid Digestion": intestinal villi with mixed micelles surrounding fat droplets. "Cholesterol forms micelles in the gut to absorb dietary fats and fat-soluble vitamins."
 
-Bottom bar (soft teal #eef6f7): "Cholesterol is not the villain — imbalance is." in navy italic. Bottom-right: small semi-transparent navy "© W. G. M. Rivero, MD · williamriveromd.com".
+Bottom bar (soft teal #eef6f7): "Cholesterol is not the villain — imbalance is." in navy italic. Bottom-right: small semi-transparent navy "© W Rivero, MD · williamriveromd.com".
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, dark backgrounds, clutter, tiny unreadable labels, AI gibberish text. Light background mandatory.
 
@@ -110,7 +110,7 @@ RIGHT LANE — heading teal (#1a6b72): "Endogenous Pathway (Liver — 80%)".
 - A teal callout: "Statin → ↑ LDL receptors on the liver → pulls LDL back from blood."
 - Bottom card: "The liver synthesizes ~800–1,000 mg cholesterol per day."
 
-Full-width bottom bar (soft teal): "Statins lower LDL by blocking liver synthesis AND increasing liver LDL-receptor uptake." in navy. Bottom-right: small semi-transparent navy "© W. G. M. Rivero, MD · williamriveromd.com".
+Full-width bottom bar (soft teal): "Statins lower LDL by blocking liver synthesis AND increasing liver LDL-receptor uptake." in navy. Bottom-right: small semi-transparent navy "© W Rivero, MD · williamriveromd.com".
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, dark backgrounds, clutter, tiny unreadable labels, AI gibberish text, unrealistic anatomy. Light background only.
 
@@ -146,7 +146,7 @@ Wide teal summary bar: "More refined carbs and sugar → more VLDL → more LDL 
 
 Bottom-right inset (white card, navy border) titled "TG/HDL Ratio: Your Insulin-Resistance Clue" — three rows: green "TG/HDL <2 — low risk", amber "2–3 — borderline", red ">3 — likely insulin resistance".
 
-Very bottom-right: small semi-transparent navy "© W. G. M. Rivero, MD · williamriveromd.com".
+Very bottom-right: small semi-transparent navy "© W Rivero, MD · williamriveromd.com".
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, dark backgrounds, tiny unreadable labels, AI gibberish text, unrealistic anatomy. Light backgrounds only.
 
@@ -180,7 +180,7 @@ Row 5 Non-HDL-C — grouped LDL + VLDL + IDL cluster. Desirable <130 · Borderli
 
 Below the table, two side-by-side callout cards. Left (teal #eef6f7): "TG/HDL Ratio — Insulin-Resistance Screen: TG ÷ HDL (mg/dL). <2 low · 2–3 borderline · >3 likely insulin resistance." Right (amber tint): "High-Risk LDL Targets: CKD, diabetes, or heart disease may need LDL-C <70 or <55 mg/dL. Individualize with your physician."
 
-Bottom-right: small semi-transparent navy "© W. G. M. Rivero, MD · williamriveromd.com".
+Bottom-right: small semi-transparent navy "© W Rivero, MD · williamriveromd.com".
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, dark backgrounds, clutter, AI gibberish text. Light background mandatory; all threshold numbers legible.
 
@@ -212,7 +212,7 @@ Stage 3 "Foam Cell Formation": macrophages engulfing oxLDL, swelling into foam c
 Stage 4 "Fatty Streak → Fibrous Plaque": necrotic lipid core with a collagen fibrous cap and narrowing lumen. "Foam cells die, forming a lipid core capped by fibrous tissue; the artery narrows."
 Stage 5 "Plaque Rupture → Heart Attack / Stroke": a ruptured thin-cap plaque exposing thrombogenic material with an acute red thrombus blocking the lumen. "A thin-cap plaque ruptures, a clot forms, and the vessel blocks — causing a heart attack or stroke."
 
-Bottom amber (#b8860b) warning strip, navy text: "Triglycerides above 500–1,000 mg/dL can also trigger acute pancreatitis." Bottom-right: small semi-transparent navy "© W. G. M. Rivero, MD · williamriveromd.com".
+Bottom amber (#b8860b) warning strip, navy text: "Triglycerides above 500–1,000 mg/dL can also trigger acute pancreatitis." Bottom-right: small semi-transparent navy "© W Rivero, MD · williamriveromd.com".
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, dark backgrounds, clutter, tiny unreadable labels, AI gibberish text, unrealistic anatomy. Light background only.
 
@@ -245,7 +245,7 @@ Column 4 (teal header, #1a6b72) "Polyunsaturated (PUFA) — EMBRACE": photoreali
 
 Bottom band split into two small cards: left (teal tint) "Dietary cholesterol: smaller effect than once thought — the liver compensates by making less." right (green tint) "Soluble fiber & plant sterols bind bile acids and cut cholesterol reabsorption."
 
-Bottom-right: small semi-transparent navy "© W. G. M. Rivero, MD · williamriveromd.com".
+Bottom-right: small semi-transparent navy "© W Rivero, MD · williamriveromd.com".
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, dark backgrounds, clutter, tiny unreadable labels, AI gibberish text. Light background mandatory; foods must look realistic and appetizing.
 
@@ -273,7 +273,7 @@ LEFT PANEL — header band red (#b91c1c), white text "LIMIT / AVOID". Photoreali
 
 RIGHT PANEL — header band green (#1f7a4d), white text "EMBRACE". Photorealistic heart-healthy Filipino foods on clean light plates: oily fish (bangus, galunggong, sardines, tulingan); legumes (monggo/mung beans, black beans, chickpeas, lentils); vegetables (malunggay, kangkong, ampalaya, okra, garlic, ginger); grains, nuts and oils (brown rice, oats, pili nuts, almonds, olive oil, avocado). Small green caption tags: "omega-3", "soluble fiber", "good fats".
 
-Bottom teal (#eef6f7) bar, navy text: "You don't have to abandon Filipino food — swap fried and fatty for grilled, steamed, and fish-forward." Bottom-right: small semi-transparent navy "© W. G. M. Rivero, MD · williamriveromd.com".
+Bottom teal (#eef6f7) bar, navy text: "You don't have to abandon Filipino food — swap fried and fatty for grilled, steamed, and fish-forward." Bottom-right: small semi-transparent navy "© W Rivero, MD · williamriveromd.com".
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, dark backgrounds, clutter, tiny unreadable labels, AI gibberish text. Light background mandatory; foods must be realistic, recognizable Filipino dishes.
 
@@ -306,7 +306,7 @@ Card 4 "Snacks": fresh fruit, a small handful of pili nuts or almonds, plain yog
 
 Bottom strip — a "Kitchen Swaps" band (soft teal #eef6f7) with three quick swap pairs shown as small before→after icon pairs: "Coconut oil → olive/canola oil", "Deep-fry → grill / steam / sinigang", "Heavy gata → light or low-fat coconut milk". Navy headings, green check on the healthier side.
 
-Bottom-right: small semi-transparent navy "© W. G. M. Rivero, MD · williamriveromd.com".
+Bottom-right: small semi-transparent navy "© W Rivero, MD · williamriveromd.com".
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, dark backgrounds, clutter, tiny unreadable labels, AI gibberish text. Light background mandatory; dishes must look realistic and appetizing.
 
@@ -332,7 +332,7 @@ Open Graph social share card, landscape 1.91:1, exactly 1200×630px, off-white b
 
 Right third: a clean composition combining a small semi-photorealistic 3D LDL/HDL lipoprotein particle (waxy yellow sphere) beside a photorealistic plate of grilled bangus with vegetables — visually linking lab results to Filipino food. Soft daylight, bright and airy, light background throughout.
 
-Bottom-left: small navy text "Dr. William G. M. Rivero, MD". Bottom-right corner: small semi-transparent navy "© W. G. M. Rivero, MD · williamriveromd.com". Keep all text well inside safe margins (no edge clipping). High legibility at small thumbnail sizes.
+Bottom-left: small navy text "Dr. William G. M. Rivero, MD". Bottom-right corner: small semi-transparent navy "© W Rivero, MD · williamriveromd.com". Keep all text well inside safe margins (no edge clipping). High legibility at small thumbnail sizes.
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, dark/navy/black backgrounds, clutter, tiny unreadable text, AI gibberish text, busy gradients. Light background mandatory; headline must be crisp and legible as a small thumbnail.
 
@@ -367,4 +367,4 @@ QUALITY CHECK: Exactly 1200×630, headline readable at thumbnail size, light bac
 | 9 Filipino day | `#cooking-tips` |
 | 10 OG card | `<head>` meta only (not inline) |
 
-*All images: light backgrounds only · teal/navy house palette · © W. G. M. Rivero, MD · williamriveromd.com attribution required.*
+*All images: light backgrounds only · teal/navy house palette · © W Rivero, MD · williamriveromd.com attribution required.*

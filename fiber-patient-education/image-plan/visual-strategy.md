@@ -1,5 +1,5 @@
 # Visual Strategy — fiber-patient-education.html
-## williamriveromd.com | Dr. W. G. M. Rivero, MD
+## williamriveromd.com | Dr. W Rivero, MD
 
 ### Guide URL
 https://www.williamriveromd.com/guides/fiber-patient-education
