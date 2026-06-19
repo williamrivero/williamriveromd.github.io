@@ -261,6 +261,16 @@ MASTER_CSS = """
   .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
   .section p:last-child { margin-bottom: 0; }
 
+  /* ── BODY LISTS (content sections) ───────────────────────────────────────────
+     The global reset zeroes list padding; restore a comfortable indent so body
+     bullets/numbers sit clearly inside the column. Component lists (.checklist,
+     .alert-body, .food-* …) define their own and override this via source order. */
+  .section ul, .section ol { margin: 0 0 18px 0; padding-left: 30px; }
+  .section li { color: var(--text-mid); line-height: 1.7; margin-bottom: 8px; padding-left: 4px; }
+  .section li:last-child { margin-bottom: 0; }
+  .section li::marker { color: var(--teal); }
+  .section ul ul, .section ol ol, .section ul ol, .section ol ul { margin: 8px 0 0 0; }
+
   /* ── INTRO CALLOUT (teal panel) ──────────────────────────────────────────── */
   .intro-callout {
     background: var(--teal);
