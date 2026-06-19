@@ -1352,6 +1352,73 @@ try{if(localStorage.getItem('wgmr-esa-cancer-mode')==='physician'){document.body
 <span data-lang="kap" class="lang-hidden">Atlung maragul a pamanyaliksik (CHOIR, CREATE, at TREAT) ing sinubuk na king ideyang mibie tamung dakal a EPO para miras king mas matas a hemoglobin. Anggang ila ametung da ing kalupang bage: ing pamanyaka migdala yang <strong>mas dakal a stroke, mas dakal a clots, at alang tutuung pakinabang king kalidad ning bie</strong>. King TREAT, deting pasyente a atin kasaysayan king kanser a mింakua matas a ESA mas dakal lang mete king kanser. Uli na niti, miglage ya ing US FDA boxed warning karing aspirin a deti.</span></p>
 </section>
 
+<!-- ════════════════ EMBEDDED CALCULATOR 0: ESA INITIATION (EPO-NAÏVE) ════════════════ -->
+<section>
+<h2><span data-lang="en">Starting EPO: The Weight-Based Dose (EPO-Naïve)</span><span data-lang="tl" class="lang-hidden">Pagsisimula ng EPO: Ang Dosis Ayon sa Timbang (Hindi Pa Gumagamit ng EPO)</span><span data-lang="ceb" class="lang-hidden">Pagsugod sa EPO: Ang Dosis Sumala sa Gibug-aton (Wala Pa Mogamit og EPO)</span><span data-lang="kap" class="lang-hidden">Pamagsimula ning EPO: Ing Dosis Agpang king Timbang (E Pa Gagamit EPO)</span></h2>
+<p><span data-lang="en">For someone <strong>not yet on EPO</strong>, the starting dose is modest and based on body weight — and it is only started when hemoglobin is below 10 g/dL, after iron is checked. Notice the calculator <em>defers</em> EPO at a hemoglobin of 10 or above. The whole system is built to reach the target gently, not to push past it.</span>
+<span data-lang="tl" class="lang-hidden">Para sa hindi pa gumagamit ng EPO, ang panimulang dosis ay katamtaman lang at base sa timbang — at sinisimulan lang kapag wala pang 10 g/dL ang hemoglobin, pagkatapos suriin ang iron. Pansinin na <em>ipinagpapaliban</em> ng calculator ang EPO kapag 10 o pataas ang hemoglobin. Idinisenyo ang buong sistema para maabot ang target nang dahan-dahan, hindi para lagpasan ito.</span>
+<span data-lang="ceb" class="lang-hidden">Alang sa wala pa mogamit og EPO, ang sinugdang dosis kasarangan lang ug base sa gibug-aton — ug sugdan lang kung ubos pa sa 10 g/dL ang hemoglobin, human masusi ang iron. Matikdi nga <em>ipasibo</em> sa calculator ang EPO kung 10 o pataas ang hemoglobin. Ang tibuok sistema gidesinyo aron maabot ang target hinay-hinay, dili aron lapason kini.</span>
+<span data-lang="kap" class="lang-hidden">Para king e pa gagamit EPO, ing simulang dosis katamtaman ya mu at base king timbang — at sisimulan ya mu nung mababa pa king 10 g/dL ing hemoglobin, kaibat lawan ing iron. Pansinan mu a <em>ipagtagal</em> na ning calculator ing EPO nung 10 o paitas ing hemoglobin. Ing buong sistema medisenyu ya para miras king target a marimla, ali para lampasan ya.</span></p>
+
+<div class="calc-wrap">
+<div class="calc-grid">
+<div class="calc-field">
+<label>ESA Agent</label>
+<select id="init-agent" onchange="calcESAInit()">
+<option value="">Select agent…</option>
+<option value="epoetin">Epoetin alfa (units)</option>
+<option value="epoetin-beta">Epoetin beta (units)</option>
+<option value="darbepoetin">Darbepoetin alfa (mcg)</option>
+<option value="cera">CERA — methoxy PEG-epoetin beta / Mircera (mcg)</option>
+</select>
+<div class="field-hint">Sets the weight-based starting formula and dose unit.</div>
+</div>
+<div class="calc-field">
+<label>Body Weight (kg)</label>
+<input id="init-weight" type="number" min="20" max="250" step="0.5" placeholder="e.g. 60" oninput="calcESAInit()"/>
+<div class="field-hint">Use actual body weight in kilograms.</div>
+</div>
+<div class="calc-field">
+<label>Current Hgb (g/dL)</label>
+<input id="init-hgb" type="number" min="3" max="18" step="0.1" placeholder="e.g. 9.2" oninput="calcESAInit()"/>
+<div class="field-hint">Pre-treatment hemoglobin. An ESA is usually started when Hgb is &lt;10 g/dL.</div>
+</div>
+<div class="calc-field">
+<label>Dialysis Status</label>
+<select id="init-setting" onchange="calcESAInit()">
+<option value="">Select setting…</option>
+<option value="dialysis">On dialysis (HD or PD)</option>
+<option value="nondialysis">Not on dialysis (ND-CKD)</option>
+</select>
+<div class="field-hint">Sets the recommended starting frequency.</div>
+</div>
+</div>
+<div class="calc-result-box" id="init-result">
+<div class="calc-metrics-row">
+<div class="calc-metric-card">
+<div class="cmv" id="init-decision-val">—</div>
+<div class="cml">Initiation Decision</div>
+<div class="cmt" id="init-decision-sub">—</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="init-dose-val" style="font-size:20px;line-height:1.2;">—</div>
+<div class="cml" id="init-dose-lbl">Starting Dose</div>
+<div class="cmt" id="init-dose-unit">—</div>
+</div>
+<div class="calc-metric-card">
+<div class="cmv" id="init-freq-val" style="font-size:18px;line-height:1.2;">—</div>
+<div class="cml">Schedule</div>
+<div class="cmt" id="init-freq-sub">—</div>
+</div>
+</div>
+<div class="calc-verdict-text" id="init-verdict"></div>
+<div class="calc-action-text" id="init-detail"></div>
+<p class="calc-disclaimer">⚕ Starting doses follow FDA / EMA ESA labeling and KDIGO 2012. Epoetin alfa: 50 units/kg per dose, 3×/week (label range 50–100). Epoetin beta: 20 units/kg per dose, 3×/week SC. Darbepoetin alfa: 0.45 mcg/kg — once weekly on dialysis, every 4 weeks if not on dialysis (0.75 mcg/kg every 2 weeks is a labeled alternative). CERA (methoxy PEG-epoetin beta): 0.6 mcg/kg once every 2 weeks, switching to twice that dose once monthly when stable. Round to available vial strengths. Confirm iron repletion before the first dose. Physician confirmation and individualized assessment are required.</p>
+</div>
+<p style="margin-top:10px;font-size:.9em;"><a href="calc-esa-dose-adjustment.html#initiation">→ <span data-lang="en">Open the full ESA Initiation calculator</span><span data-lang="tl" class="lang-hidden">Buksan ang buong ESA Initiation calculator</span><span data-lang="ceb" class="lang-hidden">Ablihi ang tibuok ESA Initiation calculator</span><span data-lang="kap" class="lang-hidden">Buklat ing buong ESA Initiation calculator</span></a></p>
+</div>
+</section>
+
 <!-- ════════════════ EMBEDDED CALCULATOR 1: ESA DOSE ════════════════ -->
 <section>
 <h2><span data-lang="en">Try It: What Should Happen to the Dose?</span><span data-lang="tl" class="lang-hidden">Subukan: Ano ang Dapat Mangyari sa Dosis?</span><span data-lang="ceb" class="lang-hidden">Sulayi: Unsa ang Angay Mahitabo sa Dosis?</span><span data-lang="kap" class="lang-hidden">Subukan: Nanu ing Dapat Malyari king Dosis?</span></h2>
@@ -1898,6 +1965,102 @@ function calcAnemia() {
   document.getElementById('a-type-badge').style.color=typeColor;
   document.getElementById('a-verdict').innerHTML='<strong style="color:'+typeColor+'">'+type+'</strong> — '+verdict;
   document.getElementById('a-action').innerHTML='<strong style="color:'+typeColor+'">Recommended action:</strong> '+action;
+}
+</script>
+
+<script>
+/* ESA Initiation Calculator — EPO-Naïve Patients (FDA/EMA labeling, KDIGO 2012) */
+function calcESAInit() {
+  var agent   = document.getElementById('init-agent').value;
+  var weight  = parseFloat(document.getElementById('init-weight').value);
+  var hgb     = parseFloat(document.getElementById('init-hgb').value);
+  var setting = document.getElementById('init-setting').value;
+  var res     = document.getElementById('init-result');
+
+  if (!agent || !setting || isNaN(weight) || isNaN(hgb) || weight <= 0 || hgb <= 0) {
+    res.style.display = 'none';
+    return;
+  }
+
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var GREEN = { c: isDark ? '#4ade80' : '#166534', bg: isDark ? 'rgba(14,42,28,.85)' : '#f0fdf4' };
+  var TEAL  = { c: isDark ? '#2ba8b0' : '#1a6b72', bg: isDark ? 'rgba(10,40,48,.85)' : '#e1f5f0' };
+  var AMBER = { c: isDark ? '#fbbf24' : '#92400e', bg: isDark ? 'rgba(42,25,0,.85)' : '#fffbeb' };
+
+  var doseVal, doseUnit, freqVal, freqSub, agentLabel, settingLabel;
+  settingLabel = setting === 'dialysis' ? 'dialysis-dependent CKD' : 'non-dialysis CKD';
+
+  if (agent === 'epoetin' || agent === 'epoetin-beta') {
+    var perKg   = agent === 'epoetin' ? 50 : 20;
+    agentLabel  = agent === 'epoetin' ? 'Epoetin alfa' : 'Epoetin beta';
+    var perDose = Math.round((weight * perKg) / 100) * 100;
+    var weekly  = perDose * 3;
+    doseVal  = perDose.toLocaleString();
+    doseUnit = 'units/dose · ' + agentLabel;
+    freqVal  = '3×/week';
+    freqSub  = '≈ ' + weekly.toLocaleString() + ' units/week';
+  } else if (agent === 'cera') {
+    agentLabel = 'CERA (Mircera)';
+    var dc = Math.round(weight * 0.6 * 10) / 10;
+    doseVal  = dc.toFixed(1);
+    doseUnit = 'mcg/dose · ' + agentLabel;
+    freqVal  = 'Every 2 weeks';
+    freqSub  = '≈ ' + (Math.round((dc / 2) * 100) / 100).toFixed(2) + ' mcg/week equiv.';
+  } else {
+    agentLabel = 'Darbepoetin alfa';
+    var d = Math.round(weight * 0.45 * 10) / 10;
+    doseVal  = d.toFixed(1);
+    doseUnit = 'mcg/dose · ' + agentLabel;
+    if (setting === 'dialysis') {
+      freqVal = 'Once weekly';
+      freqSub = '≈ ' + d.toFixed(1) + ' mcg/week';
+    } else {
+      freqVal = 'Every 4 weeks';
+      freqSub = '≈ ' + (Math.round((d / 4) * 100) / 100).toFixed(2) + ' mcg/week equiv.';
+    }
+  }
+
+  var decision, decisionSub, col, verdict, detail;
+
+  if (hgb >= 10) {
+    decision = 'DEFER'; decisionSub = 'Hgb ≥ 10 g/dL'; col = AMBER;
+    verdict = 'Hgb ' + hgb.toFixed(1) + ' g/dL is at or above 10 g/dL. KDIGO and FDA labeling advise against routinely starting an ESA at this level — the cardiovascular and thromboembolic risks are not justified when Hgb is ≥10 g/dL. First correct iron deficiency and evaluate other reversible causes, then reassess.';
+    detail = 'If you still choose to initiate (e.g. a rapidly falling Hgb where avoiding transfusion is the goal), the weight-based starting dose for ' + settingLabel + ' is shown above. Otherwise, recheck Hgb and iron indices and defer the ESA.';
+  } else {
+    decision = 'INITIATE';
+    col = (setting === 'dialysis' && hgb < 9) ? TEAL : GREEN;
+    decisionSub = (hgb < 9 ? 'Hgb < 9 g/dL' : 'Hgb < 10 g/dL') + ' · ' + (setting === 'dialysis' ? 'dialysis' : 'ND-CKD');
+    verdict = 'Hgb ' + hgb.toFixed(1) + ' g/dL is below the 10 g/dL initiation threshold. Starting an ESA is appropriate for ' + settingLabel + ' once iron deficiency and other reversible causes have been addressed. Begin at the weight-based dose above and titrate toward the 10–11.5 g/dL target.';
+    detail = 'Before the first dose, confirm iron stores are adequate (TSAT ≥20% and ferritin ≥200 ng/mL in HD; TSAT ≥20% and ferritin ≥100 ng/mL in ND-CKD) and correct absolute iron deficiency — inadequate iron is the leading cause of a poor initial ESA response. Recheck Hgb every 2–4 weeks, do not adjust the dose more often than every 4 weeks, and do not target Hgb >11.5 g/dL.';
+    if (agent === 'cera') {
+      detail += ' Once Hgb is stable, CERA can be switched to once-monthly dosing at twice the every-2-week dose.';
+    }
+    if (hgb < 7) {
+      detail += ' At Hgb <7 g/dL or with symptomatic anemia, evaluate the need for red-cell transfusion in parallel — ESAs raise Hgb too slowly to manage acute symptomatic anemia.';
+    }
+  }
+
+  res.style.display    = 'block';
+  res.style.background  = col.bg;
+  res.style.borderColor = col.c;
+
+  var dEl = document.getElementById('init-decision-val');
+  dEl.textContent = decision; dEl.style.color = col.c;
+  dEl.style.fontSize = decision.length > 8 ? '20px' : '24px';
+  var dSub = document.getElementById('init-decision-sub');
+  dSub.textContent = decisionSub; dSub.style.color = col.c;
+
+  var doseEl = document.getElementById('init-dose-val');
+  doseEl.textContent = doseVal; doseEl.style.color = col.c;
+  document.getElementById('init-dose-lbl').textContent  = (hgb >= 10) ? 'Dose if Initiated' : 'Starting Dose';
+  document.getElementById('init-dose-unit').textContent = doseUnit;
+
+  var fEl = document.getElementById('init-freq-val');
+  fEl.textContent = freqVal; fEl.style.color = col.c;
+  document.getElementById('init-freq-sub').textContent = freqSub;
+
+  document.getElementById('init-verdict').textContent = verdict;
+  document.getElementById('init-detail').textContent  = detail;
 }
 </script>
 
