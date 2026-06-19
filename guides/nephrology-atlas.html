@@ -1984,6 +1984,16 @@ document.addEventListener('keydown', e => {
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 buildFilters();
 renderCards();
+
+// ─── DEEP LINK (#itemId opens that visual abstract directly) ───────────────────
+function openByHash(){
+  var id=(location.hash||'').replace(/^#/,'').trim();
+  if(!id) return;
+  var idx=currentItems.findIndex(function(it){return it.id===id;});
+  if(idx>=0) openDetail(idx);
+}
+openByHash();
+window.addEventListener('hashchange', openByHash);
 </script>
 <script src="../assets/image-lightbox.js" defer></script>
 </body>
