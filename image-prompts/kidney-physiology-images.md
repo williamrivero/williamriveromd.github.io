@@ -2,7 +2,9 @@
 
 **Guide:** `guides/kidney-physiology.html` (immersive dark scrollytelling redo)
 **Prompt style:** `williamriveromd-biomedical-mechanism-figure` (Stage 1)
-**Total images to generate:** 16 (keep the existing `kidney-physiology-og.png` as-is)
+**Status:** The **8 embryology plates (Section A)** and the **20-grid poster (Section C)** are **RETIRED** — embryology is now an inline **SVG morph** (the kidney transforms on scroll), and the 20 responsibilities render as a **live animated HTML grid**. Neither needs raster images. The **7 function figures (Section B) are OPTIONAL** accents (not yet placed on the page). **Keep** the existing `kidney-physiology-og.png`.
+
+**Total images you actually need now:** 0 required · up to 7 optional (Section B).
 
 ---
 
@@ -43,7 +45,11 @@ consistent framing/scale/viewpoint so they cross-fade cleanly (see Section A not
 
 ---
 
-## SECTION A — Embryology scroll-background frames (8)
+## SECTION A — Embryology frames (8) · ⛔ RETIRED
+
+> **Replaced by an inline SVG morph** (flubber + ScrollTrigger): the kidney now develops as a luminous
+> vector animation as the visitor scrolls, with all labels in the HTML cards. These 8 raster plates are
+> **no longer used** — kept below only as drawing reference for the SVG keyshapes. **Do not generate.**
 
 > **CONSISTENCY NOTE (critical for the scroll morph):** Generate all 8 at the same
 > aspect ratio (**4:3, 1536 × 1152**), same centered composition, same illustration
@@ -155,7 +161,10 @@ Label "Homeostasis · the body's set-point."
 
 ---
 
-## SECTION C — Centerpiece poster (1)
+## SECTION C — Centerpiece poster (1) · ⛔ RETIRED
+
+> The 20 responsibilities render as a **live animated HTML grid** on the page — a poster image would just
+> duplicate it. **Do not generate.**
 
 ### C1 — `kp-20-responsibilities.png` · 4:3 · 1536×1152
 **Topic:** "20 Responsibilities of Healthy Kidneys" reference poster.

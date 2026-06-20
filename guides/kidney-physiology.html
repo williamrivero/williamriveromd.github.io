@@ -1838,6 +1838,16 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
     .faq{padding:72px 0 80px;}
     .faq .container{padding:0 22px;}
   }
+
+  /* ═══ ORIGINS — SVG morph (luminous line-art that transforms on scroll) ═══ */
+  .origins-morph{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(86vw,760px);height:auto;max-height:80vh;display:block;pointer-events:none;will-change:contents;contain:paint;}
+  .origins-morph .om-shape{filter:drop-shadow(0 0 18px rgba(123,227,255,.25));}
+  .origins-morph .om-inner,.origins-morph .om-accent{stroke-opacity:.85;}
+  @keyframes om-breathe{0%,100%{opacity:.9;}50%{opacity:1;}}
+  .origins-morph > g[filter]{animation:om-breathe 6.5s ease-in-out infinite;}
+  html.lite-mode .origins-morph > g[filter]{filter:none !important;animation:none;}
+  html.lite-mode .origins-morph .om-shape{filter:none;}
+  @media (prefers-reduced-motion:reduce){.origins-morph > g[filter]{animation:none !important;}}
 </style>
 </head>
 <body>
@@ -1970,40 +1980,46 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
     <!-- Pinned scrollytelling arc -->
     <div class="origins-arc">
 
-      <!-- Sticky background layer: 8 stacked developmental frames -->
-      <div class="origins-bg" aria-hidden="false">
-        <div class="origins-stage" data-frame="1">
-          <img src="../images/kp-origin-1-pronephros.png" width="1536" height="1152" loading="eager" decoding="async"
-               alt="Stage 1, weeks 3 to 4: the pronephros — about seven pairs of primitive, non-functional pronephric tubules in the cervical intermediate mesoderm, forming the Wolffian (mesonephric) duct that grows caudally as a scaffold.">
-        </div>
-        <div class="origins-stage" data-frame="2">
-          <img src="../images/kp-origin-2-mesonephros.png" width="1536" height="1152" loading="lazy" decoding="async"
-               alt="Stage 2, weeks 4 to 8: the mesonephros — a thoracolumbar intermediate kidney whose mesonephric tubules drain into the Wolffian duct and are transiently functional.">
-        </div>
-        <div class="origins-stage" data-frame="3">
-          <img src="../images/kp-origin-3-ureteric-bud-induction.png" width="1536" height="1152" loading="lazy" decoding="async"
-               alt="Stage 3, weeks 5 to 6: ureteric bud induction — the bud sprouts from the lower Wolffian duct and meets the metanephric mesenchyme, the two tissues inducing one another.">
-        </div>
-        <div class="origins-stage" data-frame="4">
-          <img src="../images/kp-origin-4-branching-morphogenesis.png" width="1536" height="1152" loading="lazy" decoding="async"
-               alt="Stage 4, weeks 6 to 10: branching morphogenesis — about fifteen dichotomous rounds build the collecting system, pelvis to major and minor calyces to papillary and collecting ducts, each tip seeding a future nephron.">
-        </div>
-        <div class="origins-stage" data-frame="5">
-          <img src="../images/kp-origin-5-nephrogenesis-met.png" width="1536" height="1152" loading="lazy" decoding="async"
-               alt="Stage 5, weeks 7 to 36: nephrogenesis by mesenchymal-to-epithelial transition — cap mesenchyme becomes renal vesicle, comma-shaped and S-shaped body, then a capillary-loop nephron with podocytes, Bowman's capsule and glomerulus.">
-        </div>
-        <div class="origins-stage" data-frame="6">
-          <img src="../images/kp-origin-6-ascent-rotation.png" width="1536" height="1152" loading="lazy" decoding="async"
-               alt="Stage 6, weeks 6 to 9: renal ascent and rotation — the kidney climbs from the sacrum to the lumbar region and rotates ninety degrees so the hilum faces anteromedially, with its blood supply migrating from sacral to iliac to aortic vessels.">
-        </div>
-        <div class="origins-stage" data-frame="7">
-          <img src="../images/kp-origin-7-fetal-kidney.png" width="1536" height="1152" loading="lazy" decoding="async"
-               alt="Stage 7, week 10 to birth: the mature fetal kidney with normal fetal lobulation, now producing the urine that becomes the main source of amniotic fluid.">
-        </div>
-        <div class="origins-stage" data-frame="8">
-          <img src="../images/kp-origin-8-anomaly-map.png" width="1536" height="1152" loading="lazy" decoding="async"
-               alt="Stage 8: a CAKUT failure-point map — where development can fail, producing renal agenesis, multicystic dysplastic kidney, duplex or ectopic ureter, a reduced nephron endowment, and pelvic or horseshoe kidney.">
-        </div>
+      <!-- Sticky background layer: ONE luminous SVG that morphs through the developmental stages on scroll -->
+      <div class="origins-bg" aria-hidden="true">
+        <svg class="origins-morph" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet"
+             role="presentation" aria-hidden="true" focusable="false">
+          <defs>
+            <filter id="om-glow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="4.5" result="b1"/>
+              <feGaussianBlur in="SourceGraphic" stdDeviation="11" result="b2"/>
+              <feMerge>
+                <feMergeNode in="b2"/>
+                <feMergeNode in="b1"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <linearGradient id="om-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%"  stop-color="#7be3ff"/>
+              <stop offset="55%" stop-color="#e8f4f8"/>
+              <stop offset="100%" stop-color="#d4af4f"/>
+            </linearGradient>
+            <radialGradient id="om-core" cx="50%" cy="46%" r="60%">
+              <stop offset="0%"  stop-color="#7be3ff" stop-opacity="0.16"/>
+              <stop offset="70%" stop-color="#2c97a3" stop-opacity="0.05"/>
+              <stop offset="100%" stop-color="#02060a" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <g class="om-halo">
+            <circle cx="200" cy="190" r="150" fill="url(#om-core)"/>
+          </g>
+          <g filter="url(#om-glow)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path class="om-shape"
+                  d="M200 70 C150 70 118 110 116 162 C114 208 142 236 150 268 C158 300 176 330 200 330 C224 330 246 304 254 270 C262 236 286 210 284 162 C282 110 250 70 200 70 Z"
+                  stroke="url(#om-grad)" stroke-width="3" stroke-opacity="0.95"/>
+            <path class="om-inner"
+                  d="M214 150 C214 178 200 188 204 218 C208 244 206 270 220 290 M204 218 C188 228 176 244 168 262 M204 218 C220 228 232 244 240 262 M214 150 C228 152 240 166 240 184"
+                  stroke="#7be3ff" stroke-width="2.2" stroke-opacity="0.85"/>
+            <path class="om-accent"
+                  d="M284 196 C272 196 262 190 256 196 M150 268 C158 262 168 262 176 268"
+                  stroke="#d4af4f" stroke-width="2" stroke-opacity="0.9"/>
+          </g>
+        </svg>
         <div class="origins-scrim" aria-hidden="true"></div>
       </div>
 
@@ -2018,10 +2034,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
         <div class="origins-step is-active" data-step="1" data-numeral="E1">
           <div class="container">
-            <figure class="origins-inline-fig">
-              <img src="../images/kp-origin-1-pronephros.png" width="1536" height="1152" loading="eager" decoding="async"
-                   alt="The pronephros: primitive non-functional tubules forming the Wolffian duct.">
-            </figure>
             <div class="origins-card">
               <div class="origins-meta"><span class="origins-stage-no">E1</span><span class="origins-label">Pronephros</span><span class="origins-week">Weeks 3–4</span></div>
               <p class="origins-lyric">You built your kidneys <em>three times</em>. This is the first draft — about seven pairs of tubules that never filter a drop, yet lay the duct every later stage will follow.</p>
@@ -2032,10 +2044,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
         <div class="origins-step" data-step="2" data-numeral="E2">
           <div class="container">
-            <figure class="origins-inline-fig">
-              <img src="../images/kp-origin-2-mesonephros.png" width="1536" height="1152" loading="lazy" decoding="async"
-                   alt="The mesonephros: thoracolumbar intermediate kidney draining to the Wolffian duct.">
-            </figure>
             <div class="origins-card">
               <div class="origins-meta"><span class="origins-stage-no">E2</span><span class="origins-label">Mesonephros</span><span class="origins-week">Weeks 4–8</span></div>
               <p class="origins-lyric">The second attempt — an <em>intermediate kidney</em> that briefly works, then steps aside. Even your discarded drafts leave something behind.</p>
@@ -2046,10 +2054,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
         <div class="origins-step" data-step="3" data-numeral="E3">
           <div class="container">
-            <figure class="origins-inline-fig">
-              <img src="../images/kp-origin-3-ureteric-bud-induction.png" width="1536" height="1152" loading="lazy" decoding="async"
-                   alt="Ureteric bud induction: the bud meets the metanephric mesenchyme.">
-            </figure>
             <div class="origins-card">
               <div class="origins-meta"><span class="origins-stage-no">E3</span><span class="origins-label">Ureteric Bud Induction</span><span class="origins-week">Weeks 5–6</span></div>
               <p class="origins-lyric">A bud reaches out, and a cloud of cells answers. <em>Two tissues have a conversation</em> — and from that exchange, the real kidney finally begins.</p>
@@ -2060,10 +2064,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
         <div class="origins-step" data-step="4" data-numeral="E4">
           <div class="container">
-            <figure class="origins-inline-fig">
-              <img src="../images/kp-origin-4-branching-morphogenesis.png" width="1536" height="1152" loading="lazy" decoding="async"
-                   alt="Branching morphogenesis building the collecting system.">
-            </figure>
             <div class="origins-card">
               <div class="origins-meta"><span class="origins-stage-no">E4</span><span class="origins-label">Branching Morphogenesis</span><span class="origins-week">Weeks 6–10</span></div>
               <p class="origins-lyric">The bud divides, and divides, and divides — about fifteen rounds — branching into a tree of collecting ducts. Each growing tip plants the seed of a single nephron.</p>
@@ -2078,10 +2078,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
         <div class="origins-step" data-step="5" data-numeral="E5">
           <div class="container">
-            <figure class="origins-inline-fig">
-              <img src="../images/kp-origin-5-nephrogenesis-met.png" width="1536" height="1152" loading="lazy" decoding="async"
-                   alt="Nephrogenesis: renal vesicle to S-shaped body to mature capillary-loop nephron.">
-            </figure>
             <div class="origins-card">
               <div class="origins-meta"><span class="origins-stage-no">E5</span><span class="origins-label">Nephrogenesis (MET)</span><span class="origins-week">Weeks 7–36</span></div>
               <p class="origins-lyric">Loose cells condense, fold, and learn to <em>become</em> a filter — renal vesicle, comma, S-shaped body, then a glomerulus laced with capillaries and the podocytes that will sieve your blood for life.</p>
@@ -2092,10 +2088,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
         <div class="origins-step" data-step="6" data-numeral="E6">
           <div class="container">
-            <figure class="origins-inline-fig">
-              <img src="../images/kp-origin-6-ascent-rotation.png" width="1536" height="1152" loading="lazy" decoding="async"
-                   alt="Renal ascent and rotation from sacrum to lumbar region.">
-            </figure>
             <div class="origins-card">
               <div class="origins-meta"><span class="origins-stage-no">E6</span><span class="origins-label">Ascent &amp; Rotation</span><span class="origins-week">Weeks 6–9</span></div>
               <p class="origins-lyric">The kidney <em>climbs</em> — from the sacrum to the small of your back — turning ninety degrees as it rises, trading one blood supply for the next until it finds its place beneath the ribs.</p>
@@ -2106,10 +2098,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
         <div class="origins-step" data-step="7" data-numeral="E7">
           <div class="container">
-            <figure class="origins-inline-fig">
-              <img src="../images/kp-origin-7-fetal-kidney.png" width="1536" height="1152" loading="lazy" decoding="async"
-                   alt="The mature fetal kidney producing amniotic fluid.">
-            </figure>
             <div class="origins-card">
               <div class="origins-meta"><span class="origins-stage-no">E7</span><span class="origins-label">Mature Fetal Kidney</span><span class="origins-week">Week 10 – Birth</span></div>
               <p class="origins-lyric">Now it works. Fetal urine becomes the <em>sea you float in</em> — the amniotic fluid. After 36 weeks the kidney no longer adds filters; it simply makes the ones it has larger.</p>
@@ -2120,10 +2108,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
         <div class="origins-step origins-step--final" data-step="8" data-numeral="E8">
           <div class="container">
-            <figure class="origins-inline-fig">
-              <img src="../images/kp-origin-8-anomaly-map.png" width="1536" height="1152" loading="lazy" decoding="async"
-                   alt="A map of where kidney development can fail (CAKUT).">
-            </figure>
             <div class="origins-card">
               <div class="origins-meta"><span class="origins-stage-no">E8</span><span class="origins-label">Where It Can Fail</span><span class="origins-week">The protection map</span></div>
               <p class="origins-lyric">Every step above is a place this story can go wrong — agenesis, dysplasia, a duplicated ureter, a kidney stranded in the pelvis, or simply <em>too few filters</em> to begin with.</p>
@@ -2335,12 +2319,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
         <h2 id="resp-heading" data-reveal data-delay="1">Twenty quiet <em>superpowers</em>,<br>in one organ.</h2>
         <p class="resp-intro" data-reveal data-delay="2">Not one task at a time — all twenty, at once, around the clock, inside two organs no larger than your fists. Read slowly. This is the workload you protect every day you stay well.</p>
       </div>
-
-      <figure class="resp-figure" data-reveal data-delay="2">
-        <img loading="lazy" decoding="async" width="1536" height="1152"
-             src="../images/kp-20-responsibilities.png"
-             alt="Luminous grid of the twenty physiologic responsibilities of healthy kidneys.">
-      </figure>
 
       <ol class="resp-grid" role="list">
 
@@ -2587,6 +2565,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 
 <script type="module">
 /* ════════════════════════════════════════════════
@@ -3484,75 +3463,148 @@ if(statBand){
   play();
 })();
 
-/* ===== ORIGINS scrollytelling driver — kidney develops as you scroll ===== */
+/* ===== ORIGINS — SVG morph driver: the kidney develops as you scroll ===== */
 (function(){
   var section = document.querySelector('.origins');
   if(!section) return;
 
-  var steps  = Array.prototype.slice.call(section.querySelectorAll('.origins-step'));
-  var frames = Array.prototype.slice.call(section.querySelectorAll('.origins-stage'));
+  var steps     = Array.prototype.slice.call(section.querySelectorAll('.origins-step'));
   var spineFill = section.querySelector('.origins-spine-fill');
   var numeralEl = section.querySelector('.origins-numeral span');
-  if(!steps.length || !frames.length) return;
+  var svg       = section.querySelector('.origins-morph');
+  var shapePath = svg && svg.querySelector('.om-shape');
+  var innerPath = svg && svg.querySelector('.om-inner');
+  var accentPath= svg && svg.querySelector('.om-accent');
+  if(!steps.length) return;
 
-  var reducedMotion = window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var mobile = window.matchMedia && window.matchMedia('(max-width:780px)').matches;
+  var mm = window.matchMedia;
+  var reducedMotion = mm && mm('(prefers-reduced-motion: reduce)').matches;
+  var mobile        = mm && mm('(max-width:780px)').matches;
 
+  /* 8 keyframes per layer (viewBox 0 0 400 400) */
+  var SHAPE = [
+    "M188 96 C176 92 174 110 186 114 C198 118 200 100 188 96 Z M212 116 C200 112 198 130 210 134 C222 138 224 120 212 116 Z M190 138 C178 134 176 152 188 156 C200 160 202 142 190 138 Z",
+    "M196 80 C184 78 184 96 196 98 C208 100 208 80 196 80 Z M204 120 C192 118 192 136 204 138 C216 140 216 120 204 120 Z M196 160 C184 158 184 176 196 178 C208 180 208 160 196 160 Z M204 200 C192 198 192 216 204 218 C216 220 216 200 204 200 Z M196 240 C184 238 184 256 196 258 C208 260 208 240 196 240 Z",
+    "M196 88 C190 88 188 130 192 176 C194 200 196 212 200 224 M210 232 C188 232 178 252 188 272 C198 292 226 290 238 272 C250 254 236 232 210 232 Z",
+    "M200 90 L200 150 M200 150 C172 168 162 200 150 232 M200 150 C228 168 238 200 250 232 M150 232 C142 252 134 268 128 286 M150 232 C158 252 166 268 172 286 M250 232 C242 252 234 268 228 286 M250 232 C258 252 266 268 272 286",
+    "M186 150 C160 150 150 178 168 196 C186 214 216 206 218 182 C220 158 206 150 186 150 Z M218 182 C236 196 220 218 234 234 C248 250 230 270 246 286",
+    "M236 132 C200 122 168 150 166 192 C164 226 184 252 196 282 C204 302 226 308 244 290 C262 272 270 240 268 206 C266 168 272 142 236 132 Z",
+    "M214 86 C166 80 130 116 128 168 C126 196 140 214 138 238 C136 258 150 268 150 288 C152 312 178 330 206 326 C236 322 256 296 260 268 C264 248 256 234 262 212 C270 184 286 168 282 134 C278 100 262 92 214 86 Z",
+    "M200 70 C150 70 118 110 116 162 C114 208 142 236 150 268 C158 300 176 330 200 330 C224 330 246 304 254 270 C262 236 286 210 284 162 C282 110 250 70 200 70 Z"
+  ];
+  var INNER = [
+    "M188 104 C196 112 204 118 210 126",
+    "M196 90 C200 130 200 180 200 230",
+    "M200 200 C204 216 208 226 214 240",
+    "M200 150 C188 172 184 196 180 220 M200 150 C212 172 216 196 220 220",
+    "M184 162 C172 168 174 188 188 190 C202 192 202 172 192 166 M226 200 C236 214 224 232 236 246",
+    "M214 168 C206 192 204 220 208 248 C210 264 220 274 230 282",
+    "M206 130 C204 170 202 206 204 240 M204 200 C188 212 178 230 170 250 M204 200 C220 212 230 230 238 250",
+    "M214 150 C214 178 200 188 204 218 C208 244 206 270 220 290 M204 218 C188 228 176 244 168 262 M204 218 C220 228 232 244 240 262 M214 150 C228 152 240 166 240 184"
+  ];
+  var ACCENT = [
+    "M186 100 C190 96 196 96 200 100",
+    "M196 88 C200 85 206 85 210 88",
+    "M210 232 C218 228 226 230 232 236",
+    "M200 90 C196 86 204 86 200 90",
+    "M168 196 C176 190 186 192 192 198",
+    "M268 206 C258 204 250 200 244 206",
+    "M260 200 C250 198 242 196 236 202",
+    "M284 196 C272 196 262 190 256 196 M150 268 C158 262 168 262 176 268"
+  ];
+
+  function setNumeral(i){
+    if(numeralEl && steps[i]) numeralEl.textContent = steps[i].getAttribute('data-numeral') || ('E'+(i+1));
+  }
   var current = -1;
-  function activate(i){
+  function activateCard(i){
     if(i === current) return;
     current = i;
-    for(var f=0; f<frames.length; f++){ frames[f].classList.toggle('is-active', f === i); }
-    for(var s=0; s<steps.length; s++){ steps[s].classList.toggle('is-active', s === i); }
-    if(numeralEl && steps[i]){ numeralEl.textContent = steps[i].getAttribute('data-numeral') || ('E'+(i+1)); }
+    for(var s=0;s<steps.length;s++){ steps[s].classList.toggle('is-active', s===i); }
+    setNumeral(i);
   }
-
-  if(reducedMotion){ steps.forEach(function(s){ s.classList.add('is-active'); }); return; }
-
-  var gsap = window.gsap, ST = window.ScrollTrigger;
-
-  if(gsap && ST && !mobile){
-    gsap.registerPlugin(ST);
-    steps.forEach(function(step, i){
-      ST.create({ trigger: step, start: 'top center', end: 'bottom center',
-        onToggle: function(self){ if(self.isActive) activate(i); } });
-    });
-    var arc = section.querySelector('.origins-arc');
-    if(arc && spineFill){
-      ST.create({ trigger: arc, start: 'top top', end: 'bottom bottom',
-        onUpdate: function(self){ spineFill.style.height = (self.progress * 72) + 'vh'; } });
+  function renderFinal(){
+    if(shapePath)  shapePath.setAttribute('d', SHAPE[SHAPE.length-1]);
+    if(innerPath)  innerPath.setAttribute('d', INNER[INNER.length-1]);
+    if(accentPath) accentPath.setAttribute('d', ACCENT[ACCENT.length-1]);
+  }
+  function startCardObserver(){
+    if(!('IntersectionObserver' in window)){
+      steps.forEach(function(s){ s.classList.add('is-active'); });
+      return;
     }
-    activate(0);
-    return;
-  }
-
-  if('IntersectionObserver' in window && !mobile){
     var io = new IntersectionObserver(function(entries){
       var best=null, bestRatio=0;
       entries.forEach(function(e){
-        if(e.isIntersecting && e.intersectionRatio > bestRatio){ bestRatio = e.intersectionRatio; best = e.target; }
+        if(e.isIntersecting && e.intersectionRatio > bestRatio){ bestRatio=e.intersectionRatio; best=e.target; }
       });
-      if(best){ var idx = steps.indexOf(best); if(idx > -1) activate(idx); }
+      if(best){ var idx = steps.indexOf(best); if(idx>-1) activateCard(idx); }
     }, { rootMargin:'-40% 0px -40% 0px', threshold:[0,.25,.5,.75,1] });
     steps.forEach(function(s){ io.observe(s); });
-    if(spineFill){
-      var arcEl = section.querySelector('.origins-arc');
-      var onScroll = function(){
-        if(!arcEl) return;
-        var r = arcEl.getBoundingClientRect();
-        var total = r.height - window.innerHeight;
-        var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
-        spineFill.style.height = (p * 72) + 'vh';
-      };
-      window.addEventListener('scroll', onScroll, { passive:true });
-      onScroll();
-    }
-    activate(0);
-    return;
+    activateCard(0);
   }
 
-  steps.forEach(function(s){ s.classList.add('is-active'); });
+  var gsap = window.gsap, ST = window.ScrollTrigger, flubber = window.flubber;
+  var canMorph = !!(svg && shapePath && flubber && gsap && ST && !reducedMotion && !mobile);
+
+  if(!canMorph){ renderFinal(); startCardObserver(); return; }
+
+  gsap.registerPlugin(ST);
+
+  function chain(arr){
+    var ip = [];
+    for(var i=0;i<arr.length-1;i++){ ip.push(flubber.interpolate(arr[i], arr[i+1], { maxSegmentLength: 3 })); }
+    return ip;
+  }
+  var ipShape  = chain(SHAPE);
+  var ipInner  = chain(INNER);
+  var ipAccent = chain(ACCENT);
+  var N = SHAPE.length;
+
+  var pending = false, lastP = 0;
+  function paint(){
+    pending = false;
+    var p = lastP;
+    var seg = p * (N - 1);
+    var i = Math.floor(seg);
+    if(i >= N - 1){ i = N - 2; }
+    if(i < 0){ i = 0; }
+    var t = seg - i;
+    if(t < 0) t = 0; if(t > 1) t = 1;
+    shapePath.setAttribute('d', ipShape[i](t));
+    if(innerPath)  innerPath.setAttribute('d',  ipInner[i](t));
+    if(accentPath) accentPath.setAttribute('d', ipAccent[i](t));
+    if(spineFill)  spineFill.style.height = (p * 72) + 'vh';
+  }
+  function schedule(p){
+    lastP = p < 0 ? 0 : (p > 1 ? 1 : p);
+    if(!pending){ pending = true; requestAnimationFrame(paint); }
+  }
+
+  var arc = section.querySelector('.origins-arc');
+  ST.create({
+    trigger: arc || section,
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: true,
+    onUpdate: function(self){ schedule(self.progress); }
+  });
+  steps.forEach(function(step, i){
+    ST.create({ trigger: step, start:'top center', end:'bottom center',
+      onToggle: function(self){ if(self.isActive) activateCard(i); } });
+  });
+  activateCard(0);
+  schedule(0);
+
+  if(mm){
+    var onMQ = function(){
+      if(mm('(max-width:780px)').matches || mm('(prefers-reduced-motion: reduce)').matches){ renderFinal(); }
+    };
+    try{
+      mm('(max-width:780px)').addEventListener('change', onMQ);
+      mm('(prefers-reduced-motion: reduce)').addEventListener('change', onMQ);
+    }catch(e){}
+  }
 })();
 </script>
 <script src="../assets/image-lightbox.js" defer></script>
