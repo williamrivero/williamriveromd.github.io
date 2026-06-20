@@ -3543,7 +3543,7 @@ if(statBand){
 (function filtCounter(){
   var el=document.getElementById('filt-counter'); if(!el) return;
   var numEl=document.getElementById('filt-counter-num'), sinceEl=document.getElementById('filt-counter-since');
-  var ratePerMs=125/60/1000, total=0, lastT=performance.now();
+  var ratePerMs=125/60/1000, pageStart=performance.now(), total=0, lastT=pageStart;
   function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
   function loop(now){ total+=(now-lastT)*ratePerMs; lastT=now; numEl.textContent=fmt(total); requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
@@ -3551,7 +3551,7 @@ if(statBand){
   window.addEventListener('scroll', vis, {passive:true});
   window.addEventListener('resize', vis, {passive:true});
   vis();
-  window.__setFiltrationRate=function(g){ if(g>0){ ratePerMs=g/60/1000; sinceEl.textContent='since you opened this page \u00b7 at your eGFR'; } };
+  window.__setFiltrationRate=function(g){ if(g>0){ ratePerMs=g/60/1000; total=(performance.now()-pageStart)*ratePerMs; sinceEl.textContent='since you opened this page \u00b7 at your eGFR'; } };
 })();
 (function egfrLive(){
   var sec=document.querySelector('.egfr-live'); if(!sec) return;
