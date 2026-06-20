@@ -8,17 +8,29 @@
 
 ## House style — apply to EVERY prompt below
 
-> Publication-grade **biomedical mechanism schematic**, scientific review-article style.
-> **Flat vector illustration with soft semi-3D shading on a WHITE background.**
-> Muted clinical palette: light gray-blue anatomy · soft yellow for highlighted
-> nephron/tubular segments · red for arteries/injury/oxidative stress · blue for
-> veins/protective or therapeutic effects · pale-pink pathology boxes · pale-blue
-> benefit/outcome boxes. Thin **dashed** boxes around magnified panels, with dashed
-> connector lines. Clean sans-serif typography, medically precise, legible at
-> slide size. Generous whitespace, minimal clutter. **No** photorealism, **no**
-> dark/navy/black background, **no** decorative effects, **no** cartoon styling,
-> **no** gibberish text. Small semi-transparent navy **`© williamriveromd.com`**
-> in the bottom-right corner (bottom-center for portrait).
+> **⚠️ Deliberate override of the usual williamriveromd.com white-background rule.** This guide is a
+> dark, cinematic, immersive page (canvas `#02060a`), so these figures are authored for **DARK**.
+>
+> Publication-grade **biomedical mechanism schematic** with scientific review-article clarity, but in a
+> **"dark-mode" / luminous treatment on a fully TRANSPARENT background — PNG with alpha channel, NO
+> backdrop fill of any color (not white, not black).** Render the anatomy as clean, softly glowing
+> vector linework with light strokes so it reads on a near-black page:
+> - **Linework & anatomy:** light / off-white (`#e8f4f8`) and pale gray-blue strokes, subtle semi-3D shading.
+> - **Highlights / key segments:** warm gold (`#d4af4f`) and cyan (`#7be3ff`) glow.
+> - **Arteries / injury / oxidative stress:** luminous red. **Veins / protective / therapeutic:** luminous blue.
+> - **Labels & callouts:** light text (`#e8f4f8`) — **never** dark navy text (it would disappear on the dark page).
+> - **Summary / inset panels:** thin **dashed** outlines in light strokes (no filled boxes); if a panel needs a
+>   tint, use a very subtle translucent dark fill, never a solid pale block.
+> Clean sans-serif labels, medically precise, legible at slide size, generous negative space, minimal clutter.
+> **No** photorealism, **no** white/colored background fill, **no** cartoon styling, **no** gibberish text.
+> Small semi-transparent **light** `© williamriveromd.com` in the bottom-right corner (bottom-center for portrait).
+>
+> **Reading the per-image prompts below:** where an individual prompt says "white background", "pale-pink box",
+> or "pale-blue box", apply the **dark-mode equivalents above instead** (transparent bg; dashed light-stroke
+> panels; light labels). The mechanism *content* (what to show and label) stays exactly as written.
+>
+> *If your generator cannot output a true alpha background, fall back to a solid near-black (`#02060a`) fill —
+> but transparent is strongly preferred so the page's cosmic background and vignette show through with no seam.*
 
 **Where these go on the page:** all figures are light-background "luminous cards"
 that sit on the page's near-black canvas (a dark scrim is applied in-page for text
@@ -158,7 +170,7 @@ Title "20 Responsibilities of Healthy Kidneys." `© williamriveromd.com` bottom-
 - [ ] A1–A8 generated at **identical 4:3 framing/scale** (scroll morph depends on it)
 - [ ] B1–B7 generated
 - [ ] C1 generated
-- [ ] All on **white** backgrounds, muted clinical palette, dashed insets
-- [ ] Every figure carries `© williamriveromd.com` (bottom-right)
+- [ ] All on **transparent** backgrounds (alpha PNG), **dark-mode luminous** linework + **light** labels, dashed insets
+- [ ] Every figure carries a light, semi-transparent `© williamriveromd.com` (bottom-right)
 - [ ] Files saved to `images/` with the exact filenames above (`.png`)
 - [ ] Keep existing `images/kidney-physiology-og.png` unchanged
