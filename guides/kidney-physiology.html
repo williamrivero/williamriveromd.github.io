@@ -2004,14 +2004,10 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
           </g>
           <g filter="url(#om-glow)" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path class="om-shape"
-                  d="M200 70 C150 70 118 110 116 162 C114 208 142 236 150 268 C158 300 176 330 200 330 C224 330 246 304 254 270 C262 236 286 210 284 162 C282 110 250 70 200 70 Z"
+                  d="M200 78 C152 78 120 116 118 166 C116 210 142 238 150 270 C158 300 176 326 200 326 C224 326 242 300 250 270 C258 238 284 212 282 166 C280 116 248 78 200 78 Z"
                   stroke="url(#om-grad)" stroke-width="3" stroke-opacity="0.95"/>
-            <path class="om-inner"
-                  d="M214 150 C214 178 200 188 204 218 C208 244 206 270 220 290 M204 218 C188 228 176 244 168 262 M204 218 C220 228 232 244 240 262 M214 150 C228 152 240 166 240 184"
-                  stroke="#7be3ff" stroke-width="2.2" stroke-opacity="0.85"/>
-            <path class="om-accent"
-                  d="M284 196 C272 196 262 190 256 196 M150 268 C158 262 168 262 176 268"
-                  stroke="#d4af4f" stroke-width="2" stroke-opacity="0.9"/>
+            <path class="om-inner" d=""
+                  stroke="#7be3ff" stroke-width="2" stroke-opacity="0.55"/>
           </g>
         </svg>
         <div class="origins-scrim" aria-hidden="true"></div>
@@ -2559,8 +2555,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
-
 <script type="module">
 /* ════════════════════════════════════════════════
    LITE MODE DETECTION
@@ -3457,147 +3451,111 @@ if(statBand){
   play();
 })();
 
-/* ===== ORIGINS — SVG morph driver: the kidney develops as you scroll ===== */
+/* ===== ORIGINS — self-contained parametric morph (no external libs) =====
+   A single luminous outline grows & reshapes from a small cluster into a
+   kidney bean as the visitor scrolls. Pure math; no CDN dependency. */
 (function(){
   var section = document.querySelector('.origins');
   if(!section) return;
-
   var steps     = Array.prototype.slice.call(section.querySelectorAll('.origins-step'));
   var spineFill = section.querySelector('.origins-spine-fill');
   var numeralEl = section.querySelector('.origins-numeral span');
   var svg       = section.querySelector('.origins-morph');
   var shapePath = svg && svg.querySelector('.om-shape');
   var innerPath = svg && svg.querySelector('.om-inner');
-  var accentPath= svg && svg.querySelector('.om-accent');
-  if(!steps.length) return;
+  if(!steps.length || !shapePath) return;
 
   var mm = window.matchMedia;
-  var reducedMotion = mm && mm('(prefers-reduced-motion: reduce)').matches;
-  var mobile        = mm && mm('(max-width:780px)').matches;
+  var reduced = mm && mm('(prefers-reduced-motion: reduce)').matches;
+  var mobile  = mm && mm('(max-width:780px)').matches;
 
-  /* 8 keyframes per layer (viewBox 0 0 400 400) */
-  var SHAPE = [
-    "M188 96 C176 92 174 110 186 114 C198 118 200 100 188 96 Z M212 116 C200 112 198 130 210 134 C222 138 224 120 212 116 Z M190 138 C178 134 176 152 188 156 C200 160 202 142 190 138 Z",
-    "M196 80 C184 78 184 96 196 98 C208 100 208 80 196 80 Z M204 120 C192 118 192 136 204 138 C216 140 216 120 204 120 Z M196 160 C184 158 184 176 196 178 C208 180 208 160 196 160 Z M204 200 C192 198 192 216 204 218 C216 220 216 200 204 200 Z M196 240 C184 238 184 256 196 258 C208 260 208 240 196 240 Z",
-    "M196 88 C190 88 188 130 192 176 C194 200 196 212 200 224 M210 232 C188 232 178 252 188 272 C198 292 226 290 238 272 C250 254 236 232 210 232 Z",
-    "M200 90 L200 150 M200 150 C172 168 162 200 150 232 M200 150 C228 168 238 200 250 232 M150 232 C142 252 134 268 128 286 M150 232 C158 252 166 268 172 286 M250 232 C242 252 234 268 228 286 M250 232 C258 252 266 268 272 286",
-    "M186 150 C160 150 150 178 168 196 C186 214 216 206 218 182 C220 158 206 150 186 150 Z M218 182 C236 196 220 218 234 234 C248 250 230 270 246 286",
-    "M236 132 C200 122 168 150 166 192 C164 226 184 252 196 282 C204 302 226 308 244 290 C262 272 270 240 268 206 C266 168 272 142 236 132 Z",
-    "M214 86 C166 80 130 116 128 168 C126 196 140 214 138 238 C136 258 150 268 150 288 C152 312 178 330 206 326 C236 322 256 296 260 268 C264 248 256 234 262 212 C270 184 286 168 282 134 C278 100 262 92 214 86 Z",
-    "M200 70 C150 70 118 110 116 162 C114 208 142 236 150 268 C158 300 176 330 200 330 C224 330 246 304 254 270 C262 236 286 210 284 162 C282 110 250 70 200 70 Z"
+  /* 8 developmental parameter sets {cx,cy,rx,ry,rot(deg),lobeAmp,lobeK,hilum,taper} */
+  var P = [
+    {cx:200,cy:152,rx:24, ry:30, rot:0,  lobeAmp:0.12,lobeK:3,hilum:0, taper:0.95}, /* 1 pronephros */
+    {cx:200,cy:200,rx:22, ry:94, rot:0,  lobeAmp:0.05,lobeK:4,hilum:0, taper:0.92}, /* 2 mesonephros */
+    {cx:200,cy:206,rx:46, ry:62, rot:0,  lobeAmp:0.05,lobeK:2,hilum:0, taper:0.42}, /* 3 ureteric bud */
+    {cx:200,cy:200,rx:76, ry:86, rot:0,  lobeAmp:0.17,lobeK:6,hilum:0, taper:0.82}, /* 4 branching */
+    {cx:200,cy:200,rx:66, ry:90, rot:-8, lobeAmp:0.10,lobeK:3,hilum:8, taper:0.60}, /* 5 nephrogenesis */
+    {cx:204,cy:198,rx:76, ry:102,rot:-20,lobeAmp:0.03,lobeK:3,hilum:18,taper:0.86}, /* 6 ascent/rotation */
+    {cx:200,cy:200,rx:84, ry:112,rot:-6, lobeAmp:0.07,lobeK:7,hilum:24,taper:0.90}, /* 7 fetal kidney */
+    {cx:200,cy:200,rx:90, ry:122,rot:0,  lobeAmp:0.00,lobeK:5,hilum:38,taper:0.92}  /* 8 mature kidney */
   ];
-  var INNER = [
-    "M188 104 C196 112 204 118 210 126",
-    "M196 90 C200 130 200 180 200 230",
-    "M200 200 C204 216 208 226 214 240",
-    "M200 150 C188 172 184 196 180 220 M200 150 C212 172 216 196 220 220",
-    "M184 162 C172 168 174 188 188 190 C202 192 202 172 192 166 M226 200 C236 214 224 232 236 246",
-    "M214 168 C206 192 204 220 208 248 C210 264 220 274 230 282",
-    "M206 130 C204 170 202 206 204 240 M204 200 C188 212 178 230 170 250 M204 200 C220 212 230 230 238 250",
-    "M214 150 C214 178 200 188 204 218 C208 244 206 270 220 290 M204 218 C188 228 176 244 168 262 M204 218 C220 228 232 244 240 262 M214 150 C228 152 240 166 240 184"
-  ];
-  var ACCENT = [
-    "M186 100 C190 96 196 96 200 100",
-    "M196 88 C200 85 206 85 210 88",
-    "M210 232 C218 228 226 230 232 236",
-    "M200 90 C196 86 204 86 200 90",
-    "M168 196 C176 190 186 192 192 198",
-    "M268 206 C258 204 250 200 244 206",
-    "M260 200 C250 198 242 196 236 202",
-    "M284 196 C272 196 262 190 256 196 M150 268 C158 262 168 262 176 268"
-  ];
+  var N = 72, PI = Math.PI;
 
-  function setNumeral(i){
-    if(numeralEl && steps[i]) numeralEl.textContent = steps[i].getAttribute('data-numeral') || ('E'+(i+1));
-  }
-  var current = -1;
-  function activateCard(i){
-    if(i === current) return;
-    current = i;
-    for(var s=0;s<steps.length;s++){ steps[s].classList.toggle('is-active', s===i); }
-    setNumeral(i);
-  }
-  function renderFinal(){
-    if(shapePath)  shapePath.setAttribute('d', SHAPE[SHAPE.length-1]);
-    if(innerPath)  innerPath.setAttribute('d', INNER[INNER.length-1]);
-    if(accentPath) accentPath.setAttribute('d', ACCENT[ACCENT.length-1]);
-  }
-  function startCardObserver(){
-    if(!('IntersectionObserver' in window)){
-      steps.forEach(function(s){ s.classList.add('is-active'); });
-      return;
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function lerpP(a,b,t){ var o={}; for(var k in a){ o[k]=lerp(a[k],b[k],t); } return o; }
+  function angDiff(a,b){ var d=Math.abs(a-b)%(2*PI); return d>PI?2*PI-d:d; }
+
+  function buildPath(p, scale){
+    scale = scale || 1;
+    var rot=p.rot*PI/180, cs=Math.cos(rot), sn=Math.sin(rot), d='';
+    for(var i=0;i<N;i++){
+      var a=i/N*2*PI;
+      var ry = (Math.sin(a)<0 ? p.ry*p.taper : p.ry);
+      var x=p.rx*Math.cos(a), y=ry*Math.sin(a);
+      var lobe=1+p.lobeAmp*Math.sin(p.lobeK*a); x*=lobe; y*=lobe;
+      x += p.hilum*Math.exp(-Math.pow(angDiff(a,PI)/0.55,2)); /* medial notch */
+      x*=scale; y*=scale;
+      var xr=x*cs-y*sn, yr=x*sn+y*cs;
+      d += (i?'L':'M')+(p.cx+xr).toFixed(1)+' '+(p.cy+yr).toFixed(1)+' ';
     }
-    var io = new IntersectionObserver(function(entries){
-      var best=null, bestRatio=0;
-      entries.forEach(function(e){
-        if(e.isIntersecting && e.intersectionRatio > bestRatio){ bestRatio=e.intersectionRatio; best=e.target; }
-      });
-      if(best){ var idx = steps.indexOf(best); if(idx>-1) activateCard(idx); }
-    }, { rootMargin:'-40% 0px -40% 0px', threshold:[0,.25,.5,.75,1] });
+    return d+'Z';
+  }
+
+  function render(prog){
+    var seg=prog*(P.length-1);
+    var i=Math.min(P.length-2, Math.max(0, Math.floor(seg)));
+    var t=Math.min(1, Math.max(0, seg-i));
+    var p=lerpP(P[i],P[i+1],t);
+    shapePath.setAttribute('d', buildPath(p,1));
+    if(innerPath) innerPath.setAttribute('d', buildPath(p,0.5));
+    if(spineFill) spineFill.style.height=(prog*72)+'vh';
+  }
+
+  var current=-1;
+  function activateCard(i){
+    if(i===current) return; current=i;
+    for(var s=0;s<steps.length;s++) steps[s].classList.toggle('is-active', s===i);
+    if(numeralEl && steps[i]) numeralEl.textContent = steps[i].getAttribute('data-numeral')||('E'+(i+1));
+  }
+  function cardObserver(){
+    if(!('IntersectionObserver' in window)){ steps.forEach(function(s){s.classList.add('is-active');}); return; }
+    var io=new IntersectionObserver(function(es){
+      var best=null,br=0;
+      es.forEach(function(e){ if(e.isIntersecting && e.intersectionRatio>br){br=e.intersectionRatio;best=e.target;} });
+      if(best){ var idx=steps.indexOf(best); if(idx>-1) activateCard(idx); }
+    },{rootMargin:'-40% 0px -40% 0px',threshold:[0,.25,.5,.75,1]});
     steps.forEach(function(s){ io.observe(s); });
     activateCard(0);
   }
 
-  var gsap = window.gsap, ST = window.ScrollTrigger, flubber = window.flubber;
-  var canMorph = !!(svg && shapePath && flubber && gsap && ST && !reducedMotion && !mobile);
+  /* reduced motion / mobile: static mature kidney, cards via observer */
+  if(reduced || mobile){ render(1); cardObserver(); return; }
 
-  if(!canMorph){ renderFinal(); startCardObserver(); return; }
+  var pending=false,lastP=0;
+  function paint(){ pending=false; render(lastP); }
+  function setP(p){ lastP = p<0?0:(p>1?1:p); if(!pending){ pending=true; requestAnimationFrame(paint); } }
 
-  gsap.registerPlugin(ST);
-
-  function chain(arr){
-    var ip = [];
-    for(var i=0;i<arr.length-1;i++){ ip.push(flubber.interpolate(arr[i], arr[i+1], { maxSegmentLength: 3 })); }
-    return ip;
-  }
-  var ipShape  = chain(SHAPE);
-  var ipInner  = chain(INNER);
-  var ipAccent = chain(ACCENT);
-  var N = SHAPE.length;
-
-  var pending = false, lastP = 0;
-  function paint(){
-    pending = false;
-    var p = lastP;
-    var seg = p * (N - 1);
-    var i = Math.floor(seg);
-    if(i >= N - 1){ i = N - 2; }
-    if(i < 0){ i = 0; }
-    var t = seg - i;
-    if(t < 0) t = 0; if(t > 1) t = 1;
-    shapePath.setAttribute('d', ipShape[i](t));
-    if(innerPath)  innerPath.setAttribute('d',  ipInner[i](t));
-    if(accentPath) accentPath.setAttribute('d', ipAccent[i](t));
-    if(spineFill)  spineFill.style.height = (p * 72) + 'vh';
-  }
-  function schedule(p){
-    lastP = p < 0 ? 0 : (p > 1 ? 1 : p);
-    if(!pending){ pending = true; requestAnimationFrame(paint); }
-  }
-
-  var arc = section.querySelector('.origins-arc');
-  ST.create({
-    trigger: arc || section,
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: true,
-    onUpdate: function(self){ schedule(self.progress); }
-  });
-  steps.forEach(function(step, i){
-    ST.create({ trigger: step, start:'top center', end:'bottom center',
-      onToggle: function(self){ if(self.isActive) activateCard(i); } });
-  });
-  activateCard(0);
-  schedule(0);
-
-  if(mm){
-    var onMQ = function(){
-      if(mm('(max-width:780px)').matches || mm('(prefers-reduced-motion: reduce)').matches){ renderFinal(); }
+  var arc=section.querySelector('.origins-arc');
+  var gsap=window.gsap, ST=window.ScrollTrigger;
+  if(gsap && ST){
+    gsap.registerPlugin(ST);
+    ST.create({ trigger:arc||section, start:'top top', end:'bottom bottom', scrub:true,
+      onUpdate:function(self){ setP(self.progress); } });
+    steps.forEach(function(step,i){
+      ST.create({ trigger:step, start:'top center', end:'bottom center',
+        onToggle:function(self){ if(self.isActive) activateCard(i); } });
+    });
+    activateCard(0); setP(0);
+  } else {
+    var onScroll=function(){
+      if(!arc) return;
+      var r=arc.getBoundingClientRect(), total=r.height-window.innerHeight;
+      setP(total>0 ? (-r.top/total) : 0);
     };
-    try{
-      mm('(max-width:780px)').addEventListener('change', onMQ);
-      mm('(prefers-reduced-motion: reduce)').addEventListener('change', onMQ);
-    }catch(e){}
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll,{passive:true});
+    cardObserver(); onScroll();
   }
 })();
 </script>
