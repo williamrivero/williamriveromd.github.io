@@ -1763,6 +1763,17 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
     .origins-morph > g[filter]{animation:none !important;}
   }
 
+  /* Origins — 8 cross-fading developmental SVG frames */
+  .origins-frames{position:absolute;inset:0;display:grid;place-items:center;}
+  .origins-frame{position:absolute;width:min(72vw,660px);height:auto;opacity:0;will-change:opacity;filter:drop-shadow(0 0 22px rgba(123,227,255,.16));transition:opacity .14s linear;}
+  .origins-frame.is-active{opacity:1;}
+  @media (max-width:780px){
+    .origins-frames{position:relative;inset:auto;display:block;height:auto;}
+    .origins-frame{position:relative;width:min(76vw,330px);display:none;margin:0 auto;}
+    .origins-frame.is-active{display:block;opacity:1;}
+  }
+  @media (prefers-reduced-motion:reduce){ .origins-frame{transition:none;} }
+
   /* ═══ RESPONSIBILITIES — twenty quiet superpowers ══════════════════════════ */
   .responsibilities{position:relative;padding:120px 0;}
   .responsibilities .resp-head{max-width:680px;margin:0 auto 56px;text-align:center;}
@@ -1974,42 +1985,18 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
     <!-- Pinned scrollytelling arc -->
     <div class="origins-arc">
 
-      <!-- Sticky background layer: ONE luminous SVG that morphs through the developmental stages on scroll -->
+      <!-- Sticky background layer: 8 developmental SVG frames cross-fading on scroll -->
       <div class="origins-bg" aria-hidden="true">
-        <svg class="origins-morph" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet"
-             role="presentation" aria-hidden="true" focusable="false">
-          <defs>
-            <filter id="om-glow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="4.5" result="b1"/>
-              <feGaussianBlur in="SourceGraphic" stdDeviation="11" result="b2"/>
-              <feMerge>
-                <feMergeNode in="b2"/>
-                <feMergeNode in="b1"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-            <linearGradient id="om-grad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%"  stop-color="#7be3ff"/>
-              <stop offset="55%" stop-color="#e8f4f8"/>
-              <stop offset="100%" stop-color="#d4af4f"/>
-            </linearGradient>
-            <radialGradient id="om-core" cx="50%" cy="46%" r="60%">
-              <stop offset="0%"  stop-color="#7be3ff" stop-opacity="0.16"/>
-              <stop offset="70%" stop-color="#2c97a3" stop-opacity="0.05"/>
-              <stop offset="100%" stop-color="#02060a" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <g class="om-halo">
-            <circle cx="200" cy="190" r="150" fill="url(#om-core)"/>
-          </g>
-          <g filter="url(#om-glow)" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path class="om-shape"
-                  d="M200 78 C152 78 120 116 118 166 C116 210 142 238 150 270 C158 300 176 326 200 326 C224 326 242 300 250 270 C258 238 284 212 282 166 C280 116 248 78 200 78 Z"
-                  stroke="url(#om-grad)" stroke-width="3" stroke-opacity="0.95"/>
-            <path class="om-inner" d=""
-                  stroke="#7be3ff" stroke-width="2" stroke-opacity="0.55"/>
-          </g>
-        </svg>
+        <div class="origins-frames">
+          <img class="origins-frame is-active" data-frame="0" src="../images/origins/kp-dev-1-pronephros.svg"     alt="" width="800" height="800" loading="eager" decoding="async">
+          <img class="origins-frame"           data-frame="1" src="../images/origins/kp-dev-2-mesonephros.svg"    alt="" width="800" height="800" loading="lazy"  decoding="async">
+          <img class="origins-frame"           data-frame="2" src="../images/origins/kp-dev-3-ureteric-bud.svg"   alt="" width="800" height="800" loading="lazy"  decoding="async">
+          <img class="origins-frame"           data-frame="3" src="../images/origins/kp-dev-4-branching.svg"      alt="" width="800" height="800" loading="lazy"  decoding="async">
+          <img class="origins-frame"           data-frame="4" src="../images/origins/kp-dev-5-nephrogenesis.svg"  alt="" width="800" height="800" loading="lazy"  decoding="async">
+          <img class="origins-frame"           data-frame="5" src="../images/origins/kp-dev-6-ascent-rotation.svg" alt="" width="800" height="800" loading="lazy" decoding="async">
+          <img class="origins-frame"           data-frame="6" src="../images/origins/kp-dev-7-fetal-kidney.svg"   alt="" width="800" height="800" loading="lazy"  decoding="async">
+          <img class="origins-frame"           data-frame="7" src="../images/origins/kp-dev-8-mature-kidney.svg"  alt="" width="800" height="800" loading="lazy"  decoding="async">
+        </div>
         <div class="origins-scrim" aria-hidden="true"></div>
       </div>
 
@@ -3451,112 +3438,70 @@ if(statBand){
   play();
 })();
 
-/* ===== ORIGINS — self-contained parametric morph (no external libs) =====
-   A single luminous outline grows & reshapes from a small cluster into a
-   kidney bean as the visitor scrolls. Pure math; no CDN dependency. */
+/* ===== ORIGINS — scroll cross-fade through 8 developmental SVG frames ===== */
 (function(){
-  var section = document.querySelector('.origins');
-  if(!section) return;
-  var steps     = Array.prototype.slice.call(section.querySelectorAll('.origins-step'));
-  var spineFill = section.querySelector('.origins-spine-fill');
-  var numeralEl = section.querySelector('.origins-numeral span');
-  var svg       = section.querySelector('.origins-morph');
-  var shapePath = svg && svg.querySelector('.om-shape');
-  var innerPath = svg && svg.querySelector('.om-inner');
-  if(!steps.length || !shapePath) return;
+  var section=document.querySelector('.origins'); if(!section) return;
+  var steps =Array.prototype.slice.call(section.querySelectorAll('.origins-step'));
+  var frames=Array.prototype.slice.call(section.querySelectorAll('.origins-frame'));
+  var spineFill=section.querySelector('.origins-spine-fill');
+  var numeralEl=section.querySelector('.origins-numeral span');
+  var arc=section.querySelector('.origins-arc');
+  if(!steps.length || !frames.length) return;
 
-  var mm = window.matchMedia;
-  var reduced = mm && mm('(prefers-reduced-motion: reduce)').matches;
-  var mobile  = mm && mm('(max-width:780px)').matches;
+  var mm=window.matchMedia;
+  var reduced=mm && mm('(prefers-reduced-motion: reduce)').matches;
+  var mobile =mm && mm('(max-width:780px)').matches;
+  var N=frames.length;
 
-  /* 8 developmental parameter sets {cx,cy,rx,ry,rot(deg),lobeAmp,lobeK,hilum,taper} */
-  var P = [
-    {cx:200,cy:152,rx:24, ry:30, rot:0,  lobeAmp:0.12,lobeK:3,hilum:0, taper:0.95}, /* 1 pronephros */
-    {cx:200,cy:200,rx:22, ry:94, rot:0,  lobeAmp:0.05,lobeK:4,hilum:0, taper:0.92}, /* 2 mesonephros */
-    {cx:200,cy:206,rx:46, ry:62, rot:0,  lobeAmp:0.05,lobeK:2,hilum:0, taper:0.42}, /* 3 ureteric bud */
-    {cx:200,cy:200,rx:76, ry:86, rot:0,  lobeAmp:0.17,lobeK:6,hilum:0, taper:0.82}, /* 4 branching */
-    {cx:200,cy:200,rx:66, ry:90, rot:-8, lobeAmp:0.10,lobeK:3,hilum:8, taper:0.60}, /* 5 nephrogenesis */
-    {cx:204,cy:198,rx:76, ry:102,rot:-20,lobeAmp:0.03,lobeK:3,hilum:18,taper:0.86}, /* 6 ascent/rotation */
-    {cx:200,cy:200,rx:84, ry:112,rot:-6, lobeAmp:0.07,lobeK:7,hilum:24,taper:0.90}, /* 7 fetal kidney */
-    {cx:200,cy:200,rx:90, ry:122,rot:0,  lobeAmp:0.00,lobeK:5,hilum:38,taper:0.92}  /* 8 mature kidney */
-  ];
-  var N = 72, PI = Math.PI;
-
-  function lerp(a,b,t){ return a+(b-a)*t; }
-  function lerpP(a,b,t){ var o={}; for(var k in a){ o[k]=lerp(a[k],b[k],t); } return o; }
-  function angDiff(a,b){ var d=Math.abs(a-b)%(2*PI); return d>PI?2*PI-d:d; }
-
-  function buildPath(p, scale){
-    scale = scale || 1;
-    var rot=p.rot*PI/180, cs=Math.cos(rot), sn=Math.sin(rot), d='';
-    for(var i=0;i<N;i++){
-      var a=i/N*2*PI;
-      var ry = (Math.sin(a)<0 ? p.ry*p.taper : p.ry);
-      var x=p.rx*Math.cos(a), y=ry*Math.sin(a);
-      var lobe=1+p.lobeAmp*Math.sin(p.lobeK*a); x*=lobe; y*=lobe;
-      x += p.hilum*Math.exp(-Math.pow(angDiff(a,PI)/0.55,2)); /* medial notch */
-      x*=scale; y*=scale;
-      var xr=x*cs-y*sn, yr=x*sn+y*cs;
-      d += (i?'L':'M')+(p.cx+xr).toFixed(1)+' '+(p.cy+yr).toFixed(1)+' ';
-    }
-    return d+'Z';
-  }
-
-  function render(prog){
-    var seg=prog*(P.length-1);
-    var i=Math.min(P.length-2, Math.max(0, Math.floor(seg)));
-    var t=Math.min(1, Math.max(0, seg-i));
-    var p=lerpP(P[i],P[i+1],t);
-    shapePath.setAttribute('d', buildPath(p,1));
-    if(innerPath) innerPath.setAttribute('d', buildPath(p,0.5));
-    if(spineFill) spineFill.style.height=(prog*72)+'vh';
-  }
-
-  var current=-1;
+  var curCard=-1;
   function activateCard(i){
-    if(i===current) return; current=i;
+    if(i===curCard) return; curCard=i;
     for(var s=0;s<steps.length;s++) steps[s].classList.toggle('is-active', s===i);
     if(numeralEl && steps[i]) numeralEl.textContent = steps[i].getAttribute('data-numeral')||('E'+(i+1));
   }
   function cardObserver(){
     if(!('IntersectionObserver' in window)){ steps.forEach(function(s){s.classList.add('is-active');}); return; }
     var io=new IntersectionObserver(function(es){
-      var best=null,br=0;
-      es.forEach(function(e){ if(e.isIntersecting && e.intersectionRatio>br){br=e.intersectionRatio;best=e.target;} });
-      if(best){ var idx=steps.indexOf(best); if(idx>-1) activateCard(idx); }
-    },{rootMargin:'-40% 0px -40% 0px',threshold:[0,.25,.5,.75,1]});
+      var b=null,br=0;
+      es.forEach(function(e){ if(e.isIntersecting && e.intersectionRatio>br){br=e.intersectionRatio;b=e.target;} });
+      if(b){ var idx=steps.indexOf(b); if(idx>-1) activateCard(idx); }
+    },{rootMargin:'-45% 0px -45% 0px',threshold:[0,.5,1]});
     steps.forEach(function(s){ io.observe(s); });
     activateCard(0);
   }
-
-  /* reduced motion / mobile: static mature kidney, cards via observer */
-  if(reduced || mobile){ render(1); cardObserver(); return; }
-
-  var pending=false,lastP=0;
-  function paint(){ pending=false; render(lastP); }
-  function setP(p){ lastP = p<0?0:(p>1?1:p); if(!pending){ pending=true; requestAnimationFrame(paint); } }
-
-  var arc=section.querySelector('.origins-arc');
-  var gsap=window.gsap, ST=window.ScrollTrigger;
-  if(gsap && ST){
-    gsap.registerPlugin(ST);
-    ST.create({ trigger:arc||section, start:'top top', end:'bottom bottom', scrub:true,
-      onUpdate:function(self){ setP(self.progress); } });
-    steps.forEach(function(step,i){
-      ST.create({ trigger:step, start:'top center', end:'bottom center',
-        onToggle:function(self){ if(self.isActive) activateCard(i); } });
-    });
-    activateCard(0); setP(0);
-  } else {
-    var onScroll=function(){
-      if(!arc) return;
-      var r=arc.getBoundingClientRect(), total=r.height-window.innerHeight;
-      setP(total>0 ? (-r.top/total) : 0);
-    };
-    window.addEventListener('scroll',onScroll,{passive:true});
-    window.addEventListener('resize',onScroll,{passive:true});
-    cardObserver(); onScroll();
+  function showOnly(idx){
+    for(var i=0;i<N;i++){ frames[i].style.opacity=(i===idx)?'1':'0'; frames[i].classList.toggle('is-active', i===idx); }
   }
+
+  /* reduced motion / mobile: show the mature kidney, let cards drive themselves */
+  if(reduced || mobile){ showOnly(N-1); cardObserver(); return; }
+
+  var seg = 1/(N-1);
+  var pending=false, lastP=0;
+  function paint(){
+    pending=false;
+    var p=lastP, i;
+    for(i=0;i<N;i++){
+      var o = 1 - Math.abs(p - i*seg)/seg;     /* triangular cross-fade */
+      o = o>1?1:(o<0?0:o);
+      frames[i].style.opacity = o.toFixed(3);
+      frames[i].classList.toggle('is-active', o>0.5);
+    }
+    var idx=Math.round(p*(N-1)); if(idx<0)idx=0; if(idx>N-1)idx=N-1;
+    activateCard(idx);
+    if(spineFill) spineFill.style.height = (p*72)+'vh';
+  }
+  function setP(p){ lastP=p<0?0:(p>1?1:p); if(!pending){ pending=true; requestAnimationFrame(paint); } }
+  function onScroll(){
+    if(!arc) return;
+    var r=arc.getBoundingClientRect(), total=r.height-window.innerHeight;
+    setP(total>0 ? (-r.top/total) : 0);
+  }
+  /* init */
+  for(var k=0;k<N;k++) frames[k].style.opacity = k===0?'1':'0';
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+  onScroll();
 })();
 </script>
 <script src="../assets/image-lightbox.js" defer></script>
