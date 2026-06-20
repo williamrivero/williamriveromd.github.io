@@ -1760,6 +1760,15 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   @media (prefers-reduced-motion:reduce){ .origins-frame{transition:opacity .2s linear;filter:none;} }
 
 
+  /* ═══ Ambient filtration counter ═══════════════════════════════════════════ */
+  .filt-counter{position:fixed;top:74px;left:18px;z-index:55;background:rgba(15,30,46,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(212,175,79,.28);border-radius:12px;padding:11px 15px;max-width:220px;opacity:0;transform:translateY(-8px);transition:opacity .6s ease,transform .6s ease;pointer-events:none;}
+  .filt-counter.show{opacity:1;transform:none;}
+  .filt-counter-label{font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.2em;font-size:8.5px;color:var(--ink-mid);}
+  .filt-counter-val{font-family:'Lora',serif;font-weight:300;font-size:27px;line-height:1.1;color:var(--ink);letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums;}
+  .filt-counter-unit{font-size:12px;color:var(--gold);}
+  .filt-counter-since{font-family:'Inter',sans-serif;font-size:9.5px;color:var(--ink-low);margin-top:3px;}
+  @media (max-width:780px){ .filt-counter{display:none;} }
+
   /* ═══ LIVE eGFR + real-time output ═════════════════════════════════════════ */
   .hero-cta{display:inline-flex;align-items:center;gap:10px;margin-top:10px;font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:12px;color:var(--gold);text-decoration:none;border:1px solid rgba(212,175,79,.4);border-radius:24px;padding:11px 20px;width:fit-content;transition:background .3s,border-color .3s,transform .3s;}
   .hero-cta:hover{background:var(--gold-soft);border-color:var(--gold);transform:translateY(-2px);}
@@ -1783,6 +1792,13 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .egfr-msg{text-align:center;color:#f5b942;font-size:14px;margin-top:16px;}
   .egfr-msg:empty{margin:0;}
   .egfr-result{text-align:center;margin-top:44px;}
+  .egfr-dial{position:relative;width:min(78vw,320px);margin:0 auto 8px;aspect-ratio:1/1;}
+  .egfr-dial svg{width:100%;height:100%;display:block;}
+  .egfr-dial-track{stroke:rgba(255,255,255,.08);}
+  .egfr-dial-arc{stroke:var(--gold);transition:stroke-dashoffset 1.1s cubic-bezier(.22,1,.36,1),stroke .6s ease;}
+  .egfr-dial-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .egfr-dial-center .egfr-gfr-num{font-size:clamp(46px,9vw,74px);}
+  .egfr-dial-center .egfr-gfr-unit{margin-top:6px;}
   .egfr-gfr-num{font-family:'Lora',serif;font-weight:300;font-size:clamp(64px,10vw,120px);line-height:1;background:linear-gradient(180deg,#fff 20%,var(--gold) 85%);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .egfr-gfr-unit{display:block;font-family:'DM Sans',sans-serif;letter-spacing:.18em;text-transform:uppercase;font-size:12px;color:var(--ink-mid);margin-top:10px;}
   .egfr-stage{display:inline-flex;align-items:center;gap:12px;margin-top:22px;}
@@ -1974,6 +1990,13 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   <span class="cinema-icon" id="cinema-icon">▶</span>
   <span class="cinema-label" id="cinema-label">Cinema</span>
 </button>
+
+<!-- Ambient filtration counter (always running ~125 mL/min, personalises to your eGFR) -->
+<div class="filt-counter" id="filt-counter" aria-hidden="true">
+  <div class="filt-counter-label">Your kidneys have filtered</div>
+  <div class="filt-counter-val"><span id="filt-counter-num">0</span> <span class="filt-counter-unit">mL</span></div>
+  <div class="filt-counter-since" id="filt-counter-since">since you opened this page</div>
+</div>
 
 <main>
 
@@ -2355,7 +2378,16 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
       <p class="egfr-msg" role="status" aria-live="polite"></p>
 
       <div class="egfr-result" hidden>
-        <div class="egfr-gfr"><span class="egfr-gfr-num">&mdash;</span><span class="egfr-gfr-unit">mL / min / 1.73m&sup2; &middot; estimated GFR</span></div>
+        <div class="egfr-dial">
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <path class="egfr-dial-track" d="M43 157 A 80 80 0 1 1 157 157" fill="none" stroke-width="6" stroke-linecap="round"/>
+            <path class="egfr-dial-arc" d="M43 157 A 80 80 0 1 1 157 157" fill="none" stroke-width="6" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
+          </svg>
+          <div class="egfr-dial-center">
+            <span class="egfr-gfr-num">&mdash;</span>
+            <span class="egfr-gfr-unit">mL/min/1.73m&sup2;</span>
+          </div>
+        </div>
         <div class="egfr-stage"><span class="egfr-stage-badge">&mdash;</span><span class="egfr-stage-txt"></span></div>
       </div>
 
@@ -3478,11 +3510,24 @@ if(statBand){
   setActive(0); update();
 })();
 
+(function filtCounter(){
+  var el=document.getElementById('filt-counter'); if(!el) return;
+  var numEl=document.getElementById('filt-counter-num'), sinceEl=document.getElementById('filt-counter-since');
+  var ratePerMs=125/60/1000, total=0, lastT=performance.now();
+  function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+  function loop(now){ total+=(now-lastT)*ratePerMs; lastT=now; numEl.textContent=fmt(total); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+  function vis(){ var h=document.documentElement.scrollHeight-window.innerHeight, p=h>0?(window.scrollY||0)/h:0; el.classList.toggle('show', p>0.06 && p<0.95); }
+  window.addEventListener('scroll', vis, {passive:true});
+  window.addEventListener('resize', vis, {passive:true});
+  vis();
+  window.__setFiltrationRate=function(g){ if(g>0){ ratePerMs=g/60/1000; sinceEl.textContent='since you opened this page \u00b7 at your eGFR'; } };
+})();
 (function egfrLive(){
   var sec=document.querySelector('.egfr-live'); if(!sec) return;
   var $=function(q){ return sec.querySelector(q); };
   var form=$('.egfr-form'), msg=$('.egfr-msg'), resBox=$('.egfr-result'), live=$('.egfr-live-panel');
-  var gfrNum=$('.egfr-gfr-num'), badge=$('.egfr-stage-badge'), stageTxt=$('.egfr-stage-txt');
+  var gfrNum=$('.egfr-gfr-num'), badge=$('.egfr-stage-badge'), stageTxt=$('.egfr-stage-txt'), arc=$('.egfr-dial-arc');
   var fEl=$('.egfr-filtered'), fLEl=$('.egfr-filtered-l'), uEl=$('.egfr-urine');
   var elap=$('.egfr-elapsed'), rateF=$('.egfr-rate-f'), rateU=$('.egfr-rate-u');
   if(!form) return;
@@ -3521,6 +3566,8 @@ if(statBand){
     gfrNum.textContent=egfr;
     var st=stage(egfr);
     badge.textContent=st[0]; badge.style.background=st[2]; stageTxt.textContent=st[1];
+    if(arc){ var pct=Math.max(0,Math.min(1,egfr/120)); arc.style.strokeDashoffset=(100-pct*100); arc.style.stroke=st[2]; }
+    if(window.__setFiltrationRate) window.__setFiltrationRate(egfr);
     if(rateF) rateF.textContent=Math.round(egfr);
     if(rateU) rateU.textContent=(egfr*0.01).toFixed(2);
     resBox.hidden=false; live.hidden=false;
