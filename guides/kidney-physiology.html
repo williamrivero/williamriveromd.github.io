@@ -1712,10 +1712,13 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .origins-spine{position:sticky;top:0;height:0;z-index:4;}
   .origins-spine::before{content:'';position:absolute;left:36px;top:14vh;width:2px;height:72vh;background:var(--line);border-radius:2px;}
   .origins-spine-fill{position:absolute;left:36px;top:14vh;width:2px;height:0;background:linear-gradient(to bottom,var(--gold),var(--teal-light));border-radius:2px;box-shadow:0 0 14px var(--gold-soft);transition:height .2s linear;}
-  .origins-numeral{position:sticky;top:0;height:0;z-index:3;pointer-events:none;}
-  .origins-numeral .onw{position:absolute;left:24px;top:9vh;display:flex;flex-direction:column;align-items:flex-start;line-height:.82;}
-  .origins-numeral .onw-n{font-family:'Lora',serif;font-style:italic;font-weight:500;font-size:clamp(56px,10vw,140px);color:var(--gold);opacity:.17;letter-spacing:-.02em;}
-  .origins-numeral .onw-u{font-family:'DM Sans',sans-serif;font-weight:500;font-size:clamp(10px,1.1vw,14px);letter-spacing:.34em;text-transform:uppercase;color:var(--gold);opacity:.17;margin-top:8px;}
+  .origins-rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(124vh,124vw);height:min(124vh,124vw);max-width:none;z-index:0;pointer-events:none;}
+  .origins-rings .oring{stroke:var(--gold);stroke-width:1.1;opacity:0;stroke-opacity:.5;transition:opacity .5s ease;}
+  .origins-rings .oring:nth-child(even){stroke:var(--teal-light);}
+  .origins-rings .orings-g{transform-origin:500px 500px;animation:oringBreathe 9s ease-in-out infinite;}
+  @keyframes oringBreathe{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
+  html.lite-mode .origins-rings .orings-g{animation:none;}
+  @media (prefers-reduced-motion:reduce){ .origins-rings .oring{transition:none;} .origins-rings .orings-g{animation:none;} }
   .origins-steps{position:relative;z-index:5;margin-top:-100vh;}
   .origins-step{min-height:100vh;display:flex;align-items:center;padding:60px 0;}
   .origins-step .container{display:flex;justify-content:flex-end;}
@@ -1989,6 +1992,18 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
       <!-- Sticky background layer: 8 developmental SVG frames cross-fading on scroll -->
       <div class="origins-bg" aria-hidden="true">
+        <svg class="origins-rings" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <g class="orings-g" fill="none">
+            <circle class="oring" cx="500" cy="500" r="60"/>
+            <circle class="oring" cx="500" cy="500" r="115"/>
+            <circle class="oring" cx="500" cy="500" r="170"/>
+            <circle class="oring" cx="500" cy="500" r="225"/>
+            <circle class="oring" cx="500" cy="500" r="285"/>
+            <circle class="oring" cx="500" cy="500" r="345"/>
+            <circle class="oring" cx="500" cy="500" r="410"/>
+            <circle class="oring" cx="500" cy="500" r="475"/>
+          </g>
+        </svg>
         <div class="origins-frames">
           <img class="origins-frame is-active" data-frame="0" src="../images/origins/kp-dev-1-pronephros.png"     alt="" width="800" height="800" loading="eager" decoding="async">
           <img class="origins-frame"           data-frame="1" src="../images/origins/kp-dev-2-mesonephros.png"    alt="" width="800" height="800" loading="lazy"  decoding="async">
@@ -2005,8 +2020,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
       <!-- Scroll-progress spine -->
       <div class="origins-spine" aria-hidden="true"><span class="origins-spine-fill"></span></div>
 
-      <!-- Background "passage of time": gestational week counter, 3 wk -> birth -->
-      <div class="origins-numeral" aria-hidden="true"><div class="onw"><span class="onw-n">3</span><span class="onw-u">weeks</span></div></div>
+      <!-- Background "passage of time": concentric growth rings accrue with scroll -->
 
       <!-- Foreground steps -->
       <div class="origins-steps">
@@ -3446,12 +3460,13 @@ if(statBand){
   var steps =Array.prototype.slice.call(section.querySelectorAll('.origins-step'));
   var frames=Array.prototype.slice.call(section.querySelectorAll('.origins-frame'));
   var spineFill=section.querySelector('.origins-spine-fill');
-  var weekNum=section.querySelector('.origins-numeral .onw-n');
-  var weekUnit=section.querySelector('.origins-numeral .onw-u');
-  function setWeek(p){
-    if(!weekNum) return;
-    if(p>=0.965){ weekNum.textContent='BIRTH'; if(weekUnit) weekUnit.style.opacity='0'; }
-    else { weekNum.textContent=Math.round(3+p*35); if(weekUnit) weekUnit.style.opacity=''; }
+  var rings=Array.prototype.slice.call(section.querySelectorAll('.origins-rings .oring'));
+  var RM=rings.length;
+  function setRings(p){
+    for(var i=0;i<RM;i++){
+      var th=i/RM;
+      rings[i].style.opacity = (p<=th ? 0 : Math.min(1,(p-th)/0.05)).toFixed(3);
+    }
   }
   var arc=section.querySelector('.origins-arc');
   if(!steps.length || !frames.length) return;
@@ -3481,7 +3496,7 @@ if(statBand){
   }
 
   /* reduced motion / mobile: show the mature kidney, let cards drive themselves */
-  if(reduced || mobile){ showOnly(N-1); setWeek(1); cardObserver(); return; }
+  if(reduced || mobile){ showOnly(N-1); setRings(1); cardObserver(); return; }
 
   var seg = 1/(N-1);
   var pending=false, lastP=0;
@@ -3497,7 +3512,7 @@ if(statBand){
     var idx=Math.round(p*(N-1)); if(idx<0)idx=0; if(idx>N-1)idx=N-1;
     activateCard(idx);
     if(spineFill) spineFill.style.height = (p*72)+'vh';
-    setWeek(p);
+    setRings(p);
   }
   function setP(p){ lastP=p<0?0:(p>1?1:p); if(!pending){ pending=true; requestAnimationFrame(paint); } }
   function onScroll(){
