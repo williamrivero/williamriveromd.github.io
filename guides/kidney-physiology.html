@@ -2739,17 +2739,20 @@ const Cinema = {
   scrollDuration: 2400,    // ms — slow, cinematic scroll between sections
 
   // Per-section dwell tuned to actual reading time of the content within each.
-  // Total = 14+22+22+18+24+14+10+24+12 = 160s ≈ 2 min 40 s
+  // 'through' sections are scrubbed across their full (pinned) height so the
+  // scroll-driven animation plays instead of being jumped past.
   sections: [
-    { id: 'hero',         dwell: 14000 },   // title + subhead + 3 stats
-    { id: 'capabilities', dwell: 22000 },   // 4 long cards
-    { id: 'more-than',    dwell: 22000 },   // 4 endocrine-role cards
-    { id: 'decision',     dwell: 18000 },   // paragraph + pull quote
-    { id: 'fails',        dwell: 24000 },   // 6-row table — needs scanning time
-    { id: 'astonish',     dwell: 14000 },   // 3 short stats
-    { id: 'stat-band',    dwell: 10000 },   // one big number + caption
-    { id: 'superpowers',  dwell: 24000 },   // 10 numbered lines
-    { id: 'cta',          dwell: 12000 },   // headline + button
+    { id: 'hero',           dwell: 12000 },                  // title + subhead + 3 stats
+    { id: 'origins',        dwell: 34000, through: true },   // 840vh embryology dissolve — 11 stages
+    { id: 'capabilities',   dwell: 22000 },                  // 4 long cards
+    { id: 'more-than',      dwell: 22000 },                  // 4 endocrine-role cards
+    { id: 'decision',       dwell: 18000 },                  // paragraph + pull quote
+    { id: 'fails',          dwell: 24000 },                  // 6-row table — needs scanning time
+    { id: 'astonish',       dwell: 14000 },                  // 3 short stats
+    { id: 'stat-band',      dwell: 10000 },                  // one big number + caption
+    { id: 'egfr-live',      dwell: 15000 },                  // eGFR dial + live counters
+    { id: 'responsibilities', dwell: 24000 },                // 20 numbered lines
+    { id: 'cta',            dwell: 12000 },                  // headline + button
   ],
 
   start(){
@@ -2769,6 +2772,7 @@ const Cinema = {
     if (!this.active) return;
     this.active = false;
     clearTimeout(this.timer);
+    clearTimeout(this.throughTimer);
     if (this.rafId) cancelAnimationFrame(this.rafId);
     document.getElementById('cinema-btn').classList.remove('is-on');
     document.getElementById('cinema-icon').textContent = '▶';
@@ -2796,6 +2800,19 @@ const Cinema = {
     this.rafId = requestAnimationFrame(step);
   },
 
+  // Even-paced linear scrub across a tall pinned section so its scroll-driven
+  // animation actually plays during cinema (used for the embryology arc).
+  scrollThrough(startY, endY, duration){
+    const start = performance.now();
+    const step = (now) => {
+      if (!this.active) return;
+      const t = Math.min((now - start) / duration, 1);
+      window.scrollTo(0, startY + (endY - startY) * t);
+      if (t < 1) this.rafId = requestAnimationFrame(step);
+    };
+    this.rafId = requestAnimationFrame(step);
+  },
+
   advance(idx){
     if (!this.active) return;
     // End of cycle → loop back to the top and replay (kiosk / waiting-room mode).
@@ -2805,8 +2822,19 @@ const Cinema = {
     const sec = this.sections[idx];
     const el  = document.querySelector('section.' + sec.id);
     if (el) {
-      const top = el.getBoundingClientRect().top + scrollY - 40;   // slight headroom
-      this.smoothScrollTo(top);
+      if (sec.through) {
+        // Arrive at the section top, then scrub linearly to its end across the dwell.
+        const topY = el.getBoundingClientRect().top + scrollY;
+        const endY = topY + el.offsetHeight - window.innerHeight;
+        this.smoothScrollTo(topY);
+        const travel = Math.max(6000, sec.dwell - this.scrollDuration - 1200);
+        this.throughTimer = setTimeout(() => {
+          if (this.active) this.scrollThrough(topY, endY, travel);
+        }, this.scrollDuration + 200);
+      } else {
+        const top = el.getBoundingClientRect().top + scrollY - 40;   // slight headroom
+        this.smoothScrollTo(top);
+      }
     }
     this.timer = setTimeout(() => this.advance(idx + 1), sec.dwell);
   },
