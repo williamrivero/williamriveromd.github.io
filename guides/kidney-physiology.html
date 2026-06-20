@@ -1713,7 +1713,9 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .origins-spine::before{content:'';position:absolute;left:36px;top:14vh;width:2px;height:72vh;background:var(--line);border-radius:2px;}
   .origins-spine-fill{position:absolute;left:36px;top:14vh;width:2px;height:0;background:linear-gradient(to bottom,var(--gold),var(--teal-light));border-radius:2px;box-shadow:0 0 14px var(--gold-soft);transition:height .2s linear;}
   .origins-numeral{position:sticky;top:0;height:0;z-index:3;pointer-events:none;}
-  .origins-numeral span{position:absolute;left:24px;top:10vh;font-family:'Lora',serif;font-style:italic;font-weight:500;font-size:clamp(60px,11vw,150px);line-height:1;color:var(--gold);opacity:.16;letter-spacing:-.02em;transition:opacity .4s ease;}
+  .origins-numeral .onw{position:absolute;left:24px;top:9vh;display:flex;flex-direction:column;align-items:flex-start;line-height:.82;}
+  .origins-numeral .onw-n{font-family:'Lora',serif;font-style:italic;font-weight:500;font-size:clamp(56px,10vw,140px);color:var(--gold);opacity:.17;letter-spacing:-.02em;}
+  .origins-numeral .onw-u{font-family:'DM Sans',sans-serif;font-weight:500;font-size:clamp(10px,1.1vw,14px);letter-spacing:.34em;text-transform:uppercase;color:var(--gold);opacity:.17;margin-top:8px;}
   .origins-steps{position:relative;z-index:5;margin-top:-100vh;}
   .origins-step{min-height:100vh;display:flex;align-items:center;padding:60px 0;}
   .origins-step .container{display:flex;justify-content:flex-end;}
@@ -2003,8 +2005,8 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
       <!-- Scroll-progress spine -->
       <div class="origins-spine" aria-hidden="true"><span class="origins-spine-fill"></span></div>
 
-      <!-- Big stage numeral overlay -->
-      <div class="origins-numeral" aria-hidden="true"><span>E1</span></div>
+      <!-- Background "passage of time": gestational week counter, 3 wk -> birth -->
+      <div class="origins-numeral" aria-hidden="true"><div class="onw"><span class="onw-n">3</span><span class="onw-u">weeks</span></div></div>
 
       <!-- Foreground steps -->
       <div class="origins-steps">
@@ -3444,7 +3446,13 @@ if(statBand){
   var steps =Array.prototype.slice.call(section.querySelectorAll('.origins-step'));
   var frames=Array.prototype.slice.call(section.querySelectorAll('.origins-frame'));
   var spineFill=section.querySelector('.origins-spine-fill');
-  var numeralEl=section.querySelector('.origins-numeral span');
+  var weekNum=section.querySelector('.origins-numeral .onw-n');
+  var weekUnit=section.querySelector('.origins-numeral .onw-u');
+  function setWeek(p){
+    if(!weekNum) return;
+    if(p>=0.965){ weekNum.textContent='BIRTH'; if(weekUnit) weekUnit.style.opacity='0'; }
+    else { weekNum.textContent=Math.round(3+p*35); if(weekUnit) weekUnit.style.opacity=''; }
+  }
   var arc=section.querySelector('.origins-arc');
   if(!steps.length || !frames.length) return;
 
@@ -3457,7 +3465,6 @@ if(statBand){
   function activateCard(i){
     if(i===curCard) return; curCard=i;
     for(var s=0;s<steps.length;s++) steps[s].classList.toggle('is-active', s===i);
-    if(numeralEl && steps[i]) numeralEl.textContent = steps[i].getAttribute('data-numeral')||('E'+(i+1));
   }
   function cardObserver(){
     if(!('IntersectionObserver' in window)){ steps.forEach(function(s){s.classList.add('is-active');}); return; }
@@ -3474,7 +3481,7 @@ if(statBand){
   }
 
   /* reduced motion / mobile: show the mature kidney, let cards drive themselves */
-  if(reduced || mobile){ showOnly(N-1); cardObserver(); return; }
+  if(reduced || mobile){ showOnly(N-1); setWeek(1); cardObserver(); return; }
 
   var seg = 1/(N-1);
   var pending=false, lastP=0;
@@ -3490,6 +3497,7 @@ if(statBand){
     var idx=Math.round(p*(N-1)); if(idx<0)idx=0; if(idx>N-1)idx=N-1;
     activateCard(idx);
     if(spineFill) spineFill.style.height = (p*72)+'vh';
+    setWeek(p);
   }
   function setP(p){ lastP=p<0?0:(p>1?1:p); if(!pending){ pending=true; requestAnimationFrame(paint); } }
   function onScroll(){
