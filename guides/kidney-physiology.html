@@ -1789,6 +1789,9 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .egfr-form input:focus,.egfr-form select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft);}
   .egfr-btn{font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.2em;font-size:12px;color:var(--bg-0);background:var(--gold);border:none;border-radius:10px;padding:13px 26px;cursor:pointer;transition:transform .3s,box-shadow .3s;}
   .egfr-btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px var(--gold-soft);}
+  .egfr-nk{display:flex;align-items:center;gap:7px;margin-top:10px;font-family:'Inter',sans-serif;font-size:11.5px;color:var(--ink-mid);cursor:pointer;}
+  .egfr-nk input{width:auto;accent-color:var(--gold);cursor:pointer;}
+  .egfr-form input:disabled,.egfr-form select:disabled{opacity:.4;cursor:not-allowed;}
   .egfr-msg{text-align:center;color:#f5b942;font-size:14px;margin-top:16px;}
   .egfr-msg:empty{margin:0;}
   .egfr-result{text-align:center;margin-top:44px;}
@@ -2020,6 +2023,73 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
       <a class="hero-cta" href="#egfr" data-reveal data-delay="4" data-magnetic>Calculate your own eGFR &amp; watch your kidneys work <span aria-hidden="true">&rarr;</span></a>
     </div>
     <div class="scroll-cue" data-reveal data-delay="4">Scroll</div>
+  </section>
+
+  <section class="egfr-live" id="egfr" aria-labelledby="egfr-title">
+    <div class="container">
+      <div class="eyebrow" data-reveal>See it for yourself</div>
+      <h2 id="egfr-title" data-reveal data-delay="1">Your kidneys, <em>right now</em>.</h2>
+      <p class="egfr-lede" data-reveal data-delay="2">Drop in a recent blood creatinine result &mdash; or tick &ldquo;Not known&rdquo; to estimate from your age &mdash; and watch your own filters at work, counting in real time for as long as you stay.</p>
+
+      <form class="egfr-form" novalidate data-reveal data-delay="2">
+        <div class="egfr-field">
+          <label for="egfr-scr">Serum creatinine</label>
+          <div class="egfr-inline">
+            <input id="egfr-scr" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 0.9">
+            <select id="egfr-unit" aria-label="Creatinine unit">
+              <option value="mgdl">mg/dL</option>
+              <option value="umol">&micro;mol/L</option>
+            </select>
+          </div>
+          <label class="egfr-nk"><input type="checkbox" id="egfr-nk"> Not known &mdash; estimate from age</label>
+        </div>
+        <div class="egfr-field">
+          <label for="egfr-age">Age</label>
+          <input id="egfr-age" type="number" inputmode="numeric" step="1" min="18" max="110" placeholder="years">
+        </div>
+        <div class="egfr-field">
+          <label for="egfr-sex">Sex</label>
+          <select id="egfr-sex">
+            <option value="">&mdash;</option>
+            <option value="m">Male</option>
+            <option value="f">Female</option>
+          </select>
+        </div>
+        <button type="submit" class="egfr-btn">Reveal</button>
+      </form>
+
+      <p class="egfr-msg" role="status" aria-live="polite"></p>
+
+      <div class="egfr-result" hidden>
+        <div class="egfr-dial">
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <path class="egfr-dial-track" d="M43 157 A 80 80 0 1 1 157 157" fill="none" stroke-width="6" stroke-linecap="round"/>
+            <path class="egfr-dial-arc" d="M43 157 A 80 80 0 1 1 157 157" fill="none" stroke-width="6" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
+          </svg>
+          <div class="egfr-dial-center">
+            <span class="egfr-gfr-num">&mdash;</span>
+            <span class="egfr-gfr-unit">mL/min/1.73m&sup2;</span>
+          </div>
+        </div>
+        <div class="egfr-stage"><span class="egfr-stage-badge">&mdash;</span><span class="egfr-stage-txt"></span></div>
+      </div>
+
+      <div class="egfr-live-panel" hidden>
+        <div class="egfr-live-head">In the <span class="egfr-elapsed">0:00</span> you&rsquo;ve been here, your kidneys have&hellip;</div>
+        <div class="egfr-metric-main">
+          <span class="egfr-filtered">0</span>
+          <span class="egfr-metric-unit">mL of blood plasma filtered</span>
+          <span class="egfr-filtered-l">(0.00 L)</span>
+        </div>
+        <div class="egfr-metric">
+          <span class="egfr-urine">0.0</span>
+          <span class="egfr-metric-unit">mL of urine made</span>
+        </div>
+        <div class="egfr-rate">&asymp; <strong class="egfr-rate-f">0</strong> mL/min filtered &middot; ~99% reabsorbed &rarr; <strong class="egfr-rate-u">0</strong> mL/min urine</div>
+      </div>
+
+      <p class="egfr-disclaimer">Estimate only, using the race-free <strong>CKD-EPI 2021</strong> creatinine equation for adults. The live figures illustrate filtrate at your eGFR and the ~1% that escapes reabsorption as urine &mdash; not a measured output. This is education, not a diagnosis; discuss any result with your doctor.</p>
+    </div>
   </section>
 
   <!-- ORIGINS — developmental scrollytelling: the kidney built three times -->
@@ -2343,72 +2413,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
   <!-- RESPONSIBILITIES — twenty quiet superpowers, the awe centerpiece -->
   <!-- LIVE eGFR + real-time filtrate/urine -->
-  <section class="egfr-live" id="egfr" aria-labelledby="egfr-title">
-    <div class="container">
-      <div class="eyebrow" data-reveal>See it for yourself</div>
-      <h2 id="egfr-title" data-reveal data-delay="1">Your kidneys, <em>right now</em>.</h2>
-      <p class="egfr-lede" data-reveal data-delay="2">Drop in a recent blood creatinine result and watch your own filters at work &mdash; counting in real time, for as long as you stay on this page.</p>
-
-      <form class="egfr-form" novalidate data-reveal data-delay="2">
-        <div class="egfr-field">
-          <label for="egfr-scr">Serum creatinine</label>
-          <div class="egfr-inline">
-            <input id="egfr-scr" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 0.9">
-            <select id="egfr-unit" aria-label="Creatinine unit">
-              <option value="mgdl">mg/dL</option>
-              <option value="umol">&micro;mol/L</option>
-            </select>
-          </div>
-        </div>
-        <div class="egfr-field">
-          <label for="egfr-age">Age</label>
-          <input id="egfr-age" type="number" inputmode="numeric" step="1" min="18" max="110" placeholder="years">
-        </div>
-        <div class="egfr-field">
-          <label for="egfr-sex">Sex</label>
-          <select id="egfr-sex">
-            <option value="">&mdash;</option>
-            <option value="m">Male</option>
-            <option value="f">Female</option>
-          </select>
-        </div>
-        <button type="submit" class="egfr-btn">Reveal</button>
-      </form>
-
-      <p class="egfr-msg" role="status" aria-live="polite"></p>
-
-      <div class="egfr-result" hidden>
-        <div class="egfr-dial">
-          <svg viewBox="0 0 200 200" aria-hidden="true">
-            <path class="egfr-dial-track" d="M43 157 A 80 80 0 1 1 157 157" fill="none" stroke-width="6" stroke-linecap="round"/>
-            <path class="egfr-dial-arc" d="M43 157 A 80 80 0 1 1 157 157" fill="none" stroke-width="6" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
-          </svg>
-          <div class="egfr-dial-center">
-            <span class="egfr-gfr-num">&mdash;</span>
-            <span class="egfr-gfr-unit">mL/min/1.73m&sup2;</span>
-          </div>
-        </div>
-        <div class="egfr-stage"><span class="egfr-stage-badge">&mdash;</span><span class="egfr-stage-txt"></span></div>
-      </div>
-
-      <div class="egfr-live-panel" hidden>
-        <div class="egfr-live-head">In the <span class="egfr-elapsed">0:00</span> you&rsquo;ve been here, your kidneys have&hellip;</div>
-        <div class="egfr-metric-main">
-          <span class="egfr-filtered">0</span>
-          <span class="egfr-metric-unit">mL of blood plasma filtered</span>
-          <span class="egfr-filtered-l">(0.00 L)</span>
-        </div>
-        <div class="egfr-metric">
-          <span class="egfr-urine">0.0</span>
-          <span class="egfr-metric-unit">mL of urine made</span>
-        </div>
-        <div class="egfr-rate">&asymp; <strong class="egfr-rate-f">0</strong> mL/min filtered &middot; ~99% reabsorbed &rarr; <strong class="egfr-rate-u">0</strong> mL/min urine</div>
-      </div>
-
-      <p class="egfr-disclaimer">Estimate only, using the race-free <strong>CKD-EPI 2021</strong> creatinine equation for adults. The live figures illustrate filtrate at your eGFR and the ~1% that escapes reabsorption as urine &mdash; not a measured output. This is education, not a diagnosis; discuss any result with your doctor.</p>
-    </div>
-  </section>
-
   <section class="responsibilities" aria-labelledby="resp-heading">
     <div class="container">
       <div class="resp-head">
@@ -2742,7 +2746,8 @@ const Cinema = {
   // 'through' sections are scrubbed across their full (pinned) height so the
   // scroll-driven animation plays instead of being jumped past.
   sections: [
-    { id: 'hero',           dwell: 12000 },                  // title + subhead + 3 stats
+    { id: 'hero',           dwell: 11000 },                  // title + subhead + 3 stats
+    { id: 'egfr-live',      dwell: 16000 },                  // eGFR dial + live counters (calculate first)
     { id: 'origins',        dwell: 34000, through: true },   // 840vh embryology dissolve — 11 stages
     { id: 'capabilities',   dwell: 22000 },                  // 4 long cards
     { id: 'more-than',      dwell: 22000 },                  // 4 endocrine-role cards
@@ -2750,7 +2755,6 @@ const Cinema = {
     { id: 'fails',          dwell: 24000 },                  // 6-row table — needs scanning time
     { id: 'astonish',       dwell: 14000 },                  // 3 short stats
     { id: 'stat-band',      dwell: 10000 },                  // one big number + caption
-    { id: 'egfr-live',      dwell: 15000 },                  // eGFR dial + live counters
     { id: 'responsibilities', dwell: 24000 },                // 20 numbered lines
     { id: 'cta',            dwell: 12000 },                  // headline + button
   ],
@@ -3577,23 +3581,35 @@ if(statBand){
     var s=Math.floor(ms/1000);
     elap.textContent=Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);
   }
+  var nkEl=$('#egfr-nk');
+  if(nkEl){ nkEl.addEventListener('change', function(){
+    var d=nkEl.checked;
+    $('#egfr-scr').disabled=d; $('#egfr-unit').disabled=d; $('#egfr-sex').disabled=d;
+  }); }
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    var scr=parseFloat($('#egfr-scr').value);
-    var unit=$('#egfr-unit').value;
     var age=parseInt($('#egfr-age').value,10);
-    var sex=$('#egfr-sex').value;
-    if(unit==='umol' && scr) scr=scr/88.4;
-    if(!scr || scr<=0){ msg.textContent='Enter a valid creatinine value.'; return; }
+    var nk = nkEl && nkEl.checked, ageExpected=false;
     if(!age || age<18 || age>110){ msg.textContent='Enter an age from 18 to 110 (CKD-EPI is for adults).'; return; }
-    if(sex!=='m' && sex!=='f'){ msg.textContent='Select a sex.'; return; }
+    if(nk){
+      egfr = age<=40 ? 100 : Math.max(15, 100-(age-40));   // expected for age: ~100, -1/yr after 40
+      ageExpected=true;
+    } else {
+      var scr=parseFloat($('#egfr-scr').value);
+      var unit=$('#egfr-unit').value;
+      var sex=$('#egfr-sex').value;
+      if(unit==='umol' && scr) scr=scr/88.4;
+      if(!scr || scr<=0){ msg.textContent='Enter a creatinine value, or tick \u201cNot known\u201d to estimate from age.'; return; }
+      if(sex!=='m' && sex!=='f'){ msg.textContent='Select a sex.'; return; }
+      var female=(sex==='f'), k=female?0.7:0.9, a=female?-0.241:-0.302, r=scr/k;
+      egfr=142*Math.pow(Math.min(r,1),a)*Math.pow(Math.max(r,1),-1.2)*Math.pow(0.9938,age)*(female?1.012:1);
+    }
     msg.textContent='';
-    var female=(sex==='f'), k=female?0.7:0.9, a=female?-0.241:-0.302, r=scr/k;
-    egfr=142*Math.pow(Math.min(r,1),a)*Math.pow(Math.max(r,1),-1.2)*Math.pow(0.9938,age)*(female?1.012:1);
     egfr=Math.round(egfr*10)/10;
     gfrNum.textContent=egfr;
     var st=stage(egfr);
-    badge.textContent=st[0]; badge.style.background=st[2]; stageTxt.textContent=st[1];
+    badge.textContent=st[0]; badge.style.background=st[2];
+    stageTxt.textContent = ageExpected ? (st[1]+' \u00b7 expected for age') : st[1];
     if(arc){ var pct=Math.max(0,Math.min(1,egfr/120)); arc.style.strokeDashoffset=(100-pct*100); arc.style.stroke=st[2]; }
     if(window.__setFiltrationRate) window.__setFiltrationRate(egfr);
     if(rateF) rateF.textContent=Math.round(egfr);
