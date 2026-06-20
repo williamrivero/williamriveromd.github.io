@@ -1594,11 +1594,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .sec-dot:hover{border-color:var(--gold);}
 
   /* ── kidney genesis stage label ── */
-  #kg-label{position:fixed;right:48vmin;bottom:20vmin;z-index:2;pointer-events:none;text-align:right;opacity:0;transition:opacity .7s;}
-  #kg-label.is-visible{opacity:1;}
-  #kg-label-stage{display:block;font-family:'Lora',serif;font-style:italic;font-size:11.5px;color:rgba(212,175,79,.9);letter-spacing:.04em;line-height:1.3;}
-  #kg-label-week{display:block;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:3px;}
-  @media(max-width:900px){#kg-label{display:none;}}
 
   /* CAPABILITIES */
   .capabilities{padding:200px 0 160px;position:relative;}
@@ -1704,8 +1699,8 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .origins-lede em{color:var(--cyan);font-style:italic;}
   .origins-arc{position:relative;height:840vh;}
   .origins-pin{position:sticky;top:0;height:100vh;overflow:hidden;}
-  .origins-stage-img{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:2;}
-  .origins-frame{position:absolute;width:min(42vw,440px);max-width:78vw;height:auto;opacity:0;transition:opacity .9s ease;filter:drop-shadow(0 0 46px rgba(255,176,96,.22));}
+  .origins-stage-img{position:absolute;inset:0;pointer-events:none;z-index:2;}
+  .origins-frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(42vw,440px);max-width:78vw;height:auto;opacity:0;transition:opacity .9s ease;filter:drop-shadow(0 0 46px rgba(255,176,96,.22));}
   .origins-frame.is-active{opacity:1;}
   .origins-timeline{position:absolute;right:max(20px,4vw);top:50%;transform:translateY(-50%);z-index:6;list-style:none;margin:0;padding:0;width:min(36vw,330px);max-height:92vh;display:flex;flex-direction:column;gap:14px;}
   .origins-tl{position:relative;padding-left:60px;cursor:pointer;opacity:.4;transition:opacity .45s ease;}
@@ -1754,8 +1749,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   }
   @media (max-width:680px){
     .origins{padding-top:80px;}
-    .origins-stage-img{align-items:flex-start;padding-top:11vh;}
-    .origins-frame{width:min(72vw,320px);}
+    .origins-frame{top:38%;width:min(72vw,320px);}
     .origins-timeline{right:0;left:0;top:auto;bottom:5vh;transform:none;width:100%;max-width:none;max-height:none;padding:0 22px;gap:0;}
     .origins-tl{display:none;padding-left:0;text-align:center;}
     .origins-tl::before{display:none;}
@@ -1959,11 +1953,6 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   <button class="sec-dot" data-target=".cta"          title="Take action"   aria-label="Jump to CTA"></button>
 </nav>
 
-<!-- kidney genesis stage label -->
-<div id="kg-label" aria-live="polite">
-  <span id="kg-label-stage">Pronephros</span>
-  <span id="kg-label-week">Week 3–4</span>
-</div>
 
 <header class="site-header">
   <a class="brand" href="https://www.williamriveromd.com">W. G. M. <strong>Rivero</strong>, MD</a>
@@ -3421,27 +3410,7 @@ document.addEventListener('keydown', e => {
 /* ════════════════════════════════════════════════
    KIDNEY GENESIS STAGE LABEL
    ════════════════════════════════════════════════ */
-const kgLabel      = document.getElementById('kg-label');
-const kgLabelStage = document.getElementById('kg-label-stage');
-const kgLabelWeek  = document.getElementById('kg-label-week');
-const kgStageNames = [
-  {stage:'Pronephros',   week:'Week 3–4'},
-  {stage:'Mesonephros',  week:'Week 4–6'},
-  {stage:'Metanephros',  week:'Week 5–8'},
-  {stage:'Adult Kidney', week:'Week 9+' },
-];
-let lastKgIdx = -1;
-function updateKgLabel(){
-  const p   = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-  const idx = Math.min(Math.floor(p*4), 3);
-  if(idx !== lastKgIdx){
-    lastKgIdx = idx;
-    kgLabelStage.textContent = kgStageNames[idx].stage;
-    kgLabelWeek.textContent  = kgStageNames[idx].week;
-  }
-  kgLabel.classList.toggle('is-visible', p > 0.01 && p < 0.90);
-}
-window.addEventListener('scroll', updateKgLabel, {passive:true});
+/* kidney-genesis stage label removed — redundant with the Origins timeline */
 
 /* ════════════════════════════════════════════════
    SECTION-REACTIVE AUDIO — filter opens at stat-band
