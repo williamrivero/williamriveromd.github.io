@@ -1169,8 +1169,8 @@
   .header-meta-item{display:flex;flex-direction:column;gap:2px}
   .header-meta-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:#4a6a88;text-transform:uppercase}
   .header-meta-val{font-size:.8rem;color:#a8c4d8;font-weight:500}
-  .header-stats{display:flex;gap:2px;flex-shrink:0;align-self:center;padding-bottom:28px}
-  .stat-pill{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:12px 18px;text-align:center}
+  .header-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;flex-shrink:0;align-self:center;padding-bottom:28px;max-width:440px}
+  .stat-pill{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:12px 14px;text-align:center}
   .stat-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--teal-light);line-height:1}
   .stat-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:#4a6a88;text-transform:uppercase;margin-top:4px}
 
@@ -1328,7 +1328,7 @@
 <body>
 
 <header class="site-header" style="background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08)">
-  <a href="https://www.williamriveromd.com" class="brand" style="color:#a8c4d8">W. G. M. <strong style="color:#fff">Rivero</strong>, MD</a>
+  <a href="https://www.williamriveromd.com" class="brand" style="color:#a8c4d8">W <strong style="color:#fff">Rivero</strong>, MD</a>
   <a href="/guides/" class="back" style="color:var(--teal-light)">← All Guides</a>
 </header>
 
@@ -1355,13 +1355,13 @@
       </div>
     </div>
     <div class="header-stats">
-      <div class="stat-pill"><div class="stat-num">23</div><div class="stat-label">Anatomy</div></div>
-      <div class="stat-pill"><div class="stat-num">28</div><div class="stat-label">Pathology</div></div>
-      <div class="stat-pill"><div class="stat-num">22</div><div class="stat-label">Interventions</div></div>
-      <div class="stat-pill"><div class="stat-num">8</div><div class="stat-label">Embryology</div></div>
-      <div class="stat-pill"><div class="stat-num">12</div><div class="stat-label">Algorithms</div></div>
-      <div class="stat-pill"><div class="stat-num">11</div><div class="stat-label">Landmarks</div></div>
-      <div class="stat-pill"><div class="stat-num">14</div><div class="stat-label">Resuscitation</div></div>
+      <div class="stat-pill"><div class="stat-num" data-stat-tab="anatomy">23</div><div class="stat-label">Anatomy</div></div>
+      <div class="stat-pill"><div class="stat-num" data-stat-tab="conditions">28</div><div class="stat-label">Pathology</div></div>
+      <div class="stat-pill"><div class="stat-num" data-stat-tab="procedures">22</div><div class="stat-label">Interventions</div></div>
+      <div class="stat-pill"><div class="stat-num" data-stat-tab="embryology">8</div><div class="stat-label">Embryology</div></div>
+      <div class="stat-pill"><div class="stat-num" data-stat-tab="algorithms">12</div><div class="stat-label">Algorithms</div></div>
+      <div class="stat-pill"><div class="stat-num" data-stat-tab="landmarks">11</div><div class="stat-label">Landmarks</div></div>
+      <div class="stat-pill"><div class="stat-num" data-stat-tab="resuscitation">14</div><div class="stat-label">Resuscitation</div></div>
     </div>
   </div>
 </header>
@@ -1371,31 +1371,31 @@
   <div class="tab-bar-inner">
     <button class="tab-btn active" onclick="switchTab('anatomy',this)" aria-selected="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="12" rx="5" ry="8"/><path d="M12 4C8 4 4 7 4 12s4 8 8 8 8-3 8-8-4-8-8-8"/></svg>
-      Anatomy & Physiology <span class="tab-count">38</span>
+      Anatomy & Physiology <span class="tab-count" data-stat-tab="anatomy">38</span>
     </button>
     <button class="tab-btn" onclick="switchTab('conditions',this)" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 12h6M12 9v6M3 12a9 9 0 1018 0 9 9 0 00-18 0"/></svg>
-      Pathology <span class="tab-count">28</span>
+      Pathology <span class="tab-count" data-stat-tab="conditions">28</span>
     </button>
     <button class="tab-btn" onclick="switchTab('procedures',this)" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
-      Interventions <span class="tab-count">22</span>
+      Interventions <span class="tab-count" data-stat-tab="procedures">22</span>
     </button>
     <button class="tab-btn" onclick="switchTab('embryology',this)" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 8v8M8 12h8"/></svg>
-      Embryology <span class="tab-count">8</span>
+      Embryology <span class="tab-count" data-stat-tab="embryology">8</span>
     </button>
     <button class="tab-btn" onclick="switchTab('algorithms',this)" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg>
-      Algorithms &amp; Maps <span class="tab-count">12</span>
+      Algorithms &amp; Maps <span class="tab-count" data-stat-tab="algorithms">12</span>
     </button>
     <button class="tab-btn" onclick="switchTab('landmarks',this)" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      Landmark Trials <span class="tab-count">11</span>
+      Landmark Trials <span class="tab-count" data-stat-tab="landmarks">11</span>
     </button>
     <button class="tab-btn" onclick="switchTab('resuscitation',this)" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-      Resuscitation &amp; Emergencies <span class="tab-count">14</span>
+      Resuscitation &amp; Emergencies <span class="tab-count" data-stat-tab="resuscitation">14</span>
     </button>
   </div>
 </nav>
@@ -2007,7 +2007,20 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); navDetail(-1); }
 });
 
+// ─── DYNAMIC COUNTS (hero stat pills + tab badges) ────────────────────────────
+function syncCounts() {
+  Object.keys(TABS).forEach(function(key){
+    var n = (TABS[key].sections || []).reduce(function(sum, sec){
+      return sum + (sec.items ? sec.items.length : 0);
+    }, 0);
+    document.querySelectorAll('[data-stat-tab="' + key + '"]').forEach(function(el){
+      el.textContent = n;
+    });
+  });
+}
+
 // ─── INIT ─────────────────────────────────────────────────────────────────────
+syncCounts();
 buildFilters();
 renderCards();
 
