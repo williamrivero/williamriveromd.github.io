@@ -1758,6 +1758,11 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   @media (prefers-reduced-motion:reduce){ .origins-frame{transition:opacity .2s linear;filter:none;} }
 
 
+  /* ═══ Blob -> developing fetus (scroll) ════════════════════════════════════ */
+  .origins-fetus{position:absolute;inset:0;display:grid;place-items:center;z-index:1;pointer-events:none;transform:scale(.8);transform-origin:center;will-change:transform;}
+  .ofet{position:absolute;width:min(70vh,620px);max-width:86vw;height:auto;opacity:0;filter:drop-shadow(0 0 30px rgba(255,176,96,.35));}
+  .ofet .f{fill:url(#ofetGrad);}
+
   /* ═══ Blob -> kidney silhouette (end transformation) ═══════════════════════ */
   #kidney-silhouette{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9);width:min(68vh,72vw);max-width:520px;z-index:1;opacity:0;pointer-events:none;will-change:opacity,transform;filter:drop-shadow(0 0 36px rgba(255,176,96,.45));}
   #kidney-silhouette svg{width:100%;height:auto;display:block;}
@@ -2223,6 +2228,16 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
     <!-- Pinned scrollytelling arc -->
     <div class="origins-arc">
       <div class="origins-pin">
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+          <linearGradient id="ofetGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffd29a"/><stop offset="0.55" stop-color="#e0a04a"/><stop offset="1" stop-color="#b8702c"/>
+          </linearGradient></defs></svg>
+        <div class="origins-fetus" aria-hidden="true">
+          <svg class="ofet" viewBox="0 0 200 200"><g class="f"><circle cx="104" cy="86" r="26"/><path d="M120,104 C140,118 132,150 112,156 C100,159 96,150 100,140 C108,124 96,112 88,108 Z"/></g></svg>
+          <svg class="ofet" viewBox="0 0 200 200"><g class="f"><circle cx="98" cy="78" r="30"/><path d="M120,96 C150,108 150,150 118,162 C96,170 78,160 80,140 C82,124 108,124 104,104 Z"/><circle cx="120" cy="150" r="11"/></g></svg>
+          <svg class="ofet" viewBox="0 0 200 200"><g class="f"><circle cx="92" cy="72" r="33"/><path d="M118,90 C158,104 160,156 116,170 C86,180 64,166 70,142 C75,122 112,126 104,98 Z"/><circle cx="118" cy="158" r="14"/><circle cx="78" cy="138" r="10"/></g></svg>
+          <svg class="ofet" viewBox="0 0 200 200"><g class="f"><circle cx="90" cy="70" r="34"/><ellipse cx="108" cy="135" rx="42" ry="40"/><circle cx="120" cy="165" r="15"/><circle cx="70" cy="150" r="13"/></g></svg>
+        </div>
         <div class="origins-stage-img" aria-hidden="true">
           <picture><source type="image/webp" srcset="../images/kp-dev--0-embryo-lateral-carnegie-10-12.webp"><img class="origins-frame is-active" data-frame="0"  src="../images/kp-dev--0-embryo-lateral-carnegie-10-12.png" alt="" width="1536" height="1024" loading="eager" decoding="async"></picture>
           <picture><source type="image/webp" srcset="../images/kp-dev--1-mesoderm.webp"><img class="origins-frame"           data-frame="1"  src="../images/kp-dev--1-mesoderm.png"             alt="" width="1536" height="1024" loading="lazy"  decoding="async"></picture>
@@ -3636,6 +3651,15 @@ if(statBand){
     for(var k=0;k<N;k++) frames[k].classList.toggle('is-active', k===i);
     for(var j=0;j<items.length;j++) items[j].classList.toggle('is-active', j===i);
   }
+  var fets=Array.prototype.slice.call(arc.querySelectorAll('.ofet'));
+  var fetusWrap=arc.querySelector('.origins-fetus');
+  var FN=fets.length;
+  function setFetus(p){
+    if(!FN) return;
+    var fp=p*(FN-1);
+    for(var j=0;j<FN;j++){ var o=1-Math.abs(fp-j); if(o<0)o=0; fets[j].style.opacity=(o*0.82).toFixed(3); }
+    if(fetusWrap) fetusWrap.style.transform='scale('+(0.78+p*0.5).toFixed(3)+')';
+  }
   var ticking=false;
   var pin=arc.querySelector('.origins-pin');
   function update(){
@@ -3650,6 +3674,7 @@ if(statBand){
     var p= total>0 ? (-r.top/total) : 0;
     if(p<0)p=0; if(p>1)p=1;
     setActive(Math.round(p*(N-1)));
+    setFetus(p);
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
   window.addEventListener('scroll', onScroll, {passive:true});
