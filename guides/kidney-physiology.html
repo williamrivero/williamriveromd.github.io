@@ -1703,6 +1703,12 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .origins-stage-img{position:absolute;inset:0;pointer-events:none;z-index:2;}
   .origins-frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(42vw,440px);max-width:78vw;height:auto;opacity:0;transition:opacity .9s ease;filter:drop-shadow(0 0 46px rgba(255,176,96,.22));}
   .origins-frame.is-active{opacity:1;}
+  .origins-leftlabels{position:absolute;left:max(20px,4vw);top:50%;transform:translateY(-50%);z-index:6;width:min(28vw,260px);pointer-events:none;}
+  .origins-ll{position:absolute;left:0;top:0;opacity:0;transition:opacity .55s ease;}
+  .origins-ll.is-active{opacity:1;}
+  .origins-ll-week{display:block;font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.26em;font-size:10.5px;color:var(--gold);}
+  .origins-ll-name{display:block;font-family:'Lora',serif;font-style:italic;font-size:clamp(20px,2.6vw,30px);line-height:1.15;color:#fff;margin-top:5px;}
+  @media (max-width:680px){ .origins-leftlabels{display:none;} }
   .origins-timeline{position:absolute;right:max(20px,4vw);top:50%;transform:translateY(-50%);z-index:6;list-style:none;margin:0;padding:0;width:min(36vw,330px);max-height:92vh;display:flex;flex-direction:column;gap:14px;}
   .origins-tl{position:relative;padding-left:60px;cursor:pointer;opacity:.4;transition:opacity .45s ease;}
   .origins-tl::before{content:'';position:absolute;left:0;top:10px;width:32px;height:1px;background:var(--ink-mid);transition:width .45s ease,background .45s ease;}
@@ -2228,6 +2234,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
     <!-- Pinned scrollytelling arc -->
     <div class="origins-arc">
       <div class="origins-pin">
+        <div class="origins-leftlabels" aria-hidden="true"></div>
         <div class="origins-stage-img" aria-hidden="true">
           <picture><source type="image/webp" srcset="../images/kp-dev--0-embryo-lateral-carnegie-10-12.webp"><img class="origins-frame is-active" data-frame="0"  src="../images/kp-dev--0-embryo-lateral-carnegie-10-12.png" alt="" width="1536" height="1024" loading="eager" decoding="async"></picture>
           <picture><source type="image/webp" srcset="../images/kp-dev--1-mesoderm.webp"><img class="origins-frame"           data-frame="1"  src="../images/kp-dev--1-mesoderm.png"             alt="" width="1536" height="1024" loading="lazy"  decoding="async"></picture>
@@ -3637,11 +3644,19 @@ if(statBand){
   var frames=Array.prototype.slice.call(arc.querySelectorAll('.origins-frame'));
   var items =Array.prototype.slice.call(arc.querySelectorAll('.origins-tl'));
   var N=frames.length; if(!N) return;
+  var llWrap=arc.querySelector('.origins-leftlabels'), lls=[];
+  if(llWrap){ items.forEach(function(it){
+    var nm=it.querySelector('.origins-tl-name'), wk=it.querySelector('.origins-tl-week');
+    var d=document.createElement('div'); d.className='origins-ll';
+    d.innerHTML='<span class="origins-ll-week">'+(wk?wk.textContent:'')+'</span><span class="origins-ll-name">'+(nm?nm.textContent:'')+'</span>';
+    llWrap.appendChild(d); lls.push(d);
+  }); }
   var last=-1;
   function setActive(i){
     if(i===last) return; last=i;
     for(var k=0;k<N;k++) frames[k].classList.toggle('is-active', k===i);
     for(var j=0;j<items.length;j++) items[j].classList.toggle('is-active', j===i);
+    for(var L=0;L<lls.length;L++) lls[L].classList.toggle('is-active', L===i);
   }
   var ticking=false;
   var pin=arc.querySelector('.origins-pin');
