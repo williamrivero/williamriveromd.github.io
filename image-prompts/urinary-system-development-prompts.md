@@ -1,142 +1,207 @@
-# Development of the Urinary System — Image Prompt Pack
+# Development of the Urinary System — Image Prompt Pack (15 stages)
 
 **Guide:** `guides/kidney-physiology.html` (Origins scrollytelling)
-**Purpose:** Regenerate the 11 `kp-dev-*` developmental-stage figures.
 **Tool:** ChatGPT Image Generator (GPT‑image / GPT‑4o native image generation).
-**Pipeline:** Stage 1 (prompt authoring) → generate → drop PNGs into `images/` with the exact filenames → rebuild WebP companions.
+**Pipeline:** Stage 1 (prompt authoring) → generate → drop PNGs into `images/` → rebuild WebP companions → wire into the guide.
 
 ---
 
-## ⚠️ Read first — the fixes that matter
+## ⚠️ Read first — non‑negotiable styling (the generator kept ignoring these)
 
-These regenerations exist to correct two problems with the previous set:
-
-1. **Transparent background.** Every figure must be a true **alpha PNG with a fully transparent background** — no white/peach plate, no panel, no ground shadow. The guide places these on a dark amber scene, so any baked background ruins the effect.
-2. **No glow behind the label text.** The previous labels had a **white glow/halo** around the type that made them hard to read. **Forbid** any glow, halo, outline, stroke, drop‑shadow, or background plate behind or around label text. The type must sit **directly on transparency**, crisp and clean.
-
-Because the background is transparent and the guide is dark, **label text and leader lines must be WHITE** (≈ `#ffffff`) so it reads on the dark scene — *not* dark text.
-
----
-
-## GLOBAL STYLE — applies to (and is repeated inside) every prompt
-
-> Realistic, semi‑3D medical illustration with soft, even studio lighting and gentle sub‑surface shading; clinically accurate; single subject centered; **fully transparent background (alpha PNG — no backdrop, no plate, no ground shadow)**; muted‑realistic tissue colors consistent across the whole series (same scale, same light direction).
-> **Labels:** thin 1px straight leader lines in white (`#ffffff`) each ending in a small dot exactly on the named structure; label text in **clean thin sans‑serif, white `#ffffff`, ~22px, perfectly legible**, arranged down the **left margin** with even spacing.
-> **CRITICAL — no glow:** absolutely **no** white glow, halo, outline, stroke, drop‑shadow, blur, or background box behind/around any label text; type sits directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. Spell every label exactly as written; no gibberish or extra text.
-> **Credit:** small semi‑transparent navy text `© williamriveromd.com` in the bottom‑right corner only.
-> **Avoid:** white/colored background, panels behind labels, dark theme fills, heavy cartoon outlines, photoreal skin texture noise, clutter.
-> **Framing:** 1536 × 1024 landscape (mature kidney 1024 × 1024), structure centered with room on the left for the labels.
+1. **Transparent background** — true alpha PNG. **No** white/colored backdrop, **no** plate, **no** panel, **no** box, **no** ground shadow. The guide sits on a dark amber scene.
+2. **Label text = PURE WHITE, UPRIGHT SANS‑SERIF.** Clean modern sans‑serif (Helvetica / Arial / DM‑Sans style), color **`#ffffff`**.
+   - **Do NOT** use serif, **do NOT** use italic, **do NOT** use yellow/gold/red/black — **white only**.
+3. **Leader/connector lines = white**, thin (1px), each ending in a small **white** dot on the structure.
+4. **No glow.** Absolutely no glow, halo, outline, stroke, drop‑shadow, blur, or background plate behind/around any text. Type sits directly on transparency.
+5. **Spelling.** Render every label **exactly** as written. (The last batch produced "Sornites" — it is **"Somites"**.) No extra or invented text.
+6. **Consistency.** Same realistic semi‑3D style, scale, and light direction across all 15 so the scroll cross‑fade reads as one continuous development.
+7. **Credit.** Small semi‑transparent navy `© williamriveromd.com` in the bottom‑right corner only.
+8. **Framing.** 1536 × 1024 landscape unless noted. Center the structure; keep the **left margin clear** for the label column.
 
 ---
 
-## 1 · Embryo — Carnegie stage 10–12  →  `kp-dev--0-embryo-lateral-carnegie-10-12.png`
+## GLOBAL STYLE — copy this into the top of every prompt (also embedded below)
+
+> Realistic, semi‑3D medical illustration; soft even studio lighting; gentle sub‑surface shading; clinically accurate; **fully transparent background (alpha PNG — no backdrop/plate/box/shadow)**; muted‑realistic tissue colors, consistent scale and light direction across the series. **Labels down the LEFT margin: thin 1px WHITE leader lines, each ending in a small WHITE dot on the structure; label text in clean UPRIGHT SANS‑SERIF (Helvetica/Arial/DM‑Sans style), PURE WHITE `#ffffff`, ~24px, perfectly legible.** NO glow/halo/outline/stroke/drop‑shadow/blur/box behind or around text — directly on transparency. NEVER serif, italic, yellow, gold, red, or black text/lines — white only. Spell every label exactly; no other text. Small semi‑transparent navy `© williamriveromd.com` bottom‑right.
+
+---
+
+# SECTION A — Embryonic Foundations
+
+## 1 · Early Embryo (Week 3–4)  →  `urinary-dev-01-embryo-overview.png`
+**Shows:** trilaminar embryo · intermediate mesoderm highlighted · future nephrogenic cord location
+**Teaching point:** *The urinary system begins from intermediate mesoderm.*
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no ground shadow). Lateral view of a ~4-week human embryo (Carnegie stage 10–12), C-shaped and curled, showing the dorsal somite column, the closing neural tube, the heart bulge, pharyngeal arches, and the connecting stalk. Muted realistic tissue colors, soft even studio lighting.
-Anatomical labels down the LEFT margin, each a thin 1px white (#ffffff) leader line ending in a small dot on the structure, text in clean thin sans-serif white (#ffffff) ~22px, crisp and legible: "Neural tube", "Somites", "Pharyngeal arches", "Heart bulge", "Connecting stalk".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, blur, or background box behind or around any label text — type sits directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background of any kind. Spell labels exactly; no other text. Small semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop, plate, box, or shadow). Simplified dorsal/oblique view of an early trilaminar human embryo (week 3–4) with a small wedge cutaway revealing the three germ layers (ectoderm, mesoderm, endoderm); the paired INTERMEDIATE MESODERM strips highlighted in a warm tone running along the back as the future nephrogenic cord. Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines each ending in a small WHITE dot on the structure; text in clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Ectoderm", "Mesoderm", "Endoderm", "Intermediate mesoderm", "Nephrogenic cord (future)".
+NO glow/halo/outline/stroke/shadow/box behind or around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
 ```
 
-## 2 · Trilaminar germ layers / mesoderm  →  `kp-dev--1-mesoderm.png`
+## 2 · Intermediate Mesoderm Formation  →  `urinary-dev-02-intermediate-mesoderm.png`
+**Shows:** neural tube · somites · intermediate mesoderm · lateral plate mesoderm
+**Teaching point:** *Intermediate mesoderm gives rise to the kidneys and ureters.*
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no shadow). CIRCULAR, round transverse cut-section of the trilaminar embryo at the level of the closing neural tube — drawn as a clean circular disc of concentric rings (the flat germ-disc shown rolled into a round tube in cross-section). Clearly show three concentric germ layers — outer surface ectoderm, middle mesoderm (subdivided into paraxial, intermediate, and lateral plate), and inner endoderm (gut tube) — plus the neural tube, the neural crest, and the notochord. Emphasize the MIDDLE mesoderm layer (warm tone) so it reads as "the middle one". Muted realistic colors, soft lighting.
-Labels down the LEFT margin, thin 1px white (#ffffff) leader lines with end dots on each structure, clean thin sans-serif white (#ffffff) ~22px: "Surface ectoderm", "Neural tube", "Neural crest", "Notochord", "Paraxial mesoderm", "Intermediate mesoderm", "Lateral plate mesoderm", "Endoderm (gut)".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, blur, or box behind/around any label — text directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background. Exact spelling, no extra text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). CIRCULAR, round transverse cut-section of the embryo drawn as a clean round disc of concentric tissue, showing: the dorsal neural tube and notochord; paired somites (paraxial mesoderm); the small paired INTERMEDIATE MESODERM strips (highlighted warm tone) flanking the dorsal aorta; the lateral plate mesoderm; and the ventral endoderm (gut). Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Neural tube", "Notochord", "Somite (paraxial mesoderm)", "Intermediate mesoderm", "Lateral plate mesoderm", "Dorsal aorta", "Endoderm (gut)".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling (it is "Somites", not "Sornites"); no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
 ```
 
-## 3 · Intermediate mesoderm / nephrogenic cord  →  `kp-dev-0-intermediate-mesoderm.png`
+---
+
+# SECTION B — Three Successive Kidney Systems
+
+## 3 · Pronephros  →  `urinary-dev-03-pronephros.png`
+**Shows:** cervical pronephric tubules · pronephric duct
+**Teaching point:** *First kidney system; nonfunctional and regresses.*
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no shadow). CIRCULAR, round transverse cut-section (a clean round disc) highlighting the INTERMEDIATE MESODERM (the nephrogenic cord) as a paired strip flanking the dorsal aorta, sitting between the paraxial somite and the lateral plate mesoderm; neural tube and notochord dorsally. Subtly highlight the intermediate mesoderm strip in warm tone. Muted realistic colors, soft even lighting.
-Labels down the LEFT margin, thin 1px white (#ffffff) leader lines ending in dots, clean thin sans-serif white (#ffffff) ~22px: "Intermediate mesoderm (nephrogenic cord)", "Somite (paraxial mesoderm)", "Lateral plate mesoderm", "Dorsal aorta", "Neural tube", "Notochord".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, or box behind/around any label — text directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background. Exact spelling only. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). The PRONEPHROS: a cranial (cervical) cluster of segmented pronephric tubules draining into a single curved pronephric duct running caudally toward the cloaca; show the pronephros faded/regressing. Muted realistic colors, soft even lighting, series-consistent scale.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Pronephric tubules (cervical)", "Pronephric duct", "Cloaca".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
 ```
 
-## 4 · Pronephros  →  `kp-dev-01-pronephros.png`
+## 4 · Mesonephros  →  `urinary-dev-04-mesonephros.png`
+**Shows:** mesonephric tubules · mesonephric (Wolffian) duct · primitive glomeruli
+**Teaching point:** *Temporary functioning embryonic kidney.*
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no shadow). The PRONEPHROS: a cranial cluster of segmented pronephric tubules on the left draining into a single curved pronephric (Wolffian) duct that runs caudally on the right toward the cloaca. Muted realistic tissue colors, soft even studio lighting, consistent scale with the series.
-Labels down the LEFT margin, thin 1px white (#ffffff) leader lines with end dots on each structure, clean thin sans-serif white (#ffffff) ~22px: "Pronephric tubules", "Pronephric (Wolffian) duct", "Cloaca".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, blur, or box behind/around label text — type directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background of any kind. Exact spelling, no extra text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). The MESONEPHROS: an elongated paired ridge of S-shaped mesonephric tubules, several bearing primitive glomeruli, draining medially into the mesonephric (Wolffian) duct. Muted realistic colors, soft even lighting, series-consistent scale.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Mesonephric tubules", "Primitive glomerulus", "Mesonephric (Wolffian) duct".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
 ```
 
-## 5 · Mesonephros  →  `kp-dev-02-mesonephros.png`
+## 5 · Mesonephric Duct Derivatives  →  `urinary-dev-05-mesonephric-duct-fate.png`
+**Shows:** male pathway (epididymis, vas deferens, seminal vesicle) · female pathway (regression)
+**Teaching point:** *The Wolffian duct becomes major male reproductive structures.*
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no shadow). The MESONEPHROS: an elongated paired ridge of mesonephric tubules, several bearing small glomeruli, draining medially into the mesonephric (Wolffian) duct; a gonadal ridge runs alongside. Muted realistic colors, soft lighting, matching the series scale.
-Labels down the LEFT margin, thin 1px white (#ffffff) leader lines ending in dots, clean thin sans-serif white (#ffffff) ~22px: "Mesonephric tubules", "Glomerulus", "Mesonephric (Wolffian) duct", "Gonadal ridge".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, or box behind/around any label — text directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background. Exact spelling only. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). Two side-by-side schematics of the fate of the mesonephric (Wolffian) duct: LEFT = MALE pathway, the duct persisting and forming the epididymis, vas deferens, and seminal vesicle; RIGHT = FEMALE pathway, the duct largely regressing (faded, small Gartner duct remnant). A small "Male" / "Female" caption over each in the same white sans-serif. Muted realistic colors, soft even lighting.
+Labels with thin 1px WHITE leader lines and small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Mesonephric (Wolffian) duct", "Epididymis", "Vas deferens", "Seminal vesicle", "Regression (female)", "Gartner duct remnant".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
 ```
 
-## 6 · Ureteric bud induction  →  `kp-dev-03-ureteric-bud.png`
+---
+
+# SECTION C — Definitive Kidney (Metanephros)
+
+## 6 · Ureteric Bud Emergence  →  `urinary-dev-06-ureteric-bud.png`
+**Shows:** mesonephric duct · ureteric bud · metanephric mesenchyme
+**Teaching point:** *The permanent kidney begins here.*
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no shadow). URETERIC BUD INDUCTION: a single ureteric bud sprouting from the caudal mesonephric (Wolffian) duct and growing into a rounded cap of metanephric (cap) mesenchyme. Show the reciprocal induction at the bud tip. Muted realistic colors, soft even lighting.
-Labels down the LEFT margin, thin 1px white (#ffffff) leader lines with end dots, clean thin sans-serif white (#ffffff) ~22px: "Ureteric bud", "Metanephric mesenchyme", "Mesonephric (Wolffian) duct".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, blur, or box behind/around label text — type directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background. Exact spelling, no extra text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). URETERIC BUD EMERGENCE: a single ureteric bud sprouting from the caudal mesonephric (Wolffian) duct and growing into a rounded cap of metanephric mesenchyme. Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Mesonephric (Wolffian) duct", "Ureteric bud", "Metanephric mesenchyme".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
 ```
 
-## 7 · Branching morphogenesis  →  `kp-dev-04-branching.png`
+## 7 · Reciprocal Induction (signaling)  →  `urinary-dev-07-induction-signaling.png`
+**Shows:** GDNF · RET · ureteric bud · metanephric mesenchyme
+**Teaching point:** *Kidney development depends on molecular signaling.* (clinician-oriented)
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no shadow). BRANCHING MORPHOGENESIS: the ureteric bud repeatedly dividing into a dichotomous tree of collecting ducts, each ampullary tip capped by condensed cap mesenchyme. Muted realistic colors, soft even lighting, series-consistent scale.
-Labels down the LEFT margin, thin 1px white (#ffffff) leader lines ending in dots, clean thin sans-serif white (#ffffff) ~22px: "Ureteric bud (branching)", "Collecting ducts", "Ampullary tip", "Cap mesenchyme".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, or box behind/around any label — text directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background. Exact spelling only. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). RECIPROCAL INDUCTION close-up: the ureteric bud tip facing the metanephric mesenchyme; the mesenchyme secreting GDNF (small molecule icons) toward RET receptors on the bud tip; a faint reciprocal WNT signal back to the mesenchyme. Thin white arrows for signal direction. Muted realistic colors, soft even lighting.
+Labels with thin 1px WHITE leader lines and small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Metanephric mesenchyme", "GDNF", "RET receptor", "Ureteric bud tip", "WNT (reciprocal)".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
 ```
 
-## 8 · Nephrogenesis (MET)  →  `kp-dev-05-nephrogenesis.png`
+## 8 · Branching Morphogenesis  →  `urinary-dev-08-branching-morphogenesis.png`
+**Shows:** repeated ureteric bud branching · collecting system formation
+**Teaching point:** *Produces the collecting ducts and calyces.*
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no shadow). NEPHROGENESIS / mesenchymal-to-epithelial transition: a sequence showing cap mesenchyme condensing into a renal vesicle, then a comma-shaped body, then an S-shaped body, maturing into a glomerulus with a capillary tuft and podocytes, connected to a collecting duct. Muted realistic colors, soft even lighting.
-Labels down the LEFT margin, thin 1px white (#ffffff) leader lines with end dots on each stage, clean thin sans-serif white (#ffffff) ~22px: "Renal vesicle", "Comma-shaped body", "S-shaped body", "Glomerulus", "Podocytes", "Collecting duct".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, blur, or box behind/around label text — type directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background. Exact spelling, no extra text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). BRANCHING MORPHOGENESIS: the ureteric bud repeatedly dividing into a dichotomous tree of collecting ducts, each ampullary tip capped by condensed cap mesenchyme; the earliest branches widening into the future renal pelvis and calyces. Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Ureteric bud (branching)", "Ampullary tip", "Cap mesenchyme", "Collecting ducts", "Future renal pelvis / calyces".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
 ```
 
-## 9 · Ascent & rotation  →  `kp-dev-06-ascent-rotation.png`
+## 9 · Nephrogenesis  →  `urinary-dev-09-nephrogenesis.png`
+**Shows:** cap mesenchyme → renal vesicle → comma body → S‑shaped body
+**Teaching point:** *Nephrons arise from metanephric mesenchyme.*
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no shadow). ASCENT & ROTATION of the metanephric kidneys: the kidneys shown climbing from the pelvis to the lumbar region while rotating ~90° so the hilum faces medially; their definitive renal arteries arising from the abdominal aorta, ureters descending to the bladder, adrenal (suprarenal) glands capping the upper poles. Subtle thin curved motion arrows for ascent and rotation (pale, unobtrusive). Muted realistic colors, soft even lighting.
-Labels down the LEFT margin, thin 1px white (#ffffff) leader lines ending in dots, clean thin sans-serif white (#ffffff) ~22px: "Kidney (ascending)", "90° medial rotation", "Renal artery (definitive)", "Suprarenal (adrenal) gland", "Ureter", "Bladder".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, or box behind/around any label — text directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background. Exact spelling only. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). NEPHROGENESIS sequence (left → right): cap mesenchyme condensing into a renal vesicle, then a comma-shaped body, then an S-shaped body, adjacent to a collecting-duct tip. Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots on each stage; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Cap mesenchyme", "Renal vesicle", "Comma-shaped body", "S-shaped body".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
 ```
 
-## 10 · Mature fetal kidney  →  `kp-dev-07-fetal-kidney.png`
+## 10 · Formation of the Mature Nephron  →  `urinary-dev-10-nephron-maturation.png`
+**Shows:** glomerulus · proximal tubule · loop of Henle · distal tubule · collecting duct connection
+**Teaching point:** *The functional nephron is assembled.*
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no shadow). MATURE FETAL KIDNEY: a single kidney with the characteristic fetal surface lobulation, cut to reveal cortex, medullary pyramids, the renal pelvis, and the ureter. Muted realistic colors, soft even studio lighting, series-consistent scale.
-Labels down the LEFT margin, thin 1px white (#ffffff) leader lines with end dots, clean thin sans-serif white (#ffffff) ~22px: "Fetal lobulation", "Cortex", "Medulla (pyramid)", "Renal pelvis", "Ureter".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, blur, or box behind/around label text — type directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background. Exact spelling, no extra text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). A single MATURE NEPHRON: glomerulus in Bowman's capsule, proximal convoluted tubule, descending/ascending loop of Henle, distal convoluted tubule, joining a collecting duct. Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Glomerulus", "Proximal convoluted tubule", "Loop of Henle", "Distal convoluted tubule", "Collecting duct".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
 ```
 
-## 11 · Mature kidney  →  `kp-dev-8-mature-kidney.png`
+---
+
+# SECTION D — Ascent and Vascularization
+
+## 11 · Kidney Ascent  →  `urinary-dev-11-kidney-ascent.png`
+**Shows:** sequential positions — pelvic · iliac · lumbar (with arrows)
+**Teaching point:** *Kidneys ascend from the pelvis.*
 
 ```
-Realistic semi-3D medical illustration on a FULLY TRANSPARENT background (alpha PNG, no backdrop, no plate, no shadow). MATURE (adult) KIDNEY, coronal section: outer cortex, medullary renal pyramids, renal columns, minor and major calyces, renal pelvis, the renal artery (red) and renal vein (blue) at the hilum, and the ureter. Muted realistic colors, soft even studio lighting, series-consistent scale.
-Labels down the LEFT margin, thin 1px white (#ffffff) leader lines ending in dots on each structure, clean thin sans-serif white (#ffffff) ~22px: "Cortex", "Renal pyramid (medulla)", "Renal column", "Minor calyx", "Major calyx", "Renal pelvis", "Renal artery", "Renal vein", "Ureter".
-CRITICAL: NO white glow, halo, outline, stroke, drop-shadow, blur, or box behind/around any label — text directly on transparency. Label text and leader lines must be pure WHITE (#ffffff) — never red or any other color. No background of any kind. Exact spelling, no extra text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1024×1024 square.
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). KIDNEY ASCENT: posterior abdominal/pelvic view showing one kidney in three successive positions — pelvic (lowest, faded), iliac (mid, semi-faded), and lumbar (final, solid) — with thin WHITE upward arrows between them; ureter trailing down to the bladder. Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Pelvic position", "Iliac position", "Lumbar (final) position", "Ureter", "Bladder".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+```
+
+## 12 · Rotation & Arterial Changes  →  `urinary-dev-12-rotation-and-blood-supply.png`
+**Shows:** 90° medial rotation · successive transient arteries · definitive renal artery
+**Teaching point:** *Explains accessory renal arteries.*
+
+```
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). KIDNEY ROTATION & BLOOD SUPPLY: a kidney rotating ~90° so the hilum turns medially (thin white curved rotation arrow); the abdominal aorta giving successive transient lower arteries (faded/degenerating) and the single definitive renal artery (solid). Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "90° medial rotation", "Hilum", "Abdominal aorta", "Transient arteries (degenerating)", "Definitive renal artery".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+```
+
+---
+
+# SECTION E — Bladder and Lower Tract
+
+## 13 · Cloaca Partitioning  →  `urinary-dev-13-cloaca-partition.png`
+**Shows:** cloaca · urorectal septum · rectum · primitive bladder
+**Teaching point:** *The urinary and gastrointestinal tracts separate.*
+
+```
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). CLOACA PARTITIONING: midline sagittal schematic of the cloaca being divided by the descending urorectal septum into a ventral urogenital sinus (primitive bladder) and a dorsal rectum; the allantois extending from the bladder apex. Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Cloaca", "Urorectal septum", "Urogenital sinus (primitive bladder)", "Rectum", "Allantois".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+```
+
+## 14 · Bladder & Urethra Development  →  `urinary-dev-14-bladder-urethra-development.png`
+**Shows:** urogenital sinus · bladder · urethra · allantois → urachus
+**Teaching point:** *Forms the lower urinary tract.*
+
+```
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). BLADDER & URETHRA DEVELOPMENT: the urogenital sinus forming the bladder and urethra; the ureters opening into the bladder base (trigone); the allantois regressing into the fibrous urachus running to the umbilicus. Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Urogenital sinus", "Bladder", "Trigone", "Ureter", "Urethra", "Allantois → Urachus".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape.
+```
+
+## 15 · Mature Urinary System  →  `urinary-dev-15-mature-urinary-system.png`
+**Shows:** kidneys · ureters · bladder · urethra (adult)
+**Teaching point:** *The completed urinary tract.*
+
+```
+Realistic semi-3D medical illustration, FULLY TRANSPARENT background (alpha PNG — no backdrop/plate/box/shadow). The COMPLETE ADULT URINARY SYSTEM, anterior view: paired kidneys with renal pelves, the ureters descending to the urinary bladder, the trigone at the bladder base, and the urethra exiting below; renal arteries (red) and veins (blue) at the hila. Muted realistic colors, soft even lighting.
+Labels down the LEFT margin, thin 1px WHITE leader lines with small WHITE end dots; clean UPRIGHT SANS-SERIF, PURE WHITE #ffffff, ~24px: "Kidney", "Renal pelvis", "Ureter", "Bladder", "Trigone", "Urethra".
+NO glow/halo/outline/stroke/shadow/box behind/around text — directly on transparency. NEVER serif/italic/yellow/gold/red/black — white only. Exact spelling, no other text. Semi-transparent navy "© williamriveromd.com" bottom-right. 1536×1024 landscape (portrait 1024×1536 also fine for the full vertical tract).
 ```
 
 ---
 
 ## After you generate
 
-1. Save each PNG into `images/` using the **exact filename** in its heading (same names as the current set — the guide already points at them; no HTML changes needed).
-2. Regenerate the WebP companions (the guide serves WebP via `<picture>`):
-   ```bash
-   python3 - <<'PY'
-   from PIL import Image
-   names=["kp-dev--0-embryo-lateral-carnegie-10-12","kp-dev--1-mesoderm","kp-dev-0-intermediate-mesoderm",
-   "kp-dev-01-pronephros","kp-dev-02-mesonephros","kp-dev-03-ureteric-bud","kp-dev-04-branching",
-   "kp-dev-05-nephrogenesis","kp-dev-06-ascent-rotation","kp-dev-07-fetal-kidney","kp-dev-8-mature-kidney"]
-   for n in names:
-       Image.open(f"images/{n}.png").convert("RGBA").save(f"images/{n}.webp","WEBP",quality=82,method=6)
-   PY
-   ```
-   (or just tell me “process the replacements” and I’ll merge, regenerate WebP, and re-center each frame on its structure.)
-3. Because the structures sit centered (labels flowing left), I’ll re-run the per-frame **structure-centering** offsets after the new images land.
+1. Save each PNG into `images/` with the **exact filename** in its heading.
+2. Say **"process the replacements"** and I will: regenerate WebP companions, **rewire the Origins section from 11 → 15 stages** (frames + timeline entries using these teaching points), and re‑center each frame on its structure.
+3. This is a **new 15‑stage set** (`urinary-dev-*`, not the old `kp-dev-*`). The current `kp-dev-*` images stay live in the guide until the new set lands and I wire it in.
 
-## Notes
-- This pack intentionally **overrides the skill’s default white background** → transparent, per the dark immersive guide.
-- Label text and leader lines are **white** (`#ffffff`) because the figures sit on a dark scene; dark or red labels are not visible.
-- Keep lighting direction and subject scale uniform across all 11 so the scroll cross-fade reads as one continuous development.
+## Generation tips (the type kept coming out wrong)
+- GPT image models often default to **serif/italic, colored** labels and add a **glow** — if a result is not‑white, serif, glowing, or misspelled, **regenerate** that one (the prompt forbids all of it) or paste the labels in your editor afterward.
+- Generate **one stage at a time** for best text fidelity; reference a previously‑good image to keep subject scale and lighting consistent.
