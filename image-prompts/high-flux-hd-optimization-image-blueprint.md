@@ -163,17 +163,22 @@ Create a clean publication-grade biomedical mechanism figure at 1792 × 1024 pix
 
 **TOP PANEL — Organ-level overview (full width):**
 Title: "Internal Filtration–Backfiltration in High-Flux Hollow Fibers"
-Show a longitudinal cross-section of a hollow-fiber hemodialyzer. The dialyzer is horizontal. Blood enters LEFT, dialysate exits RIGHT (countercurrent flow). Label blood compartment (inside fiber lumen), dialysate compartment (outside fiber, shell side).
 
-Divide the fiber length into two zones with a dashed vertical midline:
-- PROXIMAL ZONE (left half, labeled "Forward Filtration"): Arrows pointing OUTWARD from blood lumen → dialysate space. Label: "Blood pressure > osmotic pressure → fluid moves OUT." Molecules crossing: small blue dots (urea, creatinine) + medium orange dots (middle molecules, β2M 11,800 Da).
-- DISTAL ZONE (right half, labeled "Back-filtration"): Arrows pointing INWARD from dialysate space → blood lumen. Label: "Dialysate pressure > blood pressure → fluid returns IN." Warning symbol: "⚠ Endotoxin risk if water not ultrapure."
+Draw a technically accurate longitudinal cross-section of a hollow-fiber hemodialyzer in VERTICAL orientation — exactly as in published nephrology schematics:
+- BLOOD flows VERTICALLY: enters through the TOP header → distributes through the tube sheet → travels DOWNWARD through the hollow fiber lumens → collects at the bottom tube sheet → exits at the BOTTOM blood outlet port. Label: "Blood inlet (top)" and "Blood outlet (bottom)."
+- DIALYSATE (solution) flows countercurrent in the SHELL/JACKET space (outside the fibers): enters at a LOWER side port (solution inlet) → flows UPWARD around the fibers → exits at an UPPER side port (solution outlet). Label: "Solution/dialysate inlet (lower side port)" and "Solution outlet (upper side port)."
+- Hollow fibers are depicted as thin vertical parallel lines running the full length of the fiber bundle, from top tube sheet to bottom tube sheet.
+- Header caps are visible at top and bottom. Jacket (outer shell) encloses the fiber bundle on the sides.
+
+Divide the fiber bundle vertically into two zones with a dashed horizontal midline:
+- PROXIMAL ZONE (TOP half, labeled "Forward Filtration — high blood pressure"): Arrows pointing OUTWARD (left and right) from fiber lumen → dialysate/shell space. Label: "Blood pressure > dialysate pressure → fluid moves OUT of fiber." Molecules crossing: small blue dots (urea 60 Da, creatinine) + medium orange dots (middle molecules, β2M 11,800 Da).
+- DISTAL ZONE (BOTTOM half, labeled "Back-filtration — pressure reverses"): Arrows pointing INWARD (from shell space → fiber lumen). Label: "Dialysate pressure > blood pressure → fluid re-enters fiber." Warning symbol beside these arrows: "⚠ Endotoxin risk if dialysate not ultrapure."
 
 **DASHED MAGNIFIED INSET PANEL (bottom-center):**
 Title: "Effect of QB on Internal Filtration Volume"
-Two side-by-side fiber cross-sections:
-- LEFT: Dim/faded — QB 200 mL/min → Internal filtration < 20 mL/min. Small narrow arrows. Label: "Poor TMP · Limited convection · β2M accumulates"
-- RIGHT: Bright/vivid teal — QB 350 mL/min → Internal filtration 60–100 mL/min. Wide bold arrows. Label: "Adequate TMP · Active convection · β2M cleared"
+Two side-by-side magnified vertical fiber bundle cross-sections (same vertical orientation as the main diagram above — blood top to bottom, dialysate countercurrent):
+- LEFT: Dim/faded — QB 200 mL/min → Internal filtration < 20 mL/min. Small, narrow outward arrows in the proximal zone only. Tiny inward arrows in distal zone. Label: "Poor TMP · Limited convection · β2M accumulates"
+- RIGHT: Bright/vivid teal — QB 350 mL/min → Internal filtration 60–100 mL/min. Large, bold outward arrows in proximal zone. Prominent inward arrows in distal zone. Label: "Adequate TMP · Active convection · β2M cleared"
 
 **BOTTOM SUMMARY BAR (3 boxes, horizontal):**
 - Box 1 (amber): "PROBLEM: QB 200–250 → IF < 20 mL/min → Middle molecules NOT cleared"
