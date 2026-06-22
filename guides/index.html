@@ -1500,9 +1500,122 @@
     line-height: 1.5;
   }
 
+  /* ── READING PROGRESS ── */
+  .reading-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(to right, var(--teal), var(--teal-mid));
+    z-index: 9999;
+    transition: width 0.1s linear;
+    pointer-events: none;
+  }
+
+  /* ── CKD BURDEN BAND ── */
+  .burden-band {
+    background: linear-gradient(to right, #0b1929, #162848);
+    padding: 14px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .burden-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .burden-stat { display: flex; flex-direction: column; gap: 3px; }
+  .burden-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.55rem;
+    font-weight: 500;
+    color: white;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .burden-label {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.48);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .burden-divider {
+    width: 1px; height: 38px;
+    background: rgba(255,255,255,0.12);
+    align-self: center;
+  }
+  .burden-source {
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.22);
+    margin-left: auto;
+    font-style: italic;
+  }
+  @media (max-width: 640px) {
+    .burden-num { font-size: 1.25rem; }
+    .burden-source { display: none; }
+  }
+
+  /* ── CONTINUE READING RAIL ── */
+  .recent-rail {
+    background: var(--white);
+    border-bottom: 2px solid var(--teal-light);
+    padding: 9px 24px;
+  }
+  .recent-rail-inner {
+    max-width: 1060px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .recent-rail-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .recent-chip {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 11px;
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: all 0.15s;
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .recent-chip:hover { background: var(--navy); color: white; border-color: var(--navy); }
+  .recent-clear {
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink-muted);
+    font-size: 13px;
+    padding: 2px 5px;
+    flex-shrink: 0;
+    border-radius: 3px;
+    font-family: inherit;
+  }
+  .recent-clear:hover { background: var(--bg); }
+  body.dark-mode .recent-rail { background: #1a2236; border-color: #1e2d47; }
+  body.dark-mode .recent-chip { background: #0f1c2e; border-color: #1e2d47; color: #c4ccd8; }
+  body.dark-mode .recent-chip:hover { background: var(--navy); color: white; }
+
 </style>
 </head>
 <body>
+<div class="reading-progress" id="reading-progress"></div>
 
 
 <!-- NAV -->
@@ -1525,7 +1638,7 @@
   <div class="hero-orb hero-orb-3"></div>
   <div class="hero-inner">
     <div class="hero-eyebrow">Internal Medicine · Nephrology · Clinical Nutrition</div>
-    <h1>Expert Health Guides &amp; Clinical Resources.<br><em>Real answers. Plain language. Evidence you can trust.</em></h1>
+    <h1>Expert Health Guides &amp; Clinical Resources.<br><em id="hero-em">Real answers. Plain language. Evidence you can trust.</em></h1>
     <p class="hero-sub">Evidence-based guides by a practising nephrologist — for patients and their families.</p>
     <div class="stats-row">
       <div class="stat"><span class="stat-num">127</span><span class="stat-label">Guides</span></div>
@@ -1538,6 +1651,22 @@
       <div class="stat-divider"></div>
       <div class="stat"><span class="stat-num stat-cycle">KDIGO</span><span class="stat-label">Evidence basis</span></div>
     </div>
+  </div>
+</div>
+
+<!-- CKD BURDEN BAND -->
+<div class="burden-band">
+  <div class="burden-inner">
+    <div class="burden-stat">
+      <div class="burden-num" id="ckd-global">850,274,891</div>
+      <div class="burden-label">People living with CKD — worldwide</div>
+    </div>
+    <div class="burden-divider"></div>
+    <div class="burden-stat">
+      <div class="burden-num" id="ckd-ph">10,823,047</div>
+      <div class="burden-label">In the Philippines</div>
+    </div>
+    <div class="burden-source">Estimated · ISN / KDIGO 2023 · Updates in real time</div>
   </div>
 </div>
 
@@ -4037,7 +4166,7 @@ try {
 
 </script>
 
-<!-- IMMERSIVE ENHANCEMENTS: parallax + counters + reveal -->
+<!-- IMMERSIVE ENHANCEMENTS: progress + typewriter + counters + reveal + ckd counter + recent rail -->
 <script>
 // ── STAT COUNTER ANIMATION ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
@@ -4098,6 +4227,93 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }, { threshold: 0.06 });
   targets.forEach(function(el) { obs.observe(el); });
+})();
+
+// ── READING PROGRESS ──────────────────────────────────────────────────────────
+(function() {
+  var bar = document.getElementById('reading-progress');
+  if (!bar) return;
+  window.addEventListener('scroll', function() {
+    var st = window.scrollY || document.documentElement.scrollTop;
+    var dh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (dh > 0 ? Math.min(st / dh * 100, 100) : 0) + '%';
+  }, { passive: true });
+})();
+
+// ── TYPEWRITER HERO ───────────────────────────────────────────────────────────
+(function() {
+  var el = document.getElementById('hero-em');
+  if (!el) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var text = el.textContent;
+  el.textContent = '';
+  var i = 0;
+  setTimeout(function() {
+    var iv = setInterval(function() {
+      el.textContent = text.slice(0, ++i);
+      if (i >= text.length) clearInterval(iv);
+    }, 36);
+  }, 700);
+})();
+
+// ── LIVE CKD COUNTER ─────────────────────────────────────────────────────────
+(function() {
+  var globalEl = document.getElementById('ckd-global');
+  var phEl     = document.getElementById('ckd-ph');
+  if (!globalEl && !phEl) return;
+  // Base estimates: ISN/KDIGO 2023 (Jager et al., NDT 2023; PSN 2022 Atlas)
+  var BASE_GLOBAL = 850274891;
+  var BASE_PH     = 10823047;
+  var BASE_MS     = new Date('2024-01-01T00:00:00Z').getTime();
+  // New diagnoses per second: ~16M/yr global, ~500K/yr PH
+  var RATE_G = 16000000 / 31557600;
+  var RATE_P = 500000  / 31557600;
+  function fmt(n) {
+    return Math.floor(n).toLocaleString('en-US');
+  }
+  function tick() {
+    var elapsed = (Date.now() - BASE_MS) / 1000;
+    if (globalEl) globalEl.textContent = fmt(BASE_GLOBAL + RATE_G * elapsed);
+    if (phEl)     phEl.textContent     = fmt(BASE_PH     + RATE_P * elapsed);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+// ── CONTINUE READING RAIL ─────────────────────────────────────────────────────
+(function() {
+  var KEY = 'wgmr-recent-guides';
+  var MAX = 4;
+
+  // Track guide tile clicks
+  document.querySelectorAll('a.guide-tile').forEach(function(tile) {
+    tile.addEventListener('click', function() {
+      var href  = tile.getAttribute('href');
+      var titleEl = tile.querySelector('.tile-title');
+      if (!href || !titleEl) return;
+      try {
+        var list = JSON.parse(localStorage.getItem(KEY) || '[]');
+        list = list.filter(function(g) { return g.href !== href; });
+        list.unshift({ href: href, title: titleEl.textContent.trim() });
+        localStorage.setItem(KEY, JSON.stringify(list.slice(0, MAX)));
+      } catch(e) {}
+    });
+  });
+
+  // Render rail if history exists
+  try {
+    var list = JSON.parse(localStorage.getItem(KEY) || '[]');
+    if (list.length === 0) return;
+    var rail = document.createElement('div');
+    rail.className = 'recent-rail';
+    var chips = list.map(function(g) {
+      return '<a href="' + g.href + '" class="recent-chip" title="' + g.title + '">' + g.title + '</a>';
+    }).join('');
+    rail.innerHTML = '<div class="recent-rail-inner"><span class="recent-rail-label">↩ Continue reading</span>' + chips +
+      '<button class="recent-clear" title="Clear history" onclick="try{localStorage.removeItem(\'' + KEY + '\');this.closest(\'.recent-rail\').remove()}catch(e){}">✕</button></div>';
+    var target = document.querySelector('.main-layout');
+    if (target) target.parentNode.insertBefore(rail, target);
+  } catch(e) {}
 })();
 </script>
 
