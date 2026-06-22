@@ -1512,49 +1512,82 @@
     pointer-events: none;
   }
 
-  /* ── CKD BURDEN BAND ── */
-  .burden-band {
-    background: linear-gradient(to right, #0b1929, #162848);
-    padding: 14px 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+  /* ── CKD LIVE WIDGET ── */
+  .ckd-widget {
+    position: fixed;
+    bottom: 24px; right: 20px;
+    z-index: 8000;
+    font-family: 'DM Sans', sans-serif;
   }
-  .burden-inner {
-    max-width: 900px;
-    margin: 0 auto;
+  .ckd-widget-toggle {
+    background: var(--navy-deep);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 24px;
+    padding: 7px 14px 7px 10px;
     display: flex;
     align-items: center;
-    gap: 28px;
-    flex-wrap: wrap;
+    gap: 8px;
+    cursor: pointer;
+    color: white;
+    font-size: 0.73rem;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+    transition: background 0.18s, box-shadow 0.18s;
+    white-space: nowrap;
   }
-  .burden-stat { display: flex; flex-direction: column; gap: 3px; }
-  .burden-num {
+  .ckd-widget-toggle:hover { background: var(--navy-mid); box-shadow: 0 6px 24px rgba(0,0,0,0.45); }
+  .ckd-pulse {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    flex-shrink: 0;
+    animation: pulse-dot 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.45; transform: scale(0.7); }
+  }
+  .ckd-widget-panel {
+    position: absolute;
+    bottom: calc(100% + 10px); right: 0;
+    background: var(--navy-deep);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 14px 16px 12px;
+    min-width: 230px;
+    box-shadow: 0 8px 36px rgba(0,0,0,0.45);
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+  .ckd-widget.open .ckd-widget-panel {
+    opacity: 1; transform: none; pointer-events: auto;
+  }
+  .ckd-widget-row { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
+  .ckd-widget-row:last-of-type { margin-bottom: 8px; }
+  .ckd-widget-num {
     font-family: 'DM Mono', monospace;
-    font-size: 1.55rem;
+    font-size: 1.2rem;
     font-weight: 500;
     color: white;
     letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
+    line-height: 1.2;
   }
-  .burden-label {
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.48);
+  .ckd-widget-label {
+    font-size: 0.61rem;
+    color: rgba(255,255,255,0.42);
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
-  .burden-divider {
-    width: 1px; height: 38px;
-    background: rgba(255,255,255,0.12);
-    align-self: center;
-  }
-  .burden-source {
-    font-size: 0.6rem;
-    color: rgba(255,255,255,0.22);
-    margin-left: auto;
+  .ckd-widget-source {
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.2);
     font-style: italic;
-  }
-  @media (max-width: 640px) {
-    .burden-num { font-size: 1.25rem; }
-    .burden-source { display: none; }
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 7px;
+    line-height: 1.4;
   }
 
   /* ── CONTINUE READING RAIL ── */
@@ -1724,19 +1757,21 @@
   </div>
 </div>
 
-<!-- CKD BURDEN BAND -->
-<div class="burden-band">
-  <div class="burden-inner">
-    <div class="burden-stat">
-      <div class="burden-num" id="ckd-global">850,274,891</div>
-      <div class="burden-label">People living with CKD — worldwide</div>
+<!-- CKD LIVE WIDGET -->
+<div class="ckd-widget" id="ckd-widget">
+  <button class="ckd-widget-toggle" id="ckd-widget-toggle" aria-expanded="false" aria-label="CKD Live Counter">
+    <span class="ckd-pulse"></span>CKD Live
+  </button>
+  <div class="ckd-widget-panel" role="region" aria-label="Live CKD patient estimates">
+    <div class="ckd-widget-row">
+      <div class="ckd-widget-num" id="ckd-global">850,274,891</div>
+      <div class="ckd-widget-label">People with CKD — worldwide</div>
     </div>
-    <div class="burden-divider"></div>
-    <div class="burden-stat">
-      <div class="burden-num" id="ckd-ph">10,823,047</div>
-      <div class="burden-label">In the Philippines</div>
+    <div class="ckd-widget-row">
+      <div class="ckd-widget-num" id="ckd-ph">10,823,047</div>
+      <div class="ckd-widget-label">In the Philippines</div>
     </div>
-    <div class="burden-source">Estimated · ISN / KDIGO 2023 · Updates in real time</div>
+    <div class="ckd-widget-source">Est. · ISN/KDIGO 2023 · Updates in real time</div>
   </div>
 </div>
 
@@ -4348,6 +4383,24 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   tick();
   setInterval(tick, 1000);
+})();
+
+// ── CKD WIDGET TOGGLE ────────────────────────────────────────────────────────
+(function() {
+  var widget = document.getElementById('ckd-widget');
+  var btn    = document.getElementById('ckd-widget-toggle');
+  if (!widget || !btn) return;
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var isOpen = widget.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e) {
+    if (!widget.contains(e.target)) {
+      widget.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
 })();
 
 // ── CONTINUE READING RAIL ─────────────────────────────────────────────────────
