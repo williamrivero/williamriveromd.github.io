@@ -110,19 +110,46 @@
 
   /* ── HERO ── */
   .hero {
-    background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-mid) 60%, #1e4a6e 100%);
-    padding: 40px 24px 32px;
+    background: var(--navy-deep);
+    padding: 72px 24px 56px;
     position: relative;
     overflow: hidden;
+    min-height: 300px;
   }
+  /* Parallax background image layer */
+  .hero-bg {
+    position: absolute;
+    inset: -20% 0;
+    background-image: url('/images/guides-hero-banner.webp');
+    background-size: cover;
+    background-position: center 40%;
+    will-change: transform;
+    z-index: 0;
+  }
+  /* Dark cinematic overlay */
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(10, 22, 42, 0.91) 0%,
+      rgba(18, 34, 65, 0.82) 55%,
+      rgba(12, 28, 58, 0.87) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+  /* Subtle dot texture on top of overlay */
   .hero::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.018'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     pointer-events: none;
+    z-index: 2;
   }
-  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; }
+  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 3; }
   .hero-eyebrow {
     font-size: 0.7rem;
     font-weight: 600;
@@ -912,7 +939,7 @@
 
   /* Responsive */
   @media (max-width: 700px) {
-    .hero { padding: 28px 16px 24px; }
+    .hero { padding: 48px 16px 36px; }
     .hero h1 { font-size: 1.4rem; }
     .learning-path { padding: 12px 16px; }
     .main-layout { padding: 12px 12px 48px; }
@@ -931,6 +958,18 @@
   /* Highlight matched text — always dark text on amber so contrast ≥ 7:1 */
   mark { background: #fbbf24; color: #111827; border-radius: 2px; padding: 0 2px; font-weight: 600; }
   body.dark-mode mark { background: #f59e0b; color: #111827; }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.revealed { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
 
   .prototype-banner {
     background: var(--orange);
@@ -1449,6 +1488,7 @@
 
 <!-- HERO -->
 <div class="hero">
+  <div class="hero-bg" id="hero-bg"></div>
   <div class="hero-inner">
     <div class="hero-eyebrow">Internal Medicine · Nephrology · Clinical Nutrition</div>
     <h1>Expert Health Guides &amp; Clinical Resources.<br><em>Real answers. Plain language. Evidence you can trust.</em></h1>
@@ -3961,6 +4001,76 @@ try {
   });
 })();
 
+</script>
+
+<!-- IMMERSIVE ENHANCEMENTS: parallax + counters + reveal -->
+<script>
+// ── HERO PARALLAX ─────────────────────────────────────────────────────────────
+(function() {
+  var bg = document.getElementById('hero-bg');
+  if (!bg) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var hero = bg.closest('.hero');
+  var ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        var sy = window.scrollY || window.pageYOffset;
+        if (sy <= hero.offsetTop + hero.offsetHeight) {
+          bg.style.transform = 'translateY(' + (sy * 0.28) + 'px)';
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
+// ── STAT COUNTER ANIMATION ────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+  function runCounter(el, target, suffix, delay, duration) {
+    setTimeout(function() {
+      var start = performance.now();
+      function frame(now) {
+        var p = Math.min((now - start) / duration, 1);
+        el.textContent = Math.round(easeOut(p) * target) + suffix;
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }, delay);
+  }
+  var idx = 0;
+  document.querySelectorAll('.stat').forEach(function(stat) {
+    var numEl = stat.querySelector('.stat-num');
+    if (!numEl) return;
+    var raw = numEl.textContent.trim();
+    var suffix = raw.replace(/\d/g, '');
+    var num = parseInt(raw.replace(/\D/g, ''), 10);
+    if (isNaN(num)) return;
+    numEl.textContent = '0' + suffix;
+    runCounter(numEl, num, suffix, 350 + idx * 130, 1100);
+    idx++;
+  });
+});
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
+(function() {
+  if (!window.IntersectionObserver) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var targets = document.querySelectorAll(
+    '.library-intro, .pathways-section, .section-block, .spotlight, .pinned-block'
+  );
+  targets.forEach(function(el) { el.classList.add('reveal'); });
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.06 });
+  targets.forEach(function(el) { obs.observe(el); });
+})();
 </script>
 
 <!-- SITE FOOTER -->
