@@ -1612,6 +1612,76 @@
   body.dark-mode .recent-chip { background: #0f1c2e; border-color: #1e2d47; color: #c4ccd8; }
   body.dark-mode .recent-chip:hover { background: var(--navy); color: white; }
 
+  /* ── STAGGERED TILE ENTRANCE ── */
+  @keyframes tile-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .guide-tile.tile-stagger {
+    animation: tile-in 0.32s ease both;
+    animation-delay: var(--tile-delay, 0ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .guide-tile.tile-stagger { animation: none; }
+  }
+
+  /* ── WHAT BRINGS YOU HERE PROMPT ── */
+  .persona-prompt {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--navy-deep);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 18px 24px 22px;
+    z-index: 8888;
+    box-shadow: 0 -6px 32px rgba(0,0,0,0.35);
+    transform: translateY(100%);
+    transition: transform 0.48s cubic-bezier(0.16,1,0.3,1);
+  }
+  .persona-prompt.show { transform: none; }
+  .persona-inner { max-width: 900px; margin: 0 auto; }
+  .persona-question {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 12px;
+  }
+  .persona-choices {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .persona-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.18);
+    color: white;
+    padding: 9px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 600;
+    transition: background 0.15s, border-color 0.15s, transform 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .persona-btn:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.35); transform: translateY(-1px); }
+  .persona-btn.selected { background: var(--teal); border-color: var(--teal); }
+  .persona-skip {
+    background: none; border: none;
+    color: rgba(255,255,255,0.35);
+    font-size: 0.72rem; cursor: pointer;
+    margin-left: auto; font-family: 'DM Sans', sans-serif;
+    text-decoration: underline; padding: 4px;
+  }
+  .persona-skip:hover { color: rgba(255,255,255,0.65); }
+  @media (max-width: 640px) {
+    .persona-question { font-size: 0.88rem; }
+    .persona-btn { font-size: 0.78rem; padding: 8px 12px; }
+  }
+
 </style>
 </head>
 <body>
@@ -4314,6 +4384,90 @@ document.addEventListener('DOMContentLoaded', function() {
     var target = document.querySelector('.main-layout');
     if (target) target.parentNode.insertBefore(rail, target);
   } catch(e) {}
+})();
+
+// ── STAGGERED TILE ENTRANCE ───────────────────────────────────────────────────
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  function staggerTiles(body) {
+    var tiles = body.querySelectorAll('a.guide-tile');
+    tiles.forEach(function(tile, i) {
+      tile.classList.remove('tile-stagger');
+      void tile.offsetWidth;
+      tile.style.setProperty('--tile-delay', (i * 32) + 'ms');
+      tile.classList.add('tile-stagger');
+    });
+  }
+
+  // Patch toggleSection to stagger on open
+  var _orig = window.toggleSection;
+  window.toggleSection = function(header) {
+    var body = header.nextElementSibling;
+    var wasHidden = body.classList.contains('hidden');
+    _orig(header);
+    if (wasHidden) requestAnimationFrame(function() { staggerTiles(body); });
+  };
+
+  // Stagger tiles in sections already open when they scroll into view
+  if (window.IntersectionObserver) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { staggerTiles(e.target); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.04 });
+    document.querySelectorAll('.section-body:not(.hidden)').forEach(function(b) { obs.observe(b); });
+  }
+})();
+
+// ── WHAT BRINGS YOU HERE ─────────────────────────────────────────────────────
+(function() {
+  var KEY = 'wgmr-visit-persona';
+  try { if (localStorage.getItem(KEY)) return; } catch(e) { return; }
+
+  var el = document.createElement('div');
+  el.className = 'persona-prompt';
+  el.setAttribute('role', 'complementary');
+  el.innerHTML =
+    '<div class="persona-inner">' +
+      '<div class="persona-question">What brings you here today?</div>' +
+      '<div class="persona-choices">' +
+        '<button class="persona-btn" data-persona="patient">🫀 I\'m a Patient</button>' +
+        '<button class="persona-btn" data-persona="caregiver">🤝 I\'m a Caregiver</button>' +
+        '<button class="persona-btn" data-persona="clinician">🩺 I\'m a Clinician</button>' +
+        '<button class="persona-skip">Skip</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(el);
+
+  function dismiss(persona) {
+    try { if (persona) localStorage.setItem(KEY, persona); } catch(e) {}
+    el.classList.remove('show');
+    setTimeout(function() { el.remove(); }, 520);
+    if (!persona) return;
+    setTimeout(function() {
+      if (persona === 'clinician') {
+        var btn = document.querySelector('.filter-btn[data-filter="clinician"]');
+        if (btn) btn.click();
+      } else if (persona === 'caregiver') {
+        var care = document.querySelector('.pathway-tile[data-pathway="caregiver"]');
+        if (care) { care.click(); care.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      } else {
+        var sec = document.querySelector('.pathways-section');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 550);
+  }
+
+  el.querySelectorAll('.persona-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      btn.classList.add('selected');
+      setTimeout(function() { dismiss(btn.dataset.persona); }, 280);
+    });
+  });
+  el.querySelector('.persona-skip').addEventListener('click', function() { dismiss(null); });
+
+  setTimeout(function() { el.classList.add('show'); }, 2800);
 })();
 </script>
 
