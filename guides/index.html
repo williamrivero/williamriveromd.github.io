@@ -110,66 +110,81 @@
 
   /* ── HERO ── */
   .hero {
-    background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-mid) 60%, #1e4a6e 100%);
-    background-size: 220% 220%;
+    background: linear-gradient(135deg, #1a0800 0%, #2e1500 55%, #160700 100%);
+    background-size: 240% 240%;
     padding: 72px 24px 56px;
     position: relative;
     overflow: hidden;
     min-height: 300px;
-    animation: hero-shift 16s ease infinite alternate;
+    animation: hero-shift 20s ease infinite alternate;
   }
   @keyframes hero-shift {
     0%   { background-position: 0% 0%; }
+    50%  { background-position: 80% 30%; }
     100% { background-position: 100% 100%; }
   }
-  /* Dot texture */
+  /* Subtle grain texture */
   .hero::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.022'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f59e0b' fill-opacity='0.025'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 1;
   }
-  /* Animated glow orbs */
-  .hero-orb {
+  /* Warm ambient glow — fixed, no drift */
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 90% at 85% 50%, rgba(180,90,0,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 70% at 10% 60%, rgba(120,50,0,0.22) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  /* Particle container */
+  .particles-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+  }
+  /* Individual filtration particles */
+  .hero-particle {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
   }
-  .hero-orb-1 {
-    width: 640px; height: 640px;
-    background: radial-gradient(circle, rgba(0,210,220,0.38) 0%, rgba(0,180,195,0.15) 45%, transparent 70%);
-    top: -280px; right: -60px;
-    animation: orb1 22s ease-in-out infinite alternate;
+  /* Straight stream — small solutes passing freely */
+  @keyframes p-flow-a {
+    0%   { transform: translateX(0) translateY(0);  opacity: 0; }
+    8%   { opacity: var(--pop, 0.65); }
+    92%  { opacity: var(--pop, 0.65); }
+    100% { transform: translateX(var(--travel, 920px)) translateY(-12px); opacity: 0; }
   }
-  .hero-orb-2 {
-    width: 480px; height: 480px;
-    background: radial-gradient(circle, rgba(60,100,180,0.55) 0%, transparent 65%);
-    bottom: -220px; left: -40px;
-    animation: orb2 28s ease-in-out infinite alternate;
+  /* S-curve — proximal tubule reabsorption arc */
+  @keyframes p-flow-b {
+    0%   { transform: translate(0px, 0px) scale(1);    opacity: 0; }
+    8%   { opacity: var(--pop, 0.6); }
+    30%  { transform: translate(28%, -36px) scale(0.85); }
+    55%  { transform: translate(56%,  28px) scale(1.0); }
+    80%  { transform: translate(82%, -18px) scale(0.9); }
+    92%  { opacity: var(--pop, 0.6); }
+    100% { transform: translate(var(--travel, 920px), 0px) scale(0.7); opacity: 0; }
   }
-  .hero-orb-3 {
-    width: 340px; height: 340px;
-    background: radial-gradient(circle, rgba(0,195,210,0.28) 0%, rgba(0,160,180,0.10) 50%, transparent 70%);
-    top: 15%; right: 28%;
-    animation: orb3 19s ease-in-out infinite alternate;
-  }
-  @keyframes orb1 {
-    0%   { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-80px, 55px) scale(1.2); }
-  }
-  @keyframes orb2 {
-    0%   { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(100px, -70px) scale(1.28); }
-  }
-  @keyframes orb3 {
-    0%   { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-55px, 80px) scale(0.82); }
+  /* Descending arc — collecting duct / descending limb */
+  @keyframes p-flow-c {
+    0%   { transform: translate(0px,   0px) scale(1);   opacity: 0; }
+    10%  { opacity: var(--pop, 0.5); }
+    45%  { transform: translate(44%,  44px) scale(0.75); }
+    90%  { opacity: var(--pop, 0.5); }
+    100% { transform: translate(var(--travel, 920px), 20px) scale(0.55); opacity: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero          { animation: none; }
-    .hero-orb      { animation: none; }
+    .hero             { animation: none; }
+    .hero-particle    { animation: none; opacity: 0.4; }
   }
   .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 3; }
   .hero-eyebrow {
@@ -177,7 +192,7 @@
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--teal-mid);
+    color: #f59e0b;
     margin-bottom: 8px;
   }
   .hero h1 {
@@ -1736,9 +1751,7 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
-  <div class="hero-orb hero-orb-3"></div>
+  <div class="particles-wrap" id="hero-particles"></div>
   <div class="hero-inner">
     <div class="hero-eyebrow">Internal Medicine · Nephrology · Clinical Nutrition</div>
     <h1>Expert Health Guides &amp; Clinical Resources.<br><em id="hero-em">Real answers. Plain language. Evidence you can trust.</em></h1>
@@ -4273,6 +4286,46 @@ try {
 
 <!-- IMMERSIVE ENHANCEMENTS: progress + typewriter + counters + reveal + ckd counter + recent rail -->
 <script>
+// ── HERO PARTICLE GENERATOR ───────────────────────────────────────────────────
+(function() {
+  var wrap = document.getElementById('hero-particles');
+  if (!wrap) return;
+  var hero  = wrap.parentElement;
+  var W     = (hero ? hero.offsetWidth : 0) || 960;
+  var flows = ['p-flow-a', 'p-flow-b', 'p-flow-c'];
+  // amber/gold palette: [color string with VAR placeholder for opacity]
+  var palette = [
+    'rgba(245,158,11,VAR)',  // amber-500
+    'rgba(251,191,36,VAR)',  // amber-400
+    'rgba(252,211,77,VAR)',  // amber-300
+    'rgba(254,240,138,VAR)', // amber-200 — highlight glints
+    'rgba(217,119,6,VAR)',   // amber-600 — deeper warm
+  ];
+  var count = 24;
+  for (var i = 0; i < count; i++) {
+    var p    = document.createElement('div');
+    p.className = 'hero-particle';
+    var sz   = 2.5 + Math.random() * 6.5;          // 2.5–9px
+    var top  = 4 + Math.random() * 90;              // 4%–94%
+    var dur  = 8 + Math.random() * 16;              // 8–24s
+    var delay = -(Math.random() * dur);              // pre-offset so they're mid-journey on load
+    var op   = 0.22 + Math.random() * 0.55;         // 0.22–0.77
+    var travel = W + 40;
+    var flow = flows[Math.floor(Math.random() * flows.length)];
+    var color = palette[Math.floor(Math.random() * palette.length)].replace('VAR', op.toFixed(2));
+    p.style.cssText =
+      'width:'    + sz.toFixed(1) + 'px;' +
+      'height:'   + sz.toFixed(1) + 'px;' +
+      'top:'      + top.toFixed(1) + '%;' +
+      'left:'     + (-sz - 2).toFixed(0) + 'px;' +
+      'background:' + color + ';' +
+      '--pop:'    + op.toFixed(2) + ';' +
+      '--travel:' + travel + 'px;' +
+      'animation:' + flow + ' ' + dur.toFixed(1) + 's ' + delay.toFixed(1) + 's linear infinite;';
+    wrap.appendChild(p);
+  }
+})();
+
 // ── STAT COUNTER ANIMATION ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
