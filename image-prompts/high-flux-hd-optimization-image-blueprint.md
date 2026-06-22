@@ -112,9 +112,14 @@ THREE COLUMNS with rounded card borders, light gray backgrounds (#f3f4f6), teal 
 - Green (#1f7a4d) label at bottom: "FULL FUNCTION"
 
 **COLUMN 2 — HIGH-FLUX DIALYZER: QB 200–250 mL/min:**
-- Semi-photorealistic 3D dialyzer cartridge, dimly lit (desaturated), with a small faded blue blood flow arrow labeled "200–250 mL/min"
-- Faint convection symbol — crossed-out middle-molecule icon.
-- Stats:
+- Anatomically accurate schematic cross-section of a hollow-fiber hemodialyzer in VERTICAL orientation (matching published nephrology diagrams):
+  - Blood flows from a TOP blood inlet port → downward through thin vertical hollow fiber lumens (depicted as multiple thin parallel vertical lines inside the cartridge body) → exits at a BOTTOM blood outlet port.
+  - Dialysate flows countercurrent: enters at a LOWER side port → upward through the shell/jacket space (outside the fibers) → exits at an UPPER side port.
+  - Header caps (rounded end caps) visible at top and bottom. Outer jacket/shell visible on sides. Tube sheets shown at both ends sealing the fiber bundle.
+  - DESATURATED, dim color treatment (muted grays and faded blues) to signal underperformance.
+  - At the TOP half of the fiber bundle: very small, sparse outward arrows from fiber lumens — indicating minimal forward filtration. Label: "QB 200–250 mL/min → Poor TMP → < 20 mL/min internal filtration."
+  - A faint crossed-out middle-molecule icon overlaid on the fiber bundle mid-section. Label: "Middle molecules NOT cleared."
+- Stats below the diagram (navy bold):
   - Filtration: ~12–14 mL/min
   - Small molecules: ✓ Cleared (urea)
   - Middle molecules (β2M): ✗ Poorly cleared
@@ -124,9 +129,14 @@ THREE COLUMNS with rounded card borders, light gray backgrounds (#f3f4f6), teal 
 - Amber (#b8860b) label at bottom: "WASTED MEMBRANE"
 
 **COLUMN 3 — HIGH-FLUX DIALYZER: QB ≥ 300 mL/min:**
-- Semi-photorealistic 3D dialyzer cartridge, bright and vivid, with a strong teal blood flow arrow labeled "≥ 300 mL/min ✓"
-- Active convection arrows along hollow fibers.
-- Stats:
+- Same anatomically accurate vertical hollow-fiber hemodialyzer schematic as Column 2, but in VIVID, saturated teal/blue color treatment to signal full activation:
+  - Blood flows TOP inlet → downward through vertical hollow fiber lumens → BOTTOM outlet (same vertical fiber bundle structure as Column 2).
+  - Dialysate enters LOWER side port → upward through shell → exits UPPER side port (same countercurrent pattern).
+  - Header caps, tube sheets, jacket all visible.
+  - At the TOP half of the fiber bundle (proximal zone): large, bold outward arrows from fiber lumens into shell space — vigorous forward filtration. Label: "QB ≥ 300 mL/min → Adequate TMP → 60–100 mL/min internal filtration."
+  - At the BOTTOM half (distal zone): prominent inward arrows from shell space back into fiber lumens — active back-filtration loop. Label: "Back-filtration loop active."
+  - A vivid teal checkmark icon on the fiber bundle mid-section. Label: "Middle molecules CLEARED."
+- Stats below the diagram (navy bold):
   - Filtration: 60–100 mL/min (internal)
   - Small molecules: ✓ Cleared
   - Middle molecules (β2M): ✓ Substantially cleared
