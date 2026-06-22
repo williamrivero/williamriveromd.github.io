@@ -139,19 +139,19 @@
   }
   .hero-orb-1 {
     width: 640px; height: 640px;
-    background: radial-gradient(circle, rgba(26,107,114,0.28) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(0,210,220,0.38) 0%, rgba(0,180,195,0.15) 45%, transparent 70%);
     top: -280px; right: -60px;
     animation: orb1 22s ease-in-out infinite alternate;
   }
   .hero-orb-2 {
     width: 480px; height: 480px;
-    background: radial-gradient(circle, rgba(36,63,116,0.45) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(60,100,180,0.55) 0%, transparent 65%);
     bottom: -220px; left: -40px;
     animation: orb2 28s ease-in-out infinite alternate;
   }
   .hero-orb-3 {
-    width: 320px; height: 320px;
-    background: radial-gradient(circle, rgba(42,138,147,0.18) 0%, transparent 65%);
+    width: 340px; height: 340px;
+    background: radial-gradient(circle, rgba(0,195,210,0.28) 0%, rgba(0,160,180,0.10) 50%, transparent 70%);
     top: 15%; right: 28%;
     animation: orb3 19s ease-in-out infinite alternate;
   }
@@ -224,6 +224,16 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
+  .stat-link-block {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
+    text-align: center;
+  }
+  .stat-link-block:hover .stat-num { color: var(--teal-mid); }
+  .stat-cycle { transition: opacity 0.3s ease; }
   .stat-divider {
     width: 1px;
     height: 36px;
@@ -1524,9 +1534,9 @@
       <div class="stat-divider"></div>
       <div class="stat"><span class="stat-num">4</span><span class="stat-label">Languages</span></div>
       <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Tools</span></div>
+      <a href="calculators.html" class="stat stat-link-block"><span class="stat-num">92</span><span class="stat-label">Calculators</span></a>
       <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-num">KDIGO</span><span class="stat-label">Evidence basis</span></div>
+      <div class="stat"><span class="stat-num stat-cycle">KDIGO</span><span class="stat-label">Evidence basis</span></div>
     </div>
   </div>
 </div>
@@ -4057,6 +4067,22 @@ document.addEventListener('DOMContentLoaded', function() {
     idx++;
   });
 });
+
+// ── EVIDENCE BASIS CYCLING ───────────────────────────────────────────────────
+(function() {
+  var el = document.querySelector('.stat-cycle');
+  if (!el) return;
+  var bodies = ['KDIGO', 'PSN', 'AHA', 'ADA', 'ASN', 'ISRNM'];
+  var i = 0;
+  setInterval(function() {
+    el.style.opacity = '0';
+    setTimeout(function() {
+      i = (i + 1) % bodies.length;
+      el.textContent = bodies[i];
+      el.style.opacity = '1';
+    }, 320);
+  }, 2800);
+})();
 
 // ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
 (function() {
