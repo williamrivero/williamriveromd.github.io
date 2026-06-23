@@ -335,11 +335,12 @@ MASTER_CSS = """
   body.physician-mode .hero-toc-arrow { color:#b08a2a; }
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
-  .mode-physician .hero-grid { grid-template-columns: auto 1fr; }
-  .mode-physician .hero-cards { order: -1; }
+  /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
+  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
-  .hero-cards.mode-physician { order: -1; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: auto 1fr; }
+  .hero-cards.mode-physician { order: -1; width: 100%; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
