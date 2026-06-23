@@ -32,7 +32,9 @@ Create clean, publication-grade biomedical mechanism figures similar to a review
   - Blue for veins/protective or therapeutic effects
   - Pale pink for pathology summary boxes
   - Pale blue for treatment/benefit summary boxes
-- Use clean sans-serif typography
+- Use clean sans-serif typography in one of the four approved fonts only —
+  Inter, Nunito Sans, IBM Plex Sans, or Manrope (never a serif font). Name the
+  chosen font explicitly in the generated prompt.
 - Keep all text legible and medically precise
 - Avoid decorative effects, photorealism, shadows, dark backgrounds, or cartoonish styling
 
@@ -158,4 +160,4 @@ Left pathology box: [injury drivers]
 Center intervention/mechanism box: [intervention or central process]  
 Right benefit/outcome box: [expected effects]
 
-Use a white background, muted clinical colors, clean sans-serif labels, thin dashed connector lines, and a review-article figure style. Avoid photorealism, dark backgrounds, decorative elements, and overcrowding.
+Use a white background, muted clinical colors, clean sans-serif labels set in one of Inter, Nunito Sans, IBM Plex Sans, or Manrope (never a serif font), thin dashed connector lines, and a review-article figure style. Avoid photorealism, dark backgrounds, decorative elements, and overcrowding.

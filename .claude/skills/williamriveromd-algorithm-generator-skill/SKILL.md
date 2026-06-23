@@ -30,7 +30,8 @@ Every generated prompt should create an image with:
 - Consistent node size, padding, and spacing
 - Clear hierarchy from diagnosis/assessment to treatment/outcome
 - Generous margins and uncluttered negative space
-- Crisp black or navy sans-serif typography
+- Crisp black or navy sans-serif typography, set in one of the four approved
+  fonts only: Inter, Nunito Sans, IBM Plex Sans, or Manrope (never a serif font)
 - Publication-grade vector infographic quality
 - No photorealistic people
 - No cartoon styling
@@ -71,6 +72,22 @@ Include a small professional footer reading “© williamriveromd.com” positio
 
 ---
 
+## Mandatory Typeface
+
+Every generated algorithm prompt must specify a clean sans-serif font, and may use
+**only** one of these four approved faces:
+
+- Inter
+- Nunito Sans
+- IBM Plex Sans
+- Manrope
+
+Never use a serif font, condensed display font outside this list, or any decorative
+or handwritten typeface. Name the chosen approved font explicitly inside every image
+prompt (e.g. “clean sans-serif typography set in Inter”).
+
+---
+
 # Style Mode A: AHA / Resuscitation Algorithm
 
 ## Use Cases
@@ -108,7 +125,7 @@ Use this style for:
 
 ## Prompt Template
 
-Create a polished medical guideline algorithm flowchart in the style of an American Heart Association provider algorithm. Use a white background, clean sans-serif typography, thin black arrows, pastel rounded boxes, and pink decision diamonds. Layout should be portrait, centered, spacious, and easy to read.
+Create a polished medical guideline algorithm flowchart in the style of an American Heart Association provider algorithm. Use a white background, clean sans-serif typography set in one of Inter, Nunito Sans, IBM Plex Sans, or Manrope (never a serif font), thin black arrows, pastel rounded boxes, and pink decision diamonds. Layout should be portrait, centered, spacious, and easy to read.
 
 Use these visual conventions:
 - Green rounded boxes for safety, monitoring, or supportive care
@@ -182,7 +199,7 @@ Use these visual conventions:
 - Top-down flow with balanced left-right branching
 - Consistent rounded corners, box widths, and vertical spacing
 - No icons, no decorative graphics, no dark background
-- Typography should be clean, black, and journal-like
+- Typography should be clean, black, and journal-like, set in one of Inter, Nunito Sans, IBM Plex Sans, or Manrope (never a serif font)
 
 Content to render:
 [INSERT ALGORITHM CONTENT HERE]
@@ -222,7 +239,7 @@ Use this style when the user wants a more branded, modern, visually polished alg
 
 ## Prompt Template
 
-Create a clean publication-ready clinical algorithm flowchart in the williamriveromd.com house style. Use a white or very light off-white background, restrained navy and teal typography, thin teal connector arrows, and generous margins. The layout should be centered, symmetrical, and suitable for a patient-facing or clinician-facing nephrology education guide.
+Create a clean publication-ready clinical algorithm flowchart in the williamriveromd.com house style. Use a white or very light off-white background, restrained navy and teal typography set in one of Inter, Nunito Sans, IBM Plex Sans, or Manrope (never a serif font), thin teal connector arrows, and generous margins. The layout should be centered, symmetrical, and suitable for a patient-facing or clinician-facing nephrology education guide.
 
 Use these color conventions:
 - Navy #0f1e2e for title, body text, and structural emphasis
@@ -289,6 +306,7 @@ Before finalizing the prompt, ensure:
 - Decision nodes are visually distinct.
 - Treatment and action nodes are color-coded consistently.
 - Branch labels are short and readable.
+- The prompt names an approved sans-serif font (Inter, Nunito Sans, IBM Plex Sans, or Manrope) and forbids serif fonts.
 - The prompt prevents dark backgrounds, clutter, cartoons, and unnecessary decoration.
 - The copyright footer is included.
 - The image could plausibly appear in a clinical guideline, medical journal, conference slide, or williamriveromd.com guide.
