@@ -18,7 +18,8 @@ Steps:
 3. Run each script below in order, passing `--guide <filename>`. Report the output of each step briefly. If a script fails, stop and show the error.
 
 ```bash
-python3 patch_master_css.py --guide <filename>
+python3 patch_master_css.py --guide <filename>     # themed master CSS (pastel hero, Inter/Manrope/Nunito Sans)
+python3 patch_font_link.py --guide <filename>       # Google Fonts <link> → Inter/Manrope/Nunito Sans (drops Lora/DM Sans)
 python3 patch_hero_fetchpriority.py --guide <filename>
 python3 patch_hero_fullwidth.py --guide <filename>
 python3 patch_hero_maxwidth.py --guide <filename>
@@ -28,6 +29,13 @@ python3 patch_signature_position.py --guide <filename>
 python3 patch_last_reviewed.py --guide <filename>
 python3 generate_sitemap.py
 ```
+
+> **Theme note:** The site uses the pastel hero theme with Inter (headlines/titles/numbers),
+> Manrope (body), and Nunito Sans (hero subtitle). Both `patch_master_css.py` and
+> `patch_font_link.py` must run so the guide gets the themed CSS **and** loads the matching
+> fonts. The optional `patch_hero_theme.py` (circular vignette + clinician cards) is **opt-in**
+> — only run it on guides that have a real hero photo and dual-mode clinical sections (e.g.
+> `epilepsy-seizures-ckd.html`); most guides should keep the plain themed hero.
 
 4. After all scripts succeed, stage the new guide and any modified files, then commit and push to `main`:
 

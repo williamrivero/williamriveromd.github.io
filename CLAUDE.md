@@ -20,6 +20,10 @@ python3 patch_master_css.py               # apply master CSS to all guides
 python3 patch_master_css.py --dry-run     # preview changes without writing
 python3 patch_master_css.py --guide anemia-management.html  # single guide
 
+python3 patch_font_link.py                # set Google Fonts <link> → Inter/Manrope/Nunito Sans (drops Lora/DM Sans)
+python3 patch_font_link.py --dry-run      # preview changes without writing
+python3 patch_font_link.py --guide anemia-management.html   # single guide
+
 python3 patch_kdigo2026.py                # apply KDIGO 2026 terminology fixes
 python3 patch_kdigo2026.py --dry-run
 
@@ -183,6 +187,17 @@ Each of the 90 guide files is a self-contained HTML document with:
 - **Multi-language content** — English, Tagalog, Cebuano, and Kapampangan text coexisting in the DOM, toggled by class
 
 **Do not edit CSS directly in guide files.** The master CSS is maintained in `patch_master_css.py` (`MASTER_CSS` string near the top of the file) and batch-applied with the script. One-off edits to a guide's `<style>` block will be overwritten on the next `patch_master_css.py` run.
+
+**Theme & typography.** Guides/calculators use the pastel hero theme — light mint hero
+(patient) / light periwinkle hero (clinician) with dark text — and an all-sans type system:
+**Inter** for headlines, section titles, and numbers; **Manrope** for body text and UI;
+**Nunito Sans** for the hero subtitle. Lora and DM Sans have been removed. The fonts are
+declared in `MASTER_CSS` *and* loaded via the `<head>` Google Fonts `<link>`, which is managed
+by `patch_font_link.py` (run it alongside `patch_master_css.py`). The homepage (`index.html`),
+the guides listing (`guides/index.html`), and `nephrology-atlas.html` keep their own font
+stacks and are excluded from both. The optional `patch_hero_theme.py` adds the epilepsy-style
+circular-vignette + clinician cards and is **opt-in** (only for guides with a hero photo +
+dual-mode clinical sections), not part of the default rollout.
 
 ### Language system
 
