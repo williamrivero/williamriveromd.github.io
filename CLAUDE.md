@@ -138,6 +138,26 @@ Inserts before the **last** `</body>` so JS print-popup strings
 (`win.document.write('…</body></html>')`) are never touched.
 
 ```bash
+python3 patch_og_image.py                 # ensure every guide has a 1200x630 OG share card + tags
+python3 patch_og_image.py --dry-run       # preview changes without writing
+python3 patch_og_image.py --guide anemia-management.html  # single guide
+```
+
+Run `patch_og_image.py` after adding any new guide. Social-share (Open Graph)
+cards must be **exactly 1200×630**. The script renders a dedicated
+`images/<slug>-og.png` card for each guide — cover-cropping landscape sources
+(full-bleed, centered) and letterbox-padding square/portrait sources on their own
+average colour so multi-panel infographics aren't sliced — then points
+`og:image`/`twitter:image` at it and sets `og:image:width=1200`,
+`og:image:height=630`, `og:image:alt`, `twitter:image:alt` and
+`twitter:card=summary_large_image`. The source is the guide's current `og:image`
+(or its first in-page content image, or the site hero `photo-hero.jpg` as a last
+resort). Cards are **separate derivatives** — the script never resizes the
+in-page hero file. A guide whose `og:image` already resolves to an existing,
+exactly-1200×630 file is left untouched (only missing tags are back-filled).
+Requires `pip install pillow`. Idempotent.
+
+```bash
 python3 build_companion_pdfs.py                 # render every downloads/*.html companion to PDF
 python3 build_companion_pdfs.py --list          # list buildable companions
 python3 build_companion_pdfs.py wgmr-gout-uric-acid-guide   # render a single companion
