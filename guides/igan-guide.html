@@ -236,11 +236,11 @@
     box-shadow: 0 22px 55px rgba(0,0,0,.45);
   }
   .hero-vignette img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    margin: 0;            /* override global hero-img centering */
-    /* zoom past the image's baked-in title (top) + watermark (bottom), focus faces */
-    transform: scale(1.34); transform-origin: 50% 60%;
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+    display: block; margin: 0;   /* override global hero-img centering */
   }
+  /* opt-in zoom for hero images with a baked-in title/watermark (e.g. epilepsy) */
+  .hero-vignette.zoom img { transform: scale(1.34); transform-origin: 50% 60%; }
   .hero-vignette::after {           /* vignette: darken rim, blend into hero */
     content: ''; position: absolute; inset: 0; border-radius: 50%;
     background:
@@ -368,6 +368,12 @@
   @media(max-width: 460px) { .hero-cards { grid-template-columns: 1fr; } }
 
   /* Legible hero 'Last Reviewed' badge on pastel bg (overrides old inline white text) */
+  /* Clinician badge chips (pastel-themed; canonical so guides w/o a local rule render) */
+  .clin-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .clin-badge { display:inline-block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:.02em; color:#1f3864; background:rgba(31,56,100,.08);
+    border:1px solid rgba(31,56,100,.25); border-radius:20px; padding:4px 12px; }
+
   .hero-meta time { color:#1f3864 !important; background:rgba(31,56,100,.08) !important; border-color:rgba(31,56,100,.35) !important; }
 
   /* ── CONTAINER ───────────────────────────────────────────────────────────── */
@@ -2027,19 +2033,10 @@ try{if(localStorage.getItem('wgmr-igan-mode')==='physician'){document.body.class
 
 <!-- ═══ HERO ══════════════════════════════════════ -->
 <section class="hero">
-  <!-- Kidney background SVG -->
-  <div class="hero-kidney-bg" aria-hidden="true">
-    <svg width="280" height="340" viewBox="0 0 280 340" fill="none">
-      <ellipse cx="80" cy="170" rx="70" ry="155" stroke="white" stroke-width="2" fill="none"/>
-      <ellipse cx="80" cy="170" rx="50" ry="130" stroke="white" stroke-width="1.5" fill="none"/>
-      <ellipse cx="80" cy="170" rx="30" ry="100" stroke="white" stroke-width="1" fill="none"/>
-      <ellipse cx="200" cy="170" rx="70" ry="155" stroke="white" stroke-width="2" fill="none"/>
-      <ellipse cx="200" cy="170" rx="50" ry="130" stroke="white" stroke-width="1.5" fill="none"/>
-      <ellipse cx="200" cy="170" rx="30" ry="100" stroke="white" stroke-width="1" fill="none"/>
-    </svg>
-  </div>
-  <div class="container">
-    <div class="hero-tag">
+<div class="container">
+<div class="hero-grid">
+<div class="hero-copy">
+<div class="hero-tag">
       <span>🫘</span>
       <span data-lang="en">Nephrology &middot; Patient Education &middot; Clinical Reference &middot; IgA Nephropathy</span>
       <span class="lang-hidden" data-lang="tl">Nephrology &middot; Para sa Pasyente &middot; IgA Nephropathy</span>
@@ -2065,13 +2062,17 @@ try{if(localStorage.getItem('wgmr-igan-mode')==='physician'){document.body.class
       <span><strong>For:</strong> Patients &middot; Families &middot; Primary Care Physicians &middot; Internists</span>
     <span><strong><span data-lang="en">Last Reviewed</span><span class="lang-hidden" data-lang="tl">Huling Na-review</span><span class="lang-hidden" data-lang="ceb">Katapusang Na-review</span><span class="lang-hidden" data-lang="kap">Karinan Na-review</span>:</strong> <time datetime="2025-05-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2025</time></span>
     </div>
-  <figure style="margin:32px 0 8px;text-align:center;">
-    <picture>
+</div>
+<figure class="hero-figure">
+<div class="hero-vignette">
+<picture>
       <source srcset="../images/igan-hero.webp" type="image/webp">
-      <img fetchpriority="high" loading="eager" src="../images/igan-hero.png" alt="IgA Nephropathy — the most common primary kidney disease in the Philippines, now treatable with KDIGO 2025 therapies" width="1024" height="1024" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:12px;box-shadow:0 8px 40px rgba(15,30,46,.18);">
+      <img fetchpriority="high" loading="eager" src="../images/igan-hero.png" alt="IgA Nephropathy — the most common primary kidney disease in the Philippines, now treatable with KDIGO 2025 therapies" width="1024" height="1024">
     </picture>
-  </figure>
-  </div>
+</div>
+</figure>
+</div>
+</div>
 </section>
 
 <!-- ═══ PATIENT NAV ════════════════════════════════ -->

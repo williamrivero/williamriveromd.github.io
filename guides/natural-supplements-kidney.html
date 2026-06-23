@@ -254,11 +254,11 @@
     box-shadow: 0 22px 55px rgba(0,0,0,.45);
   }
   .hero-vignette img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    margin: 0;            /* override global hero-img centering */
-    /* zoom past the image's baked-in title (top) + watermark (bottom), focus faces */
-    transform: scale(1.34); transform-origin: 50% 60%;
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+    display: block; margin: 0;   /* override global hero-img centering */
   }
+  /* opt-in zoom for hero images with a baked-in title/watermark (e.g. epilepsy) */
+  .hero-vignette.zoom img { transform: scale(1.34); transform-origin: 50% 60%; }
   .hero-vignette::after {           /* vignette: darken rim, blend into hero */
     content: ''; position: absolute; inset: 0; border-radius: 50%;
     background:
@@ -386,6 +386,12 @@
   @media(max-width: 460px) { .hero-cards { grid-template-columns: 1fr; } }
 
   /* Legible hero 'Last Reviewed' badge on pastel bg (overrides old inline white text) */
+  /* Clinician badge chips (pastel-themed; canonical so guides w/o a local rule render) */
+  .clin-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .clin-badge { display:inline-block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:.02em; color:#1f3864; background:rgba(31,56,100,.08);
+    border:1px solid rgba(31,56,100,.25); border-radius:20px; padding:4px 12px; }
+
   .hero-meta time { color:#1f3864 !important; background:rgba(31,56,100,.08) !important; border-color:rgba(31,56,100,.35) !important; }
 
   /* ── CONTAINER ───────────────────────────────────────────────────────────── */
@@ -1575,21 +1581,25 @@ table.followup tr:last-child td { border-bottom:none; }
 <!-- HERO -->
 <section class="hero">
 <div class="container">
-  <div class="hero-text">
-    <div class="hero-tag">Natural Supplements · CKD · Patient Education</div>
-    <h1>Natural Supplements and Kidney Disease:<br><em style="color:var(--gold-light);">What the Evidence Actually Shows</em></h1>
-    <p class="hero-sub">An honest, science-based guide to MX3 (Mangosteen), Paragis (<em>Eleusine indica</em>), and Spirulina for patients with CKD — Philippines context</p>
-    <div class="hero-meta">
+<div class="hero-grid">
+<div class="hero-copy">
+<div class="hero-tag">Natural Supplements · CKD · Patient Education</div>
+<h1>Natural Supplements and Kidney Disease:<br><em style="color:var(--gold-light);">What the Evidence Actually Shows</em></h1>
+<p class="hero-sub">An honest, science-based guide to MX3 (Mangosteen), Paragis (<em>Eleusine indica</em>), and Spirulina for patients with CKD — Philippines context</p>
+<div class="hero-meta">
       <span><strong>Author:</strong> W Rivero, MD, FPCP, DPSN</span>
       <span><strong>Last Reviewed:</strong> <time datetime="2026-05-25">May 2026</time></span>
     </div>
-  </div>
-  <div class="illus-wrap" style="margin-top:32px;">
-    <picture>
+</div>
+<figure class="hero-figure">
+<div class="hero-vignette">
+<picture>
       <source srcset="../images/natural-supplements-hero.webp" type="image/webp">
-      <img fetchpriority="high" loading="eager" src="../images/natural-supplements-hero.png" alt="Three-panel botanical illustration: mangosteen cross-section with xanthone molecule, paragis grass Eleusine indica, and spirulina cyanobacterium — natural supplements and kidney disease guide" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:10px;" width="1254" height="1254">
+      <img fetchpriority="high" loading="eager" src="../images/natural-supplements-hero.png" alt="Three-panel botanical illustration: mangosteen cross-section with xanthone molecule, paragis grass Eleusine indica, and spirulina cyanobacterium — natural supplements and kidney disease guide" width="1254" height="1254">
     </picture>
-  </div>
+</div>
+</figure>
+</div>
 </div>
 </section>
 

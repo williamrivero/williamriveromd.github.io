@@ -259,11 +259,11 @@
     box-shadow: 0 22px 55px rgba(0,0,0,.45);
   }
   .hero-vignette img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    margin: 0;            /* override global hero-img centering */
-    /* zoom past the image's baked-in title (top) + watermark (bottom), focus faces */
-    transform: scale(1.34); transform-origin: 50% 60%;
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+    display: block; margin: 0;   /* override global hero-img centering */
   }
+  /* opt-in zoom for hero images with a baked-in title/watermark (e.g. epilepsy) */
+  .hero-vignette.zoom img { transform: scale(1.34); transform-origin: 50% 60%; }
   .hero-vignette::after {           /* vignette: darken rim, blend into hero */
     content: ''; position: absolute; inset: 0; border-radius: 50%;
     background:
@@ -391,6 +391,12 @@
   @media(max-width: 460px) { .hero-cards { grid-template-columns: 1fr; } }
 
   /* Legible hero 'Last Reviewed' badge on pastel bg (overrides old inline white text) */
+  /* Clinician badge chips (pastel-themed; canonical so guides w/o a local rule render) */
+  .clin-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .clin-badge { display:inline-block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:.02em; color:#1f3864; background:rgba(31,56,100,.08);
+    border:1px solid rgba(31,56,100,.25); border-radius:20px; padding:4px 12px; }
+
   .hero-meta time { color:#1f3864 !important; background:rgba(31,56,100,.08) !important; border-color:rgba(31,56,100,.35) !important; }
 
   /* ── CONTAINER ───────────────────────────────────────────────────────────── */
@@ -1521,7 +1527,9 @@
 <!-- HERO -->
 <section class="hero">
 <div class="container">
-    <div class="section-tag">
+<div class="hero-grid">
+<div class="hero-copy">
+<div class="section-tag">
       <span data-lang="en">Patient Preparation</span>
       <span data-lang="tl" class="lang-hidden">Paghahanda ng Pasyente</span>
       <span data-lang="ceb" class="lang-hidden">Paghanda sa Pasyente</span>
@@ -1543,12 +1551,16 @@
       <span><strong>Author:</strong> W Rivero, MD, FPCP, DPSN</span>
       <span><strong><span data-lang="en">Last Reviewed</span><span data-lang="tl" class="lang-hidden">Huling Na-review</span><span data-lang="ceb" class="lang-hidden">Katapusang Na-review</span><span data-lang="kap" class="lang-hidden">Karinan Na-review</span>:</strong> <time datetime="2026-05-24">2026</time></span>
     </div>
-  <figure class="hero-img-wrap">
-    <picture>
+</div>
+<figure class="hero-figure">
+<div class="hero-vignette">
+<picture>
       <source srcset="../images/first-nephrology-visit-hero.webp" type="image/webp">
       <img src="../images/first-nephrology-visit-hero.png" alt="Patient preparing documents and lab results for first nephrology visit" class="hero-img" fetchpriority="high" loading="eager" width="1199" height="1312">
     </picture>
-  </figure>
+</div>
+</figure>
+</div>
 </div>
 </section>
 

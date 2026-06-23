@@ -236,11 +236,11 @@
     box-shadow: 0 22px 55px rgba(0,0,0,.45);
   }
   .hero-vignette img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    margin: 0;            /* override global hero-img centering */
-    /* zoom past the image's baked-in title (top) + watermark (bottom), focus faces */
-    transform: scale(1.34); transform-origin: 50% 60%;
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+    display: block; margin: 0;   /* override global hero-img centering */
   }
+  /* opt-in zoom for hero images with a baked-in title/watermark (e.g. epilepsy) */
+  .hero-vignette.zoom img { transform: scale(1.34); transform-origin: 50% 60%; }
   .hero-vignette::after {           /* vignette: darken rim, blend into hero */
     content: ''; position: absolute; inset: 0; border-radius: 50%;
     background:
@@ -368,6 +368,12 @@
   @media(max-width: 460px) { .hero-cards { grid-template-columns: 1fr; } }
 
   /* Legible hero 'Last Reviewed' badge on pastel bg (overrides old inline white text) */
+  /* Clinician badge chips (pastel-themed; canonical so guides w/o a local rule render) */
+  .clin-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .clin-badge { display:inline-block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:.02em; color:#1f3864; background:rgba(31,56,100,.08);
+    border:1px solid rgba(31,56,100,.25); border-radius:20px; padding:4px 12px; }
+
   .hero-meta time { color:#1f3864 !important; background:rgba(31,56,100,.08) !important; border-color:rgba(31,56,100,.35) !important; }
 
   /* ── CONTAINER ───────────────────────────────────────────────────────────── */
@@ -1492,36 +1498,41 @@
 
 <!-- HERO SECTION -->
 <section class="hero">
-  <div class="container">
-    <div class="hero-tag">
+<div class="container">
+<div class="hero-grid">
+<div class="hero-copy">
+<div class="hero-tag">
       <span data-lang="en">Internal Medicine · Nephrology · Oncology · Patient Guide</span>
       <span data-lang="tl" class="lang-hidden">Internal Medicine · Neprolohiya · Onkolohiya · Gabay para sa Pasyente</span>
       <span data-lang="ceb" class="lang-hidden">Internal Medicine · Neprolohiya · Onkolohiya · Giya alang sa Pasyente</span>
       <span data-lang="kap" class="lang-hidden">Internal Medicine · Neprolohiya · Onkolohiya · Gabay para king Pasyente</span>
     </div>
-    <h1>
+<h1>
       <span data-lang="en">Prostate Cancer and <em>Your Kidneys</em>: What You Need to Know</span>
       <span data-lang="tl" class="lang-hidden">Cancer sa Prostate at <em>ang Iyong mga Bato</em>: Ano ang Kailangan Mong Malaman</span>
       <span data-lang="ceb" class="lang-hidden">Cancer sa Prostate ug <em>ang Imong mga Kidney</em>: Unsa ang Kinahanglan Nimong Mahibalo-an</span>
       <span data-lang="kap" class="lang-hidden">Cancer ning Prostate at <em>Ding Kidneys Mo</em>: Nanu ing Dapat Mong Mabalu</span>
     </h1>
-    <p class="hero-sub">
+<p class="hero-sub">
       <span data-lang="en">Understanding how prostate cancer and chronic kidney disease interact — and what you can do to protect your health during treatment.</span>
       <span data-lang="tl" class="lang-hidden">Pag-unawa kung paano nakikipag-ugnayan ang cancer sa prostate at chronic kidney disease — at kung ano ang magagawa mo para protektahan ang iyong kalusugan sa panahon ng paggamot.</span>
       <span data-lang="ceb" class="lang-hidden">Ang pagsabut kung giunsa ang pakig-ugnay sa cancer sa prostate ug chronic kidney disease — ug unsa ang imong mahimo aron mapanalipdan ang imong kalusugan sa panahon sa pagtambal.</span>
       <span data-lang="kap" class="lang-hidden">Ing pag-aral kung panung nakikiugnayan ing cancer ning prostate at chronic kidney disease — at nanu ing magagawa mu para protektahan ing kayaldanan mu keng panahon ning lunas.</span>
     </p>
-    <div class="hero-meta">
+<div class="hero-meta">
 <span><strong>Author:</strong> W Rivero, MD, FPCP, DPSN</span>
 <span><strong><span data-lang="en">Last Reviewed</span><span class="lang-hidden" data-lang="tl">Huling Na-review</span><span class="lang-hidden" data-lang="ceb">Katapusang Na-review</span><span class="lang-hidden" data-lang="kap">Karinan Na-review</span>:</strong> <time datetime="2026-05-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
     </div>
-  </div>
-  <figure style="margin:32px 0 8px;text-align:center;">
-    <img fetchpriority="high" loading="eager" src="../images/prostate-cancer-ckd-hero.png"
+</div>
+<figure class="hero-figure">
+<div class="hero-vignette">
+<img fetchpriority="high" loading="eager" src="../images/prostate-cancer-ckd-hero.png"
          alt="Filipino nephrologist and older male patient reviewing kidney and prostate cancer results together in a bright clinic"
-         width="1254" height="1254"
-         style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:12px;box-shadow:0 8px 40px rgba(15,30,46,.18);">
-  </figure>
+         width="1254" height="1254">
+</div>
+</figure>
+</div>
+</div>
 </section>
 
 <!-- NAV STRIP -->
