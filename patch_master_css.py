@@ -376,6 +376,12 @@ MASTER_CSS = """
   @media(max-width: 460px) { .hero-cards { grid-template-columns: 1fr; } }
 
   /* Legible hero 'Last Reviewed' badge on pastel bg (overrides old inline white text) */
+  /* Clinician badge chips (pastel-themed; canonical so guides w/o a local rule render) */
+  .clin-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .clin-badge { display:inline-block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:.02em; color:#1f3864; background:rgba(31,56,100,.08);
+    border:1px solid rgba(31,56,100,.25); border-radius:20px; padding:4px 12px; }
+
   .hero-meta time { color:#1f3864 !important; background:rgba(31,56,100,.08) !important; border-color:rgba(31,56,100,.35) !important; }
 
   /* ── CONTAINER ───────────────────────────────────────────────────────────── */
