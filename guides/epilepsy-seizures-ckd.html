@@ -30,7 +30,7 @@
 <meta name="twitter:title" content="Epilepsy &amp; Seizures in Kidney Disease">
 <meta name="twitter:description" content="Seizure risk in CKD, uremic encephalopathy, anti-epileptic drug dose adjustments for eGFR, and dialysis removal of AEDs.">
 <meta name="twitter:image" content="https://www.williamriveromd.com/images/epilepsy-seizures-ckd-hero.png">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
 <style>
   /* ═══════════════════════════════════════════════════════════════════════════
      MASTER GUIDE CSS — williamriveromd.com
@@ -153,56 +153,135 @@
   .lang-btn.active { background: #b8962e; border-color: #b8962e; color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
-  /* ── HERO ────────────────────────────────────────────────────────────────── */
+  /* ── HERO (redesigned: shorter footprint, Inter/Nunito, side panel) ──────── */
   .hero {
     background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%);
     color: white;
-    padding: 72px 0 80px;
+    padding: 40px 0 44px;            /* tighter vertical footprint */
     position: relative;
     overflow: hidden;
   }
   .hero::before {
     content: ''; position: absolute;
-    top: -60px; right: -80px;
-    width: 420px; height: 420px;
+    top: -90px; right: -110px;
+    width: 360px; height: 360px;
     border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.08);
+    pointer-events: none;
   }
+  /* Two-column hero: copy on the left, vignette / contents panel on the right */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-copy { min-width: 0; }
   .hero-tag {
     display: inline-block;
     font-size: 11px; font-weight: 600;
     letter-spacing: .14em; text-transform: uppercase;
     color: rgba(255,255,255,.9);     /* 5.5:1 on --teal ✓ */
     border: 1px solid rgba(255,255,255,.35);
-    padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 16px;
   }
   .hero h1 {
-    font-family: 'Lora', serif;
-    font-size: clamp(28px, 5vw, 50px);
-    font-weight: 600; line-height: 1.2;
-    margin-bottom: 20px; letter-spacing: -.02em;
+    font-family: 'Inter', sans-serif;   /* headline → Inter */
+    font-size: clamp(27px, 4.4vw, 44px);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 14px; letter-spacing: -.025em;
     color: #ffffff;
   }
   .hero h1 em {
-    font-style: italic;
+    font-style: normal;
     color: var(--gold-light);
   }
   .hero-sub em {
     font-style: italic;
     color: #fde68a;
-    font-weight: 500;
+    font-weight: 600;
   }
   .hero-sub {
-    font-size: 18px;
+    font-family: 'Nunito Sans', sans-serif;   /* subtitle → Nunito Sans */
+    font-size: 16.5px;
     color: rgba(255,255,255,.92);    /* 14.8:1 ✓ */
-    max-width: 620px; line-height: 1.65; margin-bottom: 36px;
+    max-width: 560px; line-height: 1.6; margin-bottom: 22px;
   }
   .hero-meta {
-    display: flex; gap: 32px; flex-wrap: wrap;
+    display: flex; gap: 28px; flex-wrap: wrap;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 13px;
     color: rgba(255,255,255,.75);    /* ≥ 4.5:1 ✓ */
   }
-  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 600; }
+
+  /* ── PATIENT HERO: circular vignette portrait on the right ───────────────── */
+  .hero-figure {
+    position: relative;
+    width: clamp(220px, 26vw, 300px);
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+  }
+  .hero-figure::before {            /* soft gold halo behind the disc */
+    content: ''; position: absolute; inset: -16px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,79,.28), transparent 68%);
+    pointer-events: none;
+  }
+  .hero-vignette {
+    position: relative; width: 100%; height: 100%;
+    border-radius: 50%; overflow: hidden;
+    border: 1px solid rgba(255,255,255,.20);
+    box-shadow: 0 22px 55px rgba(0,0,0,.45);
+  }
+  .hero-vignette img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    margin: 0;            /* override global hero-img centering */
+  }
+  .hero-vignette::after {           /* vignette: darken rim, blend into hero */
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 42%, transparent 48%, rgba(10,22,40,.62) 100%),
+      linear-gradient(180deg, rgba(20,92,99,.10), rgba(10,22,40,.30));
+    pointer-events: none;
+  }
+
+  /* ── CLINICIAN HERO: jump-to contents panel on the right ─────────────────── */
+  .hero-toc {
+    width: clamp(260px, 30vw, 340px);
+    flex-shrink: 0;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(212,175,79,.28);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 18px 44px rgba(0,0,0,.32);
+  }
+  .hero-toc-head {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase;
+    color: #d4af4f; margin-bottom: 10px;
+    padding-bottom: 10px; border-bottom: 1px solid rgba(212,175,79,.22);
+  }
+  .hero-toc-head svg { width: 15px; height: 15px; stroke: #d4af4f; }
+  .hero-toc-list { display: flex; flex-direction: column; }
+  .hero-toc-list a {
+    display: flex; align-items: center; gap: 11px;
+    padding: 8px 8px; border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: rgba(255,255,255,.86); text-decoration: none;
+    transition: background .15s, color .15s;
+  }
+  .hero-toc-list a + a { border-top: 1px solid rgba(255,255,255,.07); }
+  .hero-toc-list a:hover { background: rgba(212,175,79,.13); color: #fff; }
+  .hero-toc-num {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    color: #d4af4f; opacity: .85; min-width: 18px;
+  }
+  .hero-toc-arrow { margin-left: auto; color: rgba(212,175,79,.7); transition: transform .15s; }
+  .hero-toc-list a:hover .hero-toc-arrow { transform: translateX(3px); }
 
   /* ── CONTAINER ───────────────────────────────────────────────────────────── */
   .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
@@ -1077,6 +1156,13 @@
   }
   .dl-fab:hover .p-tip { opacity: 1; }
 
+  /* ── HERO RESPONSIVE: stack copy above the panel / portrait ──────────────── */
+  @media(max-width: 820px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+    .hero-figure { margin: 4px auto 0; }
+    .hero-toc { width: 100%; }
+  }
+
   /* ── MOBILE LAYOUT (≤ 480 px / 375 px phones) ───────────────────────────── */
   /* Tighter side padding on narrow viewports */
   @media(max-width: 480px) {
@@ -1436,6 +1522,8 @@ try{if(localStorage.getItem('wgmr-epilepsy-seizures-mode')==='physician'){docume
 <div class="mode-patient">
 <section class="hero">
 <div class="container">
+<div class="hero-grid">
+<div class="hero-copy">
 <div class="hero-tag"><span data-lang="en">🧠 Neurology · Kidney Disease</span><span data-lang="tl" class="lang-hidden">🧠 Neorolohiya · Sakit sa Bato</span><span data-lang="ceb" class="lang-hidden">🧠 Neurolohiya · Sakit sa Kidney</span><span data-lang="kap" class="lang-hidden">🧠 Neurolohiya · Sakit king Batu</span></div>
 <h1><span data-lang="en">Epilepsy &amp; Seizures in <em>Kidney Disease</em></span><span data-lang="tl" class="lang-hidden">Epilepsy at Atake sa Utak sa <em>Sakit sa Bato</em></span><span data-lang="ceb" class="lang-hidden">Epilepsy ug Konbulsyon sa <em>Sakit sa Kidney</em></span><span data-lang="kap" class="lang-hidden">Epilepsy at Konbulsyon king <em>Sakit king Batu</em></span></h1>
 <p class="hero-sub"><span data-lang="en">Understanding seizure risk, uremic causes, and how anti-epileptic medications must be adjusted when kidneys aren't working normally</span><span data-lang="tl" class="lang-hidden">Pag-unawa sa panganib ng atake sa utak, mga sanhi ng uremia, at kung paano dapat i-ayos ang mga gamot laban sa atake kapag hindi gumagana nang normal ang mga bato</span><span data-lang="ceb" class="lang-hidden">Pagsabot sa risgo sa konbulsyon, mga hinungdan sa uremia, ug kung giunsa ang pag-adjust sa mga tambal batok sa konbulsyon kon dili normal ang pagtrabaho sa mga kidney</span><span data-lang="kap" class="lang-hidden">Pag-intindi king panganib ning konbulsyon, deng sanhi ning uremia, at kung paano i-adjust deng gamut laban king konbulsyon kapag ali normal ing paggawa ning deng batu</span></p>
@@ -1443,12 +1531,16 @@ try{if(localStorage.getItem('wgmr-epilepsy-seizures-mode')==='physician'){docume
 <span><strong><span data-lang="en">Author</span><span data-lang="tl" class="lang-hidden">May-akda</span><span data-lang="ceb" class="lang-hidden">Awtor</span><span data-lang="kap" class="lang-hidden">Manulat</span>:</strong> W Rivero, MD · FPCP · DPSN · Nephrology · Philippines</span>
 <span><strong><span data-lang="en">Last Reviewed</span><span data-lang="tl" class="lang-hidden">Huling Na-review</span><span data-lang="ceb" class="lang-hidden">Katapusang Na-review</span><span data-lang="kap" class="lang-hidden">Karinan Na-review</span>:</strong> <time datetime="2026-06-22" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">June 2026</time></span>
 </div>
-<figure style="margin:24px 0">
+</div>
+<figure class="hero-figure" style="margin:0">
+<div class="hero-vignette">
 <picture>
 <source srcset="../images/epilepsy-seizures-ckd-hero.webp" type="image/webp">
-<img src="../images/epilepsy-seizures-ckd-hero.png" alt="Filipino nephrologist and patient discussing epilepsy and seizure management in kidney disease" width="1254" height="1254" fetchpriority="high" loading="eager" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:14px;">
+<img src="../images/epilepsy-seizures-ckd-hero.png" alt="Filipino nephrologist and patient discussing epilepsy and seizure management in kidney disease" width="1254" height="1254" fetchpriority="high" loading="eager">
 </picture>
+</div>
 </figure>
+</div>
 </div>
 </section>
 
@@ -1756,12 +1848,32 @@ try{if(localStorage.getItem('wgmr-epilepsy-seizures-mode')==='physician'){docume
 <div class="mode-physician">
 <section class="hero">
 <div class="container">
+<div class="hero-grid">
+<div class="hero-copy">
 <div class="hero-tag" style="border-color:rgba(212,175,79,.45);color:#d4af4f;"><span data-lang="en">🩺 Nephrology · Neurology · Clinical Reference</span><span data-lang="tl" class="lang-hidden">🩺 Nefrolohiya · Neurolohiya · Clinical Reference</span><span data-lang="ceb" class="lang-hidden">🩺 Nefrolohiya · Neurolohiya · Clinical Reference</span><span data-lang="kap" class="lang-hidden">🩺 Nefrolohiya · Neurolohiya · Clinical Reference</span></div>
 <h1><span data-lang="en">Epilepsy &amp; Seizures in <em>Kidney Disease</em></span><span data-lang="tl" class="lang-hidden">Epilepsy at Atake sa Utak sa <em>Sakit sa Bato</em></span><span data-lang="ceb" class="lang-hidden">Epilepsy ug Konbulsyon sa <em>Sakit sa Kidney</em></span><span data-lang="kap" class="lang-hidden">Epilepsy at Konbulsyon king <em>Sakit king Batu</em></span></h1>
 <p class="hero-sub"><span data-lang="en">Mechanisms, seizure syndromes in CKD/ESKD, complete AED pharmacokinetic table with eGFR-stratified dosing, dialysis removal, and management of status epilepticus in renal patients</span><span data-lang="tl" class="lang-hidden">Mga mekanismo, seizure syndromes sa CKD/ESKD, kumpletong AED pharmacokinetic table na may eGFR-stratified dosing, pag-aalis ng dialysis, at pamamahala ng status epilepticus sa mga pasyenteng may sakit sa bato</span><span data-lang="ceb" class="lang-hidden">Mga mekanismo, seizure syndromes sa CKD/ESKD, kompleto nga AED pharmacokinetic table nga adunay eGFR-stratified dosing, pagkuha sa dialysis, ug pagdumala sa status epilepticus sa mga pasyente nga adunay sakit sa kidney</span><span data-lang="kap" class="lang-hidden">Deng mekanismo, seizure syndromes king CKD/ESKD, kumpletong AED pharmacokinetic table na may eGFR-stratified dosing, pag-aalis ning dialysis, at pamamahala ning status epilepticus king deng pasyente ning sakit king batu</span></p>
 <div class="hero-meta">
 <span><strong>W Rivero, MD · FPCP · DPSN</strong></span>
 <span><strong><span data-lang="en">Last Reviewed</span><span data-lang="tl" class="lang-hidden">Huling Na-review</span><span data-lang="ceb" class="lang-hidden">Katapusang Na-review</span><span data-lang="kap" class="lang-hidden">Karinan Na-review</span>:</strong> <time datetime="2026-06-22" style="display:inline-block;background:rgba(212,175,79,.15);border:1px solid rgba(212,175,79,.4);border-radius:10px;padding:1px 8px;font-size:12px;color:#d4af4f;">June 2026</time></span>
+</div>
+</div>
+<aside class="hero-toc" aria-label="Clinical reference contents">
+<div class="hero-toc-head">
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+<span data-lang="en">Clinical Reference · Jump to</span><span data-lang="tl" class="lang-hidden">Clinical Reference · Pumunta sa</span><span data-lang="ceb" class="lang-hidden">Clinical Reference · Adto sa</span><span data-lang="kap" class="lang-hidden">Clinical Reference · Lumakad king</span>
+</div>
+<nav class="hero-toc-list">
+<a href="#md-epidemiology"><span class="hero-toc-num">01</span> Epidemiology <span class="hero-toc-arrow">→</span></a>
+<a href="#md-pathophysiology"><span class="hero-toc-num">02</span> Pathophysiology <span class="hero-toc-arrow">→</span></a>
+<a href="#md-syndromes"><span class="hero-toc-num">03</span> CKD Seizure Syndromes <span class="hero-toc-arrow">→</span></a>
+<a href="#md-workup"><span class="hero-toc-num">04</span> Diagnostic Workup <span class="hero-toc-arrow">→</span></a>
+<a href="#md-aed-table"><span class="hero-toc-num">05</span> AED Dose Table <span class="hero-toc-arrow">→</span></a>
+<a href="#md-dialysis"><span class="hero-toc-num">06</span> Dialysis &amp; AEDs <span class="hero-toc-arrow">→</span></a>
+<a href="#md-status"><span class="hero-toc-num">07</span> Status Epilepticus <span class="hero-toc-arrow">→</span></a>
+<a href="#md-transplant"><span class="hero-toc-num">08</span> Transplant <span class="hero-toc-arrow">→</span></a>
+</nav>
+</aside>
 </div>
 </div>
 </section>
