@@ -327,6 +327,9 @@
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   .mode-physician .hero-grid { grid-template-columns: auto 1fr; }
   .mode-physician .hero-cards { order: -1; }
+  /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
+  .hero-cards.mode-physician { order: -1; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: auto 1fr; }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -1683,6 +1686,17 @@ try{if(localStorage.getItem('wgmr-mode')==='physician'){document.body.classList.
 <section class="hero">
 <div class="container">
 <div class="hero-grid">
+<aside class="hero-cards mode-physician">
+<div class="ov-card">
+<div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
+<div class="ov-list">
+<div class="ov-stat"><span class="v">&lt;22</span><span class="l">mEq/L serum bicarbonate accelerates CKD loss</span></div>
+<div class="ov-stat"><span class="v">22&ndash;26</span><span class="l">KDIGO 2024 target bicarbonate range</span></div>
+<div class="ov-stat"><span class="v">KDIGO<br>2024</span><span class="l">G3b&ndash;5 alkali therapy guidance</span></div>
+</div>
+<a class="ov-foot" href="#md-pathophys">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+</div>
+</aside>
 <div class="hero-copy">
 <div class="hero-tag">
       <span data-lang="en">CKD G3b–5 · Bicarbonate · KDIGO 2024</span>
@@ -1709,7 +1723,7 @@ try{if(localStorage.getItem('wgmr-mode')==='physician'){document.body.classList.
       <div>Cost<br><strong>~PHP 2–5 per tablet</strong></div>
     </div>
 </div>
-<figure class="hero-figure">
+<figure class="hero-figure mode-patient">
 <div class="hero-vignette">
 <picture>
 <source srcset="../images/metabolic-acidosis-hero.webp" type="image/webp">

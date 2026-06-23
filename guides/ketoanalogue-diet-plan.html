@@ -171,6 +171,8 @@
     align-items: center;
   }
   .hero-copy { min-width: 0; }
+  /* Vignette/grid heroes have a narrower copy column — smaller headline */
+  .hero-grid .hero-copy h1 { font-size: clamp(22px, 3.4vw, 34px); }
   .hero-tag {
     display: inline-block;
     font-size: 11px; font-weight: 600;
@@ -229,11 +231,11 @@
     box-shadow: 0 22px 55px rgba(0,0,0,.45);
   }
   .hero-vignette img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    margin: 0;            /* override global hero-img centering */
-    /* zoom past the image's baked-in title (top) + watermark (bottom), focus faces */
-    transform: scale(1.34); transform-origin: 50% 60%;
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+    display: block; margin: 0;   /* override global hero-img centering */
   }
+  /* opt-in zoom for hero images with a baked-in title/watermark (e.g. epilepsy) */
+  .hero-vignette.zoom img { transform: scale(1.34); transform-origin: 50% 60%; }
   .hero-vignette::after {           /* vignette: darken rim, blend into hero */
     content: ''; position: absolute; inset: 0; border-radius: 50%;
     background:
@@ -317,6 +319,13 @@
   body.physician-mode .hero-toc-num { color:#8a6810; opacity:1; }
   body.physician-mode .hero-toc-arrow { color:#b08a2a; }
 
+  /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
+  .mode-physician .hero-grid { grid-template-columns: auto 1fr; }
+  .mode-physician .hero-cards { order: -1; }
+  /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
+  .hero-cards.mode-physician { order: -1; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: auto 1fr; }
+
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
   body.physician-mode .hero h1 { font-size: clamp(23px, 3.1vw, 33px); }
@@ -361,6 +370,12 @@
   @media(max-width: 460px) { .hero-cards { grid-template-columns: 1fr; } }
 
   /* Legible hero 'Last Reviewed' badge on pastel bg (overrides old inline white text) */
+  /* Clinician badge chips (pastel-themed; canonical so guides w/o a local rule render) */
+  .clin-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .clin-badge { display:inline-block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:.02em; color:#1f3864; background:rgba(31,56,100,.08);
+    border:1px solid rgba(31,56,100,.25); border-radius:20px; padding:4px 12px; }
+
   .hero-meta time { color:#1f3864 !important; background:rgba(31,56,100,.08) !important; border-color:rgba(31,56,100,.35) !important; }
 
   /* ── CONTAINER ───────────────────────────────────────────────────────────── */
