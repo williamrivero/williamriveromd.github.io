@@ -4061,6 +4061,8 @@ if(statBand){
   var N=frames.length; if(!N) return;
   var timeline=arc.querySelector('.origins-timeline');
   var last=-1;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce){ frames.forEach(function(fr){ fr.classList.remove('is-active'); fr.style.transition='none'; fr.style.willChange='opacity, transform'; }); }
   /* Keep the active stage's detail vertically centered (beside the figure) so
      it never scrolls off the top/bottom near the ends of the timeline. */
   function center(i){
@@ -4070,10 +4072,24 @@ if(statBand){
     var y=Math.round(window.innerHeight*0.46-(it.offsetTop+it.offsetHeight/2));
     timeline.style.transform='translateY('+y+'px)';
   }
+  /* Continuous scroll-scrubbed cross-dissolve + subtle Ken-Burns across the 15
+     developmental frames, so the timeline reads as one fluid morph rather than
+     hard cuts. Reduced-motion keeps the original discrete crossfade. */
+  function smooth(x){ return x*x*(3-2*x); }
+  function blendFrames(f){
+    if(reduce){ var ri=Math.round(f); for(var r=0;r<N;r++) frames[r].classList.toggle('is-active', r===ri); return; }
+    var base=Math.floor(f), e=smooth(f-base);
+    for(var k=0;k<N;k++){
+      var op=0, sc=1, ty=0;
+      if(k===base){ op=1; sc=1+e*0.06; ty=-e*1.4; }
+      else if(k===base+1){ op=e; sc=1.06-e*0.06; ty=(1-e)*1.6; }
+      frames[k].style.opacity=op;
+      frames[k].style.transform='translate(-50%,-50%) scale('+sc.toFixed(3)+') translateY('+ty.toFixed(2)+'px)';
+    }
+  }
   function setActive(i){
     if(i===last){ center(i); return; }
     last=i;
-    for(var k=0;k<N;k++) frames[k].classList.toggle('is-active', k===i);
     for(var j=0;j<items.length;j++) items[j].classList.toggle('is-active', j===i);
     center(i);
   }
@@ -4090,7 +4106,9 @@ if(statBand){
     var total=arc.offsetHeight-vh;
     var p= total>0 ? (-r.top/total) : 0;
     if(p<0)p=0; if(p>1)p=1;
-    setActive(Math.round(p*(N-1)));
+    var f=p*(N-1);
+    blendFrames(f);
+    setActive(Math.round(f));
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
   window.addEventListener('scroll', onScroll, {passive:true});
@@ -4099,7 +4117,7 @@ if(statBand){
     var total=arc.offsetHeight-window.innerHeight;
     window.scrollTo({ top: arc.offsetTop + (k/(N-1))*total, behavior:'smooth' });
   }); });
-  setActive(0); update();
+  blendFrames(0); setActive(0); update();
   window.addEventListener('load', function(){ center(last); });
 })();
 
