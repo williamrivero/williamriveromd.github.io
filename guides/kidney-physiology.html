@@ -2319,6 +2319,18 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   body.kp-lora .origins-pin.spline-live .origins-stage-img { opacity: 0; transition: opacity .6s ease; }
   html.lite-mode body.kp-lora .kp-spline { display: none !important; }
   @media (prefers-reduced-motion: reduce) { body.kp-lora .kp-spline { display: none !important; } }
+
+  /* "20 Major Functions" cards — serif numbers, linked heading, whole-card links
+     to the matching section of the Kidney Functions guide. */
+  body.kp-lora .responsibilities .cell-num { font-family: 'Playfair Display', serif; }
+  body.kp-lora .responsibilities .cell { position: relative; }
+  body.kp-lora .responsibilities .cell-link {
+    position: absolute; inset: 0; z-index: 5; border-radius: inherit;
+  }
+  body.kp-lora .responsibilities h2 a {
+    color: inherit; text-decoration: none; transition: color .2s ease;
+  }
+  body.kp-lora .responsibilities h2 a:hover { color: var(--gold); }
 </style>
 </head>
 <body class="kp-lora">
@@ -2919,7 +2931,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
     <div class="container">
       <div class="resp-head">
         <div class="eyebrow" data-reveal>Twenty jobs, no rest</div>
-        <h2 id="resp-heading" data-reveal data-delay="1">Twenty quiet <em>superpowers</em>,<br>in one organ.</h2>
+        <h2 id="resp-heading" data-reveal data-delay="1"><a href="/guides/kidney-functions">Healthy Kidneys: <em>20 Major Functions</em></a></h2>
         <p class="resp-intro" data-reveal data-delay="2">Not one task at a time — all twenty, at once, around the clock, inside two organs no larger than your fists. Read slowly. This is the workload you protect every day you stay well.</p>
       </div>
 
@@ -4369,6 +4381,24 @@ const SPLINE_RUNTIME = 'https://unpkg.com/@splinetool/runtime/build/runtime.js';
       addEventListener('scroll', onScroll, {passive:true}); drive();
     }).catch(e => console.warn('[spline origins]', e)), 0.05);
   }
+})();
+</script>
+<script>
+/* Link each of the 20 function cards to its counterpart section in the
+   Kidney Functions guide (whole-card stretched link). Order matches the cards. */
+(function(){
+  var anchors = ['fn-waste','fn-toxins','fn-water','fn-sodium','fn-potassium','fn-mineral',
+    'fn-magnesium','fn-acidbase','fn-bp','fn-epo','fn-renin','fn-vitd','fn-klotho','fn-bone',
+    'fn-urine','fn-glucose','fn-immune','fn-oxygen','fn-heart','fn-homeostasis'];
+  document.querySelectorAll('.responsibilities .cell').forEach(function(cell, i){
+    if(!anchors[i] || cell.querySelector('.cell-link')) return;
+    var t = cell.querySelector('.cell-title');
+    var a = document.createElement('a');
+    a.className = 'cell-link';
+    a.href = '/guides/kidney-functions#' + anchors[i];
+    a.setAttribute('aria-label', (t ? t.textContent.trim() : 'Function') + ' — open in Kidney Functions');
+    cell.appendChild(a);
+  });
 })();
 </script>
 <script src="../assets/image-lightbox.js" defer></script>
