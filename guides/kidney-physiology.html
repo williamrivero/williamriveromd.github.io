@@ -2302,6 +2302,23 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
     opacity: 0;
     pointer-events: none;
   }
+
+  /* Spline 3D stages — Row 2 (hero glass kidney) + Row 6 (embryology morph).
+     Hidden until a scene URL is set and the runtime mounts; never in lite mode
+     or for reduced-motion. The hero stage sits behind the title text; the
+     origins stage overlays (and replaces) the PNG embryology frame stack. */
+  body.kp-lora .kp-spline {
+    position: absolute; inset: 0;
+    opacity: 0; transition: opacity .8s ease;
+    pointer-events: none;
+  }
+  body.kp-lora .kp-spline.is-live { opacity: 1; }
+  body.kp-lora .kp-spline canvas { width: 100% !important; height: 100% !important; display: block; }
+  body.kp-lora .hero-spline { z-index: 0; }              /* behind .container (z-index:1) */
+  body.kp-lora .origins-spline { z-index: 3; }
+  body.kp-lora .origins-pin.spline-live .origins-stage-img { opacity: 0; transition: opacity .6s ease; }
+  html.lite-mode body.kp-lora .kp-spline { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { body.kp-lora .kp-spline { display: none !important; } }
 </style>
 </head>
 <body class="kp-lora">
@@ -2499,6 +2516,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
 
   <!-- HERO -->
   <section class="hero">
+    <div class="kp-spline hero-spline" aria-hidden="true"></div>
     <div class="container hero-grid">
       <div class="eyebrow" data-reveal>Your Amazing Kidneys · Normal Physiology</div>
       <h1 data-reveal data-delay="1">
@@ -2603,6 +2621,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
     <!-- Pinned scrollytelling arc -->
     <div class="origins-arc">
       <div class="origins-pin">
+        <div class="kp-spline origins-spline" aria-hidden="true"></div>
         <div class="origins-stage-img" aria-hidden="true">
           <picture><source type="image/webp" srcset="../images/urinary-dev-01-embryo-overview.webp"><img class="origins-frame is-active" data-frame="0" src="../images/urinary-dev-01-embryo-overview.png" alt="" width="1536" height="1024" loading="eager" decoding="async"></picture>
           <picture><source type="image/webp" srcset="../images/urinary-dev-02-intermediate-mesoderm.webp"><img class="origins-frame" data-frame="1" src="../images/urinary-dev-02-intermediate-mesoderm.png" alt="" width="1536" height="1024" loading="lazy" decoding="async"></picture>
@@ -4254,6 +4273,85 @@ if(statBand){
   new IntersectionObserver(function(es){
     skip.classList.toggle('kp-hidden', !es[0].isIntersecting);
   }, {threshold:0}).observe(arc);
+})();
+</script>
+<script type="module">
+/* ════════════════════════════════════════════════════════════════════════
+   SPLINE 3D STAGES  —  Row 2: hero glass kidney · Row 6: embryology morph
+   ────────────────────────────────────────────────────────────────────────
+   HOW TO TURN ON: author + publish each scene in the Spline editor, then paste
+   its ".splinecode" export URL below. Leave '' to keep current behaviour
+   (no hero 3D; PNG embryology frames). Both stages are lazy-mounted only when
+   on screen, and are auto-disabled in lite mode and for prefers-reduced-motion.
+
+   SCENE CONTRACT:
+   • HERO_SPLINE_URL    — a single kidney that idles/breathes on its own. This
+                          wrapper adds a gentle cursor parallax + breathing on
+                          top, so even a static scene feels alive.
+   • ORIGINS_SPLINE_URL — the embryology timeline as one animated scene exposing
+                          a NUMBER variable named "progress" (0..1). Scroll
+                          position is scrubbed into it; the scene maps 0..1 across
+                          the 15 developmental stages. (Rename via the constant
+                          ORIGINS_PROGRESS_VAR below if your scene differs.)
+   ════════════════════════════════════════════════════════════════════════ */
+const HERO_SPLINE_URL     = '';   // 'https://prod.spline.design/XXXX/scene.splinecode'
+const ORIGINS_SPLINE_URL  = '';   // 'https://prod.spline.design/YYYY/scene.splinecode'
+const ORIGINS_PROGRESS_VAR = 'progress';
+const SPLINE_RUNTIME = 'https://unpkg.com/@splinetool/runtime/build/runtime.js';
+
+(function(){
+  if (!HERO_SPLINE_URL && !ORIGINS_SPLINE_URL) return;          // nothing configured
+  if (document.documentElement.classList.contains('lite-mode')) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) return;
+
+  let runtimeP = null;
+  const App = () => (runtimeP || (runtimeP = import(SPLINE_RUNTIME).then(m => m.Application)));
+  async function mount(el, url){
+    const Application = await App();
+    const canvas = document.createElement('canvas');
+    el.appendChild(canvas);
+    const app = new Application(canvas);
+    await app.load(url);
+    requestAnimationFrame(() => el.classList.add('is-live'));
+    return app;
+  }
+  const onScreen = (el, cb, threshold) => new IntersectionObserver((es, ob) => {
+    if (!es[0].isIntersecting) return; ob.disconnect(); cb();
+  }, { threshold }).observe(el);
+
+  /* ── Row 2: hero glass kidney ─────────────────────────────────────────── */
+  const heroEl = document.querySelector('.hero-spline');
+  if (heroEl && HERO_SPLINE_URL){
+    onScreen(heroEl, () => mount(heroEl, HERO_SPLINE_URL).catch(e => console.warn('[spline hero]', e)), 0.1);
+    let tx=0, ty=0, cx=0, cy=0;
+    addEventListener('pointermove', e => { tx = e.clientX/innerWidth*2-1; ty = e.clientY/innerHeight*2-1; }, {passive:true});
+    (function parallax(){
+      cx += (tx-cx)*0.06; cy += (ty-cy)*0.06;
+      const breathe = 1 + Math.sin(performance.now()/1400)*0.012;
+      heroEl.style.transform = `translate(${(cx*14).toFixed(2)}px, ${(cy*10).toFixed(2)}px) scale(${breathe.toFixed(4)})`;
+      requestAnimationFrame(parallax);
+    })();
+  }
+
+  /* ── Row 6: embryology morph scrubbed by scroll ───────────────────────── */
+  const oEl = document.querySelector('.origins-spline');
+  const arc = document.querySelector('.origins-arc');
+  if (oEl && arc && ORIGINS_SPLINE_URL){
+    let app = null, last = -1, ticking = false;
+    const pin = oEl.closest('.origins-pin');
+    const drive = () => {
+      ticking = false;
+      const r = arc.getBoundingClientRect(), total = arc.offsetHeight - innerHeight;
+      let p = total > 0 ? (-r.top / total) : 0; p = Math.min(1, Math.max(0, p));
+      if (app && Math.abs(p - last) > 0.002){ last = p; try { app.setVariable(ORIGINS_PROGRESS_VAR, p); } catch(e){} }
+    };
+    const onScroll = () => { if (!ticking){ ticking = true; requestAnimationFrame(drive); } };
+    onScreen(oEl, () => mount(oEl, ORIGINS_SPLINE_URL).then(a => {
+      app = a; if (pin) pin.classList.add('spline-live');
+      addEventListener('scroll', onScroll, {passive:true}); drive();
+    }).catch(e => console.warn('[spline origins]', e)), 0.05);
+  }
 })();
 </script>
 <script src="../assets/image-lightbox.js" defer></script>
