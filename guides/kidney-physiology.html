@@ -2277,6 +2277,31 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   body.kp-lora .origins-tl.is-active .origins-tl-name {
     color: #ecc06a;                  /* brighter gold for the active stage */
   }
+
+  /* "Skip to next section" — pin it to the viewport so it's reachable the moment
+     the (840vh-tall) embryology timeline appears, instead of forcing the user to
+     scroll the whole thing. Shown whenever the timeline arc is on screen; the
+     small toggle script (end of body) hides it elsewhere. */
+  body.kp-lora .origins-skip {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 66;
+    font-size: 12.5px;
+    padding: 10px 24px;
+    background: rgba(20,12,4,.78);
+    border-color: rgba(212,175,97,.55);
+    color: #e8c96a;
+    transition: opacity .3s ease, background .2s, color .2s, border-color .2s, transform .2s;
+  }
+  body.kp-lora .origins-skip:hover {
+    transform: translateX(-50%) translateY(-1px);
+  }
+  body.kp-lora .origins-skip.kp-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
 </style>
 </head>
 <body class="kp-lora">
@@ -4172,6 +4197,19 @@ if(statBand){
 
 /* ===== ORIGINS — scroll cross-fade through 8 developmental SVG frames ===== */
 /* Origins is a static stacked image+caption sequence — no scroll JS needed. */
+</script>
+<script>
+/* Reveal the embryology "Skip to next section" button (now viewport-fixed) only
+   while the tall timeline arc is on screen, so it's reachable immediately. */
+(function(){
+  var skip=document.querySelector('.origins-skip'),
+      arc=document.querySelector('.origins-arc');
+  if(!skip||!arc) return;
+  if(!('IntersectionObserver' in window)) return;   /* button stays visible if unsupported */
+  new IntersectionObserver(function(es){
+    skip.classList.toggle('kp-hidden', !es[0].isIntersecting);
+  }, {threshold:0}).observe(arc);
+})();
 </script>
 <script src="../assets/image-lightbox.js" defer></script>
 </body>
