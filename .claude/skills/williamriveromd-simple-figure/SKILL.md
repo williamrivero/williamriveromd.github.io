@@ -68,6 +68,9 @@ ALL images use a **light background only**.
 | Soft purple (specialist/add-on) | `#6c3d8e` |
 
 ### Typography
+- **Approved fonts (MANDATORY): use only a clean sans-serif typeface — `Inter`,
+  `Nunito Sans`, `IBM Plex Sans`, or `Manrope`. No other fonts, and never a serif
+  font.** Name the chosen font explicitly in every generated prompt.
 - Bold condensed sans-serif titles in navy `#0f1e2e` on light backgrounds
 - Short labels, not paragraph text
 - Mobile-readable — minimum 11pt equivalent
@@ -181,6 +184,8 @@ NEGATIVE INSTRUCTIONS:
 Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text,
 avoid unrealistic anatomy, avoid overprocessed HDR, avoid excessive saturation.
 NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only.
+Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no other
+fonts, no serif fonts, no decorative or handwritten typefaces.
 Never omit the williamriveromd.com attribution.
 
 QUALITY CHECK:

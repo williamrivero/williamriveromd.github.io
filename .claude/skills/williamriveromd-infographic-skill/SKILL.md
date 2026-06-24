@@ -108,6 +108,9 @@ Color palette:
 - Clinical red: #b91c1c — warning/danger indicators
 
 Typography direction:
+- **Approved fonts (MANDATORY): use only a clean sans-serif typeface — Inter,
+  Nunito Sans, IBM Plex Sans, or Manrope. No other fonts, and never a serif font.**
+  Name the chosen font explicitly in every generated prompt.
 - Large bold condensed sans-serif titles in navy (#0f1e2e) on light backgrounds
 - Strong visual hierarchy
 - Short educational phrases
@@ -173,7 +176,7 @@ PROMPT:
 [full production prompt]
 
 NEGATIVE INSTRUCTIONS:
-Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Never omit the williamriveromd.com attribution.
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no other fonts, no serif fonts, no decorative or handwritten typefaces. Never omit the williamriveromd.com attribution.
 
 QUALITY CHECK:
 Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com. Background must be white, off-white, or soft light gray — never dark. Copyright attribution williamriveromd.com must be visible in the bottom corner.
@@ -308,5 +311,7 @@ Use mixed media when useful:
 Never sacrifice clinical clarity for visual complexity.
 
 **LIGHT BACKGROUND RULE — ABSOLUTE:** Every image must have a white, off-white, or soft light gray background. Dark backgrounds (navy, black, charcoal) are never permitted on any image type — including OG cards, heroes, infographics, and 3D renders. Navy and teal are accent and typography colors only.
+
+**APPROVED FONT RULE — ABSOLUTE:** All on-image typography must use one of four clean sans-serif fonts only — **Inter, Nunito Sans, IBM Plex Sans, or Manrope**. No serif fonts, no condensed display fonts outside this list, no decorative or handwritten typefaces. Name the chosen font explicitly in every generated prompt so the image generator renders text in an approved face.
 
 Every image must carry the copyright attribution **williamriveromd.com** — rendered as small, semi-transparent navy or dark teal text in the bottom-right corner (bottom-center for portrait). This is a non-negotiable house rule for all williamriveromd.com visuals.
