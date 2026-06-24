@@ -2153,15 +2153,21 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .responsibilities .cell{text-align:center;}
 </style>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&display=swap');
 /* ─────────────────────────────────────────────────────────────────────────
-   KIDNEY PHYSIOLOGY — Lora typography restore (separate, patch-safe class)
-   Scoped under body.kp-lora so it lives OUTSIDE the first <style> block.
-   patch_master_css.py only rewrites the first block, so this restore of the
-   editorial serif base (which the cinematic theme had switched to Inter)
-   will never be overwritten. Headings already use Lora; this returns the
-   inherited reading base and body prose to Lora as well. UI labels, eyebrows,
-   buttons and small caps keep their explicit sans fonts.
+   KIDNEY PHYSIOLOGY — custom editorial typography (separate, patch-safe block)
+   Scoped under body.kp-lora and placed OUTSIDE the first <style> block, so
+   patch_master_css.py (rewrites only the first <style>) never touches it.
+   Fonts are loaded here via @import — NOT a <link> — so patch_font_link.py
+   (which rewrites every fonts.googleapis.com css2 <link>) cannot strip them.
+   THIS GUIDE ONLY.
+     • Display headings → Playfair Display (dramatic high-contrast serif)
+     • Body reading copy → Lora (editorial serif)
+     • Hero heading brightened for visibility on the dark cinematic background
+     • Small UI labels, eyebrows, buttons keep their explicit sans fonts
    ───────────────────────────────────────────────────────────────────────── */
+
+  /* Body reading copy → Lora */
   body.kp-lora,
   body.kp-lora p,
   body.kp-lora .origins-lede,
@@ -2170,6 +2176,42 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   body.kp-lora .responsibilities .resp-intro,
   body.kp-lora .responsibilities .cell-desc {
     font-family: 'Lora', serif;
+  }
+
+  /* Display headings & big display numbers → Playfair Display */
+  body.kp-lora .hero h1,
+  body.kp-lora .egfr-live h2,
+  body.kp-lora .responsibilities h2,
+  body.kp-lora .responsibilities .resp-close,
+  body.kp-lora .origins-intro h2,
+  body.kp-lora .astonish-head h2,
+  body.kp-lora .cap-head h2,
+  body.kp-lora .cap-title,
+  body.kp-lora .sp-head h2,
+  body.kp-lora .sp-power,
+  body.kp-lora .dec-head h2,
+  body.kp-lora .dec-quote,
+  body.kp-lora .fails-head h2,
+  body.kp-lora .more-head h2,
+  body.kp-lora .more-name,
+  body.kp-lora .cta h3,
+  body.kp-lora .faq h2,
+  body.kp-lora .faq-item summary,
+  body.kp-lora .stat-band .stat-number,
+  body.kp-lora .astonish-num,
+  body.kp-lora .egfr-gfr-num {
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* Hero heading — make it clearly visible on the dark background */
+  body.kp-lora .hero h1 {
+    color: #f4ecdd;              /* warm near-white, ~18:1 on #02060a */
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+  body.kp-lora .hero h1 em {
+    color: #e7b35a;              /* bright gold (was dark #a06b00) */
+    font-style: italic;
   }
 </style>
 </head>
