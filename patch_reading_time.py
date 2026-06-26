@@ -35,14 +35,24 @@ BADGE_STYLE = (
     "color:rgba(255,255,255,.9);"
 )
 
+# Multilingual row for content guides.
 ROW_TMPL = (
     '<span class="hero-readtime"><strong>'
-    '<span data-lang="en">Reading time</span>'
+    '<span data-lang="en">Read time</span>'
     '<span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span>'
     '<span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span>'
     '<span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>'
-    ':</strong> <time datetime="PT{n}M" style="{style}">~{n} min read</time></span>'
+    ':</strong> <time datetime="PT{n}M" style="{style}">~{n} min</time></span>'
 )
+# English-only row for calculators (calculators are English-only).
+ROW_TMPL_EN = (
+    '<span class="hero-readtime"><strong>Read time:</strong> '
+    '<time datetime="PT{n}M" style="{style}">~{n} min</time></span>'
+)
+
+
+def is_calc(name: str) -> bool:
+    return name.startswith("calc-") or name == "ckd-dri-calculator.html"
 
 # Matches the whole existing row so re-runs refresh the number. The row ends in
 # </time></span> (a <time> badge inside the row span) — matching </span></span>
@@ -81,7 +91,8 @@ def patch_guide(path: Path, dry_run: bool) -> str:
 
     words = english_word_count(text)
     minutes = max(1, round(words / WPM))
-    row = ROW_TMPL.format(n=minutes, style=BADGE_STYLE)
+    tmpl = ROW_TMPL_EN if is_calc(path.name) else ROW_TMPL
+    row = tmpl.format(n=minutes, style=BADGE_STYLE)
 
     # Refresh an existing badge.
     if 'class="hero-readtime"' in text:

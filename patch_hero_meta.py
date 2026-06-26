@@ -62,6 +62,21 @@ REFS_ROW = (
     ':</strong> <span style="{badge}">{n}</span></span>'
 )
 
+# English-only rows for calculators.
+PUBLISHED_ROW_EN = (
+    '<span class="hero-published"><strong>Published:</strong> '
+    '<time datetime="{iso}" style="{badge}">{label}</time></span>'
+)
+REFS_ROW_EN = (
+    '<span class="hero-refcount"><strong>References:</strong> '
+    '<span style="{badge}">{n}</span></span>'
+)
+
+
+def is_calc(name: str) -> bool:
+    return name.startswith("calc-") or name == "ckd-dri-calculator.html"
+
+
 def find_project_dir(script_path: Path) -> Path:
     for candidate in [script_path.parent, script_path.parent.parent]:
         if (candidate / "guides").is_dir() and (candidate / "index.html").exists():
@@ -107,6 +122,21 @@ def is_managed_row(span_html: str) -> bool:
     return 'hero-published' in span_html or 'hero-refcount' in span_html
 
 
+def is_last_reviewed_row(span_html: str) -> bool:
+    """A 'Last Reviewed' row — dropped from the hero (replaced by a conditional
+    'Last updated' row managed by patch_last_updated.py)."""
+    return bool(re.search(r'Last Reviewed|Huling Na-review|Katapusang Na-review', span_html, re.I))
+
+
+def is_stray_reading_row(span_html: str) -> bool:
+    """A duplicate/legacy reading-time row that is NOT the managed hero-readtime
+    badge (some guides were authored with their own 'Reading time'/'Read time'
+    row before the patch was introduced)."""
+    if 'hero-readtime' in span_html:
+        return False
+    return bool(re.search(r'Reading time|Read time', span_html, re.I))
+
+
 def ref_count(text: str) -> int:
     m = re.search(r'REFERENCES-ACC-START.*?REFERENCES-ACC-END', text, re.S)
     return len(re.findall(r'<li\b', m.group(0))) if m else 0
@@ -125,23 +155,27 @@ def patch_guide(path: Path, dry_run: bool) -> str:
     for kind, html in split_top_level_spans(hm.group(2)):
         if kind != 'span':
             continue  # whitespace between rows — re-normalized below
-        if is_author_row(html) or is_managed_row(html):
+        if (is_author_row(html) or is_managed_row(html)
+                or is_last_reviewed_row(html) or is_stray_reading_row(html)):
             continue
         kept.append(html.strip())
 
     # 2. Build the new Published + References rows (prepended, where author was).
+    calc = is_calc(path.name)
+    pub_tmpl = PUBLISHED_ROW_EN if calc else PUBLISHED_ROW
+    refs_tmpl = REFS_ROW_EN if calc else REFS_ROW
     new_rows = []
     pm = re.search(r'<meta property="article:published_time" content="([^"]+)"', text)
     if pm:
         try:
             dt = datetime.fromisoformat(pm.group(1))
             label = dt.strftime("%b %-d, %Y")
-            new_rows.append(PUBLISHED_ROW.format(iso=pm.group(1), label=label, badge=TEAL_BADGE))
+            new_rows.append(pub_tmpl.format(iso=pm.group(1), label=label, badge=TEAL_BADGE))
         except ValueError:
             pass
     n = ref_count(text)
     if n:
-        new_rows.append(REFS_ROW.format(n=n, badge=SLATE_BADGE))
+        new_rows.append(refs_tmpl.format(n=n, badge=SLATE_BADGE))
 
     inner = "\n" + "\n".join(new_rows + kept) + "\n"
     text = text[:hm.start()] + hm.group(1) + inner + hm.group(3) + text[hm.end():]
