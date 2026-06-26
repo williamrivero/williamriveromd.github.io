@@ -252,16 +252,16 @@
      headline stays readable even where the circle extends behind it). Scoped to
      patient-mode vignette heroes; the mobile stack (≤820px) is left untouched. */
   @media (min-width: 821px) {
-    body:not(.physician-mode) .hero-grid:has(.hero-figure.mode-patient) {
+    body:not(.physician-mode) .hero-grid:has(.hero-figure) {
       display: flex; align-items: center;
       position: relative; gap: 0;
       min-height: clamp(330px, 30vw, 450px);
     }
-    body:not(.physician-mode) .hero-grid:has(.hero-figure.mode-patient) .hero-copy {
+    body:not(.physician-mode) .hero-grid:has(.hero-figure) .hero-copy {
       max-width: min(56%, 560px);
       position: relative; z-index: 3;   /* hero text on the top layer */
     }
-    body:not(.physician-mode) .hero-grid:has(.hero-figure.mode-patient) .hero-figure.mode-patient {
+    body:not(.physician-mode) .hero-grid:has(.hero-figure) .hero-figure {
       position: absolute; top: 50%; left: 55%;
       transform: translateY(-50%);
       width: clamp(400px, 50vw, 600px);
@@ -1245,10 +1245,49 @@
   html[data-theme="dark"] body.physician-mode .stat-card,
   html[data-theme="dark"] body.physician-mode .ref-band { background: #0a1425; }
 
-  /* Pastel hero is a light design — keep its light background in dark mode
-     so the dark hero text stays legible (avoids dark-on-dark). */
-  html[data-theme="dark"] .hero { background: linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%); }
-  html[data-theme="dark"] body.physician-mode .hero { background: linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%); }
+  /* ── DARK-MODE HERO ──────────────────────────────────────────────────────
+     The pastel hero gets a TRUE dark variant in dark mode: the patient hero
+     darkens to deep teal, the clinician hero to deep navy, and all hero text
+     (headline, subtitle, meta, tag, badges) flips to light. Contrast AA-verified
+     (white on #0c2a30 = 14.6:1; #eaf6f4 on #0a2228 = 13.9:1). */
+  html[data-theme="dark"] .hero {
+    background: linear-gradient(135deg,#0c2a30 0%,#103d44 55%,#0a2228 100%);
+    color: rgba(233,245,244,.82);
+  }
+  html[data-theme="dark"] .hero h1 { color:#eaf6f4; }
+  html[data-theme="dark"] .hero h1 em { color:#e2b95f; }
+  html[data-theme="dark"] .hero-sub { color:rgba(233,245,244,.82); }
+  html[data-theme="dark"] .hero-meta { color:rgba(233,245,244,.72); }
+  html[data-theme="dark"] .hero-meta strong { color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] .hero-tag {
+    color:rgba(233,245,244,.9); border-color:rgba(255,255,255,.28);
+  }
+  html[data-theme="dark"] .hero-meta time {
+    color:rgba(255,255,255,.92) !important;
+    background:rgba(255,255,255,.10) !important;
+    border-color:rgba(255,255,255,.28) !important;
+  }
+  html[data-theme="dark"] .hero-vignette { border-color: rgba(255,255,255,.18); box-shadow: 0 22px 55px rgba(0,0,0,.6); }
+  /* Clinician (physician-mode) dark hero */
+  html[data-theme="dark"] body.physician-mode .hero {
+    background: linear-gradient(135deg,#0a1426 0%,#16294d 100%);
+    color: rgba(238,242,251,.82);
+  }
+  html[data-theme="dark"] body.physician-mode .hero h1 { color:#eef2fb; }
+  html[data-theme="dark"] body.physician-mode .hero h1 em { color:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-sub { color:rgba(238,242,251,.82); }
+  html[data-theme="dark"] body.physician-mode .hero-meta { color:rgba(238,242,251,.72); }
+  html[data-theme="dark"] body.physician-mode .hero-meta strong { color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] body.physician-mode .hero-tag {
+    color:rgba(238,242,251,.9); border-color:rgba(255,255,255,.26);
+  }
+  html[data-theme="dark"] body.physician-mode .hero-toc-head { color:#eef2fb; border-bottom-color: rgba(255,255,255,.16); }
+  html[data-theme="dark"] body.physician-mode .hero-toc-head svg { stroke:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a { color:#dbe6f5; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a + a { border-top-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a:hover { background: rgba(255,255,255,.06); color:#fff; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-num { color:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-arrow { color:#e2b95f; }
 
   /* ── GUIDE LANGUAGE BAR (regional recipes / multilingual tools) ──────────── */
   .guide-lang-bar{display:flex;align-items:center;gap:8px;padding:8px 0 16px;flex-wrap:wrap;}
@@ -1292,7 +1331,7 @@
     .hero-grid { grid-template-columns: 1fr; gap: 28px; }
     .hero-figure { margin: 4px auto 0; }
     /* Phones/tablets: drop the circular vignette entirely — text-only hero. */
-    .hero-figure.mode-patient { display: none; }
+    .hero-figure { display: none; }
     .hero-cards { width: 100%; }
   }
 
