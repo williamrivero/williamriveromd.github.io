@@ -53,7 +53,7 @@ python3 patch_references_accordion.py --guide igan-guide.html  # single guide
 
 python3 generate_latest_guides.py         # regenerate the "Latest guides" strip on guides/index.html
 python3 generate_latest_guides.py --dry-run
-python3 generate_latest_guides.py --count 6   # show N cards (default 4)
+python3 generate_latest_guides.py --count 6   # show N cards (default 12; the strip scrolls horizontally)
 
 python3 generate_sitemap.py               # regenerate sitemap.xml from files on disk
 python3 generate_sitemap.py --dry-run     # preview added/removed URLs without writing
