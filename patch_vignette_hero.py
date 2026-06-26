@@ -21,14 +21,18 @@ GUIDES = os.path.join(ROOT, "guides")
 
 # guide stem -> alt text for the circular vignette
 TARGETS = {
-    "ckd-alternative-holistic-medicine": "Circular vignette hero illustration for the alternative and holistic medicine in CKD guide.",
-    "ckd-mental-health-sleep": "Circular vignette hero illustration for the CKD mental health and sleep guide.",
-    "contrast-nephropathy": "Circular vignette hero illustration for the contrast-induced nephropathy guide.",
-    "exercise-guide-ckd": "Circular vignette hero illustration for the exercise guide for CKD.",
-    "herbal-nephropathy": "Circular vignette hero illustration for the herbal nephropathy guide.",
-    "muscle-building-supplements-ckd": "Circular vignette hero illustration for the muscle-building supplements and CKD guide.",
-    "nsaid-kidney-injury": "Circular vignette hero illustration for the NSAID kidney injury guide.",
-    "travel-dialysis-ckd": "Circular vignette hero illustration for the travel and dialysis with CKD guide.",
+    "dialysis-prescription": "Circular vignette hero illustration for the dialysis prescription guide.",
+    "glp1-ozempic-ckd": "Circular vignette hero illustration for the GLP-1 agonists and CKD guide.",
+    "green-nephrology": "Circular vignette hero illustration for the green nephrology guide.",
+    "hemodiafiltration-deep-dive": "Circular vignette hero illustration for the hemodiafiltration deep-dive guide.",
+    "hemodialysis-modalities": "Circular vignette hero illustration for the hemodialysis modalities guide.",
+    "high-flux-hd-optimization": "Circular vignette hero illustration for the high-flux hemodialysis optimization guide.",
+    "innovative-technologies-ckd": "Circular vignette hero illustration for the innovative technologies in CKD guide.",
+    "medication-operational-guide": "Circular vignette hero illustration for the CKD prescriber's medication operational guide.",
+    "microbiome-probiotics-health": "Circular vignette hero illustration for the microbiome, probiotics, and kidney health guide.",
+    "new-therapeutic-agents-ckd": "Circular vignette hero illustration for the new therapeutic agents in CKD guide.",
+    "practical-outpatient-algorithms": "Circular vignette hero illustration for the practical outpatient nephrology algorithms guide.",
+    "stem-cells-ckd": "Circular vignette hero illustration for the stem cells and CKD guide.",
 }
 
 FIGURE_TMPL = (
