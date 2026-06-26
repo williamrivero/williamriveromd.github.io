@@ -111,11 +111,12 @@ python3 patch_symptom_widget.py --guide <filename>      # floating Symptom-Check
 python3 patch_mode_cls.py --guide <filename>
 python3 patch_signature_position.py --guide <filename>
 python3 patch_last_reviewed.py --guide <filename>          # "Last Reviewed" badge + article:modified_time + JSON-LD
-python3 patch_published_time.py --guide <filename>         # article:published_time stamp (date + time, +08:00) — when made/published
+python3 patch_published_time.py --guide <filename>         # article:published_time stamp (= merge/publish date, +08:00)
 python3 patch_reading_time.py --guide <filename>           # "Reading time" estimate in the hero
 python3 patch_references_accordion.py --guide <filename>   # accordion References section before the signature block
+python3 patch_hero_meta.py --guide <filename>              # hero byline: drop Author, show Published date + References count
 python3 generate_sitemap.py
-python3 generate_latest_guides.py                          # refresh the "Latest guides" strip on guides/index.html
+python3 generate_latest_guides.py                          # refresh the "Latest guides" strip on guides/index.html (new guide auto-appears)
 ```
 
 > **Dual-mode guides only:** after `patch_mode_cls.py`, also run
@@ -130,11 +131,22 @@ python3 generate_latest_guides.py                          # refresh the "Latest
 > clinical sections.
 
 > **Every new guide must (policy):**
-> 1. **Be date- and time-stamped of when it was made and published.** `patch_published_time.py`
->    writes an immutable `<meta property="article:published_time">` (Manila time). This is what
->    orders the **Latest guides** strip — so always re-run `generate_latest_guides.py` afterwards.
-> 2. **Show a reading-time estimate in its hero.** `patch_reading_time.py` adds it to `.hero-meta`.
-> 3. **Have an accordion-structured References section before the signature block.**
+> 1. **Be date- and time-stamped of when it was merged/published.** `patch_published_time.py`
+>    writes an immutable `<meta property="article:published_time">` (Manila time) — the **publish
+>    date equals the merge/publish-to-main date** (when the guide goes live). This orders the
+>    **Latest guides** strip.
+> 2. **Auto-appear in the Latest guides strip.** Because the strip (`generate_latest_guides.py`,
+>    between `LATEST-GUIDES-START/END` on `guides/index.html`) is data-driven — newest
+>    `article:published_time` first — a freshly stamped guide appears automatically. **Always
+>    re-run `generate_latest_guides.py` after adding any guide; never skip it, even if not asked.**
+>    A `SessionStart` hook also stamps + regenerates as a safety net so a new guide is never left
+>    out of the strip.
+> 3. **Show a reading-time estimate in its hero.** `patch_reading_time.py` adds it to `.hero-meta`.
+> 4. **Carry no Author byline in the hero.** The author is credited in the signature/dr-card block
+>    at the end of the page. `patch_hero_meta.py` strips any "Author: W Rivero…" row from
+>    `.hero-meta` and instead shows a **Published** date row and a **References** count row. Do not
+>    add an author line to a new guide's hero.
+> 5. **Have an accordion-structured References section before the signature block.**
 >    `patch_references_accordion.py` builds a collapsible `<details>` References block and places
 >    it right before `.dr-card-wrap`. It sources citations from the guide's footer
 >    `<p>References: A · B · C</p>` line (or the hero-meta `Guidelines:` value), so **author the

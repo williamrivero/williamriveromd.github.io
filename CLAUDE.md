@@ -51,6 +51,10 @@ python3 patch_references_accordion.py --dry-run
 python3 patch_references_accordion.py --overrides refs.json  # supply citations for guides with no footer references
 python3 patch_references_accordion.py --guide igan-guide.html  # single guide
 
+python3 patch_hero_meta.py                # hero byline: drop "Author" row, show Published date + References count
+python3 patch_hero_meta.py --dry-run
+python3 patch_hero_meta.py --guide understanding-ckd.html  # single guide
+
 python3 patch_symptom_widget.py           # install the floating Symptom-Checker widget on every content guide
 python3 patch_symptom_widget.py --report  # audit which eligible guides lack the widget (no writes)
 python3 patch_symptom_widget.py --dry-run
@@ -147,22 +151,32 @@ dr-card-wrap and related-guides immediately before `<footer class="guide-footer"
 
 ### Guide-wide content policies (every guide, from here on)
 
-Three invariants every guide must satisfy. The `/setup-guide` command runs the scripts in order.
+Invariants every guide must satisfy. The `/setup-guide` command runs the scripts in order.
 
-1. **Date- and time-stamped publish date.** Every guide carries an immutable
-   `<meta property="article:published_time" content="YYYY-MM-DDTHH:MM:SS+08:00">` recording *when
-   it was made and published* (Manila time). `patch_published_time.py` derives it from the guide's
-   first git-commit datetime (or "now" for an uncommitted new guide) and never overwrites an
-   existing stamp. It also aligns the JSON-LD `datePublished`. This timestamp is the recency
-   signal for the **Latest guides** strip — always re-run `generate_latest_guides.py` after adding
-   or stamping a guide.
+1. **Date- and time-stamped publish date (= the merge/publish-to-main date).** Every guide carries
+   an immutable `<meta property="article:published_time" content="YYYY-MM-DDTHH:MM:SS+08:00">`
+   recording *when it went live* (Manila time). `patch_published_time.py` derives it from the
+   guide's first git-commit datetime (for direct-to-main commits this is the merge moment) or
+   "now" when stamped at merge time, and never overwrites an existing stamp. It also aligns the
+   JSON-LD `datePublished`.
 
-2. **Reading-time estimate in the hero.** `patch_reading_time.py` adds a "Reading time" row to the
+2. **Auto-appears in the Latest guides strip.** The strip is data-driven (newest
+   `article:published_time` first), so a freshly stamped guide shows up automatically — **always
+   re-run `generate_latest_guides.py` after adding any guide, even if not explicitly asked.** A
+   `SessionStart` hook (`.claude/settings.json`) also runs `patch_published_time.py` +
+   `generate_latest_guides.py` each session as a safety net, so a new guide is never left out.
+
+3. **Reading-time estimate in the hero.** `patch_reading_time.py` adds a "Reading time" row to the
    `.hero-meta` block, computed from the guide's English word count (translations carried as
    `lang-hidden` data-lang siblings are excluded so the count is not inflated 4×) at 200 wpm. The
    badge uses inline styles so `patch_master_css.py` will not clobber it.
 
-3. **Accordion References section before the signature block.** `patch_references_accordion.py`
+4. **No Author byline in the hero.** The author is credited in the signature/dr-card block at the
+   end of the page, so `patch_hero_meta.py` strips any "Author: W Rivero…" row from `.hero-meta`
+   and instead shows a **Published** date row and a **References** count row (the number of items
+   in the accordion). Inline-styled, idempotent; never add an author line to a new guide's hero.
+
+5. **Accordion References section before the signature block.** `patch_references_accordion.py`
    builds a collapsible `<details class="ref-acc">` References section (multilingual summary,
    inline-styled, marker-delimited) and inserts it immediately before `.dr-card-wrap`. Citations
    are sourced from the guide's footer `<p>References: A · B · C</p>` line (or hero-meta

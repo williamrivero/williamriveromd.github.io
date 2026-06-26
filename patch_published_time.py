@@ -10,12 +10,16 @@ script records that timestamp as an immutable, machine-readable Open Graph
 `datePublished` value to match. It is the recency signal that drives the
 "Latest Guides" strip on guides/index.html (see generate_latest_guides.py).
 
-The published time is, in order of preference:
+The published time is the moment the guide is **merged / published to main**
+(i.e. goes live on the site). In order of preference:
   1. An existing <meta property="article:published_time"> — never overwritten
      (a publish date is immutable once set).
   2. The guide's first-commit (add) datetime in git, converted to Manila time
-     (+08:00) — the truthful "when it was made" for already-committed guides.
-  3. datetime.now() in +08:00 — for a brand-new guide not yet committed.
+     (+08:00) — for guides committed directly to main this IS the merge/publish
+     moment.
+  3. datetime.now() in +08:00 — for a brand-new guide not yet committed; when the
+     stamp is applied at merge time (via /setup-guide or the SessionStart hook)
+     this equals the merge date.
 
 Changes per guide (only when article:published_time is absent):
   1. Inserts <meta property="article:published_time" content="YYYY-MM-DDTHH:MM:SS+08:00">
