@@ -2465,29 +2465,40 @@ function preprocessImage(img){
 
 // ── NUTRIENT EXTRACTION ──────────────────────────────────────────────
 function extractNutrients(text){
-  var get = function(patterns){
-    for(var j = 0; j < patterns.length; j++){
-      var m = text.match(patterns[j]);
-      if(m) return parseFloat(m[1].replace(',',''));
+  // Match "<name> [(unit)] <number>" for BOTH common label layouts:
+  //  • Classic US Nutrition Facts — unit AFTER the value: "Sodium 154mg"
+  //  • Tabular AU/PH/EU labels — unit in the row header BEFORE the columns:
+  //    "Sodium (mg)  154  514"  (first number = the per-serving column)
+  // The optional unit token between the name and the value lets the same
+  // pattern capture the first number in either layout.
+  var find = function(names, unit){
+    var u = unit === 'g'   ? '(?:\\(?\\s*g\\s*\\)?)?'
+          : unit === 'mg'  ? '(?:\\(?\\s*m?g\\s*\\)?)?'
+          : unit === 'cal' ? '(?:\\(?\\s*k?(?:cal|j)\\s*\\)?)?'
+          : '';
+    for(var i = 0; i < names.length; i++){
+      var re = new RegExp(names[i] + '\\s*' + u + '\\s*[:\\s]*(\\d[\\d,]*\\.?\\d*)', 'i');
+      var m = text.match(re);
+      if(m) return parseFloat(m[1].replace(/,/g, ''));
     }
     return null;
   };
   return {
     serving_size: (text.match(/serving\s*size[:\s]*([^\n]+)/i) || [])[1]?.trim() || '',
-    calories: get([/calories\s*(\d+)/i, /(\d+)\s*calories/i, /energy\s*(\d+)/i]),
-    total_fat: get([/total\s*fat\s*(\d+\.?\d*)\s*g/i, /total\s*fat\s*(\d+\.?\d*)/i]),
-    sat_fat: get([/saturated\s*fat\s*(\d+\.?\d*)\s*g/i, /sat\.?\s*fat\s*(\d+\.?\d*)\s*g/i]),
-    trans_fat: get([/trans\s*fat\s*(\d+\.?\d*)\s*g/i]),
-    cholesterol: get([/cholesterol\s*(\d+\.?\d*)\s*m?g/i]),
-    sodium: get([/sodium\s*(\d[\d,]*\.?\d*)\s*m?g/i]),
-    total_carbs: get([/total\s*carb(?:ohydrate)?s?\s*(\d+\.?\d*)\s*g/i, /carb(?:ohydrate)?s?\s*(\d+\.?\d*)\s*g/i]),
-    fiber: get([/(?:dietary\s*)?fiber\s*(\d+\.?\d*)\s*g/i]),
-    sugars: get([/(?:total\s*)?sugars?\s*(\d+\.?\d*)\s*g/i]),
-    protein: get([/protein\s*(\d+\.?\d*)\s*g/i]),
-    potassium: get([/potassium\s*(\d[\d,]*\.?\d*)\s*m?g/i]),
-    phosphorus: get([/phosphor(?:us|ous)\s*(\d[\d,]*\.?\d*)\s*m?g/i]),
-    calcium: get([/calcium\s*(\d[\d,]*\.?\d*)\s*m?g/i]),
-    iron: get([/iron\s*(\d+\.?\d*)\s*m?g/i])
+    calories: find(['calories', 'energy'], 'cal'),
+    total_fat: find(['total\\s*fat'], 'g'),
+    sat_fat: find(['saturated\\s*fat', 'sat\\.?\\s*fat'], 'g'),
+    trans_fat: find(['trans\\s*fat'], 'g'),
+    cholesterol: find(['cholesterol'], 'mg'),
+    sodium: find(['sodium'], 'mg'),
+    total_carbs: find(['total\\s*carb(?:ohydrate)?s?', 'carb(?:ohydrate)?s?'], 'g'),
+    fiber: find(['(?:dietary\\s*)?fib(?:er|re)'], 'g'),
+    sugars: find(['(?:total\\s*)?sugars?'], 'g'),
+    protein: find(['protein'], 'g'),
+    potassium: find(['potassium'], 'mg'),
+    phosphorus: find(['phosphor(?:us|ous)'], 'mg'),
+    calcium: find(['calcium'], 'mg'),
+    iron: find(['iron'], 'mg')
   };
 }
 
