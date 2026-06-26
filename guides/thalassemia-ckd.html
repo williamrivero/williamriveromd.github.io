@@ -240,6 +240,28 @@
       linear-gradient(180deg, rgba(42,143,143,.06), rgba(20,84,94,.16));
     pointer-events: none;
   }
+  /* ── Oversized vignette layout (desktop ≥821px) ──────────────────────────
+     A large circular portrait bleeds off the hero's right/top/bottom while the
+     copy sits on the LEFT and on the TOP layer (z-index above the disc, so the
+     headline stays readable even where the circle extends behind it). Scoped to
+     patient-mode vignette heroes; the mobile stack (≤820px) is left untouched. */
+  @media (min-width: 821px) {
+    body:not(.physician-mode) .hero-grid:has(.hero-figure.mode-patient) {
+      display: flex; align-items: center;
+      position: relative; gap: 0;
+      min-height: clamp(330px, 30vw, 450px);
+    }
+    body:not(.physician-mode) .hero-grid:has(.hero-figure.mode-patient) .hero-copy {
+      max-width: min(56%, 560px);
+      position: relative; z-index: 3;   /* hero text on the top layer */
+    }
+    body:not(.physician-mode) .hero-grid:has(.hero-figure.mode-patient) .hero-figure.mode-patient {
+      position: absolute; top: 50%; left: 55%;
+      transform: translateY(-50%);
+      width: clamp(400px, 50vw, 600px);
+      margin: 0; z-index: 1;
+    }
+  }
 
   /* ── CLINICIAN HERO: jump-to contents panel on the right ─────────────────── */
   .hero-toc {
@@ -1263,6 +1285,8 @@
   @media(max-width: 820px) {
     .hero-grid { grid-template-columns: 1fr; gap: 28px; }
     .hero-figure { margin: 4px auto 0; }
+    /* Phones/tablets: drop the circular vignette entirely — text-only hero. */
+    .hero-figure.mode-patient { display: none; }
     .hero-cards { width: 100%; }
   }
 
