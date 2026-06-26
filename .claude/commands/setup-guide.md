@@ -117,6 +117,7 @@ python3 patch_references_accordion.py --guide <filename>   # accordion Reference
 python3 patch_hero_meta.py --guide <filename>              # hero byline: drop Author, show Published date + References count
 python3 generate_sitemap.py
 python3 generate_latest_guides.py                          # refresh the "Latest guides" strip on guides/index.html (new guide auto-appears)
+python3 generate_latest_calculators.py                     # if a calc-* page: refresh the "Latest calculators" carousel on calculators.html
 ```
 
 > **Dual-mode guides only:** after `patch_mode_cls.py`, also run
