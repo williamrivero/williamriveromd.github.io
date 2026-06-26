@@ -262,6 +262,23 @@ calculators inherit the feature automatically as long as their inputs follow the
 `RX-HANDOFF` blocks (removed on patch). Inserts before the **last** `</body>`.
 
 ```bash
+python3 patch_calc_english_only.py         # strip translations from all calculators (English-only)
+python3 patch_calc_english_only.py --dry-run
+python3 patch_calc_english_only.py --guide calc-kfre.html  # single calculator
+```
+
+**Calculators are English-only.** `patch_calc_english_only.py` removes every
+`data-lang="tl|ceb|kap"` translation element (depth-aware) and the `setLang`/
+`wgmr-lang` language-restore machinery from each calculator (the on-load restore
+would otherwise hide the English spans and blank the page for a visitor whose
+last-used language wasn't English). Run it after adding any new calculator.
+Because the shared patch scripts add multilingual hero-meta labels, the
+calc-touching ones are **calculator-aware** and emit English-only labels for
+`calc-*` pages so translations never return: `patch_reading_time.py` (Read time),
+`patch_hero_meta.py` (Published / References), `patch_references_accordion.py`
+(References).
+
+```bash
 python3 build_companion_pdfs.py                 # render every downloads/*.html companion to PDF
 python3 build_companion_pdfs.py --list          # list buildable companions
 python3 build_companion_pdfs.py wgmr-gout-uric-acid-guide   # render a single companion
