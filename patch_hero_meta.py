@@ -30,7 +30,8 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
-SKIP = {"index.html"}
+# The calculators index is a tool listing, not a narrative guide — no byline.
+SKIP = {"index.html", "calculators.html"}
 
 TEAL_BADGE = (
     "display:inline-block;background:rgba(26,107,114,.18);"

@@ -25,7 +25,8 @@ import argparse
 from pathlib import Path
 
 WPM = 200
-SKIP = {"index.html"}
+# The calculators index is a tool listing, not a narrative guide — no byline.
+SKIP = {"index.html", "calculators.html"}
 
 BADGE_STYLE = (
     "display:inline-block;background:rgba(184,150,46,.16);"
