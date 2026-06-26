@@ -171,14 +171,17 @@
     pointer-events: none;
   }
   /* Category sigil watermark — kidney-centred organ network behind hero content
-     (applies to patient + pastel clinician heroes; ~17% so it never distracts) */
+     (applies to patient + pastel clinician heroes; ~5% so it never distracts) */
   .hero::after {
     content: ''; position: absolute; pointer-events: none;
     top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: min(72%, 780px); aspect-ratio: 1 / 1;
     background: url('../images/nephrology-sigil.svg') center / contain no-repeat;
-    opacity: .17; z-index: 0;
+    opacity: .05; z-index: 0;
   }
+  /* Calculator pages opt out of the hero sigil watermark entirely */
+  body.calc-page .hero::after,
+  body.calc-page .md-hero::after { content: none; }
   .hero > .container { position: relative; z-index: 1; }
   /* Two-column hero: copy on the left, vignette / contents panel on the right */
   .hero-grid {
@@ -1141,7 +1144,7 @@
     top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: min(70%, 720px); aspect-ratio: 1 / 1;
     background: url('../images/nephrology-sigil.svg') center / contain no-repeat;
-    filter: invert(1); opacity: .10; z-index: 0;
+    filter: invert(1); opacity: .05; z-index: 0;
   }
   .md-hero > * { position: relative; z-index: 1; }
   .md-hero-badge {
@@ -1606,7 +1609,7 @@ html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
 html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </style>
 </head>
-<body>
+<body class="calc-page">
 <script>/* pre-paint physician-mode restore — class applied before first paint, zero CLS.
    Do NOT move this to the bottom of the page or convert it into a
    post-paint restore — that reintroduces the CLS bug patch_mode_cls.py
