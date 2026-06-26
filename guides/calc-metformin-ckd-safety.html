@@ -2159,30 +2159,6 @@ document.addEventListener('DOMContentLoaded', calcMet);
 </button>
 <script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
 <script src="../assets/image-lightbox.js" defer></script>
-<!-- RX-HANDOFF-START -->
-<script>
-/* Tier-2 renal-dosing patient handoff — carries age/sex/weight/creatinine (and
-   eGFR) across the renal drug-dosing calculators via localStorage. Prefills only
-   EMPTY fields, and weight/creatinine only when the page is in its default units
-   (kg, mg/dL); never clobbers user entry. Stores canonical units (kg, mg/dL). */
-(function(){
-  var KEY='wgmr-rx-patient';
-  var CFG={age:null,sex:null,weight:null,scr:null,egfr:'met-egfr',recalc:'calcMet'};
-  function read(){try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return{};}}
-  function write(o){try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){}}
-  function el(id){return id?document.getElementById(id):null;}
-  function active(id){var b=el(id);return !b||b.classList.contains('active');}
-  function getv(id){var e=el(id);return e?String(e.value).trim():'';}
-  var filled=0;
-  function fill(id,v){var e=el(id);if(e&&!String(e.value).trim()&&v!=null&&v!==''){e.value=v;filled++;}}
-  function banner(){var w=document.querySelector('.calc-wrap');if(!w||document.getElementById('rx-carry-note'))return;var d=document.createElement('div');d.id='rx-carry-note';d.style.cssText='display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--teal);background:var(--teal-light);border:1px solid rgba(26,107,114,.25);border-radius:8px;padding:8px 12px;margin-bottom:16px;';d.innerHTML='\u21BA Patient details carried over from your previous dosing calculator \u2014 edit any field to update.';w.insertBefore(d,w.firstChild);}
-  function prefill(){var s=read();fill(CFG.age,s.age);fill(CFG.sex,s.sex);if(CFG.weight&&active(CFG.weight.kgBtn))fill(CFG.weight.id,s.weightKg);if(CFG.scr&&active(CFG.scr.convBtn))fill(CFG.scr.id,s.scrMgdl);fill(CFG.egfr,s.egfr);if(filled)banner();if(typeof window[CFG.recalc]==='function'){try{window[CFG.recalc]();}catch(e){}}}
-  function save(){var s=read();var a=getv(CFG.age);if(a)s.age=a;var x=getv(CFG.sex);if(x)s.sex=x;if(CFG.weight&&active(CFG.weight.kgBtn)){var w=getv(CFG.weight.id);if(w)s.weightKg=w;}if(CFG.scr&&active(CFG.scr.convBtn)){var c=getv(CFG.scr.id);if(c)s.scrMgdl=c;}var g=getv(CFG.egfr);if(g)s.egfr=g;write(s);}
-  function bind(id){var e=el(id);if(e){e.addEventListener('input',save);e.addEventListener('change',save);}}
-  document.addEventListener('DOMContentLoaded',function(){prefill();[CFG.age,CFG.sex,CFG.weight&&CFG.weight.id,CFG.scr&&CFG.scr.id,CFG.egfr].forEach(function(id){if(id)bind(id);});});
-})();
-</script>
-<!-- RX-HANDOFF-END -->
 <!-- CALC-NAV-PILL-START -->
 <style id="calc-nav-pill-style">
 .calc-nav-pill{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;align-items:stretch;z-index:9997;background:#1f3864;border-radius:999px;box-shadow:0 6px 22px rgba(15,30,51,.32);border:1px solid rgba(255,255,255,.14);}
@@ -2210,5 +2186,6 @@ html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav
 <a href="diabetes-kidneys.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
 </nav>
 <!-- CALC-NAV-PILL-END -->
+<script src="../assets/calc-handoff.js" defer></script>
 </body>
 </html>

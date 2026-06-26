@@ -242,6 +242,26 @@ Inserts before the **last** `</body>` so JS print-popup strings
 (`win.document.write('…</body></html>')`) are never touched.
 
 ```bash
+python3 patch_calc_handoff.py              # install the shared cross-calculator input handoff on all calculators
+python3 patch_calc_handoff.py --dry-run
+python3 patch_calc_handoff.py --guide calc-cockcroft-gault.html  # single calculator
+```
+
+Run `patch_calc_handoff.py` after adding any new calculator. Every calculator
+loads `assets/calc-handoff.js`, a self-activating script that **carries the
+common patient inputs across the whole calculator library** — age, sex, eGFR,
+height (cm), weight (kg), serum creatinine (mg/dL) — via the `wgmr-rx-patient`
+localStorage key, so entering them once prefills every related calculator. It
+keys off the library's id-suffix convention (`<prefix>-age`, `-sex`, `-egfr`,
+`-height`/`-ht`, `-weight`, `-scr`/`-creat`), prefills **only empty** fields
+(never clobbers a user's entry), and is **unit-guarded** — weight/creatinine are
+read and written only in their default units (no active `<prefix>-wbtn-lb` /
+`<prefix>-cbtn-si` toggle), so a kg value is never pushed into a lb field. New
+calculators inherit the feature automatically as long as their inputs follow the
+`<prefix>-<field>` id convention. The script supersedes the old per-page
+`RX-HANDOFF` blocks (removed on patch). Inserts before the **last** `</body>`.
+
+```bash
 python3 build_companion_pdfs.py                 # render every downloads/*.html companion to PDF
 python3 build_companion_pdfs.py --list          # list buildable companions
 python3 build_companion_pdfs.py wgmr-gout-uric-acid-guide   # render a single companion
