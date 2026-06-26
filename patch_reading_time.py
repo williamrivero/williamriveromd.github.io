@@ -43,8 +43,10 @@ ROW_TMPL = (
     ':</strong> <time datetime="PT{n}M" style="{style}">~{n} min read</time></span>'
 )
 
-# Matches the whole existing row so re-runs refresh the number.
-ROW_RE = re.compile(r'\n?[ \t]*<span class="hero-readtime">.*?</span></span>', re.S)
+# Matches the whole existing row so re-runs refresh the number. The row ends in
+# </time></span> (a <time> badge inside the row span) — matching </span></span>
+# here would over-run into page body content, so anchor on </time></span>.
+ROW_RE = re.compile(r'\n?[ \t]*<span class="hero-readtime">.*?</time></span>', re.S)
 
 
 def find_project_dir(script_path: Path) -> Path:
