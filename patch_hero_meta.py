@@ -122,6 +122,12 @@ def is_managed_row(span_html: str) -> bool:
     return 'hero-published' in span_html or 'hero-refcount' in span_html
 
 
+def is_specialty_row(span_html: str) -> bool:
+    """The 'Specialty:' hero row — dropped to save header space (the specialty is
+    credited in the signature/dr-card block)."""
+    return bool(re.search(r'>\s*Specialty\s*:?\s*<', span_html, re.I))
+
+
 def is_last_reviewed_row(span_html: str) -> bool:
     """A 'Last Reviewed' row — dropped from the hero (replaced by a conditional
     'Last updated' row managed by patch_last_updated.py)."""
@@ -156,7 +162,8 @@ def patch_guide(path: Path, dry_run: bool) -> str:
         if kind != 'span':
             continue  # whitespace between rows — re-normalized below
         if (is_author_row(html) or is_managed_row(html)
-                or is_last_reviewed_row(html) or is_stray_reading_row(html)):
+                or is_last_reviewed_row(html) or is_stray_reading_row(html)
+                or is_specialty_row(html)):
             continue
         kept.append(html.strip())
 
