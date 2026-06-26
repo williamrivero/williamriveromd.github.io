@@ -21,17 +21,14 @@ GUIDES = os.path.join(ROOT, "guides")
 
 # guide stem -> alt text for the circular vignette
 TARGETS = {
-    "ckd-dri-calculator": "Circular vignette hero illustration for the daily nutrition prescription CKD calculator.",
-    "ckd-friendly-recipes": "Circular vignette hero illustration for the CKD-friendly Filipino recipes guide.",
-    "ckd-label-scanner": "Circular vignette hero illustration for the CKD nutrition label scanner.",
-    "ckd-recipe-analyzer": "Circular vignette hero illustration for the CKD recipe nutrition analyzer.",
-    "cooking-oils-fats-guide": "Circular vignette hero illustration for the cooking oils and fats guide.",
-    "fiber-patient-education": "Circular vignette hero illustration for the dietary fiber patient guide.",
-    "food-kidney-toxins": "Circular vignette hero illustration for the food and kidney toxins guide.",
-    "ketogenic-chrononutrition-ckd": "Circular vignette hero illustration for the ketogenic diets and chrononutrition in CKD guide.",
-    "nutrition-kidney-patients": "Circular vignette hero illustration for the nutrition for kidney patients guide.",
-    "phosphorus-ckd": "Circular vignette hero illustration for the phosphorus in CKD guide.",
-    "sodium-salt-reduction-ckd": "Circular vignette hero illustration for the sodium and salt reduction in CKD guide.",
+    "ckd-alternative-holistic-medicine": "Circular vignette hero illustration for the alternative and holistic medicine in CKD guide.",
+    "ckd-mental-health-sleep": "Circular vignette hero illustration for the CKD mental health and sleep guide.",
+    "contrast-nephropathy": "Circular vignette hero illustration for the contrast-induced nephropathy guide.",
+    "exercise-guide-ckd": "Circular vignette hero illustration for the exercise guide for CKD.",
+    "herbal-nephropathy": "Circular vignette hero illustration for the herbal nephropathy guide.",
+    "muscle-building-supplements-ckd": "Circular vignette hero illustration for the muscle-building supplements and CKD guide.",
+    "nsaid-kidney-injury": "Circular vignette hero illustration for the NSAID kidney injury guide.",
+    "travel-dialysis-ckd": "Circular vignette hero illustration for the travel and dialysis with CKD guide.",
 }
 
 FIGURE_TMPL = (
