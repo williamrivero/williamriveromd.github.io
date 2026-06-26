@@ -4,12 +4,12 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Insulin Dosing in CKD — Starting Dose, Correction Factor &amp; Carb Ratio – W Rivero, MD</title>
-<meta name="description" content="Calculate a CKD-adjusted starting insulin dose, insulin sensitivity factor (correction factor), and insulin-to-carb ratio. Includes basal/bolus split and correction dose. With clinical pearls, evidence, and KDIGO 2022 references.">
+<title>Atrial Fibrillation Anticoagulation Decision — CHA₂DS₂-VASc + HAS-BLED – W Rivero, MD</title>
+<meta name="description" content="Combined atrial fibrillation anticoagulation decision tool: enter shared risk factors once to compute CHA₂DS₂-VASc stroke risk and HAS-BLED bleeding risk side by side, then read the net anticoagulation recommendation with CKD-specific DOAC renal-dosing guidance. With indications, scoring, evidence, and references.">
 <meta name="keywords" content="chronic kidney disease Philippines, CKD Philippines, sakit sa bato, kidney disease stages, CKD stage 3 4 5, eGFR kidney stages, kidney disease causes Philippines, CKD symptoms Philippines, swollen feet kidney, foamy urine, creatinine kidney disease, kidney disease diet Philippines, CKD management Philippines, kidney disease Filipino, CKD treatment Philippines, kidney failure prevention, nephrologist Philippines, NKTI Philippines, kidney disease hypertension diabetes Philippines, CKD patient guide Philippines">
 <meta name="author" content="W Rivero, MD, FPCP, DPSN">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-insulin-dose.html">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-af-anticoagulation.html">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -17,16 +17,16 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
 <meta property="og:type" content="article">
-<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="article:modified_time" content="2025-05-01T00:00:00+08:00">
 <meta property="og:site_name" content="William Gregory M. Rivero, MD">
-<meta property="og:title" content="Insulin Dosing in CKD — Starting Dose, Correction Factor &amp; Carb Ratio">
-<meta property="og:description" content="Calculate a CKD-adjusted starting insulin dose, insulin sensitivity factor (correction factor), and insulin-to-carb ratio. Includes basal/bolus split and correction dose.">
-<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-insulin-dose.html">
+<meta property="og:title" content="Atrial Fibrillation Anticoagulation Decision — CHA₂DS₂-VASc + HAS-BLED">
+<meta property="og:description" content="Combined AF anticoagulation decision tool: shared risk factors entered once drive both CHA₂DS₂-VASc stroke risk and HAS-BLED bleeding risk, with a net recommendation and CKD-specific DOAC dosing.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-af-anticoagulation.html">
 <meta property="og:image" content="https://www.williamriveromd.com/images/ckd-understanding-overview.png">
 <meta property="og:locale" content="en_PH">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Insulin Dosing in CKD — Starting Dose, Correction Factor &amp; Carb Ratio">
-<meta name="twitter:description" content="Calculate a CKD-adjusted starting insulin dose, insulin sensitivity factor (correction factor), and insulin-to-carb ratio. Includes basal/bolus split and correction dose.">
+<meta name="twitter:title" content="Atrial Fibrillation Anticoagulation Decision — CHA₂DS₂-VASc + HAS-BLED">
+<meta name="twitter:description" content="Combined AF anticoagulation decision tool: shared risk factors entered once drive both CHA₂DS₂-VASc stroke risk and HAS-BLED bleeding risk, with a net recommendation and CKD-specific DOAC dosing.">
 <meta name="twitter:image" content="https://www.williamriveromd.com/images/ckd-understanding-overview.png">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
 <style>
@@ -1425,6 +1425,88 @@
   }
 </style>
 
+<style>
+  /* ── Stage cards ── */
+  .stages-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:28px 0;}
+  .stage-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:18px 16px;text-align:center;}
+  .stage-card .stage-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+  .stage-card .stage-num{font-family:'Inter',sans-serif;font-size:28px;font-weight:600;line-height:1;margin-bottom:8px;}
+  .stage-card .stage-egfr{font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px;}
+  .stage-card .stage-desc{font-size:12px;color:var(--text-muted);line-height:1.4;}
+  .stage-1 .stage-num{color:#2d7a4f;}
+  .stage-2 .stage-num{color:#5a9e68;}
+  .stage-3a .stage-num{color:#f0a500;}
+  .stage-3b .stage-num{color:#e07b00;}
+  .stage-4 .stage-num{color:#c0392b;}
+  .stage-5 .stage-num{color:#8b0000;}
+
+  /* ── Dot colors ── */
+  .dot-gold{background:var(--gold);}
+
+  /* ── Symptom checklist ── */
+  .symptom-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:20px 0;}
+  .symptom-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;line-height:1.4;}
+  .symptom-item .si-icon{font-size:16px;flex-shrink:0;}
+
+  /* ── Pill list ── */
+  .pill-list{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;}
+  .pill{display:inline-block;font-size:13px;font-weight:500;padding:5px 14px;border-radius:20px;background:var(--teal-light);color:var(--teal);border:1px solid rgba(26,107,114,.2);}
+
+  /* ── Nutrition grid ── */
+  .nutrition-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:24px 0;}
+  .nutrition-card{border:1px solid var(--border);border-radius:12px;padding:18px;background:var(--white);}
+  .nutrition-card .n-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+  .nutrition-card .n-value{font-size:18px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .nutrition-card .n-note{font-size:12px;color:var(--text-muted);line-height:1.4;}
+
+  /* ── Red flags ── */
+  .red-flags{background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:14px;padding:28px 32px;margin:32px 0;}
+  
+  
+  
+  
+
+  /* ── eGFR unit toggle ── */
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  
+  
+  
+  
+
+
+/* Dark mode */
+body.dark .related-card {
+  background: #1a2535;
+  border-color: #2a3a4a;
+}
+body.dark .related-card:hover {
+  border-color: var(--teal, #1a6b72);
+}
+body.dark .related-card-title {
+  color: #e8edf2;
+}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Atrial Fibrillation Anticoagulation Decision — CHA₂DS₂-VASc + HAS-BLED",
+  "url": "https://www.williamriveromd.com/guides/calc-af-anticoagulation.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH",
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "Clinician"
+  }
+}
+</script>
 <style id="mdc-style">
 /* MDCalc-style layout for standalone calculator pages */
 .mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
@@ -1442,24 +1524,51 @@
 .mdc-acc-body>h3.mdc-sub{font-family:'Inter',sans-serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
 .mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
 .mdc-acc#nextsteps>summary{color:var(--teal);}
+/* Calculate buttons — the .calc-btn/.calc-run/.tool-btn classes had no master-CSS
+   rule, so they rendered as tiny default browser buttons. Make them prominent and
+   theme-stable (solid teal + white, fixed hex so dark mode doesn't wash them out). */
 .calc-btn,.calc-run,.tool-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:16px 0 6px;padding:13px 30px;background:#1a6b72;color:#fff;border:none;border-radius:10px;font-family:'Manrope',sans-serif;font-size:1.02rem;font-weight:700;letter-spacing:.01em;cursor:pointer;box-shadow:0 2px 10px rgba(26,107,114,.30);transition:background .18s,box-shadow .18s,transform .05s;}
 .calc-btn:hover,.calc-run:hover,.tool-btn:hover{background:#155a60;box-shadow:0 5px 16px rgba(26,107,114,.40);}
 .calc-btn:active,.calc-run:active,.tool-btn:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(26,107,114,.30);}
 @media(max-width:600px){.calc-btn,.calc-run,.tool-btn{width:100%;}}
+/* Legacy .tool-* widget system — a few decision-aid calculators were lifted with
+   this guide-specific markup but without its CSS, so the inputs rendered bare.
+   Restyle here (CSS variables for dark-mode safety; radio options as chips). */
 .tool-box{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin:16px 0;}
 .tool-box>h3{font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:600;color:var(--navy);margin:0 0 6px;}
 .tool-box .tool-sub{font-size:13px;color:var(--text-muted);margin:0 0 18px;line-height:1.5;}
+.two-col-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:520px){.two-col-inputs{grid-template-columns:1fr;}}
+.tool-label{display:block;font-size:13px;font-weight:600;color:var(--text);margin:14px 0 5px;}
+.tool-input,.tool-select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;color:var(--text);background:var(--white);box-sizing:border-box;}
+.tool-select{cursor:pointer;}
+.tool-input:focus,.tool-select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.13);}
+.radio-group{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px;}
+.radio-item{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text-mid);cursor:pointer;background:var(--white);transition:border-color .15s;}
+.radio-item:hover{border-color:var(--teal);}
+.radio-item input{accent-color:var(--teal);margin:0;}
+.tool-result{display:none;margin-top:18px;padding:16px 20px;border-radius:10px;border:1px solid var(--border);background:var(--white);}
+.tool-result.show{display:block;}
+html[data-theme="dark"] .tool-box>h3{color:var(--text);}
+/* Non-standard unit-toggle markup (.ut-btn / .unit-toggle-row / .unit-toggle-lbl
+   / .ut-sep) that a few calculators used instead of the master .unit-btn system —
+   style them to match the polished segmented control. */
 .unit-toggle-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 16px;}
 .unit-toggle-lbl{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;}
 .ut-sep{width:1px;height:18px;background:var(--border);display:inline-block;}
 .ut-btn{padding:6px 14px;border:1px solid var(--border);background:var(--white);color:var(--text-mid);font-family:'Manrope',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;border-radius:6px;transition:border-color .15s,background .15s,color .15s;}
 .ut-btn:hover{border-color:var(--teal);}
 .ut-btn.active{background:#1a6b72;border-color:#1a6b72;color:#fff;}
-/* Accessible hero cross-links */
+/* Accessible hero cross-links: high-contrast white text + gold underline (link
+   affordance not by colour alone), visible focus ring, larger hit area. The
+   hero is dark in both themes, so white works throughout. */
 .hero-xlink{color:#0e4a50;font-weight:600;text-decoration:underline;text-decoration-color:var(--gold-light);text-decoration-thickness:1.5px;text-underline-offset:3px;border-radius:6px;padding:2px 4px;}
 .hero-xlink:hover{color:#0b3a40;}
 .hero-xlink:focus-visible{outline:2px solid var(--gold-light);outline-offset:2px;}
-/* Dark mode: remap --navy-colored elements */
+/* Dark mode: --navy is NOT remapped, so every element the master CSS colors with
+   var(--navy) renders dark-on-dark. Some source guides also shipped an older
+   master CSS missing these overrides — so recolor them all here (this block is
+   injected last and applies to all calculator pages regardless of CSS version). */
 html[data-theme="dark"] .mdc-acc>summary,
 html[data-theme="dark"] .mdc-acc-body>h3.mdc-sub,
 html[data-theme="dark"] .section h2,
@@ -1482,27 +1591,6 @@ html[data-theme="dark"] .calc-action-text{color:var(--text-mid)!important;}
 html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
 html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </style>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "MedicalWebPage",
-  "name": "Insulin Dosing in CKD — Starting Dose, Correction Factor & Carb Ratio",
-  "url": "https://www.williamriveromd.com/guides/calc-insulin-dose.html",
-  "author": {
-    "@type": "Physician",
-    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
-    "url": "https://www.williamriveromd.com/"
-  },
-  "dateModified": "2026-06-01",
-  "datePublished": "2026-06-01",
-  "inLanguage": "en-PH",
-  "audience": {
-    "@type": "MedicalAudience",
-    "audienceType": "patient"
-  }
-}
-</script>
 </head>
 <body>
 <header class="site-header">
@@ -1522,59 +1610,58 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 
 <section class="hero">
 <div class="container">
-<div class="hero-tag">Endocrine · Clinical Calculator · Diabetes</div>
-<h1>Insulin Dosing in CKD <em>Starting Dose, Correction Factor &amp; Carb Ratio</em></h1>
-<p class="hero-sub">Estimate a <em>CKD-adjusted</em> starting total daily insulin dose, basal/bolus split, insulin sensitivity factor (correction factor), and insulin-to-carb ratio. Dose reductions are applied automatically based on kidney function — because renal insulin clearance falls with advancing CKD and hypoglycemia risk rises. This is an <em>initiation estimate</em>; all insulin regimens must be individualized and titrated.</p>
+<div class="hero-tag">Cardiology · Nephrology · Anticoagulation · Clinical Calculator</div>
+<h1>Atrial Fibrillation Anticoagulation <em>CHA₂DS₂-VASc + HAS-BLED</em></h1>
+<p class="hero-sub">One combined decision tool for non-valvular atrial fibrillation. Enter the shared risk factors <em>once</em> and read both scores side by side — CHA₂DS₂-VASc stroke risk and HAS-BLED bleeding risk — then a net anticoagulation recommendation with CKD-specific DOAC renal-dosing guidance. A high HAS-BLED is a prompt to fix modifiable bleeding factors, not a reason to withhold anticoagulation.</p>
 <div class="hero-meta">
 <span><strong>Author:</strong> W Rivero, MD, FPCP, DPSN</span>
 <span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
 <span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
 </div>
-<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="diabetes-kidneys.html" class="hero-xlink">Related guide →</a></p>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="cardio-kidney-metabolic-syndrome.html" class="hero-xlink">Cardio-kidney-metabolic syndrome guide →</a></p>
 </div>
 </section>
-
 <nav class="nav-strip">
 <div class="nav-pills">
 <a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#use-together">Use Together</a>
 <a class="nav-pill" href="#calculator">Calculator</a>
 <a class="nav-pill" href="#nextsteps">Next Steps</a>
 <a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
-
 <main class="container">
 
-<div class="mdc-instructions" id="instructions"><span class="mdc-instr-label">Instructions</span>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
 <ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Enter the patient's <strong>body weight in kg</strong>.</li>
-<li>Select the <strong>insulin requirement category</strong> — choose the option that best describes the patient's diabetes type and insulin resistance.</li>
-<li>Select the <strong>kidney function tier</strong> corresponding to the patient's eGFR. A dose reduction factor is applied automatically: ×0.75 for eGFR 30–59 and ×0.50 for eGFR &lt;30 or dialysis.</li>
-<li>Select the <strong>correction-insulin type</strong> (rapid-acting uses the Rule of 1800; regular insulin uses the Rule of 1500) for the Insulin Sensitivity Factor.</li>
-<li>Optionally enter the patient's <strong>current blood glucose</strong> and <strong>target glucose</strong> to compute a correction dose.</li>
-<li>Results appear automatically. All computation runs in your browser; no values are stored or transmitted.</li>
+<li>Enter the <strong>shared inputs once</strong> — age, sex, hypertension, prior stroke/TIA, and eGFR/CrCl. These feed <strong>both</strong> scores where they overlap.</li>
+<li>Add the <strong>CHA₂DS₂-VASc-only</strong> factors: congestive HF / LV dysfunction, diabetes, and vascular disease.</li>
+<li>Add the <strong>HAS-BLED-only</strong> factors: abnormal liver function, bleeding history/predisposition, labile INR, drugs (antiplatelets/NSAIDs), and alcohol use.</li>
+<li>Read the two metric cards side by side — CHA₂DS₂-VASc (/9) with approximate annual stroke %, and HAS-BLED (/9) with its bleeding-risk band (≥3 = high).</li>
+<li>The <strong>net recommendation</strong> synthesises both scores using sex-aware OAC thresholds. The CKD overlay reads your entered eGFR/CrCl and shows the tailored DOAC renal-dosing note.</li>
+<li>To use either score on its own, open the standalone <a href="calc-cha2ds2-vasc.html" style="color:var(--teal);font-weight:600;">CHA₂DS₂-VASc</a> or <a href="calc-has-bled.html" style="color:var(--teal);font-weight:600;">HAS-BLED</a> tool.</li>
 </ol>
-<p style="font-size:.92rem;color:var(--text-muted);">This tool produces <strong>initiation estimates only</strong>. Insulin doses must always be individualized and titrated to measured glucose values under physician supervision.</p>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
 </div>
 
 <details class="mdc-acc" id="when">
 <summary>When to Use</summary>
 <div class="mdc-acc-body">
-<p>Use this tool when initiating insulin therapy in an adult patient with diabetes and CKD (or on dialysis), or when estimating correction factors and carb ratios for a patient whose kidney function has changed. The tool is relevant for type 1 and type 2 DM and covers the full CKD spectrum from eGFR ≥60 down to dialysis-dependent patients.</p>
+<p>Use this combined tool when making an anticoagulation decision in <strong>non-valvular atrial fibrillation</strong> (or atrial flutter). Stroke risk and bleeding risk must be weighed together — and the two scores share several inputs (age, hypertension, prior stroke, renal function). Entering those once and reading both scores side by side avoids re-keying and keeps the net benefit explicit. The CKD overlay adds renally-tailored DOAC dosing for patients with reduced eGFR/CrCl, who carry <em>both</em> elevated stroke and elevated bleeding risk.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
 <div class="alert-body">
-<h4>Appropriate use</h4>
-<p>Adults (≥18 yr) with type 1 or type 2 diabetes mellitus who are being started on insulin or whose insulin requirements need re-estimation after a change in kidney function. The CKD reduction factor reflects the well-established decrease in renal insulin clearance that accompanies CKD progression — the kidney normally degrades 30–40% of circulating insulin, so as GFR falls, exogenous insulin persists longer and hypoglycemia risk rises.</p>
+<h4>Appropriate population</h4>
+<p>Adults with documented non-valvular AF or atrial flutter in whom an oral-anticoagulation (OAC) decision is being made — including the large CKD subgroup, where the stroke–bleeding trade-off is sharpest and renal dose adjustment is essential.</p>
 </div>
 </div>
 <div class="alert alert-amber">
 <div class="alert-icon">⚠️</div>
 <div class="alert-body">
-<h4>When NOT to rely on it alone</h4>
-<p>Do not use these estimates as fixed, standing doses. Insulin requirements change with illness, dietary intake, steroid use, dialysis adequacy, and residual renal function. Patients on dialysis experience acute glucose shifts during and after sessions. Any initiation or change must be followed by frequent self-monitoring of blood glucose (SMBG) or continuous glucose monitoring (CGM) and dose titration. Always consult the full clinical picture and current KDIGO / ADA guidelines.</p>
+<h4>When NOT to rely on it</h4>
+<p>Do not apply CHA₂DS₂-VASc to <strong>valvular AF</strong> — moderate-to-severe mitral stenosis or a mechanical heart valve — where a vitamin-K antagonist is indicated regardless of score. HAS-BLED estimates bleeding risk but is <strong>not</strong> a reason to withhold OAC: a high score flags modifiable factors to correct, not a contraindication. Neither score determines the agent or dose by itself; DOAC renal thresholds are defined by Cockcroft-Gault CrCl, not indexed eGFR. Always confirm against the current prescribing information.</p>
 </div>
 </div>
 </div>
@@ -1583,32 +1670,25 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <details class="mdc-acc" id="pearls">
 <summary>Pearls &amp; Pitfalls</summary>
 <div class="mdc-acc-body">
-<div class="alert alert-red">
-<div class="alert-icon">🚨</div>
-<div class="alert-body">
-<h4>CKD markedly raises hypoglycemia risk</h4>
-<p>Renal insulin clearance falls progressively as GFR declines — the kidney normally clears ~30–40% of circulating insulin. In CKD stage 4–5 and on dialysis, insulin half-life is prolonged and carbohydrate intake is often restricted (low-potassium, low-phosphorus diet), so standard doses cause hypoglycemia. Start 25–50% lower than a non-CKD patient of equal weight and titrate slowly. Dialysis patients are at particular risk during and in the 6–8 hours after a hemodialysis session.</p>
-</div>
-</div>
 <div class="alert alert-green">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
-<h4>Favor basal-dominant regimens in CKD</h4>
-<p>A basal-only or basal-dominant regimen (≥50% basal, lower bolus) with conservative glucose targets reduces hypoglycemia risk. In non-dialysis CKD stage 4–5, a target fasting glucose of 80–130 mg/dL and a 2-hr postprandial &lt;180 mg/dL are reasonable starting points per KDIGO 2022. In dialysis patients, slightly higher targets (100–140 mg/dL fasting) may be safer — individualize based on hypoglycemia awareness and comorbidities.</p>
+<h4>High bleeding risk is not a stop sign</h4>
+<p>HAS-BLED ≥3 should trigger correction of modifiable factors (blood-pressure control, stopping NSAIDs/unnecessary antiplatelets, correcting anemia, limiting alcohol, improving INR control) and closer follow-up — <strong>not</strong> automatic withholding of anticoagulation. When stroke risk is high (CHA₂DS₂-VASc ≥2 men / ≥3 women), net clinical benefit almost always still favours OAC.</p>
 </div>
 </div>
 <div class="alert alert-teal">
 <div class="alert-icon">🔬</div>
 <div class="alert-body">
-<h4>Rules of 1800/500 are estimates, not fixed truths</h4>
-<p>The Rule of 1800 (rapid-acting) and Rule of 1500 (regular) are empirical starting points for the insulin sensitivity factor (ISF). In CKD, because TDD is already reduced, the derived ISF will be larger (each unit drops glucose more), which is clinically appropriate — CKD patients are more sensitive per unit. Use the ISF to guide correction doses only; verify with SMBG before treating and 2–4 hours after. In dialysis, pre-dialysis glucose may rise while post-dialysis glucose can drop sharply.</p>
+<h4>Shared inputs, two meanings</h4>
+<p>Some factors count toward both scores but mean slightly different things. <strong>Hypertension</strong>: CHA₂DS₂-VASc counts any history of/treated HTN; HAS-BLED counts only <em>uncontrolled</em> HTN (SBP &gt;160 mmHg) — toggle the sub-option. <strong>Renal function</strong>: a low eGFR/CrCl drives both the HAS-BLED "abnormal renal function" point and the DOAC dosing note. <strong>Age</strong>: ≥75/65–74 set the VASc age band while age &gt;65 sets the HAS-BLED "elderly" point. <strong>Prior stroke/TIA</strong> scores +2 in VASc and +1 in HAS-BLED.</p>
 </div>
 </div>
-<div class="alert alert-amber">
-<div class="alert-icon">⚠️</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
 <div class="alert-body">
-<h4>Insulin requirements often fall with dialysis initiation</h4>
-<p>Counterintuitively, starting dialysis frequently <em>reduces</em> insulin requirements — uremic toxins impair insulin signaling, so removing them with dialysis can improve insulin sensitivity. Patients who start hemodialysis or peritoneal dialysis may need dose reductions of 25–50% from their pre-dialysis regimen. Monitor closely in the first weeks after dialysis initiation and after any change in dialysis prescription.</p>
+<h4>Pitfalls</h4>
+<p>(1) Do not apply to valvular AF / mechanical valves — those need a VKA regardless of score. (2) The female sex point is a risk modifier: a woman whose only point is sex is managed as low-risk. (3) Edoxaban is <strong>not recommended when CrCl &gt;95 mL/min</strong> (reduced efficacy) — a high CrCl is a contraindication, not a green light. (4) DOAC renal thresholds use Cockcroft-Gault CrCl, not indexed eGFR; in advanced CKD/dialysis, evidence is limited and warfarin's benefit is uncertain with higher bleeding/calciphylaxis risk. (5) Labile INR applies only on warfarin (TTR &lt;60%) — skip it on a DOAC.</p>
 </div>
 </div>
 </div>
@@ -1617,114 +1697,209 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <details class="mdc-acc" id="why">
 <summary>Why Use It</summary>
 <div class="mdc-acc-body">
-<p>Using a non-CKD-adjusted insulin dose in a patient with advanced kidney disease is one of the most common causes of severe hypoglycemia in the nephrology ward and outpatient dialysis setting. Standard weight-based rules (0.3–0.5 u/kg) were derived in patients without significant kidney disease. This tool applies published dose-reduction guidance from KDIGO 2022 and ADA 2024 to produce a safer starting estimate. The basal/bolus split, ISF, and ICR outputs give prescribers a complete starting framework that can be individualized and titrated — rather than guessing from first principles at the bedside.</p>
+<p>An anticoagulation decision is never a single number — it is the balance of thromboembolic benefit against hemorrhagic harm. CHA₂DS₂-VASc reliably identifies the truly low-risk patients who can safely avoid OAC, while HAS-BLED surfaces the modifiable bleeding factors that should be corrected before and during therapy. Because the two scores share inputs (age, hypertension, prior stroke, renal function), evaluating them together — entered once — keeps the trade-off explicit and reduces transcription error. In CKD the trade-off is sharpest: the kidney both clears most DOACs and independently raises stroke and bleeding risk, so coupling the scores with an eGFR/CrCl-driven dosing overlay lets you choose the right agent at the right renal dose rather than treating either score in isolation.</p>
+</div>
+</details>
+
+<details class="mdc-acc" id="use-together">
+<summary>How &amp; Why Use Together</summary>
+<div class="mdc-acc-body">
+<p>This page runs <strong>CHA₂DS₂-VASc</strong> and <strong>HAS-BLED</strong> side by side because an anticoagulation decision is the <em>net</em> of stroke risk and bleeding risk — neither score is actionable alone. Enter the shared variables once (age, hypertension, prior stroke, sex, renal function) and both scores update together; the page then reads the two results against this matrix:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Stroke risk (CHA₂DS₂-VASc)</th><th>Bleeding risk (HAS-BLED)</th><th>Net decision</th></tr></thead>
+<tbody>
+<tr><td>Low (0 men / 1 woman, sex-only)</td><td>Any</td><td>No oral anticoagulation; reassess as risk factors accrue.</td></tr>
+<tr><td>High (≥2 men / ≥3 women)</td><td>Low (&lt;3)</td><td>Anticoagulate — DOAC preferred over warfarin; dose to renal function.</td></tr>
+<tr><td>High</td><td>High (≥3)</td><td>Anticoagulate <em>and</em> correct modifiable bleeding factors (BP control, labile INR, antiplatelets/NSAIDs, alcohol); arrange closer follow-up. A high HAS-BLED is a flag, not a veto.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>HAS-BLED never withholds anticoagulation by itself</h4>
+<p>Its role is to surface and correct reversible bleeding risks, then anticoagulate the patient whose stroke risk warrants it. Withholding OAC on a high HAS-BLED alone exposes the patient to preventable stroke.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🫘</div>
+<div class="alert-body">
+<h4>Why the shared eGFR/CrCl drives both</h4>
+<p>Renal function feeds BOTH scores and the dosing overlay at once: it adds a HAS-BLED point when impaired, shapes stroke-risk management, and sets the apixaban/rivaroxaban/dabigatran/edoxaban renal dose (or favours apixaban/warfarin in advanced CKD). Entering it once keeps the stroke score, the bleeding score, and the chosen DOAC dose internally consistent.</p>
+</div>
+</div>
 </div>
 </details>
 
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
-<h2>Insulin Dosing in CKD — Starting Dose, Correction Factor &amp; Carb Ratio Calculator</h2>
-<p>Enter body weight and select diabetes type, kidney function, and correction-insulin type. Add current and target blood glucose for a correction dose estimate. Results appear automatically.</p>
+<h2>AF Anticoagulation Decision — CHA₂DS₂-VASc + HAS-BLED</h2>
+<p>Enter the shared inputs once, then the score-specific factors. Both scores compute live and the net recommendation synthesises them with sex-aware OAC thresholds. Add an eGFR or CrCl to drive the HAS-BLED renal point and the CKD-tailored DOAC dosing note.</p>
 <div class="calc-wrap">
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Renal measure:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="af-rbtn-egfr" onclick="switchAfRenal('egfr')">eGFR (mL/min/1.73m²)</button>
+      <button class="unit-btn" id="af-rbtn-crcl" onclick="switchAfRenal('crcl')">CrCl (mL/min)</button>
+    </div>
+  </div>
+
+<h3 class="mdc-sub" style="margin-top:6px;">Shared inputs <span style="color:var(--text-muted);font-weight:500;font-size:.85rem;">— count toward both scores</span></h3>
 <div class="calc-grid">
 <div class="calc-field">
-<label>Body Weight (kg)</label>
-<input id="ins-weight" type="number" min="20" max="300" step="0.1" placeholder="e.g. 70" oninput="calcInsulin()"/>
-<div class="field-hint">Actual measured weight in kilograms.</div>
+<label>Age (years)</label>
+<input id="af-age" max="120" min="18" oninput="calcAF()" placeholder="e.g. 72" step="1" type="number"/>
+<div class="field-hint">VASc: 0 (&lt;65), 1 (65–74), 2 (≥75) · HAS-BLED: +1 if &gt;65</div>
 </div>
 <div class="calc-field">
-<label>Insulin Requirement (units/kg/day)</label>
-<select id="ins-reqtype" onchange="calcInsulin()">
+<label>Sex</label>
+<select id="af-sex" onchange="calcAF()">
 <option value="">Select…</option>
-<option value="0.2">Insulin-naïve type 2 DM — 0.2 u/kg</option>
-<option value="0.3">Type 2 DM, typical — 0.3 u/kg</option>
-<option value="0.5">Type 2 DM, insulin-resistant — 0.5 u/kg</option>
-<option value="0.4">Type 1 DM — 0.4 u/kg</option>
+<option value="m">Male</option>
+<option value="f">Female</option>
 </select>
-<div class="field-hint">Starting estimate; titrate to glucose response.</div>
+<div class="field-hint">Female (sex category) adds 1 VASc point as a risk modifier</div>
 </div>
 <div class="calc-field">
-<label>Kidney Function (CKD dose reduction)</label>
-<select id="ins-ckdfactor" onchange="calcInsulin()">
-<option value="">Select…</option>
-<option value="1.0">eGFR ≥ 60 — full dose</option>
-<option value="0.75">eGFR 30–59 — reduce ~25%</option>
-<option value="0.5">eGFR &lt; 30 / on dialysis — reduce ~50%</option>
+<label>Hypertension <span style="color:var(--text-muted);font-weight:500;">(VASc +1)</span></label>
+<select id="af-htn" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
 </select>
-<div class="field-hint">Renal insulin clearance decreases as GFR falls; dose is scaled accordingly.</div>
+<div class="field-hint">History of HTN or on antihypertensive therapy → VASc +1</div>
 </div>
 <div class="calc-field">
-<label>Correction-Insulin Type (for ISF)</label>
-<select id="ins-corrtype" onchange="calcInsulin()">
-<option value="">Select…</option>
-<option value="1800">Rapid-acting (lispro/aspart/glulisine) — Rule of 1800</option>
-<option value="1500">Regular insulin — Rule of 1500</option>
+<label>↳ Uncontrolled HTN (SBP &gt;160) <span style="color:var(--text-muted);font-weight:500;">(HAS-BLED +1)</span></label>
+<select id="af-htn-uncontrolled" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
 </select>
-<div class="field-hint">Used to compute the Insulin Sensitivity Factor (correction factor).</div>
+<div class="field-hint">HAS-BLED counts only uncontrolled HTN, SBP &gt;160 mmHg</div>
 </div>
 <div class="calc-field">
-<label>Current Blood Glucose (mg/dL) — optional</label>
-<input id="ins-glucose" type="number" min="40" max="600" step="1" placeholder="e.g. 220" oninput="calcInsulin()"/>
-<div class="field-hint">Leave blank to skip correction dose calculation.</div>
+<label>Prior Stroke / TIA / thromboembolism <span style="color:var(--text-muted);font-weight:500;">(VASc +2, HAS-BLED +1)</span></label>
+<select id="af-stroke" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select>
+<div class="field-hint">Strongest VASc predictor (+2); also adds the HAS-BLED stroke point (+1)</div>
 </div>
 <div class="calc-field">
-<label>Target Glucose (mg/dL)</label>
-<input id="ins-target" type="number" min="70" max="250" step="1" value="150" oninput="calcInsulin()"/>
-<div class="field-hint">Default 150 mg/dL. Adjust per individualized glycemic target.</div>
+<label id="af-lbl-renal">eGFR (mL/min/1.73m²)</label>
+<input id="af-renal" max="200" min="3" oninput="calcAF()" placeholder="e.g. 38" step="1" type="number"/>
+<div class="field-hint" id="af-hint-renal">HAS-BLED +1 if dialysis/transplant or ~CrCl &lt;30 (SCr &gt;2.26); also drives the DOAC note.</div>
 </div>
 </div>
 
-<div class="calc-result-box" id="ins-result">
+<h3 class="mdc-sub" style="margin-top:18px;">CHA₂DS₂-VASc only</h3>
+<div class="calc-grid">
+<div class="calc-field">
+<label>Congestive HF / LV dysfunction <span style="color:var(--text-muted);font-weight:500;">(+1)</span></label>
+<select id="af-chf" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select>
+<div class="field-hint">Signs/symptoms of HF or objective LV dysfunction</div>
+</div>
+<div class="calc-field">
+<label>Diabetes mellitus <span style="color:var(--text-muted);font-weight:500;">(+1)</span></label>
+<select id="af-dm" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select>
+<div class="field-hint">On treatment or fasting glucose ≥125 mg/dL</div>
+</div>
+<div class="calc-field">
+<label>Vascular disease <span style="color:var(--text-muted);font-weight:500;">(+1)</span></label>
+<select id="af-vasc" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select>
+<div class="field-hint">Prior MI, peripheral artery disease, or aortic plaque</div>
+</div>
+</div>
+
+<h3 class="mdc-sub" style="margin-top:18px;">HAS-BLED only</h3>
+<div class="calc-grid">
+<div class="calc-field">
+<label>Abnormal liver function <span style="color:var(--text-muted);font-weight:500;">(+1)</span></label>
+<select id="af-liver" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select>
+<div class="field-hint">Cirrhosis, bilirubin &gt;2×ULN, or AST/ALT &gt;3×ULN</div>
+</div>
+<div class="calc-field">
+<label>Bleeding history / predisposition <span style="color:var(--text-muted);font-weight:500;">(+1)</span></label>
+<select id="af-bleed" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select>
+<div class="field-hint">Prior major bleed, anemia, or bleeding diathesis</div>
+</div>
+<div class="calc-field">
+<label>Labile INR <span style="color:var(--text-muted);font-weight:500;">(+1)</span></label>
+<select id="af-inr" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select>
+<div class="field-hint">On warfarin with TTR &lt;60% — skip if on a DOAC</div>
+</div>
+<div class="calc-field">
+<label>Drugs — antiplatelets / NSAIDs <span style="color:var(--text-muted);font-weight:500;">(+1)</span></label>
+<select id="af-drugs" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select>
+<div class="field-hint">Concomitant antiplatelet agents or NSAIDs</div>
+</div>
+<div class="calc-field">
+<label>Alcohol use <span style="color:var(--text-muted);font-weight:500;">(+1)</span></label>
+<select id="af-alcohol" onchange="calcAF()">
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select>
+<div class="field-hint">≥8 alcoholic drinks per week</div>
+</div>
+</div>
+
+<div class="calc-result-box" id="af-result">
 <div class="calc-metrics-row">
 <div class="calc-metric-card">
-<div class="cmv" id="ins-tdd">—</div>
-<div class="cml">Total Daily Dose</div>
-<div class="cmt">units/day (TDD)</div>
+<div class="cmv" id="af-vasc-val">—</div>
+<div class="cml">CHA₂DS₂-VASc</div>
+<div class="cmt" id="af-vasc-band">of 9</div>
 </div>
 <div class="calc-metric-card">
-<div class="cmv" id="ins-basal">—</div>
-<div class="cml">Basal Insulin</div>
-<div class="cmt">units/day (50% of TDD)</div>
+<div class="cmv" id="af-vasc-risk" style="font-size:18px;line-height:1.2;">—</div>
+<div class="cml">Adjusted Annual Stroke Risk</div>
+<div class="cmt" id="af-vasc-risk-note">per year (approx.)</div>
 </div>
 <div class="calc-metric-card">
-<div class="cmv" id="ins-bolus-meal">—</div>
-<div class="cml">Bolus per Meal</div>
-<div class="cmt">units/meal (÷ 3 meals)</div>
-</div>
-<div class="calc-metric-card">
-<div class="cmv" id="ins-isf">—</div>
-<div class="cml">Sensitivity Factor (ISF)</div>
-<div class="cmt" id="ins-isf-note">mg/dL drop per 1 unit</div>
-</div>
-<div class="calc-metric-card">
-<div class="cmv" id="ins-icr">—</div>
-<div class="cml">Insulin-to-Carb Ratio</div>
-<div class="cmt">g carb per 1 unit</div>
-</div>
-<div class="calc-metric-card" id="ins-corr-card" style="display:none;">
-<div class="cmv" id="ins-corr">—</div>
-<div class="cml">Correction Dose</div>
-<div class="cmt" id="ins-corr-note">units (current &gt; target)</div>
+<div class="cmv" id="af-hb-val">—</div>
+<div class="cml">HAS-BLED</div>
+<div class="cmt" id="af-hb-band">of 9</div>
 </div>
 </div>
-<div class="calc-verdict-text" id="ins-verdict"></div>
-<div class="calc-action-text" id="ins-action"></div>
-<p class="calc-disclaimer">⚕ TDD = weight(kg) × u/kg/day × CKD-factor. Basal = 50% TDD; Bolus total = 50% TDD; Per-meal bolus = bolus ÷ 3. ISF = Rule ÷ TDD (mg/dL per unit). ICR = 500 ÷ TDD (g carb per unit). Correction dose = round((current − target) ÷ ISF). All values are <strong>initiation estimates only</strong> — titrate to measured glucose under physician supervision. Never change insulin doses without consulting your care team.</p>
+<div class="calc-verdict-text" id="af-verdict"></div>
+<div class="calc-action-text" id="af-action"></div>
+<div class="calc-action-text" id="af-ckd" style="margin-top:10px;"></div>
 </div>
+<p class="calc-disclaimer">⚕ <strong>CHA₂DS₂-VASc</strong>: CHF (1), Hypertension (1), Age ≥75 (2)/65–74 (1), Diabetes (1), prior Stroke/TIA/TE (2), Vascular disease (1), Sex category female (1); range 0–9. OAC recommended at ≥2 (men)/≥3 (women), considered at 1 (men)/2 (women), none at 0 (men)/1 (women, sex-only). <strong>HAS-BLED</strong>: uncontrolled Hypertension, Abnormal renal &amp; liver function (1 each), Stroke, Bleeding, Labile INR, Elderly (&gt;65), Drugs &amp; Alcohol (1 each); range 0–9, ≥3 = high bleeding risk. A high HAS-BLED flags modifiable risk — it is NOT a reason to withhold OAC. DOAC renal thresholds use Cockcroft-Gault CrCl, not indexed eGFR. A decision aid, not a substitute for current labels or clinical judgment. Sources: Lip GYH et al. Chest. 2010;137(2):263–272; Pisters R et al. Chest. 2010;138(5):1093–1100; 2023 ACC/AHA/ACCP/HRS AF Guideline.</p>
 </div>
 </section>
 
 <details class="mdc-acc" id="nextsteps">
 <summary>Next Steps</summary>
 <div class="mdc-acc-body">
-<p><strong>These estimates are a starting framework — not a standing order.</strong></p>
+<p><strong>Use both scores to support — not replace — a shared anticoagulation decision.</strong></p>
 <ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
-<li>Begin at the calculated dose and titrate upward (or downward) by 10–20% every 3–7 days based on fasting and postprandial glucose logs.</li>
-<li>Verify the correction dose against the patient's measured glucose before administering; reassess 2–4 hours after any correction.</li>
-<li>In dialysis patients, check pre- and post-dialysis glucose and consider holding or halving the correction dose on dialysis days.</li>
-<li>Educate patients on hypoglycemia symptoms and appropriate treatment (15–15 rule) — especially critical in CKD where hypoglycemia unawareness is more common.</li>
-<li>Review the insulin regimen at every visit, after any change in kidney function, and after starting or stopping dialysis.</li>
-<li>Consider referral to endocrinology or a diabetes care specialist for complex or unstable patients.</li>
+<li>When the net recommendation favours OAC, prefer a DOAC over warfarin in non-valvular AF unless a mechanical valve or moderate-to-severe mitral stenosis is present.</li>
+<li>If HAS-BLED is ≥3, identify and correct every modifiable factor (BP control, stop NSAIDs/unnecessary antiplatelets, correct anemia, limit alcohol, improve INR control) — do not withhold OAC on HAS-BLED alone when stroke risk is high.</li>
+<li>In CKD, confirm the renal dose against the current label using Cockcroft-Gault CrCl; apixaban is generally preferred in advanced CKD and dialysis.</li>
+<li>Reassess both scores and renal function over time — risk factors accrue and a changing eGFR can move a patient across DOAC dosing thresholds.</li>
+<li>Document the indication, agent, dose, and the stroke/bleeding trade-off discussed with the patient.</li>
 </ul>
 </div>
 </details>
@@ -1732,52 +1907,113 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <details class="mdc-acc" id="evidence">
 <summary>Evidence &amp; References</summary>
 <div class="mdc-acc-body">
-<h3 class="mdc-sub">Formula &amp; Equations</h3>
+<h3 class="mdc-sub">CHA₂DS₂-VASc — scoring</h3>
 <table class="lab-table">
-<thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
+<thead><tr><th>Risk factor</th><th>Points</th></tr></thead>
 <tbody>
-<tr><td>Total Daily Dose (TDD)</td><td>weight (kg) × insulin requirement (u/kg/day) × CKD reduction factor</td></tr>
-<tr><td>Basal insulin</td><td>50% × TDD (rounded to nearest whole unit)</td></tr>
-<tr><td>Total bolus (prandial)</td><td>50% × TDD (rounded)</td></tr>
-<tr><td>Bolus per meal</td><td>Total bolus ÷ 3 (assuming 3 meals/day)</td></tr>
-<tr><td>Insulin Sensitivity Factor (ISF)</td><td>1800 ÷ TDD (rapid-acting) · or · 1500 ÷ TDD (regular insulin)</td></tr>
-<tr><td>Insulin-to-Carb Ratio (ICR)</td><td>500 ÷ TDD (g of carbohydrate per 1 unit — Rule of 500)</td></tr>
-<tr><td>Correction dose</td><td>Round((current glucose − target glucose) ÷ ISF) units · only when current &gt; target</td></tr>
-<tr><td>CKD reduction factor</td><td>eGFR ≥60: ×1.0 · eGFR 30–59: ×0.75 · eGFR &lt;30 or dialysis: ×0.50</td></tr>
+<tr><td>Congestive HF / LV dysfunction</td><td>1</td></tr>
+<tr><td>Hypertension</td><td>1</td></tr>
+<tr><td>Age ≥75</td><td>2</td></tr>
+<tr><td>Age 65–74</td><td>1</td></tr>
+<tr><td>Diabetes mellitus</td><td>1</td></tr>
+<tr><td>Prior Stroke / TIA / thromboembolism</td><td>2</td></tr>
+<tr><td>Vascular disease (MI, PAD, aortic plaque)</td><td>1</td></tr>
+<tr><td>Sex category female</td><td>1</td></tr>
 </tbody>
 </table>
+<h3 style="margin-top:24px;">Adjusted annual stroke risk &amp; recommendation</h3>
+<table class="lab-table">
+<thead><tr><th>Score</th><th>Approx. adjusted stroke rate / yr</th><th>Recommendation</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>~0.2%</td><td>No antithrombotic (men 0 / women sex-only)</td></tr>
+<tr><td>1</td><td>~0.6%</td><td>Consider OAC (men); women: no therapy if sex-only</td></tr>
+<tr><td>2</td><td>~2.2%</td><td>OAC recommended (men); consider OAC (women)</td></tr>
+<tr><td>3</td><td>~3.2%</td><td>OAC recommended</td></tr>
+<tr><td>4</td><td>~4.8%</td><td>OAC recommended</td></tr>
+<tr><td>5</td><td>~7.2%</td><td>OAC recommended</td></tr>
+<tr><td>6</td><td>~9.7%</td><td>OAC recommended</td></tr>
+<tr><td>7</td><td>~11.2%</td><td>OAC recommended</td></tr>
+<tr><td>8</td><td>~10.8%</td><td>OAC recommended</td></tr>
+<tr><td>9</td><td>~12.2%</td><td>OAC recommended</td></tr>
+</tbody>
+</table>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Adjusted annual stroke rates are approximate, drawn from the validation cohort; absolute rates vary by population. OAC thresholds: recommend at ≥2 (men) / ≥3 (women); consider at 1 (men) / 2 (women).</p>
+<h3 class="mdc-sub">HAS-BLED — scoring &amp; interpretation</h3>
+<table class="lab-table">
+<thead><tr><th>Letter</th><th>Risk factor</th><th>Points</th></tr></thead>
+<tbody>
+<tr><td>H</td><td>Hypertension — uncontrolled, SBP &gt;160 mmHg</td><td>1</td></tr>
+<tr><td>A</td><td>Abnormal renal function — dialysis, transplant, or SCr &gt;2.26 mg/dL (&gt;200 µmol/L)</td><td>1</td></tr>
+<tr><td>A</td><td>Abnormal liver function — cirrhosis, bilirubin &gt;2×ULN, or AST/ALT &gt;3×ULN</td><td>1</td></tr>
+<tr><td>S</td><td>Stroke — prior history</td><td>1</td></tr>
+<tr><td>B</td><td>Bleeding history or predisposition (anemia, bleeding diathesis)</td><td>1</td></tr>
+<tr><td>L</td><td>Labile INR — if on warfarin, TTR &lt;60%</td><td>1</td></tr>
+<tr><td>E</td><td>Elderly — age &gt;65 years</td><td>1</td></tr>
+<tr><td>D</td><td>Drugs — antiplatelet agents or NSAIDs</td><td>1</td></tr>
+<tr><td>D</td><td>Alcohol — ≥8 drinks/week</td><td>1</td></tr>
+</tbody>
+</table>
+<table class="lab-table">
+<thead><tr><th>HAS-BLED</th><th>Bleeding risk</th><th>Approx. major-bleed rate / yr</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td>0–1</td><td>Low</td><td>~1% / year</td><td>Anticoagulate per stroke risk; address any factors present</td></tr>
+<tr><td>2</td><td>Intermediate</td><td>~2–3% / year</td><td>Anticoagulate with care; correct modifiable factors; consider DOAC over warfarin</td></tr>
+<tr><td>≥3</td><td>High</td><td>&gt;4% / year</td><td>Do NOT withhold anticoagulation; aggressively address all modifiable factors; close follow-up</td></tr>
+</tbody>
+</table>
+<h3 class="mdc-sub">DOAC renal dosing in CKD</h3>
+<table class="lab-table">
+<thead><tr><th>Agent</th><th>Renal dosing</th></tr></thead>
+<tbody>
+<tr><td>Apixaban</td><td>5 mg BID; reduce to 2.5 mg BID if ≥2 of: age ≥80, weight ≤60 kg, SCr ≥1.5 mg/dL. Preferred in advanced CKD; usable with caution in dialysis (5 mg BID per label; many use 2.5 mg BID).</td></tr>
+<tr><td>Rivaroxaban</td><td>20 mg daily; 15 mg daily if CrCl 15–50; avoid if CrCl &lt;15.</td></tr>
+<tr><td>Dabigatran</td><td>150 mg BID; consider 110/75 mg by region if CrCl 30–50; avoid if CrCl &lt;30.</td></tr>
+<tr><td>Edoxaban</td><td>60 mg daily; 30 mg if CrCl 15–50; NOT recommended if CrCl &gt;95 (reduced efficacy) or &lt;15.</td></tr>
+<tr><td>Warfarin (INR 2–3)</td><td>Use in valvular AF / mechanical valves. In advanced CKD / dialysis, benefit is uncertain and bleeding / calciphylaxis risk is higher — apixaban generally preferred.</td></tr>
+</tbody>
+</table>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">DOAC renal thresholds are defined by Cockcroft-Gault CrCl (mL/min), not indexed eGFR. Always confirm against the current prescribing information.</p>
 <h3 class="mdc-sub">Evidence &amp; References</h3>
-<p>The CKD dose reduction factors are derived from the observed decrease in renal insulin clearance and the clinical hypoglycemia data reviewed in KDIGO 2022 and ADA 2024. The kidney normally clears 30–40% of circulating insulin; as GFR falls, insulin half-life lengthens and a lower TDD is needed to achieve the same effect. The Rules of 1800 and 1500 are empirical heuristics widely used in diabetes education; in CKD patients the resulting ISF (larger, because TDD is lower) appropriately reflects increased insulin sensitivity per unit. The Rule of 500 for ICR has the same evidence base. All values should be verified against patient-specific glucose logs.</p>
+<p>CHA₂DS₂-VASc was derived and validated by Lip and colleagues (2010) to refine stroke-risk stratification in non-valvular AF, improving identification of truly low-risk patients over the older CHADS₂. HAS-BLED was derived by Pisters and colleagues (2010) as a user-friendly bleeding-risk score; its primary role is to flag and correct modifiable bleeding factors, not to withhold anticoagulation. The 2023 ACC/AHA/ACCP/HRS AF guideline endorses CHA₂DS₂-VASc as the primary risk-stratification tool. DOAC renal-dosing recommendations follow each agent's regulatory label and supporting trials; apixaban has the strongest evidence base in advanced CKD and dialysis.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
-<li>KDIGO Diabetes Work Group. <em>KDIGO 2022 Clinical Practice Guideline for Diabetes Management in CKD.</em> Kidney Int. 2022;102(5S):S1–S127.</li>
-<li>American Diabetes Association. <em>Standards of Care in Diabetes — 2024.</em> Diabetes Care. 2024;47(Suppl 1).</li>
-<li>Walsh J, Roberts R. <em>Using Insulin</em> (Torrey Pines Press, 2003) — source of the Rules of 1800 and 500.</li>
+<li>Lip GYH, Nieuwlaat R, Pisters R, Lane DA, Crijns HJGM. <em>Refining clinical risk stratification for predicting stroke and thromboembolism in atrial fibrillation using a novel risk factor-based approach: the Euro Heart Survey on atrial fibrillation.</em> Chest. 2010;137(2):263–272.</li>
+<li>Pisters R, Lane DA, Nieuwlaat R, de Vos CB, Crijns HJGM, Lip GYH. <em>A novel user-friendly score (HAS-BLED) to assess 1-year risk of major bleeding in patients with atrial fibrillation: the Euro Heart Survey.</em> Chest. 2010;138(5):1093–1100.</li>
+<li>Joglar JA, Chung MK, Armbruster AL, et al. <em>2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation.</em> Circulation. 2024;149(1):e1–e156.</li>
+<li>Apixaban (Eliquis), rivaroxaban (Xarelto), dabigatran (Pradaxa), edoxaban (Savaysa/Lixiana) — U.S. prescribing information (renal dosing sections).</li>
 </ol>
 </div>
 </details>
 
-<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for licensed clinicians and does not replace individualized clinical assessment, current prescribing information, or specialist consultation. Insulin dosing in CKD requires careful titration and frequent glucose monitoring. Hypoglycemia risk is substantially higher in advanced CKD and dialysis. Always individualize insulin therapy under physician supervision and in accordance with current ADA and KDIGO guidelines.</div>
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for licensed clinicians and does not replace individualized assessment or current prescribing information. CHA₂DS₂-VASc estimates stroke risk and HAS-BLED estimates bleeding risk; a high HAS-BLED is a prompt to correct modifiable risk, not a reason to withhold anticoagulation. Neither score applies to valvular AF or mechanical valves, which require a vitamin-K antagonist. Confirm every anticoagulant choice and renal dose against the drug's label before prescribing.</div>
 
 <!-- CALC-CROSSLINK-START -->
 <section class="section" aria-label="Related calculators" style="border-bottom:none;padding-top:36px;">
 <div class="section-tag">Related Calculators</div>
 <h2 style="font-size:1.25rem;">Use this with</h2>
 <div class="related-cards">
-<a class="related-card" href="calc-sglt2i-eligibility.html">
+<a class="related-card" href="calc-cha2ds2-vasc.html">
 <div class="related-card-tag">Calculator</div>
-<div class="related-card-title">SGLT2i Eligibility & Dose Check</div>
+<div class="related-card-title">CHA₂DS₂-VASc + Anticoagulation in CKD</div>
 </a>
-<a class="related-card" href="calc-metformin-ckd-safety.html">
+<a class="related-card" href="calc-has-bled.html">
 <div class="related-card-tag">Calculator</div>
-<div class="related-card-title">Metformin Safety Checker in CKD</div>
+<div class="related-card-title">HAS-BLED Score</div>
 </a>
-<a class="related-card" href="calc-eag-hba1c.html">
+<a class="related-card" href="calc-ckm-staging.html">
 <div class="related-card-tag">Calculator</div>
-<div class="related-card-title">eAG ↔ HbA1c Converter</div>
+<div class="related-card-title">CKM Syndrome Staging Tool</div>
 </a>
-<a class="related-card" href="calc-dkd-risk.html">
+<a class="related-card" href="calc-prevent-cvd.html">
 <div class="related-card-tag">Calculator</div>
-<div class="related-card-title">Diabetic Kidney Disease Risk</div>
+<div class="related-card-title">AHA PREVENT — 10-Year CV Risk</div>
+</a>
+<a class="related-card" href="calc-lipid-panel.html">
+<div class="related-card-tag">Calculator</div>
+<div class="related-card-title">Lipid Panel Interpreter</div>
+</a>
+<a class="related-card" href="calc-uacr-trend.html">
+<div class="related-card-tag">Calculator</div>
+<div class="related-card-title">UACR Serial Trend Tracker</div>
 </a>
 </div>
 </section>
@@ -1785,56 +2021,64 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </main>
 <!-- FOOTER -->
 
-<!-- DR CARD -->
+    <!-- DR CARD -->
 <div class="dr-card-wrap">
 <div class="dr-card">
 <div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
 <div class="dr-card-body">
 <h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W Rivero, MD, FPCP, DPSN</a></h4>
-<p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
 <p class="dr-creds"> &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
 </div>
 <div class="dr-qr">
 <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
-<p class="dr-qr-label">Scan and save</p>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span><span data-lang="tl" class="lang-hidden">I-scan at i-save</span><span data-lang="ceb" class="lang-hidden">I-scan ug i-save</span><span data-lang="kap" class="lang-hidden">I-scan at i-save</span></p>
 </div>
 </div>
 </div>
 
 <!-- RELATED-GUIDES-START -->
-<div class="related-guides">
-  <h2>Related Guides</h2>
-  <div class="related-cards">
-  <a class="related-card has-thumb" href="diabetes-kidneys.html">
-    <div class="related-card-tag">Overview</div>
-    <div class="related-card-title">Diabetes &amp; Your Kidneys</div>
-    <img class="related-card-thumb" src="../images/diabetes-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async">
-  </a>
-  <a class="related-card has-thumb" href="understanding-ckd.html">
-    <div class="related-card-tag">Getting Started</div>
-    <div class="related-card-title">Understanding CKD</div>
-    <img class="related-card-thumb" src="../images/ckd-understanding-overview-rg-thumb.webp" alt="" loading="lazy" decoding="async">
-  </a>
-  <a class="related-card" href="calc-cockcroft-gault.html">
-    <div class="related-card-tag">Calculator</div>
-    <div class="related-card-title">Creatinine Clearance (Cockcroft-Gault)</div>
-  </a>
-  <a class="related-card has-thumb" href="nutrition-kidney-patients.html">
-    <div class="related-card-tag">Why Food Is Medicine</div>
-    <div class="related-card-title">Nutrition for Kidney Patients</div>
-    <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async">
-  </a>
-  </div>
-</div>
-<!-- RELATED-GUIDES-END -->
-
+      <div class="related-guides">
+        <h2>
+          <span data-lang="en">Related Guides</span>
+          <span data-lang="tl" class="lang-hidden">Mga Kaugnay na Gabay</span>
+          <span data-lang="ceb" class="lang-hidden">Mga May Kalabtan nga Giya</span>
+          <span data-lang="kap" class="lang-hidden">Ding Kaugnay nga Gabay</span>
+        </h2>
+        <div class="related-cards">
+        <a class="related-card" href="calc-cha2ds2-vasc.html">
+          <div class="related-card-tag">Calculator</div>
+          <div class="related-card-title">CHA₂DS₂-VASc Stroke Risk (standalone)</div>
+          <div class="related-card-desc">The CHA₂DS₂-VASc stroke-risk calculator on its own, with the CKD DOAC-dosing overlay.</div>
+          <div class="related-card-arrow">Open →</div>
+        </a>
+        <a class="related-card" href="calc-has-bled.html">
+          <div class="related-card-tag">Calculator</div>
+          <div class="related-card-title">HAS-BLED Bleeding Risk (standalone)</div>
+          <div class="related-card-desc">The HAS-BLED bleeding-risk score on its own, with interpretation bands.</div>
+          <div class="related-card-arrow">Open →</div>
+        </a>
+        <a class="related-card" href="cardio-kidney-metabolic-syndrome.html">
+          <div class="related-card-tag">Overview</div>
+          <div class="related-card-title">Cardio-Kidney-Metabolic Syndrome</div>
+          <div class="related-card-desc">How heart, kidney, and metabolic disease intersect — and why AF risk and bleeding risk both rise in CKD.</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        <a class="related-card" href="medication-operational-guide.html">
+          <div class="related-card-tag">Prescriber's Guide</div>
+          <div class="related-card-title">CKD Medication Operational Guide</div>
+          <div class="related-card-desc">Practical renal dose-adjustment guidance for common drugs, including the oral anticoagulants.</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        </div>
+      </div>
+    <!-- RELATED-GUIDES-END -->
 <footer class="guide-footer">
 <div class="footer-inner">
 <p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
-<p>References: KDIGO 2022 Diabetes in CKD · ADA Standards of Care 2024</p>
+<p>References: KDIGO 2024 CKD Guidelines · ACC/AHA 2026 Dyslipidemia · ADA Standards of Care 2025</p>
 </div>
 </footer>
-
 <script>
   const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
   function applyDark(on){
@@ -1870,7 +2114,6 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
     if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
   })();
 </script>
-
 <a href="calculators.html" aria-label="Back to all calculators" class="calc-back-btn">
 <span class="p-tip">All Calculators</span>
 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
@@ -1885,11 +2128,10 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </a>
 <button aria-label="Print this guide" class="print-btn" onclick="window.print()">
 <span class="p-tip">Print / Save PDF</span>
-<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
 <polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
 </svg>
 </button>
-
 <script>
 const LANG_KEY='wgmr-lang';
 function setLang(lang){
@@ -1908,131 +2150,158 @@ function setLang(lang){
   if(saved!=='en')setLang(saved);
 })();
 </script>
-
 <script>
-/* ── Insulin Dosing in CKD Calculator ──────────────────────────────────────── */
-function calcInsulin() {
-  const weightRaw  = parseFloat(document.getElementById('ins-weight').value);
-  const reqType    = parseFloat(document.getElementById('ins-reqtype').value);
-  const ckdFactor  = parseFloat(document.getElementById('ins-ckdfactor').value);
-  const corrRule   = parseFloat(document.getElementById('ins-corrtype').value);
-  const glucoseRaw = parseFloat(document.getElementById('ins-glucose').value);
-  const targetRaw  = parseFloat(document.getElementById('ins-target').value);
-  const res        = document.getElementById('ins-result');
+/* Combined AF anticoagulation decision — CHA2DS2-VASc + HAS-BLED + CKD DOAC overlay
+   Lip GYH et al. Chest. 2010;137(2):263–272 (CHA2DS2-VASc)
+   Pisters R et al. Chest. 2010;138(5):1093–1100 (HAS-BLED) */
 
-  // Require weight, req type, CKD factor, and correction type
-  if (isNaN(weightRaw) || isNaN(reqType) || isNaN(ckdFactor) || isNaN(corrRule) ||
-      weightRaw <= 0) {
-    res.style.display = 'none';
+// Approximate adjusted annual stroke rate (%) by total CHA2DS2-VASc score (validation cohort)
+const VASC_RISK = [0.2,0.6,2.2,3.2,4.8,7.2,9.7,11.2,10.8,12.2];
+
+function switchAfRenal(u){
+  const isCrcl = u==='crcl';
+  document.getElementById('af-rbtn-egfr').classList.toggle('active',!isCrcl);
+  document.getElementById('af-rbtn-crcl').classList.toggle('active',isCrcl);
+  document.getElementById('af-lbl-renal').textContent =
+    isCrcl ? 'CrCl (mL/min)' : 'eGFR (mL/min/1.73m²)';
+  // value retained; only the label/interpretation context changes
+  calcAF();
+}
+
+function calcAF(){
+  const ageRaw = parseFloat(document.getElementById('af-age').value);
+  const sex    = document.getElementById('af-sex').value;
+  const res    = document.getElementById('af-result');
+
+  // Require age + sex before scoring
+  if (isNaN(ageRaw) || !sex || ageRaw<=0) { res.style.display='none'; return; }
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const female = sex==='f';
+
+  // ── Shared inputs ─────────────────────────────────────────────────────────
+  const htn        = parseInt(document.getElementById('af-htn').value,10) || 0;           // VASc HTN
+  const htnUncon   = parseInt(document.getElementById('af-htn-uncontrolled').value,10) || 0; // HAS-BLED HTN
+  const stroke     = parseInt(document.getElementById('af-stroke').value,10) || 0;         // shared (Yes/No)
+  const renalRaw   = parseFloat(document.getElementById('af-renal').value);
+  const usingCrcl  = document.getElementById('af-rbtn-crcl').classList.contains('active');
+  const renalValid = !isNaN(renalRaw) && renalRaw > 0;
+
+  // ── CHA2DS2-VASc ─────────────────────────────────────────────────────────
+  let agePts = 0;
+  if (ageRaw >= 75) agePts = 2;
+  else if (ageRaw >= 65) agePts = 1;
+
+  const chf  = parseInt(document.getElementById('af-chf').value,10)  || 0;
+  const dm   = parseInt(document.getElementById('af-dm').value,10)   || 0;
+  const vasc = parseInt(document.getElementById('af-vasc').value,10) || 0;
+  const sexPts = female ? 1 : 0;
+  const strokeVasc = stroke ? 2 : 0;
+
+  const vascScore = agePts + chf + htn + dm + strokeVasc + vasc + sexPts;
+  const nonSexScore = vascScore - sexPts;
+  const riskPct = VASC_RISK[Math.min(vascScore,9)];
+
+  // VASc recommendation by sex-aware thresholds → returns a tier: 0 none, 1 consider, 2 recommend
+  let vascTier, oacText, oacNote;
+  if (!female){
+    if (vascScore === 0){ vascTier=0; oacText='Not indicated'; oacNote='Men, score 0'; }
+    else if (vascScore === 1){ vascTier=1; oacText='Consider OAC'; oacNote='Men, score 1'; }
+    else { vascTier=2; oacText='OAC recommended'; oacNote='Men, score ≥2'; }
+  } else {
+    if (nonSexScore === 0){ vascTier=0; oacText='Not indicated'; oacNote='Women, sex-only'; }
+    else if (vascScore === 2){ vascTier=1; oacText='Consider OAC'; oacNote='Women, score 2'; }
+    else { vascTier=2; oacText='OAC recommended'; oacNote='Women, score ≥3'; }
+  }
+
+  // ── HAS-BLED ─────────────────────────────────────────────────────────────
+  const elderly = ageRaw > 65 ? 1 : 0;          // E — shared age field
+  const strokeHb = stroke ? 1 : 0;              // S — shared stroke field
+  // A — abnormal renal: dialysis/transplant or ~CrCl <30 (SCr >2.26). Use entered renal value.
+  const renalHb  = (renalValid && renalRaw < 30) ? 1 : 0;
+  const liver    = parseInt(document.getElementById('af-liver').value,10)   || 0;
+  const bleed    = parseInt(document.getElementById('af-bleed').value,10)   || 0;
+  const inr      = parseInt(document.getElementById('af-inr').value,10)     || 0;
+  const drugs    = parseInt(document.getElementById('af-drugs').value,10)   || 0;
+  const alcohol  = parseInt(document.getElementById('af-alcohol').value,10) || 0;
+
+  const hbScore = htnUncon + renalHb + liver + strokeHb + bleed + inr + elderly + drugs + alcohol;
+  let hbBand, hbColor;
+  if (hbScore <= 1){ hbBand='Low (~1%/yr)'; hbColor='#2d7a4f'; }
+  else if (hbScore === 2){ hbBand='Intermediate (~2–3%/yr)'; hbColor=isDark?'#d69220':'#b9760f'; }
+  else { hbBand = (hbScore>=5?'High (>10%/yr)':'High (~4–6%/yr)'); hbColor='#c0392b'; }
+  const hbHigh = hbScore >= 3;
+
+  // ── Net recommendation (synthesise both) ─────────────────────────────────
+  let borderColor, bg, vascColor, verdict, action;
+  if (vascTier === 0){
+    vascColor='#2d7a4f'; borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2';
+    verdict = female
+      ? 'Low stroke risk (CHA₂DS₂-VASc point is female sex only): no antithrombotic therapy is recommended.'
+      : 'Low stroke risk (CHA₂DS₂-VASc 0, man): no antithrombotic therapy is recommended.';
+    action = 'Anticoagulation is not indicated. The female sex point is a risk modifier only. Reassess as other risk factors emerge.';
+  } else if (vascTier === 1){
+    vascColor=isDark?'#d69220':'#b9760f'; borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec';
+    verdict = 'Borderline stroke risk: OAC may be considered after weighing bleeding risk and patient preference. HAS-BLED ' + hbScore + (hbHigh?' (high) — correct modifiable factors first.':' — proceed if chosen.');
+    action = hbHigh
+      ? 'Make a shared decision; if OAC is chosen, prefer a DOAC and aggressively correct modifiable bleeding factors (BP, NSAIDs, anemia, alcohol, INR control).'
+      : 'Make a shared decision; correct any modifiable bleeding factors and prefer a DOAC if OAC is started.';
+  } else {
+    // High stroke risk → anticoagulate. Bleeding modifies management, never withholds.
+    vascColor='#c0392b';
+    if (hbHigh){
+      borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec';
+      verdict = 'High stroke risk (OAC recommended) AND high bleeding risk (HAS-BLED ' + hbScore + ' ≥3): anticoagulation is still usually favoured — a high HAS-BLED is NOT a reason to withhold OAC, only to flag and modify bleeding risk.';
+      action = 'Anticoagulate (prefer a DOAC in non-valvular AF); aggressively correct ALL modifiable bleeding factors (BP control, stop NSAIDs/unnecessary antiplatelets, correct anemia, limit alcohol, improve INR control) and arrange closer follow-up.';
+    } else {
+      borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef';
+      verdict = 'High stroke risk (OAC recommended) with acceptable bleeding risk (HAS-BLED ' + hbScore + '): anticoagulate.';
+      action = 'Start a DOAC (preferred in non-valvular AF) or a VKA; address any bleeding factors present and document the decision.';
+    }
+  }
+
+  // ── Render ───────────────────────────────────────────────────────────────
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  const vEl = document.getElementById('af-vasc-val');
+  vEl.textContent = vascScore; vEl.style.color = vascColor;
+  const vBand = document.getElementById('af-vasc-band');
+  vBand.textContent = oacText; vBand.style.color = vascColor;
+
+  document.getElementById('af-vasc-risk').textContent = '~' + riskPct.toFixed(1) + '%';
+  document.getElementById('af-vasc-risk-note').textContent = oacNote;
+
+  const hEl = document.getElementById('af-hb-val');
+  hEl.textContent = hbScore; hEl.style.color = hbColor;
+  const hBand = document.getElementById('af-hb-band');
+  hBand.textContent = hbBand; hBand.style.color = hbColor;
+
+  document.getElementById('af-verdict').textContent =
+    verdict + ' Adjusted annual stroke rate ≈ ' + riskPct.toFixed(1) + '%. Does not apply to valvular AF / mechanical valves (use a VKA).';
+  document.getElementById('af-action').textContent = action;
+
+  // ── CKD DOAC overlay (entered eGFR/CrCl) ─────────────────────────────────
+  const ckdEl = document.getElementById('af-ckd');
+  const label = usingCrcl ? 'CrCl' : 'eGFR';
+  if (!renalValid){
+    ckdEl.textContent = 'Enter eGFR or CrCl to see the CKD-tailored DOAC dosing note and the HAS-BLED renal point.';
     return;
   }
-
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-
-  // ── Core calculations ─────────────────────────────────────────────────────
-  const tdd       = Math.round(weightRaw * reqType * ckdFactor);
-  const basal     = Math.round(tdd * 0.5);
-  const bolusTotal = tdd - basal;                 // ensures basal+bolus = tdd
-  const bolusPerMeal = Math.round(bolusTotal / 3);
-  const isf       = Math.round(corrRule / tdd);   // mg/dL drop per 1 unit
-  const icr       = Math.round(500 / tdd);        // g carb per 1 unit
-
-  // ── Colour theme based on CKD factor ─────────────────────────────────────
-  let borderColor, bg, tddColor;
-  if (ckdFactor >= 1.0) {
-    // Full dose — green tones
-    borderColor = isDark ? '#4ade80' : '#166534';
-    bg          = isDark ? 'rgba(74,222,128,.06)' : '#f0fdf4';
-    tddColor    = isDark ? '#4ade80' : '#166534';
-  } else if (ckdFactor >= 0.75) {
-    // 25% reduction — amber
-    borderColor = isDark ? '#fbbf24' : '#d97706';
-    bg          = isDark ? 'rgba(251,191,36,.06)' : '#fffbeb';
-    tddColor    = isDark ? '#fbbf24' : '#92400e';
+  let ckdNote;
+  if (renalRaw >= 95){
+    ckdNote = 'CKD overlay (' + label + ' ' + Math.round(renalRaw) + '): largely preserved renal function. Standard DOAC dosing applies (apixaban 5 mg BID, rivaroxaban 20 mg daily, dabigatran 150 mg BID). Note: edoxaban is NOT recommended when CrCl >95 mL/min due to reduced efficacy.';
+  } else if (renalRaw >= 50){
+    ckdNote = 'CKD overlay (' + label + ' ' + Math.round(renalRaw) + '): standard DOAC dosing generally applies (apixaban 5 mg BID; rivaroxaban 20 mg daily; dabigatran 150 mg BID; edoxaban 60 mg daily). Reassess as renal function changes; confirm against each label.';
+  } else if (renalRaw >= 30){
+    ckdNote = 'CKD overlay (' + label + ' ' + Math.round(renalRaw) + ', ~CrCl 30–49): rivaroxaban 15 mg daily; edoxaban 30 mg daily; apixaban 5 mg BID (2.5 mg BID if ≥2 of age ≥80, weight ≤60 kg, SCr ≥1.5); dabigatran 150 mg BID with caution (consider 110/75 mg by region). Both stroke and bleeding risk are elevated.';
+  } else if (renalRaw >= 15){
+    ckdNote = 'CKD overlay (' + label + ' ' + Math.round(renalRaw) + ', ~CrCl 15–29): apixaban is generally preferred (5 mg BID, or 2.5 mg BID if reduction criteria met); rivaroxaban 15 mg daily; edoxaban 30 mg daily; AVOID dabigatran (CrCl <30). This adds the HAS-BLED abnormal-renal-function point. Confirm against each label and weigh bleeding risk carefully.';
   } else {
-    // 50% reduction — red / warning
-    borderColor = isDark ? '#f87171' : '#b91c1c';
-    bg          = isDark ? 'rgba(248,113,113,.06)' : '#fff0f0';
-    tddColor    = isDark ? '#f87171' : '#b91c1c';
+    ckdNote = 'CKD overlay (' + label + ' ' + Math.round(renalRaw) + ', advanced CKD / near-dialysis): apixaban is generally preferred (5 mg BID per label; many use 2.5 mg BID); avoid rivaroxaban, dabigatran, and edoxaban when CrCl <15. Warfarin benefit is uncertain in dialysis with higher bleeding/calciphylaxis risk. This adds the HAS-BLED abnormal-renal-function point. Evidence is limited — individualize and confirm against the label.';
   }
-
-  // ── Correction dose (optional) ────────────────────────────────────────────
-  const corrCard = document.getElementById('ins-corr-card');
-  const target   = isNaN(targetRaw) ? 150 : targetRaw;
-  if (!isNaN(glucoseRaw) && glucoseRaw > target) {
-    const corrDose = Math.max(0, Math.round((glucoseRaw - target) / isf));
-    document.getElementById('ins-corr').textContent = corrDose;
-    document.getElementById('ins-corr').style.color = corrDose > 0 ? tddColor : 'inherit';
-    document.getElementById('ins-corr-note').textContent =
-      'units (BG ' + glucoseRaw + ' → target ' + target + ')';
-    corrCard.style.display = 'block';
-  } else {
-    corrCard.style.display = 'none';
-  }
-
-  // ── Render results ────────────────────────────────────────────────────────
-  res.style.display     = 'block';
-  res.style.background  = bg;
-  res.style.borderColor = borderColor;
-
-  const tddEl = document.getElementById('ins-tdd');
-  tddEl.textContent = tdd;
-  tddEl.style.color = tddColor;
-
-  document.getElementById('ins-basal').textContent = basal;
-  document.getElementById('ins-basal').style.color = tddColor;
-
-  document.getElementById('ins-bolus-meal').textContent = bolusPerMeal;
-  document.getElementById('ins-bolus-meal').style.color = tddColor;
-
-  const isfEl = document.getElementById('ins-isf');
-  isfEl.textContent = isf;
-  isfEl.style.color = tddColor;
-  document.getElementById('ins-isf-note').textContent =
-    'mg/dL per unit (Rule of ' + corrRule + ')';
-
-  const icrEl = document.getElementById('ins-icr');
-  icrEl.textContent = icr;
-  icrEl.style.color = tddColor;
-
-  // ── Verdict text ──────────────────────────────────────────────────────────
-  let verdictText = '';
-  if (ckdFactor < 1.0) {
-    const pct = ckdFactor === 0.5 ? '50%' : '25%';
-    const tier = ckdFactor === 0.5
-      ? 'eGFR <30 or dialysis-dependent'
-      : 'eGFR 30–59 (CKD stage 3)';
-    verdictText =
-      'CKD dose reduction applied (' + pct + ' reduction, ' + tier + '). ' +
-      'Renal insulin clearance falls progressively as GFR declines — the kidney normally ' +
-      'clears ~30–40% of circulating insulin, so as GFR falls insulin persists longer and ' +
-      'hypoglycemia risk rises substantially. Start at the calculated dose and titrate slowly. ';
-    if (ckdFactor === 0.5) {
-      verdictText +=
-        'Dialysis patients are at heightened risk during and in the 6–8 hours after ' +
-        'hemodialysis sessions — consider halving or holding correction doses on dialysis days. ' +
-        'Note: starting dialysis can paradoxically reduce insulin requirements (uremic insulin resistance resolves).';
-    } else {
-      verdictText +=
-        'Monitor fasting and postprandial glucose closely and titrate by 10–20% every 3–7 days.';
-    }
-  } else {
-    verdictText =
-      'Full weight-based dose calculated (eGFR ≥60; no CKD reduction applied). ' +
-      'Still verify with blood glucose monitoring — the rules of 1800/500 are empirical ' +
-      'starting estimates only. Titrate dose to individual glucose response.';
-  }
-  document.getElementById('ins-verdict').textContent = verdictText;
-
-  document.getElementById('ins-action').textContent =
-    'Suggested regimen: ' + basal + ' units basal insulin once daily at bedtime (or split per protocol) + ' +
-    bolusPerMeal + ' units rapid-acting (or regular) before each of 3 meals. ' +
-    'ISF: 1 unit corrects glucose by ~' + isf + ' mg/dL. ' +
-    'ICR: 1 unit covers ~' + icr + ' g of carbohydrate. ' +
-    'Review and adjust at every clinical encounter. Never adjust insulin doses without consulting your care team.';
+  ckdEl.textContent = ckdNote;
 }
 </script>
-
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"2dc38f135a634aa6b33afc0ddfcff929","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 
 <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
@@ -2067,7 +2336,7 @@ html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav
 <span class="cnp-div"></span>
 <button class="cnp-print" onclick="window.print()" aria-label="Print this page"><span class="cnp-tip">Print</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></button>
 <span class="cnp-div"></span>
-<a href="diabetes-kidneys.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+<a href="cardio-kidney-metabolic-syndrome.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
 </nav>
 <!-- CALC-NAV-PILL-END -->
 </body>

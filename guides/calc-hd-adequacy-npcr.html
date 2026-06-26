@@ -4,12 +4,12 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Insulin Dosing in CKD — Starting Dose, Correction Factor &amp; Carb Ratio – W Rivero, MD</title>
-<meta name="description" content="Calculate a CKD-adjusted starting insulin dose, insulin sensitivity factor (correction factor), and insulin-to-carb ratio. Includes basal/bolus split and correction dose. With clinical pearls, evidence, and KDIGO 2022 references.">
+<title>HD Adequacy + nPCR Calculator — spKt/V, URR, nPCR &amp; UF Rate – W Rivero, MD</title>
+<meta name="description" content="Combined hemodialysis adequacy and protein catabolic rate calculator. From one set of pre/post-dialysis BUN values and session data, compute single-pool Kt/V (Daugirdas 2nd-generation), urea reduction ratio (URR), normalized protein catabolic rate (nPCR), and ultrafiltration rate — each against KDOQI/KDIGO targets. With instructions, formulas, evidence, and references.">
 <meta name="keywords" content="chronic kidney disease Philippines, CKD Philippines, sakit sa bato, kidney disease stages, CKD stage 3 4 5, eGFR kidney stages, kidney disease causes Philippines, CKD symptoms Philippines, swollen feet kidney, foamy urine, creatinine kidney disease, kidney disease diet Philippines, CKD management Philippines, kidney disease Filipino, CKD treatment Philippines, kidney failure prevention, nephrologist Philippines, NKTI Philippines, kidney disease hypertension diabetes Philippines, CKD patient guide Philippines">
 <meta name="author" content="W Rivero, MD, FPCP, DPSN">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-insulin-dose.html">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-hd-adequacy-npcr.html">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -17,16 +17,16 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
 <meta property="og:type" content="article">
-<meta property="article:modified_time" content="2026-06-01T00:00:00+08:00">
+<meta property="article:modified_time" content="2025-05-01T00:00:00+08:00">
 <meta property="og:site_name" content="William Gregory M. Rivero, MD">
-<meta property="og:title" content="Insulin Dosing in CKD — Starting Dose, Correction Factor &amp; Carb Ratio">
-<meta property="og:description" content="Calculate a CKD-adjusted starting insulin dose, insulin sensitivity factor (correction factor), and insulin-to-carb ratio. Includes basal/bolus split and correction dose.">
-<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-insulin-dose.html">
+<meta property="og:title" content="HD Adequacy + nPCR Calculator — spKt/V, URR, nPCR & UF Rate">
+<meta property="og:description" content="From one set of pre/post-dialysis BUN values and session data, compute single-pool Kt/V (Daugirdas), URR, normalized protein catabolic rate (nPCR), and ultrafiltration rate — each against KDOQI/KDIGO targets.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-hd-adequacy-npcr.html">
 <meta property="og:image" content="https://www.williamriveromd.com/images/ckd-understanding-overview.png">
 <meta property="og:locale" content="en_PH">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Insulin Dosing in CKD — Starting Dose, Correction Factor &amp; Carb Ratio">
-<meta name="twitter:description" content="Calculate a CKD-adjusted starting insulin dose, insulin sensitivity factor (correction factor), and insulin-to-carb ratio. Includes basal/bolus split and correction dose.">
+<meta name="twitter:title" content="HD Adequacy + nPCR Calculator — spKt/V, URR, nPCR & UF Rate">
+<meta name="twitter:description" content="From one set of pre/post-dialysis BUN values and session data, compute single-pool Kt/V (Daugirdas), URR, normalized protein catabolic rate (nPCR), and ultrafiltration rate — each against KDOQI/KDIGO targets.">
 <meta name="twitter:image" content="https://www.williamriveromd.com/images/ckd-understanding-overview.png">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
 <style>
@@ -1425,6 +1425,88 @@
   }
 </style>
 
+<style>
+  /* ── Stage cards ── */
+  .stages-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:28px 0;}
+  .stage-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:18px 16px;text-align:center;}
+  .stage-card .stage-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+  .stage-card .stage-num{font-family:'Inter',sans-serif;font-size:28px;font-weight:600;line-height:1;margin-bottom:8px;}
+  .stage-card .stage-egfr{font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px;}
+  .stage-card .stage-desc{font-size:12px;color:var(--text-muted);line-height:1.4;}
+  .stage-1 .stage-num{color:#2d7a4f;}
+  .stage-2 .stage-num{color:#5a9e68;}
+  .stage-3a .stage-num{color:#f0a500;}
+  .stage-3b .stage-num{color:#e07b00;}
+  .stage-4 .stage-num{color:#c0392b;}
+  .stage-5 .stage-num{color:#8b0000;}
+
+  /* ── Dot colors ── */
+  .dot-gold{background:var(--gold);}
+
+  /* ── Symptom checklist ── */
+  .symptom-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:20px 0;}
+  .symptom-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;line-height:1.4;}
+  .symptom-item .si-icon{font-size:16px;flex-shrink:0;}
+
+  /* ── Pill list ── */
+  .pill-list{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;}
+  .pill{display:inline-block;font-size:13px;font-weight:500;padding:5px 14px;border-radius:20px;background:var(--teal-light);color:var(--teal);border:1px solid rgba(26,107,114,.2);}
+
+  /* ── Nutrition grid ── */
+  .nutrition-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:24px 0;}
+  .nutrition-card{border:1px solid var(--border);border-radius:12px;padding:18px;background:var(--white);}
+  .nutrition-card .n-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+  .nutrition-card .n-value{font-size:18px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .nutrition-card .n-note{font-size:12px;color:var(--text-muted);line-height:1.4;}
+
+  /* ── Red flags ── */
+  .red-flags{background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:14px;padding:28px 32px;margin:32px 0;}
+  
+  
+  
+  
+
+  /* ── eGFR unit toggle ── */
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  
+  
+  
+  
+
+
+/* Dark mode */
+body.dark .related-card {
+  background: #1a2535;
+  border-color: #2a3a4a;
+}
+body.dark .related-card:hover {
+  border-color: var(--teal, #1a6b72);
+}
+body.dark .related-card-title {
+  color: #e8edf2;
+}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "HD Adequacy + nPCR Calculator — spKt/V, URR, nPCR & UF Rate",
+  "url": "https://www.williamriveromd.com/guides/calc-hd-adequacy-npcr.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-01",
+  "inLanguage": "en-PH",
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "Clinician"
+  }
+}
+</script>
 <style id="mdc-style">
 /* MDCalc-style layout for standalone calculator pages */
 .mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
@@ -1442,24 +1524,51 @@
 .mdc-acc-body>h3.mdc-sub{font-family:'Inter',sans-serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
 .mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
 .mdc-acc#nextsteps>summary{color:var(--teal);}
+/* Calculate buttons — the .calc-btn/.calc-run/.tool-btn classes had no master-CSS
+   rule, so they rendered as tiny default browser buttons. Make them prominent and
+   theme-stable (solid teal + white, fixed hex so dark mode doesn't wash them out). */
 .calc-btn,.calc-run,.tool-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:16px 0 6px;padding:13px 30px;background:#1a6b72;color:#fff;border:none;border-radius:10px;font-family:'Manrope',sans-serif;font-size:1.02rem;font-weight:700;letter-spacing:.01em;cursor:pointer;box-shadow:0 2px 10px rgba(26,107,114,.30);transition:background .18s,box-shadow .18s,transform .05s;}
 .calc-btn:hover,.calc-run:hover,.tool-btn:hover{background:#155a60;box-shadow:0 5px 16px rgba(26,107,114,.40);}
 .calc-btn:active,.calc-run:active,.tool-btn:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(26,107,114,.30);}
 @media(max-width:600px){.calc-btn,.calc-run,.tool-btn{width:100%;}}
+/* Legacy .tool-* widget system — a few decision-aid calculators were lifted with
+   this guide-specific markup but without its CSS, so the inputs rendered bare.
+   Restyle here (CSS variables for dark-mode safety; radio options as chips). */
 .tool-box{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin:16px 0;}
 .tool-box>h3{font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:600;color:var(--navy);margin:0 0 6px;}
 .tool-box .tool-sub{font-size:13px;color:var(--text-muted);margin:0 0 18px;line-height:1.5;}
+.two-col-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:520px){.two-col-inputs{grid-template-columns:1fr;}}
+.tool-label{display:block;font-size:13px;font-weight:600;color:var(--text);margin:14px 0 5px;}
+.tool-input,.tool-select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;color:var(--text);background:var(--white);box-sizing:border-box;}
+.tool-select{cursor:pointer;}
+.tool-input:focus,.tool-select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.13);}
+.radio-group{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px;}
+.radio-item{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text-mid);cursor:pointer;background:var(--white);transition:border-color .15s;}
+.radio-item:hover{border-color:var(--teal);}
+.radio-item input{accent-color:var(--teal);margin:0;}
+.tool-result{display:none;margin-top:18px;padding:16px 20px;border-radius:10px;border:1px solid var(--border);background:var(--white);}
+.tool-result.show{display:block;}
+html[data-theme="dark"] .tool-box>h3{color:var(--text);}
+/* Non-standard unit-toggle markup (.ut-btn / .unit-toggle-row / .unit-toggle-lbl
+   / .ut-sep) that a few calculators used instead of the master .unit-btn system —
+   style them to match the polished segmented control. */
 .unit-toggle-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 16px;}
 .unit-toggle-lbl{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;}
 .ut-sep{width:1px;height:18px;background:var(--border);display:inline-block;}
 .ut-btn{padding:6px 14px;border:1px solid var(--border);background:var(--white);color:var(--text-mid);font-family:'Manrope',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;border-radius:6px;transition:border-color .15s,background .15s,color .15s;}
 .ut-btn:hover{border-color:var(--teal);}
 .ut-btn.active{background:#1a6b72;border-color:#1a6b72;color:#fff;}
-/* Accessible hero cross-links */
+/* Accessible hero cross-links: high-contrast white text + gold underline (link
+   affordance not by colour alone), visible focus ring, larger hit area. The
+   hero is dark in both themes, so white works throughout. */
 .hero-xlink{color:#0e4a50;font-weight:600;text-decoration:underline;text-decoration-color:var(--gold-light);text-decoration-thickness:1.5px;text-underline-offset:3px;border-radius:6px;padding:2px 4px;}
 .hero-xlink:hover{color:#0b3a40;}
 .hero-xlink:focus-visible{outline:2px solid var(--gold-light);outline-offset:2px;}
-/* Dark mode: remap --navy-colored elements */
+/* Dark mode: --navy is NOT remapped, so every element the master CSS colors with
+   var(--navy) renders dark-on-dark. Some source guides also shipped an older
+   master CSS missing these overrides — so recolor them all here (this block is
+   injected last and applies to all calculator pages regardless of CSS version). */
 html[data-theme="dark"] .mdc-acc>summary,
 html[data-theme="dark"] .mdc-acc-body>h3.mdc-sub,
 html[data-theme="dark"] .section h2,
@@ -1482,27 +1591,6 @@ html[data-theme="dark"] .calc-action-text{color:var(--text-mid)!important;}
 html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
 html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </style>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "MedicalWebPage",
-  "name": "Insulin Dosing in CKD — Starting Dose, Correction Factor & Carb Ratio",
-  "url": "https://www.williamriveromd.com/guides/calc-insulin-dose.html",
-  "author": {
-    "@type": "Physician",
-    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
-    "url": "https://www.williamriveromd.com/"
-  },
-  "dateModified": "2026-06-01",
-  "datePublished": "2026-06-01",
-  "inLanguage": "en-PH",
-  "audience": {
-    "@type": "MedicalAudience",
-    "audienceType": "patient"
-  }
-}
-</script>
 </head>
 <body>
 <header class="site-header">
@@ -1522,59 +1610,57 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 
 <section class="hero">
 <div class="container">
-<div class="hero-tag">Endocrine · Clinical Calculator · Diabetes</div>
-<h1>Insulin Dosing in CKD <em>Starting Dose, Correction Factor &amp; Carb Ratio</em></h1>
-<p class="hero-sub">Estimate a <em>CKD-adjusted</em> starting total daily insulin dose, basal/bolus split, insulin sensitivity factor (correction factor), and insulin-to-carb ratio. Dose reductions are applied automatically based on kidney function — because renal insulin clearance falls with advancing CKD and hypoglycemia risk rises. This is an <em>initiation estimate</em>; all insulin regimens must be individualized and titrated.</p>
+<div class="hero-tag">Nephrology · Dialysis Calculator · spKt/V · URR · nPCR</div>
+<h1>Hemodialysis Adequacy + Protein Catabolic Rate <em>spKt/V · URR · nPCR · UF Rate</em></h1>
+<p class="hero-sub">One set of pre- and post-dialysis BUN values, the next predialysis BUN, and the session details — and this tool reports <em>both</em> dialysis dose and nutrition together, exactly as they are computed and charted in practice: single-pool Kt/V (Daugirdas 2nd-generation), urea reduction ratio (URR), normalized protein catabolic rate (nPCR / nPNA), and the ultrafiltration rate. Each is checked against its KDOQI/KDIGO target.</p>
 <div class="hero-meta">
 <span><strong>Author:</strong> W Rivero, MD, FPCP, DPSN</span>
 <span><strong>Specialty:</strong> Nephrology · Internal Medicine</span>
 <span><strong>Last Reviewed:</strong> <time datetime="2026-06-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
 </div>
-<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="diabetes-kidneys.html" class="hero-xlink">Related guide →</a></p>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="dialysis-adequacy.html" class="hero-xlink">Dialysis Adequacy guide →</a></p>
 </div>
 </section>
-
 <nav class="nav-strip">
 <div class="nav-pills">
 <a class="nav-pill" href="#instructions">Instructions</a>
 <a class="nav-pill" href="#when">When to Use</a>
 <a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#use-together">Use Together</a>
 <a class="nav-pill" href="#calculator">Calculator</a>
 <a class="nav-pill" href="#nextsteps">Next Steps</a>
 <a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
-
 <main class="container">
 
-<div class="mdc-instructions" id="instructions"><span class="mdc-instr-label">Instructions</span>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
 <ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Enter the patient's <strong>body weight in kg</strong>.</li>
-<li>Select the <strong>insulin requirement category</strong> — choose the option that best describes the patient's diabetes type and insulin resistance.</li>
-<li>Select the <strong>kidney function tier</strong> corresponding to the patient's eGFR. A dose reduction factor is applied automatically: ×0.75 for eGFR 30–59 and ×0.50 for eGFR &lt;30 or dialysis.</li>
-<li>Select the <strong>correction-insulin type</strong> (rapid-acting uses the Rule of 1800; regular insulin uses the Rule of 1500) for the Insulin Sensitivity Factor.</li>
-<li>Optionally enter the patient's <strong>current blood glucose</strong> and <strong>target glucose</strong> to compute a correction dose.</li>
-<li>Results appear automatically. All computation runs in your browser; no values are stored or transmitted.</li>
+<li>Set the <strong>BUN unit</strong> (mg/dL ↔ urea mmol/L) to match your lab. The same unit applies to all three BUN fields. Switching the unit clears those fields.</li>
+<li>Enter this session's <strong>pre-dialysis BUN</strong> and <strong>post-dialysis BUN</strong> — these drive spKt/V and URR.</li>
+<li>Enter the <strong>session length</strong> (hours), the <strong>pre- and post-dialysis weight</strong> (kg/lb toggle), and confirm the auto-derived <strong>ultrafiltration volume</strong> (pre − post weight) — these feed spKt/V (Daugirdas needs UF/W) and the UF-rate readout.</li>
+<li>Enter the <strong>next session's pre-dialysis BUN</strong> and the <strong>interdialytic interval</strong> (hours) between this session's end and that next draw — these drive nPCR.</li>
+<li>Results update live: <strong>spKt/V, URR, nPCR, and UF rate</strong>, each with a colored target badge, an overall verdict, and a recommended action.</li>
 </ol>
-<p style="font-size:.92rem;color:var(--text-muted);">This tool produces <strong>initiation estimates only</strong>. Insulin doses must always be individualized and titrated to measured glucose values under physician supervision.</p>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted. nPCR fields are optional — leave them blank to compute adequacy alone.</p>
 </div>
 
 <details class="mdc-acc" id="when">
 <summary>When to Use</summary>
 <div class="mdc-acc-body">
-<p>Use this tool when initiating insulin therapy in an adult patient with diabetes and CKD (or on dialysis), or when estimating correction factors and carb ratios for a patient whose kidney function has changed. The tool is relevant for type 1 and type 2 DM and covers the full CKD spectrum from eGFR ≥60 down to dialysis-dependent patients.</p>
+<p>Use this combined tool at the monthly adequacy review, or whenever a maintenance hemodialysis patient feels under-dialyzed or is being assessed for protein-energy wasting. In real practice the dialysis dose (Kt/V, URR) and the protein catabolic rate (nPCR) are computed from the <strong>same blood draws</strong> and reported together, because both depend on urea kinetics — so this page takes one set of BUN values and returns both.</p>
 <div class="alert alert-teal">
 <div class="alert-icon">✅</div>
 <div class="alert-body">
-<h4>Appropriate use</h4>
-<p>Adults (≥18 yr) with type 1 or type 2 diabetes mellitus who are being started on insulin or whose insulin requirements need re-estimation after a change in kidney function. The CKD reduction factor reflects the well-established decrease in renal insulin clearance that accompanies CKD progression — the kidney normally degrades 30–40% of circulating insulin, so as GFR falls, exogenous insulin persists longer and hypoglycemia risk rises.</p>
+<h4>Appropriate population</h4>
+<p>Adult maintenance hemodialysis patients who are metabolically stable and at steady state. The adequacy block (spKt/V, URR, UF rate) needs this session's pre- and post-dialysis BUN with session time, weights, and ultrafiltration volume. The nPCR block additionally needs the predialysis BUN of the <em>following</em> treatment and the interdialytic interval bracketing it.</p>
 </div>
 </div>
 <div class="alert alert-amber">
 <div class="alert-icon">⚠️</div>
 <div class="alert-body">
-<h4>When NOT to rely on it alone</h4>
-<p>Do not use these estimates as fixed, standing doses. Insulin requirements change with illness, dietary intake, steroid use, dialysis adequacy, and residual renal function. Patients on dialysis experience acute glucose shifts during and after sessions. Any initiation or change must be followed by frequent self-monitoring of blood glucose (SMBG) or continuous glucose monitoring (CGM) and dose titration. Always consult the full clinical picture and current KDIGO / ADA guidelines.</p>
+<h4>When NOT to rely on it</h4>
+<p>Do not use the nPCR result in acute illness, sepsis, high-dose steroids, or any non-steady state — nPCR equals protein intake only at neutral nitrogen balance. This calculator is for thrice-weekly hemodialysis; it does not apply to peritoneal dialysis, which uses a weekly Kt/V from a 24-hour dialysate and urine collection. Significant residual renal urea clearance underestimates nPCR. Interpret every value against trends, fluid status, and a formal nutrition assessment — not in isolation.</p>
 </div>
 </div>
 </div>
@@ -1583,32 +1669,25 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <details class="mdc-acc" id="pearls">
 <summary>Pearls &amp; Pitfalls</summary>
 <div class="mdc-acc-body">
-<div class="alert alert-red">
-<div class="alert-icon">🚨</div>
-<div class="alert-body">
-<h4>CKD markedly raises hypoglycemia risk</h4>
-<p>Renal insulin clearance falls progressively as GFR declines — the kidney normally clears ~30–40% of circulating insulin. In CKD stage 4–5 and on dialysis, insulin half-life is prolonged and carbohydrate intake is often restricted (low-potassium, low-phosphorus diet), so standard doses cause hypoglycemia. Start 25–50% lower than a non-CKD patient of equal weight and titrate slowly. Dialysis patients are at particular risk during and in the 6–8 hours after a hemodialysis session.</p>
-</div>
-</div>
 <div class="alert alert-green">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
-<h4>Favor basal-dominant regimens in CKD</h4>
-<p>A basal-only or basal-dominant regimen (≥50% basal, lower bolus) with conservative glucose targets reduces hypoglycemia risk. In non-dialysis CKD stage 4–5, a target fasting glucose of 80–130 mg/dL and a 2-hr postprandial &lt;180 mg/dL are reasonable starting points per KDIGO 2022. In dialysis patients, slightly higher targets (100–140 mg/dL fasting) may be safer — individualize based on hypoglycemia awareness and comorbidities.</p>
+<h4>One blood draw, two answers</h4>
+<p>The post-dialysis BUN of this session is shared by both calculations: it is the numerator term in the Kt/V ratio (R = post/pre) and the starting point of the interdialytic rise used for nPCR (next-pre minus this-post). Charting both together is standard at the monthly review.</p>
 </div>
 </div>
 <div class="alert alert-teal">
 <div class="alert-icon">🔬</div>
 <div class="alert-body">
-<h4>Rules of 1800/500 are estimates, not fixed truths</h4>
-<p>The Rule of 1800 (rapid-acting) and Rule of 1500 (regular) are empirical starting points for the insulin sensitivity factor (ISF). In CKD, because TDD is already reduced, the derived ISF will be larger (each unit drops glucose more), which is clinically appropriate — CKD patients are more sensitive per unit. Use the ISF to guide correction doses only; verify with SMBG before treating and 2–4 hours after. In dialysis, pre-dialysis glucose may rise while post-dialysis glucose can drop sharply.</p>
+<h4>Trust Kt/V over URR; trend nPCR</h4>
+<p>URR ignores ultrafiltration and is less precise than Kt/V — trust the Kt/V when they disagree. nPCR should be trended monthly alongside serum albumin, dry-weight trend, and Kt/V, not acted on from a single value.</p>
 </div>
 </div>
-<div class="alert alert-amber">
-<div class="alert-icon">⚠️</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
 <div class="alert-body">
-<h4>Insulin requirements often fall with dialysis initiation</h4>
-<p>Counterintuitively, starting dialysis frequently <em>reduces</em> insulin requirements — uremic toxins impair insulin signaling, so removing them with dialysis can improve insulin sensitivity. Patients who start hemodialysis or peritoneal dialysis may need dose reductions of 25–50% from their pre-dialysis regimen. Monitor closely in the first weeks after dialysis initiation and after any change in dialysis prescription.</p>
+<h4>Pitfalls</h4>
+<p>(1) Single-pool Kt/V overestimates the true equilibrated dose by ~0.2 from urea rebound — a borderline spKt/V of 1.2 may be inadequate. (2) Draw the post-dialysis BUN within 30 sec of stopping (before rinse-back) using a slow-flow/stop-pump technique, or Kt/V is falsely high. (3) The interdialytic rise must span one interval: next-session predialysis BUN minus this session's postdialysis BUN — mixing sessions breaks nPCR. (4) A high UF rate (&gt; 13 mL/kg/h) is a hemodynamic red flag even when Kt/V is excellent. (5) Normalize nPCR to V-derived dry weight, not edematous weight.</p>
 </div>
 </div>
 </div>
@@ -1617,114 +1696,148 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <details class="mdc-acc" id="why">
 <summary>Why Use It</summary>
 <div class="mdc-acc-body">
-<p>Using a non-CKD-adjusted insulin dose in a patient with advanced kidney disease is one of the most common causes of severe hypoglycemia in the nephrology ward and outpatient dialysis setting. Standard weight-based rules (0.3–0.5 u/kg) were derived in patients without significant kidney disease. This tool applies published dose-reduction guidance from KDIGO 2022 and ADA 2024 to produce a safer starting estimate. The basal/bolus split, ISF, and ICR outputs give prescribers a complete starting framework that can be individualized and titrated — rather than guessing from first principles at the bedside.</p>
+<p>Under-dialysis (low Kt/V) and protein-energy wasting (low nPCR) are independent, additive drivers of mortality on hemodialysis — and both are read from the same monthly urea panel. Computing them together avoids the common error of reporting an "adequate" Kt/V while missing a silently low nPCR, or attributing a low predialysis BUN to good clearance when it actually reflects poor protein intake. Pairing dose and nutrition on one screen keeps the clinical picture coherent: it shows whether a normal BUN reflects effective dialysis, inadequate intake, or both.</p>
+</div>
+</details>
+
+<details class="mdc-acc" id="use-together">
+<summary>How &amp; Why Use Together</summary>
+<div class="mdc-acc-body">
+<p>Single-pool <strong>Kt/V</strong> (dialysis dose) and <strong>nPCR</strong> (protein intake) are both derived from the same pre- and post-dialysis urea draws, so this page computes them from one entry. Reading them together disambiguates the predialysis BUN — the same value means very different things depending on clearance and intake:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>spKt/V</th><th>nPCR</th><th>Interpretation &amp; action</th></tr></thead>
+<tbody>
+<tr><td>≥1.2 (adequate)</td><td>1.0–1.2 (adequate)</td><td>On target — maintain the prescription and nutrition; continue monthly monitoring.</td></tr>
+<tr><td>≥1.2</td><td>&lt;1.0 (low)</td><td>Adequately dialyzed but under-nourished — a low/normal BUN reflects poor protein intake, not just good clearance. Dietitian referral; assess protein-energy wasting.</td></tr>
+<tr><td>&lt;1.2 (low)</td><td>≥1.0</td><td>Under-dialyzed — increase dose (time, blood/dialysate flow, dialyzer surface, or access-recirculation work-up).</td></tr>
+<tr><td>&lt;1.2</td><td>&lt;1.0</td><td>Both inadequate — escalate dose AND nutrition; a high-mortality combination warranting a full prescription review.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>Don't read a low BUN as "good dialysis"</h4>
+<p>A low predialysis urea can reflect excellent clearance OR poor protein intake. Pairing Kt/V with nPCR tells you which — preventing a falsely reassuring "adequate" report in a malnourished patient.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">📋</div>
+<div class="alert-body">
+<h4>One draw, three answers</h4>
+<p>The same pre/post urea — plus the next pre-dialysis BUN and the session UF/weight — yields adequacy (Kt/V, URR), nutrition (nPCR), and volume removal (UF rate): the core monthly adequacy review on one screen.</p>
+</div>
+</div>
 </div>
 </details>
 
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
-<h2>Insulin Dosing in CKD — Starting Dose, Correction Factor &amp; Carb Ratio Calculator</h2>
-<p>Enter body weight and select diabetes type, kidney function, and correction-insulin type. Add current and target blood glucose for a correction dose estimate. Results appear automatically.</p>
+<h2>HD Adequacy + nPCR Calculator — spKt/V · URR · nPCR · UF Rate</h2>
+<p>Enter one set of BUN values and the session details. The tool computes single-pool Kt/V (Daugirdas 2nd-generation), urea reduction ratio (URR), and the ultrafiltration rate from this session, and the normalized protein catabolic rate (nPCR) from the rise to the next predialysis BUN. Find these values on the monthly dialysis labs and the run sheet.</p>
 <div class="calc-wrap">
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">BUN unit:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="hd-ubtn-conv" onclick="switchHdBunUnit('conv')">BUN mg/dL</button>
+      <button class="unit-btn" id="hd-ubtn-mmol" onclick="switchHdBunUnit('mmol')">Urea mmol/L</button>
+    </div>
+  </div>
+  <div class="unit-toggle-wrap">
+    <span class="ut-label">Weight unit:</span>
+    <div class="unit-toggle">
+      <button class="unit-btn active" id="hd-wbtn-kg" onclick="switchHdWeightUnit('kg')">kg</button>
+      <button class="unit-btn" id="hd-wbtn-lb" onclick="switchHdWeightUnit('lb')">lb</button>
+    </div>
+  </div>
 <div class="calc-grid">
 <div class="calc-field">
-<label>Body Weight (kg)</label>
-<input id="ins-weight" type="number" min="20" max="300" step="0.1" placeholder="e.g. 70" oninput="calcInsulin()"/>
-<div class="field-hint">Actual measured weight in kilograms.</div>
+<label id="hd-lbl-bunpre" for="hd-bun-pre">This session — Pre-dialysis BUN (mg/dL)</label>
+<input id="hd-bun-pre" type="number" min="1" max="300" step="0.1" placeholder="e.g. 60" oninput="calcHd()"/>
+<div class="field-hint" id="hd-hint-bunpre">Drawn just before this run starts (arterial line, before pump on). Used for spKt/V and URR.</div>
 </div>
 <div class="calc-field">
-<label>Insulin Requirement (units/kg/day)</label>
-<select id="ins-reqtype" onchange="calcInsulin()">
+<label id="hd-lbl-bunpost" for="hd-bun-post">This session — Post-dialysis BUN (mg/dL)</label>
+<input id="hd-bun-post" type="number" min="0.1" max="200" step="0.1" placeholder="e.g. 18" oninput="calcHd()"/>
+<div class="field-hint" id="hd-hint-bunpost">Drawn within 30 sec of stopping (slow-flow, before rinse-back). Shared by Kt/V, URR, and the nPCR rise.</div>
+</div>
+<div class="calc-field">
+<label for="hd-time">Session length (hours)</label>
+<input id="hd-time" type="number" min="1" max="10" step="0.1" placeholder="e.g. 4" oninput="calcHd()"/>
+<div class="field-hint">Actual run time in hours (e.g. 4 h). Used in spKt/V and the UF rate.</div>
+</div>
+<div class="calc-field">
+<label id="hd-lbl-wpre" for="hd-wt-pre">Pre-dialysis weight (kg)</label>
+<input id="hd-wt-pre" type="number" min="20" max="400" step="0.1" placeholder="e.g. 61.5" oninput="calcHd()"/>
+<div class="field-hint">Weight before the run. UF volume = pre − post weight.</div>
+</div>
+<div class="calc-field">
+<label id="hd-lbl-wpost" for="hd-wt-post">Post-dialysis weight (kg)</label>
+<input id="hd-wt-post" type="number" min="20" max="400" step="0.1" placeholder="e.g. 58.5" oninput="calcHd()"/>
+<div class="field-hint">Dry weight after the run. Used as W in Daugirdas and to normalize the UF rate.</div>
+</div>
+<div class="calc-field">
+<label for="hd-sex">Biological sex</label>
+<select id="hd-sex" onchange="calcHd()">
 <option value="">Select…</option>
-<option value="0.2">Insulin-naïve type 2 DM — 0.2 u/kg</option>
-<option value="0.3">Type 2 DM, typical — 0.3 u/kg</option>
-<option value="0.5">Type 2 DM, insulin-resistant — 0.5 u/kg</option>
-<option value="0.4">Type 1 DM — 0.4 u/kg</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
 </select>
-<div class="field-hint">Starting estimate; titrate to glucose response.</div>
+<div class="field-hint">Used to estimate total body water V for nPCR (males 0.60 × weight, females 0.55 × weight). Not needed for spKt/V.</div>
 </div>
 <div class="calc-field">
-<label>Kidney Function (CKD dose reduction)</label>
-<select id="ins-ckdfactor" onchange="calcInsulin()">
-<option value="">Select…</option>
-<option value="1.0">eGFR ≥ 60 — full dose</option>
-<option value="0.75">eGFR 30–59 — reduce ~25%</option>
-<option value="0.5">eGFR &lt; 30 / on dialysis — reduce ~50%</option>
-</select>
-<div class="field-hint">Renal insulin clearance decreases as GFR falls; dose is scaled accordingly.</div>
+<label for="hd-bun-next">Next session — Pre-dialysis BUN (mg/dL)</label>
+<input id="hd-bun-next" type="number" min="1" max="300" step="0.1" placeholder="e.g. 48" oninput="calcHd()"/>
+<div class="field-hint" id="hd-hint-bunnext">Predialysis BUN of the following treatment. Optional — needed only for nPCR. Interdialytic rise = next-pre − this-post.</div>
 </div>
 <div class="calc-field">
-<label>Correction-Insulin Type (for ISF)</label>
-<select id="ins-corrtype" onchange="calcInsulin()">
-<option value="">Select…</option>
-<option value="1800">Rapid-acting (lispro/aspart/glulisine) — Rule of 1800</option>
-<option value="1500">Regular insulin — Rule of 1500</option>
-</select>
-<div class="field-hint">Used to compute the Insulin Sensitivity Factor (correction factor).</div>
-</div>
-<div class="calc-field">
-<label>Current Blood Glucose (mg/dL) — optional</label>
-<input id="ins-glucose" type="number" min="40" max="600" step="1" placeholder="e.g. 220" oninput="calcInsulin()"/>
-<div class="field-hint">Leave blank to skip correction dose calculation.</div>
-</div>
-<div class="calc-field">
-<label>Target Glucose (mg/dL)</label>
-<input id="ins-target" type="number" min="70" max="250" step="1" value="150" oninput="calcInsulin()"/>
-<div class="field-hint">Default 150 mg/dL. Adjust per individualized glycemic target.</div>
+<label for="hd-interval">Interdialytic interval (hours)</label>
+<input id="hd-interval" type="number" min="1" max="120" step="0.5" placeholder="e.g. 44" oninput="calcHd()"/>
+<div class="field-hint">Hours between this session's end and the next predialysis draw (commonly 44 h, or 68 h over the long gap). Optional — for nPCR.</div>
 </div>
 </div>
 
-<div class="calc-result-box" id="ins-result">
+<!-- RESULT -->
+<div class="calc-result-box" id="hd-result">
 <div class="calc-metrics-row">
 <div class="calc-metric-card">
-<div class="cmv" id="ins-tdd">—</div>
-<div class="cml">Total Daily Dose</div>
-<div class="cmt">units/day (TDD)</div>
+<div class="cmv" id="hd-ktv">—</div>
+<div class="cml">spKt/V</div>
+<div class="cmt" id="hd-ktv-badge">Target ≥ 1.2</div>
 </div>
 <div class="calc-metric-card">
-<div class="cmv" id="ins-basal">—</div>
-<div class="cml">Basal Insulin</div>
-<div class="cmt">units/day (50% of TDD)</div>
+<div class="cmv" id="hd-urr">—</div>
+<div class="cml">URR %</div>
+<div class="cmt" id="hd-urr-badge">Target ≥ 65%</div>
 </div>
 <div class="calc-metric-card">
-<div class="cmv" id="ins-bolus-meal">—</div>
-<div class="cml">Bolus per Meal</div>
-<div class="cmt">units/meal (÷ 3 meals)</div>
+<div class="cmv" id="hd-npcr">—</div>
+<div class="cml">nPCR g/kg/d</div>
+<div class="cmt" id="hd-npcr-badge">Target 1.0–1.2</div>
 </div>
 <div class="calc-metric-card">
-<div class="cmv" id="ins-isf">—</div>
-<div class="cml">Sensitivity Factor (ISF)</div>
-<div class="cmt" id="ins-isf-note">mg/dL drop per 1 unit</div>
-</div>
-<div class="calc-metric-card">
-<div class="cmv" id="ins-icr">—</div>
-<div class="cml">Insulin-to-Carb Ratio</div>
-<div class="cmt">g carb per 1 unit</div>
-</div>
-<div class="calc-metric-card" id="ins-corr-card" style="display:none;">
-<div class="cmv" id="ins-corr">—</div>
-<div class="cml">Correction Dose</div>
-<div class="cmt" id="ins-corr-note">units (current &gt; target)</div>
+<div class="cmv" id="hd-ufr">—</div>
+<div class="cml">UF rate mL/kg/h</div>
+<div class="cmt" id="hd-ufr-badge">Keep ≤ 13</div>
 </div>
 </div>
-<div class="calc-verdict-text" id="ins-verdict"></div>
-<div class="calc-action-text" id="ins-action"></div>
-<p class="calc-disclaimer">⚕ TDD = weight(kg) × u/kg/day × CKD-factor. Basal = 50% TDD; Bolus total = 50% TDD; Per-meal bolus = bolus ÷ 3. ISF = Rule ÷ TDD (mg/dL per unit). ICR = 500 ÷ TDD (g carb per unit). Correction dose = round((current − target) ÷ ISF). All values are <strong>initiation estimates only</strong> — titrate to measured glucose under physician supervision. Never change insulin doses without consulting your care team.</p>
+<div class="calc-verdict-text" id="hd-verdict"></div>
+<div class="calc-action-text" id="hd-action"></div>
 </div>
+<p class="calc-disclaimer">⚕ spKt/V (Daugirdas 2nd-gen) = −ln(R − 0.008×t) + (4 − 3.5×R) × UF/W, where R = post-BUN/pre-BUN, t = session hours, UF = ultrafiltration volume (L), W = post-dialysis weight (kg). URR = (1 − post/pre) × 100. UF rate = UF volume (mL) ÷ session hours ÷ post weight (kg). nPCR = 0.22 + [0.036 × interdialytic BUN rise (mg/dL) × 24] ÷ interval (h), with rise = next predialysis BUN − this postdialysis BUN. Educational aid only — does not replace clinical assessment by the dialysis team. Sources: Daugirdas JT, J Am Soc Nephrol 1993;4(5):1205–1213; Depner TA & Daugirdas JT, J Am Soc Nephrol 1996;7(5):780–785; KDOQI 2015 Hemodialysis Adequacy; KDOQI 2020 Nutrition.</p>
 </div>
 </section>
 
 <details class="mdc-acc" id="nextsteps">
 <summary>Next Steps</summary>
 <div class="mdc-acc-body">
-<p><strong>These estimates are a starting framework — not a standing order.</strong></p>
+<p><strong>Use the results to support — not replace — clinical judgment.</strong></p>
 <ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
-<li>Begin at the calculated dose and titrate upward (or downward) by 10–20% every 3–7 days based on fasting and postprandial glucose logs.</li>
-<li>Verify the correction dose against the patient's measured glucose before administering; reassess 2–4 hours after any correction.</li>
-<li>In dialysis patients, check pre- and post-dialysis glucose and consider holding or halving the correction dose on dialysis days.</li>
-<li>Educate patients on hypoglycemia symptoms and appropriate treatment (15–15 rule) — especially critical in CKD where hypoglycemia unawareness is more common.</li>
-<li>Review the insulin regimen at every visit, after any change in kidney function, and after starting or stopping dialysis.</li>
-<li>Consider referral to endocrinology or a diabetes care specialist for complex or unstable patients.</li>
+<li><strong>If underdialyzed (spKt/V &lt; 1.2 or URR &lt; 65%):</strong> review the prescription — extend session time, raise blood and dialysate flow rates (Qb/Qd), upsize the dialyzer, and check access recirculation. Do not wait for the next scheduled review when the dose is critically low.</li>
+<li><strong>If nPCR is low (&lt; 1.0 g/kg/day):</strong> refer to the renal dietitian, screen for protein-energy wasting, review appetite and adequacy, and consider oral nutritional supplementation. A low nPCR with a normal predialysis BUN often means poor intake, not good clearance.</li>
+<li><strong>If the UF rate is high (&gt; 13 mL/kg/h):</strong> reduce it by lengthening sessions, adding a treatment, or tightening interdialytic fluid and sodium intake — a hemodynamic red flag even when Kt/V is excellent.</li>
+<li>Trend all four metrics monthly alongside serum albumin and dry-weight; confirm unexpected values before changing management, and document the indication.</li>
 </ul>
 </div>
 </details>
@@ -1736,48 +1849,56 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
 <tbody>
-<tr><td>Total Daily Dose (TDD)</td><td>weight (kg) × insulin requirement (u/kg/day) × CKD reduction factor</td></tr>
-<tr><td>Basal insulin</td><td>50% × TDD (rounded to nearest whole unit)</td></tr>
-<tr><td>Total bolus (prandial)</td><td>50% × TDD (rounded)</td></tr>
-<tr><td>Bolus per meal</td><td>Total bolus ÷ 3 (assuming 3 meals/day)</td></tr>
-<tr><td>Insulin Sensitivity Factor (ISF)</td><td>1800 ÷ TDD (rapid-acting) · or · 1500 ÷ TDD (regular insulin)</td></tr>
-<tr><td>Insulin-to-Carb Ratio (ICR)</td><td>500 ÷ TDD (g of carbohydrate per 1 unit — Rule of 500)</td></tr>
-<tr><td>Correction dose</td><td>Round((current glucose − target glucose) ÷ ISF) units · only when current &gt; target</td></tr>
-<tr><td>CKD reduction factor</td><td>eGFR ≥60: ×1.0 · eGFR 30–59: ×0.75 · eGFR &lt;30 or dialysis: ×0.50</td></tr>
+<tr><td>Post/pre urea ratio (R)</td><td>R = this-session post-dialysis BUN ÷ pre-dialysis BUN</td></tr>
+<tr><td>Single-pool Kt/V (Daugirdas 2nd-gen)</td><td>spKt/V = −ln(R − 0.008 × t) + (4 − 3.5 × R) × UF ÷ W, with t = session time in <em>hours</em>, UF = ultrafiltration volume (L), W = post-dialysis weight (kg)</td></tr>
+<tr><td>Urea reduction ratio (URR, %)</td><td>URR = (1 − R) × 100 = (pre-BUN − post-BUN) ÷ pre-BUN × 100</td></tr>
+<tr><td>Ultrafiltration volume</td><td>UF (L) = pre-dialysis weight (kg) − post-dialysis weight (kg)</td></tr>
+<tr><td>Ultrafiltration rate (UF rate, mL/kg/h)</td><td>UF rate = UF volume (mL) ÷ session time (h) ÷ post-dialysis weight (kg)</td></tr>
+<tr><td>nPCR / nPNA (g/kg/day)</td><td>0.22 + [0.036 × (interdialytic BUN rise, mg/dL) × 24] ÷ (interdialytic interval, hours), where rise = next-session predialysis BUN − this-session postdialysis BUN</td></tr>
+<tr><td>Unit conversion</td><td>BUN (mg/dL) = urea (mmol/L) × 2.8; weight (kg) = lb ÷ 2.2046</td></tr>
 </tbody>
 </table>
+<h3 style="margin-top:24px;">Target reference ranges (thrice-weekly HD)</h3>
+<table class="lab-table">
+<thead><tr><th>Metric</th><th>Target</th></tr></thead>
+<tbody>
+<tr><td>Single-pool Kt/V</td><td>Minimum ≥ 1.2; recommended target ~1.4 (KDOQI 2015)</td></tr>
+<tr><td>Urea reduction ratio (URR)</td><td>≥ 65%</td></tr>
+<tr><td>nPCR / nPNA</td><td>1.0–1.2 g/kg/day (KDOQI 2020 Nutrition)</td></tr>
+<tr><td>Ultrafiltration rate (UF rate)</td><td>≤ 13 mL/kg/h; flag values &gt; 13</td></tr>
+</tbody>
+</table>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The Daugirdas second-generation logarithmic equation is the KDOQI/KDIGO-endorsed bedside estimate of single-pool variable-volume Kt/V; the (4 − 3.5 × R) × UF/W term accounts for convective urea removal during ultrafiltration. Single-pool Kt/V overestimates the equilibrated Kt/V by roughly 0.2 because of urea rebound. nPCR equals protein intake only at neutral nitrogen balance in a metabolically stable patient; significant residual renal urea clearance underestimates it. Normalize nPCR to V-derived dry weight, not edematous weight.</p>
 <h3 class="mdc-sub">Evidence &amp; References</h3>
-<p>The CKD dose reduction factors are derived from the observed decrease in renal insulin clearance and the clinical hypoglycemia data reviewed in KDIGO 2022 and ADA 2024. The kidney normally clears 30–40% of circulating insulin; as GFR falls, insulin half-life lengthens and a lower TDD is needed to achieve the same effect. The Rules of 1800 and 1500 are empirical heuristics widely used in diabetes education; in CKD patients the resulting ISF (larger, because TDD is lower) appropriately reflects increased insulin sensitivity per unit. The Rule of 500 for ICR has the same evidence base. All values should be verified against patient-specific glucose logs.</p>
+<p>spKt/V uses the Daugirdas second-generation formula (1993), the standard bedside method adopted by KDOQI and KDIGO; the equilibrated-Kt/V relationship was characterized by Depner and Daugirdas (1996). The minimum spKt/V ≥ 1.2 and target ~1.4 come from the KDOQI 2015 Hemodialysis Adequacy update, informed by the HEMO Study, with URR ≥ 65% the corresponding CMS/KDOQI benchmark. The nPCR interdialytic-rise method and its 1.0–1.2 g/kg/day target follow the KDOQI 2020 nutrition guideline.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
-<li>KDIGO Diabetes Work Group. <em>KDIGO 2022 Clinical Practice Guideline for Diabetes Management in CKD.</em> Kidney Int. 2022;102(5S):S1–S127.</li>
-<li>American Diabetes Association. <em>Standards of Care in Diabetes — 2024.</em> Diabetes Care. 2024;47(Suppl 1).</li>
-<li>Walsh J, Roberts R. <em>Using Insulin</em> (Torrey Pines Press, 2003) — source of the Rules of 1800 and 500.</li>
+<li>Daugirdas JT. <em>Second generation logarithmic estimates of single-pool variable volume Kt/V: an analysis of error.</em> J Am Soc Nephrol. 1993;4(5):1205–1213.</li>
+<li>Depner TA, Daugirdas JT. <em>Equations for normalized protein catabolic rate based on two-point modeling of hemodialysis urea kinetics.</em> J Am Soc Nephrol. 1996;7(5):780–785.</li>
+<li>National Kidney Foundation. <em>KDOQI Clinical Practice Guideline for Hemodialysis Adequacy: 2015 Update.</em> Am J Kidney Dis. 2015;66(5):884–930.</li>
+<li>Ikizler TA, Burrowes JD, Byham-Gray LD, et al. <em>KDOQI Clinical Practice Guideline for Nutrition in CKD: 2020 Update.</em> Am J Kidney Dis. 2020;76(3 Suppl 1):S1–S107.</li>
+<li>Eknoyan G, Beck GJ, Cheung AK, et al. <em>Effect of dialysis dose and membrane flux in maintenance hemodialysis (the HEMO Study).</em> N Engl J Med. 2002;347(25):2010–2019.</li>
 </ol>
 </div>
 </details>
 
-<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for licensed clinicians and does not replace individualized clinical assessment, current prescribing information, or specialist consultation. Insulin dosing in CKD requires careful titration and frequent glucose monitoring. Hypoglycemia risk is substantially higher in advanced CKD and dialysis. Always individualize insulin therapy under physician supervision and in accordance with current ADA and KDIGO guidelines.</div>
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for licensed clinicians and does not replace individualized assessment by the dialysis team. A single Kt/V, URR, or nPCR is interpreted alongside fluid status, nutrition, symptoms, and serial trends. Do not change a dialysis prescription based on one result without nephrology review.</div>
 
 <!-- CALC-CROSSLINK-START -->
 <section class="section" aria-label="Related calculators" style="border-bottom:none;padding-top:36px;">
 <div class="section-tag">Related Calculators</div>
 <h2 style="font-size:1.25rem;">Use this with</h2>
 <div class="related-cards">
-<a class="related-card" href="calc-sglt2i-eligibility.html">
+<a class="related-card" href="calc-dialysis-adequacy-ktv.html">
 <div class="related-card-tag">Calculator</div>
-<div class="related-card-title">SGLT2i Eligibility & Dose Check</div>
+<div class="related-card-title">Dialysis Adequacy — spKt/V & URR</div>
 </a>
-<a class="related-card" href="calc-metformin-ckd-safety.html">
+<a class="related-card" href="calc-npcr.html">
 <div class="related-card-tag">Calculator</div>
-<div class="related-card-title">Metformin Safety Checker in CKD</div>
+<div class="related-card-title">nPCR — Protein Catabolic Rate</div>
 </a>
-<a class="related-card" href="calc-eag-hba1c.html">
+<a class="related-card" href="calc-dialysis-prescription.html">
 <div class="related-card-tag">Calculator</div>
-<div class="related-card-title">eAG ↔ HbA1c Converter</div>
-</a>
-<a class="related-card" href="calc-dkd-risk.html">
-<div class="related-card-tag">Calculator</div>
-<div class="related-card-title">Diabetic Kidney Disease Risk</div>
+<div class="related-card-title">Dialysis Prescription Calculators</div>
 </a>
 </div>
 </section>
@@ -1785,56 +1906,64 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </main>
 <!-- FOOTER -->
 
-<!-- DR CARD -->
+    <!-- DR CARD -->
 <div class="dr-card-wrap">
 <div class="dr-card">
 <div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
 <div class="dr-card-body">
 <h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W Rivero, MD, FPCP, DPSN</a></h4>
-<p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
 <p class="dr-creds"> &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
 </div>
 <div class="dr-qr">
 <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
-<p class="dr-qr-label">Scan and save</p>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span><span data-lang="tl" class="lang-hidden">I-scan at i-save</span><span data-lang="ceb" class="lang-hidden">I-scan ug i-save</span><span data-lang="kap" class="lang-hidden">I-scan at i-save</span></p>
 </div>
 </div>
 </div>
 
 <!-- RELATED-GUIDES-START -->
-<div class="related-guides">
-  <h2>Related Guides</h2>
-  <div class="related-cards">
-  <a class="related-card has-thumb" href="diabetes-kidneys.html">
-    <div class="related-card-tag">Overview</div>
-    <div class="related-card-title">Diabetes &amp; Your Kidneys</div>
-    <img class="related-card-thumb" src="../images/diabetes-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async">
-  </a>
-  <a class="related-card has-thumb" href="understanding-ckd.html">
-    <div class="related-card-tag">Getting Started</div>
-    <div class="related-card-title">Understanding CKD</div>
-    <img class="related-card-thumb" src="../images/ckd-understanding-overview-rg-thumb.webp" alt="" loading="lazy" decoding="async">
-  </a>
-  <a class="related-card" href="calc-cockcroft-gault.html">
-    <div class="related-card-tag">Calculator</div>
-    <div class="related-card-title">Creatinine Clearance (Cockcroft-Gault)</div>
-  </a>
-  <a class="related-card has-thumb" href="nutrition-kidney-patients.html">
-    <div class="related-card-tag">Why Food Is Medicine</div>
-    <div class="related-card-title">Nutrition for Kidney Patients</div>
-    <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async">
-  </a>
-  </div>
-</div>
-<!-- RELATED-GUIDES-END -->
-
+      <div class="related-guides">
+        <h2>
+          <span data-lang="en">Related Guides</span>
+          <span data-lang="tl" class="lang-hidden">Mga Kaugnay na Gabay</span>
+          <span data-lang="ceb" class="lang-hidden">Mga May Kalabtan nga Giya</span>
+          <span data-lang="kap" class="lang-hidden">Ding Kaugnay nga Gabay</span>
+        </h2>
+        <div class="related-cards">
+        <a class="related-card" href="calc-dialysis-adequacy-ktv.html">
+          <div class="related-card-tag">Calculator</div>
+          <div class="related-card-title">Dialysis Adequacy — spKt/V &amp; URR</div>
+          <div class="related-card-desc">The standalone adequacy calculator — single-pool Kt/V (Daugirdas), URR, V, and UF rate.</div>
+          <div class="related-card-arrow">Open →</div>
+        </a>
+        <a class="related-card" href="calc-npcr.html">
+          <div class="related-card-tag">Calculator</div>
+          <div class="related-card-title">nPCR / nPNA — Protein Catabolic Rate</div>
+          <div class="related-card-desc">The standalone nPCR calculator from the interdialytic BUN rise, as a surrogate for protein intake.</div>
+          <div class="related-card-arrow">Open →</div>
+        </a>
+        <a class="related-card" href="dialysis-adequacy.html">
+          <div class="related-card-tag">Understanding the Disease</div>
+          <div class="related-card-title">Dialysis Adequacy</div>
+          <div class="related-card-desc">How adequacy is measured on hemodialysis — Kt/V, URR, and the urea kinetics behind the numbers.</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        <a class="related-card" href="eating-on-dialysis.html">
+          <div class="related-card-tag">Why Food Is Medicine</div>
+          <div class="related-card-title">Eating on Dialysis</div>
+          <div class="related-card-desc">Protein, phosphate, potassium, and fluid — practical nutrition for the maintenance dialysis patient.</div>
+          <div class="related-card-arrow">Read →</div>
+        </a>
+        </div>
+      </div>
+    <!-- RELATED-GUIDES-END -->
 <footer class="guide-footer">
 <div class="footer-inner">
 <p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
-<p>References: KDIGO 2022 Diabetes in CKD · ADA Standards of Care 2024</p>
+<p>References: KDIGO 2024 CKD Guidelines · ACC/AHA 2026 Dyslipidemia · ADA Standards of Care 2025</p>
 </div>
 </footer>
-
 <script>
   const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
   function applyDark(on){
@@ -1870,7 +1999,6 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
     if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
   })();
 </script>
-
 <a href="calculators.html" aria-label="Back to all calculators" class="calc-back-btn">
 <span class="p-tip">All Calculators</span>
 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
@@ -1885,11 +2013,10 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </a>
 <button aria-label="Print this guide" class="print-btn" onclick="window.print()">
 <span class="p-tip">Print / Save PDF</span>
-<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
 <polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect>
 </svg>
 </button>
-
 <script>
 const LANG_KEY='wgmr-lang';
 function setLang(lang){
@@ -1908,131 +2035,197 @@ function setLang(lang){
   if(saved!=='en')setLang(saved);
 })();
 </script>
-
 <script>
-/* ── Insulin Dosing in CKD Calculator ──────────────────────────────────────── */
-function calcInsulin() {
-  const weightRaw  = parseFloat(document.getElementById('ins-weight').value);
-  const reqType    = parseFloat(document.getElementById('ins-reqtype').value);
-  const ckdFactor  = parseFloat(document.getElementById('ins-ckdfactor').value);
-  const corrRule   = parseFloat(document.getElementById('ins-corrtype').value);
-  const glucoseRaw = parseFloat(document.getElementById('ins-glucose').value);
-  const targetRaw  = parseFloat(document.getElementById('ins-target').value);
-  const res        = document.getElementById('ins-result');
-
-  // Require weight, req type, CKD factor, and correction type
-  if (isNaN(weightRaw) || isNaN(reqType) || isNaN(ckdFactor) || isNaN(corrRule) ||
-      weightRaw <= 0) {
-    res.style.display = 'none';
-    return;
-  }
-
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-
-  // ── Core calculations ─────────────────────────────────────────────────────
-  const tdd       = Math.round(weightRaw * reqType * ckdFactor);
-  const basal     = Math.round(tdd * 0.5);
-  const bolusTotal = tdd - basal;                 // ensures basal+bolus = tdd
-  const bolusPerMeal = Math.round(bolusTotal / 3);
-  const isf       = Math.round(corrRule / tdd);   // mg/dL drop per 1 unit
-  const icr       = Math.round(500 / tdd);        // g carb per 1 unit
-
-  // ── Colour theme based on CKD factor ─────────────────────────────────────
-  let borderColor, bg, tddColor;
-  if (ckdFactor >= 1.0) {
-    // Full dose — green tones
-    borderColor = isDark ? '#4ade80' : '#166534';
-    bg          = isDark ? 'rgba(74,222,128,.06)' : '#f0fdf4';
-    tddColor    = isDark ? '#4ade80' : '#166534';
-  } else if (ckdFactor >= 0.75) {
-    // 25% reduction — amber
-    borderColor = isDark ? '#fbbf24' : '#d97706';
-    bg          = isDark ? 'rgba(251,191,36,.06)' : '#fffbeb';
-    tddColor    = isDark ? '#fbbf24' : '#92400e';
+/* HD Adequacy (Daugirdas 2nd-gen spKt/V, URR, UF rate) + nPCR combined calculator */
+function switchHdBunUnit(u){
+  const isMmol = u==='mmol';
+  document.getElementById('hd-ubtn-conv').classList.toggle('active',!isMmol);
+  document.getElementById('hd-ubtn-mmol').classList.toggle('active',isMmol);
+  const pre=document.getElementById('hd-bun-pre'),
+        post=document.getElementById('hd-bun-post'),
+        next=document.getElementById('hd-bun-next');
+  if(isMmol){
+    document.getElementById('hd-lbl-bunpre').textContent='This session — Pre-dialysis Urea (mmol/L)';
+    document.getElementById('hd-lbl-bunpost').textContent='This session — Post-dialysis Urea (mmol/L)';
+    document.getElementById('hd-hint-bunpre').textContent='Urea in mmol/L, drawn before this run. Used for spKt/V and URR.';
+    document.getElementById('hd-hint-bunpost').textContent='Urea in mmol/L, drawn within 30 sec of stopping. Shared by Kt/V, URR, and the nPCR rise.';
+    document.getElementById('hd-hint-bunnext').textContent='Predialysis urea (mmol/L) of the following treatment. Optional — needed only for nPCR.';
+    pre.placeholder='e.g. 21.4'; post.placeholder='e.g. 6.4'; next.placeholder='e.g. 17.1';
+    [pre,post,next].forEach(el=>{el.min='0.1'; el.max='110'; el.step='0.1';});
   } else {
-    // 50% reduction — red / warning
-    borderColor = isDark ? '#f87171' : '#b91c1c';
-    bg          = isDark ? 'rgba(248,113,113,.06)' : '#fff0f0';
-    tddColor    = isDark ? '#f87171' : '#b91c1c';
+    document.getElementById('hd-lbl-bunpre').textContent='This session — Pre-dialysis BUN (mg/dL)';
+    document.getElementById('hd-lbl-bunpost').textContent='This session — Post-dialysis BUN (mg/dL)';
+    document.getElementById('hd-hint-bunpre').textContent='Drawn just before this run starts (arterial line, before pump on). Used for spKt/V and URR.';
+    document.getElementById('hd-hint-bunpost').textContent='Drawn within 30 sec of stopping (slow-flow, before rinse-back). Shared by Kt/V, URR, and the nPCR rise.';
+    document.getElementById('hd-hint-bunnext').textContent='Predialysis BUN of the following treatment. Optional — needed only for nPCR. Interdialytic rise = next-pre − this-post.';
+    pre.placeholder='e.g. 60'; post.placeholder='e.g. 18'; next.placeholder='e.g. 48';
+    pre.min='1'; pre.max='300'; pre.step='0.1';
+    post.min='0.1'; post.max='200'; post.step='0.1';
+    next.min='1'; next.max='300'; next.step='0.1';
   }
+  [pre,post,next].forEach(el=>el.value='');
+  calcHd();
+}
 
-  // ── Correction dose (optional) ────────────────────────────────────────────
-  const corrCard = document.getElementById('ins-corr-card');
-  const target   = isNaN(targetRaw) ? 150 : targetRaw;
-  if (!isNaN(glucoseRaw) && glucoseRaw > target) {
-    const corrDose = Math.max(0, Math.round((glucoseRaw - target) / isf));
-    document.getElementById('ins-corr').textContent = corrDose;
-    document.getElementById('ins-corr').style.color = corrDose > 0 ? tddColor : 'inherit';
-    document.getElementById('ins-corr-note').textContent =
-      'units (BG ' + glucoseRaw + ' → target ' + target + ')';
-    corrCard.style.display = 'block';
+function switchHdWeightUnit(u){
+  const isLb = u==='lb';
+  document.getElementById('hd-wbtn-kg').classList.toggle('active',!isLb);
+  document.getElementById('hd-wbtn-lb').classList.toggle('active',isLb);
+  const pre=document.getElementById('hd-wt-pre'), post=document.getElementById('hd-wt-post');
+  if(isLb){
+    document.getElementById('hd-lbl-wpre').textContent='Pre-dialysis weight (lb)';
+    document.getElementById('hd-lbl-wpost').textContent='Post-dialysis weight (lb)';
+    pre.placeholder='e.g. 135.6'; post.placeholder='e.g. 129.0';
+    [pre,post].forEach(el=>{el.min='44'; el.max='880'; el.step='0.1';});
   } else {
-    corrCard.style.display = 'none';
+    document.getElementById('hd-lbl-wpre').textContent='Pre-dialysis weight (kg)';
+    document.getElementById('hd-lbl-wpost').textContent='Post-dialysis weight (kg)';
+    pre.placeholder='e.g. 61.5'; post.placeholder='e.g. 58.5';
+    [pre,post].forEach(el=>{el.min='20'; el.max='400'; el.step='0.1';});
+  }
+  [pre,post].forEach(el=>el.value='');
+  calcHd();
+}
+
+function calcHd(){
+  const res = document.getElementById('hd-result');
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  const mmol = document.getElementById('hd-ubtn-mmol').classList.contains('active');
+  const lb   = document.getElementById('hd-wbtn-lb').classList.contains('active');
+
+  // Raw inputs
+  const preRaw  = parseFloat(document.getElementById('hd-bun-pre').value);
+  const postRaw = parseFloat(document.getElementById('hd-bun-post').value);
+  const t       = parseFloat(document.getElementById('hd-time').value);      // hours
+  const wPreRaw = parseFloat(document.getElementById('hd-wt-pre').value);
+  const wPostRaw= parseFloat(document.getElementById('hd-wt-post').value);
+  const sex     = document.getElementById('hd-sex').value;
+  const nextRaw = parseFloat(document.getElementById('hd-bun-next').value);
+  const interval= parseFloat(document.getElementById('hd-interval').value);  // hours
+
+  // Canonicalise to BUN mg/dL and kg
+  const preBUN  = mmol ? preRaw*2.8  : preRaw;
+  const postBUN = mmol ? postRaw*2.8 : postRaw;
+  const nextBUN = mmol ? nextRaw*2.8 : nextRaw;
+  const wPre  = lb ? wPreRaw/2.2046  : wPreRaw;
+  const wPost = lb ? wPostRaw/2.2046 : wPostRaw;
+
+  // Adequacy core inputs required: pre, post, time, both weights
+  const adequacyReady =
+    !([preBUN,postBUN,t,wPre,wPost].some(isNaN)) &&
+    preBUN>0 && postBUN>0 && t>0 && wPre>0 && wPost>0 &&
+    postBUN<preBUN && wPre>=wPost;
+
+  if (!adequacyReady) { res.style.display='none'; return; }
+
+  // Ultrafiltration volume (L) = pre − post weight
+  const uf = wPre - wPost;            // liters (≈ kg)
+
+  // Daugirdas 2nd-generation spKt/V = -ln(R - 0.008*t) + (4 - 3.5*R) * UF/W
+  const R = postBUN / preBUN;
+  const lnArg = R - 0.008 * t;
+  let ktvR = NaN;
+  if (lnArg > 0) {
+    const ktv = -Math.log(lnArg) + (4 - 3.5 * R) * (uf / wPost);
+    ktvR = Math.round(ktv * 100) / 100;
   }
 
-  // ── Render results ────────────────────────────────────────────────────────
-  res.style.display     = 'block';
-  res.style.background  = bg;
-  res.style.borderColor = borderColor;
+  // URR (%)
+  const urr  = (1 - R) * 100;
+  const urrR = Math.round(urr * 10) / 10;
 
-  const tddEl = document.getElementById('ins-tdd');
-  tddEl.textContent = tdd;
-  tddEl.style.color = tddColor;
+  // UF rate (mL/kg/h)
+  const ufr  = (uf * 1000) / t / wPost;
+  const ufrR = Math.round(ufr * 10) / 10;
 
-  document.getElementById('ins-basal').textContent = basal;
-  document.getElementById('ins-basal').style.color = tddColor;
-
-  document.getElementById('ins-bolus-meal').textContent = bolusPerMeal;
-  document.getElementById('ins-bolus-meal').style.color = tddColor;
-
-  const isfEl = document.getElementById('ins-isf');
-  isfEl.textContent = isf;
-  isfEl.style.color = tddColor;
-  document.getElementById('ins-isf-note').textContent =
-    'mg/dL per unit (Rule of ' + corrRule + ')';
-
-  const icrEl = document.getElementById('ins-icr');
-  icrEl.textContent = icr;
-  icrEl.style.color = tddColor;
-
-  // ── Verdict text ──────────────────────────────────────────────────────────
-  let verdictText = '';
-  if (ckdFactor < 1.0) {
-    const pct = ckdFactor === 0.5 ? '50%' : '25%';
-    const tier = ckdFactor === 0.5
-      ? 'eGFR <30 or dialysis-dependent'
-      : 'eGFR 30–59 (CKD stage 3)';
-    verdictText =
-      'CKD dose reduction applied (' + pct + ' reduction, ' + tier + '). ' +
-      'Renal insulin clearance falls progressively as GFR declines — the kidney normally ' +
-      'clears ~30–40% of circulating insulin, so as GFR falls insulin persists longer and ' +
-      'hypoglycemia risk rises substantially. Start at the calculated dose and titrate slowly. ';
-    if (ckdFactor === 0.5) {
-      verdictText +=
-        'Dialysis patients are at heightened risk during and in the 6–8 hours after ' +
-        'hemodialysis sessions — consider halving or holding correction doses on dialysis days. ' +
-        'Note: starting dialysis can paradoxically reduce insulin requirements (uremic insulin resistance resolves).';
-    } else {
-      verdictText +=
-        'Monitor fasting and postprandial glucose closely and titrate by 10–20% every 3–7 days.';
+  // nPCR (optional) — needs next predialysis BUN, interval, and sex (for V/dry-weight context)
+  let npcrR = NaN, riseVal = NaN;
+  const npcrReady = !isNaN(nextBUN) && !isNaN(interval) && nextBUN>0 && interval>0;
+  if (npcrReady) {
+    riseVal = nextBUN - postBUN;     // interdialytic BUN rise, mg/dL
+    if (riseVal > 0) {
+      const npcr = 0.22 + (0.036 * riseVal * 24) / interval;
+      npcrR = Math.round(npcr * 100) / 100;
     }
-  } else {
-    verdictText =
-      'Full weight-based dose calculated (eGFR ≥60; no CKD reduction applied). ' +
-      'Still verify with blood glucose monitoring — the rules of 1800/500 are empirical ' +
-      'starting estimates only. Titrate dose to individual glucose response.';
   }
-  document.getElementById('ins-verdict').textContent = verdictText;
 
-  document.getElementById('ins-action').textContent =
-    'Suggested regimen: ' + basal + ' units basal insulin once daily at bedtime (or split per protocol) + ' +
-    bolusPerMeal + ' units rapid-acting (or regular) before each of 3 meals. ' +
-    'ISF: 1 unit corrects glucose by ~' + isf + ' mg/dL. ' +
-    'ICR: 1 unit covers ~' + icr + ' g of carbohydrate. ' +
-    'Review and adjust at every clinical encounter. Never adjust insulin doses without consulting your care team.';
+  // ── Colors per metric ──
+  const GREEN='#2d7a4f', AMBER=isDark?'#c79100':'#9a6500', RED='#c0392b', MUTE='#5c6a7e';
+  function setCard(valId,badgeId,valText,valColor,badgeText,badgeColor){
+    const v=document.getElementById(valId), b=document.getElementById(badgeId);
+    v.textContent=valText; v.style.color=valColor;
+    b.textContent=badgeText; b.style.color=badgeColor;
+  }
+
+  // spKt/V
+  let ktvColor=MUTE;
+  if (!isNaN(ktvR)) {
+    if (ktvR >= 1.4)      ktvColor=GREEN;
+    else if (ktvR >= 1.2) ktvColor=AMBER;
+    else                  ktvColor=RED;
+    setCard('hd-ktv','hd-ktv-badge', ktvR.toFixed(2), ktvColor,
+      ktvR>=1.4?'✓ Target ~1.4':(ktvR>=1.2?'⚠ Min met, below 1.4':'✗ Below 1.2'), ktvColor);
+  } else {
+    setCard('hd-ktv','hd-ktv-badge','—',MUTE,'check inputs',RED);
+  }
+
+  // URR
+  const urrColor = urrR>=65?GREEN:(urrR>=58?AMBER:RED);
+  setCard('hd-urr','hd-urr-badge', urrR.toFixed(1)+'%', urrColor,
+    urrR>=65?'✓ ≥65% met':(urrR>=58?'⚠ Borderline':'✗ Below 65%'), urrColor);
+
+  // nPCR
+  let npcrColor=MUTE;
+  if (!isNaN(npcrR)) {
+    if (npcrR < 1.0)       npcrColor=RED;
+    else if (npcrR <= 1.2) npcrColor=GREEN;
+    else if (npcrR <= 1.4) npcrColor=AMBER;
+    else                   npcrColor=AMBER;
+    setCard('hd-npcr','hd-npcr-badge', npcrR.toFixed(2), npcrColor,
+      npcrR<1.0?'✗ Low intake':(npcrR<=1.2?'✓ In target':(npcrR<=1.4?'⚠ Upper-acceptable':'⚠ High / catabolic')), npcrColor);
+  } else if (npcrReady) {
+    setCard('hd-npcr','hd-npcr-badge','—',RED,'check BUN rise',RED);
+  } else {
+    setCard('hd-npcr','hd-npcr-badge','—',MUTE,'enter next-pre + interval',MUTE);
+  }
+
+  // UF rate
+  const ufrColor = ufrR<10?GREEN:(ufrR<=13?AMBER:RED);
+  setCard('hd-ufr','hd-ufr-badge', ufrR.toFixed(1), ufrColor,
+    ufrR<10?'✓ Safe':(ufrR<=13?'⚠ Elevated':'✗ > 13 — high'), ufrColor);
+
+  // ── Overall verdict / action ──
+  const ktvBad = !isNaN(ktvR) && ktvR<1.2;
+  const urrBad = urrR<65;
+  const npcrLow = !isNaN(npcrR) && npcrR<1.0;
+  const ufrHigh = ufrR>13;
+
+  let borderColor, bg;
+  if (ktvBad || ufrHigh) { borderColor=RED;   bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+  else if ((!isNaN(ktvR)&&ktvR<1.4) || urrBad || npcrLow || ufrR>10) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor=GREEN; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  let vparts=[];
+  if (!isNaN(ktvR)) vparts.push('spKt/V '+ktvR.toFixed(2)+(ktvR>=1.4?' meets the recommended target (~1.4)':(ktvR>=1.2?' meets the KDOQI minimum (≥1.2) but is below the ~1.4 target':' is below the KDOQI minimum of 1.2 — underdialyzed')));
+  vparts.push('URR '+urrR.toFixed(1)+'%'+(urrR>=65?' (≥65% target met)':' (below the 65% target; trust Kt/V over URR when they disagree)'));
+  if (!isNaN(npcrR)) vparts.push('nPCR '+npcrR.toFixed(2)+' g/kg/day'+(npcrR<1.0?' is below the 1.0–1.2 target — possible low protein intake / wasting':(npcrR<=1.2?' is within the 1.0–1.2 target':(npcrR<=1.4?' is upper-acceptable':' suggests high intake or a non-steady state'))));
+  vparts.push('UF rate '+ufrR.toFixed(1)+' mL/kg/h'+(ufrR>13?' exceeds 13 — a hemodynamic red flag':(ufrR>10?' is elevated':' is within safe limits')));
+  document.getElementById('hd-verdict').innerHTML =
+    '<strong style="color:'+borderColor+';">'+((ktvBad||urrBad)?'Underdialyzed':(npcrLow?'Adequate dose, nutrition concern':(ufrHigh?'Adequate dose, UF rate high':'Adequate & on target')))+'</strong> — '+vparts.join('; ')+'.';
+
+  let actions=[];
+  if (ktvBad || urrBad) actions.push('Increase the delivered dose: extend session time, raise blood/dialysate flows (Qb/Qd), upsize the dialyzer, and check access recirculation.');
+  else if (!isNaN(ktvR) && ktvR<1.4) actions.push('Dose meets the minimum; consider extending time to reach the ~1.4 target.');
+  if (npcrLow) actions.push('Refer to the renal dietitian; screen for protein-energy wasting and consider oral nutritional supplementation.');
+  if (ufrHigh) actions.push('Reduce the UF rate — lengthen sessions, add a treatment, or tighten interdialytic fluid/sodium intake.');
+  if (actions.length===0) actions.push('Maintain current prescription and nutrition plan; trend all four metrics monthly with serum albumin and dry-weight.');
+  document.getElementById('hd-action').innerHTML =
+    '<strong style="color:'+borderColor+';">Recommended action:</strong> '+actions.join(' ');
 }
 </script>
-
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"2dc38f135a634aa6b33afc0ddfcff929","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 
 <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
@@ -2067,7 +2260,7 @@ html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav
 <span class="cnp-div"></span>
 <button class="cnp-print" onclick="window.print()" aria-label="Print this page"><span class="cnp-tip">Print</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></button>
 <span class="cnp-div"></span>
-<a href="diabetes-kidneys.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+<a href="dialysis-adequacy.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
 </nav>
 <!-- CALC-NAV-PILL-END -->
 </body>
