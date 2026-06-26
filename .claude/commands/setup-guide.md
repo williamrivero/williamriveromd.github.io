@@ -107,6 +107,7 @@ python3 patch_hero_fetchpriority.py --guide <filename>
 python3 patch_hero_fullwidth.py --guide <filename>
 python3 patch_hero_maxwidth.py --guide <filename>
 python3 patch_image_lightbox.py --guide <filename>
+python3 patch_symptom_widget.py --guide <filename>      # floating Symptom-Checker widget (../assets/symptom-checker-widget.js)
 python3 patch_mode_cls.py --guide <filename>
 python3 patch_signature_position.py --guide <filename>
 python3 patch_last_reviewed.py --guide <filename>          # "Last Reviewed" badge + article:modified_time + JSON-LD
