@@ -15,6 +15,9 @@
 | 2 | Figure 1 — Refilling / osmolality / tone cascade | §1 (replaces `<!-- FIGURE 1 -->` placeholder) | Biomedical mechanism schematic | `williamriveromd-biomedical-mechanism-figure` | 1659 × 948 |
 | 3 | Figure 2 — Patient-selection algorithm | §6 ★ Patient Selection (top of body) | Clinical algorithm (Style Mode C — house style) | `williamriveromd-algorithm-generator-skill` | 1659 × 948 |
 | 4 | OG / Twitter share card | `<head>` meta (`og:image`, `twitter:image`) | OG share card (typographic editorial) | `williamriveromd-infographic-skill` | **1200 × 630** |
+| 5 | Figure 3 — Sequential dialysis prescription | §2 Iso-UF (between operational notes and EAG) | Time-axis mechanism schematic | `williamriveromd-simple-figure` (Scaffold D) | 1659 × 948 |
+| 6 | Figure 4 — Na & UF profile-shape catalogue | §4 UF Ramping (top of body) | Two-panel stacked line chart | `williamriveromd-simple-figure` (Scaffold D) | 1659 × 948 |
+| 7 | Figure 5 — Comparative positioning matrix | §5 Comparison (top of body) | Single-panel 2-axis bubble matrix | `williamriveromd-simple-figure` (Scaffold D) | 1659 × 948 |
 
 ---
 
@@ -241,6 +244,193 @@ VISUAL STYLE:
 ```
 
 **Negative:** Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only (warm white #faf7f2). Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope. No machine brand marks, no axis tick marks, no chart numbers on the curve overlays. Never omit the williamriveromd.com attribution.
+
+---
+
+## IMAGE 5 — Figure 3 · Sequential dialysis prescription on a time axis
+
+- **FILE NAME:** `iso-uf-sodium-uf-ramping-sequential-prescription.png` (+ `.webp` twin)
+- **SECTION PLACEMENT:** §2 Iso-UF (between operational notes list and the Evidence-at-a-glance card; already wired)
+- **ARCHETYPE:** Time-axis mechanism schematic (Scaffold D)
+- **AUDIENCE:** Clinicians
+- **DIMENSIONS:** 1659 × 948 (16:9 landscape)
+
+### COPY-READY PROMPT
+
+```
+Medical pathophysiology infographic, AJKD/NEJM graphical abstract style. Pure white (#ffffff) background. Title at top in bold navy (#1F3864) Inter SemiBold: "Sequential dialysis — front-loaded iso-UF block followed by conventional HD". Subtitle directly under the title in medium-gray Inter Regular: "Two physiologic regimes, one session. Document the trade-off in the order."
+
+Central panel — a single horizontal time axis labelled "Session time (min)" along the bottom edge, with tick marks at 0, 60, 120, 180, 240. The panel is divided into two STACKED horizontal regions that run across the full width and share the time axis:
+
+UPPER REGION — "ISO-UF PHASE" (label set in teal #1A6B72 Inter Bold, top-left):
+- Spans the first ~25% of the width (0–60 min), filled in a soft, low-saturation teal #1A6B72 at ~12% opacity so the type stays legible.
+- Vertical hollow-fiber dialyzer icon (clean line-art, navy strokes) anchored at the left edge of this region; an amber #C9A84C DOWN arrow drawn inside the dialyzer labelled "UFR active (high)".
+- Two short stacked labels inside the region in navy Inter Medium: "Dialysate flow: OFF" and "Diffusive clearance: NONE".
+- A teal UP arrow above the dialyzer icon labelled in teal: "Plasma refilling intact — osmolality preserved".
+- A subtle pill-shaped green #2E6B3E ✓ badge on the right side of the region, white text inside: "PVR preserved · IDH risk lowered".
+
+LOWER REGION — "HD PHASE" (label set in navy #1F3864 Inter Bold, top-left):
+- Spans the remaining ~75% of the width (60–240 min), filled in a soft light gray #f3f4f6.
+- Same vertical hollow-fiber dialyzer icon at the left edge of this region; amber DOWN arrow drawn inside, smaller in scale than the upper one, labelled "UFR (tapered)".
+- Two short stacked labels inside in navy Inter Medium: "Dialysate flow: ON (500 mL/min)" and "Diffusive clearance: full Kt/V dose delivered HERE".
+- A thin navy right-pointing arrow inside the region labelled: "Convective + diffusive clearance simultaneous".
+
+ABOVE both stacked regions, a thin teal #1A6B72 line plot for "Plasma osmolality" (label at the left end of the line in teal Inter Regular) that stays HIGH and FLAT across the iso-UF region, then slopes gently downward as it crosses into the HD region — the slope is subtle, not steep. A small inline italic note above the slope reads in medium gray: "preserved → progressively diluted".
+
+BELOW both stacked regions, a thin amber #C9A84C line plot for "Cumulative UF removed (L)" (label at the left end in amber Inter Regular) that climbs STEEPLY during the iso-UF region (capturing the front-loaded UF removal), then continues at a noticeably gentler slope through the HD region, ending at the prescribed total UF at the right edge. A small inline note in medium gray near the inflection: "front-loaded → tapered". The y-axis label on this plot, in tiny medium-gray Inter Regular, reads "UF removed (L)".
+
+RIGHT EDGE — a compact "Trade-off" callout card anchored to the right margin, vertically centered, with a 4 px amber #C9A84C left border, white fill, soft 1 px gray outer border, and rounded corners. Header inside the card in amber Inter Bold (small caps): "ADEQUACY TRADE-OFF". Three short bullet lines in navy Inter Regular:
+• "Iso-UF block delivers ZERO clearance."
+• "HD block must compensate — verify Kt/V ≥ 1.2."
+• "Session may need extension if HD block is shortened."
+
+BELOW THE PANEL, a thin compact key line in medium-gray Inter Regular, centered: "Front-load UF when refill reserve is highest → reserve the diffusive dose for the HD block. Document rationale + total time + achieved Kt/V."
+
+Layout discipline: every label is short, mechanism-first, and mobile-readable (≥11 pt equivalent). Whitespace generous; no overlapping labels; the two stacked region fills clearly separable; the two trend lines clearly distinguishable by color and label position. The dialyzer icons inside the two regions match in style but differ in scale to suggest the relative UF intensity. Bottom-right corner: "williamriveromd.com" in small semi-transparent navy Inter Regular, ~11 px, 70 % opacity.
+```
+
+**Negative:** Avoid cartoon style, clutter, tiny labels, AI gibberish, dark backgrounds. No machine brand marks. No legible interface readouts on the dialyzer icons. No filler text. No 3D rendering or drop-shadow effects beyond the soft 1 px card border. Use only Inter / Nunito Sans / IBM Plex Sans / Manrope.
+
+---
+
+## IMAGE 6 — Figure 4 · Na & UF profile-shape catalogue
+
+- **FILE NAME:** `iso-uf-sodium-uf-ramping-profile-catalogue.png` (+ `.webp` twin)
+- **SECTION PLACEMENT:** §4 UF Ramping (top of body — also references §3 Na Ramping; already wired)
+- **ARCHETYPE:** Two-panel stacked mechanism poster (Scaffold D)
+- **AUDIENCE:** Clinicians
+- **DIMENSIONS:** 1659 × 948 (16:9 landscape)
+
+### COPY-READY PROMPT
+
+```
+Medical pathophysiology infographic, AJKD/NEJM graphical abstract style. Pure white (#ffffff) background. Title at top in bold navy (#1F3864) Inter SemiBold: "Profile-shape catalogue — sodium and ultrafiltration". Subtitle directly under the title in medium-gray Inter Regular: "Distribution, not dose. The operative variables: TIME-AVERAGED dialysate Na and MEAN UFR — not the bookend values."
+
+The canvas is divided into two stacked horizontal panels by a thin soft-gray (#e2e6eb) divider line. Each panel is a clean line-chart with its own axes, but the two panels share the same x-axis convention (session time, 0 → 240 min) for cognitive alignment.
+
+═══ TOP PANEL — "Dialysate sodium profiles" (Inter Bold, navy panel label, top-left) ═══
+Line chart with:
+- X-axis: "Session time (min)" — tick marks 0, 60, 120, 180, 240, in navy Inter Regular.
+- Y-axis: "Dialysate Na (mEq/L)" — tick marks at 134, 140, 146, 152, 158, in navy Inter Regular.
+Four overlaid profile traces, each with distinct color AND distinct stroke style:
+  1. Step (navy #1F3864 solid line, 2 px) — starts at 155, holds flat to minute 80, drops to 145, holds to minute 160, drops to 138.
+  2. Linear descending (teal #1A6B72 solid line, 2 px) — starts at 152, falls in a straight line to 137 by minute 240.
+  3. Exponential (amber #C9A84C dashed line, 2 px) — starts at 158, decays steeply early and plateaus near 137 by minute 180.
+  4. Ascending–descending A/D (purple #6c3d8e dash-dot line, 2 px) — starts at 142, rises to 152 at minute 100, falls to 137 at minute 240.
+A horizontal DASHED REFERENCE LINE in medium gray at y=138, labelled at its right end in medium-gray Inter Regular: "Pre-HD plasma Na (138) — the anchor".
+A pale TEAL-tinted shaded band (≈±1 mEq/L wide) hugs the linear-descending trace, labelled inside in teal Inter Regular Italic: "Time-averaged Na (operative variable)".
+Below the chart, a small navy-bordered callout card with white fill, Inter Regular navy text: "Net diffusive Na ≈ time-averaged dialysate Na − pre-HD plasma Na. Aim: net-neutral. A profile that LOOKS aggressive can still be net-zero if its time-average lands on the anchor."
+Bottom-right corner of this panel: a small rounded RED (#C00000) pill, white Inter SemiBold text inside, ~12 px: "Non-neutral profile = sodium loading → IDWG ↑ → masked volume overload".
+A small inline LEGEND in the upper-right corner of the panel: four short rows, each showing the trace's stroke style, color swatch, and short name (Step / Linear / Exponential / A/D), in Inter Regular navy.
+
+═══ BOTTOM PANEL — "Ultrafiltration profiles vs the refill curve" (Inter Bold, navy panel label, top-left) ═══
+Line chart with:
+- X-axis: "Session time (min)" — tick marks 0, 60, 120, 180, 240, in navy.
+- Y-axis (left): "UFR (mL/hr)" in navy Inter Regular.
+- Secondary Y-axis (right): "Plasma refill rate (mL/min)" in teal Inter Regular.
+Background reference curve drawn FIRST (so it sits behind the UFR traces) — the PLASMA REFILL CURVE in soft teal #1A6B72, 1.5 px stroke, a smooth monotone-descending curve from a high starting point to a low plateau by minute 240. Labelled inline in teal Inter Regular: "Plasma refilling — finite, falls over session".
+Four overlaid UFR profile traces in the SAME color/style mapping as the top panel for cognitive consistency:
+  1. Constant (navy #1F3864 solid line, 2 px) — flat horizontal line at the mean UFR. Labelled "Constant" in small navy at the right end.
+  2. Descending (teal #1A6B72 solid line, 2 px) — high early (≈1.4 × mean), tapers gently to a floor at ≈0.5 × mean by minute 240. Labelled "Descending" at the right end in teal.
+  3. Step (amber #C9A84C dashed line, 2 px) — three flat tiers stepping down at minutes 80 and 160. Labelled "Step".
+  4. Ascending–descending A/D (purple #6c3d8e dash-dot line, 2 px) — rises early, peaks at ≈mid-session, tapers. Labelled "A/D".
+A horizontal DASHED CEILING LINE in red #C00000 at the patient-specific safe UFR ceiling, labelled at its right end in red Inter Regular: "Patient-specific ceiling (≤13 mL/kg/hr; consider ≤10)".
+A pale GRAY HORIZONTAL BAND running across the full plot width at the mean UFR level (the same height as the constant trace), labelled inside in dark-gray Inter Regular: "MEAN UFR — same for all four shapes. Profiling changes distribution, NOT dose."
+Bottom-right corner of this panel: a small rounded AMBER (#C9A84C) pill, white Inter SemiBold text, ~12 px: "Profiling does not lower mean UFR. Verify mean UFR before adding a profile."
+A small inline LEGEND in the upper-right corner of the panel mirroring the top panel's: Constant / Descending / Step / A/D, with stroke style and color swatch.
+
+═══ BOTTOM STRIP (full width, below both panels) ═══
+A single clear KEY LINE centered, in navy #1F3864 Inter Regular: "Same total Na delivered ≠ same Na balance. Same total UF removed ≠ same hemodynamic stress. The operative variables are TIME-AVERAGED Na and MEAN UFR — both must be calculated, both must be documented."
+
+VISUAL DISCIPLINE:
+- All typography in Inter (SemiBold for titles and panel labels, Regular for axis text and callouts, Italic Regular only for the time-averaged band note).
+- Light gridlines on each chart in very pale gray (#f3f4f6), minor only.
+- Generous left/right margins (≥60 px) so traces don't crowd the labels.
+- Trace stroke widths equal (2 px) so no profile reads as "louder" than another.
+- Color/style mapping is IDENTICAL across both panels — the eye should recognize "the same four profile families, applied to two different parameters".
+- No decorative gradients, glows, drop shadows, or 3D rendering. Clean publication-grade line-chart aesthetic.
+- Small semi-transparent navy "williamriveromd.com" attribution in the bottom-right corner of the canvas, ~11 px, 70% opacity.
+```
+
+**Negative:** Avoid cartoon style, clutter, tiny labels, AI gibberish, dark backgrounds. No filler text. No stylized infographic pictograms — clean line charts only. No grid clutter. No log scales. Use only Inter / Nunito Sans / IBM Plex Sans / Manrope.
+
+---
+
+## IMAGE 7 — Figure 5 · Comparative positioning matrix
+
+- **FILE NAME:** `iso-uf-sodium-uf-ramping-positioning-matrix.png` (+ `.webp` twin)
+- **SECTION PLACEMENT:** §5 Comparison (top of body, above the alternatives table; already wired)
+- **ARCHETYPE:** Single-panel 2-axis bubble matrix (Scaffold D)
+- **AUDIENCE:** Clinicians
+- **DIMENSIONS:** 1659 × 948 (16:9 landscape)
+
+### COPY-READY PROMPT
+
+```
+Medical pathophysiology infographic, AJKD/NEJM graphical abstract style. Pure white (#ffffff) background. Title at top in bold navy (#1F3864) Inter SemiBold: "Comparative positioning — IDH stabilization toolkit". Subtitle directly under the title in medium-gray Inter Regular: "Where each technique sits on the evidence-vs-cost map. Cool dialysate and dry-weight / time optimization are the high-evidence, low-cost first moves; the ramping / iso-UF toolkit is layered onto the refractory subset."
+
+A single bubble-chart panel occupies ~80% of the canvas. Clean publication-grade chart aesthetic — thin axes, faint pale-gray (#f3f4f6) gridlines, no glow, no drop shadows.
+
+X-AXIS (horizontal, navy Inter Regular): "Evidence strength →"
+Tick labels along the x-axis, left to right:
+"Limited / consensus only" · "Small RCTs / crossover" · "Multiple RCTs" · "Cochrane / meta-analysis / strong observational"
+
+Y-AXIS (vertical, navy Inter Regular): "Resource / equipment cost ↑"
+Tick labels along the y-axis, bottom to top:
+"Operational only" · "Programmable machine" · "Specialty equipment" · "Pharmacy / staffing burden"
+
+BUBBLES — nine interventions, each plotted at its (evidence, cost) coordinate, with size encoding implementation friction (small / medium / large). Each bubble carries a short label INSIDE in bold white Inter SemiBold, and a one-line CAVEAT just below or beside the bubble in medium-gray Inter Regular. Bubble color encodes which physiologic axis the intervention targets (per the guide's four-axis cascade):
+- TEAL #1A6B72 = refilling axis
+- NAVY #1F3864 = tonicity / osmolality axis
+- PURPLE #6c3d8e = autonomic / vascular tone axis
+- GREEN #2E6B3E = cardiac reserve / preload axis
+- A bubble that spans more than one axis has a thin secondary ring of the second axis color around its outer edge.
+
+Plot these bubbles at the following approximate positions and sizes:
+
+1. "Dry-weight reassessment" — GREEN fill with a TEAL outer ring (cardiac + refilling), MEDIUM bubble. Position: far right ("Cochrane / strong observational"), bottom ("Operational only"). Caveat below: "First-line. Clinical ± BIA + lung ultrasound."
+
+2. "Cool dialysate 35.5°C" — PURPLE fill (autonomic), MEDIUM bubble. Position: far right ("Cochrane"), bottom ("Operational only"). Caveat: "High evidence, near-zero cost. Trial first."
+
+3. "Treatment time / frequency ↑" — GREEN fill with a TEAL outer ring (cardiac + refilling), LARGE bubble (highest implementation friction). Position: far right ("strong observational"), middle ("Programmable machine / chair-time"). Caveat: "Lowers MEAN UFR — the structural fix."
+
+4. "Antihypertensive timing review" — PURPLE fill (autonomic), SMALL bubble. Position: middle-right ("Multiple RCTs / pragmatic"), bottom ("Operational only"). Caveat: "Free win in poly-treated patients."
+
+5. "Sodium-balance-neutral ramping" — NAVY fill (tonicity), MEDIUM bubble. Position: middle ("Multiple RCTs"), low-middle ("Programmable machine"). Caveat: "Net-zero Na or STOP. Not for high IDWG."
+
+6. "Iso-UF (sequential)" — NAVY fill with a PURPLE outer ring (tonicity + tone), MEDIUM bubble. Position: middle-left ("Small RCTs + KDIGO consensus"), low ("Programmable machine"). Caveat: "Adequacy trade-off; longer session."
+
+7. "UF profiling (descending / A/D)" — TEAL fill (refilling), MEDIUM bubble. Position: middle ("Small RCTs / crossover"), low ("Programmable machine"). Caveat: "Distribution ≠ dose."
+
+8. "BV-UFC biofeedback" — TEAL fill (refilling), LARGE bubble (high cost). Position: middle ("Crossover RCT 2025"), high ("Specialty equipment"). Caveat: "Specialty machine; evidence mixed."
+
+9. "Midodrine" — PURPLE fill (autonomic), SMALL bubble. Position: far left ("Limited / KDIGO: insufficient"), middle-high ("Pharmacy / staffing burden"). Caveat: "Supine HTN risk; refractory tail only."
+
+LEGEND — upper-LEFT corner of the plot, a compact white-fill legend card with a thin navy 1 px border and rounded corners. Title in navy Inter SemiBold: "Bubble color = mechanism axis targeted". Below it, five rows, each a small colored chip + a one-line label in Inter Regular navy:
+- Teal — Refilling
+- Navy — Tonicity / osmolality
+- Purple — Autonomic / vascular tone
+- Green — Cardiac reserve / preload
+- A small chip with a two-color ring — "Multi-color ring = spans more than one axis"
+
+Just under the legend, a tiny note in medium-gray Inter Regular: "Bubble size = implementation friction (chair-time / cost / staffing)."
+
+RULES OF THE ROAD — a thin strip BELOW the plot, full width, very subtle pale-gray (#f3f4f6) fill, three short bullets in a single horizontal row in medium-gray Inter Regular:
+• "Move RIGHT before moving UP — exhaust low-cost, high-evidence moves first."
+• "Match the bubble color to the patient's failing axis."
+• "Cost is per-session and operational, not per-patient lifetime."
+
+VISUAL DISCIPLINE:
+- All typography in Inter (SemiBold for titles and bubble labels, Regular for caveats and tick labels). Never a serif font.
+- Bubble fills slightly transparent (≈85% opacity) so where two bubbles sit near each other they remain individually legible; outer rings (where present) are solid.
+- Generous whitespace — at least 60 px of margin on every side of the canvas.
+- Bubble caveats kept to one short line; no caveat may overlap an axis tick label or another bubble.
+- The four-axis legend in the upper-left is small but legible at thumbnail size.
+- No decorative icons or pictograms inside bubbles — text label only.
+- Small semi-transparent navy "williamriveromd.com" attribution in the bottom-right corner of the canvas, ~11 px, 70% opacity.
+```
+
+**Negative:** Avoid cartoon style, clutter, tiny labels, AI gibberish, dark backgrounds. No decorative icons inside bubbles. No 3D rendering or glow effects on bubbles. No log axes. No filler text. Bubble overlaps must not hide labels. Use only Inter / Nunito Sans / IBM Plex Sans / Manrope.
 
 ---
 
