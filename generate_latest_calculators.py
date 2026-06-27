@@ -39,12 +39,13 @@ STYLE = """<style>
 .lc-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
 .lc-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
 .lc-strip::-webkit-scrollbar{display:none;}
-.lc-card{flex:0 0 232px;scroll-snap-align:start;min-height:96px;position:relative;overflow:hidden;border-radius:10px;background:linear-gradient(135deg,#1f3864 0%,#16294a 100%);padding:12px 96px 12px 14px;text-decoration:none;display:flex;flex-direction:column;justify-content:center;transition:transform .18s,box-shadow .18s;}
+.lc-card{flex:0 0 248px;scroll-snap-align:start;min-height:120px;position:relative;overflow:hidden;border-radius:10px;background:linear-gradient(135deg,#1f3864 0%,#16294a 100%);padding:12px 96px 12px 14px;text-decoration:none;display:flex;flex-direction:column;justify-content:center;transition:transform .18s,box-shadow .18s;}
 .lc-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(15,30,51,.3);}
 .lc-thumb{position:absolute;top:0;right:0;width:92px;height:100%;object-fit:cover;opacity:.85;-webkit-mask-image:linear-gradient(to right,transparent,#000 60%);mask-image:linear-gradient(to right,transparent,#000 60%);pointer-events:none;}
 .lc-eyebrow{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#5fc8d1;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
 .lc-dot{width:6px;height:6px;border-radius:50%;background:#5fc8d1;box-shadow:0 0 0 3px rgba(95,200,209,.22);flex:none;}
 .lc-title{font-size:.85rem;font-weight:600;color:#fff;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.lc-desc{font-size:.7rem;color:rgba(255,255,255,.72);line-height:1.4;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .lc-date{font-size:.65rem;color:rgba(255,255,255,.55);margin-top:4px;}
 </style>"""
 
@@ -119,11 +120,16 @@ def collect(project_dir: Path, colors: dict):
             dt = datetime.fromisoformat(pub)
         except ValueError:
             continue
+        desc = meta(text, "twitter:description") or meta(text, "og:description") or meta(text, "description")
+        # Trim to a tight 1–2 line blurb (~100 chars max).
+        if len(desc) > 110:
+            desc = desc[:107].rsplit(" ", 1)[0] + "…"
         rows.append({
             "file": path.name,
             "published": pub,
             "dt": dt,
             "title": clean_title(text, path.stem),
+            "desc": desc,
             "thumb": local_thumb(project_dir, og_image, path.stem),
             "alt": meta(text, "og:image:alt"),
             "color": colors.get(path.name, "#1f3864"),
@@ -139,10 +145,14 @@ def card_html(r) -> str:
     # Tint the card by its category colour (same hue family as the grid cards).
     bg = f"background:linear-gradient(135deg,color-mix(in srgb,{c} 30%,#16294a) 0%,#14233f 100%);"
     dot = f"background:{c};box-shadow:0 0 0 3px color-mix(in srgb,{c} 30%,transparent);"
+    desc_html = (
+        f'        <span class="lc-desc">{r["desc"]}</span>\n' if r.get("desc") else ""
+    )
     return (
         f'      <a href="{r["file"]}" class="lc-card" style="{bg}">\n'
         f'        <span class="lc-eyebrow"><span class="lc-dot" style="{dot}"></span>New calculator</span>\n'
         f'        <span class="lc-title">{r["title"]}</span>\n'
+        f'{desc_html}'
         f'        <span class="lc-date"><time datetime="{r["published"]}">{label}</time></span>\n'
         f'        <img class="lc-thumb" src="{r["thumb"]}" alt="{alt}" loading="lazy" decoding="async">\n'
         f'      </a>'

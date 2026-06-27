@@ -82,11 +82,11 @@
     font-size: 16px;
   }
 
-  /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
+  /* ── SITE HEADER (CONVENTION: brand | inline lang chips | back link) ────── */
   .site-header {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; gap: 18px;
     height: 56px; box-sizing: border-box;
-    padding: 0 32px;
+    padding: 0 24px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -94,26 +94,46 @@
   .site-header .brand {
     font-size: 14px; font-weight: 500;
     color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em;
+    flex: 0 0 auto;
   }
   .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
   .site-header .back {
     font-size: 12px; font-weight: 500;
     color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s;
+    margin-left: auto; flex: 0 0 auto;
   }
   .site-header .back:hover { color: rgba(255,255,255,.9); }
+  /* Inline lang chips inside the header (next to the brand). */
+  .header-lang {
+    display: flex; align-items: center; gap: 6px;
+    flex: 0 1 auto; flex-wrap: nowrap; overflow-x: auto;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .header-lang::-webkit-scrollbar { display: none; }
+  .header-lang .lang-lbl {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5);
+    text-transform: uppercase; letter-spacing: .1em; margin-right: 2px;
+  }
+  .header-lang .lang-btn-g {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.18); background: transparent;
+    color: rgba(255,255,255,.78); cursor: pointer; transition: all .15s;
+    line-height: 1.3; flex-shrink: 0;
+  }
+  .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
+  .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  @media (max-width: 640px) {
+    .site-header { padding: 0 14px; gap: 10px; }
+    .header-lang .lang-lbl { display: none; }
+    .header-lang .lang-btn-g { font-size: 11px; padding: 2px 8px; }
+    .site-header .brand { font-size: 13px; }
+    .site-header .back { font-size: 11px; }
+  }
 
-  /* ── LANG BAR ────────────────────────────────────────────────────────────── */
-  .guide-lang-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 32px;
-    background: rgba(10,18,32,.96);
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    flex-wrap: wrap;
-  }
-  .lang-lbl {
-    font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5);
-    text-transform: uppercase; letter-spacing: .08em; margin-right: 4px;
-  }
+  /* ── LEGACY LANG BAR (kept defined as a no-op so older HTML doesn't break) ─ */
+  .guide-lang-bar { display: none !important; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
   .lang-btn-g {
     font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px;
     border: 1px solid rgba(255,255,255,.2); background: transparent;
@@ -121,8 +141,40 @@
   }
   .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
   .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
-  /* Dark/desktop toggles relocated into the lang bar's right margin. */
-  .guide-toggle-inline { margin-left: auto; display: inline-flex; gap: 8px; align-items: center; }
+  /* Legacy inline dark/desktop toggle holder — now replaced by .float-controls. */
+  .guide-toggle-inline { display: none !important; }
+
+  /* ── FLOATING DARK/DESKTOP TOGGLE WIDGET (bottom-right) ──────────────────── */
+  .float-controls {
+    position: fixed; bottom: 24px; right: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  .float-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(31,56,100,.18);
+    background: #ffffff; color: #1f3864;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(15,30,46,.18);
+    transition: background .15s, color .15s, transform .15s, box-shadow .15s;
+    position: relative;
+  }
+  .float-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,30,46,.24); }
+  .float-btn svg { width: 20px; height: 20px; }
+  .float-tooltip {
+    position: absolute; right: 54px; top: 50%; transform: translateY(-50%);
+    background: rgba(15,30,46,.9); color: #fff;
+    padding: 6px 10px; border-radius: 6px;
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity .15s;
+  }
+  .float-btn:hover .float-tooltip { opacity: 1; }
+  html[data-theme="dark"] .float-btn {
+    background: #1a2535; color: #e2b95f; border-color: rgba(255,255,255,.18);
+    box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  }
+  html[data-theme="dark"] .float-tooltip { background: rgba(255,255,255,.92); color: #1f3864; }
+  @media print { .float-controls, .no-print { display: none !important; } }
 
   /* ── TOGGLE BAR ──────────────────────────────────────────────────────────── */
   .guide-toggle-bar {
@@ -1447,17 +1499,14 @@
   .fig-abbrevs dd { margin: 0; color: var(--text-muted); }
 
   /* ═══════════════════════════════════════════════════════════════════════════
-     SINGLE-TAB GUIDES — keep the floating Symptom-Checker FAB clear of the
-     floating dark/light toggle. Single-tab guides (body.single-mode: physician-
-     or clinician-only guides with no Patient/Clinician toggle) carry the
-     floating dark-toggle widget at bottom:24px right:24px (44px wide); the
-     symptom-checker widget normally pins itself bottom:22px right:22px, so the
-     two overlap. Shift the FAB ~70px left so they sit side-by-side. Multi-tab
-     guides keep the default position (the dark toggle is in the Lang bar there).
+     Keep the floating Symptom-Checker FAB clear of the floating dark/light
+     toggle. Every guide now carries the floating dark widget at bottom:24px
+     right:24px (44px wide), so the FAB (default bottom:22px right:22px)
+     would collide. Shift it ~70px left so they sit side-by-side.
   ═══════════════════════════════════════════════════════════════════════════ */
-  body.single-mode .sc-fab { right: 88px !important; }
+  .sc-fab { right: 88px !important; }
   @media (max-width: 600px) {
-    body.single-mode .sc-fab { right: 72px !important; bottom: 16px !important; }
+    .sc-fab { right: 72px !important; bottom: 16px !important; }
   }
 
   /* ═══════════════════════════════════════════════════════════════════════════
@@ -2204,5 +2253,12 @@ html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav
 <a href="understanding-ckd.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
 </nav>
 <!-- CALC-NAV-PILL-END -->
+<!-- Floating dark-mode toggle (site-wide convention) -->
+<div class="float-controls no-print">
+  <button id="darkToggle" class="float-btn" type="button" onclick="toggleDark()" aria-label="Toggle dark mode" title="Switch to dark mode">
+    <span class="float-tooltip" id="darkLabel">Dark mode</span>
+    <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
 </body>
 </html>
