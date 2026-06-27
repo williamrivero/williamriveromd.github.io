@@ -27,6 +27,8 @@ labels, and the mandatory `williamriveromd.com` attribution bottom-right
 | 2 | §1 The Case — pull-quote card | `philhealth-acr-to-drg-marvin-quote.png` | infographic | Editorial quote card (1:1) | 1024 × 1024 (1:1) | **Core** |
 | 3 | §3 Why ACR Is Breaking — chart | `philhealth-acr-to-drg-rate-vs-cost.png` | simple-figure | Single-panel concept (D) | 1792 × 1024 (16:9) | **Core** |
 | 4 | OG / Twitter share card | `philhealth-acr-to-drg-og.png` | infographic | OG editorial poster | **1200 × 630 (fixed)** | **Core** |
+| 5 | §2 Two Different Problems — split diagram | `philhealth-acr-to-drg-two-problems.png` | simple-figure | Side-by-side comparison (B) | 1792 × 1024 (16:9) | **Core (thesis visualizer)** |
+| 6 | §7 The Kidney Lens — CKD cardiorenal storm → DRG forks | `philhealth-acr-to-drg-kidney-lens.png` | simple-figure | Single-panel concept (D) | 1792 × 1024 (16:9) | **Core (specialty angle)** |
 
 > Note on `<img width/height>` attributes already in the guide HTML:
 >
@@ -210,6 +212,128 @@ Exactly 1200 × 630 px landscape. Headline "From All Case Rates to DRG" with "DR
 
 ---
 
+## 5 · Two different problems — the essay's thesis in one frame
+*Skill: williamriveromd-simple-figure · Scaffold B — side-by-side comparison*
+
+> The visual operationalization of the essay's core argument: the Marvin denial
+> (Problem A — eligibility) is not the same thing as the ACR→DRG migration
+> (Problem B — payment). DRG fixes B; it does not fix A. Drop this into §2,
+> after the prose lede and before the existing HTML table — or in place of the
+> table once the figure is finalized.
+
+```
+FILE NAME: philhealth-acr-to-drg-two-problems.png
+IMAGE TYPE: Simple figure — side-by-side comparison (Scaffold B)
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: mixed (patients + clinicians)
+VISUAL GOAL: Make it visually unambiguous that the 24-hour denial and the ACR→DRG payment reform are two distinct problems, and that DRG only solves one of them.
+
+PROMPT:
+Medical-education comparison infographic, editorial / AJKD graphical-abstract style. White (#ffffff) background, sans-serif typography only (Inter). Generous whitespace, mobile-readable labels, rounded corners.
+
+Title at top center, bold navy (#0f1e2e): "Two Different Problems — Don't Confuse Them". Subtitle directly below in clinical teal (#1a6b72), smaller: "PhilHealth's eligibility rules vs PhilHealth's payment model".
+
+Soft dashed vertical divider in muted navy splits the canvas into two equal panels with a small navy chip in the middle that reads "vs" — but the chip is small enough not to dominate. A faint background tint differentiates the panels: very-light-red wash (#fff5f5) on the LEFT, very-light-teal wash (#eef6f7) on the RIGHT.
+
+LEFT PANEL — "Problem A":
+  - Header chip, large, on a soft red (#fff0f0) pill background with clinical-red (#b91c1c) text: "PROBLEM A — ELIGIBILITY". A small line-icon of a hospital billing window / shut counter window in clinical red sits to the right of the header chip.
+  - Subheader navy: "Who gets told 'no' at the window".
+  - Three short bullet rows, each with a small clinical-red dot bullet and navy text:
+        • 24-hour confinement rule applied too rigidly
+        • Member unaware of emergency benefit (PC 2024-0033)
+        • Hospital billing office uninformed or unwilling
+  - Bottom of panel: a compact rounded badge in clinical red on a soft red fill: "DRG does NOT fix this".
+
+RIGHT PANEL — "Problem B":
+  - Header chip, large, on a soft teal (#eef6f7) pill background with clinical-teal (#1a6b72) text: "PROBLEM B — PAYMENT MODEL". A small line-icon of a stack of coins / case-rate sheet → tablet ladder in clinical teal sits to the right of the header chip.
+  - Subheader navy: "How hospitals are paid for a case".
+  - Three short bullet rows, each with a small clinical-teal dot bullet and navy text:
+        • Flat case rate ignores severity
+        • Hospitals balance-bill the shortfall to patients
+        • Migrating to DRG = severity-adjusted bundles
+  - Bottom of panel: a compact rounded badge in clinical teal on a soft teal fill: "DRG addresses this".
+
+BOTTOM STRIP — a full-width soft very-light-gray panel (#f3f4f6) across the bottom ~14% of the canvas. Inside it, centered, bold navy text in one line, sans-serif Inter:
+"DRG fixes how hospitals are paid. It does not fix who gets told 'no' at the billing window. We need both repairs."
+
+Bottom-right corner of the canvas (over the soft gray strip): small semi-transparent navy text "williamriveromd.com" at ~10–11 px equivalent, 70% opacity.
+
+Palette: white #ffffff canvas, navy #0f1e2e text, clinical red #b91c1c (Problem A markers + badge), clinical teal #1a6b72 (Problem B markers + badge), light-red wash #fff5f5 and light-teal wash #eef6f7 for panel tints, soft gray #f3f4f6 for the bottom strip. No other colors. No 3D, no shadow drops.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid AI mis-spellings — bullet text must render exactly as written. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no serif fonts, no decorative typefaces. Do NOT draw the real PhilHealth logo or any hospital wordmark. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Two clearly distinct panels under a single banner. Left = red eligibility problem with a "DRG does NOT fix this" badge. Right = teal payment problem with a "DRG addresses this" badge. A single bottom-strip sentence carrying the essay's thesis. Mobile-readable at 600 px width. Bottom-right williamriveromd.com attribution visible.
+```
+
+---
+
+## 6 · Kidney lens — cardiorenal storm into two DRG outcomes
+*Skill: williamriveromd-simple-figure · Scaffold D — single-panel concept poster*
+
+> The nephrologist's reason to care: a CKD admission is rarely one problem. A
+> well-built DRG pays severity for the storm; a weak DRG nudges hospitals to
+> discharge a fragile dialysis patient a day too early. The figure makes that
+> two-outcome fork visible at the bottom of §7.
+
+```
+FILE NAME: philhealth-acr-to-drg-kidney-lens.png
+IMAGE TYPE: Simple figure — single-panel concept poster (Scaffold D)
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: mixed (patients + clinicians, leaning clinician)
+VISUAL GOAL: Show that one CKD admission braids multiple severity drivers ("the storm"), and that DRG forks into a good-for-patients path (severity-paid) or a bad-for-patients path (early discharge) depending on guardrails.
+
+PROMPT:
+Medical pathophysiology / health-policy concept poster, AJKD/NEJM graphical-abstract style. White (#ffffff) background, sans-serif typography only (Inter). Generous whitespace, mobile-readable labels, rounded corners.
+
+Title at top center, bold navy (#0f1e2e): "The Kidney Lens — Why DRG Design Matters for Severe Cases". Subtitle in clinical teal (#1a6b72): "A CKD admission is rarely one problem. The payment model should know that."
+
+LEFT THIRD — "The cardiorenal storm" tile:
+  - A single rounded card on a very-light-gray fill (#f3f4f6) with a soft navy outline. Header in bold navy: "ONE CKD ADMISSION". Beneath the header, a small semi-photorealistic 3D pair of human kidneys (clinical reds, restrained, anatomically accurate) on a transparent backdrop with five short label chips arranged radially around the kidneys — each chip is a small rounded pill with a colored dot and a short navy label:
+        • clinical-red dot: "Fluid overload"
+        • amber dot: "Hyperkalemia"
+        • amber dot: "Acidosis"
+        • soft-purple (#6c3d8e) dot: "Anemia"
+        • clinical-red dot: "Cardiorenal strain"
+  - Card footer caption in muted navy, single line: "Severity-rich, multi-system storm."
+
+A bold navy right-pointing arrow exits the card to the right, splitting into TWO branches that fan out into the right two-thirds of the canvas — an upper branch labeled in renal green (#1f7a4d) "Severity-paid (good design)" and a lower branch labeled in amber (#b8860b) "Fixed-price logic, weak guardrails (bad design)". The two branch labels sit on the arrows as small pill chips.
+
+UPPER RIGHT — "Well-built DRG" outcome card:
+  - Header chip on a soft renal-green fill: "WELL-BUILT DRG". Renal-green border on the card.
+  - Three short bullet rows, navy text with renal-green dot bullets:
+        • Severity-adjusted payment recognizes the storm
+        • Complex transplant + cardiorenal cases properly resourced
+        • Hospitals rewarded for keeping the sickest alive
+  - Card footer badge, renal-green: "Good for kidney patients."
+
+LOWER RIGHT — "Weak DRG" outcome card:
+  - Header chip on a soft amber fill: "WEAK DRG (no guardrails)". Amber border on the card.
+  - Three short bullet rows, navy text with amber dot bullets:
+        • Early discharge of fragile dialysis patients
+        • Avoidance of complex transplant / cardiorenal admissions
+        • Outcomes invisible, readmissions unmeasured
+  - Card footer badge, amber: "Hurts the very sickest."
+
+BOTTOM STRIP — a full-width very-light-teal tint (#eef6f7) band across the bottom ~12% of the canvas, with a faint top hairline in clinical teal. Centered navy text, one line, sans-serif:
+"Severity-adjusted payment is good news for complex renal care — only if it is paired with outcome tracking."
+
+Bottom-right corner of the canvas (over the light-teal strip): small semi-transparent navy text "williamriveromd.com" at ~10–11 px equivalent, 70% opacity.
+
+Palette: white #ffffff canvas, navy #0f1e2e structure/text, clinical teal #1a6b72 (subtitle, hairline), renal green #1f7a4d (good-outcome branch + badge), amber #b8860b (bad-outcome branch + badge), clinical red #b91c1c (storm chips), soft purple #6c3d8e (anemia chip only), soft gray #f3f4f6 (storm card fill), light-teal #eef6f7 (bottom strip). No other colors. Semi-3D kidney anchor only — otherwise clean 2D. No heavy shadows.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid AI mis-spellings — every chip label and bullet must render exactly as written. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no serif fonts, no decorative typefaces. Anatomy: a clinically plausible pair of human kidneys, not a stylized cartoon and not multiple kidneys. Do NOT draw the real PhilHealth logo. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+A single storm card on the left with kidneys + five severity chips. A navy arrow forks into two outcome cards on the right — upper renal-green "Well-built DRG / Good for kidney patients", lower amber "Weak DRG / Hurts the very sickest". Bottom-strip one-liner present. Mobile-readable at 600 px width. Bottom-right williamriveromd.com attribution visible.
+```
+
+---
+
 ## Post-generation checklist
 
 1. Save each PNG to `images/<filename>.png` and write a paired WebP twin
@@ -219,8 +343,16 @@ Exactly 1200 × 630 px landscape. Headline "From All Case Rates to DRG" with "DR
    to match the actual files where they currently differ from this plan:
    - marvin-quote → `width="1024" height="1024"`
    - rate-vs-cost → `width="1792" height="1024"`
-3. Optionally run Stage 2 (`williamriveromd-local-image-generator`) to build
+3. **Wire in the two new figures** (§5 and §6 of this plan). The guide doesn't
+   yet reference them. Add a `<figure>` block to §2 ("Two Different Problems")
+   pointing to `philhealth-acr-to-drg-two-problems.{webp,png}` and a second
+   `<figure>` block to §7 ("The Kidney Lens") pointing to
+   `philhealth-acr-to-drg-kidney-lens.{webp,png}`. Mirror the inline-figcaption
+   pattern used by the existing `philhealth-acr-to-drg-rate-vs-cost` figure
+   (`<figcaption><p class="fig-desc">…</p></figcaption>`) so the lightbox shows
+   the caption.
+4. Optionally run Stage 2 (`williamriveromd-local-image-generator`) to build
    the local guide folder, manifests, and append the OG meta block — though
    `og:image*` is already present in the guide head.
-4. Re-run `python3 generate_latest_guides.py` if the hero / OG file dates
+5. Re-run `python3 generate_latest_guides.py` if the hero / OG file dates
    change (it reads file mtimes for the strip thumbnail).
