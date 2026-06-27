@@ -143,11 +143,17 @@
   /* Legacy inline dark/desktop toggle holder — now replaced by .float-controls. */
   .guide-toggle-inline { display: none !important; }
 
-  /* ── FLOATING DARK/DESKTOP TOGGLE WIDGET (bottom-right) ──────────────────── */
+  /* ── FLOATING DARK TOGGLE WIDGET (bottom-right) ─────────────────────────── */
   .float-controls {
     position: fixed; bottom: 24px; right: 24px;
     z-index: 9999; display: flex; flex-direction: column; gap: 12px;
   }
+  /* ── FLOATING DESKTOP/MOBILE TOGGLE WIDGET (bottom-left, under print) ────── */
+  .float-controls-left {
+    position: fixed; bottom: 24px; left: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  .float-controls-left .float-tooltip { left: 54px; right: auto; }
   .float-btn {
     width: 44px; height: 44px; border-radius: 50%;
     border: 1px solid rgba(31,56,100,.18);
@@ -1368,9 +1374,13 @@
   .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
   .download-btn:hover{background:#162848;}
 
-  /* ── DOWNLOAD FAB (circular floating action button, bottom-left) ─────────── */
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left stack) ───
+     Stacking on the left side (visually top → bottom):
+       1. .dl-fab           bottom:136px  (top — only when present)
+       2. .print-btn        bottom: 80px  (middle)
+       3. .float-controls-left bottom: 24px  (bottom — desktop/mobile toggle) */
   .dl-fab {
-    position: fixed; bottom: 24px; left: 24px;
+    position: fixed; bottom: 136px; left: 24px;
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--navy); color: white;
     border: none; cursor: pointer;
@@ -3201,11 +3211,14 @@ function kdCheckEligibility(){
 <script src="../assets/symptom-checker-widget.js" defer></script>
 <script src="../assets/image-lightbox.js" defer></script>
 <!-- Floating dark + desktop toggles (relocated from the lang-bar strip) -->
-<div class="float-controls no-print">
+<!-- Floating desktop/mobile toggle (bottom-left, under print) -->
+<div class="float-controls-left no-print">
   <button id="desktopToggle" class="float-btn" type="button" onclick="toggleDesktop()" aria-label="Toggle desktop/mobile view" title="Force desktop view">
-    <span class="float-tooltip" id="desktopLabel">Desktop</span>
+    <span class="float-tooltip" id="desktopLabel">Desktop view</span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
   </button>
+</div>
+<div class="float-controls no-print">
   <button id="darkToggle" class="float-btn" type="button" onclick="toggleDark()" aria-label="Toggle dark mode" title="Switch to dark mode">
     <span class="float-tooltip" id="darkLabel">Dark mode</span>
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>

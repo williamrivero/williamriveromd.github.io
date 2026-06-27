@@ -128,11 +128,17 @@
   /* Legacy inline dark/desktop toggle holder — now replaced by .float-controls. */
   .guide-toggle-inline { display: none !important; }
 
-  /* ── FLOATING DARK/DESKTOP TOGGLE WIDGET (bottom-right) ──────────────────── */
+  /* ── FLOATING DARK TOGGLE WIDGET (bottom-right) ─────────────────────────── */
   .float-controls {
     position: fixed; bottom: 24px; right: 24px;
     z-index: 9999; display: flex; flex-direction: column; gap: 12px;
   }
+  /* ── FLOATING DESKTOP/MOBILE TOGGLE WIDGET (bottom-left, under print) ────── */
+  .float-controls-left {
+    position: fixed; bottom: 24px; left: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  .float-controls-left .float-tooltip { left: 54px; right: auto; }
   .float-btn {
     width: 44px; height: 44px; border-radius: 50%;
     border: 1px solid rgba(31,56,100,.18);
@@ -1353,9 +1359,13 @@
   .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
   .download-btn:hover{background:#162848;}
 
-  /* ── DOWNLOAD FAB (circular floating action button, bottom-left) ─────────── */
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left stack) ───
+     Stacking on the left side (visually top → bottom):
+       1. .dl-fab           bottom:136px  (top — only when present)
+       2. .print-btn        bottom: 80px  (middle)
+       3. .float-controls-left bottom: 24px  (bottom — desktop/mobile toggle) */
   .dl-fab {
-    position: fixed; bottom: 24px; left: 24px;
+    position: fixed; bottom: 136px; left: 24px;
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--navy); color: white;
     border: none; cursor: pointer;
