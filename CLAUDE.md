@@ -325,6 +325,8 @@ Each of the 90 guide files is a self-contained HTML document with:
 
 **Do not edit CSS directly in guide files.** The master CSS is maintained in `patch_master_css.py` (`MASTER_CSS` string near the top of the file) and batch-applied with the script. One-off edits to a guide's `<style>` block will be overwritten on the next `patch_master_css.py` run.
 
+**Guide-specific CSS must live in a SECOND `<style>` block.** `patch_master_css.py` rewrites **only the first** `<style>` block in each file (see its `replace_style_block`). Any bespoke styling — especially for **standalone printable handouts/forms** (e.g. `bp-log-blank.html`, `bp-monitoring-log.html`, `alcohol-drinking-log.html`, with their `.toolbar`/`.page`/`.bp-log` layouts) — must be placed in a **second `<style>` block after the first**, so a master-CSS run never clobbers it. The first (master) block still supplies the design tokens (`--navy`, `--teal`, …) and base resets, so the second block can rely on them. ⚠️ Symptom of getting this wrong: the page renders **completely unstyled** after a `patch_master_css.py` run because its only `<style>` block was overwritten with the generic guide CSS (this is exactly what repeatedly "damaged" `bp-log-blank.html`). When building any standalone form, give it two style blocks from the start.
+
 **Theme & typography.** Guides/calculators use the pastel hero theme — light mint hero
 (patient) / light periwinkle hero (clinician) with dark text — and an all-sans type system:
 **Inter** for headlines, section titles, and numbers; **Manrope** for body text and UI;
