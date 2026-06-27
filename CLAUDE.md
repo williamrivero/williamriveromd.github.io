@@ -336,6 +336,19 @@ stacks and are excluded from both. The optional `patch_hero_theme.py` adds the e
 circular-vignette + clinician cards and is **opt-in** (only for guides with a hero photo +
 dual-mode clinical sections), not part of the default rollout.
 
+**Circular-vignette hero placement (convention).** On desktop (≥821px) a guide's circular
+vignette (`figure.hero-figure > .hero-vignette`) renders as an **oversized disc that bleeds
+off the top and right** of the hero — copy on the left (z-index above the disc), disc anchored
+`top:-64px; left:58%` so it touches/clips the top border and overflows the right. The MASTER_CSS
+rule is scoped to `:is(body:not(.physician-mode), body.single-mode)`, i.e. it applies to
+patient-mode heroes **and** to **single-tab guides**. A single-tab guide (one with no
+Patient/Clinician mode toggle — including **physician/clinician-only** guides) must carry the
+`single-mode` class on `<body>` so its lone vignette bleeds like a patient hero; without it a
+physician-only guide (`<body class="physician-mode">`) would be excluded and the disc would
+render small and contained. **When building any single-tab guide, add `single-mode` to the
+body class** (e.g. `<body class="physician-mode single-mode">`). The bleed is desktop-only;
+the ≤820px mobile stack is untouched, and `.hero{overflow:hidden}` clips the disc to the hero.
+
 ### Language system
 
 All pages use the same in-DOM multilingual pattern:
