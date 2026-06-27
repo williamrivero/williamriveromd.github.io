@@ -959,7 +959,88 @@
     gap: 0 48px;
     position: relative;
     overflow: hidden;
+    background: linear-gradient(135deg,#0d1b2a 0%,#152640 55%,#1a3050 100%);
+    background-size: 220% 220%;
+    animation: lib-bg-drift 24s ease-in-out infinite alternate;
     transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease, border-color .35s ease;
+  }
+  /* bespoke navy→gold gradient drift */
+  @keyframes lib-bg-drift {
+    0%   { background-position: 0% 0%; }
+    50%  { background-position: 75% 55%; }
+    100% { background-position: 100% 100%; }
+  }
+  /* fixed gold aurora glow behind content */
+  .library-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 88% 28%, rgba(212,175,79,.12) 0%, transparent 70%),
+      radial-gradient(ellipse 52% 72% at 6% 82%, rgba(46,96,150,.22) 0%, transparent 66%);
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+  }
+  /* drifting gold "evidence" motes */
+  .lib-particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+  }
+  .lib-mote {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+  @keyframes lib-mote-rise {
+    0%   { transform: translate(0,0);                       opacity: 0; }
+    12%  { opacity: var(--pop, .5); }
+    88%  { opacity: var(--pop, .5); }
+    100% { transform: translate(var(--rx,30px), var(--ry,-150px)); opacity: 0; }
+  }
+  /* evidence-basis cycler */
+  .lib-evidence {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 5px 12px 5px 10px;
+    border-radius: 20px;
+    background: rgba(212,175,79,.10);
+    border: 1px solid rgba(212,175,79,.28);
+    font-size: 12.5px;
+    line-height: 1;
+  }
+  .lib-evidence-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #d4af4f;
+    box-shadow: 0 0 8px rgba(212,175,79,.8);
+    flex-shrink: 0;
+    animation: lib-evidence-pulse 1.9s ease-in-out infinite;
+  }
+  @keyframes lib-evidence-pulse {
+    0%,100% { opacity: 1;   transform: scale(1); }
+    50%     { opacity: .45; transform: scale(.7); }
+  }
+  .lib-evidence-label {
+    color: rgba(232,244,248,.62);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+  .lib-ref-cycle {
+    color: #e8d28c;
+    font-weight: 700;
+    letter-spacing: .01em;
+    min-width: 92px;
+    transition: opacity .3s ease;
   }
   /* shimmer sweep */
   .library-card::after {
@@ -973,8 +1054,8 @@
   }
   .library-card:hover { transform: translateY(-5px) scale(1.007); box-shadow: 0 24px 64px rgba(212,175,79,.26), 0 0 0 1px rgba(212,175,79,.55); border-color: rgba(212,175,79,.65) !important; }
   .library-card:hover::after { animation: lib-shimmer .7s ease forwards; }
-  .library-card .lib-left { grid-column: 1; }
-  .library-card .lib-right { grid-column: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .library-card .lib-left { grid-column: 1; position: relative; z-index: 2; }
+  .library-card .lib-right { grid-column: 2; position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
   .library-card .guide-card-illus { position: static; opacity: .22; width: 110px; height: 110px; transition: opacity .35s ease, transform .35s ease; }
   .library-card:hover .guide-card-illus { opacity: .45; transform: scale(1.08) rotate(3deg); }
   .library-card h3 { font-size: 31px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 10px; line-height: 1.2; }
@@ -996,6 +1077,12 @@
     .library-card h3 { font-size: 24px; }
     .lib-stats { gap: 20px; }
     .lib-stat-num { font-size: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .library-card { animation: none; }
+    .lib-mote { animation: none !important; opacity: .3; }
+    .lib-evidence-dot { animation: none; }
+    .lib-ref-cycle { transition: none; }
   }
   .guide-tag {
     display: inline-block;
@@ -1479,12 +1566,19 @@
     </div>
     <div class="guides-grid" id="home-guides-grid">
       <!-- Distinguished Library card: navy background, gold accents -->
-      <a href="/guides/" class="guide-card library-card" style="background:linear-gradient(135deg,#0d1b2a 0%,#152640 60%,#1a3050 100%);border-color:rgba(212,175,79,.3);color:#e8f4f8;">
+      <a href="/guides/" class="guide-card library-card" style="border-color:rgba(212,175,79,.3);color:#e8f4f8;">
+        <span class="lib-particles" id="lib-particles" aria-hidden="true"></span>
         <!-- Left column -->
         <div class="lib-left">
           <span class="guide-tag" style="background:rgba(212,175,79,.15);color:#d4af4f;border:1px solid rgba(212,175,79,.35);">Browse All Guides</span>
           <h3 style="color:#fff;">Patient &amp; Clinician Resource Library</h3>
           <p style="color:rgba(232,244,248,.75);">All in-depth patient guides — written by Dr. Rivero and grounded in current guidelines (KDIGO 2024, ADA 2025, ACC/AHA 2026). Organized by condition, stage, and date. Multilingual where translated.</p>
+          <!-- Evidence basis cycler -->
+          <div class="lib-evidence">
+            <span class="lib-evidence-dot"></span>
+            <span class="lib-evidence-label">Evidence basis</span>
+            <span class="lib-ref-cycle" id="lib-ref-cycle">KDIGO 2024</span>
+          </div>
           <!-- Stats row -->
           <div class="lib-stats">
             <div class="lib-stat"><span class="lib-stat-num" id="lib-guide-count">132</span><span class="lib-stat-label">Patient Guides</span></div>
@@ -2459,6 +2553,90 @@ function emailAction(key, btnEl, variant) {
       if (libLang && langNum) libLang.textContent = langNum;
     })
     .catch(err => console.warn('Library guide count sync skipped:', err));
+})();
+</script>
+
+<script>
+// Library card — bespoke animated background (gold evidence motes), evidence-basis
+// reference cycling, and stat count-up. Mirrors the guides/index.html hero treatment.
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var card = document.querySelector('.library-card');
+  if (!card) return;
+
+  // 1. Drifting gold "evidence" motes — bespoke navy/gold rise (vs the hero's
+  //    horizontal kidney-filtration stream).
+  var wrap = document.getElementById('lib-particles');
+  if (wrap && !reduce) {
+    var palette = ['rgba(212,175,79,VAR)', 'rgba(232,210,140,VAR)', 'rgba(120,170,210,VAR)'];
+    var COUNT = 18;
+    for (var i = 0; i < COUNT; i++) {
+      var m = document.createElement('span');
+      m.className = 'lib-mote';
+      var sz = 2 + Math.random() * 4.5;
+      var left = Math.random() * 100;
+      var top = 38 + Math.random() * 62;
+      var dur = 9 + Math.random() * 12;
+      var delay = -(Math.random() * dur);
+      var op = 0.16 + Math.random() * 0.4;
+      var rx = Math.round(Math.random() * 70 - 25);
+      var ry = -Math.round(90 + Math.random() * 150);
+      var col = palette[Math.floor(Math.random() * palette.length)].replace('VAR', op.toFixed(2));
+      m.style.cssText =
+        'width:' + sz.toFixed(1) + 'px;height:' + sz.toFixed(1) + 'px;' +
+        'left:' + left.toFixed(1) + '%;top:' + top.toFixed(1) + '%;' +
+        'background:' + col + ';box-shadow:0 0 ' + Math.round(sz * 2) + 'px ' + col + ';' +
+        '--pop:' + op.toFixed(2) + ';--rx:' + rx + 'px;--ry:' + ry + 'px;' +
+        'animation:lib-mote-rise ' + dur.toFixed(1) + 's ' + delay.toFixed(1) + 's linear infinite;';
+      wrap.appendChild(m);
+    }
+  }
+
+  // 2. Evidence-basis cycling (mirrors the guides/index hero's cycling stat).
+  var cyc = document.getElementById('lib-ref-cycle');
+  if (cyc) {
+    var refs = ['KDIGO 2024', 'ADA 2025', 'ACC/AHA 2026', 'KDOQI', 'KDIGO BP 2021', 'ISN', 'PSN', 'ISRNM 2024', 'NKF'];
+    var ci = 0;
+    setInterval(function(){
+      cyc.style.opacity = '0';
+      setTimeout(function(){
+        ci = (ci + 1) % refs.length;
+        cyc.textContent = refs[ci];
+        cyc.style.opacity = '1';
+      }, 300);
+    }, 2600);
+  }
+
+  // 3. Stat count-up when the card scrolls into view (text animation). Targets are
+  //    read live, so they reflect whatever syncLibraryGuideCount() resolved to.
+  function runCounters(){
+    if (card._counted) return;
+    card._counted = true;
+    card.querySelectorAll('.lib-stat-num').forEach(function(el, idx){
+      var target = parseInt((el.textContent || '').replace(/\D/g, ''), 10);
+      if (isNaN(target)) return;
+      if (reduce) { el.textContent = String(target); return; }
+      el.textContent = '0';
+      var dur = 1000, t0 = null;
+      setTimeout(function(){
+        requestAnimationFrame(function step(ts){
+          if (!t0) t0 = ts;
+          var p = Math.min((ts - t0) / dur, 1);
+          el.textContent = String(Math.round((1 - Math.pow(1 - p, 3)) * target));
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = String(target);
+        });
+      }, idx * 120);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) { runCounters(); io.disconnect(); } });
+    }, { threshold: 0.3 });
+    io.observe(card);
+  } else {
+    runCounters();
+  }
 })();
 </script>
 
