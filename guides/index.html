@@ -431,6 +431,9 @@
     transition: transform 0.18s, box-shadow 0.18s;
   }
   .latest-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(31,56,100,0.25); }
+  /* While the strip auto-scrolls (to hint there's more), drop snap so the motion
+     stays smooth; snap is restored the moment the reader takes over. */
+  .latest-strip.lg-autoscrolling { scroll-snap-type: none; }
   .latest-thumb {
     position: absolute;
     top: 0; right: 0;
@@ -4871,6 +4874,65 @@ document.addEventListener('DOMContentLoaded', function() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+
+<script>
+// Latest-guides strip: gentle auto-scroll + auto-reset. Many readers never scroll
+// the strip and so never learn there are more guides hiding to the right — this
+// nudges it along to reveal them, then loops back to the start. Pauses on hover,
+// focus, or any manual interaction, and while off-screen; disabled for
+// prefers-reduced-motion.
+(function(){
+  var strip = document.querySelector('.latest-strip');
+  if (!strip) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var SPEED = 0.55;            // px per frame (~33px/s at 60fps) — slow, ambient
+  var paused = false;          // user interacting
+  var resetting = false;       // smooth-scrolling back to start
+  var inView = true;
+  var userTimer = null;
+
+  // Disable scroll-snap for the whole auto-scroll lifetime. Toggling it back on
+  // makes the browser re-snap to the nearest card, which yanks the strip to the
+  // start on hover — so we set it once and leave it (manual scroll works fine
+  // without snap).
+  strip.classList.add('lg-autoscrolling');
+
+  function maxScroll(){ return strip.scrollWidth - strip.clientWidth; }
+
+  function step(){
+    if (!paused && inView && maxScroll() > 4){
+      if (!resetting && strip.scrollLeft >= maxScroll() - 1){
+        // auto-reset: glide back to the start, then resume forward scroll
+        resetting = true;
+        strip.scrollTo({ left: 0, behavior: 'smooth' });
+        setTimeout(function(){ resetting = false; }, 1100);
+      } else if (!resetting){
+        strip.scrollLeft += SPEED;
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function userPause(){
+    paused = true;
+    clearTimeout(userTimer);
+    userTimer = setTimeout(function(){ paused = false; }, 3000);
+  }
+
+  ['mouseenter','focusin'].forEach(function(ev){ strip.addEventListener(ev, function(){ paused = true; }); });
+  ['mouseleave','focusout'].forEach(function(ev){ strip.addEventListener(ev, function(){ paused = false; }); });
+  strip.addEventListener('wheel', userPause, { passive: true });
+  strip.addEventListener('touchstart', userPause, { passive: true });
+  strip.addEventListener('pointerdown', userPause);
+
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ inView = es[0].isIntersecting; }, { threshold: 0 }).observe(strip);
+  }
+
+  requestAnimationFrame(step);
+})();
+</script>
 
 </body>
 </html>
