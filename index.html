@@ -951,7 +951,7 @@
     grid-column: 1 / -1;
     padding: 40px 44px;
     border-radius: 16px;
-    border-width: 1px;
+    border-width: 1.5px;
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto;
@@ -959,8 +959,9 @@
     gap: 0 48px;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg,#0d1b2a 0%,#152640 55%,#1a3050 100%);
+    background: linear-gradient(135deg,#073842 0%,#0b2c5e 50%,#2a1c66 100%);
     background-size: 220% 220%;
+    box-shadow: 0 16px 48px rgba(10,18,50,.30);
     animation: lib-bg-drift 24s ease-in-out infinite alternate;
     transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease, border-color .35s ease;
   }
@@ -976,13 +977,13 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 60% 80% at 88% 28%, rgba(212,175,79,.12) 0%, transparent 70%),
-      radial-gradient(ellipse 52% 72% at 6% 82%, rgba(46,96,150,.22) 0%, transparent 66%);
+      radial-gradient(ellipse 60% 80% at 88% 26%, rgba(212,175,79,.14) 0%, transparent 70%),
+      radial-gradient(ellipse 55% 75% at 5% 84%, rgba(120,90,230,.20) 0%, transparent 66%);
     pointer-events: none;
     z-index: 0;
     border-radius: inherit;
   }
-  /* drifting gold "evidence" motes */
+  /* floating "idea bubbles" — soft glowing knowledge blobs */
   .lib-particles {
     position: absolute;
     inset: 0;
@@ -991,17 +992,19 @@
     z-index: 0;
     border-radius: inherit;
   }
-  .lib-mote {
+  .lib-bubble {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
     will-change: transform, opacity;
+    filter: blur(.4px);
   }
-  @keyframes lib-mote-rise {
-    0%   { transform: translate(0,0);                       opacity: 0; }
-    12%  { opacity: var(--pop, .5); }
-    88%  { opacity: var(--pop, .5); }
-    100% { transform: translate(var(--rx,30px), var(--ry,-150px)); opacity: 0; }
+  @keyframes lib-bubble-float {
+    0%   { transform: translate(0,0) scale(.92);                                                opacity: 0; }
+    14%  { opacity: var(--pop, .5); }
+    50%  { transform: translate(calc(var(--rx,40px) * .55), calc(var(--ry,-90px) * .5)) scale(1.08); }
+    86%  { opacity: var(--pop, .5); }
+    100% { transform: translate(var(--rx,40px), var(--ry,-180px)) scale(1);                    opacity: 0; }
   }
   /* evidence-basis cycler */
   .lib-evidence {
@@ -1080,7 +1083,7 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .library-card { animation: none; }
-    .lib-mote { animation: none !important; opacity: .3; }
+    .lib-bubble { animation: none !important; opacity: .3; }
     .lib-evidence-dot { animation: none; }
     .lib-ref-cycle { transition: none; }
   }
@@ -2564,31 +2567,40 @@ function emailAction(key, btnEl, variant) {
   var card = document.querySelector('.library-card');
   if (!card) return;
 
-  // 1. Drifting gold "evidence" motes — bespoke navy/gold rise (vs the hero's
-  //    horizontal kidney-filtration stream).
+  // 1. Floating "idea bubbles" — soft glowing knowledge blobs that drift up and
+  //    gently bob (bespoke; not the hero's horizontal kidney-filtration stream).
   var wrap = document.getElementById('lib-particles');
   if (wrap && !reduce) {
-    var palette = ['rgba(212,175,79,VAR)', 'rgba(232,210,140,VAR)', 'rgba(120,170,210,VAR)'];
-    var COUNT = 18;
+    // [edge-tint, glow-tint] pairs — teal, gold, violet, sky.
+    var palette = [
+      ['rgba(52,170,180,', 'rgba(52,170,180,'],
+      ['rgba(212,175,79,', 'rgba(212,175,79,'],
+      ['rgba(150,120,235,', 'rgba(150,120,235,'],
+      ['rgba(96,156,224,', 'rgba(96,156,224,']
+    ];
+    var COUNT = 11;
     for (var i = 0; i < COUNT; i++) {
-      var m = document.createElement('span');
-      m.className = 'lib-mote';
-      var sz = 2 + Math.random() * 4.5;
+      var b = document.createElement('span');
+      b.className = 'lib-bubble';
+      var sz = 22 + Math.random() * 58;                 // 22–80px soft blobs
       var left = Math.random() * 100;
-      var top = 38 + Math.random() * 62;
-      var dur = 9 + Math.random() * 12;
+      var top = 30 + Math.random() * 72;
+      var dur = 15 + Math.random() * 13;                // 15–28s slow float
       var delay = -(Math.random() * dur);
-      var op = 0.16 + Math.random() * 0.4;
-      var rx = Math.round(Math.random() * 70 - 25);
-      var ry = -Math.round(90 + Math.random() * 150);
-      var col = palette[Math.floor(Math.random() * palette.length)].replace('VAR', op.toFixed(2));
-      m.style.cssText =
-        'width:' + sz.toFixed(1) + 'px;height:' + sz.toFixed(1) + 'px;' +
+      var op = 0.10 + Math.random() * 0.20;             // subtle, keeps text legible
+      var rx = Math.round(Math.random() * 80 - 30);
+      var ry = -Math.round(120 + Math.random() * 170);
+      var pair = palette[Math.floor(Math.random() * palette.length)];
+      var edge = pair[0] + (op + 0.06).toFixed(2) + ')';
+      var glow = pair[1] + (op * 0.9).toFixed(2) + ')';
+      b.style.cssText =
+        'width:' + sz.toFixed(0) + 'px;height:' + sz.toFixed(0) + 'px;' +
         'left:' + left.toFixed(1) + '%;top:' + top.toFixed(1) + '%;' +
-        'background:' + col + ';box-shadow:0 0 ' + Math.round(sz * 2) + 'px ' + col + ';' +
+        'background:radial-gradient(circle at 32% 28%, rgba(255,255,255,' + (op + 0.14).toFixed(2) + '), ' + edge + ' 58%, transparent 78%);' +
+        'box-shadow:inset 0 0 ' + Math.round(sz / 4) + 'px rgba(255,255,255,.18), 0 0 ' + Math.round(sz / 2) + 'px ' + glow + ';' +
         '--pop:' + op.toFixed(2) + ';--rx:' + rx + 'px;--ry:' + ry + 'px;' +
-        'animation:lib-mote-rise ' + dur.toFixed(1) + 's ' + delay.toFixed(1) + 's linear infinite;';
-      wrap.appendChild(m);
+        'animation:lib-bubble-float ' + dur.toFixed(1) + 's ' + delay.toFixed(1) + 's ease-in-out infinite;';
+      wrap.appendChild(b);
     }
   }
 
