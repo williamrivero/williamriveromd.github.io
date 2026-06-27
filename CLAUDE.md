@@ -346,7 +346,7 @@ These are the load-bearing layout conventions every guide must follow. All of th
    - Labels are uniform: **"Patients & Families"** and **"Clinicians"** (no "For " prefix, no role emoticons).
    - `.audience-tabs` background **inherits the hero palette** — mint when patient mode is active, periwinkle when clinician mode is active — so the bar reads as one continuous strip with the hero. Hard-coded in MASTER_CSS.
 4. **Hero must be properly closed** with its `</div>`. A missing close lets the hero engulf the rest of the page (symptom: hero background bleeds down to the footer). See `hematuria-blood-in-urine.html` commit for the canonical fix.
-5. **Calculator index** (`guides/calculators.html`): main-grid `<a class="related-card">` cards show titles + descriptions only, **no** peeking thumbs. Only the Latest-Calculators carousel at the top shows category-hero thumbs (`generate_latest_calculators.py`).
+5. **Calculator index** (`guides/calculators.html`): main-grid `<a class="related-card">` cards show titles + descriptions only, **no** peeking thumbs. Only the Latest-Calculators carousel at the top shows category-hero thumbs (`generate_latest_calculators.py`). The carousel auto-includes **any** new calc that has an `article:published_time` — if the calc has no `og:image`, the script falls back to the matching `images/hero-cat-{section}.webp`, so a brand-new calc is **never silently dropped** from the Latest strip.
 6. **Lang chips** (multilingual guides): exactly four (`glb-en/tl/ceb/kap`) inside `<div class="header-lang">` adjacent to the brand. Calculators and tools are English-only (no lang chips).
 
 **Theme & typography.** Guides/calculators use the pastel hero theme — light mint hero

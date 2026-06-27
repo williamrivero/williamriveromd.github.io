@@ -105,7 +105,61 @@ def category_colors(index_text: str) -> dict:
     return colors
 
 
-def collect(project_dir: Path, colors: dict):
+# Map each section's `id=` / `data-filter=` to the corresponding hero-cat-*.webp.
+# Only entries that have an actual image on disk count as a usable fallback.
+_CATEGORY_TO_THUMB = {
+    "function": "hero-cat-kidney-function",
+    "pharmacology": "hero-cat-pharmacology",
+    "risk": "hero-cat-ckd-risk",
+    "dialysis": "hero-cat-dialysis",
+    "transplant": "hero-cat-transplant",
+    "electrolytes": "hero-cat-electrolytes",
+    "minerals": "hero-cat-minerals-anemia",
+    "cardiometabolic": "hero-cat-cardiometabolic",
+    "endocrine": "hero-cat-endocrine",
+    "nutrition": "hero-cat-nutrition",
+    "geriatric": "hero-cat-geriatric",
+    "pediatric": "hero-cat-pediatric",
+    "screening": "hero-cat-screening",
+    "proms": "hero-cat-proms",
+    "aki": "hero-cat-aki",
+    "critical-care": "hero-cat-critical-care",
+    "pulmonary": "hero-cat-pulmonary",
+    "oncology": "hero-cat-oncology",
+    "rheumatology": "hero-cat-rheumatology",
+    "stones": "hero-cat-stones",
+}
+
+
+def category_thumbs(project_dir: Path, index_text: str) -> dict:
+    """Map each calculator filename → a category fallback thumb (webp), so
+    a calc without its own og:image still shows up in the Latest carousel."""
+    images = project_dir / "images"
+    out = {}
+    for sm in re.finditer(
+        r'<section class="section"\s+id="([^"]+)"(.*?)(?=<section class="section"|<!--\s*CALC-RESULTS-END|</main>)',
+        index_text,
+        flags=re.S,
+    ):
+        sec_id, body = sm.group(1), sm.group(2)
+        stem = _CATEGORY_TO_THUMB.get(sec_id)
+        if not stem:
+            continue
+        cand_webp = images / f"{stem}.webp"
+        cand_png = images / f"{stem}.png"
+        path = (
+            f"../images/{stem}.webp" if cand_webp.exists()
+            else f"../images/{stem}.png" if cand_png.exists()
+            else None
+        )
+        if not path:
+            continue
+        for hm in re.finditer(r'href="(calc-[a-z0-9-]+\.html|ckd-dri-calculator\.html)"', body):
+            out.setdefault(hm.group(1), path)
+    return out
+
+
+def collect(project_dir: Path, colors: dict, fallbacks: dict):
     guides_dir = project_dir / "guides"
     rows = []
     for path in guides_dir.glob("*.html"):
@@ -113,9 +167,11 @@ def collect(project_dir: Path, colors: dict):
             continue
         text = path.read_text(encoding="utf-8")
         pub = meta(text, "article:published_time")
-        og_image = meta(text, "og:image")
-        if not pub or not og_image:
+        if not pub:
+            # A calculator with no published_time has no anchor for "Latest" —
+            # genuinely skip until it gets a stamp from patch_published_time.py.
             continue
+        og_image = meta(text, "og:image")
         try:
             dt = datetime.fromisoformat(pub)
         except ValueError:
@@ -124,14 +180,23 @@ def collect(project_dir: Path, colors: dict):
         # Trim to a tight 1–2 line blurb (~100 chars max).
         if len(desc) > 110:
             desc = desc[:107].rsplit(" ", 1)[0] + "…"
+        # Resolve a thumb: own og:image first, else the category hero fallback,
+        # else skip the thumb (the gradient bg still reads cleanly). A missing
+        # og:image must NOT keep a brand-new calculator out of the strip.
+        if og_image:
+            thumb = local_thumb(project_dir, og_image, path.stem)
+            alt = meta(text, "og:image:alt") or path.stem.replace("-", " ")
+        else:
+            thumb = fallbacks.get(path.name, "")
+            alt = path.stem.replace("-", " ")
         rows.append({
             "file": path.name,
             "published": pub,
             "dt": dt,
             "title": clean_title(text, path.stem),
             "desc": desc,
-            "thumb": local_thumb(project_dir, og_image, path.stem),
-            "alt": meta(text, "og:image:alt"),
+            "thumb": thumb,
+            "alt": alt,
             "color": colors.get(path.name, "#1f3864"),
         })
     rows.sort(key=lambda r: (r["dt"], r["file"]), reverse=True)
@@ -148,13 +213,17 @@ def card_html(r) -> str:
     desc_html = (
         f'        <span class="lc-desc">{r["desc"]}</span>\n' if r.get("desc") else ""
     )
+    thumb_html = (
+        f'        <img class="lc-thumb" src="{r["thumb"]}" alt="{alt}" loading="lazy" decoding="async">\n'
+        if r.get("thumb") else ""
+    )
     return (
         f'      <a href="{r["file"]}" class="lc-card" style="{bg}">\n'
         f'        <span class="lc-eyebrow"><span class="lc-dot" style="{dot}"></span>New calculator</span>\n'
         f'        <span class="lc-title">{r["title"]}</span>\n'
         f'{desc_html}'
         f'        <span class="lc-date"><time datetime="{r["published"]}">{label}</time></span>\n'
-        f'        <img class="lc-thumb" src="{r["thumb"]}" alt="{alt}" loading="lazy" decoding="async">\n'
+        f'{thumb_html}'
         f'      </a>'
     )
 
@@ -184,8 +253,10 @@ def main():
     project_dir = find_project_dir(Path(__file__).resolve())
     index_path = project_dir / "guides" / "calculators.html"
 
-    colors = category_colors(index_path.read_text(encoding="utf-8"))
-    rows = collect(project_dir, colors)
+    index_text = index_path.read_text(encoding="utf-8")
+    colors = category_colors(index_text)
+    fallbacks = category_thumbs(project_dir, index_text)
+    rows = collect(project_dir, colors, fallbacks)
     featured = rows[: args.count]
     print(f"Latest {len(featured)} calculator(s):")
     for r in featured:
