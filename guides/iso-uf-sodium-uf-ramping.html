@@ -2094,6 +2094,78 @@ html[data-theme="dark"] .float-tooltip { background: rgba(255,255,255,.92); colo
 /* ── PRINT: when a single Rx is being downloaded, hide everything else ── */
 body.print-mode-rx > *:not(#print-frame-host) { display: none !important; }
 body.print-mode-rx #print-frame-host { display: block !important; }
+
+
+/* ── INLINE CALCULATOR CARDS (for §1 / §7 / §8) ─────────────────────────── */
+.calc-cards-wrap {
+  margin: 22px 0 8px;
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.calc-cards-label {
+  grid-column: 1 / -1;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--teal);
+  margin-bottom: 2px;
+}
+.calc-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  text-decoration: none;
+  transition: background .15s, border-color .15s, transform .15s, box-shadow .15s;
+}
+.calc-card:hover {
+  background: rgba(26,107,114,.04);
+  border-color: rgba(26,107,114,.32);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15,30,46,.08);
+}
+.calc-card-icon {
+  flex: 0 0 36px; width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  background: rgba(26,107,114,.10);
+  color: var(--teal);
+  font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700;
+}
+.calc-card-body { flex: 1; min-width: 0; }
+.calc-card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px; font-weight: 700; color: var(--navy);
+  line-height: 1.3;
+}
+.calc-card-desc {
+  font-size: 12px; color: var(--text-mid);
+  margin-top: 2px; line-height: 1.45;
+}
+.calc-card-arrow {
+  flex: 0 0 auto; font-size: 12px; font-weight: 600;
+  color: var(--teal); letter-spacing: .04em;
+}
+.calc-card-new {
+  display: inline-block; vertical-align: middle;
+  background: var(--gold); color: #fff;
+  border-radius: 4px; padding: 1px 6px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-left: 6px;
+}
+html[data-theme="dark"] .calc-card {
+  background: #14202f; border-color: #2a3548;
+}
+html[data-theme="dark"] .calc-card:hover {
+  background: #1a2535; border-color: rgba(93,205,213,.32);
+}
+html[data-theme="dark"] .calc-card-icon {
+  background: rgba(93,205,213,.12); color: #5dcdd5;
+}
+html[data-theme="dark"] .calc-card-title { color: #eef2fb; }
+html[data-theme="dark"] .calc-card-desc { color: #dde3eb; }
+html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
 </style>
 </head>
 <body class="physician-mode single-mode">
@@ -2129,8 +2201,8 @@ body.print-mode-rx #print-frame-host { display: block !important; }
     <div class="hero-meta">
 <span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-27T11:00:00+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 27, 2026</time></span>
 <span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">20</span></span>
-<span><strong>Audience:</strong> Clinicians (IM · Nephrology · dialysis nurses with clinical authority)</span>
 <span class="hero-readtime"><strong><span data-lang="en">Read time</span><span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span><span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span><span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>:</strong> <time datetime="PT26M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~26 min</time></span>
+<span><strong>Audience:</strong> Clinicians (IM · Nephrology · dialysis nurses with clinical authority)</span>
 </div>
       </div><!-- /.hero-copy -->
     <figure class="hero-figure">
@@ -2222,6 +2294,19 @@ body.print-mode-rx #print-frame-host { display: block !important; }
       <!-- FIGURE 1: refilling/osmolality/tone cascade -->
     </figure>
   </div>
+
+    <!-- INLINE CALCULATORS — supporting tools for §1 physiology -->
+    <div class="calc-cards-wrap">
+      <div class="calc-cards-label">Try the calculator</div>
+        <a href="calc-dialysis-kinetics.html" class="calc-card">
+          <div class="calc-card-icon">Δ</div>
+          <div class="calc-card-body">
+            <div class="calc-card-title">Dialysis Kinetics — TMP & Filtration Fraction</div>
+            <div class="calc-card-desc">Transmembrane pressure from the four dialyzer pressures, plus filtration fraction — useful for understanding the convective load behind iso-UF.</div>
+          </div>
+          <span class="calc-card-arrow">Open →</span>
+        </a>
+    </div>
 </section>
 
 <!-- ╔══════════════════════════════════════════════════════════════════════
@@ -2793,6 +2878,43 @@ body.print-mode-rx #print-frame-host { display: block !important; }
       <p>The order sheet should record the patient's <strong>pre-HD plasma Na</strong>, the <strong>mean UFR (mL/kg/hr) check</strong>, and the <strong>reassessment date</strong> as required fields. These three values prevent the three most common errors: profile-blind Na prescribing, distribution-without-dose UF profiling, and indefinitely continued ramping after the precipitant has resolved.</p>
     </div>
   </div>
+
+    <!-- INLINE CALCULATORS — copy-ready tools for §7 prescription worksheets -->
+    <div class="calc-cards-wrap">
+      <div class="calc-cards-label">Try the calculator</div>
+        <a href="calc-ufr-ceiling.html" class="calc-card">
+          <div class="calc-card-icon">⛰</div>
+          <div class="calc-card-body">
+            <div class="calc-card-title">UFR Ceiling — Patient-Specific Limit<span class="calc-card-new">New</span></div>
+            <div class="calc-card-desc">Mean UFR check against the 13 (or 10 in cardiac fragility) mL/kg/hr threshold, with the minimum session time to stay below it.</div>
+          </div>
+          <span class="calc-card-arrow">Open →</span>
+        </a>
+        <a href="calc-na-balance.html" class="calc-card">
+          <div class="calc-card-icon">Na</div>
+          <div class="calc-card-body">
+            <div class="calc-card-title">Dialysate Sodium Balance — TAD-Na & Salt-Loading Risk<span class="calc-card-new">New</span></div>
+            <div class="calc-card-desc">Time-averaged dialysate Na vs pre-HD plasma Na, with net-zero diffusive Na flag — the operative variable for Rx 2.</div>
+          </div>
+          <span class="calc-card-arrow">Open →</span>
+        </a>
+        <a href="calc-dialysis-prescription.html" class="calc-card">
+          <div class="calc-card-icon">⌬</div>
+          <div class="calc-card-body">
+            <div class="calc-card-title">Dialysis Prescription — UFR, Kt/V, RKF, nPCR</div>
+            <div class="calc-card-desc">Full HD prescription pack: residual kidney function, single-pool/eKt/V, URR, UFR, nPCR — covers every required field across Rx 1, 2, 3.</div>
+          </div>
+          <span class="calc-card-arrow">Open →</span>
+        </a>
+        <a href="calc-hd-adequacy-npcr.html" class="calc-card">
+          <div class="calc-card-icon">K</div>
+          <div class="calc-card-body">
+            <div class="calc-card-title">HD Adequacy + nPCR — Combined</div>
+            <div class="calc-card-desc">Pre/post-BUN → spKt/V, URR, nPCR, UF Rate in one pass — for the Rx 1 HD-block adequacy guardrail (≥ 1.2).</div>
+          </div>
+          <span class="calc-card-arrow">Open →</span>
+        </a>
+    </div>
 </section>
 
 <!-- ╔══════════════════════════════════════════════════════════════════════
@@ -2875,6 +2997,27 @@ body.print-mode-rx #print-frame-host { display: block !important; }
     <h3>KDIGO BP / volume anchors</h3>
     <p>Cross-link to the KDIGO 2020 Controversies Conference framework already used in the unit: avoid sodium loading, individualize on the basis of pre-HD plasma Na, and pair every intradialytic stabilization technique with structured volume reassessment.<sup class="cite"><a href="#ref-1">1</a></sup></p>
   </div>
+
+    <!-- INLINE CALCULATORS — monitoring tools for §8 reassessment -->
+    <div class="calc-cards-wrap">
+      <div class="calc-cards-label">Track these per-session / per-month</div>
+        <a href="calc-dialysis-adequacy-ktv.html" class="calc-card">
+          <div class="calc-card-icon">⌬</div>
+          <div class="calc-card-body">
+            <div class="calc-card-title">Dialysis Adequacy — spKt/V & URR (Daugirdas)</div>
+            <div class="calc-card-desc">Tracks the achieved Kt/V across sessions — pairs with the §7 reassessment cadence.</div>
+          </div>
+          <span class="calc-card-arrow">Open →</span>
+        </a>
+        <a href="calc-dry-weight-estimator.html" class="calc-card">
+          <div class="calc-card-icon">kg</div>
+          <div class="calc-card-body">
+            <div class="calc-card-title">Dry Weight Estimator (BIS + Clinical)</div>
+            <div class="calc-card-desc">BIS overhydration or clinical scoring to confirm the target weight — directly supports the "achieved vs target dry weight" monitor row.</div>
+          </div>
+          <span class="calc-card-arrow">Open →</span>
+        </a>
+    </div>
 </section>
 
 <!-- ╔══════════════════════════════════════════════════════════════════════
