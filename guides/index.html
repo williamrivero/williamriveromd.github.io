@@ -1821,6 +1821,16 @@
     .persona-btn { font-size: 0.78rem; padding: 8px 12px; }
   }
 
+  /* Floating dark-mode toggle widget (replaces the old nav button) */
+  .float-controls{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:9999;}
+  .float-btn{width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:transform .2s,box-shadow .2s;background:#1f3864;color:#fff;position:relative;}
+  .float-btn:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+  .float-btn.active{background:#b8962e;}
+  .float-btn svg{width:18px;height:18px;}
+  .float-tooltip{position:absolute;right:54px;background:rgba(15,30,46,.92);color:#fff;font-size:12px;font-weight:500;white-space:nowrap;padding:5px 10px;border-radius:6px;pointer-events:none;opacity:0;transition:opacity .15s;}
+  .float-btn:hover .float-tooltip{opacity:1;}
+  body.dark-mode .float-btn{background:#2a3a55;}
+  body.dark-mode .float-btn.active{background:#b8962e;}
 </style>
 </head>
 <body>
@@ -1835,7 +1845,6 @@
     <a href="https://www.williamriveromd.com#specialties" class="hide-mobile">Specialties</a>
     <a href="/guides/" class="nav-active">Health Guides</a>
     <a href="https://www.williamriveromd.com#contact" class="hide-mobile">Clinics</a>
-    <button class="dark-toggle" id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">Dark</button>
     <a href="https://seriousmd.com/doc/williamrivero" class="nav-cta" target="_blank" rel="noopener">Book</a>
   </div>
 </nav>
@@ -4488,7 +4497,7 @@ function toggleDark() {
   document.body.classList.toggle('dark-mode');
   const btn = document.getElementById('dark-toggle');
   const isDark = document.body.classList.contains('dark-mode');
-  btn.textContent = isDark ? 'Light' : 'Dark';
+  if (btn) { btn.classList.toggle('active', isDark); btn.title = isDark ? 'Light mode' : 'Dark mode'; }
   try { localStorage.setItem('wgmr-dark', isDark ? '1' : '0'); } catch(e) {}
 }
 // Restore preference — explicit toggle wins; fall back to OS preference only on first visit
@@ -4499,7 +4508,7 @@ try {
     document.body.classList.add('dark-mode');
     document.addEventListener('DOMContentLoaded', () => {
       const btn = document.getElementById('dark-toggle');
-      if (btn) btn.textContent = 'Light';
+      if (btn) { btn.classList.add('active'); btn.title = 'Light mode'; }
     });
   }
 } catch(e) {}
@@ -4855,6 +4864,13 @@ document.addEventListener('DOMContentLoaded', function() {
     &copy; 2026 williamriveromd.com
   </div>
 </footer>
+
+<div class="float-controls">
+  <button class="float-btn" id="dark-toggle" onclick="toggleDark()" title="Dark mode" aria-label="Toggle dark mode">
+    <span class="float-tooltip">Dark mode</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
 
 </body>
 </html>

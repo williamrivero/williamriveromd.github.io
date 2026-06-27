@@ -1670,6 +1670,14 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
   body.calc-page .hero{ animation:none; }
   .calc-formula{ animation:none !important; opacity:.16; }
 }
+/* Floating dark/desktop toggle widget (replaces the old toggle bar) */
+.float-controls{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:9999;}
+.float-btn{width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:transform .2s,box-shadow .2s;background:var(--navy,#1f3864);color:#fff;position:relative;}
+.float-btn:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.float-btn.active{background:var(--gold,#b8962e);}
+.float-btn svg{width:18px;height:18px;}
+.float-tooltip{position:absolute;right:54px;background:rgba(15,30,46,.92);color:#fff;font-size:12px;font-weight:500;white-space:nowrap;padding:5px 10px;border-radius:6px;pointer-events:none;opacity:0;transition:opacity .15s;}
+.float-btn:hover .float-tooltip{opacity:1;}
 </style>
 </head>
 <body class="calc-page">
@@ -1677,14 +1685,14 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
   <a href="https://www.williamriveromd.com" class="brand">HOME</a>
   <a href="/guides/" class="back">← All Guides</a>
 </header>
-<div class="guide-toggle-bar">
-  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+<div class="float-controls">
+  <button class="float-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">
+    <span class="float-tooltip">Dark mode</span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    <span id="darkLabel">Dark</span>
   </button>
-  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+  <button class="float-btn" id="desktopToggle" onclick="toggleDesktop()" aria-label="Toggle desktop view">
+    <span class="float-tooltip">Desktop view</span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-    <span id="desktopLabel">Desktop</span>
   </button>
 </div>
 
