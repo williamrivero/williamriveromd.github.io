@@ -327,6 +327,28 @@ Each of the 90 guide files is a self-contained HTML document with:
 
 **Guide-specific CSS must live in a SECOND `<style>` block.** `patch_master_css.py` rewrites **only the first** `<style>` block in each file (see its `replace_style_block`). Any bespoke styling — especially for **standalone printable handouts/forms** (e.g. `bp-log-blank.html`, `bp-monitoring-log.html`, `alcohol-drinking-log.html`, with their `.toolbar`/`.page`/`.bp-log` layouts) — must be placed in a **second `<style>` block after the first**, so a master-CSS run never clobbers it. The first (master) block still supplies the design tokens (`--navy`, `--teal`, …) and base resets, so the second block can rely on them. ⚠️ Symptom of getting this wrong: the page renders **completely unstyled** after a `patch_master_css.py` run because its only `<style>` block was overwritten with the generic guide CSS (this is exactly what repeatedly "damaged" `bp-log-blank.html`). When building any standalone form, give it two style blocks from the start.
 
+### Site-wide chrome conventions (lock-in)
+
+These are the load-bearing layout conventions every guide must follow. All of them live in MASTER_CSS (in `patch_master_css.py`) plus a small number of HTML patchers. **Re-run the relevant patchers after adding any new guide, or after a manual edit, to lock the conventions back in.**
+
+1. **Top nav bar** (`<header class="site-header">` — direct children, in order):
+   - `<a class="brand">` — left
+   - `<div class="header-lang">` — Lang chips (multilingual guides only)
+   - `<nav class="header-nav">` — **must be a direct child** of `.site-header`; `margin-left:auto` flushes it to the right. The 4 links: **CALCULATORS · PHYSIOLOGY · ATLAS · ALL GUIDES**, with the current page rendered gold + non-clickable (`.is-current`).
+   - ⚠️ Do NOT wrap `.header-nav` in another `<div>` — that breaks the auto-margin push. Run `patch_relocate_toggles.py` if a guide was built before the convention, or use the same patcher idiom for fresh guides.
+2. **Floating toggle widgets** (every guide).
+   - Bottom-right `.float-controls`: dark/light toggle (44 px circle, white in light theme, charcoal in dark).
+   - Bottom-left `.float-controls-left`: desktop/mobile toggle when present, sitting below the print button.
+   - Left-side stack (top → bottom): `.dl-fab` (download, `bottom:136px`, when present) → `.print-btn` (`bottom:80px`) → `.float-controls-left` (`bottom:24px`).
+   - The symptom-checker FAB is automatically shifted left (`right:88px`) so it never overlaps the dark widget.
+   - Run `patch_relocate_toggles.py` to migrate any guide built with the old in-bar dark/desktop buttons; the script is idempotent.
+3. **Audience tabs** (dual-mode guides only — patient/clinician toggle below the header):
+   - Labels are uniform: **"Patients & Families"** and **"Clinicians"** (no "For " prefix, no role emoticons).
+   - `.audience-tabs` background **inherits the hero palette** — mint when patient mode is active, periwinkle when clinician mode is active — so the bar reads as one continuous strip with the hero. Hard-coded in MASTER_CSS.
+4. **Hero must be properly closed** with its `</div>`. A missing close lets the hero engulf the rest of the page (symptom: hero background bleeds down to the footer). See `hematuria-blood-in-urine.html` commit for the canonical fix.
+5. **Calculator index** (`guides/calculators.html`): main-grid `<a class="related-card">` cards show titles + descriptions only, **no** peeking thumbs. Only the Latest-Calculators carousel at the top shows category-hero thumbs (`generate_latest_calculators.py`).
+6. **Lang chips** (multilingual guides): exactly four (`glb-en/tl/ceb/kap`) inside `<div class="header-lang">` adjacent to the brand. Calculators and tools are English-only (no lang chips).
+
 **Theme & typography.** Guides/calculators use the pastel hero theme — light mint hero
 (patient) / light periwinkle hero (clinician) with dark text — and an all-sans type system:
 **Inter** for headlines, section titles, and numbers; **Manrope** for body text and UI;
