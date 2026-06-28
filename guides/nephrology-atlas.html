@@ -1172,8 +1172,39 @@
 
   /* ── ATLAS HEADER ── */
   .atlas-header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 55%,#0d2a4a 100%);padding:36px 48px 0;position:relative;overflow:hidden}
-  .atlas-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 300px at 80% 50%,rgba(15,124,132,.12) 0%,transparent 70%),radial-gradient(ellipse 400px 400px at 10% 80%,rgba(176,125,42,.08) 0%,transparent 60%);pointer-events:none}
-  .header-inner{position:relative;max-width:1400px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+  .atlas-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 300px at 80% 50%,rgba(15,124,132,.12) 0%,transparent 70%),radial-gradient(ellipse 400px 400px at 10% 80%,rgba(176,125,42,.08) 0%,transparent 60%);pointer-events:none;z-index:0}
+
+  /* ── ANIMATED NETTER-INSPIRED SILHOUETTES (hero background) ── */
+  .atlas-bg-anim{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+  .atlas-sil{position:absolute;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;opacity:0;will-change:transform,opacity}
+  .ats-1{top:6%;left:4%;width:140px;color:#6ed4d4;animation:silDriftA 22s ease-in-out infinite 0s}
+  .ats-2{top:48%;left:14%;width:88px;color:#e6c98a;animation:silDriftB 26s ease-in-out infinite 3.2s}
+  .ats-3{top:14%;left:30%;width:72px;color:#6ed4d4;animation:silDriftA 19s ease-in-out infinite 6.5s}
+  .ats-4{top:62%;left:42%;width:110px;color:#e6c98a;animation:silDriftB 24s ease-in-out infinite 1.4s}
+  .ats-5{top:8%;left:58%;width:96px;color:#6ed4d4;animation:silDriftA 28s ease-in-out infinite 9s}
+  .ats-6{top:55%;left:70%;width:130px;color:#e6c98a;animation:silDriftB 21s ease-in-out infinite 4.7s}
+  .ats-7{top:22%;left:86%;width:80px;color:#6ed4d4;animation:silDriftA 25s ease-in-out infinite 11s}
+  .ats-8{top:70%;left:30%;width:64px;color:#e6c98a;animation:silDriftB 30s ease-in-out infinite 13s}
+  .ats-9{top:38%;left:92%;width:68px;color:#6ed4d4;animation:silDriftA 23s ease-in-out infinite 7s}
+  @keyframes silDriftA{
+    0%   {opacity:0;   transform:translate(0,0) rotate(0deg) scale(.92)}
+    18%  {opacity:.32}
+    50%  {opacity:.32; transform:translate(40px,-22px) rotate(8deg) scale(1)}
+    82%  {opacity:.32}
+    100% {opacity:0;   transform:translate(80px,-44px) rotate(15deg) scale(1.04)}
+  }
+  @keyframes silDriftB{
+    0%   {opacity:0;   transform:translate(0,0) rotate(0deg) scale(.95)}
+    18%  {opacity:.28}
+    50%  {opacity:.28; transform:translate(-30px,-18px) rotate(-7deg) scale(1.02)}
+    82%  {opacity:.28}
+    100% {opacity:0;   transform:translate(-60px,-36px) rotate(-13deg) scale(1.06)}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .atlas-sil{animation:none;opacity:.12}
+  }
+
+  .header-inner{position:relative;max-width:1400px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;z-index:1}
   .header-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--teal-light);margin-bottom:10px}
   .header-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:8px}
   .header-title em{font-style:italic;color:var(--amber-light)}
@@ -1347,6 +1378,26 @@
 
 <!-- ═══ HEADER ═══ -->
 <header class="atlas-header">
+  <div class="atlas-bg-anim" aria-hidden="true">
+    <!-- Kidney bean (anterior outline + hilum) -->
+    <svg class="atlas-sil ats-1" viewBox="0 0 100 130"><path d="M55 6 C 24 6, 9 36, 12 70 C 15 106, 30 124, 55 124 C 80 124, 92 106, 90 70 C 88 36, 76 6, 55 6 Z M 28 56 C 36 50, 46 52, 50 62 C 46 72, 36 73, 28 67"/></svg>
+    <!-- Nephron — glomerulus + loop of Henle -->
+    <svg class="atlas-sil ats-2" viewBox="0 0 100 200"><circle cx="32" cy="24" r="14"/><path d="M32 38 C 54 42, 48 62, 62 68 C 78 74, 72 92, 56 96 L 56 148 L 70 174 L 56 162 L 42 174 L 56 148"/></svg>
+    <!-- Glomerulus tuft -->
+    <svg class="atlas-sil ats-3" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40"/><path d="M30 50 C 35 35 50 35 55 50 M 50 30 C 60 40 65 55 55 65 M 40 40 C 50 50 55 60 45 70 M 62 36 C 72 50 68 64 56 70 M 36 64 C 42 70 52 70 58 64"/></svg>
+    <!-- Bladder + ureters -->
+    <svg class="atlas-sil ats-4" viewBox="0 0 100 140"><path d="M50 110 C 18 110, 10 90, 18 70 C 25 55, 38 50, 50 50 C 62 50, 75 55, 82 70 C 90 90, 82 110, 50 110 Z"/><path d="M32 52 C 28 32, 32 14, 30 2"/><path d="M68 52 C 72 32, 68 14, 70 2"/><path d="M50 110 L 50 132"/></svg>
+    <!-- Kidney cross-section with pyramids + pelvis -->
+    <svg class="atlas-sil ats-5" viewBox="0 0 100 130"><path d="M55 6 C 24 6, 9 36, 12 70 C 15 106, 30 124, 55 124 C 80 124, 92 106, 90 70 C 88 36, 76 6, 55 6 Z"/><path d="M58 28 L 46 56 L 70 56 Z"/><path d="M76 56 L 62 84 L 84 84 Z"/><path d="M58 78 L 44 104 L 68 104 Z"/><path d="M24 58 C 30 50, 42 50, 46 58 L 46 80 C 42 88, 30 88, 24 80 Z"/></svg>
+    <!-- Renal artery branching (interlobar → arcuate) -->
+    <svg class="atlas-sil ats-6" viewBox="0 0 100 130"><path d="M10 65 L 40 65 C 50 65, 55 55, 55 45 L 55 20 M 55 45 C 60 45, 65 50, 65 60 L 70 75 M 55 45 C 60 40, 70 38, 75 30 M 40 65 C 45 75, 50 85, 60 90 L 70 110 M 40 65 C 35 75, 28 80, 22 90"/></svg>
+    <!-- Kidney bean (mirrored, alternate orientation) -->
+    <svg class="atlas-sil ats-7" viewBox="0 0 100 130"><path d="M45 6 C 76 6, 91 36, 88 70 C 85 106, 70 124, 45 124 C 20 124, 8 106, 10 70 C 12 36, 24 6, 45 6 Z M 72 56 C 64 50, 54 52, 50 62 C 54 72, 64 73, 72 67"/></svg>
+    <!-- Glomerulus tuft (small) -->
+    <svg class="atlas-sil ats-8" viewBox="0 0 100 100"><circle cx="50" cy="50" r="38"/><path d="M30 48 C 38 36 50 38 54 50 M 52 32 C 62 44 64 56 54 64 M 38 60 C 48 66 58 64 62 56"/></svg>
+    <!-- Adrenal + kidney (cap + bean) -->
+    <svg class="atlas-sil ats-9" viewBox="0 0 100 150"><path d="M50 30 C 30 30, 22 18, 30 8 C 42 4, 60 6, 70 14 C 78 22, 70 32, 50 30 Z"/><path d="M50 40 C 24 40, 12 64, 14 92 C 16 124, 30 142, 50 142 C 70 142, 84 124, 86 92 C 88 64, 76 40, 50 40 Z"/></svg>
+  </div>
   <div class="header-inner">
     <div class="header-text">
       <div class="header-eyebrow">Clinical Visual Reference · Nephrology</div>
