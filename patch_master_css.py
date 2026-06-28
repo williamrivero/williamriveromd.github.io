@@ -1109,6 +1109,8 @@ MASTER_CSS = """
 
   /* Headings in dark mode */
   html[data-theme="dark"] .section h2,
+  html[data-theme="dark"] .section h3,
+  html[data-theme="dark"] h3.sub-h,
   html[data-theme="dark"] .feature-card h4,
   html[data-theme="dark"] .alert-body h4,
   html[data-theme="dark"] .step-body h4,
