@@ -110,7 +110,7 @@
 
   /* ── HERO ── */
   .hero {
-    background: linear-gradient(135deg, #1a0800 0%, #2e1500 55%, #160700 100%);
+    background: linear-gradient(135deg, #2a0a04 0%, #6a1c0a 55%, #1d0503 100%);
     background-size: 240% 240%;
     padding: 72px 24px 56px;
     position: relative;
@@ -138,8 +138,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 70% 90% at 85% 50%, rgba(180,90,0,0.18) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 70% at 10% 60%, rgba(120,50,0,0.22) 0%, transparent 65%);
+      radial-gradient(ellipse 70% 90% at 85% 50%, rgba(210, 85, 30, 0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 70% at 10% 60%, rgba(155, 40, 15, 0.26) 0%, transparent 65%);
     pointer-events: none;
     z-index: 1;
   }
@@ -190,14 +190,11 @@
     position: absolute;
     pointer-events: none;
     will-change: transform, opacity;
-    background-color: var(--rbc-tint, rgba(190, 50, 40, .32));
-    filter: drop-shadow(0 0 var(--rbc-glow, 6px) rgba(140, 25, 25, .35));
-    -webkit-mask-size: contain;
-            mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-            mask-position: center;
+    background-image: var(--rbc-img);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(0 0 var(--rbc-glow, 6px) rgba(60, 10, 5, .45));
     opacity: 0;
     animation-iteration-count: infinite;
     animation-duration: var(--rbc-dur, 18s);
@@ -4666,23 +4663,16 @@ try {
   }
 
   // ── RBC OVERLAY ─────────────────────────────────────────────────────────────
-  // Biconcave-disc silhouettes drifting across the hero alongside the solute
-  // stream. Each one picks (a) one of 45 cell SVGs split out of the source
-  // bloodcells-outline file, (b) one of four motion variants, (c) a tint from
-  // a small red palette, (d) randomised size / opacity / start rotation /
-  // spin amount / vertical bob.
-  var RBC_FILES = 45;
+  // Colored biconcave-disc cells drifting across the hero alongside the solute
+  // stream. Each instance picks (a) one of 31 cell SVGs split out of the
+  // source bloodcells-Colored file (colors baked in: #DC0000 body + #990711
+  // outline), (b) one of four motion variants, (c) randomised size, opacity,
+  // start rotation, spin amount, and vertical bob.
+  var RBC_FILES = 31;
   var rbcVariants = ['rbc-tumble', 'rbc-tumble', 'rbc-tumble',
                      'rbc-roll',   'rbc-roll',
                      'rbc-drift',  'rbc-drift',
                      'rbc-flutter'];
-  var rbcTints = [
-    'rgba(204, 60, 60,',
-    'rgba(168, 28, 28,',
-    'rgba(190, 80, 40,',
-    'rgba(155, 40, 40,',
-    'rgba(220,110, 60,'
-  ];
   var rbcCount = 14;
   for (var r = 0; r < rbcCount; r++) {
     var rbc = document.createElement('div');
@@ -4697,24 +4687,21 @@ try {
                  ? 18 + Math.random() * 14
                  : 11 + Math.random() * 11;
     var rdelay = -(Math.random() * rdur);
-    var rop = 0.16 + Math.random() * 0.22;              // 0.16–0.38
+    var rop = 0.32 + Math.random() * 0.28;              // 0.32–0.60 — slightly bolder since colors are baked
     var rrot0 = Math.round(Math.random() * 360);
     var rspin = (Math.random() < .5 ? -1 : 1) * (540 + Math.round(Math.random() * 900));
     var rsc = 0.85 + Math.random() * 0.40;
     var rbobY = (Math.random() < .5 ? -1 : 1) * (10 + Math.round(Math.random() * 28));
-    var rtint = rbcTints[Math.floor(Math.random() * rbcTints.length)] + (rop + 0.10).toFixed(2) + ')';
     var rglow = Math.max(3, Math.round(rsz / 5));
     var rtravel = W + 60;
-    var maskUrl = "url('../images/rbc/cell-" + cellId + ".svg')";
+    var bgUrl = "url('../images/rbc/cell-" + cellId + ".svg')";
 
     rbc.style.cssText =
       'width:'  + rsz.toFixed(0) + 'px;' +
       'height:' + rsz.toFixed(0) + 'px;' +
       'top:'    + rtop.toFixed(1) + '%;' +
       'left:'   + (-rsz - 4).toFixed(0) + 'px;' +
-      '-webkit-mask-image:' + maskUrl + ';' +
-              'mask-image:' + maskUrl + ';' +
-      '--rbc-tint:'   + rtint + ';' +
+      '--rbc-img:'    + bgUrl + ';' +
       '--rbc-glow:'   + rglow + 'px;' +
       '--rbc-pop:'    + rop.toFixed(2) + ';' +
       '--rbc-rot0:'   + rrot0 + 'deg;' +
