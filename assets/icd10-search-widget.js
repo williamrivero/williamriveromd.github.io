@@ -311,6 +311,7 @@
         <div class="icd10-pane icd10-pane-single" data-pane="single">
           <div class="icd10-bar">
             <input type="search" class="icd10-input" placeholder="Search ICD-10 — try: anemia in CKD, N18, hyperkalemia, heart failure…" aria-label="Search ICD-10 codes" autocomplete="off" spellcheck="false">
+            <button class="icd10-btn icd10-btn-ghost icd10-btn-reset" type="button" data-act="clear-single" aria-label="Clear search" disabled>Clear</button>
             <span class="icd10-count" aria-live="polite"></span>
           </div>
           <div class="icd10-hint">American spellings (<em>anemia</em>, <em>edema</em>, <em>hemodialysis</em>) and abbreviations (<em>CKD</em>, <em>ESRD</em>, <em>HF</em>, <em>MI</em>, <em>HTN</em>, <em>DM</em>) are auto-translated to the WHO ICD-10 vocabulary the dataset uses.</div>
@@ -416,8 +417,14 @@
       results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
 
+    const clearSingleBtn = paneSingle.querySelector('[data-act="clear-single"]');
+    function syncClearState() {
+      if (clearSingleBtn) clearSingleBtn.disabled = !input.value;
+    }
+
     let debounce;
     input.addEventListener('input', () => {
+      syncClearState();
       clearTimeout(debounce);
       debounce = setTimeout(() => {
         page = 0;
@@ -425,6 +432,16 @@
         currentRows = filter(currentQuery);
         renderSingle();
       }, 120);
+    });
+
+    clearSingleBtn.addEventListener('click', () => {
+      input.value = '';
+      currentQuery = '';
+      page = 0;
+      currentRows = DATA ? DATA : [];
+      syncClearState();
+      renderSingle();
+      input.focus();
     });
 
     /* ---- Batch-mode logic ---- */
