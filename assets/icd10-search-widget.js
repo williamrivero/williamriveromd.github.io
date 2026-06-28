@@ -68,48 +68,188 @@
     return DATA_PROMISE;
   }
 
-  /* ---- Single-mode filter (substring, sorted by relevance) ---- */
+  /* ---- Vocabulary translation ----
+     The WHO ICD-10 dataset uses British medical spellings (anaemia, oedema,
+     haemorrhage, hyperkalaemia) and older terminology (chronic renal failure
+     rather than chronic kidney disease; renal dialysis rather than
+     hemodialysis). Most clinicians type American spellings and modern
+     abbreviations. We translate the query so a user typing "anemia in CKD"
+     finds anaemia + chronic renal failure rows. ----------------------------*/
+
+  // American → British medical spellings (single-word substitutions)
+  const SPELLING_NORM = {
+    'anemia':'anaemia','anemic':'anaemic',
+    'hyperkalemia':'hyperkalaemia','hypokalemia':'hypokalaemia',
+    'hypernatremia':'hypernatraemia','hyponatremia':'hyponatraemia',
+    'hypercalcemia':'hypercalcaemia','hypocalcemia':'hypocalcaemia',
+    'hyperphosphatemia':'hyperphosphataemia','hypophosphatemia':'hypophosphataemia',
+    'hypomagnesemia':'hypomagnesaemia','hypermagnesemia':'hypermagnesaemia',
+    'acidemia':'acidaemia','alkalemia':'alkalaemia',
+    'uremia':'uraemia','uremic':'uraemic',
+    'azotemia':'azotaemia','bacteremia':'bacteraemia',
+    'leukemia':'leukaemia','septicemia':'septicaemia',
+    'ischemia':'ischaemia','ischemic':'ischaemic',
+    'edema':'oedema','edematous':'oedematous',
+    'esophagus':'oesophagus','esophageal':'oesophageal',
+    'orthopnea':'orthopnoea','dyspnea':'dyspnoea','apnea':'apnoea',
+    'diarrhea':'diarrhoea','gonorrhea':'gonorrhoea',
+    'menorrhea':'menorrhoea','amenorrhea':'amenorrhoea','dysmenorrhea':'dysmenorrhoea',
+    'hemoglobin':'haemoglobin',
+    'hemorrhage':'haemorrhage','hemorrhagic':'haemorrhagic','hemorrhoid':'haemorrhoid',
+    'hematuria':'haematuria','hematemesis':'haematemesis',
+    'hematology':'haematology','hematoma':'haematoma','hematopoietic':'haematopoietic',
+    'anesthesia':'anaesthesia','anesthetic':'anaesthetic',
+    'pediatric':'paediatric','pediatrics':'paediatrics',
+    'fetal':'foetal','fetus':'foetus',
+    'celiac':'coeliac','tumor':'tumour','cesarean':'caesarean',
+    'gynecology':'gynaecology','gynecologic':'gynaecologic',
+  };
+
+  // Abbreviations expanded to WHO-aligned terminology
+  // (CKD → "chronic renal failure" because WHO ICD-10 N18 uses "renal failure";
+  //  HD → "renal dialysis" because WHO uses "renal dialysis" / "extracorporeal dialysis",
+  //  not "hemodialysis" in code titles.)
+  const ABBREVIATIONS = {
+    'ckd':'chronic renal failure','esrd':'end-stage renal disease','eskd':'end-stage renal disease',
+    'aki':'acute renal failure','arf':'acute renal failure','crf':'chronic renal failure',
+    'hd':'renal dialysis','pd':'peritoneal dialysis','rrt':'renal dialysis',
+    'hemodialysis':'renal dialysis','haemodialysis':'renal dialysis',
+    'dm':'diabetes mellitus','t1d':'type 1 diabetes','t2d':'type 2 diabetes',
+    't1dm':'type 1 diabetes mellitus','t2dm':'type 2 diabetes mellitus',
+    'iddm':'insulin-dependent diabetes','niddm':'non-insulin-dependent diabetes',
+    'gdm':'gestational diabetes',
+    'htn':'hypertension',
+    'mi':'myocardial infarction','stemi':'st elevation myocardial infarction',
+    'nstemi':'non-st elevation myocardial infarction',
+    'hf':'heart failure','chf':'congestive heart failure',
+    'cad':'ischaemic heart','ihd':'ischaemic heart',
+    'copd':'chronic obstructive pulmonary',
+    'cap':'pneumonia','hap':'pneumonia','vap':'pneumonia',
+    'uti':'urinary tract infection',
+    'gn':'glomerulonephritis','sle':'systemic lupus erythematosus',
+    'dkd':'diabetic kidney',
+    'cva':'cerebrovascular','tia':'transient cerebral ischaemic',
+    'af':'atrial fibrillation','afib':'atrial fibrillation',
+    'pe':'pulmonary embolism','dvt':'phlebitis and thrombophlebitis',
+    'gerd':'gastro-oesophageal reflux','aaa':'aortic aneurysm',
+    'avf':'arteriovenous fistula','tb':'tuberculosis',
+    'hiv':'human immunodeficiency virus','aids':'acquired immunodeficiency',
+    'mds':'myelodysplastic',
+  };
+
+  const STOPWORDS = new Set([
+    'the','a','an','in','on','with','and','or','of','to','for','at','by',
+    'is','was','as','that','this','it','from','due','because','since','no',
+  ]);
+
+  // Normalize a query string: lowercase, expand abbreviations and American
+  // spellings to WHO British. Preserves order; does not alter punctuation
+  // semantics other than whitespace collapsing.
+  function normalizeQuery(text) {
+    const lower = text.toLowerCase().trim();
+    if (!lower) return '';
+    const parts = lower.split(/(\s+)/);  // preserve spaces
+    return parts.map(p => {
+      if (/^\s+$/.test(p)) return ' ';
+      const alpha = p.replace(/[^a-z]/g, '');
+      if (!alpha) return p;
+      if (ABBREVIATIONS[alpha]) return p.replace(alpha, ABBREVIATIONS[alpha]);
+      if (SPELLING_NORM[alpha]) return p.replace(alpha, SPELLING_NORM[alpha]);
+      return p;
+    }).join('').replace(/\s+/g, ' ').trim();
+  }
+
+  function tokenize(text) {
+    return text.split(/[\s,;:./\-()]+/)
+      .map(t => t.toLowerCase())
+      .filter(t => t.length > 1 && !STOPWORDS.has(t));
+  }
+
+  /* ---- Single-mode filter — normalization-aware substring ---- */
   function filter(query) {
     if (!DATA) return [];
-    const q = query.trim().toLowerCase();
-    if (!q) return DATA;
-    return DATA.filter(r => r._cl.indexOf(q) !== -1);
+    const raw = query.trim().toLowerCase();
+    if (!raw) return DATA;
+    const norm = normalizeQuery(query);
+    // Try the normalized form first; if it differs and yields hits, prefer it.
+    if (norm && norm !== raw) {
+      const normHits = DATA.filter(r => r._cl.indexOf(norm) !== -1 || r._cl.indexOf(raw) !== -1);
+      if (normHits.length > 0) return normHits;
+    }
+    return DATA.filter(r => r._cl.indexOf(raw) !== -1);
   }
 
   /* ---- Batch-mode ranking ----
-     For each query line, score every dataset row and return the top-N.
-     Scoring (higher = better):
-       title === q              → 110
-       title startsWith q       → 85
-       code startsWith q (UC)   → 80
-       title word startsWith q  → 70
-       title contains q         → 50
-       code contains q (UC)     → 35
+     Multi-criteria scoring per row (higher = better):
+       Code field
+         exact code             → 120
+         code startsWith query  → 100
+         code contains query    →  55
+       Title field (normalized)
+         title === query        → 115
+         title startsWith query →  92
+         title contains query   →  78
+       Token AND/OR
+         all tokens matched     →  +bonus to ≥ 65
+         each matched token     →  +ratio + flat
    --------------------------------- */
   function rankMatches(rawQuery, topN) {
     if (!DATA) return [];
-    const q = rawQuery.trim().toLowerCase();
+    const q = rawQuery.trim();
     if (!q) return [];
-    const qUC = q.toUpperCase();
-    const out = [];
+
+    const qLower = q.toLowerCase();
+    const norm = normalizeQuery(q);
+    const qTokens = Array.from(new Set(tokenize(norm || qLower)));
+
+    const isCodeLike = /^[a-z]\d/i.test(q.replace(/\s/g, ''));
+    const qCodeForm = q.replace(/[^a-z0-9.]/gi, '').toUpperCase();
+
+    if (qTokens.length === 0 && !isCodeLike) return [];
+
+    const scored = [];
     for (let i = 0; i < DATA.length; i++) {
       const r = DATA[i];
       let s = 0;
-      if (r._tl === q) s = 110;
-      else if (r._tl.startsWith(q)) s = 85;
-      else if (r.c.toUpperCase().startsWith(qUC)) s = 80;
-      else if (r._tl.indexOf(' ' + q) !== -1) s = 70;
-      else if (r._tl.indexOf(q) !== -1) s = 50;
-      else if (r.c.toUpperCase().indexOf(qUC) !== -1) s = 35;
-      if (s > 0) out.push({ r, s });
+      const tl = r._tl;
+      const codeU = r.c.toUpperCase();
+
+      // Code matching
+      if (isCodeLike) {
+        if (codeU === qCodeForm) s = Math.max(s, 120);
+        else if (codeU.startsWith(qCodeForm)) s = Math.max(s, 100);
+        else if (codeU.indexOf(qCodeForm) !== -1) s = Math.max(s, 55);
+      }
+
+      // Phrase matching (both raw and normalized)
+      if (tl === qLower || tl === norm) s = Math.max(s, 115);
+      else if (tl.startsWith(qLower) || (norm && tl.startsWith(norm))) s = Math.max(s, 92);
+      else if (tl.indexOf(qLower) !== -1 || (norm && tl.indexOf(norm) !== -1)) s = Math.max(s, 78);
+
+      // Token AND/OR
+      if (qTokens.length > 0) {
+        let matched = 0;
+        for (const tok of qTokens) {
+          if (tl.indexOf(tok) !== -1) matched++;
+        }
+        if (matched > 0) {
+          const ratio = matched / qTokens.length;
+          const tokScore = ratio * 50 + matched * 5;
+          s = Math.max(s, tokScore);
+          if (matched === qTokens.length) s = Math.max(s, 65);
+        }
+      }
+
+      if (s > 0) scored.push({ r, s });
     }
-    out.sort((a, b) => b.s - a.s || a.r.c.localeCompare(b.r.c));
-    return out.slice(0, topN).map(x => x.r);
+
+    scored.sort((a, b) => b.s - a.s || a.r.c.localeCompare(b.r.c));
+    return scored.slice(0, topN).map(x => x.r);
   }
 
   function splitBatch(text) {
     return text
-      .split(/[\n,;]+/)
+      .split(/[\n;]+/)
       .map(s => s.trim())
       .filter(s => s.length > 0);
   }
@@ -147,9 +287,10 @@
         <!-- Single mode -->
         <div class="icd10-pane icd10-pane-single" data-pane="single">
           <div class="icd10-bar">
-            <input type="search" class="icd10-input" placeholder="Search ICD-10 — try: anemia, N18, hyperkalemia, dialysis…" aria-label="Search ICD-10 codes" autocomplete="off" spellcheck="false">
+            <input type="search" class="icd10-input" placeholder="Search ICD-10 — try: anemia in CKD, N18, hyperkalemia, heart failure…" aria-label="Search ICD-10 codes" autocomplete="off" spellcheck="false">
             <span class="icd10-count" aria-live="polite"></span>
           </div>
+          <div class="icd10-hint">American spellings (<em>anemia</em>, <em>edema</em>, <em>hemodialysis</em>) and abbreviations (<em>CKD</em>, <em>ESRD</em>, <em>HF</em>, <em>MI</em>, <em>HTN</em>, <em>DM</em>) are auto-translated to the WHO ICD-10 vocabulary the dataset uses.</div>
           <div class="icd10-status">Tap the box above to load the ICD-10 dataset (≈ 700&nbsp;KB, one-time).</div>
           <div class="icd10-results"></div>
           <div class="icd10-pager"></div>
@@ -157,8 +298,8 @@
 
         <!-- Batch mode -->
         <div class="icd10-pane icd10-pane-batch" data-pane="batch" hidden>
-          <label class="icd10-batch-label" for="${cssId(host) + '-batch'}">Paste diagnoses — one per line, or comma-separated. Up to ${MAX_BATCH_LINES} at a time.</label>
-          <textarea id="${cssId(host) + '-batch'}" class="icd10-batch-input" rows="6" placeholder="Heart failure with CKD&#10;Anemia in CKD&#10;Hyperkalemia&#10;Pneumonia&#10;ESRD on hemodialysis"></textarea>
+          <label class="icd10-batch-label" for="${cssId(host) + '-batch'}">Paste diagnoses — one per line (or semicolon-separated). Up to ${MAX_BATCH_LINES} at a time. American spellings and abbreviations (CKD, ESRD, HF, MI, HTN, DM) are auto-translated.</label>
+          <textarea id="${cssId(host) + '-batch'}" class="icd10-batch-input" rows="6" placeholder="Heart failure with CKD&#10;Anemia in CKD&#10;Hyperkalemia&#10;Community-acquired pneumonia&#10;ESRD on hemodialysis"></textarea>
           <div class="icd10-batch-actions">
             <button class="icd10-btn icd10-btn-primary" type="button" data-act="match">Match ICD-10 codes</button>
             <button class="icd10-btn icd10-btn-ghost" type="button" data-act="clear">Clear</button>
