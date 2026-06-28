@@ -1006,13 +1006,46 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
   }
-  .lib-bubble { animation-name: lib-fx-supersize; animation-timing-function: ease-out; }
-  /* Each silhouette enters supersized (3-5x its base) at peak opacity, then
-     simultaneously shrinks (to 0.2-0.5x) and fades to nothing. */
+  /* Six motion variants — chosen at random per instance. Supersize and zoom-in
+     are the eye-catchers (scale dominates); scroll and fly drift across the
+     card; dissolve adds a blurred fade; drift is the calm continuous bob. */
+  .lib-bubble.fx-supersize { animation-name: lib-fx-supersize; animation-timing-function: ease-out; }
+  .lib-bubble.fx-zoomin    { animation-name: lib-fx-zoomin;    animation-timing-function: ease-in; }
+  .lib-bubble.fx-scroll    { animation-name: lib-fx-scroll;    animation-timing-function: linear; }
+  .lib-bubble.fx-fly       { animation-name: lib-fx-fly;       animation-timing-function: cubic-bezier(.42,0,.58,1); }
+  .lib-bubble.fx-dissolve  { animation-name: lib-fx-dissolve; }
+  .lib-bubble.fx-drift     { animation-name: lib-fx-drift;     animation-direction: alternate; }
   @keyframes lib-fx-supersize {
     0%   { opacity: 0;               transform: rotate(var(--rot0, 0deg)) scale(calc(var(--sc, 1) * var(--scStart, 4))); }
     10%  { opacity: var(--pop, .25); }
     100% { opacity: 0;               transform: rotate(var(--rot0, 0deg)) scale(calc(var(--sc, 1) * var(--scEnd, 0.35))); }
+  }
+  @keyframes lib-fx-zoomin {
+    0%   { opacity: 0;               transform: rotate(var(--rot0, 0deg)) scale(calc(var(--sc, 1) * 0.18)); }
+    20%  { opacity: var(--pop, .25); }
+    65%  { opacity: var(--pop, .25); transform: rotate(calc(var(--rot0, 0deg) + 6deg)) scale(calc(var(--sc, 1) * 1.4)); }
+    100% { opacity: 0;               transform: rotate(calc(var(--rot0, 0deg) + 14deg)) scale(calc(var(--sc, 1) * 1.9)); }
+  }
+  @keyframes lib-fx-scroll {
+    0%   { opacity: 0;               transform: translate(0, 130px) rotate(var(--rot0, 0deg)) scale(var(--sc, 1)); }
+    15%  { opacity: var(--pop, .25); }
+    85%  { opacity: var(--pop, .25); }
+    100% { opacity: 0;               transform: translate(0, -240px) rotate(calc(var(--rot0, 0deg) + 14deg)) scale(var(--sc, 1)); }
+  }
+  @keyframes lib-fx-fly {
+    0%   { opacity: 0;               transform: translate(calc(var(--flyX, -160px) * -1), calc(var(--flyY, 80px) * -1)) rotate(var(--rot0, 0deg)) scale(var(--sc, 1)); }
+    18%  { opacity: var(--pop, .25); }
+    82%  { opacity: var(--pop, .25); }
+    100% { opacity: 0;               transform: translate(var(--flyX, 160px), var(--flyY, -80px)) rotate(calc(var(--rot0, 0deg) + 22deg)) scale(var(--sc, 1)); }
+  }
+  @keyframes lib-fx-dissolve {
+    0%   { opacity: 0;               filter: drop-shadow(0 0 var(--glow, 8px) var(--tint-glow, rgba(212,175,79,.18))) blur(12px); transform: rotate(var(--rot0, 0deg)) scale(calc(var(--sc, 1) * 0.9)); }
+    50%  { opacity: var(--pop, .25); filter: drop-shadow(0 0 var(--glow, 8px) var(--tint-glow, rgba(212,175,79,.18))) blur(0); }
+    100% { opacity: 0;               filter: drop-shadow(0 0 var(--glow, 8px) var(--tint-glow, rgba(212,175,79,.18))) blur(12px); transform: rotate(calc(var(--rot0, 0deg) + 18deg)) scale(calc(var(--sc, 1) * 1.08)); }
+  }
+  @keyframes lib-fx-drift {
+    0%   { opacity: var(--pop, .25); transform: translate(0, 0) rotate(var(--rot0, 0deg)) scale(var(--sc, 1)); }
+    100% { opacity: var(--pop, .25); transform: translate(var(--driftX, 10px), var(--driftY, -14px)) rotate(calc(var(--rot0, 0deg) + var(--rotAmp, 10deg))) scale(calc(var(--sc, 1) * 1.04)); }
   }
   /* evidence-basis cycler */
   .lib-evidence {
@@ -2575,34 +2608,52 @@ function emailAction(key, btnEl, variant) {
   var card = document.querySelector('.library-card');
   if (!card) return;
 
-  // 1. Background "idea silhouettes" — the attached SVG mark, drawn ~14x at
-  //    random positions/sizes/tints. Every instance runs the same animation:
-  //    enter at peak opacity SUPERSIZED (3-5x its base), then simultaneously
-  //    shrink (down to 0.2-0.5x) and fade to nothing.
+  // 1. Background "idea silhouettes" — the attached SVG mark, drawn ~16x at
+  //    random positions/sizes/tints. Each instance picks one motion variant
+  //    from a weighted pool: supersize (giant pop → shrink + fade), zoomin
+  //    (tiny → big + fade out), scroll (drift upward), fly (diagonal
+  //    traverse), dissolve (blurred fade in/out), drift (calm continuous
+  //    bob). Per-instance random duration, delay, scale, rotation, and tint.
   var wrap = document.getElementById('lib-particles');
   if (wrap && !reduce) {
-    // [fill-tint, glow-tint] palette — teal, gold, violet, sky.
     var palette = [
       ['rgba(52,170,180,',  'rgba(52,170,180,'],
       ['rgba(212,175,79,',  'rgba(212,175,79,'],
       ['rgba(150,120,235,', 'rgba(150,120,235,'],
       ['rgba(96,156,224,',  'rgba(96,156,224,']
     ];
-    var COUNT = 14;
+    var fxList = [
+      { name: 'supersize', durMin: 9,  durMax: 16, weight: 3 },
+      { name: 'zoomin',    durMin: 8,  durMax: 14, weight: 2 },
+      { name: 'scroll',    durMin: 12, durMax: 22, weight: 3 },
+      { name: 'fly',       durMin: 11, durMax: 20, weight: 2 },
+      { name: 'dissolve',  durMin: 9,  durMax: 16, weight: 2 },
+      { name: 'drift',     durMin: 16, durMax: 26, weight: 2 }
+    ];
+    var fxPool = [];
+    fxList.forEach(function(f){ for (var k = 0; k < f.weight; k++) fxPool.push(f); });
+
+    var COUNT = 16;
     for (var i = 0; i < COUNT; i++) {
       var b = document.createElement('span');
-      b.className = 'lib-bubble';
+      var f = fxPool[Math.floor(Math.random() * fxPool.length)];
+      b.className = 'lib-bubble fx-' + f.name;
 
-      var sz = 36 + Math.random() * 80;                 // 36–116px base reference (peak = base * scStart)
-      var left = Math.random() * 100;                   // anywhere across the card
-      var top = -5 + Math.random() * 105;               // a touch above/below to bleed off edges
-      var dur = 9 + Math.random() * 7;                  // 9–16s per cycle
-      var delay = -(Math.random() * dur);               // negative delay → desynchronised start
+      var sz = 36 + Math.random() * 90;                 // 36–126px base reference
+      var left = Math.random() * 100;
+      var top = -5 + Math.random() * 105;
+      var dur = f.durMin + Math.random() * (f.durMax - f.durMin);
+      var delay = -(Math.random() * dur);
       var op = 0.10 + Math.random() * 0.18;             // 0.10–0.28 peak — copy stays legible
-      var rot0 = Math.round(Math.random() * 360);       // each silhouette at its own rest angle
+      var rot0 = Math.round(Math.random() * 360);
+      var rotAmp = (Math.random() < .5 ? -1 : 1) * (5 + Math.random() * 10);
       var sc = 0.85 + Math.random() * 0.30;
-      var scStart = 2.8 + Math.random() * 2.2;          // enter at 2.8–5.0× supersized
-      var scEnd   = 0.20 + Math.random() * 0.30;        // shrink to 0.20–0.50×
+      var scStart = 2.8 + Math.random() * 2.2;          // supersize: enter at 2.8–5.0×
+      var scEnd   = 0.20 + Math.random() * 0.30;        // supersize: shrink to 0.20–0.50×
+      var driftX = (Math.random() < .5 ? -1 : 1) * (8 + Math.random() * 18);
+      var driftY = -(8 + Math.random() * 18);
+      var flyX = (Math.random() < .5 ? -1 : 1) * (120 + Math.random() * 180);
+      var flyY = (Math.random() < .5 ? -1 : 1) * (80 + Math.random() * 140);
       var pair = palette[Math.floor(Math.random() * palette.length)];
       var tint = pair[0] + (op + 0.10).toFixed(2) + ')';
       var glow = pair[1] + (op * 0.55).toFixed(2) + ')';
@@ -2616,9 +2667,14 @@ function emailAction(key, btnEl, variant) {
         '--tint-glow:' + glow + ';' +
         '--glow:' + glowR + 'px;' +
         '--rot0:' + rot0 + 'deg;' +
+        '--rotAmp:' + rotAmp.toFixed(1) + 'deg;' +
         '--sc:' + sc.toFixed(2) + ';' +
         '--scStart:' + scStart.toFixed(2) + ';' +
         '--scEnd:' + scEnd.toFixed(2) + ';' +
+        '--driftX:' + driftX.toFixed(0) + 'px;' +
+        '--driftY:' + driftY.toFixed(0) + 'px;' +
+        '--flyX:' + flyX.toFixed(0) + 'px;' +
+        '--flyY:' + flyY.toFixed(0) + 'px;' +
         '--dur:' + dur.toFixed(1) + 's;' +
         '--delay:' + delay.toFixed(1) + 's;';
       wrap.appendChild(b);
