@@ -67,46 +67,45 @@
   }
 
   /* ── NAV ── */
-  .site-nav {
+  .site-header {
     background: var(--navy);
     padding: 0 24px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: 52px;
+    height: 56px;
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(255,255,255,.08);
   }
-  .nav-brand {
-    color: white;
-    font-family: 'Lora', serif;
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
+  .site-header .brand {
+    color: #fff;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     text-decoration: none;
   }
-  .nav-brand span { font-weight: 400; opacity: 0.8; }
-  .nav-links { display: flex; gap: 20px; align-items: center; }
-  .nav-links a {
+  .site-header .brand:hover { color: rgba(255,255,255,.85); }
+  .header-nav {
+    margin-left: auto;
+    display: flex;
+    gap: 22px;
+    align-items: center;
+  }
+  .header-nav a {
     color: rgba(255,255,255,0.75);
     text-decoration: none;
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.03em;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     transition: color 0.2s;
   }
-  .nav-links a:hover { color: white; }
-  .nav-cta {
-    background: var(--orange);
-    color: white !important;
-    padding: 5px 12px;
-    border-radius: 4px;
-    opacity: 1 !important;
-  }
-  .nav-cta:hover { background: #d4620f !important; }
+  .header-nav a:hover { color: #fff; }
+  .header-nav a.is-current { color: #d4af4f; pointer-events: none; }
 
   /* ── HERO ── */
   .hero {
@@ -1161,8 +1160,9 @@
     .spotlight-grid { grid-template-columns: 1fr 1fr; }
     .pinned-grid { grid-template-columns: 1fr 1fr; }
     .spotlight-card--featured .spotlight-title { font-size: 0.9rem; }
-    .site-nav { padding: 0 16px; }
-    .nav-links .hide-mobile { display: none; }
+    .site-header { padding: 0 16px; }
+    .header-nav { gap: 14px; }
+    .header-nav a { font-size: 0.72rem; letter-spacing: 0.04em; }
   }
 
   /* Scrollbar style */
@@ -1602,21 +1602,7 @@
   }
   body.dark-mode #guide-search::placeholder { color: var(--ink-muted); }
 
-  /* ── ACTIVE NAV ── */
-  .nav-active {
-    color: white !important;
-    font-weight: 600 !important;
-    position: relative;
-  }
-  .nav-active::after {
-    content: '';
-    position: absolute;
-    bottom: -16px;
-    left: 0; right: 0;
-    height: 2px;
-    background: var(--teal-mid);
-    border-radius: 1px;
-  }
+  /* ── ACTIVE NAV (legacy, retained as no-op) ── */
 
   /* ── DARK TOGGLE ── */
   .dark-toggle {
@@ -1916,16 +1902,15 @@
 
 
 <!-- NAV -->
-<nav class="site-nav">
-  <a href="https://www.williamriveromd.com" class="nav-brand">W <span>Rivero</span>, MD</a>
-  <div class="nav-links">
-    <a href="https://www.williamriveromd.com#about" class="hide-mobile">About</a>
-    <a href="https://www.williamriveromd.com#specialties" class="hide-mobile">Specialties</a>
-    <a href="/guides/" class="nav-active">Health Guides</a>
-    <a href="https://www.williamriveromd.com#contact" class="hide-mobile">Clinics</a>
-    <a href="https://seriousmd.com/doc/williamrivero" class="nav-cta" target="_blank" rel="noopener">Book</a>
-  </div>
-</nav>
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <nav class="header-nav">
+    <a href="calculators.html">CALCULATORS</a>
+    <a href="kidney-physiology.html">PHYSIOLOGY</a>
+    <a href="nephrology-atlas.html">ATLAS</a>
+    <a href="/guides/" class="is-current">ALL GUIDES</a>
+  </nav>
+</header>
 
 <!-- HERO -->
 <div class="hero">
