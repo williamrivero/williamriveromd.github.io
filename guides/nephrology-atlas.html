@@ -1171,34 +1171,55 @@
   body{background:var(--bg)}
 
   /* ── ATLAS HEADER ── */
-  .atlas-header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 55%,#0d2a4a 100%);background-size:240% 240%;padding:36px 48px 0;position:relative;overflow:hidden;min-height:240px;animation:atlas-hero-shift 22s ease infinite alternate}
+  .atlas-header{background:linear-gradient(135deg,#2c1536 0%,#3e1c4f 48%,#1a0b22 100%);background-size:240% 240%;padding:36px 48px 0;position:relative;overflow:hidden;min-height:260px;animation:atlas-hero-shift 24s ease infinite alternate;perspective:1200px}
   @keyframes atlas-hero-shift{0%{background-position:0% 0%}50%{background-position:80% 30%}100%{background-position:100% 100%}}
-  .atlas-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 85% 50%,rgba(15,124,132,.22) 0%,transparent 70%),radial-gradient(ellipse 50% 70% at 10% 60%,rgba(8,90,98,.28) 0%,transparent 65%);pointer-events:none;z-index:1}
+  .atlas-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 85% 50%,rgba(214,178,112,.18) 0%,transparent 70%),radial-gradient(ellipse 55% 75% at 8% 65%,rgba(166,118,200,.22) 0%,transparent 65%);pointer-events:none;z-index:1}
 
-  /* ── HERO PARTICLE STREAM (filtration flow) ── */
-  .atlas-particles-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
-  .atlas-particle{position:absolute;border-radius:50%;pointer-events:none}
-  @keyframes ap-flow-a{0%{transform:translateX(0) translateY(0);opacity:0}8%{opacity:var(--pop,.65)}92%{opacity:var(--pop,.65)}100%{transform:translateX(var(--travel,920px)) translateY(-12px);opacity:0}}
-  @keyframes ap-flow-b{0%{transform:translate(0,0) scale(1);opacity:0}8%{opacity:var(--pop,.6)}30%{transform:translate(28%,-36px) scale(.85)}55%{transform:translate(56%,28px) scale(1)}80%{transform:translate(82%,-18px) scale(.9)}92%{opacity:var(--pop,.6)}100%{transform:translate(var(--travel,920px),0) scale(.7);opacity:0}}
-  @keyframes ap-flow-c{0%{transform:translate(0,0) scale(1);opacity:0}10%{opacity:var(--pop,.5)}45%{transform:translate(44%,44px) scale(.75)}90%{opacity:var(--pop,.5)}100%{transform:translate(var(--travel,920px),20px) scale(.55);opacity:0}}
+  /* ── HERO FLOATING SVG SILHOUETTES (Netter-style kidney assets) ── */
+  .atlas-bg-svg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2;transform-style:preserve-3d}
+  .atlas-orb{position:absolute;background:currentColor;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;opacity:0;will-change:transform,opacity;transform-style:preserve-3d}
+  /* Three animation flavours: float-drift, zoom-fade, perspective-tilt */
+  @keyframes silFloat{
+    0%   {opacity:0;   transform:translate(0,0) rotate(0deg) scale(.85)}
+    14%  {opacity:var(--peak,.18)}
+    50%  {opacity:var(--peak,.18); transform:translate(var(--dx,40px),var(--dy,-30px)) rotate(var(--rot,8deg)) scale(1)}
+    86%  {opacity:var(--peak,.18)}
+    100% {opacity:0;   transform:translate(calc(var(--dx,40px) * 1.6),calc(var(--dy,-30px) * 1.6)) rotate(calc(var(--rot,8deg) * 1.8)) scale(1.08)}
+  }
+  @keyframes silZoom{
+    0%   {opacity:0;   transform:translateZ(-300px) scale(.5) rotate(var(--rot,-10deg))}
+    18%  {opacity:var(--peak,.2)}
+    50%  {opacity:var(--peak,.2); transform:translateZ(0) scale(1.05) rotate(0deg)}
+    82%  {opacity:var(--peak,.2)}
+    100% {opacity:0;   transform:translateZ(280px) scale(1.4) rotate(calc(var(--rot,-10deg) * -1))}
+  }
+  @keyframes silTilt{
+    0%   {opacity:0;   transform:rotateY(-35deg) rotateX(8deg) scale(.9)}
+    16%  {opacity:var(--peak,.16)}
+    50%  {opacity:var(--peak,.16); transform:rotateY(0deg) rotateX(0deg) scale(1.04)}
+    84%  {opacity:var(--peak,.16)}
+    100% {opacity:0;   transform:rotateY(35deg) rotateX(-8deg) scale(.94)}
+  }
   @media (prefers-reduced-motion: reduce){
     .atlas-header{animation:none}
-    .atlas-particle{animation:none;opacity:.4}
+    .atlas-orb{animation:none;opacity:.1}
   }
 
   .header-inner{position:relative;max-width:1400px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;z-index:3}
-  .header-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--teal-light);margin-bottom:10px}
+  .header-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#e6b97a;margin-bottom:10px}
   .header-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:8px}
-  .header-title em{font-style:italic;color:var(--amber-light)}
-  .header-sub{font-size:.88rem;color:#7a9ab8;margin-bottom:20px}
+  .header-title em{font-style:italic;color:#f1c780}
+  .header-sub{font-size:.88rem;color:#c4a8d8;margin-bottom:20px}
   .header-meta{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:0}
   .header-meta-item{display:flex;flex-direction:column;gap:2px}
-  .header-meta-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:#4a6a88;text-transform:uppercase}
-  .header-meta-val{font-size:.8rem;color:#a8c4d8;font-weight:500}
+  .header-meta-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:#8a6a9e;text-transform:uppercase}
+  .header-meta-val{font-size:.8rem;color:#d4bce4;font-weight:500}
   .header-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;flex-shrink:0;align-self:center;padding-bottom:28px;max-width:440px}
-  .stat-pill{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:12px 14px;text-align:center}
-  .stat-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--teal-light);line-height:1}
-  .stat-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:#4a6a88;text-transform:uppercase;margin-top:4px}
+  .stat-pill{background:rgba(255,255,255,.06);border:1px solid rgba(241,199,128,.14);border-radius:6px;padding:12px 14px;text-align:center;transition:border-color .3s,background .3s,transform .25s ease-out}
+  .stat-pill.is-revealed{transform:translateY(-2px);border-color:rgba(241,199,128,.28);background:rgba(255,255,255,.08)}
+  .stat-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:#f1c780;line-height:1;font-variant-numeric:tabular-nums;display:inline-block;transition:transform .35s cubic-bezier(.2,.9,.3,1.2)}
+  .stat-pill.is-revealed .stat-num{transform:scale(1.04)}
+  .stat-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:#9a7eb0;text-transform:uppercase;margin-top:4px}
 
   /* ── SIDEBAR (categories + search) ── */
   .atlas-sidebar{position:sticky;top:72px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 10px;max-height:calc(100vh - 92px);overflow-y:auto;display:flex;flex-direction:column;gap:8px}
@@ -1366,7 +1387,7 @@
 
 <!-- ═══ HEADER ═══ -->
 <header class="atlas-header">
-  <div class="atlas-particles-wrap" id="atlas-particles" aria-hidden="true"></div>
+  <div class="atlas-bg-svg" id="atlas-bg-svg" aria-hidden="true"></div>
   <div class="header-inner">
     <div class="header-text">
       <div class="header-eyebrow">Clinical Visual Reference · Nephrology</div>
@@ -2071,44 +2092,88 @@ function openByHash(){
 openByHash();
 window.addEventListener('hashchange', openByHash);
 
-// ─── ATLAS HERO PARTICLE GENERATOR ───────────────────────────────────────────
+// ─── ATLAS HERO FLOATING SVG SILHOUETTES ─────────────────────────────────────
 (function(){
-  var wrap = document.getElementById('atlas-particles');
+  var wrap = document.getElementById('atlas-bg-svg');
   if(!wrap) return;
-  var hero = wrap.parentElement;
-  var W = (hero ? hero.offsetWidth : 0) || 1100;
-  var flows = ['ap-flow-a','ap-flow-b','ap-flow-c'];
-  // teal/cyan palette (atlas signature) — distinct from the amber on guides/index
-  var palette = [
-    'rgba(110,212,212,VAR)', // teal-light
-    'rgba(34,197,197,VAR)',  // teal-400
-    'rgba(20,184,166,VAR)',  // teal-500
-    'rgba(165,243,252,VAR)', // cyan-200 highlights
-    'rgba(15,124,132,VAR)'   // deep teal
-  ];
-  var count = 26;
-  for(var i=0;i<count;i++){
-    var p = document.createElement('div');
-    p.className = 'atlas-particle';
-    var sz    = 2.5 + Math.random()*6.5;
-    var top   = 4 + Math.random()*90;
-    var dur   = 8 + Math.random()*16;
-    var delay = -(Math.random()*dur);
-    var op    = 0.22 + Math.random()*0.55;
-    var travel = W + 40;
-    var flow  = flows[Math.floor(Math.random()*flows.length)];
-    var color = palette[Math.floor(Math.random()*palette.length)].replace('VAR', op.toFixed(2));
-    p.style.cssText =
-      'width:'    + sz.toFixed(1) + 'px;' +
-      'height:'   + sz.toFixed(1) + 'px;' +
-      'top:'      + top.toFixed(1) + '%;' +
-      'left:'     + (-sz - 2).toFixed(0) + 'px;' +
-      'background:' + color + ';' +
-      'box-shadow:0 0 ' + (sz*1.6).toFixed(1) + 'px ' + color + ';' +
-      '--pop:'    + op.toFixed(2) + ';' +
-      '--travel:' + travel + 'px;' +
-      'animation:' + flow + ' ' + dur.toFixed(1) + 's ' + delay.toFixed(1) + 's linear infinite;';
-    wrap.appendChild(p);
+  var flows   = ['silFloat','silZoom','silTilt'];
+  // warm gold + soft lavender on the deep plum hero — complementary, kidney-tissue inspired
+  var palette = ['#e6b97a','#f1c780','#d9a36b','#c9a3d8','#b08bc8','#e7c1a5'];
+  // 18 SVG silhouettes available — bias toward variety
+  var indices = Array.from({length:18},function(_,i){return i+1});
+  // shuffle copy for first 12
+  for(var i=indices.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=indices[i];indices[i]=indices[j];indices[j]=t;}
+  var COUNT = 12;
+  for(var k=0;k<COUNT;k++){
+    var o = document.createElement('div');
+    o.className = 'atlas-orb';
+    var assetN = indices[k % indices.length];
+    var sz   = 80 + Math.random()*150;          // 80–230 px
+    var top  = -8 + Math.random()*104;          // -8% to 96%
+    var left = -6 + Math.random()*108;          // -6% to 102%
+    var dur  = 14 + Math.random()*16;           // 14–30 s
+    var delay= -(Math.random()*dur);            // mid-journey on load
+    var peak = 0.10 + Math.random()*0.18;       // 0.10–0.28 max opacity
+    var rot  = (Math.random()*60 - 30).toFixed(1); // -30 to 30 deg
+    var dx   = (Math.random()*120 - 60).toFixed(0) + 'px';
+    var dy   = (Math.random()*100 - 50).toFixed(0) + 'px';
+    var flow = flows[k % flows.length];          // mix the three animation styles
+    var color= palette[Math.floor(Math.random()*palette.length)];
+    var url  = '../images/atlas-bg/asset-' + assetN + '.svg';
+    o.style.cssText =
+      'width:'  + sz.toFixed(0) + 'px;' +
+      'height:' + sz.toFixed(0) + 'px;' +
+      'top:'    + top.toFixed(1) + '%;' +
+      'left:'   + left.toFixed(1) + '%;' +
+      'color:'  + color + ';' +
+      '-webkit-mask-image:url(' + url + ');' +
+      'mask-image:url(' + url + ');' +
+      '--peak:' + peak.toFixed(2) + ';' +
+      '--rot:'  + rot + 'deg;' +
+      '--dx:'   + dx + ';' +
+      '--dy:'   + dy + ';' +
+      'animation:' + flow + ' ' + dur.toFixed(1) + 's ' + delay.toFixed(1) + 's ease-in-out infinite;';
+    wrap.appendChild(o);
+  }
+})();
+
+// ─── ATLAS STAT-PILL COUNT-UP ANIMATION ──────────────────────────────────────
+(function(){
+  var pills = document.querySelectorAll('.stat-pill');
+  if(!pills.length) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function easeOut(t){return 1 - Math.pow(1 - t, 3);}
+  function runCounter(pill, targetEl, target, delay, duration){
+    setTimeout(function(){
+      pill.classList.add('is-revealed');
+      if(reduce){ targetEl.textContent = target; return; }
+      var start = performance.now();
+      function frame(now){
+        var p = Math.min((now - start) / duration, 1);
+        targetEl.textContent = Math.round(easeOut(p) * target);
+        if(p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }, delay);
+  }
+  function trigger(){
+    pills.forEach(function(pill, i){
+      var num = pill.querySelector('.stat-num');
+      if(!num) return;
+      var target = parseInt(num.textContent, 10) || 0;
+      num.textContent = '0';
+      runCounter(pill, num, target, 120 + i*90, 900);
+    });
+  }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ trigger(); io.disconnect(); }
+      });
+    }, {threshold: 0.2});
+    io.observe(pills[0]);
+  } else {
+    trigger();
   }
 })();
 </script>
