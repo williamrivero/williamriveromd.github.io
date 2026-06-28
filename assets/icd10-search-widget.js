@@ -171,7 +171,20 @@
     const raw = query.trim().toLowerCase();
     if (!raw) return DATA;
     const norm = normalizeQuery(query);
-    // Try the normalized form first; if it differs and yields hits, prefer it.
+
+    // If the raw query is a known abbreviation (AKI, CKD, ESRD, HF, MI, …),
+    // the raw 2-4 character form would substring-match unrelated words
+    // (anis-AKI-asis, aph-AKI-a, kaw-AKI-, etc.). Search ONLY the expanded
+    // form so the user sees the diagnosis codes they actually meant.
+    const rawAlpha = raw.replace(/[^a-z]/g, '');
+    const isPureAbbreviation =
+      !/\s/.test(raw) && ABBREVIATIONS.hasOwnProperty(rawAlpha);
+    if (isPureAbbreviation && norm) {
+      return DATA.filter(r => r._cl.indexOf(norm) !== -1);
+    }
+
+    // Try the normalized form first; if it differs from raw and yields hits,
+    // prefer it (handles American → British spelling: anemia → anaemia).
     if (norm && norm !== raw) {
       const normHits = DATA.filter(r => r._cl.indexOf(norm) !== -1 || r._cl.indexOf(raw) !== -1);
       if (normHits.length > 0) return normHits;
