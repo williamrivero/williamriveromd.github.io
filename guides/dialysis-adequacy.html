@@ -78,11 +78,11 @@
     font-size: 16px;
   }
 
-  /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
+  /* ── SITE HEADER (CONVENTION: brand | inline lang chips | back link) ────── */
   .site-header {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; gap: 18px;
     height: 56px; box-sizing: border-box;
-    padding: 0 32px;
+    padding: 0 24px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -90,26 +90,64 @@
   .site-header .brand {
     font-size: 14px; font-weight: 500;
     color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em;
+    flex: 0 0 auto;
   }
   .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
   .site-header .back {
     font-size: 12px; font-weight: 500;
     color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s;
+    margin-left: auto; flex: 0 0 auto;
   }
   .site-header .back:hover { color: rgba(255,255,255,.9); }
+  /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
+  .header-nav {
+    display: flex; align-items: center; gap: 14px;
+    margin-left: auto; flex: 0 0 auto;
+  }
+  .header-nav a {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.7); text-decoration: none;
+    transition: color .2s;
+    white-space: nowrap;
+  }
+  .header-nav a:hover { color: #fff; }
+  .header-nav a.is-current { color: var(--gold-light); pointer-events: none; }
+  @media (max-width: 640px) {
+    .header-nav { gap: 10px; }
+    .header-nav a { font-size: 10.5px; letter-spacing: .04em; }
+  }
+  /* Inline lang chips inside the header (next to the brand). */
+  .header-lang {
+    display: flex; align-items: center; gap: 6px;
+    flex: 0 1 auto; flex-wrap: nowrap; overflow-x: auto;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .header-lang::-webkit-scrollbar { display: none; }
+  .header-lang .lang-lbl {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5);
+    text-transform: uppercase; letter-spacing: .1em; margin-right: 2px;
+  }
+  .header-lang .lang-btn-g {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.18); background: transparent;
+    color: rgba(255,255,255,.78); cursor: pointer; transition: all .15s;
+    line-height: 1.3; flex-shrink: 0;
+  }
+  .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
+  .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  @media (max-width: 640px) {
+    .site-header { padding: 0 14px; gap: 10px; }
+    .header-lang .lang-lbl { display: none; }
+    .header-lang .lang-btn-g { font-size: 11px; padding: 2px 8px; }
+    .site-header .brand { font-size: 13px; }
+    .site-header .back { font-size: 11px; }
+  }
 
-  /* ── LANG BAR ────────────────────────────────────────────────────────────── */
-  .guide-lang-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 32px;
-    background: rgba(10,18,32,.96);
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    flex-wrap: wrap;
-  }
-  .lang-lbl {
-    font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5);
-    text-transform: uppercase; letter-spacing: .08em; margin-right: 4px;
-  }
+  /* ── LEGACY LANG BAR (kept defined as a no-op so older HTML doesn't break) ─ */
+  .guide-lang-bar { display: none !important; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
   .lang-btn-g {
     font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px;
     border: 1px solid rgba(255,255,255,.2); background: transparent;
@@ -117,8 +155,46 @@
   }
   .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
   .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
-  /* Dark/desktop toggles relocated into the lang bar's right margin. */
-  .guide-toggle-inline { margin-left: auto; display: inline-flex; gap: 8px; align-items: center; }
+  /* Legacy inline dark/desktop toggle holder — now replaced by .float-controls. */
+  .guide-toggle-inline { display: none !important; }
+
+  /* ── FLOATING DARK TOGGLE WIDGET (bottom-right) ─────────────────────────── */
+  .float-controls {
+    position: fixed; bottom: 24px; right: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  /* ── FLOATING DESKTOP/MOBILE TOGGLE WIDGET (bottom-left, under print) ────── */
+  .float-controls-left {
+    position: fixed; bottom: 24px; left: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  .float-controls-left .float-tooltip { left: 0; right: auto; }
+  .float-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(31,56,100,.18);
+    background: #ffffff; color: #1f3864;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(15,30,46,.18);
+    transition: background .15s, color .15s, transform .15s, box-shadow .15s;
+    position: relative;
+  }
+  .float-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,30,46,.24); }
+  .float-btn svg { width: 20px; height: 20px; }
+  .float-tooltip {
+    position: absolute; bottom: calc(100% + 8px); right: 0;
+    background: rgba(15,30,46,.9); color: #fff;
+    padding: 6px 10px; border-radius: 6px;
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity .15s;
+  }
+  .float-btn:hover .float-tooltip { opacity: 1; }
+  html[data-theme="dark"] .float-btn {
+    background: #1a2535; color: #e2b95f; border-color: rgba(255,255,255,.18);
+    box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  }
+  html[data-theme="dark"] .float-tooltip { background: rgba(255,255,255,.92); color: #1f3864; }
+  @media print { .float-controls, .no-print { display: none !important; } }
 
   /* ── TOGGLE BAR ──────────────────────────────────────────────────────────── */
   .guide-toggle-bar {
@@ -1212,13 +1288,16 @@
   .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
 
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
-  .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
+  /* Audience tabs inherit the hero background colour so the bar reads as part
+     of the hero (mint in patient mode, periwinkle in clinician mode). */
+  .audience-tabs{background:linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%);border-bottom:1px solid rgba(15,90,90,.18);position:sticky;top:56px;z-index:150;}
+  body.physician-mode .audience-tabs{background:linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);border-bottom-color:rgba(31,56,100,.18);}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
   .aud-tab{flex:1;text-align:center;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
   .aud-tab:hover{color:var(--navy);}
   .aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
   .aud-tab.active.tab-md{border-bottom-color:var(--navy);}
-  .tab-icon{font-size:17px;}
+  .tab-icon{display:none;}  /* legacy emoticons hidden — dropped from new HTML too */
   .mode-physician{display:none;}
   .mode-physician-pill{display:none;}
   body.physician-mode .mode-patient{display:none!important;}
@@ -1313,9 +1392,13 @@
   .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
   .download-btn:hover{background:#162848;}
 
-  /* ── DOWNLOAD FAB (circular floating action button, bottom-left) ─────────── */
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left stack) ───
+     Stacking on the left side (visually top → bottom):
+       1. .dl-fab           bottom:136px  (top — only when present)
+       2. .print-btn        bottom: 80px  (middle)
+       3. .float-controls-left bottom: 24px  (bottom — desktop/mobile toggle) */
   .dl-fab {
-    position: fixed; bottom: 24px; left: 24px;
+    position: fixed; bottom: 136px; left: 24px;
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--navy); color: white;
     border: none; cursor: pointer;
@@ -1441,6 +1524,17 @@
   }
   .fig-abbrevs dt { font-weight: 700; color: var(--text-mid); }
   .fig-abbrevs dd { margin: 0; color: var(--text-muted); }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     Keep the floating Symptom-Checker FAB clear of the floating dark/light
+     toggle. Every guide now carries the floating dark widget at bottom:24px
+     right:24px (44px wide), so the FAB (default bottom:22px right:22px)
+     would collide. Shift it ~70px left so they sit side-by-side.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  .sc-fab { right: 88px !important; }
+  @media (max-width: 600px) {
+    .sc-fab { right: 72px !important; bottom: 16px !important; }
+  }
 
   /* ═══════════════════════════════════════════════════════════════════════════
      PRINT
@@ -1592,35 +1686,13 @@ html[data-theme="dark"] .prom-pi-field input,html[data-theme="dark"] .prom-pi-fi
 try{if(localStorage.getItem('wgmr-mode-adequacy')==='physician'){document.body.classList.add('physician-mode');document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('tab-pt'),m=document.getElementById('tab-md');if(p)p.classList.remove('active');if(m)m.classList.add('active');});}}catch(e){}</script>
 
 <header class="site-header">
-  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
-  <a href="/guides/" class="back">← All Guides</a>
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a><div class="header-lang"><span class="lang-lbl">Lang:</span><button class="lang-btn-g active" id="glb-en" onclick="setGuideLang('en')">EN</button><button class="lang-btn-g" id="glb-tl" onclick="setGuideLang('tl')">TL</button><button class="lang-btn-g" id="glb-ceb" onclick="setGuideLang('ceb')">CEB</button><button class="lang-btn-g" id="glb-kap" onclick="setGuideLang('kap')">KAP</button></div>
+  <nav class="header-nav"><a href="calculators.html">CALCULATORS</a><a href="kidney-physiology.html">PHYSIOLOGY</a><a href="nephrology-atlas.html">ATLAS</a><a href="/guides/">ALL GUIDES</a></nav>
 </header>
-<div class="guide-lang-bar">
-  <span class="lang-lbl">Lang:</span>
-  <button class="lang-btn-g active" id="glb-en" onclick="setGuideLang('en')">EN</button>
-  <button class="lang-btn-g" id="glb-tl" onclick="setGuideLang('tl')">TL</button>
-  <button class="lang-btn-g" id="glb-ceb" onclick="setGuideLang('ceb')">CEB</button>
-  <button class="lang-btn-g" id="glb-kap" onclick="setGuideLang('kap')">KAP</button>
-  <span class="guide-toggle-inline">
-  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    <span id="darkLabel">Dark</span>
-  </button>
-  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-    <span id="desktopLabel">Desktop</span>
-  </button>
-  </span>
-</div>
-
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">
-      <span class="tab-icon">🧑‍⚕️</span> For Patients &amp; Families
-    </button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">
-      <span class="tab-icon">🩺</span> For Clinicians
-    </button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
   </div>
 </div>
 
@@ -3161,5 +3233,19 @@ function setMode(mode){
 <script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
 <script src="../assets/image-lightbox.js" defer></script>
+<!-- Floating dark + desktop toggles (relocated from the lang-bar strip) -->
+<!-- Floating desktop/mobile toggle (bottom-left, under print) -->
+<div class="float-controls-left no-print">
+  <button id="desktopToggle" class="float-btn" type="button" onclick="toggleDesktop()" aria-label="Toggle desktop/mobile view" title="Force desktop view">
+    <span class="float-tooltip" id="desktopLabel">Desktop view</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+  </button>
+</div>
+<div class="float-controls no-print">
+  <button id="darkToggle" class="float-btn" type="button" onclick="toggleDark()" aria-label="Toggle dark mode" title="Switch to dark mode">
+    <span class="float-tooltip" id="darkLabel">Dark mode</span>
+    <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
 </body>
 </html>

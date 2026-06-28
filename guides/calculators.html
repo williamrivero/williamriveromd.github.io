@@ -26,13 +26,13 @@
 <meta property="og:image" content="https://www.williamriveromd.com/images/calculators-index-og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Nephrology Calculators & Clinical Tools — a hub of 172 evidence-based nephrology calculators by W Rivero, MD">
+<meta property="og:image:alt" content="Nephrology Calculators & Clinical Tools — a hub of 174 evidence-based nephrology calculators by W Rivero, MD">
 <meta property="og:locale" content="en_PH">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Nephrology Calculators &amp; Clinical Tools">
 <meta name="twitter:description" content="A standalone index of nephrology calculators — eGFR (CKD-EPI 2021), KFRE, Kt/V, CKD-MBD, anion gap, Cockcroft-Gault, iron dose, proteinuria staging — each with formula, evidence and references.">
 <meta name="twitter:image" content="https://www.williamriveromd.com/images/calculators-index-og.png">
-<meta name="twitter:image:alt" content="Nephrology Calculators & Clinical Tools — a hub of 172 evidence-based nephrology calculators by W Rivero, MD">
+<meta name="twitter:image:alt" content="Nephrology Calculators & Clinical Tools — a hub of 174 evidence-based nephrology calculators by W Rivero, MD">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
 <style>
   /* ═══════════════════════════════════════════════════════════════════════════
@@ -83,11 +83,11 @@
     font-size: 16px;
   }
 
-  /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
+  /* ── SITE HEADER (CONVENTION: brand | inline lang chips | back link) ────── */
   .site-header {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; gap: 18px;
     height: 56px; box-sizing: border-box;
-    padding: 0 32px;
+    padding: 0 24px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -95,26 +95,64 @@
   .site-header .brand {
     font-size: 14px; font-weight: 500;
     color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em;
+    flex: 0 0 auto;
   }
   .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
   .site-header .back {
     font-size: 12px; font-weight: 500;
     color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s;
+    margin-left: auto; flex: 0 0 auto;
   }
   .site-header .back:hover { color: rgba(255,255,255,.9); }
+  /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
+  .header-nav {
+    display: flex; align-items: center; gap: 14px;
+    margin-left: auto; flex: 0 0 auto;
+  }
+  .header-nav a {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.7); text-decoration: none;
+    transition: color .2s;
+    white-space: nowrap;
+  }
+  .header-nav a:hover { color: #fff; }
+  .header-nav a.is-current { color: var(--gold-light); pointer-events: none; }
+  @media (max-width: 640px) {
+    .header-nav { gap: 10px; }
+    .header-nav a { font-size: 10.5px; letter-spacing: .04em; }
+  }
+  /* Inline lang chips inside the header (next to the brand). */
+  .header-lang {
+    display: flex; align-items: center; gap: 6px;
+    flex: 0 1 auto; flex-wrap: nowrap; overflow-x: auto;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .header-lang::-webkit-scrollbar { display: none; }
+  .header-lang .lang-lbl {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5);
+    text-transform: uppercase; letter-spacing: .1em; margin-right: 2px;
+  }
+  .header-lang .lang-btn-g {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.18); background: transparent;
+    color: rgba(255,255,255,.78); cursor: pointer; transition: all .15s;
+    line-height: 1.3; flex-shrink: 0;
+  }
+  .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
+  .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  @media (max-width: 640px) {
+    .site-header { padding: 0 14px; gap: 10px; }
+    .header-lang .lang-lbl { display: none; }
+    .header-lang .lang-btn-g { font-size: 11px; padding: 2px 8px; }
+    .site-header .brand { font-size: 13px; }
+    .site-header .back { font-size: 11px; }
+  }
 
-  /* ── LANG BAR ────────────────────────────────────────────────────────────── */
-  .guide-lang-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 32px;
-    background: rgba(10,18,32,.96);
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    flex-wrap: wrap;
-  }
-  .lang-lbl {
-    font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5);
-    text-transform: uppercase; letter-spacing: .08em; margin-right: 4px;
-  }
+  /* ── LEGACY LANG BAR (kept defined as a no-op so older HTML doesn't break) ─ */
+  .guide-lang-bar { display: none !important; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
   .lang-btn-g {
     font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px;
     border: 1px solid rgba(255,255,255,.2); background: transparent;
@@ -122,8 +160,46 @@
   }
   .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
   .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
-  /* Dark/desktop toggles relocated into the lang bar's right margin. */
-  .guide-toggle-inline { margin-left: auto; display: inline-flex; gap: 8px; align-items: center; }
+  /* Legacy inline dark/desktop toggle holder — now replaced by .float-controls. */
+  .guide-toggle-inline { display: none !important; }
+
+  /* ── FLOATING DARK TOGGLE WIDGET (bottom-right) ─────────────────────────── */
+  .float-controls {
+    position: fixed; bottom: 24px; right: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  /* ── FLOATING DESKTOP/MOBILE TOGGLE WIDGET (bottom-left, under print) ────── */
+  .float-controls-left {
+    position: fixed; bottom: 24px; left: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  .float-controls-left .float-tooltip { left: 0; right: auto; }
+  .float-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(31,56,100,.18);
+    background: #ffffff; color: #1f3864;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(15,30,46,.18);
+    transition: background .15s, color .15s, transform .15s, box-shadow .15s;
+    position: relative;
+  }
+  .float-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,30,46,.24); }
+  .float-btn svg { width: 20px; height: 20px; }
+  .float-tooltip {
+    position: absolute; bottom: calc(100% + 8px); right: 0;
+    background: rgba(15,30,46,.9); color: #fff;
+    padding: 6px 10px; border-radius: 6px;
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity .15s;
+  }
+  .float-btn:hover .float-tooltip { opacity: 1; }
+  html[data-theme="dark"] .float-btn {
+    background: #1a2535; color: #e2b95f; border-color: rgba(255,255,255,.18);
+    box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  }
+  html[data-theme="dark"] .float-tooltip { background: rgba(255,255,255,.92); color: #1f3864; }
+  @media print { .float-controls, .no-print { display: none !important; } }
 
   /* ── TOGGLE BAR ──────────────────────────────────────────────────────────── */
   .guide-toggle-bar {
@@ -1217,13 +1293,16 @@
   .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
 
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
-  .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
+  /* Audience tabs inherit the hero background colour so the bar reads as part
+     of the hero (mint in patient mode, periwinkle in clinician mode). */
+  .audience-tabs{background:linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%);border-bottom:1px solid rgba(15,90,90,.18);position:sticky;top:56px;z-index:150;}
+  body.physician-mode .audience-tabs{background:linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);border-bottom-color:rgba(31,56,100,.18);}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
   .aud-tab{flex:1;text-align:center;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
   .aud-tab:hover{color:var(--navy);}
   .aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
   .aud-tab.active.tab-md{border-bottom-color:var(--navy);}
-  .tab-icon{font-size:17px;}
+  .tab-icon{display:none;}  /* legacy emoticons hidden — dropped from new HTML too */
   .mode-physician{display:none;}
   .mode-physician-pill{display:none;}
   body.physician-mode .mode-patient{display:none!important;}
@@ -1318,9 +1397,13 @@
   .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
   .download-btn:hover{background:#162848;}
 
-  /* ── DOWNLOAD FAB (circular floating action button, bottom-left) ─────────── */
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left stack) ───
+     Stacking on the left side (visually top → bottom):
+       1. .dl-fab           bottom:136px  (top — only when present)
+       2. .print-btn        bottom: 80px  (middle)
+       3. .float-controls-left bottom: 24px  (bottom — desktop/mobile toggle) */
   .dl-fab {
-    position: fixed; bottom: 24px; left: 24px;
+    position: fixed; bottom: 136px; left: 24px;
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--navy); color: white;
     border: none; cursor: pointer;
@@ -1446,6 +1529,17 @@
   }
   .fig-abbrevs dt { font-weight: 700; color: var(--text-mid); }
   .fig-abbrevs dd { margin: 0; color: var(--text-muted); }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     Keep the floating Symptom-Checker FAB clear of the floating dark/light
+     toggle. Every guide now carries the floating dark widget at bottom:24px
+     right:24px (44px wide), so the FAB (default bottom:22px right:22px)
+     would collide. Shift it ~70px left so they sit side-by-side.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  .sc-fab { right: 88px !important; }
+  @media (max-width: 600px) {
+    .sc-fab { right: 72px !important; bottom: 16px !important; }
+  }
 
   /* ═══════════════════════════════════════════════════════════════════════════
      PRINT
@@ -1684,8 +1778,15 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <body class="calc-page">
 <header class="site-header">
   <a href="https://www.williamriveromd.com" class="brand">HOME</a>
-  <a href="/guides/" class="back">← All Guides</a>
+  <nav class="header-nav"><a href="calculators.html" class="is-current">CALCULATORS</a><a href="kidney-physiology.html">PHYSIOLOGY</a><a href="nephrology-atlas.html">ATLAS</a><a href="/guides/">ALL GUIDES</a></nav>
 </header>
+<!-- Floating desktop/mobile toggle (bottom-left, under print) -->
+<div class="float-controls-left no-print">
+  <button id="desktopToggle" class="float-btn" type="button" onclick="toggleDesktop()" aria-label="Toggle desktop/mobile view" title="Force desktop view">
+    <span class="float-tooltip" id="desktopLabel">Desktop view</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+  </button>
+</div>
 <div class="float-controls">
   <button class="float-btn" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">
     <span class="float-tooltip">Dark mode</span>
@@ -1714,86 +1815,99 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 .lc-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
 .lc-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
 .lc-strip::-webkit-scrollbar{display:none;}
-.lc-card{flex:0 0 232px;scroll-snap-align:start;min-height:96px;position:relative;overflow:hidden;border-radius:10px;background:linear-gradient(135deg,#1f3864 0%,#16294a 100%);padding:12px 96px 12px 14px;text-decoration:none;display:flex;flex-direction:column;justify-content:center;transition:transform .18s,box-shadow .18s;}
+.lc-card{flex:0 0 248px;scroll-snap-align:start;min-height:120px;position:relative;overflow:hidden;border-radius:10px;background:linear-gradient(135deg,#1f3864 0%,#16294a 100%);padding:12px 96px 12px 14px;text-decoration:none;display:flex;flex-direction:column;justify-content:center;transition:transform .18s,box-shadow .18s;}
 .lc-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(15,30,51,.3);}
 .lc-thumb{position:absolute;top:0;right:0;width:92px;height:100%;object-fit:cover;opacity:.85;-webkit-mask-image:linear-gradient(to right,transparent,#000 60%);mask-image:linear-gradient(to right,transparent,#000 60%);pointer-events:none;}
 .lc-eyebrow{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#5fc8d1;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
 .lc-dot{width:6px;height:6px;border-radius:50%;background:#5fc8d1;box-shadow:0 0 0 3px rgba(95,200,209,.22);flex:none;}
 .lc-title{font-size:.85rem;font-weight:600;color:#fff;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.lc-desc{font-size:.7rem;color:rgba(255,255,255,.72);line-height:1.4;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .lc-date{font-size:.65rem;color:rgba(255,255,255,.55);margin-top:4px;}
 </style>
 <section class="lc-section"><div class="container">
   <div class="lc-label">Latest calculators</div>
   <div class="lc-strip">
-      <a href="calc-transfusion-hgb.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#b91c1c 30%,#16294a) 0%,#14233f 100%);">
-        <span class="lc-eyebrow"><span class="lc-dot" style="background:#b91c1c;box-shadow:0 0 0 3px color-mix(in srgb,#b91c1c 30%,transparent);"></span>New calculator</span>
+      <a href="calc-transfusion-hgb.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#1f3864 30%,#16294a) 0%,#14233f 100%);">
+        <span class="lc-eyebrow"><span class="lc-dot" style="background:#1f3864;box-shadow:0 0 0 3px color-mix(in srgb,#1f3864 30%,transparent);"></span>New calculator</span>
         <span class="lc-title">Transfusion Hemoglobin Predictor — ΔHgb ↔ RBC Volume</span>
+        <span class="lc-desc">Predict the rise in Hgb from a planned RBC transfusion, or compute the volume required to reach a target…</span>
         <span class="lc-date"><time datetime="2026-06-28T15:00:00+08:00">Jun 28, 2026</time></span>
         <img class="lc-thumb" src="../images/hero-cat-minerals-anemia.webp" alt="Minerals, Anemia & Iron — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
+      </a>
+      <a href="calc-na-balance.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#1f3864 30%,#16294a) 0%,#14233f 100%);">
+        <span class="lc-eyebrow"><span class="lc-dot" style="background:#1f3864;box-shadow:0 0 0 3px color-mix(in srgb,#1f3864 30%,transparent);"></span>New calculator</span>
+        <span class="lc-title">Dialysate Sodium Balance Calculator — Time-Averaged Na &amp; Salt-Loading Risk</span>
+        <span class="lc-desc">Time-averaged dialysate sodium (TAD-Na), plasma–TAD delta, and salt-loading risk classification for…</span>
+        <span class="lc-date"><time datetime="2026-06-28T12:15:00+08:00">Jun 28, 2026</time></span>
+        <img class="lc-thumb" src="../images/hero-cat-dialysis.webp" alt="calc na balance" loading="lazy" decoding="async">
+      </a>
+      <a href="calc-ufr-ceiling.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#1f3864 30%,#16294a) 0%,#14233f 100%);">
+        <span class="lc-eyebrow"><span class="lc-dot" style="background:#1f3864;box-shadow:0 0 0 3px color-mix(in srgb,#1f3864 30%,transparent);"></span>New calculator</span>
+        <span class="lc-title">UFR Ceiling Calculator — Patient-Specific Ultrafiltration Rate Limit</span>
+        <span class="lc-desc">Patient-specific UFR ceiling (13 vs 10 mL/kg/hr) for safer hemodialysis prescribing. Computes mean UFR,…</span>
+        <span class="lc-date"><time datetime="2026-06-28T12:00:00+08:00">Jun 28, 2026</time></span>
+        <img class="lc-thumb" src="../images/hero-cat-dialysis.webp" alt="calc ufr ceiling" loading="lazy" decoding="async">
       </a>
       <a href="calc-pediatric-uo.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
         <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
         <span class="lc-title">Pediatric Urine Output Rate — mL/kg/hr &amp; Oliguria Thresholds</span>
+        <span class="lc-desc">Calculate a child's urine output in mL/kg/hr and classify against age-banded oliguria thresholds (neonate,…</span>
         <span class="lc-date"><time datetime="2026-06-28T09:00:00+08:00">Jun 28, 2026</time></span>
         <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
       </a>
       <a href="calc-pediatric-growth-percentiles.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
         <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
         <span class="lc-title">Pediatric Growth Percentiles (WHO 0–24 mo &amp; CDC 2–20 yr)</span>
+        <span class="lc-desc">Pediatric growth percentile and z-score calculator (height-for-age, weight-for-age, weight-for-length)…</span>
         <span class="lc-date"><time datetime="2026-06-28T09:00:00+08:00">Jun 28, 2026</time></span>
         <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
       </a>
       <a href="calc-pediatric-dehydration.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
         <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
         <span class="lc-title">Pediatric Dehydration Severity &amp; Fluid Deficit (WHO + Gorelick)</span>
+        <span class="lc-desc">Classify pediatric dehydration severity using the WHO Plan A/B/C scheme and the Gorelick 10-point clinical…</span>
         <span class="lc-date"><time datetime="2026-06-28T09:00:00+08:00">Jun 28, 2026</time></span>
         <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
       </a>
       <a href="calc-pediatric-calcium.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
         <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
         <span class="lc-title">Pediatric Calcium Correction & Ionized Ca Estimate</span>
+        <span class="lc-desc">Pediatric calcium calculator — albumin-corrected total Ca and estimated ionized Ca, classified against…</span>
         <span class="lc-date"><time datetime="2026-06-28T09:00:00+08:00">Jun 28, 2026</time></span>
         <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
       </a>
       <a href="calc-neonatal-aki.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
         <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
         <span class="lc-title">Neonatal AKI Staging (Modified KDIGO) — Jetton/AWAKEN</span>
+        <span class="lc-desc">Stage neonatal acute kidney injury with the modified neonatal KDIGO definition (Jetton/AWAKEN): uses the…</span>
         <span class="lc-date"><time datetime="2026-06-28T09:00:00+08:00">Jun 28, 2026</time></span>
         <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
       </a>
       <a href="calc-insensible-water-loss.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
         <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
         <span class="lc-title">Pediatric Insensible Water Loss (IWL) — Calculator</span>
+        <span class="lc-desc">Estimate pediatric insensible water loss (mL/kg/day, mL/day, mL/hr) by age category with adjustments for…</span>
         <span class="lc-date"><time datetime="2026-06-28T09:00:00+08:00">Jun 28, 2026</time></span>
         <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
       </a>
       <a href="calc-bsa.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
         <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
         <span class="lc-title">Body Surface Area (BSA) — Mosteller, Du Bois, Haycock</span>
+        <span class="lc-desc">Calculate body surface area (BSA) by the Mosteller, Du Bois, and Haycock formulas for drug dosing, eGFR…</span>
         <span class="lc-date"><time datetime="2026-06-28T09:00:00+08:00">Jun 28, 2026</time></span>
         <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
       </a>
       <a href="calc-renal-angina-index.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
         <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
         <span class="lc-title">Renal Angina Index (Pediatric AKI Prediction)</span>
+        <span class="lc-desc">Pediatric RAI = Risk × Injury at 12 h of PICU admission. Predict severe Day-3 KDIGO Stage 2+ AKI. ≥8 =…</span>
         <span class="lc-date"><time datetime="2026-06-27T21:00:00+08:00">Jun 27, 2026</time></span>
         <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
       </a>
       <a href="calc-pediatric-bmi-zscore.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
         <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
         <span class="lc-title">Pediatric BMI z-score &amp; Percentile (CDC 2000)</span>
-        <span class="lc-date"><time datetime="2026-06-27T21:00:00+08:00">Jun 27, 2026</time></span>
-        <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
-      </a>
-      <a href="calc-pediatric-aki.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
-        <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
-        <span class="lc-title">Pediatric AKI Staging (pRIFLE & pKDIGO)</span>
-        <span class="lc-date"><time datetime="2026-06-27T21:00:00+08:00">Jun 27, 2026</time></span>
-        <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
-      </a>
-      <a href="calc-holliday-segar.html" class="lc-card" style="background:linear-gradient(135deg,color-mix(in srgb,#ea580c 30%,#16294a) 0%,#14233f 100%);">
-        <span class="lc-eyebrow"><span class="lc-dot" style="background:#ea580c;box-shadow:0 0 0 3px color-mix(in srgb,#ea580c 30%,transparent);"></span>New calculator</span>
-        <span class="lc-title">Holliday-Segar Maintenance Fluids (4-2-1 Rule)</span>
+        <span class="lc-desc">Compute BMI, BMI-for-age z-score, percentile, and CDC 2007 expert-committee category in children 2–19…</span>
         <span class="lc-date"><time datetime="2026-06-27T21:00:00+08:00">Jun 27, 2026</time></span>
         <img class="lc-thumb" src="../images/hero-cat-pediatric.webp" alt="Pediatric Nephrology — nephrology calculators · williamriveromd.com" loading="lazy" decoding="async">
       </a>
@@ -1807,12 +1921,12 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="cf-search-wrap"><span class="cf-search-icon">⌕</span><input type="search" id="cf-search" class="cf-search" placeholder="Search calculators…" autocomplete="off" aria-label="Search calculators"></div>
 <div class="cf-cats">
 <div class="cf-heading">Categories</div>
-<button class="cf-btn active" data-filter="all"><span class="cf-dot" style="background:#94a3b8"></span>All tools<span class="cf-count">172</span></button>
+<button class="cf-btn active" data-filter="all"><span class="cf-dot" style="background:#94a3b8"></span>All tools<span class="cf-count">174</span></button>
 <button class="cf-btn" data-filter="favorites"><span class="cf-dot"></span>★ Favorites<span class="cf-count" id="cf-fav-count">0</span></button>
 <button class="cf-btn" data-filter="function"><span class="cf-dot" style="background:#1a6b72"></span>Kidney Function<span class="cf-count">4</span></button>
 <button class="cf-btn" data-filter="pharmacology"><span class="cf-dot" style="background:#0d9488"></span>Pharmacology &amp; Dosing<span class="cf-count">9</span></button>
 <button class="cf-btn" data-filter="risk"><span class="cf-dot" style="background:#b45309"></span>CKD Risk<span class="cf-count">8</span></button>
-<button class="cf-btn" data-filter="dialysis"><span class="cf-dot" style="background:#1f3864"></span>Dialysis<span class="cf-count">10</span></button>
+<button class="cf-btn" data-filter="dialysis"><span class="cf-dot" style="background:#1f3864"></span>Dialysis<span class="cf-count">12</span></button>
 <button class="cf-btn" data-filter="transplant"><span class="cf-dot" style="background:#1d4ed8"></span>Kidney Transplant<span class="cf-count">5</span></button>
 <button class="cf-btn" data-filter="electrolytes"><span class="cf-dot" style="background:#6b21a8"></span>Fluids · Electrolytes · Acid–Base<span class="cf-count">14</span></button>
 <button class="cf-btn" data-filter="minerals"><span class="cf-dot" style="background:#b91c1c"></span>Minerals · Anemia · Iron<span class="cf-count">9</span></button>
@@ -1840,26 +1954,22 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">CKD-EPI 2021</div>
 <div class="related-card-title">eGFR Calculator (race-free)</div>
 <div class="related-card-desc">GFR from creatinine via the 2021 race-free CKD-EPI equation; KDIGO G-stage.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-egfr-cystatin.html">
 <div class="related-card-tag">Cr–Cystatin C</div>
 <div class="related-card-title">eGFR — CKD-EPI 2021 Cr–CysC</div>
 <div class="related-card-desc">More precise eGFR combining creatinine and cystatin C.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-measured-crcl.html">
 <div class="related-card-tag">24-h Urine</div>
 <div class="related-card-title">Measured Creatinine Clearance</div>
 <div class="related-card-desc">CrCl from a 24-hour urine collection, with BSA correction.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-allograft-egfr-trend.html">
 <div class="related-card-tag">Transplant</div>
 <div class="related-card-title">Allograft eGFR Trend & Time to Failure</div>
 <div class="related-card-desc">Transplant eGFR trajectory and projected graft survival.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -1871,56 +1981,47 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Drug Dosing</div>
 <div class="related-card-title">Creatinine Clearance — Cockcroft-Gault</div>
 <div class="related-card-desc">CrCl for renal drug dosing with ideal/adjusted weight.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-corticosteroid-conversion.html">
 <div class="related-card-tag">Glucocorticoid</div>
 <div class="related-card-title">Corticosteroid Conversion</div>
 <div class="related-card-desc">Convert between systemic glucocorticoids by anti-inflammatory equivalence.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-iv-drip-rate.html">
 <div class="related-card-tag">IV Therapy · Nursing</div>
 <div class="related-card-title">IV Drip Rate Calculator</div>
 <div class="related-card-desc">Flow rate, drops/min, infusion duration, and weight-based drug infusion (mL/hr).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-vancomycin-auc.html">
 <div class="related-card-tag">ASHP/IDSA 2020</div>
 <div class="related-card-title">Vancomycin AUC/MIC Dosing</div>
 <div class="related-card-desc">AUC-guided dosing (target 400–600), nephrotoxicity risk, and trough interpretation.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-aminoglycoside-dosing.html">
 <div class="related-card-tag">Hartford · Extended-Interval</div>
 <div class="related-card-title">Aminoglycoside Dose & Interval</div>
 <div class="related-card-desc">Gentamicin, tobramycin & amikacin dosing by CrCl, extended-interval or conventional.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-metformin-ckd-safety.html">
 <div class="related-card-tag">ADA 2023 · eGFR</div>
 <div class="related-card-title">Metformin Safety Checker in CKD</div>
 <div class="related-card-desc">eGFR-based hold / continue / discontinue, dose cap, and contrast/sick-day holds.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-sglt2i-eligibility.html">
 <div class="related-card-tag">CKD · HF · T2DM</div>
 <div class="related-card-title">SGLT2i Eligibility & Dose Check</div>
 <div class="related-card-desc">Dapagliflozin/empagliflozin eGFR + indication eligibility, dose, and safety counseling.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-doac-renal-dosing.html">
 <div class="related-card-tag">DOAC · CrCl</div>
 <div class="related-card-title">DOAC Dosing in CKD</div>
 <div class="related-card-desc">Apixaban/rivaroxaban/dabigatran/edoxaban dose by Cockcroft-Gault CrCl + indication (FDA labels).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-renal-abx-dosing.html">
 <div class="related-card-tag">Antibiotics · CrCl</div>
 <div class="related-card-title">Renal Antibiotic Dosing</div>
 <div class="related-card-desc">CrCl-banded dose adjustment for 12+ common antibiotics (Sanford/label-verified) with avoid flags.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -1932,50 +2033,42 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Tangri KFRE</div>
 <div class="related-card-title">Kidney Failure Risk Equation</div>
 <div class="related-card-desc">2- and 5-year kidney-failure risk from age, sex, eGFR, uACR.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-ckd-progression-slope.html">
 <div class="related-card-tag">Trajectory</div>
 <div class="related-card-title">eGFR Slope & Time to Failure</div>
 <div class="related-card-desc">Rate of eGFR decline and projected time to kidney failure.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-proteinuria-uacr.html">
 <div class="related-card-tag">Albuminuria</div>
 <div class="related-card-title">Proteinuria & UACR/PCR Staging</div>
 <div class="related-card-desc">KDIGO A1–A3 albuminuria categories and prognostic risk.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-ci-aki-mehran.html">
 <div class="related-card-tag">Mehran</div>
 <div class="related-card-title">Contrast-Associated AKI Risk</div>
 <div class="related-card-desc">Mehran score and maximum safe contrast volume.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-dkd-risk.html">
 <div class="related-card-tag">Diabetes</div>
 <div class="related-card-title">Diabetic Kidney Disease Risk</div>
 <div class="related-card-desc">SGLT2i eligibility, eAG, and UACR-based risk.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-igan-prediction.html">
 <div class="related-card-tag">Barbour · IgAN</div>
 <div class="related-card-title">International IgAN Prediction Tool</div>
 <div class="related-card-desc">Risk of 50% eGFR decline or kidney failure in IgA nephropathy.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-urine-protein-excretion.html">
 <div class="related-card-tag">UPCR</div>
 <div class="related-card-title">Urine Protein Excretion (UPCR)</div>
 <div class="related-card-desc">Estimate 24-h protein excretion from a urine protein:creatinine ratio.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-anca-renal-risk.html">
 <div class="related-card-tag">ANCA · GN Prognosis</div>
 <div class="related-card-title">ANCA Renal Risk Score</div>
 <div class="related-card-desc">Biopsy-based ESKD risk in ANCA glomerulonephritis (Brix 2018): normal glomeruli, IF/TA, eGFR.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -1987,62 +2080,64 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Daugirdas</div>
 <div class="related-card-title">Dialysis Adequacy — spKt/V & URR</div>
 <div class="related-card-desc">Single-pool Kt/V, URR, and ultrafiltration rate.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-dialysis-prescription.html">
 <div class="related-card-tag">Prescription</div>
 <div class="related-card-title">Dialysis Prescription Calculators</div>
 <div class="related-card-desc">RKF, spKt/V, UF rate, nPCR, and weekly PD Kt/V.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-idwg-fluid.html">
 <div class="related-card-tag">Fluid</div>
 <div class="related-card-title">Interdialytic Weight Gain & Fluid</div>
 <div class="related-card-desc">Weight gain, fluid allowance, and UF-rate estimate.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-ultrafiltration-rate.html">
 <div class="related-card-tag">UFR · Flythe</div>
 <div class="related-card-title">Ultrafiltration Rate (UFR) — Max Safe UF</div>
 <div class="related-card-desc">UFR (mL/kg/h), risk band, and max safe UF volume at the ≤10 target and ≤13 ceiling.</div>
+<div class="related-card-arrow">Open →</div></a>
+<a class="related-card" href="calc-ufr-ceiling.html">
+<div class="related-card-tag">New · Patient-specific</div>
+<div class="related-card-title">UFR Ceiling — Patient-Specific Limit</div>
+<div class="related-card-desc">Mean UFR vs 13 (or 10 in cardiac fragility) mL/kg/hr threshold + minimum session time to stay under it.</div>
+<div class="related-card-arrow">Open →</div>
+</a>
+<a class="related-card" href="calc-na-balance.html">
+<div class="related-card-tag">New · Na · Profiling</div>
+<div class="related-card-title">Dialysate Sodium Balance — TAD-Na &amp; Salt Loading</div>
+<div class="related-card-desc">Time-averaged dialysate Na vs pre-HD plasma Na with net-zero diffusive Na flag — for sodium-ramping prescriptions.</div>
 <div class="related-card-arrow">Open →</div>
 </a>
 <a class="related-card" href="calc-dialysis-kinetics.html">
 <div class="related-card-tag">TMP · FF</div>
 <div class="related-card-title">Dialysis Kinetics — TMP & Filtration Fraction</div>
 <div class="related-card-desc">Transmembrane pressure from the four dialyzer pressures, and filtration fraction for post-/pre-dilution HDF.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-pd-adequacy.html">
 <div class="related-card-tag">ISPD 2020 · PD</div>
 <div class="related-card-title">PD Adequacy — Weekly Kt/V & CrCl</div>
 <div class="related-card-desc">Total weekly Kt/V (≥1.7) and creatinine clearance (≥45 L/1.73m²), peritoneal + residual renal.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-dry-weight-estimator.html">
 <div class="related-card-tag">BIS · Clinical</div>
 <div class="related-card-title">Dry Weight & Target Weight Estimator</div>
 <div class="related-card-desc">Estimate target weight and fluid to remove by bioimpedance (OH) or clinical method, with UF-rate check.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-pd-glucose-absorption.html">
 <div class="related-card-tag">PD · Glucose Load</div>
 <div class="related-card-title">PD Glucose Absorption & Caloric Load</div>
 <div class="related-card-desc">Dextrose absorbed and kcal/day from PD fluid — relevant to diabetes, weight, and lipids.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-hd-adequacy-npcr.html">
 <div class="related-card-tag">Combined · Daugirdas</div>
 <div class="related-card-title">HD Adequacy + nPCR (Kt/V · URR · nPCR)</div>
 <div class="related-card-desc">spKt/V, URR, nPCR and UF rate from one pre/post-dialysis urea draw.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-plasma-volume.html">
 <div class="related-card-tag">Apheresis · TPE</div>
 <div class="related-card-title">Plasma Volume & TPE Exchange Volume</div>
 <div class="related-card-desc">Estimated plasma volume and 1–1.5 PV exchange volume with % macromolecule removal — for plasmapheresis.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2054,32 +2149,27 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">KDPI · KDRI</div>
 <div class="related-card-title">KDPI & KDRI — Donor Quality</div>
 <div class="related-card-desc">Kidney Donor Risk Index → KDPI percentile (Rao/OPTN); deceased-donor quality for allocation & consent.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-epts.html">
 <div class="related-card-tag">EPTS · Allocation</div>
 <div class="related-card-title">EPTS — Post-Transplant Survival</div>
 <div class="related-card-desc">Estimated Post-Transplant Survival; EPTS ≤20% earns longevity-matched (KDPI ≤20%) offers.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-donor-esrd-risk.html">
 <div class="related-card-tag">Living Donor · ESRD</div>
 <div class="related-card-title">Living-Donor ESRD Risk</div>
 <div class="related-card-desc">Baseline pre-donation kidney-failure risk factors for living-donor evaluation & counseling.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-tacrolimus-dosing.html">
 <div class="related-card-tag">Tacrolimus · TDM</div>
 <div class="related-card-title">Tacrolimus Dosing & Target Trough</div>
 <div class="related-card-desc">Weight-based starting dose (IR / ER / Envarsus) and target whole-blood trough by time post-transplant.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-dgf-risk.html">
 <div class="related-card-tag">DGF · Risk</div>
 <div class="related-card-title">Delayed Graft Function Risk</div>
 <div class="related-card-desc">Weighted donor/recipient factors → DGF risk tier; cold ischemia, DCD, donor quality, sensitization.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2091,86 +2181,72 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Acid–Base</div>
 <div class="related-card-title">Anion Gap & Acid–Base</div>
 <div class="related-card-desc">Anion gap, corrected AG, delta ratio, Winter’s pCO₂.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-sodium-correction-rate.html">
 <div class="related-card-tag">Hyponatremia</div>
 <div class="related-card-title">Hyponatremia Correction & Na-Rise Predictor</div>
 <div class="related-card-desc">Predict Na⁺ rise from saline (3%/2%/NS) or NaCl/NaHCO₃ tablets, with rate & safe ceiling.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-urine-anion-gap.html">
 <div class="related-card-tag">RTA workup</div>
 <div class="related-card-title">Urine Anion Gap</div>
 <div class="related-card-desc">Differentiate GI bicarbonate loss from distal RTA in non-gap acidosis.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-ttkg.html">
 <div class="related-card-tag">Potassium</div>
 <div class="related-card-title">Transtubular Potassium Gradient</div>
 <div class="related-card-desc">TTKG to assess renal K⁺ handling in hyper-/hypokalemia.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-fena-feurea.html">
 <div class="related-card-tag">Pre-renal vs ATN</div>
 <div class="related-card-title">FeNa & FeUrea</div>
 <div class="related-card-desc">Fractional excretion of sodium and urea.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-osmolal-gap.html">
 <div class="related-card-tag">Osmoles</div>
 <div class="related-card-title">Serum Osmolality & Osmolal Gap</div>
 <div class="related-card-desc">Calculated osmolality and osmolal gap.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-stewart-sig.html">
 <div class="related-card-tag">Stewart · SIG</div>
 <div class="related-card-title">Strong Ion Gap (Stewart)</div>
 <div class="related-card-desc">Physicochemical SIDa, SIDe & strong ion gap — detects occult unmeasured anions the anion gap misses.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-fluid-deficit-urine-color.html">
 <div class="related-card-tag">Patient · Hydration</div>
 <div class="related-card-title">Am I Drinking Enough Water? — Urine Colour &amp; Fluid Deficit</div>
 <div class="related-card-desc">Daily water target by weight/sex, plus a urine-colour hydration check and fluid-deficit estimate.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-free-water-deficit.html">
 <div class="related-card-tag">Hypernatremia</div>
 <div class="related-card-title">Free Water Deficit</div>
 <div class="related-card-desc">Free water deficit and replacement estimate.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-maintenance-fluids.html">
 <div class="related-card-tag">IV Fluids</div>
 <div class="related-card-title">Maintenance IV Fluids & Comparison</div>
 <div class="related-card-desc">Holliday-Segar maintenance rate plus an IV-fluid composition table.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-bicarb-deficit.html">
 <div class="related-card-tag">Acidosis</div>
 <div class="related-card-title">Bicarbonate Deficit & Correction</div>
 <div class="related-card-desc">HCO₃⁻ deficit and a cautious initial replacement dose.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-abg-analyzer.html">
 <div class="related-card-tag">Acid–Base</div>
 <div class="related-card-title">ABG Analyzer — Acid-Base Interpreter</div>
 <div class="related-card-desc">Primary disorder, compensation (Winter's), anion gap & delta ratio.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-winters-formula.html">
 <div class="related-card-tag">Winters' Formula</div>
 <div class="related-card-title">Winters' Formula — Metabolic Acidosis</div>
 <div class="related-card-desc">Expected PaCO₂ compensation and mixed-disorder detection in metabolic acidosis.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-electrolyte-repletion.html">
 <div class="related-card-tag">Repletion · K · Mg · PO₄</div>
 <div class="related-card-title">Electrolyte Repletion Dosing</div>
 <div class="related-card-desc">Potassium, magnesium & phosphate replacement estimates with CKD-cautious dosing and monitoring notes.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2182,56 +2258,47 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">CKD-MBD</div>
 <div class="related-card-title">CKD-MBD Lab Calculator</div>
 <div class="related-card-desc">Ca×P product, corrected calcium, PTH target staging.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-corrected-calcium.html">
 <div class="related-card-tag">Payne</div>
 <div class="related-card-title">Corrected Calcium for Albumin</div>
 <div class="related-card-desc">Albumin-corrected serum calcium with low/normal/high flag.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-iron-deficit-ganzoni.html">
 <div class="related-card-tag">Ganzoni</div>
 <div class="related-card-title">Iron Deficit & IV Iron Dose</div>
 <div class="related-card-desc">Total iron deficit and IV replacement dose.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-iron-status-tsat.html">
 <div class="related-card-tag">TSAT</div>
 <div class="related-card-title">Iron Status — TSAT & Ferritin</div>
 <div class="related-card-desc">Transferrin saturation and ferritin interpretation.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-eri.html">
 <div class="related-card-tag">ESA Resistance</div>
 <div class="related-card-title">ESA Resistance Index (ERI)</div>
 <div class="related-card-desc">Erythropoiesis-stimulating-agent resistance index.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-esa-dose-adjustment.html">
 <div class="related-card-tag">EPO · KDIGO</div>
 <div class="related-card-title">ESA / EPO Dose Adjustment</div>
 <div class="related-card-desc">Start ESA-naïve patients and titrate epoetin/darbepoetin to the Hgb 10–11.5 target.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-iv-iron-dose.html">
 <div class="related-card-tag">IV Iron</div>
 <div class="related-card-title">IV Iron — Repletion / Maintain / Hold</div>
 <div class="related-card-desc">Decision by TSAT & ferritin (HD vs ND-CKD) per KDIGO iron thresholds.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-reticulocyte-rpi.html">
 <div class="related-card-tag">Reticulocyte · RPI</div>
 <div class="related-card-title">Reticulocyte Index (Corrected & RPI)</div>
 <div class="related-card-desc">Corrected retic % and production index — distinguishes hypoproliferative CKD anemia from hemolysis.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-transfusion-hgb.html">
 <div class="related-card-tag">Transfusion · ΔHgb</div>
 <div class="related-card-title">Transfusion Hgb Predictor</div>
 <div class="related-card-desc">Δ Hgb ↔ RBC volume with age-banded blood volume, product Hct, infusion guidance & restrictive-threshold framing.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2243,92 +2310,77 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Blood Pressure</div>
 <div class="related-card-title">MAP, Pulse Pressure & BP Target</div>
 <div class="related-card-desc">MAP, pulse pressure, and CKD BP-target check.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-lipid-panel.html">
 <div class="related-card-tag">Lipids</div>
 <div class="related-card-title">Lipid Panel Interpreter</div>
 <div class="related-card-desc">LDL (Friedewald), non-HDL, and ratio.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="dyslipidemia-management-tool.html">
 <div class="related-card-tag">Lipids · ACC/AHA 2026</div>
 <div class="related-card-title">Dyslipidemia Management Tool</div>
 <div class="related-card-desc">2026 ACC/AHA dyslipidemia tool: PREVENT-based ASCVD risk, LDL-C targets, and personalized statin/non-statin recommendations with Philippine brand names.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-uric-acid.html">
 <div class="related-card-tag">Gout / ULT</div>
 <div class="related-card-title">Uric Acid Target & FEUA</div>
 <div class="related-card-desc">Urate target, FEUA, and urate-lowering guidance.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-statin-intolerance.html">
 <div class="related-card-tag">SAMS · ACC 2022</div>
 <div class="related-card-title">Statin Intolerance & SAMS Aid</div>
 <div class="related-card-desc">Triage muscle symptoms/CK; choose rechallenge or non-statin therapy.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-has-bled.html">
 <div class="related-card-tag">HAS-BLED · Bleeding Risk</div>
 <div class="related-card-title">HAS-BLED Score</div>
 <div class="related-card-desc">1-year major bleeding risk in AF patients on anticoagulation; identifies modifiable risk factors.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-hf-staging.html">
 <div class="related-card-tag">ACC/AHA · Heart Failure</div>
 <div class="related-card-title">ACC/AHA Heart Failure Staging</div>
 <div class="related-card-desc">Stage A–D classification with NYHA cross-reference and cardiorenal syndrome guidance.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-prevent-cvd.html">
 <div class="related-card-tag">AHA · PREVENT</div>
 <div class="related-card-title">AHA PREVENT — 10-Year CV Risk</div>
 <div class="related-card-desc">Total CVD, ASCVD &amp; heart-failure risk for ages 30–79 — the kidney-aware score using eGFR and urine ACR.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-ckm-staging.html">
 <div class="related-card-tag">AHA 2023</div>
 <div class="related-card-title">CKM Syndrome Staging Tool</div>
 <div class="related-card-desc">Cardiovascular-Kidney-Metabolic stages 0–4 (incl. 4a/4b) with stage-specific management.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-cha2ds2-vasc.html">
 <div class="related-card-tag">AF · Stroke Risk</div>
 <div class="related-card-title">CHA₂DS₂-VASc + Anticoagulation in CKD</div>
 <div class="related-card-desc">Stroke risk in non-valvular AF with CKD-tailored DOAC dosing; pairs with HAS-BLED.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-eag-hba1c.html">
 <div class="related-card-tag">ADAG · Glucose</div>
 <div class="related-card-title">eAG ↔ HbA1c Converter</div>
 <div class="related-card-desc">Convert HbA1c to estimated average glucose, with CKD/dialysis reliability caveats.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-af-anticoagulation.html">
 <div class="related-card-tag">Combined · AF</div>
 <div class="related-card-title">AF Anticoagulation Decision (VASc + HAS-BLED)</div>
 <div class="related-card-desc">CHA₂DS₂-VASc and HAS-BLED on one page with a net recommendation and CKD DOAC dosing.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-aldosterone-renin-ratio.html">
 <div class="related-card-tag">ARR · Aldosteronism</div>
 <div class="related-card-title">Aldosterone-Renin Ratio (ARR)</div>
 <div class="related-card-desc">Primary aldosteronism screen (PAC/PRA or PAC/DRC) for resistant/secondary hypertension workup.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-fib4-nafld.html">
 <div class="related-card-tag">FIB-4 · NAFLD</div>
 <div class="related-card-title">FIB-4 & NAFLD Fibrosis Score</div>
 <div class="related-card-desc">Non-invasive liver-fibrosis triage (FIB-4 + NFS) for MASLD — fits the CKM/metabolic cluster.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-abi.html">
 <div class="related-card-tag">ABI · PAD</div>
 <div class="related-card-title">Ankle-Brachial Index</div>
 <div class="related-card-desc">Per-leg ABI for peripheral artery disease; flags non-compressible (calcified) vessels in diabetic CKD.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2340,62 +2392,52 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Thyroid</div>
 <div class="related-card-title">TSH Interpreter in CKD</div>
 <div class="related-card-desc">Interpret TSH in the context of kidney disease.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-subclinical-hypothyroid.html">
 <div class="related-card-tag">Thyroid</div>
 <div class="related-card-title">Subclinical Hypothyroidism Aid</div>
 <div class="related-card-desc">Treatment decision aid for subclinical hypothyroidism.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-thyroid-screening-interval.html">
 <div class="related-card-tag">Thyroid</div>
 <div class="related-card-title">Thyroid Screening Interval</div>
 <div class="related-card-desc">Recommended thyroid re-screening interval in CKD.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-sodium-glucose-correction.html">
 <div class="related-card-tag">Glucose</div>
 <div class="related-card-title">Sodium Correction for Hyperglycemia</div>
 <div class="related-card-desc">Corrected serum sodium for hyperglycemia.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-insulin-dose.html">
 <div class="related-card-tag">Diabetes</div>
 <div class="related-card-title">Insulin Dosing in CKD</div>
 <div class="related-card-desc">CKD-adjusted starting dose, basal/bolus, ISF & carb ratio, correction dose.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-insulin-resistance.html">
 <div class="related-card-tag">HOMA-IR</div>
 <div class="related-card-title">Insulin Resistance — HOMA-IR, QUICKI, TyG</div>
 <div class="related-card-desc">HOMA-IR/β, QUICKI, and TyG insulin-resistance surrogates.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-levothyroxine-dose.html">
 <div class="related-card-tag">LT4 · Thyroid</div>
 <div class="related-card-title">Levothyroxine (LT4) Weight-Based Dosing</div>
 <div class="related-card-desc">Starting LT4 dose by indication (hypothyroidism, DTC suppression) with age and cardiac adjustments.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-vitamin-d-dose.html">
 <div class="related-card-tag">25-OHD · Cholecalciferol</div>
 <div class="related-card-title">Vitamin D Dose by 25-OHD Level</div>
 <div class="related-card-desc">Cholecalciferol loading + maintenance by deficiency tier, with CKD nutritional-vs-active context.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-uacr-trend.html">
 <div class="related-card-tag">KDIGO · Albuminuria</div>
 <div class="related-card-title">UACR Serial Trend Tracker</div>
 <div class="related-card-desc">Track UACR over time — KDIGO A1–A3 category, trend, and % change across visits.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-dka-management.html">
 <div class="related-card-tag">DKA · Protocol</div>
 <div class="related-card-title">DKA Management</div>
 <div class="related-card-desc">Weight-based fluids, insulin & potassium plan with resolution criteria — euglycemic-DKA & CKD caveats.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2408,92 +2450,77 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">CKiD U25</div>
 <div class="related-card-title">Pediatric eGFR (ages 1–25)</div>
 <div class="related-card-desc">Age/sex-specific eGFR for children and young adults.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-schwartz-egfr.html">
 <div class="related-card-tag">Schwartz 2009 · Pediatric</div>
 <div class="related-card-title">Revised Schwartz eGFR (Pediatric)</div>
 <div class="related-card-desc">Bedside eGFR for children from height and serum creatinine (Schwartz 2009).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-ckid-u25-egfr.html">
 <div class="related-card-tag">CKiD U25 · Pierce 2021</div>
 <div class="related-card-title">CKiD U25 eGFR</div>
 <div class="related-card-desc">Age- &amp; sex-specific pediatric/adolescent eGFR (1–25 yr); refined from Bedside Schwartz, valid across the peds→adult transition.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-pediatric-bp.html">
 <div class="related-card-tag">Pediatric · AAP 2017</div>
 <div class="related-card-title">Pediatric Blood Pressure</div>
 <div class="related-card-desc">AAP 2017 BP classification (Normal/Elevated/Stage 1–2) by age, sex & height for children 1–17.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-pediatric-bmi-zscore.html">
 <div class="related-card-tag">CDC 2000 · BMI</div>
 <div class="related-card-title">Pediatric BMI z-score &amp; Percentile</div>
 <div class="related-card-desc">CDC 2000 BMI-for-age z-score and percentile (ages 2–19) with full LMS table — Underweight/Healthy/Overweight/Obesity.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-holliday-segar.html">
 <div class="related-card-tag">Holliday-Segar · 4-2-1</div>
 <div class="related-card-title">Holliday-Segar Maintenance Fluids</div>
 <div class="related-card-desc">24-h volume and 4-2-1 hourly rate from weight, with AAP 2018 isotonic-fluid guidance and CKD/HF cautions.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-pediatric-aki.html">
 <div class="related-card-tag">pRIFLE · pKDIGO</div>
 <div class="related-card-title">Pediatric AKI Staging</div>
 <div class="related-card-desc">pRIFLE and pKDIGO staging for children — eCCl change OR urine-output criteria with worst-of staging.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-renal-angina-index.html">
 <div class="related-card-tag">Basu · RAI</div>
 <div class="related-card-title">Renal Angina Index</div>
 <div class="related-card-desc">Risk × Injury pediatric ICU AKI prediction at 12 h; RAI ≥8 = renal angina present (high NPV for severe Day-3 AKI).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-bsa.html">
 <div class="related-card-tag">BSA · Mosteller · Du Bois · Haycock</div>
 <div class="related-card-title">Body Surface Area</div>
 <div class="related-card-desc">BSA in m² by Mosteller, Du Bois, and Haycock — for chemo, steroid & renal-cleared dosing across ages.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-pediatric-uo.html">
 <div class="related-card-tag">Pediatric · UO Rate</div>
 <div class="related-card-title">Pediatric Urine Output</div>
 <div class="related-card-desc">mL/kg/hr with age-specific oliguria thresholds (neonate / infant / child / adolescent) — underlies pRIFLE/pKDIGO.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-insensible-water-loss.html">
 <div class="related-card-tag">Pediatric · IWL</div>
 <div class="related-card-title">Insensible Water Loss</div>
 <div class="related-card-desc">Age-band IWL (mL/kg/day) adjusted for fever, phototherapy & radiant warmer — fluid-balance precision in NICU/PICU.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-pediatric-dehydration.html">
 <div class="related-card-tag">WHO · Gorelick · Deficit</div>
 <div class="related-card-title">Pediatric Dehydration</div>
 <div class="related-card-desc">WHO + Gorelick severity scales with fluid-deficit (% × kg × 10) and IV/oral plan — slow correction for hypernatremia.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-pediatric-calcium.html">
 <div class="related-card-tag">Pediatric · Ca Correction</div>
 <div class="related-card-title">Pediatric Calcium (Corrected & Ionized)</div>
 <div class="related-card-desc">Albumin-corrected total Ca and ionized-Ca estimate with age-specific reference ranges (preterm → adolescent).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-neonatal-aki.html">
 <div class="related-card-tag">Neonatal · Modified KDIGO</div>
 <div class="related-card-title">Neonatal AKI Staging</div>
 <div class="related-card-desc">Modified KDIGO using LOWEST-previous SCr (not pre-illness baseline) + age-adjusted UO thresholds (Jetton/AWAKEN).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-pediatric-growth-percentiles.html">
 <div class="related-card-tag">WHO · CDC · Growth</div>
 <div class="related-card-title">Pediatric Growth Percentiles</div>
 <div class="related-card-desc">Height-for-age, weight-for-age & weight-for-length percentiles (WHO 0–24 mo, CDC 2–20 yr) for CKD growth tracking.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2505,62 +2532,52 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">KDOQI 2020</div>
 <div class="related-card-title">CKD Nutrition Prescription</div>
 <div class="related-card-desc">Protein, energy, K, P, Na, and fluid targets by stage.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-bmi-bsa-ibw.html">
 <div class="related-card-tag">Anthropometry</div>
 <div class="related-card-title">BMI, BSA, Ideal & Adjusted Weight</div>
 <div class="related-card-desc">BMI (Asian-Pacific), Mosteller BSA, Devine IBW.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-sodium-intake.html">
 <div class="related-card-tag">Salt</div>
 <div class="related-card-title">Sodium Intake Estimator</div>
 <div class="related-card-desc">Daily sodium from Filipino foods vs the 2 g target.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-exercise-hr-zones.html">
 <div class="related-card-tag">Karvonen</div>
 <div class="related-card-title">Exercise Target HR Zones</div>
 <div class="related-card-desc">Karvonen HR zones and energy expenditure.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-energy-expenditure.html">
 <div class="related-card-tag">Harris-Benedict · Mifflin</div>
 <div class="related-card-title">Basal Energy Expenditure</div>
 <div class="related-card-desc">BMR from Harris-Benedict (original & revised) and Mifflin-St Jeor; KDOQI 30–35 kcal/kg CKD target.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-nri.html">
 <div class="related-card-tag">NRI · GNRI · Malnutrition</div>
 <div class="related-card-title">Nutritional Risk Index (NRI & GNRI)</div>
 <div class="related-card-desc">Standard NRI (albumin + weight) and Geriatric NRI (albumin + IBW ratio); KDOQI malnutrition risk categories.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-phosphorus-load.html">
 <div class="related-card-tag">Filipino Foods · Phosphate</div>
 <div class="related-card-title">Phosphorus Dietary Load Estimator</div>
 <div class="related-card-desc">Daily phosphorus from Filipino foods vs target, with an additive-phosphorus (high-absorption) warning.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-potassium-load.html">
 <div class="related-card-tag">Filipino Foods · Potassium</div>
 <div class="related-card-title">Potassium Dietary Load Estimator</div>
 <div class="related-card-desc">Daily potassium from Filipino foods vs target, with high-K avoidance and leaching tips.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-npcr.html">
 <div class="related-card-tag">nPNA · Dialysis</div>
 <div class="related-card-title">nPCR — Protein Catabolic Rate</div>
 <div class="related-card-desc">Normalized protein catabolic rate from interdialytic BUN rise; dietary protein surrogate (target 1.0–1.2).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-ketoanalogue-dose.html">
 <div class="related-card-tag">KA · LPD/VLPD</div>
 <div class="related-card-title">Ketoanalogue Supplement Dose</div>
 <div class="related-card-desc">IBW-based ketoacid analogue dosing with the paired low-/very-low-protein diet target.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2572,20 +2589,17 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Charlson</div>
 <div class="related-card-title">Charlson Comorbidity Index</div>
 <div class="related-card-desc">Age-adjusted comorbidity burden and prognosis.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-frailty-assessment.html">
 <div class="related-card-tag">Frailty</div>
 <div class="related-card-title">Frailty — CFS & Fried Phenotype</div>
 <div class="related-card-desc">Clinical Frailty Scale and Fried frailty phenotype.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-sarcopenia-sarcf.html">
 <div class="related-card-tag">SARC-F · SARC-CalF</div>
 <div class="related-card-title">Sarcopenia Screening — SARC-F + Calf</div>
 <div class="related-card-desc">SARC-F questionnaire with optional calf circumference (SARC-CalF) for low-muscle screening in CKD/dialysis.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2597,69 +2611,58 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Urology</div>
 <div class="related-card-title">IPSS — Prostate Symptom Score</div>
 <div class="related-card-desc">International Prostate Symptom Score and QoL.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-iief5.html">
 <div class="related-card-tag">Sexual Health</div>
 <div class="related-card-title">IIEF-5 — Erectile Function</div>
 <div class="related-card-desc">5-item erectile-function screening (SHIM).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-sledai.html">
 <div class="related-card-tag">Lupus</div>
 <div class="related-card-title">SLEDAI-2K & Damage Index</div>
 <div class="related-card-desc">Lupus activity (SLEDAI-2K) and SLICC/ACR damage.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-nutrition-screening.html">
 <div class="related-card-tag">Malnutrition</div>
 <div class="related-card-title">Malnutrition Screening — SNAQ/MIS/SGA</div>
 <div class="related-card-desc">Three-tab nutrition screening for CKD.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-sbirt-screening.html">
 <div class="related-card-tag">Substance Use</div>
 <div class="related-card-title">SBIRT — AUDIT-C/DAST-10/CAGE-AID</div>
 <div class="related-card-desc">Validated alcohol and drug screening.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 
 <a class="related-card" href="calc-lights-criteria.html">
 <div class="related-card-tag">Pleural Effusion</div>
 <div class="related-card-title">Light's Criteria</div>
 <div class="related-card-desc">Distinguish exudate from transudate using the 3-ratio rule (Light 1972).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-4ts-hit.html">
 <div class="related-card-tag">HIT · Hematology</div>
 <div class="related-card-title">4Ts Score — HIT Pretest Probability</div>
 <div class="related-card-desc">Pretest probability of heparin-induced thrombocytopenia (Lo 2006).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-stop-bang.html">
 <div class="related-card-tag">STOP-BANG · Sleep Apnea</div>
 <div class="related-card-title">STOP-BANG — OSA Screening</div>
 <div class="related-card-desc">8-item obstructive sleep apnea screen; high score warrants polysomnography referral.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-phq9.html">
 <div class="related-card-tag">PHQ-9 · Depression</div>
 <div class="related-card-title">PHQ-9 Depression Screen</div>
 <div class="related-card-desc">9-item depression severity with PHQ-2 and a self-harm safety flag; CKD depression is 25–40%.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-psqi.html">
 <div class="related-card-tag">PSQI · Sleep</div>
 <div class="related-card-title">Pittsburgh Sleep Quality Index</div>
 <div class="related-card-desc">7-component sleep-quality score (global >5 = poor); complements STOP-BANG for HD patients.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-epworth.html">
 <div class="related-card-tag">Epworth · ESS</div>
 <div class="related-card-title">Epworth Sleepiness Scale</div>
 <div class="related-card-desc">8-item daytime sleepiness score (≥11 = excessive); pairs with PSQI & STOP-BANG for CKD/pre-transplant workup.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2671,14 +2674,12 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Dialysis QoL</div>
 <div class="related-card-title">Dialysis PROMs — KDQOL-36/DSI/IPOS</div>
 <div class="related-card-desc">Symptom and quality-of-life PROMs for dialysis.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-transplant-prom.html">
 <div class="related-card-tag">Transplant</div>
 <div class="related-card-title">Transplant PROMs — BAASIS/KTQ/PHQ-9/GAD-7</div>
 <div class="related-card-desc">Adherence, QoL, depression, and anxiety after transplant.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2690,62 +2691,52 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">KDIGO</div>
 <div class="related-card-title">AKI Staging (KDIGO)</div>
 <div class="related-card-desc">Stage AKI by creatinine ratio/rise and urine output.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-rifle-aki.html">
 <div class="related-card-tag">RIFLE · ADQI</div>
 <div class="related-card-title">RIFLE Criteria</div>
 <div class="related-card-desc">Risk/Injury/Failure/Loss/ESKD classification of AKI (Bellomo 2004).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-akin-aki.html">
 <div class="related-card-tag">AKIN</div>
 <div class="related-card-title">AKIN Classification</div>
 <div class="related-card-desc">Stage AKI (1–3) from 48-h creatinine rise or urine output (Mehta 2007).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-hfrs-severity.html">
 <div class="related-card-tag">Hantavirus</div>
 <div class="related-card-title">HFRS Severity & Dialysis Risk</div>
 <div class="related-card-desc">HFRS severity and dialysis-need estimate.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-dengue-aki-risk.html">
 <div class="related-card-tag">Dengue</div>
 <div class="related-card-title">Dengue-Associated AKI Risk</div>
 <div class="related-card-desc">AKI risk estimate in dengue infection.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-thakar-aki.html">
 <div class="related-card-tag">Thakar · Cardiac Sx</div>
 <div class="related-card-title">Thakar Score — AKI After Cardiac Surgery</div>
 <div class="related-card-desc">Cleveland Clinic risk of AKI requiring dialysis after cardiac surgery.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-spark-aki.html">
 <div class="related-card-tag">SPARK · Non-Cardiac Sx</div>
 <div class="related-card-title">SPARK Index — AKI After Non-Cardiac Surgery</div>
 <div class="related-card-desc">Preoperative AKI risk classes (A–D) before non-cardiac surgery.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-kegfr.html">
 <div class="related-card-tag">Kinetic eGFR</div>
 <div class="related-card-title">Kinetic eGFR — AKI Creatinine Adjustment</div>
 <div class="related-card-desc">Estimates true GFR during rising or falling creatinine using the Chen 2013 kinetic formula.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-urine-output-fluid-balance.html">
 <div class="related-card-tag">Urine Output · Fluid Balance</div>
 <div class="related-card-title">Urine Output & Fluid Balance</div>
 <div class="related-card-desc">UO rate (mL/kg/h) vs KDIGO AKI thresholds; cumulative fluid balance and fluid overload % of admission weight.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-leptospirosis-aki-risk.html">
 <div class="related-card-tag">Leptospirosis · Weil's</div>
 <div class="related-card-title">Leptospirosis-AKI / Severity Risk</div>
 <div class="related-card-desc">Philippines-endemic Weil's disease: severity and dialysis-requiring-AKI risk from clinical predictors.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2757,128 +2748,107 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">GCS · Neurology</div>
 <div class="related-card-title">Glasgow Coma Scale (GCS)</div>
 <div class="related-card-desc">Eye + verbal + motor response scoring; severity classification and intubation threshold.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-sirs-sepsis.html">
 <div class="related-card-tag">SIRS · Sepsis-2</div>
 <div class="related-card-title">SIRS / Sepsis / Septic Shock</div>
 <div class="related-card-desc">Systemic inflammatory response classification with organ dysfunction checklist (Bone 1992).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-parkland-burns.html">
 <div class="related-card-tag">Burns · Parkland</div>
 <div class="related-card-title">Parkland Formula — Burns Resuscitation</div>
 <div class="related-card-desc">24-h LR volume (4×kg×%TBSA), time-adjusted delivery rates, and Rule of Nines.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-acetaminophen-nac.html">
 <div class="related-card-tag">Toxicology · NAC</div>
 <div class="related-card-title">Acetaminophen Overdose & NAC Protocol</div>
 <div class="related-card-desc">Rumack-Matthew nomogram risk assessment and IV NAC 21-hour dosing protocol.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-vasopressor-inotrope.html">
 <div class="related-card-tag">Vasopressors · Inotropes</div>
 <div class="related-card-title">Vasopressor & Inotrope Infusion</div>
 <div class="related-card-desc">Dose ↔ rate (mL/hr) and gtts/min for local norepinephrine, epinephrine, dopamine, dobutamine, vasopressin, milrinone formulations.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-qsofa-sofa.html">
 <div class="related-card-tag">Sepsis-3</div>
 <div class="related-card-title">qSOFA & SOFA Score</div>
 <div class="related-card-desc">Bedside qSOFA and full six-organ SOFA scoring; complements the SIRS/Sepsis tool.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-qtc.html">
 <div class="related-card-tag">QTc · ECG</div>
 <div class="related-card-title">Corrected QT Interval (QTc)</div>
 <div class="related-card-desc">Bazett, Fridericia, Framingham & Hodges QTc with torsades risk band — for QT-prolonging drugs in CKD.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-crrt-dose.html">
 <div class="related-card-tag">CRRT · KDIGO</div>
 <div class="related-card-title">CRRT Dose & Effluent Flow</div>
 <div class="related-card-desc">Effluent rate → delivered dose (mL/kg/hr) vs the KDIGO 20–25 target, with downtime & pre-dilution correction.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-crrt-uf-rate.html">
 <div class="related-card-tag">CRRT · Net UF</div>
 <div class="related-card-title">Net Ultrafiltration Rate (CRRT)</div>
 <div class="related-card-desc">Net fluid-removal intensity (mL/kg/hr); >1.75 mL/kg/hr is linked to mortality — distinct from the effluent dose.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-fst.html">
 <div class="related-card-tag">FST · AKI</div>
 <div class="related-card-title">Furosemide Stress Test</div>
 <div class="related-card-desc">2-h urine output after 1.0–1.5 mg/kg IV; <200 mL predicts progression to KDIGO stage-3 AKI / RRT.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-fluid-overload.html">
 <div class="related-card-tag">Fluid Balance</div>
 <div class="related-card-title">Fluid Overload %</div>
 <div class="related-card-desc">Cumulative balance ÷ baseline weight; ≥10% fluid overload predicts mortality & worse AKI recovery.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-perfusion-pressure.html">
 <div class="related-card-tag">Cardiorenal · Perfusion</div>
 <div class="related-card-title">Renal & Abdominal Perfusion Pressure</div>
 <div class="related-card-desc">MAP − CVP (renal) and MAP − IAP (abdominal) with IAH/ACS staging — congestive & compartment AKI.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-apache2.html">
 <div class="related-card-tag">APACHE II · ICU</div>
 <div class="related-card-title">APACHE II Score</div>
 <div class="related-card-desc">12 physiology variables + age + chronic health → ICU severity and estimated mortality (doubles for ARF).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-mcmahon-rhabdo.html">
 <div class="related-card-tag">Rhabdomyolysis · AKI</div>
 <div class="related-card-title">McMahon Score</div>
 <div class="related-card-desc">Predicts AKI requiring RRT or death in rhabdomyolysis (score ≥6 = elevated risk).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-meld-na.html">
 <div class="related-card-tag">MELD-Na · Hepatorenal</div>
 <div class="related-card-title">MELD & MELD-Na Score</div>
 <div class="related-card-desc">Liver-disease severity (creatinine + dialysis weighted) — hepatorenal syndrome & ACLF prognosis.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-lactate-clearance.html">
 <div class="related-card-tag">Lactate · Sepsis</div>
 <div class="related-card-title">Lactate Clearance</div>
 <div class="related-card-desc">% clearance over the resuscitation interval; ≥10% is a validated sepsis target. Rising lactate = ominous.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-vis.html">
 <div class="related-card-tag">VIS · Vasopressors</div>
 <div class="related-card-title">Vasoactive-Inotropic Score</div>
 <div class="related-card-desc">Weighted cumulative vasoactive dose; higher VIS tracks mortality, ventilation, and AKI/RRT risk.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-shock-index.html">
 <div class="related-card-tag">Shock Index</div>
 <div class="related-card-title">Shock Index & Modified SI</div>
 <div class="related-card-desc">HR/SBP (and HR/MAP, age SI); ≥0.9 flags occult shock & hypoperfusion before SBP falls.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-child-pugh.html">
 <div class="related-card-tag">Child-Pugh · Cirrhosis</div>
 <div class="related-card-title">Child-Pugh Score</div>
 <div class="related-card-desc">Cirrhosis severity (Class A/B/C) from bilirubin, albumin, INR, ascites & encephalopathy — pairs with MELD-Na.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-wells-dvt-pe.html">
 <div class="related-card-tag">Wells · VTE</div>
 <div class="related-card-title">Wells Score — DVT & PE</div>
 <div class="related-card-desc">Pretest probability for DVT and PE with the D-dimer vs imaging next step (CKD contrast caveats noted).</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-saag.html">
 <div class="related-card-tag">SAAG · Ascites</div>
 <div class="related-card-title">Serum-Ascites Albumin Gradient</div>
 <div class="related-card-desc">SAAG ≥1.1 = portal hypertension; with ascitic protein splits cardiac vs cirrhotic — hepatorenal workup.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2890,44 +2860,37 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">CAP · PSMID 2020</div>
 <div class="related-card-title">Philippine CAP Risk Stratification</div>
 <div class="related-card-desc">Low/moderate/high-risk CAP → site of care + empiric antibiotics per the 2020 PSMID/PCCP/PCP CPG.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-curb65-psi.html">
 <div class="related-card-tag">CURB-65 · Pneumonia</div>
 <div class="related-card-title">CURB-65 — Pneumonia Severity</div>
 <div class="related-card-desc">5-point CAP severity (Confusion, Urea, RR, BP, Age ≥65) → outpatient vs admit vs ICU; CRB-65 & PSI notes.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-aa-gradient.html">
 <div class="related-card-tag">Gas Exchange</div>
 <div class="related-card-title">A-a Gradient</div>
 <div class="related-card-desc">Alveolar–arterial O₂ gradient with age-expected limit — separates V/Q mismatch & shunt from hypoventilation.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-pf-ratio.html">
 <div class="related-card-tag">ARDS · Berlin</div>
 <div class="related-card-title">P/F Ratio (PaO₂/FiO₂)</div>
 <div class="related-card-desc">Berlin ARDS severity (mild/moderate/severe) with S/F surrogate; drives fluid strategy in AKI/sepsis.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-minute-ventilation.html">
 <div class="related-card-tag">Lung-Protective Vent</div>
 <div class="related-card-title">Minute Ventilation & Tidal Volume</div>
 <div class="related-card-desc">Devine IBW, 6 mL/kg lung-protective tidal volume target & minute ventilation for ICU/AKI ventilation.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-reveal-pah.html">
 <div class="related-card-tag">REVEAL 2.0 · PAH</div>
 <div class="related-card-title">REVEAL 2.0 — PAH Risk Score</div>
 <div class="related-card-desc">Weighted pulmonary-arterial-hypertension risk (low/intermediate/high); pulmonary HTN is common in dialysis.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-rap-ivc.html">
 <div class="related-card-tag">Cardiorenal · IVC</div>
 <div class="related-card-title">RAP from IVC Collapsibility</div>
 <div class="related-card-desc">ASE 3-tier right-atrial pressure from IVC size & collapse — venous congestion → cardiorenal AKI.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2939,26 +2902,22 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">PSA · Prostate Panel · Screening</div>
 <div class="related-card-title">Prostate Panel Interpreter &amp; PSA Calculator</div>
 <div class="related-card-desc">Drug-corrected PSA interpretation (finasteride ×2, dutasteride ×2.5) with % Free PSA, PSA density, PSA velocity, and age-adjusted risk tiers.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="prostate-panel-interpreter.html">
 <div class="related-card-tag">PSA · Full Interpretation Guide</div>
 <div class="related-card-title">Prostate Panel Interpreter — Full Guide</div>
 <div class="related-card-desc">In-depth PSA calculator and guide: prostate panel results, drug corrections, risk tiers, and follow-up recommendations.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-psa-doubling-time.html">
 <div class="related-card-tag">PSA · Prostate Cancer</div>
 <div class="related-card-title">PSA Doubling Time (PSADT)</div>
 <div class="related-card-desc">2-point and multi-point PSADT from serial PSA values; progression velocity and AUA risk bands.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-renal-nephrometry.html">
 <div class="related-card-tag">RENAL · Renal Mass</div>
 <div class="related-card-title">RENAL Nephrometry Score</div>
 <div class="related-card-desc">R+E+N+A+L tumor complexity scoring (4–12); Low/Moderate/High with hilar suffix for partial vs radical nephrectomy planning.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2970,14 +2929,12 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Gout · ACR/EULAR</div>
 <div class="related-card-title">2015 ACR/EULAR Gout Classification Criteria</div>
 <div class="related-card-desc">7-domain scoring (joints, MSU crystals, serum urate, imaging); score ≥8 = gout. MSU crystal identification is sufficient criterion.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-ra-classification.html">
 <div class="related-card-tag">Rheumatoid Arthritis · ACR/EULAR</div>
 <div class="related-card-title">2010 ACR/EULAR RA Classification Criteria</div>
 <div class="related-card-desc">4-domain scoring (joints, serology, APR, duration); score ≥6/10 = definite RA. Guides early DMARD initiation.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 
@@ -2989,20 +2946,17 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 <div class="related-card-tag">Prevention</div>
 <div class="related-card-title">Stone Prevention — Fluid Target</div>
 <div class="related-card-desc">Urine/fluid target and dietary stone-risk.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-stone-passage-risk.html">
 <div class="related-card-tag">Acute</div>
 <div class="related-card-title">Ureteral Stone Passage Likelihood</div>
 <div class="related-card-desc">Spontaneous-passage likelihood by size/location.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 <a class="related-card" href="calc-urine-supersaturation.html">
 <div class="related-card-tag">24-h Urine · Pak</div>
 <div class="related-card-title">Urine Supersaturation / Stone Risk Profile</div>
 <div class="related-card-desc">Interpret 24-h urine Ca, oxalate, citrate, uric acid, Na & pH against targets for stone-recurrence counseling.</div>
-<div class="related-card-arrow">Open →</div>
-</a>
+<div class="related-card-arrow">Open →</div></a>
 </div>
 </section>
 

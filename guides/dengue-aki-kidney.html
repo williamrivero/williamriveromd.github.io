@@ -82,11 +82,11 @@
     font-size: 16px;
   }
 
-  /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
+  /* ── SITE HEADER (CONVENTION: brand | inline lang chips | back link) ────── */
   .site-header {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; gap: 18px;
     height: 56px; box-sizing: border-box;
-    padding: 0 32px;
+    padding: 0 24px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -94,26 +94,64 @@
   .site-header .brand {
     font-size: 14px; font-weight: 500;
     color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em;
+    flex: 0 0 auto;
   }
   .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
   .site-header .back {
     font-size: 12px; font-weight: 500;
     color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s;
+    margin-left: auto; flex: 0 0 auto;
   }
   .site-header .back:hover { color: rgba(255,255,255,.9); }
+  /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
+  .header-nav {
+    display: flex; align-items: center; gap: 14px;
+    margin-left: auto; flex: 0 0 auto;
+  }
+  .header-nav a {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.7); text-decoration: none;
+    transition: color .2s;
+    white-space: nowrap;
+  }
+  .header-nav a:hover { color: #fff; }
+  .header-nav a.is-current { color: var(--gold-light); pointer-events: none; }
+  @media (max-width: 640px) {
+    .header-nav { gap: 10px; }
+    .header-nav a { font-size: 10.5px; letter-spacing: .04em; }
+  }
+  /* Inline lang chips inside the header (next to the brand). */
+  .header-lang {
+    display: flex; align-items: center; gap: 6px;
+    flex: 0 1 auto; flex-wrap: nowrap; overflow-x: auto;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .header-lang::-webkit-scrollbar { display: none; }
+  .header-lang .lang-lbl {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5);
+    text-transform: uppercase; letter-spacing: .1em; margin-right: 2px;
+  }
+  .header-lang .lang-btn-g {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.18); background: transparent;
+    color: rgba(255,255,255,.78); cursor: pointer; transition: all .15s;
+    line-height: 1.3; flex-shrink: 0;
+  }
+  .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
+  .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  @media (max-width: 640px) {
+    .site-header { padding: 0 14px; gap: 10px; }
+    .header-lang .lang-lbl { display: none; }
+    .header-lang .lang-btn-g { font-size: 11px; padding: 2px 8px; }
+    .site-header .brand { font-size: 13px; }
+    .site-header .back { font-size: 11px; }
+  }
 
-  /* ── LANG BAR ────────────────────────────────────────────────────────────── */
-  .guide-lang-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 32px;
-    background: rgba(10,18,32,.96);
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    flex-wrap: wrap;
-  }
-  .lang-lbl {
-    font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5);
-    text-transform: uppercase; letter-spacing: .08em; margin-right: 4px;
-  }
+  /* ── LEGACY LANG BAR (kept defined as a no-op so older HTML doesn't break) ─ */
+  .guide-lang-bar { display: none !important; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
   .lang-btn-g {
     font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px;
     border: 1px solid rgba(255,255,255,.2); background: transparent;
@@ -121,8 +159,46 @@
   }
   .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
   .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
-  /* Dark/desktop toggles relocated into the lang bar's right margin. */
-  .guide-toggle-inline { margin-left: auto; display: inline-flex; gap: 8px; align-items: center; }
+  /* Legacy inline dark/desktop toggle holder — now replaced by .float-controls. */
+  .guide-toggle-inline { display: none !important; }
+
+  /* ── FLOATING DARK TOGGLE WIDGET (bottom-right) ─────────────────────────── */
+  .float-controls {
+    position: fixed; bottom: 24px; right: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  /* ── FLOATING DESKTOP/MOBILE TOGGLE WIDGET (bottom-left, under print) ────── */
+  .float-controls-left {
+    position: fixed; bottom: 24px; left: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  .float-controls-left .float-tooltip { left: 0; right: auto; }
+  .float-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(31,56,100,.18);
+    background: #ffffff; color: #1f3864;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(15,30,46,.18);
+    transition: background .15s, color .15s, transform .15s, box-shadow .15s;
+    position: relative;
+  }
+  .float-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,30,46,.24); }
+  .float-btn svg { width: 20px; height: 20px; }
+  .float-tooltip {
+    position: absolute; bottom: calc(100% + 8px); right: 0;
+    background: rgba(15,30,46,.9); color: #fff;
+    padding: 6px 10px; border-radius: 6px;
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity .15s;
+  }
+  .float-btn:hover .float-tooltip { opacity: 1; }
+  html[data-theme="dark"] .float-btn {
+    background: #1a2535; color: #e2b95f; border-color: rgba(255,255,255,.18);
+    box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  }
+  html[data-theme="dark"] .float-tooltip { background: rgba(255,255,255,.92); color: #1f3864; }
+  @media print { .float-controls, .no-print { display: none !important; } }
 
   /* ── TOGGLE BAR ──────────────────────────────────────────────────────────── */
   .guide-toggle-bar {
@@ -1216,13 +1292,16 @@
   .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
 
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
-  .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
+  /* Audience tabs inherit the hero background colour so the bar reads as part
+     of the hero (mint in patient mode, periwinkle in clinician mode). */
+  .audience-tabs{background:linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%);border-bottom:1px solid rgba(15,90,90,.18);position:sticky;top:56px;z-index:150;}
+  body.physician-mode .audience-tabs{background:linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);border-bottom-color:rgba(31,56,100,.18);}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
   .aud-tab{flex:1;text-align:center;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
   .aud-tab:hover{color:var(--navy);}
   .aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
   .aud-tab.active.tab-md{border-bottom-color:var(--navy);}
-  .tab-icon{font-size:17px;}
+  .tab-icon{display:none;}  /* legacy emoticons hidden — dropped from new HTML too */
   .mode-physician{display:none;}
   .mode-physician-pill{display:none;}
   body.physician-mode .mode-patient{display:none!important;}
@@ -1317,9 +1396,13 @@
   .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
   .download-btn:hover{background:#162848;}
 
-  /* ── DOWNLOAD FAB (circular floating action button, bottom-left) ─────────── */
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left stack) ───
+     Stacking on the left side (visually top → bottom):
+       1. .dl-fab           bottom:136px  (top — only when present)
+       2. .print-btn        bottom: 80px  (middle)
+       3. .float-controls-left bottom: 24px  (bottom — desktop/mobile toggle) */
   .dl-fab {
-    position: fixed; bottom: 24px; left: 24px;
+    position: fixed; bottom: 136px; left: 24px;
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--navy); color: white;
     border: none; cursor: pointer;
@@ -1445,6 +1528,17 @@
   }
   .fig-abbrevs dt { font-weight: 700; color: var(--text-mid); }
   .fig-abbrevs dd { margin: 0; color: var(--text-muted); }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     Keep the floating Symptom-Checker FAB clear of the floating dark/light
+     toggle. Every guide now carries the floating dark widget at bottom:24px
+     right:24px (44px wide), so the FAB (default bottom:22px right:22px)
+     would collide. Shift it ~70px left so they sit side-by-side.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  .sc-fab { right: 88px !important; }
+  @media (max-width: 600px) {
+    .sc-fab { right: 72px !important; bottom: 16px !important; }
+  }
 
   /* ═══════════════════════════════════════════════════════════════════════════
      PRINT
@@ -1664,7 +1758,7 @@ html[data-theme="dark"] .paradox-side h4 { color: var(--text) !important; }
 
 <header class="site-header">
   <a href="https://www.williamriveromd.com" class="brand">HOME</a>
-  <a href="/guides/" class="back">← All Guides</a>
+  <nav class="header-nav"><a href="calculators.html">CALCULATORS</a><a href="kidney-physiology.html">PHYSIOLOGY</a><a href="nephrology-atlas.html">ATLAS</a><a href="/guides/">ALL GUIDES</a></nav>
 </header>
 
 <div class="guide-toggle-bar">
@@ -1693,7 +1787,8 @@ html[data-theme="dark"] .paradox-side h4 { color: var(--text) !important; }
 ══════════════════════════════════════════════════════════════════════════ -->
 <section class="hero">
   <div class="container">
-    <div class="hero-tag"><span data-lang="en">Philippines · Nephrology · Infectious Disease · Emergency Medicine</span><span data-lang="tl" class="lang-hidden">Pilipinas · Nephrology · Infectious Disease · Emergency Medicine</span><span data-lang="ceb" class="lang-hidden">Pilipinas · Nephrology · Infectious Disease · Emergency Medicine</span><span data-lang="kap" class="lang-hidden">Pilipinas · Nephrology · Infectious Disease · Emergency Medicine</span></div>
+<div class="hero-grid">
+<div class="hero-copy">    <div class="hero-tag"><span data-lang="en">Philippines · Nephrology · Infectious Disease · Emergency Medicine</span><span data-lang="tl" class="lang-hidden">Pilipinas · Nephrology · Infectious Disease · Emergency Medicine</span><span data-lang="ceb" class="lang-hidden">Pilipinas · Nephrology · Infectious Disease · Emergency Medicine</span><span data-lang="kap" class="lang-hidden">Pilipinas · Nephrology · Infectious Disease · Emergency Medicine</span></div>
     <h1><span data-lang="en">Dengue &amp; Your Kidneys — When <em>Fever</em> Becomes a Kidney <em>Emergency</em></span><span data-lang="tl" class="lang-hidden">Dengue at ang Iyong mga Bato — Kapag ang <em>Lagnat</em> ay Nagiging Kidney <em>Emergency</em></span><span data-lang="ceb" class="lang-hidden">Dengue ug ang Imong mga Bato — Kon ang <em>Hilanat</em> Mahimong Kidney <em>Emergency</em></span><span data-lang="kap" class="lang-hidden">Dengue at ing mga Bato Mu — Nung ing <em>Lagnat</em> Maging Kidney <em>Emergency</em></span></h1>
     <p class="hero-sub"><span data-lang="en">What every Filipino patient and family needs to know about dengue-associated acute kidney injury</span><span data-lang="tl" class="lang-hidden">Ang dapat malaman ng bawat Filipino na pasyente at pamilya tungkol sa dengue-associated na acute kidney injury</span><span data-lang="ceb" class="lang-hidden">Ang kinahanglan mahibaw-i sa matag Filipino nga pasyente ug pamilya mahitungod sa dengue-associated nga acute kidney injury</span><span data-lang="kap" class="lang-hidden">Ing dapat maalaman ning bawat Filipino a pasyente at pamilya tungkol king dengue-associated a acute kidney injury</span></p>
     <div class="hero-meta">
@@ -1701,20 +1796,17 @@ html[data-theme="dark"] .paradox-side h4 { color: var(--text) !important; }
 <span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">3</span></span>
 <span class="hero-readtime"><strong><span data-lang="en">Read time</span><span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span><span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span><span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>:</strong> <time datetime="PT30M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~30 min</time></span>
 </div>
+    </div>
+    <figure class="hero-figure">
+      <div class="hero-vignette">
+        <picture>
+          <source srcset="../images/dengue-aki-kidney-vignette-hero.webp" type="image/webp">
+          <img src="../images/dengue-aki-kidney-vignette-hero.png" alt="Circular vignette hero illustration for the dengue and acute kidney injury guide." width="1254" height="1254" fetchpriority="high" loading="eager" decoding="async">
+        </picture>
+      </div>
+    </figure>
+    </div>
   </div>
-
-  <figure style="margin:28px 0 8px">
-    <picture>
-      <source srcset="../images/dengue-aki-hero.webp" type="image/webp">
-      <img src="../images/dengue-aki-hero.png" fetchpriority="high" loading="eager" width="1672" height="941" alt="Dengue &amp; Your Kidneys — When Fever Becomes a Kidney Emergency: mechanisms, three-phase danger window, red flags, and kidney protection guide for Filipino patients · williamriveromd.com" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:12px;">
-    </picture>
-  </figure>
-  <figure class="mode-physician" style="margin:28px 0 8px;">
-    <picture>
-      <source srcset="../images/dengue-clin-hero.webp" type="image/webp">
-      <img src="../images/dengue-clin-hero.png" fetchpriority="high" loading="eager" width="1672" height="941" alt="Dengue-Associated AKI — Clinical Evaluation &amp; Management: KDIGO phenotypes, fluid-management tightrope, CKD modifications, rhabdomyolysis recognition, and dialysis triggers in the Philippine setting · williamriveromd.com" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:12px;">
-    </picture>
-  </figure>
 </section>
 
 <nav class="nav-strip">
@@ -1745,6 +1837,21 @@ html[data-theme="dark"] .paradox-side h4 { color: var(--text) !important; }
   <div class="container">
     <div class="section-tag">Philippines · Nephrology</div>
     <h2><span data-lang="en">What Is Dengue-Associated AKI?</span><span data-lang="tl" class="lang-hidden">Ano ang Dengue-Associated AKI?</span><span data-lang="ceb" class="lang-hidden">Unsa ang Dengue-Associated AKI?</span><span data-lang="kap" class="lang-hidden">Nano ing Dengue-Associated AKI?</span></h2>
+
+    <figure style="margin:24px 0;">
+      <picture>
+        <source srcset="../images/dengue-aki-hero.webp" type="image/webp">
+        <img src="../images/dengue-aki-hero.png" loading="lazy" width="1672" height="941" alt="Dengue &amp; Your Kidneys — When Fever Becomes a Kidney Emergency: mechanisms, three-phase danger window, red flags, and kidney protection guide for Filipino patients · williamriveromd.com" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:12px;">
+      </picture>
+      <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;"><span data-lang="en">Patient overview — mechanisms, the three-phase danger window, red flags, and kidney protection in dengue.</span><span data-lang="tl" class="lang-hidden">Pangkalahatang-tanaw ng pasyente — mga mekanismo, ang tatlong-yugtong delikadong panahon, mga babala, at proteksyon ng bato sa dengue.</span><span data-lang="ceb" class="lang-hidden">Patient overview — mga mekanismo, ang tulo-ka-hugna nga peligro, mga pasidaan, ug pagpanalipod sa kidney sa dengue.</span><span data-lang="kap" class="lang-hidden">Patient overview — deng mekanismo, ing tatlung-yugtu a delikadu a panaun, deng babala, at proteksyon ning batu king dengue.</span></figcaption>
+    </figure>
+    <figure class="mode-physician" style="margin:24px 0;">
+      <picture>
+        <source srcset="../images/dengue-clin-hero.webp" type="image/webp">
+        <img src="../images/dengue-clin-hero.png" loading="lazy" width="1672" height="941" alt="Dengue-Associated AKI — Clinical Evaluation &amp; Management: KDIGO phenotypes, fluid-management tightrope, CKD modifications, rhabdomyolysis recognition, and dialysis triggers in the Philippine setting · williamriveromd.com" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:12px;">
+      </picture>
+      <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;">Clinician reference — KDIGO phenotypes, the fluid-management tightrope, CKD modifications, rhabdomyolysis recognition, and dialysis triggers in the Philippine setting.</figcaption>
+    </figure>
 
     <div class="intro-callout">
       <p><strong><span data-lang="en">"You were told to watch your platelet count. Nobody told you to watch your creatinine."</span><span data-lang="tl" class="lang-hidden">"Sinabihan kang bantayan ang iyong platelet count. Walang nagsabi sa iyo na bantayan ang iyong creatinine."</span><span data-lang="ceb" class="lang-hidden">"Gisultihan ka nga bantayan ang imong platelet count. Walay nagsulti kanimo nga bantayan ang imong creatinine."</span><span data-lang="kap" class="lang-hidden">"Sinabihan ka nang bantayan ing platelet count mu. Wala naming nagsabi sa iyo na bantayan ing creatinine mu."</span></strong></p>
