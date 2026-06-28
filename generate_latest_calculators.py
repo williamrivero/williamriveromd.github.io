@@ -128,6 +128,7 @@ _CATEGORY_TO_THUMB = {
     "oncology": "hero-cat-oncology",
     "rheumatology": "hero-cat-rheumatology",
     "stones": "hero-cat-stones",
+    "other-tools": "hero-cat-other-tools",
 }
 
 

@@ -1629,15 +1629,44 @@
 <main class="container">
 
 <section class="section" id="search">
-<div class="section-tag">Clinical Reference</div>
-<h2>WHO ICD-10 Lookup</h2>
-<p>PhilHealth's DRG payment model groups admissions by ICD-10 diagnosis and procedure codes — the same WHO classification that underpins death certificates and most national disease registries. This lookup lets clinicians browse and search the full WHO ICD-10 dataset (10,469 codes) used as the basis for the Philippine DRG grouper, so you can quickly check the canonical title of a code or find candidate codes by keyword. Type a code prefix (e.g. <strong>N18</strong>), a chapter range, or a description keyword (e.g. <strong>"glomerulonephritis"</strong>) — results filter live as you type.</p>
-<p style="font-size:.92rem;color:var(--text-muted);">This tool is for educational and reference use only. It is <strong>not</strong> a substitute for the official ICD-10-PH localization or for PhilHealth's authoritative DRG case-mix tables, which include Philippine-specific code additions, exclusions, and grouping logic. Always verify final coding against current ICD-10-PH guidance and the live PhilHealth DRG dataset before submission.</p>
+<div class="section-tag">Interactive Tool</div>
+<h2>WHO ICD-10 Lookup &mdash; 10,469 Codes</h2>
+<p>PhilHealth's DRG payment model groups admissions by ICD-10 diagnosis and procedure codes &mdash; the same WHO classification that underpins death certificates and most national disease registries. This tool searches the full WHO ICD-10 dataset that the Philippine DRG grouper is built on. Use <strong>Single search</strong> for a single term (a code prefix like <code>N18</code>, an abbreviation like <em>CKD</em>, or any keyword) or <strong>Batch mode</strong> to paste several diagnoses at once and get the top ranked candidates for each line. American spellings (<em>anemia</em>, <em>edema</em>, <em>hemodialysis</em>) and common abbreviations (<em>CKD</em>, <em>ESRD</em>, <em>HF</em>, <em>MI</em>, <em>HTN</em>, <em>DM</em>) are auto-translated to the British/WHO vocabulary the dataset uses.</p>
 
-<div class="icd10-search-mount" data-page-size="50"></div>
-
-<p style="margin-top:24px;font-size:.92rem;color:var(--text-muted);">For background on how these codes feed into PhilHealth's case-rate and DRG payment model, see the <a href="philhealth-acr-to-drg.html" style="color:var(--teal);font-weight:600;">All Case Rates → DRG transition guide</a>.</p>
+<div class="calc-wrap">
+<div class="icd10-search-mount" data-page-size="25" data-batch-top="8"></div>
+<p class="calc-disclaimer">&#9877; The peso figures, codes, and rankings shown here are educational aids drawn from the WHO ICD-10 classification (10,469 codes). They are <strong>not</strong> a substitute for the official ICD-10-PH localization, your hospital's coding policies, or PhilHealth's authoritative DRG case-mix tables. Always confirm final coding against current ICD-10-PH guidance before claim submission. Source: WHO ICD-10 (International Classification of Diseases, 10th Revision).</p>
+</div>
 </section>
+
+<details class="mdc-acc" id="howto" open>
+<summary>How to Use This Tool</summary>
+<div class="mdc-acc-body">
+<p><strong>Two search modes, one shared dataset.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li><strong>Single search</strong> &mdash; type a single term and the result table filters live as you type. Useful for: looking up the canonical title of a specific code (<code>N18.6</code>), finding all codes in a range (<code>N18</code> &rarr; CKD family), or scanning by keyword (<em>hyperkalemia</em> &rarr; <code>E87.5</code>).</li>
+<li><strong>Batch mode</strong> &mdash; paste a list of diagnoses (one per line, or semicolon-separated, up to 30 at a time) and the tool returns the top 8 ranked candidate codes per line. Useful for prepping a discharge summary or auditing a case post-hoc.</li>
+<li><strong>Spelling &amp; abbreviation translation.</strong> WHO ICD-10 uses British medical spellings (<em>anaemia</em>, <em>oedema</em>, <em>haemodialysis</em>) and older terminology (<em>chronic renal failure</em> rather than <em>chronic kidney disease</em>). The widget translates American spellings and common abbreviations (CKD, ESRD, HF, MI, HTN, DM, HD, AKI, COPD, CHF, &hellip;) so a clinician's natural input matches the dataset's vocabulary.</li>
+<li><strong>Ranking, in batch mode.</strong> Each candidate is scored on exact-match (highest), prefix match, normalized-phrase match, and token-AND coverage of the query &mdash; results are sorted so the most specific matches surface first.</li>
+</ul>
+</div>
+</details>
+
+<details class="mdc-acc" id="dataset">
+<summary>About the Dataset &amp; Limitations</summary>
+<div class="mdc-acc-body">
+<p><strong>What this is.</strong> A locally-hosted, English-only WHO ICD-10 dataset (10,469 codes, ~700&nbsp;KB) covering all 21 ICD-10 chapters, lazy-loaded on first interaction so it does not slow page load. Search runs entirely in the browser &mdash; no codes leave your device.</p>
+<p><strong>What this is not.</strong> This is the WHO ICD-10 base classification, not the Philippine clinical modification (ICD-10-PH). It does not include:</p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>PhilHealth-specific code additions, exclusions, or grouping logic;</li>
+<li>the full case-mix grouper's combinatorial logic for major / minor complications;</li>
+<li>the granular sub-codes present in ICD-10-CM (the US clinical modification, ~70,000 codes) &mdash; the WHO base has roughly 10K codes and is the international foundation most national systems adapt;</li>
+<li>procedure codes from ICD-10-PCS, CPT, or local procedure code sets &mdash; only the diagnostic ICD-10 classification.</li>
+</ul>
+<p><strong>How to use it responsibly.</strong> This is a teaching reference for clinicians to practice the documentation-and-coding workflow that PhilHealth's DRG migration will reward. Final coding for live claims must always be confirmed against your hospital's official ICD-10-PH list and PhilHealth's current circulars.</p>
+<p style="margin-top:12px;font-size:13px;color:var(--text-muted);">For the policy context behind why honest clinical coding matters under DRG, see the companion guide: <a href="philhealth-acr-to-drg.html" style="color:var(--teal);font-weight:600;">From All Case Rates to DRG &mdash; A Nephrologist's Perspective</a>.</p>
+</div>
+</details>
 
 </main>
 <!-- REFERENCES-ACC-START -->
