@@ -21,14 +21,23 @@ labels, and the mandatory `williamriveromd.com` attribution bottom-right
 
 ## Plan overview
 
+> **2026-06-27 restructure note** — the guide was reframed away from the
+> Marvin / 24-hour-rule lede toward a pure DRG payment-reform explainer with a
+> worked cardiorenal case. As a result, figures **#2 (marvin-quote)** and
+> **#5 (two-problems)** below are **retired** and the image files were deleted
+> from `images/`. The prompts are kept in this pack for historical reference
+> but should not be regenerated. A new figure **#7 (worked-case ACR-vs-DRG
+> claim chart)** has been added for §3 (the case example).
+
 | # | Section / use | File | Skill | Type | Size | Priority |
 |---|---|---|---|---|---|---|
 | 1 | Hero circular vignette (beside `<h1>`) | `philhealth-acr-to-drg-vignette-hero.png` | hero-vignette | Scaffold A — people scene | 1024 × 1024 (1:1) | **Core** |
-| 2 | §1 The Case — pull-quote card | `philhealth-acr-to-drg-marvin-quote.png` | infographic | Editorial quote card (1:1) | 1024 × 1024 (1:1) | **Core** |
+| 2 | ~~§1 The Case — pull-quote card~~ | ~~`philhealth-acr-to-drg-marvin-quote.png`~~ | infographic | Editorial quote card | — | **Retired** |
 | 3 | §3 Why ACR Is Breaking — chart | `philhealth-acr-to-drg-rate-vs-cost.png` | simple-figure | Single-panel concept (D) | 1792 × 1024 (16:9) | **Core** |
 | 4 | OG / Twitter share card | `philhealth-acr-to-drg-og.png` | infographic | OG editorial poster | **1200 × 630 (fixed)** | **Core** |
-| 5 | §2 Two Different Problems — split diagram | `philhealth-acr-to-drg-two-problems.png` | simple-figure | Side-by-side comparison (B) | 1792 × 1024 (16:9) | **Core (thesis visualizer)** |
+| 5 | ~~§2 Two Different Problems — split diagram~~ | ~~`philhealth-acr-to-drg-two-problems.png`~~ | simple-figure | Side-by-side comparison | — | **Retired** |
 | 6 | §7 The Kidney Lens — CKD cardiorenal storm → DRG forks | `philhealth-acr-to-drg-kidney-lens.png` | simple-figure | Single-panel concept (D) | 1792 × 1024 (16:9) | **Core (specialty angle)** |
+| 7 | §3 A Worked Case — ACR vs DRG bill chart | `philhealth-acr-to-drg-case-comparison.png` | simple-figure | Side-by-side comparison (B) | 1792 × 1024 (16:9) | **Optional (HTML table covers the same content)** |
 
 > Note on `<img width/height>` attributes already in the guide HTML:
 >
@@ -334,25 +343,77 @@ A single storm card on the left with kidneys + five severity chips. A navy arrow
 
 ---
 
+## 7 · Worked case — same admission, paid under ACR vs DRG
+*Skill: williamriveromd-simple-figure · Scaffold B — side-by-side comparison · **Optional***
+
+> The HTML §3 ("A Worked Case Example") already renders the same content as a
+> table with peso figures and an explanatory amber callout. This figure is the
+> visual equivalent — a one-glance side-by-side that drives the editorial point
+> home. Generate only if you want the figure for social-sharing or for the
+> case-example to read more like a poster than a table.
+
+```
+FILE NAME: philhealth-acr-to-drg-case-comparison.png
+IMAGE TYPE: Simple figure — side-by-side comparison (Scaffold B)
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: mixed (patients + clinicians)
+VISUAL GOAL: Make the structural under-reimbursement of ACR visceral by showing the SAME admission scored under ACR vs DRG, anchored by the cardiorenal storm case in §3.
+
+PROMPT:
+Medical-education comparison infographic, editorial / AJKD graphical-abstract style. White (#ffffff) background, sans-serif typography only (Inter). Generous whitespace, mobile-readable labels, rounded corners.
+
+Title at top center, bold navy (#0f1e2e): "One Admission, Two Payment Models". Subtitle in clinical teal (#1a6b72): "65-year-old ESRD-on-HD patient, cardiorenal storm, 8-day stay (illustrative)".
+
+Soft dashed vertical divider in muted navy splits the canvas into two equal panels. A small navy chip in the middle reads "vs".
+
+LEFT PANEL — "Under ACR (today)":
+  - Header chip large on a soft red (#fff0f0) pill: "PAID UNDER ACR" in clinical red (#b91c1c). Small line-icon of a single flat case-rate slip in clinical red beside the header.
+  - A short stacked-bar chart, oriented vertically, ~70% of panel width: one short navy bar labeled "HF case rate ≈ ₱15,400" stacked on a slightly taller teal bar labeled "Z-HD package × 4 ≈ ₱16,000", total height labeled at top in muted navy: "PhilHealth pays ≈ ₱31,400".
+  - Below the chart, a gray dashed line marks the real cost of care: "Real cost ≈ ₱185,000" — clear navy text.
+  - Between the bar top and the gray "real cost" line, a large clinical-red translucent fill (#b91c1c at ~14% opacity) covers the gap. A compact rounded amber (#b8860b) badge sits inside the gap with an arrow: "BALANCE-BILLED ≈ ₱145,000".
+  - Bottom of panel: a small navy footer caption: "Only the principal diagnosis pays."
+
+RIGHT PANEL — "Under DRG (proposed)":
+  - Header chip large on a soft teal (#eef6f7) pill: "PAID UNDER DRG" in clinical teal (#1a6b72). Small line-icon of a stepped severity ladder in clinical teal beside the header.
+  - A short stacked-bar chart, oriented vertically, ~70% of panel width: one tall clinical-teal bar labeled "Cardiorenal HF + ESRD + complications bundle ≈ ₱150,000–₱180,000", total height labeled at top in muted navy: "PhilHealth pays ≈ ₱165,000".
+  - Below the chart, the same gray dashed line: "Real cost ≈ ₱185,000".
+  - The remaining gap above the bar is small. A compact renal-green (#1f7a4d) badge: "BALANCE-BILLED ≈ ₱5,000–₱35,000".
+  - Bottom of panel: a small navy footer caption: "All ICD-10 codes count toward the bundle."
+
+BETWEEN PANELS — a small floating callout box centered just below the title row, narrow, with a teal border: "Same patient. Same care. Different codes counted. Different bills."
+
+BOTTOM STRIP — full-width soft very-light-gray panel (#f3f4f6) ~14% tall. Inside it, centered bold navy text in one line: "Under DRG, every diagnosis you document is paid for; every diagnosis you omit is invisible."
+
+Bottom-right corner: small semi-transparent navy text "williamriveromd.com" at ~10–11 px equivalent, 70% opacity.
+
+Palette: white #ffffff canvas, navy #0f1e2e text/structure, clinical red #b91c1c (ACR gap + badge), clinical teal #1a6b72 (DRG bundle), renal green #1f7a4d (DRG gap badge), amber #b8860b (ACR balance-billed badge), soft gray #f3f4f6 (bottom strip), light-red wash #fff5f5 and light-teal wash #eef6f7 for panel header chips. No other colors. No 3D, no heavy shadows.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid AI mis-spellings — every peso figure and label must render exactly as written. NEVER use dark backgrounds — light only. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no serif fonts. Do NOT draw the real PhilHealth logo. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Two clearly distinct stacked-bar panels under a single title. Left = red ACR side with a small payment bar far below the gray "real cost" line and a large amber "BALANCE-BILLED ≈ ₱145,000" callout. Right = teal DRG side with a tall payment bar close to the gray "real cost" line and a small green "BALANCE-BILLED ≈ ₱5,000–₱35,000" callout. Bottom-strip one-liner present. Mobile-readable at 600 px width. Bottom-right williamriveromd.com attribution visible.
+```
+
+---
+
 ## Post-generation checklist
 
-1. Save each PNG to `images/<filename>.png` and write a paired WebP twin
-   `images/<filename>.webp` (the guide HTML already references both with
-   `<picture><source srcset="…webp"><img src="…png">`).
-2. Update the `<img width/height>` attributes in `guides/philhealth-acr-to-drg.html`
-   to match the actual files where they currently differ from this plan:
-   - marvin-quote → `width="1024" height="1024"`
-   - rate-vs-cost → `width="1792" height="1024"`
-3. **Wire in the two new figures** (§5 and §6 of this plan). The guide doesn't
-   yet reference them. Add a `<figure>` block to §2 ("Two Different Problems")
-   pointing to `philhealth-acr-to-drg-two-problems.{webp,png}` and a second
-   `<figure>` block to §7 ("The Kidney Lens") pointing to
-   `philhealth-acr-to-drg-kidney-lens.{webp,png}`. Mirror the inline-figcaption
-   pattern used by the existing `philhealth-acr-to-drg-rate-vs-cost` figure
-   (`<figcaption><p class="fig-desc">…</p></figcaption>`) so the lightbox shows
-   the caption.
-4. Optionally run Stage 2 (`williamriveromd-local-image-generator`) to build
-   the local guide folder, manifests, and append the OG meta block — though
-   `og:image*` is already present in the guide head.
-5. Re-run `python3 generate_latest_guides.py` if the hero / OG file dates
-   change (it reads file mtimes for the strip thumbnail).
+Status after the 2026-06-27 restructure: figures **#1, #3, #4, #6** are all
+generated, paired with WebP, wired into the guide, and shipped on `main`. The
+retired #2 and #5 image files have been deleted from `images/`. Figure **#7**
+(case-comparison) is optional — the HTML §3 already carries the same content
+as a table.
+
+If you generate the optional case-comparison figure:
+
+1. Save to `images/philhealth-acr-to-drg-case-comparison.png` + `…webp`
+   companion.
+2. Add a `<figure>` block to §3 ("A Worked Case Example") inside the guide,
+   below the "How each payment model values…" paragraph and before the amber
+   "Why this gap exists today" callout. Mirror the existing inline `<figure>`
+   pattern (picture + webp source + alt text + `<figcaption><p
+   class="fig-desc">…</p></figcaption>`) so the lightbox displays the caption.
+3. Run `python3 generate_latest_guides.py` to refresh the strip thumbnail if
+   the OG file has been replaced.
