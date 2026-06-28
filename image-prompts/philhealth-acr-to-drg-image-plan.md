@@ -351,49 +351,88 @@ A single storm card on the left with kidneys + five severity chips. A navy arrow
 > visual equivalent — a one-glance side-by-side that drives the editorial point
 > home. Generate only if you want the figure for social-sharing or for the
 > case-example to read more like a poster than a table.
+>
+> **2026-06-27 revision.** First-pass output labeled the bottom row "Hospital
+> Margin / Loss," which buried the patient angle (the gap is almost always
+> balance-billed to the family, not absorbed by the hospital). Revised spec
+> below makes the math explicit (line-items → Total Bill → Patient OOP) and
+> shifts the bottom row to "Amount Billed to Patient" with arithmetic that
+> closes: ₱70,000 total − PhilHealth payment = patient out-of-pocket.
 
 ```
 FILE NAME: philhealth-acr-to-drg-case-comparison.png
-IMAGE TYPE: Simple figure — side-by-side comparison (Scaffold B)
+IMAGE TYPE: Simple figure — side-by-side comparison (Scaffold B) with line-item tables
 ASPECT RATIO: 16:9
 PIXEL DIMENSIONS: 1792 × 1024
 AUDIENCE: mixed (patients + clinicians)
-VISUAL GOAL: Make the structural under-reimbursement of ACR visceral by showing the SAME admission scored under ACR vs DRG, anchored by the cardiorenal storm case in §3.
+VISUAL GOAL: Make the gap visceral — same patient, same care, two payment systems, two very different patient bills. Total bill is explicit so the reader can verify the math (Total Bill − PhilHealth = Patient OOP) at a glance.
 
 PROMPT:
 Medical-education comparison infographic, editorial / AJKD graphical-abstract style. White (#ffffff) background, sans-serif typography only (Inter). Generous whitespace, mobile-readable labels, rounded corners.
 
-Title at top center, bold navy (#0f1e2e): "One Admission, Two Payment Models". Subtitle in clinical teal (#1a6b72): "65-year-old ESRD-on-HD patient, cardiorenal storm, 8-day stay (illustrative)".
+Title at top center, bold navy (#0f1e2e): "A Worked Case: Same Patient, Two PhilHealth Payment Systems". Subtitle, clinical teal (#1a6b72), smaller: "Cardiorenal patient · 7-day admission · Private hospital (illustrative figures)".
 
-Soft dashed vertical divider in muted navy splits the canvas into two equal panels. A small navy chip in the middle reads "vs".
+Two equal panels side by side with a small navy "vs" chip centered between them.
 
 LEFT PANEL — "Under ACR (today)":
-  - Header chip large on a soft red (#fff0f0) pill: "PAID UNDER ACR" in clinical red (#b91c1c). Small line-icon of a single flat case-rate slip in clinical red beside the header.
-  - A short stacked-bar chart, oriented vertically, ~70% of panel width: one short navy bar labeled "HF case rate ≈ ₱15,400" stacked on a slightly taller teal bar labeled "Z-HD package × 4 ≈ ₱16,000", total height labeled at top in muted navy: "PhilHealth pays ≈ ₱31,400".
-  - Below the chart, a gray dashed line marks the real cost of care: "Real cost ≈ ₱185,000" — clear navy text.
-  - Between the bar top and the gray "real cost" line, a large clinical-red translucent fill (#b91c1c at ~14% opacity) covers the gap. A compact rounded amber (#b8860b) badge sits inside the gap with an arrow: "BALANCE-BILLED ≈ ₱145,000".
-  - Bottom of panel: a small navy footer caption: "Only the principal diagnosis pays."
+  - Header band, full panel width, dark navy (#0f1e2e) fill, white text. A small paper-stack glyph at the left. Two stacked lines:
+        THE OLD SYSTEM: ALL CASE RATES (ACR)
+        One price for the whole stay
+  - "PhilHealth payment" mini-table card (white fill, navy outline) directly under the header:
+        Left column header (soft gray bg, navy text): "ACR Case Rate"
+        Right column header (soft gray bg, navy text): "PhilHealth Pays"
+        Row: "Conservative Management (Major Cases) — Fixed rate per case" | bold navy "₱35,000"
+  - "What the hospital actually spent" line-item table (light fill), bold navy header above the rows. Six rows, each with a small navy line-icon at the left, an item label, and a right-aligned peso amount in muted navy:
+        🛏 Room & Board (7 days)         ₱21,000
+        ❤ Labs, Meds, Supplies          ₱22,500
+        🩺 Nephrology Care               ₱6,000
+        🩻 Consults (Cardio + Others)    ₱7,000
+        🩻 Imaging & Procedures          ₱8,000
+        … Other Costs                    ₱5,500
+    (Icons may be substituted with simple navy line-icons; do not render emoji glyphs literally.)
+  - **TOTAL BILL row — full panel width, soft gray (#f3f4f6) fill** — bold navy label "TOTAL HOSPITAL BILL" on the left, right-aligned bold navy value "₱70,000".
+  - **AMOUNT BILLED TO PATIENT row — full panel width, soft red (#fff0f0) fill** — large bold clinical-red (#b91c1c) label "AMOUNT BILLED TO PATIENT" on the left, right-aligned large bold clinical-red value "₱35,000". Small navy caption underneath: "Balance billed when PhilHealth's flat case rate falls short."
 
 RIGHT PANEL — "Under DRG (proposed)":
-  - Header chip large on a soft teal (#eef6f7) pill: "PAID UNDER DRG" in clinical teal (#1a6b72). Small line-icon of a stepped severity ladder in clinical teal beside the header.
-  - A short stacked-bar chart, oriented vertically, ~70% of panel width: one tall clinical-teal bar labeled "Cardiorenal HF + ESRD + complications bundle ≈ ₱150,000–₱180,000", total height labeled at top in muted navy: "PhilHealth pays ≈ ₱165,000".
-  - Below the chart, the same gray dashed line: "Real cost ≈ ₱185,000".
-  - The remaining gap above the bar is small. A compact renal-green (#1f7a4d) badge: "BALANCE-BILLED ≈ ₱5,000–₱35,000".
-  - Bottom of panel: a small navy footer caption: "All ICD-10 codes count toward the bundle."
+  - Header band, full panel width, deep renal-green (#0f5132) fill, white text. A small bar-chart-on-tablet glyph at the left. Two stacked lines:
+        THE NEW SYSTEM: DIAGNOSIS-RELATED GROUPS (DRG)
+        Payment reflects severity + resources
+  - "PhilHealth payment" mini-table card (white fill, renal-green outline):
+        Left column header (soft renal-green bg, navy text): "DRG Group"
+        Right column header (soft renal-green bg, navy text): "PhilHealth Pays"
+        Row: "Heart Failure with CKD (With CC) — Higher severity" | bold renal-green "₱66,390"
+  - "What the hospital actually spent (same admission)" line-item table — IDENTICAL line items and amounts as the left panel (anchor visual symmetry; the bill is the same — only the payment differs):
+        🛏 Room & Board (7 days)         ₱21,000
+        ❤ Labs, Meds, Supplies          ₱22,500
+        🩺 Nephrology Care               ₱6,000
+        🩻 Consults (Cardio + Others)    ₱7,000
+        🩻 Imaging & Procedures          ₱8,000
+        … Other Costs                    ₱5,500
+  - **TOTAL BILL row — full panel width, soft gray (#f3f4f6) fill** — bold navy label "TOTAL HOSPITAL BILL" on the left, right-aligned bold navy value "₱70,000". (Same as left panel.)
+  - **AMOUNT BILLED TO PATIENT row — full panel width, soft renal-green (#f0fdf4) fill** — large bold renal-green (#1f7a4d) label "AMOUNT BILLED TO PATIENT" on the left, right-aligned large bold renal-green value "≈ ₱3,610". Small navy caption underneath: "Severity-adjusted payment covers nearly all of the real cost."
 
-BETWEEN PANELS — a small floating callout box centered just below the title row, narrow, with a teal border: "Same patient. Same care. Different codes counted. Different bills."
+BOTTOM STRIP — full-width soft gray (#f3f4f6) panel ~14% tall. Three evenly spaced takeaway tiles, each with a small navy circle icon on the left and two lines of text on the right:
+  - Tile 1 (shield icon): "ACR Outcome" / "One-size-fits-all rate often leaves patients with a big bill."
+  - Tile 2 (kidney icon, renal green): "DRG Outcome" / "Severity-adjusted payment supports the real cost of care."
+  - Tile 3 (people icon): "What Patients Gain" / "Better-aligned payments mean smaller out-of-pocket bills."
 
-BOTTOM STRIP — full-width soft very-light-gray panel (#f3f4f6) ~14% tall. Inside it, centered bold navy text in one line: "Under DRG, every diagnosis you document is paid for; every diagnosis you omit is invisible."
+Bottom-most: small italic gray text, centered: "Figures are illustrative only. Actual payments depend on PhilHealth circulars, case mix, and hospital contracting."
 
 Bottom-right corner: small semi-transparent navy text "williamriveromd.com" at ~10–11 px equivalent, 70% opacity.
 
-Palette: white #ffffff canvas, navy #0f1e2e text/structure, clinical red #b91c1c (ACR gap + badge), clinical teal #1a6b72 (DRG bundle), renal green #1f7a4d (DRG gap badge), amber #b8860b (ACR balance-billed badge), soft gray #f3f4f6 (bottom strip), light-red wash #fff5f5 and light-teal wash #eef6f7 for panel header chips. No other colors. No 3D, no heavy shadows.
+Palette: off-white #fafafa canvas, navy #0f1e2e text/structure (and ACR header band), clinical red #b91c1c (ACR patient-bill row), renal green #1f7a4d (DRG payment + patient-bill row), deep renal green #0f5132 (DRG header band), soft gray #f3f4f6 (Total Bill rows + bottom strip), light-red wash #fff0f0 (ACR patient-bill fill), light-green wash #f0fdf4 (DRG patient-bill fill). No other colors. No 3D, no heavy shadows. Use Inter as the only typeface.
+
+ARITHMETIC INVARIANTS — verify before finalizing:
+  - Line items must sum to exactly ₱70,000 on BOTH panels.
+  - LEFT panel: ₱70,000 − ₱35,000 = ₱35,000 patient OOP. (matches displayed value)
+  - RIGHT panel: ₱70,000 − ₱66,390 = ₱3,610 patient OOP. (matches displayed value)
+  - Do NOT show "Hospital Margin" or "Hospital Loss" rows. The story is the patient bill.
 
 NEGATIVE INSTRUCTIONS:
-Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid AI mis-spellings — every peso figure and label must render exactly as written. NEVER use dark backgrounds — light only. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no serif fonts. Do NOT draw the real PhilHealth logo. Never omit the williamriveromd.com attribution.
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid AI mis-spellings — every peso figure and label must render exactly as written. Do NOT use the labels "Hospital Margin", "Hospital Loss", "Sustainable", or "+₱1,390" anywhere. NEVER use dark backgrounds except the two short header bands on each panel — body of both panels must be light. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no serif fonts. Do NOT draw the real PhilHealth logo. Never omit the williamriveromd.com attribution.
 
 QUALITY CHECK:
-Two clearly distinct stacked-bar panels under a single title. Left = red ACR side with a small payment bar far below the gray "real cost" line and a large amber "BALANCE-BILLED ≈ ₱145,000" callout. Right = teal DRG side with a tall payment bar close to the gray "real cost" line and a small green "BALANCE-BILLED ≈ ₱5,000–₱35,000" callout. Bottom-strip one-liner present. Mobile-readable at 600 px width. Bottom-right williamriveromd.com attribution visible.
+Two clearly distinct line-item panels under a single title. Identical six-line "what the hospital actually spent" tables on both sides summing to ₱70,000. Identical "TOTAL HOSPITAL BILL ₱70,000" row on both sides. ACR side closes with red "AMOUNT BILLED TO PATIENT ₱35,000". DRG side closes with green "AMOUNT BILLED TO PATIENT ≈ ₱3,610". Three-tile bottom strip with shield / kidney / people icons. Italic disclaimer at the bottom. Bottom-right williamriveromd.com attribution visible.
 ```
 
 ---
