@@ -201,10 +201,30 @@
     animation-delay: var(--rbc-delay, 0s);
     animation-timing-function: linear;
   }
-  .hero-rbc.rbc-tumble  { animation-name: rbc-tumble; }
-  .hero-rbc.rbc-roll    { animation-name: rbc-roll; }
-  .hero-rbc.rbc-drift   { animation-name: rbc-drift;   animation-timing-function: ease-in-out; }
-  .hero-rbc.rbc-flutter { animation-name: rbc-flutter; animation-timing-function: cubic-bezier(.4,0,.6,1); }
+  .hero-rbc.rbc-tumble,  .hero-mol.rbc-tumble  { animation-name: rbc-tumble; }
+  .hero-rbc.rbc-roll,    .hero-mol.rbc-roll    { animation-name: rbc-roll; }
+  .hero-rbc.rbc-drift,   .hero-mol.rbc-drift   { animation-name: rbc-drift;   animation-timing-function: ease-in-out; }
+  .hero-rbc.rbc-flutter, .hero-mol.rbc-flutter { animation-name: rbc-flutter; animation-timing-function: cubic-bezier(.4,0,.6,1); }
+  /* Molecule overlay — monochrome biomarker silhouettes (24 source SVGs)
+     tinted amber/gold via CSS-mask, sharing the RBC motion grammar. */
+  .hero-mol {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform, opacity;
+    background-color: var(--mol-tint, rgba(245, 200, 110, .35));
+    filter: drop-shadow(0 0 var(--rbc-glow, 6px) rgba(160, 90, 20, .35));
+    -webkit-mask-size: contain;
+            mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+            mask-position: center;
+    opacity: 0;
+    animation-iteration-count: infinite;
+    animation-duration: var(--rbc-dur, 18s);
+    animation-delay: var(--rbc-delay, 0s);
+    animation-timing-function: linear;
+  }
   @keyframes rbc-tumble {
     0%   { opacity: 0; transform: translate(0, 0) rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
     7%   { opacity: var(--rbc-pop, .3); }
@@ -238,7 +258,8 @@
   @media (prefers-reduced-motion: reduce) {
     .hero             { animation: none; }
     .hero-particle    { animation: none; opacity: 0.4; }
-    .hero-rbc         { animation: none; opacity: 0.22; transform: rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
+    .hero-rbc,
+    .hero-mol         { animation: none; opacity: 0.22; transform: rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
   }
   .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 3; }
   .hero-eyebrow {
@@ -4712,6 +4733,62 @@ try {
       '--rbc-delay:'  + rdelay.toFixed(1) + 's;' +
       '--rbc-travel:' + rtravel + 'px;';
     wrap.appendChild(rbc);
+  }
+
+  // ── MOLECULE OVERLAY ────────────────────────────────────────────────────────
+  // Amber/gold-tinted biomarker silhouettes sharing the RBC motion grammar.
+  // Each instance picks (a) one of 24 monochrome molecule SVGs, (b) one of
+  // four motion variants from the same pool, (c) an amber/gold/cream tint.
+  var MOL_FILES = 24;
+  var molTints = [
+    'rgba(245, 200, 110,',
+    'rgba(250, 220, 140,',
+    'rgba(220, 170,  60,',
+    'rgba(255, 225, 170,',
+    'rgba(240, 180,  80,'
+  ];
+  var molCount = 10;
+  for (var m = 0; m < molCount; m++) {
+    var mol = document.createElement('div');
+    var molIdx = 1 + Math.floor(Math.random() * MOL_FILES);
+    var molId = (molIdx < 10 ? '0' : '') + molIdx;
+    var mvariant = rbcVariants[Math.floor(Math.random() * rbcVariants.length)];
+    mol.className = 'hero-mol ' + mvariant;
+
+    var msz = 24 + Math.random() * 38;                  // 24–62px — between solutes and RBCs
+    var mtop = 4 + Math.random() * 88;
+    var mdur = mvariant === 'rbc-drift'
+                 ? 20 + Math.random() * 14
+                 : 13 + Math.random() * 11;
+    var mdelay = -(Math.random() * mdur);
+    var mop = 0.18 + Math.random() * 0.18;              // 0.18–0.36
+    var mrot0 = Math.round(Math.random() * 360);
+    var mspin = (Math.random() < .5 ? -1 : 1) * (540 + Math.round(Math.random() * 900));
+    var msc = 0.85 + Math.random() * 0.40;
+    var mbobY = (Math.random() < .5 ? -1 : 1) * (10 + Math.round(Math.random() * 28));
+    var mtint = molTints[Math.floor(Math.random() * molTints.length)] + (mop + 0.18).toFixed(2) + ')';
+    var mglow = Math.max(3, Math.round(msz / 5));
+    var mtravel = W + 60;
+    var maskUrl = "url('../images/molecules/mol-" + molId + ".svg')";
+
+    mol.style.cssText =
+      'width:'  + msz.toFixed(0) + 'px;' +
+      'height:' + msz.toFixed(0) + 'px;' +
+      'top:'    + mtop.toFixed(1) + '%;' +
+      'left:'   + (-msz - 4).toFixed(0) + 'px;' +
+      '-webkit-mask-image:' + maskUrl + ';' +
+              'mask-image:' + maskUrl + ';' +
+      '--mol-tint:'   + mtint + ';' +
+      '--rbc-glow:'   + mglow + 'px;' +
+      '--rbc-pop:'    + mop.toFixed(2) + ';' +
+      '--rbc-rot0:'   + mrot0 + 'deg;' +
+      '--rbc-spin:'   + mspin + 'deg;' +
+      '--rbc-sc:'     + msc.toFixed(2) + ';' +
+      '--rbc-bobY:'   + mbobY + 'px;' +
+      '--rbc-dur:'    + mdur.toFixed(1) + 's;' +
+      '--rbc-delay:'  + mdelay.toFixed(1) + 's;' +
+      '--rbc-travel:' + mtravel + 'px;';
+    wrap.appendChild(mol);
   }
 })();
 
