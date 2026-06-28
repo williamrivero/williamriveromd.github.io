@@ -182,9 +182,66 @@
     90%  { opacity: var(--pop, 0.5); }
     100% { transform: translate(var(--travel, 920px), 20px) scale(0.55); opacity: 0; }
   }
+  /* RBC overlay — biconcave-disc silhouettes flowing across alongside the
+     amber solute stream. SVG masks sourced from images/rbc/cell-NN.svg.
+     Variants: tumble (continuous spin), roll (one full rotation per pass),
+     drift (lazy zig-zag), flutter (scaleX squash like a flipping coin). */
+  .hero-rbc {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform, opacity;
+    background-color: var(--rbc-tint, rgba(190, 50, 40, .32));
+    filter: drop-shadow(0 0 var(--rbc-glow, 6px) rgba(140, 25, 25, .35));
+    -webkit-mask-size: contain;
+            mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+            mask-position: center;
+    opacity: 0;
+    animation-iteration-count: infinite;
+    animation-duration: var(--rbc-dur, 18s);
+    animation-delay: var(--rbc-delay, 0s);
+    animation-timing-function: linear;
+  }
+  .hero-rbc.rbc-tumble  { animation-name: rbc-tumble; }
+  .hero-rbc.rbc-roll    { animation-name: rbc-roll; }
+  .hero-rbc.rbc-drift   { animation-name: rbc-drift;   animation-timing-function: ease-in-out; }
+  .hero-rbc.rbc-flutter { animation-name: rbc-flutter; animation-timing-function: cubic-bezier(.4,0,.6,1); }
+  @keyframes rbc-tumble {
+    0%   { opacity: 0; transform: translate(0, 0) rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
+    7%   { opacity: var(--rbc-pop, .3); }
+    93%  { opacity: var(--rbc-pop, .3); }
+    100% { opacity: 0; transform: translate(var(--rbc-travel, 920px), var(--rbc-bobY, -16px)) rotate(calc(var(--rbc-rot0, 0deg) + var(--rbc-spin, 900deg))) scale(var(--rbc-sc, 1)); }
+  }
+  @keyframes rbc-roll {
+    0%   { opacity: 0; transform: translate(0, 0) rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
+    10%  { opacity: var(--rbc-pop, .3); }
+    50%  { transform: translate(50%, calc(var(--rbc-bobY, 18px) * 0.5)) rotate(calc(var(--rbc-rot0, 0deg) + 180deg)) scale(var(--rbc-sc, 1)); }
+    90%  { opacity: var(--rbc-pop, .3); }
+    100% { opacity: 0; transform: translate(var(--rbc-travel, 920px), var(--rbc-bobY, 18px)) rotate(calc(var(--rbc-rot0, 0deg) + 360deg)) scale(var(--rbc-sc, 1)); }
+  }
+  @keyframes rbc-drift {
+    0%   { opacity: 0; transform: translate(0, 0) rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
+    12%  { opacity: var(--rbc-pop, .3); }
+    35%  { transform: translate(35%, calc(var(--rbc-bobY, -20px))) rotate(calc(var(--rbc-rot0, 0deg) + 30deg)) scale(var(--rbc-sc, 1)); }
+    65%  { transform: translate(65%, calc(var(--rbc-bobY, -20px) * -1)) rotate(calc(var(--rbc-rot0, 0deg) + 70deg)) scale(var(--rbc-sc, 1)); }
+    88%  { opacity: var(--rbc-pop, .3); }
+    100% { opacity: 0; transform: translate(var(--rbc-travel, 920px), -8px) rotate(calc(var(--rbc-rot0, 0deg) + 120deg)) scale(var(--rbc-sc, 1)); }
+  }
+  @keyframes rbc-flutter {
+    0%   { opacity: 0; transform: translate(0, 0) rotate(var(--rbc-rot0, 0deg)) scaleX(var(--rbc-sc, 1)) scaleY(var(--rbc-sc, 1)); }
+    10%  { opacity: var(--rbc-pop, .3); }
+    25%  { transform: translate(25%, -10px) rotate(calc(var(--rbc-rot0, 0deg) + 60deg))  scaleX(calc(var(--rbc-sc, 1) * 0.35)) scaleY(var(--rbc-sc, 1)); }
+    50%  { transform: translate(50%, 0px)   rotate(calc(var(--rbc-rot0, 0deg) + 140deg)) scaleX(var(--rbc-sc, 1))                scaleY(var(--rbc-sc, 1)); }
+    75%  { transform: translate(75%, 10px)  rotate(calc(var(--rbc-rot0, 0deg) + 220deg)) scaleX(calc(var(--rbc-sc, 1) * 0.35)) scaleY(var(--rbc-sc, 1)); }
+    90%  { opacity: var(--rbc-pop, .3); }
+    100% { opacity: 0; transform: translate(var(--rbc-travel, 920px), 0px) rotate(calc(var(--rbc-rot0, 0deg) + 320deg)) scaleX(var(--rbc-sc, 1)) scaleY(var(--rbc-sc, 1)); }
+  }
   @media (prefers-reduced-motion: reduce) {
     .hero             { animation: none; }
     .hero-particle    { animation: none; opacity: 0.4; }
+    .hero-rbc         { animation: none; opacity: 0.22; transform: rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
   }
   .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 3; }
   .hero-eyebrow {
@@ -4606,6 +4663,68 @@ try {
       '--travel:' + travel + 'px;' +
       'animation:' + flow + ' ' + dur.toFixed(1) + 's ' + delay.toFixed(1) + 's linear infinite;';
     wrap.appendChild(p);
+  }
+
+  // ── RBC OVERLAY ─────────────────────────────────────────────────────────────
+  // Biconcave-disc silhouettes drifting across the hero alongside the solute
+  // stream. Each one picks (a) one of 45 cell SVGs split out of the source
+  // bloodcells-outline file, (b) one of four motion variants, (c) a tint from
+  // a small red palette, (d) randomised size / opacity / start rotation /
+  // spin amount / vertical bob.
+  var RBC_FILES = 45;
+  var rbcVariants = ['rbc-tumble', 'rbc-tumble', 'rbc-tumble',
+                     'rbc-roll',   'rbc-roll',
+                     'rbc-drift',  'rbc-drift',
+                     'rbc-flutter'];
+  var rbcTints = [
+    'rgba(204, 60, 60,',
+    'rgba(168, 28, 28,',
+    'rgba(190, 80, 40,',
+    'rgba(155, 40, 40,',
+    'rgba(220,110, 60,'
+  ];
+  var rbcCount = 14;
+  for (var r = 0; r < rbcCount; r++) {
+    var rbc = document.createElement('div');
+    var cellIdx = 1 + Math.floor(Math.random() * RBC_FILES);
+    var cellId = (cellIdx < 10 ? '0' : '') + cellIdx;
+    var variant = rbcVariants[Math.floor(Math.random() * rbcVariants.length)];
+    rbc.className = 'hero-rbc ' + variant;
+
+    var rsz = 18 + Math.random() * 32;                  // 18–50px
+    var rtop = 4 + Math.random() * 88;
+    var rdur = variant === 'rbc-drift'
+                 ? 18 + Math.random() * 14
+                 : 11 + Math.random() * 11;
+    var rdelay = -(Math.random() * rdur);
+    var rop = 0.16 + Math.random() * 0.22;              // 0.16–0.38
+    var rrot0 = Math.round(Math.random() * 360);
+    var rspin = (Math.random() < .5 ? -1 : 1) * (540 + Math.round(Math.random() * 900));
+    var rsc = 0.85 + Math.random() * 0.40;
+    var rbobY = (Math.random() < .5 ? -1 : 1) * (10 + Math.round(Math.random() * 28));
+    var rtint = rbcTints[Math.floor(Math.random() * rbcTints.length)] + (rop + 0.10).toFixed(2) + ')';
+    var rglow = Math.max(3, Math.round(rsz / 5));
+    var rtravel = W + 60;
+    var maskUrl = "url('../images/rbc/cell-" + cellId + ".svg')";
+
+    rbc.style.cssText =
+      'width:'  + rsz.toFixed(0) + 'px;' +
+      'height:' + rsz.toFixed(0) + 'px;' +
+      'top:'    + rtop.toFixed(1) + '%;' +
+      'left:'   + (-rsz - 4).toFixed(0) + 'px;' +
+      '-webkit-mask-image:' + maskUrl + ';' +
+              'mask-image:' + maskUrl + ';' +
+      '--rbc-tint:'   + rtint + ';' +
+      '--rbc-glow:'   + rglow + 'px;' +
+      '--rbc-pop:'    + rop.toFixed(2) + ';' +
+      '--rbc-rot0:'   + rrot0 + 'deg;' +
+      '--rbc-spin:'   + rspin + 'deg;' +
+      '--rbc-sc:'     + rsc.toFixed(2) + ';' +
+      '--rbc-bobY:'   + rbobY + 'px;' +
+      '--rbc-dur:'    + rdur.toFixed(1) + 's;' +
+      '--rbc-delay:'  + rdelay.toFixed(1) + 's;' +
+      '--rbc-travel:' + rtravel + 'px;';
+    wrap.appendChild(rbc);
   }
 })();
 
