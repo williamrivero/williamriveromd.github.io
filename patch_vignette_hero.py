@@ -33,6 +33,23 @@ TARGETS = {
     "new-therapeutic-agents-ckd": "Circular vignette hero illustration for the new therapeutic agents in CKD guide.",
     "practical-outpatient-algorithms": "Circular vignette hero illustration for the practical outpatient nephrology algorithms guide.",
     "stem-cells-ckd": "Circular vignette hero illustration for the stem cells and CKD guide.",
+    "acute-kidney-injury-on-ckd": "Circular vignette hero illustration for the AKI-on-CKD guide.",
+    "advance-care-planning-dialysis": "Circular vignette hero illustration for the advance care planning in dialysis guide.",
+    "alcohol-ckd": "Circular vignette hero illustration for the alcohol and CKD guide.",
+    "buko-juice-alkaline-water-ckd": "Circular vignette hero illustration for the buko juice and alkaline water CKD guide.",
+    "caffeine-ckd": "Circular vignette hero illustration for the caffeine and CKD guide.",
+    "cardiovascular-death-dialysis": "Circular vignette hero illustration for the cardiovascular death in dialysis guide.",
+    "ckd-financial-stress": "Circular vignette hero illustration for the CKD financial stress guide.",
+    "dialysis-coming-pre-eskd": "Circular vignette hero illustration for the preparing for dialysis (pre-ESKD) guide.",
+    "el-nino-heat-dialysis": "Circular vignette hero illustration for the El Niño heat and dialysis guide.",
+    "hemodialysis-transfer-guide": "Circular vignette hero illustration for the hemodialysis transfer guide.",
+    "hemoperfusion-blood-purification": "Circular vignette hero illustration for the hemoperfusion and blood purification guide.",
+    "philhealth-z-packages": "Circular vignette hero illustration for the PhilHealth Z-packages guide.",
+    "substance-abuse-ckd": "Circular vignette hero illustration for the substance abuse and CKD guide.",
+    "tuberculosis-kidney-disease": "Circular vignette hero illustration for the tuberculosis and kidney disease guide.",
+    "typhoon-disaster-preparedness-dialysis": "Circular vignette hero illustration for the typhoon and disaster preparedness in dialysis guide.",
+    "viral-infections-vaccinations-ckd": "Circular vignette hero illustration for the viral infections and vaccinations in CKD guide.",
+    "zero-balance-billing-philhealth": "Circular vignette hero illustration for the PhilHealth zero-balance-billing guide.",
 }
 
 FIGURE_TMPL = (
