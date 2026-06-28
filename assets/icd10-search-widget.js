@@ -279,6 +279,16 @@
 
     host.innerHTML = `
       <div class="icd10-widget">
+        <div class="icd10-header">
+          <div class="icd10-header-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+          </div>
+          <div class="icd10-header-text">
+            <div class="icd10-header-eyebrow">Interactive Tool · WHO ICD-10</div>
+            <div class="icd10-header-title">Search 10,469 ICD-10 Codes</div>
+          </div>
+          <div class="icd10-header-cta" aria-hidden="true">Try it →</div>
+        </div>
         <div class="icd10-mode-tabs" role="tablist">
           <button class="icd10-tab icd10-tab-active" data-mode="single" role="tab" aria-selected="true">Single search</button>
           <button class="icd10-tab" data-mode="batch" role="tab" aria-selected="false">Batch mode</button>

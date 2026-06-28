@@ -3,14 +3,86 @@
    ─────────────────────────────────────────────────────────────────────────── */
 
 .icd10-widget {
-  border: 1px solid var(--border, #e2e6eb);
-  border-radius: 12px;
-  background: #fff;
-  padding: 18px;
-  margin: 18px 0;
+  border: 1px solid rgba(26, 107, 114, .28);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, #eef6f7 0%, #ffffff 90px),
+    #ffffff;
+  padding: 0;
+  margin: 24px 0;
   font-family: 'Manrope', system-ui, sans-serif;
   color: var(--text, #1e2a38);
+  box-shadow:
+    0 1px 2px rgba(15, 30, 46, .04),
+    0 6px 24px rgba(26, 107, 114, .10);
+  overflow: hidden;
 }
+
+/* ── Header banner ──────────────────────────────────────────────────────── */
+.icd10-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #1a6b72 0%, #14545c 100%);
+  color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, .14);
+}
+.icd10-header-icon {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .14);
+  border: 1px solid rgba(255, 255, 255, .22);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.icd10-header-icon svg { width: 20px; height: 20px; }
+.icd10-header-text { flex: 1; min-width: 0; }
+.icd10-header-eyebrow {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .82);
+  margin-bottom: 2px;
+}
+.icd10-header-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -.005em;
+  line-height: 1.25;
+}
+.icd10-header-cta {
+  flex: 0 0 auto;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: #fff;
+  background: rgba(255, 255, 255, .14);
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 999px;
+  padding: 5px 12px;
+  white-space: nowrap;
+}
+
+/* Body padding now applied to all inner panes since widget itself is padding-0 */
+.icd10-pane,
+.icd10-mode-tabs,
+.icd10-footnote {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+.icd10-mode-tabs { margin-top: 14px; }
+.icd10-pane { padding-bottom: 4px; }
+.icd10-footnote { padding-bottom: 16px; }
 
 /* ── Mode tabs ───────────────────────────────────────────────────────────── */
 .icd10-mode-tabs {
@@ -363,7 +435,12 @@
 }
 
 @media (max-width: 640px) {
-  .icd10-widget { padding: 14px; }
+  .icd10-header { padding: 12px 14px; gap: 10px; }
+  .icd10-header-icon { width: 32px; height: 32px; }
+  .icd10-header-icon svg { width: 18px; height: 18px; }
+  .icd10-header-title { font-size: 15.5px; }
+  .icd10-header-cta { display: none; }
+  .icd10-pane, .icd10-mode-tabs, .icd10-footnote { padding-left: 14px; padding-right: 14px; }
   .icd10-bar { flex-wrap: wrap; }
   .icd10-count { width: 100%; }
   .icd10-table-wrap { font-size: 13px; }
@@ -380,9 +457,20 @@
    html[data-theme="dark"] (guide pages) or body.dark-mode (legacy pages). */
 html[data-theme="dark"] .icd10-widget,
 body.dark-mode .icd10-widget {
-  background: #16243f;
-  border-color: rgba(255,255,255,.10);
+  background:
+    linear-gradient(180deg, rgba(26,107,114,.22) 0%, #16243f 96px),
+    #16243f;
+  border-color: rgba(78,195,202,.40);
   color: #e6ebf2;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.30),
+    0 8px 28px rgba(0,0,0,.40);
+}
+/* Header banner reads the same teal gradient in both modes — keep it that
+   way; just darken its border slightly so it doesn't visually clip. */
+html[data-theme="dark"] .icd10-header,
+body.dark-mode .icd10-header {
+  border-bottom-color: rgba(0,0,0,.40);
 }
 html[data-theme="dark"] .icd10-mode-tabs,
 body.dark-mode .icd10-mode-tabs {
