@@ -1,0 +1,360 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   icd10-search-widget.css — shared styles for the WHO ICD-10 search widget
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.icd10-widget {
+  border: 1px solid var(--border, #e2e6eb);
+  border-radius: 12px;
+  background: #fff;
+  padding: 18px;
+  margin: 18px 0;
+  font-family: 'Manrope', system-ui, sans-serif;
+  color: var(--text, #1e2a38);
+}
+
+/* ── Mode tabs ───────────────────────────────────────────────────────────── */
+.icd10-mode-tabs {
+  display: flex;
+  gap: 4px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 14px;
+  max-width: 360px;
+}
+.icd10-tab {
+  flex: 1;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted, #4a5568);
+  cursor: pointer;
+  transition: background .15s, color .15s, box-shadow .15s;
+}
+.icd10-tab:hover { color: var(--text, #1e2a38); }
+.icd10-tab-active {
+  background: #fff;
+  color: var(--navy, #1f3864);
+  box-shadow: 0 1px 3px rgba(15, 30, 46, .08);
+}
+
+.icd10-pane[hidden] { display: none; }
+
+/* ── Single-mode bar ─────────────────────────────────────────────────────── */
+.icd10-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.icd10-input {
+  flex: 1;
+  min-width: 0;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 11px 14px;
+  border: 1px solid var(--border, #e2e6eb);
+  border-radius: 10px;
+  background: #f9fafb;
+  color: var(--text, #1e2a38);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+  -webkit-appearance: none;
+}
+.icd10-input:focus {
+  border-color: var(--teal, #1a6b72);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(26, 107, 114, .12);
+}
+
+.icd10-count {
+  font-size: 13px;
+  color: var(--text-muted, #4a5568);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.icd10-status {
+  font-size: 13px;
+  color: var(--text-muted, #4a5568);
+  background: #f9fafb;
+  border: 1px dashed var(--border, #e2e6eb);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+}
+.icd10-status-err {
+  color: #b91c1c;
+  background: #fff0f0;
+  border-color: rgba(185, 28, 28, .35);
+  border-style: solid;
+}
+
+.icd10-results { margin: 8px 0; }
+
+.icd10-empty {
+  padding: 24px 12px;
+  text-align: center;
+  color: var(--text-muted, #4a5568);
+  font-size: 14px;
+}
+.icd10-empty code,
+.icd10-batch-no code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 13px;
+  color: var(--navy, #1f3864);
+}
+
+/* ── Results table ───────────────────────────────────────────────────────── */
+.icd10-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border, #e2e6eb);
+  border-radius: 10px;
+}
+.icd10-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.icd10-table thead th {
+  background: #f9fafb;
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--text-muted, #4a5568);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border-bottom: 1px solid var(--border, #e2e6eb);
+}
+.icd10-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eef0f2;
+  vertical-align: top;
+}
+.icd10-table tbody tr:last-child td { border-bottom: none; }
+.icd10-table tbody tr:hover { background: #f9fafb; }
+
+.icd10-code-col { width: 110px; }
+.icd10-code {
+  font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--navy, #1f3864);
+  white-space: nowrap;
+}
+.icd10-title {
+  color: var(--text, #1e2a38);
+  line-height: 1.45;
+}
+.icd10-chapter {
+  font-size: 12.5px;
+  color: var(--text-muted, #4a5568);
+  white-space: nowrap;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icd10-hl {
+  background: rgba(184, 150, 46, .35);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+/* ── Pager ───────────────────────────────────────────────────────────────── */
+.icd10-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.icd10-page-btn,
+.icd10-btn {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border, #e2e6eb);
+  background: #fff;
+  color: var(--navy, #1f3864);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.icd10-page-btn:hover:not(:disabled),
+.icd10-btn:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: var(--teal, #1a6b72);
+}
+.icd10-page-btn:disabled {
+  color: var(--text-faint, #5c6a7e);
+  cursor: not-allowed;
+  opacity: .55;
+}
+.icd10-page-info {
+  font-size: 13px;
+  color: var(--text-muted, #4a5568);
+  white-space: nowrap;
+}
+
+.icd10-btn-primary {
+  background: var(--teal, #1a6b72);
+  border-color: var(--teal, #1a6b72);
+  color: #fff;
+}
+.icd10-btn-primary:hover:not(:disabled) {
+  background: #15555b;
+  border-color: #15555b;
+  color: #fff;
+}
+.icd10-btn-ghost {
+  background: transparent;
+  color: var(--text-muted, #4a5568);
+}
+
+/* ── Batch mode ──────────────────────────────────────────────────────────── */
+.icd10-batch-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted, #4a5568);
+  margin-bottom: 8px;
+}
+.icd10-batch-input {
+  width: 100%;
+  font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Manrope', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  padding: 12px 14px;
+  border: 1px solid var(--border, #e2e6eb);
+  border-radius: 10px;
+  background: #f9fafb;
+  color: var(--text, #1e2a38);
+  resize: vertical;
+  min-height: 120px;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+  -webkit-appearance: none;
+}
+.icd10-batch-input:focus {
+  border-color: var(--teal, #1a6b72);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(26, 107, 114, .12);
+}
+.icd10-batch-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.icd10-batch-hint {
+  font-size: 12.5px;
+  color: var(--text-faint, #5c6a7e);
+}
+.icd10-batch-status {
+  margin-top: 10px;
+  min-height: 18px;
+}
+.icd10-status-msg {
+  font-size: 13px;
+  color: var(--text-muted, #4a5568);
+}
+.icd10-status-warn {
+  color: #92400e;
+  font-weight: 600;
+}
+
+.icd10-batch-results {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.icd10-batch-group {
+  border: 1px solid var(--border, #e2e6eb);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.icd10-batch-q {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #f9fafb;
+  border-bottom: 1px solid var(--border, #e2e6eb);
+  font-size: 13.5px;
+  flex-wrap: wrap;
+}
+.icd10-batch-q-num {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--navy, #1f3864);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.icd10-batch-q-text {
+  flex: 1;
+  font-weight: 600;
+  color: var(--text, #1e2a38);
+  min-width: 0;
+  word-break: break-word;
+}
+.icd10-batch-q-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted, #4a5568);
+  white-space: nowrap;
+}
+.icd10-batch-group .icd10-table-wrap {
+  border: none;
+  border-radius: 0;
+}
+.icd10-batch-group .icd10-table thead th {
+  background: #fff;
+  font-size: 11.5px;
+  padding: 8px 14px;
+}
+.icd10-batch-no {
+  text-align: center;
+  padding: 16px 12px !important;
+  color: var(--text-muted, #4a5568);
+  font-size: 13px;
+}
+
+.icd10-footnote {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  color: var(--text-muted, #4a5568);
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .icd10-widget { padding: 14px; }
+  .icd10-bar { flex-wrap: wrap; }
+  .icd10-count { width: 100%; }
+  .icd10-table-wrap { font-size: 13px; }
+  .icd10-chapter { display: none; }
+  .icd10-code-col { width: auto; }
+  .icd10-mode-tabs { max-width: 100%; }
+  .icd10-batch-actions { gap: 8px; }
+  .icd10-batch-hint { width: 100%; }
+  .icd10-batch-q { font-size: 12.5px; padding: 8px 12px; }
+}
