@@ -1580,48 +1580,42 @@
   }
 </style>
 <style>
-/* Restored per-guide CSS */
-.alert-orange{background:#fff4ec;border:1px solid #ffd1ad;}
-.alert-orange h4{color:#b9450b;}
-html[data-theme="dark"] .alert-amber,html[data-theme="dark"] .alert-orange{background:#2a1f0a;}
-/* Clinician-specific */
-  .algo-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:24px 0;}
-.alert,.feature-card,.calc-wrap,.algo-card{border:1px solid #999!important;background:white!important;}
-html[data-theme="dark"] .feature-card,html[data-theme="dark"] .checklist,html[data-theme="dark"] .calc-wrap,html[data-theme="dark"] .algo-card{background:#141c2a;border-color:#2a3548;}
-.algo-content{flex:1;font-size:14.5px;line-height:1.65;color:var(--text-mid);}
-.algo-content strong{color:var(--navy);}
-html[data-theme="dark"] .feature-card p,html[data-theme="dark"] .feature-card li,html[data-theme="dark"] .checklist li,html[data-theme="dark"] .section p,html[data-theme="dark"] .algo-content{color:#c0cad8 !important;}
-.algo-header{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:14px;}
-html[data-theme="dark"] .feature-card h4,html[data-theme="dark"] .checklist h4,html[data-theme="dark"] .section h2,html[data-theme="dark"] .section h3,html[data-theme="dark"] .algo-header{color:#e8eaf0;}
-.algo-row{display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--border);}
-.algo-row:first-of-type{border-top:0;}
-.algo-step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--teal);color:white;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
-.calc-result{margin-top:24px;padding:24px;background:white;border-radius:12px;border:2px solid var(--border);text-align:center;transition:border-color .3s;}
-.calc-result.low{border-color:var(--green);}
-.calc-result.moderate{border-color:#e6a03c;}
-.calc-result.high{border-color:#fc8d3a;}
-.calc-result.severe{border-color:var(--red);}
-.calc-result.low .calc-result-num{color:var(--green);}
-.calc-result.moderate .calc-result-num{color:#92400e;}
-.calc-result.high .calc-result-num{color:#b9450b;}
-.calc-result.severe .calc-result-num{color:var(--red);}
-html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select,html[data-theme="dark"] .calc-result{background:#0a121e;color:#e8eaf0;border-color:#2a3548;}
-.calc-result-label{font-size:13px;color:var(--text-muted);margin-top:6px;letter-spacing:.04em;text-transform:uppercase;}
-.calc-result-num{font-family:'Lora',serif;font-size:48px;font-weight:600;line-height:1;color:var(--navy);}
-.calc-row{display:grid;grid-template-columns:1fr 130px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
-.calc-row:last-of-type{border-bottom:0;}
-.calc-row label{font-size:14px;color:var(--text-mid);font-weight:500;}
-.calc-row label .meta{display:block;font-size:11.5px;color:var(--text-muted);font-weight:400;margin-top:2px;}
-.calc-row input,.calc-row select{width:100%;padding:9px 12px;font-family:inherit;font-size:14px;border:1px solid var(--border);border-radius:8px;background:white;}
-.calc-row input{text-align:right;}
-.calc-row input:focus,.calc-row select:focus{outline:none;border-color:var(--teal);}
-.calc-verdict{margin-top:18px;font-size:15px;line-height:1.65;color:var(--text-mid);text-align:left;}
-.dr-photo{width:64px;height:64px;border-radius:50%;border:2px solid rgba(184,150,46,.5);object-fit:cover;flex-shrink:0;}
-.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
-.stat-card .stat-num{font-family:'Lora',serif;font-size:32px;font-weight:600;color:#fc8d3a;line-height:1;margin-bottom:6px;}
-.stat-card .stat-num{color:#333!important;}
-.urgent-banner{background:rgba(192,57,43,.18);border:1px solid rgba(252,141,58,.4);border-radius:10px;padding:12px 18px;margin-top:24px;font-size:13.5px;color:#ffd9c4;}
-.urgent-banner strong{color:#ffb892;}
+  /* ── Per-guide contrast fixes (kept out of master CSS) ─────────────────────
+     This block must remain the SECOND <style> block so patch_master_css.py
+     never clobbers it. All ratios verified via Playwright + WCAG 2.1.
+  */
+  /* 1. In-prose anchors on the dark hero gradient — light yellow stays
+        high-contrast on the teal→navy hero. */
+  .hero a, .hero-sub a { color:#fde68a; text-decoration:underline; }
+  .hero a:hover, .hero-sub a:hover { color:#fff3b8; }
+
+  /* 2. In-prose anchors inside alert callouts — both modes.
+        Light: dark teal text on teal-soft bg (8.4:1 ✓).
+        Dark : light teal text on dark teal bg (10.5:1 ✓). */
+  .alert a { color:#0a3a40; text-decoration:underline; }
+  .alert a:hover { color:#08272b; }
+  html[data-theme="dark"] .alert a { color:#a0e0e6; }
+  html[data-theme="dark"] .alert a:hover { color:#cdf2f6; }
+
+  /* 3. Section prose links — currently fall to UA default (#0000EE blue),
+        which fails WCAG on dark mode. Use the teal token. */
+  .section p > a:not([class]), .section li > a:not([class]) {
+    color: var(--teal); text-decoration: underline; text-underline-offset: 2px;
+  }
+  html[data-theme="dark"] .section p > a:not([class]),
+  html[data-theme="dark"] .section li > a:not([class]) {
+    color:#5fb8c0;  /* 6.4:1 on dark bg ✓ */
+  }
+
+  /* 4. Stat-numbers — master CSS uses --gold-light #d4af4f on --teal #1a6b72
+        which computes to 2.96:1 (just under the 3:1 large-text floor).
+        Use a brighter gold to clear AA for large text. */
+  .stat-card .stat-number { color:#f0d068; }  /* 3.6:1 on --teal ✓ */
+
+  /* 5. Related Guides h2 — master uses var(--navy) for the heading; in
+        dark mode --navy resolves to #0e1929, which leaves the heading
+        invisible on the dark-mode related-guides background. */
+  html[data-theme="dark"] .related-guides h2 { color: var(--text); }
 </style>
 <script type="application/ld+json">
 {
@@ -1710,244 +1704,23 @@ html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select
 }
 </script>
 
-<style>
-/* EL NINO HEAT DIALYSIS CUSTOM CSS — restored from commit 38d0ea2 */
-:root {
-    --gold:#b8962e; --gold-light:#d4af4f;
-    --teal:#1a6b72; --teal-light:#e1f5f0;
-    --text:#1e2a38; --text-mid:#2c3a4a; --text-muted:#4a5568;
-    --bg:#f9fafb; --white:#ffffff; --border:#e2e6eb;
-    --red:#b91c1c; --red-soft:#fff0f0;
-    --amber:#92400e; --amber-soft:#fffbeb;
-    --green:#166534; --green-soft:#f0fdf4;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  
-
-  .site-header{background:var(--navy);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
-  .site-header a.brand{font-size:16px;font-weight:400;color:white;text-decoration:none;}
-  .site-header a.brand strong{font-weight:600;color:#d4af4f;}
-  .site-header a.back{font-size:12px;color:rgba(255,255,255,.7);text-decoration:none;letter-spacing:.04em;}
-  .guide-toggle-bar{background:rgba(10,18,32,.96);padding:6px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);}
-  
-  
-  
-  .lang-btn.disabled{opacity:.4;cursor:not-allowed;}
-  
-  .toggle-btn.active{background:#b8962e;border-color:#b8962e;color:white;}
-  
-
-  
-  
-  
-  
-  .mode-patient{display:block;}
-  
-  
-  
-  body.physician-mode .nav-pills .mode-patient-pill{display:none;}
-  body.physician-mode .nav-pills .mode-physician-pill{display:inline-flex;}
-  
-
-  
-  
-  .hero::after{content:'';position:absolute;bottom:-80px;left:-60px;width:280px;height:280px;border-radius:50%;border:1px solid rgba(192,57,43,.12);}
-  
-  
-  
-  
-  
-  
-  
-  
-  .urgent-banner{background:rgba(192,57,43,.18);border:1px solid rgba(252,141,58,.4);border-radius:10px;padding:12px 18px;margin-top:24px;font-size:13.5px;color:#ffd9c4;}
-  .urgent-banner strong{color:#ffb892;}
-
-  .nav-strip{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100;}
-  
-  
-  
-  
-
-  
-  
-  .mode-physician .section-tag{color:var(--navy);}
-  
-  .section h2 em{font-style:italic;color:#c0392b;}
-  
-  
-  
-
-  
-  
-  
-  .intro-callout p em{color:#fc8d3a;font-style:italic;}
-  .intro-callout p + p{margin-top:14px;}
-
-  .two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:24px 0;}
-  
-  
-  
-  
-  .feature-card ul{margin:8px 0 0 22px;font-size:14.5px;color:var(--text-muted);line-height:1.7;}
-  .feature-card li{margin-bottom:5px;}
-  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;}
-  .dot-gold{background:var(--gold);}
-  
-  
-
-  .lab-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px;}
-  
-  
-  .lab-table tr:hover td{background:var(--bg);}
-
-  
-  
-  .alert-body{flex:1;}
-  
-  .alert-body p{font-size:14.5px;line-height:1.7;color:var(--text-mid);margin:0;}
-  
-  .alert-body li{margin-bottom:5px;}
-  
-  .alert-red h4{color:var(--red);}
-  
-  .alert-amber h4{color:var(--amber);}
-  
-  .alert-green h4{color:var(--green);}
-  
-  .alert-teal h4{color:var(--teal);}
-  .alert-orange{background:#fff4ec;border:1px solid #ffd1ad;}
-  .alert-orange h4{color:#b9450b;}
-
-  
-  
-  
-  .checklist li{position:relative;padding-left:30px;margin-bottom:10px;color:var(--text-mid);font-size:14.5px;line-height:1.7;}
-  .checklist li::before{content:'';position:absolute;left:0;top:8px;width:18px;height:18px;border:2px solid var(--teal);border-radius:4px;}
-  .checklist li::after{content:'✓';position:absolute;left:3px;top:5px;color:var(--teal);font-weight:700;font-size:14px;}
-
-  /* Calculator */
-  .calc-wrap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:26px;margin:24px 0;}
-  .calc-row{display:grid;grid-template-columns:1fr 130px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
-  .calc-row:last-of-type{border-bottom:0;}
-  .calc-row label{font-size:14px;color:var(--text-mid);font-weight:500;}
-  .calc-row label .meta{display:block;font-size:11.5px;color:var(--text-muted);font-weight:400;margin-top:2px;}
-  .calc-row input,.calc-row select{width:100%;padding:9px 12px;font-family:inherit;font-size:14px;border:1px solid var(--border);border-radius:8px;background:white;}
-  .calc-row input{text-align:right;}
-  .calc-row input:focus,.calc-row select:focus{outline:none;border-color:var(--teal);}
-  .calc-result{margin-top:24px;padding:24px;background:white;border-radius:12px;border:2px solid var(--border);text-align:center;transition:border-color .3s;}
-  .calc-result.low{border-color:var(--green);}
-  .calc-result.moderate{border-color:#e6a03c;}
-  .calc-result.high{border-color:#fc8d3a;}
-  .calc-result.severe{border-color:var(--red);}
-  .calc-result-num{font-family:'Lora',serif;font-size:48px;font-weight:600;line-height:1;color:var(--navy);}
-  .calc-result.low .calc-result-num{color:var(--green);}
-  .calc-result.moderate .calc-result-num{color:#92400e;}
-  .calc-result.high .calc-result-num{color:#b9450b;}
-  .calc-result.severe .calc-result-num{color:var(--red);}
-  .calc-result-label{font-size:13px;color:var(--text-muted);margin-top:6px;letter-spacing:.04em;text-transform:uppercase;}
-  .calc-verdict{margin-top:18px;font-size:15px;line-height:1.65;color:var(--text-mid);text-align:left;}
-
-  /* Clinician-specific */
-  .algo-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:24px 0;}
-  .algo-header{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:14px;}
-  .algo-row{display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--border);}
-  .algo-row:first-of-type{border-top:0;}
-  .algo-step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--teal);color:white;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
-  .algo-content{flex:1;font-size:14.5px;line-height:1.65;color:var(--text-mid);}
-  .algo-content strong{color:var(--navy);}
-  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:24px 0;}
-  
-  .stat-card .stat-num{font-family:'Lora',serif;font-size:32px;font-weight:600;color:#fc8d3a;line-height:1;margin-bottom:6px;}
-  .stat-card .stat-label{font-size:12.5px;color:rgba(255,255,255,.78);line-height:1.45;}
-
-  
-  .dr-photo{width:64px;height:64px;border-radius:50%;border:2px solid rgba(184,150,46,.5);object-fit:cover;flex-shrink:0;}
-  
-  
-  .dr-creds{font-size:12px;color:rgba(255,255,255,.55);}
-
-  .related-guides{padding:48px 0 32px;border-bottom:1px solid var(--border);background:var(--bg);}
-  
-  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
-  
-  
-  
-  
-  
-
-  .guide-footer{background:var(--bg);border-top:1px solid var(--border);padding:32px;}
-  .footer-inner{max-width:860px;margin:0 auto;font-size:12px;color:var(--text-muted);line-height:1.7;}
-  .footer-inner a{color:var(--teal);text-decoration:none;}
-  .translation-notice{background:#fff4dd;border:1px solid #fde7a7;border-radius:8px;padding:10px 16px;margin:16px 0 0;font-size:13px;color:var(--amber);text-align:center;}
-
-  /* Print */
-  @media print{
-    .nav-strip,.guide-toggle-bar,.audience-tabs,.print-btn,.related-guides,.translation-notice{display:none!important;}
-    .mode-patient,.mode-physician{display:block !important;}
-    .hero{background:white!important;color:black!important;border-bottom:2px solid #ccc;padding:24px 0;}
-    .hero h1,.hero-sub,.hero-meta,.hero-tag{color:black!important;border-color:#999!important;}
-    .section{page-break-inside:avoid;}
-    .alert,.feature-card,.calc-wrap,.algo-card{border:1px solid #999!important;background:white!important;}
-    .lab-table th,.stat-card{background:#eee!important;color:black!important;}
-    .stat-card .stat-num{color:#333!important;}
-    .intro-callout,.dr-card{background:white!important;color:black!important;border:2px solid #333;}
-    .intro-callout p,.dr-card h4,.dr-card p{color:black!important;}
-  }
-
-  /* Dark mode */
-  html[data-theme="dark"]{
-    --navy:#0e1929;--text:#e8eaf0;--text-mid:#c0cad8;--text-muted:#9aa5b8;
-    --bg:#141c2a;--white:#0a121e;--border:#2a3548;
-    --red-soft:#2a1515;--amber-soft:#2a1f0a;--green-soft:#0e2a1c;--teal-light:#0e2f32;
-  }
-  
-  
-  html[data-theme="dark"] .feature-card,html[data-theme="dark"] .checklist,html[data-theme="dark"] .calc-wrap,html[data-theme="dark"] .algo-card{background:#141c2a;border-color:#2a3548;}
-  html[data-theme="dark"] .feature-card h4,html[data-theme="dark"] .checklist h4,html[data-theme="dark"] .section h2,html[data-theme="dark"] .section h3,html[data-theme="dark"] .algo-header{color:#e8eaf0;}
-  html[data-theme="dark"] .feature-card p,html[data-theme="dark"] .feature-card li,html[data-theme="dark"] .checklist li,html[data-theme="dark"] .section p,html[data-theme="dark"] .algo-content{color:#c0cad8 !important;}
-  html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select,html[data-theme="dark"] .calc-result{background:#0a121e;color:#e8eaf0;border-color:#2a3548;}
-  html[data-theme="dark"] .related-guides,html[data-theme="dark"] .guide-footer{background:#0e1929;border-color:#2a3548;}
-  html[data-theme="dark"] .related-card{background:#141c2a;border-color:#2a3548;}
-  html[data-theme="dark"] .related-card-title{color:#e8eaf0;}
-  html[data-theme="dark"] .lab-table td{border-color:#2a3548;color:#c0cad8;}
-  html[data-theme="dark"] .lab-table tr:hover td{background:#1a2535;}
-  
-  
-  html[data-theme="dark"] .alert-amber,html[data-theme="dark"] .alert-orange{background:#2a1f0a;}
-  
-  html[data-theme="dark"] .alert-teal{background:#0e2f32;}
-  html[data-theme="dark"] .alert-body p,html[data-theme="dark"] .alert-body li{color:#c0cad8;}
-  html[data-theme="dark"] .translation-notice{background:#2a1f0a;border-color:#3a2a0e;color:#e6a03c;}
-</style>
 </head>
 <body class="single-mode">
 <header class="site-header">
   <a href="https://www.williamriveromd.com" class="brand">HOME</a>
   <a href="/guides/" class="back">← All Guides</a>
 </header>
-<div class="guide-toggle-bar">
-  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    <span id="darkLabel">Dark</span>
-  </button>
-  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-    <span id="desktopLabel">Desktop</span>
-  </button>
-</div>
-
 <section class="hero">
   <div class="container">
     <div class="hero-grid">
       <div class="hero-copy">
         <div class="hero-tag">Dialyzer Reuse · A Companion to Green Nephrology 2026</div>
         <h1>Reprocessing dialyzers in modern times — <em>the quiet renaissance of an old practice</em>.</h1>
-        <p class="hero-sub">Dialyzer reuse — cleaning, testing, disinfecting and re-using a hemodialysis filter on the <strong>same patient</strong> — was the textbook example of a practice in terminal decline. Then climate, cost, and access reframed the question. This is the deep-dive companion to the <a href="green-nephrology.html" style="color:#fde68a;text-decoration:underline;">Green Nephrology 2026 guide</a>: what reprocessing actually is, why the rich world walked away, and why KDIGO 2026 has put reuse back on the table — without lowering safety standards.</p>
+        <p class="hero-sub">Dialyzer reuse — cleaning, testing, disinfecting and re-using a hemodialysis filter on the <strong>same patient</strong> — was the textbook example of a practice in terminal decline. Then climate, cost, and access reframed the question. This is the deep-dive companion to the <a href="green-nephrology.html">Green Nephrology 2026 guide</a>: what reprocessing actually is, why the rich world walked away, and why KDIGO 2026 has put reuse back on the table — without lowering safety standards.</p>
         <div class="hero-meta">
-          <div>The core idea<br><strong>Single-patient, by standard</strong>
-          <span><strong>Last Reviewed:</strong> <time datetime="2026-06-29" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
-          </div>
+<span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-29T13:57:22+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 29, 2026</time></span>
+<span class="hero-readtime"><strong><span data-lang="en">Read time</span><span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span><span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span><span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>:</strong> <time datetime="PT16M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~16 min</time></span>
+</div>
           <div>Reuse hierarchy tier<br><strong>Tier 2 of 5 (Reuse)</strong></div>
           <div>Main germicide today<br><strong>Peracetic acid</strong></div>
         </div>
@@ -2058,7 +1831,6 @@ html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select
   <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Six documented checks; any failure halts the chain.</figcaption>
 </figure>
 
-
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
@@ -2126,7 +1898,6 @@ html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select
   <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Formaldehyde (1983) → peracetic acid (today) — the modernization in one chart.</figcaption>
 </figure>
 
-
   <div class="table-wrap">
     <table>
       <thead>
@@ -2193,7 +1964,6 @@ html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select
   </picture>
   <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Where in the world reuse is allowed — and where the Philippines sits.</figcaption>
 </figure>
-
 
   <div class="three-col">
     <div class="feature-card">
@@ -2270,7 +2040,6 @@ html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select
   <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Reuse is tier 2 of 5 — useful, but only Prevent outranks it.</figcaption>
 </figure>
 
-
   <ol>
     <li><div class="feature-card"><h4><span class="dot dot-teal"></span>1. Prevent</h4><p>The most powerful intervention is the disposable that is never produced — fewer treatments, right-sized prescriptions, incremental dialysis where appropriate.</p></div></li>
     <li><div class="feature-card"><h4><span class="dot dot-teal"></span>2. Reuse <em>(this is where dialyzer reprocessing sits)</em></h4><p>Each reuse cycle is one fewer single-use dialyzer manufactured, shipped, and incinerated. In high-volume units the saving is substantial.</p></div></li>
@@ -2302,7 +2071,6 @@ html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select
   </picture>
   <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Real saving, real footprint of its own.</figcaption>
 </figure>
-
 
   <div class="two-col">
     <div class="feature-card">
@@ -2341,7 +2109,6 @@ html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select
   <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Single-patient, labeled, logged — the visible proof inside a Philippine unit.</figcaption>
 </figure>
 
-
   <div class="checklist">
     <h4>Six questions to ask your dialysis unit</h4>
     <ul>
@@ -2361,7 +2128,6 @@ html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select
   </picture>
   <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Screenshot and bring to your next appointment.</figcaption>
 </figure>
-
 
   <div class="alert alert-red">
     <div class="alert-icon">🚩</div>
@@ -2522,13 +2288,37 @@ html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select
     <div class="alert-icon">🌿</div>
     <div class="alert-body">
       <h4>The thesis of this guide</h4>
-      <p>Reuse is a tool, not a virtue — useful where it expands access without lowering safety, and never a substitute for the upstream work of <a href="green-nephrology.html" style="color:#0a3a40;text-decoration:underline;">preventing kidney failure in the first place</a>.</p>
+      <p>Reuse is a tool, not a virtue — useful where it expands access without lowering safety, and never a substitute for the upstream work of <a href="green-nephrology.html">preventing kidney failure in the first place</a>.</p>
     </div>
   </div>
 </section>
 
 </main>
 
+<!-- REFERENCES-ACC-START -->
+<!-- Accordion references — generated by patch_references_accordion.py. Inline styles so patch_master_css.py will not clobber it. -->
+<section class="ref-section" style="max-width:860px;margin:8px auto 0;padding:0 32px;">
+<details class="ref-acc" style="border:1px solid var(--border);border-radius:12px;background:var(--white);overflow:hidden;">
+<summary style="cursor:pointer;list-style:none;padding:15px 20px;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;color:var(--text);display:flex;align-items:center;gap:10px;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;color:var(--teal);"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+<span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>
+<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">10 sources</span>
+</summary>
+<ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);">
+<li>KDIGO 2026 Green Dialysis report — Barraclough KA, et al. "Green Dialysis: Environmentally Sustainable Care, Growth, and Innovation" (Kidney International, 2026; doi:10.1016/j.kint.2026.01.015)</li>
+<li>ANSI/AAMI RD47:2020 — Reprocessing of hemodialyzers</li>
+<li>ISO 23500 series — Quality of dialysis fluids and water</li>
+<li>CDC/HICPAC Guideline for Disinfection and Sterilization (2008)</li>
+<li>UpToDate, "Reuse of dialyzers"</li>
+<li>"Does hemodialyzer reuse have a place in current ESRD care?" (PMC4086247)</li>
+<li>"Dialyzer reuse: is it safe and worth it?" (PMC6788837)</li>
+<li>"Dialyzer reuse: justified cost saving for South Asian region" (PubMed 25149841)</li>
+<li>"Reusing dialyzer in low income countries: cost saving with complex ethics" (PubMed 28839314)</li>
+<li>Companion guide: Green Nephrology 2026 (williamriveromd.com/guides/green-nephrology)</li>
+</ol>
+</details>
+</section>
+<!-- REFERENCES-ACC-END -->
 <!-- DR CARD -->
 <div class="dr-card-wrap">
 <div class="dr-card">
@@ -2581,7 +2371,8 @@ html[data-theme="dark"] .calc-row input,html[data-theme="dark"] .calc-row select
 <footer class="guide-footer">
   <div class="footer-inner">
     <p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
-    <p style="margin-top:8px;">References &amp; further reading: KDIGO 2026 Green Dialysis report — Barraclough KA, et al. "Green Dialysis: Environmentally Sustainable Care, Growth, and Innovation" (Kidney International, 2026; doi:10.1016/j.kint.2026.01.015) · ANSI/AAMI RD47:2020 — Reprocessing of hemodialyzers · ISO 23500 series — Quality of dialysis fluids and water · CDC/HICPAC Guideline for Disinfection and Sterilization (2008) · UpToDate, "Reuse of dialyzers" · "Does hemodialyzer reuse have a place in current ESRD care?" (PMC4086247) · "Dialyzer reuse: is it safe and worth it?" (PMC6788837) · "Dialyzer reuse: justified cost saving for South Asian region" (PubMed 25149841) · "Reusing dialyzer in low income countries: cost saving with complex ethics" (PubMed 28839314) · Companion guide: Green Nephrology 2026 (williamriveromd.com/guides/green-nephrology). Standard editions and figures should be confirmed against current sources. This guide is education for patients, families, and clinicians and does not replace individual medical advice.</p>
+    <p>References: KDIGO 2026 Green Dialysis report — Barraclough KA, et al. "Green Dialysis: Environmentally Sustainable Care, Growth, and Innovation" (Kidney International, 2026; doi:10.1016/j.kint.2026.01.015) · ANSI/AAMI RD47:2020 — Reprocessing of hemodialyzers · ISO 23500 series — Quality of dialysis fluids and water · CDC/HICPAC Guideline for Disinfection and Sterilization (2008) · UpToDate, "Reuse of dialyzers" · "Does hemodialyzer reuse have a place in current ESRD care?" (PMC4086247) · "Dialyzer reuse: is it safe and worth it?" (PMC6788837) · "Dialyzer reuse: justified cost saving for South Asian region" (PubMed 25149841) · "Reusing dialyzer in low income countries: cost saving with complex ethics" (PubMed 28839314) · Companion guide: Green Nephrology 2026 (williamriveromd.com/guides/green-nephrology)</p>
+    <p style="margin-top:8px;">Standard editions and figures should be confirmed against current sources. This guide is education for patients, families, and clinicians and does not replace individual medical advice.</p>
   </div>
 </footer>
 
@@ -2599,7 +2390,6 @@ function toggleDark(){const on=document.documentElement.getAttribute('data-theme
 
 </script>
 
-
 <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
   <span class="p-tip">Back to top</span>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2607,5 +2397,14 @@ function toggleDark(){const on=document.documentElement.getAttribute('data-theme
   </svg>
 </button>
 <script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/image-lightbox.js" defer></script>
+<!-- Floating dark-mode toggle (relocated from the lang-bar strip) -->
+<div class="float-controls no-print">
+  <button id="darkToggle" class="float-btn" type="button" onclick="toggleDark()" aria-label="Toggle dark mode" title="Switch to dark mode">
+    <span class="float-tooltip" id="darkLabel">Dark mode</span>
+    <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
 </body>
 </html>
