@@ -200,6 +200,18 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    because justifying short or constrained-width content opens distracting rivers of
    whitespace; only the long-form section paragraphs are justified.
 
+7. **Evidence Snapshot card uses a shared 2-column grid.** Clinician-mode guides
+   surface an "Evidence Snapshot" card (`<aside class="hero-cards mode-physician">
+   → .ov-card → .ov-list → .ov-stat (.v + .l)`). Value column (`.v`) widths vary —
+   `"0"` vs `"−7 mmHg"` vs `"G4–G5"` vs `"AHA 2023"` — which used to push each
+   label (`.l`) to a different x-position. `MASTER_CSS` now promotes `.ov-list` to
+   `display:grid; grid-template-columns:max-content 1fr` and gives `.ov-stat`
+   `display:contents`, so every child lands in the parent grid — labels line up
+   under the widest value automatically. **Never re-add `min-width`/`flex-shrink`
+   on `.ov-stat .v` per guide**; the master rule handles alignment. The `.kp`
+   variant (`<ul class="ov-list kp">` with keypoint `<li>`s) keeps its flex layout
+   via `.ov-list:not(.kp)` scoping.
+
 The **Latest guides** strip lives on `guides/index.html` between `<!-- LATEST-GUIDES-START -->`
 and `<!-- LATEST-GUIDES-END -->` (above the mobile filter bar / "Continue reading" rail). Each
 card shows the guide title, its publish date, and the guide's OG share image *peeking* on the

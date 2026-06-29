@@ -75,6 +75,15 @@ and replace its content — do not invent a new layout.
   live in a **second `<style>` block** after the first, or the patch step will strip it.
   Harvest these blocks from a guide that already uses them (e.g.
   `post-dialysis-fatigue.html`, `fluid-management-dialysis.html`).
+- **Evidence Snapshot (clinician mode).** Dual-mode guides whose clinician hero
+  carries an Evidence Snapshot card use `<aside class="hero-cards mode-physician">
+  → <div class="ov-card"> → <div class="ov-list"> → <div class="ov-stat">
+  (<span class="v"> + <span class="l">)`. `MASTER_CSS` makes `.ov-list` a 2-column
+  grid (`max-content 1fr`) with `.ov-stat { display:contents }` so labels (`.l`)
+  align under the widest value (`.v`) across rows. Do **not** add per-guide
+  `min-width`/`flex-shrink` rules to `.ov-stat .v` — they break the shared-grid
+  alignment. Mix values of any width ("0", "−7 mmHg", "AHA 2023", "G4–G5") freely;
+  the label column flushes to the same x-position automatically.
 - **Justified body text.** All narrative body paragraphs (`<p>` inside
   `<section class="section">`) render fully justified with automatic hyphenation —
   enforced by `MASTER_CSS` (`.section p { text-align: justify; hyphens: auto }`).

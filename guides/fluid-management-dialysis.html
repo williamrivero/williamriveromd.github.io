@@ -463,10 +463,15 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  .ov-stat { display: flex; align-items: flex-start; gap: 11px; }
+  /* Evidence Snapshot stat rows — promote the parent list to a shared
+     2-column grid so every label column lines up under the widest value
+     (even when values differ, e.g. "0" vs "−7 mmHg" vs "G4–G5").
+     display:contents lets each .ov-stat's children join the parent grid. */
+  .ov-list:not(.kp) { display: grid; grid-template-columns: max-content 1fr; column-gap: 12px; row-gap: 11px; align-items: baseline; }
+  .ov-list:not(.kp) .ov-stat { display: contents; }
   .ov-stat .v {
     font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.05; min-width: 52px; flex-shrink: 0;
+    color: #1f3864; line-height: 1.15;
   }
   .ov-stat .l { font-size: 11.5px; color: #5a6680; line-height: 1.35; }
   .ov-foot {
