@@ -43,7 +43,7 @@ from pathlib import Path
 MASTER_CSS = """
   /* ═══════════════════════════════════════════════════════════════════════════
      MASTER GUIDE CSS — williamriveromd.com
-     Version: 2026-05-17c
+     Version: 2026-06-23p (pastel theme — Inter/Manrope/Nunito Sans, no Lora/DM Sans)
      All contrast ratios WCAG AA verified. Do not edit per-guide — edit here.
   ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -82,18 +82,18 @@ MASTER_CSS = """
 
   /* ── BASE ────────────────────────────────────────────────────────────────── */
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Manrope', sans-serif;
     color: var(--text);
     background: var(--white);
     line-height: 1.7;
     font-size: 16px;
   }
 
-  /* ── SITE HEADER ─────────────────────────────────────────────────────────── */
+  /* ── SITE HEADER (CONVENTION: brand | inline lang chips | back link) ────── */
   .site-header {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; gap: 18px;
     height: 56px; box-sizing: border-box;
-    padding: 0 32px;
+    padding: 0 24px;
     background: var(--navy);
     border-bottom: 1px solid rgba(255,255,255,.08);
     position: sticky; top: 0; z-index: 200;
@@ -101,26 +101,64 @@ MASTER_CSS = """
   .site-header .brand {
     font-size: 14px; font-weight: 500;
     color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em;
+    flex: 0 0 auto;
   }
   .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
   .site-header .back {
     font-size: 12px; font-weight: 500;
     color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s;
+    margin-left: auto; flex: 0 0 auto;
   }
   .site-header .back:hover { color: rgba(255,255,255,.9); }
+  /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
+  .header-nav {
+    display: flex; align-items: center; gap: 14px;
+    margin-left: auto; flex: 0 0 auto;
+  }
+  .header-nav a {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.7); text-decoration: none;
+    transition: color .2s;
+    white-space: nowrap;
+  }
+  .header-nav a:hover { color: #fff; }
+  .header-nav a.is-current { color: var(--gold-light); pointer-events: none; }
+  @media (max-width: 640px) {
+    .header-nav { gap: 10px; }
+    .header-nav a { font-size: 10.5px; letter-spacing: .04em; }
+  }
+  /* Inline lang chips inside the header (next to the brand). */
+  .header-lang {
+    display: flex; align-items: center; gap: 6px;
+    flex: 0 1 auto; flex-wrap: nowrap; overflow-x: auto;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .header-lang::-webkit-scrollbar { display: none; }
+  .header-lang .lang-lbl {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5);
+    text-transform: uppercase; letter-spacing: .1em; margin-right: 2px;
+  }
+  .header-lang .lang-btn-g {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.18); background: transparent;
+    color: rgba(255,255,255,.78); cursor: pointer; transition: all .15s;
+    line-height: 1.3; flex-shrink: 0;
+  }
+  .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
+  .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  @media (max-width: 640px) {
+    .site-header { padding: 0 14px; gap: 10px; }
+    .header-lang .lang-lbl { display: none; }
+    .header-lang .lang-btn-g { font-size: 11px; padding: 2px 8px; }
+    .site-header .brand { font-size: 13px; }
+    .site-header .back { font-size: 11px; }
+  }
 
-  /* ── LANG BAR ────────────────────────────────────────────────────────────── */
-  .guide-lang-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 32px;
-    background: rgba(10,18,32,.96);
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    flex-wrap: wrap;
-  }
-  .lang-lbl {
-    font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5);
-    text-transform: uppercase; letter-spacing: .08em; margin-right: 4px;
-  }
+  /* ── LEGACY LANG BAR (kept defined as a no-op so older HTML doesn't break) ─ */
+  .guide-lang-bar { display: none !important; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
   .lang-btn-g {
     font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px;
     border: 1px solid rgba(255,255,255,.2); background: transparent;
@@ -128,6 +166,46 @@ MASTER_CSS = """
   }
   .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
   .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  /* Legacy inline dark/desktop toggle holder — now replaced by .float-controls. */
+  .guide-toggle-inline { display: none !important; }
+
+  /* ── FLOATING DARK TOGGLE WIDGET (bottom-right) ─────────────────────────── */
+  .float-controls {
+    position: fixed; bottom: 24px; right: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  /* ── FLOATING DESKTOP/MOBILE TOGGLE WIDGET (bottom-left, under print) ────── */
+  .float-controls-left {
+    position: fixed; bottom: 24px; left: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  .float-controls-left .float-tooltip { left: 0; right: auto; }
+  .float-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(31,56,100,.18);
+    background: #ffffff; color: #1f3864;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(15,30,46,.18);
+    transition: background .15s, color .15s, transform .15s, box-shadow .15s;
+    position: relative;
+  }
+  .float-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,30,46,.24); }
+  .float-btn svg { width: 20px; height: 20px; }
+  .float-tooltip {
+    position: absolute; bottom: calc(100% + 8px); right: 0;
+    background: rgba(15,30,46,.9); color: #fff;
+    padding: 6px 10px; border-radius: 6px;
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity .15s;
+  }
+  .float-btn:hover .float-tooltip { opacity: 1; }
+  html[data-theme="dark"] .float-btn {
+    background: #1a2535; color: #e2b95f; border-color: rgba(255,255,255,.18);
+    box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  }
+  html[data-theme="dark"] .float-tooltip { background: rgba(255,255,255,.92); color: #1f3864; }
+  @media print { .float-controls, .no-print { display: none !important; } }
 
   /* ── TOGGLE BAR ──────────────────────────────────────────────────────────── */
   .guide-toggle-bar {
@@ -143,7 +221,7 @@ MASTER_CSS = """
     background: rgba(255,255,255,.08);
     border: 1px solid rgba(255,255,255,.18);
     color: rgba(255,255,255,.82);   /* ≥ 4.5:1 on dark bar ✓ */
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Manrope', sans-serif;
     font-size: 11px; font-weight: 500;
     padding: 4px 10px; border-radius: 16px;
     cursor: pointer; transition: all .2s; white-space: nowrap;
@@ -152,7 +230,7 @@ MASTER_CSS = """
   .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
   .lang-label { font-size: 11px; color: rgba(255,255,255,.6); margin-right: 4px; letter-spacing: .06em; }
   .lang-btn {
-    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
     padding: 4px 12px; border-radius: 12px;
     border: 1px solid rgba(255,255,255,.2);
     background: transparent; color: rgba(255,255,255,.75);  /* ≥ 4.5:1 ✓ */
@@ -162,56 +240,264 @@ MASTER_CSS = """
   .lang-btn.active { background: #b8962e; border-color: #b8962e; color: white; }
   [data-lang].lang-hidden { display: none !important; }
 
-  /* ── HERO ────────────────────────────────────────────────────────────────── */
+  /* ── HERO (redesigned: shorter footprint, Inter/Nunito, side panel) ──────── */
   .hero {
-    background: linear-gradient(135deg, var(--teal) 0%, #0a1628 100%);
+    background: linear-gradient(135deg, #2a8f8f 0%, #14545e 100%);  /* lightened from teal→near-black */
     color: white;
-    padding: 72px 0 80px;
+    padding: 40px 0 44px;            /* tighter vertical footprint */
     position: relative;
     overflow: hidden;
+    isolation: isolate;              /* self-contained stacking for the sigil watermark */
   }
   .hero::before {
     content: ''; position: absolute;
-    top: -60px; right: -80px;
-    width: 420px; height: 420px;
+    top: -90px; right: -110px;
+    width: 360px; height: 360px;
     border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.08);
+    pointer-events: none;
   }
+  /* Hero sigil watermark removed — no decorative sigil behind hero content. */
+  .hero::after { content: none; }
+  .hero > .container { position: relative; z-index: 1; }
+  /* Two-column hero: copy on the left, vignette / contents panel on the right */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-copy { min-width: 0; }
+  /* Vignette/grid heroes have a narrower copy column — smaller headline */
+  .hero-grid .hero-copy h1 { font-size: clamp(22px, 3.4vw, 34px); }
   .hero-tag {
     display: inline-block;
     font-size: 11px; font-weight: 600;
     letter-spacing: .14em; text-transform: uppercase;
     color: rgba(255,255,255,.9);     /* 5.5:1 on --teal ✓ */
     border: 1px solid rgba(255,255,255,.35);
-    padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 16px;
   }
   .hero h1 {
-    font-family: 'Lora', serif;
-    font-size: clamp(28px, 5vw, 50px);
-    font-weight: 600; line-height: 1.2;
-    margin-bottom: 20px; letter-spacing: -.02em;
+    font-family: 'Inter', sans-serif;   /* headline → Inter */
+    font-size: clamp(27px, 4.4vw, 44px);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 14px; letter-spacing: -.025em;
     color: #ffffff;
   }
   .hero h1 em {
-    font-style: italic;
+    font-style: normal;
     color: var(--gold-light);
   }
   .hero-sub em {
     font-style: italic;
     color: #fde68a;
-    font-weight: 500;
+    font-weight: 600;
   }
   .hero-sub {
-    font-size: 18px;
+    font-family: 'Nunito Sans', sans-serif;   /* subtitle → Nunito Sans */
+    font-size: 16.5px;
     color: rgba(255,255,255,.92);    /* 14.8:1 ✓ */
-    max-width: 620px; line-height: 1.65; margin-bottom: 36px;
+    max-width: 560px; line-height: 1.6; margin-bottom: 22px;
   }
   .hero-meta {
-    display: flex; gap: 32px; flex-wrap: wrap;
+    display: flex; gap: 28px; flex-wrap: wrap;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 13px;
     color: rgba(255,255,255,.75);    /* ≥ 4.5:1 ✓ */
   }
-  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 500; }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 600; }
+
+  /* ── PATIENT HERO: circular vignette portrait on the right ───────────────── */
+  .hero-figure {
+    position: relative;
+    width: clamp(260px, 32vw, 380px);
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+  }
+  .hero-figure::before {            /* soft gold halo behind the disc */
+    content: ''; position: absolute; inset: -16px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,79,.28), transparent 68%);
+    pointer-events: none;
+  }
+  .hero-vignette {
+    position: relative; width: 100%; height: 100%;
+    border-radius: 50%; overflow: hidden;
+    border: 1px solid rgba(255,255,255,.20);
+    box-shadow: 0 22px 55px rgba(0,0,0,.45);
+  }
+  .hero-vignette img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+    display: block; margin: 0;   /* override global hero-img centering */
+  }
+  /* opt-in zoom for hero images with a baked-in title/watermark (e.g. epilepsy) */
+  .hero-vignette.zoom img { transform: scale(1.34); transform-origin: 50% 60%; }
+  .hero-vignette::after {           /* vignette: darken rim, blend into hero */
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 42%, transparent 55%, rgba(15,60,66,.38) 100%),
+      linear-gradient(180deg, rgba(42,143,143,.06), rgba(20,84,94,.16));
+    pointer-events: none;
+  }
+  /* ── Oversized vignette layout (desktop ≥821px) ──────────────────────────
+     A large circular portrait bleeds off the hero's right/top/bottom while the
+     copy sits on the LEFT and on the TOP layer (z-index above the disc, so the
+     headline stays readable even where the circle extends behind it). Applies to patient-mode
+     vignette heroes AND to single-tab guides (body.single-mode) — including
+     physician/clinician-only guides, whose lone hero is the vignette and so
+     should bleed like a patient hero. The mobile stack (≤820px) is untouched. */
+  @media (min-width: 821px) {
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) {
+      display: flex; align-items: center;
+      position: relative; gap: 0;
+      min-height: clamp(330px, 30vw, 450px);
+    }
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) .hero-copy {
+      max-width: min(56%, 560px);
+      position: relative; z-index: 3;   /* hero text on the top layer */
+    }
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) .hero-figure {
+      position: absolute; top: -64px; left: 58%;
+      width: clamp(400px, 50vw, 600px);
+      margin: 0; z-index: 1;
+    }
+  }
+
+  /* ── CLINICIAN HERO: jump-to contents panel on the right ─────────────────── */
+  .hero-toc {
+    width: clamp(260px, 30vw, 340px);
+    flex-shrink: 0;
+    background: rgba(255,255,255,.11);
+    border: 1px solid rgba(212,175,79,.38);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 18px 44px rgba(0,0,0,.22);
+  }
+  .hero-toc-head {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase;
+    color: #d4af4f; margin-bottom: 10px;
+    padding-bottom: 10px; border-bottom: 1px solid rgba(212,175,79,.22);
+  }
+  .hero-toc-head svg { width: 15px; height: 15px; stroke: #d4af4f; }
+  .hero-toc-list { display: flex; flex-direction: column; }
+  .hero-toc-list a {
+    display: flex; align-items: center; gap: 11px;
+    padding: 8px 8px; border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: rgba(255,255,255,.86); text-decoration: none;
+    transition: background .15s, color .15s;
+  }
+  .hero-toc-list a + a { border-top: 1px solid rgba(255,255,255,.07); }
+  .hero-toc-list a:hover { background: rgba(212,175,79,.13); color: #fff; }
+  .hero-toc-num {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    color: #d4af4f; opacity: .85; min-width: 18px;
+  }
+  .hero-toc-arrow { margin-left: auto; color: rgba(212,175,79,.7); transition: transform .15s; }
+  .hero-toc-list a:hover .hero-toc-arrow { transform: translateX(3px); }
+
+  /* ── PASTEL HERO MOTIF (soft light backgrounds, dark text) ───────────────── */
+  /* Patient: soft mint */
+  .hero { background: linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%); color:#28484c; }
+  .hero::before { border-color: rgba(15,90,90,.12); }
+  .hero-tag { color:#0e4a50; border-color: rgba(14,74,80,.32); background: rgba(255,255,255,.5); }
+  .hero h1 { color:#0e4a50; }
+  .hero h1 em { color:#a06b00; }
+  .hero-sub { color:#28484c; }
+  .hero-sub em { color:#a06b00; font-style:italic; }
+  .hero-meta { color:#42595d; }
+  .hero-meta strong { color:#173a3e; }
+  .hero-figure::before { background: radial-gradient(circle, rgba(160,107,0,.16), transparent 68%); }
+  .hero-vignette { border-color: rgba(15,90,90,.20); box-shadow: 0 16px 40px rgba(15,90,90,.18); }
+  .hero-vignette::after {
+    background:
+      radial-gradient(circle at 50% 42%, transparent 62%, rgba(15,90,90,.16) 100%),
+      linear-gradient(180deg, rgba(255,255,255,.10), rgba(15,90,90,.05));
+  }
+
+  /* Clinician: soft periwinkle */
+  body.physician-mode .hero { background: linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%); color:#34455f; }
+  body.physician-mode .hero h1 { color:#1f3864; }
+  body.physician-mode .hero h1 em { color:#a06b00; }
+  body.physician-mode .hero-sub { color:#34455f; }
+  body.physician-mode .hero-meta { color:#46516b; }
+  body.physician-mode .hero-meta strong { color:#1f3864; }
+  body.physician-mode .hero-toc {
+    background:#ffffff; border-color: rgba(31,56,100,.14);
+    box-shadow: 0 16px 40px rgba(31,56,100,.15);
+  }
+  body.physician-mode .hero-toc-head { color:#1f3864; border-bottom-color: rgba(31,56,100,.14); }
+  body.physician-mode .hero-toc-head svg { stroke:#8a6810; }
+  body.physician-mode .hero-toc-list a { color:#1f3864; }
+  body.physician-mode .hero-toc-list a + a { border-top-color: rgba(31,56,100,.08); }
+  body.physician-mode .hero-toc-list a:hover { background: rgba(31,56,100,.06); color:#0e2547; }
+  body.physician-mode .hero-toc-num { color:#8a6810; opacity:1; }
+  body.physician-mode .hero-toc-arrow { color:#b08a2a; }
+
+  /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
+  /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
+  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-cards { order: -1; width: 100%; }
+  /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
+  .hero-cards.mode-physician { order: -1; width: 100%; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+
+  /* Clinician: Evidence Snapshot card on the right of the hero copy */
+  body.physician-mode .hero-grid { align-items: start; gap: 34px; }
+  body.physician-mode .hero h1 { font-size: clamp(23px, 3.1vw, 33px); }
+  body.physician-mode .hero-sub { font-size: 14.5px; margin-bottom: 18px; }
+  .hero-cards {
+    display: grid; grid-template-columns: 1fr; gap: 12px;
+    width: clamp(280px, 32vw, 340px); flex-shrink: 0; align-items: stretch;
+  }
+
+  /* ── CLINICIAN OVERVIEW CARDS (compact, two-up) ──────────────────────────── */
+  .ov-card {
+    background: #fff; border: 1px solid #e6ebf3; border-radius: 13px;
+    padding: 16px 18px; display: flex; flex-direction: column;
+    box-shadow: 0 10px 26px rgba(31,56,100,.08);
+  }
+  .ov-head { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
+  .ov-ico {
+    width: 31px; height: 31px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #eef3fb; color: #1f3864;
+  }
+  .ov-ico svg { width: 16px; height: 16px; stroke: currentColor; }
+  .ov-title { font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 700; color: #1f3864; }
+  .ov-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+  .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
+  .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
+  .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
+  .ov-stat { display: flex; align-items: flex-start; gap: 11px; }
+  .ov-stat .v {
+    font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 800;
+    color: #1f3864; line-height: 1.05; min-width: 52px; flex-shrink: 0;
+  }
+  .ov-stat .l { font-size: 11.5px; color: #5a6680; line-height: 1.35; }
+  .ov-foot {
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600;
+    color: #1a6b72; text-decoration: none;
+  }
+  .ov-foot:hover { color: #0e4a50; }
+  .ov-foot svg { width: 14px; height: 14px; stroke: currentColor; }
+  @media(max-width: 460px) { .hero-cards { grid-template-columns: 1fr; } }
+
+  /* Legible hero 'Last Reviewed' badge on pastel bg (overrides old inline white text) */
+  /* Clinician badge chips (pastel-themed; canonical so guides w/o a local rule render) */
+  .clin-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .clin-badge { display:inline-block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:.02em; color:#1f3864; background:rgba(31,56,100,.08);
+    border:1px solid rgba(31,56,100,.25); border-radius:20px; padding:4px 12px; }
+
+  .hero-meta time, .hero-meta .hero-refcount span[style] { color:#1f3864 !important; background:rgba(31,56,100,.08) !important; border-color:rgba(31,56,100,.35) !important; }
 
   /* ── CONTAINER ───────────────────────────────────────────────────────────── */
   .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
@@ -247,19 +533,29 @@ MASTER_CSS = """
     color: var(--teal); margin-bottom: 10px;
   }
   .section h2 {
-    font-family: 'Lora', serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(22px, 3.5vw, 32px);
-    font-weight: 600; color: var(--navy);
-    line-height: 1.3; margin-bottom: 20px;
+    font-weight: 700; color: var(--navy);
+    line-height: 1.25; margin-bottom: 20px; letter-spacing: -.02em;
   }
   .section h3 {
-    font-family: 'Lora', serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(18px, 2.5vw, 24px);
     font-weight: 600; color: var(--navy);
     line-height: 1.3; margin-bottom: 14px;
   }
-  .section p { color: var(--text-mid); margin-bottom: 16px; }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
   .section p:last-child { margin-bottom: 0; }
+
+  /* ── BODY LISTS (content sections) ───────────────────────────────────────────
+     The global reset zeroes list padding; restore a comfortable indent so body
+     bullets/numbers sit clearly inside the column. Component lists (.checklist,
+     .alert-body, .food-* …) define their own and override this via source order. */
+  .section ul, .section ol { margin: 0 0 18px 0; padding-left: 30px; }
+  .section li { color: var(--text-mid); line-height: 1.7; margin-bottom: 8px; padding-left: 4px; }
+  .section li:last-child { margin-bottom: 0; }
+  .section li::marker { color: var(--teal); }
+  .section ul ul, .section ol ol, .section ul ol, .section ol ul { margin: 8px 0 0 0; }
 
   /* ── INTRO CALLOUT (teal panel) ──────────────────────────────────────────── */
   .intro-callout {
@@ -456,6 +752,8 @@ MASTER_CSS = """
   }
   .checklist ul li:last-child { border-bottom: none; }
   .checklist ul li::before { content: '✓'; position: absolute; left: 4px; top: 10px; color: #d4af4f; }
+  .checklist.checklist-green { background: var(--green); }
+  html[data-theme="dark"] .checklist.checklist-green { background: #0e2a1c; }
 
   /* ── COMPARE GRID ────────────────────────────────────────────────────────── */
   .compare-grid, .cartridge-compare {
@@ -578,35 +876,50 @@ MASTER_CSS = """
     margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em;
   }
   .related-cards {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
   }
   .related-card {
-    display: flex; flex-direction: column;
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px 18px;
-    text-decoration: none; color: inherit; transition: box-shadow .18s, border-color .18s;
+    display: flex; flex-direction: column; gap: 4px;
+    background: var(--navy);
+    border-radius: 8px; padding: 14px 16px;
+    text-decoration: none; color: inherit;
+    transition: transform .15s, box-shadow .15s;
+    position: relative; overflow: hidden;
   }
-  .related-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(26,107,114,.1); }
-  .related-card-tag   { font-size: .68rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-  .related-card-title { font-size: .92rem; font-weight: 600; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
-  .related-card-desc  { font-size: .80rem; color: var(--text-muted); line-height: 1.45; flex: 1; }
-  .related-card-arrow { font-size: .80rem; color: var(--teal); font-weight: 700; margin-top: 10px; align-self: flex-end; }
+  .related-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--teal);
+  }
+  .related-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,56,100,0.28); }
+  .related-card-tag   { font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9); text-transform: uppercase; letter-spacing: .08em; }
+  .related-card-title { font-size: .88rem; font-weight: 600; color: #fff; line-height: 1.3; }
+  .related-card-desc  { display: none; }
+  .related-card-arrow { display: none; }
+  .related-card-thumb {
+    position: absolute; top: 0; right: 0;
+    width: 110px; height: 100%;
+    object-fit: cover; opacity: .82;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 55%);
+    mask-image: linear-gradient(to right, transparent, #000 55%);
+    pointer-events: none;
+  }
+  .related-card.has-thumb { padding-right: 116px; }
 
   /* ── RELATED GUIDES — LEGACY ALIASES (12 guides ship variant markup) ─────── */
   .related-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
   }
   .related-badge {
     display: inline-block;
-    font-size: .68rem; font-weight: 700; color: var(--teal);
-    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px;
+    font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9);
+    text-transform: uppercase; letter-spacing: .08em;
   }
   .related-card h3 {
-    font-size: .92rem; font-weight: 600; color: var(--navy);
-    line-height: 1.35; margin: 0 0 6px 0;
+    font-size: .88rem; font-weight: 600; color: #fff;
+    line-height: 1.3; margin: 0 0 4px 0;
   }
   .related-card p {
-    font-size: .80rem; color: var(--text-muted); line-height: 1.45;
+    font-size: .80rem; color: rgba(255,255,255,.5); line-height: 1.45;
     margin: 0; flex: 1;
   }
 
@@ -647,7 +960,7 @@ MASTER_CSS = """
     background: var(--amber-soft);
     border: 1px solid rgba(146,64,14,.2);
     border-radius: 10px; padding: 16px 20px;
-    margin: 40px 0 0; font-size: 13px;
+    margin: 40px 0 36px; font-size: 13px;
     color: var(--text-mid);          /* 8.1:1 on amber-soft ✓ */
     line-height: 1.6;
   }
@@ -658,13 +971,13 @@ MASTER_CSS = """
   .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
   @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
   .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
-  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
+  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'Manrope', sans-serif; font-size: 15px; }
   .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
   .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
   .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
   .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
   .calc-metric-card { background: rgba(255,255,255,.7); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid rgba(0,0,0,.08); }
-  .calc-metric-card .cmv { font-family: 'Lora', serif; font-size: 28px; font-weight: 600; line-height: 1; color: var(--navy); }
+  .calc-metric-card .cmv { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 600; line-height: 1; color: var(--navy); }
   .calc-metric-card .cml { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; color: var(--text-muted); }
   .calc-metric-card .cmt { font-size: 11px; margin-top: 4px; font-weight: 600; color: var(--text-mid); }
   .calc-verdict-text { font-size: 14px; line-height: 1.7; margin-bottom: 10px; color: var(--text-mid); }
@@ -790,13 +1103,14 @@ MASTER_CSS = """
   html[data-theme="dark"] .food-ok ul li,
   html[data-theme="dark"] .food-avoid ul li,
   html[data-theme="dark"] .food-limit ul li,
-  html[data-theme="dark"] .related-card-desc,
   html[data-theme="dark"] .calc-verdict-text,
   html[data-theme="dark"] .calc-action-text,
   html[data-theme="dark"] .illus-caption { color: var(--text-mid) !important; }   /* 9.1:1 ✓ */
 
   /* Headings in dark mode */
   html[data-theme="dark"] .section h2,
+  html[data-theme="dark"] .section h3,
+  html[data-theme="dark"] h3.sub-h,
   html[data-theme="dark"] .feature-card h4,
   html[data-theme="dark"] .alert-body h4,
   html[data-theme="dark"] .step-body h4,
@@ -805,8 +1119,6 @@ MASTER_CSS = """
   html[data-theme="dark"] .drug-table td:first-child,
   html[data-theme="dark"] .compare-cell strong,
   html[data-theme="dark"] .cart-cell strong,
-  html[data-theme="dark"] .related-card-title,
-  html[data-theme="dark"] .related-card-tag,
   html[data-theme="dark"] .calc-metric-card .cmv { color: var(--text) !important; }  /* 12.4:1 ✓ */
 
   /* Table headers */
@@ -831,12 +1143,9 @@ MASTER_CSS = """
   html[data-theme="dark"] .compare-cell,
   html[data-theme="dark"] .cart-cell { border-color: #2a3548; }
 
-  /* Related guides */
-  html[data-theme="dark"] .related-card { background: #1a2535; border-color: #2a3548; }
-  html[data-theme="dark"] .related-card:hover { border-color: var(--teal); }
-  html[data-theme="dark"] .related-card h3 { color: var(--text); }
-  html[data-theme="dark"] .related-card p { color: var(--text-muted); }
-  html[data-theme="dark"] .related-badge { color: var(--teal); }
+  /* Related guides — cards are already dark navy, only minor tweak in dark mode */
+  html[data-theme="dark"] .related-card { background: #1a2535; }
+  html[data-theme="dark"] .related-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
 
   /* Food grids */
   html[data-theme="dark"] .food-ok    { background: var(--green-soft); border-color: rgba(74,222,128,.15); }
@@ -890,14 +1199,14 @@ MASTER_CSS = """
   .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
   .stat-card{background:var(--teal);border-radius:14px;padding:22px 24px;color:white;text-align:center;}
   html[data-theme="dark"] .stat-card{background:#0d2535;}
-  .stat-number{font-family:'Lora',serif;font-size:clamp(24px,4vw,34px);font-weight:600;color:#d4af4f;line-height:1.1;margin-bottom:8px;}
+  .stat-number{font-family:'Inter',sans-serif;font-size:clamp(24px,4vw,34px);font-weight:600;color:#d4af4f;line-height:1.1;margin-bottom:8px;}
   .stat-label{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;}
   .stat-source{font-size:11px;color:rgba(255,255,255,.45);margin-top:4px;}
 
   /* ── NUMERIC CARDS (lighter variant) ─────────────────────────────────────── */
   .num-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
   .num-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px 22px;text-align:center;}
-  .n-val,.n-value{font-family:'Lora',serif;font-size:clamp(22px,3.5vw,30px);font-weight:600;color:var(--navy);line-height:1.1;margin-bottom:6px;}
+  .n-val,.n-value{font-family:'Inter',sans-serif;font-size:clamp(22px,3.5vw,30px);font-weight:600;color:var(--navy);line-height:1.1;margin-bottom:6px;}
   .n-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
   .n-target{font-size:12px;color:var(--teal);font-weight:500;margin-top:4px;}
   .n-note{font-size:12px;color:var(--text-muted);line-height:1.4;}
@@ -906,12 +1215,12 @@ MASTER_CSS = """
   .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
   .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
   .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
-  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
   .unit-btn.active{background:var(--teal);color:#fff;}
 
   /* ── RED FLAGS ───────────────────────────────────────────────────────────── */
   .red-flags{background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:14px;padding:28px 32px;margin:32px 0;}
-  .red-flags h3{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--red);margin-bottom:16px;}
+  .red-flags h3{font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:var(--red);margin-bottom:16px;}
   .red-flags-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
   .red-flag-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-muted);}
   .rf-dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:7px;}
@@ -924,12 +1233,16 @@ MASTER_CSS = """
   .md-hero {
     background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
     padding: 60px 0 56px; position: relative; overflow: hidden;
+    isolation: isolate;
   }
   .md-hero::before {
     content: ''; position: absolute; right: -80px; top: -60px;
     width: 360px; height: 360px; border-radius: 50%;
     border: 1px solid rgba(212,175,79,.1); pointer-events: none;
   }
+  /* Clinician-hero sigil watermark removed. */
+  .md-hero::after { content: none; }
+  .md-hero > * { position: relative; z-index: 1; }
   .md-hero-badge {
     display: inline-flex; align-items: center; gap: 6px;
     font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
@@ -937,7 +1250,7 @@ MASTER_CSS = """
     padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
   }
   .md-hero h2 {
-    font-family: 'Lora', serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
@@ -951,7 +1264,7 @@ MASTER_CSS = """
     border-radius: 10px; padding: 12px 20px;
   }
   .md-stat-val {
-    font-family: 'Lora', serif; font-size: 22px; font-weight: 600;
+    font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 600;
     color: #d4af4f; line-height: 1; display: block;
   }
   .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
@@ -988,13 +1301,16 @@ MASTER_CSS = """
   .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
 
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
-  .audience-tabs{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:150;}
+  /* Audience tabs inherit the hero background colour so the bar reads as part
+     of the hero (mint in patient mode, periwinkle in clinician mode). */
+  .audience-tabs{background:linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%);border-bottom:1px solid rgba(15,90,90,.18);position:sticky;top:56px;z-index:150;}
+  body.physician-mode .audience-tabs{background:linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);border-bottom-color:rgba(31,56,100,.18);}
   .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
   .aud-tab{flex:1;text-align:center;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
   .aud-tab:hover{color:var(--navy);}
   .aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
   .aud-tab.active.tab-md{border-bottom-color:var(--navy);}
-  .tab-icon{font-size:17px;}
+  .tab-icon{display:none;}  /* legacy emoticons hidden — dropped from new HTML too */
   .mode-physician{display:none;}
   .mode-physician-pill{display:none;}
   body.physician-mode .mode-patient{display:none!important;}
@@ -1011,7 +1327,8 @@ MASTER_CSS = """
      Contrast verified: white on #0f1e2e = 15.5:1 ✓
   ─────────────────────────────────────────────────────────────────────── */
   body.physician-mode .hero {
-    background: linear-gradient(135deg, #0d1e35 0%, #1a3060 100%);
+    background: linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);  /* pastel periwinkle */
+    color:#34455f;
   }
   body.physician-mode .intro-callout { background: #0f1e2e; }
   body.physician-mode .stat-card     { background: #0f1e2e; }
@@ -1028,10 +1345,55 @@ MASTER_CSS = """
   html[data-theme="dark"] body.physician-mode .stat-card,
   html[data-theme="dark"] body.physician-mode .ref-band { background: #0a1425; }
 
+  /* ── DARK-MODE HERO ──────────────────────────────────────────────────────
+     The pastel hero gets a TRUE dark variant in dark mode: the patient hero
+     darkens to deep teal, the clinician hero to deep navy, and all hero text
+     (headline, subtitle, meta, tag, badges) flips to light. Contrast AA-verified
+     (white on #0c2a30 = 14.6:1; #eaf6f4 on #0a2228 = 13.9:1). */
+  html[data-theme="dark"] .hero {
+    background: linear-gradient(135deg,#0c2a30 0%,#103d44 55%,#0a2228 100%);
+    color: rgba(233,245,244,.82);
+  }
+  html[data-theme="dark"] .hero h1 { color:#eaf6f4; }
+  html[data-theme="dark"] .hero h1 em { color:#e2b95f; }
+  html[data-theme="dark"] .hero-sub { color:rgba(233,245,244,.82); }
+  html[data-theme="dark"] .hero-meta { color:rgba(233,245,244,.72); }
+  html[data-theme="dark"] .hero-meta strong { color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] .hero-tag {
+    color:rgba(233,245,244,.9); border-color:rgba(255,255,255,.28);
+  }
+  html[data-theme="dark"] .hero-meta time,
+  html[data-theme="dark"] .hero-meta .hero-refcount span[style] {
+    color:rgba(255,255,255,.92) !important;
+    background:rgba(255,255,255,.10) !important;
+    border-color:rgba(255,255,255,.28) !important;
+  }
+  html[data-theme="dark"] .hero-vignette { border-color: rgba(255,255,255,.18); box-shadow: 0 22px 55px rgba(0,0,0,.6); }
+  /* Clinician (physician-mode) dark hero */
+  html[data-theme="dark"] body.physician-mode .hero {
+    background: linear-gradient(135deg,#0a1426 0%,#16294d 100%);
+    color: rgba(238,242,251,.82);
+  }
+  html[data-theme="dark"] body.physician-mode .hero h1 { color:#eef2fb; }
+  html[data-theme="dark"] body.physician-mode .hero h1 em { color:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-sub { color:rgba(238,242,251,.82); }
+  html[data-theme="dark"] body.physician-mode .hero-meta { color:rgba(238,242,251,.72); }
+  html[data-theme="dark"] body.physician-mode .hero-meta strong { color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] body.physician-mode .hero-tag {
+    color:rgba(238,242,251,.9); border-color:rgba(255,255,255,.26);
+  }
+  html[data-theme="dark"] body.physician-mode .hero-toc-head { color:#eef2fb; border-bottom-color: rgba(255,255,255,.16); }
+  html[data-theme="dark"] body.physician-mode .hero-toc-head svg { stroke:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a { color:#dbe6f5; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a + a { border-top-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a:hover { background: rgba(255,255,255,.06); color:#fff; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-num { color:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-arrow { color:#e2b95f; }
+
   /* ── GUIDE LANGUAGE BAR (regional recipes / multilingual tools) ──────────── */
   .guide-lang-bar{display:flex;align-items:center;gap:8px;padding:8px 0 16px;flex-wrap:wrap;}
   .lang-lbl{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-right:4px;}
-  .lang-btn-g{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;}
+  .lang-btn-g{font-family:'Manrope',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;}
   .lang-btn-g:hover{border-color:var(--teal);color:var(--teal);}
   .lang-btn-g.active{background:var(--teal);border-color:var(--teal);color:white;}
 
@@ -1040,12 +1402,16 @@ MASTER_CSS = """
   .dot-orange{background:#e07b00;}
 
   /* ── DOWNLOAD BUTTON (inline variant) ───────────────────────────────────── */
-  .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
+  .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
   .download-btn:hover{background:#162848;}
 
-  /* ── DOWNLOAD FAB (circular floating action button, bottom-left) ─────────── */
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left stack) ───
+     Stacking on the left side (visually top → bottom):
+       1. .dl-fab           bottom:136px  (top — only when present)
+       2. .print-btn        bottom: 80px  (middle)
+       3. .float-controls-left bottom: 24px  (bottom — desktop/mobile toggle) */
   .dl-fab {
-    position: fixed; bottom: 24px; left: 24px;
+    position: fixed; bottom: 136px; left: 24px;
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--navy); color: white;
     border: none; cursor: pointer;
@@ -1065,6 +1431,15 @@ MASTER_CSS = """
   }
   .dl-fab:hover .p-tip { opacity: 1; }
 
+  /* ── HERO RESPONSIVE: stack copy above the panel / portrait ──────────────── */
+  @media(max-width: 820px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+    .hero-figure { margin: 4px auto 0; }
+    /* Phones/tablets: drop the circular vignette entirely — text-only hero. */
+    .hero-figure { display: none; }
+    .hero-cards { width: 100%; }
+  }
+
   /* ── MOBILE LAYOUT (≤ 480 px / 375 px phones) ───────────────────────────── */
   /* Tighter side padding on narrow viewports */
   @media(max-width: 480px) {
@@ -1081,36 +1456,98 @@ MASTER_CSS = """
     table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   }
 
-  /* ── IMAGE LIGHTBOX ─────────────────────────────────────────────────────── */
-  .zoomable { cursor: zoom-in; transition: opacity .15s, transform .15s; display: block; }
-  .zoomable:hover { opacity: .88; transform: scale(1.01); }
-  .lb-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,.92); z-index: 9500;
-    align-items: center; justify-content: center; padding: 16px;
-    cursor: zoom-out;
+  /* ── IMAGE LIGHTBOX (assets/image-lightbox.js) ─────────────────────────── */
+  figure img, .illus-wrap img { cursor: zoom-in; }
+  figure img:hover, .illus-wrap img:hover { opacity: .92; }
+  /* Non-hero inline images: thumbnail size — lightbox handles magnification */
+  figure img:not([fetchpriority="high"]),
+  .illus-wrap img:not([fetchpriority="high"]) {
+    max-width: 480px; width: 100%; height: auto; display: block;
+    margin-left: auto; margin-right: auto;
   }
-  .lb-overlay.open { display: flex; }
-  .lb-overlay img {
-    max-width: 100%; max-height: 90vh; border-radius: 8px;
+
+  #img-lb.lb-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.93); z-index: 9500;
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px 16px 16px; cursor: pointer; overflow-y: auto;
+  }
+  #img-lb.lb-overlay.open { display: flex; }
+
+  .lb-body {
+    display: flex; flex-direction: column; align-items: center;
+    max-width: min(95vw, 1280px); cursor: default;
+  }
+  .lb-img {
+    max-width: 100%; max-height: 72vh; border-radius: 8px;
     object-fit: contain; box-shadow: 0 8px 48px rgba(0,0,0,.7);
-    cursor: default;
+    cursor: zoom-in; display: block;
+  }
+  .lb-caption-panel {
+    width: 100%; background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.13); border-top: none;
+    border-radius: 0 0 8px 8px; padding: 14px 18px;
+  }
+  .lb-desc {
+    color: rgba(255,255,255,.88); font-size: 13px; line-height: 1.6;
+    margin: 0 0 10px; font-style: italic;
+  }
+  .lb-desc:last-child { margin-bottom: 0; }
+  .lb-abbrevs {
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 12px; row-gap: 3px; margin: 0;
+    border-top: 1px solid rgba(255,255,255,.1); padding-top: 10px;
+  }
+  .lb-abbrevs dt {
+    color: rgba(255,255,255,.5); font-size: 11px; font-weight: 700;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .lb-abbrevs dd {
+    color: rgba(255,255,255,.72); font-size: 11px; margin: 0;
   }
   .lb-close {
     position: fixed; top: 16px; right: 20px;
-    color: white; font-size: 28px; line-height: 1;
-    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+    color: #fff; font-size: 24px; line-height: 1;
+    background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.25);
     border-radius: 50%; width: 40px; height: 40px;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: background .15s;
+    cursor: pointer; transition: background .15s; z-index: 9501;
   }
-  .lb-close:hover { background: rgba(255,255,255,.25); }
+  .lb-close:hover { background: rgba(255,255,255,.28); }
   .lb-hint {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    color: rgba(255,255,255,.5); font-size: 12px; pointer-events: none;
-    white-space: nowrap;
+    margin-top: 14px; color: rgba(255,255,255,.3); font-size: 11px;
+    pointer-events: none; text-align: center; letter-spacing: .02em;
   }
-  @media print { .lb-overlay { display: none !important; } }
+  @media (max-width: 600px) {
+    .lb-img { max-height: 58vh; }
+    .lb-hint { white-space: normal; font-size: 10px; }
+  }
+  @media print { #img-lb.lb-overlay { display: none !important; } }
+
+  /* Standard figcaption for guide images */
+  figure figcaption, .illus-caption {
+    font-size: 12px; color: var(--text-muted); margin-top: 10px;
+    font-style: italic; text-align: center; line-height: 1.5;
+  }
+  .fig-desc { margin: 0 0 6px; }
+  .fig-abbrevs {
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 10px; row-gap: 2px; margin: 6px 0 0;
+    font-style: normal; text-align: left;
+  }
+  .fig-abbrevs dt { font-weight: 700; color: var(--text-mid); }
+  .fig-abbrevs dd { margin: 0; color: var(--text-muted); }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     Keep the floating Symptom-Checker FAB clear of the floating dark/light
+     toggle. Every guide now carries the floating dark widget at bottom:24px
+     right:24px (44px wide), so the FAB (default bottom:22px right:22px)
+     would collide. Shift it ~70px left so they sit side-by-side.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  .sc-fab { right: 88px !important; }
+  @media (max-width: 600px) {
+    .sc-fab { right: 72px !important; bottom: 16px !important; }
+  }
 
   /* ═══════════════════════════════════════════════════════════════════════════
      PRINT

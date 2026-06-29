@@ -20,6 +20,10 @@ python3 patch_master_css.py               # apply master CSS to all guides
 python3 patch_master_css.py --dry-run     # preview changes without writing
 python3 patch_master_css.py --guide anemia-management.html  # single guide
 
+python3 patch_font_link.py                # set Google Fonts <link> → Inter/Manrope/Nunito Sans (drops Lora/DM Sans)
+python3 patch_font_link.py --dry-run      # preview changes without writing
+python3 patch_font_link.py --guide anemia-management.html   # single guide
+
 python3 patch_kdigo2026.py                # apply KDIGO 2026 terminology fixes
 python3 patch_kdigo2026.py --dry-run
 
@@ -32,6 +36,37 @@ python3 fix_setlang_kap.py --dry-run
 python3 patch_last_reviewed.py            # add/update Last Reviewed badges + JSON-LD on all guides
 python3 patch_last_reviewed.py --dry-run
 python3 patch_last_reviewed.py --guide anemia-management.html  # single guide
+
+python3 patch_published_time.py           # stamp every guide with article:published_time (date + time, +08:00)
+python3 patch_published_time.py --dry-run
+python3 patch_published_time.py --guide hmo-ckd-coverage.html  # single guide
+
+python3 patch_reading_time.py             # add/refresh the "Reading time" estimate in every guide hero
+python3 patch_reading_time.py --dry-run
+python3 patch_reading_time.py --guide understanding-ckd.html   # single guide
+
+python3 patch_references_accordion.py            # accordion References section before the signature block (all guides)
+python3 patch_references_accordion.py --report   # audit per-guide reference coverage (no writes)
+python3 patch_references_accordion.py --dry-run
+python3 patch_references_accordion.py --overrides refs.json  # supply citations for guides with no footer references
+python3 patch_references_accordion.py --guide igan-guide.html  # single guide
+
+python3 patch_hero_meta.py                # hero byline: drop "Author" row, show Published date + References count
+python3 patch_hero_meta.py --dry-run
+python3 patch_hero_meta.py --guide understanding-ckd.html  # single guide
+
+python3 patch_symptom_widget.py           # install the floating Symptom-Checker widget on every content guide
+python3 patch_symptom_widget.py --report  # audit which eligible guides lack the widget (no writes)
+python3 patch_symptom_widget.py --dry-run
+python3 patch_symptom_widget.py --guide hmo-ckd-coverage.html  # single guide
+
+python3 generate_latest_guides.py         # regenerate the "Latest guides" strip on guides/index.html
+python3 generate_latest_guides.py --dry-run
+python3 generate_latest_guides.py --count 6   # show N cards (default 12; the strip scrolls horizontally)
+
+python3 generate_latest_calculators.py    # regenerate the "Latest calculators" carousel atop guides/calculators.html
+python3 generate_latest_calculators.py --dry-run
+python3 generate_latest_calculators.py --count 16  # show N cards (default 12; scrolls horizontally)
 
 python3 generate_sitemap.py               # regenerate sitemap.xml from files on disk
 python3 generate_sitemap.py --dry-run     # preview added/removed URLs without writing
@@ -83,10 +118,26 @@ python3 patch_mode_cls.py --guide el-nino-heat-dialysis.html  # single guide
 `patch_mode_cls.py` strips the bottom-of-page IIFE that restored physician
 mode from `localStorage` *after first paint* — that post-render patient→
 physician swap was the Cloudflare-RUM CLS of 0.364 on
-`body.physician-mode>div.mode-physician`. Dual-mode guides must always start
-in patient mode (the default CSS state). `setMode()` still writes the choice
+`body.physician-mode>div.mode-physician`. `setMode()` still writes the choice
 to `localStorage`, so in-page tab toggling is unaffected. Never reintroduce a
-restore-on-load; run this script after adding any new dual-mode guide.
+*post-paint* restore-on-load; run this script after adding any new dual-mode
+guide, then run `patch_mode_restore.py` (below) to add the safe restorer.
+
+```bash
+python3 patch_mode_restore.py                 # add pre-paint physician-mode restore (no CLS)
+python3 patch_mode_restore.py --dry-run       # preview changes without writing
+python3 patch_mode_restore.py --guide igan-guide.html  # single guide
+```
+
+`patch_mode_restore.py` makes the clinician-tab choice survive page refresh
+*without* reintroducing the CLS bug: it injects a tiny synchronous script
+immediately after the opening `<body>` tag that applies `physician-mode`
+**before first paint** (zero layout shift), reading the guide's own mode
+localStorage key. Tab-button active states sync on DOMContentLoaded (a
+color-only change). The invariant pair: mode restores are allowed **only**
+pre-paint (this script); post-paint restores are forbidden
+(`patch_mode_cls.py` removes them). Run both, in that order, after adding
+any new dual-mode guide. Idempotent.
 
 ```bash
 python3 patch_signature_position.py              # move dr-card + related-guides to right before footer
@@ -102,6 +153,163 @@ and the footer. The script is idempotent. **When building a new guide, always pl
 dr-card-wrap and related-guides immediately before `<footer class="guide-footer">`, outside
 `<main>`, as the very last HTML before the footer.**
 
+### Guide-wide content policies (every guide, from here on)
+
+Invariants every guide must satisfy. The `/setup-guide` command runs the scripts in order.
+
+1. **Date- and time-stamped publish date (= the merge/publish-to-main date).** Every guide carries
+   an immutable `<meta property="article:published_time" content="YYYY-MM-DDTHH:MM:SS+08:00">`
+   recording *when it went live* (Manila time). `patch_published_time.py` derives it from the
+   guide's first git-commit datetime (for direct-to-main commits this is the merge moment) or
+   "now" when stamped at merge time, and never overwrites an existing stamp. It also aligns the
+   JSON-LD `datePublished`.
+
+2. **Auto-appears in the Latest guides strip.** The strip is data-driven (newest
+   `article:published_time` first), so a freshly stamped guide shows up automatically — **always
+   re-run `generate_latest_guides.py` after adding any guide, even if not explicitly asked.** A
+   `SessionStart` hook (`.claude/settings.json`) also runs `patch_published_time.py` +
+   `generate_latest_guides.py` each session as a safety net, so a new guide is never left out.
+
+3. **Reading-time estimate in the hero.** `patch_reading_time.py` adds a "Reading time" row to the
+   `.hero-meta` block, computed from the guide's English word count (translations carried as
+   `lang-hidden` data-lang siblings are excluded so the count is not inflated 4×) at 200 wpm. The
+   badge uses inline styles so `patch_master_css.py` will not clobber it.
+
+4. **No Author byline in the hero.** The author is credited in the signature/dr-card block at the
+   end of the page, so `patch_hero_meta.py` strips any "Author: W Rivero…" row from `.hero-meta`
+   and instead shows a **Published** date row and a **References** count row (the number of items
+   in the accordion). Inline-styled, idempotent; never add an author line to a new guide's hero.
+
+5. **Accordion References section before the signature block.** `patch_references_accordion.py`
+   builds a collapsible `<details class="ref-acc">` References section (multilingual summary,
+   inline-styled, marker-delimited) and inserts it immediately before `.dr-card-wrap`. Citations
+   are sourced from the guide's footer `<p>References: A · B · C</p>` line (or hero-meta
+   `Guidelines:`). For a guide that cites sources only inline, supply them with
+   `--overrides refs.json` (`{ "<file>": ["Citation", …] }`). **Never fabricate medical
+   citations** — list only sources the guide actually relies on. `--report` audits coverage;
+   pure interactive tools (calculators index, symptom-checker, the interpreters) have no
+   citable sources and are the documented exceptions.
+
+The **Latest guides** strip lives on `guides/index.html` between `<!-- LATEST-GUIDES-START -->`
+and `<!-- LATEST-GUIDES-END -->` (above the mobile filter bar / "Continue reading" rail). Each
+card shows the guide title, its publish date, and the guide's OG share image *peeking* on the
+right edge (an absolutely-positioned, mask-faded thumbnail — the same treatment as the
+`.spotlight-thumb` cards). The strip scrolls horizontally (fixed-width cards + scroll-snap) and
+is regenerated by `generate_latest_guides.py` (newest publish time first) — do not hand-edit the
+block; `latest_guides.json` is written alongside as the ordered data.
+
+The **Latest calculators** carousel sits at the top of `guides/calculators.html` (between
+`<!-- LATEST-CALCS-START -->` and `<!-- LATEST-CALCS-END -->`, just above `<main>`), the same
+peeking-thumb horizontal-scroll treatment for the newest `calc-*` pages. It is regenerated by
+`generate_latest_calculators.py` (writes `latest_calculators.json`); the block carries its own
+scoped `lc-`-prefixed `<style>` so it survives `patch_master_css.py`.
+
+**Calculator cards are colour-coded by category.** Each calculator grid `<section>` on
+`guides/calculators.html` carries `style="--sec-color:#hex"`; the override `<style>` tints every
+`.calc-results .related-card` by that inherited colour (via `color-mix` over a dark base, so white
+text stays readable) instead of a uniform navy. The Latest-calculators carousel cards are tinted
+to the same per-category colours by `generate_latest_calculators.py` (it reads each calculator's
+section colour from the grid). Keep new calculators inside the correct category section so they
+inherit the right colour.
+
+**Floating Symptom-Checker widget.** Every content guide loads
+`assets/symptom-checker-widget.js` (a vanilla-JS floating 🩺 button that opens the
+symptom checker in a modal iframe) via a single deferred `<script>` before the final
+`</body>`. `patch_symptom_widget.py` installs it, repairs the legacy broken
+`../js/…` path, and is idempotent. It skips non-narrative pages: the guides index,
+`symptom-checker.html` itself (the widget self-disables there anyway), calculators
+(`calc-*`, the calculators index, `ckd-dri-calculator.html`), the pure
+interpreter/atlas tools, and printable log/blank sheets. Run it (or rely on
+`/setup-guide`) after adding any new guide; `--report` audits coverage.
+
+```bash
+python3 add_calc_nav_pill.py               # add floating bottom-center nav pill to all calculator pages
+python3 add_calc_nav_pill.py --dry-run     # preview (shows each page's right-hand guide target)
+python3 add_calc_nav_pill.py --guide calc-kfre.html  # single calculator page
+```
+
+Run `add_calc_nav_pill.py` after adding any new calculator page. It injects a
+floating, fixed bottom-center rounded "pill" (between `<!-- CALC-NAV-PILL-START -->`
+/ `END` markers, just before the final `</body>`) split into two chevron links:
+the left chevron returns to the calculators index, the right chevron opens that
+calculator's primary related guide — auto-detected as the first real content
+guide in the page's Related Guides block (calculators/index/symptom-checker are
+skipped; falls back to `understanding-ckd.html`, with per-page exceptions in the
+script's `OVERRIDES` map). Targets `guides/calc-*.html` plus
+`ckd-dri-calculator.html`. Idempotent — the existing block is stripped and
+re-inserted each run, so right-hand targets refresh if Related Guides change.
+Inserts before the **last** `</body>` so JS print-popup strings
+(`win.document.write('…</body></html>')`) are never touched.
+
+```bash
+python3 patch_calc_handoff.py              # install the shared cross-calculator input handoff on all calculators
+python3 patch_calc_handoff.py --dry-run
+python3 patch_calc_handoff.py --guide calc-cockcroft-gault.html  # single calculator
+```
+
+Run `patch_calc_handoff.py` after adding any new calculator. Every calculator
+loads `assets/calc-handoff.js`, a self-activating script that **carries the
+common patient inputs across the whole calculator library** — age, sex, eGFR,
+height (cm), weight (kg), serum creatinine (mg/dL) — via the `wgmr-rx-patient`
+localStorage key, so entering them once prefills every related calculator. It
+keys off the library's id-suffix convention (`<prefix>-age`, `-sex`, `-egfr`,
+`-height`/`-ht`, `-weight`, `-scr`/`-creat`), prefills **only empty** fields
+(never clobbers a user's entry), and is **unit-guarded** — weight/creatinine are
+read and written only in their default units (no active `<prefix>-wbtn-lb` /
+`<prefix>-cbtn-si` toggle), so a kg value is never pushed into a lb field. New
+calculators inherit the feature automatically as long as their inputs follow the
+`<prefix>-<field>` id convention. The script supersedes the old per-page
+`RX-HANDOFF` blocks (removed on patch). Inserts before the **last** `</body>`.
+
+```bash
+python3 patch_calc_english_only.py         # strip translations from all calculators (English-only)
+python3 patch_calc_english_only.py --dry-run
+python3 patch_calc_english_only.py --guide calc-kfre.html  # single calculator
+```
+
+**Calculators are English-only.** `patch_calc_english_only.py` removes every
+`data-lang="tl|ceb|kap"` translation element (depth-aware) and the `setLang`/
+`wgmr-lang` language-restore machinery from each calculator (the on-load restore
+would otherwise hide the English spans and blank the page for a visitor whose
+last-used language wasn't English). Run it after adding any new calculator.
+Because the shared patch scripts add multilingual hero-meta labels, the
+calc-touching ones are **calculator-aware** and emit English-only labels for
+`calc-*` pages so translations never return: `patch_reading_time.py` (Read time),
+`patch_hero_meta.py` (Published / References), `patch_references_accordion.py`
+(References).
+
+```bash
+python3 build_companion_pdfs.py                 # render every downloads/*.html companion to PDF
+python3 build_companion_pdfs.py --list          # list buildable companions
+python3 build_companion_pdfs.py wgmr-gout-uric-acid-guide   # render a single companion
+```
+
+All downloadable **patient companion PDFs** (the `downloads/` filter on
+`guides/index.html`) share one house style and are built HTML→PDF with WeasyPrint
+(`pip install weasyprint`). The single source of truth for their look is
+`downloads/_companion-style.css` (top-strip → navy hero + doctor badge → yellow
+knowledge band → numbered sections → navy running headers → heat-map/data tables →
+branded footer with page numbers). The canonical reference layout is
+`downloads/wgmr-diabetic-diet-guide.html`.
+
+To add or edit a companion: create/edit `downloads/<name>.html` linking the shared
+stylesheet (`<link rel="stylesheet" href="_companion-style.css">`) — use **only**
+classes defined in that CSS, never an inline `<style>` block — then run
+`build_companion_pdfs.py` to (re)render `downloads/<name>.pdf`. Each `<div class="page">`
+must fit exactly one A4 page; physical PDF page count should equal the number of
+`.page` divs. Adjust shared colours/spacing in `_companion-style.css` only, so the
+whole set stays uniform. Files beginning with `_` are partials and are not rendered.
+
+Standard credential line (top-strip, every companion):
+`W.G.M. Rivero MD · FPCP · DPSN ·  · williamriveromd.com · <year>`.
+
+> The old per-PDF reportlab generators (`generate_holiday_companion_pdf.py`,
+> `generate_sodium_food_guide_pdf.py`) have been **removed** — they produced a
+> different, inconsistent look and would revert those PDFs out of the shared style.
+> Do not reintroduce them; build companions via the shared HTML pipeline above. The
+> PSN HD endorsement form is an official external document and is intentionally left
+> in its original style.
+
 The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.
 
 There are no automated tests or linters.
@@ -116,6 +324,55 @@ Each of the 90 guide files is a self-contained HTML document with:
 - **Multi-language content** — English, Tagalog, Cebuano, and Kapampangan text coexisting in the DOM, toggled by class
 
 **Do not edit CSS directly in guide files.** The master CSS is maintained in `patch_master_css.py` (`MASTER_CSS` string near the top of the file) and batch-applied with the script. One-off edits to a guide's `<style>` block will be overwritten on the next `patch_master_css.py` run.
+
+**Guide-specific CSS must live in a SECOND `<style>` block.** `patch_master_css.py` rewrites **only the first** `<style>` block in each file (see its `replace_style_block`). Any bespoke styling — especially for **standalone printable handouts/forms** (e.g. `bp-log-blank.html`, `bp-monitoring-log.html`, `alcohol-drinking-log.html`, with their `.toolbar`/`.page`/`.bp-log` layouts) — must be placed in a **second `<style>` block after the first**, so a master-CSS run never clobbers it. The first (master) block still supplies the design tokens (`--navy`, `--teal`, …) and base resets, so the second block can rely on them. ⚠️ Symptom of getting this wrong: the page renders **completely unstyled** after a `patch_master_css.py` run because its only `<style>` block was overwritten with the generic guide CSS (this is exactly what repeatedly "damaged" `bp-log-blank.html`). When building any standalone form, give it two style blocks from the start.
+
+### Site-wide chrome conventions (lock-in)
+
+These are the load-bearing layout conventions every guide must follow. All of them live in MASTER_CSS (in `patch_master_css.py`) plus a small number of HTML patchers. **Re-run the relevant patchers after adding any new guide, or after a manual edit, to lock the conventions back in.**
+
+1. **Top nav bar** (`<header class="site-header">` — direct children, in order):
+   - `<a class="brand">` — left
+   - `<div class="header-lang">` — Lang chips (multilingual guides only)
+   - `<nav class="header-nav">` — **must be a direct child** of `.site-header`; `margin-left:auto` flushes it to the right. The 4 links: **CALCULATORS · PHYSIOLOGY · ATLAS · ALL GUIDES**, with the current page rendered gold + non-clickable (`.is-current`).
+   - ⚠️ Do NOT wrap `.header-nav` in another `<div>` — that breaks the auto-margin push. Run `patch_relocate_toggles.py` if a guide was built before the convention, or use the same patcher idiom for fresh guides.
+2. **Floating toggle widgets** (every guide).
+   - Bottom-right `.float-controls`: dark/light toggle (44 px circle, white in light theme, charcoal in dark).
+   - Bottom-left `.float-controls-left`: desktop/mobile toggle when present, sitting below the print button.
+   - Left-side stack (top → bottom): `.dl-fab` (download, `bottom:136px`, when present) → `.print-btn` (`bottom:80px`) → `.float-controls-left` (`bottom:24px`).
+   - The symptom-checker FAB is automatically shifted left (`right:88px`) so it never overlaps the dark widget.
+   - Run `patch_relocate_toggles.py` to migrate any guide built with the old in-bar dark/desktop buttons; the script is idempotent.
+3. **Audience tabs** (dual-mode guides only — patient/clinician toggle below the header):
+   - Labels are uniform: **"Patients & Families"** and **"Clinicians"** (no "For " prefix, no role emoticons).
+   - `.audience-tabs` background **inherits the hero palette** — mint when patient mode is active, periwinkle when clinician mode is active — so the bar reads as one continuous strip with the hero. Hard-coded in MASTER_CSS.
+4. **Hero must be properly closed** with its `</div>`. A missing close lets the hero engulf the rest of the page (symptom: hero background bleeds down to the footer). See `hematuria-blood-in-urine.html` commit for the canonical fix.
+   - **Direct children of `<div class="hero-grid">` must be only**: `hero-copy`, `hero-cards`, `hero-figure`, `hero-toc`. Any other element (intro-callout, urgent-banner, translation-notice, stray `<h1>`/`<p>`, etc.) becomes an extra grid column and starves `.hero-copy` to near-zero width (symptom: title wraps one word per line, hero grows to 2000+ px tall). Content blocks like callouts/banners belong **outside** the hero, in a fresh `<div class="container">` right after `</section>`. Run `python3 validate_hero_grid.py` to scan all guides for this bug.
+5. **Calculator index** (`guides/calculators.html`): main-grid `<a class="related-card">` cards show titles + descriptions only, **no** peeking thumbs. Only the Latest-Calculators carousel at the top shows category-hero thumbs (`generate_latest_calculators.py`). The carousel auto-includes **any** new calc that has an `article:published_time` — if the calc has no `og:image`, the script falls back to the matching `images/hero-cat-{section}.webp`, so a brand-new calc is **never silently dropped** from the Latest strip.
+6. **Lang chips** (multilingual guides): exactly four (`glb-en/tl/ceb/kap`) inside `<div class="header-lang">` adjacent to the brand. Calculators and tools are English-only (no lang chips).
+
+**Theme & typography.** Guides/calculators use the pastel hero theme — light mint hero
+(patient) / light periwinkle hero (clinician) with dark text — and an all-sans type system:
+**Inter** for headlines, section titles, and numbers; **Manrope** for body text and UI;
+**Nunito Sans** for the hero subtitle. Lora and DM Sans have been removed. The fonts are
+declared in `MASTER_CSS` *and* loaded via the `<head>` Google Fonts `<link>`, which is managed
+by `patch_font_link.py` (run it alongside `patch_master_css.py`). The homepage (`index.html`),
+the guides listing (`guides/index.html`), and `nephrology-atlas.html` keep their own font
+stacks and are excluded from both. The optional `patch_hero_theme.py` adds the epilepsy-style
+circular-vignette + clinician cards and is **opt-in** (only for guides with a hero photo +
+dual-mode clinical sections), not part of the default rollout.
+
+**Circular-vignette hero placement (convention).** On desktop (≥821px) a guide's circular
+vignette (`figure.hero-figure > .hero-vignette`) renders as an **oversized disc that bleeds
+off the top and right** of the hero — copy on the left (z-index above the disc), disc anchored
+`top:-64px; left:58%` so it touches/clips the top border and overflows the right. The MASTER_CSS
+rule is scoped to `:is(body:not(.physician-mode), body.single-mode)`, i.e. it applies to
+patient-mode heroes **and** to **single-tab guides**. A single-tab guide (one with no
+Patient/Clinician mode toggle — including **physician/clinician-only** guides) must carry the
+`single-mode` class on `<body>` so its lone vignette bleeds like a patient hero; without it a
+physician-only guide (`<body class="physician-mode">`) would be excluded and the disc would
+render small and contained. **When building any single-tab guide, add `single-mode` to the
+body class** (e.g. `<body class="physician-mode single-mode">`). The bleed is desktop-only;
+the ≤820px mobile stack is untouched, and `.hero{overflow:hidden}` clips the disc to the hero.
 
 ### Language system
 

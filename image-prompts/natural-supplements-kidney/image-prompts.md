@@ -70,7 +70,7 @@ Overall composition:
 - No embedded labels or large text blocks
 - Negative space at top center for title text overlay (≈ 15% of frame height)
 - Mobile-safe crop: all three specimens clearly visible at small sizes
-- Bottom-right corner: small semi-transparent copyright attribution — "© W. G. M. Rivero, MD · williamriveromd.com" in white, ~10px equivalent, 65% opacity, resting on the dark navy background
+- Bottom-right corner: small semi-transparent copyright attribution — "© W Rivero, MD · williamriveromd.com" in white, ~10px equivalent, 65% opacity, resting on the dark navy background
 
 Style: photorealistic botanical scientific illustration, premium healthcare publication aesthetic, cinematic but restrained lighting, AJKD/NEJM cover quality, navy and teal/gold accents
 ```
@@ -152,7 +152,7 @@ Bottom strip: Three small supplement summary chips:
 🟢 Paragis — "Tier 1–2 only" (red badge)
 🔵 Spirulina — "Tier 1–4, strongest human preliminary data" (yellow badge)
 
-Bottom-right corner: small semi-transparent copyright line — "© W. G. M. Rivero, MD · williamriveromd.com" in navy or dark gray, ~10px equivalent, 65% opacity
+Bottom-right corner: small semi-transparent copyright line — "© W Rivero, MD · williamriveromd.com" in navy or dark gray, ~10px equivalent, 65% opacity
 
 Style: clean 2D infographic, KDIGO guideline document aesthetic, modular, mobile-readable at 375px width, strong visual hierarchy, navy/teal/amber/green color logic
 ```
@@ -223,7 +223,7 @@ Bottom note: "Activated by MX3 & Spirulina in preclinical models"
 
 Caption area below: "Figure 1. Nrf2 pathway — how xanthones and C-phycocyanin protect kidney cells."
 
-Bottom-right corner: small semi-transparent copyright — "© W. G. M. Rivero, MD · williamriveromd.com" in dark gray, ~10px equivalent, 65% opacity
+Bottom-right corner: small semi-transparent copyright — "© W Rivero, MD · williamriveromd.com" in dark gray, ~10px equivalent, 65% opacity
 
 Color logic: navy cell membrane, teal Nrf2 elements, red/orange ROS elements, green enzyme/protective elements, gold molecular labels
 Style: semi-photorealistic 3D cell diagram, NEJM graphical abstract quality, clean annotations, mobile-readable
@@ -299,9 +299,9 @@ BOTTOM SUMMARY CHIPS (three rounded chips):
 🟢 Paragis: "Weakest evidence · Safety risks"  (red background, white text)
 🔵 Spirulina: "Best evidence · Monitor K⁺ & protein"  (green background, white text)
 
-Right side annotation: Source note "Evidence graded by W. G. M. Rivero, MD, 2026 · Based on peer-reviewed literature"
+Right side annotation: Source note "Evidence graded by W Rivero, MD, 2026 · Based on peer-reviewed literature"
 
-Bottom-right corner: small semi-transparent copyright — "© W. G. M. Rivero, MD · williamriveromd.com" in dark gray, ~10px equivalent, 65% opacity
+Bottom-right corner: small semi-transparent copyright — "© W Rivero, MD · williamriveromd.com" in dark gray, ~10px equivalent, 65% opacity
 
 Style: Clean publication-grade infographic, AJKD/KI Reports visual style, mobile-readable, navy/teal/green/red color logic, no 3D effects, flat design with strong typographic hierarchy
 ```
@@ -387,7 +387,7 @@ For the Paragis G5 and G5D cells, add a small annotation: "Cardiac glycoside ris
 
 BOTTOM FOOTNOTE STRIP (full width, soft gray background):
 "🟢 Acceptable with monitoring · 🟡 Caution, consult nephrologist · 🔴 Not recommended · ⛔ Contraindicated"
-Far right: "© W. G. M. Rivero, MD · williamriveromd.com" (small, semi-transparent, ~10px equivalent)
+Far right: "© W Rivero, MD · williamriveromd.com" (small, semi-transparent, ~10px equivalent)
 
 Style: Clean patient education infographic, mobile-readable, high contrast, Filipino healthcare clinic aesthetic, no overcrowding, rounded cards
 ```
@@ -475,7 +475,7 @@ Visual accent: A red X / stop sign icon
 
 BOTTOM OF IMAGE:
 Left side — A simplified 3D kidney icon in teal, labeled "The goal: protect what remains"
-Right side — Copyright attribution: "© W. G. M. Rivero, MD · williamriveromd.com" in small white semi-transparent text (~10px equivalent, 65% opacity) resting on the dark navy background
+Right side — Copyright attribution: "© W Rivero, MD · williamriveromd.com" in small white semi-transparent text (~10px equivalent, 65% opacity) resting on the dark navy background
 
 Far bottom strip (very subtle): 
 "Supplements should complement — never replace — proven therapies. Discuss all supplements with your nephrologist."

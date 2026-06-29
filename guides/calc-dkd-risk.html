@@ -1,0 +1,2407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diabetic Kidney Disease Calculator — SGLT2i Eligibility, eAG &amp; UACR Risk · W Rivero, MD</title>
+<meta name="description" content="Diabetic kidney disease calculator — check SGLT2 inhibitor eligibility by eGFR, convert HbA1c to estimated average glucose, and read your UACR albuminuria risk category. With formulas, evidence, and pearls.">
+<meta name="keywords" content="diabetic kidney disease Philippines, diabetes and kidneys, diabetic nephropathy Philippines, blood sugar kidney, HbA1c kidney disease, proteinuria diabetes, SGLT2 inhibitor kidney, empagliflozin kidney, dapagliflozin diabetes kidney, diabetes CKD Philippines, kidney failure diabetes, Filipino diabetes kidney, ACE inhibitor diabetic kidney, ARB diabetes kidney, diabetes diet kidney Philippines, microalbuminuria diabetes, glucose control kidney, finerenone diabetic kidney, type 2 diabetes kidney disease, diabetic CKD treatment Philippines">
+<meta name="author" content="W Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-dkd-risk.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-06-23T04:42:42+08:00">
+<meta property="article:modified_time" content="2025-05-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="Diabetic Kidney Disease Calculator — SGLT2i Eligibility, eAG &amp; UACR Risk">
+<meta property="og:description" content="Check SGLT2 inhibitor eligibility by eGFR, convert HbA1c to estimated average glucose, and read your UACR albuminuria risk category — a standalone DKD calculator with formulas and evidence.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-dkd-risk.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/hero-cat-ckd-risk.webp">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta property="og:image:alt" content="CKD Risk & Progression — nephrology calculators · williamriveromd.com">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Diabetic Kidney Disease Calculator — SGLT2i Eligibility, eAG &amp; UACR Risk">
+<meta name="twitter:description" content="Check SGLT2 inhibitor eligibility by eGFR, convert HbA1c to estimated average glucose, and read your UACR albuminuria risk category — a standalone DKD calculator with formulas and evidence.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/hero-cat-ckd-risk.webp">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<style>
+  /* ═══════════════════════════════════════════════════════════════════════════
+     MASTER GUIDE CSS — williamriveromd.com
+     Version: 2026-06-23p (pastel theme — Inter/Manrope/Nunito Sans, no Lora/DM Sans)
+     All contrast ratios WCAG AA verified. Do not edit per-guide — edit here.
+  ═══════════════════════════════════════════════════════════════════════════ */
+
+  /* ── COLOR TOKENS (light mode) ──────────────────────────────────────────── */
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+
+    /* Text — all verified ≥4.5:1 on white and #f9fafb */
+    --text:       #1e2a38;   /* 10.2:1 on white ✓ */
+    --text-mid:   #2c3a4a;   /*  8.1:1 on white ✓ */
+    --text-muted: #4a5568;   /*  6.1:1 on white ✓ */
+    --text-faint: #5c6a7e;   /*  4.7:1 on white ✓ */
+
+    /* Surfaces */
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+
+    /* Semantic colors — backgrounds are very light, text is dark */
+    --red:        #b91c1c;   /* 5.9:1 on white ✓ */
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;   /* 7.3:1 on white ✓ */
+    --amber-soft: #fffbeb;
+    --green:      #166534;   /* 8.2:1 on white ✓ */
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;   /* 7.1:1 on white ✓ */
+    --purple-soft:#faf5ff;
+  }
+
+  /* ── RESET ───────────────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── BASE ────────────────────────────────────────────────────────────────── */
+  body {
+    font-family: 'Manrope', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ── SITE HEADER (CONVENTION: brand | inline lang chips | back link) ────── */
+  .site-header {
+    display: flex; align-items: center; gap: 18px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 24px;
+    background: var(--navy);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    position: sticky; top: 0; z-index: 200;
+  }
+  .site-header .brand {
+    font-size: 14px; font-weight: 500;
+    color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em;
+    flex: 0 0 auto;
+  }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back {
+    font-size: 12px; font-weight: 500;
+    color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s;
+    margin-left: auto; flex: 0 0 auto;
+  }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+  /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
+  .header-nav {
+    display: flex; align-items: center; gap: 14px;
+    margin-left: auto; flex: 0 0 auto;
+  }
+  .header-nav a {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.7); text-decoration: none;
+    transition: color .2s;
+    white-space: nowrap;
+  }
+  .header-nav a:hover { color: #fff; }
+  .header-nav a.is-current { color: var(--gold-light); pointer-events: none; }
+  @media (max-width: 640px) {
+    .header-nav { gap: 10px; }
+    .header-nav a { font-size: 10.5px; letter-spacing: .04em; }
+  }
+  /* Inline lang chips inside the header (next to the brand). */
+  .header-lang {
+    display: flex; align-items: center; gap: 6px;
+    flex: 0 1 auto; flex-wrap: nowrap; overflow-x: auto;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .header-lang::-webkit-scrollbar { display: none; }
+  .header-lang .lang-lbl {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5);
+    text-transform: uppercase; letter-spacing: .1em; margin-right: 2px;
+  }
+  .header-lang .lang-btn-g {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.18); background: transparent;
+    color: rgba(255,255,255,.78); cursor: pointer; transition: all .15s;
+    line-height: 1.3; flex-shrink: 0;
+  }
+  .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
+  .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  @media (max-width: 640px) {
+    .site-header { padding: 0 14px; gap: 10px; }
+    .header-lang .lang-lbl { display: none; }
+    .header-lang .lang-btn-g { font-size: 11px; padding: 2px 8px; }
+    .site-header .brand { font-size: 13px; }
+    .site-header .back { font-size: 11px; }
+  }
+
+  /* ── LEGACY LANG BAR (kept defined as a no-op so older HTML doesn't break) ─ */
+  .guide-lang-bar { display: none !important; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g {
+    font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.2); background: transparent;
+    color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s;
+  }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  /* Legacy inline dark/desktop toggle holder — now replaced by .float-controls. */
+  .guide-toggle-inline { display: none !important; }
+
+  /* ── FLOATING DARK TOGGLE WIDGET (bottom-right) ─────────────────────────── */
+  .float-controls {
+    position: fixed; bottom: 24px; right: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  /* ── FLOATING DESKTOP/MOBILE TOGGLE WIDGET (bottom-left, under print) ────── */
+  .float-controls-left {
+    position: fixed; bottom: 24px; left: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  .float-controls-left .float-tooltip { left: 0; right: auto; }
+  .float-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(31,56,100,.18);
+    background: #ffffff; color: #1f3864;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(15,30,46,.18);
+    transition: background .15s, color .15s, transform .15s, box-shadow .15s;
+    position: relative;
+  }
+  .float-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,30,46,.24); }
+  .float-btn svg { width: 20px; height: 20px; }
+  .float-tooltip {
+    position: absolute; bottom: calc(100% + 8px); right: 0;
+    background: rgba(15,30,46,.9); color: #fff;
+    padding: 6px 10px; border-radius: 6px;
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity .15s;
+  }
+  .float-btn:hover .float-tooltip { opacity: 1; }
+  html[data-theme="dark"] .float-btn {
+    background: #1a2535; color: #e2b95f; border-color: rgba(255,255,255,.18);
+    box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  }
+  html[data-theme="dark"] .float-tooltip { background: rgba(255,255,255,.92); color: #1f3864; }
+  @media print { .float-controls, .no-print { display: none !important; } }
+
+  /* ── TOGGLE BAR ──────────────────────────────────────────────────────────── */
+  .guide-toggle-bar {
+    display: flex; gap: 8px; align-items: center;
+    padding: 6px 32px;
+    background: rgba(10, 18, 32, 0.96) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .toggle-btn {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18);
+    color: rgba(255,255,255,.82);   /* ≥ 4.5:1 on dark bar ✓ */
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px; font-weight: 500;
+    padding: 4px 10px; border-radius: 16px;
+    cursor: pointer; transition: all .2s; white-space: nowrap;
+  }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .lang-label { font-size: 11px; color: rgba(255,255,255,.6); margin-right: 4px; letter-spacing: .06em; }
+  .lang-btn {
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    padding: 4px 12px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.2);
+    background: transparent; color: rgba(255,255,255,.75);  /* ≥ 4.5:1 ✓ */
+    cursor: pointer; transition: all .2s;
+  }
+  .lang-btn:hover { color: white; border-color: rgba(255,255,255,.5); }
+  .lang-btn.active { background: #b8962e; border-color: #b8962e; color: white; }
+  [data-lang].lang-hidden { display: none !important; }
+
+  /* ── HERO (redesigned: shorter footprint, Inter/Nunito, side panel) ──────── */
+  .hero {
+    background: linear-gradient(135deg, #2a8f8f 0%, #14545e 100%);  /* lightened from teal→near-black */
+    color: white;
+    padding: 40px 0 44px;            /* tighter vertical footprint */
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;              /* self-contained stacking for the sigil watermark */
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    top: -90px; right: -110px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.08);
+    pointer-events: none;
+  }
+  /* Hero sigil watermark removed — no decorative sigil behind hero content. */
+  .hero::after { content: none; }
+  .hero > .container { position: relative; z-index: 1; }
+  /* Two-column hero: copy on the left, vignette / contents panel on the right */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-copy { min-width: 0; }
+  /* Vignette/grid heroes have a narrower copy column — smaller headline */
+  .hero-grid .hero-copy h1 { font-size: clamp(22px, 3.4vw, 34px); }
+  .hero-tag {
+    display: inline-block;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(255,255,255,.9);     /* 5.5:1 on --teal ✓ */
+    border: 1px solid rgba(255,255,255,.35);
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Inter', sans-serif;   /* headline → Inter */
+    font-size: clamp(27px, 4.4vw, 44px);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 14px; letter-spacing: -.025em;
+    color: #ffffff;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold-light);
+  }
+  .hero-sub em {
+    font-style: italic;
+    color: #fde68a;
+    font-weight: 600;
+  }
+  .hero-sub {
+    font-family: 'Nunito Sans', sans-serif;   /* subtitle → Nunito Sans */
+    font-size: 16.5px;
+    color: rgba(255,255,255,.92);    /* 14.8:1 ✓ */
+    max-width: 560px; line-height: 1.6; margin-bottom: 22px;
+  }
+  .hero-meta {
+    display: flex; gap: 28px; flex-wrap: wrap;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,.75);    /* ≥ 4.5:1 ✓ */
+  }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 600; }
+
+  /* ── PATIENT HERO: circular vignette portrait on the right ───────────────── */
+  .hero-figure {
+    position: relative;
+    width: clamp(260px, 32vw, 380px);
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+  }
+  .hero-figure::before {            /* soft gold halo behind the disc */
+    content: ''; position: absolute; inset: -16px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,79,.28), transparent 68%);
+    pointer-events: none;
+  }
+  .hero-vignette {
+    position: relative; width: 100%; height: 100%;
+    border-radius: 50%; overflow: hidden;
+    border: 1px solid rgba(255,255,255,.20);
+    box-shadow: 0 22px 55px rgba(0,0,0,.45);
+  }
+  .hero-vignette img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+    display: block; margin: 0;   /* override global hero-img centering */
+  }
+  /* opt-in zoom for hero images with a baked-in title/watermark (e.g. epilepsy) */
+  .hero-vignette.zoom img { transform: scale(1.34); transform-origin: 50% 60%; }
+  .hero-vignette::after {           /* vignette: darken rim, blend into hero */
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 42%, transparent 55%, rgba(15,60,66,.38) 100%),
+      linear-gradient(180deg, rgba(42,143,143,.06), rgba(20,84,94,.16));
+    pointer-events: none;
+  }
+  /* ── Oversized vignette layout (desktop ≥821px) ──────────────────────────
+     A large circular portrait bleeds off the hero's right/top/bottom while the
+     copy sits on the LEFT and on the TOP layer (z-index above the disc, so the
+     headline stays readable even where the circle extends behind it). Applies to patient-mode
+     vignette heroes AND to single-tab guides (body.single-mode) — including
+     physician/clinician-only guides, whose lone hero is the vignette and so
+     should bleed like a patient hero. The mobile stack (≤820px) is untouched. */
+  @media (min-width: 821px) {
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) {
+      display: flex; align-items: center;
+      position: relative; gap: 0;
+      min-height: clamp(330px, 30vw, 450px);
+    }
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) .hero-copy {
+      max-width: min(56%, 560px);
+      position: relative; z-index: 3;   /* hero text on the top layer */
+    }
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) .hero-figure {
+      position: absolute; top: -64px; left: 58%;
+      width: clamp(400px, 50vw, 600px);
+      margin: 0; z-index: 1;
+    }
+  }
+
+  /* ── CLINICIAN HERO: jump-to contents panel on the right ─────────────────── */
+  .hero-toc {
+    width: clamp(260px, 30vw, 340px);
+    flex-shrink: 0;
+    background: rgba(255,255,255,.11);
+    border: 1px solid rgba(212,175,79,.38);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 18px 44px rgba(0,0,0,.22);
+  }
+  .hero-toc-head {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase;
+    color: #d4af4f; margin-bottom: 10px;
+    padding-bottom: 10px; border-bottom: 1px solid rgba(212,175,79,.22);
+  }
+  .hero-toc-head svg { width: 15px; height: 15px; stroke: #d4af4f; }
+  .hero-toc-list { display: flex; flex-direction: column; }
+  .hero-toc-list a {
+    display: flex; align-items: center; gap: 11px;
+    padding: 8px 8px; border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: rgba(255,255,255,.86); text-decoration: none;
+    transition: background .15s, color .15s;
+  }
+  .hero-toc-list a + a { border-top: 1px solid rgba(255,255,255,.07); }
+  .hero-toc-list a:hover { background: rgba(212,175,79,.13); color: #fff; }
+  .hero-toc-num {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    color: #d4af4f; opacity: .85; min-width: 18px;
+  }
+  .hero-toc-arrow { margin-left: auto; color: rgba(212,175,79,.7); transition: transform .15s; }
+  .hero-toc-list a:hover .hero-toc-arrow { transform: translateX(3px); }
+
+  /* ── PASTEL HERO MOTIF (soft light backgrounds, dark text) ───────────────── */
+  /* Patient: soft mint */
+  .hero { background: linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%); color:#28484c; }
+  .hero::before { border-color: rgba(15,90,90,.12); }
+  .hero-tag { color:#0e4a50; border-color: rgba(14,74,80,.32); background: rgba(255,255,255,.5); }
+  .hero h1 { color:#0e4a50; }
+  .hero h1 em { color:#a06b00; }
+  .hero-sub { color:#28484c; }
+  .hero-sub em { color:#a06b00; font-style:italic; }
+  .hero-meta { color:#42595d; }
+  .hero-meta strong { color:#173a3e; }
+  .hero-figure::before { background: radial-gradient(circle, rgba(160,107,0,.16), transparent 68%); }
+  .hero-vignette { border-color: rgba(15,90,90,.20); box-shadow: 0 16px 40px rgba(15,90,90,.18); }
+  .hero-vignette::after {
+    background:
+      radial-gradient(circle at 50% 42%, transparent 62%, rgba(15,90,90,.16) 100%),
+      linear-gradient(180deg, rgba(255,255,255,.10), rgba(15,90,90,.05));
+  }
+
+  /* Clinician: soft periwinkle */
+  body.physician-mode .hero { background: linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%); color:#34455f; }
+  body.physician-mode .hero h1 { color:#1f3864; }
+  body.physician-mode .hero h1 em { color:#a06b00; }
+  body.physician-mode .hero-sub { color:#34455f; }
+  body.physician-mode .hero-meta { color:#46516b; }
+  body.physician-mode .hero-meta strong { color:#1f3864; }
+  body.physician-mode .hero-toc {
+    background:#ffffff; border-color: rgba(31,56,100,.14);
+    box-shadow: 0 16px 40px rgba(31,56,100,.15);
+  }
+  body.physician-mode .hero-toc-head { color:#1f3864; border-bottom-color: rgba(31,56,100,.14); }
+  body.physician-mode .hero-toc-head svg { stroke:#8a6810; }
+  body.physician-mode .hero-toc-list a { color:#1f3864; }
+  body.physician-mode .hero-toc-list a + a { border-top-color: rgba(31,56,100,.08); }
+  body.physician-mode .hero-toc-list a:hover { background: rgba(31,56,100,.06); color:#0e2547; }
+  body.physician-mode .hero-toc-num { color:#8a6810; opacity:1; }
+  body.physician-mode .hero-toc-arrow { color:#b08a2a; }
+
+  /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
+  /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
+  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-cards { order: -1; width: 100%; }
+  /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
+  .hero-cards.mode-physician { order: -1; width: 100%; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+
+  /* Clinician: Evidence Snapshot card on the right of the hero copy */
+  body.physician-mode .hero-grid { align-items: start; gap: 34px; }
+  body.physician-mode .hero h1 { font-size: clamp(23px, 3.1vw, 33px); }
+  body.physician-mode .hero-sub { font-size: 14.5px; margin-bottom: 18px; }
+  .hero-cards {
+    display: grid; grid-template-columns: 1fr; gap: 12px;
+    width: clamp(280px, 32vw, 340px); flex-shrink: 0; align-items: stretch;
+  }
+
+  /* ── CLINICIAN OVERVIEW CARDS (compact, two-up) ──────────────────────────── */
+  .ov-card {
+    background: #fff; border: 1px solid #e6ebf3; border-radius: 13px;
+    padding: 16px 18px; display: flex; flex-direction: column;
+    box-shadow: 0 10px 26px rgba(31,56,100,.08);
+  }
+  .ov-head { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
+  .ov-ico {
+    width: 31px; height: 31px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #eef3fb; color: #1f3864;
+  }
+  .ov-ico svg { width: 16px; height: 16px; stroke: currentColor; }
+  .ov-title { font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 700; color: #1f3864; }
+  .ov-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+  .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
+  .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
+  .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
+  .ov-stat { display: flex; align-items: flex-start; gap: 11px; }
+  .ov-stat .v {
+    font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 800;
+    color: #1f3864; line-height: 1.05; min-width: 52px; flex-shrink: 0;
+  }
+  .ov-stat .l { font-size: 11.5px; color: #5a6680; line-height: 1.35; }
+  .ov-foot {
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600;
+    color: #1a6b72; text-decoration: none;
+  }
+  .ov-foot:hover { color: #0e4a50; }
+  .ov-foot svg { width: 14px; height: 14px; stroke: currentColor; }
+  @media(max-width: 460px) { .hero-cards { grid-template-columns: 1fr; } }
+
+  /* Legible hero 'Last Reviewed' badge on pastel bg (overrides old inline white text) */
+  /* Clinician badge chips (pastel-themed; canonical so guides w/o a local rule render) */
+  .clin-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .clin-badge { display:inline-block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:.02em; color:#1f3864; background:rgba(31,56,100,.08);
+    border:1px solid rgba(31,56,100,.25); border-radius:20px; padding:4px 12px; }
+
+  .hero-meta time, .hero-meta .hero-refcount span[style] { color:#1f3864 !important; background:rgba(31,56,100,.08) !important; border-color:rgba(31,56,100,.35) !important; }
+
+  /* ── CONTAINER ───────────────────────────────────────────────────────────── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── NAV STRIP ───────────────────────────────────────────────────────────── */
+  .nav-strip {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 56px; z-index: 100;
+  }
+  .nav-pills {
+    display: flex; gap: 4px; padding: 12px 32px;
+    max-width: 860px; margin: 0 auto;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill {
+    white-space: nowrap; font-size: 13px; font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none; padding: 6px 14px;
+    border-radius: 20px; border: 1px solid transparent;
+    transition: all .2s;
+  }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+
+  /* ── SECTIONS ────────────────────────────────────────────────────────────── */
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-tag {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px;
+  }
+  .section h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(22px, 3.5vw, 32px);
+    font-weight: 700; color: var(--navy);
+    line-height: 1.25; margin-bottom: 20px; letter-spacing: -.02em;
+  }
+  .section h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 600; color: var(--navy);
+    line-height: 1.3; margin-bottom: 14px;
+  }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+
+  /* ── BODY LISTS (content sections) ───────────────────────────────────────────
+     The global reset zeroes list padding; restore a comfortable indent so body
+     bullets/numbers sit clearly inside the column. Component lists (.checklist,
+     .alert-body, .food-* …) define their own and override this via source order. */
+  .section ul, .section ol { margin: 0 0 18px 0; padding-left: 30px; }
+  .section li { color: var(--text-mid); line-height: 1.7; margin-bottom: 8px; padding-left: 4px; }
+  .section li:last-child { margin-bottom: 0; }
+  .section li::marker { color: var(--teal); }
+  .section ul ul, .section ol ol, .section ul ol, .section ol ul { margin: 8px 0 0 0; }
+
+  /* ── INTRO CALLOUT (teal panel) ──────────────────────────────────────────── */
+  .intro-callout {
+    background: var(--teal);
+    border-radius: 16px; padding: 32px 36px; margin-bottom: 36px;
+  }
+  .intro-callout p {
+    color: rgba(255,255,255,.92) !important;  /* 7.4:1 on --teal ✓ */
+    font-size: 16px; line-height: 1.75; margin: 0;
+  }
+  .intro-callout p strong { color: #ffffff !important; }
+
+  /* ── GRID LAYOUTS ────────────────────────────────────────────────────────── */
+  .two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .three-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0; }
+  @media(max-width: 600px) { .two-col, .three-col { grid-template-columns: 1fr; } }
+
+  /* ── FEATURE CARDS ───────────────────────────────────────────────────────── */
+  .feature-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px;
+  }
+  .feature-card h4 {
+    font-size: 14px; font-weight: 600;
+    color: var(--navy);              /* 14.5:1 on --bg ✓ */
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-mid);          /* 8.1:1 on --bg ✓ */
+    margin: 0; line-height: 1.6;
+  }
+
+  /* ── DOTS ────────────────────────────────────────────────────────────────── */
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-teal   { background: var(--teal); }
+  .dot-red    { background: var(--red); }
+  .dot-amber  { background: #d97706; }
+  .dot-green  { background: var(--green); }
+  .dot-navy   { background: var(--navy); }
+  .dot-purple { background: var(--purple); }
+
+  /* ── ALERT BOXES ─────────────────────────────────────────────────────────── */
+  .alert {
+    border-radius: 12px; padding: 20px 24px; margin: 24px 0;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-purple { background: var(--purple-soft); border-left: 3px solid var(--purple); }
+
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 {
+    font-size: 14px; font-weight: 600;
+    color: var(--navy);              /* ≥ 9:1 on all alert backgrounds ✓ */
+    margin-bottom: 6px;
+  }
+  .alert-body p,
+  .alert-body ul,
+  .alert-body ul li {
+    font-size: 14px;
+    color: var(--text-mid);          /* ≥ 8:1 on all alert backgrounds ✓ */
+    margin: 0; line-height: 1.6;
+  }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+
+  /* ── TABLES ──────────────────────────────────────────────────────────────── */
+
+  /* Generic table wrapper — used throughout guide and clinician sections */
+  .table-wrap {
+    overflow-x: auto; margin: 20px 0;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th {
+    text-align: left; padding: 11px 16px;
+    background: var(--navy); color: rgba(255,255,255,.92);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    border-bottom: none;
+  }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td {
+    padding: 13px 16px; vertical-align: top; line-height: 1.55;
+    border-bottom: 1px solid var(--border); color: var(--text-mid);
+  }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
+  .lab-table, .drug-table, .schedule-table {
+    width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;
+  }
+  .lab-table th, .drug-table th, .schedule-table th {
+    text-align: left;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-muted);        /* 6.1:1 on --bg ✓ */
+    padding: 10px 14px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .lab-table td, .drug-table td, .schedule-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-mid);          /* 8.1:1 on white ✓ */
+    vertical-align: top; line-height: 1.5;
+  }
+  .lab-table td:first-child, .drug-table td:first-child {
+    font-weight: 600;
+    color: var(--navy);              /* 14.5:1 ✓ */
+  }
+  .lab-table tr:last-child td,
+  .drug-table tr:last-child td { border-bottom: none; }
+  .lab-table tr:hover td,
+  .drug-table tr:hover td { background: var(--bg); }
+
+  /* ── BADGES ──────────────────────────────────────────────────────────────── */
+  .target-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--green-soft); color: var(--green); /* 8.2:1 ✓ */
+  }
+  .warn-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--red-soft); color: var(--red);     /* 5.9:1 ✓ */
+  }
+  .amber-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--amber-soft); color: var(--amber); /* 7.3:1 ✓ */
+  }
+  .caution-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--amber-soft); color: var(--amber); /* 7.3:1 ✓ */
+  }
+  .safe-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--green-soft); color: var(--green); /* 8.2:1 ✓ */
+  }
+  .avoid-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--red-soft); color: var(--red);     /* 5.9:1 ✓ */
+  }
+  .contraindicated-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: #7f1d1d; color: white;                  /* 9.4:1 ✓ */
+  }
+  .purple-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--purple-soft); color: var(--purple); /* 7.1:1 ✓ */
+  }
+  .teal-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--teal-light); color: var(--teal);  /* 4.8:1 ✓ */
+  }
+
+  /* ── STEPS ───────────────────────────────────────────────────────────────── */
+  .steps { margin: 24px 0; }
+  .step { display: flex; gap: 20px; margin-bottom: 24px; align-items: flex-start; }
+  .step-num {
+    width: 36px; height: 36px; background: var(--teal); color: white;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; flex-shrink: 0;
+  }
+  .step-body { flex: 1; }
+  .step-body h4 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .step-body p  { font-size: 14px; color: var(--text-mid); margin: 0; }
+
+  /* ── CHECKLIST (dark panel) ──────────────────────────────────────────────── */
+  .checklist {
+    background: var(--navy); border-radius: 16px;
+    padding: 28px 32px; margin: 28px 0;
+  }
+  .checklist h4 { color: rgba(255,255,255,.95) !important; font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+  .checklist ul { list-style: none; margin: 0; padding: 0; }
+  .checklist ul li {
+    color: rgba(255,255,255,.88) !important;  /* 13.1:1 ✓ */
+    font-size: 14px; padding: 10px 0 10px 28px; position: relative;
+    border-bottom: 1px solid rgba(255,255,255,.1); line-height: 1.5;
+  }
+  .checklist ul li:last-child { border-bottom: none; }
+  .checklist ul li::before { content: '✓'; position: absolute; left: 4px; top: 10px; color: #d4af4f; }
+  .checklist.checklist-green { background: var(--green); }
+  html[data-theme="dark"] .checklist.checklist-green { background: #0e2a1c; }
+
+  /* ── COMPARE GRID ────────────────────────────────────────────────────────── */
+  .compare-grid, .cartridge-compare {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--border); margin: 24px 0;
+  }
+  @media(max-width: 580px) { .compare-grid, .cartridge-compare { grid-template-columns: 1fr; } }
+  .compare-header, .cart-header {
+    padding: 16px 20px;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: white; text-align: center;
+  }
+  .compare-header.tophi, .cart-header.ha130 { background: #1a6b72; }
+  .compare-header.calciphylaxis, .cart-header.ha330 { background: #1f3864; }
+  .compare-row-label, .cart-row-label {
+    grid-column: 1 / -1; background: var(--bg);
+    padding: 8px 20px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  .compare-cell, .cart-cell {
+    padding: 14px 20px; font-size: 14px;
+    color: var(--text-mid);          /* 8.1:1 ✓ */
+    border-bottom: 1px solid var(--border); line-height: 1.55;
+  }
+  .compare-cell.tophi-cell, .cart-cell.left-cell { border-right: 1px solid var(--border); }
+  .compare-cell strong, .cart-cell strong { color: var(--navy); }
+
+  /* ── ILLUSTRATION WRAP ───────────────────────────────────────────────────── */
+  .illus-wrap {
+    background: #f0f4f8; border-radius: 14px;
+    padding: 24px; margin: 24px 0;
+    text-align: center; overflow-x: auto;
+  }
+  .illus-wrap-light {
+    background: #f9fafb !important;
+    border: 1px solid #e2e6eb; border-radius: 14px;
+  }
+  .illus-caption {
+    color: var(--text-mid);          /* 8.1:1 ✓ */
+    font-size: 13px; font-style: italic;
+    margin-top: 12px; line-height: 1.65; display: block;
+  }
+
+  /* ── IMAGE PLACEHOLDER ───────────────────────────────────────────────────── */
+  .img-placeholder {
+    background: var(--bg); border: 2px dashed var(--border);
+    border-radius: 12px; padding: 24px; margin: 20px 0; text-align: center;
+  }
+  .img-placeholder .img-ph-icon { font-size: 32px; margin-bottom: 8px; }
+  .img-placeholder p { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+  .img-placeholder .img-ph-credit { font-size: 11px; color: var(--teal); margin-top: 8px; font-style: italic; }
+
+  /* ── COST CARDS ──────────────────────────────────────────────────────────── */
+  .cost-card { border-radius: 14px; padding: 24px; border: 1px solid var(--border); margin: 12px 0; }
+  .cost-card.green { background: var(--green-soft); border-color: rgba(22,101,52,.2); }
+  .cost-card.red   { background: var(--red-soft);   border-color: rgba(185,28,28,.2); }
+  .cost-card.amber { background: var(--amber-soft); border-color: rgba(146,64,14,.2); }
+  .cost-card h4    { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .cost-card.green h4 { color: var(--green); }
+  .cost-card.red   h4 { color: var(--red); }
+  .cost-card.amber h4 { color: var(--amber); }
+  .cost-card p { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+
+  /* ── ANALGESIC LADDER ────────────────────────────────────────────────────── */
+  .ladder { margin: 24px 0; }
+  .ladder-step { display: flex; gap: 16px; margin-bottom: 12px; align-items: stretch; }
+  .ladder-num {
+    width: 40px; min-height: 60px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; color: white; flex-shrink: 0;
+  }
+  .ladder-num.s1 { background: #166534; }
+  .ladder-num.s2 { background: #92400e; }
+  .ladder-num.s3 { background: #b91c1c; }
+  .ladder-body {
+    flex: 1; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px;
+  }
+  .ladder-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .ladder-body p  { font-size: 13px; color: var(--text-mid); margin: 0; }
+
+  /* ── NON-PHARM GRID ──────────────────────────────────────────────────────── */
+  .nopharm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 24px 0; }
+  .nopharm-card {
+    background: var(--teal-light);
+    border: 1px solid rgba(26,107,114,.2);
+    border-radius: 12px; padding: 16px; text-align: center;
+  }
+  .nopharm-card .icon { font-size: 28px; margin-bottom: 8px; }
+  .nopharm-card h4 { font-size: 13px; font-weight: 600; color: var(--teal); margin-bottom: 4px; }
+  .nopharm-card p  { font-size: 12px; color: var(--text-mid); margin: 0; line-height: 1.5; }
+
+  /* ── FOOD GRIDS ──────────────────────────────────────────────────────────── */
+  .food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  @media(max-width: 600px) { .food-grid { grid-template-columns: 1fr; } }
+  .food-ok    { background: var(--green-soft); border: 1px solid rgba(22,101,52,.2); border-radius: 12px; padding: 20px; }
+  .food-avoid { background: var(--red-soft);   border: 1px solid rgba(185,28,28,.2); border-radius: 12px; padding: 20px; }
+  .food-limit { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 12px; padding: 20px; }
+  .food-ok    h4 { color: var(--green);  font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .food-avoid h4 { color: var(--red);    font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .food-limit h4 { color: var(--amber);  font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .food-ok ul, .food-avoid ul, .food-limit ul {
+    font-size: 13px; color: var(--text-mid); margin-left: 16px;
+  }
+  .food-ok ul li, .food-avoid ul li, .food-limit ul li { margin-bottom: 5px; line-height: 1.5; }
+
+  /* ── RELATED GUIDES SECTION ──────────────────────────────────────────────── */
+  .related-guides {
+    max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0;
+    border-top: 2px solid var(--border);
+  }
+  .related-guides h2 {
+    font-size: 1.1rem; font-weight: 700; color: var(--navy);
+    margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em;
+  }
+  .related-cards {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
+  }
+  .related-card {
+    display: flex; flex-direction: column; gap: 4px;
+    background: var(--navy);
+    border-radius: 8px; padding: 14px 16px;
+    text-decoration: none; color: inherit;
+    transition: transform .15s, box-shadow .15s;
+    position: relative; overflow: hidden;
+  }
+  .related-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--teal);
+  }
+  .related-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,56,100,0.28); }
+  .related-card-tag   { font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9); text-transform: uppercase; letter-spacing: .08em; }
+  .related-card-title { font-size: .88rem; font-weight: 600; color: #fff; line-height: 1.3; }
+  .related-card-desc  { display: none; }
+  .related-card-arrow { display: none; }
+  .related-card-thumb {
+    position: absolute; top: 0; right: 0;
+    width: 110px; height: 100%;
+    object-fit: cover; opacity: .82;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 55%);
+    mask-image: linear-gradient(to right, transparent, #000 55%);
+    pointer-events: none;
+  }
+  .related-card.has-thumb { padding-right: 116px; }
+
+  /* ── RELATED GUIDES — LEGACY ALIASES (12 guides ship variant markup) ─────── */
+  .related-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
+  }
+  .related-badge {
+    display: inline-block;
+    font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9);
+    text-transform: uppercase; letter-spacing: .08em;
+  }
+  .related-card h3 {
+    font-size: .88rem; font-weight: 600; color: #fff;
+    line-height: 1.3; margin: 0 0 4px 0;
+  }
+  .related-card p {
+    font-size: .80rem; color: rgba(255,255,255,.5); line-height: 1.45;
+    margin: 0; flex: 1;
+  }
+
+  /* ── DR CARD (dark panel) ────────────────────────────────────────────────── */
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card {
+    background: var(--navy); color: white;
+    border-radius: 16px; padding: 32px;
+    display: flex; gap: 24px; align-items: flex-start; margin-top: 0;
+  }
+  .dr-avatar {
+    width: 72px; height: 72px;
+    background: transparent; border-radius: 50%;
+    flex-shrink: 0; border: none;
+    overflow: hidden;
+  }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; } /* 13.1:1 ✓ */
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+
+  /* ── GUIDE FOOTER ────────────────────────────────────────────────────────── */
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner {
+    max-width: 860px; margin: 0 auto; padding: 0 32px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+
+  /* ── DISCLAIMER ──────────────────────────────────────────────────────────── */
+  .disclaimer {
+    background: var(--amber-soft);
+    border: 1px solid rgba(146,64,14,.2);
+    border-radius: 10px; padding: 16px 20px;
+    margin: 40px 0 36px; font-size: 13px;
+    color: var(--text-mid);          /* 8.1:1 on amber-soft ✓ */
+    line-height: 1.6;
+  }
+  .disclaimer strong { color: var(--navy); }
+
+  /* ── CALCULATOR ──────────────────────────────────────────────────────────── */
+  .calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
+  .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'Manrope', sans-serif; font-size: 15px; }
+  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
+  .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .calc-metric-card { background: rgba(255,255,255,.7); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid rgba(0,0,0,.08); }
+  .calc-metric-card .cmv { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 600; line-height: 1; color: var(--navy); }
+  .calc-metric-card .cml { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; color: var(--text-muted); }
+  .calc-metric-card .cmt { font-size: 11px; margin-top: 4px; font-weight: 600; color: var(--text-mid); }
+  .calc-verdict-text { font-size: 14px; line-height: 1.7; margin-bottom: 10px; color: var(--text-mid); }
+  .calc-action-text { font-size: 13px; line-height: 1.65; padding-top: 10px; border-top: 1px solid rgba(0,0,0,.08); color: var(--text-mid); }
+  .calc-disclaimer { font-size: 11.5px; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
+
+  /* ── PRINT BUTTON ────────────────────────────────────────────────────────── */
+  .print-btn {
+    position: fixed; bottom: 80px; left: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s; z-index: 9998;
+  }
+  .print-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip {
+    position: absolute; left: 54px;
+    background: rgba(31,56,100,.92); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .print-btn:hover .p-tip { opacity: 1; }
+
+  /* ── SCROLL-TO-TOP BUTTON ────────────────────────────────────────────────── */
+  .scroll-top-btn {
+    position: fixed; bottom: 80px; right: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996;
+    opacity: 0; pointer-events: none;
+  }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip {
+    position: absolute; right: 54px;
+    background: rgba(31,56,100,.92); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     DARK MODE OVERRIDES
+     Applied when html[data-theme="dark"] is set by toggleDark().
+     All contrast ratios re-verified for dark surfaces.
+  ═══════════════════════════════════════════════════════════════════════════ */
+
+  html[data-theme="dark"] {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #2ba8b0;   /* brighter on dark — 4.8:1 on #1a2535 ✓ */
+    --teal-light: #0a2830;
+
+    --text:       #e8eaf0;   /* 12.4:1 on #0f1520 ✓ */
+    --text-mid:   #dde3eb;   /*  9.1:1 on #1a2535 ✓ */
+    --text-muted: #9baab8;   /*  4.6:1 on #0f1520 ✓ */
+    --text-faint: #8090a4;   /*  3.9:1 — large text only */
+
+    --bg:    #141c2a;
+    --white: #1a2030;
+    --border:#2a3548;
+
+    --red:        #f87171;   /* 5.1:1 on #2a1515 ✓ */
+    --red-soft:   #2a1515;
+    --amber:      #fbbf24;   /* 5.4:1 on #2a1900 ✓ */
+    --amber-soft: #2a1900;
+    --green:      #4ade80;   /* 6.2:1 on #0e2a1c ✓ */
+    --green-soft: #0e2a1c;
+    --purple:     #c084fc;   /* 5.7:1 on #1a1030 ✓ */
+    --purple-soft:#1a1030;
+  }
+
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+
+  html[data-theme="dark"] .hero,
+  html[data-theme="dark"] .intro-callout,
+  html[data-theme="dark"] .dr-card,
+  html[data-theme="dark"] .checklist { background: #080d16; }
+  html[data-theme="dark"] .dr-qr img { background: white !important; }
+
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+
+  html[data-theme="dark"] .feature-card,
+  html[data-theme="dark"] .ladder-body,
+  html[data-theme="dark"] .calc-wrap,
+  html[data-theme="dark"] .img-placeholder { background: #1a2535; border-color: #2a3548; }
+
+  html[data-theme="dark"] .nav-pill:hover { background: #1a2535; color: var(--text); }
+
+  /* All text elements — one rule to cover them all */
+  html[data-theme="dark"] .section p,
+  html[data-theme="dark"] .section h3,
+  html[data-theme="dark"] .feature-card p,
+  html[data-theme="dark"] .alert-body p,
+  html[data-theme="dark"] .alert-body ul li,
+  html[data-theme="dark"] .step-body p,
+  html[data-theme="dark"] .ladder-body p,
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-theme="dark"] .table-wrap tbody tr:hover td { background: #1e3040; }
+
+  html[data-theme="dark"] .lab-table td,
+  html[data-theme="dark"] .drug-table td,
+  html[data-theme="dark"] .schedule-table td,
+  html[data-theme="dark"] .compare-cell,
+  html[data-theme="dark"] .cart-cell,
+  html[data-theme="dark"] .disclaimer,
+  html[data-theme="dark"] .cost-card p,
+  html[data-theme="dark"] .nopharm-card p,
+  html[data-theme="dark"] .food-ok ul li,
+  html[data-theme="dark"] .food-avoid ul li,
+  html[data-theme="dark"] .food-limit ul li,
+  html[data-theme="dark"] .calc-verdict-text,
+  html[data-theme="dark"] .calc-action-text,
+  html[data-theme="dark"] .illus-caption { color: var(--text-mid) !important; }   /* 9.1:1 ✓ */
+
+  /* Headings in dark mode */
+  html[data-theme="dark"] .section h2,
+  html[data-theme="dark"] .section h3,
+  html[data-theme="dark"] h3.sub-h,
+  html[data-theme="dark"] .feature-card h4,
+  html[data-theme="dark"] .alert-body h4,
+  html[data-theme="dark"] .step-body h4,
+  html[data-theme="dark"] .ladder-body h4,
+  html[data-theme="dark"] .lab-table td:first-child,
+  html[data-theme="dark"] .drug-table td:first-child,
+  html[data-theme="dark"] .compare-cell strong,
+  html[data-theme="dark"] .cart-cell strong,
+  html[data-theme="dark"] .calc-metric-card .cmv { color: var(--text) !important; }  /* 12.4:1 ✓ */
+
+  /* Table headers */
+  html[data-theme="dark"] .lab-table th,
+  html[data-theme="dark"] .drug-table th,
+  html[data-theme="dark"] .schedule-table th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .lab-table tr:hover td,
+  html[data-theme="dark"] .drug-table tr:hover td { background: #202d40; }
+
+  /* Alert backgrounds */
+  html[data-theme="dark"] .alert-teal   { background: #0a2830; }
+  html[data-theme="dark"] .alert-amber  { background: #2a1900; }
+  html[data-theme="dark"] .alert-green  { background: #0e2a1c; }
+  html[data-theme="dark"] .alert-red    { background: #2a1515; }
+  html[data-theme="dark"] .alert-purple { background: #1a1030; }
+
+  /* Compare/cartridge grids */
+  html[data-theme="dark"] .compare-grid,
+  html[data-theme="dark"] .cartridge-compare { border-color: #2a3548; }
+  html[data-theme="dark"] .compare-row-label,
+  html[data-theme="dark"] .cart-row-label { background: #1a2535; border-color: #2a3548; color: var(--text-muted); }
+  html[data-theme="dark"] .compare-cell,
+  html[data-theme="dark"] .cart-cell { border-color: #2a3548; }
+
+  /* Related guides — cards are already dark navy, only minor tweak in dark mode */
+  html[data-theme="dark"] .related-card { background: #1a2535; }
+  html[data-theme="dark"] .related-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
+
+  /* Food grids */
+  html[data-theme="dark"] .food-ok    { background: var(--green-soft); border-color: rgba(74,222,128,.15); }
+  html[data-theme="dark"] .food-avoid { background: var(--red-soft);   border-color: rgba(248,113,113,.15); }
+  html[data-theme="dark"] .food-limit { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+
+  /* Cost cards */
+  html[data-theme="dark"] .cost-card { border-color: #2a3548; }
+  html[data-theme="dark"] .cost-card.green { background: var(--green-soft); }
+  html[data-theme="dark"] .cost-card.red   { background: var(--red-soft); }
+  html[data-theme="dark"] .cost-card.amber { background: var(--amber-soft); }
+
+  /* Nopharm cards */
+  html[data-theme="dark"] .nopharm-card { background: #0a2830; border-color: #1a4a50; }
+  html[data-theme="dark"] .nopharm-card h4 { color: var(--teal); }
+
+  /* Disclaimer */
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+
+  /* Illus wrap */
+  html[data-theme="dark"] .illus-wrap { background: #1a2535; }
+  html[data-theme="dark"] .illus-wrap-light { background: #f9fafb !important; }
+
+  /* Calculator */
+  html[data-theme="dark"] .calc-field input,
+  html[data-theme="dark"] .calc-field select { background: #141c2a; border-color: #2a3548; color: var(--text); }
+  html[data-theme="dark"] .calc-metric-card { background: rgba(255,255,255,.04); border-color: #2a3548; }
+  html[data-theme="dark"] .calc-result-box { border-color: #2a3548 !important; background: rgba(255,255,255,.03) !important; }
+  html[data-theme="dark"] .calc-field label { color: var(--teal); }
+  html[data-theme="dark"] .calc-metric-card .cml,
+  html[data-theme="dark"] .calc-disclaimer { color: var(--text-muted); }
+
+  /* Guide footer */
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+
+  /* Numeric cards — n-val/n-value use color:var(--navy); remap for dark */
+  html[data-theme="dark"] .n-val,
+  html[data-theme="dark"] .n-value { color: var(--text); }
+
+  /* Tab hover + clinician tab underline */
+  html[data-theme="dark"] .aud-tab:hover { color: var(--text); }
+  html[data-theme="dark"] .aud-tab.active.tab-md { border-bottom-color: var(--teal); }
+
+  /* Disclaimer strong text — inherits navy from light mode, needs remap */
+  html[data-theme="dark"] .disclaimer strong { color: var(--text-mid); }
+
+  /* Desktop mode */
+  html[data-view="desktop"] { min-width: 1024px; }
+
+  /* ── STAT CARDS ──────────────────────────────────────────────────────────── */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
+  .stat-card{background:var(--teal);border-radius:14px;padding:22px 24px;color:white;text-align:center;}
+  html[data-theme="dark"] .stat-card{background:#0d2535;}
+  .stat-number{font-family:'Inter',sans-serif;font-size:clamp(24px,4vw,34px);font-weight:600;color:#d4af4f;line-height:1.1;margin-bottom:8px;}
+  .stat-label{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;}
+  .stat-source{font-size:11px;color:rgba(255,255,255,.45);margin-top:4px;}
+
+  /* ── NUMERIC CARDS (lighter variant) ─────────────────────────────────────── */
+  .num-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
+  .num-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px 22px;text-align:center;}
+  .n-val,.n-value{font-family:'Inter',sans-serif;font-size:clamp(22px,3.5vw,30px);font-weight:600;color:var(--navy);line-height:1.1;margin-bottom:6px;}
+  .n-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+  .n-target{font-size:12px;color:var(--teal);font-weight:500;margin-top:4px;}
+  .n-note{font-size:12px;color:var(--text-muted);line-height:1.4;}
+
+  /* ── UNIT TOGGLE (eGFR / lab value converters) ───────────────────────────── */
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+
+  /* ── RED FLAGS ───────────────────────────────────────────────────────────── */
+  .red-flags{background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:14px;padding:28px 32px;margin:32px 0;}
+  .red-flags h3{font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:var(--red);margin-bottom:16px;}
+  .red-flags-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
+  .red-flag-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-muted);}
+  .rf-dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:7px;}
+  html[data-theme="dark"] .red-flags{background:#2a1515;border-color:rgba(229,85,85,.2);}
+
+  /* ── ILLUSTRATION PANEL ──────────────────────────────────────────────────── */
+  .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+
+  /* ── CLINICIAN SECTION HERO (.md-hero) ───────────────────────────────────── */
+  .md-hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
+    padding: 60px 0 56px; position: relative; overflow: hidden;
+    isolation: isolate;
+  }
+  .md-hero::before {
+    content: ''; position: absolute; right: -80px; top: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(212,175,79,.1); pointer-events: none;
+  }
+  /* Clinician-hero sigil watermark removed. */
+  .md-hero::after { content: none; }
+  .md-hero > * { position: relative; z-index: 1; }
+  .md-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: #d4af4f; border: 1px solid rgba(212,175,79,.45);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .md-hero h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
+    color: white; margin-bottom: 14px; letter-spacing: -.02em;
+  }
+  .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.82);
+    max-width: 580px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .md-stat {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 10px; padding: 12px 20px;
+  }
+  .md-stat-val {
+    font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 600;
+    color: #d4af4f; line-height: 1; display: block;
+  }
+  .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
+  .md-hero .illus-wrap {
+    background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.14);
+  }
+  .md-hero .img-placeholder { background: transparent; border-color: rgba(255,255,255,.2); margin: 0; }
+  .md-hero .img-placeholder p,
+  .md-hero .img-placeholder .img-ph-icon { color: rgba(255,255,255,.55); }
+
+  /* ── CLINICIAN PATHWAY BANNERS ───────────────────────────────────────────── */
+  .pathway-banner {
+    padding: 20px 0 0;
+  }
+  .pathway-banner-inner {
+    padding: 14px 20px; border-radius: 0 8px 8px 0;
+  }
+  .pathway-banner-inner.neph {
+    border-left: 4px solid var(--teal); background: var(--teal-light);
+  }
+  .pathway-banner-inner.urol {
+    border-left: 4px solid var(--gold); background: #fdf8ec;
+  }
+  .pathway-banner-inner.synth {
+    border-left: 4px solid var(--purple); background: var(--purple-soft);
+  }
+  .pathway-banner-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; margin: 0 0 4px;
+  }
+  .pathway-banner-label.neph { color: var(--teal); }
+  .pathway-banner-label.urol { color: var(--gold); }
+  .pathway-banner-label.synth { color: var(--purple); }
+  .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
+  /* Audience tabs inherit the hero background colour so the bar reads as part
+     of the hero (mint in patient mode, periwinkle in clinician mode). */
+  .audience-tabs{background:linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%);border-bottom:1px solid rgba(15,90,90,.18);position:sticky;top:56px;z-index:150;}
+  body.physician-mode .audience-tabs{background:linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);border-bottom-color:rgba(31,56,100,.18);}
+  .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
+  .aud-tab{flex:1;text-align:center;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .aud-tab:hover{color:var(--navy);}
+  .aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
+  .aud-tab.active.tab-md{border-bottom-color:var(--navy);}
+  .tab-icon{display:none;}  /* legacy emoticons hidden — dropped from new HTML too */
+  .mode-physician{display:none;}
+  .mode-physician-pill{display:none;}
+  body.physician-mode .mode-patient{display:none!important;}
+  body.physician-mode .mode-physician{display:block!important;}
+  body.physician-mode .mode-patient-pill{display:none;}
+  body.physician-mode .mode-physician-pill{display:inline-flex;}
+  html[data-theme="dark"] .audience-tabs{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .aud-tab.active{color:#e8eaf0;}
+
+  /* ── PHYSICIAN MODE — NAVY PALETTE ──────────────────────────────────────
+     When body.physician-mode is active, key components switch from teal to
+     the homepage deep-navy palette (#0f1e2e/#1a3060), making clinician
+     content visually distinct from patient (teal) content at a glance.
+     Contrast verified: white on #0f1e2e = 15.5:1 ✓
+  ─────────────────────────────────────────────────────────────────────── */
+  body.physician-mode .hero {
+    background: linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);  /* pastel periwinkle */
+    color:#34455f;
+  }
+  body.physician-mode .intro-callout { background: #0f1e2e; }
+  body.physician-mode .stat-card     { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
+  body.physician-mode .nav-pill.active-pill {
+    background: var(--navy); border-color: var(--navy);
+  }
+  /* Tab active underline already uses var(--navy) for .tab-md — intentional */
+  /* Dark mode: already very dark; just deepen slightly */
+  html[data-theme="dark"] body.physician-mode .hero {
+    background: linear-gradient(135deg, #060f1a 0%, #0d1e40 100%);
+  }
+  html[data-theme="dark"] body.physician-mode .intro-callout,
+  html[data-theme="dark"] body.physician-mode .stat-card,
+  html[data-theme="dark"] body.physician-mode .ref-band { background: #0a1425; }
+
+  /* ── DARK-MODE HERO ──────────────────────────────────────────────────────
+     The pastel hero gets a TRUE dark variant in dark mode: the patient hero
+     darkens to deep teal, the clinician hero to deep navy, and all hero text
+     (headline, subtitle, meta, tag, badges) flips to light. Contrast AA-verified
+     (white on #0c2a30 = 14.6:1; #eaf6f4 on #0a2228 = 13.9:1). */
+  html[data-theme="dark"] .hero {
+    background: linear-gradient(135deg,#0c2a30 0%,#103d44 55%,#0a2228 100%);
+    color: rgba(233,245,244,.82);
+  }
+  html[data-theme="dark"] .hero h1 { color:#eaf6f4; }
+  html[data-theme="dark"] .hero h1 em { color:#e2b95f; }
+  html[data-theme="dark"] .hero-sub { color:rgba(233,245,244,.82); }
+  html[data-theme="dark"] .hero-meta { color:rgba(233,245,244,.72); }
+  html[data-theme="dark"] .hero-meta strong { color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] .hero-tag {
+    color:rgba(233,245,244,.9); border-color:rgba(255,255,255,.28);
+  }
+  html[data-theme="dark"] .hero-meta time,
+  html[data-theme="dark"] .hero-meta .hero-refcount span[style] {
+    color:rgba(255,255,255,.92) !important;
+    background:rgba(255,255,255,.10) !important;
+    border-color:rgba(255,255,255,.28) !important;
+  }
+  html[data-theme="dark"] .hero-vignette { border-color: rgba(255,255,255,.18); box-shadow: 0 22px 55px rgba(0,0,0,.6); }
+  /* Clinician (physician-mode) dark hero */
+  html[data-theme="dark"] body.physician-mode .hero {
+    background: linear-gradient(135deg,#0a1426 0%,#16294d 100%);
+    color: rgba(238,242,251,.82);
+  }
+  html[data-theme="dark"] body.physician-mode .hero h1 { color:#eef2fb; }
+  html[data-theme="dark"] body.physician-mode .hero h1 em { color:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-sub { color:rgba(238,242,251,.82); }
+  html[data-theme="dark"] body.physician-mode .hero-meta { color:rgba(238,242,251,.72); }
+  html[data-theme="dark"] body.physician-mode .hero-meta strong { color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] body.physician-mode .hero-tag {
+    color:rgba(238,242,251,.9); border-color:rgba(255,255,255,.26);
+  }
+  html[data-theme="dark"] body.physician-mode .hero-toc-head { color:#eef2fb; border-bottom-color: rgba(255,255,255,.16); }
+  html[data-theme="dark"] body.physician-mode .hero-toc-head svg { stroke:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a { color:#dbe6f5; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a + a { border-top-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a:hover { background: rgba(255,255,255,.06); color:#fff; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-num { color:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-arrow { color:#e2b95f; }
+
+  /* ── GUIDE LANGUAGE BAR (regional recipes / multilingual tools) ──────────── */
+  .guide-lang-bar{display:flex;align-items:center;gap:8px;padding:8px 0 16px;flex-wrap:wrap;}
+  .lang-lbl{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-right:4px;}
+  .lang-btn-g{font-family:'Manrope',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;}
+  .lang-btn-g:hover{border-color:var(--teal);color:var(--teal);}
+  .lang-btn-g.active{background:var(--teal);border-color:var(--teal);color:white;}
+
+  /* ── DOT COLOR VARIANTS ──────────────────────────────────────────────────── */
+  .dot-gold{background:var(--gold);}
+  .dot-orange{background:#e07b00;}
+
+  /* ── DOWNLOAD BUTTON (inline variant) ───────────────────────────────────── */
+  .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
+  .download-btn:hover{background:#162848;}
+
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left stack) ───
+     Stacking on the left side (visually top → bottom):
+       1. .dl-fab           bottom:136px  (top — only when present)
+       2. .print-btn        bottom: 80px  (middle)
+       3. .float-controls-left bottom: 24px  (bottom — desktop/mobile toggle) */
+  .dl-fab {
+    position: fixed; bottom: 136px; left: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s; z-index: 9997;
+    text-decoration: none;
+  }
+  .dl-fab:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .dl-fab svg { width: 18px; height: 18px; }
+  .dl-fab .p-tip {
+    position: absolute; left: 54px;
+    background: rgba(31,56,100,.92); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .dl-fab:hover .p-tip { opacity: 1; }
+
+  /* ── HERO RESPONSIVE: stack copy above the panel / portrait ──────────────── */
+  @media(max-width: 820px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+    .hero-figure { margin: 4px auto 0; }
+    /* Phones/tablets: drop the circular vignette entirely — text-only hero. */
+    .hero-figure { display: none; }
+    .hero-cards { width: 100%; }
+  }
+
+  /* ── MOBILE LAYOUT (≤ 480 px / 375 px phones) ───────────────────────────── */
+  /* Tighter side padding on narrow viewports */
+  @media(max-width: 480px) {
+    .container { padding: 0 20px; }
+    .related-guides { padding-left: 20px; padding-right: 20px; }
+    .guide-footer .footer-inner { padding: 0 20px; }
+    .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .dr-card-wrap { padding: 0 20px 40px; }
+    .hero-meta { gap: 14px; }
+  }
+
+  /* Tables: horizontal scroll to prevent content overflow on phones */
+  @media(max-width: 640px) {
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  }
+
+  /* ── IMAGE LIGHTBOX (assets/image-lightbox.js) ─────────────────────────── */
+  figure img, .illus-wrap img { cursor: zoom-in; }
+  figure img:hover, .illus-wrap img:hover { opacity: .92; }
+  /* Non-hero inline images: thumbnail size — lightbox handles magnification */
+  figure img:not([fetchpriority="high"]),
+  .illus-wrap img:not([fetchpriority="high"]) {
+    max-width: 480px; width: 100%; height: auto; display: block;
+    margin-left: auto; margin-right: auto;
+  }
+
+  #img-lb.lb-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.93); z-index: 9500;
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px 16px 16px; cursor: pointer; overflow-y: auto;
+  }
+  #img-lb.lb-overlay.open { display: flex; }
+
+  .lb-body {
+    display: flex; flex-direction: column; align-items: center;
+    max-width: min(95vw, 1280px); cursor: default;
+  }
+  .lb-img {
+    max-width: 100%; max-height: 72vh; border-radius: 8px;
+    object-fit: contain; box-shadow: 0 8px 48px rgba(0,0,0,.7);
+    cursor: zoom-in; display: block;
+  }
+  .lb-caption-panel {
+    width: 100%; background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.13); border-top: none;
+    border-radius: 0 0 8px 8px; padding: 14px 18px;
+  }
+  .lb-desc {
+    color: rgba(255,255,255,.88); font-size: 13px; line-height: 1.6;
+    margin: 0 0 10px; font-style: italic;
+  }
+  .lb-desc:last-child { margin-bottom: 0; }
+  .lb-abbrevs {
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 12px; row-gap: 3px; margin: 0;
+    border-top: 1px solid rgba(255,255,255,.1); padding-top: 10px;
+  }
+  .lb-abbrevs dt {
+    color: rgba(255,255,255,.5); font-size: 11px; font-weight: 700;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .lb-abbrevs dd {
+    color: rgba(255,255,255,.72); font-size: 11px; margin: 0;
+  }
+  .lb-close {
+    position: fixed; top: 16px; right: 20px;
+    color: #fff; font-size: 24px; line-height: 1;
+    background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.25);
+    border-radius: 50%; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .15s; z-index: 9501;
+  }
+  .lb-close:hover { background: rgba(255,255,255,.28); }
+  .lb-hint {
+    margin-top: 14px; color: rgba(255,255,255,.3); font-size: 11px;
+    pointer-events: none; text-align: center; letter-spacing: .02em;
+  }
+  @media (max-width: 600px) {
+    .lb-img { max-height: 58vh; }
+    .lb-hint { white-space: normal; font-size: 10px; }
+  }
+  @media print { #img-lb.lb-overlay { display: none !important; } }
+
+  /* Standard figcaption for guide images */
+  figure figcaption, .illus-caption {
+    font-size: 12px; color: var(--text-muted); margin-top: 10px;
+    font-style: italic; text-align: center; line-height: 1.5;
+  }
+  .fig-desc { margin: 0 0 6px; }
+  .fig-abbrevs {
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 10px; row-gap: 2px; margin: 6px 0 0;
+    font-style: normal; text-align: left;
+  }
+  .fig-abbrevs dt { font-weight: 700; color: var(--text-mid); }
+  .fig-abbrevs dd { margin: 0; color: var(--text-muted); }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     Keep the floating Symptom-Checker FAB clear of the floating dark/light
+     toggle. Every guide now carries the floating dark widget at bottom:24px
+     right:24px (44px wide), so the FAB (default bottom:22px right:22px)
+     would collide. Shift it ~70px left so they sit side-by-side.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  .sc-fab { right: 88px !important; }
+  @media (max-width: 600px) {
+    .sc-fab { right: 72px !important; bottom: 16px !important; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     PRINT
+  ═══════════════════════════════════════════════════════════════════════════ */
+  @media print {
+    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .dl-fab, .scroll-top-btn, .guide-footer { display: none !important; }
+    body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; }
+    .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; }
+    .hero h1 { color: #1f3864 !important; font-size: 22px !important; }
+    .hero-sub { color: #333 !important; font-size: 13px !important; }
+    .hero-tag, .hero-meta { color: #555 !important; }
+    .container { max-width: 100%; padding: 0 24px; }
+    .section { padding: 20px 0; border-bottom: 1px solid #ddd; }
+    .intro-callout { background: #f0f4f8 !important; color: #000 !important; border: 1px solid #ccc; }
+    .intro-callout p { color: #222 !important; }
+    .alert { border: 1px solid #ccc !important; background: #f9f9f9 !important; }
+    .alert-body h4, .alert-body p, .alert-body ul li { color: #222 !important; }
+    .feature-card { border: 1px solid #ccc !important; background: #fff !important; }
+    .feature-card h4 { color: #1f3864 !important; }
+    .feature-card p { color: #333 !important; }
+    .table-wrap { box-shadow: none !important; border: 1px solid #ccc !important; }
+    .table-wrap thead th { background: #eee !important; color: #333 !important; }
+    .table-wrap tbody td { color: #333 !important; }
+    .lab-table th { background: #eee !important; color: #333 !important; }
+    .lab-table td { color: #333 !important; }
+    .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
+    .dr-card h4, .dr-card p, .dr-card .dr-creds { color: #222 !important; }
+    .dr-qr { display: none !important; }
+    .checklist { background: #f0f4f8 !important; border: 1px solid #ccc; }
+    .checklist h4, .checklist ul li { color: #222 !important; }
+    .disclaimer { background: #fff8e8 !important; border: 1px solid #ccc !important; color: #333 !important; }
+    .illus-wrap { border: 1px solid #ccc; background: #f9f9f9 !important; }
+    a[href]:after { content: " (" attr(href) ")"; font-size: 10px; color: #666; }
+    .nav-pill { display: none; }
+    @page { margin: 18mm 15mm; size: A4; }
+  }
+</style>
+
+<style>
+/* Restored per-guide CSS */
+.hba1c-bar { display: flex; gap: 3px; align-items: flex-end; margin-bottom: 10px; }
+.hba1c-labels { display: flex; gap: 3px; }
+.hba1c-lbl { font-size: 11px; color: var(--text-muted); text-align: center; flex: 1; }
+.hba1c-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+.hba1c-legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); }
+.hba1c-segment {
+    height: 32px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: white;
+    flex: 1;
+  }
+/* HbA1c explanation */
+  .hba1c-visual {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin: 24px 0;
+  }
+.hba1c-visual h4 { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 16px; }
+.leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.monitor-card .m-freq { font-size: 12px; font-weight: 600; color: var(--teal); margin-top: 8px; display: block; }
+.monitor-card .m-icon { font-size: 22px; margin-bottom: 10px; }
+/* MECHANISM TIMELINE */
+  .mechanism-timeline { position: relative; margin: 32px 0; }
+.med-card .med-action { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+.med-border-ace { border-top: 3px solid var(--teal); }
+.med-border-glp1 { border-top: 3px solid var(--purple); }
+.med-border-sglt2 { border-top: 3px solid var(--green); }
+.med-border-statin { border-top: 3px solid var(--gold); }
+.med-card .med-brand { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.med-card { border: 1px solid var(--border); border-radius: 12px; padding: 18px; background: var(--white); }
+.med-card .med-class { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.med-card .med-name { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.med-class-ace { color: var(--teal); }
+.med-class-glp1 { color: var(--purple); }
+.med-class-sglt2 { color: var(--green); }
+.med-class-statin { color: var(--gold); }
+/* MEDICATION CARDS */
+  .med-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 24px 0; }
+.monitor-card { border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+.monitor-card h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.monitor-card p { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.45; }
+/* MONITORING */
+  .monitor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 24px 0; }
+.seg-1 { background: #2d7a4f; }
+.seg-2 { background: #f5a623; color: #1f3864; } /* dark text: 6.6:1 on #f5a623 ✓ */
+.seg-3 { background: #e07b00; color: #1f3864; } /* dark text: 4.8:1 on #e07b00 ✓ */
+.seg-4 { background: #c0392b; }
+.timeline-line { position: absolute; left: 20px; top: 10px; bottom: 10px; width: 2px; background: var(--border); }
+.tl-body { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+.tl-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.tl-body p { font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.55; }
+.tl-dot { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: white; flex-shrink: 0; z-index: 1; }
+.tl-step { position: relative; display: flex; gap: 20px; margin-bottom: 24px; align-items: flex-start; }
+.tl-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+
+
+/* Dark mode */
+body.dark .related-card {
+  background: #1a2535;
+  border-color: #2a3a4a;
+}
+body.dark .related-card:hover {
+  border-color: var(--teal, #1a6b72);
+}
+body.dark .related-card-title {
+  color: #e8edf2;
+}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Diabetic Kidney Disease Calculator — SGLT2i Eligibility, eAG & UACR Risk",
+  "url": "https://www.williamriveromd.com/guides/calc-dkd-risk.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-23",
+  "inLanguage": "en-PH",
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "patient"
+  }
+}
+</script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Inter',sans-serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Inter',sans-serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+/* Calculate buttons — the .calc-btn/.calc-run/.tool-btn classes had no master-CSS
+   rule, so they rendered as tiny default browser buttons. Make them prominent and
+   theme-stable (solid teal + white, fixed hex so dark mode doesn't wash them out). */
+.calc-btn,.calc-run,.tool-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:16px 0 6px;padding:13px 30px;background:#1a6b72;color:#fff;border:none;border-radius:10px;font-family:'Manrope',sans-serif;font-size:1.02rem;font-weight:700;letter-spacing:.01em;cursor:pointer;box-shadow:0 2px 10px rgba(26,107,114,.30);transition:background .18s,box-shadow .18s,transform .05s;}
+.calc-btn:hover,.calc-run:hover,.tool-btn:hover{background:#155a60;box-shadow:0 5px 16px rgba(26,107,114,.40);}
+.calc-btn:active,.calc-run:active,.tool-btn:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(26,107,114,.30);}
+@media(max-width:600px){.calc-btn,.calc-run,.tool-btn{width:100%;}}
+/* Legacy .tool-* widget system — a few decision-aid calculators were lifted with
+   this guide-specific markup but without its CSS, so the inputs rendered bare.
+   Restyle here (CSS variables for dark-mode safety; radio options as chips). */
+.tool-box{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin:16px 0;}
+.tool-box>h3{font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:600;color:var(--navy);margin:0 0 6px;}
+.tool-box .tool-sub{font-size:13px;color:var(--text-muted);margin:0 0 18px;line-height:1.5;}
+.two-col-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:520px){.two-col-inputs{grid-template-columns:1fr;}}
+.tool-label{display:block;font-size:13px;font-weight:600;color:var(--text);margin:14px 0 5px;}
+.tool-input,.tool-select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;color:var(--text);background:var(--white);box-sizing:border-box;}
+.tool-select{cursor:pointer;}
+.tool-input:focus,.tool-select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.13);}
+.radio-group{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px;}
+.radio-item{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text-mid);cursor:pointer;background:var(--white);transition:border-color .15s;}
+.radio-item:hover{border-color:var(--teal);}
+.radio-item input{accent-color:var(--teal);margin:0;}
+.tool-result{display:none;margin-top:18px;padding:16px 20px;border-radius:10px;border:1px solid var(--border);background:var(--white);}
+.tool-result.show{display:block;}
+html[data-theme="dark"] .tool-box>h3{color:var(--text);}
+/* Non-standard unit-toggle markup (.ut-btn / .unit-toggle-row / .unit-toggle-lbl
+   / .ut-sep) that a few calculators used instead of the master .unit-btn system —
+   style them to match the polished segmented control. */
+.unit-toggle-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 16px;}
+.unit-toggle-lbl{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;}
+.ut-sep{width:1px;height:18px;background:var(--border);display:inline-block;}
+.ut-btn{padding:6px 14px;border:1px solid var(--border);background:var(--white);color:var(--text-mid);font-family:'Manrope',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;border-radius:6px;transition:border-color .15s,background .15s,color .15s;}
+.ut-btn:hover{border-color:var(--teal);}
+.ut-btn.active{background:#1a6b72;border-color:#1a6b72;color:#fff;}
+/* Accessible hero cross-links: high-contrast white text + gold underline (link
+   affordance not by colour alone), visible focus ring, larger hit area. The
+   hero is dark in both themes, so white works throughout. */
+.hero-xlink{color:#0e4a50;font-weight:600;text-decoration:underline;text-decoration-color:var(--gold-light);text-decoration-thickness:1.5px;text-underline-offset:3px;border-radius:6px;padding:2px 4px;}
+.hero-xlink:hover{color:#0b3a40;}
+.hero-xlink:focus-visible{outline:2px solid var(--gold-light);outline-offset:2px;}
+/* Dark mode: --navy is NOT remapped, so every element the master CSS colors with
+   var(--navy) renders dark-on-dark. Some source guides also shipped an older
+   master CSS missing these overrides — so recolor them all here (this block is
+   injected last and applies to all calculator pages regardless of CSS version). */
+html[data-theme="dark"] .mdc-acc>summary,
+html[data-theme="dark"] .mdc-acc-body>h3.mdc-sub,
+html[data-theme="dark"] .section h2,
+html[data-theme="dark"] .section h3,
+html[data-theme="dark"] .alert-body h4,
+html[data-theme="dark"] .feature-card h4,
+html[data-theme="dark"] .step-body h4,
+html[data-theme="dark"] .ladder-body h4,
+html[data-theme="dark"] .tl-body h4,
+html[data-theme="dark"] .disclaimer strong,
+html[data-theme="dark"] .lab-table td:first-child,
+html[data-theme="dark"] .drug-table td:first-child,
+html[data-theme="dark"] .compare-cell strong,
+html[data-theme="dark"] .cart-cell strong,
+html[data-theme="dark"] .calc-metric-card .cmv,
+html[data-theme="dark"] .n-val,
+html[data-theme="dark"] .n-value{color:var(--text)!important;}
+html[data-theme="dark"] .calc-verdict-text,
+html[data-theme="dark"] .calc-action-text{color:var(--text-mid)!important;}
+html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
+html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
+</style>
+</head>
+<body class="calc-page">
+<script>/* pre-paint physician-mode restore — class applied before first paint, zero CLS.
+   Do NOT move this to the bottom of the page or convert it into a
+   post-paint restore — that reintroduces the CLS bug patch_mode_cls.py
+   exists to kill. See CLAUDE.md. */
+try{if(localStorage.getItem('wgmr-mode')==='physician'){document.body.classList.add('physician-mode');document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('tab-pt'),m=document.getElementById('tab-md');if(p)p.classList.remove('active');if(m)m.classList.add('active');});}}catch(e){}</script>
+
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <nav class="header-nav"><a href="calculators.html">CALCULATORS</a><a href="kidney-physiology.html">PHYSIOLOGY</a><a href="nephrology-atlas.html">ATLAS</a><a href="/guides/">ALL GUIDES</a></nav>
+</header>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Diabetic Kidney Disease</div>
+<h1>Diabetic Kidney Disease Calculator <em>SGLT2i Eligibility · eAG · UACR Risk</em></h1>
+<p class="hero-sub">Enter eGFR, HbA1c, and urine albumin-to-creatinine ratio to check eligibility for kidney-protective SGLT2 inhibitor therapy, translate HbA1c into an estimated average glucose, and classify albuminuria into a KDIGO risk category.</p>
+<div class="hero-meta">
+<span class="hero-published"><strong>Published:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
+<span class="hero-refcount"><strong>References:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">5</span></span>
+<span class="hero-readtime"><strong>Read time:</strong> <time datetime="PT6M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~6 min</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="diabetes-kidneys.html" class="hero-xlink">Full diabetes &amp; kidneys guide →</a></p>
+</div>
+</section>
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+</div>
+</nav>
+
+<main class="container">
+
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Choose <strong>Conventional</strong> or <strong>SI (IFCC / mmol)</strong> units so the HbA1c and glucose outputs match your lab report.</li>
+<li>Enter the most recent <strong>eGFR</strong>, <strong>HbA1c</strong>, and spot <strong>UACR</strong>.</li>
+<li>Select whether the patient is <strong>already on an SGLT2 inhibitor</strong> (and which one) so the tool can confirm continuation versus flag a new start.</li>
+<li>Results update live: SGLT2i eligibility/continuation status, the estimated average glucose for the entered HbA1c, and the UACR risk category — each with a colored badge and a plain-language interpretation and recommended action.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
+<p>Use this tool when reviewing a patient with type 2 diabetes and chronic kidney disease to make three linked decisions at once: whether eGFR is high enough to start (or continue) a kidney-protective SGLT2 inhibitor, what a given HbA1c means as a day-to-day average glucose, and how the urine albumin-to-creatinine ratio classifies albuminuria-based risk. It is a fast bedside check that pulls the relevant trial thresholds and KDIGO categories into one view.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Appropriate population</h4>
+<p>Adults with type 2 diabetes and CKD (or albuminuria) who have a recent eGFR, HbA1c, and spot UACR. Most useful when deciding whether to initiate an SGLT2 inhibitor for kidney and cardiovascular protection, and when counseling a patient on what their HbA1c means in everyday glucose terms.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>When NOT to rely on it</h4>
+<p>The eAG conversion assumes a stable, reliable HbA1c; it is unreliable in conditions that alter red-cell turnover (hemolysis, recent transfusion, iron-deficiency anemia, advanced CKD, hemoglobinopathies). UACR is affected by intercurrent illness, menstruation, heavy exercise, and UTI — confirm a persistent elevation on a repeat sample. SGLT2i eligibility shown here is a starting screen only; the full prescribing decision (volume status, recurrent genital infection, ketoacidosis risk, drug interactions) requires physician judgment.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Start by threshold, continue through decline</h4>
+<p>Once an SGLT2 inhibitor is appropriately started above the eGFR cutoff, it is generally continued as kidney function falls — the kidney and cardiovascular benefit persists. Do not stop it simply because eGFR has drifted below the original start threshold.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>HbA1c is a target, not a tightrope</h4>
+<p>In CKD, an HbA1c around 7.0–7.5% is usually appropriate; pushing below 7% raises hypoglycemia risk for little renal benefit. Use the eAG to make the number meaningful, but interpret HbA1c cautiously in anemia, recent transfusion, or advanced CKD where it can read falsely low.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) A single elevated UACR is not a diagnosis — confirm persistence on a repeat sample, and avoid testing during UTI, fever, menstruation, or after heavy exercise. (2) eAG is unreliable whenever red-cell lifespan is altered. (3) This screen does not capture SGLT2i contraindications and cautions (recurrent genital mycotic infection, volume depletion, ketoacidosis risk, perioperative holds) — the prescribing decision is still clinical.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
+<p>SGLT2 inhibitors slow CKD progression and reduce cardiovascular and kidney events in diabetic kidney disease, but the eGFR thresholds at which they were proven and can be started differ by agent — dapagliflozin and empagliflozin were studied to lower eGFR levels than older trials assumed. Knowing the correct cutoff avoids both under-treatment and inappropriate starts. Translating HbA1c into an estimated average glucose makes the target tangible for patients, and the UACR category drives both prognosis and the intensity of renin-angiotensin blockade and SGLT2i therapy. Computing all three together keeps these decisions coherent.</p>
+</div>
+</details>
+
+<section class="section" id="calculator">
+    <div class="section-tag"><span data-lang="en">Interactive Tool</span>
+      </div>
+    <h2><span data-lang="en">DKD Risk &amp; Treatment Calculator — SGLT2i Eligibility, HbA1c, UACR</span>
+      </h2>
+    <p><span data-lang="en">Enter your most recent lab results to check whether you qualify for kidney-protective SGLT2 inhibitor therapy, see what your HbA1c means in average daily glucose, and understand your UACR risk category.</span>
+      </p>
+    <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="dkd-btn-conv" onclick="switchDKDUnit('conv')">Conventional</button>
+          <button class="unit-btn" id="dkd-btn-si" onclick="switchDKDUnit('si')">SI (IFCC / mmol)</button>
+        </div>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label>eGFR (mL/min/1.73m²)</label>
+          <input id="d-egfr" type="number" min="1" max="120" step="0.1" placeholder="e.g. 42" oninput="calcDKD()">
+          <div class="field-hint">Your most recent kidney function result. Used to determine SGLT2i eligibility and dosing</div>
+        </div>
+        <div class="calc-field">
+          <label id="dkd-lbl-hba1c">HbA1c (% — NGSP)</label>
+          <input id="d-hba1c" type="number" min="4" max="18" step="0.1" placeholder="e.g. 7.8" oninput="calcDKD()">
+          <div class="field-hint" id="dkd-hint-hba1c">NGSP/DCCT scale (%). Target in DKD: 7.0–7.5%. Avoid &lt;7% in CKD (hypoglycemia risk)</div>
+        </div>
+        <div class="calc-field">
+          <label id="dkd-lbl-uacr">UACR (mg/g)</label>
+          <input id="d-uacr" type="number" min="0" max="10000" step="1" placeholder="e.g. 185" oninput="calcDKD()">
+          <div class="field-hint" id="dkd-hint-uacr">Urine albumin-to-creatinine ratio from spot urine. Normal &lt;30 mg/g. Microalbuminuria: 30–300 mg/g. Macroalbuminuria: &gt;300 mg/g</div>
+        </div>
+        <div class="calc-field">
+          <label>Current SGLT2 inhibitor?</label>
+          <select id="d-sglt2" onchange="calcDKD()">
+            <option value="">Select…</option>
+            <option value="none">Not currently taking one</option>
+            <option value="dapa">Taking dapagliflozin (Forxiga / Catania / Rhea)</option>
+            <option value="empa">Taking empagliflozin (Jardiance)</option>
+            <option value="other">Taking another SGLT2i</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-box" id="dkd-result">
+        <div class="calc-metrics-row">
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;line-height:1.2;" id="d-sglt2-status">—</div>
+            <div class="cml">SGLT2i Status</div>
+            <div class="cmt" id="d-sglt2-badge">—</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" id="d-eag-val">—</div>
+            <div class="cml">Avg Glucose</div>
+            <div class="cmt" id="d-eag-badge">mg/dL (eAG)</div>
+          </div>
+          <div class="calc-metric-card">
+            <div class="cmv" style="font-size:14px;" id="d-uacr-status">—</div>
+            <div class="cml">UACR Category</div>
+            <div class="cmt" id="d-uacr-badge">—</div>
+          </div>
+        </div>
+        <div class="calc-verdict-text" id="d-verdict"></div>
+        <div class="calc-action-text" id="d-action"></div>
+      </div>
+      <p class="calc-disclaimer">⚕ eAG = 28.7 × HbA1c − 46.7 (ADA formula). SGLT2i eligibility thresholds: dapagliflozin eGFR ≥25 (DAPA-CKD trial); empagliflozin eGFR ≥20 (EMPA-KIDNEY trial). UACR categories per KDIGO 2024. Prescribing decisions require physician evaluation. Philippine brands: dapagliflozin = Catania or Rhea (cost-effective); empagliflozin = Jardiance.</p>
+    </div>
+  </section>
+
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
+
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
+<table class="lab-table">
+<thead><tr><th>Quantity</th><th>Equation / Rule</th></tr></thead>
+<tbody>
+<tr><td>Estimated average glucose (mg/dL)</td><td>28.7 × HbA1c (%) − 46.7</td></tr>
+<tr><td>Estimated average glucose (mmol/L)</td><td>1.59 × HbA1c (%) − 2.59</td></tr>
+<tr><td>HbA1c IFCC (mmol/mol) → NGSP (%)</td><td>NGSP % = (IFCC mmol/mol ÷ 10.929) + 2.15</td></tr>
+<tr><td>Dapagliflozin start threshold</td><td>eGFR ≥ 25 mL/min/1.73 m² (DAPA-CKD)</td></tr>
+<tr><td>Empagliflozin start threshold</td><td>eGFR ≥ 20 mL/min/1.73 m² (EMPA-KIDNEY)</td></tr>
+</tbody>
+</table>
+<h3 style="margin-top:24px;">UACR (albuminuria) categories — KDIGO</h3>
+<table class="lab-table">
+<thead><tr><th>Category</th><th>UACR</th><th>Descriptor</th></tr></thead>
+<tbody>
+<tr><td>A1</td><td>&lt; 30 mg/g (&lt; 3 mg/mmol)</td><td>Normal to mildly increased</td></tr>
+<tr><td>A2</td><td>30–300 mg/g (3–30 mg/mmol)</td><td>Moderately increased (microalbuminuria)</td></tr>
+<tr><td>A3</td><td>&gt; 300 mg/g (&gt; 30 mg/mmol)</td><td>Severely increased (macroalbuminuria)</td></tr>
+</tbody>
+</table>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The eAG equation is the ADAG (A1c-Derived Average Glucose) study regression. Once an SGLT2 inhibitor is started above the threshold, current guidance is to continue it as eGFR declines (even below the start cutoff) unless dialysis is initiated or it is not tolerated.</p>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
+<p>SGLT2 inhibitor thresholds and the role of UACR in risk stratification follow the KDIGO 2022 guideline on diabetes management in CKD. The estimated-average-glucose conversion uses the regression derived in the ADAG study, which is also the basis for the ADA's eAG reporting.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Kidney Disease: Improving Global Outcomes (KDIGO) Diabetes Work Group. <em>KDIGO 2022 Clinical Practice Guideline for Diabetes Management in Chronic Kidney Disease.</em> Kidney Int. 2022;102(5S):S1–S127.</li>
+<li>Nathan DM, Kuenen J, Borg R, Zheng H, Schoenfeld D, Heine RJ; A1c-Derived Average Glucose (ADAG) Study Group. <em>Translating the A1C assay into estimated average glucose values.</em> Diabetes Care. 2008;31(8):1473–1478.</li>
+</ol>
+</div>
+</details>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for clinicians and patients and does not replace individualized assessment. SGLT2 inhibitor initiation, glycemic targets, and albuminuria management depend on the full clinical picture, comorbidities, and medications. Do not start, stop, or adjust therapy based on a single result without consulting your physician.</div>
+
+<!-- CALC-CROSSLINK-START -->
+<section class="section" aria-label="Related calculators" style="border-bottom:none;padding-top:36px;">
+<div class="section-tag">Related Calculators</div>
+<h2 style="font-size:1.25rem;">Use this with</h2>
+<div class="related-cards">
+<a class="related-card has-thumb" href="calc-sglt2i-eligibility.html">
+<div class="related-card-tag">Calculator</div>
+<div class="related-card-title">SGLT2i Eligibility & Dose Check</div>
+
+          <img class="related-card-thumb" src="../images/calc-sglt2i-eligibility-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<a class="related-card has-thumb" href="calc-metformin-ckd-safety.html">
+<div class="related-card-tag">Calculator</div>
+<div class="related-card-title">Metformin Safety Checker in CKD</div>
+
+          <img class="related-card-thumb" src="../images/calc-metformin-ckd-safety-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<a class="related-card has-thumb" href="calc-eag-hba1c.html">
+<div class="related-card-tag">Calculator</div>
+<div class="related-card-title">eAG ↔ HbA1c Converter</div>
+
+          <img class="related-card-thumb" src="../images/calc-eag-hba1c-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<a class="related-card has-thumb" href="calc-insulin-dose.html">
+<div class="related-card-tag">Calculator</div>
+<div class="related-card-title">Insulin Dosing in CKD</div>
+
+          <img class="related-card-thumb" src="../images/calc-insulin-dose-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+</div>
+</section>
+<!-- CALC-CROSSLINK-END -->
+</main>
+
+
+    <!-- DR CARD -->
+<!-- REFERENCES-ACC-START -->
+<!-- Accordion references — generated by patch_references_accordion.py. Inline styles so patch_master_css.py will not clobber it. -->
+<section class="ref-section" style="max-width:860px;margin:8px auto 0;padding:0 32px;">
+<details class="ref-acc" style="border:1px solid var(--border);border-radius:12px;background:var(--white);overflow:hidden;">
+<summary style="cursor:pointer;list-style:none;padding:15px 20px;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;color:var(--text);display:flex;align-items:center;gap:10px;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;color:var(--teal);"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+<span data-lang="en">References</span>
+<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">5 sources</span>
+</summary>
+<ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);">
+<li>KDIGO 2024</li>
+<li>ADA Standards 2025</li>
+<li>ACC/AHA 2026 Dyslipidemia</li>
+<li>FLOW Trial 2024</li>
+<li>FIDELIO-DKD</li>
+</ol>
+</details>
+</section>
+<!-- REFERENCES-ACC-END -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W Rivero, MD, FPCP, DPSN</a></h4>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span></p>
+<p class="dr-creds"> &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span></p>
+</div>
+</div>
+</div>
+
+<!-- RELATED-GUIDES-START -->
+      <div class="related-guides">
+        <div class="container">
+        <h2>
+          <span data-lang="en">Related Guides</span>
+          
+          
+          
+        </h2>
+        <div class="related-cards">
+        <a class="related-card has-thumb" href="understanding-ckd.html">
+          <div class="related-card-tag">The Basics</div>
+          <div class="related-card-title">Understanding Chronic Kidney Disease</div>
+          <div class="related-card-desc">A complete guide to what CKD means, how it progresses, and what you can do — today — to protect your kidneys.</div>
+          <div class="related-card-arrow">Read →</div>
+        
+          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+        <a class="related-card has-thumb" href="slowing-ckd-progression.html">
+          <div class="related-card-tag">Understanding the Disease</div>
+          <div class="related-card-title">Slowing CKD Progression</div>
+          <div class="related-card-desc">The strategies, medications, and lifestyle changes that keep your kidneys working longer — and the targets that matter.</div>
+          <div class="related-card-arrow">Read →</div>
+        
+          <img class="related-card-thumb" src="../images/slowing-ckd-progression-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+        <a class="related-card has-thumb" href="nutrition-kidney-patients.html">
+          <div class="related-card-tag">Why Food Is Medicine</div>
+          <div class="related-card-title">Nutrition for Kidney Patients</div>
+          <div class="related-card-desc">A practical Filipino guide to eating well with CKD — what to limit, what is safe, how to read food labels.</div>
+          <div class="related-card-arrow">Read →</div>
+        
+          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+        <a class="related-card has-thumb" href="proteins-proteinuria.html">
+          <div class="related-card-tag">The Basics</div>
+          <div class="related-card-title">All About Proteins &amp; Proteinuria</div>
+          <div class="related-card-desc">What protein in your urine means, why it happens, how it is measured — and the proven strategies to reduce it.</div>
+          <div class="related-card-arrow">Read →</div>
+        
+          <img class="related-card-thumb" src="../images/proteins-proteinuria-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+        </div>
+        </div>
+      </div>
+    <!-- RELATED-GUIDES-END -->
+<footer class="guide-footer">
+  <div class="footer-inner">
+    <p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+    <p>References: KDIGO 2024 · ADA Standards 2025 · ACC/AHA 2026 Dyslipidemia · FLOW Trial 2024 · FIDELIO-DKD</p>
+  </div>
+</footer>
+
+<script>
+  const DARK_KEY='wgmr-dark', DESK_KEY='wgmr-desktop';
+  function applyDark(on){
+    document.documentElement.setAttribute('data-theme',on?'dark':'light');
+    const btn=document.getElementById('darkToggle');
+    const lbl=document.getElementById('darkLabel');
+    const ico=document.getElementById('darkIcon');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Light':'Dark';
+    if(ico) ico.innerHTML=on
+      ?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+  function toggleDark(){
+    const on=document.documentElement.getAttribute('data-theme')!=='dark';
+    localStorage.setItem(DARK_KEY,on?'1':'0'); applyDark(on);
+  }
+  function applyDesktop(on){
+    const vp=document.querySelector('meta[name="viewport"]');
+    if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+    else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+    const btn=document.getElementById('desktopToggle');
+    const lbl=document.getElementById('desktopLabel');
+    if(btn) btn.classList.toggle('active',on);
+    if(lbl) lbl.textContent=on?'Mobile':'Desktop';
+  }
+  function toggleDesktop(){
+    const on=document.documentElement.getAttribute('data-view')!=='desktop';
+    localStorage.setItem(DESK_KEY,on?'1':'0'); applyDesktop(on);
+  }
+  (function(){
+    if(localStorage.getItem(DARK_KEY)==='1') applyDark(true);
+    if(localStorage.getItem(DESK_KEY)==='1') applyDesktop(true);
+  })();
+</script>
+
+<a href="calculators.html" aria-label="Back to all calculators" class="calc-back-btn">
+<span class="p-tip">All Calculators</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="15 18 9 12 15 6"></polyline>
+</svg>
+</a>
+<a href="#related-guides" aria-label="Jump to related guides" class="calc-rg-btn">
+<span class="p-tip">Related Guides</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</a>
+<button class="print-btn" onclick="window.print()" aria-label="Print this guide">
+  <span class="p-tip">Print / Save PDF</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+  </svg>
+</button>
+<script>
+function setMode(m){
+  const isMd=m==='physician';
+  document.body.classList.toggle('physician-mode',isMd);
+  const tp=document.getElementById('tab-patient');
+  const tm=document.getElementById('tab-md');
+  if(tp) tp.classList.toggle('active',!isMd);
+  if(tm) tm.classList.toggle('active',isMd);
+  localStorage.setItem('wgmr-mode',m);
+}
+(function(){
+  if(localStorage.getItem('wgmr-mode')==='physician') setMode('physician');
+})();
+</script>
+
+
+<script>
+function switchDKDUnit(u){
+  const isSI=u==='si';
+  document.getElementById('dkd-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('dkd-btn-si').classList.toggle('active',isSI);
+  const hba=document.getElementById('d-hba1c'), uacr=document.getElementById('d-uacr');
+  if(isSI){
+    document.getElementById('dkd-lbl-hba1c').textContent='HbA1c (mmol/mol — IFCC)';
+    hba.placeholder='e.g. 62'; hba.min='20'; hba.max='164'; hba.step='1';
+    document.getElementById('dkd-hint-hba1c').textContent='IFCC scale (mmol/mol). Target in DKD: 53–58 mmol/mol. To convert: NGSP% = (IFCC÷10.929)+2.15';
+    document.getElementById('dkd-lbl-uacr').textContent='UACR (mg/mmol)';
+    uacr.placeholder='e.g. 20.9'; uacr.min='0'; uacr.max='1130'; uacr.step='0.1';
+    document.getElementById('dkd-hint-uacr').textContent='Normal: <3 mg/mmol. Microalbuminuria: 3–30 mg/mmol. Macroalbuminuria: >30 mg/mmol';
+  } else {
+    document.getElementById('dkd-lbl-hba1c').textContent='HbA1c (% — NGSP)';
+    hba.placeholder='e.g. 7.8'; hba.min='4'; hba.max='18'; hba.step='0.1';
+    document.getElementById('dkd-hint-hba1c').textContent='NGSP/DCCT scale (%). Target in DKD: 7.0–7.5%. Avoid <7% in CKD (hypoglycemia risk)';
+    document.getElementById('dkd-lbl-uacr').textContent='UACR (mg/g)';
+    uacr.placeholder='e.g. 185'; uacr.min='0'; uacr.max='10000'; uacr.step='1';
+    document.getElementById('dkd-hint-uacr').textContent='Normal: <30 mg/g. Microalbuminuria: 30–300 mg/g. Macroalbuminuria: >300 mg/g';
+  }
+  ['d-hba1c','d-uacr'].forEach(id=>document.getElementById(id).value='');
+  const res=document.querySelector('#calculator .calc-result-box');
+  if(res) res.style.display='none';
+}
+
+function calcDKD() {
+  const egfr = parseFloat(document.getElementById('d-egfr').value);
+  const hba1cRaw = parseFloat(document.getElementById('d-hba1c').value);
+  const uacrRaw = parseFloat(document.getElementById('d-uacr').value);
+  const sglt2 = document.getElementById('d-sglt2').value;
+  const res = document.getElementById('dkd-result');
+  if ([egfr,hba1cRaw,uacrRaw].some(isNaN) || !sglt2) { res.style.display='none'; return; }
+
+  const isSI = document.getElementById('dkd-btn-si').classList.contains('active');
+  // convert to NGSP% and mg/g for threshold logic
+  const hba1c = isSI ? (hba1cRaw/10.929)+2.15 : hba1cRaw;  // IFCC mmol/mol → NGSP%
+  const uacr  = isSI ? uacrRaw/0.1130          : uacrRaw;   // mg/mmol → mg/g
+  // eGFR: no conversion
+
+  // display values (unit-aware)
+  const hbaDisp  = isSI ? hba1cRaw.toFixed(0)+' mmol/mol' : hba1c.toFixed(1)+'%';
+  const uacrDisp = isSI ? uacrRaw.toFixed(1)+' mg/mmol'   : Math.round(uacr)+' mg/g';
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const eag = Math.round(28.7*hba1c-46.7);
+
+  // SGLT2i eligibility
+  const dapaOk = egfr >= 25;
+  const empaOk = egfr >= 20;
+  let sglt2Status, sglt2Color, sglt2Msg;
+  if (!dapaOk && !empaOk) {
+    sglt2Status='Not eligible'; sglt2Color='#c0392b';
+    sglt2Msg='eGFR '+egfr+' is below the minimum threshold for both dapagliflozin (≥25) and empagliflozin (≥20). SGLT2 inhibitors should not be started at this stage. Focus on RAAS blockade, blood pressure control, and finerenone if applicable.';
+  } else if (!dapaOk && empaOk) {
+    sglt2Status='Empa only'; sglt2Color='#9a6500';
+    sglt2Msg='eGFR '+egfr+' qualifies for empagliflozin (≥20 threshold) but is below dapagliflozin threshold (≥25). If not already on an SGLT2i, empagliflozin is appropriate. Dapagliflozin should not be used at this eGFR.';
+  } else {
+    sglt2Status='Eligible'; sglt2Color='#2d7a4f';
+    sglt2Msg=sglt2==='none'
+      ? 'eGFR '+egfr+' qualifies for both dapagliflozin and empagliflozin. '+(uacr>=200?'With UACR '+uacrDisp+', you have a strong indication — SGLT2i reduce proteinuria by 30–40% and slow GFR decline independently of glucose control.':'SGLT2 inhibitors are kidney-protective regardless of HbA1c. Discuss initiation with your nephrologist.')
+      : 'You are already taking an SGLT2i — continue unless eGFR falls below threshold or AKI occurs. Note: the kidney-protective effect persists even at eGFR as low as 20–25; do not stop without physician guidance.';
+  }
+
+  // UACR category
+  let uacrCat, uacrColor;
+  if (uacr < 30) { uacrCat='A1 — Normal'; uacrColor='#2d7a4f'; }
+  else if (uacr < 300) { uacrCat='A2 — Mildly ↑'; uacrColor='#9a6500'; }
+  else { uacrCat='A3 — Severely ↑'; uacrColor='#c0392b'; }
+
+  // HbA1c assessment
+  const hba1cOk = hba1c >= 7.0 && hba1c <= 8.0;
+  const hba1cLow = hba1c < 7.0;
+  let hba1cMsg = hba1cOk
+    ? 'HbA1c '+hbaDisp+' is within the recommended range for CKD-DM patients ('+eag+' mg/dL average glucose). Tight control &lt;7% (53 mmol/mol) risks hypoglycemia which independently worsens kidney outcomes.'
+    : hba1cLow
+    ? 'HbA1c '+hbaDisp+' ('+eag+' mg/dL average glucose) is below the lower limit for CKD patients — hypoglycemia risk is elevated. Discuss liberalizing glycemic targets slightly with your nephrologist, especially if on insulin or sulfonylurea.'
+    : 'HbA1c '+hbaDisp+' ('+eag+' mg/dL average glucose) is above target. Each 1% (11 mmol/mol) reduction in HbA1c reduces DKD progression risk by 25–30%. Consider medication review, dietary carbohydrate reduction, and physical activity.';
+
+  // Overall
+  const problems = [!dapaOk||!empaOk, !hba1cOk, uacr>=300].filter(Boolean).length;
+  let borderColor, bg;
+  if (problems===0) { borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+  else if (problems===1) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  const sglt2El=document.getElementById('d-sglt2-status');
+  sglt2El.textContent=sglt2Status; sglt2El.style.color=sglt2Color;
+  document.getElementById('d-sglt2-badge').textContent='eGFR threshold check';
+  document.getElementById('d-sglt2-badge').style.color=sglt2Color;
+  document.getElementById('d-eag-val').textContent=eag;
+  document.getElementById('d-eag-val').style.color=hba1cOk?'#2d7a4f':(hba1cLow?'#9a6500':'#c0392b');
+  document.getElementById('d-eag-badge').textContent='HbA1c '+hbaDisp+' → '+eag+' mg/dL';
+  document.getElementById('d-eag-badge').style.color=hba1cOk?'#2d7a4f':'#c0392b';
+  document.getElementById('d-uacr-status').textContent=uacrCat; document.getElementById('d-uacr-status').style.color=uacrColor;
+  document.getElementById('d-uacr-badge').textContent=uacrDisp+(uacr<30?' — Normal':(uacr<300?' — Microalbuminuria':' — Macroalbuminuria'));
+  document.getElementById('d-uacr-badge').style.color=uacrColor;
+
+  document.getElementById('d-verdict').innerHTML='<strong style="color:'+borderColor+'">Summary</strong> — '+sglt2Msg+' '+hba1cMsg;
+  document.getElementById('d-action').innerHTML='<strong style="color:'+borderColor+'">Key actions:</strong> '+(uacr>=30?'RAAS blockade (ACE inhibitor or ARB) is indicated for UACR ≥30 mg/g (≥3.4 mg/mmol) with DM. ':'')+(sglt2==='none'&&dapaOk?'Initiate SGLT2i (dapagliflozin 10mg OD — Catania or Rhea brand available in Philippines). ':'')+(uacr>=300?'With UACR '+uacrDisp+', target BP &lt;130/80 mmHg and consider finerenone (Firialta) if not already on it. ':'')+'Monitor eGFR and UACR every 3–6 months.';
+}
+
+function switchNaGlucoseUnit(u){
+  const isSI=u==='si';
+  document.getElementById('ng-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('ng-btn-si').classList.toggle('active',isSI);
+  const glu=document.getElementById('ng-glu');
+  if(isSI){
+    document.getElementById('ng-lbl-glu').textContent='Blood glucose (mmol/L)';
+    glu.placeholder='e.g. 33.3'; glu.min='2'; glu.max='110'; glu.step='0.1';
+    document.getElementById('ng-hint-glu').textContent='Plasma glucose at the same blood draw. Correction only matters when glucose is above ~5.6 mmol/L (100 mg/dL)';
+  } else {
+    document.getElementById('ng-lbl-glu').textContent='Blood glucose (mg/dL)';
+    glu.placeholder='e.g. 600'; glu.min='40'; glu.max='2000'; glu.step='1';
+    document.getElementById('ng-hint-glu').textContent='Plasma glucose at the same blood draw. Correction only matters when glucose is above ~100 mg/dL (5.6 mmol/L)';
+  }
+  glu.value='';
+  const res=document.querySelector('#na-glucose-calc .calc-result-box');
+  if(res) res.style.display='none';
+}
+
+function calcNaGlucose(){
+  const na = parseFloat(document.getElementById('ng-na').value);
+  const gluRaw = parseFloat(document.getElementById('ng-glu').value);
+  const res = document.getElementById('ng-result');
+  if ([na,gluRaw].some(isNaN)) { res.style.display='none'; return; }
+
+  const isSI = document.getElementById('ng-btn-si').classList.contains('active');
+  const glu = isSI ? gluRaw*18 : gluRaw;   // mmol/L → mg/dL internally
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  const adj = (glu-100)/100;
+  const hillier = na + 2.4*adj;
+  const katz    = na + 1.6*adj;
+
+  // Use the more accurate Hillier value to classify true sodium status
+  const corr = hillier;
+  let status, statusColor, verdict;
+  const lowMeasured = na < 135;
+  if (corr < 135) {
+    status='True hyponatremia'; statusColor='#c0392b';
+    verdict='Even after correcting for the high glucose, the sodium is still low ('+hillier.toFixed(1)+' mEq/L by Hillier). This is genuine hyponatremia — it will not fully resolve just by lowering the blood sugar and needs its own evaluation (volume status, urine sodium/osmolality, medications, and possible SIADH or salt loss).';
+  } else if (corr > 145) {
+    status='Masked hypernatremia'; statusColor='#c0392b';
+    verdict='Once corrected for the high glucose, the true sodium is actually high ('+hillier.toFixed(1)+' mEq/L by Hillier). An underlying water deficit / hypernatremia is being hidden by the dilutional effect of hyperglycemia. As glucose is lowered the measured sodium will rise toward this value — watch for and treat the free-water deficit.';
+  } else if (lowMeasured) {
+    status='Pseudohyponatremia'; statusColor='#2d7a4f';
+    verdict='The measured sodium of '+na.toFixed(1)+' looks low, but once corrected for the high glucose it is normal ('+hillier.toFixed(1)+' mEq/L by Hillier). This is dilutional / translocational pseudohyponatremia — the low reading is driven by the sugar, not by a true sodium problem, and it will correct on its own as the glucose comes down.';
+  } else {
+    status='Normal'; statusColor='#2d7a4f';
+    verdict='Both the measured and the glucose-corrected sodium are in the normal range ('+hillier.toFixed(1)+' mEq/L corrected by Hillier). No sodium derangement is being masked by the hyperglycemia.';
+  }
+
+  // Color band by corrected (Hillier) value
+  let borderColor, bg;
+  if (corr < 125 || corr > 155) { borderColor='#c0392b'; bg=isDark?'rgba(192,57,43,.08)':'#fdf0ef'; }
+  else if (corr < 135 || corr > 145) { borderColor='#f5a623'; bg=isDark?'rgba(154,101,0,.08)':'#fef9ec'; }
+  else { borderColor='#2d7a4f'; bg=isDark?'rgba(45,122,79,.08)':'#edf7f2'; }
+
+  res.style.display='block'; res.style.background=bg; res.style.borderColor=borderColor;
+
+  const hVal=document.getElementById('ng-hillier-val');
+  hVal.textContent=hillier.toFixed(1); hVal.style.color=borderColor;
+  document.getElementById('ng-hillier-badge').textContent='mEq/L (factor 2.4)';
+  document.getElementById('ng-katz-val').textContent=katz.toFixed(1);
+  document.getElementById('ng-katz-badge').textContent='mEq/L (factor 1.6)';
+  const sEl=document.getElementById('ng-status');
+  sEl.textContent=status; sEl.style.color=statusColor;
+  document.getElementById('ng-status-badge').textContent='measured '+na.toFixed(1)+' mEq/L';
+  document.getElementById('ng-status-badge').style.color=statusColor;
+
+  document.getElementById('ng-verdict').innerHTML='<strong style="color:'+borderColor+'">'+status+'</strong> — '+verdict;
+
+  let action;
+  if (status==='Pseudohyponatremia') {
+    action='Treat the hyperglycemia (insulin and IV fluids per protocol); the sodium should normalize as glucose falls — no separate sodium therapy is usually needed. Recheck sodium and glucose together as the sugar comes down, and avoid over-rapid sodium correction (aim ≤8–10 mEq/L rise per 24 h).';
+  } else if (status==='True hyponatremia') {
+    action='Treat the hyperglycemia, but also work up the hyponatremia separately (assess volume status, urine sodium and osmolality, serum osmolality, and review medications). Correct sodium slowly — no faster than ~8 mEq/L in 24 hours — to avoid osmotic demyelination.';
+  } else if (status==='Masked hypernatremia') {
+    action='Treat the hyperglycemia and anticipate the measured sodium rising as glucose normalizes. Replace the free-water deficit and recheck sodium frequently so it does not overshoot; correct gradually under physician guidance.';
+  } else {
+    action='No sodium-specific intervention is indicated for the reading itself. Manage the hyperglycemia as clinically appropriate and recheck sodium with the next glucose if the sugar is being actively treated.';
+  }
+  document.getElementById('ng-action').innerHTML='<strong style="color:'+borderColor+'">Next step:</strong> '+action;
+}
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/image-lightbox.js" defer></script>
+<!-- CALC-NAV-PILL-START -->
+<style id="calc-nav-pill-style">
+.calc-nav-pill{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;align-items:stretch;z-index:9997;background:#1f3864;border-radius:999px;box-shadow:0 6px 22px rgba(15,30,51,.32);border:1px solid rgba(255,255,255,.14);}
+.calc-nav-pill>a,.calc-nav-pill>.cnp-print{position:relative;display:flex;align-items:center;justify-content:center;width:58px;height:44px;color:#fff;text-decoration:none;transition:background .18s;background:none;border:none;cursor:pointer;}
+.calc-nav-pill>a:first-child{border-radius:999px 0 0 999px;}
+.calc-nav-pill>a:last-child{border-radius:0 999px 999px 0;}
+.calc-nav-pill>a:hover,.calc-nav-pill>.cnp-print:hover{background:#2a4a7f;}
+.calc-nav-pill>a:first-child:hover{border-radius:999px 0 0 999px;}
+.calc-nav-pill>a:last-child:hover{border-radius:0 999px 999px 0;}
+.calc-nav-pill>a:focus-visible,.calc-nav-pill>.cnp-print:focus-visible{outline:2px solid #d4af4f;outline-offset:-3px;}
+.calc-nav-pill .cnp-div{width:1px;background:rgba(255,255,255,.22);align-self:stretch;}
+.calc-nav-pill svg{width:20px;height:20px;}
+.cnp-tip{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);background:rgba(15,30,51,.92);color:#fff;font-size:11.5px;font-weight:500;white-space:nowrap;padding:5px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s;}
+.calc-nav-pill>a:hover .cnp-tip,.calc-nav-pill>.cnp-print:hover .cnp-tip{opacity:1;}
+html[data-theme="dark"] .calc-nav-pill{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav-pill>.cnp-print:hover{background:#243349;}
+.print-fab,.print-btn,.calc-back-btn,.calc-rg-btn{display:none!important;}
+@media print{.calc-nav-pill{display:none!important;}}
+</style>
+<nav class="calc-nav-pill" id="calc-nav-pill" aria-label="Calculator navigation">
+<a href="https://www.williamriveromd.com/guides/calculators.html" aria-label="Back to all calculators"><span class="cnp-tip">All Guides</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
+<span class="cnp-div"></span>
+<button class="cnp-print" onclick="window.print()" aria-label="Print this page"><span class="cnp-tip">Print</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></button>
+<span class="cnp-div"></span>
+<a href="understanding-ckd.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+</nav>
+<!-- CALC-NAV-PILL-END -->
+<script src="../assets/calc-handoff.js" defer></script>
+<!-- Floating dark-mode toggle (site-wide convention) -->
+<div class="float-controls no-print">
+  <button id="darkToggle" class="float-btn" type="button" onclick="toggleDark()" aria-label="Toggle dark mode" title="Switch to dark mode">
+    <span class="float-tooltip" id="darkLabel">Dark mode</span>
+    <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
+</body>
+</html>

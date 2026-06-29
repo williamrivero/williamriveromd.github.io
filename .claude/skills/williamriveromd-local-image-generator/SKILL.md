@@ -2,7 +2,9 @@
 name: williamriveromd-local-image-generator
 description: >-
   Stage 2 of the WilliamRiveroMD two-stage image pipeline. Consumes the
-  image-prompts/ pack produced by williamriveromd-infographic-skill, validates
+  image-prompts/ pack produced by any Stage 1 prompt-authoring skill
+  (williamriveromd-infographic-skill, williamriveromd-simple-figure, or
+  williamriveromd-biomedical-mechanism-figure), validates
   every prompt against the required schema, builds the local guide folder
   structure under /Users/williamgregoryrivero/Downloads/[guide-folder]/,
   writes image-manifest.csv, image-manifest.json, and
@@ -16,8 +18,25 @@ description: >-
 
 ## Role in the pipeline
 
-Stage 1 (`williamriveromd-infographic-skill`) creates the archetype-based
-prompts and saves them into `image-prompts/`.
+Stage 1 creates the prompts and saves them into `image-prompts/`. Stage 1 is any
+of the prompt-authoring skills:
+- `williamriveromd-infographic-skill` — multi-panel posters, heroes, OG cards,
+  reference cards, food matrices, workflows
+- `williamriveromd-simple-figure` — a single focused figure
+- `williamriveromd-biomedical-mechanism-figure` — review-article biomedical
+  mechanism schematics (organ-level panel → magnified functional-unit inset →
+  injury → intervention → benefit flow)
+
+This skill (Stage 2) operationalizes prompts from **any** of those skills
+identically: it does not re-author the prompt, only validates, organizes, and
+wires it. When validating, accept the mechanism skill's template fields
+(organ-level panel, magnified inset, bottom injury/intervention/benefit flow) as
+a complete prompt. Confirm every prompt — regardless of authoring skill — carries
+the shared `© williamriveromd.com` attribution before building manifests. Also
+confirm every prompt that renders on-image text names an approved sans-serif font
+(Inter, Nunito Sans, IBM Plex Sans, or Manrope); flag any text-bearing prompt that
+omits the font or specifies a serif/decorative typeface. Text-free photorealistic
+prompts (e.g. "no text embedded" heroes) are exempt.
 
 Stage 2 (this skill) operationalizes those prompts locally:
 - validates prompt completeness
@@ -203,5 +222,7 @@ as an Open Graph / social share card.
   "No journal names, guideline acronyms, brand names, or watermarks."
 - Clinician algorithms use the conservative flat-flowchart style:
   white background, boxes, diamond decisions, minimal color, no 3D/icons.
+- All on-image typography uses one of the four approved sans-serif fonts only —
+  Inter, Nunito Sans, IBM Plex Sans, or Manrope. No serif or decorative fonts.
 - OG image always points to the `.webp` version of the primary image.
 - Commit directly to `main`. No PRs.

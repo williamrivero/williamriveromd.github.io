@@ -11,7 +11,10 @@ description: >-
   medical component renderings (kidneys, glomeruli, vessels, dialysis access,
   machines, stenosis, thrombus). Outputs a single copy-paste prompt block
   engineered for photorealism, medical/anatomical accuracy, and a unified
-  williamriveromd.com house style.
+  williamriveromd.com house style. For any panel that is a review-article-style
+  biomedical mechanism schematic (organ-level panel → magnified functional-unit
+  inset → injury → intervention → benefit flow), delegate that panel to
+  williamriveromd-biomedical-mechanism-figure to keep the mechanism style consistent.
 ---
 
 # WILLIAM RIVERO MD - ADVANCED MEDICAL INFOGRAPHIC + IMAGE GENERATOR GPT SYSTEM v5
@@ -34,6 +37,25 @@ Use this skill to convert guide content into:
 - case snapshot graphics
 - circular workflow diagrams
 - 2D/3D component-based medical graphics
+
+## DELEGATE: BIOMEDICAL MECHANISM FIGURES
+
+When the requested asset is a **biomedical mechanism / pathophysiology schematic
+in the scientific review-article style** — the signature layout of an
+**organ-level panel → magnified functional-unit inset (nephron / glomerulus /
+tubule / mitochondria / vessel / cell) in a dashed box → bottom injury →
+intervention → benefit summary flow** — use the dedicated
+`williamriveromd-biomedical-mechanism-figure` skill and its template instead of
+the generic "pathophysiology mechanism poster" archetype here.
+
+This applies whether the user invokes this skill directly, or is batching images
+for a whole guide: for any panel that is a review-article mechanism figure,
+generate that panel with the mechanism skill's template (organ→inset→
+injury/intervention/benefit, muted clinical palette, dashed connectors,
+experimental-therapy flagging) so the house mechanism style stays consistent.
+All other panels (heroes, food matrices, OG cards, reference cards, workflows)
+stay in this skill. Keep the shared attribution `© williamriveromd.com` on every
+panel regardless of which skill produced it.
 
 ## DEFAULT EXECUTION TARGET
 
@@ -86,6 +108,9 @@ Color palette:
 - Clinical red: #b91c1c — warning/danger indicators
 
 Typography direction:
+- **Approved fonts (MANDATORY): use only a clean sans-serif typeface — Inter,
+  Nunito Sans, IBM Plex Sans, or Manrope. No other fonts, and never a serif font.**
+  Name the chosen font explicitly in every generated prompt.
 - Large bold condensed sans-serif titles in navy (#0f1e2e) on light backgrounds
 - Strong visual hierarchy
 - Short educational phrases
@@ -151,7 +176,7 @@ PROMPT:
 [full production prompt]
 
 NEGATIVE INSTRUCTIONS:
-Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Never omit the williamriveromd.com attribution.
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no other fonts, no serif fonts, no decorative or handwritten typefaces. Never omit the williamriveromd.com attribution.
 
 QUALITY CHECK:
 Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com. Background must be white, off-white, or soft light gray — never dark. Copyright attribution williamriveromd.com must be visible in the bottom corner.
@@ -286,5 +311,7 @@ Use mixed media when useful:
 Never sacrifice clinical clarity for visual complexity.
 
 **LIGHT BACKGROUND RULE — ABSOLUTE:** Every image must have a white, off-white, or soft light gray background. Dark backgrounds (navy, black, charcoal) are never permitted on any image type — including OG cards, heroes, infographics, and 3D renders. Navy and teal are accent and typography colors only.
+
+**APPROVED FONT RULE — ABSOLUTE:** All on-image typography must use one of four clean sans-serif fonts only — **Inter, Nunito Sans, IBM Plex Sans, or Manrope**. No serif fonts, no condensed display fonts outside this list, no decorative or handwritten typefaces. Name the chosen font explicitly in every generated prompt so the image generator renders text in an approved face.
 
 Every image must carry the copyright attribution **williamriveromd.com** — rendered as small, semi-transparent navy or dark teal text in the bottom-right corner (bottom-center for portrait). This is a non-negotiable house rule for all williamriveromd.com visuals.

@@ -31,7 +31,7 @@ bokeh background of a market or kitchen. Shot on a Leica-style 50mm lens. Photor
 magazine-quality editorial lighting. No text overlays. Square crop — center the woman
 and food naturally within the frame, with enough negative space above and on the sides
 for a title overlay if needed. Bottom-right corner, small semi-transparent text:
-© W. G. M. Rivero, MD · williamriveromd.com
+© W Rivero, MD · williamriveromd.com
 
 NEGATIVE INSTRUCTIONS: No supplements, pill bottles, or medicine. No white clinical
 backgrounds. No Western or Asian-American models — Filipino facial features only.

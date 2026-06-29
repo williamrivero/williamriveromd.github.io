@@ -115,6 +115,13 @@
   html[data-theme="dark"] .cred-value { color: #c8d0dc; }
   html[data-theme="dark"] .faq-a { color: #9aa5b8; }
   html[data-theme="dark"] .contact-card h3 { color: #e8eaf0; }
+  /* Dark-mode text contrast — keep intro/lead copy and inline <strong> emphasis
+     bright (they were navy/muted, i.e. dark-on-dark, in dark mode). */
+  html[data-theme="dark"] .guides-intro-lead { color: #e8eaf0; }
+  html[data-theme="dark"] .guides-intro-sub { color: #b8c2d0; }
+  html[data-theme="dark"] .faq-a strong { color: #dbe2ec; }
+  html[data-theme="dark"] .about-text p strong { color: #e8eaf0; }
+  html[data-theme="dark"] .form-note { color: #9aa5b8; }
 
   /* ── DESKTOP FORCED MODE ────────────────────── */
   html[data-view="desktop"] { min-width: 1024px; }
@@ -944,7 +951,7 @@
     grid-column: 1 / -1;
     padding: 40px 44px;
     border-radius: 16px;
-    border-width: 1px;
+    border-width: 1.5px;
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto;
@@ -952,7 +959,132 @@
     gap: 0 48px;
     position: relative;
     overflow: hidden;
+    background: linear-gradient(135deg,#073842 0%,#0b2c5e 50%,#2a1c66 100%);
+    background-size: 220% 220%;
+    box-shadow: 0 16px 48px rgba(10,18,50,.30);
+    animation: lib-bg-drift 24s ease-in-out infinite alternate;
     transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease, border-color .35s ease;
+  }
+  /* bespoke navy→gold gradient drift */
+  @keyframes lib-bg-drift {
+    0%   { background-position: 0% 0%; }
+    50%  { background-position: 75% 55%; }
+    100% { background-position: 100% 100%; }
+  }
+  /* fixed gold aurora glow behind content */
+  .library-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 88% 26%, rgba(212,175,79,.14) 0%, transparent 70%),
+      radial-gradient(ellipse 55% 75% at 5% 84%, rgba(120,90,230,.20) 0%, transparent 66%);
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+  }
+  /* background "idea silhouettes" — parallax-drifting SVG marks behind the card copy */
+  .lib-particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+  }
+  .lib-bubble {
+    position: absolute;
+    pointer-events: none;
+    -webkit-mask: url('images/lib-illus.svg') center / contain no-repeat;
+            mask: url('images/lib-illus.svg') center / contain no-repeat;
+    background-color: var(--tint, rgba(212,175,79,.22));
+    filter: drop-shadow(0 0 var(--glow, 8px) var(--tint-glow, rgba(212,175,79,.18)));
+    opacity: 0;
+    will-change: transform, opacity, filter;
+    animation-duration: var(--dur, 14s);
+    animation-delay: var(--delay, 0s);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  /* Six motion variants — chosen at random per instance. Supersize and zoom-in
+     are the eye-catchers (scale dominates); scroll and fly drift across the
+     card; dissolve adds a blurred fade; drift is the calm continuous bob. */
+  .lib-bubble.fx-supersize { animation-name: lib-fx-supersize; animation-timing-function: ease-out; }
+  .lib-bubble.fx-zoomin    { animation-name: lib-fx-zoomin;    animation-timing-function: ease-in; }
+  .lib-bubble.fx-scroll    { animation-name: lib-fx-scroll;    animation-timing-function: linear; }
+  .lib-bubble.fx-fly       { animation-name: lib-fx-fly;       animation-timing-function: cubic-bezier(.42,0,.58,1); }
+  .lib-bubble.fx-dissolve  { animation-name: lib-fx-dissolve; }
+  .lib-bubble.fx-drift     { animation-name: lib-fx-drift;     animation-direction: alternate; }
+  @keyframes lib-fx-supersize {
+    0%   { opacity: 0;               transform: rotate(var(--rot0, 0deg)) scale(calc(var(--sc, 1) * var(--scStart, 4))); }
+    10%  { opacity: var(--pop, .25); }
+    100% { opacity: 0;               transform: rotate(var(--rot0, 0deg)) scale(calc(var(--sc, 1) * var(--scEnd, 0.35))); }
+  }
+  @keyframes lib-fx-zoomin {
+    0%   { opacity: 0;               transform: rotate(var(--rot0, 0deg)) scale(calc(var(--sc, 1) * 0.18)); }
+    20%  { opacity: var(--pop, .25); }
+    65%  { opacity: var(--pop, .25); transform: rotate(calc(var(--rot0, 0deg) + 6deg)) scale(calc(var(--sc, 1) * 1.4)); }
+    100% { opacity: 0;               transform: rotate(calc(var(--rot0, 0deg) + 14deg)) scale(calc(var(--sc, 1) * 1.9)); }
+  }
+  @keyframes lib-fx-scroll {
+    0%   { opacity: 0;               transform: translate(0, 130px) rotate(var(--rot0, 0deg)) scale(var(--sc, 1)); }
+    15%  { opacity: var(--pop, .25); }
+    85%  { opacity: var(--pop, .25); }
+    100% { opacity: 0;               transform: translate(0, -240px) rotate(calc(var(--rot0, 0deg) + 14deg)) scale(var(--sc, 1)); }
+  }
+  @keyframes lib-fx-fly {
+    0%   { opacity: 0;               transform: translate(calc(var(--flyX, -160px) * -1), calc(var(--flyY, 80px) * -1)) rotate(var(--rot0, 0deg)) scale(var(--sc, 1)); }
+    18%  { opacity: var(--pop, .25); }
+    82%  { opacity: var(--pop, .25); }
+    100% { opacity: 0;               transform: translate(var(--flyX, 160px), var(--flyY, -80px)) rotate(calc(var(--rot0, 0deg) + 22deg)) scale(var(--sc, 1)); }
+  }
+  @keyframes lib-fx-dissolve {
+    0%   { opacity: 0;               filter: drop-shadow(0 0 var(--glow, 8px) var(--tint-glow, rgba(212,175,79,.18))) blur(12px); transform: rotate(var(--rot0, 0deg)) scale(calc(var(--sc, 1) * 0.9)); }
+    50%  { opacity: var(--pop, .25); filter: drop-shadow(0 0 var(--glow, 8px) var(--tint-glow, rgba(212,175,79,.18))) blur(0); }
+    100% { opacity: 0;               filter: drop-shadow(0 0 var(--glow, 8px) var(--tint-glow, rgba(212,175,79,.18))) blur(12px); transform: rotate(calc(var(--rot0, 0deg) + 18deg)) scale(calc(var(--sc, 1) * 1.08)); }
+  }
+  @keyframes lib-fx-drift {
+    0%   { opacity: var(--pop, .25); transform: translate(0, 0) rotate(var(--rot0, 0deg)) scale(var(--sc, 1)); }
+    100% { opacity: var(--pop, .25); transform: translate(var(--driftX, 10px), var(--driftY, -14px)) rotate(calc(var(--rot0, 0deg) + var(--rotAmp, 10deg))) scale(calc(var(--sc, 1) * 1.04)); }
+  }
+  /* evidence-basis cycler */
+  .lib-evidence {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 5px 12px 5px 10px;
+    border-radius: 20px;
+    background: rgba(212,175,79,.10);
+    border: 1px solid rgba(212,175,79,.28);
+    font-size: 12.5px;
+    line-height: 1;
+  }
+  .lib-evidence-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #d4af4f;
+    box-shadow: 0 0 8px rgba(212,175,79,.8);
+    flex-shrink: 0;
+    animation: lib-evidence-pulse 1.9s ease-in-out infinite;
+  }
+  @keyframes lib-evidence-pulse {
+    0%,100% { opacity: 1;   transform: scale(1); }
+    50%     { opacity: .45; transform: scale(.7); }
+  }
+  .lib-evidence-label {
+    color: rgba(232,244,248,.62);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+  .lib-ref-cycle {
+    color: #e8d28c;
+    font-weight: 700;
+    letter-spacing: .01em;
+    min-width: 92px;
+    transition: opacity .3s ease;
   }
   /* shimmer sweep */
   .library-card::after {
@@ -966,8 +1098,8 @@
   }
   .library-card:hover { transform: translateY(-5px) scale(1.007); box-shadow: 0 24px 64px rgba(212,175,79,.26), 0 0 0 1px rgba(212,175,79,.55); border-color: rgba(212,175,79,.65) !important; }
   .library-card:hover::after { animation: lib-shimmer .7s ease forwards; }
-  .library-card .lib-left { grid-column: 1; }
-  .library-card .lib-right { grid-column: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .library-card .lib-left { grid-column: 1; position: relative; z-index: 2; }
+  .library-card .lib-right { grid-column: 2; position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
   .library-card .guide-card-illus { position: static; opacity: .22; width: 110px; height: 110px; transition: opacity .35s ease, transform .35s ease; }
   .library-card:hover .guide-card-illus { opacity: .45; transform: scale(1.08) rotate(3deg); }
   .library-card h3 { font-size: 31px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 10px; line-height: 1.2; }
@@ -989,6 +1121,12 @@
     .library-card h3 { font-size: 24px; }
     .lib-stats { gap: 20px; }
     .lib-stat-num { font-size: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .library-card { animation: none; }
+    .lib-bubble { animation: none !important; opacity: .22; transform: rotate(var(--rot0, 0deg)) scale(var(--sc, 1)); filter: drop-shadow(0 0 var(--glow, 6px) var(--tint-glow, rgba(212,175,79,.18))); }
+    .lib-evidence-dot { animation: none; }
+    .lib-ref-cycle { transition: none; }
   }
   .guide-tag {
     display: inline-block;
@@ -1325,7 +1463,7 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-brand">W. G. M. <span>Rivero</span>, MD</div>
+  <div class="nav-brand">W. <span>Rivero</span>, MD</div>
   <ul class="nav-links">
     <li><a href="#guides">Health Guides</a></li>
     <li><a href="#about">About</a></li>
@@ -1389,10 +1527,10 @@
       <div class="hero-byline">
         <picture>
           <source srcset="images/photo-hero.webp" type="image/webp">
-          <img src="images/photo-hero.jpg" alt="Dr. W. G. M. Rivero" class="hero-byline-photo">
+          <img src="images/photo-hero.jpg" alt="Dr. W Rivero" class="hero-byline-photo">
         </picture>
         <div>
-          <div class="hero-byline-name">W. G. M. Rivero, MD, FPCP, DPSN</div>
+          <div class="hero-byline-name">W Rivero, MD, FPCP, DPSN</div>
           <div class="hero-byline-title">
             <span data-lang="en">Nephrology &bull; Internal Medicine &bull; Clinical Nutrition</span>
             <span data-lang="tl" class="lang-hidden">Nefrolohiya &bull; Panloob na Medisina &bull; Nutrisyon</span>
@@ -1472,18 +1610,25 @@
     </div>
     <div class="guides-grid" id="home-guides-grid">
       <!-- Distinguished Library card: navy background, gold accents -->
-      <a href="/guides/" class="guide-card library-card" style="background:linear-gradient(135deg,#0d1b2a 0%,#152640 60%,#1a3050 100%);border-color:rgba(212,175,79,.3);color:#e8f4f8;">
+      <a href="/guides/" class="guide-card library-card" style="border-color:rgba(212,175,79,.3);color:#e8f4f8;">
+        <span class="lib-particles" id="lib-particles" aria-hidden="true"></span>
         <!-- Left column -->
         <div class="lib-left">
           <span class="guide-tag" style="background:rgba(212,175,79,.15);color:#d4af4f;border:1px solid rgba(212,175,79,.35);">Browse All Guides</span>
           <h3 style="color:#fff;">Patient &amp; Clinician Resource Library</h3>
           <p style="color:rgba(232,244,248,.75);">All in-depth patient guides — written by Dr. Rivero and grounded in current guidelines (KDIGO 2024, ADA 2025, ACC/AHA 2026). Organized by condition, stage, and date. Multilingual where translated.</p>
+          <!-- Evidence basis cycler -->
+          <div class="lib-evidence">
+            <span class="lib-evidence-dot"></span>
+            <span class="lib-evidence-label">Evidence basis</span>
+            <span class="lib-ref-cycle" id="lib-ref-cycle">KDIGO 2024</span>
+          </div>
           <!-- Stats row -->
           <div class="lib-stats">
-            <div class="lib-stat"><span class="lib-stat-num" id="lib-guide-count">100</span><span class="lib-stat-label">Patient Guides</span></div>
-            <div class="lib-stat"><span class="lib-stat-num" id="lib-tools-count">14+</span><span class="lib-stat-label">Interactive Tools</span></div>
-            <div class="lib-stat"><span class="lib-stat-num">9</span><span class="lib-stat-label">Specialties</span></div>
-            <div class="lib-stat"><span class="lib-stat-num">4</span><span class="lib-stat-label">Languages</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-guide-count">132</span><span class="lib-stat-label">Patient Guides</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-tools-count">175</span><span class="lib-stat-label">Interactive Tools</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-spec-count">9</span><span class="lib-stat-label">Specialties</span></div>
+            <div class="lib-stat"><span class="lib-stat-num" id="lib-lang-count">4</span><span class="lib-stat-label">Languages</span></div>
           </div>
           <!-- Specialty pills -->
           <div class="lib-specialties">
@@ -1622,10 +1767,6 @@
           <li>
             <span class="cred-label">Members</span>
             <span class="cred-value">PMA &bull; PCP &bull; PSN &bull; ISN &bull; Quezon City Medical Society</span>
-          </li>
-          <li>
-            <span class="cred-label">PRC</span>
-            <span class="cred-value">0105184</span>
           </li>
           <li>
             <span class="cred-label">PhilHealth</span>
@@ -2230,7 +2371,7 @@
         <div class="contact-book">
           <picture>
             <source srcset="images/avatar.webp" type="image/webp">
-            <img src="images/avatar.png" alt="Dr. W. G. M. Rivero" class="contact-photo" style="display:block;margin:0 auto 16px;">
+            <img src="images/avatar.png" alt="Dr. W Rivero" class="contact-photo" style="display:block;margin:0 auto 16px;">
           </picture>
           <h3>
   <span data-lang="en">Book an Appointment</span>
@@ -2255,7 +2396,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <p><strong>William Gregory M. Rivero, MD, FPCP, DPSN</strong> &mdash; Nephrology &bull; Internal Medicine &bull; Clinical Nutrition &mdash; PRC 0105184</p>
+  <p><strong>William Gregory M. Rivero, MD, FPCP, DPSN</strong> &mdash; Nephrology &bull; Internal Medicine &bull; Clinical Nutrition &mdash; </p>
   <p>&copy; 2026 williamriveromd.com</p>
 </footer>
 
@@ -2423,12 +2564,14 @@ function emailAction(key, btnEl, variant) {
 </script>
 
 <script>
-// Keep the library card's guide count in sync with guides/index.html.
-// Counts guide tiles the same way guides/index does (excludes downloads),
-// so the homepage never drifts as guides are added.
+// Keep the library card's guide and tools counts in sync with guides/index.html.
+// Counts guide tiles the same way guides/index does (excludes downloads), and
+// mirrors the library header's Tools stat, so the homepage never drifts as
+// guides and tools are added.
 (function syncLibraryGuideCount(){
   const libCount = document.getElementById('lib-guide-count');
-  if (!libCount) return;
+  const libTools = document.getElementById('lib-tools-count');
+  if (!libCount && !libTools) return;
   fetch('guides/index.html', {cache:'no-cache'})
     .then(r => r.ok ? r.text() : Promise.reject(r.status))
     .then(html => {
@@ -2436,9 +2579,153 @@ function emailAction(key, btnEl, variant) {
       const guideTotal = Array.from(doc.querySelectorAll('a.guide-tile'))
         .filter(t => !(t.dataset.tags || '').toLowerCase().includes('download'))
         .length;
-      if (guideTotal) libCount.textContent = guideTotal;
+      if (libCount && guideTotal) libCount.textContent = guideTotal;
+      // Mirror the Tools / Specialties / Languages stats from the guides hero
+      // so the homepage card always matches guides/index.html.
+      const heroStat = label => {
+        const stat = Array.from(doc.querySelectorAll('.stat'))
+          .find(s => new RegExp(label, 'i').test(s.querySelector('.stat-label')?.textContent || ''));
+        return stat?.querySelector('.stat-num')?.textContent.trim();
+      };
+      const toolsNum = heroStat('calculator|tool');
+      if (libTools && toolsNum) libTools.textContent = toolsNum;
+      const specNum = heroStat('specialties');
+      const libSpec = document.getElementById('lib-spec-count');
+      if (libSpec && specNum) libSpec.textContent = specNum;
+      const langNum = heroStat('languages');
+      const libLang = document.getElementById('lib-lang-count');
+      if (libLang && langNum) libLang.textContent = langNum;
     })
     .catch(err => console.warn('Library guide count sync skipped:', err));
+})();
+</script>
+
+<script>
+// Library card — bespoke animated background (gold evidence motes), evidence-basis
+// reference cycling, and stat count-up. Mirrors the guides/index.html hero treatment.
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var card = document.querySelector('.library-card');
+  if (!card) return;
+
+  // 1. Background "idea silhouettes" — the attached SVG mark, drawn ~16x at
+  //    random positions/sizes/tints. Each instance picks one motion variant
+  //    from a weighted pool: supersize (giant pop → shrink + fade), zoomin
+  //    (tiny → big + fade out), scroll (drift upward), fly (diagonal
+  //    traverse), dissolve (blurred fade in/out), drift (calm continuous
+  //    bob). Per-instance random duration, delay, scale, rotation, and tint.
+  var wrap = document.getElementById('lib-particles');
+  if (wrap && !reduce) {
+    var palette = [
+      ['rgba(52,170,180,',  'rgba(52,170,180,'],
+      ['rgba(212,175,79,',  'rgba(212,175,79,'],
+      ['rgba(150,120,235,', 'rgba(150,120,235,'],
+      ['rgba(96,156,224,',  'rgba(96,156,224,']
+    ];
+    var fxList = [
+      { name: 'supersize', durMin: 9,  durMax: 16, weight: 3 },
+      { name: 'zoomin',    durMin: 8,  durMax: 14, weight: 2 },
+      { name: 'scroll',    durMin: 12, durMax: 22, weight: 3 },
+      { name: 'fly',       durMin: 11, durMax: 20, weight: 2 },
+      { name: 'dissolve',  durMin: 9,  durMax: 16, weight: 2 },
+      { name: 'drift',     durMin: 16, durMax: 26, weight: 2 }
+    ];
+    var fxPool = [];
+    fxList.forEach(function(f){ for (var k = 0; k < f.weight; k++) fxPool.push(f); });
+
+    var COUNT = 16;
+    for (var i = 0; i < COUNT; i++) {
+      var b = document.createElement('span');
+      var f = fxPool[Math.floor(Math.random() * fxPool.length)];
+      b.className = 'lib-bubble fx-' + f.name;
+
+      var sz = 36 + Math.random() * 90;                 // 36–126px base reference
+      var left = Math.random() * 100;
+      var top = -5 + Math.random() * 105;
+      var dur = f.durMin + Math.random() * (f.durMax - f.durMin);
+      var delay = -(Math.random() * dur);
+      var op = 0.10 + Math.random() * 0.18;             // 0.10–0.28 peak — copy stays legible
+      var rot0 = Math.round(Math.random() * 360);
+      var rotAmp = (Math.random() < .5 ? -1 : 1) * (5 + Math.random() * 10);
+      var sc = 0.85 + Math.random() * 0.30;
+      var scStart = 2.8 + Math.random() * 2.2;          // supersize: enter at 2.8–5.0×
+      var scEnd   = 0.20 + Math.random() * 0.30;        // supersize: shrink to 0.20–0.50×
+      var driftX = (Math.random() < .5 ? -1 : 1) * (8 + Math.random() * 18);
+      var driftY = -(8 + Math.random() * 18);
+      var flyX = (Math.random() < .5 ? -1 : 1) * (120 + Math.random() * 180);
+      var flyY = (Math.random() < .5 ? -1 : 1) * (80 + Math.random() * 140);
+      var pair = palette[Math.floor(Math.random() * palette.length)];
+      var tint = pair[0] + (op + 0.10).toFixed(2) + ')';
+      var glow = pair[1] + (op * 0.55).toFixed(2) + ')';
+      var glowR = Math.round(sz / 7);
+
+      b.style.cssText =
+        'width:' + sz.toFixed(0) + 'px;height:' + sz.toFixed(0) + 'px;' +
+        'left:' + left.toFixed(1) + '%;top:' + top.toFixed(1) + '%;' +
+        '--pop:' + op.toFixed(2) + ';' +
+        '--tint:' + tint + ';' +
+        '--tint-glow:' + glow + ';' +
+        '--glow:' + glowR + 'px;' +
+        '--rot0:' + rot0 + 'deg;' +
+        '--rotAmp:' + rotAmp.toFixed(1) + 'deg;' +
+        '--sc:' + sc.toFixed(2) + ';' +
+        '--scStart:' + scStart.toFixed(2) + ';' +
+        '--scEnd:' + scEnd.toFixed(2) + ';' +
+        '--driftX:' + driftX.toFixed(0) + 'px;' +
+        '--driftY:' + driftY.toFixed(0) + 'px;' +
+        '--flyX:' + flyX.toFixed(0) + 'px;' +
+        '--flyY:' + flyY.toFixed(0) + 'px;' +
+        '--dur:' + dur.toFixed(1) + 's;' +
+        '--delay:' + delay.toFixed(1) + 's;';
+      wrap.appendChild(b);
+    }
+  }
+
+  // 2. Evidence-basis cycling (mirrors the guides/index hero's cycling stat).
+  var cyc = document.getElementById('lib-ref-cycle');
+  if (cyc) {
+    var refs = ['KDIGO 2024', 'ADA 2025', 'ACC/AHA 2026', 'KDOQI', 'KDIGO BP 2021', 'ISN', 'PSN', 'ISRNM 2024', 'NKF'];
+    var ci = 0;
+    setInterval(function(){
+      cyc.style.opacity = '0';
+      setTimeout(function(){
+        ci = (ci + 1) % refs.length;
+        cyc.textContent = refs[ci];
+        cyc.style.opacity = '1';
+      }, 300);
+    }, 2600);
+  }
+
+  // 3. Stat count-up when the card scrolls into view (text animation). Targets are
+  //    read live, so they reflect whatever syncLibraryGuideCount() resolved to.
+  function runCounters(){
+    if (card._counted) return;
+    card._counted = true;
+    card.querySelectorAll('.lib-stat-num').forEach(function(el, idx){
+      var target = parseInt((el.textContent || '').replace(/\D/g, ''), 10);
+      if (isNaN(target)) return;
+      if (reduce) { el.textContent = String(target); return; }
+      el.textContent = '0';
+      var dur = 1000, t0 = null;
+      setTimeout(function(){
+        requestAnimationFrame(function step(ts){
+          if (!t0) t0 = ts;
+          var p = Math.min((ts - t0) / dur, 1);
+          el.textContent = String(Math.round((1 - Math.pow(1 - p, 3)) * target));
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = String(target);
+        });
+      }, idx * 120);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) { runCounters(); io.disconnect(); } });
+    }, { threshold: 0.3 });
+    io.observe(card);
+  } else {
+    runCounters();
+  }
 })();
 </script>
 

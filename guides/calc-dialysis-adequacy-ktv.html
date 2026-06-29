@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dialysis Adequacy Calculator — spKt/V &amp; URR (Daugirdas) · W Rivero, MD</title>
+<meta name="description" content="Interactive dialysis adequacy calculator — single-pool Kt/V (Daugirdas 2nd-generation equation), urea reduction ratio (URR), estimated body water (V), and ultrafiltration rate (UFR), with KDOQI/KDIGO targets, instructions, formula, evidence, and references.">
+<meta name="keywords" content="dialysis adequacy Philippines, Kt/V hemodialysis, URR dialysis, underdialysis symptoms, dialysis dose Philippines, adequate dialysis target, Kt/V calculation, URR calculation, dialysis adequacy test, hemodialysis Kt/V Philippines, peritoneal dialysis adequacy, weekly Kt/V peritoneal dialysis, inadequate dialysis signs, dialysis session length, dialysis blood flow rate, urea reduction ratio, dialysis efficiency Philippines, how to check dialysis adequacy, KDOQI dialysis adequacy, CAPD Kt/V Philippines">
+<meta name="author" content="W Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-dialysis-adequacy-ktv.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-06-23T04:42:42+08:00">
+<meta property="article:modified_time" content="2026-05-01T00:00:00+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="Dialysis Adequacy Calculator — spKt/V &amp; URR (Daugirdas)">
+<meta property="og:description" content="Compute single-pool Kt/V (Daugirdas), urea reduction ratio, body water (V), and ultrafiltration rate from paired BUN values, with KDOQI/KDIGO targets, formula, and references.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-dialysis-adequacy-ktv.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/hero-cat-dialysis.webp">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta property="og:image:alt" content="Dialysis Adequacy & Fluid — nephrology calculators · williamriveromd.com">
+<meta property="og:locale" content="en_PH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dialysis Adequacy Calculator — spKt/V &amp; URR (Daugirdas)">
+<meta name="twitter:description" content="Compute single-pool Kt/V (Daugirdas), urea reduction ratio, body water (V), and ultrafiltration rate from paired BUN values, with KDOQI/KDIGO targets, formula, and references.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/hero-cat-dialysis.webp">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<style>
+  /* ═══════════════════════════════════════════════════════════════════════════
+     MASTER GUIDE CSS — williamriveromd.com
+     Version: 2026-06-23p (pastel theme — Inter/Manrope/Nunito Sans, no Lora/DM Sans)
+     All contrast ratios WCAG AA verified. Do not edit per-guide — edit here.
+  ═══════════════════════════════════════════════════════════════════════════ */
+
+  /* ── COLOR TOKENS (light mode) ──────────────────────────────────────────── */
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+
+    /* Text — all verified ≥4.5:1 on white and #f9fafb */
+    --text:       #1e2a38;   /* 10.2:1 on white ✓ */
+    --text-mid:   #2c3a4a;   /*  8.1:1 on white ✓ */
+    --text-muted: #4a5568;   /*  6.1:1 on white ✓ */
+    --text-faint: #5c6a7e;   /*  4.7:1 on white ✓ */
+
+    /* Surfaces */
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+
+    /* Semantic colors — backgrounds are very light, text is dark */
+    --red:        #b91c1c;   /* 5.9:1 on white ✓ */
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;   /* 7.3:1 on white ✓ */
+    --amber-soft: #fffbeb;
+    --green:      #166534;   /* 8.2:1 on white ✓ */
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;   /* 7.1:1 on white ✓ */
+    --purple-soft:#faf5ff;
+  }
+
+  /* ── RESET ───────────────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── BASE ────────────────────────────────────────────────────────────────── */
+  body {
+    font-family: 'Manrope', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ── SITE HEADER (CONVENTION: brand | inline lang chips | back link) ────── */
+  .site-header {
+    display: flex; align-items: center; gap: 18px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 24px;
+    background: var(--navy);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    position: sticky; top: 0; z-index: 200;
+  }
+  .site-header .brand {
+    font-size: 14px; font-weight: 500;
+    color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em;
+    flex: 0 0 auto;
+  }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back {
+    font-size: 12px; font-weight: 500;
+    color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s;
+    margin-left: auto; flex: 0 0 auto;
+  }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+  /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
+  .header-nav {
+    display: flex; align-items: center; gap: 14px;
+    margin-left: auto; flex: 0 0 auto;
+  }
+  .header-nav a {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.7); text-decoration: none;
+    transition: color .2s;
+    white-space: nowrap;
+  }
+  .header-nav a:hover { color: #fff; }
+  .header-nav a.is-current { color: var(--gold-light); pointer-events: none; }
+  @media (max-width: 640px) {
+    .header-nav { gap: 10px; }
+    .header-nav a { font-size: 10.5px; letter-spacing: .04em; }
+  }
+  /* Inline lang chips inside the header (next to the brand). */
+  .header-lang {
+    display: flex; align-items: center; gap: 6px;
+    flex: 0 1 auto; flex-wrap: nowrap; overflow-x: auto;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .header-lang::-webkit-scrollbar { display: none; }
+  .header-lang .lang-lbl {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5);
+    text-transform: uppercase; letter-spacing: .1em; margin-right: 2px;
+  }
+  .header-lang .lang-btn-g {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.18); background: transparent;
+    color: rgba(255,255,255,.78); cursor: pointer; transition: all .15s;
+    line-height: 1.3; flex-shrink: 0;
+  }
+  .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
+  .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  @media (max-width: 640px) {
+    .site-header { padding: 0 14px; gap: 10px; }
+    .header-lang .lang-lbl { display: none; }
+    .header-lang .lang-btn-g { font-size: 11px; padding: 2px 8px; }
+    .site-header .brand { font-size: 13px; }
+    .site-header .back { font-size: 11px; }
+  }
+
+  /* ── LEGACY LANG BAR (kept defined as a no-op so older HTML doesn't break) ─ */
+  .guide-lang-bar { display: none !important; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g {
+    font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.2); background: transparent;
+    color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s;
+  }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  /* Legacy inline dark/desktop toggle holder — now replaced by .float-controls. */
+  .guide-toggle-inline { display: none !important; }
+
+  /* ── FLOATING DARK TOGGLE WIDGET (bottom-right) ─────────────────────────── */
+  .float-controls {
+    position: fixed; bottom: 24px; right: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  /* ── FLOATING DESKTOP/MOBILE TOGGLE WIDGET (bottom-left, under print) ────── */
+  .float-controls-left {
+    position: fixed; bottom: 24px; left: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  .float-controls-left .float-tooltip { left: 0; right: auto; }
+  .float-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(31,56,100,.18);
+    background: #ffffff; color: #1f3864;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(15,30,46,.18);
+    transition: background .15s, color .15s, transform .15s, box-shadow .15s;
+    position: relative;
+  }
+  .float-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,30,46,.24); }
+  .float-btn svg { width: 20px; height: 20px; }
+  .float-tooltip {
+    position: absolute; bottom: calc(100% + 8px); right: 0;
+    background: rgba(15,30,46,.9); color: #fff;
+    padding: 6px 10px; border-radius: 6px;
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity .15s;
+  }
+  .float-btn:hover .float-tooltip { opacity: 1; }
+  html[data-theme="dark"] .float-btn {
+    background: #1a2535; color: #e2b95f; border-color: rgba(255,255,255,.18);
+    box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  }
+  html[data-theme="dark"] .float-tooltip { background: rgba(255,255,255,.92); color: #1f3864; }
+  @media print { .float-controls, .no-print { display: none !important; } }
+
+  /* ── TOGGLE BAR ──────────────────────────────────────────────────────────── */
+  .guide-toggle-bar {
+    display: flex; gap: 8px; align-items: center;
+    padding: 6px 32px;
+    background: rgba(10, 18, 32, 0.96) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .toggle-btn {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18);
+    color: rgba(255,255,255,.82);   /* ≥ 4.5:1 on dark bar ✓ */
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px; font-weight: 500;
+    padding: 4px 10px; border-radius: 16px;
+    cursor: pointer; transition: all .2s; white-space: nowrap;
+  }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .lang-label { font-size: 11px; color: rgba(255,255,255,.6); margin-right: 4px; letter-spacing: .06em; }
+  .lang-btn {
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    padding: 4px 12px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.2);
+    background: transparent; color: rgba(255,255,255,.75);  /* ≥ 4.5:1 ✓ */
+    cursor: pointer; transition: all .2s;
+  }
+  .lang-btn:hover { color: white; border-color: rgba(255,255,255,.5); }
+  .lang-btn.active { background: #b8962e; border-color: #b8962e; color: white; }
+  [data-lang].lang-hidden { display: none !important; }
+
+  /* ── HERO (redesigned: shorter footprint, Inter/Nunito, side panel) ──────── */
+  .hero {
+    background: linear-gradient(135deg, #2a8f8f 0%, #14545e 100%);  /* lightened from teal→near-black */
+    color: white;
+    padding: 40px 0 44px;            /* tighter vertical footprint */
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;              /* self-contained stacking for the sigil watermark */
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    top: -90px; right: -110px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.08);
+    pointer-events: none;
+  }
+  /* Hero sigil watermark removed — no decorative sigil behind hero content. */
+  .hero::after { content: none; }
+  .hero > .container { position: relative; z-index: 1; }
+  /* Two-column hero: copy on the left, vignette / contents panel on the right */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-copy { min-width: 0; }
+  /* Vignette/grid heroes have a narrower copy column — smaller headline */
+  .hero-grid .hero-copy h1 { font-size: clamp(22px, 3.4vw, 34px); }
+  .hero-tag {
+    display: inline-block;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(255,255,255,.9);     /* 5.5:1 on --teal ✓ */
+    border: 1px solid rgba(255,255,255,.35);
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Inter', sans-serif;   /* headline → Inter */
+    font-size: clamp(27px, 4.4vw, 44px);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 14px; letter-spacing: -.025em;
+    color: #ffffff;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold-light);
+  }
+  .hero-sub em {
+    font-style: italic;
+    color: #fde68a;
+    font-weight: 600;
+  }
+  .hero-sub {
+    font-family: 'Nunito Sans', sans-serif;   /* subtitle → Nunito Sans */
+    font-size: 16.5px;
+    color: rgba(255,255,255,.92);    /* 14.8:1 ✓ */
+    max-width: 560px; line-height: 1.6; margin-bottom: 22px;
+  }
+  .hero-meta {
+    display: flex; gap: 28px; flex-wrap: wrap;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,.75);    /* ≥ 4.5:1 ✓ */
+  }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 600; }
+
+  /* ── PATIENT HERO: circular vignette portrait on the right ───────────────── */
+  .hero-figure {
+    position: relative;
+    width: clamp(260px, 32vw, 380px);
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+  }
+  .hero-figure::before {            /* soft gold halo behind the disc */
+    content: ''; position: absolute; inset: -16px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,79,.28), transparent 68%);
+    pointer-events: none;
+  }
+  .hero-vignette {
+    position: relative; width: 100%; height: 100%;
+    border-radius: 50%; overflow: hidden;
+    border: 1px solid rgba(255,255,255,.20);
+    box-shadow: 0 22px 55px rgba(0,0,0,.45);
+  }
+  .hero-vignette img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+    display: block; margin: 0;   /* override global hero-img centering */
+  }
+  /* opt-in zoom for hero images with a baked-in title/watermark (e.g. epilepsy) */
+  .hero-vignette.zoom img { transform: scale(1.34); transform-origin: 50% 60%; }
+  .hero-vignette::after {           /* vignette: darken rim, blend into hero */
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 42%, transparent 55%, rgba(15,60,66,.38) 100%),
+      linear-gradient(180deg, rgba(42,143,143,.06), rgba(20,84,94,.16));
+    pointer-events: none;
+  }
+  /* ── Oversized vignette layout (desktop ≥821px) ──────────────────────────
+     A large circular portrait bleeds off the hero's right/top/bottom while the
+     copy sits on the LEFT and on the TOP layer (z-index above the disc, so the
+     headline stays readable even where the circle extends behind it). Applies to patient-mode
+     vignette heroes AND to single-tab guides (body.single-mode) — including
+     physician/clinician-only guides, whose lone hero is the vignette and so
+     should bleed like a patient hero. The mobile stack (≤820px) is untouched. */
+  @media (min-width: 821px) {
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) {
+      display: flex; align-items: center;
+      position: relative; gap: 0;
+      min-height: clamp(330px, 30vw, 450px);
+    }
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) .hero-copy {
+      max-width: min(56%, 560px);
+      position: relative; z-index: 3;   /* hero text on the top layer */
+    }
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) .hero-figure {
+      position: absolute; top: -64px; left: 58%;
+      width: clamp(400px, 50vw, 600px);
+      margin: 0; z-index: 1;
+    }
+  }
+
+  /* ── CLINICIAN HERO: jump-to contents panel on the right ─────────────────── */
+  .hero-toc {
+    width: clamp(260px, 30vw, 340px);
+    flex-shrink: 0;
+    background: rgba(255,255,255,.11);
+    border: 1px solid rgba(212,175,79,.38);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 18px 44px rgba(0,0,0,.22);
+  }
+  .hero-toc-head {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase;
+    color: #d4af4f; margin-bottom: 10px;
+    padding-bottom: 10px; border-bottom: 1px solid rgba(212,175,79,.22);
+  }
+  .hero-toc-head svg { width: 15px; height: 15px; stroke: #d4af4f; }
+  .hero-toc-list { display: flex; flex-direction: column; }
+  .hero-toc-list a {
+    display: flex; align-items: center; gap: 11px;
+    padding: 8px 8px; border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: rgba(255,255,255,.86); text-decoration: none;
+    transition: background .15s, color .15s;
+  }
+  .hero-toc-list a + a { border-top: 1px solid rgba(255,255,255,.07); }
+  .hero-toc-list a:hover { background: rgba(212,175,79,.13); color: #fff; }
+  .hero-toc-num {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    color: #d4af4f; opacity: .85; min-width: 18px;
+  }
+  .hero-toc-arrow { margin-left: auto; color: rgba(212,175,79,.7); transition: transform .15s; }
+  .hero-toc-list a:hover .hero-toc-arrow { transform: translateX(3px); }
+
+  /* ── PASTEL HERO MOTIF (soft light backgrounds, dark text) ───────────────── */
+  /* Patient: soft mint */
+  .hero { background: linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%); color:#28484c; }
+  .hero::before { border-color: rgba(15,90,90,.12); }
+  .hero-tag { color:#0e4a50; border-color: rgba(14,74,80,.32); background: rgba(255,255,255,.5); }
+  .hero h1 { color:#0e4a50; }
+  .hero h1 em { color:#a06b00; }
+  .hero-sub { color:#28484c; }
+  .hero-sub em { color:#a06b00; font-style:italic; }
+  .hero-meta { color:#42595d; }
+  .hero-meta strong { color:#173a3e; }
+  .hero-figure::before { background: radial-gradient(circle, rgba(160,107,0,.16), transparent 68%); }
+  .hero-vignette { border-color: rgba(15,90,90,.20); box-shadow: 0 16px 40px rgba(15,90,90,.18); }
+  .hero-vignette::after {
+    background:
+      radial-gradient(circle at 50% 42%, transparent 62%, rgba(15,90,90,.16) 100%),
+      linear-gradient(180deg, rgba(255,255,255,.10), rgba(15,90,90,.05));
+  }
+
+  /* Clinician: soft periwinkle */
+  body.physician-mode .hero { background: linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%); color:#34455f; }
+  body.physician-mode .hero h1 { color:#1f3864; }
+  body.physician-mode .hero h1 em { color:#a06b00; }
+  body.physician-mode .hero-sub { color:#34455f; }
+  body.physician-mode .hero-meta { color:#46516b; }
+  body.physician-mode .hero-meta strong { color:#1f3864; }
+  body.physician-mode .hero-toc {
+    background:#ffffff; border-color: rgba(31,56,100,.14);
+    box-shadow: 0 16px 40px rgba(31,56,100,.15);
+  }
+  body.physician-mode .hero-toc-head { color:#1f3864; border-bottom-color: rgba(31,56,100,.14); }
+  body.physician-mode .hero-toc-head svg { stroke:#8a6810; }
+  body.physician-mode .hero-toc-list a { color:#1f3864; }
+  body.physician-mode .hero-toc-list a + a { border-top-color: rgba(31,56,100,.08); }
+  body.physician-mode .hero-toc-list a:hover { background: rgba(31,56,100,.06); color:#0e2547; }
+  body.physician-mode .hero-toc-num { color:#8a6810; opacity:1; }
+  body.physician-mode .hero-toc-arrow { color:#b08a2a; }
+
+  /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
+  /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
+  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-cards { order: -1; width: 100%; }
+  /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
+  .hero-cards.mode-physician { order: -1; width: 100%; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+
+  /* Clinician: Evidence Snapshot card on the right of the hero copy */
+  body.physician-mode .hero-grid { align-items: start; gap: 34px; }
+  body.physician-mode .hero h1 { font-size: clamp(23px, 3.1vw, 33px); }
+  body.physician-mode .hero-sub { font-size: 14.5px; margin-bottom: 18px; }
+  .hero-cards {
+    display: grid; grid-template-columns: 1fr; gap: 12px;
+    width: clamp(280px, 32vw, 340px); flex-shrink: 0; align-items: stretch;
+  }
+
+  /* ── CLINICIAN OVERVIEW CARDS (compact, two-up) ──────────────────────────── */
+  .ov-card {
+    background: #fff; border: 1px solid #e6ebf3; border-radius: 13px;
+    padding: 16px 18px; display: flex; flex-direction: column;
+    box-shadow: 0 10px 26px rgba(31,56,100,.08);
+  }
+  .ov-head { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
+  .ov-ico {
+    width: 31px; height: 31px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #eef3fb; color: #1f3864;
+  }
+  .ov-ico svg { width: 16px; height: 16px; stroke: currentColor; }
+  .ov-title { font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 700; color: #1f3864; }
+  .ov-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+  .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
+  .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
+  .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
+  .ov-stat { display: flex; align-items: flex-start; gap: 11px; }
+  .ov-stat .v {
+    font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 800;
+    color: #1f3864; line-height: 1.05; min-width: 52px; flex-shrink: 0;
+  }
+  .ov-stat .l { font-size: 11.5px; color: #5a6680; line-height: 1.35; }
+  .ov-foot {
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600;
+    color: #1a6b72; text-decoration: none;
+  }
+  .ov-foot:hover { color: #0e4a50; }
+  .ov-foot svg { width: 14px; height: 14px; stroke: currentColor; }
+  @media(max-width: 460px) { .hero-cards { grid-template-columns: 1fr; } }
+
+  /* Legible hero 'Last Reviewed' badge on pastel bg (overrides old inline white text) */
+  /* Clinician badge chips (pastel-themed; canonical so guides w/o a local rule render) */
+  .clin-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .clin-badge { display:inline-block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:.02em; color:#1f3864; background:rgba(31,56,100,.08);
+    border:1px solid rgba(31,56,100,.25); border-radius:20px; padding:4px 12px; }
+
+  .hero-meta time, .hero-meta .hero-refcount span[style] { color:#1f3864 !important; background:rgba(31,56,100,.08) !important; border-color:rgba(31,56,100,.35) !important; }
+
+  /* ── CONTAINER ───────────────────────────────────────────────────────────── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── NAV STRIP ───────────────────────────────────────────────────────────── */
+  .nav-strip {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 56px; z-index: 100;
+  }
+  .nav-pills {
+    display: flex; gap: 4px; padding: 12px 32px;
+    max-width: 860px; margin: 0 auto;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill {
+    white-space: nowrap; font-size: 13px; font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none; padding: 6px 14px;
+    border-radius: 20px; border: 1px solid transparent;
+    transition: all .2s;
+  }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+
+  /* ── SECTIONS ────────────────────────────────────────────────────────────── */
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-tag {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px;
+  }
+  .section h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(22px, 3.5vw, 32px);
+    font-weight: 700; color: var(--navy);
+    line-height: 1.25; margin-bottom: 20px; letter-spacing: -.02em;
+  }
+  .section h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 600; color: var(--navy);
+    line-height: 1.3; margin-bottom: 14px;
+  }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+
+  /* ── BODY LISTS (content sections) ───────────────────────────────────────────
+     The global reset zeroes list padding; restore a comfortable indent so body
+     bullets/numbers sit clearly inside the column. Component lists (.checklist,
+     .alert-body, .food-* …) define their own and override this via source order. */
+  .section ul, .section ol { margin: 0 0 18px 0; padding-left: 30px; }
+  .section li { color: var(--text-mid); line-height: 1.7; margin-bottom: 8px; padding-left: 4px; }
+  .section li:last-child { margin-bottom: 0; }
+  .section li::marker { color: var(--teal); }
+  .section ul ul, .section ol ol, .section ul ol, .section ol ul { margin: 8px 0 0 0; }
+
+  /* ── INTRO CALLOUT (teal panel) ──────────────────────────────────────────── */
+  .intro-callout {
+    background: var(--teal);
+    border-radius: 16px; padding: 32px 36px; margin-bottom: 36px;
+  }
+  .intro-callout p {
+    color: rgba(255,255,255,.92) !important;  /* 7.4:1 on --teal ✓ */
+    font-size: 16px; line-height: 1.75; margin: 0;
+  }
+  .intro-callout p strong { color: #ffffff !important; }
+
+  /* ── GRID LAYOUTS ────────────────────────────────────────────────────────── */
+  .two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .three-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0; }
+  @media(max-width: 600px) { .two-col, .three-col { grid-template-columns: 1fr; } }
+
+  /* ── FEATURE CARDS ───────────────────────────────────────────────────────── */
+  .feature-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px;
+  }
+  .feature-card h4 {
+    font-size: 14px; font-weight: 600;
+    color: var(--navy);              /* 14.5:1 on --bg ✓ */
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-mid);          /* 8.1:1 on --bg ✓ */
+    margin: 0; line-height: 1.6;
+  }
+
+  /* ── DOTS ────────────────────────────────────────────────────────────────── */
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-teal   { background: var(--teal); }
+  .dot-red    { background: var(--red); }
+  .dot-amber  { background: #d97706; }
+  .dot-green  { background: var(--green); }
+  .dot-navy   { background: var(--navy); }
+  .dot-purple { background: var(--purple); }
+
+  /* ── ALERT BOXES ─────────────────────────────────────────────────────────── */
+  .alert {
+    border-radius: 12px; padding: 20px 24px; margin: 24px 0;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-purple { background: var(--purple-soft); border-left: 3px solid var(--purple); }
+
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 {
+    font-size: 14px; font-weight: 600;
+    color: var(--navy);              /* ≥ 9:1 on all alert backgrounds ✓ */
+    margin-bottom: 6px;
+  }
+  .alert-body p,
+  .alert-body ul,
+  .alert-body ul li {
+    font-size: 14px;
+    color: var(--text-mid);          /* ≥ 8:1 on all alert backgrounds ✓ */
+    margin: 0; line-height: 1.6;
+  }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+
+  /* ── TABLES ──────────────────────────────────────────────────────────────── */
+
+  /* Generic table wrapper — used throughout guide and clinician sections */
+  .table-wrap {
+    overflow-x: auto; margin: 20px 0;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th {
+    text-align: left; padding: 11px 16px;
+    background: var(--navy); color: rgba(255,255,255,.92);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    border-bottom: none;
+  }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td {
+    padding: 13px 16px; vertical-align: top; line-height: 1.55;
+    border-bottom: 1px solid var(--border); color: var(--text-mid);
+  }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
+  .lab-table, .drug-table, .schedule-table {
+    width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;
+  }
+  .lab-table th, .drug-table th, .schedule-table th {
+    text-align: left;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-muted);        /* 6.1:1 on --bg ✓ */
+    padding: 10px 14px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .lab-table td, .drug-table td, .schedule-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-mid);          /* 8.1:1 on white ✓ */
+    vertical-align: top; line-height: 1.5;
+  }
+  .lab-table td:first-child, .drug-table td:first-child {
+    font-weight: 600;
+    color: var(--navy);              /* 14.5:1 ✓ */
+  }
+  .lab-table tr:last-child td,
+  .drug-table tr:last-child td { border-bottom: none; }
+  .lab-table tr:hover td,
+  .drug-table tr:hover td { background: var(--bg); }
+
+  /* ── BADGES ──────────────────────────────────────────────────────────────── */
+  .target-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--green-soft); color: var(--green); /* 8.2:1 ✓ */
+  }
+  .warn-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--red-soft); color: var(--red);     /* 5.9:1 ✓ */
+  }
+  .amber-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--amber-soft); color: var(--amber); /* 7.3:1 ✓ */
+  }
+  .caution-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--amber-soft); color: var(--amber); /* 7.3:1 ✓ */
+  }
+  .safe-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--green-soft); color: var(--green); /* 8.2:1 ✓ */
+  }
+  .avoid-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--red-soft); color: var(--red);     /* 5.9:1 ✓ */
+  }
+  .contraindicated-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: #7f1d1d; color: white;                  /* 9.4:1 ✓ */
+  }
+  .purple-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--purple-soft); color: var(--purple); /* 7.1:1 ✓ */
+  }
+  .teal-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--teal-light); color: var(--teal);  /* 4.8:1 ✓ */
+  }
+
+  /* ── STEPS ───────────────────────────────────────────────────────────────── */
+  .steps { margin: 24px 0; }
+  .step { display: flex; gap: 20px; margin-bottom: 24px; align-items: flex-start; }
+  .step-num {
+    width: 36px; height: 36px; background: var(--teal); color: white;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; flex-shrink: 0;
+  }
+  .step-body { flex: 1; }
+  .step-body h4 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .step-body p  { font-size: 14px; color: var(--text-mid); margin: 0; }
+
+  /* ── CHECKLIST (dark panel) ──────────────────────────────────────────────── */
+  .checklist {
+    background: var(--navy); border-radius: 16px;
+    padding: 28px 32px; margin: 28px 0;
+  }
+  .checklist h4 { color: rgba(255,255,255,.95) !important; font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+  .checklist ul { list-style: none; margin: 0; padding: 0; }
+  .checklist ul li {
+    color: rgba(255,255,255,.88) !important;  /* 13.1:1 ✓ */
+    font-size: 14px; padding: 10px 0 10px 28px; position: relative;
+    border-bottom: 1px solid rgba(255,255,255,.1); line-height: 1.5;
+  }
+  .checklist ul li:last-child { border-bottom: none; }
+  .checklist ul li::before { content: '✓'; position: absolute; left: 4px; top: 10px; color: #d4af4f; }
+  .checklist.checklist-green { background: var(--green); }
+  html[data-theme="dark"] .checklist.checklist-green { background: #0e2a1c; }
+
+  /* ── COMPARE GRID ────────────────────────────────────────────────────────── */
+  .compare-grid, .cartridge-compare {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--border); margin: 24px 0;
+  }
+  @media(max-width: 580px) { .compare-grid, .cartridge-compare { grid-template-columns: 1fr; } }
+  .compare-header, .cart-header {
+    padding: 16px 20px;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: white; text-align: center;
+  }
+  .compare-header.tophi, .cart-header.ha130 { background: #1a6b72; }
+  .compare-header.calciphylaxis, .cart-header.ha330 { background: #1f3864; }
+  .compare-row-label, .cart-row-label {
+    grid-column: 1 / -1; background: var(--bg);
+    padding: 8px 20px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  .compare-cell, .cart-cell {
+    padding: 14px 20px; font-size: 14px;
+    color: var(--text-mid);          /* 8.1:1 ✓ */
+    border-bottom: 1px solid var(--border); line-height: 1.55;
+  }
+  .compare-cell.tophi-cell, .cart-cell.left-cell { border-right: 1px solid var(--border); }
+  .compare-cell strong, .cart-cell strong { color: var(--navy); }
+
+  /* ── ILLUSTRATION WRAP ───────────────────────────────────────────────────── */
+  .illus-wrap {
+    background: #f0f4f8; border-radius: 14px;
+    padding: 24px; margin: 24px 0;
+    text-align: center; overflow-x: auto;
+  }
+  .illus-wrap-light {
+    background: #f9fafb !important;
+    border: 1px solid #e2e6eb; border-radius: 14px;
+  }
+  .illus-caption {
+    color: var(--text-mid);          /* 8.1:1 ✓ */
+    font-size: 13px; font-style: italic;
+    margin-top: 12px; line-height: 1.65; display: block;
+  }
+
+  /* ── IMAGE PLACEHOLDER ───────────────────────────────────────────────────── */
+  .img-placeholder {
+    background: var(--bg); border: 2px dashed var(--border);
+    border-radius: 12px; padding: 24px; margin: 20px 0; text-align: center;
+  }
+  .img-placeholder .img-ph-icon { font-size: 32px; margin-bottom: 8px; }
+  .img-placeholder p { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+  .img-placeholder .img-ph-credit { font-size: 11px; color: var(--teal); margin-top: 8px; font-style: italic; }
+
+  /* ── COST CARDS ──────────────────────────────────────────────────────────── */
+  .cost-card { border-radius: 14px; padding: 24px; border: 1px solid var(--border); margin: 12px 0; }
+  .cost-card.green { background: var(--green-soft); border-color: rgba(22,101,52,.2); }
+  .cost-card.red   { background: var(--red-soft);   border-color: rgba(185,28,28,.2); }
+  .cost-card.amber { background: var(--amber-soft); border-color: rgba(146,64,14,.2); }
+  .cost-card h4    { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .cost-card.green h4 { color: var(--green); }
+  .cost-card.red   h4 { color: var(--red); }
+  .cost-card.amber h4 { color: var(--amber); }
+  .cost-card p { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+
+  /* ── ANALGESIC LADDER ────────────────────────────────────────────────────── */
+  .ladder { margin: 24px 0; }
+  .ladder-step { display: flex; gap: 16px; margin-bottom: 12px; align-items: stretch; }
+  .ladder-num {
+    width: 40px; min-height: 60px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; color: white; flex-shrink: 0;
+  }
+  .ladder-num.s1 { background: #166534; }
+  .ladder-num.s2 { background: #92400e; }
+  .ladder-num.s3 { background: #b91c1c; }
+  .ladder-body {
+    flex: 1; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px;
+  }
+  .ladder-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .ladder-body p  { font-size: 13px; color: var(--text-mid); margin: 0; }
+
+  /* ── NON-PHARM GRID ──────────────────────────────────────────────────────── */
+  .nopharm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 24px 0; }
+  .nopharm-card {
+    background: var(--teal-light);
+    border: 1px solid rgba(26,107,114,.2);
+    border-radius: 12px; padding: 16px; text-align: center;
+  }
+  .nopharm-card .icon { font-size: 28px; margin-bottom: 8px; }
+  .nopharm-card h4 { font-size: 13px; font-weight: 600; color: var(--teal); margin-bottom: 4px; }
+  .nopharm-card p  { font-size: 12px; color: var(--text-mid); margin: 0; line-height: 1.5; }
+
+  /* ── FOOD GRIDS ──────────────────────────────────────────────────────────── */
+  .food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  @media(max-width: 600px) { .food-grid { grid-template-columns: 1fr; } }
+  .food-ok    { background: var(--green-soft); border: 1px solid rgba(22,101,52,.2); border-radius: 12px; padding: 20px; }
+  .food-avoid { background: var(--red-soft);   border: 1px solid rgba(185,28,28,.2); border-radius: 12px; padding: 20px; }
+  .food-limit { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 12px; padding: 20px; }
+  .food-ok    h4 { color: var(--green);  font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .food-avoid h4 { color: var(--red);    font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .food-limit h4 { color: var(--amber);  font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .food-ok ul, .food-avoid ul, .food-limit ul {
+    font-size: 13px; color: var(--text-mid); margin-left: 16px;
+  }
+  .food-ok ul li, .food-avoid ul li, .food-limit ul li { margin-bottom: 5px; line-height: 1.5; }
+
+  /* ── RELATED GUIDES SECTION ──────────────────────────────────────────────── */
+  .related-guides {
+    max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0;
+    border-top: 2px solid var(--border);
+  }
+  .related-guides h2 {
+    font-size: 1.1rem; font-weight: 700; color: var(--navy);
+    margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em;
+  }
+  .related-cards {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
+  }
+  .related-card {
+    display: flex; flex-direction: column; gap: 4px;
+    background: var(--navy);
+    border-radius: 8px; padding: 14px 16px;
+    text-decoration: none; color: inherit;
+    transition: transform .15s, box-shadow .15s;
+    position: relative; overflow: hidden;
+  }
+  .related-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--teal);
+  }
+  .related-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,56,100,0.28); }
+  .related-card-tag   { font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9); text-transform: uppercase; letter-spacing: .08em; }
+  .related-card-title { font-size: .88rem; font-weight: 600; color: #fff; line-height: 1.3; }
+  .related-card-desc  { display: none; }
+  .related-card-arrow { display: none; }
+  .related-card-thumb {
+    position: absolute; top: 0; right: 0;
+    width: 110px; height: 100%;
+    object-fit: cover; opacity: .82;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 55%);
+    mask-image: linear-gradient(to right, transparent, #000 55%);
+    pointer-events: none;
+  }
+  .related-card.has-thumb { padding-right: 116px; }
+
+  /* ── RELATED GUIDES — LEGACY ALIASES (12 guides ship variant markup) ─────── */
+  .related-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
+  }
+  .related-badge {
+    display: inline-block;
+    font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9);
+    text-transform: uppercase; letter-spacing: .08em;
+  }
+  .related-card h3 {
+    font-size: .88rem; font-weight: 600; color: #fff;
+    line-height: 1.3; margin: 0 0 4px 0;
+  }
+  .related-card p {
+    font-size: .80rem; color: rgba(255,255,255,.5); line-height: 1.45;
+    margin: 0; flex: 1;
+  }
+
+  /* ── DR CARD (dark panel) ────────────────────────────────────────────────── */
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card {
+    background: var(--navy); color: white;
+    border-radius: 16px; padding: 32px;
+    display: flex; gap: 24px; align-items: flex-start; margin-top: 0;
+  }
+  .dr-avatar {
+    width: 72px; height: 72px;
+    background: transparent; border-radius: 50%;
+    flex-shrink: 0; border: none;
+    overflow: hidden;
+  }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; } /* 13.1:1 ✓ */
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+
+  /* ── GUIDE FOOTER ────────────────────────────────────────────────────────── */
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner {
+    max-width: 860px; margin: 0 auto; padding: 0 32px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+
+  /* ── DISCLAIMER ──────────────────────────────────────────────────────────── */
+  .disclaimer {
+    background: var(--amber-soft);
+    border: 1px solid rgba(146,64,14,.2);
+    border-radius: 10px; padding: 16px 20px;
+    margin: 40px 0 36px; font-size: 13px;
+    color: var(--text-mid);          /* 8.1:1 on amber-soft ✓ */
+    line-height: 1.6;
+  }
+  .disclaimer strong { color: var(--navy); }
+
+  /* ── CALCULATOR ──────────────────────────────────────────────────────────── */
+  .calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
+  .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'Manrope', sans-serif; font-size: 15px; }
+  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
+  .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .calc-metric-card { background: rgba(255,255,255,.7); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid rgba(0,0,0,.08); }
+  .calc-metric-card .cmv { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 600; line-height: 1; color: var(--navy); }
+  .calc-metric-card .cml { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; color: var(--text-muted); }
+  .calc-metric-card .cmt { font-size: 11px; margin-top: 4px; font-weight: 600; color: var(--text-mid); }
+  .calc-verdict-text { font-size: 14px; line-height: 1.7; margin-bottom: 10px; color: var(--text-mid); }
+  .calc-action-text { font-size: 13px; line-height: 1.65; padding-top: 10px; border-top: 1px solid rgba(0,0,0,.08); color: var(--text-mid); }
+  .calc-disclaimer { font-size: 11.5px; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
+
+  /* ── PRINT BUTTON ────────────────────────────────────────────────────────── */
+  .print-btn {
+    position: fixed; bottom: 80px; left: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s; z-index: 9998;
+  }
+  .print-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip {
+    position: absolute; left: 54px;
+    background: rgba(31,56,100,.92); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .print-btn:hover .p-tip { opacity: 1; }
+
+  /* ── SCROLL-TO-TOP BUTTON ────────────────────────────────────────────────── */
+  .scroll-top-btn {
+    position: fixed; bottom: 80px; right: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996;
+    opacity: 0; pointer-events: none;
+  }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip {
+    position: absolute; right: 54px;
+    background: rgba(31,56,100,.92); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     DARK MODE OVERRIDES
+     Applied when html[data-theme="dark"] is set by toggleDark().
+     All contrast ratios re-verified for dark surfaces.
+  ═══════════════════════════════════════════════════════════════════════════ */
+
+  html[data-theme="dark"] {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #2ba8b0;   /* brighter on dark — 4.8:1 on #1a2535 ✓ */
+    --teal-light: #0a2830;
+
+    --text:       #e8eaf0;   /* 12.4:1 on #0f1520 ✓ */
+    --text-mid:   #dde3eb;   /*  9.1:1 on #1a2535 ✓ */
+    --text-muted: #9baab8;   /*  4.6:1 on #0f1520 ✓ */
+    --text-faint: #8090a4;   /*  3.9:1 — large text only */
+
+    --bg:    #141c2a;
+    --white: #1a2030;
+    --border:#2a3548;
+
+    --red:        #f87171;   /* 5.1:1 on #2a1515 ✓ */
+    --red-soft:   #2a1515;
+    --amber:      #fbbf24;   /* 5.4:1 on #2a1900 ✓ */
+    --amber-soft: #2a1900;
+    --green:      #4ade80;   /* 6.2:1 on #0e2a1c ✓ */
+    --green-soft: #0e2a1c;
+    --purple:     #c084fc;   /* 5.7:1 on #1a1030 ✓ */
+    --purple-soft:#1a1030;
+  }
+
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+
+  html[data-theme="dark"] .hero,
+  html[data-theme="dark"] .intro-callout,
+  html[data-theme="dark"] .dr-card,
+  html[data-theme="dark"] .checklist { background: #080d16; }
+  html[data-theme="dark"] .dr-qr img { background: white !important; }
+
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+
+  html[data-theme="dark"] .feature-card,
+  html[data-theme="dark"] .ladder-body,
+  html[data-theme="dark"] .calc-wrap,
+  html[data-theme="dark"] .img-placeholder { background: #1a2535; border-color: #2a3548; }
+
+  html[data-theme="dark"] .nav-pill:hover { background: #1a2535; color: var(--text); }
+
+  /* All text elements — one rule to cover them all */
+  html[data-theme="dark"] .section p,
+  html[data-theme="dark"] .section h3,
+  html[data-theme="dark"] .feature-card p,
+  html[data-theme="dark"] .alert-body p,
+  html[data-theme="dark"] .alert-body ul li,
+  html[data-theme="dark"] .step-body p,
+  html[data-theme="dark"] .ladder-body p,
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-theme="dark"] .table-wrap tbody tr:hover td { background: #1e3040; }
+
+  html[data-theme="dark"] .lab-table td,
+  html[data-theme="dark"] .drug-table td,
+  html[data-theme="dark"] .schedule-table td,
+  html[data-theme="dark"] .compare-cell,
+  html[data-theme="dark"] .cart-cell,
+  html[data-theme="dark"] .disclaimer,
+  html[data-theme="dark"] .cost-card p,
+  html[data-theme="dark"] .nopharm-card p,
+  html[data-theme="dark"] .food-ok ul li,
+  html[data-theme="dark"] .food-avoid ul li,
+  html[data-theme="dark"] .food-limit ul li,
+  html[data-theme="dark"] .calc-verdict-text,
+  html[data-theme="dark"] .calc-action-text,
+  html[data-theme="dark"] .illus-caption { color: var(--text-mid) !important; }   /* 9.1:1 ✓ */
+
+  /* Headings in dark mode */
+  html[data-theme="dark"] .section h2,
+  html[data-theme="dark"] .section h3,
+  html[data-theme="dark"] h3.sub-h,
+  html[data-theme="dark"] .feature-card h4,
+  html[data-theme="dark"] .alert-body h4,
+  html[data-theme="dark"] .step-body h4,
+  html[data-theme="dark"] .ladder-body h4,
+  html[data-theme="dark"] .lab-table td:first-child,
+  html[data-theme="dark"] .drug-table td:first-child,
+  html[data-theme="dark"] .compare-cell strong,
+  html[data-theme="dark"] .cart-cell strong,
+  html[data-theme="dark"] .calc-metric-card .cmv { color: var(--text) !important; }  /* 12.4:1 ✓ */
+
+  /* Table headers */
+  html[data-theme="dark"] .lab-table th,
+  html[data-theme="dark"] .drug-table th,
+  html[data-theme="dark"] .schedule-table th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .lab-table tr:hover td,
+  html[data-theme="dark"] .drug-table tr:hover td { background: #202d40; }
+
+  /* Alert backgrounds */
+  html[data-theme="dark"] .alert-teal   { background: #0a2830; }
+  html[data-theme="dark"] .alert-amber  { background: #2a1900; }
+  html[data-theme="dark"] .alert-green  { background: #0e2a1c; }
+  html[data-theme="dark"] .alert-red    { background: #2a1515; }
+  html[data-theme="dark"] .alert-purple { background: #1a1030; }
+
+  /* Compare/cartridge grids */
+  html[data-theme="dark"] .compare-grid,
+  html[data-theme="dark"] .cartridge-compare { border-color: #2a3548; }
+  html[data-theme="dark"] .compare-row-label,
+  html[data-theme="dark"] .cart-row-label { background: #1a2535; border-color: #2a3548; color: var(--text-muted); }
+  html[data-theme="dark"] .compare-cell,
+  html[data-theme="dark"] .cart-cell { border-color: #2a3548; }
+
+  /* Related guides — cards are already dark navy, only minor tweak in dark mode */
+  html[data-theme="dark"] .related-card { background: #1a2535; }
+  html[data-theme="dark"] .related-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
+
+  /* Food grids */
+  html[data-theme="dark"] .food-ok    { background: var(--green-soft); border-color: rgba(74,222,128,.15); }
+  html[data-theme="dark"] .food-avoid { background: var(--red-soft);   border-color: rgba(248,113,113,.15); }
+  html[data-theme="dark"] .food-limit { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+
+  /* Cost cards */
+  html[data-theme="dark"] .cost-card { border-color: #2a3548; }
+  html[data-theme="dark"] .cost-card.green { background: var(--green-soft); }
+  html[data-theme="dark"] .cost-card.red   { background: var(--red-soft); }
+  html[data-theme="dark"] .cost-card.amber { background: var(--amber-soft); }
+
+  /* Nopharm cards */
+  html[data-theme="dark"] .nopharm-card { background: #0a2830; border-color: #1a4a50; }
+  html[data-theme="dark"] .nopharm-card h4 { color: var(--teal); }
+
+  /* Disclaimer */
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+
+  /* Illus wrap */
+  html[data-theme="dark"] .illus-wrap { background: #1a2535; }
+  html[data-theme="dark"] .illus-wrap-light { background: #f9fafb !important; }
+
+  /* Calculator */
+  html[data-theme="dark"] .calc-field input,
+  html[data-theme="dark"] .calc-field select { background: #141c2a; border-color: #2a3548; color: var(--text); }
+  html[data-theme="dark"] .calc-metric-card { background: rgba(255,255,255,.04); border-color: #2a3548; }
+  html[data-theme="dark"] .calc-result-box { border-color: #2a3548 !important; background: rgba(255,255,255,.03) !important; }
+  html[data-theme="dark"] .calc-field label { color: var(--teal); }
+  html[data-theme="dark"] .calc-metric-card .cml,
+  html[data-theme="dark"] .calc-disclaimer { color: var(--text-muted); }
+
+  /* Guide footer */
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+
+  /* Numeric cards — n-val/n-value use color:var(--navy); remap for dark */
+  html[data-theme="dark"] .n-val,
+  html[data-theme="dark"] .n-value { color: var(--text); }
+
+  /* Tab hover + clinician tab underline */
+  html[data-theme="dark"] .aud-tab:hover { color: var(--text); }
+  html[data-theme="dark"] .aud-tab.active.tab-md { border-bottom-color: var(--teal); }
+
+  /* Disclaimer strong text — inherits navy from light mode, needs remap */
+  html[data-theme="dark"] .disclaimer strong { color: var(--text-mid); }
+
+  /* Desktop mode */
+  html[data-view="desktop"] { min-width: 1024px; }
+
+  /* ── STAT CARDS ──────────────────────────────────────────────────────────── */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
+  .stat-card{background:var(--teal);border-radius:14px;padding:22px 24px;color:white;text-align:center;}
+  html[data-theme="dark"] .stat-card{background:#0d2535;}
+  .stat-number{font-family:'Inter',sans-serif;font-size:clamp(24px,4vw,34px);font-weight:600;color:#d4af4f;line-height:1.1;margin-bottom:8px;}
+  .stat-label{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;}
+  .stat-source{font-size:11px;color:rgba(255,255,255,.45);margin-top:4px;}
+
+  /* ── NUMERIC CARDS (lighter variant) ─────────────────────────────────────── */
+  .num-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
+  .num-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px 22px;text-align:center;}
+  .n-val,.n-value{font-family:'Inter',sans-serif;font-size:clamp(22px,3.5vw,30px);font-weight:600;color:var(--navy);line-height:1.1;margin-bottom:6px;}
+  .n-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+  .n-target{font-size:12px;color:var(--teal);font-weight:500;margin-top:4px;}
+  .n-note{font-size:12px;color:var(--text-muted);line-height:1.4;}
+
+  /* ── UNIT TOGGLE (eGFR / lab value converters) ───────────────────────────── */
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+
+  /* ── RED FLAGS ───────────────────────────────────────────────────────────── */
+  .red-flags{background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:14px;padding:28px 32px;margin:32px 0;}
+  .red-flags h3{font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:var(--red);margin-bottom:16px;}
+  .red-flags-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
+  .red-flag-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-muted);}
+  .rf-dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:7px;}
+  html[data-theme="dark"] .red-flags{background:#2a1515;border-color:rgba(229,85,85,.2);}
+
+  /* ── ILLUSTRATION PANEL ──────────────────────────────────────────────────── */
+  .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+
+  /* ── CLINICIAN SECTION HERO (.md-hero) ───────────────────────────────────── */
+  .md-hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
+    padding: 60px 0 56px; position: relative; overflow: hidden;
+    isolation: isolate;
+  }
+  .md-hero::before {
+    content: ''; position: absolute; right: -80px; top: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(212,175,79,.1); pointer-events: none;
+  }
+  /* Clinician-hero sigil watermark removed. */
+  .md-hero::after { content: none; }
+  .md-hero > * { position: relative; z-index: 1; }
+  .md-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: #d4af4f; border: 1px solid rgba(212,175,79,.45);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .md-hero h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
+    color: white; margin-bottom: 14px; letter-spacing: -.02em;
+  }
+  .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.82);
+    max-width: 580px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .md-stat {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 10px; padding: 12px 20px;
+  }
+  .md-stat-val {
+    font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 600;
+    color: #d4af4f; line-height: 1; display: block;
+  }
+  .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
+  .md-hero .illus-wrap {
+    background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.14);
+  }
+  .md-hero .img-placeholder { background: transparent; border-color: rgba(255,255,255,.2); margin: 0; }
+  .md-hero .img-placeholder p,
+  .md-hero .img-placeholder .img-ph-icon { color: rgba(255,255,255,.55); }
+
+  /* ── CLINICIAN PATHWAY BANNERS ───────────────────────────────────────────── */
+  .pathway-banner {
+    padding: 20px 0 0;
+  }
+  .pathway-banner-inner {
+    padding: 14px 20px; border-radius: 0 8px 8px 0;
+  }
+  .pathway-banner-inner.neph {
+    border-left: 4px solid var(--teal); background: var(--teal-light);
+  }
+  .pathway-banner-inner.urol {
+    border-left: 4px solid var(--gold); background: #fdf8ec;
+  }
+  .pathway-banner-inner.synth {
+    border-left: 4px solid var(--purple); background: var(--purple-soft);
+  }
+  .pathway-banner-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; margin: 0 0 4px;
+  }
+  .pathway-banner-label.neph { color: var(--teal); }
+  .pathway-banner-label.urol { color: var(--gold); }
+  .pathway-banner-label.synth { color: var(--purple); }
+  .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
+  /* Audience tabs inherit the hero background colour so the bar reads as part
+     of the hero (mint in patient mode, periwinkle in clinician mode). */
+  .audience-tabs{background:linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%);border-bottom:1px solid rgba(15,90,90,.18);position:sticky;top:56px;z-index:150;}
+  body.physician-mode .audience-tabs{background:linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);border-bottom-color:rgba(31,56,100,.18);}
+  .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
+  .aud-tab{flex:1;text-align:center;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .aud-tab:hover{color:var(--navy);}
+  .aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
+  .aud-tab.active.tab-md{border-bottom-color:var(--navy);}
+  .tab-icon{display:none;}  /* legacy emoticons hidden — dropped from new HTML too */
+  .mode-physician{display:none;}
+  .mode-physician-pill{display:none;}
+  body.physician-mode .mode-patient{display:none!important;}
+  body.physician-mode .mode-physician{display:block!important;}
+  body.physician-mode .mode-patient-pill{display:none;}
+  body.physician-mode .mode-physician-pill{display:inline-flex;}
+  html[data-theme="dark"] .audience-tabs{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .aud-tab.active{color:#e8eaf0;}
+
+  /* ── PHYSICIAN MODE — NAVY PALETTE ──────────────────────────────────────
+     When body.physician-mode is active, key components switch from teal to
+     the homepage deep-navy palette (#0f1e2e/#1a3060), making clinician
+     content visually distinct from patient (teal) content at a glance.
+     Contrast verified: white on #0f1e2e = 15.5:1 ✓
+  ─────────────────────────────────────────────────────────────────────── */
+  body.physician-mode .hero {
+    background: linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);  /* pastel periwinkle */
+    color:#34455f;
+  }
+  body.physician-mode .intro-callout { background: #0f1e2e; }
+  body.physician-mode .stat-card     { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
+  body.physician-mode .nav-pill.active-pill {
+    background: var(--navy); border-color: var(--navy);
+  }
+  /* Tab active underline already uses var(--navy) for .tab-md — intentional */
+  /* Dark mode: already very dark; just deepen slightly */
+  html[data-theme="dark"] body.physician-mode .hero {
+    background: linear-gradient(135deg, #060f1a 0%, #0d1e40 100%);
+  }
+  html[data-theme="dark"] body.physician-mode .intro-callout,
+  html[data-theme="dark"] body.physician-mode .stat-card,
+  html[data-theme="dark"] body.physician-mode .ref-band { background: #0a1425; }
+
+  /* ── DARK-MODE HERO ──────────────────────────────────────────────────────
+     The pastel hero gets a TRUE dark variant in dark mode: the patient hero
+     darkens to deep teal, the clinician hero to deep navy, and all hero text
+     (headline, subtitle, meta, tag, badges) flips to light. Contrast AA-verified
+     (white on #0c2a30 = 14.6:1; #eaf6f4 on #0a2228 = 13.9:1). */
+  html[data-theme="dark"] .hero {
+    background: linear-gradient(135deg,#0c2a30 0%,#103d44 55%,#0a2228 100%);
+    color: rgba(233,245,244,.82);
+  }
+  html[data-theme="dark"] .hero h1 { color:#eaf6f4; }
+  html[data-theme="dark"] .hero h1 em { color:#e2b95f; }
+  html[data-theme="dark"] .hero-sub { color:rgba(233,245,244,.82); }
+  html[data-theme="dark"] .hero-meta { color:rgba(233,245,244,.72); }
+  html[data-theme="dark"] .hero-meta strong { color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] .hero-tag {
+    color:rgba(233,245,244,.9); border-color:rgba(255,255,255,.28);
+  }
+  html[data-theme="dark"] .hero-meta time,
+  html[data-theme="dark"] .hero-meta .hero-refcount span[style] {
+    color:rgba(255,255,255,.92) !important;
+    background:rgba(255,255,255,.10) !important;
+    border-color:rgba(255,255,255,.28) !important;
+  }
+  html[data-theme="dark"] .hero-vignette { border-color: rgba(255,255,255,.18); box-shadow: 0 22px 55px rgba(0,0,0,.6); }
+  /* Clinician (physician-mode) dark hero */
+  html[data-theme="dark"] body.physician-mode .hero {
+    background: linear-gradient(135deg,#0a1426 0%,#16294d 100%);
+    color: rgba(238,242,251,.82);
+  }
+  html[data-theme="dark"] body.physician-mode .hero h1 { color:#eef2fb; }
+  html[data-theme="dark"] body.physician-mode .hero h1 em { color:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-sub { color:rgba(238,242,251,.82); }
+  html[data-theme="dark"] body.physician-mode .hero-meta { color:rgba(238,242,251,.72); }
+  html[data-theme="dark"] body.physician-mode .hero-meta strong { color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] body.physician-mode .hero-tag {
+    color:rgba(238,242,251,.9); border-color:rgba(255,255,255,.26);
+  }
+  html[data-theme="dark"] body.physician-mode .hero-toc-head { color:#eef2fb; border-bottom-color: rgba(255,255,255,.16); }
+  html[data-theme="dark"] body.physician-mode .hero-toc-head svg { stroke:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a { color:#dbe6f5; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a + a { border-top-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a:hover { background: rgba(255,255,255,.06); color:#fff; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-num { color:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-arrow { color:#e2b95f; }
+
+  /* ── GUIDE LANGUAGE BAR (regional recipes / multilingual tools) ──────────── */
+  .guide-lang-bar{display:flex;align-items:center;gap:8px;padding:8px 0 16px;flex-wrap:wrap;}
+  .lang-lbl{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-right:4px;}
+  .lang-btn-g{font-family:'Manrope',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;}
+  .lang-btn-g:hover{border-color:var(--teal);color:var(--teal);}
+  .lang-btn-g.active{background:var(--teal);border-color:var(--teal);color:white;}
+
+  /* ── DOT COLOR VARIANTS ──────────────────────────────────────────────────── */
+  .dot-gold{background:var(--gold);}
+  .dot-orange{background:#e07b00;}
+
+  /* ── DOWNLOAD BUTTON (inline variant) ───────────────────────────────────── */
+  .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
+  .download-btn:hover{background:#162848;}
+
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left stack) ───
+     Stacking on the left side (visually top → bottom):
+       1. .dl-fab           bottom:136px  (top — only when present)
+       2. .print-btn        bottom: 80px  (middle)
+       3. .float-controls-left bottom: 24px  (bottom — desktop/mobile toggle) */
+  .dl-fab {
+    position: fixed; bottom: 136px; left: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s; z-index: 9997;
+    text-decoration: none;
+  }
+  .dl-fab:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .dl-fab svg { width: 18px; height: 18px; }
+  .dl-fab .p-tip {
+    position: absolute; left: 54px;
+    background: rgba(31,56,100,.92); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .dl-fab:hover .p-tip { opacity: 1; }
+
+  /* ── HERO RESPONSIVE: stack copy above the panel / portrait ──────────────── */
+  @media(max-width: 820px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+    .hero-figure { margin: 4px auto 0; }
+    /* Phones/tablets: drop the circular vignette entirely — text-only hero. */
+    .hero-figure { display: none; }
+    .hero-cards { width: 100%; }
+  }
+
+  /* ── MOBILE LAYOUT (≤ 480 px / 375 px phones) ───────────────────────────── */
+  /* Tighter side padding on narrow viewports */
+  @media(max-width: 480px) {
+    .container { padding: 0 20px; }
+    .related-guides { padding-left: 20px; padding-right: 20px; }
+    .guide-footer .footer-inner { padding: 0 20px; }
+    .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .dr-card-wrap { padding: 0 20px 40px; }
+    .hero-meta { gap: 14px; }
+  }
+
+  /* Tables: horizontal scroll to prevent content overflow on phones */
+  @media(max-width: 640px) {
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  }
+
+  /* ── IMAGE LIGHTBOX (assets/image-lightbox.js) ─────────────────────────── */
+  figure img, .illus-wrap img { cursor: zoom-in; }
+  figure img:hover, .illus-wrap img:hover { opacity: .92; }
+  /* Non-hero inline images: thumbnail size — lightbox handles magnification */
+  figure img:not([fetchpriority="high"]),
+  .illus-wrap img:not([fetchpriority="high"]) {
+    max-width: 480px; width: 100%; height: auto; display: block;
+    margin-left: auto; margin-right: auto;
+  }
+
+  #img-lb.lb-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.93); z-index: 9500;
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px 16px 16px; cursor: pointer; overflow-y: auto;
+  }
+  #img-lb.lb-overlay.open { display: flex; }
+
+  .lb-body {
+    display: flex; flex-direction: column; align-items: center;
+    max-width: min(95vw, 1280px); cursor: default;
+  }
+  .lb-img {
+    max-width: 100%; max-height: 72vh; border-radius: 8px;
+    object-fit: contain; box-shadow: 0 8px 48px rgba(0,0,0,.7);
+    cursor: zoom-in; display: block;
+  }
+  .lb-caption-panel {
+    width: 100%; background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.13); border-top: none;
+    border-radius: 0 0 8px 8px; padding: 14px 18px;
+  }
+  .lb-desc {
+    color: rgba(255,255,255,.88); font-size: 13px; line-height: 1.6;
+    margin: 0 0 10px; font-style: italic;
+  }
+  .lb-desc:last-child { margin-bottom: 0; }
+  .lb-abbrevs {
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 12px; row-gap: 3px; margin: 0;
+    border-top: 1px solid rgba(255,255,255,.1); padding-top: 10px;
+  }
+  .lb-abbrevs dt {
+    color: rgba(255,255,255,.5); font-size: 11px; font-weight: 700;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .lb-abbrevs dd {
+    color: rgba(255,255,255,.72); font-size: 11px; margin: 0;
+  }
+  .lb-close {
+    position: fixed; top: 16px; right: 20px;
+    color: #fff; font-size: 24px; line-height: 1;
+    background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.25);
+    border-radius: 50%; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .15s; z-index: 9501;
+  }
+  .lb-close:hover { background: rgba(255,255,255,.28); }
+  .lb-hint {
+    margin-top: 14px; color: rgba(255,255,255,.3); font-size: 11px;
+    pointer-events: none; text-align: center; letter-spacing: .02em;
+  }
+  @media (max-width: 600px) {
+    .lb-img { max-height: 58vh; }
+    .lb-hint { white-space: normal; font-size: 10px; }
+  }
+  @media print { #img-lb.lb-overlay { display: none !important; } }
+
+  /* Standard figcaption for guide images */
+  figure figcaption, .illus-caption {
+    font-size: 12px; color: var(--text-muted); margin-top: 10px;
+    font-style: italic; text-align: center; line-height: 1.5;
+  }
+  .fig-desc { margin: 0 0 6px; }
+  .fig-abbrevs {
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 10px; row-gap: 2px; margin: 6px 0 0;
+    font-style: normal; text-align: left;
+  }
+  .fig-abbrevs dt { font-weight: 700; color: var(--text-mid); }
+  .fig-abbrevs dd { margin: 0; color: var(--text-muted); }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     Keep the floating Symptom-Checker FAB clear of the floating dark/light
+     toggle. Every guide now carries the floating dark widget at bottom:24px
+     right:24px (44px wide), so the FAB (default bottom:22px right:22px)
+     would collide. Shift it ~70px left so they sit side-by-side.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  .sc-fab { right: 88px !important; }
+  @media (max-width: 600px) {
+    .sc-fab { right: 72px !important; bottom: 16px !important; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     PRINT
+  ═══════════════════════════════════════════════════════════════════════════ */
+  @media print {
+    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .dl-fab, .scroll-top-btn, .guide-footer { display: none !important; }
+    body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; }
+    .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; }
+    .hero h1 { color: #1f3864 !important; font-size: 22px !important; }
+    .hero-sub { color: #333 !important; font-size: 13px !important; }
+    .hero-tag, .hero-meta { color: #555 !important; }
+    .container { max-width: 100%; padding: 0 24px; }
+    .section { padding: 20px 0; border-bottom: 1px solid #ddd; }
+    .intro-callout { background: #f0f4f8 !important; color: #000 !important; border: 1px solid #ccc; }
+    .intro-callout p { color: #222 !important; }
+    .alert { border: 1px solid #ccc !important; background: #f9f9f9 !important; }
+    .alert-body h4, .alert-body p, .alert-body ul li { color: #222 !important; }
+    .feature-card { border: 1px solid #ccc !important; background: #fff !important; }
+    .feature-card h4 { color: #1f3864 !important; }
+    .feature-card p { color: #333 !important; }
+    .table-wrap { box-shadow: none !important; border: 1px solid #ccc !important; }
+    .table-wrap thead th { background: #eee !important; color: #333 !important; }
+    .table-wrap tbody td { color: #333 !important; }
+    .lab-table th { background: #eee !important; color: #333 !important; }
+    .lab-table td { color: #333 !important; }
+    .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
+    .dr-card h4, .dr-card p, .dr-card .dr-creds { color: #222 !important; }
+    .dr-qr { display: none !important; }
+    .checklist { background: #f0f4f8 !important; border: 1px solid #ccc; }
+    .checklist h4, .checklist ul li { color: #222 !important; }
+    .disclaimer { background: #fff8e8 !important; border: 1px solid #ccc !important; color: #333 !important; }
+    .illus-wrap { border: 1px solid #ccc; background: #f9f9f9 !important; }
+    a[href]:after { content: " (" attr(href) ")"; font-size: 10px; color: #666; }
+    .nav-pill { display: none; }
+    @page { margin: 18mm 15mm; size: A4; }
+  }
+</style>
+
+<style>
+/* Restored per-guide CSS */
+.badge-amber{background:var(--amber-soft);color:#9a6500;}
+.badge-green{background:var(--green-soft);color:var(--green);}
+.calc-action{font-size:13.5px;line-height:1.7;padding-top:12px;border-top:1px solid rgba(0,0,0,.08);}
+.calc-metric{background:rgba(255,255,255,.6);border-radius:10px;padding:14px;text-align:center;border:1px solid rgba(0,0,0,.06);}
+.calc-metric .m-val{font-family:'Inter',sans-serif;font-size:32px;font-weight:600;line-height:1;}
+.calc-metric .m-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-top:4px;opacity:.7;}
+.calc-metric .m-target{font-size:11px;margin-top:5px;font-weight:600;}
+html[data-theme="dark"] .calc-metric{background:rgba(255,255,255,.04);border-color:#2a3548;}
+.calc-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px;}
+.calc-result{display:none;border-radius:12px;padding:22px 24px;border:2px solid transparent;margin-top:4px;transition:all .3s;}
+html[data-theme="dark"] .calc-result{border-color:#2a3548 !important;}
+.calc-verdict{font-size:14px;line-height:1.7;margin-bottom:12px;}
+.clin-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13.5px;}
+.clin-table th{text-align:left;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 14px;background:var(--bg);border-bottom:2px solid var(--border);}
+.clin-table td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text-mid);vertical-align:top;line-height:1.5;}
+.clin-table td:first-child{font-weight:600;color:var(--navy);}
+.clin-table tr:last-child td{border-bottom:none;}
+.clin-table tr:hover td{background:var(--bg);}
+html[data-theme="dark"] .clin-table th{background:#1a2535;color:#8a95a8;}
+html[data-theme="dark"] .clin-table td{border-color:#2a3548;color:#c0cad8;}
+html[data-theme="dark"] .clin-table td:first-child{color:#e8eaf0;}
+html[data-theme="dark"] .clin-table tr:hover td{background:#202d40;}
+body.physician-mode .nav-strip .nav-pill.md-pill{display:inline-block;}
+.md-pill{display:none;}
+body.physician-mode .nav-strip .nav-pill.pt-pill{display:none;}
+
+
+/* Dark mode */
+body.dark .related-card {
+  background: #1a2535;
+  border-color: #2a3a4a;
+}
+body.dark .related-card:hover {
+  border-color: var(--teal, #1a6b72);
+}
+body.dark .related-card-title {
+  color: #e8edf2;
+}
+/* ── PROM TOOLS ── */
+.prom-tab-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.prom-tab-btn{padding:8px 18px;font-size:13px;font-weight:600;border:1.5px solid var(--border);border-radius:20px;background:transparent;color:var(--text-mid);cursor:pointer;transition:all .15s;font-family:inherit;}
+.prom-tab-btn.active{background:var(--teal);border-color:var(--teal);color:white;}
+.prom-tab-btn:hover:not(.active){border-color:var(--teal);color:var(--teal);}
+.prom-panel{display:none;}
+.prom-panel.active{display:block;}
+.prom-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+.prom-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0;}
+@media(max-width:640px){.prom-grid,.prom-grid-3{grid-template-columns:1fr;}}
+.prom-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:10px 14px;}
+html[data-theme="dark"] .prom-item{background:#1a2535;border-color:#2a3548;}
+.prom-item label{display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px;line-height:1.4;}
+.prom-item select{width:100%;font-family:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);cursor:pointer;}
+html[data-theme="dark"] .prom-item select{background:#141c2a;border-color:#2a3548;color:#e8eaf0;}
+.prom-calc-btn{display:block;width:100%;padding:13px;background:var(--teal);color:white;border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;margin:16px 0 8px;transition:background .15s;}
+.prom-calc-btn:hover{background:#145c63;}
+.prom-result{display:none;border-radius:12px;padding:20px 24px;margin-top:12px;}
+.prom-result.show{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+.prom-result-num{font-size:48px;font-weight:800;line-height:1;min-width:70px;text-align:center;color:white;}
+.prom-result-info h4{font-size:15px;font-weight:700;margin:0 0 4px;color:white;}
+.prom-result-info p{font-size:13px;color:rgba(255,255,255,.82);margin:0;line-height:1.5;}
+.prom-res-green{background:#166534;}
+.prom-res-teal{background:#1a6b72;}
+.prom-res-amber{background:#d97706;}
+.prom-res-red{background:#b91c1c;}
+.prom-ref{font-size:11px;color:var(--text-faint);margin-top:10px;font-style:italic;}
+.prom-intro-note{background:var(--bg);border:1px solid var(--border);border-left:4px solid var(--teal);border-radius:10px;padding:14px 18px;margin:12px 0 18px;font-size:13px;color:var(--text-mid);line-height:1.6;}
+html[data-theme="dark"] .prom-intro-note{background:#141c2a;border-color:#2a3548;border-left-color:var(--teal);}
+/* ── PATIENT INFO + PRINT REPORT ── */
+.prom-pi-wrap{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;}
+html[data-theme="dark"] .prom-pi-wrap{background:#141c2a;border-color:#2a3548;}
+.prom-pi-title{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.prom-pi-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;}
+@media(max-width:600px){.prom-pi-grid{grid-template-columns:1fr 1fr;}}
+.prom-pi-field label{display:block;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
+.prom-pi-field input,.prom-pi-field select{width:100%;box-sizing:border-box;font-family:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);}
+html[data-theme="dark"] .prom-pi-field input,html[data-theme="dark"] .prom-pi-field select{background:#1a2535;border-color:#2a3548;color:#e8eaf0;}
+.prom-pi-field input::placeholder{color:var(--text-faint);}
+.prom-print-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;background:var(--navy);color:white;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;transition:background .15s;}
+.prom-print-btn:hover{background:#162848;}
+.prom-print-btn svg{width:16px;height:16px;flex-shrink:0;}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Dialysis Adequacy Calculator — spKt/V & URR (Daugirdas)",
+  "url": "https://www.williamriveromd.com/guides/calc-dialysis-adequacy-ktv.html",
+  "author": {
+    "@type": "Physician",
+    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "url": "https://www.williamriveromd.com/"
+  },
+  "dateModified": "2026-06-01",
+  "datePublished": "2026-06-23",
+  "inLanguage": "en-PH",
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "patient"
+  }
+}
+</script>
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Inter',sans-serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Inter',sans-serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+/* Calculate buttons — the .calc-btn/.calc-run/.tool-btn classes had no master-CSS
+   rule, so they rendered as tiny default browser buttons. Make them prominent and
+   theme-stable (solid teal + white, fixed hex so dark mode doesn't wash them out). */
+.calc-btn,.calc-run,.tool-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:16px 0 6px;padding:13px 30px;background:#1a6b72;color:#fff;border:none;border-radius:10px;font-family:'Manrope',sans-serif;font-size:1.02rem;font-weight:700;letter-spacing:.01em;cursor:pointer;box-shadow:0 2px 10px rgba(26,107,114,.30);transition:background .18s,box-shadow .18s,transform .05s;}
+.calc-btn:hover,.calc-run:hover,.tool-btn:hover{background:#155a60;box-shadow:0 5px 16px rgba(26,107,114,.40);}
+.calc-btn:active,.calc-run:active,.tool-btn:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(26,107,114,.30);}
+@media(max-width:600px){.calc-btn,.calc-run,.tool-btn{width:100%;}}
+/* Legacy .tool-* widget system — a few decision-aid calculators were lifted with
+   this guide-specific markup but without its CSS, so the inputs rendered bare.
+   Restyle here (CSS variables for dark-mode safety; radio options as chips). */
+.tool-box{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin:16px 0;}
+.tool-box>h3{font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:600;color:var(--navy);margin:0 0 6px;}
+.tool-box .tool-sub{font-size:13px;color:var(--text-muted);margin:0 0 18px;line-height:1.5;}
+.two-col-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:520px){.two-col-inputs{grid-template-columns:1fr;}}
+.tool-label{display:block;font-size:13px;font-weight:600;color:var(--text);margin:14px 0 5px;}
+.tool-input,.tool-select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;color:var(--text);background:var(--white);box-sizing:border-box;}
+.tool-select{cursor:pointer;}
+.tool-input:focus,.tool-select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,107,114,.13);}
+.radio-group{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px;}
+.radio-item{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text-mid);cursor:pointer;background:var(--white);transition:border-color .15s;}
+.radio-item:hover{border-color:var(--teal);}
+.radio-item input{accent-color:var(--teal);margin:0;}
+.tool-result{display:none;margin-top:18px;padding:16px 20px;border-radius:10px;border:1px solid var(--border);background:var(--white);}
+.tool-result.show{display:block;}
+html[data-theme="dark"] .tool-box>h3{color:var(--text);}
+/* Non-standard unit-toggle markup (.ut-btn / .unit-toggle-row / .unit-toggle-lbl
+   / .ut-sep) that a few calculators used instead of the master .unit-btn system —
+   style them to match the polished segmented control. */
+.unit-toggle-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 16px;}
+.unit-toggle-lbl{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;}
+.ut-sep{width:1px;height:18px;background:var(--border);display:inline-block;}
+.ut-btn{padding:6px 14px;border:1px solid var(--border);background:var(--white);color:var(--text-mid);font-family:'Manrope',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;border-radius:6px;transition:border-color .15s,background .15s,color .15s;}
+.ut-btn:hover{border-color:var(--teal);}
+.ut-btn.active{background:#1a6b72;border-color:#1a6b72;color:#fff;}
+/* Accessible hero cross-links: high-contrast white text + gold underline (link
+   affordance not by colour alone), visible focus ring, larger hit area. The
+   hero is dark in both themes, so white works throughout. */
+.hero-xlink{color:#0e4a50;font-weight:600;text-decoration:underline;text-decoration-color:var(--gold-light);text-decoration-thickness:1.5px;text-underline-offset:3px;border-radius:6px;padding:2px 4px;}
+.hero-xlink:hover{color:#0b3a40;}
+.hero-xlink:focus-visible{outline:2px solid var(--gold-light);outline-offset:2px;}
+/* Dark mode: --navy is NOT remapped, so every element the master CSS colors with
+   var(--navy) renders dark-on-dark. Some source guides also shipped an older
+   master CSS missing these overrides — so recolor them all here (this block is
+   injected last and applies to all calculator pages regardless of CSS version). */
+html[data-theme="dark"] .mdc-acc>summary,
+html[data-theme="dark"] .mdc-acc-body>h3.mdc-sub,
+html[data-theme="dark"] .section h2,
+html[data-theme="dark"] .section h3,
+html[data-theme="dark"] .alert-body h4,
+html[data-theme="dark"] .feature-card h4,
+html[data-theme="dark"] .step-body h4,
+html[data-theme="dark"] .ladder-body h4,
+html[data-theme="dark"] .tl-body h4,
+html[data-theme="dark"] .disclaimer strong,
+html[data-theme="dark"] .lab-table td:first-child,
+html[data-theme="dark"] .drug-table td:first-child,
+html[data-theme="dark"] .compare-cell strong,
+html[data-theme="dark"] .cart-cell strong,
+html[data-theme="dark"] .calc-metric-card .cmv,
+html[data-theme="dark"] .n-val,
+html[data-theme="dark"] .n-value{color:var(--text)!important;}
+html[data-theme="dark"] .calc-verdict-text,
+html[data-theme="dark"] .calc-action-text{color:var(--text-mid)!important;}
+html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
+html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
+</style>
+</head>
+<body class="calc-page">
+<script>/* pre-paint physician-mode restore — class applied before first paint, zero CLS.
+   Do NOT move this to the bottom of the page or convert it into a
+   post-paint restore — that reintroduces the CLS bug patch_mode_cls.py
+   exists to kill. See CLAUDE.md. */
+try{if(localStorage.getItem('wgmr-mode-adequacy')==='physician'){document.body.classList.add('physician-mode');document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('tab-pt'),m=document.getElementById('tab-md');if(p)p.classList.remove('active');if(m)m.classList.add('active');});}}catch(e){}</script>
+
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <nav class="header-nav"><a href="calculators.html">CALCULATORS</a><a href="kidney-physiology.html">PHYSIOLOGY</a><a href="nephrology-atlas.html">ATLAS</a><a href="/guides/">ALL GUIDES</a></nav>
+</header>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+  <button class="toggle-btn" id="desktopToggle" onclick="toggleDesktop()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span id="desktopLabel">Desktop</span>
+  </button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Hemodialysis Adequacy</div>
+<h1>Dialysis Adequacy Calculator <em>spKt/V · URR · UFR (Daugirdas)</em></h1>
+<p class="hero-sub">Enter paired pre- and post-dialysis BUN values with session details to compute single-pool Kt/V using the Daugirdas second-generation equation, the urea reduction ratio (URR), estimated total body water (V), and the ultrafiltration rate — each checked against KDOQI/KDIGO targets.</p>
+<div class="hero-meta">
+<span class="hero-published"><strong>Published:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
+<span class="hero-refcount"><strong>References:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">5</span></span>
+<span class="hero-readtime"><strong>Read time:</strong> <time datetime="PT7M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~7 min</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="dialysis-adequacy.html" class="hero-xlink">Full dialysis adequacy guide →</a></p>
+</div>
+</section>
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+</div>
+</nav>
+
+<main class="container">
+
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Choose <strong>Conventional</strong> (BUN mg/dL) or <strong>SI</strong> (urea mmol/L) units to match your lab report. The Kt/V ratio is unit-independent; switching units clears the BUN fields.</li>
+<li>Enter the <strong>pre-dialysis BUN</strong> (drawn from the arterial line before the pump starts) and the <strong>post-dialysis BUN</strong> (drawn within ~30 seconds of stopping, before rinse-back, using a slow-flow or stop-pump technique) from the <em>same</em> session.</li>
+<li>Enter the <strong>session duration</strong> in minutes, the <strong>ultrafiltration volume</strong> in liters (usually pre-weight minus post-weight), and the <strong>post-dialysis weight</strong> in kilograms.</li>
+<li>Select <strong>biological sex</strong> so total body water (V) can be estimated (Watson-style coefficient: 0.60 × weight for males, 0.55 × weight for females).</li>
+<li>Results update live: spKt/V, URR, estimated V, and UFR, each with a colored target badge plus a plain-language verdict and recommended action.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
+<p>Use this tool to quantify the delivered dose of a single hemodialysis session. It computes single-pool Kt/V (spKt/V) by the Daugirdas second-generation equation, the urea reduction ratio (URR), an estimate of total body water (V), and the ultrafiltration rate (UFR). It is the calculation done at every monthly adequacy review and whenever a patient feels under-dialyzed.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Appropriate use</h4>
+<p>Maintenance hemodialysis patients who have a pre-dialysis BUN and a correctly timed post-dialysis BUN from the <em>same</em> midweek session, plus the session duration, ultrafiltration volume, post-dialysis weight, and sex (to estimate V). Most useful for confirming adequacy, troubleshooting a low Kt/V, or checking that ultrafiltration is within a safe rate.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>When NOT to rely on it</h4>
+<p>The single-pool Kt/V overestimates the true (equilibrated) dose because of post-dialysis urea rebound, and it does not apply to peritoneal dialysis (PD uses a weekly Kt/V from dialysate and urine collection). The post-BUN must be drawn correctly — a sample taken after rinse-back, recirculation, or with the pump slowed will falsely inflate Kt/V. Kt/V is one dimension of adequacy; fluid status, nutrition, and symptoms matter too.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Draw the post-BUN correctly</h4>
+<p>The single biggest source of a falsely high Kt/V is a mis-timed post-dialysis sample. Use a slow-flow (≈100 mL/min for 15 s) or stop-pump technique and draw immediately at the end of treatment, before saline rinse-back, to avoid dilution and access recirculation artifacts.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Kt/V is size-normalized — V matters</h4>
+<p>Because Kt/V divides clearance by total body water, a small patient reaches target with a shorter or slower session than a large patient at identical machine settings. When Kt/V is low, increasing time, blood-flow rate (Qb), or dialyzer surface area — or addressing access recirculation — usually raises it more reliably than any single change.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Single-pool Kt/V overestimates the true equilibrated dose by ~0.2 due to urea rebound — a borderline spKt/V of 1.2 may be inadequate. (2) URR ignores ultrafiltration and is less precise than Kt/V; trust the Kt/V when they disagree. (3) This calculator does not apply to peritoneal dialysis, which uses a weekly Kt/V from a 24-hour dialysate and urine collection. (4) A high UFR (&gt; 13 mL/h/kg) is a hemodynamic red flag even when Kt/V is excellent.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="why">
+<summary>Why Use It</summary>
+<div class="mdc-acc-body">
+<p>Under-dialysis is independently associated with higher mortality, worse uremic symptoms, and poorer quality of life. Kt/V expresses the cleared volume of urea (K×t) relative to the urea distribution volume (V), giving a normalized, body-size-adjusted dose that can be compared to a guideline target (spKt/V ≥ 1.4 for thrice-weekly HD). URR is a simpler, less precise companion metric. Because total body water — and therefore V — scales with weight and sex, the same machine settings deliver a very different dose in a large versus a small patient; computing V makes that explicit. A high ultrafiltration rate (UFR), meanwhile, flags hemodynamic risk independent of solute clearance.</p>
+</div>
+</details>
+
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>Dialysis Adequacy Calculator — spKt/V &amp; URR</h2>
+<p>Enter your paired BUN values and session details to calculate your spKt/V (Daugirdas 2nd generation formula), URR, estimated body water (V), and ultrafiltration rate (UFR). Find these values on your monthly dialysis lab results or in your dialysis chart.</p>
+  <div class="calc-wrap">
+      <div class="unit-toggle-wrap">
+        <span class="ut-label">Units:</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="dial-btn-conv" onclick="switchDialUnit('conv')">Conventional (BUN mg/dL)</button>
+          <button class="unit-btn" id="dial-btn-si" onclick="switchDialUnit('si')">SI (Urea mmol/L)</button>
+        </div>
+      </div>
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label id="dialysis-lbl-bunpre" for="c-bun-pre">Pre-Dialysis BUN (mg/dL)</label>
+        <input id="c-bun-pre" type="number" min="10" max="300" step="0.1" placeholder="e.g. 75" oninput="calcAdequacy()">
+        <div class="field-hint" id="dialysis-hint-bunpre">BUN drawn before session starts (arterial line, before pump on)</div>
+      </div>
+      <div class="calc-field">
+        <label id="dialysis-lbl-bunpost" for="c-bun-post">Post-Dialysis BUN (mg/dL)</label>
+        <input id="c-bun-post" type="number" min="1" max="200" step="0.1" placeholder="e.g. 22" oninput="calcAdequacy()">
+        <div class="field-hint" id="dialysis-hint-bunpost">BUN drawn within 30 sec of stopping dialysis (before rinse-back)</div>
+      </div>
+      <div class="calc-field">
+        <label for="c-time">Session Duration (minutes)</label>
+        <input id="c-time" type="number" min="60" max="600" step="1" placeholder="e.g. 240" oninput="calcAdequacy()">
+        <div class="field-hint">Actual run time in minutes (e.g. 4 hrs = 240 min)</div>
+      </div>
+      <div class="calc-field">
+        <label for="c-uf">Ultrafiltration Volume (L)</label>
+        <input id="c-uf" type="number" min="0" max="10" step="0.1" placeholder="e.g. 2.5" oninput="calcAdequacy()">
+        <div class="field-hint">Total fluid removed during session (pre-weight minus post-weight in kg ≈ liters)</div>
+      </div>
+      <div class="calc-field">
+        <label for="c-wt">Post-Dialysis Weight (kg)</label>
+        <input id="c-wt" type="number" min="20" max="200" step="0.1" placeholder="e.g. 58.5" oninput="calcAdequacy()">
+        <div class="field-hint">Patient weight immediately after session (dry weight). Used to estimate V (body water ≈ weight × 0.55 for females, × 0.60 for males)</div>
+      </div>
+      <div class="calc-field">
+        <label for="c-sex">Biological Sex</label>
+        <select id="c-sex" onchange="calcAdequacy()" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'Manrope',sans-serif;font-size:15px;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231a6b72' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;">
+          <option value="">Select…</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+        <div class="field-hint">Used to estimate total body water (V). Males: V = 0.60 × weight; Females: V = 0.55 × weight</div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="calc-result" id="calc-result">
+      <div class="calc-metrics">
+        <div class="calc-metric">
+          <div class="m-val" id="r-ktv" style="color:#1a6b72;">—</div>
+          <div class="m-label">spKt/V</div>
+          <div class="m-target" id="r-ktv-badge">Target ≥ 1.4</div>
+        </div>
+        <div class="calc-metric">
+          <div class="m-val" id="r-urr" style="color:#1a6b72;">—</div>
+          <div class="m-label">URR %</div>
+          <div class="m-target" id="r-urr-badge">Target ≥ 65%</div>
+        </div>
+        <div class="calc-metric">
+          <div class="m-val" id="r-v" style="color:#0f1e2e;font-size:24px;">—</div>
+          <div class="m-label">V (L)</div>
+          <div class="m-target" style="color:var(--text-muted);">Est. body water</div>
+        </div>
+        <div class="calc-metric">
+          <div class="m-val" id="r-ufr" style="color:#0f1e2e;font-size:24px;">—</div>
+          <div class="m-label">UFR mL/h/kg</div>
+          <div class="m-target" id="r-ufr-badge">Target &lt; 10</div>
+        </div>
+      </div>
+      <div class="calc-verdict" id="r-verdict"></div>
+      <div class="calc-action" id="r-action"></div>
+    </div>
+
+    <p style="font-size:11.5px;color:var(--text-muted);margin-top:16px;line-height:1.6;">⚕ Formula: spKt/V = −ln(R − 0.008×t) + (4 − 3.5×R) × UF/V, where R = Post-BUN/Pre-BUN, t = session time in hours. This is the Daugirdas second-generation equation — the KDIGO/KDOQI recommended standard. This calculator is for educational purposes and does not replace clinical assessment by your dialysis team.</p>
+  </div>
+</section>
+
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
+<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
+<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
+<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
+</ul>
+</div>
+</details>
+
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula &amp; Equations</h3>
+<table class="lab-table">
+<thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
+<tbody>
+<tr><td>Post/pre urea ratio (R)</td><td>R = post-dialysis BUN ÷ pre-dialysis BUN</td></tr>
+<tr><td>Single-pool Kt/V (Daugirdas 2nd generation)</td><td>spKt/V = −ln(R − 0.008 × t) + (4 − 3.5 × R) × UF ÷ V, where t = session time in <em>hours</em></td></tr>
+<tr><td>Urea reduction ratio (URR, %)</td><td>URR = (pre-BUN − post-BUN) ÷ pre-BUN × 100</td></tr>
+<tr><td>Total body water / volume of distribution (V)</td><td>V = post-dialysis weight (kg) × 0.60 (male) or × 0.55 (female)</td></tr>
+<tr><td>Ultrafiltration rate (UFR, mL/h/kg)</td><td>UFR = UF volume (mL) ÷ session time (h) ÷ post-dialysis weight (kg)</td></tr>
+</tbody>
+</table>
+<h3 style="margin-top:24px;">Target reference ranges</h3>
+<table class="lab-table">
+<thead><tr><th>Metric</th><th>Target (thrice-weekly HD)</th></tr></thead>
+<tbody>
+<tr><td>Single-pool Kt/V</td><td>Minimum ≥ 1.2; recommended target ≥ 1.4 (KDOQI 2015)</td></tr>
+<tr><td>Urea reduction ratio (URR)</td><td>≥ 65%</td></tr>
+<tr><td>Ultrafiltration rate (UFR)</td><td>Keep &lt; 13 mL/h/kg; ideally &lt; 10 mL/h/kg</td></tr>
+</tbody>
+</table>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The Daugirdas second-generation logarithmic equation is the KDOQI/KDIGO-endorsed bedside estimate of single-pool variable-volume Kt/V. The (4 − 3.5 × R) × UF/V term accounts for convective urea removal during ultrafiltration. Single-pool Kt/V overestimates the equilibrated Kt/V by roughly 0.2 because of urea rebound; UFR thresholds derive from observational dialysis-cohort data.</p>
+<h3 class="mdc-sub">Evidence &amp; References</h3>
+<p>The spKt/V equation is the Daugirdas second-generation formula (1993), adopted as the standard bedside method by KDOQI and KDIGO. The minimum spKt/V ≥ 1.2 and target ≥ 1.4 for thrice-weekly hemodialysis come from the KDOQI 2015 Hemodialysis Adequacy update, informed by the HEMO Study, which found no survival benefit from a dose above this threshold. URR ≥ 65% is the corresponding historical CMS/KDOQI benchmark.</p>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Daugirdas JT. <em>Second generation logarithmic estimates of single-pool variable volume Kt/V: an analysis of error.</em> J Am Soc Nephrol. 1993;4(5):1205–1213.</li>
+<li>National Kidney Foundation. <em>KDOQI Clinical Practice Guideline for Hemodialysis Adequacy: 2015 Update.</em> Am J Kidney Dis. 2015;66(5):884–930.</li>
+<li>Eknoyan G, Beck GJ, Cheung AK, et al. <em>Effect of dialysis dose and membrane flux in maintenance hemodialysis (the HEMO Study).</em> N Engl J Med. 2002;347(25):2010–2019.</li>
+<li>Watson PE, Watson ID, Batt RD. <em>Total body water volumes for adult males and females estimated from simple anthropometric measurements.</em> Am J Clin Nutr. 1980;33(1):27–39.</li>
+<li>Flythe JE, Kimmel SE, Brunelli SM. <em>Rapid fluid removal during dialysis is associated with cardiovascular morbidity and mortality.</em> Kidney Int. 2011;79(2):250–257.</li>
+</ol>
+</div>
+</details>
+
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for clinicians and patients and does not replace individualized assessment by your dialysis team. A single Kt/V or URR is interpreted alongside fluid status, nutrition, symptoms, and serial trends. Do not change your dialysis prescription based on one result without consulting your nephrologist.</div>
+
+<!-- CALC-CROSSLINK-START -->
+<section class="section" aria-label="Related calculators" style="border-bottom:none;padding-top:36px;">
+<div class="section-tag">Related Calculators</div>
+<h2 style="font-size:1.25rem;">Use this with</h2>
+<div class="related-cards">
+<a class="related-card has-thumb" href="calc-npcr.html">
+<div class="related-card-tag">Calculator</div>
+<div class="related-card-title">nPCR — Protein Catabolic Rate</div>
+
+          <img class="related-card-thumb" src="../images/calc-npcr-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<a class="related-card has-thumb" href="calc-hd-adequacy-npcr.html">
+<div class="related-card-tag">Calculator</div>
+<div class="related-card-title">HD Adequacy + nPCR (Kt/V · URR · nPCR)</div>
+
+          <img class="related-card-thumb" src="../images/calc-hd-adequacy-npcr-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<a class="related-card has-thumb" href="calc-dialysis-prescription.html">
+<div class="related-card-tag">Calculator</div>
+<div class="related-card-title">Dialysis Prescription Calculators</div>
+
+          <img class="related-card-thumb" src="../images/calc-dialysis-prescription-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+</div>
+</section>
+<!-- CALC-CROSSLINK-END -->
+</main>
+
+
+
+    <!-- DR CARD -->
+<!-- REFERENCES-ACC-START -->
+<!-- Accordion references — generated by patch_references_accordion.py. Inline styles so patch_master_css.py will not clobber it. -->
+<section class="ref-section" style="max-width:860px;margin:8px auto 0;padding:0 32px;">
+<details class="ref-acc" style="border:1px solid var(--border);border-radius:12px;background:var(--white);overflow:hidden;">
+<summary style="cursor:pointer;list-style:none;padding:15px 20px;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;color:var(--text);display:flex;align-items:center;gap:10px;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;color:var(--teal);"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+<span data-lang="en">References</span>
+<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">5 sources</span>
+</summary>
+<ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);">
+<li>Daugirdas JT. Second generation logarithmic estimates of single-pool variable volume Kt/V: an analysis of error. J Am Soc Nephrol. 1993;4(5):1205-1213.</li>
+<li>National Kidney Foundation. KDOQI Clinical Practice Guideline for Hemodialysis Adequacy: 2015 Update. Am J Kidney Dis. 2015;66(5):884-930.</li>
+<li>Eknoyan G, Beck GJ, Cheung AK, et al. Effect of dialysis dose and membrane flux in maintenance hemodialysis (the HEMO Study). N Engl J Med. 2002;347(25):2010-2019.</li>
+<li>Watson PE, Watson ID, Batt RD. Total body water volumes for adult males and females estimated from simple anthropometric measurements. Am J Clin Nutr. 1980;33(1):27-39.</li>
+<li>Flythe JE, Kimmel SE, Brunelli SM. Rapid fluid removal during dialysis is associated with cardiovascular morbidity and mortality. Kidney Int. 2011;79(2):250-257.</li>
+</ol>
+</details>
+</section>
+<!-- REFERENCES-ACC-END -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W Rivero, MD, FPCP, DPSN</a></h4>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span></p>
+<p class="dr-creds"> &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span></p>
+</div>
+</div>
+</div>
+
+<!-- RELATED-GUIDES-START -->
+      <div class="related-guides">
+        <h2>
+          <span data-lang="en">Related Guides</span>
+          
+          
+          
+        </h2>
+        <div class="related-cards">
+        <a class="related-card has-thumb" href="living-with-dialysis.html">
+          <div class="related-card-tag">Understanding Hemodialysis</div>
+          <div class="related-card-title">Living with Dialysis</div>
+          <div class="related-card-desc">A practical guide for hemodialysis patients — what to expect at each session, how to protect your ac</div>
+          <div class="related-card-arrow">Read →</div>
+        
+          <img class="related-card-thumb" src="../images/living-with-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+        <a class="related-card has-thumb" href="hemodialysis-modalities.html">
+          <div class="related-card-tag">Fundamentals</div>
+          <div class="related-card-title">Hemodialysis Modalities Explained</div>
+          <div class="related-card-desc">Conventional HD, HDF, home hemodialysis, peritoneal dialysis, CRRT, SLED — what each modality does d</div>
+          <div class="related-card-arrow">Read →</div>
+        
+          <img class="related-card-thumb" src="../images/hemodialysis-modalities-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+        <a class="related-card has-thumb" href="understanding-lab-results.html">
+          <div class="related-card-tag">Getting Started</div>
+          <div class="related-card-title">Understanding Your Lab Results</div>
+          <div class="related-card-desc">A plain-language decoder for the most common blood and urine tests — what each number means, what yo</div>
+          <div class="related-card-arrow">Read →</div>
+        
+          <img class="related-card-thumb" src="../images/understanding-lab-results-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+        <a class="related-card has-thumb" href="anemia-management.html">
+          <div class="related-card-tag">The Basics</div>
+          <div class="related-card-title">Anemia Management</div>
+          <div class="related-card-desc">Why anemia develops, how to identify its cause, and the targeted treatments — iron, erythropoietin, </div>
+          <div class="related-card-arrow">Read →</div>
+        
+          <img class="related-card-thumb" src="../images/anemia-management-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+        </div>
+      </div>
+    <!-- RELATED-GUIDES-END -->
+<footer class="guide-footer">
+  <div class="footer-inner">
+    <p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+    <p><a href="https://www.williamriveromd.com">williamriveromd.com</a> &nbsp;·&nbsp; <a href="/guides/"><span data-lang="en">All Guides</span>
+      </a></p>
+  </div>
+</footer>
+
+<a href="calculators.html" aria-label="Back to all calculators" class="calc-back-btn">
+<span class="p-tip">All Calculators</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="15 18 9 12 15 6"></polyline>
+</svg>
+</a>
+<a href="#related-guides" aria-label="Jump to related guides" class="calc-rg-btn">
+<span class="p-tip">Related Guides</span>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</a>
+<button class="print-btn" onclick="window.print()">
+  <span class="p-tip">Print / Save PDF</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+  </svg>
+</button>
+
+<script>
+/* ── DIALYSIS ADEQUACY CALCULATOR ── Daugirdas 2nd generation spKt/V ── */
+function calcAdequacy() {
+  const bunPreRaw  = parseFloat(document.getElementById('c-bun-pre').value);
+  const bunPostRaw = parseFloat(document.getElementById('c-bun-post').value);
+  const time    = parseFloat(document.getElementById('c-time').value);   // minutes
+  const uf      = parseFloat(document.getElementById('c-uf').value);     // liters
+  const wt      = parseFloat(document.getElementById('c-wt').value);     // kg post-dialysis
+  const sex     = document.getElementById('c-sex').value;
+
+  const isSI = document.getElementById('dial-btn-si').classList.contains('active');
+  // For Kt/V: ratio R = post/pre is unit-independent — no conversion needed for formula
+  // But record the raw display values in chosen units
+  const bunPreDisp  = isSI ? bunPreRaw.toFixed(1)+' mmol/L'  : bunPreRaw.toFixed(1)+' mg/dL';
+  const bunPostDisp = isSI ? bunPostRaw.toFixed(1)+' mmol/L' : bunPostRaw.toFixed(1)+' mg/dL';
+
+  // Use raw values directly — ratio R = post/pre cancels units
+  const preBUN  = bunPreRaw;
+  const postBUN = bunPostRaw;
+
+  const res = document.getElementById('calc-result');
+
+  if ([preBUN,postBUN,time,uf,wt].some(isNaN) || !sex ||
+      preBUN<=0 || postBUN<=0 || time<=0 || uf<0 || wt<=0 || postBUN>=preBUN) {
+    res.style.display='none'; return;
+  }
+
+  // Volume of distribution — estimated total body water
+  const V = wt * (sex==='male' ? 0.60 : 0.55);   // liters
+
+  // Daugirdas 2nd generation formula
+  // spKt/V = -ln(R - 0.008×t) + (4 - 3.5×R) × UF/V
+  // where R = post/pre BUN, t = time in HOURS
+  const R = postBUN / preBUN;
+  const t = time / 60;  // convert to hours
+  const lnPart = -Math.log(R - 0.008 * t);
+  const ufPart = (4 - 3.5 * R) * (uf / V);
+  const ktv = lnPart + ufPart;
+
+  // URR
+  const urr = ((preBUN - postBUN) / preBUN) * 100;
+
+  // Ultrafiltration rate — mL/h/kg
+  const ufr = (uf * 1000) / (time / 60) / wt;  // mL/h/kg
+
+  // Round
+  const ktvR  = Math.round(ktv  * 100) / 100;
+  const urrR  = Math.round(urr  * 10)  / 10;
+  const ufrR  = Math.round(ufr  * 10)  / 10;
+  const vR    = Math.round(V    * 10)  / 10;
+
+  // Determine status
+  let ktvColor, ktvStatus, urrColor, ufrColor, bg, borderColor, verdict, action;
+
+  if (ktvR >= 1.4) {
+    ktvColor='#2d7a4f'; ktvStatus='✓ Target met';
+  } else if (ktvR >= 1.2) {
+    ktvColor='#9a6500'; ktvStatus='⚠ Below target';
+  } else {
+    ktvColor='#c0392b'; ktvStatus='✗ Critically low';
+  }
+
+  urrColor = urrR >= 65 ? '#2d7a4f' : (urrR >= 58 ? '#9a6500' : '#c0392b');
+  ufrColor = ufrR < 10 ? '#2d7a4f' : (ufrR < 13 ? '#9a6500' : '#c0392b');
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  if (ktvR >= 1.4) {
+    bg = isDark ? 'rgba(45,122,79,.08)' : '#edf7f2';
+    borderColor = '#2d7a4f';
+    verdict = `Your spKt/V of ${ktvR} meets the KDIGO 2024 minimum target of ≥1.4. Your URR of ${urrR}% is ${urrR>=65?'also at target (≥65%).':'below the 65% target — discuss with your team (URR is less precise than Kt/V; trust the Kt/V result).'}`;
+    action = ktvR >= 1.6
+      ? `Excellent adequacy. Maintain current prescription, blood flow rate, and session duration. Continue monthly monitoring.`
+      : `Good adequacy at the minimum threshold. Consider whether session time can be extended to target Kt/V of 1.6–1.8 for additional benefit. Monitor UFR — ${ufrR < 10 ? 'your UFR is within safe limits.' : 'your UFR of ' + ufrR + ' mL/h/kg is elevated; consider longer sessions or stricter interdialytic fluid control.'}`;
+  } else if (ktvR >= 1.2) {
+    bg = isDark ? 'rgba(154,101,0,.08)' : '#fef9ec';
+    borderColor = '#f5a623';
+    verdict = `Your spKt/V of ${ktvR} is below the KDIGO 2024 minimum target of 1.4. This means your dialysis is not clearing enough uremic toxins. Prompt review of your prescription is needed.`;
+    action = `Review with your nephrologist urgently. Common causes: shortened session time, low blood flow rate (Qb), access dysfunction, or dialyzer under-performance. Do not wait for your next scheduled visit — request a prescription review this week.`;
+  } else {
+    bg = isDark ? 'rgba(192,57,43,.08)' : '#fdf0ef';
+    borderColor = '#c0392b';
+    verdict = `Your spKt/V of ${ktvR} is critically below target (minimum ≥1.4, critical threshold <1.2). This level of inadequacy is associated with 50–80% higher mortality risk. Urgent action is required.`;
+    action = `Contact your nephrologist TODAY. Do not wait. Possible causes include: significantly shortened sessions, severely impaired access flow, frequent missed sessions, or dialyzer failure. An urgent access evaluation and prescription revision are needed.`;
+  }
+
+  // Render
+  res.style.display = 'block';
+  res.style.background = bg;
+  res.style.borderColor = borderColor;
+
+  document.getElementById('r-ktv').textContent = ktvR;
+  document.getElementById('r-ktv').style.color = ktvColor;
+  document.getElementById('r-ktv-badge').textContent = ktvStatus;
+  document.getElementById('r-ktv-badge').style.color = ktvColor;
+
+  document.getElementById('r-urr').textContent = urrR + '%';
+  document.getElementById('r-urr').style.color = urrColor;
+  document.getElementById('r-urr-badge').textContent = urrR >= 65 ? '✓ ≥65% met' : (urrR >= 58 ? '⚠ Borderline' : '✗ Below 65%');
+  document.getElementById('r-urr-badge').style.color = urrColor;
+
+  document.getElementById('r-v').textContent = vR + ' L';
+  document.getElementById('r-ufr').textContent = ufrR;
+  document.getElementById('r-ufr').style.color = ufrColor;
+  document.getElementById('r-ufr-badge').textContent = ufrR < 10 ? '✓ Safe' : (ufrR < 13 ? '⚠ Elevated' : '✗ Dangerous');
+  document.getElementById('r-ufr-badge').style.color = ufrColor;
+
+  document.getElementById('r-verdict').innerHTML = '<strong style="color:' + borderColor + ';">' + (ktvR>=1.4?'Adequate':'Inadequate') + ' Dialysis</strong> — ' + verdict;
+  document.getElementById('r-action').innerHTML = '<strong style="color:' + borderColor + ';">Recommended action:</strong> ' + action;
+}
+
+function switchDialUnit(u){
+  const isSI=u==='si';
+  document.getElementById('dial-btn-conv').classList.toggle('active',!isSI);
+  document.getElementById('dial-btn-si').classList.toggle('active',isSI);
+  const pre=document.getElementById('c-bun-pre'), post=document.getElementById('c-bun-post');
+  if(isSI){
+    document.getElementById('dialysis-lbl-bunpre').textContent='Pre-dialysis Urea (mmol/L)';
+    pre.placeholder='e.g. 26.8'; pre.min='3.6'; pre.max='107.1'; pre.step='0.1';
+    document.getElementById('dialysis-hint-bunpre').textContent='Urea in mmol/L. Taken immediately before dialysis session';
+    document.getElementById('dialysis-lbl-bunpost').textContent='Post-dialysis Urea (mmol/L)';
+    post.placeholder='e.g. 7.9'; post.min='0.4'; post.max='71.4'; post.step='0.1';
+    document.getElementById('dialysis-hint-bunpost').textContent='Urea in mmol/L. Taken within 5 minutes after dialysis ends';
+  } else {
+    document.getElementById('dialysis-lbl-bunpre').textContent='Pre-dialysis BUN (mg/dL)';
+    pre.placeholder='e.g. 75'; pre.min='10'; pre.max='300'; pre.step='0.1';
+    document.getElementById('dialysis-hint-bunpre').textContent='Blood urea nitrogen. Taken immediately before dialysis session';
+    document.getElementById('dialysis-lbl-bunpost').textContent='Post-dialysis BUN (mg/dL)';
+    post.placeholder='e.g. 22'; post.min='1'; post.max='200'; post.step='0.1';
+    document.getElementById('dialysis-hint-bunpost').textContent='Taken within 5 min of dialysis end. The ratio R = post/pre BUN is what matters for Kt/V';
+  }
+  ['c-bun-pre','c-bun-post'].forEach(id=>document.getElementById(id).value='');
+  const res=document.querySelector('#calculator .calc-result-box');
+  if(res) res.style.display='none';
+}
+</script>
+<script>
+const DARK_KEY='wgmr-dark';const DESK_KEY='wgmr-desk';
+function applyDark(on){
+  const i=document.getElementById('darkIcon'),l=document.getElementById('darkLabel'),btn=document.getElementById('darkToggle');
+  document.documentElement.setAttribute('data-theme',on?'dark':'light');
+  if(btn)btn.classList.toggle('active',on);
+  if(l)l.textContent=on?'Light':'Dark';
+  if(i)i.innerHTML=on?'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  // Refresh calculator display for dark bg
+  const res=document.getElementById('calc-result');
+  if(res&&res.style.display!=='none')calcAdequacy();
+}
+function toggleDark(){const on=document.documentElement.getAttribute('data-theme')!=='dark';localStorage.setItem(DARK_KEY,on?'1':'0');applyDark(on);}
+function applyDesktop(on){
+  const vp=document.querySelector('meta[name="viewport"]');
+  if(on){document.documentElement.setAttribute('data-view','desktop');if(vp)vp.setAttribute('content','width=1024');}
+  else{document.documentElement.removeAttribute('data-view');if(vp)vp.setAttribute('content','width=device-width, initial-scale=1.0');}
+  const btn=document.getElementById('desktopToggle'),lbl=document.getElementById('desktopLabel');
+  if(btn)btn.classList.toggle('active',on);
+  if(lbl)lbl.textContent=on?'Mobile':'Desktop';
+}
+function toggleDesktop(){const on=document.documentElement.getAttribute('data-view')!=='desktop';localStorage.setItem(DESK_KEY,on?'1':'0');applyDesktop(on);}
+(function(){if(localStorage.getItem(DARK_KEY)==='1')applyDark(true);if(localStorage.getItem(DESK_KEY)==='1')applyDesktop(true);})();
+</script>
+<script>
+const GMODE='wgmr-mode-adequacy';
+function setMode(mode){
+  const isPhys=mode==='physician';
+  document.body.classList.toggle('physician-mode',isPhys);
+  document.getElementById('tab-pt').classList.toggle('active',!isPhys);
+  document.getElementById('tab-md').classList.toggle('active',isPhys);
+  localStorage.setItem(GMODE,mode);
+  const tabs=document.querySelector('.audience-tabs');
+  if(tabs)window.scrollTo({top:tabs.offsetTop-60,behavior:'smooth'});
+}
+</script>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <span class="p-tip">Back to top</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
+<script src="../assets/image-lightbox.js" defer></script>
+<!-- CALC-NAV-PILL-START -->
+<style id="calc-nav-pill-style">
+.calc-nav-pill{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;align-items:stretch;z-index:9997;background:#1f3864;border-radius:999px;box-shadow:0 6px 22px rgba(15,30,51,.32);border:1px solid rgba(255,255,255,.14);}
+.calc-nav-pill>a,.calc-nav-pill>.cnp-print{position:relative;display:flex;align-items:center;justify-content:center;width:58px;height:44px;color:#fff;text-decoration:none;transition:background .18s;background:none;border:none;cursor:pointer;}
+.calc-nav-pill>a:first-child{border-radius:999px 0 0 999px;}
+.calc-nav-pill>a:last-child{border-radius:0 999px 999px 0;}
+.calc-nav-pill>a:hover,.calc-nav-pill>.cnp-print:hover{background:#2a4a7f;}
+.calc-nav-pill>a:first-child:hover{border-radius:999px 0 0 999px;}
+.calc-nav-pill>a:last-child:hover{border-radius:0 999px 999px 0;}
+.calc-nav-pill>a:focus-visible,.calc-nav-pill>.cnp-print:focus-visible{outline:2px solid #d4af4f;outline-offset:-3px;}
+.calc-nav-pill .cnp-div{width:1px;background:rgba(255,255,255,.22);align-self:stretch;}
+.calc-nav-pill svg{width:20px;height:20px;}
+.cnp-tip{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);background:rgba(15,30,51,.92);color:#fff;font-size:11.5px;font-weight:500;white-space:nowrap;padding:5px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s;}
+.calc-nav-pill>a:hover .cnp-tip,.calc-nav-pill>.cnp-print:hover .cnp-tip{opacity:1;}
+html[data-theme="dark"] .calc-nav-pill{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav-pill>.cnp-print:hover{background:#243349;}
+.print-fab,.print-btn,.calc-back-btn,.calc-rg-btn{display:none!important;}
+@media print{.calc-nav-pill{display:none!important;}}
+</style>
+<nav class="calc-nav-pill" id="calc-nav-pill" aria-label="Calculator navigation">
+<a href="https://www.williamriveromd.com/guides/calculators.html" aria-label="Back to all calculators"><span class="cnp-tip">All Guides</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
+<span class="cnp-div"></span>
+<button class="cnp-print" onclick="window.print()" aria-label="Print this page"><span class="cnp-tip">Print</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></button>
+<span class="cnp-div"></span>
+<a href="living-with-dialysis.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+</nav>
+<!-- CALC-NAV-PILL-END -->
+<script src="../assets/calc-handoff.js" defer></script>
+<!-- Floating dark-mode toggle (site-wide convention) -->
+<div class="float-controls no-print">
+  <button id="darkToggle" class="float-btn" type="button" onclick="toggleDark()" aria-label="Toggle dark mode" title="Switch to dark mode">
+    <span class="float-tooltip" id="darkLabel">Dark mode</span>
+    <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
+</body>
+</html>

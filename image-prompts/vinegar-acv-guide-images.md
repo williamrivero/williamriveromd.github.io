@@ -1,6 +1,6 @@
 # Image Prompts — vinegar-acv-guide.html
 **Guide:** Apple Cider Vinegar & Vinegars in General: Benefits, Risks, and Who Should Avoid It
-**Author:** W. G. M. Rivero, MD, FPCP, DPSN
+**Author:** W Rivero, MD, FPCP, DPSN
 **Date prepared:** 2026-05-25
 **Total images:** 6
 **Recommended generation order:** 4 → 5 → 6 → 1 → 3 → 2
@@ -122,7 +122,7 @@ Avoid cartoon style, avoid overcrowding, avoid neon, avoid unrealistic anatomy, 
 ### Prompt
 
 ```
-Clinical patient education infographic, traffic-light evidence summary grid, 16:9 landscape. Title at top: "Is Vinegar Right for You? — Quick Evidence Summary". Subtitle: "Based on current clinical evidence | W. G. M. Rivero, MD". White background, navy text, clean modern medical design.
+Clinical patient education infographic, traffic-light evidence summary grid, 16:9 landscape. Title at top: "Is Vinegar Right for You? — Quick Evidence Summary". Subtitle: "Based on current clinical evidence | W Rivero, MD". White background, navy text, clean modern medical design.
 
 Three equal-width columns filling the main body:
 
@@ -228,7 +228,7 @@ Avoid cartoon style, avoid clutter, avoid neon, avoid AI text gibberish, avoid g
 ### Prompt
 
 ```
-Patient safety warning card infographic, 4:3 landscape, designed to be printable and web-displayable. White background with a bold red (#b91c1c) outer border (4px). Title at top center: "⚠ Before You Take Vinegar — Know the Risks". Subtitle: "W. G. M. Rivero, MD, FPCP, DPSN · williamriveromd.com". Clean sans-serif typography, high contrast, poster-style.
+Patient safety warning card infographic, 4:3 landscape, designed to be printable and web-displayable. White background with a bold red (#b91c1c) outer border (4px). Title at top center: "⚠ Before You Take Vinegar — Know the Risks". Subtitle: "W Rivero, MD, FPCP, DPSN · williamriveromd.com". Clean sans-serif typography, high contrast, poster-style.
 
 TOP SECTION — Red zone (light red background #fff0f0, red header bar):
 Header bar: bold white text on red (#b91c1c): "🚫 DO NOT USE — Absolute Contraindications"

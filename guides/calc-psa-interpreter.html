@@ -1,0 +1,2249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSA Interpreter Calculator — W Rivero, MD</title>
+<meta name="description" content="Interactive PSA calculator: applies 5-ARI drug correction (finasteride ×2, dutasteride ×2.5), calculates % Free PSA, PSA density, PSA velocity, and generates risk-stratified interpretation. With clinical guidance, age-adjusted references, and evidence.">
+<meta name="author" content="W Rivero, MD, FPCP, DPSN">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-psa-interpreter.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0f1e33">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-06-23T04:42:42+08:00">
+<meta property="og:site_name" content="William Gregory M. Rivero, MD">
+<meta property="og:title" content="PSA Interpreter Calculator">
+<meta property="og:description" content="Interactive PSA calculator with 5-ARI drug correction, % Free PSA, PSA density, velocity, and risk-stratified interpretation. With clinical guidance and evidence.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-psa-interpreter.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/hero-cat-oncology-urology.webp">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta property="og:image:alt" content="Oncology & Urology — nephrology calculators · williamriveromd.com">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/hero-cat-oncology-urology.webp">
+<meta property="og:locale" content="en_PH">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<style>
+  /* ═══════════════════════════════════════════════════════════════════════════
+     MASTER GUIDE CSS — williamriveromd.com
+     Version: 2026-06-23p (pastel theme — Inter/Manrope/Nunito Sans, no Lora/DM Sans)
+     All contrast ratios WCAG AA verified. Do not edit per-guide — edit here.
+  ═══════════════════════════════════════════════════════════════════════════ */
+
+  /* ── COLOR TOKENS (light mode) ──────────────────────────────────────────── */
+  :root {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #1a6b72;
+    --teal-light: #e1f5f0;
+
+    /* Text — all verified ≥4.5:1 on white and #f9fafb */
+    --text:       #1e2a38;   /* 10.2:1 on white ✓ */
+    --text-mid:   #2c3a4a;   /*  8.1:1 on white ✓ */
+    --text-muted: #4a5568;   /*  6.1:1 on white ✓ */
+    --text-faint: #5c6a7e;   /*  4.7:1 on white ✓ */
+
+    /* Surfaces */
+    --bg:    #f9fafb;
+    --white: #ffffff;
+    --border:#e2e6eb;
+
+    /* Semantic colors — backgrounds are very light, text is dark */
+    --red:        #b91c1c;   /* 5.9:1 on white ✓ */
+    --red-soft:   #fff0f0;
+    --amber:      #92400e;   /* 7.3:1 on white ✓ */
+    --amber-soft: #fffbeb;
+    --green:      #166534;   /* 8.2:1 on white ✓ */
+    --green-soft: #f0fdf4;
+    --purple:     #6b21a8;   /* 7.1:1 on white ✓ */
+    --purple-soft:#faf5ff;
+  }
+
+  /* ── RESET ───────────────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── BASE ────────────────────────────────────────────────────────────────── */
+  body {
+    font-family: 'Manrope', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ── SITE HEADER (CONVENTION: brand | inline lang chips | back link) ────── */
+  .site-header {
+    display: flex; align-items: center; gap: 18px;
+    height: 56px; box-sizing: border-box;
+    padding: 0 24px;
+    background: var(--navy);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    position: sticky; top: 0; z-index: 200;
+  }
+  .site-header .brand {
+    font-size: 14px; font-weight: 500;
+    color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .01em;
+    flex: 0 0 auto;
+  }
+  .site-header .brand strong { font-weight: 700; color: var(--gold-light); }
+  .site-header .back {
+    font-size: 12px; font-weight: 500;
+    color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s;
+    margin-left: auto; flex: 0 0 auto;
+  }
+  .site-header .back:hover { color: rgba(255,255,255,.9); }
+  /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
+  .header-nav {
+    display: flex; align-items: center; gap: 14px;
+    margin-left: auto; flex: 0 0 auto;
+  }
+  .header-nav a {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.7); text-decoration: none;
+    transition: color .2s;
+    white-space: nowrap;
+  }
+  .header-nav a:hover { color: #fff; }
+  .header-nav a.is-current { color: var(--gold-light); pointer-events: none; }
+  @media (max-width: 640px) {
+    .header-nav { gap: 10px; }
+    .header-nav a { font-size: 10.5px; letter-spacing: .04em; }
+  }
+  /* Inline lang chips inside the header (next to the brand). */
+  .header-lang {
+    display: flex; align-items: center; gap: 6px;
+    flex: 0 1 auto; flex-wrap: nowrap; overflow-x: auto;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .header-lang::-webkit-scrollbar { display: none; }
+  .header-lang .lang-lbl {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,.5);
+    text-transform: uppercase; letter-spacing: .1em; margin-right: 2px;
+  }
+  .header-lang .lang-btn-g {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.18); background: transparent;
+    color: rgba(255,255,255,.78); cursor: pointer; transition: all .15s;
+    line-height: 1.3; flex-shrink: 0;
+  }
+  .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
+  .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  @media (max-width: 640px) {
+    .site-header { padding: 0 14px; gap: 10px; }
+    .header-lang .lang-lbl { display: none; }
+    .header-lang .lang-btn-g { font-size: 11px; padding: 2px 8px; }
+    .site-header .brand { font-size: 13px; }
+    .site-header .back { font-size: 11px; }
+  }
+
+  /* ── LEGACY LANG BAR (kept defined as a no-op so older HTML doesn't break) ─ */
+  .guide-lang-bar { display: none !important; }
+  .lang-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+  .lang-btn-g {
+    font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.2); background: transparent;
+    color: rgba(255,255,255,.75); cursor: pointer; transition: all .2s;
+  }
+  .lang-btn-g:hover { border-color: rgba(255,255,255,.5); color: white; }
+  .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: white; }
+  /* Legacy inline dark/desktop toggle holder — now replaced by .float-controls. */
+  .guide-toggle-inline { display: none !important; }
+
+  /* ── FLOATING DARK TOGGLE WIDGET (bottom-right) ─────────────────────────── */
+  .float-controls {
+    position: fixed; bottom: 24px; right: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  /* ── FLOATING DESKTOP/MOBILE TOGGLE WIDGET (bottom-left, under print) ────── */
+  .float-controls-left {
+    position: fixed; bottom: 24px; left: 24px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 12px;
+  }
+  .float-controls-left .float-tooltip { left: 0; right: auto; }
+  .float-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(31,56,100,.18);
+    background: #ffffff; color: #1f3864;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(15,30,46,.18);
+    transition: background .15s, color .15s, transform .15s, box-shadow .15s;
+    position: relative;
+  }
+  .float-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,30,46,.24); }
+  .float-btn svg { width: 20px; height: 20px; }
+  .float-tooltip {
+    position: absolute; bottom: calc(100% + 8px); right: 0;
+    background: rgba(15,30,46,.9); color: #fff;
+    padding: 6px 10px; border-radius: 6px;
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity .15s;
+  }
+  .float-btn:hover .float-tooltip { opacity: 1; }
+  html[data-theme="dark"] .float-btn {
+    background: #1a2535; color: #e2b95f; border-color: rgba(255,255,255,.18);
+    box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  }
+  html[data-theme="dark"] .float-tooltip { background: rgba(255,255,255,.92); color: #1f3864; }
+  @media print { .float-controls, .no-print { display: none !important; } }
+
+  /* ── TOGGLE BAR ──────────────────────────────────────────────────────────── */
+  .guide-toggle-bar {
+    display: flex; gap: 8px; align-items: center;
+    padding: 6px 32px;
+    background: rgba(10, 18, 32, 0.96) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .toggle-btn {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18);
+    color: rgba(255,255,255,.82);   /* ≥ 4.5:1 on dark bar ✓ */
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px; font-weight: 500;
+    padding: 4px 10px; border-radius: 16px;
+    cursor: pointer; transition: all .2s; white-space: nowrap;
+  }
+  .toggle-btn:hover { background: rgba(255,255,255,.18); color: white; }
+  .toggle-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .lang-label { font-size: 11px; color: rgba(255,255,255,.6); margin-right: 4px; letter-spacing: .06em; }
+  .lang-btn {
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500;
+    padding: 4px 12px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.2);
+    background: transparent; color: rgba(255,255,255,.75);  /* ≥ 4.5:1 ✓ */
+    cursor: pointer; transition: all .2s;
+  }
+  .lang-btn:hover { color: white; border-color: rgba(255,255,255,.5); }
+  .lang-btn.active { background: #b8962e; border-color: #b8962e; color: white; }
+  [data-lang].lang-hidden { display: none !important; }
+
+  /* ── HERO (redesigned: shorter footprint, Inter/Nunito, side panel) ──────── */
+  .hero {
+    background: linear-gradient(135deg, #2a8f8f 0%, #14545e 100%);  /* lightened from teal→near-black */
+    color: white;
+    padding: 40px 0 44px;            /* tighter vertical footprint */
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;              /* self-contained stacking for the sigil watermark */
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    top: -90px; right: -110px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.08);
+    pointer-events: none;
+  }
+  /* Hero sigil watermark removed — no decorative sigil behind hero content. */
+  .hero::after { content: none; }
+  .hero > .container { position: relative; z-index: 1; }
+  /* Two-column hero: copy on the left, vignette / contents panel on the right */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-copy { min-width: 0; }
+  /* Vignette/grid heroes have a narrower copy column — smaller headline */
+  .hero-grid .hero-copy h1 { font-size: clamp(22px, 3.4vw, 34px); }
+  .hero-tag {
+    display: inline-block;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(255,255,255,.9);     /* 5.5:1 on --teal ✓ */
+    border: 1px solid rgba(255,255,255,.35);
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Inter', sans-serif;   /* headline → Inter */
+    font-size: clamp(27px, 4.4vw, 44px);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 14px; letter-spacing: -.025em;
+    color: #ffffff;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold-light);
+  }
+  .hero-sub em {
+    font-style: italic;
+    color: #fde68a;
+    font-weight: 600;
+  }
+  .hero-sub {
+    font-family: 'Nunito Sans', sans-serif;   /* subtitle → Nunito Sans */
+    font-size: 16.5px;
+    color: rgba(255,255,255,.92);    /* 14.8:1 ✓ */
+    max-width: 560px; line-height: 1.6; margin-bottom: 22px;
+  }
+  .hero-meta {
+    display: flex; gap: 28px; flex-wrap: wrap;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,.75);    /* ≥ 4.5:1 ✓ */
+  }
+  .hero-meta strong { color: rgba(255,255,255,.95); font-weight: 600; }
+
+  /* ── PATIENT HERO: circular vignette portrait on the right ───────────────── */
+  .hero-figure {
+    position: relative;
+    width: clamp(260px, 32vw, 380px);
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+  }
+  .hero-figure::before {            /* soft gold halo behind the disc */
+    content: ''; position: absolute; inset: -16px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,79,.28), transparent 68%);
+    pointer-events: none;
+  }
+  .hero-vignette {
+    position: relative; width: 100%; height: 100%;
+    border-radius: 50%; overflow: hidden;
+    border: 1px solid rgba(255,255,255,.20);
+    box-shadow: 0 22px 55px rgba(0,0,0,.45);
+  }
+  .hero-vignette img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%;
+    display: block; margin: 0;   /* override global hero-img centering */
+  }
+  /* opt-in zoom for hero images with a baked-in title/watermark (e.g. epilepsy) */
+  .hero-vignette.zoom img { transform: scale(1.34); transform-origin: 50% 60%; }
+  .hero-vignette::after {           /* vignette: darken rim, blend into hero */
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 42%, transparent 55%, rgba(15,60,66,.38) 100%),
+      linear-gradient(180deg, rgba(42,143,143,.06), rgba(20,84,94,.16));
+    pointer-events: none;
+  }
+  /* ── Oversized vignette layout (desktop ≥821px) ──────────────────────────
+     A large circular portrait bleeds off the hero's right/top/bottom while the
+     copy sits on the LEFT and on the TOP layer (z-index above the disc, so the
+     headline stays readable even where the circle extends behind it). Applies to patient-mode
+     vignette heroes AND to single-tab guides (body.single-mode) — including
+     physician/clinician-only guides, whose lone hero is the vignette and so
+     should bleed like a patient hero. The mobile stack (≤820px) is untouched. */
+  @media (min-width: 821px) {
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) {
+      display: flex; align-items: center;
+      position: relative; gap: 0;
+      min-height: clamp(330px, 30vw, 450px);
+    }
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) .hero-copy {
+      max-width: min(56%, 560px);
+      position: relative; z-index: 3;   /* hero text on the top layer */
+    }
+    :is(body:not(.physician-mode), body.single-mode) .hero-grid:has(.hero-figure) .hero-figure {
+      position: absolute; top: -64px; left: 58%;
+      width: clamp(400px, 50vw, 600px);
+      margin: 0; z-index: 1;
+    }
+  }
+
+  /* ── CLINICIAN HERO: jump-to contents panel on the right ─────────────────── */
+  .hero-toc {
+    width: clamp(260px, 30vw, 340px);
+    flex-shrink: 0;
+    background: rgba(255,255,255,.11);
+    border: 1px solid rgba(212,175,79,.38);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 18px 44px rgba(0,0,0,.22);
+  }
+  .hero-toc-head {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .13em; text-transform: uppercase;
+    color: #d4af4f; margin-bottom: 10px;
+    padding-bottom: 10px; border-bottom: 1px solid rgba(212,175,79,.22);
+  }
+  .hero-toc-head svg { width: 15px; height: 15px; stroke: #d4af4f; }
+  .hero-toc-list { display: flex; flex-direction: column; }
+  .hero-toc-list a {
+    display: flex; align-items: center; gap: 11px;
+    padding: 8px 8px; border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: rgba(255,255,255,.86); text-decoration: none;
+    transition: background .15s, color .15s;
+  }
+  .hero-toc-list a + a { border-top: 1px solid rgba(255,255,255,.07); }
+  .hero-toc-list a:hover { background: rgba(212,175,79,.13); color: #fff; }
+  .hero-toc-num {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    color: #d4af4f; opacity: .85; min-width: 18px;
+  }
+  .hero-toc-arrow { margin-left: auto; color: rgba(212,175,79,.7); transition: transform .15s; }
+  .hero-toc-list a:hover .hero-toc-arrow { transform: translateX(3px); }
+
+  /* ── PASTEL HERO MOTIF (soft light backgrounds, dark text) ───────────────── */
+  /* Patient: soft mint */
+  .hero { background: linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%); color:#28484c; }
+  .hero::before { border-color: rgba(15,90,90,.12); }
+  .hero-tag { color:#0e4a50; border-color: rgba(14,74,80,.32); background: rgba(255,255,255,.5); }
+  .hero h1 { color:#0e4a50; }
+  .hero h1 em { color:#a06b00; }
+  .hero-sub { color:#28484c; }
+  .hero-sub em { color:#a06b00; font-style:italic; }
+  .hero-meta { color:#42595d; }
+  .hero-meta strong { color:#173a3e; }
+  .hero-figure::before { background: radial-gradient(circle, rgba(160,107,0,.16), transparent 68%); }
+  .hero-vignette { border-color: rgba(15,90,90,.20); box-shadow: 0 16px 40px rgba(15,90,90,.18); }
+  .hero-vignette::after {
+    background:
+      radial-gradient(circle at 50% 42%, transparent 62%, rgba(15,90,90,.16) 100%),
+      linear-gradient(180deg, rgba(255,255,255,.10), rgba(15,90,90,.05));
+  }
+
+  /* Clinician: soft periwinkle */
+  body.physician-mode .hero { background: linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%); color:#34455f; }
+  body.physician-mode .hero h1 { color:#1f3864; }
+  body.physician-mode .hero h1 em { color:#a06b00; }
+  body.physician-mode .hero-sub { color:#34455f; }
+  body.physician-mode .hero-meta { color:#46516b; }
+  body.physician-mode .hero-meta strong { color:#1f3864; }
+  body.physician-mode .hero-toc {
+    background:#ffffff; border-color: rgba(31,56,100,.14);
+    box-shadow: 0 16px 40px rgba(31,56,100,.15);
+  }
+  body.physician-mode .hero-toc-head { color:#1f3864; border-bottom-color: rgba(31,56,100,.14); }
+  body.physician-mode .hero-toc-head svg { stroke:#8a6810; }
+  body.physician-mode .hero-toc-list a { color:#1f3864; }
+  body.physician-mode .hero-toc-list a + a { border-top-color: rgba(31,56,100,.08); }
+  body.physician-mode .hero-toc-list a:hover { background: rgba(31,56,100,.06); color:#0e2547; }
+  body.physician-mode .hero-toc-num { color:#8a6810; opacity:1; }
+  body.physician-mode .hero-toc-arrow { color:#b08a2a; }
+
+  /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
+  /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
+  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-cards { order: -1; width: 100%; }
+  /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
+  .hero-cards.mode-physician { order: -1; width: 100%; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+
+  /* Clinician: Evidence Snapshot card on the right of the hero copy */
+  body.physician-mode .hero-grid { align-items: start; gap: 34px; }
+  body.physician-mode .hero h1 { font-size: clamp(23px, 3.1vw, 33px); }
+  body.physician-mode .hero-sub { font-size: 14.5px; margin-bottom: 18px; }
+  .hero-cards {
+    display: grid; grid-template-columns: 1fr; gap: 12px;
+    width: clamp(280px, 32vw, 340px); flex-shrink: 0; align-items: stretch;
+  }
+
+  /* ── CLINICIAN OVERVIEW CARDS (compact, two-up) ──────────────────────────── */
+  .ov-card {
+    background: #fff; border: 1px solid #e6ebf3; border-radius: 13px;
+    padding: 16px 18px; display: flex; flex-direction: column;
+    box-shadow: 0 10px 26px rgba(31,56,100,.08);
+  }
+  .ov-head { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
+  .ov-ico {
+    width: 31px; height: 31px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #eef3fb; color: #1f3864;
+  }
+  .ov-ico svg { width: 16px; height: 16px; stroke: currentColor; }
+  .ov-title { font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 700; color: #1f3864; }
+  .ov-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+  .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
+  .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
+  .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
+  .ov-stat { display: flex; align-items: flex-start; gap: 11px; }
+  .ov-stat .v {
+    font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 800;
+    color: #1f3864; line-height: 1.05; min-width: 52px; flex-shrink: 0;
+  }
+  .ov-stat .l { font-size: 11.5px; color: #5a6680; line-height: 1.35; }
+  .ov-foot {
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600;
+    color: #1a6b72; text-decoration: none;
+  }
+  .ov-foot:hover { color: #0e4a50; }
+  .ov-foot svg { width: 14px; height: 14px; stroke: currentColor; }
+  @media(max-width: 460px) { .hero-cards { grid-template-columns: 1fr; } }
+
+  /* Legible hero 'Last Reviewed' badge on pastel bg (overrides old inline white text) */
+  /* Clinician badge chips (pastel-themed; canonical so guides w/o a local rule render) */
+  .clin-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .clin-badge { display:inline-block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:.02em; color:#1f3864; background:rgba(31,56,100,.08);
+    border:1px solid rgba(31,56,100,.25); border-radius:20px; padding:4px 12px; }
+
+  .hero-meta time, .hero-meta .hero-refcount span[style] { color:#1f3864 !important; background:rgba(31,56,100,.08) !important; border-color:rgba(31,56,100,.35) !important; }
+
+  /* ── CONTAINER ───────────────────────────────────────────────────────────── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── NAV STRIP ───────────────────────────────────────────────────────────── */
+  .nav-strip {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 56px; z-index: 100;
+  }
+  .nav-pills {
+    display: flex; gap: 4px; padding: 12px 32px;
+    max-width: 860px; margin: 0 auto;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pill {
+    white-space: nowrap; font-size: 13px; font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none; padding: 6px 14px;
+    border-radius: 20px; border: 1px solid transparent;
+    transition: all .2s;
+  }
+  .nav-pill:hover { color: var(--navy); border-color: var(--border); background: var(--bg); }
+
+  /* ── SECTIONS ────────────────────────────────────────────────────────────── */
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-tag {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px;
+  }
+  .section h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(22px, 3.5vw, 32px);
+    font-weight: 700; color: var(--navy);
+    line-height: 1.25; margin-bottom: 20px; letter-spacing: -.02em;
+  }
+  .section h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 600; color: var(--navy);
+    line-height: 1.3; margin-bottom: 14px;
+  }
+  .section p { color: var(--text-mid); margin-bottom: 16px; text-align: justify; hyphens: auto; }
+  .section p:last-child { margin-bottom: 0; }
+
+  /* ── BODY LISTS (content sections) ───────────────────────────────────────────
+     The global reset zeroes list padding; restore a comfortable indent so body
+     bullets/numbers sit clearly inside the column. Component lists (.checklist,
+     .alert-body, .food-* …) define their own and override this via source order. */
+  .section ul, .section ol { margin: 0 0 18px 0; padding-left: 30px; }
+  .section li { color: var(--text-mid); line-height: 1.7; margin-bottom: 8px; padding-left: 4px; }
+  .section li:last-child { margin-bottom: 0; }
+  .section li::marker { color: var(--teal); }
+  .section ul ul, .section ol ol, .section ul ol, .section ol ul { margin: 8px 0 0 0; }
+
+  /* ── INTRO CALLOUT (teal panel) ──────────────────────────────────────────── */
+  .intro-callout {
+    background: var(--teal);
+    border-radius: 16px; padding: 32px 36px; margin-bottom: 36px;
+  }
+  .intro-callout p {
+    color: rgba(255,255,255,.92) !important;  /* 7.4:1 on --teal ✓ */
+    font-size: 16px; line-height: 1.75; margin: 0;
+  }
+  .intro-callout p strong { color: #ffffff !important; }
+
+  /* ── GRID LAYOUTS ────────────────────────────────────────────────────────── */
+  .two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .three-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0; }
+  @media(max-width: 600px) { .two-col, .three-col { grid-template-columns: 1fr; } }
+
+  /* ── FEATURE CARDS ───────────────────────────────────────────────────────── */
+  .feature-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px;
+  }
+  .feature-card h4 {
+    font-size: 14px; font-weight: 600;
+    color: var(--navy);              /* 14.5:1 on --bg ✓ */
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-mid);          /* 8.1:1 on --bg ✓ */
+    margin: 0; line-height: 1.6;
+  }
+
+  /* ── DOTS ────────────────────────────────────────────────────────────────── */
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-teal   { background: var(--teal); }
+  .dot-red    { background: var(--red); }
+  .dot-amber  { background: #d97706; }
+  .dot-green  { background: var(--green); }
+  .dot-navy   { background: var(--navy); }
+  .dot-purple { background: var(--purple); }
+
+  /* ── ALERT BOXES ─────────────────────────────────────────────────────────── */
+  .alert {
+    border-radius: 12px; padding: 20px 24px; margin: 24px 0;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .alert-red    { background: var(--red-soft);    border-left: 3px solid var(--red); }
+  .alert-amber  { background: var(--amber-soft);  border-left: 3px solid #d97706; }
+  .alert-green  { background: var(--green-soft);  border-left: 3px solid var(--green); }
+  .alert-teal   { background: var(--teal-light);  border-left: 3px solid var(--teal); }
+  .alert-purple { background: var(--purple-soft); border-left: 3px solid var(--purple); }
+
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body h4 {
+    font-size: 14px; font-weight: 600;
+    color: var(--navy);              /* ≥ 9:1 on all alert backgrounds ✓ */
+    margin-bottom: 6px;
+  }
+  .alert-body p,
+  .alert-body ul,
+  .alert-body ul li {
+    font-size: 14px;
+    color: var(--text-mid);          /* ≥ 8:1 on all alert backgrounds ✓ */
+    margin: 0; line-height: 1.6;
+  }
+  .alert-body ul { margin: 6px 0 0 16px; }
+  .alert-body ul li { margin-bottom: 4px; line-height: 1.5; }
+
+  /* ── TABLES ──────────────────────────────────────────────────────────────── */
+
+  /* Generic table wrapper — used throughout guide and clinician sections */
+  .table-wrap {
+    overflow-x: auto; margin: 20px 0;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap thead th {
+    text-align: left; padding: 11px 16px;
+    background: var(--navy); color: rgba(255,255,255,.92);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    border-bottom: none;
+  }
+  .table-wrap thead th:first-child { border-radius: 11px 0 0 0; }
+  .table-wrap thead th:last-child  { border-radius: 0 11px 0 0; }
+  .table-wrap tbody td {
+    padding: 13px 16px; vertical-align: top; line-height: 1.55;
+    border-bottom: 1px solid var(--border); color: var(--text-mid);
+  }
+  .table-wrap tbody tr:last-child td { border-bottom: none; }
+  .table-wrap tbody tr:nth-child(even) td { background: var(--bg); }
+  .table-wrap tbody tr:hover td { background: #e8f5f6; }
+
+  .lab-table, .drug-table, .schedule-table {
+    width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;
+  }
+  .lab-table th, .drug-table th, .schedule-table th {
+    text-align: left;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-muted);        /* 6.1:1 on --bg ✓ */
+    padding: 10px 14px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .lab-table td, .drug-table td, .schedule-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-mid);          /* 8.1:1 on white ✓ */
+    vertical-align: top; line-height: 1.5;
+  }
+  .lab-table td:first-child, .drug-table td:first-child {
+    font-weight: 600;
+    color: var(--navy);              /* 14.5:1 ✓ */
+  }
+  .lab-table tr:last-child td,
+  .drug-table tr:last-child td { border-bottom: none; }
+  .lab-table tr:hover td,
+  .drug-table tr:hover td { background: var(--bg); }
+
+  /* ── BADGES ──────────────────────────────────────────────────────────────── */
+  .target-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--green-soft); color: var(--green); /* 8.2:1 ✓ */
+  }
+  .warn-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--red-soft); color: var(--red);     /* 5.9:1 ✓ */
+  }
+  .amber-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--amber-soft); color: var(--amber); /* 7.3:1 ✓ */
+  }
+  .caution-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--amber-soft); color: var(--amber); /* 7.3:1 ✓ */
+  }
+  .safe-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--green-soft); color: var(--green); /* 8.2:1 ✓ */
+  }
+  .avoid-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--red-soft); color: var(--red);     /* 5.9:1 ✓ */
+  }
+  .contraindicated-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: #7f1d1d; color: white;                  /* 9.4:1 ✓ */
+  }
+  .purple-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--purple-soft); color: var(--purple); /* 7.1:1 ✓ */
+  }
+  .teal-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 10px;
+    background: var(--teal-light); color: var(--teal);  /* 4.8:1 ✓ */
+  }
+
+  /* ── STEPS ───────────────────────────────────────────────────────────────── */
+  .steps { margin: 24px 0; }
+  .step { display: flex; gap: 20px; margin-bottom: 24px; align-items: flex-start; }
+  .step-num {
+    width: 36px; height: 36px; background: var(--teal); color: white;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; flex-shrink: 0;
+  }
+  .step-body { flex: 1; }
+  .step-body h4 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .step-body p  { font-size: 14px; color: var(--text-mid); margin: 0; }
+
+  /* ── CHECKLIST (dark panel) ──────────────────────────────────────────────── */
+  .checklist {
+    background: var(--navy); border-radius: 16px;
+    padding: 28px 32px; margin: 28px 0;
+  }
+  .checklist h4 { color: rgba(255,255,255,.95) !important; font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+  .checklist ul { list-style: none; margin: 0; padding: 0; }
+  .checklist ul li {
+    color: rgba(255,255,255,.88) !important;  /* 13.1:1 ✓ */
+    font-size: 14px; padding: 10px 0 10px 28px; position: relative;
+    border-bottom: 1px solid rgba(255,255,255,.1); line-height: 1.5;
+  }
+  .checklist ul li:last-child { border-bottom: none; }
+  .checklist ul li::before { content: '✓'; position: absolute; left: 4px; top: 10px; color: #d4af4f; }
+  .checklist.checklist-green { background: var(--green); }
+  html[data-theme="dark"] .checklist.checklist-green { background: #0e2a1c; }
+
+  /* ── COMPARE GRID ────────────────────────────────────────────────────────── */
+  .compare-grid, .cartridge-compare {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--border); margin: 24px 0;
+  }
+  @media(max-width: 580px) { .compare-grid, .cartridge-compare { grid-template-columns: 1fr; } }
+  .compare-header, .cart-header {
+    padding: 16px 20px;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: white; text-align: center;
+  }
+  .compare-header.tophi, .cart-header.ha130 { background: #1a6b72; }
+  .compare-header.calciphylaxis, .cart-header.ha330 { background: #1f3864; }
+  .compare-row-label, .cart-row-label {
+    grid-column: 1 / -1; background: var(--bg);
+    padding: 8px 20px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  .compare-cell, .cart-cell {
+    padding: 14px 20px; font-size: 14px;
+    color: var(--text-mid);          /* 8.1:1 ✓ */
+    border-bottom: 1px solid var(--border); line-height: 1.55;
+  }
+  .compare-cell.tophi-cell, .cart-cell.left-cell { border-right: 1px solid var(--border); }
+  .compare-cell strong, .cart-cell strong { color: var(--navy); }
+
+  /* ── ILLUSTRATION WRAP ───────────────────────────────────────────────────── */
+  .illus-wrap {
+    background: #f0f4f8; border-radius: 14px;
+    padding: 24px; margin: 24px 0;
+    text-align: center; overflow-x: auto;
+  }
+  .illus-wrap-light {
+    background: #f9fafb !important;
+    border: 1px solid #e2e6eb; border-radius: 14px;
+  }
+  .illus-caption {
+    color: var(--text-mid);          /* 8.1:1 ✓ */
+    font-size: 13px; font-style: italic;
+    margin-top: 12px; line-height: 1.65; display: block;
+  }
+
+  /* ── IMAGE PLACEHOLDER ───────────────────────────────────────────────────── */
+  .img-placeholder {
+    background: var(--bg); border: 2px dashed var(--border);
+    border-radius: 12px; padding: 24px; margin: 20px 0; text-align: center;
+  }
+  .img-placeholder .img-ph-icon { font-size: 32px; margin-bottom: 8px; }
+  .img-placeholder p { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+  .img-placeholder .img-ph-credit { font-size: 11px; color: var(--teal); margin-top: 8px; font-style: italic; }
+
+  /* ── COST CARDS ──────────────────────────────────────────────────────────── */
+  .cost-card { border-radius: 14px; padding: 24px; border: 1px solid var(--border); margin: 12px 0; }
+  .cost-card.green { background: var(--green-soft); border-color: rgba(22,101,52,.2); }
+  .cost-card.red   { background: var(--red-soft);   border-color: rgba(185,28,28,.2); }
+  .cost-card.amber { background: var(--amber-soft); border-color: rgba(146,64,14,.2); }
+  .cost-card h4    { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .cost-card.green h4 { color: var(--green); }
+  .cost-card.red   h4 { color: var(--red); }
+  .cost-card.amber h4 { color: var(--amber); }
+  .cost-card p { font-size: 14px; color: var(--text-mid); margin: 0; line-height: 1.6; }
+
+  /* ── ANALGESIC LADDER ────────────────────────────────────────────────────── */
+  .ladder { margin: 24px 0; }
+  .ladder-step { display: flex; gap: 16px; margin-bottom: 12px; align-items: stretch; }
+  .ladder-num {
+    width: 40px; min-height: 60px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; color: white; flex-shrink: 0;
+  }
+  .ladder-num.s1 { background: #166534; }
+  .ladder-num.s2 { background: #92400e; }
+  .ladder-num.s3 { background: #b91c1c; }
+  .ladder-body {
+    flex: 1; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px;
+  }
+  .ladder-body h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .ladder-body p  { font-size: 13px; color: var(--text-mid); margin: 0; }
+
+  /* ── NON-PHARM GRID ──────────────────────────────────────────────────────── */
+  .nopharm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 24px 0; }
+  .nopharm-card {
+    background: var(--teal-light);
+    border: 1px solid rgba(26,107,114,.2);
+    border-radius: 12px; padding: 16px; text-align: center;
+  }
+  .nopharm-card .icon { font-size: 28px; margin-bottom: 8px; }
+  .nopharm-card h4 { font-size: 13px; font-weight: 600; color: var(--teal); margin-bottom: 4px; }
+  .nopharm-card p  { font-size: 12px; color: var(--text-mid); margin: 0; line-height: 1.5; }
+
+  /* ── FOOD GRIDS ──────────────────────────────────────────────────────────── */
+  .food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  @media(max-width: 600px) { .food-grid { grid-template-columns: 1fr; } }
+  .food-ok    { background: var(--green-soft); border: 1px solid rgba(22,101,52,.2); border-radius: 12px; padding: 20px; }
+  .food-avoid { background: var(--red-soft);   border: 1px solid rgba(185,28,28,.2); border-radius: 12px; padding: 20px; }
+  .food-limit { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 12px; padding: 20px; }
+  .food-ok    h4 { color: var(--green);  font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .food-avoid h4 { color: var(--red);    font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .food-limit h4 { color: var(--amber);  font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .food-ok ul, .food-avoid ul, .food-limit ul {
+    font-size: 13px; color: var(--text-mid); margin-left: 16px;
+  }
+  .food-ok ul li, .food-avoid ul li, .food-limit ul li { margin-bottom: 5px; line-height: 1.5; }
+
+  /* ── RELATED GUIDES SECTION ──────────────────────────────────────────────── */
+  .related-guides {
+    max-width: 860px; margin: 48px auto 32px; padding: 32px 32px 0;
+    border-top: 2px solid var(--border);
+  }
+  .related-guides h2 {
+    font-size: 1.1rem; font-weight: 700; color: var(--navy);
+    margin-bottom: 18px; text-transform: uppercase; letter-spacing: .04em;
+  }
+  .related-cards {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
+  }
+  .related-card {
+    display: flex; flex-direction: column; gap: 4px;
+    background: var(--navy);
+    border-radius: 8px; padding: 14px 16px;
+    text-decoration: none; color: inherit;
+    transition: transform .15s, box-shadow .15s;
+    position: relative; overflow: hidden;
+  }
+  .related-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--teal);
+  }
+  .related-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,56,100,0.28); }
+  .related-card-tag   { font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9); text-transform: uppercase; letter-spacing: .08em; }
+  .related-card-title { font-size: .88rem; font-weight: 600; color: #fff; line-height: 1.3; }
+  .related-card-desc  { display: none; }
+  .related-card-arrow { display: none; }
+  .related-card-thumb {
+    position: absolute; top: 0; right: 0;
+    width: 110px; height: 100%;
+    object-fit: cover; opacity: .82;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 55%);
+    mask-image: linear-gradient(to right, transparent, #000 55%);
+    pointer-events: none;
+  }
+  .related-card.has-thumb { padding-right: 116px; }
+
+  /* ── RELATED GUIDES — LEGACY ALIASES (12 guides ship variant markup) ─────── */
+  .related-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
+  }
+  .related-badge {
+    display: inline-block;
+    font-size: .65rem; font-weight: 700; color: rgba(90,210,190,0.9);
+    text-transform: uppercase; letter-spacing: .08em;
+  }
+  .related-card h3 {
+    font-size: .88rem; font-weight: 600; color: #fff;
+    line-height: 1.3; margin: 0 0 4px 0;
+  }
+  .related-card p {
+    font-size: .80rem; color: rgba(255,255,255,.5); line-height: 1.45;
+    margin: 0; flex: 1;
+  }
+
+  /* ── DR CARD (dark panel) ────────────────────────────────────────────────── */
+  .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
+  .dr-card {
+    background: var(--navy); color: white;
+    border-radius: 16px; padding: 32px;
+    display: flex; gap: 24px; align-items: flex-start; margin-top: 0;
+  }
+  .dr-avatar {
+    width: 72px; height: 72px;
+    background: transparent; border-radius: 50%;
+    flex-shrink: 0; border: none;
+    overflow: hidden;
+  }
+  .dr-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .dr-card-body { flex: 1; min-width: 0; }
+  .dr-card h4    { font-size: 16px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; }
+  .dr-card p     { font-size: 14px; color: rgba(255,255,255,.88) !important; line-height: 1.6; } /* 13.1:1 ✓ */
+  .dr-card .dr-creds { font-size: 12px; color: rgba(255,255,255,.65) !important; margin-top: 8px; }
+  .dr-qr { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dr-qr img { width: 80px; height: 80px; border-radius: 6px; display: block; background: white; padding: 4px; }
+  .dr-qr-label { font-size: 10px; color: rgba(255,255,255,.5); margin: 5px 0 0; line-height: 1.3; text-align: center; }
+  @media (max-width: 640px) { .dr-qr { display: none; } }
+
+  /* ── GUIDE FOOTER ────────────────────────────────────────────────────────── */
+  .guide-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px; }
+  .guide-footer .footer-inner {
+    max-width: 860px; margin: 0 auto; padding: 0 32px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  }
+  .guide-footer p { font-size: 13px; color: var(--text-muted); }
+  .guide-footer a { color: var(--teal); text-decoration: none; font-weight: 500; }
+
+  /* ── DISCLAIMER ──────────────────────────────────────────────────────────── */
+  .disclaimer {
+    background: var(--amber-soft);
+    border: 1px solid rgba(146,64,14,.2);
+    border-radius: 10px; padding: 16px 20px;
+    margin: 40px 0 36px; font-size: 13px;
+    color: var(--text-mid);          /* 8.1:1 on amber-soft ✓ */
+    line-height: 1.6;
+  }
+  .disclaimer strong { color: var(--navy); }
+
+  /* ── CALCULATOR ──────────────────────────────────────────────────────────── */
+  .calc-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
+  .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'Manrope', sans-serif; font-size: 15px; }
+  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
+  .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .calc-metric-card { background: rgba(255,255,255,.7); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid rgba(0,0,0,.08); }
+  .calc-metric-card .cmv { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 600; line-height: 1; color: var(--navy); }
+  .calc-metric-card .cml { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; color: var(--text-muted); }
+  .calc-metric-card .cmt { font-size: 11px; margin-top: 4px; font-weight: 600; color: var(--text-mid); }
+  .calc-verdict-text { font-size: 14px; line-height: 1.7; margin-bottom: 10px; color: var(--text-mid); }
+  .calc-action-text { font-size: 13px; line-height: 1.65; padding-top: 10px; border-top: 1px solid rgba(0,0,0,.08); color: var(--text-mid); }
+  .calc-disclaimer { font-size: 11.5px; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
+
+  /* ── PRINT BUTTON ────────────────────────────────────────────────────────── */
+  .print-btn {
+    position: fixed; bottom: 80px; left: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s; z-index: 9998;
+  }
+  .print-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .print-btn svg { width: 18px; height: 18px; }
+  .print-btn .p-tip {
+    position: absolute; left: 54px;
+    background: rgba(31,56,100,.92); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .print-btn:hover .p-tip { opacity: 1; }
+
+  /* ── SCROLL-TO-TOP BUTTON ────────────────────────────────────────────────── */
+  .scroll-top-btn {
+    position: fixed; bottom: 80px; right: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s, opacity .2s; z-index: 9996;
+    opacity: 0; pointer-events: none;
+  }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .scroll-top-btn svg { width: 18px; height: 18px; }
+  .scroll-top-btn .p-tip {
+    position: absolute; right: 54px;
+    background: rgba(31,56,100,.92); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .scroll-top-btn:hover .p-tip { opacity: 1; }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     DARK MODE OVERRIDES
+     Applied when html[data-theme="dark"] is set by toggleDark().
+     All contrast ratios re-verified for dark surfaces.
+  ═══════════════════════════════════════════════════════════════════════════ */
+
+  html[data-theme="dark"] {
+    --navy:       #1f3864;
+    --gold:       #b8962e;
+    --gold-light: #d4af4f;
+    --teal:       #2ba8b0;   /* brighter on dark — 4.8:1 on #1a2535 ✓ */
+    --teal-light: #0a2830;
+
+    --text:       #e8eaf0;   /* 12.4:1 on #0f1520 ✓ */
+    --text-mid:   #dde3eb;   /*  9.1:1 on #1a2535 ✓ */
+    --text-muted: #9baab8;   /*  4.6:1 on #0f1520 ✓ */
+    --text-faint: #8090a4;   /*  3.9:1 — large text only */
+
+    --bg:    #141c2a;
+    --white: #1a2030;
+    --border:#2a3548;
+
+    --red:        #f87171;   /* 5.1:1 on #2a1515 ✓ */
+    --red-soft:   #2a1515;
+    --amber:      #fbbf24;   /* 5.4:1 on #2a1900 ✓ */
+    --amber-soft: #2a1900;
+    --green:      #4ade80;   /* 6.2:1 on #0e2a1c ✓ */
+    --green-soft: #0e2a1c;
+    --purple:     #c084fc;   /* 5.7:1 on #1a1030 ✓ */
+    --purple-soft:#1a1030;
+  }
+
+  html[data-theme="dark"] body { background: #0f1520; color: var(--text); }
+
+  html[data-theme="dark"] .hero,
+  html[data-theme="dark"] .intro-callout,
+  html[data-theme="dark"] .dr-card,
+  html[data-theme="dark"] .checklist { background: #080d16; }
+  html[data-theme="dark"] .dr-qr img { background: white !important; }
+
+  html[data-theme="dark"] .nav-strip { background: #141c2a; border-color: #2a3548; }
+  html[data-theme="dark"] .section { border-color: #2a3548; }
+
+  html[data-theme="dark"] .feature-card,
+  html[data-theme="dark"] .ladder-body,
+  html[data-theme="dark"] .calc-wrap,
+  html[data-theme="dark"] .img-placeholder { background: #1a2535; border-color: #2a3548; }
+
+  html[data-theme="dark"] .nav-pill:hover { background: #1a2535; color: var(--text); }
+
+  /* All text elements — one rule to cover them all */
+  html[data-theme="dark"] .section p,
+  html[data-theme="dark"] .section h3,
+  html[data-theme="dark"] .feature-card p,
+  html[data-theme="dark"] .alert-body p,
+  html[data-theme="dark"] .alert-body ul li,
+  html[data-theme="dark"] .step-body p,
+  html[data-theme="dark"] .ladder-body p,
+  html[data-theme="dark"] .table-wrap { border-color: #2a3548; box-shadow: none; }
+  html[data-theme="dark"] .table-wrap thead th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .table-wrap tbody td { border-color: #2a3548; }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even) td { background: #1a2535; }
+  html[data-theme="dark"] .table-wrap tbody tr:hover td { background: #1e3040; }
+
+  html[data-theme="dark"] .lab-table td,
+  html[data-theme="dark"] .drug-table td,
+  html[data-theme="dark"] .schedule-table td,
+  html[data-theme="dark"] .compare-cell,
+  html[data-theme="dark"] .cart-cell,
+  html[data-theme="dark"] .disclaimer,
+  html[data-theme="dark"] .cost-card p,
+  html[data-theme="dark"] .nopharm-card p,
+  html[data-theme="dark"] .food-ok ul li,
+  html[data-theme="dark"] .food-avoid ul li,
+  html[data-theme="dark"] .food-limit ul li,
+  html[data-theme="dark"] .calc-verdict-text,
+  html[data-theme="dark"] .calc-action-text,
+  html[data-theme="dark"] .illus-caption { color: var(--text-mid) !important; }   /* 9.1:1 ✓ */
+
+  /* Headings in dark mode */
+  html[data-theme="dark"] .section h2,
+  html[data-theme="dark"] .section h3,
+  html[data-theme="dark"] h3.sub-h,
+  html[data-theme="dark"] .feature-card h4,
+  html[data-theme="dark"] .alert-body h4,
+  html[data-theme="dark"] .step-body h4,
+  html[data-theme="dark"] .ladder-body h4,
+  html[data-theme="dark"] .lab-table td:first-child,
+  html[data-theme="dark"] .drug-table td:first-child,
+  html[data-theme="dark"] .compare-cell strong,
+  html[data-theme="dark"] .cart-cell strong,
+  html[data-theme="dark"] .calc-metric-card .cmv { color: var(--text) !important; }  /* 12.4:1 ✓ */
+
+  /* Table headers */
+  html[data-theme="dark"] .lab-table th,
+  html[data-theme="dark"] .drug-table th,
+  html[data-theme="dark"] .schedule-table th { background: #1a2535; color: var(--text-muted); }
+  html[data-theme="dark"] .lab-table tr:hover td,
+  html[data-theme="dark"] .drug-table tr:hover td { background: #202d40; }
+
+  /* Alert backgrounds */
+  html[data-theme="dark"] .alert-teal   { background: #0a2830; }
+  html[data-theme="dark"] .alert-amber  { background: #2a1900; }
+  html[data-theme="dark"] .alert-green  { background: #0e2a1c; }
+  html[data-theme="dark"] .alert-red    { background: #2a1515; }
+  html[data-theme="dark"] .alert-purple { background: #1a1030; }
+
+  /* Compare/cartridge grids */
+  html[data-theme="dark"] .compare-grid,
+  html[data-theme="dark"] .cartridge-compare { border-color: #2a3548; }
+  html[data-theme="dark"] .compare-row-label,
+  html[data-theme="dark"] .cart-row-label { background: #1a2535; border-color: #2a3548; color: var(--text-muted); }
+  html[data-theme="dark"] .compare-cell,
+  html[data-theme="dark"] .cart-cell { border-color: #2a3548; }
+
+  /* Related guides — cards are already dark navy, only minor tweak in dark mode */
+  html[data-theme="dark"] .related-card { background: #1a2535; }
+  html[data-theme="dark"] .related-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
+
+  /* Food grids */
+  html[data-theme="dark"] .food-ok    { background: var(--green-soft); border-color: rgba(74,222,128,.15); }
+  html[data-theme="dark"] .food-avoid { background: var(--red-soft);   border-color: rgba(248,113,113,.15); }
+  html[data-theme="dark"] .food-limit { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+
+  /* Cost cards */
+  html[data-theme="dark"] .cost-card { border-color: #2a3548; }
+  html[data-theme="dark"] .cost-card.green { background: var(--green-soft); }
+  html[data-theme="dark"] .cost-card.red   { background: var(--red-soft); }
+  html[data-theme="dark"] .cost-card.amber { background: var(--amber-soft); }
+
+  /* Nopharm cards */
+  html[data-theme="dark"] .nopharm-card { background: #0a2830; border-color: #1a4a50; }
+  html[data-theme="dark"] .nopharm-card h4 { color: var(--teal); }
+
+  /* Disclaimer */
+  html[data-theme="dark"] .disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); }
+
+  /* Illus wrap */
+  html[data-theme="dark"] .illus-wrap { background: #1a2535; }
+  html[data-theme="dark"] .illus-wrap-light { background: #f9fafb !important; }
+
+  /* Calculator */
+  html[data-theme="dark"] .calc-field input,
+  html[data-theme="dark"] .calc-field select { background: #141c2a; border-color: #2a3548; color: var(--text); }
+  html[data-theme="dark"] .calc-metric-card { background: rgba(255,255,255,.04); border-color: #2a3548; }
+  html[data-theme="dark"] .calc-result-box { border-color: #2a3548 !important; background: rgba(255,255,255,.03) !important; }
+  html[data-theme="dark"] .calc-field label { color: var(--teal); }
+  html[data-theme="dark"] .calc-metric-card .cml,
+  html[data-theme="dark"] .calc-disclaimer { color: var(--text-muted); }
+
+  /* Guide footer */
+  html[data-theme="dark"] .guide-footer { background: #141c2a; border-color: #2a3548; }
+
+  /* Numeric cards — n-val/n-value use color:var(--navy); remap for dark */
+  html[data-theme="dark"] .n-val,
+  html[data-theme="dark"] .n-value { color: var(--text); }
+
+  /* Tab hover + clinician tab underline */
+  html[data-theme="dark"] .aud-tab:hover { color: var(--text); }
+  html[data-theme="dark"] .aud-tab.active.tab-md { border-bottom-color: var(--teal); }
+
+  /* Disclaimer strong text — inherits navy from light mode, needs remap */
+  html[data-theme="dark"] .disclaimer strong { color: var(--text-mid); }
+
+  /* Desktop mode */
+  html[data-view="desktop"] { min-width: 1024px; }
+
+  /* ── STAT CARDS ──────────────────────────────────────────────────────────── */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
+  .stat-card{background:var(--teal);border-radius:14px;padding:22px 24px;color:white;text-align:center;}
+  html[data-theme="dark"] .stat-card{background:#0d2535;}
+  .stat-number{font-family:'Inter',sans-serif;font-size:clamp(24px,4vw,34px);font-weight:600;color:#d4af4f;line-height:1.1;margin-bottom:8px;}
+  .stat-label{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;}
+  .stat-source{font-size:11px;color:rgba(255,255,255,.45);margin-top:4px;}
+
+  /* ── NUMERIC CARDS (lighter variant) ─────────────────────────────────────── */
+  .num-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:28px 0;}
+  .num-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px 22px;text-align:center;}
+  .n-val,.n-value{font-family:'Inter',sans-serif;font-size:clamp(22px,3.5vw,30px);font-weight:600;color:var(--navy);line-height:1.1;margin-bottom:6px;}
+  .n-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+  .n-target{font-size:12px;color:var(--teal);font-weight:500;margin-top:4px;}
+  .n-note{font-size:12px;color:var(--text-muted);line-height:1.4;}
+
+  /* ── UNIT TOGGLE (eGFR / lab value converters) ───────────────────────────── */
+  .unit-toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .unit-toggle-wrap .ut-label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .unit-toggle{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .unit-btn{background:transparent;border:none;padding:7px 16px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;}
+  .unit-btn.active{background:var(--teal);color:#fff;}
+
+  /* ── RED FLAGS ───────────────────────────────────────────────────────────── */
+  .red-flags{background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:14px;padding:28px 32px;margin:32px 0;}
+  .red-flags h3{font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:var(--red);margin-bottom:16px;}
+  .red-flags-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
+  .red-flag-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-muted);}
+  .rf-dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:7px;}
+  html[data-theme="dark"] .red-flags{background:#2a1515;border-color:rgba(229,85,85,.2);}
+
+  /* ── ILLUSTRATION PANEL ──────────────────────────────────────────────────── */
+  .illus-panel{margin:28px 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+
+  /* ── CLINICIAN SECTION HERO (.md-hero) ───────────────────────────────────── */
+  .md-hero {
+    background: linear-gradient(135deg, #0d1e35 0%, #192d58 100%);
+    padding: 60px 0 56px; position: relative; overflow: hidden;
+    isolation: isolate;
+  }
+  .md-hero::before {
+    content: ''; position: absolute; right: -80px; top: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(212,175,79,.1); pointer-events: none;
+  }
+  /* Clinician-hero sigil watermark removed. */
+  .md-hero::after { content: none; }
+  .md-hero > * { position: relative; z-index: 1; }
+  .md-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: #d4af4f; border: 1px solid rgba(212,175,79,.45);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .md-hero h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
+    color: white; margin-bottom: 14px; letter-spacing: -.02em;
+  }
+  .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.82);
+    max-width: 580px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .md-stat {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 10px; padding: 12px 20px;
+  }
+  .md-stat-val {
+    font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 600;
+    color: #d4af4f; line-height: 1; display: block;
+  }
+  .md-stat-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 4px; display: block; }
+  .md-hero .illus-wrap {
+    background: rgba(255,255,255,.05) !important; border: 1px solid rgba(255,255,255,.14);
+  }
+  .md-hero .img-placeholder { background: transparent; border-color: rgba(255,255,255,.2); margin: 0; }
+  .md-hero .img-placeholder p,
+  .md-hero .img-placeholder .img-ph-icon { color: rgba(255,255,255,.55); }
+
+  /* ── CLINICIAN PATHWAY BANNERS ───────────────────────────────────────────── */
+  .pathway-banner {
+    padding: 20px 0 0;
+  }
+  .pathway-banner-inner {
+    padding: 14px 20px; border-radius: 0 8px 8px 0;
+  }
+  .pathway-banner-inner.neph {
+    border-left: 4px solid var(--teal); background: var(--teal-light);
+  }
+  .pathway-banner-inner.urol {
+    border-left: 4px solid var(--gold); background: #fdf8ec;
+  }
+  .pathway-banner-inner.synth {
+    border-left: 4px solid var(--purple); background: var(--purple-soft);
+  }
+  .pathway-banner-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .12em; margin: 0 0 4px;
+  }
+  .pathway-banner-label.neph { color: var(--teal); }
+  .pathway-banner-label.urol { color: var(--gold); }
+  .pathway-banner-label.synth { color: var(--purple); }
+  .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
+  /* Audience tabs inherit the hero background colour so the bar reads as part
+     of the hero (mint in patient mode, periwinkle in clinician mode). */
+  .audience-tabs{background:linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%);border-bottom:1px solid rgba(15,90,90,.18);position:sticky;top:56px;z-index:150;}
+  body.physician-mode .audience-tabs{background:linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);border-bottom-color:rgba(31,56,100,.18);}
+  .tabs-inner{max-width:860px;margin:0 auto;padding:0 32px;display:flex;gap:0;}
+  .aud-tab{flex:1;text-align:center;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .aud-tab:hover{color:var(--navy);}
+  .aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);}
+  .aud-tab.active.tab-md{border-bottom-color:var(--navy);}
+  .tab-icon{display:none;}  /* legacy emoticons hidden — dropped from new HTML too */
+  .mode-physician{display:none;}
+  .mode-physician-pill{display:none;}
+  body.physician-mode .mode-patient{display:none!important;}
+  body.physician-mode .mode-physician{display:block!important;}
+  body.physician-mode .mode-patient-pill{display:none;}
+  body.physician-mode .mode-physician-pill{display:inline-flex;}
+  html[data-theme="dark"] .audience-tabs{background:#141c2a;border-color:#2a3548;}
+  html[data-theme="dark"] .aud-tab.active{color:#e8eaf0;}
+
+  /* ── PHYSICIAN MODE — NAVY PALETTE ──────────────────────────────────────
+     When body.physician-mode is active, key components switch from teal to
+     the homepage deep-navy palette (#0f1e2e/#1a3060), making clinician
+     content visually distinct from patient (teal) content at a glance.
+     Contrast verified: white on #0f1e2e = 15.5:1 ✓
+  ─────────────────────────────────────────────────────────────────────── */
+  body.physician-mode .hero {
+    background: linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);  /* pastel periwinkle */
+    color:#34455f;
+  }
+  body.physician-mode .intro-callout { background: #0f1e2e; }
+  body.physician-mode .stat-card     { background: #0f1e2e; }
+  body.physician-mode .ref-band      { background: #0f1e2e; color: rgba(255,255,255,.88); }  /* white text on navy — 13.2:1 ✓ */
+  body.physician-mode .nav-pill.active-pill {
+    background: var(--navy); border-color: var(--navy);
+  }
+  /* Tab active underline already uses var(--navy) for .tab-md — intentional */
+  /* Dark mode: already very dark; just deepen slightly */
+  html[data-theme="dark"] body.physician-mode .hero {
+    background: linear-gradient(135deg, #060f1a 0%, #0d1e40 100%);
+  }
+  html[data-theme="dark"] body.physician-mode .intro-callout,
+  html[data-theme="dark"] body.physician-mode .stat-card,
+  html[data-theme="dark"] body.physician-mode .ref-band { background: #0a1425; }
+
+  /* ── DARK-MODE HERO ──────────────────────────────────────────────────────
+     The pastel hero gets a TRUE dark variant in dark mode: the patient hero
+     darkens to deep teal, the clinician hero to deep navy, and all hero text
+     (headline, subtitle, meta, tag, badges) flips to light. Contrast AA-verified
+     (white on #0c2a30 = 14.6:1; #eaf6f4 on #0a2228 = 13.9:1). */
+  html[data-theme="dark"] .hero {
+    background: linear-gradient(135deg,#0c2a30 0%,#103d44 55%,#0a2228 100%);
+    color: rgba(233,245,244,.82);
+  }
+  html[data-theme="dark"] .hero h1 { color:#eaf6f4; }
+  html[data-theme="dark"] .hero h1 em { color:#e2b95f; }
+  html[data-theme="dark"] .hero-sub { color:rgba(233,245,244,.82); }
+  html[data-theme="dark"] .hero-meta { color:rgba(233,245,244,.72); }
+  html[data-theme="dark"] .hero-meta strong { color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] .hero-tag {
+    color:rgba(233,245,244,.9); border-color:rgba(255,255,255,.28);
+  }
+  html[data-theme="dark"] .hero-meta time,
+  html[data-theme="dark"] .hero-meta .hero-refcount span[style] {
+    color:rgba(255,255,255,.92) !important;
+    background:rgba(255,255,255,.10) !important;
+    border-color:rgba(255,255,255,.28) !important;
+  }
+  html[data-theme="dark"] .hero-vignette { border-color: rgba(255,255,255,.18); box-shadow: 0 22px 55px rgba(0,0,0,.6); }
+  /* Clinician (physician-mode) dark hero */
+  html[data-theme="dark"] body.physician-mode .hero {
+    background: linear-gradient(135deg,#0a1426 0%,#16294d 100%);
+    color: rgba(238,242,251,.82);
+  }
+  html[data-theme="dark"] body.physician-mode .hero h1 { color:#eef2fb; }
+  html[data-theme="dark"] body.physician-mode .hero h1 em { color:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-sub { color:rgba(238,242,251,.82); }
+  html[data-theme="dark"] body.physician-mode .hero-meta { color:rgba(238,242,251,.72); }
+  html[data-theme="dark"] body.physician-mode .hero-meta strong { color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] body.physician-mode .hero-tag {
+    color:rgba(238,242,251,.9); border-color:rgba(255,255,255,.26);
+  }
+  html[data-theme="dark"] body.physician-mode .hero-toc-head { color:#eef2fb; border-bottom-color: rgba(255,255,255,.16); }
+  html[data-theme="dark"] body.physician-mode .hero-toc-head svg { stroke:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a { color:#dbe6f5; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a + a { border-top-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] body.physician-mode .hero-toc-list a:hover { background: rgba(255,255,255,.06); color:#fff; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-num { color:#e2b95f; }
+  html[data-theme="dark"] body.physician-mode .hero-toc-arrow { color:#e2b95f; }
+
+  /* ── GUIDE LANGUAGE BAR (regional recipes / multilingual tools) ──────────── */
+  .guide-lang-bar{display:flex;align-items:center;gap:8px;padding:8px 0 16px;flex-wrap:wrap;}
+  .lang-lbl{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-right:4px;}
+  .lang-btn-g{font-family:'Manrope',sans-serif;font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;}
+  .lang-btn-g:hover{border-color:var(--teal);color:var(--teal);}
+  .lang-btn-g.active{background:var(--teal);border-color:var(--teal);color:white;}
+
+  /* ── DOT COLOR VARIANTS ──────────────────────────────────────────────────── */
+  .dot-gold{background:var(--gold);}
+  .dot-orange{background:#e07b00;}
+
+  /* ── DOWNLOAD BUTTON (inline variant) ───────────────────────────────────── */
+  .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s;}
+  .download-btn:hover{background:#162848;}
+
+  /* ── DOWNLOAD FAB (circular floating action button, bottom-left stack) ───
+     Stacking on the left side (visually top → bottom):
+       1. .dl-fab           bottom:136px  (top — only when present)
+       2. .print-btn        bottom: 80px  (middle)
+       3. .float-controls-left bottom: 24px  (bottom — desktop/mobile toggle) */
+  .dl-fab {
+    position: fixed; bottom: 136px; left: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    transition: transform .2s, box-shadow .2s; z-index: 9997;
+    text-decoration: none;
+  }
+  .dl-fab:hover { background: #162848; transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .dl-fab svg { width: 18px; height: 18px; }
+  .dl-fab .p-tip {
+    position: absolute; left: 54px;
+    background: rgba(31,56,100,.92); color: white;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    padding: 5px 10px; border-radius: 6px;
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .dl-fab:hover .p-tip { opacity: 1; }
+
+  /* ── HERO RESPONSIVE: stack copy above the panel / portrait ──────────────── */
+  @media(max-width: 820px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+    .hero-figure { margin: 4px auto 0; }
+    /* Phones/tablets: drop the circular vignette entirely — text-only hero. */
+    .hero-figure { display: none; }
+    .hero-cards { width: 100%; }
+  }
+
+  /* ── MOBILE LAYOUT (≤ 480 px / 375 px phones) ───────────────────────────── */
+  /* Tighter side padding on narrow viewports */
+  @media(max-width: 480px) {
+    .container { padding: 0 20px; }
+    .related-guides { padding-left: 20px; padding-right: 20px; }
+    .guide-footer .footer-inner { padding: 0 20px; }
+    .dr-card { flex-direction: column; padding: 24px; gap: 16px; }
+    .dr-card-wrap { padding: 0 20px 40px; }
+    .hero-meta { gap: 14px; }
+  }
+
+  /* Tables: horizontal scroll to prevent content overflow on phones */
+  @media(max-width: 640px) {
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  }
+
+  /* ── IMAGE LIGHTBOX (assets/image-lightbox.js) ─────────────────────────── */
+  figure img, .illus-wrap img { cursor: zoom-in; }
+  figure img:hover, .illus-wrap img:hover { opacity: .92; }
+  /* Non-hero inline images: thumbnail size — lightbox handles magnification */
+  figure img:not([fetchpriority="high"]),
+  .illus-wrap img:not([fetchpriority="high"]) {
+    max-width: 480px; width: 100%; height: auto; display: block;
+    margin-left: auto; margin-right: auto;
+  }
+
+  #img-lb.lb-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.93); z-index: 9500;
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px 16px 16px; cursor: pointer; overflow-y: auto;
+  }
+  #img-lb.lb-overlay.open { display: flex; }
+
+  .lb-body {
+    display: flex; flex-direction: column; align-items: center;
+    max-width: min(95vw, 1280px); cursor: default;
+  }
+  .lb-img {
+    max-width: 100%; max-height: 72vh; border-radius: 8px;
+    object-fit: contain; box-shadow: 0 8px 48px rgba(0,0,0,.7);
+    cursor: zoom-in; display: block;
+  }
+  .lb-caption-panel {
+    width: 100%; background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.13); border-top: none;
+    border-radius: 0 0 8px 8px; padding: 14px 18px;
+  }
+  .lb-desc {
+    color: rgba(255,255,255,.88); font-size: 13px; line-height: 1.6;
+    margin: 0 0 10px; font-style: italic;
+  }
+  .lb-desc:last-child { margin-bottom: 0; }
+  .lb-abbrevs {
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 12px; row-gap: 3px; margin: 0;
+    border-top: 1px solid rgba(255,255,255,.1); padding-top: 10px;
+  }
+  .lb-abbrevs dt {
+    color: rgba(255,255,255,.5); font-size: 11px; font-weight: 700;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .lb-abbrevs dd {
+    color: rgba(255,255,255,.72); font-size: 11px; margin: 0;
+  }
+  .lb-close {
+    position: fixed; top: 16px; right: 20px;
+    color: #fff; font-size: 24px; line-height: 1;
+    background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.25);
+    border-radius: 50%; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .15s; z-index: 9501;
+  }
+  .lb-close:hover { background: rgba(255,255,255,.28); }
+  .lb-hint {
+    margin-top: 14px; color: rgba(255,255,255,.3); font-size: 11px;
+    pointer-events: none; text-align: center; letter-spacing: .02em;
+  }
+  @media (max-width: 600px) {
+    .lb-img { max-height: 58vh; }
+    .lb-hint { white-space: normal; font-size: 10px; }
+  }
+  @media print { #img-lb.lb-overlay { display: none !important; } }
+
+  /* Standard figcaption for guide images */
+  figure figcaption, .illus-caption {
+    font-size: 12px; color: var(--text-muted); margin-top: 10px;
+    font-style: italic; text-align: center; line-height: 1.5;
+  }
+  .fig-desc { margin: 0 0 6px; }
+  .fig-abbrevs {
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 10px; row-gap: 2px; margin: 6px 0 0;
+    font-style: normal; text-align: left;
+  }
+  .fig-abbrevs dt { font-weight: 700; color: var(--text-mid); }
+  .fig-abbrevs dd { margin: 0; color: var(--text-muted); }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     Keep the floating Symptom-Checker FAB clear of the floating dark/light
+     toggle. Every guide now carries the floating dark widget at bottom:24px
+     right:24px (44px wide), so the FAB (default bottom:22px right:22px)
+     would collide. Shift it ~70px left so they sit side-by-side.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  .sc-fab { right: 88px !important; }
+  @media (max-width: 600px) {
+    .sc-fab { right: 72px !important; bottom: 16px !important; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     PRINT
+  ═══════════════════════════════════════════════════════════════════════════ */
+  @media print {
+    .site-header, .nav-strip, .guide-toggle-bar, .print-btn, .dl-fab, .scroll-top-btn, .guide-footer { display: none !important; }
+    body { font-size: 13px; line-height: 1.6; color: #000; background: #fff; }
+    .hero { background: #fff !important; color: #000 !important; padding: 24px 0 16px !important; }
+    .hero h1 { color: #1f3864 !important; font-size: 22px !important; }
+    .hero-sub { color: #333 !important; font-size: 13px !important; }
+    .hero-tag, .hero-meta { color: #555 !important; }
+    .container { max-width: 100%; padding: 0 24px; }
+    .section { padding: 20px 0; border-bottom: 1px solid #ddd; }
+    .intro-callout { background: #f0f4f8 !important; color: #000 !important; border: 1px solid #ccc; }
+    .intro-callout p { color: #222 !important; }
+    .alert { border: 1px solid #ccc !important; background: #f9f9f9 !important; }
+    .alert-body h4, .alert-body p, .alert-body ul li { color: #222 !important; }
+    .feature-card { border: 1px solid #ccc !important; background: #fff !important; }
+    .feature-card h4 { color: #1f3864 !important; }
+    .feature-card p { color: #333 !important; }
+    .table-wrap { box-shadow: none !important; border: 1px solid #ccc !important; }
+    .table-wrap thead th { background: #eee !important; color: #333 !important; }
+    .table-wrap tbody td { color: #333 !important; }
+    .lab-table th { background: #eee !important; color: #333 !important; }
+    .lab-table td { color: #333 !important; }
+    .dr-card { background: #f0f4f8 !important; border: 1px solid #ccc; }
+    .dr-card h4, .dr-card p, .dr-card .dr-creds { color: #222 !important; }
+    .dr-qr { display: none !important; }
+    .checklist { background: #f0f4f8 !important; border: 1px solid #ccc; }
+    .checklist h4, .checklist ul li { color: #222 !important; }
+    .disclaimer { background: #fff8e8 !important; border: 1px solid #ccc !important; color: #333 !important; }
+    .illus-wrap { border: 1px solid #ccc; background: #f9f9f9 !important; }
+    a[href]:after { content: " (" attr(href) ")"; font-size: 10px; color: #666; }
+    .nav-pill { display: none; }
+    @page { margin: 18mm 15mm; size: A4; }
+  }
+</style>
+
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Inter',sans-serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Inter',sans-serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+html[data-theme="dark"] .mdc-acc>summary,
+html[data-theme="dark"] .mdc-acc-body>h3.mdc-sub{color:var(--text)!important;}
+html[data-theme="dark"] .mdc-acc{background:var(--white);border-color:var(--border);}
+html[data-theme="dark"] .mdc-acc>summary:hover{background:#1e2a3a;}
+html[data-theme="dark"] .mdc-acc[open]>summary{border-bottom-color:var(--border);}
+html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
+html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
+</style>
+
+<style id="calc-style">
+/* ── FORM CARD ── */
+.form-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); padding: 28px 32px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.form-card h2 { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.form-card h2 .badge { font-family: 'Manrope', sans-serif; font-size: 11px; font-weight: 700; color: white; background: var(--teal); padding: 2px 10px; border-radius: 10px; letter-spacing: .06em; }
+.form-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--teal); margin: 20px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 4px; }
+.field-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 4px; }
+@media(max-width: 560px) { .field-grid, .field-grid-3 { grid-template-columns: 1fr; } }
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+.field input[type=number], .field input[type=date] { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'Manrope', sans-serif; font-size: 15px; transition: border-color .15s, box-shadow .15s; }
+.field input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.12); }
+.field .hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+
+/* ── RADIO GROUPS ── */
+.radio-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.radio-group label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-mid); padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: all .15s; text-transform: none; letter-spacing: 0; background: var(--bg); }
+.radio-group label:has(input:checked) { border-color: var(--teal); background: var(--teal-light); color: var(--teal); }
+.radio-group input[type=radio] { width: 14px; height: 14px; accent-color: var(--teal); }
+
+/* ── CHECKBOXES ── */
+.check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+@media(max-width: 560px) { .check-grid { grid-template-columns: 1fr; } }
+.check-item { display: flex; align-items: flex-start; gap: 8px; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-mid); transition: border-color .15s; }
+.check-item input[type=checkbox] { margin-top: 2px; flex-shrink: 0; accent-color: var(--red); }
+.check-item:has(input:checked) { border-color: #d97706; background: var(--amber-soft); }
+
+/* ── BUTTONS ── */
+.btn-row { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+.btn-calc { flex: 1; min-width: 160px; padding: 13px 24px; background: var(--teal); color: white; border: none; border-radius: 10px; font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background .2s, transform .1s; }
+.btn-calc:hover { background: #155f65; }
+.btn-calc:active { transform: scale(.98); }
+.btn-reset { padding: 13px 20px; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 10px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all .2s; }
+.btn-reset:hover { border-color: var(--text-muted); color: var(--text); }
+
+/* ── RESULTS ── */
+#ci-results { display: none; margin-top: 20px; }
+.note-box { border-radius: 10px; padding: 14px 18px; font-size: 13px; line-height: 1.6; margin-bottom: 12px; display: none; }
+.drug-note { background: var(--amber-soft); border-left: 4px solid #d97706; color: var(--text-mid); }
+.conf-note { background: var(--red-soft); border-left: 4px solid var(--red); color: var(--text-mid); }
+.result-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); padding: 28px 32px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.result-card h3 { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 18px; }
+.risk-badge { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .04em; padding: 6px 20px; border-radius: 20px; margin-bottom: 16px; color: white; }
+
+/* Metrics table */
+.mtable { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px; }
+.mtable th { text-align: left; padding: 9px 14px; background: var(--navy); color: rgba(255,255,255,.88); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.mtable th:first-child { border-radius: 10px 0 0 0; }
+.mtable th:last-child { border-radius: 0 10px 0 0; }
+.mtable td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; color: var(--text-mid); }
+.mtable tr:last-child td { border-bottom: none; }
+.mtable tr:nth-child(even) td { background: var(--bg); }
+.mtable .row-label { font-weight: 600; color: var(--navy); white-space: nowrap; }
+.vn { color: #166534; font-weight: 700; }
+.vw { color: #92400e; font-weight: 700; }
+.vh { color: #b91c1c; font-weight: 700; }
+.vi { color: #1a6b72; font-weight: 700; }
+.vm { color: #6b7280; font-style: italic; }
+.narr-box { background: var(--bg); border-radius: 10px; border: 1px solid var(--border); padding: 16px 20px; margin-bottom: 16px; font-size: 14px; color: var(--text-mid); line-height: 1.7; }
+.rlist { list-style: none; padding: 0; margin: 0; }
+.rlist li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-mid); line-height: 1.55; }
+.rlist li:last-child { border-bottom: none; }
+.ri { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+.calc-disclaimer { background: var(--amber-soft); border: 1px solid rgba(146,64,14,.2); border-radius: 10px; padding: 14px 18px; font-size: 12px; color: var(--text-mid); line-height: 1.6; margin-top: 20px; }
+
+/* ── DARK MODE (calc elements) ── */
+html[data-theme="dark"] .form-card,
+html[data-theme="dark"] .result-card { background: var(--white); border-color: var(--border); }
+html[data-theme="dark"] .form-card h2,
+html[data-theme="dark"] .result-card h3,
+html[data-theme="dark"] .mtable .row-label { color: var(--text) !important; }
+html[data-theme="dark"] .field input[type=number],
+html[data-theme="dark"] .field input[type=date] { background: #141c2a; border-color: var(--border); color: var(--text); }
+html[data-theme="dark"] .radio-group label { color: var(--text-mid); background: #1a2535; border-color: var(--border); }
+html[data-theme="dark"] .radio-group label:has(input:checked) { color: var(--teal); border-color: var(--teal); background: var(--teal-light); }
+html[data-theme="dark"] .check-item { background: #1a2535; border-color: var(--border); color: var(--text-mid); }
+html[data-theme="dark"] .check-item:has(input:checked) { background: var(--amber-soft); border-color: #d97706; }
+html[data-theme="dark"] .narr-box { background: #1a2535; border-color: var(--border); color: var(--text-mid); }
+html[data-theme="dark"] .mtable td { border-color: var(--border); color: var(--text-mid); }
+html[data-theme="dark"] .mtable tr:nth-child(even) td { background: #1a2535; }
+html[data-theme="dark"] .drug-note { background: var(--amber-soft); }
+html[data-theme="dark"] .conf-note { background: var(--red-soft); }
+html[data-theme="dark"] .rlist li { border-color: var(--border); color: var(--text-mid); }
+html[data-theme="dark"] .calc-disclaimer { background: var(--amber-soft); border-color: rgba(251,191,36,.15); color: var(--text-mid); }
+html[data-theme="dark"] .btn-reset { border-color: var(--border); color: var(--text-muted); }
+html[data-theme="dark"] .btn-reset:hover { border-color: var(--text-muted); color: var(--text); }
+@media print { .site-header, .guide-toggle-bar, .nav-strip, .guide-footer, .calc-nav-pill { display: none !important; } body { font-size: 13px; color: #000; background: #fff; } }
+</style>
+</head>
+<body class="calc-page">
+
+<script>
+(function(){try{var t=localStorage.getItem('wgmr-psa-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();
+</script>
+
+<header class="site-header">
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
+  <nav class="header-nav"><a href="calculators.html">CALCULATORS</a><a href="kidney-physiology.html">PHYSIOLOGY</a><a href="nephrology-atlas.html">ATLAS</a><a href="/guides/">ALL GUIDES</a></nav>
+</header>
+
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
+</div>
+
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Urology &amp; Oncology · Clinical Calculator · PSA</div>
+<h1>PSA Interpreter <em>Drug-Corrected · Multi-Metric · Risk-Stratified</em></h1>
+<p class="hero-sub">Enter PSA values, prostate volume, prior PSA, and current medications. The calculator applies 5-ARI drug correction automatically, computes % Free PSA, PSA density, and velocity, and generates a risk-stratified clinical interpretation with actionable recommendations.</p>
+<div class="hero-meta">
+<span class="hero-published"><strong>Published:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
+<span class="hero-refcount"><strong>References:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">7</span></span>
+<span class="hero-readtime"><strong>Read time:</strong> <time datetime="PT8M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~8 min</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="prostate-panel-interpreter.html" class="hero-xlink">Full PSA Interpretation Guide →</a></p>
+</div>
+</section>
+
+<nav class="nav-strip">
+<div class="nav-pills">
+<a class="nav-pill" href="#instructions">Instructions</a>
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
+</div>
+</nav>
+
+<main class="container">
+
+<div class="mdc-instructions" id="instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Enter the patient's <strong>age</strong> — required for age-adjusted reference ranges (40–49: ≤2.5, 50–59: ≤3.5, 60–69: ≤4.5, 70–79: ≤6.5, 80+: ≤7.2 ng/mL).</li>
+<li>Enter <strong>Total PSA</strong> (required) and optionally <strong>Free PSA</strong> and <strong>Prostate Volume</strong> (from TRUS or bladder scan).</li>
+<li>For PSA velocity, enter <strong>Prior PSA</strong> value and its <strong>date</strong>, plus the <strong>current PSA date</strong> (leave blank for today).</li>
+<li>Select the current <strong>5-ARI medication</strong> — finasteride (×2 correction) or dutasteride (×2.5 correction) are applied automatically.</li>
+<li>Check any <strong>confounding factors</strong> that may have falsely elevated PSA before the draw.</li>
+<li>Click <strong>Calculate &amp; Interpret</strong> to see drug-corrected PSA, all metrics, risk stratification, and recommendations.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser — no values are stored or transmitted.</p>
+</div>
+
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
+<p>Use this calculator for any man undergoing PSA-based prostate cancer screening or monitoring, especially when the clinical picture requires more than a single total PSA value. It is most valuable in three scenarios:</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>5-ARI drug correction — the most critical use case</h4>
+<p>Men on finasteride 5 mg or dutasteride 0.5 mg (for BPH or hair loss) have PSA suppressed by 50–70% after ≥6 months of therapy. A raw PSA of 2.0 ng/mL on dutasteride represents a corrected (true) PSA of ~5.0 ng/mL — clearly in the elevated range. Without correction, up to half of significant cancers in this group may be missed. Always apply the correction multiplier and use the corrected PSA for all risk decisions.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Gray zone PSA (4–10 ng/mL)</h4>
+<p>Total PSA in the 4–10 ng/mL range carries roughly a 25% prostate cancer risk on biopsy — but BPH and prostatitis account for the other 75%. % Free PSA, PSA density, and PSA velocity help separate benign from malignant causes before proceeding to biopsy. Free PSA &lt;10% strongly favors cancer; ≥25% favors benign. PSA density ≥0.15 ng/mL/mL supports biopsy even with borderline total PSA.</p>
+</div>
+</div>
+<div class="alert alert-green">
+<div class="alert-icon">📅</div>
+<div class="alert-body">
+<h4>Serial PSA monitoring</h4>
+<p>Enter a prior PSA value and date to compute annualized PSA velocity. A velocity ≥0.75 ng/mL/year — even with an absolute PSA below the biopsy threshold — is independently associated with prostate cancer risk and cancer-specific mortality. Use this feature to detect accelerating PSA rise before the threshold is crossed.</p>
+</div>
+</div>
+</div>
+</details>
+
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>% Free PSA is most useful in the gray zone</h4>
+<p>The ratio of free-to-total PSA adds meaningful discrimination specifically when total (corrected) PSA is between 4 and 10 ng/mL. Below 4 ng/mL or above 10 ng/mL it adds less incremental value. Order free PSA whenever the corrected total PSA sits in this gray zone and you need to decide about biopsy.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">⚖️</div>
+<div class="alert-body">
+<h4>PSA density requires an accurate prostate volume</h4>
+<p>PSA density = Total PSA ÷ Prostate volume (mL). A threshold of ≥0.15 ng/mL/mL is the standard biopsy trigger. Volume must come from TRUS (most accurate) or bladder scan — DRE estimation is unreliable. PSA density is particularly useful when PSA is mildly elevated and the gland is enlarged (large BPH may explain the PSA without cancer).</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>Confounders must be resolved before acting</h4>
+<p>PSA can be transiently elevated by DRE (within 48 hours), prostate biopsy (up to 6 weeks), urethral catheterization (within 1 week), active UTI or prostatitis, ejaculation (within 48 hours), and vigorous perineal pressure (cycling). If any confounders were present before the PSA draw, flag the result and repeat in 4–6 weeks after resolution before making biopsy decisions.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<ul>
+<li><strong>5-ARI correction is mandatory</strong> — uncorrected PSA on 5-ARI is the single most common clinical error. Even a "normal" raw PSA may represent a doubled or 2.5× true PSA.</li>
+<li><strong>Alpha-1 blockers do not lower PSA</strong> — tamsulosin and silodosin have no meaningful effect on PSA and require no correction.</li>
+<li><strong>Daily tadalafil 5 mg</strong> has negligible PSA effect; no numeric correction is applied, but document it in the record.</li>
+<li><strong>PSA alone does not diagnose cancer</strong> — all positive results require confirmatory evaluation (mpMRI, biopsy) and physician assessment before treatment decisions.</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>PSA Panel Calculator</h2>
+
+<div class="form-card">
+  <h2>Enter Laboratory Values <span class="badge">Interactive</span></h2>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Enter your lab values below. Drug corrections and risk stratification are applied automatically. All fields except Total PSA are optional.</p>
+
+  <form id="calc-form" onsubmit="return false;">
+
+    <div class="form-section-label">Patient Information</div>
+    <div class="field-grid">
+      <div class="field">
+        <label for="ci-age">Age (years)</label>
+        <input type="number" id="ci-age" min="18" max="120" placeholder="e.g. 65">
+        <div class="hint">Used for age-adjusted reference ranges</div>
+      </div>
+      <div class="field" style="grid-column: span 1;"></div>
+    </div>
+
+    <div class="form-section-label">PSA Results</div>
+    <div class="field-grid">
+      <div class="field">
+        <label for="ci-tpsa">Total PSA — ng/mL <span style="color:var(--red);">*</span></label>
+        <input type="number" id="ci-tpsa" min="0" step="0.01" placeholder="e.g. 5.40">
+        <div class="hint">As reported by the laboratory</div>
+      </div>
+      <div class="field">
+        <label for="ci-fpsa">Free PSA — ng/mL</label>
+        <input type="number" id="ci-fpsa" min="0" step="0.01" placeholder="e.g. 0.80">
+        <div class="hint">Optional — needed for % Free PSA</div>
+      </div>
+      <div class="field">
+        <label for="ci-vol">Prostate Volume — mL</label>
+        <input type="number" id="ci-vol" min="0" step="0.1" placeholder="e.g. 45">
+        <div class="hint">From TRUS or bladder ultrasound</div>
+      </div>
+      <div class="field" style="grid-column: span 1;"></div>
+    </div>
+
+    <div class="form-section-label">PSA Velocity (Prior Result)</div>
+    <div class="field-grid-3">
+      <div class="field">
+        <label for="ci-prior">Prior PSA — ng/mL</label>
+        <input type="number" id="ci-prior" min="0" step="0.01" placeholder="e.g. 4.20">
+      </div>
+      <div class="field">
+        <label for="ci-pdate">Date of Prior PSA</label>
+        <input type="date" id="ci-pdate">
+      </div>
+      <div class="field">
+        <label for="ci-cdate">Date of Current PSA</label>
+        <input type="date" id="ci-cdate">
+        <div class="hint">Leave blank for today</div>
+      </div>
+    </div>
+
+    <div class="form-section-label">Medications</div>
+
+    <div class="field">
+      <label>5-Alpha Reductase Inhibitor (5-ARI)</label>
+      <div class="radio-group">
+        <label><input type="radio" name="ci-ari" value="none" checked> None</label>
+        <label><input type="radio" name="ci-ari" value="finasteride"> Finasteride 5mg (×2 correction)</label>
+        <label><input type="radio" name="ci-ari" value="dutasteride"> Dutasteride 0.5mg (×2.5 correction)</label>
+      </div>
+    </div>
+
+    <div class="field-grid" style="margin-top:12px;">
+      <div class="field">
+        <label>Alpha-1 Blocker?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="ci-alpha" value="no" checked> No</label>
+          <label><input type="radio" name="ci-alpha" value="yes"> Yes (tamsulosin, silodosin)</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Daily Tadalafil 5mg?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="ci-pde5" value="none" checked> No</label>
+          <label><input type="radio" name="ci-pde5" value="daily"> Yes</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section-label">Confounding Factors (Check all that apply)</div>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" id="cc-dre"> DRE within 48 hours</label>
+      <label class="check-item"><input type="checkbox" id="cc-bx"> Prostate biopsy within 6 weeks</label>
+      <label class="check-item"><input type="checkbox" id="cc-cath"> Catheterization within 1 week</label>
+      <label class="check-item"><input type="checkbox" id="cc-uti"> Active UTI or prostatitis</label>
+      <label class="check-item"><input type="checkbox" id="cc-ejac"> Ejaculation within 48 hours</label>
+      <label class="check-item"><input type="checkbox" id="cc-ride"> Vigorous cycling within 48 hours</label>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-calc" onclick="ciCalc()">Calculate &amp; Interpret</button>
+      <button class="btn-reset" type="button" onclick="ciReset()">Reset</button>
+    </div>
+
+  </form>
+</div>
+
+<!-- RESULTS -->
+<div id="ci-results">
+  <div id="ci-drug" class="note-box drug-note"></div>
+  <div id="ci-conf" class="note-box conf-note"></div>
+
+  <div class="result-card">
+    <h3>Interpretation Results</h3>
+    <div id="r-badge" class="risk-badge"></div>
+
+    <div style="overflow-x:auto;">
+    <table class="mtable">
+      <thead><tr><th>Metric</th><th>Result &amp; Interpretation</th></tr></thead>
+      <tbody>
+        <tr><td class="row-label">Reported PSA</td><td id="r-rep">—</td></tr>
+        <tr id="r-crow" style="display:none;"><td class="row-label">Corrected PSA (5-ARI)</td><td id="r-cor">—</td></tr>
+        <tr><td class="row-label">Effective PSA</td><td id="r-eff">—</td></tr>
+        <tr id="r-frow" style="display:none;"><td class="row-label">% Free PSA</td><td id="r-fpct">—</td></tr>
+        <tr id="r-drow" style="display:none;"><td class="row-label">PSA Density</td><td id="r-dens">—</td></tr>
+        <tr id="r-vrow" style="display:none;"><td class="row-label">PSA Velocity</td><td id="r-vel">—</td></tr>
+        <tr><td class="row-label">Age-Adjusted Range</td><td id="r-age">—</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="narr-box" id="r-narr"></div>
+
+    <div style="margin-top:16px;">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:10px;">Recommendations</div>
+      <ul class="rlist" id="r-recs"></ul>
+    </div>
+
+    <div class="calc-disclaimer">
+      <strong>Clinical disclaimer:</strong> This calculator is for educational and clinical decision-support purposes only. Results must be interpreted in the context of the full clinical picture including symptoms, DRE findings, imaging, and comorbidities. All biopsy and treatment decisions require physician evaluation. PSA correction factors for 5-ARIs are approximate; individual responses vary. Not a substitute for professional medical judgment.
+    </div>
+  </div>
+</div>
+
+</section>
+
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the result to support — not replace — clinical judgment.</strong> The interpretation is a starting point; final decisions require the full clinical picture.</p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li><strong>If confounders were present:</strong> Repeat PSA in 4–6 weeks after complete resolution before making any biopsy or referral decisions.</li>
+<li><strong>If on 5-ARI:</strong> Always use the corrected PSA for all cancer-risk decisions. Document the drug, dose, and duration of therapy in the medical record.</li>
+<li><strong>If PSA is in the gray zone (4–10 ng/mL):</strong> Order Free PSA and prostate volume if not already done. PSA density ≥0.15 supports biopsy; % Free PSA &lt;10% strongly favors cancer. Consider mpMRI before biopsy — it reduces unnecessary procedures (EAU 2024, NICE 2019).</li>
+<li><strong>If PSA &gt;10 ng/mL or rapidly rising:</strong> Refer to urology promptly. Do not delay pending a repeat PSA. Bone scan and mpMRI should be discussed.</li>
+<li><strong>For serial monitoring:</strong> Low risk — every 1–2 years. Elevated or borderline — every 6–12 months. After starting a 5-ARI — recheck at 6 months to establish a new treated baseline, then use that value as the comparator (not the pre-treatment PSA).</li>
+<li><strong>Document shared decision-making:</strong> PSA screening is a shared decision between patient and physician. Discuss the benefits and limitations, life expectancy, and individual risk factors (family history, prior biopsy) before any screening or re-screening decision.</li>
+</ul>
+</div>
+</details>
+
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Age-Adjusted PSA Reference Ranges</h3>
+<p>Age-specific PSA norms (Oesterling JE, et al. <em>JAMA</em> 1993) were derived from a community cohort of men without prostate disease. They improve sensitivity in younger men and reduce unnecessary biopsies in older men with BPH.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Age Group</th><th>Upper Reference Limit</th><th>Clinical Implication</th></tr></thead>
+<tbody>
+<tr><td>40–49 years</td><td>≤ 2.5 ng/mL</td><td>PSA above this in a young man warrants evaluation regardless of absolute value</td></tr>
+<tr><td>50–59 years</td><td>≤ 3.5 ng/mL</td><td>Most common screening age; use with free PSA in the gray zone</td></tr>
+<tr><td>60–69 years</td><td>≤ 4.5 ng/mL</td><td>BPH becomes common; PSA density helps distinguish</td></tr>
+<tr><td>70–79 years</td><td>≤ 6.5 ng/mL</td><td>Large prostates common; individualize biopsy decisions</td></tr>
+<tr><td>80+ years</td><td>≤ 7.2 ng/mL</td><td>Shared decision-making with life expectancy context</td></tr>
+</tbody>
+</table>
+</div>
+<h3 class="mdc-sub">5-ARI Correction Factors</h3>
+<p>Finasteride 5 mg (a type-2 5-ARI) suppresses serum PSA by approximately 50% after ≥6 months of therapy (Oesterling JE, et al. <em>Urology</em> 1993). Dutasteride 0.5 mg (a dual type 1+2 5-ARI) suppresses PSA by 50–70% (Andriole GL, et al. <em>Eur Urol</em> 2010). Current AUA and EAU guidelines recommend doubling PSA for finasteride and multiplying by 2.5 for dutasteride as conservative correction factors. Apply the correction to PSA drawn after ≥6 months of therapy; earlier draws reflect incomplete suppression.</p>
+<h3 class="mdc-sub">% Free PSA Thresholds</h3>
+<p>In men with total PSA 4–10 ng/mL and a non-suspicious DRE, % Free PSA refines cancer risk (Catalona WJ, et al. <em>JAMA</em> 1998):</p>
+<ul style="margin:8px 0 12px 1.2em;line-height:1.8;">
+<li><strong>&lt;10%</strong> — cancer probability ~56%; biopsy strongly recommended</li>
+<li><strong>10–15%</strong> — cancer probability ~28%; biopsy generally recommended</li>
+<li><strong>15–25%</strong> — cancer probability ~16%; individualize (PSA density, velocity, age, family history)</li>
+<li><strong>≥25%</strong> — cancer probability &lt;8%; watchful waiting appropriate if other factors favorable</li>
+</ul>
+<h3 class="mdc-sub">PSA Velocity</h3>
+<p>An annual PSA rise ≥0.75 ng/mL/year (in men with PSA &gt;4 ng/mL) is independently associated with prostate cancer risk and cancer-specific mortality (Carter HB, et al. <em>JAMA</em> 1992). Velocity requires at least two measurements over ≥18 months for reliable calculation. A rapid rise even within the "normal" range warrants evaluation.</p>
+<h3 class="mdc-sub">Key References</h3>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Oesterling JE, Jacobsen SJ, Chute CG, et al. <em>Serum prostate-specific antigen in a community-based population of healthy men.</em> JAMA. 1993;270(7):860–864.</li>
+<li>Catalona WJ, Partin AW, Slawin KM, et al. <em>Use of the percentage of free prostate-specific antigen to enhance differentiation of prostate cancer from benign prostatic disease.</em> JAMA. 1998;279(19):1542–1547.</li>
+<li>Carter HB, Morrell CH, Pearson JD, et al. <em>Estimation of prostatic growth using serial prostate-specific antigen measurements in men with and without prostate disease.</em> Cancer Res. 1992;52(12):3323–3328.</li>
+<li>European Association of Urology (EAU). <em>Guidelines on Prostate Cancer.</em> Edn. presented at the EAU Annual Congress Paris 2024. EAU Guidelines Office, Arnhem, The Netherlands.</li>
+<li>American Urological Association (AUA). <em>PSA Testing for the Pretreatment Staging and Posttreatment Management of Prostate Cancer: 2013 Revision of 2009 Best Practice Statement.</em> AUA; 2013.</li>
+<li>Andriole GL, Bostwick DG, Brawley OW, et al. <em>Effect of dutasteride on the risk of prostate cancer.</em> N Engl J Med. 2010;362(13):1192–1202.</li>
+</ol>
+</div>
+</details>
+
+<div class="disclaimer">
+  <strong>Disclaimer:</strong> This calculator is provided for educational and clinical decision-support purposes. It does not constitute medical advice and is not a substitute for professional physician assessment. All screening, biopsy, and treatment decisions must be individualized based on the full clinical context, patient preferences, and current guidelines. PSA correction factors are population-derived estimates; individual responses to 5-ARIs vary.
+</div>
+
+</main>
+
+<!-- REFERENCES-ACC-START -->
+<!-- Accordion references — generated by patch_references_accordion.py. Inline styles so patch_master_css.py will not clobber it. -->
+<section class="ref-section" style="max-width:860px;margin:8px auto 0;padding:0 32px;">
+<details class="ref-acc" style="border:1px solid var(--border);border-radius:12px;background:var(--white);overflow:hidden;">
+<summary style="cursor:pointer;list-style:none;padding:15px 20px;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;color:var(--text);display:flex;align-items:center;gap:10px;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;color:var(--teal);"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+<span data-lang="en">References</span>
+<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">7 sources</span>
+</summary>
+<ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);">
+<li>Oesterling JE, Jacobsen SJ, Chute CG, et al. Serum prostate-specific antigen in a community-based population of healthy men. JAMA. 1993;270(7):860-864.</li>
+<li>Catalona WJ, Partin AW, Slawin KM, et al. Use of the percentage of free prostate-specific antigen to enhance differentiation of prostate cancer from benign prostatic disease. JAMA. 1998;279(19):1542-1547.</li>
+<li>Carter HB, Morrell CH, Pearson JD, et al. Estimation of prostatic growth using serial prostate-specific antigen measurements in men with and without prostate disease. Cancer Res. 1992;52(12):3323-3328.</li>
+<li>European Association of Urology (EAU). Guidelines on Prostate Cancer. EAU Annual Congress Paris 2024.</li>
+<li>American Urological Association (AUA). PSA Testing for the Pretreatment Staging and Posttreatment Management of Prostate Cancer: 2013 Revision of 2009 Best Practice Statement. AUA; 2013.</li>
+<li>Andriole GL, Bostwick DG, Brawley OW, et al. Effect of dutasteride on the risk of prostate cancer. N Engl J Med. 2010;362(13):1192-1202.</li>
+<li>Oesterling JE, et al. Urology 1993 (finasteride PSA suppression of approximately 50%)</li>
+</ol>
+</details>
+</section>
+<!-- REFERENCES-ACC-END -->
+<!-- DR CARD -->
+<div class="dr-card-wrap">
+<div class="dr-card">
+  <div class="dr-avatar"><img src="../images/dr-william-rivero-avatar.png" alt="Dr. W Rivero, MD" onerror="this.style.display='none'"></div>
+  <div class="dr-card-body">
+    <h4>W Rivero, MD, FPCP, DPSN</h4>
+    <p>Internal Medicine · Nephrology · Philippines</p>
+    <p class="dr-creds"> · Fellow, Philippine College of Physicians · Diplomate, Philippine Society of Nephrology</p>
+  </div>
+  <div class="dr-qr">
+    <img src="../images/qr-appointment.png" alt="QR code for booking" onerror="this.style.display='none'">
+    <div class="dr-qr-label">Book<br>Appointment</div>
+  </div>
+</div>
+</div>
+
+<div class="related-guides">
+<h2>Related Guides &amp; Tools</h2>
+<div class="related-cards">
+  <a href="prostate-panel-interpreter.html" class="related-card">
+    <span class="related-card-tag">Urology</span>
+    <span class="related-card-title">PSA Interpretation Guide</span>
+  </a>
+  <a href="prostate-enlargement.html" class="related-card">
+    <span class="related-card-tag">Urology</span>
+    <span class="related-card-title">Prostate Enlargement (BPH)</span>
+  </a>
+  <a href="prostate-cancer-ckd.html" class="related-card">
+    <span class="related-card-tag">Oncology · Nephrology</span>
+    <span class="related-card-title">Prostate Cancer &amp; CKD</span>
+  </a>
+  <a href="understanding-ckd.html" class="related-card">
+    <span class="related-card-tag">Nephrology</span>
+    <span class="related-card-title">Understanding CKD</span>
+  </a>
+</div>
+</div>
+
+<footer class="guide-footer">
+<div class="footer-inner">
+<p>W Rivero, MD, FPCP, DPSN ·  · <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>© 2026 · For educational purposes only · <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener">Book an Appointment</a></p>
+</div>
+</footer>
+
+<script>
+const AGE_REF = [
+  {min:40,max:49,upper:2.5,label:'40–49 yrs: ≤2.5 ng/mL'},
+  {min:50,max:59,upper:3.5,label:'50–59 yrs: ≤3.5 ng/mL'},
+  {min:60,max:69,upper:4.5,label:'60–69 yrs: ≤4.5 ng/mL'},
+  {min:70,max:79,upper:6.5,label:'70–79 yrs: ≤6.5 ng/mL'},
+  {min:80,max:120,upper:7.2,label:'80+ yrs: ≤7.2 ng/mL'},
+];
+function getAgeRef(a){return AGE_REF.find(r=>a>=r.min&&a<=r.max)||{upper:4.0,label:'≤4.0 ng/mL (default)'};}
+function cc(v,l,m){return v<=l?'vn':v<=m?'vw':'vh';}
+
+function ciCalc(){
+  const age=parseFloat(document.getElementById('ci-age').value);
+  const tpsa=parseFloat(document.getElementById('ci-tpsa').value);
+  const fpsa=parseFloat(document.getElementById('ci-fpsa').value);
+  const vol=parseFloat(document.getElementById('ci-vol').value);
+  const prior=parseFloat(document.getElementById('ci-prior').value);
+  const pd=document.getElementById('ci-pdate').value;
+  const cd=document.getElementById('ci-cdate').value;
+  const ari=document.querySelector('input[name="ci-ari"]:checked').value;
+  const alpha=document.querySelector('input[name="ci-alpha"]:checked').value;
+  const pde5=document.querySelector('input[name="ci-pde5"]:checked').value;
+  const confs=[];
+  if(document.getElementById('cc-dre').checked) confs.push('DRE within 48h');
+  if(document.getElementById('cc-bx').checked)  confs.push('prostate biopsy within 6 weeks');
+  if(document.getElementById('cc-cath').checked)confs.push('urethral catheterization within 1 week');
+  if(document.getElementById('cc-uti').checked) confs.push('active UTI or prostatitis');
+  if(document.getElementById('cc-ejac').checked)confs.push('ejaculation within 48h');
+  if(document.getElementById('cc-ride').checked)confs.push('vigorous perineal pressure within 48h');
+  if(isNaN(tpsa)){alert('Total PSA is required.');return;}
+  let cf=1,cpsa=tpsa,cnote='';
+  if(ari==='finasteride'){cf=2;cpsa=tpsa*2;cnote=`<strong>Finasteride ×2 correction applied:</strong> Reported PSA ${tpsa.toFixed(2)} → Estimated true PSA <strong>${cpsa.toFixed(2)} ng/mL</strong>. Finasteride suppresses PSA ~50% after ≥6 months.`;}
+  else if(ari==='dutasteride'){cf=2.5;cpsa=tpsa*2.5;cnote=`<strong>Dutasteride ×2.5 correction applied:</strong> Reported PSA ${tpsa.toFixed(2)} → Estimated true PSA <strong>${cpsa.toFixed(2)} ng/mL</strong>. Dutasteride suppresses PSA 50–70% after ≥6 months.`;}
+  const eff=cpsa;
+  const hasFp=!isNaN(fpsa)&&fpsa>0;
+  const fpct=hasFp?(fpsa/tpsa)*100:null;
+  const hasVol=!isNaN(vol)&&vol>0;
+  const dens=hasVol?eff/vol:null;
+  let vel=null,velYr=null;
+  if(!isNaN(prior)&&prior>=0&&pd){const d1=new Date(pd),d2=cd?new Date(cd):new Date();velYr=(d2-d1)/(365.25*24*3600*1000);if(velYr>0)vel=(eff-prior)/velYr;}
+  const ar=!isNaN(age)?getAgeRef(age):null;
+  let rl,rbg;
+  if(eff<1){rl='LOW RISK';rbg='#166534';}
+  else if(eff<2.5){rl='LOW–INTERMEDIATE';rbg='#2d7a3a';}
+  else if(eff<4){rl='INTERMEDIATE';rbg='#92400e';}
+  else if(eff<=10){rl='ELEVATED — EVALUATE';rbg='#b45309';}
+  else{rl='HIGH CONCERN — REFER';rbg='#b91c1c';}
+  document.getElementById('ci-results').style.display='block';
+  const dc=document.getElementById('ci-drug');
+  if(cnote){dc.innerHTML=cnote;dc.style.display='block';}else dc.style.display='none';
+  const cc2=document.getElementById('ci-conf');
+  if(confs.length){cc2.innerHTML=`<strong>⚠ PSA may be falsely elevated</strong> due to: ${confs.join('; ')}. Consider repeating PSA in 4–6 weeks before clinical decisions.`;cc2.style.display='block';}else cc2.style.display='none';
+  document.getElementById('r-rep').innerHTML=`<span class="${cc(tpsa,2.5,4)}">${tpsa.toFixed(2)} ng/mL</span>`;
+  if(cf>1){document.getElementById('r-crow').style.display='';document.getElementById('r-cor').innerHTML=`<span class="vw">${cpsa.toFixed(2)} ng/mL (×${cf})</span>`;}else document.getElementById('r-crow').style.display='none';
+  document.getElementById('r-eff').innerHTML=`<span class="${cc(eff,2.5,4)}">${eff.toFixed(2)} ng/mL</span>`;
+  if(hasFp){
+    document.getElementById('r-frow').style.display='';
+    const fc=fpct<10?'vh':fpct<15?'vw':fpct<25?'vi':'vn';
+    const fn=fpct<10?'— High cancer concern':fpct<15?'— Intermediate risk':fpct<25?'— Consider biopsy if other factors present':'— Favors benign';
+    document.getElementById('r-fpct').innerHTML=`<span class="${fc}">${fpct.toFixed(1)}% ${fn}</span>`;
+  }else document.getElementById('r-frow').style.display='none';
+  if(hasVol){
+    document.getElementById('r-drow').style.display='';
+    const dc2=dens<0.10?'vn':dens<0.15?'vi':dens<0.20?'vw':'vh';
+    const dn=dens<0.10?'— Low cancer likelihood':dens<0.15?'— Borderline':dens<0.20?'— Supports biopsy discussion':'— High cancer probability';
+    document.getElementById('r-dens').innerHTML=`<span class="${dc2}">${dens.toFixed(3)} ng/mL/mL ${dn}</span>`;
+  }else document.getElementById('r-drow').style.display='none';
+  if(vel!==null){
+    document.getElementById('r-vrow').style.display='';
+    const vc=vel<0.35?'vn':vel<0.75?'vw':'vh';
+    const vn=vel<0?'— PSA decreased':vel<0.35?'— Stable / reassuring':vel<0.75?'— Intermediate rise; monitor closely':'— Rapid rise; high concern';
+    document.getElementById('r-vel').innerHTML=`<span class="${vc}">${vel.toFixed(2)} ng/mL/yr (over ${velYr.toFixed(1)} yr) ${vn}</span>`;
+  }else document.getElementById('r-vrow').style.display='none';
+  if(ar){const ab=eff>ar.upper;document.getElementById('r-age').innerHTML=`<span class="${ab?'vh':'vn'}">${ar.label} → ${ab?'⚠ ABOVE age-adjusted range':'✓ Within range'}</span>`;}
+  else document.getElementById('r-age').innerHTML=`<span class="vm">Enter age to see reference</span>`;
+  const badge=document.getElementById('r-badge');
+  badge.textContent=rl;badge.style.background=rbg;badge.style.color='#fff';
+  const al=ari==='none'?'not on a 5-ARI':ari==='finasteride'?'on Finasteride 5mg':'on Dutasteride 0.5mg';
+  const cn=confs.length?` <strong>Note:</strong> Confounding factors present — repeat PSA in 4–6 weeks before decisions.`:'';
+  let narr='';
+  if(eff<1)narr=`<p>Effective PSA <strong>${eff.toFixed(2)} ng/mL</strong> (${al}) is very low. Risk of clinically significant prostate cancer is minimal. Routine monitoring appropriate.${cn}</p>`;
+  else if(eff<2.5)narr=`<p>Effective PSA <strong>${eff.toFixed(2)} ng/mL</strong> (${al}) is low-intermediate. BPH or prostatitis most likely. Individualize interval by age and family history.${cn}</p>`;
+  else if(eff<4)narr=`<p>Effective PSA <strong>${eff.toFixed(2)} ng/mL</strong> (${al}) is mildly elevated — gray zone. BPH, prostatitis, and cancer can all produce this level. % Free PSA and PSA density should guide next steps.${cn}</p>`;
+  else if(eff<=10)narr=`<p>Effective PSA <strong>${eff.toFixed(2)} ng/mL</strong> (${al}) is elevated. The 4–10 ng/mL gray zone carries ~25% cancer risk on biopsy. <strong>% Free PSA is critical: &lt;10% → biopsy strongly advised; 10–25% → shared decision; &gt;25% → cancer less likely.</strong> PSA density and velocity add further stratification.${cn}</p>`;
+  else{narr=`<p>Effective PSA <strong>${eff.toFixed(2)} ng/mL</strong> (${al}) is significantly elevated. Risk of prostate cancer — including high-grade disease — is high. Urgent urology referral warranted. Bone scan and mpMRI should be considered.${cn}</p>`;
+  if(alpha==='yes')narr+=`<p><strong>Alpha-blocker note:</strong> Alpha-1 blockers do not lower PSA and do not alter this risk interpretation.</p>`;
+  if(pde5==='daily')narr+=`<p><strong>Daily tadalafil note:</strong> Negligible PSA effect; no numeric correction applied.</p>`;}
+  document.getElementById('r-narr').innerHTML=narr;
+  const recs=[];
+  if(confs.length)recs.push({i:'⚠',t:'Repeat PSA in 4–6 weeks after confounders resolve before making biopsy decisions.'});
+  if(cf>1)recs.push({i:'💊',t:`Always use corrected PSA (×${cf}) for cancer risk assessment. Document 5-ARI medication and duration in records.`});
+  if(hasFp&&fpct<10)recs.push({i:'🔴',t:'% Free PSA <10% → high probability of prostate cancer. Urology referral and biopsy discussion strongly recommended.'});
+  else if(hasFp&&fpct<25&&eff>=4)recs.push({i:'🟡',t:'% Free PSA 10–25% with elevated PSA → intermediate risk. Shared decision-making; consider mpMRI before biopsy.'});
+  else if(hasFp&&fpct>=25)recs.push({i:'🟢',t:'% Free PSA ≥25% is reassuring for benign disease. Active surveillance with serial PSA appropriate if other factors favorable.'});
+  if(hasVol&&dens>=0.15)recs.push({i:'📐',t:`PSA density ≥0.15 (yours: ${dens.toFixed(3)} ng/mL/mL) supports biopsy consideration even in the gray zone.`});
+  if(vel!==null&&vel>=0.75)recs.push({i:'📈',t:`PSA velocity ≥0.75 ng/mL/yr (yours: ${vel.toFixed(2)}) is independently associated with increased cancer risk.`});
+  if(ar&&eff>ar.upper)recs.push({i:'🔶',t:`PSA exceeds age-adjusted upper limit (${ar.label}). Warrants evaluation regardless of absolute value.`});
+  if(eff>=4&&eff<=10&&!hasFp)recs.push({i:'🧪',t:'Order Free PSA (fPSA) — critical for risk stratification in the 4–10 ng/mL gray zone.'});
+  if(eff>=4&&!hasVol)recs.push({i:'📡',t:'Obtain prostate volume (TRUS or bladder scan) to calculate PSA density.'});
+  if(eff>10)recs.push({i:'🏥',t:'Urgent urology referral. Consider mpMRI and bone scan. Do not delay pending repeat PSA.'});
+  else if(eff>=4)recs.push({i:'⚕',t:'Urology referral for biopsy discussion. mpMRI before biopsy reduces unnecessary procedures (EAU 2024, NICE 2019).'});
+  recs.push({i:'📅',t:'PSA monitoring: every 1–2 years if low risk; every 6–12 months if elevated; recheck at 6 months after starting 5-ARI to establish treated baseline.'});
+  document.getElementById('r-recs').innerHTML=recs.map(r=>`<li><span class="ri">${r.i}</span><span>${r.t}</span></li>`).join('');
+  document.getElementById('ci-results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function ciReset(){
+  document.querySelectorAll('#calc-form input[type=number],#calc-form input[type=date]').forEach(e=>e.value='');
+  document.querySelectorAll('#calc-form input[type=radio]').forEach(e=>{if(e.value==='none'||e.value==='no')e.checked=true;});
+  document.querySelectorAll('#calc-form input[type=checkbox]').forEach(e=>e.checked=false);
+  document.getElementById('ci-results').style.display='none';
+}
+
+function toggleDark(){
+  const h=document.documentElement;
+  const d=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',d?'light':'dark');
+  try{localStorage.setItem('wgmr-psa-theme',d?'light':'dark');}catch(e){}
+  document.getElementById('darkLabel').textContent=d?'Dark':'Light';
+}
+// Sync dark label on load
+(function(){
+  if(document.documentElement.getAttribute('data-theme')==='dark'){
+    document.getElementById('darkLabel').textContent='Light';
+  }
+})();
+</script>
+<!-- CALC-NAV-PILL-START -->
+<style id="calc-nav-pill-style">
+.calc-nav-pill{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;align-items:stretch;z-index:9997;background:#1f3864;border-radius:999px;box-shadow:0 6px 22px rgba(15,30,51,.32);border:1px solid rgba(255,255,255,.14);}
+.calc-nav-pill>a,.calc-nav-pill>.cnp-print{position:relative;display:flex;align-items:center;justify-content:center;width:58px;height:44px;color:#fff;text-decoration:none;transition:background .18s;background:none;border:none;cursor:pointer;}
+.calc-nav-pill>a:first-child{border-radius:999px 0 0 999px;}
+.calc-nav-pill>a:last-child{border-radius:0 999px 999px 0;}
+.calc-nav-pill>a:hover,.calc-nav-pill>.cnp-print:hover{background:#2a4a7f;}
+.calc-nav-pill>a:first-child:hover{border-radius:999px 0 0 999px;}
+.calc-nav-pill>a:last-child:hover{border-radius:0 999px 999px 0;}
+.calc-nav-pill>a:focus-visible,.calc-nav-pill>.cnp-print:focus-visible{outline:2px solid #d4af4f;outline-offset:-3px;}
+.calc-nav-pill .cnp-div{width:1px;background:rgba(255,255,255,.22);align-self:stretch;}
+.calc-nav-pill svg{width:20px;height:20px;}
+.cnp-tip{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);background:rgba(15,30,51,.92);color:#fff;font-size:11.5px;font-weight:500;white-space:nowrap;padding:5px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s;}
+.calc-nav-pill>a:hover .cnp-tip,.calc-nav-pill>.cnp-print:hover .cnp-tip{opacity:1;}
+html[data-theme="dark"] .calc-nav-pill{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav-pill>.cnp-print:hover{background:#243349;}
+.print-fab,.print-btn,.calc-back-btn,.calc-rg-btn{display:none!important;}
+@media print{.calc-nav-pill{display:none!important;}}
+</style>
+<nav class="calc-nav-pill" id="calc-nav-pill" aria-label="Calculator navigation">
+<a href="https://www.williamriveromd.com/guides/calculators.html" aria-label="Back to all calculators"><span class="cnp-tip">All Calculators</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
+<span class="cnp-div"></span>
+<button class="cnp-print" onclick="window.print()" aria-label="Print this page"><span class="cnp-tip">Print</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></button>
+<span class="cnp-div"></span>
+<a href="prostate-panel-interpreter.html" aria-label="Go to related guide"><span class="cnp-tip">PSA Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+</nav>
+<!-- CALC-NAV-PILL-END -->
+<script src="../assets/calc-handoff.js" defer></script>
+<!-- Floating dark-mode toggle (site-wide convention) -->
+<div class="float-controls no-print">
+  <button id="darkToggle" class="float-btn" type="button" onclick="toggleDark()" aria-label="Toggle dark mode" title="Switch to dark mode">
+    <span class="float-tooltip" id="darkLabel">Dark mode</span>
+    <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
+</body>
+</html>

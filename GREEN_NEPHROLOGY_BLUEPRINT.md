@@ -4,7 +4,7 @@
 **Status:** Blueprint / pre-build (not yet authored as HTML)
 **Audience:** Dual-mode — patients & families (default) + clinicians/unit managers (physician mode)
 **Last reviewed (planned badge):** 2026
-**Author byline:** W. G. M. Rivero, MD, FPCP, DPSN
+**Author byline:** W Rivero, MD, FPCP, DPSN
 
 > *Green Nephrology* = delivering kidney care in a way that protects the planet
 > as well as the patient — cutting the carbon, water, energy, and plastic
@@ -249,7 +249,7 @@ When the HTML is authored, run (per `CLAUDE.md`):
 (And add `green-nephrology.html` to the related-arrays of those guides where it fits — esp. `el-nino-heat-dialysis.html`.)
 
 ## 10. SEO scaffolding (draft)
-- **Title:** `Green Nephrology — Sustainable, Climate-Resilient Kidney Care · W. G. M. Rivero, MD`
+- **Title:** `Green Nephrology — Sustainable, Climate-Resilient Kidney Care · W Rivero, MD`
 - **Description:** *How to make dialysis and CKD care greener and more climate-resilient in the Philippines — saving water, energy, and plastic while protecting patients. Drawing on UK, Australian, and global experience.*
 - **Keywords:** green nephrology Philippines, sustainable dialysis, dialysis water reuse, RO reject water reclamation, solar dialysis, carbon footprint dialysis, PD-first Philippines, climate kidney care, green dialysis survey, eco-friendly dialysis, brownout dialysis resilience, ERA 2026 Glasgow green nephrology.
 - `og:locale` `en_PH`; hero image `green-nephrology-overview-infographic.png` (use the infographic skill).

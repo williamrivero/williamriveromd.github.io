@@ -66,7 +66,7 @@ AUDIENCE: Filipino CKD patients, caregivers, general public
 VISUAL GOAL: Premium social share card that immediately communicates kidney health guidance and builds clinical trust.
 
 PROMPT:
-Premium medical editorial social share card, 1200 × 630 pixels, white background (#ffffff). Left two-thirds: photorealistic editorial scene — a Filipino male nephrologist in his 40s in a clean, bright, modern outpatient clinic, wearing a white coat, seated across from a Filipino middle-aged male patient (50s) who looks attentive and calm — warm professional atmosphere, natural daylight from a window, soft-focus clinical background, teal and navy accent details in the environment. Right one-third: clean white panel with the following text elements precisely rendered: Large bold condensed sans-serif title in navy (#0f1e2e): "Slowing CKD Progression"; below it in clinical teal (#1a6b72), medium weight: "Evidence-based strategies to protect your kidney function"; below that in small navy text: "W. G. M. Rivero, MD · Nephrology"; a slim teal horizontal rule separating sections. Bottom-right corner: very small semi-transparent navy text "williamriveromd.com" at 70% opacity. No dark backgrounds — white and off-white only. Premium healthcare publication aesthetic, warm and trustworthy, not clinical-cold.
+Premium medical editorial social share card, 1200 × 630 pixels, white background (#ffffff). Left two-thirds: photorealistic editorial scene — a Filipino male nephrologist in his 40s in a clean, bright, modern outpatient clinic, wearing a white coat, seated across from a Filipino middle-aged male patient (50s) who looks attentive and calm — warm professional atmosphere, natural daylight from a window, soft-focus clinical background, teal and navy accent details in the environment. Right one-third: clean white panel with the following text elements precisely rendered: Large bold condensed sans-serif title in navy (#0f1e2e): "Slowing CKD Progression"; below it in clinical teal (#1a6b72), medium weight: "Evidence-based strategies to protect your kidney function"; below that in small navy text: "W Rivero, MD · Nephrology"; a slim teal horizontal rule separating sections. Bottom-right corner: very small semi-transparent navy text "williamriveromd.com" at 70% opacity. No dark backgrounds — white and off-white only. Premium healthcare publication aesthetic, warm and trustworthy, not clinical-cold.
 
 NEGATIVE INSTRUCTIONS: Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Never omit the williamriveromd.com attribution.
 
@@ -555,7 +555,7 @@ Card 7 (navy left border): Icon: lab tube + calendar checkmark. Bold navy: "Show
 
 BOTTOM RIGHT INSET: Small rounded photorealistic photo panel — a Filipino family (mother, adult daughter, elderly father) in a bright, warm Filipino home kitchen, cooking together with fresh vegetables and fish, smiling naturally — no salt shakers visible on the counter. Caption below in teal italic: "Small daily choices add up to years of protected function."
 
-BOTTOM FULL-WIDTH: Teal rounded bar, white bold text: "You have far more influence over the speed of this journey than you think. — Dr. W. G. M. Rivero, MD"
+BOTTOM FULL-WIDTH: Teal rounded bar, white bold text: "You have far more influence over the speed of this journey than you think. — Dr. W Rivero, MD"
 
 Bottom-right corner: small semi-transparent navy text "williamriveromd.com". White background throughout. Warm, empowering, not clinical-cold.
 
@@ -607,4 +607,4 @@ https://chatgpt.com/g/g-pmuQfob8d-image-generator
 
 ---
 
-*Visual Aid Plan authored for williamriveromd.com · Nephrology Patient Education · Dr. W. G. M. Rivero, MD*
+*Visual Aid Plan authored for williamriveromd.com · Nephrology Patient Education · Dr. W Rivero, MD*
