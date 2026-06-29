@@ -190,6 +190,16 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    pure interactive tools (calculators index, symptom-checker, the interpreters) have no
    citable sources and are the documented exceptions.
 
+6. **Justified body text.** Every guide's narrative body — every `<p>` inside a
+   `<section class="section">` — is **fully justified** with automatic hyphenation
+   (`text-align: justify; hyphens: auto`). This is enforced by `MASTER_CSS` in
+   `patch_master_css.py` (`.section p` rule), so no per-guide override is needed. **Do not
+   author `<p>` with inline `style="text-align:left"` or wrap body paragraphs outside
+   `<section class="section">`** — that escapes the policy. Hero copy, alert-body `<p>`,
+   figure captions, FAQs (`.qa-a`), and table cells are intentionally left ragged-right
+   because justifying short or constrained-width content opens distracting rivers of
+   whitespace; only the long-form section paragraphs are justified.
+
 The **Latest guides** strip lives on `guides/index.html` between `<!-- LATEST-GUIDES-START -->`
 and `<!-- LATEST-GUIDES-END -->` (above the mobile filter bar / "Continue reading" rail). Each
 card shows the guide title, its publish date, and the guide's OG share image *peeking* on the

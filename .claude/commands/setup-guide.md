@@ -75,6 +75,14 @@ and replace its content — do not invent a new layout.
   live in a **second `<style>` block** after the first, or the patch step will strip it.
   Harvest these blocks from a guide that already uses them (e.g.
   `post-dialysis-fatigue.html`, `fluid-management-dialysis.html`).
+- **Justified body text.** All narrative body paragraphs (`<p>` inside
+  `<section class="section">`) render fully justified with automatic hyphenation —
+  enforced by `MASTER_CSS` (`.section p { text-align: justify; hyphens: auto }`).
+  When authoring: keep every body paragraph **inside** a `<section class="section">`
+  wrapper and do **not** add inline `style="text-align:left"` or stray top-level
+  `<p>` between sections. Hero copy, alert callouts, captions, FAQ answers (`.qa-a`),
+  and table cells stay ragged-right by design (justifying short text creates
+  whitespace rivers); only long-form section paragraphs are justified.
 - **Page-tail order (enforced by `patch_signature_position.py`).** End every guide,
   outside `<main>`, as: `</main>` → optional `calc-cards-wrap` → `<!-- DR CARD -->`
   `<div class="dr-card-wrap">` → `<div class="related-guides">` → `<footer class="guide-footer">`.
