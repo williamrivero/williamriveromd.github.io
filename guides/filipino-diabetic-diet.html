@@ -966,8 +966,14 @@
   .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
   @media(max-width: 520px) { .calc-grid { grid-template-columns: 1fr; } }
   .calc-field label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
-  .calc-field input, .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'Manrope', sans-serif; font-size: 15px; }
-  .calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  .calc-field input:not([type="checkbox"]):not([type="radio"]), .calc-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); font-family: 'Manrope', sans-serif; font-size: 15px; }
+  .calc-field input:not([type="checkbox"]):not([type="radio"]):focus, .calc-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,107,114,.1); }
+  /* Checkbox/radio inputs nested inline within a label — keep the box
+     sized to its natural dimensions and sit it next to its text. */
+  .calc-field label:has(input[type="checkbox"]),
+  .calc-field label:has(input[type="radio"]) { display: flex; align-items: center; gap: 8px; text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 500; color: var(--text); }
+  .calc-field input[type="checkbox"],
+  .calc-field input[type="radio"] { width: 16px; height: 16px; flex: none; margin: 0; padding: 0; accent-color: var(--teal); cursor: pointer; }
   .calc-field .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
   .calc-result-box { display: none; border-radius: 12px; padding: 20px 24px; border: 2px solid transparent; margin-top: 4px; transition: all .3s; }
   .calc-metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
