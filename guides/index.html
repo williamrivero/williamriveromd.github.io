@@ -4405,6 +4405,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let activeFilter = 'all';
 
+  // Auto-populate filter counts from actual tile data-tags (never hand-edit)
+  (function refreshCounts() {
+    const tiles = Array.from(document.querySelectorAll('.guide-tile'));
+    const tagsFor = t => (t.dataset.tags || '').toLowerCase().split(/\s+/).filter(Boolean);
+    const isDownload = t => tagsFor(t).includes('download');
+    const total = tiles.filter(t => !isDownload(t)).length;
+    // Sidebar + mobile filter chips: update by data-filter attribute
+    document.querySelectorAll('[data-filter]').forEach(btn => {
+      const f = btn.dataset.filter;
+      let n;
+      if (f === 'all') n = total;
+      else if (f === 'download') n = tiles.filter(isDownload).length;
+      else n = tiles.filter(t => !isDownload(t) && tagsFor(t).includes(f)).length;
+      const cEl = btn.querySelector('.count, .mf-count');
+      if (cEl) cEl.textContent = n;
+    });
+    // Top-of-grid count
+    if (resultsCount) resultsCount.textContent = total;
+    // Header stat tile
+    const statNum = document.querySelector('.stat .stat-num');
+    if (statNum) statNum.textContent = total;
+  })();
+
   function toggleSection(header) {
     header.classList.toggle('collapsed');
     const body = header.nextElementSibling;
