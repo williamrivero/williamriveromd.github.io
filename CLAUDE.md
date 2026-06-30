@@ -215,6 +215,36 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    the column (`text-align:center`) so short ("0") and wide ("−7 mmHg") entries
    read as a balanced metrics column.
 
+8. **Text contrast in both light and dark mode (WCAG AA).** Every visible text
+   element in a guide must pass **≥ 4.5:1** contrast against its background for
+   normal text (`< 18.66 px` or `< 24 px` non-bold) and **≥ 3:1** for large text
+   (`≥ 18.66 px` bold or `≥ 24 px`) **in both light and dark mode**, with the
+   contrast walked through the actual ancestor-background chain (translucent
+   parents flattened). Always test the new guide with `html[data-theme="dark"]`
+   active before declaring it done. Common failure patterns to avoid:
+   - **`color:var(--navy)` on text inside a card that uses a dark `--bg` in dark
+     mode** — navy-on-navy is invisible. Use `var(--text)` or `var(--text-mid)`
+     for body text and remap any per-guide navy heading via
+     `html[data-theme="dark"] .my-card h4 { color: var(--text-mid) }`.
+   - **Light-bg cards (`.illus-wrap-light`, hard-coded `#fff` cards) that keep
+     their light background in dark mode** — the inherited dark-mode text colour
+     turns invisible. Either pin the bg to dark in dark mode, or pin the text to
+     a dark value (e.g. `#2a3548`) inside the light-bg card.
+   - **White-on-`var(--teal)` chips** (`.fig-letter`, `.nt-section-tag`,
+     `.unit-btn.active`) — `--teal` brightens in dark mode and the ratio drops
+     below 4.5:1. Use a deep teal (`#0e4a50`) for the dark variant.
+   - **`color:var(--text-faint)`** on small text — bumped to `#9ba6b8` in dark
+     mode to clear 4.5:1 on the standard `#1a2535` dark card; never lower it.
+   - **Hardcoded literal colours** (`#1f3864`, `#7a859a`, etc.) bypass the
+     dark-mode token swap entirely. Always use the design tokens (`--text`,
+     `--text-mid`, `--text-muted`, `--text-faint`, `--teal`, `--navy`, `--bg`,
+     `--white`, `--border`) so the colour adapts automatically.
+
+   Site-wide patterns are caught by `MASTER_CSS` dark-mode remaps (see the
+   "Dark-mode contrast remaps" block in `patch_master_css.py`); guide-specific
+   ones must live in the **second `<style>` block** of the guide so
+   `patch_master_css.py` does not strip them.
+
 The **Latest guides** strip lives on `guides/index.html` between `<!-- LATEST-GUIDES-START -->`
 and `<!-- LATEST-GUIDES-END -->` (above the mobile filter bar / "Continue reading" rail). Each
 card shows the guide title, its publish date, and the guide's OG share image *peeking* on the

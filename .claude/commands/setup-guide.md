@@ -84,6 +84,22 @@ and replace its content — do not invent a new layout.
   (≤ ~8 chars — `"0"`, `"−7 mmHg"`, `"AHA 2023"`, `"G4–G5"`); longer values wrap
   inside the 104 px column rather than pushing the label right. Do **not** add
   per-guide `min-width`/`flex-shrink` on `.ov-stat .v`.
+- **WCAG AA contrast in both modes.** Every text element in the new guide must
+  hit **≥ 4.5:1** for normal text and **≥ 3:1** for large text (`≥ 18.66 px`
+  bold or `≥ 24 px`) against its actual rendered background, in **both** light
+  mode and `html[data-theme="dark"]`. Always check the guide in dark mode
+  before reporting it complete. Rules of thumb:
+  - Use the design tokens (`var(--text)`, `var(--text-mid)`, `var(--text-muted)`,
+    `var(--text-faint)`, `var(--teal)`, `var(--navy)`, `var(--bg)`, `var(--white)`,
+    `var(--border)`) — never hard-code literal colours like `#1f3864` or
+    `#7a859a`, they bypass the dark-mode token swap.
+  - Any heading or value that uses `color:var(--navy)` on a card whose `--bg`
+    flips dark in dark mode needs a per-guide remap:
+    `html[data-theme="dark"] .my-card h4 { color: var(--text-mid) }`.
+  - Light-background cards that stay light in dark mode (e.g. `.illus-wrap-light`)
+    must pin their text to a dark colour, not inherit the light dark-mode text.
+  - White-on-`var(--teal)` chips fail in dark mode — use `#0e4a50` for the
+    dark variant.
 - **Justified body text.** All narrative body paragraphs (`<p>` inside
   `<section class="section">`) render fully justified with automatic hyphenation —
   enforced by `MASTER_CSS` (`.section p { text-align: justify; hyphens: auto }`).
