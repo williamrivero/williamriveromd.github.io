@@ -211,7 +211,9 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    the column rather than pushing the label right. Every description column now
    shares the same x-position. **Never re-add per-guide `min-width`/`flex-shrink`
    on `.ov-stat .v` and do not author a `.v` value longer than ~8 characters** —
-   the 104 px column is fixed by design.
+   the 104 px column is fixed by design. Values are **center-aligned** within
+   the column (`text-align:center`) so short ("0") and wide ("−7 mmHg") entries
+   read as a balanced metrics column.
 
 The **Latest guides** strip lives on `guides/index.html` between `<!-- LATEST-GUIDES-START -->`
 and `<!-- LATEST-GUIDES-END -->` (above the mobile filter bar / "Continue reading" rail). Each
