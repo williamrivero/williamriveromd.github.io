@@ -55,21 +55,53 @@ def hero_children(h):
         i += 1
     return out
 
+def figure_outside_grid(h):
+    """Return True when a guide has <figure ... hero-figure ...> sitting
+    AFTER its hero-grid's closing </div> instead of inside the grid.
+    That breaks the layout: the disc falls below the copy column rather
+    than into its grid slot."""
+    m = re.search(r'<div class="hero-grid"[^>]*>', h)
+    if not m: return False
+    i = m.end(); depth = 1
+    while i < len(h) and depth > 0:
+        o = h.find('<div', i); c = h.find('</div>', i)
+        if c == -1: return False
+        if o != -1 and o < c: depth += 1; i = o + 4
+        else: depth -= 1; close_at = c; i = c + 6
+    body = h[m.end():close_at]
+    if re.search(r'<figure[^>]+\bhero-figure\b', body): return False
+    # No figure inside; check the next ~6000 chars after grid for a stray one
+    return bool(re.search(r'<figure[^>]+\bhero-figure\b', h[close_at:close_at+6000]))
+
+
 def main():
     strict = '--strict' in sys.argv
     issues = []
+    outside = []
     for f in sorted(Path('guides').glob('*.html')):
         if f.name in SKIP_FILES: continue
-        kids = hero_children(f.read_text(encoding='utf-8'))
-        if not kids: continue
-        bad = [(t,c) for (t,c) in kids if not VALID.search(c)]
-        if bad: issues.append((f.name, bad))
-    if not issues:
-        print('✓ All hero-grids have only valid direct children.')
+        src = f.read_text(encoding='utf-8')
+        kids = hero_children(src)
+        if kids:
+            bad = [(t,c) for (t,c) in kids if not VALID.search(c)]
+            if bad: issues.append((f.name, bad))
+        if figure_outside_grid(src):
+            outside.append(f.name)
+    ok = True
+    if issues:
+        ok = False
+        print(f'⚠ {len(issues)} guide(s) with misplaced hero-grid children:')
+        for name, bad in issues:
+            print(f'  {name:48s} {bad}')
+    if outside:
+        ok = False
+        print(f'\n⚠ {len(outside)} guide(s) with <figure class="hero-figure"> OUTSIDE the hero-grid')
+        print('  (run `python3 fix_hero_figure_placement.py` to move them in):')
+        for name in outside:
+            print(f'  {name}')
+    if ok:
+        print('✓ All hero-grids have only valid direct children, and every hero-figure sits inside its grid.')
         return 0
-    print(f'⚠ {len(issues)} guide(s) with misplaced hero-grid children:')
-    for name, bad in issues:
-        print(f'  {name:48s} {bad}')
     return 1 if strict else 0
 
 if __name__ == '__main__':
