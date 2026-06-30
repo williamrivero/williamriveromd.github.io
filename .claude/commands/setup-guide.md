@@ -183,11 +183,21 @@ python3 patch_last_reviewed.py --guide <filename>          # "Last Reviewed" bad
 python3 patch_published_time.py --guide <filename>         # article:published_time stamp (= merge/publish date, +08:00)
 python3 patch_reading_time.py --guide <filename>           # "Reading time" estimate in the hero
 python3 patch_references_accordion.py --guide <filename>   # accordion References section before the signature block
+python3 audit_apa_references.py --guide <filename>         # HARD-FAIL gate: every citation must be APA-7 (italic journal, DOI link, year, author block)
 python3 patch_hero_meta.py --guide <filename>              # hero byline: drop Author, show Published date + References count
 python3 generate_sitemap.py
 python3 generate_latest_guides.py                          # refresh the "Latest guides" strip on guides/index.html (new guide auto-appears)
 python3 generate_latest_calculators.py                     # if a calc-* page: refresh the "Latest calculators" carousel on calculators.html
 ```
+
+> **References audit is a hard gate.** `audit_apa_references.py --guide <file>`
+> exits 1 if any citation in the footer line fails the APA-7 heuristics (italic
+> `<em>` journal, `doi.org` or URL link, `(YYYY)` year, `Author, X.` block,
+> page range). Do NOT declare the new guide done until the audit reports
+> `N/N` compliant. If you see partial compliance, the footer `References:`
+> line still carries legacy short-form snippets ("Smith 2023 NEJM", "KDIGO
+> 2026", "EO 192 s.2015") — rewrite them to full APA via the PubMed MCP
+> (`mcp__PubMed__lookup_article_by_citation` + `mcp__PubMed__get_article_metadata`).
 
 > **Dual-mode guides only:** after `patch_mode_cls.py`, also run
 > `python3 patch_mode_restore.py --guide <filename>` to add the safe **pre-paint**

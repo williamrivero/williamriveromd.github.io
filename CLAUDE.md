@@ -51,6 +51,10 @@ python3 patch_references_accordion.py --dry-run
 python3 patch_references_accordion.py --overrides refs.json  # supply citations for guides with no footer references
 python3 patch_references_accordion.py --guide igan-guide.html  # single guide
 
+python3 audit_apa_references.py                 # check APA-7 compliance of every guide's footer References line
+python3 audit_apa_references.py --details       # show failing citation samples (which fields are missing)
+python3 audit_apa_references.py --guide igan-guide.html  # single guide; exits 1 if anything fails (CI-friendly)
+
 python3 patch_hero_meta.py                # hero byline: drop "Author" row, show Published date + References count
 python3 patch_hero_meta.py --dry-run
 python3 patch_hero_meta.py --guide understanding-ckd.html  # single guide
@@ -200,9 +204,17 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    PubMed-verified via the `mcp__PubMed__*` MCP). For a guide that cites sources only inline,
    supply them with `--overrides refs.json` (`{ "<file>": ["APA citation 1", …] }`).
    **Never fabricate medical citations** — list only sources the guide actually relies on, and
-   verify author/year/journal/volume/pages/DOI against PubMed before publishing. `--report`
-   audits coverage; pure interactive tools (calculators index, symptom-checker, interpreters)
-   have no citable sources and are the documented exceptions.
+   verify author/year/journal/volume/pages/DOI against PubMed before publishing.
+   - `patch_references_accordion.py --report` audits coverage (count only).
+   - **`audit_apa_references.py`** checks each citation's APA-7 compliance (italics for
+     journal+volume, DOI/URL link, year, author block, page range) and reports the per-guide
+     compliance ratio. **Run this before declaring a new guide done — a 0/N or partial
+     compliance score means the footer line still carries legacy short-form citations
+     ("Smith 2023 NEJM", "KDIGO 2026", "EO 192 s.2015") and must be rewritten to full APA
+     via PubMed lookups.** Pure interactive tools (calculators, symptom-checker, label
+     scanner, recipe analyzer, interpreters, blank logs, the atlas/physiology reference
+     pages) have no citable sources and are the documented exceptions — they're excluded
+     by both the patcher and the audit.
 
 6. **Justified body text.** Every guide's narrative body — every `<p>` inside a
    `<section class="section">` — is **fully justified** with automatic hyphenation
