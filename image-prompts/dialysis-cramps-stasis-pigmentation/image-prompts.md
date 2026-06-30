@@ -520,6 +520,251 @@ OG HEIGHT: 1536
 
 ---
 
+## 010 — Management 4-Tier Circular Workflow (clinician-only)
+
+```
+IMAGE NUMBER: 010
+SECTION PLACEMENT: §md-management — opens the tiered management section
+FILE NAME: dialysis-cramps-management-tiers-workflow.png
+ARCHETYPE: Circular Workflow / Cycle (infographic-skill, Archetype 8)
+AUDIENCE: clinicians
+ASPECT RATIO: 1:1
+PIXEL DIMENSIONS: 1024 × 1024
+MODE SCOPING: clinician-only — embed inside <section class="section mode-physician" id="md-management">; must NOT render in patient mode.
+VISUAL MIX:
+- photorealistic models: none
+- 2D infographic: yes — circular workflow with central object
+- 3D component graphics: light semi-3D on the central patient pictogram
+- algorithm/flowchart: implicit cyclic flow with reassessment arrow
+PURPOSE: A single circular diagram that anchors the four-tier management lever and makes the "reassess continuously" loop visible — one prescription, two axes, four levers.
+KEY CONCEPTS: Tier 1 volume/Rx; Tier 2 acute rescue; Tier 3 bioenergetic; Tier 4 lower-limb venous axis; ABI/TBI safety gate; quarterly reassessment loop.
+
+COPY-READY IMAGE GENERATOR GPT PROMPT:
+Create a polished circular clinical workflow infographic in the williamriveromd.com house style. Square 1024 × 1024 canvas, white (#ffffff) background. Clean sans-serif typography in Inter (or Manrope or IBM Plex Sans); never a serif font.
+
+TITLE STRIP — top centered, bold navy (#0f1e2e): "Management — one prescription, two axes, four levers" with a smaller clinical-teal (#1a6b72) subtitle in Nunito Sans: "The cramp-and-pigment patient · reassess each tier each visit".
+
+CENTER — a small, calm, semi-3D pictogram of a hemodialysis patient's lower leg (knee-to-mid-foot silhouette) on a soft pastel-teal disc, with a tiny stylised dialysis-machine icon beside it. A small navy label beneath the central disc reads "Patient".
+
+FOUR-TIER WHEEL — four rounded quadrant cards arranged in a balanced compass around the central disc (12, 3, 6, 9 o'clock positions), connected to the centre by short teal arrows. Each card has a coloured top accent band, a Tier label, a one-line summary, and three short bullet points (Manrope, ~12pt equivalent):
+
+  12 o'clock — green (#1f7a4d) "Tier 1 · Volume & Rx"
+    • Dry weight ≤ 1–3 mo reassessment
+    • IDWG ≤ 4–5% / UFR ≤ 10 mL/kg/h
+    • Individualise dialysate (Na, HCO₃⁻, Mg)
+
+  3 o'clock — teal (#1a6b72) "Tier 2 · Acute Rescue"
+    • Passive stretching / dorsiflexion
+    • Reposition out of shortened-calf seated posture
+    • Saline bolus per protocol if hypotensive
+
+  6 o'clock — amber (#b8860b) "Tier 3 · Bioenergetic"
+    • L-carnitine — IV 1 g post-HD; oral 500–1000 mg PO BID where IV unavailable
+    • Renal B-complex daily; CoQ10 in statin users
+    • Magnesium mid-normal; consider Mg 0.75 mmol/L dialysate
+
+  9 o'clock — purple (#6b21a8) "Tier 4 · Lower-Limb Venous Axis"
+    • Leg elevation 2×/day, calf-pump activation
+    • ABI + TBI before any compression; TcPO₂ at CEAP ≥ C4
+    • Multidisciplinary referral at spectrum stage ≥ 3
+
+A dotted teal circular arrow running outside the wheel (clockwise) labelled "Reassess each tier each visit" closes the loop and reads as the continuous-reassessment cycle. A small footer strip in navy below the wheel: "Volume + oxygen + stretching + footwear — same levers, both axes."
+
+Restrained clinical palette throughout. Generous whitespace; mobile-readable labels. No photorealistic people; no dark backgrounds. Bottom-right: "© williamriveromd.com" in small semi-transparent navy text. No journal names, guideline acronyms, brand names, or watermarks.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, unrealistic anatomy, photorealism of people, dark backgrounds, overprocessed HDR, excessive saturation. NEVER use dark/navy/charcoal/black backgrounds — light only. Use ONLY Inter, Nunito Sans, IBM Plex Sans, or Manrope. Never omit the © williamriveromd.com attribution. No journal/guideline/brand names.
+
+QUALITY CHECK:
+Reads as a calm, credible journal-quality circular workflow. Four tiers visually distinguishable by colour and clearly labelled. Central patient pictogram is small enough that the four quadrants dominate the wheel. Reassessment arrow continuous and unmistakable. Bottom-right attribution visible. Embeddable inside a clinician-mode-only section without competing with the patient-mode hero.
+
+ALT TEXT: A clinician-mode circular workflow showing the four management levers — Tier 1 volume and Rx, Tier 2 acute rescue, Tier 3 bioenergetic, Tier 4 lower-limb venous axis — arranged around a small central patient pictogram, with a dotted outer "reassess each tier each visit" loop.
+OG WIDTH: 1024
+OG HEIGHT: 1024
+```
+
+---
+
+## 011 — Pharmacology Quick-Reference Card (clinician-only)
+
+```
+IMAGE NUMBER: 011
+SECTION PLACEMENT: §md-pharmacology — top of the section, above the HTML table
+FILE NAME: dialysis-cramps-pharmacology-reference-card.png
+ARCHETYPE: Clinician Reference Card (simple-figure skill, Scaffold E — adapted to landscape 4:3)
+AUDIENCE: clinicians
+ASPECT RATIO: 4:3
+PIXEL DIMENSIONS: 1536 × 1152
+MODE SCOPING: clinician-only — embed inside <section class="section mode-physician" id="md-pharmacology">; must NOT render in patient mode.
+VISUAL MIX:
+- photorealistic models: none
+- 2D infographic: yes — compact table-style reference card
+- 3D component graphics: none
+- algorithm/flowchart: minimal — a small spectrum-stage band at the top mapping each agent to its earliest indication
+PURPOSE: A glance-able quick-reference for the 10 pharmacology + adjunct levers used across the Hypoxic-Lower-Limb Spectrum, with CKD-specific dosing and safety, including the Philippine-context oral L-carnitine alternative.
+KEY CONCEPTS: agent × indication × dose × CKD safety; spectrum-stage anchor; PH-context oral L-carnitine; ABI/TBI safety gate for compression; denosumab for active Charcot in CKD.
+
+COPY-READY IMAGE GENERATOR GPT PROMPT:
+A clean clinician reference card, landscape 1536 × 1152 on a white (#ffffff) background. Publication-grade nephrology design. Clean sans-serif typography in Inter (or Manrope, IBM Plex Sans) for body and IBM Plex Sans for tabular numerals; never a serif font.
+
+TITLE — top centered, bold navy (#0f1e2e): "Pharmacology & Adjuncts — Cramps + Stasis Pigmentation in CKD" with a smaller clinical-teal subtitle: "Doses · evidence · CKD-specific safety · spectrum-stage anchor".
+
+SPECTRUM STAGE BAND — a thin horizontal band immediately under the title showing the 7 spectrum stages (0–6) as small colour-graded chips (green → teal → amber → red → purple), with each agent in the table below later labelled with its earliest indicated stage chip.
+
+MAIN TABLE — four-column layout occupying most of the canvas; alternating row fills (white and very soft gray #f3f4f6). Column headers in teal (#1a6b72) on a soft gray header bar; column 1 narrow (agent), columns 2–4 wider:
+
+| Agent | Earliest stage | Dose / regimen | CKD safety / note |
+|---|---|---|---|
+| L-carnitine — IV | 1 | 1 g IV post-HD × 12–24 wk (post-dialyzer line) | Evidence-grade route; reassess at 12 wk |
+| L-carnitine — oral (PH alt) | 1 | 500–1000 mg PO BID × 12–24 wk | Where IV unavailable; pair with low red-meat / low egg-yolk diet (TMAO) |
+| Renal B-complex | 0 | 1 tab PO daily, post-HD on dialysis days | Avoid non-renal multivitamins (vitamin A) |
+| Magnesium dialysate | 1 | Consider 0.75 mmol/L vs ≤ 0.5 mmol/L | Dial-Mag pragmatic RCT in progress (Tangri 2025) |
+| CoQ10 | 1 | 100–200 mg PO daily × 12 wk trial | Consider in statin co-prescribed patients |
+| Saline bolus (acute) | 1 | 100–250 mL NS IV per protocol | Pair with UF reduction + passive stretch |
+| Topical wound care | 3 | Emollient ± short-contact topical steroid | Gentle skin care; treat fissures early |
+| Compression bandaging | 3 | Multilayer compression by trained team | Only after ABI ≥ 0.8 + TBI ≥ 0.7 |
+| Pentoxifylline | 5 | 400 mg PO TID (renal-dose reduce in HD) | Adjunct to compression in C5–C6 VLU |
+| Denosumab | 4 | 60 mg SC single dose | Active Charcot in CKD; replete 25-OH-D + Ca first |
+| Cinacalcet / etelcalcetide review | any | Re-titrate or convert | Hypocalcemic cramping class effect |
+| SGLT2i / GLP-1 RA in DM | any | Per KDIGO 2024–2026 | Baseline + quarterly foot exam mandatory |
+
+Each "Earliest stage" cell carries the matching colour chip from the band (small filled chip + numeral). The "CKD safety / note" column uses concise navy text with a small amber-triangle icon in front of any safety-critical note (compression gate; Ca repletion before denosumab; foot exam mandate). Footer strip in navy: "Pharmacology is additive — fix volume / UF / dialysate first."
+
+Restrained clinical palette throughout. No photorealistic people. No dark backgrounds. Bottom-right: "© williamriveromd.com" in small semi-transparent navy text. No journal names, guideline acronyms, brand names, or watermarks (within the figure itself — DOIs live in the HTML accordion).
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, unrealistic anatomy, photorealism, dark backgrounds, overprocessed HDR, excessive saturation. NEVER use dark/navy/charcoal/black backgrounds — light only. Use ONLY Inter, Nunito Sans, IBM Plex Sans, or Manrope. Never omit the © williamriveromd.com attribution. No brand or journal names in the figure.
+
+QUALITY CHECK:
+Table legible at full resolution; column headers high-contrast on the header bar. The PH-context oral L-carnitine row is clearly visible directly under the IV row. Spectrum-stage chips visible per agent. Safety triangles visible in the safety column. Footer note present. Bottom-right attribution visible. Embeddable inside a clinician-mode-only section.
+
+ALT TEXT: A clinician quick-reference card for the dialysis cramp / stasis pigmentation guide — an alphabetical pharmacology table covering L-carnitine IV and oral (Philippine alternative), dialysate magnesium, renal B-complex, CoQ10, saline bolus, topical wound care, compression, pentoxifylline, denosumab, calcimimetic review, and SGLT2i / GLP-1 foot-exam mandate, each anchored to the earliest spectrum stage of indication.
+OG WIDTH: 1536
+OG HEIGHT: 1152
+```
+
+---
+
+## 012 — Diabetes Accelerator Mechanism (clinician-only)
+
+```
+IMAGE NUMBER: 012
+SECTION PLACEMENT: §md-spectrum — under the "Why diabetes pushes patients forward" subsection
+FILE NAME: dialysis-cramps-diabetes-accelerator-mechanism.png
+ARCHETYPE: Biomedical Mechanism Figure (biomedical-mechanism-figure skill) — organ → inset → bottom flow
+AUDIENCE: clinicians
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+MODE SCOPING: clinician-only — embed inside <section class="section mode-physician" id="md-spectrum">; must NOT render in patient mode.
+VISUAL MIX:
+- photorealistic models: none
+- 2D infographic: yes — multi-scale review-article layout
+- 3D component graphics: light semi-3D on the foot cross-section and arterial wall
+- algorithm/flowchart: bottom injury → intervention → benefit summary
+PURPOSE: Diagram the five DM-specific accelerators that push patients further along the spectrum — and pin the ABI/TBI safety-gate failure mode to the calcified vessel.
+KEY CONCEPTS: autonomic neuropathy → deeper IDH; sensory neuropathy → masked pre-ulcer; AGEs + glycation → mitochondrial impairment; medial arterial calcification (MAC) → false-normal ABI; impaired neutrophil + glycated matrix → delayed healing.
+
+COPY-READY IMAGE GENERATOR GPT PROMPT:
+Create a publication-grade biomedical mechanism schematic in the AJKD/NEJM review-article style (without naming any journal). Landscape 1792 × 1024 on a white (#ffffff) background. Clean sans-serif labels in Inter (or Manrope, IBM Plex Sans); never a serif font.
+
+TITLE — bold navy (#0f1e2e), top centred: "Diabetes accelerates every node of the Hypoxic-Lower-Limb Spectrum" with a smaller clinical-teal subtitle: "Five DM-specific levers · same upstream field".
+
+LEFT PANEL — organ-level context: a simplified flat-vector diabetic neuropathic foot in lateral view (no gore), soft light gray-blue anatomy. Show a pale-sienna gaiter pigmentation band above the ankle, a small dotted area over the metatarsal pressure point labelled "pressure-point pre-ulcer / silent injury", and an outline glyph indicating monofilament insensitivity (a small monofilament tip with a question-mark glyph). A small dashed connector box on the calf vasculature points into the central inset.
+
+CENTER PANEL — magnified arterial cross-section inside a thin dashed border. Show a small artery wall with three concentric layers: intima (thin teal), media (soft sienna with visible calcium granules — render medial arterial calcification as small irregular ivory/cream specks in the media), adventitia (gray-blue). A small label reads "Medial arterial calcification (MAC)". A dotted arrow points out of the inset with the note "→ ABI falsely normal; TBI required".
+
+A second mini-inset above the artery shows a stylised mitochondrion with red dashed lines indicating "ETC impairment from AGEs / hyperglycemia → ↓ ATP".
+
+A third mini-inset below the artery shows an autonomic nerve fibre with a faded synapse and the label "Autonomic neuropathy → blunted vasoconstrictor reflex → deeper IDH".
+
+RIGHT PANEL — vertical "five-accelerator ladder", each row a soft pastel-amber rounded card with a one-line label in navy (Manrope, ~13pt equivalent), reading top to bottom:
+  1. "Autonomic neuropathy → deeper IDH (hit 1 amplified)"
+  2. "Sensory neuropathy → silent injury / Charcot risk"
+  3. "AGEs + glycation → mitochondrial OXPHOS impairment (hit 4 amplified)"
+  4. "Medial arterial calcification → ABI falsely normal → TBI/TcPO₂ mandatory"
+  5. "Impaired neutrophils + glycated matrix → delayed healing → stage-5 ulcers"
+
+BOTTOM SUMMARY FLOW — single horizontal row of three rounded boxes connected by teal arrows:
+  LEFT (pale pink #fbe7e7): "Pathology drivers: same upstream field, amplified by DM at every node"
+  CENTER (pale blue #e3edf9): "Intervention: ABI + TBI + TcPO₂; daily foot exam; SGLT2i / GLP-1 with foot-exam mandate; aggressive glycemic control without hypoglycemia; podiatry + vascular co-management"
+  RIGHT (pale green #e9f5ec): "Benefit: spectrum progression slowed; ulceration delayed; amputation risk reduced"
+
+Restrained clinical palette. Generous whitespace. Mobile-readable labels. No photorealism of people. No dark backgrounds. Bottom-right: "© williamriveromd.com" in small semi-transparent navy text. No journal names, guideline acronyms, brand names, or watermarks.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, unrealistic anatomy, photorealism of feet or wounds (no gore), dark backgrounds, overprocessed HDR, excessive saturation. NEVER use dark/navy/charcoal/black backgrounds — light only. Use ONLY Inter, Nunito Sans, IBM Plex Sans, or Manrope. Never omit the © williamriveromd.com attribution.
+
+QUALITY CHECK:
+Mobile-readable. Five accelerators legible and individually labelled. Medial-arterial-calcification inset clearly shows the calcium in the media (not the intima) and the dotted "ABI falsely normal" caption. Bottom three-box flow connected by visible teal arrows. Bottom-right attribution visible. Reads as a clinician figure — never a patient hero.
+
+ALT TEXT: A review-article schematic showing the five diabetes-specific accelerators that push patients forward along the Hypoxic-Lower-Limb Spectrum — autonomic neuropathy deepening intradialytic hypotension, sensory neuropathy masking pre-ulcerative injury, AGEs and glycation impairing mitochondrial ATP, medial arterial calcification rendering ABI falsely normal so TBI is mandatory, and impaired neutrophil function with a glycated matrix delaying wound healing.
+OG WIDTH: 1792
+OG HEIGHT: 1024
+```
+
+---
+
+## 013 — Clinic Audit Pipeline (clinician-only)
+
+```
+IMAGE NUMBER: 013
+SECTION PLACEMENT: §md-audit — top of the testable-predictions section
+FILE NAME: dialysis-cramps-clinic-audit-pipeline.png
+ARCHETYPE: Horizontal step sequence (simple-figure skill, Scaffold C — 4 steps as an audit pipeline)
+AUDIENCE: clinicians
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+MODE SCOPING: clinician-only — embed inside <section class="section mode-physician" id="md-audit">; must NOT render in patient mode.
+VISUAL MIX:
+- photorealistic models: none
+- 2D infographic: yes — 4 rounded research-step cards connected by arrows
+- 3D component graphics: none
+- algorithm/flowchart: implicit research-pipeline sequence
+PURPOSE: Turn the four testable predictions in §md-audit into a one-image clinic-audit pipeline a single nephrology unit can run on its own cohort.
+KEY CONCEPTS: cross-sectional association; clustered phenotype; intervention coupling; tissue-oxygen signature; converting the hypothesis into local data.
+
+COPY-READY IMAGE GENERATOR GPT PROMPT:
+A clean clinical-research infographic, landscape 1792 × 1024 on a white (#ffffff) background. Clean sans-serif typography in Inter (or Manrope, IBM Plex Sans); never a serif font.
+
+TITLE STRIP — top centred, bold navy: "Clinic Audit Pipeline — Test the Hypoxic Lower-Limb Hypothesis on Your Panel" with a smaller clinical-teal subtitle: "Four testable predictions, one season-long audit".
+
+Four rounded rectangular cards arranged horizontally in a single row, connected by bold navy right-pointing arrows. Each card has a coloured top accent band (steps 1–4 coloured teal → teal-deep → amber → purple), a step number, a bold step label, and three short bullet points. Cards sit on a very soft gray panel (#f3f4f6).
+
+  Step 1 — teal (#1a6b72) "Phenotype the cohort"
+    • All maintenance HD patients in unit (n)
+    • CEAP class for each lower limb (photo log)
+    • Cramp Frequency–Severity score; intradialytic BP log
+
+  Step 2 — teal-deep (#0e4a50) "Capture exposures"
+    • IDWG, UFR, dry-weight gap (mean over 6 sessions)
+    • Hgb, albumin, free carnitine (where available)
+    • ABI + TBI for every diabetic / spectrum-stage-3+ patient
+
+  Step 3 — amber (#b8860b) "Test predictions"
+    • Cramps vs pigmentation cross-sectional χ² / OR
+    • Clustering with UFR / Hgb / TBI (regression)
+    • Pre-/post intervention bundle (volume + cofactor + venous axis)
+
+  Step 4 — purple (#6b21a8) "Report + iterate"
+    • Cramp-frequency delta, photo-log progression delta
+    • Transcutaneous PO₂ trend at pigmented vs unpigmented limbs
+    • Local audit memo + williamriveromd.com cohort contribution
+
+Bottom strip: full-width soft gray (#f3f4f6) panel, brief summary sentence in navy: "Clinic data become the test — convert the hypothesis into local evidence and a teaching dataset." Bottom-right: "© williamriveromd.com" in small semi-transparent navy text. No journal names, guideline acronyms, brand names, or watermarks.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, unrealistic anatomy, photorealism, dark backgrounds, overprocessed HDR, excessive saturation. NEVER use dark/navy/charcoal/black backgrounds — light only. Use ONLY Inter, Nunito Sans, IBM Plex Sans, or Manrope. Never omit the © williamriveromd.com attribution.
+
+QUALITY CHECK:
+Reads as a credible journal/audit figure. Four research-step cards clearly numbered and sequenced. Each step's three bullets legible at full resolution. Bottom summary sentence present. Bottom-right attribution visible. Embeddable inside a clinician-mode-only section.
+
+ALT TEXT: A clinician-mode four-step clinic-audit pipeline for testing the Hypoxic-Lower-Limb hypothesis on a single nephrology unit's panel — phenotype the cohort, capture exposures (UFR, Hgb, ABI/TBI), test the four predictions with cross-sectional and intervention analyses, and report a local audit memo with cramp-frequency delta, photo-log progression, and transcutaneous PO₂ trends.
+OG WIDTH: 1792
+OG HEIGHT: 1024
+```
+
+---
+
 ## Production checklist (for the human running the GPT)
 
 For each prompt above:

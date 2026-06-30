@@ -42,27 +42,39 @@ Every image must serve **one** of three jobs:
 
 ---
 
-## 3. Image inventory (10 assets)
+## 3. Image inventory (14 assets — 10 base + 4 clinician extensions)
 
-| # | File | Skill used | Archetype / Scaffold | Dimensions | Placement in guide |
-|---|------|-----------|----------------------|-----------:|----|
-| 000 | `dialysis-cramps-stasis-pigmentation-og-card.png` | Infographic | OG / Social Share Card | 1200 × 630 | `<head>` `og:image`; link previews on FB/X/LinkedIn/iMessage |
-| 001 | `dialysis-cramps-stasis-pigmentation-vignette-hero.png` | Hero Vignette v3 | Scaffold A — Clinical People | 2048 × 2048 | `figure.hero-figure > .hero-vignette` (patient-mode-only) |
-| 002 | `dialysis-cramps-serca-relaxation-pump.png` | Biomedical Mechanism | Multi-scale schematic (cell → SERCA pump) | 1792 × 1024 | §2 patient ("oxygen budget") + §1 clinician (pathophys) |
-| 003 | `dialysis-cramps-5hit-mechanism.png` | Biomedical Mechanism | Organ → inset → injury/intervention/benefit | 1792 × 1024 | §3 patient ("last-hour cramps") + §1 clinician (pathophys) |
-| 004 | `dialysis-cramps-hemosiderin-pathway.png` | Biomedical Mechanism | Organ → dermal-capillary inset → MMP/inflammation flow | 1792 × 1024 | §4 patient ("why skin darkens") + §2 clinician (stasis pigment) |
-| 005 | `dialysis-cramps-two-axes-one-field.png` | Simple Figure | Scaffold B — Side-by-Side Comparison | 1792 × 1024 | §5 patient ("the connection") + §3 clinician (hypothesis) |
-| 006 | `dialysis-cramps-hypoxic-lower-limb-sigil.png` | Organ-Crosstalk Sigil | Minimal monoline + dotted arrows | 1024 × 1024 | §3 clinician (Hypoxic-Lower-Limb hypothesis header) |
-| 007 | `dialysis-cramps-spectrum-staircase.png` | Simple Figure | Scaffold C — Horizontal Step Sequence (7 stages) | 1792 × 1024 | §pt-spectrum + §md-spectrum (top of section) |
-| 008 | `dialysis-cramps-rescue-steps.png` | Simple Figure | Scaffold C — Step Sequence (4 steps) | 1792 × 1024 | §pt-rescue (60-second rescue) |
-| 009 | `dialysis-cramps-abi-tbi-algorithm.png` | Algorithm Generator | Mode C — house-style clinical algorithm | 1024 × 1536 | §md-workup (vascular assessment step) + §md-spectrum (operational take-home) |
+The guide is **dual-mode** (patient + clinician toggle), so every asset is explicitly scoped to one of three audiences in the table below:
+
+- **PT** = renders only when the patient tab is active (`.mode-patient` containers, or no mode scoping).
+- **MD** = renders only when the clinician tab is active (`.mode-physician` containers).
+- **Both** = shared figures placed inside both a `.mode-patient` and a `.mode-physician` section so each audience sees them in context.
+
+| # | File | Skill used | Archetype / Scaffold | Dimensions | Mode | Placement in guide |
+|---|------|-----------|----------------------|-----------:|:----:|----|
+| 000 | `dialysis-cramps-stasis-pigmentation-og-card.png` | Infographic | OG / Social Share Card | 1200 × 630 | — | `<head>` `og:image`; link previews on FB/X/LinkedIn/iMessage |
+| 001 | `dialysis-cramps-stasis-pigmentation-vignette-hero.png` | Hero Vignette v3 | Scaffold A — Clinical People | 2048 × 2048 | **PT** | `figure.hero-figure.mode-patient > .hero-vignette` — hidden in clinician mode |
+| 002 | `dialysis-cramps-serca-relaxation-pump.png` | Biomedical Mechanism | Multi-scale schematic (cell → SERCA pump) | 1792 × 1024 | **Both** | §pt-oxygen + §md-pathophys |
+| 003 | `dialysis-cramps-5hit-mechanism.png` | Biomedical Mechanism | Organ → inset → injury/intervention/benefit | 1792 × 1024 | **Both** | §pt-cramps + §md-pathophys |
+| 004 | `dialysis-cramps-hemosiderin-pathway.png` | Biomedical Mechanism | Organ → dermal-capillary inset → MMP/inflammation flow | 1792 × 1024 | **Both** | §pt-darken + §md-pigment |
+| 005 | `dialysis-cramps-two-axes-one-field.png` | Simple Figure | Scaffold B — Side-by-Side Comparison | 1792 × 1024 | **Both** | §pt-connection + §md-theory |
+| 006 | `dialysis-cramps-hypoxic-lower-limb-sigil.png` | Organ-Crosstalk Sigil | Minimal monoline + dotted arrows | 1024 × 1024 | **MD** | §md-theory header |
+| 007 | `dialysis-cramps-spectrum-staircase.png` | Simple Figure | Scaffold C — Horizontal Step Sequence (7 stages) | 1792 × 1024 | **Both** | §pt-spectrum + §md-spectrum (top of section) |
+| 008 | `dialysis-cramps-rescue-steps.png` | Simple Figure | Scaffold C — Step Sequence (4 steps) | 1792 × 1024 | **PT** | §pt-rescue (60-second rescue) |
+| 009 | `dialysis-cramps-abi-tbi-algorithm.png` | Algorithm Generator | Mode C — house-style clinical algorithm | 1024 × 1536 | **MD** | §md-workup + §md-spectrum |
+| 010 | `dialysis-cramps-management-tiers-workflow.png` | Infographic | Archetype 8 — Circular Workflow | 1024 × 1024 | **MD** | §md-management (opens the tiered section) |
+| 011 | `dialysis-cramps-pharmacology-reference-card.png` | Simple Figure | Scaffold E — Clinician Reference Card (4:3) | 1536 × 1152 | **MD** | §md-pharmacology (top, above the HTML table) |
+| 012 | `dialysis-cramps-diabetes-accelerator-mechanism.png` | Biomedical Mechanism | Organ → inset → bottom flow | 1792 × 1024 | **MD** | §md-spectrum (DM amplification subsection) |
+| 013 | `dialysis-cramps-clinic-audit-pipeline.png` | Simple Figure | Scaffold C — Step Sequence (4 steps) | 1792 × 1024 | **MD** | §md-audit (top of the testable-predictions section) |
+
+**Clinician-only inventory (6 dedicated images):** 006 (sigil), 009 (ABI/TBI algorithm), 010 (management workflow), 011 (pharmacology card), 012 (DM accelerator mechanism), 013 (audit pipeline). Together they anchor every clinician section (pathophys, pigment, theory, workup, management, pharmacology, spectrum, audit) — with §md-pearls deliberately left visual-free (its content is short alert callouts).
 
 **Coverage map.** Every Stage 1 skill is exercised at least once:
 
-- **Infographic skill** → #000 (OG card).
+- **Infographic skill** → #000 (OG card), #010 (management workflow).
 - **Hero vignette skill** → #001.
-- **Biomedical mechanism figure skill** → #002, #003, #004 (the three big mechanism schematics that anchor the science).
-- **Simple figure skill** → #005, #007, #008 (single-concept teaching figures).
+- **Biomedical mechanism figure skill** → #002, #003, #004, #012 (the four big mechanism schematics that anchor the science).
+- **Simple figure skill** → #005, #007, #008, #011, #013 (single-concept teaching figures and reference cards).
 - **Organ-crosstalk sigil skill** → #006 (the hypothesis sigil).
 - **Algorithm generator skill** → #009 (the ABI/TBI safety gate).
 
