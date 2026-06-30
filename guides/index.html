@@ -1960,12 +1960,16 @@
   body.persona-caregiver .guide-tile[data-tags~="caregiver"] {
     box-shadow: inset 3px 0 0 #d97706, 0 1px 0 rgba(0,0,0,.04);
   }
-  /* Patient — the site default audience. The whole library is already
-     patient-friendly, so don't accent anything; just gently de-emphasize
-     guides explicitly flagged as clinician-only (technical/clinical-decision
-     support pages a typical patient can skip). */
-  body.persona-patient .guide-tile[data-tags~="clinician"] { opacity: .55; }
-  body.persona-patient .guide-tile[data-tags~="clinician"]:hover { opacity: .9; }
+  /* Patient — dim guides flagged as clinician-only (technical pages a
+     typical patient can skip), and accent the curated patient-essential
+     set (kidney basics, nutrition, dialysis primer, lifestyle, daily life)
+     with a green inset edge — same loud-and-clear treatment the clinician
+     and caregiver personas use, just in a different category hue. */
+  body.persona-patient .guide-tile[data-tags~="clinician"]:not([data-tags~="patient"]) { opacity: .55; }
+  body.persona-patient .guide-tile[data-tags~="clinician"]:not([data-tags~="patient"]):hover { opacity: .9; }
+  body.persona-patient .guide-tile[data-tags~="patient"] {
+    box-shadow: inset 3px 0 0 #2e6b3e, 0 1px 0 rgba(0,0,0,.04);
+  }
   /* Small chip in the results bar that says "you're in clinician/caregiver/
      patient view" and offers a one-click escape (clears localStorage + class). */
   .persona-active {
@@ -2526,7 +2530,7 @@
       <span class="results-count" id="results-count">132</span>
       <span>guides</span>
       <span id="filter-label"></span>
-      <span class="persona-active for-patient"   role="status" aria-live="polite">Patient view — clinician-only guides dimmed<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
+      <span class="persona-active for-patient"   role="status" aria-live="polite">Highlighting patient picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
       <span class="persona-active for-clinician" role="status" aria-live="polite">Highlighting clinician picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
       <span class="persona-active for-caregiver" role="status" aria-live="polite">Highlighting caregiver picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
     </div>
@@ -2595,7 +2599,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="symptom-checker.html" class="guide-tile" data-tags="decision-tool new" data-text="symptom checker triage ER same-day kidney heart diabetes swelling edema breathless shortness of breath chest pain fever nausea vomiting fatigue weakness dizziness urgent emergency when to go hospital">
+        <a href="symptom-checker.html" class="guide-tile" data-tags="decision-tool new patient" data-text="symptom checker triage ER same-day kidney heart diabetes swelling edema breathless shortness of breath chest pain fever nausea vomiting fatigue weakness dizziness urgent emergency when to go hospital">
           <div class="tile-icon calc" data-icon="alert"></div>
           <div class="tile-body">
             <div class="tile-title">Symptom Checker — When Should You Worry?</div>
@@ -2638,7 +2642,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="kidney-physiology.html" class="guide-tile" data-tags="pre-dialysis" data-text="kidney physiology normal function filtration endocrine how kidneys work glomerulus tubule nephron erythropoietin renin vitamin D fluid balance waste removal urine anatomy renal function">
+        <a href="kidney-physiology.html" class="guide-tile" data-tags="pre-dialysis patient" data-text="kidney physiology normal function filtration endocrine how kidneys work glomerulus tubule nephron erythropoietin renin vitamin D fluid balance waste removal urine anatomy renal function">
           <div class="tile-icon read" data-icon="kidney"></div>
           <div class="tile-body">
             <div class="tile-title">Your Amazing Kidneys — Normal Physiology</div>
@@ -2648,7 +2652,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="kidney-functions.html" class="guide-tile" data-tags="pre-dialysis" data-text="kidney functions master regulators 20 functions what do kidneys do waste removal toxins fluid balance sodium potassium calcium phosphorus acid base bicarbonate blood pressure erythropoietin EPO renin vitamin D calcitriol klotho bone gluconeogenesis immune oxygen sensing HIF cardiovascular homeostasis nephron glomerulus tubule">
+        <a href="kidney-functions.html" class="guide-tile" data-tags="pre-dialysis patient" data-text="kidney functions master regulators 20 functions what do kidneys do waste removal toxins fluid balance sodium potassium calcium phosphorus acid base bicarbonate blood pressure erythropoietin EPO renin vitamin D calcitriol klotho bone gluconeogenesis immune oxygen sensing HIF cardiovascular homeostasis nephron glomerulus tubule">
           <div class="tile-icon read" data-icon="kidney"></div>
           <div class="tile-body">
             <div class="tile-title">Your Kidneys: The Master Regulators of Your Body</div>
@@ -2668,7 +2672,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="understanding-ckd.html" class="guide-tile" data-tags="calculator pre-dialysis" data-text="CKD chronic kidney disease stages understanding classification progression what is CKD GFR G1 G2 G3 G4 G5 A1 A2 A3 uremia end stage kidney failure renal disease eGFR creatinine diagnosis staging">
+        <a href="understanding-ckd.html" class="guide-tile" data-tags="calculator pre-dialysis patient" data-text="CKD chronic kidney disease stages understanding classification progression what is CKD GFR G1 G2 G3 G4 G5 A1 A2 A3 uremia end stage kidney failure renal disease eGFR creatinine diagnosis staging">
           <div class="tile-icon read" data-icon="clipboard"></div>
           <div class="tile-body">
             <div class="tile-title">Taking Charge of CKD: Understanding Your Kidney Disease</div>
@@ -2678,7 +2682,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="first-nephrology-visit-guide.html" class="guide-tile" data-tags="philippines pre-dialysis system-nav" data-text="first nephrologist visit Philippines what to ask nephrologist CKD first appointment nephrology preparation questions bring labs NKTI PGH PhilHealth Z-benefit referral kidney specialist appointment tips CKD workup">
+        <a href="first-nephrology-visit-guide.html" class="guide-tile" data-tags="philippines pre-dialysis system-nav patient" data-text="first nephrologist visit Philippines what to ask nephrologist CKD first appointment nephrology preparation questions bring labs NKTI PGH PhilHealth Z-benefit referral kidney specialist appointment tips CKD workup">
           <div class="tile-icon ph" data-icon="clipboard"></div>
           <div class="tile-body">
             <div class="tile-title">Preparing for Your First Nephrologist Visit</div>
@@ -2698,7 +2702,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="ckd-top5-mistakes.html" class="guide-tile" data-tags="pre-dialysis" data-text="CKD mistakes patients NSAIDs protein medication follow-up common errors avoid dehydration analgesics pain relievers herbal supplements salt restriction fluid restriction missed appointments self-medication">
+        <a href="ckd-top5-mistakes.html" class="guide-tile" data-tags="pre-dialysis patient" data-text="CKD mistakes patients NSAIDs protein medication follow-up common errors avoid dehydration analgesics pain relievers herbal supplements salt restriction fluid restriction missed appointments self-medication">
           <div class="tile-icon read" data-icon="warn"></div>
           <div class="tile-body">
             <div class="tile-title">Top 5 Mistakes CKD Patients Make</div>
@@ -2708,7 +2712,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="slowing-ckd-progression.html" class="guide-tile" data-tags="calculator pre-dialysis" data-text="slowing CKD progression SGLT2 RAAS medications targets lifestyle glomerulus delay protect kidney empagliflozin dapagliflozin Jardiance Farxiga blood pressure control smoking cessation exercise proteinuria reduction">
+        <a href="slowing-ckd-progression.html" class="guide-tile" data-tags="calculator pre-dialysis patient" data-text="slowing CKD progression SGLT2 RAAS medications targets lifestyle glomerulus delay protect kidney empagliflozin dapagliflozin Jardiance Farxiga blood pressure control smoking cessation exercise proteinuria reduction">
           <div class="tile-icon calc" data-icon="shield"></div>
           <div class="tile-body">
             <div class="tile-title">Slowing CKD Progression</div>
@@ -2776,7 +2780,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="living-with-dialysis.html" class="guide-tile" data-tags="dialysis updated calculator" data-text="hemodialysis dialysis ESKD KDIGO 2024 fluid access complications life on dialysis HD machine AVF schedule 3x week diet restrictions quality of life sleep fatigue thirst fluid limit what to expect">
+        <a href="living-with-dialysis.html" class="guide-tile" data-tags="dialysis updated calculator patient" data-text="hemodialysis dialysis ESKD KDIGO 2024 fluid access complications life on dialysis HD machine AVF schedule 3x week diet restrictions quality of life sleep fatigue thirst fluid limit what to expect">
           <div class="tile-icon read" data-icon="syringe"></div>
           <div class="tile-body">
             <div class="tile-title">Staying Well on Dialysis — What Every HD Patient Must Know</div>
@@ -2839,7 +2843,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="dialysis-access-care.html" class="guide-tile" data-tags="updated dialysis" data-text="dialysis access fistula graft catheter PD Tenckhoff care complications AVF AV fistula arteriovenous graft tunneled catheter buttonhole cannulation infection thrombosis maturation steal syndrome needle technique">
+        <a href="dialysis-access-care.html" class="guide-tile" data-tags="updated dialysis patient" data-text="dialysis access fistula graft catheter PD Tenckhoff care complications AVF AV fistula arteriovenous graft tunneled catheter buttonhole cannulation infection thrombosis maturation steal syndrome needle technique">
           <div class="tile-icon read" data-icon="link"></div>
           <div class="tile-body">
             <div class="tile-title">Dialysis Access Care: Your Lifeline — Protect It Every Day</div>
@@ -2939,7 +2943,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="fluid-management-dialysis.html" class="guide-tile" data-tags="dialysis calculator" data-text="fluid management weight gain interdialytic sodium Filipino food dry weight UF rate fluid restriction overload shortness of breath IDH ultrafiltration edema swelling salt water limit thirst interdialytic weight gain">
+        <a href="fluid-management-dialysis.html" class="guide-tile" data-tags="dialysis calculator patient" data-text="fluid management weight gain interdialytic sodium Filipino food dry weight UF rate fluid restriction overload shortness of breath IDH ultrafiltration edema swelling salt water limit thirst interdialytic weight gain">
           <div class="tile-icon calc" data-icon="drop"></div>
           <div class="tile-body">
             <div class="tile-title">Fluid Management & Interdialytic Weight Gain</div>
@@ -2959,7 +2963,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="potassium-hyperkalemia-ckd.html" class="guide-tile" data-tags="philippines" data-text="potassium hyperkalemia CKD EKG Filipino food Kayexalate patiromer emergency dialysis high potassium heart arrhythmia peaked T waves banana saging kamote sodium zirconium SZC Veltassa Lokelma calcium gluconate cardiac">
+        <a href="potassium-hyperkalemia-ckd.html" class="guide-tile" data-tags="philippines patient" data-text="potassium hyperkalemia CKD EKG Filipino food Kayexalate patiromer emergency dialysis high potassium heart arrhythmia peaked T waves banana saging kamote sodium zirconium SZC Veltassa Lokelma calcium gluconate cardiac">
           <div class="tile-icon read" data-icon="bolt"></div>
           <div class="tile-body">
             <div class="tile-title">Potassium & Hyperkalemia in CKD</div>
@@ -3031,7 +3035,7 @@
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
-        <a href="filipino-diabetic-diet.html" class="guide-tile" data-tags="philippines new calculator clinician nutrition diabetes" data-text="Filipino diabetic diet diabetes food guide Philippines GI glycemic index rice sinangag ampalaya kamote palengke HbA1c blood sugar Filipino plate method meal sequencing 7-day meal plan sinigang tinola diabetes Filipino food glycemic load postprandial glucose">
+        <a href="filipino-diabetic-diet.html" class="guide-tile" data-tags="philippines new calculator clinician nutrition diabetes patient" data-text="Filipino diabetic diet diabetes food guide Philippines GI glycemic index rice sinangag ampalaya kamote palengke HbA1c blood sugar Filipino plate method meal sequencing 7-day meal plan sinigang tinola diabetes Filipino food glycemic load postprandial glucose">
           <div class="tile-icon ph" data-icon="leaf"></div>
           <div class="tile-body">
             <div class="tile-title">Eating Smart with Diabetes — A Filipino Food Guide</div>
@@ -3055,7 +3059,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="diabetes-kidneys.html" class="guide-tile" data-tags="calculator diabetes pre-dialysis" data-text="diabetes kidney hyperfiltration DKD SGLT2 glycation targets diabetic kidney disease diabetic nephropathy sugar insulin type 2 HbA1c blood glucose GLP-1 ACE ARB progression microalbuminuria">
+        <a href="diabetes-kidneys.html" class="guide-tile" data-tags="calculator diabetes pre-dialysis patient" data-text="diabetes kidney hyperfiltration DKD SGLT2 glycation targets diabetic kidney disease diabetic nephropathy sugar insulin type 2 HbA1c blood glucose GLP-1 ACE ARB progression microalbuminuria">
           <div class="tile-icon calc" data-icon="dna"></div>
           <div class="tile-body">
             <div class="tile-title">Diabetes & Your Kidneys</div>
@@ -3076,7 +3080,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="managing-hypertension.html" class="guide-tile" data-tags="calculator hypertension" data-text="hypertension blood pressure heart kidney brain medication RAAS lifestyle high blood pressure 140/90 antihypertensive amlodipine losartan valsartan enalapril lisinopril stroke heart attack target BP home monitoring">
+        <a href="managing-hypertension.html" class="guide-tile" data-tags="calculator hypertension patient" data-text="hypertension blood pressure heart kidney brain medication RAAS lifestyle high blood pressure 140/90 antihypertensive amlodipine losartan valsartan enalapril lisinopril stroke heart attack target BP home monitoring">
           <div class="tile-icon calc" data-icon="heart"></div>
           <div class="tile-body">
             <div class="tile-title">Managing High Blood Pressure</div>
@@ -3133,7 +3137,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="preventing-uti.html" class="guide-tile" data-tags="calculus prevention" data-text="UTI urinary tract infection recurrent antibiotic hydration CKD diabetes urinary burning dysuria frequency urgency E. coli fosfomycin trimethoprim nitrofurantoin cranberry D-mannose hygiene prevention">
+        <a href="preventing-uti.html" class="guide-tile" data-tags="calculus prevention patient" data-text="UTI urinary tract infection recurrent antibiotic hydration CKD diabetes urinary burning dysuria frequency urgency E. coli fosfomycin trimethoprim nitrofurantoin cranberry D-mannose hygiene prevention">
           <div class="tile-icon read" data-icon="micro"></div>
           <div class="tile-body">
             <div class="tile-title">Why UTIs Keep Coming Back — And How to Finally Stop Them</div>
@@ -3171,7 +3175,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="understanding-lab-results.html" class="guide-tile" data-tags="calculator system-nav" data-text="lab results understanding blood urine tests decoder what does blood test mean creatinine BUN eGFR electrolytes sodium potassium CBC hemoglobin WBC platelets urinalysis UA protein dipstick">
+        <a href="understanding-lab-results.html" class="guide-tile" data-tags="calculator system-nav patient" data-text="lab results understanding blood urine tests decoder what does blood test mean creatinine BUN eGFR electrolytes sodium potassium CBC hemoglobin WBC platelets urinalysis UA protein dipstick">
           <div class="tile-icon calc" data-icon="clipboard"></div>
           <div class="tile-body">
             <div class="tile-title">Understanding Your Lab Results</div>
@@ -3180,7 +3184,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="pain-management-ckd.html" class="guide-tile" data-tags="" data-text="pain management CKD NSAIDs mefenamic acid ibuprofen opioids neuropathy Philippine brands paracetamol acetaminophen Biogesic Panadol Cataflam Voltaren tramadol neuropathic gabapentin pregabalin safe analgesic kidney patients">
+        <a href="pain-management-ckd.html" class="guide-tile" data-tags=" patient" data-text="pain management CKD NSAIDs mefenamic acid ibuprofen opioids neuropathy Philippine brands paracetamol acetaminophen Biogesic Panadol Cataflam Voltaren tramadol neuropathic gabapentin pregabalin safe analgesic kidney patients">
           <div class="tile-icon read" data-icon="pill"></div>
           <div class="tile-body">
             <div class="tile-title">Hurt Without Harm: Safe Pain Relief in Kidney Disease</div>
@@ -3221,7 +3225,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="nutrition-kidney-patients.html" class="guide-tile" data-tags="philippines calculator nutrition" data-text="nutrition kidney patients CKD diet protein potassium phosphorus sodium Filipino renal diet food restriction what to eat kidney-friendly meal plan low potassium low phosphorus low sodium low protein nutritionist dietitian">
+        <a href="nutrition-kidney-patients.html" class="guide-tile" data-tags="philippines calculator nutrition patient" data-text="nutrition kidney patients CKD diet protein potassium phosphorus sodium Filipino renal diet food restriction what to eat kidney-friendly meal plan low potassium low phosphorus low sodium low protein nutritionist dietitian">
           <div class="tile-icon read" data-icon="leaf"></div>
           <div class="tile-body">
             <div class="tile-title">Nutrition for Kidney Patients</div>
@@ -3231,7 +3235,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="kain-pa-rin.html" class="guide-tile" data-tags="new clinician philippines calculator nutrition" data-text="kain pa rin CKD nutrition diet Filipino food guide protein phosphorus potassium sodium CKD stages 3 4 5 pre-dialysis low protein diet LPD Filipino food table bangus tilapia kamote kangkong renal diet Philippines protein energy wasting PEW KDIGO 2024 ketoanalogues nutrition pre-dialysis clinician dual mode">
+        <a href="kain-pa-rin.html" class="guide-tile" data-tags="new clinician philippines calculator nutrition patient" data-text="kain pa rin CKD nutrition diet Filipino food guide protein phosphorus potassium sodium CKD stages 3 4 5 pre-dialysis low protein diet LPD Filipino food table bangus tilapia kamote kangkong renal diet Philippines protein energy wasting PEW KDIGO 2024 ketoanalogues nutrition pre-dialysis clinician dual mode">
           <div class="tile-icon clin" data-icon="leaf"></div>
           <div class="tile-body">
             <div class="tile-title">Kain Pa Rin: CKD Nutrition Guide for Filipino Patients</div>
@@ -3241,7 +3245,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="ketoanalogue-supplementation.html" class="guide-tile" data-tags="new clinician nutrition" data-text="ketoanalogue supplementation CKD ketosteril keto acid nitrogen-free essential amino acid VLPD LPD very low protein diet pre-dialysis CKD stage 4 5 protein restriction BUN urea reduction hypercalcemia monitoring KDIGO Philippines nephrologist ketoanalogue indication malnutrition">
+        <a href="ketoanalogue-supplementation.html" class="guide-tile" data-tags="new clinician nutrition patient" data-text="ketoanalogue supplementation CKD ketosteril keto acid nitrogen-free essential amino acid VLPD LPD very low protein diet pre-dialysis CKD stage 4 5 protein restriction BUN urea reduction hypercalcemia monitoring KDIGO Philippines nephrologist ketoanalogue indication malnutrition">
           <div class="tile-icon clin" data-icon="pill"></div>
           <div class="tile-body">
             <div class="tile-title">Ketoanalogues: When Misuse Leads to Harm</div>
@@ -3251,7 +3255,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="eating-on-dialysis.html" class="guide-tile" data-tags="new dialysis clinician philippines calculator nutrition" data-text="dialysis nutrition eating on dialysis diet hemodialysis protein phosphorus potassium intradialytic eating PEW protein energy wasting KDOQI renal diet Filipino food phosphate binder timing Nepro oral nutrition supplement buko juice hyperkalemia dialysis diet Philippines">
+        <a href="eating-on-dialysis.html" class="guide-tile" data-tags="new dialysis clinician philippines calculator nutrition patient" data-text="dialysis nutrition eating on dialysis diet hemodialysis protein phosphorus potassium intradialytic eating PEW protein energy wasting KDOQI renal diet Filipino food phosphate binder timing Nepro oral nutrition supplement buko juice hyperkalemia dialysis diet Philippines">
           <div class="tile-icon clin" data-icon="food"></div>
           <div class="tile-body">
             <div class="tile-title">Eating on Dialysis: What the Evidence Actually Says</div>
@@ -3282,7 +3286,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="sodium-salt-reduction-ckd.html" class="guide-tile" data-tags="calculator philippines hypertension nutrition" data-text="sodium salt reduction CKD patis bagoong Maggi noodles Filipino diet hypertension low salt diet fluid retention blood pressure Filipino seasoning soy sauce toyo cooking tricks less salt flavor substitute">
+        <a href="sodium-salt-reduction-ckd.html" class="guide-tile" data-tags="calculator philippines hypertension nutrition patient" data-text="sodium salt reduction CKD patis bagoong Maggi noodles Filipino diet hypertension low salt diet fluid retention blood pressure Filipino seasoning soy sauce toyo cooking tricks less salt flavor substitute">
           <div class="tile-icon calc" data-icon="flask"></div>
           <div class="tile-body">
             <div class="tile-title">Sodium & Salt Reduction — Your Most Powerful Daily Choice</div>
@@ -3306,7 +3310,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="ckd-friendly-recipes.html" class="guide-tile" data-tags="philippines nutrition" data-text="CKD friendly recipes tinola sinigang inihaw tilapia Filipino cooking pre-dialysis HD low potassium meals leaching vegetables kidney-friendly Filipino recipe ideas healthy cooking dialysis patient traditional Filipino">
+        <a href="ckd-friendly-recipes.html" class="guide-tile" data-tags="philippines nutrition patient" data-text="CKD friendly recipes tinola sinigang inihaw tilapia Filipino cooking pre-dialysis HD low potassium meals leaching vegetables kidney-friendly Filipino recipe ideas healthy cooking dialysis patient traditional Filipino">
           <div class="tile-icon read" data-icon="bowl"></div>
           <div class="tile-body">
             <div class="tile-title">CKD-Friendly Filipino Recipes</div>
@@ -3333,7 +3337,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="meal-prep-fastfood-ckd.html" class="guide-tile" data-tags="updated philippines nutrition" data-text="meal prep fast food CKD Jollibee McDonald's KFC Chowking Mang Inasal leaching weekly plan eating out restaurant Philippines kidney diet ordering tips low potassium low sodium choices Chickenjoy Burger McDo">
+        <a href="meal-prep-fastfood-ckd.html" class="guide-tile" data-tags="updated philippines nutrition patient" data-text="meal prep fast food CKD Jollibee McDonald's KFC Chowking Mang Inasal leaching weekly plan eating out restaurant Philippines kidney diet ordering tips low potassium low sodium choices Chickenjoy Burger McDo">
           <div class="tile-icon read" data-icon="doc"></div>
           <div class="tile-body">
             <div class="tile-title">Meal Prep & Fast Food for CKD Patients on the Go</div>
@@ -3345,7 +3349,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="ckd-friendly-recipes-regional.html" class="guide-tile" data-tags="philippines nutrition" data-text="CKD regional Philippine recipes Kapampangan Ilocano Ilonggo Cebuano kare-kare pinakbet adobo regional Filipino food kidney-friendly Visayas Mindanao Ilocos Tagalog traditional recipes modified kidney disease Bisaya Bisayas">
+        <a href="ckd-friendly-recipes-regional.html" class="guide-tile" data-tags="philippines nutrition patient" data-text="CKD regional Philippine recipes Kapampangan Ilocano Ilonggo Cebuano kare-kare pinakbet adobo regional Filipino food kidney-friendly Visayas Mindanao Ilocos Tagalog traditional recipes modified kidney disease Bisaya Bisayas">
           <div class="tile-icon read" data-icon="doc"></div>
           <div class="tile-body">
             <div class="tile-title">CKD-Friendly Regional Philippine Recipes</div>
@@ -3363,7 +3367,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="phosphorus-ckd.html" class="guide-tile" data-tags="nutrition" data-text="phosphorus CKD silent threat food labels phosphate binders Filipino diet high phosphorus hyperphosphatemia sevelamer calcium carbonate Phoslo Renvela bone disease vascular calcification dialysis phosphate binders food">
+        <a href="phosphorus-ckd.html" class="guide-tile" data-tags="nutrition patient" data-text="phosphorus CKD silent threat food labels phosphate binders Filipino diet high phosphorus hyperphosphatemia sevelamer calcium carbonate Phoslo Renvela bone disease vascular calcification dialysis phosphate binders food">
           <div class="tile-icon read" data-icon="flask"></div>
           <div class="tile-body">
             <div class="tile-title">Phosphorus: The Silent Threat in CKD</div>
@@ -3411,7 +3415,7 @@
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
-        <a href="sexual-health-intimacy-ckd.html" class="guide-tile" data-tags="new clinician calculator" data-text="sexual health intimacy CKD ESRD erectile dysfunction libido testosterone dialysis IIEF orgasm dyspareunia vaginal dryness prolactin hypogonadism PDE5 inhibitor sildenafil tadalafil sexual dysfunction kidney disease men women fertility hormones neuropathy">
+        <a href="sexual-health-intimacy-ckd.html" class="guide-tile" data-tags="new clinician calculator patient" data-text="sexual health intimacy CKD ESRD erectile dysfunction libido testosterone dialysis IIEF orgasm dyspareunia vaginal dryness prolactin hypogonadism PDE5 inhibitor sildenafil tadalafil sexual dysfunction kidney disease men women fertility hormones neuropathy">
           <div class="tile-icon read" data-icon="heart"></div>
           <div class="tile-body">
             <div class="tile-title">Sexual Health &amp; Intimacy in CKD / ESRD</div>
@@ -3424,7 +3428,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="exercise-guide-ckd.html" class="guide-tile" data-tags="calculator prevention" data-text="exercise CKD physical activity warm-up aerobic resistance rehabilitation fall prevention walking jogging swimming cycling yoga sarcopenia muscle weakness deconditioning exercise prescription intradialytic exercise dialysis">
+        <a href="exercise-guide-ckd.html" class="guide-tile" data-tags="calculator prevention patient" data-text="exercise CKD physical activity warm-up aerobic resistance rehabilitation fall prevention walking jogging swimming cycling yoga sarcopenia muscle weakness deconditioning exercise prescription intradialytic exercise dialysis">
           <div class="tile-icon calc" data-icon="person"></div>
           <div class="tile-body">
             <div class="tile-title">Physical Exercise Guide for CKD Patients</div>
@@ -3433,7 +3437,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="ckd-mental-health-sleep.html" class="guide-tile" data-tags="calculator caregiver" data-text="CKD mental health sleep depression anxiety brain fog RLS restless legs apnea psychological quality of life fatigue cognitive impairment uremic encephalopathy insomnia CPAP mood disorder kidney psychiatry">
+        <a href="ckd-mental-health-sleep.html" class="guide-tile" data-tags="calculator caregiver patient" data-text="CKD mental health sleep depression anxiety brain fog RLS restless legs apnea psychological quality of life fatigue cognitive impairment uremic encephalopathy insomnia CPAP mood disorder kidney psychiatry">
           <div class="tile-icon read" data-icon="brain"></div>
           <div class="tile-body">
             <div class="tile-title">CKD, Mental Health & Sleep</div>
@@ -3451,7 +3455,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="travel-dialysis-ckd.html" class="guide-tile" data-tags="system-nav" data-text="travel dialysis CKD abroad medications fluid checklist PD holiday vacation guest dialysis ESKD travel tips medication list insurance letter doctor certificate abroad temporary center">
+        <a href="travel-dialysis-ckd.html" class="guide-tile" data-tags="system-nav patient" data-text="travel dialysis CKD abroad medications fluid checklist PD holiday vacation guest dialysis ESKD travel tips medication list insurance letter doctor certificate abroad temporary center">
           <div class="tile-icon read" data-icon="plane"></div>
           <div class="tile-body">
             <div class="tile-title">Travel Guide for Dialysis & CKD Patients</div>
@@ -3578,7 +3582,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="glp1-ozempic-ckd.html" class="guide-tile" data-tags="philippines diabetes pre-dialysis" data-text="GLP-1 semaglutide Ozempic CKD FLOW trial FDA 2025 diabetes muscle Philippines cost Rybelsus Wegovy weight loss injection tirzepatide Mounjaro Zepbound kidney protection obesity Philippines price liraglutide Victoza">
+        <a href="glp1-ozempic-ckd.html" class="guide-tile" data-tags="philippines diabetes pre-dialysis patient" data-text="GLP-1 semaglutide Ozempic CKD FLOW trial FDA 2025 diabetes muscle Philippines cost Rybelsus Wegovy weight loss injection tirzepatide Mounjaro Zepbound kidney protection obesity Philippines price liraglutide Victoza">
           <div class="tile-icon read" data-icon="pill"></div>
           <div class="tile-body">
             <div class="tile-title">GLP-1 Drugs & Your Kidneys: What Ozempic Means for CKD</div>
@@ -3761,7 +3765,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="dialysis-coming-pre-eskd.html" class="guide-tile" data-tags="dialysis philippines calculator clinician pre-dialysis system-nav" data-text="pre-dialysis preparing ESKD eGFR 15-29 AVF modality PhilHealth decision tools transplant approaching dialysis kidney failure starting dialysis access creation fistula graft PD catheter early referral modality choice">
+        <a href="dialysis-coming-pre-eskd.html" class="guide-tile" data-tags="dialysis philippines calculator clinician pre-dialysis system-nav patient" data-text="pre-dialysis preparing ESKD eGFR 15-29 AVF modality PhilHealth decision tools transplant approaching dialysis kidney failure starting dialysis access creation fistula graft PD catheter early referral modality choice">
           <div class="tile-icon calc" data-icon="clock"></div>
           <div class="tile-body">
             <div class="tile-title">Preparing for Dialysis — The 12-Month Window That Changes Your Outcome</div>
