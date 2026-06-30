@@ -466,17 +466,18 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — promote the parent list to a shared
-     2-column grid so every label column lines up under the widest value
-     (even when values differ, e.g. "0" vs "−7 mmHg" vs "G4–G5").
-     display:contents lets each .ov-stat's children join the parent grid. */
-  .ov-list:not(.kp) { display: grid; grid-template-columns: max-content 1fr; column-gap: 12px; row-gap: 11px; align-items: baseline; }
-  .ov-list:not(.kp) .ov-stat { display: contents; }
+  /* Evidence Snapshot stat rows — every label (.l) must start at the
+     same x-position regardless of value (.v) width. Approach: the row
+     itself is a 2-col grid with a fixed value column (104px, wide
+     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
+     "30–60%") and a flexible label column. Wider values wrap inside
+     the column rather than pushing the label right. */
+  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
   .ov-stat .v {
     font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15;
+    color: #1f3864; line-height: 1.15; min-width: 0;
   }
-  .ov-stat .l { font-size: 11.5px; color: #5a6680; line-height: 1.35; }
+  .ov-stat .l { font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0; }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
     display: flex; align-items: center; gap: 7px;
