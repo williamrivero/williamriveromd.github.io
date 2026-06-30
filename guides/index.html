@@ -1770,6 +1770,29 @@
     padding-top: 7px;
     line-height: 1.4;
   }
+  /* Methodology disclosure — small toggle so visitors can see HOW the live
+     number is computed without making the panel taller by default. */
+  .ckd-widget-why {
+    margin-top: 6px;
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.45);
+    background: none; border: none; padding: 0; cursor: pointer;
+    text-decoration: underline; text-underline-offset: 2px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .ckd-widget-why:hover { color: rgba(255,255,255,0.85); }
+  .ckd-widget-method {
+    display: none;
+    margin-top: 7px; padding: 8px 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    font-size: 0.6rem; line-height: 1.5;
+    color: rgba(255,255,255,0.62);
+    max-width: 260px;
+  }
+  .ckd-widget-method.show { display: block; }
+  .ckd-widget-method strong { color: rgba(255,255,255,0.82); font-weight: 600; }
 
   /* ── CONTINUE READING RAIL ── */
   .recent-rail {
@@ -2015,6 +2038,10 @@
       <div class="ckd-widget-label">On dialysis — Philippines</div>
     </div>
     <div class="ckd-widget-source">Est. · ISN/KDIGO 2023 · NKTI/PRDR 2024 · Updates in real time</div>
+    <button type="button" class="ckd-widget-why" id="ckd-widget-why" aria-expanded="false" aria-controls="ckd-widget-method">Why is this counting?</button>
+    <div class="ckd-widget-method" id="ckd-widget-method" role="region">
+      <strong>How the counter ticks.</strong> No registry feed exists for live CKD or dialysis numbers. Each row uses the latest published baseline (ISN/KDIGO 2023 for prevalence; NKTI/Philippine Renal Disease Registry 2024 for dialysis census) and extrapolates forward at the observed annual growth rate, ticking once per second. So the climb you see is the projected pace — the underlying counts are real, the second-by-second motion is arithmetic.
+    </div>
   </div>
 </div>
 
@@ -5044,6 +5071,17 @@ document.addEventListener('DOMContentLoaded', function() {
       btn.setAttribute('aria-expanded', 'false');
     }
   });
+  // "Why is this counting?" — methodology disclosure inside the panel
+  var why    = document.getElementById('ckd-widget-why');
+  var method = document.getElementById('ckd-widget-method');
+  if (why && method) {
+    why.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var on = method.classList.toggle('show');
+      why.setAttribute('aria-expanded', on ? 'true' : 'false');
+      why.textContent = on ? 'Hide details' : 'Why is this counting?';
+    });
+  }
 })();
 
 // ── CONTINUE READING RAIL ─────────────────────────────────────────────────────
