@@ -2010,7 +2010,11 @@
       <div class="ckd-widget-num" id="ckd-ph">10,823,047</div>
       <div class="ckd-widget-label">In the Philippines</div>
     </div>
-    <div class="ckd-widget-source">Est. · ISN/KDIGO 2023 · Updates in real time</div>
+    <div class="ckd-widget-row">
+      <div class="ckd-widget-num" id="ckd-ph-dialysis">82,000</div>
+      <div class="ckd-widget-label">On dialysis — Philippines</div>
+    </div>
+    <div class="ckd-widget-source">Est. · ISN/KDIGO 2023 · NKTI/PRDR 2024 · Updates in real time</div>
   </div>
 </div>
 
@@ -4993,9 +4997,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ── LIVE CKD COUNTER ─────────────────────────────────────────────────────────
 (function() {
-  var globalEl = document.getElementById('ckd-global');
-  var phEl     = document.getElementById('ckd-ph');
-  if (!globalEl && !phEl) return;
+  var globalEl     = document.getElementById('ckd-global');
+  var phEl         = document.getElementById('ckd-ph');
+  var phDialysisEl = document.getElementById('ckd-ph-dialysis');
+  if (!globalEl && !phEl && !phDialysisEl) return;
   // Base estimates: ISN/KDIGO 2023 (Jager et al., NDT 2023; PSN 2022 Atlas)
   var BASE_GLOBAL = 850274891;
   var BASE_PH     = 10823047;
@@ -5003,13 +5008,21 @@ document.addEventListener('DOMContentLoaded', function() {
   // New diagnoses per second: ~16M/yr global, ~500K/yr PH
   var RATE_G = 16000000 / 31557600;
   var RATE_P = 500000  / 31557600;
+  // PH dialysis census — NKTI/PRDR 2024 reported 64,845 on dialysis (up
+  // from 53,296 in 2023 = +11,549 in one year). Anchor at end-2024 and
+  // grow at that observed rate.
+  var BASE_PH_DIALYSIS    = 64845;
+  var BASE_PH_DIALYSIS_MS = new Date('2025-01-01T00:00:00+08:00').getTime();
+  var RATE_PD = 11549 / 31557600;
   function fmt(n) {
     return Math.floor(n).toLocaleString('en-US');
   }
   function tick() {
-    var elapsed = (Date.now() - BASE_MS) / 1000;
-    if (globalEl) globalEl.textContent = fmt(BASE_GLOBAL + RATE_G * elapsed);
-    if (phEl)     phEl.textContent     = fmt(BASE_PH     + RATE_P * elapsed);
+    var now = Date.now();
+    var elapsed = (now - BASE_MS) / 1000;
+    if (globalEl)     globalEl.textContent     = fmt(BASE_GLOBAL + RATE_G * elapsed);
+    if (phEl)         phEl.textContent         = fmt(BASE_PH     + RATE_P * elapsed);
+    if (phDialysisEl) phDialysisEl.textContent = fmt(BASE_PH_DIALYSIS + RATE_PD * ((now - BASE_PH_DIALYSIS_MS) / 1000));
   }
   tick();
   setInterval(tick, 1000);
