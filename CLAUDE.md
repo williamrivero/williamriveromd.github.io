@@ -180,15 +180,29 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    and instead shows a **Published** date row and a **References** count row (the number of items
    in the accordion). Inline-styled, idempotent; never add an author line to a new guide's hero.
 
-5. **Accordion References section before the signature block.** `patch_references_accordion.py`
-   builds a collapsible `<details class="ref-acc">` References section (multilingual summary,
-   inline-styled, marker-delimited) and inserts it immediately before `.dr-card-wrap`. Citations
-   are sourced from the guide's footer `<p>References: A · B · C</p>` line (or hero-meta
-   `Guidelines:`). For a guide that cites sources only inline, supply them with
-   `--overrides refs.json` (`{ "<file>": ["Citation", …] }`). **Never fabricate medical
-   citations** — list only sources the guide actually relies on. `--report` audits coverage;
-   pure interactive tools (calculators index, symptom-checker, the interpreters) have no
-   citable sources and are the documented exceptions.
+5. **Accordion References section before the signature block — APA 7 format.** Every guide's
+   References block is a collapsible `<details class="ref-acc">` rendered by
+   `patch_references_accordion.py` from the footer `<p>References: A · B · C</p>` line
+   (or hero-meta `Guidelines:`), inserted immediately before `.dr-card-wrap`. Each citation
+   in that footer line — and therefore each `<li>` in the rendered accordion — **must be
+   in APA 7 format**: `Author, A. A., Author, B. B., & Author, C. C. (Year). Sentence-case
+   title. <em>Journal Name</em>, <em>Volume</em>(Issue), pages. <a href="https://doi.org/…">https://doi.org/…</a>`.
+   - Up to 20 authors → list all (comma + `&` before the last). 21+ → first 19, `... `, final author.
+   - Titles in **sentence case** (only first word + first word after a colon/em-dash capitalised);
+     preserve acronyms (CKD, AKI, ChatGPT, SaMD, etc.).
+   - Journal name in full title-case (not the PubMed abbreviation), italicised via `<em>`.
+     Volume italicised via `<em>`; issue in parens (not italicised).
+   - DOI rendered as a real `<a href="https://doi.org/...">…</a>` link. The patcher's tag
+     whitelist preserves `<em>`, `<strong>`, `<b>`, `<i>`, and `<a>` from the footer line —
+     other inline tags are stripped. **Do not paste short-form citations** like
+     "Smith 2023 (Nature)" — those are pre-APA legacy and must be migrated when touched.
+   The canonical reference exemplar is `guides/ai-in-nephrology-practice.html` (26 sources,
+   PubMed-verified via the `mcp__PubMed__*` MCP). For a guide that cites sources only inline,
+   supply them with `--overrides refs.json` (`{ "<file>": ["APA citation 1", …] }`).
+   **Never fabricate medical citations** — list only sources the guide actually relies on, and
+   verify author/year/journal/volume/pages/DOI against PubMed before publishing. `--report`
+   audits coverage; pure interactive tools (calculators index, symptom-checker, interpreters)
+   have no citable sources and are the documented exceptions.
 
 6. **Justified body text.** Every guide's narrative body — every `<p>` inside a
    `<section class="section">` — is **fully justified** with automatic hyphenation

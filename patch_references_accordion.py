@@ -76,7 +76,13 @@ def extract_citations(text: str):
     if not raw:
         return []
 
-    raw = re.sub(r'<[^>]+>', '', raw)  # strip any inline tags
+    # Strip any inline tags EXCEPT a small whitelist used by APA-formatted
+    # citations: <em>/<i> for italicised journal+volume, <strong>/<b> for
+    # emphasis, and <a …> for DOI/URL links. Everything else (stray spans,
+    # data-lang attrs, font tags from legacy footers) is stripped.
+    raw = re.sub(
+        r'<(?!/?(?:em|i|strong|b|a)(?:\s|>|/))[^>]+>', '', raw, flags=re.I
+    )
     parts = re.split(r'\s*(?:&middot;|·|&#183;)\s*', raw)
     cites = [re.sub(r'\s+', ' ', p).strip() for p in parts]
     cites = [c for c in cites if c and c.lower() not in ("references", "guidelines")]

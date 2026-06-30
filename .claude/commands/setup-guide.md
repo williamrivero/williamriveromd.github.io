@@ -216,15 +216,25 @@ python3 generate_latest_calculators.py                     # if a calc-* page: r
 >    at the end of the page. `patch_hero_meta.py` strips any "Author: W Rivero…" row from
 >    `.hero-meta` and instead shows a **Published** date row and a **References** count row. Do not
 >    add an author line to a new guide's hero.
-> 5. **Have an accordion-structured References section before the signature block.**
+> 5. **Have an accordion-structured References section before the signature block, in APA 7 format.**
 >    `patch_references_accordion.py` builds a collapsible `<details>` References block and places
->    it right before `.dr-card-wrap`. It sources citations from the guide's footer
->    `<p>References: A · B · C</p>` line (or the hero-meta `Guidelines:` value), so **author the
->    guide with a real footer references line** (· separated). For a guide whose sources are only
->    cited inline, pass a JSON file of citations:
+>    it right before `.dr-card-wrap`, sourced from the guide's footer
+>    `<p>References: A · B · C</p>` line (or the hero-meta `Guidelines:` value). **Every citation
+>    in that footer line must be APA 7:** `Author, A. A., …, & Author, Z. Z. (Year). Sentence-case
+>    title. <em>Journal Name</em>, <em>Volume</em>(Issue), pages. <a href="https://doi.org/…">https://doi.org/…</a>`.
+>    Up to 20 authors → list all (`, & ` before the last); 21+ → first 19, ellipsis, final author.
+>    Sentence-case title with acronyms preserved (CKD, AKI, ChatGPT, SaMD). Full title-case
+>    journal name (not the PubMed abbreviation), italicised via `<em>`. DOIs as live
+>    `<a href="https://doi.org/...">` links. The patcher preserves `<em>`, `<strong>`, `<b>`,
+>    `<i>`, and `<a>` from the footer line; other inline tags are stripped.
+>    **Build APA citations from PubMed metadata** — use the `mcp__PubMed__lookup_article_by_citation`
+>    + `mcp__PubMed__get_article_metadata` MCP tools to fetch verified author lists, volume, issue,
+>    pages, and DOI; never write a citation from memory. For a guide whose sources are only cited
+>    inline, pass a JSON file of citations:
 >    `python3 patch_references_accordion.py --overrides refs.json` where `refs.json` is
->    `{ "<filename>": ["Citation 1", "Citation 2", …] }`. **Never fabricate citations** — list only
->    sources the guide actually relies on. Run `--report` to audit reference coverage site-wide.
+>    `{ "<filename>": ["APA citation 1", "APA citation 2", …] }`. **Never fabricate citations** —
+>    list only sources the guide actually relies on. Run `--report` to audit reference coverage
+>    site-wide. The canonical APA exemplar is `guides/ai-in-nephrology-practice.html`.
 
 4. After all scripts succeed, stage the new guide and any modified files, then commit and push to `main`:
 
