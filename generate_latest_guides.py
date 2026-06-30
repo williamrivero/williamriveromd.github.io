@@ -34,6 +34,21 @@ START = "<!-- LATEST-GUIDES-START -->"
 END = "<!-- LATEST-GUIDES-END -->"
 ANCHOR = "<!-- MOBILE FILTER BAR -->"
 
+# Category palette — same hues as each section's `.section-color-bar` in the
+# index. Used as solid (not CSS-var) hex so the card gradient resolves even
+# when the variable isn't defined in the rendering scope.
+SECTION_COLORS = {
+    "nephrology":  "#1a6b72",   # teal
+    "internal":    "#c55a11",   # orange
+    "nutrition":   "#2e6b3e",   # green
+    "lifestyle":   "#7c3aed",   # violet
+    "advanced":    "#6b46c1",   # purple
+    "dialysis":    "#1f3864",   # navy
+    "philippines": "#c2410c",   # amber-orange
+    "download":    "#92710a",   # gold
+}
+DEFAULT_CARD_COLOR = "#1a6b72"
+
 # Pages that are not patient-education *guides* (calculators, printables, tools,
 # the directory itself). Excluded from the Latest-guides strip.
 SKIP_EXACT = {
@@ -96,8 +111,38 @@ def local_thumb(project_dir: Path, og_image: str, stem: str) -> str:
     return f"../images/{base}"
 
 
+def file_to_section(index_html: str) -> dict:
+    """Walk guides/index.html and map each tiled guide file → its data-section.
+
+    Splits the document on the `<div class="guide-section" data-section="…">`
+    opening tag and reads tiles out of each chunk. Simpler than the original
+    lookahead regex (which was matching only the first chunk in practice)."""
+    out = {}
+    parts = re.split(
+        r'<div class="guide-section"[^>]*data-section="([^"]+)"[^>]*>',
+        index_html,
+    )
+    # re.split returns [pre, key1, body1, key2, body2, …]
+    # Tiles can have href before class or after, and the class attribute may
+    # carry extra tokens (e.g. "guide-tile dual"). Match either order with
+    # \bguide-tile\b inside the class string.
+    tile_re = re.compile(
+        r'<a\s+(?=[^>]*class="[^"]*\bguide-tile\b[^"]*")[^>]*href="([^"]+)"|'
+        r'<a\s+(?=[^>]*href="([^"]+)")[^>]*class="[^"]*\bguide-tile\b[^"]*"',
+    )
+    for i in range(1, len(parts), 2):
+        ds, body = parts[i], parts[i + 1] if i + 1 < len(parts) else ""
+        for m in tile_re.finditer(body):
+            href = m.group(1) or m.group(2)
+            if href:
+                out.setdefault(href, ds)
+    return out
+
+
 def collect(project_dir: Path):
     guides_dir = project_dir / "guides"
+    index_html = (guides_dir / "index.html").read_text(encoding="utf-8")
+    file_section = file_to_section(index_html)
     rows = []
     for path in guides_dir.glob("*.html"):
         if not is_guide(path.name):
@@ -111,6 +156,7 @@ def collect(project_dir: Path):
             dt = datetime.fromisoformat(pub)
         except ValueError:
             continue
+        section = file_section.get(path.name, "")
         rows.append({
             "file": path.name,
             "published": pub,
@@ -118,6 +164,8 @@ def collect(project_dir: Path):
             "title": clean_title(text, path.stem),
             "thumb": local_thumb(project_dir, og_image, path.stem),
             "alt": meta(text, "og:image:alt"),
+            "section": section,
+            "color": SECTION_COLORS.get(section, DEFAULT_CARD_COLOR),
         })
     # Newest first; tie-break by filename for determinism.
     rows.sort(key=lambda r: (r["dt"], r["file"]), reverse=True)
@@ -131,7 +179,7 @@ def card_html(r) -> str:
     label = dt.strftime("%b %-d, %Y")
     alt = (r["alt"] or "").replace('"', "&quot;")
     return (
-        f'      <a href="{r["file"]}" class="latest-card">\n'
+        f'      <a href="{r["file"]}" class="latest-card" style="--card-color:{r["color"]}">\n'
         f'        <span class="latest-eyebrow"><span class="latest-dot"></span>New guide</span>\n'
         f'        <span class="latest-title">{r["title"]}</span>\n'
         f'        <span class="latest-date"><time datetime="{r["published"]}">{label}</time></span>\n'
@@ -189,7 +237,8 @@ def main():
     # Write the ordered data alongside, for reference / other consumers.
     data = [
         {"file": r["file"], "title": r["title"], "published": r["published"],
-         "thumb": r["thumb"]}
+         "thumb": r["thumb"], "section": r.get("section", ""),
+         "color": r.get("color", DEFAULT_CARD_COLOR)}
         for r in rows
     ]
 

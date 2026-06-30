@@ -245,6 +245,30 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    ones must live in the **second `<style>` block** of the guide so
    `patch_master_css.py` does not strip them.
 
+9. **Category-tinted Latest-guides cards.** Each section in `guides/index.html`
+   (`<div class="guide-section" data-section="…">`) has its own colour — visible
+   as the small `.section-color-bar` ("|") before the section title:
+   - `nephrology` → `#1a6b72` (teal)
+   - `internal` → `#c55a11` (orange)
+   - `nutrition` → `#2e6b3e` (green)
+   - `lifestyle` → `#7c3aed` (violet)
+   - `advanced` → `#6b46c1` (purple)
+   - `dialysis` → `#1f3864` (navy)
+   - `philippines` → `#c2410c` (amber-orange)
+   - `download` → `#92710a` (gold)
+
+   `generate_latest_guides.py` reads each guide's category from its tile in
+   `guides/index.html` (via `data-section` on the parent `.guide-section`) and
+   emits `style="--card-color:<hex>"` on every `.latest-card`. The `.latest-card`
+   CSS uses that variable for both the gradient background and the hover shadow,
+   so each card carries its category's identity across the strip. **Always
+   re-run `generate_latest_guides.py` after** (a) adding a new guide tile,
+   (b) moving a guide to a different section, or (c) editing the `SECTION_COLORS`
+   palette. New categories added to the index need a matching entry in the
+   `SECTION_COLORS` dict at the top of the generator. The same colour scheme is
+   the single source of truth for any future category-tinted UI (filter pills,
+   guide-tile accents, related-guide chips).
+
 The **Latest guides** strip lives on `guides/index.html` between `<!-- LATEST-GUIDES-START -->`
 and `<!-- LATEST-GUIDES-END -->` (above the mobile filter bar / "Continue reading" rail). Each
 card shows the guide title, its publish date, and the guide's OG share image *peeking* on the
