@@ -38,14 +38,15 @@ ANCHOR = "<!-- MOBILE FILTER BAR -->"
 # index. Used as solid (not CSS-var) hex so the card gradient resolves even
 # when the variable isn't defined in the rendering scope.
 SECTION_COLORS = {
-    "nephrology":  "#1a6b72",   # teal
-    "internal":    "#c55a11",   # orange
-    "nutrition":   "#2e6b3e",   # green
-    "lifestyle":   "#7c3aed",   # violet
-    "advanced":    "#6b46c1",   # purple
-    "dialysis":    "#1f3864",   # navy
-    "philippines": "#c2410c",   # amber-orange
-    "download":    "#92710a",   # gold
+    "nephrology":   "#1a6b72",   # teal
+    "internal":     "#c55a11",   # orange
+    "perspectives": "#1f3864",   # deep navy (essay/opinion gravitas)
+    "nutrition":    "#2e6b3e",   # green
+    "lifestyle":    "#7c3aed",   # violet
+    "advanced":     "#6b46c1",   # purple
+    "dialysis":     "#1f3864",   # navy
+    "philippines":  "#c2410c",   # amber-orange
+    "download":     "#92710a",   # gold
 }
 DEFAULT_CARD_COLOR = "#1a6b72"
 
