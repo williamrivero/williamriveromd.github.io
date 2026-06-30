@@ -1896,6 +1896,45 @@
     .persona-btn { font-size: 0.78rem; padding: 8px 12px; }
   }
 
+  /* Persona highlight mode — when a visitor picks "I'm a Clinician" the page
+     keeps every guide visible but dims tiles not tagged for that audience and
+     gives matching tiles a coloured accent so they stand out at a glance.
+     Strict filtering still happens only when the visitor clicks the sidebar
+     Clinician filter chip — this is a softer, scan-friendly cue. */
+  body.persona-clinician .guide-tile,
+  body.persona-caregiver .guide-tile {
+    transition: opacity .25s ease, box-shadow .25s ease, transform .15s ease;
+  }
+  body.persona-clinician .guide-tile:not([data-tags~="clinician"]):not([data-tags~="download"]) { opacity: .42; }
+  body.persona-clinician .guide-tile:not([data-tags~="clinician"]):not([data-tags~="download"]):hover { opacity: .9; }
+  body.persona-clinician .guide-tile[data-tags~="clinician"] {
+    box-shadow: inset 3px 0 0 #7c3aed, 0 1px 0 rgba(0,0,0,.04);
+  }
+  body.persona-caregiver .guide-tile:not([data-tags~="caregiver"]):not([data-tags~="download"]) { opacity: .55; }
+  body.persona-caregiver .guide-tile[data-tags~="caregiver"] {
+    box-shadow: inset 3px 0 0 #d97706, 0 1px 0 rgba(0,0,0,.04);
+  }
+  /* Small chip in the results bar that says "you're in clinician/caregiver
+     view" and offers a one-click escape (clears localStorage + class). */
+  .persona-active {
+    display: none; align-items: center; gap: 6px;
+    margin-left: 10px; padding: 3px 5px 3px 10px;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: .76rem; font-weight: 600; letter-spacing: .01em;
+    border-radius: 12px; line-height: 1.4;
+  }
+  body.persona-clinician .persona-active.for-clinician,
+  body.persona-caregiver .persona-active.for-caregiver { display: inline-flex; }
+  .persona-active.for-clinician { background: rgba(124,58,237,.13); color: #6d28d9; }
+  .persona-active.for-caregiver { background: rgba(217,119,6,.13); color: #b45309; }
+  body.dark-mode .persona-active.for-clinician { background: rgba(124,58,237,.22); color: #c4b5fd; }
+  body.dark-mode .persona-active.for-caregiver { background: rgba(217,119,6,.22); color: #fcd34d; }
+  .persona-clear {
+    border: none; background: transparent; cursor: pointer; color: inherit;
+    font-size: .9em; line-height: 1; padding: 2px 4px; border-radius: 6px;
+  }
+  .persona-clear:hover { background: rgba(0,0,0,.08); }
+
   /* Floating dark-mode toggle widget (replaces the old nav button) */
   .float-controls{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:9999;}
   .float-btn{width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:transform .2s,box-shadow .2s;background:#1f3864;color:#fff;position:relative;}
@@ -2424,6 +2463,8 @@
       <span class="results-count" id="results-count">132</span>
       <span>guides</span>
       <span id="filter-label"></span>
+      <span class="persona-active for-clinician" role="status" aria-live="polite">Highlighting clinician picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
+      <span class="persona-active for-caregiver" role="status" aria-live="polite">Highlighting caregiver picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
     </div>
 
     <div class="no-results" id="no-results">No guides match your search. Try a different keyword.</div>
@@ -5048,6 +5089,26 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 })();
 
+// ── PERSONA HIGHLIGHT MODE ───────────────────────────────────────────────────
+// Restore the saved persona's body class so the dim-and-highlight treatment
+// applies on every visit. Then wire the "✕ reset audience" chip in the
+// results bar to clear both the class and the localStorage entry — the next
+// visit will re-prompt.
+(function() {
+  var KEY = 'wgmr-visit-persona';
+  function applyPersona(p) {
+    document.body.classList.remove('persona-clinician', 'persona-caregiver', 'persona-patient');
+    if (p) document.body.classList.add('persona-' + p);
+  }
+  try { applyPersona(localStorage.getItem(KEY)); } catch(e) {}
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-persona-clear]');
+    if (!btn) return;
+    try { localStorage.removeItem(KEY); } catch(e) {}
+    applyPersona(null);
+  });
+})();
+
 // ── WHAT BRINGS YOU HERE ─────────────────────────────────────────────────────
 (function() {
   var KEY = 'wgmr-visit-persona';
@@ -5073,17 +5134,20 @@ document.addEventListener('DOMContentLoaded', function() {
     el.classList.remove('show');
     setTimeout(function() { el.remove(); }, 520);
     if (!persona) return;
+    // Apply the body class right away so the dim/highlight transition starts
+    // while the prompt is sliding off.
+    document.body.classList.remove('persona-clinician', 'persona-caregiver', 'persona-patient');
+    document.body.classList.add('persona-' + persona);
     setTimeout(function() {
-      if (persona === 'clinician') {
-        var btn = document.querySelector('.filter-btn[data-filter="clinician"]');
-        if (btn) btn.click();
-      } else if (persona === 'caregiver') {
-        var care = document.querySelector('.pathway-tile[data-pathway="caregiver"]');
-        if (care) { care.click(); care.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-      } else {
-        var sec = document.querySelector('.pathways-section');
-        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (persona === 'clinician' || persona === 'caregiver') {
+        // Soft cue only — no strict filter, no scroll. The body.persona-<x>
+        // class dims non-matching tiles and accents the matching ones; the
+        // visitor can still see and click every guide.
+        return;
       }
+      // patient → still guide them to the "Start Here" pathway tiles
+      var sec = document.querySelector('.pathways-section');
+      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 550);
   }
 
