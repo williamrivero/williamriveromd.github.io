@@ -1902,20 +1902,30 @@
      Strict filtering still happens only when the visitor clicks the sidebar
      Clinician filter chip — this is a softer, scan-friendly cue. */
   body.persona-clinician .guide-tile,
-  body.persona-caregiver .guide-tile {
+  body.persona-caregiver .guide-tile,
+  body.persona-patient .guide-tile {
     transition: opacity .25s ease, box-shadow .25s ease, transform .15s ease;
   }
+  /* Clinician — dim non-clinician tiles, accent clinician ones violet */
   body.persona-clinician .guide-tile:not([data-tags~="clinician"]):not([data-tags~="download"]) { opacity: .42; }
   body.persona-clinician .guide-tile:not([data-tags~="clinician"]):not([data-tags~="download"]):hover { opacity: .9; }
   body.persona-clinician .guide-tile[data-tags~="clinician"] {
     box-shadow: inset 3px 0 0 #7c3aed, 0 1px 0 rgba(0,0,0,.04);
   }
+  /* Caregiver — dim non-caregiver tiles, accent caregiver-tagged ones amber */
   body.persona-caregiver .guide-tile:not([data-tags~="caregiver"]):not([data-tags~="download"]) { opacity: .55; }
+  body.persona-caregiver .guide-tile:not([data-tags~="caregiver"]):not([data-tags~="download"]):hover { opacity: .9; }
   body.persona-caregiver .guide-tile[data-tags~="caregiver"] {
     box-shadow: inset 3px 0 0 #d97706, 0 1px 0 rgba(0,0,0,.04);
   }
-  /* Small chip in the results bar that says "you're in clinician/caregiver
-     view" and offers a one-click escape (clears localStorage + class). */
+  /* Patient — the site default audience. The whole library is already
+     patient-friendly, so don't accent anything; just gently de-emphasize
+     guides explicitly flagged as clinician-only (technical/clinical-decision
+     support pages a typical patient can skip). */
+  body.persona-patient .guide-tile[data-tags~="clinician"] { opacity: .55; }
+  body.persona-patient .guide-tile[data-tags~="clinician"]:hover { opacity: .9; }
+  /* Small chip in the results bar that says "you're in clinician/caregiver/
+     patient view" and offers a one-click escape (clears localStorage + class). */
   .persona-active {
     display: none; align-items: center; gap: 6px;
     margin-left: 10px; padding: 3px 5px 3px 10px;
@@ -1924,11 +1934,14 @@
     border-radius: 12px; line-height: 1.4;
   }
   body.persona-clinician .persona-active.for-clinician,
-  body.persona-caregiver .persona-active.for-caregiver { display: inline-flex; }
+  body.persona-caregiver .persona-active.for-caregiver,
+  body.persona-patient .persona-active.for-patient { display: inline-flex; }
   .persona-active.for-clinician { background: rgba(124,58,237,.13); color: #6d28d9; }
   .persona-active.for-caregiver { background: rgba(217,119,6,.13); color: #b45309; }
+  .persona-active.for-patient   { background: rgba(26,107,114,.13); color: #115e64; }
   body.dark-mode .persona-active.for-clinician { background: rgba(124,58,237,.22); color: #c4b5fd; }
   body.dark-mode .persona-active.for-caregiver { background: rgba(217,119,6,.22); color: #fcd34d; }
+  body.dark-mode .persona-active.for-patient   { background: rgba(45,184,192,.22); color: #5eead4; }
   .persona-clear {
     border: none; background: transparent; cursor: pointer; color: inherit;
     font-size: .9em; line-height: 1; padding: 2px 4px; border-radius: 6px;
@@ -2463,6 +2476,7 @@
       <span class="results-count" id="results-count">132</span>
       <span>guides</span>
       <span id="filter-label"></span>
+      <span class="persona-active for-patient"   role="status" aria-live="polite">Patient view — clinician-only guides dimmed<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
       <span class="persona-active for-clinician" role="status" aria-live="polite">Highlighting clinician picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
       <span class="persona-active for-caregiver" role="status" aria-live="polite">Highlighting caregiver picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
     </div>
@@ -2935,7 +2949,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="caregiver-guide-ckd.html" class="guide-tile" data-tags="calculator system-nav" data-text="caregiver CKD family burnout neglect diet NKTI spouse family member support carer mental health companion hospital visits palliative medication management emotional burden caregiver fatigue">
+        <a href="caregiver-guide-ckd.html" class="guide-tile" data-tags="calculator system-nav caregiver" data-text="caregiver CKD family burnout neglect diet NKTI spouse family member support carer mental health companion hospital visits palliative medication management emotional burden caregiver fatigue">
           <div class="tile-icon read" data-icon="heart"></div>
           <div class="tile-body">
             <div class="tile-title">You Didn't Sign Up for This: The CKD Family Caregiver's Guide</div>
@@ -3359,7 +3373,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="ckd-mental-health-sleep.html" class="guide-tile" data-tags="calculator" data-text="CKD mental health sleep depression anxiety brain fog RLS restless legs apnea psychological quality of life fatigue cognitive impairment uremic encephalopathy insomnia CPAP mood disorder kidney psychiatry">
+        <a href="ckd-mental-health-sleep.html" class="guide-tile" data-tags="calculator caregiver" data-text="CKD mental health sleep depression anxiety brain fog RLS restless legs apnea psychological quality of life fatigue cognitive impairment uremic encephalopathy insomnia CPAP mood disorder kidney psychiatry">
           <div class="tile-icon read" data-icon="brain"></div>
           <div class="tile-body">
             <div class="tile-title">CKD, Mental Health & Sleep</div>
@@ -3700,7 +3714,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="advance-care-planning-dialysis.html" class="guide-tile" data-tags="dialysis philippines calculator system-nav" data-text="advance care planning ACP dialysis goals of care withdrawal Filipino family Philippines end of life palliative withdrawal stopping dialysis conservative management living will DNAR Do Not Resuscitate family meeting hospice">
+        <a href="advance-care-planning-dialysis.html" class="guide-tile" data-tags="dialysis philippines calculator system-nav caregiver" data-text="advance care planning ACP dialysis goals of care withdrawal Filipino family Philippines end of life palliative withdrawal stopping dialysis conservative management living will DNAR Do Not Resuscitate family meeting hospice">
           <div class="tile-icon read" data-icon="scroll"></div>
           <div class="tile-body">
             <div class="tile-title">Advance Care Planning: Making Your Voice Heard Before the Crisis</div>
@@ -3709,7 +3723,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="el-nino-heat-dialysis.html" class="guide-tile" data-tags="dialysis philippines calculator" data-text="El Nino heat dialysis brownout HD PD Philippines protocol hyperkalemia cool dialysate summer heat stroke dehydration hot weather fluid intake power outage dialysis emergency heat stress Philippines climate change">
+        <a href="el-nino-heat-dialysis.html" class="guide-tile" data-tags="dialysis philippines calculator caregiver" data-text="El Nino heat dialysis brownout HD PD Philippines protocol hyperkalemia cool dialysate summer heat stroke dehydration hot weather fluid intake power outage dialysis emergency heat stress Philippines climate change">
           <div class="tile-icon calc" data-icon="temp"></div>
           <div class="tile-body">
             <div class="tile-title">El Niño & Extreme Heat: Survival Guide for Dialysis Patients</div>
@@ -3721,7 +3735,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="typhoon-disaster-preparedness-dialysis.html" class="guide-tile" data-tags="updated dialysis philippines" data-text="typhoon disaster preparedness dialysis PAGASA go-bag HD PD evacuation NDRRMC Philippines bagyo flood storm surge emergency dialysis kit medications supply stockpile communication hospital disaster preparedness kidney">
+        <a href="typhoon-disaster-preparedness-dialysis.html" class="guide-tile" data-tags="updated dialysis philippines caregiver" data-text="typhoon disaster preparedness dialysis PAGASA go-bag HD PD evacuation NDRRMC Philippines bagyo flood storm surge emergency dialysis kit medications supply stockpile communication hospital disaster preparedness kidney">
           <div class="tile-icon read" data-icon="wind"></div>
           <div class="tile-body">
             <div class="tile-title">Typhoon & Disaster Preparedness for Dialysis Patients</div>
@@ -3807,7 +3821,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="hmo-ckd-coverage.html" class="guide-tile" data-tags="perspective philippines new patient-rights system-nav" data-text="HMO kidney disease coverage Philippines CKD pre-existing condition health card denied claim nephrologist not accepting HMO accreditation LOA letter of authorization No Balance Billing PhilHealth Z-benefit dialysis coverage Insurance Commission AHMOPI Health Care Agreement Bill of Rights waiting period Maxicare MediCard Intellicare PhilCare Hive Health Day 1 coverage Malasakit Center PCSO IMAP DSWD PWD card RA 10754 government safety net lab cost imaging contrast nephropathy patient rights perspective essay system navigation">
+        <a href="hmo-ckd-coverage.html" class="guide-tile" data-tags="perspective philippines new patient-rights system-nav caregiver" data-text="HMO kidney disease coverage Philippines CKD pre-existing condition health card denied claim nephrologist not accepting HMO accreditation LOA letter of authorization No Balance Billing PhilHealth Z-benefit dialysis coverage Insurance Commission AHMOPI Health Care Agreement Bill of Rights waiting period Maxicare MediCard Intellicare PhilCare Hive Health Day 1 coverage Malasakit Center PCSO IMAP DSWD PWD card RA 10754 government safety net lab cost imaging contrast nephropathy patient rights perspective essay system navigation">
           <div class="tile-icon ph" data-icon="shield"></div>
           <div class="tile-body">
             <div class="tile-title">Why Won't My HMO Cover My Kidneys?</div>
@@ -3883,7 +3897,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="philhealth-z-packages.html" class="guide-tile" data-tags="philippines transplant system-nav" data-text="PhilHealth Z package peritoneal dialysis kidney transplant benefits Z benefit PD KT Z benefit coverage indigent NHCP NKTI hospital package reimbursement PhilHealth benefits dialysis cost financial aid">
+        <a href="philhealth-z-packages.html" class="guide-tile" data-tags="philippines transplant system-nav caregiver" data-text="PhilHealth Z package peritoneal dialysis kidney transplant benefits Z benefit PD KT Z benefit coverage indigent NHCP NKTI hospital package reimbursement PhilHealth benefits dialysis cost financial aid">
           <div class="tile-icon ph" data-icon="building"></div>
           <div class="tile-body">
             <div class="tile-title">PhilHealth Z-Package: PD & Kidney Transplant Benefits</div>
@@ -3892,7 +3906,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="ckd-financial-stress.html" class="guide-tile" data-tags="philippines system-nav" data-text="CKD financial stress cost PhilHealth PCSO DSWD Malasakit PWD Senior dialysis Philippines financial aid assistance charity fund indigent patient senior citizen PWD discount Malasakit Center PhilHealth social worker">
+        <a href="ckd-financial-stress.html" class="guide-tile" data-tags="philippines system-nav caregiver" data-text="CKD financial stress cost PhilHealth PCSO DSWD Malasakit PWD Senior dialysis Philippines financial aid assistance charity fund indigent patient senior citizen PWD discount Malasakit Center PhilHealth social worker">
           <div class="tile-icon ph" data-icon="currency"></div>
           <div class="tile-body">
             <div class="tile-title">CKD & Financial Stress</div>
@@ -3901,7 +3915,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="pwd-card-ckd.html" class="guide-tile" data-tags="philippines dialysis pre-dialysis new" data-text="PWD card CKD dialysis Philippines PWD ID Person with Disability RA 10754 20% discount dialysis medicines labs NCDA application requirements documents Stage 5 kidney disease ESKD hemodialysis PD PWD benefits financial aid">
+        <a href="pwd-card-ckd.html" class="guide-tile" data-tags="philippines dialysis pre-dialysis new caregiver" data-text="PWD card CKD dialysis Philippines PWD ID Person with Disability RA 10754 20% discount dialysis medicines labs NCDA application requirements documents Stage 5 kidney disease ESKD hemodialysis PD PWD benefits financial aid">
           <div class="tile-icon ph" data-icon="heart"></div>
           <div class="tile-body">
             <div class="tile-title">PWD Card for CKD Patients</div>
@@ -5139,15 +5153,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.classList.remove('persona-clinician', 'persona-caregiver', 'persona-patient');
     document.body.classList.add('persona-' + persona);
     setTimeout(function() {
-      if (persona === 'clinician' || persona === 'caregiver') {
-        // Soft cue only — no strict filter, no scroll. The body.persona-<x>
-        // class dims non-matching tiles and accents the matching ones; the
-        // visitor can still see and click every guide.
-        return;
+      // All three personas now use the soft dim-and-highlight treatment
+      // (body.persona-<x> class applied above). The whole library remains
+      // visible and clickable; only emphasis changes. Patient additionally
+      // gets a one-time nudge down to the "Start Here" pathway tiles.
+      if (persona === 'patient') {
+        var sec = document.querySelector('.pathways-section');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-      // patient → still guide them to the "Start Here" pathway tiles
-      var sec = document.querySelector('.pathways-section');
-      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 550);
   }
 
