@@ -41,6 +41,19 @@ and replace its content — do not invent a new layout.
   `class="section mode-physician"`; nav pills are `mode-patient-pill` /
   `mode-physician-pill`. Include the pre-paint restore snippet right after `<body>`
   (never a post-paint restore — that reintroduces CLS; see `patch_mode_cls.py`).
+- **Circular vignette hero — single-mode only.** The oversized circular
+  vignette disc (`figure.hero-figure > .hero-vignette`) is the *single-mode*
+  hero treatment: it applies to patient-only guides and to clinician-only
+  guides marked `<body class="… single-mode">`. **Dual-mode guides must NOT
+  render the vignette in clinician mode** — the clinician hero is the
+  Evidence-Snapshot aside (`<aside class="hero-cards mode-physician">`) on
+  the left with copy on the right, not a portrait disc. To enforce this on a
+  dual-mode guide, scope the figure to patient mode by adding `mode-patient`
+  to its class — `<figure class="hero-figure mode-patient">` — so
+  `body.physician-mode .mode-patient { display:none }` hides it cleanly when
+  the clinician tab is active. (Leaving the figure unscoped lets it bleed
+  into the clinician hero, fighting the Evidence-Snapshot card for space.)
+  See `anemia-management.html` for the canonical wiring.
 - **Components — use only house classes** (no bespoke CSS in the master block):
   - Callout boxes: `<div class="alert alert-{teal|red|amber|green|purple}">` with an
     `.alert-icon` (house style uses an emoji glyph, e.g. 💡 ⚠️ ⛔ ✅ 🔬) and `.alert-body`
