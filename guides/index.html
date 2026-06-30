@@ -156,30 +156,70 @@
     border-radius: 50%;
     pointer-events: none;
   }
-  /* Straight stream — small solutes passing freely */
+  /* ── Pulsatile laminar flow ────────────────────────────────────────────────
+     Each particle now rides a sequence of systolic surges (fast X jumps,
+     ~12% of the cycle) and diastolic glides (slow drift, ~16% of the cycle),
+     stacked into 3 visible "heartbeats" per pass. The opacity also pulses
+     gently — peaks at each systole, dips between — so the whole stream
+     reads as living arterial flow rather than a flat conveyor. Cubic-bezier
+     timing on each segment models the rise-and-decay of a pressure wave. */
+  /* Straight stream — small solutes passing freely (pulsatile) */
   @keyframes p-flow-a {
-    0%   { transform: translateX(0) translateY(0);  opacity: 0; }
-    8%   { opacity: var(--pop, 0.65); }
-    92%  { opacity: var(--pop, 0.65); }
-    100% { transform: translateX(var(--travel, 920px)) translateY(-12px); opacity: 0; }
+    0%   { transform: translateX(0)                                 translateY(0);  opacity: 0; }
+    6%   { opacity: calc(var(--pop, 0.65) * 0.85); }
+    /* heartbeat 1 — systole / diastole */
+    18%  { transform: translateX(calc(var(--travel, 920px) * 0.22)) translateY(-3px); opacity: var(--pop, 0.65); }
+    30%  { transform: translateX(calc(var(--travel, 920px) * 0.28)) translateY(-4px); opacity: calc(var(--pop, 0.65) * 0.78); }
+    /* heartbeat 2 */
+    44%  { transform: translateX(calc(var(--travel, 920px) * 0.52)) translateY(-6px); opacity: var(--pop, 0.65); }
+    56%  { transform: translateX(calc(var(--travel, 920px) * 0.58)) translateY(-7px); opacity: calc(var(--pop, 0.65) * 0.78); }
+    /* heartbeat 3 */
+    72%  { transform: translateX(calc(var(--travel, 920px) * 0.82)) translateY(-9px); opacity: var(--pop, 0.65); }
+    84%  { transform: translateX(calc(var(--travel, 920px) * 0.88)) translateY(-10px); opacity: calc(var(--pop, 0.65) * 0.78); }
+    94%  { opacity: calc(var(--pop, 0.65) * 0.85); }
+    100% { transform: translateX(var(--travel, 920px))              translateY(-12px); opacity: 0; }
   }
-  /* S-curve — proximal tubule reabsorption arc */
+  /* S-curve — proximal tubule reabsorption arc (pulsatile) */
   @keyframes p-flow-b {
-    0%   { transform: translate(0px, 0px) scale(1);    opacity: 0; }
-    8%   { opacity: var(--pop, 0.6); }
-    30%  { transform: translate(28%, -36px) scale(0.85); }
-    55%  { transform: translate(56%,  28px) scale(1.0); }
-    80%  { transform: translate(82%, -18px) scale(0.9); }
-    92%  { opacity: var(--pop, 0.6); }
+    0%   { transform: translate(0%,  0px)  scale(1);     opacity: 0; }
+    6%   { opacity: calc(var(--pop, 0.6) * 0.85); }
+    18%  { transform: translate(22%, -28px) scale(0.92); opacity: var(--pop, 0.6); }
+    30%  { transform: translate(28%, -36px) scale(0.85); opacity: calc(var(--pop, 0.6) * 0.78); }
+    44%  { transform: translate(50%,  18px) scale(1.0);  opacity: var(--pop, 0.6); }
+    56%  { transform: translate(56%,  28px) scale(1.0);  opacity: calc(var(--pop, 0.6) * 0.78); }
+    72%  { transform: translate(78%, -12px) scale(0.94); opacity: var(--pop, 0.6); }
+    84%  { transform: translate(82%, -18px) scale(0.9);  opacity: calc(var(--pop, 0.6) * 0.78); }
+    94%  { opacity: calc(var(--pop, 0.6) * 0.85); }
     100% { transform: translate(var(--travel, 920px), 0px) scale(0.7); opacity: 0; }
   }
-  /* Descending arc — collecting duct / descending limb */
+  /* Descending arc — collecting duct / descending limb (pulsatile) */
   @keyframes p-flow-c {
-    0%   { transform: translate(0px,   0px) scale(1);   opacity: 0; }
-    10%  { opacity: var(--pop, 0.5); }
-    45%  { transform: translate(44%,  44px) scale(0.75); }
-    90%  { opacity: var(--pop, 0.5); }
+    0%   { transform: translate(0%,   0px)  scale(1);    opacity: 0; }
+    8%   { opacity: calc(var(--pop, 0.5) * 0.85); }
+    20%  { transform: translate(22%,  24px) scale(0.92); opacity: var(--pop, 0.5); }
+    32%  { transform: translate(26%,  28px) scale(0.88); opacity: calc(var(--pop, 0.5) * 0.78); }
+    45%  { transform: translate(46%,  44px) scale(0.78); opacity: var(--pop, 0.5); }
+    58%  { transform: translate(52%,  46px) scale(0.75); opacity: calc(var(--pop, 0.5) * 0.78); }
+    72%  { transform: translate(76%,  34px) scale(0.66); opacity: var(--pop, 0.5); }
+    84%  { transform: translate(82%,  30px) scale(0.62); opacity: calc(var(--pop, 0.5) * 0.78); }
+    92%  { opacity: calc(var(--pop, 0.5) * 0.85); }
     100% { transform: translate(var(--travel, 920px), 20px) scale(0.55); opacity: 0; }
+  }
+  /* Subtle whole-stream pulse — translates the entire particles container
+     ~6 px sideways three times per cycle in sync with the in-particle
+     systoles. Reads as the carrier fluid surging with each heartbeat. */
+  @keyframes laminar-pulse {
+    0%, 100% { transform: translateX(0); }
+    16%, 18% { transform: translateX(4px);  }   /* heartbeat 1 */
+    33%      { transform: translateX(0); }
+    44%, 46% { transform: translateX(5px);  }   /* heartbeat 2 */
+    61%      { transform: translateX(0); }
+    72%, 74% { transform: translateX(6px);  }   /* heartbeat 3 */
+    90%      { transform: translateX(0); }
+  }
+  .particles-wrap {
+    animation: laminar-pulse 6s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+    will-change: transform;
   }
   /* RBC overlay — biconcave-disc silhouettes flowing across alongside the
      amber solute stream. SVG masks sourced from images/rbc/cell-NN.svg.
@@ -224,38 +264,61 @@
     animation-delay: var(--rbc-delay, 0s);
     animation-timing-function: linear;
   }
+  /* RBC keyframes — now share the 3-heartbeat pulsatile X-progression of
+     the solute streams. Each cell still spins/rolls/drifts at its own
+     rate; the systolic surges show as ~12% jumps in the X axis followed
+     by a slower diastolic glide. */
   @keyframes rbc-tumble {
     0%   { opacity: 0; transform: translate(0, 0) rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
-    7%   { opacity: var(--rbc-pop, .3); }
-    93%  { opacity: var(--rbc-pop, .3); }
+    6%   { opacity: var(--rbc-pop, .3); }
+    18%  { transform: translate(calc(var(--rbc-travel, 920px) * 0.22), calc(var(--rbc-bobY, -16px) * 0.18)) rotate(calc(var(--rbc-rot0, 0deg) + var(--rbc-spin, 900deg) * 0.18)) scale(var(--rbc-sc, 1)); }
+    30%  { transform: translate(calc(var(--rbc-travel, 920px) * 0.28), calc(var(--rbc-bobY, -16px) * 0.28)) rotate(calc(var(--rbc-rot0, 0deg) + var(--rbc-spin, 900deg) * 0.28)) scale(var(--rbc-sc, 1)); }
+    44%  { transform: translate(calc(var(--rbc-travel, 920px) * 0.52), calc(var(--rbc-bobY, -16px) * 0.50)) rotate(calc(var(--rbc-rot0, 0deg) + var(--rbc-spin, 900deg) * 0.50)) scale(var(--rbc-sc, 1)); }
+    56%  { transform: translate(calc(var(--rbc-travel, 920px) * 0.58), calc(var(--rbc-bobY, -16px) * 0.58)) rotate(calc(var(--rbc-rot0, 0deg) + var(--rbc-spin, 900deg) * 0.58)) scale(var(--rbc-sc, 1)); }
+    72%  { transform: translate(calc(var(--rbc-travel, 920px) * 0.82), calc(var(--rbc-bobY, -16px) * 0.78)) rotate(calc(var(--rbc-rot0, 0deg) + var(--rbc-spin, 900deg) * 0.78)) scale(var(--rbc-sc, 1)); }
+    84%  { transform: translate(calc(var(--rbc-travel, 920px) * 0.88), calc(var(--rbc-bobY, -16px) * 0.88)) rotate(calc(var(--rbc-rot0, 0deg) + var(--rbc-spin, 900deg) * 0.88)) scale(var(--rbc-sc, 1)); }
+    94%  { opacity: var(--rbc-pop, .3); }
     100% { opacity: 0; transform: translate(var(--rbc-travel, 920px), var(--rbc-bobY, -16px)) rotate(calc(var(--rbc-rot0, 0deg) + var(--rbc-spin, 900deg))) scale(var(--rbc-sc, 1)); }
   }
   @keyframes rbc-roll {
     0%   { opacity: 0; transform: translate(0, 0) rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
-    10%  { opacity: var(--rbc-pop, .3); }
-    50%  { transform: translate(50%, calc(var(--rbc-bobY, 18px) * 0.5)) rotate(calc(var(--rbc-rot0, 0deg) + 180deg)) scale(var(--rbc-sc, 1)); }
-    90%  { opacity: var(--rbc-pop, .3); }
+    8%   { opacity: var(--rbc-pop, .3); }
+    20%  { transform: translate(22%, calc(var(--rbc-bobY, 18px) * 0.18)) rotate(calc(var(--rbc-rot0, 0deg) + 72deg))  scale(var(--rbc-sc, 1)); }
+    32%  { transform: translate(28%, calc(var(--rbc-bobY, 18px) * 0.28)) rotate(calc(var(--rbc-rot0, 0deg) + 110deg)) scale(var(--rbc-sc, 1)); }
+    46%  { transform: translate(50%, calc(var(--rbc-bobY, 18px) * 0.50)) rotate(calc(var(--rbc-rot0, 0deg) + 180deg)) scale(var(--rbc-sc, 1)); }
+    58%  { transform: translate(56%, calc(var(--rbc-bobY, 18px) * 0.58)) rotate(calc(var(--rbc-rot0, 0deg) + 215deg)) scale(var(--rbc-sc, 1)); }
+    72%  { transform: translate(78%, calc(var(--rbc-bobY, 18px) * 0.78)) rotate(calc(var(--rbc-rot0, 0deg) + 280deg)) scale(var(--rbc-sc, 1)); }
+    84%  { transform: translate(82%, calc(var(--rbc-bobY, 18px) * 0.88)) rotate(calc(var(--rbc-rot0, 0deg) + 315deg)) scale(var(--rbc-sc, 1)); }
+    92%  { opacity: var(--rbc-pop, .3); }
     100% { opacity: 0; transform: translate(var(--rbc-travel, 920px), var(--rbc-bobY, 18px)) rotate(calc(var(--rbc-rot0, 0deg) + 360deg)) scale(var(--rbc-sc, 1)); }
   }
   @keyframes rbc-drift {
     0%   { opacity: 0; transform: translate(0, 0) rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
-    12%  { opacity: var(--rbc-pop, .3); }
-    35%  { transform: translate(35%, calc(var(--rbc-bobY, -20px))) rotate(calc(var(--rbc-rot0, 0deg) + 30deg)) scale(var(--rbc-sc, 1)); }
-    65%  { transform: translate(65%, calc(var(--rbc-bobY, -20px) * -1)) rotate(calc(var(--rbc-rot0, 0deg) + 70deg)) scale(var(--rbc-sc, 1)); }
-    88%  { opacity: var(--rbc-pop, .3); }
+    10%  { opacity: var(--rbc-pop, .3); }
+    22%  { transform: translate(22%, calc(var(--rbc-bobY, -20px) * 0.5)) rotate(calc(var(--rbc-rot0, 0deg) + 22deg)) scale(var(--rbc-sc, 1)); }
+    34%  { transform: translate(28%, calc(var(--rbc-bobY, -20px))) rotate(calc(var(--rbc-rot0, 0deg) + 30deg)) scale(var(--rbc-sc, 1)); }
+    48%  { transform: translate(50%, calc(var(--rbc-bobY, -20px) * 0.2)) rotate(calc(var(--rbc-rot0, 0deg) + 55deg)) scale(var(--rbc-sc, 1)); }
+    60%  { transform: translate(56%, calc(var(--rbc-bobY, -20px) * -1)) rotate(calc(var(--rbc-rot0, 0deg) + 70deg)) scale(var(--rbc-sc, 1)); }
+    74%  { transform: translate(78%, calc(var(--rbc-bobY, -20px) * -0.5)) rotate(calc(var(--rbc-rot0, 0deg) + 95deg)) scale(var(--rbc-sc, 1)); }
+    86%  { transform: translate(82%, -10px) rotate(calc(var(--rbc-rot0, 0deg) + 110deg)) scale(var(--rbc-sc, 1)); }
+    92%  { opacity: var(--rbc-pop, .3); }
     100% { opacity: 0; transform: translate(var(--rbc-travel, 920px), -8px) rotate(calc(var(--rbc-rot0, 0deg) + 120deg)) scale(var(--rbc-sc, 1)); }
   }
   @keyframes rbc-flutter {
     0%   { opacity: 0; transform: translate(0, 0) rotate(var(--rbc-rot0, 0deg)) scaleX(var(--rbc-sc, 1)) scaleY(var(--rbc-sc, 1)); }
-    10%  { opacity: var(--rbc-pop, .3); }
-    25%  { transform: translate(25%, -10px) rotate(calc(var(--rbc-rot0, 0deg) + 60deg))  scaleX(calc(var(--rbc-sc, 1) * 0.35)) scaleY(var(--rbc-sc, 1)); }
-    50%  { transform: translate(50%, 0px)   rotate(calc(var(--rbc-rot0, 0deg) + 140deg)) scaleX(var(--rbc-sc, 1))                scaleY(var(--rbc-sc, 1)); }
-    75%  { transform: translate(75%, 10px)  rotate(calc(var(--rbc-rot0, 0deg) + 220deg)) scaleX(calc(var(--rbc-sc, 1) * 0.35)) scaleY(var(--rbc-sc, 1)); }
-    90%  { opacity: var(--rbc-pop, .3); }
+    8%   { opacity: var(--rbc-pop, .3); }
+    20%  { transform: translate(22%, -8px) rotate(calc(var(--rbc-rot0, 0deg) + 50deg))  scaleX(calc(var(--rbc-sc, 1) * 0.40)) scaleY(var(--rbc-sc, 1)); }
+    32%  { transform: translate(28%, -10px) rotate(calc(var(--rbc-rot0, 0deg) + 85deg))  scaleX(calc(var(--rbc-sc, 1) * 0.45)) scaleY(var(--rbc-sc, 1)); }
+    46%  { transform: translate(50%,  0px)  rotate(calc(var(--rbc-rot0, 0deg) + 140deg)) scaleX(var(--rbc-sc, 1)) scaleY(var(--rbc-sc, 1)); }
+    58%  { transform: translate(56%,  4px)  rotate(calc(var(--rbc-rot0, 0deg) + 175deg)) scaleX(calc(var(--rbc-sc, 1) * 0.80)) scaleY(var(--rbc-sc, 1)); }
+    72%  { transform: translate(78%,  8px)  rotate(calc(var(--rbc-rot0, 0deg) + 230deg)) scaleX(calc(var(--rbc-sc, 1) * 0.40)) scaleY(var(--rbc-sc, 1)); }
+    84%  { transform: translate(82%, 10px)  rotate(calc(var(--rbc-rot0, 0deg) + 275deg)) scaleX(calc(var(--rbc-sc, 1) * 0.55)) scaleY(var(--rbc-sc, 1)); }
+    92%  { opacity: var(--rbc-pop, .3); }
     100% { opacity: 0; transform: translate(var(--rbc-travel, 920px), 0px) rotate(calc(var(--rbc-rot0, 0deg) + 320deg)) scaleX(var(--rbc-sc, 1)) scaleY(var(--rbc-sc, 1)); }
   }
   @media (prefers-reduced-motion: reduce) {
     .hero             { animation: none; }
+    .particles-wrap   { animation: none; }
     .hero-particle    { animation: none; opacity: 0.4; }
     .hero-rbc,
     .hero-mol         { animation: none; opacity: 0.22; transform: rotate(var(--rbc-rot0, 0deg)) scale(var(--rbc-sc, 1)); }
