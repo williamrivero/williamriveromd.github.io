@@ -245,6 +245,21 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    ones must live in the **second `<style>` block** of the guide so
    `patch_master_css.py` does not strip them.
 
+10. **Category-tinted tile icons.** Every `.guide-tile` in `guides/index.html`
+    renders its leading icon as a **uniform rounded square** (`30 × 30 px`,
+    `border-radius: 8px`) tinted to the **parent section's category colour**.
+    The tint is wired via a single `--cat-color` custom property set on each
+    `.guide-section[data-section="…"]` in master CSS; `.tile-icon` resolves
+    it with `background: color-mix(in srgb, var(--cat-color) 14%, transparent)`
+    and `color: var(--cat-color)`. **Do not author per-tile `.tile-icon.calc`
+    / `.read` / `.tool` / `.ph` / `.dl` overrides** — those classes are
+    inert and the icon now derives its hue from category only. **Pick an
+    icon (`data-icon="…"`) that actually depicts the guide's subject** —
+    heart for cardio-renal, kidney for renal anatomy, drop for fluid/
+    dialysis, flask for labs, etc. Available icon keys are defined in the
+    `ICONS` map near the bottom of `guides/index.html`; add a new key
+    there if no existing glyph fits.
+
 9. **Category-tinted Latest-guides cards.** Each section in `guides/index.html`
    (`<div class="guide-section" data-section="…">`) has its own colour — visible
    as the small `.section-color-bar` ("|") before the section title:

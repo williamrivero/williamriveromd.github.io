@@ -916,11 +916,19 @@
   .guide-tile:hover { background: var(--bg); }
   .guide-tile:hover .tile-arrow { opacity: 1; transform: translateX(2px); }
 
+  /* Uniform rounded-square icon chip — every tile-icon picks up its parent
+     category colour from --cat-color (set on each .guide-section below).
+     Background is a soft tint of the category colour; the SVG strokes the
+     same hue. The old .calc/.read/.tool/.ph/.dl variants no longer paint
+     anything; they remain in markup for back-compat but inherit category
+     styling like every other icon. */
   .tile-icon {
     width: 30px; height: 30px;
-    border-radius: 6px;
+    border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
+    background: color-mix(in srgb, var(--cat-color, #1a6b72) 14%, transparent);
+    color: var(--cat-color, #1a6b72);
   }
   .tile-icon svg {
     width: 15px; height: 15px;
@@ -930,6 +938,17 @@
     stroke-linecap: round;
     stroke-linejoin: round;
   }
+  /* Per-category colour token — every .guide-section sets --cat-color,
+     which the tile icons (and any future category-tinted descendants)
+     resolve via the var() in .tile-icon. Single source of truth. */
+  .guide-section[data-section="nephrology"]  { --cat-color: #1a6b72; }
+  .guide-section[data-section="internal"]    { --cat-color: #c55a11; }
+  .guide-section[data-section="nutrition"]   { --cat-color: #2e6b3e; }
+  .guide-section[data-section="lifestyle"]   { --cat-color: #7c3aed; }
+  .guide-section[data-section="advanced"]    { --cat-color: #6b46c1; }
+  .guide-section[data-section="dialysis"]    { --cat-color: #1f3864; }
+  .guide-section[data-section="philippines"] { --cat-color: #c2410c; }
+  .guide-section[data-section="download"]    { --cat-color: #92710a; }
   /* Shared icon size for sidebar */
   .sidebar-icon {
     width: 13px; height: 13px;
@@ -940,10 +959,6 @@
     stroke-linejoin: round;
     flex-shrink: 0;
   }
-  .tile-icon.calc { background: var(--teal-light); color: var(--teal); }
-  .tile-icon.read { background: rgba(31,56,100,0.07); color: #4a5778; }
-  .tile-icon.tool { background: var(--teal-light); color: var(--teal-mid); }
-  .tile-icon.ph { background: #f1f5f9; color: #64748b; }
 
   .tile-body { flex: 1; min-width: 0; }
   .tile-title {
@@ -989,7 +1004,6 @@
   .tag-system-nav   { background: #f1f5f9; color: #334155; }
   .tag-prevention   { background: #f7fee7; color: #3f6212; }
   .tag-perspective  { background: #eef1f8; color: var(--navy); border: 1px solid #d3ddf0; }
-  .tile-icon.dl { background: #fef9ec; color: #92710a; }
 
   /* Downloads section — amber/warm unified theme */
   #sec-downloads .section-body { background: #fffdf5; }
@@ -1549,15 +1563,18 @@
   body.dark-mode .section-header:hover { background: #1e2d47; }
   body.dark-mode .guide-tile { color: var(--ink); }
   body.dark-mode .guide-tile:hover { background: #1a2843; }
-  body.dark-mode .tile-icon.read { background: rgba(255,255,255,.07); color: #94a3b8; }
-  body.dark-mode .tile-icon.ph { background: rgba(255,255,255,.07); color: #94a3b8; }
+  /* Dark-mode tile icons: brighten the category tint so the chip stays
+     legible on the dark card background. */
+  body.dark-mode .tile-icon {
+    background: color-mix(in srgb, var(--cat-color, #1a6b72) 26%, transparent);
+    color: color-mix(in srgb, var(--cat-color, #1a6b72) 65%, #ffffff);
+  }
   body.dark-mode .tile-title { color: var(--ink); }
   body.dark-mode .tile-teaser { color: var(--ink-muted); }
   body.dark-mode .tag-new { background: rgba(197,90,17,.2); color: #fb923c; border-color: rgba(197,90,17,.3); }
   body.dark-mode .tag-ph { background: rgba(197,90,17,.15); color: #fb923c; }
   body.dark-mode .tag-clinician { background: rgba(75,50,128,.3); color: #c4b5fd; }
   body.dark-mode .tag-download { background: rgba(146,113,10,.2); color: #f5d97a; border-color: rgba(146,113,10,.3); }
-  body.dark-mode .tile-icon.dl { background: rgba(146,113,10,.2); color: #f5d97a; }
   body.dark-mode #sec-downloads .section-body { background: rgba(146,113,10,.05); }
   body.dark-mode #sec-downloads .guide-tile { border-left-color: rgba(245,217,122,.3); }
   body.dark-mode #sec-downloads .guide-tile:hover { background: rgba(146,113,10,.08); }
