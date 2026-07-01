@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Audit every guide's References block for APA-7 compliance.
 
-Per CLAUDE.md rule 5, every guide's footer `References:` line — and therefore
-every <li> rendered by patch_references_accordion.py inside the accordion —
-must be APA 7 format:
+Per CLAUDE.md rule 5, the collapsible accordion
+(<!-- REFERENCES-ACC-START --> ... <!-- REFERENCES-ACC-END -->) is the only
+rendered References location, and every <li> inside its <ol> must be APA 7
+format:
 
     Author, A. A., Author, B. B., & Author, C. C. (Year). Sentence-case
     title. <em>Journal Name</em>, <em>Volume</em>(Issue), pages.
@@ -57,20 +58,18 @@ def is_guide(name):
     return True
 
 
-REF_LINE_RE = re.compile(
-    r'<p>References:\s*(.+?)</p>',
+ACC_OL_RE = re.compile(
+    r'<!-- REFERENCES-ACC-START -->.*?<ol[^>]*>(.*?)</ol>',
     re.DOTALL,
 )
+LI_RE = re.compile(r'<li>(.*?)</li>', re.DOTALL)
 
 
 def get_citations(src):
-    """Return the list of citation strings from the footer line, or []."""
-    m = REF_LINE_RE.search(src)
+    """Return the list of citation strings from the References accordion, or []."""
+    m = ACC_OL_RE.search(src)
     if not m: return []
-    raw = m.group(1).strip()
-    # Citations are joined by " · "
-    cites = [c.strip() for c in re.split(r'\s+·\s+', raw) if c.strip()]
-    return cites
+    return [li.strip() for li in LI_RE.findall(m.group(1)) if li.strip()]
 
 
 def check_apa(cite):
@@ -127,7 +126,7 @@ def main():
     print(f"Examined:           {examined} guides")
     print(f"Compliant (all ✓):  {len(compliant)}")
     print(f"Non-compliant:      {len(noncomp)}")
-    print(f"No footer line:     {len(missing)}")
+    print(f"No accordion found:  {len(missing)}")
 
     if noncomp:
         print(f"\n--- NON-COMPLIANT (need APA conversion) ---")
@@ -135,7 +134,7 @@ def main():
             print(f"  {ok}/{tot:>3}  {n}")
 
     if missing and len(missing) <= 40:
-        print(f"\n--- NO FOOTER `References:` LINE ---")
+        print(f"\n--- NO REFERENCES ACCORDION FOUND ---")
         for n in missing:
             print(f"  (sources may be inline / from hero Guidelines line)  {n}")
 
