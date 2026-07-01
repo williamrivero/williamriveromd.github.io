@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Hemodialysis Water Treatment Systems: A Clinical &amp; Engineering Reference for Dialysis Staff · W Rivero, MD</title>
-<meta name="description" content="Operational reference for hemodialysis water treatment systems: treatment-train design, source-water variants (municipal, deep well, brackish, hard water), capacity sizing, isolation-bay/HDF/dual-pass RO specs, AAMI/ISO 23500 limits, maintenance, and troubleshooting — for dialysis nurses, technicians, and nephrologists.">
-<meta name="keywords" content="hemodialysis water treatment system, dialysis RO reverse osmosis, ISO 23500, AAMI dialysis water, DOH AO 2012-0001, DOH AO 2013-0003, chloramine breakthrough, carbon tanks dialysis, ultrafiltration dialysate, ultrapure water HDF, deep well water treatment, brackish water RO, hard water softener dialysis, dialysis water capacity sizing, isolation bay hepatitis B dialysis, dual-pass RO, water treatment troubleshooting dialysis, Philippines dialysis facility">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RO Recovery &amp; Dual-Pass Reject Volume Calculator – W Rivero, MD</title>
+<meta name="description" content="Calculate permeate and reject volumes for a hemodialysis reverse osmosis system from feed flow and pass recovery percentages, including combined overall recovery for dual-pass RO trains used on brackish or high-TDS source water.">
+<meta name="keywords" content="RO recovery calculator, reverse osmosis reject volume, dual-pass RO dialysis, double-pass reverse osmosis, brackish water RO recovery, dialysis water treatment RO sizing, RO permeate reject calculator">
 <meta name="author" content="W Rivero, MD, FPCP, DPSN">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.williamriveromd.com/guides/dialysis-water-treatment-systems.html">
+<link rel="canonical" href="https://www.williamriveromd.com/guides/calc-ro-recovery-dualpass.html">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -16,23 +16,21 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2026-07-01T07:53:39+08:00">
-<meta property="article:modified_time" content="2026-07-01T07:53:39+08:00">
+<meta property="article:published_time" content="2026-07-01T10:00:00+08:00">
+<meta property="article:modified_time" content="2026-07-01T10:00:00+08:00">
 <meta property="og:site_name" content="William Gregory M. Rivero, MD">
-<meta property="og:title" content="Hemodialysis Water Treatment Systems — A Clinical &amp; Engineering Reference">
-<meta property="og:description" content="Treatment-train design, source-water variants, capacity sizing, isolation-bay/HDF/dual-pass RO specs, AAMI/ISO 23500 limits, maintenance, and troubleshooting — for dialysis nurses, technicians, and nephrologists.">
-<meta property="og:url" content="https://www.williamriveromd.com/guides/dialysis-water-treatment-systems.html">
-<meta property="og:image" content="https://www.williamriveromd.com/images/dialysis-water-treatment-systems-og.png">
-<meta property="og:image:width" content="1731">
-<meta property="og:image:height" content="909">
-<meta property="og:image:alt" content="Open Graph share card — Hemodialysis Water Treatment Systems: a clinical and engineering reference for dialysis staff.">
+<meta property="og:title" content="RO Recovery &amp; Dual-Pass Reject Volume Calculator">
+<meta property="og:description" content="Feed flow and pass recovery percentages to permeate/reject volumes and combined overall recovery for single- or dual-pass RO.">
+<meta property="og:url" content="https://www.williamriveromd.com/guides/calc-ro-recovery-dualpass.html">
+<meta property="og:image" content="https://www.williamriveromd.com/images/hero-cat-dialysis.webp">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta property="og:image:alt" content="Dialysis & Critical Nephrology — nephrology calculators · williamriveromd.com">
 <meta property="og:locale" content="en_PH">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Hemodialysis Water Treatment Systems — Clinical &amp; Engineering Reference">
-<meta name="twitter:description" content="Treatment-train design, source-water variants, capacity sizing, facility layout, AAMI/ISO 23500 limits, and troubleshooting for dialysis water rooms.">
-<meta name="twitter:image" content="https://www.williamriveromd.com/images/dialysis-water-treatment-systems-og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="twitter:title" content="RO Recovery &amp; Dual-Pass Reject Calculator">
+<meta name="twitter:description" content="Permeate/reject volumes and overall recovery for single- or dual-pass hemodialysis RO systems.">
+<meta name="twitter:image" content="https://www.williamriveromd.com/images/hero-cat-dialysis.webp">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
 <style>
   /* ═══════════════════════════════════════════════════════════════════════════
@@ -1643,598 +1641,233 @@
     @page { margin: 18mm 15mm; size: A4; }
   }
 </style>
-<style id="calc-card-embed-style">
-/* Embedded calculator cards (house pattern) */
-.calc-cards-wrap{max-width:860px;margin:28px auto 8px;padding:0;box-sizing:border-box;}
-.calc-cards-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--teal);margin-bottom:12px;}
-.calc-card{display:flex;align-items:center;gap:14px;background:rgba(26,107,114,.07);border:1px solid rgba(26,107,114,.2);border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;margin-bottom:10px;transition:border-color .18s,box-shadow .18s;}
-.calc-card:hover{border-color:var(--teal);box-shadow:0 2px 14px rgba(26,107,114,.14);}
-.calc-card-icon{width:36px;height:36px;flex:none;background:var(--teal);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;line-height:1;}
-.calc-card-body{flex:1;min-width:0;}
-.calc-card-title{font-size:.88rem;font-weight:700;color:var(--teal);margin-bottom:2px;}
-.calc-card-desc{font-size:.78rem;color:var(--text-mid,#4b5563);line-height:1.4;}
-.calc-card-arrow{flex:none;font-size:.8rem;font-weight:700;color:var(--teal);white-space:nowrap;padding-left:8px;}
-html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:rgba(26,107,114,.4);}
+<style id="mdc-style">
+/* MDCalc-style layout for standalone calculator pages */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:8px;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Inter',sans-serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc>summary:hover{background:var(--bg);border-radius:10px;}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body>h3.mdc-sub{font-family:'Inter',sans-serif;font-size:1rem;color:var(--navy);margin:16px 0 8px;}
+.mdc-acc-body>h3.mdc-sub:first-child{margin-top:6px;}
+.mdc-acc#nextsteps>summary{color:var(--teal);}
+.calc-btn,.calc-run,.tool-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:16px 0 6px;padding:13px 30px;background:#1a6b72;color:#fff;border:none;border-radius:10px;font-family:'Manrope',sans-serif;font-size:1.02rem;font-weight:700;letter-spacing:.01em;cursor:pointer;box-shadow:0 2px 10px rgba(26,107,114,.30);transition:background .18s,box-shadow .18s,transform .05s;}
+.calc-btn:hover,.calc-run:hover,.tool-btn:hover{background:#155a60;box-shadow:0 5px 16px rgba(26,107,114,.40);}
+.calc-btn:active,.calc-run:active,.tool-btn:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(26,107,114,.30);}
+@media(max-width:600px){.calc-btn,.calc-run,.tool-btn{width:100%;}}
+.hero-xlink{color:#0e4a50;font-weight:600;text-decoration:underline;text-decoration-color:var(--gold-light);text-decoration-thickness:1.5px;text-underline-offset:3px;border-radius:6px;padding:2px 4px;}
+.hero-xlink:hover{color:#0b3a40;}
+.hero-xlink:focus-visible{outline:2px solid var(--gold-light);outline-offset:2px;}
+.calc-field label:has(input[type="checkbox"]){display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;font-weight:500;color:var(--text);}
+.calc-field input[type="checkbox"]{width:16px;height:16px;flex:none;margin:0;padding:0;accent-color:var(--teal);cursor:pointer;}
+html[data-theme="dark"] .mdc-acc>summary,
+html[data-theme="dark"] .mdc-acc-body>h3.mdc-sub,
+html[data-theme="dark"] .section h2,
+html[data-theme="dark"] .section h3,
+html[data-theme="dark"] .alert-body h4,
+html[data-theme="dark"] .feature-card h4,
+html[data-theme="dark"] .step-body h4,
+html[data-theme="dark"] .disclaimer strong,
+html[data-theme="dark"] .lab-table td:first-child,
+html[data-theme="dark"] .drug-table td:first-child,
+html[data-theme="dark"] .calc-metric-card .cmv{color:var(--text)!important;}
+html[data-theme="dark"] .calc-verdict-text,
+html[data-theme="dark"] .calc-action-text{color:var(--text-mid)!important;}
+html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
+html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "MedicalWebPage",
-  "name": "Hemodialysis Water Treatment Systems",
-  "url": "https://www.williamriveromd.com/guides/dialysis-water-treatment-systems.html",
-  "author": {
-    "@type": "Physician",
-    "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
-    "url": "https://www.williamriveromd.com/"
-  },
-  "dateModified": "2026-07-01",
-  "datePublished": "2026-07-01",
-  "inLanguage": "en-PH",
-  "audience": {
-    "@type": "MedicalAudience",
-    "audienceType": "clinician"
-  }
-}
-</script>
 </head>
-<body class="physician-mode single-mode">
-
-<!-- ═══ SITE HEADER ══════════════════════════════════════════════════════ -->
+<body class="calc-page">
 <header class="site-header">
-  <a class="brand" href="https://www.williamriveromd.com">W. G. M. <strong>Rivero</strong>, MD</a><div class="header-lang"><span class="lang-lbl">Lang:</span><button class="lang-btn-g active" id="glb-en" onclick="setGuideLang('en')">EN</button><button class="lang-btn-g" id="glb-tl" onclick="setGuideLang('tl')">TL</button><button class="lang-btn-g" id="glb-ceb" onclick="setGuideLang('ceb')">CEB</button><button class="lang-btn-g" id="glb-kap" onclick="setGuideLang('kap')">KAP</button></div>
+  <a href="https://www.williamriveromd.com" class="brand">HOME</a>
   <nav class="header-nav"><a href="calculators.html">CALCULATORS</a><a href="kidney-physiology.html">PHYSIOLOGY</a><a href="nephrology-atlas.html">ATLAS</a><a href="/guides/">ALL GUIDES</a></nav>
 </header>
-
-<!-- ═══ HERO ═════════════════════════════════════════════════════════════ -->
-<div class="hero">
-  <div class="container">
-    <div class="hero-grid">
-      <aside class="hero-cards mode-physician">
-        <div class="ov-card">
-          <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
-          <div class="ov-list">
-            <div class="ov-stat"><span class="v">≤0.1 mg/L</span><span class="l">Total chlorine limit downstream of carbon tanks — the chloramine-breakthrough threshold</span></div>
-            <div class="ov-stat"><span class="v">&lt;100/&lt;0.25</span><span class="l">CFU/mL &amp; EU/mL limits for standard dialysis product water (AAMI/ISO 23500)</span></div>
-            <div class="ov-stat"><span class="v">&lt;0.1/&lt;0.03</span><span class="l">CFU/mL &amp; EU/mL required for ultrapure water — online HDF</span></div>
-          </div>
-          <a class="ov-foot" href="#sec-standards">View limits table <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-        </div>
-      </aside>
-      <div class="hero-copy">
-        <div class="hero-tag">Nephrology · Clinical Operations Reference</div>
-        <h1>Hemodialysis Water Treatment Systems</h1>
-        <p class="hero-sub"><em>Design, standards, capacity &amp; troubleshooting</em> — a working reference for the water room, built around the Philippine DOH framework and AAMI/ISO 23500.</p>
-        <div class="hero-meta">
-<span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-07-01T07:53:39+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jul 1, 2026</time></span>
-<span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">14</span></span>
-<span><strong>Audience:</strong> Dialysis nurses &amp; technicians · Nephrologists · Biomedical/water-treatment engineers</span>
-<span class="hero-readtime"><strong><span data-lang="en">Read time</span><span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span><span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span><span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>:</strong> <time datetime="PT24M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~24 min</time></span>
-<span><strong><span data-lang="en">Last Reviewed</span><span class="lang-hidden" data-lang="tl">Huling Na-review</span><span class="lang-hidden" data-lang="ceb">Katapusang Na-review</span><span class="lang-hidden" data-lang="kap">Karinan Na-review</span>:</strong> <time datetime="2026-07-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jul 1, 2026</time></span>
-</div>
-      </div><!-- /.hero-copy -->
-    </div><!-- /.hero-grid -->
-  </div>
+<div class="guide-toggle-bar">
+  <button class="toggle-btn" id="darkToggle" onclick="toggleDark()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="darkIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <span id="darkLabel">Dark</span>
+  </button>
 </div>
 
-<!-- ═══ SECTION NAVIGATION ═════════════════════════════════════════════ -->
+<section class="hero">
+<div class="container">
+<div class="hero-tag">Nephrology · Clinical Calculator · Dialysis Water Treatment</div>
+<h1>RO Recovery <em>&amp; Dual-Pass Reject Volume</em></h1>
+<p class="hero-sub">Enter feed flow and pass recovery percentages to get permeate and reject volumes for a single- or dual-pass RO train — with combined overall recovery for brackish/high-TDS sources that need a second pass.</p>
+<div class="hero-meta">
+<span class="hero-published"><strong>Published:</strong> <time datetime="2026-07-01T10:00:00+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jul 1, 2026</time></span>
+<span class="hero-refcount"><strong>References:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2</span></span>
+<span class="hero-readtime"><strong>Read time:</strong> <time datetime="PT4M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~4 min</time></span>
+</div>
+<p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="dialysis-water-treatment-systems.html" class="hero-xlink">WTS clinical &amp; engineering reference →</a></p>
+</div>
+</section>
 <nav class="nav-strip">
 <div class="nav-pills">
-<a class="nav-pill" href="#sec-why">Why It Matters</a>
-<a class="nav-pill" href="#sec-regs">Standards &amp; Regs</a>
-<a class="nav-pill" href="#sec-design">System Design</a>
-<a class="nav-pill" href="#sec-source">Source-Water Designs</a>
-<a class="nav-pill" href="#sec-capacity">Capacity Planning</a>
-<a class="nav-pill" href="#sec-layout">Facility Layout</a>
-<a class="nav-pill" href="#sec-standards">Quality Limits</a>
-<a class="nav-pill" href="#sec-maintenance">Maintenance</a>
-<a class="nav-pill" href="#sec-trouble">Troubleshooting</a>
-<a class="nav-pill" href="#sec-docs">Documentation</a>
-<a class="nav-pill" href="#sec-qref">Quick Reference</a>
+<a class="nav-pill" href="#instructions">Instructions</a>
+<a class="nav-pill" href="#when">When to Use</a>
+<a class="nav-pill" href="#pearls">Pearls &amp; Pitfalls</a>
+<a class="nav-pill" href="#calculator">Calculator</a>
+<a class="nav-pill" href="#nextsteps">Next Steps</a>
+<a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
-
-<div class="container" style="margin-top:8px;">
-  <div class="alert alert-teal">
-    <div class="alert-icon">🩺</div>
-    <div class="alert-body">
-      <h4>Scope and limits</h4>
-      <p>This is an operational reference aligned with AAMI/ISO 23500 and Philippine DOH requirements. It does not replace your equipment manufacturer's manual, your facility's validated SOPs, or your biomedical engineer's instructions. When this guide and the manufacturer disagree, the manufacturer's validated procedure governs. Any result exceeding a limit, and any patient reaction suspected to involve water quality, must be escalated to the nurse-in-charge and medical director immediately.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ MAIN CONTENT ═════════════════════════════════════════════════════ -->
 <main class="container">
 
-<!-- ════════════════════════ SECTION 1 — WHY IT MATTERS ════════════════ -->
-<section class="section" id="sec-why">
-  <div class="section-tag">Patient Safety Foundation</div>
-  <h2>Why Water Quality Matters</h2>
-  <p>A healthy person drinks roughly 2 liters of water a day, with the gut and liver acting as barriers before anything reaches the bloodstream. A hemodialysis patient is exposed to a far larger volume under far more dangerous conditions: each session uses roughly 120 to 200 liters of water to make dialysate, separated from the patient's blood only by the thin, highly permeable dialyzer membrane. A patient on thrice-weekly dialysis is exposed to 18,000–30,000 liters of water per year with no gut or liver barrier in between — any contaminant in the water can diffuse directly into the blood.</p>
+<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
+<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
+<li>Enter the <strong>feed flow rate</strong> in liters per hour (L/hr) reaching the RO unit.</li>
+<li>Enter the <strong>Pass 1 recovery</strong> percentage (typically 50–75% for brackish/high-TDS feed, higher for low-TDS municipal feed).</li>
+<li>Check <strong>"Include Pass 2 (dual-pass)"</strong> if your system polishes Pass-1 permeate through a second RO pass, and enter the Pass 2 recovery (typically 85–90%+).</li>
+<li>Read the permeate, reject, and overall recovery results below.</li>
+</ol>
+<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
+</div>
 
-  <h3>What contaminated water does to patients</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Contaminant</th><th>Clinical effect</th><th>Mechanism</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Chloramine / chlorine</strong></td><td>Hemolytic anemia, poor EPO response</td><td>Oxidative damage to red cells crossing the membrane</td></tr>
-        <tr><td><strong>Aluminum</strong></td><td>Encephalopathy, osteomalacia, microcytic anemia</td><td>Accumulation in brain and bone; no renal clearance</td></tr>
-        <tr><td><strong>Bacteria &amp; endotoxin</strong></td><td>Pyrogenic reactions (fever, rigors, hypotension), chronic micro-inflammation</td><td>Endotoxin fragments back-diffuse and trigger cytokine release</td></tr>
-        <tr><td><strong>Copper / zinc</strong></td><td>Acute hemolysis, nausea, hemolytic anemia</td><td>Leached from plumbing; oxidative and direct toxicity</td></tr>
-        <tr><td><strong>Fluoride</strong></td><td>Acute toxicity, bone disease, fatal arrhythmia at high dose</td><td>Direct cellular and cardiac toxicity</td></tr>
-        <tr><td><strong>Calcium / magnesium</strong> ("hard water")</td><td>"Hard water syndrome": nausea, vomiting, hypertension, headache, hypercalcemia</td><td>Sudden electrolyte load across the membrane</td></tr>
-        <tr><td><strong>Nitrate</strong></td><td>Methemoglobinemia, hypotension</td><td>Oxidizes hemoglobin; vasodilation</td></tr>
-        <tr><td><strong>Sulfate</strong></td><td>Nausea, vomiting, metabolic acidosis</td><td>Osmotic and acid-base disturbance</td></tr>
-      </tbody>
-    </table>
-  </div>
+<details class="mdc-acc" id="when">
+<summary>When to Use</summary>
+<div class="mdc-acc-body">
+<p>Use this whenever you are <strong>planning water logistics for a brackish or high-TDS source</strong> (reject volume affects feed-water consumption, trucking, and disposal), <strong>evaluating a vendor's dual-pass RO proposal</strong>, or want to understand how much of your feed water actually becomes usable product water.</p>
+<div class="alert alert-teal">
+<div class="alert-icon">✅</div>
+<div class="alert-body">
+<h4>Appropriate use</h4>
+<p>Feed-water logistics planning for coastal/island facilities, vendor-proposal sanity checks, and understanding the water-economy trade-off of adding a second RO pass.</p>
+</div>
+</div>
+<div class="alert alert-amber">
+<div class="alert-icon">⚠️</div>
+<div class="alert-body">
+<h4>When NOT to rely on it</h4>
+<p>This calculates flow volumes only — it does not determine whether a given feed water's TDS actually requires dual-pass RO, and it does not model optional reject-recirculation (Pass-2 reject blended back into Pass-1 feed), which needs a facility-specific engineering review to confirm it won't reconcentrate problem species.</p>
+</div>
+</div>
+</div>
+</details>
 
-  <div class="alert alert-teal">
-    <div class="alert-icon">💧</div>
-    <div class="alert-body">
-      <h4>The core principle</h4>
-      <p>Water is the single largest "ingredient" in dialysis, yet it is the one the patient never consents to and cannot taste, see, or refuse. The water treatment system is a patient-safety device, not plumbing. Every check you perform is an infection-control and toxicology safeguard.</p>
+<details class="mdc-acc" id="pearls">
+<summary>Pearls &amp; Pitfalls</summary>
+<div class="mdc-acc-body">
+<div class="alert alert-green">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<h4>Dual-pass recovery multiplies, it doesn't average</h4>
+<p>Overall recovery for a dual-pass system is Pass 1 recovery × Pass 2 recovery — not their average. A 65% Pass 1 feeding an 88% Pass 2 gives roughly 57% overall recovery, not 76.5%. This is why dual-pass systems, despite each pass individually recovering a majority of their feed, can still show markedly lower overall recovery than a single-pass system on cleaner water.</p>
+</div>
+</div>
+<div class="alert alert-teal">
+<div class="alert-icon">🔬</div>
+<div class="alert-body">
+<h4>Reject volume is a real logistics number, not just an engineering abstraction</h4>
+<p>For a small coastal or island facility trucking in feed water, the reject volume this calculator reports is water that must be sourced, paid for, and disposed of — every day, indefinitely. Low overall recovery on a brackish source is a genuine operating-cost driver, not just a design detail.</p>
+</div>
+</div>
+<div class="alert alert-red">
+<div class="alert-icon">🚫</div>
+<div class="alert-body">
+<h4>Pitfalls</h4>
+<p>(1) Entering an unrealistically high Pass 1 recovery for a high-TDS feed — pushing recovery too high on brackish water increases scaling/fouling risk at the membrane. (2) Forgetting that Pass 2 feed is Pass 1's <em>permeate</em>, not the original feed — Pass 2 recovery should be higher because it's working on already-clean water. (3) Assuming reject-recirculation is a free water-economy win without verifying it won't reconcentrate a specific contaminant for your feed water.</p>
+</div>
+</div>
+</div>
+</details>
+
+<section class="section" id="calculator">
+<div class="section-tag">Interactive Tool</div>
+<h2>RO Recovery Calculator</h2>
+<p>Enter feed flow and Pass 1 recovery. Add Pass 2 for a dual-pass system. Permeate, reject, and overall recovery appear below.</p>
+<div class="calc-wrap">
+
+  <div class="calc-grid">
+    <div class="calc-field">
+      <label>Feed flow rate (L/hr)</label>
+      <input type="number" id="ro-feed" min="1" max="20000" step="1" placeholder="e.g. 900" oninput="calcRORecovery()">
+      <div class="field-hint">Flow rate reaching the RO unit's feed inlet.</div>
     </div>
-  </div>
-</section>
-
-<!-- ════════════════════════ SECTION 2 — REGULATORY FRAMEWORK ══════════ -->
-<section class="section" id="sec-regs">
-  <div class="section-tag">Compliance Baseline</div>
-  <h2>Regulatory and Standards Framework</h2>
-  <p>Two layers govern dialysis water in the Philippines: the international quality standards that define the numbers, and the DOH administrative orders that make compliance a legal condition of your License to Operate (LTO).</p>
-
-  <h3>2.1 Philippine DOH requirements</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Issuance</th><th>What it requires of your center</th></tr></thead>
-      <tbody>
-        <tr><td><strong>DOH AO 2012-0001</strong><br>(Licensure of dialysis facilities)</td><td>Mandates a complete water treatment line — pre-treatment, reverse osmosis (RO), and post-treatment — and compliance with AAMI or equivalent water-quality standards as a condition of the License to Operate.</td></tr>
-        <tr><td><strong>DOH AO 2013-0003</strong><br>(Water analysis, monitoring &amp; maintenance)</td><td>Sets the monitoring program: routine chemical and microbiological testing, ultrafiltration (UF) after RO for microbial/endotoxin control, and a documented Water Quality Management Program inside the facility.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="alert alert-amber">
-    <div class="alert-icon">⏱️</div>
-    <div class="alert-body">
-      <h4>Testing cadence required for licensure</h4>
-      <p><strong>Microbiological testing:</strong> performed regularly (monthly at minimum). Bacterial count in product water must stay below the action threshold — AAMI/ISO 23500 best practice is &lt;100 CFU/mL with an action level of 50 CFU/mL.<br><strong>Chemical testing:</strong> at least every six months, and whenever feed-water quality changes.<br>Only DOH-accredited laboratories may perform the official tests, and any result exceeding standard must be reported immediately.</p>
+    <div class="calc-field">
+      <label>Pass 1 recovery (%)</label>
+      <input type="number" id="ro-r1" min="10" max="95" step="1" value="65" oninput="calcRORecovery()">
+      <div class="field-hint">Typically 50–75% for brackish/high-TDS feed; can run higher on clean municipal feed.</div>
     </div>
-  </div>
-
-  <h3>2.2 AAMI / ISO 23500 series</h3>
-  <p>The current ISO 23500 series consolidates earlier standalone standards into one framework: water for hemodialysis (formerly ISO 13959), concentrates (formerly ISO 13958), and dialysis fluid quality (formerly ISO 11663). The numeric limits in §7 of this guide trace directly to this lineage and carry forward into current editions. The parts most relevant to the water room are general requirements (Part 1), water treatment equipment (Part 2), water for hemodialysis (Part 3), concentrates (Part 4), and dialysis fluid quality including ultrapure and online fluids (Part 5).</p>
-</section>
-
-<!-- ════════════════════════ SECTION 3 — SYSTEM DESIGN ═════════════════ -->
-<section class="section" id="sec-design">
-  <div class="section-tag">The Treatment Train</div>
-  <h2>System Design and How It Flows</h2>
-  <p>A dialysis water system is a chain of barriers. Each stage removes a specific class of contaminant and protects the stage that follows. Water always moves in one direction: from the feed source, through progressive purification, into a recirculating loop that feeds the machines, and back.</p>
-
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Stage</th><th>Component</th><th>Removes / does</th><th>Why it matters downstream</th></tr></thead>
-      <tbody>
-        <tr><td>Feed</td><td>Municipal or deep-well supply + feed tank</td><td>Raw water entry; break tank buffers supply interruptions</td><td>Defines the contaminant load everything else must handle</td></tr>
-        <tr><td>1</td><td>Backwash / multimedia (sediment) filter</td><td>Sand, silt, rust, particulates</td><td>Protects carbon and RO membranes from fouling</td></tr>
-        <tr><td>2</td><td>Water softener</td><td>Calcium &amp; magnesium (hardness); exchanges for sodium</td><td>Prevents scale on the RO membrane</td></tr>
-        <tr><td>3</td><td>Carbon adsorption tanks (two in series)</td><td>Chlorine AND chloramine, organics</td><td>Chloramine destroys RO membranes and causes hemolysis — the critical safety stage</td></tr>
-        <tr><td>4</td><td>Microfilter / cartridge (1–5 µm)</td><td>Carbon fines, fine particulate</td><td>Final guard before the RO pump</td></tr>
-        <tr><td>5</td><td>Reverse osmosis (RO) unit</td><td>90–99%+ of dissolved ions, bacteria, endotoxin</td><td>The heart of the system; produces "product water"</td></tr>
-        <tr><td>6</td><td>Storage tank + distribution loop</td><td>Holds &amp; circulates product water to stations</td><td>Design must prevent stagnation and biofilm</td></tr>
-        <tr><td>7</td><td>Ultrafiltration (UF) / polishing</td><td>Residual bacteria &amp; endotoxin (final barrier, &lt;0.01 µm)</td><td>Delivers ultrapure water at the machine, per DOH AO 2013-0003</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="alert alert-teal">
-    <div class="alert-icon">➡️</div>
-    <div class="alert-body">
-      <h4>Read the flow as a sentence</h4>
-      <p>Feed water → sediment filter → softener → carbon (chlorine + chloramine) → microfilter → RO → storage + loop → UF → dialysis machine. Carbon comes BEFORE RO (to protect the membrane); UF comes AFTER RO (to polish the product). A check valve or air gap separates the system from drains.</p>
+    <div class="calc-field">
+      <label><input type="checkbox" id="ro-dualpass" onchange="toggleDualPass()"> Include Pass 2 (dual-pass RO)</label>
+    </div>
+    <div class="calc-field" id="ro-r2-field" style="display:none;">
+      <label>Pass 2 recovery (%)</label>
+      <input type="number" id="ro-r2" min="10" max="98" step="1" value="88" oninput="calcRORecovery()">
+      <div class="field-hint">Typically 85–90%+ — Pass 2 feed is already low-TDS Pass-1 permeate.</div>
     </div>
   </div>
 
-  <h3>3.1 Pre-treatment</h3>
-  <p>Pre-treatment conditions raw water so the RO membrane survives. It is the part of the system that fails most often because it does the dirtiest work.</p>
-  <ul>
-    <li><strong>Sediment / multimedia filter:</strong> backwashes periodically (timer-controlled) to flush trapped solids. Watch the pressure drop across it.</li>
-    <li><strong>Softener:</strong> resin beads swap hardness ions (Ca²⁺, Mg²⁺) for sodium. Requires a brine (salt) tank — never let it run empty.</li>
-    <li><strong>Carbon tanks:</strong> granular activated carbon adsorbs chlorine and — far more slowly and importantly — chloramine. Two tanks in series ("worker" and "polisher") guarantee breakthrough protection. Empty Bed Contact Time (EBCT) must be adequate (commonly ≥6 minutes total across the tanks at design flow).</li>
-  </ul>
-
-  <div class="alert alert-red">
-    <div class="alert-icon">⚠️</div>
-    <div class="alert-body">
-      <h4>Carbon tanks are the patient-safety heart of pre-treatment</h4>
-      <p>Chloramine breakthrough is the classic cause of dialysis-associated hemolytic anemia — documented as far back as a 1987 outbreak that required transfusion in 41 patients after a carbon-filter failure (Tipple et al., 1991). Test total chlorine DOWNSTREAM of the carbon tanks (after the worker tank) before each treatment day and at intervals through the day. If total chlorine exceeds 0.1 mg/L, the worker tank has broken through and water must not be used for dialysis until corrected.</p>
-    </div>
-  </div>
-
-  <div class="calc-cards-wrap">
-    <div class="calc-cards-label">Try the Calculator</div>
-    <a href="calc-carbon-tank-ebct.html" class="calc-card">
-      <div class="calc-card-icon">⌬</div>
-      <div class="calc-card-body">
-        <div class="calc-card-title">Carbon Tank Empty Bed Contact Time</div>
-        <div class="calc-card-desc">Check your carbon tanks' EBCT from media volume, tank count, and design flow against the ≥6-minute threshold.</div>
+  <div class="calc-result-box" id="ro-result">
+    <div class="calc-metrics-row">
+      <div class="calc-metric-card">
+        <div class="cmv" id="ro-product" style="font-size:22px;line-height:1.2;">—</div>
+        <div class="cml">Final Product Water</div>
+        <div class="cmt">L/hr</div>
       </div>
-      <span class="calc-card-arrow">Open →</span>
-    </a>
-  </div>
-
-  <h3>3.2 Reverse osmosis (RO)</h3>
-  <p>RO is the core purification step. A high-pressure pump forces feed water against a semipermeable membrane; purified "permeate" (product water) passes through, while concentrated "reject" carries away rejected salts, bacteria, and endotoxin to drain. It removes 90–99%+ of dissolved ions and essentially all bacteria and endotoxin when intact. Key live readings: product (permeate) conductivity or resistivity, percent rejection, feed/reject/permeate pressures, and recovery ratio.</p>
-
-  <h3>3.3 Storage and distribution loop</h3>
-  <p>Product water is fed directly to the loop or held in a storage tank, then circulated continuously to every machine and back. The enemy here is stagnation, because standing water grows biofilm — a bacterial layer that sheds endotoxin and resists disinfection. Loop design favors continuous recirculation with high flow/turbulence and no "dead legs" (capped, unused pipe stubs where water sits). A vented storage tank uses a hydrophobic 0.2 µm air vent filter and a conical/sloped base for full drainage.</p>
-
-  <h3>3.4 Ultrafiltration (UF) and polishing</h3>
-  <p>UF membranes (pore size &lt;0.01 µm) sit after RO — often one at the loop and a second point-of-use (POU) UF on each machine — as the final barrier against bacteria and endotoxin. DOH AO 2013-0003 specifically calls for UF after RO for microbial and endotoxin control, and UF is what allows a center to reach ultrapure water for online HDF.</p>
-</section>
-
-<!-- ════════════════════════ SECTION 4 — SOURCE-WATER DESIGNS ══════════ -->
-<section class="section" id="sec-source">
-  <div class="section-tag">Matching the Build to the Source</div>
-  <h2>Designing for Your Source Water</h2>
-  <p>The baseline treatment train above assumes a municipal feed. Pre-treatment design must change for deep-well, brackish, and high-hardness sources — these are common variants for provincial and coastal Philippine dialysis centers.</p>
-
-  <h3>4.1 Municipal / treated water supply (baseline)</h3>
-  <p>The utility has already disinfected — chlorinated or chloraminated — the supply, so the entire pretreatment train downstream of the carbon stage exists largely to <em>undo</em> that disinfection before it reaches the RO membrane and the dialysate. The dual GAC (granular activated carbon) tanks in series specifically guard against <strong>chloramine breakthrough</strong>: total chlorine is sampled between the two tanks and after the second tank before each shift, with an action limit of ≤0.1 mg/L before treatment may proceed. Utility-side "shock" hyperchlorination events — common after typhoons or flooding, when water districts spike chlorine dosing — are a known precipitant of breakthrough and should be flagged to staff whenever the water district advises one.</p>
-
-  <h3>4.2 Deep well / borehole / artesian water</h3>
-  <p>Common for provincial centers without a reliable utility connection. The source arrives untreated and biologically/chemically unpredictable, so pretreatment adds steps the municipal train doesn't need — while the dual-carbon chloramine logic above becomes largely irrelevant unless the facility chlorinates the well water itself for storage-tank disinfection.</p>
-  <ul>
-    <li><strong>Iron and manganese removal:</strong> groundwater frequently carries dissolved iron and manganese that precipitate (rust-colored, then black-brown staining) once exposed to air, fouling softener resin, carbon media, and RO membranes if not removed first. Standard approaches are aeration or chemical oxidation followed by filtration, or a manganese greensand filter.</li>
-    <li><strong>Higher, more variable turbidity:</strong> borehole silt/sand fines argue for a more conservative, often backwashing, multimedia prefilter ahead of the cartridge stage.</li>
-    <li><strong>Higher pre-treatment bacteriological risk:</strong> with no upstream disinfectant residual suppressing growth in storage cisterns, periodic well-water/storage-tank disinfection and more frequent bacteriology/endotoxin testing of pretreatment-stage water are warranted.</li>
-    <li><strong>Baseline contaminant testing:</strong> iron, manganese, and hardness are the most commonly reported groundwater issues nationally and should be assumed present until tested. Arsenic is a documented but geographically localized concern in specific Philippine groundwater sources — not an established nationwide hazard — so facility-specific source-water testing (including arsenic) before commissioning a deep-well-fed WTS is the correct practice, not a blanket assumption either way.</li>
-  </ul>
-
-  <h3>4.3 Brackish or saline-influenced water</h3>
-  <p>Coastal and island centers, some within seawater-intrusion range of shallow coastal aquifers, face elevated TDS/conductivity as the dominant design driver rather than organic or microbial load.</p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Component</th><th>Standard freshwater RO</th><th>Brackish/saline-influenced design</th></tr></thead>
-      <tbody>
-        <tr><td>Feed TDS</td><td>Low, stable</td><td>Elevated; may fluctuate with tide/season (saltwater intrusion)</td></tr>
-        <tr><td>Membrane type</td><td>Standard low-TDS RO element</td><td>Brackish-water RO (BWRO) element rated for higher TDS</td></tr>
-        <tr><td>Operating pressure</td><td>Standard</td><td>Higher, to overcome osmotic pressure</td></tr>
-        <tr><td>Pass configuration</td><td>Single-pass</td><td>Single pass often insufficient → dual-pass (double-pass) RO</td></tr>
-        <tr><td>Antiscalant</td><td>Optional/situational</td><td>Routine dosing ahead of RO</td></tr>
-        <tr><td>Recovery / reject volume</td><td>Higher recovery, lower reject</td><td>Lower recovery, higher reject volume — cost/logistics impact</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>The operational trade-off to flag for planning: higher reject (concentrate) volume and lower recovery compared to a freshwater feed mean more feed water consumed per liter of usable permeate — a real cost and logistics consideration (water trucking, cistern sizing, reject disposal) for small coastal/island facilities that already pay a premium for source water.</p>
-
-  <h3>4.4 Hard water (high calcium / magnesium)</h3>
-  <p>Routine hardness is the softener stage's job, and most limestone-aquifer groundwater sits comfortably within a correctly sized softener's capacity. The design question is what changes at <em>high</em> hardness loads, not whether softening is needed at all.</p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Component</th><th>Standard hardness</th><th>High-hardness design</th></tr></thead>
-      <tbody>
-        <tr><td>Softener configuration</td><td>Single tank (or simplex with standby)</td><td>Duplex/dual-alternating tanks — one regenerates while one stays in service</td></tr>
-        <tr><td>Regeneration frequency</td><td>Per standard schedule</td><td>More frequent brine regeneration cycles</td></tr>
-        <tr><td>Resin/tank sizing</td><td>Standard capacity</td><td>Upsized resin volume for higher daily grain load</td></tr>
-        <tr><td>Backup protection</td><td>None typically needed</td><td>Antiscalant dosing pre-RO as a defensive backup</td></tr>
-        <tr><td>Failure mode if undersized</td><td>—</td><td>Resin exhaustion/channeling → hard water reaches RO → CaCO₃ membrane scaling/fouling</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>As source hardness rises, daily grain load (volume treated × grains hardness per gallon) rises proportionally, so an undersized softener exhausts mid-shift or "channels" — hardness breaks through before scheduled regeneration. This is a silent failure mode: the water still looks and tastes normal. Verify post-softener hardness directly rather than assuming the softener is adequate from source hardness alone. Inadequate softening lets calcium and magnesium concentrate at the RO membrane surface, precipitating as calcium carbonate scale that fouls the membrane and shortens its service life — making softener sizing a direct RO-membrane-longevity issue.</p>
-
-  <div class="calc-cards-wrap">
-    <div class="calc-cards-label">Try the Calculator</div>
-    <a href="calc-softener-sizing.html" class="calc-card">
-      <div class="calc-card-icon">⌬</div>
-      <div class="calc-card-body">
-        <div class="calc-card-title">Water Softener Sizing &amp; Regeneration</div>
-        <div class="calc-card-desc">Enter source hardness, daily volume, and resin capacity to get days between regenerations and a duplex-configuration flag.</div>
+      <div class="calc-metric-card">
+        <div class="cmv" id="ro-reject" style="font-size:22px;line-height:1.2;">—</div>
+        <div class="cml">Total Reject Volume</div>
+        <div class="cmt">L/hr</div>
       </div>
-      <span class="calc-card-arrow">Open →</span>
-    </a>
-  </div>
-</section>
-
-<!-- ════════════════════════ SECTION 5 — CAPACITY PLANNING ═════════════ -->
-<section class="section" id="sec-capacity">
-  <div class="section-tag">Sizing for Growth</div>
-  <h2>Sizing &amp; Capacity Planning</h2>
-  <p>The medical director and facility leadership are responsible for ensuring the WTS can reliably supply every station it serves — undersizing is a documented, recurring cause of clinic-level water-quality failure (Kasparek &amp; Rodriguez, 2015).</p>
-
-  <h3>5.1 How to measure WTS capacity</h3>
-  <ol>
-    <li><strong>Capacity is the RO unit's rated permeate (product water) output</strong> — liters per hour (LPH) or gallons per day (GPD) — measured at a standard feed temperature (usually 25°C). RO output drops as feed water gets colder (roughly 2–3% per °C below the rating point), so a unit rated at 25°C under-produces on a cool morning unless margin is built in.</li>
-    <li><strong>Calculate actual peak demand, not average usage.</strong> Standard single-pass HD draws roughly 500–800 mL/min dialysate flow (≈30–48 L/hr per station); online HDF substitution fluid pushes a station to ~50–60 L/hr. Peak simultaneous demand = (number of stations running <em>at the same time</em>, not total stations in the building) × per-station flow, plus a design margin of 20–30% for recirculation-loop losses and headroom.</li>
-    <li><strong>Compare peak demand against the RO's rated permeate output — not the storage tank size.</strong> A large tank can mask an undersized RO for a while, but once the tank draws down faster than the RO refills it, every additional station drops outlet pressure/flow for everyone on the loop.</li>
-    <li><strong>Check the loop, not just the RO.</strong> Distribution-loop pipe diameter and recirculation pump must maintain adequate linear velocity — no dead legs, continuous turbulent flow — even after new machine take-off points are added.</li>
-  </ol>
-
-  <h3>5.2 Increasing capacity when machines are added</h3>
-  <ol>
-    <li><strong>Recalculate total peak demand</strong> with the new station count, then size the gap against current RO rated output (with margin) before adding machines, not after.</li>
-    <li><strong>Add a parallel RO skid</strong> sized for the increment, rather than replacing the existing unit — this gives N+1 redundancy (one unit can be serviced or fail without losing all capacity).</li>
-    <li><strong>Scale pretreatment with the RO, not just the RO itself.</strong> Pushing more flow through the <em>same</em> carbon tanks reduces Empty Bed Contact Time (EBCT), risking chloramine breakthrough. Adding RO capacity without adding matching softener/carbon capacity is a common, dangerous shortcut.</li>
-    <li><strong>Re-size storage and the recirculation loop</strong> — bigger or additional storage if peak buffering is needed, and confirm the loop pump and pipe diameter still hit target velocity with the new branch takeoffs.</li>
-    <li><strong>Re-validate and re-document before going live:</strong> re-test conductivity/rejection, chlorine, and microbiological/endotoxin counts on the expanded system, and update the facility's Water Quality Management Program (DOH AO 2013-0003) to reflect the new configuration before the added stations treat patients.</li>
-  </ol>
-
-  <div class="calc-cards-wrap">
-    <div class="calc-cards-label">Try the Calculator</div>
-    <a href="calc-wts-capacity.html" class="calc-card">
-      <div class="calc-card-icon">⌬</div>
-      <div class="calc-card-body">
-        <div class="calc-card-title">Water Treatment Capacity &amp; RO Sizing</div>
-        <div class="calc-card-desc">Enter your station count and modality mix to get peak demand, required RO capacity, and a headroom verdict against your rated RO output.</div>
+      <div class="calc-metric-card">
+        <div class="cmv" id="ro-overall" style="font-size:24px;line-height:1.2;">—</div>
+        <div class="cml">Overall Recovery</div>
+        <div class="cmt" id="ro-overall-cmt">% of feed</div>
       </div>
-      <span class="calc-card-arrow">Open →</span>
-    </a>
-  </div>
-</section>
-
-<!-- ════════════════════════ SECTION 6 — FACILITY LAYOUT ═══════════════ -->
-<section class="section" id="sec-layout">
-  <div class="section-tag">Special Configurations</div>
-  <h2>Facility Layout &amp; Special Configurations</h2>
-
-  <h3>6.1 Isolation bay placement — hepatitis B and C</h3>
-  <p>Bloodborne pathogens (HBV, HCV, HIV) are not transmitted through the RO-treated water/dialysate supply. Isolation requirements are about dedicated machines, supplies, and physical space — not a separate water-treatment stream. The WTS loop continues to serve every station, isolation included, from one centrally treated supply.</p>
-  <ul>
-    <li><strong>Hepatitis B surface antigen (HBsAg) positive:</strong> current guidance recommends use of a dedicated dialysis machine that is never used for another patient (Jardine et al., 2019), consistent with a separate room and dedicated supply cart given how readily HBV persists on environmental surfaces.</li>
-    <li><strong>Hepatitis C positive:</strong> a dedicated machine is <em>not</em> required provided strict inter-patient cleaning and disinfection protocols are followed (Martin et al., 2022) — standard precautions plus routine surface/external disinfection on a shared machine is considered adequate. Some facilities still cohort HCV-positive patients by shift as an added margin; this is a facility policy choice, not a water-system requirement.</li>
-    <li><strong>Loop/plumbing placement:</strong> the isolation room's water/dialysate takeoff is just another branch off the same continuously recirculating loop. The practical engineering concern is that an isolation bay typically runs fewer patients per week, so its branch is more prone to becoming a low-flow dead leg that breeds biofilm. Keep the branch as short as possible, site the room where its branch can still join normal high-velocity recirculation rather than dangling off a long stub, and include the isolation branch in the routine flush/disinfection schedule even on days it isn't used.</li>
-  </ul>
-
-  <h3>6.2 HDF bays — ultrapure water requirements</h3>
-  <p>Online hemodiafiltration (HDF) infuses substitution fluid produced from dialysate directly into the bloodstream, bypassing the dialyzer membrane barrier that protects standard HD — so HDF stations require ultrapure water/dialysate (bacteria &lt;0.1 CFU/mL, endotoxin &lt;0.03 EU/mL), roughly 100–1,000× stricter than standard dialysis water, and a key reason ultrapure water was adopted as standard for high-quality dialysis care (Canaud, 2011).</p>
-  <ul>
-    <li>Each HDF-capable machine needs its own point-of-use (POU) ultrafilter, typically two in series — one polishing the dialysate, a second "sterilizing-grade" filter immediately upstream of the substitution-fluid infusion line — in addition to the central loop UF.</li>
-    <li>POU filters need periodic integrity testing (pressure-hold/diffusion test per manufacturer) and scheduled replacement on the validated interval — do not run them past it even if they "look fine."</li>
-    <li><strong>Bay placement:</strong> cluster HDF stations on the takeoff closest to the post-RO/UF point on the loop — shortest distance and residence time before the most demanding stations, minimizing bioburden accumulation in transit, and simplifying servicing of the extra POU hardware in one area.</li>
-  </ul>
-
-  <h3>6.3 Dual-pass (double-pass) RO</h3>
-  <p>Used when a single RO pass can't reliably hit ultrapure-grade rejection, or when feed TDS is high (brackish/hard/variable municipal supply).</p>
-  <ul>
-    <li><strong>Configuration:</strong> first-pass permeate becomes the feed to a second RO module instead of raw/pretreated municipal water. Needs an interstage booster pump, because first-pass permeate exits at low pressure and the second membrane still needs its full operating pressure.</li>
-    <li><strong>Recovery:</strong> first pass typically runs 50–75% recovery (limited by scaling risk from raw feed); second pass runs much higher, often 85–90%+, since its feed is already low-TDS — antiscalant dosing is usually unnecessary on the second pass.</li>
-    <li><strong>Reject handling:</strong> second-pass reject is usually low enough in TDS to be recirculated back into the first-pass feed, improving overall system recovery — verify this doesn't reconcentrate any problem species for your specific feed water first.</li>
-    <li><strong>Array design:</strong> first pass commonly uses a tapered ("Christmas tree") membrane array to manage rising reject concentration; second pass is usually a simple single-stage array since its feed is already clean.</li>
-    <li><strong>What it buys you vs. UF:</strong> double-pass improves ionic/chemical rejection (the conductivity/TDS side). It does not substitute for ultrafiltration — UF (after the loop, plus POU UF at HDF stations) is still required for the microbiological/endotoxin barrier. The two are complementary, not interchangeable.</li>
-  </ul>
-
-  <div class="calc-cards-wrap">
-    <div class="calc-cards-label">Try the Calculator</div>
-    <a href="calc-ro-recovery-dualpass.html" class="calc-card">
-      <div class="calc-card-icon">⌬</div>
-      <div class="calc-card-body">
-        <div class="calc-card-title">RO Recovery &amp; Dual-Pass Reject Volume</div>
-        <div class="calc-card-desc">Feed flow and pass recovery percentages to permeate/reject volumes and combined overall recovery.</div>
-      </div>
-      <span class="calc-card-arrow">Open →</span>
-    </a>
-  </div>
-</section>
-
-<!-- ════════════════════════ SECTION 7 — QUALITY STANDARDS ═════════════ -->
-<section class="section" id="sec-standards">
-  <div class="section-tag">The Numbers</div>
-  <h2>Water Quality Standards</h2>
-  <p>These are the limits your testing is measured against, per AAMI/ISO 23500 (Suravaram et al., 2024; Humudat et al., 2020). Post this section in the water room.</p>
-
-  <h3>7.1 Microbiological limits</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Fluid / grade</th><th>Total viable count (CFU/mL)</th><th>Endotoxin (EU/mL)</th><th>Action level</th></tr></thead>
-      <tbody>
-        <tr><td>Dialysis water (product water)</td><td>&lt;100</td><td>&lt;0.25</td><td>50 CFU/mL / 0.125 EU/mL</td></tr>
-        <tr><td>Standard dialysate</td><td>&lt;100</td><td>&lt;0.5</td><td>50 CFU/mL / 0.25 EU/mL</td></tr>
-        <tr><td><strong>Ultrapure dialysis water / dialysate</strong></td><td><strong>&lt;0.1</strong></td><td><strong>&lt;0.03</strong></td><td>Required for online HDF</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p><em>The "action level" is a trigger, not a pass mark. When a result reaches the action level, investigate and intervene (disinfect, increase monitoring) even though the result hasn't yet exceeded the maximum — acting at the action level is how you avoid ever crossing the limit.</em></p>
-
-  <h3>7.2 Maximum allowable chemical contaminants</h3>
-  <p>Maximum concentrations in water used to prepare dialysate, make concentrates from powder, and reprocess dialyzers. Units are mg/L (ppm) unless noted.</p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Contaminant</th><th>Max (mg/L)</th><th>Contaminant</th><th>Max (mg/L)</th></tr></thead>
-      <tbody>
-        <tr><td colspan="2"><strong>Toxic in dialysis</strong></td><td colspan="2"><strong>Electrolytes in dialysate</strong></td></tr>
-        <tr><td>Aluminum</td><td>0.01</td><td>Calcium</td><td>2 (0.1 mEq/L)</td></tr>
-        <tr><td>Copper</td><td>0.1</td><td>Magnesium</td><td>4 (0.3 mEq/L)</td></tr>
-        <tr><td>Fluoride</td><td>0.2</td><td>Potassium</td><td>8 (0.2 mEq/L)</td></tr>
-        <tr><td>Lead</td><td>0.005</td><td>Sodium</td><td>70 (3.0 mEq/L)</td></tr>
-        <tr><td>Nitrate (as N)</td><td>2</td><td colspan="2"><strong>Trace elements</strong></td></tr>
-        <tr><td>Sulfate</td><td>100</td><td>Antimony</td><td>0.006</td></tr>
-        <tr><td>Zinc</td><td>0.1</td><td>Arsenic</td><td>0.005</td></tr>
-        <tr><td>Barium</td><td>0.1</td><td>Mercury</td><td>0.0002</td></tr>
-        <tr><td>Beryllium</td><td>0.0004</td><td>Selenium</td><td>0.09</td></tr>
-        <tr><td>Cadmium</td><td>0.001</td><td>Silver</td><td>0.005</td></tr>
-        <tr><td>Chromium</td><td>0.014</td><td>Thallium</td><td>0.002</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="alert alert-amber">
-    <div class="alert-icon">🧪</div>
-    <div class="alert-body">
-      <h4>Disinfectant residual limits (test these yourself, daily)</h4>
-      <p>Free chlorine: ≤0.5 mg/L · Total chlorine (chlorine + chloramine): ≤0.1 mg/L. These two are the only chemical parameters you measure in-house every treatment day, downstream of the carbon tanks. The rest of the chemical panel is sent to a DOH-accredited laboratory.</p>
     </div>
+    <div class="calc-verdict-text" id="ro-verdict"></div>
+    <div class="calc-action-text" id="ro-action"></div>
+    <p class="calc-disclaimer">⚕ Calculates flow volumes only — does not determine whether dual-pass RO is required for your source water, or model optional reject-recirculation. See the <a href="dialysis-water-treatment-systems.html" style="color:var(--teal);font-weight:600;">Water Treatment Systems reference</a> §4.3 and §6.3. For biomedical engineers and RO commissioning engineers; not a substitute for a validated facility engineering assessment.</p>
   </div>
+</div>
 </section>
 
-<!-- ════════════════════════ SECTION 8 — MAINTENANCE ════════════════════ -->
-<section class="section" id="sec-maintenance">
-  <div class="section-tag">Schedule</div>
-  <h2>Maintenance and Monitoring Schedule</h2>
-  <p>Maintenance is divided between what operating staff do (checks, logging, salt, disinfection) and what biomedical/vendor engineers do (membrane changes, calibration, validation). Adapt frequencies to your manufacturer's manual and DOH requirements (Kasparek &amp; Rodriguez, 2015).</p>
+<details class="mdc-acc" id="nextsteps">
+<summary>Next Steps</summary>
+<div class="mdc-acc-body">
+<p><strong>Use the reject volume and overall recovery to plan feed-water logistics and evaluate whether a vendor's dual-pass proposal is reasonable.</strong></p>
+<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
+<li>Size feed-water supply (trucking, cistern volume, well capacity) around the total feed flow (product + reject), not just the product water figure.</li>
+<li>Confirm reject-disposal capacity can handle the calculated reject volume, especially for coastal/island facilities with limited drainage options.</li>
+<li>If overall recovery seems unexpectedly low, verify the Pass 1 recovery assumption against your actual feed-water TDS — very high-TDS feed may need an even more conservative Pass 1 recovery to protect the membrane.</li>
+<li>See the full <a href="dialysis-water-treatment-systems.html" style="color:var(--teal);font-weight:600;">Hemodialysis Water Treatment Systems</a> guide for brackish-water design and dual-pass RO facility layout.</li>
+</ul>
+</div>
+</details>
 
-  <h3>8.1 Routine schedule</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Frequency</th><th>Task</th><th>Owner</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Each treatment day (start)</strong></td><td>Test total &amp; free chlorine downstream of carbon tanks before the first patient. Record RO product conductivity / % rejection. Check feed, RO, and loop pressures. Confirm storage tank level and disinfection status. Verify hardness (softener working).</td><td>Nurse / Tech</td></tr>
-        <tr><td>Through the day</td><td>Repeat chlorine/chloramine test at the interval set by your SOP. Watch RO panel alarms. Observe for leaks, unusual noise, color/odor.</td><td>Nurse / Tech</td></tr>
-        <tr><td>End of day</td><td>Record running hours. Initiate scheduled disinfection if due. Complete and sign the daily water log.</td><td>Nurse / Tech</td></tr>
-        <tr><td>Weekly</td><td>Check and refill softener salt (brine tank). Inspect pre-filters and pressure drops. Microbiological/endotoxin sampling per facility schedule (loop and post-RO).</td><td>Tech</td></tr>
-        <tr><td>Monthly</td><td>Microbiological + endotoxin testing of product water (DOH-accredited lab). Replace sediment/microfilter cartridges per condition. Review trend logs.</td><td>Tech / Biomed</td></tr>
-        <tr><td>Quarterly</td><td>Carbon tank performance check / rebed assessment. Loop disinfection validation. Calibration check of online monitors.</td><td>Biomed / Vendor</td></tr>
-        <tr><td>Every 6 months</td><td>Full chemical analysis of product water (DOH-accredited lab). Service softener and carbon media.</td><td>Biomed / Vendor</td></tr>
-        <tr><td>Annually</td><td>RO membrane inspection/replacement as indicated. Full system validation, pump service, calibration of all sensors. Review and update SOPs.</td><td>Vendor / Biomed</td></tr>
-      </tbody>
-    </table>
-  </div>
+<details class="mdc-acc" id="evidence">
+<summary>Evidence &amp; References</summary>
+<div class="mdc-acc-body">
+<h3 class="mdc-sub">Formula</h3>
+<table class="lab-table">
+<thead><tr><th>Quantity</th><th>Formula</th></tr></thead>
+<tbody>
+<tr><td>Pass 1 permeate (L/hr)</td><td>feed flow × (Pass 1 recovery / 100)</td></tr>
+<tr><td>Pass 1 reject (L/hr)</td><td>feed flow × (1 − Pass 1 recovery / 100)</td></tr>
+<tr><td>Pass 2 permeate (L/hr), if enabled</td><td>Pass 1 permeate × (Pass 2 recovery / 100)</td></tr>
+<tr><td>Pass 2 reject (L/hr), if enabled</td><td>Pass 1 permeate × (1 − Pass 2 recovery / 100)</td></tr>
+<tr><td>Overall recovery</td><td>final product water ÷ feed flow × 100%</td></tr>
+</tbody>
+</table>
+<p style="font-size:.9rem;color:var(--text-muted);">Typical Pass 1 (50–75%) and Pass 2 (85–90%+) recovery ranges reflect commonly cited brackish-water RO engineering practice; always verify against your specific membrane manufacturer's design software and your facility's actual feed-water TDS.</p>
+<h3 class="mdc-sub">References</h3>
+<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
+<li>Kasparek T, Rodriguez OE. What Medical Directors Need to Know about Dialysis Facility Water Management. <em>Clin J Am Soc Nephrol.</em> 2015;10(6):1061-1071.</li>
+<li>Humudat YR, Al-Naseri SK, Al-Fatlawy YF. Assessment of microbial contamination levels of water in hemodialysis centers in Baghdad, Iraq (referencing AAMI and ISO 23500 series limits). <em>Water Environ Res.</em> 2020;92(9):1325-1333.</li>
+</ol>
+</div>
+</details>
 
-  <h3>8.2 In-house tests you must know how to run</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Test</th><th>How / with what</th><th>Pass criterion</th></tr></thead>
-      <tbody>
-        <tr><td>Total chlorine (chloramine)</td><td>DPD colorimetric test (total chlorine), sample taken AFTER the worker carbon tank</td><td>≤0.1 mg/L</td></tr>
-        <tr><td>Free chlorine</td><td>DPD free-chlorine reagent at same point</td><td>≤0.5 mg/L</td></tr>
-        <tr><td>Water hardness</td><td>Hardness test strip/titration on softener outlet</td><td>Effectively zero / per softener spec</td></tr>
-        <tr><td>RO product conductivity</td><td>Inline RO meter (µS/cm) and % rejection</td><td>Per RO spec; rejection typically &gt;90–95%</td></tr>
-        <tr><td>Visual / sensory</td><td>Inspect for leaks, discoloration, biofilm slime, unusual smell</td><td>Clear, odorless, no leaks</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="alert alert-teal">
-    <div class="alert-icon">🧫</div>
-    <div class="alert-body">
-      <h4>Disinfection — the discipline that keeps the loop safe</h4>
-      <p>Biofilm is the chronic enemy. Disinfect the RO unit, storage tank, and distribution loop on a scheduled cycle using the method validated for your system: chemical (peracetic acid, sodium hypochlorite, or proprietary agents), heat/thermal, or ozone. After any chemical disinfection you MUST confirm the disinfectant is fully rinsed out — test for residual at every outlet and document a negative result before the system returns to patient use. A patient connected to water containing residual disinfectant can suffer hemolysis or death.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════ SECTION 9 — TROUBLESHOOTING ═══════════════ -->
-<section class="section" id="sec-trouble">
-  <div class="section-tag">Recognize, Diagnose, Act</div>
-  <h2>Troubleshooting</h2>
-  <p>Use these matrices to recognize a problem, identify likely causes, and take correct first-line action.</p>
-
-  <div class="alert alert-red">
-    <div class="alert-icon">🛑</div>
-    <div class="alert-body">
-      <h4>Golden rule</h4>
-      <p>If water quality is in doubt, do not dialyze with it. Take the affected stations or the whole system offline, switch to a validated backup if available, and escalate. No treatment is ever worth exposing a patient to unsafe water.</p>
-    </div>
-  </div>
-
-  <h3>9.1 Water chemistry and RO problems</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Symptom / alarm</th><th>Likely cause</th><th>First-line action</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Total chlorine &gt;0.1 mg/L after carbon</strong></td><td>Carbon tank exhaustion / chloramine breakthrough; inadequate contact time; sudden rise in feed chloramine</td><td>STOP dialysis on that water. Notify biomed; rebed/replace carbon. Re-test until ≤0.1 mg/L before resuming.</td></tr>
-        <tr><td>Rising RO product conductivity / falling % rejection</td><td>Membrane fouling or degradation; failing membrane; high feed TDS; temperature change</td><td>Flag biomed. Check feed water and pre-treatment. Membrane cleaning or replacement may be needed.</td></tr>
-        <tr><td>Low RO permeate flow / low production</td><td>Fouled or scaled membrane; failing high-pressure pump; clogged pre-filters; low feed pressure</td><td>Check and change pre-filters; inspect softener (scale); check pump pressures; call vendor.</td></tr>
-        <tr><td>Softener not removing hardness</td><td>Salt/brine tank empty; resin exhausted/channeling; failed regeneration valve</td><td>Refill salt and force a regeneration; if hardness persists, service the valve/resin.</td></tr>
-        <tr><td>High feed/reject pressure or frequent backwash</td><td>Sediment filter loaded; scaling; valve fault</td><td>Inspect/replace sediment media; verify backwash cycle; check for scale.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>9.2 Microbiological problems</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Symptom / result</th><th>Likely cause</th><th>First-line action</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Pyrogenic reaction (fever, chills, rigors, hypotension during/after run, no positive blood culture)</strong></td><td>Endotoxin/bacterial contamination of water or dialysate; biofilm shedding; failed UF</td><td>Treat the patient and notify physician immediately. Quarantine and culture the water/dialysate. Inspect &amp; disinfect loop; check UF integrity. Investigate as a cluster if &gt;1 patient.</td></tr>
-        <tr><td>Bacterial count at/above action level (50 CFU/mL)</td><td>Early biofilm; lapsed disinfection; stagnation/dead leg</td><td>Increase disinfection frequency; review loop flow; re-sample. Intervene before the 100 CFU/mL limit is crossed.</td></tr>
-        <tr><td>Bacterial count or endotoxin above limit</td><td>Established biofilm; UF failure; sampling/handling error</td><td>Take system offline for the affected use; disinfect; replace UF; re-validate with repeat testing before reuse.</td></tr>
-        <tr><td>Repeated borderline counts despite disinfection</td><td>Dead legs, low loop velocity, degraded piping, or biofilm reservoir in tank</td><td>Engineering review of loop design; consider tank/loop sanitization or piping replacement.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>9.3 System / mechanical</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Symptom</th><th>Likely cause</th><th>First-line action</th></tr></thead>
-      <tbody>
-        <tr><td>Visible leak or dripping at joints/fittings</td><td>Failed seal, loose fitting, pipe stress, vibration</td><td>Isolate the section if possible; place containment; call biomed. Watch for electrical hazard near pumps.</td></tr>
-        <tr><td>RO unit will not start / repeated trips</td><td>Low feed pressure or empty break tank; electrical fault; interlock from a sensor alarm</td><td>Check feed supply and tank level; read the alarm code; do not bypass safety interlocks.</td></tr>
-        <tr><td>Loud noise / cavitation from pump</td><td>Air in line, low inlet pressure, failing bearing/impeller</td><td>Check feed and pre-filters; report to biomed before bearing failure.</td></tr>
-        <tr><td>Disinfectant residual still positive after rinse</td><td>Insufficient rinse cycle; trapped chemical in dead leg or machine</td><td>Continue rinsing; re-test EVERY outlet; do NOT return to patient use until all outlets test negative.</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- ════════════════════════ SECTION 10 — DOCUMENTATION ════════════════ -->
-<section class="section" id="sec-docs">
-  <div class="section-tag">Records</div>
-  <h2>Documentation, Logs, and the Water Quality Management Program</h2>
-  <p>DOH AO 2013-0003 requires a documented Water Quality Management Program — defined SOPs, named responsible staff, a calibration and maintenance schedule, and complete, signed records that a surveyor or your medical director can review at any time.</p>
-  <ul>
-    <li><strong>Daily water log:</strong> chlorine/chloramine results, RO conductivity/% rejection, pressures, tank level, disinfection status — dated and signed each shift.</li>
-    <li><strong>Disinfection records:</strong> date, method, agent and concentration, contact time, and the post-rinse residual test result (negative) for each cycle.</li>
-    <li><strong>Laboratory reports:</strong> monthly microbiological/endotoxin and six-monthly chemical analyses from a DOH-accredited lab, with evidence that out-of-range results were acted upon.</li>
-    <li><strong>Maintenance &amp; calibration logs:</strong> filter/cartridge changes, salt refills, carbon rebed, membrane changes, sensor calibration, vendor service reports.</li>
-    <li><strong>Corrective action / incident reports:</strong> any limit exceedance, pyrogenic reaction, or system failure, with root cause and resolution.</li>
-  </ul>
-
-  <div class="alert alert-purple">
-    <div class="alert-icon">📋</div>
-    <div class="alert-body">
-      <h4>If it is not written down, it did not happen</h4>
-      <p>Logs are both a clinical safety tool and a licensing requirement. Trends in the daily numbers (creeping conductivity, slowly rising chlorine, climbing CFU counts) are your earliest warning of a failure — but only if they are recorded consistently and reviewed.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════ SECTION 11 — QUICK REFERENCE ══════════════ -->
-<section class="section" id="sec-qref">
-  <div class="section-tag">Tear-Out Summary</div>
-  <h2>Quick Reference Card</h2>
-
-  <h3>Daily, before the first patient</h3>
-  <ol>
-    <li>Test TOTAL chlorine after carbon tanks → must be ≤0.1 mg/L. If higher, STOP.</li>
-    <li>Test free chlorine → must be ≤0.5 mg/L.</li>
-    <li>Record RO product conductivity and % rejection.</li>
-    <li>Check feed / RO / loop pressures and storage tank level.</li>
-    <li>Confirm softener has salt and is removing hardness.</li>
-    <li>Confirm any overnight disinfection is fully rinsed (residual negative).</li>
-    <li>Sign the log.</li>
-  </ol>
-
-  <h3>Key limits to remember</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Parameter</th><th>Limit</th></tr></thead>
-      <tbody>
-        <tr><td>Total chlorine (post-carbon)</td><td>≤0.1 mg/L</td></tr>
-        <tr><td>Free chlorine</td><td>≤0.5 mg/L</td></tr>
-        <tr><td>Bacteria — dialysis water</td><td>&lt;100 CFU/mL (act at 50)</td></tr>
-        <tr><td>Endotoxin — dialysis water</td><td>&lt;0.25 EU/mL (act at 0.125)</td></tr>
-        <tr><td>Ultrapure water (for HDF)</td><td>&lt;0.1 CFU/mL &amp; &lt;0.03 EU/mL</td></tr>
-        <tr><td>Aluminum</td><td>≤0.01 mg/L</td></tr>
-        <tr><td>Calcium / Magnesium</td><td>≤2 / ≤4 mg/L</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="alert alert-red">
-    <div class="alert-icon">🚨</div>
-    <div class="alert-body">
-      <h4>Four things that mean STOP and escalate now</h4>
-      <p>1. Total chlorine above 0.1 mg/L after the carbon tanks.<br>
-      2. A patient with fever, chills, rigors, or unexplained hypotension during or just after a run (possible pyrogenic reaction).<br>
-      3. Any positive disinfectant residual at an outlet before patient use.<br>
-      4. A microbiological or chemical result above the limit, or a visible leak/biofilm in the system.</p>
-    </div>
-  </div>
-</section>
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational planning aid for biomedical engineers, RO commissioning engineers, and nephrologists. It estimates flow volumes only and does not determine whether dual-pass RO is required for a given source water, or replace a validated facility engineering assessment.</div>
 
 </main>
 
@@ -2245,106 +1878,57 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
 <summary style="cursor:pointer;list-style:none;padding:15px 20px;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;color:var(--text);display:flex;align-items:center;gap:10px;">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;color:var(--teal);"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
 <span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>
-<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">14 sources</span>
+<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">2 sources</span>
 </summary>
 <ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);">
-<li>Tipple, M. A., Shusterman, N., Bland, L. A., McCarthy, M. A., Favero, M. S., Arduino, M. J., Reid, M. H., &amp; Jarvis, W. R. (1991). Illness in hemodialysis patients after exposure to chloramine contaminated dialysate. <em>ASAIO Transactions</em>, <em>37</em>(4), 588–591. <a href="https://pubmed.ncbi.nlm.nih.gov/1768494/" target="_blank" rel="noopener">https://pubmed.ncbi.nlm.nih.gov/1768494/</a></li>
-<li>Alfrey, A. C. (1985). Dialysis encephalopathy. <em>Clinical Nephrology</em>, <em>24</em>(Suppl 1), S15-S19. <a href="https://pubmed.ncbi.nlm.nih.gov/3915955/" target="_blank" rel="noopener">https://pubmed.ncbi.nlm.nih.gov/3915955/</a></li>
-<li>Bryliński, Ł., Kostelecka, K., Woliński, F., Duda, P., Góra, J., Granat, M., Flieger, J., Teresiński, G., Buszewicz, G., Sitarz, R., &amp; Baj, J. (2023). Aluminium in the human brain: Routes of penetration, toxicity, and resulting complications. <em>International Journal of Molecular Sciences</em>, <em>24</em>(8), 7228. <a href="https://doi.org/10.3390/ijms24087228" target="_blank" rel="noopener">https://doi.org/10.3390/ijms24087228</a></li>
-<li>Glorieux, G., Schepers, E., Schindler, R., Lemke, H.-D., Verbeke, F., Dhondt, A., Lameire, N., &amp; Vanholder, R. (2008). A novel bio-assay increases the detection yield of microbiological impurity of dialysis fluid, in comparison to the LAL-test. <em>Nephrology Dialysis Transplantation</em>, <em>24</em>(2), 548–554. <a href="https://doi.org/10.1093/ndt/gfn485" target="_blank" rel="noopener">https://doi.org/10.1093/ndt/gfn485</a></li>
-<li>Thomé, F. S., Senger, M., Garcez, C., Garcez, J., Chemello, C., &amp; Manfro, R. C. (2005). Dialysis water treated by reverse osmosis decreases the levels of C-reactive protein in uremic patients. <em>Brazilian Journal of Medical and Biological Research</em>, <em>38</em>(5), 789–794. <a href="https://doi.org/10.1590/s0100-879x2005000500018" target="_blank" rel="noopener">https://doi.org/10.1590/s0100-879x2005000500018</a></li>
-<li>Leonard, H., &amp; Pile, T. (2019). Hard water syndrome: A case series of 30 patients from a London haemodialysis unit. <em>Clinical Kidney Journal</em>, <em>13</em>(1), 111–112. <a href="https://doi.org/10.1093/ckj/sfz050" target="_blank" rel="noopener">https://doi.org/10.1093/ckj/sfz050</a></li>
-<li>Canaud, B. (2011). The early years of on-line HDF: How did it all start? How did we get here? <em>Contributions to Nephrology</em>, <em>175</em>, 93–109. <a href="https://doi.org/10.1159/000333627" target="_blank" rel="noopener">https://doi.org/10.1159/000333627</a></li>
-<li>Jardine, M., Commons, R. J., de Zoysa, J. R., Wong, M. G., Gilroy, N., Green, J., Henderson, B., Stuart, R. L., Tunnicliffe, D. J., van Eps, C., &amp; Athan, E. (2019). Kidney Health Australia – Caring for Australasians with Renal Impairment guideline recommendations for infection control for haemodialysis units. <em>Nephrology</em>, <em>24</em>(9), 951–957. <a href="https://doi.org/10.1111/nep.13511" target="_blank" rel="noopener">https://doi.org/10.1111/nep.13511</a></li>
-<li>Martin, P., Awan, A. A., Berenguer, M. C., Bruchfeld, A., Fabrizi, F., Goldberg, D. S., Jia, J., Kamar, N., Mohamed, R., Pessôa, M. G., Pol, S., Sise, M. E., Balk, E. M., Gordon, C. E., Adam, G., Cheung, M., Earley, A., &amp; Jadoul, M. (2022). Executive summary of the KDIGO 2022 clinical practice guideline for the prevention, diagnosis, evaluation, and treatment of hepatitis C in chronic kidney disease. <em>Kidney International</em>, <em>102</em>(6), 1228–1237. <a href="https://doi.org/10.1016/j.kint.2022.07.012" target="_blank" rel="noopener">https://doi.org/10.1016/j.kint.2022.07.012</a></li>
-<li>Suravaram, S., Gopikonda, S. S., Siddiqui, I. A., Kanugula, H., Gorakanti, D., &amp; Vaddanapu, L. (2024). Enhancing infection control in dialysis at a resource limited public healthcare institute: A cross-sectional study on microbiological quality assessment of dialysis water and dialysate (applying ANSI/AAMI RD47:2020 and ISO 23500-4:2019 standards). <em>Indian Journal of Medical Microbiology</em>, <em>52</em>, 100734. <a href="https://doi.org/10.1016/j.ijmmb.2024.100734" target="_blank" rel="noopener">https://doi.org/10.1016/j.ijmmb.2024.100734</a></li>
-<li>Humudat, Y. R., Al-Naseri, S. K., &amp; Al-Fatlawy, Y. F. (2020). Assessment of microbial contamination levels of water in hemodialysis centers in Baghdad, Iraq (referencing AAMI and ISO 23500 series limits). <em>Water Environment Research</em>, <em>92</em>(9), 1325–1333. <a href="https://doi.org/10.1002/wer.1329" target="_blank" rel="noopener">https://doi.org/10.1002/wer.1329</a></li>
-<li>Kasparek, T., &amp; Rodriguez, O. E. (2015). What medical directors need to know about dialysis facility water management. <em>Clinical Journal of the American Society of Nephrology</em>, <em>10</em>(6), 1061–1071. <a href="https://doi.org/10.2215/CJN.11851214" target="_blank" rel="noopener">https://doi.org/10.2215/CJN.11851214</a></li>
-<li>Ona, E. T. (2012). <em>New rules and regulations governing the licensure and regulation of dialysis facilities in the Philippines</em> (Department of Health Administrative Order No. 2012-0001). Department of Health. <a href="https://hfsrb.doh.gov.ph/wp-content/uploads/2021/05/AO-2012-0001.pdf" target="_blank" rel="noopener">https://hfsrb.doh.gov.ph/wp-content/uploads/2021/05/AO-2012-0001.pdf</a></li>
-<li>Ona, E. T. (2013). <em>Implementing guidelines in the analysis, monitoring and maintenance of water used in dialysis facilities pursuant to Administrative Order No. 2012-0001</em> (Department of Health Administrative Order No. 2013-0003). Department of Health. <a href="https://hfsrb.doh.gov.ph/wp-content/uploads/2021/05/02052013-2013-0003.pdf" target="_blank" rel="noopener">https://hfsrb.doh.gov.ph/wp-content/uploads/2021/05/02052013-2013-0003.pdf</a></li>
+<li>Kasparek T, Rodriguez OE. What Medical Directors Need to Know about Dialysis Facility Water Management. <em>Clin J Am Soc Nephrol.</em> 2015;10(6):1061-1071.</li>
+<li>Humudat YR, Al-Naseri SK, Al-Fatlawy YF. Assessment of microbial contamination levels of water in hemodialysis centers in Baghdad, Iraq (referencing AAMI and ISO 23500 series limits). <em>Water Environ Res.</em> 2020;92(9):1325-1333.</li>
 </ol>
 </details>
 </section>
 <!-- REFERENCES-ACC-END -->
-<!-- DR CARD -->
 <div class="dr-card-wrap">
-  <div class="dr-card">
-    <div class="dr-avatar">
-      <picture>
-        <source srcset="../images/avatar.webp" type="image/webp">
-        <img src="../images/avatar.png" alt="Dr. William Gregory M. Rivero, MD" loading="lazy" width="80" height="80">
-      </picture>
-    </div>
-    <div class="dr-card-body">
-      <h4>William Gregory Rivero, MD, FPCP, DPSN</h4>
-      <p>Internal Medicine · Nephrology · Nutrition · Philippines · PRC 0105184</p>
-      <p style="margin-top:8px;font-size:12px;color:var(--text-muted);font-style:italic;">Educational operational reference. Does not replace manufacturer manuals, validated facility SOPs, DOH licensing documents, or the clinical judgment of the medical director and biomedical engineering team.</p>
-    </div>
-    <div class="dr-qr">
-      <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
-      <p class="dr-qr-label">Scan and save</p>
-    </div>
-  </div>
+<div class="dr-card">
+<div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
+<div class="dr-card-body">
+<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W Rivero, MD, FPCP, DPSN</a></h4>
+<p>Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</p>
+<p class="dr-creds"> &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
+</div>
+<div class="dr-qr">
+<a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
+<p class="dr-qr-label">Scan and save</p>
+</div>
+</div>
 </div>
 
 <!-- RELATED-GUIDES-START -->
-<div class="related-guides">
+<div class="related-guides" id="related-guides">
   <h2>Related Guides</h2>
   <div class="related-cards">
-    <a class="related-card has-thumb" href="dialyzer-reprocessing-reuse.html">
-      <div class="related-card-tag">Related Guide</div>
-      <div class="related-card-title">Dialyzer Reprocessing &amp; Reuse</div>
-      <div class="related-card-desc">The companion water-quality discipline — ISO 23500 and AAMI RD47 standards applied to dialyzer rinse and disinfection.</div>
-      <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/dialyzer-reprocessing-reuse-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
-    <a class="related-card has-thumb" href="dialysis-access-infection.html">
-      <div class="related-card-tag">Related Guide</div>
-      <div class="related-card-title">Dialysis Access Infection</div>
-      <div class="related-card-desc">Infection-control protocols for vascular access — the patient-facing counterpart to water-system infection control.</div>
-      <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/dialysis-access-infection-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
-    <a class="related-card has-thumb" href="hemodiafiltration-deep-dive.html">
-      <div class="related-card-tag">Related Guide</div>
-      <div class="related-card-title">Hemodiafiltration Deep Dive</div>
-      <div class="related-card-desc">Online HDF mechanics and substitution fluid — why ultrapure water from this guide's §6.2 is non-negotiable.</div>
-      <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/hemodiafiltration-deep-dive-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
-    <a class="related-card has-thumb" href="hemodialysis-modalities.html">
-      <div class="related-card-tag">Related Guide</div>
-      <div class="related-card-title">Hemodialysis Modalities</div>
-      <div class="related-card-desc">How modality choice (conventional HD, HDF, home HD) changes the demands placed on the water treatment system.</div>
-      <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/hemodialysis-modalities-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
-    <a class="related-card has-thumb" href="dialysis-adequacy.html">
-      <div class="related-card-tag">Related Guide</div>
-      <div class="related-card-title">Dialysis Adequacy</div>
-      <div class="related-card-desc">Kt/V and adequacy targets depend on a water system that reliably delivers spec-grade dialysate every session.</div>
-      <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
-    <a class="related-card has-thumb" href="dialysis-machine-assignment.html">
-      <div class="related-card-tag">Related Guide</div>
-      <div class="related-card-title">Dialysis Machine Assignment</div>
-      <div class="related-card-desc">Station and machine assignment logic — including isolation-bay routing for HBV-positive patients.</div>
-      <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/dialysis-machine-assignment-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+    <a class="related-card has-thumb" href="dialysis-water-treatment-systems.html">
+      <div class="related-card-tag">Guide</div>
+      <div class="related-card-title">Hemodialysis Water Treatment Systems</div>
+      <div class="related-card-desc">The full clinical &amp; engineering reference — see §4.3 brackish water and §6.3 dual-pass RO design.</div>
+      <img class="related-card-thumb" src="../images/dialysis-water-treatment-systems-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+    <a class="related-card" href="calc-wts-capacity.html">
+      <div class="related-card-tag">Calculator</div>
+      <div class="related-card-title">Water Treatment Capacity &amp; RO Sizing</div>
+      <div class="related-card-desc">Size total RO capacity for your station count before checking pass-by-pass recovery here.</div>
+    </a>
+    <a class="related-card has-thumb" href="calculators.html">
+      <div class="related-card-tag">Tools</div>
+      <div class="related-card-title">All Calculators &amp; Tools</div>
+      <img class="related-card-thumb" src="../images/calculators-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
   </div>
 </div>
 <!-- RELATED-GUIDES-END -->
-
 <footer class="guide-footer">
-  <div class="footer-inner">
-    <p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
-    <p>References: Tipple, M. A., Shusterman, N., Bland, L. A., McCarthy, M. A., Favero, M. S., Arduino, M. J., Reid, M. H., &amp; Jarvis, W. R. (1991). Illness in hemodialysis patients after exposure to chloramine contaminated dialysate. <em>ASAIO Transactions</em>, <em>37</em>(4), 588–591. <a href="https://pubmed.ncbi.nlm.nih.gov/1768494/" target="_blank" rel="noopener">https://pubmed.ncbi.nlm.nih.gov/1768494/</a> · Alfrey, A. C. (1985). Dialysis encephalopathy. <em>Clinical Nephrology</em>, <em>24</em>(Suppl 1), S15-S19. <a href="https://pubmed.ncbi.nlm.nih.gov/3915955/" target="_blank" rel="noopener">https://pubmed.ncbi.nlm.nih.gov/3915955/</a> · Bryliński, Ł., Kostelecka, K., Woliński, F., Duda, P., Góra, J., Granat, M., Flieger, J., Teresiński, G., Buszewicz, G., Sitarz, R., &amp; Baj, J. (2023). Aluminium in the human brain: Routes of penetration, toxicity, and resulting complications. <em>International Journal of Molecular Sciences</em>, <em>24</em>(8), 7228. <a href="https://doi.org/10.3390/ijms24087228" target="_blank" rel="noopener">https://doi.org/10.3390/ijms24087228</a> · Glorieux, G., Schepers, E., Schindler, R., Lemke, H.-D., Verbeke, F., Dhondt, A., Lameire, N., &amp; Vanholder, R. (2008). A novel bio-assay increases the detection yield of microbiological impurity of dialysis fluid, in comparison to the LAL-test. <em>Nephrology Dialysis Transplantation</em>, <em>24</em>(2), 548–554. <a href="https://doi.org/10.1093/ndt/gfn485" target="_blank" rel="noopener">https://doi.org/10.1093/ndt/gfn485</a> · Thomé, F. S., Senger, M., Garcez, C., Garcez, J., Chemello, C., &amp; Manfro, R. C. (2005). Dialysis water treated by reverse osmosis decreases the levels of C-reactive protein in uremic patients. <em>Brazilian Journal of Medical and Biological Research</em>, <em>38</em>(5), 789–794. <a href="https://doi.org/10.1590/s0100-879x2005000500018" target="_blank" rel="noopener">https://doi.org/10.1590/s0100-879x2005000500018</a> · Leonard, H., &amp; Pile, T. (2019). Hard water syndrome: A case series of 30 patients from a London haemodialysis unit. <em>Clinical Kidney Journal</em>, <em>13</em>(1), 111–112. <a href="https://doi.org/10.1093/ckj/sfz050" target="_blank" rel="noopener">https://doi.org/10.1093/ckj/sfz050</a> · Canaud, B. (2011). The early years of on-line HDF: How did it all start? How did we get here? <em>Contributions to Nephrology</em>, <em>175</em>, 93–109. <a href="https://doi.org/10.1159/000333627" target="_blank" rel="noopener">https://doi.org/10.1159/000333627</a> · Jardine, M., Commons, R. J., de Zoysa, J. R., Wong, M. G., Gilroy, N., Green, J., Henderson, B., Stuart, R. L., Tunnicliffe, D. J., van Eps, C., &amp; Athan, E. (2019). Kidney Health Australia – Caring for Australasians with Renal Impairment guideline recommendations for infection control for haemodialysis units. <em>Nephrology</em>, <em>24</em>(9), 951–957. <a href="https://doi.org/10.1111/nep.13511" target="_blank" rel="noopener">https://doi.org/10.1111/nep.13511</a> · Martin, P., Awan, A. A., Berenguer, M. C., Bruchfeld, A., Fabrizi, F., Goldberg, D. S., Jia, J., Kamar, N., Mohamed, R., Pessôa, M. G., Pol, S., Sise, M. E., Balk, E. M., Gordon, C. E., Adam, G., Cheung, M., Earley, A., &amp; Jadoul, M. (2022). Executive summary of the KDIGO 2022 clinical practice guideline for the prevention, diagnosis, evaluation, and treatment of hepatitis C in chronic kidney disease. <em>Kidney International</em>, <em>102</em>(6), 1228–1237. <a href="https://doi.org/10.1016/j.kint.2022.07.012" target="_blank" rel="noopener">https://doi.org/10.1016/j.kint.2022.07.012</a> · Suravaram, S., Gopikonda, S. S., Siddiqui, I. A., Kanugula, H., Gorakanti, D., &amp; Vaddanapu, L. (2024). Enhancing infection control in dialysis at a resource limited public healthcare institute: A cross-sectional study on microbiological quality assessment of dialysis water and dialysate (applying ANSI/AAMI RD47:2020 and ISO 23500-4:2019 standards). <em>Indian Journal of Medical Microbiology</em>, <em>52</em>, 100734. <a href="https://doi.org/10.1016/j.ijmmb.2024.100734" target="_blank" rel="noopener">https://doi.org/10.1016/j.ijmmb.2024.100734</a> · Humudat, Y. R., Al-Naseri, S. K., &amp; Al-Fatlawy, Y. F. (2020). Assessment of microbial contamination levels of water in hemodialysis centers in Baghdad, Iraq (referencing AAMI and ISO 23500 series limits). <em>Water Environment Research</em>, <em>92</em>(9), 1325–1333. <a href="https://doi.org/10.1002/wer.1329" target="_blank" rel="noopener">https://doi.org/10.1002/wer.1329</a> · Kasparek, T., &amp; Rodriguez, O. E. (2015). What medical directors need to know about dialysis facility water management. <em>Clinical Journal of the American Society of Nephrology</em>, <em>10</em>(6), 1061–1071. <a href="https://doi.org/10.2215/CJN.11851214" target="_blank" rel="noopener">https://doi.org/10.2215/CJN.11851214</a> · Ona, E. T. (2012). <em>New rules and regulations governing the licensure and regulation of dialysis facilities in the Philippines</em> (Department of Health Administrative Order No. 2012-0001). Department of Health. <a href="https://hfsrb.doh.gov.ph/wp-content/uploads/2021/05/AO-2012-0001.pdf" target="_blank" rel="noopener">https://hfsrb.doh.gov.ph/wp-content/uploads/2021/05/AO-2012-0001.pdf</a> · Ona, E. T. (2013). <em>Implementing guidelines in the analysis, monitoring and maintenance of water used in dialysis facilities pursuant to Administrative Order No. 2012-0001</em> (Department of Health Administrative Order No. 2013-0003). Department of Health. <a href="https://hfsrb.doh.gov.ph/wp-content/uploads/2021/05/02052013-2013-0003.pdf" target="_blank" rel="noopener">https://hfsrb.doh.gov.ph/wp-content/uploads/2021/05/02052013-2013-0003.pdf</a></p>
-  </div>
+<div class="footer-inner">
+<p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://www.williamriveromd.com">williamriveromd.com</a></p>
+<p>References: Kasparek T, Rodriguez OE. What Medical Directors Need to Know about Dialysis Facility Water Management. <em>Clin J Am Soc Nephrol.</em> 2015;10(6):1061-1071. · Humudat YR, Al-Naseri SK, Al-Fatlawy YF. Assessment of microbial contamination levels of water in hemodialysis centers in Baghdad, Iraq (referencing AAMI and ISO 23500 series limits). <em>Water Environ Res.</em> 2020;92(9):1325-1333.</p>
+</div>
 </footer>
-
-<!-- ═══ FLOATING BUTTONS ════════════════════════════════════════════════ -->
-<button class="print-btn" onclick="window.print()" aria-label="Print this guide">
-  <span class="p-tip">Print / Save PDF</span>
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
-  </svg>
-</button>
 
 <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
   <span class="p-tip">Back to top</span>
@@ -2352,16 +1936,8 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
     <polyline points="18 15 12 9 6 15"/>
   </svg>
 </button>
+<script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
 
-<!-- Floating dark-mode widget -->
-<div class="float-controls no-print">
-  <button id="darkToggle" class="float-btn" type="button" onclick="toggleDark()" aria-label="Toggle dark mode" title="Switch to dark mode">
-    <span class="float-tooltip" id="darkLabel">Dark mode</span>
-    <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-  </button>
-</div>
-
-<!-- ═══ SCRIPTS ══════════════════════════════════════════════════════════ -->
 <script>
 const DARK_KEY = 'wgmr-dark';
 function toggleDark() {
@@ -2378,20 +1954,109 @@ function toggleDark() {
     if (lbl) lbl.textContent = 'Light';
   }
 })();
-
-// Scroll-to-top button
-(function() {
-  var b = document.getElementById('scrollTopBtn');
-  if (!b) return;
-  window.addEventListener('scroll', function() { b.classList.toggle('visible', window.scrollY > 300); }, { passive: true });
-})();
-
-// Lang stub (English only for this guide)
-const GLANG_KEY = 'wgmr-lang';
-function setGuideLang(lang) { localStorage.setItem(GLANG_KEY, lang); }
-(function() { const saved = localStorage.getItem(GLANG_KEY) || 'en'; })();
 </script>
-<script src="../assets/symptom-checker-widget.js" defer></script>
+
+<script>
+function toggleDualPass() {
+  var enabled = document.getElementById('ro-dualpass').checked;
+  document.getElementById('ro-r2-field').style.display = enabled ? '' : 'none';
+  calcRORecovery();
+}
+
+/* RO Recovery & Dual-Pass Reject Volume
+   Pass 1 permeate = feed x (R1/100); Pass 1 reject = feed x (1-R1/100)
+   Pass 2 permeate = Pass1 permeate x (R2/100); Pass 2 reject = Pass1 permeate x (1-R2/100)
+   Overall recovery = final product / feed */
+function calcRORecovery() {
+  var res = document.getElementById('ro-result');
+  var feed = parseFloat(document.getElementById('ro-feed').value);
+  var r1   = parseFloat(document.getElementById('ro-r1').value);
+  var dualPass = document.getElementById('ro-dualpass').checked;
+  var r2   = parseFloat(document.getElementById('ro-r2').value);
+
+  if (isNaN(feed) || feed <= 0 || isNaN(r1) || r1 <= 0 || r1 >= 100) {
+    res.style.display = 'none';
+    return;
+  }
+
+  var pass1Permeate = feed * (r1 / 100);
+  var pass1Reject = feed - pass1Permeate;
+
+  var finalProduct, totalReject, overallRecovery;
+
+  if (dualPass && !isNaN(r2) && r2 > 0 && r2 < 100) {
+    var pass2Permeate = pass1Permeate * (r2 / 100);
+    var pass2Reject = pass1Permeate - pass2Permeate;
+    finalProduct = pass2Permeate;
+    totalReject = pass1Reject + pass2Reject;
+  } else {
+    finalProduct = pass1Permeate;
+    totalReject = pass1Reject;
+  }
+
+  overallRecovery = (finalProduct / feed) * 100;
+
+  var finalProductR = Math.round(finalProduct * 10) / 10;
+  var totalRejectR = Math.round(totalReject * 10) / 10;
+  var overallRecoveryR = Math.round(overallRecovery * 10) / 10;
+
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+  document.getElementById('ro-product').textContent = finalProductR + ' L/hr';
+  document.getElementById('ro-reject').textContent = totalRejectR + ' L/hr';
+
+  var tagColor = isDark ? 'var(--teal)' : '#1a6b72';
+  var bg = isDark ? 'rgba(26,107,114,.08)' : '#e1f5f0';
+  var borderColor = '#1a6b72';
+
+  var overallEl = document.getElementById('ro-overall');
+  overallEl.textContent = overallRecoveryR + '%';
+  overallEl.style.color = tagColor;
+
+  var verdict, action;
+  if (dualPass && !isNaN(r2) && r2 > 0 && r2 < 100) {
+    verdict = 'Dual-pass RO: Pass 1 (' + r1 + '% recovery) feeds Pass 2 (' + r2 + '% recovery), giving ' + finalProductR + ' L/hr of final product water and ' + totalRejectR + ' L/hr of total reject — an overall recovery of ' + overallRecoveryR + '% of the original feed.';
+    action = 'Overall recovery multiplies across passes, not averages — this is the expected trade-off for reaching ultrapure-grade rejection on a difficult feed. Size feed-water supply and reject disposal around the total feed flow, not just the product-water figure.';
+  } else {
+    verdict = 'Single-pass RO at ' + r1 + '% recovery gives ' + finalProductR + ' L/hr of product water and ' + totalRejectR + ' L/hr of reject from a ' + feed + ' L/hr feed.';
+    action = 'If this recovery cannot reliably meet your target product-water conductivity/quality on this feed water, consider whether a second (dual-pass) stage is warranted — check the box above to model it.';
+  }
+
+  res.style.display = 'block';
+  res.style.background = bg;
+  res.style.borderColor = borderColor;
+  document.getElementById('ro-verdict').textContent = verdict;
+  document.getElementById('ro-action').textContent = action;
+}
+</script>
 <script src="../assets/image-lightbox.js" defer></script>
+<script src="../assets/calc-handoff.js" defer></script>
+<!-- CALC-NAV-PILL-START -->
+<style id="calc-nav-pill-style">
+.calc-nav-pill{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;align-items:stretch;z-index:9997;background:#1f3864;border-radius:999px;box-shadow:0 6px 22px rgba(15,30,51,.32);border:1px solid rgba(255,255,255,.14);}
+.calc-nav-pill>a,.calc-nav-pill>.cnp-print{position:relative;display:flex;align-items:center;justify-content:center;width:58px;height:44px;color:#fff;text-decoration:none;transition:background .18s;background:none;border:none;cursor:pointer;}
+.calc-nav-pill>a:first-child{border-radius:999px 0 0 999px;}
+.calc-nav-pill>a:last-child{border-radius:0 999px 999px 0;}
+.calc-nav-pill>a:hover,.calc-nav-pill>.cnp-print:hover{background:#2a4a7f;}
+.calc-nav-pill>a:first-child:hover{border-radius:999px 0 0 999px;}
+.calc-nav-pill>a:last-child:hover{border-radius:0 999px 999px 0;}
+.calc-nav-pill>a:focus-visible,.calc-nav-pill>.cnp-print:focus-visible{outline:2px solid #d4af4f;outline-offset:-3px;}
+.calc-nav-pill .cnp-div{width:1px;background:rgba(255,255,255,.22);align-self:stretch;}
+.calc-nav-pill svg{width:20px;height:20px;}
+.cnp-tip{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);background:rgba(15,30,51,.92);color:#fff;font-size:11.5px;font-weight:500;white-space:nowrap;padding:5px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s;}
+.calc-nav-pill>a:hover .cnp-tip,.calc-nav-pill>.cnp-print:hover .cnp-tip{opacity:1;}
+html[data-theme="dark"] .calc-nav-pill{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav-pill>.cnp-print:hover{background:#243349;}
+.print-fab,.print-btn,.calc-back-btn,.calc-rg-btn{display:none!important;}
+@media print{.calc-nav-pill{display:none!important;}}
+</style>
+<nav class="calc-nav-pill" id="calc-nav-pill" aria-label="Calculator navigation">
+<a href="https://www.williamriveromd.com/guides/calculators.html" aria-label="Back to all calculators"><span class="cnp-tip">All Guides</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
+<span class="cnp-div"></span>
+<button class="cnp-print" onclick="window.print()" aria-label="Print this page"><span class="cnp-tip">Print</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></button>
+<span class="cnp-div"></span>
+<a href="dialysis-water-treatment-systems.html" aria-label="Go to related guide"><span class="cnp-tip">Related Guide</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+</nav>
+<!-- CALC-NAV-PILL-END -->
 </body>
 </html>
