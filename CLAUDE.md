@@ -286,6 +286,46 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
     `ICONS` map near the bottom of `guides/index.html`; add a new key
     there if no existing glyph fits.
 
+11. **Image lightbox with plain-language descriptions.** Every content guide
+    must (a) load `assets/image-lightbox.js` via a single deferred script tag
+    just before `</body>`, and (b) give every inline `<figure>` a structured
+    `<figcaption>` the lightbox can read. The v2.0 shape:
+
+    ```html
+    <figcaption>
+      <p class="fig-desc">Plain-language description of the image.</p>
+      <dl class="fig-abbrevs">
+        <dt>SERCA</dt><dd>Sarco/endoplasmic reticulum Ca²⁺-ATPase</dd>
+        <dt>UF</dt><dd>Ultrafiltration</dd>
+      </dl>
+    </figcaption>
+    ```
+
+    Behavior: single tap opens the lightbox with the `.fig-desc` line and
+    any abbreviations panel; double-tap opens the full image in a new tab.
+    A copyright-only figcaption is not enough — the lightbox caption panel
+    will be blank. **When authoring a new figure, the plain-language
+    description is required; the abbreviation list is required whenever
+    the image contains any acronym.** `patch_image_lightbox.py` installs
+    the script tag idempotently — it inserts it if missing and swaps any
+    legacy `image-open.js` reference.
+
+12. **Glossary & abbreviations accordion (`<!-- GLOSSARY-START --> … END -->`).**
+    Every narrative content guide carries a collapsible `<details class="glossary-acc">`
+    section placed immediately after `</main>` and before `<!-- REFERENCES-ACC-START -->`.
+    It has two `<dl>` blocks: **Abbreviations** (every acronym or initialism used
+    anywhere in the guide, defined once) and **Terms** (any specialised word a
+    lay reader would not know — mechanisms, anatomical zones, physiology
+    concepts). The section header is `Glossary & abbreviations` with EN/TL/CEB/KAP
+    translations wired via `data-lang` spans exactly like every other translatable
+    string. It gates only on narrative content — the same exclusion set as
+    `audit_apa_references.py` and `patch_symptom_widget.py` (calculators,
+    printable logs, the atlas/physiology reference pages) skip it. Rationale:
+    the glossary is the on-page dictionary the lightbox's per-figure
+    `<dl class="fig-abbrevs">` blocks point back to, and it is what patients
+    and clinicians alike open first when a term is unfamiliar. **A new guide
+    is not done until this section is present with every acronym in it.**
+
 9. **Category-tinted Latest-guides cards.** Each section in `guides/index.html`
    (`<div class="guide-section" data-section="…">`) has its own colour — visible
    as the small `.section-color-bar` ("|") before the section title:

@@ -2,10 +2,20 @@
 """
 patch_image_lightbox.py
 
-Replaces the <script src="../assets/image-open.js" ...> tag with
-<script src="../assets/image-lightbox.js" defer></script> in every guide
-that references image-open.js.  Also strips any stale inline zoomable-
-dblclick handler injected by patch_zoomable_dblclick.py (superseded).
+Ensures every guide loads assets/image-lightbox.js and drops the superseded
+image-open.js / zoomable-dblclick handler:
+
+  1. Swap <script src="../assets/image-open.js" ...> → image-lightbox.js.
+  2. Strip any stale inline zoomable-dblclick <script> block.
+  3. INSERT <script src="../assets/image-lightbox.js" defer></script> right
+     before the final </body> for guides that never had either tag (this is
+     the case for freshly-authored guides).
+
+The script tag is a required invariant for every content guide: it powers
+the single-tap magnify / double-tap open-in-new-tab behavior and reads the
+figcaption's <p class="fig-desc"> plain-language description + optional
+<dl class="fig-abbrevs"> into the lightbox caption panel. Idempotent — a
+guide already carrying the correct tag is skipped.
 
 Usage:
   python3 patch_image_lightbox.py            # patch all guides
@@ -44,6 +54,15 @@ def patch_file(path, dry_run=False):
         new_html, n = re.subn(pattern, '', html)
         if n:
             html = new_html
+            changed = True
+
+    # 3. Insert the tag if the guide has no lightbox script at all. Insert
+    #    just before the LAST </body> so JS strings inside inline scripts
+    #    (e.g. print-popup `win.document.write('…</body>…')`) are untouched.
+    if NEW_TAG not in html:
+        idx = html.rfind('</body>')
+        if idx != -1:
+            html = html[:idx] + NEW_TAG + '\n' + html[idx:]
             changed = True
 
     if not changed:

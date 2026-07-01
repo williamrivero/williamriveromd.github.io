@@ -254,6 +254,7 @@ git commit -m "Add <filename> with full structure setup"
 git push -u origin main
 ```
 
-5. Remind the user of two things to check manually in the guide HTML:
-   - Each inline `<figure>` image should have a `<figcaption>` with `<p class="fig-desc">` (plain description) and optionally `<dl class="fig-abbrevs">` for any abbreviations used in the image — the lightbox will display both.
-   - The guide's script tag `<script src="../assets/image-lightbox.js" defer></script>` should be present near `</body>` (patch_image_lightbox.py adds it if missing).
+5. Remind the user of three things to check manually in the guide HTML:
+   - Each inline `<figure>` image **must** have a `<figcaption>` with `<p class="fig-desc">` (plain-language description) — the lightbox reads this into its caption panel. A copyright-only figcaption is not enough. Add `<dl class="fig-abbrevs">` for any acronym shown in the image (`SERCA`, `UF`, `ABI`, etc.). See CLAUDE.md rule 11.
+   - The guide's script tag `<script src="../assets/image-lightbox.js" defer></script>` should be present near `</body>` (patch_image_lightbox.py adds it if missing — idempotent).
+   - A **Glossary & abbreviations** accordion (`<!-- GLOSSARY-START --> … <!-- GLOSSARY-END -->`) must sit immediately after `</main>` and before `<!-- REFERENCES-ACC-START -->`, listing every acronym used anywhere in the guide plus any specialised term a lay reader would not know. Two `<dl>` blocks: **Abbreviations** and **Terms**. Header string wired via `data-lang="en|tl|ceb|kap"` spans like every other translatable string. See CLAUDE.md rule 12; canonical exemplar is `guides/dialysis-cramps-stasis-pigmentation.html`. **The guide is not done until this section exists.**
