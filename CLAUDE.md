@@ -51,7 +51,7 @@ python3 patch_references_accordion.py --dry-run
 python3 patch_references_accordion.py --overrides refs.json  # supply citations for guides with no footer references
 python3 patch_references_accordion.py --guide igan-guide.html  # single guide
 
-python3 audit_apa_references.py                 # check APA-7 compliance of every guide's footer References line
+python3 audit_apa_references.py                 # check APA-7 compliance of every guide's References accordion
 python3 audit_apa_references.py --details       # show failing citation samples (which fields are missing)
 python3 audit_apa_references.py --guide igan-guide.html  # single guide; exits 1 if anything fails (CI-friendly)
 
@@ -186,9 +186,15 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
 
 5. **Accordion References section before the signature block — APA 7 format.** Every guide's
    References block is a collapsible `<details class="ref-acc">` rendered by
-   `patch_references_accordion.py` from the footer `<p>References: A · B · C</p>` line
-   (or hero-meta `Guidelines:`), inserted immediately before `.dr-card-wrap`. Each citation
-   in that footer line — and therefore each `<li>` in the rendered accordion — **must be
+   `patch_references_accordion.py` and inserted immediately before `.dr-card-wrap`.
+   **The accordion is the only rendered References location.** Do NOT add a
+   `<p>References: A · B · C</p>` line to the guide's `<footer class="guide-footer">` —
+   the old footer-references placement is deprecated and must be removed on touch
+   (references appearing twice — once in the footer, once in the accordion — is a
+   duplication bug). For the patcher's data source, supply citations via
+   `--overrides refs.json` (`{ "<file>": ["APA citation 1", …] }`); the patcher
+   preserves an existing accordion's `<ol>` on subsequent runs, so once built the
+   accordion is self-sourced. Each `<li>` in the rendered accordion **must be
    in APA 7 format**: `Author, A. A., Author, B. B., & Author, C. C. (Year). Sentence-case
    title. <em>Journal Name</em>, <em>Volume</em>(Issue), pages. <a href="https://doi.org/…">https://doi.org/…</a>`.
    - Up to 20 authors → list all (comma + `&` before the last). 21+ → first 19, `... `, final author.
@@ -197,7 +203,7 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    - Journal name in full title-case (not the PubMed abbreviation), italicised via `<em>`.
      Volume italicised via `<em>`; issue in parens (not italicised).
    - DOI rendered as a real `<a href="https://doi.org/...">…</a>` link. The patcher's tag
-     whitelist preserves `<em>`, `<strong>`, `<b>`, `<i>`, and `<a>` from the footer line —
+     whitelist preserves `<em>`, `<strong>`, `<b>`, `<i>`, and `<a>` in each citation —
      other inline tags are stripped. **Do not paste short-form citations** like
      "Smith 2023 (Nature)" — those are pre-APA legacy and must be migrated when touched.
    The canonical reference exemplar is `guides/ai-in-nephrology-practice.html` (26 sources,
@@ -209,9 +215,8 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    - **`audit_apa_references.py`** checks each citation's APA-7 compliance (italics for
      journal+volume, DOI/URL link, year, author block, page range) and reports the per-guide
      compliance ratio. **Run this before declaring a new guide done — a 0/N or partial
-     compliance score means the footer line still carries legacy short-form citations
-     ("Smith 2023 NEJM", "KDIGO 2026", "EO 192 s.2015") and must be rewritten to full APA
-     via PubMed lookups.** Pure interactive tools (calculators, symptom-checker, label
+     compliance score means legacy short-form citations ("Smith 2023 NEJM", "KDIGO 2026",
+     "EO 192 s.2015") slipped in and must be rewritten to full APA via PubMed lookups.** Pure interactive tools (calculators, symptom-checker, label
      scanner, recipe analyzer, interpreters, blank logs, the atlas/physiology reference
      pages) have no citable sources and are the documented exceptions — they're excluded
      by both the patcher and the audit.

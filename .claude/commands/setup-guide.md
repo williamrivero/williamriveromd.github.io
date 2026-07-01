@@ -194,10 +194,10 @@ python3 generate_latest_calculators.py                     # if a calc-* page: r
 > exits 1 if any citation in the footer line fails the APA-7 heuristics (italic
 > `<em>` journal, `doi.org` or URL link, `(YYYY)` year, `Author, X.` block,
 > page range). Do NOT declare the new guide done until the audit reports
-> `N/N` compliant. If you see partial compliance, the footer `References:`
-> line still carries legacy short-form snippets ("Smith 2023 NEJM", "KDIGO
-> 2026", "EO 192 s.2015") — rewrite them to full APA via the PubMed MCP
-> (`mcp__PubMed__lookup_article_by_citation` + `mcp__PubMed__get_article_metadata`).
+> `N/N` compliant. If you see partial compliance, legacy short-form snippets
+> ("Smith 2023 NEJM", "KDIGO 2026", "EO 192 s.2015") slipped into the citations —
+> rewrite them to full APA via the PubMed MCP (`mcp__PubMed__lookup_article_by_citation`
+> + `mcp__PubMed__get_article_metadata`).
 
 > **Dual-mode guides only:** after `patch_mode_cls.py`, also run
 > `python3 patch_mode_restore.py --guide <filename>` to add the safe **pre-paint**
@@ -227,23 +227,26 @@ python3 generate_latest_calculators.py                     # if a calc-* page: r
 >    `.hero-meta` and instead shows a **Published** date row and a **References** count row. Do not
 >    add an author line to a new guide's hero.
 > 5. **Have an accordion-structured References section before the signature block, in APA 7 format.**
->    `patch_references_accordion.py` builds a collapsible `<details>` References block and places
->    it right before `.dr-card-wrap`, sourced from the guide's footer
->    `<p>References: A · B · C</p>` line (or the hero-meta `Guidelines:` value). **Every citation
->    in that footer line must be APA 7:** `Author, A. A., …, & Author, Z. Z. (Year). Sentence-case
->    title. <em>Journal Name</em>, <em>Volume</em>(Issue), pages. <a href="https://doi.org/…">https://doi.org/…</a>`.
+>    `patch_references_accordion.py` builds a collapsible `<details class="ref-acc">` References
+>    block and places it right before `.dr-card-wrap`. **The accordion is the only rendered
+>    References location.** Do NOT paste a `<p>References: A · B · C</p>` line into the guide's
+>    `<footer class="guide-footer">` — that old placement is deprecated (references appearing
+>    twice, once in the footer and once in the accordion, is a duplication bug). For the
+>    patcher's data source, pass a JSON file:
+>    `python3 patch_references_accordion.py --overrides refs.json` where `refs.json` is
+>    `{ "<filename>": ["APA citation 1", "APA citation 2", …] }`. Once built, the patcher
+>    preserves the existing accordion `<ol>` on subsequent runs, so the accordion is self-sourced.
+>    **Every citation in the accordion must be APA 7:** `Author, A. A., …, & Author, Z. Z. (Year).
+>    Sentence-case title. <em>Journal Name</em>, <em>Volume</em>(Issue), pages. <a href="https://doi.org/…">https://doi.org/…</a>`.
 >    Up to 20 authors → list all (`, & ` before the last); 21+ → first 19, ellipsis, final author.
 >    Sentence-case title with acronyms preserved (CKD, AKI, ChatGPT, SaMD). Full title-case
 >    journal name (not the PubMed abbreviation), italicised via `<em>`. DOIs as live
 >    `<a href="https://doi.org/...">` links. The patcher preserves `<em>`, `<strong>`, `<b>`,
->    `<i>`, and `<a>` from the footer line; other inline tags are stripped.
+>    `<i>`, and `<a>` in each citation; other inline tags are stripped.
 >    **Build APA citations from PubMed metadata** — use the `mcp__PubMed__lookup_article_by_citation`
 >    + `mcp__PubMed__get_article_metadata` MCP tools to fetch verified author lists, volume, issue,
->    pages, and DOI; never write a citation from memory. For a guide whose sources are only cited
->    inline, pass a JSON file of citations:
->    `python3 patch_references_accordion.py --overrides refs.json` where `refs.json` is
->    `{ "<filename>": ["APA citation 1", "APA citation 2", …] }`. **Never fabricate citations** —
->    list only sources the guide actually relies on. Run `--report` to audit reference coverage
+>    pages, and DOI; never write a citation from memory. **Never fabricate citations** — list
+>    only sources the guide actually relies on. Run `--report` to audit reference coverage
 >    site-wide. The canonical APA exemplar is `guides/ai-in-nephrology-practice.html`.
 
 4. After all scripts succeed, stage the new guide and any modified files, then commit and push to `main`:
