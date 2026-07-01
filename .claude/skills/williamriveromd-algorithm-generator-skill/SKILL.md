@@ -88,6 +88,31 @@ prompt (e.g. “clean sans-serif typography set in Inter”).
 
 ---
 
+## Hemofilter / Dialyzer Reference Anatomy (if the algorithm includes a circuit/filter legend or inset)
+
+CRRT/HD algorithm cards sometimes benefit from a small circuit or pressure-point
+legend alongside the decision logic. If one is requested (or the model adds one
+unprompted), it must follow this verified anatomy — earlier prompts got this
+wrong (missing points, garbled labels, a confusing left-right loop) and had to be
+corrected:
+
+- Hemofilter/dialyzer has **two end ports** (Arterial = blood in, Venous = blood
+  out) and **two side ports** (Dialysate in, near the venous end; Effluent out,
+  near the arterial end — true countercurrent flow). Replacement fluid merges
+  into the blood line itself, never the filter's shell port. TMP is a pressure
+  annotation across the filter, not a flow arrow.
+- For a **small inset/legend**, draw the filter **vertically** (blood in at the
+  bottom, out at the top) rather than horizontally — this avoids the left-right
+  loop-back that causes tangled or garbled small diagrams. Explicitly instruct
+  the model to include every pressure landmark the surrounding algorithm refers
+  to (e.g. if the card has 4 alarm columns, the legend must show all 4 points).
+- Never invent specific numeric pressure/alarm thresholds (mmHg values) unless
+  they come from the source guide or a cited reference — real limits are
+  device-specific; use device-dependent language ("use your unit's validated
+  alarm limits") instead of a fabricated number.
+
+---
+
 # Style Mode A: AHA / Resuscitation Algorithm
 
 ## Use Cases

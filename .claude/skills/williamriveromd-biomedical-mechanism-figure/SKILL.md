@@ -112,6 +112,33 @@ For a kidney mitochondrial dysfunction figure:
 - Keep nephron segment labels anatomically plausible.
 - Use “hypothesis,” “proposed mechanism,” or “experimental therapy” when the intervention is not standard clinical care.
 - For preclinical concepts such as mitochondrial transplantation, avoid implying routine clinical availability unless explicitly requested.
+- **Never invent specific numeric thresholds** (pressures, lab cutoffs, doses) that
+  aren't in the source guide or a cited reference — if a figure needs a device- or
+  protocol-dependent value, say so explicitly (e.g. "device-specific — use your
+  unit's validated limits") rather than printing a plausible-looking number.
+
+## Hemofilter / Dialyzer Reference Anatomy (mandatory whenever a filter/dialyzer/circuit appears)
+
+Verified against a real hollow-fiber hemofilter product photo and standard textbook
+CVVH circuit diagrams — earlier prompts got this wrong and had to be corrected, so
+treat this as ground truth, not a guess:
+
+- **Two END ports (blood path):** Arterial port = blood IN, Venous port = blood
+  OUT, one at each end of the cartridge; blood flows through the hollow-fiber
+  lumens bundled inside.
+- **Two SIDE ports (shell/dialysate path), separate from the blood tubing:**
+  Dialysate enters near the **venous (blood-out) end**; effluent (spent dialysate
+  + ultrafiltrate) exits near the **arterial (blood-in) end** — this is
+  intentional countercurrent flow (opposite the blood direction), which maximizes
+  the diffusion gradient. Never place both at the same end or swap them.
+- **Replacement fluid** merges into the **blood line itself** (pre- or
+  post-filter), never into the filter's shell/dialysate port. **Anticoagulant/
+  citrate** merges into the blood line pre-pump, closest to the patient.
+- **TMP** is a pressure-gradient annotation drawn *across* the filter body, never
+  a flow arrow toward a bag.
+- Draw the filter horizontally for a full circuit map, or vertically (blood in at
+  the bottom, out at the top) for a compact inset — vertical avoids the
+  left-right loop-back that causes tangled/garbled small diagrams.
 
 ## Output Requirements
 - Clean SVG-like or high-resolution PNG style

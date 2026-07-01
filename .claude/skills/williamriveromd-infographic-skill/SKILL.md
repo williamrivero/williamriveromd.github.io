@@ -57,6 +57,35 @@ All other panels (heroes, food matrices, OG cards, reference cards, workflows)
 stay in this skill. Keep the shared attribution `© williamriveromd.com` on every
 panel regardless of which skill produced it.
 
+## HEMOFILTER / DIALYZER REFERENCE ANATOMY (mandatory whenever a filter/dialyzer/circuit/dialysis-machine panel appears)
+
+Verified against a real hollow-fiber hemofilter product photo and standard
+textbook CVVH/HD circuit diagrams — earlier prompts got this wrong (dialysate and
+replacement fluid merged into one shared input, missing/swapped ports, garbled
+inset labels) and had to be corrected, so treat this as ground truth:
+
+- **Two END ports (blood path):** Arterial port = blood IN, Venous port = blood
+  OUT, one at each end of the cartridge; blood flows through the hollow-fiber
+  lumens bundled inside (draw fine parallel lines to suggest the fiber bundle).
+- **Two SIDE ports (shell/dialysate path), separate from the blood tubing:**
+  Dialysate enters near the **venous (blood-out) end**; effluent (spent dialysate
+  + ultrafiltrate) exits near the **arterial (blood-in) end** — intentional
+  countercurrent flow (opposite the blood direction), which maximizes the
+  diffusion gradient. Never place both at the same end or swap them.
+- **Replacement fluid** (CVVH/CVVHDF) merges into the **blood line itself**
+  (pre- or post-filter), never into the filter's shell/dialysate port.
+  **Anticoagulant/citrate** merges into the blood line pre-pump, closest to the
+  patient.
+- **TMP (transmembrane pressure)** is a pressure-gradient annotation drawn
+  *across* the filter body — never a flow arrow toward a bag.
+- **Orientation:** horizontal (filter on one side, patient on the other, blood in
+  a rectangular loop) for a full circuit map; vertical (blood in at the bottom,
+  out at the top) for a compact inset/legend — vertical avoids the left-right
+  loop-back that causes tangled or garbled small diagrams.
+- Do not invent specific numeric pressure/alarm thresholds (mmHg values, etc.)
+  unless they come from the source guide or a cited reference — real limits are
+  device-specific; use device-dependent language instead of a fabricated number.
+
 ## DEFAULT EXECUTION TARGET
 
 When the user says apply this skill, generate prompts, batch generate image prompts, make image-generator prompts, use Image Generator, use the Image Generator GPT, or use /generate-image, assume the output should be formatted for the ChatGPT Image Generator GPT unless another tool is specified.
