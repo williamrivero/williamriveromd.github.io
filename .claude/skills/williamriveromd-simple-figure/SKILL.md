@@ -48,6 +48,64 @@ its template rather than producing a generic figure here.
 
 ---
 
+## HEMOFILTER / DIALYZER REFERENCE ANATOMY (mandatory whenever a filter/dialyzer/circuit appears)
+
+Verified against a real hollow-fiber hemofilter product photo and standard textbook
+CVVH circuit diagrams (not a first-draft guess — earlier prompts got this wrong and
+had to be corrected). Any figure showing a hemofilter, dialyzer, or CRRT/HD circuit
+must follow this anatomy exactly:
+
+- **Two END ports (the blood path):** one **Arterial port = blood IN**, one **Venous
+  port = blood OUT**, one at each end of the cartridge. Blood flows through the
+  lumens of thousands of parallel hollow fibers bundled inside — draw fine parallel
+  lines inside the cylinder to suggest this.
+- **Two SIDE ports (the shell/dialysate path), set back from each end cap — never
+  merged with the blood-line tubing:**
+  - **Dialysate port (dialysate IN)** sits near the **venous (blood-OUT) end**.
+  - **Effluent port (spent dialysate + ultrafiltrate OUT)** sits near the
+    **arterial (blood-IN) end**.
+  - This is intentional: dialysate flows **countercurrent** to blood through the
+    shell space (opposite direction to the blood inside the fibers), which
+    maximizes the diffusion gradient. Never place both at the same end; never
+    swap them.
+- **Replacement fluid** (CVVH/CVVHDF) is not a filter port at all — it merges
+  directly into the **blood line itself**, either pre-filter (arterial side,
+  "pre-dilution") or post-filter (venous side, "post-dilution"). Never draw it
+  entering the filter's shell/dialysate port.
+- **Anticoagulant/citrate infusion** also merges into the blood line, positioned
+  pre-pump, at the very start of the access line closest to the patient.
+- **TMP (transmembrane pressure)** is a pressure-gradient annotation drawn
+  **across** the filter body (spanning blood-side to shell-side) — it is a static
+  annotation, never a flow arrow, and never points at a bag.
+- **Orientation:** horizontal (textbook CVVH-diagram convention — filter on one
+  side, patient on the other, blood in a rectangular loop) works well for a main
+  circuit map. **Vertical** (blood IN at the bottom, OUT at the top) works better
+  for small compact insets/legends, since it avoids the left-right loop-back that
+  causes rendering tangles and missing/garbled labels in small diagrams. Either is
+  fine — what must stay correct is the port topology above, regardless of
+  orientation.
+- **Common failure to explicitly forbid in the prompt:** merging dialysate and
+  replacement fluid into one shared input; swapping dialysate/effluent port
+  positions; omitting any of the four circuit landmarks (Access, Pre-filter, TMP,
+  Return) when the figure claims to show pressure-monitoring points.
+- **Order along the arterial/access line matters and is easy to get backwards:**
+  Patient → Access pressure gauge (closest to patient) → Citrate/anticoagulant
+  infusion → Blood pump → Pre-filter pressure gauge (closest to the filter,
+  i.e. AFTER the pump, never before it) → filter. Models frequently draw the
+  pre-filter gauge before the pump — forbid this explicitly.
+- **If a sampling port (for post-filter ionized calcium or similar) appears, it
+  belongs on the VENOUS/return line only**, positioned AFTER the filter and AFTER
+  any air detector, but BEFORE any calcium/replacement infusion back into that
+  line — sampling always precedes recalcification, never the reverse, and it
+  must never be duplicated onto the arterial line.
+- **Draw exactly one arterial line and one venous line** — a duplicate or
+  redundant second "arterial-looking" path (which models sometimes add when a
+  sampling port or extra gauge doesn't fit cleanly into the first path) is a
+  common failure; forbid it explicitly and give every landmark a single, unambiguous
+  place on one of the two lines.
+
+---
+
 ## HOUSE STYLE CONSTITUTION (non-negotiable — same as main skill)
 
 ### Backgrounds
