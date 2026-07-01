@@ -88,6 +88,21 @@ must follow this anatomy exactly:
   replacement fluid into one shared input; swapping dialysate/effluent port
   positions; omitting any of the four circuit landmarks (Access, Pre-filter, TMP,
   Return) when the figure claims to show pressure-monitoring points.
+- **Order along the arterial/access line matters and is easy to get backwards:**
+  Patient → Access pressure gauge (closest to patient) → Citrate/anticoagulant
+  infusion → Blood pump → Pre-filter pressure gauge (closest to the filter,
+  i.e. AFTER the pump, never before it) → filter. Models frequently draw the
+  pre-filter gauge before the pump — forbid this explicitly.
+- **If a sampling port (for post-filter ionized calcium or similar) appears, it
+  belongs on the VENOUS/return line only**, positioned AFTER the filter and AFTER
+  any air detector, but BEFORE any calcium/replacement infusion back into that
+  line — sampling always precedes recalcification, never the reverse, and it
+  must never be duplicated onto the arterial line.
+- **Draw exactly one arterial line and one venous line** — a duplicate or
+  redundant second "arterial-looking" path (which models sometimes add when a
+  sampling port or extra gauge doesn't fit cleanly into the first path) is a
+  common failure; forbid it explicitly and give every landmark a single, unambiguous
+  place on one of the two lines.
 
 ---
 

@@ -136,6 +136,14 @@ treat this as ground truth, not a guess:
   citrate** merges into the blood line pre-pump, closest to the patient.
 - **TMP** is a pressure-gradient annotation drawn *across* the filter body, never
   a flow arrow toward a bag.
+- **Order along the arterial line, patient to filter:** Access pressure gauge
+  (closest to patient) → citrate/anticoagulant infusion → blood pump → pre-filter
+  pressure gauge (closest to the filter, AFTER the pump — models often draw this
+  backwards). **A sampling port** (e.g. for post-filter ionized calcium) belongs
+  on the VENOUS/return line only, after the filter and any air detector but
+  BEFORE any calcium/replacement infusion back into that line (sampling always
+  precedes recalcification). Draw exactly one arterial line and one venous
+  line — never a duplicate/redundant second path to fit an extra landmark.
 - Draw the filter horizontally for a full circuit map, or vertically (blood in at
   the bottom, out at the top) for a compact inset — vertical avoids the
   left-right loop-back that causes tangled/garbled small diagrams.

@@ -85,6 +85,15 @@ inset labels) and had to be corrected, so treat this as ground truth:
 - Do not invent specific numeric pressure/alarm thresholds (mmHg values, etc.)
   unless they come from the source guide or a cited reference — real limits are
   device-specific; use device-dependent language instead of a fabricated number.
+- **Order along the arterial line, patient to filter:** Access pressure gauge
+  (closest to patient) → citrate/anticoagulant infusion → blood pump → pre-filter
+  pressure gauge (closest to the filter, AFTER the pump — models often draw this
+  backwards). **A sampling port** (e.g. for post-filter ionized calcium) belongs
+  on the VENOUS/return line only, after the filter and any air detector but
+  BEFORE any calcium/replacement infusion back into that line — sampling always
+  precedes recalcification. Draw exactly one arterial line and one venous
+  line per circuit — never a duplicate/redundant second path to fit an extra
+  landmark that doesn't belong on the first one.
 
 ## DEFAULT EXECUTION TARGET
 
