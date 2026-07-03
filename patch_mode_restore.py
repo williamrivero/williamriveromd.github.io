@@ -19,7 +19,18 @@ Each guide stores its mode under its own localStorage key (e.g.
 'wgmr-mode', 'wgmr-igan-mode'); the key is extracted from the guide's own
 setMode() source and inlined literally.
 
-Idempotent: guides already carrying the pre-paint restorer are skipped.
+Audience-portal fallback: when a guide has NO explicit per-guide mode
+choice yet (first visit), the snippet falls back to the shared
+`wgmr-visit-persona` key set by the audience picker on /guides/ and
+/guides/calculators.html — a nephrologist, internist/GP, dialysis-staff,
+or dietitian persona opens the guide straight into Clinicians; patient/
+caregiver (or no persona at all) opens Patients & Families, same as
+before. The very first explicit in-page tab click writes the per-guide
+key and wins on every later visit, overriding the persona default.
+
+Idempotent: re-running upgrades a guide's existing pre-paint restorer in
+place (so the persona fallback above rolls out even to guides patched by
+an earlier version of this script) rather than skipping it.
 Run after adding any new dual-mode guide (after patch_mode_cls.py).
 
 Usage (run from repo root):
@@ -43,16 +54,30 @@ SNIPPET = (
     "\n<script>/* {marker} — class applied before first paint, zero CLS.\n"
     "   Do NOT move this to the bottom of the page or convert it into a\n"
     "   post-paint restore — that reintroduces the CLS bug patch_mode_cls.py\n"
-    "   exists to kill. See CLAUDE.md. */\n"
-    "try{{if(localStorage.getItem('{key}')==='physician'){{"
+    "   exists to kill. See CLAUDE.md.\n"
+    "   Falls back to the shared wgmr-visit-persona audience-portal choice\n"
+    "   (see /guides/ and /guides/calculators.html) only when this guide has\n"
+    "   no explicit per-guide choice yet; an in-page tab click always wins\n"
+    "   on every later visit. */\n"
+    "try{{(function(){{"
+    "var v=localStorage.getItem('{key}');"
+    "if(v===null){{"
+    "var per=localStorage.getItem('wgmr-visit-persona');"
+    "if(per==='nephrologist'||per==='internist-gp'||per==='dialysis-staff'||per==='dietitian')v='physician';"
+    "}}"
+    "if(v==='physician'){{"
     "document.body.classList.add('physician-mode');"
     "document.addEventListener('DOMContentLoaded',function(){{"
     "var p=document.getElementById('tab-pt'),m=document.getElementById('tab-md');"
-    "if(p)p.classList.remove('active');if(m)m.classList.add('active');}});}}}}"
-    "catch(e){{}}</script>\n"
+    "if(p)p.classList.remove('active');if(m)m.classList.add('active');}});"
+    "}}"
+    "}})();}}catch(e){{}}</script>\n"
 )
 
 BODY_TAG = re.compile(r"<body[^>]*>")
+EXISTING_SNIPPET = re.compile(
+    r"\n?<script>/\* " + re.escape(MARKER) + r".*?</script>\n?", re.S
+)
 
 
 def find_mode_key(html):
@@ -71,12 +96,14 @@ def patch_guide(path, dry_run=False):
 
     if 'id="tab-md"' not in html:
         return "not dual-mode"
-    if MARKER in html:
-        return "already patched"
 
     key = find_mode_key(html)
     if not key:
         return "SKIP: mode key not found"
+
+    was_patched = MARKER in html
+    if was_patched:
+        html = EXISTING_SNIPPET.sub("", html, count=1)
 
     m = BODY_TAG.search(html)
     if not m:
@@ -87,7 +114,7 @@ def patch_guide(path, dry_run=False):
 
     if not dry_run:
         path.write_text(html, encoding="utf-8")
-    return f"patched (key: {key})"
+    return f"upgraded (key: {key})" if was_patched else f"patched (key: {key})"
 
 
 def main():
