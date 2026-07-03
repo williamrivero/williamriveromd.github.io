@@ -1946,6 +1946,13 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <p>Unlike most entries here, star fruit and its juice are unsafe for anyone with CKD, dialysis, or a transplant regardless of what other medicines are on the list — the fruit's own neurotoxin (caramboxin) and potassium load are the danger, not just an interaction. The checker will flag it when paired with another potassium-raising drug, but the advice is the same either way: avoid it entirely.</p>
 </div>
 </div>
+<div class="alert alert-purple">
+<div class="alert-icon">💊</div>
+<div class="alert-body">
+<h4>Standard multivitamins are a hidden hazard in CKD5/ESRD</h4>
+<p>A routine drugstore multivitamin usually contains <strong>vitamin A</strong>, which the kidney normally clears — in ESRD it accumulates and can cause hypercalcemia, bone pain, liver toxicity, and pseudotumor cerebri — plus <strong>high-dose vitamin C</strong>, which metabolizes to oxalate that a dialysis patient cannot excrete, risking secondary oxalosis. This is true regardless of what else the patient is taking. Nephrology instead uses vitamin-A-free, low-vitamin-C "renal vitamin" formulations (e.g., Nephrocaps, Renax) that replace the water-soluble B vitamins and folate that dialysis removes, without the accumulation risk. This checker lists both separately — the standard multivitamin and the renal vitamin — so you can confirm which one is actually on the medication list.</p>
+</div>
+</div>
 <div class="alert alert-red">
 <div class="alert-icon">🚫</div>
 <div class="alert-body">
@@ -2000,6 +2007,7 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <tr><td>Loop &amp; thiazide diuretics</td><td>Furosemide, torsemide, bumetanide, hydrochlorothiazide, chlorthalidone</td></tr>
 <tr><td>NSAIDs &amp; analgesics</td><td>Ibuprofen, naproxen, diclofenac, mefenamic acid (Ponstan), celecoxib, ketorolac, high-dose aspirin, paracetamol</td></tr>
 <tr><td>OTC cold, allergy &amp; GI products</td><td>Pseudoephedrine, diphenhydramine, loperamide, antacids, H2 blockers, omeprazole, potassium-based salt substitutes</td></tr>
+<tr><td>Multivitamins</td><td>Standard multivitamin (contains vitamin A) vs. renal-specific vitamin (e.g., Nephrocaps, Renax) — see the Pearls &amp; Pitfalls note above</td></tr>
 <tr><td>Nephrotoxins &amp; contrast</td><td>Iodinated contrast, aminoglycosides, vancomycin, amphotericin B, cisplatin, foscarnet, tenofovir, cidofovir</td></tr>
 <tr><td>Transplant immunosuppressants</td><td>Tacrolimus, cyclosporine, sirolimus, mycophenolate, azathioprine</td></tr>
 <tr><td>CYP3A4/P-gp modifiers</td><td>Azole antifungals, macrolides, non-dihydropyridine CCBs, rifampin, phenytoin, carbamazepine, ritonavir, St. John's wort</td></tr>
@@ -2322,7 +2330,9 @@ const DIC_DRUGS = {
   noni_juice:{name:'Noni Juice',aliases:['noni'],classes:['kraise']},
   star_fruit:{name:'Star Fruit (Kamias/Balimbing)',aliases:['kamias','balimbing','carambola'],classes:['kraise']},
   ginseng:{name:'Ginseng',aliases:[],classes:[]},
-  vitamin_e:{name:'Vitamin E (high-dose)',aliases:['tocopherol','vit e','vitamin e'],classes:['bleedherb']}
+  vitamin_e:{name:'Vitamin E (high-dose)',aliases:['tocopherol','vit e','vitamin e'],classes:['bleedherb']},
+  multivitamin_standard:{name:'Standard Multivitamin (contains Vitamin A)',aliases:['multivitamins','multivitamin','centrum'],classes:[]},
+  renal_vitamin:{name:'Renal Vitamin (e.g., Nephrocaps, Renax)',aliases:['nephrocaps','renax','nephroplex','renal vitamin','renal multivitamin'],classes:[]}
 };
 
 const DIC_SEV_RANK = {contra:4,major:3,moderate:2,minor:1};
@@ -2383,6 +2393,7 @@ const DIC_DRUGCLASS_RULES = [
 ];
 
 const DIC_PAIR_RULES = [
+  ['multivitamin_standard','calcium_carbonate_antacid','moderate',"Standard multivitamins usually contain vitamin D (cholecalciferol/ergocalciferol); combined with a calcium-based phosphate binder or antacid, the added calcium and vitamin D load raises the risk of hypercalcemia — a particular concern in advanced CKD/ESRD where calcium and vitamin D handling is already deranged.","Avoid routine standard-multivitamin use in advanced CKD, dialysis, or transplant patients on calcium-based binders; use a renal-specific vitamin formulation instead and monitor calcium and phosphate."],
   ['metformin','iodinated_contrast','moderate',"Reduced kidney function slows metformin's elimination; if contrast causes acute kidney injury on top of that, metformin can accumulate and contribute to lactic acidosis.","Follow current guidance (usually based on eGFR and the presence of other risk factors) on whether to hold metformin around contrast administration; recheck renal function before restarting."],
   ['metformin','cimetidine','minor',"Cimetidine competes with metformin for renal tubular secretion, modestly raising metformin levels.","Usually not clinically significant at typical doses; be aware in patients with reduced kidney function already near a metformin dosing threshold."],
   ['allopurinol','warfarin','minor',"Allopurinol may modestly potentiate warfarin's anticoagulant effect by inhibiting its metabolism.","Check INR after starting or stopping allopurinol in a patient on warfarin."],
