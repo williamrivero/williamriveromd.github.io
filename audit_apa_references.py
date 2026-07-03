@@ -17,7 +17,9 @@ five lightweight heuristics:
   DOI     — a doi.org link (preferred) OR another http URL
   YEAR    — a (YYYY) year in parens
   AUTH    — an "Author, X." style author block before the year, OR an
-            "& Lastname, X. Y." for multi-author cites
+            "& Lastname, X. Y." for multi-author cites, OR a corporate/
+            group author ending in an acronym in parens right before the
+            year, e.g. "... (KDIGO) CKD Work Group. (2024)."
   PAGES   — page range "NN-NN" or "NN–NN" or e-locator "eNNNN"
 
 A citation gets a PASS if ITAL + DOI + YEAR + AUTH are all present.
@@ -79,7 +81,8 @@ def check_apa(cite):
         'DOI':   bool(re.search(r'doi\.org/', cite, re.I)),
         'URL':   bool(re.search(r'https?://', cite)),
         'YEAR':  bool(re.search(r'\(\s*(19|20)\d{2}\s*[a-z]?\)', cite)),
-        'AUTH':  bool(re.search(r'[A-Z][a-zA-Z\-]+,\s+[A-Z]\.', cite)),
+        'AUTH':  bool(re.search(r'[A-Z][a-zA-Z\-]+,\s+[A-Z]\.', cite)) or
+                 bool(re.search(r'\([A-Z]{2,8}\)[^()]{0,60}\.\s*\(\s*(19|20)\d{2}', cite)),
         'PAGES': bool(re.search(r'\b\d+[–-]\d+\b|e\d{4,}', cite)),
     }
     # Pass = italics + (DOI or URL) + year + at least one Author, X. block.
