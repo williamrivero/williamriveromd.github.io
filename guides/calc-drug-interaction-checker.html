@@ -2006,13 +2006,13 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <tr><td>Aldosterone antagonists &amp; K-sparing diuretics</td><td>Spironolactone, eplerenone, finerenone, amiloride, triamterene</td></tr>
 <tr><td>Loop &amp; thiazide diuretics</td><td>Furosemide, torsemide, bumetanide, hydrochlorothiazide, chlorthalidone</td></tr>
 <tr><td>NSAIDs &amp; analgesics</td><td>Ibuprofen, naproxen, diclofenac, mefenamic acid (Ponstan), celecoxib, ketorolac, high-dose aspirin, paracetamol</td></tr>
-<tr><td>OTC cold, allergy &amp; GI products</td><td>Pseudoephedrine, diphenhydramine, loperamide, antacids, H2 blockers, omeprazole, potassium-based salt substitutes</td></tr>
+<tr><td>OTC cold, allergy &amp; GI products</td><td>Pseudoephedrine, phenylephrine cold/flu combos (Decolgen, Neozep, Bioflu, Sinutab), diphenhydramine, loperamide, antacids, H2 blockers, omeprazole/esomeprazole, potassium-based salt substitutes</td></tr>
 <tr><td>Multivitamins</td><td>Standard multivitamin (contains vitamin A) vs. renal-specific vitamin (e.g., Nephrocaps, Renax) — see the Pearls &amp; Pitfalls note above</td></tr>
 <tr><td>Nephrotoxins &amp; contrast</td><td>Iodinated contrast, aminoglycosides, vancomycin, amphotericin B, cisplatin, foscarnet, tenofovir, cidofovir</td></tr>
 <tr><td>Transplant immunosuppressants</td><td>Tacrolimus, cyclosporine, sirolimus, mycophenolate, azathioprine</td></tr>
 <tr><td>CYP3A4/P-gp modifiers</td><td>Azole antifungals, macrolides, non-dihydropyridine CCBs, rifampin, phenytoin, carbamazepine, ritonavir, St. John's wort</td></tr>
 <tr><td>Anticoagulants &amp; antiplatelets</td><td>Warfarin, apixaban, rivaroxaban, dabigatran, edoxaban, clopidogrel, aspirin</td></tr>
-<tr><td>Cardiac &amp; metabolic</td><td>Digoxin, amiodarone, lithium, methotrexate, colchicine, allopurinol, febuxostat, statins, gemfibrozil, SGLT2 inhibitors, metformin</td></tr>
+<tr><td>Cardiac &amp; metabolic</td><td>Digoxin, amiodarone, lithium, methotrexate, colchicine, allopurinol, febuxostat, statins, fibrates (gemfibrozil, fenofibrate), SGLT2 inhibitors, metformin</td></tr>
 <tr><td>Herbal &amp; supplement</td><td>St. John's wort, turmeric, ginkgo biloba, garlic, cranberry, licorice, noni juice, star fruit (kamias/balimbing), ginseng, high-dose vitamin E</td></tr>
 </tbody>
 </table>
@@ -2261,14 +2261,16 @@ const DIC_DRUGS = {
   ketorolac:{name:'Ketorolac',aliases:['toradol'],classes:['nsaid','nephro']},
   aspirin_highdose:{name:'Aspirin (high dose)',aliases:['aspirin'],classes:['nsaid','antiplatelet']},
   paracetamol:{name:'Paracetamol (Acetaminophen)',aliases:['biogesic','tylenol','acetaminophen'],classes:[]},
-  pseudoephedrine:{name:'Pseudoephedrine',aliases:['sudafed','neozep'],classes:[]},
-  diphenhydramine:{name:'Diphenhydramine',aliases:['benadryl'],classes:[]},
+  pseudoephedrine:{name:'Pseudoephedrine',aliases:['sudafed'],classes:['decongestant']},
+  phenylephrine_combo:{name:'Phenylephrine Cold/Flu Combo (Decolgen, Neozep, Sinutab)',aliases:['decolgen','decolgen forte','neozep','neozep forte','phenylephrine','bioflu','sinutab'],classes:['decongestant','antihistamine1st']},
+  diphenhydramine:{name:'Diphenhydramine',aliases:['benadryl'],classes:['antihistamine1st']},
   loperamide:{name:'Loperamide',aliases:['imodium','diatabs'],classes:[]},
   calcium_carbonate_antacid:{name:'Calcium Carbonate Antacid',aliases:['tums'],classes:['antacid']},
   aluminum_hydroxide_antacid:{name:'Aluminum/Magnesium Antacid',aliases:['maalox','kremil-s','kremil s'],classes:['antacid']},
   famotidine:{name:'Famotidine',aliases:['pepcid'],classes:[]},
   cimetidine:{name:'Cimetidine',aliases:['tagamet'],classes:[]},
   omeprazole:{name:'Omeprazole',aliases:['losec'],classes:['ppi']},
+  esomeprazole:{name:'Esomeprazole',aliases:['nexium'],classes:['ppi']},
   potassium_salt_substitute:{name:'Potassium Salt Substitute',aliases:['no salt','nosalt','lite salt','diet salt'],classes:['kraise']},
   iodinated_contrast:{name:'Iodinated Contrast (IV dye)',aliases:['contrast dye','ct contrast','contrast media'],classes:['nephro']},
   gentamicin:{name:'Gentamicin',aliases:[],classes:['nephro','aminoglycoside']},
@@ -2317,6 +2319,7 @@ const DIC_DRUGS = {
   simvastatin:{name:'Simvastatin',aliases:['zocor'],classes:['statin']},
   atorvastatin:{name:'Atorvastatin',aliases:['lipitor'],classes:['statin']},
   gemfibrozil:{name:'Gemfibrozil',aliases:['lopid'],classes:['fibrate']},
+  fenofibrate:{name:'Fenofibrate',aliases:['tricor','lipanthyl'],classes:['fibrate']},
   dapagliflozin:{name:'Dapagliflozin',aliases:['forxiga'],classes:['sglt2']},
   empagliflozin:{name:'Empagliflozin',aliases:['jardiance'],classes:['sglt2']},
   insulin:{name:'Insulin',aliases:[],classes:['hypo']},
@@ -2359,7 +2362,10 @@ const DIC_CLASS_RULES = [
   ['nsaid','nsaid','minor',"Combining two NSAIDs (including high-dose aspirin) does not add meaningful pain relief but does add GI bleeding and kidney risk.","Avoid routine use of two NSAIDs together; if aspirin is for heart protection, keep it at the lowest effective dose and add gastroprotection if another NSAID is truly needed."],
   ['nsaid','antiplatelet','moderate',"Combining an NSAID with an antiplatelet drug increases GI bleeding risk beyond either alone.","Use paracetamol instead of an NSAID when possible for patients on antiplatelet therapy; add gastroprotection if an NSAID is necessary."],
   ['sglt2','loopthz','moderate',"SGLT2 inhibitors cause osmotic diuresis; combined with a loop or thiazide diuretic, the added volume loss raises the risk of dehydration, hypotension, and acute kidney injury, especially in older adults.","Counsel on hydration and sick-day rules; consider a lower diuretic dose when starting an SGLT2 inhibitor, and check renal function and volume status after."],
-  ['sglt2','hypo','minor',"Adding an SGLT2 inhibitor to insulin or a sulfonylurea can increase hypoglycemia risk, since SGLT2 inhibitors independently lower glucose.","Consider a proactive dose reduction of insulin or the sulfonylurea when starting an SGLT2 inhibitor; counsel on hypoglycemia symptoms."]
+  ['sglt2','hypo','minor',"Adding an SGLT2 inhibitor to insulin or a sulfonylurea can increase hypoglycemia risk, since SGLT2 inhibitors independently lower glucose.","Consider a proactive dose reduction of insulin or the sulfonylurea when starting an SGLT2 inhibitor; counsel on hypoglycemia symptoms."],
+  ['decongestant','acei_arb','moderate',"Phenylephrine and pseudoephedrine are sympathomimetic decongestants that constrict blood vessels and raise blood pressure and heart rate, which can blunt the blood-pressure-lowering effect of an ACE inhibitor or ARB.","Ask about OTC cold/flu combination use (Decolgen, Neozep, Bioflu, Sinutab, and similar) in any hypertensive or CKD patient; prefer a decongestant-free formulation (plain paracetamol, or an antihistamine alone) or limit to short-term, lowest-dose use with home blood pressure checks."],
+  ['decongestant','loopthz','minor',"Decongestants raise blood pressure and heart rate, which can work against a diuretic's blood-pressure-lowering effect.","Monitor blood pressure with regular or repeated use; prefer a decongestant-free option when possible."],
+  ['antihistamine1st','antihistamine1st','minor',"Combining two first-generation (sedating) antihistamines — as can happen when an OTC cold/flu combo (Decolgen, Neozep, Bioflu, Sinutab) is taken alongside a separate antihistamine like diphenhydramine — adds sedation and anticholinergic side effects (dry mouth, constipation, urinary retention) without added benefit. Urinary retention is a particular concern in older men with prostate enlargement.","Avoid routine use of two antihistamine-containing products together; check the ingredient list of combination cold/flu remedies before adding a separate antihistamine."]
 ];
 
 const DIC_DRUGCLASS_RULES = [
