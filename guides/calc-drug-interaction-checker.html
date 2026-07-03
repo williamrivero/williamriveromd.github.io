@@ -1847,6 +1847,34 @@ html[data-theme="dark"] #dic-search{background:#141c2a;border-color:#2a3548;colo
 html[data-theme="dark"] .dic-card{background:#1a2535;border-color:#2a3548;}
 html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,html[data-theme="dark"] .dic-card .dic-mgmt strong{color:var(--text);}
 @media(max-width:520px){.dic-chip{font-size:12.5px;}}
+
+/* ── Patient context panel, triple-whammy banner, sick-day & renal-adjustment sections ── */
+.dic-ctx-wrap{border:1px solid var(--border);border-radius:10px;margin-bottom:16px;background:var(--bg);}
+.dic-ctx-summary{cursor:pointer;list-style:none;padding:11px 16px;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:var(--teal);display:flex;align-items:center;gap:8px;}
+.dic-ctx-summary::-webkit-details-marker{display:none;}
+.dic-ctx-summary::after{content:"+";margin-left:auto;font-size:1.2rem;color:var(--teal);}
+.dic-ctx-wrap[open] .dic-ctx-summary::after{content:"\2212";}
+.dic-ctx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;padding:2px 16px 16px;}
+.dic-ctx-field label{display:block;font-size:11.5px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
+.dic-ctx-field input[type="number"],.dic-ctx-field select{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:7px;background:var(--white);color:var(--text);font-family:'Manrope',sans-serif;font-size:14px;}
+.dic-ctx-checkbox{display:flex;align-items:flex-end;grid-column:span 2;}
+.dic-ctx-checkbox label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--text);text-transform:none;letter-spacing:0;}
+.dic-ctx-checkbox input[type="checkbox"]{width:16px;height:16px;accent-color:var(--teal);}
+@media(max-width:560px){.dic-ctx-checkbox{grid-column:1/-1;}}
+.dic-ctx-banner{border-radius:10px;padding:12px 16px;margin:0 0 14px;font-size:13.5px;line-height:1.6;background:#7f1d1d;color:#fff;}
+.dic-triple{border-radius:12px;padding:16px 20px;margin-bottom:16px;background:#7f1d1d;border:2px solid #5c1414;}
+.dic-triple-title{font-family:'Inter',sans-serif;font-weight:800;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.dic-triple p{color:rgba(255,255,255,.94);font-size:13.5px;line-height:1.6;margin:0 0 6px;}
+.dic-triple .dic-mgmt strong{color:#fff;}
+.dic-sickday-section,.dic-adj-section{border-top:1px solid var(--border);margin-top:18px;padding-top:14px;}
+.dic-sickday-title,.dic-adj-title{font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);margin-bottom:8px;}
+.dic-adj-row{display:flex;gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px dashed var(--border);font-size:13.5px;color:var(--text-mid);}
+.dic-adj-row:last-child{border-bottom:none;}
+.dic-adj-row strong{color:var(--navy);flex:0 0 auto;}
+.dic-adj-row a{color:var(--teal);white-space:nowrap;}
+html[data-theme="dark"] .dic-ctx-wrap{background:#141c2a;border-color:#2a3548;}
+html[data-theme="dark"] .dic-ctx-field input,html[data-theme="dark"] .dic-ctx-field select{background:#1a2535;border-color:#2a3548;color:var(--text);}
+html[data-theme="dark"] .dic-adj-row strong,html[data-theme="dark"] .dic-sickday-title,html[data-theme="dark"] .dic-adj-title{color:var(--text);}
 </style>
 </head>
 <body class="calc-page">
@@ -1916,7 +1944,7 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <div class="alert-icon">⚠️</div>
 <div class="alert-body">
 <h4>When NOT to rely on it</h4>
-<p>This is a curated subset of roughly 70 drugs and their best-documented nephrology-relevant interactions — it is <strong>not</strong> a comprehensive interaction database like Lexicomp, Micromedex, or Medscape's checker, and it does not cover herbal supplements, most oncology regimens, or every drug on the market. A drug pair showing no result here has <strong>not</strong> been confirmed safe — it may simply be outside this tool's scope. Always confirm against a full-database interaction checker or pharmacist review before acting on, or dismissing, any combination.</p>
+<p>This is a curated subset of roughly 130 drugs (plus common herbal/OTC products) and their best-documented nephrology-relevant interactions — it is <strong>not</strong> a comprehensive interaction database like Lexicomp, Micromedex, or Medscape's checker, and it does not cover most oncology regimens or every drug on the market. A drug pair showing no result here has <strong>not</strong> been confirmed safe — it may simply be outside this tool's scope. The optional eGFR/potassium/dialysis/sick-day fields sharpen a handful of specific alerts (finerenone's eGFR cutoff, hyperkalemia severity, sick-day cautions) — they do not replace a full renal medication review. Always confirm against a full-database interaction checker or pharmacist review before acting on, or dismissing, any combination.</p>
 </div>
 </div>
 </div>
@@ -1929,7 +1957,7 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <h4>The "triple whammy"</h4>
-<p>NSAID + ACE inhibitor/ARB + diuretic is the single most common preventable drug-induced AKI pattern in outpatients — each drug independently reduces renal perfusion or filtration, and together they can precipitate acute kidney injury within days, especially with volume depletion (fever, diarrhea, hot weather). Counsel every CKD patient on this combination explicitly.</p>
+<p>NSAID + ACE inhibitor/ARB + diuretic is the single most common preventable drug-induced AKI pattern in outpatients — each drug independently reduces renal perfusion or filtration, and together they can precipitate acute kidney injury within days, especially with volume depletion (fever, diarrhea, hot weather). The checker detects all three drugs together as one combined alert (not three separate pairwise flags) — counsel every CKD patient on this combination explicitly.</p>
 </div>
 </div>
 <div class="alert alert-teal">
@@ -1957,7 +1985,7 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <div class="alert-icon">🚫</div>
 <div class="alert-body">
 <h4>Pitfalls</h4>
-<p>(1) This tool checks pairs only — it does not model three-or-more-drug additive effects (e.g., triple hyperkalemia risk), so read the individual pairwise flags together. (2) Severity here reflects typical risk in reduced renal function; the same pair may be lower-risk with normal kidney function. (3) A "no interactions found" result reflects this tool's limited drug list, not a guarantee of safety. (4) Always re-verify against current prescribing information — interaction data and drug labels change.</p>
+<p>(1) The engine is pairwise by design, with one explicit exception (the NSAID+ACEi/ARB+diuretic "triple whammy," detected as a true three-drug combination) — beyond that, read multiple pairwise flags together, since three-or-more-drug additive effects (e.g., triple hyperkalemia risk from four potassium-raising drugs) are not separately modeled. (2) Severity here reflects typical risk in reduced renal function; the same pair may be lower-risk with normal kidney function. (3) A "no interactions found" result reflects this tool's limited drug list, not a guarantee of safety. (4) The optional patient-context fields (eGFR, potassium, dialysis, sick-day) sharpen specific alerts but do not verify every entry against them — always re-verify against current prescribing information and the actual lab values in the chart.</p>
 </div>
 </div>
 </div>
@@ -1966,15 +1994,40 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <section class="section" id="calculator">
 <div class="section-tag">Interactive Tool</div>
 <h2>Drug Interaction Checker</h2>
-<p>Search and add every medicine — prescription, over-the-counter, or herbal/supplement — the patient is taking. The checker screens every possible pair automatically and lists what it finds below.</p>
+<p>Search and add every medicine — prescription, over-the-counter, or herbal/supplement — the patient is taking. Optionally add eGFR, potassium, dialysis status, and a sick-day flag to sharpen the alerts. The checker screens every pair automatically, detects the NSAID+ACEi/ARB+diuretic "triple whammy" as one combined alert, and lists what it finds below.</p>
 <div class="calc-wrap">
 <div class="alert alert-amber" style="margin-bottom:20px;">
 <div class="alert-icon">⚠️</div>
 <div class="alert-body">
-<h4>Not a full-database checker</h4>
-<p>This tool covers roughly 100 medicines and herbal/OTC products commonly relevant to kidney disease, dialysis, and transplant care. It is <strong>not</strong> exhaustive like Lexicomp, Micromedex, or Medscape's checker, and does not cover every drug, herbal product, dose, or timing effect. A combination showing no result has <strong>not</strong> been confirmed safe — it may simply be outside this tool's scope. Always confirm with your doctor or pharmacist before starting, stopping, or combining any medicines.</p>
+<h4>Clinical decision support, not a prescribing authority</h4>
+<p>This tool covers roughly 130 medicines and herbal/OTC products commonly relevant to Philippine outpatient, internal medicine, and nephrology prescribing. It is <strong>not</strong> exhaustive like Lexicomp, Micromedex, or Medscape's checker, and does not cover every drug, herbal product, dose, or timing effect. A combination showing no result has <strong>not</strong> been confirmed safe — it may simply be outside this tool's scope. <strong>Review clinically and correlate with the patient's status, labs, and current guidelines</strong> — always confirm with a doctor or pharmacist before starting, stopping, or combining any medicines.</p>
 </div>
 </div>
+
+<details class="dic-ctx-wrap">
+<summary class="dic-ctx-summary">Patient context (optional) — sharpens the alerts below</summary>
+<div class="dic-ctx-grid">
+<div class="dic-ctx-field">
+<label for="dic-ctx-egfr">eGFR (mL/min/1.73 m²)</label>
+<input type="number" id="dic-ctx-egfr" min="0" max="150" step="1" placeholder="e.g. 22" oninput="dicOnCtxChange()">
+</div>
+<div class="dic-ctx-field">
+<label for="dic-ctx-k">Serum potassium (mmol/L)</label>
+<input type="number" id="dic-ctx-k" min="0" max="10" step="0.1" placeholder="e.g. 5.6" oninput="dicOnCtxChange()">
+</div>
+<div class="dic-ctx-field">
+<label for="dic-ctx-dialysis">Dialysis status</label>
+<select id="dic-ctx-dialysis" onchange="dicOnCtxChange()">
+<option value="none">None</option>
+<option value="hd">Hemodialysis (HD)</option>
+<option value="pd">Peritoneal dialysis (PD)</option>
+</select>
+</div>
+<div class="dic-ctx-field dic-ctx-checkbox">
+<label><input type="checkbox" id="dic-ctx-sickday" onchange="dicOnCtxChange()"> Sick day — vomiting, diarrhea, poor intake, fever/sepsis, or recent contrast</label>
+</div>
+</div>
+</details>
 
 <div class="dic-search-wrap">
 <label for="dic-search" class="dic-search-label">Add a medicine (generic or brand name)</label>
@@ -1988,11 +2041,16 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 </div>
 
 <div id="dic-empty" class="dic-empty-state">Add two or more medicines to see interactions.</div>
+<div id="dic-ctx-banner" class="dic-ctx-banner" hidden></div>
+<div id="dic-solo" class="dic-triple" hidden></div>
 <div id="dic-summary" class="dic-summary" hidden></div>
+<div id="dic-triple" class="dic-triple" hidden></div>
+<div id="dic-sickday-section" class="dic-sickday-section" hidden></div>
 <div id="dic-results" class="dic-results"></div>
+<div id="dic-adj-section" class="dic-adj-section" hidden></div>
 
 </div>
-<p class="calc-disclaimer">⚕ This checker screens curated pairwise drug-drug interactions relevant to CKD, dialysis, and transplant care. It does not model three-or-more-drug combined effects, dose, or timing, and it is not a substitute for a full-database interaction checker or pharmacist/physician review. All computation runs in your browser; nothing you enter is stored or transmitted.</p>
+<p class="calc-disclaimer">⚕ This checker screens curated drug-drug interactions relevant to CKD, dialysis, and transplant care — pairwise, plus one explicit three-drug rule (the NSAID+ACEi/ARB+diuretic "triple whammy"). It does not model every three-or-more-drug combination, exact dose, or timing, and it is clinical decision support, not a prescribing authority — review clinically and correlate with the patient's status, labs, and current guidelines. All computation runs in your browser; nothing you enter is stored or transmitted.</p>
 </section>
 
 <details class="mdc-acc" id="coverage">
@@ -2002,17 +2060,20 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <table class="lab-table">
 <thead><tr><th>Category</th><th>Examples in the database</th></tr></thead>
 <tbody>
-<tr><td>RAAS agents</td><td>ACE inhibitors, ARBs, ARNI (sacubitril/valsartan), direct renin inhibitor (aliskiren)</td></tr>
+<tr><td>RAAS agents</td><td>ACE inhibitors (incl. perindopril), ARBs, ARNI (sacubitril/valsartan), direct renin inhibitor (aliskiren)</td></tr>
 <tr><td>Aldosterone antagonists &amp; K-sparing diuretics</td><td>Spironolactone, eplerenone, finerenone, amiloride, triamterene</td></tr>
-<tr><td>Loop &amp; thiazide diuretics</td><td>Furosemide, torsemide, bumetanide, hydrochlorothiazide, chlorthalidone</td></tr>
+<tr><td>Loop &amp; thiazide-type diuretics</td><td>Furosemide, torsemide, bumetanide, hydrochlorothiazide, chlorthalidone, indapamide, metolazone</td></tr>
 <tr><td>NSAIDs &amp; analgesics</td><td>Ibuprofen, naproxen, diclofenac, mefenamic acid (Ponstan), celecoxib, ketorolac, high-dose aspirin, paracetamol</td></tr>
 <tr><td>OTC cold, allergy &amp; GI products</td><td>Pseudoephedrine, phenylephrine cold/flu combos (Decolgen, Neozep, Bioflu, Sinutab), diphenhydramine, loperamide, antacids, H2 blockers, omeprazole/esomeprazole, potassium-based salt substitutes</td></tr>
 <tr><td>Multivitamins</td><td>Standard multivitamin (contains vitamin A) vs. renal-specific vitamin (e.g., Nephrocaps, Renax) — see the Pearls &amp; Pitfalls note above</td></tr>
+<tr><td>GLP-1 receptor agonists &amp; DPP-4 inhibitors</td><td>Semaglutide, dulaglutide, liraglutide, exenatide, lixisenatide, tirzepatide; sitagliptin, alogliptin, saxagliptin</td></tr>
+<tr><td>SGLT2 inhibitors</td><td>Dapagliflozin, empagliflozin, canagliflozin</td></tr>
+<tr><td>Neurology / antiviral / antibiotic renal-dosed agents</td><td>Gabapentin, pregabalin, levetiracetam, ciprofloxacin, levofloxacin, cefepime, acyclovir, valacyclovir, oseltamivir</td></tr>
 <tr><td>Nephrotoxins &amp; contrast</td><td>Iodinated contrast, aminoglycosides, vancomycin, amphotericin B, cisplatin, foscarnet, tenofovir, cidofovir</td></tr>
 <tr><td>Transplant immunosuppressants</td><td>Tacrolimus, cyclosporine, sirolimus, mycophenolate, azathioprine</td></tr>
 <tr><td>CYP3A4/P-gp modifiers</td><td>Azole antifungals, macrolides, non-dihydropyridine CCBs, rifampin, phenytoin, carbamazepine, ritonavir, St. John's wort</td></tr>
 <tr><td>Anticoagulants &amp; antiplatelets</td><td>Warfarin, apixaban, rivaroxaban, dabigatran, edoxaban, clopidogrel, aspirin</td></tr>
-<tr><td>Cardiac &amp; metabolic</td><td>Digoxin, amiodarone, lithium, methotrexate, colchicine, allopurinol, febuxostat, statins (simvastatin, atorvastatin, rosuvastatin, pravastatin), fibrates (gemfibrozil, fenofibrate), SGLT2 inhibitors, metformin</td></tr>
+<tr><td>Cardiac &amp; metabolic</td><td>Digoxin, amiodarone, lithium, methotrexate, colchicine, allopurinol, febuxostat, statins (simvastatin, atorvastatin, rosuvastatin, pravastatin), fibrates (gemfibrozil, fenofibrate), metformin, insulin, glimepiride</td></tr>
 <tr><td>Herbal &amp; supplement</td><td>St. John's wort, turmeric, ginkgo biloba, garlic, cranberry, licorice, noni juice, star fruit (kamias/balimbing), ginseng, high-dose vitamin E</td></tr>
 </tbody>
 </table>
@@ -2032,7 +2093,7 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <tr><td><span class="teal-badge">Minor — be aware</span></td><td>Low clinical significance for most patients, but worth knowing about.</td></tr>
 </tbody>
 </table>
-<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Severity reflects typical risk in reduced renal function, which is this tool's intended context — the same pair may carry lower risk with normal kidney function. This tool checks pairs only; it does not model the added risk of three or more interacting drugs together (see the "triple whammy" pearl above).</p>
+<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">Severity reflects typical risk in reduced renal function, which is this tool's intended context — the same pair may carry lower risk with normal kidney function. The engine is pairwise, with the NSAID+ACEi/ARB+diuretic "triple whammy" detected as one explicit three-drug exception (see the pearl above) — other three-or-more-drug additive effects are not separately modeled. Entering eGFR, potassium, dialysis status, or a sick-day flag escalates or adds a small number of specific alerts (finerenone's eGFR cutoff, hyperkalemia severity, sick-day cautions, dialysis-relevant dosing notes) but does not re-verify the whole list against them.</p>
 <h3 class="mdc-sub">Evidence &amp; References</h3>
 <p>The interaction database draws on well-established pharmacology teaching (renal drug elimination, CYP3A4/P-glycoprotein metabolism, and additive nephrotoxicity) plus the specific trials, case reports, and reviews below for the higher-stakes flags — dual RAAS blockade, the NSAID/RAAS-agent/diuretic "triple whammy," azathioprine-allopurinol myelosuppression, colchicine with CYP3A4 inhibitors in renal impairment, St. John's wort with transplant drugs, star fruit nephrotoxicity, and metformin with iodinated contrast.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
@@ -2232,34 +2293,37 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <script>
 /* Drug Interaction Checker — nephrology-focused curated database + rule engine */
 const DIC_DRUGS = {
-  lisinopril:{name:'Lisinopril',aliases:['zestril'],classes:['acei_arb','acei_only','kraise']},
-  enalapril:{name:'Enalapril',aliases:['renitec','vasotec'],classes:['acei_arb','acei_only','kraise']},
-  ramipril:{name:'Ramipril',aliases:['tritace'],classes:['acei_arb','acei_only','kraise']},
-  captopril:{name:'Captopril',aliases:['capoten'],classes:['acei_arb','acei_only','kraise']},
-  losartan:{name:'Losartan',aliases:['cozaar'],classes:['acei_arb','kraise']},
-  valsartan:{name:'Valsartan',aliases:['diovan'],classes:['acei_arb','kraise']},
-  telmisartan:{name:'Telmisartan',aliases:['micardis'],classes:['acei_arb','kraise']},
-  irbesartan:{name:'Irbesartan',aliases:['aprovel','avapro'],classes:['acei_arb','kraise']},
-  sacubitril_valsartan:{name:'Sacubitril/Valsartan',aliases:['entresto','arni'],classes:['acei_arb','kraise']},
+  lisinopril:{name:'Lisinopril',aliases:['zestril'],classes:['acei_arb','acei_only','kraise','volumesensitive']},
+  enalapril:{name:'Enalapril',aliases:['renitec','vasotec'],classes:['acei_arb','acei_only','kraise','volumesensitive']},
+  ramipril:{name:'Ramipril',aliases:['tritace'],classes:['acei_arb','acei_only','kraise','volumesensitive']},
+  captopril:{name:'Captopril',aliases:['capoten'],classes:['acei_arb','acei_only','kraise','volumesensitive']},
+  perindopril:{name:'Perindopril',aliases:['coversyl'],classes:['acei_arb','acei_only','kraise','volumesensitive']},
+  losartan:{name:'Losartan',aliases:['cozaar','lifezar'],classes:['acei_arb','kraise','volumesensitive']},
+  valsartan:{name:'Valsartan',aliases:['diovan'],classes:['acei_arb','kraise','volumesensitive']},
+  telmisartan:{name:'Telmisartan',aliases:['micardis'],classes:['acei_arb','kraise','volumesensitive']},
+  irbesartan:{name:'Irbesartan',aliases:['aprovel','avapro'],classes:['acei_arb','kraise','volumesensitive']},
+  sacubitril_valsartan:{name:'Sacubitril/Valsartan',aliases:['entresto','arni'],classes:['acei_arb','kraise','volumesensitive']},
   aliskiren:{name:'Aliskiren',aliases:['rasilez','tekturna'],classes:[]},
-  spironolactone:{name:'Spironolactone',aliases:['aldactone'],classes:['aldo','kraise']},
-  eplerenone:{name:'Eplerenone',aliases:['inspra'],classes:['aldo','kraise']},
+  spironolactone:{name:'Spironolactone',aliases:['aldactone'],classes:['aldo','kraise','diuretic_any','volumesensitive']},
+  eplerenone:{name:'Eplerenone',aliases:['inspra'],classes:['aldo','kraise','diuretic_any','volumesensitive']},
   finerenone:{name:'Finerenone',aliases:['kerendia'],classes:['aldo','kraise']},
-  amiloride:{name:'Amiloride',aliases:['midamor'],classes:['ksparing','kraise']},
-  triamterene:{name:'Triamterene',aliases:['dyrenium'],classes:['ksparing','kraise']},
-  furosemide:{name:'Furosemide',aliases:['lasix'],classes:['loopthz']},
-  torsemide:{name:'Torsemide',aliases:['demadex'],classes:['loopthz']},
-  bumetanide:{name:'Bumetanide',aliases:['bumex'],classes:['loopthz']},
-  hydrochlorothiazide:{name:'Hydrochlorothiazide',aliases:['hctz','microzide'],classes:['loopthz','thiazide']},
-  chlorthalidone:{name:'Chlorthalidone',aliases:['hygroton'],classes:['loopthz','thiazide']},
+  amiloride:{name:'Amiloride',aliases:['midamor'],classes:['ksparing','kraise','diuretic_any']},
+  triamterene:{name:'Triamterene',aliases:['dyrenium'],classes:['ksparing','kraise','diuretic_any']},
+  furosemide:{name:'Furosemide',aliases:['lasix'],classes:['loopthz','diuretic_any','volumesensitive'],adj:{note:'Loop diuretic dosing is titrated by response, not eGFR — but higher doses are typically needed as CKD advances, and it stops working once the patient is anuric on dialysis.'}},
+  torsemide:{name:'Torsemide',aliases:['demadex'],classes:['loopthz','diuretic_any','volumesensitive']},
+  bumetanide:{name:'Bumetanide',aliases:['bumex'],classes:['loopthz','diuretic_any','volumesensitive']},
+  hydrochlorothiazide:{name:'Hydrochlorothiazide',aliases:['hctz','microzide'],classes:['loopthz','thiazide','diuretic_any','volumesensitive'],adj:{note:'Loses most of its effect once eGFR is well below 30 mL/min/1.73 m² — often combined with a loop diuretic instead in advanced CKD.'}},
+  chlorthalidone:{name:'Chlorthalidone',aliases:['hygroton'],classes:['loopthz','thiazide','diuretic_any','volumesensitive']},
+  indapamide:{name:'Indapamide',aliases:['natrilix'],classes:['loopthz','thiazide','diuretic_any','volumesensitive']},
+  metolazone:{name:'Metolazone',aliases:['zaroxolyn'],classes:['loopthz','thiazide','diuretic_any','volumesensitive']},
   amlodipine:{name:'Amlodipine',aliases:['norvasc'],classes:[]},
-  ibuprofen:{name:'Ibuprofen',aliases:['advil','medicol'],classes:['nsaid','nephro']},
-  naproxen:{name:'Naproxen',aliases:['flanax','naprosyn'],classes:['nsaid','nephro']},
-  diclofenac:{name:'Diclofenac',aliases:['voltaren','cataflam'],classes:['nsaid','nephro']},
-  mefenamic_acid:{name:'Mefenamic Acid',aliases:['ponstan'],classes:['nsaid','nephro']},
-  celecoxib:{name:'Celecoxib',aliases:['celebrex'],classes:['nsaid','nephro']},
-  ketorolac:{name:'Ketorolac',aliases:['toradol'],classes:['nsaid','nephro']},
-  aspirin_highdose:{name:'Aspirin (high dose)',aliases:['aspirin'],classes:['nsaid','antiplatelet']},
+  ibuprofen:{name:'Ibuprofen',aliases:['advil','medicol'],classes:['nsaid','nephro','volumesensitive']},
+  naproxen:{name:'Naproxen',aliases:['flanax','naprosyn'],classes:['nsaid','nephro','volumesensitive']},
+  diclofenac:{name:'Diclofenac',aliases:['voltaren','cataflam'],classes:['nsaid','nephro','volumesensitive']},
+  mefenamic_acid:{name:'Mefenamic Acid',aliases:['ponstan'],classes:['nsaid','nephro','volumesensitive']},
+  celecoxib:{name:'Celecoxib',aliases:['celebrex'],classes:['nsaid','nephro','volumesensitive']},
+  ketorolac:{name:'Ketorolac',aliases:['toradol'],classes:['nsaid','nephro','volumesensitive']},
+  aspirin_highdose:{name:'Aspirin (high dose)',aliases:['aspirin'],classes:['nsaid','antiplatelet','volumesensitive']},
   paracetamol:{name:'Paracetamol (Acetaminophen)',aliases:['biogesic','tylenol','acetaminophen'],classes:[]},
   pseudoephedrine:{name:'Pseudoephedrine',aliases:['sudafed'],classes:['decongestant']},
   phenylephrine_combo:{name:'Phenylephrine Cold/Flu Combo (Decolgen, Neozep, Sinutab)',aliases:['decolgen','decolgen forte','neozep','neozep forte','phenylephrine','bioflu','sinutab'],classes:['decongestant','antihistamine1st']},
@@ -2267,19 +2331,19 @@ const DIC_DRUGS = {
   loperamide:{name:'Loperamide',aliases:['imodium','diatabs'],classes:[]},
   calcium_carbonate_antacid:{name:'Calcium Carbonate Antacid',aliases:['tums'],classes:['antacid']},
   aluminum_hydroxide_antacid:{name:'Aluminum/Magnesium Antacid',aliases:['maalox','kremil-s','kremil s'],classes:['antacid']},
-  famotidine:{name:'Famotidine',aliases:['pepcid'],classes:[]},
-  cimetidine:{name:'Cimetidine',aliases:['tagamet'],classes:[]},
+  famotidine:{name:'Famotidine',aliases:['pepcid'],classes:[],adj:{note:'Renally cleared — reduce the dose/frequency as eGFR falls.'}},
+  cimetidine:{name:'Cimetidine',aliases:['tagamet'],classes:[],adj:{note:'Renally cleared — reduce the dose/frequency as eGFR falls.'}},
   omeprazole:{name:'Omeprazole',aliases:['losec'],classes:['ppi']},
   esomeprazole:{name:'Esomeprazole',aliases:['nexium'],classes:['ppi']},
   potassium_salt_substitute:{name:'Potassium Salt Substitute',aliases:['no salt','nosalt','lite salt','diet salt'],classes:['kraise']},
   iodinated_contrast:{name:'Iodinated Contrast (IV dye)',aliases:['contrast dye','ct contrast','contrast media'],classes:['nephro']},
-  gentamicin:{name:'Gentamicin',aliases:[],classes:['nephro','aminoglycoside']},
-  tobramycin:{name:'Tobramycin',aliases:[],classes:['nephro','aminoglycoside']},
-  amikacin:{name:'Amikacin',aliases:[],classes:['nephro','aminoglycoside']},
-  vancomycin:{name:'Vancomycin',aliases:['vancocin'],classes:['nephro']},
-  piperacillin_tazobactam:{name:'Piperacillin/Tazobactam',aliases:['tazocin','zosyn'],classes:['nephro']},
+  gentamicin:{name:'Gentamicin',aliases:[],classes:['nephro','aminoglycoside'],adj:{note:'Renally cleared with a narrow therapeutic index — dose and/or interval must be adjusted to eGFR, with level monitoring.',href:'calc-aminoglycoside-dosing.html'}},
+  tobramycin:{name:'Tobramycin',aliases:[],classes:['nephro','aminoglycoside'],adj:{note:'Renally cleared with a narrow therapeutic index — dose and/or interval must be adjusted to eGFR, with level monitoring.',href:'calc-aminoglycoside-dosing.html'}},
+  amikacin:{name:'Amikacin',aliases:[],classes:['nephro','aminoglycoside'],adj:{note:'Renally cleared with a narrow therapeutic index — dose and/or interval must be adjusted to eGFR, with level monitoring.',href:'calc-aminoglycoside-dosing.html'}},
+  vancomycin:{name:'Vancomycin',aliases:['vancocin'],classes:['nephro'],adj:{note:'Renally cleared — needs AUC-guided, eGFR-adjusted dosing and level monitoring.',href:'calc-vancomycin-auc.html'}},
+  piperacillin_tazobactam:{name:'Piperacillin/Tazobactam',aliases:['tazocin','zosyn'],classes:['nephro'],adj:{note:'Renally cleared beta-lactam — dose/interval needs adjustment as eGFR falls.',href:'calc-renal-abx-dosing.html'}},
   amphotericin_b:{name:'Amphotericin B',aliases:['fungizone'],classes:['nephro']},
-  cisplatin:{name:'Cisplatin',aliases:[],classes:['nephro']},
+  cisplatin:{name:'Cisplatin',aliases:[],classes:['nephro','volumesensitive']},
   foscarnet:{name:'Foscarnet',aliases:[],classes:['nephro']},
   tenofovir_df:{name:'Tenofovir Disoproxil Fumarate',aliases:['tenofovir','viread'],classes:['nephro']},
   cidofovir:{name:'Cidofovir',aliases:[],classes:['nephro']},
@@ -2304,28 +2368,47 @@ const DIC_DRUGS = {
   potassium_chloride:{name:'Potassium Chloride',aliases:['kalium durule','kcl'],classes:['kraise']},
   lithium:{name:'Lithium',aliases:['lithane'],classes:[]},
   methotrexate:{name:'Methotrexate',aliases:[],classes:[]},
-  digoxin:{name:'Digoxin',aliases:['lanoxin'],classes:[]},
+  digoxin:{name:'Digoxin',aliases:['lanoxin'],classes:[],adj:{note:'Almost entirely renally cleared with a narrow therapeutic index — dose must be reduced as eGFR falls, and levels/potassium monitored closely (toxicity risk rises sharply in reduced kidney function and on dialysis).',href:'calc-cockcroft-gault.html'}},
   amiodarone:{name:'Amiodarone',aliases:['cordarone'],classes:['digoxinraise']},
   warfarin:{name:'Warfarin',aliases:['coumadin'],classes:[]},
-  apixaban:{name:'Apixaban',aliases:['eliquis'],classes:['doac']},
-  rivaroxaban:{name:'Rivaroxaban',aliases:['xarelto'],classes:['doac']},
-  dabigatran:{name:'Dabigatran',aliases:['pradaxa'],classes:['doac']},
-  edoxaban:{name:'Edoxaban',aliases:['lixiana'],classes:['doac']},
+  apixaban:{name:'Apixaban',aliases:['eliquis'],classes:['doac'],adj:{note:'Renally cleared DOAC — dose depends on renal function plus age/weight criteria.',href:'calc-doac-renal-dosing.html'}},
+  rivaroxaban:{name:'Rivaroxaban',aliases:['xarelto'],classes:['doac'],adj:{note:'Renally cleared DOAC — dose depends on renal function and indication.',href:'calc-doac-renal-dosing.html'}},
+  dabigatran:{name:'Dabigatran',aliases:['pradaxa'],classes:['doac'],adj:{note:'The most renally-dependent DOAC — avoid or reduce dose as eGFR falls.',href:'calc-doac-renal-dosing.html'}},
+  edoxaban:{name:'Edoxaban',aliases:['lixiana'],classes:['doac'],adj:{note:'Renally cleared DOAC — dose depends on renal function, weight, and interacting drugs.',href:'calc-doac-renal-dosing.html'}},
   clopidogrel:{name:'Clopidogrel',aliases:['plavix'],classes:['antiplatelet']},
-  metformin:{name:'Metformin',aliases:['glucophage'],classes:[]},
-  colchicine:{name:'Colchicine',aliases:['colcrys'],classes:[]},
-  allopurinol:{name:'Allopurinol',aliases:['zyloric'],classes:['xoi']},
-  febuxostat:{name:'Febuxostat',aliases:['feburic'],classes:['xoi']},
+  metformin:{name:'Metformin',aliases:['glucophage'],classes:['volumesensitive'],adj:{note:'Renally cleared — dose is capped and then stopped as eGFR falls, to avoid lactic acidosis; also needs a sick-day hold.',href:'calc-metformin-ckd-safety.html'}},
+  colchicine:{name:'Colchicine',aliases:['colcrys'],classes:[],adj:{note:'Renally cleared with a narrow safety margin — dose must be reduced in CKD, and it accumulates further with strong CYP3A4/P-gp inhibitors (see interactions above).',href:'calc-neuropathic-gout-renal-dosing.html'}},
+  allopurinol:{name:'Allopurinol',aliases:['zyloric'],classes:['xoi'],adj:{note:'Renally cleared — starting dose and titration are lower in CKD to reduce hypersensitivity risk.',href:'calc-neuropathic-gout-renal-dosing.html'}},
+  febuxostat:{name:'Febuxostat',aliases:['feburic'],classes:['xoi'],adj:{note:'Mainly hepatically cleared, so dose adjustment is less critical than allopurinol\'s — but caution is still advised in severe CKD and it carries its own cardiovascular-safety caveat.',href:'calc-neuropathic-gout-renal-dosing.html'}},
   simvastatin:{name:'Simvastatin',aliases:['zocor'],classes:['statin','statin_cyp3a4']},
   atorvastatin:{name:'Atorvastatin',aliases:['lipitor'],classes:['statin','statin_cyp3a4']},
   rosuvastatin:{name:'Rosuvastatin',aliases:['crestor'],classes:['statin']},
   pravastatin:{name:'Pravastatin',aliases:['pravachol'],classes:['statin']},
   gemfibrozil:{name:'Gemfibrozil',aliases:['lopid'],classes:['fibrate']},
   fenofibrate:{name:'Fenofibrate',aliases:['tricor','lipanthyl'],classes:['fibrate']},
-  dapagliflozin:{name:'Dapagliflozin',aliases:['forxiga'],classes:['sglt2']},
-  empagliflozin:{name:'Empagliflozin',aliases:['jardiance'],classes:['sglt2']},
-  insulin:{name:'Insulin',aliases:[],classes:['hypo']},
-  glimepiride:{name:'Glimepiride',aliases:['amaryl'],classes:['hypo']},
+  dapagliflozin:{name:'Dapagliflozin',aliases:['forxiga'],classes:['sglt2','volumesensitive']},
+  empagliflozin:{name:'Empagliflozin',aliases:['jardiance'],classes:['sglt2','volumesensitive']},
+  canagliflozin:{name:'Canagliflozin',aliases:['invokana'],classes:['sglt2','volumesensitive']},
+  semaglutide:{name:'Semaglutide',aliases:['ozempic','rybelsus','wegovy'],classes:['glp1','volumesensitive']},
+  dulaglutide:{name:'Dulaglutide',aliases:['trulicity'],classes:['glp1','volumesensitive']},
+  liraglutide:{name:'Liraglutide',aliases:['victoza','saxenda'],classes:['glp1','volumesensitive']},
+  exenatide:{name:'Exenatide',aliases:['byetta','bydureon'],classes:['glp1','volumesensitive'],adj:{note:'Cleared renally — avoid at eGFR <30 mL/min/1.73 m² (stricter cutoff than other GLP-1 agonists).'}},
+  lixisenatide:{name:'Lixisenatide',aliases:['adlyxin','lyxumia'],classes:['glp1','volumesensitive'],adj:{note:'Partly renally cleared — use with caution and avoid in severe renal impairment.'}},
+  tirzepatide:{name:'Tirzepatide',aliases:['mounjaro','zepbound'],classes:['glp1','volumesensitive']},
+  insulin:{name:'Insulin',aliases:[],classes:['hypo'],adj:{note:'Renal clearance of insulin falls as CKD advances, prolonging its effect — dose typically needs to be reduced to avoid hypoglycemia, especially in CKD4–5/dialysis.'}},
+  glimepiride:{name:'Glimepiride',aliases:['amaryl'],classes:['hypo'],adj:{note:'Sulfonylurea with active renally-cleared metabolites — avoid or use with caution in advanced CKD due to prolonged hypoglycemia risk.'}},
+  sitagliptin:{name:'Sitagliptin',aliases:['januvia'],classes:['dpp4'],adj:{note:'DPP-4 inhibitor — dose needs reduction as eGFR falls.'}},
+  alogliptin:{name:'Alogliptin',aliases:['nesina'],classes:['dpp4'],adj:{note:'DPP-4 inhibitor — dose needs reduction as eGFR falls.'}},
+  saxagliptin:{name:'Saxagliptin',aliases:['onglyza'],classes:['dpp4'],adj:{note:'DPP-4 inhibitor — dose needs reduction as eGFR falls.'}},
+  gabapentin:{name:'Gabapentin',aliases:['neurontin'],classes:[],adj:{note:'Entirely renally cleared — dose/frequency must be reduced as eGFR falls; accumulation causes sedation, confusion, and myoclonus.',href:'calc-neuropathic-gout-renal-dosing.html'}},
+  pregabalin:{name:'Pregabalin',aliases:['lyrica'],classes:[],adj:{note:'Entirely renally cleared — dose/frequency must be reduced as eGFR falls; accumulation causes sedation and confusion.',href:'calc-neuropathic-gout-renal-dosing.html'}},
+  levetiracetam:{name:'Levetiracetam',aliases:['keppra'],classes:[],adj:{note:'Mostly renally cleared — dose must be reduced as eGFR falls, with a supplemental post-dialysis dose on HD days.'}},
+  ciprofloxacin:{name:'Ciprofloxacin',aliases:['ciprobay'],classes:['nephro'],adj:{note:'Renally cleared fluoroquinolone — dose/interval needs adjustment as eGFR falls.',href:'calc-renal-abx-dosing.html'}},
+  levofloxacin:{name:'Levofloxacin',aliases:['levaquin','tavanic'],classes:['nephro'],adj:{note:'Renally cleared fluoroquinolone — dose/interval needs adjustment as eGFR falls.',href:'calc-renal-abx-dosing.html'}},
+  cefepime:{name:'Cefepime',aliases:['maxipime'],classes:['nephro'],adj:{note:'Renally cleared beta-lactam — under-dosing the interval adjustment in CKD is a recognized cause of neurotoxicity (confusion, myoclonus, seizures).',href:'calc-renal-abx-dosing.html'}},
+  acyclovir:{name:'Acyclovir',aliases:['zovirax'],classes:['nephro','volumesensitive'],adj:{note:'Can crystallize in the renal tubules, especially with rapid IV infusion or dehydration — dose needs eGFR adjustment and good hydration.'}},
+  valacyclovir:{name:'Valacyclovir',aliases:['valtrex'],classes:['nephro','volumesensitive'],adj:{note:'Prodrug of acyclovir — same crystal-nephropathy and dehydration precautions; dose needs eGFR adjustment.'}},
+  oseltamivir:{name:'Oseltamivir',aliases:['tamiflu'],classes:[],adj:{note:'Renally cleared — dose must be reduced as eGFR falls.'}},
   st_johns_wort:{name:"St. John's Wort",aliases:['hypericum'],classes:['cyp3a4ind']},
   turmeric_curcumin:{name:'Turmeric / Curcumin',aliases:['luyang dilaw','curcumin'],classes:['bleedherb']},
   ginkgo_biloba:{name:'Ginkgo Biloba',aliases:['ginkgo'],classes:['bleedherb']},
@@ -2363,8 +2446,11 @@ const DIC_CLASS_RULES = [
   ['kraise','kraise','moderate',"Both raise serum potassium by different mechanisms — RAAS blockade, aldosterone antagonism, potassium-sparing diuresis, reduced renal potassium excretion, or a direct potassium load. Two together is a caution; three or more, especially with reduced kidney function, is when severe hyperkalemia most often happens.","Check a potassium level within 1–2 weeks of starting the combination (sooner if CKD is advanced) and again after any dose change. If three or more potassium-raising drugs or foods are being used together, review whether all are necessary."],
   ['nsaid','nsaid','minor',"Combining two NSAIDs (including high-dose aspirin) does not add meaningful pain relief but does add GI bleeding and kidney risk.","Avoid routine use of two NSAIDs together; if aspirin is for heart protection, keep it at the lowest effective dose and add gastroprotection if another NSAID is truly needed."],
   ['nsaid','antiplatelet','moderate',"Combining an NSAID with an antiplatelet drug increases GI bleeding risk beyond either alone.","Use paracetamol instead of an NSAID when possible for patients on antiplatelet therapy; add gastroprotection if an NSAID is necessary."],
-  ['sglt2','loopthz','moderate',"SGLT2 inhibitors cause osmotic diuresis; combined with a loop or thiazide diuretic, the added volume loss raises the risk of dehydration, hypotension, and acute kidney injury, especially in older adults.","Counsel on hydration and sick-day rules; consider a lower diuretic dose when starting an SGLT2 inhibitor, and check renal function and volume status after."],
+  ['sglt2','diuretic_any','moderate',"SGLT2 inhibitors cause osmotic diuresis; combined with a loop, thiazide, or aldosterone-antagonist diuretic, the added volume loss raises the risk of dehydration, hypotension, and acute kidney injury, especially in older adults.","Counsel on hydration and sick-day rules; consider a lower diuretic dose when starting an SGLT2 inhibitor, and check renal function and volume status after."],
+  ['sglt2','nsaid','moderate',"SGLT2 inhibitors already reduce intravascular volume through osmotic diuresis; an NSAID's reduction of kidney blood flow compounds this, raising acute kidney injury risk especially with any dehydration.","Prefer paracetamol for pain in patients on an SGLT2 inhibitor; if an NSAID is unavoidable, avoid it during illness, vomiting, diarrhea, or poor oral intake, and hold the SGLT2 inhibitor on sick days."],
   ['sglt2','hypo','minor',"Adding an SGLT2 inhibitor to insulin or a sulfonylurea can increase hypoglycemia risk, since SGLT2 inhibitors independently lower glucose.","Consider a proactive dose reduction of insulin or the sulfonylurea when starting an SGLT2 inhibitor; counsel on hypoglycemia symptoms."],
+  ['glp1','diuretic_any','moderate',"GLP-1 receptor agonists (semaglutide, dulaglutide, liraglutide, and similar) are generally kidney-protective in type 2 diabetes and CKD, but their GI side effects (nausea, vomiting, reduced intake) add another route to volume depletion when combined with a diuretic — this is a sick-day risk, not a reason to avoid the combination routinely.","No action needed with routine, well-tolerated use. Counsel on sick-day rules: during vomiting, diarrhea, or an inability to eat/drink normally, contact the prescriber about holding the diuretic and rechecking kidney function."],
+  ['glp1','nsaid','moderate',"NSAIDs are best avoided in CKD generally; the concern is specifically greater if GI losses (nausea, vomiting, reduced appetite) from a GLP-1 agonist coincide with an NSAID's reduction in kidney blood flow.","Prefer paracetamol for pain in patients on a GLP-1 receptor agonist; avoid an NSAID during any period of nausea, vomiting, or poor intake."],
   ['decongestant','acei_arb','moderate',"Phenylephrine and pseudoephedrine are sympathomimetic decongestants that constrict blood vessels and raise blood pressure and heart rate, which can blunt the blood-pressure-lowering effect of an ACE inhibitor or ARB.","Ask about OTC cold/flu combination use (Decolgen, Neozep, Bioflu, Sinutab, and similar) in any hypertensive or CKD patient; prefer a decongestant-free formulation (plain paracetamol, or an antihistamine alone) or limit to short-term, lowest-dose use with home blood pressure checks."],
   ['decongestant','loopthz','minor',"Decongestants raise blood pressure and heart rate, which can work against a diuretic's blood-pressure-lowering effect.","Monitor blood pressure with regular or repeated use; prefer a decongestant-free option when possible."],
   ['antihistamine1st','antihistamine1st','minor',"Combining two first-generation (sedating) antihistamines — as can happen when an OTC cold/flu combo (Decolgen, Neozep, Bioflu, Sinutab) is taken alongside a separate antihistamine like diphenhydramine — adds sedation and anticholinergic side effects (dry mouth, constipation, urinary retention) without added benefit. Urinary retention is a particular concern in older men with prostate enlargement.","Avoid routine use of two antihistamine-containing products together; check the ingredient list of combination cold/flu remedies before adding a separate antihistamine."]
@@ -2394,7 +2480,9 @@ const DIC_DRUGCLASS_RULES = [
   ['sacubitril_valsartan','acei_only','contra',"Combining an ARNI with any ACE inhibitor allows bradykinin to accumulate from both directions, causing life-threatening angioedema.","Contraindicated — do not co-administer. If switching between an ACE inhibitor and sacubitril/valsartan in either direction, allow a 36-hour washout."],
   ['vancomycin','aminoglycoside','major',"Vancomycin and aminoglycosides are each independently nephrotoxic and ototoxic; combined, the risk of both is substantially higher than either alone.","Avoid combining when possible; if both are needed, use extended-interval aminoglycoside dosing, monitor levels/AUC closely, and check renal function frequently."],
   ['cisplatin','aminoglycoside','major',"Cisplatin and aminoglycosides are each independently nephrotoxic and ototoxic; combined, the risk of both is substantially higher.","Avoid combining when possible; if unavoidable, ensure aggressive hydration and monitor renal function and hearing closely."],
+  ['cisplatin','nsaid','major',"Cisplatin is directly nephrotoxic to the renal tubules; an NSAID's reduction in kidney blood flow compounds this, raising acute kidney injury risk.","Avoid NSAID use around cisplatin administration; use paracetamol or a non-NSAID strategy for pain, and ensure aggressive hydration per the chemotherapy protocol."],
   ['amphotericin_b','cni','major',"Amphotericin B and calcineurin inhibitors are both significantly nephrotoxic; combined, acute kidney injury risk is substantially higher.","Use a lipid formulation of amphotericin B if available, ensure adequate saline hydration, and monitor renal function and CNI trough levels closely."],
+  ['amphotericin_b','aminoglycoside','major',"Amphotericin B and aminoglycosides are each independently and substantially nephrotoxic; combined, acute kidney injury risk is markedly higher than either alone.","Avoid combining when possible; if unavoidable, use a lipid formulation of amphotericin B if available, ensure aggressive hydration, and monitor renal function daily."],
   ['licorice','loopthz','moderate',"Licorice (glycyrrhizin) causes sodium retention and potassium loss (pseudohyperaldosteronism); combined with a loop or thiazide diuretic, this can produce severe hypokalemia and worsen blood pressure control.","Advise avoiding regular licorice (candy, tea, or supplements) in patients on diuretics; check potassium if hypokalemic symptoms (weakness, palpitations) occur."],
   ['licorice','aldo','moderate',"Licorice's mineralocorticoid-like effect can counteract the blood-pressure and potassium-sparing benefit of spironolactone, eplerenone, or finerenone.","Advise avoiding regular licorice intake; monitor blood pressure and potassium if used."],
   ['star_fruit','kraise','major',"Star fruit (kamias/balimbing) is very high in potassium and contains a neurotoxin (caramboxin) normally cleared by the kidneys; in reduced kidney function it can cause intractable hiccups, confusion, seizures, and death, and its potassium load compounds any other potassium-raising drug.","Advise patients with CKD, dialysis, or a transplant to avoid star fruit and its juice entirely, regardless of other medications."]
@@ -2421,22 +2509,48 @@ function dicHasClass(id,cls){ const d=DIC_DRUGS[id]; return d && d.classes.index
 
 function dicResolvePair(idA,idB){
   for(const [a,b,sev,mech,mgmt] of DIC_PAIR_RULES){
-    if((a===idA&&b===idB)||(a===idB&&b===idA)) return {sev,mech,mgmt};
+    if((a===idA&&b===idB)||(a===idB&&b===idA)) return {sev,mech,mgmt,ruleId:'pair:'+a+'+'+b};
   }
   let best=null;
   for(const [drug,cls,sev,mech,mgmt] of DIC_DRUGCLASS_RULES){
     let hit=false;
     if(drug===idA && dicHasClass(idB,cls)) hit=true;
     if(drug===idB && dicHasClass(idA,cls)) hit=true;
-    if(hit && (!best || DIC_SEV_RANK[sev]>DIC_SEV_RANK[best.sev])) best={sev,mech,mgmt};
+    if(hit && (!best || DIC_SEV_RANK[sev]>DIC_SEV_RANK[best.sev])) best={sev,mech,mgmt,ruleId:'drugclass:'+drug+'+'+cls};
   }
   for(const [c1,c2,sev,mech,mgmt] of DIC_CLASS_RULES){
     let hit=false;
     if(c1===c2){ if(dicHasClass(idA,c1)&&dicHasClass(idB,c1)) hit=true; }
     else if((dicHasClass(idA,c1)&&dicHasClass(idB,c2))||(dicHasClass(idA,c2)&&dicHasClass(idB,c1))) hit=true;
-    if(hit && (!best || DIC_SEV_RANK[sev]>DIC_SEV_RANK[best.sev])) best={sev,mech,mgmt};
+    if(hit && (!best || DIC_SEV_RANK[sev]>DIC_SEV_RANK[best.sev])) best={sev,mech,mgmt,ruleId:'class:'+c1+'+'+c2};
   }
   return best;
+}
+
+/* Patient context (optional): eGFR, serum K, dialysis status, sick-day flag.
+   These do not add new drug-drug pairs — they escalate severity, gate a few
+   standalone (non-pairwise) hazards, and log which rule produced each card. */
+const dicCtx = {egfr:null, k:null, dialysis:'none', sickday:false};
+
+function dicOnCtxChange(){
+  const egfrRaw = parseFloat(document.getElementById('dic-ctx-egfr').value);
+  const kRaw = parseFloat(document.getElementById('dic-ctx-k').value);
+  dicCtx.egfr = isNaN(egfrRaw) ? null : egfrRaw;
+  dicCtx.k = isNaN(kRaw) ? null : kRaw;
+  dicCtx.dialysis = document.getElementById('dic-ctx-dialysis').value;
+  dicCtx.sickday = document.getElementById('dic-ctx-sickday').checked;
+  dicRender();
+}
+
+/* True triple-combination detection — the pairwise engine alone cannot see this. */
+function dicDetectTripleWhammy(selected){
+  const nsaids = selected.filter(id=>dicHasClass(id,'nsaid'));
+  const raas = selected.filter(id=>dicHasClass(id,'acei_arb'));
+  const diuretics = selected.filter(id=>dicHasClass(id,'diuretic_any'));
+  if(nsaids.length && raas.length && diuretics.length){
+    return {nsaids,raas,diuretics,ruleId:'triple:nsaid+acei_arb+diuretic_any'};
+  }
+  return null;
 }
 
 let dicSelected = [];
@@ -2509,6 +2623,19 @@ function dicClearAll(){
   dicRender();
 }
 
+function dicSickDayNote(id){
+  const d = DIC_DRUGS[id];
+  if(id==='metformin') return "Hold during vomiting, diarrhea, fever/sepsis, dehydration, or around contrast administration — accumulation in acutely reduced kidney function risks lactic acidosis. Resume once eating/drinking normally and renal function is confirmed stable.";
+  if(d.classes.indexOf('glp1')!==-1) return "GLP-1 RA kidney note: generally kidney-protective in type 2 diabetes/CKD, but hold or reassess during persistent vomiting, dehydration, or poor intake. Check creatinine/eGFR if symptomatic.";
+  if(d.classes.indexOf('sglt2')!==-1) return "Hold during sepsis, prolonged fasting, vomiting/diarrhea, major surgery, or any severe acute illness — SGLT2 inhibitors compound volume depletion and have been linked to euglycemic ketoacidosis in these settings.";
+  if(id==='acyclovir'||id==='valacyclovir') return "Ensure good hydration and discuss a temporary dose reduction with the prescriber during dehydration — this drug can crystallize in the renal tubules when urine output is low.";
+  if(id==='cisplatin') return "Ensure aggressive hydration per protocol; flag to the treating team if the patient is currently dehydrated or has poor oral intake before the next dose.";
+  if(d.classes.indexOf('nsaid')!==-1) return "Hold during vomiting, diarrhea, fever, or poor oral intake — dehydration sharply increases this drug's risk of acute kidney injury.";
+  if(d.classes.indexOf('diuretic_any')!==-1) return "Discuss a temporary hold with the prescriber during vomiting, diarrhea, fever, or poor intake, to avoid compounding volume depletion — do not stop unilaterally for routine long-term use.";
+  if(d.classes.indexOf('acei_arb')!==-1) return "Discuss a temporary hold with the prescriber during significant dehydration (vomiting, diarrhea, fever, poor intake) or around contrast exposure, then resume once volume status normalizes.";
+  return "Extra caution advised during dehydration, vomiting, diarrhea, fever/sepsis, or contrast exposure — this drug's kidney clearance or nephrotoxicity risk may be affected.";
+}
+
 function dicRender(){
   const chips = document.getElementById('dic-chips');
   chips.innerHTML = dicSelected.map(id=>
@@ -2520,29 +2647,125 @@ function dicRender(){
   const empty = document.getElementById('dic-empty');
   const summary = document.getElementById('dic-summary');
   const results = document.getElementById('dic-results');
+  const ctxBanner = document.getElementById('dic-ctx-banner');
+  const soloBox = document.getElementById('dic-solo');
+  const tripleBox = document.getElementById('dic-triple');
+  const sickSection = document.getElementById('dic-sickday-section');
+  const adjSection = document.getElementById('dic-adj-section');
+
+  ctxBanner.hidden = true; ctxBanner.innerHTML='';
+  soloBox.hidden = true; soloBox.innerHTML='';
+  tripleBox.hidden = true; tripleBox.innerHTML='';
+  sickSection.hidden = true; sickSection.innerHTML='';
+  adjSection.hidden = true; adjSection.innerHTML='';
+
+  if(dicSelected.length===0){
+    empty.style.display='block'; empty.textContent='Add two or more medicines to see interactions.';
+    summary.hidden=true; results.innerHTML=''; return;
+  }
+
+  /* ── Standalone, context-driven hazards — evaluated even with just 1 drug selected ── */
+
+  if(dicCtx.k!==null && dicCtx.k>=6.0){
+    ctxBanner.hidden=false;
+    ctxBanner.innerHTML = '⚠️ Measured potassium ('+dicCtx.k.toFixed(1)+' mmol/L) is critically elevated — this needs urgent clinical attention independent of any single drug interaction (ECG, calcium gluconate/shifting agents, and dialysis referral per protocol as indicated).';
+    console.debug('[dic] rule fired: context:k-critical', dicCtx.k);
+  }
+
+  if(dicCtx.egfr!==null && dicCtx.egfr<25 && dicSelected.indexOf('finerenone')!==-1){
+    soloBox.hidden=false;
+    soloBox.innerHTML = '<div class="dic-triple-title">🚫 Finerenone — do not initiate/continue</div>'
+      + '<p>The entered eGFR ('+dicCtx.egfr+' mL/min/1.73 m²) is below the labeled threshold for starting finerenone (eGFR &lt;25 mL/min/1.73 m²).</p>'
+      + '<p class="dic-mgmt"><strong>What to do: </strong>Do not initiate finerenone at this eGFR. If already on it and eGFR has since fallen below this threshold, discuss discontinuation with the prescriber.</p>';
+    console.debug('[dic] rule fired: context:finerenone-egfr-lt25', dicCtx.egfr);
+  }
+
+  if(dicCtx.sickday){
+    const affected = dicSelected.filter(id=>dicHasClass(id,'volumesensitive'));
+    if(affected.length){
+      sickSection.hidden=false;
+      let h = '<div class="dic-sickday-title">🌡️ Sick-day cautions (dehydration / vomiting / diarrhea / fever / contrast)</div>';
+      affected.forEach(id=>{
+        h += '<div class="dic-card"><div class="dic-card-head"><span class="dic-card-title">'+DIC_DRUGS[id].name+'</span></div><p>'+dicSickDayNote(id)+'</p></div>';
+        console.debug('[dic] rule fired: sickday:'+id);
+      });
+      sickSection.innerHTML = h;
+    }
+  }
+
+  const withAdj = dicSelected.filter(id=>DIC_DRUGS[id].adj);
+  const dialysisRelevant = dicCtx.dialysis!=='none' ? dicSelected.filter(id=>dicHasClass(id,'nephro')||id==='digoxin') : [];
+  if(withAdj.length || dialysisRelevant.length){
+    adjSection.hidden=false;
+    let h = '<div class="dic-adj-title">📋 Renal dose-adjustment notes</div>';
+    if(dialysisRelevant.length){
+      const modality = dicCtx.dialysis==='hd' ? 'hemodialysis' : 'peritoneal dialysis';
+      h += '<div class="dic-adj-row"><strong>On '+modality+':</strong> <span>Dosing of renally-cleared or nephrotoxic drugs ('+dialysisRelevant.map(id=>DIC_DRUGS[id].name).join(', ')+') still needs dialysis-specific adjustment (timing relative to sessions, supplemental post-HD dosing) — use the linked calculators where available. Nephrotoxicity concerns mostly relate to any remaining residual native kidney function; digoxin needs especially close monitoring given the shifting potassium on dialysis.</span></div>';
+      console.debug('[dic] rule fired: context:dialysis-'+dicCtx.dialysis);
+    }
+    withAdj.forEach(id=>{
+      const adj = DIC_DRUGS[id].adj;
+      const egfrPrefix = dicCtx.egfr!==null ? 'At eGFR '+dicCtx.egfr+': ' : '';
+      h += '<div class="dic-adj-row"><strong>'+DIC_DRUGS[id].name+':</strong> <span>'+egfrPrefix+adj.note+(adj.href?' <a href="'+adj.href+'">Open dosing calculator →</a>':'')+'</span></div>';
+      console.debug('[dic] rule fired: renal-adjust:'+id);
+    });
+    adjSection.innerHTML = h;
+  }
 
   if(dicSelected.length<2){
-    empty.style.display='block'; empty.textContent = dicSelected.length===0
-      ? 'Add two or more medicines to see interactions.'
-      : 'Add one more medicine to check for interactions.';
+    empty.style.display='block'; empty.textContent = 'Add one more medicine to check for drug-drug interactions.';
     summary.hidden=true; results.innerHTML=''; return;
   }
   empty.style.display='none';
 
+  /* ── True triple-combination detection (the pairwise engine alone cannot see this) ── */
+  const triple = dicDetectTripleWhammy(dicSelected);
+  const suppressPairs = new Set();
+  if(triple){
+    triple.nsaids.forEach(n=>{
+      triple.raas.forEach(r=>suppressPairs.add([n,r].sort().join('~')));
+      triple.diuretics.forEach(dz=>suppressPairs.add([n,dz].sort().join('~')));
+    });
+    tripleBox.hidden=false;
+    const nsaidNames = triple.nsaids.map(id=>DIC_DRUGS[id].name).join(', ');
+    const raasNames = triple.raas.map(id=>DIC_DRUGS[id].name).join(', ');
+    const diureticNames = triple.diuretics.map(id=>DIC_DRUGS[id].name).join(', ');
+    tripleBox.innerHTML = '<div class="dic-triple-title">🚨 Triple Whammy Detected</div>'
+      + '<p><strong>'+nsaidNames+'</strong> + <strong>'+raasNames+'</strong> + <strong>'+diureticNames+'</strong></p>'
+      + '<p>Increased risk of acute kidney injury due to reduced afferent flow, reduced efferent tone, and lower effective circulating volume acting together.</p>'
+      + '<p class="dic-mgmt"><strong>What to do: </strong>Avoid if possible. Check creatinine/eGFR and potassium within 3–7 days if unavoidable, and counsel on sick-day rules (hold the NSAID; discuss holding the diuretic during vomiting, diarrhea, fever, or poor intake).</p>';
+    console.debug('[dic] rule fired:', triple.ruleId, triple);
+  }
+
+  /* ── Pairwise engine ── */
   const found=[];
   for(let i=0;i<dicSelected.length;i++){
     for(let j=i+1;j<dicSelected.length;j++){
-      const r = dicResolvePair(dicSelected[i],dicSelected[j]);
-      if(r) found.push({a:dicSelected[i],b:dicSelected[j],...r});
+      const idA=dicSelected[i], idB=dicSelected[j];
+      if(suppressPairs.has([idA,idB].sort().join('~'))) continue;
+      const r = dicResolvePair(idA,idB);
+      if(r) found.push({a:idA,b:idB,...r});
     }
   }
+
+  if(dicCtx.k!==null && dicCtx.k>=5.5){
+    found.forEach(f=>{
+      if(f.ruleId.indexOf('kraise')!==-1 && DIC_SEV_RANK[f.sev] < DIC_SEV_RANK.major){
+        f.sev='major';
+        f.mgmt = 'Measured potassium is already elevated ('+dicCtx.k.toFixed(1)+' mmol/L) — act now rather than just monitor. ' + f.mgmt;
+        console.debug('[dic] rule fired: context:k-escalate', f.ruleId, dicCtx.k);
+      }
+    });
+  }
+
   found.sort((x,y)=>DIC_SEV_RANK[y.sev]-DIC_SEV_RANK[x.sev]);
 
+  const totalFlags = found.length + (triple?1:0);
   summary.hidden=false;
-  if(found.length===0){
+  if(totalFlags===0){
     summary.innerHTML = '<span class="dic-sum-icon">✅</span> No interactions found in this checker\'s database among the selected medicines.';
   } else {
-    summary.innerHTML = '<span class="dic-sum-icon">⚠️</span> '+found.length+' interaction'+(found.length===1?'':'s')+' found';
+    summary.innerHTML = '<span class="dic-sum-icon">⚠️</span> '+totalFlags+' interaction'+(totalFlags===1?'':'s')+' found'+(triple?' (including the Triple Whammy above)':'');
   }
 
   const groups = {contra:[],major:[],moderate:[],minor:[]};
@@ -2552,7 +2775,7 @@ function dicRender(){
     if(!groups[sev].length) return;
     html += '<div class="dic-group"><div class="dic-group-title"><span class="'+DIC_SEV_BADGE[sev]+'">'+DIC_SEV_LABEL[sev]+'</span></div>';
     groups[sev].forEach(f=>{
-      html += '<div class="dic-card">'
+      html += '<div class="dic-card" data-rule="'+f.ruleId+'">'
         + '<div class="dic-card-head"><span class="dic-card-title">'+DIC_DRUGS[f.a].name+' + '+DIC_DRUGS[f.b].name+'</span></div>'
         + '<p>'+f.mech+'</p>'
         + '<p class="dic-mgmt"><strong>What to do: </strong>'+f.mgmt+'</p>'
