@@ -2012,7 +2012,7 @@ html[data-theme="dark"] .dic-card-title,html[data-theme="dark"] .dic-summary,htm
 <tr><td>Transplant immunosuppressants</td><td>Tacrolimus, cyclosporine, sirolimus, mycophenolate, azathioprine</td></tr>
 <tr><td>CYP3A4/P-gp modifiers</td><td>Azole antifungals, macrolides, non-dihydropyridine CCBs, rifampin, phenytoin, carbamazepine, ritonavir, St. John's wort</td></tr>
 <tr><td>Anticoagulants &amp; antiplatelets</td><td>Warfarin, apixaban, rivaroxaban, dabigatran, edoxaban, clopidogrel, aspirin</td></tr>
-<tr><td>Cardiac &amp; metabolic</td><td>Digoxin, amiodarone, lithium, methotrexate, colchicine, allopurinol, febuxostat, statins, fibrates (gemfibrozil, fenofibrate), SGLT2 inhibitors, metformin</td></tr>
+<tr><td>Cardiac &amp; metabolic</td><td>Digoxin, amiodarone, lithium, methotrexate, colchicine, allopurinol, febuxostat, statins (simvastatin, atorvastatin, rosuvastatin, pravastatin), fibrates (gemfibrozil, fenofibrate), SGLT2 inhibitors, metformin</td></tr>
 <tr><td>Herbal &amp; supplement</td><td>St. John's wort, turmeric, ginkgo biloba, garlic, cranberry, licorice, noni juice, star fruit (kamias/balimbing), ginseng, high-dose vitamin E</td></tr>
 </tbody>
 </table>
@@ -2316,8 +2316,10 @@ const DIC_DRUGS = {
   colchicine:{name:'Colchicine',aliases:['colcrys'],classes:[]},
   allopurinol:{name:'Allopurinol',aliases:['zyloric'],classes:['xoi']},
   febuxostat:{name:'Febuxostat',aliases:['feburic'],classes:['xoi']},
-  simvastatin:{name:'Simvastatin',aliases:['zocor'],classes:['statin']},
-  atorvastatin:{name:'Atorvastatin',aliases:['lipitor'],classes:['statin']},
+  simvastatin:{name:'Simvastatin',aliases:['zocor'],classes:['statin','statin_cyp3a4']},
+  atorvastatin:{name:'Atorvastatin',aliases:['lipitor'],classes:['statin','statin_cyp3a4']},
+  rosuvastatin:{name:'Rosuvastatin',aliases:['crestor'],classes:['statin']},
+  pravastatin:{name:'Pravastatin',aliases:['pravachol'],classes:['statin']},
   gemfibrozil:{name:'Gemfibrozil',aliases:['lopid'],classes:['fibrate']},
   fenofibrate:{name:'Fenofibrate',aliases:['tricor','lipanthyl'],classes:['fibrate']},
   dapagliflozin:{name:'Dapagliflozin',aliases:['forxiga'],classes:['sglt2']},
@@ -2355,7 +2357,7 @@ const DIC_CLASS_RULES = [
   ['doac','antiplatelet','moderate',"Combining an anticoagulant with an antiplatelet drug increases bleeding risk beyond either drug alone.","Confirm the combination is clinically intended (e.g., after a stent); use the lowest effective doses and durations, and counsel on bleeding warning signs."],
   ['statin','cni','moderate',"Cyclosporine (and, to a lesser extent, tacrolimus) inhibits statin metabolism and transport, raising statin levels and the risk of myopathy or rhabdomyolysis.","Use the lowest effective statin dose, prefer a statin less affected by cyclosporine where available, and watch for muscle pain or weakness."],
   ['statin','fibrate','moderate',"Combining a statin with a fibrate (especially gemfibrozil) increases the risk of myopathy and rhabdomyolysis, which is compounded in reduced kidney function.","Avoid gemfibrozil with a statin where possible (fenofibrate is a somewhat safer pairing); counsel on muscle pain and check creatine kinase if symptoms occur."],
-  ['statin','cyp3a4inh','moderate',"Strong CYP3A4 inhibitors raise statin levels (especially simvastatin), increasing the risk of myopathy and rhabdomyolysis.","Avoid simvastatin with a strong CYP3A4 inhibitor; consider a lower dose or an alternative statin less dependent on CYP3A4."],
+  ['statin_cyp3a4','cyp3a4inh','moderate',"Simvastatin and atorvastatin are meaningfully metabolized by CYP3A4; strong inhibitors raise their levels, increasing the risk of myopathy and rhabdomyolysis. (Rosuvastatin and pravastatin are not significantly CYP3A4-dependent and are not flagged here.)","Avoid simvastatin with a strong CYP3A4 inhibitor; consider a lower atorvastatin dose, or switch to rosuvastatin or pravastatin, which are not meaningfully affected by CYP3A4 inhibitors."],
   ['bleedherb','doac','minor',"Ginkgo, garlic, and turmeric have mild antiplatelet activity in some studies and may add to a DOAC's bleeding risk.","Ask about herbal supplement use; if bruising or bleeding appears, consider stopping the supplement."],
   ['bleedherb','antiplatelet','minor',"Ginkgo, garlic, and turmeric have mild antiplatelet activity that may add to the bleeding risk of aspirin or clopidogrel.","Ask about supplement use; watch for bruising or bleeding, especially before procedures."],
   ['kraise','kraise','moderate',"Both raise serum potassium by different mechanisms — RAAS blockade, aldosterone antagonism, potassium-sparing diuresis, reduced renal potassium excretion, or a direct potassium load. Two together is a caution; three or more, especially with reduced kidney function, is when severe hyperkalemia most often happens.","Check a potassium level within 1–2 weeks of starting the combination (sooner if CKD is advanced) and again after any dose change. If three or more potassium-raising drugs or foods are being used together, review whether all are necessary."],
