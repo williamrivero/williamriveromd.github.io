@@ -2008,21 +2008,33 @@
      Strict filtering still happens only when the visitor clicks a sidebar
      filter chip — this is a softer, scan-friendly cue.
 
-     Internal data-tags convention (see #curation): tiles curated for the
-     new personas carry `dialysis-staff` or `dietitian`; the "Physicians"
-     persona keeps the historical `clinician` tag so existing guide tags
-     don't need to be rewritten. */
-  body.persona-clinician .guide-tile,
+     Internal data-tags convention (see #curation): the former generic
+     "Physicians" persona is split into `internist-gp` (primary-care /
+     internal-medicine relevant: recognition, referral, comorbidity
+     management) and `nephrologist` (subspecialist: dialysis technicals,
+     transplant, glomerular disease). `dialysis-staff` now also covers HD
+     technicians — the two roles read the same guide set in this library,
+     so they share one persona rather than duplicating tags. */
+  body.persona-internist-gp .guide-tile,
+  body.persona-nephrologist .guide-tile,
   body.persona-caregiver .guide-tile,
   body.persona-patient .guide-tile,
   body.persona-dialysis-staff .guide-tile,
   body.persona-dietitian .guide-tile {
     transition: opacity .25s ease, box-shadow .25s ease, transform .15s ease;
   }
-  /* Physicians — dim non-clinician tiles, accent clinician ones violet */
-  body.persona-clinician .guide-tile:not([data-tags~="clinician"]):not([data-tags~="download"]) { opacity: .42; }
-  body.persona-clinician .guide-tile:not([data-tags~="clinician"]):not([data-tags~="download"]):hover { opacity: .9; }
-  body.persona-clinician .guide-tile[data-tags~="clinician"] {
+  /* Internist / GP — dim tiles not curated for primary care, accent
+     internist-gp-tagged ones blue. */
+  body.persona-internist-gp .guide-tile:not([data-tags~="internist-gp"]):not([data-tags~="download"]) { opacity: .42; }
+  body.persona-internist-gp .guide-tile:not([data-tags~="internist-gp"]):not([data-tags~="download"]):hover { opacity: .9; }
+  body.persona-internist-gp .guide-tile[data-tags~="internist-gp"] {
+    box-shadow: inset 3px 0 0 #2563eb, 0 1px 0 rgba(0,0,0,.04);
+  }
+  /* Nephrologist — dim non-nephrologist tiles, accent nephrologist-tagged
+     ones violet (the historical "Physicians" accent colour). */
+  body.persona-nephrologist .guide-tile:not([data-tags~="nephrologist"]):not([data-tags~="download"]) { opacity: .42; }
+  body.persona-nephrologist .guide-tile:not([data-tags~="nephrologist"]):not([data-tags~="download"]):hover { opacity: .9; }
+  body.persona-nephrologist .guide-tile[data-tags~="nephrologist"] {
     box-shadow: inset 3px 0 0 #7c3aed, 0 1px 0 rgba(0,0,0,.04);
   }
   /* Caregiver — dim non-caregiver tiles, accent caregiver-tagged ones amber */
@@ -2031,18 +2043,18 @@
   body.persona-caregiver .guide-tile[data-tags~="caregiver"] {
     box-shadow: inset 3px 0 0 #d97706, 0 1px 0 rgba(0,0,0,.04);
   }
-  /* Patient — dim guides flagged as clinician-only (technical pages a
+  /* Patient — dim guides flagged as specialist-only (technical pages a
      typical patient can skip), and accent the curated patient-essential
      set (kidney basics, nutrition, dialysis primer, lifestyle, daily life)
-     with a green inset edge — same loud-and-clear treatment the clinician
-     and caregiver personas use, just in a different category hue. */
-  body.persona-patient .guide-tile[data-tags~="clinician"]:not([data-tags~="patient"]) { opacity: .55; }
-  body.persona-patient .guide-tile[data-tags~="clinician"]:not([data-tags~="patient"]):hover { opacity: .9; }
+     with a green inset edge — same loud-and-clear treatment the other
+     personas use, just in a different category hue. */
+  body.persona-patient .guide-tile:is([data-tags~="internist-gp"], [data-tags~="nephrologist"]):not([data-tags~="patient"]) { opacity: .55; }
+  body.persona-patient .guide-tile:is([data-tags~="internist-gp"], [data-tags~="nephrologist"]):not([data-tags~="patient"]):hover { opacity: .9; }
   body.persona-patient .guide-tile[data-tags~="patient"] {
     box-shadow: inset 3px 0 0 #2e6b3e, 0 1px 0 rgba(0,0,0,.04);
   }
-  /* Dialysis Staff — dim non-dialysis tiles, accent dialysis-staff-tagged
-     ones with the dialysis-category navy. */
+  /* Dialysis Staff / HD Tech — dim non-dialysis tiles, accent
+     dialysis-staff-tagged ones with the dialysis-category navy. */
   body.persona-dialysis-staff .guide-tile:not([data-tags~="dialysis-staff"]):not([data-tags~="download"]) { opacity: .5; }
   body.persona-dialysis-staff .guide-tile:not([data-tags~="dialysis-staff"]):not([data-tags~="download"]):hover { opacity: .9; }
   body.persona-dialysis-staff .guide-tile[data-tags~="dialysis-staff"] {
@@ -2050,7 +2062,7 @@
   }
   /* Dietitian / Nutritionist — dim non-nutrition tiles, accent
      dietitian-tagged ones with a distinct teal (kept off the patient green
-     and off the dialysis navy so all five personas remain visually
+     and off the dialysis navy so every persona remains visually
      distinct). */
   body.persona-dietitian .guide-tile:not([data-tags~="dietitian"]):not([data-tags~="download"]) { opacity: .5; }
   body.persona-dietitian .guide-tile:not([data-tags~="dietitian"]):not([data-tags~="download"]):hover { opacity: .9; }
@@ -2066,17 +2078,20 @@
     font-size: .76rem; font-weight: 600; letter-spacing: .01em;
     border-radius: 12px; line-height: 1.4;
   }
-  body.persona-clinician      .persona-active.for-clinician,
+  body.persona-internist-gp   .persona-active.for-internist-gp,
+  body.persona-nephrologist   .persona-active.for-nephrologist,
   body.persona-caregiver      .persona-active.for-caregiver,
   body.persona-patient        .persona-active.for-patient,
   body.persona-dialysis-staff .persona-active.for-dialysis-staff,
   body.persona-dietitian      .persona-active.for-dietitian { display: inline-flex; }
-  .persona-active.for-clinician      { background: rgba(124,58,237,.13); color: #6d28d9; }
+  .persona-active.for-internist-gp   { background: rgba(37,99,235,.13);   color: #1d4ed8; }
+  .persona-active.for-nephrologist   { background: rgba(124,58,237,.13); color: #6d28d9; }
   .persona-active.for-caregiver      { background: rgba(217,119,6,.13);  color: #b45309; }
   .persona-active.for-patient        { background: rgba(26,107,114,.13); color: #115e64; }
   .persona-active.for-dialysis-staff { background: rgba(31,56,100,.13);  color: #1f3864; }
   .persona-active.for-dietitian      { background: rgba(13,148,136,.13); color: #0f766e; }
-  body.dark-mode .persona-active.for-clinician      { background: rgba(124,58,237,.22); color: #c4b5fd; }
+  body.dark-mode .persona-active.for-internist-gp   { background: rgba(37,99,235,.24);  color: #93c5fd; }
+  body.dark-mode .persona-active.for-nephrologist   { background: rgba(124,58,237,.22); color: #c4b5fd; }
   body.dark-mode .persona-active.for-caregiver      { background: rgba(217,119,6,.22);  color: #fcd34d; }
   body.dark-mode .persona-active.for-patient        { background: rgba(45,184,192,.22); color: #5eead4; }
   body.dark-mode .persona-active.for-dialysis-staff { background: rgba(66,120,220,.28); color: #bfd4ff; }
@@ -2086,6 +2101,32 @@
     font-size: .9em; line-height: 1; padding: 2px 4px; border-radius: 6px;
   }
   .persona-clear:hover { background: rgba(0,0,0,.08); }
+
+  /* "Top picks for you" — a small, data-driven strip of the first guides
+     tagged for the active persona, rendered by JS right below the results
+     bar. Auto-refreshes as guides are re-tagged, so it never needs
+     hand-curated upkeep like the condition-based pathway tiles do. */
+  .persona-picks {
+    margin: 0 0 18px; padding: 14px 16px 16px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .persona-picks-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .persona-picks-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: .92rem; color: var(--ink); }
+  .persona-picks-sub { font-size: .78rem; color: var(--ink-muted); }
+  .persona-picks-row {
+    display: flex; gap: 10px; overflow-x: auto; padding-bottom: 2px;
+    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+  }
+  .persona-pick-card {
+    flex: 0 0 auto; width: 220px; scroll-snap-align: start;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 12px; text-decoration: none;
+    display: block; transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .persona-pick-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.1); }
+  .persona-pick-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 650; font-size: .82rem; color: var(--ink); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .persona-pick-teaser { font-size: .74rem; color: var(--ink-muted); margin-top: 4px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
   /* Floating dark-mode toggle widget (replaces the old nav button) */
   .float-controls{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:9999;}
@@ -2472,6 +2513,12 @@
   <button class="mf-pill" data-filter="philippines">Philippines</button>
   <button class="mf-pill" data-filter="dialysis">Dialysis</button>
   <button class="mf-pill" data-filter="clinician">Physician</button>
+  <button class="mf-pill" data-filter="patient">Patient</button>
+  <button class="mf-pill" data-filter="caregiver">Caregiver</button>
+  <button class="mf-pill" data-filter="internist-gp">Internist/GP</button>
+  <button class="mf-pill" data-filter="nephrologist">Nephrologist</button>
+  <button class="mf-pill" data-filter="dialysis-staff">Dialysis/HD Tech</button>
+  <button class="mf-pill" data-filter="dietitian">Dietitian</button>
   <button class="mf-pill" data-filter="download">Downloads</button>
   <button class="mf-pill" data-filter="pre-dialysis">Pre-Dialysis</button>
   <button class="mf-pill" data-filter="hypertension">Hypertension</button>
@@ -2517,6 +2564,27 @@
       </button>
       <button class="filter-btn" data-filter="perspective">
         <span class="filter-dot" style="background:#1F3864"></span>Perspectives<span class="count">4</span>
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Filter by role</div>
+      <button class="filter-btn" data-filter="patient">
+        <span class="filter-dot" style="background:#2e6b3e"></span>Patient<span class="count">35</span>
+      </button>
+      <button class="filter-btn" data-filter="caregiver">
+        <span class="filter-dot" style="background:#d97706"></span>Caregiver<span class="count">9</span>
+      </button>
+      <button class="filter-btn" data-filter="internist-gp">
+        <span class="filter-dot" style="background:#2563eb"></span>Internist / GP<span class="count">20</span>
+      </button>
+      <button class="filter-btn" data-filter="nephrologist">
+        <span class="filter-dot" style="background:var(--purple)"></span>Nephrologist<span class="count">45</span>
+      </button>
+      <button class="filter-btn" data-filter="dialysis-staff">
+        <span class="filter-dot" style="background:var(--navy)"></span>Dialysis Staff / HD Tech<span class="count">41</span>
+      </button>
+      <button class="filter-btn" data-filter="dietitian">
+        <span class="filter-dot" style="background:#0d9488"></span>Dietitian<span class="count">35</span>
       </button>
     </div>
     <div class="sidebar-section">
@@ -2625,10 +2693,19 @@
       <span>guides</span>
       <span id="filter-label"></span>
       <span class="persona-active for-patient"        role="status" aria-live="polite">Highlighting patient picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
-      <span class="persona-active for-clinician"      role="status" aria-live="polite">Highlighting physician picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
+      <span class="persona-active for-internist-gp"   role="status" aria-live="polite">Highlighting internist/GP picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
+      <span class="persona-active for-nephrologist"   role="status" aria-live="polite">Highlighting nephrologist picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
       <span class="persona-active for-caregiver"      role="status" aria-live="polite">Highlighting caregiver picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
-      <span class="persona-active for-dialysis-staff" role="status" aria-live="polite">Highlighting dialysis-staff picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
+      <span class="persona-active for-dialysis-staff" role="status" aria-live="polite">Highlighting dialysis-staff/HD-tech picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
       <span class="persona-active for-dietitian"      role="status" aria-live="polite">Highlighting dietitian picks<button class="persona-clear" data-persona-clear title="Show all audiences equally" aria-label="Reset audience">✕</button></span>
+    </div>
+
+    <div class="persona-picks" id="persona-picks" style="display:none;">
+      <div class="persona-picks-head">
+        <span class="persona-picks-title">Top picks for you</span>
+        <span class="persona-picks-sub" id="persona-picks-sub"></span>
+      </div>
+      <div class="persona-picks-row" id="persona-picks-row"></div>
     </div>
 
     <div class="no-results" id="no-results">No guides match your search. Try a different keyword.</div>
@@ -2658,7 +2735,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="nephrology-atlas.html" class="guide-tile" data-tags="new clinician" data-text="nephrology visual atlas kidney anatomy gross anatomy nephron glomerulus vascular supply collecting system retroperitoneal procedures biopsy nephrostomy ESWL DJ stent AVF AVG permcath tenckhoff peritoneal dialysis hemodialysis access embryology pronephros mesonephros metanephros ureteric bud nephrogenesis ADPKD horseshoe kidney renal agenesis duplex BPH hydronephrosis medical conditions RCC renal artery stenosis nephrocalcinosis lupus diabetic nephropathy illustration reference atlas">
+        <a href="nephrology-atlas.html" class="guide-tile" data-tags="new internist-gp nephrologist clinician" data-text="nephrology visual atlas kidney anatomy gross anatomy nephron glomerulus vascular supply collecting system retroperitoneal procedures biopsy nephrostomy ESWL DJ stent AVF AVG permcath tenckhoff peritoneal dialysis hemodialysis access embryology pronephros mesonephros metanephros ureteric bud nephrogenesis ADPKD horseshoe kidney renal agenesis duplex BPH hydronephrosis medical conditions RCC renal artery stenosis nephrocalcinosis lupus diabetic nephropathy illustration reference atlas">
           <div class="tile-icon read" data-icon="atlas"></div>
           <div class="tile-body">
             <div class="tile-title">Nephrology Visual Atlas — Anatomy, Conditions, Procedures & Embryology</div>
@@ -2671,7 +2748,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="epilepsy-seizures-ckd.html" class="guide-tile" data-tags="new clinician calculator" data-text="epilepsy seizures CKD kidney AED anti-epileptic phenytoin levetiracetam Keppra uremic encephalopathy PRES status epilepticus seizure threshold dialysis neurology nephrology free phenytoin Sheiner-Tozer dose adjustment eGFR">
+        <a href="epilepsy-seizures-ckd.html" class="guide-tile" data-tags="new calculator nephrologist clinician" data-text="epilepsy seizures CKD kidney AED anti-epileptic phenytoin levetiracetam Keppra uremic encephalopathy PRES status epilepticus seizure threshold dialysis neurology nephrology free phenytoin Sheiner-Tozer dose adjustment eGFR">
           <div class="tile-icon calc" data-icon="drop"></div>
           <div class="tile-body">
             <div class="tile-title">Epilepsy &amp; Seizures in Kidney Disease</div>
@@ -2681,7 +2758,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="hematuria-blood-in-urine.html" class="guide-tile" data-tags="new clinician glomerular" data-text="blood urine hematuria igA nephropathy bladder stones cystoscopy red urine gross microscopic RBC dipstick urinalysis bladder cancer renal cell cancer infection glomerulonephritis kidney biopsy painless hematuria">
+        <a href="hematuria-blood-in-urine.html" class="guide-tile" data-tags="new glomerular internist-gp nephrologist clinician" data-text="blood urine hematuria igA nephropathy bladder stones cystoscopy red urine gross microscopic RBC dipstick urinalysis bladder cancer renal cell cancer infection glomerulonephritis kidney biopsy painless hematuria">
           <div class="tile-icon tool" data-icon="drop"></div>
           <div class="tile-body">
             <div class="tile-title">Red Alert — Blood in Your Urine: When to Worry, When to Wait</div>
@@ -2694,7 +2771,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="lab-interpreter-guide.html" class="guide-tile" data-tags="calculator new clinician" data-text="lab results interpreter kidney CBC metabolic lipids diabetes eGFR PDF blood test creatinine BUN potassium sodium albumin complete blood count cholesterol triglycerides glucose HbA1c A1C what does my test mean">
+        <a href="lab-interpreter-guide.html" class="guide-tile" data-tags="calculator new internist-gp nephrologist clinician" data-text="lab results interpreter kidney CBC metabolic lipids diabetes eGFR PDF blood test creatinine BUN potassium sodium albumin complete blood count cholesterol triglycerides glucose HbA1c A1C what does my test mean">
           <div class="tile-icon calc" data-icon="calc"></div>
           <div class="tile-body">
             <div class="tile-title">Lab Results Interpreter — What Do Your Numbers Mean?</div>
@@ -2720,7 +2797,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="cardio-kidney-metabolic-syndrome.html" class="guide-tile" data-tags="new clinician diabetes hypertension" data-text="cardiovascular kidney metabolic CKM syndrome AHA ASN heart kidney diabetes obesity metabolic dysfunction SGLT2 finerenone GLP-1 RAAS PREVENT triple therapy cardiorenal Filipino staging stages">
+        <a href="cardio-kidney-metabolic-syndrome.html" class="guide-tile" data-tags="new diabetes hypertension internist-gp nephrologist clinician" data-text="cardiovascular kidney metabolic CKM syndrome AHA ASN heart kidney diabetes obesity metabolic dysfunction SGLT2 finerenone GLP-1 RAAS PREVENT triple therapy cardiorenal Filipino staging stages">
           <div class="tile-icon read" data-icon="heart"></div>
           <div class="tile-body">
             <div class="tile-title">CKM Syndrome — Heart, Kidney & Metabolic Disease, Connected</div>
@@ -2850,7 +2927,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="igan-guide.html" class="guide-tile" data-tags="new clinician glomerular" data-text="IgA nephropathy KDIGO 2025 sparsentan budesonide SAR Philippines IgAN Berger disease hematuria proteinuria targeted release budesonide hydroxychloroquine SGLT2 RAS support treatment Nefecon">
+        <a href="igan-guide.html" class="guide-tile" data-tags="new glomerular internist-gp nephrologist clinician" data-text="IgA nephropathy KDIGO 2025 sparsentan budesonide SAR Philippines IgAN Berger disease hematuria proteinuria targeted release budesonide hydroxychloroquine SGLT2 RAS support treatment Nefecon">
           <div class="tile-icon read" data-icon="doc"></div>
           <div class="tile-body">
             <div class="tile-title">IgA Nephropathy — The Kidney Disease You Didn't Know You Had</div>
@@ -2908,7 +2985,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="transplant-allograft-failure.html" class="guide-tile" data-tags="updated clinician calculator transplant" data-text="transplant failure rejection allograft Banff 2022 re-transplant desensitization acute chronic rejection DSA donor specific antibody biopsy plasma cell rich AMR T cell mediated antibody mediated rejection">
+        <a href="transplant-allograft-failure.html" class="guide-tile" data-tags="updated calculator transplant nephrologist clinician" data-text="transplant failure rejection allograft Banff 2022 re-transplant desensitization acute chronic rejection DSA donor specific antibody biopsy plasma cell rich AMR T cell mediated antibody mediated rejection">
           <div class="tile-icon read" data-icon="refresh"></div>
           <div class="tile-body">
             <div class="tile-title">Kidney Transplant Failure — Understanding Rejection & What Comes Next</div>
@@ -2921,7 +2998,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="dialysis-access-infection.html" class="guide-tile" data-tags="new clinician dialysis dialysis-staff" data-text="dialysis access infection AVF fistula graft tunneled catheter CRBSI bacteremia peritonitis PD exit site infection vancomycin mupirocin catheter removal salvage antibiotic lock MRSA S aureus Philippines hemodialysis">
+        <a href="dialysis-access-infection.html" class="guide-tile" data-tags="new dialysis dialysis-staff nephrologist clinician" data-text="dialysis access infection AVF fistula graft tunneled catheter CRBSI bacteremia peritonitis PD exit site infection vancomycin mupirocin catheter removal salvage antibiotic lock MRSA S aureus Philippines hemodialysis">
           <div class="tile-icon clin" data-icon="link"></div>
           <div class="tile-body">
             <div class="tile-title">When the Access Gets Infected</div>
@@ -2931,7 +3008,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="dialysis-machine-assignment.html" class="guide-tile" data-tags="new clinician dialysis decision-tool dialysis-staff" data-text="dialysis machine assignment hemodialysis HBsAg anti-HBc anti-HCV HIV HBV hepatitis B hepatitis C machine allocation isolation non-isolation serology seroconversion window period IgM IgG PSN DOH AO 2012-0001 PhilHealth machine categories infection control Philippines nephrology">
+        <a href="dialysis-machine-assignment.html" class="guide-tile" data-tags="new dialysis decision-tool dialysis-staff nephrologist clinician" data-text="dialysis machine assignment hemodialysis HBsAg anti-HBc anti-HCV HIV HBV hepatitis B hepatitis C machine allocation isolation non-isolation serology seroconversion window period IgM IgG PSN DOH AO 2012-0001 PhilHealth machine categories infection control Philippines nephrology">
           <div class="tile-icon clin" data-icon="link"></div>
           <div class="tile-body">
             <div class="tile-title">Hemodialysis Machine Assignment by Serology</div>
@@ -2941,7 +3018,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="avf-aneurysm-and-changes.html" class="guide-tile" data-tags="dialysis clinician new dialysis-staff" data-text="AVF arteriovenous fistula aneurysm pseudoaneurysm Da Silva intimal hyperplasia tortuosity vascular access KDOQI EVAS Duplex Qa banding aneurysmorrhaphy MILLER procedure high output heart failure Nicoladoni Branham hemodialysis Philippines NKTI PGH">
+        <a href="avf-aneurysm-and-changes.html" class="guide-tile" data-tags="dialysis new dialysis-staff nephrologist clinician" data-text="AVF arteriovenous fistula aneurysm pseudoaneurysm Da Silva intimal hyperplasia tortuosity vascular access KDOQI EVAS Duplex Qa banding aneurysmorrhaphy MILLER procedure high output heart failure Nicoladoni Branham hemodialysis Philippines NKTI PGH">
           <div class="tile-icon read" data-icon="link"></div>
           <div class="tile-body">
             <div class="tile-title">Understanding Your Fistula After Years on Dialysis</div>
@@ -2961,7 +3038,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="thyroid-ckd.html" class="guide-tile" data-tags="calculator clinician new" data-text="thyroid CKD hypothyroidism kidney disease TSH levothyroxine low T3 dialysis transplant thyroid function test subclinical hypothyroidism euthyroid sick syndrome iodine contrast thyroid binder interaction">
+        <a href="thyroid-ckd.html" class="guide-tile" data-tags="calculator new internist-gp nephrologist clinician" data-text="thyroid CKD hypothyroidism kidney disease TSH levothyroxine low T3 dialysis transplant thyroid function test subclinical hypothyroidism euthyroid sick syndrome iodine contrast thyroid binder interaction">
           <div class="tile-icon calc" data-icon="thyroid"></div>
           <div class="tile-body">
             <div class="tile-title">Thyroid Disease and Kidney Health</div>
@@ -2981,7 +3058,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="esa-dose-cancer-risk.html" class="guide-tile" data-tags="new calculator clinician dialysis-staff" data-text="ESA dose cancer risk EPO erythropoietin epoetin darbepoetin hemoglobin target KDIGO dialysis PhilHealth increase EPO dose more EPO higher hemoglobin malignancy Kim 2026 JAMA cancer dialysis older patients ESA initiation EPO naive starting dose iron TSAT ferritin do not raise EPO at target">
+        <a href="esa-dose-cancer-risk.html" class="guide-tile" data-tags="new calculator dialysis-staff nephrologist clinician" data-text="ESA dose cancer risk EPO erythropoietin epoetin darbepoetin hemoglobin target KDIGO dialysis PhilHealth increase EPO dose more EPO higher hemoglobin malignancy Kim 2026 JAMA cancer dialysis older patients ESA initiation EPO naive starting dose iron TSAT ferritin do not raise EPO at target">
           <div class="tile-icon calc" data-icon="drop"></div>
           <div class="tile-body">
             <div class="tile-title">More EPO Isn't Better: ESA Dose & Cancer Risk</div>
@@ -2991,7 +3068,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="epo-resistant-renal-anemia.html" class="guide-tile" data-tags="new clinician dialysis-staff" data-text="EPO resistant renal anemia ESA hyporesponsiveness erythropoietin resistance index ERI hepcidin iron CKD KDIGO 2026 anemia PIVOTAL IV iron OLYMPUS roxadustat HIF-PHI daprodustat vadadustat L-carnitine vitamin D ESA resistance secondary hyperparathyroidism PTH indoxyl sulfate anti-EPO antibody PRCA pure red cell aplasia CHOIR TREAT CREATE Normal Hematocrit Besarab dialysis hemodialysis ferric carboxymaltose hypophosphatemia FGF23">
+        <a href="epo-resistant-renal-anemia.html" class="guide-tile" data-tags="new dialysis-staff nephrologist clinician" data-text="EPO resistant renal anemia ESA hyporesponsiveness erythropoietin resistance index ERI hepcidin iron CKD KDIGO 2026 anemia PIVOTAL IV iron OLYMPUS roxadustat HIF-PHI daprodustat vadadustat L-carnitine vitamin D ESA resistance secondary hyperparathyroidism PTH indoxyl sulfate anti-EPO antibody PRCA pure red cell aplasia CHOIR TREAT CREATE Normal Hematocrit Besarab dialysis hemodialysis ferric carboxymaltose hypophosphatemia FGF23">
           <div class="tile-icon" data-icon="drop"></div>
           <div class="tile-body">
             <div class="tile-title">EPO-Resistant Renal Anemia: ESA Hyporesponsiveness in CKD</div>
@@ -3001,7 +3078,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="thalassemia-ckd.html" class="guide-tile" data-tags="new clinician" data-text="thalassemia kidney disease beta thalassemia trait CKD blood condition hemoglobin iron overload chelation deferasirox deferoxamine HPLC HbA2 ferritin TSAT ESA folic acid Filipino anemia genetic blood disorder iron chelation KDIGO anemia management">
+        <a href="thalassemia-ckd.html" class="guide-tile" data-tags="new internist-gp nephrologist clinician" data-text="thalassemia kidney disease beta thalassemia trait CKD blood condition hemoglobin iron overload chelation deferasirox deferoxamine HPLC HbA2 ferritin TSAT ESA folic acid Filipino anemia genetic blood disorder iron chelation KDIGO anemia management">
           <div class="tile-icon" data-icon="dna"></div>
           <div class="tile-body">
             <div class="tile-title">Thalassemia and Kidney Disease</div>
@@ -3021,7 +3098,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="ckd-associated-osteoporosis.html" class="guide-tile" data-tags="new clinician" data-text="CKD-associated osteoporosis CKD-MBD renal osteodystrophy ROD TMV turnover mineralization volume bone turnover markers BSAP P1NP TRAP-5b KDIGO 2025 denosumab dialysis hypocalcemia bisphosphonates romosozumab boxed warning teriparatide adynamic bone abaloparatide vascular calcification FGF-23 Klotho skeletal PTH hyporesponsiveness EUROD fracture risk dialysis sclerostin one umbrella">
+        <a href="ckd-associated-osteoporosis.html" class="guide-tile" data-tags="new internist-gp nephrologist clinician" data-text="CKD-associated osteoporosis CKD-MBD renal osteodystrophy ROD TMV turnover mineralization volume bone turnover markers BSAP P1NP TRAP-5b KDIGO 2025 denosumab dialysis hypocalcemia bisphosphonates romosozumab boxed warning teriparatide adynamic bone abaloparatide vascular calcification FGF-23 Klotho skeletal PTH hyporesponsiveness EUROD fracture risk dialysis sclerostin one umbrella">
           <div class="tile-icon read" data-icon="bone"></div>
           <div class="tile-body">
             <div class="tile-title">CKD-Associated Osteoporosis: One Umbrella for Bone & Vessel</div>
@@ -3143,7 +3220,7 @@
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
-        <a href="filipino-diabetic-diet.html" class="guide-tile" data-tags="philippines new calculator clinician nutrition diabetes patient dietitian" data-text="Filipino diabetic diet diabetes food guide Philippines GI glycemic index rice sinangag ampalaya kamote palengke HbA1c blood sugar Filipino plate method meal sequencing 7-day meal plan sinigang tinola diabetes Filipino food glycemic load postprandial glucose">
+        <a href="filipino-diabetic-diet.html" class="guide-tile" data-tags="philippines new calculator nutrition diabetes patient dietitian internist-gp clinician" data-text="Filipino diabetic diet diabetes food guide Philippines GI glycemic index rice sinangag ampalaya kamote palengke HbA1c blood sugar Filipino plate method meal sequencing 7-day meal plan sinigang tinola diabetes Filipino food glycemic load postprandial glucose">
           <div class="tile-icon ph" data-icon="leaf"></div>
           <div class="tile-body">
             <div class="tile-title">Eating Smart with Diabetes — A Filipino Food Guide</div>
@@ -3218,7 +3295,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="heart-kidney-connection.html" class="guide-tile" data-tags="calculator clinician hypertension" data-text="heart kidney cardiorenal syndrome SGLT2 heart failure cardiorenal type 1 2 3 4 5 heart failure EF preserved reduced fluid overload diuretic furosemide Lasix natriuretic peptide BNP">
+        <a href="heart-kidney-connection.html" class="guide-tile" data-tags="calculator hypertension internist-gp nephrologist clinician" data-text="heart kidney cardiorenal syndrome SGLT2 heart failure cardiorenal type 1 2 3 4 5 heart failure EF preserved reduced fluid overload diuretic furosemide Lasix natriuretic peptide BNP">
           <div class="tile-icon calc" data-icon="heart"></div>
           <div class="tile-body">
             <div class="tile-title">Heart & Kidney Connection — When Protecting One Saves Both</div>
@@ -3227,7 +3304,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="heart-failure-ckd.html" class="guide-tile" data-tags="new clinician diabetes hypertension" data-text="heart failure CKD chronic kidney disease cardiorenal syndrome KDIGO 2024 SGLT2 inhibitor dapagliflozin empagliflozin finerenone FINEARTS GLP-1 semaglutide FLOW ARNI sacubitril valsartan ACEi ARB MRA spironolactone eGFR dip 30 percent GDMT guideline directed medical therapy BNP NT-proBNP UACR natriuretic peptide HFpEF HFrEF preserved reduced ejection fraction diuretic resistance furosemide congestion fluid overload iron deficiency IV iron potassium hyperkalemia ultrafiltration peritoneal dialysis common soil">
+        <a href="heart-failure-ckd.html" class="guide-tile" data-tags="new diabetes hypertension internist-gp nephrologist clinician" data-text="heart failure CKD chronic kidney disease cardiorenal syndrome KDIGO 2024 SGLT2 inhibitor dapagliflozin empagliflozin finerenone FINEARTS GLP-1 semaglutide FLOW ARNI sacubitril valsartan ACEi ARB MRA spironolactone eGFR dip 30 percent GDMT guideline directed medical therapy BNP NT-proBNP UACR natriuretic peptide HFpEF HFrEF preserved reduced ejection fraction diuretic resistance furosemide congestion fluid overload iron deficiency IV iron potassium hyperkalemia ultrafiltration peritoneal dialysis common soil">
           <div class="tile-icon new" data-icon="heart"></div>
           <div class="tile-body">
             <div class="tile-title">Heart Failure & CKD — One Integrated Plan for Both Organs</div>
@@ -3314,7 +3391,7 @@
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
-        <a href="ai-in-nephrology-practice.html" class="guide-tile" data-tags="new perspective clinician" data-text="artificial intelligence nephrology machine learning deep learning large language models LLM ChatGPT generative AI clinical decision support CKD risk prediction Klinrisk KFRE Tangri 2024 acute kidney injury AKI prediction DeepMind Tomasev 2019 deep learning kidney biopsy histopathology Hermsen 2019 Bouteldja 2022 stain independent retinal imaging diabetic kidney disease Meng 2025 dialysis optimization volume hypotension anemia ESA reinforcement learning peritoneal dialysis transplant tacrolimus dosing rejection prediction Schwantes Alamgir retrieval augmented generation RAG Miao 2024 Eppler 2023 pediatric LLM Niel 2025 algorithmic bias eGFR race coefficient Pinsino 2023 cystatin C software as a medical device SaMD FDA Yu 2023 KDIGO ASN ERA AI guideline gap appraisal checklist AUROC calibration alert burden fairness governance">
+        <a href="ai-in-nephrology-practice.html" class="guide-tile" data-tags="new perspective nephrologist clinician" data-text="artificial intelligence nephrology machine learning deep learning large language models LLM ChatGPT generative AI clinical decision support CKD risk prediction Klinrisk KFRE Tangri 2024 acute kidney injury AKI prediction DeepMind Tomasev 2019 deep learning kidney biopsy histopathology Hermsen 2019 Bouteldja 2022 stain independent retinal imaging diabetic kidney disease Meng 2025 dialysis optimization volume hypotension anemia ESA reinforcement learning peritoneal dialysis transplant tacrolimus dosing rejection prediction Schwantes Alamgir retrieval augmented generation RAG Miao 2024 Eppler 2023 pediatric LLM Niel 2025 algorithmic bias eGFR race coefficient Pinsino 2023 cystatin C software as a medical device SaMD FDA Yu 2023 KDIGO ASN ERA AI guideline gap appraisal checklist AUROC calibration alert burden fairness governance">
           <div class="tile-icon" data-icon="brain"></div>
           <div class="tile-body">
             <div class="tile-title">Artificial Intelligence in Nephrology Practice</div>
@@ -3356,7 +3433,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="filipino-nephrologist-challenges.html" class="guide-tile" data-tags="perspective philippines new clinician system-nav" data-text="Filipino nephrologist challenges perspective Philippines nephrology CKD epidemic late referral dialysis financing PhilHealth NKTI workforce shortage maldistribution burnout kidney transplant peritoneal home dialysis SGLT2 inhibitor access value-based care volume-based conflict of interest dialysis business ownership prevention kidney health preservation Metro Manila Cebu Davao essay opinion viewpoint reflection">
+        <a href="filipino-nephrologist-challenges.html" class="guide-tile" data-tags="perspective philippines new system-nav nephrologist clinician" data-text="Filipino nephrologist challenges perspective Philippines nephrology CKD epidemic late referral dialysis financing PhilHealth NKTI workforce shortage maldistribution burnout kidney transplant peritoneal home dialysis SGLT2 inhibitor access value-based care volume-based conflict of interest dialysis business ownership prevention kidney health preservation Metro Manila Cebu Davao essay opinion viewpoint reflection">
           <div class="tile-icon ph" data-icon="stethoscope"></div>
           <div class="tile-body">
             <div class="tile-title">A Filipino Nephrologist's Challenges — A Perspective</div>
@@ -3382,7 +3459,7 @@
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
-        <a href="surviving-fiestas-holidays-ckd.html" class="guide-tile" data-tags="new clinician philippines nutrition dialysis dietitian" data-text="holiday kidney syndrome fiesta christmas new year noche buena media noche reunion team building party food potassium hyperkalemia rambutan lanzones star fruit balimbing durian fruit salad buko salad lechon dinuguan ham keso de bola skipped dialysis session long interdialytic gap missed schedule alcohol beer fluid limit emergency ER warning signs wallet card host family caregiver Filipino celebration undas holy week kain pa">
+        <a href="surviving-fiestas-holidays-ckd.html" class="guide-tile" data-tags="new philippines nutrition dialysis dietitian nephrologist clinician" data-text="holiday kidney syndrome fiesta christmas new year noche buena media noche reunion team building party food potassium hyperkalemia rambutan lanzones star fruit balimbing durian fruit salad buko salad lechon dinuguan ham keso de bola skipped dialysis session long interdialytic gap missed schedule alcohol beer fluid limit emergency ER warning signs wallet card host family caregiver Filipino celebration undas holy week kain pa">
           <div class="tile-icon read" data-icon="bowl"></div>
           <div class="tile-body">
             <div class="tile-title">"Holiday Kidney Syndrome": Surviving Fiestas, Reunions &amp; the Holidays</div>
@@ -3412,7 +3489,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="kain-pa-rin.html" class="guide-tile" data-tags="new clinician philippines calculator nutrition patient dialysis-staff dietitian" data-text="kain pa rin CKD nutrition diet Filipino food guide protein phosphorus potassium sodium CKD stages 3 4 5 pre-dialysis low protein diet LPD Filipino food table bangus tilapia kamote kangkong renal diet Philippines protein energy wasting PEW KDIGO 2024 ketoanalogues nutrition pre-dialysis clinician dual mode">
+        <a href="kain-pa-rin.html" class="guide-tile" data-tags="new philippines calculator nutrition patient dialysis-staff dietitian nephrologist clinician" data-text="kain pa rin CKD nutrition diet Filipino food guide protein phosphorus potassium sodium CKD stages 3 4 5 pre-dialysis low protein diet LPD Filipino food table bangus tilapia kamote kangkong renal diet Philippines protein energy wasting PEW KDIGO 2024 ketoanalogues nutrition pre-dialysis clinician dual mode">
           <div class="tile-icon clin" data-icon="leaf"></div>
           <div class="tile-body">
             <div class="tile-title">Kain Pa Rin: CKD Nutrition Guide for Filipino Patients</div>
@@ -3422,7 +3499,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="ketoanalogue-supplementation.html" class="guide-tile" data-tags="new clinician nutrition patient dietitian" data-text="ketoanalogue supplementation CKD ketosteril keto acid nitrogen-free essential amino acid VLPD LPD very low protein diet pre-dialysis CKD stage 4 5 protein restriction BUN urea reduction hypercalcemia monitoring KDIGO Philippines nephrologist ketoanalogue indication malnutrition">
+        <a href="ketoanalogue-supplementation.html" class="guide-tile" data-tags="new nutrition patient dietitian nephrologist clinician" data-text="ketoanalogue supplementation CKD ketosteril keto acid nitrogen-free essential amino acid VLPD LPD very low protein diet pre-dialysis CKD stage 4 5 protein restriction BUN urea reduction hypercalcemia monitoring KDIGO Philippines nephrologist ketoanalogue indication malnutrition">
           <div class="tile-icon clin" data-icon="pill"></div>
           <div class="tile-body">
             <div class="tile-title">Ketoanalogues: When Misuse Leads to Harm</div>
@@ -3432,7 +3509,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="eating-on-dialysis.html" class="guide-tile" data-tags="new dialysis clinician philippines calculator nutrition patient dialysis-staff dietitian" data-text="dialysis nutrition eating on dialysis diet hemodialysis protein phosphorus potassium intradialytic eating PEW protein energy wasting KDOQI renal diet Filipino food phosphate binder timing Nepro oral nutrition supplement buko juice hyperkalemia dialysis diet Philippines">
+        <a href="eating-on-dialysis.html" class="guide-tile" data-tags="new dialysis philippines calculator nutrition patient dialysis-staff dietitian nephrologist clinician" data-text="dialysis nutrition eating on dialysis diet hemodialysis protein phosphorus potassium intradialytic eating PEW protein energy wasting KDOQI renal diet Filipino food phosphate binder timing Nepro oral nutrition supplement buko juice hyperkalemia dialysis diet Philippines">
           <div class="tile-icon clin" data-icon="food"></div>
           <div class="tile-body">
             <div class="tile-title">Eating on Dialysis: What the Evidence Actually Says</div>
@@ -3592,7 +3669,7 @@
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
-        <a href="sexual-health-intimacy-ckd.html" class="guide-tile" data-tags="new clinician calculator patient" data-text="sexual health intimacy CKD ESRD erectile dysfunction libido testosterone dialysis IIEF orgasm dyspareunia vaginal dryness prolactin hypogonadism PDE5 inhibitor sildenafil tadalafil sexual dysfunction kidney disease men women fertility hormones neuropathy">
+        <a href="sexual-health-intimacy-ckd.html" class="guide-tile" data-tags="new calculator patient internist-gp nephrologist clinician" data-text="sexual health intimacy CKD ESRD erectile dysfunction libido testosterone dialysis IIEF orgasm dyspareunia vaginal dryness prolactin hypogonadism PDE5 inhibitor sildenafil tadalafil sexual dysfunction kidney disease men women fertility hormones neuropathy">
           <div class="tile-icon read" data-icon="heart"></div>
           <div class="tile-body">
             <div class="tile-title">Sexual Health &amp; Intimacy in CKD / ESRD</div>
@@ -3707,7 +3784,7 @@
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
-        <a href="green-nephrology.html" class="guide-tile" data-tags="new clinician philippines dialysis prevention" data-text="green nephrology sustainable dialysis environmental kidney care carbon footprint water reuse RO reverse osmosis reject reclamation rainwater harvesting solar power brownout resilience PD-first peritoneal home dialysis telenephrology telemedicine plastic PVC waste segregation recycling prevention CKD slowing progression climate change ERA 2026 Glasgow green dialysis survey GDS Agar Barraclough Geelong UK NHS net zero ISN PhilHealth DOH DENR conservative care transplant 5 Rs reduce reuse recycle refuse rethink">
+        <a href="green-nephrology.html" class="guide-tile" data-tags="new philippines dialysis prevention internist-gp nephrologist clinician" data-text="green nephrology sustainable dialysis environmental kidney care carbon footprint water reuse RO reverse osmosis reject reclamation rainwater harvesting solar power brownout resilience PD-first peritoneal home dialysis telenephrology telemedicine plastic PVC waste segregation recycling prevention CKD slowing progression climate change ERA 2026 Glasgow green dialysis survey GDS Agar Barraclough Geelong UK NHS net zero ISN PhilHealth DOH DENR conservative care transplant 5 Rs reduce reuse recycle refuse rethink">
           <div class="tile-icon read" data-icon="leaf"></div>
           <div class="tile-body">
             <div class="tile-title">Green Nephrology 2026: Sustainable Kidney Care</div>
@@ -3720,7 +3797,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="dialyzer-reprocessing-reuse.html" class="guide-tile" data-tags="new clinician philippines dialysis dialysis-staff" data-text="dialyzer reprocessing reuse hemodialysis filter peracetic acid Renalin formaldehyde glutaraldehyde heat citric acid germicide AAMI RD47 ISO 23500 TCV total cell volume membrane integrity residual germicide test polysulfone PES polyethersulfone biocompatible first-use syndrome KDIGO 2026 green dialysis waste hierarchy reduce reuse recycle ClearFlux single-use Japan Australia EU ban LMIC low income middle income Philippines NKTI cost saving access plastic carbon footprint sustainability Barraclough is dialyzer reuse safe">
+        <a href="dialyzer-reprocessing-reuse.html" class="guide-tile" data-tags="new philippines dialysis dialysis-staff nephrologist clinician" data-text="dialyzer reprocessing reuse hemodialysis filter peracetic acid Renalin formaldehyde glutaraldehyde heat citric acid germicide AAMI RD47 ISO 23500 TCV total cell volume membrane integrity residual germicide test polysulfone PES polyethersulfone biocompatible first-use syndrome KDIGO 2026 green dialysis waste hierarchy reduce reuse recycle ClearFlux single-use Japan Australia EU ban LMIC low income middle income Philippines NKTI cost saving access plastic carbon footprint sustainability Barraclough is dialyzer reuse safe">
           <div class="tile-icon read" data-icon="leaf"></div>
           <div class="tile-body">
             <div class="tile-title">Dialyzer Reuse in Modern Times: Is It Making a Comeback?</div>
@@ -3733,7 +3810,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="medication-operational-guide.html" class="guide-tile" data-tags="calculator new clinician system-nav dialysis-staff" data-text="medication operational guide how to use drugs SGLT2 start protocol ACEi ARB creatinine rise interpretation RAASi hyperkalemia mitigation GLP-1 titration diuretic sequencing phosphate binder timing ESA adjustment logic patiromer SZC Lokelma metolazone darbepoetin iron first empagliflozin dapagliflozin semaglutide nephrology prescribing">
+        <a href="medication-operational-guide.html" class="guide-tile" data-tags="calculator new system-nav dialysis-staff internist-gp nephrologist clinician" data-text="medication operational guide how to use drugs SGLT2 start protocol ACEi ARB creatinine rise interpretation RAASi hyperkalemia mitigation GLP-1 titration diuretic sequencing phosphate binder timing ESA adjustment logic patiromer SZC Lokelma metolazone darbepoetin iron first empagliflozin dapagliflozin semaglutide nephrology prescribing">
 
           <div class="tile-icon read" data-icon="pill"></div>
           <div class="tile-body">
@@ -3746,7 +3823,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="practical-outpatient-algorithms.html" class="guide-tile" data-tags="calculator new clinician decision-tool system-nav dialysis-staff" data-text="outpatient algorithms edema hyperkalemia hyponatremia resistant hypertension AKI CKD referral anemia proteinuria metabolic acidosis GP internist clinical decision flowchart work-up diagnosis pathway FeNa eGFR iron dose anion gap hyponatremia correction primary care nephrology step-by-step">
+        <a href="practical-outpatient-algorithms.html" class="guide-tile" data-tags="calculator new decision-tool system-nav dialysis-staff internist-gp clinician" data-text="outpatient algorithms edema hyperkalemia hyponatremia resistant hypertension AKI CKD referral anemia proteinuria metabolic acidosis GP internist clinical decision flowchart work-up diagnosis pathway FeNa eGFR iron dose anion gap hyponatremia correction primary care nephrology step-by-step">
           <div class="tile-icon read" data-icon="doc"></div>
           <div class="tile-body">
             <div class="tile-title">Practical Outpatient Algorithms</div>
@@ -3795,7 +3872,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="hemodiafiltration-deep-dive.html" class="guide-tile" data-tags="dialysis clinician new calculator dialysis-staff" data-text="hemodiafiltration HDF OL-HDF online hemodiafiltration CONVINCE trial ESHOL CONTRAST middle molecules beta-2 microglobulin convection volume mortality dialysis survival high-volume HDF ≥23 L/session high-flux HD vs HDF EuDial 2025 Lancet IPD meta-analysis nephrology evidence">
+        <a href="hemodiafiltration-deep-dive.html" class="guide-tile" data-tags="dialysis new calculator dialysis-staff nephrologist clinician" data-text="hemodiafiltration HDF OL-HDF online hemodiafiltration CONVINCE trial ESHOL CONTRAST middle molecules beta-2 microglobulin convection volume mortality dialysis survival high-volume HDF ≥23 L/session high-flux HD vs HDF EuDial 2025 Lancet IPD meta-analysis nephrology evidence">
           <div class="tile-icon read" data-icon="doc"></div>
           <div class="tile-body">
             <div class="tile-title">Hemodiafiltration Deep Dive: What the Evidence Has Taught Us</div>
@@ -3807,7 +3884,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="high-flux-hd-optimization.html" class="guide-tile" data-tags="dialysis clinician new calculator dialysis-staff" data-text="high-flux hemodialysis QB blood flow rate optimization beta-2 microglobulin β2M middle molecules internal filtration back-filtration dialysis-related amyloidosis DRA HEMO trial MPO trial convection TMP transmembrane pressure Kuf ultrapure water endotoxin dialysis prescription Philippines nephrology">
+        <a href="high-flux-hd-optimization.html" class="guide-tile" data-tags="dialysis new calculator dialysis-staff nephrologist clinician" data-text="high-flux hemodialysis QB blood flow rate optimization beta-2 microglobulin β2M middle molecules internal filtration back-filtration dialysis-related amyloidosis DRA HEMO trial MPO trial convection TMP transmembrane pressure Kuf ultrapure water endotoxin dialysis prescription Philippines nephrology">
           <div class="tile-icon read" data-icon="doc"></div>
           <div class="tile-body">
             <div class="tile-title">Maximizing Your High-Flux Hemodialysis Benefits</div>
@@ -3837,7 +3914,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="dialysis-prescription.html" class="guide-tile" data-tags="new dialysis clinician calculator dialysis-staff" data-text="dialysis prescription Kt/V UFR HD PD adequacy KDOQI adjustment special populations dialysis order blood flow dialysate flow time per session membrane flux ultrafiltration rate incremental dialysis individualized">
+        <a href="dialysis-prescription.html" class="guide-tile" data-tags="new dialysis calculator dialysis-staff nephrologist clinician" data-text="dialysis prescription Kt/V UFR HD PD adequacy KDOQI adjustment special populations dialysis order blood flow dialysate flow time per session membrane flux ultrafiltration rate incremental dialysis individualized">
           <div class="tile-icon read" data-icon="doc"></div>
           <div class="tile-body">
             <div class="tile-title">Understanding Your Dialysis Prescription</div>
@@ -3888,7 +3965,7 @@
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
-        <a href="crrt-continuous-renal-replacement-therapy.html" class="guide-tile" data-tags="new dialysis clinician calculator dialysis-staff" data-text="continuous renal replacement therapy CRRT CVVH CVVHD CVVHDF SCUF regional citrate anticoagulation RCA effluent dose filtration fraction KDIGO AKI guideline STARRT-AKI AKIKI ELAIN IDEAL-ICU RENAL trial ATN trial vascular access dialysis catheter citrate accumulation filter clotting troubleshooting drug dosing CRRT weaning ICU nephrology critical care">
+        <a href="crrt-continuous-renal-replacement-therapy.html" class="guide-tile" data-tags="new dialysis calculator dialysis-staff nephrologist clinician" data-text="continuous renal replacement therapy CRRT CVVH CVVHD CVVHDF SCUF regional citrate anticoagulation RCA effluent dose filtration fraction KDIGO AKI guideline STARRT-AKI AKIKI ELAIN IDEAL-ICU RENAL trial ATN trial vascular access dialysis catheter citrate accumulation filter clotting troubleshooting drug dosing CRRT weaning ICU nephrology critical care">
           <div class="tile-icon read" data-icon="drop"></div>
           <div class="tile-body">
             <div class="tile-title">Continuous Renal Replacement Therapy (CRRT) — Basics to Advanced</div>
@@ -3902,7 +3979,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="dialysis-water-treatment-systems.html" class="guide-tile" data-tags="new dialysis clinician dialysis-staff" data-text="hemodialysis water treatment system RO reverse osmosis ultrafiltration dialysate carbon tanks chloramine breakthrough deep well borehole brackish saline hard water softener dual-pass RO ultrapure water HDF isolation bay hepatitis B AAMI ISO 23500 DOH AO 2012-0001 2013-0003 capacity sizing water quality management program troubleshooting dialysis nurse technician biomedical engineer">
+        <a href="dialysis-water-treatment-systems.html" class="guide-tile" data-tags="new dialysis dialysis-staff nephrologist clinician" data-text="hemodialysis water treatment system RO reverse osmosis ultrafiltration dialysate carbon tanks chloramine breakthrough deep well borehole brackish saline hard water softener dual-pass RO ultrapure water HDF isolation bay hepatitis B AAMI ISO 23500 DOH AO 2012-0001 2013-0003 capacity sizing water quality management program troubleshooting dialysis nurse technician biomedical engineer">
           <div class="tile-icon read" data-icon="droplet"></div>
           <div class="tile-body">
             <div class="tile-title">Hemodialysis Water Treatment Systems — Clinical &amp; Engineering Reference</div>
@@ -3915,7 +3992,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="pocus-nephrology.html" class="guide-tile" data-tags="new dialysis clinician dialysis-staff" data-text="POCUS point-of-care ultrasound nephrology kidney bladder hydronephrosis IVC RAP VEXUS venous excess hepatic portal intrarenal Doppler lung B-lines extravascular lung water EVLW focused cardiac PLAX PSAX A4C subcostal AV fistula rule of 6s ultrasound-guided kidney biopsy central venous access cardiorenal phenotype dry weight clinician trainee field guide ASN Philippines">
+        <a href="pocus-nephrology.html" class="guide-tile" data-tags="new dialysis dialysis-staff nephrologist clinician" data-text="POCUS point-of-care ultrasound nephrology kidney bladder hydronephrosis IVC RAP VEXUS venous excess hepatic portal intrarenal Doppler lung B-lines extravascular lung water EVLW focused cardiac PLAX PSAX A4C subcostal AV fistula rule of 6s ultrasound-guided kidney biopsy central venous access cardiorenal phenotype dry weight clinician trainee field guide ASN Philippines">
 
           <div class="tile-icon read" data-icon="droplet"></div>
           <div class="tile-body">
@@ -3929,7 +4006,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="iso-uf-sodium-uf-ramping.html" class="guide-tile" data-tags="new dialysis clinician dialysis-staff" data-text="iso-UF isolated ultrafiltration sodium ramping dialysate sodium profile UF profile hemodynamic stabilization intradialytic hypotension IDH dialysis prescription HD clinician guide KDIGO 2020 vascular tone refilling plasma osmolality net-zero diffusive Na cool dialysate sequential dialysis dialyzer prescription worksheet">
+        <a href="iso-uf-sodium-uf-ramping.html" class="guide-tile" data-tags="new dialysis dialysis-staff nephrologist clinician" data-text="iso-UF isolated ultrafiltration sodium ramping dialysate sodium profile UF profile hemodynamic stabilization intradialytic hypotension IDH dialysis prescription HD clinician guide KDIGO 2020 vascular tone refilling plasma osmolality net-zero diffusive Na cool dialysate sequential dialysis dialyzer prescription worksheet">
           <div class="tile-icon read" data-icon="droplet"></div>
           <div class="tile-body">
             <div class="tile-title">Iso-UF, Sodium &amp; UF Ramping — Clinician\'s Prescription Guide</div>
@@ -3942,7 +4019,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="cardiovascular-death-dialysis.html" class="guide-tile" data-tags="new dialysis clinician calculator dialysis-staff" data-text="cardiovascular death dialysis sudden cardiac death arrhythmia Monday effect myocardial stunning intradialytic hypotension LVH left ventricular hypertrophy ICD defibrillator hemodialysis heart failure atrial fibrillation potassium hyperkalemia carvedilol beta blocker dialysate ESRD kidney heart">
+        <a href="cardiovascular-death-dialysis.html" class="guide-tile" data-tags="new dialysis calculator dialysis-staff nephrologist clinician" data-text="cardiovascular death dialysis sudden cardiac death arrhythmia Monday effect myocardial stunning intradialytic hypotension LVH left ventricular hypertrophy ICD defibrillator hemodialysis heart failure atrial fibrillation potassium hyperkalemia carvedilol beta blocker dialysate ESRD kidney heart">
           <div class="tile-icon read" data-icon="heart"></div>
           <div class="tile-body">
             <div class="tile-title">Cardiovascular Disease &amp; Sudden Death in Dialysis</div>
@@ -3955,7 +4032,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="code-blue-acls-dialysis-unit.html" class="guide-tile" data-tags="new dialysis clinician dialysis-staff" data-text="code blue ACLS dialysis unit cardiac arrest CPR resuscitation hemodialysis emergency hyperkalemic arrest defibrillation crash cart epinephrine amiodarone calcium chloride ROSC reversible causes H's and T's air embolism stop ultrafiltration return blood team roles closed-loop communication mock code recording flowsheet sudden cardiac death renal care unit Philippines">
+        <a href="code-blue-acls-dialysis-unit.html" class="guide-tile" data-tags="new dialysis dialysis-staff nephrologist clinician" data-text="code blue ACLS dialysis unit cardiac arrest CPR resuscitation hemodialysis emergency hyperkalemic arrest defibrillation crash cart epinephrine amiodarone calcium chloride ROSC reversible causes H's and T's air embolism stop ultrafiltration return blood team roles closed-loop communication mock code recording flowsheet sudden cardiac death renal care unit Philippines">
           <div class="tile-icon read" data-icon="heart"></div>
           <div class="tile-body">
             <div class="tile-title">Efficient Handling of Code Blues &amp; ACLS in a Dialysis Unit</div>
@@ -3967,7 +4044,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="post-dialysis-fatigue.html" class="guide-tile" data-tags="calculator new dialysis clinician dialysis-staff" data-text="post-dialysis fatigue PDF hemodialysis exhaustion tired after dialysis HD fatigue recovery strategies intradialytic hypotension carnitine deficiency anemia dialysis uremic toxin rebound osmotic stress autonomic dysfunction cytokine inflammation IDH cool dialysate intradialytic exercise sleep apnea dialysis Philippines">
+        <a href="post-dialysis-fatigue.html" class="guide-tile" data-tags="calculator new dialysis dialysis-staff nephrologist clinician" data-text="post-dialysis fatigue PDF hemodialysis exhaustion tired after dialysis HD fatigue recovery strategies intradialytic hypotension carnitine deficiency anemia dialysis uremic toxin rebound osmotic stress autonomic dysfunction cytokine inflammation IDH cool dialysate intradialytic exercise sleep apnea dialysis Philippines">
           <div class="tile-icon read" data-icon="brain"></div>
           <div class="tile-body">
             <div class="tile-title">Post-Dialysis Fatigue: Why You're Exhausted After HD (And What to Do About It)</div>
@@ -3979,7 +4056,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="dialysis-cramps-stasis-pigmentation.html" class="guide-tile" data-tags="new dialysis clinician patient diabetes dialysis-staff" data-text="intradialytic cramps muscle cramp stasis pigmentation hemosiderin gaiter brown legs hypoxic lower limb HLL hypoxia venous hypertension SERCA ATP last-hour cramp diabetic foot ABI TBI ankle brachial index toe pressure peripheral arterial disease PAD diabetes diabetic amplification ultrafiltration UF rate dialysis cool dialysate sodium ramp compression intradialytic exercise lower limb dialysis Philippines">
+        <a href="dialysis-cramps-stasis-pigmentation.html" class="guide-tile" data-tags="new dialysis patient diabetes dialysis-staff nephrologist clinician" data-text="intradialytic cramps muscle cramp stasis pigmentation hemosiderin gaiter brown legs hypoxic lower limb HLL hypoxia venous hypertension SERCA ATP last-hour cramp diabetic foot ABI TBI ankle brachial index toe pressure peripheral arterial disease PAD diabetes diabetic amplification ultrafiltration UF rate dialysis cool dialysate sodium ramp compression intradialytic exercise lower limb dialysis Philippines">
           <div class="tile-icon read" data-icon="droplet"></div>
           <div class="tile-body">
             <div class="tile-title">When Your Legs Cramp and Darken: Oxygen, Fluid &amp; the Dialysis Patient's Lower Limb</div>
@@ -3991,7 +4068,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="dialysis-coming-pre-eskd.html" class="guide-tile" data-tags="dialysis philippines calculator clinician pre-dialysis system-nav patient dialysis-staff" data-text="pre-dialysis preparing ESKD eGFR 15-29 AVF modality PhilHealth decision tools transplant approaching dialysis kidney failure starting dialysis access creation fistula graft PD catheter early referral modality choice">
+        <a href="dialysis-coming-pre-eskd.html" class="guide-tile" data-tags="dialysis philippines calculator pre-dialysis system-nav patient dialysis-staff internist-gp nephrologist clinician" data-text="pre-dialysis preparing ESKD eGFR 15-29 AVF modality PhilHealth decision tools transplant approaching dialysis kidney failure starting dialysis access creation fistula graft PD catheter early referral modality choice">
           <div class="tile-icon calc" data-icon="clock"></div>
           <div class="tile-body">
             <div class="tile-title">Preparing for Dialysis — The 12-Month Window That Changes Your Outcome</div>
@@ -4097,7 +4174,7 @@
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
-        <a href="hantavirus-ckd.html" class="guide-tile" data-tags="philippines new calculator clinician pre-dialysis prevention" data-text="hantavirus kidney disease HFRS hemorrhagic fever renal syndrome AKI CKD Seoul virus Philippines MV Hondius 2026 outbreak cruise ship Filipino crew oliguric phase diuretic phase ribavirin dialysis rodent exposure flooding typhoon leptospirosis differential dengue differential RITM serology hantavirus prevention">
+        <a href="hantavirus-ckd.html" class="guide-tile" data-tags="philippines new calculator pre-dialysis prevention internist-gp nephrologist clinician" data-text="hantavirus kidney disease HFRS hemorrhagic fever renal syndrome AKI CKD Seoul virus Philippines MV Hondius 2026 outbreak cruise ship Filipino crew oliguric phase diuretic phase ribavirin dialysis rodent exposure flooding typhoon leptospirosis differential dengue differential RITM serology hantavirus prevention">
           <div class="tile-icon ph" data-icon="alert"></div>
           <div class="tile-body">
             <div class="tile-title">Hantavirus and the Kidneys — HFRS, AKI &amp; CKD</div>
@@ -4112,7 +4189,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="dengue-aki-kidney.html" class="guide-tile" data-tags="philippines new calculator clinician pre-dialysis prevention" data-text="dengue AKI kidney acute kidney injury dengue fever Philippines dengue creatinine dengue nephropathy dengue rhabdomyolysis dengue CKD mefenamic acid danger dengue fluid paradox dengue critical phase dengue ER dengue NS1 antigen dengue capillary leak DENV dengue dialysis dengue rainy season Philippines">
+        <a href="dengue-aki-kidney.html" class="guide-tile" data-tags="philippines new calculator pre-dialysis prevention internist-gp nephrologist clinician" data-text="dengue AKI kidney acute kidney injury dengue fever Philippines dengue creatinine dengue nephropathy dengue rhabdomyolysis dengue CKD mefenamic acid danger dengue fluid paradox dengue critical phase dengue ER dengue NS1 antigen dengue capillary leak DENV dengue dialysis dengue rainy season Philippines">
           <div class="tile-icon ph" data-icon="alert"></div>
           <div class="tile-body">
             <div class="tile-title">Dengue &amp; Your Kidneys — When Fever Becomes a Kidney Emergency</div>
@@ -4190,7 +4267,7 @@
           <span class="tile-arrow">›</span>
         </a>
 
-        <a href="hivan-hiv-kidney-disease.html" class="guide-tile" data-tags="new clinician glomerular" data-text="HIVAN HIV kidney disease nephropathy collapsing FSGS proteinuria ART antiretroviral CKD dialysis transplant tenofovir TDF TAF ARV drug dosing HIV nephropathy APOL1 HIVICK immune complex glomerulonephritis Philippines">
+        <a href="hivan-hiv-kidney-disease.html" class="guide-tile" data-tags="new glomerular internist-gp nephrologist clinician" data-text="HIVAN HIV kidney disease nephropathy collapsing FSGS proteinuria ART antiretroviral CKD dialysis transplant tenofovir TDF TAF ARV drug dosing HIV nephropathy APOL1 HIVICK immune complex glomerulonephritis Philippines">
           <div class="tile-icon clin" data-icon="shield"></div>
           <div class="tile-body">
             <div class="tile-title">HIVAN: The Kidney Disease You Can Fight Back Against</div>
@@ -4234,7 +4311,7 @@
           </div>
           <span class="tile-arrow">›</span>
         </a>
-        <a href="substance-abuse-ckd.html" class="guide-tile" data-tags="new philippines clinician prevention" data-text="substance abuse use disorder kidney CKD shabu methamphetamine stimulant cocaine smoking tobacco vaping nicotine opioid tramadol painkiller NSAID mefenamic analgesic nephropathy inhalant rugby solvent cannabis synthetic cannabinoid supplements anabolic steroids drug-induced AKI rhabdomyolysis recovery rehab harm reduction Philippines NCMH DOH Dangerous Drugs Board clinician addiction">
+        <a href="substance-abuse-ckd.html" class="guide-tile" data-tags="new philippines prevention internist-gp clinician" data-text="substance abuse use disorder kidney CKD shabu methamphetamine stimulant cocaine smoking tobacco vaping nicotine opioid tramadol painkiller NSAID mefenamic analgesic nephropathy inhalant rugby solvent cannabis synthetic cannabinoid supplements anabolic steroids drug-induced AKI rhabdomyolysis recovery rehab harm reduction Philippines NCMH DOH Dangerous Drugs Board clinician addiction">
           <div class="tile-icon ph" data-icon="shield"></div>
           <div class="tile-body">
             <div class="tile-title">Substance Use & Your Kidneys — Protecting What You Have</div>
@@ -4309,7 +4386,7 @@
           <span class="tile-arrow">↓</span>
         </a>
 
-        <a href="../downloads/wgmr-code-blue-recording-flowsheet.pdf" class="guide-tile" target="_blank" rel="noopener" data-tags="download dialysis clinician" data-text="code blue recording flowsheet ACLS dialysis unit cardiac arrest CPR resuscitation documentation form printable PDF epinephrine amiodarone defibrillation rhythm vitals event conclusion personnel recorder renal care unit clinician handout download ACLS algorithms cardiac arrest bradycardia tachycardia hyperkalemia management">
+        <a href="../downloads/wgmr-code-blue-recording-flowsheet.pdf" class="guide-tile" target="_blank" rel="noopener" data-tags="download dialysis nephrologist clinician" data-text="code blue recording flowsheet ACLS dialysis unit cardiac arrest CPR resuscitation documentation form printable PDF epinephrine amiodarone defibrillation rhythm vitals event conclusion personnel recorder renal care unit clinician handout download ACLS algorithms cardiac arrest bradycardia tachycardia hyperkalemia management">
           <div class="tile-icon dl" data-icon="download"></div>
           <div class="tile-body">
             <div class="tile-title">Code Blue Recording Flowsheet</div>
@@ -4319,7 +4396,7 @@
           <span class="tile-arrow">↓</span>
         </a>
 
-        <a href="../downloads/wgmr-acls-rhythm-recognition-cheatsheet.pdf" class="guide-tile" target="_blank" rel="noopener" data-tags="download dialysis clinician" data-text="ACLS cardiac rhythm recognition cheat sheet ECG strips sinus bradycardia tachycardia atrial fibrillation flutter SVT junctional AV block Mobitz Wenckebach VT ventricular tachycardia torsades ventricular fibrillation VF asystole PEA paced WPW hyperkalemia shockable non-shockable management treatment dialysis clinician reference printable PDF download">
+        <a href="../downloads/wgmr-acls-rhythm-recognition-cheatsheet.pdf" class="guide-tile" target="_blank" rel="noopener" data-tags="download dialysis nephrologist clinician" data-text="ACLS cardiac rhythm recognition cheat sheet ECG strips sinus bradycardia tachycardia atrial fibrillation flutter SVT junctional AV block Mobitz Wenckebach VT ventricular tachycardia torsades ventricular fibrillation VF asystole PEA paced WPW hyperkalemia shockable non-shockable management treatment dialysis clinician reference printable PDF download">
           <div class="tile-icon dl" data-icon="download"></div>
           <div class="tile-body">
             <div class="tile-title">ACLS Cardiac Rhythm Recognition &amp; Management Cheat Sheet</div>
@@ -4369,7 +4446,7 @@
           <span class="tile-arrow">↓</span>
         </a>
 
-        <a href="../downloads/psn-hd-endorsement-form.pdf" class="guide-tile" target="_blank" rel="noopener" data-tags="download clinician philippines" data-text="PSN HD endorsement form Philippine Society of Nephrology hemodialysis PhilHealth endorsement PDF clinician">
+        <a href="../downloads/psn-hd-endorsement-form.pdf" class="guide-tile" target="_blank" rel="noopener" data-tags="download nephrologist philippines clinician" data-text="PSN HD endorsement form Philippine Society of Nephrology hemodialysis PhilHealth endorsement PDF clinician">
           <div class="tile-icon dl" data-icon="download"></div>
           <div class="tile-body">
             <div class="tile-title">PSN Hemodialysis Endorsement Form</div>
@@ -5377,10 +5454,53 @@ document.addEventListener('DOMContentLoaded', function() {
 // visit will re-prompt.
 (function() {
   var KEY = 'wgmr-visit-persona';
-  var PERSONAS = ['clinician','caregiver','patient','dialysis-staff','dietitian'];
+  var PERSONAS = ['internist-gp','nephrologist','caregiver','patient','dialysis-staff','dietitian'];
+  var LABELS = {
+    'internist-gp': 'Internist / GP',
+    'nephrologist': 'Nephrologist',
+    'caregiver': 'Caregiver',
+    'patient': 'Patient',
+    'dialysis-staff': 'Dialysis Staff / HD Tech',
+    'dietitian': 'Dietitian / Nutritionist'
+  };
   function applyPersona(p) {
     PERSONAS.forEach(function(k) { document.body.classList.remove('persona-' + k); });
     if (p && PERSONAS.indexOf(p) !== -1) document.body.classList.add('persona-' + p);
+    renderPersonaPicks(p);
+  }
+  // Data-driven "Top picks for you" strip: pulls the first guides tagged
+  // for the active persona straight from the tile grid, so it updates
+  // automatically whenever guides are added or re-tagged.
+  function renderPersonaPicks(p) {
+    var wrap = document.getElementById('persona-picks');
+    var row = document.getElementById('persona-picks-row');
+    var sub = document.getElementById('persona-picks-sub');
+    if (!wrap || !row) return;
+    if (!p || PERSONAS.indexOf(p) === -1) { wrap.style.display = 'none'; row.innerHTML = ''; return; }
+    var tiles = document.querySelectorAll('.guide-tile[data-tags~="' + p + '"]');
+    if (!tiles.length) { wrap.style.display = 'none'; row.innerHTML = ''; return; }
+    row.innerHTML = '';
+    for (var i = 0; i < tiles.length && i < 8; i++) {
+      var t = tiles[i];
+      var titleEl = t.querySelector('.tile-title');
+      var teaserEl = t.querySelector('.tile-teaser');
+      var a = document.createElement('a');
+      a.className = 'persona-pick-card';
+      a.href = t.getAttribute('href');
+      var titleDiv = document.createElement('div');
+      titleDiv.className = 'persona-pick-title';
+      titleDiv.textContent = titleEl ? titleEl.textContent : t.textContent.trim();
+      a.appendChild(titleDiv);
+      if (teaserEl) {
+        var teaserDiv = document.createElement('div');
+        teaserDiv.className = 'persona-pick-teaser';
+        teaserDiv.textContent = teaserEl.textContent;
+        a.appendChild(teaserDiv);
+      }
+      row.appendChild(a);
+    }
+    sub.textContent = 'Curated for ' + LABELS[p];
+    wrap.style.display = '';
   }
   try { applyPersona(localStorage.getItem(KEY)); } catch(e) {}
   document.addEventListener('click', function(e) {
@@ -5389,6 +5509,7 @@ document.addEventListener('DOMContentLoaded', function() {
     try { localStorage.removeItem(KEY); } catch(e) {}
     applyPersona(null);
   });
+  window.wgmrRenderPersonaPicks = renderPersonaPicks;
 })();
 
 // ── WHAT BRINGS YOU HERE ─────────────────────────────────────────────────────
@@ -5405,8 +5526,9 @@ document.addEventListener('DOMContentLoaded', function() {
       '<div class="persona-choices">' +
         '<button class="persona-btn" data-persona="patient">🫀 I\'m a Patient</button>' +
         '<button class="persona-btn" data-persona="caregiver">🤝 I\'m a Caregiver</button>' +
-        '<button class="persona-btn" data-persona="clinician">🩺 I\'m a Physician</button>' +
-        '<button class="persona-btn" data-persona="dialysis-staff">💧 Dialysis Staff</button>' +
+        '<button class="persona-btn" data-persona="internist-gp">🩺 Internist / GP</button>' +
+        '<button class="persona-btn" data-persona="nephrologist">🧬 Nephrologist</button>' +
+        '<button class="persona-btn" data-persona="dialysis-staff">💧 Dialysis Staff / HD Tech</button>' +
         '<button class="persona-btn" data-persona="dietitian">🥗 Dietitian / Nutritionist</button>' +
         '<button class="persona-skip">Skip</button>' +
       '</div>' +
@@ -5420,10 +5542,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!persona) return;
     // Apply the body class right away so the dim/highlight transition starts
     // while the prompt is sliding off.
-    ['clinician','caregiver','patient','dialysis-staff','dietitian'].forEach(function(k) {
+    ['internist-gp','nephrologist','caregiver','patient','dialysis-staff','dietitian'].forEach(function(k) {
       document.body.classList.remove('persona-' + k);
     });
     document.body.classList.add('persona-' + persona);
+    if (window.wgmrRenderPersonaPicks) window.wgmrRenderPersonaPicks(persona);
     setTimeout(function() {
       // All three personas now use the soft dim-and-highlight treatment
       // (body.persona-<x> class applied above). The whole library remains
