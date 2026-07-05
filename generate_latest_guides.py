@@ -18,6 +18,17 @@ reading" rail. If the markers are missing they are auto-inserted before the
 "<!-- MOBILE FILTER BAR -->" comment. The script also writes latest_guides.json
 (the ordered data it used). Idempotent.
 
+The script ALSO keeps the site's guide/calculator counts in sync everywhere
+they're hand-displayed, so they never drift the way "141 guides" did (the real
+count was 145 while three different stale numbers — 130, 135, 141 — sat in
+different meta tags). It recomputes the true counts from source (guide-tile
+count in guides/index.html, minus the downloads-only tiles; related-card count
+in guides/calculators.html) and patches: the guides/index.html hero stat, its
+mobile-filter and sidebar-filter "All N" labels, its og/twitter meta copy,
+calculators.html's og:image:alt, and the root index.html hero stat fallback
+(the data-target the JS count-up animation uses before its own live sync
+fetch resolves). Runs automatically as part of `main()` — no separate flag.
+
 Usage:
     python3 generate_latest_guides.py
     python3 generate_latest_guides.py --dry-run
@@ -230,6 +241,91 @@ def build_block(rows) -> str:
     )
 
 
+def count_true_guides(index_html: str) -> int:
+    """Guide-tile count in guides/index.html, minus tiles tagged "download"
+    (those point to PDF companions in downloads/, or a printable blank log —
+    not readable web guides). This is the site's own definition of "a guide",
+    already used by the homepage's stat-sync JS."""
+    tiles = re.findall(r'<a\b[^>]*class="[^"]*\bguide-tile\b[^"]*"[^>]*>', index_html)
+    count = 0
+    for t in tiles:
+        m = re.search(r'data-tags="([^"]*)"', t)
+        tags = m.group(1).lower() if m else ""
+        if "download" not in tags:
+            count += 1
+    return count
+
+
+def count_true_calculators(calculators_html: str) -> int:
+    """related-card tile count in guides/calculators.html — every calc-*.html
+    page plus the handful of non-prefixed interactive tools (e.g.
+    dyslipidemia-management-tool.html) that are listed the same way."""
+    return len(re.findall(r'<a class="related-card[^"]*" href="[^"]*"', calculators_html))
+
+
+def count_true_specialties(index_html: str) -> int:
+    """Distinct guide-section categories (nephrology, internal, nutrition, …)."""
+    return len(set(re.findall(r'<div class="guide-section"[^>]*data-section="([^"]+)"', index_html)))
+
+
+def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool) -> str:
+    """Patch every hand-displayed guide/calculator count to the true, freshly
+    computed values. Returns the (possibly) updated guides/index.html text;
+    also patches guides/calculators.html and root index.html in place."""
+    calc_path = project_dir / "guides" / "calculators.html"
+    root_index_path = project_dir / "index.html"
+    calc_text = calc_path.read_text(encoding="utf-8")
+
+    guide_count = count_true_guides(guides_index_text)
+    calc_count = count_true_calculators(calc_text)
+    spec_count = count_true_specialties(guides_index_text)
+
+    print(f"\nTrue counts: {guide_count} guides, {calc_count} calculators, {spec_count} specialties")
+
+    text = guides_index_text
+    text, n1 = re.subn(
+        r'(<span class="stat-num">)\d+(</span><span class="stat-label">Guides</span>)',
+        rf'\g<1>{guide_count}\g<2>', text)
+    text, n2 = re.subn(
+        r'(<span class="stat-num">)\d+(</span><span class="stat-label">Calculators</span>)',
+        rf'\g<1>{calc_count}\g<2>', text)
+    text, n3 = re.subn(
+        r'(<span class="stat-num">)\d+(</span><span class="stat-label">Specialties</span>)',
+        rf'\g<1>{spec_count}\g<2>', text)
+    text, n4 = re.subn(r'(data-filter="all">All )\d+', rf'\g<1>{guide_count}', text)
+    text, n5 = re.subn(
+        r'(All guides<span class="count">)\d+(</span>)',
+        rf'\g<1>{guide_count}\g<2>', text)
+    text, n6 = re.subn(
+        r'\d+( evidence-based guides on CKD)', rf'{guide_count}\g<1>', text)
+    text, n7 = re.subn(
+        r'\d+( evidence-based guides, )\d+( calculators)',
+        rf'{guide_count}\g<1>{calc_count}\g<2>', text)
+    changed = n1 + n2 + n3 + n4 + n5 + n6 + n7
+    print(f"guides/index.html: {changed} stat/meta reference(s) synced" if changed else "guides/index.html: stats already in sync")
+
+    new_calc_text, cn1 = re.subn(
+        r'\d+( evidence-based nephrology calculators)', rf'{calc_count}\g<1>', calc_text)
+    print(f"guides/calculators.html: {cn1} reference(s) synced" if cn1 else "guides/calculators.html: already in sync")
+
+    root_text = root_index_path.read_text(encoding="utf-8")
+    new_root_text, rn1 = re.subn(r'(data-target=")\d+(" id="stat-guides")', rf'\g<1>{guide_count}\g<2>', root_text)
+    new_root_text, rn2 = re.subn(r'(data-target=")\d+(" id="stat-specialties")', rf'\g<1>{spec_count}\g<2>', new_root_text)
+    new_root_text, rn3 = re.subn(r'(data-target=")\d+(" id="stat-calculators")', rf'\g<1>{calc_count}\g<2>', new_root_text)
+    rn = rn1 + rn2 + rn3
+    print(f"index.html: {rn} hero stat fallback(s) synced" if rn else "index.html: stats already in sync")
+
+    if not dry_run:
+        if new_calc_text != calc_text:
+            calc_path.write_text(new_calc_text, encoding="utf-8")
+        if new_root_text != root_text:
+            root_index_path.write_text(new_root_text, encoding="utf-8")
+    elif cn1 or rn:
+        print("[dry-run] would update guides/calculators.html and/or index.html")
+
+    return text
+
+
 def main():
     ap = argparse.ArgumentParser(description="Regenerate the Latest-guides strip.")
     ap.add_argument("--dry-run", action="store_true", help="preview without writing")
@@ -258,6 +354,8 @@ def main():
             raise SystemExit(f"Cannot find anchor {ANCHOR!r} to insert the strip.")
         new_text = text.replace(ANCHOR, block + "\n\n" + ANCHOR, 1)
         print(f"  (markers absent — inserted block before {ANCHOR})")
+
+    new_text = sync_library_stats(project_dir, new_text, args.dry_run)
 
     # Write the ordered data alongside, for reference / other consumers.
     data = [
