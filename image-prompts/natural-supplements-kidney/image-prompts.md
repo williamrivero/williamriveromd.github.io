@@ -1,6 +1,6 @@
 # Image Prompts — Natural Supplements & Kidney Disease
 **Guide:** `guides/natural-supplements-kidney.html`
-**URL:** https://www.williamriveromd.com/guides/natural-supplements-kidney
+**URL:** https://renalcarematters.com/guides/natural-supplements-kidney
 **Destination GPT:** https://chatgpt.com/g/g-pmuQfob8d-image-generator
 **Generated:** 2026-05-27
 **Total images:** 6
@@ -499,7 +499,7 @@ Gold tier must dominate visually. Red tier must be clearly de-emphasized. Spirul
 ### Hero image → OG image tag update
 The HTML already contains the following (updated):
 ```html
-<meta property="og:image" content="https://www.williamriveromd.com/images/natural-supplements-hero.webp">
+<meta property="og:image" content="https://renalcarematters.com/images/natural-supplements-hero.webp">
 <meta property="og:image:width" content="1080">
 <meta property="og:image:height" content="1080">
 <meta property="og:image:alt" content="Three-panel botanical illustration: mangosteen cross-section, paragis grass, and spirulina cyanobacterium — williamriveromd.com">

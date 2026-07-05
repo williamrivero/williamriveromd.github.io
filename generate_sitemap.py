@@ -37,7 +37,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent
-SITE = "https://www.williamriveromd.com"
+SITE = "https://renalcarematters.com"
 SITEMAP_PATH = REPO_ROOT / "sitemap.xml"
 
 # Defaults applied ONLY to pages not already present in sitemap.xml.

@@ -1,7 +1,7 @@
 # Image Architecture — Why Won't My HMO Cover My Kidneys?
 
 **Guide:** `/guides/hmo-ckd-coverage.html`
-**URL:** https://www.williamriveromd.com/guides/hmo-ckd-coverage.html
+**URL:** https://renalcarematters.com/guides/hmo-ckd-coverage.html
 **Audience:** Filipino CKD patients & families, plus a clinician/HR secondary audience (mixed, patient-first)
 **Category:** Perspectives · Philippines · Patient Rights · System Nav
 **House style:** williamriveromd.com — light backgrounds only, navy `#0f1e2e` / teal `#1a6b72` / green `#1f7a4d` / amber `#b8860b` / red `#b91c1c` (+ soft purple `#6c3d8e` for specialist/add-on). Every image carries a subtle `williamriveromd.com` attribution bottom-right (bottom-center for portrait). On-image type uses **Inter / Nunito Sans / IBM Plex Sans / Manrope only** — never serif.
@@ -206,7 +206,7 @@ Save each as `images/<name>.png` plus a WebP twin `images/<name>.webp`.
 1. **Hero (Image 1)** drops straight into the existing markup — the guide already references
    `<source srcset="../images/hmo-ckd-coverage-hero.webp">` + `<img src="../images/hmo-ckd-coverage-hero.png" width="1536" height="1024">` in `#why`. Just add both files; no markup change.
 2. **OG card (Image 2)** is optional but recommended for better link previews. If used, point the meta at it and add explicit dimensions:
-   - `og:image` / `twitter:image` → `https://www.williamriveromd.com/images/hmo-ckd-coverage-og.png`
+   - `og:image` / `twitter:image` → `https://renalcarematters.com/images/hmo-ckd-coverage-og.png`
    - add `<meta property="og:image:width" content="1200">` and `<meta property="og:image:height" content="630">` and `og:image:alt`.
    - If you'd rather keep one asset, leave the meta on the hero and skip Image 2.
 3. **In-body figures (Images 3–9)** are new `<figure>` blocks inside their sections. Each should get a `<figcaption>` with a `<p class="fig-desc">` (and a `<dl class="fig-abbrevs">` for any abbreviations) so the site lightbox shows a description. Run `python3 patch_hero_fetchpriority.py --guide hmo-ckd-coverage.html` **only** affects the first/hero image — leave in-body figures lazy-loaded (default).

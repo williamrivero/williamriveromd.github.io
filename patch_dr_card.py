@@ -37,7 +37,7 @@ NEW_DR_CARD = '''\
 <div class="dr-card">
 <div class="dr-avatar"><picture><source srcset="../images/photo-contact.webp" type="image/webp"><img src="../images/photo-contact.jpg" alt="Dr. W. G. M. Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
 <div class="dr-card-body">
-<h4><a href="https://www.williamriveromd.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
+<h4><a href="https://renalcarematters.com" style="color:white;text-decoration:none;">W. G. M. Rivero, MD, FPCP, DPSN</a></h4>
 <p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span data-lang="tl" class="lang-hidden">Espesyalista sa Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ng integratibo at ebidensya-batay na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span><span data-lang="ceb" class="lang-hidden">Espesyalista sa Internal nga Medisina, Nefrolohiya, ug Klinikal nga Nutrisyon. Nagpraktis og integratibo ug ebidensya-base nga nefrolohiya sa Quezon City, Pampanga, ug Bulacan.</span><span data-lang="kap" class="lang-hidden">Espesyalista king Panloob na Medisina, Nefrolohiya, at Klinikal na Nutrisyon. Nagpapraktis ning integratibo at ebidensya-base na nefrolohiya sa Quezon City, Pampanga, at Bulacan.</span></p>
 <p class="dr-creds">PRC 0105184 &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
 </div>

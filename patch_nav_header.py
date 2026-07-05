@@ -26,8 +26,8 @@ SKIP = {
 CANONICAL_BLOCK = '''\
 
 <header class="site-header">
-  <a href="https://williamriveromd.com" class="brand">W. G. M. <strong>Rivero</strong>, MD</a>
-  <a href="https://williamriveromd.com/guides/index.html" class="back">← All Guides</a>
+  <a href="https://renalcarematters.com" class="brand">W. G. M. <strong>Rivero</strong>, MD</a>
+  <a href="https://renalcarematters.com/guides/index.html" class="back">← All Guides</a>
 </header>
 <div class="guide-lang-bar">
   <span class="lang-lbl">Lang:</span>

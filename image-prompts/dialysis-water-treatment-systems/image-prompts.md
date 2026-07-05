@@ -1,6 +1,6 @@
 # Image Prompts — Hemodialysis Water Treatment Systems
 **Guide:** `guides/dialysis-water-treatment-systems.html`
-**URL:** https://www.williamriveromd.com/guides/dialysis-water-treatment-systems
+**URL:** https://renalcarematters.com/guides/dialysis-water-treatment-systems
 **Destination GPT:** https://chatgpt.com/g/g-pmuQfob8d-image-generator
 **Generated:** 2026-07-01 (expanded 2026-07-01)
 **Total images:** 11

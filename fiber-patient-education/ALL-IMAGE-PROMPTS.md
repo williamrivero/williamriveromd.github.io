@@ -1,6 +1,6 @@
 # Image Generation Prompts
 ## Guide: 30% Lower Risk of Dying — From One Dietary Change
-## URL: https://www.williamriveromd.com/guides/fiber-patient-education
+## URL: https://renalcarematters.com/guides/fiber-patient-education
 ## Total images: 10
 
 ---

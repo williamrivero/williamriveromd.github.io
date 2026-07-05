@@ -6,7 +6,7 @@
 
 ## VISUAL AID ARCHITECTURE OVERVIEW
 
-**Guide URL:** https://www.williamriveromd.com/guides/slowing-ckd-progression
+**Guide URL:** https://renalcarematters.com/guides/slowing-ckd-progression
 
 **Patient Audience:** Filipino CKD patients (any stage), caregivers, family members
 
@@ -587,11 +587,11 @@ For each image, insert inside an `.illus-wrap` or `.illus-wrap-light` div within
 ### OG image update
 After generating Image 1, update the guide's `<head>`:
 ```html
-<meta property="og:image" content="https://www.williamriveromd.com/images/slowing-ckd-progression-og.png">
+<meta property="og:image" content="https://renalcarematters.com/images/slowing-ckd-progression-og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Slowing CKD Progression — Evidence-based strategies for Filipino kidney disease patients">
-<meta name="twitter:image" content="https://www.williamriveromd.com/images/slowing-ckd-progression-og.png">
+<meta name="twitter:image" content="https://renalcarematters.com/images/slowing-ckd-progression-og.png">
 ```
 
 ### Hero image update

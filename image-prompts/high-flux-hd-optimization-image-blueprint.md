@@ -486,7 +486,7 @@ Include a small professional footer reading "© williamriveromd.com" positioned 
 
 ### OG image meta tags to add (Image 1):
 ```html
-<meta property="og:image" content="https://www.williamriveromd.com/images/high-flux-hd-optimization-og.png">
+<meta property="og:image" content="https://renalcarematters.com/images/high-flux-hd-optimization-og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Maximizing Your High-Flux Hemodialysis Benefits — williamriveromd.com nephrology guide">

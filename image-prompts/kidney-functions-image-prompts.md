@@ -26,7 +26,7 @@ into the guide. Stage 2 (`williamriveromd-local-image-generator`) can validate a
 wire any additional in-page `<figure>` placements.
 
 > **OG image status:** the social-share tags are already wired in the guide head —
-> `og:image` → `https://www.williamriveromd.com/images/kidney-functions-og.png`
+> `og:image` → `https://renalcarematters.com/images/kidney-functions-og.png`
 > (1200×630), with matching `og:image:width`, `og:image:height`, and `og:image:alt`.
 > Generate **Figure 1** below at 1200×630 and save it exactly as
 > `images/kidney-functions-og.png` to satisfy that tag.
