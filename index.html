@@ -299,6 +299,95 @@
     .stat-divider { display: none; }
   }
 
+  /* ── HERO ENTRANCE (on load, not scroll-tied) ── */
+  .hero-eyebrow, .hero h1, .hero-sub, .hero-actions, .stats-row {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: heroIn .8s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  .hero-eyebrow  { animation-delay: .05s; }
+  .hero h1       { animation-delay: .16s; }
+  .hero-sub      { animation-delay: .30s; }
+  .hero-actions  { animation-delay: .44s; }
+  .stats-row     { animation-delay: .58s; }
+  @keyframes heroIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-eyebrow, .hero h1, .hero-sub, .hero-actions, .stats-row {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
+  }
+
+  /* ── HERO PARTICLES (drifting motes, mirrors the site's established motif) ── */
+  .hero-particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .hero-mote {
+    position: absolute;
+    pointer-events: none;
+    -webkit-mask: url('images/lib-illus.svg') center / contain no-repeat;
+            mask: url('images/lib-illus.svg') center / contain no-repeat;
+    background-color: var(--tint, rgba(212,175,79,.22));
+    opacity: 0;
+    will-change: transform, opacity;
+    animation-duration: var(--dur, 16s);
+    animation-delay: var(--delay, 0s);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  .hero-mote.fx-supersize { animation-name: mote-supersize; animation-timing-function: ease-out; }
+  .hero-mote.fx-zoomin    { animation-name: mote-zoomin;    animation-timing-function: ease-in; }
+  .hero-mote.fx-drift     { animation-name: mote-drift;     animation-direction: alternate; }
+  @keyframes mote-supersize {
+    0%   { opacity: 0;             transform: rotate(var(--rot0,0deg)) scale(var(--scStart,4)); }
+    12%  { opacity: var(--pop,.22); }
+    100% { opacity: 0;             transform: rotate(var(--rot0,0deg)) scale(var(--scEnd,.4)); }
+  }
+  @keyframes mote-zoomin {
+    0%   { opacity: 0;             transform: rotate(var(--rot0,0deg)) scale(.2); }
+    20%  { opacity: var(--pop,.22); }
+    100% { opacity: 0;             transform: rotate(calc(var(--rot0,0deg) + 14deg)) scale(1.7); }
+  }
+  @keyframes mote-drift {
+    0%   { opacity: var(--pop,.22); transform: translate(0,0) rotate(var(--rot0,0deg)) scale(1); }
+    100% { opacity: var(--pop,.22); transform: translate(var(--driftX,14px), var(--driftY,-18px)) rotate(calc(var(--rot0,0deg) + 10deg)) scale(1.05); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-particles { display: none; }
+  }
+
+  /* ── SCROLL CUE ── */
+  .scroll-cue {
+    position: absolute;
+    bottom: 16px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.25);
+    color: rgba(255,255,255,.75);
+    text-decoration: none;
+    animation: cueBounce 2.2s ease-in-out infinite;
+    opacity: 0;
+    animation: heroIn .8s cubic-bezier(.22,1,.36,1) forwards .8s, cueBounce 2.2s ease-in-out infinite 1.6s;
+    transition: border-color .2s, color .2s;
+  }
+  .scroll-cue:hover { border-color: rgba(255,255,255,.55); color: #fff; }
+  .scroll-cue svg { width: 16px; height: 16px; }
+  @keyframes cueBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(5px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-cue { animation: none !important; opacity: 1 !important; }
+  }
+
   /* EDU DISCLAIMER */
   .edu-disclaimer {
     background: #fdf6e3;
@@ -576,6 +665,7 @@
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-particles" id="hero-particles" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-eyebrow">Internal Medicine &middot; Nephrology &middot; Clinical Nutrition</div>
     <h1>Understand Your Kidneys.<br><em>Take Control of Your Health.</em></h1>
@@ -585,15 +675,18 @@
       <a href="/about.html" class="btn-secondary">Meet Dr. Rivero</a>
     </div>
     <div class="stats-row" id="hero-stats">
-      <div class="stat"><span class="stat-num" id="stat-guides">141</span><span class="stat-label">Guides</span></div>
+      <div class="stat"><span class="stat-num" data-target="141" id="stat-guides">0</span><span class="stat-label">Guides</span></div>
       <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-num" id="stat-specialties">9</span><span class="stat-label">Specialties</span></div>
+      <div class="stat"><span class="stat-num" data-target="9" id="stat-specialties">0</span><span class="stat-label">Specialties</span></div>
       <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-num" id="stat-languages">4</span><span class="stat-label">Languages</span></div>
+      <div class="stat"><span class="stat-num" data-target="4" id="stat-languages">0</span><span class="stat-label">Languages</span></div>
       <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-num" id="stat-calculators">184</span><span class="stat-label">Calculators</span></div>
+      <div class="stat"><span class="stat-num" data-target="184" id="stat-calculators">0</span><span class="stat-label">Calculators</span></div>
     </div>
   </div>
+  <a href="#why-library" class="scroll-cue" aria-label="Scroll to explore the guide library">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </a>
 </section>
 
 <!-- EDUCATIONAL DISCLAIMER -->
@@ -602,7 +695,7 @@
 </div>
 
 <!-- WHY THESE GUIDES / HOW IT WORKS -->
-<div class="shell reveal">
+<div class="shell reveal" id="why-library">
   <div class="shell-label">Why This Library</div>
   <h2>Free, physician-written, and built to stay current</h2>
   <p class="shell-sub">No content mills, no paywalls, no advertisements — just clear, honest medical education, kept up to date.</p>
@@ -913,7 +1006,9 @@
       Object.entries(map).forEach(([id, label]) => {
         const val = stat(label);
         const el = document.getElementById('stat-' + id);
-        if (el && val) el.textContent = val;
+        // Update the count-up target too, so the in-flight (or already
+        // finished) animation lands on the synced number, not the default.
+        if (el && val && /^\d+$/.test(val)) { el.dataset.target = val; if (!el.dataset.counting) el.textContent = val; }
       });
     })
     .catch(err => console.warn('Hero stats sync skipped:', err));
@@ -965,6 +1060,85 @@
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   targets.forEach(t => io.observe(t));
+})();
+</script>
+
+<script>
+// Hero stat count-up — animates each stat from 0 to its data-target on load,
+// timed to land just as the stats bar finishes fading in.
+(function statCountUp(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nums = document.querySelectorAll('#hero-stats .stat-num');
+  if (!nums.length) return;
+  if (reduce) { nums.forEach(el => el.textContent = el.dataset.target || el.textContent); return; }
+  const start = 700; // ms — roughly when .stats-row finishes its entrance fade
+  nums.forEach((el, i) => {
+    if (isNaN(parseInt(el.dataset.target, 10))) return;
+    el.dataset.counting = '1'; // tells syncHeroStats not to write textContent mid-animation
+    setTimeout(() => {
+      const dur = 1100, t0 = performance.now();
+      requestAnimationFrame(function step(ts){
+        // Read live so a late-arriving sync correction is picked up mid-flight.
+        const target = parseInt(el.dataset.target, 10) || 0;
+        const p = Math.min((ts - t0) / dur, 1);
+        el.textContent = String(Math.round((1 - Math.pow(1 - p, 3)) * target));
+        if (p < 1) requestAnimationFrame(step);
+        else { el.textContent = String(target); delete el.dataset.counting; }
+      });
+    }, start + i * 80);
+  });
+})();
+</script>
+
+<script>
+// Hero background motes — drifting silhouettes from the site's established
+// library-card motif (images/lib-illus.svg), tinted to the new hero palette.
+(function heroParticles(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wrap = document.getElementById('hero-particles');
+  if (!wrap || reduce) return;
+  const palette = ['rgba(212,175,79,', 'rgba(52,170,180,', 'rgba(150,120,235,'];
+  const fx = [
+    { name: 'supersize', durMin: 10, durMax: 18, weight: 3 },
+    { name: 'zoomin',    durMin: 9,  durMax: 15, weight: 2 },
+    { name: 'drift',     durMin: 16, durMax: 26, weight: 3 }
+  ];
+  const pool = [];
+  fx.forEach(f => { for (let k = 0; k < f.weight; k++) pool.push(f); });
+
+  const COUNT = 10;
+  for (let i = 0; i < COUNT; i++) {
+    const b = document.createElement('span');
+    const f = pool[Math.floor(Math.random() * pool.length)];
+    b.className = 'hero-mote fx-' + f.name;
+
+    const sz = 40 + Math.random() * 100;
+    const left = Math.random() * 100;
+    const top = -5 + Math.random() * 90;
+    const dur = f.durMin + Math.random() * (f.durMax - f.durMin);
+    const delay = -(Math.random() * dur);
+    const op = 0.08 + Math.random() * 0.14;
+    const rot0 = Math.round(Math.random() * 360);
+    const scStart = 2.6 + Math.random() * 2;
+    const scEnd = 0.25 + Math.random() * 0.25;
+    const driftX = (Math.random() < .5 ? -1 : 1) * (10 + Math.random() * 16);
+    const driftY = -(10 + Math.random() * 16);
+    const tint = palette[Math.floor(Math.random() * palette.length)];
+
+    b.style.cssText =
+      'width:' + sz.toFixed(0) + 'px;height:' + sz.toFixed(0) + 'px;' +
+      'left:' + left.toFixed(1) + '%;top:' + top.toFixed(1) + '%;' +
+      '--pop:' + op.toFixed(2) + ';' +
+      '--tint:' + tint + (op + 0.08).toFixed(2) + ');' +
+      '--rot0:' + rot0 + 'deg;' +
+      '--scStart:' + scStart.toFixed(2) + ';' +
+      '--scEnd:' + scEnd.toFixed(2) + ';' +
+      '--driftX:' + driftX.toFixed(0) + 'px;' +
+      '--driftY:' + driftY.toFixed(0) + 'px;' +
+      '--dur:' + dur.toFixed(1) + 's;' +
+      '--delay:' + delay.toFixed(1) + 's;';
+    wrap.appendChild(b);
+  }
 })();
 </script>
 
