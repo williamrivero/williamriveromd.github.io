@@ -9,10 +9,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json({ limit: '32kb' }));
 
-// Redirect apex to www
+// Redirect www to apex
 app.use((req, res, next) => {
-  if (req.hostname === 'williamriveromd.com') {
-    return res.redirect(301, 'https://www.williamriveromd.com' + req.originalUrl);
+  if (req.hostname === 'www.renalcarematters.com') {
+    return res.redirect(301, 'https://renalcarematters.com' + req.originalUrl);
   }
   next();
 });

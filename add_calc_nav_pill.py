@@ -21,7 +21,7 @@ Usage:
 import argparse, glob, os, re
 
 GUIDES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'guides')
-INDEX_URL = 'https://www.williamriveromd.com/guides/calculators.html'
+INDEX_URL = 'https://renalcarematters.com/guides/calculators.html'
 FALLBACK_GUIDE = 'understanding-ckd.html'
 
 START = '<!-- CALC-NAV-PILL-START -->'

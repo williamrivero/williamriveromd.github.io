@@ -180,7 +180,7 @@ Append immediately after the existing `og:description` meta tag in `<head>`.
 Use the PRIMARY image (first image / hero) for the guide.
 
 ```html
-<meta property="og:image"        content="https://www.williamriveromd.com/images/[filename].webp"/>
+<meta property="og:image"        content="https://renalcarematters.com/images/[filename].webp"/>
 <meta property="og:image:width"  content="[OG WIDTH from prompt file]"/>
 <meta property="og:image:height" content="[OG HEIGHT from prompt file]"/>
 <meta property="og:image:alt"    content="[Guide title] — williamriveromd.com"/>

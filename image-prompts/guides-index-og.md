@@ -21,11 +21,11 @@ Generated with **`williamriveromd-infographic-skill`**. Single prompt, ready to 
 
 After generation, also update the guide's `<head>`:
 ```html
-<meta property="og:image"        content="https://www.williamriveromd.com/images/guides-index-og.png">
+<meta property="og:image"        content="https://renalcarematters.com/images/guides-index-og.png">
 <meta property="og:image:width"  content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt"    content="W. Rivero, MD — Real answers. 135+ kidney-disease patient guides, 174 calculators, KDIGO-2024 evidence.">
-<meta name="twitter:image"       content="https://www.williamriveromd.com/images/guides-index-og.png">
+<meta name="twitter:image"       content="https://renalcarematters.com/images/guides-index-og.png">
 ```
 
 ---

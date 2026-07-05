@@ -192,7 +192,7 @@ def patch_guide(path: Path, dry_run: bool = False) -> str:
             "author": {
                 "@type": "Physician",
                 "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
-                "url": "https://williamriveromd.com/",
+                "url": "https://renalcarematters.com/",
             },
             "dateModified": datetime_val,
             "datePublished": f"{year}-01-01",

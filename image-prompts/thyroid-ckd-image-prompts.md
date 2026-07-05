@@ -275,7 +275,7 @@ Anatomically plausible thyroid and kidney rendering, all pathway labels are legi
 
 ```html
 <!-- OG image -->
-<meta property="og:image" content="https://williamriveromd.com/images/thyroid-ckd-hero.png">
+<meta property="og:image" content="https://renalcarematters.com/images/thyroid-ckd-hero.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Thyroid Disease and Kidney Health — williamriveromd.com">

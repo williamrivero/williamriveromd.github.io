@@ -1,7 +1,7 @@
 # AKI-on-CKD Guide — Image Prompt Pack v2 (Mechanism-Figure Style)
 
 **Guide:** `guides/acute-kidney-injury-on-ckd.html`
-**Live URL:** https://www.williamriveromd.com/guides/acute-kidney-injury-on-ckd
+**Live URL:** https://renalcarematters.com/guides/acute-kidney-injury-on-ckd
 **Excluded:** `images/acute-kidney-injury-on-ckd-vignette-hero.webp` (keep as-is)
 **Authored with:** `williamriveromd-biomedical-mechanism-figure`
 

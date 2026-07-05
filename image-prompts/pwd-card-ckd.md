@@ -1,7 +1,7 @@
 # Image Architecture — PWD Card for CKD Patients
 
 **Guide:** `/guides/pwd-card-ckd.html`
-**URL:** https://www.williamriveromd.com/guides/pwd-card-ckd
+**URL:** https://renalcarematters.com/guides/pwd-card-ckd
 **Audience:** Filipino CKD Stage 5 / dialysis patients and their families (patient-facing, mixed)
 **House style:** williamriveromd.com — light backgrounds only, navy `#0f1e2e` / teal `#1a6b72` / green `#1f7a4d` / amber `#b8860b` / red `#b91c1c` accents. Every image carries a subtle `williamriveromd.com` attribution in the bottom-right (bottom-center for portrait).
 **Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator

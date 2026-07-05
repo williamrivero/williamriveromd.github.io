@@ -500,7 +500,7 @@ After the assets are generated and saved into `images/`:
    class="fig-desc">` plain description. The lightbox (`../assets/image-lightbox.js`)
    is already wired.
 5. **OG card meta.** The HTML already references
-   `https://www.williamriveromd.com/images/ai-in-nephrology-practice-og.png`
+   `https://renalcarematters.com/images/ai-in-nephrology-practice-og.png`
    with `og:image:width="1200"` and `og:image:height="630"` — drop the file in
    place and the share preview works.
 6. **Patient-mode visuals (#11, #12).** The current guide is single-mode

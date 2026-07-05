@@ -2,7 +2,7 @@
 ## williamriveromd.com | Dr. W Rivero, MD
 
 ### Guide URL
-https://www.williamriveromd.com/guides/fiber-patient-education
+https://renalcarematters.com/guides/fiber-patient-education
 
 ### Audience
 Filipino patients (general public), ages 30–70, many with diabetes, hypertension,

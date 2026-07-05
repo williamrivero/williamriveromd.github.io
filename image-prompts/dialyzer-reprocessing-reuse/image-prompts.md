@@ -1,6 +1,6 @@
 # Image Prompts — Dialyzer Reuse in Modern Times
 **Guide:** `guides/dialyzer-reprocessing-reuse.html`
-**URL:** https://www.williamriveromd.com/guides/dialyzer-reprocessing-reuse
+**URL:** https://renalcarematters.com/guides/dialyzer-reprocessing-reuse
 **Destination GPT:** https://chatgpt.com/g/g-pmuQfob8d-image-generator
 **Generated:** 2026-06-29
 **Total images:** 10

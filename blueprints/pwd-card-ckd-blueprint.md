@@ -17,7 +17,7 @@ description: Filipino patients with CKD Stage 5 (kidney failure) or on dialysis 
 og:image: /images/pwd-card-ckd-hero.webp (1200×630)
 og:image:alt: Filipino CKD patient holding PWD identification card at a dialysis center with the Philippine flag and PhilHealth logo in the background
 keywords: PWD card CKD Philippines, PWD ID kidney disease, PWD discount dialysis, RA 10754 kidney, persons with disability CKD, pwd application LGU kidney
-canonical: https://www.williamriveromd.com/guides/pwd-card-ckd
+canonical: https://renalcarematters.com/guides/pwd-card-ckd
 JSON-LD: MedicalWebPage + HowTo schema (application steps), datePublished 2026-06
 ```
 

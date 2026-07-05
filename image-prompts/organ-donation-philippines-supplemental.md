@@ -13,7 +13,7 @@ inline image with a `<picture>` block (webp + png), `loading="lazy"`, explicit
 width/height, and run
 `patch_hero_maxwidth.py --guide organ-donation-philippines.html`.
 For Image 5 (OG card), instead update the guide's `<head>`:
-`og:image` / `twitter:image` → `https://www.williamriveromd.com/images/organ-donation-ph-og.png`,
+`og:image` / `twitter:image` → `https://renalcarematters.com/images/organ-donation-ph-og.png`,
 `og:image:width="1200"`, `og:image:height="630"`, and refresh `og:image:alt`.
 
 ---

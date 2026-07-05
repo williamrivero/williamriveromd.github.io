@@ -1,6 +1,6 @@
 # Image Generation — fiber-patient-education
 ## Guide: By the way, Fiber Is Not the Same as Vegetables
-## URL: https://www.williamriveromd.com/guides/fiber-patient-education
+## URL: https://renalcarematters.com/guides/fiber-patient-education
 
 ---
 
@@ -111,7 +111,7 @@ Upload images to this Claude Code session. The session will:
 ## OG image (primary)
 The hero image (001) will be used as the Open Graph image:
 ```html
-<meta property="og:image" content="https://www.williamriveromd.com/images/fiber-patient-education-hero-market.webp"/>
+<meta property="og:image" content="https://renalcarematters.com/images/fiber-patient-education-hero-market.webp"/>
 <meta property="og:image:width" content="1024"/>
 <meta property="og:image:height" content="1024"/>
 <meta property="og:image:alt" content="By the way, Fiber Is Not the Same as Vegetables — williamriveromd.com"/>

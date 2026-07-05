@@ -342,12 +342,12 @@ QUALITY CHECK: Exactly 1200×630, headline readable at thumbnail size, light bac
 ### Meta tags to add (after the OG image is generated and placed)
 
 ```html
-<meta property="og:image" content="https://www.williamriveromd.com/guides/images/cholesterol-diet-guide/cholesterol-diet-guide-og.png">
+<meta property="og:image" content="https://renalcarematters.com/guides/images/cholesterol-diet-guide/cholesterol-diet-guide-og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cholesterol and the Filipino Diet — What Your Lipid Panel Is Actually Telling You. A patient guide by Dr. William G. M. Rivero, MD.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://www.williamriveromd.com/guides/images/cholesterol-diet-guide/cholesterol-diet-guide-og.png">
+<meta name="twitter:image" content="https://renalcarematters.com/guides/images/cholesterol-diet-guide/cholesterol-diet-guide-og.png">
 ```
 
 ---

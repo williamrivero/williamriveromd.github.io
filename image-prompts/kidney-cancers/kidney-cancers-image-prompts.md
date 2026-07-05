@@ -7,7 +7,7 @@
 
 > **Image 000 is the OG / social-share card (1200 × 630).** It is *not* placed inline — it becomes the guide's social preview. Stage 2 updates the `<head>`:
 > ```html
-> <meta property="og:image"        content="https://www.williamriveromd.com/images/kidney-cancers-og-card.webp"/>
+> <meta property="og:image"        content="https://renalcarematters.com/images/kidney-cancers-og-card.webp"/>
 > <meta property="og:image:width"  content="1200"/>
 > <meta property="og:image:height" content="630"/>
 > <meta property="og:image:alt"    content="Kidney Cancers — williamriveromd.com"/>

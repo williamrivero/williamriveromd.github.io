@@ -9,7 +9,7 @@
 - **What it is:** Static patient-education site for Dr. William Gregory M. Rivero MD (Nephrology, Philippines)
 - **~93 standalone HTML guides** — each is a complete self-contained document with inline CSS + JS
 - **No build step.** Commit HTML files and push. GitHub Pages auto-deploys.
-- **Live:** `https://williamriveromd.com`
+- **Live:** `https://renalcarematters.com`
 - **Git rule: commit directly to `main`. No PRs, no branches unless user says "review mode."**
 - **Dev preview:** `npm start` → serves at `localhost:3000`
 
@@ -156,7 +156,7 @@ scroll-margin-top on sections: 112px  (56px header + 56px drug nav)
 
 <!-- LAYER 1: Sticky site header, z-index 200 -->
 <header class="site-header">
-  <a class="brand" href="https://williamriveromd.com">W. G. M. <strong>Rivero</strong>, MD</a>
+  <a class="brand" href="https://renalcarematters.com">W. G. M. <strong>Rivero</strong>, MD</a>
   <div style="display:flex;align-items:center;gap:16px;">
     <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">
       <span id="darkLabel">Dark</span>
@@ -213,7 +213,7 @@ scroll-margin-top on sections: 112px  (56px header + 56px drug nav)
 <!-- FOOTER -->
 <footer class="guide-footer">
   <div class="footer-inner">
-    <p>© 2026 W Rivero, MD · <a href="https://williamriveromd.com">williamriveromd.com</a></p>
+    <p>© 2026 W Rivero, MD · <a href="https://renalcarematters.com">williamriveromd.com</a></p>
     <p><a href="index.html">← All Patient Guides</a> · <a href="../index.html">Home</a></p>
   </div>
 </footer>
@@ -928,7 +928,7 @@ git push origin main
 ### sitemap.xml entry format
 ```xml
 <url>
-  <loc>https://williamriveromd.com/guides/medication-operational-guide-2.html</loc>
+  <loc>https://renalcarematters.com/guides/medication-operational-guide-2.html</loc>
   <lastmod>2026-05-16</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>

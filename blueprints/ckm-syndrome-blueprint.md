@@ -17,7 +17,7 @@ description: Cardiovascular-Kidney-Metabolic (CKM) Syndrome is a new AHA-ASN fra
 og:image: /images/ckm-syndrome-hero.webp (1280×720)
 og:image:alt: Four-way connection between heart, kidneys, metabolic syndrome, and obesity — CKM Syndrome framework
 keywords: CKM syndrome Philippines, cardiovascular kidney metabolic syndrome, CKD heart disease, cardiorenal metabolic, AHA kidney, nephrology
-canonical: https://www.williamriveromd.com/guides/ckm-syndrome
+canonical: https://renalcarematters.com/guides/ckm-syndrome
 JSON-LD: MedicalWebPage, datePublished 2026-06, specialty Nephrology + Cardiology
 ```
 
