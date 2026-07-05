@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this site is
 
-`williamriveromd.com` is a static patient-education website for Dr. William Gregory M. Rivero, MD (Nephrology, Internal Medicine, Philippines). It consists of ~90 standalone HTML guides on kidney disease topics, a homepage (`index.html`), and a small Node.js proxy server for an AI feature.
+`renalcarematters.com` is a static patient-education website for Dr. William Gregory M. Rivero, MD (Nephrology, Internal Medicine, Philippines). It consists of ~90 standalone HTML guides on kidney disease topics, a homepage (`index.html`), and a small Node.js proxy server for an AI feature. The repo is named `williamriveromd.github.io` for historical reasons only — that name is unrelated to the live domain.
 
 ## Development commands
 
@@ -577,7 +577,7 @@ An Express server that:
 1. Serves the static site (fallback: `index.html` for any unknown route)
 2. Exposes `POST /api/analyze` — proxies to `https://api.anthropic.com/v1/messages`, hard-codes model to `claude-haiku-4-5-20251001` and caps `max_tokens` at 2000, rate-limited to 20 req / 15 min
 
-This server is not used in GitHub Pages production (which serves only static files). It supports local development and any alternative hosting where server-side API key protection is needed.
+This server is not used in Cloudflare Pages production (which serves only static files). It supports local development and any alternative hosting where server-side API key protection is needed.
 
 ### Supporting data files
 
@@ -587,7 +587,33 @@ This server is not used in GitHub Pages production (which serves only static fil
 
 ### Deployment
 
-GitHub Pages via `CNAME` pointing to `williamriveromd.com`. There is no build step — commit HTML files directly. The `sitemap.xml` and `robots.txt` are static files in the repo root.
+Cloudflare Pages only — GitHub Pages is unpublished/disabled and there is no `CNAME` file. Pushing to `main` auto-deploys in 30–60 seconds. There is no build step — commit HTML files directly. `renalcarematters.com` (apex) is canonical; `www.renalcarematters.com` 301-redirects to the apex via the Cloudflare-native `_redirects` file. The old domain, `williamriveromd.com`, is retired and 301-redirects all paths to `renalcarematters.com` — never use it in a new canonical, link, or meta tag. The `sitemap.xml` and `robots.txt` are static files in the repo root; a GitHub Action (`.github/workflows/sitemap.yml`) regenerates and commits `sitemap.xml` on every push to `main`.
+
+**Canonical URL rule for new content.** Every new page must have: (1) `<link rel="canonical">` →
+`https://renalcarematters.com/guides/[filename].html`; (2) `og:url`, `og:image`, `twitter:` meta
+all on `renalcarematters.com`; (3) JSON-LD `url`/`@id`/`logo` all on `renalcarematters.com`; (4)
+nav/footer/inter-guide links on the apex only. Do not resubmit the sitemap to Google Search
+Console per-guide — CI keeps it current and Google re-reads it on schedule; only resubmit
+manually after a mass URL restructuring.
+
+**Pre-push guardrail.** Before committing a change that touches URLs, meta tags, or
+structured data, grep the changed files for the old domain:
+
+```bash
+git diff --name-only main | xargs grep -n "williamriveromd\.com" 2>/dev/null
+```
+
+`williamriveromd.com` may legitimately appear only in: the repo path itself
+(`williamriveromd.github.io`), the Twitter handle `@williamriveromd`, and dev-machine local
+paths. Any occurrence outside those three — especially in a canonical, link, meta tag, or
+visible patient-facing text — is a regression; fix it before committing.
+
+**Deferred / do-not-touch items.** The repo name (`williamriveromd.github.io`) stays as-is —
+renaming it changes the URL and requires reconnecting Cloudflare Pages, not worth the risk
+mid-transition. The Twitter handle `@williamriveromd` is a social handle, not a URL; leave it
+unless a deliberate rebrand. Bare-text `williamriveromd.com` mentions in code comments, skill
+docs, or planning markdown are cosmetic and non-SEO — only sweep patient-visible rendered
+strings if/when doing a scoped branding pass.
 
 ## Git workflow
 
