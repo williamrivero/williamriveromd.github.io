@@ -366,19 +366,14 @@
   }
   .pathway-tile:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.08); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,.3); }
   .pathway-tile:hover::before { opacity: 1; }
-  .pathway-tile[data-pathway="ckd"] { --pw-color: #4fb8be; }
-  .pathway-tile[data-pathway="diabetes"] { --pw-color: #d99a4e; }
-  .pathway-tile[data-pathway="hbp"] { --pw-color: #e0645f; }
-  .pathway-tile[data-pathway="dialysis"] { --pw-color: #7c93c9; }
-  .pathway-tile[data-pathway="creatinine"] { --pw-color: #a98be0; }
-  .pathway-tile[data-pathway="swelling"] { --pw-color: #5ab3e0; }
-  .pathway-tile[data-pathway="gout"] { --pw-color: #7ec98f; }
-  .pathway-tile[data-pathway="protein"] { --pw-color: #e07eb0; }
-  .pathway-tile[data-pathway="stones"] { --pw-color: #d9a24e; }
+  .pathway-tile[data-pathway="patient"] { --pw-color: #4fb8be; }
   .pathway-tile[data-pathway="caregiver"] { --pw-color: #b09ee0; }
-  .pathway-icon { width: 26px; height: 26px; margin-bottom: 10px; display: block; color: rgba(255,255,255,.5); transition: color .2s; }
-  .pathway-icon svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-  .pathway-tile:hover .pathway-icon { color: var(--pw-color); }
+  .pathway-tile[data-pathway="internist-gp"] { --pw-color: #7c93c9; }
+  .pathway-tile[data-pathway="nephrologist"] { --pw-color: #d99a4e; }
+  .pathway-tile[data-pathway="dialysis-staff"] { --pw-color: #5ab3e0; }
+  .pathway-tile[data-pathway="dietitian"] { --pw-color: #7ec98f; }
+  .pathway-icon { font-size: 22px; line-height: 1; margin-bottom: 10px; display: block; filter: grayscale(.4) opacity(.75); transition: filter .2s; }
+  .pathway-tile:hover .pathway-icon { filter: none; }
   .pathway-condition { font-size: .64rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 3px; }
   .pathway-title { font-size: .84rem; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 5px; }
   .pathway-count { font-size: .68rem; color: rgba(255,255,255,.5); }
@@ -787,7 +782,7 @@
     </div>
     <div class="modal-body" id="modal-body"></div>
     <div class="modal-footer">
-      <div class="modal-footer-note"><strong>These are curated starting points.</strong> Your nephrologist will tailor recommendations to your specific stage and test results.</div>
+      <div class="modal-footer-note" id="modal-footer-note"></div>
       <button class="modal-dismiss" id="modal-dismiss">Got it</button>
     </div>
   </div>
@@ -800,77 +795,49 @@
     <div class="pathways-header">
       <div class="pathways-eyebrow">Start Here</div>
       <div class="pathways-label">What brings you here today?</div>
-      <div class="pathways-sub">Select your situation for a curated reading path — every pathway starts with the fundamentals and builds from there.</div>
+      <div class="pathways-sub">Tell us your role for a curated reading path — every pathway starts with the fundamentals and builds from there.</div>
     </div>
     <div class="pathways-grid">
-      <button class="pathway-tile" data-pathway="ckd">
-        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 6 5 10c0 5 4 9 7 12 3-3 7-7 7-12 0-4-3-8-7-8z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-        <div class="pathway-condition">Condition</div>
-        <div class="pathway-title">Newly diagnosed CKD</div>
-        <div class="pathway-count">7 guides &middot; Start here</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="dialysis">
-        <span class="pathway-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/><path d="M9 9l6 6M15 9l-6 6" stroke-opacity="0.4"/></svg></span>
-        <div class="pathway-condition">Treatment</div>
-        <div class="pathway-title">I'm on dialysis</div>
-        <div class="pathway-count">7 guides &middot; HD &amp; PD</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="diabetes">
-        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg></span>
-        <div class="pathway-condition">Condition</div>
-        <div class="pathway-title">Diabetes</div>
-        <div class="pathway-count">8 guides &middot; DM &amp; kidneys</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="hbp">
-        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><path d="M8 12h2l1.5-3 2 6 1.5-3H17" stroke-opacity="0.55" fill="none"/></svg></span>
-        <div class="pathway-condition">Condition</div>
-        <div class="pathway-title">High blood pressure</div>
-        <div class="pathway-count">7 guides &middot; BP &amp; kidneys</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="creatinine">
-        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4"/><path d="M9 3a3 3 0 0 0 6 0M9 3a3 3 0 0 1 6 0"/><path d="M9 12h6M9 16h4"/></svg></span>
-        <div class="pathway-condition">Lab result</div>
-        <div class="pathway-title">My creatinine is high</div>
-        <div class="pathway-count">6 guides &middot; What it means</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="swelling">
-        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
-        <div class="pathway-condition">Symptom</div>
-        <div class="pathway-title">Swelling / fluid retention</div>
-        <div class="pathway-count">7 guides &middot; Edema &amp; fluid</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="protein">
-        <span class="pathway-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12a4 4 0 0 1 8 0"/><path d="M9 15.5c.83.97 1.84 1.5 3 1.5s2.17-.53 3-1.5"/></svg></span>
-        <div class="pathway-condition">Lab result</div>
-        <div class="pathway-title">Protein in my urine</div>
-        <div class="pathway-count">5 guides &middot; Proteinuria</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="gout">
-        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
-        <div class="pathway-condition">Condition</div>
-        <div class="pathway-title">Gout / high uric acid</div>
-        <div class="pathway-count">5 guides &middot; Gout &amp; kidneys</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="stones">
-        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M12 22c-4.97 0-9-3.58-9-8 0-3 1.5-5.5 3.5-7C8 5.5 10 4 12 2c2 2 4 3.5 5.5 5 2 1.5 3.5 4 3.5 7 0 4.42-4.03 8-9 8z"/><path d="M9 14l1.5-1.5M13 11l1.5-1.5M10.5 11.5l3 0" stroke-opacity="0.5"/></svg></span>
-        <div class="pathway-condition">Condition</div>
-        <div class="pathway-title">Kidney stones</div>
-        <div class="pathway-count">5 guides &middot; Prevention</div>
+      <button class="pathway-tile" data-pathway="patient">
+        <span class="pathway-icon">&#129505;</span>
+        <div class="pathway-condition">Role</div>
+        <div class="pathway-title">I'm a Patient</div>
+        <div class="pathway-count">6 guides &middot; Start here</div>
         <span class="pathway-arrow">&rsaquo;</span>
       </button>
       <button class="pathway-tile" data-pathway="caregiver">
-        <span class="pathway-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span class="pathway-icon">&#129309;</span>
         <div class="pathway-condition">Role</div>
-        <div class="pathway-title">Caring for someone with CKD</div>
+        <div class="pathway-title">I'm a Caregiver</div>
         <div class="pathway-count">6 guides &middot; Caregiver path</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+      <button class="pathway-tile" data-pathway="internist-gp">
+        <span class="pathway-icon">&#129658;</span>
+        <div class="pathway-condition">Role</div>
+        <div class="pathway-title">Internist / GP</div>
+        <div class="pathway-count">6 guides &middot; Referral &amp; triage</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+      <button class="pathway-tile" data-pathway="nephrologist">
+        <span class="pathway-icon">&#129516;</span>
+        <div class="pathway-condition">Role</div>
+        <div class="pathway-title">Nephrologist</div>
+        <div class="pathway-count">6 guides &middot; Clinical depth</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+      <button class="pathway-tile" data-pathway="dialysis-staff">
+        <span class="pathway-icon">&#128167;</span>
+        <div class="pathway-condition">Role</div>
+        <div class="pathway-title">Dialysis Staff / HD Tech</div>
+        <div class="pathway-count">6 guides &middot; Unit operations</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+      <button class="pathway-tile" data-pathway="dietitian">
+        <span class="pathway-icon">&#129381;</span>
+        <div class="pathway-condition">Role</div>
+        <div class="pathway-title">Dietitian / Nutritionist</div>
+        <div class="pathway-count">6 guides &middot; Nutrition therapy</div>
         <span class="pathway-arrow">&rsaquo;</span>
       </button>
     </div>
@@ -1280,130 +1247,25 @@ initParticles('hero-particles', '.hero-media', 14);
 // Start Here pathway tiles + modal — same PATHWAYS dataset and modal
 // mechanics used on guides/index.html, restyled for this page's dark band.
 const PATHWAYS = {
-  ckd: {
-    condition: 'Newly diagnosed CKD', title: 'Where do I start with CKD?',
-    desc: 'You\'ve just been told your kidneys aren\'t working at full capacity. Start with how kidneys work, what CKD actually means, then build from there.',
+  patient: {
+    condition: 'Patient', title: 'Where should I start?',
+    desc: 'New to a CKD diagnosis, or just want to understand your kidneys better? Start with the fundamentals, then build from there.',
     color: '#1A6B72',
+    note: '<strong>These are curated starting points.</strong> Your nephrologist will tailor recommendations to your specific stage and test results.',
     steps: [
       { num: 1, title: 'Your Amazing Kidneys — Normal Physiology', why: 'Understand what healthy kidneys do before learning what goes wrong.', badges: [], url: '/guides/kidney-physiology.html', isStart: true },
       { num: 2, title: 'Taking Charge of CKD: Understanding Your Kidney Disease', why: 'What CKD stages mean, how progression works, and what to expect.', badges: [], url: '/guides/understanding-ckd.html' },
       { num: 3, title: 'Understanding Your Lab Results', why: 'Learn to read the numbers your doctor monitors — creatinine, eGFR, UACR.', badges: ['calc'], url: '/guides/understanding-lab-results.html' },
-      { num: 4, title: 'Slowing CKD Progression', why: 'The medications and lifestyle changes proven to protect kidney function.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
-      { num: 5, title: 'Nutrition for Kidney Patients', why: 'Stage-specific protein, potassium, and sodium limits using Filipino foods.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html' },
+      { num: 4, title: 'Nutrition for Kidney Patients', why: 'Stage-specific protein, potassium, and sodium limits using Filipino foods.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html' },
+      { num: 5, title: 'Managing High Blood Pressure', why: 'How BP damages the kidney — home monitoring, medication classes, targets.', badges: ['calc'], url: '/guides/managing-hypertension.html' },
       { num: 6, title: 'Top 5 Mistakes CKD Patients Make', why: 'The most common — and most preventable — errors that accelerate kidney decline.', badges: [], url: '/guides/ckd-top5-mistakes.html' },
-      { num: 7, title: 'CKD & Pregnancy: A Guide for Women with Kidney Disease', why: 'Safe medications, pre-conception counselling, fetal monitoring, and postpartum care.', badges: ['new'], url: '/guides/ckd-and-pregnancy.html' },
-    ]
-  },
-  dialysis: {
-    condition: 'On dialysis', title: 'Making the most of dialysis',
-    desc: 'Whether you\'re newly starting or have been on HD or PD for years, these guides cover the essentials: safety, diet, access, and adequacy.',
-    color: '#1F3864',
-    steps: [
-      { num: 1, title: 'Staying Well on Dialysis — What Every HD Patient Must Know', why: 'Per-session expectations, KDIGO 2024 targets, and access protection basics.', badges: [], url: '/guides/living-with-dialysis.html', isStart: true },
-      { num: 2, title: 'Fluid Management & Interdialytic Weight Gain', why: 'Why fluid builds up, the weekend gap danger, and personalized UF rate targets.', badges: ['calc'], url: '/guides/fluid-management-dialysis.html' },
-      { num: 3, title: 'Finding Your True Dry Weight', why: 'Why dry weight keeps changing and how the team triangulates the signals.', badges: ['calc','new'], url: '/guides/dry-weight-determination.html' },
-      { num: 4, title: 'Dialysis Access Care: Your Lifeline', why: 'Fistulas, grafts, catheters, and PD — daily care and early complication recognition.', badges: [], url: '/guides/dialysis-access-care.html' },
-      { num: 5, title: 'Is My Dialysis Working? Understanding Dialysis Adequacy', why: 'What Kt/V and URR mean — use the interactive Daugirdas spKt/V calculator.', badges: ['calc'], url: '/guides/dialysis-adequacy.html' },
-      { num: 6, title: 'Anemia in Kidney Disease: Iron, EPO & Energy', why: 'The EPO deficiency cascade — iron-first, ESA targets, and dialysis anemia management.', badges: ['calc'], url: '/guides/anemia-management.html' },
-      { num: 7, title: 'Managing Complications of Hemodialysis', why: 'Intradialytic hypotension, cramps, arrhythmias, access emergencies.', badges: [], url: '/guides/hemodialysis-complications.html' },
-    ]
-  },
-  diabetes: {
-    condition: 'Diabetes', title: 'Diabetes, kidneys, and what connects them',
-    desc: 'Diabetic kidney disease (DKD) is the #1 cause of kidney failure worldwide. These guides explain the mechanism and the modern treatments that protect both organs.',
-    color: '#b45309',
-    steps: [
-      { num: 1, title: 'Diabetes & Your Kidneys', why: 'How hyperfiltration and glycation damage the kidney — the foundational guide for DKD.', badges: ['calc'], url: '/guides/diabetes-kidneys.html', isStart: true },
-      { num: 2, title: 'Filipino Diabetic Diet — Eating Smart with Diabetes', why: 'Evidence-based glycemic control using Filipino foods. Built for the local plate.', badges: ['new','ph','calc'], url: '/guides/filipino-diabetic-diet.html' },
-      { num: 3, title: 'Slowing CKD Progression', why: 'SGLT2 inhibitors, RAAS blockade, and BP control — the KDIGO 2024 evidence-based toolkit.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
-      { num: 4, title: 'Heart & Kidney Connection', why: 'The cardiorenal cycle — how DM accelerates both heart and kidney failure.', badges: ['calc'], url: '/guides/heart-kidney-connection.html' },
-      { num: 5, title: 'GLP-1 Drugs & Your Kidneys: What Ozempic Means for CKD', why: 'The FLOW trial, 2025 FDA approval of semaglutide for kidney protection.', badges: ['new','ph'], url: '/guides/glp1-ozempic-ckd.html' },
-      { num: 6, title: 'Dyslipidemia: 2026 ACC/AHA Guidelines', why: 'DM patients aged 40–75 are treated regardless of LDL — new targets.', badges: ['calc'], url: '/guides/dyslipidemia-2026.html' },
-      { num: 7, title: 'New Therapeutic Agents for CKD', why: 'SGLT2i, finerenone, GLP-1, sparsentan — the drug revolution changing DKD management.', badges: [], url: '/guides/new-therapeutic-agents-ckd.html' },
-      { num: 8, title: 'CKM Syndrome — Heart, Kidney & Metabolic Disease, Connected', why: 'The AHA-ASN CKM framework unifies DM, CKD, and heart disease.', badges: ['new','calc'], url: '/guides/cardio-kidney-metabolic-syndrome.html' },
-    ]
-  },
-  hbp: {
-    condition: 'High blood pressure', title: 'Blood pressure, kidneys, and the silent connection',
-    desc: 'Hypertension is the #2 cause of kidney failure in the Philippines — yet it rarely causes symptoms until significant damage is done.',
-    color: '#c00000',
-    steps: [
-      { num: 1, title: 'Managing High Blood Pressure', why: 'How BP damages heart, kidney, and brain — home monitoring, medication classes, targets.', badges: ['calc'], url: '/guides/managing-hypertension.html', isStart: true },
-      { num: 2, title: 'The Silent Scarring: Hypertensive Kidney Disease', why: 'How decades of uncontrolled BP silently scars kidneys.', badges: [], url: '/guides/hypertensive-kidney-disease.html' },
-      { num: 3, title: 'Sodium & Salt Reduction', why: 'Filipino diet averages 5–6 g sodium/day. CKD target is ≤2 g.', badges: ['calc','ph'], url: '/guides/sodium-salt-reduction-ckd.html' },
-      { num: 4, title: 'Heart & Kidney Connection', why: 'RAAS blockade, SGLT2i, and the drugs that simultaneously protect both organs.', badges: ['calc'], url: '/guides/heart-kidney-connection.html' },
-      { num: 5, title: 'Slowing CKD Progression', why: 'Once hypertension has damaged the kidney, these tools slow further decline.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
-      { num: 6, title: 'Dyslipidemia: 2026 ACC/AHA Guidelines', why: 'HTN + CKD = high ASCVD risk. Know your LDL target.', badges: ['calc'], url: '/guides/dyslipidemia-2026.html' },
-      { num: 7, title: 'CKM Syndrome', why: 'Hypertension is a core CKM driver — see the full staging framework.', badges: ['new','calc'], url: '/guides/cardio-kidney-metabolic-syndrome.html' },
-    ]
-  },
-  creatinine: {
-    condition: 'High creatinine', title: 'My creatinine is high — what does it mean?',
-    desc: 'A rising creatinine is one of the most common reasons patients are referred to a nephrologist. It can mean many things — from dehydration to chronic kidney disease.',
-    color: '#4B3280',
-    steps: [
-      { num: 1, title: 'Understanding Your Lab Results', why: 'What creatinine, eGFR, BUN, and UACR actually mean.', badges: ['calc'], url: '/guides/understanding-lab-results.html', isStart: true },
-      { num: 2, title: 'Taking Charge of CKD', why: 'If creatinine is chronically elevated, learn what CKD staging means for you.', badges: [], url: '/guides/understanding-ckd.html' },
-      { num: 3, title: 'Acute Kidney Injury on Top of CKD (AKI-on-CKD)', why: 'A sudden creatinine rise may be AKI — learn the KDIGO stages.', badges: [], url: '/guides/acute-kidney-injury-on-ckd.html' },
-      { num: 4, title: 'Hurt Without Harm: Safe Pain Relief in Kidney Disease', why: 'NSAIDs are a top cause of creatinine spikes.', badges: ['ph'], url: '/guides/pain-management-ckd.html' },
-      { num: 5, title: 'Contrast-Induced Nephropathy', why: 'If a CT scan or angiogram is planned, know the protocol that protects your kidneys.', badges: ['calc'], url: '/guides/contrast-nephropathy.html' },
-      { num: 6, title: 'Slowing CKD Progression', why: 'Once creatinine is chronically elevated, these are the tools to slow further loss.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
-    ]
-  },
-  swelling: {
-    condition: 'Swelling / fluid retention', title: 'Why am I swelling — and what can I do?',
-    desc: 'Edema in kidney disease has multiple causes: low albumin, heart failure, fluid overload, or sodium retention.',
-    color: '#0369a1',
-    steps: [
-      { num: 1, title: 'Proteins & Proteinuria', why: 'Low albumin from protein loss is a leading cause of edema.', badges: ['calc'], url: '/guides/proteins-proteinuria.html', isStart: true },
-      { num: 2, title: 'Sodium & Salt Reduction', why: 'Sodium drives fluid retention — cutting hidden sodium is the most impactful step.', badges: ['calc','ph'], url: '/guides/sodium-salt-reduction-ckd.html' },
-      { num: 3, title: 'Fluid Management & Interdialytic Weight Gain', why: 'For dialysis patients: how much fluid to restrict, dry weight, and UF rate targets.', badges: ['calc'], url: '/guides/fluid-management-dialysis.html' },
-      { num: 4, title: 'Finding Your True Dry Weight', why: 'How the team converges on the right post-dialysis target weight.', badges: ['calc','new'], url: '/guides/dry-weight-determination.html' },
-      { num: 5, title: 'Heart & Kidney Connection', why: 'Heart failure causes fluid to back up into tissues.', badges: ['calc'], url: '/guides/heart-kidney-connection.html' },
-      { num: 6, title: 'Managing High Blood Pressure', why: 'Fluid overload raises BP, and elevated BP worsens swelling.', badges: ['calc'], url: '/guides/managing-hypertension.html' },
-      { num: 7, title: 'Nutrition for Kidney Patients', why: 'Stage-specific sodium, fluid, and protein targets to reduce swelling.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html' },
-    ]
-  },
-  protein: {
-    condition: 'Protein in urine', title: 'Protein in my urine — is it serious?',
-    desc: 'Proteinuria is one of the strongest predictors of kidney disease progression. It\'s often silent, but treatable.',
-    color: '#be185d',
-    steps: [
-      { num: 1, title: 'Proteins & Proteinuria', why: 'Why protein leaks into urine, how UACR is measured, and what levels are dangerous.', badges: ['calc'], url: '/guides/proteins-proteinuria.html', isStart: true },
-      { num: 2, title: 'Taking Charge of CKD', why: 'Proteinuria is a CKD marker — understand the staging.', badges: [], url: '/guides/understanding-ckd.html' },
-      { num: 3, title: 'Glomerulonephritis: When Kidney Filters Become Inflamed', why: 'IgAN, lupus nephritis, FSGS — diseases where inflammation drives heavy proteinuria.', badges: [], url: '/guides/glomerulonephritis.html' },
-      { num: 4, title: 'Diabetes & Your Kidneys', why: 'Microalbuminuria is the earliest sign of diabetic kidney disease.', badges: ['calc'], url: '/guides/diabetes-kidneys.html' },
-      { num: 5, title: 'Slowing CKD Progression', why: 'RAAS blockade and SGLT2i reduce proteinuria and slow GFR decline.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
-    ]
-  },
-  gout: {
-    condition: 'Gout / high uric acid', title: 'Gout, uric acid, and your kidneys',
-    desc: 'Gout isn\'t just a joint disease. Hyperuricemia damages kidney tubules, promotes stones, and accelerates CKD.',
-    color: '#2E6B3E',
-    steps: [
-      { num: 1, title: 'Gout — The Crystal Disease You Can Actually Conquer', why: 'Uric acid buildup in Filipinos and why febuxostat is preferred over allopurinol in CKD.', badges: ['calc'], url: '/guides/gout-uric-acid.html', isStart: true },
-      { num: 2, title: 'Stone Smart: Managing Kidney Stones', why: 'Uric acid stones are a direct complication of hyperuricemia.', badges: ['calc'], url: '/guides/managing-kidney-stones.html' },
-      { num: 3, title: 'Hurt Without Harm: Safe Pain Relief in Kidney Disease', why: 'NSAIDs are the go-to for acute gout — but are nephrotoxic.', badges: ['ph'], url: '/guides/pain-management-ckd.html' },
-      { num: 4, title: 'Nutrition for Kidney Patients', why: 'Purine-rich Filipino foods and their CKD-safe alternatives.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html' },
-      { num: 5, title: 'CKD and Alternative Medicine: Fact vs. Fiction', why: 'Many Filipinos try sambong and herbal remedies for gout.', badges: ['ph'], url: '/guides/ckd-alternative-holistic-medicine.html' },
-    ]
-  },
-  stones: {
-    condition: 'Kidney stones', title: 'Kidney stones — prevention is everything',
-    desc: 'Once you\'ve had one stone, your lifetime recurrence risk is 50%.',
-    color: '#92400e',
-    steps: [
-      { num: 1, title: 'Stone Smart: Managing Kidney Stones', why: 'Stone types, metabolic causes, MET with tamsulosin, procedures.', badges: ['calc'], url: '/guides/managing-kidney-stones.html', isStart: true },
-      { num: 2, title: 'Sodium & Salt Reduction', why: 'High sodium increases urinary calcium.', badges: ['calc','ph'], url: '/guides/sodium-salt-reduction-ckd.html' },
-      { num: 3, title: 'Nutrition for Kidney Patients', why: 'Oxalate, purine, and calcium content of Filipino foods.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html' },
-      { num: 4, title: 'Herbal Nephropathy', why: 'High-dose Vitamin C and certain herbal supplements are a hidden cause of oxalate stones.', badges: ['ph'], url: '/guides/herbal-nephropathy.html' },
-      { num: 5, title: 'Understanding Your Lab Results', why: 'Uric acid, calcium, phosphorus, and 24-hour urine results.', badges: ['calc'], url: '/guides/understanding-lab-results.html' },
     ]
   },
   caregiver: {
-    condition: 'Caregiver', title: 'I\'m caring for someone with CKD',
-    desc: 'Supporting a family member on dialysis or with advancing kidney disease is demanding.',
+    condition: 'Caregiver', title: 'Supporting someone with CKD',
+    desc: 'Caring for a family member on dialysis or with advancing kidney disease is demanding. These guides are for you.',
     color: '#5b4397',
+    note: '<strong>These are curated starting points.</strong> Your loved one\'s nephrologist will tailor recommendations to their specific stage and test results.',
     steps: [
       { num: 1, title: 'The CKD Caregiver\'s Guide: Supporting Without Burning Out', why: 'Practical frameworks for medication management and recognising burnout.', badges: ['ph'], url: '/guides/caregiver-guide-ckd.html', isStart: true },
       { num: 2, title: 'Taking Charge of CKD', why: 'Understand what your loved one\'s CKD stage means.', badges: [], url: '/guides/understanding-ckd.html' },
@@ -1411,6 +1273,62 @@ const PATHWAYS = {
       { num: 4, title: 'Staying Well on Dialysis', why: 'Per-session expectations, access care, and warning signs to report.', badges: [], url: '/guides/living-with-dialysis.html' },
       { num: 5, title: 'Fluid Management & Interdialytic Weight Gain', why: 'Understanding why fluid restriction matters between sessions.', badges: ['calc'], url: '/guides/fluid-management-dialysis.html' },
       { num: 6, title: 'PhilHealth Z Benefits & Dialysis Coverage', why: 'Navigate the financial side — Z package, case rates.', badges: ['ph'], url: '/guides/philhealth-z-packages.html' },
+    ]
+  },
+  'internist-gp': {
+    condition: 'Internist / GP', title: 'Nephrology essentials for primary care',
+    desc: 'When to refer, what to check first, and the outpatient algorithms that keep patients stable between nephrology visits.',
+    color: '#7c93c9',
+    note: '<strong>These are curated starting points.</strong> Adapt to your patients\' actual clinical picture and your own referral protocols.',
+    steps: [
+      { num: 1, title: 'Signs It\'s Time to See a Kidney Doctor', why: 'The early-referral red flags — foamy urine, nocturia, resistant hypertension, anemia.', badges: [], url: '/guides/signs-to-see-a-nephrologist.html', isStart: true },
+      { num: 2, title: 'Slowing CKD Progression', why: 'The KDIGO 2024 evidence-based toolkit — RAAS blockade, SGLT2i, BP and glycemic targets.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
+      { num: 3, title: 'First Nephrology Visit: What to Expect', why: 'What a referred patient will be asked and tested for, so the handoff is smooth.', badges: [], url: '/guides/first-nephrology-visit-guide.html' },
+      { num: 4, title: 'Practical Outpatient Algorithms', why: 'Quick-reference decision trees for common outpatient nephrology scenarios.', badges: [], url: '/guides/practical-outpatient-algorithms.html' },
+      { num: 5, title: 'Medication Operational Guide', why: 'Renal dose adjustments and drug interactions to check before prescribing.', badges: [], url: '/guides/medication-operational-guide.html' },
+      { num: 6, title: 'Contrast-Induced Nephropathy', why: 'The pre- and post-procedure protocol before any CT scan or angiogram.', badges: ['calc'], url: '/guides/contrast-nephropathy.html' },
+    ]
+  },
+  nephrologist: {
+    condition: 'Nephrologist', title: 'Deeper clinical references',
+    desc: 'Advanced techniques, procedures, and evidence past the patient-facing basics — for trainees and practising nephrologists.',
+    color: '#d99a4e',
+    note: '<strong>These are curated starting points.</strong> Weigh against your own institution\'s protocols and your patients\' individual context.',
+    steps: [
+      { num: 1, title: 'Nephrology Visual Atlas', why: '133 illustrated cards across anatomy, pathology, algorithms, and landmark trials.', badges: [], url: '/guides/nephrology-atlas.html', isStart: true },
+      { num: 2, title: 'AI in Nephrology Practice', why: 'A clinician\'s perspective on where AI tools currently help — and where they don\'t.', badges: [], url: '/guides/ai-in-nephrology-practice.html' },
+      { num: 3, title: 'Point-of-Care Ultrasound in Nephrology', why: 'A bedside field guide for trainees and practising nephrologists.', badges: [], url: '/guides/pocus-nephrology.html' },
+      { num: 4, title: 'Hemodiafiltration: A Deep Dive', why: 'Convective clearance, substitution fluid, and when HDF outperforms standard HD.', badges: [], url: '/guides/hemodiafiltration-deep-dive.html' },
+      { num: 5, title: 'Continuous Renal Replacement Therapy (CRRT)', why: 'Modality selection, dosing, and anticoagulation for the critically ill.', badges: [], url: '/guides/crrt-continuous-renal-replacement-therapy.html' },
+      { num: 6, title: 'IgA Nephropathy', why: 'Diagnosis, risk-stratification, and the new targeted therapies.', badges: [], url: '/guides/igan-guide.html' },
+    ]
+  },
+  'dialysis-staff': {
+    condition: 'Dialysis Staff / HD Tech', title: 'Running a safe dialysis unit',
+    desc: 'Water treatment, reprocessing, machine assignment, and access care — the operational side of hemodialysis.',
+    color: '#5ab3e0',
+    note: '<strong>These are curated starting points.</strong> Always defer to your unit\'s standing protocols and supervising nephrologist.',
+    steps: [
+      { num: 1, title: 'Hemodialysis Water Treatment Systems', why: 'A clinical and engineering reference for dialysis staff.', badges: [], url: '/guides/dialysis-water-treatment-systems.html', isStart: true },
+      { num: 2, title: 'Dialyzer Reprocessing & Reuse', why: 'Protocols, documentation, and safety checks for reprocessed dialyzers.', badges: [], url: '/guides/dialyzer-reprocessing-reuse.html' },
+      { num: 3, title: 'Dialysis Machine Assignment', why: 'How units triage machine and shift assignment for patient safety.', badges: [], url: '/guides/dialysis-machine-assignment.html' },
+      { num: 4, title: 'Dialysis Access Care: Your Lifeline', why: 'Fistulas, grafts, catheters, and PD — daily care and early complication recognition.', badges: [], url: '/guides/dialysis-access-care.html' },
+      { num: 5, title: 'Dialysis Access Infection', why: 'Recognizing and managing access-related infection before it becomes systemic.', badges: [], url: '/guides/dialysis-access-infection.html' },
+      { num: 6, title: 'Code Blue & ACLS in the Dialysis Unit', why: 'The unit-specific adaptations to standard ACLS during a dialysis emergency.', badges: [], url: '/guides/code-blue-acls-dialysis-unit.html' },
+    ]
+  },
+  dietitian: {
+    condition: 'Dietitian / Nutritionist', title: 'Nutrition therapy for kidney disease',
+    desc: 'Stage-specific protein, potassium, phosphorus, and sodium targets — built around Filipino food.',
+    color: '#7ec98f',
+    note: '<strong>These are curated starting points.</strong> Individualize targets against each patient\'s labs and the treating nephrologist\'s plan.',
+    steps: [
+      { num: 1, title: 'Nutrition for Kidney Patients', why: 'Stage-specific protein, potassium, and sodium limits using Filipino foods.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html', isStart: true },
+      { num: 2, title: 'Phosphorus & CKD', why: 'Hidden phosphate additives, binder timing, and Filipino food sources to watch.', badges: [], url: '/guides/phosphorus-ckd.html' },
+      { num: 3, title: 'CKD-Friendly Filipino Recipes', why: 'Practical, stage-appropriate recipes patients will actually cook and eat.', badges: ['ph'], url: '/guides/ckd-friendly-recipes.html' },
+      { num: 4, title: 'CKD Dietary Reference Intake Calculator', why: 'Compute a patient\'s individualized protein, potassium, phosphorus, and sodium targets.', badges: ['calc'], url: '/guides/ckd-dri-calculator.html' },
+      { num: 5, title: 'Filipino Diabetic Diet — Eating Smart with Diabetes', why: 'Evidence-based glycemic control using Filipino foods, for patients with DKD.', badges: ['ph','calc'], url: '/guides/filipino-diabetic-diet.html' },
+      { num: 6, title: 'Potassium & Hyperkalemia in CKD', why: 'Which foods actually drive potassium up, and how to counsel around them.', badges: [], url: '/guides/potassium-hyperkalemia-ckd.html' },
     ]
   }
 };
@@ -1422,6 +1340,7 @@ const PATHWAYS = {
   const modalTitle = document.getElementById('modal-title');
   const modalDesc = document.getElementById('modal-desc');
   const modalBody = document.getElementById('modal-body');
+  const modalFooterNote = document.getElementById('modal-footer-note');
 
   function openPathway(key) {
     const p = PATHWAYS[key];
@@ -1430,6 +1349,7 @@ const PATHWAYS = {
     modalBadge.style.background = p.color;
     modalTitle.textContent = p.title;
     modalDesc.textContent = p.desc;
+    modalFooterNote.innerHTML = p.note;
     modalBody.innerHTML = p.steps.map(s => {
       const badges = (s.badges || []).map(b => {
         if (b === 'calc') return '<span class="step-badge badge-calc">Calculator</span>';
@@ -1458,7 +1378,11 @@ const PATHWAYS = {
     document.body.style.overflow = '';
   }
   document.querySelectorAll('.pathway-tile').forEach(tile => {
-    tile.addEventListener('click', () => openPathway(tile.dataset.pathway));
+    tile.addEventListener('click', () => {
+      var persona = tile.dataset.pathway;
+      try { localStorage.setItem('wgmr-visit-persona', persona); } catch(e) {}
+      openPathway(persona);
+    });
   });
   document.getElementById('modal-close').addEventListener('click', closeModal);
   document.getElementById('modal-dismiss').addEventListener('click', closeModal);
