@@ -105,7 +105,6 @@
   html[data-theme="dark"] body { background: #0f1520; color: #e8eaf0; }
   html[data-theme="dark"] .site-header { background: #0a0f1a; }
   html[data-theme="dark"] .cat-card,
-  html[data-theme="dark"] .path-card,
   html[data-theme="dark"] .latest-card,
   html[data-theme="dark"] .author-note,
   html[data-theme="dark"] .explainer-card,
@@ -641,26 +640,343 @@
   .cat-name { font-size: 14.5px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
   .cat-desc { font-size: 12.5px; color: var(--muted); }
 
-  /* START HERE PATHWAYS */
-  .path-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-  }
-  .path-card {
+  /* ── START HERE PATHWAYS (ported from guides/index.html) ── */
+  .pathways-section {
     background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
-    text-decoration: none;
-    display: block;
-    box-shadow: var(--shadow-sm);
-    transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s;
+    border-top: 1px solid var(--border);
+    border-bottom: 3px solid var(--navy);
+    padding: 48px 24px;
   }
-  .path-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-  .path-condition { font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
-  .path-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.35; }
-  .path-arrow { font-size: 13px; color: var(--teal); font-weight: 600; line-height: 1.4; }
+  .pathways-inner { max-width: 900px; margin: 0 auto; }
+  .pathways-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .pathways-label {
+    font-family: 'Lora', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .pathways-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .pathways-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+  .pathway-tile {
+    position: relative;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 14px 12px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.18s, background 0.18s, transform 0.15s, box-shadow 0.15s;
+    overflow: hidden;
+  }
+  .pathway-tile::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 10px 10px 0 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background: var(--pw-color);
+  }
+  .pathway-tile:hover {
+    border-color: transparent;
+    background: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(31,56,100,0.13);
+  }
+  .pathway-tile:hover::before { opacity: 1; }
+  .pathway-tile:hover .pathway-icon { color: var(--pw-color); }
+
+  /* Per-condition accent colors */
+  .pathway-tile[data-pathway="ckd"] { --pw-color: #1A6B72; }
+  .pathway-tile[data-pathway="diabetes"] { --pw-color: #b45309; }
+  .pathway-tile[data-pathway="hbp"] { --pw-color: #c00000; }
+  .pathway-tile[data-pathway="dialysis"] { --pw-color: #1F3864; }
+  .pathway-tile[data-pathway="creatinine"] { --pw-color: #4B3280; }
+  .pathway-tile[data-pathway="swelling"] { --pw-color: #0369a1; }
+  .pathway-tile[data-pathway="gout"] { --pw-color: #2E6B3E; }
+  .pathway-tile[data-pathway="protein"] { --pw-color: #be185d; }
+  .pathway-tile[data-pathway="stones"] { --pw-color: #92400e; }
+  .pathway-tile[data-pathway="caregiver"] { --pw-color: #5b4397; }
+
+  .pathway-icon {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 8px;
+    display: block;
+    color: #94a3b8;
+    transition: color 0.2s;
+  }
+  .pathway-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .pathway-condition {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .pathway-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.28;
+    margin-bottom: 4px;
+  }
+  .pathway-count {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .pathway-arrow {
+    position: absolute;
+    bottom: 11px; right: 12px;
+    font-size: 14px;
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+  .pathway-tile:hover .pathway-arrow { opacity: 1; transform: translateX(2px); }
+
+  html[data-theme="dark"] .pathways-section { background: #111c30; border-top-color: #1e2d47; border-bottom-color: #2a8a93; }
+  html[data-theme="dark"] .pathway-tile { background: #1a2535; border-color: #2a3a54; }
+  html[data-theme="dark"] .pathway-tile:hover { background: #1e2d47; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+  html[data-theme="dark"] .pathway-icon { color: #5eead4; }
+
+  /* ── PATHWAY MODAL (ported from guides/index.html) ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(3px);
+    z-index: 10000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  @media (min-width: 600px) {
+    .modal-overlay { align-items: center; }
+  }
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .modal-drawer {
+    background: var(--white);
+    width: 100%;
+    max-width: 580px;
+    max-height: 88vh;
+    border-radius: 18px 18px 0 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(30px);
+    transition: transform 0.28s cubic-bezier(0.34, 1.2, 0.64, 1);
+    box-shadow: 0 -8px 40px rgba(15,23,42,0.18);
+  }
+  @media (min-width: 600px) {
+    .modal-drawer {
+      border-radius: 16px;
+      transform: translateY(16px) scale(0.97);
+      max-height: 82vh;
+    }
+    .modal-overlay.open .modal-drawer {
+      transform: translateY(0) scale(1);
+    }
+  }
+  .modal-overlay.open .modal-drawer { transform: translateY(0); }
+
+  .modal-header {
+    padding: 16px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .modal-drag-handle {
+    width: 36px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 12px;
+    display: block;
+  }
+  @media (min-width: 600px) { .modal-drag-handle { display: none; } }
+  .modal-condition-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    color: white;
+  }
+  .modal-title {
+    font-family: 'Lora', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+  .modal-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 30px; height: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    transition: background 0.15s, color 0.15s;
+  }
+  .modal-close:hover { background: var(--border); color: var(--text); }
+
+  .modal-body {
+    overflow-y: auto;
+    flex: 1;
+    padding: 0 0 8px;
+  }
+  .modal-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 20px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s;
+    position: relative;
+  }
+  .modal-step:last-child { border-bottom: none; }
+  .modal-step:hover { background: var(--bg); }
+  .modal-step:hover .modal-step-arrow { opacity: 1; transform: translateX(2px); }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    color: white;
+    margin-top: 1px;
+  }
+  .step-body { flex: 1; min-width: 0; }
+  .step-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+  .step-why {
+    font-size: 0.73rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .step-badges {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+  .step-badge {
+    font-size: 0.6rem;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .badge-calc { background: var(--teal-light); color: var(--teal); }
+  .badge-tool { background: #f3e8ff; color: #7c3aed; }
+  .badge-ph { background: #fff5e6; color: #c2410c; }
+  .badge-new { background: #fef3ec; color: #c2410c; border: 1px solid #fcd9b8; }
+  .badge-start { background: var(--navy); color: white; }
+
+  .modal-step-arrow {
+    flex-shrink: 0;
+    font-size: 14px;
+    color: var(--muted);
+    opacity: 0;
+    align-self: center;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+
+  .modal-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg);
+    gap: 12px;
+  }
+  .modal-footer-note {
+    font-size: 0.7rem;
+    color: var(--muted);
+    line-height: 1.4;
+    max-width: 320px;
+  }
+  .modal-footer-note strong { color: var(--text); }
+  .modal-dismiss {
+    background: var(--navy);
+    color: white;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .modal-dismiss:hover { background: var(--navy-mid); }
+
+  html[data-theme="dark"] .modal-drawer,
+  html[data-theme="dark"] .modal-close,
+  html[data-theme="dark"] .modal-footer { background: var(--white); }
+  html[data-theme="dark"] .badge-tool { background: #2a1a4a; color: #c4b5fd; }
+  html[data-theme="dark"] .badge-ph { background: #2a1a0e; color: #fb923c; }
+  html[data-theme="dark"] .badge-new { background: #2a1a0e; color: #fb923c; border-color: #4a2e10; }
 
   /* FEATURED GUIDES */
   .featured-grid {
@@ -962,42 +1278,114 @@
   </div>
 </div>
 
-<!-- START HERE -->
-<div class="shell shell-alt reveal" id="start-here">
-  <div class="shell-label">Start Here</div>
-  <h2>What brings you here today?</h2>
-  <p class="shell-sub">Pick the line that sounds most like you. Each path starts with the basics and builds — no medical background needed.</p>
-  <div class="path-grid">
-    <a href="/guides/understanding-ckd.html" class="path-card">
-      <div class="path-condition">Newly diagnosed</div>
-      <div class="path-title">I was just told I have kidney disease</div>
-      <span class="path-arrow">Start with the fundamentals &rarr;</span>
-    </a>
-    <a href="/guides/living-with-dialysis.html" class="path-card">
-      <div class="path-condition">Treatment</div>
-      <div class="path-title">I'm on dialysis</div>
-      <span class="path-arrow">Living well, session to session &rarr;</span>
-    </a>
-    <a href="/guides/diabetes-kidneys.html" class="path-card">
-      <div class="path-condition">Condition</div>
-      <div class="path-title">I have diabetes</div>
-      <span class="path-arrow">How to protect the kidneys before they're damaged &rarr;</span>
-    </a>
-    <a href="/guides/managing-hypertension.html" class="path-card">
-      <div class="path-condition">Condition</div>
-      <div class="path-title">My blood pressure is high</div>
-      <span class="path-arrow">The silent driver of kidney loss &rarr;</span>
-    </a>
-    <a href="/guides/understanding-lab-results.html" class="path-card">
-      <div class="path-condition">Lab result</div>
-      <div class="path-title">My creatinine came back high</div>
-      <span class="path-arrow">What that number actually means &rarr;</span>
-    </a>
-    <a href="/guides/caregiver-guide-ckd.html" class="path-card">
-      <div class="path-condition">Role</div>
-      <div class="path-title">I'm caring for someone with CKD</div>
-      <span class="path-arrow">For the family doing the hard work &rarr;</span>
-    </a>
+<!-- PATHWAY MODAL OVERLAY (ported from guides/index.html) -->
+<div class="modal-overlay" id="pathway-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-drawer">
+    <div class="modal-header">
+      <span class="modal-drag-handle"></span>
+      <span class="modal-condition-badge" id="modal-badge"></span>
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <button class="modal-close" id="modal-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <div class="modal-footer-note"><strong>These are curated starting points.</strong> Your nephrologist will tailor recommendations to your specific stage and test results.</div>
+      <button class="modal-dismiss" id="modal-dismiss">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- START HERE PATHWAYS (ported from guides/index.html) -->
+<div class="pathways-section reveal" id="start-here">
+  <div class="pathways-inner">
+    <div class="pathways-header">
+      <span class="pathways-label">Start Here — I Have…</span>
+      <span class="pathways-sub">Select your situation for a curated reading path</span>
+    </div>
+    <div class="pathways-grid">
+
+      <button class="pathway-tile" data-pathway="ckd">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 6 5 10c0 5 4 9 7 12 3-3 7-7 7-12 0-4-3-8-7-8z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <div class="pathway-condition">Condition</div>
+        <div class="pathway-title">Newly diagnosed CKD</div>
+        <div class="pathway-count">7 guides · Start here</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+
+      <button class="pathway-tile" data-pathway="dialysis">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/><path d="M9 9l6 6M15 9l-6 6" stroke-opacity="0.4"/></svg></span>
+        <div class="pathway-condition">Treatment</div>
+        <div class="pathway-title">I'm on dialysis</div>
+        <div class="pathway-count">7 guides · HD &amp; PD</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+
+      <button class="pathway-tile" data-pathway="diabetes">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg></span>
+        <div class="pathway-condition">Condition</div>
+        <div class="pathway-title">Diabetes</div>
+        <div class="pathway-count">8 guides · DM &amp; kidneys</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+
+      <button class="pathway-tile" data-pathway="hbp">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><path d="M8 12h2l1.5-3 2 6 1.5-3H17" stroke-opacity="0.55" fill="none"/></svg></span>
+        <div class="pathway-condition">Condition</div>
+        <div class="pathway-title">High blood pressure</div>
+        <div class="pathway-count">7 guides · BP &amp; kidneys</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+
+      <button class="pathway-tile" data-pathway="creatinine">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4"/><path d="M9 3a3 3 0 0 0 6 0M9 3a3 3 0 0 1 6 0"/><path d="M9 12h6M9 16h4"/></svg></span>
+        <div class="pathway-condition">Lab result</div>
+        <div class="pathway-title">My creatinine is high</div>
+        <div class="pathway-count">6 guides · What it means</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+
+      <button class="pathway-tile" data-pathway="swelling">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
+        <div class="pathway-condition">Symptom</div>
+        <div class="pathway-title">Swelling / fluid retention</div>
+        <div class="pathway-count">7 guides · Edema &amp; fluid</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+
+      <button class="pathway-tile" data-pathway="protein">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12a4 4 0 0 1 8 0"/><path d="M9 15.5c.83.97 1.84 1.5 3 1.5s2.17-.53 3-1.5"/></svg></span>
+        <div class="pathway-condition">Lab result</div>
+        <div class="pathway-title">Protein in my urine</div>
+        <div class="pathway-count">5 guides · Proteinuria</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+
+      <button class="pathway-tile" data-pathway="gout">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+        <div class="pathway-condition">Condition</div>
+        <div class="pathway-title">Gout / high uric acid</div>
+        <div class="pathway-count">5 guides · Gout &amp; kidneys</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+
+      <button class="pathway-tile" data-pathway="stones">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24"><path d="M12 22c-4.97 0-9-3.58-9-8 0-3 1.5-5.5 3.5-7C8 5.5 10 4 12 2c2 2 4 3.5 5.5 5 2 1.5 3.5 4 3.5 7 0 4.42-4.03 8-9 8z"/><path d="M9 14l1.5-1.5M13 11l1.5-1.5M10.5 11.5l3 0" stroke-opacity="0.5"/></svg></span>
+        <div class="pathway-condition">Condition</div>
+        <div class="pathway-title">Kidney stones</div>
+        <div class="pathway-count">5 guides · Prevention</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+
+      <button class="pathway-tile" data-pathway="caregiver">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <div class="pathway-condition">Role</div>
+        <div class="pathway-title">Caring for someone with CKD</div>
+        <div class="pathway-count">6 guides · Caregiver path</div>
+        <span class="pathway-arrow">&rsaquo;</span>
+      </button>
+
+    </div>
   </div>
 </div>
 
@@ -1369,6 +1757,215 @@
       el.style.opacity = '1';
     }, 320);
   }, 2800);
+})();
+</script>
+
+<script>
+// Start Here pathway tiles + modal — ported verbatim from guides/index.html,
+// including the full PATHWAYS dataset (10 conditions), so this page's
+// "curated reading path" experience matches the guides hub exactly.
+/* ── PATHWAY DATA ── */
+const PATHWAYS = {
+  ckd: {
+    condition: 'Newly diagnosed CKD',
+    title: 'Where do I start with CKD?',
+    desc: 'You\'ve just been told your kidneys aren\'t working at full capacity. Start with how kidneys work, what CKD actually means, then build from there.',
+    color: '#1A6B72',
+    steps: [
+      { num: 1, title: 'Your Amazing Kidneys — Normal Physiology', why: 'Understand what healthy kidneys do before learning what goes wrong.', badges: [], url: '/guides/kidney-physiology.html', isStart: true },
+      { num: 2, title: 'Taking Charge of CKD: Understanding Your Kidney Disease', why: 'What CKD stages mean, how progression works, and what to expect.', badges: [], url: '/guides/understanding-ckd.html' },
+      { num: 3, title: 'Understanding Your Lab Results', why: 'Learn to read the numbers your doctor monitors — creatinine, eGFR, UACR.', badges: ['calc'], url: '/guides/understanding-lab-results.html' },
+      { num: 4, title: 'Slowing CKD Progression', why: 'The medications and lifestyle changes proven to protect kidney function.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
+      { num: 5, title: 'Nutrition for Kidney Patients', why: 'Stage-specific protein, potassium, and sodium limits using Filipino foods.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html' },
+      { num: 6, title: 'Top 5 Mistakes CKD Patients Make', why: 'The most common — and most preventable — errors that accelerate kidney decline.', badges: [], url: '/guides/ckd-top5-mistakes.html' },
+      { num: 7, title: 'CKD & Pregnancy: A Guide for Women with Kidney Disease', why: 'Safe medications, pre-conception counselling, fetal monitoring, and postpartum care — essential reading for any woman with CKD of reproductive age.', badges: ['new'], url: '/guides/ckd-and-pregnancy.html' },
+    ]
+  },
+  dialysis: {
+    condition: 'On dialysis',
+    title: 'Making the most of dialysis',
+    desc: 'Whether you\'re newly starting or have been on HD or PD for years, these guides cover the essentials: safety, diet, access, and adequacy.',
+    color: '#1F3864',
+    steps: [
+      { num: 1, title: 'Staying Well on Dialysis — What Every HD Patient Must Know', why: 'Per-session expectations, KDIGO 2024 targets, and access protection basics.', badges: [], url: '/guides/living-with-dialysis.html', isStart: true },
+      { num: 2, title: 'Fluid Management & Interdialytic Weight Gain', why: 'Why fluid builds up, the weekend gap danger, and personalized UF rate targets.', badges: ['calc'], url: '/guides/fluid-management-dialysis.html' },
+      { num: 3, title: 'Finding Your True Dry Weight', why: 'Why dry weight keeps changing, why bioimpedance is only a trend, and how the team triangulates the signals.', badges: ['calc','new'], url: '/guides/dry-weight-determination.html' },
+      { num: 4, title: 'Dialysis Access Care: Your Lifeline — Protect It Every Day', why: 'Fistulas, grafts, catheters, and PD — daily care and early complication recognition.', badges: [], url: '/guides/dialysis-access-care.html' },
+      { num: 5, title: 'Is My Dialysis Working? Understanding Dialysis Adequacy', why: 'What Kt/V and URR mean — use the interactive Daugirdas spKt/V calculator.', badges: ['calc'], url: '/guides/dialysis-adequacy.html' },
+      { num: 6, title: 'Anemia in Kidney Disease: Iron, EPO & Energy', why: 'The EPO deficiency cascade — iron-first, ESA targets, and dialysis anemia management.', badges: ['calc'], url: '/guides/anemia-management.html' },
+      { num: 7, title: 'Managing Complications of Hemodialysis', why: 'Intradialytic hypotension, cramps, arrhythmias, access emergencies — prevention checklists.', badges: [], url: '/guides/hemodialysis-complications.html' },
+    ]
+  },
+  diabetes: {
+    condition: 'Diabetes',
+    title: 'Diabetes, kidneys, and what connects them',
+    desc: 'Diabetic kidney disease (DKD) is the #1 cause of kidney failure worldwide. These guides explain the mechanism and the modern treatments that protect both organs.',
+    color: '#b45309',
+    steps: [
+      { num: 1, title: 'Diabetes & Your Kidneys', why: 'How hyperfiltration and glycation damage the kidney — the foundational guide for DKD.', badges: ['calc'], url: '/guides/diabetes-kidneys.html', isStart: true },
+      { num: 2, title: 'Filipino Diabetic Diet — Eating Smart with Diabetes', why: 'Evidence-based glycemic control using Filipino foods: rice, sinangag, ampalaya, sinigang. Built for the local plate, not Western guidelines.', badges: ['new','ph','calc'], url: '/guides/filipino-diabetic-diet.html' },
+      { num: 3, title: 'Slowing CKD Progression', why: 'SGLT2 inhibitors, RAAS blockade, and BP control — the KDIGO 2024 evidence-based toolkit.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
+      { num: 4, title: 'Heart & Kidney Connection — When Protecting One Saves Both', why: 'The cardiorenal cycle — how DM accelerates both heart and kidney failure simultaneously.', badges: ['calc'], url: '/guides/heart-kidney-connection.html' },
+      { num: 5, title: 'GLP-1 Drugs & Your Kidneys: What Ozempic Means for CKD', why: 'The FLOW trial, 2025 FDA approval of semaglutide for kidney protection, Philippines cost.', badges: ['new','ph'], url: '/guides/glp1-ozempic-ckd.html' },
+      { num: 6, title: 'Dyslipidemia: 2026 ACC/AHA Guidelines', why: 'DM patients aged 40–75 are treated regardless of LDL — new targets and stepwise therapy.', badges: ['calc'], url: '/guides/dyslipidemia-2026.html' },
+      { num: 7, title: 'New Therapeutic Agents for CKD', why: 'SGLT2i, finerenone, GLP-1, sparsentan — the drug revolution changing DKD management.', badges: [], url: '/guides/new-therapeutic-agents-ckd.html' },
+      { num: 8, title: 'CKM Syndrome — Heart, Kidney & Metabolic Disease, Connected', why: 'The AHA-ASN CKM framework unifies DM, CKD, and heart disease — staging, triple therapy, and PREVENT equation.', badges: ['new','calc'], url: '/guides/cardio-kidney-metabolic-syndrome.html' },
+    ]
+  },
+  hbp: {
+    condition: 'High blood pressure',
+    title: 'Blood pressure, kidneys, and the silent connection',
+    desc: 'Hypertension is the #2 cause of kidney failure in the Philippines — yet it rarely causes symptoms until significant damage is done. These guides explain why and what to do.',
+    color: '#c00000',
+    steps: [
+      { num: 1, title: 'Managing High Blood Pressure', why: 'How BP damages heart, kidney, and brain — home monitoring, medication classes, targets.', badges: ['calc'], url: '/guides/managing-hypertension.html', isStart: true },
+      { num: 2, title: 'The Silent Scarring: Hypertensive Kidney Disease', why: 'How decades of uncontrolled BP silently scars kidneys — nephrosclerosis explained.', badges: [], url: '/guides/hypertensive-kidney-disease.html' },
+      { num: 3, title: 'Sodium & Salt Reduction — Your Most Powerful Daily Choice', why: 'Filipino diet averages 5–6 g sodium/day. CKD target is ≤2 g. Here\'s how to close the gap.', badges: ['calc','ph'], url: '/guides/sodium-salt-reduction-ckd.html' },
+      { num: 4, title: 'Heart & Kidney Connection — When Protecting One Saves Both', why: 'RAAS blockade, SGLT2i, and the drugs that simultaneously protect both organs.', badges: ['calc'], url: '/guides/heart-kidney-connection.html' },
+      { num: 5, title: 'Slowing CKD Progression', why: 'Once hypertension has damaged the kidney, these tools slow further decline.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
+      { num: 6, title: 'Dyslipidemia: 2026 ACC/AHA Guidelines', why: 'HTN + CKD = high ASCVD risk. Know your LDL target and stepwise lipid therapy.', badges: ['calc'], url: '/guides/dyslipidemia-2026.html' },
+      { num: 7, title: 'CKM Syndrome — Heart, Kidney & Metabolic Disease, Connected', why: 'Hypertension is a core CKM driver — see the full AHA-ASN staging framework and triple therapy that protects heart and kidney together.', badges: ['new','calc'], url: '/guides/cardio-kidney-metabolic-syndrome.html' },
+    ]
+  },
+  creatinine: {
+    condition: 'High creatinine',
+    title: 'My creatinine is high — what does it mean?',
+    desc: 'A rising creatinine is one of the most common reasons patients are referred to a nephrologist. It can mean many things — from dehydration to chronic kidney disease. Start here.',
+    color: '#4B3280',
+    steps: [
+      { num: 1, title: 'Understanding Your Lab Results', why: 'What creatinine, eGFR, BUN, and UACR actually mean — and which direction is dangerous.', badges: ['calc'], url: '/guides/understanding-lab-results.html', isStart: true },
+      { num: 2, title: 'Taking Charge of CKD: Understanding Your Kidney Disease', why: 'If creatinine is chronically elevated, learn what CKD staging means for you.', badges: [], url: '/guides/understanding-ckd.html' },
+      { num: 3, title: 'Acute Kidney Injury on Top of CKD (AKI-on-CKD)', why: 'A sudden creatinine rise may be AKI — learn the KDIGO stages and sick-day rules.', badges: [], url: '/guides/acute-kidney-injury-on-ckd.html' },
+      { num: 4, title: 'Hurt Without Harm: Safe Pain Relief in Kidney Disease', why: 'NSAIDs — mefenamic acid and ibuprofen — are a top cause of creatinine spikes.', badges: ['ph'], url: '/guides/pain-management-ckd.html' },
+      { num: 5, title: 'Contrast-Induced Nephropathy', why: 'If a CT scan or angiogram is planned, know the protocol that protects your kidneys.', badges: ['calc'], url: '/guides/contrast-nephropathy.html' },
+      { num: 6, title: 'Slowing CKD Progression', why: 'Once creatinine is chronically elevated, these are the tools to slow further loss.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
+    ]
+  },
+  swelling: {
+    condition: 'Swelling / fluid retention',
+    title: 'Why am I swelling — and what can I do?',
+    desc: 'Edema in kidney disease has multiple causes: low albumin, heart failure, fluid overload, or sodium retention. These guides trace the mechanism and the solutions.',
+    color: '#0369a1',
+    steps: [
+      { num: 1, title: 'Proteins & Proteinuria', why: 'Low albumin from protein loss is a leading cause of edema — understand the mechanism first.', badges: ['calc'], url: '/guides/proteins-proteinuria.html', isStart: true },
+      { num: 2, title: 'Sodium & Salt Reduction — Your Most Powerful Daily Choice', why: 'Sodium drives fluid retention. Cutting hidden sodium in Filipino food is the most impactful step.', badges: ['calc','ph'], url: '/guides/sodium-salt-reduction-ckd.html' },
+      { num: 3, title: 'Fluid Management & Interdialytic Weight Gain', why: 'For dialysis patients: how much fluid to restrict, dry weight, and UF rate targets.', badges: ['calc'], url: '/guides/fluid-management-dialysis.html' },
+      { num: 4, title: 'Finding Your True Dry Weight', why: 'For dialysis patients: how the team converges on the right post-dialysis target weight without over-removing fluid.', badges: ['calc','new'], url: '/guides/dry-weight-determination.html' },
+      { num: 5, title: 'Heart & Kidney Connection — When Protecting One Saves Both', why: 'Heart failure causes fluid to back up into tissues — the cardiorenal cycle explained.', badges: ['calc'], url: '/guides/heart-kidney-connection.html' },
+      { num: 6, title: 'Managing High Blood Pressure', why: 'Fluid overload raises BP, and elevated BP worsens swelling — a reinforcing cycle to break.', badges: ['calc'], url: '/guides/managing-hypertension.html' },
+      { num: 7, title: 'Nutrition for Kidney Patients', why: 'Stage-specific sodium, fluid, and protein targets to reduce swelling from the dietary side.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html' },
+    ]
+  },
+  protein: {
+    condition: 'Protein in urine',
+    title: 'Protein in my urine — is it serious?',
+    desc: 'Proteinuria is one of the strongest predictors of kidney disease progression. It\'s often silent, but treatable. These guides explain what it means and what to do about it.',
+    color: '#be185d',
+    steps: [
+      { num: 1, title: 'Proteins & Proteinuria', why: 'Why protein leaks into urine, how UACR is measured correctly, and what levels are dangerous.', badges: ['calc'], url: '/guides/proteins-proteinuria.html', isStart: true },
+      { num: 2, title: 'Taking Charge of CKD: Understanding Your Kidney Disease', why: 'Proteinuria is a CKD marker — understand the staging and what progression means.', badges: [], url: '/guides/understanding-ckd.html' },
+      { num: 3, title: 'Glomerulonephritis: When Kidney Filters Become Inflamed', why: 'IgAN, lupus nephritis, FSGS — diseases where inflammation drives heavy proteinuria.', badges: [], url: '/guides/glomerulonephritis.html' },
+      { num: 4, title: 'Diabetes & Your Kidneys', why: 'Microalbuminuria is the earliest sign of diabetic kidney disease — catch it here.', badges: ['calc'], url: '/guides/diabetes-kidneys.html' },
+      { num: 5, title: 'Slowing CKD Progression', why: 'RAAS blockade and SGLT2i reduce proteinuria and slow GFR decline — the evidence.', badges: ['calc'], url: '/guides/slowing-ckd-progression.html' },
+    ]
+  },
+  gout: {
+    condition: 'Gout / high uric acid',
+    title: 'Gout, uric acid, and your kidneys',
+    desc: 'Gout isn\'t just a joint disease. Hyperuricemia damages kidney tubules, promotes stones, and accelerates CKD. Filipino diet and genetics make this especially common.',
+    color: '#2E6B3E',
+    steps: [
+      { num: 1, title: 'Gout — The Crystal Disease You Can Actually Conquer', why: 'Uric acid buildup in Filipinos, crystal kidney damage, and why febuxostat is preferred over allopurinol in CKD.', badges: ['calc'], url: '/guides/gout-uric-acid.html', isStart: true },
+      { num: 2, title: 'Stone Smart: Managing Kidney Stones', why: 'Uric acid stones are a direct complication of hyperuricemia — prevention, MET, and procedures.', badges: ['calc'], url: '/guides/managing-kidney-stones.html' },
+      { num: 3, title: 'Hurt Without Harm: Safe Pain Relief in Kidney Disease', why: 'NSAIDs are the go-to for acute gout — but are nephrotoxic. Know the safe alternatives by CKD stage.', badges: ['ph'], url: '/guides/pain-management-ckd.html' },
+      { num: 4, title: 'Nutrition for Kidney Patients', why: 'Purine-rich Filipino foods and their CKD-safe alternatives — the dietary side of gout control.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html' },
+      { num: 5, title: 'CKD and Alternative Medicine: Fact vs. Fiction', why: 'Many Filipinos try sambong and herbal remedies for gout — know what\'s safe and what\'s not.', badges: ['ph'], url: '/guides/ckd-alternative-holistic-medicine.html' },
+    ]
+  },
+  stones: {
+    condition: 'Kidney stones',
+    title: 'Kidney stones — prevention is everything',
+    desc: 'Once you\'ve had one stone, your lifetime recurrence risk is 50%. These guides cover the metabolic workup, prevention, and how stones can silently damage kidneys over time.',
+    color: '#92400e',
+    steps: [
+      { num: 1, title: 'Stone Smart: Managing Kidney Stones', why: 'Stone types, metabolic causes, MET with tamsulosin, procedures, and precision dietary strategies.', badges: ['calc'], url: '/guides/managing-kidney-stones.html', isStart: true },
+      { num: 2, title: 'Sodium & Salt Reduction — Your Most Powerful Daily Choice', why: 'High sodium increases urinary calcium — the single most impactful dietary change for stone prevention.', badges: ['calc','ph'], url: '/guides/sodium-salt-reduction-ckd.html' },
+      { num: 3, title: 'Nutrition for Kidney Patients', why: 'Oxalate, purine, and calcium content of Filipino foods — tailored to your stone type.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html' },
+      { num: 4, title: 'Herbal Nephropathy', why: 'High-dose Vitamin C and certain herbal supplements are a hidden cause of oxalate stones.', badges: ['ph'], url: '/guides/herbal-nephropathy.html' },
+      { num: 5, title: 'Understanding Your Lab Results', why: 'Uric acid, calcium, phosphorus, and 24-hour urine results — what the stone metabolic workup means.', badges: ['calc'], url: '/guides/understanding-lab-results.html' },
+    ]
+  },
+  caregiver: {
+    condition: 'Caregiver',
+    title: 'I\'m caring for someone with CKD',
+    desc: 'Supporting a family member on dialysis or with advancing kidney disease is demanding. These guides help you understand what\'s happening medically, what to watch for, and how to protect your own wellbeing.',
+    color: '#5b4397',
+    steps: [
+      { num: 1, title: 'The CKD Caregiver\'s Guide: Supporting Without Burning Out', why: 'Practical frameworks for medication management, dialysis schedules, and recognising caregiver burnout — the place to start.', badges: ['ph'], url: '/guides/caregiver-guide-ckd.html', isStart: true },
+      { num: 2, title: 'Taking Charge of CKD: Understanding Your Kidney Disease', why: 'Understand what your loved one\'s CKD stage means, how the disease progresses, and what milestones to expect.', badges: [], url: '/guides/understanding-ckd.html' },
+      { num: 3, title: 'Nutrition for Kidney Patients', why: 'Stage-specific diet rules — protein, potassium, sodium, phosphorus limits — so you can plan safe meals at home.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html' },
+      { num: 4, title: 'Staying Well on Dialysis — What Every HD Patient Must Know', why: 'If your family member is on haemodialysis, this covers per-session expectations, access care, and warning signs to report.', badges: [], url: '/guides/living-with-dialysis.html' },
+      { num: 5, title: 'Fluid Management & Interdialytic Weight Gain', why: 'Understanding why fluid restriction matters between sessions and how to help your loved one stick to it safely.', badges: ['calc'], url: '/guides/fluid-management-dialysis.html' },
+      { num: 6, title: 'PhilHealth Z Benefits & Dialysis Coverage', why: 'Navigate the financial side — Z package, case rates, and what to expect at accredited centres in the Philippines.', badges: ['ph'], url: '/guides/philhealth-z-packages.html' },
+    ]
+  }
+};
+
+/* ── MODAL LOGIC ── */
+(function(){
+  const modalOverlay = document.getElementById('pathway-modal');
+  if (!modalOverlay) return;
+  const modalBadge = document.getElementById('modal-badge');
+  const modalTitle = document.getElementById('modal-title');
+  const modalDesc = document.getElementById('modal-desc');
+  const modalBody = document.getElementById('modal-body');
+
+  function openPathway(key) {
+    const p = PATHWAYS[key];
+    if (!p) return;
+
+    modalBadge.textContent = p.condition;
+    modalBadge.style.background = p.color;
+    modalTitle.textContent = p.title;
+    modalDesc.textContent = p.desc;
+
+    modalBody.innerHTML = p.steps.map(s => {
+      const badges = (s.badges || []).map(b => {
+        if (b === 'calc') return '<span class="step-badge badge-calc">Calculator</span>';
+        if (b === 'tool') return '<span class="step-badge badge-tool">⚙️ Tool</span>';
+        if (b === 'ph')   return '<span class="step-badge badge-ph">🇵🇭 Philippines</span>';
+        if (b === 'new')  return '<span class="step-badge badge-new">New</span>';
+        return '';
+      }).join('');
+      const startBadge = s.isStart ? '<span class="step-badge badge-start">Start here</span>' : '';
+      return `
+        <a href="${s.url}" class="modal-step">
+          <div class="step-num" style="background:${p.color}">${s.num}</div>
+          <div class="step-body">
+            <div class="step-title">${s.title}</div>
+            <div class="step-why">${s.why}</div>
+            <div class="step-badges">${startBadge}${badges}</div>
+          </div>
+          <span class="modal-step-arrow">›</span>
+        </a>`;
+    }).join('');
+
+    modalOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.pathway-tile').forEach(tile => {
+    tile.addEventListener('click', () => openPathway(tile.dataset.pathway));
+  });
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('modal-dismiss').addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 })();
 </script>
 
