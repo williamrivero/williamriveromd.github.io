@@ -314,26 +314,24 @@ def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool)
     # (not just a JS-animation target) so no-JS/slow-JS visitors never see a
     # stale count either.
     new_root_text, rn1 = re.subn(
-        r'(<span class="stat-num" data-target=")\d+("\s+id="stat-guides">)\d+(</span>)',
+        r'(<div class="rcm-stat-num" id="stat-guides" data-target=")\d+(">)\d+(</div>)',
         rf'\g<1>{guide_count}\g<2>{guide_count}\g<3>', root_text)
     new_root_text, rn2 = re.subn(
-        r'(<span class="stat-num" data-target=")\d+("\s+id="stat-specialties">)\d+(</span>)',
+        r'(<div class="rcm-stat-num" id="stat-specialties" data-target=")\d+(">)\d+(</div>)',
         rf'\g<1>{spec_count}\g<2>{spec_count}\g<3>', new_root_text)
     new_root_text, rn3 = re.subn(
-        r'(<span class="stat-num" data-target=")\d+("\s+id="stat-calculators">)\d+(</span>)',
+        r'(<div class="rcm-stat-num" id="stat-calculators" data-target=")\d+(">)\d+(</div>)',
         rf'\g<1>{calc_count}\g<2>{calc_count}\g<3>', new_root_text)
     new_root_text, rn4 = re.subn(
-        r'(<span id="subhead-guides">)\d+(</span>)', rf'\g<1>{guide_count}\g<2>', new_root_text)
+        r'(<span id="stat-specialties-inline">)\d+(</span>)', rf'\g<1>{spec_count}\g<2>', new_root_text)
     new_root_text, rn5 = re.subn(
-        r'(<span id="subhead-calculators">)\d+(</span>)', rf'\g<1>{calc_count}\g<2>', new_root_text)
+        r'(<span id="stat-calculators-inline">)\d+(</span>)', rf'\g<1>{calc_count}\g<2>', new_root_text)
     new_root_text, rn6 = re.subn(
-        r'(<span id="final-cta-guides">)\d+(</span>)', rf'\g<1>{guide_count}\g<2>', new_root_text)
-    new_root_text, rn7 = re.subn(
-        r'\d+( evidence-based guides organized by specialty)', rf'{guide_count}\g<1>', new_root_text)
+        r'(<span id="stat-calculators-inline2">)\d+(</span>)', rf'\g<1>{calc_count}\g<2>', new_root_text)
     new_root_text, rn8 = re.subn(
         r'\d+( physician-written guides and )\d+( interactive tools)',
         rf'{guide_count}\g<1>{calc_count}\g<2>', new_root_text)
-    rn = rn1 + rn2 + rn3 + rn4 + rn5 + rn6 + rn7 + rn8
+    rn = rn1 + rn2 + rn3 + rn4 + rn5 + rn6 + rn8
     print(f"index.html: {rn} hero stat fallback(s) synced" if rn else "index.html: stats already in sync")
 
     if not dry_run:

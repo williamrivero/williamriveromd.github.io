@@ -51,963 +51,812 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Lora:wght@600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* ══════════════════════════════════════════════════════════════════════
-     DESIGN TOKENS — "editorial light": Aventura's confident-serif, alternating-
-     rhythm architecture adapted for a legible, calm, patient-facing medical site.
-     Gold is WCAG-AA-borderline on light backgrounds (verified: 2.99 on cream,
-     3.17 on paper) — so by rule, gold text is used ONLY for large (>=24px)
-     Fraunces headline accent words, always against --paper (white), never for
-     body copy, labels, or buttons. Everything else uses --navy or --ink.
-     ══════════════════════════════════════════════════════════════════════ */
-  :root {
-    --cream: #F4F6FA;
-    --cream-2: #EAEDF5;
-    --paper: #FFFFFF;
-    --navy: #1F3864;
-    --navy-deep: #152742;
-    --ink: #1B2740;
-    --gold: #A67A3B;
-    --gold-soft: #C9A66B;
-    --muted: #5B6473;
-    --line: #DCE3EE;
-    --shadow-sm: 0 1px 3px rgba(27,39,64,.07);
-    --shadow-md: 0 10px 28px rgba(27,39,64,.09);
-    --shadow-lg: 0 20px 48px rgba(27,39,64,.14);
-    --k: var(--navy);
-    --l: var(--gold);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    color: var(--ink);
-    background: var(--cream);
-    line-height: 1.65;
-  }
-  em { font-style: italic; }
+  body { background: #FBFAF7; font-family: 'Public Sans', system-ui, sans-serif; color: #1E2A3D; line-height: 1.5; }
   a { color: inherit; }
-  img { max-width: 100%; display: block; }
-  ::selection { background: var(--gold-soft); color: var(--navy-deep); }
-  :focus-visible { outline: 2.5px solid var(--gold); outline-offset: 2px; }
-
-  .skip-link {
-    position: absolute; left: -9999px; top: 0; z-index: 10001;
-    background: var(--navy); color: #fff; padding: 12px 20px; border-radius: 0 0 8px 0;
-    font-weight: 600; text-decoration: none;
-  }
+  img { max-width: 100%; }
+  .skip-link { position: absolute; left: -9999px; top: 0; background: #1F3864; color: #fff; padding: 12px 20px; z-index: 10000; border-radius: 0 0 8px 0; font-weight: 700; }
   .skip-link:focus { left: 0; }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  }
-
-  /* ── SCROLL REVEAL — short, calm, disabled under reduced-motion ── */
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1); }
-  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  :focus-visible { outline: 2.5px solid #F2B44E; outline-offset: 2px; }
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1 !important; transform: none !important; }
+    .rcm-live-ping, .rcm-scrolldot { display: none !important; }
   }
+
+  @keyframes rcm-pulse { 0% { transform: scale(1); opacity: .9; } 70% { transform: scale(3); opacity: 0; } 100% { opacity: 0; } }
+  @keyframes rcm-scroll { 0% { transform: translateY(0); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(9px); opacity: 0; } }
+  .reveal { opacity: 0; transform: translate3d(0,28px,0); will-change: opacity, transform; }
+  .reveal.is-visible { opacity: 1; transform: translate3d(0,0,0); transition: opacity .85s cubic-bezier(.2,.7,.3,1), transform .85s cubic-bezier(.2,.7,.3,1); }
+  .reveal.is-visible.delay-1 { transition-delay: 110ms; }
+  .reveal.is-visible.delay-2 { transition-delay: 220ms; }
 
   /* ══════════════════════════ NAV ══════════════════════════ */
-  .site-header {
-    position: sticky; top: 0; z-index: 500;
-    background: rgba(251,248,242,.86);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid transparent;
-    padding: 0 28px;
-    height: 68px;
-    display: flex; align-items: center; gap: 28px;
-    transition: border-color .25s, box-shadow .25s;
-  }
-  .site-header.scrolled { border-bottom-color: var(--line); box-shadow: 0 4px 20px rgba(27,39,64,.05); }
-  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .brand-icon { width: 24px; height: auto; flex-shrink: 0; }
-  .brand-word {
-    font-family: 'Lora', serif; font-weight: 600; font-size: 17px;
-    color: var(--navy); letter-spacing: -.01em;
-  }
-  .header-nav { display: flex; gap: 26px; align-items: center; margin-left: auto; }
-  .header-nav a {
-    font-size: 13.5px; font-weight: 600; color: var(--ink); text-decoration: none;
-    transition: color .2s;
-  }
-  .header-nav a:hover { color: var(--navy); }
-  .nav-pill {
-    background: var(--navy); color: #fff !important;
-    padding: 10px 20px; border-radius: 100px;
-    font-size: 13px; font-weight: 700;
-    text-decoration: none; white-space: nowrap;
-    transition: background .2s, transform .15s;
-  }
-  .nav-pill:hover { background: var(--navy-deep); transform: translateY(-1px); }
-  .hamburger {
-    display: none; margin-left: auto;
-    width: 44px; height: 44px; border: none; background: none; cursor: pointer;
-    flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-  }
-  .hamburger span { width: 22px; height: 2px; background: var(--navy); border-radius: 2px; transition: transform .2s, opacity .2s; }
-  @media (max-width: 860px) {
-    .header-nav, .nav-pill { display: none; }
-    .hamburger { display: flex; }
+  .rcm-header { position: relative; z-index: 6; width: 100%; max-width: 1280px; margin: 0 auto; padding: 22px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .rcm-brand { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+  .rcm-brand img { display: block; height: 38px; width: auto; }
+  .rcm-brand-text { display: flex; flex-direction: column; line-height: 1.05; }
+  .rcm-brand-word { font-family: 'Newsreader', serif; font-weight: 500; font-size: 19px; color: #F4F7FC; letter-spacing: -0.01em; }
+  .rcm-brand-tag { font-size: 10.5px; color: #8FD3D6; font-weight: 700; letter-spacing: 0.14em; }
+  .rcm-desknav { display: none; align-items: center; gap: 30px; }
+  .rcm-desknav a { text-decoration: none; color: #C6D2E8; font-weight: 500; font-size: 15px; }
+  .rcm-desknav a:hover { color: #fff; }
+  .rcm-langbar { display: flex; align-items: center; gap: 4px; padding: 4px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; }
+  .rcm-langbar button { border: none; cursor: pointer; font-family: inherit; padding: 6px 11px; border-radius: 999px; font-size: 12.5px; font-weight: 700; background: transparent; color: #B7C4DD; transition: background .2s, color .2s; }
+  .rcm-langbar button.active { background: #F4F8FC; color: #16294a; }
+  .rcm-hamburger { display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 40px; height: 40px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); border-radius: 10px; cursor: pointer; }
+  .rcm-hamburger span { width: 18px; height: 2px; margin: 0 auto; background: #EAF0FA; border-radius: 2px; }
+  @media (min-width: 760px) {
+    .rcm-desknav { display: flex; }
+    .rcm-hamburger { display: none; }
   }
 
-  .mobile-overlay {
-    position: fixed; inset: 0; z-index: 10000;
-    background: var(--cream);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
-    opacity: 0; pointer-events: none; transition: opacity .25s;
-  }
+  .mobile-overlay { position: fixed; inset: 0; z-index: 10000; background: #14284b; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; opacity: 0; pointer-events: none; transition: opacity .25s; }
   .mobile-overlay.open { opacity: 1; pointer-events: all; }
-  .mobile-overlay-close {
-    position: absolute; top: 18px; right: 20px;
-    width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%;
-    background: var(--paper); font-size: 20px; cursor: pointer; color: var(--navy);
-  }
+  .mobile-overlay-close { position: absolute; top: 18px; right: 20px; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; background: rgba(255,255,255,0.06); font-size: 20px; cursor: pointer; color: #fff; }
   .mobile-overlay-nav { display: flex; flex-direction: column; align-items: center; gap: 22px; }
-  .mobile-overlay-nav a:not(.mobile-pill) { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 500; color: var(--navy); text-decoration: none; }
-  .mobile-pill {
-    margin-top: 12px; background: var(--navy); color: #fff; padding: 14px 32px; border-radius: 100px;
-    font-size: 14px; font-weight: 700; text-decoration: none;
-  }
+  .mobile-overlay-nav a { font-family: 'Newsreader', serif; font-size: 26px; font-weight: 500; color: #F4F7FC; text-decoration: none; }
 
   /* ══════════════════════════ HERO ══════════════════════════ */
-  .hero {
-    display: grid; grid-template-columns: 1fr 1fr; align-items: stretch;
-    min-height: 620px; background: var(--cream);
-  }
-  .hero-copy {
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 64px clamp(28px, 6vw, 80px);
-    background: var(--paper);
-  }
-  .hero-eyebrow {
-    font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--navy); margin-bottom: 20px;
-  }
-  .hero-headline {
-    font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(34px, 4.2vw, 52px);
-    line-height: 1.14; color: var(--navy); margin-bottom: 22px;
-  }
-  .hero-headline em { font-style: italic; font-weight: 500; color: var(--gold); }
-  .hero-para { font-size: 16px; color: var(--muted); max-width: 460px; line-height: 1.75; margin-bottom: 32px; }
-  .hero-actions { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; margin-bottom: 28px; }
-  .btn-primary {
-    display: inline-block; background: var(--navy); color: #fff;
-    padding: 15px 30px; border-radius: 100px; text-decoration: none;
-    font-weight: 700; font-size: 14.5px; transition: background .2s, transform .15s, box-shadow .2s;
-    box-shadow: var(--shadow-sm);
-  }
-  .btn-primary:hover { background: var(--navy-deep); transform: translateY(-2px); box-shadow: var(--shadow-md); }
-  .btn-text { font-size: 14.5px; font-weight: 700; color: var(--navy); text-decoration: underline; text-underline-offset: 3px; }
-  .btn-text:hover { color: var(--gold); }
-  .hero-langs { font-size: 12.5px; color: var(--muted); letter-spacing: .03em; }
-  .hero-media {
-    position: relative; overflow: hidden; min-height: 320px;
-    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .hero-media::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 42%, rgba(201,166,107,.22), transparent 62%);
-  }
-  .hero-photo { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-  .hero-logo-panel { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 40px; }
-  .hero-logo-mark { width: 148px; height: auto; }
-  .hero-logo-word { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 500; color: rgba(255,255,255,.94); letter-spacing: .01em; text-align: center; }
-  .hero-chip {
-    position: absolute; left: 24px; bottom: 24px;
-    background: var(--paper); color: var(--navy);
-    padding: 10px 18px; border-radius: 100px;
-    font-size: 12.5px; font-weight: 700;
-    box-shadow: var(--shadow-md);
-    display: flex; align-items: center; gap: 8px;
-  }
-  @media (max-width: 860px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero-media { min-height: 280px; order: -1; }
-    .hero-copy { padding: 40px 24px; }
-  }
+  .rcm-hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; background: linear-gradient(103deg, rgba(11,20,42,0.94) 0%, rgba(13,25,52,0.78) 42%, rgba(13,25,52,0.42) 100%), url('images/hero-atmos.jpg') center/cover no-repeat; padding: 0 22px 30px; color: #EAF0FA; }
+  .rcm-hero-mid { position: relative; z-index: 4; flex: 1; width: 100%; max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 30px 0 18px; }
+  .rcm-eyebrow-row { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+  .rcm-eyebrow-rule { width: 26px; height: 1px; background: #8FD3D6; }
+  .rcm-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.18em; color: #8FD3D6; }
+  .rcm-h1 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(40px, 8vw, 92px); line-height: 1.02; letter-spacing: -0.025em; color: #F6F9FE; margin: 0 0 22px; text-wrap: balance; }
+  .rcm-h1 em { font-style: italic; font-weight: 300; color: #8FD3D6; }
+  .rcm-hero-sub { font-family: 'Newsreader', serif; font-style: normal; font-weight: 400; font-size: clamp(18px, 2.4vw, 25px); line-height: 1.35; color: #F2B44E; margin: 0 0 34px; max-width: 620px; }
+  .rcm-hero-ctas { display: flex; flex-wrap: wrap; gap: 13px; justify-content: center; }
+  .rcm-btn-light { display: inline-flex; align-items: center; gap: 10px; padding: 16px 26px; background: #F4F8FC; color: #16294a; text-decoration: none; font-weight: 700; font-size: 16px; border-radius: 13px; box-shadow: 0 14px 34px rgba(0,0,0,0.3); transition: transform .24s cubic-bezier(.2,.7,.3,1); }
+  .rcm-btn-light:hover { transform: translateY(-3px); }
+  .rcm-btn-ghost { display: inline-flex; align-items: center; gap: 10px; padding: 16px 26px; background: rgba(255,255,255,0.05); color: #EAF0FA; text-decoration: none; font-weight: 600; font-size: 16px; border: 1.5px solid rgba(255,255,255,0.28); border-radius: 13px; transition: transform .24s cubic-bezier(.2,.7,.3,1); }
+  .rcm-btn-ghost:hover { transform: translateY(-3px); }
+  .rcm-hero-foot { position: relative; z-index: 4; width: 100%; max-width: 1280px; margin: 0 auto; padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; gap: 20px; }
+  .rcm-trust { display: flex; flex-wrap: wrap; gap: 11px 22px; justify-content: center; }
+  .rcm-trust span.t { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #C6D2E8; }
+  .rcm-trust .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+  .rcm-scroll-cue { display: none; align-items: center; gap: 9px; position: absolute; right: 0; color: #8A93A6; font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; }
+  @media (min-width: 900px) { .rcm-scroll-cue { display: inline-flex; } }
+  .rcm-scroll-box { position: relative; width: 18px; height: 28px; border: 1.5px solid rgba(255,255,255,0.25); border-radius: 10px; display: inline-flex; justify-content: center; padding-top: 5px; }
+  .rcm-scrolldot { width: 3px; height: 6px; border-radius: 2px; background: #8FD3D6; animation: rcm-scroll 1.8s ease-in-out infinite; }
 
-  /* ══════════════════════════ STATS STRIP ══════════════════════════ */
-  .stats-strip {
-    background: var(--cream-2);
-    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-    padding: 32px 24px;
-  }
-  .stats-row {
-    max-width: 760px; margin: 0 auto;
-    display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
-  }
-  .stat { text-align: center; padding: 0 26px; }
-  .stat-num {
-    display: block; font-family: 'Fraunces', serif; font-weight: 600;
-    font-size: 32px; color: var(--navy); line-height: 1; margin-bottom: 6px;
-  }
-  .stat-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
-  .stat-divider { width: 1px; height: 36px; background: var(--line); }
-  @media (max-width: 640px) { .stat { padding: 8px 16px; } .stat-divider { display: none; } }
+  /* ══════════════════════════ AUDIENCE PICKER ══════════════════════════ */
+  .rcm-audience { position: relative; background: #14284b; color: #E7EDF8; padding: clamp(60px,9vw,100px) 22px; overflow: hidden; }
+  .rcm-audience-inner { max-width: 980px; margin: 0 auto; text-align: center; }
+  .rcm-audience h2 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(28px,4.4vw,50px); line-height: 1.08; letter-spacing: -0.02em; color: #F6F9FE; margin: 0 0 32px; text-wrap: balance; }
+  .rcm-audience h2 em { color: #F0A94A; font-style: italic; }
+  .pathway-tile { display: inline-flex; align-items: center; gap: 9px; padding: 8px 17px 8px 9px; border-radius: 999px; font-family: inherit; font-weight: 600; font-size: 14.5px; cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .15s; background: rgba(255,255,255,0.06); color: #CBD6EC; border: 1px solid rgba(255,255,255,0.15); }
+  .pathway-tile:hover { transform: translateY(-2px); }
+  .pathway-tile .p-icon { display: inline-flex; align-items: center; justify-content: center; width: 25px; height: 25px; border-radius: 50%; flex: none; font-size: 13px; }
+  .rcm-audience-row { display: flex; flex-wrap: wrap; gap: 11px; justify-content: center; max-width: 840px; margin: 0 auto; }
+  .rcm-audience-blurb { margin: 28px auto 0; max-width: 540px; font-size: 16.5px; line-height: 1.55; color: #B7C4DD; min-height: 26px; }
 
-  /* ══════════════════════════ DISCLAIMER BAND (dark #1) ══════════════════════════ */
-  .edu-disclaimer {
-    background: var(--navy-deep); color: rgba(255,255,255,.82);
-    padding: 16px 24px; text-align: center; font-size: 13px; line-height: 1.7;
+  /* ══════════════════════════ CONVERGING CARDS ══════════════════════════ */
+  .rcm-converge-wrap { position: relative; background: #FBFAF7; }
+  .rcm-converge-glow { position: absolute; top: 8%; left: 50%; transform: translateX(-50%); width: min(900px, 90%); height: 60vh; background: radial-gradient(ellipse at center, rgba(26,107,114,0.08), rgba(26,107,114,0) 70%); pointer-events: none; }
+  .rcm-converge-sticky { display: flex; flex-direction: column; padding: 90px 22px 90px; }
+  .rcm-converge-stage { position: relative; display: flex; flex-direction: column; gap: 26px; min-height: 420px; overflow: hidden; }
+  .rcm-converge-headline { text-align: center; z-index: 4; margin: 0 auto; max-width: 760px; }
+  .rcm-converge-headline .rcm-eyebrow, .rcm-converge-headline .rcm-eyebrow-rule { }
+  .rcm-converge-h1 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(36px, 7vw, 84px); line-height: 1; letter-spacing: -0.025em; color: #16294a; margin: 0 0 20px; text-wrap: balance; }
+  .rcm-converge-h1 em { font-style: italic; font-weight: 300; color: #1A6B72; }
+  .rcm-converge-p { font-size: clamp(16px, 2.2vw, 20px); line-height: 1.55; color: #566072; margin: 0 auto; max-width: 500px; }
+  .rcm-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; z-index: 8; margin-top: 20px; }
+  @media (min-width: 760px) { .rcm-cards-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  .rcm-card { background: #fff; border: 1px solid #ECE7DC; border-radius: 18px; padding: 16px 17px; box-shadow: 0 18px 38px -20px rgba(31,56,100,0.30); }
+  .rcm-card-top { display: flex; align-items: center; gap: 9px; margin-bottom: 13px; }
+  .rcm-card-icon { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 9px; flex: none; }
+  .rcm-card-role { font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+  .rcm-card-title { font-size: 16px; font-weight: 700; color: #1E2A3D; line-height: 1.25; margin-bottom: 12px; }
+  .rcm-card-foot { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; background: #F5F3ED; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: #5A6472; }
+  .rcm-card-foot .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .rcm-payoff { display: flex; align-items: center; gap: 9px; padding: 11px 20px; background: #16294a; border-radius: 999px; box-shadow: 0 16px 36px -14px rgba(22,41,74,0.5); margin: 20px auto 0; width: fit-content; }
+  .rcm-payoff .dot { width: 8px; height: 8px; border-radius: 50%; background: #7FE3A0; box-shadow: 0 0 10px rgba(127,227,160,0.9); }
+  .rcm-payoff span.txt { font-size: 14px; font-weight: 600; color: #EAF0FA; }
+  @media (min-width: 760px) {
+    .rcm-converge-wrap { height: 220vh; }
+    .rcm-converge-sticky { position: sticky; top: 0; height: 100vh; justify-content: center; }
+    .rcm-converge-stage { flex: 1; }
+    .rcm-converge-headline { position: absolute; top: 40%; left: 50%; transform: translate(-50%,-50%); width: min(820px, 88%); }
+    .rcm-cards-grid { position: absolute; inset: 0; display: block; margin-top: 0; }
+    .rcm-card { position: absolute; top: 50%; left: 50%; width: 234px; transform: translate(-50%,-50%); }
+    .rcm-payoff { position: absolute; top: 68%; left: 50%; transform: translate(-50%,0); opacity: 0; margin: 0; }
   }
-  .edu-disclaimer strong { color: #fff; }
+  @media (min-width: 1080px) { .rcm-card { width: 250px; } }
 
-  /* ══════════════════════════ SECTION SHELL ══════════════════════════ */
-  .shell { max-width: 1080px; margin: 0 auto; padding: 80px 24px; }
-  .shell-alt { background: var(--cream-2); }
-  .shell-paper { background: var(--paper); }
-  .section-eyebrow {
-    font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--navy); margin-bottom: 14px;
-  }
-  .section-title {
-    font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(26px, 3.2vw, 38px);
-    color: var(--navy); line-height: 1.2; margin-bottom: 16px;
-  }
-  .section-title em { color: var(--gold); font-style: italic; font-weight: 500; }
-  .section-sub { font-size: 15.5px; color: var(--muted); max-width: 620px; margin-bottom: 44px; line-height: 1.75; }
+  /* ══════════════════════════ STACKING WORDS ══════════════════════════ */
+  .rcm-stack-wrap { position: relative; background: #FBFAF7; }
+  .rcm-stack-sticky { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 64px 22px; text-align: center; }
+  @media (min-width: 760px) { .rcm-stack-wrap { height: 260vh; } .rcm-stack-sticky { position: sticky; top: 0; min-height: 100vh; } }
+  .rcm-stack-head { margin-bottom: clamp(24px,4vw,44px); max-width: 640px; }
+  .rcm-stack-tag { font-family: 'Newsreader', serif; font-style: italic; font-weight: 300; font-size: clamp(18px,2.4vw,25px); line-height: 1.3; color: #566072; margin: 14px 0 0; }
+  .rcm-stack-col { display: flex; flex-direction: column; align-items: center; gap: clamp(4px,1vw,12px); }
+  .rcm-stackword { display: flex; align-items: center; gap: clamp(10px,1.4vw,18px); }
+  .rcm-stackword-icon { display: inline-flex; align-items: center; justify-content: center; width: clamp(38px,5.6vw,66px); height: clamp(38px,5.6vw,66px); border-radius: clamp(11px,1.5vw,18px); }
+  .rcm-stackword-label { font-family: 'Public Sans', sans-serif; font-weight: 800; font-size: clamp(34px,7.2vw,84px); line-height: 1; letter-spacing: -0.03em; }
 
-  /* ══════════════════════════ WHY THIS LIBRARY ══════════════════════════ */
-  .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-  .why-card {
-    background: var(--paper); border: 1px solid var(--line); border-radius: 4px;
-    padding: 28px 24px; box-shadow: var(--shadow-sm);
-    transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s;
-  }
-  .why-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-  .why-icon {
-    width: 42px; height: 42px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    background: color-mix(in srgb, var(--gold) 16%, transparent);
-    color: var(--navy); margin-bottom: 18px;
-  }
-  .why-icon svg { width: 21px; height: 21px; }
-  .why-card h3 { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
-  .why-card p { font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+  /* ══════════════════════════ LIVE ESTIMATE ══════════════════════════ */
+  .rcm-live { position: relative; background: linear-gradient(160deg, #1F3864, #14284b); color: #E7EDF8; padding: clamp(74px,12vw,140px) 22px; overflow: hidden; text-align: center; }
+  .rcm-live-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: min(760px,94%); height: 440px; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(26,107,114,0.38), rgba(26,107,114,0) 70%); pointer-events: none; }
+  .rcm-live-inner { position: relative; max-width: 660px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+  .rcm-live-tag { display: inline-flex; align-items: center; gap: 9px; margin-bottom: 22px; }
+  .rcm-live-ping { position: absolute; inset: 0; border-radius: 50%; background: #7FE3A0; animation: rcm-pulse 2.6s ease-out infinite; }
+  .rcm-live-dot-wrap { position: relative; display: inline-flex; width: 9px; height: 9px; }
+  .rcm-live-dot { position: relative; width: 9px; height: 9px; border-radius: 50%; background: #7FE3A0; box-shadow: 0 0 10px rgba(127,227,160,0.8); }
+  .rcm-live-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.16em; color: #9FB4D6; }
+  .rcm-live-num { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(48px, 12vw, 100px); line-height: 1; color: #FFFFFF; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; text-shadow: 0 0 54px rgba(143,211,214,0.4); }
+  .rcm-live-p { margin: 20px 0 0; font-size: clamp(16px,2vw,19px); line-height: 1.55; color: #C4D0E6; max-width: 480px; }
+  .rcm-why-btn { margin-top: 20px; display: inline-flex; align-items: center; gap: 7px; padding: 0; background: none; border: none; cursor: pointer; font-family: inherit; font-size: 13.5px; font-weight: 600; color: #8FD3D6; border-bottom: 1px solid rgba(143,211,214,0.4); padding-bottom: 2px; }
+  .rcm-why-chevron { transition: transform .25s ease; }
+  .rcm-why-btn[aria-expanded="true"] .rcm-why-chevron { transform: rotate(180deg); }
+  .rcm-why-panel { display: none; margin: 18px auto 0; max-width: 440px; font-size: 13.5px; line-height: 1.65; color: #A7B7D4; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .rcm-why-panel.show { display: block; }
 
-  /* ══════════════════════════ CATEGORIES NAVIGATOR ══════════════════════════ */
-  .cat-nav { display: grid; grid-template-columns: 220px 1fr; gap: 0; background: var(--paper); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; box-shadow: var(--shadow-sm); }
-  .cat-tabs { display: flex; flex-direction: column; background: var(--cream-2); border-right: 1px solid var(--line); }
-  .cat-tab {
-    text-align: left; background: none; border: none; cursor: pointer;
-    padding: 16px 20px; font-size: 13.5px; font-weight: 600; color: var(--muted);
-    border-left: 3px solid transparent; border-bottom: 1px solid var(--line);
-    transition: color .18s, background .18s, border-color .18s;
-  }
-  .cat-tab:last-child { border-bottom: none; }
-  .cat-tab:hover { color: var(--navy); background: var(--paper); }
-  .cat-tab.active { color: var(--navy); background: var(--paper); border-left-color: var(--gold); font-weight: 700; }
-  .cat-panels { position: relative; min-height: 320px; }
-  .cat-panel {
-    display: none; padding: 40px clamp(24px, 4vw, 48px);
-    animation: catFade .4s ease;
-  }
-  .cat-panel.active { display: block; }
-  @keyframes catFade { from { opacity: 0; } to { opacity: 1; } }
-  @media (prefers-reduced-motion: reduce) { .cat-panel { animation: none; } }
-  .cat-panel h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(24px, 3vw, 32px); color: var(--navy); margin-bottom: 12px; }
-  .cat-panel h3 em { color: var(--gold); font-style: italic; }
-  .cat-panel p { font-size: 14.5px; color: var(--muted); max-width: 560px; line-height: 1.75; margin-bottom: 24px; }
-  .cat-guide-list { list-style: none; display: grid; gap: 4px; }
-  .cat-guide-list a {
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    padding: 13px 0; border-bottom: 1px solid var(--line);
-    font-size: 14px; font-weight: 600; color: var(--navy); text-decoration: none;
-  }
-  .cat-guide-list a:last-child { border-bottom: none; }
-  .cat-guide-list a:hover { color: var(--gold); }
-  .cat-guide-list a span.arrow { color: var(--muted); flex-shrink: 0; }
-  @media (max-width: 720px) {
-    .cat-nav { grid-template-columns: 1fr; }
-    .cat-tabs { flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--line); }
-    .cat-tab { border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
-    .cat-tab.active { border-left-color: transparent; border-bottom-color: var(--gold); }
-  }
+  /* ══════════════════════════ TWO DOORS ══════════════════════════ */
+  .rcm-doors-section { position: relative; background: #FBFAF7; color: #1E2A3D; padding: clamp(70px,10vw,120px) 22px; overflow: hidden; }
+  .rcm-doors-inner { position: relative; max-width: 1180px; margin: 0 auto; }
+  .rcm-doors-head { max-width: 720px; margin-bottom: 52px; }
+  .rcm-doors-h2 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(32px,5vw,58px); line-height: 1.04; letter-spacing: -0.02em; color: #16294a; margin: 0 0 16px; text-wrap: balance; }
+  .rcm-doors-p { font-size: clamp(16px,2vw,19px); line-height: 1.6; color: #566072; margin: 0; max-width: 600px; }
+  .rcm-doors-grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
+  @media (min-width: 760px) { .rcm-doors-grid { grid-template-columns: 1fr 1fr; } }
+  .rcm-door { position: relative; border-radius: 24px; padding: clamp(28px,3.4vw,44px); overflow: hidden; }
+  .rcm-door-patient { background: #FFFFFF; border: 1px solid #EFE8DB; box-shadow: 0 20px 48px -28px rgba(31,56,100,0.22); }
+  .rcm-door-patient::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #1A6B72, #F0A94A); }
+  .rcm-door-clinician { background: linear-gradient(155deg, #1F3864, #14284b); color: #E7EDF8; box-shadow: 0 26px 54px -28px rgba(20,40,75,0.6); }
+  .rcm-door-glow { position: absolute; top: -80px; right: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(26,107,114,0.5), rgba(26,107,114,0) 70%); }
+  .rcm-door-icon { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 15px; margin-bottom: 22px; }
+  .rcm-door-tag { position: relative; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; margin-bottom: 10px; }
+  .rcm-door-h3 { position: relative; font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(24px,3.2vw,36px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 14px; }
+  .rcm-door-p { position: relative; font-size: 16px; line-height: 1.6; margin: 0 0 24px; max-width: 460px; }
+  .rcm-door-list { position: relative; list-style: none; margin: 0 0 30px; padding: 0; display: grid; gap: 12px; }
+  .rcm-door-list li { display: flex; align-items: flex-start; gap: 11px; font-size: 15.5px; line-height: 1.45; }
+  .rcm-door-list svg { flex: none; margin-top: 1px; }
+  .rcm-door-cta { position: relative; display: inline-flex; align-items: center; gap: 9px; padding: 14px 24px; text-decoration: none; font-weight: 600; font-size: 15.5px; border-radius: 12px; transition: transform .24s cubic-bezier(.2,.7,.3,1); }
+  .rcm-door-cta:hover { transform: translateY(-3px); }
+  .rcm-door-cta-patient { background: #1A6B72; color: #fff; font-weight: 600; box-shadow: 0 10px 24px rgba(26,107,114,0.28); }
+  .rcm-door-cta-clinician { background: #F4F8FC; color: #16294a; font-weight: 700; box-shadow: 0 10px 24px rgba(0,0,0,0.25); }
 
-  /* ══════════════════════════ START HERE PATHWAYS (dark band #2) ══════════════════════════ */
-  .pathways-section {
-    background: var(--navy-deep);
-    padding: 72px 24px;
-    position: relative; overflow: hidden;
-  }
-  .particles-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-  .pathways-inner { max-width: 1040px; margin: 0 auto; position: relative; z-index: 1; }
-  .pathways-header { margin-bottom: 32px; }
-  .pathways-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 12px; }
-  .pathways-label {
-    font-family: 'Fraunces', serif; font-size: clamp(26px, 3.2vw, 36px); font-weight: 500;
-    color: #fff; margin-bottom: 10px;
-  }
-  .pathways-sub { font-size: 14.5px; color: rgba(255,255,255,.6); }
-  .pathways-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
-  }
-  .pathway-tile {
-    position: relative;
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 4px;
-    padding: 18px 18px 16px;
-    cursor: pointer; text-align: left; font-family: 'Inter', sans-serif;
-    transition: border-color .18s, background .18s, transform .15s, box-shadow .15s;
-    overflow: hidden;
-  }
-  .pathway-tile::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    opacity: 0; transition: opacity .2s; background: var(--pw-color, var(--gold));
-  }
-  .pathway-tile:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.08); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,.3); }
-  .pathway-tile:hover::before { opacity: 1; }
-  .pathway-tile[data-pathway="patient"] { --pw-color: #4fb8be; }
-  .pathway-tile[data-pathway="caregiver"] { --pw-color: #b09ee0; }
-  .pathway-tile[data-pathway="internist-gp"] { --pw-color: #7c93c9; }
-  .pathway-tile[data-pathway="nephrologist"] { --pw-color: #d99a4e; }
-  .pathway-tile[data-pathway="dialysis-staff"] { --pw-color: #5ab3e0; }
-  .pathway-tile[data-pathway="dietitian"] { --pw-color: #7ec98f; }
-  .pathway-icon { font-size: 22px; line-height: 1; margin-bottom: 10px; display: block; filter: grayscale(.4) opacity(.75); transition: filter .2s; }
-  .pathway-tile:hover .pathway-icon { filter: none; }
-  .pathway-condition { font-size: .64rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 3px; }
-  .pathway-title { font-size: .84rem; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 5px; }
-  .pathway-count { font-size: .68rem; color: rgba(255,255,255,.5); }
-  .pathway-arrow { position: absolute; bottom: 12px; right: 13px; font-size: 14px; color: rgba(255,255,255,.5); opacity: 0; transition: opacity .15s, transform .15s; }
-  .pathway-tile:hover .pathway-arrow { opacity: 1; transform: translateX(2px); }
+  /* ══════════════════════════ LIBRARY ══════════════════════════ */
+  .rcm-library { position: relative; background: #F1F6F5; color: #1E2A3D; padding: clamp(70px,10vw,120px) 22px; overflow: hidden; }
+  .rcm-library-inner { position: relative; max-width: 1180px; margin: 0 auto; }
+  .rcm-library-head { max-width: 720px; margin-bottom: 44px; }
+  .rcm-library-h2 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(32px,5vw,58px); line-height: 1.04; letter-spacing: -0.02em; color: #16294a; margin: 0 0 16px; text-wrap: balance; }
+  .rcm-library-p { font-size: clamp(16px,2vw,19px); line-height: 1.6; color: #566072; margin: 0; max-width: 600px; }
+  .rcm-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: #DDE8E6; border: 1px solid #DDE8E6; border-radius: 20px; overflow: hidden; margin-bottom: 52px; }
+  @media (min-width: 760px) { .rcm-stats-grid { grid-template-columns: repeat(4, 1fr); } }
+  .rcm-stat-cell { background: #FBFCFC; padding: clamp(22px,3vw,32px); }
+  .rcm-stat-num { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(38px,5vw,56px); line-height: 1; color: #1A6B72; letter-spacing: -0.02em; }
+  .rcm-stat-label { font-size: 14px; font-weight: 600; color: #566072; margin-top: 8px; }
+  .rcm-spec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+  .rcm-spec-head h3 { font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(20px,2.6vw,26px); color: #16294a; margin: 0; }
+  .rcm-spec-head a { font-size: 14.5px; font-weight: 600; color: #1A6B72; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+  .rcm-spec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+  .rcm-spec-card { display: block; background: #FFFFFF; border: 1px solid #E7EEED; border-radius: 18px; padding: 22px; text-decoration: none; transition: transform .24s cubic-bezier(.2,.7,.3,1), box-shadow .24s; }
+  .rcm-spec-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -20px rgba(31,56,100,0.30); }
+  .rcm-spec-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; margin-bottom: 16px; }
+  .rcm-spec-name { font-size: 17px; font-weight: 700; color: #1E2A3D; margin-bottom: 4px; }
+  .rcm-spec-sub { font-size: 13.5px; color: #66707C; font-weight: 500; }
 
-  /* ── PATHWAY MODAL ── */
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(3px);
-    z-index: 10500; display: flex; align-items: flex-end; justify-content: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.25s;
-  }
-  @media (min-width: 600px) { .modal-overlay { align-items: center; } }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal-drawer {
-    background: var(--paper); width: 100%; max-width: 580px; max-height: 88vh;
-    border-radius: 16px 16px 0 0; overflow: hidden; display: flex; flex-direction: column;
-    transform: translateY(30px); transition: transform 0.28s cubic-bezier(0.34, 1.2, 0.64, 1);
-    box-shadow: 0 -8px 40px rgba(15,23,42,0.2);
-  }
-  @media (min-width: 600px) {
-    .modal-drawer { border-radius: 8px; transform: translateY(16px) scale(0.97); max-height: 82vh; }
-    .modal-overlay.open .modal-drawer { transform: translateY(0) scale(1); }
-  }
-  .modal-overlay.open .modal-drawer { transform: translateY(0); }
-  .modal-header { padding: 18px 22px 16px; border-bottom: 1px solid var(--line); flex-shrink: 0; position: relative; }
-  .modal-drag-handle { width: 36px; height: 4px; background: var(--line); border-radius: 2px; margin: 0 auto 12px; display: block; }
-  @media (min-width: 600px) { .modal-drag-handle { display: none; } }
-  .modal-condition-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 9px; border-radius: 4px; margin-bottom: 8px; color: white; }
-  .modal-title { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 500; color: var(--navy); line-height: 1.3; margin-bottom: 5px; }
-  .modal-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
-  .modal-close { position: absolute; top: 16px; right: 18px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 50%; width: 32px; height: 32px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--muted); }
-  .modal-close:hover { background: var(--line); color: var(--ink); }
-  .modal-body { overflow-y: auto; flex: 1; padding: 0 0 8px; }
-  .modal-step { display: flex; align-items: flex-start; gap: 12px; padding: 14px 22px; text-decoration: none; border-bottom: 1px solid var(--line); transition: background 0.12s; position: relative; }
-  .modal-step:last-child { border-bottom: none; }
-  .modal-step:hover { background: var(--cream-2); }
-  .modal-step:hover .modal-step-arrow { opacity: 1; transform: translateX(2px); }
-  .step-num { flex-shrink: 0; width: 27px; height: 27px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: white; margin-top: 1px; }
-  .step-body { flex: 1; min-width: 0; }
-  .step-title { font-size: 0.86rem; font-weight: 700; color: var(--navy); line-height: 1.35; margin-bottom: 3px; }
-  .step-why { font-size: 0.74rem; color: var(--muted); line-height: 1.45; }
-  .step-badges { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
-  .step-badge { font-size: 0.6rem; padding: 2px 6px; border-radius: 3px; font-weight: 700; letter-spacing: 0.03em; }
-  .badge-calc { background: #e8f4f5; color: var(--navy); }
-  .badge-tool { background: #f3e8ff; color: #7c3aed; }
-  .badge-ph { background: #fff5e6; color: #c2410c; }
-  .badge-new { background: #fef3ec; color: #c2410c; border: 1px solid #fcd9b8; }
-  .badge-start { background: var(--navy); color: white; }
-  .modal-step-arrow { flex-shrink: 0; font-size: 14px; color: var(--muted); opacity: 0; align-self: center; transition: opacity 0.15s, transform 0.15s; }
-  .modal-footer { padding: 14px 22px; border-top: 1px solid var(--line); flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; background: var(--cream-2); gap: 12px; }
-  .modal-footer-note { font-size: 0.72rem; color: var(--muted); line-height: 1.45; max-width: 320px; }
-  .modal-footer-note strong { color: var(--navy); }
-  .modal-dismiss { background: var(--navy); color: white; border: none; padding: 8px 18px; border-radius: 100px; font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
-  .modal-dismiss:hover { background: var(--navy-deep); }
+  /* ══════════════════════════ TOOLS BAND ══════════════════════════ */
+  .rcm-tools { position: relative; background: linear-gradient(160deg, #16294a, #12213f); color: #E7EDF8; padding: clamp(70px,10vw,120px) 22px; overflow: hidden; }
+  .rcm-tools-glow { position: absolute; bottom: -140px; left: -100px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, rgba(26,107,114,0.22), rgba(26,107,114,0) 70%); pointer-events: none; }
+  .rcm-tools-inner { position: relative; max-width: 1180px; margin: 0 auto; }
+  .rcm-tools-head { max-width: 720px; margin-bottom: 46px; }
+  .rcm-tools-h2 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(32px,5vw,58px); line-height: 1.04; letter-spacing: -0.02em; color: #FFFFFF; margin: 0 0 16px; text-wrap: balance; }
+  .rcm-tools-p { font-size: clamp(16px,2vw,19px); line-height: 1.6; color: #AEBDD8; margin: 0; max-width: 620px; }
+  .rcm-tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; margin-bottom: 40px; }
+  .rcm-tool-card { display: block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 26px; text-decoration: none; transition: transform .24s cubic-bezier(.2,.7,.3,1), background .24s; }
+  .rcm-tool-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.09); }
+  .rcm-tool-icon { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 12px; background: rgba(143,211,214,0.14); margin-bottom: 18px; }
+  .rcm-tool-name { font-size: 18px; font-weight: 700; color: #F4F7FC; margin-bottom: 7px; }
+  .rcm-tool-desc { font-size: 14.5px; line-height: 1.5; color: #AEBDD8; margin: 0 0 16px; }
+  .rcm-tool-open { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; color: #8FD3D6; text-decoration: none; }
+  .rcm-tools-all { display: inline-flex; align-items: center; gap: 9px; padding: 14px 26px; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.25); color: #EAF0FA; text-decoration: none; font-weight: 600; font-size: 15.5px; border-radius: 12px; }
 
-  /* ══════════════════════════ FEATURED GUIDES ══════════════════════════ */
-  .featured-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; margin-bottom: 40px; }
-  .featured-card {
-    position: relative; overflow: hidden;
-    background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--card-accent, var(--line));
-    border-radius: 4px; padding: 30px 24px 24px;
-    text-decoration: none; display: flex; flex-direction: column; box-shadow: var(--shadow-sm);
-    transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, border-color .25s;
-  }
-  .featured-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-  .featured-num {
-    position: absolute; top: -6px; right: 14px; z-index: 0;
-    font-family: 'Fraunces', serif; font-size: 64px; font-weight: 600; line-height: 1;
-    color: var(--cream-2); user-select: none; pointer-events: none;
-  }
-  .featured-body { position: relative; z-index: 1; }
-  .featured-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--card-accent, var(--navy)); display: block; margin-bottom: 12px; }
-  .featured-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500; color: var(--navy); margin-bottom: 9px; line-height: 1.3; display: block; }
-  .featured-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; display: block; }
-  .featured-cta { font-size: 12.5px; font-weight: 700; color: var(--navy); display: block; margin-top: auto; }
-  .featured-card:hover .featured-cta { color: var(--gold); }
-  .view-all-wrap { text-align: center; }
+  /* ══════════════════════════ EVIDENCE ══════════════════════════ */
+  .rcm-evidence { position: relative; background: #FBFAF7; color: #1E2A3D; padding: clamp(70px,10vw,120px) 22px; overflow: hidden; }
+  .rcm-evidence-inner { position: relative; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 48px; }
+  @media (min-width: 900px) { .rcm-evidence-inner { grid-template-columns: 1.05fr 0.95fr; align-items: start; } }
+  .rcm-evidence-h2 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(28px,4.4vw,48px); line-height: 1.06; letter-spacing: -0.02em; color: #16294a; margin: 0 0 20px; text-wrap: balance; }
+  .rcm-evidence-p { font-size: 17px; line-height: 1.65; color: #4C5768; margin: 0 0 26px; max-width: 520px; }
+  .rcm-evidence-note { display: flex; align-items: center; gap: 14px; padding: 20px 22px; background: #fff; border: 1px solid #EEE9DE; border-left: 4px solid #1F3864; border-radius: 14px; box-shadow: 0 12px 30px rgba(31,56,100,0.07); max-width: 520px; }
+  .rcm-evidence-note p { margin: 0; font-size: 16px; line-height: 1.5; color: #2B3546; }
+  .rcm-pillars { display: grid; gap: 14px; }
+  .rcm-pillar { display: flex; gap: 16px; align-items: flex-start; padding: 20px 22px; background: #FFFFFF; border: 1px solid #EEE9DE; border-radius: 16px; }
+  .rcm-pillar-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; flex: none; }
+  .rcm-pillar-title { font-size: 16.5px; font-weight: 700; color: #1E2A3D; margin-bottom: 4px; }
+  .rcm-pillar-body { margin: 0; font-size: 14.5px; line-height: 1.5; color: #6A7484; }
 
-  /* ══════════════════════════ EVIDENCE-BASED BAND ══════════════════════════ */
-  .evidence-list { display: grid; gap: 0; border-top: 1px solid var(--line); }
-  .evidence-item { border-bottom: 1px solid var(--line); padding: 22px 0; }
-  .evidence-item summary {
-    cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: 14px;
-    font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500; color: var(--navy);
-  }
-  .evidence-item summary::-webkit-details-marker { display: none; }
-  .evidence-item summary::after { content: '+'; margin-left: auto; font-size: 20px; color: var(--muted); font-family: 'Inter', sans-serif; transition: transform .2s; }
-  .evidence-item[open] summary::after { content: '−'; }
-  .ev-full { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: var(--muted); }
-  .evidence-item p { font-size: 14.5px; color: var(--muted); line-height: 1.75; margin-top: 12px; max-width: 640px; }
+  /* ══════════════════════════ GLOBAL REACH ══════════════════════════ */
+  .rcm-reach { position: relative; background: #F1F6F5; color: #1E2A3D; padding: clamp(70px,10vw,120px) 22px; overflow: hidden; }
+  .rcm-reach-inner { position: relative; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 46px; }
+  @media (min-width: 900px) { .rcm-reach-inner { grid-template-columns: 1.05fr 0.95fr; gap: 52px; align-items: center; } }
+  .rcm-reach-h2 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(30px,5vw,54px); line-height: 1.05; letter-spacing: -0.02em; color: #16294a; margin: 0 0 18px; text-wrap: balance; }
+  .rcm-reach-p { font-size: clamp(16px,2vw,19px); line-height: 1.6; color: #566072; margin: 0; max-width: 520px; }
+  .rcm-reach-nums { display: flex; gap: 40px; margin-top: 32px; }
+  .rcm-reach-num { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(32px,4.5vw,48px); line-height: 1; color: #1A6B72; letter-spacing: -0.02em; }
+  .rcm-reach-num-label { font-size: 13.5px; font-weight: 600; color: #6A7484; margin-top: 7px; }
+  .rcm-bars-card { background: #fff; border: 1px solid #E1E9E8; border-radius: 20px; padding: clamp(22px,3vw,30px); box-shadow: 0 18px 44px -26px rgba(31,56,100,0.18); }
+  .rcm-bars-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+  .rcm-bars-title { font-size: 12.5px; font-weight: 700; letter-spacing: 0.08em; color: #1A6B72; }
+  .rcm-bars-sub { font-size: 12.5px; font-weight: 600; color: #667080; }
+  .rcm-bars-rows { display: grid; gap: 14px; }
+  .rcm-bar-row { display: grid; grid-template-columns: 116px 1fr 54px; align-items: center; gap: 13px; }
+  .rcm-bar-name { font-size: 13.5px; font-weight: 600; color: #35404F; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rcm-bar-track { height: 9px; background: #E4EAE9; border-radius: 999px; overflow: hidden; }
+  .rcm-bar-fill { display: block; height: 100%; border-radius: 999px; background: #1A6B72; width: 0%; transition: width 1.05s cubic-bezier(.2,.7,.3,1); }
+  .rcm-bar-value { font-size: 13.5px; font-weight: 700; color: #16294a; text-align: right; font-variant-numeric: tabular-nums; }
+  .rcm-flagpile { position: relative; height: clamp(110px,15vw,170px); margin: clamp(34px,5vw,60px) -22px 0; overflow: hidden; }
+  .rcm-flag { position: absolute; border-radius: 50%; box-shadow: 0 6px 16px rgba(31,56,100,0.16); background: #fff; opacity: 0; transition: transform .72s cubic-bezier(.34,1.16,.64,1), opacity .3s ease; }
 
-  /* ══════════════════════════ RECOGNITION ══════════════════════════ */
-  .recognition-wrap { text-align: center; }
-  .recognition-badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 8px 0 24px; }
-  .recognition-badge {
-    font-size: 13px; font-weight: 600; color: var(--navy);
-    background: var(--paper); border: 1px solid var(--line);
-    padding: 8px 16px; border-radius: 100px;
-  }
-  .recognition-cta { font-size: 13.5px; font-weight: 700; color: var(--navy); text-decoration: none; }
-  .recognition-cta:hover { color: var(--gold); text-decoration: underline; }
+  /* ══════════════════════════ CLOSING CTA ══════════════════════════ */
+  /* Two identical stacked layers (CSS grid same-cell trick) + an animated
+     chevron clip-path on the top layer — a color-inversion "wipe" whose
+     boundary is an upward arrow rather than a flat line. Layer B is a
+     decorative duplicate (aria-hidden + pointer-events:none); Layer A always
+     carries the real, focusable/clickable content. */
+  .rcm-closing { position: relative; }
+  .rcm-closing-stack { display: grid; }
+  .rcm-closing-stack > * { grid-area: 1 / 1; }
+  .rcm-closing-layer { display: flex; flex-direction: column; align-items: center; text-align: center; padding: clamp(90px,12vw,150px) 22px; }
+  .rcm-closing-layer--light { background: #FBFAF7; color: #16294a; }
+  .rcm-closing-layer--dark { background: #1F3864; color: #fff; pointer-events: none; will-change: clip-path; }
+  .rcm-closing-h2 { font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(42px,10vw,110px); line-height: 0.94; letter-spacing: -0.03em; margin: 0; text-wrap: balance; }
+  .rcm-closing-layer--light .rcm-closing-h2 { color: #16294a; }
+  .rcm-closing-layer--dark .rcm-closing-h2 { color: #fff; }
+  .rcm-closing-h2 em { font-style: italic; font-weight: 400; }
+  .rcm-closing-layer--light .rcm-closing-h2 em { color: #1A6B72; }
+  .rcm-closing-layer--dark .rcm-closing-h2 em { color: #8FD3D6; }
+  .rcm-closing-p { font-size: clamp(16px,2vw,20px); line-height: 1.5; margin: 26px 0 0; max-width: 460px; }
+  .rcm-closing-layer--light .rcm-closing-p { color: #566072; }
+  .rcm-closing-layer--dark .rcm-closing-p { color: #C4D0E6; }
+  .rcm-closing-ctas { display: flex; flex-wrap: wrap; gap: 13px; justify-content: center; margin-top: 32px; }
+  .rcm-closing-layer--dark .rcm-btn-navy { background: #fff; color: #1F3864; box-shadow: none; }
+  .rcm-closing-layer--dark .rcm-btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+  .rcm-btn-navy { display: inline-flex; align-items: center; gap: 10px; padding: 16px 26px; background: #1F3864; color: #fff; text-decoration: none; font-weight: 700; font-size: 16px; border-radius: 13px; box-shadow: 0 14px 32px rgba(31,56,100,0.28); transition: transform .24s cubic-bezier(.2,.7,.3,1); }
+  .rcm-btn-navy:hover { transform: translateY(-3px); }
+  .rcm-btn-outline { display: inline-flex; align-items: center; gap: 10px; padding: 16px 26px; background: #fff; color: #1A6B72; text-decoration: none; font-weight: 600; font-size: 16px; border: 1.5px solid #CFE2E3; border-radius: 13px; transition: transform .24s cubic-bezier(.2,.7,.3,1); }
+  .rcm-btn-outline:hover { transform: translateY(-3px); }
 
-  /* ══════════════════════════ DOCTOR BIO CTA ══════════════════════════ */
-  .bio-card {
-    display: flex; gap: 36px; align-items: flex-start;
-    background: var(--paper); border: 1px solid var(--line); border-radius: 4px;
-    padding: 36px; box-shadow: var(--shadow-sm);
-  }
-  .bio-photo { width: 128px; height: 128px; border-radius: 4px; object-fit: cover; object-position: center top; flex-shrink: 0; }
-  .bio-body { flex: 1; min-width: 240px; }
-  .bio-name { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--navy); margin-bottom: 4px; }
-  .bio-credentials { font-size: 12.5px; font-weight: 600; color: var(--muted); letter-spacing: .03em; margin-bottom: 16px; }
-  .bio-quote { font-size: 15.5px; color: var(--ink); line-height: 1.75; margin-bottom: 20px; max-width: 620px; }
-  .bio-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-  .bio-actions a { font-size: 12.5px; font-weight: 700; padding: 11px 20px; border-radius: 100px; text-decoration: none; white-space: nowrap; transition: transform .2s, box-shadow .2s, background .2s; }
-  .bio-actions a.primary { background: var(--navy); color: #fff; }
-  .bio-actions a.primary:hover { background: var(--navy-deep); transform: translateY(-2px); box-shadow: var(--shadow-md); }
-  .bio-actions a.secondary { border: 1.5px solid var(--line); color: var(--navy); }
-  .bio-actions a.secondary:hover { border-color: var(--navy); }
-  @media (max-width: 640px) { .bio-card { flex-direction: column; align-items: center; text-align: center; } .bio-actions { justify-content: center; } }
-
-  /* ══════════════════════════ FOOTER (dark #3) ══════════════════════════ */
-  .site-footer { background: var(--navy-deep); color: rgba(255,255,255,.65); padding: 64px 24px 28px; }
-  .footer-inner {
-    max-width: 1080px; margin: 0 auto;
-    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px;
-    padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.1);
-  }
-  .footer-brand { display: flex; flex-direction: column; gap: 12px; }
-  .footer-brand-row { display: flex; align-items: center; gap: 10px; }
-  .footer-word { font-family: 'Lora', serif; font-weight: 600; font-size: 16px; color: #fff; }
-  .footer-brand p { font-size: 13px; color: rgba(255,255,255,.55); line-height: 1.7; max-width: 260px; }
-  .footer-col-title { font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 16px; }
-  .footer-col { display: flex; flex-direction: column; gap: 11px; }
-  .footer-col a { font-size: 13.5px; color: rgba(255,255,255,.75); text-decoration: none; }
-  .footer-col a:hover { color: #fff; }
-  .footer-col span { font-size: 13.5px; color: rgba(255,255,255,.75); }
-  .footer-legal { max-width: 1080px; margin: 0 auto; padding-top: 24px; text-align: center; font-size: 12px; color: rgba(255,255,255,.55); }
-  @media (max-width: 780px) { .footer-inner { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 480px) { .footer-inner { grid-template-columns: 1fr; } }
-
-  /* ══════════════════════════ CKD LIVE WIDGET ══════════════════════════ */
-  .ckd-widget { position: fixed; bottom: 24px; left: 20px; z-index: 8000; font-family: 'Inter', sans-serif; }
-  .ckd-widget-toggle {
-    background: var(--navy-deep); border: 1px solid rgba(255,255,255,0.14); border-radius: 100px;
-    padding: 8px 15px 8px 11px; display: flex; align-items: center; gap: 8px; cursor: pointer;
-    color: white; font-size: 0.73rem; font-weight: 600; box-shadow: var(--shadow-md);
-    transition: background 0.18s; white-space: nowrap;
-  }
-  .ckd-widget-toggle:hover { background: var(--navy); }
-  .ckd-pulse { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; animation: pulse-dot 1.8s ease-in-out infinite; }
-  @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(0.7); } }
-  .ckd-widget-panel {
-    position: absolute; bottom: calc(100% + 10px); left: 0; transform: translateY(6px) scale(0.97);
-    background: var(--navy-deep); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
-    padding: 14px 16px 12px; min-width: 230px; box-shadow: 0 8px 36px rgba(0,0,0,0.45);
-    opacity: 0; pointer-events: none; transition: opacity 0.22s ease, transform 0.22s ease;
-  }
-  .ckd-widget.open .ckd-widget-panel { opacity: 1; transform: none; pointer-events: auto; }
-  .ckd-widget-row { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
-  .ckd-widget-row:last-of-type { margin-bottom: 8px; }
-  .ckd-widget-num { font-size: 1.2rem; font-weight: 600; color: white; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.2; }
-  .ckd-widget-label { font-size: 0.64rem; color: rgba(255,255,255,0.82); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
-  .ckd-widget-source { font-size: 0.62rem; color: rgba(255,255,255,0.62); border-top: 1px solid rgba(255,255,255,0.14); padding-top: 7px; line-height: 1.5; }
-  .ckd-widget-why { margin-top: 7px; font-size: 0.62rem; font-weight: 600; color: rgba(255,255,255,0.75); background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline; }
-  .ckd-widget-why:hover { color: #fff; }
-  .ckd-widget-method { display: none; margin-top: 8px; padding: 10px 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 0.64rem; line-height: 1.55; color: rgba(255,255,255,0.85); max-width: 260px; }
-  .ckd-widget-method.show { display: block; }
-  .ckd-widget-method strong { color: rgba(255,255,255,0.82); font-weight: 600; }
+  /* ══════════════════════════ FOOTER ══════════════════════════ */
+  .rcm-footer { background: #12213f; color: #C6D2E8; padding: clamp(50px,7vw,80px) 22px 34px; }
+  .rcm-footer-inner { max-width: 1180px; margin: 0 auto; }
+  .rcm-footer-top { display: grid; grid-template-columns: 1fr; gap: 40px; padding-bottom: 44px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  @media (min-width: 760px) { .rcm-footer-top { grid-template-columns: 1fr 1.5fr; gap: 56px; } }
+  .rcm-footer-brand { display: flex; align-items: center; gap: 11px; margin-bottom: 16px; }
+  .rcm-footer-brand img { height: 38px; width: auto; }
+  .rcm-footer-word { font-family: 'Newsreader', serif; font-weight: 500; font-size: 19px; color: #F4F7FC; }
+  .rcm-footer-blurb { font-size: 14.5px; line-height: 1.6; color: #97A6C4; margin: 0 0 20px; max-width: 340px; }
+  .rcm-footer-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 32px; }
+  .rcm-footer-head { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: #8FD3D6; margin-bottom: 16px; }
+  .rcm-footer-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+  .rcm-footer-list a { text-decoration: none; color: #C6D2E8; font-size: 14.5px; }
+  .rcm-footer-list a:hover { color: #fff; }
+  .rcm-footer-bottom { padding-top: 26px; display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; justify-content: space-between; }
+  .rcm-footer-legal { margin: 0; font-size: 13px; line-height: 1.6; color: #7E8EAC; max-width: 640px; }
+  .rcm-footer-legalnav { display: flex; gap: 22px; }
+  .rcm-footer-legalnav a { color: #7E8EAC; font-size: 13px; text-decoration: none; }
 
   /* ══════════════════════════ FLOATING VIEW TOGGLE ══════════════════════════ */
   .float-controls { position: fixed; bottom: 24px; right: 24px; z-index: 9999; }
-  .float-btn {
-    width: 44px; height: 44px; border-radius: 50%; border: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: var(--shadow-md); transition: transform .2s;
-    background: var(--navy); color: #fff;
-  }
-  .float-btn:hover { transform: scale(1.08); }
-  .float-btn.active { background: var(--gold); }
-  .float-btn svg { width: 18px; height: 18px; }
-  .float-btn .float-tooltip {
-    position: absolute; right: 54px; bottom: 12px; background: var(--navy-deep); color: #fff;
-    font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px;
-    border-radius: 6px; pointer-events: none; opacity: 0; transition: opacity .15s;
-  }
+  .float-btn { width: 44px; height: 44px; border-radius: 50%; border: none; background: #16294a; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(22,41,74,.35); position: relative; }
+  .float-btn svg { width: 20px; height: 20px; }
+  .float-btn.active { background: #1A6B72; }
+  .float-tooltip { position: absolute; right: 52px; top: 50%; transform: translateY(-50%); background: #16294a; color: #fff; font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .15s; }
   .float-btn:hover .float-tooltip { opacity: 1; }
-  html[data-view="desktop"] { min-width: 1024px; }
-  html[data-view="desktop"] body { min-width: 1024px; }
+
+  /* ══════════════════════════ MODAL (Start Here pathway steps) ══════════════════════════ */
+  .modal-overlay { position: fixed; inset: 0; z-index: 10500; background: rgba(15,20,35,.55); display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  @media (min-width: 640px) { .modal-overlay { align-items: center; } }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-drawer { background: #fff; width: 100%; max-width: 580px; max-height: 88vh; border-radius: 18px 18px 0 0; display: flex; flex-direction: column; transform: translateY(24px); transition: transform .25s; overflow: hidden; }
+  @media (min-width: 640px) { .modal-drawer { border-radius: 18px; transform: translateY(16px) scale(0.97); max-height: 82vh; } .modal-overlay.open .modal-drawer { transform: translateY(0) scale(1); } }
+  .modal-overlay.open .modal-drawer { transform: translateY(0); }
+  .modal-header { padding: 18px 22px 16px; border-bottom: 1px solid #E7EEED; flex-shrink: 0; position: relative; }
+  .modal-condition-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #fff; padding: 4px 11px; border-radius: 100px; margin-bottom: 10px; }
+  .modal-title { font-family: 'Newsreader', serif; font-size: 1.3rem; font-weight: 500; color: #16294a; line-height: 1.3; margin-bottom: 5px; }
+  .modal-desc { font-size: 0.85rem; color: #566072; line-height: 1.5; }
+  .modal-close { position: absolute; top: 16px; right: 18px; background: #F1F6F5; border: 1px solid #E7EEED; border-radius: 50%; width: 32px; height: 32px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #566072; }
+  .modal-close:hover { background: #E7EEED; color: #1E2A3D; }
+  .modal-body { overflow-y: auto; flex: 1; padding: 0 0 8px; }
+  .modal-step { display: flex; align-items: flex-start; gap: 13px; padding: 16px 22px; text-decoration: none; border-bottom: 1px solid #F1F6F5; transition: background .15s; }
+  .modal-step:hover { background: #F8FBFA; }
+  .step-num { flex: none; width: 26px; height: 26px; border-radius: 50%; color: #fff; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .step-body { flex: 1; min-width: 0; }
+  .step-title { font-size: 14.5px; font-weight: 700; color: #1E2A3D; line-height: 1.35; margin-bottom: 3px; }
+  .step-why { font-size: 12.5px; color: #566072; line-height: 1.45; margin-bottom: 6px; }
+  .step-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .step-badge { font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 100px; }
+  .badge-calc { background: #E7F1F1; color: #1A6B72; }
+  .badge-tool { background: #EEEAF9; color: #6D51C4; }
+  .badge-ph { background: #FBEEDD; color: #C77A16; }
+  .badge-new { background: #F8E7E4; color: #C0453B; }
+  .badge-start { background: #16294a; color: #fff; }
+  .modal-step-arrow { color: #8794A2; font-size: 16px; margin-top: 4px; flex: none; }
+  .modal-footer { padding: 14px 22px; border-top: 1px solid #E7EEED; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; background: #F1F6F5; gap: 12px; }
+  .modal-footer-note { font-size: 0.72rem; color: #566072; line-height: 1.45; max-width: 320px; }
+  .modal-footer-note strong { color: #16294a; }
+  .modal-dismiss { background: #16294a; color: white; border: none; padding: 8px 18px; border-radius: 100px; font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+  .modal-dismiss:hover { background: #1F3864; }
 </style>
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to content</a>
 
-<header class="site-header" id="site-header">
-  <a href="/" class="brand">
-    <img class="brand-icon" src="/brand/icon.svg" alt="" width="24" height="31">
-    <span class="brand-word">Renal Care Matters</span>
-  </a>
-  <nav class="header-nav">
-    <a href="/guides/">All Guides</a>
-    <a href="#categories">Categories</a>
-    <a href="#start-here">Start Here</a>
-    <a href="/about.html">About</a>
-  </nav>
-  <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" class="nav-pill">Book Appointment</a>
-  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-overlay">
-    <span></span><span></span><span></span>
-  </button>
-</header>
-
-<div class="mobile-overlay" id="mobile-overlay" role="dialog" aria-modal="true" aria-label="Site menu">
+<div id="mobile-overlay" class="mobile-overlay" role="dialog" aria-modal="true" aria-label="Site menu">
   <button class="mobile-overlay-close" id="mobile-overlay-close" aria-label="Close menu">&times;</button>
   <nav class="mobile-overlay-nav">
-    <a href="/guides/">All Guides</a>
-    <a href="#categories">Categories</a>
-    <a href="#start-here">Start Here</a>
+    <a href="/guides/">Guides</a>
+    <a href="/guides/calculators.html">Tools</a>
+    <a href="#library">Specialties</a>
     <a href="/about.html">About</a>
-    <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" class="mobile-pill">Book Appointment</a>
   </nav>
 </div>
 
 <main id="main">
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-copy">
-    <div class="hero-eyebrow">Internal Medicine &middot; Nephrology &middot; Clinical Nutrition</div>
-    <h1 class="hero-headline">Renal care really matters — and it begins by <em>understanding it</em>.</h1>
-    <p class="hero-para"><span id="subhead-guides">146</span> physician-written guides and <span id="subhead-calculators">184</span> interactive tools on kidney disease, dialysis, diabetes, hypertension, and nutrition — grounded in KDIGO, ADA, and ACC/AHA guidelines, written for Filipino patients and their families.</p>
-    <div class="hero-actions">
-      <a href="/guides/" class="btn-primary">Browse All Health Guides</a>
-      <a href="/about.html" class="btn-text">Meet Dr. Rivero &rarr;</a>
+<!-- ======================= HERO ======================= -->
+<section class="rcm-hero">
+  <header class="rcm-header">
+    <a href="/" class="rcm-brand">
+      <img src="/brand/icon-dark.svg" alt="Renal Care Matters" width="30" height="38">
+      <span class="rcm-brand-text">
+        <span class="rcm-brand-word">Renal Care Matters</span>
+        <span class="rcm-brand-tag">NEPHROLOGY &middot; KIDNEY HEALTH</span>
+      </span>
+    </a>
+    <nav class="rcm-desknav">
+      <a href="/guides/">Guides</a>
+      <a href="/guides/calculators.html">Tools</a>
+      <a href="#library">Specialties</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="rcm-langbar" id="rcm-langbar">
+      <button data-lang-btn="en" class="active">ENG</button>
+      <button data-lang-btn="tl">TAG</button>
+      <button data-lang-btn="ceb">CEB</button>
+      <button data-lang-btn="kap">KAP</button>
     </div>
-    <div class="hero-langs">English &middot; Filipino &middot; Cebuano &middot; Kapampangan</div>
+    <button class="rcm-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-overlay">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="rcm-hero-mid">
+    <div class="rcm-eyebrow-row reveal is-visible">
+      <span class="rcm-eyebrow-rule"></span>
+      <span class="rcm-eyebrow">A FREE LIBRARY, WRITTEN BY ONE NEPHROLOGIST</span>
+    </div>
+    <h1 class="rcm-h1 reveal is-visible">Understand your kidneys,<br><em>without the fear.</em></h1>
+    <p class="rcm-hero-sub reveal is-visible">Renal care really matters — and it begins by understanding it.</p>
+    <div class="rcm-hero-ctas reveal is-visible">
+      <a href="/guides/" class="rcm-btn-light" id="hero-cta-patient">I've been diagnosed
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#16294a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="/guides/calculators.html" class="rcm-btn-ghost">I'm a clinician
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#EAF0FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
   </div>
-  <div class="hero-media reveal">
-    <canvas class="particles-canvas" id="hero-particles" aria-hidden="true"></canvas>
-    <div class="hero-logo-panel">
-      <img class="hero-logo-mark" src="/brand/icon-dark.svg" alt="" width="148" height="192">
-      <div class="hero-logo-word">Renal Care Matters</div>
+
+  <div class="rcm-hero-foot">
+    <div class="rcm-trust">
+      <span class="t"><span class="dot" style="background:#8FD3D6;box-shadow:0 0 8px #8FD3D6;"></span>Physician-written</span>
+      <span class="t"><span class="dot" style="background:#7FD08A;box-shadow:0 0 8px #7FD08A;"></span>Anchored to KDIGO &middot; ADA &middot; ACC/AHA</span>
+      <span class="t"><span class="dot" style="background:#F0A94A;box-shadow:0 0 8px #F0A94A;"></span>Always free — no ads</span>
+      <span class="t"><span class="dot" style="background:#B79BEA;box-shadow:0 0 8px #B79BEA;"></span>Four languages</span>
     </div>
-    <div class="hero-chip">&#127942; Recognized by Patients</div>
+    <div class="rcm-scroll-cue">
+      <span>SCROLL</span>
+      <span class="rcm-scroll-box"><span class="rcm-scrolldot"></span></span>
+    </div>
   </div>
 </section>
 
-<!-- STATS STRIP -->
-<div class="stats-strip">
-  <div class="stats-row" id="hero-stats">
-    <div class="stat"><span class="stat-num" data-target="146" id="stat-guides">146</span><span class="stat-label">Guides</span></div>
-    <div class="stat-divider"></div>
-    <div class="stat"><span class="stat-num" data-target="184" id="stat-calculators">184</span><span class="stat-label">Calculators &amp; Tools</span></div>
-    <div class="stat-divider"></div>
-    <div class="stat"><span class="stat-num" data-target="9" id="stat-specialties">9</span><span class="stat-label">Specialties</span></div>
-    <div class="stat-divider"></div>
-    <div class="stat"><span class="stat-num" data-target="4" id="stat-languages">4</span><span class="stat-label">Languages</span></div>
+<!-- ======================= AUDIENCE PICKER ======================= -->
+<section class="rcm-audience" id="audience">
+  <div class="rcm-audience-inner reveal">
+    <div class="rcm-eyebrow-row" style="justify-content:center;">
+      <span class="rcm-eyebrow-rule" style="background:#F0A94A;"></span>
+      <span class="rcm-eyebrow" style="color:#F0A94A;">WHO IT'S FOR</span>
+    </div>
+    <h2>Built for the whole renal care team <em>— and then some.</em></h2>
+    <div class="rcm-audience-row">
+      <button class="pathway-tile" data-pathway="patient"><span class="p-icon" style="background:#1A6B72;">&#129505;</span>I'm a Patient</button>
+      <button class="pathway-tile" data-pathway="caregiver"><span class="p-icon" style="background:#C77A16;">&#129309;</span>I'm a Caregiver</button>
+      <button class="pathway-tile" data-pathway="internist-gp"><span class="p-icon" style="background:#2E7D46;">&#129658;</span>Internist / GP</button>
+      <button class="pathway-tile" data-pathway="nephrologist"><span class="p-icon" style="background:#4E86C9;">&#129516;</span>Nephrologist</button>
+      <button class="pathway-tile" data-pathway="dialysis-staff"><span class="p-icon" style="background:#6D51C4;">&#128167;</span>Dialysis Staff / HD Tech</button>
+      <button class="pathway-tile" data-pathway="dietitian"><span class="p-icon" style="background:#C0453B;">&#129381;</span>Dietitian / Nutritionist</button>
+    </div>
+    <p class="rcm-audience-blurb" id="audience-blurb">Plain-language guides, lab explainers, and questions for your next visit.</p>
+  </div>
+</section>
+
+<!-- ======================= CONVERGING CARDS ======================= -->
+<div class="rcm-converge-wrap" id="converge-wrap">
+  <div class="rcm-converge-glow"></div>
+  <div class="rcm-converge-sticky" id="converge-sticky">
+    <div class="rcm-converge-stage">
+      <div class="rcm-converge-headline reveal is-visible" id="converge-headline">
+        <div class="rcm-eyebrow-row" style="justify-content:center;">
+          <span class="rcm-eyebrow-rule" style="background:#1A6B72;"></span>
+          <span class="rcm-eyebrow" style="color:#1A6B72;">FOR EVERYONE IN KIDNEY CARE</span>
+        </div>
+        <h2 class="rcm-converge-h1">Nephrology resources,<br><em>unified.</em></h2>
+        <p class="rcm-converge-p">One free, evidence-based library for patients and the whole care team.</p>
+      </div>
+
+      <div class="rcm-cards-grid" id="converge-cards">
+        <article class="rcm-card" data-card data-sx="-600" data-sy="-300" data-sr="-8" data-gx="-138" data-gy="-60" data-gr="-8">
+          <div class="rcm-card-top"><span class="rcm-card-icon" style="background:#E7F1F1;"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M12 20s-6.5-4.2-6.5-9A3.5 3.5 0 0 1 12 8.2 3.5 3.5 0 0 1 18.5 11c0 4.8-6.5 9-6.5 9Z" fill="none" stroke="#1A6B72" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rcm-card-role" style="color:#1A6B72;">Patients</span></div>
+          <div class="rcm-card-title">Your labs, explained</div>
+          <div class="rcm-card-foot"><span class="dot" style="background:#1A6B72;"></span>eGFR 48 &middot; Stage 3a</div>
+        </article>
+        <article class="rcm-card" data-card data-sx="615" data-sy="-320" data-sr="7" data-gx="142" data-gy="-46" data-gr="7">
+          <div class="rcm-card-top"><span class="rcm-card-icon" style="background:#E7ECF5;"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M4 5h6v6a3 3 0 0 1-6 0V5Zm3 9v2a5 5 0 0 0 10 0v-1" fill="none" stroke="#1F3864" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19" cy="12" r="2.2" fill="none" stroke="#1F3864" stroke-width="1.7"/></svg></span><span class="rcm-card-role" style="color:#1F3864;">Nephrologists</span></div>
+          <div class="rcm-card-title">Guideline summaries</div>
+          <div class="rcm-card-foot"><span class="dot" style="background:#1F3864;"></span>KDIGO 2024 &middot; CKD</div>
+        </article>
+        <article class="rcm-card" data-card data-sx="-720" data-sy="60" data-sr="-5" data-gx="-160" data-gy="46" data-gr="-5">
+          <div class="rcm-card-top"><span class="rcm-card-icon" style="background:#E6F2EA;"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M4 9h11l-3-3M20 15H9l3 3" fill="none" stroke="#2E7D46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rcm-card-role" style="color:#2E7D46;">Internists</span></div>
+          <div class="rcm-card-title">When to refer &amp; co-manage</div>
+          <div class="rcm-card-foot"><span class="dot" style="background:#2E7D46;"></span>Primary-care pathways</div>
+        </article>
+        <article class="rcm-card" data-card data-sx="710" data-sy="90" data-sr="6" data-gx="128" data-gy="76" data-gr="5">
+          <div class="rcm-card-top"><span class="rcm-card-icon" style="background:#FBEEDD;"><svg width="17" height="17" viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="17" rx="2" fill="none" stroke="#C77A16" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 4V3h6v1M9 10h6M9 14h4" fill="none" stroke="#C77A16" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rcm-card-role" style="color:#C77A16;">Nurses</span></div>
+          <div class="rcm-card-title">Teach-back handouts</div>
+          <div class="rcm-card-foot"><span class="dot" style="background:#C77A16;"></span>Plain-language sheets</div>
+        </article>
+        <article class="rcm-card" data-card data-sx="-470" data-sy="380" data-sr="8" data-gx="-32" data-gy="112" data-gr="4">
+          <div class="rcm-card-top"><span class="rcm-card-icon" style="background:#EEEAF9;"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M5 12a7 7 0 0 1 12-4.9" fill="none" stroke="#6D51C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 4.5V8h-3.5" fill="none" stroke="#6D51C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 12a7 7 0 0 1-12 4.9" fill="none" stroke="#6D51C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 19.5V16h3.5" fill="none" stroke="#6D51C4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rcm-card-role" style="color:#6D51C4;">Dialysis Technicians</span></div>
+          <div class="rcm-card-title">Access &amp; machine guides</div>
+          <div class="rcm-card-foot"><span class="dot" style="background:#6D51C4;"></span>Safety checklists</div>
+        </article>
+        <article class="rcm-card" data-card data-sx="500" data-sy="385" data-sr="-7" data-gx="58" data-gy="-6" data-gr="-3">
+          <div class="rcm-card-top"><span class="rcm-card-icon" style="background:#F8E7E4;"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M5 19c0-8 6-13 14-13 0 8-6 13-14 13Z" fill="none" stroke="#C0453B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19c3-5 6-7 10-8" fill="none" stroke="#C0453B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rcm-card-role" style="color:#C0453B;">Nutritionists / Dietitians</span></div>
+          <div class="rcm-card-title">Renal diet builder</div>
+          <div class="rcm-card-foot"><span class="dot" style="background:#C0453B;"></span>Potassium &amp; phosphate</div>
+        </article>
+      </div>
+
+      <div class="rcm-payoff" id="converge-payoff">
+        <span class="dot"></span><span class="txt">Six roles. One trusted library.</span>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- EDUCATIONAL DISCLAIMER -->
-<div class="edu-disclaimer" role="note" aria-label="Educational use disclaimer">
-  <strong>For educational purposes only.</strong> These guides do not substitute for individualized advice from your physician. Always consult your nephrologist or primary-care doctor before changing medications, diet, dialysis, or treatment.
-</div>
-
-<!-- WHY THIS LIBRARY -->
-<div class="shell reveal">
-  <div class="section-eyebrow">Why This Library</div>
-  <h2 class="section-title">Free, physician-written, and built for real life here</h2>
-  <p class="section-sub">No content mills. No paywalls. No ads. Just clear, honest kidney education — kept current.</p>
-  <div class="why-grid">
-    <div class="why-card">
-      <span class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v6a4 4 0 0 0 8 0V4"/><circle cx="18" cy="6" r="2"/><path d="M18 8v3a6 6 0 0 1-12 0"/></svg></span>
-      <h3>Written by one doctor, personally.</h3>
-      <p>Every guide is written by Dr. Rivero, a practising nephrologist — not outsourced, not spun out by a content farm. If it's on this site, he wrote it and stands behind it.</p>
+<!-- ======================= STACKING WORDS ======================= -->
+<div class="rcm-stack-wrap" id="stack-wrap">
+  <div class="rcm-stack-sticky">
+    <div class="rcm-stack-head reveal">
+      <div class="rcm-eyebrow-row" style="justify-content:center;">
+        <span class="rcm-eyebrow-rule" style="background:#1A6B72;"></span>
+        <span class="rcm-eyebrow" style="color:#1A6B72;">WHAT'S INSIDE</span>
+      </div>
+      <p class="rcm-stack-tag">Five ways to learn — one trusted source.</p>
     </div>
-    <div class="why-card">
-      <span class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg></span>
-      <h3>Traceable to the guidelines.</h3>
-      <p>Recommendations are anchored in current KDIGO, ADA, and ACC/AHA guidance — and every guide shows a visible "Last Reviewed" date, so you always know how fresh it is.</p>
-    </div>
-    <div class="why-card">
-      <span class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V4a1 1 0 0 1 1-1h11l-1 4h4l-2 8H8v6"/></svg></span>
-      <h3>Built for the Philippines.</h3>
-      <p>The medicines on your prescription, the food at the palengke, PhilHealth and PWD benefits, dengue and lepto season, El Niño heat and typhoons — this library is written for the system and the life you actually live, not a Western pantry.</p>
-    </div>
-    <div class="why-card">
-      <span class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12a4 4 0 0 1 8 0"/></svg></span>
-      <h3>Free, in four languages.</h3>
-      <p>English, Tagalog, Cebuano, and Kapampangan — because language should never stand between a family and understanding.</p>
+    <div class="rcm-stack-col">
+      <div class="rcm-stackword" data-stackword data-i="0">
+        <span class="rcm-stackword-icon" style="background:#1A6B72;box-shadow:0 16px 32px -12px #1A6B72;"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3.5V8h4" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12h6M9 15.5h4" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="rcm-stackword-label" style="color:#1A6B72;">Guides</span>
+      </div>
+      <div class="rcm-stackword" data-stackword data-i="1">
+        <span class="rcm-stackword-icon" style="background:#1F3864;box-shadow:0 16px 32px -12px #1F3864;"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 4 3.5 8 12 12l8.5-4L12 4Z" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12 12 16l8.5-4" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 16 12 20l8.5-4" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="rcm-stackword-label" style="color:#1F3864;">Atlases</span>
+      </div>
+      <div class="rcm-stackword" data-stackword data-i="2">
+        <span class="rcm-stackword-icon" style="background:#C77A16;box-shadow:0 16px 32px -12px #C77A16;"><svg width="34" height="34" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="2" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 7h8" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/><path d="M8 11h.01M12 11h.01M16 11h.01M8 14.5h.01M12 14.5h.01M16 14.5h.01M8 18h4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+        <span class="rcm-stackword-label" style="color:#C77A16;">Calculators</span>
+      </div>
+      <div class="rcm-stackword" data-stackword data-i="3">
+        <span class="rcm-stackword-icon" style="background:#6D51C4;box-shadow:0 16px 32px -12px #6D51C4;"><svg width="34" height="34" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="18" cy="6" r="2" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="18" r="2" fill="none" stroke="#fff" stroke-width="1.7"/><path d="M6 8v2a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8M12 12v4" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+        <span class="rcm-stackword-label" style="color:#6D51C4;">Algorithms</span>
+      </div>
+      <div class="rcm-stackword" data-stackword data-i="4">
+        <span class="rcm-stackword-icon" style="background:#2E7D46;box-shadow:0 16px 32px -12px #2E7D46;"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 3.6l2.4 4.9 5.4.8-3.9 3.8.9 5.3-4.8-2.5-4.8 2.5.9-5.3L4.2 9.3l5.4-.8L12 3.6Z" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="rcm-stackword-label" style="color:#2E7D46;">Reviews</span>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- CATEGORIES NAVIGATOR -->
-<div class="shell shell-alt reveal" id="categories">
-  <div class="section-eyebrow">Browse The Library</div>
-  <h2 class="section-title">Explore by <em>category</em></h2>
-  <p class="section-sub">146 evidence-based guides organized by specialty — every guide is written personally by Dr. Rivero and reviewed against current clinical guidelines.</p>
-
-  <div class="cat-nav">
-    <div class="cat-tabs" role="tablist" aria-label="Guide categories" id="cat-tabs">
-      <button class="cat-tab active" role="tab" aria-selected="true" data-cat="nephrology" id="tab-nephrology" aria-controls="panel-nephrology">Nephrology</button>
-      <button class="cat-tab" role="tab" aria-selected="false" data-cat="internal" id="tab-internal" aria-controls="panel-internal">Internal Medicine</button>
-      <button class="cat-tab" role="tab" aria-selected="false" data-cat="nutrition" id="tab-nutrition" aria-controls="panel-nutrition">Nutrition &amp; Diet</button>
-      <button class="cat-tab" role="tab" aria-selected="false" data-cat="dialysis" id="tab-dialysis" aria-controls="panel-dialysis">Dialysis</button>
-      <button class="cat-tab" role="tab" aria-selected="false" data-cat="lifestyle" id="tab-lifestyle" aria-controls="panel-lifestyle">Lifestyle</button>
-      <button class="cat-tab" role="tab" aria-selected="false" data-cat="advanced" id="tab-advanced" aria-controls="panel-advanced">Advanced Topics</button>
-      <button class="cat-tab" role="tab" aria-selected="false" data-cat="perspectives" id="tab-perspectives" aria-controls="panel-perspectives">Perspectives</button>
-      <button class="cat-tab" role="tab" aria-selected="false" data-cat="philippines" id="tab-philippines" aria-controls="panel-philippines">Philippines-Specific</button>
+<!-- ======================= LIVE ESTIMATE ======================= -->
+<section class="rcm-live">
+  <div class="rcm-live-glow"></div>
+  <div class="rcm-live-inner reveal">
+    <div class="rcm-live-tag">
+      <span class="rcm-live-dot-wrap"><span class="rcm-live-ping"></span><span class="rcm-live-dot"></span></span>
+      <span class="rcm-live-label">LIVE ESTIMATE</span>
     </div>
-    <div class="cat-panels">
-      <div class="cat-panel active" role="tabpanel" data-cat="nephrology" id="panel-nephrology" aria-labelledby="tab-nephrology">
-        <h3><em>Nephrology</em></h3>
-        <p>The core science of kidney disease — anatomy, staging, and the everyday clinical decisions that shape how CKD is caught and managed.</p>
-        <ul class="cat-guide-list">
-          <li><a href="/guides/signs-to-see-a-nephrologist.html">Signs It's Time to See a Kidney Doctor <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/nephrology-atlas.html">Nephrology Visual Atlas <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/understanding-ckd.html">Taking Charge of CKD <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/igan-guide.html">IgA Nephropathy <span class="arrow">&rarr;</span></a></li>
+    <div class="rcm-live-num" id="ckd-global">850,274,891</div>
+    <p class="rcm-live-p">people worldwide are living with kidney disease right now — about <strong style="color:#fff;">1 in 10 adults.</strong></p>
+    <button class="rcm-why-btn" id="rcm-why-btn" aria-expanded="false">
+      Why is this counting?
+      <svg class="rcm-why-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="#8FD3D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <p class="rcm-why-panel" id="rcm-why-panel">A live estimate from global prevalence data (ISN / GBD), not a diagnosis counter. We show it for one reason: a diagnosis can feel isolating, and <strong style="color:#D9E4F5;">you are far from alone.</strong> Hundreds of millions are learning to live well with kidney disease.</p>
+  </div>
+</section>
+
+<!-- ======================= TWO DOORS ======================= -->
+<section class="rcm-doors-section">
+  <div class="rcm-doors-inner">
+    <div class="rcm-doors-head reveal">
+      <div class="rcm-eyebrow-row">
+        <span class="rcm-eyebrow-rule" style="background:#1A6B72;"></span>
+        <span class="rcm-eyebrow" style="color:#1A6B72;">TWO WAYS IN</span>
+      </div>
+      <h2 class="rcm-doors-h2">Where would you like to begin?</h2>
+      <p class="rcm-doors-p">The same evidence, told two ways — plain and reassuring for patients, fast and citable for clinicians.</p>
+    </div>
+    <div class="rcm-doors-grid">
+      <div class="rcm-door rcm-door-patient reveal">
+        <span class="rcm-door-icon" style="background:#E7F1F1;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20s-6.5-4.2-6.5-9A3.5 3.5 0 0 1 12 8.2 3.5 3.5 0 0 1 18.5 11c0 4.8-6.5 9-6.5 9Z" stroke="#1A6B72" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </span>
+        <div class="rcm-door-tag" style="color:#1A6B72;">FOR PATIENTS &amp; FAMILIES</div>
+        <h3 class="rcm-door-h3" style="color:#16294a;">Newly diagnosed?<br>Start here, gently.</h3>
+        <p class="rcm-door-p" style="color:#566072;">No jargon, no fear. Understand what your diagnosis means, what your lab numbers say, and what to ask at your next appointment.</p>
+        <ul class="rcm-door-list" style="color:#35404F;">
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#E7F1F1"/><path d="m8 12 2.5 2.5L16 9" stroke="#1A6B72" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Understand what your diagnosis actually means</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#E7F1F1"/><path d="m8 12 2.5 2.5L16 9" stroke="#1A6B72" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Make sense of your eGFR, creatinine and other labs</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#E7F1F1"/><path d="m8 12 2.5 2.5L16 9" stroke="#1A6B72" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>A checklist of questions for your next appointment</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#E7F1F1"/><path d="m8 12 2.5 2.5L16 9" stroke="#1A6B72" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in your language, written plainly</li>
         </ul>
+        <a href="/guides/" class="rcm-door-cta rcm-door-cta-patient">Enter the patient library
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
-      <div class="cat-panel" role="tabpanel" data-cat="internal" id="panel-internal" aria-labelledby="tab-internal">
-        <h3><em>Internal</em> Medicine</h3>
-        <p>Where kidney disease meets the rest of the body — diabetes, blood pressure, and the heart conditions that so often travel with it.</p>
-        <ul class="cat-guide-list">
-          <li><a href="/guides/diabetes-kidneys.html">Diabetes &amp; Your Kidneys <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/filipino-diabetic-diet.html">Eating Smart with Diabetes <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/managing-hypertension.html">Managing High Blood Pressure <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/heart-failure-ckd.html">Heart Failure &amp; CKD <span class="arrow">&rarr;</span></a></li>
+      <div class="rcm-door rcm-door-clinician reveal delay-1">
+        <div class="rcm-door-glow"></div>
+        <span class="rcm-door-icon" style="background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.14);">
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h6v6a3 3 0 0 1-6 0V5Zm3 9v2a5 5 0 0 0 10 0v-1" stroke="#8FD3D6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19" cy="12" r="2.2" stroke="#8FD3D6" stroke-width="1.7"/></svg>
+        </span>
+        <div class="rcm-door-tag" style="color:#8FD3D6;">FOR CLINICIANS &amp; TRAINEES</div>
+        <h3 class="rcm-door-h3" style="color:#FFFFFF;">Bedside-ready,<br>fully referenced.</h3>
+        <p class="rcm-door-p" style="color:#AEBDD8;">Guideline summaries, calculators and dosing you can trust at the point of care — every claim linked to its KDIGO, ADA or ACC/AHA source.</p>
+        <ul class="rcm-door-list" style="color:#D3DDEF;">
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(143,211,214,0.14)"/><path d="m8 12 2.5 2.5L16 9" stroke="#8FD3D6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Concise, staged guideline summaries</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(143,211,214,0.14)"/><path d="m8 12 2.5 2.5L16 9" stroke="#8FD3D6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Validated calculators and risk tools</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(143,211,214,0.14)"/><path d="m8 12 2.5 2.5L16 9" stroke="#8FD3D6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Drug selection and dosing in reduced kidney function</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(143,211,214,0.14)"/><path d="m8 12 2.5 2.5L16 9" stroke="#8FD3D6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Every statement linked to its primary source</li>
         </ul>
-      </div>
-      <div class="cat-panel" role="tabpanel" data-cat="nutrition" id="panel-nutrition" aria-labelledby="tab-nutrition">
-        <h3><em>Nutrition</em> &amp; Diet</h3>
-        <p>Practical, Filipino-kitchen guidance on eating well at every stage of kidney disease, from the palengke to the dialysis chair.</p>
-        <ul class="cat-guide-list">
-          <li><a href="/guides/kain-pa-rin.html">Kain Pa Rin: CKD Nutrition Guide <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/nutrition-kidney-patients.html">Nutrition for Kidney Patients <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/ckd-friendly-recipes.html">CKD-Friendly Filipino Recipes <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/phosphorus-ckd.html">Phosphorus: The Silent Threat <span class="arrow">&rarr;</span></a></li>
-        </ul>
-      </div>
-      <div class="cat-panel" role="tabpanel" data-cat="dialysis" id="panel-dialysis" aria-labelledby="tab-dialysis">
-        <h3><em>Dialysis</em></h3>
-        <p>What dialysis actually involves — preparing for it, living through it, and the complications that matter most along the way.</p>
-        <ul class="cat-guide-list">
-          <li><a href="/guides/dialysis-coming-pre-eskd.html">Preparing for Dialysis <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/crrt-continuous-renal-replacement-therapy.html">Continuous Renal Replacement Therapy <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/cardiovascular-death-dialysis.html">Cardiovascular Disease in Dialysis <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/post-dialysis-fatigue.html">Post-Dialysis Fatigue <span class="arrow">&rarr;</span></a></li>
-        </ul>
-      </div>
-      <div class="cat-panel" role="tabpanel" data-cat="lifestyle" id="panel-lifestyle" aria-labelledby="tab-lifestyle">
-        <h3><em>Lifestyle</em></h3>
-        <p>The quieter side of living with kidney disease — sleep, intimacy, movement, and the medicines worth being careful with.</p>
-        <ul class="cat-guide-list">
-          <li><a href="/guides/sexual-health-intimacy-ckd.html">Sexual Health &amp; Intimacy in CKD <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/exercise-guide-ckd.html">Physical Exercise Guide for CKD <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/ckd-mental-health-sleep.html">CKD, Mental Health &amp; Sleep <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/nsaid-kidney-injury.html">Kidney Injury from NSAIDs <span class="arrow">&rarr;</span></a></li>
-        </ul>
-      </div>
-      <div class="cat-panel" role="tabpanel" data-cat="advanced" id="panel-advanced" aria-labelledby="tab-advanced">
-        <h3><em>Advanced</em> Topics</h3>
-        <p>Emerging therapies, technologies, and specialist topics for readers who want to go beyond the basics.</p>
-        <ul class="cat-guide-list">
-          <li><a href="/guides/green-nephrology.html">Green Nephrology 2026 <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/hemodiafiltration-deep-dive.html">Hemodiafiltration Deep Dive <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/polycystic-kidney-disease.html">Polycystic Kidney Disease <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/lupus-nephritis.html">Lupus Nephritis <span class="arrow">&rarr;</span></a></li>
-        </ul>
-      </div>
-      <div class="cat-panel" role="tabpanel" data-cat="perspectives" id="panel-perspectives" aria-labelledby="tab-perspectives">
-        <h3><em>Perspectives</em></h3>
-        <p>First-person essays from a practicing nephrologist on the systems, technologies, and policies shaping kidney care.</p>
-        <ul class="cat-guide-list">
-          <li><a href="/guides/ai-in-nephrology-practice.html">Artificial Intelligence in Nephrology <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/philhealth-acr-to-drg.html">PhilHealth's Payment Overhaul <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/hmo-ckd-coverage.html">Why Won't My HMO Cover My Kidneys? <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/filipino-nephrologist-challenges.html">A Filipino Nephrologist's Challenges <span class="arrow">&rarr;</span></a></li>
-        </ul>
-      </div>
-      <div class="cat-panel" role="tabpanel" data-cat="philippines" id="panel-philippines" aria-labelledby="tab-philippines">
-        <h3><em>Philippines</em>-Specific</h3>
-        <p>The realities specific to kidney care in the Philippines — local infections, financial access, and organ donation.</p>
-        <ul class="cat-guide-list">
-          <li><a href="/guides/hantavirus-ckd.html">Hantavirus and the Kidneys <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/dengue-aki-kidney.html">Dengue &amp; Your Kidneys <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/organ-donation-philippines.html">Organ &amp; Kidney Donation in the Philippines <span class="arrow">&rarr;</span></a></li>
-          <li><a href="/guides/ckd-financial-stress.html">CKD &amp; Financial Stress <span class="arrow">&rarr;</span></a></li>
-        </ul>
+        <a href="/guides/calculators.html" class="rcm-door-cta rcm-door-cta-clinician">Enter the clinical reference
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#16294a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- PATHWAY MODAL OVERLAY -->
-<div class="modal-overlay" id="pathway-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div class="modal-drawer">
-    <div class="modal-header">
-      <span class="modal-drag-handle"></span>
-      <span class="modal-condition-badge" id="modal-badge"></span>
-      <div class="modal-title" id="modal-title"></div>
-      <div class="modal-desc" id="modal-desc"></div>
-      <button class="modal-close" id="modal-close" aria-label="Close">&#10005;</button>
+<!-- ======================= LIBRARY ======================= -->
+<section class="rcm-library" id="library">
+  <div class="rcm-library-inner">
+    <div class="rcm-library-head reveal">
+      <div class="rcm-eyebrow-row">
+        <span class="rcm-eyebrow-rule" style="background:#1A6B72;"></span>
+        <span class="rcm-eyebrow" style="color:#1A6B72;">THE LIBRARY</span>
+      </div>
+      <h2 class="rcm-library-h2">One library. Every angle of kidney care.</h2>
+      <p class="rcm-library-p">Built and maintained by a single practising nephrologist — so it reads with one clear, consistent voice.</p>
     </div>
-    <div class="modal-body" id="modal-body"></div>
-    <div class="modal-footer">
-      <div class="modal-footer-note" id="modal-footer-note"></div>
-      <button class="modal-dismiss" id="modal-dismiss">Got it</button>
-    </div>
-  </div>
-</div>
 
-<!-- START HERE PATHWAYS (dark band) -->
-<div class="pathways-section reveal" id="start-here">
-  <canvas class="particles-canvas" id="pathways-particles" aria-hidden="true"></canvas>
-  <div class="pathways-inner">
-    <div class="pathways-header">
-      <div class="pathways-eyebrow">Start Here</div>
-      <div class="pathways-label">What brings you here today?</div>
-      <div class="pathways-sub">Tell us your role for a curated reading path — every pathway starts with the fundamentals and builds from there.</div>
+    <div class="rcm-stats-grid reveal">
+      <div class="rcm-stat-cell"><div class="rcm-stat-num" id="stat-guides" data-target="146">146</div><div class="rcm-stat-label">Evidence-based guides</div></div>
+      <div class="rcm-stat-cell"><div class="rcm-stat-num" id="stat-calculators" data-target="184">184</div><div class="rcm-stat-label">Interactive tools</div></div>
+      <div class="rcm-stat-cell"><div class="rcm-stat-num" id="stat-specialties" data-target="9">9</div><div class="rcm-stat-label">Specialties</div></div>
+      <div class="rcm-stat-cell"><div class="rcm-stat-num" id="stat-languages" data-target="4">4</div><div class="rcm-stat-label">Languages</div></div>
     </div>
-    <div class="pathways-grid">
-      <button class="pathway-tile" data-pathway="patient">
-        <span class="pathway-icon">&#129505;</span>
-        <div class="pathway-condition">Role</div>
-        <div class="pathway-title">I'm a Patient</div>
-        <div class="pathway-count">6 guides &middot; Start here</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="caregiver">
-        <span class="pathway-icon">&#129309;</span>
-        <div class="pathway-condition">Role</div>
-        <div class="pathway-title">I'm a Caregiver</div>
-        <div class="pathway-count">6 guides &middot; Caregiver path</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="internist-gp">
-        <span class="pathway-icon">&#129658;</span>
-        <div class="pathway-condition">Role</div>
-        <div class="pathway-title">Internist / GP</div>
-        <div class="pathway-count">6 guides &middot; Referral &amp; triage</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="nephrologist">
-        <span class="pathway-icon">&#129516;</span>
-        <div class="pathway-condition">Role</div>
-        <div class="pathway-title">Nephrologist</div>
-        <div class="pathway-count">6 guides &middot; Clinical depth</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="dialysis-staff">
-        <span class="pathway-icon">&#128167;</span>
-        <div class="pathway-condition">Role</div>
-        <div class="pathway-title">Dialysis Staff / HD Tech</div>
-        <div class="pathway-count">6 guides &middot; Unit operations</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
-      <button class="pathway-tile" data-pathway="dietitian">
-        <span class="pathway-icon">&#129381;</span>
-        <div class="pathway-condition">Role</div>
-        <div class="pathway-title">Dietitian / Nutritionist</div>
-        <div class="pathway-count">6 guides &middot; Nutrition therapy</div>
-        <span class="pathway-arrow">&rsaquo;</span>
-      </button>
+
+    <div class="rcm-spec-head reveal">
+      <h3>Explore by specialty</h3>
+      <a href="/guides/">All <span id="stat-specialties-inline">9</span> specialties
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#1A6B72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="rcm-spec-grid reveal">
+      <a href="/guides/understanding-ckd.html" class="rcm-spec-card"><span class="rcm-spec-icon" style="background:#E7F1F1;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12h3.5l2-5.5L12 17l2-5h4" stroke="#1A6B72" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="rcm-spec-name">Chronic Kidney Disease</div><div class="rcm-spec-sub">Staging, monitoring, slowing progression</div></a>
+      <a href="/guides/diabetes-kidneys.html" class="rcm-spec-card"><span class="rcm-spec-icon" style="background:#FBEEDD;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3.5s5.5 6 5.5 10a5.5 5.5 0 0 1-11 0C6.5 9.5 12 3.5 12 3.5Z" stroke="#C77A16" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 14.5v-3" stroke="#C77A16" stroke-width="1.7" stroke-linecap="round"/></svg></span><div class="rcm-spec-name">Diabetic Kidney Disease</div><div class="rcm-spec-sub">The #1 cause of kidney failure</div></a>
+      <a href="/guides/managing-hypertension.html" class="rcm-spec-card"><span class="rcm-spec-icon" style="background:#F8E7E4;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4.5 16a7.5 7.5 0 1 1 15 0" stroke="#C0453B" stroke-width="1.7" stroke-linecap="round"/><path d="M12 16l3.5-3.5" stroke="#C0453B" stroke-width="1.7" stroke-linecap="round"/></svg></span><div class="rcm-spec-name">Hypertension</div><div class="rcm-spec-sub">The #2 cause, often silent</div></a>
+      <a href="/guides/living-with-dialysis.html" class="rcm-spec-card"><span class="rcm-spec-icon" style="background:#E7ECF5;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12a7 7 0 0 1 12-4.9" stroke="#1F3864" stroke-width="1.7" stroke-linecap="round"/><path d="M17 4.5V8h-3.5" stroke="#1F3864" stroke-width="1.7" stroke-linecap="round"/><path d="M19 12a7 7 0 0 1-12 4.9" stroke="#1F3864" stroke-width="1.7" stroke-linecap="round"/><path d="M7 19.5V16h3.5" stroke="#1F3864" stroke-width="1.7" stroke-linecap="round"/></svg></span><div class="rcm-spec-name">Dialysis</div><div class="rcm-spec-sub">Hemodialysis &amp; peritoneal dialysis</div></a>
+      <a href="/guides/kidney-transplant.html" class="rcm-spec-card"><span class="rcm-spec-icon" style="background:#E6F2EA;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3.5 5 6v5.5c0 4 3 7.3 7 8.5 4-1.2 7-4.5 7-8.5V6l-7-2.5Z" stroke="#2E7D46" stroke-width="1.7" stroke-linejoin="round"/><path d="m9.5 11.5 1.8 1.8L15 9.8" stroke="#2E7D46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="rcm-spec-name">Kidney Transplant</div><div class="rcm-spec-sub">Before, during, and after</div></a>
+      <a href="/guides/glomerulonephritis.html" class="rcm-spec-card"><span class="rcm-spec-icon" style="background:#EEEAF9;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5h16l-6 7v6l-4 2v-8L4 5Z" stroke="#6D51C4" stroke-width="1.7" stroke-linejoin="round"/></svg></span><div class="rcm-spec-name">Glomerular Disease</div><div class="rcm-spec-sub">IgAN, lupus nephritis, FSGS</div></a>
+      <a href="/guides/metabolic-acidosis-ckd.html" class="rcm-spec-card"><span class="rcm-spec-icon" style="background:#E7F1F1;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9.5 3h5M11 3v5.5L6 17.5A2 2 0 0 0 7.8 20.5h8.4A2 2 0 0 0 18 17.5L13 8.5V3" stroke="#1A6B72" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 14h7" stroke="#1A6B72" stroke-width="1.7" stroke-linecap="round"/></svg></span><div class="rcm-spec-name">Electrolytes &amp; Acid–Base</div><div class="rcm-spec-sub">Sodium, potassium, and the acid-base map</div></a>
+      <a href="/guides/managing-kidney-stones.html" class="rcm-spec-card"><span class="rcm-spec-icon" style="background:#FBEEDD;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4l7 4.2v7.6L12 20l-7-4.2V8.2L12 4Z" stroke="#C77A16" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 8.2 12 12l7-3.8M12 12v8" stroke="#C77A16" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="rcm-spec-name">Kidney Stones</div><div class="rcm-spec-sub">Prevention is everything</div></a>
+      <a href="/guides/acute-kidney-injury-on-ckd.html" class="rcm-spec-card"><span class="rcm-spec-icon" style="background:#F8E7E4;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4 2.5 20.5h19L12 4Z" stroke="#C0453B" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10.5v4.5" stroke="#C0453B" stroke-width="1.7" stroke-linecap="round"/><path d="M12 18h.01" stroke="#C0453B" stroke-width="2" stroke-linecap="round"/></svg></span><div class="rcm-spec-name">Acute Kidney Injury</div><div class="rcm-spec-sub">Recognize, stage, and reverse it</div></a>
     </div>
   </div>
-</div>
+</section>
 
-<!-- FEATURED GUIDES -->
-<div class="shell reveal">
-  <div class="section-eyebrow">Editor's Picks</div>
-  <h2 class="section-title">Still not sure where to <em>start</em>?</h2>
-  <p class="section-sub">These six are the foundation the rest of the library builds on.</p>
-  <div class="featured-grid">
-    <a href="/guides/kidney-physiology.html" class="featured-card" style="--card-accent:#1a6b72">
-      <span class="featured-num">01</span>
-      <span class="featured-body">
-        <span class="featured-eyebrow">Foundations</span>
-        <span class="featured-title">Your Amazing Kidneys</span>
-        <span class="featured-desc">Understand what healthy kidneys do before learning what goes wrong.</span>
-        <span class="featured-cta">Read guide &rarr;</span>
-      </span>
-    </a>
-    <a href="/guides/understanding-ckd.html" class="featured-card" style="--card-accent:#1a6b72">
-      <span class="featured-num">02</span>
-      <span class="featured-body">
-        <span class="featured-eyebrow">Nephrology</span>
-        <span class="featured-title">Taking Charge of CKD</span>
-        <span class="featured-desc">What CKD stages mean, how progression works, and what to expect.</span>
-        <span class="featured-cta">Read guide &rarr;</span>
-      </span>
-    </a>
-    <a href="/guides/understanding-lab-results.html" class="featured-card" style="--card-accent:#1a6b72">
-      <span class="featured-num">03</span>
-      <span class="featured-body">
-        <span class="featured-eyebrow">Labs</span>
-        <span class="featured-title">Understanding Your Lab Results</span>
-        <span class="featured-desc">Learn to read the numbers your doctor monitors — creatinine, eGFR, UACR.</span>
-        <span class="featured-cta">Read guide &rarr;</span>
-      </span>
-    </a>
-    <a href="/guides/nutrition-kidney-patients.html" class="featured-card" style="--card-accent:#2e6b3e">
-      <span class="featured-num">04</span>
-      <span class="featured-body">
-        <span class="featured-eyebrow">Nutrition</span>
-        <span class="featured-title">Nutrition for Kidney Patients</span>
-        <span class="featured-desc">Stage-specific protein, potassium, and sodium limits using Filipino foods.</span>
-        <span class="featured-cta">Read guide &rarr;</span>
-      </span>
-    </a>
-    <a href="/guides/managing-hypertension.html" class="featured-card" style="--card-accent:#a3480c">
-      <span class="featured-num">05</span>
-      <span class="featured-body">
-        <span class="featured-eyebrow">Internal Medicine</span>
-        <span class="featured-title">Managing High Blood Pressure</span>
-        <span class="featured-desc">How BP damages heart, kidney, and brain — home monitoring, medication classes, targets.</span>
-        <span class="featured-cta">Read guide &rarr;</span>
-      </span>
-    </a>
-    <a href="/guides/diabetes-kidneys.html" class="featured-card" style="--card-accent:#a3480c">
-      <span class="featured-num">06</span>
-      <span class="featured-body">
-        <span class="featured-eyebrow">Internal Medicine</span>
-        <span class="featured-title">Diabetes &amp; Your Kidneys</span>
-        <span class="featured-desc">How hyperfiltration and glycation damage the kidney — the foundational guide for DKD.</span>
-        <span class="featured-cta">Read guide &rarr;</span>
-      </span>
-    </a>
-  </div>
-  <div class="view-all-wrap">
-    <a href="/guides/" class="btn-primary" style="background:var(--navy);">View All <span id="final-cta-guides">146</span> Guides</a>
-  </div>
-</div>
-
-<!-- EVIDENCE-BASED BAND -->
-<div class="shell shell-alt reveal">
-  <div class="section-eyebrow">Evidence Basis</div>
-  <h2 class="section-title">Grounded in current clinical guidelines</h2>
-  <p class="section-sub">Every recommendation in this library traces back to one of these bodies — click to see why each one matters to kidney care.</p>
-  <div class="evidence-list">
-    <details class="evidence-item" open>
-      <summary>KDIGO <span class="ev-full">Kidney Disease: Improving Global Outcomes</span></summary>
-      <p>An international nonprofit that publishes the global consensus guidelines defining how kidney disease is diagnosed, staged, and managed.</p>
-    </details>
-    <details class="evidence-item">
-      <summary>ADA <span class="ev-full">American Diabetes Association</span></summary>
-      <p>Publishes annual Standards of Care setting the benchmark for managing diabetes, the leading driver of chronic kidney disease worldwide.</p>
-    </details>
-    <details class="evidence-item">
-      <summary>ACC/AHA <span class="ev-full">American College of Cardiology / American Heart Association</span></summary>
-      <p>Jointly issue cardiovascular guidelines essential to kidney care given how closely heart and kidney disease progress together.</p>
-    </details>
-    <details class="evidence-item">
-      <summary>KDOQI <span class="ev-full">Kidney Disease Outcomes Quality Initiative</span></summary>
-      <p>The National Kidney Foundation's initiative producing US-focused, practice-level guidelines for evaluating and treating kidney disease.</p>
-    </details>
-  </div>
-</div>
-
-<!-- RECOGNITION -->
-<div class="shell reveal">
-  <div class="recognition-wrap">
-    <div class="section-eyebrow">Patient Recognition</div>
-    <h2 class="section-title">Recognized by patients</h2>
-    <p class="section-sub" style="margin-left:auto;margin-right:auto;">Ratings and recognition earned directly from patients through SeriousMD's booking platform.</p>
-    <div class="recognition-badges">
-      <span class="recognition-badge">&#127942; Good Communicator</span>
-      <span class="recognition-badge">&#127942; Pleasing Personality</span>
-      <span class="recognition-badge">&#127942; In Safe Hands</span>
-      <span class="recognition-badge">&#127942; Caring Doctor</span>
-      <span class="recognition-badge">&#129352; Silver Award — Successful Consultations</span>
-      <span class="recognition-badge">&#9889; Reply Time Guarantee</span>
+<!-- ======================= TOOLS BAND ======================= -->
+<section class="rcm-tools">
+  <div class="rcm-tools-glow"></div>
+  <div class="rcm-tools-inner">
+    <div class="rcm-tools-head reveal">
+      <div class="rcm-eyebrow-row">
+        <span class="rcm-eyebrow-rule" style="background:#8FD3D6;"></span>
+        <span class="rcm-eyebrow" style="color:#8FD3D6;"><span id="stat-calculators-inline">184</span> INTERACTIVE TOOLS</span>
+      </div>
+      <h2 class="rcm-tools-h2">Not just something to read. Something you can use.</h2>
+      <p class="rcm-tools-p">Enter your own numbers and see what they mean — calculators and trackers that turn guidelines into answers for your situation.</p>
     </div>
-    <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" class="recognition-cta">View full profile &amp; patient reviews on SeriousMD &rarr;</a>
+    <div class="rcm-tools-grid reveal">
+      <a href="/guides/calc-egfr-ckd-epi.html" class="rcm-tool-card">
+        <span class="rcm-tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4.5 15a7.5 7.5 0 1 1 15 0" stroke="#8FD3D6" stroke-width="1.7" stroke-linecap="round"/><path d="M12 15l4-3" stroke="#8FD3D6" stroke-width="1.7" stroke-linecap="round"/><path d="M4.5 19h15" stroke="#8FD3D6" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+        <div class="rcm-tool-name">eGFR &amp; CKD Stage</div>
+        <p class="rcm-tool-desc">Enter your creatinine, age and sex to see your eGFR and CKD stage explained.</p>
+        <span class="rcm-tool-open">Open tool <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#8FD3D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a href="/guides/calc-kfre.html" class="rcm-tool-card">
+        <span class="rcm-tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 20V4" stroke="#8FD3D6" stroke-width="1.7" stroke-linecap="round"/><path d="M4 20h16" stroke="#8FD3D6" stroke-width="1.7" stroke-linecap="round"/><path d="M8 16l3-4 3 2 4-6" stroke="#8FD3D6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="rcm-tool-name">Kidney Failure Risk (KFRE)</div>
+        <p class="rcm-tool-desc">Estimate your 2- and 5-year risk with the validated Kidney Failure Risk Equation.</p>
+        <span class="rcm-tool-open">Open tool <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#8FD3D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a href="/guides/calc-renal-med-safety.html" class="rcm-tool-card">
+        <span class="rcm-tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3.5 5 6v5.5c0 4 3 7.3 7 8.5 4-1.2 7-4.5 7-8.5V6l-7-2.5Z" stroke="#8FD3D6" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 8.5v4M10 10.5h4" stroke="#8FD3D6" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+        <div class="rcm-tool-name">Medication Safety in CKD</div>
+        <p class="rcm-tool-desc">Check whether a drug and its dose are appropriate at your level of kidney function.</p>
+        <span class="rcm-tool-open">Open tool <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#8FD3D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+    </div>
+    <a href="/guides/calculators.html" class="rcm-tools-all reveal">Browse all <span id="stat-calculators-inline2">184</span> tools <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#EAF0FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
-</div>
+</section>
 
-<!-- DOCTOR BIO CTA -->
-<div class="shell shell-alt reveal">
-  <div class="bio-card">
-    <picture>
-      <source srcset="images/photo-about.webp" type="image/webp">
-      <img src="images/photo-about.jpg" alt="Dr. William Gregory M. Rivero" class="bio-photo" loading="lazy">
-    </picture>
-    <div class="bio-body">
-      <div class="section-eyebrow">Why I Built This</div>
-      <div class="bio-name">William Gregory M. Rivero, MD</div>
-      <div class="bio-credentials">FPCP &middot; DPSN &middot; Nephrology, Internal Medicine &amp; Clinical Nutrition</div>
-      <p class="bio-quote">I'm a nephrologist in daily practice, and I kept meeting patients who left the clinic frightened and under-informed — not because they weren't smart, but because no one had the time to explain. This library is my attempt to give that time back: honest answers, in plain language, in the language you think in. New guides go up regularly. If you spot an error or want to reach out, I'd genuinely like to hear from you.</p>
-      <div class="bio-actions">
-        <a href="/about.html" class="secondary">Read Full Bio &amp; Credentials</a>
-        <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" class="primary">Book an Appointment</a>
+<!-- ======================= EVIDENCE / TRUST ======================= -->
+<section class="rcm-evidence">
+  <div class="rcm-evidence-inner">
+    <div class="reveal">
+      <div class="rcm-eyebrow-row">
+        <span class="rcm-eyebrow-rule" style="background:#1A6B72;"></span>
+        <span class="rcm-eyebrow" style="color:#1A6B72;">WHY YOU CAN TRUST IT</span>
+      </div>
+      <h2 class="rcm-evidence-h2">Written by a doctor. Anchored to the evidence.</h2>
+      <p class="rcm-evidence-p">Every guide is written and kept current by <strong style="color:#16294a;">Dr. William Rivero</strong>, a practising nephrologist — one clinician, one voice, no committee and no sponsor. When guidelines change, the library changes with them.</p>
+      <div class="rcm-evidence-note">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="flex:none;" aria-hidden="true"><path d="M12 3 4 6v6c0 4.4 3.4 7.9 8 9 4.6-1.1 8-4.6 8-9V6l-8-3Z" stroke="#1F3864" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="#1A6B72" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>Made to read <strong style="color:#16294a;">alongside your doctor</strong> — never instead of one.</p>
+      </div>
+    </div>
+    <div class="rcm-pillars reveal delay-1">
+      <div class="rcm-pillar"><span class="rcm-pillar-icon" style="background:#E7F1F1;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v10.5A1.5 1.5 0 0 1 16.5 19H7A1.5 1.5 0 0 1 5.5 17.5V4.5A1.5 1.5 0 0 1 7 3Z" stroke="#1A6B72" stroke-width="1.7" stroke-linejoin="round"/><path d="M13.5 3v4.5H18" stroke="#1A6B72" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 12.5h5M8.5 15.5h3" stroke="#1A6B72" stroke-width="1.7" stroke-linecap="round"/></svg></span><div><div class="rcm-pillar-title">Physician-written</div><p class="rcm-pillar-body">Authored and maintained by a nephrologist — not a content team, sponsor or algorithm.</p></div></div>
+      <div class="rcm-pillar"><span class="rcm-pillar-icon" style="background:#E6F2EA;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3.5 5 6v5.5c0 4 3 7.3 7 8.5 4-1.2 7-4.5 7-8.5V6l-7-2.5Z" stroke="#2E7D46" stroke-width="1.7" stroke-linejoin="round"/><path d="m9.5 11.5 1.8 1.8L15 9.8" stroke="#2E7D46" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="rcm-pillar-title">Guideline-anchored</div><p class="rcm-pillar-body">Every recommendation traces back to KDIGO, ADA or ACC/AHA guidance.</p></div></div>
+      <div class="rcm-pillar"><span class="rcm-pillar-icon" style="background:#FBEEDD;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="10.5" width="14" height="9" rx="2" stroke="#C77A16" stroke-width="1.7"/><path d="M8 10.5V8a4 4 0 0 1 7.5-1.9" stroke="#C77A16" stroke-width="1.7" stroke-linecap="round"/><path d="M12 14v2.5" stroke="#C77A16" stroke-width="1.7" stroke-linecap="round"/></svg></span><div><div class="rcm-pillar-title">Always free</div><p class="rcm-pillar-body">No ads, no paywall, no account required. Open to every patient, everywhere.</p></div></div>
+      <div class="rcm-pillar"><span class="rcm-pillar-icon" style="background:#EEEAF9;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="#6D51C4" stroke-width="1.7"/><path d="M3.5 12h17M12 3.5c2.5 2.4 2.5 14.6 0 17M12 3.5c-2.5 2.4-2.5 14.6 0 17" stroke="#6D51C4" stroke-width="1.7"/></svg></span><div><div class="rcm-pillar-title">Four languages</div><p class="rcm-pillar-body">English, Tagalog, Cebuano and Kapampangan — care that meets people in their own words.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= GLOBAL REACH ======================= -->
+<section class="rcm-reach">
+  <div class="rcm-reach-inner">
+    <div class="reveal">
+      <div class="rcm-eyebrow-row">
+        <span class="rcm-eyebrow-rule" style="background:#1A6B72;"></span>
+        <span class="rcm-eyebrow" style="color:#1A6B72;">READ AROUND THE WORLD</span>
+      </div>
+      <h2 class="rcm-reach-h2">Kidney care has no borders.</h2>
+      <p class="rcm-reach-p">Readers across dozens of countries open the library — most of all in the United States and the Philippines, and always in one of four languages.<!-- TODO(user): if you have the real total distinct-country figure from Cloudflare, swap it in here for a specific claim instead of "dozens." --></p>
+      <div class="rcm-reach-nums">
+        <div><div class="rcm-reach-num">14+</div><div class="rcm-reach-num-label">countries reached</div></div>
+        <div><div class="rcm-reach-num">47k+</div><div class="rcm-reach-num-label">reads, recent snapshots</div></div>
+      </div>
+    </div>
+    <div class="rcm-bars-card reveal delay-1" id="bars-card">
+      <div class="rcm-bars-head">
+        <span class="rcm-bars-title">TOP COUNTRIES</span>
+        <span class="rcm-bars-sub">recent traffic</span>
+      </div>
+      <div class="rcm-bars-rows">
+        <div class="rcm-bar-row"><span class="rcm-bar-name">United States</span><span class="rcm-bar-track"><span class="rcm-bar-fill" data-tw="100%"></span></span><span class="rcm-bar-value">18,720</span></div>
+        <div class="rcm-bar-row"><span class="rcm-bar-name">Philippines</span><span class="rcm-bar-track"><span class="rcm-bar-fill" data-tw="79.6%"></span></span><span class="rcm-bar-value">14,900</span></div>
+        <div class="rcm-bar-row"><span class="rcm-bar-name">Netherlands</span><span class="rcm-bar-track"><span class="rcm-bar-fill" data-tw="14%"></span></span><span class="rcm-bar-value">2,613</span></div>
+        <div class="rcm-bar-row"><span class="rcm-bar-name">Canada</span><span class="rcm-bar-track"><span class="rcm-bar-fill" data-tw="12.8%"></span></span><span class="rcm-bar-value">2,396</span></div>
+        <div class="rcm-bar-row"><span class="rcm-bar-name">Japan</span><span class="rcm-bar-track"><span class="rcm-bar-fill" data-tw="11%"></span></span><span class="rcm-bar-value">2,055</span></div>
+        <div class="rcm-bar-row"><span class="rcm-bar-name">United Kingdom</span><span class="rcm-bar-track"><span class="rcm-bar-fill" data-tw="8%"></span></span><span class="rcm-bar-value">1,490</span></div>
+        <div class="rcm-bar-row"><span class="rcm-bar-name">Italy</span><span class="rcm-bar-track"><span class="rcm-bar-fill" data-tw="5.8%"></span></span><span class="rcm-bar-value">1,090</span></div>
+        <div class="rcm-bar-row"><span class="rcm-bar-name">China</span><span class="rcm-bar-track"><span class="rcm-bar-fill" data-tw="5%"></span></span><span class="rcm-bar-value">943</span></div>
+        <div class="rcm-bar-row"><span class="rcm-bar-name">Hong Kong</span><span class="rcm-bar-track"><span class="rcm-bar-fill" data-tw="5%"></span></span><span class="rcm-bar-value">937</span></div>
+        <div class="rcm-bar-row"><span class="rcm-bar-name">France</span><span class="rcm-bar-track"><span class="rcm-bar-fill" data-tw="4.7%"></span></span><span class="rcm-bar-value">886</span></div>
       </div>
     </div>
   </div>
-</div>
+  <div class="rcm-flagpile" id="flagpile"></div>
+</section>
+
+<!-- ======================= CLOSING CTA (chevron color-inversion wipe) ======================= -->
+<section class="rcm-closing" id="closing-cta">
+  <div class="rcm-closing-stack">
+    <div class="rcm-closing-layer rcm-closing-layer--light">
+      <h2 class="rcm-closing-h2">47,000 readers,<br><em>plus you.</em></h2>
+      <p class="rcm-closing-p">It takes only a moment to begin — free, no account, and in your language.</p>
+      <div class="rcm-closing-ctas">
+        <a href="/guides/" class="rcm-btn-navy">I've been diagnosed
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="/guides/calculators.html" class="rcm-btn-outline">I'm a clinician
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#1A6B72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="rcm-closing-layer rcm-closing-layer--dark" data-chevron aria-hidden="true">
+      <h2 class="rcm-closing-h2">47,000 readers,<br><em>plus you.</em></h2>
+      <p class="rcm-closing-p">It takes only a moment to begin — free, no account, and in your language.</p>
+      <div class="rcm-closing-ctas">
+        <a href="/guides/" class="rcm-btn-navy" tabindex="-1">I've been diagnosed
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#1F3864" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="/guides/calculators.html" class="rcm-btn-outline" tabindex="-1">I'm a clinician
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 
 </main>
 
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="footer-brand-row">
-        <img class="brand-icon" src="/brand/icon-dark.svg" alt="" width="24" height="31">
-        <span class="footer-word">Renal Care Matters</span>
+<!-- ======================= FOOTER ======================= -->
+<footer class="rcm-footer">
+  <div class="rcm-footer-inner">
+    <div class="rcm-footer-top">
+      <div>
+        <div class="rcm-footer-brand">
+          <img src="/brand/icon-dark.svg" alt="Renal Care Matters" width="30" height="38">
+          <span class="rcm-footer-word">Renal Care Matters</span>
+        </div>
+        <p class="rcm-footer-blurb">A free kidney-health library — physician-written, guideline-anchored, and available in four languages.</p>
+        <div class="rcm-langbar">
+          <button data-lang-btn="en" class="active">ENG</button>
+          <button data-lang-btn="tl">TAG</button>
+          <button data-lang-btn="ceb">CEB</button>
+          <button data-lang-btn="kap">KAP</button>
+        </div>
       </div>
-      <p>Free, physician-written kidney health education for Filipino patients and families — in English, Filipino, Cebuano, and Kapampangan.</p>
+      <div class="rcm-footer-cols">
+        <div>
+          <div class="rcm-footer-head">EXPLORE</div>
+          <ul class="rcm-footer-list">
+            <li><a href="/guides/">All guides</a></li>
+            <li><a href="/guides/calculators.html">Interactive tools</a></li>
+            <li><a href="#library">Specialties</a></li>
+            <li><a href="/guides/">What's new</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="rcm-footer-head">FOR PATIENTS</div>
+          <ul class="rcm-footer-list">
+            <li><a href="/guides/understanding-ckd.html">Newly diagnosed</a></li>
+            <li><a href="/guides/understanding-lab-results.html">Understanding your labs</a></li>
+            <li><a href="/guides/living-with-dialysis.html">Living with dialysis</a></li>
+            <li><a href="/guides/first-nephrology-visit-guide.html">Questions to ask</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="rcm-footer-head">FOR CLINICIANS</div>
+          <ul class="rcm-footer-list">
+            <li><a href="/guides/slowing-ckd-progression.html">Guideline summaries</a></li>
+            <li><a href="/guides/calculators.html">Calculators</a></li>
+            <li><a href="/guides/calc-renal-med-safety.html">Drug dosing</a></li>
+            <li><a href="/guides/nephrology-atlas.html">Citations</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Explore</div>
-      <a href="/guides/">All Guides</a>
-      <a href="/guides/calculators.html">Calculators</a>
-      <a href="/guides/kidney-physiology.html">Physiology</a>
-      <a href="/nephrology-atlas.html">Atlas</a>
+    <div class="rcm-footer-bottom">
+      <p class="rcm-footer-legal">This library is for education and does not replace professional medical advice. Always consult your own clinician about your care. &copy; 2026 Renal Care Matters.</p>
+      <div class="rcm-footer-legalnav">
+        <a href="/about.html">About</a>
+        <a href="/about.html">Contact</a>
+      </div>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Practice</div>
-      <a href="/about.html">About</a>
-      <a href="/about.html#contact">Clinics &amp; Contact</a>
-      <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener">Book an Appointment</a>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Languages</div>
-      <span>English</span>
-      <span>Filipino</span>
-      <span>Cebuano</span>
-      <span>Kapampangan</span>
-    </div>
-  </div>
-  <div class="footer-legal">
-    <p>&copy; 2026 Renal Care Matters. Educational content only — always consult your physician.</p>
   </div>
 </footer>
 
@@ -1021,14 +870,26 @@
   </button>
 </div>
 
-<script>
-// ── NAV: blur-on-scroll + mobile hamburger overlay ──────────────────────
-(function(){
-  var header = document.getElementById('site-header');
-  var onScroll = function(){ header.classList.toggle('scrolled', window.scrollY > 8); };
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+<!-- ======================= START HERE PATHWAY MODAL ======================= -->
+<div class="modal-overlay" id="pathway-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-drawer">
+    <div class="modal-header">
+      <span class="modal-condition-badge" id="modal-badge"></span>
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <button class="modal-close" id="modal-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <div class="modal-footer-note" id="modal-footer-note"></div>
+      <button class="modal-dismiss" id="modal-dismiss">Got it</button>
+    </div>
+  </div>
+</div>
 
+<script>
+// ── NAV: mobile hamburger overlay ────────────────────────────────────────
+(function(){
   var hamburger = document.getElementById('hamburger');
   var overlay = document.getElementById('mobile-overlay');
   var closeBtn = document.getElementById('mobile-overlay-close');
@@ -1038,6 +899,27 @@
   closeBtn.addEventListener('click', closeOverlay);
   overlay.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeOverlay); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeOverlay(); });
+})();
+
+// ── LANGUAGE PREFERENCE (sets the site-wide wgmr-lang key; homepage copy
+//    itself stays English — actual translated copy lives on guide pages) ──
+(function(){
+  var KEY = 'wgmr-lang';
+  var saved = null;
+  try { saved = localStorage.getItem(KEY); } catch(e) {}
+  function applyActive(lang){
+    document.querySelectorAll('[data-lang-btn]').forEach(function(b){
+      b.classList.toggle('active', b.dataset.langBtn === lang);
+    });
+  }
+  document.querySelectorAll('[data-lang-btn]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var lang = btn.dataset.langBtn;
+      try { localStorage.setItem(KEY, lang); } catch(e) {}
+      applyActive(lang);
+    });
+  });
+  if (saved) applyActive(saved);
 })();
 
 // ── DESKTOP VIEW TOGGLE ──────────────────────────────────────────────────
@@ -1065,27 +947,27 @@ function toggleDesktop() {
 </script>
 
 <script>
-// ── CATEGORIES TABS ──────────────────────────────────────────────────────
-(function(){
-  var tabs = document.querySelectorAll('.cat-tab');
-  var panels = document.querySelectorAll('.cat-panel');
-  tabs.forEach(function(tab){
-    tab.addEventListener('click', function(){
-      tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
-      panels.forEach(function(p){ p.classList.remove('active'); });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected','true');
-      var panel = document.getElementById('panel-' + tab.dataset.cat);
-      if (panel) panel.classList.add('active');
+// ── SCROLL REVEAL ──────────────────────────────────────────────────────────
+(function scrollReveal(){
+  const targets = document.querySelectorAll('.reveal:not(.is-visible)');
+  if (!('IntersectionObserver' in window) || !targets.length) {
+    targets.forEach(t => t.classList.add('is-visible'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
     });
-  });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  targets.forEach(t => io.observe(t));
 })();
 </script>
 
 <script>
-// Mirror the guide/specialty/calculator counts from guides/index.html so the
-// homepage stats never drift. Real numbers are already the static content
-// (no-JS visitors never see a placeholder) — this just keeps everything synced.
+// ── HERO STATS SYNC (reads real counts from guides/index.html) ─────────────
 (function syncHeroStats(){
   fetch('/guides/index.html', {cache:'no-cache'})
     .then(r => r.ok ? r.text() : Promise.reject(r.status))
@@ -1102,17 +984,17 @@ function toggleDesktop() {
         const el = document.getElementById('stat-' + id);
         if (el && val && /^\d+$/.test(val)) { el.dataset.target = val; el.textContent = val; }
       });
-      const guideVal = stat('guide');
-      if (guideVal && /^\d+$/.test(guideVal)) {
-        const sg = document.getElementById('subhead-guides');
-        const fg = document.getElementById('final-cta-guides');
-        if (sg) sg.textContent = guideVal;
-        if (fg) fg.textContent = guideVal;
+      const specVal = stat('specialt');
+      if (specVal && /^\d+$/.test(specVal)) {
+        const si = document.getElementById('stat-specialties-inline');
+        if (si) si.textContent = specVal;
       }
       const calcVal = stat('calculator');
       if (calcVal && /^\d+$/.test(calcVal)) {
-        const sc = document.getElementById('subhead-calculators');
-        if (sc) sc.textContent = calcVal;
+        ['stat-calculators-inline','stat-calculators-inline2'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = calcVal;
+        });
       }
     })
     .catch(err => console.warn('Hero stats sync skipped:', err));
@@ -1120,137 +1002,41 @@ function toggleDesktop() {
 </script>
 
 <script>
-// ── SCROLL REVEAL ──────────────────────────────────────────────────────────
-(function scrollReveal(){
-  const targets = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window) || !targets.length) {
-    targets.forEach(t => t.classList.add('is-visible'));
-    return;
+// ── LIVE ESTIMATE (real ISN/GBD-derived global CKD prevalence estimate) ────
+(function() {
+  var globalEl = document.getElementById('ckd-global');
+  if (!globalEl) return;
+  var BASE_GLOBAL = 850274891;
+  var BASE_MS = new Date('2024-01-01T00:00:00Z').getTime();
+  var RATE_G = 16000000 / 31557600;
+  function fmt(n) { return Math.floor(n).toLocaleString('en-US'); }
+  function tick() {
+    var elapsed = (Date.now() - BASE_MS) / 1000;
+    globalEl.textContent = fmt(BASE_GLOBAL + RATE_G * elapsed);
   }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  targets.forEach(t => io.observe(t));
+  tick();
+  setInterval(tick, 1000);
+})();
+(function() {
+  var btn = document.getElementById('rcm-why-btn');
+  var panel = document.getElementById('rcm-why-panel');
+  if (!btn || !panel) return;
+  btn.addEventListener('click', function() {
+    var on = panel.classList.toggle('show');
+    btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+  });
 })();
 </script>
 
 <script>
-// ── DARK-BAND PARTICLE BACKGROUND (Start Here + hero) ───────────────────────
-function initParticles(canvasId, containerSelector, density){
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const ctx = canvas.getContext('2d');
-  const section = canvas.closest(containerSelector);
-  let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
-  let particles = [];
-  let running = false;
-  let raf = null;
-
-  const COLORS = ['rgba(201,166,107,0.5)', 'rgba(255,255,255,0.28)', 'rgba(79,184,190,0.35)'];
-
-  function sizeCanvas(){
-    w = section.clientWidth;
-    h = section.clientHeight;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-
-  function makeParticles(){
-    const count = Math.round(Math.min(w, 1400) / density);
-    particles = Array.from({ length: count }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: 0.8 + Math.random() * 1.8,
-      vx: (Math.random() - 0.5) * 0.12,
-      vy: -0.05 - Math.random() * 0.12,
-      c: COLORS[Math.floor(Math.random() * COLORS.length)]
-    }));
-  }
-
-  function drawStatic(){
-    sizeCanvas();
-    makeParticles();
-    ctx.clearRect(0, 0, w, h);
-    particles.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.c;
-      ctx.fill();
-    });
-  }
-
-  function tick(){
-    if (!running) return;
-    ctx.clearRect(0, 0, w, h);
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.y < -4) { p.y = h + 4; p.x = Math.random() * w; }
-      if (p.x < -4) p.x = w + 4;
-      if (p.x > w + 4) p.x = -4;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.c;
-      ctx.fill();
-    });
-    raf = requestAnimationFrame(tick);
-  }
-
-  function start(){
-    if (running) return;
-    running = true;
-    raf = requestAnimationFrame(tick);
-  }
-  function stop(){
-    running = false;
-    if (raf) cancelAnimationFrame(raf);
-  }
-
-  if (reduceMotion) {
-    drawStatic();
-    return;
-  }
-
-  sizeCanvas();
-  makeParticles();
-
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => entry.isIntersecting ? start() : stop());
-    }, { threshold: 0.01 });
-    io.observe(section);
-  } else {
-    start();
-  }
-
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { sizeCanvas(); makeParticles(); }, 200);
-  });
-}
-
-initParticles('pathways-particles', '.pathways-section', 18);
-initParticles('hero-particles', '.hero-media', 14);
-</script>
-
-<script>
-// Start Here pathway tiles + modal — same PATHWAYS dataset and modal
-// mechanics used on guides/index.html, restyled for this page's dark band.
+// ── START HERE / AUDIENCE PICKER: same PATHWAYS dataset + modal mechanics
+// used previously on this page, now triggered from the "WHO IT'S FOR" band.
 const PATHWAYS = {
   patient: {
     condition: 'Patient', title: 'Where should I start?',
     desc: 'New to a CKD diagnosis, or just want to understand your kidneys better? Start with the fundamentals, then build from there.',
     color: '#1A6B72',
+    blurb: 'Plain-language guides, lab explainers, and questions for your next visit.',
     note: '<strong>These are curated starting points.</strong> Your nephrologist will tailor recommendations to your specific stage and test results.',
     steps: [
       { num: 1, title: 'Your Amazing Kidneys — Normal Physiology', why: 'Understand what healthy kidneys do before learning what goes wrong.', badges: [], url: '/guides/kidney-physiology.html', isStart: true },
@@ -1264,7 +1050,8 @@ const PATHWAYS = {
   caregiver: {
     condition: 'Caregiver', title: 'Supporting someone with CKD',
     desc: 'Caring for a family member on dialysis or with advancing kidney disease is demanding. These guides are for you.',
-    color: '#5b4397',
+    color: '#C77A16',
+    blurb: 'How to support a loved one — diet, dialysis days, and the warning signs to watch.',
     note: '<strong>These are curated starting points.</strong> Your loved one\'s nephrologist will tailor recommendations to their specific stage and test results.',
     steps: [
       { num: 1, title: 'The CKD Caregiver\'s Guide: Supporting Without Burning Out', why: 'Practical frameworks for medication management and recognising burnout.', badges: ['ph'], url: '/guides/caregiver-guide-ckd.html', isStart: true },
@@ -1278,7 +1065,8 @@ const PATHWAYS = {
   'internist-gp': {
     condition: 'Internist / GP', title: 'Nephrology essentials for primary care',
     desc: 'When to refer, what to check first, and the outpatient algorithms that keep patients stable between nephrology visits.',
-    color: '#7c93c9',
+    color: '#2E7D46',
+    blurb: 'When to refer, how to co-manage, and CKD staging at a glance.',
     note: '<strong>These are curated starting points.</strong> Adapt to your patients\' actual clinical picture and your own referral protocols.',
     steps: [
       { num: 1, title: 'Signs It\'s Time to See a Kidney Doctor', why: 'The early-referral red flags — foamy urine, nocturia, resistant hypertension, anemia.', badges: [], url: '/guides/signs-to-see-a-nephrologist.html', isStart: true },
@@ -1292,7 +1080,8 @@ const PATHWAYS = {
   nephrologist: {
     condition: 'Nephrologist', title: 'Deeper clinical references',
     desc: 'Advanced techniques, procedures, and evidence past the patient-facing basics — for trainees and practising nephrologists.',
-    color: '#d99a4e',
+    color: '#4E86C9',
+    blurb: 'Concise KDIGO-anchored summaries and validated calculators.',
     note: '<strong>These are curated starting points.</strong> Weigh against your own institution\'s protocols and your patients\' individual context.',
     steps: [
       { num: 1, title: 'Nephrology Visual Atlas', why: '133 illustrated cards across anatomy, pathology, algorithms, and landmark trials.', badges: [], url: '/guides/nephrology-atlas.html', isStart: true },
@@ -1306,7 +1095,8 @@ const PATHWAYS = {
   'dialysis-staff': {
     condition: 'Dialysis Staff / HD Tech', title: 'Running a safe dialysis unit',
     desc: 'Water treatment, reprocessing, machine assignment, and access care — the operational side of hemodialysis.',
-    color: '#5ab3e0',
+    color: '#6D51C4',
+    blurb: 'Access care, machine safety, and patient-teaching handouts.',
     note: '<strong>These are curated starting points.</strong> Always defer to your unit\'s standing protocols and supervising nephrologist.',
     steps: [
       { num: 1, title: 'Hemodialysis Water Treatment Systems', why: 'A clinical and engineering reference for dialysis staff.', badges: [], url: '/guides/dialysis-water-treatment-systems.html', isStart: true },
@@ -1320,7 +1110,8 @@ const PATHWAYS = {
   dietitian: {
     condition: 'Dietitian / Nutritionist', title: 'Nutrition therapy for kidney disease',
     desc: 'Stage-specific protein, potassium, phosphorus, and sodium targets — built around Filipino food.',
-    color: '#7ec98f',
+    color: '#C0453B',
+    blurb: 'Renal diet building blocks — potassium, phosphate, sodium and protein.',
     note: '<strong>These are curated starting points.</strong> Individualize targets against each patient\'s labs and the treating nephrologist\'s plan.',
     steps: [
       { num: 1, title: 'Nutrition for Kidney Patients', why: 'Stage-specific protein, potassium, and sodium limits using Filipino foods.', badges: ['ph'], url: '/guides/nutrition-kidney-patients.html', isStart: true },
@@ -1341,6 +1132,7 @@ const PATHWAYS = {
   const modalDesc = document.getElementById('modal-desc');
   const modalBody = document.getElementById('modal-body');
   const modalFooterNote = document.getElementById('modal-footer-note');
+  const blurbEl = document.getElementById('audience-blurb');
 
   function openPathway(key) {
     const p = PATHWAYS[key];
@@ -1380,7 +1172,9 @@ const PATHWAYS = {
   document.querySelectorAll('.pathway-tile').forEach(tile => {
     tile.addEventListener('click', () => {
       var persona = tile.dataset.pathway;
+      var p = PATHWAYS[persona];
       try { localStorage.setItem('wgmr-visit-persona', persona); } catch(e) {}
+      if (blurbEl && p) blurbEl.textContent = p.blurb;
       openPathway(persona);
     });
   });
@@ -1392,80 +1186,178 @@ const PATHWAYS = {
 </script>
 
 <script>
-// ── CKD LIVE WIDGET ──────────────────────────────────────────────────────
-(function() {
-  var globalEl = document.getElementById('ckd-global');
-  var phEl = document.getElementById('ckd-ph');
-  var phDialysisEl = document.getElementById('ckd-ph-dialysis');
-  if (!globalEl && !phEl && !phDialysisEl) return;
-  var BASE_GLOBAL = 850274891;
-  var BASE_PH = 10823047;
-  var BASE_MS = new Date('2024-01-01T00:00:00Z').getTime();
-  var RATE_G = 16000000 / 31557600;
-  var RATE_P = 500000 / 31557600;
-  var BASE_PH_DIALYSIS = 64845;
-  var BASE_PH_DIALYSIS_MS = new Date('2025-01-01T00:00:00+08:00').getTime();
-  var RATE_PD = 11549 / 31557600;
-  function fmt(n) { return Math.floor(n).toLocaleString('en-US'); }
-  function tick() {
-    var now = Date.now();
-    var elapsed = (now - BASE_MS) / 1000;
-    if (globalEl) globalEl.textContent = fmt(BASE_GLOBAL + RATE_G * elapsed);
-    if (phEl) phEl.textContent = fmt(BASE_PH + RATE_P * elapsed);
-    if (phDialysisEl) phDialysisEl.textContent = fmt(BASE_PH_DIALYSIS + RATE_PD * ((now - BASE_PH_DIALYSIS_MS) / 1000));
-  }
-  tick();
-  setInterval(tick, 1000);
-})();
-(function() {
-  var widget = document.getElementById('ckd-widget');
-  var btn = document.getElementById('ckd-widget-toggle');
-  if (!widget || !btn) return;
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    var isOpen = widget.classList.toggle('open');
-    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
-  document.addEventListener('click', function(e) {
-    if (!widget.contains(e.target)) { widget.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
-  });
-  var why = document.getElementById('ckd-widget-why');
-  var method = document.getElementById('ckd-widget-method');
-  if (why && method) {
-    why.addEventListener('click', function(e) {
-      e.stopPropagation();
-      var on = method.classList.toggle('show');
-      why.setAttribute('aria-expanded', on ? 'true' : 'false');
-      why.textContent = on ? 'Hide details' : 'Why is this counting?';
+// ── SCROLL-DRIVEN MOTION: converging cards, stacking words, tent reveal ────
+(function(){
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const wrap = document.getElementById('converge-wrap');
+  const cards = Array.from(document.querySelectorAll('[data-card]'));
+  const headline = document.getElementById('converge-headline');
+  const payoff = document.getElementById('converge-payoff');
+  const stackWrap = document.getElementById('stack-wrap');
+  const stackWords = Array.from(document.querySelectorAll('[data-stackword]'));
+  const chevronSection = document.getElementById('closing-cta');
+  const chevronEl = document.querySelector('[data-chevron]');
+  const CHEVRON_DEPTH = 30;
+
+  const applyHero = (p) => {
+    const vw = window.innerWidth;
+    if (vw < 760) {
+      cards.forEach(c => { c.style.transform = ''; c.style.opacity = ''; });
+      if (headline) { headline.style.transform = ''; headline.style.opacity = ''; }
+      if (payoff) { payoff.style.opacity = ''; payoff.style.transform = ''; }
+      return;
+    }
+    const f = Math.max(0.6, Math.min(1, vw / 1360));
+    cards.forEach(c => {
+      const sx = +c.dataset.sx, sy = +c.dataset.sy, sr = +c.dataset.sr;
+      const gx = +c.dataset.gx, gy = +c.dataset.gy, gr = +c.dataset.gr;
+      const x = lerp(sx, gx, p) * f, y = lerp(sy, gy, p) * f, r = lerp(sr, gr, p);
+      c.style.transform = 'translate(-50%,-50%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + r.toFixed(2) + 'deg)';
+      const op = Math.max(0, Math.min(1, (p - 0.04) / 0.62));
+      c.style.opacity = (0.1 + 0.9 * op).toFixed(3);
+      c.style.zIndex = String(10 + Math.round(p * 6) * (sr < 0 ? 1 : 0) + (+c.dataset.gy < 0 ? 1 : 2));
     });
+    if (headline) {
+      headline.style.opacity = (1 - 0.9 * p).toFixed(3);
+      headline.style.transform = 'translate(-50%,-50%) translateY(' + (-28 * p).toFixed(1) + 'px) scale(' + (1 - 0.1 * p).toFixed(3) + ')';
+    }
+    if (payoff) {
+      const pp = Math.max(0, (p - 0.5) / 0.5);
+      payoff.style.opacity = pp.toFixed(3);
+      payoff.style.transform = 'translate(-50%,0) translateY(' + (18 * (1 - pp)).toFixed(1) + 'px)';
+    }
+  };
+
+  const heroProgress = () => {
+    if (!wrap) return 0;
+    const vh = window.innerHeight;
+    const total = wrap.offsetHeight - vh;
+    if (total <= 0) return 0;
+    return Math.max(0, Math.min(1, -wrap.getBoundingClientRect().top / total));
+  };
+
+  const applyStack = (p) => {
+    const vw = window.innerWidth;
+    if (vw < 760) { stackWords.forEach(w => { w.style.opacity = ''; w.style.transform = ''; }); return; }
+    const n = stackWords.length || 1;
+    stackWords.forEach(w => {
+      const i = +w.dataset.i;
+      const rev = Math.max(0, Math.min(1, p * n - i + 0.35));
+      w.style.opacity = rev.toFixed(3);
+      w.style.transform = 'translateY(' + ((1 - rev) * 30).toFixed(1) + 'px)';
+    });
+  };
+  const stackProgress = () => {
+    if (!stackWrap) return 0;
+    const vh = window.innerHeight;
+    const total = stackWrap.offsetHeight - vh;
+    if (total <= 0) return 0;
+    return Math.max(0, Math.min(1, -stackWrap.getBoundingClientRect().top / total));
+  };
+
+  // Chevron color-inversion wipe (jeton.com-style): the dark layer is
+  // clipped by a polygon whose bottom edge is an upward chevron; as the
+  // section scrolls through the viewport the chevron sweeps top-to-bottom,
+  // wiping the dark layer over the light one beneath it.
+  const applyChevron = () => {
+    if (!chevronEl || !chevronSection) return;
+    const vh = window.innerHeight;
+    const r = chevronSection.getBoundingClientRect();
+    const t = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+    const e = t * 100;
+    const a = e - CHEVRON_DEPTH;
+    chevronEl.style.clipPath = 'polygon(0% -1%, 100% -1%, 100% ' + e.toFixed(1) + '%, 50% ' + a.toFixed(1) + '%, 50% ' + a.toFixed(1) + '%, 0% ' + e.toFixed(1) + '%)';
+  };
+
+  applyHero(heroProgress());
+  applyStack(stackProgress());
+
+  if (reduce) {
+    cards.forEach(c => { c.style.opacity = '1'; });
+    stackWords.forEach(w => { w.style.opacity = '1'; w.style.transform = 'none'; });
+    if (chevronEl) chevronEl.style.clipPath = 'polygon(0% -1%, 100% -1%, 100% 0%, 50% -30%, 50% -30%, 0% 0%)';
+    return;
   }
+
+  applyChevron();
+
+  // animated bar grow-in for the global-reach section
+  const barCard = document.getElementById('bars-card');
+  const bars = Array.from(document.querySelectorAll('.rcm-bar-fill'));
+  bars.forEach(b => { b.dataset.tw = b.dataset.tw || b.style.width || '0%'; b.style.transition = 'none'; b.style.width = '0%'; });
+  if (barCard && bars.length) {
+    void barCard.offsetWidth;
+    const bo = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        bars.forEach((b, idx) => {
+          setTimeout(() => { b.style.transition = 'width 1.05s cubic-bezier(.2,.7,.3,1)'; b.style.width = b.dataset.tw; }, idx * 55);
+        });
+        bo.disconnect();
+      });
+    }, { threshold: 0.3 });
+    bo.observe(barCard);
+  }
+
+  // flag pile drop-in for the global-reach section
+  const flagPile = document.getElementById('flagpile');
+  if (flagPile) {
+    const flagCodes = ['us','ph','nl','ca','jp','gb','it','cn','hk','fr','de','tw','sg','br','es','ch','in','au','kr','se','dk','no','is','my','ae','qa','np','vn','gh','sg','tw','pt','ie','mx','za'];
+    let fseed = 9;
+    const frnd = () => { fseed = (fseed * 1103515245 + 12345) & 0x7fffffff; return fseed / 0x7fffffff; };
+    const FN = 30;
+    const frag = document.createDocumentFragment();
+    const flagEls = [];
+    for (let i = 0; i < FN; i++) {
+      const code = flagCodes[i % flagCodes.length];
+      const left = (i + 0.5) / FN * 100 + (frnd() - 0.5) * 5;
+      const size = Math.round(38 + frnd() * 20);
+      const mound = Math.sin((i + 0.5) / FN * Math.PI) * 32;
+      const bottom = Math.round(frnd() * 22 + mound);
+      const rot = ((frnd() - 0.5) * 30).toFixed(1);
+      const img = document.createElement('img');
+      img.src = 'https://hatscripts.github.io/circle-flags/flags/' + code + '.svg';
+      img.alt = '';
+      img.loading = 'lazy';
+      img.className = 'rcm-flag';
+      img.style.width = size + 'px';
+      img.style.height = size + 'px';
+      img.style.left = left.toFixed(1) + '%';
+      img.style.bottom = bottom + 'px';
+      img.style.zIndex = String(Math.round(60 - bottom / 2));
+      img.dataset.rest = 'translateX(-50%) translateY(0) rotate(' + rot + 'deg)';
+      img.dataset.delay = String(i);
+      img.style.transform = 'translateX(-50%) translateY(-260px) rotate(' + rot + 'deg)';
+      frag.appendChild(img);
+      flagEls.push(img);
+    }
+    flagPile.appendChild(frag);
+    const fo = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        flagEls.forEach(fl => {
+          const d = +fl.dataset.delay;
+          setTimeout(() => { fl.style.opacity = '1'; fl.style.transform = fl.dataset.rest; }, d * 42);
+        });
+        fo.disconnect();
+      });
+    }, { threshold: 0.2 });
+    fo.observe(flagPile);
+  }
+
+  // scroll-driven update loop
+  let ticking = false;
+  const update = () => {
+    applyHero(heroProgress());
+    applyStack(stackProgress());
+    applyChevron();
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
 })();
 </script>
-
-<div class="ckd-widget" id="ckd-widget">
-  <button class="ckd-widget-toggle" id="ckd-widget-toggle" aria-expanded="false" aria-label="CKD Live Counter">
-    <span class="ckd-pulse"></span>CKD Live
-  </button>
-  <div class="ckd-widget-panel" role="region" aria-label="Live CKD patient estimates">
-    <div class="ckd-widget-row">
-      <div class="ckd-widget-num" id="ckd-global">850,274,891</div>
-      <div class="ckd-widget-label">People with CKD — worldwide</div>
-    </div>
-    <div class="ckd-widget-row">
-      <div class="ckd-widget-num" id="ckd-ph">10,823,047</div>
-      <div class="ckd-widget-label">In the Philippines</div>
-    </div>
-    <div class="ckd-widget-row">
-      <div class="ckd-widget-num" id="ckd-ph-dialysis">82,000</div>
-      <div class="ckd-widget-label">On dialysis — Philippines</div>
-    </div>
-    <div class="ckd-widget-source">Est. &middot; ISN/KDIGO 2023 &middot; NKTI/PRDR 2024 &middot; Updates in real time</div>
-    <button type="button" class="ckd-widget-why" id="ckd-widget-why" aria-expanded="false" aria-controls="ckd-widget-method">Why is this counting?</button>
-    <div class="ckd-widget-method" id="ckd-widget-method" role="region">
-      <strong>How the counter ticks.</strong> No registry feed exists for live CKD or dialysis numbers. Each row uses the latest published baseline and extrapolates forward at the observed annual growth rate. The climb you see is the projected pace — the underlying counts are real, the second-by-second motion is arithmetic.
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
