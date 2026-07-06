@@ -617,6 +617,7 @@
     <div class="hero-langs">English &middot; Filipino &middot; Cebuano &middot; Kapampangan</div>
   </div>
   <div class="hero-media reveal">
+    <canvas class="particles-canvas" id="hero-particles" aria-hidden="true"></canvas>
     <div class="hero-logo-panel">
       <img class="hero-logo-mark" src="/brand/icon-dark.svg" alt="" width="148" height="192">
       <div class="hero-logo-word">Renal Care Matters</div>
@@ -1172,13 +1173,13 @@ function toggleDesktop() {
 </script>
 
 <script>
-// ── START-HERE PARTICLE BACKGROUND ──────────────────────────────────────────
-(function particles(){
-  const canvas = document.getElementById('pathways-particles');
+// ── DARK-BAND PARTICLE BACKGROUND (Start Here + hero) ───────────────────────
+function initParticles(canvasId, containerSelector, density){
+  const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const ctx = canvas.getContext('2d');
-  const section = canvas.closest('.pathways-section');
+  const section = canvas.closest(containerSelector);
   let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
   let particles = [];
   let running = false;
@@ -1197,7 +1198,7 @@ function toggleDesktop() {
   }
 
   function makeParticles(){
-    const count = Math.round(Math.min(w, 1400) / 18);
+    const count = Math.round(Math.min(w, 1400) / density);
     particles = Array.from({ length: count }, () => ({
       x: Math.random() * w,
       y: Math.random() * h,
@@ -1269,7 +1270,10 @@ function toggleDesktop() {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => { sizeCanvas(); makeParticles(); }, 200);
   });
-})();
+}
+
+initParticles('pathways-particles', '.pathways-section', 18);
+initParticles('hero-particles', '.hero-media', 14);
 </script>
 
 <script>
