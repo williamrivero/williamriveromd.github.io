@@ -1266,7 +1266,8 @@ const PATHWAYS = {
     const r = chevronSection.getBoundingClientRect();
     const t = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
     const e = t * 100;
-    const a = e - CHEVRON_DEPTH;
+    const depth = CHEVRON_DEPTH * t; // the notch opens up (grows) as you scroll down, rather than a fixed-size arrow just translating
+    const a = e - depth;
     chevronEl.style.clipPath = 'polygon(0% -1%, 100% -1%, 100% ' + e.toFixed(1) + '%, 50% ' + a.toFixed(1) + '%, 50% ' + a.toFixed(1) + '%, 0% ' + e.toFixed(1) + '%)';
   };
 
