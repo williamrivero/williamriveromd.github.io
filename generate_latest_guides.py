@@ -328,7 +328,12 @@ def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool)
         r'(<span id="subhead-calculators">)\d+(</span>)', rf'\g<1>{calc_count}\g<2>', new_root_text)
     new_root_text, rn6 = re.subn(
         r'(<span id="final-cta-guides">)\d+(</span>)', rf'\g<1>{guide_count}\g<2>', new_root_text)
-    rn = rn1 + rn2 + rn3 + rn4 + rn5 + rn6
+    new_root_text, rn7 = re.subn(
+        r'\d+( evidence-based guides organized by specialty)', rf'{guide_count}\g<1>', new_root_text)
+    new_root_text, rn8 = re.subn(
+        r'\d+( physician-written guides and )\d+( interactive tools)',
+        rf'{guide_count}\g<1>{calc_count}\g<2>', new_root_text)
+    rn = rn1 + rn2 + rn3 + rn4 + rn5 + rn6 + rn7 + rn8
     print(f"index.html: {rn} hero stat fallback(s) synced" if rn else "index.html: stats already in sync")
 
     if not dry_run:
