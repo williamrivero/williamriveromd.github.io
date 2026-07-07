@@ -304,7 +304,7 @@
   .rcm-closing-stack > * { grid-area: 1 / 1; }
   .rcm-closing-layer { display: flex; flex-direction: column; align-items: center; text-align: center; padding: clamp(90px,12vw,150px) 22px; }
   .rcm-closing-layer--light { background: #FBFAF7; color: #16294a; }
-  .rcm-closing-layer--dark { background: #1F3864; color: #fff; pointer-events: none; will-change: clip-path; }
+  .rcm-closing-layer--dark { background: #1F3864; color: #fff; pointer-events: none; will-change: clip-path; transition: clip-path 90ms linear; }
   .rcm-closing-h2 { font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(42px,10vw,110px); line-height: 0.94; letter-spacing: -0.03em; margin: 0; text-wrap: balance; }
   .rcm-closing-layer--light .rcm-closing-h2 { color: #16294a; }
   .rcm-closing-layer--dark .rcm-closing-h2 { color: #fff; }
@@ -1260,13 +1260,15 @@ const PATHWAYS = {
   // clipped by a polygon whose bottom edge is an upward chevron; as the
   // section scrolls through the viewport the chevron sweeps top-to-bottom,
   // wiping the dark layer over the light one beneath it.
+  const easeInOutCubic = (x) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
   const applyChevron = () => {
     if (!chevronEl || !chevronSection) return;
     const vh = window.innerHeight;
     const r = chevronSection.getBoundingClientRect();
-    const t = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+    const raw = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+    const t = easeInOutCubic(raw);
     const e = t * 100;
-    const depth = CHEVRON_DEPTH * t; // the notch opens up (grows) as you scroll down, rather than a fixed-size arrow just translating
+    const depth = CHEVRON_DEPTH * easeInOutCubic(Math.min(1, raw * 1.4)); // the notch opens up (grows) a touch ahead of the sweep, so it reads as "opening" rather than a rigid shape translating
     const a = e - depth;
     chevronEl.style.clipPath = 'polygon(0% -1%, 100% -1%, 100% ' + e.toFixed(1) + '%, 50% ' + a.toFixed(1) + '%, 50% ' + a.toFixed(1) + '%, 0% ' + e.toFixed(1) + '%)';
   };
