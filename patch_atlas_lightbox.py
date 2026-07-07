@@ -293,7 +293,7 @@ LIGHTBOX_HTML = """
       </picture>
       <button class="lb-nav lb-prev" onclick="lightboxNav(-1)">&#8249;</button>
       <button class="lb-nav lb-next" onclick="lightboxNav(1)">&#8250;</button>
-      <div class="lb-attribution">© williamriveromd.com</div>
+      <div class="lb-attribution">© renalcarematters.com</div>
     </div>
     <div class="lb-info-panel">
       <div class="lb-toprow">

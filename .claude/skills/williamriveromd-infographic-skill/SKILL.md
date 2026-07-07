@@ -3,7 +3,7 @@ name: williamriveromd-infographic-skill
 description: >-
   Produces ready-to-paste ChatGPT Image Generator 2 (GPT-image / GPT-4o
   native image generation) prompts for the
-  williamriveromd.com nephrology patient-education site. Use whenever creating
+  renalcarematters.com nephrology patient-education site. Use whenever creating
   or designing ANY visual asset for these guides — editorial hero images,
   pathophysiology posters, clinical algorithms/flowcharts, multi-panel
   educational infographics, clinician reference cards, food matrices, case
@@ -11,7 +11,7 @@ description: >-
   medical component renderings (kidneys, glomeruli, vessels, dialysis access,
   machines, stenosis, thrombus). Outputs a single copy-paste prompt block
   engineered for photorealism, medical/anatomical accuracy, and a unified
-  williamriveromd.com house style. For any panel that is a review-article-style
+  renalcarematters.com house style. For any panel that is a review-article-style
   biomedical mechanism schematic (organ-level panel → magnified functional-unit
   inset → injury → intervention → benefit flow), delegate that panel to
   williamriveromd-biomedical-mechanism-figure to keep the mechanism style consistent.
@@ -21,7 +21,7 @@ description: >-
 
 ## PURPOSE
 
-This skill creates production-ready prompts and visual plans for medical images and infographics for williamriveromd.com/guides.
+This skill creates production-ready prompts and visual plans for medical images and infographics for renalcarematters.com/guides.
 
 It is designed to work with ChatGPT image-generation workflows, including the custom Image Generator GPT:
 https://chatgpt.com/g/g-pmuQfob8d-image-generator
@@ -54,7 +54,7 @@ generate that panel with the mechanism skill's template (organ→inset→
 injury/intervention/benefit, muted clinical palette, dashed connectors,
 experimental-therapy flagging) so the house mechanism style stays consistent.
 All other panels (heroes, food matrices, OG cards, reference cards, workflows)
-stay in this skill. Keep the shared attribution `© williamriveromd.com` on every
+stay in this skill. Keep the shared attribution `© renalcarematters.com` on every
 panel regardless of which skill produced it.
 
 ## HEMOFILTER / DIALYZER REFERENCE ANATOMY (mandatory whenever a filter/dialyzer/circuit/dialysis-machine panel appears)
@@ -167,10 +167,10 @@ Composition:
 
 Copyright attribution (MANDATORY on every image):
 - Every image must include a subtle copyright attribution line rendered as small, legible text
-- Format: williamriveromd.com
+- Format: renalcarematters.com
 - Placement: bottom-right corner for landscape/square images; bottom-center for portrait images
 - Style: navy (#0f1e2e) or dark teal text, 10–11px equivalent, semi-transparent (70% opacity), set against the light image background — never obscuring clinical content
-- Render the attribution exactly as williamriveromd.com
+- Render the attribution exactly as renalcarematters.com
 - This attribution must appear in EVERY prompt and EVERY generated image, with no exceptions
 
 ## IMAGE GENERATOR GPT ADAPTER
@@ -214,10 +214,10 @@ PROMPT:
 [full production prompt]
 
 NEGATIVE INSTRUCTIONS:
-Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no other fonts, no serif fonts, no decorative or handwritten typefaces. Never omit the williamriveromd.com attribution.
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no other fonts, no serif fonts, no decorative or handwritten typefaces. Never omit the renalcarematters.com attribution.
 
 QUALITY CHECK:
-Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com. Background must be white, off-white, or soft light gray — never dark. Copyright attribution williamriveromd.com must be visible in the bottom corner.
+Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with renalcarematters.com. Background must be white, off-white, or soft light gray — never dark. Copyright attribution renalcarematters.com must be visible in the bottom corner.
 
 ## MIXED-MEDIA RENDERING SYSTEM
 
@@ -338,7 +338,7 @@ COPY-READY IMAGE GENERATOR GPT PROMPT:
 
 ## MASTER DIRECTIVE
 
-All prompts must create visuals that belong to a single, premium williamriveromd.com nephrology education ecosystem.
+All prompts must create visuals that belong to a single, premium renalcarematters.com nephrology education ecosystem.
 
 Use mixed media when useful:
 - photorealistic Filipino medical models for human trust and relatability
@@ -352,4 +352,4 @@ Never sacrifice clinical clarity for visual complexity.
 
 **APPROVED FONT RULE — ABSOLUTE:** All on-image typography must use one of four clean sans-serif fonts only — **Inter, Nunito Sans, IBM Plex Sans, or Manrope**. No serif fonts, no condensed display fonts outside this list, no decorative or handwritten typefaces. Name the chosen font explicitly in every generated prompt so the image generator renders text in an approved face.
 
-Every image must carry the copyright attribution **williamriveromd.com** — rendered as small, semi-transparent navy or dark teal text in the bottom-right corner (bottom-center for portrait). This is a non-negotiable house rule for all williamriveromd.com visuals.
+Every image must carry the copyright attribution **renalcarematters.com** — rendered as small, semi-transparent navy or dark teal text in the bottom-right corner (bottom-center for portrait). This is a non-negotiable house rule for all renalcarematters.com visuals.

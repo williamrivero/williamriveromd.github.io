@@ -38,7 +38,7 @@ NEGATIVE INSTRUCTIONS:
 Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation.
 
 QUALITY CHECK:
-Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with williamriveromd.com.
+Must be mobile-readable, clinically plausible, visually calm, publication-grade, and consistent with renalcarematters.com.
 
 ALT TEXT:
 Filipino nephrologist counseling a dialysis patient in a clean renal clinic.

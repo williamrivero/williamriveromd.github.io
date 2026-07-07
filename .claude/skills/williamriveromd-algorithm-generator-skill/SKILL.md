@@ -1,6 +1,6 @@
 ---
 name: williamriveromd-algorithm-generator-skill
-description: Generate image-generation prompts for clean clinical algorithm flowcharts resembling AHA-style resuscitation algorithms and journal-style nephrology treatment algorithms, with williamriveromd.com copyright attribution.
+description: Generate image-generation prompts for clean clinical algorithm flowcharts resembling AHA-style resuscitation algorithms and journal-style nephrology treatment algorithms, with renalcarematters.com copyright attribution.
 ---
 
 # williamriveromd Algorithm Generator Skill
@@ -47,7 +47,7 @@ Every generated algorithm image must include a discreet but visible copyright at
 
 Text:
 
-© williamriveromd.com
+© renalcarematters.com
 
 Placement:
 
@@ -68,7 +68,7 @@ Typography:
 
 Default instruction to append to every image prompt:
 
-Include a small professional footer reading “© williamriveromd.com” positioned at the bottom-right corner in subtle gray medical-publication styling.
+Include a small professional footer reading “© renalcarematters.com” positioned at the bottom-right corner in subtle gray medical-publication styling.
 
 ---
 
@@ -174,7 +174,7 @@ Design requirements:
 - No excessive shadows
 - Use only short, readable text inside boxes
 - Professional clinical education style
-- Include a small professional footer reading “© williamriveromd.com” positioned at the bottom-right corner in subtle gray medical-publication styling
+- Include a small professional footer reading “© renalcarematters.com” positioned at the bottom-right corner in subtle gray medical-publication styling
 
 ---
 
@@ -237,15 +237,15 @@ Design requirements:
 - Avoid clutter
 - Add a small caption area only if requested
 - Make the final image look like a medical journal figure
-- Include a small professional footer reading “© williamriveromd.com” positioned at the bottom-right corner in subtle gray medical-publication styling
+- Include a small professional footer reading “© renalcarematters.com” positioned at the bottom-right corner in subtle gray medical-publication styling
 
 ---
 
-# Style Mode C: williamriveromd.com House-Style Clinical Algorithm
+# Style Mode C: renalcarematters.com House-Style Clinical Algorithm
 
 ## Use Cases
 
-Use this style when the user wants a more branded, modern, visually polished algorithm for williamriveromd.com guides.
+Use this style when the user wants a more branded, modern, visually polished algorithm for renalcarematters.com guides.
 
 ## Visual Rules
 
@@ -264,7 +264,7 @@ Use this style when the user wants a more branded, modern, visually polished alg
 
 ## Prompt Template
 
-Create a clean publication-ready clinical algorithm flowchart in the williamriveromd.com house style. Use a white or very light off-white background, restrained navy and teal typography set in one of Inter, Nunito Sans, IBM Plex Sans, or Manrope (never a serif font), thin teal connector arrows, and generous margins. The layout should be centered, symmetrical, and suitable for a patient-facing or clinician-facing nephrology education guide.
+Create a clean publication-ready clinical algorithm flowchart in the renalcarematters.com house style. Use a white or very light off-white background, restrained navy and teal typography set in one of Inter, Nunito Sans, IBM Plex Sans, or Manrope (never a serif font), thin teal connector arrows, and generous margins. The layout should be centered, symmetrical, and suitable for a patient-facing or clinician-facing nephrology education guide.
 
 Use these color conventions:
 - Navy #0f1e2e for title, body text, and structural emphasis
@@ -286,7 +286,7 @@ Design requirements:
 - No clutter
 - No photorealistic people
 - Optional simple flat line icons only if useful
-- Include a small professional footer reading “© williamriveromd.com” positioned at the bottom-right corner in subtle gray medical-publication styling
+- Include a small professional footer reading “© renalcarematters.com” positioned at the bottom-right corner in subtle gray medical-publication styling
 
 ---
 
@@ -296,8 +296,8 @@ When the user asks for:
 
 - CPR, ACLS, BLS, PALS, emergency, dialysis code blue, arrest, bradycardia, tachycardia, airway, opioid emergency → use Style Mode A.
 - CKD, AAV, vasculitis, glomerulonephritis, nephrology treatment, remission, induction, maintenance, pharmacotherapy → use Style Mode B.
-- Website guide algorithms, patient education diagrams, branded williamriveromd.com assets, PWD-card workflows, CKD education visuals → use Style Mode C.
-- If unclear, ask the user to choose: “AHA emergency algorithm,” “journal treatment algorithm,” or “williamriveromd.com house style.”
+- Website guide algorithms, patient education diagrams, branded renalcarematters.com assets, PWD-card workflows, CKD education visuals → use Style Mode C.
+- If unclear, ask the user to choose: “AHA emergency algorithm,” “journal treatment algorithm,” or “renalcarematters.com house style.”
 
 ---
 
@@ -334,7 +334,7 @@ Before finalizing the prompt, ensure:
 - The prompt names an approved sans-serif font (Inter, Nunito Sans, IBM Plex Sans, or Manrope) and forbids serif fonts.
 - The prompt prevents dark backgrounds, clutter, cartoons, and unnecessary decoration.
 - The copyright footer is included.
-- The image could plausibly appear in a clinical guideline, medical journal, conference slide, or williamriveromd.com guide.
+- The image could plausibly appear in a clinical guideline, medical journal, conference slide, or renalcarematters.com guide.
 
 ---
 
@@ -342,4 +342,4 @@ Before finalizing the prompt, ensure:
 
 Use this add-on when a user wants maximum consistency:
 
-Make the diagram publication-grade and vector-like, with crisp typography, perfectly aligned nodes, consistent arrow lengths, balanced left-right branches, and generous margins. Ensure all text is legible at full size and thumbnail size. Include footer attribution “© williamriveromd.com” in small subtle gray text at the bottom-right corner.
+Make the diagram publication-grade and vector-like, with crisp typography, perfectly aligned nodes, consistent arrow lengths, balanced left-right branches, and generous margins. Ensure all text is legible at full size and thumbnail size. Include footer attribution “© renalcarematters.com” in small subtle gray text at the bottom-right corner.
