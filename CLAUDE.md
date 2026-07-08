@@ -55,6 +55,11 @@ python3 audit_apa_references.py                 # check APA-7 compliance of ever
 python3 audit_apa_references.py --details       # show failing citation samples (which fields are missing)
 python3 audit_apa_references.py --guide igan-guide.html  # single guide; exits 1 if anything fails (CI-friendly)
 
+python3 audit_acronym_expansion.py             # every acronym expanded on FIRST use in the body (site policy — rule 13)
+python3 audit_acronym_expansion.py --details   # list every first-use violation, per guide
+python3 audit_acronym_expansion.py --report    # per-guide ratios, never exit-fails (survey the whole library)
+python3 audit_acronym_expansion.py --guide igan-guide.html  # single guide; exits 1 if any acronym is unexpanded at first use
+
 python3 patch_hero_meta.py                # hero byline: drop "Author" row, show Published date + References count
 python3 patch_hero_meta.py --dry-run
 python3 patch_hero_meta.py --guide understanding-ckd.html  # single guide
@@ -330,6 +335,38 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
     `<dl class="fig-abbrevs">` blocks point back to, and it is what patients
     and clinicians alike open first when a term is unfamiliar. **A new guide
     is not done until this section is present with every acronym in it.**
+
+13. **Expand every acronym on first use in the content.** The first time an
+    abbreviation or acronym appears in a guide's visible body text, it must be
+    accompanied by what it stands for, in parentheses — **either order is
+    accepted**: `Continuous Quality Improvement (CQI)` or
+    `CQI (Continuous Quality Improvement)`. Every subsequent use may be the bare
+    acronym. This is a **site-wide policy**, not per-guide, and it holds for
+    patient- and clinician-facing guides alike (the on-page glossary of rule 12
+    is the dictionary; this rule is the first-use courtesy in the running prose).
+    - **Scope = English body prose.** Expand in the `data-lang="en"` content. Hero
+      **titles** and the section **nav-strip pills** are display chrome and stay as
+      bare acronyms (expanding a headline reads poorly); the expansion lands at the
+      first occurrence in the running text (a lead paragraph, an intro callout, or
+      the dashboard/table row where the acronym first appears). For a multilingual
+      guide, mirror the expansion into the TL/CEB/KAP sibling spans when you touch
+      that string.
+    - **Formula/symbol notation is exempt** — dialysis-dose notation (`Kt/V`,
+      `spKt/V`, `eKt/V`) and element/ion symbols (`Na`, `K`, `Ca`, `PO₄`) are not
+      initialisms and are defined in the glossary instead. A short curated exempt
+      list (near-universal tokens like `IV`, `PO`, `BP`) lives in the audit script.
+    - **`audit_acronym_expansion.py`** enforces it (structural check: is a
+      parenthetical carrying the acronym present at/around its first content use).
+      Same exclusion set as `audit_apa_references.py` (calculators, printable logs,
+      the atlas/physiology pages are skipped). Usage:
+      `python3 audit_acronym_expansion.py` (site summary, exits 1 on any violation),
+      `--details` (list every violation), `--guide <file>` (one guide),
+      `--report` (per-guide ratios, never exit-fails). The acronym set is each
+      guide's own Glossary "Abbreviations" list UNION a curated global list at the
+      top of the script — **add new acronyms there as they enter the library.**
+    - **Run it before declaring a touched guide done** (like the APA audit). The
+      existing library is being brought into compliance on-touch; a guide you edit
+      should come out at `N/N` for the acronyms it uses.
 
 9. **Category-tinted Latest-guides cards.** Each section in `guides/index.html`
    (`<div class="guide-section" data-section="…">`) has its own colour — visible
