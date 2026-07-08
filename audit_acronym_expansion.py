@@ -132,9 +132,9 @@ def content_region(html):
     html = re.sub(r'<style\b.*?</style>', ' ', html, flags=re.DOTALL)
     # remove chrome / non-prose blocks
     html = re.sub(r'<h1\b.*?</h1>', ' ', html, flags=re.DOTALL)
-    html = re.sub(r'<nav class="nav-strip">.*?</nav>', ' ', html, flags=re.DOTALL)
-    html = re.sub(r'<div class="hero-meta">.*?</div>', ' ', html, flags=re.DOTALL)
-    html = re.sub(r'<p class="hero-sub">.*?</p>', ' ', html, flags=re.DOTALL)  # subtitle is chrome
+    html = re.sub(r'<nav class="nav-strip[^"]*"[^>]*>.*?</nav>', ' ', html, flags=re.DOTALL)
+    html = re.sub(r'<div class="hero-meta[^"]*"[^>]*>.*?</div>', ' ', html, flags=re.DOTALL)
+    html = re.sub(r'<p class="hero-sub[^"]*"[^>]*>.*?</p>', ' ', html, flags=re.DOTALL)  # subtitle is chrome
     # glossary + references + tail
     for marker in ('<!-- GLOSSARY-START -->', '<!-- REFERENCES-ACC-START -->',
                    '<!-- DR CARD -->', '<div class="dr-card-wrap"',
@@ -145,7 +145,7 @@ def content_region(html):
     # Section headings are labels, not prose — an acronym in a heading is expanded
     # in the following body text. Drop heading text so first-use is judged on prose.
     html = re.sub(r'<h[2-4]\b.*?</h[2-4]>', ' ', html, flags=re.DOTALL)
-    html = re.sub(r'<div class="section-tag">.*?</div>', ' ', html, flags=re.DOTALL)
+    html = re.sub(r'<div class="section-tag[^"]*"[^>]*>.*?</div>', ' ', html, flags=re.DOTALL)
     return html
 
 
