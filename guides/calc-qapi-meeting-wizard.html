@@ -1953,7 +1953,7 @@ function mwRenderStepper(){
   el.innerHTML=h;
 }
 function mwGoto(n){
-  if(n>mwMax+0 && n>mwCur) n=mwCur; // don't allow skipping ahead past current+1 arbitrarily far; simple guard
+  if(n>mwMax+1) n=mwCur; // allow the next step or any visited step; block jumping far ahead
   mwCur=Math.max(1,Math.min(6,n));
   mwMax=Math.max(mwMax,mwCur);
   document.querySelectorAll('.mw-panel').forEach(function(p){p.classList.toggle('active',parseInt(p.dataset.step,10)===mwCur);});
