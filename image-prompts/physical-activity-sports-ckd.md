@@ -10,9 +10,14 @@ Authored with the `williamriveromd-hero-vignette`, `williamriveromd-organ-crosst
 | # | File (save to `images/`) | Type | Dimensions | Where it appears | Skill |
 |---|---|---|---|---|---|
 | 1 | `physical-activity-sports-ckd-vignette-hero.png` **+ `.webp`** | Circular vignette hero (people) | 2048 × 2048 (1:1) | Guide hero disc (`figure.hero-figure > .hero-vignette`) | hero-vignette |
-| 2 | `physical-activity-sports-ckd-01-triangle.png` **+ `.webp`** | Organ-crosstalk sigil | 1024 × 1024 (1:1) | Inline figure in the **Why Move** (`#why`) section | organ-crosstalk-sigil |
-| 3 | `physical-activity-sports-ckd-og.png` | OG / social share card | **1200 × 630** (1.91:1, fixed) | `og:image` / `twitter:image` | infographic-skill |
-| 4 | `physical-activity-sports-ckd-rg-thumb.webp` | Related-guides thumbnail | 480 × 480 (1:1) crop | "Related Guides" cards on sibling pages + the MET calculator | crop of #1 or #3 |
+| 2 | `physical-activity-sports-ckd-01-triangle.png` **+ `.webp`** | Organ-crosstalk sigil | 1024 × 1024 (1:1) | Inline figure in **Why Move** (`#why`) | organ-crosstalk-sigil |
+| 3 | `physical-activity-sports-ckd-02-met-chart.png` **+ `.webp`** | MET intensity color-tier chart | 1792 × 1024 (16:9) | Inline figure in **Sports** (`#sports`) | simple-figure |
+| 4 | `physical-activity-sports-ckd-03-rpe-scale.png` **+ `.webp`** | Borg RPE / talk-test gauge | 1792 × 1024 (16:9) | Inline figure in **Green Light** (`#greenlight`) | simple-figure |
+| 5 | `physical-activity-sports-ckd-04-home-routine.png` **+ `.webp`** | 3-panel home-routine sequence | 1792 × 1024 (16:9) | Inline figure in **Home Routine** (`#home`) | simple-figure |
+| 6 | `physical-activity-sports-ckd-og.png` | OG / social share card | **1200 × 630** (1.91:1, fixed) | `og:image` / `twitter:image` | infographic-skill |
+| 7 | `physical-activity-sports-ckd-rg-thumb.webp` | Related-guides thumbnail | 480 × 480 (1:1) crop | "Related Guides" cards on sibling pages + the MET calculator | crop of #1 or #6 |
+
+**7 assets total** (5 inline/hero + OG + thumbnail). Each inline figure and the hero also ship a `.webp` twin; the OG card is PNG-only and the thumbnail is `.webp`.
 
 **Already present, no generation needed:** `images/hero-cat-lifestyle.webp` (OG fallback used by the MET calculator page), `images/avatar.png/webp`, `images/dr-rivero-contact-qr.svg`.
 
@@ -225,11 +230,139 @@ distorted anatomy.
 
 ---
 
+## 5b · Prompt 5 — MET intensity color-tier chart (inline `#sports` figure)
+
+```
+FILE NAME: physical-activity-sports-ckd-02-met-chart.png
+IMAGE TYPE: Simple figure — Scaffold E (reference/matrix card), color-tier chart
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: patients
+VISUAL GOAL: sort Filipino activities into green/amber/red intensity tiers so a patient
+picks a stage-appropriate sport at a glance.
+
+PROMPT:
+Clean clinical reference chart, publication-grade nephrology design, white (#ffffff)
+background. Bold navy (#0f1e2e) title in Inter: "Match the Sport to Your Tier". Three
+horizontal color-banded rows stacked top to bottom, each a rounded card:
+- TOP row, renal-green (#1f7a4d) accent, header "LIGHT (under 3 MET)": small clean line
+  icons + short labels for walking (leisurely), household chores, tai chi. Sub-note
+  "All groups, including frail and G5."
+- MIDDLE row, amber-gold (#b8860b) accent, header "MODERATE (3–6 MET)": brisk walking,
+  leisure cycling, badminton doubles, pickleball, half-court basketball. Sub-note
+  "The everyday target — G1–G4, HD & PD off-days."
+- BOTTOM row, clinical-red (#b91c1c) accent, header "VIGOROUS (over 6 MET)": Zumba,
+  full-court basketball, competitive badminton. Sub-note "Cardiac-cleared, higher-
+  functioning non-dialysis only."
+A slim vertical MET gauge on the left edge (2 → 8+) aligns the three bands. Soft gray
+(#f3f4f6) panel behind the rows, generous whitespace, mobile-readable labels ≥11pt, all
+type in Inter or Manrope (no serif). Bottom-right: "renalcarematters.com" in small
+semi-transparent navy text.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish
+text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid excessive saturation.
+NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Use ONLY
+the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no serif or
+decorative fonts. Never omit the renalcarematters.com attribution.
+
+QUALITY CHECK:
+16:9, white background, three clearly separated green/amber/red tier rows with correct
+sports in each, a left MET gauge, mobile-legible sans-serif labels, renalcarematters.com
+bottom-right. (Figcaption + MET/HD/PD abbreviation list already in the guide.)
+```
+
+---
+
+## 5c · Prompt 6 — Borg RPE / talk-test gauge (inline `#greenlight` figure)
+
+```
+FILE NAME: physical-activity-sports-ckd-03-rpe-scale.png
+IMAGE TYPE: Simple figure — Scaffold D/E (single gauge + talk-test key)
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: patients
+VISUAL GOAL: show the Borg 6–20 scale with the moderate 11–13 band highlighted and tied
+to the talk test.
+
+PROMPT:
+Clean clinical education figure, white (#ffffff) background. Bold navy (#0f1e2e) title in
+Inter: "How Hard Should It Feel?". A single large horizontal gauge/ruler running left to
+right from 6 (labeled "No effort") to 20 (labeled "All-out maximal"), with tick numbers
+6, 9, 11, 13, 15, 17, 20. A soft gradient along the gauge from renal-green (#1f7a4d, low)
+through amber-gold (#b8860b, middle) to clinical-red (#b91c1c, high). The 11–13 segment is
+clearly highlighted with an amber rounded bracket labeled "MODERATE — your target". Three
+compact "talk test" callout chips beneath the gauge, aligned to their zones: green "Can
+talk AND sing = too easy", amber "Can talk in short sentences, cannot sing = just right",
+red "Too breathless to talk = ease off". Generous whitespace, soft gray (#f3f4f6) base
+panel, mobile-readable sans-serif labels in Inter or Manrope (no serif). Bottom-right:
+"renalcarematters.com" in small semi-transparent navy text.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish
+text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid excessive saturation.
+NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Use ONLY
+the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no serif or
+decorative fonts. Never omit the renalcarematters.com attribution.
+
+QUALITY CHECK:
+16:9, white background, one clear 6–20 gauge with a green→amber→red gradient, the 11–13
+"moderate" band bracketed, three talk-test chips correctly zoned, sans-serif labels,
+renalcarematters.com bottom-right. (Figcaption + RPE abbreviation already in the guide.)
+```
+
+---
+
+## 5d · Prompt 7 — Home-routine 3-panel sequence (inline `#home` figure)
+
+```
+FILE NAME: physical-activity-sports-ckd-04-home-routine.png
+IMAGE TYPE: Simple figure — Scaffold C (3-panel horizontal sequence)
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: patients
+VISUAL GOAL: three no-equipment routine levels — chair, standing, balance — shown with a
+calm Filipino patient.
+
+PROMPT:
+Clean patient-education figure, white (#ffffff) background. Bold navy (#0f1e2e) title in
+Inter: "No-Equipment Home Routine". Three rounded cards in a single horizontal row on a
+soft gray (#f3f4f6) panel, each with a colored top accent band, a small semi-photoreal
+illustration of a Filipino patient (varied ages, home setting, light athletic clothing),
+and 2–3 short labels:
+- Card 1, teal (#1a6b72) band, "CHAIR-BASED": sit-to-stands, seated marching, wall
+  push-ups — labeled "frail, elderly, G5, dialysis days".
+- Card 2, amber-gold (#b8860b) band, "STANDING BODYWEIGHT": modified squats, calf raises,
+  step-ups, resistance bands — labeled "stronger days".
+- Card 3, renal-green (#1f7a4d) band, "BALANCE": single-leg stand near a wall, tai-chi
+  weight shifts — labeled "prevent falls".
+Bold navy right-pointing arrows between the cards. Bright, airy, naturally lit home
+scenes, calm and trustworthy. Bottom strip in soft gray with a navy takeaway: "Two
+strength days a week — start low, build over weeks." Mobile-readable sans-serif labels in
+Inter or Manrope (no serif). Bottom-right: "renalcarematters.com" in small semi-
+transparent navy text.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish
+text, avoid unrealistic anatomy, avoid overprocessed HDR, avoid excessive saturation.
+NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Use ONLY
+the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no serif or
+decorative fonts. Never omit the renalcarematters.com attribution.
+
+QUALITY CHECK:
+16:9, white background, three connected cards (chair / standing / balance) with correct
+exercises and audience labels, calm Filipino home illustrations, arrows between cards, a
+navy takeaway strip, sans-serif labels, renalcarematters.com bottom-right.
+```
+
+---
+
 ## 6 · Production checklist (Stage 2)
 
 1. Generate each PNG in the Image Generator GPT with the prompts above.
-2. For files 1 & 2, also export a **`.webp` twin** at the same name (the guide's `<picture>`
-   markup already points at both). File 3 (OG) is PNG-only. File 4 ships as `.webp`.
+2. For files 1–5 (hero + all inline figures), also export a **`.webp` twin** at the same
+   name (the guide's `<picture>` markup already points at both). File 6 (OG) is PNG-only.
+   File 7 (thumbnail) ships as `.webp`.
 3. Drop all files into `images/` using the **exact filenames** in §1.
 4. No HTML edits needed — the guide already references every path and the OG meta tags
    already carry `width="1200" height="630"`. Confirm the hero disc renders (open the
