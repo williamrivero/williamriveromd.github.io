@@ -16,19 +16,19 @@ infographic v5).
 | 1 | Circular hero (metaphor) | `sugar-control-kidney-disease-vignette-hero` | hero-vignette v3 (Scaffold C anatomy) | Hero disc (patient hero) | 2048×2048 | ✅ referenced |
 | 2 | Syrup-in-the-filter comparison | `sugar-control-kidney-disease-01-syrup-filter` | simple-figure (Scaffold B) | Patient §"Why Sugar Matters" | 1792×1024 | ✅ referenced |
 | 3 | Glycemic-renal-CV cascade | `sugar-control-kidney-disease-02-cascade` | biomedical-mechanism-figure | Clinician §Pathophysiology | 1792×1024 | ✅ referenced |
-| 4 | eGFR-stratified Rx decision tree | `sugar-control-kidney-disease-03-pharmacotherapy-tree` | algorithm-generator (Mode C) | Clinician §Pharmacotherapy | 1024×1536 | ⚠️ needs figure block |
-| 5 | HbA1c reliability by CKD stage | `sugar-control-kidney-disease-04-hba1c-reliability` | simple-figure (Scaffold E) | Clinician §Diagnostic Nuance | 1536×1152 | ⚠️ needs figure block |
+| 4 | eGFR-stratified Rx decision tree | `sugar-control-kidney-disease-03-pharmacotherapy-tree` | algorithm-generator (Mode C) | Clinician §Pharmacotherapy | 1024×1536 | ✅ wired |
+| 5 | HbA1c reliability by CKD stage | `sugar-control-kidney-disease-04-hba1c-reliability` | simple-figure (Scaffold E) | Clinician §Diagnostic Nuance | 1448×1086 | ✅ wired |
 | 6 | OG / social share card | `sugar-control-kidney-disease-og` | infographic v5 (Archetype 1) | `og:image` / `twitter:image` | 1200×630 | ✅ referenced |
 
 **Blueprint coverage (Section 7):** cascade diagram → #3; eGFR pharmacotherapy
 decision tree → #4; patient "syrup in the filter" analogy → #2; HbA1c
 reliability-by-stage chart → #5. Hero (#1) and OG card (#6) round out the set.
 
-**Wiring note.** #1, #2, #3, #6 are already referenced by the live guide — drop
-the rendered files into `images/` and they appear. #4 and #5 are *new* clinician
-figures from the blueprint that are **not yet in the HTML**; tell me to wire them
-and I'll add the `<figure>` + `<figcaption>` blocks (with `fig-desc` + `fig-abbrevs`)
-to the Pharmacotherapy and Diagnostic-Nuance sections.
+**Wiring note.** All six assets are now live in the guide: #1/#2/#3/#6 were
+already referenced, and #4/#5 were wired into the clinician Pharmacotherapy and
+Diagnostic-Nuance sections (with `fig-desc` + `fig-abbrevs` for the lightbox).
+Delivered files are PNG at native resolution plus WebP twins; the OG card was
+normalized to its declared 1200×630.
 
 ## 2 · Production checklist (every asset)
 
@@ -150,9 +150,6 @@ Reads as an NEJM/AJKD review figure. Hemodynamic and glucotoxic tracks visibly s
 
 ### IMAGE 4 — eGFR-stratified pharmacotherapy decision tree (clinician)
 
-> ⚠️ Not yet wired into the HTML — say the word and I'll add the `<figure>` block
-> to the clinician **Pharmacotherapy** section.
-
 ```
 FILE NAME: sugar-control-kidney-disease-03-pharmacotherapy-tree.png
 IMAGE TYPE: Clinical algorithm — algorithm-generator Style Mode C (renalcarematters.com house style)
@@ -197,9 +194,6 @@ Clear top-to-bottom clinical logic, decision diamonds visually distinct from act
 ---
 
 ### IMAGE 5 — HbA1c reliability by CKD stage (clinician)
-
-> ⚠️ Not yet wired into the HTML — say the word and I'll add the `<figure>` block
-> to the clinician **Diagnostic Nuance** section.
 
 ```
 FILE NAME: sugar-control-kidney-disease-04-hba1c-reliability.png
@@ -267,8 +261,8 @@ Exactly 1200×630. Title and subtitle legible at Facebook/X/LinkedIn thumbnail s
 
 ## 4 · After rendering
 
-Once files are in `images/` (PNG + WebP twins), everything except #4 and #5
-displays automatically. Ping me to:
-- wire figures #4 and #5 into the clinician sections, and/or
-- re-run `patch_hero_fullwidth.py` / `patch_hero_maxwidth.py` if the hero needs
-  its inline sizing re-normalized after the real image lands.
+All six assets are live (PNG + WebP twins in `images/`, OG normalized to
+1200×630, figures #4/#5 wired). Dimension attributes were updated to the real
+files, and the APA + acronym audits still pass at N/N. To regenerate any asset,
+re-render its prompt above and drop the file into `images/` (remake the WebP twin
+with `cwebp -q 82` or Pillow).
