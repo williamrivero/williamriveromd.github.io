@@ -1674,9 +1674,6 @@
   .doc-title { font-family: 'Inter', sans-serif; font-size: 23px; font-weight: 700; color: var(--navy); line-height: 1.15; }
   .doc-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
   .doc-sub em { font-style: italic; }
-  .doc-header-right { text-align: right; flex-shrink: 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.5; }
-  .dr-name { display: block; font-weight: 700; color: var(--navy); font-size: 13px; }
-  .dr-spec { display: block; }
 
   /* Confidential intro strip */
   .intro-strip {
@@ -1860,6 +1857,8 @@
     .page { box-shadow: none; border: none; border-radius: 0; max-width: 100%; padding: 0; }
     .rate-table { min-width: 0; font-size: 10.5px; }
     .comment-area { min-height: 52px; }
+    /* On paper a <select> is not fillable — always show the write-in line */
+    .branch-input { display: inline-block !important; }
     .block, .comment-block, .followup, .scale-legend, .cat-row { page-break-inside: avoid; }
     .intro-strip, .scale-legend, .cat-row td, .rate-table thead th, .cat-num, .rate-radio {
       -webkit-print-color-adjust: exact; print-color-adjust: exact;
@@ -1893,11 +1892,6 @@
       <div class="doc-title">Dialysis Patient Satisfaction Survey</div>
       <div class="doc-sub">Your honest feedback helps us improve your care · <em>Ang inyong puna ay tumutulong sa aming serbisyo</em></div>
     </div>
-    <div class="doc-header-right">
-      <span class="dr-name">W Rivero, MD</span>
-      <span class="dr-spec">Nephrology · Internal Medicine</span>
-      FPCP, DPSN
-    </div>
   </div>
 
   <!-- CONFIDENTIAL INTRO -->
@@ -1920,9 +1914,8 @@
   <div class="block">
     <p class="fld-label">Which branch / location?</p>
     <div class="branch-row">
-      <select class="branch-select" name="branch" aria-label="Branch or location">
-        <option value="" disabled selected>Select your branch…</option>
-        <option value="__other">Other / not listed — write below</option>
+      <select class="branch-select" name="branch" aria-label="Branch or location" disabled>
+        <option value="" disabled selected>Select your center first…</option>
       </select>
       <input type="text" class="branch-input" name="branch-other" placeholder="Branch name or location (if not listed)">
     </div>
@@ -2197,9 +2190,53 @@
 
   <div class="thanks">Salamat po! Thank you for helping us serve you better.</div>
 
+  <script>
+  (function () {
+    /* ── BRANCH DATA ──────────────────────────────────────────────────────────
+       Fill each center's real branches into the arrays below. Once populated,
+       choosing a center automatically shows only that center's branches.
+       Leave an array empty and patients simply write their branch in the line. */
+    var BRANCHES = {
+      "st-john-biocare":     [],   /* e.g. ["Malolos", "Meycauayan"] */
+      "core-renal-care":     [],   /* e.g. ["Quezon City", "Caloocan"] */
+      "st-josef-renal-care": []    /* e.g. ["San Fernando", "Angeles"] */
+    };
+
+    var sel    = document.querySelector('.branch-select');
+    var other  = document.querySelector('.branch-input');
+    var radios = document.querySelectorAll('input[name="center"]');
+    if (!sel || !other) return;
+
+    function toggleOther() {
+      other.style.display = (sel.value === '__other') ? '' : 'none';
+      if (sel.value === '__other') other.focus();
+    }
+
+    function fillBranches(center) {
+      var list = BRANCHES[center] || [];
+      sel.innerHTML = '';
+      var ph = new Option(center ? 'Select your branch…' : 'Select your center first…', '');
+      ph.disabled = true; ph.selected = true;
+      sel.add(ph);
+      list.forEach(function (b) { sel.add(new Option(b, b)); });
+      sel.add(new Option('Other / not listed — write below', '__other'));
+      sel.disabled = !center;
+      toggleOther();
+    }
+
+    radios.forEach(function (r) {
+      r.addEventListener('change', function () { fillBranches(r.value); });
+    });
+    sel.addEventListener('change', toggleOther);
+
+    var checked = document.querySelector('input[name="center"]:checked');
+    fillBranches(checked ? checked.value : '');
+  })();
+  </script>
+
   <!-- DOCUMENT FOOTER -->
   <div class="doc-footer">
-    <span><span class="footer-brand">renalcarematters.com</span> · W Rivero, MD, FPCP, DPSN · Confidential patient feedback · For quality improvement only</span>
+    <span><span class="footer-brand">renalcarematters.com</span> · Confidential patient feedback · For quality improvement only</span>
     <span>St John Biocare · Core Renal Care · St Josef Renal Care</span>
   </div>
 
