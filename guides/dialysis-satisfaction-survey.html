@@ -1709,6 +1709,24 @@
   .center-chip input { accent-color: var(--teal); width: 15px; height: 15px; margin: 0; }
   .center-chip:has(input:checked) { border-color: var(--teal); background: var(--teal-light); }
 
+  /* Branch selector */
+  .branch-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .branch-select, .branch-input {
+    flex: 1 1 260px; min-width: 220px;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 9px 12px; background: #fff;
+    font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600; color: var(--navy);
+  }
+  .branch-select:focus, .branch-input:focus { outline: none; border-color: var(--teal); }
+  .branch-input::placeholder { color: var(--text-faint); font-weight: 400; }
+
+  /* Note strip before the rating grid */
+  .rate-note {
+    font-size: 12px; color: var(--text-muted); line-height: 1.5;
+    margin: 0 0 12px; padding-left: 2px;
+  }
+  .rate-note strong { color: var(--navy); }
+
   /* Visit-info grid (optional) */
   .visit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; }
   .vfield label { display: block; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 7px; }
@@ -1898,6 +1916,18 @@
     </div>
   </div>
 
+  <!-- BRANCH SELECTOR -->
+  <div class="block">
+    <p class="fld-label">Which branch / location?</p>
+    <div class="branch-row">
+      <select class="branch-select" name="branch" aria-label="Branch or location">
+        <option value="" disabled selected>Select your branch…</option>
+        <option value="__other">Other / not listed — write below</option>
+      </select>
+      <input type="text" class="branch-input" name="branch-other" placeholder="Branch name or location (if not listed)">
+    </div>
+  </div>
+
   <!-- VISIT INFO (optional) -->
   <div class="block">
     <p class="fld-label">About your dialysis (optional — helps us group feedback)</p>
@@ -1946,6 +1976,7 @@
   </div>
 
   <!-- RATING TABLE -->
+  <p class="rate-note"><strong>Please rate your care over the past few weeks, not just today.</strong> During a typical week you may be seen by several physicians on duty, and sometimes a dietitian — rate each care team as a whole. Tick <strong>N/A</strong> for anyone you did not see.</p>
   <div class="rate-outer">
     <table class="rate-table">
       <thead>
@@ -1960,137 +1991,154 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="cat-row"><td colspan="7"><span class="cat-num">1</span>Your doctors & nephrologist</td></tr>
+        <tr class="cat-row"><td colspan="7"><span class="cat-num">1</span>Physicians on duty</td></tr>
         <tr>
-          <td class="q-cell">Explained your condition and treatment in a way you understand</td>
+          <td class="q-cell">The physicians on duty explained your condition and treatment in a way you understand</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q1" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q1" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q1" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q1" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q1" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q1" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Listened carefully to your questions and concerns</td>
+          <td class="q-cell">They listened carefully to your questions and concerns</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q2" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q2" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q2" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q2" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q2" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q2" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Treated you with courtesy and respect</td>
+          <td class="q-cell">They treated you with courtesy and respect</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q3" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q3" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q3" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q3" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q3" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q3" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Was available and attentive when you needed them</td>
+          <td class="q-cell">A physician was available and attentive whenever you needed one</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q4" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q4" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q4" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q4" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q4" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q4" value="na" aria-label="Not applicable"></label></td>
+        </tr>
+        <tr>
+          <td class="q-cell">Care felt consistent across the different physicians you saw</td>
+          <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr class="cat-row"><td colspan="7"><span class="cat-num">2</span>Dialysis nurses & technicians</td></tr>
         <tr>
           <td class="q-cell">Skill and gentleness when placing needles / handling your access</td>
-          <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q5" value="na" aria-label="Not applicable"></label></td>
-        </tr>
-        <tr>
-          <td class="q-cell">Responded quickly when you called or felt unwell</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q6" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q6" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q6" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q6" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q6" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q6" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Treated you with kindness and respect</td>
+          <td class="q-cell">Responded quickly when you called or felt unwell</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q7" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q7" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q7" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q7" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q7" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q7" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Explained what they were doing during your session</td>
+          <td class="q-cell">Treated you with kindness and respect</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q8" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q8" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q8" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q8" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q8" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q8" value="na" aria-label="Not applicable"></label></td>
         </tr>
-        <tr class="cat-row"><td colspan="7"><span class="cat-num">3</span>Your dialysis treatment</td></tr>
         <tr>
-          <td class="q-cell">Comfort during needle insertion (cannulation)</td>
+          <td class="q-cell">Explained what they were doing during your session</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q9" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q9" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q9" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q9" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q9" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q9" value="na" aria-label="Not applicable"></label></td>
         </tr>
+        <tr class="cat-row"><td colspan="7"><span class="cat-num">3</span>Dietitian — rate only if you saw one this period</td></tr>
         <tr>
-          <td class="q-cell">Management of cramps, low blood pressure, or other symptoms</td>
+          <td class="q-cell">The dietitian explained your diet and fluid limits clearly</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q10" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q10" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q10" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q10" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q10" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q10" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Your sessions started and ended on time</td>
+          <td class="q-cell">The dietitian gave practical, easy-to-follow advice</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q11" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q11" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q11" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q11" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q11" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q11" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Comfort of the chairs / beds during treatment</td>
+          <td class="q-cell">The dietitian treated you with courtesy and respect</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q12" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q12" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q12" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q12" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q12" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q12" value="na" aria-label="Not applicable"></label></td>
         </tr>
-        <tr class="cat-row"><td colspan="7"><span class="cat-num">4</span>Cleanliness & safety</td></tr>
+        <tr class="cat-row"><td colspan="7"><span class="cat-num">4</span>Your dialysis treatment</td></tr>
         <tr>
-          <td class="q-cell">Cleanliness of your dialysis station and machine</td>
+          <td class="q-cell">Comfort during needle insertion (cannulation)</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q13" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q13" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q13" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q13" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q13" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q13" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Cleanliness of restrooms and waiting areas</td>
+          <td class="q-cell">Management of cramps, low blood pressure, or other symptoms</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q14" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q14" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q14" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q14" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q14" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q14" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Infection-prevention practices (handwashing, gloves)</td>
+          <td class="q-cell">Your sessions started and ended on time</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q15" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q15" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q15" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q15" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q15" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q15" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">How safe you felt during your treatment</td>
+          <td class="q-cell">Comfort of the chairs / beds during treatment</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q16" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q16" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q16" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q16" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q16" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q16" value="na" aria-label="Not applicable"></label></td>
         </tr>
-        <tr class="cat-row"><td colspan="7"><span class="cat-num">5</span>Communication & information</td></tr>
+        <tr class="cat-row"><td colspan="7"><span class="cat-num">5</span>Cleanliness & safety</td></tr>
         <tr>
-          <td class="q-cell">Explained your lab results and what they mean</td>
+          <td class="q-cell">Cleanliness of your dialysis station and machine</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q17" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q17" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q17" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q17" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q17" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q17" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Explained your medicines and diet clearly</td>
+          <td class="q-cell">Cleanliness of restrooms and waiting areas</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q18" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q18" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q18" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q18" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q18" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q18" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Answered your questions in a way you understood</td>
+          <td class="q-cell">Infection-prevention practices (handwashing, gloves)</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q19" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q19" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q19" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q19" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q19" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q19" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Kept you informed about changes in your care</td>
+          <td class="q-cell">How safe you felt during your treatment</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q20" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q20" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q20" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q20" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q20" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q20" value="na" aria-label="Not applicable"></label></td>
         </tr>
-        <tr class="cat-row"><td colspan="7"><span class="cat-num">6</span>Access & scheduling</td></tr>
+        <tr class="cat-row"><td colspan="7"><span class="cat-num">6</span>Communication & information</td></tr>
         <tr>
-          <td class="q-cell">Ease of scheduling and changing your sessions</td>
+          <td class="q-cell">Explained your lab results and what they mean</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q21" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q21" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q21" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q21" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q21" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q21" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Waiting time before your session started</td>
+          <td class="q-cell">Explained your medicines and diet clearly</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q22" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q22" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q22" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q22" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q22" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q22" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Ease of reaching staff by phone or in person</td>
+          <td class="q-cell">Answered your questions in a way you understood</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q23" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q23" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q23" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q23" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q23" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q23" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Help with PhilHealth / HMO / billing questions</td>
+          <td class="q-cell">Kept you informed about changes in your care</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q24" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q24" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q24" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q24" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q24" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q24" value="na" aria-label="Not applicable"></label></td>
         </tr>
-        <tr class="cat-row"><td colspan="7"><span class="cat-num">7</span>Facility & comfort</td></tr>
+        <tr class="cat-row"><td colspan="7"><span class="cat-num">7</span>Access & scheduling</td></tr>
         <tr>
-          <td class="q-cell">Comfort and temperature of the treatment area</td>
+          <td class="q-cell">Ease of scheduling and changing your sessions</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q25" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q25" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q25" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q25" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q25" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q25" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Cleanliness and comfort of the waiting area</td>
+          <td class="q-cell">Waiting time before your session started</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q26" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q26" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q26" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q26" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q26" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q26" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Parking and transport access</td>
+          <td class="q-cell">Ease of reaching staff by phone or in person</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q27" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q27" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q27" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q27" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q27" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q27" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Availability of drinking water, snacks, or entertainment</td>
+          <td class="q-cell">Help with PhilHealth / HMO / billing questions</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q28" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q28" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q28" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q28" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q28" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q28" value="na" aria-label="Not applicable"></label></td>
         </tr>
-        <tr class="cat-row"><td colspan="7"><span class="cat-num">8</span>Overall experience</td></tr>
+        <tr class="cat-row"><td colspan="7"><span class="cat-num">8</span>Facility & comfort</td></tr>
         <tr>
-          <td class="q-cell">Overall quality of care at this center</td>
+          <td class="q-cell">Comfort and temperature of the treatment area</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q29" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q29" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q29" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q29" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q29" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q29" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">Overall friendliness and professionalism of the staff</td>
+          <td class="q-cell">Cleanliness and comfort of the waiting area</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q30" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q30" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q30" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q30" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q30" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q30" value="na" aria-label="Not applicable"></label></td>
         </tr>
         <tr>
-          <td class="q-cell">How well this center meets your needs as a dialysis patient</td>
+          <td class="q-cell">Parking and transport access</td>
           <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q31" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q31" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q31" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q31" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q31" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q31" value="na" aria-label="Not applicable"></label></td>
+        </tr>
+        <tr>
+          <td class="q-cell">Availability of drinking water, snacks, or entertainment</td>
+          <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q32" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q32" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q32" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q32" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q32" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q32" value="na" aria-label="Not applicable"></label></td>
+        </tr>
+        <tr class="cat-row"><td colspan="7"><span class="cat-num">9</span>Overall experience</td></tr>
+        <tr>
+          <td class="q-cell">Overall quality of care at this center</td>
+          <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q33" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q33" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q33" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q33" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q33" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q33" value="na" aria-label="Not applicable"></label></td>
+        </tr>
+        <tr>
+          <td class="q-cell">Overall friendliness and professionalism of the staff</td>
+          <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q34" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q34" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q34" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q34" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q34" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q34" value="na" aria-label="Not applicable"></label></td>
+        </tr>
+        <tr>
+          <td class="q-cell">How well this center meets your needs as a dialysis patient</td>
+          <td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q35" value="1" aria-label="Poor"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q35" value="2" aria-label="Fair"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q35" value="3" aria-label="Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q35" value="4" aria-label="Very Good"></label></td><td class="opt-cell"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q35" value="5" aria-label="Excellent"></label></td><td class="opt-cell na-col"><label class="opt-wrap"><input type="radio" class="rate-radio" name="q35" value="na" aria-label="Not applicable"></label></td>
         </tr>
       </tbody>
     </table>
