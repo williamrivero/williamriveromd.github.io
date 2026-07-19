@@ -1842,6 +1842,32 @@
   .footer-link { color: var(--navy); }
   .thanks { text-align: center; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; color: var(--navy); margin: 4px 0 18px; }
 
+  /* Submit */
+  .submit-row { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; margin: 6px 0 20px; }
+  .submit-btn {
+    background: var(--teal); color: #fff; border: none; border-radius: 9px;
+    padding: 12px 26px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: filter .15s, opacity .15s;
+  }
+  .submit-btn:hover { filter: brightness(1.08); }
+  .submit-btn:disabled { opacity: .6; cursor: default; }
+  .submit-hint { font-size: 12px; color: var(--text-muted); }
+  .submit-msg { font-size: 12.5px; line-height: 1.5; margin: -8px 0 18px; min-height: 0; }
+  .submit-msg.err { color: var(--red); }
+  .submit-msg.info { color: var(--amber); }
+
+  /* Success panel (shown after submit) */
+  .success-panel { text-align: center; padding: 56px 40px; }
+  .sp-ico {
+    width: 58px; height: 58px; margin: 0 auto 18px; border-radius: 50%;
+    background: var(--green-soft); color: var(--green);
+    display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .success-panel h3 { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .success-panel p { font-size: 13.5px; color: var(--text-mid); max-width: 460px; margin: 0 auto 20px; line-height: 1.6; }
+  .success-panel .sp-again { color: var(--teal); font-weight: 700; text-decoration: none; font-size: 13px; cursor: pointer; }
+
   @media (max-width: 640px) {
     .page { padding: 22px 18px; }
     .visit-grid, .fu-grid { grid-template-columns: 1fr; }
@@ -2190,7 +2216,30 @@
 
   <div class="thanks">Salamat po! Thank you for helping us serve you better.</div>
 
-  <script>
+  <!-- SUBMIT -->
+  <div class="submit-row no-print">
+    <button type="button" class="submit-btn" id="submitBtn">Submit survey</button>
+    <span class="submit-hint">Prefer paper? Use “Print / Save as PDF” at the top instead.</span>
+  </div>
+  <div class="submit-msg" id="submitMsg" role="status" aria-live="polite"></div>
+
+  <!-- DOCUMENT FOOTER -->
+  <div class="doc-footer">
+    <span><span class="footer-brand">renalcarematters.com</span> · Confidential patient feedback · For quality improvement only</span>
+    <span>St John Biocare · Core Renal Care · St Josef Renal Care</span>
+  </div>
+
+</form><!-- .page -->
+
+<!-- SUCCESS PANEL (shown after online submit) -->
+<div class="page success-panel" id="successPanel" hidden>
+  <div class="sp-ico">✓</div>
+  <h3>Salamat po! Your feedback was submitted.</h3>
+  <p>Thank you for helping us improve your dialysis care. Your response is confidential. You may now close this page.</p>
+  <a class="sp-again" id="againBtn">Submit another response</a>
+</div>
+
+<script>
   (function () {
     /* ── BRANCH DATA ──────────────────────────────────────────────────────────
        Fill each center's real branches into the arrays below. Once populated,
@@ -2235,14 +2284,102 @@
     fillBranches(checked ? checked.value : '');
   })();
   </script>
+  <script>
+  (function () {
+    /* ── GOOGLE SHEET SUBMISSION ───────────────────────────────────────────────
+       Paste your deployed Google Apps Script Web App URL between the quotes.
+       Setup steps are in dialysis-survey-apps-script.gs. Until this is filled in,
+       the Submit button tells patients to use Print / Save as PDF instead. */
+    var SHEET_ENDPOINT = "";
 
-  <!-- DOCUMENT FOOTER -->
-  <div class="doc-footer">
-    <span><span class="footer-brand">renalcarematters.com</span> · Confidential patient feedback · For quality improvement only</span>
-    <span>St John Biocare · Core Renal Care · St Josef Renal Care</span>
-  </div>
+    var form   = document.getElementById('survey-form');
+    var btn    = document.getElementById('submitBtn');
+    var msg    = document.getElementById('submitMsg');
+    var panel  = document.getElementById('successPanel');
+    var again  = document.getElementById('againBtn');
+    if (!form || !btn) return;
 
-</form><!-- .page -->
+    function say(text, cls) { msg.textContent = text || ''; msg.className = 'submit-msg' + (cls ? ' ' + cls : ''); }
+
+    function labelOf(input) {
+      var lab = input.closest('label');
+      return lab ? lab.textContent.trim() : (input.value || '');
+    }
+
+    function collect() {
+      var d = {};
+      var c = form.querySelector('input[name="center"]:checked');
+      d['Center'] = c ? labelOf(c) : '';
+
+      var sel = form.querySelector('.branch-select');
+      var other = form.querySelector('.branch-input');
+      var branch = (sel && sel.value && sel.value !== '__other') ? sel.value : '';
+      d['Branch'] = branch || (other ? other.value.trim() : '');
+
+      d['Date of visit'] = (form.querySelector('input[name="date"]') || {}).value || '';
+      [['shift','Shift'], ['tenure','Time on dialysis'], ['freq','Sessions per week'],
+       ['nps','Recommend (0-10)'], ['return','Would choose again']].forEach(function (p) {
+        var el = form.querySelector('input[name="' + p[0] + '"]:checked');
+        d[p[1]] = el ? labelOf(el) : '';
+      });
+
+      /* Ratings — key by the question text, value = numeric score (1-5) or N/A */
+      form.querySelectorAll('.rate-table tbody tr').forEach(function (tr) {
+        var q = tr.querySelector('.q-cell');
+        if (!q) return;
+        var picked = tr.querySelector('input[type="radio"]:checked');
+        d[q.textContent.trim()] = picked ? (picked.value === 'na' ? 'N/A' : picked.value) : '';
+      });
+
+      [['did-well','What we did well'], ['improve','What to improve'],
+       ['recognize','Staff to recognize'], ['fu-name','Follow-up name'],
+       ['fu-contact','Follow-up contact'], ['fu-time','Best time to reach'],
+       ['fu-id','Patient / dialysis ID']].forEach(function (p) {
+        var el = form.querySelector('[name="' + p[0] + '"]');
+        d[p[1]] = el ? el.value.trim() : '';
+      });
+      var cm = form.querySelector('input[name="contact-me"]');
+      d['Wants contact'] = (cm && cm.checked) ? 'Yes' : 'No';
+      return d;
+    }
+
+    btn.addEventListener('click', function () {
+      if (!form.querySelector('input[name="center"]:checked')) {
+        say('Please choose which center you are rating.', 'err');
+        form.querySelector('.center-row').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (!SHEET_ENDPOINT) {
+        say('Online submission is not set up yet — please use “Print / Save as PDF” at the top.', 'info');
+        return;
+      }
+      say('Sending your response…');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      fetch(SHEET_ENDPOINT, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(collect())
+      }).then(function () {
+        form.style.display = 'none';
+        panel.hidden = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }).catch(function () {
+        btn.disabled = false; btn.textContent = 'Submit survey';
+        say('Could not send — please check your connection and try again, or use Print / Save as PDF.', 'err');
+      });
+    });
+
+    if (again) again.addEventListener('click', function () {
+      form.reset();
+      form.style.display = '';
+      panel.hidden = true;
+      btn.disabled = false; btn.textContent = 'Submit survey';
+      say('');
+      var evt = document.querySelector('input[name="center"]');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+  </script>
 </div><!-- .page-outer -->
 
 </body>
