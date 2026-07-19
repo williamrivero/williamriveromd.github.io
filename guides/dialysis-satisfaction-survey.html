@@ -2245,12 +2245,23 @@
        Fill each center's real branches into the arrays below. Once populated,
        choosing a center automatically shows only that center's branches.
        Leave an array empty and patients simply write their branch in the line. */
-    /* Branch lists confirmed by the center group. The "Other" write-in still
-       covers anything not listed. */
+    /* Branch lists confirmed by the center group. Each branch has a stable
+       "key" used only for email/sheet routing (see dialysis-survey-apps-script.gs)
+       so relabelling the display text never breaks routing. The "Other" write-in
+       still covers anything not listed. */
     var BRANCHES = {
-      "st-john-biocare":     ["Quezon Avenue", "Marikina", "Caloocan"],
-      "core-renal-care":     ["Santillan, Makati"],
-      "st-josef-renal-care": ["Concepcion", "Marilao"]
+      "st-john-biocare": [
+        { key: "sjb-qave",     label: "Quezon Avenue" },
+        { key: "sjb-marikina", label: "Marikina" },
+        { key: "sjb-caloocan", label: "Caloocan" }
+      ],
+      "core-renal-care": [
+        { key: "core-santillan", label: "Santillan, Makati" }
+      ],
+      "st-josef-renal-care": [
+        { key: "sjrc-concepcion", label: "Concepcion" },
+        { key: "sjrc-marilao",    label: "Marilao" }
+      ]
     };
 
     var sel    = document.querySelector('.branch-select');
@@ -2269,7 +2280,7 @@
       var ph = new Option(center ? 'Select your branch…' : 'Select your center first…', '');
       ph.disabled = true; ph.selected = true;
       sel.add(ph);
-      list.forEach(function (b) { sel.add(new Option(b, b)); });
+      list.forEach(function (b) { sel.add(new Option(b.label, b.key)); });
       sel.add(new Option('Other / not listed — write below', '__other'));
       sel.disabled = !center;
       toggleOther();
@@ -2286,10 +2297,31 @@
   </script>
   <script>
   (function () {
-    /* ── GOOGLE SHEET SUBMISSION ───────────────────────────────────────────────
-       Paste your deployed Google Apps Script Web App URL between the quotes.
-       Setup steps are in dialysis-survey-apps-script.gs. Until this is filled in,
-       the Submit button tells patients to use Print / Save as PDF instead. */
+    /* ── SUBMISSION CONFIG ─────────────────────────────────────────────────────
+       Each response is (1) emailed to the selected branch via Web3Forms and
+       (2) logged to your Google Sheet via the Apps Script Web App.
+
+       WEB3FORMS_KEYS: create one Web3Forms access key per branch inbox
+       (web3forms.com → verify each branch email → copy its access key) and paste
+       it below. Access keys are public identifiers — safe to ship in the page;
+       the branch email address itself stays private inside Web3Forms.
+       "__other" is the fallback used for the write-in / no-branch case
+       (routes to Quezon Avenue, the group default).
+
+       SHEET_ENDPOINT: your deployed Apps Script Web App URL (see
+       dialysis-survey-apps-script.gs). Leave "" to skip the Sheet.
+
+       If no branch key is configured and no Sheet URL is set, Submit tells the
+       patient to use Print / Save as PDF instead. */
+    var WEB3FORMS_KEYS = {
+      "sjb-qave":        "",   /* qave.sjbdc@gmail.com        (also the default) */
+      "sjb-marikina":    "",   /* sjbdc_marikina@yahoo.com */
+      "sjb-caloocan":    "",   /* sjbdc.caloocan@gmail.com */
+      "core-santillan":  "",   /* sjbd.corerenalcenter@gmail.com */
+      "sjrc-concepcion": "",   /* sjrcf2019@gmail.com */
+      "sjrc-marilao":    "",   /* sjrcmarilao@gmail.com */
+      "__other":         ""    /* fallback → qave.sjbdc@gmail.com */
+    };
     var SHEET_ENDPOINT = "";
 
     var form   = document.getElementById('survey-form');
@@ -2310,11 +2342,18 @@
       var d = {};
       var c = form.querySelector('input[name="center"]:checked');
       d['Center'] = c ? labelOf(c) : '';
+      d['Center key'] = c ? c.value : '';
 
       var sel = form.querySelector('.branch-select');
       var other = form.querySelector('.branch-input');
-      var branch = (sel && sel.value && sel.value !== '__other') ? sel.value : '';
-      d['Branch'] = branch || (other ? other.value.trim() : '');
+      var opt = (sel && sel.selectedOptions) ? sel.selectedOptions[0] : null;
+      if (sel && sel.value && sel.value !== '__other') {
+        d['Branch'] = opt ? opt.textContent.trim() : sel.value;
+        d['Branch key'] = sel.value;
+      } else {
+        d['Branch'] = other ? other.value.trim() : '';
+        d['Branch key'] = '__other';
+      }
 
       d['Date of visit'] = (form.querySelector('input[name="date"]') || {}).value || '';
       [['shift','Shift'], ['tenure','Time on dialysis'], ['freq','Sessions per week'],
@@ -2343,28 +2382,66 @@
       return d;
     }
 
+    function showSuccess() {
+      form.style.display = 'none';
+      panel.hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function reset() { btn.disabled = false; btn.textContent = 'Submit survey'; }
+
+    function logToSheet(payload) {
+      if (!SHEET_ENDPOINT) return;
+      /* Fire-and-forget: cross-site Apps Script only accepts an opaque POST, so
+         we cannot read its result — the Sheet row still gets written. */
+      fetch(SHEET_ENDPOINT, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      }).catch(function () {});
+    }
+
     btn.addEventListener('click', function () {
       if (!form.querySelector('input[name="center"]:checked')) {
         say('Please choose which center you are rating.', 'err');
         form.querySelector('.center-row').scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
-      if (!SHEET_ENDPOINT) {
+
+      var d = collect();
+      var bkey = d['Branch key'] || '__other';
+      var w3key = WEB3FORMS_KEYS[bkey] || WEB3FORMS_KEYS['__other'] || '';
+      var emailOn = !!w3key;
+      var sheetOn = !!SHEET_ENDPOINT;
+
+      if (!emailOn && !sheetOn) {
         say('Online submission is not set up yet — please use “Print / Save as PDF” at the top.', 'info');
         return;
       }
+
       say('Sending your response…');
       btn.disabled = true; btn.textContent = 'Sending…';
-      fetch(SHEET_ENDPOINT, {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(collect())
-      }).then(function () {
-        form.style.display = 'none';
-        panel.hidden = false;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      logToSheet(d);   /* always log to the Sheet if configured */
+
+      if (!emailOn) {  /* Sheet-only: no readable result, show success optimistically */
+        setTimeout(showSuccess, 400);
+        return;
+      }
+
+      var w3 = { access_key: w3key, from_name: 'Renal Care Matters — Patient Survey',
+                 subject: 'Patient Satisfaction Survey — ' + (d['Center'] || '') + (d['Branch'] ? ' — ' + d['Branch'] : ''),
+                 botcheck: '' };
+      for (var k in d) { if (d.hasOwnProperty(k)) w3[k] = d[k]; }
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(w3)
+      }).then(function (r) { return r.json(); }).then(function (res) {
+        if (res && res.success) { showSuccess(); }
+        else { reset(); say((res && res.message) ? res.message : 'Could not send — please try again, or use Print / Save as PDF.', 'err'); }
       }).catch(function () {
-        btn.disabled = false; btn.textContent = 'Submit survey';
+        reset();
         say('Could not send — please check your connection and try again, or use Print / Save as PDF.', 'err');
       });
     });
