@@ -985,7 +985,7 @@
     <li><a href="/guides/">Health Guides</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#specialties">Specialties</a></li>
-    <li><a href="#voices">Patient Voices</a></li>
+    <li><a href="#voices">Kind Words</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#contact">Clinics</a></li>
     <li><a href="#appointment" class="nav-cta">Book Appointment</a></li>
@@ -1432,20 +1432,33 @@
   </div>
 </section>
 
-<!-- PATIENT VOICES -->
+<!-- KIND WORDS -->
 <style>
   .voices { background: white; }
   html[data-theme="dark"] .voices { background: #0f1520; }
-  .voices-grid { margin-top: 8px; }
+  .voices-carousel { position: relative; margin-top: 8px; }
+  .voices-viewport { overflow: hidden; border-radius: 14px; }
+  .voices-track {
+    display: flex;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+    will-change: transform;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .voices-track { transition: none; }
+  }
   .voice-card {
     position: relative;
+    flex: 0 0 100%;
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
     background: var(--cream);
     border: 1px solid var(--border);
     border-left: 4px solid var(--teal);
     border-radius: 14px;
-    padding: 40px 44px 32px;
-    max-width: 760px;
+    padding: 40px 56px 32px;
   }
+  .voice-card.peer { border-left-color: var(--gold); }
   html[data-theme="dark"] .voice-card { background: #141c2a; }
   .voice-mark {
     font-family: 'Cormorant Garamond', serif;
@@ -1457,6 +1470,7 @@
     top: 18px; left: 24px;
     pointer-events: none;
   }
+  .voice-card.peer .voice-mark { color: var(--gold); }
   .voice-body { position: relative; z-index: 1; }
   .voice-body p {
     font-family: 'Cormorant Garamond', serif;
@@ -1473,10 +1487,11 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 26px;
-    padding-top: 20px;
+    margin-top: auto;
+    padding-top: 22px;
     border-top: 1px solid var(--border);
   }
+  .voice-body + .voice-attrib { margin-top: 26px; }
   .voice-avatar {
     width: 40px; height: 40px;
     flex-shrink: 0;
@@ -1488,50 +1503,175 @@
     font-size: 14px; font-weight: 600;
     letter-spacing: .04em;
   }
-  .voice-name {
-    font-size: 14px; font-weight: 600; color: var(--navy);
-  }
+  .voice-card.peer .voice-avatar { background: var(--gold); }
+  .voice-name { font-size: 14px; font-weight: 600; color: var(--navy); }
   html[data-theme="dark"] .voice-name { color: #e8eaf0; }
   .voice-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  /* Nav arrows */
+  .voice-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--navy);
+    font-size: 22px; line-height: 1;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,.1);
+    transition: background .2s, transform .15s, box-shadow .2s;
+    z-index: 3;
+  }
+  .voice-nav:hover { background: var(--teal); color: white; border-color: var(--teal); }
+  .voice-nav.prev { left: 8px; }
+  .voice-nav.next { right: 8px; }
+  html[data-theme="dark"] .voice-nav { background: #1a2535; color: #e8eaf0; }
+  /* Dots */
+  .voice-dots { display: flex; justify-content: center; gap: 8px; margin-top: 22px; }
+  .voice-dot {
+    width: 8px; height: 8px; padding: 0;
+    border: none; border-radius: 50%;
+    background: var(--border); cursor: pointer;
+    transition: width .25s, background .25s, border-radius .25s;
+  }
+  .voice-dot.active { background: var(--teal); width: 24px; border-radius: 4px; }
   .voice-note {
     font-size: 12px; color: var(--muted);
-    margin-top: 22px; line-height: 1.6; font-style: italic;
+    margin-top: 18px; line-height: 1.6; font-style: italic; text-align: center;
   }
   @media (max-width: 600px) {
-    .voice-card { padding: 32px 24px 26px; }
+    .voice-card { padding: 34px 22px 26px; }
     .voice-mark { font-size: 56px; top: 12px; left: 14px; }
     .voice-body p { font-size: 17px; }
+    .voice-nav { width: 34px; height: 34px; font-size: 19px; }
+    .voice-nav.prev { left: 4px; }
+    .voice-nav.next { right: 4px; }
   }
 </style>
 <section class="voices" id="voices">
   <div class="section-inner">
-    <div class="section-eyebrow">Patient Voices</div>
+    <div class="section-eyebrow">Kind Words</div>
     <h2 class="section-title">In their own words</h2>
     <p class="section-sub">
-      What matters most is that patients feel heard. This is one patient's reflection, shared with permission.
+      A few reflections from patients, their families, and referring colleagues — shared with permission.
     </p>
 
-    <div class="voices-grid">
-      <figure class="voice-card">
-        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
-        <blockquote class="voice-body">
-          <p>Doc, I just finished reading the meal plan.</p>
-          <p>Thank you for taking the time to prepare such a thoughtful treatment plan. I honestly became emotional reading it. Over the past few months, I've felt like I've had to constantly explain what I've been experiencing with my IgA nephropathy and the effects of high-dose prednisone. Many people, with good intentions, have told me to simply eat less because of the weight gain and swelling. Even I started questioning whether I was doing something wrong. For the first time since my diagnosis, I truly felt heard, understood, and believed.</p>
-          <p>Your compassion and the way you explained everything gave me hope and reassurance during a very difficult time. Thank you for treating me as a person, not just a patient.</p>
-          <p>I am incredibly grateful for your kindness and expertise.</p>
-        </blockquote>
-        <figcaption class="voice-attrib">
-          <div class="voice-avatar" aria-hidden="true">KS</div>
-          <div>
-            <div class="voice-name">KS</div>
-            <div class="voice-meta">Patient living with IgA nephropathy</div>
-          </div>
-        </figcaption>
-      </figure>
-      <p class="voice-note">Shared with the patient's permission. Initials used to protect privacy.</p>
+    <div class="voices-carousel" data-voices aria-roledescription="carousel" aria-label="Testimonials">
+      <div class="voices-viewport">
+        <div class="voices-track">
+
+          <figure class="voice-card" role="group" aria-roledescription="slide" aria-label="1 of 3">
+            <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+            <blockquote class="voice-body">
+              <p>Doc, I just finished reading the meal plan.</p>
+              <p>Thank you for taking the time to prepare such a thoughtful treatment plan. I honestly became emotional reading it. Over the past few months, I've felt like I've had to constantly explain what I've been experiencing with my IgA nephropathy and the effects of high-dose prednisone. Many people, with good intentions, have told me to simply eat less because of the weight gain and swelling. Even I started questioning whether I was doing something wrong. For the first time since my diagnosis, I truly felt heard, understood, and believed.</p>
+              <p>Your compassion and the way you explained everything gave me hope and reassurance during a very difficult time. Thank you for treating me as a person, not just a patient.</p>
+              <p>I am incredibly grateful for your kindness and expertise.</p>
+            </blockquote>
+            <figcaption class="voice-attrib">
+              <div class="voice-avatar" aria-hidden="true">KS</div>
+              <div>
+                <div class="voice-name">KS</div>
+                <div class="voice-meta">Patient living with IgA nephropathy</div>
+              </div>
+            </figcaption>
+          </figure>
+
+          <figure class="voice-card peer" role="group" aria-roledescription="slide" aria-label="2 of 3">
+            <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+            <blockquote class="voice-body">
+              <p>Thank you for your very kind referral. I had seen your patient, Mr. JE. I really appreciate the elaborate and detailed summary that allowed me to understand his case more clearly.</p>
+            </blockquote>
+            <figcaption class="voice-attrib">
+              <div class="voice-avatar" aria-hidden="true">JA</div>
+              <div>
+                <div class="voice-name">Dr. JA</div>
+                <div class="voice-meta">Urologist &middot; Referring colleague</div>
+              </div>
+            </figcaption>
+          </figure>
+
+          <figure class="voice-card" role="group" aria-roledescription="slide" aria-label="3 of 3">
+            <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+            <blockquote class="voice-body">
+              <p>Good evening po doc, salamat po sa magandang face to face check up kanina. Sobrang natuwa si daddy at mommy sa inyo. Ibang-iba daw po kayo sa dati niyang doctor na nagmamadali at napapagalitan siya.</p>
+            </blockquote>
+            <figcaption class="voice-attrib">
+              <div class="voice-avatar" aria-hidden="true">GE</div>
+              <div>
+                <div class="voice-name">GE</div>
+                <div class="voice-meta">Son of a patient</div>
+              </div>
+            </figcaption>
+          </figure>
+
+        </div>
+      </div>
+      <button type="button" class="voice-nav prev" aria-label="Previous testimonial">&lsaquo;</button>
+      <button type="button" class="voice-nav next" aria-label="Next testimonial">&rsaquo;</button>
+      <div class="voice-dots" role="tablist" aria-label="Choose testimonial"></div>
     </div>
+    <p class="voice-note">Shared with permission. Initials used to protect privacy.</p>
   </div>
 </section>
+<script>
+(function(){
+  var root = document.querySelector('[data-voices]');
+  if (!root) return;
+  var track  = root.querySelector('.voices-track');
+  var slides = Array.prototype.slice.call(root.querySelectorAll('.voice-card'));
+  var dotsWrap = root.querySelector('.voice-dots');
+  var prevBtn = root.querySelector('.voice-nav.prev');
+  var nextBtn = root.querySelector('.voice-nav.next');
+  if (!track || slides.length < 2) {
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+    return;
+  }
+  var i = 0, timer = null, x0 = null;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var dots = slides.map(function(_, idx){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'voice-dot' + (idx === 0 ? ' active' : '');
+    b.setAttribute('aria-label', 'Testimonial ' + (idx + 1));
+    b.addEventListener('click', function(){ go(idx); restart(); });
+    dotsWrap.appendChild(b);
+    return b;
+  });
+
+  function go(n){
+    i = (n + slides.length) % slides.length;
+    track.style.transform = 'translateX(' + (-i * 100) + '%)';
+    dots.forEach(function(d, idx){ d.classList.toggle('active', idx === i); });
+  }
+  function next(){ go(i + 1); }
+  function prev(){ go(i - 1); }
+
+  function start(){ if (!reduce && !timer) timer = setInterval(next, 8000); }
+  function stop(){ if (timer){ clearInterval(timer); timer = null; } }
+  function restart(){ stop(); start(); }
+
+  nextBtn.addEventListener('click', function(){ next(); restart(); });
+  prevBtn.addEventListener('click', function(){ prev(); restart(); });
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', start);
+  root.addEventListener('focusin', stop);
+  root.addEventListener('focusout', start);
+  root.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; stop(); }, { passive: true });
+  root.addEventListener('touchend', function(e){
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
+    x0 = null; start();
+  }, { passive: true });
+
+  go(0); start();
+})();
+</script>
 
 <section class="faq" id="faq">
   <div class="section-inner">
