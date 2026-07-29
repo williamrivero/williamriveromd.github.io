@@ -1464,6 +1464,22 @@
   }
   .voice-card.peer { border-left-color: var(--gold); }
   html[data-theme="dark"] .voice-card { background: #141c2a; }
+  /* "Rising" scroll reveal — only active when JS adds .js-rise (cards stay visible without JS) */
+  .voices-wall.js-rise .voice-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .6s ease, transform .7s cubic-bezier(.22,.61,.36,1);
+    will-change: opacity, transform;
+  }
+  .voices-wall.js-rise .voice-card.rise-in {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .voices-wall.js-rise .voice-card {
+      opacity: 1 !important; transform: none !important; transition: none !important;
+    }
+  }
   .voice-mark {
     font-family: 'Cormorant Garamond', serif;
     font-size: 60px;
@@ -1711,6 +1727,28 @@
     <p class="voice-note">Shared with permission; initials used to protect privacy. Additional feedback was submitted anonymously by patients through the SeriousMD consultation platform and is published without identifying details. Individual experiences vary and are not a prediction of outcome for any other patient.</p>
   </div>
 </section>
+<script>
+(function(){
+  var wall = document.querySelector('.voices-wall');
+  if (!wall) return;
+  var cards = Array.prototype.slice.call(wall.querySelectorAll('.voice-card'));
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Without IntersectionObserver support or with reduced motion, leave cards fully visible.
+  if (reduce || !('IntersectionObserver' in window)) return;
+  wall.classList.add('js-rise');
+  // Small, capped stagger so a card scrolled to on its own never sits blank for long.
+  cards.forEach(function(c, i){ c.style.transitionDelay = (Math.min(i, 5) * 60) + 'ms'; });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){
+        e.target.classList.add('rise-in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  cards.forEach(function(c){ io.observe(c); });
+})();
+</script>
 
 <section class="faq" id="faq">
   <div class="section-inner">
