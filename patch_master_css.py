@@ -1316,8 +1316,10 @@ MASTER_CSS = """
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
