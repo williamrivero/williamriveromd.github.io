@@ -77,7 +77,14 @@ URLs were preserved — no file was renamed or deleted.
 
 ## 4. Visual assets flagged for regeneration
 
-Alt text/captions were corrected in the HTML, but these images have **outdated claims baked into their pixels** and should be re-rendered:
+**Update 2026-08-09 — RESOLVED.** All 13 flagged figures below were regenerated in the
+house style (prompts in `IMAGE-REGENERATION-PROMPTS.md`), committed as PNG + WebP, and
+wired: the metabolic hero was upgraded to `<picture>` so its new WebP is served, and the
+three ADPKD figures' alt text/figcaptions were rewritten to the corrected pixels (the
+"being revised" disclaimers were removed). The contrast OG share card was replaced
+separately (see §2). The original list is retained below for the record.
+
+Alt text/captions were corrected in the HTML, but these images had **outdated claims baked into their pixels** and were re-rendered:
 
 - **Metabolic acidosis:** `metabolic-acidosis-bicarb-explainer`, `metabolic-acidosis-kidney-damage`, `metabolic-acidosis-treatment`, `metabolic-acidosis-monitoring`, `metabolic-acidosis-ckd-clinician-infographic` (all show "KDIGO target 22–26" / "treat <22").
 - **Contrast:** `contrast-injury-mechanism` (CIN-as-cause framing — this is also the current OG/Twitter share image), `contrast-nephropathy-vignette-hero` (old CIN concept). A **new 1200×630 OG card** prompt was produced (`contrast-ca-aki-og-card.png`); once generated, `og:image`/`twitter:image` + width/height/alt will be wired and `latest_guides.json` re-synced.
