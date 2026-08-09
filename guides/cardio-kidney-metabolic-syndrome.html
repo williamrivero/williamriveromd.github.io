@@ -143,6 +143,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1311,8 +1319,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1776,8 +1786,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1797,13 +1807,13 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 </aside>
 <div class="hero-copy">
 <div class="hero-tag">
-      <span data-lang="en">New Framework · AHA–ASN (American Society of Nephrology) 2023</span>
+      <span data-lang="en">New Framework · AHA–ASN (American Society of Nephrology) 2023</span><span class="lang-hidden" data-lang="tl">Bagong Balangkas · AHA–ASN (American Society of Nephrology) 2023</span><span class="lang-hidden" data-lang="ceb">Bag-ong Balangkas · AHA–ASN (American Society of Nephrology) 2023</span><span class="lang-hidden" data-lang="kap">Bayung Balangkas · AHA–ASN (American Society of Nephrology) 2023</span>
     </div>
 <h1>
-      <span data-lang="en">Your Heart, Kidneys, and Metabolism — <em>One Connected Crisis</em></span>
+      <span data-lang="en">Your Heart, Kidneys, and Metabolism — <em>One Connected Crisis</em></span><span class="lang-hidden" data-lang="tl">Ang Iyong Puso, mga Bato, at Metabolismo — <em>Isang Magkakaugnay na Krisis</em></span><span class="lang-hidden" data-lang="ceb">Ang Imong Kasingkasing, mga Kidney, ug Metabolismo — <em>Usa ka Nagkadugtong nga Krisis</em></span><span class="lang-hidden" data-lang="kap">Ing Kekang Pusu, Reng Batu, at Metabolismo — <em>Metung a Makasese a Krisis</em></span>
     </h1>
 <p class="hero-sub">
-      <span data-lang="en">Your heart, your kidneys, and your metabolism are not three separate problems. They are one connected system — and treating them together is the key to protecting all three. A patient &amp; clinician guide to Cardio-Kidney-Metabolic (CKM) syndrome.</span>
+      <span data-lang="en">Your heart, your kidneys, and your metabolism are not three separate problems. They are one connected system — and treating them together is the key to protecting all three. A patient &amp; clinician guide to Cardio-Kidney-Metabolic (CKM) syndrome.</span><span class="lang-hidden" data-lang="tl">Ang iyong puso, ang iyong mga bato, at ang iyong metabolismo ay hindi tatlong magkakahiwalay na problema. Isa silang magkakaugnay na sistema — at ang paggamot sa mga ito nang sabay-sabay ang susi sa pagprotekta sa lahat ng tatlo. Isang gabay para sa pasyente &amp; kliniko tungkol sa Cardio-Kidney-Metabolic (CKM) syndrome.</span><span class="lang-hidden" data-lang="ceb">Ang imong kasingkasing, ang imong mga kidney, ug ang imong metabolismo dili tulo ka bulag nga problema. Usa sila ka nagkadugtong nga sistema — ug ang pagtambal kanila nga dungan mao ang yawe sa pagpanalipod sa tanang tulo. Usa ka giya para sa pasyente &amp; kliniko bahin sa Cardio-Kidney-Metabolic (CKM) syndrome.</span><span class="lang-hidden" data-lang="kap">Ing kekang pusu, reng kekang batu, at ing kekang metabolismo e la atlung misasarili a problema. Metung lang makasese a sistema — at ing pamanlunas karela a sabay ya ing susi ba miprotektan la ngan a atlu. Metung a giya para keng pasyente &amp; kliniko tungkul king Cardio-Kidney-Metabolic (CKM) syndrome.</span>
     </p>
 <div class="hero-meta">
 <span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
@@ -1853,8 +1863,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 <!-- ===== S1 PATIENT ===== -->
 <section class="section mode-patient" id="what-is-ckm">
-  <div class="section-tag"><span data-lang="en">What Is CKM Syndrome?</span></div>
-  <h2><span data-lang="en">Three parts of your body, working as one</span></h2>
+  <div class="section-tag"><span data-lang="en">What Is CKM Syndrome?</span><span class="lang-hidden" data-lang="tl">Ano ang CKM Syndrome?</span><span class="lang-hidden" data-lang="ceb">Unsa ang CKM Syndrome?</span><span class="lang-hidden" data-lang="kap">Nanu ing CKM Syndrome?</span></div>
+  <h2><span data-lang="en">Three parts of your body, working as one</span><span class="lang-hidden" data-lang="tl">Tatlong bahagi ng iyong katawan, gumagana bilang isa</span><span class="lang-hidden" data-lang="ceb">Tulo ka bahin sa imong lawas, nagtinabangay isip usa</span><span class="lang-hidden" data-lang="kap">Atlung dake ning kekang katawan, magobra a metung</span></h2>
   <p>Cardio-Kidney-Metabolic syndrome — CKM for short — describes how three parts of your body are tightly linked: your <strong>heart</strong> (cardio), your <strong>kidneys</strong> (renal), and your <strong>metabolism</strong> (how your body handles sugar, fat, and weight).</p>
   <p>When one of these starts to struggle, it puts strain on the others. High blood sugar and extra weight stress the blood vessels; stressed blood vessels make the heart and kidneys work harder; struggling kidneys hold onto fluid, which strains the heart further. It becomes a cycle.</p>
   <div class="intro-callout">
@@ -1865,8 +1875,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 <!-- ===== S2 PATIENT ===== -->
 <section class="section mode-patient" id="stages">
-  <div class="section-tag"><span data-lang="en">Knowing Your Stage</span></div>
-  <h2><span data-lang="en">Where am I on the path?</span></h2>
+  <div class="section-tag"><span data-lang="en">Knowing Your Stage</span><span class="lang-hidden" data-lang="tl">Pag-alam sa Iyong Antas</span><span class="lang-hidden" data-lang="ceb">Pag-ila sa Imong Ang-ang</span><span class="lang-hidden" data-lang="kap">Pamibalu king Kekang Stage</span></div>
+  <h2><span data-lang="en">Where am I on the path?</span><span class="lang-hidden" data-lang="tl">Nasaan ako sa landas?</span><span class="lang-hidden" data-lang="ceb">Asa ko sa dalan?</span><span class="lang-hidden" data-lang="kap">Nokarin ku king dalan?</span></h2>
   <p>CKM is described in <strong>stages, from 0 to 4</strong>. The stages are a ladder — they tell you and your doctor how far things have progressed and, just as importantly, what you can do to stay where you are or step back down.</p>
   <p>Lower stages are about <em>risk</em> (extra weight, blood pressure, blood sugar). Higher stages mean the heart, kidneys, or blood vessels have started to show changes. The earlier you act, the more you can protect.</p>
 
@@ -1905,8 +1915,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 <!-- ===== S3 PATIENT ===== -->
 <section class="section mode-patient" id="shared-engine">
-  <div class="section-tag"><span data-lang="en">The Shared Engine</span></div>
-  <h2><span data-lang="en">Why these three travel together</span></h2>
+  <div class="section-tag"><span data-lang="en">The Shared Engine</span><span class="lang-hidden" data-lang="tl">Ang Iisang Makina</span><span class="lang-hidden" data-lang="ceb">Ang Usa ka Gipaambit nga Makina</span><span class="lang-hidden" data-lang="kap">Ing Mikakabaltan a Makina</span></div>
+  <h2><span data-lang="en">Why these three travel together</span><span class="lang-hidden" data-lang="tl">Bakit magkakasama ang tatlong ito</span><span class="lang-hidden" data-lang="ceb">Ngano nga magkuyog kining tulo</span><span class="lang-hidden" data-lang="kap">Bakit la reng atlung ini mikakayabe</span></h2>
   <p>Underneath CKM is a single "engine" of harm. It usually starts with <strong>extra or unhealthy fat tissue</strong>, which is not just storage — it actively releases signals that raise blood sugar, blood pressure, and inflammation.</p>
   <div class="intro-callout">
     <p><strong>The story in one breath.</strong> Extra fat tissue makes the body resistant to insulin and switches on inflammation → blood vessels everywhere get irritated and stiff → the heart must push harder and the kidneys filter under pressure → the strained kidneys hold salt and water → that extra fluid loads the heart even more. Each step feeds the next.</p>
@@ -1916,8 +1926,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 <!-- ===== S4 PATIENT ===== -->
 <section class="section mode-patient" id="measuring">
-  <div class="section-tag"><span data-lang="en">How We Measure It</span></div>
-  <h2><span data-lang="en">Making sense of your tests</span></h2>
+  <div class="section-tag"><span data-lang="en">How We Measure It</span><span class="lang-hidden" data-lang="tl">Paano Namin Ito Sinusukat</span><span class="lang-hidden" data-lang="ceb">Giunsa Namo Kini Pagsukod</span><span class="lang-hidden" data-lang="kap">Makananu Mi Yang Susukatan</span></div>
+  <h2><span data-lang="en">Making sense of your tests</span><span class="lang-hidden" data-lang="tl">Pag-unawa sa iyong mga test</span><span class="lang-hidden" data-lang="ceb">Pagsabot sa imong mga test</span><span class="lang-hidden" data-lang="kap">Pamakaintindi king kekang test</span></h2>
   <p>A handful of simple tests let your doctor see all three systems at once. Here is what they mean — in everyday terms.</p>
   <div class="table-wrap">
     <table>
@@ -1938,8 +1948,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 <!-- ===== S5 PATIENT ===== -->
 <section class="section mode-patient" id="pillars">
-  <div class="section-tag"><span data-lang="en">The Pillars of Treatment</span></div>
-  <h2><span data-lang="en">Three pillars that work together</span></h2>
+  <div class="section-tag"><span data-lang="en">The Pillars of Treatment</span><span class="lang-hidden" data-lang="tl">Ang mga Haligi ng Paggamot</span><span class="lang-hidden" data-lang="ceb">Ang mga Haligi sa Pagtambal</span><span class="lang-hidden" data-lang="kap">Reng Haligi ning Lunas</span></div>
+  <h2><span data-lang="en">Three pillars that work together</span><span class="lang-hidden" data-lang="tl">Tatlong haligi na gumagana nang sabay</span><span class="lang-hidden" data-lang="ceb">Tulo ka haligi nga nagtinabangay</span><span class="lang-hidden" data-lang="kap">Atlung haligi a magobra a sabay</span></h2>
   <p>Treatment rests on three pillars. They reinforce each other — medicines work better alongside food and movement, and vice versa.</p>
   <div class="feature-card">
     <h4>💊 Targeted medicines</h4>
@@ -1966,8 +1976,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 <!-- ===== S6 PATIENT ===== -->
 <section class="section mode-patient" id="fluid-weight">
-  <div class="section-tag"><span data-lang="en">Managing Fluid &amp; Weight</span></div>
-  <h2><span data-lang="en">Daily weights &amp; fluid — a simple routine</span></h2>
+  <div class="section-tag"><span data-lang="en">Managing Fluid &amp; Weight</span><span class="lang-hidden" data-lang="tl">Pamamahala sa Likido &amp; Timbang</span><span class="lang-hidden" data-lang="ceb">Pagdumala sa Likido &amp; Timbang</span><span class="lang-hidden" data-lang="kap">Pamanaya king Likido &amp; Timbang</span></div>
+  <h2><span data-lang="en">Daily weights &amp; fluid — a simple routine</span><span class="lang-hidden" data-lang="tl">Araw-araw na timbang &amp; likido — isang simpleng gawain</span><span class="lang-hidden" data-lang="ceb">Adlaw-adlaw nga timbang &amp; likido — usa ka simpleng rutina</span><span class="lang-hidden" data-lang="kap">Aldo-aldo a timbang &amp; likido — metung a simpleng rutina</span></h2>
   <p>When the heart and kidneys are under strain, the body can hold onto extra fluid. The earliest sign is often <strong>weight that creeps up quickly</strong> — before you even feel swollen or breathless. Catching it early lets your team adjust treatment before it becomes serious.</p>
   <div class="feature-card">
     <h4>⚖️ How to weigh yourself</h4>
@@ -2000,8 +2010,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 <!-- ===== S7 PATIENT ===== -->
 <section class="section mode-patient" id="warning-signs">
-  <div class="section-tag"><span data-lang="en">Warning Signs &amp; Follow-Up</span></div>
-  <h2><span data-lang="en">When to seek help</span></h2>
+  <div class="section-tag"><span data-lang="en">Warning Signs &amp; Follow-Up</span><span class="lang-hidden" data-lang="tl">Mga Babalang Palatandaan &amp; Pagsubaybay</span><span class="lang-hidden" data-lang="ceb">Mga Timailhan sa Pasidaan &amp; Follow-Up</span><span class="lang-hidden" data-lang="kap">Reng Tanda ning Babala &amp; Follow-Up</span></div>
+  <h2><span data-lang="en">When to seek help</span><span class="lang-hidden" data-lang="tl">Kailan humingi ng tulong</span><span class="lang-hidden" data-lang="ceb">Kanus-a mangayo og tabang</span><span class="lang-hidden" data-lang="kap">Kapilan manyad saup</span></h2>
   <div class="alert alert-red">
     <div class="alert-icon">🚨</div>
     <div class="alert-body">
@@ -2023,8 +2033,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 <!-- ===== S8 PATIENT ===== -->
 <section class="section mode-patient" id="together">
-  <div class="section-tag"><span data-lang="en">Putting It All Together</span></div>
-  <h2><span data-lang="en">One engine, one set of healthy choices</span></h2>
+  <div class="section-tag"><span data-lang="en">Putting It All Together</span><span class="lang-hidden" data-lang="tl">Pagbubuo ng Lahat</span><span class="lang-hidden" data-lang="ceb">Paghiusa sa Tanan</span><span class="lang-hidden" data-lang="kap">Pamitipun ning Anggang Ini</span></div>
+  <h2><span data-lang="en">One engine, one set of healthy choices</span><span class="lang-hidden" data-lang="tl">Isang makina, isang hanay ng malulusog na pagpipilian</span><span class="lang-hidden" data-lang="ceb">Usa ka makina, usa ka hugpong sa himsog nga mga pagpili</span><span class="lang-hidden" data-lang="kap">Metung a makina, metung a grupu ning masalese a pamipili</span></h2>
   <p>The single most encouraging fact about CKM is this: because the three systems share one engine, the right treatment helps all of them at once. Below, see how one important medicine family acts on every corner.</p>
 
   <!-- WIDGET 3: INTERVENTION -> ORGAN MAPPER -->
@@ -2280,12 +2290,12 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <div class="dr-avatar"><picture><source srcset="../images/avatar.webp" type="image/webp"><img src="../images/avatar.png" alt="Dr. W Rivero, MD" width="64" height="64" loading="lazy"></picture></div>
 <div class="dr-card-body">
 <h4><a href="https://renalcarematters.com" style="color:white;text-decoration:none;">W Rivero, MD, FPCP, DPSN</a></h4>
-<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span></p>
+<p><span data-lang="en">Specialist in Internal Medicine, Nephrology, and Clinical Nutrition. Practicing integrative and evidence-based nephrology across Quezon City, Pampanga, and Bulacan.</span><span class="lang-hidden" data-lang="tl">Espesyalista sa Internal Medicine, Nephrology, at Clinical Nutrition. Nagsasagawa ng integrative at evidence-based na nephrology sa Quezon City, Pampanga, at Bulacan.</span><span class="lang-hidden" data-lang="ceb">Espesyalista sa Internal Medicine, Nephrology, ug Clinical Nutrition. Nagpraktis og integrative ug evidence-based nga nephrology sa Quezon City, Pampanga, ug Bulacan.</span><span class="lang-hidden" data-lang="kap">Espesyalista king Internal Medicine, Nephrology, at Clinical Nutrition. Magpraktis ya integrative at evidence-based a nephrology king Quezon City, Pampanga, at Bulacan.</span></p>
 <p class="dr-creds"> &middot; <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7);">Book an Appointment &rarr;</a></p>
 </div>
 <div class="dr-qr">
 <a href="https://www.seriousmd.com/doc/williamrivero" target="_blank" rel="noopener" aria-label="Scan QR code to save Dr. Rivero's contact information"><img src="../images/dr-rivero-contact-qr.svg" alt="QR code — scan to save Dr. Rivero's contact info" width="80" height="80" loading="lazy"></a>
-<p class="dr-qr-label"><span data-lang="en">Scan and save</span></p>
+<p class="dr-qr-label"><span data-lang="en">Scan and save</span><span class="lang-hidden" data-lang="tl">I-scan at i-save</span><span class="lang-hidden" data-lang="ceb">I-scan ug i-save</span><span class="lang-hidden" data-lang="kap">I-scan at i-save</span></p>
 </div>
 </div>
 </div>
@@ -2485,5 +2495,6 @@ buildChips();
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

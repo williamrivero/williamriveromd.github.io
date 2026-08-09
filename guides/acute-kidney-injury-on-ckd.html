@@ -139,6 +139,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1307,8 +1315,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1848,16 +1858,34 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
 <div class="alert alert-teal" style="margin-top:28px;">
 <div class="alert-icon">🌴</div>
 <div class="alert-body">
-<h4 data-lang="en">Infections as a Leading Cause of AKI in the Philippines</h4>
-<p data-lang="en">In tropical and low-to-middle-income countries — including the Philippines — <strong>infections are among the most common causes of AKI</strong>, alongside dehydration and nephrotoxins. Leptospirosis, dengue fever, scrub typhus, and malaria all damage the kidneys through volume depletion, low blood pressure, and direct immune-mediated injury to kidney tubules. Many of these infections also cause multiorgan failure (liver, lungs, and heart), which compounds kidney damage. <em>(Kidney Int 2026)</em></p>
+<h4 data-lang="en">Infections as a Leading Cause of AKI in the Philippines</h4><h4 class="lang-hidden" data-lang="tl">Ang mga Impeksyon bilang Nangungunang Sanhi ng AKI sa Pilipinas</h4><h4 class="lang-hidden" data-lang="ceb">Ang mga Impeksyon isip Nag-unang Hinungdan sa AKI sa Pilipinas</h4><h4 class="lang-hidden" data-lang="kap">Deng Impeksyon bilang Nangungunang Sanhi ning AKI king Pilipinas</h4>
+<p data-lang="en">In tropical and low-to-middle-income countries — including the Philippines — <strong>infections are among the most common causes of AKI</strong>, alongside dehydration and nephrotoxins. Leptospirosis, dengue fever, scrub typhus, and malaria all damage the kidneys through volume depletion, low blood pressure, and direct immune-mediated injury to kidney tubules. Many of these infections also cause multiorgan failure (liver, lungs, and heart), which compounds kidney damage. <em>(Kidney Int 2026)</em></p><p class="lang-hidden" data-lang="tl">Sa mga tropikal at mababa-hanggang-katamtamang kita na bansa — kabilang ang Pilipinas — <strong>ang mga impeksyon ay kabilang sa pinakakaraniwang sanhi ng AKI</strong>, kasabay ng dehydration at nephrotoxins. Ang leptospirosis, dengue fever, scrub typhus, at malaria ay pawang nakakasira sa mga bato sa pamamagitan ng pagkawala ng likido sa katawan, mababang presyon ng dugo, at direktang pinsala sa mga tubule ng bato dulot ng immune system. Marami sa mga impeksyong ito ay nagdudulot din ng pagpalya ng maraming organo (atay, baga, at puso), na lalong nagpapalala sa pinsala sa bato. <em>(Kidney Int 2026)</em></p><p class="lang-hidden" data-lang="ceb">Sa tropikal ug ubos-hangtod-tunga nga kita nga mga nasod — lakip ang Pilipinas — <strong>ang mga impeksyon maoy usa sa labing komon nga hinungdan sa AKI</strong>, kauban sa dehydration ug nephrotoxins. Ang leptospirosis, dengue fever, scrub typhus, ug malaria ang tanan makadaot sa mga kidney pinaagi sa pagkawala sa likido sa lawas, ubos nga presyon sa dugo, ug direkta nga kadaot sa mga tubule sa kidney nga tungod sa immune system. Daghan niini nga mga impeksyon makahatag usab og pagpalya sa daghang organ (atay, baga, ug kasingkasing), nga nagpagrabe sa kadaot sa kidney. <em>(Kidney Int 2026)</em></p><p class="lang-hidden" data-lang="kap">Karing tropikal at mababa-anggang-katamtaman a kita a bansa — kayabe ing Pilipinas — <strong>deng impeksyon metung la kareng pekakaraniwan a sanhi ning AKI</strong>, kayabe ning dehydration at nephrotoxins. Ing leptospirosis, dengue fever, scrub typhus, at malaria ngan makasira la kareng batu king pamamitud ning pamangawala ning danum king katawan, mababang presyun ning daya, at direktang pinsala kareng tubule ning batu a dulut ning immune system. Dakal kareng impeksyon a ini magdulut la naman king pamagpalya ning dakal a organo (ate, baga, at pusu), a lalu nang magpasama king pinsala king batu. <em>(Kidney Int 2026)</em></p>
 <ul data-lang="en">
 <li><strong>Leptospirosis</strong> (from floodwater exposure, especially during typhoon season): 49.2% of patients develop AKI; 14.4% need dialysis. Up to 13–62% of survivors develop new-onset CKD — making early antibiotic treatment critical.</li>
 <li><strong>Dengue fever</strong>: approximately 8% of dengue patients develop AKI; 3–14% of those require dialysis.</li>
 <li><strong>Malaria</strong>: 20–40% of patients develop AKI, particularly with <em>Plasmodium falciparum</em>.</li>
 <li><strong>Scrub typhus</strong>: 18–53% of patients develop AKI; 5–10% need dialysis.</li>
 <li><strong>HIV</strong> (human immunodeficiency virus): 23.35% of HIV-positive patients develop AKI during illness.</li>
+</ul><ul class="lang-hidden" data-lang="tl">
+<li><strong>Leptospirosis</strong> (mula sa pagkababad sa baha, lalo na tuwing panahon ng bagyo): 49.2% ng mga pasyente ang nagkakaroon ng AKI; 14.4% ang nangangailangan ng dialysis. Hanggang 13–62% ng mga nakaligtas ang nagkakaroon ng bagong CKD — kaya napakahalaga ng maagang paggamot na antibiotic.</li>
+<li><strong>Dengue fever</strong>: humigit-kumulang 8% ng mga pasyenteng may dengue ang nagkakaroon ng AKI; 3–14% ng mga ito ang nangangailangan ng dialysis.</li>
+<li><strong>Malaria</strong>: 20–40% ng mga pasyente ang nagkakaroon ng AKI, lalo na sa <em>Plasmodium falciparum</em>.</li>
+<li><strong>Scrub typhus</strong>: 18–53% ng mga pasyente ang nagkakaroon ng AKI; 5–10% ang nangangailangan ng dialysis.</li>
+<li><strong>HIV</strong> (human immunodeficiency virus): 23.35% ng mga HIV-positive na pasyente ang nagkakaroon ng AKI habang may sakit.</li>
+</ul><ul class="lang-hidden" data-lang="ceb">
+<li><strong>Leptospirosis</strong> (gikan sa pagkahumod sa baha, ilabina panahon sa bagyo): 49.2% sa mga pasyente ang magbaton og AKI; 14.4% ang nagkinahanglan og dialysis. Hangtod 13–62% sa mga naluwas ang magbaton og bag-ong CKD — mao nga hinungdanon kaayo ang sayo nga pagtambal og antibiotic.</li>
+<li><strong>Dengue fever</strong>: mga 8% sa mga pasyente nga adunay dengue ang magbaton og AKI; 3–14% niini ang nagkinahanglan og dialysis.</li>
+<li><strong>Malaria</strong>: 20–40% sa mga pasyente ang magbaton og AKI, ilabina sa <em>Plasmodium falciparum</em>.</li>
+<li><strong>Scrub typhus</strong>: 18–53% sa mga pasyente ang magbaton og AKI; 5–10% ang nagkinahanglan og dialysis.</li>
+<li><strong>HIV</strong> (human immunodeficiency virus): 23.35% sa mga HIV-positive nga pasyente ang magbaton og AKI samtang nagsakit.</li>
+</ul><ul class="lang-hidden" data-lang="kap">
+<li><strong>Leptospirosis</strong> (ibat king pamagkababad king baha, lalu na potang panaun ning bagyu): 49.2% ding pasyente ing magkasakit AKI; 14.4% ing kailangan da ing dialysis. Anggang 13–62% ding mekaligtas ing magkasakit bayung CKD — inya pekamahalaga ing maranung a pamaggamut a antibiotic.</li>
+<li><strong>Dengue fever</strong>: manga 8% ding pasyente a atin dengue ing magkasakit AKI; 3–14% karela ing kailangan da ing dialysis.</li>
+<li><strong>Malaria</strong>: 20–40% ding pasyente ing magkasakit AKI, lalu na king <em>Plasmodium falciparum</em>.</li>
+<li><strong>Scrub typhus</strong>: 18–53% ding pasyente ing magkasakit AKI; 5–10% ing kailangan da ing dialysis.</li>
+<li><strong>HIV</strong> (human immunodeficiency virus): 23.35% ding HIV-positive a pasyente ing magkasakit AKI kapag atin sakit.</li>
 </ul>
-<p data-lang="en"><strong>What this means for CKD patients:</strong> If you have CKD and develop fever with rash, muscle pain, yellow skin (jaundice), or a history of floodwater exposure — seek medical care immediately. These infections are treatable with antibiotics (leptospirosis, scrub typhus) or targeted antimalarials, but only if caught early. Delayed treatment sharply increases the risk of AKI and long-term kidney damage. <em>(Kidney Int 2026)</em></p>
+<p data-lang="en"><strong>What this means for CKD patients:</strong> If you have CKD and develop fever with rash, muscle pain, yellow skin (jaundice), or a history of floodwater exposure — seek medical care immediately. These infections are treatable with antibiotics (leptospirosis, scrub typhus) or targeted antimalarials, but only if caught early. Delayed treatment sharply increases the risk of AKI and long-term kidney damage. <em>(Kidney Int 2026)</em></p><p class="lang-hidden" data-lang="tl"><strong>Ano ang ibig sabihin nito para sa mga pasyenteng may CKD:</strong> Kung mayroon kang CKD at nagkaroon ng lagnat na may rashes, pananakit ng kalamnan, paninilaw ng balat (jaundice), o kasaysayan ng pagkababad sa baha — humingi kaagad ng medikal na tulong. Ang mga impeksyong ito ay magagamot ng antibiotics (leptospirosis, scrub typhus) o angkop na antimalarials, ngunit kung maagang matukoy lamang. Ang naantalang paggamot ay lubhang nagpapataas sa panganib ng AKI at pangmatagalang pinsala sa bato. <em>(Kidney Int 2026)</em></p><p class="lang-hidden" data-lang="ceb"><strong>Unsa ang buot ipasabot niini alang sa mga pasyente nga adunay CKD:</strong> Kung ikaw adunay CKD ug magbaton og hilanat nga adunay rashes, kasakit sa kaunuran, pagkadalag sa panit (jaundice), o kasaysayan sa pagkahumod sa baha — pangita dayon og medikal nga tabang. Kini nga mga impeksyon matambalan og antibiotics (leptospirosis, scrub typhus) o angay nga antimalarials, apan kung sayo lang nga matuki. Ang nalangan nga pagtambal makapataas pag-ayo sa risgo sa AKI ug dugay nga kadaot sa kidney. <em>(Kidney Int 2026)</em></p><p class="lang-hidden" data-lang="kap"><strong>Nanu ing kabaldugan na nini para kareng pasyente a atin CKD:</strong> Nung ika atin CKD at menyakit pamu a atin rashes, sakit ning laman, paninilaw ning balat (jaundice), o kasaysayan ning pamagkababad king baha — maniawad ka tambing king medikal a saup. Deng impeksyon a ini malyaring gamutan king antibiotics (leptospirosis, scrub typhus) o angkop a antimalarials, dapot nung maranung lang matuki. Ing meantala a pamaggamut lubhang magpataas king panganib ning AKI at pangmatagal a pinsala king batu. <em>(Kidney Int 2026)</em></p>
 </div>
 </div>
 <!-- END TROPICAL INFECTIONS SUBSECTION -->
@@ -1983,14 +2011,32 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
 <div class="alert alert-green" style="margin-top:8px;">
 <div class="alert-icon">🛡️</div>
 <div class="alert-body">
-<h4 data-lang="en">Protecting Your Kidneys From Tropical Infections (Philippines-Specific)</h4>
-<p data-lang="en">Because infections are a leading cause of AKI in the Philippines, preventing these infections is a direct way to protect your kidneys — especially if you already have CKD. Key public health measures that reduce infection-associated AKI include <em>(Kidney Int 2026)</em>:</p>
+<h4 data-lang="en">Protecting Your Kidneys From Tropical Infections (Philippines-Specific)</h4><h4 class="lang-hidden" data-lang="tl">Pagprotekta sa Iyong mga Bato Laban sa mga Tropikal na Impeksyon (Para sa Pilipinas)</h4><h4 class="lang-hidden" data-lang="ceb">Pagpanalipod sa Imong mga Kidney Batok sa mga Tropikal nga Impeksyon (Alang sa Pilipinas)</h4><h4 class="lang-hidden" data-lang="kap">Pamanialakad kareng Batu Mu Laban kareng Tropikal a Impeksyon (Para king Pilipinas)</h4>
+<p data-lang="en">Because infections are a leading cause of AKI in the Philippines, preventing these infections is a direct way to protect your kidneys — especially if you already have CKD. Key public health measures that reduce infection-associated AKI include <em>(Kidney Int 2026)</em>:</p><p class="lang-hidden" data-lang="tl">Dahil ang mga impeksyon ay isang nangungunang sanhi ng AKI sa Pilipinas, ang pag-iwas sa mga impeksyong ito ay tuwirang paraan upang protektahan ang iyong mga bato — lalo na kung mayroon ka nang CKD. Ang mahahalagang hakbang sa kalusugang pampubliko na nagpapababa ng AKI na kaugnay ng impeksyon ay kinabibilangan ng <em>(Kidney Int 2026)</em>:</p><p class="lang-hidden" data-lang="ceb">Tungod kay ang mga impeksyon usa ka nag-unang hinungdan sa AKI sa Pilipinas, ang paglikay niini nga mga impeksyon usa ka direkta nga paagi sa pagpanalipod sa imong mga kidney — ilabina kung ikaw adunay na CKD. Ang mahinungdanon nga mga lakang sa panglawas sa publiko nga makapamenos sa AKI nga may kalabotan sa impeksyon naglakip sa <em>(Kidney Int 2026)</em>:</p><p class="lang-hidden" data-lang="kap">Uling deng impeksyon metung a nangungunang sanhi ning AKI king Pilipinas, ing pamaniwasan kareng impeksyon a ini metung a tuwirang paralan bang panialakad kareng batu mu — lalu na nung ika atin nang CKD. Deng mahalagang hakbang king kalusugan publiku a magpababa king AKI a kaugne ning impeksyon ila reng makatuki <em>(Kidney Int 2026)</em>:</p>
 <ul data-lang="en">
 <li><strong>Leptospirosis (typhoon/flood season):</strong> Avoid wading in floodwater without waterproof boots and gloves. If unavoidable exposure occurred, seek a doctor early — antibiotic prophylaxis (doxycycline) can be given after high-risk flood exposure. Wash wounds immediately with clean water and soap.</li>
 <li><strong>Dengue:</strong> Use mosquito repellent (DEET), wear long sleeves and pants at dawn and dusk, eliminate standing water (containers, tires, plant saucers) where <em>Aedes</em> mosquitoes breed. Dengue vaccines (Dengvaxia, Qdenga) are available — ask your doctor if you qualify.</li>
 <li><strong>Scrub typhus and malaria:</strong> Use insect repellent, wear protective clothing, and sleep under permethrin-treated nets when in endemic or forested areas.</li>
 <li><strong>If you develop fever with any of the following — go to the ER immediately:</strong> rash, severe muscle pain, yellow skin/eyes (jaundice), recent floodwater exposure, or travel to a malaria-endemic area. Early antibiotic or antimalarial treatment prevents kidney damage.</li>
 <li><strong>Stay vaccinated:</strong> Community vaccination programs (leptospirosis in high-risk areas, typhoid, hepatitis A) reduce systemic infections that can trigger AKI.</li>
+</ul><ul class="lang-hidden" data-lang="tl">
+<li><strong>Leptospirosis (panahon ng bagyo/baha):</strong> Iwasang tumawid sa baha nang walang waterproof na bota at guwantes. Kung hindi maiwasan ang pagkababad, magpatingin agad sa doktor — maaaring bigyan ng antibiotic prophylaxis (doxycycline) matapos ang mataas-na-panganib na pagkababad sa baha. Hugasan agad ang mga sugat ng malinis na tubig at sabon.</li>
+<li><strong>Dengue:</strong> Gumamit ng pamugon sa lamok (DEET), magsuot ng mahabang manggas at pantalon tuwing madaling-araw at takipsilim, alisin ang nakatigil na tubig (mga lalagyan, gulong, platito ng halaman) kung saan namamahay ang <em>Aedes</em> na lamok. May mga bakuna laban sa dengue (Dengvaxia, Qdenga) — tanungin ang iyong doktor kung kwalipikado ka.</li>
+<li><strong>Scrub typhus at malaria:</strong> Gumamit ng pamugon sa insekto, magsuot ng pananggalang na damit, at matulog sa ilalim ng kulambong may permethrin kapag nasa endemic o may kagubatang lugar.</li>
+<li><strong>Kung magkaroon ka ng lagnat na may alinman sa mga sumusunod — pumunta agad sa ER:</strong> rashes, matinding pananakit ng kalamnan, paninilaw ng balat/mata (jaundice), kamakailang pagkababad sa baha, o pagbiyahe sa lugar na may malaria. Ang maagang paggamot na antibiotic o antimalarial ay pumipigil sa pinsala sa bato.</li>
+<li><strong>Manatiling bakunado:</strong> Ang mga programa sa bakuna sa komunidad (leptospirosis sa mga mataas-na-panganib na lugar, typhoid, hepatitis A) ay nagpapababa ng mga systemic na impeksyon na maaaring magbunsod ng AKI.</li>
+</ul><ul class="lang-hidden" data-lang="ceb">
+<li><strong>Leptospirosis (panahon sa bagyo/baha):</strong> Likayi ang paglakaw sa baha nga walay waterproof nga bota ug guwantes. Kung dili malikayan ang pagkahumod, pagpatambal dayon sa doktor — mahimong hatagan og antibiotic prophylaxis (doxycycline) human sa taas-og-risgo nga pagkahumod sa baha. Hugasi dayon ang mga samad og limpyo nga tubig ug sabon.</li>
+<li><strong>Dengue:</strong> Paggamit og pamugong sa lamok (DEET), pagsul-ob og taas nga manggas ug karsones panahon sa kaadlawon ug kilomkilom, wagtanga ang nagtingub nga tubig (mga sudlanan, ligid, platito sa tanom) diin nagpuyo ang <em>Aedes</em> nga lamok. Adunay mga bakuna batok sa dengue (Dengvaxia, Qdenga) — pangutana sa imong doktor kung kwalipikado ka.</li>
+<li><strong>Scrub typhus ug malaria:</strong> Paggamit og pamugong sa insekto, pagsul-ob og panalipod nga sinina, ug pagkatulog ilalom sa moskitero nga adunay permethrin kung anaa sa endemic o kalasangan nga dapit.</li>
+<li><strong>Kung magbaton ka og hilanat nga adunay bisan usa sa mosunod — adto dayon sa ER:</strong> rashes, grabe nga kasakit sa kaunuran, pagkadalag sa panit/mata (jaundice), bag-o lang nga pagkahumod sa baha, o pagbiyahe sa dapit nga adunay malaria. Ang sayo nga pagtambal og antibiotic o antimalarial makapugong sa kadaot sa kidney.</li>
+<li><strong>Magpabiling bakunado:</strong> Ang mga programa sa bakuna sa komunidad (leptospirosis sa mga taas-og-risgo nga dapit, typhoid, hepatitis A) makapamenos sa mga systemic nga impeksyon nga makapasugod og AKI.</li>
+</ul><ul class="lang-hidden" data-lang="kap">
+<li><strong>Leptospirosis (panaun ning bagyu/baha):</strong> Iwasan mung dumalan king baha a alang waterproof a bota at guwantes. Nung e maiwasan ing pamagkababad, magpalawe kang tambing king doktor — malyaring dinan da ka antibiotic prophylaxis (doxycycline) kaibat ning matas-a-panganib a pamagkababad king baha. Uranan mung tambing deng sugat king malinis a danum at sabun.</li>
+<li><strong>Dengue:</strong> Gamit kang pamugong king amuk (DEET), manikwan kang makabang manggas at pantalon potang abak-abak at sisilim, alisan mu ing tutuknang danum (deng lalagyan, gulong, platitu ning tanaman) nu manuknangan deng <em>Aedes</em> a amuk. Atin bakuna laban king dengue (Dengvaxia, Qdenga) — kutnan me ing doktor mu nung kwalipikado ka.</li>
+<li><strong>Scrub typhus at malaria:</strong> Gamit kang pamugong king insektu, manikwan kang pananggang imalan, at makatudtud ka king lalam ning kulambu a atin permethrin nung atiu ka king endemic o kakewan a lugal.</li>
+<li><strong>Nung menyakit kang atin lagnat a kayabe ing nanu man kareng makatuki — ume kang tambing king ER:</strong> rashes, masakit a laman, paninilaw ning balat/mata (jaundice), bayu mung pamagkababad king baha, o pamagbiyahe king lugal a atin malaria. Ing maranung a pamaggamut a antibiotic o antimalarial na papigil king pinsala king batu.</li>
+<li><strong>Manatiling bakunadu:</strong> Deng programa king bakuna king komunidad (leptospirosis kareng matas-a-panganib a lugal, typhoid, hepatitis A) magpababa la kareng systemic a impeksyon a malyaring magbunsul king AKI.</li>
 </ul>
 </div>
 </div>
@@ -2354,5 +2400,6 @@ function setLang(lang){localStorage.setItem(LANG_KEY,lang);['en','tl','ceb','kap
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

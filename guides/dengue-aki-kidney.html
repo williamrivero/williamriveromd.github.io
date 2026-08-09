@@ -142,6 +142,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1310,8 +1318,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1857,7 +1867,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
 <div class="audience-tabs">
   <div class="tabs-inner">
     <button class="aud-tab active" onclick="setMode('patient')"><span class="tab-icon">🧑‍⚕️</span> Patient Guide</button>
-    <button class="aud-tab tab-md" onclick="setMode('physician')"><span class="tab-icon">⚕️</span> Clinician Tab</button>
+    <button class="aud-tab tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -2281,7 +2291,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
   <div class="container">
     <div class="section-tag">Emergency Criteria</div>
     <h2><span data-lang="en">When to Go to the ER — Red Flags</span><span data-lang="tl" class="lang-hidden">Kailan Pumunta sa ER — Mga Pulang Bandila</span><span data-lang="ceb" class="lang-hidden">Kanus-a Adto sa ER — Mga Pulang Bandila</span><span data-lang="kap" class="lang-hidden">Kailan Pumunta king ER — Mga Pulang Bandila</span></h2>
-    <p><span data-lang="en">The following signs require <strong>immediate emergency evaluation</strong>. Do not wait for the next morning's clinic slot. Do not "observe" overnight. If you or a family member has dengue and develops any of the following, go to the ER now.</span></p>
+    <p><span data-lang="en">The following signs require <strong>immediate emergency evaluation</strong>. Do not wait for the next morning's clinic slot. Do not "observe" overnight. If you or a family member has dengue and develops any of the following, go to the ER now.</span><span class="lang-hidden" data-lang="tl">Ang mga sumusunod na palatandaan ay nangangailangan ng <strong>agarang emergency na pagsusuri</strong>. Huwag hintayin ang appointment sa klinika kinabukasan. Huwag "obserbahan" lamang buong magdamag. Kung ikaw o isang miyembro ng pamilya ay may dengue at nagkaroon ng alinman sa mga sumusunod, pumunta na sa ER ngayon din.</span><span class="lang-hidden" data-lang="ceb">Ang mosunod nga mga timailhan nagkinahanglan og <strong>diha-diha nga emergency nga pagsusi</strong>. Ayaw paghulat sa appointment sa klinika ugma buntag. Ayaw lang "obserbahi" tibuok gabii. Kung ikaw o usa ka membro sa pamilya adunay dengue ug naay bisan usa sa mosunod, adto na sa ER karon dayon.</span><span class="lang-hidden" data-lang="kap">Deng makatuki a tanda kailangan da ing <strong>tambing a emergency a pamanigap</strong>. E ka manaya king appointment king klinika bukas abak. E mu "obserban" king buong bengi. Nung ika o metung a kapamilya mu atin dengue at atin nanu man kareng makatuki, ume na ka king ER ngeni.</span></p>
     <p><span data-lang="en">The WHO defines <strong>severe dengue</strong> as: plasma leakage severe enough to cause shock or respiratory distress, <strong>OR</strong> severe bleeding, <strong>OR</strong> severe organ impairment (including the kidneys). It is important to remember that <strong>more than 90% of dengue cases are mild or asymptomatic</strong> — but the minority who develop severe disease, including AKI, need urgent hospital care (Kidney Int 2026).</span><span data-lang="tl" class="lang-hidden">Ang mga sumusunod na tanda ay nangangailangan ng <strong>agarang emergency evaluation</strong>. Huwag hintayin ang slot ng klinika ng susunod na umaga. Huwag "obserbahin" nang magdamag. Kung ikaw o ang isang miyembro ng pamilya ay may dengue at nagkakaroon ng alinman sa mga sumusunod, pumunta sa ER ngayon.</span><span data-lang="ceb" class="lang-hidden">Ang mosunod nga mga timailhan nagkinahanglan <strong>dayon nga emergency evaluation</strong>. Ayaw hulata ang slot sa klinika sa sunod nga buntag. Ayaw "obserbahan" sa tibuok gabii. Kon ikaw o ang usa ka miyembro sa pamilya adunay dengue ug nagpalambo og bisan kinsa sa mosunod, adto sa ER karon.</span><span data-lang="kap" class="lang-hidden">Ing mga sumusunod a tanda nangangailangan ning <strong>agarang emergency evaluation</strong>. Ala hintayin ing slot ning klinika ning susunod a umaga. Ala "obserbahin" nang magdamag. Kung ikaw o metung a miyembro ning pamilya may dengue at nagkakaroon ning alinman king mga sumusunod, pumunta king ER ngayon.</span></p>
 
     <div class="rf-grid">
@@ -3171,5 +3181,6 @@ function calcDengueAKI() {
 </script>
 <script src="../assets/image-lightbox.js" defer></script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

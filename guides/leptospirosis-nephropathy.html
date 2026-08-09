@@ -142,6 +142,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1310,8 +1318,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1983,8 +1993,8 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span></button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -2437,9 +2447,9 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
     <div class="alert alert-teal">
       <div class="alert-icon">🩺</div>
       <div class="alert-body">
-        <h4><span data-lang="en">3-point bedside severity score — can be checked without lab tests</span></h4>
+        <h4><span data-lang="en">3-point bedside severity score — can be checked without lab tests</span><span class="lang-hidden" data-lang="tl">3-puntong bedside severity score — pwedeng suriin kahit walang lab tests</span><span class="lang-hidden" data-lang="ceb">3-puntos nga bedside severity score — mahimong susihon bisan walay lab tests</span><span class="lang-hidden" data-lang="kap">3-puntung bedside severity score — malyaring suryan agyang alang lab tests</span></h4>
         <p>
-          <span data-lang="en">Research shows three bedside findings each independently predict severe leptospirosis: (1) <strong>abnormal lung sounds</strong> on listening (wheezing or crackles suggesting fluid or hemorrhage); (2) <strong>low blood pressure</strong> (hypotension, systolic &lt;90 mmHg); and (3) <strong>reduced urine output</strong> (oliguria). Any one of these three signs at presentation should prompt urgent hospital transfer and close monitoring. This scoring approach can be applied by any healthcare worker with a stethoscope and blood pressure cuff — no lab tests required (Smith S et al., PLoS Negl Trop Dis 2019; cited in Kidney Int 2026).</span>
+          <span data-lang="en">Research shows three bedside findings each independently predict severe leptospirosis: (1) <strong>abnormal lung sounds</strong> on listening (wheezing or crackles suggesting fluid or hemorrhage); (2) <strong>low blood pressure</strong> (hypotension, systolic &lt;90 mmHg); and (3) <strong>reduced urine output</strong> (oliguria). Any one of these three signs at presentation should prompt urgent hospital transfer and close monitoring. This scoring approach can be applied by any healthcare worker with a stethoscope and blood pressure cuff — no lab tests required (Smith S et al., PLoS Negl Trop Dis 2019; cited in Kidney Int 2026).</span><span class="lang-hidden" data-lang="tl">Ipinapakita ng pananaliksik na tatlong bedside na natuklasan ang bawat isa ay hiwalay na nakakapaghula ng malubhang leptospirosis: (1) <strong>abnormal na tunog ng baga</strong> kapag pinakinggan (paghinga na parang plauta o lagitik na nagpapahiwatig ng likido o pagdurugo); (2) <strong>mababang presyon ng dugo</strong> (hypotension, systolic &lt;90 mmHg); at (3) <strong>kakaunting ihi</strong> (oliguria). Ang alinman sa tatlong palatandaang ito sa unang pagsusuri ay dapat magtulak ng agarang paglilipat sa ospital at maingat na pagmamanman. Ang paraang ito ng pagsu-score ay maaaring gawin ng sinumang healthcare worker na may stethoscope at blood pressure cuff — walang kailangang lab tests (Smith S et al., PLoS Negl Trop Dis 2019; sinipi sa Kidney Int 2026).</span><span class="lang-hidden" data-lang="ceb">Gipakita sa panukiduki nga tulo ka bedside nga nakit-an ang matag usa managlahi nga makatagna sa grabe nga leptospirosis: (1) <strong>abnormal nga tingog sa baga</strong> kung paminawon (paghangos nga daw plawta o kagitkit nga nagpasabot og likido o pagdugo); (2) <strong>ubos nga presyon sa dugo</strong> (hypotension, systolic &lt;90 mmHg); ug (3) <strong>gamay nga ihi</strong> (oliguria). Ang bisan usa niining tulo ka timailhan sa unang pagsusi kinahanglan mohatod sa dinaliang pagbalhin sa ospital ug hugot nga pagbantay. Kining paagi sa pag-score mahimong buhaton sa bisan kinsa nga healthcare worker nga adunay stethoscope ug blood pressure cuff — walay gikinahanglan nga lab tests (Smith S et al., PLoS Negl Trop Dis 2019; gikutlo sa Kidney Int 2026).</span><span class="lang-hidden" data-lang="kap">Pakit ning pananaliksik a atlung bedside a kabaldugan ing balang metung mag-isa yang makapamanaya king grabing leptospirosis: (1) <strong>abnormal a tunug ning baga</strong> nung pakiramdaman (pamaniga a anti plawta o kagitkit a maglaraw king danum o pamagdaya); (2) <strong>mababang presyun ning daya</strong> (hypotension, systolic &lt;90 mmHg); at (3) <strong>kaunting ihi</strong> (oliguria). Ing nanu man kareng atlung tanda king mumunang pamanigap dapat na mag-udyuk king tambing a pamaglipat king ospital at maingat a pamamanman. Ini a paralan ning pag-score malyaring daptan ning ninu mang healthcare worker a atin stethoscope at blood pressure cuff — alang kailangan a lab tests (Smith S et al., PLoS Negl Trop Dis 2019; binanggit king Kidney Int 2026).</span>
         </p>
       </div>
     </div>
@@ -3526,5 +3536,6 @@ function setGuideLang(lang){localStorage.setItem(GLANG_KEY,lang);['en','tl','ceb
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>
