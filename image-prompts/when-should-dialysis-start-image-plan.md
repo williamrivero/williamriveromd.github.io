@@ -4,7 +4,7 @@
 **Prepared:** 2026-08-10 · **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the
 ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
 **Skills used:** `williamriveromd-hero-vignette` · `williamriveromd-infographic-skill` ·
-`williamriveromd-algorithm-generator-skill`
+`williamriveromd-algorithm-generator-skill` · `williamriveromd-biomedical-mechanism-figure`
 
 ---
 
@@ -43,9 +43,10 @@ ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-gene
 | 7 | `when-should-dialysis-start-05-treatment-options.png` | ➕ add (§ Your options) | infographic | 1792×1024 | #6 |
 | 8 | `when-should-dialysis-start-06-tlt-loop.png` | ➕ add (§ Incremental & TLT / clinician) | infographic | 2048×2048 | #7 |
 | 9 | `when-should-dialysis-start-md-01-initiation-algorithm.png` | ➕ recommended (§ Algorithm / clinician) | algorithm (House C) | 1024×1536 | — |
+| 10 | `when-should-dialysis-start-md-02-uremic-syndrome-mechanism.png` | ➕ add (§ Physiology / clinician) | biomedical-mechanism | 1792×1024 | §8.2 |
 
 > **Wiring status.** Assets **1–2 are already referenced** in the guide (hero `<figure>` + `og:image`) — dropping
-> the files "lights them up." Assets **3–9 are not yet placed inline**; the exact `<figure>` HTML to insert is given
+> the files "lights them up." Assets **3–10 are not yet placed inline**; the exact `<figure>` HTML to insert is given
 > under each (with a rule-11 `figcaption`). After adding any inline figure, re-run
 > `python3 patch_hero_fetchpriority.py`, `patch_hero_fullwidth.py`, `patch_hero_maxwidth.py`, and
 > `patch_image_lightbox.py`, then `patch_hero_meta.py` (ref/again count is unaffected).
@@ -587,10 +588,97 @@ trunk steps present; decisions are diamonds. © renalcarematters.com bottom-righ
 
 ---
 
+## 10 · Uremic syndrome — a multi-hit mechanism  *(add — § Physiology, clinician)* — supports guide §8.2
+
+> This is the review-article **mechanism** figure (organ → magnified functional unit → injury → intervention →
+> benefit), authored with `williamriveromd-biomedical-mechanism-figure` so it matches the house mechanism style.
+> It is the physiologic backbone of the guide's core claim: uremia is a *syndrome* of many retained solutes +
+> inflammation + hormonal loss, so **no single toxin and no single eGFR marks its onset** — and dialysis clears
+> those classes *unequally*, which is why symptom response is variable and must be measured.
+
+**Insert this `<figure>` inside `<section id="md-physiology">` (after the "two corollaries" paragraph):**
+
+```html
+<figure style="margin:24px 0 0;">
+  <picture>
+    <source srcset="../images/when-should-dialysis-start-md-02-uremic-syndrome-mechanism.webp" type="image/webp">
+    <img src="../images/when-should-dialysis-start-md-02-uremic-syndrome-mechanism.png" loading="lazy" width="1792" height="1024" alt="Mechanism schematic: a failing kidney (organ panel) links to a magnified nephron-and-bloodstream inset showing three retained solute classes plus inflammation and lost hormones; a bottom flow runs from the multi-hit uremic injury, through dialysis as partial and unequal clearance, to variable symptom benefit that must be measured." style="width:100%;height:auto;display:block;border-radius:10px;">
+  </picture>
+  <figcaption>
+    <p class="fig-desc">Uremia is a multi-hit syndrome, not one toxin: advanced kidney failure lets small water-soluble solutes, middle molecules, and protein-bound solutes accumulate together with inflammation and lost hormone production. Dialysis clears these classes unequally — well for small solutes, incompletely for middle molecules, poorly for protein-bound ones — and replaces no hormones, which is why symptom relief is real but variable and must be measured rather than assumed.</p>
+    <dl class="fig-abbrevs">
+      <dt>β2-M</dt><dd>Beta-2 microglobulin — a "middle molecule" cleared only incompletely by conventional haemodialysis.</dd>
+      <dt>IS / pCS</dt><dd>Indoxyl sulfate / p-cresyl sulfate — protein-bound uremic solutes that dialysis removes poorly.</dd>
+      <dt>EPO</dt><dd>Erythropoietin — a kidney hormone not replaced by dialysis.</dd>
+      <dt>CKD-MBD</dt><dd>CKD–mineral and bone disorder.</dd>
+    </dl>
+  </figcaption>
+</figure>
+```
+
+```
+FILE NAME: when-should-dialysis-start-md-02-uremic-syndrome-mechanism.png
+IMAGE TYPE: Biomedical mechanism schematic (review-article style — organ → magnified unit → injury/intervention/benefit)
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: clinicians (also readable by informed patients)
+VISUAL GOAL: Uremia is a multi-hit syndrome (many solute classes + inflammation + hormone loss), so no single toxin or eGFR marks its onset — and dialysis clears those classes unequally, making symptom response variable and worth measuring.
+
+PROMPT:
+Create a publication-grade biomedical mechanism schematic in a clean scientific review-article style, landscape
+16:9, 1792×1024, on a WHITE background — flat vector illustration with soft semi-3D shading, muted clinical
+palette (light gray-blue anatomy, soft yellow highlighted tubular segment, red for injury/inflammation, blue for
+therapeutic/beneficial effects, pale-pink pathology box, pale-blue benefit box), thin dashed connector boxes,
+generous whitespace, and clean sans-serif labels set in Inter (never a serif font). Title in navy #0f1e2e:
+"Uremia is a syndrome, not a single toxin — why it does not track one eGFR."
+
+LEFT — ORGAN-LEVEL PANEL:
+A simplified cross-section of a failing kidney in light gray-blue, labeled "Advanced kidney failure (CKD G5)",
+with reduced functional nephron mass suggested and a small dashed connector box pointing right to the magnified
+panel.
+
+CENTER/RIGHT — MAGNIFIED FUNCTIONAL UNIT (inside a dashed border):
+A single nephron with an adjacent peritubular blood vessel. In the bloodstream, show THREE clearly separated,
+accumulating solute classes as small labeled dot-clusters, each with a concise callout:
+- "Small water-soluble" (urea, potassium, hydrogen ion / acid) — many small dots
+- "Middle molecules" (β2-microglobulin, β2-M) — medium dots
+- "Protein-bound" (indoxyl sulfate IS, p-cresyl sulfate pCS) — dots bound to a small albumin carrier
+Add two more red callouts near the vessel/interstitium: "↑ Inflammation (IL-6, CRP)" and a blue-outlined loss
+callout "↓ Erythropoietin (EPO), ↓ vitamin-D activation". Keep every label short and medically precise.
+
+BOTTOM — SUMMARY FLOW (left → center → right, connected by arrows):
+- LEFT pale-pink PATHOLOGY box, header "Multi-hit uremic injury": retained small + middle + protein-bound solutes;
+  acid / potassium / volume dysregulation; systemic inflammation; lost hormone production. Bold bottom line:
+  "No single toxin, no single eGFR marks its onset."
+- CENTER pale-gray INTERVENTION box, header "Dialysis = partial, intermittent clearance": clears small solutes
+  well; middle molecules incompletely; protein-bound solutes poorly; corrects acid/potassium/volume at the
+  session; replaces NO hormones. (Established physiology.)
+- RIGHT pale-blue BENEFIT box, header "Expected effect (variable)": relieves some uremic symptoms — response
+  differs between patients and must be MEASURED, not assumed; anemia and CKD-MBD need separate treatment.
+
+Restrained, uncluttered, mobile-legible, review-figure look. Small semi-transparent navy "© renalcarematters.com"
+attribution in the bottom-right corner.
+
+NEGATIVE INSTRUCTIONS:
+Avoid photorealism, dark backgrounds, decorative effects, drop shadows, cartoonish styling, clutter, tiny
+unreadable labels, and AI-gibberish text. No serif fonts — Inter only. Do NOT invent numeric thresholds
+(no mg/dL, no eGFR cutoff that "triggers" dialysis). Do NOT imply dialysis clears all solute classes equally or
+replaces hormones. Keep the three solute classes visually distinct. Never omit the © renalcarematters.com
+attribution.
+
+QUALITY CHECK:
+16:9, 1792×1024, white background, Inter. Organ panel → dashed magnified nephron/vessel inset with three distinct
+solute classes + inflammation + hormone loss → bottom injury→intervention→benefit flow. Dialysis shown as
+partial/unequal clearance replacing no hormones; benefit labeled "variable, must be measured." No fabricated
+numbers, no eGFR trigger. © renalcarematters.com bottom-right.
+```
+
+---
+
 ## Production checklist (after generating in GPT)
 1. For **every** asset, export both `.png` and a `.webp` twin into `images/` using the exact FILE NAME above.
 2. Export `when-should-dialysis-start-rg-thumb.webp` as a 1:1 center-crop of asset #2 (OG) for sibling related-cards.
-3. Insert the `<figure>` blocks (assets 3–9) at the marked section anchors, then run:
+3. Insert the `<figure>` blocks (assets 3–10) at the marked section anchors, then run:
    `python3 patch_hero_fetchpriority.py --guide when-should-dialysis-start.html` ·
    `patch_hero_fullwidth.py` · `patch_hero_maxwidth.py` · `patch_image_lightbox.py` (all `--guide …`).
 4. Confirm each new `<figure>` has a `<figcaption><p class="fig-desc">…</p>` (+ `<dl class="fig-abbrevs">` where an
