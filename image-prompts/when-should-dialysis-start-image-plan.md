@@ -36,18 +36,18 @@ ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-gene
 |---|---|---|---|---|---|
 | 1 | `when-should-dialysis-start-vignette-hero.png` | ✅ wired (patient hero disc) | hero-vignette | 2048×2048 | — |
 | 2 | `when-should-dialysis-start-og.png` | ✅ wired (`og:image`) | infographic | 1200×630 | #1 |
-| 3 | `when-should-dialysis-start-01-composite-compass.png` | ➕ add (§ No magic eGFR) | infographic | 2048×2048 | #4 |
-| 4 | `when-should-dialysis-start-02-four-kidney-jobs.png` | ➕ add (§ Physiology / clinician) | infographic | 1792×1024 | #2 |
-| 5 | `when-should-dialysis-start-03-prepare-vs-start.png` | ➕ add (§ Prepare early) | infographic | 1792×1024 | #3 |
-| 6 | `when-should-dialysis-start-04-urgent-vs-planned.png` | ➕ add (§ Fork / near urgent) | algorithm (House C) | 1024×1536 | #5 |
-| 7 | `when-should-dialysis-start-05-treatment-options.png` | ➕ add (§ Your options) | infographic | 1792×1024 | #6 |
-| 8 | `when-should-dialysis-start-06-tlt-loop.png` | ➕ add (§ Incremental & TLT / clinician) | infographic | 2048×2048 | #7 |
-| 9 | `when-should-dialysis-start-md-01-initiation-algorithm.png` | ➕ recommended (§ Algorithm / clinician) | algorithm (House C) | 1024×1536 | — |
-| 10 | `when-should-dialysis-start-md-02-uremic-syndrome-mechanism.png` | ➕ add (§ Physiology / clinician) | biomedical-mechanism | 1792×1024 | §8.2 |
+| 3 | `when-should-dialysis-start-01-composite-compass.png` | ✅ wired (§ No magic eGFR) | infographic | 2048×2048 | #4 |
+| 4 | `when-should-dialysis-start-02-four-kidney-jobs.png` | ✅ wired (§ Physiology / clinician) | infographic | 1792×1024 | #2 |
+| 5 | `when-should-dialysis-start-03-prepare-vs-start.png` | ✅ wired (§ Prepare early) | infographic | 1792×1024 | #3 |
+| 6 | `when-should-dialysis-start-04-urgent-vs-planned.png` | ✅ wired (§ Fork / near urgent) | algorithm (House C) | 1024×1536 | #5 |
+| 7 | `when-should-dialysis-start-05-treatment-options.png` | ✅ wired (§ Your options) | infographic | 1792×1024 | #6 |
+| 8 | `when-should-dialysis-start-06-tlt-loop.png` | ⏳ NOT yet generated (§ Incremental & TLT) | infographic | 2048×2048 | #7 |
+| 9 | `when-should-dialysis-start-md-01-initiation-algorithm.png` | ✅ wired (§ Algorithm / clinician) | algorithm (House C) | 1024×1536 | — |
+| 10 | `when-should-dialysis-start-md-02-uremic-syndrome-mechanism.png` | ✅ wired (§ Physiology / clinician) | biomedical-mechanism | 1792×1024 | §8.2 |
 
-> **Wiring status.** Assets **1–2 are already referenced** in the guide (hero `<figure>` + `og:image`) — dropping
-> the files "lights them up." Assets **3–10 are not yet placed inline**; the exact `<figure>` HTML to insert is given
-> under each (with a rule-11 `figcaption`). After adding any inline figure, re-run
+> **Wiring status (updated 2026-08-10).** Assets **1–7, 9, and 10 are wired and their image files are committed** —
+> the hero, OG, and all seven in-body figures now render. **Asset 8 (`06-tlt-loop`) has not yet been generated**;
+> its `<figure>` is intentionally NOT inserted (to avoid a broken image) — generate it, then insert the block below. After adding any inline figure, re-run
 > `python3 patch_hero_fetchpriority.py`, `patch_hero_fullwidth.py`, `patch_hero_maxwidth.py`, and
 > `patch_image_lightbox.py`, then `patch_hero_meta.py` (ref/again count is unaffected).
 >
