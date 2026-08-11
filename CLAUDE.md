@@ -2,6 +2,24 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Language & spelling — American English (non-negotiable)
+
+Write **all** content in **American English**, always. This is a Philippine
+audience; the Philippines uses American spelling and usage, and British
+spellings are wrong here. This applies to every deliverable and to chat replies:
+patient- and clinician-facing guide prose, image-prompt text, commit messages,
+documentation, and conversational answers.
+
+Use the American form every time: **hemodialysis** (never "haemodialysis"),
+**hemodiafiltration**, **anemia**, **edema**, **pediatric**, **color**,
+**center** / **in-center**, **fiber**, **liter**, **behavior**, **dialyze** /
+**dialyzed** (the noun "dialysis" is spelled the same in both). Prefer
+`-ize`/`-ization` over `-ise`/`-isation`, `-or` over `-our`, and `-er` over
+`-re`. Do not default to British spelling under any circumstance. (The only
+legitimate exceptions are proper nouns that are spelled that way officially —
+e.g. a journal title like *Peritoneal Dialysis International* — and pre-existing
+site-wide master-CSS code comments owned by `patch_master_css.py`.)
+
 ## What this site is
 
 `renalcarematters.com` is a static patient-education website for Dr. William Gregory M. Rivero, MD (Nephrology, Internal Medicine, Philippines). It consists of ~90 standalone HTML guides on kidney disease topics, a homepage (`index.html`), and a small Node.js proxy server for an AI feature. The repo is named `williamriveromd.github.io` for historical reasons only — that name is unrelated to the live domain.

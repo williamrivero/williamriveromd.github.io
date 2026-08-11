@@ -88,7 +88,7 @@ worried. No dialysis machine, no needles, no monitors, no clocks in view.
 Visual hierarchy: the three people and the table occupy 60–70% of the circle; 2–3 supporting context cues
 (window light, a potted plant, the notebook) fill 20–30%; reserve a 20–25% TITLE SAFE ZONE of soft out-of-focus
 wall / gentle daylight gradient in the upper-left (no faces, hands, text, or objects inside that zone) so the HTML
-title can sit beside the disc. Calm, documentary-realistic colour grade harmonizing with clinical teal #1a6b72
+title can sit beside the disc. Calm, documentary-realistic color grade harmonizing with clinical teal #1a6b72
 and navy #0f1e2e on a light background; soft edge falloff toward a slightly deeper neutral at the rim. Full-bleed
 within the inscribed circle, no rectangular borders, frames, or banners.
 
@@ -194,7 +194,7 @@ often but not invariably 5–10". Do NOT draw any gauge, dial needle, or red zon
 icon, never a meter hitting a limit.
 
 Thin teal connector rings, generous white negative space, restrained navy/teal/green/amber accents used only as
-line and text colour on the light cards. Balanced, symmetrical, mobile-legible. Small semi-transparent navy
+line and text color on the light cards. Balanced, symmetrical, mobile-legible. Small semi-transparent navy
 "renalcarematters.com" attribution in the bottom-right corner.
 
 NEGATIVE INSTRUCTIONS:
@@ -247,7 +247,7 @@ anchor.
 
 TOP ROW — four equal rounded cards, each with a simple flat line icon and short Inter label:
 1) "Clear waste solutes"  2) "Balance salt & water"  3) "Regulate potassium & acid"  4) "Hormones (endocrine/
-metabolic)". Under each top card, a thin arrow drops to a matching BOTTOM ROW card in two colours:
+metabolic)". Under each top card, a thin arrow drops to a matching BOTTOM ROW card in two colors:
 - teal #1a6b72 "Dialysis helps (partly, in sessions)" for jobs 1–3, with a one-line note each: removes some
   solutes / removes salt & water / corrects potassium & acid at the session.
 - amber #b8860b "Needs separate treatment" for job 4, note: erythropoietin (EPO) and vitamin-D activation are
@@ -284,7 +284,7 @@ QUALITY CHECK:
     <p class="fig-desc">Preparation and initiation run on different clocks. The Prepare track starts early and continuously; the Start point appears only when a clinical reason develops — which may be early, late, or never. There is no fixed countdown.</p>
     <dl class="fig-abbrevs">
       <dt>PD</dt><dd>Peritoneal dialysis.</dd>
-      <dt>HD</dt><dd>Haemodialysis.</dd>
+      <dt>HD</dt><dd>Hemodialysis.</dd>
       <dt>CKM</dt><dd>Conservative kidney management — active care without dialysis.</dd>
     </dl>
   </figcaption>
@@ -402,13 +402,13 @@ prepare/start/reassess. AKI and CKD distinct. Diamond for the one decision. © r
 <figure style="margin:24px 0;">
   <picture>
     <source srcset="../images/when-should-dialysis-start-05-treatment-options.webp" type="image/webp">
-    <img src="../images/when-should-dialysis-start-05-treatment-options.png" loading="lazy" width="1792" height="1024" alt="Four equally sized option cards side by side — preemptive kidney transplant, peritoneal dialysis, haemodialysis (home or in-center), and comprehensive conservative kidney management — each with an icon, a one-line description, and 'what it needs', shown at equal visual weight." style="width:100%;height:auto;display:block;border-radius:10px;">
+    <img src="../images/when-should-dialysis-start-05-treatment-options.png" loading="lazy" width="1792" height="1024" alt="Four equally sized option cards side by side — preemptive kidney transplant, peritoneal dialysis, hemodialysis (home or in-center), and comprehensive conservative kidney management — each with an icon, a one-line description, and 'what it needs', shown at equal visual weight." style="width:100%;height:auto;display:block;border-radius:10px;">
   </picture>
   <figcaption>
     <p class="fig-desc">Four paths at equal weight when kidney failure needs treatment. Conservative kidney management is drawn the same size and dignity as the others — it is active, planned care, not "no treatment."</p>
     <dl class="fig-abbrevs">
       <dt>PD</dt><dd>Peritoneal dialysis — home dialysis using the abdominal lining.</dd>
-      <dt>HD</dt><dd>Haemodialysis — machine filtering of the blood, at home or in-center.</dd>
+      <dt>HD</dt><dd>Hemodialysis — machine filtering of the blood, at home or in-center.</dd>
       <dt>CKM</dt><dd>Comprehensive conservative kidney management — active care without dialysis.</dd>
     </dl>
   </figcaption>
@@ -433,10 +433,10 @@ over the others):
 kidney before dialysis is ever needed — for those who are suitable."
 2) "Peritoneal dialysis (PD)" — icon (home + gentle fluid drop); one line: "Home-based, uses the abdomen's
 lining, preserves natural function longer."
-3) "Haemodialysis — home or in-center (HD)" — icon (simple filter, NOT a looming machine); one line: "Blood
+3) "Hemodialysis — home or in-center (HD)" — icon (simple filter, NOT a looming machine); one line: "Blood
 filtered through an access; in-center 3×/week or more frequent at home."
 4) "Comprehensive conservative kidney management (CKM)" — icon (open hand / supportive care); one line: "ACTIVE,
-planned care without dialysis — symptom control and full support." Give this card the same size, colour weight,
+planned care without dialysis — symptom control and full support." Give this card the same size, color weight,
 and warmth as the other three.
 
 Under each card, a small uniform "What it needs" line. A calm renal-green #1f7a4d footer: "Which one fits depends
@@ -607,7 +607,7 @@ trunk steps present; decisions are diamonds. © renalcarematters.com bottom-righ
   <figcaption>
     <p class="fig-desc">Uremia is a multi-hit syndrome, not one toxin: advanced kidney failure lets small water-soluble solutes, middle molecules, and protein-bound solutes accumulate together with inflammation and lost hormone production. Dialysis clears these classes unequally — well for small solutes, incompletely for middle molecules, poorly for protein-bound ones — and replaces no hormones, which is why symptom relief is real but variable and must be measured rather than assumed.</p>
     <dl class="fig-abbrevs">
-      <dt>β2-M</dt><dd>Beta-2 microglobulin — a "middle molecule" cleared only incompletely by conventional haemodialysis.</dd>
+      <dt>β2-M</dt><dd>Beta-2 microglobulin — a "middle molecule" cleared only incompletely by conventional hemodialysis.</dd>
       <dt>IS / pCS</dt><dd>Indoxyl sulfate / p-cresyl sulfate — protein-bound uremic solutes that dialysis removes poorly.</dd>
       <dt>EPO</dt><dd>Erythropoietin — a kidney hormone not replaced by dialysis.</dd>
       <dt>CKD-MBD</dt><dd>CKD–mineral and bone disorder.</dd>
