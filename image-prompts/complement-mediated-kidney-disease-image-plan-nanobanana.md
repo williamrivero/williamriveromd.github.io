@@ -27,7 +27,7 @@ Rules that keep Nano Banana accurate:
 | 1 | `complement-mediated-kidney-disease-vignette-hero` | Patient hero disc | **1:1** (square) |
 | 2 | `complement-mediated-kidney-disease-og` | `og:image` / share card | **16:9**, then crop to 1200×630 |
 | 3 | `complement-mediated-kidney-disease-01-two-compartments` | "One System, Several Diseases" | **16:9** |
-| 4 | `complement-mediated-kidney-disease-02-pathway-map` | "Complement 101" *(optional add)* | **16:9** |
+| 4 | `complement-mediated-kidney-disease-02-pathway-map` | "Complement 101" | **16:9** |
 | 5 | `complement-mediated-kidney-disease-03-biopsy-triptych` | "Three Views of One Biopsy" | **16:9** |
 | 6 | `complement-mediated-kidney-disease-04-spectrum` | "Driver or Marker?" | **1:1** (square) |
 | 7 | `complement-mediated-kidney-disease-05-tma-algorithm` | "TMA Emergency" (clinician) | **2:3** (tall) |
@@ -71,7 +71,7 @@ A clean medical education comparison illustration, wide horizontal layout, white
 
 ---
 
-## 4 — Complement pathway map  *(optional add to "Complement 101")*
+## 4 — Complement pathway map
 
 **Save as:** `images/complement-mediated-kidney-disease-02-pathway-map.png` (+ `.webp`)
 **Aspect ratio:** 16:9
@@ -180,4 +180,4 @@ A clean patient-education infographic, wide horizontal layout, white background,
 - Save each as `images/<name>.png` **and** a WebP twin. The guide's `<picture>` blocks load WebP first, PNG fallback.
 - Confirm the on-image words match the guide's figure captions; if a label renders wrong, keep the image and tell Nano Banana *"fix only that label to read exactly ‘…’"*.
 - The hero has no text and no attribution; every other figure must show `© renalcarematters.com` bottom-right.
-- Asset #4 (pathway map) still needs its inline `<figure>` added to "Complement 101"; the other ten are already referenced in the HTML.
+- All 11 assets are generated, placed in `images/` (PNG + WebP), and referenced inline in the HTML.

@@ -17,7 +17,7 @@
 | 1 | `…-vignette-hero.{png,webp}` | Patient hero disc (`figure.hero-figure.mode-patient`) | hero-vignette | 2048×2048 | **referenced** |
 | 2 | `…-og.png` | `og:image` / `twitter:image` | infographic | 1200×630 | **referenced** |
 | 3 | `…-01-two-compartments.{png,webp}` | §"One System, Several Diseases" (patient) | simple-figure | 1792×1024 | **referenced** |
-| 4 | `…-02-pathway-map.{png,webp}` | §"Complement 101" (patient) | simple-figure | 1792×1024 | optional add |
+| 4 | `…-02-pathway-map.{png,webp}` | §"Complement 101" (patient) | simple-figure | 1792×1024 | **referenced** |
 | 5 | `…-03-biopsy-triptych.{png,webp}` | §"Three Views of One Biopsy" (patient) | simple-figure | 1792×1024 | **referenced** |
 | 6 | `…-04-spectrum.{png,webp}` | §"Driver or Marker?" (patient) | simple-figure | 2048×2048 | **referenced** |
 | 7 | `…-05-tma-algorithm.{png,webp}` | §"TMA Emergency" (clinician) | algorithm-generator (AHA) | 1024×1536 | **referenced** |
@@ -26,7 +26,7 @@
 | 10 | `…-08-genetics.{png,webp}` | §"Genetics" (patient) | simple-figure | 2048×2048 | **referenced** |
 | 11 | `…-09-safety-shield.{png,webp}` | §"Infection Safety" (patient) | infographic | 1792×1024 | **referenced** |
 
-> After generating, save each as `images/<name>.png` **plus a `.webp` twin**. Asset #4 (pathway map) is the one figure not yet inlined — add it to the "Complement 101" section as a `<figure>` (with `<figcaption><p class="fig-desc">…</p>` and a `<dl class="fig-abbrevs">` for MAC/C3), then re-run `patch_hero_fetchpriority.py`, `patch_hero_fullwidth.py`, `patch_hero_maxwidth.py`, and `patch_image_lightbox.py`. All other assets are already referenced in the HTML.
+> After generating, save each as `images/<name>.png` **plus a `.webp` twin**. All 11 assets are now generated, placed in `images/` (PNG + WebP), and referenced inline in the HTML.
 
 ---
 
@@ -316,5 +316,4 @@ Shield + five equal safety cards + amber "lowers but does not remove risk" strip
 - [ ] Save to `images/complement-mediated-kidney-disease-<descriptor>.{png,webp}` using the exact FILE NAME stems above.
 - [ ] Verify each figure's on-image text matches the guide's `<figcaption>` wording; keep labels short.
 - [ ] Confirm light background + approved sans-serif + `© renalcarematters.com` on every figure (hero stays wordless).
-- [ ] For asset #4 (pathway map), add the inline `<figure>` to "Complement 101," then re-run `patch_hero_fetchpriority.py`, `patch_hero_fullwidth.py`, `patch_hero_maxwidth.py`, `patch_image_lightbox.py`.
 - [ ] Optionally hand this pack to `williamriveromd-local-image-generator` (Stage 2) to build the local folder + manifest and to append the `og:image` meta once the OG card is confirmed.
