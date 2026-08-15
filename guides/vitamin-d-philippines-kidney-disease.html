@@ -1738,7 +1738,28 @@ html[data-theme="dark"] .algo-content strong{color:#e8eaf0;}
 .ref-band{background:var(--navy,#1f3864);border-radius:14px;padding:22px 28px;margin:24px 0;color:#fff;}
 .ref-band h4{font-family:'Inter',sans-serif;font-size:17px;font-weight:600;color:#d4af4f;margin-bottom:10px;}
 .ref-band p{color:rgba(255,255,255,.85);font-size:14.5px;margin:0 0 14px;line-height:1.7;}
-.ref-band table td{color:#1e2a38;}
+/* Claim-ledger table sits ON the navy .ref-band, so its cells must use LIGHT text.
+   The old `.ref-band table td{color:#1e2a38}` rule put dark text on the navy band —
+   nearly invisible in every mode, and the base even-row light stripe made light mode
+   alternate readable/invisible. Pin the whole ledger table to light-on-navy. */
+.ref-band .table-wrap{background:transparent;border:1px solid rgba(255,255,255,.18);box-shadow:none;}
+.ref-band table thead th{background:rgba(255,255,255,.10);color:#ffffff;border-color:rgba(255,255,255,.20);}
+.ref-band table tbody td{color:rgba(255,255,255,.92);background:transparent;border-color:rgba(255,255,255,.12);}
+.ref-band table tbody tr:nth-child(even) td{background:rgba(255,255,255,.06);}
+.ref-band table tbody tr:hover td{background:rgba(255,255,255,.14);}
+html[data-theme="dark"] .ref-band table thead th{background:rgba(255,255,255,.08);}
+html[data-theme="dark"] .ref-band table tbody tr:nth-child(even) td{background:rgba(255,255,255,.05);}
+html[data-theme="dark"] .ref-band table tbody tr:hover td{background:rgba(255,255,255,.12);}
+/* Step-number chips: white-on-teal drops below AA once --teal brightens in dark mode. */
+html[data-theme="dark"] .algo-step-num{background:#0e4a50;}
+/* Table links (e.g. Quick Reference "Related guide" row) need a themed color, not default blue. */
+.table-wrap tbody a{color:#1a6b72;font-weight:600;}
+html[data-theme="dark"] .table-wrap tbody a{color:#5fc7cf;}
+/* Inline prose links default to browser blue (fails AA on the dark theme) — theme them. */
+.section p a, .section li a{color:#1a6b72;font-weight:600;}
+html[data-theme="dark"] .section p a, html[data-theme="dark"] .section li a{color:#5fc7cf;}
+/* Active language chip: white-on-teal fails AA in dark mode. */
+html[data-theme="dark"] .header-lang .lang-btn-g.active{background:#0e4a50;border-color:#0e4a50;}
 @media print{.algo-card,.ref-band{border:1px solid #999!important;background:white!important;}}
 
 /* qa-item (FAQ) */
