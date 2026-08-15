@@ -27,11 +27,20 @@
   }
 
   function applyLangDisplay(lang) {
+    // data-lang scheme: toggle the lang-hidden class
     var els = document.querySelectorAll('[data-lang]');
     for (var i = 0; i < els.length; i++) {
       var el = els[i];
       el.classList.toggle('lang-hidden', el.getAttribute('data-lang') !== lang);
     }
+    // legacy class scheme (lang-en/lang-tl/...): toggle inline display
+    for (var k = 0; k < LANGS.length; k++) {
+      var cls = document.querySelectorAll('.lang-' + LANGS[k]);
+      for (var n = 0; n < cls.length; n++) {
+        cls[n].style.display = (LANGS[k] === lang) ? '' : 'none';
+      }
+    }
+    // active state on the top-nav chips
     for (var j = 0; j < LANGS.length; j++) {
       var b = document.getElementById('glb-' + LANGS[j]);
       if (b) b.classList.toggle('active', LANGS[j] === lang);
@@ -45,6 +54,22 @@
       applyLangDisplay(storedLang());   // patient mode → restore user's language
     }
   }
+
+  // Public language setter for the top-nav chips. Many guides' chips call
+  // setGuideLang(...) via inline onclick but never define it (only setLang),
+  // so the switcher throws "setGuideLang is not defined" and does nothing.
+  // Define a global fallback for BOTH names — but only when the guide didn't
+  // already define its own (so guides with a working inline setLang/setGuideLang
+  // keep theirs untouched). While in clinician mode the language is locked to EN.
+  function publicSetLang(lang) {
+    if (LANGS.indexOf(lang) < 0) lang = 'en';
+    if (document.body.classList.contains('physician-mode')) lang = 'en';
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    document.documentElement.setAttribute('lang', lang);
+    applyLangDisplay(lang);
+  }
+  if (typeof window.setGuideLang !== 'function') window.setGuideLang = publicSetLang;
+  if (typeof window.setLang !== 'function') window.setLang = publicSetLang;
 
   function init() {
     // React to Patient/Clinician tab toggles (they flip body.physician-mode).
