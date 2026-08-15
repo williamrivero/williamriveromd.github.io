@@ -16,7 +16,9 @@ PROSE={'p','h1','h2','h3','h4','li','blockquote'}
 BLOCK={'p','h1','h2','h3','h4','li','td','th','dd','blockquote'}
 CHROME={'site-header','header-nav','nav-strip','guide-footer','dr-card','dr-card-wrap',
         'related-guides','hero-meta','ref-acc','glossary-acc','ref-section','glossary-sec',
-        'audience-tabs','toc','float-controls'}
+        'audience-tabs','toc','float-controls',
+        # embedded interactive tools/calculators are English-only by policy
+        'calc-wrap','calc','calculator','tool-wrap','symptom-checker'}
 
 def inphys(el): return any({'mode-physician','physician-mode'}&set(a.get('class')or[]) for a in el.parents)
 

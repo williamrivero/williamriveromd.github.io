@@ -21,6 +21,10 @@ def neutral(path):
         e.decompose()
     for e in s.find_all(class_=lambda c: c and set(c) & {'lang-tl','lang-ceb','lang-kap'}):
         e.decompose()
+    # the top-nav language chips are chrome, not content; strip so a guide that
+    # had chips added after baseline still compares equal
+    for e in s.find_all(class_='header-lang'):
+        e.decompose()
     return ' '.join(s.get_text(' ').split())
 
 def patient_missing(path):
