@@ -20,7 +20,13 @@ CHROME={'site-header','header-nav','nav-strip','guide-footer','dr-card','dr-card
         # embedded interactive tools/calculators are English-only by policy
         'calc-wrap','calc','calculator','tool-wrap','symptom-checker'}
 
-def inphys(el): return any({'mode-physician','physician-mode'}&set(a.get('class')or[]) for a in el.parents)
+def inphys(el):
+    # check the element itself AND its ancestors (a mode-physician class can sit
+    # directly on the flagged element, not only on a parent)
+    for a in [el] + list(el.parents):
+        if {'mode-physician','physician-mode'} & set(a.get('class') or []):
+            return True
+    return False
 
 def in_refs_section(el):
     sec=el.find_parent('section')
@@ -58,6 +64,12 @@ def main():
         if len(t)<8 or not re.search(r'[A-Za-z]{3}',t): continue
         # inline cross-reference navigation (e.g. "→ See also: …", "→ See full guide: …")
         if t.startswith('→') or re.match(r'(See also|See full guide)\b', t): continue
+        # clinician-only footnotes (annotated with ⚕/⚕) are English by policy
+        if t[:1] in ('⚕', '⚖', '⚕', '⚖'): continue
+        # bare image filenames used as figure placeholders
+        if re.fullmatch(r'[\w-]+\.(png|webp|jpg|jpeg|svg)', t): continue
+        # citation/reference lines (Author AB et al. … Journal Year;vol)
+        if re.search(r'\bet al\.', t) and re.search(r'\b(19|20)\d\d\b', t): continue
         if hs(el) or any(hs(a) for a in el.parents) or any(hs(d) for d in el.descendants if getattr(d,'name',None)):
             continue
         # classify: short label-like heading vs real prose
