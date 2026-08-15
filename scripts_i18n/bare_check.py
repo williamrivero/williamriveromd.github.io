@@ -56,6 +56,8 @@ def main():
         if any(getattr(d,'name',None) in BLOCK for d in el.descendants): continue
         t=el.get_text(' ',strip=True)
         if len(t)<8 or not re.search(r'[A-Za-z]{3}',t): continue
+        # inline cross-reference navigation (e.g. "→ See also: …", "→ See full guide: …")
+        if t.startswith('→') or re.match(r'(See also|See full guide)\b', t): continue
         if hs(el) or any(hs(a) for a in el.parents) or any(hs(d) for d in el.descendants if getattr(d,'name',None)):
             continue
         # classify: short label-like heading vs real prose
