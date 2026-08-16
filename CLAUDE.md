@@ -22,17 +22,16 @@ site-wide master-CSS code comments owned by `patch_master_css.py`.)
 
 ## What this site is
 
-`renalcarematters.com` is a static patient-education website for Dr. William Gregory M. Rivero, MD (Nephrology, Internal Medicine, Philippines). It consists of ~90 standalone HTML guides on kidney disease topics, a homepage (`index.html`), and a small Node.js proxy server for an AI feature. The repo is named `williamriveromd.github.io` for historical reasons only — that name is unrelated to the live domain.
+`renalcarematters.com` is a static patient-education website for Dr. William Gregory M. Rivero, MD (Nephrology, Internal Medicine, Philippines). It consists of ~90 standalone HTML guides on kidney disease topics and a homepage (`index.html`), served by Cloudflare Pages with no server-side component. The repo is named `williamriveromd.github.io` for historical reasons only — that name is unrelated to the live domain.
 
 ## Development commands
 
+The site is a pure static bundle served by Cloudflare Pages — there is no
+Node.js server component and no local dev server; preview by opening any
+`.html` file directly in a browser, or point a plain static server (e.g.
+`python3 -m http.server`) at the repo root.
+
 ```bash
-# Local preview server (serves the static site at localhost:3000)
-npm start                         # runs williamriveromd-server/server.js
-
-# Install server dependencies (only needed once)
-npm run install-server
-
 # Python patch scripts — run from the repo root
 python3 patch_master_css.py               # apply master CSS to all guides
 python3 patch_master_css.py --dry-run     # preview changes without writing
@@ -530,8 +529,6 @@ Standard credential line (top-strip, every companion):
 > PSN HD endorsement form is an official external document and is intentionally left
 > in its original style.
 
-The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.
-
 There are no automated tests or linters.
 
 ## Architecture
@@ -625,14 +622,6 @@ Two token sets exist — **do not mix them**:
 Guides also expose `--text-mid`, `--text-muted`, `--text-faint`, `--red`, `--red-soft`, `--amber`, `--amber-soft`, `--green`, `--green-soft`, `--purple`, `--purple-soft`. All foreground/background combinations are WCAG AA verified (≥4.5:1 normal text, ≥3:1 large text).
 
 Dark mode on the homepage is `html[data-theme="dark"]`. Guides do not currently have dark mode.
-
-### Node.js proxy server (`williamriveromd-server/`)
-
-An Express server that:
-1. Serves the static site (fallback: `index.html` for any unknown route)
-2. Exposes `POST /api/analyze` — proxies to `https://api.anthropic.com/v1/messages`, hard-codes model to `claude-haiku-4-5-20251001` and caps `max_tokens` at 2000, rate-limited to 20 req / 15 min
-
-This server is not used in Cloudflare Pages production (which serves only static files). It supports local development and any alternative hosting where server-side API key protection is needed.
 
 ### Supporting data files
 
