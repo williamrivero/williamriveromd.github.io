@@ -27,7 +27,11 @@ in guides/calculators.html) and patches: the guides/index.html hero stat, its
 mobile-filter and sidebar-filter "All N" labels, its og/twitter meta copy,
 calculators.html's og:image:alt, and the root index.html hero stat fallback
 (the data-target the JS count-up animation uses before its own live sync
-fetch resolves). Runs automatically as part of `main()` — no separate flag.
+fetch resolves). It also patches the two guides/index.html numbers no JS ever
+rewrites — the search-box placeholder and the results-count fallback — and
+every static cf-count filter chip on calculators.html ("All tools", plus each
+category), which otherwise go one short the moment a calculator is added.
+Runs automatically as part of `main()` — no separate flag.
 
 Usage:
     python3 generate_latest_guides.py
@@ -268,6 +272,48 @@ def count_true_specialties(index_html: str) -> int:
     return len(set(re.findall(r'<div class="guide-section"[^>]*data-section="([^"]+)"', index_html)))
 
 
+def sync_calc_filter_chips(calc_text: str) -> tuple[str, int]:
+    """Recompute every cf-count chip on guides/calculators.html from the grid.
+
+    The category filter chips ("Dialysis 23", "All tools 197") are static HTML —
+    only the Favorites chip is JS-driven — so adding a calculator to a section
+    silently leaves both that section's chip and the "All tools" chip one short.
+    Counts come from the real grid: <a class="related-card"> inside each
+    <section id="…">, with the Latest-calculators carousel excluded so its
+    cards are never double-counted.
+    """
+    body = re.sub(r'<!-- LATEST-CALCS-START -->.*?<!-- LATEST-CALCS-END -->',
+                  '', calc_text, flags=re.DOTALL)
+    per_section = {}
+    for m in re.finditer(r'<section class="section" id="([a-z-]+)"[^>]*>(.*?)</section>',
+                         body, re.DOTALL):
+        n = len(re.findall(r'<a class="related-card', m.group(2)))
+        if n:
+            per_section[m.group(1)] = n
+    per_section['all'] = sum(per_section.values())
+
+    changed = 0
+
+    # Every capture group is re-emitted, including the data-filter attribute
+    # itself — dropping it would silently disable the category filter buttons.
+    # The Favorites chip carries an id and is written by JS, so it is skipped.
+    pattern = (r'(data-filter=")([a-z-]+)(")'
+               r'(?![^>]*id="cf-fav-count")'
+               r'((?:(?!</button>).)*?<span class="cf-count">)(\d+)(</span>)')
+
+    def repl2(m):
+        nonlocal changed
+        a, key, b, mid, old, tail = m.groups()
+        true = per_section.get(key)
+        if true is None or str(true) == old:
+            return m.group(0)
+        changed += 1
+        return f'{a}{key}{b}{mid}{true}{tail}'
+
+    calc_text = re.sub(pattern, repl2, calc_text)
+    return calc_text, changed
+
+
 def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool) -> str:
     """Patch every hand-displayed guide/calculator count to the true, freshly
     computed values. Returns the (possibly) updated guides/index.html text;
@@ -315,6 +361,9 @@ def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool)
 
     new_calc_text, cn1 = re.subn(
         r'\d+( evidence-based nephrology calculators)', rf'{calc_count}\g<1>', calc_text)
+    cn2 = sync_calc_filter_chips(new_calc_text)
+    new_calc_text = cn2[0]
+    cn1 += cn2[1]
     print(f"guides/calculators.html: {cn1} reference(s) synced" if cn1 else "guides/calculators.html: already in sync")
 
     root_text = root_index_path.read_text(encoding="utf-8")
