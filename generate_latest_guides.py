@@ -301,7 +301,16 @@ def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool)
     text, n7 = re.subn(
         r'\d+( evidence-based guides, )\d+( calculators)',
         rf'{guide_count}\g<1>{calc_count}\g<2>', text)
-    changed = n1 + n2 + n3 + n4 + n5 + n6 + n7
+    # The search box placeholder is a static attribute — no JS ever rewrites it,
+    # so a stale number here is visible to every visitor until it is patched.
+    text, n8 = re.subn(
+        r'(placeholder=.Search )\d+( guides)', rf'\g<1>{guide_count}\g<2>', text)
+    # The results-count span IS recomputed by refreshCounts() on load, but the
+    # static value is what a no-JS or slow-JS visitor sees first — keep it true.
+    text, n9 = re.subn(
+        r'(<span class="results-count" id="results-count">)\d+(</span>)',
+        rf'\g<1>{guide_count}\g<2>', text)
+    changed = n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9
     print(f"guides/index.html: {changed} stat/meta reference(s) synced" if changed else "guides/index.html: stats already in sync")
 
     new_calc_text, cn1 = re.subn(
