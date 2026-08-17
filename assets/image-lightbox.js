@@ -1,5 +1,5 @@
 /*!
- * williamriveromd.com — Image Lightbox v2.0
+ * renalcarematters.com — Image Lightbox v2.1
  *
  * Inline images in guide figures behave like book illustrations:
  *   • Single click / tap   → lightbox (magnified view with caption + abbreviations)
@@ -19,6 +19,19 @@
  *   </figcaption>
  * Falls back gracefully to raw figcaption text or img alt when
  * the structured markup is absent.
+ *
+ * v2.1 fixes two bandwidth / correctness bugs from v2.0:
+ *   1. The lightbox now uses img.currentSrc (the WebP the browser already
+ *      loaded from <picture>) instead of img.getAttribute('src') (the PNG
+ *      fallback), so opening the lightbox is a cache hit rather than a
+ *      fresh full-size PNG download. Same fix on double-click-open-in-new-
+ *      tab, so users don't get magically served a heavier PNG either.
+ *   2. Caption extraction now uses .innerText (which respects display:none
+ *      set by [data-lang].lang-hidden) instead of .textContent (which
+ *      returned every hidden translation sibling concatenated together).
+ *      The fig-abbrevs <dt>/<dd> pairs are also cloned rather than string-
+ *      copied so their data-lang / lang-hidden attributes carry over and
+ *      the site's global CSS hides the inactive languages.
  */
 (function () {
   'use strict';
@@ -28,6 +41,28 @@
 
   // ── Overlay elements (lazily created) ──────────────────────────────────────
   var overlay, lbImg, lbDesc, lbAbbrevs, lbCapPanel;
+
+  // Prefer currentSrc — the URL the browser actually loaded (WebP when the
+  // <picture> declared one) — over the src attribute (which is the PNG
+  // fallback). Using src would trigger a fresh full-size PNG download even
+  // though the WebP is already in the browser's memory cache; that made the
+  // lightbox visibly slow and doubled the bandwidth. currentSrc reuses the
+  // exact resource the guide already rendered, so the lightbox is instant.
+  function bestSrc(img) {
+    return img.currentSrc || img.getAttribute('src') || '';
+  }
+
+  // Text extraction that honours the site's [data-lang].lang-hidden rule
+  // (display:none !important in MASTER_CSS). Using textContent would pick up
+  // every hidden translation sibling and concatenate all four languages into
+  // one caption; innerText walks only rendered nodes. Falls back to
+  // textContent if innerText is empty for any reason (e.g. detached DOM).
+  function visibleText(el) {
+    if (!el) return '';
+    var t = (el.innerText || '').trim();
+    if (!t) t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    return t;
+  }
 
   function buildOverlay() {
     if (document.getElementById('img-lb')) {
@@ -81,7 +116,7 @@
       e.stopPropagation();
       var now = Date.now();
       if (now - _lbLastClick < DBLCLICK_MS) {
-        openNewTab(lbImg.getAttribute('src'));
+        openNewTab(lbImg.currentSrc || lbImg.getAttribute('src'));
         _lbLastClick = 0;
       } else {
         _lbLastClick = now;
@@ -95,7 +130,13 @@
   function openLB(img) {
     buildOverlay();
 
-    lbImg.src = img.getAttribute('src') || img.currentSrc || '';
+    // Use the same resource the browser already loaded (bestSrc → currentSrc
+    // when available) so opening the lightbox is a cache hit and adds zero
+    // extra bytes. decoding=async + fetchpriority=high tell the browser this
+    // paint is now the priority, without blocking the click.
+    lbImg.decoding = 'async';
+    lbImg.fetchPriority = 'high';
+    lbImg.src = bestSrc(img);
     lbImg.alt = img.alt || '';
 
     // Resolve caption: structured figcaption > raw figcaption > illus-caption > alt
@@ -115,11 +156,16 @@
     if (cap) {
       var descEl  = cap.querySelector('.fig-desc');
       var abbrEl  = cap.querySelector('.fig-abbrevs');
-      descText = descEl
-        ? descEl.textContent.trim()
-        : cap.textContent.replace(/\s+/g, ' ').trim();
+      descText = descEl ? visibleText(descEl) : visibleText(cap);
+      // Copy the abbrevs list by cloning so the DOM keeps its data-lang /
+      // lang-hidden attributes; the site's global rule
+      // `[data-lang].lang-hidden{display:none!important}` then hides the
+      // non-active languages exactly as it does in the guide body.
       if (abbrEl && abbrEl.children.length) {
-        lbAbbrevs.innerHTML = abbrEl.innerHTML;
+        lbAbbrevs.innerHTML = '';
+        for (var i = 0; i < abbrEl.children.length; i++) {
+          lbAbbrevs.appendChild(abbrEl.children[i].cloneNode(true));
+        }
         hasAbbrevs = true;
       }
     }
@@ -159,7 +205,7 @@
       // Second click within DBLCLICK_MS → double-click detected
       clearTimeout(_timer);
       _timer = _pendingImg = null;
-      openNewTab(img.getAttribute('src') || img.currentSrc || '');
+      openNewTab(bestSrc(img));
     } else {
       _pendingImg = img;
       _timer = setTimeout(function () {
@@ -180,7 +226,7 @@
       e.preventDefault();
       clearTimeout(_timer);
       _timer = _pendingImg = null;
-      openNewTab(img.getAttribute('src') || img.currentSrc || '');
+      openNewTab(bestSrc(img));
       _lastTap = { el: null, t: 0 };
     } else {
       _lastTap = { el: img, t: now };
