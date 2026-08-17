@@ -2,7 +2,7 @@
 name: williamriveromd-simple-figure
 description: >-
   Produces a single, copy-paste ChatGPT Image Generator prompt for one simple
-  figure or algorithm for williamriveromd.com nephrology patient-education guides.
+  figure or algorithm for renalcarematters.com nephrology patient-education guides.
   Use when the user wants ONE focused visual — a single flowchart, comparison
   panel, mechanism diagram, step sequence, or reference table — not a
   multi-panel infographic batch. Faster and lighter than williamriveromd-infographic-skill.
@@ -134,7 +134,7 @@ ALL images use a **light background only**.
 - Mobile-readable — minimum 11pt equivalent
 
 ### Attribution (MANDATORY on every image)
-- Text: `williamriveromd.com`
+- Text: `renalcarematters.com`
 - Placement: bottom-right corner (landscape/square); bottom-center (portrait)
 - Style: small, semi-transparent navy text, ~10–11px, 70% opacity
 - Never omit. Never obscure clinical content.
@@ -178,7 +178,7 @@ Rounded rectangular nodes — decision nodes in teal (#1a6b72), action nodes in 
 caution nodes in amber (#b8860b), escalation nodes in red (#b91c1c), optimal-path nodes
 in renal green (#1f7a4d). Bold connecting arrows. Maximum 3–4 branching levels.
 Generous whitespace. Mobile-readable labels. No spaghetti. Clean left-to-right or
-top-to-bottom flow. Bottom-right: "williamriveromd.com" in small semi-transparent navy text.
+top-to-bottom flow. Bottom-right: "renalcarematters.com" in small semi-transparent navy text.
 ```
 
 ### Scaffold B — Side-by-Side Comparison (landscape 1792 × 1024)
@@ -189,7 +189,7 @@ divider splitting the canvas into two equal panels. Left panel labeled in renal 
 (#1f7a4d): "[NORMAL/HEALTHY LABEL]". Right panel labeled in clinical red (#b91c1c):
 "[ABNORMAL/DISEASE LABEL]". Each panel contains [DESCRIBE CONTENT]. Rounded panel
 corners, ample negative space, mobile-readable labels ≥11pt. Bottom-right:
-"williamriveromd.com" in small semi-transparent navy text.
+"renalcarematters.com" in small semi-transparent navy text.
 ```
 
 ### Scaffold C — Horizontal Step Sequence (landscape 1792 × 1024)
@@ -200,7 +200,7 @@ row, connected by bold navy right-pointing arrows. Each card has a colored top a
 band ([colors per step]), a small icon, a bold step label, and 2–3 bullet details.
 Cards sit on a very soft gray panel (#f3f4f6). Generous whitespace. Mobile-readable.
 Bottom strip: full-width soft gray, brief summary sentence in navy.
-Bottom-right: "williamriveromd.com" in small semi-transparent navy text.
+Bottom-right: "renalcarematters.com" in small semi-transparent navy text.
 ```
 
 ### Scaffold D — Single Mechanism / One-Panel Poster (landscape 1792 × 1024)
@@ -210,7 +210,7 @@ background. Title at top in bold navy (#0f1e2e), subtitle in clinical teal (#1a6
 Central semi-photorealistic 3D diagram of [ANATOMY/MECHANISM]. Labeled callouts using
 modular rounded cards. Color-coded arrows showing [DIRECTION/FLOW]. Bottom strip with
 clinical implication in navy. Ample negative space, no clutter, mobile-readable labels.
-Bottom-right: "williamriveromd.com" in small semi-transparent navy text.
+Bottom-right: "renalcarematters.com" in small semi-transparent navy text.
 ```
 
 ### Scaffold E — Reference Table / Quick-Look Card (1:1 or 4:3)
@@ -220,7 +220,7 @@ Bold navy title at top. Compact well-organized table or grid with [N] rows/colum
 Column headers in teal (#1a6b72) on soft gray background (#f3f4f6). Alternating row
 fills (white / very soft gray). Key values highlighted in amber or red where clinically
 significant. Footer: brief takeaway sentence. Mobile-readable, not cluttered.
-Bottom-right: "williamriveromd.com" in small semi-transparent navy text.
+Bottom-right: "renalcarematters.com" in small semi-transparent navy text.
 ```
 
 4. **Expand the scaffold** with the specific clinical content, labels, steps, values, and color assignments relevant to the request.
@@ -244,12 +244,12 @@ avoid unrealistic anatomy, avoid overprocessed HDR, avoid excessive saturation.
 NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only.
 Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or Manrope — no other
 fonts, no serif fonts, no decorative or handwritten typefaces.
-Never omit the williamriveromd.com attribution.
+Never omit the renalcarematters.com attribution.
 
 QUALITY CHECK:
 Must be mobile-readable, clinically plausible, visually calm, publication-grade, and
-consistent with williamriveromd.com house style. Background must be white or soft light
-gray — never dark. Copyright attribution williamriveromd.com must be visible in the
+consistent with renalcarematters.com house style. Background must be white or soft light
+gray — never dark. Copyright attribution renalcarematters.com must be visible in the
 bottom-right corner (bottom-center for portrait).
 ```
 

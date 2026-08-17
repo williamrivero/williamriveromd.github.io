@@ -32,7 +32,7 @@ identically: it does not re-author the prompt, only validates, organizes, and
 wires it. When validating, accept the mechanism skill's template fields
 (organ-level panel, magnified inset, bottom injury/intervention/benefit flow) as
 a complete prompt. Confirm every prompt — regardless of authoring skill — carries
-the shared `© williamriveromd.com` attribution before building manifests. Also
+the shared `© renalcarematters.com` attribution before building manifests. Also
 confirm every prompt that renders on-image text names an approved sans-serif font
 (Inter, Nunito Sans, IBM Plex Sans, or Manrope); flag any text-bearing prompt that
 omits the font or specifies a serif/decorative typeface. Text-free photorealistic
@@ -183,7 +183,7 @@ Use the PRIMARY image (first image / hero) for the guide.
 <meta property="og:image"        content="https://renalcarematters.com/images/[filename].webp"/>
 <meta property="og:image:width"  content="[OG WIDTH from prompt file]"/>
 <meta property="og:image:height" content="[OG HEIGHT from prompt file]"/>
-<meta property="og:image:alt"    content="[Guide title] — williamriveromd.com"/>
+<meta property="og:image:alt"    content="[Guide title] — renalcarematters.com"/>
 ```
 
 Dimensions come from the `OG WIDTH` / `OG HEIGHT` fields in the prompt file,

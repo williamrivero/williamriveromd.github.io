@@ -3,7 +3,7 @@ name: williamriveromd-hero-vignette
 description: >-
   Produces a single copy-paste ChatGPT Image Generator prompt for a guide HERO
   graphic designed to sit inside the circular vignette beside the hero title on
-  williamriveromd.com. v3 spec: 2048×2048 canvas, circle occupies 85–90% of the
+  renalcarematters.com. v3 spec: 2048×2048 canvas, circle occupies 85–90% of the
   diameter with a visible white margin (NOT full-bleed), a 20–25% reserved
   title-safe zone, mandatory people-variation rules, rotating composition
   archetypes, and camera-angle rotation across guides. Use whenever creating
@@ -333,7 +333,7 @@ slightly deeper neutral at the rim. Full-bleed within the inscribed circle,
 no rectangular borders, frames, or banners.
 
 Absolutely NO text of any kind: no title, subtitle, caption, label, logo, or
-williamriveromd.com watermark.
+renalcarematters.com watermark.
 ```
 
 ### Scaffold B — Single Still-Life / Object (2048 × 2048)

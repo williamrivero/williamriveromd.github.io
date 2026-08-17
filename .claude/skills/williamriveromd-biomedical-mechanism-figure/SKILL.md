@@ -2,7 +2,7 @@
 name: williamriveromd-biomedical-mechanism-figure
 description: >-
   Produces a clean, publication-grade biomedical mechanism figure prompt for
-  williamriveromd.com nephrology patient-education guides — a review-article
+  renalcarematters.com nephrology patient-education guides — a review-article
   schematic that explains organ-to-cellular pathophysiology using simple
   vector-style anatomy, dashed magnified panels, restrained clinical colors,
   and clinically accurate labels. Use when the user wants a mechanism/pathway
@@ -152,7 +152,7 @@ treat this as ground truth, not a guess:
 - Clean SVG-like or high-resolution PNG style
 - Prefer 4:3 or 16:9 aspect ratio for educational figures
 - **Attribution (MANDATORY, house convention):** every figure carries small,
-  semi-transparent navy text `© williamriveromd.com` in the bottom-right corner
+  semi-transparent navy text `© renalcarematters.com` in the bottom-right corner
   (bottom-center for portrait), ~10–11px, not obscuring any figure element. This
   is the only mark permitted — no other watermarks.
 - No gibberish text

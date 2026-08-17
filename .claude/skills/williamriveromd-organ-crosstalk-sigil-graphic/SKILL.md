@@ -2,14 +2,14 @@
 name: williamriveromd-organ-crosstalk-sigil-graphic
 description: >-
   Generate clean, minimal medical "organ sigil" image prompts for
-  williamriveromd.com nephrology patient-education guides — simple line-art organ
+  renalcarematters.com nephrology patient-education guides — simple line-art organ
   icons connected by dotted arrows or flow lines to show organ crosstalk,
   physiology, feedback loops, or systemic relationships (e.g. neuro-renal,
   cardiorenal, gut-kidney, hepatorenal, muscle-kidney axes). Use when the user
   wants a symbolic, monoline "sigil"-style crosstalk diagram rather than a
   detailed infographic, photorealistic hero, algorithm flowchart, or
   review-article mechanism schematic. Outputs a single copy-paste ChatGPT Image
-  Generator prompt in the williamriveromd.com house style.
+  Generator prompt in the renalcarematters.com house style.
 ---
 
 # williamriveromd-organ-crosstalk-sigil-graphic
@@ -47,8 +47,8 @@ organ→inset→injury/intervention/benefit review-article schematic use
 
 ## Attribution (MANDATORY, house convention)
 Even though the sigil is otherwise label-free, every generated image must carry the
-shared williamriveromd.com mark:
-- Text: `williamriveromd.com`
+shared renalcarematters.com mark:
+- Text: `renalcarematters.com`
 - Placement: bottom-right corner (square/landscape); bottom-center (portrait)
 - Style: small, semi-transparent navy or dark-teal text, ~10–11px, ~70% opacity
 - Never omit. Never obscure the sigil. This is the only mark permitted — no other
@@ -81,7 +81,7 @@ COMPOSITION:
 Place [primary organ] at the top/center and [secondary organ/s] below or around it. Connect them with dotted arrows forming a gentle circular or bidirectional loop. Keep the design simple, symbolic, and suitable for a patient-education medical website.
 
 OUTPUT:
-Square or vertical image, clean margins, high-resolution, publication-grade medical icon aesthetic. Include a small, semi-transparent "williamriveromd.com" attribution in the bottom-right corner (bottom-center for portrait), not obscuring the sigil.
+Square or vertical image, clean margins, high-resolution, publication-grade medical icon aesthetic. Include a small, semi-transparent "renalcarematters.com" attribution in the bottom-right corner (bottom-center for portrait), not obscuring the sigil.
 
 ## Example Prompt
 
@@ -91,7 +91,7 @@ Show brain–kidney communication using subtle dotted curved arrows flowing down
 
 Minimal clinical line-art, thin monoline strokes, soft teal-blue palette, white background, clean rounded organ shapes, balanced sigil-like composition, generous whitespace, no photorealism, no 3D, no text labels.
 
-Place the brain at the top center and the two kidneys symmetrically below. Connect them with dotted arrows forming a calm bidirectional loop. The image should feel like a symbolic medical sigil for neuro-renal crosstalk, suitable for a patient-education nephrology website. Add a small, semi-transparent "williamriveromd.com" attribution in the bottom-right corner.
+Place the brain at the top center and the two kidneys symmetrically below. Connect them with dotted arrows forming a calm bidirectional loop. The image should feel like a symbolic medical sigil for neuro-renal crosstalk, suitable for a patient-education nephrology website. Add a small, semi-transparent "renalcarematters.com" attribution in the bottom-right corner.
 
 ## Variants
 
@@ -111,4 +111,4 @@ Use skeletal muscle icon and kidneys connected by dotted metabolic arrows.
 Triangular composition with brain top, gut lower left, kidney lower right, circular dotted arrows.
 
 ## Negative Prompt
-Avoid: photorealistic anatomy, surgical detail, excessive labels, dark background, neon colors, complex infographics, crowded arrows, thick cartoon outlines, 3D rendering, glossy icons, dramatic lighting, stock-photo style. If text is present, never use serif or decorative fonts — Inter, Nunito Sans, IBM Plex Sans, or Manrope only. Never omit the williamriveromd.com attribution.
+Avoid: photorealistic anatomy, surgical detail, excessive labels, dark background, neon colors, complex infographics, crowded arrows, thick cartoon outlines, 3D rendering, glossy icons, dramatic lighting, stock-photo style. If text is present, never use serif or decorative fonts — Inter, Nunito Sans, IBM Plex Sans, or Manrope only. Never omit the renalcarematters.com attribution.
