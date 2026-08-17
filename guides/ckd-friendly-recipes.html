@@ -13,6 +13,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -138,6 +139,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1306,8 +1315,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -2121,8 +2132,8 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-card-header">
 <div>
 <div class="recipe-tag-row"><span class="rtag rtag-hd">Dialysis</span></div>
-<h3>Chicken Congee (Goto-Style)</h3>
-<p class="tagline">High-protein congee using chicken breast — goto without the organ meat risk</p>
+<h3><span data-lang="en">Chicken Congee (Goto-Style)</span><span data-lang="tl" class="lang-hidden">Lugaw na Manok (Istilong Goto)</span><span data-lang="ceb" class="lang-hidden">Lugaw nga Manok (Estilong Goto)</span><span data-lang="kap" class="lang-hidden">Lugaw a Manuk (Istilung Goto)</span></h3>
+<p class="tagline"><span data-lang="en">High-protein congee using chicken breast — goto without the organ meat risk</span><span data-lang="tl" class="lang-hidden">Mataas sa protina na lugaw gamit ang dibdib ng manok — goto na walang panganib ng lamang-loob</span><span data-lang="ceb" class="lang-hidden">Taas sa protina nga lugaw gamit ang dughan sa manok — goto nga walay peligro sa lamang-loob</span><span data-lang="kap" class="lang-hidden">Matas king protina a lugaw a gagamit dibdib ning manuk — goto a alang peligru ning lamang-lub</span></p>
 </div>
 </div>
 <div class="recipe-meta">
@@ -2133,29 +2144,29 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-body">
 <div class="recipe-section-title">Ingredients</div>
 <ul>
-<li>½ cup white rice (malagkit if desired for texture)</li>
-<li>200 g chicken breast, shredded</li>
-<li>4 cups water</li>
-<li>1 thumb luya, julienned</li>
-<li>3 cloves garlic, fried crispy in oil</li>
-<li>2 stalks dahon ng sibuyas (green onion tops), sliced thin</li>
-<li>Calamansi halves for serving</li>
-<li>Pepper to taste — NO patis</li>
+<li><span data-lang="en">½ cup white rice (malagkit if desired for texture)</span><span data-lang="tl" class="lang-hidden">½ tasa puting bigas (malagkit kung nais para sa texture)</span><span data-lang="ceb" class="lang-hidden">½ tasa puting bugas (malagkit kung gusto para sa texture)</span><span data-lang="kap" class="lang-hidden">½ tasa maputing bugas (malagkit nung buri para king texture)</span></li>
+<li><span data-lang="en">200 g chicken breast, shredded</span><span data-lang="tl" class="lang-hidden">200 g dibdib ng manok, hinimay</span><span data-lang="ceb" class="lang-hidden">200 g dughan sa manok, gihimay</span><span data-lang="kap" class="lang-hidden">200 g dibdib ning manuk, hinimay</span></li>
+<li><span data-lang="en">4 cups water</span><span data-lang="tl" class="lang-hidden">4 tasa tubig</span><span data-lang="ceb" class="lang-hidden">4 tasa tubig</span><span data-lang="kap" class="lang-hidden">4 tasa danum</span></li>
+<li><span data-lang="en">1 thumb luya, julienned</span><span data-lang="tl" class="lang-hidden">1 hinlalaki luya, hiniwang manipis (julienne)</span><span data-lang="ceb" class="lang-hidden">1 kumagko nga luya, gihiwa nga nipis (julienne)</span><span data-lang="kap" class="lang-hidden">1 hinlalaki a luya, hiniwang manipis (julienne)</span></li>
+<li><span data-lang="en">3 cloves garlic, fried crispy in oil</span><span data-lang="tl" class="lang-hidden">3 butil bawang, piniritong malutong sa mantika</span><span data-lang="ceb" class="lang-hidden">3 butil bawang, giprito nga crispy sa mantika</span><span data-lang="kap" class="lang-hidden">3 butil bawang, piniritung malutung king mantika</span></li>
+<li><span data-lang="en">2 stalks dahon ng sibuyas (green onion tops), sliced thin</span><span data-lang="tl" class="lang-hidden">2 tangkay dahon ng sibuyas (green onion tops), hiniwang manipis</span><span data-lang="ceb" class="lang-hidden">2 tangkay dahon sa sibuyas (green onion tops), gihiwa nga nipis</span><span data-lang="kap" class="lang-hidden">2 tangkay dahun ning sibuyas (green onion tops), hiniwang manipis</span></li>
+<li><span data-lang="en">Calamansi halves for serving</span><span data-lang="tl" class="lang-hidden">Hinating calamansi para sa paghahain</span><span data-lang="ceb" class="lang-hidden">Gitunga nga calamansi para sa pagsilbi</span><span data-lang="kap" class="lang-hidden">Kapitna a calamansi para king pamaghain</span></li>
+<li><span data-lang="en">Pepper to taste — NO patis</span><span data-lang="tl" class="lang-hidden">Paminta ayon sa panlasa — WALANG patis</span><span data-lang="ceb" class="lang-hidden">Paminta sumala sa lami — WALAY patis</span><span data-lang="kap" class="lang-hidden">Paminta agpang king lasa — ALANG patis</span></li>
 </ul>
 <div class="recipe-section-title">Steps</div>
 <ol class="recipe-steps">
-<li>Boil chicken breast in 4 cups water with ginger, 20 minutes.</li>
-<li>Remove chicken, shred finely. Reserve broth.</li>
-<li>Add rice to broth, simmer on low 25–30 minutes, stirring often, until porridge consistency.</li>
-<li>Return shredded chicken, stir through.</li>
-<li>Serve topped with fried garlic bits, green onion, and calamansi.</li>
+<li><span data-lang="en">Boil chicken breast in 4 cups water with ginger, 20 minutes.</span><span data-lang="tl" class="lang-hidden">Pakuluan ang dibdib ng manok sa 4 tasang tubig kasama ang luya, 20 minuto.</span><span data-lang="ceb" class="lang-hidden">Pakuloa ang dughan sa manok sa 4 tasa tubig uban ang luya, 20 minuto.</span><span data-lang="kap" class="lang-hidden">Pakuluan ing dibdib ning manuk king 4 tasang danum a kayabe ing luya, 20 minutu.</span></li>
+<li><span data-lang="en">Remove chicken, shred finely. Reserve broth.</span><span data-lang="tl" class="lang-hidden">Alisin ang manok, himayin nang pino. Itabi ang sabaw.</span><span data-lang="ceb" class="lang-hidden">Kuhaa ang manok, himaya og pino. Itagana ang sabaw.</span><span data-lang="kap" class="lang-hidden">Alisan ing manuk, himayan nang pinu. Itabi ing sabaw.</span></li>
+<li><span data-lang="en">Add rice to broth, simmer on low 25–30 minutes, stirring often, until porridge consistency.</span><span data-lang="tl" class="lang-hidden">Idagdag ang bigas sa sabaw, pakuluan nang mahina 25–30 minuto, madalas haluin, hanggang maging malapot na lugaw.</span><span data-lang="ceb" class="lang-hidden">Idugang ang bugas sa sabaw, pakuloa sa hinay 25–30 minuto, kanunayng kutawa, hangtod mahimong lugaw.</span><span data-lang="kap" class="lang-hidden">Idagdag ing bugas king sabaw, pakuluan nang mayna 25–30 minutu, pisan-pisan kutawan, angga king maging malaput a lugaw.</span></li>
+<li><span data-lang="en">Return shredded chicken, stir through.</span><span data-lang="tl" class="lang-hidden">Ibalik ang hinimay na manok, haluin nang mabuti.</span><span data-lang="ceb" class="lang-hidden">Ibalik ang gihimay nga manok, kutawa og maayo.</span><span data-lang="kap" class="lang-hidden">Ibalik ing hinimay a manuk, kutawan nang mayap.</span></li>
+<li><span data-lang="en">Serve topped with fried garlic bits, green onion, and calamansi.</span><span data-lang="tl" class="lang-hidden">Ihain na may palamuting piniritong bawang, dahon ng sibuyas, at calamansi.</span><span data-lang="ceb" class="lang-hidden">Isilbi nga adunay giprito nga bawang, dahon sa sibuyas, ug calamansi.</span><span data-lang="kap" class="lang-hidden">Ihain a atin palamuting piniritung bawang, dahun ning sibuyas, at calamansi.</span></li>
 </ol>
 <div class="recipe-section-title">Why it works</div>
 <ul>
-<li>High protein for HD patients — chicken breast, no organ meat</li>
-<li>Traditional goto uses tripe (tripas) — extremely high in phosphorus</li>
-<li>Rice dilutes phosphorus and potassium concentration</li>
-<li>Calamansi replaces patis perfectly</li>
+<li><span data-lang="en">High protein for HD patients — chicken breast, no organ meat</span><span data-lang="tl" class="lang-hidden">Mataas na protina para sa mga pasyenteng HD — dibdib ng manok, walang lamang-loob</span><span data-lang="ceb" class="lang-hidden">Taas nga protina alang sa mga pasyenteng HD — dughan sa manok, walay lamang-loob</span><span data-lang="kap" class="lang-hidden">Matas a protina para kareng pasyenteng HD — dibdib ning manuk, alang lamang-lub</span></li>
+<li><span data-lang="en">Traditional goto uses tripe (tripas) — extremely high in phosphorus</span><span data-lang="tl" class="lang-hidden">Ang tradisyonal na goto ay gumagamit ng tripas — napakataas sa phosphorus</span><span data-lang="ceb" class="lang-hidden">Ang tradisyonal nga goto naggamit og tripa (tripas) — hilabihan ka taas sa phosphorus</span><span data-lang="kap" class="lang-hidden">Ing tradisyunal a goto gagamit yang tripas — masiadung matas king phosphorus</span></li>
+<li><span data-lang="en">Rice dilutes phosphorus and potassium concentration</span><span data-lang="tl" class="lang-hidden">Ang bigas ay nagbabawas sa konsentrasyon ng phosphorus at potassium</span><span data-lang="ceb" class="lang-hidden">Ang bugas nagpakunhod sa konsentrasyon sa phosphorus ug potassium</span><span data-lang="kap" class="lang-hidden">Ing bugas babawasan na ing konsentrasyun ning phosphorus at potassium</span></li>
+<li><span data-lang="en">Calamansi replaces patis perfectly</span><span data-lang="tl" class="lang-hidden">Perpektong kapalit ng patis ang calamansi</span><span data-lang="ceb" class="lang-hidden">Ang calamansi hingpit nga kapuli sa patis</span><span data-lang="kap" class="lang-hidden">Ing calamansi perpektung kapalit ning patis</span></li>
 </ul>
 </div>
 <div class="nutrient-bar">
@@ -2170,15 +2181,15 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <!-- ULAM -->
 <section class="section" id="ulam">
 <div class="section-tag">Ulam — Main Dishes</div>
-<h2>Main Dishes (Ulam)</h2>
+<h2><span data-lang="en">Main Dishes (Ulam)</span><span data-lang="tl" class="lang-hidden">Mga Pangunahing Putahe (Ulam)</span><span data-lang="ceb" class="lang-hidden">Mga Panguna nga Putahe (Ulam)</span><span data-lang="kap" class="lang-hidden">Reng Pangunang Putahe (Ulam)</span></h2>
 <div class="recipes-grid">
 <!-- INIHAW NA TILAPIA -->
 <div class="recipe-card">
 <div class="recipe-card-header">
 <div>
 <div class="recipe-tag-row"><span class="rtag rtag-both">Both</span></div>
-<h3>Inihaw na Tilapia</h3>
-<p class="tagline">Grilled tilapia with calamansi-garlic dip — no marinade needed</p>
+<h3><span data-lang="en">Inihaw na Tilapia</span><span data-lang="tl" class="lang-hidden">Inihaw na Tilapia</span><span data-lang="ceb" class="lang-hidden">Sinugbang Tilapia</span><span data-lang="kap" class="lang-hidden">Inihaw a Tilapia</span></h3>
+<p class="tagline"><span data-lang="en">Grilled tilapia with calamansi-garlic dip — no marinade needed</span><span data-lang="tl" class="lang-hidden">Inihaw na tilapia na may sawsawang calamansi-bawang — hindi na kailangan ng marinade</span><span data-lang="ceb" class="lang-hidden">Sinugbang tilapia nga adunay sarsa nga calamansi-bawang — dili na kinahanglan og marinade</span><span data-lang="kap" class="lang-hidden">Inihaw a tilapia a atin sawsawan a calamansi-bawang — ali na kailangan ing marinade</span></p>
 </div>
 </div>
 <div class="recipe-meta">
@@ -2189,26 +2200,26 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-body">
 <div class="recipe-section-title">Ingredients</div>
 <ul>
-<li>2 medium tilapia, whole (cleaned) or fillets</li>
-<li>4 calamansi, halved</li>
-<li>4 cloves garlic, minced</li>
-<li>1 tbsp canola oil</li>
-<li>Banana leaves or foil for grilling</li>
-<li>Pepper only — NO toyo, NO patis</li>
+<li><span data-lang="en">2 medium tilapia, whole (cleaned) or fillets</span><span data-lang="tl" class="lang-hidden">2 katamtamang tilapia, buo (nilinis) o fillet</span><span data-lang="ceb" class="lang-hidden">2 katamtamang tilapia, tibuok (gilimpyo) o fillet</span><span data-lang="kap" class="lang-hidden">2 katamtaman a tilapia, buu (linalinis) o fillet</span></li>
+<li><span data-lang="en">4 calamansi, halved</span><span data-lang="tl" class="lang-hidden">4 calamansi, hinati</span><span data-lang="ceb" class="lang-hidden">4 calamansi, gitunga</span><span data-lang="kap" class="lang-hidden">4 calamansi, kapitna</span></li>
+<li><span data-lang="en">4 cloves garlic, minced</span><span data-lang="tl" class="lang-hidden">4 butil bawang, tinadtad</span><span data-lang="ceb" class="lang-hidden">4 butil bawang, gitadtad</span><span data-lang="kap" class="lang-hidden">4 butil bawang, tinadtad</span></li>
+<li><span data-lang="en">1 tbsp canola oil</span><span data-lang="tl" class="lang-hidden">1 kutsara canola oil</span><span data-lang="ceb" class="lang-hidden">1 kutsara canola oil</span><span data-lang="kap" class="lang-hidden">1 kutsara canola oil</span></li>
+<li><span data-lang="en">Banana leaves or foil for grilling</span><span data-lang="tl" class="lang-hidden">Dahon ng saging o foil para sa pag-ihaw</span><span data-lang="ceb" class="lang-hidden">Dahon sa saging o foil para sa pagsugba</span><span data-lang="kap" class="lang-hidden">Dahun ning saging o foil para king pamanihaw</span></li>
+<li><span data-lang="en">Pepper only — NO toyo, NO patis</span><span data-lang="tl" class="lang-hidden">Paminta lamang — WALANG toyo, WALANG patis</span><span data-lang="ceb" class="lang-hidden">Paminta lamang — WALAY toyo, WALAY patis</span><span data-lang="kap" class="lang-hidden">Paminta mu — ALANG toyo, ALANG patis</span></li>
 </ul>
 <div class="recipe-section-title">Steps</div>
 <ol class="recipe-steps">
-<li>Score fish with 2–3 diagonal cuts on each side.</li>
-<li>Rub with pepper and a light brush of oil.</li>
-<li>Grill on banana leaves or foil over medium heat, 7 minutes per side.</li>
-<li>Mix minced garlic with calamansi juice for dipping sauce.</li>
-<li>Serve immediately with white rice and a simple vegetable side.</li>
+<li><span data-lang="en">Score fish with 2–3 diagonal cuts on each side.</span><span data-lang="tl" class="lang-hidden">Hiwaan ang isda ng 2–3 pahilis na hiwa sa bawat gilid.</span><span data-lang="ceb" class="lang-hidden">Hiwai ang isda og 2–3 diyagonal nga hiwa sa matag kilid.</span><span data-lang="kap" class="lang-hidden">Hiwan ing asan ning 2–3 pahilis a hiwa king balang gilid.</span></li>
+<li><span data-lang="en">Rub with pepper and a light brush of oil.</span><span data-lang="tl" class="lang-hidden">Kuskusin ng paminta at bahagyang pahiran ng mantika.</span><span data-lang="ceb" class="lang-hidden">Bantoki og paminta ug pahiri og gamay nga mantika.</span><span data-lang="kap" class="lang-hidden">Kuskusan ning paminta at kaunting pahiran ning mantika.</span></li>
+<li><span data-lang="en">Grill on banana leaves or foil over medium heat, 7 minutes per side.</span><span data-lang="tl" class="lang-hidden">Ihawin sa dahon ng saging o foil sa katamtamang init, 7 minuto bawat gilid.</span><span data-lang="ceb" class="lang-hidden">Sugbaha sa dahon sa saging o foil sa kasarangang kainit, 7 minuto matag kilid.</span><span data-lang="kap" class="lang-hidden">Ihawan king dahun ning saging o foil king katamtaman a lawut, 7 minutu balang gilid.</span></li>
+<li><span data-lang="en">Mix minced garlic with calamansi juice for dipping sauce.</span><span data-lang="tl" class="lang-hidden">Haluin ang tinadtad na bawang sa katas ng calamansi para sa sawsawan.</span><span data-lang="ceb" class="lang-hidden">Sagola ang gitadtad nga bawang sa duga sa calamansi para sa sarsa.</span><span data-lang="kap" class="lang-hidden">Haluan ing tinadtad a bawang king katas ning calamansi para king sawsawan.</span></li>
+<li><span data-lang="en">Serve immediately with white rice and a simple vegetable side.</span><span data-lang="tl" class="lang-hidden">Ihain agad kasama ang puting kanin at simpleng gulay.</span><span data-lang="ceb" class="lang-hidden">Isilbi dayon uban ang puting kan-on ug yano nga utan.</span><span data-lang="kap" class="lang-hidden">Ihain agad a kayabe ing maputing nasi at simpleng gulay.</span></li>
 </ol>
 <div class="recipe-section-title">Why it works</div>
 <ul>
-<li>Grilling requires no added sodium — natural flavor shines</li>
-<li>Tilapia has moderate protein and natural phosphorus only (well-absorbed but manageable)</li>
-<li>Avoid soy sauce-based marinades — 1 tbsp toyo = ~900 mg sodium</li>
+<li><span data-lang="en">Grilling requires no added sodium — natural flavor shines</span><span data-lang="tl" class="lang-hidden">Ang pag-ihaw ay hindi nangangailangan ng dagdag na sodium — lumalabas ang natural na lasa</span><span data-lang="ceb" class="lang-hidden">Ang pagsugba dili magkinahanglan og dugang nga sodium — mogawas ang natural nga lami</span><span data-lang="kap" class="lang-hidden">Ing pamanihaw ali kailangan dagdag a sodium — lulwal ing natural a lasa</span></li>
+<li><span data-lang="en">Tilapia has moderate protein and natural phosphorus only (well-absorbed but manageable)</span><span data-lang="tl" class="lang-hidden">Ang tilapia ay may katamtamang protina at natural na phosphorus lamang (mahusay na nasisipsip ngunit napamamahalaan)</span><span data-lang="ceb" class="lang-hidden">Ang tilapia adunay kasarangang protina ug natural nga phosphorus lamang (maayong masuyop apan madumala)</span><span data-lang="kap" class="lang-hidden">Ing tilapia atin katamtaman a protina at natural a phosphorus mu (mayap a masipsip pero adyang idumala)</span></li>
+<li><span data-lang="en">Avoid soy sauce-based marinades — 1 tbsp toyo = ~900 mg sodium</span><span data-lang="tl" class="lang-hidden">Iwasan ang mga marinade na batay sa toyo — 1 kutsara toyo = ~900 mg sodium</span><span data-lang="ceb" class="lang-hidden">Likayi ang mga marinade nga base sa toyo — 1 kutsara toyo = ~900 mg sodium</span><span data-lang="kap" class="lang-hidden">Iwasan ing marinade a base king toyo — 1 kutsara toyo = ~900 mg sodium</span></li>
 </ul>
 </div>
 <div class="nutrient-bar">
@@ -2223,8 +2234,8 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-card-header">
 <div>
 <div class="recipe-tag-row"><span class="rtag rtag-pre">Pre-Dialysis</span></div>
-<h3>Torta ng Itlog Puti at Sayote</h3>
-<p class="tagline">Egg white omelette with grated sayote — kidney-safe comfort food</p>
+<h3><span data-lang="en">Torta ng Itlog Puti at Sayote</span><span data-lang="tl" class="lang-hidden">Torta ng Itlog Puti at Sayote</span><span data-lang="ceb" class="lang-hidden">Torta sa Itlog Puti ug Sayote</span><span data-lang="kap" class="lang-hidden">Torta ning Itlug Puti at Sayote</span></h3>
+<p class="tagline"><span data-lang="en">Egg white omelette with grated sayote — kidney-safe comfort food</span><span data-lang="tl" class="lang-hidden">Omelette na puti ng itlog na may kinudkod na sayote — kidney-safe na comfort food</span><span data-lang="ceb" class="lang-hidden">Omelette sa puti sa itlog nga adunay giniling nga sayote — kidney-safe nga comfort food</span><span data-lang="kap" class="lang-hidden">Omelette a puti ning itlug a atin kinudkud a sayote — kidney-safe a comfort food</span></p>
 </div>
 </div>
 <div class="recipe-meta">
@@ -2235,27 +2246,27 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-body">
 <div class="recipe-section-title">Ingredients</div>
 <ul>
-<li>4 egg whites (no yolks)</li>
-<li>½ cup sayote, finely grated or diced small</li>
-<li>2 cloves garlic, minced</li>
-<li>2 tbsp sibuyas, minced</li>
-<li>1 tbsp canola oil</li>
-<li>Pepper to taste — NO salt</li>
+<li><span data-lang="en">4 egg whites (no yolks)</span><span data-lang="tl" class="lang-hidden">4 puti ng itlog (walang pula)</span><span data-lang="ceb" class="lang-hidden">4 puti sa itlog (walay pula)</span><span data-lang="kap" class="lang-hidden">4 puti ning itlug (alang pula)</span></li>
+<li><span data-lang="en">½ cup sayote, finely grated or diced small</span><span data-lang="tl" class="lang-hidden">½ tasa sayote, pinong kinudkod o hiniwang maliliit</span><span data-lang="ceb" class="lang-hidden">½ tasa sayote, pinong giniling o gihiwa og gagmay</span><span data-lang="kap" class="lang-hidden">½ tasa sayote, pinung kinudkud o hiniwang maliliit</span></li>
+<li><span data-lang="en">2 cloves garlic, minced</span><span data-lang="tl" class="lang-hidden">2 butil bawang, tinadtad</span><span data-lang="ceb" class="lang-hidden">2 butil bawang, gitadtad</span><span data-lang="kap" class="lang-hidden">2 butil bawang, tinadtad</span></li>
+<li><span data-lang="en">2 tbsp sibuyas, minced</span><span data-lang="tl" class="lang-hidden">2 kutsara sibuyas, tinadtad</span><span data-lang="ceb" class="lang-hidden">2 kutsara sibuyas, gitadtad</span><span data-lang="kap" class="lang-hidden">2 kutsara sibuyas, tinadtad</span></li>
+<li><span data-lang="en">1 tbsp canola oil</span><span data-lang="tl" class="lang-hidden">1 kutsara canola oil</span><span data-lang="ceb" class="lang-hidden">1 kutsara canola oil</span><span data-lang="kap" class="lang-hidden">1 kutsara canola oil</span></li>
+<li><span data-lang="en">Pepper to taste — NO salt</span><span data-lang="tl" class="lang-hidden">Paminta ayon sa panlasa — WALANG asin</span><span data-lang="ceb" class="lang-hidden">Paminta sumala sa lami — WALAY asin</span><span data-lang="kap" class="lang-hidden">Paminta agpang king lasa — ALANG asin</span></li>
 </ul>
 <div class="recipe-section-title">Steps</div>
 <ol class="recipe-steps">
-<li>Beat egg whites until slightly frothy. Add pepper.</li>
-<li>Sauté garlic and onion in oil until soft.</li>
-<li>Add grated sayote, cook 3 minutes, stirring.</li>
-<li>Pour egg whites over vegetables. Do not stir.</li>
-<li>Cook on medium-low until bottom is set (3 min), then flip carefully.</li>
-<li>Cook 2 more minutes. Serve with white rice and calamansi.</li>
+<li><span data-lang="en">Beat egg whites until slightly frothy. Add pepper.</span><span data-lang="tl" class="lang-hidden">Batihin ang puti ng itlog hanggang bahagyang mabula. Dagdagan ng paminta.</span><span data-lang="ceb" class="lang-hidden">Batiha ang puti sa itlog hangtod gamayng mabula. Dugangi og paminta.</span><span data-lang="kap" class="lang-hidden">Batihan ing puti ning itlug angga king kaunting mabula. Dagdagan ning paminta.</span></li>
+<li><span data-lang="en">Sauté garlic and onion in oil until soft.</span><span data-lang="tl" class="lang-hidden">I-sauté ang bawang at sibuyas sa mantika hanggang lumambot.</span><span data-lang="ceb" class="lang-hidden">I-sauté ang bawang ug sibuyas sa mantika hangtod mohumok.</span><span data-lang="kap" class="lang-hidden">I-sauté ing bawang at sibuyas king mantika angga king lumambut.</span></li>
+<li><span data-lang="en">Add grated sayote, cook 3 minutes, stirring.</span><span data-lang="tl" class="lang-hidden">Idagdag ang kinudkod na sayote, lutuin ng 3 minuto habang hinahalo.</span><span data-lang="ceb" class="lang-hidden">Idugang ang giniling nga sayote, lutoa og 3 minuto samtang gikutaw.</span><span data-lang="kap" class="lang-hidden">Idagdag ing kinudkud a sayote, lutuan ning 3 minutu habang kukutawan.</span></li>
+<li><span data-lang="en">Pour egg whites over vegetables. Do not stir.</span><span data-lang="tl" class="lang-hidden">Ibuhos ang puti ng itlog sa ibabaw ng gulay. Huwag haluin.</span><span data-lang="ceb" class="lang-hidden">Ibubo ang puti sa itlog sa ibabaw sa utan. Ayaw kutawa.</span><span data-lang="kap" class="lang-hidden">Ibuldak ing puti ning itlug king babo ning gulay. Eka kutawan.</span></li>
+<li><span data-lang="en">Cook on medium-low until bottom is set (3 min), then flip carefully.</span><span data-lang="tl" class="lang-hidden">Lutuin sa katamtaman-hina hanggang mag-set ang ilalim (3 min), pagkatapos baligtarin nang maingat.</span><span data-lang="ceb" class="lang-hidden">Lutoa sa medium-low hangtod mo-set ang ilawom (3 min), dayon balihon og amping.</span><span data-lang="kap" class="lang-hidden">Lutuan king katamtaman-mayna angga king mag-set ing ilalam (3 min), kaibat baligtaran nang maingat.</span></li>
+<li><span data-lang="en">Cook 2 more minutes. Serve with white rice and calamansi.</span><span data-lang="tl" class="lang-hidden">Lutuin pa ng 2 minuto. Ihain kasama ang puting kanin at calamansi.</span><span data-lang="ceb" class="lang-hidden">Lutoa pa og 2 minuto. Isilbi uban ang puting kan-on ug calamansi.</span><span data-lang="kap" class="lang-hidden">Lutuan pa ning 2 minutu. Ihain a kayabe ing maputing nasi at calamansi.</span></li>
 </ol>
 <div class="recipe-section-title">Why it works</div>
 <ul>
-<li>Egg whites = near-zero phosphorus (yolk removed) + complete protein</li>
-<li>Sayote = lowest-potassium vegetable available in the Philippines</li>
-<li>Inexpensive, filling, and quick to prepare</li>
+<li><span data-lang="en">Egg whites = near-zero phosphorus (yolk removed) + complete protein</span><span data-lang="tl" class="lang-hidden">Puti ng itlog = halos-zero na phosphorus (tinanggal ang pula) + kumpletong protina</span><span data-lang="ceb" class="lang-hidden">Puti sa itlog = hapit-zero nga phosphorus (gikuha ang pula) + kompleto nga protina</span><span data-lang="kap" class="lang-hidden">Puti ning itlug = halos-zero a phosphorus (inalis ing pula) + kumpletung protina</span></li>
+<li><span data-lang="en">Sayote = lowest-potassium vegetable available in the Philippines</span><span data-lang="tl" class="lang-hidden">Sayote = pinakamababang-potassium na gulay na makukuha sa Pilipinas</span><span data-lang="ceb" class="lang-hidden">Sayote = pinakaubos-potassium nga utan nga makuha sa Pilipinas</span><span data-lang="kap" class="lang-hidden">Sayote = pekapababang-potassium a gulay a akakua king Pilipinas</span></li>
+<li><span data-lang="en">Inexpensive, filling, and quick to prepare</span><span data-lang="tl" class="lang-hidden">Mura, nakakabusog, at madaling ihanda</span><span data-lang="ceb" class="lang-hidden">Barato, makabusog, ug paspas iandam</span><span data-lang="kap" class="lang-hidden">Mura, makabsi, at malagwang iandam</span></li>
 </ul>
 </div>
 <div class="nutrient-bar">
@@ -2270,8 +2281,8 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-card-header">
 <div>
 <div class="recipe-tag-row"><span class="rtag rtag-hd">Dialysis</span></div>
-<h3>Steamed Chicken with Ginger-Calamansi Sauce</h3>
-<p class="tagline">High-protein steamed chicken — HD patients need 1.0–1.4 g/kg protein daily</p>
+<h3><span data-lang="en">Steamed Chicken with Ginger-Calamansi Sauce</span><span data-lang="tl" class="lang-hidden">Pinasingawang Manok na may Sawsawang Luya-Calamansi</span><span data-lang="ceb" class="lang-hidden">Gipasingaw nga Manok nga adunay Sarsa nga Luya-Calamansi</span><span data-lang="kap" class="lang-hidden">Pinasingawan a Manuk a atin Sawsawan a Luya-Calamansi</span></h3>
+<p class="tagline"><span data-lang="en">High-protein steamed chicken — HD patients need 1.0–1.4 g/kg protein daily</span><span data-lang="tl" class="lang-hidden">Mataas sa protina na pinasingawang manok — kailangan ng mga pasyenteng HD ng 1.0–1.4 g/kg protina araw-araw</span><span data-lang="ceb" class="lang-hidden">Taas sa protina nga gipasingaw nga manok — ang mga pasyenteng HD nagkinahanglan og 1.0–1.4 g/kg protina kada adlaw</span><span data-lang="kap" class="lang-hidden">Matas king protina a pinasingawan a manuk — reng pasyenteng HD kailangan da ing 1.0–1.4 g/kg protina aldo-aldo</span></p>
 </div>
 </div>
 <div class="recipe-meta">
@@ -2282,27 +2293,27 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-body">
 <div class="recipe-section-title">Ingredients</div>
 <ul>
-<li>300 g chicken breast or thigh (skin removed)</li>
-<li>1 thumb luya (ginger), sliced thin</li>
-<li>3 stalks tanglad (lemongrass), bruised</li>
-<li>Juice of 5 calamansi</li>
-<li>2 cloves garlic, minced (for sauce)</li>
-<li>1 tsp sesame oil (for sauce only — not cooking)</li>
-<li>Pepper to taste</li>
+<li><span data-lang="en">300 g chicken breast or thigh (skin removed)</span><span data-lang="tl" class="lang-hidden">300 g dibdib o hita ng manok (tinanggal ang balat)</span><span data-lang="ceb" class="lang-hidden">300 g dughan o paa sa manok (gikuha ang panit)</span><span data-lang="kap" class="lang-hidden">300 g dibdib o hita ning manuk (inalis ing balat)</span></li>
+<li><span data-lang="en">1 thumb luya (ginger), sliced thin</span><span data-lang="tl" class="lang-hidden">1 hinlalaki luya (ginger), hiniwang manipis</span><span data-lang="ceb" class="lang-hidden">1 kumagko nga luya (ginger), gihiwa nga nipis</span><span data-lang="kap" class="lang-hidden">1 hinlalaki a luya (ginger), hiniwang manipis</span></li>
+<li><span data-lang="en">3 stalks tanglad (lemongrass), bruised</span><span data-lang="tl" class="lang-hidden">3 tangkay tanglad (lemongrass), binayo nang bahagya</span><span data-lang="ceb" class="lang-hidden">3 tangkay tanglad (lemongrass), gidugmok og gamay</span><span data-lang="kap" class="lang-hidden">3 tangkay tanglad (lemongrass), binayung kaunti</span></li>
+<li><span data-lang="en">Juice of 5 calamansi</span><span data-lang="tl" class="lang-hidden">Katas ng 5 calamansi</span><span data-lang="ceb" class="lang-hidden">Duga sa 5 calamansi</span><span data-lang="kap" class="lang-hidden">Katas ning 5 calamansi</span></li>
+<li><span data-lang="en">2 cloves garlic, minced (for sauce)</span><span data-lang="tl" class="lang-hidden">2 butil bawang, tinadtad (para sa sawsawan)</span><span data-lang="ceb" class="lang-hidden">2 butil bawang, gitadtad (para sa sarsa)</span><span data-lang="kap" class="lang-hidden">2 butil bawang, tinadtad (para king sawsawan)</span></li>
+<li><span data-lang="en">1 tsp sesame oil (for sauce only — not cooking)</span><span data-lang="tl" class="lang-hidden">1 kutsarita sesame oil (para sa sawsawan lamang — hindi pangluto)</span><span data-lang="ceb" class="lang-hidden">1 kutsarita sesame oil (para sa sarsa lamang — dili pangluto)</span><span data-lang="kap" class="lang-hidden">1 kutsarita sesame oil (para king sawsawan mu — ali pangluto)</span></li>
+<li><span data-lang="en">Pepper to taste</span><span data-lang="tl" class="lang-hidden">Paminta ayon sa panlasa</span><span data-lang="ceb" class="lang-hidden">Paminta sumala sa lami</span><span data-lang="kap" class="lang-hidden">Paminta agpang king lasa</span></li>
 </ul>
 <div class="recipe-section-title">Steps</div>
 <ol class="recipe-steps">
-<li>Place chicken pieces on a steaming rack over boiling water.</li>
-<li>Top with ginger slices and lemongrass stalks.</li>
-<li>Cover and steam 20–25 minutes until fully cooked through.</li>
-<li>Mix calamansi juice, minced garlic, sesame oil, and pepper for dipping sauce.</li>
-<li>Slice chicken, serve with sauce alongside white rice.</li>
+<li><span data-lang="en">Place chicken pieces on a steaming rack over boiling water.</span><span data-lang="tl" class="lang-hidden">Ilagay ang mga piraso ng manok sa steaming rack sa ibabaw ng kumukulong tubig.</span><span data-lang="ceb" class="lang-hidden">Ibutang ang mga piraso sa manok sa steaming rack sa ibabaw sa nagbukal nga tubig.</span><span data-lang="kap" class="lang-hidden">Ibili ing mga piraso ning manuk king steaming rack king babo ning kumukulung danum.</span></li>
+<li><span data-lang="en">Top with ginger slices and lemongrass stalks.</span><span data-lang="tl" class="lang-hidden">Lagyan sa ibabaw ng hiniwang luya at tangkay ng tanglad.</span><span data-lang="ceb" class="lang-hidden">Butangi sa ibabaw og hiniwa nga luya ug tangkay sa tanglad.</span><span data-lang="kap" class="lang-hidden">Bili king babo ing hiniwang luya at tangkay ning tanglad.</span></li>
+<li><span data-lang="en">Cover and steam 20–25 minutes until fully cooked through.</span><span data-lang="tl" class="lang-hidden">Takpan at pasingawan ng 20–25 minuto hanggang lubos na maluto.</span><span data-lang="ceb" class="lang-hidden">Taboni ug pasingawa og 20–25 minuto hangtod hingpit nga maluto.</span><span data-lang="kap" class="lang-hidden">Takpan at pasingawan ning 20–25 minutu angga king lubus a maluto.</span></li>
+<li><span data-lang="en">Mix calamansi juice, minced garlic, sesame oil, and pepper for dipping sauce.</span><span data-lang="tl" class="lang-hidden">Haluin ang katas ng calamansi, tinadtad na bawang, sesame oil, at paminta para sa sawsawan.</span><span data-lang="ceb" class="lang-hidden">Sagola ang duga sa calamansi, gitadtad nga bawang, sesame oil, ug paminta para sa sarsa.</span><span data-lang="kap" class="lang-hidden">Haluan ing katas ning calamansi, tinadtad a bawang, sesame oil, at paminta para king sawsawan.</span></li>
+<li><span data-lang="en">Slice chicken, serve with sauce alongside white rice.</span><span data-lang="tl" class="lang-hidden">Hiwain ang manok, ihain kasama ang sawsawan at puting kanin.</span><span data-lang="ceb" class="lang-hidden">Hiwaa ang manok, isilbi uban ang sarsa ug puting kan-on.</span><span data-lang="kap" class="lang-hidden">Hiwan ing manuk, ihain a kayabe ing sawsawan at maputing nasi.</span></li>
 </ol>
 <div class="recipe-section-title">Why it works</div>
 <ul>
-<li>Steaming preserves protein without adding sodium</li>
-<li>Lemongrass and ginger provide complex flavor with zero sodium</li>
-<li>Large portions appropriate for HD protein requirements</li>
+<li><span data-lang="en">Steaming preserves protein without adding sodium</span><span data-lang="tl" class="lang-hidden">Ang pagpapasingaw ay nagpapanatili ng protina nang walang dagdag na sodium</span><span data-lang="ceb" class="lang-hidden">Ang pagpasingaw nagtipig sa protina nga walay dugang nga sodium</span><span data-lang="kap" class="lang-hidden">Ing pamaningaw pananatilian na ing protina a alang dagdag a sodium</span></li>
+<li><span data-lang="en">Lemongrass and ginger provide complex flavor with zero sodium</span><span data-lang="tl" class="lang-hidden">Ang tanglad at luya ay nagbibigay ng masalimuot na lasa nang walang sodium</span><span data-lang="ceb" class="lang-hidden">Ang tanglad ug luya naghatag og komplikadong lami nga walay sodium</span><span data-lang="kap" class="lang-hidden">Ing tanglad at luya bibie lang masalimuut a lasa a alang sodium</span></li>
+<li><span data-lang="en">Large portions appropriate for HD protein requirements</span><span data-lang="tl" class="lang-hidden">Malalaking bahagi na angkop sa pangangailangan ng protina para sa HD</span><span data-lang="ceb" class="lang-hidden">Dagko nga bahin nga angay sa gikinahanglang protina alang sa HD</span><span data-lang="kap" class="lang-hidden">Malalaking bahagi a angkop king kailangan a protina para king HD</span></li>
 </ul>
 </div>
 <div class="nutrient-bar">
@@ -2317,8 +2328,8 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-card-header">
 <div>
 <div class="recipe-tag-row"><span class="rtag rtag-both">Both</span></div>
-<h3>Paksiw na Isda (Low-Sodium)</h3>
-<p class="tagline">Vinegar-braised fish — using cane vinegar replaces all the patis</p>
+<h3><span data-lang="en">Paksiw na Isda (Low-Sodium)</span><span data-lang="tl" class="lang-hidden">Paksiw na Isda (Low-Sodium)</span><span data-lang="ceb" class="lang-hidden">Paksiw nga Isda (Low-Sodium)</span><span data-lang="kap" class="lang-hidden">Paksiw a Asan (Low-Sodium)</span></h3>
+<p class="tagline"><span data-lang="en">Vinegar-braised fish — using cane vinegar replaces all the patis</span><span data-lang="tl" class="lang-hidden">Isdang nilaga sa suka — ang tubong suka (cane vinegar) ang pumapalit sa lahat ng patis</span><span data-lang="ceb" class="lang-hidden">Isda nga giluto sa suka — ang suka sa tubo (cane vinegar) mopuli sa tanang patis</span><span data-lang="kap" class="lang-hidden">Asan a niluto king suka — ing sukang tubu (cane vinegar) ing kapalit ning eganaganang patis</span></p>
 </div>
 </div>
 <div class="recipe-meta">
@@ -2329,28 +2340,28 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-body">
 <div class="recipe-section-title">Ingredients</div>
 <ul>
-<li>300 g galunggong or bangus, cut into pieces</li>
-<li>3 tbsp suka (cane vinegar or white vinegar)</li>
-<li>½ cup water</li>
-<li>4 cloves garlic, crushed</li>
-<li>1 thumb ginger, sliced</li>
-<li>½ tsp whole black pepper</li>
-<li>2 pcs siling haba (finger chili) — optional</li>
-<li>NO patis, NO toyo, NO salt</li>
+<li><span data-lang="en">300 g galunggong or bangus, cut into pieces</span><span data-lang="tl" class="lang-hidden">300 g galunggong o bangus, hiniwa sa mga piraso</span><span data-lang="ceb" class="lang-hidden">300 g galunggong o bangus, giputol sa mga piraso</span><span data-lang="kap" class="lang-hidden">300 g galunggong o bangus, hiniwa king mga piraso</span></li>
+<li><span data-lang="en">3 tbsp suka (cane vinegar or white vinegar)</span><span data-lang="tl" class="lang-hidden">3 kutsara suka (tubong suka o puting suka)</span><span data-lang="ceb" class="lang-hidden">3 kutsara suka (suka sa tubo o puting suka)</span><span data-lang="kap" class="lang-hidden">3 kutsara suka (sukang tubu o maputing suka)</span></li>
+<li><span data-lang="en">½ cup water</span><span data-lang="tl" class="lang-hidden">½ tasa tubig</span><span data-lang="ceb" class="lang-hidden">½ tasa tubig</span><span data-lang="kap" class="lang-hidden">½ tasa danum</span></li>
+<li><span data-lang="en">4 cloves garlic, crushed</span><span data-lang="tl" class="lang-hidden">4 butil bawang, dinurog</span><span data-lang="ceb" class="lang-hidden">4 butil bawang, gidugmok</span><span data-lang="kap" class="lang-hidden">4 butil bawang, dinurug</span></li>
+<li><span data-lang="en">1 thumb ginger, sliced</span><span data-lang="tl" class="lang-hidden">1 hinlalaki luya, hiniwa</span><span data-lang="ceb" class="lang-hidden">1 kumagko nga luya, gihiwa</span><span data-lang="kap" class="lang-hidden">1 hinlalaki a luya, hiniwa</span></li>
+<li><span data-lang="en">½ tsp whole black pepper</span><span data-lang="tl" class="lang-hidden">½ kutsarita buong paminta</span><span data-lang="ceb" class="lang-hidden">½ kutsarita tibuok nga paminta</span><span data-lang="kap" class="lang-hidden">½ kutsarita buung paminta</span></li>
+<li><span data-lang="en">2 pcs siling haba (finger chili) — optional</span><span data-lang="tl" class="lang-hidden">2 pirasong siling haba (finger chili) — opsyonal</span><span data-lang="ceb" class="lang-hidden">2 ka buok siling haba (finger chili) — opsyonal</span><span data-lang="kap" class="lang-hidden">2 pirasung siling haba (finger chili) — opsyonal</span></li>
+<li><span data-lang="en">NO patis, NO toyo, NO salt</span><span data-lang="tl" class="lang-hidden">WALANG patis, WALANG toyo, WALANG asin</span><span data-lang="ceb" class="lang-hidden">WALAY patis, WALAY toyo, WALAY asin</span><span data-lang="kap" class="lang-hidden">ALANG patis, ALANG toyo, ALANG asin</span></li>
 </ul>
 <div class="recipe-section-title">Steps</div>
 <ol class="recipe-steps">
-<li>Arrange fish in a shallow pan.</li>
-<li>Add vinegar, water, garlic, ginger, pepper, and chili.</li>
-<li>Bring to a boil uncovered for 5 minutes (to cook off vinegar sharpness).</li>
-<li>Cover, reduce heat, simmer 15 minutes.</li>
-<li>Serve with white rice. The natural fish flavor and vinegar provide all the taste needed.</li>
+<li><span data-lang="en">Arrange fish in a shallow pan.</span><span data-lang="tl" class="lang-hidden">Ayusin ang isda sa mababaw na kawali.</span><span data-lang="ceb" class="lang-hidden">Ihan-ay ang isda sa mabaw nga kaha.</span><span data-lang="kap" class="lang-hidden">Ayusan ing asan king mababo a kawali.</span></li>
+<li><span data-lang="en">Add vinegar, water, garlic, ginger, pepper, and chili.</span><span data-lang="tl" class="lang-hidden">Idagdag ang suka, tubig, bawang, luya, paminta, at sili.</span><span data-lang="ceb" class="lang-hidden">Idugang ang suka, tubig, bawang, luya, paminta, ug sili.</span><span data-lang="kap" class="lang-hidden">Idagdag ing suka, danum, bawang, luya, paminta, at sili.</span></li>
+<li><span data-lang="en">Bring to a boil uncovered for 5 minutes (to cook off vinegar sharpness).</span><span data-lang="tl" class="lang-hidden">Pakuluan nang walang takip ng 5 minuto (upang mawala ang anghang ng suka).</span><span data-lang="ceb" class="lang-hidden">Pakuloa nga walay taklob og 5 minuto (aron mawala ang kaaslom sa suka).</span><span data-lang="kap" class="lang-hidden">Pakuluan a alang takip ning 5 minutu (bang mawala ing anghang ning suka).</span></li>
+<li><span data-lang="en">Cover, reduce heat, simmer 15 minutes.</span><span data-lang="tl" class="lang-hidden">Takpan, hinaan ang apoy, pakuluan nang dahan-dahan ng 15 minuto.</span><span data-lang="ceb" class="lang-hidden">Taboni, hinaya ang kalayo, pakuloa og hinay 15 minuto.</span><span data-lang="kap" class="lang-hidden">Takpan, paynan ing api, pakuluan nang mayna ning 15 minutu.</span></li>
+<li><span data-lang="en">Serve with white rice. The natural fish flavor and vinegar provide all the taste needed.</span><span data-lang="tl" class="lang-hidden">Ihain kasama ang puting kanin. Ang natural na lasa ng isda at suka ang nagbibigay ng lahat ng lasang kailangan.</span><span data-lang="ceb" class="lang-hidden">Isilbi uban ang puting kan-on. Ang natural nga lami sa isda ug suka mohatag sa tanang lami nga gikinahanglan.</span><span data-lang="kap" class="lang-hidden">Ihain a kayabe ing maputing nasi. Ing natural a lasa ning asan at suka ing bibie king eganaganang lasa a kailangan.</span></li>
 </ol>
 <div class="recipe-section-title">Why it works</div>
 <ul>
-<li>Vinegar = zero sodium natural preservative and flavor agent</li>
-<li>Traditional paksiw uses patis — this version has &lt;100 mg sodium</li>
-<li>Galunggong = budget-friendly, lower phosphorus than canned sardines</li>
+<li><span data-lang="en">Vinegar = zero sodium natural preservative and flavor agent</span><span data-lang="tl" class="lang-hidden">Suka = zero sodium na natural na preserbatibo at pampalasa</span><span data-lang="ceb" class="lang-hidden">Suka = zero sodium nga natural nga preserbatibo ug pangpalami</span><span data-lang="kap" class="lang-hidden">Suka = zero sodium a natural a preserbatibu at pampalasa</span></li>
+<li><span data-lang="en">Traditional paksiw uses patis — this version has &lt;100 mg sodium</span><span data-lang="tl" class="lang-hidden">Ang tradisyonal na paksiw ay gumagamit ng patis — ang bersyong ito ay may &lt;100 mg sodium</span><span data-lang="ceb" class="lang-hidden">Ang tradisyonal nga paksiw naggamit og patis — kini nga bersyon adunay &lt;100 mg sodium</span><span data-lang="kap" class="lang-hidden">Ing tradisyunal a paksiw gagamit yang patis — ing bersyun a ini atin &lt;100 mg sodium</span></li>
+<li><span data-lang="en">Galunggong = budget-friendly, lower phosphorus than canned sardines</span><span data-lang="tl" class="lang-hidden">Galunggong = abot-kaya, mas mababa ang phosphorus kaysa de-latang sardinas</span><span data-lang="ceb" class="lang-hidden">Galunggong = barato, mas ubos ang phosphorus kaysa de-lata nga sardinas</span><span data-lang="kap" class="lang-hidden">Galunggong = abot-kaya, mas mababa ing phosphorus kesa king de-latang sardinas</span></li>
 </ul>
 </div>
 <div class="nutrient-bar">
@@ -2365,16 +2376,16 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <!-- GULAY -->
 <section class="section" id="gulay">
 <div class="section-tag">Gulay — Vegetables</div>
-<h2>Vegetable Dishes</h2>
-<p>All vegetables in these recipes have been leached (boiled and drained) or selected for naturally low potassium content. Never use the boiling water as soup base.</p>
+<h2><span data-lang="en">Vegetable Dishes</span><span data-lang="tl" class="lang-hidden">Mga Putaheng Gulay</span><span data-lang="ceb" class="lang-hidden">Mga Putahe nga Utanon</span><span data-lang="kap" class="lang-hidden">Reng Putaheng Gulay</span></h2>
+<p><span data-lang="en">All vegetables in these recipes have been leached (boiled and drained) or selected for naturally low potassium content. Never use the boiling water as soup base.</span><span data-lang="tl" class="lang-hidden">Lahat ng gulay sa mga recipe na ito ay na-leach (pinakuluan at sinala) o pinili dahil natural na mababa ang potassium. Huwag kailanman gamitin ang tubig na pinagkuluan bilang base ng sabaw.</span><span data-lang="ceb" class="lang-hidden">Ang tanang utan sa kini nga mga recipe gi-leach (gipabukal ug gisala) o gipili tungod natural nga ubos ang potassium. Ayaw gayod gamita ang tubig nga gipabukal isip base sa sabaw.</span><span data-lang="kap" class="lang-hidden">Eganaganang gulay king mga recipe a ini na-leach (pinakuluan at sinala) o pinili uli natural a mababa ing potassium. Eka gagamit kapilan man king danum a pinagkuluan bilang base ning sabaw.</span></p>
 <div class="recipes-grid">
 <!-- GINISANG SAYOTE -->
 <div class="recipe-card">
 <div class="recipe-card-header">
 <div>
 <div class="recipe-tag-row"><span class="rtag rtag-both">Both</span></div>
-<h3>Ginisang Sayote at Sitaw</h3>
-<p class="tagline">Sautéed chayote and string beans — the kidney patient's everyday gulay</p>
+<h3><span data-lang="en">Ginisang Sayote at Sitaw</span><span data-lang="tl" class="lang-hidden">Ginisang Sayote at Sitaw</span><span data-lang="ceb" class="lang-hidden">Gisang Sayote ug Sitaw</span><span data-lang="kap" class="lang-hidden">Ginisang Sayote at Sitaw</span></h3>
+<p class="tagline"><span data-lang="en">Sautéed chayote and string beans — the kidney patient's everyday gulay</span><span data-lang="tl" class="lang-hidden">Ginisang sayote at sitaw — ang pang-araw-araw na gulay ng pasyenteng may sakit sa bato</span><span data-lang="ceb" class="lang-hidden">Gisang sayote ug sitaw — ang inadlaw nga utan sa pasyenteng adunay sakit sa kidney</span><span data-lang="kap" class="lang-hidden">Ginisang sayote at sitaw — ing aldo-aldo a gulay ning pasyenteng atin sakit king batu</span></p>
 </div>
 </div>
 <div class="recipe-meta">
@@ -2385,21 +2396,21 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-body">
 <div class="recipe-section-title">Ingredients</div>
 <ul>
-<li>2 medium sayote, peeled and sliced thin</li>
-<li>1 cup sitaw, cut into 2-inch pieces</li>
-<li>100 g chicken breast, thinly sliced (optional — adds protein for HD)</li>
-<li>3 cloves garlic, minced</li>
-<li>1 sibuyas, sliced</li>
-<li>1 tbsp canola oil</li>
-<li>Pepper — NO patis or salt</li>
+<li><span data-lang="en">2 medium sayote, peeled and sliced thin</span><span data-lang="tl" class="lang-hidden">2 katamtamang sayote, binalatan at hiniwang manipis</span><span data-lang="ceb" class="lang-hidden">2 katamtamang sayote, gibalatan ug gihiwa nga nipis</span><span data-lang="kap" class="lang-hidden">2 katamtaman a sayote, binalatan at hiniwang manipis</span></li>
+<li><span data-lang="en">1 cup sitaw, cut into 2-inch pieces</span><span data-lang="tl" class="lang-hidden">1 tasa sitaw, hiniwa sa 2-pulgadang piraso</span><span data-lang="ceb" class="lang-hidden">1 tasa sitaw, giputol sa 2-pulgada nga piraso</span><span data-lang="kap" class="lang-hidden">1 tasa sitaw, hiniwa king 2-pulgadang piraso</span></li>
+<li><span data-lang="en">100 g chicken breast, thinly sliced (optional — adds protein for HD)</span><span data-lang="tl" class="lang-hidden">100 g dibdib ng manok, hiniwang manipis (opsyonal — nagdaragdag ng protina para sa HD)</span><span data-lang="ceb" class="lang-hidden">100 g dughan sa manok, gihiwa nga nipis (opsyonal — magdugang og protina alang sa HD)</span><span data-lang="kap" class="lang-hidden">100 g dibdib ning manuk, hiniwang manipis (opsyonal — magdagdag protina para king HD)</span></li>
+<li><span data-lang="en">3 cloves garlic, minced</span><span data-lang="tl" class="lang-hidden">3 butil bawang, tinadtad</span><span data-lang="ceb" class="lang-hidden">3 butil bawang, gitadtad</span><span data-lang="kap" class="lang-hidden">3 butil bawang, tinadtad</span></li>
+<li><span data-lang="en">1 sibuyas, sliced</span><span data-lang="tl" class="lang-hidden">1 sibuyas, hiniwa</span><span data-lang="ceb" class="lang-hidden">1 sibuyas, gihiwa</span><span data-lang="kap" class="lang-hidden">1 sibuyas, hiniwa</span></li>
+<li><span data-lang="en">1 tbsp canola oil</span><span data-lang="tl" class="lang-hidden">1 kutsara canola oil</span><span data-lang="ceb" class="lang-hidden">1 kutsara canola oil</span><span data-lang="kap" class="lang-hidden">1 kutsara canola oil</span></li>
+<li><span data-lang="en">Pepper — NO patis or salt</span><span data-lang="tl" class="lang-hidden">Paminta — WALANG patis o asin</span><span data-lang="ceb" class="lang-hidden">Paminta — WALAY patis o asin</span><span data-lang="kap" class="lang-hidden">Paminta — ALANG patis o asin</span></li>
 </ul>
 <div class="recipe-section-title">Steps</div>
 <ol class="recipe-steps">
-<li>Sauté garlic and onion in oil until soft.</li>
-<li>Add chicken (if using), cook until white all around.</li>
-<li>Add sayote and sitaw, toss to coat in oil.</li>
-<li>Add 2–3 tbsp water, cover, steam-sauté 8 minutes.</li>
-<li>Uncover, toss, season with pepper. Serve.</li>
+<li><span data-lang="en">Sauté garlic and onion in oil until soft.</span><span data-lang="tl" class="lang-hidden">I-sauté ang bawang at sibuyas sa mantika hanggang lumambot.</span><span data-lang="ceb" class="lang-hidden">I-sauté ang bawang ug sibuyas sa mantika hangtod mohumok.</span><span data-lang="kap" class="lang-hidden">I-sauté ing bawang at sibuyas king mantika angga king lumambut.</span></li>
+<li><span data-lang="en">Add chicken (if using), cook until white all around.</span><span data-lang="tl" class="lang-hidden">Idagdag ang manok (kung gagamit), lutuin hanggang pumuti sa lahat ng bahagi.</span><span data-lang="ceb" class="lang-hidden">Idugang ang manok (kung mogamit), lutoa hangtod moputi sa tanang bahin.</span><span data-lang="kap" class="lang-hidden">Idagdag ing manuk (nung gagamit), lutuan angga king pumuti king eganaganang bahagi.</span></li>
+<li><span data-lang="en">Add sayote and sitaw, toss to coat in oil.</span><span data-lang="tl" class="lang-hidden">Idagdag ang sayote at sitaw, haluin upang mabalot sa mantika.</span><span data-lang="ceb" class="lang-hidden">Idugang ang sayote ug sitaw, kutawa aron mabuligan sa mantika.</span><span data-lang="kap" class="lang-hidden">Idagdag ing sayote at sitaw, haluan bang mabalut king mantika.</span></li>
+<li><span data-lang="en">Add 2–3 tbsp water, cover, steam-sauté 8 minutes.</span><span data-lang="tl" class="lang-hidden">Idagdag ang 2–3 kutsarang tubig, takpan, i-steam-sauté ng 8 minuto.</span><span data-lang="ceb" class="lang-hidden">Idugang ang 2–3 kutsara tubig, taboni, i-steam-sauté og 8 minuto.</span><span data-lang="kap" class="lang-hidden">Idagdag ing 2–3 kutsarang danum, takpan, i-steam-sauté ning 8 minutu.</span></li>
+<li><span data-lang="en">Uncover, toss, season with pepper. Serve.</span><span data-lang="tl" class="lang-hidden">Alisin ang takip, haluin, timplahan ng paminta. Ihain.</span><span data-lang="ceb" class="lang-hidden">Kuhaa ang taklob, kutawa, timplahi og paminta. Isilbi.</span><span data-lang="kap" class="lang-hidden">Alisan ing takip, haluan, timplan ning paminta. Ihain.</span></li>
 </ol>
 </div>
 <div class="nutrient-bar">
@@ -2414,8 +2425,8 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-card-header">
 <div>
 <div class="recipe-tag-row"><span class="rtag rtag-both">Both</span></div>
-<h3>Ginisang Repolyo</h3>
-<p class="tagline">Sautéed cabbage — one of the safest, most affordable kidney-friendly vegetables</p>
+<h3><span data-lang="en">Ginisang Repolyo</span><span data-lang="tl" class="lang-hidden">Ginisang Repolyo</span><span data-lang="ceb" class="lang-hidden">Gisang Repolyo</span><span data-lang="kap" class="lang-hidden">Ginisang Repolyo</span></h3>
+<p class="tagline"><span data-lang="en">Sautéed cabbage — one of the safest, most affordable kidney-friendly vegetables</span><span data-lang="tl" class="lang-hidden">Ginisang repolyo — isa sa pinakaligtas at pinakamurang gulay na kidney-friendly</span><span data-lang="ceb" class="lang-hidden">Gisang repolyo — usa sa pinakaluwas ug pinakabaratong utan nga kidney-friendly</span><span data-lang="kap" class="lang-hidden">Ginisang repolyo — metung king pekaligtas at pekamurang gulay a kidney-friendly</span></p>
 </div>
 </div>
 <div class="recipe-meta">
@@ -2426,21 +2437,21 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-body">
 <div class="recipe-section-title">Ingredients</div>
 <ul>
-<li>½ head repolyo (cabbage), thinly sliced</li>
-<li>3 cloves garlic, minced</li>
-<li>1 sibuyas, sliced</li>
-<li>1 medium tomato, diced</li>
-<li>1 tbsp canola oil</li>
-<li>Calamansi juice (squeeze over before serving)</li>
-<li>Pepper to taste</li>
+<li><span data-lang="en">½ head repolyo (cabbage), thinly sliced</span><span data-lang="tl" class="lang-hidden">½ ulo repolyo (cabbage), hiniwang manipis</span><span data-lang="ceb" class="lang-hidden">½ ulo repolyo (cabbage), gihiwa nga nipis</span><span data-lang="kap" class="lang-hidden">½ ulu repolyo (cabbage), hiniwang manipis</span></li>
+<li><span data-lang="en">3 cloves garlic, minced</span><span data-lang="tl" class="lang-hidden">3 butil bawang, tinadtad</span><span data-lang="ceb" class="lang-hidden">3 butil bawang, gitadtad</span><span data-lang="kap" class="lang-hidden">3 butil bawang, tinadtad</span></li>
+<li><span data-lang="en">1 sibuyas, sliced</span><span data-lang="tl" class="lang-hidden">1 sibuyas, hiniwa</span><span data-lang="ceb" class="lang-hidden">1 sibuyas, gihiwa</span><span data-lang="kap" class="lang-hidden">1 sibuyas, hiniwa</span></li>
+<li><span data-lang="en">1 medium tomato, diced</span><span data-lang="tl" class="lang-hidden">1 katamtamang kamatis, hiniwang cubo</span><span data-lang="ceb" class="lang-hidden">1 katamtamang kamatis, gihiwa og cubo</span><span data-lang="kap" class="lang-hidden">1 katamtaman a kamatis, hiniwang cubo</span></li>
+<li><span data-lang="en">1 tbsp canola oil</span><span data-lang="tl" class="lang-hidden">1 kutsara canola oil</span><span data-lang="ceb" class="lang-hidden">1 kutsara canola oil</span><span data-lang="kap" class="lang-hidden">1 kutsara canola oil</span></li>
+<li><span data-lang="en">Calamansi juice (squeeze over before serving)</span><span data-lang="tl" class="lang-hidden">Katas ng calamansi (pigain sa ibabaw bago ihain)</span><span data-lang="ceb" class="lang-hidden">Duga sa calamansi (pug-a sa ibabaw sa dili pa isilbi)</span><span data-lang="kap" class="lang-hidden">Katas ning calamansi (pigan king babo bayu ihain)</span></li>
+<li><span data-lang="en">Pepper to taste</span><span data-lang="tl" class="lang-hidden">Paminta ayon sa panlasa</span><span data-lang="ceb" class="lang-hidden">Paminta sumala sa lami</span><span data-lang="kap" class="lang-hidden">Paminta agpang king lasa</span></li>
 </ul>
 <div class="recipe-section-title">Steps</div>
 <ol class="recipe-steps">
-<li>Sauté garlic and onion until soft and fragrant.</li>
-<li>Add tomato, cook until softened, 3 minutes.</li>
-<li>Add cabbage, toss to mix well.</li>
-<li>Cover, cook 5 minutes until wilted but still slightly crisp.</li>
-<li>Squeeze calamansi over, add pepper. Serve immediately.</li>
+<li><span data-lang="en">Sauté garlic and onion until soft and fragrant.</span><span data-lang="tl" class="lang-hidden">I-sauté ang bawang at sibuyas hanggang lumambot at bumango.</span><span data-lang="ceb" class="lang-hidden">I-sauté ang bawang ug sibuyas hangtod mohumok ug mahumot.</span><span data-lang="kap" class="lang-hidden">I-sauté ing bawang at sibuyas angga king lumambut at bumangi.</span></li>
+<li><span data-lang="en">Add tomato, cook until softened, 3 minutes.</span><span data-lang="tl" class="lang-hidden">Idagdag ang kamatis, lutuin hanggang lumambot, 3 minuto.</span><span data-lang="ceb" class="lang-hidden">Idugang ang kamatis, lutoa hangtod mohumok, 3 minuto.</span><span data-lang="kap" class="lang-hidden">Idagdag ing kamatis, lutuan angga king lumambut, 3 minutu.</span></li>
+<li><span data-lang="en">Add cabbage, toss to mix well.</span><span data-lang="tl" class="lang-hidden">Idagdag ang repolyo, haluin nang mabuti.</span><span data-lang="ceb" class="lang-hidden">Idugang ang repolyo, kutawa og maayo.</span><span data-lang="kap" class="lang-hidden">Idagdag ing repolyo, haluan nang mayap.</span></li>
+<li><span data-lang="en">Cover, cook 5 minutes until wilted but still slightly crisp.</span><span data-lang="tl" class="lang-hidden">Takpan, lutuin ng 5 minuto hanggang lumanta ngunit bahagyang malutong pa rin.</span><span data-lang="ceb" class="lang-hidden">Taboni, lutoa og 5 minuto hangtod malanta apan gamayng crisp pa.</span><span data-lang="kap" class="lang-hidden">Takpan, lutuan ning 5 minutu angga king lumanta pero kaunti mu ing malutung.</span></li>
+<li><span data-lang="en">Squeeze calamansi over, add pepper. Serve immediately.</span><span data-lang="tl" class="lang-hidden">Pigain ang calamansi sa ibabaw, dagdagan ng paminta. Ihain agad.</span><span data-lang="ceb" class="lang-hidden">Pug-a ang calamansi sa ibabaw, dugangi og paminta. Isilbi dayon.</span><span data-lang="kap" class="lang-hidden">Pigan ing calamansi king babo, dagdagan ning paminta. Ihain agad.</span></li>
 </ol>
 </div>
 <div class="nutrient-bar">
@@ -2455,8 +2466,8 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-card-header">
 <div>
 <div class="recipe-tag-row"><span class="rtag rtag-both">Both</span></div>
-<h3>Ampalaya at Itlog Puti</h3>
-<p class="tagline">Bitter melon with egg whites — anti-inflammatory and kidney-protective</p>
+<h3><span data-lang="en">Ampalaya at Itlog Puti</span><span data-lang="tl" class="lang-hidden">Ampalaya at Itlog Puti</span><span data-lang="ceb" class="lang-hidden">Ampalaya ug Itlog Puti</span><span data-lang="kap" class="lang-hidden">Ampalaya at Itlug Puti</span></h3>
+<p class="tagline"><span data-lang="en">Bitter melon with egg whites — anti-inflammatory and kidney-protective</span><span data-lang="tl" class="lang-hidden">Ampalaya na may puti ng itlog — anti-inflammatory at nagpoprotekta sa bato</span><span data-lang="ceb" class="lang-hidden">Ampalaya nga adunay puti sa itlog — anti-inflammatory ug nagapanalipod sa kidney</span><span data-lang="kap" class="lang-hidden">Ampalaya a atin puti ning itlug — anti-inflammatory at panangan king batu</span></p>
 </div>
 </div>
 <div class="recipe-meta">
@@ -2467,25 +2478,25 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-body">
 <div class="recipe-section-title">Ingredients</div>
 <ul>
-<li>2 medium ampalaya, deseeded and sliced thin</li>
-<li>3 egg whites</li>
-<li>1 medium tomato, diced</li>
-<li>3 cloves garlic, minced</li>
-<li>1 sibuyas, sliced</li>
-<li>1 tbsp canola oil — Pepper to taste</li>
+<li><span data-lang="en">2 medium ampalaya, deseeded and sliced thin</span><span data-lang="tl" class="lang-hidden">2 katamtamang ampalaya, inalis ang buto at hiniwang manipis</span><span data-lang="ceb" class="lang-hidden">2 katamtamang ampalaya, gikuha ang liso ug gihiwa nga nipis</span><span data-lang="kap" class="lang-hidden">2 katamtaman a ampalaya, inalis ing butu at hiniwang manipis</span></li>
+<li><span data-lang="en">3 egg whites</span><span data-lang="tl" class="lang-hidden">3 puti ng itlog</span><span data-lang="ceb" class="lang-hidden">3 puti sa itlog</span><span data-lang="kap" class="lang-hidden">3 puti ning itlug</span></li>
+<li><span data-lang="en">1 medium tomato, diced</span><span data-lang="tl" class="lang-hidden">1 katamtamang kamatis, hiniwang cubo</span><span data-lang="ceb" class="lang-hidden">1 katamtamang kamatis, gihiwa og cubo</span><span data-lang="kap" class="lang-hidden">1 katamtaman a kamatis, hiniwang cubo</span></li>
+<li><span data-lang="en">3 cloves garlic, minced</span><span data-lang="tl" class="lang-hidden">3 butil bawang, tinadtad</span><span data-lang="ceb" class="lang-hidden">3 butil bawang, gitadtad</span><span data-lang="kap" class="lang-hidden">3 butil bawang, tinadtad</span></li>
+<li><span data-lang="en">1 sibuyas, sliced</span><span data-lang="tl" class="lang-hidden">1 sibuyas, hiniwa</span><span data-lang="ceb" class="lang-hidden">1 sibuyas, gihiwa</span><span data-lang="kap" class="lang-hidden">1 sibuyas, hiniwa</span></li>
+<li><span data-lang="en">1 tbsp canola oil — Pepper to taste</span><span data-lang="tl" class="lang-hidden">1 kutsara canola oil — Paminta ayon sa panlasa</span><span data-lang="ceb" class="lang-hidden">1 kutsara canola oil — Paminta sumala sa lami</span><span data-lang="kap" class="lang-hidden">1 kutsara canola oil — Paminta agpang king lasa</span></li>
 </ul>
 <div class="recipe-section-title">Reducing bitterness</div>
 <ul>
-<li>Slice ampalaya thin, sprinkle with 1 tsp salt, massage, let sit 10 min</li>
-<li>Rinse thoroughly under running water — removes bitterness AND reduces potassium</li>
-<li>Squeeze gently and drain before cooking</li>
+<li><span data-lang="en">Slice ampalaya thin, sprinkle with 1 tsp salt, massage, let sit 10 min</span><span data-lang="tl" class="lang-hidden">Hiwain ang ampalaya nang manipis, budburan ng 1 kutsaritang asin, masahihin, hayaang tumigil ng 10 min</span><span data-lang="ceb" class="lang-hidden">Hiwaa ang ampalaya nga nipis, sabwagi og 1 kutsarita nga asin, masahia, pasagdi og 10 min</span><span data-lang="kap" class="lang-hidden">Hiwan ing ampalaya manipis, wisikan ning 1 kutsaritang asin, masahian, paburen a maka-10 min</span></li>
+<li><span data-lang="en">Rinse thoroughly under running water — removes bitterness AND reduces potassium</span><span data-lang="tl" class="lang-hidden">Banlawan nang mabuti sa umaagos na tubig — nag-aalis ng pait AT nagbabawas ng potassium</span><span data-lang="ceb" class="lang-hidden">Hugasi og maayo ilalom sa nagdagayday nga tubig — mokuha sa kapait UG mokunhod sa potassium</span><span data-lang="kap" class="lang-hidden">Banlawan nang mayap king aagus a danum — inalis na ing pait AT babawasan na ing potassium</span></li>
+<li><span data-lang="en">Squeeze gently and drain before cooking</span><span data-lang="tl" class="lang-hidden">Pigain nang marahan at patuluin bago lutuin</span><span data-lang="ceb" class="lang-hidden">Pug-a og hinay ug patuloa sa dili pa lutoon</span><span data-lang="kap" class="lang-hidden">Pigan nang marahan at patuluan bayu lutuan</span></li>
 </ul>
 <div class="recipe-section-title">Steps</div>
 <ol class="recipe-steps">
-<li>Sauté garlic, onion, tomato until soft.</li>
-<li>Add prepared ampalaya, toss well, cook 5 minutes.</li>
-<li>Push to sides, pour egg whites in center, scramble gently.</li>
-<li>Fold ampalaya back in, toss together. Season with pepper.</li>
+<li><span data-lang="en">Sauté garlic, onion, tomato until soft.</span><span data-lang="tl" class="lang-hidden">I-sauté ang bawang, sibuyas, kamatis hanggang lumambot.</span><span data-lang="ceb" class="lang-hidden">I-sauté ang bawang, sibuyas, kamatis hangtod mohumok.</span><span data-lang="kap" class="lang-hidden">I-sauté ing bawang, sibuyas, kamatis angga king lumambut.</span></li>
+<li><span data-lang="en">Add prepared ampalaya, toss well, cook 5 minutes.</span><span data-lang="tl" class="lang-hidden">Idagdag ang inihandang ampalaya, haluin nang mabuti, lutuin ng 5 minuto.</span><span data-lang="ceb" class="lang-hidden">Idugang ang giandam nga ampalaya, kutawa og maayo, lutoa og 5 minuto.</span><span data-lang="kap" class="lang-hidden">Idagdag ing inandam a ampalaya, haluan nang mayap, lutuan ning 5 minutu.</span></li>
+<li><span data-lang="en">Push to sides, pour egg whites in center, scramble gently.</span><span data-lang="tl" class="lang-hidden">Itabi sa gilid, ibuhos ang puti ng itlog sa gitna, haluin nang marahan.</span><span data-lang="ceb" class="lang-hidden">Itulak sa kilid, ibubo ang puti sa itlog sa tunga, kutawa og hinay.</span><span data-lang="kap" class="lang-hidden">Itabi king gilid, ibuldak ing puti ning itlug king libutad, kutawan nang marahan.</span></li>
+<li><span data-lang="en">Fold ampalaya back in, toss together. Season with pepper.</span><span data-lang="tl" class="lang-hidden">Ibalik ang ampalaya, pagsamahin. Timplahan ng paminta.</span><span data-lang="ceb" class="lang-hidden">Ibalik ang ampalaya, sagola. Timplahi og paminta.</span><span data-lang="kap" class="lang-hidden">Ibalik ing ampalaya, pisaman. Timplan ning paminta.</span></li>
 </ol>
 </div>
 <div class="nutrient-bar">
@@ -2500,15 +2511,15 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <!-- MERYENDA & RICE -->
 <section class="section" id="meryenda">
 <div class="section-tag">Meryenda &amp; Rice</div>
-<h2>Snacks, Rice Dishes &amp; Between-Meal Options</h2>
+<h2><span data-lang="en">Snacks, Rice Dishes &amp; Between-Meal Options</span><span data-lang="tl" class="lang-hidden">Meryenda, Putaheng Kanin &amp; Pagkain sa Pagitan ng Kainan</span><span data-lang="ceb" class="lang-hidden">Meryenda, Putahe sa Kan-on &amp; Pagkaon Tunga-tunga sa Kan-anan</span><span data-lang="kap" class="lang-hidden">Meryenda, Putaheng Nasi &amp; Pamangan king Pilatan ning Pamangan</span></h2>
 <div class="recipes-grid">
 <!-- GARLIC FRIED RICE -->
 <div class="recipe-card">
 <div class="recipe-card-header">
 <div>
 <div class="recipe-tag-row"><span class="rtag rtag-both">Both</span></div>
-<h3>Sinangag (Garlic Rice)</h3>
-<p class="tagline">Classic garlic fried rice — day-old rice keeps phosphorus absorption lower</p>
+<h3><span data-lang="en">Sinangag (Garlic Rice)</span><span data-lang="tl" class="lang-hidden">Sinangag (Garlic Rice)</span><span data-lang="ceb" class="lang-hidden">Sinangag (Garlic Rice)</span><span data-lang="kap" class="lang-hidden">Sinangag (Garlic Rice)</span></h3>
+<p class="tagline"><span data-lang="en">Classic garlic fried rice — day-old rice keeps phosphorus absorption lower</span><span data-lang="tl" class="lang-hidden">Klasikong sinangag — ang lamig na kanin (day-old) ay nagpapababa ng pagsipsip ng phosphorus</span><span data-lang="ceb" class="lang-hidden">Klasikong sinangag — ang day-old nga kan-on nagpaubos sa pagsuyop sa phosphorus</span><span data-lang="kap" class="lang-hidden">Klasikung sinangag — ing lamig a nasi (day-old) babawasan na ing pamanipsip king phosphorus</span></p>
 </div>
 </div>
 <div class="recipe-meta">
@@ -2519,24 +2530,24 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-body">
 <div class="recipe-section-title">Ingredients</div>
 <ul>
-<li>1 cup cold cooked white rice (day-old is best)</li>
-<li>4 cloves garlic, minced</li>
-<li>1 tbsp canola oil</li>
-<li>Pepper to taste — NO salt, NO toyo</li>
+<li><span data-lang="en">1 cup cold cooked white rice (day-old is best)</span><span data-lang="tl" class="lang-hidden">1 tasa malamig na lutong puting kanin (pinakamainam ang day-old)</span><span data-lang="ceb" class="lang-hidden">1 tasa bugnaw nga luto nga puting kan-on (labing maayo ang day-old)</span><span data-lang="kap" class="lang-hidden">1 tasa malamig a lutung maputing nasi (pekamayap ing day-old)</span></li>
+<li><span data-lang="en">4 cloves garlic, minced</span><span data-lang="tl" class="lang-hidden">4 butil bawang, tinadtad</span><span data-lang="ceb" class="lang-hidden">4 butil bawang, gitadtad</span><span data-lang="kap" class="lang-hidden">4 butil bawang, tinadtad</span></li>
+<li><span data-lang="en">1 tbsp canola oil</span><span data-lang="tl" class="lang-hidden">1 kutsara canola oil</span><span data-lang="ceb" class="lang-hidden">1 kutsara canola oil</span><span data-lang="kap" class="lang-hidden">1 kutsara canola oil</span></li>
+<li><span data-lang="en">Pepper to taste — NO salt, NO toyo</span><span data-lang="tl" class="lang-hidden">Paminta ayon sa panlasa — WALANG asin, WALANG toyo</span><span data-lang="ceb" class="lang-hidden">Paminta sumala sa lami — WALAY asin, WALAY toyo</span><span data-lang="kap" class="lang-hidden">Paminta agpang king lasa — ALANG asin, ALANG toyo</span></li>
 </ul>
 <div class="recipe-section-title">Steps</div>
 <ol class="recipe-steps">
-<li>Heat oil in a wok or pan over medium-high heat.</li>
-<li>Add garlic, fry until golden and crispy — do not burn.</li>
-<li>Add cold rice, breaking up clumps with a spatula.</li>
-<li>Toss and fry 5 minutes until each grain is coated and slightly crispy.</li>
-<li>Season with pepper. Top with extra fried garlic bits.</li>
+<li><span data-lang="en">Heat oil in a wok or pan over medium-high heat.</span><span data-lang="tl" class="lang-hidden">Painitin ang mantika sa wok o kawali sa katamtaman-taas na init.</span><span data-lang="ceb" class="lang-hidden">Painita ang mantika sa wok o kaha sa medium-high nga kainit.</span><span data-lang="kap" class="lang-hidden">Painitan ing mantika king wok o kawali king katamtaman-matas a lawut.</span></li>
+<li><span data-lang="en">Add garlic, fry until golden and crispy — do not burn.</span><span data-lang="tl" class="lang-hidden">Idagdag ang bawang, iprito hanggang maging ginintuan at malutong — huwag masunog.</span><span data-lang="ceb" class="lang-hidden">Idugang ang bawang, iprito hangtod mahimong bulawan ug crispy — ayaw pasunoga.</span><span data-lang="kap" class="lang-hidden">Idagdag ing bawang, iprito angga king maging ginintuan at malutung — eka pasunugan.</span></li>
+<li><span data-lang="en">Add cold rice, breaking up clumps with a spatula.</span><span data-lang="tl" class="lang-hidden">Idagdag ang malamig na kanin, dinudurog ang mga bukol gamit ang spatula.</span><span data-lang="ceb" class="lang-hidden">Idugang ang bugnaw nga kan-on, dugmoka ang mga tipun-og gamit ang spatula.</span><span data-lang="kap" class="lang-hidden">Idagdag ing malamig a nasi, dinurug ing mga bukul a gagamit spatula.</span></li>
+<li><span data-lang="en">Toss and fry 5 minutes until each grain is coated and slightly crispy.</span><span data-lang="tl" class="lang-hidden">Haluin at iprito ng 5 minuto hanggang mabalot ang bawat butil at bahagyang malutong.</span><span data-lang="ceb" class="lang-hidden">Kutawa ug iprito og 5 minuto hangtod mabuligan ang matag lugas ug gamayng crispy.</span><span data-lang="kap" class="lang-hidden">Haluan at iprito ning 5 minutu angga king mabalut ing balang butil at kaunting malutung.</span></li>
+<li><span data-lang="en">Season with pepper. Top with extra fried garlic bits.</span><span data-lang="tl" class="lang-hidden">Timplahan ng paminta. Lagyan ng dagdag na piniritong bawang.</span><span data-lang="ceb" class="lang-hidden">Timplahi og paminta. Butangi og dugang nga giprito nga bawang.</span><span data-lang="kap" class="lang-hidden">Timplan ning paminta. Bili ning dagdag a piniritung bawang.</span></li>
 </ol>
 <div class="recipe-section-title">Kidney notes</div>
 <ul>
-<li>White rice = lowest phosphorus of all staple grains</li>
-<li>Day-old rice has slightly lower glycemic index</li>
-<li>Avoid adding toyo for color — use turmeric powder instead (natural color, anti-inflammatory)</li>
+<li><span data-lang="en">White rice = lowest phosphorus of all staple grains</span><span data-lang="tl" class="lang-hidden">Puting kanin = pinakamababang phosphorus sa lahat ng staple na butil</span><span data-lang="ceb" class="lang-hidden">Puting kan-on = pinakaubos nga phosphorus sa tanang staple nga lugas</span><span data-lang="kap" class="lang-hidden">Maputing nasi = pekapababang phosphorus king eganaganang staple a butil</span></li>
+<li><span data-lang="en">Day-old rice has slightly lower glycemic index</span><span data-lang="tl" class="lang-hidden">Ang day-old na kanin ay may bahagyang mas mababang glycemic index</span><span data-lang="ceb" class="lang-hidden">Ang day-old nga kan-on adunay gamayng mas ubos nga glycemic index</span><span data-lang="kap" class="lang-hidden">Ing day-old a nasi atin kaunting mas mababang glycemic index</span></li>
+<li><span data-lang="en">Avoid adding toyo for color — use turmeric powder instead (natural color, anti-inflammatory)</span><span data-lang="tl" class="lang-hidden">Iwasang magdagdag ng toyo para sa kulay — gumamit ng turmeric powder sa halip (natural na kulay, anti-inflammatory)</span><span data-lang="ceb" class="lang-hidden">Likayi ang pagdugang og toyo para sa kolor — gamita ang turmeric powder puli (natural nga kolor, anti-inflammatory)</span><span data-lang="kap" class="lang-hidden">Iwasan ing magdagdag toyo para king kule — gamitan ing turmeric powder a kapalit (natural a kule, anti-inflammatory)</span></li>
 </ul>
 </div>
 <div class="nutrient-bar">
@@ -2551,8 +2562,8 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-card-header">
 <div>
 <div class="recipe-tag-row"><span class="rtag rtag-both">Both</span></div>
-<h3>Fresh Pineapple with Crackers</h3>
-<p class="tagline">One of the few fruits kidney patients can enjoy freely — sweet, acidic, low potassium</p>
+<h3><span data-lang="en">Fresh Pineapple with Crackers</span><span data-lang="tl" class="lang-hidden">Sariwang Pinya na may Crackers</span><span data-lang="ceb" class="lang-hidden">Presko nga Pinya nga adunay Crackers</span><span data-lang="kap" class="lang-hidden">Sariwang Pinya a atin Crackers</span></h3>
+<p class="tagline"><span data-lang="en">One of the few fruits kidney patients can enjoy freely — sweet, acidic, low potassium</span><span data-lang="tl" class="lang-hidden">Isa sa iilang prutas na malaya nang matatamasa ng mga pasyenteng may sakit sa bato — matamis, maasim, mababa sa potassium</span><span data-lang="ceb" class="lang-hidden">Usa sa pipila ka prutas nga malaya nga matagamtam sa mga pasyenteng adunay sakit sa kidney — tam-is, aslom, ubos sa potassium</span><span data-lang="kap" class="lang-hidden">Metung king pilang prutas a malaya ng arapan da ring pasyenteng atin sakit king batu — mayumu, maaslam, mababa king potassium</span></p>
 </div>
 </div>
 <div class="recipe-meta">
@@ -2563,17 +2574,17 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <div class="recipe-body">
 <div class="recipe-section-title">Ingredients</div>
 <ul>
-<li>½ cup fresh pineapple chunks (not canned in syrup)</li>
-<li>4–6 unsalted crackers or rice cakes</li>
-<li>Optional: small drizzle of honey</li>
+<li><span data-lang="en">½ cup fresh pineapple chunks (not canned in syrup)</span><span data-lang="tl" class="lang-hidden">½ tasa sariwang hiwa ng pinya (hindi de-latang naka-syrup)</span><span data-lang="ceb" class="lang-hidden">½ tasa presko nga tinadtad nga pinya (dili de-lata nga naka-syrup)</span><span data-lang="kap" class="lang-hidden">½ tasa sariwang piraso ning pinya (ali de-latang naka-syrup)</span></li>
+<li><span data-lang="en">4–6 unsalted crackers or rice cakes</span><span data-lang="tl" class="lang-hidden">4–6 walang-asing crackers o rice cakes</span><span data-lang="ceb" class="lang-hidden">4–6 walay-asin nga crackers o rice cakes</span><span data-lang="kap" class="lang-hidden">4–6 alang-asing crackers o rice cakes</span></li>
+<li><span data-lang="en">Optional: small drizzle of honey</span><span data-lang="tl" class="lang-hidden">Opsyonal: kaunting pulot-pukyutan</span><span data-lang="ceb" class="lang-hidden">Opsyonal: gamayng dugos</span><span data-lang="kap" class="lang-hidden">Opsyonal: kaunting pulut</span></li>
 </ul>
 <div class="recipe-section-title">Kidney notes</div>
 <ul>
-<li>Pineapple: only ~180 mg potassium per cup — safe for most CKD patients</li>
-<li>Naturally high in Vitamin C — helps iron absorption</li>
-<li>Avoid canned pineapple — syrup adds sugar; rinse with water if using canned</li>
-<li>Unsalted crackers: no sodium. Avoid regular crackers or Skyflakes (salted)</li>
-<li>Grapes (½ cup) and apple slices are equally good low-potassium alternatives</li>
+<li><span data-lang="en">Pineapple: only ~180 mg potassium per cup — safe for most CKD patients</span><span data-lang="tl" class="lang-hidden">Pinya: ~180 mg potassium lamang bawat tasa — ligtas para sa karamihan ng pasyenteng CKD</span><span data-lang="ceb" class="lang-hidden">Pinya: ~180 mg potassium lamang matag tasa — luwas alang sa kadaghanan sa mga pasyenteng CKD</span><span data-lang="kap" class="lang-hidden">Pinya: ~180 mg potassium mu balang tasa — ligtas para karing dakal a pasyenteng CKD</span></li>
+<li><span data-lang="en">Naturally high in Vitamin C — helps iron absorption</span><span data-lang="tl" class="lang-hidden">Natural na mataas sa Vitamin C — tumutulong sa pagsipsip ng iron</span><span data-lang="ceb" class="lang-hidden">Natural nga taas sa Vitamin C — motabang sa pagsuyop sa iron</span><span data-lang="kap" class="lang-hidden">Natural a matas king Vitamin C — sasaupan na ing pamanipsip king iron</span></li>
+<li><span data-lang="en">Avoid canned pineapple — syrup adds sugar; rinse with water if using canned</span><span data-lang="tl" class="lang-hidden">Iwasan ang de-latang pinya — nagdaragdag ng asukal ang syrup; banlawan ng tubig kung gagamit ng de-lata</span><span data-lang="ceb" class="lang-hidden">Likayi ang de-lata nga pinya — ang syrup magdugang og asukal; hugasi og tubig kung mogamit og de-lata</span><span data-lang="kap" class="lang-hidden">Iwasan ing de-latang pinya — ing syrup magdagdag asukal; banlawan king danum nung gagamit de-lata</span></li>
+<li><span data-lang="en">Unsalted crackers: no sodium. Avoid regular crackers or Skyflakes (salted)</span><span data-lang="tl" class="lang-hidden">Walang-asing crackers: walang sodium. Iwasan ang ordinaryong crackers o Skyflakes (may asin)</span><span data-lang="ceb" class="lang-hidden">Walay-asin nga crackers: walay sodium. Likayi ang regular nga crackers o Skyflakes (adunay asin)</span><span data-lang="kap" class="lang-hidden">Alang-asing crackers: alang sodium. Iwasan ing ordinaryung crackers o Skyflakes (atin asin)</span></li>
+<li><span data-lang="en">Grapes (½ cup) and apple slices are equally good low-potassium alternatives</span><span data-lang="tl" class="lang-hidden">Ang ubas (½ tasa) at hiwa ng mansanas ay pantay na mabuting mababa-sa-potassium na alternatibo</span><span data-lang="ceb" class="lang-hidden">Ang ubas (½ tasa) ug hiniwa nga mansanas parehong maayong ubos-sa-potassium nga alternatibo</span><span data-lang="kap" class="lang-hidden">Ing ubas (½ tasa) at hiwa ning mansanas pante lang mayap a mababa-king-potassium a alternatibu</span></li>
 </ul>
 </div>
 <div class="nutrient-bar">
@@ -2588,37 +2599,37 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <!-- COOKING TIPS -->
 <section class="section" id="tips">
 <div class="section-tag">Kitchen Techniques</div>
-<h2>CKD Cooking Tips That Make a Real Difference</h2>
+<h2><span data-lang="en">CKD Cooking Tips That Make a Real Difference</span><span data-lang="tl" class="lang-hidden">Mga Tip sa Pagluluto para sa CKD na Talagang Makakatulong</span><span data-lang="ceb" class="lang-hidden">Mga Tip sa Pagluto alang sa CKD nga Tinuod nga Makatabang</span><span data-lang="kap" class="lang-hidden">Reng Tip king Pagluto para king CKD a Talagang Makasaup</span></h2>
 <div class="two-col">
 <div class="feature-card">
-<h4><span class="dot dot-teal"></span>The leaching method — reduce potassium by up to 50%</h4>
-<p>Peel and cut vegetable into small pieces → soak in large amount of warm water for 2 hours (change water once) → drain → boil in fresh water → drain again and discard water. Works for kamote, potato, pechay, kangkong, sitaw. Never use the boiling water as sabaw.</p>
+<h4><span class="dot dot-teal"></span><span data-lang="en">The leaching method — reduce potassium by up to 50%</span><span data-lang="tl" class="lang-hidden">Ang paraan ng leaching — bawasan ang potassium nang hanggang 50%</span><span data-lang="ceb" class="lang-hidden">Ang pamaagi sa leaching — kunhoran ang potassium hangtod 50%</span><span data-lang="kap" class="lang-hidden">Ing paraan ning leaching — bawasan ing potassium angga king 50%</span></h4>
+<p><span data-lang="en">Peel and cut vegetable into small pieces → soak in large amount of warm water for 2 hours (change water once) → drain → boil in fresh water → drain again and discard water. Works for kamote, potato, pechay, kangkong, sitaw. Never use the boiling water as sabaw.</span><span data-lang="tl" class="lang-hidden">Balatan at hiwain ang gulay sa maliliit na piraso → ibabad sa maraming maligamgam na tubig ng 2 oras (palitan ang tubig nang minsan) → salain → pakuluan sa sariwang tubig → salain muli at itapon ang tubig. Angkop para sa kamote, patatas, pechay, kangkong, sitaw. Huwag kailanman gamitin ang tubig na pinagkuluan bilang sabaw.</span><span data-lang="ceb" class="lang-hidden">Balati ug putla ang utan sa gagmayng piraso → ibabad sa daghang mainit-init nga tubig og 2 oras (usba ang tubig kausa) → salaa → pabukala sa presko nga tubig → salaa pag-usab ug ilabay ang tubig. Angay sa kamote, patatas, pechay, kangkong, sitaw. Ayaw gayod gamita ang tubig nga gipabukal isip sabaw.</span><span data-lang="kap" class="lang-hidden">Balatan at hiwan ing gulay king maliliit a piraso → ibabad king dakal a maligamgam a danum ning 2 oras (salinan ing danum minsan) → salan → pakuluan king sariwang danum → salan pasibayu at itapun ing danum. Angkop para king kamote, patatas, pechay, kangkong, sitaw. Eka gagamit kapilan man king danum a pinagkuluan bilang sabaw.</span></p>
 </div>
 <div class="feature-card">
-<h4><span class="dot dot-amber"></span>Replace patis with calamansi + pepper</h4>
-<p>1 tbsp patis = ~1,500 mg sodium. Calamansi juice provides similar umami brightness with zero sodium. For dishes needing depth, use a combination of calamansi + garlic + black pepper + a drop of sesame oil (for flavor, not cooking).</p>
+<h4><span class="dot dot-amber"></span><span data-lang="en">Replace patis with calamansi + pepper</span><span data-lang="tl" class="lang-hidden">Palitan ang patis ng calamansi + paminta</span><span data-lang="ceb" class="lang-hidden">Pulihi ang patis og calamansi + paminta</span><span data-lang="kap" class="lang-hidden">Kapalitan ing patis king calamansi + paminta</span></h4>
+<p><span data-lang="en">1 tbsp patis = ~1,500 mg sodium. Calamansi juice provides similar umami brightness with zero sodium. For dishes needing depth, use a combination of calamansi + garlic + black pepper + a drop of sesame oil (for flavor, not cooking).</span><span data-lang="tl" class="lang-hidden">1 kutsara patis = ~1,500 mg sodium. Ang katas ng calamansi ay nagbibigay ng katulad na umami na liwanag nang walang sodium. Para sa mga putaheng nangangailangan ng lalim, gumamit ng kombinasyon ng calamansi + bawang + paminta + patak ng sesame oil (para sa lasa, hindi pangluto).</span><span data-lang="ceb" class="lang-hidden">1 kutsara patis = ~1,500 mg sodium. Ang duga sa calamansi mohatag og susama nga umami nga kahayag nga walay sodium. Para sa mga putahe nga nagkinahanglan og giladmon, gamita ang kombinasyon sa calamansi + bawang + paminta + tulo sa sesame oil (para sa lami, dili pangluto).</span><span data-lang="kap" class="lang-hidden">1 kutsara patis = ~1,500 mg sodium. Ing katas ning calamansi bibie yang kaparehung umami a liwanag a alang sodium. Para king mga putahe a kailangan lalam, gamitan ing kombinasyun ning calamansi + bawang + paminta + patak ning sesame oil (para king lasa, ali pangluto).</span></p>
 </div>
 <div class="feature-card">
-<h4><span class="dot dot-green"></span>Grilling, steaming, and poaching over frying</h4>
-<p>Grilling and steaming require no breading (which adds phosphate additives) and no sauces (which add sodium). They also reduce fat content — important for CKD patients with concurrent dyslipidemia. Reserve frying for small amounts of garlic bits and onion for topping.</p>
+<h4><span class="dot dot-green"></span><span data-lang="en">Grilling, steaming, and poaching over frying</span><span data-lang="tl" class="lang-hidden">Pag-ihaw, pagpapasingaw, at poaching kaysa pagpiprito</span><span data-lang="ceb" class="lang-hidden">Pagsugba, pagpasingaw, ug poaching kaysa pagprito</span><span data-lang="kap" class="lang-hidden">Pamanihaw, pamaningaw, at poaching kesa king pamiprito</span></h4>
+<p><span data-lang="en">Grilling and steaming require no breading (which adds phosphate additives) and no sauces (which add sodium). They also reduce fat content — important for CKD patients with concurrent dyslipidemia. Reserve frying for small amounts of garlic bits and onion for topping.</span><span data-lang="tl" class="lang-hidden">Ang pag-ihaw at pagpapasingaw ay hindi nangangailangan ng breading (na nagdaragdag ng phosphate additives) at walang sarsa (na nagdaragdag ng sodium). Binabawasan din nila ang taba — mahalaga para sa mga pasyenteng CKD na may kasabay na dyslipidemia. Ilaan ang pagpiprito para sa kaunting piniritong bawang at sibuyas na pampalamuti.</span><span data-lang="ceb" class="lang-hidden">Ang pagsugba ug pagpasingaw dili magkinahanglan og breading (nga magdugang og phosphate additives) ug walay sarsa (nga magdugang og sodium). Mokunhod usab sila sa tambok — importante alang sa mga pasyenteng CKD nga adunay dungan nga dyslipidemia. Igahin ang pagprito para sa gamayng giprito nga bawang ug sibuyas nga pangtabon.</span><span data-lang="kap" class="lang-hidden">Ing pamanihaw at pamaningaw ali kailangan breading (a magdagdag phosphate additives) at alang sarsa (a magdagdag sodium). Babawasan da mu naman ing taba — importante para karing pasyenteng CKD a atin kayabe a dyslipidemia. Ilaan ing pamiprito para king kaunting piniritung bawang at sibuyas a palamuti.</span></p>
 </div>
 <div class="feature-card">
-<h4><span class="dot dot-red"></span>Avoid phosphate-laden processed foods entirely</h4>
-<p>Hotdog, tocino, longganisa, processed cheese, instant noodles, and canned goods all contain inorganic phosphate preservatives absorbed at 90–100%. One piece of hotdog can contain 400 mg phosphorus — nearly half the daily limit. Cook fresh every day when possible.</p>
+<h4><span class="dot dot-red"></span><span data-lang="en">Avoid phosphate-laden processed foods entirely</span><span data-lang="tl" class="lang-hidden">Iwasan nang lubusan ang mga processed na pagkaing puno ng phosphate</span><span data-lang="ceb" class="lang-hidden">Likayi sa hingpit ang mga processed nga pagkaon nga puno sa phosphate</span><span data-lang="kap" class="lang-hidden">Iwasan a lubus ing mga processed a pamangan a mitmu king phosphate</span></h4>
+<p><span data-lang="en">Hotdog, tocino, longganisa, processed cheese, instant noodles, and canned goods all contain inorganic phosphate preservatives absorbed at 90–100%. One piece of hotdog can contain 400 mg phosphorus — nearly half the daily limit. Cook fresh every day when possible.</span><span data-lang="tl" class="lang-hidden">Ang hotdog, tocino, longganisa, processed cheese, instant noodles, at mga de-latang produkto ay lahat naglalaman ng inorganic phosphate preservatives na nasisipsip nang 90–100%. Ang isang piraso ng hotdog ay maaaring maglaman ng 400 mg phosphorus — halos kalahati ng pang-araw-araw na limitasyon. Magluto ng sariwa araw-araw kung kaya.</span><span data-lang="ceb" class="lang-hidden">Ang hotdog, tocino, longganisa, processed cheese, instant noodles, ug mga de-lata nga produkto tanan adunay inorganic phosphate preservatives nga masuyop og 90–100%. Ang usa ka piraso sa hotdog mahimong adunay 400 mg phosphorus — hapit katunga sa inadlaw nga limit. Pagluto og presko kada adlaw kung mahimo.</span><span data-lang="kap" class="lang-hidden">Ing hotdog, tocino, longganisa, processed cheese, instant noodles, at mga de-latang produktu eganagana atin inorganic phosphate preservatives a masipsip king 90–100%. Ing metung a piraso ning hotdog malyaring atin 400 mg phosphorus — halos kapitna ning aldo-aldo a limit. Magluto sariwa aldo-aldo nung malyari.</span></p>
 </div>
 </div>
 <div class="alert alert-teal">
 <div class="alert-icon">🧂</div>
 <div class="alert-body">
-<h4>Flavor without salt — your new pantry essentials</h4>
+<h4><span data-lang="en">Flavor without salt — your new pantry essentials</span><span data-lang="tl" class="lang-hidden">Lasa nang walang asin — ang inyong bagong mga kailangan sa pantry</span><span data-lang="ceb" class="lang-hidden">Lami nga walay asin — ang inyong bag-ong mga kinahanglanon sa pantry</span><span data-lang="kap" class="lang-hidden">Lasa a alang asin — reng bayung kailangan yu king pantry</span></h4>
 <ul>
-<li><strong>Calamansi / suka</strong> — brightens any dish, replaces patis and toyo</li>
-<li><strong>Luya (ginger)</strong> — warming, anti-inflammatory, flavor depth</li>
-<li><strong>Tanglad (lemongrass)</strong> — fragrant, zero sodium, great for fish and chicken</li>
-<li><strong>Bawang (garlic)</strong> — most versatile flavor base; anti-inflammatory</li>
-<li><strong>Pandan leaves</strong> — natural sweetness and aroma for rice dishes</li>
-<li><strong>Black pepper</strong> — replaces salt's role in bringing flavors forward</li>
-<li><strong>Turmeric (dilaw)</strong> — anti-inflammatory, gives color without toyo</li>
+<li><span data-lang="en"><strong>Calamansi / suka</strong> — brightens any dish, replaces patis and toyo</span><span data-lang="tl" class="lang-hidden"><strong>Calamansi / suka</strong> — nagpapaliwanag sa anumang putahe, kapalit ng patis at toyo</span><span data-lang="ceb" class="lang-hidden"><strong>Calamansi / suka</strong> — mopasidlak sa bisan unsang putahe, mopuli sa patis ug toyo</span><span data-lang="kap" class="lang-hidden"><strong>Calamansi / suka</strong> — pasariwan na ing anumang putahe, kapalit ning patis at toyo</span></li>
+<li><span data-lang="en"><strong>Luya (ginger)</strong> — warming, anti-inflammatory, flavor depth</span><span data-lang="tl" class="lang-hidden"><strong>Luya (ginger)</strong> — nagpapainit, anti-inflammatory, lalim ng lasa</span><span data-lang="ceb" class="lang-hidden"><strong>Luya (ginger)</strong> — makapainit, anti-inflammatory, giladmon sa lami</span><span data-lang="kap" class="lang-hidden"><strong>Luya (ginger)</strong> — makapainit, anti-inflammatory, lalam ning lasa</span></li>
+<li><span data-lang="en"><strong>Tanglad (lemongrass)</strong> — fragrant, zero sodium, great for fish and chicken</span><span data-lang="tl" class="lang-hidden"><strong>Tanglad (lemongrass)</strong> — mabango, zero sodium, mainam para sa isda at manok</span><span data-lang="ceb" class="lang-hidden"><strong>Tanglad (lemongrass)</strong> — mahumot, zero sodium, maayo para sa isda ug manok</span><span data-lang="kap" class="lang-hidden"><strong>Tanglad (lemongrass)</strong> — mabangi, zero sodium, mayap para king asan at manuk</span></li>
+<li><span data-lang="en"><strong>Bawang (garlic)</strong> — most versatile flavor base; anti-inflammatory</span><span data-lang="tl" class="lang-hidden"><strong>Bawang (garlic)</strong> — pinaka-versatile na base ng lasa; anti-inflammatory</span><span data-lang="ceb" class="lang-hidden"><strong>Bawang (garlic)</strong> — labing versatile nga base sa lami; anti-inflammatory</span><span data-lang="kap" class="lang-hidden"><strong>Bawang (garlic)</strong> — pekaversatile a base ning lasa; anti-inflammatory</span></li>
+<li><span data-lang="en"><strong>Pandan leaves</strong> — natural sweetness and aroma for rice dishes</span><span data-lang="tl" class="lang-hidden"><strong>Dahon ng pandan</strong> — natural na tamis at halimuyak para sa mga putaheng kanin</span><span data-lang="ceb" class="lang-hidden"><strong>Dahon sa pandan</strong> — natural nga katam-is ug kahumot para sa mga putahe sa kan-on</span><span data-lang="kap" class="lang-hidden"><strong>Dahun ning pandan</strong> — natural a yumu at bangi para king mga putaheng nasi</span></li>
+<li><span data-lang="en"><strong>Black pepper</strong> — replaces salt's role in bringing flavors forward</span><span data-lang="tl" class="lang-hidden"><strong>Paminta</strong> — pumapalit sa papel ng asin sa paglalabas ng lasa</span><span data-lang="ceb" class="lang-hidden"><strong>Itom nga paminta</strong> — mopuli sa papel sa asin sa pagpagawas sa lami</span><span data-lang="kap" class="lang-hidden"><strong>Itim a paminta</strong> — kapalit king papel ning asin king pamaglual ning lasa</span></li>
+<li><span data-lang="en"><strong>Turmeric (dilaw)</strong> — anti-inflammatory, gives color without toyo</span><span data-lang="tl" class="lang-hidden"><strong>Turmeric (dilaw)</strong> — anti-inflammatory, nagbibigay ng kulay nang walang toyo</span><span data-lang="ceb" class="lang-hidden"><strong>Turmeric (dilaw)</strong> — anti-inflammatory, mohatag og kolor nga walay toyo</span><span data-lang="kap" class="lang-hidden"><strong>Turmeric (dilaw)</strong> — anti-inflammatory, bibie yang kule a alang toyo</span></li>
 </ul>
 </div>
 </div>
@@ -2626,26 +2637,24 @@ Magsangguni kayu king kekayu dietitian o doctor bayu kayu mangan kareni.</span>
 <!-- SUBSTITUTIONS -->
 <section class="section" id="substitutions">
 <div class="section-tag">Safe Swaps</div>
-<h2>Ingredient Substitution Guide</h2>
+<h2><span data-lang="en">Ingredient Substitution Guide</span><span data-lang="tl" class="lang-hidden">Gabay sa Pagpapalit ng Sangkap</span><span data-lang="ceb" class="lang-hidden">Giya sa Pag-ilis sa Sangkap</span><span data-lang="kap" class="lang-hidden">Giya king Pamanyaliwan ning Sangkap</span></h2>
 <table class="lab-table">
-<thead><tr><th>Common ingredient</th><th>The problem</th><th>Kidney-safe substitute</th></tr></thead>
+<thead><tr><th><span data-lang="en">Common ingredient</span><span data-lang="tl" class="lang-hidden">Karaniwang sangkap</span><span data-lang="ceb" class="lang-hidden">Kasagarang sangkap</span><span data-lang="kap" class="lang-hidden">Karaniwan a sangkap</span></th><th><span data-lang="en">The problem</span><span data-lang="tl" class="lang-hidden">Ang problema</span><span data-lang="ceb" class="lang-hidden">Ang problema</span><span data-lang="kap" class="lang-hidden">Ing problema</span></th><th><span data-lang="en">Kidney-safe substitute</span><span data-lang="tl" class="lang-hidden">Kidney-safe na kapalit</span><span data-lang="ceb" class="lang-hidden">Kidney-safe nga kapuli</span><span data-lang="kap" class="lang-hidden">Kidney-safe a kapalit</span></th></tr></thead>
 <tbody>
-<tr><td>Patis (fish sauce)</td><td>1 tbsp = ~1,500 mg sodium</td><td>Calamansi juice + pepper + garlic</td></tr>
-<tr><td>Toyo (soy sauce)</td><td>1 tbsp = ~900 mg sodium</td><td>Calamansi + a drop of sesame oil for color and depth</td></tr>
-<tr><td>Sinigang mix (commercial)</td><td>~900 mg sodium per sachet, phosphate additives</td><td>Fresh calamansi or kamias (bilimbi) for sourness</td></tr>
-<tr><td>Instant noodles base</td><td>1 packet = ~1,800–2,500 mg sodium</td><td>Home-made rice noodle soup with unsalted broth</td></tr>
-<tr><td>Longganisa / hotdog</td><td>High sodium, phosphate preservatives</td><td>Grilled chicken breast or fresh fish fillet</td></tr>
-<tr><td>Whole eggs</td><td>Yolk = high phosphorus</td><td>Egg whites only (itlog puti lamang)</td></tr>
-<tr><td>Kangkong / camote tops</td><td>High potassium (unless leached)</td><td>Sayote, upo, repolyo, sitaw, patola — naturally low potassium</td></tr>
-<tr><td>Coconut water (buko)</td><td>Very high potassium (~600 mg per cup)</td><td>Barley water, apple juice diluted 50/50 with water</td></tr>
-<tr><td>Banana</td><td>High potassium (~420 mg each)</td><td>Apple, grapes, pineapple chunks, canned pears (rinsed)</td></tr>
-<tr><td>Dark cola (Coke, Pepsi)</td><td>High phosphoric acid — worst phosphorus source</td><td>Water, barley water, unsweetened dalandan juice</td></tr>
-<tr><td>Salt substitute (e.g., Nu-Salt)</td><td>Contains potassium chloride — dangerous in CKD</td><td>Herb-based seasoning, calamansi, pepper — never salt substitutes</td></tr>
+<tr><td><span data-lang="en">Patis (fish sauce)</span><span data-lang="tl" class="lang-hidden">Patis (fish sauce)</span><span data-lang="ceb" class="lang-hidden">Patis (fish sauce)</span><span data-lang="kap" class="lang-hidden">Patis (fish sauce)</span></td><td><span data-lang="en">1 tbsp = ~1,500 mg sodium</span><span data-lang="tl" class="lang-hidden">1 tbsp = ~1,500 mg sodium</span><span data-lang="ceb" class="lang-hidden">1 tbsp = ~1,500 mg sodium</span><span data-lang="kap" class="lang-hidden">1 tbsp = ~1,500 mg sodium</span></td><td><span data-lang="en">Calamansi juice + pepper + garlic</span><span data-lang="tl" class="lang-hidden">Katas ng calamansi + paminta + bawang</span><span data-lang="ceb" class="lang-hidden">Duga sa calamansi + paminta + bawang</span><span data-lang="kap" class="lang-hidden">Katas ning calamansi + paminta + bawang</span></td></tr>
+<tr><td><span data-lang="en">Toyo (soy sauce)</span><span data-lang="tl" class="lang-hidden">Toyo (soy sauce)</span><span data-lang="ceb" class="lang-hidden">Toyo (soy sauce)</span><span data-lang="kap" class="lang-hidden">Toyo (soy sauce)</span></td><td><span data-lang="en">1 tbsp = ~900 mg sodium</span><span data-lang="tl" class="lang-hidden">1 tbsp = ~900 mg sodium</span><span data-lang="ceb" class="lang-hidden">1 tbsp = ~900 mg sodium</span><span data-lang="kap" class="lang-hidden">1 tbsp = ~900 mg sodium</span></td><td><span data-lang="en">Calamansi + a drop of sesame oil for color and depth</span><span data-lang="tl" class="lang-hidden">Calamansi + patak ng sesame oil para sa kulay at lalim</span><span data-lang="ceb" class="lang-hidden">Calamansi + tulo sa sesame oil para sa kolor ug giladmon</span><span data-lang="kap" class="lang-hidden">Calamansi + patak ning sesame oil para king kule at lalam</span></td></tr>
+<tr><td><span data-lang="en">Sinigang mix (commercial)</span><span data-lang="tl" class="lang-hidden">Sinigang mix (komersyal)</span><span data-lang="ceb" class="lang-hidden">Sinigang mix (komersyal)</span><span data-lang="kap" class="lang-hidden">Sinigang mix (komersyal)</span></td><td><span data-lang="en">~900 mg sodium per sachet, phosphate additives</span><span data-lang="tl" class="lang-hidden">~900 mg sodium bawat sachet, phosphate additives</span><span data-lang="ceb" class="lang-hidden">~900 mg sodium matag sachet, phosphate additives</span><span data-lang="kap" class="lang-hidden">~900 mg sodium balang sachet, phosphate additives</span></td><td><span data-lang="en">Fresh calamansi or kamias (bilimbi) for sourness</span><span data-lang="tl" class="lang-hidden">Sariwang calamansi o kamias (bilimbi) para sa asim</span><span data-lang="ceb" class="lang-hidden">Presko nga calamansi o kamias (bilimbi) para sa aslom</span><span data-lang="kap" class="lang-hidden">Sariwang calamansi o kamias (bilimbi) para king aslam</span></td></tr>
+<tr><td><span data-lang="en">Instant noodles base</span><span data-lang="tl" class="lang-hidden">Base ng instant noodles</span><span data-lang="ceb" class="lang-hidden">Base sa instant noodles</span><span data-lang="kap" class="lang-hidden">Base ning instant noodles</span></td><td><span data-lang="en">1 packet = ~1,800–2,500 mg sodium</span><span data-lang="tl" class="lang-hidden">1 packet = ~1,800–2,500 mg sodium</span><span data-lang="ceb" class="lang-hidden">1 packet = ~1,800–2,500 mg sodium</span><span data-lang="kap" class="lang-hidden">1 packet = ~1,800–2,500 mg sodium</span></td><td><span data-lang="en">Home-made rice noodle soup with unsalted broth</span><span data-lang="tl" class="lang-hidden">Homemade na sopas ng bihon na may walang-asing sabaw</span><span data-lang="ceb" class="lang-hidden">Homemade nga sabaw sa bihon nga adunay walay-asin nga sabaw</span><span data-lang="kap" class="lang-hidden">Homemade a sopas ning bihon a atin alang-asing sabaw</span></td></tr>
+<tr><td><span data-lang="en">Longganisa / hotdog</span><span data-lang="tl" class="lang-hidden">Longganisa / hotdog</span><span data-lang="ceb" class="lang-hidden">Longganisa / hotdog</span><span data-lang="kap" class="lang-hidden">Longganisa / hotdog</span></td><td><span data-lang="en">High sodium, phosphate preservatives</span><span data-lang="tl" class="lang-hidden">Mataas na sodium, phosphate preservatives</span><span data-lang="ceb" class="lang-hidden">Taas nga sodium, phosphate preservatives</span><span data-lang="kap" class="lang-hidden">Matas a sodium, phosphate preservatives</span></td><td><span data-lang="en">Grilled chicken breast or fresh fish fillet</span><span data-lang="tl" class="lang-hidden">Inihaw na dibdib ng manok o sariwang fillet ng isda</span><span data-lang="ceb" class="lang-hidden">Sinugbang dughan sa manok o presko nga fillet sa isda</span><span data-lang="kap" class="lang-hidden">Inihaw a dibdib ning manuk o sariwang fillet ning asan</span></td></tr>
+<tr><td><span data-lang="en">Whole eggs</span><span data-lang="tl" class="lang-hidden">Buong itlog</span><span data-lang="ceb" class="lang-hidden">Tibuok nga itlog</span><span data-lang="kap" class="lang-hidden">Buung itlug</span></td><td><span data-lang="en">Yolk = high phosphorus</span><span data-lang="tl" class="lang-hidden">Pula = mataas na phosphorus</span><span data-lang="ceb" class="lang-hidden">Pula = taas nga phosphorus</span><span data-lang="kap" class="lang-hidden">Pula = matas a phosphorus</span></td><td><span data-lang="en">Egg whites only (itlog puti lamang)</span><span data-lang="tl" class="lang-hidden">Puti ng itlog lamang (itlog puti lamang)</span><span data-lang="ceb" class="lang-hidden">Puti sa itlog lamang (itlog puti lamang)</span><span data-lang="kap" class="lang-hidden">Puti ning itlug mu (itlog puti lamang)</span></td></tr>
+<tr><td><span data-lang="en">Kangkong / camote tops</span><span data-lang="tl" class="lang-hidden">Kangkong / talbos ng kamote</span><span data-lang="ceb" class="lang-hidden">Kangkong / talbos sa kamote</span><span data-lang="kap" class="lang-hidden">Kangkong / talbos ning kamote</span></td><td><span data-lang="en">High potassium (unless leached)</span><span data-lang="tl" class="lang-hidden">Mataas na potassium (maliban kung na-leach)</span><span data-lang="ceb" class="lang-hidden">Taas nga potassium (gawas kung na-leach)</span><span data-lang="kap" class="lang-hidden">Matas a potassium (liban nung na-leach)</span></td><td><span data-lang="en">Sayote, upo, repolyo, sitaw, patola — naturally low potassium</span><span data-lang="tl" class="lang-hidden">Sayote, upo, repolyo, sitaw, patola — natural na mababa sa potassium</span><span data-lang="ceb" class="lang-hidden">Sayote, upo, repolyo, sitaw, patola — natural nga ubos sa potassium</span><span data-lang="kap" class="lang-hidden">Sayote, upo, repolyo, sitaw, patola — natural a mababa king potassium</span></td></tr>
+<tr><td><span data-lang="en">Coconut water (buko)</span><span data-lang="tl" class="lang-hidden">Tubig ng niyog (buko)</span><span data-lang="ceb" class="lang-hidden">Tubig sa lubi (buko)</span><span data-lang="kap" class="lang-hidden">Danum ning ngungut (buko)</span></td><td><span data-lang="en">Very high potassium (~600 mg per cup)</span><span data-lang="tl" class="lang-hidden">Napakataas na potassium (~600 mg bawat tasa)</span><span data-lang="ceb" class="lang-hidden">Hilabihan ka taas nga potassium (~600 mg matag tasa)</span><span data-lang="kap" class="lang-hidden">Masiadung matas a potassium (~600 mg balang tasa)</span></td><td><span data-lang="en">Barley water, apple juice diluted 50/50 with water</span><span data-lang="tl" class="lang-hidden">Barley water, apple juice na hinaluan ng 50/50 na tubig</span><span data-lang="ceb" class="lang-hidden">Barley water, apple juice nga gisagolan og 50/50 nga tubig</span><span data-lang="kap" class="lang-hidden">Barley water, apple juice a hinaluan ning 50/50 a danum</span></td></tr>
+<tr><td><span data-lang="en">Banana</span><span data-lang="tl" class="lang-hidden">Saging</span><span data-lang="ceb" class="lang-hidden">Saging</span><span data-lang="kap" class="lang-hidden">Saging</span></td><td><span data-lang="en">High potassium (~420 mg each)</span><span data-lang="tl" class="lang-hidden">Mataas na potassium (~420 mg bawat isa)</span><span data-lang="ceb" class="lang-hidden">Taas nga potassium (~420 mg matag usa)</span><span data-lang="kap" class="lang-hidden">Matas a potassium (~420 mg balang metung)</span></td><td><span data-lang="en">Apple, grapes, pineapple chunks, canned pears (rinsed)</span><span data-lang="tl" class="lang-hidden">Mansanas, ubas, hiwa ng pinya, de-latang peras (binanlawan)</span><span data-lang="ceb" class="lang-hidden">Mansanas, ubas, tinadtad nga pinya, de-lata nga peras (gihugasan)</span><span data-lang="kap" class="lang-hidden">Mansanas, ubas, piraso ning pinya, de-latang peras (binanlawan)</span></td></tr>
+<tr><td><span data-lang="en">Dark cola (Coke, Pepsi)</span><span data-lang="tl" class="lang-hidden">Maitim na cola (Coke, Pepsi)</span><span data-lang="ceb" class="lang-hidden">Itom nga cola (Coke, Pepsi)</span><span data-lang="kap" class="lang-hidden">Maitim a cola (Coke, Pepsi)</span></td><td><span data-lang="en">High phosphoric acid — worst phosphorus source</span><span data-lang="tl" class="lang-hidden">Mataas na phosphoric acid — pinakamasamang pinagmumulan ng phosphorus</span><span data-lang="ceb" class="lang-hidden">Taas nga phosphoric acid — pinakadaotang tinubdan sa phosphorus</span><span data-lang="kap" class="lang-hidden">Matas a phosphoric acid — pekamarok a pikuanan ning phosphorus</span></td><td><span data-lang="en">Water, barley water, unsweetened dalandan juice</span><span data-lang="tl" class="lang-hidden">Tubig, barley water, walang-asukal na dalandan juice</span><span data-lang="ceb" class="lang-hidden">Tubig, barley water, walay-asukal nga dalandan juice</span><span data-lang="kap" class="lang-hidden">Danum, barley water, alang-asukal a dalandan juice</span></td></tr>
+<tr><td><span data-lang="en">Salt substitute (e.g., Nu-Salt)</span><span data-lang="tl" class="lang-hidden">Kapalit ng asin (hal., Nu-Salt)</span><span data-lang="ceb" class="lang-hidden">Kapuli sa asin (pananglitan, Nu-Salt)</span><span data-lang="kap" class="lang-hidden">Kapalit ning asin (alimbawa, Nu-Salt)</span></td><td><span data-lang="en">Contains potassium chloride — dangerous in CKD</span><span data-lang="tl" class="lang-hidden">Naglalaman ng potassium chloride — mapanganib sa CKD</span><span data-lang="ceb" class="lang-hidden">Adunay potassium chloride — delikado sa CKD</span><span data-lang="kap" class="lang-hidden">Atin potassium chloride — mapanganib king CKD</span></td><td><span data-lang="en">Herb-based seasoning, calamansi, pepper — never salt substitutes</span><span data-lang="tl" class="lang-hidden">Pampalasang batay sa herbs, calamansi, paminta — huwag kailanman ang mga kapalit ng asin</span><span data-lang="ceb" class="lang-hidden">Pampalami nga base sa herbs, calamansi, paminta — dili gayod ang mga kapuli sa asin</span><span data-lang="kap" class="lang-hidden">Pampalasa a base king herbs, calamansi, paminta — eka bala gagamit kapalit ning asin</span></td></tr>
 </tbody>
 </table>
-<div class="disclaimer"><strong><span data-lang="en">Important</span><span class="lang-hidden" data-lang="kap">Pakibigay mu pu ing medical patient education text a buring mung i-translate king Kapampangan. Ala kung tinggap a text para i-translate.
-
-Paki-paste mu ing content at i-translate ke king natural a Kapampangan a maintindian da ring taga-Pampanga.</span><span class="lang-hidden" data-lang="tl">Mahalagang Paalala</span><span class="lang-hidden" data-lang="ceb">Importante nga Pahibalo</span>:</strong> Nutritional values are estimates for guidance only. Individual CKD dietary requirements depend on your current lab results, CKD stage, body weight, and comorbidities. Always confirm your specific dietary limits with your nephrologist or renal dietitian.</div>
+<div class="disclaimer"><strong><span data-lang="en">Important</span><span class="lang-hidden" data-lang="kap">Importanteng Paala</span><span class="lang-hidden" data-lang="tl">Mahalagang Paalala</span><span class="lang-hidden" data-lang="ceb">Importante nga Pahibalo</span>:</strong> <span data-lang="en">Nutritional values are estimates for guidance only. Individual CKD dietary requirements depend on your current lab results, CKD stage, body weight, and comorbidities. Always confirm your specific dietary limits with your nephrologist or renal dietitian.</span><span data-lang="tl" class="lang-hidden">Ang mga nutritional value ay mga pagtatantya para sa gabay lamang. Ang indibidwal na pangangailangan sa diyeta sa CKD ay nakadepende sa inyong kasalukuyang resulta ng lab, yugto ng CKD, timbang ng katawan, at mga komorbididad. Palaging kumpirmahin ang inyong tiyak na limitasyon sa diyeta sa inyong nephrologist o renal dietitian.</span><span data-lang="ceb" class="lang-hidden">Ang mga nutritional value mga banabana para sa giya lamang. Ang indibidwal nga panginahanglan sa diyeta sa CKD nagdepende sa inyong kasamtangang resulta sa lab, ang-ang sa CKD, timbang sa lawas, ug mga komorbididad. Kanunay kumpirmaha ang inyong espesipikong limitasyon sa diyeta sa inyong nephrologist o renal dietitian.</span><span data-lang="kap" class="lang-hidden">Ing mga nutritional value mga pagtatantya para king giya mu. Ing indibidwal a kailangan king diyeta king CKD dependi ya king inyu kasalukuyang resulta ning lab, yugtu ning CKD, timbang ning katawan, at mga komorbididad. Pilit yung kumpirman ing inyu tiyak a limitasyun king diyeta king inyu nephrologist o renal dietitian.</span></div>
 </section>
 </main>
 
@@ -2810,5 +2819,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

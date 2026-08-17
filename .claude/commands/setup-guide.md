@@ -184,6 +184,7 @@ python3 patch_published_time.py --guide <filename>         # article:published_t
 python3 patch_reading_time.py --guide <filename>           # "Reading time" estimate in the hero
 python3 patch_references_accordion.py --guide <filename>   # accordion References section before the signature block
 python3 audit_apa_references.py --guide <filename>         # HARD-FAIL gate: every citation must be APA-7 (italic journal, DOI link, year, author block)
+python3 audit_acronym_expansion.py --guide <filename>      # HARD-FAIL gate: every acronym expanded on first body use — Expansion (ACRO) or ACRO (Expansion). CLAUDE.md rule 13
 python3 patch_hero_meta.py --guide <filename>              # hero byline: drop Author, show Published date + References count
 python3 generate_sitemap.py
 python3 generate_latest_guides.py                          # refresh the "Latest guides" strip on guides/index.html (new guide auto-appears)

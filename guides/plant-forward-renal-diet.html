@@ -142,6 +142,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -468,12 +476,22 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  .ov-stat { display: flex; align-items: flex-start; gap: 11px; }
+  /* Evidence Snapshot stat rows — every label (.l) must start at the
+     same x-position regardless of value (.v) width. Approach: the row
+     itself is a 2-col grid with a fixed value column (104px, wide
+     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
+     "30–60%") and a flexible label column. Wider values wrap inside
+     the column rather than pushing the label right. */
+  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
   .ov-stat .v {
-    font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.05; min-width: 52px; flex-shrink: 0;
+    font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 19px; font-weight: 800;
+    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
   }
-  .ov-stat .l { font-size: 11.5px; color: #5a6680; line-height: 1.35; }
+  .ov-stat .l {
+    font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+  }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
     display: flex; align-items: center; gap: 7px;
@@ -1300,8 +1318,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1754,8 +1774,12 @@ html[data-theme="dark"] .md-stat-val{color:#e8eaf0;}
 <script>/* pre-paint physician-mode restore — class applied before first paint, zero CLS.
    Do NOT move this to the bottom of the page or convert it into a
    post-paint restore — that reintroduces the CLS bug patch_mode_cls.py
-   exists to kill. See CLAUDE.md. */
-try{if(localStorage.getItem('wgmr-pfrd-mode')==='physician'){document.body.classList.add('physician-mode');document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('tab-pt'),m=document.getElementById('tab-md');if(p)p.classList.remove('active');if(m)m.classList.add('active');});}}catch(e){}</script>
+   exists to kill. See CLAUDE.md.
+   Falls back to the shared wgmr-visit-persona audience-portal choice
+   (see /guides/ and /guides/calculators.html) only when this guide has
+   no explicit per-guide choice yet; an in-page tab click always wins
+   on every later visit. */
+try{(function(){var v=localStorage.getItem('wgmr-pfrd-mode');if(v===null){var per=localStorage.getItem('wgmr-visit-persona');if(per==='nephrologist'||per==='internist-gp'||per==='dialysis-staff'||per==='dietitian')v='physician';}if(v==='physician'){document.body.classList.add('physician-mode');document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('tab-pt'),m=document.getElementById('tab-md');if(p)p.classList.remove('active');if(m)m.classList.add('active');});}})();}catch(e){}</script>
 
 <header class="site-header">
   <a href="https://www.williamriveromd.com" class="brand">HOME</a><div class="header-lang"><span class="lang-lbl">Lang:</span><button class="lang-btn-g active" id="glb-en" onclick="setGuideLang('en')">EN</button><button class="lang-btn-g" id="glb-tl" onclick="setGuideLang('tl')">TL</button><button class="lang-btn-g" id="glb-ceb" onclick="setGuideLang('ceb')">CEB</button><button class="lang-btn-g" id="glb-kap" onclick="setGuideLang('kap')">KAP</button></div>
@@ -1789,7 +1813,7 @@ try{if(localStorage.getItem('wgmr-pfrd-mode')==='physician'){document.body.class
       <div class="hero-meta">
 <span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-30T01:09:07+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 30, 2026</time></span>
 <span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">9</span></span>
-<span class="hero-readtime"><strong><span data-lang="en">Read time</span><span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span><span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span><span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>:</strong> <time datetime="PT12M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~12 min</time></span>
+<span class="hero-readtime"><strong><span data-lang="en">Read time</span><span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span><span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span><span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>:</strong> <time datetime="PT13M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~13 min</time></span>
 </div>
     <span><strong><span data-lang="en">Last Reviewed</span><span class="lang-hidden" data-lang="tl">Huling Na-review</span><span class="lang-hidden" data-lang="ceb">Katapusang Na-review</span><span class="lang-hidden" data-lang="kap">Karinan Na-review</span>:</strong> <time datetime="2026-05-01" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</time></span>
     </div>

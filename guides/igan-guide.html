@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -141,6 +142,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1309,8 +1318,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -2248,8 +2259,8 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span></button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -2262,8 +2273,8 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
 <div class="ov-stat"><span class="v">34.4%</span><span class="l">of PH GN biopsies &mdash; #1 primary GN (NKTI)</span></div>
-<div class="ov-stat"><span class="v">~98%</span><span class="l">of PH IgAN cases undiagnosed</span></div>
-<div class="ov-stat"><span class="v">HR 2.27</span><span class="l">ESKD risk, Chinese vs White ancestry</span></div>
+<div class="ov-stat"><span class="v">~98%</span><span class="l">of PH IgAN (immunoglobulin A nephropathy) cases undiagnosed</span></div>
+<div class="ov-stat"><span class="v">HR 2.27</span><span class="l">ESKD (end-stage kidney disease) risk, Chinese vs White ancestry</span></div>
 </div>
 <a class="ov-foot" href="#md-epidemiology">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 </div>
@@ -2341,7 +2352,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
   <a class="nav-pill mode-physician-pill" href="#md-clinical">Clinical &amp; DDx</a>
   <a class="nav-pill mode-physician-pill" href="#md-workup">Workup</a>
   <a class="nav-pill mode-physician-pill" href="#md-risk">Risk &amp; Prognosis</a>
-  <a class="nav-pill mode-physician-pill" href="#md-treatment">KDIGO 2025 Rx</a>
+  <a class="nav-pill mode-physician-pill" href="#md-treatment">KDIGO (Kidney Disease: Improving Global Outcomes) 2025 Rx</a>
   <a class="nav-pill mode-physician-pill" href="#md-referral">Referral &amp; Access</a>
   <a class="nav-pill mode-physician-pill" href="#md-monitoring">Monitoring</a>
   <a class="nav-pill mode-physician-pill" href="#md-era2026">ERA 2026</a>
@@ -2387,7 +2398,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
   </div>
   <div class="stat-card">
     <div class="stat-number">56</div>
-    <div class="stat-label"><span data-lang="en">Mean eGFR at time of biopsy in Filipino patients — already Stage 3 CKD</span><span class="lang-hidden" data-lang="tl">Katamtamang eGFR sa oras ng biopsy — Stage 3 na CKD na</span><span class="lang-hidden" data-lang="ceb">Kasagarang eGFR sa panahon sa biopsy — Stage 3 na CKD na</span><span class="lang-hidden" data-lang="kap">Katamtamang eGFR sa oras ning biopsy — Stage 3 na CKD na</span></div>
+    <div class="stat-label"><span data-lang="en">Mean eGFR (estimated glomerular filtration rate) at time of biopsy in Filipino patients — already Stage 3 CKD (chronic kidney disease)</span><span class="lang-hidden" data-lang="tl">Katamtamang eGFR sa oras ng biopsy — Stage 3 na CKD na</span><span class="lang-hidden" data-lang="ceb">Kasagarang eGFR sa panahon sa biopsy — Stage 3 na CKD na</span><span class="lang-hidden" data-lang="kap">Katamtamang eGFR sa oras ning biopsy — Stage 3 na CKD na</span></div>
   </div>
   <div class="stat-card">
     <div class="stat-number">~98%</div>
@@ -2528,7 +2539,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
   <div class="vcard vc-purple">
     <div class="vcard-icon">👨‍👩‍👧</div>
     <h4><span data-lang="en">Family History</span><span class="lang-hidden" data-lang="tl">Kasaysayan sa Pamilya</span><span class="lang-hidden" data-lang="ceb">Kasaysayan sa Pamilya</span><span class="lang-hidden" data-lang="kap">Kasaysayan ning Pamilya</span></h4>
-    <p><span data-lang="en">Some forms of IgAN are hereditary. Alport syndrome, ADPKD, and some FSGS types run in families. If you are diagnosed with IgAN, siblings and parents may need screening. Ask your nephrologist about genetic counselling.</span>
+    <p><span data-lang="en">Some forms of IgAN are hereditary. Alport syndrome, ADPKD (autosomal dominant polycystic kidney disease), and some FSGS (focal segmental glomerulosclerosis) types run in families. If you are diagnosed with IgAN, siblings and parents may need screening. Ask your nephrologist about genetic counselling.</span>
     <span class="lang-hidden" data-lang="tl">Ang ilang anyo ng IgAN ay namamana. Ang Alport syndrome, ADPKD, at ilang uri ng FSGS ay nagmumula sa pamilya. Kung na-diagnose ka ng IgAN, maaaring kailangan ng mga kapatid at magulang na mag-screening. Tanungin ang iyong nephrologist tungkol sa genetic counselling.</span>
     <span class="lang-hidden" data-lang="ceb">Ang pipila ka anyo sa IgAN gipanunod. Ang Alport syndrome, ADPKD, ug pipila ka tipo sa FSGS nagagikan sa pamilya. Kung na-diagnose ka og IgAN, mahimong kinahanglan og screening ang mga igsoon ug ginikanan. Pangutana ang imong nephrologist bahin sa genetic counselling.</span>
     <span class="lang-hidden" data-lang="kap">Ilang anyo ning IgAN namamana. Ing Alport syndrome, ADPKD, at ilang uri ning FSGS nagmumula sa pamilya. Kung na-diagnose ka ning IgAN, maaaring kailangan da ring mga kapatad at magulang na mag-screening. Tanungin ing nephrologist mu tungkol king genetic counselling.</span></p>
@@ -2740,7 +2751,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
   <div class="alert-icon">✓</div>
   <div class="alert-body">
     <h4><span data-lang="en">The key message: early treatment changes everything</span><span class="lang-hidden" data-lang="tl">Ang pangunahing mensahe: binabago ng maagang paggamot ang lahat</span><span class="lang-hidden" data-lang="ceb">Ang pangunahing mensahe: ang sayo nga pagtambal nagbag-o sa tanan</span><span class="lang-hidden" data-lang="kap">Ing pangunahing mensahe: binabago ning maagang paggamot ing lahat</span></h4>
-    <p><span data-lang="en">With appropriate treatment — blood pressure control, maximum RAS blockade, SGLT2 inhibitors, and now targeted therapies — the rate of eGFR decline can be cut in half or more. Patients diagnosed at G1–G2 with proteinuria &lt;0.5 g/day have excellent long-term outcomes. The tragedy in the Philippines is not that the disease is untreatable — it is that most people are diagnosed too late.</span>
+    <p><span data-lang="en">With appropriate treatment — blood pressure control, maximum RAS blockade, SGLT2 (sodium–glucose cotransporter-2) inhibitors, and now targeted therapies — the rate of eGFR decline can be cut in half or more. Patients diagnosed at G1–G2 with proteinuria &lt;0.5 g/day have excellent long-term outcomes. The tragedy in the Philippines is not that the disease is untreatable — it is that most people are diagnosed too late.</span>
     <span class="lang-hidden" data-lang="tl">Sa tamang paggamot — blood pressure control, maximum RAS blockade, SGLT2 inhibitors, at ngayon ay mga targeted na therapy — ang rate ng pagbaba ng eGFR ay maaaring mabawasan ng kalahati o higit pa. Ang mga pasyenteng na-diagnose sa G1–G2 na may proteinuria &lt;0.5 g/araw ay may magandang pangmatagalang kinalabasan. Ang trahedya sa Pilipinas ay hindi na hindi maaring gamutin ang sakit — kundi karamihan ay late na ang diagnosis.</span>
     <span class="lang-hidden" data-lang="ceb">Sa husto nga pagtambal — blood pressure control, maximum RAS blockade, SGLT2 inhibitors, ug karon targeted nga mga therapy — ang rate sa paghulog sa eGFR mahimong mapusgay sa katunga o labaw pa. Ang mga pasyente nga na-diagnose sa G1–G2 nga adunay proteinuria &lt;0.5 g/adlaw adunay maayong pangdugay nga mga resulta. Ang trahedya sa Pilipinas dili nga dili matambal ang sakit — kondili kadaghanan late na ang diagnosis.</span>
     <span class="lang-hidden" data-lang="kap">Sa tamang paggamot — blood pressure control, maximum RAS blockade, SGLT2 inhibitors, at ngeni deng targeted a therapy — ing rate ning pagbaba ning eGFR maaaring mabawasan ning kalahati o higit pa. Deng pasyenteng na-diagnose sa G1–G2 a maki proteinuria &lt;0.5 g/aldo maki magandang pangmatagalang kinalabasan. Ing trahedya king Pilipinas ali na ali maaring gamutin ing sakit — kundi karinan late na ing diagnosis.</span></p>
@@ -2755,7 +2766,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
          alt="Biomedical mechanism schematic of IgA nephropathy: galactose-deficient IgA1 immune complexes deposit in the glomerular mesangium and activate complement, causing mesangial proliferation, hematuria and proteinuria, treated with RAAS blockade, SGLT2 inhibitors, targeted-release budesonide and complement inhibitors"
          style="width:100%;height:auto;border-radius:12px;display:block;">
   </picture>
-  <figcaption><span data-lang="en">Why IgA nephropathy injures the kidney: galactose-deficient IgA1 immune complexes deposit in the glomerular mesangium and activate complement, causing mesangial proliferation with blood and protein in the urine. RAAS blockade, SGLT2 inhibitors, targeted-release budesonide, and complement inhibitors slow the injury.</span><span data-lang="tl" class="lang-hidden">Bakit nakakasira sa bato ang IgA nephropathy: ang galactose-deficient IgA1 immune complexes ay dumidikit sa glomerular mesangium at nag-a-activate ng complement, na nagdudulot ng mesangial proliferation na may dugo at protina sa ihi. Ang RAAS blockade, SGLT2 inhibitors, targeted-release budesonide, at complement inhibitors ang nagpapabagal sa pinsala.</span><span data-lang="ceb" class="lang-hidden">Ngano nga makadaot sa bato ang IgA nephropathy: ang galactose-deficient IgA1 immune complexes mopilit sa glomerular mesangium ug mo-activate sa complement, hinungdan sa mesangial proliferation nga adunay dugo ug protina sa ihi. Ang RAAS blockade, SGLT2 inhibitors, targeted-release budesonide, ug complement inhibitors maoy nagpahinay sa kadaot.</span><span data-lang="kap" class="lang-hidden">Bakit makasira king batu ing IgA nephropathy: ing galactose-deficient IgA1 immune complexes ya dumikit king glomerular mesangium at mag-activate king complement, a magdulot ning mesangial proliferation a atin daya at protina king ihi. Ing RAAS blockade, SGLT2 inhibitors, targeted-release budesonide, at complement inhibitors ing magpabagal king pinsala.</span></figcaption>
+  <figcaption><span data-lang="en">Why IgA nephropathy injures the kidney: galactose-deficient IgA1 immune complexes deposit in the glomerular mesangium and activate complement, causing mesangial proliferation with blood and protein in the urine. RAAS (renin–angiotensin–aldosterone system) blockade, SGLT2 inhibitors, targeted-release budesonide, and complement inhibitors slow the injury.</span><span data-lang="tl" class="lang-hidden">Bakit nakakasira sa bato ang IgA nephropathy: ang galactose-deficient IgA1 immune complexes ay dumidikit sa glomerular mesangium at nag-a-activate ng complement, na nagdudulot ng mesangial proliferation na may dugo at protina sa ihi. Ang RAAS blockade, SGLT2 inhibitors, targeted-release budesonide, at complement inhibitors ang nagpapabagal sa pinsala.</span><span data-lang="ceb" class="lang-hidden">Ngano nga makadaot sa bato ang IgA nephropathy: ang galactose-deficient IgA1 immune complexes mopilit sa glomerular mesangium ug mo-activate sa complement, hinungdan sa mesangial proliferation nga adunay dugo ug protina sa ihi. Ang RAAS blockade, SGLT2 inhibitors, targeted-release budesonide, ug complement inhibitors maoy nagpahinay sa kadaot.</span><span data-lang="kap" class="lang-hidden">Bakit makasira king batu ing IgA nephropathy: ing galactose-deficient IgA1 immune complexes ya dumikit king glomerular mesangium at mag-activate king complement, a magdulot ning mesangial proliferation a atin daya at protina king ihi. Ing RAAS blockade, SGLT2 inhibitors, targeted-release budesonide, at complement inhibitors ing magpabagal king pinsala.</span></figcaption>
 </figure>
 
 <!-- ── PATIENT S7: TREATMENT ─────────────────────── -->
@@ -2800,7 +2811,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
   <div class="alert-icon">🌏</div>
   <div class="alert-body">
     <h4><span data-lang="en">New targeted therapies — coming to Asia, not yet here</span><span class="lang-hidden" data-lang="tl">Bagong targeted therapies — paparating na sa Asia, hindi pa dito</span><span class="lang-hidden" data-lang="ceb">Bag-ong targeted nga mga therapy — maabot na sa Asia, wala pa diri</span><span class="lang-hidden" data-lang="kap">Bagong targeted therapies — paparating na sa Asia, ali pa dito</span></h4>
-    <p><span data-lang="en">Two medications have now received full US FDA approval specifically for IgAN — <strong>Tarpeyo (budesonide delayed-release)</strong> and <strong>Filspari (sparsentan)</strong>. Both are approved in Europe, China, South Korea, Singapore, and Taiwan. Japan's NDA for sparsentan is expected in 2026. The Philippines is in the licensed territory for sparsentan (Renalys/Chugai) but no local registration has been filed yet. Patients who need these drugs urgently can ask their nephrologist about the <strong>Special Access Route (SAR)</strong> — the Philippine FDA's compassionate use pathway for unregistered international medications.</span>
+    <p><span data-lang="en">Two medications have now received full US FDA (Food and Drug Administration) approval specifically for IgAN — <strong>Tarpeyo (budesonide delayed-release)</strong> and <strong>Filspari (sparsentan)</strong>. Both are approved in Europe, China, South Korea, Singapore, and Taiwan. Japan's NDA for sparsentan is expected in 2026. The Philippines is in the licensed territory for sparsentan (Renalys/Chugai) but no local registration has been filed yet. Patients who need these drugs urgently can ask their nephrologist about the <strong>Special Access Route (SAR)</strong> — the Philippine FDA's compassionate use pathway for unregistered international medications.</span>
     <span class="lang-hidden" data-lang="tl">Dalawang gamot ang nakatanggap na ng full US FDA approval para sa IgAN — <strong>Tarpeyo (budesonide delayed-release)</strong> at <strong>Filspari (sparsentan)</strong>. Pareho ay approved na sa Europa, China, South Korea, Singapore, at Taiwan. Ang NDA ng Japan para sa sparsentan ay inaasahan sa 2026. Ang Pilipinas ay nasa licensed territory para sa sparsentan pero hindi pa na-file ang lokal na registration. Ang mga pasyenteng kailangan ng mga gamot na ito ay maaaring magtanong sa kanilang nephrologist tungkol sa <strong>Special Access Route (SAR)</strong>.</span>
     <span class="lang-hidden" data-lang="ceb">Duha ka tambal ang nakadawat na og full US FDA approval para sa IgAN — <strong>Tarpeyo (budesonide delayed-release)</strong> ug <strong>Filspari (sparsentan)</strong>. Pareho approved na sa Europe, China, South Korea, Singapore, ug Taiwan. Ang NDA sa Japan para sa sparsentan gipaabut sa 2026. Ang Pilipinas anaa sa licensed territory para sa sparsentan apan wala pa na-file ang lokal nga registration. Ang mga pasyente nga nagkinahanglan niining mga tambal mahimong mangutana sa ilang nephrologist bahin sa <strong>Special Access Route (SAR)</strong>.</span>
     <span class="lang-hidden" data-lang="kap">Aduang gamut ing nakatanggap na ning full US FDA approval para king IgAN — <strong>Tarpeyo (budesonide delayed-release)</strong> at <strong>Filspari (sparsentan)</strong>. Pareho approved na sa Europa, China, South Korea, Singapore, at Taiwan. Ing NDA ning Japan para king sparsentan inaasahan sa 2026. Ing Pilipinas nasa licensed territory para king sparsentan pero ali pa na-file ing lokal a registration. Deng pasyente a kailangan ning deting mga gamut maaaring magtanong sa nephrologist nila tungkol king <strong>Special Access Route (SAR)</strong>.</span></p>
@@ -2981,7 +2992,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
     </div>
     <div class="feature-card">
       <h4><span class="dot dot-red"></span>Clinically Overt</h4>
-      <p>Synpharyngitic/synenteric macrohematuria (tea/cola-colored urine 1–2 days post-URTI/GI infection — classic); persistent microhematuria + proteinuria; nephrotic syndrome (uncommon, suspect podocytopathy variant); AKI on hematuria (tubular obstruction by RBC casts); rapidly progressive GN (crescentic IgAN — rare, aggressive).</p>
+      <p>Synpharyngitic/synenteric macrohematuria (tea/cola-colored urine 1–2 days post-URTI/GI infection — classic); persistent microhematuria + proteinuria; nephrotic syndrome (uncommon, suspect podocytopathy variant); AKI (acute kidney injury) on hematuria (tubular obstruction by RBC casts); rapidly progressive GN (crescentic IgAN — rare, aggressive).</p>
     </div>
   </div>
   <div>
@@ -3026,7 +3037,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
   </div></div>
   <div class="step"><div class="step-num">4</div><div class="step-body">
     <h4>Risk stratification: International IgAN Prediction Tool</h4>
-    <p>Validated in Chinese, Japanese, European, and Filipino cohorts (NKTI validation, WCN 2024). Inputs: age, sex, eGFR, proteinuria, BP, MEST-C score, ACEi/ARB use. Predicts 5-year risk of 50% eGFR decline or ESKD. Landmark analysis at 1-year post-biopsy provides stronger prediction than at-biopsy model. Guides treatment escalation decisions.</p>
+    <p>Validated in Chinese, Japanese, European, and Filipino cohorts (NKTI validation, WCN 2024). Inputs: age, sex, eGFR, proteinuria, BP, MEST-C score, ACEi (angiotensin-converting enzyme inhibitor)/ARB (angiotensin receptor blocker) use. Predicts 5-year risk of 50% eGFR decline or ESKD. Landmark analysis at 1-year post-biopsy provides stronger prediction than at-biopsy model. Guides treatment escalation decisions.</p>
   </div></div>
 </div>
 </section>
@@ -3056,7 +3067,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
 <tr><td>Hypertension</td><td>Independent predictor; also reflects glomerular pressure</td><td>Target BP &lt;130/80 per KDIGO 2025</td></tr>
 <tr><td>Oxford T1/T2 score</td><td>Tubular atrophy/interstitial fibrosis — irreversible component</td><td>T1 (25–50% cortical fibrosis): HR ~2.5 for ESKD; T2 (&gt;50%): HR ~4+</td></tr>
 <tr><td>Oxford E1 score</td><td>Endocapillary proliferation — active/reversible component</td><td>Indicates acute immunological activity; predicts steroid response</td></tr>
-<tr><td>Oxford C1/C2 score</td><td>Crescents — rapid progression risk</td><td>C2 (&gt;25% crescents): RPGN protocol</td></tr>
+<tr><td>Oxford C1/C2 score</td><td>Crescents — rapid progression risk</td><td>C2 (&gt;25% crescents): RPGN (rapidly progressive glomerulonephritis) protocol</td></tr>
 <tr><td>Pacific Asian ethnicity</td><td>Genetic susceptibility + histological severity</td><td>HR 1.50–2.27 (Japanese/Chinese); Filipino not separately validated</td></tr>
 <tr><td>Persistent microhematuria</td><td>KDIGO 2025: now recognized as independent risk factor</td><td>Resolution of microhematuria emerging as therapeutic endpoint</td></tr>
 </tbody>
@@ -3080,7 +3091,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
       <div class="algo-step-num">1</div>
       <div class="algo-content">
         <h5>Supportive Care Foundation <span class="algo-badge b-all">ALL PATIENTS</span></h5>
-        <p>Maximize RAS blockade (ACEi or ARB to maximum tolerated dose — irbesartan 300mg, telmisartan 80mg, enalapril 40mg, etc.). Target UPCR &lt;0.5 g/g, ideally &lt;0.3 g/g. BP target &lt;130/80 mmHg. Lifestyle: low sodium (&lt;2 g/day), avoid NSAIDs, quit smoking. KDIGO 2025 proteinuria target is more aggressive than the previous 1 g/day threshold.</p>
+        <p>Maximize RAS blockade (ACEi or ARB to maximum tolerated dose — irbesartan 300mg, telmisartan 80mg, enalapril 40mg, etc.). Target UPCR &lt;0.5 g/g, ideally &lt;0.3 g/g. BP target &lt;130/80 mmHg. Lifestyle: low sodium (&lt;2 g/day), avoid NSAIDs (non-steroidal anti-inflammatory drugs), quit smoking. KDIGO 2025 proteinuria target is more aggressive than the previous 1 g/day threshold.</p>
       </div>
     </div>
     <div class="algo-row">
@@ -3094,7 +3105,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
       <div class="algo-step-num">3</div>
       <div class="algo-content">
         <h5>Sparsentan (Replace ARB) <span class="algo-badge b-2b">UPCR ≥1.0–1.5 g/g persisting</span></h5>
-        <p>Dual ETA + AT1 receptor antagonist. PROTECT trial (n=404): −49.8% UPCR vs irbesartan at 36 weeks; chronic eGFR slope +1.1 mL/min/yr (P=0.037). Full US FDA + EU approval 2024. South Korea/Taiwan/Singapore approved. Japan NDA 2026 (Chugai/Renalys — Phase III: −58.5% UPCR in Japanese patients). <strong>Philippines: SAR access only.</strong> Replaces ARB in the supportive backbone — non-immunosuppressive, compatible with SGLT2i. <span class="kdigo-2b">KDIGO 2B</span><br><em>REMS requirements (US/EU): LFT monitoring q3 months; teratogenic (contraindicated in pregnancy).</em></p>
+        <p>Dual ETA + AT1 receptor antagonist. PROTECT trial (n=404): −49.8% UPCR vs irbesartan at 36 weeks; chronic eGFR slope +1.1 mL/min/yr (P=0.037). Full US FDA + EU approval 2024. South Korea/Taiwan/Singapore approved. Japan NDA 2026 (Chugai/Renalys — Phase III: −58.5% UPCR in Japanese patients). <strong>Philippines: SAR access only.</strong> Replaces ARB in the supportive backbone — non-immunosuppressive, compatible with SGLT2i (sodium–glucose cotransporter-2 inhibitor). <span class="kdigo-2b">KDIGO 2B</span><br><em>REMS requirements (US/EU): LFT (liver function test) monitoring q3 months; teratogenic (contraindicated in pregnancy).</em></p>
       </div>
     </div>
     <div class="algo-row">
@@ -3115,7 +3126,7 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
       <div class="algo-step-num">6</div>
       <div class="algo-content">
         <h5>Rapidly Progressive IgAN <span class="algo-badge" style="background:var(--red);">URGENT — ≥50% eGFR decline in ≤3 months</span></h5>
-        <p>Oxford C2 (crescentic IgAN) or rapid GFR decline: cyclophosphamide + high-dose systemic glucocorticoids per ANCA vasculitis KDIGO 2024 protocol. Rituximab insufficient evidence — not recommended. Repeat biopsy indicated if no response. Ensure transfer to institution with CRRT capability if AKI occurs.</p>
+        <p>Oxford C2 (crescentic IgAN) or rapid GFR decline: cyclophosphamide + high-dose systemic glucocorticoids per ANCA vasculitis KDIGO 2024 protocol. Rituximab insufficient evidence — not recommended. Repeat biopsy indicated if no response. Ensure transfer to institution with CRRT (continuous renal replacement therapy) capability if AKI occurs.</p>
       </div>
     </div>
   </div>
@@ -3221,9 +3232,9 @@ try{(function(){var v=localStorage.getItem('wgmr-igan-mode');if(v===null){var pe
 <tr><td>Blood pressure</td><td>&lt;130/80 mmHg</td><td>Every visit; home BP log encouraged</td><td>Ambulatory BP preferred if white-coat or masked HTN suspected</td></tr>
 <tr><td>Urine microscopy / hematuria</td><td>Resolution of microhematuria now a KDIGO 2025 emerging endpoint</td><td>Every 3–6 months</td><td>Persistent hematuria independently associated with progression; correlates with active inflammation</td></tr>
 <tr><td>Serum potassium</td><td>3.5–5.5 mEq/L</td><td>Every 3 months on RAS blockade + SGLT2i</td><td>Hyperkalemia risk with dual RAS/SGLT2i. Finerenone if indicated for additional renoprotection.</td></tr>
-<tr><td>HbA1c / glucose</td><td>HbA1c 7–8% (if DM comorbid)</td><td>Every 3–6 months</td><td>SGLT2i adds glycaemic benefit in DM; hypoglycaemia risk low in non-DM</td></tr>
+<tr><td>HbA1c (glycated hemoglobin) / glucose</td><td>HbA1c 7–8% (if DM comorbid)</td><td>Every 3–6 months</td><td>SGLT2i adds glycaemic benefit in DM; hypoglycaemia risk low in non-DM</td></tr>
 <tr><td>Repeat biopsy</td><td>Indicated if: unexplained eGFR decline, treatment non-response, new nephrotic-range proteinuria</td><td>Not routine — per clinical indication</td><td>Oxford MEST-C trajectory on repeat biopsy guides treatment intensification or withdrawal</td></tr>
-<tr><td>Lipids / cardiovascular risk</td><td>LDL &lt;55 mg/dL (very high risk), LDL &lt;70 mg/dL (high risk) per 2026 ACC/AHA</td><td>Annually</td><td>IgAN with persistent proteinuria = high CV risk; statin use should be optimized</td></tr>
+<tr><td>Lipids / cardiovascular risk</td><td>LDL (low-density lipoprotein) &lt;55 mg/dL (very high risk), LDL &lt;70 mg/dL (high risk) per 2026 ACC/AHA (American Heart Association)</td><td>Annually</td><td>IgAN with persistent proteinuria = high CV risk; statin use should be optimized</td></tr>
 </tbody>
 </table>
 
@@ -3618,5 +3629,6 @@ document.querySelectorAll('.section[id]').forEach(s=>observer.observe(s));
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

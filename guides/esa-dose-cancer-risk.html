@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -141,6 +142,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1309,8 +1318,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1680,8 +1691,8 @@ try{(function(){var v=localStorage.getItem('wgmr-esa-cancer-mode');if(v===null){
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1716,11 +1727,11 @@ try{(function(){var v=localStorage.getItem('wgmr-esa-cancer-mode');if(v===null){
   <img fetchpriority="high" loading="eager" src="../images/esa-dose-cancer-risk-hero.png" width="1254" height="1254"
        alt="More EPO is not stronger blood — once hemoglobin reaches the 10 to 11.5 g/dL target, a higher EPO dose adds risk, not benefit, including a 2026 cancer signal in older dialysis patients."
        style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.1);">
-  <figcaption><p class="fig-desc"><span data-lang="en">Once hemoglobin is in the safe target band, a higher EPO dose adds risk, not benefit.</span><span data-lang="tl" class="lang-hidden">Kapag nasa ligtas na target na ang hemoglobin, ang mas mataas na dosis ng EPO ay nagdadagdag ng panganib, hindi benepisyo.</span><span data-lang="ceb" class="lang-hidden">Kung naa na sa luwas nga target ang hemoglobin, ang mas taas nga dosis sa EPO magdugang og peligro, dili benepisyo.</span><span data-lang="kap" class="lang-hidden">Nung atyu na king ligtas a target ing hemoglobin, ing mas matas a dosis ning EPO magdagdag yang peligru, ali benepisyu.</span></p></figcaption>
+  <figcaption><p class="fig-desc"><span data-lang="en">Once hemoglobin is in the safe target band, a higher EPO (erythropoietin) dose adds risk, not benefit.</span><span data-lang="tl" class="lang-hidden">Kapag nasa ligtas na target na ang hemoglobin, ang mas mataas na dosis ng EPO ay nagdadagdag ng panganib, hindi benepisyo.</span><span data-lang="ceb" class="lang-hidden">Kung naa na sa luwas nga target ang hemoglobin, ang mas taas nga dosis sa EPO magdugang og peligro, dili benepisyo.</span><span data-lang="kap" class="lang-hidden">Nung atyu na king ligtas a target ing hemoglobin, ing mas matas a dosis ning EPO magdagdag yang peligru, ali benepisyu.</span></p></figcaption>
 </figure>
 
 <div class="intro-callout">
-<p><strong><span data-lang="en">“Doc, can you just increase my EPO? PhilHealth covers it anyway.”</span><span data-lang="tl" class="lang-hidden">“Doc, pwede bang dagdagan na lang ang EPO ko? Sagot naman ng PhilHealth.”</span><span data-lang="ceb" class="lang-hidden">“Doc, pwede ba dugangan na lang akong EPO? Sagot man sa PhilHealth.”</span><span data-lang="kap" class="lang-hidden">“Doc, malyari mu wari dagdagan ne mu ing kakung EPO? Sagut na man ning PhilHealth.”</span></strong></p>
+<p><strong><span data-lang="en">“Doc, can you just increase my EPO? PhilHealth (Philippine Health Insurance Corporation) covers it anyway.”</span><span data-lang="tl" class="lang-hidden">“Doc, pwede bang dagdagan na lang ang EPO ko? Sagot naman ng PhilHealth.”</span><span data-lang="ceb" class="lang-hidden">“Doc, pwede ba dugangan na lang akong EPO? Sagot man sa PhilHealth.”</span><span data-lang="kap" class="lang-hidden">“Doc, malyari mu wari dagdagan ne mu ing kakung EPO? Sagut na man ning PhilHealth.”</span></strong></p>
 <p><span data-lang="en">This is one of the most common requests in the dialysis unit. It feels logical — if EPO builds blood, more EPO should mean more energy. But the science says the opposite once you reach target. This guide explains why, in plain language, and what actually fixes the tiredness.</span>
 <span data-lang="tl" class="lang-hidden">Isa ito sa pinakakaraniwang hiling sa dialysis unit. Mukhang lohikal — kung gumagawa ng dugo ang EPO, mas maraming EPO dapat mas maraming lakas. Ngunit kabaligtaran ang sinasabi ng agham kapag umabot ka na sa target. Ipinapaliwanag ng gabay na ito kung bakit, sa simpleng salita, at kung ano talaga ang lunas sa pagod.</span>
 <span data-lang="ceb" class="lang-hidden">Usa kini sa pinakakomon nga hangyo sa dialysis unit. Morag lohikal — kung maghimo og dugo ang EPO, mas daghang EPO angay mas daghang kusog. Apan baliktad ang giingon sa siyensiya kung naabot na nimo ang target. Gipasabot niini nga giya ngano, sa yano nga pinulongan, ug unsa gyud ang tambal sa kakapoy.</span>
@@ -1802,7 +1813,7 @@ try{(function(){var v=localStorage.getItem('wgmr-esa-cancer-mode');if(v===null){
 
 <section class="section">
 <h2><span data-lang="en">This Is Not New: The Older Trials</span><span data-lang="tl" class="lang-hidden">Hindi Ito Bago: Ang Mga Naunang Pag-aaral</span><span data-lang="ceb" class="lang-hidden">Dili Kini Bag-o: Ang mga Naunang Pagtuon</span><span data-lang="kap" class="lang-hidden">E Ya Bayu: Ding Milabas a Pamanyaliksik</span></h2>
-<p><span data-lang="en">Three large randomized trials (CHOIR, CREATE, and TREAT) already tested the idea of giving more EPO to reach higher hemoglobin. All found the same thing: aiming higher caused <strong>more strokes, more blood clots, and no real gain in quality of life</strong>. In TREAT, patients with a history of cancer who got high-dose ESA had more cancer deaths. Because of this, the US FDA places a boxed warning on these drugs.</span>
+<p><span data-lang="en">Three large randomized trials (CHOIR, CREATE, and TREAT) already tested the idea of giving more EPO to reach higher hemoglobin. All found the same thing: aiming higher caused <strong>more strokes, more blood clots, and no real gain in quality of life</strong>. In TREAT, patients with a history of cancer who got high-dose ESA had more cancer deaths. Because of this, the US FDA (Food and Drug Administration) places a boxed warning on these drugs.</span>
 <span data-lang="tl" class="lang-hidden">Tatlong malalaking pag-aaral (CHOIR, CREATE, at TREAT) ang sumubok na sa ideyang magbigay ng mas maraming EPO para umabot sa mas mataas na hemoglobin. Lahat ay nakakita ng parehong bagay: ang pagtataas ay nagdulot ng <strong>mas maraming stroke, mas maraming clots, at walang tunay na pakinabang sa kalidad ng buhay</strong>. Sa TREAT, ang mga pasyenteng may kasaysayan ng kanser na nakatanggap ng mataas na ESA ay mas maraming namatay sa kanser. Dahil dito, naglagay ang US FDA ng boxed warning sa mga gamot na ito.</span>
 <span data-lang="ceb" class="lang-hidden">Tulo ka dagkong pagtuon (CHOIR, CREATE, ug TREAT) misulay na sa ideya nga maghatag og mas daghang EPO aron makaabot sa mas taas nga hemoglobin. Tanan nakakaplag sa samang butang: ang pagpataas nagdala og <strong>mas daghang stroke, mas daghang clots, ug walay tinuod nga ganansiya sa kalidad sa kinabuhi</strong>. Sa TREAT, ang mga pasyente nga adunay kasaysayan sa kanser nga nakadawat og taas nga ESA mas daghang namatay sa kanser. Tungod niini, ang US FDA nagbutang og boxed warning niini nga tambal.</span>
 <span data-lang="kap" class="lang-hidden">Atlung maragul a pamanyaliksik (CHOIR, CREATE, at TREAT) ing sinubuk na king ideyang mibie tamung dakal a EPO para miras king mas matas a hemoglobin. Anggang ila ametung da ing kalupang bage: ing pamanyaka migdala yang <strong>mas dakal a stroke, mas dakal a clots, at alang tutuung pakinabang king kalidad ning bie</strong>. King TREAT, deting pasyente a atin kasaysayan king kanser a mింakua matas a ESA mas dakal lang mete king kanser. Uli na niti, miglage ya ing US FDA boxed warning karing aspirin a deti.</span></p>
@@ -1956,7 +1967,7 @@ try{(function(){var v=localStorage.getItem('wgmr-esa-cancer-mode');if(v===null){
 <!-- ════════════════ EMBEDDED CALCULATOR 2: IRON STATUS ════════════════ -->
 <section class="section">
 <h2><span data-lang="en">Check First: Is It Really Low Iron?</span><span data-lang="tl" class="lang-hidden">Suriin Muna: Kulang ba Talaga sa Iron?</span><span data-lang="ceb" class="lang-hidden">Susiha Una: Kulang ba Gyud sa Iron?</span><span data-lang="kap" class="lang-hidden">Lawan Pamu: Talagang Kulang ya king Iron?</span></h2>
-<p><span data-lang="en">Two blood tests — <strong>TSAT</strong> and <strong>ferritin</strong> — tell whether iron is the problem. Often, fixing iron raises hemoglobin and energy with <em>no extra EPO at all</em>.</span>
+<p><span data-lang="en">Two blood tests — <strong>TSAT</strong> (transferrin saturation) and <strong>ferritin</strong> — tell whether iron is the problem. Often, fixing iron raises hemoglobin and energy with <em>no extra EPO at all</em>.</span>
 <span data-lang="tl" class="lang-hidden">Dalawang blood test — <strong>TSAT</strong> at <strong>ferritin</strong> — ang nagsasabi kung iron ang problema. Madalas, ang pag-aayos ng iron ay nagtataas ng hemoglobin at lakas nang <em>walang dagdag na EPO</em>.</span>
 <span data-lang="ceb" class="lang-hidden">Duha ka blood test — <strong>TSAT</strong> ug <strong>ferritin</strong> — ang mosulti kung iron ang problema. Sagad, ang pag-ayo sa iron magpataas sa hemoglobin ug kusog nga <em>walay dugang nga EPO</em>.</span>
 <span data-lang="kap" class="lang-hidden">Aduang blood test — <strong>TSAT</strong> at <strong>ferritin</strong> — ing sasabi nung iron ing problema. Karaniwan, ing pamanuldu king iron migpataas ya king hemoglobin at sikan a <em>alang dagdag a EPO</em>.</span></p>
@@ -2681,5 +2692,6 @@ function calcESAInit() {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

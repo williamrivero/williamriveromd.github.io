@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1809,7 +1820,7 @@ body.dark .related-card-title {
         <source srcset="../images/pwd-card-ckd-hero.webp" type="image/webp">
         <img src="../images/pwd-card-ckd-hero.png" loading="lazy" width="1731" height="909" alt="Filipino CKD patient receiving a PWD identification card at an LGU office, with PWD card benefits — 20% discount, transport concessions, medicine savings, priority services" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:12px;">
       </picture>
-      <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;"><span data-lang="en">A Filipino CKD patient receiving a PWD card at an LGU office — the 20% discount applies to dialysis, medicines, transport, and outpatient services.</span><span data-lang="tl" class="lang-hidden">Isang Filipino na pasyenteng may CKD na tumatanggap ng PWD card sa LGU — ang 20% diskwento ay para sa dialysis, gamot, transportasyon, at mga outpatient na serbisyo.</span><span data-lang="ceb" class="lang-hidden">Usa ka Filipino nga pasyente nga adunay CKD nga gidawat ang PWD card sa LGU — ang 20% diskwento alang sa dialysis, mga tambal, transportasyon, ug mga serbisyo sa outpatient.</span><span data-lang="kap" class="lang-hidden">Metung a Filipino a pasyenteng may CKD a tumatanggap ning PWD card king LGU — ing 20% diskwento ya para king dialysis, gamut, transportasyon, at deng serbisyong outpatient.</span></figcaption>
+      <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;"><span data-lang="en">A Filipino CKD (chronic kidney disease) patient receiving a PWD (person with disability) card at an LGU office — the 20% discount applies to dialysis, medicines, transport, and outpatient services.</span><span data-lang="tl" class="lang-hidden">Isang Filipino na pasyenteng may CKD na tumatanggap ng PWD card sa LGU — ang 20% diskwento ay para sa dialysis, gamot, transportasyon, at mga outpatient na serbisyo.</span><span data-lang="ceb" class="lang-hidden">Usa ka Filipino nga pasyente nga adunay CKD nga gidawat ang PWD card sa LGU — ang 20% diskwento alang sa dialysis, mga tambal, transportasyon, ug mga serbisyo sa outpatient.</span><span data-lang="kap" class="lang-hidden">Metung a Filipino a pasyenteng may CKD a tumatanggap ning PWD card king LGU — ing 20% diskwento ya para king dialysis, gamut, transportasyon, at deng serbisyong outpatient.</span></figcaption>
     </figure>
     <div class="section-tag">
       <span data-lang="en">Eligibility</span>
@@ -1964,15 +1975,15 @@ body.dark .related-card-title {
         <tbody>
           <tr>
             <td><strong>20%</strong> <span data-lang="en">Discount — Dialysis</span><span data-lang="tl" class="lang-hidden">Diskwento — Dialysis</span><span data-lang="ceb" class="lang-hidden">Diskwento — Dialysis</span><span data-lang="kap" class="lang-hidden">Diskwento — Dialysis</span></td>
-            <td><span data-lang="en">All dialysis sessions (hemodialysis and peritoneal dialysis) — applied to your out-of-pocket portion after PhilHealth</span><span data-lang="tl" class="lang-hidden">Lahat ng sesyon ng dialysis (hemodialysis at peritoneal dialysis) — inilalapat sa inyong out-of-pocket na bahagi pagkatapos ng PhilHealth</span><span data-lang="ceb" class="lang-hidden">Tanan nga mga sesyon sa dialysis (hemodialysis ug peritoneal dialysis) — gi-apply sa imong out-of-pocket nga bahin pagkahuman sa PhilHealth</span><span data-lang="kap" class="lang-hidden">Lahat ning deng sesyon ning dialysis (hemodialysis at peritoneal dialysis) — inilalapat sa inyong out-of-pocket na bahagi pagkatapos ning PhilHealth</span></td>
+            <td><span data-lang="en">All dialysis sessions (hemodialysis and peritoneal dialysis) — applied to your out-of-pocket portion after PhilHealth (Philippine Health Insurance Corporation)</span><span data-lang="tl" class="lang-hidden">Lahat ng sesyon ng dialysis (hemodialysis at peritoneal dialysis) — inilalapat sa inyong out-of-pocket na bahagi pagkatapos ng PhilHealth</span><span data-lang="ceb" class="lang-hidden">Tanan nga mga sesyon sa dialysis (hemodialysis ug peritoneal dialysis) — gi-apply sa imong out-of-pocket nga bahin pagkahuman sa PhilHealth</span><span data-lang="kap" class="lang-hidden">Lahat ning deng sesyon ning dialysis (hemodialysis at peritoneal dialysis) — inilalapat sa inyong out-of-pocket na bahagi pagkatapos ning PhilHealth</span></td>
           </tr>
           <tr>
             <td><strong>20%</strong> <span data-lang="en">Discount — Medicines</span><span data-lang="tl" class="lang-hidden">Diskwento — Gamot</span><span data-lang="ceb" class="lang-hidden">Diskwento — mga Tambal</span><span data-lang="kap" class="lang-hidden">Diskwento — Gamut</span></td>
-            <td><span data-lang="en">Prescription medicines: immunosuppressants, EPO, phosphate binders, antihypertensives, and all other prescribed drugs</span><span data-lang="tl" class="lang-hidden">Mga gamot na may reseta: immunosuppressants, EPO, phosphate binders, antihypertensives, at lahat ng iba pang inireseta na gamot</span><span data-lang="ceb" class="lang-hidden">Mga tambal nga adunay reseta: immunosuppressants, EPO, phosphate binders, antihypertensives, ug tanan pang giresetang tambal</span><span data-lang="kap" class="lang-hidden">Deng gamut na may reseta: immunosuppressants, EPO, phosphate binders, antihypertensives, at lahat ning iba pang inireseta na gamut</span></td>
+            <td><span data-lang="en">Prescription medicines: immunosuppressants, EPO (erythropoietin), phosphate binders, antihypertensives, and all other prescribed drugs</span><span data-lang="tl" class="lang-hidden">Mga gamot na may reseta: immunosuppressants, EPO, phosphate binders, antihypertensives, at lahat ng iba pang inireseta na gamot</span><span data-lang="ceb" class="lang-hidden">Mga tambal nga adunay reseta: immunosuppressants, EPO, phosphate binders, antihypertensives, ug tanan pang giresetang tambal</span><span data-lang="kap" class="lang-hidden">Deng gamut na may reseta: immunosuppressants, EPO, phosphate binders, antihypertensives, at lahat ning iba pang inireseta na gamut</span></td>
           </tr>
           <tr>
             <td><strong>20%</strong> <span data-lang="en">Discount — Medical/Lab Services</span><span data-lang="tl" class="lang-hidden">Diskwento — Medikal/Lab na Serbisyo</span><span data-lang="ceb" class="lang-hidden">Diskwento — Medikal/Lab nga Serbisyo</span><span data-lang="kap" class="lang-hidden">Diskwento — Medikal/Lab Serbisyo</span></td>
-            <td><span data-lang="en">Creatinine, eGFR, CBC, PTH, dialysis-related labs, and other outpatient medical services</span><span data-lang="tl" class="lang-hidden">Creatinine, eGFR, CBC, PTH, mga lab na may kaugnayan sa dialysis, at iba pang mga serbisyong medikal na outpatient</span><span data-lang="ceb" class="lang-hidden">Creatinine, eGFR, CBC, PTH, mga lab nga may kalabtan sa dialysis, ug uban pang mga serbisyo sa medikal nga outpatient</span><span data-lang="kap" class="lang-hidden">Creatinine, eGFR, CBC, PTH, deng lab na may kaugnayan sa dialysis, at iba pang deng serbisyong medikal na outpatient</span></td>
+            <td><span data-lang="en">Creatinine, eGFR, CBC (complete blood count), PTH (parathyroid hormone), dialysis-related labs, and other outpatient medical services</span><span data-lang="tl" class="lang-hidden">Creatinine, eGFR, CBC, PTH, mga lab na may kaugnayan sa dialysis, at iba pang mga serbisyong medikal na outpatient</span><span data-lang="ceb" class="lang-hidden">Creatinine, eGFR, CBC, PTH, mga lab nga may kalabtan sa dialysis, ug uban pang mga serbisyo sa medikal nga outpatient</span><span data-lang="kap" class="lang-hidden">Creatinine, eGFR, CBC, PTH, deng lab na may kaugnayan sa dialysis, at iba pang deng serbisyong medikal na outpatient</span></td>
           </tr>
           <tr>
             <td><strong>20%</strong> <span data-lang="en">Discount — Medical Equipment</span><span data-lang="tl" class="lang-hidden">Diskwento — Medikal na Kagamitan</span><span data-lang="ceb" class="lang-hidden">Diskwento — Medikal nga Kagamitan</span><span data-lang="kap" class="lang-hidden">Diskwento — Medikal Kagamitan</span></td>
@@ -2100,7 +2111,7 @@ body.dark .related-card-title {
           <span data-lang="kap" class="lang-hidden"><strong>1 bagong 1×1 na ID photo</strong> (puting background)</span>
         </li>
         <li>
-          <span data-lang="en"><strong>PSA Birth Certificate</strong> (original or certified true copy)</span>
+          <span data-lang="en"><strong>PSA (Philippine Statistics Authority) Birth Certificate</strong> (original or certified true copy)</span>
           <span data-lang="tl" class="lang-hidden"><strong>PSA Birth Certificate</strong> (orihinal o certified true copy)</span>
           <span data-lang="ceb" class="lang-hidden"><strong>PSA Birth Certificate</strong> (orihinal o certified true copy)</span>
           <span data-lang="kap" class="lang-hidden"><strong>PSA Birth Certificate</strong> (orihinal o certified true copy)</span>
@@ -2651,7 +2662,7 @@ body.dark .related-card-title {
           <span data-lang="kap" class="lang-hidden">Sinasaklaw ba ning PWD card deng dialysis consumables na binibili ko mismo (hal., deng PD bag)?</span>
         </h4>
         <p>
-          <span data-lang="en">Yes — PD bags, tubing sets, and other prescribed dialysis consumables sold at pharmacies or medical supply stores qualify for the 20% PWD discount and VAT exemption when purchased with a valid prescription and PWD ID.</span>
+          <span data-lang="en">Yes — PD (peritoneal dialysis) bags, tubing sets, and other prescribed dialysis consumables sold at pharmacies or medical supply stores qualify for the 20% PWD discount and VAT exemption when purchased with a valid prescription and PWD ID.</span>
           <span data-lang="tl" class="lang-hidden">Oo — ang mga PD bag, tubing set, at iba pang inireseta na dialysis consumable na ibinebenta sa mga parmasya o tindahan ng medikal na kagamitan ay kwalipikado para sa 20% na diskwento ng PWD at VAT exemption kapag binili gamit ang isang wastong reseta at PWD ID.</span>
           <span data-lang="ceb" class="lang-hidden">Oo — ang mga PD bag, tubing set, ug uban pang giresetang dialysis consumable nga gibaligya sa mga parmasya o tindahan sa medikal nga kagamitan kwalipikado alang sa 20% nga diskwento sa PWD ug VAT exemption kung gipalit gamit ang balido nga reseta ug PWD ID.</span>
           <span data-lang="kap" class="lang-hidden">Ewa — deng PD bag, tubing set, at iba pang inireseta na dialysis consumable na ibinebenta sa deng parmasya o tindahan ning medikal na kagamitan ya kwalipikado para king 20% diskwento ning PWD at VAT exemption kapag binili gamit ing wastong reseta at PWD ID.</span>
@@ -2874,5 +2885,6 @@ function setGuideLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

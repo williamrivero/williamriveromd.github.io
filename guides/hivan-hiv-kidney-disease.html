@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1678,8 +1689,8 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span></button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span></button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1693,7 +1704,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">23.35%</span><span class="l">AKI prevalence in PLHIV (meta-analysis)</span></div>
+<div class="ov-stat"><span class="v">23.35%</span><span class="l">acute kidney injury (AKI) prevalence in PLHIV (meta-analysis)</span></div>
 <div class="ov-stat"><span class="v">OR &gt;29</span><span class="l">HIVAN risk, APOL1 two-allele carriers</span></div>
 <div class="ov-stat"><span class="v">4&ndash;12 wk</span><span class="l">Proteinuria response to ART suppression</span></div>
 </div>
@@ -1701,9 +1712,9 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
 </div>
 </aside>
 <div class="hero-copy">
-<div class="hero-tag">HIV &middot; Kidney Disease &middot; Patient Guide</div>
-<h1>HIVAN: The Kidney Disease You Can <em>Fight Back Against</em></h1>
-<p class="hero-sub"><em>HIV can harm your kidneys — but starting treatment changes everything</em></p>
+<div class="hero-tag">HIV (human immunodeficiency virus) &middot; Kidney Disease &middot; Patient Guide</div>
+<h1><span data-lang="en">HIVAN: The Kidney Disease You Can <em>Fight Back Against</em></span><span data-lang="tl" class="lang-hidden">HIVAN: Ang Sakit sa Bato na Kaya Mong <em>Labanan</em></span><span data-lang="ceb" class="lang-hidden">HIVAN: Ang Sakit sa Kidney nga <em>Masukol</em> Nimo</span><span data-lang="kap" class="lang-hidden">HIVAN: Ing Sakit ning Batu a Agyu Mung <em>Salangsangan</em></span></h1>
+<p class="hero-sub"><span data-lang="en"><em>HIV can harm your kidneys — but starting treatment changes everything</em></span><span data-lang="tl" class="lang-hidden"><em>Maaaring makapinsala ang HIV sa inyong mga bato — ngunit binabago ng pagsisimula ng gamutan ang lahat</em></span><span data-lang="ceb" class="lang-hidden"><em>Makadaot ang HIV sa imong mga kidney — apan ang pagsugod sa tambal mag-usab sa tanan</em></span><span data-lang="kap" class="lang-hidden"><em>Malyaring makasira ing HIV karing bato mu — dapot ing pamagsimula ning gamut babago ne ing anggang bagay</em></span></p>
 <div class="hero-meta">
 <span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
 <span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">7</span></span>
@@ -1803,7 +1814,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
       <div class="step-num">1</div>
       <div class="step-body">
         <h4><span data-lang="en">Blood test (creatinine and eGFR)</span><span data-lang="tl" class="lang-hidden">Pagsusuri ng dugo (creatinine at eGFR)</span><span data-lang="ceb" class="lang-hidden">Pagsusi sa dugo (creatinine ug eGFR)</span><span data-lang="kap" class="lang-hidden">Pagsusuri ning dugu (creatinine at eGFR)</span></h4>
-        <p><span data-lang="en">This measures how well your kidneys filter waste. Your doctor calculates your eGFR — a number that tells you what percentage of kidney function you have left. Normal is above 60.</span><span data-lang="tl" class="lang-hidden">Sinusukat nito kung gaano kahusay ang mga bato mo sa pag-filter ng mga basura. Kinakalkula ng doktor mo ang iyong eGFR — isang numero na nagsasabi kung anong porsyento ng function ng bato ang natitira pa sa iyo. Ang normal ay higit sa 60.</span><span data-lang="ceb" class="lang-hidden">Gisukat niini kung unsa ka maayo ang imong mga bato sa pagsala sa basura. Gicomputar sa imong doktor ang imong eGFR — usa ka numero nga nagsulti kung unsa ka porsyento ang function sa bato ang anaa pa kanimo. Ang normal mao ang labaw sa 60.</span><span data-lang="kap" class="lang-hidden">Iting susukat kung gaano kahusay ing mga bato mu a mag-filter ning mga dumi. Kinakalkula ning doktor mu ing eGFR mu — metung a numero a magsabi kung nanung porsyento ning function ning bato ing natatira pa keka. Ing normal tataas sa 60.</span></p>
+        <p><span data-lang="en">This measures how well your kidneys filter waste. Your doctor calculates your eGFR (estimated glomerular filtration rate) — a number that tells you what percentage of kidney function you have left. Normal is above 60.</span><span data-lang="tl" class="lang-hidden">Sinusukat nito kung gaano kahusay ang mga bato mo sa pag-filter ng mga basura. Kinakalkula ng doktor mo ang iyong eGFR — isang numero na nagsasabi kung anong porsyento ng function ng bato ang natitira pa sa iyo. Ang normal ay higit sa 60.</span><span data-lang="ceb" class="lang-hidden">Gisukat niini kung unsa ka maayo ang imong mga bato sa pagsala sa basura. Gicomputar sa imong doktor ang imong eGFR — usa ka numero nga nagsulti kung unsa ka porsyento ang function sa bato ang anaa pa kanimo. Ang normal mao ang labaw sa 60.</span><span data-lang="kap" class="lang-hidden">Iting susukat kung gaano kahusay ing mga bato mu a mag-filter ning mga dumi. Kinakalkula ning doktor mu ing eGFR mu — metung a numero a magsabi kung nanung porsyento ning function ning bato ing natatira pa keka. Ing normal tataas sa 60.</span></p>
       </div>
     </div>
     <div class="step">
@@ -1824,7 +1835,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
       <div class="step-num">4</div>
       <div class="step-body">
         <h4><span data-lang="en">Kidney biopsy (sometimes needed)</span><span data-lang="tl" class="lang-hidden">Biopsy ng bato (kung minsan ay kinakailangan)</span><span data-lang="ceb" class="lang-hidden">Biopsy sa bato (usahay gikinahanglan)</span><span data-lang="kap" class="lang-hidden">Biopsy ning bato (paminsan ay kailangan)</span></h4>
-        <p><span data-lang="en">A small needle sample of kidney tissue is examined under a microscope. The pattern seen in HIVAN is called "collapsing FSGS" — scarred, collapsed kidney filters. Not everyone needs a biopsy; your doctor will decide based on your situation.</span><span data-lang="tl" class="lang-hidden">Ang isang maliit na sample ng tissue ng bato gamit ang karayom ay sinusuri sa ilalim ng mikroskopyo. Ang pattern na makikita sa HIVAN ay tinatawag na "collapsing FSGS" — mga sirang at nakulapang filter ng bato. Hindi lahat ay nangangailangan ng biopsy; ang inyong doktor ang magpapasya batay sa inyong sitwasyon.</span><span data-lang="ceb" class="lang-hidden">Ang gamay nga sample sa tissue sa bato gamit ang dagom sinususi ubos sa mikroskopyo. Ang pattern nga makita sa HIVAN gitawag nga "collapsing FSGS" — nadaut ug nakulapan nga filter sa bato. Dili tanan nagkinahanglan og biopsy; ang imong doktor magdesisyon base sa imong sitwasyon.</span><span data-lang="kap" class="lang-hidden">Metung a maliit a sample ning tissue ning bato gamitten ing karayom sinusuri king ilalam ning mikroskopyo. Ing pattern a makita king HIVAN tatawag na "collapsing FSGS" — mga sirang at narugsak a filter ning bato. E amin kailangan ning biopsy; ing doktor mu magpapasya base king oras mu.</span></p>
+        <p><span data-lang="en">A small needle sample of kidney tissue is examined under a microscope. The pattern seen in HIVAN is called "collapsing FSGS (focal segmental glomerulosclerosis)" — scarred, collapsed kidney filters. Not everyone needs a biopsy; your doctor will decide based on your situation.</span><span data-lang="tl" class="lang-hidden">Ang isang maliit na sample ng tissue ng bato gamit ang karayom ay sinusuri sa ilalim ng mikroskopyo. Ang pattern na makikita sa HIVAN ay tinatawag na "collapsing FSGS" — mga sirang at nakulapang filter ng bato. Hindi lahat ay nangangailangan ng biopsy; ang inyong doktor ang magpapasya batay sa inyong sitwasyon.</span><span data-lang="ceb" class="lang-hidden">Ang gamay nga sample sa tissue sa bato gamit ang dagom sinususi ubos sa mikroskopyo. Ang pattern nga makita sa HIVAN gitawag nga "collapsing FSGS" — nadaut ug nakulapan nga filter sa bato. Dili tanan nagkinahanglan og biopsy; ang imong doktor magdesisyon base sa imong sitwasyon.</span><span data-lang="kap" class="lang-hidden">Metung a maliit a sample ning tissue ning bato gamitten ing karayom sinusuri king ilalam ning mikroskopyo. Ing pattern a makita king HIVAN tatawag na "collapsing FSGS" — mga sirang at narugsak a filter ning bato. E amin kailangan ning biopsy; ing doktor mu magpapasya base king oras mu.</span></p>
       </div>
     </div>
     <div class="step">
@@ -1844,7 +1855,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
 
   <div class="illus-wrap illus-wrap-light" style="margin:20px auto 28px;max-width:860px;">
     <img src="../images/hivan-treatment-patient.webp" alt="Three-step HIVAN treatment overview — ART, ACEi/ARB, and kidney protection" style="width:100%;border-radius:10px;display:block;" loading="lazy"/ width="1536" height="1024">
-    <span class="illus-caption">Three steps to fight HIVAN — ART to stop the virus, ACEi/ARB to protect the filters, and daily habits to preserve what remains. Most patients see improvement within 4–12 weeks.</span>
+    <span class="illus-caption">Three steps to fight HIVAN — ART to stop the virus, ACEi (angiotensin-converting enzyme inhibitor)/ARB (angiotensin receptor blocker) to protect the filters, and daily habits to preserve what remains. Most patients see improvement within 4–12 weeks.</span>
   </div>
 
   <div class="alert alert-teal">
@@ -1860,7 +1871,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
       <div class="step-num">1</div>
       <div class="step-body">
         <h4><span data-lang="en">Start or optimize your HIV medications (ART)</span><span data-lang="tl" class="lang-hidden">Simulan o i-optimize ang iyong mga gamot para sa HIV (ART)</span><span data-lang="ceb" class="lang-hidden">Sugdan o i-optimize ang imong mga tambal para sa HIV (ART)</span><span data-lang="kap" class="lang-hidden">Simulan o i-optimize ing gamot mu para king HIV (ART)</span></h4>
-        <p><span data-lang="en">If you are not yet on HIV treatment, start immediately — do not wait. WHO recommends starting HIV treatment on the same day as diagnosis and having your kidney function checked every year if you are at higher risk. If you are already on treatment but your viral load is detectable, speak to your HIV doctor about adjusting your regimen. The goal is undetectable viral load (HIV RNA &lt;50 copies/mL). (Kidney Int 2026)</span><span data-lang="tl" class="lang-hidden">Kung hindi ka pa umaangkop sa paggamot para sa HIV, magsimula agad — huwag maghintay. Kung nasa paggamot ka na ngunit mahahalata ang iyong viral load, kausapin ang iyong doktor sa HIV tungkol sa pag-aayos ng inyong regimen. Ang layunin ay hindi mahahalagang viral load (HIV RNA &lt;50 copies/mL).</span><span data-lang="ceb" class="lang-hidden">Kon wala pa ikaw sa pagtambal para sa HIV, magsugod dayon — ayaw paghulat. Kon naa na ikaw sa pagtambal apan makat-onan ang imong viral load, sultihi ang imong HIV doctor bahin sa pag-adjust sa imong regimen. Ang katuyoan mao ang dili matukod nga viral load (HIV RNA &lt;50 copies/mL).</span><span data-lang="kap" class="lang-hidden">Nung e ka pa umaangkop king lunas para king HIV, magsimula agad — eka maghintay. Nung nang nasa lunas ka ngem mahahalata ing viral load mu, kausapin ing doktor mu king HIV tungkol king pag-adjust ning regimen mu. Ing layunin e mahahalata a viral load (HIV RNA &lt;50 copies/mL).</span></p>
+        <p><span data-lang="en">If you are not yet on HIV treatment, start immediately — do not wait. WHO (World Health Organization) recommends starting HIV treatment on the same day as diagnosis and having your kidney function checked every year if you are at higher risk. If you are already on treatment but your viral load is detectable, speak to your HIV doctor about adjusting your regimen. The goal is undetectable viral load (HIV RNA &lt;50 copies/mL). (Kidney Int 2026)</span><span data-lang="tl" class="lang-hidden">Kung hindi ka pa umaangkop sa paggamot para sa HIV, magsimula agad — huwag maghintay. Kung nasa paggamot ka na ngunit mahahalata ang iyong viral load, kausapin ang iyong doktor sa HIV tungkol sa pag-aayos ng inyong regimen. Ang layunin ay hindi mahahalagang viral load (HIV RNA &lt;50 copies/mL).</span><span data-lang="ceb" class="lang-hidden">Kon wala pa ikaw sa pagtambal para sa HIV, magsugod dayon — ayaw paghulat. Kon naa na ikaw sa pagtambal apan makat-onan ang imong viral load, sultihi ang imong HIV doctor bahin sa pag-adjust sa imong regimen. Ang katuyoan mao ang dili matukod nga viral load (HIV RNA &lt;50 copies/mL).</span><span data-lang="kap" class="lang-hidden">Nung e ka pa umaangkop king lunas para king HIV, magsimula agad — eka maghintay. Nung nang nasa lunas ka ngem mahahalata ing viral load mu, kausapin ing doktor mu king HIV tungkol king pag-adjust ning regimen mu. Ing layunin e mahahalata a viral load (HIV RNA &lt;50 copies/mL).</span></p>
       </div>
     </div>
     <div class="step">
@@ -1881,7 +1892,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
       <div class="step-num">4</div>
       <div class="step-body">
         <h4><span data-lang="en">Avoid kidney-harmful medications</span><span data-lang="tl" class="lang-hidden">Iwasan ang mga gamot na nakakasama sa bato</span><span data-lang="ceb" class="lang-hidden">Likayi ang mga tambal nga makadaut sa bato</span><span data-lang="kap" class="lang-hidden">Iwasan ing mga gamot a makapinsala king bato</span></h4>
-        <p><span data-lang="en">NSAIDs (ibuprofen, mefenamic acid, aspirin for pain) damage kidneys — use paracetamol instead. Herbal and traditional remedies — many are toxic to kidneys; tell your doctor about everything you take. If you need a CT scan with contrast dye, make sure your doctor knows about your kidney disease beforehand.</span><span data-lang="tl" class="lang-hidden">Ang NSAIDs (ibuprofen, mefenamic acid, aspirin para sa sakit) ay nagdudulot ng pinsala sa bato — gumamit ng paracetamol sa halip. Ang mga halamang gamot at tradisyunal na lunas — marami ay nakakalason sa bato; sabihin sa inyong doktor ang lahat ng inyong inumin. Kung kailangan ninyo ng CT scan na may contrast dye, tiyaking alam ng inyong doktor ang inyong sakit sa bato bago ito gawin.</span><span data-lang="ceb" class="lang-hidden">Ang NSAIDs (ibuprofen, mefenamic acid, aspirin para sa sakit) makadaut sa bato — gamita ang paracetamol sa baylo. Ang mga halamang tambal ug tradisyunal nga lunas — daghan ang makahilo sa bato; sultihi ang imong doktor ang tanan nimo nga giinom. Kon kinahanglan mo og CT scan nga adunay contrast dye, siguroha nga nahibalo ang imong doktor sa imong sakit sa bato daan.</span><span data-lang="kap" class="lang-hidden">Ing NSAIDs (ibuprofen, mefenamic acid, aspirin para king sakit) makapinsala king bato — gamitin ing paracetamol kesa. Ing mga herbal at tradisyunal a gamot — merakung makalalason king bato; sabian ing doktor mu ing amin a inyong inumin. Nung kailangan kang CT scan ampo contrast dye, siguraduhin a alam na ning doktor mu ing sakit mu king bato.</span></p>
+        <p><span data-lang="en">NSAIDs (ibuprofen, mefenamic acid, aspirin for pain) damage kidneys — use paracetamol instead. Herbal and traditional remedies — many are toxic to kidneys; tell your doctor about everything you take. If you need a CT (computed tomography) scan with contrast dye, make sure your doctor knows about your kidney disease beforehand.</span><span data-lang="tl" class="lang-hidden">Ang NSAIDs (ibuprofen, mefenamic acid, aspirin para sa sakit) ay nagdudulot ng pinsala sa bato — gumamit ng paracetamol sa halip. Ang mga halamang gamot at tradisyunal na lunas — marami ay nakakalason sa bato; sabihin sa inyong doktor ang lahat ng inyong inumin. Kung kailangan ninyo ng CT scan na may contrast dye, tiyaking alam ng inyong doktor ang inyong sakit sa bato bago ito gawin.</span><span data-lang="ceb" class="lang-hidden">Ang NSAIDs (ibuprofen, mefenamic acid, aspirin para sa sakit) makadaut sa bato — gamita ang paracetamol sa baylo. Ang mga halamang tambal ug tradisyunal nga lunas — daghan ang makahilo sa bato; sultihi ang imong doktor ang tanan nimo nga giinom. Kon kinahanglan mo og CT scan nga adunay contrast dye, siguroha nga nahibalo ang imong doktor sa imong sakit sa bato daan.</span><span data-lang="kap" class="lang-hidden">Ing NSAIDs (ibuprofen, mefenamic acid, aspirin para king sakit) makapinsala king bato — gamitin ing paracetamol kesa. Ing mga herbal at tradisyunal a gamot — merakung makalalason king bato; sabian ing doktor mu ing amin a inyong inumin. Nung kailangan kang CT scan ampo contrast dye, siguraduhin a alam na ning doktor mu ing sakit mu king bato.</span></p>
       </div>
     </div>
   </div>
@@ -1973,7 +1984,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
 <div class="hero-copy">
   <div class="clin-badges">
     <span class="clin-badge">&#x2695; Clinician Reference</span>
-    <span class="clin-badge">KDIGO 2024</span>
+    <span class="clin-badge">KDIGO (Kidney Disease: Improving Global Outcomes) 2024</span>
     <span class="clin-badge">&#x1F1F5;&#x1F1ED; Philippines Context</span>
   </div>
   <h1>HIVAN: The Kidney Disease You Can <em>Fight Back Against</em></h1>
@@ -2073,7 +2084,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
         <td>ART optimization; plasma exchange if severe</td>
       </tr>
       <tr>
-        <td>Comorbidity-driven CKD</td>
+        <td>Comorbidity-driven CKD (chronic kidney disease)</td>
         <td>Hypertension, diabetes, aging</td>
         <td>HTN nephrosclerosis; diabetic nephropathy</td>
         <td>Gradual progression; less proteinuric than HIVAN</td>
@@ -2144,7 +2155,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
       <ul>
         <li><strong>Virus-related:</strong> direct HIV infection of podocytes and tubular cells; kidney as viral reservoir; viral protein (Vpr, Tat)-mediated injury; podocyte dedifferentiation.</li>
         <li><strong>Medication-related:</strong> tenofovir (TDF/TAF), indinavir, atazanavir; opportunistic infection treatments (aminoglycosides, pentamidine, amphotericin B, TMP-SMX); NSAIDs and contrast nephropathy.</li>
-        <li><strong>Host-related:</strong> APOL1 G1/G2 risk variants (African ancestry); advanced HIV / low CD4 / high viral load; pre-existing CKD; HCV coinfection; diabetes; hypertension; <strong>low hemoglobin — the leading independent risk factor for AKI in PLHIV</strong>.</li>
+        <li><strong>Host-related:</strong> APOL1 G1/G2 risk variants (African ancestry); advanced HIV / low CD4 / high viral load; pre-existing CKD; HCV (hepatitis C virus) coinfection; diabetes; hypertension; <strong>low hemoglobin — the leading independent risk factor for AKI in PLHIV</strong>.</li>
         <li><strong>Sepsis and severe opportunistic infections</strong> account for approximately 40% of AKI episodes in PLHIV.</li>
       </ul>
     </div>
@@ -2299,7 +2310,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
         <td>INSTI-based preferred regimen</td>
         <td>DTG + TAF/FTC (Descovy) or BIC/TAF/FTC (Biktarvy)</td>
         <td>Expert consensus</td>
-        <td>Avoid TDF in CKD G3+. DTG does not require renal dose adjustment. Avoid cobicistat-boosted regimens in CrCl &lt;30.</td>
+        <td>Avoid TDF in CKD G3+. DTG does not require renal dose adjustment. Avoid cobicistat-boosted regimens in CrCl (creatinine clearance) &lt;30.</td>
       </tr>
       <tr>
         <td>Switch TDF &rarr; TAF</td>
@@ -2311,7 +2322,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
         <td>ACEi or ARB</td>
         <td>Enalapril 5–20 mg/day, lisinopril 5–20 mg/day, or losartan 25–100 mg/day; titrate to BP &lt;130/80 and maximum tolerated proteinuria reduction</td>
         <td>Level B (observational + small RCTs)</td>
-        <td>Combination ACEi + ARB increases AKI and hyperkalemia risk — avoid dual RAAS blockade. Monitor K&sup+ and creatinine at 2 and 4 weeks after initiation.</td>
+        <td>Combination ACEi + ARB increases AKI and hyperkalemia risk — avoid dual RAAS (renin–angiotensin–aldosterone system) blockade. Monitor K&sup+ and creatinine at 2 and 4 weeks after initiation.</td>
       </tr>
       <tr>
         <td>Corticosteroids</td>
@@ -2375,7 +2386,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
         <td>Diffuse proliferative + capillary wall deposits</td>
         <td>Full-house (IgG, IgM, IgA, C3, C1q)</td>
         <td>Mimics lupus nephritis; ANA may be low-titer</td>
-        <td>Rule out true SLE; ART; consider hydroxychloroquine &plusmn; immunosuppression</td>
+        <td>Rule out true SLE (systemic lupus erythematosus); ART; consider hydroxychloroquine &plusmn; immunosuppression</td>
       </tr>
     </tbody>
   </table>
@@ -2395,7 +2406,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
   <h2>ESKD Management in PLHIV</h2>
 
   <h3>Hemodialysis</h3>
-  <p>Both HD and PD are viable in PLHIV. HIV is not a contraindication to dialysis. Outcomes in PLHIV on ART are approaching those of HIV-negative ESKD patients. Universal precautions apply — HIV-positive HD patients do not require dedicated machines or separate shifts in centers with proper infection control. ART is continued through dialysis (see Module 14 for dose adjustments by CrCl stage).</p>
+  <p>Both HD and PD are viable in PLHIV. HIV is not a contraindication to dialysis. Outcomes in PLHIV on ART are approaching those of HIV-negative ESKD (end-stage kidney disease) patients. Universal precautions apply — HIV-positive HD patients do not require dedicated machines or separate shifts in centers with proper infection control. ART is continued through dialysis (see Module 14 for dose adjustments by CrCl stage).</p>
 
   <h3>Peritoneal Dialysis</h3>
   <p>PD is acceptable and may offer advantages including home-based treatment and longer preservation of residual renal function. PD peritonitis rates in HIV-positive patients on ART are comparable to HIV-negative patients. IP antibiotic protocols are the same as for HIV-negative patients (see Module 12 for peritonitis management).</p>
@@ -2780,5 +2791,6 @@ function setMode(m) {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

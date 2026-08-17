@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Anemia Management – W Rivero, MD</title>
-<meta name="description" content="Anemia in kidney disease explained: low hemoglobin causes, iron vs. EPO treatment, Filipino iron-rich foods, and targets to restore energy and protect your heart.">
+<meta name="description" content="Anemia in kidney disease explained (KDIGO 2026-aligned): population-specific pathways for non-dialysis CKD, hemodialysis, peritoneal dialysis, transplant, and pediatrics; iron route, ESA vs. HIF-PHI, Filipino iron-rich foods, and individualized targets.">
 <meta name="keywords" content="anemia kidney disease, anemia CKD Philippines, low hemoglobin kidney, EPO injection kidney, erythropoietin CKD, iron deficiency dialysis, iron infusion Philippines, TSAT ferritin kidney, anemia treatment CKD, pagod palagi kidney, mahina anemia, iron supplement kidney patient, darbepoetin Philippines, roxadustat kidney anemia, hemoglobin target dialysis, blood building foods Philippines, anemia fatigue kidney, kidney anemia treatment, IV iron hemodialysis, Filipino iron rich foods kidney">
 <meta name="author" content="W Rivero, MD, FPCP, DPSN">
 <meta name="robots" content="index, follow">
@@ -13,12 +13,13 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2026-06-23T04:42:42+08:00">
-<meta property="article:modified_time" content="2025-05-01T00:00:00+08:00">
+<meta property="article:modified_time" content="2026-08-09T00:00:00+08:00">
 <meta property="og:site_name" content="William Gregory M. Rivero, MD">
 <meta property="og:title" content="Anemia Management">
 <meta property="og:description" content="Anemia in kidney disease explained: low hemoglobin causes, iron vs. EPO treatment, Filipino iron-rich foods, and targets to restore energy and protect your heart.">
@@ -138,6 +139,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1306,8 +1315,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1815,7 +1826,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
     "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
     "url": "https://renalcarematters.com/"
   },
-  "dateModified": "2025-05-01",
+  "dateModified": "2026-08-09",
   "datePublished": "2026-06-23",
   "inLanguage": "en-PH",
   "audience": {
@@ -1842,8 +1853,8 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 <div class="mode-patient">
@@ -1862,6 +1873,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
       <span data-lang="kap" class="lang-hidden">Bakit nagkakaroon ning anemia, paano matukoy ing sanhi nini, at ing deng naka-target a paggamut — <em>iron, erythropoietin, at nutrisyon</em> — a <em>nagpapanumbalik ning lakas at nagpoprotekta king inyu pusu at deng batu.</em></span></p>
 <div class="hero-meta">
 <span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
+<span class="hero-updated"><strong><span data-lang="en">Last updated</span><span class="lang-hidden" data-lang="tl">Huling na-update</span><span class="lang-hidden" data-lang="ceb">Kataposang gi-update</span><span class="lang-hidden" data-lang="kap">Panga-update</span>:</strong> <time datetime="2026-08-09" style="display:inline-block;background:rgba(46,107,62,.18);border:1px solid rgba(46,107,62,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Aug 9, 2026</time></span>
 <span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">4</span></span>
 <span class="hero-readtime"><strong><span data-lang="en">Read time</span><span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span><span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span><span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>:</strong> <time datetime="PT15M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~15 min</time></span>
 </div>
@@ -1877,6 +1889,15 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 </div>
 </div>
 </section>
+<div class="container" style="margin-top:18px;">
+<div class="alert alert-teal">
+<div class="alert-icon">🔄</div>
+<div class="alert-body">
+<h4><span data-lang="en">Evidence review updated August 2026</span><span data-lang="tl" class="lang-hidden">Ni-review muli ang ebidensya noong Agosto 2026</span><span data-lang="ceb" class="lang-hidden">Gi-review pag-usab ang ebidensya niadtong Agosto 2026</span><span data-lang="kap" class="lang-hidden"> Me-review pasibayu ing ebidensya kanitang Agosto 2026</span></h4>
+<p><span data-lang="en">Evidence review updated August 2026. This page was reconciled with the final KDIGO (Kidney Disease: Improving Global Outcomes) 2026 guideline for anemia in chronic kidney disease (CKD). Iron-therapy route, ferritin and TSAT (transferrin saturation) thresholds, ESA (erythropoiesis-stimulating agent) and HIF-PHI positioning, and hemoglobin targets are now <strong>population-specific</strong> (non-dialysis CKD, hemodialysis (HD), peritoneal dialysis (PD), kidney transplant, and pediatric CKD are managed differently) and framed around <strong>shared decision-making</strong> rather than one universal algorithm.</span><span data-lang="tl" class="lang-hidden">Ni-review muli ang ebidensya noong Agosto 2026. Ang pahinang ito ay iniayon sa pinal na KDIGO (Kidney Disease: Improving Global Outcomes) 2026 na patnubay para sa anemia sa chronic kidney disease (CKD). Ang ruta ng iron therapy, mga threshold ng ferritin at TSAT (transferrin saturation), posisyon ng ESA (erythropoiesis-stimulating agent) at HIF-PHI, at mga target ng hemoglobin ay <strong>naaayon na sa uri ng populasyon</strong> (magkaiba ang pamamahala sa non-dialysis CKD, hemodialysis (HD), peritoneal dialysis (PD), kidney transplant, at pediatric CKD) at nakabatay sa <strong>shared decision-making</strong> sa halip na iisang unibersal na algorithm.</span><span data-lang="ceb" class="lang-hidden">Gi-review pag-usab ang ebidensya niadtong Agosto 2026. Kini nga panid gipahiuyon sa pinal nga KDIGO (Kidney Disease: Improving Global Outcomes) 2026 nga giya para sa anemia sa chronic kidney disease (CKD). Ang ruta sa iron therapy, mga threshold sa ferritin ug TSAT (transferrin saturation), posisyon sa ESA (erythropoiesis-stimulating agent) ug HIF-PHI, ug mga target sa hemoglobin <strong>gibase na sa matang sa populasyon</strong> (lahi ang pagdumala sa non-dialysis CKD, hemodialysis (HD), peritoneal dialysis (PD), kidney transplant, ug pediatric CKD) ug gipasukad sa <strong>shared decision-making</strong> imbes usa ka unibersal nga algorithm.</span><span data-lang="kap" class="lang-hidden">Me-review pasibayu ing ebidensya kanitang Agosto 2026. Ing pisamak a ini me-ayun king pinal a KDIGO (Kidney Disease: Improving Global Outcomes) 2026 a giya para king anemia king chronic kidney disease (CKD). Ing ruta ning iron therapy, deng threshold ning ferritin at TSAT (transferrin saturation), posisyon ning ESA (erythropoiesis-stimulating agent) at HIF-PHI, at deng target ning hemoglobin ya <strong>me-base na king uri ning populasyon</strong> (miyayaliwa ing pamamahala king non-dialysis CKD, hemodialysis (HD), peritoneal dialysis (PD), kidney transplant, at pediatric CKD) at me-base king <strong>shared decision-making</strong> imbes metung a unibersal a algorithm.</span></p>
+</div>
+</div>
+</div>
 <nav class="nav-strip">
 <div class="nav-pills">
 <a class="nav-pill" href="#what">What is Anemia?</a>
@@ -1904,24 +1925,24 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
     <img fetchpriority="high" loading="eager" src="../images/anemia-ckd-overview.png" width="1024" height="1024"
          alt="Anemia in Chronic Kidney Disease infographic: why it happens (EPO deficiency), common symptoms, how it is diagnosed, treatment options (iron, ESA medications), iron-rich foods, tips to help, and when to seek help." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.1);">
   </picture>
-  <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;"><span data-lang="en">Overview: Anemia in CKD — causes, symptoms, diagnosis, and treatment options.</span><span data-lang="tl" class="lang-hidden">Pangkalahatang-ideya: Anemia sa CKD — mga sanhi, sintomas, diagnosis, at mga opsyon sa paggamot.</span><span data-lang="ceb" class="lang-hidden">Kinatibuk-an: Anemia sa CKD — mga hinungdan, sintomas, diagnosis, ug mga kapilian sa pagtambal.</span>
+  <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;"><span data-lang="en">Overview: Anemia in CKD (chronic kidney disease) — causes, symptoms, diagnosis, and treatment options.</span><span data-lang="tl" class="lang-hidden">Pangkalahatang-ideya: Anemia sa CKD — mga sanhi, sintomas, diagnosis, at mga opsyon sa paggamot.</span><span data-lang="ceb" class="lang-hidden">Kinatibuk-an: Anemia sa CKD — mga hinungdan, sintomas, diagnosis, ug mga kapilian sa pagtambal.</span>
       <span data-lang="kap" class="lang-hidden">Pangkalahatang-ideya: Anemia king CKD — deng sanhi, sintomas, diagnosis, at deng opsyon king paggamut.</span></figcaption>
 </figure>
 
 <div class="intro-callout">
 <p><span data-lang="en">Anemia means your blood does not carry enough oxygen to meet your body's needs. Red blood cells contain hemoglobin — the protein that picks up oxygen in the lungs and delivers it to every organ. <strong>When hemoglobin falls too low, every organ suffers</strong> — especially the heart (which works harder) and the kidneys (which need oxygen to maintain filtration).</span><span data-lang="tl" class="lang-hidden">Ang anemia ay nangangahulugang ang inyong dugo ay hindi nagdadala ng sapat na oxygen para matugunan ang pangangailangan ng katawan. Ang mga pulang selula ng dugo ay naglalaman ng hemoglobin — ang protina na kumukuha ng oxygen sa baga at naghahatid nito sa bawat organo. <strong>Kapag masyadong bumaba ang hemoglobin, nagdurusa ang bawat organo</strong> — lalo na ang puso (na nagtatrabaho nang mas malakas) at ang mga bato (na nangangailangan ng oxygen upang mapanatili ang pagsasala).</span><span data-lang="ceb" class="lang-hidden">Ang anemia nagpasabot nga ang inyong dugo dili magdala og igo nga oxygen aron matubag ang mga pangangailangan sa lawas. Ang mga pulang selula sa dugo adunay hemoglobin — ang protina nga mokuha og oxygen sa baga ug maghatod niini sa matag organo. <strong>Kon mubaba kaayo ang hemoglobin, mag-antos ang matag organo</strong> — ilabi na ang kasingkasing (nga nagbuhat og mas kusog) ug ang mga kidney (nga nanginahanglan og oxygen aron mapadayon ang pagsala).</span>
       <span data-lang="kap" class="lang-hidden">Ing anemia ya nangangahulugang ing inyu daya ya ali nagdadala ning sapat a oxygen para matugunan ing pangangailangan ning bangkî. Ing deng pulang selula ning daya ya naglalaman ning hemoglobin — ing protina a kumukuha ning oxygen king baga at naghahatid nini king bawat organo. <strong>Nung masyadong bumaba ing hemoglobin, nagdurusa ing bawat organo</strong> — lalo a ing pusu (a nagtatrabaho nang mas malakas) at ing deng batu (a nangangailangan ning oxygen upang mapanatili ing pagsasala).</span></p>
-<p><span data-lang="en">Anemia is defined as hemoglobin below 130 g/L in men and below 120 g/L in women. In CKD patients, the KDIGO 2024 target is 100–115 g/L — a range that balances oxygen delivery with the risk of excess hemoglobin causing hypertension and thrombosis.</span><span data-lang="tl" class="lang-hidden">Ang anemia ay tinukoy bilang hemoglobin na mas mababa sa 130 g/L sa mga lalaki at mas mababa sa 120 g/L sa mga babae. Sa mga pasyenteng may CKD, ang target ng KDIGO 2024 ay 100–115 g/L — isang saklaw na nagbabalanse ng paghahatid ng oxygen sa panganib ng labis na hemoglobin na nagdudulot ng hypertension at thrombosis.</span><span data-lang="ceb" class="lang-hidden">Ang anemia gihulagway ingon nga hemoglobin nga ubos sa 130 g/L sa mga lalaki ug ubos sa 120 g/L sa mga babaye. Sa mga pasyente nga may CKD, ang target sa KDIGO 2024 mao ang 100–115 g/L — usa ka saklaw nga nagbalansi sa paghatod sa oxygen ug sa peligro sa sobrang hemoglobin nga hinungdan sa hypertension ug thrombosis.</span>
-      <span data-lang="kap" class="lang-hidden">Ing anemia ya tinukoy bilang hemoglobin a mas mababa king 130 g/L king deng lalaki at mas mababa king 120 g/L king deng babae. King deng pasyenteng atin CKD, ing target ning KDIGO 2024 ya 100–115 g/L — metung a saklaw a nagbabalanse ning paghahatid ning oxygen king panganib ning labis a hemoglobin a nagdudulot ning hypertension at thrombosis.</span></p>
+<p><span data-lang="en">Anemia is defined as hemoglobin below 130 g/L in men and below 120 g/L in women. There is <strong>no single hemoglobin target that fits every kidney patient</strong>. The KDIGO (Kidney Disease: Improving Global Outcomes) 2026 guideline advises against using ESA (erythropoiesis-stimulating agent) therapy to <em>maintain</em> hemoglobin at or above 115 g/L, because pushing hemoglobin high increases the risk of stroke, blood clots, and high blood pressure — but the point at which treatment starts, and the goal chosen, are <strong>individualized</strong> for each person and each population (non-dialysis CKD, hemodialysis, peritoneal dialysis, transplant, and children are handled differently) through <strong>shared decision-making</strong> with your kidney doctor.</span><span data-lang="tl" class="lang-hidden">Ang anemia ay tinukoy bilang hemoglobin na mas mababa sa 130 g/L sa mga lalaki at mas mababa sa 120 g/L sa mga babae. <strong>Walang iisang target ng hemoglobin na akma sa bawat pasyente ng bato</strong>. Ang patnubay ng KDIGO (Kidney Disease: Improving Global Outcomes) 2026 ay nagpapayo laban sa paggamit ng ESA (erythropoiesis-stimulating agent) upang <em>panatilihin</em> ang hemoglobin sa 115 g/L o mas mataas, dahil ang mataas na hemoglobin ay nagpapataas ng panganib ng stroke, pamumuo ng dugo, at altapresyon — ngunit ang puntong sisimulan ang paggamot, at ang piniling layunin, ay <strong>isinasapersonal</strong> para sa bawat tao at bawat populasyon (magkaiba ang non-dialysis CKD, hemodialysis, peritoneal dialysis, transplant, at mga bata) sa pamamagitan ng <strong>shared decision-making</strong> kasama ang inyong doktor sa bato.</span><span data-lang="ceb" class="lang-hidden">Ang anemia gihulagway ingon nga hemoglobin nga ubos sa 130 g/L sa mga lalaki ug ubos sa 120 g/L sa mga babaye. <strong>Walay usa ka target sa hemoglobin nga haom sa matag pasyente sa kidney</strong>. Ang giya sa KDIGO (Kidney Disease: Improving Global Outcomes) 2026 nagtambag batok sa paggamit sa ESA (erythropoiesis-stimulating agent) aron <em>huptan</em> ang hemoglobin sa 115 g/L o mas taas, kay ang taas nga hemoglobin nagdugang sa peligro sa stroke, pamuo sa dugo, ug taas nga presyon — apan ang punto diin magsugod ang tambal, ug ang gipili nga tumong, <strong>gipahiangay sa matag tawo</strong> ug matag populasyon (lahi ang non-dialysis CKD, hemodialysis, peritoneal dialysis, transplant, ug mga bata) pinaagi sa <strong>shared decision-making</strong> uban sa inyong doktor sa kidney.</span>
+      <span data-lang="kap" class="lang-hidden">Ing anemia ya tinukoy bilang hemoglobin a mas mababa king 130 g/L king deng lalaki at mas mababa king 120 g/L king deng babae. <strong>Alang metung a target ning hemoglobin a akma king balang pasyente ning batu</strong>. Ing giya ning KDIGO (Kidney Disease: Improving Global Outcomes) 2026 ya magpayu laban king pamangamit ning ESA (erythropoiesis-stimulating agent) para <em>panatilian</em> ing hemoglobin king 115 g/L o mas matas, uli ing matas a hemoglobin ya nagpapataas king panganib ning stroke, pamumu ning daya, at altapresyon — dapot ing puntung sisimulan ing paggamut, at ing piling layunin, ya <strong>me-personalize</strong> para king balang tau at balang populasyon (miyayaliwa ing non-dialysis CKD, hemodialysis, peritoneal dialysis, transplant, at deng anak) king pamamagitan ning <strong>shared decision-making</strong> kayabe ing inyu doktor king batu.</span></p>
 </div>
 <figure class="illus-panel" style="max-width:760px;margin:0 auto 24px;">
   <picture>
     <source srcset="../images/anemia-ckd-mechanism.webp" type="image/webp">
     <img src="../images/anemia-ckd-mechanism.png" alt="Why CKD causes anemia — four mechanisms: EPO deficiency, hepcidin-mediated iron restriction, uremic toxin-shortened RBC lifespan, and PTH-driven marrow fibrosis" loading="lazy" width="1024" height="1024" style="border-radius:12px;display:block;width:100%;height:auto;">
   </picture>
-<figcaption><p class="fig-desc">This illustration shows the four main reasons damaged kidneys lead to anemia: too little EPO hormone, iron locked away by hepcidin, red blood cells that wear out faster, and bone marrow that makes fewer cells.</p></figcaption>
+<figcaption><p class="fig-desc">This illustration shows the four main reasons damaged kidneys lead to anemia: too little EPO (erythropoietin) hormone, iron locked away by hepcidin, red blood cells that wear out faster, and bone marrow that makes fewer cells.</p></figcaption>
 </figure>
-<p style="font-size:12px;color:var(--text-muted);text-align:center;font-style:italic;margin:-16px 0 24px;"><span data-lang="en">CKD anemia is multifactorial — EPO deficiency, iron-restricted erythropoiesis, and shortened RBC survival all contribute simultaneously. All three must be addressed.</span><span data-lang="tl" class="lang-hidden">Ang anemia sa CKD ay may maraming dahilan — ang kakulangan ng EPO, ang iron-restricted erythropoiesis, at ang pinaikling buhay ng RBC ay sabay-sabay na nag-aambag. Ang lahat ng tatlo ay dapat tugunan.</span><span data-lang="ceb" class="lang-hidden">Ang anemia sa CKD adunay daghang hinungdan — ang kakulang sa EPO, ang iron-restricted erythropoiesis, ug ang gipamubo nga kinabuhi sa RBC nagambibit tanan sa dungan. Ang tanan nga tulo kinahanglan nga sulbaron.</span>
+<p style="font-size:12px;color:var(--text-muted);text-align:center;font-style:italic;margin:-16px 0 24px;"><span data-lang="en">CKD anemia is multifactorial — EPO deficiency, iron-restricted erythropoiesis, and shortened RBC (red blood cell) survival all contribute simultaneously. All three must be addressed.</span><span data-lang="tl" class="lang-hidden">Ang anemia sa CKD ay may maraming dahilan — ang kakulangan ng EPO, ang iron-restricted erythropoiesis, at ang pinaikling buhay ng RBC ay sabay-sabay na nag-aambag. Ang lahat ng tatlo ay dapat tugunan.</span><span data-lang="ceb" class="lang-hidden">Ang anemia sa CKD adunay daghang hinungdan — ang kakulang sa EPO, ang iron-restricted erythropoiesis, ug ang gipamubo nga kinabuhi sa RBC nagambibit tanan sa dungan. Ang tanan nga tulo kinahanglan nga sulbaron.</span>
       <span data-lang="kap" class="lang-hidden">Ing anemia king CKD ya atin dacal a dahilan — ing kakulangan ning EPO, ing iron-restricted erythropoiesis, at ing pinaikling biye ning RBC ya sabay-sabay a nag-aambag. Ing amin ning tatlo ya dapat tugunan.</span></p>
 <div class="two-col">
 <div class="feature-card">
@@ -1967,7 +1988,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
       <span data-lang="kap" class="lang-hidden">Thalassemia</span></h4><p><span data-lang="en">Genetic disorder causing defective hemoglobin production. Common in Southeast Asia including the Philippines. Causes microcytic, hypochromic anemia resistant to iron therapy.</span><span data-lang="tl" class="lang-hidden">Genetic disorder na nagdudulot ng depektibong produksyon ng hemoglobin. Karaniwan sa Timog-silangang Asya kasama ang Pilipinas. Nagdudulot ng microcytic, hypochromic anemia na lumalaban sa iron therapy.</span><span data-lang="ceb" class="lang-hidden">Genetic disorder nga nagdala sa depektibong produksyon sa hemoglobin. Kasagarang makita sa Timog-sidlakang Asya lakip ang Pilipinas. Nagdala sa microcytic, hypochromic anemia nga nagbatok sa iron therapy.</span>
       <span data-lang="kap" class="lang-hidden">Genetic disorder a nagdudulot ning depektibong produksyon ning hemoglobin. Karaniwan king Timog-silangang Asya kasama ing Pilipinas. Nagdudulot ning microcytic, hypochromic anemia a lumalaban king iron therapy.</span></p></div>
 <div class="cause-card"><div class="c-icon">💊</div><h4><span data-lang="en">Medication-related</span><span data-lang="tl" class="lang-hidden">Kaugnay sa gamot</span><span data-lang="ceb" class="lang-hidden">May kalabotan sa tambal</span>
-      <span data-lang="kap" class="lang-hidden">Kaugnay king gamut</span></h4><p><span data-lang="en">ACE inhibitors, ARBs, immunosuppressants, and certain antibiotics can suppress red cell production or cause hemolysis.</span><span data-lang="tl" class="lang-hidden">Ang ACE inhibitors, ARBs, immunosuppressants, at ilang antibiotics ay maaaring pigilan ang produksyon ng pulang selula o magdulot ng hemolysis.</span><span data-lang="ceb" class="lang-hidden">Ang ACE inhibitors, ARBs, immunosuppressants, ug pipila ka antibiotics mahimong pugngan ang produksyon sa pulang selula o makapahimong hemolysis.</span>
+      <span data-lang="kap" class="lang-hidden">Kaugnay king gamut</span></h4><p><span data-lang="en">ACE inhibitors, ARBs (angiotensin receptor blockers), immunosuppressants, and certain antibiotics can suppress red cell production or cause hemolysis.</span><span data-lang="tl" class="lang-hidden">Ang ACE inhibitors, ARBs, immunosuppressants, at ilang antibiotics ay maaaring pigilan ang produksyon ng pulang selula o magdulot ng hemolysis.</span><span data-lang="ceb" class="lang-hidden">Ang ACE inhibitors, ARBs, immunosuppressants, ug pipila ka antibiotics mahimong pugngan ang produksyon sa pulang selula o makapahimong hemolysis.</span>
       <span data-lang="kap" class="lang-hidden">Ing ACE inhibitors, ARBs, immunosuppressants, at ilang antibiotics ya maaaring pigilan ing produksyon ning pulang selula o magdulot ning hemolysis.</span></p></div>
 </div>
 <div class="alert alert-teal">
@@ -1975,7 +1996,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <div class="alert-body">
 <h4><span data-lang="en">Most CKD anemia is multifactorial</span><span data-lang="tl" class="lang-hidden">Ang karamihang anemia sa CKD ay may maraming dahilan</span><span data-lang="ceb" class="lang-hidden">Ang kadaghanan sa anemia sa CKD adunay daghang hinungdan</span>
       <span data-lang="kap" class="lang-hidden">Ing karamihang anemia king CKD ya atin dacal a dahilan</span></h4>
-<p><span data-lang="en">In a CKD or dialysis patient, anemia is rarely from a single cause. The most common combination is <strong>EPO deficiency + iron deficiency + chronic inflammation</strong> — all three must be addressed simultaneously. Treating EPO deficiency alone without ensuring iron adequacy is a common cause of ESA therapy failure.</span><span data-lang="tl" class="lang-hidden">Sa isang pasyenteng may CKD o nasa dialysis, ang anemia ay bihirang manggaling sa isang dahilan lamang. Ang pinakakaraniwang kombinasyon ay <strong>kakulangan ng EPO + kakulangan ng iron + kronikong pamamaga</strong> — ang lahat ng tatlo ay dapat tugunan nang sabay-sabay. Ang paggamot lamang sa kakulangan ng EPO nang hindi tinitiyak ang sapat na iron ay isang karaniwang sanhi ng pagkabigo ng ESA therapy.</span><span data-lang="ceb" class="lang-hidden">Sa usa ka pasyente nga may CKD o nag-dialysis, ang anemia panagsa ra gikan sa usa ka hinungdan lamang. Ang labing kasagarang kombinasyon mao ang <strong>kakulang sa EPO + kakulang sa iron + kroniko nga pamamaga</strong> — ang tanan nga tulo kinahanglan nga sulbaron sa dungan. Ang pagtambal lamang sa kakulang sa EPO nga wala masiguro ang sapat nga iron usa ka kasagarang hinungdan sa pagkapakyas sa ESA therapy.</span>
+<p><span data-lang="en">In a CKD or dialysis patient, anemia is rarely from a single cause. The most common combination is <strong>EPO deficiency + iron deficiency + chronic inflammation</strong> — all three must be addressed simultaneously. Treating EPO deficiency alone without ensuring iron adequacy is a common cause of ESA (erythropoiesis-stimulating agent) therapy failure.</span><span data-lang="tl" class="lang-hidden">Sa isang pasyenteng may CKD o nasa dialysis, ang anemia ay bihirang manggaling sa isang dahilan lamang. Ang pinakakaraniwang kombinasyon ay <strong>kakulangan ng EPO + kakulangan ng iron + kronikong pamamaga</strong> — ang lahat ng tatlo ay dapat tugunan nang sabay-sabay. Ang paggamot lamang sa kakulangan ng EPO nang hindi tinitiyak ang sapat na iron ay isang karaniwang sanhi ng pagkabigo ng ESA therapy.</span><span data-lang="ceb" class="lang-hidden">Sa usa ka pasyente nga may CKD o nag-dialysis, ang anemia panagsa ra gikan sa usa ka hinungdan lamang. Ang labing kasagarang kombinasyon mao ang <strong>kakulang sa EPO + kakulang sa iron + kroniko nga pamamaga</strong> — ang tanan nga tulo kinahanglan nga sulbaron sa dungan. Ang pagtambal lamang sa kakulang sa EPO nga wala masiguro ang sapat nga iron usa ka kasagarang hinungdan sa pagkapakyas sa ESA therapy.</span>
       <span data-lang="kap" class="lang-hidden">King metung a pasyenteng atin CKD o nasa dialysis, ing anemia ya bihirang manggaling king metung a dahilan lamang. Ing pinakakaraniwang kombinasyon ya <strong>kakulangan ning EPO + kakulangan ning iron + kronikong pamamaga</strong> — ing amin ning tatlo ya dapat tugunan nang sabay-sabay. Ing paggamut lamang king kakulangan ning EPO nang ali tinitiyak ing sapat a iron ya metung a karaniwang sanhi ning pagkabigo ning ESA therapy.</span></p>
 </div>
 </div>
@@ -2000,8 +2021,8 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <div class="step-body">
 <h4><span data-lang="en">Iron deficiency — absolute and functional</span><span data-lang="tl" class="lang-hidden">Kakulangan ng iron — ganap at functional</span><span data-lang="ceb" class="lang-hidden">Kakulang sa iron — absoluto ug functional</span>
       <span data-lang="kap" class="lang-hidden">Kakulangan ning iron — ganap at functional</span></h4>
-<p><span data-lang="en">CKD patients lose iron through the dialysis circuit (blood remaining in tubing), frequent blood draws, and GI bleeding from uremic platelet dysfunction. Additionally, inflammation raises hepcidin — a hormone that blocks iron release from stores even when ferritin appears adequate. This "iron-restricted erythropoiesis" requires IV iron, not oral iron.</span><span data-lang="tl" class="lang-hidden">Ang mga pasyenteng may CKD ay nawawalan ng iron sa pamamagitan ng dialysis circuit (dugo na nananatili sa tubing), madalas na pagkuha ng dugo, at GI bleeding mula sa uremic platelet dysfunction. Bukod dito, ang pamamaga ay nagpapataas ng hepcidin — isang hormon na humahadlang sa pagpapalabas ng iron mula sa mga imbakan kahit na tila sapat ang ferritin. Ang "iron-restricted erythropoiesis" na ito ay nangangailangan ng IV iron, hindi oral iron.</span><span data-lang="ceb" class="lang-hidden">Ang mga pasyente nga may CKD nawad-an og iron pinaagi sa dialysis circuit (dugo nga nagpabilin sa tubing), kanunay nga pagkuha sa dugo, ug GI bleeding gikan sa uremic platelet dysfunction. Dugang pa, ang pamamaga nagpataas sa hepcidin — usa ka hormon nga nagpugong sa pagpagawas sa iron gikan sa mga imbakan bisan kung tila sapat ang ferritin. Kining "iron-restricted erythropoiesis" nanginahanglan og IV iron, dili oral iron.</span>
-      <span data-lang="kap" class="lang-hidden">Ing deng pasyenteng atin CKD ya nawawalan ning iron king pamamagitan ning dialysis circuit (daya a nananatili king tubing), madalas a pagkuha ning daya, at GI bleeding mula king uremic platelet dysfunction. Bukod dini, ing pamamaga ya nagpapataas ning hepcidin — metung a hormon a humahadlang king pagpapalabas ning iron mula king deng imbakan kahit a tila sapat ing ferritin. Ing "iron-restricted erythropoiesis" a ini ya nangangailangan ning IV iron, ali oral iron.</span></p>
+<p><span data-lang="en">CKD patients lose iron through the dialysis circuit (blood remaining in tubing), frequent blood draws, and GI bleeding from uremic platelet dysfunction. Additionally, inflammation raises hepcidin — a hormone that blocks iron release from stores even when ferritin appears adequate. This pattern is called <strong>iron-restricted erythropoiesis</strong> (not enough iron reaching the marrow despite apparently adequate stores). In hemodialysis it often responds better to IV iron; in non-dialysis CKD, oral or IV iron can both be reasonable and the choice is individualized. Note that a rise in hemoglobin after IV iron does not by itself <em>prove</em> iron deficiency.</span><span data-lang="tl" class="lang-hidden">Ang mga pasyenteng may CKD ay nawawalan ng iron sa pamamagitan ng dialysis circuit (dugo na nananatili sa tubing), madalas na pagkuha ng dugo, at GI bleeding mula sa uremic platelet dysfunction. Bukod dito, ang pamamaga ay nagpapataas ng hepcidin — isang hormon na humahadlang sa pagpapalabas ng iron mula sa mga imbakan kahit na tila sapat ang ferritin. Ang pattern na ito ay tinatawag na <strong>iron-restricted erythropoiesis</strong> (kulang ang iron na umaabot sa marrow kahit tila sapat ang imbak). Sa hemodialysis, madalas itong mas tumutugon sa IV iron; sa non-dialysis CKD, maaaring parehong makatwiran ang oral o IV iron at isinasapersonal ang pagpili. Tandaan: ang pagtaas ng hemoglobin pagkatapos ng IV iron ay hindi <em>nagpapatunay</em> mag-isa ng kakulangan sa iron.</span><span data-lang="ceb" class="lang-hidden">Ang mga pasyente nga may CKD nawad-an og iron pinaagi sa dialysis circuit (dugo nga nagpabilin sa tubing), kanunay nga pagkuha sa dugo, ug GI bleeding gikan sa uremic platelet dysfunction. Dugang pa, ang pamamaga nagpataas sa hepcidin — usa ka hormon nga nagpugong sa pagpagawas sa iron gikan sa mga imbakan bisan kung tila sapat ang ferritin. Kini nga pattern gitawag nga <strong>iron-restricted erythropoiesis</strong> (kulang ang iron nga moabot sa marrow bisan pa og tila igo ang stores). Sa hemodialysis, kasagaran mas motubag kini sa IV iron; sa non-dialysis CKD, mahimong pareho nga makatarunganon ang oral o IV iron ug ang pagpili gipahiangay sa tawo. Timan-i: ang pagsaka sa hemoglobin human sa IV iron dili <em>magpamatuod</em> nga mag-inusara sa kakulang sa iron.</span>
+      <span data-lang="kap" class="lang-hidden">Ing deng pasyenteng atin CKD ya nawawalan ning iron king pamamagitan ning dialysis circuit (daya a nananatili king tubing), madalas a pagkuha ning daya, at GI bleeding mula king uremic platelet dysfunction. Bukod dini, ing pamamaga ya nagpapataas ning hepcidin — metung a hormon a humahadlang king pagpapalabas ning iron mula king deng imbakan kahit a tila sapat ing ferritin. Ing pattern a ini ya ausan dang <strong>iron-restricted erythropoiesis</strong> (kulang ing iron a datang king marrow kahit tila sapat ing imbak). King hemodialysis, madalas ini mas tumutugon king IV iron; king non-dialysis CKD, malyaring parehong makatwiran ing oral o IV iron at me-personalize ing pamamili. Tandaan: ing pagtaas ning hemoglobin kaibat ning IV iron ya ali <em>nagpapatunay</em> mag-isa ning kakulangan king iron.</span></p>
 </div>
 </div>
 <div class="step">
@@ -2018,7 +2039,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <div class="step-body">
 <h4><span data-lang="en">Secondary hyperparathyroidism — bone marrow fibrosis</span><span data-lang="tl" class="lang-hidden">Secondary hyperparathyroidism — fibrosis ng bone marrow</span><span data-lang="ceb" class="lang-hidden">Secondary hyperparathyroidism — fibrosis sa bone marrow</span>
       <span data-lang="kap" class="lang-hidden">Secondary hyperparathyroidism — fibrosis ning bone marrow</span></h4>
-<p><span data-lang="en">Severely elevated PTH causes marrow fibrosis (osteitis fibrosa cystica) — replacing the normal marrow where red cells are made with fibrous tissue. This form of anemia responds poorly to EPO and iron — it requires control of PTH through active vitamin D, phosphate binders, and sometimes parathyroidectomy.</span><span data-lang="tl" class="lang-hidden">Ang matinding pagtaas ng PTH ay nagdudulot ng marrow fibrosis (osteitis fibrosa cystica) — pinapalitan ang normal na marrow kung saan ginagawa ang mga pulang selula ng fibrous tissue. Ang anyang ito ay mahinang tumutugon sa EPO at iron — nangangailangan ito ng kontrol sa PTH sa pamamagitan ng active vitamin D, phosphate binders, at minsan parathyroidectomy.</span><span data-lang="ceb" class="lang-hidden">Ang grabeng pagtaas sa PTH nagdala sa marrow fibrosis (osteitis fibrosa cystica) — nagpuli sa normal nga marrow diin gihimo ang mga pulang selula pinaagi sa fibrous tissue. Kining matang sa anemia mahinay motubag sa EPO ug iron — nanginahanglan kini og kontrol sa PTH pinaagi sa active vitamin D, phosphate binders, ug usahay parathyroidectomy.</span>
+<p><span data-lang="en">Severely elevated PTH (parathyroid hormone) causes marrow fibrosis (osteitis fibrosa cystica) — replacing the normal marrow where red cells are made with fibrous tissue. This form of anemia responds poorly to EPO and iron — it requires control of PTH through active vitamin D, phosphate binders, and sometimes parathyroidectomy.</span><span data-lang="tl" class="lang-hidden">Ang matinding pagtaas ng PTH ay nagdudulot ng marrow fibrosis (osteitis fibrosa cystica) — pinapalitan ang normal na marrow kung saan ginagawa ang mga pulang selula ng fibrous tissue. Ang anyang ito ay mahinang tumutugon sa EPO at iron — nangangailangan ito ng kontrol sa PTH sa pamamagitan ng active vitamin D, phosphate binders, at minsan parathyroidectomy.</span><span data-lang="ceb" class="lang-hidden">Ang grabeng pagtaas sa PTH nagdala sa marrow fibrosis (osteitis fibrosa cystica) — nagpuli sa normal nga marrow diin gihimo ang mga pulang selula pinaagi sa fibrous tissue. Kining matang sa anemia mahinay motubag sa EPO ug iron — nanginahanglan kini og kontrol sa PTH pinaagi sa active vitamin D, phosphate binders, ug usahay parathyroidectomy.</span>
       <span data-lang="kap" class="lang-hidden">Ing matinding pagtaas ning PTH ya nagdudulot ning marrow fibrosis (osteitis fibrosa cystica) — pinapalitan ing normal a marrow nung saan ginagawa ing deng pulang selula ning fibrous tissue. Ing anyang ini ya mahinang tumutugon king EPO at iron — nangangailangan ini ning kontrol king PTH king pamamagitan ning active vitamin D, phosphate binders, at misan parathyroidectomy.</span></p>
 </div>
 </div>
@@ -2032,10 +2053,18 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <figure class="illus-panel" style="max-width:720px;margin:0 auto 24px;">
   <picture>
     <source srcset="../images/anemia-diagnosis-infographic.webp" type="image/webp">
-    <img src="../images/anemia-diagnosis-infographic.png" loading="lazy" width="1024" height="1024" alt="Diagnosing and Classifying Anemia in CKD — MCV categories, iron studies, ferritin targets, TSAT thresholds" style="border-radius:12px;display:block;width:100%;height:auto;">
+    <img src="../images/anemia-diagnosis-infographic.png" loading="lazy" width="1024" height="1024" alt="Diagnosing and classifying anemia in CKD — MCV categories and iron studies; ferritin and TSAT reference thresholds differ by population (non-dialysis CKD vs hemodialysis) and are interpreted individually, not as one universal cutoff" style="border-radius:12px;display:block;width:100%;height:auto;">
   </picture>
 <figcaption><p class="fig-desc">This infographic explains how anemia in kidney disease is diagnosed and classified, using red cell size (MCV) categories and iron blood tests such as ferritin and transferrin saturation (TSAT).</p></figcaption>
 </figure>
+<div class="alert alert-teal">
+<div class="alert-icon">🧪</div>
+<div class="alert-body">
+<h4><span data-lang="en">Two KDIGO 2026 terms worth knowing</span><span data-lang="tl" class="lang-hidden">Dalawang termino ng KDIGO 2026 na dapat malaman</span><span data-lang="ceb" class="lang-hidden">Duha ka termino sa KDIGO 2026 nga angay mahibaloan</span><span data-lang="kap" class="lang-hidden">Adwang termino ning KDIGO 2026 a dapat balu</span></h4>
+<p><span data-lang="en"><strong>Systemic iron deficiency</strong> means both circulating iron AND stored iron are low. <strong>Iron-restricted erythropoiesis</strong> means there is not enough <em>circulating</em> iron reaching the marrow despite apparently adequate stores — driven by inflammation and hepcidin, and by ESA-driven iron use. Ferritin and TSAT are the two markers used to tell these apart. They are <strong>imperfect</strong> (ferritin also rises with inflammation) but remain the principal trial-tested measures. Importantly, a rise in hemoglobin after IV iron does <strong>not</strong> by itself prove that iron deficiency was the problem.</span><span data-lang="tl" class="lang-hidden">Ang <strong>systemic iron deficiency</strong> ay nangangahulugang mababa ang parehong umiikot (circulating) na iron AT nakaimbak na iron. Ang <strong>iron-restricted erythropoiesis</strong> ay nangangahulugang kulang ang <em>umiikot</em> na iron na umaabot sa marrow kahit tila sapat ang imbak — dulot ng pamamaga at hepcidin, at ng paggamit ng iron dahil sa ESA. Ang ferritin at TSAT ang dalawang marker na ginagamit upang pag-ibahin ang mga ito. <strong>Hindi sila perpekto</strong> (tumataas din ang ferritin sa pamamaga) ngunit nananatiling pangunahing sinubok-sa-pananaliksik na sukatan. Mahalaga: ang pagtaas ng hemoglobin pagkatapos ng IV iron ay <strong>hindi</strong> nagpapatunay mag-isa na kakulangan sa iron ang problema.</span><span data-lang="ceb" class="lang-hidden">Ang <strong>systemic iron deficiency</strong> nagpasabot nga ubos ang circulating iron UG stored iron. Ang <strong>iron-restricted erythropoiesis</strong> nagpasabot nga kulang ang <em>circulating</em> iron nga moabot sa marrow bisan tuod og tila igo ang stores — tungod sa pamamaga ug hepcidin, ug sa paggamit sa iron tungod sa ESA. Ang ferritin ug TSAT ang duha ka marker nga gigamit aron mailhan kini. <strong>Dili sila hingpit</strong> (ang ferritin mosaka usab sa pamamaga) apan nagpabilin nga panguna nga na-trial nga sukdanan. Importante: ang pagsaka sa hemoglobin human sa IV iron <strong>dili</strong> magpamatuod nga mag-inusara nga kakulang sa iron ang problema.</span>
+      <span data-lang="kap" class="lang-hidden">Ing <strong>systemic iron deficiency</strong> ya buri nang sabian mababa ing parehong circulating a iron AT nakaimbak a iron. Ing <strong>iron-restricted erythropoiesis</strong> ya buri nang sabian kulang ing <em>circulating</em> a iron a datang king marrow kahit tila sapat ing imbak — dulut ning pamamaga at hepcidin, at ning pamangamit ning iron uli ning ESA. Ing ferritin at TSAT ing adwang marker a gagamitan para miyayaliwa la deti. <strong>Ali la perpektu</strong> (tutas mu naman ing ferritin king pamamaga) dapot manatili lang pangunang me-trial a sukatan. Importante: ing pagtaas ning hemoglobin kaibat ning IV iron ya <strong>ali</strong> nagpapatunay mag-isa a kakulangan king iron ing problema.</span></p>
+</div>
+</div>
 <table class="lab-table">
 <thead><tr><th><span data-lang="en">Test</span><span data-lang="tl" class="lang-hidden">Pagsusuri</span><span data-lang="ceb" class="lang-hidden">Pagsusiha</span>
       <span data-lang="kap" class="lang-hidden">Pagsusuri</span></th><th><span data-lang="en">What it identifies</span><span data-lang="tl" class="lang-hidden">Ano ang natutukoy nito</span><span data-lang="ceb" class="lang-hidden">Unsa ang natino niini</span>
@@ -2070,7 +2099,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
       <span data-lang="kap" class="lang-hidden">Hemoglobin electrophoresis</span></td><td><span data-lang="en">Thalassemia and hemoglobin variants</span><span data-lang="tl" class="lang-hidden">Thalassemia at mga variant ng hemoglobin</span><span data-lang="ceb" class="lang-hidden">Thalassemia ug mga variant sa hemoglobin</span>
       <span data-lang="kap" class="lang-hidden">Thalassemia at deng variant ning hemoglobin</span></td><td><span data-lang="en">Essential when microcytic anemia does not respond to iron therapy. Common in Filipino patients — alpha and beta thalassemia trait are prevalent.</span><span data-lang="tl" class="lang-hidden">Mahalaga kapag ang microcytic anemia ay hindi tumutugon sa iron therapy. Karaniwan sa mga pasyenteng Pilipino — ang alpha at beta thalassemia trait ay laganap.</span><span data-lang="ceb" class="lang-hidden">Hinungdanon kon ang microcytic anemia dili motubag sa iron therapy. Kasagarang makita sa mga pasyenteng Pilipino — ang alpha ug beta thalassemia trait kaylap.</span>
       <span data-lang="kap" class="lang-hidden">Importante nung ing microcytic anemia ya ali tumutugon king iron therapy. Karaniwan king deng pasyenteng Pilipino — ing alpha at beta thalassemia trait ya laganap.</span></td></tr>
-<tr><td><span data-lang="en">CRP / hsCRP</span><span data-lang="tl" class="lang-hidden">CRP / hsCRP</span><span data-lang="ceb" class="lang-hidden">CRP / hsCRP</span>
+<tr><td><span data-lang="en">CRP (C-reactive protein) / hsCRP</span><span data-lang="tl" class="lang-hidden">CRP / hsCRP</span><span data-lang="ceb" class="lang-hidden">CRP / hsCRP</span>
       <span data-lang="kap" class="lang-hidden">CRP / hsCRP</span></td><td><span data-lang="en">Inflammation — suppresses iron utilization</span><span data-lang="tl" class="lang-hidden">Pamamaga — pinipigilan ang paggamit ng iron</span><span data-lang="ceb" class="lang-hidden">Pamamaga — nagpugong sa paggamit sa iron</span>
       <span data-lang="kap" class="lang-hidden">Pamamaga — pinipigilan ing paggamit ning iron</span></td><td><span data-lang="en">Elevated CRP + low TSAT + high ferritin = anemia of chronic disease / iron-restricted erythropoiesis. IV iron + treat underlying inflammation.</span><span data-lang="tl" class="lang-hidden">Mataas na CRP + mababang TSAT + mataas na ferritin = anemia ng kronikong sakit / iron-restricted erythropoiesis. IV iron + gamutin ang pinagbabatayan na pamamaga.</span><span data-lang="ceb" class="lang-hidden">Taas nga CRP + ubos nga TSAT + taas nga ferritin = anemia sa kroniko nga sakit / iron-restricted erythropoiesis. IV iron + tambalon ang nagpapailalom nga pamamaga.</span>
       <span data-lang="kap" class="lang-hidden">Matas a CRP + mababang TSAT + matas a ferritin = anemia ning kronikong sakit / iron-restricted erythropoiesis. IV iron + gamutin ing pinagbabatayan a pamamaga.</span></td></tr>
@@ -2099,8 +2128,8 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <div class="feature-card">
 <h4><span class="dot dot-teal"></span><span data-lang="en">IV iron — preferred in CKD Stage 3b–5 and dialysis</span><span data-lang="tl" class="lang-hidden">IV iron — mas mainam sa CKD Stage 3b–5 at dialysis</span><span data-lang="ceb" class="lang-hidden">IV iron — mas gipili sa CKD Stage 3b–5 ug dialysis</span>
       <span data-lang="kap" class="lang-hidden">IV iron — mas mainam king CKD Stage 3b–5 at dialysis</span></h4>
-<p><span data-lang="en">IV iron sucrose is the standard in Philippine dialysis centers, available locally as <strong>Ferrofer</strong>, <strong>Anema</strong>, and <strong>Ferriscript</strong> (all iron sucrose 100 mg/5 mL ampoules — available at Philippine dialysis centers). All are iron sucrose complex formulations and are clinically equivalent for standard dosing. IV iron bypasses absorption barriers, delivers iron directly to storage and bone marrow, and is significantly more effective than oral iron in CKD Stage 3–5 and dialysis. Standard dosing: <strong>loading 200 mg IV × 3 sessions</strong> (over 1–2 weeks); <strong>maintenance 100 mg per HD session</strong> once iron targets are reached. Infuse slowly over 15–30 minutes diluted in 100 mL normal saline. Monitor for hypersensitivity reactions — observe patient for 30 minutes post-infusion. Do not administer if ferritin &gt;500 ng/mL with active infection or inflammation.</span><span data-lang="tl" class="lang-hidden">Ang IV iron sucrose ang pamantayan sa mga dialysis center sa Pilipinas, available nang lokal bilang <strong>Ferrofer</strong>, <strong>Anema</strong>, at <strong>Ferriscript</strong> (lahat ay iron sucrose 100 mg/5 mL ampoule). Lahat ay naglalaman ng iron sucrose complex at clinically equivalent para sa karaniwang dosis. Ang IV iron ay lumalampas sa mga hadlang sa pagsipsip, naghahatid ng iron nang direkta sa imbakan at bone marrow, at mas epektibo kaysa oral iron sa CKD Stage 3–5 at dialysis. Karaniwang dosis: <strong>loading 200 mg IV × 3 sessions</strong> (sa loob ng 1–2 linggo); <strong>maintenance 100 mg bawat HD session</strong> kapag naabot na ang mga target ng iron. Mag-infuse nang dahan-dahan sa loob ng 15–30 minuto na natunaw sa 100 mL normal saline. Bantayan ang mga reaksyon ng hypersensitivity — obserbahan ang pasyente sa loob ng 30 minuto pagkatapos ng infusion. Huwag ibigay kung ang ferritin &gt;500 ng/mL na may aktibong impeksyon o pamamaga.</span><span data-lang="ceb" class="lang-hidden">Ang IV iron sucrose mao ang pamantayan sa mga dialysis center sa Pilipinas, available nang lokal isip <strong>Ferrofer</strong>, <strong>Anema</strong>, ug <strong>Ferriscript</strong> (tanan iron sucrose 100 mg/5 mL ampoule). Tanan adunay iron sucrose complex ug clinically equivalent alang sa standard nga dosis. Ang IV iron milabang sa mga babag sa pagsuyop, naghatod sa iron direkta sa imbakan ug bone marrow, ug labi ka epektibo kaysa oral iron sa CKD Stage 3–5 ug dialysis. Kasagarang dosis: <strong>loading 200 mg IV × 3 sessions</strong> (sulod sa 1–2 ka semana); <strong>maintenance 100 mg sa matag HD session</strong> kon naabot na ang mga target sa iron. Mag-infuse nga hinay sulod sa 15–30 minuto nga natunaw sa 100 mL normal saline. Bantayan ang mga reaksyon sa hypersensitivity — obserbahan ang pasyente sulod sa 30 minuto human sa infusion. Ayaw ihatag kon ang ferritin &gt;500 ng/mL nga adunay aktibong impeksyon o pamamaga.</span>
-      <span data-lang="kap" class="lang-hidden">Ing IV iron sucrose ing pamantayan king deng dialysis center king Pilipinas, available nang lokal bilang <strong>Ferrofer</strong>, <strong>Anema</strong>, at <strong>Ferriscript</strong> (amin ya iron sucrose 100 mg/5 mL ampoule). Amin ya naglalaman ning iron sucrose complex at clinically equivalent para king karaniwang dosis. Ing IV iron ya lumalampas king deng hadlang king pagsipsip, naghahatid ning iron nang direkta king imbakan at bone marrow, at mas epektibo kaysa oral iron king CKD Stage 3–5 at dialysis. Karaniwang dosis: <strong>loading 200 mg IV × 3 sessions</strong> (king loob ning 1–2 lutu); <strong>maintenance 100 mg bawat HD session</strong> nung naabot a ing deng target ning iron. Mag-infuse nang dahan-dahan king loob ning 15–30 minuto a natunaw king 100 mL normal saline. Bantayan ing deng reaksyon ning hypersensitivity — obserbahan ing pasyente king loob ning 30 minuto kapabanuan ning infusion. Eka ibigay nung ing ferritin &gt;500 ning/mL a atin aktibong impeksyon o pamamaga.</span></p>
+<p><span data-lang="en">IV iron sucrose is the standard in Philippine dialysis centers, available locally as <strong>Ferrofer</strong>, <strong>Anema</strong>, and <strong>Ferriscript</strong> (all iron sucrose 100 mg/5 mL ampoules — available at Philippine dialysis centers). All are iron sucrose complex formulations and are clinically equivalent for standard dosing. IV iron bypasses absorption barriers and delivers iron directly to storage and bone marrow. In in-center hemodialysis it is generally preferred over oral iron; in non-dialysis CKD it is one option among several and is not automatically superior to a trial of oral iron. Typical HD dosing: <strong>loading 200 mg IV × 3 sessions</strong> (over 1–2 weeks); <strong>maintenance 100 mg per HD (hemodialysis) session</strong> once individualized iron goals are reached. Infuse slowly over 15–30 minutes diluted in 100 mL normal saline. Monitor for hypersensitivity reactions — observe patient for 30 minutes post-infusion. Per KDIGO 2026, withhold iron when ferritin &gt;700 ng/mL <em>or</em> TSAT ≥40%, and temporarily suspend IV iron during active systemic infection (ferritin is also falsely raised by inflammation).</span><span data-lang="tl" class="lang-hidden">Ang IV iron sucrose ang karaniwang ginagamit sa mga dialysis center sa Pilipinas, available nang lokal bilang <strong>Ferrofer</strong>, <strong>Anema</strong>, at <strong>Ferriscript</strong> (lahat ay iron sucrose 100 mg/5 mL ampoule). Lahat ay naglalaman ng iron sucrose complex at clinically equivalent para sa karaniwang dosis. Ang IV iron ay lumalampas sa mga hadlang sa pagsipsip at naghahatid ng iron nang direkta sa imbakan at bone marrow. Sa in-center hemodialysis, karaniwang mas pinipili kaysa oral iron; sa non-dialysis CKD ito ay isa lamang sa mga opsyon at hindi awtomatikong mas mahusay kaysa subok ng oral iron. Karaniwang dosis sa HD: <strong>loading 200 mg IV × 3 sessions</strong> (sa loob ng 1–2 linggo); <strong>maintenance 100 mg bawat HD session</strong> kapag naabot na ang isinasapersonal na layunin sa iron. Mag-infuse nang dahan-dahan sa loob ng 15–30 minuto na natunaw sa 100 mL normal saline. Bantayan ang mga reaksyon ng hypersensitivity — obserbahan ang pasyente sa loob ng 30 minuto pagkatapos ng infusion. Ayon sa KDIGO 2026, pigilan ang iron kapag ferritin &gt;700 ng/mL <em>o</em> TSAT ≥40%, at pansamantalang ihinto ang IV iron sa panahon ng aktibong systemic infection (mataas din nang mali ang ferritin dahil sa pamamaga).</span><span data-lang="ceb" class="lang-hidden">Ang IV iron sucrose kasagarang gigamit sa mga dialysis center sa Pilipinas, available nang lokal isip <strong>Ferrofer</strong>, <strong>Anema</strong>, ug <strong>Ferriscript</strong> (tanan iron sucrose 100 mg/5 mL ampoule). Tanan adunay iron sucrose complex ug clinically equivalent alang sa standard nga dosis. Ang IV iron milabang sa mga babag sa pagsuyop ug naghatod sa iron direkta sa imbakan ug bone marrow. Sa in-center hemodialysis sagad gipalabi kaysa oral iron; sa non-dialysis CKD kini usa lamang ka kapilian ug dili awtomatikong mas maayo kaysa pagsulay sa oral iron. Kasagarang dosis sa HD: <strong>loading 200 mg IV × 3 sessions</strong> (sulod sa 1–2 ka semana); <strong>maintenance 100 mg sa matag HD session</strong> kon naabot na ang indibidwal nga tumong sa iron. Mag-infuse nga hinay sulod sa 15–30 minuto nga natunaw sa 100 mL normal saline. Bantayan ang mga reaksyon sa hypersensitivity — obserbahan ang pasyente sulod sa 30 minuto human sa infusion. Sumala sa KDIGO 2026, pugngan ang iron kon ferritin &gt;700 ng/mL <em>o</em> TSAT ≥40%, ug temporaryong ihunong ang IV iron sa panahon sa aktibong systemic infection (ang ferritin sayop usab nga mosaka tungod sa pamamaga).</span>
+      <span data-lang="kap" class="lang-hidden">Ing IV iron sucrose ing karaniwang gagamitan king deng dialysis center king Pilipinas, available nang lokal bilang <strong>Ferrofer</strong>, <strong>Anema</strong>, at <strong>Ferriscript</strong> (amin ya iron sucrose 100 mg/5 mL ampoule). Amin ya naglalaman ning iron sucrose complex at clinically equivalent para king karaniwang dosis. Ing IV iron ya lumalampas king deng hadlang king pagsipsip at naghahatid ning iron nang direkta king imbakan at bone marrow. King in-center hemodialysis, karaniwang mas pipilinan kaysa oral iron; king non-dialysis CKD ya metung ne mu king deng opsyon at ali awtomatikong mas mayap kaysa subuk ning oral iron. Karaniwang dosis king HD: <strong>loading 200 mg IV × 3 sessions</strong> (king loob ning 1–2 lutu); <strong>maintenance 100 mg bawat HD session</strong> nung naabot a ing me-personalize a layunin king iron. Mag-infuse nang dahan-dahan king loob ning 15–30 minuto a natunaw king 100 mL normal saline. Bantayan ing deng reaksyon ning hypersensitivity — obserbahan ing pasyente king loob ning 30 minuto kapabanuan ning infusion. Base king KDIGO 2026, pigilan ing iron nung ferritin &gt;700 ng/mL <em>o</em> TSAT ≥40%, at pansamantalang ihinto ing IV iron king panahon ning aktibong systemic infection (matas mu naman nang mali ing ferritin uli ning pamamaga).</span></p>
 </div>
 </div>
 <h3><span data-lang="en">Oral Iron Formulations — New vs. Conventional</span><span data-lang="tl" class="lang-hidden">Mga Formulation ng Oral Iron — Bago kumpara sa Tradisyonal</span><span data-lang="ceb" class="lang-hidden">Mga Formulation sa Oral Iron — Bag-o batok sa Tradisyonal</span>
@@ -2158,7 +2187,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;vertical-align:top;"><span style="background:#edf7f2;color:#2d7a4f;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;"><span data-lang="en">Good</span><span data-lang="tl" class="lang-hidden">Mabuti</span><span data-lang="ceb" class="lang-hidden">Maayo</span>
       <span data-lang="kap" class="lang-hidden">Mabuti</span></span> — <span data-lang="en">phospholipid matrix protects GI mucosa. Significantly fewer side effects than FeSO₄. Can be taken with food.</span><span data-lang="tl" class="lang-hidden">ang phospholipid matrix ay nagpoprotekta sa GI mucosa. Mas kaunting side effects kaysa FeSO₄. Maaaring inumin kasama ang pagkain.</span><span data-lang="ceb" class="lang-hidden">ang phospholipid matrix nagpanalipod sa GI mucosa. Labi ka gamay nga side effects kaysa FeSO₄. Mahimong inumon uban sa pagkaon.</span>
       <span data-lang="kap" class="lang-hidden">ing phospholipid matrix ya nagpoprotekta king GI mucosa. Mas kaunting side effects kaysa FeSO₄. Maaaring inumin kasama ing pamangan.</span></td>
-<td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;"><span data-lang="en">Emerging role in CKD Stage 2–4 where hepcidin-mediated absorption is impaired. RCTs show non-inferiority to IV iron in non-dialysis CKD for mild-moderate deficiency. Higher cost than FeSO₄.</span><span data-lang="tl" class="lang-hidden">Lumalabas na papel sa CKD Stage 2–4 kung saan ang hepcidin-mediated absorption ay may kapansanan. Ang mga RCT ay nagpapakita ng non-inferiority sa IV iron sa non-dialysis CKD para sa banayad hanggang katamtamang kakulangan. Mas mataas na gastos kaysa FeSO₄.</span><span data-lang="ceb" class="lang-hidden">Nagtubo nga papel sa CKD Stage 2–4 diin ang hepcidin-mediated absorption may pagkamay-depekto. Ang mga RCT nagpakita og non-inferiority sa IV iron sa non-dialysis CKD alang sa banayad hangtod katamtamang kakulang. Mas taas nga gasto kaysa FeSO₄.</span>
+<td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;"><span data-lang="en">Emerging role in CKD Stage 2–4 where hepcidin-mediated absorption is impaired. RCTs (randomized controlled trials) show non-inferiority to IV iron in non-dialysis CKD for mild-moderate deficiency. Higher cost than FeSO₄.</span><span data-lang="tl" class="lang-hidden">Lumalabas na papel sa CKD Stage 2–4 kung saan ang hepcidin-mediated absorption ay may kapansanan. Ang mga RCT ay nagpapakita ng non-inferiority sa IV iron sa non-dialysis CKD para sa banayad hanggang katamtamang kakulangan. Mas mataas na gastos kaysa FeSO₄.</span><span data-lang="ceb" class="lang-hidden">Nagtubo nga papel sa CKD Stage 2–4 diin ang hepcidin-mediated absorption may pagkamay-depekto. Ang mga RCT nagpakita og non-inferiority sa IV iron sa non-dialysis CKD alang sa banayad hangtod katamtamang kakulang. Mas taas nga gasto kaysa FeSO₄.</span>
       <span data-lang="kap" class="lang-hidden">Lumalabas a papel king CKD Stage 2–4 nung saan ing hepcidin-mediated absorption ya atin kapansanan. Ing deng RCT ya nagpapakita ning non-inferiority king IV iron king non-dialysis CKD para king banayad anggang katamtamang kakulangan. Mas matas a gastos kaysa FeSO₄.</span></td>
 </tr>
 <tr style="background:#f9fafb;">
@@ -2170,7 +2199,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;vertical-align:top;"><span style="background:#edf7f2;color:#2d7a4f;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;"><span data-lang="en">Excellent</span><span data-lang="tl" class="lang-hidden">Napakahusay</span><span data-lang="ceb" class="lang-hidden">Labing maayo</span>
       <span data-lang="kap" class="lang-hidden">Napakahusay</span></span> — <span data-lang="en">minimal GI side effects due to liposomal protection. Can be taken at any time, with or without food.</span><span data-lang="tl" class="lang-hidden">minimal na GI side effects dahil sa liposomal protection. Maaaring inumin anumang oras, may pagkain man o wala.</span><span data-lang="ceb" class="lang-hidden">minimal nga GI side effects tungod sa liposomal protection. Mahimong inumon bisan unsang oras, uban o walay pagkaon.</span>
       <span data-lang="kap" class="lang-hidden">minimal a GI side effects dahil king liposomal protection. Maaaring inumin anumang oras, atin pamangan man o ala.</span></td>
-<td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;"><span data-lang="en">Most promising oral formulation for CKD patients who cannot tolerate conventional iron or have significant hepcidin-mediated absorption failure. Local availability: verify current FDA-PH registration status before prescribing. Higher cost. Emerging evidence in CKD; Phase III data expected 2025–2026.</span><span data-lang="tl" class="lang-hidden">Pinaka-promising na oral formulation para sa mga pasyenteng may CKD na hindi kayang tiisin ang conventional iron o may malaking hepcidin-mediated absorption failure. Lokal na availability: i-verify ang kasalukuyang FDA-PH registration status bago mag-reseta. Mas mataas na gastos. Lumalabas na ebidensya sa CKD; inaasahang Phase III data sa 2025–2026.</span><span data-lang="ceb" class="lang-hidden">Labing promising nga oral formulation alang sa mga pasyente nga may CKD nga dili makatiis sa conventional iron o adunay dakong hepcidin-mediated absorption failure. Lokal nga availability: i-verify ang kasamtangang FDA-PH registration status sa wala pa mag-reseta. Mas taas nga gasto. Nagtubo nga ebidensya sa CKD; gipaabut nga Phase III data sa 2025–2026.</span>
+<td style="padding:10px 12px;border-bottom:1px solid #e2e6eb;color:#2c3340;vertical-align:top;"><span data-lang="en">Most promising oral formulation for CKD patients who cannot tolerate conventional iron or have significant hepcidin-mediated absorption failure. Local availability: verify current FDA-PH (Food and Drug Administration Philippines) registration status before prescribing. Higher cost. Emerging evidence in CKD; Phase III data expected 2025–2026.</span><span data-lang="tl" class="lang-hidden">Pinaka-promising na oral formulation para sa mga pasyenteng may CKD na hindi kayang tiisin ang conventional iron o may malaking hepcidin-mediated absorption failure. Lokal na availability: i-verify ang kasalukuyang FDA-PH registration status bago mag-reseta. Mas mataas na gastos. Lumalabas na ebidensya sa CKD; inaasahang Phase III data sa 2025–2026.</span><span data-lang="ceb" class="lang-hidden">Labing promising nga oral formulation alang sa mga pasyente nga may CKD nga dili makatiis sa conventional iron o adunay dakong hepcidin-mediated absorption failure. Lokal nga availability: i-verify ang kasamtangang FDA-PH registration status sa wala pa mag-reseta. Mas taas nga gasto. Nagtubo nga ebidensya sa CKD; gipaabut nga Phase III data sa 2025–2026.</span>
       <span data-lang="kap" class="lang-hidden">Pinaka-promising a oral formulation para king deng pasyenteng atin CKD a ali kayang tiisin ing conventional iron o atin malaking hepcidin-mediated absorption failure. Lokal a availability: i-verify ing kasalukuyang FDA-PH registration status bago mag-reseta. Mas matas a gastos. Lumalabas a ebidensya king CKD; inaasahang Phase III data king 2025–2026.</span></td>
 </tr>
 <tr>
@@ -2201,9 +2230,12 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <li><strong><span data-lang="en">CKD Stage 3–4, significant hepcidin elevation, absorption failure:</span><span data-lang="tl" class="lang-hidden">CKD Stage 3–4, makabuluhang pagtaas ng hepcidin, kabiguan sa pagsipsip:</span><span data-lang="ceb" class="lang-hidden">CKD Stage 3–4, dakong pagtaas sa hepcidin, pagkapakyas sa pagsuyop:</span>
       <span data-lang="kap" class="lang-hidden">CKD Stage 3–4, makabuluhang pagtaas ning hepcidin, kabiguan king pagsipsip:</span></strong> <span data-lang="en">Consider Pelamis (liposomal FPC) sachets — verify local FDA-PH availability before prescribing.</span><span data-lang="tl" class="lang-hidden">Isaalang-alang ang Pelamis (liposomal FPC) sachets — i-verify ang lokal na FDA-PH availability bago mag-reseta.</span><span data-lang="ceb" class="lang-hidden">Konsiderahon ang Pelamis (liposomal FPC) sachets — i-verify ang lokal nga FDA-PH availability sa wala pa mag-reseta.</span>
       <span data-lang="kap" class="lang-hidden">Isaalang-alang ing Pelamis (liposomal FPC) sachets — i-verify ing lokal a FDA-PH availability bago mag-reseta.</span></li>
-<li><strong><span data-lang="en">CKD Stage 3b–5 and all hemodialysis patients:</span><span data-lang="tl" class="lang-hidden">CKD Stage 3b–5 at lahat ng pasyenteng nasa hemodialysis:</span><span data-lang="ceb" class="lang-hidden">CKD Stage 3b–5 ug tanan nga pasyente nga nag-hemodialysis:</span>
-      <span data-lang="kap" class="lang-hidden">CKD Stage 3b–5 at amin ning pasyenteng nasa hemodialysis:</span></strong> <span data-lang="en">IV iron sucrose (Ferrofer, Anema, or Ferriscript) — oral iron is largely ineffective at this stage due to iron-restricted erythropoiesis from hepcidin. IV route is standard of care.</span><span data-lang="tl" class="lang-hidden">IV iron sucrose (Ferrofer, Anema, o Ferriscript) — ang oral iron ay halos hindi epektibo sa yugtong ito dahil sa iron-restricted erythropoiesis mula sa hepcidin. Ang IV route ang pamantayan ng pag-aalaga.</span><span data-lang="ceb" class="lang-hidden">IV iron sucrose (Ferrofer, Anema, o Ferriscript) — ang oral iron halos dili epektibo sa yugto nga kini tungod sa iron-restricted erythropoiesis gikan sa hepcidin. Ang IV route mao ang pamantayan sa pag-atiman.</span>
-      <span data-lang="kap" class="lang-hidden">IV iron sucrose (Ferrofer, Anema, o Ferriscript) — ing oral iron ya halos ali epektibo king yugtong ini dahil king iron-restricted erythropoiesis mula king hepcidin. Ing IV route ing pamantayan ning pag-aalaga.</span></li>
+<li><strong><span data-lang="en">Hemodialysis patients:</span><span data-lang="tl" class="lang-hidden">Mga pasyenteng nasa hemodialysis:</span><span data-lang="ceb" class="lang-hidden">Mga pasyente nga nag-hemodialysis:</span>
+      <span data-lang="kap" class="lang-hidden">Deng pasyenteng nasa hemodialysis:</span></strong> <span data-lang="en">IV iron sucrose (Ferrofer, Anema, or Ferriscript) is generally preferred over oral iron in in-center HD — ongoing dialysis losses and hepcidin-driven iron-restricted erythropoiesis limit oral absorption. Individualized exceptions (prior reactions, availability, cost, patient preference) still apply.</span><span data-lang="tl" class="lang-hidden">Ang IV iron sucrose (Ferrofer, Anema, o Ferriscript) ay karaniwang mas pinipili kaysa oral iron sa in-center HD — nililimitahan ng patuloy na pagkawala sa dialysis at ng hepcidin-driven na iron-restricted erythropoiesis ang oral na pagsipsip. May natatanging mga eksepsyon (dating reaksyon, availability, gastos, kagustuhan ng pasyente).</span><span data-lang="ceb" class="lang-hidden">Ang IV iron sucrose (Ferrofer, Anema, o Ferriscript) sagad gipalabi kaysa oral iron sa in-center HD — ang padayon nga pagkawala sa dialysis ug ang hepcidin-driven nga iron-restricted erythropoiesis naglimit sa oral nga pagsuyop. Adunay indibidwal nga mga eksepsyon (kaniadto nga reaksyon, availability, gasto, gusto sa pasyente).</span>
+      <span data-lang="kap" class="lang-hidden">Ing IV iron sucrose (Ferrofer, Anema, o Ferriscript) ya karaniwang mas pipilinan kaysa oral iron king in-center HD — nililimitahan ning tuluy-tuluy a pangawala king dialysis at ning hepcidin-driven a iron-restricted erythropoiesis ing oral a pagsipsip. Atin natatanging deng eksepsyon (dating reaksyon, availability, gastu, kaburian ning pasyente).</span></li>
+<li><strong><span data-lang="en">CKD not on dialysis (including G3b–G5):</span><span data-lang="tl" class="lang-hidden">CKD na hindi nasa dialysis (kabilang ang G3b–G5):</span><span data-lang="ceb" class="lang-hidden">CKD nga wala sa dialysis (lakip ang G3b–G5):</span>
+      <span data-lang="kap" class="lang-hidden">CKD a ali nasa dialysis (kayabe ing G3b–G5):</span></strong> <span data-lang="en"><em>Either</em> oral or IV iron can be reasonable — the route is individualized to severity, prior response, tolerance, availability, cost, venous access, and preference. Oral iron is <strong>not</strong> uniformly ineffective in G3b–G5; a trial is appropriate for many, with IV iron reserved for intolerance, poor response, or more severe deficiency.</span><span data-lang="tl" class="lang-hidden"><em>Alinman</em> sa oral o IV iron ay maaaring makatwiran — isinasapersonal ang ruta batay sa tindi, dating tugon, tiyaga, availability, gastos, venous access, at kagustuhan. Ang oral iron ay <strong>hindi</strong> pare-parehong hindi epektibo sa G3b–G5; angkop ang subok para sa marami, at nakalaan ang IV iron para sa hindi pagtitiis, mahinang tugon, o mas malubhang kakulangan.</span><span data-lang="ceb" class="lang-hidden"><em>Bisan asa</em> sa oral o IV iron makatarunganon — gipahiangay ang ruta sa kagrabe, kaniadto nga tubag, pagkamaantoson, availability, gasto, venous access, ug gusto. Ang oral iron <strong>dili</strong> managsama nga dili epektibo sa G3b–G5; angay ang usa ka pagsulay alang sa daghan, ug ang IV iron gitagana alang sa dili pagkamaantoson, huyang nga tubag, o mas grabe nga kakulang.</span>
+      <span data-lang="kap" class="lang-hidden">Nokarin man king oral o IV iron ya malyaring makatwiran — me-personalize ing ruta base king tindi, dating tugon, tiyaga, availability, gastu, venous access, at kaburian. Ing oral iron ya <strong>ali</strong> parehong ali epektibo king G3b–G5; angkop ing subuk para king dakal, at nakalaan ing IV iron para king ali pamagtiis, mahinang tugon, o mas malubhang kakulangan.</span></li>
 <li><strong><span data-lang="en">Never give IV iron during active bacterial infection</span><span data-lang="tl" class="lang-hidden">Huwag kailanman magbigay ng IV iron sa panahon ng aktibong impeksyon sa bakterya</span><span data-lang="ceb" class="lang-hidden">Ayaw gayud hatagi og IV iron sa panahon sa aktibong impeksyon sa bakterya</span>
       <span data-lang="kap" class="lang-hidden">Eka kailanman magbigay ning IV iron king panahon ning aktibong impeksyon king bakterya</span></strong> — <span data-lang="en">see alert below.</span><span data-lang="tl" class="lang-hidden">tingnan ang alerto sa ibaba.</span><span data-lang="ceb" class="lang-hidden">tan-awa ang alerto sa ubos.</span>
       <span data-lang="kap" class="lang-hidden">tingnan ing alerto king ibaba.</span></li>
@@ -2232,16 +2264,16 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
   </picture>
 <figcaption><p class="fig-desc">This infographic introduces ESA therapy — injections that replace the EPO hormone — covering dosing, hemoglobin goals, the risk of raised blood pressure, and when treatment may need to be increased.</p></figcaption>
 </figure>
-<p><span data-lang="en">When iron stores are adequate (ferritin &gt;200, TSAT &gt;30%) and hemoglobin remains below 100 g/L, erythropoiesis-stimulating agents (ESAs) are initiated to stimulate bone marrow red cell production.</span><span data-lang="tl" class="lang-hidden">Kapag sapat na ang mga imbakan ng iron (ferritin &gt;200, TSAT &gt;30%) at ang hemoglobin ay nananatiling mas mababa sa 100 g/L, ang mga erythropoiesis-stimulating agent (ESA) ay sinimulan upang pukawin ang produksyon ng pulang selula sa bone marrow.</span><span data-lang="ceb" class="lang-hidden">Kon igo na ang mga imbakan sa iron (ferritin &gt;200, TSAT &gt;30%) ug ang hemoglobin nagpabilin nga ubos sa 100 g/L, ang mga erythropoiesis-stimulating agent (ESA) gisugdan aron pukawin ang produksyon sa pulang selula sa bone marrow.</span>
-      <span data-lang="kap" class="lang-hidden">Nung sapat a ing deng imbakan ning iron (ferritin &gt;200, TSAT &gt;30%) at ing hemoglobin ya nananatiling mas mababa king 100 g/L, ing deng erythropoiesis-stimulating agent (ESA) ya sinimulan upang pukawin ing produksyon ning pulang selula king bone marrow.</span></p>
+<p><span data-lang="en">Before starting an ESA, <strong>reversible causes are corrected first</strong> — iron deficiency, infection or inflammation, B12/folate deficiency, and blood loss. When those are addressed and hemoglobin is still low, erythropoiesis-stimulating agents (ESAs) may be considered. There is <strong>no single hemoglobin number that triggers ESA in every population</strong>; the decision is individualized (symptoms, how fast hemoglobin is falling, wish to avoid transfusion, transplant candidacy, and risks such as cancer, stroke, or clots) and made through shared decision-making with your nephrologist. The goal is to use the <strong>lowest effective dose</strong> to relieve symptoms and reduce the need for transfusion — not to normalize hemoglobin.</span><span data-lang="tl" class="lang-hidden">Bago simulan ang ESA, <strong>unang itinatama ang mga nababawi na sanhi</strong> — kakulangan sa iron, impeksyon o pamamaga, kakulangan sa B12/folate, at pagkawala ng dugo. Kapag natugunan ang mga ito at mababa pa rin ang hemoglobin, maaaring isaalang-alang ang erythropoiesis-stimulating agents (ESA). <strong>Walang iisang numero ng hemoglobin na nagsisimula ng ESA sa bawat populasyon</strong>; isinasapersonal ang desisyon (sintomas, bilis ng pagbaba ng hemoglobin, hangaring iwasan ang transfusion, pagiging kandidato sa transplant, at mga panganib tulad ng kanser, stroke, o pamumuo) sa pamamagitan ng shared decision-making kasama ang inyong nephrologist. Layunin ang <strong>pinakamababang epektibong dosis</strong> upang mapawi ang sintomas at bawasan ang pangangailangan sa transfusion — hindi ang gawing normal ang hemoglobin.</span><span data-lang="ceb" class="lang-hidden">Sa dili pa magsugod og ESA, <strong>unahon pagtul-id ang mga mabalik nga hinungdan</strong> — kakulang sa iron, impeksyon o pamamaga, kakulang sa B12/folate, ug pagkawala sa dugo. Kon masulbad kini ug ubos gihapon ang hemoglobin, mahimong konsiderahon ang erythropoiesis-stimulating agents (ESA). <strong>Walay usa ka numero sa hemoglobin nga magsugod og ESA sa matag populasyon</strong>; ang desisyon gipahiangay (sintomas, kakusog sa pag-ubos sa hemoglobin, tinguha nga malikayan ang transfusion, pagka-kandidato sa transplant, ug mga peligro sama sa kanser, stroke, o pamuo) pinaagi sa shared decision-making uban sa inyong nephrologist. Ang tumong mao ang paggamit sa <strong>labing ubos nga epektibong dosis</strong> aron mahupay ang sintomas ug makunhod ang panginahanglan sa transfusion — dili aron himoong normal ang hemoglobin.</span>
+      <span data-lang="kap" class="lang-hidden">Bayu simulan ing ESA, <strong>mumuna metatama ing deng mababawi a sanhi</strong> — kakulangan king iron, impeksyon o pamamaga, kakulangan king B12/folate, at pangawala ning daya. Nung metugunan ne deti at mababa pamu ing hemoglobin, malyaring isaalang-alang ing erythropoiesis-stimulating agents (ESA). <strong>Alang metung a numeru ning hemoglobin a magsimula ning ESA king balang populasyon</strong>; me-personalize ing desisyon (sintomas, bilis ning pamababa ning hemoglobin, kaburian a iwasan ing transfusion, pamagkandidato king transplant, at deng panganib anti ing kanser, stroke, o pamumu) king pamamagitan ning shared decision-making kayabe ing inyu nephrologist. Ing layunin ya gamitan ing <strong>pekamababang epektibong dosis</strong> para mapawi ing sintomas at bawasan ing pangangailangan king transfusion — ali ing gawang normal ing hemoglobin.</span></p>
 <div class="steps">
 <div class="step">
 <div class="step-num">1</div>
 <div class="step-body">
 <h4><span data-lang="en">Iron first — always</span><span data-lang="tl" class="lang-hidden">Iron muna — palagi</span><span data-lang="ceb" class="lang-hidden">Iron una — kanunay</span>
       <span data-lang="kap" class="lang-hidden">Iron muna — palagi</span></h4>
-<p><span data-lang="en">ESA therapy without adequate iron stores is ineffective and wasteful. The bone marrow needs iron to build hemoglobin in every new red cell. Always ensure ferritin &gt;200 and TSAT &gt;30% before initiating or escalating ESA dose.</span><span data-lang="tl" class="lang-hidden">Ang ESA therapy nang wala sapat na imbakan ng iron ay hindi epektibo at sayang. Ang bone marrow ay nangangailangan ng iron upang bumuo ng hemoglobin sa bawat bagong pulang selula. Palaging tiyaking ferritin &gt;200 at TSAT &gt;30% bago simulan o taasan ang dosis ng ESA.</span><span data-lang="ceb" class="lang-hidden">Ang ESA therapy nga walay igo nga imbakan sa iron dili epektibo ug sayang. Ang bone marrow nanginahanglan og iron aron magtukod og hemoglobin sa matag bag-ong pulang selula. Kanunay sigurohon nga ferritin &gt;200 ug TSAT &gt;30% sa wala pa magsugod o magtaas sa dosis sa ESA.</span>
-      <span data-lang="kap" class="lang-hidden">Ing ESA therapy nang ala sapat a imbakan ning iron ya ali epektibo at sayang. Ing bone marrow ya nangangailangan ning iron upang bumuo ning hemoglobin king bawat bagong pulang selula. Papirming tiyaking ferritin &gt;200 at TSAT &gt;30% bago simulan o taasan ing dosis ning ESA.</span></p>
+<p><span data-lang="en">ESA therapy without adequate iron stores is ineffective and wasteful — the bone marrow needs iron to build hemoglobin in every new red cell. So iron status should be assessed and optimized before starting or increasing an ESA. The exact ferritin and TSAT figures used differ by population (hemodialysis units are managed differently from non-dialysis CKD), so treat them as thresholds to interpret with your nephrologist, not as fixed automatic orders.</span><span data-lang="tl" class="lang-hidden">Ang ESA therapy nang walang sapat na imbakan ng iron ay hindi epektibo at sayang — kailangan ng bone marrow ang iron upang bumuo ng hemoglobin sa bawat bagong pulang selula. Kaya dapat suriin at i-optimize ang katayuan ng iron bago simulan o taasan ang ESA. Naiiba ang eksaktong bilang ng ferritin at TSAT ayon sa populasyon (magkaiba ang pamamahala sa hemodialysis at sa non-dialysis CKD), kaya ituring ang mga ito bilang threshold na binibigyang-kahulugan kasama ang inyong nephrologist, hindi bilang nakapirming awtomatikong utos.</span><span data-lang="ceb" class="lang-hidden">Ang ESA therapy nga walay igo nga imbakan sa iron dili epektibo ug sayang — ang bone marrow nanginahanglan og iron aron magtukod og hemoglobin sa matag bag-ong pulang selula. Busa kinahanglan susihon ug i-optimize ang kahimtang sa iron sa dili pa magsugod o magdugang sa ESA. Lahi ang eksaktong numero sa ferritin ug TSAT matag populasyon (lahi ang pagdumala sa hemodialysis ug sa non-dialysis CKD), busa isipa kini nga mga threshold nga hubaron uban sa inyong nephrologist, dili nga pihong awtomatikong mando.</span>
+      <span data-lang="kap" class="lang-hidden">Ing ESA therapy nang alang sapat a imbakan ning iron ya ali epektibo at sayang — kailangan ning bone marrow ing iron para bumuo ning hemoglobin king balang bagong pulang selula. Kaya dapat suriin at i-optimize ing katayuan ning iron bayu simulan o taasan ing ESA. Miyayaliwa ing eksaktong bilang ning ferritin at TSAT base king populasyon (miyayaliwa ing pamamahala king hemodialysis at king non-dialysis CKD), kaya ituring la deti bilang threshold a bibiyang-kahulugan kayabe ing inyu nephrologist, ali bilang nakapirming awtomatikong utos.</span></p>
 </div>
 </div>
 <div class="step">
@@ -2258,8 +2290,8 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <div class="step-body">
 <h4><span data-lang="en">Hemoglobin monitoring and target</span><span data-lang="tl" class="lang-hidden">Pagmamasid sa hemoglobin at target</span><span data-lang="ceb" class="lang-hidden">Pagbantay sa hemoglobin ug target</span>
       <span data-lang="kap" class="lang-hidden">Pagmamasid king hemoglobin at target</span></h4>
-<p><span data-lang="en">Check hemoglobin monthly. Target is 100–115 g/L — do NOT target higher. If hemoglobin rises above 115 g/L, reduce ESA dose. If hemoglobin rises above 130 g/L, hold ESA temporarily. Higher hemoglobin targets are associated with increased stroke and myocardial infarction risk (TREAT trial).</span><span data-lang="tl" class="lang-hidden">Suriin ang hemoglobin bawat buwan. Ang target ay 100–115 g/L — HUWAG mag-target ng mas mataas. Kung ang hemoglobin ay umaangat nang higit sa 115 g/L, bawasan ang dosis ng ESA. Kung ang hemoglobin ay umaangat nang higit sa 130 g/L, pansamantalang ihinto ang ESA. Ang mas mataas na target ng hemoglobin ay nauugnay sa pagtaas ng panganib ng stroke at myocardial infarction (TREAT trial).</span><span data-lang="ceb" class="lang-hidden">Susihon ang hemoglobin matag buwan. Ang target mao ang 100–115 g/L — AYAW mag-target og mas taas. Kon ang hemoglobin mosaka ibabaw sa 115 g/L, bawason ang dosis sa ESA. Kon ang hemoglobin mosaka ibabaw sa 130 g/L, ihunong sa makadiyot ang ESA. Ang mas taas nga mga target sa hemoglobin adunay kalabotan sa dugang peligro sa stroke ug myocardial infarction (TREAT trial).</span>
-      <span data-lang="kap" class="lang-hidden">Suriin ing hemoglobin bawat bulan. Ing target ya 100–115 g/L — HUWAG mag-target ning mas matas. Nung ing hemoglobin ya umaangat nang higit king 115 g/L, bawasan ing dosis ning ESA. Nung ing hemoglobin ya umaangat nang higit king 130 g/L, pansamantalang ihinto ing ESA. Ing mas matas a target ning hemoglobin ya nauugnay king pagtaas ning panganib ning stroke at myocardial infarction (TREAT trial).</span></p>
+<p><span data-lang="en">Check hemoglobin regularly and use the <strong>lowest effective ESA dose</strong>. KDIGO 2026 advises <strong>against using ESAs to maintain hemoglobin at or above 115 g/L</strong>; if hemoglobin approaches or exceeds 115 g/L, reduce the dose, and if it rises above ~130 g/L, hold the ESA temporarily. Raising hemoglobin into the normal range with ESAs has <strong>not</strong> been shown to improve heart or kidney outcomes and is linked to more strokes and heart attacks (CHOIR, TREAT trials). The aim is to ease symptoms and avoid transfusion, not to reach a "normal" number.</span><span data-lang="tl" class="lang-hidden">Regular na suriin ang hemoglobin at gamitin ang <strong>pinakamababang epektibong dosis ng ESA</strong>. Nagpapayo ang KDIGO 2026 <strong>laban sa paggamit ng ESA upang panatilihin ang hemoglobin sa 115 g/L o mas mataas</strong>; kung papalapit o lumampas ang hemoglobin sa 115 g/L, bawasan ang dosis, at kung lumampas ito sa ~130 g/L, pansamantalang ihinto ang ESA. Ang pagtaas ng hemoglobin sa normal na saklaw gamit ang ESA ay <strong>hindi</strong> napatunayang nagpapabuti sa puso o bato at nauugnay sa mas maraming stroke at atake sa puso (CHOIR, TREAT). Ang layunin ay mapawi ang sintomas at maiwasan ang transfusion, hindi ang maabot ang "normal" na numero.</span><span data-lang="ceb" class="lang-hidden">Susihon kanunay ang hemoglobin ug gamita ang <strong>labing ubos nga epektibong dosis sa ESA</strong>. Ang KDIGO 2026 nagtambag <strong>batok sa paggamit sa ESA aron huptan ang hemoglobin sa 115 g/L o mas taas</strong>; kon moduol o molapas ang hemoglobin sa 115 g/L, kunhoran ang dosis, ug kon molapas kini sa ~130 g/L, ihunong sa makadiyot ang ESA. Ang pagpataas sa hemoglobin ngadto sa normal nga han-ay pinaagi sa ESA <strong>wala</strong> mapamatud-i nga makapaayo sa kasingkasing o kidney ug nalambigit sa mas daghang stroke ug atake sa kasingkasing (CHOIR, TREAT). Ang tumong mao ang paghupay sa sintomas ug paglikay sa transfusion, dili ang pagkab-ot sa "normal" nga numero.</span>
+      <span data-lang="kap" class="lang-hidden">Regular a suriin ing hemoglobin at gamitan ing <strong>pekamababang epektibong dosis ning ESA</strong>. Magpayu ing KDIGO 2026 <strong>laban king pamangamit ning ESA para panatilian ing hemoglobin king 115 g/L o mas matas</strong>; nung papalapit o lumampas ing hemoglobin king 115 g/L, bawasan ing dosis, at nung lumampas ya king ~130 g/L, pansamantalang ihinto ing ESA. Ing pagtaas ning hemoglobin king normal a saklaw gamit ing ESA ya <strong>ali</strong> mepatunayan a nagpapabuti king pusu o batu at me-link king mas dakal a stroke at atake king pusu (CHOIR, TREAT). Ing layunin ya mapawi ing sintomas at maiwasan ing transfusion, ali ing maabot ing "normal" a numeru.</span></p>
 </div>
 </div>
 <div class="step">
@@ -2341,8 +2373,8 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
       <span data-lang="kap" class="lang-hidden">08 · Interactive a Kagamitan</span></div>
 <h2><span data-lang="en">Iron Status Calculator — TSAT &amp; Iron Deficiency Classifier</span><span data-lang="tl" class="lang-hidden">Kalkulador ng Katayuan ng Iron — TSAT at Iron Deficiency Classifier</span><span data-lang="ceb" class="lang-hidden">Kalkulador sa Kahimtang sa Iron — TSAT ug Iron Deficiency Classifier</span>
       <span data-lang="kap" class="lang-hidden">Kalkulador ning Katayuan ning Iron — TSAT at Iron Deficiency Classifier</span></h2>
-<p><span data-lang="en">Enter your iron panel results to calculate TSAT and determine your iron deficiency type. Your doctor uses this to decide whether IV iron, oral iron, or no iron therapy is appropriate for you.</span><span data-lang="tl" class="lang-hidden">Ilagay ang inyong mga resulta ng iron panel upang kalkulahin ang TSAT at matukoy ang uri ng inyong kakulangan sa iron. Ginagamit ito ng inyong doktor upang magpasiya kung ang IV iron, oral iron, o walang iron therapy ang angkop para sa inyo.</span><span data-lang="ceb" class="lang-hidden">Isulod ang inyong mga resulta sa iron panel aron makalkula ang TSAT ug matino ang matang sa inyong kakulang sa iron. Gigamit kini sa inyong doktor aron magdesisyon kon ang IV iron, oral iron, o walay iron therapy ang angay alang kaninyo.</span>
-      <span data-lang="kap" class="lang-hidden">Ilagay ing inyu deng resulta ning iron panel upang kalkulahin ing TSAT at matukoy ing uri ning inyu kakulangan king iron. Ginagamit ini ning inyu doktor upang magpasiya nung ing IV iron, oral iron, o alang iron therapy ing angkop para king inyo.</span></p>
+<p><span data-lang="en"><strong>First choose your population</strong> — the thresholds are different for each. Then enter your iron panel to calculate TSAT and see how the numbers are interpreted. This tool <strong>evaluates and helps you discuss</strong> iron status with your doctor; it does <strong>not</strong> prescribe iron or decide the route (oral vs. IV) on its own. Interpretation follows KDIGO 2026.</span><span data-lang="tl" class="lang-hidden"><strong>Piliin muna ang inyong populasyon</strong> — magkaiba ang mga threshold para sa bawat isa. Pagkatapos ilagay ang iron panel upang kalkulahin ang TSAT at makita kung paano binibigyang-kahulugan ang mga numero. Ang tool na ito ay <strong>sumusuri at tumutulong na talakayin</strong> ang katayuan ng iron sa inyong doktor; <strong>hindi</strong> ito nagrereseta ng iron o nagpapasya ng ruta (oral vs. IV) nang mag-isa. Sumusunod sa KDIGO 2026 ang interpretasyon.</span><span data-lang="ceb" class="lang-hidden"><strong>Pilia una ang inyong populasyon</strong> — lahi ang mga threshold sa matag usa. Dayon isulod ang iron panel aron makalkula ang TSAT ug makita giunsa paghubad ang mga numero. Kini nga himan <strong>nag-evaluate ug motabang nga hisgotan</strong> ang kahimtang sa iron uban sa inyong doktor; kini <strong>dili</strong> mag-reseta og iron o magdesisyon sa ruta (oral vs. IV) sa iyang kaugalingon. Ang paghubad nagsunod sa KDIGO 2026.</span>
+      <span data-lang="kap" class="lang-hidden"><strong>Piliin mumuna ing inyu populasyon</strong> — miyayaliwa ing deng threshold para king balang metung. Kaibat ilagay ing iron panel para kalkulahin ing TSAT at akit nung makananu bibiyang-kahulugan ing deng numeru. Ing tool a ini ya <strong>sumusuri at saup a talakayan</strong> ing katayuan ning iron kayabe ing inyu doktor; <strong>ali</strong> ne magreseta ning iron o magpasya king ruta (oral vs. IV) mag-isa. Ing interpretasyon ya tutuki king KDIGO 2026.</span></p>
 <div class="calc-wrap">
       <div class="unit-toggle-wrap">
         <span class="ut-label">Units:</span>
@@ -2352,6 +2384,18 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
         </div>
       </div>
 <div class="calc-grid">
+<div class="calc-field" style="grid-column:1 / -1;">
+<label>Population <span style="color:#c0392b;">(required — choose first)</span></label>
+<select id="a-dialysis" onchange="calcAnemia()">
+<option value="">Select your population…</option>
+<option value="ckd">CKD, not on dialysis</option>
+<option value="hd">Hemodialysis</option>
+<option value="pd">Peritoneal dialysis</option>
+<option value="transplant">Kidney transplant recipient</option>
+<option value="pediatric">Pediatric CKD (child)</option>
+</select>
+<div class="field-hint">Thresholds and pathways differ by population (KDIGO 2026). Transplant, PD, and pediatric anemia are managed by a specialist — this tool gives an overview only for those.</div>
+</div>
 <div class="calc-field">
 <label id="anem-lbl-si">Serum Iron (μg/dL)</label>
 <input id="a-si" max="300" min="1" oninput="calcAnemia()" placeholder="e.g. 45" step="0.1" type="number"/>
@@ -2365,17 +2409,11 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <div class="calc-field">
 <label id="anem-lbl-ferritin">Serum Ferritin (ng/mL)</label>
 <input id="a-ferritin" max="5000" min="1" oninput="calcAnemia()" placeholder="e.g. 120" step="0.1" type="number"/>
-<div class="field-hint">Iron storage marker. Also reflects inflammation — unreliable in acute illness</div>
+<div class="field-hint">Iron storage marker. Also rises with inflammation — unreliable in acute illness</div>
 </div>
 <div class="calc-field">
-<label>Dialysis Status</label>
-<select id="a-dialysis" onchange="calcAnemia()">
-<option value="">Select…</option>
-<option value="hd">On hemodialysis</option>
-<option value="pd">On peritoneal dialysis</option>
-<option value="ckd">CKD (not on dialysis)</option>
-</select>
-<div class="field-hint">Targets differ between dialysis and non-dialysis CKD patients (KDIGO 2024)</div>
+<label style="display:flex;align-items:center;gap:8px;font-weight:600;"><input type="checkbox" id="a-inflam" onchange="calcAnemia()" style="width:auto;">Active infection or inflammation now?</label>
+<div class="field-hint">Check this if there is a current infection, recent hospitalization, or a high CRP. Ferritin is falsely raised by inflammation, and iron is usually paused during active infection.</div>
 </div>
 </div>
 <div class="calc-result-box" id="anemia-result">
@@ -2383,7 +2421,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <div class="calc-metric-card">
 <div class="cmv" id="a-tsat-val">—</div>
 <div class="cml">TSAT %</div>
-<div class="cmt" id="a-tsat-badge">HD target &gt;30%</div>
+<div class="cmt" id="a-tsat-badge">Select population</div>
 </div>
 <div class="calc-metric-card">
 <div class="cmv" id="a-ferritin-val">—</div>
@@ -2398,26 +2436,37 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 </div>
 <div class="calc-verdict-text" id="a-verdict"></div>
 <div class="calc-action-text" id="a-action"></div>
+<div id="a-warnings" style="display:none;margin-top:12px;font-size:12.5px;line-height:1.6;background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.5);border-radius:8px;padding:10px 14px;color:var(--text-mid);"></div>
 </div>
-<p class="calc-disclaimer">⚕ TSAT = (Serum Iron ÷ TIBC) × 100. Ferritin is an acute phase reactant — elevated by inflammation, infection, or malignancy independent of iron stores. Classification per KDIGO 2024. This tool is for educational guidance only — iron therapy decisions require physician assessment.</p>
+<div style="margin-top:14px;font-size:12px;line-height:1.6;color:var(--text-muted);border:1px dashed var(--border);border-radius:8px;padding:12px 14px;">
+<strong>What this tool cannot decide:</strong> It cannot choose your population for you (you must select it), it cannot set a hemoglobin or ESA target, and it does <strong>not</strong> prescribe iron — it <em>evaluates</em> iron status and flags issues to discuss. A low TSAT with a high ferritin, or during active infection, is <strong>not</strong> proof of iron deficiency and should not by itself trigger IV iron. Any therapy needs clinician confirmation of the full picture. Source model: KDIGO 2026 Anemia-in-CKD guideline (reference values; individualization required).
+</div>
+<p class="calc-disclaimer">⚕ TSAT = (Serum Iron ÷ TIBC) × 100. Ferritin is an acute phase reactant — elevated by inflammation, infection, or malignancy independent of iron stores. Classification per KDIGO 2026. This tool is for educational guidance only — iron therapy decisions require physician assessment.</p>
 </div>
 </section>
 <section class="section" id="targets">
-<div class="section-tag"><span data-lang="en">09 · KDIGO 2024 Targets</span><span data-lang="tl" class="lang-hidden">09 · Mga Target ng KDIGO 2024</span><span data-lang="ceb" class="lang-hidden">09 · Mga Target sa KDIGO 2024</span>
-      <span data-lang="kap" class="lang-hidden">09 · Deng Target ning KDIGO 2024</span></div>
+<div class="section-tag"><span data-lang="en">09 · KDIGO 2026 Targets</span><span data-lang="tl" class="lang-hidden">09 · Mga Target ng KDIGO 2026</span><span data-lang="ceb" class="lang-hidden">09 · Mga Target sa KDIGO 2026</span>
+      <span data-lang="kap" class="lang-hidden">09 · Deng Target ning KDIGO 2026</span></div>
 <h2><span data-lang="en">Treatment Targets for CKD-Related Anemia</span><span data-lang="tl" class="lang-hidden">Mga Target sa Paggamot ng Anemia na Kaugnay sa CKD</span><span data-lang="ceb" class="lang-hidden">Mga Target sa Pagtambal sa Anemia nga May Kalabotan sa CKD</span>
       <span data-lang="kap" class="lang-hidden">Deng Target king Paggamut ning Anemia a Kaugnay king CKD</span></h2>
 <figure class="illus-panel" style="max-width:760px;margin:0 auto 24px;">
   <picture>
     <source srcset="../images/anemia-kdigo-targets-infographic.webp" type="image/webp">
-    <img src="../images/anemia-kdigo-targets-infographic.png" loading="lazy" width="1024" height="1024" alt="KDIGO 2024 Anemia Management Targets — Hemoglobin 100–115 g/L, Ferritin >200 ng/mL dialysis, TSAT >30% dialysis, CHr >29 pg" style="border-radius:12px;display:block;width:100%;height:auto;">
+    <img src="../images/anemia-kdigo-targets-infographic.png" loading="lazy" width="1024" height="1024" alt="KDIGO 2026 anemia reference ranges (individualized by population): hemoglobin ~100–115 g/L as a general range, do not use ESAs to maintain Hb ≥115 g/L; dialysis iron references ferritin >200 ng/mL and TSAT >30%, withhold iron at ferritin >700 ng/mL or TSAT ≥40%; CHr >29 pg. These are population-specific reference values, not a single universal target." style="border-radius:12px;display:block;width:100%;height:auto;">
   </picture>
-<figcaption><p class="fig-desc">This infographic summarizes the international KDIGO treatment targets for anemia in kidney disease, including the recommended hemoglobin range and iron level goals for patients on dialysis.</p></figcaption>
+<figcaption><p class="fig-desc">This infographic summarizes international KDIGO treatment reference ranges for anemia in kidney disease. Note that hemoglobin and iron goals are individualized and differ by population; the figure shows general dialysis-oriented reference values.</p></figcaption>
 </figure>
+<div class="alert alert-teal" style="margin-bottom:18px;">
+<div class="alert-icon">⚖️</div>
+<div class="alert-body">
+<h4><span data-lang="en">These are population-specific reference ranges, not universal orders</span><span data-lang="tl" class="lang-hidden">Ang mga ito ay reference range ayon sa populasyon, hindi unibersal na utos</span><span data-lang="ceb" class="lang-hidden">Kini mga reference range base sa populasyon, dili unibersal nga mando</span><span data-lang="kap" class="lang-hidden">Deti ya reference range base king populasyon, ali unibersal a utos</span></h4>
+<p><span data-lang="en">The figures below differ between hemodialysis and non-dialysis CKD, and are handled differently again in peritoneal dialysis, transplant recipients, and children. There is <strong>no single universal hemoglobin target or iron threshold</strong>; each is interpreted through shared decision-making with the nephrologist, not converted into an automatic order.</span><span data-lang="tl" class="lang-hidden">Ang mga bilang sa ibaba ay magkaiba sa hemodialysis at non-dialysis CKD, at iba rin ang pagtrato sa peritoneal dialysis, mga tumanggap ng transplant, at mga bata. <strong>Walang iisang unibersal na target ng hemoglobin o threshold ng iron</strong>; binibigyang-kahulugan ang bawat isa sa pamamagitan ng shared decision-making kasama ang nephrologist, hindi ginagawang awtomatikong utos.</span><span data-lang="ceb" class="lang-hidden">Ang mga numero sa ubos lahi tali sa hemodialysis ug non-dialysis CKD, ug lahi usab ang pagdumala sa peritoneal dialysis, mga nakadawat og transplant, ug mga bata. <strong>Walay usa ka unibersal nga target sa hemoglobin o threshold sa iron</strong>; ang matag usa gihubad pinaagi sa shared decision-making uban sa nephrologist, dili himoong awtomatikong mando.</span><span data-lang="kap" class="lang-hidden">Ing deng bilang king ibaba ya miyayaliwa king hemodialysis at non-dialysis CKD, at miyayaliwa mu naman ing pamagtrato king peritoneal dialysis, deng tumanggap ning transplant, at deng anak. <strong>Alang metung a unibersal a target ning hemoglobin o threshold ning iron</strong>; bibiyang-kahulugan ing balang metung king pamamagitan ning shared decision-making kayabe ing nephrologist, ali gagawang awtomatikong utos.</span></p>
+</div>
+</div>
 <table class="lab-table">
 <thead><tr><th><span data-lang="en">Parameter</span><span data-lang="tl" class="lang-hidden">Parameter</span><span data-lang="ceb" class="lang-hidden">Parameter</span>
-      <span data-lang="kap" class="lang-hidden">Parameter</span></th><th><span data-lang="en">KDIGO 2024 Target</span><span data-lang="tl" class="lang-hidden">Target ng KDIGO 2024</span><span data-lang="ceb" class="lang-hidden">Target sa KDIGO 2024</span>
-      <span data-lang="kap" class="lang-hidden">Target ning KDIGO 2024</span></th><th><span data-lang="en">Action if below target</span><span data-lang="tl" class="lang-hidden">Aksyon kung nasa ibaba ng target</span><span data-lang="ceb" class="lang-hidden">Aksyon kon ubos sa target</span>
+      <span data-lang="kap" class="lang-hidden">Parameter</span></th><th><span data-lang="en">KDIGO 2026 Target</span><span data-lang="tl" class="lang-hidden">Target ng KDIGO 2026</span><span data-lang="ceb" class="lang-hidden">Target sa KDIGO 2026</span>
+      <span data-lang="kap" class="lang-hidden">Target ning KDIGO 2026</span></th><th><span data-lang="en">Action if below target</span><span data-lang="tl" class="lang-hidden">Aksyon kung nasa ibaba ng target</span><span data-lang="ceb" class="lang-hidden">Aksyon kon ubos sa target</span>
       <span data-lang="kap" class="lang-hidden">Aksyon nung nasa ibaba ning target</span></th><th><span data-lang="en">Action if above target</span><span data-lang="tl" class="lang-hidden">Aksyon kung nasa itaas ng target</span><span data-lang="ceb" class="lang-hidden">Aksyon kon ibabaw sa target</span>
       <span data-lang="kap" class="lang-hidden">Aksyon nung nasa itaas ning target</span></th></tr></thead>
 <tbody>
@@ -2427,12 +2476,12 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
       <span data-lang="kap" class="lang-hidden">Bawasan/ihinto ing ESA; imbestigahan ing deng sanhi ning polycythemia</span></td></tr>
 <tr><td><span data-lang="en">Serum ferritin</span><span data-lang="tl" class="lang-hidden">Serum ferritin</span><span data-lang="ceb" class="lang-hidden">Serum ferritin</span>
       <span data-lang="kap" class="lang-hidden">Serum ferritin</span></td><td><span class="target-badge">&gt;200 ng/mL (dialysis) / &gt;100 (pre-dialysis)</span></td><td><span data-lang="en">IV iron supplementation (dialysis) or oral iron (pre-dialysis)</span><span data-lang="tl" class="lang-hidden">IV iron supplementation (dialysis) o oral iron (pre-dialysis)</span><span data-lang="ceb" class="lang-hidden">IV iron supplementation (dialysis) o oral iron (pre-dialysis)</span>
-      <span data-lang="kap" class="lang-hidden">IV iron supplementation (dialysis) o oral iron (pre-dialysis)</span></td><td><span data-lang="en">&gt;500 with active inflammation — avoid IV iron; ferritin may be falsely elevated</span><span data-lang="tl" class="lang-hidden">&gt;500 na may aktibong pamamaga — iwasan ang IV iron; ang ferritin ay maaaring maling mataas</span><span data-lang="ceb" class="lang-hidden">&gt;500 nga adunay aktibong pamamaga — likayi ang IV iron; ang ferritin mahimong sayop nga taas</span>
-      <span data-lang="kap" class="lang-hidden">&gt;500 a atin aktibong pamamaga — iwasan ing IV iron; ing ferritin ya maaaring maling matas</span></td></tr>
+      <span data-lang="kap" class="lang-hidden">IV iron supplementation (dialysis) o oral iron (pre-dialysis)</span></td><td><span data-lang="en">Withhold iron when ferritin &gt;700 ng/mL (KDIGO 2026 safety limit). Also hold if ferritin &gt;500 with active inflammation/infection — ferritin may be falsely elevated.</span><span data-lang="tl" class="lang-hidden">Pigilan ang iron kapag ferritin &gt;700 ng/mL (KDIGO 2026 safety limit). Ihinto rin kung ferritin &gt;500 na may aktibong pamamaga/impeksyon — maaaring maling mataas ang ferritin.</span><span data-lang="ceb" class="lang-hidden">Pugngan ang iron kon ferritin &gt;700 ng/mL (KDIGO 2026 safety limit). Ihunong usab kon ferritin &gt;500 nga adunay aktibong pamamaga/impeksyon — mahimong sayop nga taas ang ferritin.</span>
+      <span data-lang="kap" class="lang-hidden">Pigilan ing iron nung ferritin &gt;700 ng/mL (KDIGO 2026 safety limit). Ihinto mu naman nung ferritin &gt;500 a atin aktibong pamamaga/impeksyon — malyaring maling matas ing ferritin.</span></td></tr>
 <tr><td><span data-lang="en">TSAT</span><span data-lang="tl" class="lang-hidden">TSAT</span><span data-lang="ceb" class="lang-hidden">TSAT</span>
-      <span data-lang="kap" class="lang-hidden">TSAT</span></td><td><span class="target-badge">&gt;30% (dialysis) / &gt;20% (pre-dialysis)</span></td><td><span data-lang="en">IV iron even if ferritin is adequate — iron-restricted erythropoiesis</span><span data-lang="tl" class="lang-hidden">IV iron kahit sapat ang ferritin — iron-restricted erythropoiesis</span><span data-lang="ceb" class="lang-hidden">IV iron bisan igo ang ferritin — iron-restricted erythropoiesis</span>
-      <span data-lang="kap" class="lang-hidden">IV iron kahit sapat ing ferritin — iron-restricted erythropoiesis</span></td><td><span data-lang="en">&gt;50% — hold IV iron; risk of iron overload</span><span data-lang="tl" class="lang-hidden">&gt;50% — ihinto ang IV iron; panganib ng iron overload</span><span data-lang="ceb" class="lang-hidden">&gt;50% — ihunong ang IV iron; peligro sa iron overload</span>
-      <span data-lang="kap" class="lang-hidden">&gt;50% — ihinto ing IV iron; panganib ning iron overload</span></td></tr>
+      <span data-lang="kap" class="lang-hidden">TSAT</span></td><td><span class="target-badge">&gt;30% (dialysis) / &gt;20% (pre-dialysis)</span></td><td><span data-lang="en">Consider iron even if ferritin is adequate (iron-restricted erythropoiesis) — IV in HD; oral or IV individualized in non-dialysis CKD</span><span data-lang="tl" class="lang-hidden">Isaalang-alang ang iron kahit sapat ang ferritin (iron-restricted erythropoiesis) — IV sa HD; oral o IV na isinasapersonal sa non-dialysis CKD</span><span data-lang="ceb" class="lang-hidden">Konsiderahon ang iron bisan igo ang ferritin (iron-restricted erythropoiesis) — IV sa HD; oral o IV nga gipahiangay sa non-dialysis CKD</span>
+      <span data-lang="kap" class="lang-hidden">Isaalang-alang ing iron kahit sapat ing ferritin (iron-restricted erythropoiesis) — IV king HD; oral o IV a me-personalize king non-dialysis CKD</span></td><td><span data-lang="en">TSAT ≥40% — withhold iron (KDIGO 2026 safety limit); risk of iron overload</span><span data-lang="tl" class="lang-hidden">TSAT ≥40% — pigilan ang iron (KDIGO 2026 safety limit); panganib ng iron overload</span><span data-lang="ceb" class="lang-hidden">TSAT ≥40% — pugngan ang iron (KDIGO 2026 safety limit); peligro sa iron overload</span>
+      <span data-lang="kap" class="lang-hidden">TSAT ≥40% — pigilan ing iron (KDIGO 2026 safety limit); panganib ning iron overload</span></td></tr>
 <tr><td><span data-lang="en">Reticulocyte Hgb content (CHr)</span><span data-lang="tl" class="lang-hidden">Reticulocyte Hgb content (CHr)</span><span data-lang="ceb" class="lang-hidden">Reticulocyte Hgb content (CHr)</span>
       <span data-lang="kap" class="lang-hidden">Reticulocyte Hgb content (CHr)</span></td><td><span class="target-badge">&gt;29 pg</span></td><td><span data-lang="en">Iron-restricted erythropoiesis — IV iron needed before escalating ESA</span><span data-lang="tl" class="lang-hidden">Iron-restricted erythropoiesis — kailangan ang IV iron bago taasan ang ESA</span><span data-lang="ceb" class="lang-hidden">Iron-restricted erythropoiesis — gikinahanglan ang IV iron sa wala pa taason ang ESA</span>
       <span data-lang="kap" class="lang-hidden">Iron-restricted erythropoiesis — kailangan ing IV iron bago taasan ing ESA</span></td><td><span data-lang="en">Iron replete — proceed with ESA optimization</span><span data-lang="tl" class="lang-hidden">Puno na ang iron — magpatuloy sa ESA optimization</span><span data-lang="ceb" class="lang-hidden">Puno na ang iron — padayonon ang ESA optimization</span>
@@ -2481,7 +2530,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
       <!-- Tabs -->
       <div class="an-tabs">
         <button class="an-tab active" id="an-tab-facit" onclick="anTab('facit')">FACIT-Fatigue</button>
-        <button class="an-tab" id="an-tab-kdqol" onclick="anTab('kdqol')">KDQOL-36</button>
+        <button class="an-tab" id="an-tab-kdqol" onclick="anTab('kdqol')">KDQOL-36 (Kidney Disease Quality of Life)</button>
       </div>
 
       <!-- FACIT-Fatigue Panel -->
@@ -2522,7 +2571,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
         <button class="an-btn-primary" onclick="anPrint()">Print / Save as PDF</button>
       </div>
 
-      <p style="font-size:11px;color:var(--text-faint,#94a3b8);margin:12px 0 0;line-height:1.5;"><span data-lang="en">⚕ FACIT-Fatigue: Yellen et al. (1997), validated for CKD/dialysis. KDQOL-36: Ware et al., kidney-targeted QoL instrument. Educational tools only — results do not replace clinical evaluation. Share with your nephrologist for discussion.</span><span data-lang="tl" class="lang-hidden">⚕ Mga kagamitang pang-edukasyon lamang; hindi pumapalit sa pagtatasa ng doktor.</span><span data-lang="ceb" class="lang-hidden">⚕ Mga himan sa edukasyon lamang; dili makapuli sa pagtimbang sa doktor.</span><span data-lang="kap" class="lang-hidden">⚕ Deng kasangkapang pang-edukasyon lamang; e kalagan ing pagsusuri ning doktor.</span></p>
+      <p style="font-size:11px;color:var(--text-faint,#94a3b8);margin:12px 0 0;line-height:1.5;"><span data-lang="en">⚕ FACIT-Fatigue: Yellen et al. (1997), validated for CKD/dialysis. KDQOL-36: Ware et al., kidney-targeted QoL (quality of life) instrument. Educational tools only — results do not replace clinical evaluation. Share with your nephrologist for discussion.</span><span data-lang="tl" class="lang-hidden">⚕ Mga kagamitang pang-edukasyon lamang; hindi pumapalit sa pagtatasa ng doktor.</span><span data-lang="ceb" class="lang-hidden">⚕ Mga himan sa edukasyon lamang; dili makapuli sa pagtimbang sa doktor.</span><span data-lang="kap" class="lang-hidden">⚕ Deng kasangkapang pang-edukasyon lamang; e kalagan ing pagsusuri ning doktor.</span></p>
     </div>
   </section>
 </main>
@@ -2645,9 +2694,9 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <div class="hero-copy">
 <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1f3864;margin-bottom:10px;">Nephrology · Internal Medicine · Clinical Reference</div>
 <h1 style="font-family:'Inter',sans-serif;font-size:clamp(22px,4vw,32px);font-weight:700;margin-bottom:12px;">Anemia in CKD: <em style="color:#a06b00;">Clinical Management Guide</em></h1>
-<p style="font-size:1rem;max-width:680px;line-height:1.65;margin-bottom:18px;">KDIGO 2024-aligned protocols for iron optimization, ESA dosing, HIF-PHI integration, and dialysis-specific anemia workflows. Evidence-based decision support for nephrologists and internists.</p>
+<p style="font-size:1rem;max-width:680px;line-height:1.65;margin-bottom:18px;">KDIGO 2026-aligned protocols for iron optimization, ESA dosing, HIF-PHI integration, and dialysis-specific anemia workflows. Evidence-based decision support for nephrologists and internists.</p>
 <div class="clin-badges">
-  <span class="clin-badge">KDIGO 2024 Aligned</span>
+  <span class="clin-badge">KDIGO 2026 Aligned</span>
   <span class="clin-badge">CKD ND · HD · PD</span>
   <span class="clin-badge">ESA Protocols</span>
   <span class="clin-badge">Iron Titration</span>
@@ -2663,9 +2712,9 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <span class="ov-title">Evidence Snapshot</span>
 </div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">100–115</span><span class="l">g/L target Hb in HD, PD &amp; CKD ND</span></div>
+<div class="ov-stat"><span class="v">≥115</span><span class="l">g/L — do NOT use ESA to maintain Hb here (individualized; KDIGO 2026)</span></div>
 <div class="ov-stat"><span class="v">&gt;130</span><span class="l">g/L raises CV events &amp; thrombosis (CHOIR/TREAT)</span></div>
-<div class="ov-stat"><span class="v">KDIGO<br>2024</span><span class="l">guideline-aligned management</span></div>
+<div class="ov-stat"><span class="v">KDIGO<br>2026</span><span class="l">guideline-aligned management</span></div>
 </div>
 <a class="ov-foot" href="#clin-overview">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 </div>
@@ -2712,11 +2761,11 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <div class="hb-meter">
   <div class="hb-row"><span class="hb-range">Men</span><div class="hb-fill hb-danger">Anemia &lt; 130 g/L</div></div>
   <div class="hb-row"><span class="hb-range">Women</span><div class="hb-fill hb-low">Anemia &lt; 120 g/L</div></div>
-  <div class="hb-row"><span class="hb-range">CKD ND target</span><div class="hb-fill hb-target">100 – 115 g/L</div></div>
-  <div class="hb-row"><span class="hb-range">HD / PD target</span><div class="hb-fill hb-target">100 – 115 g/L</div></div>
+  <div class="hb-row"><span class="hb-range">Typical range</span><div class="hb-fill hb-target">~100 – 115 g/L (individualized)</div></div>
+  <div class="hb-row"><span class="hb-range">ESA maintenance</span><div class="hb-fill hb-high">Do NOT use ESA to keep Hb ≥ 115</div></div>
   <div class="hb-row"><span class="hb-range">Avoid &gt; 130</span><div class="hb-fill hb-high">↑ CV risk / thrombosis</div></div>
 </div>
-<p style="font-size:11px;color:var(--text-muted);margin-top:8px;">KDIGO 2024: CKD anemia = Hb below sex-specific threshold without obvious non-renal cause. Evaluate at any CKD stage. Screen every 3 months in HD/PD, every 6 months in CKD G3–G5 ND.</p>
+<p style="font-size:11px;color:var(--text-muted);margin-top:8px;">KDIGO 2026: CKD anemia = Hb below sex-specific threshold without obvious non-renal cause. There is <strong>no single universal Hb target/initiation threshold</strong>; individualize by population (CKD ND, HD, PD, transplant, pediatric) and by symptoms, Hb trajectory, transfusion-avoidance and transplant candidacy via shared decision-making. Do not use ESAs to maintain Hb ≥115 g/L. Evaluate at any CKD stage. Screen every 3 months in HD/PD, every 6 months in CKD G3–G5 ND.</p>
 </div>
 <div class="feature-card">
 <h4>Pathophysiology at a Glance</h4>
@@ -2817,17 +2866,17 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 </tbody>
 </table>
 </div>
-<p style="font-size:11px;color:var(--text-muted);margin-top:6px;">Thresholds per KDIGO 2024. HD: TSAT target ≥30%, ferritin 200–800 ng/mL. CKD ND/PD: TSAT ≥20%, ferritin ≥100 ng/mL.</p>
+<p style="font-size:11px;color:var(--text-muted);margin-top:6px;">Thresholds per KDIGO 2026. HD: TSAT target ≥30%, ferritin ~200 up to the 700 ng/mL withhold limit. CKD ND/PD: TSAT ≥20%, ferritin ≥100 ng/mL.</p>
 </section>
 
 <!-- §4 KDIGO TARGETS -->
 <section class="section" id="clin-kdigo">
 <div class="section-tag">Section 4</div>
-<h2>KDIGO 2024 Targets &amp; Thresholds</h2>
+<h2>KDIGO 2026 Targets &amp; Thresholds</h2>
 <figure class="illus-panel" style="max-width:900px;margin:0 auto 28px;">
   <picture>
     <source srcset="../images/anemia-thresholds-reference.webp" type="image/webp">
-    <img src="../images/anemia-thresholds-reference.png" loading="lazy" width="1024" height="1024" alt="CKD Anemia Clinical Thresholds Quick Reference — anemia diagnosis, iron initiation, ESA initiation, hemoglobin targets, hold parameters" style="border-radius:12px;display:block;width:100%;height:auto;">
+    <img src="../images/anemia-thresholds-reference.png" loading="lazy" width="1024" height="1024" alt="CKD anemia clinical thresholds quick reference (population-specific, KDIGO 2026): anemia diagnosis, iron initiation and withhold limits (ferritin >700 ng/mL or TSAT ≥40%), individualized ESA initiation, and the guidance not to use ESAs to maintain hemoglobin ≥115 g/L. Values differ by population and are not universal orders." style="border-radius:12px;display:block;width:100%;height:auto;">
   </picture>
 <figcaption><p class="fig-desc">This quick-reference card lists the key numbers clinicians use for kidney-related anemia, such as when to diagnose anemia, when to start iron or ESA therapy, the hemoglobin targets, and when to pause treatment.</p></figcaption>
 </figure>
@@ -2863,16 +2912,16 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <h3 style="font-size:15px;font-weight:700;color:var(--navy);margin:28px 0 14px;">Iron Initiation / Hold Thresholds</h3>
 <div class="kdigo-grid">
   <div class="kdigo-card k-hold">
-    <div class="k-label">Hold IV Iron</div>
-    <div class="k-value">Ferritin &gt; 800</div>
-    <div class="k-unit">ng/mL</div>
-    <div class="k-note">Regardless of TSAT; risk of hepatic siderosis and oxidative injury</div>
+    <div class="k-label">Withhold Iron (KDIGO 2026)</div>
+    <div class="k-value">Ferritin &gt; 700</div>
+    <div class="k-unit">ng/mL <em>or</em> TSAT ≥ 40%</div>
+    <div class="k-note">Suggested upper safety limits; also suspend during active systemic infection. Not a rigid automatic order</div>
   </div>
   <div class="kdigo-card k-warn">
     <div class="k-label">Caution Zone</div>
-    <div class="k-value">Ferritin 500–800</div>
+    <div class="k-value">Ferritin 500–700</div>
     <div class="k-unit">ng/mL</div>
-    <div class="k-note">Weigh benefit vs. risk; consider if TSAT &lt;20% and Hb below target</div>
+    <div class="k-note">Weigh benefit vs. risk; ferritin may be inflammation-driven; individualize</div>
   </div>
   <div class="kdigo-card k-ok">
     <div class="k-label">Adequate (HD)</div>
@@ -2910,7 +2959,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <figure class="illus-panel" style="max-width:900px;margin:0 auto 28px;">
   <picture>
     <source srcset="../images/anemia-iv-iron-algorithm.webp" type="image/webp">
-    <img src="../images/anemia-iv-iron-algorithm.png" loading="lazy" width="1024" height="1024" alt="IV Iron Decision Tree in CKD — ferritin and TSAT-based branches for oral iron, IV repletion, maintenance, or hold" style="border-radius:12px;display:block;width:100%;height:auto;">
+    <img src="../images/anemia-iv-iron-algorithm.png" loading="lazy" width="1024" height="1024" alt="Iron decision tree in CKD — ferritin and TSAT branches for a trial of oral iron, IV repletion, maintenance, or withholding iron; route and thresholds are population-specific (IV generally preferred in hemodialysis; oral or IV individualized in non-dialysis CKD) with KDIGO 2026 withhold at ferritin >700 ng/mL or TSAT ≥40%" style="border-radius:12px;display:block;width:100%;height:auto;">
   </picture>
 <figcaption><p class="fig-desc">This decision tree shows how iron blood test results (ferritin and TSAT) guide the choice between oral iron, a course of IV iron, maintenance dosing, or holding iron altogether.</p></figcaption>
 </figure>
@@ -3039,7 +3088,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
   <li>EPO receptors expressed on some solid tumors (breast, head &amp; neck, lung)</li>
   <li>ESA in chemotherapy-related anemia associated with shorter survival in some RCTs</li>
   <li>In CKD: no clear evidence of de novo tumor promotion, but caution in active malignancy</li>
-  <li>KDIGO 2024: ESA acceptable in CKD + malignancy but avoid high Hb targets</li>
+  <li>KDIGO 2026: ESA acceptable in CKD + malignancy but avoid high Hb targets</li>
 </ul>
 </div>
 </div>
@@ -3115,7 +3164,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 </figure>
 
 <div class="intro-callout" style="margin-bottom:24px;">
-<p><strong>Definition (KDIGO 2024):</strong> Failure to achieve target Hb (≥100 g/L) despite epoetin alfa ≥450 IU/kg/week SC or ≥300 IU/kg/week IV (or equivalent darbepoetin ≥1.5 µg/kg/week), <em>after correcting iron deficiency</em>. Alternatively: requirement for &gt;3× the usual maintenance ESA dose to maintain target Hb.</p>
+<p><strong>Definition (KDIGO 2026):</strong> Failure to achieve target Hb (≥100 g/L) despite epoetin alfa ≥450 IU/kg/week SC or ≥300 IU/kg/week IV (or equivalent darbepoetin ≥1.5 µg/kg/week), <em>after correcting iron deficiency</em>. Alternatively: requirement for &gt;3× the usual maintenance ESA dose to maintain target Hb.</p>
 </div>
 
 <h3 style="font-size:15px;font-weight:700;color:var(--navy);margin:0 0 14px;">Causes Checklist</h3>
@@ -3160,6 +3209,15 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <figcaption><p class="fig-desc">This diagram explains how newer HIF-PHI tablets work by prompting the body to make its own EPO and use iron more effectively, leading to more red blood cells.</p></figcaption>
 </figure>
 
+<div class="alert alert-teal" style="margin-bottom:22px;">
+<div class="alert-icon">📌</div>
+<div class="alert-body">
+<h4>KDIGO 2026 positioning — ESA is generally suggested first</h4>
+<p style="margin:0;">When erythropoiesis-stimulating treatment is needed, <strong>KDIGO 2026 generally suggests an ESA rather than a HIF-PHI</strong>, because there is more extensive long-term safety experience with ESAs. A HIF-PHI may be a reasonable <em>alternative</em> in selected patients — oral-agent preference, ESA intolerance, or lack of refrigeration/reliable cold-chain access — subject to local regulatory approval. <strong>Do not combine an ESA and a HIF-PHI.</strong> Avoid HIF-PHIs in active malignancy or after a recent cardiovascular or vascular thrombotic event, per guideline and product precautions. Reassess and stop if there is an inadequate response after ~3–4 months. <strong>Long-term safety remains uncertain.</strong></p>
+<p style="margin:8px 0 0;"><strong>Philippine implementation note:</strong> verify current Philippine FDA approval and actual local availability before prescribing — do not assume the US/EU/Japan/China regulatory status applies here. As of this review HIF-PHIs are not established in routine Philippine practice; confirm before counseling a patient that this option is available to them.</p>
+</div>
+</div>
+
 <div class="two-col">
 <div class="feature-card">
 <h4>Mechanism of Action</h4>
@@ -3185,7 +3243,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <p>ASCEND-D and PRO2TECT trials showed non-inferiority for MACE vs. ESA in HD patients but <strong>potential harm in non-dialysis CKD</strong> (vadadustat ND: ↑ MACE trend). All HIF-PHIs carry theoretical oncologic concern (HIF-1α promotes tumor angiogenesis via VEGF). Avoid in active or recent (&lt;3 years) solid malignancy. Also: ↑ thrombosis risk; do not combine with ESA. Philippines: regulatory approval pending as of 2025 — not yet commercially available for routine use.</p>
 </div>
 <div class="algo-box" style="margin-top:16px;">
-<div class="algo-node"><div class="algo-node-num">✓</div><div class="algo-node-content"><h5>Current Role in Practice</h5><p>HIF-PHIs are an alternative to ESA in HD patients who are ESA-hyporesponsive, ESA-intolerant, or prefer oral therapy. Iron stores must still be optimized. Best suited for stable ESKD patients without active malignancy or high CV risk. Monitoring: CBC monthly, LFTs q3 months, blood pressure closely during titration.</p></div></div>
+<div class="algo-node"><div class="algo-node-num">✓</div><div class="algo-node-content"><h5>Current Role in Practice</h5><p>Under KDIGO 2026 an ESA is generally suggested first; a HIF-PHI is a second-line <em>alternative</em> for selected patients who are ESA-intolerant, prefer an oral agent, or lack reliable refrigeration for ESA — subject to local approval. Iron stores must still be optimized. Avoid in active malignancy or recent cardiovascular/vascular thrombotic events. Do not combine with an ESA. Reassess and stop if response is inadequate after ~3–4 months. Long-term safety remains uncertain. Monitoring: CBC monthly, LFTs q3 months, blood pressure closely during titration.</p></div></div>
 </div>
 </section>
 
@@ -3229,6 +3287,10 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <tr><td>ESA/iron refractory chronic anemia</td><td>Hb persistently &lt;70 g/L</td><td>Maximize iron and ESA first; rule out PRCA; consider transplant referral</td></tr>
 </tbody>
 </table>
+</div>
+<div class="pearl-box" style="margin-top:16px;">
+<h5>Practice point — matching the tool to the situation</h5>
+<p>Acute, unstable anemia (active hemorrhage, hemodynamic compromise) may require transfusion regardless of the Hb number. In chronic, stable anemia the decision is driven by symptoms and context, not an arbitrary threshold. Transplant candidates need special attention to alloimmunization/sensitization. And when erythropoiesis-stimulating therapy (ESA or HIF-PHI) is ineffective or unsafe in a given patient — e.g. PRCA, active malignancy, recent thrombotic event — the balance shifts toward judicious transfusion using leukoreduced, CMV-negative blood.</p>
 </div>
 </section>
 
@@ -3300,7 +3362,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
   <div class="algo-node"><div class="algo-node-num">1</div><div class="algo-node-content"><h5>Confirm Anemia</h5><p>Hb &lt;130 (men) / &lt;120 (women) g/L on repeat CBC. Exclude lab error or dilution effect (blood drawn near IV fluid site or from access line).</p></div></div>
   <div class="algo-node"><div class="algo-node-num">2</div><div class="algo-node-content"><h5>Iron Workup First</h5><p>Check TSAT and ferritin. If TSAT &lt;20%: treat iron deficiency first. IV iron in HD/PD; trial oral iron in CKD ND. Recheck Hb and iron in 4–8 weeks before initiating ESA.</p></div></div>
   <div class="algo-node"><div class="algo-node-num">3</div><div class="algo-node-content"><h5>Exclude Non-Renal Causes</h5><p>MCV evaluation: microcytic → IDA/thalassemia; macrocytic → B12/folate. Check B12, folate, reticulocytes, CRP, LDH, haptoglobin, FOBT. Address all reversible causes before escalating ESA.</p></div></div>
-  <div class="algo-node"><div class="algo-node-num">4</div><div class="algo-node-content"><h5>ESA Initiation Decision</h5><p>Start ESA if: Hb persistently &lt;100 g/L, iron replete (TSAT ≥20%), non-renal causes excluded. Discuss risks/benefits with patient. Caution in pre-transplant candidates and active malignancy.</p></div></div>
+  <div class="algo-node"><div class="algo-node-num">4</div><div class="algo-node-content"><h5>ESA Initiation Decision</h5><p>Individualize — there is no single universal Hb trigger across populations. Correct reversible causes first (iron, infection, B12/folate, bleeding). Consider an ESA when Hb is low (often around &lt;100 g/L) <em>and</em> the balance of symptoms, rate of Hb decline, transfusion-avoidance, transplant candidacy, and thrombosis/cancer/stroke risk favors it, via shared decision-making. Use the lowest effective dose; do not use ESAs to maintain Hb ≥115 g/L. Extra caution in pre-transplant candidates and active malignancy.</p></div></div>
   <div class="algo-node"><div class="algo-node-num">5</div><div class="algo-node-content"><h5>Titrate to Target</h5><p>Apply titration ladder. Target Hb 100–115 g/L. Reassess monthly (HD) or q3 months (ND). Never target &gt;130 g/L.</p></div></div>
 </div>
 
@@ -3621,9 +3683,10 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
       <div class="calc-field">
         <label>Current Hemoglobin (g/dL)</label>
         <input id="eri-hgb" type="number" min="4" max="18" step="0.1" placeholder="e.g. 10.2" oninput="calcERI()">
-        <div class="field-hint">Pre-dialysis Hgb for HD patients; most recent value</div>
+        <div class="field-hint"><strong>Enter g/dL, not g/L.</strong> A g/dL value is roughly 4–18 (e.g. 10.2); if you have g/L (e.g. 102), divide by 10. Pre-dialysis Hgb for HD patients; most recent value.</div>
       </div>
     </div>
+    <div id="eri-unit-warn" style="display:none;margin:0 0 12px;font-size:12.5px;line-height:1.6;background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.5);border-radius:8px;padding:10px 14px;color:#c0392b;"></div>
     <div class="calc-result-box" id="eri-result" style="display:none;">
       <div class="calc-metrics-row">
         <div class="calc-metric-card">
@@ -3748,7 +3811,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
   <!-- Targets and Monitoring -->
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:16px;">
     <div style="background:#edf5f6;border-left:4px solid var(--teal);border-radius:0 10px 10px 0;padding:14px 18px;">
-      <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">🎯 Iron Repletion Targets (KDIGO 2024)</div>
+      <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">🎯 Iron Repletion Targets (KDIGO 2026)</div>
       <div style="font-size:13px;color:#2c3340;line-height:1.85;">
         <div>TSAT: <strong>≥20%</strong> (upper safety limit: 50%)</div>
         <div>Ferritin (HD): <strong>200–500 ng/mL</strong> (withhold IV iron &gt;800)</div>
@@ -4029,12 +4092,12 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
 <h3 style="font-size:15px;font-weight:700;color:var(--navy);margin:28px 0 14px;">Guidelines Reference</h3>
 <div class="two-col">
 <div class="feature-card">
-<h4>KDIGO 2024 Anemia in CKD</h4>
+<h4>KDIGO 2026 Anemia in CKD</h4>
 <ul style="font-size:13px;color:var(--text-mid);padding-left:16px;margin:0;line-height:1.7;">
   <li>Hb target 100–115 g/L (HD, PD, CKD ND)</li>
   <li>Do not intentionally target &gt;130 g/L</li>
   <li>Treat iron deficiency before initiating ESA</li>
-  <li>TSAT ≥30% + ferritin 200–800 in HD; TSAT ≥20% + ferritin ≥100 in ND/PD</li>
+  <li>TSAT ≥30% + ferritin ~200 (withhold at ferritin >700 or TSAT ≥40%) in HD; TSAT ≥20% + ferritin ≥100 in ND/PD</li>
   <li>Use lowest effective ESA dose (minimize ERI)</li>
   <li>HIF-PHI: alternative in dialysis patients; caution in non-dialysis CKD</li>
 </ul>
@@ -4520,78 +4583,116 @@ function calcAnemia() {
   const siRaw = parseFloat(document.getElementById('a-si').value);
   const tibcRaw = parseFloat(document.getElementById('a-tibc').value);
   const ferritin = parseFloat(document.getElementById('a-ferritin').value);
-  const dialysis = document.getElementById('a-dialysis').value;
+  const pop = document.getElementById('a-dialysis').value;              // population selector (required first)
+  const inflam = document.getElementById('a-inflam').checked;           // active infection / inflammation
   const res = document.getElementById('anemia-result');
-  if ([siRaw,tibcRaw,ferritin].some(isNaN) || !dialysis || tibcRaw<=0) { res.style.display='none'; return; }
+  const warnEl = document.getElementById('a-warnings');
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+
+  // SAFEGUARD 1: population must be chosen BEFORE any thresholds are applied.
+  if (!pop) { res.style.display='none'; return; }
+  if ([siRaw,tibcRaw,ferritin].some(isNaN) || tibcRaw<=0) { res.style.display='none'; return; }
 
   const isSI = document.getElementById('anem-btn-si').classList.contains('active');
   const IRON_CONV = 0.1791; // µg/dL × 0.1791 = µmol/L
-  // convert to µg/dL for threshold logic
   const si   = isSI ? siRaw/IRON_CONV   : siRaw;
   const tibc = isSI ? tibcRaw/IRON_CONV : tibcRaw;
-  // ferritin: ng/mL = µg/L, same in both — use as-is
-  // helper: display iron values in chosen unit
-  const dIron = v => isSI ? (v*IRON_CONV).toFixed(1)+' µmol/L' : Math.round(v)+' µg/dL';
-
   const tsat = Math.round((si/tibc)*1000)/10;
-  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
 
-  // KDIGO 2024 targets
-  const tsatTarget = dialysis==='hd' ? 30 : 20;
-  const ferritinTarget = dialysis==='hd' ? 200 : 100;
-  const ferritinUpper = dialysis==='hd' ? 800 : 500;
+  // Standing confounder checklist — shown with every result (evaluation, not prescription).
+  const confounders = 'Before acting on these numbers, rule out and discuss: thalassemia or other hemoglobinopathy, active bleeding, hemolysis, B12 or folate deficiency, bone-marrow disease, malignancy, severe hyperparathyroidism, thyroid disease, infection, and (in dialysis) inadequate dialysis. Any of these changes the interpretation.';
 
-  // Classify iron status
+  // KDIGO 2026 upper safety limits (HD and non-dialysis CKD alike): withhold iron when ferritin >700 OR TSAT ≥40%.
+  const FERRITIN_WITHHOLD = 700, TSAT_WITHHOLD = 40;
+
   let type, typeColor, bg, borderColor, verdict, action;
-  const tsatLow = tsat < tsatTarget;
-  const ferritinLow = ferritin < ferritinTarget;
-  const ferritinHigh = ferritin > ferritinUpper;
+  const warmBg  = isDark ? 'rgba(154,101,0,.08)' : '#fef9ec';
+  const redBg   = isDark ? 'rgba(192,57,43,.08)' : '#fdf0ef';
+  const greenBg = isDark ? 'rgba(45,122,79,.08)' : '#edf7f2';
 
-  if (ferritinHigh) {
-    type='Iron Overload Risk'; typeColor='#c0392b';
-    bg = isDark ? 'rgba(192,57,43,.08)' : '#fdf0ef'; borderColor='#c0392b';
-    verdict = `Ferritin of ${ferritin} ng/mL exceeds the upper safety threshold (${ferritinUpper} ng/mL for ${dialysis==='hd'?'HD':'CKD'} patients). TSAT of ${tsat}% suggests ${tsat>30?'iron stores are replete — further iron supplementation carries accumulation risk.':'assess for iron-restricted erythropoiesis before supplementing.'}`;
-    action = 'Hold IV iron supplementation. Re-evaluate in 3 months. If TSAT remains low despite high ferritin, consider iron-restricted erythropoiesis from inflammation — discuss with your nephrologist before giving more iron.';
-  } else if (tsatLow && ferritinLow) {
-    type='Systemic Iron Deficiency'; typeColor='#c0392b';
-    bg = isDark ? 'rgba(192,57,43,.08)' : '#fdf0ef'; borderColor='#c0392b';
-    verdict = `TSAT ${tsat}% (target ≥${tsatTarget}%) and Ferritin ${ferritin} ng/mL (target ≥${ferritinTarget} ng/mL) — both below target. This is systemic iron deficiency: iron stores are genuinely depleted. This is the most common cause of poor ESA response in CKD.`;
-    action = (dialysis==='hd')
-      ? 'IV iron sucrose (Ferrofer) is preferred — oral iron is poorly absorbed in HD patients and disrupted by phosphate binders. Typical protocol: 100 mg IV per session × 10 sessions. Recheck iron panel after full repletion.'
-      : 'Oral iron (ferrous sulfate or ferric carboxymaltose) is first-line for non-dialysis CKD. IV iron if oral is not tolerated or TSAT critically low. Recheck in 4–8 weeks.';
-  } else if (tsatLow && !ferritinLow) {
-    type='Iron-Restricted Erythropoiesis'; typeColor='#9a6500';
-    bg = isDark ? 'rgba(154,101,0,.08)' : '#fef9ec'; borderColor='#f5a623';
-    verdict = `TSAT ${tsat}% (below target ≥${tsatTarget}%) but Ferritin ${ferritin} ng/mL (adequate). This is iron-restricted erythropoiesis — iron is stored but unavailable for erythropoiesis. Common causes: ESA therapy driving rapid iron utilization, inflammation blocking iron release (hepcidin effect), or malnutrition.`;
-    action = 'A trial of IV iron is often warranted even with adequate ferritin in dialysis patients — if Hgb improves, iron-restricted erythropoiesis is confirmed. Review ESA dose adequacy and check CRP/inflammatory markers. Oral iron is not effective for iron-restricted erythropoiesis.';
-  } else if (!tsatLow && ferritinLow) {
-    type='Depleting Stores'; typeColor='#9a6500';
-    bg = isDark ? 'rgba(154,101,0,.08)' : '#fef9ec'; borderColor='#f5a623';
-    verdict = `TSAT ${tsat}% is adequate but Ferritin ${ferritin} ng/mL is below target (${ferritinTarget} ng/mL). Iron stores are being depleted — if not repleted, TSAT will fall and iron-restricted erythropoiesis will develop. Early intervention prevents anemia worsening.`;
-    action = 'Preventive iron supplementation is recommended. Oral iron may be sufficient for non-dialysis CKD. In HD patients, proactive IV iron maintenance doses prevent cycle of depletion and repletion.';
+  // ── SAFEGUARD 2: PD / transplant / pediatric are NOT run through the HD/ND iron algorithm ──
+  if (pop==='pd' || pop==='transplant' || pop==='pediatric') {
+    type='Specialist pathway'; typeColor='#1a6b72';
+    bg = isDark ? 'rgba(26,107,114,.08)' : '#edf5f6'; borderColor='#1a6b72';
+    let ov;
+    if (pop==='pd') ov = 'Peritoneal-dialysis anemia overlaps with hemodialysis (EPO deficiency dominates, blood loss is lower, but peritoneal protein losses can blunt ESA response). There is no separate validated threshold set applied here — iron and ESA are individualized by your nephrologist rather than copied from the HD pathway.';
+    else if (pop==='transplant') ov = 'Post-transplant anemia is common (graft function, immunosuppressants such as MMF/sirolimus, iron deficiency, infection). It is individualized by the transplant team; thresholds differ from dialysis, and transfusion is minimized to avoid HLA sensitization.';
+    else ov = 'Anemia in children with CKD is weight-based and growth-sensitive, with pediatric-specific hemoglobin and iron targets. It must be managed by a pediatric nephrologist — adult dialysis thresholds do not apply.';
+    verdict = `Your TSAT is ${tsat}% and ferritin ${ferritin} ng/mL. ${ov}`;
+    action = 'Use these values as discussion points with the specialist managing this population. This tool does not set an iron or ESA decision for you here. ' + (inflam ? 'You flagged active infection/inflammation, so ferritin is likely falsely elevated and iron is usually paused until it resolves. ' : '') + confounders;
   } else {
-    type='Iron Replete'; typeColor='#2d7a4f';
-    bg = isDark ? 'rgba(45,122,79,.08)' : '#edf7f2'; borderColor='#2d7a4f';
-    verdict = `TSAT ${tsat}% (target ≥${tsatTarget}%) and Ferritin ${ferritin} ng/mL (target ≥${ferritinTarget} ng/mL) — both at target. Iron status is adequate. If anemia persists with adequate iron, the cause is likely EPO deficiency requiring ESA therapy, or another co-existing cause (B12, folate deficiency, inflammation, hemolysis).`;
-    action = 'No iron supplementation needed at this time. If Hgb remains below target (100–115 g/L) despite adequate iron, discuss ESA (erythropoietin stimulating agent) initiation or dose adjustment with your nephrologist.';
+    // ── CKD not on dialysis vs Hemodialysis ──
+    const isHD = (pop==='hd');
+    const tsatTarget = isHD ? 30 : 20;      // adequacy reference
+    const ferritinTarget = isHD ? 200 : 100;
+
+    // Suggested INITIATION patterns (evaluate/consider — never auto-order):
+    //  HD:  ferritin ≤500 AND TSAT ≤30
+    //  ND:  ferritin <100 & TSAT <40  OR  ferritin 100–300 & TSAT <25
+    const initiateSuggested = isHD
+      ? (ferritin<=500 && tsat<=30)
+      : ((ferritin<100 && tsat<40) || (ferritin>=100 && ferritin<=300 && tsat<25));
+
+    const tsatLow = tsat < tsatTarget;
+    const ferritinLow = ferritin < ferritinTarget;
+    const atWithhold = ferritin > FERRITIN_WITHHOLD || tsat >= TSAT_WITHHOLD;
+
+    if (atWithhold) {
+      // SAFEGUARD 3: high ferritin / high TSAT → do NOT add iron; a low-TSAT-alone never overrides this.
+      type='At iron safety limit'; typeColor='#c0392b';
+      bg=redBg; borderColor='#c0392b';
+      verdict = `TSAT ${tsat}% and Ferritin ${ferritin} ng/mL reach a KDIGO 2026 upper safety limit (withhold iron when ferritin >${FERRITIN_WITHHOLD} ng/mL OR TSAT ≥${TSAT_WITHHOLD}%).` + ((tsat<tsatTarget && ferritin>FERRITIN_WITHHOLD) ? ' A low TSAT with a high ferritin is NOT proof of iron deficiency — it more often reflects inflammation blocking iron release.' : '');
+      action = 'Discuss holding further iron and re-evaluating in ~3 months. If TSAT stays low with high ferritin, this points to iron-restricted erythropoiesis from inflammation, not empty stores — investigate the cause rather than adding iron. ' + confounders;
+    } else if (inflam) {
+      // SAFEGUARD 4: during active infection/inflammation, do not classify iron status from ferritin/TSAT.
+      type='Interpretation limited (inflammation)'; typeColor='#9a6500';
+      bg=warmBg; borderColor='#f5a623';
+      verdict = `TSAT ${tsat}%, Ferritin ${ferritin} ng/mL. You flagged active infection or inflammation, so ferritin is likely falsely raised and TSAT can be suppressed — iron status cannot be reliably classified right now, and this pattern is NOT proof of iron deficiency.`;
+      action = 'IV iron is usually paused during active systemic infection. Treat the infection/inflammation first and repeat the iron panel when stable before deciding on iron. ' + confounders;
+    } else if (tsatLow && ferritinLow) {
+      type='Systemic iron deficiency'; typeColor='#c0392b';
+      bg=redBg; borderColor='#c0392b';
+      verdict = `TSAT ${tsat}% (adequacy ≥${tsatTarget}%) and Ferritin ${ferritin} ng/mL (adequacy ≥${ferritinTarget} ng/mL) are both low — a pattern of systemic iron deficiency (low circulating AND stored iron). This is a common cause of poor ESA response in CKD.`;
+      action = (isHD
+        ? 'Discuss iron repletion — in in-center HD, IV iron is generally preferred over oral. Confirm no active infection first, then recheck the iron panel after repletion.'
+        : 'Discuss iron repletion — in non-dialysis CKD, either oral or IV iron can be reasonable and the route is individualized (severity, tolerance, access, cost, preference). Recheck in 4–8 weeks.') + ' This tool evaluates; it does not prescribe. ' + confounders;
+    } else if (tsatLow && !ferritinLow) {
+      type='Iron-restricted erythropoiesis'; typeColor='#9a6500';
+      bg=warmBg; borderColor='#f5a623';
+      verdict = `TSAT ${tsat}% is below the ≥${tsatTarget}% adequacy mark but Ferritin ${ferritin} ng/mL looks adequate — a pattern of iron-restricted erythropoiesis (not enough circulating iron despite apparently adequate stores). Drivers include inflammation/hepcidin and ESA-driven iron utilization. This is NOT proof of true iron deficiency.`;
+      action = 'Discuss with the nephrologist — options include reviewing ESA dose, checking CRP/inflammatory markers, and considering a monitored iron trial. A rise in hemoglobin after iron does not by itself confirm iron deficiency. ' + confounders;
+    } else if (!tsatLow && ferritinLow) {
+      type='Depleting stores'; typeColor='#9a6500';
+      bg=warmBg; borderColor='#f5a623';
+      verdict = `TSAT ${tsat}% is adequate but Ferritin ${ferritin} ng/mL is on the low side (adequacy ≥${ferritinTarget} ng/mL). Stores may be depleting; if unaddressed, TSAT can later fall.`;
+      action = 'Discuss monitoring and, if hemoglobin is below the individualized goal, whether iron is warranted — route individualized by population. This tool evaluates; it does not prescribe. ' + confounders;
+    } else {
+      type='Iron appears adequate'; typeColor='#2d7a4f';
+      bg=greenBg; borderColor='#2d7a4f';
+      verdict = `TSAT ${tsat}% and Ferritin ${ferritin} ng/mL both look adequate for ${isHD?'hemodialysis':'non-dialysis CKD'}. If anemia persists with adequate iron, EPO deficiency or another co-existing cause (B12/folate, inflammation, hemolysis, blood loss) is more likely.`;
+      action = 'No new iron is suggested by these numbers alone. If hemoglobin stays below the individualized goal, discuss whether an ESA is appropriate — KDIGO 2026 advises against using ESAs to maintain Hb ≥115 g/L, and reversible causes should be corrected first. ' + confounders;
+    }
+
+    if (!atWithhold && !inflam && initiateSuggested) {
+      action += ' These labs fall within the KDIGO 2026 ' + (isHD?'HD':'non-dialysis CKD') + ' pattern where iron initiation may be considered — a decision for your clinician, not an automatic order.';
+    }
   }
 
+  // ── Render ──
   res.style.display='block';
   res.style.background=bg; res.style.borderColor=borderColor;
   document.getElementById('a-tsat-val').textContent=tsat+'%';
-  document.getElementById('a-tsat-val').style.color=tsat>=tsatTarget?'#2d7a4f':'#c0392b';
-  document.getElementById('a-tsat-badge').textContent='Target ≥'+tsatTarget+'% ('+(dialysis==='hd'?'HD':'CKD')+')';
-  document.getElementById('a-tsat-badge').style.color=tsat>=tsatTarget?'#2d7a4f':'#c0392b';
+  document.getElementById('a-tsat-badge').textContent = (pop==='hd')?'HD':(pop==='ckd')?'CKD ND':(pop==='pd')?'PD':(pop==='transplant')?'Transplant':'Pediatric';
   document.getElementById('a-ferritin-val').textContent=ferritin;
-  document.getElementById('a-ferritin-val').style.color=ferritin>=ferritinTarget&&ferritin<=ferritinUpper?'#2d7a4f':(ferritin>ferritinUpper?'#c0392b':'#c0392b');
-  document.getElementById('a-ferritin-badge').textContent='Target '+ferritinTarget+'–'+ferritinUpper;
-  document.getElementById('a-ferritin-badge').style.color=ferritin>=ferritinTarget&&ferritin<=ferritinUpper?'#2d7a4f':'#c0392b';
+  document.getElementById('a-ferritin-badge').textContent = inflam ? 'ng/mL (inflammation)' : 'ng/mL';
   document.getElementById('a-type-val').textContent=type;
   document.getElementById('a-type-val').style.color=typeColor;
   document.getElementById('a-type-badge').textContent='KDIGO 2026';
   document.getElementById('a-type-badge').style.color=typeColor;
   document.getElementById('a-verdict').innerHTML='<strong style="color:'+typeColor+'">'+type+'</strong> — '+verdict;
-  document.getElementById('a-action').innerHTML='<strong style="color:'+typeColor+'">Recommended action:</strong> '+action;
+  document.getElementById('a-action').innerHTML='<strong style="color:'+typeColor+'">Evaluate / discuss:</strong> '+action;
+  warnEl.style.display='block';
+  warnEl.innerHTML='⚠️ <strong>Also weigh:</strong> a low TSAT with high ferritin, or any result during infection, is not proof of iron deficiency. Confirm units (ferritin ng/mL; iron/TIBC in the selected unit). Treatment intensity also depends on the hemoglobin trend over time — bring recent dated results.';
 }
 
 /* ── Monthly HD Checklist ─────────────────────────────────────────────── */
@@ -4683,6 +4784,18 @@ function calcERI(){
   const weight  = parseFloat(document.getElementById('eri-weight').value);
   const hgb     = parseFloat(document.getElementById('eri-hgb').value);
   const res     = document.getElementById('eri-result');
+  const unitWarn = document.getElementById('eri-unit-warn');
+
+  // UNIT GUARD: hemoglobin must be entered in g/dL, not g/L. A value >20 is almost
+  // certainly a g/L entry (e.g. 102 instead of 10.2) — block the calculation and explain.
+  if (!isNaN(hgb) && hgb > 20) {
+    unitWarn.style.display = 'block';
+    unitWarn.innerHTML = '⚠️ That hemoglobin looks like <strong>g/L</strong>, but this field needs <strong>g/dL</strong>. Divide by 10 (e.g. ' + hgb + ' g/L → ' + (hgb/10).toFixed(1) + ' g/dL) and re-enter. The ERI is not calculated until the units are correct.';
+    res.style.display = 'none';
+    return;
+  } else {
+    unitWarn.style.display = 'none';
+  }
 
   // Update dose label / hint based on ESA type
   const doseLabel = document.getElementById('eri-dose-label');
@@ -4731,8 +4844,8 @@ function calcERI(){
     statusLabel = 'Elevated — Hyporesponsive';
     statusColor = '#c07a00';
     bg = '#fef9ec'; borderColor = '#f5a623';
-    verdict = `ERI of <strong>${eri.toFixed(2)}</strong> IU/kg/week/g/dL exceeds the threshold of 10 — this indicates <strong style="color:#c07a00;">ESA hyporesponsiveness</strong>. KDIGO 2024 recommends investigating modifiable causes before escalating ESA dose further, as high ERI is independently associated with cardiovascular mortality.`;
-    action = 'Investigate: (1) Iron status — TSAT <20% or Ferritin <100 ng/mL → give IV iron before increasing ESA. (2) Active infection or inflammation — CRP elevated? (3) Malnutrition — albumin, B12, folate. (4) Dialysis adequacy — Kt/V ≥1.2 (HD). (5) Undercorrected secondary hyperparathyroidism. (6) Occult blood loss. Do NOT escalate ESA dose until causes are addressed.';
+    verdict = `ERI of <strong>${eri.toFixed(2)}</strong> IU/kg/week/g/dL exceeds the threshold of 10 — this indicates <strong style="color:#c07a00;">ESA hyporesponsiveness</strong>. KDIGO 2026 recommends investigating modifiable causes before escalating ESA dose further, as high ERI is independently associated with cardiovascular mortality.`;
+    action = 'Investigate: (1) Iron status — if TSAT <20% or Ferritin <100 ng/mL, consider iron (route individualized by population) before increasing ESA, provided ferritin is not above the withhold limit and there is no active infection. (2) Active infection or inflammation — CRP elevated? (3) Malnutrition — albumin, B12, folate. (4) Dialysis adequacy — Kt/V ≥1.2 (HD). (5) Undercorrected secondary hyperparathyroidism. (6) Occult blood loss. Do NOT escalate ESA dose until causes are addressed.';
   } else {
     statusLabel = 'High — Severe Hyporesponsiveness';
     statusColor = '#c0392b';
@@ -4813,5 +4926,6 @@ function switchAnemUnit(u){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

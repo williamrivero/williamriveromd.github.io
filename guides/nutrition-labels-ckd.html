@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1744,7 +1755,7 @@ body.dark .related-card-title {
 <section class="hero">
   <div class="container">
     <div class="hero-tag">
-      <span data-lang="en">CKD · Nutrition · Shopping · Label Reading</span>
+      <span data-lang="en">CKD (chronic kidney disease) · Nutrition · Shopping · Label Reading</span>
       <span data-lang="tl" class="lang-hidden">CKD · Nutrisyon · Pamimili · Pagbabasa ng Label</span>
       <span data-lang="ceb" class="lang-hidden">CKD · Nutrisyon · Pagpalit · Pagbasa sa Label</span>
     </h1>
@@ -1793,7 +1804,7 @@ body.dark .related-card-title {
     <div class="section-tag"><span data-lang="en">The Foundation</span><span data-lang="tl" class="lang-hidden">Ang Pundasyon</span><span data-lang="ceb" class="lang-hidden">Ang Pundasyon</span><span data-lang="kap" class="lang-hidden">Ing Pundasyon</span></div>
     <h2><span data-lang="en">Anatomy of a Philippine Nutrition Facts Label</span><span data-lang="tl" class="lang-hidden">Anatomya ng Nutrition Facts Label sa Pilipinas</span><span data-lang="ceb" class="lang-hidden">Anatomy sa Philippine Nutrition Facts Label</span><span data-lang="kap" class="lang-hidden">Anatomya ning Nutrition Facts Label king Pilipinas</span></h2>
     <div class="intro-callout">
-      <p><span data-lang="en">Philippine nutrition labels follow the format mandated by FDA Circular 2014-014. Most packaged foods sold in SM, Robinsons, Puregold, and palengke stalls follow this layout. <strong>For CKD patients, the label is a clinical tool — not just a calorie counter.</strong> You are specifically looking for sodium, potassium, phosphorus, protein, and serving size information. Most Filipino patients have never been taught how to read a label for their kidney condition — this guide changes that.</span><span data-lang="tl" class="lang-hidden">Ang mga nutrition label sa Pilipinas ay sumusunod sa format na itinakda ng FDA Circular 2014-014. Karamihan sa mga nakabalot na pagkain na ibinebenta sa SM, Robinsons, Puregold, at mga tindahan sa palengke ay sumusunod sa layout na ito. <strong>Para sa mga pasyenteng may CKD, ang label ay isang klinikal na kasangkapan — hindi lamang isang counter ng calorie.</strong> Hinahanap ninyo nang tiyak ang sodium, potassium, phosphorus, protina, at impormasyon sa serving size. Karamihan sa mga pasyenteng Pilipino ay hindi pa natuturuan kung paano magbasa ng label para sa kanilang kondisyon ng bato — binabago ng gabay na ito iyon.</span><span data-lang="ceb" class="lang-hidden">Ang mga nutrition label sa Pilipinas nagsubay sa format nga gitakda sa FDA Circular 2014-014. Kadaghanan sa mga nakabalot nga pagkaon nga gibaligya sa SM, Robinsons, Puregold, ug mga tindahan sa palengke nagsubay niini nga layout. <strong>Para sa mga pasyente nga adunay CKD, ang label usa ka klinikal nga himan — dili lamang usa ka counter sa calorie.</strong> Nangita kamo sa sodium, potassium, phosphorus, protina, ug impormasyon sa serving size. Kadaghanan sa mga pasyenteng Pilipino wala pa matudloan kung unsaon pagbasa sa label alang sa ilang kondisyon sa kidney — kini nga giya nagbag-o niana.</span><span data-lang="kap" class="lang-hidden">Deng nutrition label king Pilipinas ya sumusunod sa format na itinakda ning FDA Circular 2014-014. Karamihan sa deng nakabalot na pamangan na ibinebenta sa SM, Robinsons, Puregold, at deng tindahan sa palengke ya sumusunod sa layout na ini. <strong>Para king deng pasyenteng may CKD, ing label ya metung a klinikal na kasangkapan — ali lamang metung a counter ning calorie.</strong> Hinahanap ninyo nang tiyak ing sodium, potassium, phosphorus, protina, at impormasyon sa serving size. Karamihan sa deng pasyenteng Pilipino ya ali pa natuturuan nung paano magbasa ning label para king kanilang kondisyon nining batu — binabago ning gabay na ini iyun.</span></p>
+      <p><span data-lang="en">Philippine nutrition labels follow the format mandated by the Food and Drug Administration (FDA) Circular 2014-014. Most packaged foods sold in SM, Robinsons, Puregold, and palengke stalls follow this layout. <strong>For CKD patients, the label is a clinical tool — not just a calorie counter.</strong> You are specifically looking for sodium, potassium, phosphorus, protein, and serving size information. Most Filipino patients have never been taught how to read a label for their kidney condition — this guide changes that.</span><span data-lang="tl" class="lang-hidden">Ang mga nutrition label sa Pilipinas ay sumusunod sa format na itinakda ng FDA Circular 2014-014. Karamihan sa mga nakabalot na pagkain na ibinebenta sa SM, Robinsons, Puregold, at mga tindahan sa palengke ay sumusunod sa layout na ito. <strong>Para sa mga pasyenteng may CKD, ang label ay isang klinikal na kasangkapan — hindi lamang isang counter ng calorie.</strong> Hinahanap ninyo nang tiyak ang sodium, potassium, phosphorus, protina, at impormasyon sa serving size. Karamihan sa mga pasyenteng Pilipino ay hindi pa natuturuan kung paano magbasa ng label para sa kanilang kondisyon ng bato — binabago ng gabay na ito iyon.</span><span data-lang="ceb" class="lang-hidden">Ang mga nutrition label sa Pilipinas nagsubay sa format nga gitakda sa FDA Circular 2014-014. Kadaghanan sa mga nakabalot nga pagkaon nga gibaligya sa SM, Robinsons, Puregold, ug mga tindahan sa palengke nagsubay niini nga layout. <strong>Para sa mga pasyente nga adunay CKD, ang label usa ka klinikal nga himan — dili lamang usa ka counter sa calorie.</strong> Nangita kamo sa sodium, potassium, phosphorus, protina, ug impormasyon sa serving size. Kadaghanan sa mga pasyenteng Pilipino wala pa matudloan kung unsaon pagbasa sa label alang sa ilang kondisyon sa kidney — kini nga giya nagbag-o niana.</span><span data-lang="kap" class="lang-hidden">Deng nutrition label king Pilipinas ya sumusunod sa format na itinakda ning FDA Circular 2014-014. Karamihan sa deng nakabalot na pamangan na ibinebenta sa SM, Robinsons, Puregold, at deng tindahan sa palengke ya sumusunod sa layout na ini. <strong>Para king deng pasyenteng may CKD, ing label ya metung a klinikal na kasangkapan — ali lamang metung a counter ning calorie.</strong> Hinahanap ninyo nang tiyak ing sodium, potassium, phosphorus, protina, at impormasyon sa serving size. Karamihan sa deng pasyenteng Pilipino ya ali pa natuturuan nung paano magbasa ning label para king kanilang kondisyon nining batu — binabago ning gabay na ini iyun.</span></p>
     </div>
 
     <div class="illus-wrap illus-wrap-light">
@@ -2299,7 +2310,7 @@ body.dark .related-card-title {
       </div>
     </div>
 
-    <div class="disclaimer"><strong><span data-lang="en">Important:</span><span data-lang="tl" class="lang-hidden">Mahalaga:</span><span data-lang="ceb" class="lang-hidden">Importante:</span><span data-lang="kap" class="lang-hidden">Mahalaga:</span></strong> <span data-lang="en">Dietary limits vary by individual CKD stage, current lab values, and clinical condition. These guidelines represent general KDIGO 2024 targets. Your specific sodium, potassium, and phosphorus limits should be confirmed with your nephrologist and registered nutritionist-dietitian. When in doubt, choose fresh whole foods over packaged products — fresh food does not require a label.</span><span data-lang="tl" class="lang-hidden">Ang mga limitasyon sa diyeta ay nag-iiba-iba ayon sa indibidwal na CKD stage, kasalukuyang mga resulta ng laboratoryo, at klinikal na kondisyon. Ang mga alituntuning ito ay kumakatawan sa pangkalahatang mga target ng KDIGO 2024. Ang inyong tiyak na mga limitasyon sa sodium, potassium, at phosphorus ay dapat kumpirmahin kasama ang inyong nephrologist at rehistradong nutritionist-dietitian. Kapag nag-aalangan, pumili ng mga sariwang buong pagkain kaysa sa mga nakabalot na produkto — ang sariwang pagkain ay hindi nangangailangan ng label.</span><span data-lang="ceb" class="lang-hidden">Ang mga limitasyon sa diyeta nag-ilis-ilis sumala sa indibidwal nga CKD stage, kasamtangan nga mga resulta sa laboratoryo, ug klinikal nga kondisyon. Kini nga mga alituntunan nagrepresentar sa kinatibuk-ang mga target sa KDIGO 2024. Ang inyong tiyak nga mga limitasyon sa sodium, potassium, ug phosphorus kinahanglan kumpirmasyon sa inyong nephrologist ug rehistradong nutritionist-dietitian. Kung naduhaduha, pilion ang mga sariwa nga buong pagkaon kaysa sa mga nakabalot nga produkto — ang sariwa nga pagkaon wala nagkinahanglan og label.</span><span data-lang="kap" class="lang-hidden">Deng limitasyon king diyeta ya nag-iiba-iba ayon sa indibidwal na CKD stage, kasalukuydeng resulta ning laboratoryo, at klinikal na kondisyon. Deng alituntuning ini ya kumabangkî sa pangkalahatdeng target ning KDIGO 2024. Ing inyong tiyak na deng limitasyon sa sodium, potassium, at phosphorus ya dapat kumpirmahin kasama ing inyong nephrologist at rehistradong nutritionist-dietitian. Nung nag-aalangan, pumili ning deng sariwang buoning pamangan kaysa sa deng nakabalot na produkto — ing sariwaning pamangan ya ali nangangailangan ning label.</span></div>
+    <div class="disclaimer"><strong><span data-lang="en">Important:</span><span data-lang="tl" class="lang-hidden">Mahalaga:</span><span data-lang="ceb" class="lang-hidden">Importante:</span><span data-lang="kap" class="lang-hidden">Mahalaga:</span></strong> <span data-lang="en">Dietary limits vary by individual CKD stage, current lab values, and clinical condition. These guidelines represent general Kidney Disease: Improving Global Outcomes (KDIGO) 2024 targets. Your specific sodium, potassium, and phosphorus limits should be confirmed with your nephrologist and registered nutritionist-dietitian. When in doubt, choose fresh whole foods over packaged products — fresh food does not require a label.</span><span data-lang="tl" class="lang-hidden">Ang mga limitasyon sa diyeta ay nag-iiba-iba ayon sa indibidwal na CKD stage, kasalukuyang mga resulta ng laboratoryo, at klinikal na kondisyon. Ang mga alituntuning ito ay kumakatawan sa pangkalahatang mga target ng KDIGO 2024. Ang inyong tiyak na mga limitasyon sa sodium, potassium, at phosphorus ay dapat kumpirmahin kasama ang inyong nephrologist at rehistradong nutritionist-dietitian. Kapag nag-aalangan, pumili ng mga sariwang buong pagkain kaysa sa mga nakabalot na produkto — ang sariwang pagkain ay hindi nangangailangan ng label.</span><span data-lang="ceb" class="lang-hidden">Ang mga limitasyon sa diyeta nag-ilis-ilis sumala sa indibidwal nga CKD stage, kasamtangan nga mga resulta sa laboratoryo, ug klinikal nga kondisyon. Kini nga mga alituntunan nagrepresentar sa kinatibuk-ang mga target sa KDIGO 2024. Ang inyong tiyak nga mga limitasyon sa sodium, potassium, ug phosphorus kinahanglan kumpirmasyon sa inyong nephrologist ug rehistradong nutritionist-dietitian. Kung naduhaduha, pilion ang mga sariwa nga buong pagkaon kaysa sa mga nakabalot nga produkto — ang sariwa nga pagkaon wala nagkinahanglan og label.</span><span data-lang="kap" class="lang-hidden">Deng limitasyon king diyeta ya nag-iiba-iba ayon sa indibidwal na CKD stage, kasalukuydeng resulta ning laboratoryo, at klinikal na kondisyon. Deng alituntuning ini ya kumabangkî sa pangkalahatdeng target ning KDIGO 2024. Ing inyong tiyak na deng limitasyon sa sodium, potassium, at phosphorus ya dapat kumpirmahin kasama ing inyong nephrologist at rehistradong nutritionist-dietitian. Nung nag-aalangan, pumili ning deng sariwang buoning pamangan kaysa sa deng nakabalot na produkto — ing sariwaning pamangan ya ali nangangailangan ning label.</span></div>
 
     
   </section>
@@ -2566,5 +2577,6 @@ function resetTracker() {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -2010,7 +2021,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
 <div class="hero-grid">
 <div class="hero-copy">
 <div class="hero-tag">
-<span data-lang="en">Dialysis &middot; ESKD &middot; Patient Safety</span>
+<span data-lang="en">Dialysis &middot; ESKD (end-stage kidney disease) &middot; Patient Safety</span>
 <span class="lang-hidden" data-lang="tl">Dialysis &middot; ESKD &middot; Kaligtasan ng Pasyente</span>
 <span class="lang-hidden" data-lang="ceb">Dialysis &middot; ESKD &middot; Kaluwasan sa Pasyente</span>
 <span class="lang-hidden" data-lang="kap">Dialysis &middot; ESKD &middot; Kaligtasan ning Pasyente</span>
@@ -2093,7 +2104,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
 <!-- SVG TIMELINE -->
 <div class="illus-wrap" style="background:#f0f4f8;border-radius:14px;padding:24px;margin:24px 0;text-align:center;overflow-x:auto;">
 <svg viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;width:100%;">
-  <text x="280" y="15" text-anchor="middle" font-size="12" font-weight="600" fill="#0f1e2e">Fluid Accumulation Across a Typical Week (Mon/Wed/Fri Schedule)</text>
+  <text x="280" y="15" text-anchor="middle" font-size="12" font-weight="600" fill="#0f1e2e">Fluid Accumulation Across a Typical HD (hemodialysis) Week (Mon/Wed/Fri Schedule)</text>
   <line x1="40" y1="80" x2="520" y2="80" stroke="#e2e6eb" stroke-width="3"/>
   <!-- HD blocks -->
   <rect x="28" y="60" width="32" height="40" rx="4" fill="#1a6b72"/>
@@ -2539,9 +2550,9 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
   </div>
 </div>
 <div class="prom-tab-nav">
-  <button class="prom-tab-btn active" data-tab="kdqol" onclick="promShowTab('kdqol')">KDQOL-36 Symptoms</button>
+  <button class="prom-tab-btn active" data-tab="kdqol" onclick="promShowTab('kdqol')">KDQOL-36 (Kidney Disease Quality of Life) Symptoms</button>
   <button class="prom-tab-btn" data-tab="dsi" onclick="promShowTab('dsi')">Dialysis Symptom Index</button>
-  <button class="prom-tab-btn" data-tab="ipos" onclick="promShowTab('ipos')">IPOS-Renal</button>
+  <button class="prom-tab-btn" data-tab="ipos" onclick="promShowTab('ipos')">IPOS-Renal (Integrated Palliative care Outcome Scale)</button>
 </div>
 
 <!-- KDQOL PANEL -->
@@ -2605,7 +2616,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
   <div class="prom-item"><label>29. Difficulty swallowing</label><select id="dsi29"><option value="0">0 – Not present</option><option value="1">1 – Barely</option><option value="2">2 – Somewhat</option><option value="3">3 – Quite a bit</option><option value="4">4 – Very much</option></select></div>
   <div class="prom-item"><label>30. Fainting</label><select id="dsi30"><option value="0">0 – Not present</option><option value="1">1 – Barely</option><option value="2">2 – Somewhat</option><option value="3">3 – Quite a bit</option><option value="4">4 – Very much</option></select></div>
 </div>
-<button class="prom-calc-btn" onclick="promCalcDSI()">Calculate DSI Score</button>
+<button class="prom-calc-btn" onclick="promCalcDSI()">Calculate DSI (Dialysis Symptom Index) Score</button>
 <div class="prom-result" id="dsiResult">
   <div class="prom-result-num" id="dsiNum">—</div>
   <div class="prom-result-info"><h4 id="dsiSev">—</h4><p id="dsiDesc">—</p></div>
@@ -2650,7 +2661,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <div class="calc-card-icon">⌬</div>
       <div class="calc-card-body">
         <div class="calc-card-title">Interdialytic Weight Gain & Fluid Removal Calculator</div>
-        <div class="calc-card-desc">Converts IDWG to % of dry weight; computes required UF volume and flags safe vs. high UF rate.</div>
+        <div class="calc-card-desc">Converts IDWG (interdialytic weight gain) to % of dry weight; computes required UF volume and flags safe vs. high UF rate.</div>
       </div>
       <span class="calc-card-arrow">Open →</span>
     </a>
@@ -2658,7 +2669,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <div class="calc-card-icon">⌬</div>
       <div class="calc-card-body">
         <div class="calc-card-title">Ultrafiltration Rate Calculator</div>
-        <div class="calc-card-desc">UFR in mL/hr/kg — flags the KDOQI <13 mL/hr/kg cardiovascular safety threshold.</div>
+        <div class="calc-card-desc">UFR in mL/hr/kg — flags the KDOQI (Kidney Disease Outcomes Quality Initiative) <13 mL/hr/kg cardiovascular safety threshold.</div>
       </div>
       <span class="calc-card-arrow">Open →</span>
     </a>
@@ -2666,7 +2677,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <div class="calc-card-icon">Δ</div>
       <div class="calc-card-body">
         <div class="calc-card-title">Dialysis Kinetics Calculator — TMP & Filtration Fraction</div>
-        <div class="calc-card-desc">Transmembrane pressure from the four dialyzer pressures, plus filtration fraction for post-/pre-dilution HDF.</div>
+        <div class="calc-card-desc">Transmembrane pressure from the four dialyzer pressures, plus filtration fraction for post-/pre-dilution HDF (hemodiafiltration).</div>
       </div>
       <span class="calc-card-arrow">Open →</span>
     </a>
@@ -2880,5 +2891,6 @@ function promCalcIPOS(){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

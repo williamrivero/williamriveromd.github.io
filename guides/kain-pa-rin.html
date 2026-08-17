@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1825,8 +1836,8 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
 <!-- AUDIENCE TABS -->
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span></button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span></button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1838,7 +1849,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">0.6&ndash;0.8</span><span class="l">g/kg/d protein, CKD G3&ndash;5 (KDIGO 2024)</span></div>
+<div class="ov-stat"><span class="v">0.6&ndash;0.8</span><span class="l">g/kg/d protein, CKD (chronic kidney disease) G3&ndash;5 (KDIGO 2024)</span></div>
 <div class="ov-stat"><span class="v">&gt;1.0</span><span class="l">g/kg/d once on hemodialysis</span></div>
 <div class="ov-stat"><span class="v">ISRNM<br>2023</span><span class="l">protein-energy wasting definition</span></div>
 </div>
@@ -1851,11 +1862,11 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
   <span class="mode-physician" style="display:none;">CKD Nutritional Management &middot; KDIGO 2024 &middot; Philippine Clinical Context</span>
 </div>
 <h1>
-  <span class="mode-patient"><em>Kain Pa Rin</em> — You Can Still Eat</span>
+  <span class="mode-patient"><span data-lang="en"><em>Kain Pa Rin</em> — You Can Still Eat</span><span data-lang="tl" class="lang-hidden"><em>Kain Pa Rin</em> — Puwede Ka Pang Kumain</span><span data-lang="ceb" class="lang-hidden"><em>Kain Pa Rin</em> — Makakaon Ka Gihapon</span><span data-lang="kap" class="lang-hidden"><em>Kain Pa Rin</em> — Malyari Ka Pang Mangan</span></span>
   <span class="mode-physician" style="display:none;">CKD Nutritional Management: <em>Evidence &amp; Practice</em> in the Filipino Patient</span>
 </h1>
 <p class="hero-sub">
-  <span class="mode-patient">CKD doesn't mean the end of good food. It means understanding four numbers — protein, phosphorus, potassium, and sodium — and learning how they apply to rice, bangus, kangkong, and everything on a Filipino table.</span>
+  <span class="mode-patient"><span data-lang="en">CKD doesn't mean the end of good food. It means understanding four numbers — protein, phosphorus, potassium, and sodium — and learning how they apply to rice, bangus, kangkong, and everything on a Filipino table.</span><span data-lang="tl" class="lang-hidden">Ang CKD ay hindi nangangahulugan ng katapusan ng masarap na pagkain. Ibig sabihin nito ay pag-unawa sa apat na numero — protina, phosphorus, potassium, at sodium — at pag-aaral kung paano ito nauukol sa kanin, bangus, kangkong, at lahat ng nasa hapag-kainan ng Pilipino.</span><span data-lang="ceb" class="lang-hidden">Ang CKD wala magpasabot nga kataposan sa lami nga pagkaon. Nagpasabot kini og pagsabot sa upat ka numero — protina, phosphorus, potassium, ug sodium — ug pagkat-on kung giunsa kini paggamit sa kanin, bangus, kangkong, ug tanan nga anaa sa lamesa sa Pilipino.</span><span data-lang="kap" class="lang-hidden">Ing CKD e ne buri sabian a kataposan ning mayap a pamangan. Buri nang sabian ing pamanintindi king apat a numero — protina, phosphorus, potassium, at sodium — at pamag-aral nung panung la magamit king kanin, bangus, kangkong, at anggang atyu king lamesang Filipino.</span></span>
   <span class="mode-physician" style="display:none;">A comprehensive clinical reference covering protein targets by CKD stage, phosphorus bioavailability, potassium individualization, protein-energy wasting in Filipino patients, and the critical nutrition pivot at dialysis initiation.</span>
 </p>
 <div class="hero-meta">
@@ -1959,15 +1970,15 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
 </div>
 <div class="three-col">
   <div class="feature-card">
-    <h4><span class="dot dot-red" style="margin-right:6px;"></span>CKD Stage 3 (GFR 30–59)</h4>
+    <h4><span class="dot dot-red" style="margin-right:6px;"></span><span data-lang="en">CKD Stage 3 (GFR 30–59)</span><span data-lang="tl" class="lang-hidden">CKD Yugto 3 (GFR 30–59)</span><span data-lang="ceb" class="lang-hidden">CKD Ang-ang 3 (GFR 30–59)</span><span data-lang="kap" class="lang-hidden">CKD Yugto 3 (GFR 30–59)</span></h4>
     <p><span data-lang="en">Kidneys working at 30–59% capacity. Most patients feel well. Diet changes begin here — this is the best time to establish habits.</span><span data-lang="tl" class="lang-hidden">Mga bato na gumagana sa 30–59% ng kapasidad. Karamihan sa mga pasyente ay nakakaramdam na mabuti. Nagsisimula dito ang mga pagbabago sa diyeta — ito ang pinakamainam na oras upang maitatag ang mga ugali.</span><span data-lang="ceb" class="lang-hidden">Mga bato nga nagtrabaho sa 30–59% nga kapasidad. Kadaghanan sa mga pasyente nakaramdam og maayo. Nagsugod dinhi ang mga pagbag-o sa diyeta — kini ang pinakamaayo nga panahon aron maestablisar ang mga batasan.</span><span data-lang="kap" class="lang-hidden">Mga bato a gumagana sa 30–59% ning kapasidad. Karamihan king mga pasyente maramdam nang maayos. Nagsisimula diti ing mga pagbabago sa diyeta — iti ing pinakamainam a panahon para maitatatag ing mga ugali.</span></p>
   </div>
   <div class="feature-card">
-    <h4><span class="dot dot-amber" style="margin-right:6px;"></span>CKD Stage 4 (GFR 15–29)</h4>
+    <h4><span class="dot dot-amber" style="margin-right:6px;"></span><span data-lang="en">CKD Stage 4 (GFR 15–29)</span><span data-lang="tl" class="lang-hidden">CKD Yugto 4 (GFR 15–29)</span><span data-lang="ceb" class="lang-hidden">CKD Ang-ang 4 (GFR 15–29)</span><span data-lang="kap" class="lang-hidden">CKD Yugto 4 (GFR 15–29)</span></h4>
     <p><span data-lang="en">Kidneys at 15–29% capacity. Symptoms may appear. Low-protein diet with possible ketoanalogue supplements. Dialysis planning begins.</span><span data-lang="tl" class="lang-hidden">Mga bato sa 15–29% ng kapasidad. Maaaring lumabas ang mga sintomas. Diyeta na mababa ang protina na may posibleng mga ketoanalogue supplements. Nagsisimula ang pagpaplano ng dialysis.</span><span data-lang="ceb" class="lang-hidden">Mga bato sa 15–29% nga kapasidad. Mahimong moabot ang mga sintomas. Diyeta nga ubos sa protina nga adunay posible nga mga ketoanalogue supplements. Nagsugod ang pagplano sa dialysis.</span><span data-lang="kap" class="lang-hidden">Mga bato sa 15–29% ning kapasidad. Malyaring lumabas ing mga simtomas. Diyeta a mababa ing protina ampo posibleng mga ketoanalogue supplements. Nagsisimula ing pagpaplano ning dialysis.</span></p>
   </div>
   <div class="feature-card">
-    <h4><span class="dot dot-navy" style="margin-right:6px;"></span>CKD Stage 5 (GFR &lt;15)</h4>
+    <h4><span class="dot dot-navy" style="margin-right:6px;"></span><span data-lang="en">CKD Stage 5 (GFR &lt;15)</span><span data-lang="tl" class="lang-hidden">CKD Yugto 5 (GFR &lt;15)</span><span data-lang="ceb" class="lang-hidden">CKD Ang-ang 5 (GFR &lt;15)</span><span data-lang="kap" class="lang-hidden">CKD Yugto 5 (GFR &lt;15)</span></h4>
     <p><span data-lang="en">Near-complete kidney failure. Dialysis either starting or imminent. Nutrition targets shift significantly — see the Transition section.</span><span data-lang="tl" class="lang-hidden">Halos kumpletong pagpalya ng bato. Nagsisimula na o nalalapit na ang dialysis. Ang mga target sa nutrisyon ay malaki ang pagbabago — tingnan ang seksyon ng Transition.</span><span data-lang="ceb" class="lang-hidden">Hapit kumpletong pagkapalyas sa bato. Nagsugod na o hapit na ang dialysis. Ang mga target sa nutrisyon nagsugod og dakong pagbag-o — tan-awa ang seksyon sa Transition.</span><span data-lang="kap" class="lang-hidden">Halos kumpletong pagpalya ning bato. Nagsisimula na o malapit na ing dialysis. Ang mga target sa nutrisyon malaki ing pagbabago — tingnan ing seksyon ning Transition.</span></p>
   </div>
 </div>
@@ -2082,45 +2093,45 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
 <div class="tl-green">
   <h4>🟢 <span data-lang="en">Green — Eat Freely</span><span data-lang="tl" class="lang-hidden">Berde — Kumain nang Malaya</span><span data-lang="ceb" class="lang-hidden">Berde — Kaon nga Libre</span><span data-lang="kap" class="lang-hidden">Berde — Kumain nang Malaya</span></h4>
   <ul>
-    <li>Kangkong, pechay, repolyo</li>
-    <li>Upo, sayote, labanos</li>
-    <li>Ampalaya (bitter gourd)</li>
-    <li>Sitaw (string beans)</li>
-    <li>Sibuyas, bawang, luya</li>
-    <li>Talong (eggplant)</li>
-    <li>Papaya (green, cooked)</li>
-    <li>Rice (in appropriate portions)</li>
-    <li>Corn (in moderation)</li>
-    <li>Bottled water, black tea, buko juice — <em>if potassium is normal</em></li>
+    <li><span data-lang="en">Kangkong, pechay, repolyo</span><span data-lang="tl" class="lang-hidden">Kangkong, pechay, repolyo</span><span data-lang="ceb" class="lang-hidden">Kangkong, pechay, repolyo</span><span data-lang="kap" class="lang-hidden">Kangkong, pechay, repolyo</span></li>
+    <li><span data-lang="en">Upo, sayote, labanos</span><span data-lang="tl" class="lang-hidden">Upo, sayote, labanos</span><span data-lang="ceb" class="lang-hidden">Upo, sayote, labanos</span><span data-lang="kap" class="lang-hidden">Upo, sayote, labanos</span></li>
+    <li><span data-lang="en">Ampalaya (bitter gourd)</span><span data-lang="tl" class="lang-hidden">Ampalaya (mapait na gulay)</span><span data-lang="ceb" class="lang-hidden">Ampalaya (paliya)</span><span data-lang="kap" class="lang-hidden">Ampalaya (mapait a gulay)</span></li>
+    <li><span data-lang="en">Sitaw (string beans)</span><span data-lang="tl" class="lang-hidden">Sitaw (mahabang bitsuwelas)</span><span data-lang="ceb" class="lang-hidden">Sitaw (tag-as nga bitsuwelas)</span><span data-lang="kap" class="lang-hidden">Sitaw (mahabang bitsuwelas)</span></li>
+    <li><span data-lang="en">Sibuyas, bawang, luya</span><span data-lang="tl" class="lang-hidden">Sibuyas, bawang, luya</span><span data-lang="ceb" class="lang-hidden">Sibuyas, bawang, luy-a</span><span data-lang="kap" class="lang-hidden">Sibuyas, bawang, luya</span></li>
+    <li><span data-lang="en">Talong (eggplant)</span><span data-lang="tl" class="lang-hidden">Talong</span><span data-lang="ceb" class="lang-hidden">Talong</span><span data-lang="kap" class="lang-hidden">Talong</span></li>
+    <li><span data-lang="en">Papaya (green, cooked)</span><span data-lang="tl" class="lang-hidden">Papaya (hilaw, niluto)</span><span data-lang="ceb" class="lang-hidden">Papaya (hilaw, giluto)</span><span data-lang="kap" class="lang-hidden">Papaya (hilo, niluto)</span></li>
+    <li><span data-lang="en">Rice (in appropriate portions)</span><span data-lang="tl" class="lang-hidden">Kanin (sa tamang dami)</span><span data-lang="ceb" class="lang-hidden">Kanin (sa hustong gidaghanon)</span><span data-lang="kap" class="lang-hidden">Kanin (king tamang dami)</span></li>
+    <li><span data-lang="en">Corn (in moderation)</span><span data-lang="tl" class="lang-hidden">Mais (katamtaman lang)</span><span data-lang="ceb" class="lang-hidden">Mais (katamtaman lang)</span><span data-lang="kap" class="lang-hidden">Mais (katamtaman la)</span></li>
+    <li><span data-lang="en">Bottled water, black tea, buko juice — <em>if potassium is normal</em></span><span data-lang="tl" class="lang-hidden">Naka-bote na tubig, black tea, buko juice — <em>kung normal ang potassium</em></span><span data-lang="ceb" class="lang-hidden">Naka-botelya nga tubig, black tea, buko juice — <em>kon normal ang potassium</em></span><span data-lang="kap" class="lang-hidden">Naka-bote a danum, black tea, buko juice — <em>nung normal ing potassium</em></span></li>
   </ul>
 </div>
 <div class="tl-yellow">
   <h4>🟡 <span data-lang="en">Yellow — Limit</span><span data-lang="tl" class="lang-hidden">Dilaw — Limitahan</span><span data-lang="ceb" class="lang-hidden">Dalag — Limitahan</span><span data-lang="kap" class="lang-hidden">Dilaw — Limitahan</span></h4>
   <ul>
-    <li>Kamote (½ medium/day)</li>
-    <li>Saging na saba (¼ piece/day)</li>
-    <li>Ripe mango (small slice)</li>
-    <li>Gata / coconut milk (2 tbsp)</li>
-    <li>Tokwa / tofu (1 block)</li>
-    <li>Munggo (1 cup/week)</li>
-    <li>Patatas (boiled, leached)</li>
-    <li>Gabi (leached, small)</li>
-    <li>Dark leafy greens (leach before cooking)</li>
+    <li><span data-lang="en">Kamote (½ medium/day)</span><span data-lang="tl" class="lang-hidden">Kamote (½ katamtaman/araw)</span><span data-lang="ceb" class="lang-hidden">Kamote (½ medium/adlaw)</span><span data-lang="kap" class="lang-hidden">Kamote (½ medium/aldo)</span></li>
+    <li><span data-lang="en">Saging na saba (¼ piece/day)</span><span data-lang="tl" class="lang-hidden">Saging na saba (¼ piraso/araw)</span><span data-lang="ceb" class="lang-hidden">Saging na saba (¼ piraso/adlaw)</span><span data-lang="kap" class="lang-hidden">Saging na saba (¼ piraso/aldo)</span></li>
+    <li><span data-lang="en">Ripe mango (small slice)</span><span data-lang="tl" class="lang-hidden">Hinog na mangga (maliit na hiwa)</span><span data-lang="ceb" class="lang-hidden">Hinog nga mangga (gamay nga hiwa)</span><span data-lang="kap" class="lang-hidden">Hinog a mangga (maliit a hiwa)</span></li>
+    <li><span data-lang="en">Gata / coconut milk (2 tbsp)</span><span data-lang="tl" class="lang-hidden">Gata / coconut milk (2 kutsara)</span><span data-lang="ceb" class="lang-hidden">Gata / coconut milk (2 ka kutsara)</span><span data-lang="kap" class="lang-hidden">Gata / coconut milk (2 kutsara)</span></li>
+    <li><span data-lang="en">Tokwa / tofu (1 block)</span><span data-lang="tl" class="lang-hidden">Tokwa / tofu (1 bloke)</span><span data-lang="ceb" class="lang-hidden">Tokwa / tofu (1 ka bloke)</span><span data-lang="kap" class="lang-hidden">Tokwa / tofu (1 bloke)</span></li>
+    <li><span data-lang="en">Munggo (1 cup/week)</span><span data-lang="tl" class="lang-hidden">Munggo (1 tasa/linggo)</span><span data-lang="ceb" class="lang-hidden">Munggo (1 tasa/semana)</span><span data-lang="kap" class="lang-hidden">Munggo (1 tasa/dominggo)</span></li>
+    <li><span data-lang="en">Patatas (boiled, leached)</span><span data-lang="tl" class="lang-hidden">Patatas (pinakuluan, na-leach)</span><span data-lang="ceb" class="lang-hidden">Patatas (gilat-an, gi-leach)</span><span data-lang="kap" class="lang-hidden">Patatas (pinakulo, na-leach)</span></li>
+    <li><span data-lang="en">Gabi (leached, small)</span><span data-lang="tl" class="lang-hidden">Gabi (na-leach, maliit)</span><span data-lang="ceb" class="lang-hidden">Gabi (gi-leach, gamay)</span><span data-lang="kap" class="lang-hidden">Gabi (na-leach, maliit)</span></li>
+    <li><span data-lang="en">Dark leafy greens (leach before cooking)</span><span data-lang="tl" class="lang-hidden">Madidilim na madahong gulay (i-leach bago lutuin)</span><span data-lang="ceb" class="lang-hidden">Itom nga madahon nga utanon (i-leach una lutoon)</span><span data-lang="kap" class="lang-hidden">Maitim a madahong gulay (i-leach bayu lutuan)</span></li>
   </ul>
 </div>
 <div class="tl-red">
   <h4>🔴 <span data-lang="en">Red — Avoid or Rare</span><span data-lang="tl" class="lang-hidden">Pula — Iwasan o Bihira Lang</span><span data-lang="ceb" class="lang-hidden">Pula — Likayon o Talagsaon Lang</span><span data-lang="kap" class="lang-hidden">Pula — Iwasan o Bihira Lang</span></h4>
   <ul>
-    <li>Coconut water (tubig ng buko) — very high potassium</li>
-    <li>Banana (lacatan, latundan) — high potassium</li>
-    <li>Bagoong, patis, toyo — high sodium</li>
-    <li>Nuts, peanuts — high phosphorus</li>
-    <li>Processed meats (tocino, longganisa, corned beef)</li>
-    <li>Instant noodles (Lucky Me, Nissin)</li>
-    <li>Chips, crackers — hidden sodium &amp; phosphate additives</li>
-    <li>Organ meats (liver, kidney, heart) — very high phosphorus</li>
-    <li>Dilis, dried fish — very high sodium</li>
-    <li>Soft drinks, especially cola — phosphoric acid</li>
+    <li><span data-lang="en">Coconut water (tubig ng buko) — very high potassium</span><span data-lang="tl" class="lang-hidden">Tubig ng buko — napakataas ang potassium</span><span data-lang="ceb" class="lang-hidden">Tubig sa buko — taas kaayo ang potassium</span><span data-lang="kap" class="lang-hidden">Danum ning buko — napakataas ing potassium</span></li>
+    <li><span data-lang="en">Banana (lacatan, latundan) — high potassium</span><span data-lang="tl" class="lang-hidden">Saging (lacatan, latundan) — mataas ang potassium</span><span data-lang="ceb" class="lang-hidden">Saging (lacatan, latundan) — taas ang potassium</span><span data-lang="kap" class="lang-hidden">Saging (lacatan, latundan) — matas ing potassium</span></li>
+    <li><span data-lang="en">Bagoong, patis, toyo — high sodium</span><span data-lang="tl" class="lang-hidden">Bagoong, patis, toyo — mataas ang sodium</span><span data-lang="ceb" class="lang-hidden">Bagoong, patis, toyo — taas ang sodium</span><span data-lang="kap" class="lang-hidden">Bagoong, patis, toyo — matas ing sodium</span></li>
+    <li><span data-lang="en">Nuts, peanuts — high phosphorus</span><span data-lang="tl" class="lang-hidden">Mani, nuts — mataas ang phosphorus</span><span data-lang="ceb" class="lang-hidden">Mani, nuts — taas ang phosphorus</span><span data-lang="kap" class="lang-hidden">Mani, nuts — matas ing phosphorus</span></li>
+    <li><span data-lang="en">Processed meats (tocino, longganisa, corned beef)</span><span data-lang="tl" class="lang-hidden">Mga processed na karne (tocino, longganisa, corned beef)</span><span data-lang="ceb" class="lang-hidden">Mga processed nga karne (tocino, longganisa, corned beef)</span><span data-lang="kap" class="lang-hidden">Mga processed a karne (tocino, longganisa, corned beef)</span></li>
+    <li><span data-lang="en">Instant noodles (Lucky Me, Nissin)</span><span data-lang="tl" class="lang-hidden">Instant noodles (Lucky Me, Nissin)</span><span data-lang="ceb" class="lang-hidden">Instant noodles (Lucky Me, Nissin)</span><span data-lang="kap" class="lang-hidden">Instant noodles (Lucky Me, Nissin)</span></li>
+    <li><span data-lang="en">Chips, crackers — hidden sodium &amp; phosphate additives</span><span data-lang="tl" class="lang-hidden">Chips, crackers — nakatagong sodium at phosphate additives</span><span data-lang="ceb" class="lang-hidden">Chips, crackers — tinago nga sodium ug phosphate additives</span><span data-lang="kap" class="lang-hidden">Chips, crackers — nakatagong sodium ampo phosphate additives</span></li>
+    <li><span data-lang="en">Organ meats (liver, kidney, heart) — very high phosphorus</span><span data-lang="tl" class="lang-hidden">Lamang-loob (atay, bato, puso) — napakataas ang phosphorus</span><span data-lang="ceb" class="lang-hidden">Mga organ meat (atay, kidney, kasingkasing) — taas kaayo ang phosphorus</span><span data-lang="kap" class="lang-hidden">Lamang-lub (ate, bato, pusu) — napakataas ing phosphorus</span></li>
+    <li><span data-lang="en">Dilis, dried fish — very high sodium</span><span data-lang="tl" class="lang-hidden">Dilis, tuyo — napakataas ang sodium</span><span data-lang="ceb" class="lang-hidden">Dilis, bulad — taas kaayo ang sodium</span><span data-lang="kap" class="lang-hidden">Dilis, daing — napakataas ing sodium</span></li>
+    <li><span data-lang="en">Soft drinks, especially cola — phosphoric acid</span><span data-lang="tl" class="lang-hidden">Soft drinks, lalo na ang cola — phosphoric acid</span><span data-lang="ceb" class="lang-hidden">Soft drinks, ilabi na ang cola — phosphoric acid</span><span data-lang="kap" class="lang-hidden">Soft drinks, lalu na ing cola — phosphoric acid</span></li>
   </ul>
 </div>
 </div>
@@ -2217,7 +2228,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
     <div class="n-note"><span data-lang="en">Low: may need more protein or supplements</span><span data-lang="tl" class="lang-hidden">Mababa: maaaring kailanganin ng mas maraming protina o suplemento</span><span data-lang="ceb" class="lang-hidden">Ubos: tingali kinahanglan og dugang protina o suplemento</span><span data-lang="kap" class="lang-hidden">Mababa: malyaring kailangan pa ning protina o suplemento</span></div>
   </div>
   <div class="num-card">
-    <div class="n-label">eGFR</div>
+    <div class="n-label">eGFR (estimated glomerular filtration rate)</div>
     <div class="n-val">&lt;15</div>
     <div class="n-target">mL/min — <span data-lang="en">transition zone</span><span data-lang="tl" class="lang-hidden">zona ng paglipat</span><span data-lang="ceb" class="lang-hidden">zona sa transisyon</span><span data-lang="kap" class="lang-hidden">zona ning paglipat</span></div>
     <div class="n-note"><span data-lang="en">Below 15: dialysis discussion begins</span><span data-lang="tl" class="lang-hidden">Mas mababa sa 15: magsisimula ang talakayan sa dialysis</span><span data-lang="ceb" class="lang-hidden">Ubos sa 15: nagsugod na ang diskusyon sa dialysis</span><span data-lang="kap" class="lang-hidden">Baba sa 15: magsisimula ing usapan king dialysis</span></div>
@@ -2347,7 +2358,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
 <div class="three-col">
   <div class="feature-card">
     <h4>Subjective Global Assessment (SGA)</h4>
-    <p>7-point validated tool covering weight change, dietary intake, GI symptoms, functional capacity, and physical examination. SGA A = well nourished; B = mild-moderate malnutrition; C = severe. Grade B or C warrants dietitian referral and supplement consideration.</p>
+    <p>7-point validated tool covering weight change, dietary intake, GI symptoms, functional capacity, and physical examination. SGA (Subjective Global Assessment) A = well nourished; B = mild-moderate malnutrition; C = severe. Grade B or C warrants dietitian referral and supplement consideration.</p>
   </div>
   <div class="feature-card">
     <h4>Handgrip Strength</h4>
@@ -2355,7 +2366,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
   </div>
   <div class="feature-card">
     <h4>Biochemical Markers</h4>
-    <p>Albumin &lt;3.5 g/dL (chronic inflammation marker, not just nutrition). Prealbumin &lt;30 mg/dL (more sensitive to acute change). BUN:Cr ratio &lt;10 suggests inadequate protein intake; &gt;20 suggests excessive protein intake or GI bleeding.</p>
+    <p>Albumin &lt;3.5 g/dL (chronic inflammation marker, not just nutrition). Prealbumin &lt;30 mg/dL (more sensitive to acute change). BUN (blood urea nitrogen):Cr ratio &lt;10 suggests inadequate protein intake; &gt;20 suggests excessive protein intake or GI bleeding.</p>
   </div>
 </div>
 <div class="illus-wrap">
@@ -2380,7 +2391,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
   <div class="alert-icon">🧮</div>
   <div class="alert-body">
     <h4>Example: 60 kg patient, CKD Stage 4 (GFR 22 mL/min)</h4>
-    <p>Target: 0.7 g/kg/day × 60 kg = <strong>42 g protein/day</strong>. Use adjusted body weight if BMI &gt;30 or &lt;18.5. One medium tilapia (26 g) + 2 eggs (14 g) = 40 g — already at target before accounting for rice (4–5 g/cup). Clinical implication: dinner should be protein-light (vegetables + rice only). This is a dramatic change from typical Filipino meal structure.</p>
+    <p>Target: 0.7 g/kg/day × 60 kg = <strong>42 g protein/day</strong>. Use adjusted body weight if BMI (body mass index) &gt;30 or &lt;18.5. One medium tilapia (26 g) + 2 eggs (14 g) = 40 g — already at target before accounting for rice (4–5 g/cup). Clinical implication: dinner should be protein-light (vegetables + rice only). This is a dramatic change from typical Filipino meal structure.</p>
   </div>
 </div>
 <p>The protein content table in the patient section (above) also applies clinically. Share the table directly with patients and families — it is one of the most effective counseling tools because it makes the abstract target concrete.</p>
@@ -2424,7 +2435,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
   <div class="alert-icon">⚠️</div>
   <div class="alert-body">
     <h4>The phosphate additive problem in Philippine processed food</h4>
-    <p>Philippine FDA does not require quantitative phosphate additive disclosure. Patients must be taught to identify E338–E341, E450–E452, and "phosphate" in ingredient lists. Common high-phosphate offenders in Filipino households: Century Tuna in sauce, sausages, processed cheese spreads, biscuits with leavening agents. Switching from canned tuna-in-brine (phosphate-added) to fresh tilapia reduces phosphorus load by &gt;50%.</p>
+    <p>Philippine FDA (Food and Drug Administration) does not require quantitative phosphate additive disclosure. Patients must be taught to identify E338–E341, E450–E452, and "phosphate" in ingredient lists. Common high-phosphate offenders in Filipino households: Century Tuna in sauce, sausages, processed cheese spreads, biscuits with leavening agents. Switching from canned tuna-in-brine (phosphate-added) to fresh tilapia reduces phosphorus load by &gt;50%.</p>
   </div>
 </div>
 <div class="ref-band">
@@ -2457,7 +2468,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
     <div class="ladder-num s1">2</div>
     <div class="ladder-body">
       <h4>Medication Review</h4>
-      <p>ACEi, ARBs, MRAs (spironolactone), TMP-SMX (amiloride-like effect), NSAIDs, heparins, SSRIs, beta-blockers, calcineurin inhibitors. Dose-adjust or substitute where clinically feasible before initiating dietary restriction or binders.</p>
+      <p>ACEi (angiotensin-converting enzyme inhibitor), ARBs (angiotensin receptor blocker), MRAs (spironolactone), TMP-SMX (amiloride-like effect), NSAIDs (non-steroidal anti-inflammatory drug), heparins, SSRIs, beta-blockers, calcineurin inhibitors. Dose-adjust or substitute where clinically feasible before initiating dietary restriction or binders.</p>
     </div>
   </div>
   <div class="ladder-step">
@@ -2478,7 +2489,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
     <div class="ladder-num s3">5</div>
     <div class="ladder-body">
       <h4>Dialysis Initiation</h4>
-      <p>Persistent K+ &gt;6.0–6.5 mEq/L despite Steps 1–4, or any level with ECG changes, is an indication to initiate dialysis regardless of GFR if the patient meets other indications. Potassium alone rarely drives dialysis start unless refractory.</p>
+      <p>Persistent K+ &gt;6.0–6.5 mEq/L despite Steps 1–4, or any level with ECG (electrocardiogram) changes, is an indication to initiate dialysis regardless of GFR if the patient meets other indications. Potassium alone rarely drives dialysis start unless refractory.</p>
     </div>
   </div>
 </div>
@@ -2529,7 +2540,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
   </div>
 </div>
 <div class="ref-band">
-  <p><strong>Key references:</strong> Ikizler TA et al. KDOQI Nutrition Guidelines 2020 (dialysis protein targets) · Fouque D et al. NDT 2007 (protein requirements on dialysis) · Kalantar-Zadeh K et al. Sem Nephrol 2017 (wasting in dialysis)</p>
+  <p><strong>Key references:</strong> Ikizler TA et al. KDOQI (Kidney Disease Outcomes Quality Initiative) Nutrition Guidelines 2020 (dialysis protein targets) · Fouque D et al. NDT 2007 (protein requirements on dialysis) · Kalantar-Zadeh K et al. Sem Nephrol 2017 (wasting in dialysis)</p>
 </div>
 </section>
 
@@ -2612,7 +2623,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
 <div class="section-tag">Part 9</div>
 <h2>Philippine Clinical Context</h2>
 <h3>PhilHealth and Dietitian Access</h3>
-<p>PhilHealth outpatient renal benefit packages (as of 2024) cover nephrologist consultations but do not include a separate dietitian benefit for pre-dialysis CKD patients. Most government hospitals with nephrology units have registered nutritionist-dietitians; private settings have variable access. For patients without dietitian access, the nephrology team must provide targeted nutritional counseling directly — the 10-minute framework above is designed for this constraint.</p>
+<p>PhilHealth (Philippine Health Insurance Corporation) outpatient renal benefit packages (as of 2024) cover nephrologist consultations but do not include a separate dietitian benefit for pre-dialysis CKD patients. Most government hospitals with nephrology units have registered nutritionist-dietitians; private settings have variable access. For patients without dietitian access, the nephrology team must provide targeted nutritional counseling directly — the 10-minute framework above is designed for this constraint.</p>
 <h3>Ketoanalogue Access and Cost</h3>
 <div class="two-col">
   <div class="feature-card">
@@ -2722,8 +2733,8 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
 <section class="section" id="nut-tools">
   <div class="nt-section">
     <span class="nt-section-tag">Nutrition Screening</span>
-    <h2>Nutrition Assessment Tools</h2>
-    <p class="nt-sub">Validated tools for identifying malnutrition risk in CKD and dialysis patients: SNAQ (quick 3-question screen), MIS (10-item scored assessment), and SGA (clinician-administered global rating).</p>
+    <h2><span data-lang="en">Nutrition Assessment Tools</span><span data-lang="tl" class="lang-hidden">Mga Kagamitan sa Pagtatasa ng Nutrisyon</span><span data-lang="ceb" class="lang-hidden">Mga Himan sa Pag-assess sa Nutrisyon</span><span data-lang="kap" class="lang-hidden">Mga Kasangkapan king Pamanukod king Nutrisyon</span></h2>
+    <p class="nt-sub"><span data-lang="en">Validated tools for identifying malnutrition risk in CKD and dialysis patients: SNAQ (quick 3-question screen), MIS (10-item scored assessment), and SGA (clinician-administered global rating).</span><span data-lang="tl" class="lang-hidden">Mga napatunayang kagamitan para tukuyin ang panganib ng malnutrisyon sa mga pasyenteng may CKD at dialysis: SNAQ (mabilis na 3-tanong na screen), MIS (10-item na may iskor na pagtatasa), at SGA (global rating na isinasagawa ng klinisyan).</span><span data-lang="ceb" class="lang-hidden">Mga napamatud-an nga himan para mailhan ang risgo sa malnutrisyon sa mga pasyente nga adunay CKD ug dialysis: SNAQ (paspas nga 3-pangutana nga screen), MIS (10-item nga may iskor nga assessment), ug SGA (global rating nga gihimo sa klinisyan).</span><span data-lang="kap" class="lang-hidden">Mga napatunayan a kasangkapan para akilala ing peligru ning malnutrisyon king mga pasyenteng CKD at dialysis: SNAQ (maganan a 3-kutang a screen), MIS (10-item a atin iskor a pamanukod), at SGA (global rating a gagawan ning klinisyan).</span></p>
 
     <!-- Demographics -->
     <div class="nt-demo-row" id="nt-demo">
@@ -2784,7 +2795,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
           <div class="nt-result-label" id="snaq-label">—</div>
           <div class="nt-result-desc" id="snaq-desc"></div>
         </div>
-        <p class="nt-ref">Reference: Kruizenga HM et al. <em>Clin Nutr</em> 2005;24(1):75–82. SNAQ validated for hospitalized patients; adapted for CKD screening.</p>
+        <p class="nt-ref"><span data-lang="en">Reference: Kruizenga HM et al. <em>Clin Nutr</em> 2005;24(1):75–82. SNAQ validated for hospitalized patients; adapted for CKD screening.</span><span data-lang="tl" class="lang-hidden">Sanggunian: Kruizenga HM et al. <em>Clin Nutr</em> 2005;24(1):75–82. Ang SNAQ ay napatunayan para sa mga pasyenteng naka-ospital; inangkop para sa CKD screening.</span><span data-lang="ceb" class="lang-hidden">Tinubdan: Kruizenga HM et al. <em>Clin Nutr</em> 2005;24(1):75–82. Ang SNAQ napamatud-an para sa mga pasyente nga naka-ospital; gipahiangay para sa CKD screening.</span><span data-lang="kap" class="lang-hidden">Reperensya: Kruizenga HM et al. <em>Clin Nutr</em> 2005;24(1):75–82. Ing SNAQ napatunayan para king mga pasyenteng naka-ospital; inangkop para king CKD screening.</span></p>
       </div>
       <div class="nt-btn-row">
         <button class="nt-print-btn" onclick="ntPrint('snaq')">
@@ -2913,7 +2924,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
           <div class="nt-result-label" id="mis-label">—</div>
           <div class="nt-result-desc" id="mis-desc"></div>
         </div>
-        <p class="nt-ref">Reference: Kalantar-Zadeh K et al. <em>Am J Kidney Dis</em> 2001;38(6):1251–1263. MIS validated for maintenance hemodialysis patients. Score range 0–30.</p>
+        <p class="nt-ref"><span data-lang="en">Reference: Kalantar-Zadeh K et al. <em>Am J Kidney Dis</em> 2001;38(6):1251–1263. MIS validated for maintenance hemodialysis patients. Score range 0–30.</span><span data-lang="tl" class="lang-hidden">Sanggunian: Kalantar-Zadeh K et al. <em>Am J Kidney Dis</em> 2001;38(6):1251–1263. Ang MIS ay napatunayan para sa mga pasyenteng nasa maintenance hemodialysis. Saklaw ng iskor 0–30.</span><span data-lang="ceb" class="lang-hidden">Tinubdan: Kalantar-Zadeh K et al. <em>Am J Kidney Dis</em> 2001;38(6):1251–1263. Ang MIS napamatud-an para sa mga pasyente sa maintenance hemodialysis. Gilay-on sa iskor 0–30.</span><span data-lang="kap" class="lang-hidden">Reperensya: Kalantar-Zadeh K et al. <em>Am J Kidney Dis</em> 2001;38(6):1251–1263. Ing MIS napatunayan para king mga pasyenteng atyu king maintenance hemodialysis. Sakup ning iskor 0–30.</span></p>
       </div>
       <div class="nt-btn-row">
         <button class="nt-print-btn" onclick="ntPrint('mis')">
@@ -3036,7 +3047,7 @@ try{(function(){var v=localStorage.getItem('wgmr-kpr-mode');if(v===null){var per
           <div class="nt-result-label" id="sga-label">—</div>
           <div class="nt-result-desc" id="sga-desc"></div>
         </div>
-        <p class="nt-ref">References: Detsky AS et al. <em>JPEN J Parenter Enteral Nutr</em> 1987;11(1):8–13. Steiber A et al. <em>J Ren Nutr</em> 2004;14(1):1–7 (CKD validation).</p>
+        <p class="nt-ref"><span data-lang="en">References: Detsky AS et al. <em>JPEN J Parenter Enteral Nutr</em> 1987;11(1):8–13. Steiber A et al. <em>J Ren Nutr</em> 2004;14(1):1–7 (CKD validation).</span><span data-lang="tl" class="lang-hidden">Mga Sanggunian: Detsky AS et al. <em>JPEN J Parenter Enteral Nutr</em> 1987;11(1):8–13. Steiber A et al. <em>J Ren Nutr</em> 2004;14(1):1–7 (CKD validation).</span><span data-lang="ceb" class="lang-hidden">Mga Tinubdan: Detsky AS et al. <em>JPEN J Parenter Enteral Nutr</em> 1987;11(1):8–13. Steiber A et al. <em>J Ren Nutr</em> 2004;14(1):1–7 (CKD validation).</span><span data-lang="kap" class="lang-hidden">Reng Reperensya: Detsky AS et al. <em>JPEN J Parenter Enteral Nutr</em> 1987;11(1):8–13. Steiber A et al. <em>J Ren Nutr</em> 2004;14(1):1–7 (CKD validation).</span></p>
       </div>
       <div class="nt-btn-row">
         <button class="nt-print-btn" onclick="ntPrint('sga')">
@@ -3456,5 +3467,6 @@ function setMode(mode) {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

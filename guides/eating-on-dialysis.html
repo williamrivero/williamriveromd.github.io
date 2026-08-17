@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1806,8 +1817,8 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span></button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span></button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1874,7 +1885,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
       <h4><span class="dot dot-amber"></span> <span data-lang="en">Before Dialysis (CKD Stages 3–5)</span><span data-lang="tl" class="lang-hidden">Bago ang Dialysis (CKD Stages 3–5)</span><span data-lang="ceb" class="lang-hidden">Ayha sa Dialysis (CKD Stages 3–5)</span><span data-lang="kap" class="lang-hidden">Bago ning Dialysis (CKD Stages 3–5)</span></h4>
       <ul>
         <li><span data-lang="en">Restrict protein (0.6–0.8 g/kg/day)</span><span data-lang="tl" class="lang-hidden">Limitahan ang protina (0.6–0.8 g/kg/day)</span><span data-lang="ceb" class="lang-hidden">Limitahan ang protina (0.6–0.8 g/kg/day)</span><span data-lang="kap" class="lang-hidden">Limitahan ing protina (0.6–0.8 g/kg/day)</span></li>
-        <li><span data-lang="en">Limit phosphorus to reduce CKD-MBD risk</span><span data-lang="tl" class="lang-hidden">Limitahan ang phosphorus upang bawasan ang panganib ng CKD-MBD</span><span data-lang="ceb" class="lang-hidden">Limitahan ang phosphorus aron mapakgang ang peligro sa CKD-MBD</span><span data-lang="kap" class="lang-hidden">Limitahan ing phosphorus para bawasan ing panganib ning CKD-MBD</span></li>
+        <li><span data-lang="en">Limit phosphorus to reduce chronic kidney disease–mineral and bone disorder (CKD-MBD) risk</span><span data-lang="tl" class="lang-hidden">Limitahan ang phosphorus upang bawasan ang panganib ng CKD-MBD</span><span data-lang="ceb" class="lang-hidden">Limitahan ang phosphorus aron mapakgang ang peligro sa CKD-MBD</span><span data-lang="kap" class="lang-hidden">Limitahan ing phosphorus para bawasan ing panganib ning CKD-MBD</span></li>
         <li><span data-lang="en">Restrict potassium based on blood levels</span><span data-lang="tl" class="lang-hidden">Limitahan ang potassium batay sa antas ng dugo</span><span data-lang="ceb" class="lang-hidden">Limitahan ang potassium base sa lebel sa dugo</span><span data-lang="kap" class="lang-hidden">Limitahan ing potassium base king antas ning dugo</span></li>
         <li><span data-lang="en">Reduce fluid if edema is present</span><span data-lang="tl" class="lang-hidden">Bawasan ang likido kung may edema</span><span data-lang="ceb" class="lang-hidden">Pagkunhora ang likido kung adunay edema</span><span data-lang="kap" class="lang-hidden">Bawasan ing likido nung mayroon edema</span></li>
         <li><strong><span data-lang="en">Goal:</span><span data-lang="tl" class="lang-hidden">Layunin:</span><span data-lang="ceb" class="lang-hidden">Tumong:</span><span data-lang="kap" class="lang-hidden">Tungulan:</span></strong> <span data-lang="en">Slow disease progression</span><span data-lang="tl" class="lang-hidden">Pabagalin ang pag-unlad ng sakit</span><span data-lang="ceb" class="lang-hidden">Paghinaya sa pag-uswag sa sakit</span><span data-lang="kap" class="lang-hidden">Pabagalin ing pagpalala ning sakit</span></li>
@@ -1905,7 +1916,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
   <div class="section-tag"><span data-lang="en">Protein</span><span data-lang="tl" class="lang-hidden">Protina</span><span data-lang="ceb" class="lang-hidden">Protina</span><span data-lang="kap" class="lang-hidden">Protina</span></div>
   <h2><span data-lang="en">Protein — You Actually Need More</span><span data-lang="tl" class="lang-hidden">Protina — Kailangan Mo Talagang Mas Marami</span><span data-lang="ceb" class="lang-hidden">Protina — Kinahanglan Nimo og Mas Daghan</span><span data-lang="kap" class="lang-hidden">Protina — Kailangan Mo Talagang Mas Damo</span></h2>
   <p><span data-lang="en">Every hemodialysis session removes 10–12 grams of amino acids directly from your bloodstream. On top of that, the dialysis process itself triggers inflammation that causes your body to break down muscle for fuel. This is called a catabolic state — and it means you need more protein than almost anyone else, not less.</span><span data-lang="tl" class="lang-hidden">Bawat session ng hemodialysis ay nag-aalis ng 10–12 gramo ng amino acids nang direkta mula sa iyong daloy ng dugo. Dagdag pa rito, ang proseso mismo ng dialysis ay nagpapagana ng pamamaga na nagpapasira ng kalamnan upang magsilbing gatong. Ito ay tinatawag na catabolic state — at nangangahulugang kailangan mo ng mas maraming protina kaysa sa halos kahit sino, hindi mas kaunti.</span><span data-lang="ceb" class="lang-hidden">Ang matag sesyon sa hemodialysis nagkuha og 10–12 gramo sa mga amino acid direkta gikan sa imong daloy sa dugo. Dugang pa, ang proseso mismo sa dialysis nagpagana sa pamamaga nga nagpabuak sa kaunuran alang sa sugnod. Gitawag kini og catabolic state — ug nagpasabot kini nga kinahanglan nimo og mas daghan nga protina kaysa sa halos bisan kinsa, dili mas diyutay.</span><span data-lang="kap" class="lang-hidden">Balang sesyon ning hemodialysis ay nag-aalis ning 10–12 gramo ning mga amino acid nang diretso mula king iyong daloy ning dugo. Dagdag pa rito, ing proseso mismo ning dialysis ay nagpapalabas ning pamamaga a nagpapasira ning kalamnan para gamitin bilang gatong. Iti ay tinatawag na catabolic state — at ibig sabihin ay kailangan mong mas daming protina kaysa sa halos sinuman, ali mas kaunti.</span></p>
-  <p><span data-lang="en">KDOQI 2020 (the gold-standard US kidney nutrition guidelines) recommends <strong>at least 1.2 grams of protein per kilogram of body weight per day</strong> for hemodialysis patients. For peritoneal dialysis patients, the target is slightly higher — 1.2 to 1.3 g/kg/day — because protein also leaks into the PD fluid.</span><span data-lang="tl" class="lang-hidden">Inirerekomenda ng KDOQI 2020 (ang pinaka-pamantayang alituntunin sa nutrisyon ng bato sa US) ang <strong>hindi bababa sa 1.2 gramo ng protina bawat kilogramo ng timbang ng katawan bawat araw</strong> para sa mga pasyente ng hemodialysis. Para sa mga pasyente ng peritoneal dialysis, ang target ay bahagyang mas mataas — 1.2 hanggang 1.3 g/kg/day — dahil ang protina ay tumatagos din sa PD fluid.</span><span data-lang="ceb" class="lang-hidden">Ang KDOQI 2020 (ang gold-standard nga giya sa nutrisyon sa kidney sa US) nagrekomendar og <strong>labing menos 1.2 gramo sa protina bawat kilogramo sa timbang sa lawas bawat adlaw</strong> alang sa mga pasyente sa hemodialysis. Alang sa mga pasyente sa peritoneal dialysis, ang target mas taas og gamay — 1.2 hangtod 1.3 g/kg/day — tungod kay ang protina nagtulo usab sa PD fluid.</span><span data-lang="kap" class="lang-hidden">Inirerekomenda ning KDOQI 2020 (ing gold-standard na gabay sa nutrisyon ning bato sa US) ing <strong>hindi bababa sa 1.2 gramo ning protina bawat kilogramo ning timbang ning katawan bawat araw</strong> para king mga pasyente ning hemodialysis. Para king mga pasyente ning peritoneal dialysis, ing target ay kaunting mas mataas — 1.2 hanggang 1.3 g/kg/day — dahil ing protina ay tumutulo rin sa PD fluid.</span></p>
+  <p><span data-lang="en">KDOQI (Kidney Disease Outcomes Quality Initiative) 2020 (the gold-standard US kidney nutrition guidelines) recommends <strong>at least 1.2 grams of protein per kilogram of body weight per day</strong> for hemodialysis patients. For peritoneal dialysis (PD) patients, the target is slightly higher — 1.2 to 1.3 g/kg/day — because protein also leaks into the PD fluid.</span><span data-lang="tl" class="lang-hidden">Inirerekomenda ng KDOQI 2020 (ang pinaka-pamantayang alituntunin sa nutrisyon ng bato sa US) ang <strong>hindi bababa sa 1.2 gramo ng protina bawat kilogramo ng timbang ng katawan bawat araw</strong> para sa mga pasyente ng hemodialysis. Para sa mga pasyente ng peritoneal dialysis, ang target ay bahagyang mas mataas — 1.2 hanggang 1.3 g/kg/day — dahil ang protina ay tumatagos din sa PD fluid.</span><span data-lang="ceb" class="lang-hidden">Ang KDOQI 2020 (ang gold-standard nga giya sa nutrisyon sa kidney sa US) nagrekomendar og <strong>labing menos 1.2 gramo sa protina bawat kilogramo sa timbang sa lawas bawat adlaw</strong> alang sa mga pasyente sa hemodialysis. Alang sa mga pasyente sa peritoneal dialysis, ang target mas taas og gamay — 1.2 hangtod 1.3 g/kg/day — tungod kay ang protina nagtulo usab sa PD fluid.</span><span data-lang="kap" class="lang-hidden">Inirerekomenda ning KDOQI 2020 (ing gold-standard na gabay sa nutrisyon ning bato sa US) ing <strong>hindi bababa sa 1.2 gramo ning protina bawat kilogramo ning timbang ning katawan bawat araw</strong> para king mga pasyente ning hemodialysis. Para king mga pasyente ning peritoneal dialysis, ing target ay kaunting mas mataas — 1.2 hanggang 1.3 g/kg/day — dahil ing protina ay tumutulo rin sa PD fluid.</span></p>
   <p><span data-lang="en">For a 60 kg person on hemodialysis, that is 72 grams of protein per day — roughly double what many patients were told to eat before starting dialysis.</span><span data-lang="tl" class="lang-hidden">Para sa isang taong 60 kg na nasa hemodialysis, iyon ay 72 gramo ng protina bawat araw — halos doble ng sinabi sa maraming pasyente na kainin bago magsimula ng dialysis.</span><span data-lang="ceb" class="lang-hidden">Alang sa usa ka tawo nga 60 kg nga naa sa hemodialysis, mao kini ang 72 gramo sa protina bawat adlaw — halos doble sa giingon sa daghang pasyente nga kan-on ayha magsugod sa dialysis.</span><span data-lang="kap" class="lang-hidden">Para king isang taung 60 kg na nasa hemodialysis, iyun ay 72 gramo ning protina bawat araw — halos doble ning sinabi sa daming pasyente a kainin bago magsimula ng dialysis.</span></p>
 
   <div class="alert alert-green" style="margin-bottom:24px;">
@@ -1942,7 +1953,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
         <source srcset="../images/eod-pat-protein-targets.webp" type="image/webp">
         <img src="../images/eod-pat-protein-targets.png" loading="lazy" width="1672" height="941" alt="Protein targets for hemodialysis and peritoneal dialysis — at least 1.2 g per kg per day" style="border-radius:12px;display:block;width:100%;height:auto;">
       </picture>
-      <figcaption style="font-size:12px;color:var(--text-muted);margin-top:10px;font-style:italic;text-align:center;">Every HD session removes 10–12 g of amino acids. You need at least 1.2 g protein per kg per day to replace them.</figcaption>
+      <figcaption style="font-size:12px;color:var(--text-muted);margin-top:10px;font-style:italic;text-align:center;">Every HD (hemodialysis) session removes 10–12 g of amino acids. You need at least 1.2 g protein per kg per day to replace them.</figcaption>
     </figure>
 </section>
 
@@ -2184,7 +2195,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
       <div class="step-num" style="background:var(--red);font-size:15px;">3</div>
       <div class="step-body">
         <h4><span data-lang="en">Processed Food Amplifies the Inflammation Already Caused by Dialysis</span><span data-lang="tl" class="lang-hidden">Ang Naprosesong Pagkain ay Nagpapalala ng Pamamaga na Dulot ng Dialysis</span><span data-lang="ceb" class="lang-hidden">Ang Naproseso nga Pagkaon Nagpadako sa Pamamaga nga Gipahinabo sa Dialysis</span><span data-lang="kap" class="lang-hidden">Ing Naprosesong Pamangan ay Nagpapalala ning Pamamaga a Dulot ning Dialysis</span></h4>
-        <p><span data-lang="en">Dialysis itself causes inflammation — every session triggers a stress response that elevates markers like CRP and IL-6. This chronic inflammation is one of the main reasons dialysis patients have a much higher risk of heart disease. Processed and fast food is loaded with compounds called advanced glycation end products (AGEs), trans fats, and chemical additives that activate the same inflammatory pathways. Eating junk food during dialysis does not replace the bad effects — it adds to them, amplifying the very inflammation that damages your heart and blood vessels over time.</span><span data-lang="tl" class="lang-hidden">Ang dialysis mismo ay nagdudulot ng pamamaga — bawat session ay nagpapagana ng stress response na nagpapataas ng mga marker tulad ng CRP at IL-6. Ang kronikong pamamaga na ito ay isa sa mga pangunahing dahilan kung bakit ang mga pasyente ng dialysis ay may mas mataas na panganib ng sakit sa puso. Ang naproseso at fast food ay puno ng mga compound na tinatawag na advanced glycation end products (AGEs), trans fats, at mga chemical additive na nagpapagana ng parehong mga landas ng pamamaga. Ang pagkain ng junk food sa panahon ng dialysis ay hindi pinapalitan ang mga masamang epekto — ito ay nagdadagdag sa kanila, nagpapalaki ng pamamaga mismo na nagpapasama ng iyong puso at mga daluyan ng dugo sa paglipas ng panahon.</span><span data-lang="ceb" class="lang-hidden">Ang dialysis mismo nagpahinabo sa pamamaga — matag sesyon nagpagana og stress response nga nagpataas sa mga marker sama sa CRP ug IL-6. Kining kronikong pamamaga usa sa mga nag-unang hinungdan nganong ang mga pasyente sa dialysis adunay mas taas nga peligro sa sakit sa kasingkasing. Ang naproseso ug fast food puno sa mga compound nga gitawag og advanced glycation end products (AGEs), trans fats, ug mga chemical additive nga nagpagana sa mao nga mga daanan sa pamamaga. Ang pagkaon og junk food atol sa dialysis wala magpuli sa mga daotang epekto — nagdugang pa kini kanila, nagpabag-o sa pamamaga mismo nga nagpasama sa imong kasingkasing ug mga ugat sa dugo sa paglabay sa panahon.</span><span data-lang="kap" class="lang-hidden">Ing dialysis mismo ay nagdudulot ning pamamaga — balang sesyon ay nagpapagana ning stress response a nagpapataas ning mga marker tulad ning CRP at IL-6. Ing kronikong pamamaga na iti ay metung sa mga pangunahing dahilan kung bakit ing mga pasyente ning dialysis ay may mas mataas na panganib ning sakit sa puso. Ing naproseso at fast food ay puno ning mga compound na tinatawag na advanced glycation end products (AGEs), trans fats, at mga chemical additive a nagpapagana ning parehong mga landas ning pamamaga. Ing pagkain ning junk food keng oras ning dialysis ay ali pinapalitan ing mga masamang epekto — nagdadagdag pa ito sa kanila, nagpapalaki ning pamamaga mismo a nagpapasama ning iyong puso at mga daluyan ning dugo sa paglipas ning panahon.</span></p>
+        <p><span data-lang="en">Dialysis itself causes inflammation — every session triggers a stress response that elevates markers like CRP (C-reactive protein) and IL-6. This chronic inflammation is one of the main reasons dialysis patients have a much higher risk of heart disease. Processed and fast food is loaded with compounds called advanced glycation end products (AGEs), trans fats, and chemical additives that activate the same inflammatory pathways. Eating junk food during dialysis does not replace the bad effects — it adds to them, amplifying the very inflammation that damages your heart and blood vessels over time.</span><span data-lang="tl" class="lang-hidden">Ang dialysis mismo ay nagdudulot ng pamamaga — bawat session ay nagpapagana ng stress response na nagpapataas ng mga marker tulad ng CRP at IL-6. Ang kronikong pamamaga na ito ay isa sa mga pangunahing dahilan kung bakit ang mga pasyente ng dialysis ay may mas mataas na panganib ng sakit sa puso. Ang naproseso at fast food ay puno ng mga compound na tinatawag na advanced glycation end products (AGEs), trans fats, at mga chemical additive na nagpapagana ng parehong mga landas ng pamamaga. Ang pagkain ng junk food sa panahon ng dialysis ay hindi pinapalitan ang mga masamang epekto — ito ay nagdadagdag sa kanila, nagpapalaki ng pamamaga mismo na nagpapasama ng iyong puso at mga daluyan ng dugo sa paglipas ng panahon.</span><span data-lang="ceb" class="lang-hidden">Ang dialysis mismo nagpahinabo sa pamamaga — matag sesyon nagpagana og stress response nga nagpataas sa mga marker sama sa CRP ug IL-6. Kining kronikong pamamaga usa sa mga nag-unang hinungdan nganong ang mga pasyente sa dialysis adunay mas taas nga peligro sa sakit sa kasingkasing. Ang naproseso ug fast food puno sa mga compound nga gitawag og advanced glycation end products (AGEs), trans fats, ug mga chemical additive nga nagpagana sa mao nga mga daanan sa pamamaga. Ang pagkaon og junk food atol sa dialysis wala magpuli sa mga daotang epekto — nagdugang pa kini kanila, nagpabag-o sa pamamaga mismo nga nagpasama sa imong kasingkasing ug mga ugat sa dugo sa paglabay sa panahon.</span><span data-lang="kap" class="lang-hidden">Ing dialysis mismo ay nagdudulot ning pamamaga — balang sesyon ay nagpapagana ning stress response a nagpapataas ning mga marker tulad ning CRP at IL-6. Ing kronikong pamamaga na iti ay metung sa mga pangunahing dahilan kung bakit ing mga pasyente ning dialysis ay may mas mataas na panganib ning sakit sa puso. Ing naproseso at fast food ay puno ning mga compound na tinatawag na advanced glycation end products (AGEs), trans fats, at mga chemical additive a nagpapagana ning parehong mga landas ning pamamaga. Ing pagkain ning junk food keng oras ning dialysis ay ali pinapalitan ing mga masamang epekto — nagdadagdag pa ito sa kanila, nagpapalaki ning pamamaga mismo a nagpapasama ning iyong puso at mga daluyan ning dugo sa paglipas ning panahon.</span></p>
       </div>
     </div>
     <div class="step">
@@ -2203,7 +2214,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
       <tr>
         <td><strong>1 burger + fries</strong> (e.g., Jollibee Yumburger meal)</td>
         <td>~600–800 mg inorganic phosphate; 1,500–2,000 mg sodium; 40–50 g fat; 800+ kcal</td>
-        <td><span data-lang="en">Phosphate spikes in blood faster than dialysis removes it; large fat load → blood pooling in gut → IDH risk; sodium → thirst → interdialytic weight gain</span><span data-lang="tl" class="lang-hidden">Tumaas ang phosphate sa dugo nang mas mabilis kaysa inaalis ng dialysis; malaking fat load → pagtitipon ng dugo sa tiyan → panganib ng IDH; sodium → uhaw → pagtaas ng timbang sa pagitan ng mga session</span><span data-lang="ceb" class="lang-hidden">Moasdang ang phosphate sa dugo mas paspas kaysa gikuha sa dialysis; dakong fat load → pagtipon sa dugo sa tiyan → peligro sa IDH; sodium → uhaw → pagtaas sa timbang tali sa mga sesyon</span><span data-lang="kap" class="lang-hidden">Tumaas ing phosphate sa dugo nang mas mabilis kaysa inaalis ning dialysis; malaking fat load → pagtitipon ning dugo sa tiyan → panganib ning IDH; sodium → uhaw → pagtaas ning timbang sa pagitan ning mga sesyon</span></td>
+        <td><span data-lang="en">Phosphate spikes in blood faster than dialysis removes it; large fat load → blood pooling in gut → IDH (intradialytic hypotension) risk; sodium → thirst → interdialytic weight gain</span><span data-lang="tl" class="lang-hidden">Tumaas ang phosphate sa dugo nang mas mabilis kaysa inaalis ng dialysis; malaking fat load → pagtitipon ng dugo sa tiyan → panganib ng IDH; sodium → uhaw → pagtaas ng timbang sa pagitan ng mga session</span><span data-lang="ceb" class="lang-hidden">Moasdang ang phosphate sa dugo mas paspas kaysa gikuha sa dialysis; dakong fat load → pagtipon sa dugo sa tiyan → peligro sa IDH; sodium → uhaw → pagtaas sa timbang tali sa mga sesyon</span><span data-lang="kap" class="lang-hidden">Tumaas ing phosphate sa dugo nang mas mabilis kaysa inaalis ning dialysis; malaking fat load → pagtitipon ning dugo sa tiyan → panganib ning IDH; sodium → uhaw → pagtaas ning timbang sa pagitan ning mga sesyon</span></td>
       </tr>
       <tr>
         <td><strong>1.5L bottle of cola (Coke, Pepsi)</strong></td>
@@ -2387,9 +2398,9 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
   </div>
 </div>
 <div class="prom-tab-nav">
-  <button class="prom-tab-btn active" data-tab="kdqol" onclick="promShowTab('kdqol')">KDQOL-36 Symptoms</button>
+  <button class="prom-tab-btn active" data-tab="kdqol" onclick="promShowTab('kdqol')">KDQOL-36 (Kidney Disease Quality of Life) Symptoms</button>
   <button class="prom-tab-btn" data-tab="dsi" onclick="promShowTab('dsi')">Dialysis Symptom Index</button>
-  <button class="prom-tab-btn" data-tab="ipos" onclick="promShowTab('ipos')">IPOS-Renal</button>
+  <button class="prom-tab-btn" data-tab="ipos" onclick="promShowTab('ipos')">IPOS-Renal (Integrated Palliative care Outcome Scale)</button>
 </div>
 
 <!-- KDQOL PANEL -->
@@ -2453,7 +2464,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
   <div class="prom-item"><label>29. Difficulty swallowing</label><select id="dsi29"><option value="0">0 – Not present</option><option value="1">1 – Barely</option><option value="2">2 – Somewhat</option><option value="3">3 – Quite a bit</option><option value="4">4 – Very much</option></select></div>
   <div class="prom-item"><label>30. Fainting</label><select id="dsi30"><option value="0">0 – Not present</option><option value="1">1 – Barely</option><option value="2">2 – Somewhat</option><option value="3">3 – Quite a bit</option><option value="4">4 – Very much</option></select></div>
 </div>
-<button class="prom-calc-btn" onclick="promCalcDSI()">Calculate DSI Score</button>
+<button class="prom-calc-btn" onclick="promCalcDSI()">Calculate DSI (Dialysis Symptom Index) Score</button>
 <div class="prom-result" id="dsiResult">
   <div class="prom-result-num" id="dsiNum">—</div>
   <div class="prom-result-info"><h4 id="dsiSev">—</h4><p id="dsiDesc">—</p></div>
@@ -2497,8 +2508,8 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
 <section class="section" id="nut-tools">
   <div class="nt-section">
     <span class="nt-section-tag">Nutrition Screening</span>
-    <h2>Nutrition Assessment Tools</h2>
-    <p class="nt-sub">Validated tools for identifying malnutrition risk in CKD and dialysis patients: SNAQ (quick 3-question screen), MIS (10-item scored assessment), and SGA (clinician-administered global rating).</p>
+    <h2><span data-lang="en">Nutrition Assessment Tools</span><span data-lang="tl" class="lang-hidden">Mga Kasangkapan sa Pagtatasa ng Nutrisyon</span><span data-lang="ceb" class="lang-hidden">Mga Himan sa Pag-assess sa Nutrisyon</span><span data-lang="kap" class="lang-hidden">Deng Gamit king Pamanigaral king Nutrisyon</span></h2>
+    <p class="nt-sub"><span data-lang="en">Validated tools for identifying malnutrition risk in CKD and dialysis patients: SNAQ (quick 3-question screen), MIS (10-item scored assessment), and SGA (clinician-administered global rating).</span><span data-lang="tl" class="lang-hidden">Mga napatunayang kasangkapan para matukoy ang panganib ng malnutrisyon sa mga pasyenteng may CKD at nasa dialysis: SNAQ (mabilis na 3-tanong na screen), MIS (10-item na may iskor na pagtatasa), at SGA (isinasagawa ng klinisyan na global rating).</span><span data-lang="ceb" class="lang-hidden">Mga napamatud-an nga himan aron mailhan ang risgo sa malnutrisyon sa mga pasyente nga adunay CKD ug naa sa dialysis: SNAQ (paspas nga 3-pangutana nga screen), MIS (10-item nga adunay iskor nga pag-assess), ug SGA (gihimo sa kliniko nga global rating).</span><span data-lang="kap" class="lang-hidden">Deng napatunayan a gamit bang matukiran ing panganib ning malnutrisyon king deng pasyente a atin CKD at atyu king dialysis: SNAQ (masiklab a 3-kutang a screen), MIS (10-item a atin iskor a pamanigaral), at SGA (dinaraptan ning klinisyan a global rating).</span></p>
 
     <!-- Demographics -->
     <div class="nt-demo-row" id="nt-demo">
@@ -2850,7 +2861,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
 <span class="ov-title">Evidence Snapshot</span>
 </div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">28–54%</span><span class="l">PEW prevalence in HD patients</span></div>
+<div class="ov-stat"><span class="v">28–54%</span><span class="l">protein-energy wasting (PEW) prevalence in HD patients</span></div>
 <div class="ov-stat"><span class="v">1.8–2.5</span><span class="l">mortality hazard ratio with PEW</span></div>
 <div class="ov-stat"><span class="v">KDOQI<br>ISRNM</span><span class="l">guideline-concordant targets</span></div>
 </div>
@@ -2890,7 +2901,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
 <div class="clin-badges">
   <span class="clin-badge">KDOQI 2020</span>
   <span class="clin-badge">ISRNM 2020</span>
-  <span class="clin-badge">KDIGO 2024</span>
+  <span class="clin-badge">KDIGO (Kidney Disease: Improving Global Outcomes) 2024</span>
   <span class="clin-badge">ESPEN 2021</span>
   <span class="clin-badge">Philippines Context</span>
 
@@ -2910,7 +2921,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
     <h2 class="algo-title">The Protein-Energy Wasting Epidemic</h2>
   </div>
 
-  <p>Protein-energy wasting (PEW) affects 28–54% of hemodialysis patients globally. Asian DOPPS data show comparable prevalence in Southeast Asian cohorts. PEW is an independent predictor of all-cause mortality, cardiovascular mortality, hospitalization, and infection risk in ESKD patients — with hazard ratios for mortality in the range of 1.8–2.5 compared to well-nourished patients.</p>
+  <p>Protein-energy wasting (PEW) affects 28–54% of hemodialysis patients globally. Asian DOPPS data show comparable prevalence in Southeast Asian cohorts. PEW is an independent predictor of all-cause mortality, cardiovascular mortality, hospitalization, and infection risk in ESKD (end-stage kidney disease) patients — with hazard ratios for mortality in the range of 1.8–2.5 compared to well-nourished patients.</p>
 
   <h3 style="font-family:'Inter',sans-serif;font-size:17px;color:var(--navy);margin:28px 0 12px;">ISRNM Diagnostic Criteria for PEW (≥3 of 4 categories required)</h3>
   <table class="drug-table">
@@ -3049,7 +3060,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
       <tr><td><strong>Nepro HP</strong> (Abbott)</td><td>RTD 237 mL bottle</td><td>~1.8 kcal/mL (~401 kcal)</td><td>~17.8–19.1 g</td><td>Yes — K restricted, PO₄ restricted</td><td>HD &amp; PD</td><td>Gold-standard renal HP formula; GI 35; MUFA + omega-3; widely available Mercury Drug, Watsons, hospital pharmacies</td></tr>
       <tr><td>Nepro LP (Abbott)</td><td>RTD 237 mL bottle</td><td>~1.8 kcal/mL (~401 kcal)</td><td>~9.9–10.6 g</td><td>Yes — renal-specific pre-dialysis</td><td>Non-dialysis CKD only</td><td>Pre-dialysis LP equivalent; GI 44; switch to HP at dialysis initiation</td></tr>
       <tr><td>Suplena (Abbott)</td><td>RTD 235 mL can</td><td>1.8 kcal/mL (~425 kcal)</td><td>~10.6 g</td><td>Yes — renal-specific pre-dialysis</td><td>Non-dialysis CKD only</td><td>Functionally equivalent to Nepro LP; CARBSTEADY low-GI blend; for pre-dialysis protein sparing</td></tr>
-      <tr><td>Novasource Renal (Nestlé)</td><td>RTD 200–237 mL</td><td>2.0 kcal/mL</td><td>~19–21 g</td><td>Yes — renal-specific HP</td><td>HD, PD, AKI on RRT</td><td>Highest caloric density among RTDs; L-carnitine, taurine; preferred in fluid-restricted/oligoanuric patients</td></tr>
+      <tr><td>Novasource Renal (Nestlé)</td><td>RTD 200–237 mL</td><td>2.0 kcal/mL</td><td>~19–21 g</td><td>Yes — renal-specific HP</td><td>HD, PD, AKI (acute kidney injury) on RRT (renal replacement therapy)</td><td>Highest caloric density among RTDs; L-carnitine, taurine; preferred in fluid-restricted/oligoanuric patients</td></tr>
       <tr><td>Renilon 7.5 (Nutricia)</td><td>RTD 125 mL bottle</td><td>~2.0 kcal/mL (~250 kcal)</td><td>~9.4 g</td><td>Yes — renal-specific</td><td>HD (low-volume option)</td><td>Very small volume — ideal for strict fluid restriction; 2–3 bottles/day for dialysis patients</td></tr>
       <tr><td>Renilon 4.0 (Nutricia)</td><td>RTD 125 mL bottle</td><td>~2.0 kcal/mL (~250 kcal)</td><td>~4.8 g</td><td>Yes — renal-specific LP</td><td>Non-dialysis CKD only</td><td>Pre-dialysis, very low protein fraction; minimal fluid burden</td></tr>
       <tr><td>Fresubin Renal (Fresenius Kabi)</td><td>RTD 200 mL</td><td>2.0 kcal/mL (~400 kcal)</td><td>~6 g</td><td>Yes — renal-specific LP</td><td>Non-dialysis CKD only</td><td>Most aggressively LP of the RTD group (~6% kcal from protein); suitable as sole-source calorie supplement on strict LPD; fish oil, reduced electrolytes</td></tr>
@@ -3139,7 +3150,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
 
   <h3 style="font-family:'Inter',sans-serif;font-size:17px;color:var(--navy);margin:28px 0 12px;">Evidence Summary</h3>
   <ul>
-    <li>Multiple RCTs demonstrate IODN improves serum albumin (+0.2–0.4 g/dL), prealbumin, handgrip strength, and body weight in malnourished HD patients</li>
+    <li>Multiple RCTs (randomized controlled trials) demonstrate IODN improves serum albumin (+0.2–0.4 g/dL), prealbumin, handgrip strength, and body weight in malnourished HD patients</li>
     <li>JAPEN Study (Japan): intradialytic ONS significantly improved nutritional markers in malnourished HD patients over 6 months</li>
     <li>Korean and Taiwanese registry data support improved survival trends with intradialytic nutritional support in PEW patients</li>
     <li>FINE-D Trial: IODN combined with exercise improved lean body mass and physical function beyond nutrition alone</li>
@@ -3258,7 +3269,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
     <thead><tr><th>Agent</th><th>Class</th><th>Approx. Cost (PH)</th><th>Timing</th><th>Preferred Use</th><th>Caution</th></tr></thead>
     <tbody>
       <tr><td>Calcium carbonate (generic)</td><td>Ca-based</td><td>₱2–5/tablet</td><td>With meals (first bites)</td><td>First-line; most affordable; widely available</td><td>Avoid if serum Ca &gt;10.2 mg/dL, Ca×PO₄ product elevated, or evidence of vascular calcification</td></tr>
-      <tr><td>Sevelamer (Renvela)</td><td>Non-Ca polymer</td><td>₱50–80/tablet</td><td>With meals</td><td>Elevated calcium, calcification on imaging, high LDL</td><td>GI side effects (constipation, nausea); capsule must not be crushed</td></tr>
+      <tr><td>Sevelamer (Renvela)</td><td>Non-Ca polymer</td><td>₱50–80/tablet</td><td>With meals</td><td>Elevated calcium, calcification on imaging, high LDL (low-density lipoprotein)</td><td>GI side effects (constipation, nausea); capsule must not be crushed</td></tr>
       <tr><td>Lanthanum carbonate (Fosrenol)</td><td>Non-Ca, non-Mg</td><td>₱80–120/tablet</td><td>Chew with meals</td><td>Ca-overload, poor compliance with tablet burden</td><td>Must be chewed — not swallowed whole; long-term lanthanum tissue deposition data reassuring but limited</td></tr>
       <tr><td>Aluminum hydroxide</td><td>Al-based</td><td>Low</td><td>With meals</td><td>Short-term refractory hyperphosphatemia only (maximum 4 weeks)</td><td>Aluminum-related bone disease, myopathy, dialysis encephalopathy with chronic use — DO NOT use long-term</td></tr>
     </tbody>
@@ -3297,7 +3308,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
     <li>Interdialytic weight gain — rapid fluid shifts affect K distribution</li>
     <li>Dialysis session frequency and Kt/V adequacy</li>
     <li>Gastrointestinal K excretion — significantly impaired by constipation</li>
-    <li>Medications: ACEi, ARBs, spironolactone, TMP-SMX, non-selective beta-blockers, NSAIDs all elevate K</li>
+    <li>Medications: ACEi (angiotensin-converting enzyme inhibitor), ARBs (angiotensin receptor blocker), spironolactone, TMP-SMX, non-selective beta-blockers, NSAIDs (non-steroidal anti-inflammatory drug) all elevate K</li>
     <li>Metabolic acidosis — acidosis shifts K extracellularly (+0.5 mEq/L per 0.1 pH unit decrease)</li>
   </ul>
 
@@ -3325,7 +3336,7 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
     </div>
     <div class="fs">
       <span class="fb fb-stop">Emergency</span>
-      <div class="fc"><div class="fq">K &gt;6.5 mEq/L or ECG changes (peaked T waves, widened QRS, sine wave)</div><div class="fd">IV calcium gluconate 10 mL of 10% solution over 2–3 minutes (cardiac membrane stabilization). IV dextrose 50% 50 mL + regular insulin 10 units IV (cellular shift, onset 15–30 min). Albuterol nebulization 10–20 mg. Emergency HD — most effective acute treatment. Continuous cardiac monitoring throughout.</div></div>
+      <div class="fc"><div class="fq">K &gt;6.5 mEq/L or ECG (electrocardiogram) changes (peaked T waves, widened QRS, sine wave)</div><div class="fd">IV calcium gluconate 10 mL of 10% solution over 2–3 minutes (cardiac membrane stabilization). IV dextrose 50% 50 mL + regular insulin 10 units IV (cellular shift, onset 15–30 min). Albuterol nebulization 10–20 mg. Emergency HD — most effective acute treatment. Continuous cardiac monitoring throughout.</div></div>
     </div>
   </div>
     <figure style="margin:28px 0;">
@@ -3405,13 +3416,13 @@ try{(function(){var v=localStorage.getItem('wgmr-eod-mode');if(v===null){var per
       <tr><td>Bagoong / patis / toyo</td><td>Near-universal use as flavoring agent</td><td>Patis ≈ 1,500 mg sodium per tablespoon; acceptable as a small condiment accent; should not be a primary seasoning or table sauce</td></tr>
       <tr><td>Malunggay (Moringa oleifera)</td><td>Heavily marketed locally as a nutritional superfood</td><td>Potassium ~337 mg/100 g fresh leaves — caution in anuric or hyperkalemic HD patients; small boiled amounts acceptable in patients with residual function and controlled K</td></tr>
       <tr><td>Buko juice</td><td>Perceived as a natural, healthful drink</td><td>Very high potassium; multiple documented fatalities in anuric PH dialysis patients; patients require explicit counseling against it at dialysis initiation</td></tr>
-      <tr><td>Sambong (Blumea balsamifera)</td><td>DOH-approved herbal; patients ask about it</td><td>Approved for urolithiasis/diuresis in pre-CKD; no evidence for benefit in ESKD; not contraindicated; mechanism not relevant once anuric</td></tr>
+      <tr><td>Sambong (Blumea balsamifera)</td><td>DOH (Department of Health)-approved herbal; patients ask about it</td><td>Approved for urolithiasis/diuresis in pre-CKD; no evidence for benefit in ESKD; not contraindicated; mechanism not relevant once anuric</td></tr>
     </tbody>
   </table>
 
   <div class="info-box">
     <h4>Protein Sources and Socioeconomic Accessibility</h4>
-    <p>A significant proportion of Filipino dialysis patients are PhilHealth indigent members or face significant financial hardship. Nutritional recommendations must be cost-conscious and grounded in local food availability. The most accessible high-quality protein sources are eggs (₱7–10 each), fresh tofu (₱30–50 per block), and fresh tilapia or bangus (₱80–150/kg). These three sources alone can meet protein targets for most patients without requiring expensive commercial supplements as a first-line approach.</p>
+    <p>A significant proportion of Filipino dialysis patients are PhilHealth (Philippine Health Insurance Corporation) indigent members or face significant financial hardship. Nutritional recommendations must be cost-conscious and grounded in local food availability. The most accessible high-quality protein sources are eggs (₱7–10 each), fresh tofu (₱30–50 per block), and fresh tilapia or bangus (₱80–150/kg). These three sources alone can meet protein targets for most patients without requiring expensive commercial supplements as a first-line approach.</p>
   </div>
     <figure style="margin:28px 0;">
       <picture>
@@ -3957,5 +3968,6 @@ if(firstFaq)firstFaq.classList.add('faq-open');
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

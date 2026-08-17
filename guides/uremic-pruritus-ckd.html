@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -2074,7 +2085,7 @@ html[data-theme="dark"] .sc-card{background:#1a2535;border-color:#2a3548;}
 <div class="hero-grid">
 <div class="hero-copy">
 <div class="hero-tag">
-<span data-lang="en">Nephrology &middot; Quality of Life &middot; CKD Complications</span>
+<span data-lang="en">Nephrology &middot; Quality of Life &middot; CKD (chronic kidney disease) Complications</span>
 <span class="lang-hidden" data-lang="tl">Nefrolohiya &middot; Kalidad ng Buhay &middot; Mga Komplikasyon ng CKD</span>
 <span class="lang-hidden" data-lang="ceb">Nefrolohiya &middot; Kalidad sa Kinabuhi &middot; Mga Komplikasyon sa CKD</span>
 <span class="lang-hidden" data-lang="kap">Nefrolohiya &middot; Kalidad ning Buhay &middot; Deng Komplikasyon ning CKD</span>
@@ -2215,7 +2226,7 @@ html[data-theme="dark"] .sc-card{background:#1a2535;border-color:#2a3548;}
 </div>
 <div class="feature-card">
 <h4><span class="dot dot-green"></span> <span data-lang="en">5. High PTH &amp; Phosphorus</span><span class="lang-hidden" data-lang="tl">5. Mataas na PTH at Phosphorus</span><span class="lang-hidden" data-lang="ceb">5. Taas nga PTH ug Phosphorus</span><span class="lang-hidden" data-lang="kap">5. Mataas a PTH at Phosphorus</span></h4>
-<p><span data-lang="en">Very high PTH and phosphorus cause calcium-phosphate deposits in skin, activating mast cells and itch pathways. This is one reason why mineral control (phosphorus binders, cinacalcet, calcitriol) can partially improve pruritus &mdash; it treats one of its actual drivers, not just symptoms.</span>
+<p><span data-lang="en">Very high parathyroid hormone (PTH) and phosphorus cause calcium-phosphate deposits in skin, activating mast cells and itch pathways. This is one reason why mineral control (phosphorus binders, cinacalcet, calcitriol) can partially improve pruritus &mdash; it treats one of its actual drivers, not just symptoms.</span>
 <span class="lang-hidden" data-lang="tl">Ang napakataas na PTH at phosphorus ay nagdudulot ng calcium-phosphate deposits sa balat, nagpapagana ng mga mast cell at itch pathway. Ito ang isa sa mga dahilan kung bakit ang kontrol ng mineral ay maaaring bahagyang mapabuti ang pruritus.</span>
 <span class="lang-hidden" data-lang="ceb">Ang hilabihan ka taas nga PTH ug phosphorus nagdala sa calcium-phosphate deposits sa panit, nag-activate sa mga mast cell ug itch pathway. Kini usa sa mga hinungdan ngano ang kontrol sa mineral mahimong magpauswag sa pruritus.</span>
 <span class="lang-hidden" data-lang="kap">Ing napakataas a PTH at phosphorus nagdudulot ning calcium-phosphate deposits king balat, nagpapagana ning deng mast cell at itch pathway. Iti metung sa deng dahilan kung bakit ing kontrol ning mineral maaaring bahagyang mapabuti ing pruritus.</span></p>
@@ -2308,7 +2319,7 @@ html[data-theme="dark"] .sc-card{background:#1a2535;border-color:#2a3548;}
 <div class="tier-sub"><span data-lang="en">Always first &mdash; treat the root cause</span><span class="lang-hidden" data-lang="tl">Lagi munang gawin &mdash; gamutin ang ugat na sanhi</span><span class="lang-hidden" data-lang="ceb">Kanunay una &mdash; tambali ang gamot nga hinungdan</span><span class="lang-hidden" data-lang="kap">Lagi muna &mdash; gamutin ing ugat ning sanhi</span></div>
 </div>
 <div class="tier-body">
-<p><span data-lang="en"><strong>Ensure spKt/V &ge;1.4 at every session.</strong> Switch to high-flux membranes if not already. Hemodiafiltration (HDF) removes more middle molecules and shows superior itch reduction vs. conventional HD in multiple trials. <strong>Control phosphorus</strong> (target 3.5&ndash;5.5 mg/dL with binders) and <strong>PTH</strong> (130&ndash;600 pg/mL). Both drive CKD-aP through the mast cell and calcium-phosphate pathways.</span>
+<p><span data-lang="en"><strong>Ensure spKt/V &ge;1.4 at every session.</strong> Switch to high-flux membranes if not already. Hemodiafiltration (HDF) removes more middle molecules and shows superior itch reduction vs. conventional hemodialysis (HD) in multiple trials. <strong>Control phosphorus</strong> (target 3.5&ndash;5.5 mg/dL with binders) and <strong>PTH</strong> (130&ndash;600 pg/mL). Both drive CKD-aP through the mast cell and calcium-phosphate pathways.</span>
 <span class="lang-hidden" data-lang="tl"><strong>Siguraduhin ang spKt/V &ge;1.4 sa bawat sesyon.</strong> Mag-switch sa high-flux membranes kung wala pa. Ang hemodiafiltration (HDF) ay nag-aalis ng mas maraming middle molecules. <strong>Kontrolin ang phosphorus</strong> (target 3.5&ndash;5.5 mg/dL) at <strong>PTH</strong> (130&ndash;600 pg/mL). Ang parehong nagpapatakbo ng CKD-aP.</span>
 <span class="lang-hidden" data-lang="ceb"><strong>Sigurohon ang spKt/V &ge;1.4 sa matag sesyon.</strong> Mag-switch sa high-flux membranes kon wala pa. Ang hemodiafiltration (HDF) nagkuha sa daghang middle molecules. <strong>Kontrolin ang phosphorus</strong> (target 3.5&ndash;5.5 mg/dL) ug <strong>PTH</strong> (130&ndash;600 pg/mL).</span>
 <span class="lang-hidden" data-lang="kap"><strong>Siguraduhin ing spKt/V &ge;1.4 king bawat sesyon.</strong> Mag-switch king high-flux membranes kung wala pa. Ing hemodiafiltration (HDF) nag-aalis ning mas dakal a middle molecules. <strong>Kontrolin ing phosphorus</strong> (target 3.5&ndash;5.5 mg/dL) at <strong>PTH</strong> (130&ndash;600 pg/mL).</span></p>
@@ -2372,7 +2383,7 @@ html[data-theme="dark"] .sc-card{background:#1a2535;border-color:#2a3548;}
 <div class="tier-sub"><span data-lang="en">For refractory cases &mdash; discuss with nephrologist</span><span class="lang-hidden" data-lang="tl">Para sa mga refractory na kaso &mdash; kausapin ang nephrologist</span><span class="lang-hidden" data-lang="ceb">Alang sa mga refractory nga kaso &mdash; estoryaha ang nephrologist</span><span class="lang-hidden" data-lang="kap">Para king deng refractory a kaso &mdash; kausapin ing nephrologist</span></div>
 </div>
 <div class="tier-body">
-<p><span data-lang="en"><strong>Difelikefalin (Korsuva, IV):</strong> FDA-approved in 2021 specifically for hemodialysis patients with CKD-aP. A highly selective peripherally-acting kappa-opioid agonist given IV after each HD session. Proven effective in Phase 3 trials. Advantage over nalbuphine: minimal CNS effects (does not cross the blood-brain barrier), so less sedation. Not yet routinely available in the Philippines &mdash; ask your nephrologist about access programs.</span>
+<p><span data-lang="en"><strong>Difelikefalin (Korsuva, IV):</strong> Food and Drug Administration (FDA)-approved in 2021 specifically for hemodialysis patients with CKD-aP. A highly selective peripherally-acting kappa-opioid agonist given IV after each HD session. Proven effective in Phase 3 trials. Advantage over nalbuphine: minimal CNS effects (does not cross the blood-brain barrier), so less sedation. Not yet routinely available in the Philippines &mdash; ask your nephrologist about access programs.</span>
 <span class="lang-hidden" data-lang="tl"><strong>Difelikefalin (Korsuva, IV):</strong> Inaaprubahan ng FDA noong 2021 espesipiko para sa mga pasyente ng hemodialysis na may CKD-aP. Isang highly selective peripherally-acting kappa-opioid agonist na ibinibigay ng IV pagkatapos ng bawat sesyon ng HD. Napatunayan na epektibo sa mga Phase 3 trial. Hindi pa karaniwang available sa Pilipinas.</span>
 <span class="lang-hidden" data-lang="ceb"><strong>Difelikefalin (Korsuva, IV):</strong> FDA-approved niadtong 2021 espesipiko alang sa mga pasyente sa hemodialysis nga adunay CKD-aP. Usa ka highly selective peripherally-acting kappa-opioid agonist nga gihatag IV pagkahuman sa matag sesyon sa HD. Dili pa kasagaran available sa Pilipinas.</span>
 <span class="lang-hidden" data-lang="kap"><strong>Difelikefalin (Korsuva, IV):</strong> FDA-approved noong 2021 espesipiko para king deng pasyente ning hemodialysis a maki CKD-aP. Isang highly selective peripherally-acting kappa-opioid agonist a ibinibigay IV pagkatapos ning bawat sesyon ning HD. Hindi pa karaniwang available king Pilipinas.</span></p>
@@ -3071,5 +3082,6 @@ function itchPrintReport(tool){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

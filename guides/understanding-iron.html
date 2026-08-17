@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1764,7 +1775,7 @@ body.dark .related-card-title {
       <img src="../images/iron-what-cycle.png" alt="Iron cycle infographic: food → duodenum → transferrin → bone marrow → red blood cells, with recycling loop and hepcidin note for CKD" loading="lazy" width="1024" height="1024" style="width:100%;height:auto;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.10);margin:24px 0;display:block">
     </picture>
 
-      <p class="illus-caption"><span data-lang="en">Most iron in the body is continuously recycled from old red blood cells. The dietary contribution is small — but in CKD, hepcidin traps iron in storage even when ferritin appears normal, requiring IV supplementation.</span><span data-lang="tl" class="lang-hidden">Ang karamihan sa iron sa katawan ay patuloy na nire-recycle mula sa mga lumang pulang selula ng dugo. Maliit lamang ang kontribusyon mula sa pagkain — ngunit sa CKD, ang hepcidin ay nag-iimbak ng iron kahit normal ang hitsura ng ferritin, na nangangailangan ng IV supplementation.</span><span data-lang="ceb" class="lang-hidden">Ang kadaghanan sa iron sa lawas kanunay nga gi-recycle gikan sa mga daan nga pulang selula sa dugo. Gamay lamang ang kontribusyon gikan sa pagkaon — apan sa CKD, ang hepcidin nag-imik sa iron sa imbakan bisan normal ang hitsura sa ferritin, nga nanginahanglan og IV supplementation.</span>
+      <p class="illus-caption"><span data-lang="en">Most iron in the body is continuously recycled from old red blood cells. The dietary contribution is small — but in chronic kidney disease (CKD), hepcidin traps iron in storage even when ferritin appears normal, requiring IV supplementation.</span><span data-lang="tl" class="lang-hidden">Ang karamihan sa iron sa katawan ay patuloy na nire-recycle mula sa mga lumang pulang selula ng dugo. Maliit lamang ang kontribusyon mula sa pagkain — ngunit sa CKD, ang hepcidin ay nag-iimbak ng iron kahit normal ang hitsura ng ferritin, na nangangailangan ng IV supplementation.</span><span data-lang="ceb" class="lang-hidden">Ang kadaghanan sa iron sa lawas kanunay nga gi-recycle gikan sa mga daan nga pulang selula sa dugo. Gamay lamang ang kontribusyon gikan sa pagkaon — apan sa CKD, ang hepcidin nag-imik sa iron sa imbakan bisan normal ang hitsura sa ferritin, nga nanginahanglan og IV supplementation.</span>
       <span data-lang="kap" class="lang-hidden">Ing kadaklan king iron king bangkî ya patuloy a nire-recycle mula king deng lumang pulang selula ning daya. Maliit lamang ing kontribusyon mula king pamangan — ngarud king CKD, ing hepcidin ya nag-iimbak ning iron kahit normal ing hitsura ning ferritin, a nangangailangan ning IV supplementation.</span></p>
 
       <p><span data-lang="en">Iron is the mineral at the center of hemoglobin — the protein in red blood cells that <strong>carries oxygen from your lungs to every organ in your body</strong>. Without adequate iron, your body cannot make enough healthy red blood cells. The result is anemia — persistent fatigue, shortness of breath, pale skin, and reduced capacity to heal, think, and function.</span><span data-lang="tl" class="lang-hidden">Ang iron ang mineral sa gitna ng hemoglobin — ang protina sa mga pulang selula ng dugo na <strong>nagdadala ng oxygen mula sa inyong mga baga patungo sa bawat organ ng inyong katawan</strong>. Kung walang sapat na iron, hindi makakagawa ang inyong katawan ng sapat na malusog na pulang selula ng dugo. Ang resulta ay anemia — patuloy na pagod, hirap sa paghinga, maputlang balat, at nabawasang kakayahan na gumaling, mag-isip, at gumana.</span><span data-lang="ceb" class="lang-hidden">Ang iron ang mineral sa sentro sa hemoglobin — ang protina sa mga pulang selula sa dugo nga <strong>nagdala sa oxygen gikan sa inyong mga baga ngadto sa matag organ sa inyong lawas</strong>. Kung walay igo nga iron, dili makahimo ang inyong lawas og igo nga maayo nga pulang selula sa dugo. Ang resulta mao ang anemia — padayon nga kakapoy, kawalay gininhawa, mapusaw nga panit, ug nabawasan nga kakayahan sa pagayo, pag-isip, ug pagtrabaho.</span>
@@ -2227,7 +2238,7 @@ body.dark .related-card-title {
         <div class="calc-field">
           <label id="iron-lbl-hgb">Actual Hemoglobin (g/dL)</label>
           <input id="ir-hgb" type="number" min="4" max="18" step="0.1" placeholder="e.g. 8.5" oninput="calcIron()">
-          <div class="field-hint" id="iron-hint-hgb"><span data-lang="en">Current Hgb from CBC. Normal: 12–16 g/dL (F), 13.5–17.5 g/dL (M)</span><span data-lang="tl" class="lang-hidden">Pinakabagong resulta ng Hgb. Normal na target para sa CKD: 100–115 g/L = 10–11.5 g/dL</span><span data-lang="ceb" class="lang-hidden">Labing bag-ong resulta sa Hgb. Normal nga target alang sa CKD: 100–115 g/L = 10–11.5 g/dL</span>
+          <div class="field-hint" id="iron-hint-hgb"><span data-lang="en">Current Hgb from complete blood count (CBC). Normal: 12–16 g/dL (F), 13.5–17.5 g/dL (M)</span><span data-lang="tl" class="lang-hidden">Pinakabagong resulta ng Hgb. Normal na target para sa CKD: 100–115 g/L = 10–11.5 g/dL</span><span data-lang="ceb" class="lang-hidden">Labing bag-ong resulta sa Hgb. Normal nga target alang sa CKD: 100–115 g/L = 10–11.5 g/dL</span>
       <span data-lang="kap" class="lang-hidden">Pinakabagong resulta ning Hgb. Normal a target para king CKD: 100–115 g/L = 10–11.5 g/dL</span></div>
         </div>
         <div class="calc-field">
@@ -2241,7 +2252,7 @@ body.dark .related-card-title {
           <select id="ir-route" onchange="calcIron()">
             <option value="">Select…
       </option>
-            <option value="iv">IV iron (sucrose — Ferrofer) — preferred in HD
+            <option value="iv">IV iron (sucrose — Ferrofer) — preferred in hemodialysis (HD)
       </option>
             <option value="oral">Oral iron — for non-dialysis CKD
       </option>
@@ -2296,7 +2307,7 @@ body.dark .related-card-title {
       <div class="feature-card">
         <h4><span class="dot dot-amber"></span><span data-lang="en">Iron-restricted erythropoiesis</span><span data-lang="tl" class="lang-hidden">Iron-restricted erythropoiesis</span><span data-lang="ceb" class="lang-hidden">Iron-restricted erythropoiesis</span>
       <span data-lang="kap" class="lang-hidden">Iron-restricted erythropoiesis</span></h4>
-        <p><span data-lang="en">In CKD with chronic inflammation, hepcidin traps iron inside macrophages — making it unavailable for erythropoiesis even when ferritin appears adequate. TSAT &lt;30% despite ferritin &gt;200 ng/mL indicates functional deficiency requiring IV iron — not more oral iron or higher ESA doses.</span><span data-lang="tl" class="lang-hidden">Sa CKD na may talamak na pamamaga, ang hepcidin ay nagtatago ng iron sa loob ng mga macrophage — ginagawa itong hindi available para sa erythropoiesis kahit mukhang sapat ang ferritin. Ang TSAT &lt;30% kahit ang ferritin &gt;200 ng/mL ay nagpapahiwatig ng functional deficiency na nangangailangan ng IV iron — hindi mas maraming oral iron o mas mataas na dosis ng ESA.</span><span data-lang="ceb" class="lang-hidden">Sa CKD nga adunay chronic nga pamamaga, ang hepcidin nagtago sa iron sulod sa mga macrophage — nagbuhat niini nga dili magamit alang sa erythropoiesis bisan murag igo ang ferritin. Ang TSAT &lt;30% bisan ang ferritin &gt;200 ng/mL nagpakita sa functional deficiency nga nanginahanglan og IV iron — dili mas daghang oral iron o mas taas nga dosis sa ESA.</span>
+        <p><span data-lang="en">In CKD with chronic inflammation, hepcidin traps iron inside macrophages — making it unavailable for erythropoiesis even when ferritin appears adequate. TSAT &lt;30% despite ferritin &gt;200 ng/mL indicates functional deficiency requiring IV iron — not more oral iron or higher erythropoiesis-stimulating agent (ESA) doses.</span><span data-lang="tl" class="lang-hidden">Sa CKD na may talamak na pamamaga, ang hepcidin ay nagtatago ng iron sa loob ng mga macrophage — ginagawa itong hindi available para sa erythropoiesis kahit mukhang sapat ang ferritin. Ang TSAT &lt;30% kahit ang ferritin &gt;200 ng/mL ay nagpapahiwatig ng functional deficiency na nangangailangan ng IV iron — hindi mas maraming oral iron o mas mataas na dosis ng ESA.</span><span data-lang="ceb" class="lang-hidden">Sa CKD nga adunay chronic nga pamamaga, ang hepcidin nagtago sa iron sulod sa mga macrophage — nagbuhat niini nga dili magamit alang sa erythropoiesis bisan murag igo ang ferritin. Ang TSAT &lt;30% bisan ang ferritin &gt;200 ng/mL nagpakita sa functional deficiency nga nanginahanglan og IV iron — dili mas daghang oral iron o mas taas nga dosis sa ESA.</span>
       <span data-lang="kap" class="lang-hidden">King CKD a atin talamak a pamamaga, ing hepcidin ya nagtatago ning iron king loob ning deng macrophage — ginagawa itong ali available para king erythropoiesis kahit mukhang sapat ing ferritin. Ing TSAT &lt;30% kahit ing ferritin &gt;200 ning/mL ya nagpapahiwatig ning functional deficiency a nangangailangan ning IV iron — ali mas dacal a oral iron o mas matas a dosis ning ESA.</span></p>
       </div>
       <div class="feature-card">
@@ -2576,5 +2587,6 @@ function calcIron() {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

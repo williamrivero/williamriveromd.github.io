@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1769,7 +1780,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <button class="aud-tab tab-pat active" id="tab-patient" onclick="setMode('patient')">
       <span class="tab-icon">🧑</span>
       For Patients</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1780,16 +1791,16 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
   <div class="ov-card">
   <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
   <div class="ov-list">
-  <div class="ov-stat"><span class="v">&ge;30%</span><span class="l">UACR reduction is the treatment target</span></div>
-  <div class="ov-stat"><span class="v">&lt;55</span><span class="l">mg/dL LDL target in CKD + diabetes</span></div>
-  <div class="ov-stat"><span class="v">KDIGO<br>2024</span><span class="l">four-pillar DKD therapy hierarchy</span></div>
+  <div class="ov-stat"><span class="v">&ge;30%</span><span class="l">UACR (urine albumin-to-creatinine ratio) reduction is the treatment target</span></div>
+  <div class="ov-stat"><span class="v">&lt;55</span><span class="l">mg/dL LDL (low-density lipoprotein) target in CKD (chronic kidney disease) + diabetes</span></div>
+  <div class="ov-stat"><span class="v">2024</span><span class="l">Kidney Disease: Improving Global Outcomes (KDIGO) &mdash; four-pillar DKD (diabetic kidney disease) therapy hierarchy</span></div>
   </div>
   <a class="ov-foot" href="#md-overview">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
   </div>
   </aside>
   <div class="hero-copy">
-    <h1>Diabetes &amp; <em>Your Kidneys</em></h1>
-    <p class="hero-sub">How elevated blood sugar damages kidney function — what targets to aim for, and practical strategies to protect both organs simultaneously.</p>
+    <h1><span data-lang="en">Diabetes &amp; <em>Your Kidneys</em></span><span data-lang="tl" class="lang-hidden">Diabetes at <em>ang Iyong mga Bato</em></span><span data-lang="ceb" class="lang-hidden">Diabetes ug <em>ang Imong mga Kidney</em></span><span data-lang="kap" class="lang-hidden">Diabetes at <em>Deng Batu Mu</em></span></h1>
+    <p class="hero-sub"><span data-lang="en">How elevated blood sugar damages kidney function — what targets to aim for, and practical strategies to protect both organs simultaneously.</span><span data-lang="tl" class="lang-hidden">Kung paano nakakasira ang mataas na asukal sa dugo sa paggana ng bato — kung anong mga target ang dapat abutin, at praktikal na mga estratehiya upang protektahan ang parehong organ nang sabay.</span><span data-lang="ceb" class="lang-hidden">Kung giunsa pagdaot sa taas nga asukal sa dugo ang paglihok sa kidney — unsa nga mga target ang angay tumbukon, ug praktikal nga mga estratehiya aron mapanalipdan ang duha ka organ nga dungan.</span><span data-lang="kap" class="lang-hidden">Nung makananu makasira ing matas a asukal king daya king pamagobra ning batu — nanu reng target a dapat abutan, at praktikal a estratehiya para protektan la ring aduang organ a sabay.</span></p>
     <div class="hero-meta">
 <span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
 <span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">5</span></span>
@@ -1852,7 +1863,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
              alt="Biomedical mechanism schematic of diabetic kidney disease: chronic high blood sugar causes glomerular hyperfiltration and podocyte injury leading to albuminuria and nephron loss, with SGLT2 inhibitors and RAAS blockade lowering intraglomerular pressure"
              style="width:100%;height:auto;border-radius:12px;display:block;">
       </picture>
-      <figcaption><span data-lang="en">How high blood sugar damages the kidney filter: hyperfiltration and podocyte injury drive albuminuria and nephron loss, while SGLT2 inhibitors and ACEi/ARB lower the pressure inside the glomerulus and slow the damage.</span><span data-lang="tl" class="lang-hidden">Paano sinisira ng mataas na asukal ang salaan ng bato: ang hyperfiltration at pinsala sa podocyte ang nagdudulot ng albuminuria at pagkawala ng nephron, habang ang SGLT2 inhibitors at ACEi/ARB ay nagpapababa ng presyon sa loob ng glomerulus at pinapabagal ang pinsala.</span><span data-lang="ceb" class="lang-hidden">Giunsa pagdaot sa taas nga asukal ang salaan sa bato: ang hyperfiltration ug kadaot sa podocyte maoy hinungdan sa albuminuria ug pagkawala sa nephron, samtang ang SGLT2 inhibitors ug ACEi/ARB nagpaubos sa presyon sulod sa glomerulus ug nagpahinay sa kadaot.</span><span data-lang="kap" class="lang-hidden">Makananu sirain ning matas a asukal ing salaan ning batu: ing hyperfiltration at pinsala king podocyte ing magdulot ning albuminuria at pamagkawala ning nephron, kabang ing SGLT2 inhibitors at ACEi/ARB magpababa ya king presyon king lalam ning glomerulus at pabagalan ne ing pinsala.</span></figcaption>
+      <figcaption><span data-lang="en">How high blood sugar damages the kidney filter: hyperfiltration and podocyte injury drive albuminuria and nephron loss, while SGLT2 (sodium&ndash;glucose cotransporter-2) inhibitors and ACEi (angiotensin-converting enzyme inhibitor)/ARB (angiotensin receptor blocker) lower the pressure inside the glomerulus and slow the damage.</span><span data-lang="tl" class="lang-hidden">Paano sinisira ng mataas na asukal ang salaan ng bato: ang hyperfiltration at pinsala sa podocyte ang nagdudulot ng albuminuria at pagkawala ng nephron, habang ang SGLT2 inhibitors at ACEi/ARB ay nagpapababa ng presyon sa loob ng glomerulus at pinapabagal ang pinsala.</span><span data-lang="ceb" class="lang-hidden">Giunsa pagdaot sa taas nga asukal ang salaan sa bato: ang hyperfiltration ug kadaot sa podocyte maoy hinungdan sa albuminuria ug pagkawala sa nephron, samtang ang SGLT2 inhibitors ug ACEi/ARB nagpaubos sa presyon sulod sa glomerulus ug nagpahinay sa kadaot.</span><span data-lang="kap" class="lang-hidden">Makananu sirain ning matas a asukal ing salaan ning batu: ing hyperfiltration at pinsala king podocyte ing magdulot ning albuminuria at pamagkawala ning nephron, kabang ing SGLT2 inhibitors at ACEi/ARB magpababa ya king presyon king lalam ning glomerulus at pabagalan ne ing pinsala.</span></figcaption>
     </figure>
 
     <figure class="illus-panel" style="max-width:640px;margin:28px auto;">
@@ -1862,7 +1873,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
              alt="HbA1c visual explainer — glycated haemoglobin ranges, eAG conversion, and DKD targets"
              style="width:100%;height:auto;border-radius:12px;display:block;">
       </picture>
-      <figcaption><p class="fig-desc">This figure explains the HbA1c blood test, showing how its ranges relate to average blood sugar levels and the target ranges recommended for people with kidney disease.</p></figcaption>
+      <figcaption><p class="fig-desc">This figure explains the HbA1c (glycated hemoglobin) blood test, showing how its ranges relate to average blood sugar levels and the target ranges recommended for people with kidney disease.</p></figcaption>
     </figure>
 
     <p><span data-lang="en">HbA1c (glycated hemoglobin) reflects your <strong>average blood sugar over the past 2–3 months</strong>. Think of it this way: sugar in the bloodstream naturally attaches itself to hemoglobin — the protein inside red blood cells that carries oxygen. Since red blood cells live approximately 90 days, HbA1c tells us how much sugar has been "sticking" over that period.</span><span data-lang="tl" class="lang-hidden">Ang HbA1c (glycated hemoglobin) ay sumasalamin sa inyong <strong>average na asukal sa dugo sa nakalipas na 2–3 buwan</strong>. Isipin ninyo ito sa ganitong paraan: ang asukal sa daloy ng dugo ay natural na kumakapit sa hemoglobin — ang protina sa loob ng mga pulang selula ng dugo na nagdadala ng oxygen. Dahil ang mga pulang selula ng dugo ay nabubuhay ng humigit-kumulang 90 araw, sinasabi sa atin ng HbA1c kung gaano karaming asukal ang "kumakapa" sa panahong iyon.</span><span data-lang="ceb" class="lang-hidden">Ang HbA1c (glycated hemoglobin) nagpakita sa inyong <strong>average nga asukal sa dugo sa miaging 2–3 ka bulan</strong>. Hunahunaa kini: ang asukal sa dugo natural nga mokapit sa hemoglobin — ang protina sulod sa mga pula nga selula sa dugo nga nagdala sa oxygen. Tungod kay ang mga pula nga selula sa dugo buhi og mga 90 ka adlaw, ang HbA1c nagasulti kanato kon pila ka asukal ang "nagkapit" sa panahon nga kana.</span>
@@ -1926,7 +1937,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <span data-lang="kap" class="lang-hidden">Pagtatasa ning Yugto ning Sakit</span></div>
     <h2><span data-lang="en">Stages of Diabetic Kidney Disease</span><span data-lang="tl" class="lang-hidden">Mga Yugto ng Diabetic Kidney Disease</span><span data-lang="ceb" class="lang-hidden">Mga Yugto sa Diabetic Kidney Disease</span>
       <span data-lang="kap" class="lang-hidden">Deng Yugto ning Diabetic Kidney Disease</span></h2>
-    <p><span data-lang="en">DKD is classified by both eGFR and the amount of albumin in the urine. The combination determines your risk category and guides treatment intensity.</span><span data-lang="tl" class="lang-hidden">Ang DKD ay inuuri ayon sa eGFR at sa dami ng albumin sa ihi. Ang kombinasyon ay nagtatakda ng inyong kategorya ng panganib at gumagabay sa intensity ng paggamot.</span><span data-lang="ceb" class="lang-hidden">Ang DKD ginaklasipika base sa eGFR ug sa gidaghanon sa albumin sa ihi. Ang kombinasyon nagtino sa inyong kategorya sa risgo ug naggiya sa intensity sa pagtambal.</span>
+    <p><span data-lang="en">DKD is classified by both eGFR (estimated glomerular filtration rate) and the amount of albumin in the urine. The combination determines your risk category and guides treatment intensity.</span><span data-lang="tl" class="lang-hidden">Ang DKD ay inuuri ayon sa eGFR at sa dami ng albumin sa ihi. Ang kombinasyon ay nagtatakda ng inyong kategorya ng panganib at gumagabay sa intensity ng paggamot.</span><span data-lang="ceb" class="lang-hidden">Ang DKD ginaklasipika base sa eGFR ug sa gidaghanon sa albumin sa ihi. Ang kombinasyon nagtino sa inyong kategorya sa risgo ug naggiya sa intensity sa pagtambal.</span>
       <span data-lang="kap" class="lang-hidden">Ing DKD ya inuuri ayon king eGFR at king dami ning albumin king ihi. Ing kombinasyon ya nagtatakda ning inyu kategorya ning panganib at gumagabay king intensity ning paggamut.</span></p>
 
     <figure class="illus-panel" style="max-width:720px;margin:28px auto;">
@@ -1968,7 +1979,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
           <td>60–90 mL/min</td>
           <td><span data-lang="en">Microalbuminuria: 30–300 mg/g</span><span data-lang="tl" class="lang-hidden">Microalbuminuria: 30–300 mg/g</span><span data-lang="ceb" class="lang-hidden">Microalbuminuria: 30–300 mg/g</span>
       <span data-lang="kap" class="lang-hidden">Microalbuminuria: 30–300 mg/g</span></td>
-          <td><span data-lang="en">First detectable sign of damage. RAAS blockade (ACE/ARB) + SGLT2 inhibitor strongly indicated.</span><span data-lang="tl" class="lang-hidden">Unang matukoy na palatandaan ng pinsala. Matibay na ipinahiwatig ang RAAS blockade (ACE/ARB) + SGLT2 inhibitor.</span><span data-lang="ceb" class="lang-hidden">Unang matukod nga timailhan sa kadaot. Kusganon nga gipakita ang RAAS blockade (ACE/ARB) + SGLT2 inhibitor.</span>
+          <td><span data-lang="en">First detectable sign of damage. RAAS (renin&ndash;angiotensin&ndash;aldosterone system) blockade (ACE/ARB) + SGLT2 inhibitor strongly indicated.</span><span data-lang="tl" class="lang-hidden">Unang matukoy na palatandaan ng pinsala. Matibay na ipinahiwatig ang RAAS blockade (ACE/ARB) + SGLT2 inhibitor.</span><span data-lang="ceb" class="lang-hidden">Unang matukod nga timailhan sa kadaot. Kusganon nga gipakita ang RAAS blockade (ACE/ARB) + SGLT2 inhibitor.</span>
       <span data-lang="kap" class="lang-hidden">Unang matukoy a palatandaan ning pinsala. Matibay a ipinahiwatig ing RAAS blockade (ACE/ARB) + SGLT2 inhibitor.</span></td>
         </tr>
         <tr>
@@ -2090,7 +2101,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <div class="m-icon">🔬</div>
         <h4><span data-lang="en">Lipid panel + LDL</span><span data-lang="tl" class="lang-hidden">Lipid panel + LDL</span><span data-lang="ceb" class="lang-hidden">Lipid panel + LDL</span>
       <span data-lang="kap" class="lang-hidden">Lipid panel + LDL</span></h4>
-        <p><span data-lang="en">CKD + diabetes = very high ASCVD risk. LDL target &lt;55 mg/dL per 2026 ACC/AHA guidelines.</span><span data-lang="tl" class="lang-hidden">CKD + diabetes = napakataas na ASCVD risk. LDL target &lt;55 mg/dL ayon sa 2026 ACC/AHA guidelines.</span><span data-lang="ceb" class="lang-hidden">CKD + diabetes = espesyal nga taas nga ASCVD risk. LDL target &lt;55 mg/dL sumala sa 2026 ACC/AHA guidelines.</span>
+        <p><span data-lang="en">CKD + diabetes = very high ASCVD risk. LDL target &lt;55 mg/dL per 2026 ACC/AHA (American Heart Association) guidelines.</span><span data-lang="tl" class="lang-hidden">CKD + diabetes = napakataas na ASCVD risk. LDL target &lt;55 mg/dL ayon sa 2026 ACC/AHA guidelines.</span><span data-lang="ceb" class="lang-hidden">CKD + diabetes = espesyal nga taas nga ASCVD risk. LDL target &lt;55 mg/dL sumala sa 2026 ACC/AHA guidelines.</span>
       <span data-lang="kap" class="lang-hidden">CKD + diabetes = napakataas a ASCVD risk. LDL target &lt;55 mg/dL ayon king 2026 ACC/AHA guidelines.</span></p>
         <span class="m-freq"><span data-lang="en">Annually (or per adjustment)</span><span data-lang="tl" class="lang-hidden">Taon-taon (o ayon sa pag-aayos)</span><span data-lang="ceb" class="lang-hidden">Sa matag tuig (o sumala sa pag-adjust)</span>
       <span data-lang="kap" class="lang-hidden">Banua-banua (o ayon king pag-aayos)</span></span>
@@ -2134,7 +2145,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <span data-lang="kap" class="lang-hidden">Napatunayang nakapag-iisa a mapabagal ing pag-usad ning CKD king parehong diabetic at non-diabetic CKD. Binabawasan ing afferent arteriolar pressure king pamamagitan ning tubuloglomerular feedback. Pinoprotektahan din ing pusu. Kasalukuyang pamantayan ning pag-aalaga para king DKD.</span></div>
       </div>
       <div class="med-card med-border-glp1">
-        <div class="med-class med-class-glp1">GLP-1 Receptor Agonist</div>
+        <div class="med-class med-class-glp1">GLP-1 (glucagon-like peptide-1) Receptor Agonist</div>
         <div class="med-name">Semaglutide / Dulaglutide</div>
         <div class="med-brand">Ozempic / Trulicity</div>
         <div class="med-action"><span data-lang="en">Reduces proteinuria, promotes weight loss, and provides cardiovascular protection. FLOW trial showed semaglutide significantly reduced the risk of kidney failure in DKD. Increasingly used in combination with SGLT2 inhibitors.</span><span data-lang="tl" class="lang-hidden">Binabawasan ang proteinuria, nagtataguyod ng pagbaba ng timbang, at nagbibigay ng cardiovascular protection. Ipinakita ng FLOW trial na ang semaglutide ay makabuluhang nagbawas ng panganib ng pagpalya ng bato sa DKD. Lalong ginagamit kasabay ng mga SGLT2 inhibitor.</span><span data-lang="ceb" class="lang-hidden">Gipakunhod ang proteinuria, nagtaguyod sa pagkunhod sa timbang, ug naghatag sa cardiovascular protection. Gipakita sa FLOW trial nga ang semaglutide makabuluhang nagpakunhod sa risgo sa pagpakyas sa kidney sa DKD. Ngadto na karon gamiton uban sa mga SGLT2 inhibitor.</span>
@@ -2154,7 +2165,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <div class="alert-body">
         <h4><span data-lang="en">Finerenone — the newest kidney protector</span><span data-lang="tl" class="lang-hidden">Finerenone — ang pinakabagong tagaprotekta ng bato</span><span data-lang="ceb" class="lang-hidden">Finerenone — ang labing bag-o nga tigprotekta sa kidney</span>
       <span data-lang="kap" class="lang-hidden">Finerenone — ing pinakabagong tagaprotekta ning batu</span></h4>
-        <p><span data-lang="en">Finerenone (a non-steroidal mineralocorticoid receptor antagonist) has recently been approved for DKD. The FIDELIO-DKD and FIGARO-DKD trials demonstrated significant reductions in proteinuria and kidney progression. It is used add-on to ACE/ARB + SGLT2i for high-risk DKD patients. Ask your doctor if this is appropriate for you.</span><span data-lang="tl" class="lang-hidden">Ang Finerenone (isang non-steroidal mineralocorticoid receptor antagonist) ay kamakailan lamang na naaprubahan para sa DKD. Ipinakita ng mga FIDELIO-DKD at FIGARO-DKD trials ang makabuluhang pagbaba ng proteinuria at pag-usad ng sakit sa bato. Ginagamit ito bilang add-on sa ACE/ARB + SGLT2i para sa mga pasyenteng may mataas na panganib na DKD. Tanungin ang inyong doktor kung ito ay angkop para sa inyo.</span><span data-lang="ceb" class="lang-hidden">Ang Finerenone (usa ka non-steroidal mineralocorticoid receptor antagonist) bag-o lang giaprobahan alang sa DKD. Gipakita sa mga FIDELIO-DKD ug FIGARO-DKD trials ang hinungdanong pagkunhod sa proteinuria ug pag-uswag sa sakit sa kidney. Gigamit kini isip add-on sa ACE/ARB + SGLT2i alang sa mga pasyente nga adunay taas nga risgo nga DKD. Pangutan-a ang inyong doktor kon kini angay alang kaninyo.</span>
+        <p><span data-lang="en">Finerenone (a non-steroidal mineralocorticoid receptor antagonist) has recently been approved for DKD. The FIDELIO-DKD and FIGARO-DKD trials demonstrated significant reductions in proteinuria and kidney progression. It is used add-on to ACE/ARB + SGLT2i (sodium&ndash;glucose cotransporter-2 inhibitor) for high-risk DKD patients. Ask your doctor if this is appropriate for you.</span><span data-lang="tl" class="lang-hidden">Ang Finerenone (isang non-steroidal mineralocorticoid receptor antagonist) ay kamakailan lamang na naaprubahan para sa DKD. Ipinakita ng mga FIDELIO-DKD at FIGARO-DKD trials ang makabuluhang pagbaba ng proteinuria at pag-usad ng sakit sa bato. Ginagamit ito bilang add-on sa ACE/ARB + SGLT2i para sa mga pasyenteng may mataas na panganib na DKD. Tanungin ang inyong doktor kung ito ay angkop para sa inyo.</span><span data-lang="ceb" class="lang-hidden">Ang Finerenone (usa ka non-steroidal mineralocorticoid receptor antagonist) bag-o lang giaprobahan alang sa DKD. Gipakita sa mga FIDELIO-DKD ug FIGARO-DKD trials ang hinungdanong pagkunhod sa proteinuria ug pag-uswag sa sakit sa kidney. Gigamit kini isip add-on sa ACE/ARB + SGLT2i alang sa mga pasyente nga adunay taas nga risgo nga DKD. Pangutan-a ang inyong doktor kon kini angay alang kaninyo.</span>
       <span data-lang="kap" class="lang-hidden">Ing Finerenone (metung a non-steroidal mineralocorticoid receptor antagonist) ya kamakailan lamang a naaprubahan para king DKD. Ipinakita ning deng FIDELIO-DKD at FIGARO-DKD trials ing makabuluhang pagbaba ning proteinuria at pag-usad ning sakit king batu. Ginagamit ini bilang add-on king ACE/ARB + SGLT2i para king deng pasyenteng atin matas a panganib a DKD. Tanungin ing inyu doktor nung ini ya angkop para king inyo.</span></p>
       </div>
     </div>
@@ -2254,7 +2265,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
           <td><span data-lang="en">Hemoglobin</span><span data-lang="tl" class="lang-hidden">Hemoglobin</span><span data-lang="ceb" class="lang-hidden">Hemoglobin</span>
       <span data-lang="kap" class="lang-hidden">Hemoglobin</span></td>
           <td><span class="target-badge">100–115 g/L</span></td>
-          <td><span data-lang="en">Anemia worsens cardiac strain; ESA therapy initiated when below target</span><span data-lang="tl" class="lang-hidden">Ang anemia ay nagpapalala ng cardiac strain; sinimulan ang ESA therapy kapag nasa ibaba ng target</span><span data-lang="ceb" class="lang-hidden">Ang anemia nagpasamot sa cardiac strain; gisugdan ang ESA therapy kon ubos sa target</span>
+          <td><span data-lang="en">Anemia worsens cardiac strain; ESA (erythropoiesis-stimulating agent) therapy initiated when below target</span><span data-lang="tl" class="lang-hidden">Ang anemia ay nagpapalala ng cardiac strain; sinimulan ang ESA therapy kapag nasa ibaba ng target</span><span data-lang="ceb" class="lang-hidden">Ang anemia nagpasamot sa cardiac strain; gisugdan ang ESA therapy kon ubos sa target</span>
       <span data-lang="kap" class="lang-hidden">Ing anemia ya nagpapalala ning cardiac strain; sinimulan ing ESA therapy nung nasa ibaba ning target</span></td>
         </tr>
         <tr>
@@ -3060,5 +3071,6 @@ function calcNaGlucose(){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

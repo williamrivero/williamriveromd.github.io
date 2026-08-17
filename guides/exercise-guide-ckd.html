@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1809,7 +1820,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
 <div class="hero-grid">
 <div class="hero-copy">
     <div class="hero-tag">
-  <span data-lang="en">CKD · Exercise · Patient Guide</span>
+  <span data-lang="en">chronic kidney disease (CKD) · Exercise · Patient Guide</span>
   <span data-lang="tl" class="lang-hidden">CKD · Ehersisyo · Gabay sa Pasyente</span>
   <span data-lang="ceb" class="lang-hidden">CKD · Ehersisyo · Giya sa Pasyente</span>
       <span data-lang="kap" class="lang-hidden">CKD · Ehersisyo · Gabay king Pasyente</span>
@@ -1877,7 +1888,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
     </div>
 
 
-    <figure style="margin:24px 0"><picture><source srcset="../images/exercise-ckd-benefits-infographic.webp" type="image/webp"><img src="../images/exercise-ckd-benefits-infographic.png" alt="Medical infographic showing how regular exercise benefits CKD patients — lower blood pressure, reduced proteinuria, less inflammation, lower CV mortality, increased muscle mass, and improved quality of life" style="width:100%;border-radius:10px;display:block;height:auto;height:auto" width="1254" height="1254"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">Six evidence-based benefits of regular exercise in CKD — from cardiovascular protection to preserving muscle mass. KDIGO 2024 recommends ≥150 min/week of moderate-intensity activity for all CKD patients.</figcaption></figure>
+    <figure style="margin:24px 0"><picture><source srcset="../images/exercise-ckd-benefits-infographic.webp" type="image/webp"><img src="../images/exercise-ckd-benefits-infographic.png" alt="Medical infographic showing how regular exercise benefits CKD patients — lower blood pressure, reduced proteinuria, less inflammation, lower CV mortality, increased muscle mass, and improved quality of life" style="width:100%;border-radius:10px;display:block;height:auto;height:auto" width="1254" height="1254"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">Six evidence-based benefits of regular exercise in CKD — from cardiovascular protection to preserving muscle mass. KDIGO (Kidney Disease: Improving Global Outcomes) 2024 recommends ≥150 min/week of moderate-intensity activity for all CKD patients.</figcaption></figure>
 
     <div class="three-col">
       <div class="feature-card">
@@ -1889,7 +1900,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <div class="feature-card">
         <h4><span class="dot dot-amber"></span><span data-lang="en">Exercise and dialysis adequacy</span><span data-lang="tl" class="lang-hidden">Ehersisyo at kasapatan ng dialysis</span><span data-lang="ceb" class="lang-hidden">Ehersisyo ug kasapatan sa dialysis</span>
       <span data-lang="kap" class="lang-hidden">Ehersisyo at kasapatan ning dialysis</span></h4>
-        <p><span data-lang="en">Exercise during hemodialysis sessions (intradialytic exercise) improves toxin clearance by increasing blood flow to muscles — improving effective Kt/V by 5–10% without changing the dialysis prescription. Even gentle pedaling during HD is beneficial.</span><span data-lang="tl" class="lang-hidden">Ang ehersisyo sa panahon ng mga sesyon ng hemodialysis (intradialytic exercise) ay nagpapabuti ng pagtanggal ng toxin sa pamamagitan ng pagpapataas ng daloy ng dugo sa mga kalamnan — nagpapabuti ng epektibong Kt/V ng 5–10% nang hindi binabago ang reseta ng dialysis. Kahit ang malumanay na pedaling sa panahon ng HD ay kapaki-pakinabang.</span><span data-lang="ceb" class="lang-hidden">Ang ehersisyo sa panahon sa mga sesyon sa hemodialysis (intradialytic exercise) nagpabuti sa pagtangtang sa toxin pinaagi sa pagdugang sa daloy sa dugo ngadto sa mga kaunoran — nagpabuti sa epektibong Kt/V og 5–10% nga wala gibag-o ang reseta sa dialysis. Bisan ang malumo nga pedaling sa panahon sa HD mapuslanon.</span>
+        <p><span data-lang="en">Exercise during hemodialysis (HD) sessions (intradialytic exercise) improves toxin clearance by increasing blood flow to muscles — improving effective Kt/V by 5–10% without changing the dialysis prescription. Even gentle pedaling during HD is beneficial.</span><span data-lang="tl" class="lang-hidden">Ang ehersisyo sa panahon ng mga sesyon ng hemodialysis (intradialytic exercise) ay nagpapabuti ng pagtanggal ng toxin sa pamamagitan ng pagpapataas ng daloy ng dugo sa mga kalamnan — nagpapabuti ng epektibong Kt/V ng 5–10% nang hindi binabago ang reseta ng dialysis. Kahit ang malumanay na pedaling sa panahon ng HD ay kapaki-pakinabang.</span><span data-lang="ceb" class="lang-hidden">Ang ehersisyo sa panahon sa mga sesyon sa hemodialysis (intradialytic exercise) nagpabuti sa pagtangtang sa toxin pinaagi sa pagdugang sa daloy sa dugo ngadto sa mga kaunoran — nagpabuti sa epektibong Kt/V og 5–10% nga wala gibag-o ang reseta sa dialysis. Bisan ang malumo nga pedaling sa panahon sa HD mapuslanon.</span>
       <span data-lang="kap" class="lang-hidden">Ing ehersisyo king panahon ning deng sesyon ning hemodialysis (intradialytic exercise) ya nagpapabuti ning pagtanggal ning toxin king pamamagitan ning pagpapataas ning daloy ning daya king deng kalamnan — nagpapabuti ning epektibong Kt/V ning 5–10% nang ali binabago ing reseta ning dialysis. Kahit ing malumanay a pedaling king panahon ning HD ya kapaki-pakinabang.</span></p>
       </div>
       <div class="feature-card">
@@ -2085,7 +2096,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
           <div class="ex-meta"><span class="ex-tag"><span data-lang="en">Seated</span><span data-lang="tl" class="lang-hidden">Nakaupo</span><span data-lang="ceb" class="lang-hidden">Naklingkod</span>
       <span data-lang="kap" class="lang-hidden">Nakaupo</span></span><span class="ex-tag">1 min</span><span class="ex-tag"><span data-lang="en">Fistula patients</span><span data-lang="tl" class="lang-hidden">Mga pasyente ng fistula</span><span data-lang="ceb" class="lang-hidden">Mga pasyente sa fistula</span>
       <span data-lang="kap" class="lang-hidden">Deng pasyente ning fistula</span></span></div>
-          <div class="ex-desc"><span data-lang="en">Important pre-exercise warm-up for AVF patients — gentle wrist movement improves fistula blood flow and reduces post-exercise access soreness.</span><span data-lang="tl" class="lang-hidden">Mahalagang warm-up bago mag-ehersisyo para sa mga pasyente ng AVF — ang malumanay na paggalaw ng pulso ay nagpapabuti ng daloy ng dugo sa fistula at nagpapababa ng pananakit ng access pagkatapos ng ehersisyo.</span><span data-lang="ceb" class="lang-hidden">Importante nga warm-up sa wala pa mag-ehersisyo alang sa mga pasyente sa AVF — ang malumo nga paglihok sa pulso nagpabuti sa daloy sa dugo sa fistula ug nagpaubos sa kasakit sa access human sa ehersisyo.</span>
+          <div class="ex-desc"><span data-lang="en">Important pre-exercise warm-up for arteriovenous fistula (AVF) patients — gentle wrist movement improves fistula blood flow and reduces post-exercise access soreness.</span><span data-lang="tl" class="lang-hidden">Mahalagang warm-up bago mag-ehersisyo para sa mga pasyente ng AVF — ang malumanay na paggalaw ng pulso ay nagpapabuti ng daloy ng dugo sa fistula at nagpapababa ng pananakit ng access pagkatapos ng ehersisyo.</span><span data-lang="ceb" class="lang-hidden">Importante nga warm-up sa wala pa mag-ehersisyo alang sa mga pasyente sa AVF — ang malumo nga paglihok sa pulso nagpabuti sa daloy sa dugo sa fistula ug nagpaubos sa kasakit sa access human sa ehersisyo.</span>
       <span data-lang="kap" class="lang-hidden">Mahalagang warm-up bago mag-ehersisyo para king deng pasyente ning AVF — ing malumanay a paggalaw ning pulso ya nagpapabuti ning daloy ning daya king fistula at nagpapababa ning pananakit ning access kapabanuan ning ehersisyo.</span></div>
           <ol class="ex-steps">
             <li><span data-lang="en">Gently circle both wrists clockwise × 8, then counter-clockwise × 8</span><span data-lang="tl" class="lang-hidden">Malumanay na i-circle ang parehong pulso clockwise × 8, pagkatapos counter-clockwise × 8</span><span data-lang="ceb" class="lang-hidden">Malumo nga i-circle ang duha ka pulso clockwise × 8, dayon counter-clockwise × 8</span>
@@ -2599,7 +2610,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
           <div class="ex-name"><span data-lang="en">Chair Aerobics</span><span data-lang="tl" class="lang-hidden">Chair Aerobics</span><span data-lang="ceb" class="lang-hidden">Chair Aerobics</span>
       <span data-lang="kap" class="lang-hidden">Chair Aerobics</span></div>
           <div class="ex-meta"><span class="ex-tag"><span data-lang="en">Seated</span><span data-lang="tl" class="lang-hidden">Nakaupo</span><span data-lang="ceb" class="lang-hidden">Naklingkod</span>
-      <span data-lang="kap" class="lang-hidden">Nakaupo</span></span><span class="ex-tag">15–20 min</span><span class="ex-tag"><span data-lang="en">ESKD / elderly</span><span data-lang="tl" class="lang-hidden">ESKD / matatanda</span><span data-lang="ceb" class="lang-hidden">ESKD / tigulang</span>
+      <span data-lang="kap" class="lang-hidden">Nakaupo</span></span><span class="ex-tag">15–20 min</span><span class="ex-tag"><span data-lang="en">end-stage kidney disease (ESKD) / elderly</span><span data-lang="tl" class="lang-hidden">ESKD / matatanda</span><span data-lang="ceb" class="lang-hidden">ESKD / tigulang</span>
       <span data-lang="kap" class="lang-hidden">ESKD / matatanda</span></span></div>
           <div class="ex-desc"><span data-lang="en">Fully seated cardiovascular workout — suitable for patients who cannot stand safely for extended periods. Combines arm and leg movements to elevate heart rate without standing.</span><span data-lang="tl" class="lang-hidden">Ganap na nakaupo na cardiovascular workout — angkop para sa mga pasyente na hindi makatayo nang ligtas sa matagal na panahon. Pinagsasama ang mga galaw ng braso at binti upang itaas ang tibok ng puso nang hindi nakatayo.</span><span data-lang="ceb" class="lang-hidden">Hingpit nga naklingkod nga cardiovascular workout — angay alang sa mga pasyente nga dili makatindog nga luwas sa dugay nga panahon. Nagsagol sa mga lihok sa bukton ug binti aron itaas ang tibok sa kasingkasing nga walay pagtindog.</span>
       <span data-lang="kap" class="lang-hidden">Ganap a nakaupo a cardiovascular workout — angkop para king deng pasyente a ali makatayo nang ligtas king matagal a panahon. Pinagsasama ing deng galaw ning braso at binti upang itaas ing tibok ning pusu nang ali nakatayo.</span></div>
@@ -2816,8 +2827,8 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
   <!-- COOL DOWN -->
   <section class="section" id="cooldown">
     <div class="section-tag">Phase 7 — 5–10 Minutes</div>
-    <h2>Cool-Down</h2>
-    <p>The cool-down is not optional in CKD. Abrupt cessation of exercise can cause a sudden drop in blood pressure — particularly dangerous in patients on antihypertensives or those with autonomic neuropathy from diabetes.</p>
+    <h2><span data-lang="en">Cool-Down</span><span data-lang="tl" class="lang-hidden">Cool-Down</span><span data-lang="ceb" class="lang-hidden">Cool-Down</span><span data-lang="kap" class="lang-hidden">Cool-Down</span></h2>
+    <p><span data-lang="en">The cool-down is not optional in CKD. Abrupt cessation of exercise can cause a sudden drop in blood pressure — particularly dangerous in patients on antihypertensives or those with autonomic neuropathy from diabetes.</span><span data-lang="tl" class="lang-hidden">Ang cool-down ay hindi opsyonal sa CKD. Ang biglaang paghinto sa ehersisyo ay maaaring magdulot ng biglaang pagbaba ng presyon ng dugo — lalong mapanganib sa mga pasyenteng umiinom ng antihypertensive o may autonomic neuropathy mula sa diabetes.</span><span data-lang="ceb" class="lang-hidden">Ang cool-down dili opsyonal sa CKD. Ang kalit nga paghunong sa ehersisyo makahimo og kalit nga pagkunhod sa presyon sa dugo — labi ka delikado sa mga pasyente nga nag-inom og antihypertensive o adunay autonomic neuropathy gikan sa diabetes.</span><span data-lang="kap" class="lang-hidden">Ing cool-down e opsyonal king CKD. Ing biglang pamaglako king ehersisyo malyaring magdulut na biglang pamababa ning presyun ning daya — lalu yang makatakut karing pasyenteng minum antihypertensive o atin autonomic neuropathy manibat king diabetes.</span></p>
 
     <figure style="margin:24px 0;"><picture><source srcset="../images/exercise-ckd-cooldown-sequence.webp" type="image/webp"><img src="../images/exercise-ckd-cooldown-sequence.png" alt="Three-panel cool-down sequence for CKD patients: slow deceleration walk, standing full-body gentle stretch with arms overhead, and supine relaxation pose on a mat with eyes closed" style="width:100%;border-radius:10px;display:block;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">Spend at least 5 minutes cooling down after every session. Blood pressure can drop significantly in the first 5 minutes post-exercise — sit or lie down if you feel lightheaded. Never skip the cool-down.</figcaption></figure>
 
@@ -2829,10 +2840,10 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
           <div class="ex-meta"><span class="ex-tag">Walking</span><span class="ex-tag">3–5 min</span><span class="ex-tag">All stages</span></div>
           <div class="ex-desc">After any aerobic session, spend 3–5 minutes walking at progressively slower pace before stopping completely.</div>
           <ol class="ex-steps">
-            <li>Reduce walking pace gradually over 3–5 minutes</li>
-            <li>Never stop suddenly — keep moving until heart rate and breathing have settled</li>
-            <li>End with 2 minutes of very slow strolling</li>
-            <li>Sit only after heart rate has returned to near-resting level</li>
+            <li><span data-lang="en">Reduce walking pace gradually over 3–5 minutes</span><span data-lang="tl" class="lang-hidden">Unti-unting bawasan ang bilis ng paglalakad sa loob ng 3–5 minuto</span><span data-lang="ceb" class="lang-hidden">Hinay-hinay nga hinaanan ang tulin sa paglakaw sulod sa 3–5 minuto</span><span data-lang="kap" class="lang-hidden">Kaunti-kaunti yang bawasan ing bilis ning paglakad king loob ning 3–5 minuto</span></li>
+            <li><span data-lang="en">Never stop suddenly — keep moving until heart rate and breathing have settled</span><span data-lang="tl" class="lang-hidden">Huwag kailanman huminto nang bigla — patuloy na gumalaw hanggang huminahon ang tibok ng puso at ang paghinga</span><span data-lang="ceb" class="lang-hidden">Ayaw gyud paghunong og kalit — padayon sa paglihok hangtod nga mohuway ang tibok sa kasingkasing ug ang pagginhawa</span><span data-lang="kap" class="lang-hidden">E ka babalu manuknangan agad-agad — magsulung kang kikilus angga king manimbawi ing tibuk ning pusu at ing pamiginawa</span></li>
+            <li><span data-lang="en">End with 2 minutes of very slow strolling</span><span data-lang="tl" class="lang-hidden">Tapusin sa 2 minuto ng napakabagal na paglalakad-lakad</span><span data-lang="ceb" class="lang-hidden">Tapuson sa 2 minuto nga hinay kaayo nga paglakaw-lakaw</span><span data-lang="kap" class="lang-hidden">Yaring king 2 minuto ning malumbe kong paglakad-lakad</span></li>
+            <li><span data-lang="en">Sit only after heart rate has returned to near-resting level</span><span data-lang="tl" class="lang-hidden">Umupo lamang matapos bumalik ang tibok ng puso sa malapit sa antas ng pahinga</span><span data-lang="ceb" class="lang-hidden">Molingkod lamang human mobalik ang tibok sa kasingkasing sa duol sa lebel sa pahulay</span><span data-lang="kap" class="lang-hidden">Lukluk mu kaibat mibalik ing tibuk ning pusu king malapit king lebel ning pamagpainawa</span></li>
           </ol>
         </div>
 
@@ -2841,11 +2852,11 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
           <div class="ex-meta"><span class="ex-tag">Seated or Supine</span><span class="ex-tag">5 min</span><span class="ex-tag">All stages</span></div>
           <div class="ex-desc">Post-exercise muscles are warm and most receptive to stretching. Hold each stretch longer than warm-up (30–45 seconds).</div>
           <ol class="ex-steps">
-            <li>Seated hamstring stretch × 30 sec each leg</li>
-            <li>Seated calf stretch × 30 sec each leg</li>
-            <li>Chest opener × 30 sec × 2</li>
-            <li>Neck side tilts × 20 sec each side</li>
-            <li>Deep breathing × 5 cycles while stretching</li>
+            <li><span data-lang="en">Seated hamstring stretch × 30 sec each leg</span><span data-lang="tl" class="lang-hidden">Nakaupong hamstring stretch × 30 seg bawat binti</span><span data-lang="ceb" class="lang-hidden">Naglingkod nga hamstring stretch × 30 seg matag paa</span><span data-lang="kap" class="lang-hidden">Nakalukluk a hamstring stretch × 30 seg balang bitis</span></li>
+            <li><span data-lang="en">Seated calf stretch × 30 sec each leg</span><span data-lang="tl" class="lang-hidden">Nakaupong calf stretch × 30 seg bawat binti</span><span data-lang="ceb" class="lang-hidden">Naglingkod nga calf stretch × 30 seg matag paa</span><span data-lang="kap" class="lang-hidden">Nakalukluk a calf stretch × 30 seg balang bitis</span></li>
+            <li><span data-lang="en">Chest opener × 30 sec × 2</span><span data-lang="tl" class="lang-hidden">Chest opener × 30 seg × 2</span><span data-lang="ceb" class="lang-hidden">Chest opener × 30 seg × 2</span><span data-lang="kap" class="lang-hidden">Chest opener × 30 seg × 2</span></li>
+            <li><span data-lang="en">Neck side tilts × 20 sec each side</span><span data-lang="tl" class="lang-hidden">Pagtabingi ng leeg × 20 seg bawat gilid</span><span data-lang="ceb" class="lang-hidden">Pagkiling sa liog × 20 seg matag kilid</span><span data-lang="kap" class="lang-hidden">Pamikiling ning batal × 20 seg balang gilid</span></li>
+            <li><span data-lang="en">Deep breathing × 5 cycles while stretching</span><span data-lang="tl" class="lang-hidden">Malalim na paghinga × 5 siklo habang nag-uunat</span><span data-lang="ceb" class="lang-hidden">Lawom nga pagginhawa × 5 ka siklo samtang nag-inat</span><span data-lang="kap" class="lang-hidden">Malalam a pamiginawa × 5 siklo kayabe ning pamag-inat</span></li>
           </ol>
         </div>
 
@@ -2854,11 +2865,11 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
           <div class="ex-meta"><span class="ex-tag">Supine</span><span class="ex-tag">3–5 min</span><span class="ex-tag">All stages</span></div>
           <div class="ex-desc">Activates the parasympathetic nervous system to bring heart rate, BP, and cortisol back to baseline. Especially beneficial for hypertensive CKD patients.</div>
           <ol class="ex-steps">
-            <li>Lie flat on back with pillow if needed</li>
-            <li>Arms relaxed at sides, eyes closed</li>
-            <li>Breathe in through nose for 4 counts</li>
-            <li>Breathe out through mouth for 6 counts</li>
-            <li>Continue for 3–5 minutes — let your body sink heavy into the floor</li>
+            <li><span data-lang="en">Lie flat on back with pillow if needed</span><span data-lang="tl" class="lang-hidden">Humiga nang patihaya na may unan kung kinakailangan</span><span data-lang="ceb" class="lang-hidden">Mohigda nga patihaya nga adunay unlan kung gikinahanglan</span><span data-lang="kap" class="lang-hidden">Mera kang patihaya a atin ulunan nung kailangan</span></li>
+            <li><span data-lang="en">Arms relaxed at sides, eyes closed</span><span data-lang="tl" class="lang-hidden">Nakarelaks ang mga braso sa magkabilang tagiliran, nakapikit ang mga mata</span><span data-lang="ceb" class="lang-hidden">Relaks ang mga bukton sa kilid, piyong ang mga mata</span><span data-lang="kap" class="lang-hidden">Relaks reng gamat king magkasumangid a gilid, mikirat reng mata</span></li>
+            <li><span data-lang="en">Breathe in through nose for 4 counts</span><span data-lang="tl" class="lang-hidden">Huminga papasok sa ilong nang 4 na bilang</span><span data-lang="ceb" class="lang-hidden">Ginhawa pasulod sa ilong sa 4 ka ihap</span><span data-lang="kap" class="lang-hidden">Uminawa papaluob king arung ning 4 a bilang</span></li>
+            <li><span data-lang="en">Breathe out through mouth for 6 counts</span><span data-lang="tl" class="lang-hidden">Huminga palabas sa bibig nang 6 na bilang</span><span data-lang="ceb" class="lang-hidden">Ginhawa pagawas sa baba sa 6 ka ihap</span><span data-lang="kap" class="lang-hidden">Uminawa palwal king asbuk ning 6 a bilang</span></li>
+            <li><span data-lang="en">Continue for 3–5 minutes — let your body sink heavy into the floor</span><span data-lang="tl" class="lang-hidden">Ipagpatuloy sa loob ng 3–5 minuto — hayaang lumubog nang mabigat ang inyong katawan sa sahig</span><span data-lang="ceb" class="lang-hidden">Ipadayon sa 3–5 minuto — pasagdi nga molugdang og bug-at ang imong lawas sa salog</span><span data-lang="kap" class="lang-hidden">Ipagpatuluy king loob ning 3–5 minuto — paburen yang lumbug a mabayat ing katawan yu king salug</span></li>
           </ol>
         </div>
 
@@ -2870,8 +2881,8 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
 
   <section class="section" id="calculator">
     <div class="section-tag">Interactive Tool</div>
-    <h2>Exercise Calculator — Target Heart Rate Zones &amp; Energy Expenditure</h2>
-    <p>Calculate your safe target heart rate training zones for CKD using the Karvonen formula, and estimate calorie burn for common activities by MET value. These zones are adjusted for CKD — most patients should train in the light-to-moderate zone (RPE 11–14 on the Borg scale).</p>
+    <h2><span data-lang="en">Exercise Calculator — Target Heart Rate Zones &amp; Energy Expenditure</span><span data-lang="tl" class="lang-hidden">Calculator ng Ehersisyo — Mga Target na Heart Rate Zone at Paggasta ng Enerhiya</span><span data-lang="ceb" class="lang-hidden">Calculator sa Ehersisyo — Mga Target nga Heart Rate Zone ug Paggasto sa Enerhiya</span><span data-lang="kap" class="lang-hidden">Calculator ning Ehersisyo — Reng Target a Heart Rate Zone at Pamaggamit Enerhiya</span></h2>
+    <p><span data-lang="en">Calculate your safe target heart rate training zones for CKD using the Karvonen formula, and estimate calorie burn for common activities by MET value. These zones are adjusted for CKD — most patients should train in the light-to-moderate zone (RPE 11–14 on the Borg scale).</span><span data-lang="tl" class="lang-hidden">Kalkulahin ang inyong ligtas na target heart rate training zones para sa CKD gamit ang Karvonen formula, at tantiyahin ang pagkasunog ng kalorya para sa mga karaniwang gawain ayon sa MET value. Ang mga zone na ito ay inayos para sa CKD — karamihan ng mga pasyente ay dapat mag-ensayo sa light-to-moderate zone (RPE 11–14 sa Borg scale).</span><span data-lang="ceb" class="lang-hidden">Kuwentaha ang imong luwas nga target heart rate training zones alang sa CKD gamit ang Karvonen formula, ug banabana-a ang pagkasunog sa kalorya alang sa mga kasagarang kalihokan sumala sa MET value. Kini nga mga zone giangay alang sa CKD — kadaghanan sa mga pasyente kinahanglan mag-ensayo sa light-to-moderate zone (RPE 11–14 sa Borg scale).</span><span data-lang="kap" class="lang-hidden">Kwentan me ing kekayung ligtas a target heart rate training zones para king CKD gamit ing Karvonen formula, at tantyan me ing pamagsunug kalorya para karing pangkaraniwan a gawain agpang king MET value. Deng zone a reti mikayang para king CKD — kalakuan karing pasyente dapat mag-ensayu king light-to-moderate zone (RPE 11–14 king Borg scale).</span></p>
 
     <figure style="margin:24px 0;"><picture><source srcset="../images/exercise-ckd-calculator-ui.webp" type="image/webp"><img src="../images/exercise-ckd-calculator-ui.png" alt="Digital health calculator card for CKD showing input fields for age, resting heart rate, CKD stage, and weight — with output displaying three heart rate zones in green, yellow, and orange with BPM ranges and calorie burn chart" style="width:100%;border-radius:10px;display:block;" width="1024" height="1536"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">Use this calculator to personalize your training zones. The Karvonen formula accounts for your resting heart rate — making it more accurate than using maximum heart rate alone.</figcaption></figure>
 
@@ -2940,7 +2951,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
 
   <section class="section" id="program">
     <div class="section-tag">The Full Program</div>
-    <h2>Weekly Exercise Schedule — Progressive by CKD Stage</h2>
+    <h2><span data-lang="en">Weekly Exercise Schedule — Progressive by CKD Stage</span><span data-lang="tl" class="lang-hidden">Lingguhang Iskedyul ng Ehersisyo — Progresibo Ayon sa Yugto ng CKD</span><span data-lang="ceb" class="lang-hidden">Sinemana nga Iskedyul sa Ehersisyo — Progresibo Sumala sa Yugto sa CKD</span><span data-lang="kap" class="lang-hidden">Linggo-linggong Iskedyul ning Ehersisyo — Progresibo Agpang king Yugtu ning CKD</span></h2>
 
     <figure style="margin:24px 0;"><picture><source srcset="../images/exercise-ckd-weekly-schedule.webp" type="image/webp"><img src="../images/exercise-ckd-weekly-schedule.png" alt="Seven-column weekly exercise schedule infographic for CKD patients with day icons and a four-month progressive build table color-coded from light green for Month 1 to deep teal for Month 4+" style="width:100%;border-radius:10px;display:block;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">The 4-month progressive build. Start conservatively — completing Month 1 consistently is more important than intensity. Your nephrologist should review your program at each clinic visit.</figcaption></figure>
 
@@ -2957,7 +2968,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       </tbody>
     </table>
 
-    <h3 style="font-family:'Inter',sans-serif;color:var(--navy);margin:28px 0 16px;font-size:18px;">Progressive Build — Month by Month</h3>
+    <h3 style="font-family:'Inter',sans-serif;color:var(--navy);margin:28px 0 16px;font-size:18px;"><span data-lang="en">Progressive Build — Month by Month</span><span data-lang="tl" class="lang-hidden">Progresibong Pagbuo — Buwan-Buwan</span><span data-lang="ceb" class="lang-hidden">Progresibo nga Pagtukod — Bulan-Bulan</span><span data-lang="kap" class="lang-hidden">Progresibong Pamitalakad — Bulan-Bulan</span></h3>
     <table class="schedule-table">
       <thead><tr><th>Phase</th><th>Duration per session</th><th>Intensity</th><th>Focus</th></tr></thead>
       <tbody>
@@ -2971,14 +2982,14 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
     <div class="alert alert-green">
       <div class="alert-icon">✅</div>
       <div class="alert-body">
-        <h4>Signs you are exercising at the right level</h4>
+        <h4><span data-lang="en">Signs you are exercising at the right level</span><span data-lang="tl" class="lang-hidden">Mga senyales na tama ang antas ng inyong ehersisyo</span><span data-lang="ceb" class="lang-hidden">Mga timailhan nga sakto ang lebel sa imong ehersisyo</span><span data-lang="kap" class="lang-hidden">Reng tanda a tama ing lebel ning kekayung ehersisyo</span></h4>
         <ul>
-          <li>You finish the session feeling tired but not exhausted</li>
-          <li>You feel better (less fatigue, better mood) within 30 minutes of finishing</li>
-          <li>Muscle soreness the next day is mild and resolves within 24 hours</li>
-          <li>Your blood pressure 30 minutes after exercise is at or below your pre-exercise reading</li>
-          <li>You could carry on a short conversation throughout the session</li>
-          <li>Sleep quality and appetite are gradually improving over weeks</li>
+          <li><span data-lang="en">You finish the session feeling tired but not exhausted</span><span data-lang="tl" class="lang-hidden">Natatapos ninyo ang session na pagod ngunit hindi lubusang hapo</span><span data-lang="ceb" class="lang-hidden">Mahuman nimo ang session nga gikapoy apan dili gyud hurot ang kusog</span><span data-lang="kap" class="lang-hidden">Ayaring me ing session a pagal dapot ali lubus a pagal</span></li>
+          <li><span data-lang="en">You feel better (less fatigue, better mood) within 30 minutes of finishing</span><span data-lang="tl" class="lang-hidden">Mas gumagaan ang inyong pakiramdam (mas kaunting pagkapagod, mas magandang mood) sa loob ng 30 minuto pagkatapos</span><span data-lang="ceb" class="lang-hidden">Mas maayo ang imong bati (mas gamay nga kakapoy, mas maayo nga mood) sulod sa 30 minuto human mahuman</span><span data-lang="kap" class="lang-hidden">Mas mayap ing pakiramdam yu (mas kaunti a pagal, mas mayap a mood) king loob ning 30 minuto kaibat</span></li>
+          <li><span data-lang="en">Muscle soreness the next day is mild and resolves within 24 hours</span><span data-lang="tl" class="lang-hidden">Ang pananakit ng kalamnan kinabukasan ay banayad at nawawala sa loob ng 24 oras</span><span data-lang="ceb" class="lang-hidden">Ang pagngutngot sa kaunoran pagkasunod adlaw kay malumo ug mawala sulod sa 24 ka oras</span><span data-lang="kap" class="lang-hidden">Ing sakit ning laman king kabukasan malumu ya at mawala king loob ning 24 oras</span></li>
+          <li><span data-lang="en">Your blood pressure 30 minutes after exercise is at or below your pre-exercise reading</span><span data-lang="tl" class="lang-hidden">Ang inyong presyon ng dugo 30 minuto pagkatapos ng ehersisyo ay katumbas o mas mababa sa inyong presyon bago mag-ehersisyo</span><span data-lang="ceb" class="lang-hidden">Ang imong presyon sa dugo 30 minuto human sa ehersisyo kay pareho o mas ubos sa imong presyon sa wala pa ang ehersisyo</span><span data-lang="kap" class="lang-hidden">Ing presyun ning daya yu 30 minuto kaibat ning ehersisyo katumbas o mas mababa king presyun yu bayu mag-ehersisyo</span></li>
+          <li><span data-lang="en">You could carry on a short conversation throughout the session</span><span data-lang="tl" class="lang-hidden">Nakakapag-usap kayo nang maikli sa buong session</span><span data-lang="ceb" class="lang-hidden">Makahimo kang mubo nga panag-istorya sa tibuok session</span><span data-lang="kap" class="lang-hidden">Malyari kang makapag-amanu nang makuyad king buung session</span></li>
+          <li><span data-lang="en">Sleep quality and appetite are gradually improving over weeks</span><span data-lang="tl" class="lang-hidden">Unti-unting bumubuti ang kalidad ng tulog at gana sa pagkain sa paglipas ng mga linggo</span><span data-lang="ceb" class="lang-hidden">Hinay-hinay nga nag-ayo ang kalidad sa tulog ug ang gana sa pagkaon paglabay sa mga semana</span><span data-lang="kap" class="lang-hidden">Kaunti-kaunting mumayap ing kalidad ning tudtud at ing gana king pamangan king pamanlipas ding linggo</span></li>
         </ul>
       </div>
     </div>
@@ -3473,6 +3484,12 @@ function exPrint() {
   })();
 </script>
 
+<a class="dl-fab" href="../downloads/wgmr-physical-activity-guide.pdf" target="_blank" rel="noopener" aria-label="Download the Move Right, Kidneys Right physical activity handout">
+  <span class="p-tip">Download Handout</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+  </svg>
+</a>
 <button class="print-btn" onclick="window.print()" aria-label="Print this guide">
   <span class="p-tip">Print / Save PDF</span>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3597,5 +3614,6 @@ function calcExercise() {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>
