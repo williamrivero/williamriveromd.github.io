@@ -88,81 +88,35 @@ No image contains needles in skin, blood, or distress imagery.
 
 ---
 
-## DELIVERY STATUS — updated 17 August 2026
+## DELIVERY STATUS — updated 17 August 2026 (second pass)
 
-Eight of nine images were generated and uploaded to `main` (commit `a1047743`,
-"Add files via upload"), PNG + WebP for each. All eight are **downloaded, dimension-
-corrected, and wired into the guide**. Filenames are stable, so any regenerated
-replacement dropped in at the same path needs no re-wiring.
+**Round 2 complete.** The five figures flagged for regeneration were rerun from
+`home-hemodialysis-philippines-regeneration.md` and verified against the rendered
+artwork. All five came back at their original canvas sizes, so the guide's declared
+`width`/`height` stayed valid and nothing needed re-wiring.
 
-### What landed
-
-| # | File stem | Delivered | Status |
+| # | File stem | Round 2 | Verified |
 |---|---|---|---|
-| 1 | `vignette-hero` | 1254×1254 | Wired. Delivered at the site's canonical hero size rather than the requested 2048²; markup updated to match. |
-| 2 | `og` | 1730×909 → **resized to 1200×630** | Wired. See note below. |
-| 3 | `failure-modes` | 1659×948 | Wired. Dialyzer port topology verified correct. |
-| 4 | `water-exposure` | 1659×948 | Wired. See defects. |
-| 5 | `six-layers` | 1659×948 | Wired. |
-| 6 | `household` | 1448×1086 | Wired. Clean. |
-| 7 | `trial-evidence` | 1448×1086 | Wired. All trial values verified correct against PubMed. |
-| 8 | `readiness-gates` | 1024×1536 | Wired. Only image delivered at the requested size. |
-| 9 | `water-strategies` | — | **Not generated.** |
+| 3 | `failure-modes` | 1659×948 | hemolysis, aluminum · `renalcarematters.com` · port topology still correct · COUNTERCURRENT now horizontal and legible |
+| 4 | `water-exposure` | 1659×948 | title reads "dialyze" · liters · DIALYZING · Aluminum · **flow redrawn countercurrent, now agrees with fig. 3** · portable-RO line present |
+| 5 | `six-layers` | 1659×948 | authorized · TECHNICAL panel names all three water strategies |
+| 7 | `trial-evidence` | 1448×1086 | IN-CENTER · favored · hemoglobin · **every trial value re-checked digit by digit and correct** · still a table, not a forest plot |
+| 8 | `readiness-gates` | 1024×1536 | license · authorization · enrollment · hospitalization · Gate 0 still the blocking gate · no completion markers |
 
-The generator delivered its own canvas sizes rather than the requested ones. Rather
-than upscale, the guide now declares each file's true intrinsic dimensions, which is
-what `patch_img_dimensions.py` verifies and what prevents layout shift.
+Every regenerated figure now carries the current `renalcarematters.com` attribution.
 
-**The OG card is the one exception.** It arrived at 1730×909 while the guide's
-`og:image:width` / `og:image:height` meta declare 1200×630, and the house rule fixes
-OG cards at exactly 1200×630. It was downscaled with Lanczos resampling; the aspect
-correction is 1.9032 → 1.9048, about 0.08%, and imperceptible. Its WebP twin was
-regenerated from the resized PNG.
+### Still outstanding
 
-### Defects requiring regeneration
+| # | File stem | Issue |
+|---|---|---|
+| 2 | `og` | Attribution still reads the retired `williamriveromd.com`. Most publicly visible asset in the set — it is the social share card. |
+| 6 | `household` | Retired domain, and the WATER callout still omits the portable-RO line the prose carries. |
+| 9 | `water-strategies` | Never generated. Prompt is ready under IMAGE 9 below. |
+| 1 | `vignette-hero` | Nothing to fix — wordless by the vignette spec. |
 
-All eight images were generated from the plan **as it stood before commit `d7d99bad`**,
-which converted the guide to American English and added the portable-RO water strategy.
-Two consequences:
-
-**1. British spellings are baked into five images.** The guide's prose is now American
-English throughout, so these are visibly inconsistent with the text around them:
-
-| Image | Baked-in British spellings |
-|---|---|
-| 3 `failure-modes` | haemolysis, aluminium |
-| 4 `water-exposure` | dialyse *(in the title)*, litres, DIALYSING, Aluminium |
-| 5 `six-layers` | authorised |
-| 7 `trial-evidence` | IN-CENTRE ×2, in-centre ×2, favoured, haemoglobin ×2 |
-| 8 `readiness-gates` | licence, authorisation, enrolment, hospitalisation |
-
-Images 1, 2 and 6 are clean.
-
-**2. The portable-RO amendments are absent.** IMG 4 is missing the "same standard
-whether the water comes from a fixed plant or a portable RO unit" line; IMG 5's
-TECHNICAL panel does not name the three water options; IMG 6's WATER callout does not
-mention a portable RO on an ordinary tap. Combined with the absence of IMG 9, the
-image set currently implies a fixed, plumbed-in water plant is the only option —
-which §0.6 of this plan explicitly forbids and which the guide's prose contradicts.
-
-**3. IMG 4 contradicts IMG 3 on dialyzer flow.** IMG 3 renders the port topology
-correctly: arterial blood in at the bottom, venous out at the top, dialysate entering
-a side port near the venous end, effluent leaving near the arterial end, with a labeled
-countercurrent arrow. IMG 4's dialyzer places blood in at the top-left and blood out at
-the bottom-left with dialysate entering at the top — reading as co-current flow, which
-is wrong and disagrees with IMG 3 in the same guide. IMG 4 needs the mandatory port
-topology applied.
-
-Minor, not worth a regeneration on its own: IMG 3's vertical "COUNTERCURRENT" label has
-slightly malformed letterforms, and the water-treatment room signage in IMG 2 is partly
-garbled AI text at small size.
-
-### Recommended regeneration batch
-
-Re-run prompts **4, 3, 7, 8, 5** (in that order of importance) from the current
-US-English plan text, then generate **IMG 9**. That is six images — one batch of five,
-a 60-second pause, then one. IMG 4 is first because it carries both a spelling defect
-in its title and the flow-direction error.
+Regenerating 2, 6 and 9 would bring every image in the guide onto one domain and one
+water-strategy framing. Prompts for 2 and 6 need only the domain and callout edits;
+9 is ready as written.
 
 ---
 
