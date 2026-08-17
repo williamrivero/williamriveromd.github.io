@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1813,8 +1824,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1827,7 +1838,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <div class="ov-list">
     <div class="ov-stat"><span class="v">~50%</span><span class="l">Filipino LN biopsies are Class IV</span></div>
     <div class="ov-stat"><span class="v">41%</span><span class="l">Voclosporin CRR vs 23% placebo</span></div>
-    <div class="ov-stat"><span class="v">30&ndash;60%</span><span class="l">of SLE develops LN by 5 years</span></div>
+    <div class="ov-stat"><span class="v">30&ndash;60%</span><span class="l">of systemic lupus erythematosus (SLE) develops LN by 5 years</span></div>
     </div>
     <a class="ov-foot" href="#md-quickguide">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
@@ -1912,7 +1923,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <source srcset="../images/lupus-nephritis-01-hero-editorial.webp" type="image/webp">
         <img loading="lazy" src="../images/lupus-nephritis-01-hero-editorial.png" alt="Lupus nephritis — autoimmune cascade illustration showing immune complexes depositing in kidney glomeruli against a teal-to-navy background" width="1536" height="1024" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;">
       </picture>
-      <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+      <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
     </figure>
     <div class="intro-callout">
       <p><span data-lang="en">Lupus nephritis (LN) is kidney inflammation caused by systemic lupus erythematosus (SLE) — an autoimmune disease in which the immune system produces antibodies against the body's own DNA and proteins. <strong>Up to 50–60% of SLE patients develop lupus nephritis</strong>, and it remains the most serious organ manifestation of lupus — responsible for significant morbidity and the leading cause of premature death in SLE patients. The Philippines has one of the highest SLE prevalences in Asia.</span><span data-lang="tl" class="lang-hidden">Ang lupus nephritis (LN) ay pamamaga ng bato na dulot ng systemic lupus erythematosus (SLE) — isang autoimmune na sakit kung saan gumagawa ang immune system ng mga antibody laban sa sariling DNA at protina ng katawan. <strong>Hanggang 50–60% ng mga pasyenteng may SLE ang nagkakaroon ng lupus nephritis</strong>, at ito ang pinaka-seryosong manifestasyon ng lupus sa mga organo — responsable sa malaking paghihirap at nangungunang sanhi ng maagang pagkamatay sa mga pasyenteng may SLE. Ang Pilipinas ay may isa sa pinakamataas na prevalence ng SLE sa Asya.</span><span data-lang="ceb" class="lang-hidden">Ang lupus nephritis (LN) mao ang pamamaga sa kidney nga gikan sa systemic lupus erythematosus (SLE) — usa ka autoimmune nga sakit diin ang immune system nagmugna ug mga antibody batok sa kaugalingon nga DNA ug protina sa lawas. <strong>Hangtod 50–60% sa mga pasyente nga adunay SLE ang nagpalambo ug lupus nephritis</strong>, ug kini nagpabilin nga pinaka-seryosong manifestasyon sa lupus sa mga organo — responsable sa dako nga kahirap ug nanguna nga hinungdan sa sayo nga kamatayon sa mga pasyente nga adunay SLE. Ang Pilipinas adunay usa sa pinakataas nga prevalence sa SLE sa Asya.</span>
@@ -1924,7 +1935,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-02-overview-infographic.webp" type="image/webp">
     <img src="/images/lupus-nephritis-02-overview-infographic.png" alt="Four-panel lupus nephritis overview infographic: autoantibody cascade, ISN/RPS class reference, Filipino statistics, and treatment pyramid" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
 
     <div class="stat-grid" style="margin:28px 0;">
@@ -1946,7 +1957,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-03-immune-cascade.webp" type="image/webp">
     <img src="/images/lupus-nephritis-03-immune-cascade.png" alt="SLE immune cascade flow diagram: from triggers through autoantibody production and glomerular deposition to kidney damage outcomes" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
   </section>
 
@@ -1961,7 +1972,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-05-symptoms-signs.webp" type="image/webp">
     <img src="/images/lupus-nephritis-05-symptoms-signs.png" alt="Lupus nephritis symptoms diagram: body silhouette with callouts showing foamy urine, malar rash, joint swelling, and pitting edema" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
 
     <div class="two-col">
@@ -2001,10 +2012,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-06-diagnostic-workup.webp" type="image/webp">
     <img src="/images/lupus-nephritis-06-diagnostic-workup.png" alt="Lupus nephritis diagnostic workup flowchart: urinalysis, UACR, anti-dsDNA, complement levels, and biopsy decision pathway" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
-      <p><strong>lupus-nephritis-06-diagnostic-workup.png</strong></p>
-      <p>Diagnostic workup flowchart: starting point "SLE patient with kidney concern" → two branches: (A) Blood tests — ANA, anti-dsDNA, C3/C4, creatinine/eGFR, CBC; (B) Urine tests — UACR/spot urine protein, urine microscopy (RBC casts?), 24-hr urine protein. Both branches converge at "Kidney Biopsy Indicated? (UACR ≥0.5 g/g, RBC casts, unexplained AKI)" → Biopsy → ISN/RPS Classification → Treatment Choice. Include reference ranges for normal vs concerning values.</p>
     </div>
 
     <table class="lab-table">
@@ -2016,7 +2025,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <tr><td>Anti-dsDNA antibody</td><td>Antibodies against double-stranded DNA</td><td>Most specific for SLE; high levels predict LN flares; monitor for treatment response</td></tr>
         <tr><td>C3, C4 complement</td><td>Complement consumption by immune complexes</td><td>↓ C3 + C4 = active disease; normalize with successful treatment</td></tr>
         <tr><td>UACR (spot urine)</td><td>Urine albumin-creatinine ratio</td><td>&gt;500 mg/g = significant — suggests Class III/IV; &gt;3,000 = nephrotic range (often Class V)</td></tr>
-        <tr><td>Urine microscopy</td><td>RBC casts, WBC casts, dysmorphic RBCs</td><td>RBC casts = glomerular bleeding = active proliferative disease (Class III/IV) — critical finding</td></tr>
+        <tr><td>Urine microscopy</td><td>RBC casts, WBC (white blood cell) casts, dysmorphic RBCs</td><td>RBC casts = glomerular bleeding = active proliferative disease (Class III/IV) — critical finding</td></tr>
         <tr><td>24-hour urine protein</td><td>Total protein excretion</td><td>&gt;3.5 g/day = nephrotic syndrome; baseline before treatment; monitor response</td></tr>
         <tr><td>ANA (antinuclear antibody)</td><td>General autoantibody screen</td><td>&gt;99% of SLE patients positive; not specific but required for SLE diagnosis</td></tr>
         <tr><td>Anti-Sm, Anti-SSA/B, antiphospholipid antibodies</td><td>SLE-specific and overlap antibodies</td><td>Anti-Sm highly specific for SLE; antiphospholipid = thrombosis risk; affects treatment</td></tr>
@@ -2035,7 +2044,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-04-isn-rps-classes.webp" type="image/webp">
     <img src="/images/lupus-nephritis-04-isn-rps-classes.png" alt="ISN/RPS lupus nephritis classification Classes I–VI: six-panel glomerulus grid with severity color coding and Filipino Class IV prevalence note" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
 
     <p><span data-lang="en">Kidney biopsy remains essential — clinical features alone cannot determine the class of lupus nephritis, and the class determines the treatment intensity. The ISN/RPS 2018 classification is the current standard.</span><span data-lang="tl" class="lang-hidden">Ang kidney biopsy ay mahalaga pa rin — ang mga klinikal na katangian lamang ay hindi makapagtukoy ng klase ng lupus nephritis, at ang klase ang nagtatakda ng intensity ng paggamot. Ang ISN/RPS 2018 na klasipikasyon ang kasalukuyang pamantayan.</span><span data-lang="ceb" class="lang-hidden">Ang kidney biopsy nagpabilin nga importante — ang mga klinikal nga kinaiya lamang dili makatino sa klase sa lupus nephritis, ug ang klase maoy nagpakita sa gidak-on sa pagtambal. Ang ISN/RPS 2018 nga klasipikasyon mao ang karon nga sumbanan.</span>
@@ -2125,14 +2134,14 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-07-treatment-protocol.webp" type="image/webp">
     <img src="/images/lupus-nephritis-07-treatment-protocol.png" alt="Lupus nephritis two-phase treatment timeline: induction months 0–6 with steroids plus MMF, maintenance months 6–36 with tapering, HCQ as lifetime baseline" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
 
     <div class="two-col">
       <div class="feature-card">
         <h4><span class="dot dot-teal"></span><span data-lang="en">Mycophenolate mofetil (MMF) — the backbone drug</span><span data-lang="tl" class="lang-hidden">Mycophenolate mofetil (MMF) — ang pangunahing gamot</span><span data-lang="ceb" class="lang-hidden">Mycophenolate mofetil (MMF) — ang punoan nga tambal</span>
       <span data-lang="kap" class="lang-hidden">Mycophenolate mofetil (MMF) — ing pangunahing gamut</span></h4>
-        <p><span data-lang="en">MMF (CellCept, Myforic) is now the preferred agent for both induction and maintenance of Class III/IV LN — equal efficacy to cyclophosphamide for induction with better side-effect profile and no risk of ovarian failure. Available in the Philippines and covered by PhilHealth for LN. Key monitoring: CBC monthly (leukopenia risk), liver function, blood pressure. Absolutely contraindicated in pregnancy — mandatory contraception.</span><span data-lang="tl" class="lang-hidden">Ang MMF (CellCept, Myforic) ay kasalukuyang pinipiling ahente para sa induction at maintenance ng Klase III/IV LN — katumbas ang bisa sa cyclophosphamide para sa induction ngunit mas magandang profile ng epekto at walang panganib ng pagkabigo ng obaryo. Available sa Pilipinas at saklaw ng PhilHealth para sa LN. Pangunahing pagsubaybay: CBC bawat buwan (panganib ng leukopenia), function ng atay, presyon ng dugo. Ganap na kontraindikado sa pagbubuntis — ipinag-uutos ang pagpigil sa pagbubuntis.</span><span data-lang="ceb" class="lang-hidden">Ang MMF (CellCept, Myforic) karon ang piniling ahente alang sa induction ug maintenance sa Klase III/IV LN — parehas nga epekto sa cyclophosphamide alang sa induction apan mas maayo nga profile sa side-effect ug walay risgo sa pagkabigo sa obaryo. Available sa Pilipinas ug sakop sa PhilHealth alang sa LN. Importante nga pagsubay: CBC matag bulan (risgo sa leukopenia), function sa atay, presyon sa dugo. Ganap nga kontraindikado sa pagbusog — gikinahanglang paglikay sa pagbusog.</span>
+        <p><span data-lang="en">MMF (CellCept, Myforic) is now the preferred agent for both induction and maintenance of Class III/IV LN — equal efficacy to cyclophosphamide for induction with better side-effect profile and no risk of ovarian failure. Available in the Philippines and covered by PhilHealth (Philippine Health Insurance Corporation) for LN. Key monitoring: CBC monthly (leukopenia risk), liver function, blood pressure. Absolutely contraindicated in pregnancy — mandatory contraception.</span><span data-lang="tl" class="lang-hidden">Ang MMF (CellCept, Myforic) ay kasalukuyang pinipiling ahente para sa induction at maintenance ng Klase III/IV LN — katumbas ang bisa sa cyclophosphamide para sa induction ngunit mas magandang profile ng epekto at walang panganib ng pagkabigo ng obaryo. Available sa Pilipinas at saklaw ng PhilHealth para sa LN. Pangunahing pagsubaybay: CBC bawat buwan (panganib ng leukopenia), function ng atay, presyon ng dugo. Ganap na kontraindikado sa pagbubuntis — ipinag-uutos ang pagpigil sa pagbubuntis.</span><span data-lang="ceb" class="lang-hidden">Ang MMF (CellCept, Myforic) karon ang piniling ahente alang sa induction ug maintenance sa Klase III/IV LN — parehas nga epekto sa cyclophosphamide alang sa induction apan mas maayo nga profile sa side-effect ug walay risgo sa pagkabigo sa obaryo. Available sa Pilipinas ug sakop sa PhilHealth alang sa LN. Importante nga pagsubay: CBC matag bulan (risgo sa leukopenia), function sa atay, presyon sa dugo. Ganap nga kontraindikado sa pagbusog — gikinahanglang paglikay sa pagbusog.</span>
       <span data-lang="kap" class="lang-hidden">Ing MMF (CellCept, Myforic) ya kasalukuyang pinipiling ahente para king induction at maintenance ning Klase III/IV LN — katumbas ing bisa king cyclophosphamide para king induction ngarud mas magandang profile ning epekto at alang panganib ning pagkabigo ning obaryo. Available king Pilipinas at saklaw ning PhilHealth para king LN. Pangunahing pagsubaybay: CBC bawat bulan (panganib ning leukopenia), function ning atay, presyon ning daya. Ganap a kontraindikado king pagbubuntis — ipinag-uutos ing pagpigil king pagbubuntis.</span></p>
       </div>
       <div class="feature-card">
@@ -2155,7 +2164,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-08-new-therapies.webp" type="image/webp">
     <img src="/images/lupus-nephritis-08-new-therapies.png" alt="New lupus nephritis therapies comparison: belimumab, voclosporin, and anifrolumab cards with trial data and Philippine access status" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
 
     <div class="three-col">
@@ -2166,7 +2175,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       </div>
       <div class="feature-card">
         <h4><span class="dot dot-purple"></span>Voclosporin (Lupkynis)</h4>
-        <p><span data-lang="en"><strong>Mechanism:</strong> Novel calcineurin inhibitor — blocks T-cell activation and has direct podocyte-protective effects. <strong>Evidence:</strong> AURORA trial (2021) — MMF + voclosporin achieved complete renal response in 40.8% vs 22.5% with MMF alone. FDA-approved 2021 specifically for active LN. <strong>Philippines:</strong> Not yet registered locally — specialist access or compassionate use.</span><span data-lang="tl" class="lang-hidden"><strong>Mekanismo:</strong> Bagong calcineurin inhibitor — nagharang ng pag-activate ng T-cell at may direktang epekto sa pagprotekta sa podocyte. <strong>Ebidensya:</strong> AURORA trial (2021) — ang MMF + voclosporin ay nakamit ang kumpletong renal response sa 40.8% kumpara sa 22.5% sa MMF lamang. FDA-approved 2021 para sa aktibong LN. <strong>Pilipinas:</strong> Hindi pa nairehistro nang lokal — espesyalistang access o compassionate use.</span><span data-lang="ceb" class="lang-hidden"><strong>Mekanismo:</strong> Bag-ong calcineurin inhibitor — nagbabag sa pag-activate sa T-cell ug adunay direkta nga epekto sa pagpanalipod sa podocyte. <strong>Ebidensya:</strong> AURORA trial (2021) — ang MMF + voclosporin nakab-ot ang kompleto nga renal response sa 40.8% kumpara sa 22.5% sa MMF lamang. FDA-approved 2021 alang sa aktibong LN. <strong>Pilipinas:</strong> Wala pa narehistro sa lokal — espesyalista nga access o compassionate use.</span>
+        <p><span data-lang="en"><strong>Mechanism:</strong> Novel calcineurin inhibitor — blocks T-cell activation and has direct podocyte-protective effects. <strong>Evidence:</strong> AURORA trial (2021) — MMF + voclosporin achieved complete renal response in 40.8% vs 22.5% with MMF alone. FDA (Food and Drug Administration)-approved 2021 specifically for active LN. <strong>Philippines:</strong> Not yet registered locally — specialist access or compassionate use.</span><span data-lang="tl" class="lang-hidden"><strong>Mekanismo:</strong> Bagong calcineurin inhibitor — nagharang ng pag-activate ng T-cell at may direktang epekto sa pagprotekta sa podocyte. <strong>Ebidensya:</strong> AURORA trial (2021) — ang MMF + voclosporin ay nakamit ang kumpletong renal response sa 40.8% kumpara sa 22.5% sa MMF lamang. FDA-approved 2021 para sa aktibong LN. <strong>Pilipinas:</strong> Hindi pa nairehistro nang lokal — espesyalistang access o compassionate use.</span><span data-lang="ceb" class="lang-hidden"><strong>Mekanismo:</strong> Bag-ong calcineurin inhibitor — nagbabag sa pag-activate sa T-cell ug adunay direkta nga epekto sa pagpanalipod sa podocyte. <strong>Ebidensya:</strong> AURORA trial (2021) — ang MMF + voclosporin nakab-ot ang kompleto nga renal response sa 40.8% kumpara sa 22.5% sa MMF lamang. FDA-approved 2021 alang sa aktibong LN. <strong>Pilipinas:</strong> Wala pa narehistro sa lokal — espesyalista nga access o compassionate use.</span>
       <span data-lang="kap" class="lang-hidden"><strong>Mekanismo:</strong> Bagong calcineurin inhibitor — nagharang ning pag-activate ning T-cell at atin direktang epekto king pagprotekta king podocyte. <strong>Ebidensya:</strong> AURORA trial (2021) — ing MMF + voclosporin ya nakamit ing kumpletong renal response king 40.8% kumpara king 22.5% king MMF lamang. FDA-approved 2021 para king aktibong LN. <strong>Pilipinas:</strong> Ali pa nairehistro nang lokal — espesyalistang access o compassionate use.</span></p>
       </div>
       <div class="feature-card">
@@ -2181,7 +2190,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <div class="alert-body">
         <h4><span data-lang="en">SGLT2 inhibitors in lupus nephritis — new evidence</span><span data-lang="tl" class="lang-hidden">Mga SGLT2 inhibitor sa lupus nephritis — bagong ebidensya</span><span data-lang="ceb" class="lang-hidden">Mga SGLT2 inhibitor sa lupus nephritis — bag-ong ebidensya</span>
       <span data-lang="kap" class="lang-hidden">Deng SGLT2 inhibitor king lupus nephritis — bagong ebidensya</span></h4>
-        <p><span data-lang="en">Multiple cohort studies and subgroup analyzes from major SGLT2i trials show that dapagliflozin and empagliflozin reduce proteinuria and slow eGFR decline in LN — independently of glucose control. The glomerular hemodynamic protection and anti-inflammatory effects of SGLT2 inhibitors appear to benefit LN just as they benefit other proteinuric nephropathies. KDIGO 2024 now includes consideration of SGLT2i in all proteinuric CKD including LN. <strong>Locally available: Catania or Rhea (dapagliflozin).</strong></span><span data-lang="tl" class="lang-hidden">Maraming cohort studies at subgroup analyzes mula sa mga pangunahing SGLT2i trials ang nagpapakita na ang dapagliflozin at empagliflozin ay nagbabawas ng protina sa ihi at nagpapabagal ng pagbaba ng eGFR sa LN — nang hiwalay sa kontrol ng glucose. Ang proteksyon ng glomerular hemodynamics at anti-inflammatory na epekto ng mga SGLT2 inhibitor ay tila nagbibigay-benepisyo sa LN tulad ng iba pang proteinuric nephropathies. Kasama na ngayon ng KDIGO 2024 ang pagsasaalang-alang sa SGLT2i sa lahat ng proteinuric CKD kasama ang LN. <strong>Available sa lokal: Catania o Rhea (dapagliflozin).</strong></span><span data-lang="ceb" class="lang-hidden">Daghang cohort studies ug subgroup analyzes gikan sa mga nanguna nga SGLT2i trials nagpakita nga ang dapagliflozin ug empagliflozin nagpaubos sa protina sa ihi ug nagpabagal sa pagkunhod sa eGFR sa LN — independente sa kontrol sa glucose. Ang proteksyon sa glomerular hemodynamics ug anti-inflammatory nga epekto sa mga SGLT2 inhibitor daw naghatag og benepisyo sa LN sama sa ubang proteinuric nephropathies. Kasama na karon sa KDIGO 2024 ang pagsalabot sa SGLT2i sa tanan nga proteinuric CKD apil ang LN. <strong>Available sa lokal: Catania o Rhea (dapagliflozin).</strong></span>
+        <p><span data-lang="en">Multiple cohort studies and subgroup analyzes from major SGLT2i (sodium–glucose cotransporter-2 inhibitor) trials show that dapagliflozin and empagliflozin reduce proteinuria and slow eGFR decline in LN — independently of glucose control. The glomerular hemodynamic protection and anti-inflammatory effects of SGLT2 (sodium–glucose cotransporter-2) inhibitors appear to benefit LN just as they benefit other proteinuric nephropathies. KDIGO (Kidney Disease: Improving Global Outcomes) 2024 now includes consideration of SGLT2i in all proteinuric CKD (chronic kidney disease) including LN. <strong>Locally available: Catania or Rhea (dapagliflozin).</strong></span><span data-lang="tl" class="lang-hidden">Maraming cohort studies at subgroup analyzes mula sa mga pangunahing SGLT2i trials ang nagpapakita na ang dapagliflozin at empagliflozin ay nagbabawas ng protina sa ihi at nagpapabagal ng pagbaba ng eGFR sa LN — nang hiwalay sa kontrol ng glucose. Ang proteksyon ng glomerular hemodynamics at anti-inflammatory na epekto ng mga SGLT2 inhibitor ay tila nagbibigay-benepisyo sa LN tulad ng iba pang proteinuric nephropathies. Kasama na ngayon ng KDIGO 2024 ang pagsasaalang-alang sa SGLT2i sa lahat ng proteinuric CKD kasama ang LN. <strong>Available sa lokal: Catania o Rhea (dapagliflozin).</strong></span><span data-lang="ceb" class="lang-hidden">Daghang cohort studies ug subgroup analyzes gikan sa mga nanguna nga SGLT2i trials nagpakita nga ang dapagliflozin ug empagliflozin nagpaubos sa protina sa ihi ug nagpabagal sa pagkunhod sa eGFR sa LN — independente sa kontrol sa glucose. Ang proteksyon sa glomerular hemodynamics ug anti-inflammatory nga epekto sa mga SGLT2 inhibitor daw naghatag og benepisyo sa LN sama sa ubang proteinuric nephropathies. Kasama na karon sa KDIGO 2024 ang pagsalabot sa SGLT2i sa tanan nga proteinuric CKD apil ang LN. <strong>Available sa lokal: Catania o Rhea (dapagliflozin).</strong></span>
       <span data-lang="kap" class="lang-hidden">Dacal a cohort studies at subgroup analyzes mula king deng pangunahing SGLT2i trials ing nagpapakita a ing dapagliflozin at empagliflozin ya nagbabawas ning protina king ihi at nagpapabagal ning pagbaba ning eGFR king LN — nang hialay king kontrol ning glucose. Ing proteksyon ning glomerular hemodynamics at anti-inflammatory a epekto ning deng SGLT2 inhibitor ya tila nagbibigay-benepisyo king LN tulad ning iba pang proteinuric nephropathies. Kasama a ngayon ning KDIGO 2024 ing pagsasaalang-alang king SGLT2i king amin ning proteinuric CKD kasama ing LN. <strong>Available king lokal: Catania o Rhea (dapagliflozin).</strong></span></p>
       </div>
     </div>
@@ -2198,7 +2207,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-09-monitoring-schedule.webp" type="image/webp">
     <img src="/images/lupus-nephritis-09-monitoring-schedule.png" alt="Lupus nephritis monitoring schedule timeline: calendar grid showing UACR, anti-dsDNA, eGFR, and BP check frequencies from induction through maintenance" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
 
     <table class="lab-table">
@@ -2229,7 +2238,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <span data-lang="kap" class="lang-hidden">Pagpigil ning utak ning buto ning MMF/azathioprine; epekto ning steroid king atay</span></td></tr>
         <tr><td><span data-lang="en">Blood pressure</span><span data-lang="tl" class="lang-hidden">Presyon ng dugo</span><span data-lang="ceb" class="lang-hidden">Presyon sa dugo</span>
       <span data-lang="kap" class="lang-hidden">Presyon ning daya</span></td><td><span data-lang="en">Every visit; home monitoring ideal</span><span data-lang="tl" class="lang-hidden">Bawat pagbisita; pinakamabuti ang pagsubaybay sa bahay</span><span data-lang="ceb" class="lang-hidden">Matag pagbisita; pinaka-maayo ang pagsubay sa balay</span>
-      <span data-lang="kap" class="lang-hidden">Bawat pagbisita; pinakamabuti ing pagsubaybay king bale</span></td><td><span data-lang="en">Uncontrolled BP accelerates LN progression; target &lt;130/80 on ACE/ARB</span><span data-lang="tl" class="lang-hidden">Ang hindi kontroladong presyon ay nagpapabilis ng pag-unlad ng LN; target na &lt;130/80 sa ACE/ARB</span><span data-lang="ceb" class="lang-hidden">Ang dili kontrolado nga presyon nagpapaspas sa pag-uswag sa LN; target nga &lt;130/80 sa ACE/ARB</span>
+      <span data-lang="kap" class="lang-hidden">Bawat pagbisita; pinakamabuti ing pagsubaybay king bale</span></td><td><span data-lang="en">Uncontrolled BP accelerates LN progression; target &lt;130/80 on ACE/ARB (angiotensin receptor blocker)</span><span data-lang="tl" class="lang-hidden">Ang hindi kontroladong presyon ay nagpapabilis ng pag-unlad ng LN; target na &lt;130/80 sa ACE/ARB</span><span data-lang="ceb" class="lang-hidden">Ang dili kontrolado nga presyon nagpapaspas sa pag-uswag sa LN; target nga &lt;130/80 sa ACE/ARB</span>
       <span data-lang="kap" class="lang-hidden">Ing ali kontroladong presyon ya nagpapabilis ning pag-unlad ning LN; target a &lt;130/80 king ACE/ARB</span></td></tr>
         <tr><td><span data-lang="en">Fasting glucose, lipids</span><span data-lang="tl" class="lang-hidden">Fasting glucose, mga lipid</span><span data-lang="ceb" class="lang-hidden">Fasting glucose, mga lipid</span>
       <span data-lang="kap" class="lang-hidden">Fasting glucose, deng lipid</span></td><td><span data-lang="en">Every 6 months</span><span data-lang="tl" class="lang-hidden">Bawat 6 buwan</span><span data-lang="ceb" class="lang-hidden">Matag 6 ka bulan</span>
@@ -2258,10 +2267,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-10-pregnancy-safety.webp" type="image/webp">
     <img src="/images/lupus-nephritis-10-pregnancy-safety.png" alt="Lupus nephritis and pregnancy safety guide: conception timing, medication safety categories, monitoring schedule, and flare management during pregnancy" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
-      <p><strong>lupus-nephritis-10-pregnancy-safety.png</strong></p>
-      <p>Two-column safe/unsafe drug grid plus pregnancy risk timeline: Left column "Safe / Continue" (green background) — HCQ, low-dose prednisone, azathioprine, low-dose aspirin, LMWH. Right column "Stop Before Conception" (red background) — MMF (stop 3 months prior), cyclophosphamide, ACEi/ARB (stop at conception), methotrexate. Bottom: pregnancy risk timeline showing 6-month remission requirement before trying to conceive, with monitoring checkpoints. Maternal-fetal risk stat box: flare rate 30–50%, pre-eclampsia 3×, preterm birth risk.</p>
     </div>
 
     <div class="two-col">
@@ -2296,7 +2303,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <div class="feature-card">
         <h4><span class="dot dot-teal"></span><span data-lang="en">Stress and sleep management</span><span data-lang="tl" class="lang-hidden">Pamamahala ng stress at tulog</span><span data-lang="ceb" class="lang-hidden">Pagdumala sa stress ug tulog</span>
       <span data-lang="kap" class="lang-hidden">Pamamahala ning stress at tulog</span></h4>
-        <p><span data-lang="en">Psychological stress is a known lupus flare trigger — cortisol and catecholamines directly alter immune regulation. 7–9 hours of quality sleep. Mindfulness-based stress reduction has RCT evidence in SLE. Regular gentle exercise (swimming, yoga, walking). Avoid overnight shifts and circadian disruption. Join a local SLE support group — the Philippine Alliance of Patient Organizations (PAPO) has SLE chapters.</span><span data-lang="tl" class="lang-hidden">Ang sikolohikal na stress ay kilalang trigger ng lupus flare — ang cortisol at catecholamines ay direktang nagbabago ng regulasyon ng immune system. 7–9 oras ng kalidad na tulog. Ang mindfulness-based stress reduction ay may ebidensya mula sa RCT sa SLE. Regular na mahinahong ehersisyo (paglangoy, yoga, paglalakad). Iwasan ang gabi na trabaho at pagkagambala ng circadian rhythm. Sumali sa isang lokal na grupo ng suporta para sa SLE — ang Philippine Alliance of Patient Organizations (PAPO) ay may mga SLE chapter.</span><span data-lang="ceb" class="lang-hidden">Ang sikolohikal nga stress nahibaloan nga trigger sa lupus flare — ang cortisol ug catecholamines direkta nga nagbag-o sa regulasyon sa immune system. 7–9 ka oras nga kalidad nga tulog. Ang mindfulness-based stress reduction adunay ebidensya gikan sa RCT sa SLE. Regular nga mahinay nga ehersisyo (paglangoy, yoga, paglakaw). Likayi ang gabii nga trabaho ug pagkaguba sa circadian rhythm. Apil sa usa ka lokal nga grupo sa suporta alang sa SLE — ang Philippine Alliance of Patient Organizations (PAPO) adunay mga SLE chapter.</span>
+        <p><span data-lang="en">Psychological stress is a known lupus flare trigger — cortisol and catecholamines directly alter immune regulation. 7–9 hours of quality sleep. Mindfulness-based stress reduction has RCT (randomized controlled trial) evidence in SLE. Regular gentle exercise (swimming, yoga, walking). Avoid overnight shifts and circadian disruption. Join a local SLE support group — the Philippine Alliance of Patient Organizations (PAPO) has SLE chapters.</span><span data-lang="tl" class="lang-hidden">Ang sikolohikal na stress ay kilalang trigger ng lupus flare — ang cortisol at catecholamines ay direktang nagbabago ng regulasyon ng immune system. 7–9 oras ng kalidad na tulog. Ang mindfulness-based stress reduction ay may ebidensya mula sa RCT sa SLE. Regular na mahinahong ehersisyo (paglangoy, yoga, paglalakad). Iwasan ang gabi na trabaho at pagkagambala ng circadian rhythm. Sumali sa isang lokal na grupo ng suporta para sa SLE — ang Philippine Alliance of Patient Organizations (PAPO) ay may mga SLE chapter.</span><span data-lang="ceb" class="lang-hidden">Ang sikolohikal nga stress nahibaloan nga trigger sa lupus flare — ang cortisol ug catecholamines direkta nga nagbag-o sa regulasyon sa immune system. 7–9 ka oras nga kalidad nga tulog. Ang mindfulness-based stress reduction adunay ebidensya gikan sa RCT sa SLE. Regular nga mahinay nga ehersisyo (paglangoy, yoga, paglakaw). Likayi ang gabii nga trabaho ug pagkaguba sa circadian rhythm. Apil sa usa ka lokal nga grupo sa suporta alang sa SLE — ang Philippine Alliance of Patient Organizations (PAPO) adunay mga SLE chapter.</span>
       <span data-lang="kap" class="lang-hidden">Ing sikolohikal a stress ya kilalang trigger ning lupus flare — ing cortisol at catecholamines ya direktang nagbabago ning regulasyon ning immune system. 7–9 oras ning kalidad a tulog. Ing mindfulness-based stress reduction ya atin ebidensya mula king RCT king SLE. Regular a mahinahong ehersisyo (paglangoy, yoga, paglalakad). Iwasan ing gabi a obran at pagkagambala ning circadian rhythm. Sumali king metung a lokal a grupo ning suporta para king SLE — ing Philippine Alliance of Patient Organizations (PAPO) ya atin deng SLE chapter.</span></p>
       </div>
       <div class="feature-card">
@@ -2321,14 +2328,14 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
   <section class="section mode-physician" id="md-quickguide">
     <div class="section-tag" style="color:var(--teal);">For Clinicians · Quick Guide</div>
     <h2>Lupus Nephritis Clinician Quick Guide</h2>
-    <p>A one-page, KDIGO 2024 + ACR 2024 summary tailored for Philippine practice — biopsy thresholds, treat-to-target goals, induction by ISN/RPS class, mandatory adjuncts, maintenance, refractory escalation, repeat-biopsy indications, special populations, and emerging therapies. Detailed sections follow below.</p>
+    <p>A one-page, KDIGO 2024 + American College of Rheumatology (ACR) 2024 summary tailored for Philippine practice — biopsy thresholds, treat-to-target goals, induction by ISN/RPS class, mandatory adjuncts, maintenance, refractory escalation, repeat-biopsy indications, special populations, and emerging therapies. Detailed sections follow below.</p>
 
     <figure style="margin:32px 0;">
   <picture>
     <source srcset="/images/lupus-nephritis-md-01-clinician-quickguide.webp" type="image/webp">
     <img src="/images/lupus-nephritis-md-01-clinician-quickguide.png" alt="Lupus nephritis one-page clinician quick guide: biopsy indications, treat-to-target goals, induction by class, adjuncts checklist, and escalation algorithm" width="1024" height="1536" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
   </section>
 
@@ -2359,7 +2366,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-ph-sle-epidemiology.webp" type="image/webp">
     <img src="/images/lupus-nephritis-ph-sle-epidemiology.png" alt="Philippines SLE epidemiology infographic: LN prevalence, Class IV predominance, ESKD risk, and mortality data from Philippine tertiary centres" width="1024" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
 
     <div class="alert alert-amber" style="background:#fffbeb;border:1px solid #fde7a7;border-radius:12px;padding:18px 22px;margin:24px 0;">
@@ -2367,7 +2374,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <ol style="margin:0 0 0 20px;font-size:14.5px;line-height:1.7;color:#7a3700;">
         <li><strong>Delayed presentation</strong> — many patients are referred only after Cr is &gt;3 or with established nephrotic syndrome.</li>
         <li><strong>Infection-related mortality</strong> — TB reactivation, fungal infections, and bacterial sepsis under triple immunosuppression are the leading killers, not the disease itself.</li>
-        <li><strong>Limited access to biologics</strong> — voclosporin (~₱120,000/month), belimumab (~₱80,000/month), and rituximab (~₱150,000 per induction) remain out of reach for most patients without HMO coverage.</li>
+        <li><strong>Limited access to biologics</strong> — voclosporin (~₱120,000/month), belimumab (~₱80,000/month), and rituximab (~₱150,000 per induction) remain out of reach for most patients without HMO (health maintenance organization) coverage.</li>
         <li><strong>Adherence cliffs</strong> — MMF cost (₱5,000–8,000/month) and steroid side effects drive interruption; flares almost always follow non-adherence rather than drug failure.</li>
       </ol>
     </div>
@@ -2396,7 +2403,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-md-02-decision-algorithm.webp" type="image/webp">
     <img src="/images/lupus-nephritis-md-02-decision-algorithm.png" alt="Lupus nephritis clinical decision flowchart: from SLE screening through biopsy, ISN/RPS class assignment, induction, and escalation at 6-month response check" width="1149" height="1369" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
 
     <div class="algo-card">
@@ -2432,7 +2439,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <tbody>
         <tr>
           <td class="drug-name">Class I / II<br>(minimal mesangial / mesangial proliferative)</td>
-          <td>HCQ + RAAS blockade. Steroids only if extrarenal SLE activity demands. No cytotoxic immunosuppression for the kidney indication alone.</td>
+          <td>HCQ + RAAS (renin–angiotensin–aldosterone system) blockade. Steroids only if extrarenal SLE activity demands. No cytotoxic immunosuppression for the kidney indication alone.</td>
           <td>Common in early presentations. Watch for evolution to proliferative class — repeat biopsy if proteinuria rises.</td>
         </tr>
         <tr>
@@ -2452,7 +2459,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         </tr>
         <tr>
           <td class="drug-name">Class VI<br>(advanced sclerotic, &gt;90% globally sclerotic)</td>
-          <td>Supportive care; immunosuppression does not reverse damage. Prepare for KRT.</td>
+          <td>Supportive care; immunosuppression does not reverse damage. Prepare for KRT (kidney replacement therapy).</td>
           <td>Often a missed Class IV that progressed unrecognized. Highest mortality cohort.</td>
         </tr>
       </tbody>
@@ -2463,10 +2470,10 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <ul style="margin:0 0 0 20px;font-size:14.5px;line-height:1.75;color:#0f4a52;">
         <li><strong>Hydroxychloroquine 5 mg/kg/day</strong> (max 400 mg) — reduces flares, improves renal response, reduces thrombotic risk. Annual ophthalmology screening after year 5.</li>
         <li><strong>RAAS blockade</strong> (ACEi or ARB) titrated to BP &lt;130/80, even in normotensive proteinuria.</li>
-        <li><strong>Statin</strong> if LDL &gt;100 (or any nephrotic-range proteinuria).</li>
+        <li><strong>Statin</strong> if LDL (low-density lipoprotein) &gt;100 (or any nephrotic-range proteinuria).</li>
         <li><strong>Pneumocystis jirovecii prophylaxis</strong> (cotrimoxazole 800/160 mg 3×/week or daily) for any patient on prednisone ≥20 mg/day for &gt;4 weeks combined with another immunosuppressant.</li>
         <li><strong>Latent TB screen</strong> before biologic initiation. PHL has high TB prevalence — IGRA preferred over TST due to BCG.</li>
-        <li><strong>Vaccinations</strong>: pneumococcal (PCV13 + PPSV23), influenza annual, HBV, HPV, COVID-19, shingles (recombinant) — ideally before starting B-cell depletion.</li>
+        <li><strong>Vaccinations</strong>: pneumococcal (PCV13 + PPSV23), influenza annual, HBV (hepatitis B virus), HPV, COVID-19 (coronavirus disease 2019), shingles (recombinant) — ideally before starting B-cell depletion.</li>
       </ul>
     </div>
 
@@ -2475,10 +2482,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-md-03-induction-regimens.webp" type="image/webp">
     <img src="/images/lupus-nephritis-md-03-induction-regimens.png" alt="Lupus nephritis induction regimens reference card: class-matched drug regimens with doses, Eurolupus vs NIH cyclophosphamide, and triple therapy criteria" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
-      <p><strong>lupus-nephritis-md-03-induction-regimens.png</strong></p>
-      <p>Clinician reference card (portrait, 3:4 ratio) — class-matched induction regimen grid. Four columns (Class I–II, III–IV, V, VI) arranged left to right with colored headers matching ISN/RPS class severity (grey → orange → red → charcoal). Each column lists glucocorticoid pulse strategy, steroid-sparing backbone (MMF vs. Eurolupus CYC), and add-on biologic options (voclosporin, belimumab) with dose callouts. A horizontal banner at the bottom reads "Universal adjuncts: HCQ · RAAS blockade · Statin · PJP prophylaxis · TB screen · Vaccinations." Color scheme: teal/navy on white with warm amber highlights for high-risk escalation steps.</p>
     </div>
   </section>
 
@@ -2515,10 +2520,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-md-04-steroid-taper-curve.webp" type="image/webp">
     <img src="/images/lupus-nephritis-md-04-steroid-taper-curve.png" alt="Lupus nephritis steroid taper curve: annotated prednisone dose timeline from pulse IV methylprednisolone through maintenance with KDIGO 2024 milestones" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
-      <p><strong>lupus-nephritis-md-04-steroid-taper-curve.png</strong></p>
-      <p>Clinical timeline graphic (landscape, 16:9 ratio) — annotated steroid taper curve for proliferative LN. X-axis: time from induction (Day 0 to Month 36+). Y-axis: prednisone-equivalent dose (0–60 mg). A smooth descending curve with labeled inflection points: pulse IV methylprednisolone spike at Day 0–3, plateau at 0.5 mg/kg weeks 1–4, stepwise taper milestones (≤10 mg at month 3, ≤7.5 mg at month 6, 2.5–5 mg beyond month 12, optional zero). Inset icons indicate monthly monitoring labs. Shaded risk bands (green = safe taper zone, amber = watch for flare, red = steroid excess / toxicity corridor). Footer note: "KDIGO 2024 — lower starting dose (0.4 mg/kg) when triple therapy used."</p>
     </div>
   </section>
 
@@ -2552,7 +2555,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <source srcset="/images/lupus-nephritis-md-05-refractory-escalation.webp" type="image/webp">
     <img src="/images/lupus-nephritis-md-05-refractory-escalation.png" alt="Refractory lupus nephritis escalation algorithm: decision tree from failed induction through switch, biologic add-on, rituximab, and plasma exchange steps" width="1536" height="1024" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;">
   </picture>
-  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+  <figcaption style="font-size:11px;color:var(--text-muted);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
 </figure>
   </section>
 
@@ -2746,7 +2749,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       </div>
       <div class="stat-card">
         <div class="stat-number">5</div>
-        <div class="stat-label">Number needed to treat to prevent 1 renal flare</div>
+        <div class="stat-label">Number needed to treat (NNT) to prevent 1 renal flare</div>
         <div class="stat-source">NNT to prevent 1 overall flare = 2</div>
       </div>
       <div class="stat-card">
@@ -2918,12 +2921,12 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
       <!-- SLEDAI panel -->
       <div class="ln-panel active" id="ln-panel-sledai">
-        <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;">Check each feature <strong>present and attributable to active SLE</strong> in the past 10 days. Each item carries the weighted score shown in parentheses. The same 24 descriptors apply to both SLEDAI-2K and SELENA-SLEDAI.</p>
+        <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;"><span data-lang="en">Check each feature <strong>present and attributable to active SLE</strong> in the past 10 days. Each item carries the weighted score shown in parentheses. The same 24 descriptors apply to both SLEDAI-2K and SELENA-SLEDAI.</span><span data-lang="tl" class="lang-hidden">Lagyan ng tsek ang bawat feature na <strong>naroroon at maiuugnay sa aktibong SLE</strong> sa nakaraang 10 araw. Bawat aytem ay may nakatalagang timbang na iskor na nakasaad sa panaklong. Ang parehong 24 na deskriptor ay ginagamit sa SLEDAI-2K at SELENA-SLEDAI.</span><span data-lang="ceb" class="lang-hidden">Butangi og tsek ang matag feature nga <strong>anaa ug mapasangil sa aktibong SLE</strong> sulod sa milabayng 10 ka adlaw. Ang matag aytem adunay gitakdang gibug-aton nga iskor nga gipakita sa panaklong. Ang parehas nga 24 ka deskriptor magamit sa SLEDAI-2K ug SELENA-SLEDAI.</span><span data-lang="kap" class="lang-hidden">Tsekan me ing balang feature a <strong>atyu at maiugne king aktibong SLE</strong> king milabas a 10 aldo. Balang aytem atin yang nakatalagang timbang a iskor a nakasulat king panaklong. Ing parehong 24 a deskriptor gagamitan da king SLEDAI-2K at SELENA-SLEDAI.</span></p>
         <div id="ln-sledai-qs"></div>
         <!-- Physician Global Assessment (PGA) — SELENA-SLEDAI component -->
         <div style="background:rgba(26,107,114,.07);border-radius:12px;padding:16px 18px;margin-top:16px;">
           <div style="font-size:12px;font-weight:700;color:var(--teal,#1a6b72);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Physician Global Assessment (PGA) — SELENA-SLEDAI</div>
-          <p style="font-size:12px;color:var(--text-muted);margin:0 0 12px;">Rate overall SLE disease activity on a 0–3 visual analogue scale. Required for SELENA-SLEDAI flare classification.</p>
+          <p style="font-size:12px;color:var(--text-muted);margin:0 0 12px;"><span data-lang="en">Rate overall SLE disease activity on a 0–3 visual analogue scale. Required for SELENA-SLEDAI flare classification.</span><span data-lang="tl" class="lang-hidden">I-rate ang kabuuang aktibidad ng sakit na SLE sa 0–3 na visual analogue scale. Kailangan para sa klasipikasyon ng flare ng SELENA-SLEDAI.</span><span data-lang="ceb" class="lang-hidden">I-rate ang kinatibuk-ang aktibidad sa sakit nga SLE sa 0–3 nga visual analogue scale. Gikinahanglan para sa klasipikasyon sa flare sa SELENA-SLEDAI.</span><span data-lang="kap" class="lang-hidden">I-rate me ing mabilug a aktibidad ning sakit a SLE king 0–3 a visual analogue scale. Kailangan para king klasipikasyon ning flare ning SELENA-SLEDAI.</span></p>
           <div style="display:flex;gap:8px;flex-wrap:wrap;" id="ln-pga-pills">
             <button class="ln-pill sel" data-pga="0" onclick="lnPgaClick(this)">0 — None</button>
             <button class="ln-pill" data-pga="0.5" onclick="lnPgaClick(this)">0.5</button>
@@ -2949,7 +2952,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
       <!-- SDI panel -->
       <div class="ln-panel" id="ln-panel-sdi">
-        <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;">Record damage <strong>present for ≥6 months since diagnosis</strong> that is not due to active inflammation. Items score 0/1 unless noted (some allow 0/1/2).</p>
+        <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;"><span data-lang="en">Record damage <strong>present for ≥6 months since diagnosis</strong> that is not due to active inflammation. Items score 0/1 unless noted (some allow 0/1/2).</span><span data-lang="tl" class="lang-hidden">Itala ang pinsalang <strong>naroroon nang ≥6 na buwan mula sa diagnosis</strong> na hindi dahil sa aktibong pamamaga. Ang mga aytem ay may iskor na 0/1 maliban kung nakasaad (may ilang pumapayag ng 0/1/2).</span><span data-lang="ceb" class="lang-hidden">Itala ang kadaut nga <strong>anaa sulod sa ≥6 ka bulan sukad sa diagnosis</strong> nga dili tungod sa aktibong hubag. Ang mga aytem adunay iskor nga 0/1 gawas kung gipahibalo (adunay pipila nga motugot og 0/1/2).</span><span data-lang="kap" class="lang-hidden">Itala me ing pinsala a <strong>atyu na king ≥6 a bulan manibat king diagnosis</strong> a e ustung dahil king aktibong pamamaga. Deng aytem atin lang iskor a 0/1 liban nung nakasulat (atin ilang papayagan a 0/1/2).</span></p>
         <div id="ln-sdi-qs"></div>
         <div class="ln-score-panel">
           <div class="ln-score-row">
@@ -2967,7 +2970,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     </div>
 
     <div class="alert alert-teal" style="margin-top:16px;display:block;padding:20px 24px;">
-      <p style="font-size:13px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin:0 0 14px;">About these tools</p>
+      <p style="font-size:13px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin:0 0 14px;"><span data-lang="en">About these tools</span><span data-lang="tl" class="lang-hidden">Tungkol sa mga tool na ito</span><span data-lang="ceb" class="lang-hidden">Mahitungod niining mga himan</span><span data-lang="kap" class="lang-hidden">Tungkol karening deng tool</span></p>
       <p style="font-size:13.5px;color:var(--text-mid);margin:0 0 12px;line-height:1.7;"><strong>SLEDAI-2K</strong> (Gladman et al., <em>J Rheumatol</em> 2002) — Modified SLEDAI allowing persistent active disease to be scored, not just new-onset features. Score ≥6 = moderate-to-high activity.</p>
       <p style="font-size:13.5px;color:var(--text-mid);margin:0 0 12px;line-height:1.7;"><strong>SELENA-SLEDAI</strong> (Petri et al., <em>Arthritis Rheum</em> 2005) — Same 24 descriptors as SLEDAI-2K, plus the Physician Global Assessment (PGA, 0–3 VAS). Used in BLISS-LN, REGENCY, AURORA, and most biologics trials. SELENA flare = SLEDAI increase ≥3 + PGA increase ≥1, or new high-dose steroids/immunosuppressants/hospitalization. PGA alone ≥1 with any new or worsening finding qualifies as a mild/moderate flare. Most published eligibility criteria for voclosporin, belimumab, and anifrolumab use SELENA-SLEDAI proteinuria thresholds.</p>
       <p style="font-size:13.5px;color:var(--text-mid);margin:0;line-height:1.7;"><strong>SLICC/ACR Damage Index (SDI)</strong> (Gladman et al., <em>Arthritis Rheum</em> 1996) — Records irreversible organ damage present for ≥6 months since diagnosis. SDI ≥1 predicts increased mortality. These calculators are educational aids — clinical judgement always takes precedence.</p>
@@ -3459,5 +3462,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

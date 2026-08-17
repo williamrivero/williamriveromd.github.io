@@ -2,19 +2,36 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Language & spelling — American English (non-negotiable)
+
+Write **all** content in **American English**, always. This is a Philippine
+audience; the Philippines uses American spelling and usage, and British
+spellings are wrong here. This applies to every deliverable and to chat replies:
+patient- and clinician-facing guide prose, image-prompt text, commit messages,
+documentation, and conversational answers.
+
+Use the American form every time: **hemodialysis** (never "haemodialysis"),
+**hemodiafiltration**, **anemia**, **edema**, **pediatric**, **color**,
+**center** / **in-center**, **fiber**, **liter**, **behavior**, **dialyze** /
+**dialyzed** (the noun "dialysis" is spelled the same in both). Prefer
+`-ize`/`-ization` over `-ise`/`-isation`, `-or` over `-our`, and `-er` over
+`-re`. Do not default to British spelling under any circumstance. (The only
+legitimate exceptions are proper nouns that are spelled that way officially —
+e.g. a journal title like *Peritoneal Dialysis International* — and pre-existing
+site-wide master-CSS code comments owned by `patch_master_css.py`.)
+
 ## What this site is
 
-`renalcarematters.com` is a static patient-education website for Dr. William Gregory M. Rivero, MD (Nephrology, Internal Medicine, Philippines). It consists of ~90 standalone HTML guides on kidney disease topics, a homepage (`index.html`), and a small Node.js proxy server for an AI feature. The repo is named `williamriveromd.github.io` for historical reasons only — that name is unrelated to the live domain.
+`renalcarematters.com` is a static patient-education website for Dr. William Gregory M. Rivero, MD (Nephrology, Internal Medicine, Philippines). It consists of ~90 standalone HTML guides on kidney disease topics and a homepage (`index.html`), served by Cloudflare Pages with no server-side component. The repo is named `williamriveromd.github.io` for historical reasons only — that name is unrelated to the live domain.
 
 ## Development commands
 
+The site is a pure static bundle served by Cloudflare Pages — there is no
+Node.js server component and no local dev server; preview by opening any
+`.html` file directly in a browser, or point a plain static server (e.g.
+`python3 -m http.server`) at the repo root.
+
 ```bash
-# Local preview server (serves the static site at localhost:3000)
-npm start                         # runs williamriveromd-server/server.js
-
-# Install server dependencies (only needed once)
-npm run install-server
-
 # Python patch scripts — run from the repo root
 python3 patch_master_css.py               # apply master CSS to all guides
 python3 patch_master_css.py --dry-run     # preview changes without writing
@@ -54,6 +71,11 @@ python3 patch_references_accordion.py --guide igan-guide.html  # single guide
 python3 audit_apa_references.py                 # check APA-7 compliance of every guide's References accordion
 python3 audit_apa_references.py --details       # show failing citation samples (which fields are missing)
 python3 audit_apa_references.py --guide igan-guide.html  # single guide; exits 1 if anything fails (CI-friendly)
+
+python3 audit_acronym_expansion.py             # every acronym expanded on FIRST use in the body (site policy — rule 13)
+python3 audit_acronym_expansion.py --details   # list every first-use violation, per guide
+python3 audit_acronym_expansion.py --report    # per-guide ratios, never exit-fails (survey the whole library)
+python3 audit_acronym_expansion.py --guide igan-guide.html  # single guide; exits 1 if any acronym is unexpanded at first use
 
 python3 patch_hero_meta.py                # hero byline: drop "Author" row, show Published date + References count
 python3 patch_hero_meta.py --dry-run
@@ -331,6 +353,38 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
     and clinicians alike open first when a term is unfamiliar. **A new guide
     is not done until this section is present with every acronym in it.**
 
+13. **Expand every acronym on first use in the content.** The first time an
+    abbreviation or acronym appears in a guide's visible body text, it must be
+    accompanied by what it stands for, in parentheses — **either order is
+    accepted**: `Continuous Quality Improvement (CQI)` or
+    `CQI (Continuous Quality Improvement)`. Every subsequent use may be the bare
+    acronym. This is a **site-wide policy**, not per-guide, and it holds for
+    patient- and clinician-facing guides alike (the on-page glossary of rule 12
+    is the dictionary; this rule is the first-use courtesy in the running prose).
+    - **Scope = English body prose.** Expand in the `data-lang="en"` content. Hero
+      **titles** and the section **nav-strip pills** are display chrome and stay as
+      bare acronyms (expanding a headline reads poorly); the expansion lands at the
+      first occurrence in the running text (a lead paragraph, an intro callout, or
+      the dashboard/table row where the acronym first appears). For a multilingual
+      guide, mirror the expansion into the TL/CEB/KAP sibling spans when you touch
+      that string.
+    - **Formula/symbol notation is exempt** — dialysis-dose notation (`Kt/V`,
+      `spKt/V`, `eKt/V`) and element/ion symbols (`Na`, `K`, `Ca`, `PO₄`) are not
+      initialisms and are defined in the glossary instead. A short curated exempt
+      list (near-universal tokens like `IV`, `PO`, `BP`) lives in the audit script.
+    - **`audit_acronym_expansion.py`** enforces it (structural check: is a
+      parenthetical carrying the acronym present at/around its first content use).
+      Same exclusion set as `audit_apa_references.py` (calculators, printable logs,
+      the atlas/physiology pages are skipped). Usage:
+      `python3 audit_acronym_expansion.py` (site summary, exits 1 on any violation),
+      `--details` (list every violation), `--guide <file>` (one guide),
+      `--report` (per-guide ratios, never exit-fails). The acronym set is each
+      guide's own Glossary "Abbreviations" list UNION a curated global list at the
+      top of the script — **add new acronyms there as they enter the library.**
+    - **Run it before declaring a touched guide done** (like the APA audit). The
+      existing library is being brought into compliance on-touch; a guide you edit
+      should come out at `N/N` for the acronyms it uses.
+
 9. **Category-tinted Latest-guides cards.** Each section in `guides/index.html`
    (`<div class="guide-section" data-section="…">`) has its own colour — visible
    as the small `.section-color-bar` ("|") before the section title:
@@ -475,8 +529,6 @@ Standard credential line (top-strip, every companion):
 > PSN HD endorsement form is an official external document and is intentionally left
 > in its original style.
 
-The server requires `williamriveromd-server/.env` with `ANTHROPIC_API_KEY=...`.
-
 There are no automated tests or linters.
 
 ## Architecture
@@ -570,14 +622,6 @@ Two token sets exist — **do not mix them**:
 Guides also expose `--text-mid`, `--text-muted`, `--text-faint`, `--red`, `--red-soft`, `--amber`, `--amber-soft`, `--green`, `--green-soft`, `--purple`, `--purple-soft`. All foreground/background combinations are WCAG AA verified (≥4.5:1 normal text, ≥3:1 large text).
 
 Dark mode on the homepage is `html[data-theme="dark"]`. Guides do not currently have dark mode.
-
-### Node.js proxy server (`williamriveromd-server/`)
-
-An Express server that:
-1. Serves the static site (fallback: `index.html` for any unknown route)
-2. Exposes `POST /api/analyze` — proxies to `https://api.anthropic.com/v1/messages`, hard-codes model to `claude-haiku-4-5-20251001` and caps `max_tokens` at 2000, rate-limited to 20 req / 15 min
-
-This server is not used in Cloudflare Pages production (which serves only static files). It supports local development and any alternative hosting where server-side API key protection is needed.
 
 ### Supporting data files
 

@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -164,6 +165,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1332,8 +1341,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1969,7 +1980,7 @@
     <span data-lang="kap" class="lang-hidden">Ing Referral Pathway king Pilipinas</span>
   </h3>
   <p>
-    <span data-lang="en">Most patients reach a nephrologist through the tiered public health system: <strong>Barangay Health Center → Rural Health Unit (RHU) → Secondary Hospital → Tertiary Hospital</strong> (NKTI, PGH, regional centers). Private patients may go directly to a nephrology clinic. If you are covered by <strong>PhilHealth</strong>, ask your referring physician about the <strong>Z-benefit package for CKD</strong> — it covers outpatient dialysis, erythropoiesis-stimulating agents, and specialist consultations for qualified members.</span>
+    <span data-lang="en">Most patients reach a nephrologist through the tiered public health system: <strong>Barangay Health Center → Rural Health Unit (RHU) → Secondary Hospital → Tertiary Hospital</strong> (NKTI, PGH, regional centers). Private patients may go directly to a nephrology clinic. If you are covered by <strong>PhilHealth (Philippine Health Insurance Corporation)</strong>, ask your referring physician about the <strong>Z-benefit package for CKD</strong> — it covers outpatient dialysis, erythropoiesis-stimulating agents, and specialist consultations for qualified members.</span>
     <span data-lang="tl" class="lang-hidden">Karamihan sa mga pasyente ay nakakaabot sa nephrologist sa pamamagitan ng tiered public health system: <strong>Barangay Health Center → Rural Health Unit (RHU) → Secondary Hospital → Tertiary Hospital</strong> (NKTI, PGH, mga regional center). Ang mga private na pasyente ay maaaring pumunta nang direkta sa isang nephrology clinic. Kung sakop kayo ng <strong>PhilHealth</strong>, itanong sa inyong referring physician ang tungkol sa <strong>Z-benefit package para sa CKD</strong> — sinasaklaw nito ang outpatient dialysis, erythropoiesis-stimulating agents, at mga specialist consultation para sa mga kwalipikadong miyembro.</span>
     <span data-lang="ceb" class="lang-hidden">Kadaghanan sa mga pasyente nakaabot sa nephrologist pinaagi sa tiered public health system: <strong>Barangay Health Center → Rural Health Unit (RHU) → Secondary Hospital → Tertiary Hospital</strong> (NKTI, PGH, mga regional center). Ang mga private nga pasyente mahimong moadto direkta sa nephrology clinic. Kung sakop ka sa <strong>PhilHealth</strong>, pangutan-a ang imong referring physician mahitungod sa <strong>Z-benefit package alang sa CKD</strong> — kini naglakip sa outpatient dialysis, erythropoiesis-stimulating agents, ug specialist consultations alang sa mga kwalipikadong miyembro.</span>
     <span data-lang="kap" class="lang-hidden">Karamian king mga pasyente makarating king nephrologist king pamamagitan ning tiered public health system: <strong>Barangay Health Center → Rural Health Unit (RHU) → Secondary Hospital → Tertiary Hospital</strong> (NKTI, PGH, mga regional center). Ing mga private a pasyente malyari lang pumunta direkta king nephrology clinic. Nung sakop ka ning <strong>PhilHealth</strong>, tanungan ing iyong referring physician tungkol king <strong>Z-benefit package para king CKD</strong> — sinasaklaw na ing outpatient dialysis, erythropoiesis-stimulating agents, at mga specialist consultation para king mga kwalipikadong miyembro.</span>
@@ -2015,7 +2026,7 @@
           <span data-lang="kap" class="lang-hidden">Ilista ing lahat ning inyong mga gamot</span>
         </strong>
         <p>
-          <span data-lang="en">Include dose and frequency for every prescription, over-the-counter drug, supplement, and herbal medicine. NSAIDs, herbal teas, and certain antibiotics are common kidney stressors.</span>
+          <span data-lang="en">Include dose and frequency for every prescription, over-the-counter drug, supplement, and herbal medicine. Non-steroidal anti-inflammatory drugs (NSAIDs), herbal teas, and certain antibiotics are common kidney stressors.</span>
           <span data-lang="tl" class="lang-hidden">Isama ang dose at frequency ng bawat reseta, over-the-counter na gamot, supplement, at herbal na gamot. Ang mga NSAID, herbal tea, at ilang mga antibiotic ay karaniwang nakakasama sa bato.</span>
           <span data-lang="ceb" class="lang-hidden">Ilakip ang dose ug frequency sa matag reseta, over-the-counter nga tambal, supplement, ug herbal nga tambal. Ang mga NSAID, herbal tea, ug pipila ka antibiotics kasagarang nakapangabot sa mga kidney.</span>
           <span data-lang="kap" class="lang-hidden">Isama ing dose at frequency ning balang reseta, over-the-counter a gamot, supplement, at herbal a gamot. Ing mga NSAID, herbal tea, at deng timu-timu a antibiotics ay karaniwan a nakakasama king batu.</span>
@@ -2163,7 +2174,7 @@
     <tbody>
       <tr>
         <td><strong>Serum Creatinine</strong></td>
-        <td><span data-lang="en">Calculates eGFR; tracks kidney function over time</span><span data-lang="tl" class="lang-hidden">Kinakalkula ang eGFR; sinusubaybayan ang kidney function sa paglipas ng panahon</span><span data-lang="ceb" class="lang-hidden">Nag-calculates sa eGFR; nagsubay sa kidney function sa paglabay sa panahon</span><span data-lang="kap" class="lang-hidden">Kinakalkula ing eGFR; sinusubaybayan ing kidney function sa paglabas ning panahon</span></td>
+        <td><span data-lang="en">Calculates estimated glomerular filtration rate (eGFR); tracks kidney function over time</span><span data-lang="tl" class="lang-hidden">Kinakalkula ang eGFR; sinusubaybayan ang kidney function sa paglipas ng panahon</span><span data-lang="ceb" class="lang-hidden">Nag-calculates sa eGFR; nagsubay sa kidney function sa paglabay sa panahon</span><span data-lang="kap" class="lang-hidden">Kinakalkula ing eGFR; sinusubaybayan ing kidney function sa paglabas ning panahon</span></td>
         <td>mg/dL</td>
         <td>0.6–1.2 (M); 0.5–1.1 (F)</td>
       </tr>
@@ -2201,7 +2212,7 @@
         <td><strong>CBC</strong></td>
         <td><span data-lang="en">Hemoglobin checks for renal anemia (common from Stage 3)</span><span data-lang="tl" class="lang-hidden">Sinisuri ng hemoglobin ang renal anemia (karaniwan mula Stage 3)</span><span data-lang="ceb" class="lang-hidden">Ang hemoglobin nagsusi sa renal anemia (kasagaran gikan Stage 3)</span><span data-lang="kap" class="lang-hidden">Sinisuri ning hemoglobin ing renal anemia (karaniwan gikan Stage 3)</span></td>
         <td>g/dL</td>
-        <td>Hgb: 12–16 (F); 13–17 (M)</td>
+        <td>Hgb (hemoglobin): 12–16 (F); 13–17 (M)</td>
       </tr>
       <tr>
         <td><strong>Urinalysis + Spot UPCR</strong></td>
@@ -2219,7 +2230,7 @@
         <td><strong>Lipid Panel</strong></td>
         <td><span data-lang="en">Cardiovascular risk is the leading cause of death in CKD</span><span data-lang="tl" class="lang-hidden">Ang cardiovascular risk ay ang nangungunang sanhi ng kamatayan sa CKD</span><span data-lang="ceb" class="lang-hidden">Ang cardiovascular risk ang nanguna nga hinungdan sa kamatayon sa CKD</span><span data-lang="kap" class="lang-hidden">Ing cardiovascular risk ay ing nangungunang sanhi ning kamatayan king CKD</span></td>
         <td>mg/dL</td>
-        <td>LDL &lt; 100 (CKD); TG &lt; 150</td>
+        <td>LDL (low-density lipoprotein) &lt; 100 (CKD); TG &lt; 150</td>
       </tr>
     </tbody>
   </table>
@@ -2236,7 +2247,7 @@
         <li><span data-lang="en">Kidney-ureter-bladder (KUB) ultrasound — most important</span><span data-lang="tl" class="lang-hidden">KUB ultrasound — pinakamahalaga</span><span data-lang="ceb" class="lang-hidden">KUB ultrasound — labing importante</span><span data-lang="kap" class="lang-hidden">KUB ultrasound — pinakamahalaga</span></li>
         <li><span data-lang="en">Any CT scan of abdomen/pelvis (report + CD/films)</span><span data-lang="tl" class="lang-hidden">Anumang CT scan ng abdomen/pelvis</span><span data-lang="ceb" class="lang-hidden">Bisan unsang CT scan sa abdomen/pelvis</span><span data-lang="kap" class="lang-hidden">Anung CT scan ning abdomen/pelvis</span></li>
         <li><span data-lang="en">Chest X-ray (checks for fluid overload)</span><span data-lang="tl" class="lang-hidden">Chest X-ray (sinisuri ang fluid overload)</span><span data-lang="ceb" class="lang-hidden">Chest X-ray (nagsusi sa fluid overload)</span><span data-lang="kap" class="lang-hidden">Chest X-ray (sinisuri ing fluid overload)</span></li>
-        <li><span data-lang="en">ECG if you have heart disease or high potassium</span><span data-lang="tl" class="lang-hidden">ECG kung mayroon kayong heart disease o mataas na potasium</span><span data-lang="ceb" class="lang-hidden">ECG kung adunay ka heart disease o taas nga potassium</span><span data-lang="kap" class="lang-hidden">ECG nung mayroon kang heart disease o mataas a potasium</span></li>
+        <li><span data-lang="en">ECG (electrocardiogram) if you have heart disease or high potassium</span><span data-lang="tl" class="lang-hidden">ECG kung mayroon kayong heart disease o mataas na potasium</span><span data-lang="ceb" class="lang-hidden">ECG kung adunay ka heart disease o taas nga potassium</span><span data-lang="kap" class="lang-hidden">ECG nung mayroon kang heart disease o mataas a potasium</span></li>
       </ul>
     </div>
     <div class="feature-card">
@@ -2249,7 +2260,7 @@
       <ul>
         <li><span data-lang="en">Any prior kidney disease diagnosis (IgA nephropathy, FSGS, etc.)</span><span data-lang="tl" class="lang-hidden">Anumang nakaraang diagnosis ng sakit sa bato</span><span data-lang="ceb" class="lang-hidden">Bisan unsang miaging diagnosis sa kidney disease</span><span data-lang="kap" class="lang-hidden">Anung nakalipas a diagnosis ning sakit king batu</span></li>
         <li><span data-lang="en">Family history: kidney disease, dialysis, transplant</span><span data-lang="tl" class="lang-hidden">Family history: sakit sa bato, dialysis, transplant</span><span data-lang="ceb" class="lang-hidden">Family history: kidney disease, dialysis, transplant</span><span data-lang="kap" class="lang-hidden">Family history: sakit king batu, dialysis, transplant</span></li>
-        <li><span data-lang="en">History of recurrent UTIs or kidney stones</span><span data-lang="tl" class="lang-hidden">History ng paulit-ulit na UTI o kidney stones</span><span data-lang="ceb" class="lang-hidden">History sa kanunay nga UTI o kidney stones</span><span data-lang="kap" class="lang-hidden">History ning paulit-ulit a UTI o kidney stones</span></li>
+        <li><span data-lang="en">History of recurrent urinary tract infections (UTIs) or kidney stones</span><span data-lang="tl" class="lang-hidden">History ng paulit-ulit na UTI o kidney stones</span><span data-lang="ceb" class="lang-hidden">History sa kanunay nga UTI o kidney stones</span><span data-lang="kap" class="lang-hidden">History ning paulit-ulit a UTI o kidney stones</span></li>
         <li><span data-lang="en">Diabetes, hypertension, lupus, or gout diagnoses</span><span data-lang="tl" class="lang-hidden">Mga diagnosis ng diabetes, hypertension, lupus, o gout</span><span data-lang="ceb" class="lang-hidden">Mga diagnosis sa diabetes, hypertension, lupus, o gout</span><span data-lang="kap" class="lang-hidden">Mga diagnosis ning diabetes, hypertension, lupus, o gout</span></li>
       </ul>
     </div>
@@ -2311,7 +2322,7 @@
     <div class="num-card">
       <div class="num-val">BP &lt; 130/80</div>
       <div class="num-lbl">
-        <span data-lang="en">The KDIGO 2024 CKD blood pressure target. Uncontrolled hypertension is the single biggest accelerator of CKD progression — more important than diet alone.</span>
+        <span data-lang="en">The Kidney Disease: Improving Global Outcomes (KDIGO) 2024 CKD blood pressure target. Uncontrolled hypertension is the single biggest accelerator of CKD progression — more important than diet alone.</span>
         <span data-lang="tl" class="lang-hidden">Ang KDIGO 2024 na target ng blood pressure para sa CKD. Ang hindi nakontrolang hypertension ay ang pinakamalaking accelerator ng pag-unlad ng CKD — mas mahalaga kaysa sa diyeta lamang.</span>
         <span data-lang="ceb" class="lang-hidden">Ang KDIGO 2024 blood pressure target para sa CKD. Ang wala makontrola nga hypertension ang labing dako nga accelerator sa pag-uswag sa CKD — mas importante kaysa sa diyeta lang.</span>
         <span data-lang="kap" class="lang-hidden">Ing KDIGO 2024 a target ning blood pressure para king CKD. Ing hindi nakontrolang hypertension ay ing pinakamalaking accelerator ning pag-asenso ning CKD — mas mahalaga kaysa king diyeta lamang.</span>
@@ -2432,7 +2443,7 @@
         <button class="qb-btn" onclick="qbToggle(this)" data-q="What pain relievers are safe for me to use given my kidney disease?">
           What pain relievers can I use?</button>
         <button class="qb-btn" onclick="qbToggle(this)" data-q="Should I be on an ACE inhibitor or ARB to protect my kidneys?">
-          Do I need ACE inhibitor / ARB?</button>
+          Do I need ACE inhibitor / angiotensin receptor blocker (ARB)?</button>
       </div>
     </div>
 
@@ -2924,6 +2935,7 @@ function qbClear() {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>
 

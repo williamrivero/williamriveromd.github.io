@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -142,6 +143,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1310,8 +1319,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1817,8 +1828,8 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1829,11 +1840,11 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
         <div class="ov-card">
           <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
           <div class="ov-list">
-            <div class="ov-stat"><span class="v">33–86%</span><span class="l">Intradialytic cramp prevalence reported in HD cohorts</span></div>
+            <div class="ov-stat"><span class="v">33–86%</span><span class="l">Intradialytic cramp prevalence reported in hemodialysis (HD) cohorts</span></div>
             <div class="ov-stat"><span class="v">~73%</span><span class="l">Cramps clustering in the final hour of HD</span></div>
             <div class="ov-stat"><span class="v">~85%</span><span class="l">HD patients with measurable carnitine deficiency</span></div>
             <div class="ov-stat"><span class="v">≤10</span><span class="l">Target UFR (mL/kg/h) to lower hemodynamic stress</span></div>
-            <div class="ov-stat"><span class="v">ABI</span><span class="l">Required before any leg compression in CKD</span></div>
+            <div class="ov-stat"><span class="v">ABI</span><span class="l">(ankle–brachial index) Required before any leg compression in chronic kidney disease (CKD)</span></div>
           </div>
           <a class="ov-foot" href="#md-pathophys">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
         </div>
@@ -1908,10 +1919,10 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-serca-relaxation-pump.webp" type="image/webp">
 <img src="../images/dialysis-cramps-serca-relaxation-pump.png" loading="lazy" width="1792" height="1024" alt="Multi-scale schematic of the SERCA Ca²⁺ ATPase pump on the sarcoplasmic reticulum, showing how falling ATP supply during ultrafiltration causes failure of muscle relaxation." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">A Filipino hemodialysis patient's lower leg showing intradialytic calf cramping and a brown gaiter of stasis pigmentation — two signals from one struggling leg.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">A Filipino hemodialysis patient's lower leg showing intradialytic calf cramping and a brown gaiter of stasis pigmentation — two signals from one struggling leg.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
-  <p><span data-lang="en">Most people think the hard work a muscle does is the squeezing — the contraction. The truth is the opposite. A muscle only stays painful and locked if it cannot <strong>relax</strong>. Relaxation is the part that runs on energy. Inside every muscle cell there is a tiny pump called <strong>SERCA</strong> that uses energy (ATP) to vacuum calcium back into storage so the muscle can let go. No ATP — no relaxation — and the muscle stays cramped, sometimes for minutes.</span><span class="lang-hidden" data-lang="tl">Karamihan ay nag-iisip na ang mahirap na trabaho ng kalamnan ay ang paghigpit — ang pagkontrak. Ang katotohanan ay kabaligtaran. Ang kalamnan ay nananatili lamang masakit at naka-lock kapag hindi ito makapag-<strong>relax</strong>. Ang pagrelax ang siyang gumagamit ng enerhiya. Sa bawat selula ng kalamnan ay may maliit na pump na tinatawag na <strong>SERCA</strong> na gumagamit ng ATP upang ibalik ang calcium sa imbakan nito, kaya nakakapagpakawala ang kalamnan. Kapag walang ATP — walang relax — at ang kalamnan ay mananatiling naka-pulikat, minsan ng ilang minuto.</span><span class="lang-hidden" data-lang="ceb">Kasagaran nag-isip ang mga tawo nga ang lisod nga trabaho sa kaunoran mao ang paghigot — ang pagkontrak. Ang tinuod sukwahi. Magpabilin lamang ang kaunoran nga sakit ug naka-lock kung dili kini maka-<strong>relax</strong>. Ang pag-relax mao ang gigamit og kusog. Sa matag selula sa kaunoran adunay gamay nga pump nga tawag og <strong>SERCA</strong> nga naggamit og ATP aron ibalik ang calcium sa tindahan niini, aron makabuhi ang kaunoran. Kung walay ATP — walay relax — ug ang kaunoran magpabilin nga naka-kulokot, usahay sulod sa pipila ka minuto.</span><span class="lang-hidden" data-lang="kap">Reng dakal a tau magisip lang ing malisud a obra na ning kaunan iyang pamamuk — reng pamigkontrak. Reng matua mas-sukwahi. Mananatili mu ya makasakit at naka-lock ing kaunan nung ali ya maka-<strong>relax</strong>. Reng pamag-relax iyang manga-aksaya gamit kalakasan. Keng dilas a selula na ning kaunan, ating malating pump a awsan dang <strong>SERCA</strong> a gagamit ATP bang ibalik ya ing calcium karing pisanan na, bang makabuhi ya ing kaunan. Nung alang ATP — alang relax — at ing kaunan mananatili ya naka-pulikat, minsan na ning mapilan a minuto.</span></p>
+  <p><span data-lang="en">Most people think the hard work a muscle does is the squeezing — the contraction. The truth is the opposite. A muscle only stays painful and locked if it cannot <strong>relax</strong>. Relaxation is the part that runs on energy. Inside every muscle cell there is a tiny pump called <strong>SERCA</strong> (sarco/endoplasmic reticulum Ca²⁺-ATPase) that uses energy (ATP) to vacuum calcium back into storage so the muscle can let go. No ATP — no relaxation — and the muscle stays cramped, sometimes for minutes.</span><span class="lang-hidden" data-lang="tl">Karamihan ay nag-iisip na ang mahirap na trabaho ng kalamnan ay ang paghigpit — ang pagkontrak. Ang katotohanan ay kabaligtaran. Ang kalamnan ay nananatili lamang masakit at naka-lock kapag hindi ito makapag-<strong>relax</strong>. Ang pagrelax ang siyang gumagamit ng enerhiya. Sa bawat selula ng kalamnan ay may maliit na pump na tinatawag na <strong>SERCA</strong> na gumagamit ng ATP upang ibalik ang calcium sa imbakan nito, kaya nakakapagpakawala ang kalamnan. Kapag walang ATP — walang relax — at ang kalamnan ay mananatiling naka-pulikat, minsan ng ilang minuto.</span><span class="lang-hidden" data-lang="ceb">Kasagaran nag-isip ang mga tawo nga ang lisod nga trabaho sa kaunoran mao ang paghigot — ang pagkontrak. Ang tinuod sukwahi. Magpabilin lamang ang kaunoran nga sakit ug naka-lock kung dili kini maka-<strong>relax</strong>. Ang pag-relax mao ang gigamit og kusog. Sa matag selula sa kaunoran adunay gamay nga pump nga tawag og <strong>SERCA</strong> nga naggamit og ATP aron ibalik ang calcium sa tindahan niini, aron makabuhi ang kaunoran. Kung walay ATP — walay relax — ug ang kaunoran magpabilin nga naka-kulokot, usahay sulod sa pipila ka minuto.</span><span class="lang-hidden" data-lang="kap">Reng dakal a tau magisip lang ing malisud a obra na ning kaunan iyang pamamuk — reng pamigkontrak. Reng matua mas-sukwahi. Mananatili mu ya makasakit at naka-lock ing kaunan nung ali ya maka-<strong>relax</strong>. Reng pamag-relax iyang manga-aksaya gamit kalakasan. Keng dilas a selula na ning kaunan, ating malating pump a awsan dang <strong>SERCA</strong> a gagamit ATP bang ibalik ya ing calcium karing pisanan na, bang makabuhi ya ing kaunan. Nung alang ATP — alang relax — at ing kaunan mananatili ya naka-pulikat, minsan na ning mapilan a minuto.</span></p>
   <p><span data-lang="en">ATP is made by your cells when there is enough <strong>oxygen</strong> reaching them and enough <strong>fuel and cofactors</strong> (B-vitamins, carnitine, magnesium, CoQ10) to run the engine. Anything that lowers oxygen delivery to the muscle, or runs the engine down on fuel and cofactors, is one step away from a cramp.</span><span class="lang-hidden" data-lang="tl">Ang ATP ay ginagawa ng iyong mga selula kapag sapat ang <strong>oxygen</strong> na umaabot sa kanila at sapat ang <strong>panggatong at cofactors</strong> (B-vitamins, carnitine, magnesium, CoQ10) upang patakbuhin ang makina. Anumang nagpapababa sa oxygen na pumapasok sa kalamnan, o nagpapaubos ng panggatong at cofactors, ay isang hakbang lamang palayo sa pulikat.</span><span class="lang-hidden" data-lang="ceb">Ang ATP gibuhat sa imong mga selula kung igo ang <strong>oxygen</strong> nga moabot kanila ug igo ang <strong>sugnod ug cofactors</strong> (B-vitamins, carnitine, magnesium, CoQ10) aron padaganon ang makina. Bisan unsa nga nagpaubos sa oxygen nga moabot sa kaunoran, o nagpaubos sa sugnod ug cofactors, usa lamang ka lakang palayo sa kulokot.</span><span class="lang-hidden" data-lang="kap">Reng ATP gagawa la na ning imung selulas nung sapat ya ing <strong>oxygen</strong> a daratang karela at sapat la reng <strong>sugnod ampo reng cofactors</strong> (B-vitamins, carnitine, magnesium, CoQ10) bang patakbuhin ya ing makina. Nung nanumang pamiyabang king oxygen a duduming king kaunan, o pamiyabang king sugnod at cofactors, metung mu ya kang lakad palayu king pulikat.</span></p>
   <div class="alert alert-teal">
     <div class="alert-icon">💡</div>
@@ -1930,7 +1941,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-5hit-mechanism.webp" type="image/webp">
 <img src="../images/dialysis-cramps-5hit-mechanism.png" loading="lazy" width="1792" height="1024" alt="Review-article schematic of the five-hit cramp mechanism converging on SERCA failure — hypoperfusion, contraction alkalosis, electrolyte shift, cofactor-limited ATP, mechanical stretch." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Review-article schematic of the five-hit cramp mechanism converging on SERCA failure — hypoperfusion, contraction alkalosis, electrolyte shift, cofactor-limited ATP, mechanical stretch.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Review-article schematic of the five-hit cramp mechanism converging on SERCA failure — hypoperfusion, contraction alkalosis, electrolyte shift, cofactor-limited ATP, mechanical stretch.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p><span data-lang="en">Roughly seven of every ten dialysis cramps happen in the final hour of the session, exactly when the most fluid has been removed and your blood pressure is lowest. Five different things converge on the same end point — a muscle that cannot make enough ATP to let go.</span><span class="lang-hidden" data-lang="tl">Halos pito sa bawat sampung pulikat sa dialysis ay nangyayari sa huling oras ng sesyon, sa eksaktong oras na pinakamaraming likido na ang naalis at pinakamababa ang iyong presyon ng dugo. Limang magkakaibang bagay ang nagsasama sa parehong dulo — isang kalamnan na hindi makagawa ng sapat na ATP upang magpakawala.</span><span class="lang-hidden" data-lang="ceb">Mga pito sa matag napulo ka kulokot sa dialysis mahitabo sa kataposang oras sa sesyon, sa eksaktong panahon nga labing daghan na ang tubig nga gikuha ug labing ubos na ang imong presyon sa dugo. Lima ka lahi nga butang nagtagbo sa parehas nga tumoy — usa ka kaunoran nga dili makahimo og igo nga ATP aron makabuhi.</span><span class="lang-hidden" data-lang="kap">Pituan king dilas mapulu a pulikat king dialysis matuli la king tauling oras na ning sesyon, kabud king panaun a kabud kayatian ne mailis ya ing danum at kabud kababang presyon na ning daya mu. Limang miyaibang bage saut lang king dilas a sapnu — metung a kaunan a ali makayari ATP bang makabuhi.</span></p>
@@ -1969,9 +1980,9 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
   <figure style="margin:28px 0;">
 <picture>
 <source srcset="../images/dialysis-cramps-hemosiderin-pathway.webp" type="image/webp">
-<img src="../images/dialysis-cramps-hemosiderin-pathway.png" loading="lazy" width="1792" height="1024" alt="Schematic of chronic venous hypertension widening dermal capillary junctions, with red cell extravasation, hemosiderin deposition, MMP-driven matrix damage, and the consequence ladder to stasis ulcer." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
+<img src="../images/dialysis-cramps-hemosiderin-pathway.png" loading="lazy" width="1792" height="1024" alt="Schematic of chronic venous hypertension widening dermal capillary junctions, with red cell extravasation, hemosiderin deposition, matrix metalloproteinase (MMP)-driven matrix damage, and the consequence ladder to stasis ulcer." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Schematic of chronic venous hypertension widening dermal capillary junctions, with red cell extravasation, hemosiderin deposition, MMP-driven matrix damage, and the consequence ladder to stasis ulcer.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Schematic of chronic venous hypertension widening dermal capillary junctions, with red cell extravasation, hemosiderin deposition, matrix metalloproteinase (MMP)-driven matrix damage, and the consequence ladder to stasis ulcer.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p><span data-lang="en">The brown discoloration you see is not dirt, sun, or melanin. It is <strong>iron</strong> — specifically the iron from red blood cells that have leaked out of the tiny vessels in the skin of your lower legs and broken down. The body cannot mop the iron up fast enough, so it stays in the tissue as a pigment called <strong>hemosiderin</strong>. Once deposited it is very slow to clear, which is why the gaiter pattern persists for years.</span><span class="lang-hidden" data-lang="tl">Ang kayumanggi sa balat ay hindi dumi, araw, o melanin. Ito ay <strong>bakal</strong> — partikular ang bakal mula sa mga pulang selula ng dugo na tumagas sa mga maliliit na ugat sa balat ng iyong ibabang binti at nasira. Hindi kayang malinis ng katawan ang bakal nang mabilis, kaya nananatili ito sa tisyu bilang isang pigmento na tinatawag na <strong>hemosiderin</strong>. Kapag naipon na, napakabagal itong mawala, kaya nananatili ang gaiter pattern sa loob ng mga taon.</span><span class="lang-hidden" data-lang="ceb">Ang itom nga kolor sa panit dili hugaw, adlaw, o melanin. Kini <strong>puthaw</strong> — partikular ang puthaw gikan sa mga pula nga selula sa dugo nga nagatulo gikan sa gagmay nga mga ugat sa panit sa imong ubos nga bitiis ug naguba. Dili madagan-dagan sa lawas ang puthaw, busa magpabilin kini sa tisyu isip pigmento nga tawag og <strong>hemosiderin</strong>. Kung gibilin na, dugay kaayo nga mawala, mao nga nagpabilin ang gaiter pattern sulod sa mga tuig.</span><span class="lang-hidden" data-lang="kap">Reng mangingitim a balat ali ya pati, aldo, o melanin. Iya ya <strong>bakal</strong> — partikular reng bakal ibat keng malulutung selulas na ning daya a tinula keng maliliting ugat king balat na ning baba mung bitis at nasira. Ali na ya makayari ya ing katawan ya ing bakal a mabilis, kaya mananatili ya king tisyu bilang pigmento a awsan dang <strong>hemosiderin</strong>. Pamipinanun ne, marayu yang mawala, kaya mananatili ya ing gaiter pattern king mabilug a banwa.</span></p>
@@ -1987,7 +1998,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-two-axes-one-field.webp" type="image/webp">
 <img src="../images/dialysis-cramps-two-axes-one-field.png" loading="lazy" width="1792" height="1024" alt="Two-panel comparison showing the acute axis (intradialytic cramp) and chronic axis (brown gaiter pigmentation) descending from a single shared upstream field of lower-limb hypoxia." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Two-panel comparison showing the acute axis (intradialytic cramp) and chronic axis (brown gaiter pigmentation) descending from a single shared upstream field of lower-limb hypoxia.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Two-panel comparison showing the acute axis (intradialytic cramp) and chronic axis (brown gaiter pigmentation) descending from a single shared upstream field of lower-limb hypoxia.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p><span data-lang="en">The cramp lives on a <em>fast clock</em> — minutes to hours, tied to the dialysis session. The pigment lives on a <em>slow clock</em> — months to years, the residue of every hour you spent on your feet between sessions. But both share the same underlying battlefield: an overloaded, congested, low-oxygen lower limb.</span><span class="lang-hidden" data-lang="tl">Ang pulikat ay nasa <em>mabilis na orasan</em> — minuto hanggang oras, nakatali sa sesyon ng dialysis. Ang pigmento ay nasa <em>mabagal na orasan</em> — buwan hanggang taon, ang tira ng bawat oras na nakatayo ka sa pagitan ng mga sesyon. Pero pareho silang may kaparehong larangan: isang sobrang puno, naipipit, mababa-sa-oxygen na ibabang binti.</span><span class="lang-hidden" data-lang="ceb">Ang kulokot naa sa <em>kusog nga orasan</em> — minuto hangtod oras, nahigot sa sesyon sa dialysis. Ang pigmento naa sa <em>hinay nga orasan</em> — bulan hangtod tuig, ang nahabilin sa matag oras nga nagtindog ka tali sa mga sesyon. Apan parehas silang nagdumala sa parehas nga gubat: usa ka napuno, gipiit, ubos-sa-oxygen nga ubos nga bitiis.</span><span class="lang-hidden" data-lang="kap">Reng pulikat ya pati king <em>mabilis a orasan</em> — minuto hanggang oras, makatali ya king sesyon na ning dialysis. Reng pigmento ya pati king <em>mabayat a orasan</em> — banwa hanggang banua, ing tira na ning dilas a oras a nakatindig ka kabang reng sesyon. Pero pareho lang dakal a labuad: metung a napuno, tinipas, mababang-oxygen a baba a bitis.</span></p>
@@ -2060,7 +2071,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-spectrum-staircase.webp" type="image/webp">
 <img src="../images/dialysis-cramps-spectrum-staircase.png" loading="lazy" width="1792" height="1024" alt="Seven-stage horizontal staircase of the Hypoxic Lower-Limb Spectrum, from subclinical through critical limb-threatening ischemia, with the diabetes-accelerator rail underneath." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Seven-stage horizontal staircase of the Hypoxic Lower-Limb Spectrum, from subclinical through critical limb-threatening ischemia, with the diabetes-accelerator rail underneath.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Seven-stage horizontal staircase of the Hypoxic Lower-Limb Spectrum, from subclinical through critical limb-threatening ischemia, with the diabetes-accelerator rail underneath.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p><span data-lang="en">The cramps you feel today and the brown gaiter you may see tomorrow are not separate problems — they are <strong>two visible milestones on a single, slow-moving spectrum</strong> of lower-limb hypoxia. Diabetes does not change the spectrum; it just <em>pushes you along it faster</em>, and at its later stages it changes the kind of wound that finally appears. Knowing where you stand on the spectrum is how you spot the next milestone before it arrives.</span><span class="lang-hidden" data-lang="tl">Ang pulikat na nararamdaman mo ngayon at ang kayumanggi sa balat na maaari mong makita bukas ay hindi magkahiwalay na problema — sila ay <strong>dalawang nakikitang milyahe sa iisang dahan-dahan na spectrum</strong> ng kakulangan ng oxygen sa ibabang binti. Hindi binabago ng diyabetis ang spectrum; <em>pinapabilis lang nito ang iyong pag-usad</em>, at sa mga huling yugto nito ay binabago ang uri ng sugat na lumilitaw. Ang malaman kung nasaan ka sa spectrum ay paraan upang makita ang susunod na milyahe bago ito dumating.</span><span class="lang-hidden" data-lang="ceb">Ang kulokot nga gibati nimo karon ug ang itom nga gaiter nga mahimong makita nimo ugma dili lahi nga problema — sila <strong>duha ka makita nga milya sa usa ka hinay nga spectrum</strong> sa kakulangon sa oxygen sa ubos nga bitiis. Wala usabon sa diabetes ang spectrum; <em>gipadali lang niini ang imong pag-uswag</em>, ug sa kataposang mga yugto niini gibag-o niini ang matang sa samad nga motungha. Ang pagkahibalo kung asa ka sa spectrum mao ang paagi nga makita ang sunod nga milya sa wala pa kini moabot.</span><span class="lang-hidden" data-lang="kap">Reng pulikat a dadalan mu ngeni ampong reng mangitiman a balat a aakit mu bukas eya magkayatung a problema — sila <strong>aduang nakikit a milya king metung mu marayung spectrum</strong> ning kakulangan ya ing oxygen king baba a bitis. Eya binabaguh na ning diabetes ya ing spectrum; <em>pinapabilisan na mu ya ing imung pamipausad</em>, at king tauling yugto nia binabaguh na ya ing uri na ning sugat a lumalabas. Reng pamikit nung nukarin ka king spectrum iya ya ing paraan ban makit ya ing susunud a milya bayu yang dumating.</span></p>
@@ -2150,7 +2161,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
     <div class="lifestyle-card">
       <div class="lc-icon">🧘</div>
       <h4><span data-lang="en">Bone &amp; balance vigilance</span><span class="lang-hidden" data-lang="tl">Pag-iingat sa buto at balanse</span><span class="lang-hidden" data-lang="ceb">Pag-amping sa bukog ug balanse</span><span class="lang-hidden" data-lang="kap">Pamipagmasid king butu at balanse</span></h4>
-      <p><span data-lang="en">A neuropathic diabetic foot with CKD-MBD bone disease is at risk of Charcot foot — a painless deformity that develops fast. New foot warmth, swelling, or change in shape (even without a wound) needs same-week imaging.</span><span class="lang-hidden" data-lang="tl">Ang neuropathic na diyabetikong paa na may CKD-MBD bone disease ay nasa panganib ng Charcot foot — mabilis lumalala na walang sakit na deformity. Bagong init, pamamaga, o pagbabago ng hugis ng paa (kahit walang sugat) ay nangangailangan ng imaging sa loob ng linggo.</span><span class="lang-hidden" data-lang="ceb">Ang neuropathic nga diabetic nga tiil nga adunay CKD-MBD bone disease naa sa peligro sa Charcot foot — usa ka walay sakit nga deformity nga paspas mouswag. Bag-ong init, panghubag, o pagbag-o sa porma sa tiil (bisan walay samad) nagkinahanglan og imaging sulod sa semana.</span><span class="lang-hidden" data-lang="kap">Reng neuropathic a diabetiko a bitis a may CKD-MBD bone disease ya pati king peligro a Charcot foot — metung yang alang sakit a deformity a mabilis manuld. Bayung kalapotan, pamabuktut, o pamipalit king hugis ning bitis (maski alang sugat) kayatian ya imaging king sulud na nung domingu.</span></p>
+      <p><span data-lang="en">A neuropathic diabetic foot with chronic kidney disease–mineral and bone disorder (CKD-MBD) bone disease is at risk of Charcot foot — a painless deformity that develops fast. New foot warmth, swelling, or change in shape (even without a wound) needs same-week imaging.</span><span class="lang-hidden" data-lang="tl">Ang neuropathic na diyabetikong paa na may CKD-MBD bone disease ay nasa panganib ng Charcot foot — mabilis lumalala na walang sakit na deformity. Bagong init, pamamaga, o pagbabago ng hugis ng paa (kahit walang sugat) ay nangangailangan ng imaging sa loob ng linggo.</span><span class="lang-hidden" data-lang="ceb">Ang neuropathic nga diabetic nga tiil nga adunay CKD-MBD bone disease naa sa peligro sa Charcot foot — usa ka walay sakit nga deformity nga paspas mouswag. Bag-ong init, panghubag, o pagbag-o sa porma sa tiil (bisan walay samad) nagkinahanglan og imaging sulod sa semana.</span><span class="lang-hidden" data-lang="kap">Reng neuropathic a diabetiko a bitis a may CKD-MBD bone disease ya pati king peligro a Charcot foot — metung yang alang sakit a deformity a mabilis manuld. Bayung kalapotan, pamabuktut, o pamipalit king hugis ning bitis (maski alang sugat) kayatian ya imaging king sulud na nung domingu.</span></p>
     </div>
   </div>
 </section>
@@ -2163,7 +2174,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-rescue-steps.webp" type="image/webp">
 <img src="../images/dialysis-cramps-rescue-steps.png" loading="lazy" width="1792" height="1024" alt="Four-step horizontal sequence for at-the-chair calf-cramp rescue — straighten the knee, dorsiflex the ankle for 20–30 seconds, repeat once, then tell the nurse." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Four-step horizontal sequence for at-the-chair calf-cramp rescue — straighten the knee, dorsiflex the ankle for 20–30 seconds, repeat once, then tell the nurse.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Four-step horizontal sequence for at-the-chair calf-cramp rescue — straighten the knee, dorsiflex the ankle for 20–30 seconds, repeat once, then tell the nurse.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p><span data-lang="en">A cramp is a runaway feedback loop in the nervous system — it is not a sign that the muscle is "torn" or that something major is happening to your heart. The fastest way to interrupt the loop is to <strong>stretch the muscle in the opposite direction</strong>, which loads the "brake" inside the tendon and tells the spinal cord to stop firing. Do it slowly and steadily, do not bounce.</span><span class="lang-hidden" data-lang="tl">Ang pulikat ay isang walang kontrol na feedback loop sa sistema ng nerbiyo — hindi ito senyales na nasira ang kalamnan o may mabigat na nangyayari sa puso. Ang pinakamabilis na paraan upang pigilan ang loop ay <strong>i-stretch ang kalamnan sa kabaligtarang direksyon</strong>, na nagbibigay-buhay sa "preno" sa tendon at nagsasabi sa spinal cord na tigilan na ang firing. Gawin nang mabagal at tuluy-tuloy, huwag bumabuwelo.</span><span class="lang-hidden" data-lang="ceb">Ang kulokot usa ka dili kontrolado nga feedback loop sa sistema sa nerbiyo — dili kini senyales nga ang kaunoran "naguba" o nga adunay grabe nga nahitabo sa kasingkasing. Ang pinakapaspas nga paagi sa pagbabag sa loop mao ang <strong>pag-stretch sa kaunoran sa atbang nga direksyon</strong>, nga magpuno sa "preno" sa tendon ug magsulti sa spinal cord nga undangon ang firing. Buhata kini nga hinay ug padayon, ayaw og bouncing.</span><span class="lang-hidden" data-lang="kap">Reng pulikat metung yang alang kontrol a feedback loop king sistema ning nerbiyo — ali ya senyales nung "nasira" ya ing kaunan o ating maragul a malalyari king pusu. Reng kabud-bilis a paraan ban pigilan na ya ing loop, iya ya ing <strong>pag-stretch ning kaunan king kasalumbatan a direksyon</strong>, a pinupuno na ya ing "preno" king tendon at sasabi king spinal cord ban pamigilan na ya ing firing. Gawan mu nang marayung at marayung, eka magbouncing.</span></p>
@@ -2183,7 +2194,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
     </div>
     <div class="algo-row">
       <div class="algo-step-num">4</div>
-      <div class="algo-content"><span data-lang="en"><strong>Tell your nurse.</strong> Your team can lower the UF, reposition you, and — if needed — give a small saline bolus. This is a routine, well-rehearsed response. Do not "tough it out".</span><span class="lang-hidden" data-lang="tl"><strong>Sabihan ang iyong nurse.</strong> Maaaring babaan ng team mo ang UF, ilipat ka ng posisyon, at — kung kinakailangan — magbigay ng maliit na saline bolus. Ito ay isang nakagawiang tugon. Huwag mong "tiisin lamang".</span><span class="lang-hidden" data-lang="ceb"><strong>Sultihi ang imong nars.</strong> Mahimong ipakubos sa imong team ang UF, ibalhin ka og posisyon, ug — kung gikinahanglan — maghatag og gamay nga saline bolus. Kini usa ka komon nga tubag. Ayaw og "tiisin lang".</span><span class="lang-hidden" data-lang="kap"><strong>Sabian mu ya ing imung nars.</strong> Mayari na ya ing team mu ya ing UF, ilipat ka king posisyon, at — nung kayatian — bigyan ka maliting saline bolus. Iya ya metung a parati a tugon. Eka "tiisin mu mu lang".</span></div>
+      <div class="algo-content"><span data-lang="en"><strong>Tell your nurse.</strong> Your team can lower the ultrafiltration (UF), reposition you, and — if needed — give a small saline bolus. This is a routine, well-rehearsed response. Do not "tough it out".</span><span class="lang-hidden" data-lang="tl"><strong>Sabihan ang iyong nurse.</strong> Maaaring babaan ng team mo ang UF, ilipat ka ng posisyon, at — kung kinakailangan — magbigay ng maliit na saline bolus. Ito ay isang nakagawiang tugon. Huwag mong "tiisin lamang".</span><span class="lang-hidden" data-lang="ceb"><strong>Sultihi ang imong nars.</strong> Mahimong ipakubos sa imong team ang UF, ibalhin ka og posisyon, ug — kung gikinahanglan — maghatag og gamay nga saline bolus. Kini usa ka komon nga tubag. Ayaw og "tiisin lang".</span><span class="lang-hidden" data-lang="kap"><strong>Sabian mu ya ing imung nars.</strong> Mayari na ya ing team mu ya ing UF, ilipat ka king posisyon, at — nung kayatian — bigyan ka maliting saline bolus. Iya ya metung a parati a tugon. Eka "tiisin mu mu lang".</span></div>
     </div>
   </div>
 </section>
@@ -2261,7 +2272,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-5hit-mechanism.webp" type="image/webp">
 <img src="../images/dialysis-cramps-5hit-mechanism.png" loading="lazy" width="1792" height="1024" alt="Five-hit cramp mechanism convergent on SERCA failure with the bottom intervention-and-benefit flow." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Five-hit cramp mechanism convergent on SERCA failure with the bottom intervention-and-benefit flow.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Five-hit cramp mechanism convergent on SERCA failure with the bottom intervention-and-benefit flow.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <figure style="margin:28px 0;">
@@ -2269,7 +2280,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-serca-relaxation-pump.webp" type="image/webp">
 <img src="../images/dialysis-cramps-serca-relaxation-pump.png" loading="lazy" width="1792" height="1024" alt="Multi-scale schematic of SERCA-ATP relaxation, the SR Ca²⁺ reuptake bottleneck, and the cofactor inputs (L-carnitine, B-vitamins, Mg²⁺, CoQ10) that feed mitochondrial ATP." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Multi-scale schematic of SERCA-ATP relaxation, the SR Ca²⁺ reuptake bottleneck, and the cofactor inputs (L-carnitine, B-vitamins, Mg²⁺, CoQ10) that feed mitochondrial ATP.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Multi-scale schematic of SERCA-ATP relaxation, the SR Ca²⁺ reuptake bottleneck, and the cofactor inputs (L-carnitine, B-vitamins, Mg²⁺, CoQ10) that feed mitochondrial ATP.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p>Skeletal-muscle relaxation is the ATP-dependent step. SERCA reuptakes 2 Ca²⁺ per ATP into the sarcoplasmic reticulum, and a normal twitch terminates in 5–10 ms only because that pump keeps pace. When ATP supply falls below demand, cytosolic Ca²⁺ is not recaptured, actin–myosin engagement persists, and the myocyte locks into a sustained contracture — the clinical cramp. Hits 1 and 4 below converge on inadequate aerobic ATP regeneration; hits 2 and 3 lower the excitation threshold so the energy-starved muscle is also easier to trigger; hit 5 adds the mechanical/afferent geometry that explains both the timing and why a passive stretch aborts the discharge.</p>
@@ -2309,9 +2320,9 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
   <figure style="margin:28px 0;">
 <picture>
 <source srcset="../images/dialysis-cramps-hemosiderin-pathway.webp" type="image/webp">
-<img src="../images/dialysis-cramps-hemosiderin-pathway.png" loading="lazy" width="1792" height="1024" alt="Stasis-pigmentation pathway from venous hypertension to RBC extravasation, hemosiderin deposition, MMP activation, and the gaiter consequence ladder." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
+<img src="../images/dialysis-cramps-hemosiderin-pathway.png" loading="lazy" width="1792" height="1024" alt="Stasis-pigmentation pathway from venous hypertension to red blood cell (RBC) extravasation, hemosiderin deposition, MMP activation, and the gaiter consequence ladder." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Stasis-pigmentation pathway from venous hypertension to RBC extravasation, hemosiderin deposition, MMP activation, and the gaiter consequence ladder.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Stasis-pigmentation pathway from venous hypertension to red blood cell (RBC) extravasation, hemosiderin deposition, MMP activation, and the gaiter consequence ladder.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p>Stasis (hemosiderin) hyperpigmentation is the cutaneous fingerprint of chronic ambulatory venous hypertension. The mechanism is straightforward and well-established:</p>
@@ -2332,7 +2343,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-hypoxic-lower-limb-sigil.webp" type="image/webp">
 <img src="../images/dialysis-cramps-hypoxic-lower-limb-sigil.png" loading="lazy" width="1024" height="1024" alt="Minimal monoline sigil of the Hypoxic Lower-Limb Spectrum — a single lower leg connected by dotted crosstalk arrows to a dialysis-machine pictogram (acute cramp axis) and a dermal-capillary motif (chronic pigment axis)." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Minimal monoline sigil of the Hypoxic Lower-Limb Spectrum — a single lower leg connected by dotted crosstalk arrows to a dialysis-machine pictogram (acute cramp axis) and a dermal-capillary motif (chronic pigment axis).</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Minimal monoline sigil of the Hypoxic Lower-Limb Spectrum — a single lower leg connected by dotted crosstalk arrows to a dialysis-machine pictogram (acute cramp axis) and a dermal-capillary motif (chronic pigment axis).</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <figure style="margin:28px 0;">
@@ -2340,13 +2351,13 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-two-axes-one-field.webp" type="image/webp">
 <img src="../images/dialysis-cramps-two-axes-one-field.png" loading="lazy" width="1792" height="1024" alt="Two-axes-one-field figure: acute and chronic outputs of a single hypoxic lower-limb field, the central teaching diagram of the hypothesis." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Two-axes-one-field figure: acute and chronic outputs of a single hypoxic lower-limb field, the central teaching diagram of the hypothesis.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Two-axes-one-field figure: acute and chronic outputs of a single hypoxic lower-limb field, the central teaching diagram of the hypothesis.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p>The clinical observation — cramps and stasis pigmentation co-occurring in the same maintenance-HD patient far more often than chance — is best understood as <em>convergent</em>, not causally sequential. Both are manifestations of a chronically volume-overloaded, microvascularly compromised, and dependently congested lower limb whose oxygen supply–demand balance is repeatedly violated. The cramp is the acute, intermittent discharge of that state during UF; the pigmentation is its chronic, cumulative tissue archive. They share a substrate and a currency (impaired tissue oxygenation), not a direct causal arrow.</p>
   <div class="hyp-box">
     <h4>Honest framing</h4>
-    <p>Each pillar — alkalosis/ischemia/ATP cramp model, venous-hypertension/hemosiderin pigment model, shared volume/microvascular/PAD substrate — is separately well supported. There is no published study that directly tests the two as a linked syndrome. The "Hypoxic Lower-Limb" hypothesis is a mechanistic synthesis and a shared-risk-factor argument — a unifying teaching model and an audit-worthy hypothesis, not a proven causal entity. Treat it as such with patients and colleagues.</p>
+    <p>Each pillar — alkalosis/ischemia/ATP cramp model, venous-hypertension/hemosiderin pigment model, shared volume/microvascular/peripheral arterial disease (PAD) substrate — is separately well supported. There is no published study that directly tests the two as a linked syndrome. The "Hypoxic Lower-Limb" hypothesis is a mechanistic synthesis and a shared-risk-factor argument — a unifying teaching model and an audit-worthy hypothesis, not a proven causal entity. Treat it as such with patients and colleagues.</p>
   </div>
   <h3>Shared upstream nodes (why they travel together)</h3>
   <div class="table-wrap">
@@ -2366,7 +2377,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
         </tr>
         <tr>
           <td><strong>Dependent lower limbs (gravity)</strong></td>
-          <td>First muscle bed to lose perfusion during IDH</td>
+          <td>First muscle bed to lose perfusion during intradialytic hypotension (IDH)</td>
           <td>Bear the highest hydrostatic venous load → gaiter pigmentation</td>
         </tr>
         <tr>
@@ -2407,7 +2418,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-abi-tbi-algorithm.webp" type="image/webp">
 <img src="../images/dialysis-cramps-abi-tbi-algorithm.png" loading="lazy" width="1024" height="1536" alt="Portrait clinical algorithm for the vascular safety gate in the cramp-and-pigment DM-CKD patient — ABI, TBI, and TcPO₂ sequenced before any compression therapy, with multidisciplinary-referral routing." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Portrait clinical algorithm for the vascular safety gate in the cramp-and-pigment DM-CKD patient — ABI, TBI, and TcPO₂ sequenced before any compression therapy, with multidisciplinary-referral routing.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Portrait clinical algorithm for the vascular safety gate in the cramp-and-pigment DM-CKD patient — ABI, TBI, and TcPO₂ sequenced before any compression therapy, with multidisciplinary-referral routing.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p>Approach the joint phenotype as one work-up, not two. Anchor the history on the cramp, the exam on the leg, and the labs on the bioenergetic and microvascular substrates. Build the dialysis-prescription audit and the vascular review into the same encounter — they will redirect management far more often than a single new prescription.</p>
@@ -2423,15 +2434,15 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
     </div>
     <div class="algo-row">
       <div class="algo-step-num">3</div>
-      <div class="algo-content"><strong>Medication review.</strong> Statins (CoQ10 depletion → muscle symptoms); diuretics (volume + electrolyte impact); antihypertensives (autonomic flooring); cinacalcet/etelcalcetide (hypocalcemic cramping); phosphate binders (acid–base and Ca shifts); SGLT2i / GLP-1 RA in DM (baseline foot exam per labeling); any traditional, herbal, or over-the-counter preparation.</div>
+      <div class="algo-content"><strong>Medication review.</strong> Statins (CoQ10 depletion → muscle symptoms); diuretics (volume + electrolyte impact); antihypertensives (autonomic flooring); cinacalcet/etelcalcetide (hypocalcemic cramping); phosphate binders (acid–base and Ca shifts); SGLT2i (sodium–glucose cotransporter-2 inhibitor) / GLP-1 (glucagon-like peptide-1) RA in DM (baseline foot exam per labeling); any traditional, herbal, or over-the-counter preparation.</div>
     </div>
     <div class="algo-row">
       <div class="algo-step-num">4</div>
-      <div class="algo-content"><strong>Physical exam.</strong> CEAP staging (C0–C6) of both legs. Pulse palpation (DP, PT, popliteal, femoral). 10-g monofilament at the standard 10 sites + 128-Hz tuning fork at the great toe / medial malleolus. Foot inspection including interdigital spaces; mark any callus, blister, or fissure. Assess the Charcot warning triad (warmth + swelling + deformity without pain) on every DM-CKD foot at risk.</div>
+      <div class="algo-content"><strong>Physical exam.</strong> Clinical–Etiology–Anatomy–Pathophysiology (CEAP) staging (C0–C6) of both legs. Pulse palpation (DP, PT, popliteal, femoral). 10-g monofilament at the standard 10 sites + 128-Hz tuning fork at the great toe / medial malleolus. Foot inspection including interdigital spaces; mark any callus, blister, or fissure. Assess the Charcot warning triad (warmth + swelling + deformity without pain) on every DM-CKD foot at risk.</div>
     </div>
     <div class="algo-row">
       <div class="algo-step-num">5</div>
-      <div class="algo-content"><strong>Laboratory panel.</strong> Hgb / reticulocyte / ferritin / TSAT / CRP; serum albumin and prealbumin; calcium / phosphate / corrected calcium / iPTH / 25-OH-D; magnesium; sodium / potassium / bicarbonate; HbA1c if DM; lipid panel; <strong>free carnitine</strong> level where available (deficiency &lt; 20 µmol/L per Date, 2021). Pre- and post-HD electrolyte deltas if cramps are session-locked.</div>
+      <div class="algo-content"><strong>Laboratory panel.</strong> hemoglobin (Hgb) / reticulocyte / ferritin / transferrin saturation (TSAT) / C-reactive protein (CRP); serum albumin and prealbumin; calcium / phosphate / corrected calcium / iPTH / 25-OH-D; magnesium; sodium / potassium / bicarbonate; glycated hemoglobin (HbA1c) if DM; lipid panel; <strong>free carnitine</strong> level where available (deficiency &lt; 20 µmol/L per Date, 2021). Pre- and post-HD electrolyte deltas if cramps are session-locked.</div>
     </div>
     <div class="algo-row">
       <div class="algo-step-num">6</div>
@@ -2439,11 +2450,11 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
     </div>
     <div class="algo-row">
       <div class="algo-step-num">7</div>
-      <div class="algo-content"><strong>Vascular assessment.</strong> <strong>ABI plus TBI on every cramp-and-pigment patient</strong>; ABI alone is insufficient in DM-CKD because of medial arterial calcification (Wukich et al., 2015; Prasad et al., 2019). Add transcutaneous PO₂ (TcPO₂) at CEAP C4 or any pre-ulcerative finding; venous duplex ultrasound if reflux/DVT is suspected; CT or MR angiography for revascularization candidates.</div>
+      <div class="algo-content"><strong>Vascular assessment.</strong> <strong>ABI plus TBI on every cramp-and-pigment patient</strong>; ABI alone is insufficient in DM-CKD because of medial arterial calcification (Wukich et al., 2015; Prasad et al., 2019). Add transcutaneous PO₂ (TcPO₂) at CEAP C4 or any pre-ulcerative finding; venous duplex ultrasound if reflux/DVT is suspected; computed tomography (CT) or MR angiography for revascularization candidates.</div>
     </div>
     <div class="algo-row">
       <div class="algo-step-num">8</div>
-      <div class="algo-content"><strong>Imaging at risk.</strong> Plain foot radiograph in any DM-CKD patient with a new warm-swollen foot, deformity, or unexplained foot pain — assesses pedal vessel calcification (an independent predictor of major adverse foot events; Brown et al., 2024) and detects Charcot mid-foot collapse and osteomyelitis. MRI or labeled-WBC bone scan if osteomyelitis is suspected and the X-ray is inconclusive.</div>
+      <div class="algo-content"><strong>Imaging at risk.</strong> Plain foot radiograph in any DM-CKD patient with a new warm-swollen foot, deformity, or unexplained foot pain — assesses pedal vessel calcification (an independent predictor of major adverse foot events; Brown et al., 2024) and detects Charcot mid-foot collapse and osteomyelitis. magnetic resonance imaging (MRI) or labeled-WBC (white blood cell) bone scan if osteomyelitis is suspected and the X-ray is inconclusive.</div>
     </div>
     <div class="algo-row">
       <div class="algo-step-num">9</div>
@@ -2460,7 +2471,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-management-tiers-workflow.webp" type="image/webp">
 <img src="../images/dialysis-cramps-management-tiers-workflow.png" loading="lazy" width="1024" height="1024" alt="Clinician-mode circular workflow showing the four management levers — Tier 1 volume and Rx, Tier 2 acute rescue, Tier 3 bioenergetic, Tier 4 lower-limb venous axis — with a continuous reassessment outer loop." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Clinician-mode circular workflow showing the four management levers — Tier 1 volume and Rx, Tier 2 acute rescue, Tier 3 bioenergetic, Tier 4 lower-limb venous axis — with a continuous reassessment outer loop.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Clinician-mode circular workflow showing the four management levers — Tier 1 volume and Rx, Tier 2 acute rescue, Tier 3 bioenergetic, Tier 4 lower-limb venous axis — with a continuous reassessment outer loop.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p>Because the upstream substrate is shared, virtually every meaningful intervention attacks both axes simultaneously. Build the plan around four levers — volume/dialysis prescription, intradialytic rescue, integrative-nutrition / bioenergetic support, and the lower-limb venous axis — and apply them in tiers.</p>
@@ -2478,7 +2489,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
         <tr>
           <td><span class="tier-badge tier-1">Tier 1</span><br>Volume &amp; Rx</td>
           <td>Flatten the volume curve</td>
-          <td><strong>Dry weight:</strong> reassess every 1–3 mo and post-event<br><strong>IDWG:</strong> Na restriction (&lt; 5 g/d) + dietitian counsel; target ≤ 4–5% DW<br><strong>UFR:</strong> ≤ 10 mL/kg/h — extend session, ↑ frequency, or incremental HD if persistently high<br><strong>Dialysate:</strong> individualize Na profiling; avoid over-correction of acidosis / excess HCO₃⁻; review Mg/Ca</td>
+          <td><strong>Dry weight:</strong> reassess every 1–3 mo and post-event<br><strong>IDWG:</strong> Na restriction (&lt; 5 g/d) + dietitian counsel; target ≤ 4–5% dry weight (DW)<br><strong>UFR:</strong> ≤ 10 mL/kg/h — extend session, ↑ frequency, or incremental HD if persistently high<br><strong>Dialysate:</strong> individualize Na profiling; avoid over-correction of acidosis / excess HCO₃⁻; review Mg/Ca</td>
           <td>Strong (KDOQI / KDIGO volume; observational for UFR ≤ 10)</td>
         </tr>
         <tr>
@@ -2519,10 +2530,10 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-pharmacology-reference-card.webp" type="image/webp">
 <img src="../images/dialysis-cramps-pharmacology-reference-card.png" loading="lazy" width="1536" height="1152" alt="Clinician quick-reference card listing the 12 pharmacology and adjunct levers with CKD-specific doses and safety notes, including the Philippine-context oral L-carnitine row directly under the IV row." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Clinician quick-reference card listing the 12 pharmacology and adjunct levers with CKD-specific doses and safety notes, including the Philippine-context oral L-carnitine row directly under the IV row.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Clinician quick-reference card listing the 12 pharmacology and adjunct levers with CKD-specific doses and safety notes, including the Philippine-context oral L-carnitine row directly under the IV row.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
-  <p>Pharmacology is additive, not a substitute for the volume/UF/dialysate corrections in §6 management. Use the table below to bring concrete dose, evidence grade, and CKD-specific safety considerations to bedside decisions. All renal dose-adjustments assume maintenance HD with no significant residual renal function; verify against the patient's eGFR slope, urine output, and the local formulary.</p>
+  <p>Pharmacology is additive, not a substitute for the volume/UF/dialysate corrections in §6 management. Use the table below to bring concrete dose, evidence grade, and CKD-specific safety considerations to bedside decisions. All renal dose-adjustments assume maintenance HD with no significant residual renal function; verify against the patient's estimated glomerular filtration rate (eGFR) slope, urine output, and the local formulary.</p>
   <div class="table-wrap">
     <table>
       <thead>
@@ -2586,10 +2597,10 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
           <td><strong>Cinacalcet / etelcalcetide review</strong></td>
           <td>Cramp-prone patients on calcimimetics with low post-HD ionized Ca</td>
           <td>Re-titrate dose or convert to alternative SHPT regimen; check ionized Ca trend</td>
-          <td>Hypocalcemic cramping is a recognized class effect; mid-week ionized Ca and PTH should drive titration, not symptoms alone.</td>
+          <td>Hypocalcemic cramping is a recognized class effect; mid-week ionized Ca and parathyroid hormone (PTH) should drive titration, not symptoms alone.</td>
         </tr>
         <tr>
-          <td><strong>SGLT2 inhibitors / GLP-1 RA in DM</strong></td>
+          <td><strong>sodium–glucose cotransporter-2 (SGLT2) inhibitors / GLP-1 RA in DM</strong></td>
           <td>Cardio-renal protection in DM-CKD (per KDIGO 2024)</td>
           <td>Initiate per current guidelines; <strong>baseline + quarterly foot exam mandatory</strong> for canagliflozin (CANVAS amputation signal); avoid initiation during active foot infection or pre-ulcerative lesion</td>
           <td>Foot exam mandate is a labeling requirement, not optional. Class benefits on cardio-renal endpoints outweigh foot risk in stable feet, but the spectrum matters: do not start during stage 4+ lesions.</td>
@@ -2620,7 +2631,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-diabetes-accelerator-mechanism.webp" type="image/webp">
 <img src="../images/dialysis-cramps-diabetes-accelerator-mechanism.png" loading="lazy" width="1792" height="1024" alt="Diabetes-acceleration schematic showing the five DM-specific levers — autonomic neuropathy deepening IDH, sensory neuropathy masking pre-ulcerative injury, AGE-driven mitochondrial impairment, medial arterial calcification rendering ABI falsely normal, and impaired neutrophils with glycated matrix delaying healing." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Diabetes-acceleration schematic showing the five DM-specific levers — autonomic neuropathy deepening IDH, sensory neuropathy masking pre-ulcerative injury, AGE-driven mitochondrial impairment, medial arterial calcification rendering ABI falsely normal, and impaired neutrophils with glycated matrix delaying healing.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Diabetes-acceleration schematic showing the five DM-specific levers — autonomic neuropathy deepening IDH, sensory neuropathy masking pre-ulcerative injury, AGE-driven mitochondrial impairment, medial arterial calcification rendering ABI falsely normal, and impaired neutrophils with glycated matrix delaying healing.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <figure style="margin:28px 0;">
@@ -2628,7 +2639,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-spectrum-staircase.webp" type="image/webp">
 <img src="../images/dialysis-cramps-spectrum-staircase.png" loading="lazy" width="1792" height="1024" alt="Hypoxic Lower-Limb Spectrum staircase mapped to CEAP and DM acceleration, the master orienting figure for the section." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Hypoxic Lower-Limb Spectrum staircase mapped to CEAP and DM acceleration, the master orienting figure for the section.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Hypoxic Lower-Limb Spectrum staircase mapped to CEAP and DM acceleration, the master orienting figure for the section.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p>The cleanest way to think about the cramp + stasis-pigmentation phenotype is not as two diseases, but as a single, slow-moving continuum of lower-limb tissue hypoxia. Patients move along it at different rates depending on volume status, microvascular reserve, and — most importantly — diabetes. The same upstream lever (volume + perfusion + tissue oxygen) operates throughout; what changes across the spectrum is the visible marker.</p>
@@ -2703,9 +2714,9 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
   <h3>Evidence base — the diabetes × dialysis × foot intersection</h3>
   <p>The literature supports every step of the amplification argument (APA 7th narrative citations; full references below):</p>
   <ul>
-    <li>In a systematic review of 64 observational studies, DFU incidence in ESKD rose with advancing renal impairment and showed a temporal association with hemodialysis initiation — particularly within the first two years — and dialysis-dependent ESKD was independently predictive of lower-extremity amputation, with post-amputation mortality approaching 50% at 2 years and 70% at 5 years (Lim et al., 2026).</li>
+    <li>In a systematic review of 64 observational studies, DFU incidence in end-stage kidney disease (ESKD) rose with advancing renal impairment and showed a temporal association with hemodialysis initiation — particularly within the first two years — and dialysis-dependent ESKD was independently predictive of lower-extremity amputation, with post-amputation mortality approaching 50% at 2 years and 70% at 5 years (Lim et al., 2026).</li>
     <li>A New Zealand cohort of 772 hospitalized DRFU admissions found that dialysis-dependent patients had a 1-year major-amputation rate of <strong>31.6% vs 3.2%</strong> and a 1-year mortality of 33.8% vs 17.6% compared to those with intact renal function (Beaumont et al., 2025).</li>
-    <li>A cross-sectional study of 54 DM patients on RRT in Buenos Aires reported diabetic-foot prevalence of 40.7% (48.6% in the HD subset), <strong>61.1% pre-ulcerative lesions</strong>, neuropathy in 87%, and PAD in 81.5% — precisely the substrate the spectrum predicts (Spinelli et al., 2025).</li>
+    <li>A cross-sectional study of 54 DM patients on renal replacement therapy (RRT) in Buenos Aires reported diabetic-foot prevalence of 40.7% (48.6% in the HD subset), <strong>61.1% pre-ulcerative lesions</strong>, neuropathy in 87%, and PAD in 81.5% — precisely the substrate the spectrum predicts (Spinelli et al., 2025).</li>
     <li>A 10-year Shanghai cohort identified dialysis (HR 3.05) and severe PAD (HR 3.57) as the two strongest 3-year mortality drivers in moderate-to-severe DFU (Li et al., 2026).</li>
     <li>A Thai cohort showed advanced CKD raised non-healed-ulcer odds (OR 2.69) and 1-year mortality (21.7% vs 8.4%) in hospitalized DFU patients (Sripatpong et al., 2026).</li>
     <li>The ABI — the conventional safety gate — is unreliable in this population: dialysis patients had 7.3× the odds of PAD, and medial arterial calcification rendered ABI falsely normal, so a TBI is the necessary adjunct (Wukich et al., 2015). TBI &lt; 0.7 outperformed ABI as a mortality predictor in dialysis patients (Prasad et al., 2019).</li>
@@ -2729,7 +2740,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
 <source srcset="../images/dialysis-cramps-clinic-audit-pipeline.webp" type="image/webp">
 <img src="../images/dialysis-cramps-clinic-audit-pipeline.png" loading="lazy" width="1792" height="1024" alt="Clinic-audit four-step pipeline for testing the Hypoxic-Lower-Limb hypothesis on a single nephrology unit — phenotype the cohort, capture exposures, test the four predictions, then report and iterate." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
 </picture>
-<figcaption><p class="fig-desc">Clinic-audit four-step pipeline for testing the Hypoxic-Lower-Limb hypothesis on a single nephrology unit — phenotype the cohort, capture exposures, test the four predictions, then report and iterate.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p></figcaption>
+<figcaption><p class="fig-desc">Clinic-audit four-step pipeline for testing the Hypoxic-Lower-Limb hypothesis on a single nephrology unit — phenotype the cohort, capture exposures, test the four predictions, then report and iterate.</p><p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p></figcaption>
 </figure>
 
   <p>The Hypoxic-Lower-Limb hypothesis converts cleanly into a small clinic audit. Each prediction is straightforward to test in any standing HD cohort:</p>
@@ -2813,7 +2824,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
     <div class="alert-icon">⚠️</div>
     <div class="alert-body">
       <h4>Pearl 7 — Foot-exam mandate before SGLT2i / GLP-1 RA in DM-CKD</h4>
-      <p>The cardio-renal class benefits in DM-CKD (per KDIGO 2024 and 2026 guideline updates) are real and large. But initiation requires a baseline foot exam — explicit FDA labeling for canagliflozin (CANVAS amputation signal) and conservative practice for the rest of the class. Do not start during an active foot infection or stage-4 pre-ulcerative finding. Re-examine quarterly thereafter. The drug saves the kidney; the foot exam saves the limb.</p>
+      <p>The cardio-renal class benefits in DM-CKD (per KDIGO 2024 and 2026 guideline updates) are real and large. But initiation requires a baseline foot exam — explicit Food and Drug Administration (FDA) labeling for canagliflozin (CANVAS amputation signal) and conservative practice for the rest of the class. Do not start during an active foot infection or stage-4 pre-ulcerative finding. Re-examine quarterly thereafter. The drug saves the kidney; the foot exam saves the limb.</p>
     </div>
   </div>
   <div class="alert alert-purple" style="margin-top:16px;">
@@ -2935,41 +2946,48 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
   <div class="container">
     <h2>Related guides</h2>
     <div class="related-cards">
-      <a class="related-card" href="hemodialysis-complications.html">
+      <a class="related-card has-thumb" href="hemodialysis-complications.html">
         <div class="related-card-tag">Dialysis</div>
         <div class="related-card-title">Managing Complications of Hemodialysis</div>
         <div class="related-card-desc">IDH, cramps, arrhythmias, vascular access emergencies — prevention protocols and checklists.</div>
-      </a>
-      <a class="related-card" href="fluid-management-dialysis.html">
+      
+          <img class="related-card-thumb" src="../images/hemodialysis-complications-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <a class="related-card has-thumb" href="fluid-management-dialysis.html">
         <div class="related-card-tag">Volume</div>
         <div class="related-card-title">Fluid Management &amp; Interdialytic Weight Gain</div>
         <div class="related-card-desc">Why fluid builds up, the weekend gap, and personalized UF rate targets.</div>
-      </a>
-      <a class="related-card" href="dry-weight-determination.html">
+      
+          <img class="related-card-thumb" src="../images/fluid-management-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <a class="related-card has-thumb" href="dry-weight-determination.html">
         <div class="related-card-tag">Dry Weight</div>
         <div class="related-card-title">Dry Weight: The Most Important Number on Dialysis</div>
         <div class="related-card-desc">How dry weight is set, the signs you're below or above it, and how to re-check it safely.</div>
-      </a>
-      <a class="related-card" href="post-dialysis-fatigue.html">
+      
+          <img class="related-card-thumb" src="../images/dry-weight-determination-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <a class="related-card has-thumb" href="post-dialysis-fatigue.html">
         <div class="related-card-tag">Dialysis Life</div>
         <div class="related-card-title">Post-Dialysis Fatigue: Why You're Exhausted After HD</div>
         <div class="related-card-desc">5 mechanisms, 4-tier treatment, 7 recovery strategies — and clinical pearls.</div>
-      </a>
-      <a class="related-card" href="ckd-skin-darkening-body-changes.html">
+      
+          <img class="related-card-thumb" src="../images/post-dialysis-fatigue-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <a class="related-card has-thumb" href="ckd-skin-darkening-body-changes.html">
         <div class="related-card-tag">Skin Changes</div>
         <div class="related-card-title">CKD Skin Darkening &amp; Body Changes</div>
         <div class="related-card-desc">Why CKD changes pigmentation across the body — and what does and doesn't respond.</div>
-      </a>
-      <a class="related-card" href="exercise-guide-ckd.html">
+      
+          <img class="related-card-thumb" src="../images/ckd-skin-darkening-body-changes-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <a class="related-card has-thumb" href="exercise-guide-ckd.html">
         <div class="related-card-tag">Movement</div>
         <div class="related-card-title">Exercise Guide for CKD &amp; Dialysis</div>
         <div class="related-card-desc">Safe activity levels, intradialytic exercise, and how movement fights fatigue and cramping.</div>
-      </a>
-      <a class="related-card" href="diabetes-kidneys.html">
+      
+          <img class="related-card-thumb" src="../images/exercise-guide-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <a class="related-card has-thumb" href="diabetes-kidneys.html">
         <div class="related-card-tag">Diabetes &amp; Kidney</div>
         <div class="related-card-title">Diabetes &amp; the Kidneys</div>
         <div class="related-card-desc">How diabetes drives CKD — and how its neuropathy and microvascular disease shape the lower-limb hypoxia spectrum and diabetic foot.</div>
-      </a>
+      
+          <img class="related-card-thumb" src="../images/diabetes-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
     </div>
   </div>
 </div>
@@ -3043,5 +3061,6 @@ function setLang(lang){
 </div>
 <script src="../assets/symptom-checker-widget.js" defer></script>
 <script src="../assets/image-lightbox.js" defer></script>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

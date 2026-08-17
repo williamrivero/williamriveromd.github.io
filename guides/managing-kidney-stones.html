@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1718,7 +1729,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
   <span data-lang="ceb" class="lang-hidden">Stone Smart: <em>Pagdumala sa Bato sa Kidney</em></span>
       <span data-lang="kap" class="lang-hidden">Matalino king Batu: <em>Pamamahala ning Batu king Batu</em></span>
 </h1>
-<p style="margin:6px 0 0;font-size:1.05rem;"><em style="color:var(--gold-light);font-style:italic;">Pass It. Prevent It. Protect Your Kidneys.</em></p>
+<p style="margin:6px 0 0;font-size:1.05rem;"><em style="color:var(--gold-light);font-style:italic;"><span data-lang="en">Pass It. Prevent It. Protect Your Kidneys.</span><span data-lang="tl" class="lang-hidden">Ipalabas Ito. Iwasan Ito. Protektahan ang Iyong mga Bato.</span><span data-lang="ceb" class="lang-hidden">Ipagawas Kini. Likayi Kini. Panalipdi ang Imong mga Kidney.</span><span data-lang="kap" class="lang-hidden">Ipalwal Me. Iwasan Me. Ingatan Me ing Kekang deng Batu.</span></em></p>
     <p class="hero-sub"><span data-lang="en">Why kidney stones form, what the different types mean, how to pass one safely — and the dietary and medical strategies to make sure it never happens again.</span><span data-lang="tl" class="lang-hidden">Bakit nabubuo ang bato sa bato, ano ang ibig sabihin ng iba't ibang uri, paano ito maipalabas nang ligtas — at ang mga estratehiya sa pagkain at gamot para matiyak na hindi na ito mauulit.</span><span data-lang="ceb" class="lang-hidden">Nganong nabuhatan ang bato sa bato, unsa ang kahulogan sa lain-laing mga klase, unsaon kining pagpalabas nga luwas — ug ang mga estratehiya sa pagkaon ug tambal aron masiguro nga dili na kini maulit.</span>
       <span data-lang="kap" class="lang-hidden">Bakit nabubuo ing batu king batu, ano ing ibig sabihin ning iba't ibang uri, paano ini maipalabas nang ligtas — at ing deng estratehiya king pamangan at gamut para matiyak a ali a ini mauulit.</span></p>
     <div class="hero-meta">
@@ -1949,7 +1960,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       </tr></thead>
       <tbody>
         <tr>
-          <td><span data-lang="en">CT scan (non-contrast KUB)</span><span data-lang="tl" class="lang-hidden">CT scan (non-contrast KUB)</span><span data-lang="ceb" class="lang-hidden">CT scan (non-contrast KUB)</span>
+          <td><span data-lang="en">CT (computed tomography) scan (non-contrast KUB)</span><span data-lang="tl" class="lang-hidden">CT scan (non-contrast KUB)</span><span data-lang="ceb" class="lang-hidden">CT scan (non-contrast KUB)</span>
       <span data-lang="kap" class="lang-hidden">CT scan (non-contrast KUB)</span></td>
           <td><span data-lang="en">Gold standard — detects all stone types including uric acid stones (radiolucent on X-ray), shows exact size and location, identifies obstruction</span><span data-lang="tl" class="lang-hidden">Gold standard — natutuklas ang lahat ng uri ng bato kasama ang uric acid stones (radiolucent sa X-ray), nagpapakita ng eksaktong laki at lokasyon, natutukoy ang obstruction</span><span data-lang="ceb" class="lang-hidden">Gold standard — namatikdan ang tanan nga klase sa bato lakip ang uric acid stones (radiolucent sa X-ray), nagpakita sa eksaktong gidak-on ug lokasyon, nahibal-an ang obstruction</span>
       <span data-lang="kap" class="lang-hidden">Gold standard — natutuklas ing amin ning uri ning batu kasama ing uric acid stones (radiolucent king X-ray), nagpapakita ning eksaktong laki at lokasyon, natutukoy ing obstruction</span></td>
@@ -1989,9 +2000,9 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <span data-lang="kap" class="lang-hidden">Pirming i-order nung ing lagnat ya kasama ning deng sintomas ning batu.</span></td>
         </tr>
         <tr>
-          <td><span data-lang="en">Serum calcium, uric acid, creatinine, PTH</span><span data-lang="tl" class="lang-hidden">Serum calcium, uric acid, creatinine, PTH</span><span data-lang="ceb" class="lang-hidden">Serum calcium, uric acid, creatinine, PTH</span>
+          <td><span data-lang="en">Serum calcium, uric acid, creatinine, PTH (parathyroid hormone)</span><span data-lang="tl" class="lang-hidden">Serum calcium, uric acid, creatinine, PTH</span><span data-lang="ceb" class="lang-hidden">Serum calcium, uric acid, creatinine, PTH</span>
       <span data-lang="kap" class="lang-hidden">Serum calcium, uric acid, creatinine, PTH</span></td>
-          <td><span data-lang="en">Screens for metabolic causes: hyperparathyroidism, hyperuricemia, CKD</span><span data-lang="tl" class="lang-hidden">Nagsasala para sa mga metabolikong sanhi: hyperparathyroidism, hyperuricemia, CKD</span><span data-lang="ceb" class="lang-hidden">Nagsala alang sa mga metabolikong hinungdan: hyperparathyroidism, hyperuricemia, CKD</span>
+          <td><span data-lang="en">Screens for metabolic causes: hyperparathyroidism, hyperuricemia, chronic kidney disease (CKD)</span><span data-lang="tl" class="lang-hidden">Nagsasala para sa mga metabolikong sanhi: hyperparathyroidism, hyperuricemia, CKD</span><span data-lang="ceb" class="lang-hidden">Nagsala alang sa mga metabolikong hinungdan: hyperparathyroidism, hyperuricemia, CKD</span>
       <span data-lang="kap" class="lang-hidden">Nagsasala para king deng metabolikong sanhi: hyperparathyroidism, hyperuricemia, CKD</span></td>
           <td><span data-lang="en">Essential for first-time stone formers and all recurrent cases.</span><span data-lang="tl" class="lang-hidden">Mahalaga para sa mga unang beses na nagkaroon ng bato at lahat ng paulit-ulit na kaso.</span><span data-lang="ceb" class="lang-hidden">Kinahanglanon alang sa mga unang higayon nga nagbuhatan sa bato ug tanan nga nagbalikbalik nga kaso.</span>
       <span data-lang="kap" class="lang-hidden">Importante para king deng unang beses a nagkaroon ning batu at amin ning paulit-ulit a kaso.</span></td>
@@ -2033,7 +2044,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
         <div class="step-body">
           <h4><span data-lang="en">Pain control — do not suffer unnecessarily</span><span data-lang="tl" class="lang-hidden">Kontrol ng sakit — huwag magdusa nang hindi kailangan</span><span data-lang="ceb" class="lang-hidden">Kontrol sa sakit — ayaw mag-antos nga dili kinahanglan</span>
       <span data-lang="kap" class="lang-hidden">Kontrol ning sakit — eka magdusa nang ali kailangan</span></h4>
-          <p><span data-lang="en">Renal colic is severe pain that requires adequate analgesia. Ketorolac (IV/IM) or diclofenac are highly effective for acute pain if kidney function allows. Paracetamol is safe across all kidney function levels. Opioids (tramadol, morphine) are used for severe pain not controlled by NSAIDs. Do not avoid pain medications out of fear — undertreated pain is dangerous and prolongs the ordeal.</span><span data-lang="tl" class="lang-hidden">Ang renal colic ay matinding sakit na nangangailangan ng sapat na analgesia. Ang Ketorolac (IV/IM) o diclofenac ay napaka-epektibo para sa acute pain kung pinapayagan ng tungkulin ng bato. Ang Paracetamol ay ligtas sa lahat ng antas ng tungkulin ng bato. Ang mga Opioid (tramadol, morphine) ay ginagamit para sa matinding sakit na hindi nakokontrol ng NSAIDs. Huwag umiwas sa mga gamot sa sakit sa takot — ang hindi sapat na ginagamot na sakit ay mapanganib at nagpapahaba ng paghihirap.</span><span data-lang="ceb" class="lang-hidden">Ang renal colic grabe nga sakit nga nagkinahanglan og igo nga analgesia. Ang Ketorolac (IV/IM) o diclofenac hilabihang epektibo alang sa acute pain kon gitugutan sa gimbuhaton sa bato. Ang Paracetamol luwas sa tanan nga lebel sa gimbuhaton sa bato. Ang mga Opioid (tramadol, morphine) gigamit alang sa grabe nga sakit nga dili makontrol sa NSAIDs. Ayaw likaya ang mga tambal sa sakit tungod sa kahadlok — ang dili igo nga gitambal nga sakit mapeligro ug nagpadugay sa pagsakit.</span>
+          <p><span data-lang="en">Renal colic is severe pain that requires adequate analgesia. Ketorolac (IV/IM) or diclofenac are highly effective for acute pain if kidney function allows. Paracetamol is safe across all kidney function levels. Opioids (tramadol, morphine) are used for severe pain not controlled by NSAIDs (non-steroidal anti-inflammatory drugs). Do not avoid pain medications out of fear — undertreated pain is dangerous and prolongs the ordeal.</span><span data-lang="tl" class="lang-hidden">Ang renal colic ay matinding sakit na nangangailangan ng sapat na analgesia. Ang Ketorolac (IV/IM) o diclofenac ay napaka-epektibo para sa acute pain kung pinapayagan ng tungkulin ng bato. Ang Paracetamol ay ligtas sa lahat ng antas ng tungkulin ng bato. Ang mga Opioid (tramadol, morphine) ay ginagamit para sa matinding sakit na hindi nakokontrol ng NSAIDs. Huwag umiwas sa mga gamot sa sakit sa takot — ang hindi sapat na ginagamot na sakit ay mapanganib at nagpapahaba ng paghihirap.</span><span data-lang="ceb" class="lang-hidden">Ang renal colic grabe nga sakit nga nagkinahanglan og igo nga analgesia. Ang Ketorolac (IV/IM) o diclofenac hilabihang epektibo alang sa acute pain kon gitugutan sa gimbuhaton sa bato. Ang Paracetamol luwas sa tanan nga lebel sa gimbuhaton sa bato. Ang mga Opioid (tramadol, morphine) gigamit alang sa grabe nga sakit nga dili makontrol sa NSAIDs. Ayaw likaya ang mga tambal sa sakit tungod sa kahadlok — ang dili igo nga gitambal nga sakit mapeligro ug nagpadugay sa pagsakit.</span>
       <span data-lang="kap" class="lang-hidden">Ing renal colic ya matinding sakit a nangangailangan ning sapat a analgesia. Ing Ketorolac (IV/IM) o diclofenac ya napaka-epektibo para king acute pain nung pinapayagan ning tungkulin ning batu. Ing Paracetamol ya ligtas king amin ning antas ning tungkulin ning batu. Ing deng Opioid (tramadol, morphine) ya ginagamit para king matinding sakit a ali nakokontrol ning NSAIDs. Eka umiwas king deng gamut king sakit king takot — ing ali sapat a ginagamot a sakit ya mapanganib at nagpapahaba ning paghihirap.</span></p>
         </div>
       </div>
@@ -2779,5 +2790,6 @@ if (document.getElementById('ss-result')) calcStoneScore();
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

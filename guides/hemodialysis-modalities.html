@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1773,7 +1784,7 @@ body.dark .related-card-title {
     <source srcset="../images/hd-modalities-overview.webp" type="image/webp">
     <img loading="lazy" src="../images/hd-modalities-overview.png" width="1024" height="1024" alt="Six dialysis modalities overview — conventional HD, hemodiafiltration (HDF), home hemodialysis, peritoneal dialysis (CAPD/APD), CRRT, SLED — comparing mechanism, solute clearance, setting, and clinical indication" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:12px;">
   </picture>
-  <figcaption><p class="fig-desc">An overview of six dialysis types — conventional hemodialysis, hemodiafiltration, home hemodialysis, peritoneal dialysis, CRRT, and SLED — comparing how each one works, how well it clears wastes, where it is done, and when it is typically used.</p></figcaption>
+  <figcaption><p class="fig-desc">An overview of six dialysis types — conventional hemodialysis, hemodiafiltration, home hemodialysis, peritoneal dialysis, CRRT (continuous renal replacement therapy), and SLED (sustained low-efficiency dialysis) — comparing how each one works, how well it clears wastes, where it is done, and when it is typically used.</p></figcaption>
 </figure>
     <div class="intro-callout">
       <p><span data-lang="en">All dialysis modalities work through two physical principles: <strong>diffusion</strong> (molecules move across a semi-permeable membrane from high to low concentration) and <strong>convection</strong> (fluid and dissolved molecules are pushed through a membrane by pressure). The key difference between modalities is <strong>which molecules they clear most effectively</strong> — and this determines clinical outcomes.</span><span data-lang="tl" class="lang-hidden">Lahat ng paraan ng diyalisis ay gumagana sa pamamagitan ng dalawang pisikal na prinsipyo: <strong>diffusion</strong> (ang mga molekulo ay gumagalaw sa semi-permeable membrane mula sa mataas hanggang mababang konsentrasyon) at <strong>convection</strong> (ang likido at mga natunaw na molekulo ay itinulak sa pamamagitan ng membrane sa pamamagitan ng presyon). Ang pangunahing pagkakaiba sa pagitan ng mga paraan ay <strong>kung aling mga molekulo ang pinaka-epektibong nililinis</strong> — at ito ang nagtatakda ng mga klinikal na resulta.</span><span data-lang="ceb" class="lang-hidden">Ang tanan nga mga pamaagi sa dialysis nagtrabaho pinaagi sa duha ka pisikal nga prinsipyo: <strong>diffusion</strong> (ang mga molekula mobalhin sa semi-permeable nga membrane gikan sa taas ngadto sa ubos nga konsentrasyon) ug <strong>convection</strong> (ang tubig ug natunaw nga mga molekula gipadunot sa membrane pinaagi sa presyon). Ang yawe nga kalainan taliwala sa mga pamaagi mao ang <strong>kung unsang mga molekula ang pinaka-epektibong nahilmo</strong> — ug kini nagtino sa mga klinikal nga resulta.</span>
@@ -1787,7 +1798,7 @@ body.dark .related-card-title {
         <!-- DIFFUSION panel -->
         <rect x="14" y="32" width="256" height="160" rx="12" fill="#e1f5f0" stroke="#1a6b72" stroke-width="1.5"/>
         <text x="142" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#1a6b72">DIFFUSION</text>
-        <text x="142" y="66" text-anchor="middle" font-size="9" fill="#1e2a38">Conventional HD — Low-flux</text>
+        <text x="142" y="66" text-anchor="middle" font-size="9" fill="#1e2a38">Conventional HD (hemodialysis) — Low-flux</text>
         <!-- Blood side -->
         <rect x="26" y="76" width="88" height="78" rx="6" fill="rgba(192,57,43,.1)"/>
         <text x="70" y="94" text-anchor="middle" font-size="9" font-weight="600" fill="#c0392b">Blood</text>
@@ -1814,7 +1825,7 @@ body.dark .related-card-title {
         <!-- CONVECTION panel -->
         <rect x="310" y="32" width="256" height="160" rx="12" fill="#edf7f2" stroke="#2d7a4f" stroke-width="1.5"/>
         <text x="438" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#2d7a4f">CONVECTION</text>
-        <text x="438" y="66" text-anchor="middle" font-size="9" fill="#1e2a38">HDF — High-flux + substitution</text>
+        <text x="438" y="66" text-anchor="middle" font-size="9" fill="#1e2a38">HDF (hemodiafiltration) — High-flux + substitution</text>
         <!-- Blood side -->
         <rect x="322" y="76" width="88" height="78" rx="6" fill="rgba(192,57,43,.1)"/>
         <text x="366" y="94" text-anchor="middle" font-size="9" font-weight="600" fill="#c0392b">Blood</text>
@@ -1906,7 +1917,7 @@ body.dark .related-card-title {
       <span data-lang="kap" class="lang-hidden">HDF = Hemodialysis + Hemofiltration nang sabay-sabay</span></div>
       <p><span data-lang="en">HDF combines diffusion (like conventional HD) with high-volume convective transport — producing 20–25 liters of ultrafiltrate per session and replacing this with ultrapure substitution fluid prepared online from the dialysis water supply. The result: dramatically superior clearance of middle molecules (β2-microglobulin, FGF-23, light chains, cytokines) while maintaining small molecule clearance equivalent to conventional HD.</span><span data-lang="tl" class="lang-hidden">Pinagsama ng HDF ang diffusion (tulad ng conventional HD) sa mataas na dami na convective transport — gumagawa ng 20–25 litro ng ultrafiltrate bawat sesyon at pinapalitan ito ng ultrapure na substitution fluid na inihanda online mula sa supply ng tubig ng diyalisis. Ang resulta: napakahusay na paglilinis ng mga gitnang molekulo (β2-microglobulin, FGF-23, light chains, cytokines) habang pinapanatili ang paglilinis ng maliliit na molekulo na katumbas ng conventional HD.</span><span data-lang="ceb" class="lang-hidden">Gikombina sa HDF ang diffusion (sama sa conventional HD) sa high-volume nga convective transport — nagprodyus og 20–25 litro sa ultrafiltrate matag sesyon ug gipulihan kini sa ultrapure nga substitution fluid nga giandam online gikan sa supply sa tubig sa diyalisis. Ang resulta: mas maayo kaayo nga paglilimpyo sa mga gitnang molekula (β2-microglobulin, FGF-23, light chains, cytokines) samtang gipreserba ang paglilimpyo sa gagmay nga molekula nga katumbas sa conventional HD.</span>
       <span data-lang="kap" class="lang-hidden">Pinagsama ning HDF ing diffusion (tulad ning conventional HD) king matas a dami a convective transport — gumagawa ning 20–25 litro ning ultrafiltrate bawat sesyon at pinapalitan ini ning ultrapure a substitution fluid a inihanda online mula king supply ning danum ning diyalisis. Ing resulta: napakahusay a paglilinis ning deng gitnang molekulo (β2-microglobulin, FGF-23, light chains, cytokines) habang pinapanatili ing paglilinis ning maliliit a molekulo a katumbas ning conventional HD.</span></p>
-      <p><span data-lang="en">The ESHOL trial (2013) and subsequent meta-analyzes showed high-volume OL-HDF reduces all-cause mortality by 30–35% and cardiovascular mortality by 33–45% compared to conventional HD — one of the strongest outcome signals in the dialysis literature. KDIGO 2024 now suggests HDF for patients tolerating conventional HD who want improved outcomes.</span><span data-lang="tl" class="lang-hidden">Ipinakita ng ESHOL trial (2013) at mga kasunod na meta-analysis na ang high-volume OL-HDF ay nagbabawas ng all-cause mortality ng 30–35% at cardiovascular mortality ng 33–45% kumpara sa conventional HD — isa sa pinakamalakas na signal ng resulta sa literatura ng diyalisis. Inirerekomenda na ngayon ng KDIGO 2024 ang HDF para sa mga pasyenteng nakakatagal ng conventional HD na nagnanais ng mas magandang resulta.</span><span data-lang="ceb" class="lang-hidden">Gipakita sa ESHOL trial (2013) ug mga sunod nga meta-analysis nga ang high-volume OL-HDF nagpaminus sa all-cause mortality og 30–35% ug cardiovascular mortality og 33–45% kumpara sa conventional HD — usa sa pinakamalakas nga signal sa resulta sa literatura sa diyalisis. Gisugyot na karon sa KDIGO 2024 ang HDF alang sa mga pasyente nga nakatagal sa conventional HD ug gusto og mas maayong mga resulta.</span>
+      <p><span data-lang="en">The ESHOL trial (2013) and subsequent meta-analyzes showed high-volume OL-HDF reduces all-cause mortality by 30–35% and cardiovascular mortality by 33–45% compared to conventional HD — one of the strongest outcome signals in the dialysis literature. KDIGO (Kidney Disease: Improving Global Outcomes) 2024 now suggests HDF for patients tolerating conventional HD who want improved outcomes.</span><span data-lang="tl" class="lang-hidden">Ipinakita ng ESHOL trial (2013) at mga kasunod na meta-analysis na ang high-volume OL-HDF ay nagbabawas ng all-cause mortality ng 30–35% at cardiovascular mortality ng 33–45% kumpara sa conventional HD — isa sa pinakamalakas na signal ng resulta sa literatura ng diyalisis. Inirerekomenda na ngayon ng KDIGO 2024 ang HDF para sa mga pasyenteng nakakatagal ng conventional HD na nagnanais ng mas magandang resulta.</span><span data-lang="ceb" class="lang-hidden">Gipakita sa ESHOL trial (2013) ug mga sunod nga meta-analysis nga ang high-volume OL-HDF nagpaminus sa all-cause mortality og 30–35% ug cardiovascular mortality og 33–45% kumpara sa conventional HD — usa sa pinakamalakas nga signal sa resulta sa literatura sa diyalisis. Gisugyot na karon sa KDIGO 2024 ang HDF alang sa mga pasyente nga nakatagal sa conventional HD ug gusto og mas maayong mga resulta.</span>
       <span data-lang="kap" class="lang-hidden">Ipinakita ning ESHOL trial (2013) at deng kasunod a meta-analysis a ing high-volume OL-HDF ya nagbabawas ning all-cause mortality ning 30–35% at cardiovascular mortality ning 33–45% kumpara king conventional HD — metung king pinakamalakas a signal ning resulta king literatura ning diyalisis. Inirerekomenda a ngayon ning KDIGO 2024 ing HDF para king deng pasyenteng nakakatagal ning conventional HD a nagnanais ning mas magandang resulta.</span></p>
       <div class="mc-specs">
         <span class="mc-spec">Substitution vol: ≥23 L/session</span>
@@ -1981,7 +1992,7 @@ body.dark .related-card-title {
         <text x="240" y="193" text-anchor="middle" font-size="10" fill="#1e2a38">Glucose in dialysate draws water out by osmosis; toxins diffuse into dialysate</text>
       </svg>
           </div>
-      <p class="illus-caption"><span data-lang="en">In PD, dialysate fluid is instilled into the peritoneal cavity through a surgically placed catheter. The peritoneum acts as the dialysis membrane — toxins and water move across it into the dialysate, which is then drained and replaced.</span><span data-lang="tl" class="lang-hidden">Sa PD, ang likidong diyalisis ay ini-install sa peritoneal cavity sa pamamagitan ng surgical na catheter. Ang peritoneum ay gumaganap bilang membrane ng diyalisis — ang mga toxin at tubig ay dumadaan dito patungo sa diyalisis, na pagkatapos ay pinapalabas at pinalitan.</span><span data-lang="ceb" class="lang-hidden">Sa PD, ang likido sa diyalisis gibutang sa peritoneal cavity pinaagi sa surgical nga catheter. Ang peritoneum nagtrabaho isip membrane sa diyalisis — ang mga toxin ug tubig nagbalhin niini ngadto sa diyalisis, nga pagkahuman gipaagos ug gipulihan.</span>
+      <p class="illus-caption"><span data-lang="en">In PD (peritoneal dialysis), dialysate fluid is instilled into the peritoneal cavity through a surgically placed catheter. The peritoneum acts as the dialysis membrane — toxins and water move across it into the dialysate, which is then drained and replaced.</span><span data-lang="tl" class="lang-hidden">Sa PD, ang likidong diyalisis ay ini-install sa peritoneal cavity sa pamamagitan ng surgical na catheter. Ang peritoneum ay gumaganap bilang membrane ng diyalisis — ang mga toxin at tubig ay dumadaan dito patungo sa diyalisis, na pagkatapos ay pinapalabas at pinalitan.</span><span data-lang="ceb" class="lang-hidden">Sa PD, ang likido sa diyalisis gibutang sa peritoneal cavity pinaagi sa surgical nga catheter. Ang peritoneum nagtrabaho isip membrane sa diyalisis — ang mga toxin ug tubig nagbalhin niini ngadto sa diyalisis, nga pagkahuman gipaagos ug gipulihan.</span>
       <span data-lang="kap" class="lang-hidden">King PD, ing likidong diyalisis ya ini-install king peritoneal cavity king pamamagitan ning surgical a catheter. Ing peritoneum ya gumaganap bilang membrane ning diyalisis — ing deng toxin at danum ya dumadaan dini patungo king diyalisis, a kapabanuan ya pinapalabas at pinalitan.</span></p>
 
     <div class="two-col">
@@ -2020,13 +2031,13 @@ body.dark .related-card-title {
       <span data-lang="kap" class="lang-hidden">Continuous Renal Replacement Therapy (CRRT)</span></h2>
 
     <div class="modality-card mc-crrt">
-      <div class="mc-label"><span data-lang="en">ICU — Critically ill patients</span><span data-lang="tl" class="lang-hidden">ICU — Mga kritikal na pasyente</span><span data-lang="ceb" class="lang-hidden">ICU — Mga kritikal nga pasyente</span>
+      <div class="mc-label"><span data-lang="en">ICU (intensive care unit) — Critically ill patients</span><span data-lang="tl" class="lang-hidden">ICU — Mga kritikal na pasyente</span><span data-lang="ceb" class="lang-hidden">ICU — Mga kritikal nga pasyente</span>
       <span data-lang="kap" class="lang-hidden">ICU — Deng kritikal a pasyente</span></div>
       <h4><span data-lang="en">CRRT — CVVH / CVVHD / CVVHDF</span><span data-lang="tl" class="lang-hidden">CRRT — CVVH / CVVHD / CVVHDF</span><span data-lang="ceb" class="lang-hidden">CRRT — CVVH / CVVHD / CVVHDF</span>
       <span data-lang="kap" class="lang-hidden">CRRT — CVVH / CVVHD / CVVHDF</span></h4>
       <div class="mc-sub"><span data-lang="en">Continuous 24-hour dialysis for hemodynamically unstable patients</span><span data-lang="tl" class="lang-hidden">Tuloy-tuloy na 24-oras na diyalisis para sa mga pasyenteng hindi stable ang hemodynamics</span><span data-lang="ceb" class="lang-hidden">Tuloy-tuloy nga 24-oras nga diyalisis alang sa mga pasyente nga dili stable ang hemodynamics</span>
       <span data-lang="kap" class="lang-hidden">Tuloy-tuloy a 24-oras a diyalisis para king deng pasyenteng ali stable ing hemodynamics</span></div>
-      <p><span data-lang="en">Critically ill patients with AKI in the ICU often cannot tolerate the rapid fluid and solute shifts of conventional intermittent HD — they develop hypotension during treatment. CRRT runs continuously at slow rates (150–300 mL/min blood flow) — removing fluid and toxins gently over 24 hours, matching the body's capacity for re-equilibration.</span><span data-lang="tl" class="lang-hidden">Ang mga kritikal na pasyenteng may AKI sa ICU ay madalas hindi makatagal sa mabilis na paglilipat ng likido at solute ng conventional intermittent HD — nagkakaroon sila ng hypotension sa panahon ng paggamot. Ang CRRT ay tumatakbo nang tuloy-tuloy sa mabagal na bilis (150–300 mL/min blood flow) — dahan-dahang inaalis ang likido at mga toxin sa loob ng 24 oras, na katugma sa kakayahan ng katawan para sa muling pag-aayos.</span><span data-lang="ceb" class="lang-hidden">Ang mga kritikal nga pasyente nga adunay AKI sa ICU kanunay dili makatagal sa dali nga pagbalhin sa tubig ug solute sa conventional intermittent HD — nagmugna sila og hypotension sa panahon sa pagtambal. Ang CRRT nagdagan nga tuloy-tuloy sa hinay nga bilis (150–300 mL/min blood flow) — hinay-hinay nga gikuha ang tubig ug mga toxin sa 24 oras, phù hợp sa kapasidad sa lawas alang sa muling pag-aayos.</span>
+      <p><span data-lang="en">Critically ill patients with AKI (acute kidney injury) in the ICU often cannot tolerate the rapid fluid and solute shifts of conventional intermittent HD — they develop hypotension during treatment. CRRT runs continuously at slow rates (150–300 mL/min blood flow) — removing fluid and toxins gently over 24 hours, matching the body's capacity for re-equilibration.</span><span data-lang="tl" class="lang-hidden">Ang mga kritikal na pasyenteng may AKI sa ICU ay madalas hindi makatagal sa mabilis na paglilipat ng likido at solute ng conventional intermittent HD — nagkakaroon sila ng hypotension sa panahon ng paggamot. Ang CRRT ay tumatakbo nang tuloy-tuloy sa mabagal na bilis (150–300 mL/min blood flow) — dahan-dahang inaalis ang likido at mga toxin sa loob ng 24 oras, na katugma sa kakayahan ng katawan para sa muling pag-aayos.</span><span data-lang="ceb" class="lang-hidden">Ang mga kritikal nga pasyente nga adunay AKI sa ICU kanunay dili makatagal sa dali nga pagbalhin sa tubig ug solute sa conventional intermittent HD — nagmugna sila og hypotension sa panahon sa pagtambal. Ang CRRT nagdagan nga tuloy-tuloy sa hinay nga bilis (150–300 mL/min blood flow) — hinay-hinay nga gikuha ang tubig ug mga toxin sa 24 oras, phù hợp sa kapasidad sa lawas alang sa muling pag-aayos.</span>
       <span data-lang="kap" class="lang-hidden">Ing deng kritikal a pasyenteng atin AKI king ICU ya madalas ali makatagal king mabilis a paglilipat ning likido at solute ning conventional intermittent HD — nagkakaroon sila ning hypotension king panahon ning paggamut. Ing CRRT ya tumatakbo nang tuloy-tuloy king mabagal a bilis (150–300 mL/min blood flow) — dahan-dahang inaalis ing likido at deng toxin king loob ning 24 oras, a katugma king kakayahan ning bangkî para king muling pag-aayos.</span></p>
       <p><span data-lang="en">Modalities: CVVH (convection only), CVVHD (diffusion only), CVVHDF (both). Anticoagulation required — regional citrate anticoagulation (RCA) is preferred in bleeding-risk patients. CRRT is not superior to IHD for survival in unselected AKI — but is preferred when hemodynamic instability prevents conventional HD.</span><span data-lang="tl" class="lang-hidden">Mga paraan: CVVH (convection lamang), CVVHD (diffusion lamang), CVVHDF (pareho). Kailangan ang anticoagulation — ang regional citrate anticoagulation (RCA) ay inirerekomenda para sa mga pasyenteng may panganib sa pagdurugo. Ang CRRT ay hindi mas mahusay kaysa IHD para sa kaligtasan sa hindi napiling AKI — ngunit inirerekomenda kapag ang hemodynamic instability ay pumipigil sa conventional HD.</span><span data-lang="ceb" class="lang-hidden">Mga pamaagi: CVVH (convection lamang), CVVHD (diffusion lamang), CVVHDF (duha). Gikinahanglan ang anticoagulation — ang regional citrate anticoagulation (RCA) gipinili alang sa mga pasyente nga may peligro sa pagdugo. Ang CRRT dili mas maayo kaysa IHD alang sa pagluwas sa dili napili nga AKI — apan gipinili kung ang hemodynamic instability nagpugong sa conventional HD.</span>
       <span data-lang="kap" class="lang-hidden">Deng paraan: CVVH (convection lamang), CVVHD (diffusion lamang), CVVHDF (pareho). Kailangan ing anticoagulation — ing regional citrate anticoagulation (RCA) ya inirerekomenda para king deng pasyenteng atin panganib king pagdurugo. Ing CRRT ya ali mas mahusay kaysa IHD para king kaligtasan king ali napiling AKI — ngarud inirerekomenda nung ing hemodynamic instability ya pumipigil king conventional HD.</span></p>
@@ -2108,7 +2119,7 @@ body.dark .related-card-title {
             <td>3×/week, 4 hrs</td>
             <td><span data-lang="en">Poor</span><span data-lang="tl" class="lang-hidden">Mahina</span><span data-lang="ceb" class="lang-hidden">Huyang</span>
       <span data-lang="kap" class="lang-hidden">Mahina</span></td>
-            <td><span data-lang="en">Standard ESKD — all Philippine centers</span><span data-lang="tl" class="lang-hidden">Pamantayang ESKD — lahat ng sentro sa Pilipinas</span><span data-lang="ceb" class="lang-hidden">Standard ESKD — tanan nga sentro sa Pilipinas</span>
+            <td><span data-lang="en">Standard ESKD (end-stage kidney disease) — all Philippine centers</span><span data-lang="tl" class="lang-hidden">Pamantayang ESKD — lahat ng sentro sa Pilipinas</span><span data-lang="ceb" class="lang-hidden">Standard ESKD — tanan nga sentro sa Pilipinas</span>
       <span data-lang="kap" class="lang-hidden">Pamantayang ESKD — amin ning sentro king Pilipinas</span></td>
           </tr>
           <tr>
@@ -2130,7 +2141,7 @@ body.dark .related-card-title {
             <td>5–7×/week, 2–3 hrs</td>
             <td><span data-lang="en">Good (more frequent)</span><span data-lang="tl" class="lang-hidden">Maganda (mas madalas)</span><span data-lang="ceb" class="lang-hidden">Maayo (mas kanunay)</span>
       <span data-lang="kap" class="lang-hidden">Maganda (mas madalas)</span></td>
-            <td><span data-lang="en">Motivated patients with trained helper; best BP/QoL</span><span data-lang="tl" class="lang-hidden">Mga motivadong pasyente na may sinanay na katulong; pinakamainam na BP/QoL</span><span data-lang="ceb" class="lang-hidden">Mga motivado nga pasyente nga adunay sinangay nga kaayo; pinakamainam nga BP/QoL</span>
+            <td><span data-lang="en">Motivated patients with trained helper; best BP/QoL (quality of life)</span><span data-lang="tl" class="lang-hidden">Mga motivadong pasyente na may sinanay na katulong; pinakamainam na BP/QoL</span><span data-lang="ceb" class="lang-hidden">Mga motivado nga pasyente nga adunay sinangay nga kaayo; pinakamainam nga BP/QoL</span>
       <span data-lang="kap" class="lang-hidden">Deng motivadong pasyente a atin sinanay a katulong; pinakamainam a BP/QoL</span></td>
           </tr>
           <tr>
@@ -2398,5 +2409,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

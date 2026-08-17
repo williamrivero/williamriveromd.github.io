@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -142,6 +143,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1310,8 +1319,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1756,7 +1767,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
     <div class="alert-icon">🩺</div>
     <div class="alert-body">
       <h4>Scope and limits</h4>
-      <p>This is an operational reference aligned with AAMI/ISO 23500 and Philippine DOH requirements. It does not replace your equipment manufacturer's manual, your facility's validated SOPs, or your biomedical engineer's instructions. When this guide and the manufacturer disagree, the manufacturer's validated procedure governs. Any result exceeding a limit, and any patient reaction suspected to involve water quality, must be escalated to the nurse-in-charge and medical director immediately.</p>
+      <p>This is an operational reference aligned with AAMI (Association for the Advancement of Medical Instrumentation)/ISO (International Organization for Standardization) 23500 and Philippine DOH (Department of Health) requirements. It does not replace your equipment manufacturer's manual, your facility's validated SOPs, or your biomedical engineer's instructions. When this guide and the manufacturer disagree, the manufacturer's validated procedure governs. Any result exceeding a limit, and any patient reaction suspected to involve water quality, must be escalated to the nurse-in-charge and medical director immediately.</p>
     </div>
   </div>
 </div>
@@ -1775,7 +1786,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
     <table>
       <thead><tr><th>Contaminant</th><th>Clinical effect</th><th>Mechanism</th></tr></thead>
       <tbody>
-        <tr><td><strong>Chloramine / chlorine</strong></td><td>Hemolytic anemia, poor EPO response</td><td>Oxidative damage to red cells crossing the membrane</td></tr>
+        <tr><td><strong>Chloramine / chlorine</strong></td><td>Hemolytic anemia, poor EPO (erythropoietin) response</td><td>Oxidative damage to red cells crossing the membrane</td></tr>
         <tr><td><strong>Aluminum</strong></td><td>Encephalopathy, osteomalacia, microcytic anemia</td><td>Accumulation in brain and bone; no renal clearance</td></tr>
         <tr><td><strong>Bacteria &amp; endotoxin</strong></td><td>Pyrogenic reactions (fever, rigors, hypotension), chronic micro-inflammation</td><td>Endotoxin fragments back-diffuse and trigger cytokine release</td></tr>
         <tr><td><strong>Copper / zinc</strong></td><td>Acute hemolysis, nausea, hemolytic anemia</td><td>Leached from plumbing; oxidative and direct toxicity</td></tr>
@@ -1817,7 +1828,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
     <div class="alert-icon">⏱️</div>
     <div class="alert-body">
       <h4>Testing cadence required for licensure</h4>
-      <p><strong>Microbiological testing:</strong> performed regularly (monthly at minimum). Bacterial count in product water must stay below the action threshold — AAMI/ISO 23500 best practice is &lt;100 CFU/mL with an action level of 50 CFU/mL.<br><strong>Chemical testing:</strong> at least every six months, and whenever feed-water quality changes.<br>Only DOH-accredited laboratories may perform the official tests, and any result exceeding standard must be reported immediately.</p>
+      <p><strong>Microbiological testing:</strong> performed regularly (monthly at minimum). Bacterial count in product water must stay below the action threshold — AAMI/ISO 23500 best practice is &lt;100 CFU (colony-forming units)/mL with an action level of 50 CFU/mL.<br><strong>Chemical testing:</strong> at least every six months, and whenever feed-water quality changes.<br>Only DOH-accredited laboratories may perform the official tests, and any result exceeding standard must be reported immediately.</p>
     </div>
   </div>
 
@@ -1866,7 +1877,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
         <dt>RO</dt><dd>Reverse osmosis</dd>
         <dt>UF</dt><dd>Ultrafiltration</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -1905,7 +1916,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
   <p>Product water is fed directly to the loop or held in a storage tank, then circulated continuously to every machine and back. The enemy here is stagnation, because standing water grows biofilm — a bacterial layer that sheds endotoxin and resists disinfection. Loop design favors continuous recirculation with high flow/turbulence and no "dead legs" (capped, unused pipe stubs where water sits). A vented storage tank uses a hydrophobic 0.2 µm air vent filter and a conical/sloped base for full drainage.</p>
 
   <h3>3.4 Ultrafiltration (UF) and polishing</h3>
-  <p>UF membranes (pore size &lt;0.01 µm) sit after RO — often one at the loop and a second point-of-use (POU) UF on each machine — as the final barrier against bacteria and endotoxin. DOH AO 2013-0003 specifically calls for UF after RO for microbial and endotoxin control, and UF is what allows a center to reach ultrapure water for online HDF.</p>
+  <p>UF membranes (pore size &lt;0.01 µm) sit after RO — often one at the loop and a second point-of-use (POU) UF on each machine — as the final barrier against bacteria and endotoxin. DOH AO 2013-0003 specifically calls for UF after RO for microbial and endotoxin control, and UF is what allows a center to reach ultrapure water for online HDF (hemodiafiltration).</p>
 </section>
 
 <!-- ════════════════════════ SECTION 4 — SOURCE-WATER DESIGNS ══════════ -->
@@ -1925,7 +1936,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
         <dt>RO</dt><dd>Reverse osmosis</dd>
         <dt>TDS</dt><dd>Total dissolved solids</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -1996,7 +2007,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
   <h3>5.1 How to measure WTS capacity</h3>
   <ol>
     <li><strong>Capacity is the RO unit's rated permeate (product water) output</strong> — liters per hour (LPH) or gallons per day (GPD) — measured at a standard feed temperature (usually 25°C). RO output drops as feed water gets colder (roughly 2–3% per °C below the rating point), so a unit rated at 25°C under-produces on a cool morning unless margin is built in.</li>
-    <li><strong>Calculate actual peak demand, not average usage.</strong> Standard single-pass HD draws roughly 500–800 mL/min dialysate flow (≈30–48 L/hr per station); online HDF substitution fluid pushes a station to ~50–60 L/hr. Peak simultaneous demand = (number of stations running <em>at the same time</em>, not total stations in the building) × per-station flow, plus a design margin of 20–30% for recirculation-loop losses and headroom.</li>
+    <li><strong>Calculate actual peak demand, not average usage.</strong> Standard single-pass HD (hemodialysis) draws roughly 500–800 mL/min dialysate flow (≈30–48 L/hr per station); online HDF substitution fluid pushes a station to ~50–60 L/hr. Peak simultaneous demand = (number of stations running <em>at the same time</em>, not total stations in the building) × per-station flow, plus a design margin of 20–30% for recirculation-loop losses and headroom.</li>
     <li><strong>Compare peak demand against the RO's rated permeate output — not the storage tank size.</strong> A large tank can mask an undersized RO for a while, but once the tank draws down faster than the RO refills it, every additional station drops outlet pressure/flow for everyone on the loop.</li>
     <li><strong>Check the loop, not just the RO.</strong> Distribution-loop pipe diameter and recirculation pump must maintain adequate linear velocity — no dead legs, continuous turbulent flow — even after new machine take-off points are added.</li>
   </ol>
@@ -2011,7 +2022,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
       <dl class="fig-abbrevs">
         <dt>RO</dt><dd>Reverse osmosis</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -2054,7 +2065,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
         <dt>UF</dt><dd>Ultrafiltration</dd>
         <dt>HDF</dt><dd>Hemodiafiltration</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -2077,7 +2088,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
         <dt>HBV</dt><dd>Hepatitis B virus</dd>
         <dt>HCV</dt><dd>Hepatitis C virus</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -2103,7 +2114,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
         <dt>CFU</dt><dd>Colony-forming unit</dd>
         <dt>EU</dt><dd>Endotoxin unit</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -2128,7 +2139,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
         <dt>RO</dt><dd>Reverse osmosis</dd>
         <dt>TDS</dt><dd>Total dissolved solids</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -2163,7 +2174,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
         <dt>EU</dt><dd>Endotoxin unit</dd>
         <dt>HDF</dt><dd>Hemodiafiltration</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -2278,7 +2289,7 @@ html[data-theme="dark"] .algo-acc-body h4{color:var(--text);}
     </picture>
     <figcaption>
       <p class="fig-desc">The Golden Rule as a literal decision path: any of four STOP triggers means take the water offline and escalate now; none present means continue routine monitoring.</p>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -2897,5 +2908,6 @@ function setGuideLang(lang) { localStorage.setItem(GLANG_KEY, lang); }
 </script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
 <script src="../assets/image-lightbox.js" defer></script>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

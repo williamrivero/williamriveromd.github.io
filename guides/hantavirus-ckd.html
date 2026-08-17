@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -141,6 +142,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1309,8 +1318,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1853,7 +1864,7 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
      SITE HEADER
 ════════════════════════════════════════════════════════════════════════════ -->
 <header class="site-header">
-  <a href="/guides/" class="brand"><strong>W Rivero</strong>, MD · Nephrology</a>
+  <a href="/guides/" class="brand"><strong>W Rivero</strong>, MD · Nephrology</a><div class="header-lang"><span class="lang-lbl">Lang:</span><button class="lang-btn-g active" id="glb-en" onclick="setGuideLang('en')">EN</button><button class="lang-btn-g" id="glb-tl" onclick="setGuideLang('tl')">TL</button><button class="lang-btn-g" id="glb-ceb" onclick="setGuideLang('ceb')">CEB</button><button class="lang-btn-g" id="glb-kap" onclick="setGuideLang('kap')">KAP</button></div>
   <nav class="header-nav"><a href="calculators.html">CALCULATORS</a><a href="kidney-physiology.html">PHYSIOLOGY</a><a href="nephrology-atlas.html">ATLAS</a><a href="/guides/">ALL GUIDES</a><a href="/about.html">ABOUT</a></nav>
 </header>
 
@@ -1872,13 +1883,13 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
       Clinician
     </button>
   </div>
-  <div style="font-size:11px;color:rgba(255,255,255,.5);">Updated May 2026 · WHO DON-600/601</div>
+  <div style="font-size:11px;color:rgba(255,255,255,.5);">Updated May 2026 · WHO (World Health Organization) DON-600/601</div>
 </div>
 
 <div class="audience-tabs">
   <div class="tabs-inner">
     <button class="aud-tab active" onclick="setMode('patient')"><span class="tab-icon">🧑‍⚕️</span> Patient Guide</button>
-    <button class="aud-tab tab-md" onclick="setMode('physician')"><span class="tab-icon">⚕️</span> Clinician Tab</button>
+    <button class="aud-tab tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1900,9 +1911,9 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
     </div>
     </aside>
     <div class="hero-copy">
-    <div class="hero-tag">Infectious Disease · Nephrology · Philippines</div>
-    <h1>Hantavirus<br>and the <em>Kidneys</em></h1>
-    <p class="hero-sub">HFRS, AKI, and CKD — what the 2026 global outbreak means for patients and clinicians in the Philippines</p>
+    <div class="hero-tag"><span data-lang="en">Infectious Disease · Nephrology · Philippines</span><span data-lang="tl" class="lang-hidden">Nakakahawang Sakit · Nephrology · Pilipinas</span><span data-lang="ceb" class="lang-hidden">Makatakod nga Sakit · Nephrology · Pilipinas</span><span data-lang="kap" class="lang-hidden">Sakit a Makikat · Nephrology · Pilipinas</span></div>
+    <h1><span data-lang="en">Hantavirus<br>and the <em>Kidneys</em></span><span data-lang="tl" class="lang-hidden">Hantavirus<br>at ang <em>mga Bato</em></span><span data-lang="ceb" class="lang-hidden">Hantavirus<br>ug ang <em>mga Bato</em></span><span data-lang="kap" class="lang-hidden">Hantavirus<br>ampo reng <em>Batu</em></span></h1>
+    <p class="hero-sub"><span data-lang="en">HFRS, AKI, and CKD — what the 2026 global outbreak means for patients and clinicians in the Philippines</span><span data-lang="tl" class="lang-hidden">HFRS, AKI, at CKD — kung ano ang kahulugan ng 2026 global na outbreak para sa mga pasyente at kliniko sa Pilipinas</span><span data-lang="ceb" class="lang-hidden">HFRS, AKI, ug CKD — unsa ang kahulugan sa 2026 global nga outbreak alang sa mga pasyente ug kliniko sa Pilipinas</span><span data-lang="kap" class="lang-hidden">HFRS, AKI, ampo CKD — nanu ing kabaldugan ning 2026 global a outbreak para karing pasyente ampo kliniko king Pilipinas</span></p>
     <div class="hero-meta">
 <span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
 <span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">7</span></span>
@@ -1956,25 +1967,25 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 <!-- SECTION 1 — 2026 OUTBREAK -->
 <section class="section" id="outbreak">
   <div class="container">
-    <div class="section-tag">Breaking · May 2026</div>
-    <h2>The 2026 Outbreak — Why Hantavirus Is Front-Page News Again</h2>
+    <div class="section-tag"><span data-lang="en">Breaking · May 2026</span><span data-lang="tl" class="lang-hidden">Balitang Kasalukuyan · Mayo 2026</span><span data-lang="ceb" class="lang-hidden">Bag-ong Balita · Mayo 2026</span><span data-lang="kap" class="lang-hidden">Balitang Bayu · Mayu 2026</span></div>
+    <h2><span data-lang="en">The 2026 Outbreak — Why Hantavirus Is Front-Page News Again</span><span data-lang="tl" class="lang-hidden">Ang 2026 Outbreak — Bakit Muling Nagiging Front-Page News ang Hantavirus</span><span data-lang="ceb" class="lang-hidden">Ang 2026 Outbreak — Ngano nga Nabalik sa Front-Page News ang Hantavirus</span><span data-lang="kap" class="lang-hidden">Ing 2026 Outbreak — Bakit Mauling Ginawang Front-Page News ing Hantavirus</span></h2>
 
     <div class="outbreak-banner">
       <div class="outbreak-banner-icon">🚨</div>
       <div>
-        <h3>MV Hondius Cruise Ship — WHO DON-600/601 · May 2026</h3>
-        <p>In May 2026, WHO confirmed an outbreak of <strong>Andes hantavirus (ANDV)</strong> aboard the M/V Hondius, a cruise ship traveling in the South Atlantic. <strong>11 cases confirmed, 3 deaths.</strong> Passengers and crew from <strong>23 countries</strong> were exposed — including Australia, Canada, France, Germany, Singapore, South Africa, Spain, Switzerland, Turkey, and the United States.</p>
-        <p><strong>The crew of MV Hondius was predominantly Filipino.</strong> This is the first documented hantavirus outbreak linked to international cruise ship travel.</p>
+        <h3><span data-lang="en">MV Hondius Cruise Ship — WHO DON-600/601 · May 2026</span><span data-lang="tl" class="lang-hidden">MV Hondius Cruise Ship — WHO DON-600/601 · Mayo 2026</span><span data-lang="ceb" class="lang-hidden">MV Hondius Cruise Ship — WHO DON-600/601 · Mayo 2026</span><span data-lang="kap" class="lang-hidden">MV Hondius Cruise Ship — WHO DON-600/601 · Mayu 2026</span></h3>
+        <p><span data-lang="en">In May 2026, WHO confirmed an outbreak of <strong>Andes hantavirus (ANDV)</strong> aboard the M/V Hondius, a cruise ship traveling in the South Atlantic. <strong>11 cases confirmed, 3 deaths.</strong> Passengers and crew from <strong>23 countries</strong> were exposed — including Australia, Canada, France, Germany, Singapore, South Africa, Spain, Switzerland, Turkey, and the United States.</span><span data-lang="tl" class="lang-hidden">Noong Mayo 2026, kinumpirma ng WHO ang isang outbreak ng <strong>Andes hantavirus (ANDV)</strong> sa loob ng M/V Hondius, isang cruise ship na naglalakbay sa South Atlantic. <strong>11 kaso ang nakumpirma, 3 ang namatay.</strong> Ang mga pasahero at tripulante mula sa <strong>23 bansa</strong> ay nalantad — kabilang ang Australia, Canada, France, Germany, Singapore, South Africa, Spain, Switzerland, Turkey, at ang United States.</span><span data-lang="ceb" class="lang-hidden">Niadtong Mayo 2026, gikumpirma sa WHO ang usa ka outbreak sa <strong>Andes hantavirus (ANDV)</strong> sulod sa M/V Hondius, usa ka cruise ship nga nagbiyahe sa South Atlantic. <strong>11 ka kaso ang nakumpirma, 3 ang namatay.</strong> Ang mga pasahero ug tripulante gikan sa <strong>23 ka nasod</strong> naladlad — lakip ang Australia, Canada, France, Germany, Singapore, South Africa, Spain, Switzerland, Turkey, ug ang United States.</span><span data-lang="kap" class="lang-hidden">Kanitang Mayu 2026, kinumpirma ning WHO ing metung a outbreak ning <strong>Andes hantavirus (ANDV)</strong> king lalam ning M/V Hondius, metung a cruise ship a byabyahe king South Atlantic. <strong>11 kaso ing mekumpirma, 3 ing mete.</strong> Reng pasahero ampo tripulante ibat karing <strong>23 bansa</strong> mielad — kayabe ing Australia, Canada, France, Germany, Singapore, South Africa, Spain, Switzerland, Turkey, ampo ing United States.</span></p>
+        <p><span data-lang="en"><strong>The crew of MV Hondius was predominantly Filipino.</strong> This is the first documented hantavirus outbreak linked to international cruise ship travel.</span><span data-lang="tl" class="lang-hidden"><strong>Ang tripulante ng MV Hondius ay pangunahing Pilipino.</strong> Ito ang unang naidokumentong hantavirus outbreak na nakaugnay sa internasyonal na cruise ship travel.</span><span data-lang="ceb" class="lang-hidden"><strong>Ang tripulante sa MV Hondius kadaghanan Pilipino.</strong> Kini ang unang nadokumento nga hantavirus outbreak nga nalambigit sa internasyonal nga cruise ship travel.</span><span data-lang="kap" class="lang-hidden"><strong>Reng tripulante ning MV Hondius kalakuan lang Pilipino.</strong> Ini ing mumunang medokumentong hantavirus outbreak a nesumpung king internasyunal a cruise ship travel.</span></p>
       </div>
     </div>
 
-    <p>Why does this matter to patients in the Philippines? Two reasons. First, Filipino workers in international maritime, hospitality, and healthcare settings now face documented exposure pathways previously not associated with hantavirus. Second — and more quietly — <strong>Seoul hantavirus is already present in Philippine rats.</strong> The Department of Health confirmed zero human cases in 2026, but scientific surveys have detected Seoul virus in <em>Rattus norvegicus</em> (the common brown rat) across the country.</p>
+    <p><span data-lang="en">Why does this matter to patients in the Philippines? Two reasons. First, Filipino workers in international maritime, hospitality, and healthcare settings now face documented exposure pathways previously not associated with hantavirus. Second — and more quietly — <strong>Seoul hantavirus is already present in Philippine rats.</strong> The Department of Health confirmed zero human cases in 2026, but scientific surveys have detected Seoul virus in <em>Rattus norvegicus</em> (the common brown rat) across the country.</span><span data-lang="tl" class="lang-hidden">Bakit ito mahalaga sa mga pasyente sa Pilipinas? Dalawang dahilan. Una, ang mga manggagawang Pilipino sa internasyonal na maritime, hospitality, at healthcare ay humaharap na ngayon sa mga naidokumentong daan ng pagkalantad na dati ay hindi iniuugnay sa hantavirus. Pangalawa — at mas tahimik — <strong>naroon na ang Seoul hantavirus sa mga daga sa Pilipinas.</strong> Kinumpirma ng Department of Health na walang kaso sa tao noong 2026, ngunit natuklasan ng mga siyentipikong survey ang Seoul virus sa <em>Rattus norvegicus</em> (ang karaniwang brown rat) sa buong bansa.</span><span data-lang="ceb" class="lang-hidden">Ngano nga importante kini sa mga pasyente sa Pilipinas? Duha ka rason. Una, ang mga trabahante nga Pilipino sa internasyonal nga maritime, hospitality, ug healthcare karon nag-atubang na sa nadokumento nga mga agianan sa pagkaladlad nga kaniadto wala ilambigit sa hantavirus. Ikaduha — ug mas hilom — <strong>anaa na ang Seoul hantavirus sa mga ilaga sa Pilipinas.</strong> Gikumpirma sa Department of Health nga walay kaso sa tawo niadtong 2026, apan nakit-an sa mga syentipikong survey ang Seoul virus sa <em>Rattus norvegicus</em> (ang komon nga brown rat) sa tibuok nasod.</span><span data-lang="kap" class="lang-hidden">Bakit mahalaga ini karing pasyente king Pilipinas? Adwang rason. Mumuna, reng manggagawang Pilipino king internasyunal a maritime, hospitality, ampo healthcare mangaladwa la ngeni karing medokumentong dalan ning pamielad a dati eng nesumpung king hantavirus. Kaduwa — ampo mas tahimik — <strong>atyu na ing Seoul hantavirus karing dagis king Pilipinas.</strong> Kinumpirma ning Department of Health a alang kaso king tau kanitang 2026, dapot detektadu ning reng syentipikong survey ing Seoul virus king <em>Rattus norvegicus</em> (ing karaniwang brown rat) king mabilug a bansa.</span></p>
 
     <div class="alert alert-amber">
       <div class="alert-icon">⚠️</div>
       <div class="alert-body">
-        <h4>What makes the 2026 outbreak unusual</h4>
-        <p>Most hantaviruses <strong>cannot spread from person to person</strong> — you can only catch them from infected rodents. Andes virus (ANDV) is the sole exception: it has documented, though rare, human-to-human transmission. This is why WHO issued a global alert for the MV Hondius event, and why countries across five continents were placed on watch.</p>
+        <h4><span data-lang="en">What makes the 2026 outbreak unusual</span><span data-lang="tl" class="lang-hidden">Ano ang nagpapakaiba sa 2026 outbreak</span><span data-lang="ceb" class="lang-hidden">Unsa ang naghimo sa 2026 outbreak nga talagsaon</span><span data-lang="kap" class="lang-hidden">Nanu ing pengari king 2026 outbreak a e karaniwan</span></h4>
+        <p><span data-lang="en">Most hantaviruses <strong>cannot spread from person to person</strong> — you can only catch them from infected rodents. Andes virus (ANDV) is the sole exception: it has documented, though rare, human-to-human transmission. This is why WHO issued a global alert for the MV Hondius event, and why countries across five continents were placed on watch.</span><span data-lang="tl" class="lang-hidden">Karamihan ng hantavirus ay <strong>hindi kayang kumalat mula tao sa tao</strong> — nakukuha mo lang ito mula sa mga daga na may impeksyon. Ang Andes virus (ANDV) ang tanging eksepsiyon: may naidokumento, bagaman bihira, na human-to-human na transmisyon. Ito ang dahilan kung bakit naglabas ang WHO ng global alert para sa MV Hondius, at kung bakit inilagay sa pagbabantay ang mga bansa sa limang kontinente.</span><span data-lang="ceb" class="lang-hidden">Kadaghanan sa hantavirus <strong>dili makakatakod gikan sa tawo ngadto sa tawo</strong> — makuha ra nimo kini gikan sa mga ilaga nga adunay impeksyon. Ang Andes virus (ANDV) mao ra ang eksepsiyon: adunay nadokumento, bisan panagsa, nga human-to-human nga transmisyon. Mao kini ang hinungdan nga nagpagawas ang WHO og global alert alang sa MV Hondius, ug ngano nga gibutang sa pagbantay ang mga nasod sa lima ka kontinente.</span><span data-lang="kap" class="lang-hidden">Kalakuan karing hantavirus <strong>ela malyaring kumalat manibat tau king tau</strong> — akakwa mu la mu deni ibat karing dagis a atin impeksyon. Ing Andes virus (ANDV) ing bukud a eksepsiyon: atin ne medokumento, agyaman malagwa, a human-to-human a transmisyon. Ini ing sangkan bakit meglual ing WHO king global alert para king MV Hondius, ampo bakit mebili king pamanyaliksik reng bansa king limang kontinente.</span></p>
       </div>
     </div>
 
@@ -1985,7 +1996,7 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
              alt="2026 MV Hondius hantavirus outbreak — world map, affected countries, and outbreak timeline"
              width="1536" height="1024" style="width:100%;height:auto;border-radius:8px;display:block">
       </picture>
-      <p class="illus-caption">2026 MV Hondius outbreak: 11 cases, 3 deaths, 23 countries. Filipino crew predominantly affected. Seoul virus already detected in Philippine rats.</p>
+      <p class="illus-caption"><span data-lang="en">2026 MV Hondius outbreak: 11 cases, 3 deaths, 23 countries. Filipino crew predominantly affected. Seoul virus already detected in Philippine rats.</span><span data-lang="tl" class="lang-hidden">2026 MV Hondius outbreak: 11 kaso, 3 namatay, 23 bansa. Pangunahing naapektuhan ang mga tripulanteng Pilipino. Natuklasan na ang Seoul virus sa mga daga sa Pilipinas.</span><span data-lang="ceb" class="lang-hidden">2026 MV Hondius outbreak: 11 kaso, 3 namatay, 23 nasod. Kadaghanan naapektuhan ang mga tripulanteng Pilipino. Nakit-an na ang Seoul virus sa mga ilaga sa Pilipinas.</span><span data-lang="kap" class="lang-hidden">2026 MV Hondius outbreak: 11 kaso, 3 mete, 23 bansa. Kalakuan a meapektuan reng tripulanteng Pilipino. Detektadu na ing Seoul virus karing dagis king Pilipinas.</span></p>
     </div>
   </div>
 </section>
@@ -1993,8 +2004,8 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 <!-- SECTION 2 — WHAT IS HANTAVIRUS -->
 <section class="section" id="what">
   <div class="container">
-    <div class="section-tag">Overview</div>
-    <h2>What Is Hantavirus — and How Do You Get It?</h2>
+    <div class="section-tag"><span data-lang="en">Overview</span><span data-lang="tl" class="lang-hidden">Pangkalahatang-tanaw</span><span data-lang="ceb" class="lang-hidden">Kinatibuk-ang Panglantaw</span><span data-lang="kap" class="lang-hidden">Kabilugang Lawe</span></div>
+    <h2><span data-lang="en">What Is Hantavirus — and How Do You Get It?</span><span data-lang="tl" class="lang-hidden">Ano ang Hantavirus — at Paano Ito Nakukuha?</span><span data-lang="ceb" class="lang-hidden">Unsa ang Hantavirus — ug Giunsa Kini Makuha?</span><span data-lang="kap" class="lang-hidden">Nanu ing Hantavirus — ampo Nu Karin Ya Akakwa?</span></h2>
 
     <figure style="margin:24px 0;">
       <picture>
@@ -2004,28 +2015,28 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
       <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;">Patient overview — hantavirus, HFRS, and what the 2026 outbreak means for the Philippines.</figcaption>
     </figure>
 
-    <p>Hantavirus is a family of viruses carried by rodents. Unlike dengue (mosquito-borne) or leptospirosis (floodwater-borne), hantavirus spreads almost exclusively through <strong>infected rodent droppings, urine, or saliva</strong> — usually when particles become airborne and are inhaled. You do not need to be bitten. Simply cleaning a room with dried rat droppings — without protection — is enough exposure.</p>
+    <p><span data-lang="en">Hantavirus is a family of viruses carried by rodents. Unlike dengue (mosquito-borne) or leptospirosis (floodwater-borne), hantavirus spreads almost exclusively through <strong>infected rodent droppings, urine, or saliva</strong> — usually when particles become airborne and are inhaled. You do not need to be bitten. Simply cleaning a room with dried rat droppings — without protection — is enough exposure.</span><span data-lang="tl" class="lang-hidden">Ang hantavirus ay isang pamilya ng mga virus na dala ng mga daga. Hindi tulad ng dengue (dala ng lamok) o leptospirosis (dala ng baha), ang hantavirus ay kumakalat halos eksklusibo sa pamamagitan ng <strong>dumi, ihi, o laway ng dagang may impeksyon</strong> — kadalasan kapag ang mga particle ay nagiging airborne at nalalanghap. Hindi kailangang makagat ka. Ang paglilinis lang ng silid na may tuyong dumi ng daga — nang walang proteksyon — ay sapat nang pagkalantad.</span><span data-lang="ceb" class="lang-hidden">Ang hantavirus usa ka pamilya sa mga virus nga gidala sa mga ilaga. Dili sama sa dengue (dala sa lamok) o leptospirosis (dala sa baha), ang hantavirus mokaylap halos eksklusibo pinaagi sa <strong>hugaw, ihi, o laway sa ilaga nga adunay impeksyon</strong> — kasagaran kon ang mga partikulo mahimong airborne ug masuyop. Dili kinahanglan nga mapaakan ka. Ang paglimpyo ra sa usa ka kwarto nga adunay uga nga hugaw sa ilaga — nga walay panalipod — igo na nga pagkaladlad.</span><span data-lang="kap" class="lang-hidden">Ing hantavirus metung yang pamilya ning virus a dala da reng dagis. Ali anti ing dengue (dala na ning lamuk) o leptospirosis (dala na ning albug), ing hantavirus mikakalat yang halos eksklusibo king pamiaus ning <strong>dumi, ihi, o laway ning dagis a atin impeksyon</strong> — karaniwan nung reng partikulo maging airborne la ampo maisnawa. Ali mu kailangang makagat. Ing pamaglinis mu ning kwartu a atin melangeng dumi ning dagis — alang kambilan — sapat ne yang pamielad.</span></p>
 
     <div class="three-col" style="margin:24px 0;">
       <div class="feature-card">
-        <h4><span class="dot dot-red"></span> HFRS — The Kidney Form</h4>
-        <p><strong>Hemorrhagic Fever with Renal Syndrome</strong> is caused by Old World hantaviruses — primarily Hantaan and Seoul virus in Asia. The kidneys are the primary target. This is the form most relevant to the Philippines. Around 150,000 HFRS cases occur globally each year, mostly in China and Korea.</p>
+        <h4><span data-lang="en"><span class="dot dot-red"></span> HFRS — The Kidney Form</span><span data-lang="tl" class="lang-hidden"><span class="dot dot-red"></span> HFRS — Ang Anyong Pang-Bato</span><span data-lang="ceb" class="lang-hidden"><span class="dot dot-red"></span> HFRS — Ang Porma sa Bato</span><span data-lang="kap" class="lang-hidden"><span class="dot dot-red"></span> HFRS — Ing Anyu Para King Batu</span></h4>
+        <p><span data-lang="en"><strong>Hemorrhagic Fever with Renal Syndrome</strong> is caused by Old World hantaviruses — primarily Hantaan and Seoul virus in Asia. The kidneys are the primary target. This is the form most relevant to the Philippines. Around 150,000 HFRS cases occur globally each year, mostly in China and Korea.</span><span data-lang="tl" class="lang-hidden">Ang <strong>Hemorrhagic Fever with Renal Syndrome</strong> ay dulot ng mga Old World hantavirus — pangunahin ang Hantaan at Seoul virus sa Asia. Ang mga bato ang pangunahing target. Ito ang anyo na pinakaangkop sa Pilipinas. May humigit-kumulang 150,000 HFRS na kaso sa buong mundo bawat taon, kadalasan sa China at Korea.</span><span data-lang="ceb" class="lang-hidden">Ang <strong>Hemorrhagic Fever with Renal Syndrome</strong> gipahinabo sa mga Old World hantavirus — nag-una ang Hantaan ug Seoul virus sa Asia. Ang mga bato mao ang nag-unang target. Kini ang porma nga labing angay sa Pilipinas. Adunay mga 150,000 ka HFRS nga kaso sa tibuok kalibutan matag tuig, kasagaran sa China ug Korea.</span><span data-lang="kap" class="lang-hidden">Ing <strong>Hemorrhagic Fever with Renal Syndrome</strong> mikawa ya karing Old World hantavirus — mumuna ing Hantaan ampo Seoul virus king Asia. Reng batu ing mumunang target. Ini ing anyu a pekamaangkup king Pilipinas. Atin manga 150,000 a HFRS a kaso king mabilug a yatu balang banua, kalakuan king China ampo Korea.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-amber"></span> HPS — The Lung Form</h4>
-        <p><strong>Hantavirus Pulmonary Syndrome</strong> is caused by New World hantaviruses — primarily Sin Nombre (USA) and Andes virus (South America). The lungs are the primary target. This is the form behind the 2026 MV Hondius outbreak. Case fatality rate can reach 35–40%.</p>
+        <h4><span data-lang="en"><span class="dot dot-amber"></span> HPS — The Lung Form</span><span data-lang="tl" class="lang-hidden"><span class="dot dot-amber"></span> HPS — Ang Anyong Pang-Baga</span><span data-lang="ceb" class="lang-hidden"><span class="dot dot-amber"></span> HPS — Ang Porma sa Baga</span><span data-lang="kap" class="lang-hidden"><span class="dot dot-amber"></span> HPS — Ing Anyu Para King Baga</span></h4>
+        <p><span data-lang="en"><strong>Hantavirus Pulmonary Syndrome</strong> is caused by New World hantaviruses — primarily Sin Nombre (USA) and Andes virus (South America). The lungs are the primary target. This is the form behind the 2026 MV Hondius outbreak. Case fatality rate can reach 35–40%.</span><span data-lang="tl" class="lang-hidden">Ang <strong>Hantavirus Pulmonary Syndrome</strong> ay dulot ng mga New World hantavirus — pangunahin ang Sin Nombre (USA) at Andes virus (South America). Ang mga baga ang pangunahing target. Ito ang anyo sa likod ng 2026 MV Hondius outbreak. Ang case fatality rate ay maaaring umabot sa 35–40%.</span><span data-lang="ceb" class="lang-hidden">Ang <strong>Hantavirus Pulmonary Syndrome</strong> gipahinabo sa mga New World hantavirus — nag-una ang Sin Nombre (USA) ug Andes virus (South America). Ang mga baga mao ang nag-unang target. Kini ang porma luyo sa 2026 MV Hondius outbreak. Ang case fatality rate mahimong moabot og 35–40%.</span><span data-lang="kap" class="lang-hidden">Ing <strong>Hantavirus Pulmonary Syndrome</strong> mikawa ya karing New World hantavirus — mumuna ing Sin Nombre (USA) ampo Andes virus (South America). Reng baga ing mumunang target. Ini ing anyu king gulut ning 2026 MV Hondius outbreak. Ing case fatality rate malyaring datang king 35–40%.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-teal"></span> Seoul Virus — The Philippine Risk</h4>
-        <p><strong>Seoul orthohantavirus (SEOV)</strong> is carried by the common brown rat (<em>Rattus norvegicus</em>) — the same city rat found across Metro Manila, Cebu, and Davao. SEOV is documented in Philippine rats. It causes a milder HFRS than Hantaan virus, but can still cause AKI requiring dialysis.</p>
+        <h4><span data-lang="en"><span class="dot dot-teal"></span> Seoul Virus — The Philippine Risk</span><span data-lang="tl" class="lang-hidden"><span class="dot dot-teal"></span> Seoul Virus — Ang Panganib sa Pilipinas</span><span data-lang="ceb" class="lang-hidden"><span class="dot dot-teal"></span> Seoul Virus — Ang Peligro sa Pilipinas</span><span data-lang="kap" class="lang-hidden"><span class="dot dot-teal"></span> Seoul Virus — Ing Panganib King Pilipinas</span></h4>
+        <p><span data-lang="en"><strong>Seoul orthohantavirus (SEOV)</strong> is carried by the common brown rat (<em>Rattus norvegicus</em>) — the same city rat found across Metro Manila, Cebu, and Davao. SEOV is documented in Philippine rats. It causes a milder HFRS than Hantaan virus, but can still cause AKI (acute kidney injury) requiring dialysis.</span><span data-lang="tl" class="lang-hidden">Ang <strong>Seoul orthohantavirus (SEOV)</strong> ay dala ng karaniwang brown rat (<em>Rattus norvegicus</em>) — ang parehong dagang panlungsod na matatagpuan sa Metro Manila, Cebu, at Davao. Naidokumento ang SEOV sa mga daga sa Pilipinas. Nagdudulot ito ng mas banayad na HFRS kaysa Hantaan virus, ngunit maaari pa ring magdulot ng AKI (acute kidney injury) na nangangailangan ng dialysis.</span><span data-lang="ceb" class="lang-hidden">Ang <strong>Seoul orthohantavirus (SEOV)</strong> gidala sa komon nga brown rat (<em>Rattus norvegicus</em>) — ang samang ilaga sa siyudad nga makita sa Metro Manila, Cebu, ug Davao. Ang SEOV nadokumento sa mga ilaga sa Pilipinas. Nagpahinabo kini og mas hinay nga HFRS kaysa Hantaan virus, apan mahimo gihapong hinungdan sa AKI (acute kidney injury) nga nagkinahanglan og dialysis.</span><span data-lang="kap" class="lang-hidden">Ing <strong>Seoul orthohantavirus (SEOV)</strong> dala ne ning karaniwang brown rat (<em>Rattus norvegicus</em>) — ing parehong dagis king ciudad a masumpung king Metro Manila, Cebu, ampo Davao. Ing SEOV medokumento ya karing dagis king Pilipinas. Mikawa yang mas mayumung HFRS kesa Hantaan virus, dapot malyari ne pang mikawang AKI (acute kidney injury) a mangailangan king dialysis.</span></p>
       </div>
     </div>
 
     <div class="alert alert-teal">
       <div class="alert-icon">💡</div>
       <div class="alert-body">
-        <h4>Who is at highest risk in the Philippines?</h4>
-        <p>Field workers (rice harvests, sugarcane), construction workers (clearing debris), slaughterhouse workers, sewage workers, people cleaning after flooding, and anyone living in areas with high rat density. Seoul virus spreads via <em>urban</em> rats — it is not only a rural disease. The post-flooding period (July–October typhoon season) is the highest-risk window.</p>
+        <h4><span data-lang="en">Who is at highest risk in the Philippines?</span><span data-lang="tl" class="lang-hidden">Sino ang nasa pinakamataas na panganib sa Pilipinas?</span><span data-lang="ceb" class="lang-hidden">Kinsa ang naa sa labing taas nga peligro sa Pilipinas?</span><span data-lang="kap" class="lang-hidden">Ninu ing atyu king pekamatas a panganib king Pilipinas?</span></h4>
+        <p><span data-lang="en">Field workers (rice harvests, sugarcane), construction workers (clearing debris), slaughterhouse workers, sewage workers, people cleaning after flooding, and anyone living in areas with high rat density. Seoul virus spreads via <em>urban</em> rats — it is not only a rural disease. The post-flooding period (July–October typhoon season) is the highest-risk window.</span><span data-lang="tl" class="lang-hidden">Mga manggagawa sa bukid (ani ng palay, tubo), mga construction worker (naglilinis ng debris), mga trabahador sa katayan, mga trabahador sa imburnal, mga taong naglilinis pagkatapos ng baha, at sinumang nakatira sa mga lugar na may mataas na dami ng daga. Ang Seoul virus ay kumakalat sa pamamagitan ng mga dagang <em>urban</em> — hindi ito sakit lamang sa kanayunan. Ang panahon pagkatapos ng baha (panahon ng bagyo mula Hulyo–Oktubre) ang pinakamataas na panganib.</span><span data-lang="ceb" class="lang-hidden">Mga trabahante sa uma (ani sa humay, tubo), mga construction worker (naglimpyo sa debris), mga trabahante sa ihawan, mga trabahante sa imburnal, mga tawo nga naglimpyo human sa baha, ug bisan kinsa nga nagpuyo sa mga dapit nga taas ang gidaghanon sa ilaga. Ang Seoul virus mokaylap pinaagi sa mga <em>urban</em> nga ilaga — dili kini sakit sa kabukiran lamang. Ang panahon human sa baha (panahon sa bagyo gikan Hulyo–Oktubre) mao ang labing taas nga peligro.</span><span data-lang="kap" class="lang-hidden">Reng manggagawa king marangle (ani ning pale, atbu), reng construction worker (maglinis debris), reng manggagawa king katayan, reng manggagawa king imburnal, reng taung maglinis kaibat ning albug, ampo ninumang manuknangan king lugal a matas ing dami ning dagis. Ing Seoul virus mikakalat ya king pamiaus da reng <em>urban</em> a dagis — ali ya sakit king kabundukan mu. Ing panaun kaibat ning albug (panaun ning bagyu manibat Hulyu–Oktubre) ing pekamatas a panganib.</span></p>
       </div>
     </div>
   </div>
@@ -2034,10 +2045,10 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 <!-- SECTION 3 — MECHANISM -->
 <section class="section" id="mechanism">
   <div class="container">
-    <div class="section-tag">How It Happens</div>
-    <h2>How Hantavirus Destroys the Kidneys — Step by Step</h2>
+    <div class="section-tag"><span data-lang="en">How It Happens</span><span data-lang="tl" class="lang-hidden">Paano Ito Nangyayari</span><span data-lang="ceb" class="lang-hidden">Giunsa Kini Mahitabo</span><span data-lang="kap" class="lang-hidden">Nu Karin Ya Milyari</span></div>
+    <h2><span data-lang="en">How Hantavirus Destroys the Kidneys — Step by Step</span><span data-lang="tl" class="lang-hidden">Paano Sinisira ng Hantavirus ang mga Bato — Hakbang-Hakbang</span><span data-lang="ceb" class="lang-hidden">Giunsa Pagguba sa Hantavirus ang mga Bato — Lakang-Lakang</span><span data-lang="kap" class="lang-hidden">Nu Karin Sisiran ning Hantavirus Reng Batu — Baytang-Baytang</span></h2>
 
-    <p>Hantavirus does not directly poison kidney cells. Instead, it hijacks the immune system into attacking the body's own blood vessel lining. The kidneys — with their dense network of tiny blood vessels — take the worst of this damage.</p>
+    <p><span data-lang="en">Hantavirus does not directly poison kidney cells. Instead, it hijacks the immune system into attacking the body's own blood vessel lining. The kidneys — with their dense network of tiny blood vessels — take the worst of this damage.</span><span data-lang="tl" class="lang-hidden">Hindi direktang nilalason ng hantavirus ang mga selula ng bato. Sa halip, kinukuha nito ang immune system upang atakihin ang sariling lining ng mga daluyan ng dugo ng katawan. Ang mga bato — na may makapal na network ng maliliit na daluyan ng dugo — ang tumatanggap ng pinakamalalang pinsala.</span><span data-lang="ceb" class="lang-hidden">Wala direktang gihiloan sa hantavirus ang mga selula sa bato. Hinuon, gikuha niini ang immune system aron atakihon ang kaugalingong lining sa mga ugat sa dugo sa lawas. Ang mga bato — nga adunay baga nga network sa gagmayng mga ugat sa dugo — mao ang makadawat sa labing grabe nga kadaot.</span><span data-lang="kap" class="lang-hidden">Ali derechang lasunan ning hantavirus reng selula ning batu. Imbis, kukwa ne ing immune system bang atakan ne ing sariling lining da reng ugat ning daya ning katawan. Reng batu — a atin makapal a network da reng maliit a ugat ning daya — ing makatanggap king pekamaragul a pinsala.</span></p>
 
     <div class="figure-panel" style="max-width:720px;margin:28px auto;">
       <picture>
@@ -2047,50 +2058,50 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
              width="1536" height="1024"
              style="width:100%;height:auto;border-radius:8px;display:block;">
       </picture>
-      <p class="illus-caption">Hantavirus binds endothelial cells via β3-integrin, triggering a cytokine storm and capillary leak that leads to proteinuria, oliguria, and acute kidney injury.</p>
+      <p class="illus-caption"><span data-lang="en">Hantavirus binds endothelial cells via β3-integrin, triggering a cytokine storm and capillary leak that leads to proteinuria, oliguria, and acute kidney injury.</span><span data-lang="tl" class="lang-hidden">Kumakabit ang hantavirus sa mga endothelial cell sa pamamagitan ng β3-integrin, na nagbubunsod ng cytokine storm at capillary leak na humahantong sa proteinuria, oliguria, at acute kidney injury.</span><span data-lang="ceb" class="lang-hidden">Nagkabit ang hantavirus sa mga endothelial cell pinaagi sa β3-integrin, nga nagpahinabo og cytokine storm ug capillary leak nga mosangpot sa proteinuria, oliguria, ug acute kidney injury.</span><span data-lang="kap" class="lang-hidden">Mikabit ya ing hantavirus karing endothelial cell king pamiaus ning β3-integrin, a mibunsud king cytokine storm ampo capillary leak a mikasangkan king proteinuria, oliguria, ampo acute kidney injury.</span></p>
     </div>
 
     <div class="mech-steps">
       <div class="mech-step">
         <div class="mech-n">1</div>
         <div class="mech-body">
-          <h4>You inhale the virus</h4>
-          <p>Dried particles from rodent droppings or urine are disturbed and become airborne. The virus enters through the respiratory tract and reaches the bloodstream within hours.</p>
+          <h4><span data-lang="en">You inhale the virus</span><span data-lang="tl" class="lang-hidden">Nalalanghap mo ang virus</span><span data-lang="ceb" class="lang-hidden">Masuyop nimo ang virus</span><span data-lang="kap" class="lang-hidden">Maisnawa mu ing virus</span></h4>
+          <p><span data-lang="en">Dried particles from rodent droppings or urine are disturbed and become airborne. The virus enters through the respiratory tract and reaches the bloodstream within hours.</span><span data-lang="tl" class="lang-hidden">Ang mga tuyong particle mula sa dumi o ihi ng daga ay nagagalaw at nagiging airborne. Pumapasok ang virus sa pamamagitan ng respiratory tract at umaabot sa daluyan ng dugo sa loob ng ilang oras.</span><span data-lang="ceb" class="lang-hidden">Ang mga uga nga partikulo gikan sa hugaw o ihi sa ilaga makuyaw ug mahimong airborne. Mosulod ang virus pinaagi sa respiratory tract ug moabot sa dugo sulod sa pipila ka oras.</span><span data-lang="kap" class="lang-hidden">Reng melangeng partikulo ibat king dumi o ihi ning dagis magalo la ampo maging airborne. Lulub ya ing virus king pamiaus ning respiratory tract ampo datang ya king daya king lalam ning mapilang oras.</span></p>
         </div>
       </div>
       <div class="mech-step mech-amber">
         <div class="mech-n">2</div>
         <div class="mech-body">
-          <h4>The virus infects blood vessel lining cells</h4>
-          <p>Hantavirus has a specific entry point — a receptor called β3-integrin on the surface of endothelial cells (the cells that line all blood vessels). It infects these cells throughout the body while remaining largely invisible to the immune system for several days.</p>
+          <h4><span data-lang="en">The virus infects blood vessel lining cells</span><span data-lang="tl" class="lang-hidden">Iniimpeksyon ng virus ang mga selula ng lining ng daluyan ng dugo</span><span data-lang="ceb" class="lang-hidden">Gi-impeksyon sa virus ang mga selula sa lining sa ugat sa dugo</span><span data-lang="kap" class="lang-hidden">Iimpeksyunan ning virus reng selula ning lining ning ugat ning daya</span></h4>
+          <p><span data-lang="en">Hantavirus has a specific entry point — a receptor called β3-integrin on the surface of endothelial cells (the cells that line all blood vessels). It infects these cells throughout the body while remaining largely invisible to the immune system for several days.</span><span data-lang="tl" class="lang-hidden">May tiyak na pasukan ang hantavirus — isang receptor na tinatawag na β3-integrin sa ibabaw ng mga endothelial cell (ang mga selula na bumubuo sa lining ng lahat ng daluyan ng dugo). Iniimpeksyon nito ang mga selulang ito sa buong katawan habang nananatiling halos hindi nakikita ng immune system sa loob ng ilang araw.</span><span data-lang="ceb" class="lang-hidden">Adunay piho nga agianan ang hantavirus — usa ka receptor nga gitawag og β3-integrin sa ibabaw sa mga endothelial cell (ang mga selula nga naglining sa tanang ugat sa dugo). Gi-impeksyon niini kining mga selula sa tibuok lawas samtang nagpabiling halos dili makita sa immune system sulod sa pipila ka adlaw.</span><span data-lang="kap" class="lang-hidden">Atin yang tanging pasbulan ing hantavirus — metung a receptor a ausan dang β3-integrin king ibabo da reng endothelial cell (reng selula a mibubuu king lining da reng anggang ugat ning daya). Iimpeksyunan na la deni king mabilug a katawan kabang manatili yang halos e akakit ning immune system king lalam ning mapilang aldo.</span></p>
         </div>
       </div>
       <div class="mech-step mech-red">
         <div class="mech-n">3</div>
         <div class="mech-body">
-          <h4>The immune system launches a massive counterattack</h4>
-          <p>When the immune system finally detects the infection, it releases a storm of inflammatory chemicals (cytokines). This response — not the virus itself — causes the damage. Blood vessels become "leaky," plasma floods out of the circulation, and blood pressure drops dangerously.</p>
+          <h4><span data-lang="en">The immune system launches a massive counterattack</span><span data-lang="tl" class="lang-hidden">Naglulunsad ang immune system ng napakalaking kontra-atake</span><span data-lang="ceb" class="lang-hidden">Nagpagawas ang immune system og dako nga kontra-atake</span><span data-lang="kap" class="lang-hidden">Milunsad ing immune system king maragul a kontra-atake</span></h4>
+          <p><span data-lang="en">When the immune system finally detects the infection, it releases a storm of inflammatory chemicals (cytokines). This response — not the virus itself — causes the damage. Blood vessels become "leaky," plasma floods out of the circulation, and blood pressure drops dangerously.</span><span data-lang="tl" class="lang-hidden">Kapag sa wakas natukoy ng immune system ang impeksyon, naglalabas ito ng bagyo ng mga inflammatory chemical (cytokines). Ang tugong ito — hindi ang virus mismo — ang nagdudulot ng pinsala. Ang mga daluyan ng dugo ay nagiging "leaky," bumabaha ang plasma palabas ng sirkulasyon, at bumababa nang mapanganib ang blood pressure.</span><span data-lang="ceb" class="lang-hidden">Kon sa kataposan mamatikdan sa immune system ang impeksyon, mopagawas kini og bagyo sa mga inflammatory chemical (cytokines). Kining tubag — dili ang virus mismo — mao ang hinungdan sa kadaot. Ang mga ugat sa dugo mahimong "leaky," mobaha ang plasma pagawas sa sirkulasyon, ug mahulog nga peligroso ang blood pressure.</span><span data-lang="kap" class="lang-hidden">Nung king wakas amatikdan ning immune system ing impeksyon, meglual yang bagyu da reng inflammatory chemical (cytokines). Ing tugun ini — ali ing virus mismu — ing mikawang pinsala. Reng ugat ning daya maging "leaky" la, bubaha ing plasma palual king sirkulasyon, ampo bababa yang mapanganib ing blood pressure.</span></p>
         </div>
       </div>
       <div class="mech-step mech-red">
         <div class="mech-n">4</div>
         <div class="mech-body">
-          <h4>The kidney's blood vessels hemorrhage</h4>
-          <p>The kidney is packed with tiny blood vessels (glomeruli) that act as filters. When capillary leakage causes bleeding into the kidney's central zone (medullary hemorrhage), filtration collapses. Urine output drops, creatinine rises — this is acute kidney injury.</p>
+          <h4><span data-lang="en">The kidney's blood vessels hemorrhage</span><span data-lang="tl" class="lang-hidden">Nagdurugo ang mga daluyan ng dugo ng bato</span><span data-lang="ceb" class="lang-hidden">Nagdugo ang mga ugat sa dugo sa bato</span><span data-lang="kap" class="lang-hidden">Mamdaya reng ugat ning daya ning batu</span></h4>
+          <p><span data-lang="en">The kidney is packed with tiny blood vessels (glomeruli) that act as filters. When capillary leakage causes bleeding into the kidney's central zone (medullary hemorrhage), filtration collapses. Urine output drops, creatinine rises — this is acute kidney injury.</span><span data-lang="tl" class="lang-hidden">Ang bato ay puno ng maliliit na daluyan ng dugo (glomeruli) na gumaganap bilang mga filter. Kapag ang capillary leakage ay nagdudulot ng pagdurugo sa gitnang zona ng bato (medullary hemorrhage), gumuguho ang filtration. Bumababa ang output ng ihi, tumataas ang creatinine — ito ang acute kidney injury.</span><span data-lang="ceb" class="lang-hidden">Ang bato puno sa gagmayng mga ugat sa dugo (glomeruli) nga naglihok isip mga filter. Kon ang capillary leakage magpahinabo og pagdugo ngadto sa sentral nga zona sa bato (medullary hemorrhage), matumba ang filtration. Mokunhod ang output sa ihi, mosaka ang creatinine — kini ang acute kidney injury.</span><span data-lang="kap" class="lang-hidden">Ing batu mitmu ya karing maliit a ugat ning daya (glomeruli) a maglaru antimong mga filter. Nung ing capillary leakage mikawang pamamdaya king libutad a zona ning batu (medullary hemorrhage), mibagsak ing filtration. Bababa ing output ning ihi, tataas ing creatinine — ini ing acute kidney injury.</span></p>
         </div>
       </div>
       <div class="mech-step mech-purple">
         <div class="mech-n">5</div>
         <div class="mech-body">
-          <h4>Platelets are consumed</h4>
-          <p>The same immune response destroys platelets — the blood cells that control clotting. This causes the bleeding tendency (petechiae, gum bleeding, blood in urine) that accompanies kidney failure in HFRS.</p>
+          <h4><span data-lang="en">Platelets are consumed</span><span data-lang="tl" class="lang-hidden">Nauubos ang mga platelet</span><span data-lang="ceb" class="lang-hidden">Nahurot ang mga platelet</span><span data-lang="kap" class="lang-hidden">Maubus la reng platelet</span></h4>
+          <p><span data-lang="en">The same immune response destroys platelets — the blood cells that control clotting. This causes the bleeding tendency (petechiae, gum bleeding, blood in urine) that accompanies kidney failure in HFRS.</span><span data-lang="tl" class="lang-hidden">Ang parehong immune response ay sumisira sa mga platelet — ang mga selula ng dugo na kumokontrol sa pamumuo. Ito ang nagdudulot ng tendensiyang magdugo (petechiae, pagdurugo ng gilagid, dugo sa ihi) na kasabay ng pagpalya ng bato sa HFRS.</span><span data-lang="ceb" class="lang-hidden">Ang samang immune response magguba sa mga platelet — ang mga selula sa dugo nga nagkontrol sa pagkuyaw sa dugo. Kini ang hinungdan sa tendensiya nga modugo (petechiae, pagdugo sa lagus, dugo sa ihi) nga kauban sa pagpalya sa bato sa HFRS.</span><span data-lang="kap" class="lang-hidden">Ing parehong immune response sisiran na la reng platelet — reng selula ning daya a magkontrol king pamumuu. Ini ing mikawang tendensiyang mamdaya (petechiae, pamamdaya ning gilagid, daya king ihi) a kayabe king pamalya ning batu king HFRS.</span></p>
         </div>
       </div>
       <div class="mech-step">
         <div class="mech-n">6</div>
         <div class="mech-body">
-          <h4>Recovery — or scarring</h4>
-          <p>In most healthy people, the immune response subsides after 1–3 weeks, and the kidneys gradually recover. In patients with pre-existing CKD, or in severe cases, the inflammatory damage can leave permanent scarring — accelerating kidney failure.</p>
+          <h4><span data-lang="en">Recovery — or scarring</span><span data-lang="tl" class="lang-hidden">Paggaling — o pagkakapeklat</span><span data-lang="ceb" class="lang-hidden">Pag-ayo — o pagpeklat</span><span data-lang="kap" class="lang-hidden">Pamaglino — o pamipeklat</span></h4>
+          <p><span data-lang="en">In most healthy people, the immune response subsides after 1–3 weeks, and the kidneys gradually recover. In patients with pre-existing CKD (chronic kidney disease), or in severe cases, the inflammatory damage can leave permanent scarring — accelerating kidney failure.</span><span data-lang="tl" class="lang-hidden">Sa karamihan ng malulusog na tao, humuhupa ang immune response pagkatapos ng 1–3 linggo, at unti-unting gumagaling ang mga bato. Sa mga pasyenteng may dati nang CKD (chronic kidney disease), o sa mga malubhang kaso, maaaring mag-iwan ang inflammatory damage ng permanenteng peklat — na nagpapabilis ng pagpalya ng bato.</span><span data-lang="ceb" class="lang-hidden">Sa kadaghanan sa himsog nga mga tawo, mohupay ang immune response human sa 1–3 ka semana, ug hinay-hinay nga mo-ayo ang mga bato. Sa mga pasyente nga adunay naa nang CKD (chronic kidney disease), o sa grabe nga mga kaso, ang inflammatory damage makabilin og permanente nga peklat — nga magpaspas sa pagpalya sa bato.</span><span data-lang="kap" class="lang-hidden">King kalakuan da reng malusug a tau, humupa ing immune response kaibat ning 1–3 dominggu, ampo utnut-utnut a lulino reng batu. Karing pasyenteng atin nang CKD (chronic kidney disease), o karing malubang kaso, malyaring mag-iwan ing inflammatory damage king permanenteng peklat — a magpasibayu king pamalya ning batu.</span></p>
         </div>
       </div>
     </div>
@@ -2100,10 +2111,10 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 <!-- SECTION 4 — 5 PHASES -->
 <section class="section" id="phases">
   <div class="container">
-    <div class="section-tag">Disease Course</div>
-    <h2>The 5 Phases of HFRS — What to Expect</h2>
+    <div class="section-tag"><span data-lang="en">Disease Course</span><span data-lang="tl" class="lang-hidden">Takbo ng Sakit</span><span data-lang="ceb" class="lang-hidden">Dagan sa Sakit</span><span data-lang="kap" class="lang-hidden">Dalan ning Sakit</span></div>
+    <h2><span data-lang="en">The 5 Phases of HFRS — What to Expect</span><span data-lang="tl" class="lang-hidden">Ang 5 Yugto ng HFRS — Ano ang Aasahan</span><span data-lang="ceb" class="lang-hidden">Ang 5 ka Hugna sa HFRS — Unsa ang Paabuton</span><span data-lang="kap" class="lang-hidden">Reng 5 Dake ning HFRS — Nanu ing Asahan</span></h2>
 
-    <p>HFRS follows a predictable sequence of five clinical phases. Knowing which phase you or your family member is in is critical — the management needs are completely different at each stage, and the dangers are different too.</p>
+    <p><span data-lang="en">HFRS follows a predictable sequence of five clinical phases. Knowing which phase you or your family member is in is critical — the management needs are completely different at each stage, and the dangers are different too.</span><span data-lang="tl" class="lang-hidden">Sumusunod ang HFRS sa isang matatantiyang pagkakasunod-sunod ng limang klinikal na yugto. Napakahalaga na malaman kung nasa aling yugto ka o ang miyembro ng iyong pamilya — magkaiba ang pangangailangan sa pamamahala sa bawat yugto, at magkaiba rin ang mga panganib.</span><span data-lang="ceb" class="lang-hidden">Ang HFRS mosunod sa usa ka matag-an nga han-ay sa lima ka klinikal nga hugna. Hinungdanon kaayo nga mahibaloan kon asa nga hugna ikaw o ang membro sa imong pamilya — lahi kaayo ang mga panginahanglan sa pagdumala sa matag yugto, ug lahi usab ang mga peligro.</span><span data-lang="kap" class="lang-hidden">Susundan ning HFRS ing metung a matatantyang pamiaus-yaus da reng limang klinikal a dake. Mataimtiman a abalu nu karin dake ka o ing kayabe ning pamilya mu — mikaiba la reng pangailangan king pamanaptan king balang dake, ampo mikaiba la mu rin reng panganib.</span></p>
 
     <div class="figure-panel" style="max-width:860px;margin:28px auto;">
       <picture>
@@ -2113,47 +2124,47 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
              width="1536" height="1024"
              style="width:100%;height:auto;border-radius:8px;display:block;">
       </picture>
-      <p class="illus-caption">HFRS follows five predictable phases. The oliguric phase is the most dangerous — kidney failure and dialysis risk peak here. Most patients recover with proper hospital care.</p>
+      <p class="illus-caption"><span data-lang="en">HFRS follows five predictable phases. The oliguric phase is the most dangerous — kidney failure and dialysis risk peak here. Most patients recover with proper hospital care.</span><span data-lang="tl" class="lang-hidden">Sumusunod ang HFRS sa limang matatantiyang yugto. Ang oliguric phase ang pinakamapanganib — dito tumataas ang panganib ng pagpalya ng bato at dialysis. Karamihan ng pasyente ay gumagaling sa tamang pangangalaga sa ospital.</span><span data-lang="ceb" class="lang-hidden">Ang HFRS mosunod sa lima ka matag-an nga hugna. Ang oliguric phase mao ang labing peligroso — dinhi mosaka ang peligro sa pagpalya sa bato ug dialysis. Kadaghanan sa mga pasyente mo-ayo sa saktong pag-atiman sa ospital.</span><span data-lang="kap" class="lang-hidden">Susundan ning HFRS reng limang matatantyang dake. Ing oliguric phase ing pekamapanganib — keni tataas ing panganib ning pamalya ning batu ampo dialysis. Kalakuan da reng pasyente lulino la king tamang pamanintini king ospital.</span></p>
     </div>
 
     <div class="hfrs-phases">
       <div class="hfrs-phase ph-febrile">
-        <div class="hfrs-phase-num">Phase 1</div>
-        <div class="hfrs-phase-name">Febrile</div>
-        <div class="hfrs-phase-days">Days 1–3</div>
-        <div class="hfrs-phase-risk">High fever, severe headache, flushing, lower back pain, conjunctival redness. Often misdiagnosed as dengue or flu.</div>
+        <div class="hfrs-phase-num"><span data-lang="en">Phase 1</span><span data-lang="tl" class="lang-hidden">Yugto 1</span><span data-lang="ceb" class="lang-hidden">Hugna 1</span><span data-lang="kap" class="lang-hidden">Dake 1</span></div>
+        <div class="hfrs-phase-name"><span data-lang="en">Febrile</span><span data-lang="tl" class="lang-hidden">Lagnat</span><span data-lang="ceb" class="lang-hidden">Hilanat</span><span data-lang="kap" class="lang-hidden">Lagnat</span></div>
+        <div class="hfrs-phase-days"><span data-lang="en">Days 1–3</span><span data-lang="tl" class="lang-hidden">Araw 1–3</span><span data-lang="ceb" class="lang-hidden">Adlaw 1–3</span><span data-lang="kap" class="lang-hidden">Aldo 1–3</span></div>
+        <div class="hfrs-phase-risk"><span data-lang="en">High fever, severe headache, flushing, lower back pain, conjunctival redness. Often misdiagnosed as dengue or flu.</span><span data-lang="tl" class="lang-hidden">Mataas na lagnat, matinding sakit ng ulo, pamumula ng mukha, sakit sa ibabang likod, pamumula ng mata. Madalas mamaling-diyagnos bilang dengue o trangkaso.</span><span data-lang="ceb" class="lang-hidden">Taas nga hilanat, grabe nga sakit sa ulo, pamula sa nawong, sakit sa ubos nga likod, pamula sa mata. Kanunay masayop og diyagnos isip dengue o trangkaso.</span><span data-lang="kap" class="lang-hidden">Matas a lagnat, masakit a buntuk, pamula ning lupa, sakit king lalam a gulut, pamula ning mata. Pilan-pilan mesabing dengue o trangkasu.</span></div>
       </div>
       <div class="hfrs-phase ph-hypotensive">
-        <div class="hfrs-phase-num">Phase 2</div>
-        <div class="hfrs-phase-name">Hypotensive</div>
-        <div class="hfrs-phase-days">Hours to 2 days</div>
-        <div class="hfrs-phase-risk">Sudden blood pressure crash. Shock. Urine output begins to drop. ⚡ Emergency — go to ER immediately.</div>
+        <div class="hfrs-phase-num"><span data-lang="en">Phase 2</span><span data-lang="tl" class="lang-hidden">Yugto 2</span><span data-lang="ceb" class="lang-hidden">Hugna 2</span><span data-lang="kap" class="lang-hidden">Dake 2</span></div>
+        <div class="hfrs-phase-name"><span data-lang="en">Hypotensive</span><span data-lang="tl" class="lang-hidden">Mababang Presyon</span><span data-lang="ceb" class="lang-hidden">Ubos nga Presyon</span><span data-lang="kap" class="lang-hidden">Mababang Presyon</span></div>
+        <div class="hfrs-phase-days"><span data-lang="en">Hours to 2 days</span><span data-lang="tl" class="lang-hidden">Oras hanggang 2 araw</span><span data-lang="ceb" class="lang-hidden">Oras ngadto sa 2 ka adlaw</span><span data-lang="kap" class="lang-hidden">Oras angga king 2 aldo</span></div>
+        <div class="hfrs-phase-risk"><span data-lang="en">Sudden blood pressure crash. Shock. Urine output begins to drop. ⚡ Emergency — go to ER immediately.</span><span data-lang="tl" class="lang-hidden">Biglaang pagbagsak ng blood pressure. Shock. Nagsisimulang bumaba ang output ng ihi. ⚡ Emergency — pumunta agad sa ER.</span><span data-lang="ceb" class="lang-hidden">Kalit nga pagkahagsa sa blood pressure. Shock. Magsugod nga mokunhod ang output sa ihi. ⚡ Emerhensiya — adto dayon sa ER.</span><span data-lang="kap" class="lang-hidden">Kagligligan a pamibagsak ning blood pressure. Shock. Magumpisang bumaba ing output ning ihi. ⚡ Emergency — ume kang agad king ER.</span></div>
       </div>
       <div class="hfrs-phase ph-oliguric">
-        <div class="hfrs-phase-num">Phase 3</div>
-        <div class="hfrs-phase-name">Oliguric</div>
-        <div class="hfrs-phase-days">Days 3–7+</div>
-        <div class="hfrs-phase-risk">Little or no urine (&lt;400 mL/day). Creatinine spikes. Fluid overload risk. Bleeding. Most patients who need dialysis are in this phase.</div>
+        <div class="hfrs-phase-num"><span data-lang="en">Phase 3</span><span data-lang="tl" class="lang-hidden">Yugto 3</span><span data-lang="ceb" class="lang-hidden">Hugna 3</span><span data-lang="kap" class="lang-hidden">Dake 3</span></div>
+        <div class="hfrs-phase-name"><span data-lang="en">Oliguric</span><span data-lang="tl" class="lang-hidden">Kakaunting Ihi</span><span data-lang="ceb" class="lang-hidden">Gamay nga Ihi</span><span data-lang="kap" class="lang-hidden">Kaputing Ihi</span></div>
+        <div class="hfrs-phase-days"><span data-lang="en">Days 3–7+</span><span data-lang="tl" class="lang-hidden">Araw 3–7+</span><span data-lang="ceb" class="lang-hidden">Adlaw 3–7+</span><span data-lang="kap" class="lang-hidden">Aldo 3–7+</span></div>
+        <div class="hfrs-phase-risk"><span data-lang="en">Little or no urine (&lt;400 mL/day). Creatinine spikes. Fluid overload risk. Bleeding. Most patients who need dialysis are in this phase.</span><span data-lang="tl" class="lang-hidden">Kaunti o walang ihi (&lt;400 mL/araw). Biglang tumataas ang creatinine. Panganib ng fluid overload. Pagdurugo. Karamihan ng pasyenteng nangangailangan ng dialysis ay nasa yugtong ito.</span><span data-lang="ceb" class="lang-hidden">Gamay o walay ihi (&lt;400 mL/adlaw). Kalit nga mosaka ang creatinine. Peligro sa fluid overload. Pagdugo. Kadaghanan sa mga pasyente nga nagkinahanglan og dialysis anaa niining hugna.</span><span data-lang="kap" class="lang-hidden">Kaputi o alang ihi (&lt;400 mL/aldo). Kagligligan a pamitaas ning creatinine. Panganib king fluid overload. Pamamdaya. Kalakuan da reng pasyenteng mangailangan king dialysis atyu la king dakeng ini.</span></div>
       </div>
       <div class="hfrs-phase ph-diuretic">
-        <div class="hfrs-phase-num">Phase 4</div>
-        <div class="hfrs-phase-name">Diuretic</div>
-        <div class="hfrs-phase-days">Days 7–14</div>
-        <div class="hfrs-phase-risk">Urine surges to 3–6 L/day. Electrolytes crash. Paradoxically dangerous — dehydration and hypokalemia are killers in this phase.</div>
+        <div class="hfrs-phase-num"><span data-lang="en">Phase 4</span><span data-lang="tl" class="lang-hidden">Yugto 4</span><span data-lang="ceb" class="lang-hidden">Hugna 4</span><span data-lang="kap" class="lang-hidden">Dake 4</span></div>
+        <div class="hfrs-phase-name"><span data-lang="en">Diuretic</span><span data-lang="tl" class="lang-hidden">Sobrang Ihi</span><span data-lang="ceb" class="lang-hidden">Sobra nga Ihi</span><span data-lang="kap" class="lang-hidden">Sobrang Ihi</span></div>
+        <div class="hfrs-phase-days"><span data-lang="en">Days 7–14</span><span data-lang="tl" class="lang-hidden">Araw 7–14</span><span data-lang="ceb" class="lang-hidden">Adlaw 7–14</span><span data-lang="kap" class="lang-hidden">Aldo 7–14</span></div>
+        <div class="hfrs-phase-risk"><span data-lang="en">Urine surges to 3–6 L/day. Electrolytes crash. Paradoxically dangerous — dehydration and hypokalemia are killers in this phase.</span><span data-lang="tl" class="lang-hidden">Bumubuhos ang ihi sa 3–6 L/araw. Bumabagsak ang mga electrolyte. Nakakabahalang mapanganib — ang dehydration at hypokalemia ay nakamamatay sa yugtong ito.</span><span data-lang="ceb" class="lang-hidden">Mobuhagay ang ihi sa 3–6 L/adlaw. Mahagsa ang mga electrolyte. Katingad-anang peligroso — ang dehydration ug hypokalemia makamatay niining hugna.</span><span data-lang="kap" class="lang-hidden">Bubuhus ing ihi king 3–6 L/aldo. Bumagsak la reng electrolyte. Makapaglinang a mapanganib — ing dehydration ampo hypokalemia makamate la king dakeng ini.</span></div>
       </div>
       <div class="hfrs-phase ph-convalescent">
-        <div class="hfrs-phase-num">Phase 5</div>
-        <div class="hfrs-phase-name">Convalescent</div>
-        <div class="hfrs-phase-days">Weeks to months</div>
-        <div class="hfrs-phase-risk">Gradual recovery. Fatigue persists. Proteinuria may last up to 1 year. Check creatinine at 3 and 6 months post-discharge.</div>
+        <div class="hfrs-phase-num"><span data-lang="en">Phase 5</span><span data-lang="tl" class="lang-hidden">Yugto 5</span><span data-lang="ceb" class="lang-hidden">Hugna 5</span><span data-lang="kap" class="lang-hidden">Dake 5</span></div>
+        <div class="hfrs-phase-name"><span data-lang="en">Convalescent</span><span data-lang="tl" class="lang-hidden">Panunumbalik</span><span data-lang="ceb" class="lang-hidden">Pagpalig-on</span><span data-lang="kap" class="lang-hidden">Panumbalik</span></div>
+        <div class="hfrs-phase-days"><span data-lang="en">Weeks to months</span><span data-lang="tl" class="lang-hidden">Linggo hanggang buwan</span><span data-lang="ceb" class="lang-hidden">Semana ngadto sa bulan</span><span data-lang="kap" class="lang-hidden">Dominggu angga king bulan</span></div>
+        <div class="hfrs-phase-risk"><span data-lang="en">Gradual recovery. Fatigue persists. Proteinuria may last up to 1 year. Check creatinine at 3 and 6 months post-discharge.</span><span data-lang="tl" class="lang-hidden">Unti-unting paggaling. Nananatili ang pagkapagod. Maaaring tumagal ang proteinuria hanggang 1 taon. Suriin ang creatinine sa 3 at 6 na buwan pagkalabas sa ospital.</span><span data-lang="ceb" class="lang-hidden">Hinay-hinay nga pag-ayo. Magpabilin ang kakapoy. Mahimong molungtad ang proteinuria hangtod 1 ka tuig. Susiha ang creatinine sa 3 ug 6 ka bulan human sa discharge.</span><span data-lang="kap" class="lang-hidden">Utnut-utnut a pamaglino. Manatili ing pamangapagal. Malyaring mitagal ing proteinuria angga king 1 banua. Suriin ing creatinine king 3 ampo 6 bulan kaibat ning discharge.</span></div>
       </div>
     </div>
 
     <div class="alert alert-red">
       <div class="alert-icon">🚨</div>
       <div class="alert-body">
-        <h4>The dangerous paradox of the diuretic phase</h4>
-        <p>Many patients and families feel relieved when urine output surges in Phase 4 — "the kidneys are working again!" But this phase kills through dehydration and dangerous drops in sodium and potassium. You must be under medical care during the diuretic phase, even though you appear to be improving. Aggressive electrolyte replacement is essential.</p>
+        <h4><span data-lang="en">The dangerous paradox of the diuretic phase</span><span data-lang="tl" class="lang-hidden">Ang mapanganib na kabalintunaan ng diuretic phase</span><span data-lang="ceb" class="lang-hidden">Ang peligroso nga paradox sa diuretic phase</span><span data-lang="kap" class="lang-hidden">Ing mapanganib a paradox ning diuretic phase</span></h4>
+        <p><span data-lang="en">Many patients and families feel relieved when urine output surges in Phase 4 — "the kidneys are working again!" But this phase kills through dehydration and dangerous drops in sodium and potassium. You must be under medical care during the diuretic phase, even though you appear to be improving. Aggressive electrolyte replacement is essential.</span><span data-lang="tl" class="lang-hidden">Maraming pasyente at pamilya ang naginhawahan kapag bumuhos ang ihi sa Phase 4 — "gumagana na ulit ang mga bato!" Ngunit ang yugtong ito ay pumapatay sa pamamagitan ng dehydration at mapanganib na pagbaba ng sodium at potassium. Dapat ka nasa ilalim ng medikal na pangangalaga sa diuretic phase, kahit na para kang gumagaling. Mahalaga ang masinsinang pagpapalit ng electrolyte.</span><span data-lang="ceb" class="lang-hidden">Daghang pasyente ug pamilya ang mahupayan kon mobuhagay ang ihi sa Phase 4 — "molihok na usab ang mga bato!" Apan kining hugna makamatay pinaagi sa dehydration ug peligrosong pagkunhod sa sodium ug potassium. Kinahanglan naa ka sa ilawom sa medikal nga pag-atiman panahon sa diuretic phase, bisan pa nga daw nag-ayo ka. Hinungdanon ang agresibong pag-ilis sa electrolyte.</span><span data-lang="kap" class="lang-hidden">Dakal a pasyente ampo pamilya ing malino nung bubuhus ing ihi king Phase 4 — "maglaru la pasibayu reng batu!" Dapot ing dakeng ini makamate ya king pamiaus ning dehydration ampo mapanganib a pamibaba ning sodium ampo potassium. Dapat atyu ka king lalam ning medikal a pamanintini kabang diuretic phase, agyaman anti kang lulino. Mataimtiman ing agresibong pamanyaliwang electrolyte.</span></p>
       </div>
     </div>
   </div>
@@ -2162,10 +2173,10 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 <!-- SECTION 5 — WARNING SIGNS -->
 <section class="section" id="warning">
   <div class="container">
-    <div class="section-tag">Emergency Signs</div>
-    <h2>Warning Signs — Go to the ER Immediately</h2>
+    <div class="section-tag"><span data-lang="en">Emergency Signs</span><span data-lang="tl" class="lang-hidden">Mga Palatandaan ng Emergency</span><span data-lang="ceb" class="lang-hidden">Mga Timailhan sa Emerhensiya</span><span data-lang="kap" class="lang-hidden">Reng Tanda ning Emergency</span></div>
+    <h2><span data-lang="en">Warning Signs — Go to the ER Immediately</span><span data-lang="tl" class="lang-hidden">Mga Palatandaan ng Panganib — Pumunta Agad sa ER</span><span data-lang="ceb" class="lang-hidden">Mga Timailhan sa Peligro — Adto Dayon sa ER</span><span data-lang="kap" class="lang-hidden">Reng Tanda ning Panganib — Ume Kang Agad King ER</span></h2>
 
-    <p>If you have had any possible rodent exposure in the past 2–6 weeks and develop any of the following, do not wait for a doctor's appointment. Go directly to the emergency room.</p>
+    <p><span data-lang="en">If you have had any possible rodent exposure in the past 2–6 weeks and develop any of the following, do not wait for a doctor's appointment. Go directly to the emergency room.</span><span data-lang="tl" class="lang-hidden">Kung nagkaroon ka ng anumang posibleng pagkalantad sa daga sa nakaraang 2–6 linggo at nagkaroon ng alinman sa mga sumusunod, huwag maghintay ng appointment sa doktor. Dumiretso sa emergency room.</span><span data-lang="ceb" class="lang-hidden">Kon adunay ka posibleng pagkaladlad sa ilaga sa milabay nga 2–6 ka semana ug adunay bisan unsa sa mosunod, ayaw paghulat sa appointment sa doktor. Diretso sa emergency room.</span><span data-lang="kap" class="lang-hidden">Nung mika ka nanumang posibleng pamielad king dagis king milabas a 2–6 dominggu ampo mika ka nanumang karing tumuki, e ka maintaya king appointment ning doktor. Ume kang direchu king emergency room.</span></p>
 
     <div class="figure-panel" style="max-width:720px;margin:28px auto;">
       <picture>
@@ -2175,37 +2186,37 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
              width="1536" height="1024"
              style="width:100%;height:auto;border-radius:8px;display:block;">
       </picture>
-      <p class="illus-caption">Go to the emergency room immediately if you have any of these signs after possible rodent exposure. Do not wait.</p>
+      <p class="illus-caption"><span data-lang="en">Go to the emergency room immediately if you have any of these signs after possible rodent exposure. Do not wait.</span><span data-lang="tl" class="lang-hidden">Pumunta agad sa emergency room kung mayroon ka ng alinman sa mga palatandaang ito pagkatapos ng posibleng pagkalantad sa daga. Huwag maghintay.</span><span data-lang="ceb" class="lang-hidden">Adto dayon sa emergency room kon adunay ka bisan unsa niining mga timailhan human sa posibleng pagkaladlad sa ilaga. Ayaw paghulat.</span><span data-lang="kap" class="lang-hidden">Ume kang agad king emergency room nung atin kang nanumang karing tandang ini kaibat ning posibleng pamielad king dagis. E ka maintaya.</span></p>
     </div>
 
     <div class="red-flags">
       <div class="red-flag-item">
         <span class="rf-icon">🔴</span>
-        <div><strong>No urine or very little urine for 8+ hours</strong> — the most critical sign of oliguric AKI. Even if you feel "okay," this is an emergency.</div>
+        <div><span data-lang="en"><strong>No urine or very little urine for 8+ hours</strong> — the most critical sign of oliguric AKI. Even if you feel "okay," this is an emergency.</span><span data-lang="tl" class="lang-hidden"><strong>Walang ihi o napakakaunting ihi sa loob ng 8+ oras</strong> — ang pinakakritikal na palatandaan ng oliguric AKI. Kahit pakiramdam mo ay "okay," isa itong emergency.</span><span data-lang="ceb" class="lang-hidden"><strong>Walay ihi o gamay kaayo nga ihi sulod sa 8+ ka oras</strong> — ang labing kritikal nga timailhan sa oliguric AKI. Bisan mobati ka nga "okay," emerhensiya kini.</span><span data-lang="kap" class="lang-hidden"><strong>Alang ihi o kaputi ya pin ihi king lalam ning 8+ oras</strong> — ing pekakritikal a tanda ning oliguric AKI. Agyaman pakiramdam mu "okay," metung yang emergency.</span></div>
       </div>
       <div class="red-flag-item">
         <span class="rf-icon">🔴</span>
-        <div><strong>Severe flank or lower back pain</strong> — the kidneys are located in the lower back. Intense pain here during a febrile illness is a red flag.</div>
+        <div><span data-lang="en"><strong>Severe flank or lower back pain</strong> — the kidneys are located in the lower back. Intense pain here during a febrile illness is a red flag.</span><span data-lang="tl" class="lang-hidden"><strong>Matinding sakit sa tagiliran o ibabang likod</strong> — nasa ibabang likod ang mga bato. Ang matinding sakit dito habang may lagnat ay isang red flag.</span><span data-lang="ceb" class="lang-hidden"><strong>Grabe nga sakit sa kilid o ubos nga likod</strong> — anaa sa ubos nga likod ang mga bato. Ang grabe nga sakit dinhi samtang adunay hilanat usa ka red flag.</span><span data-lang="kap" class="lang-hidden"><strong>Masakit a takyaran o lalam a gulut</strong> — atyu la king lalam a gulut reng batu. Ing masakit a sakit keni kabang atin lagnat metung yang red flag.</span></div>
       </div>
       <div class="red-flag-item">
         <span class="rf-icon">🔴</span>
-        <div><strong>Confusion, disorientation, or difficulty thinking</strong> — can indicate uremic encephalopathy (toxin buildup from failing kidneys) or severe electrolyte imbalance.</div>
+        <div><span data-lang="en"><strong>Confusion, disorientation, or difficulty thinking</strong> — can indicate uremic encephalopathy (toxin buildup from failing kidneys) or severe electrolyte imbalance.</span><span data-lang="tl" class="lang-hidden"><strong>Pagkalito, disorientasyon, o hirap mag-isip</strong> — maaaring magpahiwatig ng uremic encephalopathy (pag-ipon ng toxin mula sa pumapalyang bato) o matinding electrolyte imbalance.</span><span data-lang="ceb" class="lang-hidden"><strong>Kalibog, disorientasyon, o kalisod sa paghunahuna</strong> — mahimong magpaila og uremic encephalopathy (pundok sa toxin gikan sa napalya nga bato) o grabe nga electrolyte imbalance.</span><span data-lang="kap" class="lang-hidden"><strong>Pamanlino ning isip, disorientasyon, o kayirapan mag-isip</strong> — malyaring magpakit king uremic encephalopathy (pamitipun ning toxin ibat king mamalyang batu) o masakit a electrolyte imbalance.</span></div>
       </div>
       <div class="red-flag-item">
         <span class="rf-icon">🔴</span>
-        <div><strong>Unexplained bleeding</strong> — blood in urine (red or brown urine), gum bleeding, pinpoint red dots on skin (petechiae), or unusual bruising.</div>
+        <div><span data-lang="en"><strong>Unexplained bleeding</strong> — blood in urine (red or brown urine), gum bleeding, pinpoint red dots on skin (petechiae), or unusual bruising.</span><span data-lang="tl" class="lang-hidden"><strong>Hindi maipaliwanag na pagdurugo</strong> — dugo sa ihi (pula o kayumangging ihi), pagdurugo ng gilagid, maliliit na pulang tuldok sa balat (petechiae), o hindi pangkaraniwang pasa.</span><span data-lang="ceb" class="lang-hidden"><strong>Dili mapasabot nga pagdugo</strong> — dugo sa ihi (pula o brown nga ihi), pagdugo sa lagus, gagmayng pulang tulbok sa panit (petechiae), o dili kasagaran nga pangos.</span><span data-lang="kap" class="lang-hidden"><strong>E maipaliwanag a pamamdaya</strong> — daya king ihi (malutu o kayumangging ihi), pamamdaya ning gilagid, maliit a malutung tulduk king balat (petechiae), o e karaniwan a pasa.</span></div>
       </div>
       <div class="red-flag-item">
         <span class="rf-icon">🔴</span>
-        <div><strong>Sudden drop in blood pressure</strong> — dizziness when standing, feeling faint, cold clammy skin. This is the hypotensive phase — shock is developing.</div>
+        <div><span data-lang="en"><strong>Sudden drop in blood pressure</strong> — dizziness when standing, feeling faint, cold clammy skin. This is the hypotensive phase — shock is developing.</span><span data-lang="tl" class="lang-hidden"><strong>Biglaang pagbaba ng blood pressure</strong> — pagkahilo pagtayo, pakiramdam na hihimatayin, malamig na maligamgam na balat. Ito ang hypotensive phase — nabubuo ang shock.</span><span data-lang="ceb" class="lang-hidden"><strong>Kalit nga pagkunhod sa blood pressure</strong> — kalipong kon motindog, morag makuyapan, bugnaw nga singot sa panit. Kini ang hypotensive phase — nagkaporma ang shock.</span><span data-lang="kap" class="lang-hidden"><strong>Kagligligan a pamibaba ning blood pressure</strong> — pamanlula nung tatalakad, pakiramdam a mahimatay, malamig a balat. Ini ing hypotensive phase — mibubuu ing shock.</span></div>
       </div>
       <div class="red-flag-item">
         <span class="rf-icon">🔴</span>
-        <div><strong>Rapidly worsening swelling</strong> — face, hands, legs, or abdomen swelling up quickly. This indicates fluid is leaking into tissues from damaged blood vessels.</div>
+        <div><span data-lang="en"><strong>Rapidly worsening swelling</strong> — face, hands, legs, or abdomen swelling up quickly. This indicates fluid is leaking into tissues from damaged blood vessels.</span><span data-lang="tl" class="lang-hidden"><strong>Mabilis na lumalalang pamamaga</strong> — mabilis na pamamaga ng mukha, kamay, binti, o tiyan. Nagpapahiwatig ito na tumatagas ang likido papasok sa mga tisyu mula sa nasirang daluyan ng dugo.</span><span data-lang="ceb" class="lang-hidden"><strong>Paspas nga nagkagrabe nga panghubag</strong> — paspas nga panghubag sa nawong, kamot, tiil, o tiyan. Nagpaila kini nga nagtagas ang likido ngadto sa mga tisyu gikan sa nadaot nga ugat sa dugo.</span><span data-lang="kap" class="lang-hidden"><strong>Maganggang lalalang pamamaga</strong> — magangga a pamamaga ning lupa, gamat, bitis, o atian. Magpakit ini a tatagas ing danum papalub karing tisyu ibat karing mesirang ugat ning daya.</span></div>
       </div>
       <div class="red-flag-item">
         <span class="rf-icon">🔴</span>
-        <div><strong>High fever + rodent exposure</strong> — especially within 6 weeks of cleaning rat droppings, working in fields, cleaning after flooding, or other rodent contact.</div>
+        <div><span data-lang="en"><strong>High fever + rodent exposure</strong> — especially within 6 weeks of cleaning rat droppings, working in fields, cleaning after flooding, or other rodent contact.</span><span data-lang="tl" class="lang-hidden"><strong>Mataas na lagnat + pagkalantad sa daga</strong> — lalo na sa loob ng 6 na linggo ng paglilinis ng dumi ng daga, pagtatrabaho sa bukid, paglilinis pagkatapos ng baha, o iba pang kontak sa daga.</span><span data-lang="ceb" class="lang-hidden"><strong>Taas nga hilanat + pagkaladlad sa ilaga</strong> — ilabina sulod sa 6 ka semana human maglimpyo og hugaw sa ilaga, magtrabaho sa uma, maglimpyo human sa baha, o ubang kontak sa ilaga.</span><span data-lang="kap" class="lang-hidden"><strong>Matas a lagnat + pamielad king dagis</strong> — lalu na king lalam ning 6 dominggu ning pamaglinis dumi ning dagis, pamagobra king marangle, pamaglinis kaibat ning albug, o aliwang kontak king dagis.</span></div>
       </div>
     </div>
   </div>
@@ -2214,59 +2225,59 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 <!-- SECTION 6 — DIAGNOSIS -->
 <section class="section" id="diagnosis">
   <div class="container">
-    <div class="section-tag">Laboratory</div>
-    <h2>Diagnosis — What Tests Will Be Done</h2>
+    <div class="section-tag"><span data-lang="en">Laboratory</span><span data-lang="tl" class="lang-hidden">Laboratoryo</span><span data-lang="ceb" class="lang-hidden">Laboratoryo</span><span data-lang="kap" class="lang-hidden">Laboratoryo</span></div>
+    <h2><span data-lang="en">Diagnosis — What Tests Will Be Done</span><span data-lang="tl" class="lang-hidden">Diyagnosis — Anong mga Pagsusuri ang Isasagawa</span><span data-lang="ceb" class="lang-hidden">Diyagnosis — Unsang mga Test ang Buhaton</span><span data-lang="kap" class="lang-hidden">Diyagnosis — Nanung Test ing Gagawan</span></h2>
 
-    <p>HFRS is frequently misdiagnosed as dengue or leptospirosis in Philippine hospitals because all three present with fever, thrombocytopenia, and kidney involvement. The combination of <strong>low platelets + rising creatinine + recent rodent exposure</strong> should always raise the possibility of HFRS.</p>
+    <p><span data-lang="en">HFRS is frequently misdiagnosed as dengue or leptospirosis in Philippine hospitals because all three present with fever, thrombocytopenia, and kidney involvement. The combination of <strong>low platelets + rising creatinine + recent rodent exposure</strong> should always raise the possibility of HFRS.</span><span data-lang="tl" class="lang-hidden">Madalas na namamaling-diyagnos ang HFRS bilang dengue o leptospirosis sa mga ospital sa Pilipinas dahil pareho silang tatlo na may lagnat, thrombocytopenia, at pagkakaapekto ng bato. Ang kombinasyon ng <strong>mababang platelet + tumataas na creatinine + kamakailang pagkalantad sa daga</strong> ay dapat palaging magbunsod ng posibilidad ng HFRS.</span><span data-lang="ceb" class="lang-hidden">Kanunay masayop og diyagnos ang HFRS isip dengue o leptospirosis sa mga ospital sa Pilipinas kay silang tulo adunay hilanat, thrombocytopenia, ug apekto sa bato. Ang kombinasyon sa <strong>ubos nga platelet + mosaka nga creatinine + bag-o nga pagkaladlad sa ilaga</strong> kinahanglan kanunay magpataas sa posibilidad sa HFRS.</span><span data-lang="kap" class="lang-hidden">Pilan-pilang mesabing dengue o leptospirosis ing HFRS karing ospital king Pilipinas uli reng atlu atin lang lagnat, thrombocytopenia, ampo apektu king batu. Ing kombinasyun ning <strong>mababang platelet + tataas a creatinine + bayung pamielad king dagis</strong> dapat palaguang magpataas king posibilidad ning HFRS.</span></p>
 
     <table class="lab-table">
       <thead>
         <tr>
-          <th>Test</th>
-          <th>What It Shows in HFRS</th>
-          <th>Timing</th>
+          <th><span data-lang="en">Test</span><span data-lang="tl" class="lang-hidden">Pagsusuri</span><span data-lang="ceb" class="lang-hidden">Test</span><span data-lang="kap" class="lang-hidden">Test</span></th>
+          <th><span data-lang="en">What It Shows in HFRS</span><span data-lang="tl" class="lang-hidden">Ang Ipinapakita Nito sa HFRS</span><span data-lang="ceb" class="lang-hidden">Ang Gipakita Niini sa HFRS</span><span data-lang="kap" class="lang-hidden">Ing Pakit Na King HFRS</span></th>
+          <th><span data-lang="en">Timing</span><span data-lang="tl" class="lang-hidden">Panahon</span><span data-lang="ceb" class="lang-hidden">Panahon</span><span data-lang="kap" class="lang-hidden">Panaun</span></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>CBC with platelet count</strong></td>
-          <td>Thrombocytopenia (platelets &lt;100,000); leukocytosis with left shift; hematocrit may rise early</td>
-          <td>From Day 1–2</td>
+          <td><span data-lang="en"><strong>CBC (complete blood count) with platelet count</strong></span><span data-lang="tl" class="lang-hidden"><strong>CBC (complete blood count) na may platelet count</strong></span><span data-lang="ceb" class="lang-hidden"><strong>CBC (complete blood count) nga adunay platelet count</strong></span><span data-lang="kap" class="lang-hidden"><strong>CBC (complete blood count) a atin platelet count</strong></span></td>
+          <td><span data-lang="en">Thrombocytopenia (platelets &lt;100,000); leukocytosis with left shift; hematocrit may rise early</span><span data-lang="tl" class="lang-hidden">Thrombocytopenia (platelet &lt;100,000); leukocytosis na may left shift; maaaring tumaas nang maaga ang hematocrit</span><span data-lang="ceb" class="lang-hidden">Thrombocytopenia (platelet &lt;100,000); leukocytosis nga adunay left shift; mahimong mosaka og sayo ang hematocrit</span><span data-lang="kap" class="lang-hidden">Thrombocytopenia (platelet &lt;100,000); leukocytosis a atin left shift; malyaring tumaas yang maranu ing hematocrit</span></td>
+          <td><span data-lang="en">From Day 1–2</span><span data-lang="tl" class="lang-hidden">Mula Araw 1–2</span><span data-lang="ceb" class="lang-hidden">Gikan Adlaw 1–2</span><span data-lang="kap" class="lang-hidden">Manibat Aldo 1–2</span></td>
         </tr>
         <tr>
-          <td><strong>Creatinine &amp; BUN</strong></td>
-          <td>Rapidly rising; may reach 10–15 mg/dL in severe cases during oliguric phase</td>
-          <td>From Day 3–4</td>
+          <td><span data-lang="en"><strong>Creatinine &amp; BUN (blood urea nitrogen)</strong></span><span data-lang="tl" class="lang-hidden"><strong>Creatinine &amp; BUN (blood urea nitrogen)</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Creatinine &amp; BUN (blood urea nitrogen)</strong></span><span data-lang="kap" class="lang-hidden"><strong>Creatinine &amp; BUN (blood urea nitrogen)</strong></span></td>
+          <td><span data-lang="en">Rapidly rising; may reach 10–15 mg/dL in severe cases during oliguric phase</span><span data-lang="tl" class="lang-hidden">Mabilis na tumataas; maaaring umabot sa 10–15 mg/dL sa mga malubhang kaso sa oliguric phase</span><span data-lang="ceb" class="lang-hidden">Paspas nga mosaka; mahimong moabot og 10–15 mg/dL sa grabe nga mga kaso panahon sa oliguric phase</span><span data-lang="kap" class="lang-hidden">Maganggang tataas; malyaring datang king 10–15 mg/dL karing malubang kaso kabang oliguric phase</span></td>
+          <td><span data-lang="en">From Day 3–4</span><span data-lang="tl" class="lang-hidden">Mula Araw 3–4</span><span data-lang="ceb" class="lang-hidden">Gikan Adlaw 3–4</span><span data-lang="kap" class="lang-hidden">Manibat Aldo 3–4</span></td>
         </tr>
         <tr>
-          <td><strong>Urinalysis</strong></td>
-          <td>Hematuria (blood), proteinuria, granular casts — this combination is highly suggestive</td>
-          <td>From Day 2</td>
+          <td><span data-lang="en"><strong>Urinalysis</strong></span><span data-lang="tl" class="lang-hidden"><strong>Urinalysis</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Urinalysis</strong></span><span data-lang="kap" class="lang-hidden"><strong>Urinalysis</strong></span></td>
+          <td><span data-lang="en">Hematuria (blood), proteinuria, granular casts — this combination is highly suggestive</span><span data-lang="tl" class="lang-hidden">Hematuria (dugo), proteinuria, granular casts — mataas na nagmumungkahi ang kombinasyong ito</span><span data-lang="ceb" class="lang-hidden">Hematuria (dugo), proteinuria, granular casts — taas kaayo nga nagsugyot kining kombinasyon</span><span data-lang="kap" class="lang-hidden">Hematuria (daya), proteinuria, granular casts — matas yang magpakit ing kombinasyung ini</span></td>
+          <td><span data-lang="en">From Day 2</span><span data-lang="tl" class="lang-hidden">Mula Araw 2</span><span data-lang="ceb" class="lang-hidden">Gikan Adlaw 2</span><span data-lang="kap" class="lang-hidden">Manibat Aldo 2</span></td>
         </tr>
         <tr>
-          <td><strong>Electrolytes</strong></td>
-          <td>Hyponatremia; hyperkalemia (oliguria phase); hypokalemia (diuretic phase)</td>
-          <td>Monitor daily</td>
+          <td><span data-lang="en"><strong>Electrolytes</strong></span><span data-lang="tl" class="lang-hidden"><strong>Electrolytes</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Electrolytes</strong></span><span data-lang="kap" class="lang-hidden"><strong>Electrolytes</strong></span></td>
+          <td><span data-lang="en">Hyponatremia; hyperkalemia (oliguria phase); hypokalemia (diuretic phase)</span><span data-lang="tl" class="lang-hidden">Hyponatremia; hyperkalemia (oliguria phase); hypokalemia (diuretic phase)</span><span data-lang="ceb" class="lang-hidden">Hyponatremia; hyperkalemia (oliguria phase); hypokalemia (diuretic phase)</span><span data-lang="kap" class="lang-hidden">Hyponatremia; hyperkalemia (oliguria phase); hypokalemia (diuretic phase)</span></td>
+          <td><span data-lang="en">Monitor daily</span><span data-lang="tl" class="lang-hidden">Subaybayan araw-araw</span><span data-lang="ceb" class="lang-hidden">Bantayi adlaw-adlaw</span><span data-lang="kap" class="lang-hidden">Bantayan aldo-aldo</span></td>
         </tr>
         <tr>
-          <td><strong>Serology — IgM</strong></td>
-          <td>Positive from Day 3–4; confirms active infection; preferred test in PH if available</td>
-          <td>Day 3 onward</td>
+          <td><span data-lang="en"><strong>Serology — IgM</strong></span><span data-lang="tl" class="lang-hidden"><strong>Serology — IgM</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Serology — IgM</strong></span><span data-lang="kap" class="lang-hidden"><strong>Serology — IgM</strong></span></td>
+          <td><span data-lang="en">Positive from Day 3–4; confirms active infection; preferred test in PH if available</span><span data-lang="tl" class="lang-hidden">Positibo mula Araw 3–4; kinukumpirma ang aktibong impeksyon; ninanais na test sa PH kung available</span><span data-lang="ceb" class="lang-hidden">Positibo gikan Adlaw 3–4; nagkumpirma sa aktibong impeksyon; gipili nga test sa PH kon available</span><span data-lang="kap" class="lang-hidden">Positibu manibat Aldo 3–4; kukumpirma na ing aktibong impeksyon; pipiling test king PH nung available</span></td>
+          <td><span data-lang="en">Day 3 onward</span><span data-lang="tl" class="lang-hidden">Araw 3 pataas</span><span data-lang="ceb" class="lang-hidden">Adlaw 3 padayon</span><span data-lang="kap" class="lang-hidden">Aldo 3 patas</span></td>
         </tr>
         <tr>
-          <td><strong>Serology — IgG</strong></td>
-          <td>Positive from Week 1; useful for confirmation and seroprevalence studies</td>
-          <td>Week 1 onward</td>
+          <td><span data-lang="en"><strong>Serology — IgG</strong></span><span data-lang="tl" class="lang-hidden"><strong>Serology — IgG</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Serology — IgG</strong></span><span data-lang="kap" class="lang-hidden"><strong>Serology — IgG</strong></span></td>
+          <td><span data-lang="en">Positive from Week 1; useful for confirmation and seroprevalence studies</span><span data-lang="tl" class="lang-hidden">Positibo mula Linggo 1; kapaki-pakinabang para sa kumpirmasyon at seroprevalence studies</span><span data-lang="ceb" class="lang-hidden">Positibo gikan Semana 1; mapuslanon alang sa kumpirmasyon ug seroprevalence studies</span><span data-lang="kap" class="lang-hidden">Positibu manibat Dominggu 1; makagamit para king kumpirmasyon ampo seroprevalence studies</span></td>
+          <td><span data-lang="en">Week 1 onward</span><span data-lang="tl" class="lang-hidden">Linggo 1 pataas</span><span data-lang="ceb" class="lang-hidden">Semana 1 padayon</span><span data-lang="kap" class="lang-hidden">Dominggu 1 patas</span></td>
         </tr>
         <tr>
-          <td><strong>RT-PCR</strong></td>
-          <td>Positive only during the short viremic window (first 4–6 days); negative later</td>
-          <td>Days 1–6 only</td>
+          <td><span data-lang="en"><strong>RT-PCR</strong></span><span data-lang="tl" class="lang-hidden"><strong>RT-PCR</strong></span><span data-lang="ceb" class="lang-hidden"><strong>RT-PCR</strong></span><span data-lang="kap" class="lang-hidden"><strong>RT-PCR</strong></span></td>
+          <td><span data-lang="en">Positive only during the short viremic window (first 4–6 days); negative later</span><span data-lang="tl" class="lang-hidden">Positibo lamang sa maikling viremic window (unang 4–6 araw); negatibo sa bandang huli</span><span data-lang="ceb" class="lang-hidden">Positibo lamang sa mubo nga viremic window (unang 4–6 ka adlaw); negatibo unya</span><span data-lang="kap" class="lang-hidden">Positibu mu king makuyad a viremic window (mumunang 4–6 aldo); negatibu kaibat</span></td>
+          <td><span data-lang="en">Days 1–6 only</span><span data-lang="tl" class="lang-hidden">Araw 1–6 lamang</span><span data-lang="ceb" class="lang-hidden">Adlaw 1–6 lamang</span><span data-lang="kap" class="lang-hidden">Aldo 1–6 mu</span></td>
         </tr>
         <tr class="table-row-alert">
-          <td><strong>Liver enzymes</strong></td>
-          <td>Mildly elevated (unlike dengue or leptospirosis where hepatitis is more prominent)</td>
-          <td>Variable</td>
+          <td><span data-lang="en"><strong>Liver enzymes</strong></span><span data-lang="tl" class="lang-hidden"><strong>Liver enzymes</strong></span><span data-lang="ceb" class="lang-hidden"><strong>Liver enzymes</strong></span><span data-lang="kap" class="lang-hidden"><strong>Liver enzymes</strong></span></td>
+          <td><span data-lang="en">Mildly elevated (unlike dengue or leptospirosis where hepatitis is more prominent)</span><span data-lang="tl" class="lang-hidden">Bahagyang tumaas (hindi tulad ng dengue o leptospirosis kung saan mas prominente ang hepatitis)</span><span data-lang="ceb" class="lang-hidden">Gamay nga mitaas (dili sama sa dengue o leptospirosis diin mas prominente ang hepatitis)</span><span data-lang="kap" class="lang-hidden">Kaunti a tinaas (ali anti king dengue o leptospirosis nu karin mas prominente ing hepatitis)</span></td>
+          <td><span data-lang="en">Variable</span><span data-lang="tl" class="lang-hidden">Nagbabago</span><span data-lang="ceb" class="lang-hidden">Nagkalainlain</span><span data-lang="kap" class="lang-hidden">Mikakaiba</span></td>
         </tr>
       </tbody>
     </table>
@@ -2274,8 +2285,8 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
     <div class="alert alert-teal">
       <div class="alert-icon">💡</div>
       <div class="alert-body">
-        <h4>Why HFRS is often missed in the Philippines</h4>
-        <p>Hantavirus serology is not routinely available in most Philippine government hospitals — it is available at Research Institute for Tropical Medicine (RITM) and a limited number of reference laboratories. Most HFRS patients are managed clinically under a dengue or leptospirosis label. If you have a febrile illness with AKI and clear rodent exposure — ask your doctor specifically about hantavirus serology at RITM.</p>
+        <h4><span data-lang="en">Why HFRS is often missed in the Philippines</span><span data-lang="tl" class="lang-hidden">Bakit madalas hindi natutukoy ang HFRS sa Pilipinas</span><span data-lang="ceb" class="lang-hidden">Ngano nga kanunay dili matultolan ang HFRS sa Pilipinas</span><span data-lang="kap" class="lang-hidden">Bakit pilan-pilan e amamatikdan ing HFRS king Pilipinas</span></h4>
+        <p><span data-lang="en">Hantavirus serology is not routinely available in most Philippine government hospitals — it is available at Research Institute for Tropical Medicine (RITM) and a limited number of reference laboratories. Most HFRS patients are managed clinically under a dengue or leptospirosis label. If you have a febrile illness with AKI and clear rodent exposure — ask your doctor specifically about hantavirus serology at RITM.</span><span data-lang="tl" class="lang-hidden">Ang hantavirus serology ay hindi rutinaryong available sa karamihan ng pampublikong ospital sa Pilipinas — available ito sa Research Institute for Tropical Medicine (RITM) at sa limitadong bilang ng mga reference laboratory. Karamihan ng pasyenteng HFRS ay pinamamahalaan nang klinikal sa ilalim ng dengue o leptospirosis na label. Kung may febrile illness ka na may AKI at malinaw na pagkalantad sa daga — tanungin nang tiyak ang iyong doktor tungkol sa hantavirus serology sa RITM.</span><span data-lang="ceb" class="lang-hidden">Ang hantavirus serology dili rutinaryong available sa kadaghanan sa gobyerno nga ospital sa Pilipinas — available kini sa Research Institute for Tropical Medicine (RITM) ug sa limitado nga gidaghanon sa mga reference laboratory. Kadaghanan sa mga pasyente sa HFRS gidumala nga klinikal ubos sa dengue o leptospirosis nga label. Kon adunay ka febrile illness nga adunay AKI ug klaro nga pagkaladlad sa ilaga — pangutan-a nga piho ang imong doktor bahin sa hantavirus serology sa RITM.</span><span data-lang="kap" class="lang-hidden">Ing hantavirus serology ali ya rutinaryong available king kalakuan da reng gobyernung ospital king Pilipinas — available ya king Research Institute for Tropical Medicine (RITM) ampo king limitadong bilang da reng reference laboratory. Kalakuan da reng pasyenteng HFRS papanaptan la nang klinikal king lalam ning dengue o leptospirosis a label. Nung atin kang febrile illness a atin AKI ampo malinong pamielad king dagis — kutnan me nang tanging ing doktor mu tungkul king hantavirus serology king RITM.</span></p>
       </div>
     </div>
   </div>
@@ -2284,48 +2295,48 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 <!-- SECTION 7 — TREATMENT -->
 <section class="section" id="treatment">
   <div class="container">
-    <div class="section-tag">Management</div>
-    <h2>Treatment and Recovery</h2>
+    <div class="section-tag"><span data-lang="en">Management</span><span data-lang="tl" class="lang-hidden">Pamamahala</span><span data-lang="ceb" class="lang-hidden">Pagdumala</span><span data-lang="kap" class="lang-hidden">Pamanaptan</span></div>
+    <h2><span data-lang="en">Treatment and Recovery</span><span data-lang="tl" class="lang-hidden">Paggamot at Paggaling</span><span data-lang="ceb" class="lang-hidden">Pagtambal ug Pag-ayo</span><span data-lang="kap" class="lang-hidden">Panaman ampo Pamaglino</span></h2>
 
-    <p>There is no cure for hantavirus. Treatment is entirely <strong>supportive</strong> — keeping the body stable while the immune system resolves the infection. This sounds simple but is extremely demanding: the fluid management alone requires hospitalization.</p>
+    <p><span data-lang="en">There is no cure for hantavirus. Treatment is entirely <strong>supportive</strong> — keeping the body stable while the immune system resolves the infection. This sounds simple but is extremely demanding: the fluid management alone requires hospitalization.</span><span data-lang="tl" class="lang-hidden">Walang lunas ang hantavirus. Ang paggamot ay ganap na <strong>suportibo</strong> — pinananatiling matatag ang katawan habang nireresolba ng immune system ang impeksyon. Mukhang simple ito ngunit napakahirap: ang fluid management lamang ay nangangailangan ng pagpapaospital.</span><span data-lang="ceb" class="lang-hidden">Walay tambal ang hantavirus. Ang pagtambal hingpit nga <strong>suportibo</strong> — gihuptan nga lig-on ang lawas samtang gisulbad sa immune system ang impeksyon. Morag simple kini apan lisod kaayo: ang fluid management lamang nagkinahanglan og hospitalisasyon.</span><span data-lang="kap" class="lang-hidden">Alang lunas ing hantavirus. Ing panaman ganap yang <strong>suportibu</strong> — pananatili yang matatag ing katawan kabang riresolba ning immune system ing impeksyon. Anti yang simple ini dapot mayirap ya pin: ing fluid management mu mangailangan king pamagospital.</span></p>
 
-    <h3 style="font-size:17px;margin:24px 0 12px;">The Fluid Tightrope</h3>
-    <p>Fluid management in HFRS is one of the most delicate balancing acts in clinical medicine. During the oliguric phase, too much fluid causes pulmonary edema and fluid overload. During the diuretic phase, too little fluid causes hypovolemic shock. The dangers are opposite — and the phase can change within hours.</p>
+    <h3 style="font-size:17px;margin:24px 0 12px;"><span data-lang="en">The Fluid Tightrope</span><span data-lang="tl" class="lang-hidden">Ang Delikadong Balanse ng Likido</span><span data-lang="ceb" class="lang-hidden">Ang Delikadong Balanse sa Likido</span><span data-lang="kap" class="lang-hidden">Ing Delikadung Balanse ning Danum</span></h3>
+    <p><span data-lang="en">Fluid management in HFRS is one of the most delicate balancing acts in clinical medicine. During the oliguric phase, too much fluid causes pulmonary edema and fluid overload. During the diuretic phase, too little fluid causes hypovolemic shock. The dangers are opposite — and the phase can change within hours.</span><span data-lang="tl" class="lang-hidden">Ang fluid management sa HFRS ay isa sa pinakamaseselang pagbabalanse sa klinikal na medisina. Sa oliguric phase, ang sobrang likido ay nagdudulot ng pulmonary edema at fluid overload. Sa diuretic phase, ang kulang na likido ay nagdudulot ng hypovolemic shock. Magkasalungat ang mga panganib — at maaaring magbago ang yugto sa loob ng ilang oras.</span><span data-lang="ceb" class="lang-hidden">Ang fluid management sa HFRS usa sa labing delikado nga pagbalanse sa klinikal nga medisina. Panahon sa oliguric phase, ang sobra nga likido magpahinabo og pulmonary edema ug fluid overload. Panahon sa diuretic phase, ang kulang nga likido magpahinabo og hypovolemic shock. Magkasumpaki ang mga peligro — ug ang hugna mahimong mausab sulod sa pipila ka oras.</span><span data-lang="kap" class="lang-hidden">Ing fluid management king HFRS metung ya karing pekadelikadung pamibalanse king klinikal a medisina. Kabang oliguric phase, ing sobrang danum mikawang pulmonary edema ampo fluid overload. Kabang diuretic phase, ing kulang a danum mikawang hypovolemic shock. Mikasumpa la reng panganib — ampo malyaring magbayu ing dake king lalam ning mapilang oras.</span></p>
 
     <div class="fluid-cols">
       <div class="fluid-col fc-restrict">
-        <h4>🔴 Oliguric Phase — Restrict Fluids</h4>
+        <h4><span data-lang="en">🔴 Oliguric Phase — Restrict Fluids</span><span data-lang="tl" class="lang-hidden">🔴 Oliguric Phase — Limitahan ang Likido</span><span data-lang="ceb" class="lang-hidden">🔴 Oliguric Phase — Limitahi ang Likido</span><span data-lang="kap" class="lang-hidden">🔴 Oliguric Phase — Limitan ing Danum</span></h4>
         <ul>
-          <li>Give only: insensible losses (~500 mL/day) + yesterday's urine output</li>
-          <li>Avoid IV boluses — they flood the lungs</li>
-          <li>Daily weight monitoring mandatory</li>
-          <li>Restrict sodium intake</li>
-          <li>Dialysis if you cannot maintain balance</li>
+          <li><span data-lang="en">Give only: insensible losses (~500 mL/day) + yesterday's urine output</span><span data-lang="tl" class="lang-hidden">Ibigay lamang: insensible losses (~500 mL/araw) + output ng ihi kahapon</span><span data-lang="ceb" class="lang-hidden">Ihatag lamang: insensible losses (~500 mL/adlaw) + output sa ihi kagahapon</span><span data-lang="kap" class="lang-hidden">Ibiye mu: insensible losses (~500 mL/aldo) + output ning ihi napun</span></li>
+          <li><span data-lang="en">Avoid IV boluses — they flood the lungs</span><span data-lang="tl" class="lang-hidden">Iwasan ang IV boluses — binabaha nila ang mga baga</span><span data-lang="ceb" class="lang-hidden">Likayi ang IV boluses — gibaha nila ang mga baga</span><span data-lang="kap" class="lang-hidden">Ilagwan me reng IV boluses — bubahan da reng baga</span></li>
+          <li><span data-lang="en">Daily weight monitoring mandatory</span><span data-lang="tl" class="lang-hidden">Sapilitan ang pang-araw-araw na pagsubaybay ng timbang</span><span data-lang="ceb" class="lang-hidden">Kinahanglanon ang adlaw-adlaw nga pagbantay sa timbang</span><span data-lang="kap" class="lang-hidden">Kailangan ing aldo-aldong pamanyubay king timbang</span></li>
+          <li><span data-lang="en">Restrict sodium intake</span><span data-lang="tl" class="lang-hidden">Limitahan ang inikonsumong sodium</span><span data-lang="ceb" class="lang-hidden">Limitahi ang gikaon nga sodium</span><span data-lang="kap" class="lang-hidden">Limitan ing pamangan a sodium</span></li>
+          <li><span data-lang="en">Dialysis if you cannot maintain balance</span><span data-lang="tl" class="lang-hidden">Dialysis kung hindi mo mapanatili ang balanse</span><span data-lang="ceb" class="lang-hidden">Dialysis kon dili nimo mahuptan ang balanse</span><span data-lang="kap" class="lang-hidden">Dialysis nung ali mu mapanatili ing balanse</span></li>
         </ul>
       </div>
       <div class="fluid-col fc-replace">
-        <h4>🟣 Diuretic Phase — Replace Aggressively</h4>
+        <h4><span data-lang="en">🟣 Diuretic Phase — Replace Aggressively</span><span data-lang="tl" class="lang-hidden">🟣 Diuretic Phase — Palitan nang Masinsinan</span><span data-lang="ceb" class="lang-hidden">🟣 Diuretic Phase — Ilisan nga Agresibo</span><span data-lang="kap" class="lang-hidden">🟣 Diuretic Phase — Saliwan nang Agresibu</span></h4>
         <ul>
-          <li>Match urine output (3–6 L/day is common)</li>
-          <li>Oral replacement preferred if tolerated</li>
-          <li>Monitor sodium and potassium every 12 hours</li>
-          <li>Hypokalemia is common and dangerous</li>
-          <li>Risk: dehydration and electrolyte collapse</li>
+          <li><span data-lang="en">Match urine output (3–6 L/day is common)</span><span data-lang="tl" class="lang-hidden">Itugma sa output ng ihi (karaniwan ang 3–6 L/araw)</span><span data-lang="ceb" class="lang-hidden">Itakdo sa output sa ihi (komon ang 3–6 L/adlaw)</span><span data-lang="kap" class="lang-hidden">Itugma king output ning ihi (karaniwan ing 3–6 L/aldo)</span></li>
+          <li><span data-lang="en">Oral replacement preferred if tolerated</span><span data-lang="tl" class="lang-hidden">Mas ninanais ang oral na pagpapalit kung natitiis</span><span data-lang="ceb" class="lang-hidden">Gipili ang oral nga pag-ilis kon matugot</span><span data-lang="kap" class="lang-hidden">Mas pipili ing oral a pamanyaliwan nung matiis</span></li>
+          <li><span data-lang="en">Monitor sodium and potassium every 12 hours</span><span data-lang="tl" class="lang-hidden">Subaybayan ang sodium at potassium tuwing 12 oras</span><span data-lang="ceb" class="lang-hidden">Bantayi ang sodium ug potassium matag 12 ka oras</span><span data-lang="kap" class="lang-hidden">Bantayan ing sodium ampo potassium balang 12 oras</span></li>
+          <li><span data-lang="en">Hypokalemia is common and dangerous</span><span data-lang="tl" class="lang-hidden">Karaniwan at mapanganib ang hypokalemia</span><span data-lang="ceb" class="lang-hidden">Komon ug peligroso ang hypokalemia</span><span data-lang="kap" class="lang-hidden">Karaniwan ampo mapanganib ing hypokalemia</span></li>
+          <li><span data-lang="en">Risk: dehydration and electrolyte collapse</span><span data-lang="tl" class="lang-hidden">Panganib: dehydration at pagbagsak ng electrolyte</span><span data-lang="ceb" class="lang-hidden">Peligro: dehydration ug pagkahagsa sa electrolyte</span><span data-lang="kap" class="lang-hidden">Panganib: dehydration ampo pamibagsak ning electrolyte</span></li>
         </ul>
       </div>
     </div>
 
-    <h3 style="font-size:17px;margin:24px 0 12px;">Dialysis</h3>
-    <p>Approximately 5–15% of HFRS patients require temporary dialysis support. This is almost always temporary — the vast majority of patients who are dialyzed for HFRS are off dialysis within 2–4 weeks as the kidneys recover. <strong>HFRS dialysis is not permanent dialysis.</strong> This is important for families to hear clearly during the acute phase.</p>
+    <h3 style="font-size:17px;margin:24px 0 12px;"><span data-lang="en">Dialysis</span><span data-lang="tl" class="lang-hidden">Dialysis</span><span data-lang="ceb" class="lang-hidden">Dialysis</span><span data-lang="kap" class="lang-hidden">Dialysis</span></h3>
+    <p><span data-lang="en">Approximately 5–15% of HFRS patients require temporary dialysis support. This is almost always temporary — the vast majority of patients who are dialyzed for HFRS are off dialysis within 2–4 weeks as the kidneys recover. <strong>HFRS dialysis is not permanent dialysis.</strong> This is important for families to hear clearly during the acute phase.</span><span data-lang="tl" class="lang-hidden">Humigit-kumulang 5–15% ng mga pasyenteng HFRS ang nangangailangan ng pansamantalang suporta ng dialysis. Halos palaging pansamantala ito — karamihan ng mga pasyenteng na-dialyze dahil sa HFRS ay wala nang dialysis sa loob ng 2–4 linggo habang gumagaling ang mga bato. <strong>Ang HFRS dialysis ay hindi permanenteng dialysis.</strong> Mahalagang marinig ito nang malinaw ng mga pamilya sa acute phase.</span><span data-lang="ceb" class="lang-hidden">Mga 5–15% sa mga pasyente sa HFRS ang nagkinahanglan og temporaryong suporta sa dialysis. Halos kanunay temporaryo kini — kadaghanan sa mga pasyente nga gi-dialyze tungod sa HFRS wala nay dialysis sulod sa 2–4 ka semana samtang mo-ayo ang mga bato. <strong>Ang HFRS dialysis dili permanente nga dialysis.</strong> Hinungdanon nga madungog kini nga klaro sa mga pamilya panahon sa acute phase.</span><span data-lang="kap" class="lang-hidden">Manga 5–15% da reng pasyenteng HFRS ing mangailangan king pansamantalang suporta ning dialysis. Halos palaguang pansamantala ya ini — kalakuan da reng pasyenteng me-dialyze uli ning HFRS alang na lang dialysis king lalam ning 2–4 dominggu kabang lulino reng batu. <strong>Ing HFRS dialysis ali yang permanenteng dialysis.</strong> Mataimtiman a adamdaman ini nang malino da reng pamilya kabang acute phase.</span></p>
 
-    <h3 style="font-size:17px;margin:24px 0 12px;">Ribavirin</h3>
-    <p>Ribavirin (an antiviral medication) has evidence for reducing severity in HFRS caused by Hantaan virus, particularly when started within the first 5 days of illness. Evidence is weaker for Seoul virus. It requires dose reduction in kidney failure and is contraindicated in pregnancy. Your doctor will decide if it is appropriate based on severity and timing.</p>
+    <h3 style="font-size:17px;margin:24px 0 12px;"><span data-lang="en">Ribavirin</span><span data-lang="tl" class="lang-hidden">Ribavirin</span><span data-lang="ceb" class="lang-hidden">Ribavirin</span><span data-lang="kap" class="lang-hidden">Ribavirin</span></h3>
+    <p><span data-lang="en">Ribavirin (an antiviral medication) has evidence for reducing severity in HFRS caused by Hantaan virus, particularly when started within the first 5 days of illness. Evidence is weaker for Seoul virus. It requires dose reduction in kidney failure and is contraindicated in pregnancy. Your doctor will decide if it is appropriate based on severity and timing.</span><span data-lang="tl" class="lang-hidden">Ang Ribavirin (isang antiviral na gamot) ay may ebidensiya sa pagbawas ng severity sa HFRS na dulot ng Hantaan virus, lalo na kapag sinimulan sa loob ng unang 5 araw ng sakit. Mas mahina ang ebidensiya para sa Seoul virus. Nangangailangan ito ng dose reduction sa pagpalya ng bato at kontraindikado sa pagbubuntis. Magpapasya ang iyong doktor kung angkop ito batay sa severity at timing.</span><span data-lang="ceb" class="lang-hidden">Ang Ribavirin (usa ka antiviral nga tambal) adunay ebidensya sa pagpakunhod sa severity sa HFRS nga gipahinabo sa Hantaan virus, ilabina kon sugdan sulod sa unang 5 ka adlaw sa sakit. Mas huyang ang ebidensya alang sa Seoul virus. Nagkinahanglan kini og dose reduction sa pagpalya sa bato ug kontraindikado sa pagmabdos. Modesisyon ang imong doktor kon angay kini base sa severity ug timing.</span><span data-lang="kap" class="lang-hidden">Ing Ribavirin (metung a antiviral a gamut) atin yang ebidensya king pamibawas ning severity king HFRS a mikawa ning Hantaan virus, lalu na nung uumpisan king lalam ning mumunang 5 aldo ning sakit. Mas maluya ing ebidensya para king Seoul virus. Mangailangan ya king dose reduction king pamalya ning batu ampo kontraindikado ya king pamagligtas. Magdesisyun ing doktor mu nung angkup ya base king severity ampo timing.</span></p>
 
     <div class="alert alert-red">
       <div class="alert-icon">❌</div>
       <div class="alert-body">
-        <h4>Do NOT take these during HFRS</h4>
-        <p><strong>NSAIDs (mefenamic acid, ibuprofen, diclofenac, naproxen)</strong> — these are nephrotoxic and will worsen kidney failure. <strong>Aspirin</strong> — worsens bleeding risk with already-low platelets. Use paracetamol (acetaminophen) for fever control only, and only at appropriate doses. Tell your doctor every medication you are taking, including herbal remedies.</p>
+        <h4><span data-lang="en">Do NOT take these during HFRS</span><span data-lang="tl" class="lang-hidden">HUWAG inumin ang mga ito sa panahon ng HFRS</span><span data-lang="ceb" class="lang-hidden">AYAW inuma kini panahon sa HFRS</span><span data-lang="kap" class="lang-hidden">E ka minum karing ini kabang HFRS</span></h4>
+        <p><span data-lang="en"><strong>NSAIDs (mefenamic acid, ibuprofen, diclofenac, naproxen)</strong> — these are nephrotoxic and will worsen kidney failure. <strong>Aspirin</strong> — worsens bleeding risk with already-low platelets. Use paracetamol (acetaminophen) for fever control only, and only at appropriate doses. Tell your doctor every medication you are taking, including herbal remedies.</span><span data-lang="tl" class="lang-hidden"><strong>NSAIDs (mefenamic acid, ibuprofen, diclofenac, naproxen)</strong> — nephrotoxic ang mga ito at lalala ang pagpalya ng bato. <strong>Aspirin</strong> — pinalalala ang panganib ng pagdurugo dahil mababa na ang platelet. Gumamit ng paracetamol (acetaminophen) para sa lagnat lamang, at sa tamang dose lamang. Sabihin sa iyong doktor ang bawat gamot na iniinom mo, kasama ang mga herbal na remedyo.</span><span data-lang="ceb" class="lang-hidden"><strong>NSAIDs (mefenamic acid, ibuprofen, diclofenac, naproxen)</strong> — nephrotoxic kini ug mograbe ang pagpalya sa bato. <strong>Aspirin</strong> — mograbe ang peligro sa pagdugo tungod kay ubos na ang platelet. Gamita ang paracetamol (acetaminophen) alang sa hilanat lamang, ug sa saktong dose lamang. Sultihi ang imong doktor sa matag tambal nga imong giinom, apil ang mga herbal nga remedyo.</span><span data-lang="kap" class="lang-hidden"><strong>NSAIDs (mefenamic acid, ibuprofen, diclofenac, naproxen)</strong> — nephrotoxic la deni ampo lalalu ing pamalya ning batu. <strong>Aspirin</strong> — palalalu na ing panganib ning pamamdaya uli mababa na ing platelet. Gamitan me ing paracetamol (acetaminophen) para king lagnat mu, ampo king tamang dose mu. Sabyan me king doktor mu ing balang gamut a inuman mu, kayabe reng herbal a remedyu.</span></p>
       </div>
     </div>
   </div>
@@ -2335,8 +2346,8 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 <section class="section" id="calculator">
   <div class="container">
     <div class="calc-box">
-      <h3>HFRS Severity &amp; Dialysis Risk Tool</h3>
-      <p class="calc-intro">This tool uses clinical parameters to estimate HFRS severity and dialysis risk. It is a decision-support aid — not a substitute for physician judgment. Designed for use with laboratory results in hand.</p>
+      <h3><span data-lang="en">HFRS Severity &amp; Dialysis Risk Tool</span><span data-lang="tl" class="lang-hidden">HFRS Severity &amp; Dialysis Risk Tool</span><span data-lang="ceb" class="lang-hidden">HFRS Severity &amp; Dialysis Risk Tool</span><span data-lang="kap" class="lang-hidden">HFRS Severity &amp; Dialysis Risk Tool</span></h3>
+      <p class="calc-intro"><span data-lang="en">This tool uses clinical parameters to estimate HFRS severity and dialysis risk. It is a decision-support aid — not a substitute for physician judgment. Designed for use with laboratory results in hand.</span><span data-lang="tl" class="lang-hidden">Gumagamit ang tool na ito ng mga klinikal na parameter upang tantiyahin ang severity ng HFRS at panganib ng dialysis. Isa itong tulong sa paggawa ng desisyon — hindi kapalit ng pagpapasya ng doktor. Idinisenyo para gamitin habang hawak ang mga resulta ng laboratoryo.</span><span data-lang="ceb" class="lang-hidden">Naggamit kining tool og mga klinikal nga parameter aron pagbanabana sa severity sa HFRS ug peligro sa dialysis. Kini usa ka tabang sa paghimo og desisyon — dili puli sa paghukom sa doktor. Gidisenyo aron gamiton samtang gunit ang mga resulta sa laboratoryo.</span><span data-lang="kap" class="lang-hidden">Gagamit ing tool a ini karing klinikal a parameter bang tantiyan ing severity ning HFRS ampo panganib ning dialysis. Metung yang saup king pamaggawa king desisyun — ali ya kapalit ning paghusga ning doktor. Dinisenyu ya bang gamitan kabang gagamitan reng resulta ning laboratoryo.</span></p>
 
       <div class="calc-grid">
         <div class="calc-field">
@@ -2401,38 +2412,38 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 <!-- SECTION 9 — CKD -->
 <section class="section" id="ckd">
   <div class="container">
-    <div class="section-tag">Special Populations</div>
-    <h2>If You Already Have CKD — HFRS Is a Higher-Stakes Emergency</h2>
+    <div class="section-tag"><span data-lang="en">Special Populations</span><span data-lang="tl" class="lang-hidden">Mga Espesyal na Populasyon</span><span data-lang="ceb" class="lang-hidden">Mga Espesyal nga Populasyon</span><span data-lang="kap" class="lang-hidden">Reng Espesyal a Populasyon</span></div>
+    <h2><span data-lang="en">If You Already Have CKD — HFRS Is a Higher-Stakes Emergency</span><span data-lang="tl" class="lang-hidden">Kung May CKD Ka Na — Mas Mataas ang Panganib ng HFRS</span><span data-lang="ceb" class="lang-hidden">Kon Aduna Ka Nay CKD — Mas Taas ang Peligro sa HFRS</span><span data-lang="kap" class="lang-hidden">Nung Atin Ka Nang CKD — Mas Matas ing Panganib ning HFRS</span></h2>
 
-    <p>Chronic kidney disease dramatically changes the outcome of hantavirus infection. The kidneys are already working below capacity — the same immune-mediated injury that causes temporary AKI in a healthy person can cause <strong>permanent kidney failure</strong> in a CKD patient.</p>
+    <p><span data-lang="en">Chronic kidney disease dramatically changes the outcome of hantavirus infection. The kidneys are already working below capacity — the same immune-mediated injury that causes temporary AKI in a healthy person can cause <strong>permanent kidney failure</strong> in a CKD patient.</span><span data-lang="tl" class="lang-hidden">Malaki ang pagbabago ng chronic kidney disease sa resulta ng impeksyon ng hantavirus. Kumakayod na sa ilalim ng kapasidad ang mga bato — ang parehong immune-mediated na pinsala na nagdudulot ng pansamantalang AKI sa malusog na tao ay maaaring magdulot ng <strong>permanenteng pagpalya ng bato</strong> sa pasyenteng may CKD.</span><span data-lang="ceb" class="lang-hidden">Ang chronic kidney disease dako og pagbag-o sa resulta sa impeksyon sa hantavirus. Naglihok na ubos sa kapasidad ang mga bato — ang samang immune-mediated nga kadaot nga nagpahinabo og temporaryong AKI sa himsog nga tawo mahimong hinungdan sa <strong>permanente nga pagpalya sa bato</strong> sa pasyente nga adunay CKD.</span><span data-lang="kap" class="lang-hidden">Maragul ing pamibayu ning chronic kidney disease king resulta ning impeksyon ning hantavirus. Maglaru na king lalam ning kapasidad reng batu — ing parehong immune-mediated a pinsala a mikawang pansamantalang AKI king malusug a tau malyaring mikawang <strong>permanenteng pamalya ning batu</strong> king pasyenteng atin CKD.</span></p>
 
     <div class="two-col">
       <div class="feature-card">
-        <h4><span class="dot dot-red"></span> Why CKD Makes HFRS Worse</h4>
-        <p>A healthy kidney has enormous reserve — it can lose more than 50% of function before creatinine even rises. A Stage 3 CKD kidney is already at 50% or less. The same HFRS injury that sends a healthy patient to the oliguric phase briefly can send a CKD patient straight to dialysis — and they may not come off it.</p>
+        <h4><span data-lang="en"><span class="dot dot-red"></span> Why CKD Makes HFRS Worse</span><span data-lang="tl" class="lang-hidden"><span class="dot dot-red"></span> Bakit Pinalalala ng CKD ang HFRS</span><span data-lang="ceb" class="lang-hidden"><span class="dot dot-red"></span> Ngano nga Gigrabe sa CKD ang HFRS</span><span data-lang="kap" class="lang-hidden"><span class="dot dot-red"></span> Bakit Palalalan ning CKD ing HFRS</span></h4>
+        <p><span data-lang="en">A healthy kidney has enormous reserve — it can lose more than 50% of function before creatinine even rises. A Stage 3 CKD kidney is already at 50% or less. The same HFRS injury that sends a healthy patient to the oliguric phase briefly can send a CKD patient straight to dialysis — and they may not come off it.</span><span data-lang="tl" class="lang-hidden">May napakalaking reserba ang malusog na bato — maaari nitong mawala ang higit sa 50% ng function bago pa man tumaas ang creatinine. Ang Stage 3 CKD na bato ay nasa 50% na o mas mababa. Ang parehong pinsala ng HFRS na nagpapadala sa malusog na pasyente sa oliguric phase nang panandalian ay maaaring magpadala sa pasyenteng CKD diretso sa dialysis — at maaaring hindi na sila makaalis dito.</span><span data-lang="ceb" class="lang-hidden">Ang himsog nga bato adunay dako kaayo nga reserba — mahimo kining mawad-an og labaw sa 50% sa function una pa mosaka ang creatinine. Ang Stage 3 CKD nga bato anaa na sa 50% o ubos pa. Ang samang kadaot sa HFRS nga nagpadala sa himsog nga pasyente sa oliguric phase sa mubo nga panahon mahimong magpadala sa pasyente nga CKD diretso sa dialysis — ug basin dili na sila makagawas niini.</span><span data-lang="kap" class="lang-hidden">Atin yang maragul a reserba ing malusug a batu — malyaring mawala ne ing labi king 50% ning function bayu pa tumaas ing creatinine. Ing Stage 3 CKD a batu atyu na king 50% o mas mababa. Ing parehong pinsala ning HFRS a magpalub king malusug a pasyente king oliguric phase king makuyad malyaring magpalub king pasyenteng CKD direchu king dialysis — ampo malyaring ela na makalual keni.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-navy"></span> Risk of Non-Recovery</h4>
-        <p>In healthy patients, the risk of permanent dialysis from HFRS is very low (&lt;5%). In patients with CKD Stage 3–4, the risk of "non-recovery" — where dialysis becomes permanent — rises to 15–30%. This is because HFRS injury may tip the patient past the point of no return for their baseline kidney function.</p>
+        <h4><span data-lang="en"><span class="dot dot-navy"></span> Risk of Non-Recovery</span><span data-lang="tl" class="lang-hidden"><span class="dot dot-navy"></span> Panganib ng Hindi Paggaling</span><span data-lang="ceb" class="lang-hidden"><span class="dot dot-navy"></span> Peligro sa Dili Pag-ayo</span><span data-lang="kap" class="lang-hidden"><span class="dot dot-navy"></span> Panganib ning E Pamaglino</span></h4>
+        <p><span data-lang="en">In healthy patients, the risk of permanent dialysis from HFRS is very low (&lt;5%). In patients with CKD Stage 3–4, the risk of "non-recovery" — where dialysis becomes permanent — rises to 15–30%. This is because HFRS injury may tip the patient past the point of no return for their baseline kidney function.</span><span data-lang="tl" class="lang-hidden">Sa malulusog na pasyente, napakababa ng panganib ng permanenteng dialysis mula sa HFRS (&lt;5%). Sa mga pasyenteng may CKD Stage 3–4, ang panganib ng "non-recovery" — kung saan nagiging permanente ang dialysis — ay umaakyat sa 15–30%. Ito ay dahil maaaring itulak ng pinsala ng HFRS ang pasyente lampas sa point of no return para sa baseline function ng kanilang bato.</span><span data-lang="ceb" class="lang-hidden">Sa himsog nga mga pasyente, ubos kaayo ang peligro sa permanente nga dialysis gikan sa HFRS (&lt;5%). Sa mga pasyente nga adunay CKD Stage 3–4, ang peligro sa "non-recovery" — diin mahimong permanente ang dialysis — mosaka ngadto sa 15–30%. Kini tungod kay ang kadaot sa HFRS mahimong motukmod sa pasyente lapas sa point of no return alang sa ilang baseline nga function sa bato.</span><span data-lang="kap" class="lang-hidden">Karing malusug a pasyente, mababa ya pin ing panganib ning permanenteng dialysis ibat king HFRS (&lt;5%). Karing pasyenteng atin CKD Stage 3–4, ing panganib ning "non-recovery" — nu karin maging permanente ing dialysis — tataas ya king 15–30%. Ini uli malyaring itulak ning pinsala ning HFRS ing pasyente lampas king point of no return para king baseline function da reng batu.</span></p>
       </div>
     </div>
 
-    <h3 style="font-size:17px;margin:24px 0 12px;">What Changes in CKD Patients</h3>
+    <h3 style="font-size:17px;margin:24px 0 12px;"><span data-lang="en">What Changes in CKD Patients</span><span data-lang="tl" class="lang-hidden">Ano ang Nagbabago sa mga Pasyenteng CKD</span><span data-lang="ceb" class="lang-hidden">Unsa ang Mabag-o sa mga Pasyenteng CKD</span><span data-lang="kap" class="lang-hidden">Nanu ing Mibabayu Karing Pasyenteng CKD</span></h3>
     <ul style="font-size:15px;line-height:2;padding-left:20px;color:var(--text-muted);">
-      <li><strong>Lower threshold for hospital admission</strong> — do not manage at home</li>
-      <li><strong>Earlier dialysis initiation</strong> — do not wait for "standard" indications</li>
-      <li><strong>Hold ACE inhibitors and ARBs</strong> during the oliguric phase (risk of hyperkalemia)</li>
-      <li><strong>Hold metformin</strong> immediately (lactic acidosis risk with AKI)</li>
-      <li><strong>Ribavirin dose reduction</strong> required if eGFR &lt;60; avoid if &lt;30 without guidance</li>
-      <li><strong>More aggressive potassium monitoring</strong> — hyperkalemia is faster and more severe</li>
-      <li><strong>Post-discharge follow-up</strong> at 1, 3, 6, and 12 months — creatinine, UACR, and BP</li>
+      <li><span data-lang="en"><strong>Lower threshold for hospital admission</strong> — do not manage at home</span><span data-lang="tl" class="lang-hidden"><strong>Mas mababang threshold para sa pag-admit sa ospital</strong> — huwag pamahalaan sa bahay</span><span data-lang="ceb" class="lang-hidden"><strong>Mas ubos nga threshold alang sa pag-admit sa ospital</strong> — ayaw dumalaha sa balay</span><span data-lang="kap" class="lang-hidden"><strong>Mas mababang threshold para king pag-admit king ospital</strong> — e me papanaptan king bale</span></li>
+      <li><span data-lang="en"><strong>Earlier dialysis initiation</strong> — do not wait for "standard" indications</span><span data-lang="tl" class="lang-hidden"><strong>Mas maagang pagsisimula ng dialysis</strong> — huwag maghintay ng "standard" na indikasyon</span><span data-lang="ceb" class="lang-hidden"><strong>Mas sayo nga pagsugod sa dialysis</strong> — ayaw paghulat sa "standard" nga indikasyon</span><span data-lang="kap" class="lang-hidden"><strong>Mas maranung pamagumpisa ning dialysis</strong> — e ka maintaya king "standard" a indikasyon</span></li>
+      <li><span data-lang="en"><strong>Hold ACE inhibitors and ARBs (angiotensin receptor blockers)</strong> during the oliguric phase (risk of hyperkalemia)</span><span data-lang="tl" class="lang-hidden"><strong>Ihinto ang ACE inhibitors at ARBs (angiotensin receptor blockers)</strong> sa oliguric phase (panganib ng hyperkalemia)</span><span data-lang="ceb" class="lang-hidden"><strong>Hunonga ang ACE inhibitors ug ARBs (angiotensin receptor blockers)</strong> panahon sa oliguric phase (peligro sa hyperkalemia)</span><span data-lang="kap" class="lang-hidden"><strong>Itigil ing ACE inhibitors ampo ARBs (angiotensin receptor blockers)</strong> kabang oliguric phase (panganib ning hyperkalemia)</span></li>
+      <li><span data-lang="en"><strong>Hold metformin</strong> immediately (lactic acidosis risk with AKI)</span><span data-lang="tl" class="lang-hidden"><strong>Ihinto ang metformin</strong> kaagad (panganib ng lactic acidosis sa AKI)</span><span data-lang="ceb" class="lang-hidden"><strong>Hunonga ang metformin</strong> dayon (peligro sa lactic acidosis sa AKI)</span><span data-lang="kap" class="lang-hidden"><strong>Itigil ing metformin</strong> agad (panganib ning lactic acidosis king AKI)</span></li>
+      <li><span data-lang="en"><strong>Ribavirin dose reduction</strong> required if eGFR &lt;60; avoid if &lt;30 without guidance</span><span data-lang="tl" class="lang-hidden"><strong>Kailangan ang Ribavirin dose reduction</strong> kung eGFR &lt;60; iwasan kung &lt;30 nang walang gabay</span><span data-lang="ceb" class="lang-hidden"><strong>Gikinahanglan ang Ribavirin dose reduction</strong> kon eGFR &lt;60; likayi kon &lt;30 nga walay giya</span><span data-lang="kap" class="lang-hidden"><strong>Kailangan ing Ribavirin dose reduction</strong> nung eGFR &lt;60; ilagwan nung &lt;30 alang giya</span></li>
+      <li><span data-lang="en"><strong>More aggressive potassium monitoring</strong> — hyperkalemia is faster and more severe</span><span data-lang="tl" class="lang-hidden"><strong>Mas masinsinang pagsubaybay ng potassium</strong> — mas mabilis at mas malubha ang hyperkalemia</span><span data-lang="ceb" class="lang-hidden"><strong>Mas agresibong pagbantay sa potassium</strong> — mas paspas ug mas grabe ang hyperkalemia</span><span data-lang="kap" class="lang-hidden"><strong>Mas agresibong pamanyubay king potassium</strong> — mas magangga ampo mas maluba ing hyperkalemia</span></li>
+      <li><span data-lang="en"><strong>Post-discharge follow-up</strong> at 1, 3, 6, and 12 months — creatinine, UACR (urine albumin-to-creatinine ratio), and BP</span><span data-lang="tl" class="lang-hidden"><strong>Follow-up pagkalabas sa ospital</strong> sa 1, 3, 6, at 12 buwan — creatinine, UACR (urine albumin-to-creatinine ratio), at BP</span><span data-lang="ceb" class="lang-hidden"><strong>Follow-up human sa discharge</strong> sa 1, 3, 6, ug 12 ka bulan — creatinine, UACR (urine albumin-to-creatinine ratio), ug BP</span><span data-lang="kap" class="lang-hidden"><strong>Follow-up kaibat ning discharge</strong> king 1, 3, 6, ampo 12 bulan — creatinine, UACR (urine albumin-to-creatinine ratio), ampo BP</span></li>
     </ul>
 
     <div class="alert alert-amber">
       <div class="alert-icon">⚠️</div>
       <div class="alert-body">
-        <h4>After you recover — your kidneys need watching</h4>
-        <p>Even patients who recover fully from HFRS may have accelerated CKD progression afterward. A subset develop new proteinuria that persists for months. If you have pre-existing CKD and survived HFRS, your nephrologist should check your labs more frequently in the year following your illness — do not skip these follow-up visits.</p>
+        <h4><span data-lang="en">After you recover — your kidneys need watching</span><span data-lang="tl" class="lang-hidden">Pagkatapos mong gumaling — kailangang bantayan ang iyong mga bato</span><span data-lang="ceb" class="lang-hidden">Human ka mo-ayo — kinahanglang bantayan ang imong mga bato</span><span data-lang="kap" class="lang-hidden">Kaibat mung meglino — kailangang bantayan reng batu mu</span></h4>
+        <p><span data-lang="en">Even patients who recover fully from HFRS may have accelerated CKD progression afterward. A subset develop new proteinuria that persists for months. If you have pre-existing CKD and survived HFRS, your nephrologist should check your labs more frequently in the year following your illness — do not skip these follow-up visits.</span><span data-lang="tl" class="lang-hidden">Kahit ang mga pasyenteng ganap na gumaling mula sa HFRS ay maaaring magkaroon ng bumilis na CKD progression pagkatapos. May ilang nagkakaroon ng bagong proteinuria na nananatili nang ilang buwan. Kung may dati ka nang CKD at nakaligtas sa HFRS, dapat mas madalas suriin ng iyong nephrologist ang iyong mga lab sa taon pagkatapos ng iyong sakit — huwag laktawan ang mga follow-up visit na ito.</span><span data-lang="ceb" class="lang-hidden">Bisan ang mga pasyente nga hingpit nga na-ayo gikan sa HFRS mahimong adunay napaspas nga CKD progression human niini. Adunay pipila nga makaugmad og bag-ong proteinuria nga magpabilin sa daghang bulan. Kon aduna ka nay CKD ug naluwas sa HFRS, kinahanglang mas kanunay susihon sa imong nephrologist ang imong mga lab sa tuig human sa imong sakit — ayaw laktawi kining mga follow-up visit.</span><span data-lang="kap" class="lang-hidden">Agyaman reng pasyenteng ganap a meglino ibat king HFRS malyaring magkaroan king mengganggang CKD progression kaibat. Atin mapilan a magkaroan king bayung proteinuria a manatili king dakal a bulan. Nung atin ka nang CKD ampo meligtas king HFRS, dapat mas pilan-pilan suriin ning nephrologist mu reng lab mu king banua kaibat ning sakit mu — e me lalaktawan reng follow-up visit a ini.</span></p>
       </div>
     </div>
   </div>
@@ -2441,10 +2452,10 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 <!-- SECTION 10 — PREVENTION -->
 <section class="section" id="prevention">
   <div class="container">
-    <div class="section-tag">Protection</div>
-    <h2>Prevention — The Philippines Context</h2>
+    <div class="section-tag"><span data-lang="en">Protection</span><span data-lang="tl" class="lang-hidden">Proteksyon</span><span data-lang="ceb" class="lang-hidden">Panalipod</span><span data-lang="kap" class="lang-hidden">Kambilan</span></div>
+    <h2><span data-lang="en">Prevention — The Philippines Context</span><span data-lang="tl" class="lang-hidden">Pag-iwas — Ang Konteksto ng Pilipinas</span><span data-lang="ceb" class="lang-hidden">Paglikay — Ang Konteksto sa Pilipinas</span><span data-lang="kap" class="lang-hidden">Pamikaila — Ing Konteksto ning Pilipinas</span></h2>
 
-    <p>There is no hantavirus vaccine approved or available in the Philippines. China and South Korea have bivalent vaccines for Hantaan and Seoul virus — but these are not accessible here. <strong>Prevention is entirely behavioral.</strong></p>
+    <p><span data-lang="en">There is no hantavirus vaccine approved or available in the Philippines. China and South Korea have bivalent vaccines for Hantaan and Seoul virus — but these are not accessible here. <strong>Prevention is entirely behavioral.</strong></span><span data-lang="tl" class="lang-hidden">Walang hantavirus vaccine na aprubado o available sa Pilipinas. May bivalent vaccines ang China at South Korea para sa Hantaan at Seoul virus — ngunit hindi ito naa-access dito. <strong>Ganap na behavioral ang pag-iwas.</strong></span><span data-lang="ceb" class="lang-hidden">Walay hantavirus vaccine nga aprobado o available sa Pilipinas. Adunay bivalent vaccines ang China ug South Korea alang sa Hantaan ug Seoul virus — apan dili kini ma-access dinhi. <strong>Hingpit nga behavioral ang paglikay.</strong></span><span data-lang="kap" class="lang-hidden">Alang hantavirus vaccine a aprubadu o available king Pilipinas. Atin bivalent vaccines ing China ampo South Korea para king Hantaan ampo Seoul virus — dapot ali la deni ma-access keni. <strong>Ganap yang behavioral ing pamikaila.</strong></span></p>
 
     <div class="figure-panel" style="max-width:720px;margin:28px auto;">
       <picture>
@@ -2454,50 +2465,50 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
              width="1536" height="1024"
              style="width:100%;height:auto;border-radius:8px;display:block;">
       </picture>
-      <p class="illus-caption">No hantavirus vaccine is available in the Philippines. Prevention through rodent exposure avoidance is the only protection.</p>
+      <p class="illus-caption"><span data-lang="en">No hantavirus vaccine is available in the Philippines. Prevention through rodent exposure avoidance is the only protection.</span><span data-lang="tl" class="lang-hidden">Walang hantavirus vaccine na available sa Pilipinas. Ang pag-iwas sa pagkalantad sa daga lamang ang tanging proteksyon.</span><span data-lang="ceb" class="lang-hidden">Walay hantavirus vaccine nga available sa Pilipinas. Ang paglikay sa pagkaladlad sa ilaga lamang ang bugtong panalipod.</span><span data-lang="kap" class="lang-hidden">Alang hantavirus vaccine a available king Pilipinas. Ing pamikaila king pamielad king dagis mu ing bukud a kambilan.</span></p>
     </div>
 
-    <h3 style="font-size:16px;margin:20px 0 10px;color:var(--red);">Highest-Risk Situations in the Philippines</h3>
+    <h3 style="font-size:16px;margin:20px 0 10px;color:var(--red);"><span data-lang="en">Highest-Risk Situations in the Philippines</span><span data-lang="tl" class="lang-hidden">Mga Sitwasyong Pinakamataas ang Panganib sa Pilipinas</span><span data-lang="ceb" class="lang-hidden">Mga Sitwasyon nga Labing Taas ang Peligro sa Pilipinas</span><span data-lang="kap" class="lang-hidden">Reng Sitwasyong Pekamatas ing Panganib King Pilipinas</span></h3>
     <div class="stat-grid" style="margin-bottom:24px;">
       <div class="stat-card">
         <div class="stat-icon">🌾</div>
-        <div class="stat-label">Rice Harvest / Field Work</div>
-        <div class="stat-value" style="font-size:13px;color:rgba(255,255,255,.82);">Rodent density is highest in agricultural fields; harvesting disturbs nesting sites</div>
+        <div class="stat-label"><span data-lang="en">Rice Harvest / Field Work</span><span data-lang="tl" class="lang-hidden">Ani ng Palay / Gawaing Bukid</span><span data-lang="ceb" class="lang-hidden">Ani sa Humay / Trabaho sa Uma</span><span data-lang="kap" class="lang-hidden">Ani ning Pale / Obra King Marangle</span></div>
+        <div class="stat-value" style="font-size:13px;color:rgba(255,255,255,.82);"><span data-lang="en">Rodent density is highest in agricultural fields; harvesting disturbs nesting sites</span><span data-lang="tl" class="lang-hidden">Pinakamataas ang dami ng daga sa mga bukiring pang-agrikultura; ginagambala ng pag-aani ang mga pugad</span><span data-lang="ceb" class="lang-hidden">Labing taas ang gidaghanon sa ilaga sa mga uma nga agrikultural; gisamok sa pag-ani ang mga salag</span><span data-lang="kap" class="lang-hidden">Pekamatas ing dami ning dagis karing marangleng agrikultural; giginambala ning pamanani reng pugad</span></div>
       </div>
       <div class="stat-card">
         <div class="stat-icon">🌊</div>
-        <div class="stat-label">Post-Typhoon Flooding</div>
-        <div class="stat-value" style="font-size:13px;color:rgba(255,255,255,.82);">Flooding displaces rats into homes; rat droppings mix with floodwater and dry on surfaces</div>
+        <div class="stat-label"><span data-lang="en">Post-Typhoon Flooding</span><span data-lang="tl" class="lang-hidden">Pagbaha Pagkatapos ng Bagyo</span><span data-lang="ceb" class="lang-hidden">Baha Human sa Bagyo</span><span data-lang="kap" class="lang-hidden">Albug Kaibat ning Bagyu</span></div>
+        <div class="stat-value" style="font-size:13px;color:rgba(255,255,255,.82);"><span data-lang="en">Flooding displaces rats into homes; rat droppings mix with floodwater and dry on surfaces</span><span data-lang="tl" class="lang-hidden">Itinutulak ng baha ang mga daga papasok sa mga bahay; humahalo ang dumi ng daga sa tubig-baha at natutuyo sa mga ibabaw</span><span data-lang="ceb" class="lang-hidden">Gitulod sa baha ang mga ilaga ngadto sa mga balay; nagsagol ang hugaw sa ilaga sa tubig-baha ug mauga sa mga ibabaw</span><span data-lang="kap" class="lang-hidden">Itutulak ning albug reng dagis papalub karing bale; misalu ing dumi ning dagis king danum ning albug ampo malango karing ibabo</span></div>
       </div>
       <div class="stat-card">
         <div class="stat-icon">🏗️</div>
-        <div class="stat-label">Construction / Demolition</div>
-        <div class="stat-value" style="font-size:13px;color:rgba(255,255,255,.82);">Disturbing old structures releases years of dried rodent excreta into the air</div>
+        <div class="stat-label"><span data-lang="en">Construction / Demolition</span><span data-lang="tl" class="lang-hidden">Konstruksyon / Demolisyon</span><span data-lang="ceb" class="lang-hidden">Konstruksyon / Demolisyon</span><span data-lang="kap" class="lang-hidden">Konstruksyon / Demolisyon</span></div>
+        <div class="stat-value" style="font-size:13px;color:rgba(255,255,255,.82);"><span data-lang="en">Disturbing old structures releases years of dried rodent excreta into the air</span><span data-lang="tl" class="lang-hidden">Ang paggambala sa mga lumang istruktura ay naglalabas ng maraming taon ng tuyong dumi ng daga sa hangin</span><span data-lang="ceb" class="lang-hidden">Ang pagsamok sa daan nga mga istruktura magpagawas og daghang tuig nga uga nga hugaw sa ilaga ngadto sa hangin</span><span data-lang="kap" class="lang-hidden">Ing pamanggambala karing lumang istruktura maglual king dakal a banuang melangeng dumi ning dagis king angin</span></div>
       </div>
       <div class="stat-card">
         <div class="stat-icon">🏚️</div>
-        <div class="stat-label">Informal Settlements</div>
-        <div class="stat-value" style="font-size:13px;color:rgba(255,255,255,.82);">High rat density + poor sanitation + close living quarters = elevated risk year-round</div>
+        <div class="stat-label"><span data-lang="en">Informal Settlements</span><span data-lang="tl" class="lang-hidden">Mga Impormal na Pamayanan</span><span data-lang="ceb" class="lang-hidden">Mga Impormal nga Pamuy-anan</span><span data-lang="kap" class="lang-hidden">Reng Impormal a Panuknangan</span></div>
+        <div class="stat-value" style="font-size:13px;color:rgba(255,255,255,.82);"><span data-lang="en">High rat density + poor sanitation + close living quarters = elevated risk year-round</span><span data-lang="tl" class="lang-hidden">Mataas na dami ng daga + mahinang sanitasyon + masikip na tirahan = mataas na panganib buong taon</span><span data-lang="ceb" class="lang-hidden">Taas nga gidaghanon sa ilaga + huyang nga sanitasyon + suok nga puy-anan = taas nga peligro tibuok tuig</span><span data-lang="kap" class="lang-hidden">Matas a dami ning dagis + maluyang sanitasyon + masiksik a panuknangan = matas a panganib mabilug a banua</span></div>
       </div>
     </div>
 
-    <h3 style="font-size:16px;margin:20px 0 10px;">What to Do</h3>
+    <h3 style="font-size:16px;margin:20px 0 10px;"><span data-lang="en">What to Do</span><span data-lang="tl" class="lang-hidden">Ano ang Dapat Gawin</span><span data-lang="ceb" class="lang-hidden">Unsa ang Buhaton</span><span data-lang="kap" class="lang-hidden">Nanu ing Dapat Gawan</span></h3>
     <ul style="font-size:15px;line-height:2;padding-left:20px;color:var(--text-muted);">
-      <li><strong>Wet the area before cleaning</strong> — never sweep or vacuum dry rat droppings; spray with bleach solution first</li>
-      <li><strong>Wear gloves and an N95 mask</strong> when cleaning any area with possible rodent activity</li>
-      <li><strong>Store food in rodent-proof containers</strong> — not open sacks or cardboard boxes</li>
-      <li><strong>Seal all entry points</strong> — holes in walls, pipes, floors; rats can enter through gaps as small as 2 cm</li>
-      <li><strong>Do not touch dead rodents</strong> with bare hands; use gloves and dispose in sealed bags</li>
-      <li><strong>Keep surroundings clean</strong> especially garbage, compost, and standing water after rain</li>
-      <li><strong>After flooding</strong>: assume all surfaces that contacted floodwater may be contaminated; clean with bleach</li>
-      <li><strong>Ventilate</strong> closed, long-unused spaces for 30 minutes before cleaning</li>
+      <li><span data-lang="en"><strong>Wet the area before cleaning</strong> — never sweep or vacuum dry rat droppings; spray with bleach solution first</span><span data-lang="tl" class="lang-hidden"><strong>Basain ang lugar bago maglinis</strong> — huwag kailanman walisin o i-vacuum ang tuyong dumi ng daga; i-spray muna ng bleach solution</span><span data-lang="ceb" class="lang-hidden"><strong>Basaa ang dapit una maglimpyo</strong> — ayaw gyud silhiga o i-vacuum ang uga nga hugaw sa ilaga; i-spray una og bleach solution</span><span data-lang="kap" class="lang-hidden"><strong>Basan me ing lugal bayu maglinis</strong> — e me pisan magpalis o mag-vacuum king melangeng dumi ning dagis; i-spray me mumuna king bleach solution</span></li>
+      <li><span data-lang="en"><strong>Wear gloves and an N95 mask</strong> when cleaning any area with possible rodent activity</span><span data-lang="tl" class="lang-hidden"><strong>Magsuot ng gloves at N95 mask</strong> kapag naglilinis ng anumang lugar na may posibleng aktibidad ng daga</span><span data-lang="ceb" class="lang-hidden"><strong>Pagsul-ob og gloves ug N95 mask</strong> kon maglimpyo og bisan unsang dapit nga adunay posibleng kalihokan sa ilaga</span><span data-lang="kap" class="lang-hidden"><strong>Magsulud king gloves ampo N95 mask</strong> nung maglinis nanumang lugal a atin posibleng aktibidad ning dagis</span></li>
+      <li><span data-lang="en"><strong>Store food in rodent-proof containers</strong> — not open sacks or cardboard boxes</span><span data-lang="tl" class="lang-hidden"><strong>Itago ang pagkain sa mga rodent-proof na lalagyan</strong> — hindi sa bukas na sako o cardboard box</span><span data-lang="ceb" class="lang-hidden"><strong>Tipigi ang pagkaon sa mga rodent-proof nga sudlanan</strong> — dili sa abli nga sako o cardboard box</span><span data-lang="kap" class="lang-hidden"><strong>Isukud ing pamangan karing rodent-proof a lalanan</strong> — ali king abyerto a sako o cardboard box</span></li>
+      <li><span data-lang="en"><strong>Seal all entry points</strong> — holes in walls, pipes, floors; rats can enter through gaps as small as 2 cm</span><span data-lang="tl" class="lang-hidden"><strong>Selyuhan ang lahat ng pasukan</strong> — mga butas sa dingding, tubo, sahig; nakakapasok ang daga sa mga puwang na kasinliit ng 2 cm</span><span data-lang="ceb" class="lang-hidden"><strong>Selyohi ang tanang agianan</strong> — mga lungag sa bongbong, tubo, salog; makasulod ang ilaga sa mga gilay-on nga sama kagamay sa 2 cm</span><span data-lang="kap" class="lang-hidden"><strong>Selyuan me ing anggang pasbulan</strong> — reng butas king dinding, tubo, gabun; makalub ya ing dagis karing puwang a kasindet ning 2 cm</span></li>
+      <li><span data-lang="en"><strong>Do not touch dead rodents</strong> with bare hands; use gloves and dispose in sealed bags</span><span data-lang="tl" class="lang-hidden"><strong>Huwag hawakan ang mga patay na daga</strong> nang walang gloves; gumamit ng gloves at itapon sa mga selyadong bag</span><span data-lang="ceb" class="lang-hidden"><strong>Ayaw hikapa ang mga patay nga ilaga</strong> nga walay gloves; gamita ang gloves ug ilabay sa mga selyado nga bag</span><span data-lang="kap" class="lang-hidden"><strong>E me tagkan reng mete a dagis</strong> king alang gloves; gamitan me ing gloves ampo itapun king selyadung bag</span></li>
+      <li><span data-lang="en"><strong>Keep surroundings clean</strong> especially garbage, compost, and standing water after rain</span><span data-lang="tl" class="lang-hidden"><strong>Panatilihing malinis ang paligid</strong> lalo na ang basura, compost, at nakatambak na tubig pagkatapos ng ulan</span><span data-lang="ceb" class="lang-hidden"><strong>Huptan nga limpyo ang palibot</strong> ilabina ang basura, compost, ug nagtambak nga tubig human sa ulan</span><span data-lang="kap" class="lang-hidden"><strong>Panatilian mung malinis ing paligid</strong> lalu na ing basura, compost, ampo natambak a danum kaibat ning uran</span></li>
+      <li><span data-lang="en"><strong>After flooding</strong>: assume all surfaces that contacted floodwater may be contaminated; clean with bleach</span><span data-lang="tl" class="lang-hidden"><strong>Pagkatapos ng baha</strong>: ipalagay na maaaring kontaminado ang lahat ng ibabaw na nadikitan ng tubig-baha; linisin gamit ang bleach</span><span data-lang="ceb" class="lang-hidden"><strong>Human sa baha</strong>: hunahunaa nga mahimong kontaminado ang tanang ibabaw nga nadikit sa tubig-baha; limpyohi gamit ang bleach</span><span data-lang="kap" class="lang-hidden"><strong>Kaibat ning albug</strong>: isipan mung malyaring kontaminadu ing anggang ibabo a medikit king danum ning albug; linisan me king bleach</span></li>
+      <li><span data-lang="en"><strong>Ventilate</strong> closed, long-unused spaces for 30 minutes before cleaning</span><span data-lang="tl" class="lang-hidden"><strong>Bentilahan</strong> ang mga saradong, matagal nang hindi ginagamit na espasyo sa loob ng 30 minuto bago maglinis</span><span data-lang="ceb" class="lang-hidden"><strong>Bentilahi</strong> ang mga sirado, dugay nang wala magamit nga espasyo sulod sa 30 ka minuto una maglimpyo</span><span data-lang="kap" class="lang-hidden"><strong>Bentilan me</strong> reng saradu, matagal nang e gagamitan a espasyo king lalam ning 30 minutu bayu maglinis</span></li>
     </ul>
 
     <div class="alert alert-teal">
       <div class="alert-icon">💡</div>
       <div class="alert-body">
-        <h4>For seamen and OFWs</h4>
-        <p>Following the MV Hondius outbreak, ship crew — especially those working in cargo holds, engine rooms, and storage areas — should be aware of rodent control protocols. Report any rat sightings onboard to the ship's safety officer. Andes virus (the strain on MV Hondius) is also capable of limited person-to-person spread through very close respiratory contact with infected individuals.</p>
+        <h4><span data-lang="en">For seamen and OFWs</span><span data-lang="tl" class="lang-hidden">Para sa mga marino at OFW</span><span data-lang="ceb" class="lang-hidden">Alang sa mga marinero ug OFW</span><span data-lang="kap" class="lang-hidden">Para karing marino ampo OFW</span></h4>
+        <p><span data-lang="en">Following the MV Hondius outbreak, ship crew — especially those working in cargo holds, engine rooms, and storage areas — should be aware of rodent control protocols. Report any rat sightings onboard to the ship's safety officer. Andes virus (the strain on MV Hondius) is also capable of limited person-to-person spread through very close respiratory contact with infected individuals.</span><span data-lang="tl" class="lang-hidden">Kasunod ng MV Hondius outbreak, ang tripulante ng barko — lalo na ang mga nagtatrabaho sa cargo hold, engine room, at storage area — ay dapat may kaalaman sa mga rodent control protocol. Iulat ang anumang pagkakita ng daga sa barko sa safety officer ng barko. Ang Andes virus (ang strain sa MV Hondius) ay may kakayahan din ng limitadong pagkalat mula tao sa tao sa pamamagitan ng napakalapit na respiratory contact sa mga taong may impeksyon.</span><span data-lang="ceb" class="lang-hidden">Human sa MV Hondius outbreak, ang tripulante sa barko — ilabina kadtong nagtrabaho sa cargo hold, engine room, ug storage area — kinahanglang adunay kahibalo sa mga rodent control protocol. Ireport ang bisan unsang pagkakita og ilaga sa barko ngadto sa safety officer sa barko. Ang Andes virus (ang strain sa MV Hondius) adunay katakos usab sa limitadong pagkaylap gikan sa tawo ngadto sa tawo pinaagi sa suod kaayo nga respiratory contact sa mga tawo nga adunay impeksyon.</span><span data-lang="kap" class="lang-hidden">Kaibat ning MV Hondius outbreak, reng tripulante ning barku — lalu na reng magobra king cargo hold, engine room, ampo storage area — dapat atin lang kaalaman karing rodent control protocol. Ireport me ing nanumang pamakit king dagis king barku king safety officer ning barku. Ing Andes virus (ing strain king MV Hondius) atin ne mu rin kakayan king limitadong pamikalat manibat tau king tau king pamiaus ning malapit a respiratory contact karing taung atin impeksyon.</span></p>
       </div>
     </div>
   </div>
@@ -2514,7 +2525,7 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
     <div class="container">
       <div class="md-hero-badge">Clinician Reference · HFRS · WHO DON-600/601 · May 2026</div>
       <h2>Hantavirus HFRS — Evidence-Based Management &amp; Global Epidemiology</h2>
-      <p class="md-hero-sub">Staging, differential diagnosis, fluid and RRT management, CKD-on-HFRS considerations, and 2026 outbreak data</p>
+      <p class="md-hero-sub">Staging, differential diagnosis, fluid and RRT (renal replacement therapy) management, CKD-on-HFRS considerations, and 2026 outbreak data</p>
       <div class="illus-wrap">
         <picture>
           <source srcset="../images/hantavirus-ckd-clin-00-hero.webp" type="image/webp">
@@ -2557,7 +2568,7 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
         </tbody>
       </table>
 
-      <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">Sources: WHO DON-600/601 (May 2026); CDC HAN-00528/529; PLOS NTDs meta-analysis (2024); China NHC Q1 2026; ECDC Surveillance Report 2023; GMA News / DOH (May 2026).</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">Sources: WHO DON-600/601 (May 2026); CDC (Centers for Disease Control and Prevention) HAN-00528/529; PLOS NTDs meta-analysis (2024); China NHC Q1 2026; ECDC Surveillance Report 2023; GMA News / DOH (May 2026).</p>
     </div>
   </section>
 
@@ -2575,7 +2586,7 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
                width="1536" height="1024"
                style="width:100%;height:auto;border-radius:8px;display:block;">
         </picture>
-        <p class="illus-caption">HFRS causes 150,000 cases/year globally, predominantly Asia. HPS CFR reaches 35–40% in the Americas. Seoul virus is cosmopolitan via Rattus norvegicus.</p>
+        <p class="illus-caption">HFRS causes 150,000 cases/year globally, predominantly Asia. HPS CFR (case fatality rate) reaches 35–40% in the Americas. Seoul virus is cosmopolitan via Rattus norvegicus.</p>
       </div>
 
       <p>The following table summarizes burden, virus strains, and risk trajectory by region — the data layer underlying the heatmap image above.</p>
@@ -2713,7 +2724,7 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
                width="1536" height="1024"
                style="width:100%;height:auto;border-radius:8px;display:block;">
         </picture>
-        <p class="illus-caption">Severity determines dialysis timing. CRRT is preferred in hemodynamically unstable patients. Critical HFRS requires urgent RRT initiation.</p>
+        <p class="illus-caption">Severity determines dialysis timing. CRRT (continuous renal replacement therapy) is preferred in hemodynamically unstable patients. Critical HFRS requires urgent RRT initiation.</p>
       </div>
 
       <h3 style="font-size:16px;margin:0 0 16px;">WHO / Korean Severity Classification</h3>
@@ -2740,7 +2751,7 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
           <div class="sev-label">Critical</div>
           <div class="sev-stat">Multi-organ failure</div>
           <div class="sev-stat">CNS / Massive bleed</div>
-          <div class="sev-detail">ARDS, hepatic failure, cerebral hemorrhage, or refractory shock. ICU mandatory. CRRT preferred. Mortality 5–15% in this group.</div>
+          <div class="sev-detail">ARDS, hepatic failure, cerebral hemorrhage, or refractory shock. ICU (intensive care unit) mandatory. CRRT preferred. Mortality 5–15% in this group.</div>
         </div>
       </div>
 
@@ -2847,7 +2858,7 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
 
       <h3 style="font-size:16px;margin:24px 0 12px;">Ribavirin — Evidence &amp; Dosing</h3>
       <div class="feature-card">
-        <p><strong>Evidence base:</strong> RCTs support ribavirin for HTNV-HFRS (China, Korea); evidence for SEOV is extrapolated. Benefit requires initiation within 5 days of symptom onset. No proven benefit after Day 7.</p>
+        <p><strong>Evidence base:</strong> RCTs (randomized controlled trials) support ribavirin for HTNV-HFRS (China, Korea); evidence for SEOV is extrapolated. Benefit requires initiation within 5 days of symptom onset. No proven benefit after Day 7.</p>
         <p style="margin-top:8px;"><strong>Dosing (IV):</strong> Loading 33 mg/kg → 16 mg/kg q6h × 4 days → 8 mg/kg q8h × 3 days.</p>
         <p style="margin-top:8px;"><strong>Dose adjustment:</strong> Reduce by 50% if eGFR 30–60. Avoid (or use under specialist guidance) if eGFR &lt;30 or on dialysis. Contraindicated in pregnancy (teratogenic).</p>
         <p style="margin-top:8px;"><strong>Monitoring:</strong> CBC for hemolytic anemia (ribavirin's primary toxicity); bilirubin; reticulocyte count.</p>
@@ -2879,7 +2890,7 @@ html[data-theme="dark"] .mech-body h4 { color: var(--text); }
         <tbody>
           <tr class="table-row-ok"><td>None (eGFR ≥90)</td><td>&lt;3%</td><td>Standard indications</td><td>None required</td></tr>
           <tr class="table-row-ok"><td>Stage 1–2 (eGFR 60–89)</td><td>3–8%</td><td>Standard indications</td><td>Closer monitoring; early nephrology consult</td></tr>
-          <tr class="table-row-caution"><td>Stage 3 (eGFR 30–59)</td><td>10–20%</td><td>Lower — initiate earlier</td><td>Hold ACEi/ARB in oliguria; ribavirin 50% dose; aggressive K⁺ monitoring</td></tr>
+          <tr class="table-row-caution"><td>Stage 3 (eGFR 30–59)</td><td>10–20%</td><td>Lower — initiate earlier</td><td>Hold ACEi (angiotensin-converting enzyme inhibitor)/ARB in oliguria; ribavirin 50% dose; aggressive K⁺ monitoring</td></tr>
           <tr class="table-row-alert"><td>Stage 4–5 (eGFR &lt;30)</td><td>25–40%</td><td>Very low — proactive</td><td>Avoid ribavirin without specialist guidance; hold nephrotoxins; early CRRT consideration; family counseling re: permanent RRT risk</td></tr>
         </tbody>
       </table>
@@ -3225,5 +3236,6 @@ function setGuideLang(lang) {
 <script>(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});})();</script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
 <script src="../assets/image-lightbox.js" defer></script>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

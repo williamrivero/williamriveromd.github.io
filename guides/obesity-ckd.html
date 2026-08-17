@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -139,6 +140,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1307,8 +1316,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -2025,8 +2036,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -2037,7 +2048,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">&ge;23</span><span class="l">WHO Asia-Pacific overweight BMI cutoff</span></div>
+<div class="ov-stat"><span class="v">&ge;23</span><span class="l">World Health Organization (WHO) Asia-Pacific overweight body mass index (BMI) cutoff</span></div>
 <div class="ov-stat"><span class="v">24%</span><span class="l">Semaglutide cut kidney/CV death (FLOW)</span></div>
 <div class="ov-stat"><span class="v">18&ndash;22%</span><span class="l">Tirzepatide body-weight loss in trials</span></div>
 </div>
@@ -2046,7 +2057,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 </aside>
 <div class="hero-copy">
 <div class="hero-tag">
-      <span data-lang="en">CKD &middot; Filipino Asian Cutoffs &middot; Weight &amp; Kidneys</span>
+      <span data-lang="en">chronic kidney disease (CKD) &middot; Filipino Asian Cutoffs &middot; Weight &amp; Kidneys</span>
       <span data-lang="tl" class="lang-hidden">CKD &middot; Mga Asian Cutoff &middot; Timbang at Bato</span>
       <span data-lang="ceb" class="lang-hidden">CKD &middot; Asian Cutoffs &middot; Timbang ug Kidney</span>
       <span data-lang="kap" class="lang-hidden">CKD &middot; Asian Cutoffs &middot; Timbang at Batu</span>
@@ -2336,7 +2347,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       </tr>
       <tr>
         <td><strong><span data-lang="en">Transplant candidate</span><span data-lang="tl" class="lang-hidden">Transplant candidate</span><span data-lang="ceb" class="lang-hidden">Transplant candidate</span><span data-lang="kap" class="lang-hidden">Transplant candidate</span></strong></td>
-        <td><span data-lang="en">Most centers require BMI &lt;35 (Asian-Pacific) for transplant listing. Weight loss before transplant — supervised, often with GLP-1 RAs or bariatric surgery — improves transplant outcomes meaningfully.</span><span data-lang="tl" class="lang-hidden">Karamihan ng center ay nangangailangan ng BMI &lt;35 (Asian-Pacific) para sa transplant listing. Ang weight loss bago ang transplant — supervised, madalas gamit ang GLP-1 RAs o bariatric surgery — ay malaki ang naitutulong sa resulta ng transplant.</span><span data-lang="ceb" class="lang-hidden">Kasagaran sa mga center nanginahanglan og BMI &lt;35 (Asian-Pacific) alang sa transplant listing. Ang weight loss sa wala pa ang transplant — supervised, kasagaran gigamit ang GLP-1 RAs o bariatric surgery — daku ang ikatabang sa resulta sa transplant.</span><span data-lang="kap" class="lang-hidden">Karamihan ning center nanginahanglan ning BMI &lt;35 para king transplant listing.</span></td>
+        <td><span data-lang="en">Most centers require BMI &lt;35 (Asian-Pacific) for transplant listing. Weight loss before transplant — supervised, often with glucagon-like peptide-1 (GLP-1) RAs or bariatric surgery — improves transplant outcomes meaningfully.</span><span data-lang="tl" class="lang-hidden">Karamihan ng center ay nangangailangan ng BMI &lt;35 (Asian-Pacific) para sa transplant listing. Ang weight loss bago ang transplant — supervised, madalas gamit ang GLP-1 RAs o bariatric surgery — ay malaki ang naitutulong sa resulta ng transplant.</span><span data-lang="ceb" class="lang-hidden">Kasagaran sa mga center nanginahanglan og BMI &lt;35 (Asian-Pacific) alang sa transplant listing. Ang weight loss sa wala pa ang transplant — supervised, kasagaran gigamit ang GLP-1 RAs o bariatric surgery — daku ang ikatabang sa resulta sa transplant.</span><span data-lang="kap" class="lang-hidden">Karamihan ning center nanginahanglan ning BMI &lt;35 para king transplant listing.</span></td>
       </tr>
     </tbody>
   </table>
@@ -2460,7 +2471,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <span data-lang="kap" class="lang-hidden">3. Visceral fat — ing pinaka-mapanganib a klase</span>
       </h4>
       <p>
-        <span data-lang="en">CT and MRI studies (Lear et al., <em>CMAJ</em> 2007; Huxley et al., <em>Obes Rev</em> 2008) confirm that South and Southeast Asians — including Filipinos — have disproportionately high visceral adiposity compared to Europeans at equivalent BMI. Visceral fat is the metabolically active depot that secretes inflammatory cytokines, drives RAAS activation, and directly promotes kidney hyperfiltration and injury — making it far more harmful than subcutaneous fat at the same total body-fat percentage.</span>
+        <span data-lang="en">computed tomography (CT) and magnetic resonance imaging (MRI) studies (Lear et al., <em>CMAJ</em> 2007; Huxley et al., <em>Obes Rev</em> 2008) confirm that South and Southeast Asians — including Filipinos — have disproportionately high visceral adiposity compared to Europeans at equivalent BMI. Visceral fat is the metabolically active depot that secretes inflammatory cytokines, drives renin–angiotensin–aldosterone system (RAAS) activation, and directly promotes kidney hyperfiltration and injury — making it far more harmful than subcutaneous fat at the same total body-fat percentage.</span>
         <span data-lang="tl" class="lang-hidden">Ang mga CT at MRI na pag-aaral (Lear et al., <em>CMAJ</em> 2007; Huxley et al., <em>Obes Rev</em> 2008) ay nagpapatunay na ang Timog at Timog-Silangang mga Asyano — kasama ang mga Pilipino — ay may disproportionately na mataas na visceral adiposity kumpara sa mga Europeo sa katumbas na BMI. Ang visceral fat ang metabolically active depot na nagsesekrete ng mga inflammatory cytokines, nagdo-drive ng RAAS activation, at direktang nagpo-promote ng kidney hyperfiltration at pinsala — na ginagawa itong mas mapaminsala kaysa sa subcutaneous fat sa parehong kabuuang body-fat percentage.</span>
         <span data-lang="ceb" class="lang-hidden">Ang CT ug MRI studies (Lear et al., <em>CMAJ</em> 2007; Huxley et al., <em>Obes Rev</em> 2008) nagkumpirma nga ang South ug Southeast Asian — lakip ang mga Pilipino — adunay disproportionately taas nga visceral adiposity kompara sa mga Europeo sa katumbas nga BMI. Ang visceral fat ang metabolically active depot nga nag-secrete sa inflammatory cytokines, nagpaandar sa RAAS activation, ug direkta nagpasiugda sa kidney hyperfiltration ug kadaot — nga naghimo niini nga mas makadaot kaysa sa subcutaneous fat sa pareho nga total body-fat percentage.</span>
         <span data-lang="kap" class="lang-hidden">Deng CT at MRI studies (Lear et al., <em>CMAJ</em> 2007; Huxley et al., <em>Obes Rev</em> 2008) nagpapatunay a deng South at Southeast Asian — kasama deng Pilipino — atin disproportionately mataas a visceral adiposity kumpara king deng Europeo king katumbas a BMI. Ing visceral fat ing metabolically active depot a nag-secrete ning deng inflammatory cytokines, nag-drive ning RAAS activation, at direkta nagpo-promote ning kidney hyperfiltration at pinsala — na ginagawa itong mas mapaminsala kesa king subcutaneous fat king parehong kabuuang body-fat percentage.</span>
@@ -2474,7 +2485,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <span data-lang="kap" class="lang-hidden">4. Sinuportahan da reng WHO, PSEDM, at internasyonal a mga guideline</span>
       </h4>
       <p>
-        <span data-lang="en">The WHO Asia-Pacific guidelines (2000), the 2004 WHO Expert Consultation (<em>Lancet</em>), and the International Obesity Task Force all recommend the ≥23/≥25 thresholds for Asian populations. In the Philippines, the <strong>PSEDM</strong> and the <strong>Philippine Heart Association</strong> have formally adopted these cutoffs. The 2023 KDIGO Obesity and CKD guidelines also acknowledge that ethnicity-specific BMI thresholds should be used when available — directly validating the use of Asian-Pacific cutoffs in Filipino nephrology practice.</span>
+        <span data-lang="en">The WHO Asia-Pacific guidelines (2000), the 2004 WHO Expert Consultation (<em>Lancet</em>), and the International Obesity Task Force all recommend the ≥23/≥25 thresholds for Asian populations. In the Philippines, the <strong>PSEDM</strong> and the <strong>Philippine Heart Association</strong> have formally adopted these cutoffs. The 2023 Kidney Disease: Improving Global Outcomes (KDIGO) Obesity and CKD guidelines also acknowledge that ethnicity-specific BMI thresholds should be used when available — directly validating the use of Asian-Pacific cutoffs in Filipino nephrology practice.</span>
         <span data-lang="tl" class="lang-hidden">Ang WHO Asia-Pacific guidelines (2000), ang 2004 WHO Expert Consultation (<em>Lancet</em>), at ang International Obesity Task Force ay nagrererekomenda ng ≥23/≥25 na mga threshold para sa mga populasyong Asyano. Sa Pilipinas, ang <strong>PSEDM</strong> at ang <strong>Philippine Heart Association</strong> ay pormal na pinagtibay ang mga cutoffs na ito. Ang 2023 KDIGO Obesity and CKD guidelines ay kinikilala rin na ang ethnicity-specific na BMI thresholds ay dapat gamitin kung available — direktang nagpapatunay sa paggamit ng Asian-Pacific cutoffs sa Filipino nephrology practice.</span>
         <span data-lang="ceb" class="lang-hidden">Ang WHO Asia-Pacific guidelines (2000), ang 2004 WHO Expert Consultation (<em>Lancet</em>), ug ang International Obesity Task Force nagrekomendar sa ≥23/≥25 nga mga threshold para sa mga populasyon sa Asya. Sa Pilipinas, ang <strong>PSEDM</strong> ug ang <strong>Philippine Heart Association</strong> pormal nga gi-adopt kining mga cutoffs. Ang 2023 KDIGO Obesity and CKD guidelines nagila usab nga ang ethnicity-specific nga BMI thresholds kinahanglang gamiton kung magamit — direkta nagpatuniyal sa paggamit sa Asian-Pacific cutoffs sa Filipino nephrology practice.</span>
         <span data-lang="kap" class="lang-hidden">Deng WHO Asia-Pacific guidelines (2000), ing 2004 WHO Expert Consultation (<em>Lancet</em>), at ing International Obesity Task Force nagrerekomenda ning ≥23/≥25 a mga threshold para king deng populasyong Asyano. King Pilipinas, ing <strong>PSEDM</strong> at ing <strong>Philippine Heart Association</strong> pormal a pinagtibay deting mga cutoffs. Deng 2023 KDIGO Obesity and CKD guidelines kinikilala na ing ethnicity-specific a BMI thresholds dapat gamitin nung available — direkta nagpapatunay king paggamit ning Asian-Pacific cutoffs king Filipino nephrology practice.</span>
@@ -2906,7 +2917,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <span data-lang="kap" class="lang-hidden">Importante ing pagkasunud</span>
       </h4>
       <p>
-        <span data-lang="en">Weight gain almost always comes before the kidney injury appears. By the time creatinine starts rising, the kidney damage from years of metabolic stress has already accumulated. The right time to address weight is <strong>at the first signs of metabolic syndrome</strong> — high BP, high triglycerides, central adiposity, fasting glucose creep — not when the eGFR has already declined.</span>
+        <span data-lang="en">Weight gain almost always comes before the kidney injury appears. By the time creatinine starts rising, the kidney damage from years of metabolic stress has already accumulated. The right time to address weight is <strong>at the first signs of metabolic syndrome</strong> — high BP, high triglycerides, central adiposity, fasting glucose creep — not when the estimated glomerular filtration rate (eGFR) has already declined.</span>
         <span data-lang="tl" class="lang-hidden">Ang pagtaas ng timbang ay halos palaging nauuna bago lumitaw ang pinsala sa bato. Sa oras na magsimulang tumaas ang creatinine, naipon na ang taon-taong pinsala mula sa metabolic stress. Ang tamang oras para asikasuhin ang timbang ay <strong>sa unang senyales ng metabolic syndrome</strong> — mataas na BP, mataas na triglycerides, taba sa gitna ng katawan, dahan-dahang pagtaas ng fasting glucose — hindi kapag bumaba na ang eGFR.</span>
         <span data-lang="ceb" class="lang-hidden">Ang pagsaka sa timbang halos kanunay mauna sa wala pa motungha ang kadaot sa kidney. Sa pagsugod sa pagsaka sa creatinine, natipon na ang katuigang kadaot gikan sa metabolic stress. Ang husto nga panahon nga atubangon ang timbang mao <strong>sa unang senyales sa metabolic syndrome</strong> — taas nga BP, taas nga triglycerides, tambok sa tunga sa lawas, hinay nga pagsaka sa fasting glucose — dili kung mikunhod na ang eGFR.</span>
         <span data-lang="kap" class="lang-hidden">Ing pagtaas ning timbang halos kanunaynaunang bago lumitaw ing pinsala king batu. King oras a magumpisang tumaas ing creatinine, naipun na ing taon-taong pinsala manibat king metabolic stress.</span>
@@ -3086,7 +3097,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
   <div class="intro-callout">
     <p>
-      <span data-lang="en"><strong>The FLOW trial (semaglutide) and SURMOUNT-CKD-related data (tirzepatide)</strong> have shown that these drugs reduce the risk of kidney function decline, cardiovascular events, and death in patients with type 2 diabetes and CKD. Newer trials are extending this to non-diabetic CKD patients. For overweight or obese Filipino CKD patients, this is one of the most important new tools in nephrology — but it is expensive (PHP ~10,000–25,000/month) and not yet covered by PhilHealth.</span>
+      <span data-lang="en"><strong>The FLOW trial (semaglutide) and SURMOUNT-CKD-related data (tirzepatide)</strong> have shown that these drugs reduce the risk of kidney function decline, cardiovascular events, and death in patients with type 2 diabetes and CKD. Newer trials are extending this to non-diabetic CKD patients. For overweight or obese Filipino CKD patients, this is one of the most important new tools in nephrology — but it is expensive (PHP ~10,000–25,000/month) and not yet covered by the Philippine Health Insurance Corporation (PhilHealth).</span>
       <span data-lang="tl" class="lang-hidden"><strong>Ipinakita ng FLOW trial (semaglutide) at SURMOUNT-CKD-related data (tirzepatide)</strong> na binabawasan ng mga gamot na ito ang risk ng paghina ng bato, cardiovascular events, at kamatayan sa pasyenteng may type 2 diabetes at CKD. Pinapalawak ng mga bagong trial ito sa non-diabetic CKD patients. Para sa overweight o obese Filipino CKD patients, isa ito sa pinakamahalagang bagong tool sa nephrology — pero mahal ito (PHP ~10,000–25,000/buwan) at hindi pa saklaw ng PhilHealth.</span>
       <span data-lang="ceb" class="lang-hidden"><strong>Gipakita sa FLOW trial (semaglutide) ug SURMOUNT-CKD-related data (tirzepatide)</strong> nga gikunhuran niining mga tambal ang risk sa paghina sa kidney, cardiovascular events, ug kamatayon sa pasyente nga adunay type 2 diabetes ug CKD. Gipalapad sa mga bag-ong trial kini sa non-diabetic CKD patients. Para sa overweight o obese Filipino CKD patients, usa kini sa pinakaimportante nga bag-ong tool sa nephrology — apan mahal kini (PHP ~10,000–25,000/bulan) ug wala pa sakop sa PhilHealth.</span>
       <span data-lang="kap" class="lang-hidden"><strong>Pakikit ning FLOW trial at SURMOUNT-CKD data</strong> a binabawasan ning deng gamot ing risk ning paghina ning batu. Mahal ya (PHP ~10,000–25,000/buwan) at ali pa saklaw ning PhilHealth.</span>
@@ -3303,7 +3314,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <ul>
       <li><span data-lang="en">What is my BMI by Asian-Pacific cutoffs? Where am I on the risk scale?</span><span data-lang="tl" class="lang-hidden">Ano ang aking BMI ayon sa Asian-Pacific cutoffs? Saan ako sa risk scale?</span><span data-lang="ceb" class="lang-hidden">Unsa ang akong BMI sumala sa Asian-Pacific cutoffs? Asa ko sa risk scale?</span><span data-lang="kap" class="lang-hidden">Nano ya ing kakung BMI ayon king Asian-Pacific cutoffs? Nokarin aku king risk scale?</span></li>
       <li><span data-lang="en">What is my waist circumference, and is it above the Filipino target?</span><span data-lang="tl" class="lang-hidden">Ano ang aking waist circumference, at lampas ba ito sa Filipino target?</span><span data-lang="ceb" class="lang-hidden">Unsa ang akong waist circumference, ug labaw ba kini sa Filipino target?</span><span data-lang="kap" class="lang-hidden">Nano ya ing kakung waist circumference, at labis ya iti king Filipino target?</span></li>
-      <li><span data-lang="en">Do I have signs of metabolic syndrome — central adiposity, BP, fasting glucose, triglycerides, HDL?</span><span data-lang="tl" class="lang-hidden">May mga senyales ba ako ng metabolic syndrome — central adiposity, BP, fasting glucose, triglycerides, HDL?</span><span data-lang="ceb" class="lang-hidden">Aduna ba kong mga senyales sa metabolic syndrome — central adiposity, BP, fasting glucose, triglycerides, HDL?</span><span data-lang="kap" class="lang-hidden">Atin ku bang mga senyales ning metabolic syndrome?</span></li>
+      <li><span data-lang="en">Do I have signs of metabolic syndrome — central adiposity, BP, fasting glucose, triglycerides, high-density lipoprotein (HDL)?</span><span data-lang="tl" class="lang-hidden">May mga senyales ba ako ng metabolic syndrome — central adiposity, BP, fasting glucose, triglycerides, HDL?</span><span data-lang="ceb" class="lang-hidden">Aduna ba kong mga senyales sa metabolic syndrome — central adiposity, BP, fasting glucose, triglycerides, HDL?</span><span data-lang="kap" class="lang-hidden">Atin ku bang mga senyales ning metabolic syndrome?</span></li>
       <li><span data-lang="en">Do my labs suggest fatty liver (MASLD/MASH)?</span><span data-lang="tl" class="lang-hidden">May ipinapahiwatig ba ang aking labs na fatty liver (MASLD/MASH)?</span><span data-lang="ceb" class="lang-hidden">Aduna bay gipakita ang akong labs nga fatty liver (MASLD/MASH)?</span><span data-lang="kap" class="lang-hidden">Atin bang ipakit ing kakung labs ning fatty liver?</span></li>
     </ul>
   </div>
@@ -3344,7 +3355,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <span class="alert-icon">⚠️</span>
     <div class="alert-body">
     <h4>A common — and dangerous — clinical encounter</h4>
-    <p>A dialysis patient who refuses a weight management discussion because "my previous doctor told me obesity is protective on dialysis" is not presenting an irrational belief. It is grounded in two decades of published data from the world's largest ESRD registries. The problem is not that the data was fabricated. The problem is that a legitimate epidemiological observation has been stripped of its confounders and applied as clinical permission — in a population (Filipino patients) where the extrapolation is especially unjustified. The sections below work through the data systematically: what it shows, why it shows it, and why it cannot be used the way it commonly is in Filipino nephrology practice.</p>
+    <p>A dialysis patient who refuses a weight management discussion because "my previous doctor told me obesity is protective on dialysis" is not presenting an irrational belief. It is grounded in two decades of published data from the world's largest end-stage renal disease (ESRD) registries. The problem is not that the data was fabricated. The problem is that a legitimate epidemiological observation has been stripped of its confounders and applied as clinical permission — in a population (Filipino patients) where the extrapolation is especially unjustified. The sections below work through the data systematically: what it shows, why it shows it, and why it cannot be used the way it commonly is in Filipino nephrology practice.</p>
     </div>
   </div>
 
@@ -3397,10 +3408,10 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
   <div class="section-tag">For Clinicians · Pathophysiology</div>
   <h2>How obesity drives CKD &mdash; three converging mechanisms.</h2>
 
-  <figure style="margin:24px 0;"><picture><source srcset="../images/obesity-ckd-pathophys-mechanisms-clinician.webp" type="image/webp"><img src="../images/obesity-ckd-pathophys-mechanisms-clinician.png" alt="How Obesity Drives CKD: Three Converging Pathways diagram. Pathway 1 Glomerular Hyperfiltration/ORG: adipokines to afferent arteriolar dilation to RAAS activation to SNS upregulation to raised GFR to glomerulomegaly plus podocyte stress to FSGS variant ORG — responds to weight loss, RAAS blockade, SGLT2i. Pathway 2 MASLD/MASH-related kidney injury: central adiposity to hepatic steatosis to MASH TNF-a IL-6 CRP to hepato-renal endothelial dysfunction to shared substrate insulin resistance dyslipidaemia — screen with FIB-4. Pathway 3 Metabolic syndrome nephropathy: visceral fat to insulin resistance to clustering HTN dyslipidaemia hyperuricaemia dysglycaemia to tubular lipotoxicity to mild proteinuria slow eGFR decline. Bottom bar: all three pathways converge on intraglomerular hypertension — the same target as ACEi/ARB, SGLT2i, and GLP-1 RA." style="width:100%;border-radius:10px;display:block;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">Three distinct mechanisms, one convergent target — intraglomerular hypertension explains why RAAS blockade, SGLT2i, and GLP-1 RA all preserve kidney function.</figcaption></figure>
+  <figure style="margin:24px 0;"><picture><source srcset="../images/obesity-ckd-pathophys-mechanisms-clinician.webp" type="image/webp"><img src="../images/obesity-ckd-pathophys-mechanisms-clinician.png" alt="How Obesity Drives CKD: Three Converging Pathways diagram. Pathway 1 Glomerular Hyperfiltration/ORG: adipokines to afferent arteriolar dilation to RAAS activation to SNS upregulation to raised GFR to glomerulomegaly plus podocyte stress to FSGS variant ORG — responds to weight loss, RAAS blockade, SGLT2i. Pathway 2 MASLD/MASH-related kidney injury: central adiposity to hepatic steatosis to MASH TNF-a IL-6 CRP to hepato-renal endothelial dysfunction to shared substrate insulin resistance dyslipidaemia — screen with FIB-4. Pathway 3 Metabolic syndrome nephropathy: visceral fat to insulin resistance to clustering HTN dyslipidaemia hyperuricaemia dysglycaemia to tubular lipotoxicity to mild proteinuria slow eGFR decline. Bottom bar: all three pathways converge on intraglomerular hypertension — the same target as ACEi/ARB, SGLT2i, and GLP-1 RA." style="width:100%;border-radius:10px;display:block;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">Three distinct mechanisms, one convergent target — intraglomerular hypertension explains why RAAS blockade, sodium–glucose cotransporter-2 inhibitor (SGLT2i), and GLP-1 RA all preserve kidney function.</figcaption></figure>
 
   <h3>1. Glomerular hyperfiltration and obesity-related glomerulopathy</h3>
-  <p>Increased adiposity raises GFR through several mechanisms: increased lean mass demands, RAAS activation, sympathetic nervous system upregulation, and direct adipokine signalling (leptin, resistin) on the afferent arteriole. The consequent intraglomerular hypertension, glomerulomegaly, and podocyte stress produce <em>obesity-related glomerulopathy</em> (ORG): a focal segmental glomerulosclerosis (FSGS) variant with characteristic glomerulomegaly and milder foot-process effacement than primary FSGS, presenting as proteinuria with relatively preserved eGFR. ORG responds to weight loss, RAAS blockade, and SGLT2 inhibition.</p>
+  <p>Increased adiposity raises GFR through several mechanisms: increased lean mass demands, RAAS activation, sympathetic nervous system upregulation, and direct adipokine signalling (leptin, resistin) on the afferent arteriole. The consequent intraglomerular hypertension, glomerulomegaly, and podocyte stress produce <em>obesity-related glomerulopathy</em> (ORG): a focal segmental glomerulosclerosis (FSGS) variant with characteristic glomerulomegaly and milder foot-process effacement than primary FSGS, presenting as proteinuria with relatively preserved eGFR. ORG responds to weight loss, RAAS blockade, and sodium–glucose cotransporter-2 (SGLT2) inhibition.</p>
 
   <h3>2. MASLD/MASH-related kidney injury</h3>
   <p>Metabolic dysfunction-associated steatotic liver disease (MASLD; formerly NAFLD) and its inflammatory form MASH are now recognized as independent risk factors for CKD progression and incident proteinuria, mediated by systemic inflammation, hepato-renal endothelial dysfunction, and shared metabolic substrates (insulin resistance, dysglycaemia, dyslipidaemia). The prevalence of MASLD in Filipino adults with central adiposity is high; screening with FIB-4 or transient elastography in CKD patients with metabolic syndrome is reasonable.</p>
@@ -3412,7 +3423,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <span class="alert-icon">📊</span>
     <div class="alert-body">
       <h4>The shared mechanism worth remembering</h4>
-      <p>Obesity, type 2 diabetes, and hypertension all converge on intraglomerular hypertension — the same final common pathway that ACEi/ARBs, SGLT2i, and now GLP-1 RAs all target. This is why these therapies preserve eGFR even when their classical indications (BP, glycaemia, weight) are not the primary problem.</p>
+      <p>Obesity, type 2 diabetes, and hypertension all converge on intraglomerular hypertension — the same final common pathway that angiotensin-converting enzyme inhibitors (ACEi)/angiotensin receptor blockers (ARBs), SGLT2i, and now GLP-1 RAs all target. This is why these therapies preserve eGFR even when their classical indications (BP, glycaemia, weight) are not the primary problem.</p>
     </div>
   </div>
 
@@ -3464,7 +3475,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <tr><td><strong>G1–G3a</strong></td><td>5–10% body weight if BMI ≥23 (Asia-Pacific overweight); larger losses for BMI ≥30</td><td>Diet, exercise, RAAS blockade, SGLT2i if indicated, GLP-1 RA if appropriate. Resistance exercise mandatory.</td><td>Standard cautions. Watch for hypoglycaemia if on insulin/sulfonylurea — GLP-1 + SGLT2i + caloric deficit can stack.</td></tr>
       <tr><td><strong>G3b–G4</strong></td><td>5–10% body weight, slow (0.25–0.5 kg/week)</td><td>Diet protein 0.6–0.8 g/kg/d, calorie deficit 300–500 kcal/d, supervised resistance training. Consider GLP-1 RA.</td><td>Avoid keto and very-high-protein diets (push hyperfiltration). Avoid prolonged fasting (muscle loss into dialysis).</td></tr>
       <tr><td><strong>G5 not on dialysis</strong></td><td>Weight stability with body composition focus</td><td>Maintain protein at 0.8 g/kg/d minimum, resistance exercise, treat metabolic drivers aggressively. Defer aggressive weight loss unless transplant work-up.</td><td>PEW risk dominant. Monitor albumin, prealbumin, mid-arm muscle circumference, handgrip strength.</td></tr>
-      <tr><td><strong>HD/PD</strong></td><td>Weight stability with muscle preservation; selective weight loss only for transplant candidacy</td><td>Protein 1.0–1.2 g/kg/d, intra-dialytic exercise, resistance training. If listed for transplant, structured program ± GLP-1 ± bariatric.</td><td>The general-population weight-loss playbook is usually wrong here. PEW is the dominant nutritional risk.</td></tr>
+      <tr><td><strong>hemodialysis (HD)/peritoneal dialysis (PD)</strong></td><td>Weight stability with muscle preservation; selective weight loss only for transplant candidacy</td><td>Protein 1.0–1.2 g/kg/d, intra-dialytic exercise, resistance training. If listed for transplant, structured program ± GLP-1 ± bariatric.</td><td>The general-population weight-loss playbook is usually wrong here. PEW is the dominant nutritional risk.</td></tr>
       <tr><td><strong>Transplant candidate</strong></td><td>BMI &lt;35 (Asia-Pacific equivalent) for most centers; lower preferred</td><td>Structured 6–18 month program: diet, exercise, GLP-1 RA, bariatric surgery referral as appropriate.</td><td>Coordinate with transplant team early. Bariatric pre-transplant pathway requires planning.</td></tr>
     </tbody>
   </table>
@@ -3497,7 +3508,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
   <h3>Practical use in Filipino CKD practice</h3>
   <ul style="margin:8px 0 16px 24px;color:var(--text-mid);font-size:15px;line-height:1.7;">
-    <li><strong>Indications widening:</strong> reasonable in T2DM-CKD regardless of HbA1c when overweight/obese; emerging data support use in non-diabetic CKD with metabolic syndrome.</li>
+    <li><strong>Indications widening:</strong> reasonable in T2DM-CKD regardless of glycated hemoglobin (HbA1c) when overweight/obese; emerging data support use in non-diabetic CKD with metabolic syndrome.</li>
     <li><strong>Dose:</strong> standard escalation (e.g. semaglutide 0.25 → 0.5 → 1.0 mg/week, slower if GI side effects). No major eGFR-based dose adjustment.</li>
     <li><strong>Cautions:</strong> personal/family medullary thyroid carcinoma, MEN2, acute pancreatitis history, severe gastroparesis. Monitor for dehydration during illness or aggressive volume reduction.</li>
     <li><strong>Combine with SGLT2i</strong> when appropriate; the combination delivers larger renal and CV benefit than either alone.</li>
@@ -4320,5 +4331,6 @@ function calcIBW() {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

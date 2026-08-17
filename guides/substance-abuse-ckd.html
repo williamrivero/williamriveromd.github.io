@@ -13,6 +13,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -141,6 +142,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1309,8 +1318,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1872,8 +1883,8 @@ try{(function(){var v=localStorage.getItem('wgmr-substance-mode');if(v===null){v
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 <div class="mode-patient">
@@ -2020,7 +2031,7 @@ try{(function(){var v=localStorage.getItem('wgmr-substance-mode');if(v===null){v
         <span data-lang="en">5. Infections from Sharing Needles</span><span data-lang="tl" class="lang-hidden">5. Impeksyon mula sa Paghihiraman ng Karayom</span><span data-lang="ceb" class="lang-hidden">5. Impeksyon gikan sa Pag-ambit sa Dagom</span><span data-lang="kap" class="lang-hidden">5. Impeksiyon Ibat King Pamipahiram Karayum</span>
       </h4>
       <p>
-        <span data-lang="en">Sharing needles can pass on HIV and hepatitis B and C. These infections can directly inflame and scar the kidneys. Never sharing needles, and getting tested, protects both you and your kidneys.</span><span data-lang="tl" class="lang-hidden">Ang paghihiraman ng karayom ay maaaring magpasa ng HIV at hepatitis B at C. Ang mga impeksyong ito ay maaaring direktang magpamaga at pumilat sa bato. Ang hindi paghihiraman ng karayom, at ang pagpapasuri, ay nagpoprotekta sa iyo at sa iyong bato.</span><span data-lang="ceb" class="lang-hidden">Ang pag-ambit sa dagom makapasa ug HIV ug hepatitis B ug C. Kining mga impeksyon makahubag ug makapilat direkta sa kidney. Ang dili pag-ambit sa dagom, ug ang pagpa-test, manalipod kanimo ug sa imong kidney.</span><span data-lang="kap" class="lang-hidden">Ing pamipahiram karayum malyaring mipasa HIV at hepatitis B at C. Deng impeksiyong deni malyaring direktang mamaga at pilatan da ing batu. Ing eka pamipahiram karayum, at ing pamagpasuri, mangaglio keka at king batu mu.</span>
+        <span data-lang="en">Sharing needles can pass on human immunodeficiency virus (HIV) and hepatitis B and C. These infections can directly inflame and scar the kidneys. Never sharing needles, and getting tested, protects both you and your kidneys.</span><span data-lang="tl" class="lang-hidden">Ang paghihiraman ng karayom ay maaaring magpasa ng HIV at hepatitis B at C. Ang mga impeksyong ito ay maaaring direktang magpamaga at pumilat sa bato. Ang hindi paghihiraman ng karayom, at ang pagpapasuri, ay nagpoprotekta sa iyo at sa iyong bato.</span><span data-lang="ceb" class="lang-hidden">Ang pag-ambit sa dagom makapasa ug HIV ug hepatitis B ug C. Kining mga impeksyon makahubag ug makapilat direkta sa kidney. Ang dili pag-ambit sa dagom, ug ang pagpa-test, manalipod kanimo ug sa imong kidney.</span><span data-lang="kap" class="lang-hidden">Ing pamipahiram karayum malyaring mipasa HIV at hepatitis B at C. Deng impeksiyong deni malyaring direktang mamaga at pilatan da ing batu. Ing eka pamipahiram karayum, at ing pamagpasuri, mangaglio keka at king batu mu.</span>
       </p>
     </div>
 
@@ -2085,7 +2096,7 @@ try{(function(){var v=localStorage.getItem('wgmr-substance-mode');if(v===null){v
   </div>
 
   <p>
-    <span data-lang="en">Quitting is hard, and you do not have to do it on willpower alone. Ask your doctor about quit support — counseling, nicotine patches or gum, and safe medicines that can double your chances of success. You can also call the DOH Quitline at 1558 for free coaching (please confirm the current number with your clinic, as it may change). Slips are normal; what matters is trying again.</span><span data-lang="tl" class="lang-hidden">Mahirap ang pagtigil, at hindi mo kailangang gawin ito sa lakas ng loob lamang. Tanungin ang iyong doktor tungkol sa quit support — counseling, nicotine patch o gum, at ligtas na mga gamot na maaaring magdoble ng iyong tsansa ng tagumpay. Maaari ka ring tumawag sa DOH Quitline sa 1558 para sa libreng coaching (mangyaring kumpirmahin ang kasalukuyang numero sa iyong klinika, dahil maaaring magbago ito). Normal ang mga pagkadulas; ang mahalaga ay subukan muli.</span><span data-lang="ceb" class="lang-hidden">Lisod ang pag-undang, ug dili kinahanglan nga buhaton nimo kini sa kusog sa kabubut-on lamang. Pangutana sa imong doktor bahin sa quit support — counseling, nicotine patch o gum, ug luwas nga mga tambal nga makadoble sa imong kahigayonan sa kalampusan. Mahimo ka usab motawag sa DOH Quitline sa 1558 alang sa libre nga coaching (palihug kumpirma ang karon nga numero sa imong klinika, kay mahimong mausab). Normal ang mga pagkadalin-as; ang importante mao ang pagsulay pag-usab.</span><span data-lang="kap" class="lang-hidden">Masakit ya ing pamituknang, at ali mu kailangang gawan ini king sikan ning lub mu mu. Kutnan me ing doktor mu tungkul king quit support — counseling, nicotine patch o gum, at ligtas a tambal a malyaring magdoble king tsansa mu king tagumpe. Malyari ka muring tumawag king DOH Quitline king 1558 para king libreng coaching (paki-kumpirma ing kasalungsungan a numeru king klinika mu, uli malyaring maglio ya). Normal la ding pamagkadulas; ing mahalaga ya ing pamagsubuk pasibayu.</span>
+    <span data-lang="en">Quitting is hard, and you do not have to do it on willpower alone. Ask your doctor about quit support — counseling, nicotine patches or gum, and safe medicines that can double your chances of success. You can also call the Department of Health (DOH) Quitline at 1558 for free coaching (please confirm the current number with your clinic, as it may change). Slips are normal; what matters is trying again.</span><span data-lang="tl" class="lang-hidden">Mahirap ang pagtigil, at hindi mo kailangang gawin ito sa lakas ng loob lamang. Tanungin ang iyong doktor tungkol sa quit support — counseling, nicotine patch o gum, at ligtas na mga gamot na maaaring magdoble ng iyong tsansa ng tagumpay. Maaari ka ring tumawag sa DOH Quitline sa 1558 para sa libreng coaching (mangyaring kumpirmahin ang kasalukuyang numero sa iyong klinika, dahil maaaring magbago ito). Normal ang mga pagkadulas; ang mahalaga ay subukan muli.</span><span data-lang="ceb" class="lang-hidden">Lisod ang pag-undang, ug dili kinahanglan nga buhaton nimo kini sa kusog sa kabubut-on lamang. Pangutana sa imong doktor bahin sa quit support — counseling, nicotine patch o gum, ug luwas nga mga tambal nga makadoble sa imong kahigayonan sa kalampusan. Mahimo ka usab motawag sa DOH Quitline sa 1558 alang sa libre nga coaching (palihug kumpirma ang karon nga numero sa imong klinika, kay mahimong mausab). Normal ang mga pagkadalin-as; ang importante mao ang pagsulay pag-usab.</span><span data-lang="kap" class="lang-hidden">Masakit ya ing pamituknang, at ali mu kailangang gawan ini king sikan ning lub mu mu. Kutnan me ing doktor mu tungkul king quit support — counseling, nicotine patch o gum, at ligtas a tambal a malyaring magdoble king tsansa mu king tagumpe. Malyari ka muring tumawag king DOH Quitline king 1558 para king libreng coaching (paki-kumpirma ing kasalungsungan a numeru king klinika mu, uli malyaring maglio ya). Normal la ding pamagkadulas; ing mahalaga ya ing pamagsubuk pasibayu.</span>
   </p>
 
   <p>
@@ -2137,7 +2148,7 @@ try{(function(){var v=localStorage.getItem('wgmr-substance-mode');if(v===null){v
 
 
   <p>
-    <span data-lang="en">Stimulants like shabu (methamphetamine), cocaine, and many "party" drugs speed up the whole body. They push your blood pressure dangerously high and force your heart to race. Right at that moment, the small blood vessels inside your kidneys can clamp down so hard that blood almost stops flowing through them. When kidneys lose their blood supply, they can be injured within hours — this is called acute kidney injury, or AKI.</span>
+    <span data-lang="en">Stimulants like shabu (methamphetamine), cocaine, and many "party" drugs speed up the whole body. They push your blood pressure dangerously high and force your heart to race. Right at that moment, the small blood vessels inside your kidneys can clamp down so hard that blood almost stops flowing through them. When kidneys lose their blood supply, they can be injured within hours — this is called acute kidney injury (AKI).</span>
     <span data-lang="tl" class="lang-hidden">Ang mga stimulant tulad ng shabu (methamphetamine), cocaine, at maraming "party" drugs ay pinapabilis ang buong katawan. Itinataas nito nang delikado ang iyong presyon ng dugo at pinipilit ang iyong puso na bumilis. Sa sandaling iyon, ang maliliit na ugat sa loob ng iyong bato ay maaaring sumikip nang husto kaya halos huminto ang daloy ng dugo. Kapag nawalan ng suplay ng dugo ang bato, maaari itong masira sa loob lamang ng ilang oras — tinatawag itong acute kidney injury, o AKI.</span>
     <span data-lang="ceb" class="lang-hidden">Ang mga stimulant sama sa shabu (methamphetamine), cocaine, ug daghang "party" drugs makapaspas sa tibuok lawas. Pataason niini ang imong presyon sa dugo og delikado ug pugson ang imong kasingkasing nga modagan. Niana mismong gutloa, ang gagmay nga ugat sa sulod sa imong kidney mahimong mosikip pag-ayo nga hapit na mohunong ang dagan sa dugo. Kon mawad-an og suplay sa dugo ang kidney, madaot kini sulod lang sa pipila ka oras — gitawag kini og acute kidney injury, o AKI.</span>
     <span data-lang="kap" class="lang-hidden">Ding stimulant a anti mo ing shabu (methamphetamine), cocaine, at dakal a "party" drugs pepasibayu da ing mabilug a katawan. Pepalwal da nang delikadu ing presion ning daya mu at pepilitan da ing pusu mung mabilis. King oras a ita, ding malating ugat king kilub ning bato mu malyaring sumipit nang masican kaya halus tumuknang ing dalan ning daya. Nung mawala ing suplay ning daya king bato, malyaring masira ya kilub mu ning pilang oras — aus da ya ini acute kidney injury, o AKI.</span>
@@ -2487,7 +2498,7 @@ try{(function(){var v=localStorage.getItem('wgmr-substance-mode');if(v===null){v
   </p>
 
   <p>
-    <span data-lang="en">Dialysis sessions are your lifeline, and substances can put them at risk. Drinking or using can make you miss sessions, come late, or leave early — and missed dialysis is dangerous, letting fluid and toxins build up in your body. If you inject substances, there is a serious added danger: bacteria can enter your bloodstream and reach your dialysis access (your fistula, graft, or catheter), causing infections that can spread fast and even become life-threatening. Substances also clash with the medicines that keep you stable — your blood-pressure drugs, phosphate binders, and the ESA/EPO injections that treat your anemia may stop working the way they should.</span>
+    <span data-lang="en">Dialysis sessions are your lifeline, and substances can put them at risk. Drinking or using can make you miss sessions, come late, or leave early — and missed dialysis is dangerous, letting fluid and toxins build up in your body. If you inject substances, there is a serious added danger: bacteria can enter your bloodstream and reach your dialysis access (your fistula, graft, or catheter), causing infections that can spread fast and even become life-threatening. Substances also clash with the medicines that keep you stable — your blood-pressure drugs, phosphate binders, and the erythropoiesis-stimulating agent (ESA)/erythropoietin (EPO) injections that treat your anemia may stop working the way they should.</span>
     <span data-lang="tl" class="lang-hidden">Ang mga dialysis session ay iyong lifeline, at maaaring mailagay sila sa panganib ng mga substance. Ang pag-inom o paggamit ay maaaring magpalampas sa iyo ng session, magpahuli, o magpaalis nang maaga — at delikado ang nalaktawang dialysis, na nagpapaipon ng likido at lason sa iyong katawan. Kung nagtuturok ka ng substance, may seryosong dagdag na panganib: maaaring pumasok ang bakterya sa iyong dugo at umabot sa iyong dialysis access (fistula, graft, o catheter), na nagdudulot ng impeksyon na mabilis kumalat at maaaring ikamatay. Sumasalungat din ang mga substance sa gamot na nagpapanatili sa iyo — ang iyong gamot sa presyon, phosphate binder, at ESA/EPO na iniksyon laban sa anemia ay maaaring tumigil sa tamang paggana.</span>
     <span data-lang="ceb" class="lang-hidden">Ang mga dialysis session imong lifeline, ug mahimong ibutang sila sa peligro sa mga substance. Ang pag-inom o paggamit makahimo nimong mawad-an og session, maulahi, o mobiya og sayo — ug delikado ang nalaktawang dialysis, nga magpatipon og likido ug hilo sa imong lawas. Kon mag-inject ka og substance, naay grabe nga dugang nga peligro: makasulod ang bakterya sa imong dugo ug makaabot sa imong dialysis access (fistula, graft, o catheter), nga makahatag og impeksyon nga paspas mokatag ug mahimong makamatay. Misumpaki usab ang mga substance sa tambal nga nagpabilin nimong lig-on — ang imong tambal sa presyon, phosphate binder, ug ESA/EPO nga injection batok sa anemia mahimong moundang sa hustong paglihok.</span>
     <span data-lang="kap" class="lang-hidden">Ding dialysis session, lifeline mo la, at malyari lang miyabe king delikadu da reng substance. Ing pamininum o pamagamit malyaring milampas ka king session, mira-tagal, o mira-alis nang maranun — at delikadu ing nalaktawan a dialysis, a magpa-tipun likido at lasun king kekang katawan. Nung magturuk kang substance, atin seryosung dagdag a delikadu: malyaring lungub ing bakterya king kekang daya at makaras king kekang dialysis access (fistula, graft, o catheter), a magkanta impeksyong malagua kumalat at malyaring ikamate. Susalangsang la rin deng substance king gamot a magpa-tatag kekayu — ing kekang gamot king presyon, phosphate binder, at ESA/EPO a injection laban king anemia malyaring tuknang king tamang pamagana.</span>
@@ -3806,5 +3817,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -139,6 +140,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1307,8 +1316,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1855,7 +1866,7 @@
 </section>
 
 <!-- ═══ NAV STRIP ══════════════════════════════════════════════════════════ -->
-<nav class="nav-strip" aria-label="Guide sections">
+<nav class="nav-strip">
   <div class="nav-pills">
     <a class="nav-pill" href="#rights">Your Rights</a>
     <a class="nav-pill" href="#why-critical">Why This Matters</a>
@@ -1887,7 +1898,7 @@
 
     <div class="illus-wrap illus-wrap-light" style="margin-top:32px;">
       <img fetchpriority="high" loading="eager" src="../images/hd-transfer-guide-hero.webp" alt="Filipino nephrologist and dialysis nurse performing a professional patient handoff at a Philippine hemodialysis center" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:10px;"/ width="1024" height="1024">
-      <span class="illus-caption">A planned, documented HD transfer ensures continuity of care — and protects your life. Filipino nephrologist teams coordinating a safe patient endorsement at a Philippine dialysis center.</span>
+      <span class="illus-caption">A planned, documented hemodialysis (HD) transfer ensures continuity of care — and protects your life. Filipino nephrologist teams coordinating a safe patient endorsement at a Philippine dialysis center.</span>
     </div>
   </div>
 </section>
@@ -1977,7 +1988,7 @@
           <li><span data-lang="en">Vascular access type and history</span><span data-lang="tl" class="lang-hidden">Uri at kasaysayan ng vascular access</span><span data-lang="ceb" class="lang-hidden">Klase ug kasaysayan sa vascular access</span><span data-lang="kap" class="lang-hidden">Uri at kasaysayan ning vascular access</span></li>
           <li><span data-lang="en">Known access problems</span><span data-lang="tl" class="lang-hidden">Mga kilalang problema sa access</span><span data-lang="ceb" class="lang-hidden">Mga nahibaw-ang problema sa access</span><span data-lang="kap" class="lang-hidden">Mga kilalang problema sa access</span></li>
           <li><span data-lang="en">Recent complications</span><span data-lang="tl" class="lang-hidden">Kamakailang mga komplikasyon</span><span data-lang="ceb" class="lang-hidden">Bag-ong mga komplikasyon</span><span data-lang="kap" class="lang-hidden">Kamakaailang mga komplikasyon</span></li>
-          <li><span data-lang="en">PhilHealth utilization status</span><span data-lang="tl" class="lang-hidden">Katayuan ng paggamit ng PhilHealth</span><span data-lang="ceb" class="lang-hidden">Status sa paggamit sa PhilHealth</span><span data-lang="kap" class="lang-hidden">Katayuan ning paggamit ning PhilHealth</span></li>
+          <li><span data-lang="en">PhilHealth (Philippine Health Insurance Corporation) utilization status</span><span data-lang="tl" class="lang-hidden">Katayuan ng paggamit ng PhilHealth</span><span data-lang="ceb" class="lang-hidden">Status sa paggamit sa PhilHealth</span><span data-lang="kap" class="lang-hidden">Katayuan ning paggamit ning PhilHealth</span></li>
         </ul>
       </div>
     </div>
@@ -2035,7 +2046,7 @@
     <div class="psn-box">
       <div class="psn-box-icon">📋</div>
       <div class="psn-box-body">
-        <h3>PSN Hemodialysis Patient's Endorsement Form (HPEF)</h3>
+        <h3><span data-lang="en">PSN Hemodialysis Patient's Endorsement Form (HPEF)</span><span data-lang="tl" class="lang-hidden">PSN Hemodialysis Patient's Endorsement Form (HPEF)</span><span data-lang="ceb" class="lang-hidden">PSN Hemodialysis Patient's Endorsement Form (HPEF)</span><span data-lang="kap" class="lang-hidden">PSN Hemodialysis Patient's Endorsement Form (HPEF)</span></h3>
         <p><span data-lang="en">The official transfer document recommended by the Philippine Society of Nephrology. Use this form whenever transferring between HD centers, changing nephrologists, or arranging temporary dialysis while traveling.</span><span data-lang="tl" class="lang-hidden">Ang opisyal na transfer document na inirerekomenda ng Philippine Society of Nephrology. Gamitin ang form na ito tuwing maglilipat sa pagitan ng mga HD center, magpapalit ng nephrologist, o mag-aayos ng pansamantalang dialysis habang naglalakbay.</span><span data-lang="ceb" class="lang-hidden">Ang opisyal nga transfer document nga girekomendar sa Philippine Society of Nephrology. Gamiton kini nga form sa matag pagbalhin tali sa mga HD center, pagbag-o sa nephrologist, o pag-arrange og temporaryong dialysis samtang nagbiyahe.</span><span data-lang="kap" class="lang-hidden">Ing opisyal a transfer document na inirerekomenda ning Philippine Society of Nephrology. Gamitin ing form na iti tuwing maglilipat sa pagitan ning mga HD center, magpapalit ning nephrologist, o mag-aayos ning pansamantalang dialysis habang naglalakbay.</span></p>
         <p><span data-lang="en">A fillable PDF copy of the form is available for download. Bring it to your current nephrologist and ask them to complete it before your transfer.</span><span data-lang="tl" class="lang-hidden">Isang fillable PDF na kopya ng form ay available para i-download. Dalhin ito sa iyong kasalukuyang nephrologist at hilingin sa kanila na kumpletuhin bago ang iyong paglilipat.</span><span data-lang="ceb" class="lang-hidden">Usa ka fillable PDF nga kopya sa form available para i-download. Dad-on kini sa imong kasamtangang nephrologist ug pangayoa nga kumpletuhin sa wala pa ang imong pagbalhin.</span><span data-lang="kap" class="lang-hidden">Metung a fillable PDF a kopya ning form ay available para i-download. Dalhin iti sa iyong kasalukuyang nephrologist at hingin la na kumpletuhin bago ing iyong paglilipat.</span></p>
         <a href="../downloads/psn-hd-endorsement-form.pdf" download target="_blank" rel="noopener">
@@ -2076,7 +2087,7 @@
         <ul>
           <li><span data-lang="en">HBsAg status</span><span data-lang="tl" class="lang-hidden">Katayuan ng HBsAg</span><span data-lang="ceb" class="lang-hidden">Status sa HBsAg</span><span data-lang="kap" class="lang-hidden">Katayuan ning HBsAg</span></li>
           <li><span data-lang="en">Anti-HBs status</span><span data-lang="tl" class="lang-hidden">Katayuan ng Anti-HBs</span><span data-lang="ceb" class="lang-hidden">Status sa Anti-HBs</span><span data-lang="kap" class="lang-hidden">Katayuan ning Anti-HBs</span></li>
-          <li><span data-lang="en">Anti-HCV status</span><span data-lang="tl" class="lang-hidden">Katayuan ng Anti-HCV</span><span data-lang="ceb" class="lang-hidden">Status sa Anti-HCV</span><span data-lang="kap" class="lang-hidden">Katayuan ning Anti-HCV</span></li>
+          <li><span data-lang="en">Anti-HCV (hepatitis C virus) status</span><span data-lang="tl" class="lang-hidden">Katayuan ng Anti-HCV</span><span data-lang="ceb" class="lang-hidden">Status sa Anti-HCV</span><span data-lang="kap" class="lang-hidden">Katayuan ning Anti-HCV</span></li>
           <li><span data-lang="en">Hepatitis vaccination history</span><span data-lang="tl" class="lang-hidden">Kasaysayan ng bakuna sa hepatitis</span><span data-lang="ceb" class="lang-hidden">Kasaysayan sa bakuna batok hepatitis</span><span data-lang="kap" class="lang-hidden">Kasaysayan ning bakuna keng hepatitis</span></li>
         </ul>
       </div>
@@ -2231,7 +2242,7 @@
               <h4>🧪 <span data-lang="en">Laboratory Results</span><span data-lang="tl" class="lang-hidden">Mga Resulta sa Laboratoryo</span><span data-lang="ceb" class="lang-hidden">Mga Resulta sa Laboratoryo</span><span data-lang="kap" class="lang-hidden">Mga Resulta keng Laboratoryo</span></h4>
               <ul>
                 <li><span data-lang="en">CBC (complete blood count)</span><span data-lang="tl" class="lang-hidden">CBC (kumpletong bilang ng dugo)</span><span data-lang="ceb" class="lang-hidden">CBC (complete blood count)</span><span data-lang="kap" class="lang-hidden">CBC (kumpletong bilang ning daga)</span></li>
-                <li><span data-lang="en">BUN and creatinine</span><span data-lang="tl" class="lang-hidden">BUN at creatinine</span><span data-lang="ceb" class="lang-hidden">BUN ug creatinine</span><span data-lang="kap" class="lang-hidden">BUN at creatinine</span></li>
+                <li><span data-lang="en">BUN (blood urea nitrogen) and creatinine</span><span data-lang="tl" class="lang-hidden">BUN at creatinine</span><span data-lang="ceb" class="lang-hidden">BUN ug creatinine</span><span data-lang="kap" class="lang-hidden">BUN at creatinine</span></li>
                 <li><span data-lang="en">Sodium, potassium</span><span data-lang="tl" class="lang-hidden">Sodium, potassium</span><span data-lang="ceb" class="lang-hidden">Sodium, potassium</span><span data-lang="kap" class="lang-hidden">Sodium, potassium</span></li>
                 <li><span data-lang="en">Calcium, phosphorus</span><span data-lang="tl" class="lang-hidden">Calcium, phosphorus</span><span data-lang="ceb" class="lang-hidden">Calcium, phosphorus</span><span data-lang="kap" class="lang-hidden">Calcium, phosphorus</span></li>
                 <li><span data-lang="en">Albumin</span><span data-lang="tl" class="lang-hidden">Albumin</span><span data-lang="ceb" class="lang-hidden">Albumin</span><span data-lang="kap" class="lang-hidden">Albumin</span></li>
@@ -2250,7 +2261,7 @@
               <h4>📋 <span data-lang="en">Administrative</span><span data-lang="tl" class="lang-hidden">Administratibo</span><span data-lang="ceb" class="lang-hidden">Administratibo</span><span data-lang="kap" class="lang-hidden">Administratibo</span></h4>
               <ul>
                 <li><span data-lang="en">Valid government-issued ID</span><span data-lang="tl" class="lang-hidden">Valid na ID na ibinigay ng gobyerno</span><span data-lang="ceb" class="lang-hidden">Valid nga government-issued ID</span><span data-lang="kap" class="lang-hidden">Valid na ID mibigay ning gobyerno</span></li>
-                <li><span data-lang="en">Senior Citizen or PWD ID (if applicable)</span><span data-lang="tl" class="lang-hidden">Senior Citizen o PWD ID (kung applicable)</span><span data-lang="ceb" class="lang-hidden">Senior Citizen o PWD ID (kung applicable)</span><span data-lang="kap" class="lang-hidden">Senior Citizen o PWD ID (kung applicable)</span></li>
+                <li><span data-lang="en">Senior Citizen or PWD (person with disability) ID (if applicable)</span><span data-lang="tl" class="lang-hidden">Senior Citizen o PWD ID (kung applicable)</span><span data-lang="ceb" class="lang-hidden">Senior Citizen o PWD ID (kung applicable)</span><span data-lang="kap" class="lang-hidden">Senior Citizen o PWD ID (kung applicable)</span></li>
                 <li><span data-lang="en">PhilHealth ID and MDR</span><span data-lang="tl" class="lang-hidden">PhilHealth ID at MDR</span><span data-lang="ceb" class="lang-hidden">PhilHealth ID ug MDR</span><span data-lang="kap" class="lang-hidden">PhilHealth ID at MDR</span></li>
                 <li><span data-lang="en">Consent for release of records</span><span data-lang="tl" class="lang-hidden">Pahintulot para sa pagpapalabas ng mga rekord</span><span data-lang="ceb" class="lang-hidden">Consent para sa pagpagawas sa mga rekord</span><span data-lang="kap" class="lang-hidden">Pahintulot para king pagpalabas ning mga rekord</span></li>
               </ul>
@@ -2379,7 +2390,7 @@
 
     <div class="reg-card">
       <h4><span data-lang="en">DOH (Department of Health) — Dialysis Center Licensing</span><span data-lang="tl" class="lang-hidden">DOH (Kagawaran ng Kalusugan) — Lisensya ng Sentro ng Dialysis</span><span data-lang="ceb" class="lang-hidden">DOH (Department of Health) — Lisensya sa Sentro sa Dialysis</span><span data-lang="kap" class="lang-hidden">DOH (Kagawaran ning Kalusugan) — Lisensya ning Sentro ning Dialysis</span></h4>
-      <p><span data-lang="en">All hemodialysis facilities in the Philippines must be DOH-licensed under <strong>DOH Administrative Order 2012-0001</strong>, which sets standards for safe and effective hemodialysis care. Before transferring, verify that your receiving center is currently licensed and compliant. A DOH-licensed center will have proper staffing, equipment, and infection-control procedures. Reference: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span><span data-lang="tl" class="lang-hidden">Lahat ng pasilidad ng hemodialysis sa Pilipinas ay dapat may lisensya ng DOH sa ilalim ng <strong>DOH Administrative Order 2012-0001</strong>, na nagtatakda ng mga pamantayan para sa ligtas at epektibong pag-aalaga ng hemodialysis. Bago lumipat, tiyakin na ang iyong tatanggap na sentro ay may kasalukuyang lisensya at sumusunod. Ang sentro na may lisensya ng DOH ay magkakaroon ng tamang kawani, kagamitan, at mga pamamaraan ng kontrol ng impeksyon. Sanggunian: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span><span data-lang="ceb" class="lang-hidden">Ang tanan nga mga pasilidad sa hemodialysis sa Pilipinas kinahanglan DOH-licensed ubos sa <strong>DOH Administrative Order 2012-0001</strong>, nga nagtakda sa mga pamantayan alang sa luwas ug epektibong pag-atiman sa hemodialysis. Sa wala pa magbalhin, pamatud-i nga ang imong receiving center karon nga adunay lisensya ug compliant. Ang sentro nga DOH-licensed adunay hustong kawani, kagamitan, ug mga pamamaraan sa kontrol sa impeksyon. Reperensya: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span><span data-lang="kap" class="lang-hidden">Lahat ning mga pasilidad ning hemodialysis king Pilipinas kailangan DOH-licensed ubos king <strong>DOH Administrative Order 2012-0001</strong>, na nagtakda ning mga pamantayan para king ligtas at epektibong pag-aalaga ning hemodialysis. Bago lumipat, tiyakin na ing iyung tatanggap na sentro adwang kasalukuyang lisensya at sumusunod. Ing sentro na adwang lisensya ning DOH adwang tamang kawani, kagamitan, at mga pamamaraan ning kontrol ning impeksyon. Sanggunian: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span></p>
+      <p><span data-lang="en">All hemodialysis facilities in the Philippines must be Department of Health (DOH)-licensed under <strong>DOH Administrative Order 2012-0001</strong>, which sets standards for safe and effective hemodialysis care. Before transferring, verify that your receiving center is currently licensed and compliant. A DOH-licensed center will have proper staffing, equipment, and infection-control procedures. Reference: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span><span data-lang="tl" class="lang-hidden">Lahat ng pasilidad ng hemodialysis sa Pilipinas ay dapat may lisensya ng DOH sa ilalim ng <strong>DOH Administrative Order 2012-0001</strong>, na nagtatakda ng mga pamantayan para sa ligtas at epektibong pag-aalaga ng hemodialysis. Bago lumipat, tiyakin na ang iyong tatanggap na sentro ay may kasalukuyang lisensya at sumusunod. Ang sentro na may lisensya ng DOH ay magkakaroon ng tamang kawani, kagamitan, at mga pamamaraan ng kontrol ng impeksyon. Sanggunian: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span><span data-lang="ceb" class="lang-hidden">Ang tanan nga mga pasilidad sa hemodialysis sa Pilipinas kinahanglan DOH-licensed ubos sa <strong>DOH Administrative Order 2012-0001</strong>, nga nagtakda sa mga pamantayan alang sa luwas ug epektibong pag-atiman sa hemodialysis. Sa wala pa magbalhin, pamatud-i nga ang imong receiving center karon nga adunay lisensya ug compliant. Ang sentro nga DOH-licensed adunay hustong kawani, kagamitan, ug mga pamamaraan sa kontrol sa impeksyon. Reperensya: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span><span data-lang="kap" class="lang-hidden">Lahat ning mga pasilidad ning hemodialysis king Pilipinas kailangan DOH-licensed ubos king <strong>DOH Administrative Order 2012-0001</strong>, na nagtakda ning mga pamantayan para king ligtas at epektibong pag-aalaga ning hemodialysis. Bago lumipat, tiyakin na ing iyung tatanggap na sentro adwang kasalukuyang lisensya at sumusunod. Ing sentro na adwang lisensya ning DOH adwang tamang kawani, kagamitan, at mga pamamaraan ning kontrol ning impeksyon. Sanggunian: <a href="https://www.doh.gov.ph" target="_blank" rel="noopener">doh.gov.ph</a></span></p>
     </div>
 
     <div class="reg-card">
@@ -2822,5 +2833,6 @@ function setGuideLang(lang) {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

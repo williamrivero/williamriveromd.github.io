@@ -10,11 +10,17 @@
 <meta property="og:image" content="https://renalcarematters.com/images/thalassemia-ckd-og.png"/>
 <meta property="og:image:width" content="1731"/>
 <meta property="og:image:height" content="909"/>
-<meta property="og:image:alt" content="Thalassemia and Kidney Disease — williamriveromd.com"/>
+<meta property="og:image:alt" content="Thalassemia and Kidney Disease — Renal Care Matters"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2026-06-23T04:42:42+08:00">
 <meta property="article:modified_time" content="2026-05-01T00:00:00+08:00">
 <link rel="canonical" href="https://renalcarematters.com/guides/thalassemia-ckd.html"/>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
@@ -126,6 +132,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1294,8 +1308,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1815,8 +1831,8 @@ try{(function(){var v=localStorage.getItem('wgmr-thalassemia-ckd-mode');if(v===n
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -2097,7 +2113,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thalassemia-ckd-mode');if(v===n
         <p class="fig-desc">Two separate pathways — iron overload (rust-like tubular deposits) and chronic low oxygen (renal hypoxia and fibrosis) — both lead to worsening CKD over time.</p>
         <dl class="fig-abbrevs">
           <dt>CKD</dt><dd>Chronic Kidney Disease</dd>
-          <dt>eGFR</dt><dd>Estimated Glomerular Filtration Rate</dd>
+          <dt>eGFR</dt><dd>(Estimated Glomerular Filtration Rate)</dd>
           <dt>NTBI</dt><dd>Non-Transferrin-Bound Iron</dd>
         </dl>
       </figcaption>
@@ -2150,7 +2166,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thalassemia-ckd-mode');if(v===n
         </thead>
         <tbody>
           <tr>
-            <td><strong>CBC / Hemoglobin</strong></td>
+            <td><strong>CBC (Complete Blood Count) / Hemoglobin</strong></td>
             <td><span data-lang="en">Red blood cell count &amp; oxygen-carrying protein</span><span data-lang="tl" class="lang-hidden">Bilang ng pulang selula at protina na nagdadala ng oxygen</span><span data-lang="ceb" class="lang-hidden">Ihap sa pula nga selula ug protina nga nagdala sa oxygen</span><span data-lang="kap" class="lang-hidden">Bilang ning mararuang selula at protina a nagdadala ning oxygen</span></td>
             <td><span data-lang="en">Often low due to both thalassemia AND CKD — hard to separate</span><span data-lang="tl" class="lang-hidden">Madalas mababa dahil sa talasemya AT CKD — mahirap paghiwalayin</span><span data-lang="ceb" class="lang-hidden">Kasagaran ubos tungod sa talasemya UG CKD — lisod ibulag</span><span data-lang="kap" class="lang-hidden">Madalas baba tungkul king talasemya AT CKD — mahirap paghiwalayin</span></td>
           </tr>
@@ -2165,7 +2181,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thalassemia-ckd-mode');if(v===n
             <td><span data-lang="en">Often <strong>high</strong> in thalassemia — NOT the same as iron deficiency. Do NOT give iron if ferritin is high.</span><span data-lang="tl" class="lang-hidden">Madalas <strong>mataas</strong> sa talasemya — HINDI katulad ng kakulangan ng iron. HUWAG bigyan ng iron kung mataas ang ferritin.</span><span data-lang="ceb" class="lang-hidden">Kasagaran <strong>taas</strong> sa talasemya — DILI sama sa kakulang sa iron. AYAW ibhatag og iron kung taas ang ferritin.</span><span data-lang="kap" class="lang-hidden">Madalas <strong>mataas</strong> king talasemya — HINDI kapareho ning kakulangan ning iron. HUWAG bigyan ning iron kung mataas ing ferritin.</span></td>
           </tr>
           <tr>
-            <td><strong>HbA1c</strong></td>
+            <td><strong>HbA1c (glycated hemoglobin)</strong></td>
             <td><span data-lang="en">3-month blood sugar average — used for diabetes monitoring</span><span data-lang="tl" class="lang-hidden">3-buwang average ng asukal sa dugo — ginagamit para sa pagsubaybay ng diabetes</span><span data-lang="ceb" class="lang-hidden">3-buwang average sa asukar sa dugo — gigamit alang sa pag-monitor sa diabetes</span><span data-lang="kap" class="lang-hidden">3-buwang average ning asukal king dugo — ginagamit para king pag-monitor ning diabetes</span></td>
             <td><span class="warn-badge">Unreliable</span>
             <span data-lang="en"> — falsely low in thalassemia. Use <strong>fructosamine</strong> instead.</span>
@@ -2198,7 +2214,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thalassemia-ckd-mode');if(v===n
         <dl class="fig-abbrevs">
           <dt>HPLC</dt><dd>High-Performance Liquid Chromatography — required to measure HbA2</dd>
           <dt>HbA2</dt><dd>Hemoglobin A2 — elevated (&gt;3.5%) in β-thalassemia trait</dd>
-          <dt>TSAT</dt><dd>Transferrin Saturation — iron transport marker</dd>
+          <dt>TSAT</dt><dd>(Transferrin Saturation) — iron transport marker</dd>
           <dt>eGFR</dt><dd>Estimated Glomerular Filtration Rate — kidney filtering ability</dd>
         </dl>
       </figcaption>
@@ -2454,7 +2470,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thalassemia-ckd-mode');if(v===n
         <span data-lang="ceb" class="lang-hidden">Disclaimer:</span>
         <span data-lang="kap" class="lang-hidden">Disclaimer:</span>
       </strong>
-      <span data-lang="en"> This guide is for patient education only and does not replace individual medical advice. Always consult Dr. Rivero or your treating physician before making any changes to your treatment. References: TIF Guidelines 5th Ed. 2025 · KDIGO 2024 CKD Anemia · KDIGO 2017 CKD-MBD · GeneReviews β-Thalassemia (Feb 2026).</span>
+      <span data-lang="en"> This guide is for patient education only and does not replace individual medical advice. Always consult Dr. Rivero or your treating physician before making any changes to your treatment. References: TIF Guidelines 5th Ed. 2025 · KDIGO (Kidney Disease: Improving Global Outcomes) 2024 CKD Anemia · KDIGO 2017 CKD-MBD (chronic kidney disease–mineral and bone disorder) · GeneReviews β-Thalassemia (Feb 2026).</span>
       <span data-lang="tl" class="lang-hidden"> Ang gabay na ito ay para sa edukasyon ng pasyente lamang at hindi pumapalit sa indibidwal na medikal na payo. Laging kumonsulta kay Dr. Rivero o sa iyong manggagamot bago gumawa ng anumang pagbabago sa iyong paggamot.</span>
       <span data-lang="ceb" class="lang-hidden"> Kining giya alang sa edukasyon sa pasyente lamang ug dili makapuli sa indibidwal nga medikal nga tambag. Kanunay konsultaha si Dr. Rivero o ang imong manggagamot sa wala pa maghimo og bisan unsang pagbabag-o sa imong pagtambal.</span>
       <span data-lang="kap" class="lang-hidden"> Ing gabay na iti para king edukasyon ning pasyente la at ali pumapalit king indibidwal na medikal na payo. Lagi kumonsulta king Dr. Rivero o king doktor mu bago gumawa ning anung pagbabago king paggamot mu.</span>
@@ -3086,5 +3102,6 @@ function toggleDesktop(){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

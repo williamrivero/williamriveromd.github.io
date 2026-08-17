@@ -11,6 +11,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -984,6 +985,7 @@
     <li><a href="/guides/">Health Guides</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#specialties">Specialties</a></li>
+    <li><a href="#voices">Kind Words</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#contact">Clinics</a></li>
     <li><a href="#appointment" class="nav-cta">Book Appointment</a></li>
@@ -1429,6 +1431,324 @@
     </div>
   </div>
 </section>
+
+<!-- KIND WORDS -->
+<style>
+  .voices { background: white; }
+  html[data-theme="dark"] .voices { background: #0f1520; }
+  .voices-trust {
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 8px;
+    margin-top: 16px;
+    font-size: 13px; font-weight: 600; color: var(--muted);
+  }
+  .voices-trust .stars { color: var(--gold); letter-spacing: 2px; font-size: 15px; }
+  /* Masonry "quote wall" — every voice visible at once, mixed lengths pack naturally */
+  .voices-wall {
+    column-count: 3;
+    column-gap: 20px;
+    margin-top: 30px;
+  }
+  @media (max-width: 900px) { .voices-wall { column-count: 2; } }
+  @media (max-width: 600px) { .voices-wall { column-count: 1; } }
+  .voice-card {
+    position: relative;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--teal);
+    border-radius: 14px;
+    padding: 30px 26px 22px;
+    margin: 0 0 20px;
+  }
+  .voice-card.peer { border-left-color: var(--gold); }
+  html[data-theme="dark"] .voice-card { background: #141c2a; }
+  /* "Rising" scroll reveal — only active when JS adds .js-rise (cards stay visible without JS) */
+  .voices-wall.js-rise .voice-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .6s ease, transform .7s cubic-bezier(.22,.61,.36,1);
+    will-change: opacity, transform;
+  }
+  .voices-wall.js-rise .voice-card.rise-in {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .voices-wall.js-rise .voice-card {
+      opacity: 1 !important; transform: none !important; transition: none !important;
+    }
+  }
+  .voice-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 60px;
+    line-height: 1;
+    color: var(--teal);
+    opacity: .22;
+    position: absolute;
+    top: 10px; right: 18px;
+    pointer-events: none;
+  }
+  .voice-card.peer .voice-mark { color: var(--gold); }
+  .voice-body { position: relative; z-index: 1; }
+  .voice-body p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--navy);
+    font-weight: 400;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+  html[data-theme="dark"] .voice-body p { color: #dbe2ec; }
+  .voice-body p:last-of-type { margin-bottom: 0; }
+  .voice-stars {
+    color: var(--gold); font-size: 13px; letter-spacing: 2px;
+    margin-top: 16px;
+  }
+  .voice-attrib {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .voice-avatar {
+    width: 40px; height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 600;
+    letter-spacing: .04em;
+  }
+  .voice-card.peer .voice-avatar { background: var(--gold); }
+  .voice-name { font-size: 14px; font-weight: 600; color: var(--navy); }
+  html[data-theme="dark"] .voice-name { color: #e8eaf0; }
+  .voice-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .voice-note {
+    font-size: 12px; color: var(--muted);
+    margin-top: 24px; line-height: 1.6; font-style: italic; text-align: center;
+    max-width: 760px; margin-left: auto; margin-right: auto;
+  }
+  @media (max-width: 600px) {
+    .voice-card { padding: 28px 22px 20px; }
+    .voice-mark { font-size: 52px; }
+    .voice-body p { font-size: 17px; }
+  }
+</style>
+<section class="voices" id="voices">
+  <div class="section-inner">
+    <div class="section-eyebrow">Kind Words</div>
+    <h2 class="section-title">In their own words</h2>
+    <p class="section-sub">
+      A few reflections from patients, their families, and referring colleagues.
+    </p>
+    <div class="voices-trust">
+      <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+      <span>Rated 5.0 / 5 across recent verified consultations on SeriousMD</span>
+    </div>
+
+    <div class="voices-wall">
+
+      <figure class="voice-card">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>Doc, I just finished reading the meal plan.</p>
+          <p>Thank you for taking the time to prepare such a thoughtful treatment plan. I honestly became emotional reading it. Over the past few months, I've felt like I've had to constantly explain what I've been experiencing with my IgA nephropathy and the effects of high-dose prednisone. Many people, with good intentions, have told me to simply eat less because of the weight gain and swelling. Even I started questioning whether I was doing something wrong. For the first time since my diagnosis, I truly felt heard, understood, and believed.</p>
+          <p>Your compassion and the way you explained everything gave me hope and reassurance during a very difficult time. Thank you for treating me as a person, not just a patient.</p>
+          <p>I am incredibly grateful for your kindness and expertise.</p>
+        </blockquote>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">KS</div>
+          <div>
+            <div class="voice-name">KS</div>
+            <div class="voice-meta">Patient living with IgA nephropathy</div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="voice-card">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>I truly felt that he genuinely cared about my well-being&mdash;he didn't just prescribe medications&mdash;he took the time to explain why I needed them and what each one was for. That's something I really appreciate.</p>
+          <p>Most doctors simply review the lab results, prescribe medication, and that's the end of the consultation. I'm always grateful whenever I have the opportunity to be treated by a doctor who takes the time to educate and ensure I understand my condition and treatment.</p>
+        </blockquote>
+        <div class="voice-stars" aria-label="Rated 5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">&check;</div>
+          <div>
+            <div class="voice-name">Verified patient</div>
+            <div class="voice-meta">Online consultation via SeriousMD &middot; July 2026</div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="voice-card">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>Good evening po doc, salamat po sa magandang face to face check up kanina. Sobrang natuwa si daddy at mommy sa inyo. Ibang-iba daw po kayo sa dati niyang doctor na nagmamadali at napapagalitan siya.</p>
+        </blockquote>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">GE</div>
+          <div>
+            <div class="voice-name">GE</div>
+            <div class="voice-meta">Son of a patient</div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="voice-card peer">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>Doc Wil is very accommodating, knowledgeable, and incredibly helpful addressing my situation. In our conversation, he takes time to explain complex medical concepts in a way that is easy to understand. He listens attentively to my concerns and questions, providing thoughtful answers that alleviate my worries.</p>
+          <p>It's evident that [he] genuinely cares about his patients and is committed to their wellbeing. His expertise gives me confidence in the treatment plan we've established, and I feel empowered to take an active role in my health journey. Thanks Doc Wil!</p>
+        </blockquote>
+        <div class="voice-stars" aria-label="Rated 5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">&check;</div>
+          <div>
+            <div class="voice-name">Verified patient</div>
+            <div class="voice-meta">Online consultation via SeriousMD &middot; October 2024</div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="voice-card">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>Doc William is very concerned and accommodating not just with issues about my kidney but for my other related health concerns.</p>
+        </blockquote>
+        <div class="voice-stars" aria-label="Rated 5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">&check;</div>
+          <div>
+            <div class="voice-name">Verified patient</div>
+            <div class="voice-meta">Online consultation via SeriousMD &middot; April 2025</div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="voice-card peer">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>Thank you for your very kind referral. I had seen your patient, Mr. JE. I really appreciate the elaborate and detailed summary that allowed me to understand his case more clearly.</p>
+        </blockquote>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">JA</div>
+          <div>
+            <div class="voice-name">Dr. JA</div>
+            <div class="voice-meta">Urologist &middot; Referring colleague</div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="voice-card">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>The doctor gives clear instructions as well as explained each of the blood result values clearly.</p>
+        </blockquote>
+        <div class="voice-stars" aria-label="Rated 5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">&check;</div>
+          <div>
+            <div class="voice-name">Verified patient</div>
+            <div class="voice-meta">Online consultation via SeriousMD &middot; May 2026</div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="voice-card">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>Dr. William Rivero is always the best Doctor we know. Thank you so much for always taking care of us Doc. You are the best as always, very caring, hands on, approachable and foremost very kind, very knowledgeable and professional, we always feel safe and that we are in good hands.</p>
+          <p>God bless you more and always Doc. Stay safe, happy and healthy. Thank you so much. I highly recommend.</p>
+        </blockquote>
+        <div class="voice-stars" aria-label="Rated 5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">&check;</div>
+          <div>
+            <div class="voice-name">Verified patient's family</div>
+            <div class="voice-meta">In-person consultation via SeriousMD &middot; September 2024</div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="voice-card peer">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>Dr. Rivero was interested to learn more about lifestyles and medical history. Some doctors seldom ask.</p>
+        </blockquote>
+        <div class="voice-stars" aria-label="Rated 5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">&check;</div>
+          <div>
+            <div class="voice-name">Verified patient</div>
+            <div class="voice-meta">Online consultation via SeriousMD &middot; July 2026</div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="voice-card">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>Truly listens and makes you feel heard. Addressing every concern with empathy and patience. Taking the time to explain everything clearly and ensuring you felt comfortable throughout the process!</p>
+        </blockquote>
+        <div class="voice-stars" aria-label="Rated 5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">&check;</div>
+          <div>
+            <div class="voice-name">Verified patient</div>
+            <div class="voice-meta">Online consultation via SeriousMD &middot; January 2025</div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="voice-card peer">
+        <div class="voice-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="voice-body">
+          <p>Recommended ko si Doc ..ang ganda niyang mag explain well detailed talaga kung may 10 star lang ayun yung i rate ko sa kanya.</p>
+        </blockquote>
+        <div class="voice-stars" aria-label="Rated 5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <figcaption class="voice-attrib">
+          <div class="voice-avatar" aria-hidden="true">&check;</div>
+          <div>
+            <div class="voice-name">Verified patient</div>
+            <div class="voice-meta">Online consultation via SeriousMD &middot; February 2025</div>
+          </div>
+        </figcaption>
+      </figure>
+
+    </div>
+    <p class="voice-note">Shared with permission; initials used to protect privacy. Additional feedback was submitted anonymously by patients through the SeriousMD consultation platform and is published without identifying details. Individual experiences vary and are not a prediction of outcome for any other patient.</p>
+  </div>
+</section>
+<script>
+(function(){
+  var wall = document.querySelector('.voices-wall');
+  if (!wall) return;
+  var cards = Array.prototype.slice.call(wall.querySelectorAll('.voice-card'));
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Without IntersectionObserver support or with reduced motion, leave cards fully visible.
+  if (reduce || !('IntersectionObserver' in window)) return;
+  wall.classList.add('js-rise');
+  // Small, capped stagger so a card scrolled to on its own never sits blank for long.
+  cards.forEach(function(c, i){ c.style.transitionDelay = (Math.min(i, 5) * 60) + 'ms'; });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){
+        e.target.classList.add('rise-in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  cards.forEach(function(c){ io.observe(c); });
+})();
+</script>
 
 <section class="faq" id="faq">
   <div class="section-inner">

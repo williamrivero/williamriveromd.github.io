@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -142,6 +143,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1310,8 +1319,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -2332,7 +2343,7 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
       <div class="hero-copy">
         <div class="hero-badge-row">
           <span class="hbadge clin">⚕ Clinician &amp; Trainee Reference</span>
-          <span class="hbadge kdigo">ASN POCUS · KDIGO Aligned</span>
+          <span class="hbadge kdigo">ASN (American Society of Nephrology) POCUS · KDIGO (Kidney Disease: Improving Global Outcomes) Aligned</span>
           <span class="hbadge ph">Bedside · Four Domains</span>
         </div>
         <h1>Point-of-Care Ultrasound<br>in Nephrology</h1>
@@ -2379,10 +2390,10 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
     <div class="best-when">
       <h4>Best used when — at a glance</h4>
       <ul>
-        <li><strong>AKI workup:</strong> rule out post-renal obstruction (hydronephrosis, retention) before pursuing intrinsic causes.</li>
+        <li><strong>AKI (acute kidney injury) workup:</strong> rule out post-renal obstruction (hydronephrosis, retention) before pursuing intrinsic causes.</li>
         <li><strong>Volume status:</strong> replace "wet/dry" guesswork with IVC + VEXUS + lung B-lines + focused cardiac.</li>
         <li><strong>Dialysis prescription:</strong> set/refine dry weight, titrate ultrafiltration, surveil AV access.</li>
-        <li><strong>Procedural safety:</strong> US-guided central venous access, kidney biopsy, PD/peritoneal catheter siting.</li>
+        <li><strong>Procedural safety:</strong> US-guided central venous access, kidney biopsy, PD (peritoneal dialysis)/peritoneal catheter siting.</li>
         <li><em>See §6 — Integration: cross-organ hemodynamic phenotyping.</em></li>
       </ul>
     </div>
@@ -2505,7 +2516,7 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
 
     <div class="cb cb-amber">
       <h4>Decision point — AKI workup</h4>
-      <p>An obstructed (hydronephrotic) kidney or a high PVR converts the differential to <strong>post-renal AKI</strong> — <em>decompress first</em> (Foley / nephrostomy) before pursuing intrinsic causes. Absence of hydronephrosis does <strong>not</strong> fully exclude early or volume-depleted obstruction; rescan after rehydration or pursue CT urography if pre-test suspicion stays high.</p>
+      <p>An obstructed (hydronephrotic) kidney or a high PVR converts the differential to <strong>post-renal AKI</strong> — <em>decompress first</em> (Foley / nephrostomy) before pursuing intrinsic causes. Absence of hydronephrosis does <strong>not</strong> fully exclude early or volume-depleted obstruction; rescan after rehydration or pursue CT (computed tomography) urography if pre-test suspicion stays high.</p>
     </div>
 
     <figure class="illus-wrap illus-wrap-light" style="margin:18px 0 8px;">
@@ -2524,7 +2535,7 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
       <li><strong>Parapelvic cysts</strong> — clustered, round, do not communicate with the ureter; look for the cyst wall vs branched calyceal anatomy.</li>
       <li><strong>Full bladder / reflux</strong> — a distended bladder back-pressures the upper tract and falsely "creates" mild bilateral dilation. Rescan after catheter drainage.</li>
       <li><strong>Decompressed obstruction</strong> — early or volume-depleted obstruction may show minimal dilation; bowel gas commonly limits the left kidney.</li>
-      <li><strong>Renal cell carcinoma</strong> — a solid renal lesion is never a POCUS diagnosis; refer for contrast-enhanced CT/MRI.</li>
+      <li><strong>Renal cell carcinoma</strong> — a solid renal lesion is never a POCUS diagnosis; refer for contrast-enhanced CT/MRI (magnetic resonance imaging).</li>
     </ul>
 
     <div class="cb cb-teal">
@@ -2590,7 +2601,7 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
     </figure>
 
     <h3>3.2 VEXUS — Venous Excess Ultrasound grading</h3>
-    <p>VEXUS converts IVC plethora into a graded venous-congestion score by adding pulsed-wave Doppler of the <strong>hepatic vein</strong>, <strong>portal vein</strong>, and <strong>intrarenal vein</strong>. It tracks dynamically across hemodialysis ultrafiltration (ACUVEX cohort)<sup class="cite"><a href="#ref-5">5</a></sup> and predicts worsening renal function in acute heart failure<sup class="cite"><a href="#ref-6">6</a></sup> and the ICU AKI prevalence cohort.<sup class="cite"><a href="#ref-7">7</a></sup></p>
+    <p>VEXUS converts IVC plethora into a graded venous-congestion score by adding pulsed-wave Doppler of the <strong>hepatic vein</strong>, <strong>portal vein</strong>, and <strong>intrarenal vein</strong>. It tracks dynamically across hemodialysis ultrafiltration (ACUVEX cohort)<sup class="cite"><a href="#ref-5">5</a></sup> and predicts worsening renal function in acute heart failure<sup class="cite"><a href="#ref-6">6</a></sup> and the ICU (intensive care unit) AKI prevalence cohort.<sup class="cite"><a href="#ref-7">7</a></sup></p>
 
     <h4>Component Doppler severity</h4>
     <div class="table-wrap"><table class="gtab">
@@ -2639,7 +2650,7 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
     </div>
 
     <h3>3.3 Cross-organ link</h3>
-    <p>VEXUS is the sonographic face of cardiorenal syndrome (CRS) types 1 &amp; 2, and of hepatic congestion in the same patient. The unifying frame: <em>the kidney is an early victim of systemic venous congestion</em>. When VEXUS is paired with lung ultrasound (§4) and a focused echo, the volume status of the AHF or HD patient is mapped end-to-end at the bedside.</p>
+    <p>VEXUS is the sonographic face of cardiorenal syndrome (CRS) types 1 &amp; 2, and of hepatic congestion in the same patient. The unifying frame: <em>the kidney is an early victim of systemic venous congestion</em>. When VEXUS is paired with lung ultrasound (§4) and a focused echo, the volume status of the AHF or HD (hemodialysis) patient is mapped end-to-end at the bedside.</p>
 
     <!-- INLINE CALCULATORS — supporting tools for §3 -->
     <div class="calc-cards-wrap">
@@ -2655,7 +2666,7 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
         <a href="calc-idwg-fluid.html" class="calc-card">
           <div class="calc-card-icon">Δ</div>
           <div class="calc-card-body">
-            <div class="calc-card-title">IDWG &amp; UFR Targets</div>
+            <div class="calc-card-title">IDWG (interdialytic weight gain) &amp; UFR (ultrafiltration rate) Targets</div>
             <div class="calc-card-desc">Interdialytic weight gain &amp; weight-based UFR limits for the cardiorenal HD patient.</div>
           </div>
           <span class="calc-card-arrow">Open →</span>
@@ -2798,7 +2809,7 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
 
     <div class="cb cb-navy">
       <h4>Cross-organ link — access is the dialysis lifeline</h4>
-      <p>Early sonographic surveillance — a brief monthly look at flow, depth, and any focal velocity step-up — preserves AV access patency and pre-empts thrombosis. Every catheter avoided is a downstream CRBSI, central-vein stenosis, and hospitalization avoided.</p>
+      <p>Early sonographic surveillance — a brief monthly look at flow, depth, and any focal velocity step-up — preserves AV access patency and pre-empts thrombosis. Every catheter avoided is a downstream CRBSI (catheter-related bloodstream infection), central-vein stenosis, and hospitalization avoided.</p>
     </div>
 
     <!-- INLINE CALCULATORS — relevant tools for §5 -->
@@ -2851,7 +2862,7 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
     <div class="table-wrap"><table class="gtab">
       <thead><tr><th>Phenotype</th><th>POCUS signature</th><th>Action (guideline anchor)</th></tr></thead>
       <tbody>
-        <tr><td><strong>Congestive nephropathy / CRS-1/2</strong></td><td>Plethoric IVC, VEXUS 2–3, ≥ 3 B-lines per zone in multiple zones, ± reduced LV function</td><td><em>Decongest</em> — loop diuretic ± ultrafiltration; reassess by falling VEXUS / B-line burden. SGLT2 inhibitor where indicated (KDIGO 2024 / ADA / ACC).</td></tr>
+        <tr><td><strong>Congestive nephropathy / CRS-1/2</strong></td><td>Plethoric IVC, VEXUS 2–3, ≥ 3 B-lines per zone in multiple zones, ± reduced LV function</td><td><em>Decongest</em> — loop diuretic ± ultrafiltration; reassess by falling VEXUS / B-line burden. SGLT2 (sodium–glucose cotransporter-2) inhibitor where indicated (KDIGO 2024 / ADA / ACC).</td></tr>
         <tr><td><strong>True hypovolemia / pre-renal</strong></td><td>Small, collapsible IVC; dry lungs (A-pattern); hyperdynamic LV ("kissing walls")</td><td><em>Volume resuscitation</em> (balanced crystalloid), reassess dynamically; stop pressors that mask the deficit.</td></tr>
         <tr><td><strong>Obstructive / post-renal AKI</strong></td><td>Hydronephrosis ± high PVR (full bladder)</td><td><em>Decompress first</em> (Foley / nephrostomy) — then revisit the intrinsic workup.</td></tr>
         <tr><td><strong>Cardiorenal with pump failure</strong></td><td>Reduced LV, B-lines, high VEXUS, possibly pericardial effusion</td><td><em>Decongest + neurohormonal therapy</em> (ARNI/MRA/SGLT2i per ACC/AHA HF); avoid the reflex fluid bolus.</td></tr>
@@ -2906,7 +2917,7 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
     <h3>7.4 Governance — a departmental POCUS committee</h3>
     <ul>
       <li>Owns credentialing criteria and the privileging pathway.</li>
-      <li>Runs QA image review (random audits of archived studies).</li>
+      <li>Runs QA (Quality Assurance) image review (random audits of archived studies).</li>
       <li>Maintains the curriculum and the institutional protocol pack (probe disinfection, archiving, reporting language).</li>
       <li>Mirrors published ASN recommendations for nephrology POCUS programs.<sup class="cite"><a href="#ref-2">2</a></sup></li>
     </ul>
@@ -2989,19 +3000,19 @@ html[data-theme="dark"] .calc-card-arrow { color: #5dcdd5; }
         <tr><td><strong>AHF</strong></td><td>Acute Heart Failure</td><td>Rapid onset/worsening of HF signs/symptoms requiring urgent therapy.</td></tr>
         <tr><td><strong>HF / HFrEF / HFpEF</strong></td><td>Heart Failure / reduced / preserved EF</td><td>Reduced (LVEF ≤ 40%) vs preserved (LVEF ≥ 50%) ejection fraction.</td></tr>
         <tr><td><strong>CRS-1 / CRS-2</strong></td><td>Cardiorenal Syndrome types 1, 2</td><td>Acute (1) or chronic (2) cardiac dysfunction driving renal dysfunction — VEXUS is its sonographic face.</td></tr>
-        <tr><td><strong>LVH</strong></td><td>Left Ventricular Hypertrophy</td><td>Wall thickening of the LV, often driven by hypertension or volume overload.</td></tr>
+        <tr><td><strong>LVH (left ventricular hypertrophy)</strong></td><td>Left Ventricular Hypertrophy</td><td>Wall thickening of the LV, often driven by hypertension or volume overload.</td></tr>
         <tr><td><strong>LV / RV / LA / RA</strong></td><td>Left / Right Ventricle, Atrium</td><td>The four cardiac chambers as labeled on every echo window.</td></tr>
         <tr><td><strong>EF</strong></td><td>Ejection Fraction</td><td>Stroke volume ÷ end-diastolic volume — "eyeball" on POCUS, quantified on formal echo.</td></tr>
         <tr><td><strong>RAP</strong></td><td>Right Atrial Pressure</td><td>Pressure in the RA; estimated from IVC diameter + respiratory variation (§3).</td></tr>
         <tr><td><strong>TR</strong></td><td>Tricuspid Regurgitation</td><td>Backward flow across the tricuspid valve — a confounder of IVC interpretation.</td></tr>
         <tr><td><strong>HD</strong></td><td>Hemodialysis</td><td>Extracorporeal renal-replacement therapy by diffusion ± convection.</td></tr>
-        <tr><td><strong>PD</strong></td><td>Peritoneal Dialysis</td><td>RRT using the peritoneum as the dialysis membrane.</td></tr>
-        <tr><td><strong>IDH</strong></td><td>Intradialytic Hypotension</td><td>BP drop during HD; mechanism-mapped to refilling, tonicity, tone, or cardiac reserve.</td></tr>
+        <tr><td><strong>PD</strong></td><td>Peritoneal Dialysis</td><td>RRT (renal replacement therapy) using the peritoneum as the dialysis membrane.</td></tr>
+        <tr><td><strong>IDH (intradialytic hypotension)</strong></td><td>Intradialytic Hypotension</td><td>BP drop during HD; mechanism-mapped to refilling, tonicity, tone, or cardiac reserve.</td></tr>
         <tr><td><strong>UF / UFR</strong></td><td>Ultrafiltration / Ultrafiltration Rate</td><td>Convective fluid removal during HD; UFR usually expressed in mL/kg/hr.</td></tr>
         <tr><td><strong>IDWG</strong></td><td>Interdialytic Weight Gain</td><td>Weight gained between HD sessions, mostly fluid.</td></tr>
         <tr><td><strong>CRBSI</strong></td><td>Catheter-Related Bloodstream Infection</td><td>Bacteremia attributable to an intravascular catheter.</td></tr>
         <tr><td><strong>IJ</strong></td><td>Internal Jugular (vein)</td><td>The preferred US-guided central venous access site.</td></tr>
-        <tr><td><strong>AVF / AVG</strong></td><td>Arteriovenous Fistula / Graft</td><td>Surgical (AVF) or prosthetic (AVG) anastomosis used for HD access.</td></tr>
+        <tr><td><strong>AVF (arteriovenous fistula) / AVG (arteriovenous graft)</strong></td><td>Arteriovenous Fistula / Graft</td><td>Surgical (AVF) or prosthetic (AVG) anastomosis used for HD access.</td></tr>
         <tr><td><strong>KDIGO</strong></td><td>Kidney Disease: Improving Global Outcomes</td><td>International nephrology guideline body (AKI, CKD, BP, AKI/AKD, diabetes, etc.).</td></tr>
         <tr><td><strong>ACC / AHA</strong></td><td>American College of Cardiology / Heart Association</td><td>U.S. cardiology guideline bodies (HF, AHF, pericardial disease).</td></tr>
         <tr><td><strong>ADA</strong></td><td>American Diabetes Association</td><td>Diabetes guideline body — SGLT2i indications in CKD/HF.</td></tr>
@@ -3306,5 +3317,6 @@ function setGuideLang(lang) { localStorage.setItem(GLANG_KEY, lang); }
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>
