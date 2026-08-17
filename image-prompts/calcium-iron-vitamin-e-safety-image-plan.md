@@ -139,7 +139,7 @@ Hands must be anatomically correct with exactly five fingers each — no extra o
     fingers, plastic skin, visual clutter, tiny unreadable text, chaotic infographic density,
     rainbow gradients, neon colors, fear-inducing imagery, stock-photo corporate aesthetic,
     dosing numbers, brand names, uneven grid, floating elements without containers.
-    Include a small "williamriveromd.com" attribution bottom-right in light grey.
+    Include a small "renalcarematters.com" attribution bottom-right in light grey.
 ```
 
 ---
@@ -177,7 +177,7 @@ Hands must be anatomically correct with exactly five fingers each — no extra o
 11. NEGATIVE PROMPTS: cartoon appearance, anime style, distorted anatomy, smiling organs, real
     brand names, tiny unreadable text, visual clutter, additional dosing advice text, rainbow
     gradients, neon colors, stock-photo aesthetic, uneven panels.
-    Include a small "williamriveromd.com" attribution bottom-right in light grey.
+    Include a small "renalcarematters.com" attribution bottom-right in light grey.
 ```
 
 ---
@@ -228,7 +228,7 @@ fails, why ferritin misleads, and why IV iron is chosen. Currently taught in tex
     smiling cells, sci-fi interfaces, fake holograms, neon colors, rainbow gradients, glowing
     energy effects, tiny unreadable text, chaotic density, fantasy anatomy, molecular structures
     drawn as literal keys and padlocks, chemical formulas, fear-inducing imagery.
-    Include a small "williamriveromd.com" attribution bottom-right in light grey.
+    Include a small "renalcarematters.com" attribution bottom-right in light grey.
 ```
 
 **HTML block to paste when the asset exists** — insert directly after the closing `</p>` of the
@@ -296,7 +296,7 @@ shared pathways, which reads best as a clean converging schematic.
     imagery, dramatic red washes, sci-fi interfaces, neon colors, rainbow gradients, tiny
     unreadable text, chaotic density, chemical structural formulas, real drug brand names,
     smiling cells, distorted anatomy.
-    Include a small "williamriveromd.com" attribution bottom-right in light grey.
+    Include a small "renalcarematters.com" attribution bottom-right in light grey.
 ```
 
 **HTML block to paste when the asset exists** — insert after the bleeding-mechanism `</p>` in
@@ -357,7 +357,7 @@ patient must carry into a consultation; a card version is what actually gets scr
 11. NEGATIVE PROMPTS: cartoon appearance, anime style, tiny unreadable text, more than seven
     words in a cell, any milligram or threshold number, chaotic density, uneven grid, missing
     header bars, rainbow gradients, neon colors, fear-inducing red washes, stock-photo aesthetic.
-    Include a small "williamriveromd.com" attribution bottom-right in light grey.
+    Include a small "renalcarematters.com" attribution bottom-right in light grey.
 ```
 
 **HTML block to paste when the asset exists** — insert after the "General orientation only"
@@ -429,7 +429,7 @@ tab, and the numbers on it must not be reproduced in patient-facing copy.
     decorative anatomy, tiny unreadable text, crossing or tangled connectors, ambiguous branch
     labels, altered or rounded threshold numbers, drug brand names, dose amounts, sci-fi
     interfaces, neon colors, rainbow gradients, chaotic density.
-    Include a small "williamriveromd.com" attribution bottom-right in light grey.
+    Include a small "renalcarematters.com" attribution bottom-right in light grey.
 ```
 
 **HTML block to paste when the asset exists** — insert in `#md-iron` after the thresholds
