@@ -75,6 +75,12 @@ SKIP_EXACT = {
 SKIP_PREFIX = ("calc-",)
 SKIP_SUFFIX = ("-log.html", "-log-blank.html", "-blank.html")
 
+# Editing artifacts that must never reach the live strip. A hand-saved backup
+# keeps its article:published_time, so without this it outranks real guides and
+# publishes a card pointing at a stale, unlinked copy (this happened with
+# epilepsy-seizures-ckd.hero-backup-20260623.html).
+SKIP_CONTAINS = (".hero-backup-", ".backup-", ".bak", " 2.html", "-copy.html", "-samples.html")
+
 # Guides whose og:image crops badly under the strip's live CSS crop (a large
 # title block on one side of a wide OG card, flagged by hand) — prefer the
 # pre-cropped {stem}-rg-thumb.webp instead. Guides using a square
@@ -99,6 +105,8 @@ def is_guide(name: str) -> bool:
     if name.startswith(SKIP_PREFIX):
         return False
     if name.endswith(SKIP_SUFFIX):
+        return False
+    if any(frag in name for frag in SKIP_CONTAINS):
         return False
     return True
 
