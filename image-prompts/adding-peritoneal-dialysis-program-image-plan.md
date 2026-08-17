@@ -42,7 +42,7 @@ Per the planner skill's own guidance: when a reference card is really a table, s
   teal tint `#eef6f7`. Navy `#0f1e2e` is text and accent only — never a background fill.
 - **Approved fonts only:** Inter, Nunito Sans, IBM Plex Sans, or Manrope. Never a serif.
   The chosen face is named explicitly inside each prompt.
-- **Attribution `williamriveromd.com`** in small semi-transparent navy at the bottom-right
+- **Attribution `renalcarematters.com`** in small semi-transparent navy at the bottom-right
   (bottom-centre for portrait) on **every image except the hero vignette**, which the
   hero-vignette skill explicitly requires to be wordless and unmarked.
 - **Palette:** navy `#0f1e2e`, clinical teal `#1a6b72`, renal green `#1f7a4d`, amber `#b8860b`,
@@ -137,7 +137,7 @@ rim. Full-bleed within the inscribed circle. Mood: serious professional planning
 never celebration.
 
 Absolutely NO text of any kind: no title, subtitle, caption, label, signage, legible writing on the
-planning wall, logo, or williamriveromd.com watermark.
+planning wall, logo, or renalcarematters.com watermark.
 
 NEGATIVE INSTRUCTIONS:
 Avoid: busy layouts, collage overload, more than four supporting scenes, dozens of icons, tiny
@@ -195,7 +195,7 @@ Generous whitespace, strong hierarchy, crisp alignment, mobile-thumbnail-readabl
 Flat vector, no directional lighting, no drop shadows, no 3D bevels, no gradients other than the
 single thin progression rule.
 
-Include the attribution "williamriveromd.com" as small semi-transparent navy #0f1e2e text in the
+Include the attribution "renalcarematters.com" as small semi-transparent navy #0f1e2e text in the
 bottom-right corner, roughly 11px equivalent at 70% opacity, clear of all other elements.
 
 NEGATIVE INSTRUCTIONS:
@@ -203,7 +203,7 @@ Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibbe
 unrealistic anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive
 saturation. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only. Use
 ONLY Inter — no other fonts, no serif fonts, no decorative or handwritten typefaces. Never omit
-the williamriveromd.com attribution. No photographs, no patients, no hospital logos, no brand
+the renalcarematters.com attribution. No photographs, no patients, no hospital logos, no brand
 names, no needles or catheters entering a body.
 
 QUALITY CHECK:
@@ -287,7 +287,7 @@ Right box, pale blue, headed "Expected benefit":
 
 Add a small italic note beneath the bottom flow reading "Mechanism figure. Clinical management,
 antimicrobial selection and dwell prescriptions are governed by approved local SOPs and current
-ISPD guidance." Include the attribution "williamriveromd.com" as small semi-transparent navy
+ISPD guidance." Include the attribution "renalcarematters.com" as small semi-transparent navy
 #0f1e2e text in the bottom-right corner at roughly 70% opacity.
 
 NEGATIVE INSTRUCTIONS:
@@ -295,7 +295,7 @@ Avoid photorealism, dark backgrounds, decorative elements, overcrowding, cartoon
 shadows, glossy 3D. Avoid tiny unreadable labels and AI gibberish text. Do not invent numeric
 thresholds — no dwell volumes, no glucose strengths, no antibiotic names or doses, no day counts
 for the break-in interval. Do not depict a person, an exchange being performed, a hand connecting
-tubing, an open wound, or blood. Use ONLY IBM Plex Sans. Never omit the williamriveromd.com
+tubing, an open wound, or blood. Use ONLY IBM Plex Sans. Never omit the renalcarematters.com
 attribution.
 
 QUALITY CHECK:
@@ -353,7 +353,7 @@ Tested tracer case = validated."
 
 Consistent row heights, consistent column widths, strict alignment, generous margins, rounded card
 corners, no drop shadows, no 3D, no photographs, flat vector only. Mobile-readable label sizes —
-no microtext. Include the attribution "williamriveromd.com" as small semi-transparent navy text in
+no microtext. Include the attribution "renalcarematters.com" as small semi-transparent navy text in
 the bottom-right corner at roughly 70% opacity.
 
 NEGATIVE INSTRUCTIONS:
@@ -361,7 +361,7 @@ Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibbe
 overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark,
 navy, charcoal, or black backgrounds — light backgrounds only; navy is for text and header bars
 only. Use ONLY Manrope. No hospital branding, no real institution names, no logos, no photographs,
-no uneven grid, no mismatched panel sizes. Never omit the williamriveromd.com attribution.
+no uneven grid, no mismatched panel sizes. Never omit the renalcarematters.com attribution.
 
 QUALITY CHECK:
 Exactly ten aligned rows across all three columns. Left and right cells clearly distinguishable by
@@ -382,7 +382,7 @@ guide algorithm, so Mode C is correct.
 
 ```
 FILE NAME: adding-peritoneal-dialysis-program-03-phase-gate-roadmap.png
-IMAGE TYPE: Clinical algorithm flowchart — williamriveromd.com house style (Mode C)
+IMAGE TYPE: Clinical algorithm flowchart — renalcarematters.com house style (Mode C)
 ASPECT RATIO: 2:3 (portrait)
 PIXEL DIMENSIONS: 1024 × 1536
 AUDIENCE: Administrators, medical directors, quality and compliance leads
@@ -390,7 +390,7 @@ VISUAL GOAL: Make visible that each phase is closed by a gate that can send the 
 backwards, and that one critical finding overrides any aggregate score.
 
 PROMPT:
-Create a clean publication-ready clinical algorithm flowchart in the williamriveromd.com house
+Create a clean publication-ready clinical algorithm flowchart in the renalcarematters.com house
 style, on a very light off-white #fafafa background, portrait 1024 × 1536. Restrained navy and
 teal typography set in Inter — never a serif font. Thin teal connector arrows, generous margins,
 centred and symmetrical, suitable for a clinician- and administrator-facing nephrology guide.
@@ -427,7 +427,7 @@ procurement — do not sum them into a fixed opening date."
 
 Consistent rounded corners, identical box widths, equal vertical spacing, arrows of consistent
 length, no crossing or tangled connectors, no icons inside nodes, no photographs, no 3D, no dark
-background, no clutter. Include a small professional footer reading "williamriveromd.com"
+background, no clutter. Include a small professional footer reading "renalcarematters.com"
 positioned at the bottom-centre in subtle gray medical-publication styling.
 
 NEGATIVE INSTRUCTIONS:
@@ -435,7 +435,7 @@ Avoid cartoon style, 3D effects, drop shadows, neon or rainbow gradients, crossi
 connectors, tiny unreadable text, decorative medical imagery, photographs, dark backgrounds. Use
 ONLY Inter. Do not add clinical content, drug names, patient criteria, or eligibility rules — this
 is a programme-management pathway, not a treatment algorithm. Do not invent phase durations or
-dates inside the boxes. Never omit the williamriveromd.com attribution.
+dates inside the boxes. Never omit the renalcarematters.com attribution.
 
 QUALITY CHECK:
 Exactly eight phase boxes numbered 0 through 7 in the stated order, seven gate diamonds between
@@ -500,7 +500,7 @@ approval, never logistics."
 
 Generous whitespace, strict alignment between control markers, chain nodes and risk segments,
 mobile-readable label sizes, no microtext, no paragraphs. Include the attribution
-"williamriveromd.com" as small semi-transparent navy text in the bottom-right corner at roughly
+"renalcarematters.com" as small semi-transparent navy text in the bottom-right corner at roughly
 70% opacity.
 
 NEGATIVE INSTRUCTIONS:
@@ -509,7 +509,7 @@ overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation, a
 crossing arrows. NEVER use dark, navy, charcoal, or black backgrounds — light backgrounds only.
 Use ONLY Nunito Sans. No courier or delivery-company branding, no real manufacturer names, no
 product packaging copy, no photographs, no drug names, no dwell volumes or glucose strengths.
-Never omit the williamriveromd.com attribution.
+Never omit the renalcarematters.com attribution.
 
 QUALITY CHECK:
 Exactly nine chain nodes in the stated order, one clean return arc, four control markers vertically
@@ -534,7 +534,7 @@ treatment selection.
 
 ```
 FILE NAME: adding-peritoneal-dialysis-program-05-peritonitis-tracer.png
-IMAGE TYPE: Operational tracer pathway — williamriveromd.com house style (Mode C)
+IMAGE TYPE: Operational tracer pathway — renalcarematters.com house style (Mode C)
 ASPECT RATIO: 2:3 (portrait)
 PIXEL DIMENSIONS: 1024 × 1536
 AUDIENCE: Medical directors, PD nurses, microbiology and quality leads, compliance reviewers
@@ -542,7 +542,7 @@ VISUAL GOAL: Prove or disprove that a suspected-peritonitis call at 2 a.m. on a 
 clinician who can act and a laboratory that will process the specimen.
 
 PROMPT:
-Create a clean publication-ready operational pathway flowchart in the williamriveromd.com house
+Create a clean publication-ready operational pathway flowchart in the renalcarematters.com house
 style, on a very light off-white #fafafa background, portrait 1024 × 1536. Restrained navy and teal
 typography set in Inter — never a serif font. Thin teal connector arrows, centred, symmetrical,
 generous margins, publication-grade vector look.
@@ -582,7 +582,7 @@ night, this is a critical finding — the programme does not launch."
 
 Consistent rounded corners, identical box widths on the trunk, equal vertical spacing, arrows of
 consistent length, no crossing or tangled connectors, no photographs, no 3D, no dark background.
-Include a small professional footer reading "williamriveromd.com" at the bottom-centre in subtle
+Include a small professional footer reading "renalcarematters.com" at the bottom-centre in subtle
 gray medical-publication styling.
 
 NEGATIVE INSTRUCTIONS:
@@ -591,7 +591,7 @@ text, decorative medical imagery, photographs, dark backgrounds. Use ONLY Inter.
 antibiotic names, no drug classes, no doses, no routes, no dwell volumes, no glucose strengths, no
 cell-count thresholds, no turnaround-time numbers in hours — this is an accountability map, not a
 treatment or diagnostic algorithm. Do not depict specimen collection technique, a catheter being
-handled, an exchange in progress, or any body part. Never omit the williamriveromd.com attribution.
+handled, an exchange in progress, or any body part. Never omit the renalcarematters.com attribution.
 
 QUALITY CHECK:
 Eleven trunk steps in the stated order with two decision diamonds. Technical branch clearly
