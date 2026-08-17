@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -138,6 +139,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1306,8 +1315,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -2061,8 +2072,8 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -2085,7 +2096,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
 <div class="ov-list">
 <div class="ov-stat"><span class="v">300&ndash;500 mL/min</span><span class="l">Blood flow (Qb) range</span></div>
 <div class="ov-stat"><span class="v">500&ndash;800 mL/min</span><span class="l">Dialysate flow (Qd) range</span></div>
-<div class="ov-stat"><span class="v">&le;13 mL/kg/h</span><span class="l">UFR ceiling (KDOQI 2015)</span></div>
+<div class="ov-stat"><span class="v">&le;13 mL/kg/h</span><span class="l">UFR (ultrafiltration rate) ceiling (KDOQI 2015)</span></div>
 </div>
 <a class="ov-foot" href="#hd-params">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 </div>
@@ -2131,8 +2142,8 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
 </section>
 
 <!-- NAV STRIP -->
-<div class="nav-strip">
-  <nav class="nav-pills" aria-label="Section navigation">
+<nav class="nav-strip">
+  <div class="nav-pills" aria-label="Section navigation">
     <!-- patient nav -->
     <a class="nav-pill pt-pill" href="#what">What It Is</a>
     <a class="nav-pill pt-pill" href="#numbers">Your Numbers</a>
@@ -2151,8 +2162,8 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
     <a class="nav-pill md-pill" href="#calculators">Calculators</a>
     <a class="nav-pill md-pill" href="#adjustment">Dose Adjustment</a>
     <a class="nav-pill md-pill" href="#special">Special Populations</a>
-  </nav>
-</div>
+  </div>
+</nav>
 
 <!-- ════════════════════════════════════════════════
      PATIENT CONTENT
@@ -2233,7 +2244,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
         <source srcset="../images/dialysis-prescription-patient-overview.webp" type="image/webp">
         <img src="../images/dialysis-prescription-patient-overview.png" loading="lazy" width="1536" height="1024" alt="Your Dialysis Prescription at a Glance — Kt/V, URR, UFR targets and HD vs CAPD comparison" style="width:100%;height:auto;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.10);">
       </picture>
-      <figcaption style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:8px;"><span data-lang="en">Your prescription at a glance: key numbers, targets, and how HD and PD work</span><span data-lang="tl" class="lang-hidden">Ang inyong reseta sa isang tingin: mga pangunahing numero, target, at kung paano gumagana ang HD at PD</span><span data-lang="ceb" class="lang-hidden">Ang imong reseta sa usa ka talan-awon: mga importanteng numero, target, ug kung unsaon pagtrabaho sa HD ug PD</span><span data-lang="kap" class="lang-hidden">Ing inyong reseta sa metung a tingin: deng pangunahing numero, target, at nung paano gumagana ing HD at PD</span></figcaption>
+      <figcaption style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:8px;"><span data-lang="en">Your prescription at a glance: key numbers, targets, and how HD (hemodialysis) and PD (peritoneal dialysis) work</span><span data-lang="tl" class="lang-hidden">Ang inyong reseta sa isang tingin: mga pangunahing numero, target, at kung paano gumagana ang HD at PD</span><span data-lang="ceb" class="lang-hidden">Ang imong reseta sa usa ka talan-awon: mga importanteng numero, target, ug kung unsaon pagtrabaho sa HD ug PD</span><span data-lang="kap" class="lang-hidden">Ing inyong reseta sa metung a tingin: deng pangunahing numero, target, at nung paano gumagana ing HD at PD</span></figcaption>
     </figure>
 
     <div class="num-grid">
@@ -2244,7 +2255,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
       </div>
       <div class="num-card nc-amber">
         <div class="num-value">URR</div>
-        <div class="num-label"><span data-lang="en">Urea Reduction Ratio</span><span data-lang="tl" class="lang-hidden">Urea Reduction Ratio</span><span data-lang="ceb" class="lang-hidden">Urea Reduction Ratio</span><span data-lang="kap" class="lang-hidden">Urea Reduction Ratio</span></div>
+        <div class="num-label"><span data-lang="en">(Urea Reduction Ratio)</span><span data-lang="tl" class="lang-hidden">Urea Reduction Ratio</span><span data-lang="ceb" class="lang-hidden">Urea Reduction Ratio</span><span data-lang="kap" class="lang-hidden">Urea Reduction Ratio</span></div>
         <div class="num-desc"><span data-lang="en">The percentage drop in urea (a waste product) from the start to the end of your session. A URR of <strong>65% or higher</strong> is the target. Higher is generally better.</span><span data-lang="tl" class="lang-hidden">Ang porsyento ng pagbaba ng urea (isang dumi) mula simula hanggang katapusan ng inyong session. Ang URR na <strong>65% o mas mataas</strong> ang target. Mas mataas, mas mabuti sa pangkalahatan.</span><span data-lang="ceb" class="lang-hidden">Ang porsyento sa pagkunhod sa urea (usa ka basura) gikan sa sinugdan hangtod sa katapusan sa imong sesyon. Ang URR nga <strong>65% o mas taas</strong> ang target. Mas taas, mas maayo sa kasagaran.</span><span data-lang="kap" class="lang-hidden">Ing porsyento ning pagbaba ning urea (metung a dumi) mula simula anggang katapusan ning inyong session. Ing URR na <strong>65% o mas mataas</strong> ing target. Mas mataas, mas mabuti sa pangkalahatan.</span></div>
       </div>
       <div class="num-card nc-navy">
@@ -2453,7 +2464,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
       <div class="alert-icon">📋</div>
       <div class="alert-body">
         <h4><span data-lang="en">Why labs matter as much as the session itself</span><span data-lang="tl" class="lang-hidden">Bakit kasinghalaga ang mga lab gaya ng mismong session</span><span data-lang="ceb" class="lang-hidden">Nganong pareho ka importanti ang mga lab sama sa sesyon mismo</span><span data-lang="kap" class="lang-hidden">Bakit kasinghalaga deng lab gaya ning mismong session</span></h4>
-        <p><span data-lang="en">Lab results are how your nephrologist knows whether your prescription is working. A low Kt/V triggers a longer session. A rising phosphorus triggers a diet review. A falling hemoglobin triggers an ESA dose adjustment. Missing labs means missing the signal to act before problems become serious.</span><span data-lang="tl" class="lang-hidden">Ang mga resulta ng lab ang paraan ng inyong nephrologist para malaman kung gumagana ang inyong reseta. Ang mababang Kt/V ay nag-trigger ng mas matagal na session. Ang tumataas na phosphorus ay nag-trigger ng pagsusuri ng diyeta. Ang bumababang hemoglobin ay nag-trigger ng pag-aayos ng dosis ng ESA. Ang paglaktaw ng mga lab ay nangangahulugang paglaktaw ng signal para kumilos bago pa maging seryoso ang mga problema.</span><span data-lang="ceb" class="lang-hidden">Ang mga resulta sa lab mao ang paagi sa imong nephrologist aron mahibalo kung nagtrabaho ba ang imong reseta. Ang ubos nga Kt/V nag-trigger sa mas dugay nga sesyon. Ang mosaka nga phosphorus nag-trigger sa pagsusi sa diyeta. Ang monaog nga hemoglobin nag-trigger sa pag-adjust sa dosis sa ESA. Ang paglaktaw sa mga lab nagpasabot og paglaktaw sa siyal aron molihok sa wala pa mahimong grabe ang mga problema.</span><span data-lang="kap" class="lang-hidden">Deng resulta ning lab ing paraan ning inyong nephrologist para malaman nung gumagana ing inyong reseta. Ing mababang Kt/V ya nag-trigger ning mas matagal na session. Ing tumatas a phosphorus ya nag-trigger ning pagsusuri ning diyeta. Ing bumababang hemoglobin ya nag-trigger ning pag-aayos ning dosis ning ESA. Ing paglaktaw ning deng lab ya nangangahulugang paglaktaw ning signal para kumilos bago pa maging seryoso deng problema.</span></p>
+        <p><span data-lang="en">Lab results are how your nephrologist knows whether your prescription is working. A low Kt/V triggers a longer session. A rising phosphorus triggers a diet review. A falling hemoglobin triggers an ESA (erythropoiesis-stimulating agent) dose adjustment. Missing labs means missing the signal to act before problems become serious.</span><span data-lang="tl" class="lang-hidden">Ang mga resulta ng lab ang paraan ng inyong nephrologist para malaman kung gumagana ang inyong reseta. Ang mababang Kt/V ay nag-trigger ng mas matagal na session. Ang tumataas na phosphorus ay nag-trigger ng pagsusuri ng diyeta. Ang bumababang hemoglobin ay nag-trigger ng pag-aayos ng dosis ng ESA. Ang paglaktaw ng mga lab ay nangangahulugang paglaktaw ng signal para kumilos bago pa maging seryoso ang mga problema.</span><span data-lang="ceb" class="lang-hidden">Ang mga resulta sa lab mao ang paagi sa imong nephrologist aron mahibalo kung nagtrabaho ba ang imong reseta. Ang ubos nga Kt/V nag-trigger sa mas dugay nga sesyon. Ang mosaka nga phosphorus nag-trigger sa pagsusi sa diyeta. Ang monaog nga hemoglobin nag-trigger sa pag-adjust sa dosis sa ESA. Ang paglaktaw sa mga lab nagpasabot og paglaktaw sa siyal aron molihok sa wala pa mahimong grabe ang mga problema.</span><span data-lang="kap" class="lang-hidden">Deng resulta ning lab ing paraan ning inyong nephrologist para malaman nung gumagana ing inyong reseta. Ing mababang Kt/V ya nag-trigger ning mas matagal na session. Ing tumatas a phosphorus ya nag-trigger ning pagsusuri ning diyeta. Ing bumababang hemoglobin ya nag-trigger ning pag-aayos ning dosis ning ESA. Ing paglaktaw ning deng lab ya nangangahulugang paglaktaw ning signal para kumilos bago pa maging seryoso deng problema.</span></p>
       </div>
     </div>
 
@@ -2503,7 +2514,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
         </tr>
         <tr>
           <td></td>
-          <td><span data-lang="en">Iron studies — ferritin, TSAT</span><span data-lang="tl" class="lang-hidden">Mga pagsusuri ng iron — ferritin, TSAT</span><span data-lang="ceb" class="lang-hidden">Mga pagsusi sa iron — ferritin, TSAT</span><span data-lang="kap" class="lang-hidden">Deng pagsusuri ning iron — ferritin, TSAT</span></td>
+          <td><span data-lang="en">Iron studies — ferritin, TSAT (transferrin saturation)</span><span data-lang="tl" class="lang-hidden">Mga pagsusuri ng iron — ferritin, TSAT</span><span data-lang="ceb" class="lang-hidden">Mga pagsusi sa iron — ferritin, TSAT</span><span data-lang="kap" class="lang-hidden">Deng pagsusuri ning iron — ferritin, TSAT</span></td>
           <td><span data-lang="en">Iron is needed to make ESA therapy work; guides IV iron dosing</span><span data-lang="tl" class="lang-hidden">Kailangan ang iron para gumana ang ESA therapy; ginagabayan ang dosis ng IV iron</span><span data-lang="ceb" class="lang-hidden">Gikinahanglan ang iron aron magtrabaho ang ESA therapy; gigiyahan ang dosis sa IV iron</span><span data-lang="kap" class="lang-hidden">Kailangan ing iron para gumana ing ESA therapy; ginagabayan ing dosis ning IV iron</span></td>
         </tr>
         <tr>
@@ -2554,8 +2565,8 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
 
     <!-- PATIENT RKF CALCULATOR -->
     <div style="background:#f0f9f8;border:1px solid rgba(26,107,114,.35);border-radius:12px;padding:24px 28px;margin-top:28px;">
-      <h3 style="color:#1a6b72;margin:0 0 8px;">Does My Remaining Urine Still Count?</h3>
-      <p style="margin-bottom:20px;color:#3a4a5c;">If you still produce urine, your own kidneys are still contributing to waste removal — and your nephrologist can credit this in your dialysis dose calculation. Enter how much urine you collected over 24 hours to see what it means.</p>
+      <h3 style="color:#1a6b72;margin:0 0 8px;"><span data-lang="en">Does My Remaining Urine Still Count?</span><span data-lang="tl" class="lang-hidden">Mahalaga Pa Ba ang Natitira Kong Ihi?</span><span data-lang="ceb" class="lang-hidden">Naa Pa Bay Bili ang Nahibilin Nakong Ihi?</span><span data-lang="kap" class="lang-hidden">Atin Pa Yang Halaga Ing Natatagan Kung Ihi?</span></h3>
+      <p style="margin-bottom:20px;color:#3a4a5c;"><span data-lang="en">If you still produce urine, your own kidneys are still contributing to waste removal — and your nephrologist can credit this in your dialysis dose calculation. Enter how much urine you collected over 24 hours to see what it means.</span><span data-lang="tl" class="lang-hidden">Kung kayo ay umiihi pa rin, ang inyong sariling mga bato ay tumutulong pa rin sa pag-aalis ng dumi — at maaari itong isaalang-alang ng inyong nephrologist sa pagkuwenta ng inyong dosis ng dialysis. Ilagay kung gaano karaming ihi ang inyong naipon sa loob ng 24 oras upang makita kung ano ang ibig sabihin nito.</span><span data-lang="ceb" class="lang-hidden">Kung nangihi ka pa gihapon, ang imong kaugalingong mga kidney nagatabang pa gihapon sa pagwagtang sa hugaw — ug mahimo kining ihatag og bili sa imong nephrologist sa pagkwenta sa imong dosis sa dialysis. Isulod kung pila ka ihi ang imong natigom sulod sa 24 ka oras aron makita kung unsa ang gipasabot niini.</span><span data-lang="kap" class="lang-hidden">Nung mimih ka pa mu rin, deng sariling bato mu tatabang la pa rin king pamiyalis king dumi — at malyaring isaisip iti ning inyong nephrologist king pamagkwenta ning dosis ning dialysis mu. Ilage me nung magkanu karaming ihi ing natipun mu king loob ning 24 oras para akit mu nung nanu ing buri nang sabian nini.</span></p>
       <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:16px;">
         <div style="flex:1;min-width:180px;">
           <label style="font-weight:600;font-size:13px;display:block;margin-bottom:6px;color:#1a6b72;">Urine output in 24 hours (mL)</label>
@@ -2594,7 +2605,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
       <source srcset="../images/dialysis-philhealth-z-benefit.webp" type="image/webp">
       <img src="../images/dialysis-philhealth-z-benefit.png" alt="PhilHealth Z Benefit Package for Dialysis — HD ₱990,600/year vs PD ₱510,140/year coverage comparison, what is included, and 4 steps to access your coverage" loading="lazy" width="1024" height="1024" style="width:100%;height:auto;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.10);margin-bottom:28px;display:block;">
     </picture>
-    <p><span data-lang="en">PhilHealth provides significant financial protection for dialysis patients through its Z Benefit Package — one of the most comprehensive government dialysis coverage programs in Southeast Asia. Here is what it covers and how to access it.</span><span data-lang="tl" class="lang-hidden">Nagbibigay ang PhilHealth ng malaking proteksyong pinansyal para sa mga pasyenteng nasa dialysis sa pamamagitan ng Z Benefit Package nito — isa sa mga pinaka-komprehensibong programa ng gobyerno para sa saklaw ng dialysis sa Southeast Asia. Narito ang saklaw nito at kung paano ito ma-access.</span><span data-lang="ceb" class="lang-hidden">Naghatag ang PhilHealth og mahinungdanon nga pinansyal nga proteksyon alang sa mga pasyente nga nasa dialysis pinaagi sa iyang Z Benefit Package — usa sa mga labing komprehensibo nga programa sa gobyerno alang sa sakup sa dialysis sa Southeast Asia. Ania ang iyang sakup ug kung unsaon pag-access niini.</span><span data-lang="kap" class="lang-hidden">Nagbibigay ing PhilHealth ning malda a proteksyong pinansyal para king deng pasyenteng nasa dialysis sa pamamagitan ning Z Benefit Package nini — isa king deng pinaka-komprehensibong programa ning gobyerno para king saklaw ning dialysis sa Southeast Asia. Narini ing saklaw nini at nung paano ini ma-access.</span></p>
+    <p><span data-lang="en">PhilHealth (Philippine Health Insurance Corporation) provides significant financial protection for dialysis patients through its Z Benefit Package — one of the most comprehensive government dialysis coverage programs in Southeast Asia. Here is what it covers and how to access it.</span><span data-lang="tl" class="lang-hidden">Nagbibigay ang PhilHealth ng malaking proteksyong pinansyal para sa mga pasyenteng nasa dialysis sa pamamagitan ng Z Benefit Package nito — isa sa mga pinaka-komprehensibong programa ng gobyerno para sa saklaw ng dialysis sa Southeast Asia. Narito ang saklaw nito at kung paano ito ma-access.</span><span data-lang="ceb" class="lang-hidden">Naghatag ang PhilHealth og mahinungdanon nga pinansyal nga proteksyon alang sa mga pasyente nga nasa dialysis pinaagi sa iyang Z Benefit Package — usa sa mga labing komprehensibo nga programa sa gobyerno alang sa sakup sa dialysis sa Southeast Asia. Ania ang iyang sakup ug kung unsaon pag-access niini.</span><span data-lang="kap" class="lang-hidden">Nagbibigay ing PhilHealth ning malda a proteksyong pinansyal para king deng pasyenteng nasa dialysis sa pamamagitan ning Z Benefit Package nini — isa king deng pinaka-komprehensibong programa ning gobyerno para king saklaw ning dialysis sa Southeast Asia. Narini ing saklaw nini at nung paano ini ma-access.</span></p>
 
     <div class="alert alert-green">
       <div class="alert-icon">✅</div>
@@ -2805,7 +2816,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
       <div class="alert-icon">🔬</div>
       <div class="alert-body">
         <h4>Residual Kidney Function (RKF)</h4>
-        <p>RKF contributes meaningfully to total weekly clearance — particularly in the first 1–2 years of dialysis. Nephrotoxic agents (NSAIDs, IV contrast, aminoglycosides) accelerate RKF loss. RKF should be measured with timed urine collection every 3–6 months in PD patients and factored into adequacy calculations. In HD patients with measurable urine output, the residual GFR can be credited toward total Kt/V when determining whether the prescription meets targets.</p>
+        <p>RKF (residual kidney function) contributes meaningfully to total weekly clearance — particularly in the first 1–2 years of dialysis. Nephrotoxic agents (NSAIDs, IV contrast, aminoglycosides) accelerate RKF loss. RKF should be measured with timed urine collection every 3–6 months in PD patients and factored into adequacy calculations. In HD patients with measurable urine output, the residual GFR can be credited toward total Kt/V when determining whether the prescription meets targets.</p>
       </div>
     </div>
   </div>
@@ -2991,7 +3002,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
           <li>HCO and super high-flux membranes: <strong>not suitable for reprocessing</strong> — fiber integrity degrades rapidly</li>
           <li>Absolute contraindications: known formaldehyde or peracetic acid allergy; active hepatitis B infection (cross-contamination risk if protocols are not perfect)</li>
         </ul>
-        <p style="margin-top:10px;"><strong>Current practice and regulatory note:</strong> Single-use dialyzers are now the global standard and are mandated in many accredited centers. The Philippine FDA and PhilHealth accreditation standards increasingly require single-use practice. If reprocessing is still used at your center, strict AAMI RD47 / ISO 8637 protocols, a reuse log, and patient informed consent are mandatory. The prescription should specify <em>"Single-use only"</em> when clinically indicated (e.g., HCO membranes, immunocompromised patients, Hep B carriers).</p>
+        <p style="margin-top:10px;"><strong>Current practice and regulatory note:</strong> Single-use dialyzers are now the global standard and are mandated in many accredited centers. The Philippine FDA (Food and Drug Administration) and PhilHealth accreditation standards increasingly require single-use practice. If reprocessing is still used at your center, strict AAMI RD47 / ISO (International Organization for Standardization) 8637 protocols, a reuse log, and patient informed consent are mandatory. The prescription should specify <em>"Single-use only"</em> when clinically indicated (e.g., HCO membranes, immunocompromised patients, Hep B carriers).</p>
       </div>
     </div>
 
@@ -3835,7 +3846,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
 
     <div class="dr-card">
       <div class="dr-avatar">
-        <img alt="Dr. W. G. M. Rivero" src="../images/avatar.png" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
+        <img alt="Dr. W. G. M. Rivero" src="../images/avatar.png" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/ width="986" height="968">
       </div>
       <div>
         <h4>Clinical Commentary — W Rivero, MD</h4>
@@ -3845,7 +3856,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
     </div>
 
     <div class="disclaimer">
-      <strong>Clinical disclaimer:</strong> This reference guide reflects current KDOQI, ISPD, and KDIGO guidelines as of 2026. Local PhilHealth coverage, drug availability, and center-specific protocols may differ. Clinical judgment should always supersede algorithmic targets when individualized patient factors apply.
+      <strong>Clinical disclaimer:</strong> This reference guide reflects current KDOQI, ISPD, and KDIGO (Kidney Disease: Improving Global Outcomes) guidelines as of 2026. Local PhilHealth coverage, drug availability, and center-specific protocols may differ. Clinical judgment should always supersede algorithmic targets when individualized patient factors apply.
     </div>
 
     <div class="related-guides">
@@ -3857,28 +3868,28 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
           <div class="related-card-desc">Full clinical review of Kt/V measurement, BUN kinetics, and adequacy targets.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="hemodialysis-modalities.html">
           <div class="related-card-tag">Dialysis</div>
           <div class="related-card-title">HD Modalities</div>
-          <div class="related-card-desc">HDF, online HDF, SLED, and home HD — evidence and patient selection.</div>
+          <div class="related-card-desc">HDF, online HDF, SLED (sustained low-efficiency dialysis), and home HD — evidence and patient selection.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/hemodialysis-modalities-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hemodialysis-modalities-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="hemodialysis-complications.html">
           <div class="related-card-tag">Dialysis</div>
           <div class="related-card-title">HD Complications</div>
           <div class="related-card-desc">Intradialytic hypotension, cramping, arrhythmia — recognition and management.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/hemodialysis-complications-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hemodialysis-complications-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="anemia-management.html">
           <div class="related-card-tag">CKD</div>
           <div class="related-card-title">Anemia Management</div>
           <div class="related-card-desc">ESA dosing, iron targets, and hemoglobin goals in dialysis patients.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/anemia-management-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/anemia-management-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       </div>
     </div>
   </div>
@@ -3960,28 +3971,28 @@ try{(function(){var v=localStorage.getItem('wgmr-dpx-mode');if(v===null){var per
           <div class="related-card-desc">Deep dive into Kt/V, URR, and what adequacy means for outcomes.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="fluid-management-dialysis.html">
           <div class="related-card-tag">Dialysis</div>
           <div class="related-card-title">Fluid Management</div>
           <div class="related-card-desc">Why fluid control between sessions is as important as the session itself.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/fluid-management-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/fluid-management-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="hemodialysis-modalities.html">
           <div class="related-card-tag">Dialysis</div>
           <div class="related-card-title">HD Modalities</div>
           <div class="related-card-desc">Comparing conventional, extended, home, and nocturnal hemodialysis.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/hemodialysis-modalities-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hemodialysis-modalities-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="peritoneal-dialysis-ckd.html">
           <div class="related-card-tag">Dialysis</div>
           <div class="related-card-title">Peritoneal Dialysis Guide</div>
           <div class="related-card-desc">Everything about CAPD and APD — from setup to troubleshooting.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/peritoneal-dialysis-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/peritoneal-dialysis-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       </div>
     </div>
 <!-- RELATED-GUIDES-END -->
@@ -4066,5 +4077,6 @@ document.querySelectorAll('.section[id]').forEach(s=>observer.observe(s));
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

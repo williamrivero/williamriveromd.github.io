@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1731,7 +1742,7 @@ body.dark .related-card-title {
 <div class="hero-grid">
 <div class="hero-copy">
     <div class="hero-tag">
-      <span data-lang="en">PhilHealth · Patient Rights · Nephrology Philippines</span>
+      <span data-lang="en">Philippine Health Insurance Corporation (PhilHealth) · Patient Rights · Nephrology Philippines</span>
       <span data-lang="tl" class="lang-hidden">PhilHealth · Karapatan ng Pasyente · Nefrolohiya Pilipinas</span>
       <span data-lang="ceb" class="lang-hidden">PhilHealth · Katungod sa Pasyente · Nefrolohiya Pilipinas</span>
     
@@ -1805,7 +1816,7 @@ body.dark .related-card-title {
     <div class="two-col">
       <div class="feature-card">
         <h4><span class="dot dot-teal"></span><span data-lang="en">HD update (PC 2024-0023, Oct 2024)</span><span data-lang="tl" class="lang-hidden">Update sa HD (PC 2024-0023, Okt 2024)</span><span data-lang="ceb" class="lang-hidden">Update sa HD (PC 2024-0023, Okt 2024)</span><span data-lang="kap" class="lang-hidden">Update sa HD (PC 2024-0023, Okt 2024)</span></h4>
-        <p><span data-lang="en">HD session rate raised to <strong>₱6,350/session</strong> covering <strong>156 sessions/year</strong> — total annual package of <strong>₱990,600</strong>. Includes facility, machine, dialyzer, solutions, dialysis kit, anticoagulation, anemia drugs (ESA + IV iron), labs, and professional fees. No Balance Billing policy applies — no co-pay at accredited centers.</span><span data-lang="tl" class="lang-hidden">Ang rate ng HD session ay itinataas sa <strong>₱6,350/session</strong> na sumasaklaw sa <strong>156 sessions/taon</strong> — kabuuang taunang pakete ng <strong>₱990,600</strong>. Kasama ang pasilidad, makina, dialyzer, solusyon, dialysis kit, anticoagulation, mga gamot para sa anemia (ESA + IV iron), mga lab, at professional fees. Naaangkop ang patakaran ng No Balance Billing — walang co-pay sa mga accredited center.</span><span data-lang="ceb" class="lang-hidden">Ang rate sa HD session gipataas ngadto sa <strong>₱6,350/session</strong> nga nagsakop sa <strong>156 sessions/tuig</strong> — kinatibuk-ang taunang pakete nga <strong>₱990,600</strong>. Naglakip sa pasilidad, makina, dialyzer, solusyon, dialysis kit, anticoagulation, mga tambal alang sa anemia (ESA + IV iron), mga lab, ug professional fees. Nag-apply ang patakaran sa No Balance Billing — walay co-pay sa mga accredited center.</span><span data-lang="kap" class="lang-hidden">Ing rate ning HD session ya itinataas sa <strong>₱6,350/session</strong> na sumasaklaw sa <strong>156 sessions/banua</strong> — kabuuang taunang pakete ning <strong>₱990,600</strong>. Kasama ing pasilidad, makina, dialyzer, solusyon, dialysis kit, anticoagulation, dening gamut para king anemia (ESA + IV iron), deng lab, at professional fees. Naaangkop ing patakaran ning No Balance Billing — alang co-pay sa deng accredited center.</span></p>
+        <p><span data-lang="en">Hemodialysis (HD) session rate raised to <strong>₱6,350/session</strong> covering <strong>156 sessions/year</strong> — total annual package of <strong>₱990,600</strong>. Includes facility, machine, dialyzer, solutions, dialysis kit, anticoagulation, anemia drugs (ESA + IV iron), labs, and professional fees. No Balance Billing policy applies — no co-pay at accredited centers.</span><span data-lang="tl" class="lang-hidden">Ang rate ng HD session ay itinataas sa <strong>₱6,350/session</strong> na sumasaklaw sa <strong>156 sessions/taon</strong> — kabuuang taunang pakete ng <strong>₱990,600</strong>. Kasama ang pasilidad, makina, dialyzer, solusyon, dialysis kit, anticoagulation, mga gamot para sa anemia (ESA + IV iron), mga lab, at professional fees. Naaangkop ang patakaran ng No Balance Billing — walang co-pay sa mga accredited center.</span><span data-lang="ceb" class="lang-hidden">Ang rate sa HD session gipataas ngadto sa <strong>₱6,350/session</strong> nga nagsakop sa <strong>156 sessions/tuig</strong> — kinatibuk-ang taunang pakete nga <strong>₱990,600</strong>. Naglakip sa pasilidad, makina, dialyzer, solusyon, dialysis kit, anticoagulation, mga tambal alang sa anemia (ESA + IV iron), mga lab, ug professional fees. Nag-apply ang patakaran sa No Balance Billing — walay co-pay sa mga accredited center.</span><span data-lang="kap" class="lang-hidden">Ing rate ning HD session ya itinataas sa <strong>₱6,350/session</strong> na sumasaklaw sa <strong>156 sessions/banua</strong> — kabuuang taunang pakete ning <strong>₱990,600</strong>. Kasama ing pasilidad, makina, dialyzer, solusyon, dialysis kit, anticoagulation, dening gamut para king anemia (ESA + IV iron), deng lab, at professional fees. Naaangkop ing patakaran ning No Balance Billing — alang co-pay sa deng accredited center.</span></p>
       </div>
       <div class="feature-card">
         <h4><span class="dot dot-green"></span><span data-lang="en">New Post-KT Package — July 5, 2025</span><span data-lang="tl" class="lang-hidden">Bagong Post-KT Package — Hulyo 5, 2025</span><span data-lang="ceb" class="lang-hidden">Bag-ong Post-KT Package — Hulyo 5, 2025</span><span data-lang="kap" class="lang-hidden">Bagong Post-KT Package — Hulyo 5, 2025</span></h4>
@@ -1846,7 +1857,7 @@ body.dark .related-card-title {
 <figcaption><p class="fig-desc">A breakdown of PhilHealth's hemodialysis package, covering ₱6,350 per session for up to 156 sessions a year, and listing what is included — facility, machine, dialyzer, medicines, lab tests, and doctor's fees — under the No Balance Billing policy.</p></figcaption>
 </figure>
     <div class="z-card" style="border-left:4px solid var(--teal,#1a6b72);background:var(--bg,#f9fafb);border-radius:14px;padding:24px 28px;margin:20px 0;">
-      <h3 style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:var(--navy,#0f1e2e);margin-bottom:16px;">HD Benefits Package — What Is Covered (PC 2024-0023)</h3>
+      <h3 style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:var(--navy,#0f1e2e);margin-bottom:16px;"><span data-lang="en">HD Benefits Package — What Is Covered (PC 2024-0023)</span><span data-lang="tl" class="lang-hidden">Pakete ng Benepisyo sa HD — Ano ang Saklaw (PC 2024-0023)</span><span data-lang="ceb" class="lang-hidden">Pakete sa Benepisyo sa HD — Unsa ang Sakop (PC 2024-0023)</span><span data-lang="kap" class="lang-hidden">Pakete ning Benepisyo king HD — Nanu ing Sasaklo (PC 2024-0023)</span></h3>
       <div class="z-benefit" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border,#e2e6eb);flex-wrap:wrap;gap:4px;"><span class="zb-label">Session rate</span><span class="zb-amount hl" style="font-weight:700;color:#1a6b72;">₱6,350 per session</span></div>
       <div class="z-benefit" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border,#e2e6eb);flex-wrap:wrap;gap:4px;"><span class="zb-label">Sessions covered per year</span><span class="zb-amount hl" style="font-weight:700;color:#1a6b72;">156 sessions (3×/week × 52 weeks)</span></div>
       <div class="z-benefit" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border,#e2e6eb);flex-wrap:wrap;gap:4px;"><span class="zb-label">Total annual coverage</span><span class="zb-amount hl" style="font-weight:700;color:#1a6b72;">₱990,600/year</span></div>
@@ -1897,7 +1908,7 @@ body.dark .related-card-title {
 
     <h3><span data-lang="en">Adult Patients — Continuous Ambulatory PD (CAPD)</span><span data-lang="tl" class="lang-hidden">Mga Pasyenteng Nasa Hustong Gulang — Continuous Ambulatory PD (CAPD)</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente nga Hamtong — Continuous Ambulatory PD (CAPD)</span><span data-lang="kap" class="lang-hidden">Deng Pasyenteng Nasa Hustong Gulang — Continuous Ambulatory PD (CAPD)</span></h3>
     <div class="z-card z-card-pd">
-      <h3>Adult CAPD Z Benefit Package</h3>
+      <h3><span data-lang="en">Adult CAPD Z Benefit Package</span><span data-lang="tl" class="lang-hidden">Pakete ng Z Benefit sa CAPD para sa Nasa Hustong Gulang</span><span data-lang="ceb" class="lang-hidden">Pakete sa Z Benefit sa CAPD para sa Hamtong</span><span data-lang="kap" class="lang-hidden">Pakete ning Z Benefit king CAPD para king Nasa Hustong Gulang</span></h3>
       <div class="z-subtitle"><span data-lang="en">Annual benefit for CKD Stage 5 adult patients on CAPD. Rate depends on daily PD solution volume required.</span><span data-lang="tl" class="lang-hidden">Taunang benepisyo para sa mga pasyenteng nasa hustong gulang na CKD Stage 5 na nasa CAPD. Ang rate ay nakasalalay sa kinakailangang dami ng solusyong PD bawat araw.</span><span data-lang="ceb" class="lang-hidden">Taunang benepisyo alang sa mga pasyente nga hamtong nga CKD Stage 5 nga nag-CAPD. Ang rate nagdepende sa gikinahanglan nga dami sa solusyon sa PD matag adlaw.</span><span data-lang="kap" class="lang-hidden">Taunang benepisyo para king deng pasyenteng nasa hustong gulang na CKD Stage 5 na nasa CAPD. Ing rate ya nakasalalay sa kinakailangang dami ning solusyong PD bawat aldo.</span></div>
       <div class="z-benefit"><span class="zb-label">Previous benefit (all adults)</span><span class="zb-amount old">₱270,000/year</span></div>
       <div class="z-benefit"><span class="zb-label">CAPD — lower daily solution volume</span><span class="zb-amount hl">₱389,640/year</span></div>
@@ -2062,7 +2073,7 @@ body.dark .related-card-title {
           <li><span data-lang="en">Previous kidney transplant</span><span data-lang="tl" class="lang-hidden">Nakaraang kidney transplant</span><span data-lang="ceb" class="lang-hidden">Nauna nga kidney transplant</span><span data-lang="kap" class="lang-hidden">Nakaraaning kidney transplant</span></li>
           <li><span data-lang="en">Active or recent malignancy</span><span data-lang="tl" class="lang-hidden">Aktibo o kamakailang malignancy</span><span data-lang="ceb" class="lang-hidden">Aktibo o bag-o lang nga malignancy</span><span data-lang="kap" class="lang-hidden">Aktibo o kamakailang malignancy</span></li>
           <li><span data-lang="en">Active Hepatitis B or C infection</span><span data-lang="tl" class="lang-hidden">Aktibong impeksyon ng Hepatitis B o C</span><span data-lang="ceb" class="lang-hidden">Aktibong impeksyon sa Hepatitis B o C</span><span data-lang="kap" class="lang-hidden">Aktibong impeksyon ning Hepatitis B o C</span></li>
-          <li><span data-lang="en">HIV positivity</span><span data-lang="tl" class="lang-hidden">Positibo sa HIV</span><span data-lang="ceb" class="lang-hidden">Positibo sa HIV</span><span data-lang="kap" class="lang-hidden">Positibo sa HIV</span></li>
+          <li><span data-lang="en">Human immunodeficiency virus (HIV) positivity</span><span data-lang="tl" class="lang-hidden">Positibo sa HIV</span><span data-lang="ceb" class="lang-hidden">Positibo sa HIV</span><span data-lang="kap" class="lang-hidden">Positibo sa HIV</span></li>
           <li><span data-lang="en">CMV R−/D+ mismatch</span><span data-lang="tl" class="lang-hidden">CMV R−/D+ mismatch</span><span data-lang="ceb" class="lang-hidden">CMV R−/D+ mismatch</span><span data-lang="kap" class="lang-hidden">CMV R−/D+ mismatch</span></li>
           <li><span data-lang="en">Uncontrolled congestive heart failure</span><span data-lang="tl" class="lang-hidden">Hindi kontroladong congestive heart failure</span><span data-lang="ceb" class="lang-hidden">Dili kontroladong congestive heart failure</span><span data-lang="kap" class="lang-hidden">Ali kontroladong congestive heart failure</span></li>
           <li><span data-lang="en">Liver cirrhosis</span><span data-lang="tl" class="lang-hidden">Liver cirrhosis</span><span data-lang="ceb" class="lang-hidden">Liver cirrhosis</span><span data-lang="kap" class="lang-hidden">Liver cirrhosis</span></li>
@@ -2283,11 +2294,11 @@ body.dark .related-card-title {
 
     <h3><span data-lang="en">Supplementary assistance — do not overlook</span><span data-lang="tl" class="lang-hidden">Karagdagang tulong — huwag kalimutan</span><span data-lang="ceb" class="lang-hidden">Dugang nga tabang — ayaw kalimti</span><span data-lang="kap" class="lang-hidden">Karagdagang tulong — eka kalimutan</span></h3>
     <ul>
-      <li><span data-lang="en"><strong>Malasakit Center</strong> — in government hospitals; coordinates DSWD, DOH, and PhilMedical Fund assistance to cover remaining balances</span><span data-lang="tl" class="lang-hidden"><strong>Malasakit Center</strong> — sa mga ospital ng gobyerno; nagko-coordinate ng tulong mula sa DSWD, DOH, at PhilMedical Fund para masaklaw ang mga natitirang balanse</span><span data-lang="ceb" class="lang-hidden"><strong>Malasakit Center</strong> — sa mga ospital sa gobyerno; nagkoordina sa tabang sa DSWD, DOH, ug PhilMedical Fund aron masakop ang mga nahabilin nga balanse</span><span data-lang="kap" class="lang-hidden"><strong>Malasakit Center</strong> — sa deng ospital ning gobyerno; nagko-coordinate ning tulong mula sa DSWD, DOH, at PhilMedical Fund para masaklaw deng natitirang balanse</span></li>
+      <li><span data-lang="en"><strong>Malasakit Center</strong> — in government hospitals; coordinates DSWD, DOH (Department of Health), and PhilMedical Fund assistance to cover remaining balances</span><span data-lang="tl" class="lang-hidden"><strong>Malasakit Center</strong> — sa mga ospital ng gobyerno; nagko-coordinate ng tulong mula sa DSWD, DOH, at PhilMedical Fund para masaklaw ang mga natitirang balanse</span><span data-lang="ceb" class="lang-hidden"><strong>Malasakit Center</strong> — sa mga ospital sa gobyerno; nagkoordina sa tabang sa DSWD, DOH, ug PhilMedical Fund aron masakop ang mga nahabilin nga balanse</span><span data-lang="kap" class="lang-hidden"><strong>Malasakit Center</strong> — sa deng ospital ning gobyerno; nagko-coordinate ning tulong mula sa DSWD, DOH, at PhilMedical Fund para masaklaw deng natitirang balanse</span></li>
       <li><span data-lang="en"><strong>PCSO Medical Assistance</strong> — for medications and hospital balances not covered by PhilHealth</span><span data-lang="tl" class="lang-hidden"><strong>PCSO Medical Assistance</strong> — para sa mga gamot at balanse sa ospital na hindi nasaklaw ng PhilHealth</span><span data-lang="ceb" class="lang-hidden"><strong>PCSO Medical Assistance</strong> — alang sa mga tambal ug balanse sa ospital nga wala nasakop sa PhilHealth</span><span data-lang="kap" class="lang-hidden"><strong>PCSO Medical Assistance</strong> — para king dening gamut at balanse king ospital na ali nasaklaw ning PhilHealth</span></li>
       <li><span data-lang="en"><strong>DSWD Assistance</strong> — social protection for qualified indigent patients</span><span data-lang="tl" class="lang-hidden"><strong>DSWD Assistance</strong> — proteksyong panlipunan para sa mga kwalipikadong indigent na pasyente</span><span data-lang="ceb" class="lang-hidden"><strong>DSWD Assistance</strong> — proteksyon sa katilingban alang sa mga kwalipikadong indigent nga pasyente</span><span data-lang="kap" class="lang-hidden"><strong>DSWD Assistance</strong> — proteksyong panlipunan para king deng kwalipikadong indigent na pasyente</span></li>
       <li><span data-lang="en"><strong>Senior Citizen Discount (RA 9994)</strong> — 20% discount on medications for patients 60 years and older</span><span data-lang="tl" class="lang-hidden"><strong>Senior Citizen Discount (RA 9994)</strong> — 20% diskwento sa mga gamot para sa mga pasyenteng 60 taon pataas</span><span data-lang="ceb" class="lang-hidden"><strong>Senior Citizen Discount (RA 9994)</strong> — 20% diskwento sa mga tambal alang sa mga pasyente nga 60 ka tuig pataas</span><span data-lang="kap" class="lang-hidden"><strong>Senior Citizen Discount (RA 9994)</strong> — 20% diskwento sa dening gamut para king deng pasyenteng 60 banua pataas</span></li>
-      <li><span data-lang="en"><strong>PWD Discount</strong> — 20% on medications and selected services for registered Persons with Disability</span><span data-lang="tl" class="lang-hidden"><strong>PWD Discount</strong> — 20% sa mga gamot at mga piling serbisyo para sa mga rehistradong Persons with Disability</span><span data-lang="ceb" class="lang-hidden"><strong>PWD Discount</strong> — 20% sa mga tambal ug mga piniling serbisyo alang sa mga rehistradong Persons with Disability</span><span data-lang="kap" class="lang-hidden"><strong>PWD Discount</strong> — 20% sa dening gamut at deng piling serbisyo para king deng rehistradong Persons with Disability</span></li>
+      <li><span data-lang="en"><strong>PWD (person with disability) Discount</strong> — 20% on medications and selected services for registered Persons with Disability</span><span data-lang="tl" class="lang-hidden"><strong>PWD Discount</strong> — 20% sa mga gamot at mga piling serbisyo para sa mga rehistradong Persons with Disability</span><span data-lang="ceb" class="lang-hidden"><strong>PWD Discount</strong> — 20% sa mga tambal ug mga piniling serbisyo alang sa mga rehistradong Persons with Disability</span><span data-lang="kap" class="lang-hidden"><strong>PWD Discount</strong> — 20% sa dening gamut at deng piling serbisyo para king deng rehistradong Persons with Disability</span></li>
     </ul>
 
     <div class="alert alert-red">
@@ -2369,28 +2380,28 @@ body.dark .related-card-title {
           <div class="related-card-desc">The real cost of kidney disease in the Philippines — and every government program, benefit, NGO, and</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/ckd-financial-stress-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-financial-stress-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="kidney-transplant.html">
           <div class="related-card-tag">The Best Treatment for ESKD</div>
           <div class="related-card-title">Kidney Transplant</div>
           <div class="related-card-desc">The best treatment for kidney failure — what to expect before, during, and after transplant, and how</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/kidney-transplant-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/kidney-transplant-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="living-with-dialysis.html">
           <div class="related-card-tag">Understanding Hemodialysis</div>
           <div class="related-card-title">Living with Dialysis</div>
           <div class="related-card-desc">A practical guide for hemodialysis patients — what to expect at each session, how to protect your ac</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/living-with-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/living-with-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="hemodialysis-modalities.html">
           <div class="related-card-tag">Fundamentals</div>
           <div class="related-card-title">Hemodialysis Modalities Explained</div>
           <div class="related-card-desc">Conventional HD, HDF, home hemodialysis, peritoneal dialysis, CRRT, SLED — what each modality does d</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/hemodialysis-modalities-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hemodialysis-modalities-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -2461,5 +2472,6 @@ function setGuideLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -2052,27 +2063,27 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <div class="related-card-tag">Calculator</div>
 <div class="related-card-title">CKM Syndrome Staging Tool</div>
 
-          <img class="related-card-thumb" src="../images/calc-ckm-staging-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/calc-ckm-staging-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="calc-lipid-panel.html">
 <div class="related-card-tag">Calculator</div>
 <div class="related-card-title">Lipid Panel Interpreter</div>
 
-          <img class="related-card-thumb" src="../images/calc-lipid-panel-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/calc-lipid-panel-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="calc-cha2ds2-vasc.html">
 <div class="related-card-tag">Calculator</div>
 <div class="related-card-title">CHA₂DS₂-VASc + Anticoagulation in CKD</div>
 
-          <img class="related-card-thumb" src="../images/calc-cha2ds2-vasc-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/calc-cha2ds2-vasc-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="calc-af-anticoagulation.html">
 <div class="related-card-tag">Calculator</div>
 <div class="related-card-title">AF Anticoagulation Decision (VASc + HAS-BLED)</div>
 
-          <img class="related-card-thumb" src="../images/calc-af-anticoagulation-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/calc-af-anticoagulation-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="calc-uacr-trend.html">
 <div class="related-card-tag">Calculator</div>
 <div class="related-card-title">UACR Serial Trend Tracker</div>
 
-          <img class="related-card-thumb" src="../images/calc-uacr-trend-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/calc-uacr-trend-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 </div>
 </section>
 <!-- CALC-CROSSLINK-END -->
@@ -2126,28 +2137,28 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
           <div class="related-card-desc">When heart and kidney fail together &mdash; the shared medicines and why a small eGFR dip is no reason to stop.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/heart-failure-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/heart-failure-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="cardio-kidney-metabolic-syndrome.html">
           <div class="related-card-tag">The Unifying Framework</div>
           <div class="related-card-title">Cardio-Kidney-Metabolic (CKM) Syndrome</div>
           <div class="related-card-desc">The AHA staging that ties together obesity, diabetes, the heart, and the kidneys &mdash; and the PREVENT equation.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/cardio-kidney-metabolic-syndrome-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/cardio-kidney-metabolic-syndrome-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="diabetes-kidneys.html">
           <div class="related-card-tag">The Biggest Driver</div>
           <div class="related-card-title">Diabetes &amp; Your Kidneys</div>
           <div class="related-card-desc">How high blood sugar damages the filters &mdash; and the medicines that now protect them.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/diabetes-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/diabetes-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="managing-hypertension.html">
           <div class="related-card-tag">A Core Risk Factor</div>
           <div class="related-card-title">Managing High Blood Pressure</div>
           <div class="related-card-desc">How to monitor BP at home, what your medications do, and how lifestyle changes lower your risk.</div>
           <div class="related-card-arrow">Read &rarr;</div>
         
-          <img class="related-card-thumb" src="../images/managing-hypertension-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/managing-hypertension-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->

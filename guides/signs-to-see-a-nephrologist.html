@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -169,6 +170,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1337,8 +1346,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1834,7 +1845,7 @@
 <div class="step-num">7</div>
 <div class="step-body">
 <h4><span class="dot dot-red"></span> <span data-lang="en">The day of the visit</span><span class="lang-hidden" data-lang="tl">Ang araw ng konsulta</span><span class="lang-hidden" data-lang="ceb">Ang adlaw sa konsulta</span><span class="lang-hidden" data-lang="kap">Ing aldo ning pamialaus</span></h4>
-<p><span data-lang="en">Brought to the emergency room breathless and unusually drowsy. First-ever kidney function test showed advanced failure. Diagnosis: CKD Stage 5 — kidney failure. Emergency dialysis started that same day through a temporary neck catheter; there had been no time to plan an AV fistula.</span><span class="lang-hidden" data-lang="tl">Dinala sa emergency room na hingal na hingal at hindi pangkaraniwang antok. Ang una niyang kidney function test ay nagpakita ng malalang pagbagsak. Diagnosis: CKD Stage 5 — pagkabigo ng bato. Nagsimula ang emergency dialysis sa mismong araw na iyon sa pamamagitan ng pansamantalang catheter sa leeg; wala nang oras para planuhin ang AV fistula.</span><span class="lang-hidden" data-lang="ceb">Gidala sa emergency room nga gikapoy sa ginhawa ug talagsaon ka tulog. Ang una gyud niyang kidney function test nagpakita og grabe nga pagkanaog. Diagnosis: CKD Stage 5 — pagkapakyas sa kidney. Nagsugod ang emergency dialysis sa mao rang adlaw pinaagi sa temporaryong catheter sa liog; wala nay panahon para planohon ang AV fistula.</span><span class="lang-hidden" data-lang="kap">Yakit king emergency room a mikakahingal at ali kanita katulugan. Ing enang kidney function test na mikapakit king maragul a pamaguran. Diagnosis: CKD Stage 5 — pamaguran ning bato. Migumpisa ing emergency dialysis king mumuya a aldo king pamamilatan ning pansamantalang catheter king batal; alang neng oras para planuan ing AV fistula.</span></p>
+<p><span data-lang="en">Brought to the emergency room breathless and unusually drowsy. First-ever kidney function test showed advanced failure. Diagnosis: CKD (chronic kidney disease) Stage 5 — kidney failure. Emergency dialysis started that same day through a temporary neck catheter; there had been no time to plan an AV fistula.</span><span class="lang-hidden" data-lang="tl">Dinala sa emergency room na hingal na hingal at hindi pangkaraniwang antok. Ang una niyang kidney function test ay nagpakita ng malalang pagbagsak. Diagnosis: CKD Stage 5 — pagkabigo ng bato. Nagsimula ang emergency dialysis sa mismong araw na iyon sa pamamagitan ng pansamantalang catheter sa leeg; wala nang oras para planuhin ang AV fistula.</span><span class="lang-hidden" data-lang="ceb">Gidala sa emergency room nga gikapoy sa ginhawa ug talagsaon ka tulog. Ang una gyud niyang kidney function test nagpakita og grabe nga pagkanaog. Diagnosis: CKD Stage 5 — pagkapakyas sa kidney. Nagsugod ang emergency dialysis sa mao rang adlaw pinaagi sa temporaryong catheter sa liog; wala nay panahon para planohon ang AV fistula.</span><span class="lang-hidden" data-lang="kap">Yakit king emergency room a mikakahingal at ali kanita katulugan. Ing enang kidney function test na mikapakit king maragul a pamaguran. Diagnosis: CKD Stage 5 — pamaguran ning bato. Migumpisa ing emergency dialysis king mumuya a aldo king pamamilatan ning pansamantalang catheter king batal; alang neng oras para planuan ing AV fistula.</span></p>
 </div>
 </div>
 
@@ -1842,7 +1853,7 @@
 
 <div class="case-labs">
 <span class="case-lab abnormal">Creatinine 9.8 mg/dL</span>
-<span class="case-lab abnormal">eGFR 6 mL/min</span>
+<span class="case-lab abnormal">eGFR (estimated glomerular filtration rate) 6 mL/min</span>
 <span class="case-lab warn">Hemoglobin 6.8 g/dL</span>
 <span class="case-lab abnormal">Potassium 6.4 mEq/L</span>
 </div>
@@ -2031,7 +2042,7 @@
 <p><span data-lang="en"><strong>Three ways medicines quietly cause harm:</strong></span><span class="lang-hidden" data-lang="tl"><strong>Tatlong paraan kung paano tahimik na nakakasama ang gamot:</strong></span><span class="lang-hidden" data-lang="ceb"><strong>Tulo ka paagi kung giunsa hilom nga makadaot ang tambal:</strong></span><span class="lang-hidden" data-lang="kap"><strong>Atlung paralan nung makananu tainung mangasaup deng gamut:</strong></span></p>
 <ol>
 <li><span data-lang="en"><strong>Wrong dose</strong> for your current kidney function.</span><span class="lang-hidden" data-lang="tl"><strong>Maling dosis</strong> para sa kasalukuyang gana ng bato mo.</span><span class="lang-hidden" data-lang="ceb"><strong>Sayop nga dosis</strong> alang sa karon nga gana sa imong kidney.</span><span class="lang-hidden" data-lang="kap"><strong>Alaus a dosis</strong> para king kasalukuyan a dapat ning bato mu.</span></li>
-<li><span data-lang="en"><strong>Wrong timing / dangerous stacking</strong> — the classic triple whammy: an NSAID + an ACE-inhibitor or ARB + a diuretic, taken together, can collapse kidney filtration.</span><span class="lang-hidden" data-lang="tl"><strong>Maling oras / mapanganib na pagsasama-sama</strong> — ang klasikong "triple whammy": ang NSAID + ACE-inhibitor o ARB + diuretic, kapag sabay na iniinom, ay maaaring magpabagsak sa filtration ng bato.</span><span class="lang-hidden" data-lang="ceb"><strong>Sayop nga panahon / peligroso nga pagsagol</strong> — ang klasiko nga "triple whammy": ang NSAID + ACE-inhibitor o ARB + diuretic, kung inuman dungan, mahimong makapahugno sa filtration sa kidney.</span><span class="lang-hidden" data-lang="kap"><strong>Alaus a oras / makasakit a pamagsama</strong> — ing tradisyunal a "triple whammy": ing NSAID + ACE-inhibitor o ARB + diuretic, nung sabaying ininum, mangyaring mangagba ing filtration ning bato.</span></li>
+<li><span data-lang="en"><strong>Wrong timing / dangerous stacking</strong> — the classic triple whammy: an NSAID + an ACE-inhibitor or ARB (angiotensin receptor blocker) + a diuretic, taken together, can collapse kidney filtration.</span><span class="lang-hidden" data-lang="tl"><strong>Maling oras / mapanganib na pagsasama-sama</strong> — ang klasikong "triple whammy": ang NSAID + ACE-inhibitor o ARB + diuretic, kapag sabay na iniinom, ay maaaring magpabagsak sa filtration ng bato.</span><span class="lang-hidden" data-lang="ceb"><strong>Sayop nga panahon / peligroso nga pagsagol</strong> — ang klasiko nga "triple whammy": ang NSAID + ACE-inhibitor o ARB + diuretic, kung inuman dungan, mahimong makapahugno sa filtration sa kidney.</span><span class="lang-hidden" data-lang="kap"><strong>Alaus a oras / makasakit a pamagsama</strong> — ing tradisyunal a "triple whammy": ing NSAID + ACE-inhibitor o ARB + diuretic, nung sabaying ininum, mangyaring mangagba ing filtration ning bato.</span></li>
 <li><span data-lang="en"><strong>No one reconciling the full list</strong> — prescription + over-the-counter + herbal.</span><span class="lang-hidden" data-lang="tl"><strong>Walang tumitingin sa buong listahan</strong> — reseta + hindi-reseta + herbal.</span><span class="lang-hidden" data-lang="ceb"><strong>Walay nagtan-aw sa tibuok listahan</strong> — resita + dili-resita + herbal.</span><span class="lang-hidden" data-lang="kap"><strong>Alang mangaliwat king mabilug a listahan</strong> — reseta + ali-reseta + herbal.</span></li>
 </ol>
 <p><span data-lang="en"><strong>What to do:</strong> bring every bottle — vitamins, herbals, pain relievers, supplements included — to your visit. This "brown-bag review" lets a nephrologist renally dose-adjust or safely stop what you don't need. Fewer, safer, right-dosed.</span><span class="lang-hidden" data-lang="tl"><strong>Ano ang gawin:</strong> dalhin ang lahat ng bote — bitamina, herbal, pampawala ng sakit, supplement, lahat — sa iyong konsulta. Ang "brown-bag review" na ito ay nagbibigay-daan sa nephrologist na iayon ang dosis o tigilan nang ligtas ang hindi mo na kailangan. Mas kaunti, mas ligtas, tamang dosis.</span><span class="lang-hidden" data-lang="ceb"><strong>Unsa ang buhaton:</strong> dad-a ang tanang botelya — bitamina, herbal, pampahupay sa sakit, supplement, tanan — sa imong konsulta. Kining "brown-bag review" nagtugot sa nephrologist nga i-adjust ang dosis o luwas nga ihunong ang dili nimo kinahanglan. Gamay, luwas, husto nga dosis.</span><span class="lang-hidden" data-lang="kap"><strong>Nanu ing dapat gawan:</strong> yakit no ngan reng dagul — bitamina, herbal, pamakas king sakit, supplement, lahat — king pamialaus mu. Ining "brown-bag review" mibye lako king nephrologist a i-adjust ing dosis o pabustan a matiwasay ing e mu kailangan. Migkulang, mas matiwasay, tamang dosis.</span></p>
@@ -2053,7 +2064,7 @@
 <p class="fig-desc"><span data-lang="en">The "triple whammy": an NSAID narrows the inflow vessel, an ACE-inhibitor or ARB widens the outflow vessel, and a diuretic drops fluid volume — together, three normally safe medicines can shut down kidney filtration.</span><span class="lang-hidden" data-lang="tl">Ang "triple whammy": kinikipot ng NSAID ang daluyan papasok, pinalapad naman ng ACE-inhibitor o ARB ang daluyan palabas, at binabawasan ng diuretic ang tubig sa katawan — kung sabay, tatlong karaniwang ligtas na gamot ang maaaring magpahinto sa pag-filter ng bato.</span><span class="lang-hidden" data-lang="ceb">Ang "triple whammy": gipahigot sa NSAID ang agianan pasulod, gipadako sa ACE-inhibitor o ARB ang agianan pagawas, ug gikuhaan sa diuretic ang tubig sa lawas — kung dungan, tulo ka kasagarang luwas nga tambal mahimong makapahunong sa pag-filter sa kidney.</span><span class="lang-hidden" data-lang="kap">Ing "triple whammy": kikitkitan ne ning NSAID ing dinaralanan a lulub, palapdan ne ning ACE-inhibitor o ARB ing dinaralanan a lulwal, at ibababa ne ning diuretic ing danum king lawan — nung sabaying gawa, atlung kalimit-limitan a matiwasay a gamut mangyaring mangasumpang king pamag-filter ning bato.</span></p>
 <dl class="fig-abbrevs">
 <dt>NSAID</dt><dd><span data-lang="en">Non-steroidal anti-inflammatory drug (pain reliever)</span><span class="lang-hidden" data-lang="tl">Pampawala ng sakit na hindi steroid</span><span class="lang-hidden" data-lang="ceb">Pampahupay sa sakit nga dili steroid</span><span class="lang-hidden" data-lang="kap">Pamakas king sakit a ali steroid</span></dd>
-<dt>ACEi/ARB</dt><dd><span data-lang="en">Blood pressure medicines that relax the outflow vessel</span><span class="lang-hidden" data-lang="tl">Gamot sa presyon na nagpapaluwag sa daluyan palabas</span><span class="lang-hidden" data-lang="ceb">Tambal sa presyon nga naghumok sa agianan pagawas</span><span class="lang-hidden" data-lang="kap">Gamut king presyon a mipapalubad king dinaralanan a lulwal</span></dd>
+<dt>ACEi (angiotensin-converting enzyme inhibitor)/ARB</dt><dd><span data-lang="en">Blood pressure medicines that relax the outflow vessel</span><span class="lang-hidden" data-lang="tl">Gamot sa presyon na nagpapaluwag sa daluyan palabas</span><span class="lang-hidden" data-lang="ceb">Tambal sa presyon nga naghumok sa agianan pagawas</span><span class="lang-hidden" data-lang="kap">Gamut king presyon a mipapalubad king dinaralanan a lulwal</span></dd>
 </dl>
 </figcaption>
 </figure>
@@ -2168,7 +2179,7 @@
 </ul>
 
 <p>
-<span data-lang="en"><strong>KDIGO framing:</strong> Kidney doctors decide urgency using two simple numbers — how well you filter (eGFR) and how much protein leaks (urine ACR). The higher your risk category, the sooner and the more often you should be seen.</span>
+<span data-lang="en"><strong>KDIGO (Kidney Disease: Improving Global Outcomes) framing:</strong> Kidney doctors decide urgency using two simple numbers — how well you filter (eGFR) and how much protein leaks (urine ACR). The higher your risk category, the sooner and the more often you should be seen.</span>
 <span class="lang-hidden" data-lang="tl"><strong>Balangkas ng KDIGO:</strong> Nagpapasya ang mga doktor ng bato sa antas ng pangangailangan gamit ang dalawang simpleng numero — kung gaano kahusay ang pag-filter mo (eGFR) at kung gaano karaming protina ang tumutulo (urine ACR). Kung mas mataas ang risk category mo, mas maaga at mas madalas kang dapat magpatingin.</span>
 <span class="lang-hidden" data-lang="ceb"><strong>Balangkas sa KDIGO:</strong> Ang mga doktor sa kidney nagdesisyon sa lebel sa panginahanglan gamit ang duha ka yano nga numero — unsa ka maayo ang imong pag-filter (eGFR) ug pila ka daghan ang nitulo nga protina (urine ACR). Kung mas taas ang imong risk category, mas sayo ug mas kanunay ka nga angay tan-awon.</span>
 <span class="lang-hidden" data-lang="kap"><strong>Balangkas ning KDIGO:</strong> Deng doktor na ning bato mideskarga king kailangan gamit ang aduang mayadyad a numero — nung makananu kayap ing pamag-filter mu (eGFR) at nung makatapaka ing protina a mibubulus (urine ACR). Nung mas matas ing risk category mu, mas maranun at mas malimit kang dapat lawan.</span>
@@ -2339,8 +2350,8 @@
 </div>
 
 <div class="qa-item">
-<div class="qa-q"><span data-lang="en">How much does it cost — does PhilHealth cover it?</span><span class="lang-hidden" data-lang="tl">Magkano ang gastos — sakop ba ito ng PhilHealth?</span><span class="lang-hidden" data-lang="ceb">Pila ang gasto — gitabangan ba sa PhilHealth?</span><span class="lang-hidden" data-lang="kap">Magkanu ing gastus — asakup ya iti ning PhilHealth?</span></div>
-<div class="qa-a"><span data-lang="en">A basic first-visit workup (consultation, blood test, urine test) is inexpensive and often covered in part by PhilHealth's outpatient benefits or your HMO, especially at a government facility. Ask the clinic's billing staff what's covered before your visit so there are no surprises — costs and coverage vary by facility and by whether you already have a diagnosed condition like diabetes or hypertension.</span><span class="lang-hidden" data-lang="tl">Ang batayang unang workup (konsulta, blood test, urine test) ay mura at kadalasang bahagyang sakop ng outpatient benefits ng PhilHealth o ng iyong HMO, lalo na sa government facility. Tanungin ang billing staff ng clinic kung ano ang saklaw bago ang iyong bisita para walang gulat — nag-iiba ang gastos at saklaw depende sa facility at kung mayroon ka nang diagnosed na kondisyon tulad ng diabetes o hypertension.</span><span class="lang-hidden" data-lang="ceb">Ang batakang una nga workup (konsulta, blood test, urine test) barato ug kasagaran bahin nga gitabangan sa outpatient benefits sa PhilHealth o sa imong HMO, ilabina sa government facility. Pangutan-a ang billing staff sa clinic kung unsa ang sakop una sa imong bisita aron walay katingala — magkalahi ang gasto ug sakop depende sa facility ug kung naa ka nay na-diagnose nga kondisyon sama sa diabetes o hypertension.</span><span class="lang-hidden" data-lang="kap">Ing pisapun a enang workup (konsulta, blood test, urine test) mura ya at kalimitan bage yang asakup ning outpatient benefits ning PhilHealth o ning HMO mu, lalu na king government facility. Isulit me king billing staff ning clinic nung nanu ing asakup bayu ing pamialaus mu para alang pamanggilalu — mibabago ing gastus at asakup depende king facility at nung ati ka nang na-diagnose a kondisyon a musling diabetes o hypertension.</span></div>
+<div class="qa-q"><span data-lang="en">How much does it cost — does PhilHealth (Philippine Health Insurance Corporation) cover it?</span><span class="lang-hidden" data-lang="tl">Magkano ang gastos — sakop ba ito ng PhilHealth?</span><span class="lang-hidden" data-lang="ceb">Pila ang gasto — gitabangan ba sa PhilHealth?</span><span class="lang-hidden" data-lang="kap">Magkanu ing gastus — asakup ya iti ning PhilHealth?</span></div>
+<div class="qa-a"><span data-lang="en">A basic first-visit workup (consultation, blood test, urine test) is inexpensive and often covered in part by PhilHealth's outpatient benefits or your HMO (health maintenance organization), especially at a government facility. Ask the clinic's billing staff what's covered before your visit so there are no surprises — costs and coverage vary by facility and by whether you already have a diagnosed condition like diabetes or hypertension.</span><span class="lang-hidden" data-lang="tl">Ang batayang unang workup (konsulta, blood test, urine test) ay mura at kadalasang bahagyang sakop ng outpatient benefits ng PhilHealth o ng iyong HMO, lalo na sa government facility. Tanungin ang billing staff ng clinic kung ano ang saklaw bago ang iyong bisita para walang gulat — nag-iiba ang gastos at saklaw depende sa facility at kung mayroon ka nang diagnosed na kondisyon tulad ng diabetes o hypertension.</span><span class="lang-hidden" data-lang="ceb">Ang batakang una nga workup (konsulta, blood test, urine test) barato ug kasagaran bahin nga gitabangan sa outpatient benefits sa PhilHealth o sa imong HMO, ilabina sa government facility. Pangutan-a ang billing staff sa clinic kung unsa ang sakop una sa imong bisita aron walay katingala — magkalahi ang gasto ug sakop depende sa facility ug kung naa ka nay na-diagnose nga kondisyon sama sa diabetes o hypertension.</span><span class="lang-hidden" data-lang="kap">Ing pisapun a enang workup (konsulta, blood test, urine test) mura ya at kalimitan bage yang asakup ning outpatient benefits ning PhilHealth o ning HMO mu, lalu na king government facility. Isulit me king billing staff ning clinic nung nanu ing asakup bayu ing pamialaus mu para alang pamanggilalu — mibabago ing gastus at asakup depende king facility at nung ati ka nang na-diagnose a kondisyon a musling diabetes o hypertension.</span></div>
 </div>
 
 <div class="qa-item">
@@ -2394,7 +2405,7 @@
 
 <div class="feature-card">
 <h4><span class="dot dot-teal"></span> <span data-lang="en">Protein leak reduced</span><span class="lang-hidden" data-lang="tl">Nabawasan ang tumutulong protina</span><span class="lang-hidden" data-lang="ceb">Naminusan ang nitulo nga protina</span><span class="lang-hidden" data-lang="kap">Mikaba ing mibubulus a protina</span></h4>
-<p><span data-lang="en">Tracked by repeat urine ACR; an ACE-inhibitor/ARB and, increasingly, an SGLT2-inhibitor both lower the pressure inside the filter itself.</span><span class="lang-hidden" data-lang="tl">Sinusubaybayan sa pamamagitan ng paulit-ulit na urine ACR; parehong binabawasan ng ACE-inhibitor/ARB at, lalong ginagamit, ng SGLT2-inhibitor ang presyon sa loob mismo ng filter.</span><span class="lang-hidden" data-lang="ceb">Gisubay pinaagi sa balik-balik nga urine ACR; parehas nga giminusan sa ACE-inhibitor/ARB ug, misamot gigamit, sa SGLT2-inhibitor ang presyon sa sulod mismo sa filter.</span><span class="lang-hidden" data-lang="kap">Susubaybayan ya king mibalik-balik a urine ACR; pareparehung kikebaba ning ACE-inhibitor/ARB at, lalu na yang gagamitan, ning SGLT2-inhibitor ing presyon king lub mismu ning filter.</span></p>
+<p><span data-lang="en">Tracked by repeat urine ACR; an ACE-inhibitor/ARB and, increasingly, an SGLT2-inhibitor (sodium–glucose cotransporter-2 inhibitor) both lower the pressure inside the filter itself.</span><span class="lang-hidden" data-lang="tl">Sinusubaybayan sa pamamagitan ng paulit-ulit na urine ACR; parehong binabawasan ng ACE-inhibitor/ARB at, lalong ginagamit, ng SGLT2-inhibitor ang presyon sa loob mismo ng filter.</span><span class="lang-hidden" data-lang="ceb">Gisubay pinaagi sa balik-balik nga urine ACR; parehas nga giminusan sa ACE-inhibitor/ARB ug, misamot gigamit, sa SGLT2-inhibitor ang presyon sa sulod mismo sa filter.</span><span class="lang-hidden" data-lang="kap">Susubaybayan ya king mibalik-balik a urine ACR; pareparehung kikebaba ning ACE-inhibitor/ARB at, lalu na yang gagamitan, ning SGLT2-inhibitor ing presyon king lub mismu ning filter.</span></p>
 </div>
 
 <div class="feature-card">
@@ -2404,7 +2415,7 @@
 
 <div class="feature-card">
 <h4><span class="dot dot-teal"></span> <span data-lang="en">Blood sugar managed</span><span class="lang-hidden" data-lang="tl">Nasubaybayan ang asukal</span><span class="lang-hidden" data-lang="ceb">Gibantayan ang asukar</span><span class="lang-hidden" data-lang="kap">Minipagmasid king asukal</span></h4>
-<p><span data-lang="en">For patients with diabetes, an individualized HbA1c target — usually around 7% — slows the same filter injury that high blood pressure causes.</span><span class="lang-hidden" data-lang="tl">Para sa mga pasyenteng may diabetes, isang indibidwal na HbA1c target — karaniwan ay humigit-kumulang 7% — nagpapabagal sa parehong pinsala sa filter na dulot ng mataas na presyon.</span><span class="lang-hidden" data-lang="ceb">Para sa mga pasyente nga adunay diabetes, usa ka indibidwal nga HbA1c target — kasagaran mga 7% — nagpahinay sa mao ring kadaot sa filter nga hinungdan sa taas nga presyon.</span><span class="lang-hidden" data-lang="kap">Para karing pasyenteng ating diabetes, metung a indibidwal a HbA1c target — kalimitan king palibat 7% — mipaluat king pareparehung kasakit king filter a sanhi na ning matas a presyon.</span></p>
+<p><span data-lang="en">For patients with diabetes, an individualized HbA1c (glycated hemoglobin) target — usually around 7% — slows the same filter injury that high blood pressure causes.</span><span class="lang-hidden" data-lang="tl">Para sa mga pasyenteng may diabetes, isang indibidwal na HbA1c target — karaniwan ay humigit-kumulang 7% — nagpapabagal sa parehong pinsala sa filter na dulot ng mataas na presyon.</span><span class="lang-hidden" data-lang="ceb">Para sa mga pasyente nga adunay diabetes, usa ka indibidwal nga HbA1c target — kasagaran mga 7% — nagpahinay sa mao ring kadaot sa filter nga hinungdan sa taas nga presyon.</span><span class="lang-hidden" data-lang="kap">Para karing pasyenteng ating diabetes, metung a indibidwal a HbA1c target — kalimitan king palibat 7% — mipaluat king pareparehung kasakit king filter a sanhi na ning matas a presyon.</span></p>
 </div>
 
 </div>
@@ -2532,25 +2543,25 @@
 <div class="related-card-title">Symptom Checker — When Should You Worry?</div>
 <div class="related-card-desc">4-band triage for kidney, heart & diabetes patients — now includes the quiet-signal and polypharmacy triggers from this guide.</div>
 <div class="related-card-arrow">Read →</div>
-<img class="related-card-thumb" src="../images/symptom-checker-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<img class="related-card-thumb" src="../images/symptom-checker-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="medicines-and-your-kidneys.html">
 <div class="related-card-tag">Medication Safety</div>
 <div class="related-card-title">Multiple Medicines and Your Kidneys</div>
 <div class="related-card-desc">How everyday drugs, doses, and timing can quietly harm your kidneys — and the brown-bag review that prevents it.</div>
 <div class="related-card-arrow">Read →</div>
-<img class="related-card-thumb" src="../images/medicines-and-your-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<img class="related-card-thumb" src="../images/medicines-and-your-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="understanding-ckd.html">
 <div class="related-card-tag">Foundations</div>
 <div class="related-card-title">Taking Charge of CKD: Understanding Your Kidney Disease</div>
 <div class="related-card-desc">Stages 1–5, classification, progression, and strategies to keep kidneys working longer.</div>
 <div class="related-card-arrow">Read →</div>
-<img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="ckd-skin-darkening-body-changes.html">
 <div class="related-card-tag">Philippines</div>
 <div class="related-card-title">Why Is My Skin Getting Darker? Skin Changes in CKD &amp; Dialysis</div>
 <div class="related-card-desc">Another set of quiet body signals — three root causes, Filipino-specific patterns, and warning signs to know.</div>
 <div class="related-card-arrow">Read →</div>
-<img class="related-card-thumb" src="../images/ckd-skin-darkening-body-changes-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+<img class="related-card-thumb" src="../images/ckd-skin-darkening-body-changes-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 </div>
 </div>
 </div>
@@ -2626,5 +2637,6 @@
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

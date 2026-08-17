@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -2469,28 +2480,28 @@ Scan Label</button>
 <div class="related-card-desc">Paste any recipe's ingredients and get a full Nutrition Facts label with CKD safety flags for your stage.</div>
 <div class="related-card-arrow">Read →</div>
 
-          <img class="related-card-thumb" src="../images/ckd-recipe-analyzer-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-recipe-analyzer-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="nutrition-labels-ckd.html">
 <div class="related-card-tag">The Foundation</div>
 <div class="related-card-title">Reading Nutrition Labels with CKD</div>
 <div class="related-card-desc">A supermarket survival guide for kidney patients — how to decode nutrition facts panels and spot hidden dangers.</div>
 <div class="related-card-arrow">Read →</div>
 
-          <img class="related-card-thumb" src="../images/nutrition-labels-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/nutrition-labels-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="ckd-friendly-recipes.html">
 <div class="related-card-tag">Before You Cook</div>
 <div class="related-card-title">CKD-Friendly Filipino Recipes</div>
 <div class="related-card-desc">Practical, affordable recipes using local ingredients — crafted for both pre-dialysis and dialysis patients.</div>
 <div class="related-card-arrow">Read →</div>
 
-          <img class="related-card-thumb" src="../images/ckd-friendly-recipes-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-friendly-recipes-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="nutrition-kidney-patients.html">
 <div class="related-card-tag">Nutrition Basics</div>
 <div class="related-card-title">Nutrition for Kidney Patients</div>
 <div class="related-card-desc">Understanding what to eat and what to avoid when you have CKD — a comprehensive guide to renal nutrition.</div>
 <div class="related-card-arrow">Read →</div>
 
-          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 </div>
 </div>
 <!-- RELATED-GUIDES-END -->
@@ -3105,5 +3116,6 @@ async function scanLabel(){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1754,7 +1765,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
   <div class="container">
 <div class="hero-grid">
 <div class="hero-copy">
-    <div class="hero-tag"><span data-lang="en">Nephrology · ESKD · Patient Guide</span><span data-lang="tl" class="lang-hidden">Nefrolohiya · ESKD · Gabay para sa Pasyente</span><span data-lang="ceb" class="lang-hidden">Nefrolohiya · ESKD · Giya para sa Pasyente</span>
+    <div class="hero-tag"><span data-lang="en">Nephrology · ESKD (end-stage kidney disease) · Patient Guide</span><span data-lang="tl" class="lang-hidden">Nefrolohiya · ESKD · Gabay para sa Pasyente</span><span data-lang="ceb" class="lang-hidden">Nefrolohiya · ESKD · Giya para sa Pasyente</span>
       <span data-lang="kap" class="lang-hidden">Nefrolohiya · ESKD · Gabay para king Pasyente</span></div>
     <h1><span data-lang="en">Staying <em>Well</em> on Dialysis — What Every Patient <em>Must Know</em></span><span data-lang="tl" class="lang-hidden">Manatiling Malusog sa Diyalisis</span><span data-lang="ceb" class="lang-hidden">Pagpabilin nga Maayo sa Diyalisis</span>
       <span data-lang="kap" class="lang-hidden">Manatiling Malusog king Diyalisis</span></h1>
@@ -2010,9 +2021,9 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <span data-lang="kap" class="lang-hidden">Bakit ini importante</span></th></tr></thead>
       <tbody>
         <tr><td><span data-lang="en">Hemoglobin</span><span data-lang="tl" class="lang-hidden">Hemoglobin</span><span data-lang="ceb" class="lang-hidden">Hemoglobin</span>
-      <span data-lang="kap" class="lang-hidden">Hemoglobin</span></td><td><span class="target-badge">100–115 g/L</span></td><td><span data-lang="en">Anemia causes fatigue, heart strain, poor quality of life. Requires ESA + iron</span><span data-lang="tl" class="lang-hidden">Ang anemya ay nagdudulot ng pagod, pagkabigo ng puso, at masamang kalidad ng buhay. Nangangailangan ng ESA + iron</span><span data-lang="ceb" class="lang-hidden">Ang anemia nagdulot sa pagkakapoy, kapit sa kasingkasing, ug dili maayong kalidad sa kinabuhi. Nanginahanglan og ESA + iron</span>
+      <span data-lang="kap" class="lang-hidden">Hemoglobin</span></td><td><span class="target-badge">100–115 g/L</span></td><td><span data-lang="en">Anemia causes fatigue, heart strain, poor quality of life. Requires ESA (erythropoiesis-stimulating agent) + iron</span><span data-lang="tl" class="lang-hidden">Ang anemya ay nagdudulot ng pagod, pagkabigo ng puso, at masamang kalidad ng buhay. Nangangailangan ng ESA + iron</span><span data-lang="ceb" class="lang-hidden">Ang anemia nagdulot sa pagkakapoy, kapit sa kasingkasing, ug dili maayong kalidad sa kinabuhi. Nanginahanglan og ESA + iron</span>
       <span data-lang="kap" class="lang-hidden">Ing anemya ya nagdudulot ning pagod, pagkabigo ning pusu, at masamang kalidad ning biye. Nangangailangan ning ESA + iron</span></td></tr>
-        <tr><td><span data-lang="en">Ferritin / TSAT</span><span data-lang="tl" class="lang-hidden">Ferritin / TSAT</span><span data-lang="ceb" class="lang-hidden">Ferritin / TSAT</span>
+        <tr><td><span data-lang="en">Ferritin / TSAT (transferrin saturation)</span><span data-lang="tl" class="lang-hidden">Ferritin / TSAT</span><span data-lang="ceb" class="lang-hidden">Ferritin / TSAT</span>
       <span data-lang="kap" class="lang-hidden">Ferritin / TSAT</span></td><td><span class="target-badge">Ferritin &gt;200 / TSAT &gt;30%</span></td><td><span data-lang="en">Iron must be adequate for ESA to work. IV iron (Iron Sucrose) preferred in HD</span><span data-lang="tl" class="lang-hidden">Ang iron ay dapat sapat para gumana ang ESA. Mas gusto ang IV iron (Iron Sucrose) sa HD</span><span data-lang="ceb" class="lang-hidden">Ang iron kinahanglan nga sapat aron molihok ang ESA. IV iron (Iron Sucrose) ang mas gusto sa HD</span>
       <span data-lang="kap" class="lang-hidden">Ing iron ya dapat sapat para gumana ing ESA. Mas gusto ing IV iron (Iron Sucrose) king HD</span></td></tr>
         <tr><td><span data-lang="en">Potassium (pre-HD)</span><span data-lang="tl" class="lang-hidden">Potassium (bago ang HD)</span><span data-lang="ceb" class="lang-hidden">Potassium (sa wala pa ang HD)</span>
@@ -2048,7 +2059,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <span data-lang="kap" class="lang-hidden">Renal a Diyeta para king deng Pasyente ning HD</span></div>
     <h2><span data-lang="en">What to Eat — and What to Avoid</span><span data-lang="tl" class="lang-hidden">Ano ang Dapat Kainin — at Ano ang Dapat Iwasan</span><span data-lang="ceb" class="lang-hidden">Unsa ang Dapat Kaonon — ug Unsa ang Dapat Likayan</span>
       <span data-lang="kap" class="lang-hidden">Ano ing Dapat Kainin — at Ano ing Dapat Iwasan</span></h2>
-    <p><span data-lang="en">Diet on hemodialysis is different from pre-dialysis CKD. Because dialysis removes some nutrients, your protein needs are <em>higher</em> — but potassium, phosphorus, and sodium must still be controlled carefully.</span><span data-lang="tl" class="lang-hidden">Ang diyeta sa hemodialysis ay naiiba mula sa pre-dialysis CKD. Dahil ang diyalisis ay nag-aalis ng ilang sustansya, ang inyong pangangailangan sa protina ay <em>mas mataas</em> — ngunit ang potassium, phosphorus, at sodium ay dapat pa ring maingat na kontrolin.</span><span data-lang="ceb" class="lang-hidden">Ang diyeta sa hemodialysis lahi sa pre-dialysis CKD. Tungod kay ang dialysis nagkuha sa pipila nga mga sustansya, ang inyong pangangailangan sa protina ay <em>mas taas</em> — apan ang potassium, phosphorus, ug sodium kinahanglan pa gihapon nga maingat nga kontrolon.</span>
+    <p><span data-lang="en">Diet on hemodialysis is different from pre-dialysis CKD (chronic kidney disease). Because dialysis removes some nutrients, your protein needs are <em>higher</em> — but potassium, phosphorus, and sodium must still be controlled carefully.</span><span data-lang="tl" class="lang-hidden">Ang diyeta sa hemodialysis ay naiiba mula sa pre-dialysis CKD. Dahil ang diyalisis ay nag-aalis ng ilang sustansya, ang inyong pangangailangan sa protina ay <em>mas mataas</em> — ngunit ang potassium, phosphorus, at sodium ay dapat pa ring maingat na kontrolin.</span><span data-lang="ceb" class="lang-hidden">Ang diyeta sa hemodialysis lahi sa pre-dialysis CKD. Tungod kay ang dialysis nagkuha sa pipila nga mga sustansya, ang inyong pangangailangan sa protina ay <em>mas taas</em> — apan ang potassium, phosphorus, ug sodium kinahanglan pa gihapon nga maingat nga kontrolon.</span>
       <span data-lang="kap" class="lang-hidden">Ing diyeta king hemodialysis ya naiiba mula king pre-dialysis CKD. Dahil ing diyalisis ya nag-aalis ning ilang sustansya, ing inyu pangangailangan king protina ya <em>mas matas</em> — ngarud ing potassium, phosphorus, at sodium ya dapat pa ring maingat a kontrolin.</span></p>
 
     <p><span data-lang="en">This section covers hemodialysis (HD). If you are on peritoneal dialysis (PD), your targets differ slightly — ask your nephrologist about your individual PD diet plan.</span><span data-lang="tl" class="lang-hidden">Ang seksyong ito ay sumasaklaw sa hemodialysis (HD). Kung kayo ay nasa peritoneal dialysis (PD), ang inyong mga target ay bahagyang naiiba — tanungin ang inyong nephrologist tungkol sa inyong indibidwal na plano sa diyeta sa PD.</span><span data-lang="ceb" class="lang-hidden">Kining seksyon nasakop ang hemodialysis (HD). Kon kamo naa sa peritoneal dialysis (PD), ang inyong mga target bahagyang nagkalahi — pangutan-a ang inyong nephrologist bahin sa inyong indibidwal nga plano sa diyeta sa PD.</span><span data-lang="kap" class="lang-hidden">Ing seksyong ini ya sumasaklaw king hemodialysis (HD). Nung kayu ya nasa peritoneal dialysis (PD), ing inyu deng target ya bahagyang naiiba — tanungin ing inyu nephrologist tungkol king inyu indibidwal a plano king diyeta king PD.</span></p>
@@ -2269,7 +2280,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
         <div class="step-body">
           <h4><span data-lang="en">Vaccinations are essential</span><span data-lang="tl" class="lang-hidden">Ang mga bakuna ay mahalaga</span><span data-lang="ceb" class="lang-hidden">Ang mga bakuna importante kaayo</span>
       <span data-lang="kap" class="lang-hidden">Ing deng bakuna ya importante</span></h4>
-          <p><span data-lang="en">Dialysis patients are immunocompromised. Required vaccines: <strong>Hepatitis B</strong> — double-dose 40 mcg series (0, 1, 6 months); check anti-HBs titer annually — a titer ≥ 10 mIU/mL confirms protection; give a booster if below. <strong>Influenza</strong> — annually. <strong>Pneumococcal</strong> — PCV13 followed by PPSV23. <strong>COVID-19</strong> — primary series plus updated boosters per current DOH guidelines. Check your vaccination status at your next visit.</span><span data-lang="tl" class="lang-hidden">Ang mga pasyente ng diyalisis ay may kompromisong immune system. Mga kinakailangang bakuna: <strong>Hepatitis B</strong> — doble na dosis na 40 mcg (0, 1, 6 na buwan); suriin ang anti-HBs titer taun-taon — ang titer na ≥ 10 mIU/mL ay nagpapatunay ng proteksyon; bigyan ng booster kung mas mababa. <strong>Influenza</strong> — taun-taon. <strong>Pneumococcal</strong> — PCV13 pagkatapos PPSV23. <strong>COVID-19</strong> — pangunahing serye kasama ang mga na-update na booster ayon sa kasalukuyang mga alituntunin ng DOH. Suriin ang inyong katayuan sa bakuna sa inyong susunod na pagbisita.</span><span data-lang="ceb" class="lang-hidden">Ang mga pasyente sa dialysis adunay kompromisong immune system. Mga kinahanglang bakuna: <strong>Hepatitis B</strong> — doble nga dosis nga 40 mcg (0, 1, 6 ka bulan); susihon ang anti-HBs titer matag tuig — ang titer nga ≥ 10 mIU/mL nagpamatuod sa proteksyon; hatagan og booster kon ubos. <strong>Influenza</strong> — matag tuig. <strong>Pneumococcal</strong> — PCV13 unya PPSV23. <strong>COVID-19</strong> — primaryong serye uban ang gi-update nga mga booster sumala sa kasamtangan nga mga alituntunin sa DOH. Susiha ang inyong kahimtang sa bakuna sa inyong sunod nga pagbisita.</span>
+          <p><span data-lang="en">Dialysis patients are immunocompromised. Required vaccines: <strong>Hepatitis B</strong> — double-dose 40 mcg series (0, 1, 6 months); check anti-HBs titer annually — a titer ≥ 10 mIU/mL confirms protection; give a booster if below. <strong>Influenza</strong> — annually. <strong>Pneumococcal</strong> — PCV13 followed by PPSV23. <strong>COVID-19</strong> (coronavirus disease 2019) — primary series plus updated boosters per current DOH (Department of Health) guidelines. Check your vaccination status at your next visit.</span><span data-lang="tl" class="lang-hidden">Ang mga pasyente ng diyalisis ay may kompromisong immune system. Mga kinakailangang bakuna: <strong>Hepatitis B</strong> — doble na dosis na 40 mcg (0, 1, 6 na buwan); suriin ang anti-HBs titer taun-taon — ang titer na ≥ 10 mIU/mL ay nagpapatunay ng proteksyon; bigyan ng booster kung mas mababa. <strong>Influenza</strong> — taun-taon. <strong>Pneumococcal</strong> — PCV13 pagkatapos PPSV23. <strong>COVID-19</strong> — pangunahing serye kasama ang mga na-update na booster ayon sa kasalukuyang mga alituntunin ng DOH. Suriin ang inyong katayuan sa bakuna sa inyong susunod na pagbisita.</span><span data-lang="ceb" class="lang-hidden">Ang mga pasyente sa dialysis adunay kompromisong immune system. Mga kinahanglang bakuna: <strong>Hepatitis B</strong> — doble nga dosis nga 40 mcg (0, 1, 6 ka bulan); susihon ang anti-HBs titer matag tuig — ang titer nga ≥ 10 mIU/mL nagpamatuod sa proteksyon; hatagan og booster kon ubos. <strong>Influenza</strong> — matag tuig. <strong>Pneumococcal</strong> — PCV13 unya PPSV23. <strong>COVID-19</strong> — primaryong serye uban ang gi-update nga mga booster sumala sa kasamtangan nga mga alituntunin sa DOH. Susiha ang inyong kahimtang sa bakuna sa inyong sunod nga pagbisita.</span>
       <span data-lang="kap" class="lang-hidden">Ing deng pasyente ning diyalisis ya atin kompromisong immune system. Deng kinakailangang bakuna: <strong>Hepatitis B</strong> — doble a dosis a 40 mcg (0, 1, 6 a bulan); suriin ing anti-HBs titer taun-banua — ing titer a ≥ 10 mIU/mL ya nagpapatunay ning proteksyon; bigyan ning booster nung mas mababa. <strong>Influenza</strong> — taun-banua. <strong>Pneumococcal</strong> — PCV13 kapabanuan PPSV23. <strong>COVID-19</strong> — pangunahing serye kasama ing deng na-update a booster ayon king kasalukuyang deng alituntunin ning DOH. Suriin ing inyu katayuan king bakuna king inyu susunod a pagbisita.</span></p>
         </div>
       </div>
@@ -2356,9 +2367,9 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
   </div>
 </div>
 <div class="prom-tab-nav">
-  <button class="prom-tab-btn active" data-tab="kdqol" onclick="promShowTab('kdqol')">KDQOL-36 Symptoms</button>
+  <button class="prom-tab-btn active" data-tab="kdqol" onclick="promShowTab('kdqol')">KDQOL-36 (Kidney Disease Quality of Life) Symptoms</button>
   <button class="prom-tab-btn" data-tab="dsi" onclick="promShowTab('dsi')">Dialysis Symptom Index</button>
-  <button class="prom-tab-btn" data-tab="ipos" onclick="promShowTab('ipos')">IPOS-Renal</button>
+  <button class="prom-tab-btn" data-tab="ipos" onclick="promShowTab('ipos')">IPOS-Renal (Integrated Palliative care Outcome Scale)</button>
 </div>
 <!-- KDQOL PANEL -->
 <div class="prom-panel active" id="prom-kdqol">
@@ -2417,7 +2428,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
   <div class="prom-item"><label>29. Difficulty swallowing</label><select id="dsi29"><option value="0">0 – Not present</option><option value="1">1 – Barely</option><option value="2">2 – Somewhat</option><option value="3">3 – Quite a bit</option><option value="4">4 – Very much</option></select></div>
   <div class="prom-item"><label>30. Fainting</label><select id="dsi30"><option value="0">0 – Not present</option><option value="1">1 – Barely</option><option value="2">2 – Somewhat</option><option value="3">3 – Quite a bit</option><option value="4">4 – Very much</option></select></div>
 </div>
-<button class="prom-calc-btn" onclick="promCalcDSI()">Calculate DSI Score</button>
+<button class="prom-calc-btn" onclick="promCalcDSI()">Calculate DSI (Dialysis Symptom Index) Score</button>
 <div class="prom-result" id="dsiResult"><div class="prom-result-num" id="dsiNum">—</div><div class="prom-result-info"><h4 id="dsiSev">—</h4><p id="dsiDesc">—</p></div></div>
 <button class="prom-print-btn" onclick="promPrintReport('dsi')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Download / Print DSI Report</button>
 <p class="prom-ref">Dialysis Symptom Index. Weisbord SD et al. J Palliat Med. 2004;7(1):23–32. Adapted for patient self-monitoring; not a clinical diagnostic tool.</p>
@@ -2455,7 +2466,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
     <a href="calc-dialysis-prom.html" class="calc-card">
       <div class="calc-card-icon">⌬</div>
       <div class="calc-card-body">
-        <div class="calc-card-title">Dialysis PROMs — KDQOL-36, DSI & IPOS-Renal</div>
+        <div class="calc-card-title">Dialysis PROMs (patient-reported outcome measures) — KDQOL-36, DSI & IPOS-Renal</div>
         <div class="calc-card-desc">Three validated patient-reported outcome tools — symptom burden, kidney impact, palliative needs.</div>
       </div>
       <span class="calc-card-arrow">Open →</span>
@@ -2510,28 +2521,28 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
           <div class="related-card-desc">Understanding the different types of dialysis access, how to care for your fistula or catheter at ho</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/dialysis-access-care-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/dialysis-access-care-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="hemodialysis-complications.html">
           <div class="related-card-tag">The Complication Landscape</div>
           <div class="related-card-title">Managing Complications of Hemodialysis</div>
           <div class="related-card-desc">Hemodialysis is life-sustaining — but every session carries risks. Knowing how to recognize, prevent</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/hemodialysis-complications-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hemodialysis-complications-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="dialysis-adequacy.html">
           <div class="related-card-tag">The Foundation</div>
           <div class="related-card-title">Is My Dialysis Working? Understanding Dialysis Adequacy</div>
           <div class="related-card-desc">What Kt/V and URR mean, why they matter, what your target should be, and how to calculate your own d</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="eating-on-dialysis.html">
           <div class="related-card-tag">Renal Nutrition</div>
           <div class="related-card-title">Eating Well on Dialysis</div>
           <div class="related-card-desc">What to eat and what to avoid on hemodialysis — Filipino food choices, fluid limits, and tips for eating well at every meal.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/eating-on-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/eating-on-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -2631,5 +2642,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

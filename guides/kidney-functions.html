@@ -13,6 +13,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -142,6 +143,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1310,8 +1319,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1998,7 +2009,7 @@ body.dark .related-card-title {
 <section class="section" id="fn-toxins">
 <div class="section-tag"><span data-lang="en">Function 2 · Drugs &amp; Toxins</span><span data-lang="tl" class="lang-hidden">Function 2 · Mga Gamot at Lason</span><span data-lang="ceb" class="lang-hidden">Function 2 · Mga Tambal ug Hilo</span><span data-lang="kap" class="lang-hidden">Function 2 · Mga Gamut at Racun</span></div>
 <h2><span data-lang="en">Removing Medications and Toxins</span><span data-lang="tl" class="lang-hidden">Pag-aalis ng mga Gamot at Lason</span><span data-lang="ceb" class="lang-hidden">Pagtangtang sa mga Tambal ug Hilo</span><span data-lang="kap" class="lang-hidden">Pagtanggal ning mga Gamut at Racun</span></h2>
-<figure style="margin:8px 0 24px;"><picture><source srcset="../images/kidney-functions-tubular-secretion.webp" type="image/webp"><img src="../images/kidney-functions-tubular-secretion.png" alt="Proximal tubule drug and toxin secretion — organic anion transporters (OAT, e.g. penicillins, diuretics, uric acid), organic cation transporters (OCT, e.g. metformin), and apical P-glycoprotein efflux pumps actively move drugs and toxins from blood into urine." loading="lazy" decoding="async" style="width:100%;height:auto;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--border);max-width:760px;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;"><p class="fig-desc">Specialized proximal-tubule transporters (OAT, OCT, P-glycoprotein) actively secrete drugs and toxins — clearing them even when filtration alone is not enough. This is why doses are adjusted in CKD.</p></figcaption></figure>
+<figure style="margin:8px 0 24px;"><picture><source srcset="../images/kidney-functions-tubular-secretion.webp" type="image/webp"><img src="../images/kidney-functions-tubular-secretion.png" alt="Proximal tubule drug and toxin secretion — organic anion transporters (OAT, e.g. penicillins, diuretics, uric acid), organic cation transporters (OCT, e.g. metformin), and apical P-glycoprotein efflux pumps actively move drugs and toxins from blood into urine." loading="lazy" decoding="async" style="width:100%;height:auto;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--border);max-width:760px;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;"><p class="fig-desc">Specialized proximal-tubule transporters (OAT, OCT, P-glycoprotein) actively secrete drugs and toxins — clearing them even when filtration alone is not enough. This is why doses are adjusted in CKD (chronic kidney disease).</p></figcaption></figure>
 
 <p><span data-lang="en">Every time you take a medication — an antibiotic, a blood-pressure pill, or even a painkiller — your kidneys are responsible for clearing it safely from your blood. They also eliminate environmental toxins and contrast dyes used in medical imaging. This remarkable ability protects you from drug build-up and keeps prescribed medicines working as intended.</span><span data-lang="tl" class="lang-hidden">Sa tuwing uminom ka ng gamot — isang antibiotic, isang tableta para sa presyon ng dugo, o kahit isang pansamantalang pampakilig — ang iyong mga bato ang responsable sa ligtas na pagtanggal nito mula sa iyong dugo. Inaalis din nila ang mga panligalig mula sa kapaligiran at contrast dye na ginagamit sa medical imaging. Ang kahanga-hangang kakayahang ito ay nagpoprotekta sa iyo mula sa pag-iipon ng gamot at tinitiyak na ang mga inireseta na gamot ay gumagana tulad ng inilaan.</span><span data-lang="ceb" class="lang-hidden">Sa matag higayon nga moinom ka ug tambal — usa ka antibiotic, usa ka tableta alang sa presyon sa dugo, o bisan usa ka pampakilig — ang imong mga kidney ang responsable sa luwas nga pagtangtang niini gikan sa imong dugo. Gitangtang usab nila ang mga hilo gikan sa palibot ug contrast dye nga gigamit sa medical imaging. Kining talagsaong kakayahan nagpanalipod kanimo gikan sa pagtipon sa tambal ug nagpasiguro nga ang mga gireseta nga tambal nagtrabaho sama sa giintensyon.</span><span data-lang="kap" class="lang-hidden">Sa bawat beses a uminom ka ning gamut — isang antibiotic, isang tableta para king presyon ning dugo, o maging isang pampakilig — ing iyong mga bato ing responsable king ligtas a pagtanggal nito mula king iyong dugo. Tinatanggal da nila ing mga racun mula king kapaligiran at contrast dye a ginagamit king medical imaging. Ining kahanga-hangang kakayahan nagpoprotekta keka mula king pagtipon ning gamut at tinitiyak a ing mga inireseta a gamut gumagana kaku nang inilaan.</span></p>
 <div class="two-col">
@@ -2123,7 +2134,7 @@ body.dark .related-card-title {
 <section class="section" id="fn-mineral">
 <div class="section-tag"><span data-lang="en">Function 6 · Calcium &amp; Phosphorus</span><span data-lang="tl" class="lang-hidden">Function 6 · Calcium at Posporo</span><span data-lang="ceb" class="lang-hidden">Function 6 · Calcium ug Posporo</span><span data-lang="kap" class="lang-hidden">Function 6 · Calcium at Phosphorus</span></div>
 <h2><span data-lang="en">Maintaining Healthy Calcium and Phosphorus Levels</span><span data-lang="tl" class="lang-hidden">Pagpapanatili ng Malusog na Antas ng Calcium at Posporo</span><span data-lang="ceb" class="lang-hidden">Pagpaduy-ong sa Himsog nga mga Lebel sa Calcium ug Posporo</span><span data-lang="kap" class="lang-hidden">Pagpanatili ning Malusog a Antas ning Calcium at Phosphorus</span></h2>
-<figure style="margin:8px 0 24px;"><picture><source srcset="../images/kidney-functions-bone-mineral-axis.webp" type="image/webp"><img src="../images/kidney-functions-bone-mineral-axis.png" alt="Kidney mineral and bone axis — calcium, phosphate, PTH, vitamin D (calcitriol), FGF23, and Klotho. The kidney activates vitamin D, excretes phosphate (NaPi-IIa/IIc), and produces Klotho to keep bones strong and arteries flexible." loading="lazy" decoding="async" style="width:100%;height:auto;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--border);max-width:760px;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;"><p class="fig-desc">The kidney runs the calcium–phosphate–PTH–vitamin D–FGF23–Klotho axis. When it fails, the result is CKD-mineral and bone disorder (CKD-MBD) — weak bones and calcified arteries.</p></figcaption></figure>
+<figure style="margin:8px 0 24px;"><picture><source srcset="../images/kidney-functions-bone-mineral-axis.webp" type="image/webp"><img src="../images/kidney-functions-bone-mineral-axis.png" alt="Kidney mineral and bone axis — calcium, phosphate, PTH, vitamin D (calcitriol), FGF23, and Klotho. The kidney activates vitamin D, excretes phosphate (NaPi-IIa/IIc), and produces Klotho to keep bones strong and arteries flexible." loading="lazy" decoding="async" style="width:100%;height:auto;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--border);max-width:760px;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;"><p class="fig-desc">The kidney runs the calcium–phosphate–PTH (parathyroid hormone)–vitamin D–FGF23 (fibroblast growth factor 23)–Klotho axis. When it fails, the result is CKD-mineral and bone disorder (CKD-MBD) — weak bones and calcified arteries.</p></figcaption></figure>
 
 <p><span data-lang="en">Your kidneys keep calcium and phosphorus in careful balance to protect your bones and blood vessels. Every day, they filter these minerals and decide exactly how much to return to your bloodstream and how much to send out in the urine. Without this precise control, bones weaken and arteries stiffen.</span><span data-lang="tl" class="lang-hidden">Pinapanatili ng iyong mga bato ang calcium at posporo sa tamang balanse upang maprotektahan ang iyong mga buto at mga daluyan ng dugo. Araw-araw, sinasala nila ang mga mineral na ito at tinutukoy kung gaano karami ang ibabalik sa daloy ng dugo at kung gaano karami ang ilalabas sa ihi. Kung wala ang maingat na kontrol na ito, humihina ang mga buto at tumitigas ang mga arterya.</span><span data-lang="ceb" class="lang-hidden">Gibalanse sa imong mga kidney ang calcium ug posporo aron mapanalipdan ang imong mga bukog ug mga ugat sa dugo. Matag adlaw, gisala nila kini nga mga mineral ug gideterminar kung pila ang ibalik sa dugo ug pila ang ipagawas sa ihi. Kung wala kining maayong kontrol, mohumok ang mga bukog ug motig-a ang mga arterya.</span><span data-lang="kap" class="lang-hidden">Iniheheld ning iyong mga kidney ing calcium at phosphorus king balanse para protektahan ing iyong mga buto at ugat ning dugo. Aldo-aldo, sinasala da ining mga mineral at tinutukuyan kung magkanu ing ibalik king agus ning dugo at kung magkanu ing palabasin king ihi. Kung ala itong tuksuyang kontrol, humulma ang mga buto at tumigás ang mga arterya.</span></p>
 <div class="two-col">
@@ -2217,7 +2228,7 @@ body.dark .related-card-title {
 <section class="section" id="fn-bp">
 <div class="section-tag"><span data-lang="en">Function 9 · Blood Pressure</span><span data-lang="tl" class="lang-hidden">Function 9 · Presyon ng Dugo</span><span data-lang="ceb" class="lang-hidden">Function 9 · Presyon sa Dugo</span><span data-lang="kap" class="lang-hidden">Function 9 · Presyon ning Dugo</span></div>
 <h2><span data-lang="en">Controlling Blood Pressure</span><span data-lang="tl" class="lang-hidden">Pagkontrol ng Presyon ng Dugo</span><span data-lang="ceb" class="lang-hidden">Pagkontrol sa Presyon sa Dugo</span><span data-lang="kap" class="lang-hidden">Pagkontrol ning Presyon ning Dugo</span></h2>
-<figure style="margin:8px 0 24px;"><picture><source srcset="../images/kidney-functions-raas-bp.webp" type="image/webp"><img src="../images/kidney-functions-raas-bp.png" alt="Sodium and long-term blood pressure via RAAS — the juxtaglomerular apparatus releases renin when perfusion, distal sodium-chloride delivery, or sympathetic tone change; renin drives angiotensinogen to angiotensin I, ACE to angiotensin II (vasoconstriction), then aldosterone and ENaC sodium retention, with pressure natriuresis and tubuloglomerular feedback as counter-regulation." loading="lazy" decoding="async" style="width:100%;height:auto;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--border);max-width:760px;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;"><p class="fig-desc">The kidney sets long-term blood pressure by controlling sodium. The RAAS cascade (renin to angiotensin II to aldosterone) raises pressure when needed, while pressure natriuresis lowers it — dysregulation drives hypertension in CKD.</p></figcaption></figure>
+<figure style="margin:8px 0 24px;"><picture><source srcset="../images/kidney-functions-raas-bp.webp" type="image/webp"><img src="../images/kidney-functions-raas-bp.png" alt="Sodium and long-term blood pressure via RAAS — the juxtaglomerular apparatus releases renin when perfusion, distal sodium-chloride delivery, or sympathetic tone change; renin drives angiotensinogen to angiotensin I, ACE to angiotensin II (vasoconstriction), then aldosterone and ENaC sodium retention, with pressure natriuresis and tubuloglomerular feedback as counter-regulation." loading="lazy" decoding="async" style="width:100%;height:auto;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--border);max-width:760px;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;"><p class="fig-desc">The kidney sets long-term blood pressure by controlling sodium. The RAAS (renin–angiotensin–aldosterone system) cascade (renin to angiotensin II to aldosterone) raises pressure when needed, while pressure natriuresis lowers it — dysregulation drives hypertension in CKD.</p></figcaption></figure>
 
 <p><span data-lang="en">Your kidneys are the body's master regulators of long-term blood pressure. Unlike the heart and blood vessels that respond in seconds, the kidneys adjust blood pressure over hours and days by controlling how much salt and water stays in your body. No other organ has this sustained, powerful influence on blood pressure.</span><span data-lang="tl" class="lang-hidden">Ang iyong mga bato ang pangunahing regulator ng pangmatagalang presyon ng dugo sa katawan. Hindi tulad ng puso at mga daluyan ng dugo na tumutugon sa loob ng ilang segundo, inaayos ng mga bato ang presyon ng dugo sa loob ng mga oras at araw sa pamamagitan ng pagkontrol ng dami ng asin at tubig na nananatili sa iyong katawan. Walang ibang organo ang may ganitong napapanatiling, malakas na impluwensya sa presyon ng dugo.</span><span data-lang="ceb" class="lang-hidden">Ang imong mga kidney ang panguna nga regulador sa dugay nga presyon sa dugo sa lawas. Dili sama sa kasingkasing ug mga ugat sa dugo nga motubag sulod sa mga segundo, ang mga kidney nag-adjust sa presyon sa dugo sulod sa mga oras ug adlaw pinaagi sa pagkontrol sa kung pila ka asin ug tubig ang magpabilin sa imong lawas. Walay laing organo ang adunay niining padayon ug kusog nga impluwensya sa presyon sa dugo.</span><span data-lang="kap" class="lang-hidden">Ing iyong mga kidney ing pangunahing regulator ning pangmatagalang presyon ning dugo king katawan. Ali tulad ning puso at mga ugat ning dugo a tumutupad king loob ning ilang segundo, iniaayos ning mga kidney ing presyon ning dugo king loob ning mga oras at araw sa pamamamagitan ning pagkontrol kung magkanu a asin at tubig ing mananatili king iyong katawan. Ala pang ibang organo ing adunang ganitong napapanatiling, malakas a impluwensya king presyon ning dugo.</span></p>
 <div class="two-col">
@@ -2860,42 +2871,42 @@ body.dark .related-card-title {
           <div class="related-card-desc">A guided tour of how healthy kidneys filter, reabsorb, and signal — the perfect companion to this guide.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/kidney-physiology-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/kidney-physiology-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="understanding-ckd.html">
           <div class="related-card-tag">Understanding the Disease</div>
           <div class="related-card-title">Taking Charge of CKD</div>
           <div class="related-card-desc">What chronic kidney disease means, how it is staged, and what you can do to slow it.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="anemia-management.html">
           <div class="related-card-tag">Complications</div>
           <div class="related-card-title">Anemia in Kidney Disease</div>
           <div class="related-card-desc">Why failing kidneys make less erythropoietin — and how the anemia of CKD is treated.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/anemia-management-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/anemia-management-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="ckd-mbd.html">
           <div class="related-card-tag">Bone &amp; Mineral</div>
           <div class="related-card-title">Understanding CKD-MBD</div>
           <div class="related-card-desc">How the kidney's mineral and hormone axis breaks down — and what it means for your bones and arteries.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/ckd-mbd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-mbd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="potassium-hyperkalemia-ckd.html">
           <div class="related-card-tag">Electrolytes</div>
           <div class="related-card-title">Hyperkalemia: High Potassium Explained</div>
           <div class="related-card-desc">Why potassium control protects your heartbeat, and how to keep levels safe in CKD.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/potassium-hyperkalemia-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/potassium-hyperkalemia-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="heart-failure-ckd.html">
           <div class="related-card-tag">Heart &amp; Kidney</div>
           <div class="related-card-title">Heart Failure and Kidney Disease</div>
           <div class="related-card-desc">The cardiorenal connection — why kidney disease is also a cardiovascular disease.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/heart-failure-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/heart-failure-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -2986,5 +2997,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

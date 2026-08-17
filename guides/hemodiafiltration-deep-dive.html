@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -141,6 +142,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1309,8 +1318,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1681,8 +1692,8 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1695,7 +1706,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">&minus;23%</span><span class="l">All-cause mortality, HDF vs HD (CONVINCE 2023)</span></div>
+<div class="ov-stat"><span class="v">&minus;23%</span><span class="l">All-cause mortality, hemodiafiltration (HDF) vs HD (CONVINCE 2023)</span></div>
 <div class="ov-stat"><span class="v">&ge;23 L</span><span class="l">Convection volume per session (therapeutic target)</span></div>
 <div class="ov-stat"><span class="v">2025</span><span class="l">EuDial consensus supports high-volume HDF</span></div>
 </div>
@@ -1745,7 +1756,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
     <img src="../images/hdf-mechanism-figure.png"
          alt="Hemodiafiltration mechanism: diffusion vs convection in online HDF — the scientific basis for superior middle molecule clearance"
          fetchpriority="high" loading="eager"
-         style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.12);">
+         style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.12);" width="1448" height="1086">
   </picture>
   <figcaption style="text-align:center;font-size:12px;color:var(--text-muted);padding:8px 32px 16px;">
     <span data-lang="en">HDF mechanism: simultaneous diffusion (small molecules) and convection (middle molecules). The convection volume ≥23 L/session is the key therapeutic threshold.</span>
@@ -1801,7 +1812,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
     </div>
     <div class="stat-card">
       <div class="stat-number">4,153</div>
-      <div class="stat-label">Patients in the Lancet 2024 IPD meta-analysis across 5 RCTs</div>
+      <div class="stat-label">Patients in the Lancet 2024 IPD meta-analysis across 5 randomized controlled trials (RCTs)</div>
     </div>
     <div class="stat-card">
       <div class="stat-number">≥23 L</div>
@@ -1809,7 +1820,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
     </div>
     <div class="stat-card">
       <div class="stat-number">2024</div>
-      <div class="stat-label">Year FDA granted 510(k) clearance for online HDF in the USA</div>
+      <div class="stat-label">Year the Food and Drug Administration (FDA) granted 510(k) clearance for online HDF in the USA</div>
     </div>
   </div>
 
@@ -1819,7 +1830,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
       <img src="../images/hdf-trial-evidence-infographic.png"
            alt="Timeline of landmark HDF trials: CONTRAST 2012, Turkish OL-HDF 2013, ESHOL 2013, CONVINCE 2023, Lancet IPD meta-analysis 2024"
            loading="lazy"
-           style="border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.10);">
+           style="border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.10);" width="1659" height="948">
     </picture>
     <figcaption>
       <span data-lang="en">Timeline of landmark HDF randomized controlled trials, 2012–2024. The progression from early neutral trials to definitive high-volume trials established the dose-response relationship that explains all prior results.</span>
@@ -1862,7 +1873,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
       <img src="../images/hdf-outcomes-infographic.png"
            alt="Clinical outcomes of HDF vs HD: mortality reduction, infection mortality, quality of life — ESHOL and CONVINCE trial results"
            loading="lazy"
-           style="border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.10);">
+           style="border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.10);" width="1122" height="1402">
     </picture>
     <figcaption>
       <span data-lang="en">Key outcome data from ESHOL (2013) and CONVINCE (2023) — the two high-volume HDF trials that showed consistent mortality reduction. Both required ≥22–25 L/session convection volume.</span>
@@ -2043,7 +2054,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
       <img src="../images/hdf-toxin-clearance-infographic.png"
            alt="Comparison of toxin clearance in hemodialysis vs hemodiafiltration: small molecules, middle molecules, β2-microglobulin, FGF-23, uremic toxins"
            loading="lazy"
-           style="border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.10);">
+           style="border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.10);" width="1448" height="1086">
     </picture>
     <figcaption>
       <span data-lang="en">Comparative toxin clearance: HDF's convection mechanism provides 78% better clearance of β₂-microglobulin compared to high-flux HD (~87 mL/min vs ~49 mL/min). The clinical benefit is accumulation prevention over years of dialysis.</span>
@@ -2080,7 +2091,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
       <img src="../images/hdf-selection-algorithm.png"
            alt="Patient selection algorithm for hemodiafiltration: vascular access, blood flow, center capability, convection volume target"
            loading="lazy"
-           style="border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.10);">
+           style="border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.10);" width="1024" height="1536">
     </picture>
     <figcaption>
       <span data-lang="en">HDF patient selection algorithm. The most important factor is the ability to consistently achieve ≥23 L/session convection volume, which depends on vascular access quality (blood flow ≥350 mL/min) and center capability.</span>
@@ -2234,7 +2245,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
           <td><strong>CONVINCE</strong><br><small style="color:var(--text-muted)">Multinational</small></td>
           <td>2023</td>
           <td>1,360</td>
-          <td>HR 0.77 (95% CI 0.65–0.93) ✓ — 23% all-cause mortality; deaths 118 vs 148; QoL QALY +0.045–0.058</td>
+          <td>HR 0.77 (95% CI 0.65–0.93) ✓ — 23% all-cause mortality; deaths 118 vs 148; quality of life (QoL) QALY +0.045–0.058</td>
           <td>25.3 L (mean)</td>
         </tr>
       </tbody>
@@ -2248,7 +2259,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
     </div>
   </div>
   <h3 style="margin-top:32px;">ESHOL Detail</h3>
-  <p>906 patients; HR 0.70 for all-cause mortality (30% reduction); 55% reduction in infection-related mortality (HR 0.45, p&lt;0.001); NNT = 8 to prevent 1 annual death; significant reduction in intradialytic hypotension. Mean convection volume 22.9–23.9 L/session (post-dilution). <em>Reference: Maduell et al., JASN 2013, DOI: 10.1681/ASN.2012080875</em></p>
+  <p>906 patients; HR 0.70 for all-cause mortality (30% reduction); 55% reduction in infection-related mortality (HR 0.45, p&lt;0.001); number needed to treat (NNT) = 8 to prevent 1 annual death; significant reduction in intradialytic hypotension. Mean convection volume 22.9–23.9 L/session (post-dilution). <em>Reference: Maduell et al., JASN (Journal of the American Society of Nephrology, ASN) 2013, DOI: 10.1681/ASN.2012080875</em></p>
   <h3 style="margin-top:24px;">CONVINCE Detail</h3>
   <p>1,360 patients; 683 HDF vs 677 HD; median follow-up 30 months; mean convection volume 25.3 L/session (post-dilution). Primary endpoint met: HR 0.77 (95% CI 0.65–0.93). Deaths: 118 (17.3%) HDF vs 148 (21.9%) HD. CV mortality HR 0.81 (NS). Composite CV events HR 1.07 (NS). Infection/COVID deaths: significantly reduced. QoL: QALY gains 0.045–0.058. <em>Reference: Blankestijn et al., NEJM 2023, DOI: 10.1056/NEJMoa2304820</em></p>
 </section>
@@ -2336,7 +2347,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
   <p>Cardiovascular mortality in HD patients remains approximately 10%/year — 10–20× higher than the age-matched general population. Landmark pharmacological trials have all been neutral:</p>
   <ul>
     <li><strong>Statins:</strong> 4D (atorvastatin, T2DM on HD) and AURORA (rosuvastatin) — both neutral for MACE</li>
-    <li><strong>MRA:</strong> ACHIEVE (spironolactone) and ALCHEMIST — neutral</li>
+    <li><strong>Mineralocorticoid receptor antagonists (MRA):</strong> ACHIEVE (spironolactone) and ALCHEMIST — neutral</li>
     <li><strong>Potassium control:</strong> DIALIZE-Outcomes — neutral for CV events</li>
   </ul>
   <p>The dominant CV risk mechanisms in dialysis are "non-traditional": chronic inflammation, oxidative stress, vascular calcification, intradialytic myocardial ischemia (regional wall motion abnormalities are common), and uremic cardiomyopathy. These are not modifiable by statins or MRA in the conventional sense.</p>
@@ -2359,7 +2370,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
     <li>Evidence insufficient for: sudden cardiac death prevention, consistent intradialytic hypotension reduction, hospitalization reduction</li>
   </ul>
   <h3>KDIGO</h3>
-  <p>No formal HDF guideline as of 2025–2026. The nephrology community (Strippoli et al., CKJ 2026) has explicitly called for world-class KDIGO-level evidence-synthesis guidelines rather than consensus/position statements, given the strength of the available RCT evidence.</p>
+  <p>No formal HDF guideline as of 2025–2026. The nephrology community (Strippoli et al., CKJ 2026) has explicitly called for world-class Kidney Disease: Improving Global Outcomes (KDIGO)-level evidence-synthesis guidelines rather than consensus/position statements, given the strength of the available RCT evidence.</p>
   <h3>United States Context</h3>
   <p>FDA 510(k) clearance for online HDF machine granted in 2024 — the first such clearance in US history. The US dialysis population (~800,000 patients) now has access to HDF for the first time. Phased clinical introduction underway. Institutional adoption dependent on water treatment infrastructure upgrades (ultrapure dialysate standard) and capital investment in HDF-capable machines. Reimbursement framework under development.</p>
   <h3>HDF vs Expanded Hemodialysis (HDx)</h3>
@@ -2503,22 +2514,22 @@ try{(function(){var v=localStorage.getItem('wgmr-hdf-mode');if(v===null){var per
       <div class="related-card-tag">Understanding the Disease</div>
       <div class="related-card-title">Taking Charge of CKD</div>
     
-          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card has-thumb" href="hemodialysis-modalities.html">
       <div class="related-card-tag">Dialysis Treatment</div>
       <div class="related-card-title">Hemodialysis Modalities</div>
     
-          <img class="related-card-thumb" src="../images/hemodialysis-modalities-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hemodialysis-modalities-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card has-thumb" href="dialysis-adequacy.html">
       <div class="related-card-tag">Dialysis Quality</div>
       <div class="related-card-title">Dialysis Adequacy</div>
     
-          <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card has-thumb" href="cardiovascular-death-dialysis.html">
       <div class="related-card-tag">Cardiovascular Risk</div>
       <div class="related-card-title">Cardiovascular Death in Dialysis</div>
     
-          <img class="related-card-thumb" src="../images/cardiovascular-death-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/cardiovascular-death-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
   </div>
 </div>
 <!-- RELATED-GUIDES-END -->
@@ -2626,5 +2637,6 @@ function setGuideLang(lang){ setLang(lang); }
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

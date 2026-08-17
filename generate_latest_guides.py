@@ -27,7 +27,11 @@ in guides/calculators.html) and patches: the guides/index.html hero stat, its
 mobile-filter and sidebar-filter "All N" labels, its og/twitter meta copy,
 calculators.html's og:image:alt, and the root index.html hero stat fallback
 (the data-target the JS count-up animation uses before its own live sync
-fetch resolves). Runs automatically as part of `main()` — no separate flag.
+fetch resolves). It also patches the two guides/index.html numbers no JS ever
+rewrites — the search-box placeholder and the results-count fallback — and
+every static cf-count filter chip on calculators.html ("All tools", plus each
+category), which otherwise go one short the moment a calculator is added.
+Runs automatically as part of `main()` — no separate flag.
 
 Usage:
     python3 generate_latest_guides.py
@@ -71,6 +75,12 @@ SKIP_EXACT = {
 SKIP_PREFIX = ("calc-",)
 SKIP_SUFFIX = ("-log.html", "-log-blank.html", "-blank.html")
 
+# Editing artifacts that must never reach the live strip. A hand-saved backup
+# keeps its article:published_time, so without this it outranks real guides and
+# publishes a card pointing at a stale, unlinked copy (this happened with
+# epilepsy-seizures-ckd.hero-backup-20260623.html).
+SKIP_CONTAINS = (".hero-backup-", ".backup-", ".bak", " 2.html", "-copy.html", "-samples.html")
+
 # Guides whose og:image crops badly under the strip's live CSS crop (a large
 # title block on one side of a wide OG card, flagged by hand) — prefer the
 # pre-cropped {stem}-rg-thumb.webp instead. Guides using a square
@@ -95,6 +105,8 @@ def is_guide(name: str) -> bool:
     if name.startswith(SKIP_PREFIX):
         return False
     if name.endswith(SKIP_SUFFIX):
+        return False
+    if any(frag in name for frag in SKIP_CONTAINS):
         return False
     return True
 
@@ -268,6 +280,48 @@ def count_true_specialties(index_html: str) -> int:
     return len(set(re.findall(r'<div class="guide-section"[^>]*data-section="([^"]+)"', index_html)))
 
 
+def sync_calc_filter_chips(calc_text: str) -> tuple[str, int]:
+    """Recompute every cf-count chip on guides/calculators.html from the grid.
+
+    The category filter chips ("Dialysis 23", "All tools 197") are static HTML —
+    only the Favorites chip is JS-driven — so adding a calculator to a section
+    silently leaves both that section's chip and the "All tools" chip one short.
+    Counts come from the real grid: <a class="related-card"> inside each
+    <section id="…">, with the Latest-calculators carousel excluded so its
+    cards are never double-counted.
+    """
+    body = re.sub(r'<!-- LATEST-CALCS-START -->.*?<!-- LATEST-CALCS-END -->',
+                  '', calc_text, flags=re.DOTALL)
+    per_section = {}
+    for m in re.finditer(r'<section class="section" id="([a-z-]+)"[^>]*>(.*?)</section>',
+                         body, re.DOTALL):
+        n = len(re.findall(r'<a class="related-card', m.group(2)))
+        if n:
+            per_section[m.group(1)] = n
+    per_section['all'] = sum(per_section.values())
+
+    changed = 0
+
+    # Every capture group is re-emitted, including the data-filter attribute
+    # itself — dropping it would silently disable the category filter buttons.
+    # The Favorites chip carries an id and is written by JS, so it is skipped.
+    pattern = (r'(data-filter=")([a-z-]+)(")'
+               r'(?![^>]*id="cf-fav-count")'
+               r'((?:(?!</button>).)*?<span class="cf-count">)(\d+)(</span>)')
+
+    def repl2(m):
+        nonlocal changed
+        a, key, b, mid, old, tail = m.groups()
+        true = per_section.get(key)
+        if true is None or str(true) == old:
+            return m.group(0)
+        changed += 1
+        return f'{a}{key}{b}{mid}{true}{tail}'
+
+    calc_text = re.sub(pattern, repl2, calc_text)
+    return calc_text, changed
+
+
 def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool) -> str:
     """Patch every hand-displayed guide/calculator count to the true, freshly
     computed values. Returns the (possibly) updated guides/index.html text;
@@ -301,18 +355,49 @@ def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool)
     text, n7 = re.subn(
         r'\d+( evidence-based guides, )\d+( calculators)',
         rf'{guide_count}\g<1>{calc_count}\g<2>', text)
-    changed = n1 + n2 + n3 + n4 + n5 + n6 + n7
+    # The search box placeholder is a static attribute — no JS ever rewrites it,
+    # so a stale number here is visible to every visitor until it is patched.
+    text, n8 = re.subn(
+        r'(placeholder=.Search )\d+( guides)', rf'\g<1>{guide_count}\g<2>', text)
+    # The results-count span IS recomputed by refreshCounts() on load, but the
+    # static value is what a no-JS or slow-JS visitor sees first — keep it true.
+    text, n9 = re.subn(
+        r'(<span class="results-count" id="results-count">)\d+(</span>)',
+        rf'\g<1>{guide_count}\g<2>', text)
+    changed = n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9
     print(f"guides/index.html: {changed} stat/meta reference(s) synced" if changed else "guides/index.html: stats already in sync")
 
     new_calc_text, cn1 = re.subn(
         r'\d+( evidence-based nephrology calculators)', rf'{calc_count}\g<1>', calc_text)
+    cn2 = sync_calc_filter_chips(new_calc_text)
+    new_calc_text = cn2[0]
+    cn1 += cn2[1]
     print(f"guides/calculators.html: {cn1} reference(s) synced" if cn1 else "guides/calculators.html: already in sync")
 
     root_text = root_index_path.read_text(encoding="utf-8")
-    new_root_text, rn1 = re.subn(r'(data-target=")\d+(" id="stat-guides")', rf'\g<1>{guide_count}\g<2>', root_text)
-    new_root_text, rn2 = re.subn(r'(data-target=")\d+(" id="stat-specialties")', rf'\g<1>{spec_count}\g<2>', new_root_text)
-    new_root_text, rn3 = re.subn(r'(data-target=")\d+(" id="stat-calculators")', rf'\g<1>{calc_count}\g<2>', new_root_text)
-    rn = rn1 + rn2 + rn3
+    # Both the data-target attribute AND the visible digits between the tags
+    # need updating — the real number is baked into the static HTML itself
+    # (not just a JS-animation target) so no-JS/slow-JS visitors never see a
+    # stale count either.
+    new_root_text, rn1 = re.subn(
+        r'(<div class="rcm-stat-num" id="stat-guides" data-target=")\d+(">)\d+(</div>)',
+        rf'\g<1>{guide_count}\g<2>{guide_count}\g<3>', root_text)
+    new_root_text, rn2 = re.subn(
+        r'(<div class="rcm-stat-num" id="stat-specialties" data-target=")\d+(">)\d+(</div>)',
+        rf'\g<1>{spec_count}\g<2>{spec_count}\g<3>', new_root_text)
+    new_root_text, rn3 = re.subn(
+        r'(<div class="rcm-stat-num" id="stat-calculators" data-target=")\d+(">)\d+(</div>)',
+        rf'\g<1>{calc_count}\g<2>{calc_count}\g<3>', new_root_text)
+    new_root_text, rn4 = re.subn(
+        r'(<span id="stat-specialties-inline">)\d+(</span>)', rf'\g<1>{spec_count}\g<2>', new_root_text)
+    new_root_text, rn5 = re.subn(
+        r'(<span id="stat-calculators-inline">)\d+(</span>)', rf'\g<1>{calc_count}\g<2>', new_root_text)
+    new_root_text, rn6 = re.subn(
+        r'(<span id="stat-calculators-inline2">)\d+(</span>)', rf'\g<1>{calc_count}\g<2>', new_root_text)
+    new_root_text, rn8 = re.subn(
+        r'\d+( physician-written guides and )\d+( interactive tools)',
+        rf'{guide_count}\g<1>{calc_count}\g<2>', new_root_text)
+    rn = rn1 + rn2 + rn3 + rn4 + rn5 + rn6 + rn8
     print(f"index.html: {rn} hero stat fallback(s) synced" if rn else "index.html: stats already in sync")
 
     if not dry_run:

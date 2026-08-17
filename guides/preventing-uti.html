@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1747,7 +1758,7 @@ body.dark .related-card-title {
     <div class="illus-wrap" style="background:#f9fafb;border:1px solid #e2e6eb;border-radius:14px;padding:24px;margin:24px 0;text-align:center;">
       <img src="../images/uti-progression-stages-urosepsis.webp" alt="Infographic showing 4 stages of UTI progression: urethra → bladder → kidney → bloodstream (urosepsis emergency)" style="max-width:100%;width:100%;display:block;border-radius:12px;" loading="lazy" width="1536" height="1024">
           </div>
-      <p class="illus-caption"><span data-lang="en">Fever separates simple cystitis from kidney infection. Any UTI with fever above 38.5°C and flank pain requires prompt medical attention — in CKD patients, this can escalate to sepsis within hours.</span><span data-lang="tl" class="lang-hidden">Ang lagnat ang nagpapaiba ng simpleng cystitis mula sa impeksyon sa bato. Ang anumang UTI na may lagnat na higit sa 38.5°C at pananakit sa gilid ay nangangailangan ng agarang atensyong medikal — sa mga pasyenteng may CKD, maaari itong maging sepsis sa loob ng ilang oras.</span><span data-lang="ceb" class="lang-hidden">Ang hilanat ang nagbulag-bulag sa simpleng cystitis ug impeksyon sa kidney. Ang bisan unsang UTI nga adunay hilanat nga mosobra sa 38.5°C ug kasakit sa kilid nagkinahanglan sa dali nga atensyong medikal — sa mga pasyente nga adunay CKD, mahimong mahimong sepsis sulod sa pipila ka oras.</span>
+      <p class="illus-caption"><span data-lang="en">Fever separates simple cystitis from kidney infection. Any urinary tract infection (UTI) with fever above 38.5°C and flank pain requires prompt medical attention — in chronic kidney disease (CKD) patients, this can escalate to sepsis within hours.</span><span data-lang="tl" class="lang-hidden">Ang lagnat ang nagpapaiba ng simpleng cystitis mula sa impeksyon sa bato. Ang anumang UTI na may lagnat na higit sa 38.5°C at pananakit sa gilid ay nangangailangan ng agarang atensyong medikal — sa mga pasyenteng may CKD, maaari itong maging sepsis sa loob ng ilang oras.</span><span data-lang="ceb" class="lang-hidden">Ang hilanat ang nagbulag-bulag sa simpleng cystitis ug impeksyon sa kidney. Ang bisan unsang UTI nga adunay hilanat nga mosobra sa 38.5°C ug kasakit sa kilid nagkinahanglan sa dali nga atensyong medikal — sa mga pasyente nga adunay CKD, mahimong mahimong sepsis sulod sa pipila ka oras.</span>
       <span data-lang="kap" class="lang-hidden">Ing lagnat ing nagpapaiba ning simpleng cystitis mula king impeksyon king batu. Ing anumang UTI a atin lagnat a higit king 38.5°C at pananakit king gilid ya nangangailangan ning agarang atensyong medikal — king deng pasyenteng atin CKD, maaari itong maging sepsis king loob ning ilang oras.</span></p>
 
       <p><span data-lang="en">A UTI is a bacterial infection anywhere in the urinary tract — the kidneys, ureters, bladder, or urethra. The vast majority are caused by <strong>Escherichia coli (E. coli)</strong> from the bowel entering the urethra. <strong>In patients with CKD or diabetes, a simple bladder infection can rapidly ascend to the kidney and cause life-threatening sepsis.</strong> Prevention and early treatment are essential.</span><span data-lang="tl" class="lang-hidden">Ang UTI ay isang impeksyon na dulot ng bakterya sa anumang bahagi ng urinary tract — ang mga bato, ureter, pantog, o urethra. Karamihan ay dulot ng <strong>Escherichia coli (E. coli)</strong> mula sa bituka na pumapasok sa urethra. <strong>Sa mga pasyenteng may CKD o diabetes, ang simpleng impeksyon sa pantog ay maaaring mabilis na umakyat sa bato at magdulot ng banta sa buhay na sepsis.</strong> Mahalaga ang pag-iwas at maagang paggamot.</span><span data-lang="ceb" class="lang-hidden">Ang UTI usa ka impeksyon sa bakterya sa bisan unsang bahin sa urinary tract — ang mga kidney, ureter, pantog, o urethra. Kadaghanan dulot sa <strong>Escherichia coli (E. coli)</strong> gikan sa tinai nga mosulod sa urethra. <strong>Sa mga pasyente nga adunay CKD o diabetes, ang simpleng impeksyon sa pantog mahimong dali nga mosaka sa kidney ug magdulot sa sepsis nga makamamatay.</strong> Mahinungdanon ang pagpugong ug sayo nga pagtambal.</span>
@@ -1795,7 +1806,7 @@ body.dark .related-card-title {
       <span data-lang="kap" class="lang-hidden">Malubha — nangangailangan ning 7–14 aldo a antibiotiko; maaaring kailangang maospital</span></td></tr>
         <tr><td>Urosepsis</td><td><span data-lang="en">Bloodstream from kidney</span><span data-lang="tl" class="lang-hidden">Daluyan ng dugo mula sa bato</span><span data-lang="ceb" class="lang-hidden">Dugo gikan sa kidney</span>
       <span data-lang="kap" class="lang-hidden">Daluyan ning daya mula king batu</span></td><td><span data-lang="en">High fever, rigors, hypotension, confusion, rapid heart rate</span><span data-lang="tl" class="lang-hidden">Mataas na lagnat, panginginig, mababang presyon, kalituhan, mabilis na tibok ng puso</span><span data-lang="ceb" class="lang-hidden">Taas nga hilanat, pangintayon, ubos nga presyon, kalibog, paspas nga tibok sa puso</span>
-      <span data-lang="kap" class="lang-hidden">Matas a lagnat, panginginig, mababang presyon, kalituhan, mabilis a tibok ning pusu</span></td><td><span data-lang="en">Medical emergency — IV antibiotics, ICU if severe</span><span data-lang="tl" class="lang-hidden">Medikal na emerhensiya — IV na antibiotiko, ICU kung malubha</span><span data-lang="ceb" class="lang-hidden">Medikal nga emerhensiya — IV nga antibiotiko, ICU kung grabe</span>
+      <span data-lang="kap" class="lang-hidden">Matas a lagnat, panginginig, mababang presyon, kalituhan, mabilis a tibok ning pusu</span></td><td><span data-lang="en">Medical emergency — IV antibiotics, intensive care unit (ICU) if severe</span><span data-lang="tl" class="lang-hidden">Medikal na emerhensiya — IV na antibiotiko, ICU kung malubha</span><span data-lang="ceb" class="lang-hidden">Medikal nga emerhensiya — IV nga antibiotiko, ICU kung grabe</span>
       <span data-lang="kap" class="lang-hidden">Medikal a emerhenya — IV a antibiotiko, ICU nung malubha</span></td></tr>
         <tr><td><span data-lang="en">Recurrent UTI</span><span data-lang="tl" class="lang-hidden">Paulit-ulit na UTI</span><span data-lang="ceb" class="lang-hidden">Balik-balik nga UTI</span>
       <span data-lang="kap" class="lang-hidden">Paulit-ulit a UTI</span></td><td><span data-lang="en">Bladder ± kidney</span><span data-lang="tl" class="lang-hidden">Pantog ± bato</span><span data-lang="ceb" class="lang-hidden">Pantog ± kidney</span>
@@ -1941,7 +1952,7 @@ body.dark .related-card-title {
       <tbody>
         <tr><td><span data-lang="en">Uncomplicated cystitis (women)</span><span data-lang="tl" class="lang-hidden">Simpleng cystitis (kababaihan)</span><span data-lang="ceb" class="lang-hidden">Simpleng cystitis (mga babaye)</span>
       <span data-lang="kap" class="lang-hidden">Simpleng cystitis (kababaihan)</span></td><td>Nitrofurantoin 100 mg QID × 5 days, or Fosfomycin 3 g single dose; <em>TMP-SMX 960 mg BID × 3 days only if culture-proven susceptible</em> — not empiric (high local resistance, PSMID 2013)</td><td><span data-lang="en">5 days (nitrofurantoin) or single dose (fosfomycin)</span><span data-lang="tl" class="lang-hidden">5 araw (nitrofurantoin) o isang beses lang (fosfomycin)</span><span data-lang="ceb" class="lang-hidden">5 ka adlaw (nitrofurantoin) o usa ka dosis (fosfomycin)</span>
-      <span data-lang="kap" class="lang-hidden">5 aldo (nitrofurantoin) o metung a beses lang (fosfomycin)</span></td><td><span data-lang="en">Avoid nitrofurantoin when eGFR &lt;45 — reduced efficacy and toxicity risk in CKD. Quinolones not first-line (collateral damage). Beta-lactams (amox-clav, cefuroxime) 7 days if preferred agents unavailable.</span><span data-lang="tl" class="lang-hidden">Iwasan ang nitrofurantoin kung ang eGFR &lt;45 — bumababang bisa at panganib ng toxicity sa CKD. Hindi unang linya ang quinolones (collateral damage). Beta-lactams (amox-clav, cefuroxime) 7 araw kung hindi available ang preferred agents.</span><span data-lang="ceb" class="lang-hidden">Likayi ang nitrofurantoin kung ang eGFR &lt;45 — nagkunhod nga epekto ug risgo sa toxicity sa CKD. Dili una nga linya ang quinolones (collateral damage). Beta-lactams (amox-clav, cefuroxime) 7 ka adlaw kung dili available ang preferred agents.</span>
+      <span data-lang="kap" class="lang-hidden">5 aldo (nitrofurantoin) o metung a beses lang (fosfomycin)</span></td><td><span data-lang="en">Avoid nitrofurantoin when estimated glomerular filtration rate (eGFR) &lt;45 — reduced efficacy and toxicity risk in CKD. Quinolones not first-line (collateral damage). Beta-lactams (amox-clav, cefuroxime) 7 days if preferred agents unavailable.</span><span data-lang="tl" class="lang-hidden">Iwasan ang nitrofurantoin kung ang eGFR &lt;45 — bumababang bisa at panganib ng toxicity sa CKD. Hindi unang linya ang quinolones (collateral damage). Beta-lactams (amox-clav, cefuroxime) 7 araw kung hindi available ang preferred agents.</span><span data-lang="ceb" class="lang-hidden">Likayi ang nitrofurantoin kung ang eGFR &lt;45 — nagkunhod nga epekto ug risgo sa toxicity sa CKD. Dili una nga linya ang quinolones (collateral damage). Beta-lactams (amox-clav, cefuroxime) 7 ka adlaw kung dili available ang preferred agents.</span>
       <span data-lang="kap" class="lang-hidden">Iwasan ing nitrofurantoin nung ing eGFR &lt;45 — bumababang bisa at panganib ning toxicity king CKD. Deng quinolones ali una nga linya (collateral damage). Beta-lactams (amox-clav, cefuroxime) 7 aldo nung ali available deng preferred agents.</span></td></tr>
         <tr><td><span data-lang="en">Cystitis with diabetes or CKD</span><span data-lang="tl" class="lang-hidden">Cystitis na may diyabetes o CKD</span><span data-lang="ceb" class="lang-hidden">Cystitis nga adunay diyabetes o CKD</span>
       <span data-lang="kap" class="lang-hidden">Cystitis a atin diyabetes o CKD</span></td><td>Ciprofloxacin 500 mg BID or Co-trimoxazole 960 mg BID (guided by culture)</td><td><span data-lang="en">7 days</span><span data-lang="tl" class="lang-hidden">7 araw</span><span data-lang="ceb" class="lang-hidden">7 ka adlaw</span>
@@ -2309,7 +2320,7 @@ body.dark .related-card-title {
       <span data-lang="kap" class="lang-hidden">Ing paulit-ulit a UTI a ali tumutugon king deng hakbang king pag-uugali ya halos papirming atin pinagbabatayan a istruktura o metabolikong dahilan:</span></p>
           <ul style="margin:8px 0 0 16px;font-size:14px;color:var(--text-muted);">
             <li style="margin-bottom:6px;"><strong><span data-lang="en">Diabetes:</span><span data-lang="tl" class="lang-hidden">Diyabetes:</span><span data-lang="ceb" class="lang-hidden">Diyabetes:</span>
-      <span data-lang="kap" class="lang-hidden">Diyabetes:</span></strong> <span data-lang="en">Optimize blood sugar control — glucose-rich urine is a potent bacterial culture medium. Target HbA1c 7–8% (adjust in CKD). Glucosuria directly correlates with UTI frequency</span><span data-lang="tl" class="lang-hidden">I-optimize ang kontrol ng asukal sa dugo — ang ihi na mayaman sa glucose ay isang napakalakas na medium para sa kultura ng bakterya. Target na HbA1c 7–8% (iayon sa CKD). Ang glucosuria ay direktang nauugnay sa dalas ng UTI</span><span data-lang="ceb" class="lang-hidden">I-optimize ang kontrol sa asukal sa dugo — ang ihi nga dato sa glucose usa ka kusgan nga medium alang sa kultura sa bakterya. Target nga HbA1c 7–8% (ayuhon sa CKD). Ang glucosuria direktang nalakip sa kasagaran sa UTI</span>
+      <span data-lang="kap" class="lang-hidden">Diyabetes:</span></strong> <span data-lang="en">Optimize blood sugar control — glucose-rich urine is a potent bacterial culture medium. Target glycated hemoglobin (HbA1c) 7–8% (adjust in CKD). Glucosuria directly correlates with UTI frequency</span><span data-lang="tl" class="lang-hidden">I-optimize ang kontrol ng asukal sa dugo — ang ihi na mayaman sa glucose ay isang napakalakas na medium para sa kultura ng bakterya. Target na HbA1c 7–8% (iayon sa CKD). Ang glucosuria ay direktang nauugnay sa dalas ng UTI</span><span data-lang="ceb" class="lang-hidden">I-optimize ang kontrol sa asukal sa dugo — ang ihi nga dato sa glucose usa ka kusgan nga medium alang sa kultura sa bakterya. Target nga HbA1c 7–8% (ayuhon sa CKD). Ang glucosuria direktang nalakip sa kasagaran sa UTI</span>
       <span data-lang="kap" class="lang-hidden">I-optimize ing kontrol ning asukal king daya — ing ihi a mayaman king glucose ya metung a napakalakas a medium para king kultura ning bakterya. Target a HbA1c 7–8% (iayon king CKD). Ing glucosuria ya direktang nauugnay king dalas ning UTI</span></li>
             <li style="margin-bottom:6px;"><strong><span data-lang="en">BPH (enlarged prostate):</span><span data-lang="tl" class="lang-hidden">BPH (malalaking prostate):</span><span data-lang="ceb" class="lang-hidden">BPH (dako nga prostate):</span>
       <span data-lang="kap" class="lang-hidden">BPH (malalaking prostate):</span></strong> <span data-lang="en">Urinary retention from BPH is the leading UTI risk in older men — treat with alpha-blockers or 5-alpha reductase inhibitors; consider urology referral for significant retention</span><span data-lang="tl" class="lang-hidden">Ang pagpigil ng ihi mula sa BPH ang nangungunang panganib ng UTI sa mga matatandang lalaki — gamutin ng alpha-blockers o 5-alpha reductase inhibitors; isaalang-alang ang referral sa urology para sa makabuluhang pagpigil</span><span data-lang="ceb" class="lang-hidden">Ang pagpugngan sa ihi gikan sa BPH ang nangulong risgo sa UTI sa mga tigulang nga lalaki — ayohon gamit ang alpha-blockers o 5-alpha reductase inhibitors; hunahunaon ang referral sa urology alang sa makabuluhang pagpugngan</span>
@@ -2471,21 +2482,21 @@ body.dark .related-card-title {
           <div class="related-card-desc">Urinary tract infections are not just an inconvenience in CKD — they are a recognized driver of kidn</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/recurrent-uti-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/recurrent-uti-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="managing-kidney-stones.html">
           <div class="related-card-tag">The Basics</div>
           <div class="related-card-title">Managing Kidney Stones</div>
           <div class="related-card-desc">Why kidney stones form, what the different types mean, how to pass one safely — and the dietary and </div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/managing-kidney-stones-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/managing-kidney-stones-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="prostate-enlargement.html">
           <div class="related-card-tag">The Basics</div>
           <div class="related-card-title">Prostate Enlargement (BPH)</div>
           <div class="related-card-desc">What benign prostatic hyperplasia is, why it causes urinary problems, and the lifestyle changes and </div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/prostate-enlargement-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/prostate-enlargement-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -2578,5 +2589,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

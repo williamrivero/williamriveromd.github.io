@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1721,7 +1732,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <button class="aud-tab tab-pat active" id="tab-patient" onclick="setMode('patient')">
       <span class="tab-icon">🧑</span>
       For Patients</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1805,7 +1816,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <div class="intro-callout">
       <p><span data-lang="en">The prostate gland surrounds the urethra just below the bladder. As men age, the prostate naturally enlarges — a process called <strong>benign prostatic hyperplasia (BPH)</strong>. The enlarging gland squeezes the urethra, making it harder to urinate. By age 60, over 50% of Filipino men have BPH; by age 85, over 90% are affected. <strong>It is not cancer</strong> — but untreated, it can damage the kidneys.</span><span data-lang="tl" class="lang-hidden">Ang prostate gland ay nakapaligid sa urethra nang direkta sa ibaba ng pantog. Habang tumatanda ang mga lalaki, ang prostate ay natural na lumalaki — isang prosesong tinatawag na <strong>benign prostatic hyperplasia (BPH)</strong>. Pinipiga ng lumalaking gland ang urethra, na nagpapahirap sa pag-ihi. Sa edad 60, mahigit 50% ng mga Pilipinong lalaki ay may BPH; sa edad 85, mahigit 90% ang apektado. <strong>Hindi ito cancer</strong> — ngunit kung hindi ginagamot, maaari itong makasama sa mga bato.</span><span data-lang="ceb" class="lang-hidden">Ang prostate gland naglibot sa urethra direkta sa ilalom sa pantog. Samtang nagtigulang ang mga lalaki, ang prostate natural nga nagdako — usa ka proseso nga gitawag og <strong>benign prostatic hyperplasia (BPH)</strong>. Ang nagdakong gland nagpisog sa urethra, nga nagpabudlay sa pag-ihi. Sa edad 60, kapin sa 50% sa mga Pilipinong lalaki adunay BPH; sa edad 85, kapin sa 90% ang apektado. <strong>Dili kini cancer</strong> — apan kung dili gamuton, mahimong makadaot sa mga kidney.</span>
       <span data-lang="kap" class="lang-hidden">Ing prostate gland ya napaligiran king urethra a diriktang manak king pantog. Kalugud tumanda deng lalaki, ing prostate ya natural a lumakbe — metung a proseso a tawagan <strong>benign prostatic hyperplasia (BPH)</strong>. Pinipiga ning lumakbing gland ing urethra, a maglisud king pag-ihi. King edad 60, mahigit 50% deng Pilipinong lalaki atin BPH; king edad 85, mahigit 90% deng apektado. <strong>Ali ya cancer ini</strong> — ngan nung ali gagamulan, malyari yang makasama king deng batu.</span></p>
-      <p style="margin-top:14px;"><span data-lang="en">BPH silently damages kidneys through back-pressure long before patients report significant urinary symptoms. PSA testing and kidney function (creatinine + ultrasound with post-void residual) should be checked in all men with LUTS. Chronic obstruction → back-pressure → hydronephrosis → silent CKD.</span><span data-lang="tl" class="lang-hidden">Ang BPH ay palihim na nagpapasama sa mga bato sa pamamagitan ng back-pressure na matagal bago pa man mag-ulat ang mga pasyente ng makabuluhang sintomas ng ihi. Dapat suriin ang PSA testing at kidney function (creatinine + ultrasound na may post-void residual) sa lahat ng lalaki na may LUTS. Talamak na obstruction → back-pressure → hydronephrosis → tahimik na CKD.</span><span data-lang="ceb" class="lang-hidden">Ang BPH hilom nga nagdaot sa mga kidney pinaagi sa back-pressure dugay pa sa wala pay pasyente nga nag-report sa makisabutan nga sintomas sa ihi. Ang PSA testing ug kidney function (creatinine + ultrasound nga adunay post-void residual) kinahanglan susihon sa tanan nga lalaki nga adunay LUTS. Kronikong obstruction → back-pressure → hydronephrosis → hilom nga CKD.</span>
+      <p style="margin-top:14px;"><span data-lang="en">BPH silently damages kidneys through back-pressure long before patients report significant urinary symptoms. Prostate-specific antigen (PSA) testing and kidney function (creatinine + ultrasound with post-void residual) should be checked in all men with LUTS. Chronic obstruction → back-pressure → hydronephrosis → silent chronic kidney disease (CKD).</span><span data-lang="tl" class="lang-hidden">Ang BPH ay palihim na nagpapasama sa mga bato sa pamamagitan ng back-pressure na matagal bago pa man mag-ulat ang mga pasyente ng makabuluhang sintomas ng ihi. Dapat suriin ang PSA testing at kidney function (creatinine + ultrasound na may post-void residual) sa lahat ng lalaki na may LUTS. Talamak na obstruction → back-pressure → hydronephrosis → tahimik na CKD.</span><span data-lang="ceb" class="lang-hidden">Ang BPH hilom nga nagdaot sa mga kidney pinaagi sa back-pressure dugay pa sa wala pay pasyente nga nag-report sa makisabutan nga sintomas sa ihi. Ang PSA testing ug kidney function (creatinine + ultrasound nga adunay post-void residual) kinahanglan susihon sa tanan nga lalaki nga adunay LUTS. Kronikong obstruction → back-pressure → hydronephrosis → hilom nga CKD.</span>
       <span data-lang="kap" class="lang-hidden">Ing BPH ya palihim a sumira king deng batu paagi king back-pressure, matagal bago pa man magreklamo deng pasyente ning makabuluang sintomas king pag-ihi. Dapat suriin ing PSA testing at kidney function (creatinine + ultrasound a atin post-void residual) king amin a lalaki a atin LUTS. Maragul a obstruction → back-pressure → hydronephrosis → tahimik a CKD.</span></p>
     </div>
     <div class="two-col">
@@ -1943,7 +1954,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-top:16px;">
         <div style="font-size:13px;font-weight:600;color:#0f1e2e;margin-bottom:12px;">
           <span style="display:inline-block;width:24px;height:24px;background:#1a6b72;color:white;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;margin-right:8px;">QoL</span>
-          <span data-lang="en">If you were to spend the rest of your life with your urinary condition just the way it is now, how would you feel about that?</span>
+          <span data-lang="en">(quality of life) — If you were to spend the rest of your life with your urinary condition just the way it is now, how would you feel about that?</span>
           <span data-lang="tl" class="lang-hidden">Kung gagastusin mo ang natitirang buhay mo na may kondisyon ng ihi na katulad ng ngayon, paano mo mararamdaman iyon?</span>
           <span data-lang="ceb" class="lang-hidden">Kung gaganawon mo ang nabilin mong kinabuhi nga adunay kondisyon sa ihi sama sa karon, unsay imong mabatyagan bahin niana?</span>
       <span data-lang="kap" class="lang-hidden">Nung gaganawin mo ing nabilin mong biye na atin kondisyon ning ihi a katulad ning ngeni, nanu ing maramdaman mu king ini?</span>
@@ -2025,7 +2036,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <div class="feature-card">
         <h4><span class="dot dot-amber"></span><span data-lang="en">Recurrent UTIs from retention</span><span data-lang="tl" class="lang-hidden">Paulit-ulit na UTI mula sa retention</span><span data-lang="ceb" class="lang-hidden">Balik-balik nga UTI gikan sa retention</span>
       <span data-lang="kap" class="lang-hidden">Paulit-ulit a UTI mula king retention</span></h4>
-        <p><span data-lang="en">Post-void residual urine (stagnant urine remaining in the bladder after voiding) is a perfect bacterial culture medium. Men with significant BPH have high rates of recurrent UTI and are at risk for ascending pyelonephritis and urosepsis — particularly dangerous in those with coexisting CKD or diabetes.</span><span data-lang="tl" class="lang-hidden">Ang post-void residual urine (nananatiling ihi sa pantog pagkatapos ng pag-ihi) ay perpektong medium para sa pagpapalaki ng bakterya. Ang mga lalaki na may makabuluhang BPH ay may mataas na rate ng paulit-ulit na UTI at nanganganib sa ascending pyelonephritis at urosepsis — lalo na mapanganib sa mga may kasamang CKD o diabetes.</span><span data-lang="ceb" class="lang-hidden">Ang post-void residual urine (natibilin nga ihi sa pantog human mag-ihi) perpektong medium alang sa pagtubo sa bakterya. Ang mga lalaki nga adunay makisabutan nga BPH adunay taas nga rate sa balik-balik nga UTI ug naa sa peligro sa ascending pyelonephritis ug urosepsis — labi na delikado sa mga adunay kasamtamang CKD o diabetes.</span>
+        <p><span data-lang="en">Post-void residual urine (stagnant urine remaining in the bladder after voiding) is a perfect bacterial culture medium. Men with significant BPH have high rates of recurrent urinary tract infection (UTI) and are at risk for ascending pyelonephritis and urosepsis — particularly dangerous in those with coexisting CKD or diabetes.</span><span data-lang="tl" class="lang-hidden">Ang post-void residual urine (nananatiling ihi sa pantog pagkatapos ng pag-ihi) ay perpektong medium para sa pagpapalaki ng bakterya. Ang mga lalaki na may makabuluhang BPH ay may mataas na rate ng paulit-ulit na UTI at nanganganib sa ascending pyelonephritis at urosepsis — lalo na mapanganib sa mga may kasamang CKD o diabetes.</span><span data-lang="ceb" class="lang-hidden">Ang post-void residual urine (natibilin nga ihi sa pantog human mag-ihi) perpektong medium alang sa pagtubo sa bakterya. Ang mga lalaki nga adunay makisabutan nga BPH adunay taas nga rate sa balik-balik nga UTI ug naa sa peligro sa ascending pyelonephritis ug urosepsis — labi na delikado sa mga adunay kasamtamang CKD o diabetes.</span>
       <span data-lang="kap" class="lang-hidden">Ing post-void residual urine (nananatiling ihi king pantog kapabanuan ning pag-ihi) ya perpektong medium para king paglako ning bakterya. Deng lalaki a atin makabuluhang BPH ya atin matas a rate ning paulit-ulit a UTI at nanganganib king ascending pyelonephritis at urosepsis — lalu nang mapanganib king deng atin kasamang CKD o diabetes.</span></p>
       </div>
       <div class="feature-card">
@@ -2045,7 +2056,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <span data-lang="kap" class="lang-hidden">Pseudoephedrine, phenylephrine (king deng gamut para king sipon/decongestant) — nagpapasuot king leeg ning pantog, nagpapalala ning obstruction</span></li>
           <li><strong>Anticholinergics:</strong> <span data-lang="en">Some antihistamines (diphenhydramine), antispasmodics, some antidepressants — reduce bladder contractility</span><span data-lang="tl" class="lang-hidden">Ilang antihistamine (diphenhydramine), antispasmodic, ilang antidepressant — nagpapababa ng contractility ng pantog</span><span data-lang="ceb" class="lang-hidden">Pipila ka antihistamine (diphenhydramine), antispasmodic, pipila ka antidepressant — nagpubos sa contractility sa pantog</span>
       <span data-lang="kap" class="lang-hidden">Deng antihistamine (diphenhydramine), antispasmodic, deng antidepressant — nagpababang mababa ning contractility ning pantog</span></li>
-          <li><strong>NSAIDs:</strong> <span data-lang="en">Reduce prostaglandin-mediated detrusor muscle tone</span><span data-lang="tl" class="lang-hidden">Nagpapababa ng tono ng detrusor muscle na pinapamahalaan ng prostaglandin</span><span data-lang="ceb" class="lang-hidden">Nagpubos sa tono sa detrusor muscle nga gipatumhok sa prostaglandin</span>
+          <li><strong>NSAIDs (non-steroidal anti-inflammatory drugs):</strong> <span data-lang="en">Reduce prostaglandin-mediated detrusor muscle tone</span><span data-lang="tl" class="lang-hidden">Nagpapababa ng tono ng detrusor muscle na pinapamahalaan ng prostaglandin</span><span data-lang="ceb" class="lang-hidden">Nagpubos sa tono sa detrusor muscle nga gipatumhok sa prostaglandin</span>
       <span data-lang="kap" class="lang-hidden">Nagpababa ning tono ning detrusor muscle a pinapamahalaan ning prostaglandin</span></li>
           <li><strong>Diuretics (high dose):</strong> <span data-lang="en">Rapidly fill the bladder, overwhelming already-impaired emptying</span><span data-lang="tl" class="lang-hidden">Mabilis na pinupuno ang pantog, nagsasalin sa nang may kapansanang pag-aalisan</span><span data-lang="ceb" class="lang-hidden">Dali nga nagpuno sa pantog, nagsalin sa nang may gikabsan nga pag-uyog</span>
       <span data-lang="kap" class="lang-hidden">Mabilis a pinupuno ing pantog, nagsalin king nang atin kapansanang pag-aalisan</span></li>
@@ -2071,7 +2082,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <tr><td>Serum PSA (Prostate-Specific Antigen)</td><td><span data-lang="en">Elevated in BPH, prostatitis, and prostate cancer</span><span data-lang="tl" class="lang-hidden">Mataas sa BPH, prostatitis, at prostate cancer</span><span data-lang="ceb" class="lang-hidden">Taas sa BPH, prostatitis, ug prostate cancer</span>
       <span data-lang="kap" class="lang-hidden">Matas king BPH, prostatitis, at prostate cancer</span></td><td><span data-lang="en">Must be interpreted with prostate volume and age. Rising PSA or PSA &gt;4 ng/mL warrants urology referral to exclude cancer.</span><span data-lang="tl" class="lang-hidden">Dapat bigkaing kasama ang dami ng prostate at edad. Ang tumataas na PSA o PSA &gt;4 ng/mL ay nangangailangan ng referral sa urology upang ibukod ang cancer.</span><span data-lang="ceb" class="lang-hidden">Kinahanglan basahon uban sa gidaghanon sa prostate ug edad. Ang nagtubo nga PSA o PSA &gt;4 ng/mL nagkinahanglan og referral sa urology aron ibulag ang cancer.</span>
       <span data-lang="kap" class="lang-hidden">Dapat basaing kasama ing dami ning prostate at edad. Ing tumataas a PSA o PSA &gt;4 ng/mL ya kailangan ning referral king urology para ibukod ing cancer.</span></td></tr>
-        <tr><td>Creatinine + eGFR</td><td><span data-lang="en">Kidney function — detects obstructive nephropathy</span><span data-lang="tl" class="lang-hidden">Kidney function — nakakakita ng obstructive nephropathy</span><span data-lang="ceb" class="lang-hidden">Kidney function — nakamatikod sa obstructive nephropathy</span>
+        <tr><td>Creatinine + estimated glomerular filtration rate (eGFR)</td><td><span data-lang="en">Kidney function — detects obstructive nephropathy</span><span data-lang="tl" class="lang-hidden">Kidney function — nakakakita ng obstructive nephropathy</span><span data-lang="ceb" class="lang-hidden">Kidney function — nakamatikod sa obstructive nephropathy</span>
       <span data-lang="kap" class="lang-hidden">Kidney function — nakapamalas ning obstructive nephropathy</span></td><td><span data-lang="en">Essential at diagnosis and follow-up. Silent CKD from BPH is common and often missed.</span><span data-lang="tl" class="lang-hidden">Mahalaga sa diagnosis at follow-up. Ang tahimik na CKD mula sa BPH ay karaniwan at madalas na hindi nakikita.</span><span data-lang="ceb" class="lang-hidden">Importante sa diagnosis ug follow-up. Ang hilom nga CKD gikan sa BPH kasagaran ug kasagarang wala mamatikdan.</span>
       <span data-lang="kap" class="lang-hidden">Importante king diagnosis at follow-up. Ing tahimik a CKD manipud king BPH ya karaniwan at madalas a ali napanayan.</span></td></tr>
         <tr><td>Urinalysis + urine culture</td><td><span data-lang="en">Infection, hematuria, glucosuria</span><span data-lang="tl" class="lang-hidden">Impeksyon, hematuria, glucosuria</span><span data-lang="ceb" class="lang-hidden">Impeksyon, hematuria, glucosuria</span>
@@ -2360,7 +2371,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         The sections that follow move from <em>diagnosis</em> to an <em>IPSS-anchored treatment
         algorithm</em>, then to <em>pharmacotherapy</em> and <em>surgical selection</em>, and close
         with a <em>surveillance schedule</em>. Recommendations are aligned to AUA 2023, EAU 2024,
-        KDIGO 2024 (obstructive uropathy), and the Philippine Society of Urology 2022 guidelines,
+        Kidney Disease: Improving Global Outcomes (KDIGO) 2024 (obstructive uropathy), and the Philippine Society of Urology 2022 guidelines,
         with dosing and availability noted for local practice.
       </p>
 
@@ -2500,7 +2511,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
             <tr>
               <td><strong>Silodosin</strong> (α<sub>1A</sub>-blocker)</td>
               <td>8 mg OD with meal</td><td>Days</td>
-              <td>High uroselectivity; superior Q<sub>max</sub> improvement vs tamsulosin in some RCTs</td>
+              <td>High uroselectivity; superior Q<sub>max</sub> improvement vs tamsulosin in some randomized controlled trials (RCTs)</td>
               <td>Retrograde ejaculation (~30%); dose-reduce in CKD (eGFR 30–50: 4 mg OD; avoid if &lt;30)</td>
             </tr>
             <tr>
@@ -2518,7 +2529,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
             <tr>
               <td><strong>Tadalafil</strong> (PDE5i)</td>
               <td>5 mg OD</td><td>Days–weeks</td>
-              <td>Treats BPH-LUTS and ED simultaneously; approved by FDA/AUA</td>
+              <td>Treats BPH-LUTS and ED simultaneously; approved by the Food and Drug Administration (FDA)/AUA</td>
               <td>Avoid with nitrates; use caution in eGFR &lt;30</td>
             </tr>
             <tr>
@@ -2662,21 +2673,21 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
           <div class="related-card-desc">Why UTIs keep coming back, who is most at risk, and the practical steps — hygiene, hydration, and me</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/preventing-uti-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/preventing-uti-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="recurrent-uti-ckd.html">
           <div class="related-card-tag">The Intersection</div>
           <div class="related-card-title">Recurrent UTI as a CKD Peril</div>
           <div class="related-card-desc">Urinary tract infections are not just an inconvenience in CKD — they are a recognized driver of kidn</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/recurrent-uti-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/recurrent-uti-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="managing-kidney-stones.html">
           <div class="related-card-tag">The Basics</div>
           <div class="related-card-title">Managing Kidney Stones</div>
           <div class="related-card-desc">Why kidney stones form, what the different types mean, how to pass one safely — and the dietary and </div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/managing-kidney-stones-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/managing-kidney-stones-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -3036,5 +3047,6 @@ function setMode(m){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -142,6 +143,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1310,8 +1319,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1928,7 +1939,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
 <div class="hero-grid">
 <div class="hero-copy">
     <div class="hero-tag">
-      <span data-lang="en">Nutrition · CKD · Filipino Diet</span>
+      <span data-lang="en">Nutrition · CKD (chronic kidney disease) · Filipino Diet</span>
       <span data-lang="tl" class="lang-hidden">Nutrisyon · CKD · Pagkain ng Pilipino</span>
       <span data-lang="ceb" class="lang-hidden">Nutrisyon · CKD · Pagkaon sa Pilipino</span>
       <span data-lang="kap" class="lang-hidden">Nutrisyon · CKD · Pamangan da reng Pilipino</span>
@@ -2038,7 +2049,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
     </p>
     <div class="intro-callout">
       <p>
-        <span data-lang="en"><strong>Every 100 mmol (≈2.3 g) reduction in daily sodium intake</strong> lowers systolic blood pressure by 5 mmHg and proteinuria by ~25% in CKD patients on RAAS blockade. <em>It amplifies the effect of every kidney-protective drug we prescribe.</em></span>
+        <span data-lang="en"><strong>Every 100 mmol (≈2.3 g) reduction in daily sodium intake</strong> lowers systolic blood pressure by 5 mmHg and proteinuria by ~25% in CKD patients on RAAS (renin&ndash;angiotensin&ndash;aldosterone system) blockade. <em>It amplifies the effect of every kidney-protective drug we prescribe.</em></span>
         <span data-lang="tl" class="lang-hidden"><strong>Sa bawat 100 mmol (≈2.3 g) na bawas sa pang-araw-araw na sodium</strong> bumababa ang systolic blood pressure ng 5 mmHg at ang proteinuria ng ~25% sa mga pasyenteng may CKD na umiinom ng ACEi o ARB. <em>Ito ang nagpapalakas ng epekto ng bawat gamot na nagpoprotekta sa bato.</em></span>
         <span data-lang="ceb" class="lang-hidden"><strong>Sa matag 100 mmol (≈2.3 g) nga pagpaminus sa adlaw-adlaw nga sodium</strong> moubos ang systolic blood pressure og 5 mmHg ug ang proteinuria og ~25% sa mga pasyente nga adunay CKD nga nag-inom og ACEi o ARB. <em>Kini ang nagpalig-on sa epekto sa matag tambal nga nagpanalipod sa kidney.</em></span>
         <span data-lang="kap" class="lang-hidden"><strong>King kabang 100 mmol (≈2.3 g) a bawas king aldo-aldong sodium</strong> bumababa ing systolic blood pressure ning 5 mmHg at ing proteinuria ning ~25% kareng pasyenting atin CKD a maginum ning ACEi o ARB. <em>Iti ing magpalakas king epektu ning kabang gamut a magpoprotekta king bato.</em></span>
@@ -2080,7 +2091,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <div class="feature-card">
         <h4><span class="dot dot-amber"></span><span data-lang="en">Proteinuria</span><span data-lang="tl" class="lang-hidden">Proteinuria</span><span data-lang="ceb" class="lang-hidden">Proteinuria</span><span data-lang="kap" class="lang-hidden">Proteinuria</span></h4>
         <p>
-          <span data-lang="en">High sodium intake doubles the protein leak across damaged glomeruli, even when blood pressure is "controlled" on paper. ACE inhibitors and ARBs lose much of their renoprotection in the setting of high salt.</span>
+          <span data-lang="en">High sodium intake doubles the protein leak across damaged glomeruli, even when blood pressure is "controlled" on paper. ACE inhibitors and ARBs (angiotensin receptor blockers) lose much of their renoprotection in the setting of high salt.</span>
           <span data-lang="tl" class="lang-hidden">Ang mataas na sodium ay nagdo-doble sa pagtagas ng protina sa nasirang mga salaan ng bato, kahit "kontrolado" na sa papel ang presyon. Nawawala ang malaking bahagi ng proteksiyon ng ACEi at ARB sa kapaligirang puno ng asin.</span>
           <span data-lang="ceb" class="lang-hidden">Ang taas nga sodium magdoble sa pagtulo sa protina sa nadaot nga mga salaan sa kidney, bisan "kontrolado" na sa papel ang presyur. Mawala ang dako nga bahin sa proteksyon sa ACEi ug ARB sa palibot nga puno sa asin.</span>
           <span data-lang="kap" class="lang-hidden">Ing matas a sodium magdo-doble king pamagdumpe ning protina king mesirang mga salaan ning bato, maski "kontrolado" na king papel ing presyon. Mewara ing malakas a bayu ning proteksyon ning ACEi at ARB king palibutan a punung asin.</span>
@@ -2158,13 +2169,13 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
           <td>General CKD Stage 1–4</td>
           <td><strong>&lt;2,000 mg</strong></td>
           <td>&lt;5 g (1 tsp)</td>
-          <td>The KDIGO 2024 default for adults with CKD without contraindications.</td>
+          <td>The KDIGO (Kidney Disease: Improving Global Outcomes) 2024 default for adults with CKD without contraindications.</td>
         </tr>
         <tr>
           <td>CKD with hypertension or proteinuria</td>
           <td><strong>&lt;1,500 mg</strong></td>
           <td>&lt;3.75 g (¾ tsp)</td>
-          <td>Lower target maximizes ACEi/ARB effect; aligns with AHA recommendations.</td>
+          <td>Lower target maximizes ACEi (angiotensin-converting enzyme inhibitor)/ARB effect; aligns with AHA (American Heart Association) recommendations.</td>
         </tr>
         <tr>
           <td>CKD with heart failure or edema</td>
@@ -2397,12 +2408,12 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <span data-lang="kap" class="lang-hidden">Ding limbung king label a dapat bantayan</span>
     </h3>
     <ul style="margin:12px 0 0 24px;font-size:15px;line-height:1.85;color:var(--text-mid);">
-      <li><strong>Servings per container.</strong> A small can of corned beef often lists "2.5 servings" — the sodium number on the front is per serving, not per can. Multiply.</li>
-      <li><strong>"Reduced sodium" ≠ low sodium.</strong> Reduced means 25% less than the original product. If the original was 1,800 mg, the "reduced" version is still 1,350 mg — too high.</li>
-      <li><strong>"No salt added" ≠ sodium-free.</strong> Many ingredients (cheese, broth, processed meats) contain natural or added sodium other than salt. Always check the actual mg.</li>
-      <li><strong>"Lite" or "light" sodium</strong> in the Philippines is not standardized. Read the actual number.</li>
-      <li><strong>MSG (monosodium glutamate)</strong> contributes sodium and may not be obvious. If "MSG" or "E621" is in the ingredient list, the sodium number includes it.</li>
-      <li><strong>Sodium bicarbonate, sodium nitrite, sodium benzoate, sodium phosphate</strong> are all preservative forms of sodium. They count toward your daily limit even though they are not "salt."</li>
+      <li><span data-lang="en"><strong>Servings per container.</strong> A small can of corned beef often lists "2.5 servings" — the sodium number on the front is per serving, not per can. Multiply.</span><span data-lang="tl" class="lang-hidden"><strong>Servings per container.</strong> Ang maliit na lata ng corned beef ay madalas naglilista ng "2.5 servings" — ang sodium number sa harapan ay kada serving, hindi kada buong lata. Kaya i-multiply.</span><span data-lang="ceb" class="lang-hidden"><strong>Servings per container.</strong> Ang gamay nga lata sa corned beef kasagaran naglista og "2.5 servings" — ang sodium number sa atubangan kay matag serving, dili matag tibuok lata. Busa i-multiply.</span><span data-lang="kap" class="lang-hidden"><strong>Servings per container.</strong> Ing malating lata ning corned beef pilan a beses naglilista yang "2.5 servings" — ing sodium number king arapan kada serving ya, ali kada mabilug a lata. Kanita i-multiply me.</span></li>
+      <li><span data-lang="en"><strong>"Reduced sodium" ≠ low sodium.</strong> Reduced means 25% less than the original product. If the original was 1,800 mg, the "reduced" version is still 1,350 mg — too high.</span><span data-lang="tl" class="lang-hidden"><strong>"Reduced sodium" ≠ low sodium.</strong> Ang "reduced" ay 25% na mas mababa kaysa orihinal na produkto. Kung 1,800 mg ang orihinal, ang "reduced" na bersyon ay 1,350 mg pa rin — masyadong mataas.</span><span data-lang="ceb" class="lang-hidden"><strong>"Reduced sodium" ≠ low sodium.</strong> Ang "reduced" nagpasabot og 25% nga mas ubos kaysa orihinal nga produkto. Kung 1,800 mg ang orihinal, ang "reduced" nga bersyon 1,350 mg gihapon — sobra ka taas.</span><span data-lang="kap" class="lang-hidden"><strong>"Reduced sodium" ≠ low sodium.</strong> Ing "reduced" buri nang sabian 25% a mas mababa kesa orihinal a produktu. Nung 1,800 mg ing orihinal, ing "reduced" a bersyon 1,350 mg mu pa — masyadu yang matas.</span></li>
+      <li><span data-lang="en"><strong>"No salt added" ≠ sodium-free.</strong> Many ingredients (cheese, broth, processed meats) contain natural or added sodium other than salt. Always check the actual mg.</span><span data-lang="tl" class="lang-hidden"><strong>"No salt added" ≠ sodium-free.</strong> Maraming sangkap (keso, sabaw, processed meats) ang may natural o dagdag na sodium bukod sa asin. Palaging tingnan ang aktwal na mg.</span><span data-lang="ceb" class="lang-hidden"><strong>"No salt added" ≠ sodium-free.</strong> Daghang sangkap (keso, sabaw, processed meats) adunay natural o dugang nga sodium gawas sa asin. Susiha kanunay ang aktwal nga mg.</span><span data-lang="kap" class="lang-hidden"><strong>"No salt added" ≠ sodium-free.</strong> Dakal a sangkap (keso, sabo, processed meats) ing atin natural o dagdag a sodium bukud king asin. Lawen mu lagi ing aktwal a mg.</span></li>
+      <li><span data-lang="en"><strong>"Lite" or "light" sodium</strong> in the Philippines is not standardized. Read the actual number.</span><span data-lang="tl" class="lang-hidden"><strong>"Lite" o "light" sodium</strong> sa Pilipinas ay hindi standardized. Basahin ang aktwal na numero.</span><span data-lang="ceb" class="lang-hidden"><strong>"Lite" o "light" sodium</strong> sa Pilipinas dili standardized. Basaha ang aktwal nga numero.</span><span data-lang="kap" class="lang-hidden"><strong>"Lite" o "light" sodium</strong> king Pilipinas ali ya standardized. Basan mu ing aktwal a numeru.</span></li>
+      <li><span data-lang="en"><strong>MSG (monosodium glutamate)</strong> contributes sodium and may not be obvious. If "MSG" or "E621" is in the ingredient list, the sodium number includes it.</span><span data-lang="tl" class="lang-hidden"><strong>MSG (monosodium glutamate)</strong> ay nagdaragdag ng sodium at maaaring hindi halata. Kung "MSG" o "E621" ay nasa listahan ng sangkap, kasama na ito sa sodium number.</span><span data-lang="ceb" class="lang-hidden"><strong>MSG (monosodium glutamate)</strong> nagdugang og sodium ug basin dili dayag. Kung "MSG" o "E621" naa sa listahan sa sangkap, apil na kini sa sodium number.</span><span data-lang="kap" class="lang-hidden"><strong>MSG (monosodium glutamate)</strong> magdagdag yang sodium at malyaring ali malino. Nung "MSG" o "E621" ing atyu king listahan ding sangkap, kayabe ne ita king sodium number.</span></li>
+      <li><span data-lang="en"><strong>Sodium bicarbonate, sodium nitrite, sodium benzoate, sodium phosphate</strong> are all preservative forms of sodium. They count toward your daily limit even though they are not "salt."</span><span data-lang="tl" class="lang-hidden"><strong>Sodium bicarbonate, sodium nitrite, sodium benzoate, sodium phosphate</strong> ay lahat mga preservative na anyo ng sodium. Nabibilang ang mga ito sa iyong araw-araw na limit kahit hindi sila "asin."</span><span data-lang="ceb" class="lang-hidden"><strong>Sodium bicarbonate, sodium nitrite, sodium benzoate, sodium phosphate</strong> tanan kini mga preservative nga porma sa sodium. Naiapil kini sa imong adlaw-adlaw nga limit bisan dili sila "asin."</span><span data-lang="kap" class="lang-hidden"><strong>Sodium bicarbonate, sodium nitrite, sodium benzoate, sodium phosphate</strong> eganagana lang deng preservative a porma ning sodium. Mabilang la king aldo-aldo mung limit maski ali la "asin."</span></li>
     </ul>
     <div class="alert alert-teal">
       <div class="alert-icon">📷</div>
@@ -2540,38 +2551,38 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
     </p>
     <div class="three-col">
       <div class="feature-card">
-        <h4><span class="dot dot-green"></span>Lean on acid</h4>
-        <p>Calamansi, vinegar (suka), tamarind (sampalok), kamias, unripe mango, sili leaf juice. Acid sharpens flavor the way salt does — without the sodium load.</p>
+        <h4><span class="dot dot-green"></span><span data-lang="en">Lean on acid</span><span data-lang="tl" class="lang-hidden">Umasa sa asim</span><span data-lang="ceb" class="lang-hidden">Salig sa aslom</span><span data-lang="kap" class="lang-hidden">Manalig king aslam</span></h4>
+        <p><span data-lang="en">Calamansi, vinegar (suka), tamarind (sampalok), kamias, unripe mango, sili leaf juice. Acid sharpens flavor the way salt does — without the sodium load.</span><span data-lang="tl" class="lang-hidden">Calamansi, suka (vinegar), sampalok (tamarind), kamias, hilaw na mangga, katas ng dahon ng sili. Ang asim ay nagpapatingkad ng lasa gaya ng asin — nang walang sodium load.</span><span data-lang="ceb" class="lang-hidden">Calamansi, suka (vinegar), sampalok (tamarind), kamias, hilaw nga mangga, duga sa dahon sa sili. Ang aslom nagpahait sa lami sama sa asin — nga walay sodium load.</span><span data-lang="kap" class="lang-hidden">Calamansi, aslam (suka/vinegar), sampalok, kamias, ilaw a manga, katas ning bulung ning sili. Ing aslam magpatingkad yang lasa anti ing asin — alang sodium load.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-amber"></span>Use heat and aromatics</h4>
-        <p>Sili labuyo, ground black pepper, sinigang sili, ginger, garlic (lots), onion, leeks (kutsay), tanglad, dahon ng laurel, oregano. Bloom them in oil first to release maximum aroma.</p>
+        <h4><span class="dot dot-amber"></span><span data-lang="en">Use heat and aromatics</span><span data-lang="tl" class="lang-hidden">Gumamit ng init at mababangong pampalasa</span><span data-lang="ceb" class="lang-hidden">Gamita ang kainit ug humot nga pahumot</span><span data-lang="kap" class="lang-hidden">Gamitan ing pali at mabangong pampalasa</span></h4>
+        <p><span data-lang="en">Sili labuyo, ground black pepper, sinigang sili, ginger, garlic (lots), onion, leeks (kutsay), tanglad, dahon ng laurel, oregano. Bloom them in oil first to release maximum aroma.</span><span data-lang="tl" class="lang-hidden">Sili labuyo, ground black pepper, sinigang sili, luya, bawang (marami), sibuyas, kutsay (leeks), tanglad, dahon ng laurel, oregano. I-bloom muna ang mga ito sa mantika para lumabas ang pinakamatinding bango.</span><span data-lang="ceb" class="lang-hidden">Sili labuyo, ground black pepper, sinigang sili, luy-a, ahos (daghan), sibuyas, kutsay (leeks), tanglad, dahon sa laurel, oregano. I-bloom una kini sa mantika aron mogawas ang pinakalabang humot.</span><span data-lang="kap" class="lang-hidden">Sili labuyo, ground black pepper, sinigang sili, laya, bawang (dakal), sibuyas, kutsay (leeks), tanglad, bulung ning laurel, oregano. I-bloom mula pamu king mantika ba lumwal ing pekamasias a bange.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-teal"></span>Build your own broth</h4>
-        <p>Save chicken or pork bones in the freezer. Once a week, simmer 2–3 hours with onion, ginger, carrot, peppercorns. Strain, portion into 1-cup containers, freeze. Replaces every Maggi cube and bouillon you would otherwise buy.</p>
+        <h4><span class="dot dot-teal"></span><span data-lang="en">Build your own broth</span><span data-lang="tl" class="lang-hidden">Gumawa ng sarili mong sabaw</span><span data-lang="ceb" class="lang-hidden">Paghimo og kaugalingong sabaw</span><span data-lang="kap" class="lang-hidden">Gumawa kang sariling sabo</span></h4>
+        <p><span data-lang="en">Save chicken or pork bones in the freezer. Once a week, simmer 2–3 hours with onion, ginger, carrot, peppercorns. Strain, portion into 1-cup containers, freeze. Replaces every Maggi cube and bouillon you would otherwise buy.</span><span data-lang="tl" class="lang-hidden">Itago ang buto ng manok o baboy sa freezer. Minsan sa isang linggo, pakuluan nang 2–3 oras kasama ang sibuyas, luya, carrot, peppercorns. Salain, hatiin sa 1-cup na lalagyan, i-freeze. Pinapalitan nito ang bawat Maggi cube at bouillon na bibilhin mo sana.</span><span data-lang="ceb" class="lang-hidden">Tipigi ang bukog sa manok o baboy sa freezer. Kausa sa usa ka semana, pabukala og 2–3 oras uban ang sibuyas, luy-a, carrot, peppercorns. Salaa, bahina sa 1-cup nga sudlanan, i-freeze. Kini mopuli sa matag Maggi cube ug bouillon nga imong paliton unta.</span><span data-lang="kap" class="lang-hidden">Itago mo deng butul ning manuk o babi king freezer. Maminsan king metung a dominggu, pakulwan mu nang 2–3 oras a kayabe ing sibuyas, laya, carrot, peppercorns. Salan me, painawan mu king 1-cup a lalagyan, i-freeze. Salyan na ini ing balang Maggi cube at bouillon a sana saliwan mu.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-navy"></span>Salt at the table, not the pot</h4>
-        <p>Sodium tasted on the surface registers stronger than sodium dissolved through. A small pinch sprinkled at serving time delivers the flavor of a much larger amount used during cooking.</p>
+        <h4><span class="dot dot-navy"></span><span data-lang="en">Salt at the table, not the pot</span><span data-lang="tl" class="lang-hidden">Asin sa mesa, hindi sa kaldero</span><span data-lang="ceb" class="lang-hidden">Asin sa lamesa, dili sa kaldero</span><span data-lang="kap" class="lang-hidden">Asin king lamesa, ali king kaldero</span></h4>
+        <p><span data-lang="en">Sodium tasted on the surface registers stronger than sodium dissolved through. A small pinch sprinkled at serving time delivers the flavor of a much larger amount used during cooking.</span><span data-lang="tl" class="lang-hidden">Ang sodium na natitikman sa ibabaw ay mas matindi kaysa sa sodium na natunaw na sa loob. Ang kaunting kurot na iwinisik sa oras ng pagkain ay nagbibigay ng lasa na katumbas ng mas malaking dami na ginamit habang nagluluto.</span><span data-lang="ceb" class="lang-hidden">Ang sodium nga natilawan sa ibabaw mas kusog kaysa sodium nga natunaw na sa sulod. Ang gamayng kusi nga iwisik sa panahon sa pagkaon mohatag sa lami nga katumbas sa mas dako nga gidaghanon nga gigamit samtang nagluto.</span><span data-lang="kap" class="lang-hidden">Ing sodium a natikman king babo mas masias ya kesa sodium a metunaw na king lalam. Ing dyutay a kurut a wisik-wisik king oras ning pamangan magbie yang lasa a katumbas ning mas maragul a dami a ginamit kabang maglutu.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-red"></span>Rinse canned goods</h4>
-        <p>Pouring canned tuna, sardines, beans, or vegetables into a strainer and running water through them for 60 seconds removes 30–40% of the sodium. Pat dry before using.</p>
+        <h4><span class="dot dot-red"></span><span data-lang="en">Rinse canned goods</span><span data-lang="tl" class="lang-hidden">Banlawan ang de-lata</span><span data-lang="ceb" class="lang-hidden">Hugasi ang de-lata</span><span data-lang="kap" class="lang-hidden">Banlawan la deng de-lata</span></h4>
+        <p><span data-lang="en">Pouring canned tuna, sardines, beans, or vegetables into a strainer and running water through them for 60 seconds removes 30–40% of the sodium. Pat dry before using.</span><span data-lang="tl" class="lang-hidden">Ang pagbuhos ng de-latang tuna, sardinas, beans, o gulay sa salaan at pagdaloy ng tubig dito nang 60 segundo ay nag-aalis ng 30–40% ng sodium. Patuyuin bago gamitin.</span><span data-lang="ceb" class="lang-hidden">Ang pagbubo sa de-latang tuna, sardinas, beans, o utanon sa salaan ug pagpaagay og tubig niini sulod sa 60 segundo mokuha og 30–40% sa sodium. Pat-a og mala usa gamiton.</span><span data-lang="kap" class="lang-hidden">Ing pamibu king de-lata a tuna, sardinas, beans, o gulayan king salaan at pamipaagus ning danum kanita nang 60 segundu mag-alis yang 30–40% ning sodium. Patuyuan me bayu me gamitan.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-gold"></span>Grill, bake, inihaw</h4>
-        <p>High-heat dry cooking concentrates natural flavor and reduces the perceived need for added salt. A grilled bangus or inihaw na liempo with garlic and pepper rivals any salted version for taste.</p>
+        <h4><span class="dot dot-gold"></span><span data-lang="en">Grill, bake, inihaw</span><span data-lang="tl" class="lang-hidden">I-grill, i-bake, inihaw</span><span data-lang="ceb" class="lang-hidden">I-grill, i-bake, inihaw</span><span data-lang="kap" class="lang-hidden">I-grill, i-bake, inihaw</span></h4>
+        <p><span data-lang="en">High-heat dry cooking concentrates natural flavor and reduces the perceived need for added salt. A grilled bangus or inihaw na liempo with garlic and pepper rivals any salted version for taste.</span><span data-lang="tl" class="lang-hidden">Ang mataas na init na tuyong pagluluto ay nagpapatindi ng natural na lasa at nagpapababa ng pakiramdam na kailangan pa ng dagdag na asin. Ang grilled na bangus o inihaw na liempo na may bawang at paminta ay kasinglasa ng kahit anong inasnan na bersyon.</span><span data-lang="ceb" class="lang-hidden">Ang taas-init nga uga nga pagluto nagpakusog sa natural nga lami ug nagpakunhod sa gibati nga panginahanglan sa dugang nga asin. Ang grilled nga bangus o inihaw nga liempo nga adunay ahos ug paminta parehas ka lami sa bisan unsang inasinan nga bersyon.</span><span data-lang="kap" class="lang-hidden">Ing matas-pali a maldang pamaglutu magpasias yang natural a lasa at magpababa king pakiramdam a kailangan pa dagdag a asin. Ing grilled a bangus o inihaw a liempo a atin bawang at paminta kaanti lasa na ning maski nanung inasnan a bersyon.</span></p>
       </div>
     </div>
     <div class="checklist">
-      <h4>Kitchen substitutions to make this week</h4>
+      <h4><span data-lang="en">Kitchen substitutions to make this week</span><span data-lang="tl" class="lang-hidden">Mga pagpapalit sa kusina ngayong linggo</span><span data-lang="ceb" class="lang-hidden">Mga ilis sa kusina karong semanaha</span><span data-lang="kap" class="lang-hidden">Deng pamanalili king kusina ngeni a dominggu</span></h4>
       <ul>
-        <li>Replace your Maggi/Knorr cube container with a small jar of dried onion + dried garlic + black pepper. Use one teaspoon in soups and stews.</li>
-        <li>Keep a small bottle of reduced-sodium toyo within reach; move the regular toyo to the back of the cupboard.</li>
-        <li>Buy 4–5 calamansi a week. Squeeze fresh into eggs, rice, soup, fish, even into water.</li>
-        <li>Make and freeze one batch of homemade chicken broth. Use it everywhere a recipe calls for water + bouillon.</li>
-        <li>Move the salt shaker off the dining table to discourage casual sprinkling.</li>
+        <li><span data-lang="en">Replace your Maggi/Knorr cube container with a small jar of dried onion + dried garlic + black pepper. Use one teaspoon in soups and stews.</span><span data-lang="tl" class="lang-hidden">Palitan ang lalagyan ng Maggi/Knorr cube ng maliit na garapon ng tuyong sibuyas + tuyong bawang + black pepper. Gumamit ng isang kutsarita sa sabaw at nilaga.</span><span data-lang="ceb" class="lang-hidden">Ilisi ang sudlanan sa Maggi/Knorr cube og gamayng garapon sa uga nga sibuyas + uga nga ahos + black pepper. Gamita ang usa ka kutsarita sa sabaw ug nilaga.</span><span data-lang="kap" class="lang-hidden">Salilan me ing lalagyan ning Maggi/Knorr cube king malating garapun ning maldang sibuyas + maldang bawang + black pepper. Gamitan mu ing metung a kutsarita king sabo at nilaga.</span></li>
+        <li><span data-lang="en">Keep a small bottle of reduced-sodium toyo within reach; move the regular toyo to the back of the cupboard.</span><span data-lang="tl" class="lang-hidden">Maglagay ng maliit na bote ng reduced-sodium toyo sa abot-kamay; ilipat ang regular na toyo sa likod ng cupboard.</span><span data-lang="ceb" class="lang-hidden">Pagbutang og gamayng botelya sa reduced-sodium toyo nga abot-kamot; ibalhin ang regular nga toyo sa likod sa cupboard.</span><span data-lang="kap" class="lang-hidden">Maglagay kang malating bote ning reduced-sodium toyo a abot-gamat; ilipat me ing regular a toyo king gulut ning cupboard.</span></li>
+        <li><span data-lang="en">Buy 4–5 calamansi a week. Squeeze fresh into eggs, rice, soup, fish, even into water.</span><span data-lang="tl" class="lang-hidden">Bumili ng 4–5 calamansi kada linggo. Pigain nang sariwa sa itlog, kanin, sabaw, isda, kahit sa tubig.</span><span data-lang="ceb" class="lang-hidden">Palit og 4–5 calamansi matag semana. Pug-a nga presko sa itlog, kanon, sabaw, isda, bisan sa tubig.</span><span data-lang="kap" class="lang-hidden">Manaliw kang 4–5 calamansi kada dominggu. Pigan me nang sariwa king ebun, nasi, sabo, asan, maski king danum.</span></li>
+        <li><span data-lang="en">Make and freeze one batch of homemade chicken broth. Use it everywhere a recipe calls for water + bouillon.</span><span data-lang="tl" class="lang-hidden">Gumawa at mag-freeze ng isang batch ng homemade chicken broth. Gamitin ito saanman kailangan ng recipe ng tubig + bouillon.</span><span data-lang="ceb" class="lang-hidden">Paghimo ug i-freeze ang usa ka batch sa homemade chicken broth. Gamita kini bisan asa nga ang recipe nanginahanglan og tubig + bouillon.</span><span data-lang="kap" class="lang-hidden">Gumawa at mag-freeze kang metung a batch ning homemade chicken broth. Gamitan me nokarin man a ing recipe kailangan na ing danum + bouillon.</span></li>
+        <li><span data-lang="en">Move the salt shaker off the dining table to discourage casual sprinkling.</span><span data-lang="tl" class="lang-hidden">Ilipat ang salt shaker mula sa hapag-kainan para hindi basta-basta makapagwisik ng asin.</span><span data-lang="ceb" class="lang-hidden">Ibalhin ang salt shaker gikan sa lamesa aron dili sayon ang pagwisik-wisik og asin.</span><span data-lang="kap" class="lang-hidden">Ilipat me ing salt shaker king lamesa a pamangan ba eka basta-basta makapamisik asin.</span></li>
       </ul>
     </div>
   </div>
@@ -2599,20 +2610,20 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
     </p>
     <div class="two-col">
       <div class="feature-card">
-        <h4><span class="dot dot-green"></span>Order grilled and steamed</h4>
-        <p><strong>Better choices:</strong> inihaw na isda, tinolang manok (no patis added), grilled liempo, pinakbet without bagoong, ginataang gulay, chopsuey, fresh lumpiang ubod, kanin (plain rice). Sodium typically 300–600 mg per serving.</p>
+        <h4><span class="dot dot-green"></span><span data-lang="en">Order grilled and steamed</span><span data-lang="tl" class="lang-hidden">Umorder ng inihaw at steamed</span><span data-lang="ceb" class="lang-hidden">Pag-order og inihaw ug steamed</span><span data-lang="kap" class="lang-hidden">Mag-order kang inihaw at steamed</span></h4>
+        <p><span data-lang="en"><strong>Better choices:</strong> inihaw na isda, tinolang manok (no patis added), grilled liempo, pinakbet without bagoong, ginataang gulay, chopsuey, fresh lumpiang ubod, kanin (plain rice). Sodium typically 300–600 mg per serving.</span><span data-lang="tl" class="lang-hidden"><strong>Mas magandang pagpipilian:</strong> inihaw na isda, tinolang manok (walang dagdag na patis), grilled liempo, pinakbet na walang bagoong, ginataang gulay, chopsuey, fresh lumpiang ubod, kanin (plain rice). Karaniwang 300–600 mg na sodium kada serving.</span><span data-lang="ceb" class="lang-hidden"><strong>Mas maayong pilianan:</strong> inihaw na isda, tinolang manok (walay dugang nga patis), grilled liempo, pinakbet nga walay bagoong, ginataang gulay, chopsuey, fresh lumpiang ubod, kanin (plain rice). Kasagaran 300–600 mg nga sodium matag serving.</span><span data-lang="kap" class="lang-hidden"><strong>Mas mayap a piliin:</strong> inihaw na isda, tinolang manok (alang dagdag a patis), grilled liempo, pinakbet a alang bagoong, ginataang gulay, chopsuey, fresh lumpiang ubod, kanin (plain rice). Karaniwan 300–600 mg a sodium kada serving.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-red"></span>Avoid breaded, brined, soup-based, and fried</h4>
-        <p><strong>Worst choices:</strong> pancit (any kind), sinigang (the broth holds the sodium), kare-kare with bagoong, fried chicken, fast-food breakfast meals (corned beef, longganisa, tocino, hotdogs), instant noodle dishes. Sodium often &gt;1,000 mg per plate.</p>
+        <h4><span class="dot dot-red"></span><span data-lang="en">Avoid breaded, brined, soup-based, and fried</span><span data-lang="tl" class="lang-hidden">Iwasan ang breaded, brined, soup-based, at prito</span><span data-lang="ceb" class="lang-hidden">Likayi ang breaded, brined, soup-based, ug prito</span><span data-lang="kap" class="lang-hidden">Iwasan ing breaded, brined, soup-based, at prito</span></h4>
+        <p><span data-lang="en"><strong>Worst choices:</strong> pancit (any kind), sinigang (the broth holds the sodium), kare-kare with bagoong, fried chicken, fast-food breakfast meals (corned beef, longganisa, tocino, hotdogs), instant noodle dishes. Sodium often &gt;1,000 mg per plate.</span><span data-lang="tl" class="lang-hidden"><strong>Pinakamasamang pagpipilian:</strong> pancit (kahit anong uri), sinigang (nasa sabaw ang sodium), kare-kare na may bagoong, fried chicken, fast-food breakfast meals (corned beef, longganisa, tocino, hotdogs), instant noodle dishes. Kadalasang &gt;1,000 mg na sodium kada plato.</span><span data-lang="ceb" class="lang-hidden"><strong>Pinakagrabing pilianan:</strong> pancit (bisan unsang klase), sinigang (naa sa sabaw ang sodium), kare-kare nga adunay bagoong, fried chicken, fast-food breakfast meals (corned beef, longganisa, tocino, hotdogs), instant noodle dishes. Kasagaran &gt;1,000 mg nga sodium matag plato.</span><span data-lang="kap" class="lang-hidden"><strong>Pekamaroknang piliin:</strong> pancit (maski nanung klase), sinigang (atyu king sabo ing sodium), kare-kare a atin bagoong, fried chicken, fast-food breakfast meals (corned beef, longganisa, tocino, hotdogs), instant noodle dishes. Pilan a beses &gt;1,000 mg a sodium kada plato.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-amber"></span>Move the sauce off the food</h4>
-        <p>Ask for toyo, bagoong, or gravy "on the side" and dip lightly instead of pouring. A meal can drop 600–800 mg of sodium by this single change.</p>
+        <h4><span class="dot dot-amber"></span><span data-lang="en">Move the sauce off the food</span><span data-lang="tl" class="lang-hidden">Ihiwalay ang sarsa sa pagkain</span><span data-lang="ceb" class="lang-hidden">Ilain ang sarsa gikan sa pagkaon</span><span data-lang="kap" class="lang-hidden">Ilaku ing sarsa king pamangan</span></h4>
+        <p><span data-lang="en">Ask for toyo, bagoong, or gravy "on the side" and dip lightly instead of pouring. A meal can drop 600–800 mg of sodium by this single change.</span><span data-lang="tl" class="lang-hidden">Humingi ng toyo, bagoong, o gravy "on the side" at basta isawsaw nang bahagya sa halip na ibuhos. Ang isang pagkain ay maaaring bumaba nang 600–800 mg ng sodium sa iisang pagbabagong ito.</span><span data-lang="ceb" class="lang-hidden">Pangayo og toyo, bagoong, o gravy "on the side" ug isawsaw og gaan imbes nga ibubo. Ang usa ka pagkaon mahimong makunhod og 600–800 mg nga sodium pinaagi niining usa ka kausaban.</span><span data-lang="kap" class="lang-hidden">Manyaman kang toyo, bagoong, o gravy "on the side" at isawsaw mu mu nang dyutay imbes na ibu. Ing metung a pamangan malyaring bumaba nang 600–800 mg a sodium king metung a pamanalili a ini.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-navy"></span>Skip or share the soup</h4>
-        <p>Restaurant soup broths are often the highest-sodium item on the menu. If you order soup, share it, eat the solids, leave most of the broth.</p>
+        <h4><span class="dot dot-navy"></span><span data-lang="en">Skip or share the soup</span><span data-lang="tl" class="lang-hidden">Laktawan o ibahagi ang sabaw</span><span data-lang="ceb" class="lang-hidden">Laktawi o ambitan ang sabaw</span><span data-lang="kap" class="lang-hidden">Laktawan o pisamsaman ing sabo</span></h4>
+        <p><span data-lang="en">Restaurant soup broths are often the highest-sodium item on the menu. If you order soup, share it, eat the solids, leave most of the broth.</span><span data-lang="tl" class="lang-hidden">Ang sabaw sa restaurant ay kadalasang ang may pinakamataas na sodium sa menu. Kung uminom ka ng sabaw, ibahagi ito, kainin ang laman, iwanan ang karamihan ng sabaw.</span><span data-lang="ceb" class="lang-hidden">Ang sabaw sa restaurant kasagaran mao ang labing taas og sodium sa menu. Kung mag-order ka og sabaw, ambita kini, kan-a ang unod, ibilin ang kadaghanan sa sabaw.</span><span data-lang="kap" class="lang-hidden">Ing sabo king restaurant pilan a beses ya ing pekamatas a sodium king menu. Nung mag-order kang sabo, pisamsaman me, kanan mu ing laman, tagan mu ing karakalan a sabo.</span></p>
       </div>
     </div>
     <div class="alert alert-teal">
@@ -2843,32 +2854,32 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
     </p>
     <div class="three-col">
       <div class="feature-card">
-        <h4><span class="dot dot-teal"></span>Day 1 — Move the salt shaker off the table</h4>
-        <p>Put it in a cabinet you have to walk to. Add salt during cooking only. This single change typically cuts ~300 mg/day without any other effort.</p>
+        <h4><span class="dot dot-teal"></span><span data-lang="en">Day 1 — Move the salt shaker off the table</span><span data-lang="tl" class="lang-hidden">Araw 1 — Ilipat ang salt shaker mula sa mesa</span><span data-lang="ceb" class="lang-hidden">Adlaw 1 — Ibalhin ang salt shaker gikan sa lamesa</span><span data-lang="kap" class="lang-hidden">Aldo 1 — Ilipat me ing salt shaker king lamesa</span></h4>
+        <p><span data-lang="en">Put it in a cabinet you have to walk to. Add salt during cooking only. This single change typically cuts ~300 mg/day without any other effort.</span><span data-lang="tl" class="lang-hidden">Ilagay ito sa isang cabinet na kailangan mong lakarin. Maglagay ng asin habang nagluluto lang. Ang iisang pagbabagong ito ay karaniwang nakakabawas ng ~300 mg/araw nang walang ibang pagsisikap.</span><span data-lang="ceb" class="lang-hidden">Ibutang kini sa cabinet nga kinahanglan nimong lakton. Pagbutang og asin samtang nagluto lang. Kining usa ka kausaban kasagaran mokunhod og ~300 mg/adlaw nga walay laing paningkamot.</span><span data-lang="kap" class="lang-hidden">Ilagay me king metung a cabinet a kailangan mung lakaran. Maglagay kang asin kabang maglutu mu. Ing metung a pamanalili a ini karaniwan makabawas yang ~300 mg/aldo alang aliwang pamagsikap.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-teal"></span>Day 2 — Replace breakfast patis with calamansi</h4>
-        <p>If you eat eggs or fried rice with patis, switch to calamansi + garlic + pepper. Reclaims ~1,400 mg every morning you would have used patis.</p>
+        <h4><span class="dot dot-teal"></span><span data-lang="en">Day 2 — Replace breakfast patis with calamansi</span><span data-lang="tl" class="lang-hidden">Araw 2 — Palitan ang patis sa almusal ng calamansi</span><span data-lang="ceb" class="lang-hidden">Adlaw 2 — Ilisi ang patis sa pamahaw og calamansi</span><span data-lang="kap" class="lang-hidden">Aldo 2 — Salilan me ing patis king agpang-abak king calamansi</span></h4>
+        <p><span data-lang="en">If you eat eggs or fried rice with patis, switch to calamansi + garlic + pepper. Reclaims ~1,400 mg every morning you would have used patis.</span><span data-lang="tl" class="lang-hidden">Kung kumakain ka ng itlog o sinangag na may patis, lumipat sa calamansi + bawang + paminta. Nababawi ang ~1,400 mg bawat umagang gagamit ka sana ng patis.</span><span data-lang="ceb" class="lang-hidden">Kung mokaon ka og itlog o sinangag nga adunay patis, balhin sa calamansi + ahos + paminta. Mabawi ang ~1,400 mg matag buntag nga mogamit ka unta og patis.</span><span data-lang="kap" class="lang-hidden">Nung mangan kang ebun o sinangag a atin patis, lumipat kang calamansi + bawang + paminta. Mababawi ing ~1,400 mg balang abak a sana gamit mung patis.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-teal"></span>Day 3 — One day without instant noodles</h4>
-        <p>Replace instant pancit canton or cup noodles with rice + a boiled egg + sautéed kangkong. Saves ~1,500 mg.</p>
+        <h4><span class="dot dot-teal"></span><span data-lang="en">Day 3 — One day without instant noodles</span><span data-lang="tl" class="lang-hidden">Araw 3 — Isang araw na walang instant noodles</span><span data-lang="ceb" class="lang-hidden">Adlaw 3 — Usa ka adlaw nga walay instant noodles</span><span data-lang="kap" class="lang-hidden">Aldo 3 — Metung a aldo alang instant noodles</span></h4>
+        <p><span data-lang="en">Replace instant pancit canton or cup noodles with rice + a boiled egg + sautéed kangkong. Saves ~1,500 mg.</span><span data-lang="tl" class="lang-hidden">Palitan ang instant pancit canton o cup noodles ng kanin + pinakuluang itlog + ginisang kangkong. Nakakatipid ng ~1,500 mg.</span><span data-lang="ceb" class="lang-hidden">Ilisi ang instant pancit canton o cup noodles og kanin + linuto nga itlog + gisang kangkong. Makatipig og ~1,500 mg.</span><span data-lang="kap" class="lang-hidden">Salilan me ing instant pancit canton o cup noodles king nasi + peburu a ebun + gisang kangkong. Makatipid yang ~1,500 mg.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-teal"></span>Day 4 — Throw out the seasoning packet</h4>
-        <p>If you do eat instant noodles today, use only half the packet (or none — sauté with garlic, ginger, light low-sodium toyo). Saves ~1,000 mg.</p>
+        <h4><span class="dot dot-teal"></span><span data-lang="en">Day 4 — Throw out the seasoning packet</span><span data-lang="tl" class="lang-hidden">Araw 4 — Itapon ang seasoning packet</span><span data-lang="ceb" class="lang-hidden">Adlaw 4 — Ilabay ang seasoning packet</span><span data-lang="kap" class="lang-hidden">Aldo 4 — Ibaldag me ing seasoning packet</span></h4>
+        <p><span data-lang="en">If you do eat instant noodles today, use only half the packet (or none — sauté with garlic, ginger, light low-sodium toyo). Saves ~1,000 mg.</span><span data-lang="tl" class="lang-hidden">Kung kakain ka ng instant noodles ngayon, gamitin lang ang kalahati ng packet (o wala — gisahin sa bawang, luya, kaunting low-sodium toyo). Nakakatipid ng ~1,000 mg.</span><span data-lang="ceb" class="lang-hidden">Kung mokaon ka og instant noodles karon, gamita lang ang tunga sa packet (o wala — igisa sa ahos, luy-a, gamayng low-sodium toyo). Makatipig og ~1,000 mg.</span><span data-lang="kap" class="lang-hidden">Nung mangan kang instant noodles ngeni, gamitan mu mu ing kapitna ning packet (o ala — igisa king bawang, laya, dyutay a low-sodium toyo). Makatipid yang ~1,000 mg.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-teal"></span>Day 5 — No bouillon cubes</h4>
-        <p>Make a small batch of homemade broth (chicken bones, onion, ginger, 1–2 hours simmer). Use that instead of Knorr or Maggi this week. Saves ~1,500 mg per cube avoided.</p>
+        <h4><span class="dot dot-teal"></span><span data-lang="en">Day 5 — No bouillon cubes</span><span data-lang="tl" class="lang-hidden">Araw 5 — Walang bouillon cubes</span><span data-lang="ceb" class="lang-hidden">Adlaw 5 — Walay bouillon cubes</span><span data-lang="kap" class="lang-hidden">Aldo 5 — Alang bouillon cubes</span></h4>
+        <p><span data-lang="en">Make a small batch of homemade broth (chicken bones, onion, ginger, 1–2 hours simmer). Use that instead of Knorr or Maggi this week. Saves ~1,500 mg per cube avoided.</span><span data-lang="tl" class="lang-hidden">Gumawa ng maliit na batch ng homemade broth (buto ng manok, sibuyas, luya, 1–2 oras na pagpapakulo). Gamitin iyon sa halip na Knorr o Maggi ngayong linggo. Nakakatipid ng ~1,500 mg kada cube na naiwasan.</span><span data-lang="ceb" class="lang-hidden">Paghimo og gamayng batch sa homemade broth (bukog sa manok, sibuyas, luy-a, 1–2 oras nga pabukal). Gamita kana imbes nga Knorr o Maggi karong semanaha. Makatipig og ~1,500 mg matag cube nga nalikayan.</span><span data-lang="kap" class="lang-hidden">Gumawa kang malating batch ning homemade broth (butul ning manuk, sibuyas, laya, 1–2 oras a pamagpakulu). Gamitan me ita imbes na Knorr o Maggi ngeni a dominggu. Makatipid yang ~1,500 mg kada cube a meiwasan.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-teal"></span>Day 6 — Read every label before buying</h4>
-        <p>At the grocery, read the sodium-per-serving line on every packaged item. Avoid anything &gt;400 mg per serving. Use the <a href="ckd-label-scanner.html#scanner" style="color:var(--teal);font-weight:500;">label scanner</a> if it speeds you up.</p>
+        <h4><span class="dot dot-teal"></span><span data-lang="en">Day 6 — Read every label before buying</span><span data-lang="tl" class="lang-hidden">Araw 6 — Basahin ang bawat label bago bumili</span><span data-lang="ceb" class="lang-hidden">Adlaw 6 — Basaha ang matag label una mopalit</span><span data-lang="kap" class="lang-hidden">Aldo 6 — Basan me ing balang label bayu manaliw</span></h4>
+        <p><span data-lang="en">At the grocery, read the sodium-per-serving line on every packaged item. Avoid anything &gt;400 mg per serving. Use the <a href="ckd-label-scanner.html#scanner" style="color:var(--teal);font-weight:500;">label scanner</a> if it speeds you up.</span><span data-lang="tl" class="lang-hidden">Sa grocery, basahin ang sodium-per-serving line sa bawat nakabalot na produkto. Iwasan ang anumang &gt;400 mg kada serving. Gamitin ang <a href="ckd-label-scanner.html#scanner" style="color:var(--teal);font-weight:500;">label scanner</a> kung mas mapapabilis ka nito.</span><span data-lang="ceb" class="lang-hidden">Sa grocery, basaha ang sodium-per-serving line sa matag nakaputos nga produkto. Likayi ang bisan unsa nga &gt;400 mg matag serving. Gamita ang <a href="ckd-label-scanner.html#scanner" style="color:var(--teal);font-weight:500;">label scanner</a> kung mapadali ka niini.</span><span data-lang="kap" class="lang-hidden">King grocery, basan me ing sodium-per-serving line king balang nakabalut a produktu. Iwasan mu ing maski nanu a &gt;400 mg kada serving. Gamitan me ing <a href="ckd-label-scanner.html#scanner" style="color:var(--teal);font-weight:500;">label scanner</a> nung mapapabilis na ka.</span></p>
       </div>
       <div class="feature-card">
-        <h4><span class="dot dot-teal"></span>Day 7 — Eat out only once, choose well</h4>
-        <p>If you eat out, pick grilled fish, inihaw, or a vegetable dish. Ask for sauce on the side. Skip the soup. Drink water, not soft drinks.</p>
+        <h4><span class="dot dot-teal"></span><span data-lang="en">Day 7 — Eat out only once, choose well</span><span data-lang="tl" class="lang-hidden">Araw 7 — Kumain sa labas nang isang beses lang, pumili nang mabuti</span><span data-lang="ceb" class="lang-hidden">Adlaw 7 — Pagkaon sa gawas kausa lang, pagpili og maayo</span><span data-lang="kap" class="lang-hidden">Aldo 7 — Mangan king lwal nang metung a beses, pumili kang mayap</span></h4>
+        <p><span data-lang="en">If you eat out, pick grilled fish, inihaw, or a vegetable dish. Ask for sauce on the side. Skip the soup. Drink water, not soft drinks.</span><span data-lang="tl" class="lang-hidden">Kung kakain ka sa labas, pumili ng grilled na isda, inihaw, o gulay na putahe. Humingi ng sauce on the side. Laktawan ang sabaw. Uminom ng tubig, hindi soft drinks.</span><span data-lang="ceb" class="lang-hidden">Kung mokaon ka sa gawas, pagpili og grilled nga isda, inihaw, o utanon nga putahe. Pangayo og sauce on the side. Laktawi ang sabaw. Inom og tubig, dili soft drinks.</span><span data-lang="kap" class="lang-hidden">Nung mangan ka king lwal, pumili kang grilled a asan, inihaw, o gulay a putahe. Manyaman kang sauce on the side. Laktawan me ing sabo. Minum kang danum, ali soft drinks.</span></p>
       </div>
     </div>
     <div class="alert alert-green">
@@ -2965,37 +2976,37 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
         <div class="related-card-title">Nutrition for Kidney Patients</div>
         <div class="related-card-desc">Stage-specific protein, K, P, and Na limits with Filipino meal-plan examples and a renal nutrition calculator.</div>
       
-          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="ckd-label-scanner.html">
         <div class="related-card-tag">Tool</div>
         <div class="related-card-title">CKD Nutrition Label Scanner</div>
         <div class="related-card-desc">Snap a photo of any nutrition label — instant sodium/potassium/phosphorus safety flags for your CKD stage.</div>
       
-          <img class="related-card-thumb" src="../images/ckd-label-scanner-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-label-scanner-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="ckd-recipe-analyzer.html">
         <div class="related-card-tag">Tool</div>
         <div class="related-card-title">CKD Recipe Analyzer</div>
         <div class="related-card-desc">Paste any recipe — adobo, sinigang, kare-kare — to see Nutrition Facts per serving and CKD safety flags.</div>
       
-          <img class="related-card-thumb" src="../images/ckd-recipe-analyzer-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-recipe-analyzer-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="hypertensive-kidney-disease.html">
         <div class="related-card-tag">Nephrology</div>
         <div class="related-card-title">Hypertensive Kidney Disease</div>
         <div class="related-card-desc">How decades of uncontrolled blood pressure silently scars the kidneys — and what intervention reverses the trend.</div>
       
-          <img class="related-card-thumb" src="../images/hypertensive-kidney-disease-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hypertensive-kidney-disease-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="managing-hypertension.html">
         <div class="related-card-tag">Internal Medicine</div>
         <div class="related-card-title">Managing High Blood Pressure</div>
         <div class="related-card-desc">BP targets, drug classes, monitoring, and lifestyle pillars — sodium reduction is the foundation.</div>
       
-          <img class="related-card-thumb" src="../images/managing-hypertension-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/managing-hypertension-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="ckd-friendly-recipes.html">
         <div class="related-card-tag">Recipes</div>
         <div class="related-card-title">CKD-Friendly Filipino Recipes</div>
         <div class="related-card-desc">40+ Filipino dishes modified for CKD nutrition limits, with smart ingredient swaps that preserve flavor.</div>
       
-          <img class="related-card-thumb" src="../images/ckd-friendly-recipes-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-friendly-recipes-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     </div>
   </div>
 </div>
@@ -3143,5 +3154,6 @@ calcSodium();
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

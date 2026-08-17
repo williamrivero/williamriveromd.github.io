@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1678,8 +1689,8 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span></button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span></button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1693,8 +1704,8 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">30&ndash;40%</span><span class="l">PH MRSA prevalence in HD bacteremia</span></div>
-<div class="ov-stat"><span class="v">10&ndash;25%</span><span class="l">CRBSI 12-week mortality (tunneled HD catheter)</span></div>
+<div class="ov-stat"><span class="v">30&ndash;40%</span><span class="l">PH methicillin-resistant Staphylococcus aureus (MRSA) prevalence in hemodialysis (HD) bacteremia</span></div>
+<div class="ov-stat"><span class="v">10&ndash;25%</span><span class="l">catheter-related bloodstream infection (CRBSI) 12-week mortality (tunneled HD catheter)</span></div>
 <div class="ov-stat"><span class="v">DTP &ge;2 h</span><span class="l">Diagnostic of CRBSI (paired blood cultures)</span></div>
 </div>
 <a class="ov-foot" href="#spectrum">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
@@ -1761,7 +1772,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
     </div>
     <div class="feature-card">
       <h4><span class="dot dot-navy"></span> PD Catheter</h4>
-      <p><span data-lang="en">A soft silicone tube passes through the abdominal wall into the belly cavity (peritoneal space). It is used for peritoneal dialysis, which is often done at home. Infection at the exit site, along the tunnel, or inside the belly (peritonitis) is the most serious complication of PD.</span><span data-lang="tl" class="lang-hidden">Ang isang malambot na silicone na tubo ay dumadaan sa dingding ng tiyan patungo sa loob ng tiyan (peritoneal space). Ginagamit ito para sa peritoneal dialysis, na kadalasang ginagawa sa bahay. Ang impeksyon sa exit site, sa kahabaan ng tunnel, o sa loob ng tiyan (peritonitis) ang pinaka-malubhang komplikasyon ng PD.</span><span data-lang="ceb" class="lang-hidden">Ang usa ka humok nga silicone nga tubo moagi sa dingding sa tiyan ngadto sa sulod sa tiyan (peritoneal space). Gigamit kini para sa peritoneal dialysis, nga kasagarang buhaton sa balay. Ang impeksyon sa exit site, sa tibuok tunnel, o sulod sa tiyan (peritonitis) ang labing grabe nga komplikasyon sa PD.</span><span data-lang="kap" class="lang-hidden">Metung a malambot a silicone a tubo dumadaan sa dingding ning tiyan patungo king loob ning tiyan (peritoneal space). Ginagamit iti para king peritoneal dialysis, a madalas ginagawa king bahay. Ing impeksyon king exit site, sa kahabaan ning tunnel, o sa loob ning tiyan (peritonitis) ing pinaka-malubhang komplikasyon ning PD.</span></p>
+      <p><span data-lang="en">A soft silicone tube passes through the abdominal wall into the belly cavity (peritoneal space). It is used for peritoneal dialysis (PD), which is often done at home. Infection at the exit site, along the tunnel, or inside the belly (peritonitis) is the most serious complication of PD.</span><span data-lang="tl" class="lang-hidden">Ang isang malambot na silicone na tubo ay dumadaan sa dingding ng tiyan patungo sa loob ng tiyan (peritoneal space). Ginagamit ito para sa peritoneal dialysis, na kadalasang ginagawa sa bahay. Ang impeksyon sa exit site, sa kahabaan ng tunnel, o sa loob ng tiyan (peritonitis) ang pinaka-malubhang komplikasyon ng PD.</span><span data-lang="ceb" class="lang-hidden">Ang usa ka humok nga silicone nga tubo moagi sa dingding sa tiyan ngadto sa sulod sa tiyan (peritoneal space). Gigamit kini para sa peritoneal dialysis, nga kasagarang buhaton sa balay. Ang impeksyon sa exit site, sa tibuok tunnel, o sulod sa tiyan (peritonitis) ang labing grabe nga komplikasyon sa PD.</span><span data-lang="kap" class="lang-hidden">Metung a malambot a silicone a tubo dumadaan sa dingding ning tiyan patungo king loob ning tiyan (peritoneal space). Ginagamit iti para king peritoneal dialysis, a madalas ginagawa king bahay. Ing impeksyon king exit site, sa kahabaan ning tunnel, o sa loob ning tiyan (peritonitis) ing pinaka-malubhang komplikasyon ning PD.</span></p>
     </div>
   </div>
 
@@ -1966,7 +1977,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
   <p><span data-lang="en">Politely say: "Excuse me, could you please wash or sanitize your hands before connecting me?" This is your right as a patient and a standard infection-control requirement. A professional nurse will understand and comply without offense.</span><span data-lang="tl" class="lang-hidden">Magalang na sabihin: "Excuse me, maaari ba ninyong hugasan o disimpektahin ang inyong mga kamay bago ako ikonekta?" Ito ang iyong karapatan bilang pasyente at isang pamantayang kinakailangan sa kontrol ng impeksyon. Ang isang propesyonal na nars ay maiintindihan at susunod nang walang sama ng loob.</span><span data-lang="ceb" class="lang-hidden">Magalang nga isulti: "Excuse me, mahimo ba ninyo hugason o sanitasyon ang inyong mga kamot una sa pag-konekta kanako?" Kini ang imong katungod ingon usa ka pasyente ug usa ka pamantayang kinahanglan sa kontrol sa impeksyon. Ang usa ka propesyonal nga nars mosabot ug mosunod nga walay kapungot.</span><span data-lang="kap" class="lang-hidden">Magalang a sabihin: "Excuse me, malyari ne ninyong hugasan o disimpektahin ing inyong mga kamay bago ako ikonekta?" Iti ing karapatan mu bilang pasyente at metung a pamantayang kinakailangan king kontrol ning impeksyon. Metung a propesyonal a nars maiintindihan at susunod nang walang sama ning loob.</span></p>
 
   <div class="disclaimer">
-    <strong><span data-lang="en">Disclaimer:</span><span data-lang="tl" class="lang-hidden">Disclaimer:</span><span data-lang="ceb" class="lang-hidden">Disclaimer:</span><span data-lang="kap" class="lang-hidden">Disclaimer:</span></strong> <span data-lang="en">This guide is for patient education only and does not replace the individualized advice of your nephrologist or dialysis care team. Always consult your physician regarding your specific situation, medications, and treatment plan. Clinical recommendations are based on IDSA, ISPD, and KDOQI guidelines as interpreted for a Philippine clinical context.</span><span data-lang="tl" class="lang-hidden">Ang gabay na ito ay para sa edukasyon ng pasyente lamang at hindi pinapalitan ang indibidwal na payo ng iyong nephrologist o dialysis care team. Palaging kumonsulta sa iyong doktor tungkol sa iyong tiyak na sitwasyon, mga gamot, at plano sa paggamot. Ang mga klinikal na rekomendasyon ay batay sa mga alituntunin ng IDSA, ISPD, at KDOQI na inangkop para sa kontekstong klinikong Pilipino.</span><span data-lang="ceb" class="lang-hidden">Kining giya alang sa edukasyon sa pasyente lamang ug dili nagpuli sa indibidwal nga payo sa imong nephrologist o dialysis care team. Kanunay kumonsulta sa imong doktor mahitungod sa imong piho nga kahimtang, mga tambal, ug plano sa paggamot. Ang mga klinikal nga rekomendasyon base sa mga giya sa IDSA, ISPD, ug KDOQI nga gihubad alang sa kontekstuwal nga klinikong Pilipino.</span><span data-lang="kap" class="lang-hidden">Iting gabay para king edukasyon ning pasyente la at e pinapalitan ing indibidwal a payo ning nephrologist mu o dialysis care team. Palaging kumonsulta king doktor mu tungkol king tiyak a sitwasyon mu, mga gamot, at plano king paggamot. Ing mga klinikal a rekomendasyon batay king mga alituntunin ning IDSA, ISPD, at KDOQI a inangkop para king kontekstong klinikong Pilipino.</span>
+    <strong><span data-lang="en">Disclaimer:</span><span data-lang="tl" class="lang-hidden">Disclaimer:</span><span data-lang="ceb" class="lang-hidden">Disclaimer:</span><span data-lang="kap" class="lang-hidden">Disclaimer:</span></strong> <span data-lang="en">This guide is for patient education only and does not replace the individualized advice of your nephrologist or dialysis care team. Always consult your physician regarding your specific situation, medications, and treatment plan. Clinical recommendations are based on IDSA, International Society for Peritoneal Dialysis (ISPD), and Kidney Disease Outcomes Quality Initiative (KDOQI) guidelines as interpreted for a Philippine clinical context.</span><span data-lang="tl" class="lang-hidden">Ang gabay na ito ay para sa edukasyon ng pasyente lamang at hindi pinapalitan ang indibidwal na payo ng iyong nephrologist o dialysis care team. Palaging kumonsulta sa iyong doktor tungkol sa iyong tiyak na sitwasyon, mga gamot, at plano sa paggamot. Ang mga klinikal na rekomendasyon ay batay sa mga alituntunin ng IDSA, ISPD, at KDOQI na inangkop para sa kontekstong klinikong Pilipino.</span><span data-lang="ceb" class="lang-hidden">Kining giya alang sa edukasyon sa pasyente lamang ug dili nagpuli sa indibidwal nga payo sa imong nephrologist o dialysis care team. Kanunay kumonsulta sa imong doktor mahitungod sa imong piho nga kahimtang, mga tambal, ug plano sa paggamot. Ang mga klinikal nga rekomendasyon base sa mga giya sa IDSA, ISPD, ug KDOQI nga gihubad alang sa kontekstuwal nga klinikong Pilipino.</span><span data-lang="kap" class="lang-hidden">Iting gabay para king edukasyon ning pasyente la at e pinapalitan ing indibidwal a payo ning nephrologist mu o dialysis care team. Palaging kumonsulta king doktor mu tungkol king tiyak a sitwasyon mu, mga gamot, at plano king paggamot. Ing mga klinikal a rekomendasyon batay king mga alituntunin ning IDSA, ISPD, at KDOQI a inangkop para king kontekstong klinikong Pilipino.</span>
   </div>
 </section>
 
@@ -2061,7 +2072,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
     </thead>
     <tbody>
       <tr>
-        <td>AVF</td>
+        <td>AVF (arteriovenous fistula)</td>
         <td>Exit site / soft-tissue cellulitis</td>
         <td>S. aureus (60%), CoNS, GNR</td>
         <td>Low if treated early</td>
@@ -2124,7 +2135,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
       <div class="step-num">3</div>
       <div class="step-body">
         <h4>PD Fluid Cell Count and Culture</h4>
-        <p>For PD patients: drain PD fluid and send for WBC count with differential and culture and sensitivity. Peritonitis is defined as WBC &gt;100 cells/&mu;L with &gt;50% neutrophils on differential, OR clinical symptoms plus a positive culture. Use blood culture bottles (10 mL per bottle) for PD fluid — this significantly increases culture yield compared to standard culture tubes.</p>
+        <p>For PD patients: drain PD fluid and send for white blood cell (WBC) count with differential and culture and sensitivity. Peritonitis is defined as WBC &gt;100 cells/&mu;L with &gt;50% neutrophils on differential, OR clinical symptoms plus a positive culture. Use blood culture bottles (10 mL per bottle) for PD fluid — this significantly increases culture yield compared to standard culture tubes.</p>
       </div>
     </div>
     <div class="step">
@@ -2138,7 +2149,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
       <div class="step-num">5</div>
       <div class="step-body">
         <h4>Imaging</h4>
-        <p>Ultrasound of the access site if abscess, fluid collection, tunnel infection, or graft involvement is suspected clinically. CT of the chest and neck for deep soft-tissue infection or when mediastinal involvement from an internal jugular tunneled catheter is considered. MRI is preferred for suspected spinal osteomyelitis in the setting of S. aureus bacteremia with back pain.</p>
+        <p>Ultrasound of the access site if abscess, fluid collection, tunnel infection, or graft involvement is suspected clinically. Computed tomography (CT) of the chest and neck for deep soft-tissue infection or when mediastinal involvement from an internal jugular tunneled catheter is considered. Magnetic resonance imaging (MRI) is preferred for suspected spinal osteomyelitis in the setting of S. aureus bacteremia with back pain.</p>
       </div>
     </div>
   </div>
@@ -2240,7 +2251,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
       </tr>
       <tr>
         <td>Enterococcus</td>
-        <td>Ampicillin 2 g IV q4–6h if susceptible; vancomycin if resistant; linezolid or daptomycin for VRE</td>
+        <td>Ampicillin 2 g IV q4–6h if susceptible; vancomycin if resistant; linezolid or daptomycin for vancomycin-resistant Enterococcus (VRE)</td>
         <td>14 days (uncomplicated); 6 weeks if endocarditis</td>
         <td>Screen for VRE if prior vancomycin exposure, healthcare-associated acquisition, or prior VRE history</td>
       </tr>
@@ -2412,7 +2423,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
 <section class="section" id="pd-infection">
   <div class="section-tag">Clinician Section 7</div>
   <h2>PD Exit-Site, Tunnel, and Peritonitis</h2>
-  <p>Cross-reference: See Module 12 of the CKD Prescriber's Playbook for IP antibiotic dosing tables and the full ISPD 2022 peritonitis protocol.</p>
+  <p>Cross-reference: See Module 12 of the chronic kidney disease (CKD) Prescriber's Playbook for IP antibiotic dosing tables and the full ISPD 2022 peritonitis protocol.</p>
 
   <div style="margin:20px 0 28px;">
     <img src="../images/dai-clin-pd-spectrum.webp" alt="PD infection escalation ladder — exit-site infection, tunnel infection, peritonitis with definitions, management, and catheter removal thresholds" style="width:100%;height:auto;max-width:900px;border-radius:8px;display:block;margin:0 auto;" loading="lazy" width="1536" height="1024"/>
@@ -2481,7 +2492,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
         <td>Mupirocin exit-site cream</td>
         <td>All HD catheter patients and PD catheter patients</td>
         <td>Apply to exit site daily after cleaning and drying; standard of care</td>
-        <td>Reduces catheter infection rates; supported by multiple RCTs</td>
+        <td>Reduces catheter infection rates; supported by multiple randomized controlled trials (RCTs)</td>
       </tr>
       <tr>
         <td>Polysporin Triple cream (exit site)</td>
@@ -2594,7 +2605,7 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
 
   <div class="dr-card">
     <div class="dr-avatar">
-      <img src="../images/avatar.png" alt="Dr. W Rivero, MD">
+      <img src="../images/avatar.png" alt="Dr. W Rivero, MD" width="986" height="968">
     </div>
     <div>
       <h4>W Rivero, MD, FPCP, DPSN</h4>
@@ -2658,35 +2669,35 @@ try{(function(){var v=localStorage.getItem('wgmr-dai-mode');if(v===null){var per
         <span class="related-card-desc">Practical guidance for patients on hemodialysis or peritoneal dialysis — diet, fluid, schedule, and daily adjustments.</span>
         <span class="related-card-arrow">→</span>
       
-          <img class="related-card-thumb" src="../images/living-with-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/living-with-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="hemodialysis-complications.html">
         <span class="related-card-tag">Nephrology</span>
         <span class="related-card-title">Hemodialysis Complications</span>
         <span class="related-card-desc">Recognition and management of common and serious complications during and after hemodialysis sessions.</span>
         <span class="related-card-arrow">→</span>
       
-          <img class="related-card-thumb" src="../images/hemodialysis-complications-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hemodialysis-complications-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="dialysis-access-care.html">
         <span class="related-card-tag">Nephrology</span>
         <span class="related-card-title">Dialysis Access Care</span>
         <span class="related-card-desc">How to protect and maintain your fistula, graft, or catheter for long-term dialysis success.</span>
         <span class="related-card-arrow">→</span>
       
-          <img class="related-card-thumb" src="../images/dialysis-access-care-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/dialysis-access-care-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="medication-operational-guide.html">
         <span class="related-card-tag">Clinician Reference</span>
         <span class="related-card-title">The CKD Prescriber's Playbook</span>
         <span class="related-card-desc">Complete prescribing protocols for CKD and dialysis — includes IP antibiotic dosing tables and ISPD peritonitis protocol.</span>
         <span class="related-card-arrow">→</span>
       
-          <img class="related-card-thumb" src="../images/medication-operational-guide-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/medication-operational-guide-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="preventing-uti.html">
         <span class="related-card-tag">Nephrology</span>
         <span class="related-card-title">Preventing UTI in Kidney Disease</span>
         <span class="related-card-desc">Why CKD patients are at higher risk for urinary tract infections and how to reduce that risk.</span>
         <span class="related-card-arrow">→</span>
       
-          <img class="related-card-thumb" src="../images/preventing-uti-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/preventing-uti-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     </div>
   </div>
 <!-- RELATED-GUIDES-END -->
@@ -2819,5 +2830,6 @@ function setMode(m) {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

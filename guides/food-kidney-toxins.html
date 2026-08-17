@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1718,7 +1729,7 @@ body.dark .related-card-title {
 <div class="hero-copy">
     <div class="hero-tag"><span data-lang="en">Clinical Nutrition · Nephrology · Patient Guide</span><span data-lang="tl" class="lang-hidden">Klinikal na Nutrisyon · Nefrolohiya · Gabay para sa Pasyente</span><span data-lang="ceb" class="lang-hidden">Klinikal nga Nutrisyon · Nefrolohiya · Giya para sa Pasyente</span>
       <span data-lang="kap" class="lang-hidden">Klinikal a Nutrisyon · Nefrolohiya · Gabay para king Pasyente</span></div>
-    <h1>Food &amp; Kidney Toxins: <em>What You Should Know</em></h1>
+    <h1><span data-lang="en">Food &amp; Kidney Toxins: <em>What You Should Know</em></span><span data-lang="tl" class="lang-hidden">Pagkain at mga Toxin sa Bato: <em>Ano ang Dapat Mong Malaman</em></span><span data-lang="ceb" class="lang-hidden">Pagkaon ug mga Toxin sa Kidney: <em>Unsa ang Angay Nimong Mahibaw-an</em></span><span data-lang="kap" class="lang-hidden">Pamangan at Deng Toxin King Batu: <em>Nanu ing Dapat Mung Abalu</em></span></h1>
     <p class="hero-sub"><span data-lang="en">Many common foods — eaten daily by millions of Filipinos — generate compounds that healthy kidneys excrete easily but that accumulate dangerously in CKD. Understanding which foods generate which toxins, and why, puts powerful protection in your hands.</span><span data-lang="tl" class="lang-hidden">Maraming karaniwang pagkain — kinakain araw-araw ng milyun-milyong Pilipino — ay gumagawa ng mga compound na madaling itatapon ng malusog na bato ngunit mapanganib na nag-iipon sa CKD. Ang pag-unawa kung aling pagkain ang gumagawa ng kung aling mga lason, at kung bakit, ay nagbibigay sa inyo ng malakas na proteksyon.</span><span data-lang="ceb" class="lang-hidden">Daghang komon nga pagkaon — gikaon adlaw-adlaw sa milyun-milyong Pilipino — naghimo og mga compound nga daling ilabas sa himsog nga kidney apan delikadong nag-ipon sa CKD. Ang pagsabot kon unsang pagkaon ang naghimo sa unsang mga hilo, ug ngano, naghatag sa inyo og lig-on nga proteksyon.</span>
       <span data-lang="kap" class="lang-hidden">Dacal a karaniwang pamangan — kinakain aldo-aldo ning milyun-milyong Pilipino — ya gumagawa ning deng compound a madaling itatapon ning malusog a batu ngarud mapanganib a nag-iipon king CKD. Ing pag-unawa nung aling pamangan ing gumagawa ning nung aling deng lason, at nung bakit, ya nagbibigay king inyo ning malakas a proteksyon.</span></p>
     <div class="hero-meta">
@@ -1762,7 +1773,7 @@ body.dark .related-card-title {
     <h2><span data-lang="en">What Are Kidney Toxins — and Why Do They Accumulate?</span><span data-lang="tl" class="lang-hidden">Ano ang mga Lason ng Bato — at Bakit Nag-iipon?</span><span data-lang="ceb" class="lang-hidden">Unsa ang mga Hilo sa Kidney — ug Ngano nga Nag-ipon?</span>
       <span data-lang="kap" class="lang-hidden">Ano ing deng Lason ning Batu — at Bakit Nag-iipon?</span></h2>
     <div class="intro-callout">
-      <p><span data-lang="en">A kidney toxin is any substance that builds up in the blood when the kidneys cannot adequately filter and excrete it. Some toxins come directly from food. Others are metabolic byproducts of digestion that healthy kidneys clear effortlessly — but that reach harmful levels in CKD. <strong>Diet is one of the most powerful tools for controlling toxin load</strong> — reducing what the kidneys must excrete slows progression and reduces symptoms.</span><span data-lang="tl" class="lang-hidden">Ang lason ng bato ay anumang sangkap na nag-iipon sa dugo kapag hindi kayang linisin at itapon ng bato ang sapat. Ang ilang mga lason ay nagmumula nang direkta sa pagkain. Ang iba ay mga byproduct ng metabolismo ng pagtunaw na madaling nilinis ng malusog na bato — ngunit umaabot sa mapanganib na antas sa CKD. <strong>Ang diyeta ay isa sa pinaka-makapangyarihang kasangkapan sa pagkontrol ng bigat ng lason</strong> — ang pagbabawas ng kailangang itapon ng bato ay nagpapabagal ng pag-unlad at nagbabawas ng mga sintomas.</span><span data-lang="ceb" class="lang-hidden">Ang hilo sa kidney mao ang bisan unsang sangkap nga nag-ipon sa dugo kon ang mga kidney dili makafilter ug makalabas niini sa husto. Ang ubang mga hilo gikan direkta sa pagkaon. Ang uban mga byproduct sa metabolismo sa pagtunaw nga daling gilimpyohan sa himsog nga kidney — apan nakaabot sa makadaot nga lebel sa CKD. <strong>Ang diyeta usa sa pinaka-gamhanan nga himan sa pagkontrol sa bigat sa hilo</strong> — ang pagkunhod sa kinahanglan nga ilabas sa kidney nagpabagal sa pag-uswag ug nagkunhod sa mga sintomas.</span>
+      <p><span data-lang="en">A kidney toxin is any substance that builds up in the blood when the kidneys cannot adequately filter and excrete it. Some toxins come directly from food. Others are metabolic byproducts of digestion that healthy kidneys clear effortlessly — but that reach harmful levels in chronic kidney disease (CKD). <strong>Diet is one of the most powerful tools for controlling toxin load</strong> — reducing what the kidneys must excrete slows progression and reduces symptoms.</span><span data-lang="tl" class="lang-hidden">Ang lason ng bato ay anumang sangkap na nag-iipon sa dugo kapag hindi kayang linisin at itapon ng bato ang sapat. Ang ilang mga lason ay nagmumula nang direkta sa pagkain. Ang iba ay mga byproduct ng metabolismo ng pagtunaw na madaling nilinis ng malusog na bato — ngunit umaabot sa mapanganib na antas sa CKD. <strong>Ang diyeta ay isa sa pinaka-makapangyarihang kasangkapan sa pagkontrol ng bigat ng lason</strong> — ang pagbabawas ng kailangang itapon ng bato ay nagpapabagal ng pag-unlad at nagbabawas ng mga sintomas.</span><span data-lang="ceb" class="lang-hidden">Ang hilo sa kidney mao ang bisan unsang sangkap nga nag-ipon sa dugo kon ang mga kidney dili makafilter ug makalabas niini sa husto. Ang ubang mga hilo gikan direkta sa pagkaon. Ang uban mga byproduct sa metabolismo sa pagtunaw nga daling gilimpyohan sa himsog nga kidney — apan nakaabot sa makadaot nga lebel sa CKD. <strong>Ang diyeta usa sa pinaka-gamhanan nga himan sa pagkontrol sa bigat sa hilo</strong> — ang pagkunhod sa kinahanglan nga ilabas sa kidney nagpabagal sa pag-uswag ug nagkunhod sa mga sintomas.</span>
       <span data-lang="kap" class="lang-hidden">Ing lason ning batu ya anumang sangkap a nag-iipon king daya nung ali kayang linisin at itapon ning batu ing sapat. Ing ilang deng lason ya nagmumula nang direkta king pamangan. Ing iba ya deng byproduct ning metabolismo ning pagtunaw a madaling nilinis ning malusog a batu — ngarud umaabot king mapanganib a antas king CKD. <strong>Ing diyeta ya metung king pinaka-makapangyarihang kasangkapan king pagkontrol ning bigat ning lason</strong> — ing pagbabawas ning kailangang itapon ning batu ya nagpapabagal ning pag-unlad at nagbabawas ning deng sintomas.</span></p>
     </div>
 
@@ -2134,28 +2145,28 @@ body.dark .related-card-title {
           <div class="related-card-desc">A deep dive into the specific dietary compounds — tryptophan, tyrosine, choline, sulfur amino acids </div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/uremic-toxin-precursors-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/uremic-toxin-precursors-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="nutrition-kidney-patients.html">
           <div class="related-card-tag">Why Food Is Medicine</div>
           <div class="related-card-title">Nutrition for Kidney Patients</div>
           <div class="related-card-desc">A practical Filipino guide to eating well with CKD — what to limit, what is safe, how to read food l</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="microbiome-probiotics-health.html">
           <div class="related-card-tag">The Inner Ecosystem</div>
           <div class="related-card-title">Your Microbiome & the Role of Biotics in Health</div>
           <div class="related-card-desc">The 38 trillion microorganisms living in your gut are not passengers — they are active participants </div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/microbiome-probiotics-health-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/microbiome-probiotics-health-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="herbal-nephropathy.html">
           <div class="related-card-tag">The Hidden Danger</div>
           <div class="related-card-title">Herbal Nephropathy: When Traditional Remedies Damage Kidneys</div>
           <div class="related-card-desc">Many Filipinos use herbal and traditional remedies alongside prescription medicines — but some commo</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/herbal-nephropathy-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/herbal-nephropathy-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -2248,5 +2259,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

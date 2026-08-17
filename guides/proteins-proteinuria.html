@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1704,8 +1715,8 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 <div class="mode-patient">
@@ -1717,9 +1728,9 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">A3 &gt;300 mg/g</span><span class="l">KDIGO 2024 severely &uarr; albuminuria; nephrotic-range UACR &gt;2200 mg/g (&ge;3.5 g/day)</span></div>
-<div class="ov-stat"><span class="v">30&ndash;50% &darr;</span><span class="l">ACEi/ARB UACR reduction (IDNT, RENAAL, MARVAL)</span></div>
-<div class="ov-stat"><span class="v">20&ndash;35% &darr;</span><span class="l">SGLT2i UACR reduction (DAPA-CKD, EMPA-KIDNEY, CREDENCE)</span></div>
+<div class="ov-stat"><span class="v">A3 &gt;300 mg/g</span><span class="l">KDIGO (Kidney Disease: Improving Global Outcomes) 2024 severely &uarr; albuminuria; nephrotic-range UACR (urine albumin-to-creatinine ratio) &gt;2200 mg/g (&ge;3.5 g/day)</span></div>
+<div class="ov-stat"><span class="v">30&ndash;50% &darr;</span><span class="l">angiotensin-converting enzyme inhibitor (ACEi)/angiotensin receptor blocker (ARB) UACR reduction (IDNT, RENAAL, MARVAL)</span></div>
+<div class="ov-stat"><span class="v">20&ndash;35% &darr;</span><span class="l">sodium–glucose cotransporter-2 inhibitor (SGLT2i) UACR reduction (DAPA-CKD, EMPA-KIDNEY, CREDENCE)</span></div>
 </div>
 <a class="ov-foot" href="#clin-rx">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 </div>
@@ -1883,7 +1894,7 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
       <span data-lang="kap" class="lang-hidden">Dual a tungkulin ning barrier:</span></strong> <span data-lang="en">The slit diaphragm acts as both a size-selective sieve (proteins &gt;~8 nm radius are excluded) and — because foot process surfaces are coated with podocalyxin (sialylated, highly anionic) — a charge barrier on the urinary side.</span><span data-lang="tl" class="lang-hidden">Ang slit diaphragm ay gumaganap bilang size-selective na salaan (ang mga protina &gt;~8 nm radius ay hindi tinatanggap) at — dahil ang mga ibabaw ng foot process ay nababalutan ng podocalyxin (sialylated, lubos na anionic) — isang charge barrier sa panig ng ihi.</span><span data-lang="ceb" class="lang-hidden">Ang slit diaphragm nagtrabaho ingon usa ka size-selective nga salaan (ang mga protina &gt;~8 nm radius gidili) ug — tungod kay ang mga ibabaw sa foot process gitabonan og podocalyxin (sialylated, labi ka anionic) — usa ka charge barrier sa bahin sa ihi.</span>
       <span data-lang="kap" class="lang-hidden">Ing slit diaphragm ya gumaganap bilang size-selective a salaan (ing deng protina &gt;~8 nm radius ya ali tinatanggap) at — dahil ing deng ibabaw ning foot process ya nababalutan ning podocalyxin (sialylated, lubos a anionic) — metung a charge barrier king panig ning ihi.</span></li>
         <li><strong><span data-lang="en">Foot process effacement:</span><span data-lang="tl" class="lang-hidden">Effacement ng foot process:</span><span data-lang="ceb" class="lang-hidden">Effacement sa foot process:</span>
-      <span data-lang="kap" class="lang-hidden">Effacement ning foot process:</span></strong> <span data-lang="en">When podocytes are injured (immune, metabolic, haemodynamic stress), foot processes retract and fuse into a sheet — eliminating the slit structure. This is the hallmark of nephrotic syndrome and is reversible in minimal change disease but irreversible in advanced FSGS and diabetic nephropathy.</span><span data-lang="tl" class="lang-hidden">Kapag nasugatan ang podocytes (immune, metabolic, haemodynamic stress), ang foot processes ay umuurong at nagtatagpo sa isang sheet — inaaalis ang slit structure. Ito ang hallmark ng nephrotic syndrome at nababalik sa minimal change disease ngunit hindi na nababalik sa advanced FSGS at diabetic nephropathy.</span><span data-lang="ceb" class="lang-hidden">Kung ang podocytes madaot (immune, metabolic, haemodynamic stress), ang foot processes moatras ug motopon sa usa ka sheet — ginalisan ang slit structure. Kini ang hallmark sa nephrotic syndrome ug mabalihon sa minimal change disease apan dili na mabalihon sa advanced FSGS ug diabetic nephropathy.</span>
+      <span data-lang="kap" class="lang-hidden">Effacement ning foot process:</span></strong> <span data-lang="en">When podocytes are injured (immune, metabolic, haemodynamic stress), foot processes retract and fuse into a sheet — eliminating the slit structure. This is the hallmark of nephrotic syndrome and is reversible in minimal change disease but irreversible in advanced focal segmental glomerulosclerosis (FSGS) and diabetic nephropathy.</span><span data-lang="tl" class="lang-hidden">Kapag nasugatan ang podocytes (immune, metabolic, haemodynamic stress), ang foot processes ay umuurong at nagtatagpo sa isang sheet — inaaalis ang slit structure. Ito ang hallmark ng nephrotic syndrome at nababalik sa minimal change disease ngunit hindi na nababalik sa advanced FSGS at diabetic nephropathy.</span><span data-lang="ceb" class="lang-hidden">Kung ang podocytes madaot (immune, metabolic, haemodynamic stress), ang foot processes moatras ug motopon sa usa ka sheet — ginalisan ang slit structure. Kini ang hallmark sa nephrotic syndrome ug mabalihon sa minimal change disease apan dili na mabalihon sa advanced FSGS ug diabetic nephropathy.</span>
       <span data-lang="kap" class="lang-hidden">Nung nasugatan ing podocytes (immune, metabolic, haemodynamic stress), ing foot processes ya umuurong at nagtatagpo king metung a sheet — inaaalis ing slit structure. Ini ing hallmark ning nephrotic syndrome at nababalik king minimal change disease ngarud ali a nababalik king advanced FSGS at diabetic nephropathy.</span></li>
         <li><strong><span data-lang="en">Genetic NS:</span><span data-lang="tl" class="lang-hidden">Genetic na NS:</span><span data-lang="ceb" class="lang-hidden">Genetic nga NS:</span>
       <span data-lang="kap" class="lang-hidden">Genetic a NS:</span></strong> <span data-lang="en">Mutations in <em>NPHS1</em> (nephrin — Finnish congenital NS) or <em>NPHS2</em> (podocin) cause severe proteinuria from birth by eliminating slit diaphragm assembly entirely. These are steroid-resistant because the structural scaffold for the barrier simply does not exist.</span><span data-lang="tl" class="lang-hidden">Ang mga mutasyon sa <em>NPHS1</em> (nephrin — Finnish congenital NS) o <em>NPHS2</em> (podocin) ay nagdudulot ng matinding proteinuria mula pa sa kapanganakan sa pamamagitan ng ganap na pag-aalis ng slit diaphragm assembly. Ang mga ito ay steroid-resistant dahil ang istruktural na scaffold ng barrier ay wala talaga.</span><span data-lang="ceb" class="lang-hidden">Ang mga mutasyon sa <em>NPHS1</em> (nephrin — Finnish congenital NS) o <em>NPHS2</em> (podocin) nagdala og grabe nga proteinuria gikan pa sa pagkatawo pinaagi sa ganap nga pagtangtang sa slit diaphragm assembly. Kini steroid-resistant tungod kay ang istruktural nga scaffold sa barrier wala gayud naglungtad.</span>
@@ -1926,7 +1937,7 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
       <span data-lang="kap" class="lang-hidden">Layer 1</span></td>
           <td><span data-lang="en">Early microalbuminuria; acute-phase proteinuria</span><span data-lang="tl" class="lang-hidden">Maagang microalbuminuria; acute-phase proteinuria</span><span data-lang="ceb" class="lang-hidden">Sayo nga microalbuminuria; acute-phase proteinuria</span>
       <span data-lang="kap" class="lang-hidden">Maagang microalbuminuria; acute-phase proteinuria</span></td>
-          <td><span data-lang="en">Diabetic nephropathy (early), sepsis-associated AKI</span><span data-lang="tl" class="lang-hidden">Diabetic nephropathy (maagang yugto), sepsis-associated AKI</span><span data-lang="ceb" class="lang-hidden">Diabetic nephropathy (sayo), sepsis-associated AKI</span>
+          <td><span data-lang="en">Diabetic nephropathy (early), sepsis-associated acute kidney injury (AKI)</span><span data-lang="tl" class="lang-hidden">Diabetic nephropathy (maagang yugto), sepsis-associated AKI</span><span data-lang="ceb" class="lang-hidden">Diabetic nephropathy (sayo), sepsis-associated AKI</span>
       <span data-lang="kap" class="lang-hidden">Diabetic nephropathy (maagang yugto), sepsis-associated AKI</span></td>
         </tr>
         <tr>
@@ -2084,7 +2095,7 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
       <p class="illus-caption"><span data-lang="en">Protein in the tubular fluid is not just a passive marker — it is directly toxic. Albumin activates complement, NF-κB, and TGF-β pathways in tubular cells, triggering fibrosis. Reducing proteinuria breaks this cascade.</span><span data-lang="tl" class="lang-hidden">Ang protina sa tubular fluid ay hindi lamang passive na tanda — ito ay direktang nakakalason. Ini-activate ng albumin ang complement, NF-κB, at TGF-β pathways sa tubular cells, na nagpapagana ng fibrosis. Ang pagbabawas ng proteinuria ay nasisira ang kasunod-sunod na prosesong ito.</span><span data-lang="ceb" class="lang-hidden">Ang protina sa tubular fluid dili lamang passive nga timailhan — kini direktang nakakalason. Gi-activate sa albumin ang complement, NF-κB, ug TGF-β pathways sa tubular cells, nagpagana og fibrosis. Ang pagpakunhod sa proteinuria nagpabali niining sunod-sunod nga proseso.</span>
       <span data-lang="kap" class="lang-hidden">Ing protina king tubular fluid ya ali lamang passive a tanda — ini ya direktang nakakalason. Ini-activate ning albumin ing complement, NF-κB, at TGF-β pathways king tubular cells, a nagpapagana ning fibrosis. Ing pagbabawas ning proteinuria ya nasisira ing kasunod-sunod a prosesong ini.</span></p>
 
-    <p><span data-lang="en">Beyond the kidney, proteinuria is a powerful cardiovascular risk marker. Every doubling of UACR increases the risk of cardiovascular death by approximately 15–20%, independent of eGFR and traditional risk factors. This is why aggressive proteinuria reduction benefits both the kidneys and the heart simultaneously.</span><span data-lang="tl" class="lang-hidden">Higit pa sa bato, ang proteinuria ay isang makapangyarihang cardiovascular risk marker. Bawat pagdoble ng UACR ay nagpapataas ng panganib ng cardiovascular na kamatayan ng humigit-kumulang 15–20%, independyente sa eGFR at mga tradisyonal na risk factors. Kaya naman ang agresibong pagbabawas ng proteinuria ay nakikinabang ang mga bato at puso nang sabay-sabay.</span><span data-lang="ceb" class="lang-hidden">Labaw pa sa kidney, ang proteinuria usa ka gamhanang cardiovascular risk marker. Ang matag pagdoble sa UACR nagpataas sa risgo sa cardiovascular nga kamatayon og mga 15–20%, independyente sa eGFR ug tradisyonal nga mga risk factor. Mao kini ang hinungdan nga ang agresibong pagpakunhod sa proteinuria nakabenepisyo sa mga kidney ug kasingkasing sa dungan.</span>
+    <p><span data-lang="en">Beyond the kidney, proteinuria is a powerful cardiovascular risk marker. Every doubling of UACR increases the risk of cardiovascular death by approximately 15–20%, independent of estimated glomerular filtration rate (eGFR) and traditional risk factors. This is why aggressive proteinuria reduction benefits both the kidneys and the heart simultaneously.</span><span data-lang="tl" class="lang-hidden">Higit pa sa bato, ang proteinuria ay isang makapangyarihang cardiovascular risk marker. Bawat pagdoble ng UACR ay nagpapataas ng panganib ng cardiovascular na kamatayan ng humigit-kumulang 15–20%, independyente sa eGFR at mga tradisyonal na risk factors. Kaya naman ang agresibong pagbabawas ng proteinuria ay nakikinabang ang mga bato at puso nang sabay-sabay.</span><span data-lang="ceb" class="lang-hidden">Labaw pa sa kidney, ang proteinuria usa ka gamhanang cardiovascular risk marker. Ang matag pagdoble sa UACR nagpataas sa risgo sa cardiovascular nga kamatayon og mga 15–20%, independyente sa eGFR ug tradisyonal nga mga risk factor. Mao kini ang hinungdan nga ang agresibong pagpakunhod sa proteinuria nakabenepisyo sa mga kidney ug kasingkasing sa dungan.</span>
       <span data-lang="kap" class="lang-hidden">Higit pa king batu, ing proteinuria ya metung a makapangyarihang cardiovascular risk marker. Bawat pagdoble ning UACR ya nagpapataas ning panganib ning cardiovascular a kamatayan ning humigit-kumulang 15–20%, independyente king eGFR at deng tradisyonal a risk factors. Kaya naman ing agresibong pagbabawas ning proteinuria ya nakikinabang ing deng batu at pusu nang sabay-sabay.</span></p>
   </section>
 
@@ -2126,7 +2137,7 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
         <div class="step-body">
           <h4><span data-lang="en">Finerenone — for diabetic CKD with persistent proteinuria</span><span data-lang="tl" class="lang-hidden">Finerenone — para sa diabetic CKD na may patuloy na proteinuria</span><span data-lang="ceb" class="lang-hidden">Finerenone — alang sa diabetic CKD nga adunay padayon nga proteinuria</span>
       <span data-lang="kap" class="lang-hidden">Finerenone — para king diabetic CKD a atin patuloy a proteinuria</span></h4>
-          <p><span data-lang="en">The non-steroidal mineralocorticoid receptor antagonist finerenone (Kerendia) reduces UACR by 31% in diabetic CKD on top of ACE/ARB — through anti-fibrotic and anti-inflammatory mechanisms targeting aldosterone-driven glomerular and tubular damage. Particularly useful in Stage 3–4 DKD with residual proteinuria.</span><span data-lang="tl" class="lang-hidden">Ang non-steroidal mineralocorticoid receptor antagonist na finerenone (Kerendia) ay nagbabawas ng UACR ng 31% sa diabetic CKD sa ibabaw ng ACE/ARB — sa pamamagitan ng anti-fibrotic at anti-inflammatory na mekanismo na nagta-target ng aldosterone-driven na glomerular at tubular damage. Lalo itong kapaki-pakinabang sa Stage 3–4 DKD na may natitirang proteinuria.</span><span data-lang="ceb" class="lang-hidden">Ang non-steroidal mineralocorticoid receptor antagonist nga finerenone (Kerendia) nagpakunhod sa UACR og 31% sa diabetic CKD ibabaw sa ACE/ARB — pinaagi sa anti-fibrotic ug anti-inflammatory nga mekanismo nga nagtarget sa aldosterone-driven nga glomerular ug tubular damage. Labi ka mapuslanon sa Stage 3–4 DKD nga adunay nahibilin nga proteinuria.</span>
+          <p><span data-lang="en">The non-steroidal mineralocorticoid receptor antagonist finerenone (Kerendia) reduces UACR by 31% in diabetic CKD on top of ACE/ARB — through anti-fibrotic and anti-inflammatory mechanisms targeting aldosterone-driven glomerular and tubular damage. Particularly useful in Stage 3–4 diabetic kidney disease (DKD) with residual proteinuria.</span><span data-lang="tl" class="lang-hidden">Ang non-steroidal mineralocorticoid receptor antagonist na finerenone (Kerendia) ay nagbabawas ng UACR ng 31% sa diabetic CKD sa ibabaw ng ACE/ARB — sa pamamagitan ng anti-fibrotic at anti-inflammatory na mekanismo na nagta-target ng aldosterone-driven na glomerular at tubular damage. Lalo itong kapaki-pakinabang sa Stage 3–4 DKD na may natitirang proteinuria.</span><span data-lang="ceb" class="lang-hidden">Ang non-steroidal mineralocorticoid receptor antagonist nga finerenone (Kerendia) nagpakunhod sa UACR og 31% sa diabetic CKD ibabaw sa ACE/ARB — pinaagi sa anti-fibrotic ug anti-inflammatory nga mekanismo nga nagtarget sa aldosterone-driven nga glomerular ug tubular damage. Labi ka mapuslanon sa Stage 3–4 DKD nga adunay nahibilin nga proteinuria.</span>
       <span data-lang="kap" class="lang-hidden">Ing non-steroidal mineralocorticoid receptor antagonist a finerenone (Kerendia) ya nagbabawas ning UACR ning 31% king diabetic CKD king ibabaw ning ACE/ARB — king pamamagitan ning anti-fibrotic at anti-inflammatory a mekanismo a nagta-target ning aldosterone-driven a glomerular at tubular damage. Lalo itong kapaki-pakinabang king Stage 3–4 DKD a atin natitirang proteinuria.</span></p>
         </div>
       </div>
@@ -2178,7 +2189,7 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
       <span data-lang="kap" class="lang-hidden">Para king combined GFR + albuminuria risk classification (KDIGO heat map)</span></div>
         </div>
         <div class="calc-field">
-          <label>On RAAS blockade?</label>
+          <label>On RAAS (renin–angiotensin–aldosterone system) blockade?</label>
           <select id="pr-raas" onchange="calcProt()">
             <option value="">Select…
       </option>
@@ -2385,28 +2396,28 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
           <div class="related-card-desc">A plain-language decoder for the most common blood and urine tests — what each number means, what yo</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/understanding-lab-results-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/understanding-lab-results-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="slowing-ckd-progression.html">
           <div class="related-card-tag">Understanding the Disease</div>
           <div class="related-card-title">Slowing CKD Progression</div>
           <div class="related-card-desc">The strategies, medications, and lifestyle changes that keep your kidneys working longer — and the t</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/slowing-ckd-progression-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/slowing-ckd-progression-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="nutrition-kidney-patients.html">
           <div class="related-card-tag">Why Food Is Medicine</div>
           <div class="related-card-title">Nutrition for Kidney Patients</div>
           <div class="related-card-desc">A practical Filipino guide to eating well with CKD — what to limit, what is safe, how to read food l</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="glomerulonephritis.html">
           <div class="related-card-tag">Overview</div>
           <div class="related-card-title">What is Glomerulonephritis?</div>
           <div class="related-card-desc">Understanding inflammation of the kidney's filtering units — the different types, how they are diagn</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/glomerulonephritis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/glomerulonephritis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -3466,5 +3477,6 @@ function calcConv() {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

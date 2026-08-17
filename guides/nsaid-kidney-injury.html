@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1758,7 +1769,7 @@ body.dark .related-card-title {
     <div class="section-tag"><span data-lang="en">The Problem</span><span data-lang="tl" class="lang-hidden">Ang Problema</span><span data-lang="ceb" class="lang-hidden">Ang Problema</span><span data-lang="kap" class="lang-hidden">Ing Problema</span></div>
     <h2><span data-lang="en">NSAIDs — Effective Pain Relief with a Hidden Kidney Cost</span><span data-lang="tl" class="lang-hidden">NSAIDs — Epektibong Pampawi ng Sakit na may Nakatagong Gastos sa Bato</span><span data-lang="ceb" class="lang-hidden">NSAIDs — Epektibo nga Pampawi sa Sakit nga adunay Tinago nga Bayad sa Kidney</span><span data-lang="kap" class="lang-hidden">NSAIDs — Epektibong Pampawi ning Sakit na may Nakatagong Gastos sa Batu</span></h2>
     <div class="intro-callout">
-      <p><span data-lang="en">Non-steroidal anti-inflammatory drugs (NSAIDs) are some of the most commonly purchased over-the-counter medicines in the Philippines. They are effective for pain, fever, and inflammation — but they work by blocking prostaglandins, compounds that also <strong>maintain kidney blood flow and protect the kidney tubules</strong>. In vulnerable patients, a single dose can trigger acute kidney injury.</span><span data-lang="tl" class="lang-hidden">Ang mga non-steroidal anti-inflammatory drugs (NSAIDs) ay ilan sa pinakakaraniwang binibiling over-the-counter na gamot sa Pilipinas. Sila ay epektibo para sa sakit, lagnat, at pamamaga — ngunit gumagana sila sa pamamagitan ng pagharang sa mga prostaglandin, mga compound na nagtataglay rin ng <strong>pagpapanatili ng daloy ng dugo sa bato at pag-protekta sa mga tubule ng bato</strong>. Sa mga mahihinang pasyente, ang isang dosis ay maaaring mag-trigger ng acute kidney injury.</span><span data-lang="ceb" class="lang-hidden">Ang mga non-steroidal anti-inflammatory drugs (NSAIDs) pipila sa labing kasagarang gipalit nga over-the-counter nga tambal sa Pilipinas. Epektibo sila alang sa sakit, hilanat, ug pamamaga — apan naglihok sila pinaagi sa pagbabag sa mga prostaglandin, mga compound nga nagpabilin usab sa <strong>pagmentinar sa daloy sa dugo sa kidney ug pag-protekta sa mga tubule sa kidney</strong>. Sa mga mahuyang nga pasyente, ang usa ka dosis pwede mag-trigger sa acute kidney injury.</span><span data-lang="kap" class="lang-hidden">Deng non-steroidal anti-inflammatory drugs (NSAIDs) ya ilan sa pinakakaraniwang binibiling over-the-counter na gamut king Pilipinas. Sila ya epektibo para king sakit, lagnat, at pamamaga — ngarud gumagana sila sa pamamagitan ning pagharang sa deng prostaglandin, deng compound na nagtataglay rin ning <strong>pagpapanatili ning daloy nining daya sa batu at pag-protekta sa deng tubule nining batu</strong>. Sa deng mahihinang pasyente, ing metung a dosis ya maaaring mag-trigger ning acute kidney injury.</span></p>
+      <p><span data-lang="en">Non-steroidal anti-inflammatory drugs (NSAIDs) are some of the most commonly purchased over-the-counter medicines in the Philippines. They are effective for pain, fever, and inflammation — but they work by blocking prostaglandins, compounds that also <strong>maintain kidney blood flow and protect the kidney tubules</strong>. In vulnerable patients, a single dose can trigger acute kidney injury (AKI).</span><span data-lang="tl" class="lang-hidden">Ang mga non-steroidal anti-inflammatory drugs (NSAIDs) ay ilan sa pinakakaraniwang binibiling over-the-counter na gamot sa Pilipinas. Sila ay epektibo para sa sakit, lagnat, at pamamaga — ngunit gumagana sila sa pamamagitan ng pagharang sa mga prostaglandin, mga compound na nagtataglay rin ng <strong>pagpapanatili ng daloy ng dugo sa bato at pag-protekta sa mga tubule ng bato</strong>. Sa mga mahihinang pasyente, ang isang dosis ay maaaring mag-trigger ng acute kidney injury.</span><span data-lang="ceb" class="lang-hidden">Ang mga non-steroidal anti-inflammatory drugs (NSAIDs) pipila sa labing kasagarang gipalit nga over-the-counter nga tambal sa Pilipinas. Epektibo sila alang sa sakit, hilanat, ug pamamaga — apan naglihok sila pinaagi sa pagbabag sa mga prostaglandin, mga compound nga nagpabilin usab sa <strong>pagmentinar sa daloy sa dugo sa kidney ug pag-protekta sa mga tubule sa kidney</strong>. Sa mga mahuyang nga pasyente, ang usa ka dosis pwede mag-trigger sa acute kidney injury.</span><span data-lang="kap" class="lang-hidden">Deng non-steroidal anti-inflammatory drugs (NSAIDs) ya ilan sa pinakakaraniwang binibiling over-the-counter na gamut king Pilipinas. Sila ya epektibo para king sakit, lagnat, at pamamaga — ngarud gumagana sila sa pamamagitan ning pagharang sa deng prostaglandin, deng compound na nagtataglay rin ning <strong>pagpapanatili ning daloy nining daya sa batu at pag-protekta sa deng tubule nining batu</strong>. Sa deng mahihinang pasyente, ing metung a dosis ya maaaring mag-trigger ning acute kidney injury.</span></p>
     </div>
 
     <div class="illus-wrap illus-wrap-light">
@@ -1786,7 +1797,7 @@ body.dark .related-card-title {
         <text x="430" y="121" text-anchor="middle" font-size="9" fill="#c0392b">Tubular ischemia and necrosis</text>
         <text x="430" y="135" text-anchor="middle" font-size="9" fill="#c0392b">↓↓ GFR — rising creatinine</text>
         <text x="430" y="149" text-anchor="middle" font-size="11" font-weight="600" fill="#c0392b">✗ AKI — acute kidney injury</text>
-        <text x="280" y="173" text-anchor="middle" font-size="10" fill="#1e2a38">In healthy kidneys this effect is mild and reversible. In CKD, diabetes, or heart failure — it can be catastrophic.</text>
+        <text x="280" y="173" text-anchor="middle" font-size="10" fill="#1e2a38">In healthy kidneys this effect is mild and reversible. In chronic kidney disease (CKD), diabetes, or heart failure — it can be catastrophic.</text>
       </svg>
           </div>
       <p class="illus-caption"><span data-lang="en">Prostaglandins act as a protective buffer for kidney blood flow — especially when the kidney is already under stress from CKD, dehydration, or heart failure. NSAIDs remove this buffer, exposing the kidney to unchecked vasoconstriction.</span><span data-lang="tl" class="lang-hidden">Ang mga prostaglandin ay kumikilos bilang protektibong buffer para sa daloy ng dugo sa bato — lalo na kapag ang bato ay nasa ilalim na ng stress mula sa CKD, dehydration, o pagpalya ng puso. Ang mga NSAID ay nag-aalis ng buffer na ito, na inilalantad ang bato sa walang kontrol na vasoconstriction.</span><span data-lang="ceb" class="lang-hidden">Ang mga prostaglandin naglihok isip protektibong buffer alang sa daloy sa dugo sa kidney — labi na kon ang kidney naa na sa ilalim sa stress gikan sa CKD, dehydration, o pagpalya sa puso. Ang mga NSAID nagtangtang niining buffer, nagpahayag sa kidney sa wala kontrola nga vasoconstriction.</span><span data-lang="kap" class="lang-hidden">Deng prostaglandin ya kumikilos bilang protektibong buffer para king daloy nining daya sa batu — lalo na nung ining batu ya nasa ilalim na ning stress mula sa CKD, dehydration, o pagpalya nining pusu. Deng NSAID ya nag-aalis ning buffer na ini, na inilalantad ining batu sa alang kontrol na vasoconstriction.</span></p>
@@ -1795,7 +1806,7 @@ body.dark .related-card-title {
 <figure style="margin:24px 0">
   <picture>
     <source srcset="../images/nsaid-kidney-mechanisms.webp" type="image/webp">
-    <img loading="lazy" src="../images/nsaid-kidney-mechanisms.png" width="1024" height="1024" alt="Four mechanisms of NSAID kidney injury — hemodynamic AKI, acute interstitial nephritis, papillary necrosis, and chronic analgesic nephropathy — clinical features and timeframes" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:12px;">
+    <img loading="lazy" src="../images/nsaid-kidney-mechanisms.png" width="1536" height="1024" alt="Four mechanisms of NSAID kidney injury — hemodynamic AKI, acute interstitial nephritis, papillary necrosis, and chronic analgesic nephropathy — clinical features and timeframes" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:12px;">
   </picture>
 <figcaption><p class="fig-desc">A chart showing the four main ways that pain relievers (NSAIDs) can harm the kidneys, from sudden injury within days to slow damage that builds up over years.</p></figcaption>
 </figure>
@@ -1817,7 +1828,7 @@ body.dark .related-card-title {
       </div>
       <div class="feature-card">
         <h4><span class="dot dot-amber"></span><span data-lang="en">4. Sodium and fluid retention</span><span data-lang="tl" class="lang-hidden">4. Pagtitipon ng sodium at tubig</span><span data-lang="ceb" class="lang-hidden">4. Pag-atipon sa sodium ug tubig</span><span data-lang="kap" class="lang-hidden">4. Pagtitipon ning sodium at danum</span></h4>
-        <p><span data-lang="en">NSAIDs block prostaglandin-mediated sodium and water excretion — causing fluid retention, edema, and worsening hypertension. This directly antagonizes the effect of antihypertensive medications — particularly ACE inhibitors, ARBs, and diuretics. Can precipitate acute decompensation in heart failure or CKD patients on diuretics.</span><span data-lang="tl" class="lang-hidden">Ang NSAIDs ay humahawa sa prostaglandin-mediated na pag-excrete ng sodium at tubig — nagdudulot ng pagtitipon ng tubig, edema, at pagpapalala ng hypertension. Direktang kinukontra nito ang epekto ng mga antihypertensive na gamot — lalo na ang mga ACE inhibitor, ARB, at diuretic. Maaaring mag-trigger ng acute decompensation sa mga pasyenteng may heart failure o CKD na nasa diuretic.</span><span data-lang="ceb" class="lang-hidden">Ang NSAIDs nagbabag sa prostaglandin-mediated nga pag-excrete sa sodium ug tubig — nagdaot sa pag-atipon sa tubig, edema, ug pagpagrabe sa hypertension. Direkta niining gikukontra ang epekto sa mga antihypertensive nga tambal — labi na ang mga ACE inhibitor, ARB, ug diuretic. Pwede mag-trigger sa acute decompensation sa mga pasyente nga adunay heart failure o CKD nga naa sa diuretic.</span><span data-lang="kap" class="lang-hidden">Ing NSAIDs ya humahawa sa prostaglandin-mediated na pag-excrete ning sodium at danum — nagdudulot ning pagtitipon nining danum, edema, at pagpapalala ning hypertension. Direktang kinukontra nini ing epekto ning deng antihypertensive na gamut — lalo na deng ACE inhibinir, ARB, at diuretic. Maaaring mag-trigger ning acute decompensation sa deng pasyenteng may heart failure o CKD na nasa diuretic.</span></p>
+        <p><span data-lang="en">NSAIDs block prostaglandin-mediated sodium and water excretion — causing fluid retention, edema, and worsening hypertension. This directly antagonizes the effect of antihypertensive medications — particularly ACE inhibitors, angiotensin receptor blockers (ARBs), and diuretics. Can precipitate acute decompensation in heart failure or CKD patients on diuretics.</span><span data-lang="tl" class="lang-hidden">Ang NSAIDs ay humahawa sa prostaglandin-mediated na pag-excrete ng sodium at tubig — nagdudulot ng pagtitipon ng tubig, edema, at pagpapalala ng hypertension. Direktang kinukontra nito ang epekto ng mga antihypertensive na gamot — lalo na ang mga ACE inhibitor, ARB, at diuretic. Maaaring mag-trigger ng acute decompensation sa mga pasyenteng may heart failure o CKD na nasa diuretic.</span><span data-lang="ceb" class="lang-hidden">Ang NSAIDs nagbabag sa prostaglandin-mediated nga pag-excrete sa sodium ug tubig — nagdaot sa pag-atipon sa tubig, edema, ug pagpagrabe sa hypertension. Direkta niining gikukontra ang epekto sa mga antihypertensive nga tambal — labi na ang mga ACE inhibitor, ARB, ug diuretic. Pwede mag-trigger sa acute decompensation sa mga pasyente nga adunay heart failure o CKD nga naa sa diuretic.</span><span data-lang="kap" class="lang-hidden">Ing NSAIDs ya humahawa sa prostaglandin-mediated na pag-excrete ning sodium at danum — nagdudulot ning pagtitipon nining danum, edema, at pagpapalala ning hypertension. Direktang kinukontra nini ing epekto ning deng antihypertensive na gamut — lalo na deng ACE inhibinir, ARB, at diuretic. Maaaring mag-trigger ning acute decompensation sa deng pasyenteng may heart failure o CKD na nasa diuretic.</span></p>
       </div>
     </div>
   </section>
@@ -1838,7 +1849,7 @@ body.dark .related-card-title {
       <div class="alert-body">
         <h4><span data-lang="en">NSAIDs are contraindicated (should be avoided) in:</span><span data-lang="tl" class="lang-hidden">Ang mga NSAID ay kontraindikado (dapat iwasan) sa:</span><span data-lang="ceb" class="lang-hidden">Ang mga NSAID kontraindikado (kinahanglan likayon) sa:</span><span data-lang="kap" class="lang-hidden">Deng NSAID ya kontraindikado (dapat iwasan) sa:</span></h4>
         <ul>
-          <li><strong><span data-lang="en">Any CKD patient with eGFR &lt;60 mL/min</span><span data-lang="tl" class="lang-hidden">Anumang pasyenteng may CKD na may eGFR &lt;60 mL/min</span><span data-lang="ceb" class="lang-hidden">Bisan unsang pasyente nga adunay CKD nga adunay eGFR &lt;60 mL/min</span><span data-lang="kap" class="lang-hidden">Anumang pasyenteng may CKD na may eGFR &lt;60 mL/min</span></strong> — <span data-lang="en">even short-course use carries significant AKI risk</span><span data-lang="tl" class="lang-hidden">kahit ang maikling paggamit ay may malaking panganib ng AKI</span><span data-lang="ceb" class="lang-hidden">bisan ang mubo nga paggamit adunay dakong risk sa AKI</span><span data-lang="kap" class="lang-hidden">kahit ing maikling paggamit ya may malda a panganib ning AKI</span></li>
+          <li><strong><span data-lang="en">Any CKD patient with estimated glomerular filtration rate (eGFR) &lt;60 mL/min</span><span data-lang="tl" class="lang-hidden">Anumang pasyenteng may CKD na may eGFR &lt;60 mL/min</span><span data-lang="ceb" class="lang-hidden">Bisan unsang pasyente nga adunay CKD nga adunay eGFR &lt;60 mL/min</span><span data-lang="kap" class="lang-hidden">Anumang pasyenteng may CKD na may eGFR &lt;60 mL/min</span></strong> — <span data-lang="en">even short-course use carries significant AKI risk</span><span data-lang="tl" class="lang-hidden">kahit ang maikling paggamit ay may malaking panganib ng AKI</span><span data-lang="ceb" class="lang-hidden">bisan ang mubo nga paggamit adunay dakong risk sa AKI</span><span data-lang="kap" class="lang-hidden">kahit ing maikling paggamit ya may malda a panganib ning AKI</span></li>
           <li><strong><span data-lang="en">Dialysis patients</span><span data-lang="tl" class="lang-hidden">Mga pasyenteng nasa dialysis</span><span data-lang="ceb" class="lang-hidden">Mga pasyente sa dialysis</span><span data-lang="kap" class="lang-hidden">Deng pasyenteng nasa dialysis</span></strong> — <span data-lang="en">NSAID use causes cardiovascular events, GI bleeding, and worsens blood pressure control</span><span data-lang="tl" class="lang-hidden">ang paggamit ng NSAID ay nagdudulot ng cardiovascular events, GI bleeding, at nagpapalala ng kontrol ng presyon ng dugo</span><span data-lang="ceb" class="lang-hidden">ang paggamit sa NSAID nagdaot sa cardiovascular events, GI bleeding, ug nagpagrabe sa kontrol sa presyon sa dugo</span><span data-lang="kap" class="lang-hidden">ang paggamit ning NSAID ya nagdudulot ning cardiovascular events, GI bleeding, at nagpapalala ning kontrol nining presyon nining daya</span></li>
           <li><strong><span data-lang="en">Patients with heart failure</span><span data-lang="tl" class="lang-hidden">Mga pasyenteng may heart failure</span><span data-lang="ceb" class="lang-hidden">Mga pasyente nga adunay heart failure</span><span data-lang="kap" class="lang-hidden">Deng pasyenteng may heart failure</span></strong> — <span data-lang="en">precipitates fluid retention and acute decompensation</span><span data-lang="tl" class="lang-hidden">nagdudulot ng pagtitipon ng tubig at acute decompensation</span><span data-lang="ceb" class="lang-hidden">nagdaot sa pag-atipon sa tubig ug acute decompensation</span><span data-lang="kap" class="lang-hidden">nagdudulot ning pagtitipon nining danum at acute decompensation</span></li>
           <li><strong><span data-lang="en">Dehydrated patients</span><span data-lang="tl" class="lang-hidden">Mga pasyenteng may dehydration</span><span data-lang="ceb" class="lang-hidden">Mga pasyente nga adunay dehydration</span><span data-lang="kap" class="lang-hidden">Deng pasyenteng may dehydration</span></strong> — <span data-lang="en">diarrhea, vomiting, fasting, or heat exposure remove the prostaglandin-buffered kidney protection</span><span data-lang="tl" class="lang-hidden">ang pagtatae, pagsusuka, pag-aayuno, o pagkakalantad sa init ay nag-aalis ng proteksyon ng bato na buffered ng prostaglandin</span><span data-lang="ceb" class="lang-hidden">ang pagtatae, pagsuka, pag-ayuno, o pagkaladlad sa init nagtangtang sa proteksyon sa kidney nga gi-buffer sa prostaglandin</span><span data-lang="kap" class="lang-hidden">ang pagtatae, pagsusuka, pag-aayuno, o pagkakalantad sa init ya nag-aalis ning proteksyon nining batu na buffered ning prostaglandin</span></li>
@@ -2065,28 +2076,28 @@ body.dark .related-card-title {
           <div class="related-card-desc">Nearly 60% of CKD patients live with significant pain — but almost every standard painkiller is eith</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/pain-management-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/pain-management-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="acute-kidney-injury-on-ckd.html">
           <div class="related-card-tag">A Dangerous Combination</div>
           <div class="related-card-title">Acute Kidney Injury on Top of CKD (AKI-on-CKD)</div>
           <div class="related-card-desc">When an acute insult strikes kidneys already weakened by chronic disease — the most dangerous form o</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/acute-kidney-injury-on-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/acute-kidney-injury-on-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="ckd-top5-mistakes.html">
           <div class="related-card-tag">Why This Guide Exists</div>
           <div class="related-card-title">Top 5 Mistakes CKD Patients Make</div>
           <div class="related-card-desc">These are not failures of character — they are gaps in information. Every one of these mistakes is u</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/ckd-top5-mistakes-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-top5-mistakes-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="gout-uric-acid.html">
           <div class="related-card-tag">The Basics</div>
           <div class="related-card-title">Gout & Uric Acid</div>
           <div class="related-card-desc">Why uric acid builds up, how it damages joints and kidneys, which foods matter most — and how to wor</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/gout-uric-acid-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/gout-uric-acid-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -2150,5 +2161,6 @@ function setGuideLang(lang) {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -142,6 +143,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1310,8 +1319,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1752,8 +1763,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -1766,22 +1777,22 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <div class="ov-list">
     <div class="ov-stat"><span class="v">60&ndash;97%</span><span class="l">Prevalence in hemodialysis patients</span></div>
     <div class="ov-stat"><span class="v">6&ndash;8 h</span><span class="l">Mean recovery time after dialysis</span></div>
-    <div class="ov-stat"><span class="v">&le;10</span><span class="l">Target UFR mL/kg/h</span></div>
+    <div class="ov-stat"><span class="v">&le;10</span><span class="l">Target ultrafiltration rate (UFR) mL/kg/h</span></div>
     </div>
     <a class="ov-foot" href="#md-pathophys">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
     </aside>
     <div class="hero-copy">
     <div class="hero-tag">Dialysis Life · Dialysis &amp; Critical Nephrology</div>
-    <h1>Post-Dialysis Fatigue: Why You're <em>Exhausted</em> After Dialysis</h1>
-    <p class="hero-sub">Understanding the science behind post-HD fatigue — and <em>evidence-based strategies</em> to reclaim your day.</p>
+    <h1><span data-lang="en">Post-Dialysis Fatigue: Why You're <em>Exhausted</em> After Dialysis</span><span data-lang="tl" class="lang-hidden">Pagkapagod Pagkatapos ng Dialysis: Bakit Ka <em>Sobrang Pagod</em> Pagkatapos ng Dialysis</span><span data-lang="ceb" class="lang-hidden">Kakapoy Human sa Dialysis: Nganong <em>Sobra Ka Kakapoy</em> Human sa Dialysis</span><span data-lang="kap" class="lang-hidden">Kapaguran Kaibat ning Dialysis: Bakit Ka <em>Masyadung Pagal</em> Kaibat ning Dialysis</span></h1>
+    <p class="hero-sub"><span data-lang="en">Understanding the science behind post-HD fatigue — and <em>evidence-based strategies</em> to reclaim your day.</span><span data-lang="tl" class="lang-hidden">Ang pag-unawa sa agham sa likod ng pagkapagod pagkatapos ng HD — at ang <em>mga estratehiyang batay sa ebidensya</em> upang mabawi ang inyong araw.</span><span data-lang="ceb" class="lang-hidden">Ang pagsabot sa siyensya luyo sa kakapoy human sa HD — ug ang <em>mga estratehiya nga pinasukad sa ebidensya</em> aron mabawi ang imong adlaw.</span><span data-lang="kap" class="lang-hidden">Ing pamakaintindi king agham king likud ning kapaguran kaibat ning HD — at ding <em>estratehiyang base king ebidensya</em> ban mabawi me ing kekang aldo.</span></p>
     <div class="hero-meta">
 <span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
 <span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">3</span></span>
 <span class="hero-readtime"><strong><span data-lang="en">Read time</span><span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span><span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span><span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>:</strong> <time datetime="PT16M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~16 min</time></span>
 </div>
-      <div>Duration<br><strong>Avg. 6–8 hours post-HD</strong></div>
-      <div>Most treatable cause<br><strong>Anemia (Hgb &lt; 10)</strong></div>
+      <div><span data-lang="en">Duration<br><strong>Avg. 6–8 hours post-hemodialysis (HD)</strong></span><span data-lang="tl" class="lang-hidden">Tagal<br><strong>Karaniwan 6–8 oras pagkatapos ng hemodialysis (HD)</strong></span><span data-lang="ceb" class="lang-hidden">Gidugayon<br><strong>Kasagaran 6–8 ka oras human sa hemodialysis (HD)</strong></span><span data-lang="kap" class="lang-hidden">Kaba<br><strong>Karaniwan 6–8 oras kaibat ning hemodialysis (HD)</strong></span></div>
+      <div><span data-lang="en">Most treatable cause<br><strong>Anemia (Hgb &lt; 10)</strong></span><span data-lang="tl" class="lang-hidden">Pinakamadaling gamutin na sanhi<br><strong>Anemya (Hgb &lt; 10)</strong></span><span data-lang="ceb" class="lang-hidden">Kasagarang matambalan nga hinungdan<br><strong>Anemya (Hgb &lt; 10)</strong></span><span data-lang="kap" class="lang-hidden">Ing pekamadaling agaman a sanhi<br><strong>Anemya (Hgb &lt; 10)</strong></span></div>
     </div>
     <figure class="hero-figure">
       <div class="hero-vignette">
@@ -1817,72 +1828,72 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <!-- ═══════════════════════════════════════ PATIENT SECTIONS ═══════════════════════════════════════ -->
 
 <section class="section mode-patient" id="what">
-  <div class="section-tag">Dialysis Life</div>
-  <h2>What is post-dialysis fatigue?</h2>
+  <div class="section-tag"><span data-lang="en">Dialysis Life</span><span data-lang="tl" class="lang-hidden">Buhay sa Dialysis</span><span data-lang="ceb" class="lang-hidden">Kinabuhi sa Dialysis</span><span data-lang="kap" class="lang-hidden">Bie king Dialysis</span></div>
+  <h2><span data-lang="en">What is post-dialysis fatigue?</span><span data-lang="tl" class="lang-hidden">Ano ang pagkapagod pagkatapos ng dialysis?</span><span data-lang="ceb" class="lang-hidden">Unsa ang kakapoy human sa dialysis?</span><span data-lang="kap" class="lang-hidden">Nanu ing kapaguran kaibat ning dialysis?</span></h2>
   <figure style="margin:24px 0;">
     <picture>
       <source srcset="../images/post-dialysis-fatigue-00-hero-editorial.webp" type="image/webp">
       <img src="../images/post-dialysis-fatigue-00-hero-editorial.png" loading="lazy" width="1536" height="1024" alt="Filipino hemodialysis patient resting in a recliner after dialysis — the exhaustion of post-dialysis fatigue, calm and dignified" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto;border-radius:10px;">
     </picture>
-    <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;">A Filipino hemodialysis patient resting after treatment — the exhaustion that follows a session, calm and dignified. © williamriveromd.com</figcaption>
+    <figcaption style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;text-align:center;">A Filipino hemodialysis patient resting after treatment — the exhaustion that follows a session, calm and dignified. © renalcarematters.com</figcaption>
   </figure>
   <figure style="margin:28px 0 0;">
     <picture>
       <source srcset="../images/post-dialysis-fatigue-01-pathophysiology.webp" type="image/webp">
       <img src="../images/post-dialysis-fatigue-01-pathophysiology.png" loading="lazy" width="1536" height="1024" alt="Diagram of 5 mechanisms that cause post-dialysis fatigue: hemodynamic stress, fluid shifts, uremic toxin rebound, inflammation, and mitochondrial dysfunction" style="width:100%;height:auto;display:block;border-radius:10px;">
     </picture>
-    <figcaption style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+    <figcaption style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
   </figure>
-  <p>Post-dialysis fatigue (PDF) is the overwhelming tiredness, weakness, and "washed-out" feeling that begins during or just after a hemodialysis session and can last anywhere from a few hours to the rest of the day. It is not laziness — it is a real physiologic response to what dialysis does to your body.</p>
-  <p>Studies consistently report that <strong>60 to 97% of hemodialysis patients</strong> experience significant fatigue after each session, making it one of the most common and most disabling symptoms in kidney failure. Filipino patients on three-times-weekly HD lose roughly <strong>18 to 24 hours of functional time per week</strong> to post-dialysis recovery.</p>
+  <p><span data-lang="en">Post-dialysis fatigue (PDF) is the overwhelming tiredness, weakness, and "washed-out" feeling that begins during or just after a hemodialysis session and can last anywhere from a few hours to the rest of the day. It is not laziness — it is a real physiologic response to what dialysis does to your body.</span><span data-lang="tl" class="lang-hidden">Ang pagkapagod pagkatapos ng dialysis (post-dialysis fatigue o PDF) ay ang napakatinding pagod, panghihina, at pakiramdam na "wala nang lakas" na nagsisimula habang o kaagad pagkatapos ng isang sesyon ng hemodialysis at maaaring tumagal mula sa ilang oras hanggang sa buong maghapon. Hindi ito katamaran — isa itong tunay na tugon ng katawan sa ginagawa ng dialysis sa inyong katawan.</span><span data-lang="ceb" class="lang-hidden">Ang kakapoy human sa dialysis (post-dialysis fatigue o PDF) mao ang hilabihang kakapoy, kaluya, ug pamati nga "wala nay kusog" nga magsugod atol o pagkahuman dayon sa usa ka sesyon sa hemodialysis ug mahimong molungtad gikan sa pipila ka oras hangtod sa tibuok adlaw. Dili kini katapulan — usa kini ka tinuod nga tubag sa lawas sa gibuhat sa dialysis sa imong lawas.</span><span data-lang="kap" class="lang-hidden">Ing kapaguran kaibat ning dialysis (post-dialysis fatigue o PDF) iya ing masakit a pamagal, kalunusan, at pamiramdam a "ala nang sikanan" a magumpisa kabang o kaibat mu ning metung a sesyon ning hemodialysis at malyaring tumagal manibat king pilang oras angga king mabilug a aldo. E ya katamaran — metung yang tune a tugun ning katawan king gagawan ning dialysis king kekang katawan.</span></p>
+  <p><span data-lang="en">Studies consistently report that <strong>60 to 97% of hemodialysis patients</strong> experience significant fatigue after each session, making it one of the most common and most disabling symptoms in kidney failure. Filipino patients on three-times-weekly HD lose roughly <strong>18 to 24 hours of functional time per week</strong> to post-dialysis recovery.</span><span data-lang="tl" class="lang-hidden">Palaging ipinapakita ng mga pag-aaral na <strong>60 hanggang 97% ng mga pasyenteng nagpapa-hemodialysis</strong> ang nakakaranas ng malubhang pagkapagod pagkatapos ng bawat sesyon, kaya isa ito sa pinakakaraniwan at pinakanakaaapektong sintomas sa pagpalya ng bato. Ang mga pasyenteng Pilipino na nagpapa-HD nang tatlong beses kada linggo ay nawawalan ng humigit-kumulang <strong>18 hanggang 24 oras ng magamit na oras kada linggo</strong> dahil sa paggaling pagkatapos ng dialysis.</span><span data-lang="ceb" class="lang-hidden">Kanunay nga gitaho sa mga pagtuon nga <strong>60 hangtod 97% sa mga pasyente sa hemodialysis</strong> ang makasinati og grabe nga kakapoy human sa matag sesyon, mao nga usa kini sa pinakakomon ug pinakamakadaot nga simtomas sa pagkapakyas sa kidney. Ang mga Pilipinong pasyente nga naga-HD og tulo ka beses matag semana mawad-an og mga <strong>18 hangtod 24 ka oras nga magamit nga panahon matag semana</strong> tungod sa pagpaayo human sa dialysis.</span><span data-lang="kap" class="lang-hidden">Pane pakit ning mga pamagsaliksik a <strong>60 angga 97% ding pasyenteng magpa-hemodialysis</strong> ing makaramdam kapaguran a masakit kaibat ning balang sesyon, kaya metung ya king pekakaraniwan at pekamakaapektung sintomas king pamagpalya ning batu. Ding pasyenteng Kapampangan/Pilipinu a magpa-HD atlung beses kada dominggu ing mawawala lang mag <strong>18 angga 24 oras a magagamit a panaun kada dominggu</strong> uli ning pamagaling kaibat ning dialysis.</span></p>
   <div class="intro-callout">
-    <p><strong>The key insight: post-dialysis fatigue is not one problem — it is five problems happening at once.</strong> Each session triggers fluid shifts, toxin rebound, blood pressure stress, autonomic strain, and an inflammatory surge. Understanding which mechanism dominates for you is the first step toward targeting it.</p>
+    <p><span data-lang="en"><strong>The key insight: post-dialysis fatigue is not one problem — it is five problems happening at once.</strong> Each session triggers fluid shifts, toxin rebound, blood pressure stress, autonomic strain, and an inflammatory surge. Understanding which mechanism dominates for you is the first step toward targeting it.</span><span data-lang="tl" class="lang-hidden"><strong>Ang mahalagang aral: ang pagkapagod pagkatapos ng dialysis ay hindi iisang problema — limang problema itong nangyayari nang sabay-sabay.</strong> Ang bawat sesyon ay nagdudulot ng paglipat ng likido, pagbalik ng lason, stress sa presyon ng dugo, pahirap sa awtonomikong sistema, at pagsalpok ng pamamaga. Ang pag-unawa kung aling mekanismo ang nangingibabaw sa inyo ang unang hakbang upang matugunan ito.</span><span data-lang="ceb" class="lang-hidden"><strong>Ang hinungdanong hibalo: ang kakapoy human sa dialysis dili usa lang ka problema — lima kini ka problema nga mahitabo nga dungan.</strong> Ang matag sesyon magpahinabo og pagbalhin sa likido, pagbalik sa hilo, stress sa presyon sa dugo, pag-antos sa autonomic nga sistema, ug pagsulbo sa panghubag. Ang pagsabot kon unsang mekanismo ang nagpatigbabaw kanimo mao ang unang lakang aron kini masulbad.</span><span data-lang="kap" class="lang-hidden"><strong>Ing mahalagang aral: ing kapaguran kaibat ning dialysis e ya metung mung problema — limang problema yang mangyari a sabay-sabay.</strong> Ing balang sesyon ing magdala kapamilatan king paglipat ning danum, pamibalik ning lason, stress king presyon ning daya, pamagpahirap king awtonomikung sistema, at pamagsulbu ning pamanlati. Ing pamakaintindi nung nanung mekanismu ing pekamaragul kekayu ing mumunang dapat ban maatupan ya.</span></p>
   </div>
 </section>
 
 <section class="section mode-patient" id="mechanisms">
-  <div class="section-tag">The Science</div>
-  <h2>Why dialysis makes you so tired — <em>5 mechanisms.</em></h2>
+  <div class="section-tag"><span data-lang="en">The Science</span><span data-lang="tl" class="lang-hidden">Ang Agham</span><span data-lang="ceb" class="lang-hidden">Ang Siyensya</span><span data-lang="kap" class="lang-hidden">Ing Agham</span></div>
+  <h2><span data-lang="en">Why dialysis makes you so tired — <em>5 mechanisms.</em></span><span data-lang="tl" class="lang-hidden">Bakit ka lubhang napapagod ng dialysis — <em>5 mekanismo.</em></span><span data-lang="ceb" class="lang-hidden">Nganong grabe ka nga gikapoy sa dialysis — <em>5 ka mekanismo.</em></span><span data-lang="kap" class="lang-hidden">Bakit ka masyadung papaganan ning dialysis — <em>5 mekanismu.</em></span></h2>
   <div class="mechanism-grid">
     <div class="mechanism-card">
       <div class="mc-num">01</div>
-      <h4>Fluid Shift &amp; Osmotic Stress</h4>
-      <p>Rapid removal of 2–4 liters of fluid in 4 hours causes abrupt osmolality shifts. Cells — including brain cells — shrink and re-equilibrate. This osmotic stress is a major driver of the post-HD "crash."</p>
+      <h4><span data-lang="en">Fluid Shift &amp; Osmotic Stress</span><span data-lang="tl" class="lang-hidden">Paglipat ng Likido at Osmotikong Stress</span><span data-lang="ceb" class="lang-hidden">Pagbalhin sa Likido ug Osmotic nga Stress</span><span data-lang="kap" class="lang-hidden">Paglipat ning Danum at Osmotikung Stress</span></h4>
+      <p><span data-lang="en">Rapid removal of 2–4 liters of fluid in 4 hours causes abrupt osmolality shifts. Cells — including brain cells — shrink and re-equilibrate. This osmotic stress is a major driver of the post-HD "crash."</span><span data-lang="tl" class="lang-hidden">Ang mabilisang pag-alis ng 2–4 litro ng likido sa loob ng 4 na oras ay nagdudulot ng biglaang pagbabago sa osmolality. Ang mga selula — pati na ang mga selula ng utak — ay lumiliit at nagbabalanse muli. Ang osmotikong stress na ito ay isang pangunahing dahilan ng "pagbagsak" pagkatapos ng HD.</span><span data-lang="ceb" class="lang-hidden">Ang paspas nga pagkuha og 2–4 ka litro nga likido sulod sa 4 ka oras magpahinabo og kalit nga pagbag-o sa osmolality. Ang mga selula — apil ang mga selula sa utok — mokunhod ug mobalik og timbang. Kini nga osmotic nga stress usa ka nag-unang hinungdan sa "pagkahagsa" human sa HD.</span><span data-lang="kap" class="lang-hidden">Ing masiglang pamiyalis ning 2–4 litru danum king lub ning 4 oras ing magdala kapamilatan king biglang pamagbayu king osmolality. Ding selula — pati na ding selula ning utak — ing lumiit at mibalanse lang pasibayu. Ing osmotikung stress a ini metung yang pekaragul a sanhi ning "pamibagsak" kaibat ning HD.</span></p>
     </div>
     <div class="mechanism-card">
       <div class="mc-num">02</div>
-      <h4>Uremic Toxin Rebound</h4>
-      <p>Dialysis clears small-molecule toxins efficiently, but medium-molecule uremic toxins (indoxyl sulfate, p-cresol sulfate) are incompletely removed and rebound from tissue compartments within hours — re-exposing the brain and muscles.</p>
+      <h4><span data-lang="en">Uremic Toxin Rebound</span><span data-lang="tl" class="lang-hidden">Pagbalik ng Uremikong Lason</span><span data-lang="ceb" class="lang-hidden">Pagbalik sa Uremic nga Hilo</span><span data-lang="kap" class="lang-hidden">Pamibalik ning Uremikung Lason</span></h4>
+      <p><span data-lang="en">Dialysis clears small-molecule toxins efficiently, but medium-molecule uremic toxins (indoxyl sulfate, p-cresol sulfate) are incompletely removed and rebound from tissue compartments within hours — re-exposing the brain and muscles.</span><span data-lang="tl" class="lang-hidden">Mahusay na naaalis ng dialysis ang mga lasong maliit ang molekula, ngunit ang mga uremikong lasong may katamtamang molekula (indoxyl sulfate, p-cresol sulfate) ay hindi lubusang naaalis at bumabalik mula sa mga bahagi ng tisyu sa loob ng ilang oras — muling nabibilad ang utak at mga kalamnan.</span><span data-lang="ceb" class="lang-hidden">Maayo nga makuha sa dialysis ang mga hilo nga gagmay og molekula, apan ang mga uremic nga hilo nga tunga-tunga og molekula (indoxyl sulfate, p-cresol sulfate) dili hingpit nga makuha ug mobalik gikan sa mga bahin sa tisyu sulod sa pipila ka oras — mabutyag pag-usab ang utok ug mga kaunuran.</span><span data-lang="kap" class="lang-hidden">Mayap yang milako ning dialysis ding lason a malating molekula, dapat ding uremikung lason a katamtaman ing molekula (indoxyl sulfate, p-cresol sulfate) ing e mabilug a milako at mibabalik la manibat king mga dake ning tisyu king lub ning pilang oras — mibalik lang malantad ing utak at ding laman.</span></p>
     </div>
     <div class="mechanism-card">
       <div class="mc-num">03</div>
-      <h4>Hemodynamic Stress</h4>
-      <p>Intradialytic hypotension (IDH) — systolic BP drops during HD — reduces oxygen delivery to the brain and muscles. Even brief hypotensive episodes cause myocardial and cerebral "stunning" that outlasts the session by hours.</p>
+      <h4><span data-lang="en">Hemodynamic Stress</span><span data-lang="tl" class="lang-hidden">Hemodinamikong Stress</span><span data-lang="ceb" class="lang-hidden">Hemodynamic nga Stress</span><span data-lang="kap" class="lang-hidden">Hemodinamikung Stress</span></h4>
+      <p><span data-lang="en">Intradialytic hypotension (IDH) — systolic BP drops during HD — reduces oxygen delivery to the brain and muscles. Even brief hypotensive episodes cause myocardial and cerebral "stunning" that outlasts the session by hours.</span><span data-lang="tl" class="lang-hidden">Ang intradialytic hypotension (IDH) — pagbaba ng systolic na presyon ng dugo habang HD — ay binabawasan ang paghatid ng oksiheno sa utak at mga kalamnan. Kahit ang mga sandaling pagbaba ng presyon ay nagdudulot ng "stunning" ng puso at utak na tumatagal ng ilang oras pagkatapos ng sesyon.</span><span data-lang="ceb" class="lang-hidden">Ang intradialytic hypotension (IDH) — pagkunhod sa systolic nga presyon sa dugo atol sa HD — magpakunhod sa pagdala og oksiheno ngadto sa utok ug mga kaunuran. Bisan ang mubo nga pagkunhod sa presyon magpahinabo og "stunning" sa kasingkasing ug utok nga molungtad og pipila ka oras human sa sesyon.</span><span data-lang="kap" class="lang-hidden">Ing intradialytic hypotension (IDH) — pamiyabak ning systolic a presyon ning daya kabang HD — ing magbawas king pamiyatad ning oksiheno king utak at ding laman. Maski ing malating pamiyabak ning presyon ing magdala kapamilatan king "stunning" ning pusu at utak a tumagal ya pilang oras kaibat ning sesyon.</span></p>
     </div>
     <div class="mechanism-card">
       <div class="mc-num">04</div>
-      <h4>Autonomic Dysfunction</h4>
-      <p>Chronic kidney disease impairs the autonomic nervous system. After HD, heart rate variability is reduced and the baroreflex response is blunted — making it harder for the body to restore normal blood pressure and tissue perfusion.</p>
+      <h4><span data-lang="en">Autonomic Dysfunction</span><span data-lang="tl" class="lang-hidden">Sira ng Awtonomikong Sistema</span><span data-lang="ceb" class="lang-hidden">Kadaot sa Autonomic nga Sistema</span><span data-lang="kap" class="lang-hidden">Depektu ning Awtonomikung Sistema</span></h4>
+      <p><span data-lang="en">Chronic kidney disease impairs the autonomic nervous system. After HD, heart rate variability is reduced and the baroreflex response is blunted — making it harder for the body to restore normal blood pressure and tissue perfusion.</span><span data-lang="tl" class="lang-hidden">Sinisira ng talamak na sakit sa bato ang awtonomikong sistema ng nerbiyo. Pagkatapos ng HD, bumababa ang pagbabago-bago ng tibok ng puso at nanghihina ang tugon ng baroreflex — kaya nahihirapan ang katawan na ibalik ang normal na presyon ng dugo at daloy ng dugo sa tisyu.</span><span data-lang="ceb" class="lang-hidden">Ang tibuok-panahon nga sakit sa kidney magdaot sa autonomic nga sistema sa nerbiyos. Human sa HD, mokunhod ang pagkalainlain sa pitik sa kasingkasing ug moluya ang tubag sa baroreflex — mao nga maglisod ang lawas sa pagbalik sa normal nga presyon sa dugo ug pag-agos sa dugo sa tisyu.</span><span data-lang="kap" class="lang-hidden">Ing malwat nang sakit king batu ing magsira king awtonomikung sistema ning ugat. Kaibat ning HD, ing miyabak ing pamibayu-bayu ning pitik ning pusu at ing luya ing tugun ning baroreflex — kaya mahirap na king katawan ing pamibalik king normal a presyon ning daya at ing agus ning daya king tisyu.</span></p>
     </div>
     <div class="mechanism-card">
       <div class="mc-num">05</div>
-      <h4>Inflammatory Surge</h4>
-      <p>Contact of blood with the dialyzer membrane activates complement and releases pro-inflammatory cytokines (IL-1β, IL-6, TNF-α). This "mini-SIRS" response peaks 1–2 hours post-HD and mimics the fatigue of a low-grade infection.</p>
+      <h4><span data-lang="en">Inflammatory Surge</span><span data-lang="tl" class="lang-hidden">Pagsalpok ng Pamamaga</span><span data-lang="ceb" class="lang-hidden">Pagsulbo sa Panghubag</span><span data-lang="kap" class="lang-hidden">Pamagsulbu ning Pamanlati</span></h4>
+      <p><span data-lang="en">Contact of blood with the dialyzer membrane activates complement and releases pro-inflammatory cytokines (IL-1β, IL-6, TNF-α). This "mini-SIRS" response peaks 1–2 hours post-HD and mimics the fatigue of a low-grade infection.</span><span data-lang="tl" class="lang-hidden">Ang pagdikit ng dugo sa lamad ng dialyzer ay pinapagana ang complement at naglalabas ng mga pro-inflammatory na cytokine (IL-1β, IL-6, TNF-α). Ang tugon na "mini-SIRS" na ito ay pinakamataas 1–2 oras pagkatapos ng HD at kagaya ng pagkapagod ng mahinang impeksyon.</span><span data-lang="ceb" class="lang-hidden">Ang pagsaghid sa dugo sa lamad sa dialyzer magpalihok sa complement ug magpagawas og mga pro-inflammatory nga cytokine (IL-1β, IL-6, TNF-α). Kini nga tubag nga "mini-SIRS" mokinang 1–2 ka oras human sa HD ug susama sa kakapoy sa hinay nga impeksyon.</span><span data-lang="kap" class="lang-hidden">Ing pamidikit ning daya king lamad ning dialyzer ing magpagana king complement at magpalwal kareng pro-inflammatory a cytokine (IL-1β, IL-6, TNF-α). Ing tugun a "mini-SIRS" a ini ing pekamatas 1–2 oras kaibat ning HD at kalupa ning kapaguran ning malumang impeksyon.</span></p>
     </div>
   </div>
   <div class="alert alert-teal">
     <div class="alert-icon">🩸</div>
     <div class="alert-body">
-      <h4>Anemia amplifies all five</h4>
-      <p>A hemoglobin below 10 g/dL dramatically worsens every mechanism above — less oxygen-carrying capacity means less reserve for every insult. Correcting anemia with erythropoietin and IV iron is the highest-yield single intervention for PDF. KDIGO target: Hgb 10–11.5 g/dL.</p>
+      <h4><span data-lang="en">Anemia amplifies all five</span><span data-lang="tl" class="lang-hidden">Pinalalala ng anemya ang lahat ng lima</span><span data-lang="ceb" class="lang-hidden">Ang anemya magpagrabe sa tanan nga lima</span><span data-lang="kap" class="lang-hidden">Ing anemya ing magpalala king anggang lima</span></h4>
+      <p><span data-lang="en">A hemoglobin below 10 g/dL dramatically worsens every mechanism above — less oxygen-carrying capacity means less reserve for every insult. Correcting anemia with erythropoietin and IV iron is the highest-yield single intervention for PDF. Kidney Disease: Improving Global Outcomes (KDIGO) target: Hgb 10–11.5 g/dL.</span><span data-lang="tl" class="lang-hidden">Ang hemoglobin na mababa sa 10 g/dL ay lubhang nagpapalala sa bawat mekanismo sa itaas — mas kaunting kapasidad na magdala ng oksiheno ay nangangahulugang mas kaunting reserba sa bawat pinsala. Ang pagtutuwid ng anemya gamit ang erythropoietin at IV na bakal ang pinakamabisang nag-iisang hakbang para sa PDF. Target ng Kidney Disease: Improving Global Outcomes (KDIGO): Hgb 10–11.5 g/dL.</span><span data-lang="ceb" class="lang-hidden">Ang hemoglobin nga ubos sa 10 g/dL grabe nga magpagrabe sa matag mekanismo sa ibabaw — mas gamay nga katakos sa pagdala og oksiheno nagpasabot og mas gamay nga reserba sa matag kadaot. Ang pagtul-id sa anemya pinaagi sa erythropoietin ug IV nga puthaw mao ang labing epektibo nga bugtong lakang alang sa PDF. Target sa Kidney Disease: Improving Global Outcomes (KDIGO): Hgb 10–11.5 g/dL.</span><span data-lang="kap" class="lang-hidden">Ing hemoglobin a mababa king 10 g/dL ing masakit a magpalala king balang mekanismu king babo — mas kaunti a kakayanan a magdala oksiheno ing sinabi na mas kaunti a reserba king balang pinsala. Ing pamituid ning anemya kapamilatan ning erythropoietin at IV a bakal ing pekamabisang metung a dapat para king PDF. Target ning Kidney Disease: Improving Global Outcomes (KDIGO): Hgb 10–11.5 g/dL.</span></p>
     </div>
   </div>
 </section>
 
 <section class="section mode-patient" id="fss">
-  <div class="section-tag">Self-Assessment Tool</div>
-  <h2>Rate your post-dialysis fatigue — <em>the FSS.</em></h2>
-  <p>The <strong>Fatigue Severity Scale (FSS)</strong> is a validated 9-item questionnaire used in hemodialysis research worldwide. Rate each statement based on how you have felt <em>during the past week, including after your dialysis sessions.</em> A mean score of <strong>4 or higher</strong> meets the clinical threshold for significant fatigue — worth bringing to your nephrologist.</p>
+  <div class="section-tag"><span data-lang="en">Self-Assessment Tool</span><span data-lang="tl" class="lang-hidden">Kasangkapan sa Sariling Pagsusuri</span><span data-lang="ceb" class="lang-hidden">Himan sa Kaugalingong Pagsusi</span><span data-lang="kap" class="lang-hidden">Kasangkapan king Sariling Pamagsuri</span></div>
+  <h2><span data-lang="en">Rate your post-dialysis fatigue — <em>the FSS.</em></span><span data-lang="tl" class="lang-hidden">Sukatin ang inyong pagkapagod pagkatapos ng dialysis — <em>ang FSS.</em></span><span data-lang="ceb" class="lang-hidden">Sukda ang imong kakapoy human sa dialysis — <em>ang FSS.</em></span><span data-lang="kap" class="lang-hidden">Sukatan me ing kekang kapaguran kaibat ning dialysis — <em>ing FSS.</em></span></h2>
+  <p><span data-lang="en">The <strong>Fatigue Severity Scale (FSS)</strong> is a validated 9-item questionnaire used in hemodialysis research worldwide. Rate each statement based on how you have felt <em>during the past week, including after your dialysis sessions.</em> A mean score of <strong>4 or higher</strong> meets the clinical threshold for significant fatigue — worth bringing to your nephrologist.</span><span data-lang="tl" class="lang-hidden">Ang <strong>Fatigue Severity Scale (FSS)</strong> ay isang napatunayang 9-aytem na talatanungan na ginagamit sa pananaliksik sa hemodialysis sa buong mundo. Sukatin ang bawat pahayag batay sa kung ano ang naramdaman ninyo <em>sa nakaraang linggo, kasama na pagkatapos ng inyong mga sesyon ng dialysis.</em> Ang karaniwang iskor na <strong>4 o mas mataas</strong> ay umaabot sa klinikal na antas ng malubhang pagkapagod — dapat ipaalam sa inyong nephrologist.</span><span data-lang="ceb" class="lang-hidden">Ang <strong>Fatigue Severity Scale (FSS)</strong> usa ka napamatud-an nga 9-ka-butang nga pangutan-anon nga gigamit sa panukiduki sa hemodialysis sa tibuok kalibutan. Sukda ang matag pamahayag base sa unsay imong gibati <em>sa milabay nga semana, apil ang human sa imong mga sesyon sa dialysis.</em> Ang aberids nga iskor nga <strong>4 o mas taas</strong> moabot sa klinikal nga lebel sa grabe nga kakapoy — angay ipahibalo sa imong nephrologist.</span><span data-lang="kap" class="lang-hidden">Ing <strong>Fatigue Severity Scale (FSS)</strong> metung yang napatunayan a 9-aytem a talatanungan a gagamitan king pamanaliksik king hemodialysis king mabilug a yatu. Sukatan me ing balang pamagsabi base king nanu ing daramdaman mu <em>king milabas a dominggu, pati na kaibat ding kekang sesyon ning dialysis.</em> Ing karaniwan a iskor a <strong>4 o mas matas</strong> ing miras king klinikal a antas ning masakit a kapaguran — dapat me pabalu king kekang nephrologist.</span></p>
 
   <div class="calc-wrap" id="fss-calc">
     <div id="fss-questions"></div>
@@ -1896,43 +1907,43 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 </section>
 
 <section class="section mode-patient" id="treatments">
-  <div class="section-tag">What Helps</div>
-  <h2>Medications &amp; treatments for post-dialysis fatigue.</h2>
-  <p>Management follows a four-tier approach: fix the fixable causes first, then optimize the dialysis prescription, then add lifestyle strategies, and finally consider targeted pharmacotherapy.</p>
+  <div class="section-tag"><span data-lang="en">What Helps</span><span data-lang="tl" class="lang-hidden">Ano ang Nakakatulong</span><span data-lang="ceb" class="lang-hidden">Unsa ang Makatabang</span><span data-lang="kap" class="lang-hidden">Nanu ing Makasaup</span></div>
+  <h2><span data-lang="en">Medications &amp; treatments for post-dialysis fatigue.</span><span data-lang="tl" class="lang-hidden">Mga gamot at panggagamot para sa pagkapagod pagkatapos ng dialysis.</span><span data-lang="ceb" class="lang-hidden">Mga tambal ug pamaagi sa pagtambal alang sa kakapoy human sa dialysis.</span><span data-lang="kap" class="lang-hidden">Deng gamut at panggamut para king kapaguran kaibat ning dialysis.</span></h2>
+  <p><span data-lang="en">Management follows a four-tier approach: fix the fixable causes first, then optimize the dialysis prescription, then add lifestyle strategies, and finally consider targeted pharmacotherapy.</span><span data-lang="tl" class="lang-hidden">Ang paggamot ay sumusunod sa apat na antas: ayusin muna ang mga sanhing kayang ayusin, pagkatapos ay pagbutihin ang reseta ng dialysis, pagkatapos ay magdagdag ng mga estratehiya sa pamumuhay, at panghuli ay isaalang-alang ang tumpak na panggamot sa pamamagitan ng gamot.</span><span data-lang="ceb" class="lang-hidden">Ang pagdumala mosunod sa upat ka lebel: ayoha una ang mga hinungdan nga mahimong ayohon, dayon pauswaga ang reseta sa dialysis, dayon dugangi og mga estratehiya sa pagpuyo, ug sa kataposan hunahunaa ang tukmang pagtambal pinaagi sa tambal.</span><span data-lang="kap" class="lang-hidden">Ing panggamut ing tutuki king apat a antas: ayusan mumuna ding sanhi a kayang ayusan, kaibat pagmayapan ing reseta ning dialysis, kaibat dagdagan lang estratehiya king pamumuhay, at panuri isipan ing tumpak a panggamut kapamilatan ning gamut.</span></p>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th>Tier</th>
-          <th>Approach</th>
-          <th>Specific Actions</th>
-          <th>Evidence</th>
+          <th><span data-lang="en">Tier</span><span data-lang="tl" class="lang-hidden">Antas</span><span data-lang="ceb" class="lang-hidden">Lebel</span><span data-lang="kap" class="lang-hidden">Antas</span></th>
+          <th><span data-lang="en">Approach</span><span data-lang="tl" class="lang-hidden">Paraan</span><span data-lang="ceb" class="lang-hidden">Pamaagi</span><span data-lang="kap" class="lang-hidden">Paralan</span></th>
+          <th><span data-lang="en">Specific Actions</span><span data-lang="tl" class="lang-hidden">Mga Tiyak na Aksyon</span><span data-lang="ceb" class="lang-hidden">Mga Espisipikong Aksyon</span><span data-lang="kap" class="lang-hidden">Deng Espesipikung Dapat</span></th>
+          <th><span data-lang="en">Evidence</span><span data-lang="tl" class="lang-hidden">Ebidensya</span><span data-lang="ceb" class="lang-hidden">Ebidensya</span><span data-lang="kap" class="lang-hidden">Ebidensya</span></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><span class="tier-badge tier-1">Tier 1</span><br>Fix Root Causes</td>
-          <td>Treat reversible contributors</td>
-          <td><strong>Anemia:</strong> Target Hgb 10–11.5 g/dL with ESA + IV iron<br><strong>Electrolytes:</strong> Correct hypo-K, hypo-Mg, hyperphosphatemia<br><strong>Dialysis adequacy:</strong> Ensure Kt/V ≥ 1.4<br><strong>Sleep:</strong> Screen and treat obstructive sleep apnea</td>
-          <td>Strong (KDIGO 2012/2024)</td>
+          <td><span data-lang="en"><span class="tier-badge tier-1">Tier 1</span><br>Fix Root Causes</span><span data-lang="tl" class="lang-hidden"><span class="tier-badge tier-1">Antas 1</span><br>Ayusin ang Pinag-uugatang Sanhi</span><span data-lang="ceb" class="lang-hidden"><span class="tier-badge tier-1">Lebel 1</span><br>Ayoha ang Gigikanang Hinungdan</span><span data-lang="kap" class="lang-hidden"><span class="tier-badge tier-1">Antas 1</span><br>Ayusan ing Pekaugatan a Sanhi</span></td>
+          <td><span data-lang="en">Treat reversible contributors</span><span data-lang="tl" class="lang-hidden">Gamutin ang mga nababawing dahilan</span><span data-lang="ceb" class="lang-hidden">Tambali ang mga mabalik nga hinungdan</span><span data-lang="kap" class="lang-hidden">Gamutan ding mababawi a dahilan</span></td>
+          <td><span data-lang="en"><strong>Anemia:</strong> Target Hgb 10–11.5 g/dL with erythropoiesis-stimulating agent (ESA) + IV iron<br><strong>Electrolytes:</strong> Correct hypo-K, hypo-Mg, hyperphosphatemia<br><strong>Dialysis adequacy:</strong> Ensure Kt/V ≥ 1.4<br><strong>Sleep:</strong> Screen and treat obstructive sleep apnea</span><span data-lang="tl" class="lang-hidden"><strong>Anemya:</strong> Target Hgb 10–11.5 g/dL gamit ang erythropoiesis-stimulating agent (ESA) + IV na bakal<br><strong>Electrolytes:</strong> Itama ang mababang K, mababang Mg, mataas na phosphate<br><strong>Sapat na dialysis:</strong> Tiyaking Kt/V ≥ 1.4<br><strong>Tulog:</strong> Suriin at gamutin ang obstructive sleep apnea</span><span data-lang="ceb" class="lang-hidden"><strong>Anemya:</strong> Target Hgb 10–11.5 g/dL gamit ang erythropoiesis-stimulating agent (ESA) + IV nga puthaw<br><strong>Electrolytes:</strong> Itul-id ang ubos nga K, ubos nga Mg, taas nga phosphate<br><strong>Igong dialysis:</strong> Siguroha nga Kt/V ≥ 1.4<br><strong>Tulog:</strong> Susiha ug tambali ang obstructive sleep apnea</span><span data-lang="kap" class="lang-hidden"><strong>Anemya:</strong> Target Hgb 10–11.5 g/dL kapamilatan ning erythropoiesis-stimulating agent (ESA) + IV a bakal<br><strong>Electrolytes:</strong> Ituid ing mababang K, mababang Mg, matas a phosphate<br><strong>Sukat a dialysis:</strong> Tiyakan ing Kt/V ≥ 1.4<br><strong>Tudtud:</strong> Suriian at gamutan ing obstructive sleep apnea</span></td>
+          <td><span data-lang="en">Strong (KDIGO 2012/2024)</span><span data-lang="tl" class="lang-hidden">Malakas (KDIGO 2012/2024)</span><span data-lang="ceb" class="lang-hidden">Kusog (KDIGO 2012/2024)</span><span data-lang="kap" class="lang-hidden">Masikan (KDIGO 2012/2024)</span></td>
         </tr>
         <tr>
-          <td><span class="tier-badge tier-2">Tier 2</span><br>Dialysis Rx</td>
-          <td>Optimize the session itself</td>
-          <td><strong>Cool dialysate:</strong> 35–36°C reduces IDH and post-HD fatigue<br><strong>Lower UF rate:</strong> ≤ 10 mL/kg/h reduces hemodynamic stress<br><strong>Longer sessions:</strong> 5–6 h thrice-weekly or incremental HD<br><strong>HDF:</strong> Hemodiafiltration removes more medium-molecule toxins</td>
-          <td>Moderate (RCT evidence for cool dialysate; observational for HDF fatigue)</td>
+          <td><span data-lang="en"><span class="tier-badge tier-2">Tier 2</span><br>Dialysis Rx</span><span data-lang="tl" class="lang-hidden"><span class="tier-badge tier-2">Antas 2</span><br>Reseta ng Dialysis</span><span data-lang="ceb" class="lang-hidden"><span class="tier-badge tier-2">Lebel 2</span><br>Reseta sa Dialysis</span><span data-lang="kap" class="lang-hidden"><span class="tier-badge tier-2">Antas 2</span><br>Reseta ning Dialysis</span></td>
+          <td><span data-lang="en">Optimize the session itself</span><span data-lang="tl" class="lang-hidden">Pagbutihin ang mismong sesyon</span><span data-lang="ceb" class="lang-hidden">Pauswaga ang sesyon mismo</span><span data-lang="kap" class="lang-hidden">Pagmayapan ing mismung sesyon</span></td>
+          <td><span data-lang="en"><strong>Cool dialysate:</strong> 35–36°C reduces IDH and post-HD fatigue<br><strong>Lower UF rate:</strong> ≤ 10 mL/kg/h reduces hemodynamic stress<br><strong>Longer sessions:</strong> 5–6 h thrice-weekly or incremental HD<br><strong>Hemodiafiltration (HDF):</strong> removes more medium-molecule toxins</span><span data-lang="tl" class="lang-hidden"><strong>Malamig na dialysate:</strong> 35–36°C binabawasan ang IDH at pagkapagod pagkatapos ng HD<br><strong>Mas mababang UF rate:</strong> ≤ 10 mL/kg/h binabawasan ang hemodinamikong stress<br><strong>Mas mahabang sesyon:</strong> 5–6 oras tatlong beses kada linggo o incremental HD<br><strong>Hemodiafiltration (HDF):</strong> nag-aalis ng mas maraming lasong katamtaman ang molekula</span><span data-lang="ceb" class="lang-hidden"><strong>Bugnaw nga dialysate:</strong> 35–36°C magpakunhod sa IDH ug kakapoy human sa HD<br><strong>Mas ubos nga UF rate:</strong> ≤ 10 mL/kg/h magpakunhod sa hemodynamic nga stress<br><strong>Mas taas nga sesyon:</strong> 5–6 ka oras tulo ka beses matag semana o incremental HD<br><strong>Hemodiafiltration (HDF):</strong> mokuha og mas daghang hilo nga tunga-tunga og molekula</span><span data-lang="kap" class="lang-hidden"><strong>Malamig a dialysate:</strong> 35–36°C ing magbawas king IDH at kapaguran kaibat ning HD<br><strong>Mas mababang UF rate:</strong> ≤ 10 mL/kg/h ing magbawas king hemodinamikung stress<br><strong>Mas makaba a sesyon:</strong> 5–6 oras atlung beses kada dominggu o incremental HD<br><strong>Hemodiafiltration (HDF):</strong> milako yang mas dakal a lason a katamtaman ing molekula</span></td>
+          <td><span data-lang="en">Moderate (RCT evidence for cool dialysate; observational for HDF fatigue)</span><span data-lang="tl" class="lang-hidden">Katamtaman (ebidensyang RCT para sa malamig na dialysate; obserbasyonal para sa pagkapagod sa HDF)</span><span data-lang="ceb" class="lang-hidden">Kasarangan (ebidensyang RCT alang sa bugnaw nga dialysate; obserbasyonal alang sa kakapoy sa HDF)</span><span data-lang="kap" class="lang-hidden">Katamtaman (ebidensyang RCT para king malamig a dialysate; obserbasyonal para king kapaguran king HDF)</span></td>
         </tr>
         <tr>
-          <td><span class="tier-badge tier-3">Tier 3</span><br>Non-Pharmacologic</td>
-          <td>Behavioral &amp; lifestyle</td>
-          <td><strong>Intradialytic exercise:</strong> Pedaling during HD improves fatigue scores<br><strong>Post-HD rest protocol:</strong> 20–30 min planned rest, then light activity<br><strong>Nutritional support:</strong> Adequate protein (1.2 g/kg/d) + pre-HD snack<br><strong>Sleep hygiene:</strong> Consistent sleep schedule; avoid daytime naps &gt; 30 min</td>
-          <td>Moderate (systematic reviews of exercise; observational for nutrition)</td>
+          <td><span data-lang="en"><span class="tier-badge tier-3">Tier 3</span><br>Non-Pharmacologic</span><span data-lang="tl" class="lang-hidden"><span class="tier-badge tier-3">Antas 3</span><br>Hindi Gumagamit ng Gamot</span><span data-lang="ceb" class="lang-hidden"><span class="tier-badge tier-3">Lebel 3</span><br>Dili Paggamit og Tambal</span><span data-lang="kap" class="lang-hidden"><span class="tier-badge tier-3">Antas 3</span><br>E Gagamit Gamut</span></td>
+          <td><span data-lang="en">Behavioral &amp; lifestyle</span><span data-lang="tl" class="lang-hidden">Ugali at pamumuhay</span><span data-lang="ceb" class="lang-hidden">Batasan ug pagpuyo</span><span data-lang="kap" class="lang-hidden">Ugali at pamumuhay</span></td>
+          <td><span data-lang="en"><strong>Intradialytic exercise:</strong> Pedaling during HD improves fatigue scores<br><strong>Post-HD rest protocol:</strong> 20–30 min planned rest, then light activity<br><strong>Nutritional support:</strong> Adequate protein (1.2 g/kg/d) + pre-HD snack<br><strong>Sleep hygiene:</strong> Consistent sleep schedule; avoid daytime naps &gt; 30 min</span><span data-lang="tl" class="lang-hidden"><strong>Ehersisyo habang dialysis:</strong> Ang pagpepedal habang HD ay nagpapabuti ng iskor ng pagkapagod<br><strong>Protokol ng pahinga pagkatapos ng HD:</strong> 20–30 minutong nakaplanong pahinga, pagkatapos ay magaang gawain<br><strong>Suportang nutrisyon:</strong> Sapat na protina (1.2 g/kg/araw) + meryenda bago ang HD<br><strong>Kalinisan sa pagtulog:</strong> Palagiang oras ng tulog; iwasan ang idlip sa araw na &gt; 30 minuto</span><span data-lang="ceb" class="lang-hidden"><strong>Ehersisyo atol sa dialysis:</strong> Ang pagpedal atol sa HD magpauswag sa iskor sa kakapoy<br><strong>Protokol sa pagpahulay human sa HD:</strong> 20–30 ka minuto nga giplanong pahulay, dayon gaan nga kalihokan<br><strong>Suportang nutrisyon:</strong> Igong protina (1.2 g/kg/adlaw) + meryenda una sa HD<br><strong>Kahinlo sa pagtulog:</strong> Kanunayng iskedyul sa tulog; likayi ang katulog sa adlaw nga &gt; 30 ka minuto</span><span data-lang="kap" class="lang-hidden"><strong>Ehersisyo kabang dialysis:</strong> Ing pamamedal kabang HD ing magpayap king iskor ning kapaguran<br><strong>Protokol ning pamipainawa kaibat ning HD:</strong> 20–30 minutu a plinanung painawa, kaibat magaan a dapat<br><strong>Suportang nutrisyon:</strong> Sukat a protina (1.2 g/kg/aldo) + meryenda bayu ning HD<br><strong>Kalinisan king pamitudtud:</strong> Pane a oras ning tudtud; itakwil ing idlip king aldo a &gt; 30 minutu</span></td>
+          <td><span data-lang="en">Moderate (systematic reviews of exercise; observational for nutrition)</span><span data-lang="tl" class="lang-hidden">Katamtaman (sistematikong pagsusuri ng ehersisyo; obserbasyonal para sa nutrisyon)</span><span data-lang="ceb" class="lang-hidden">Kasarangan (sistematikong pagsusi sa ehersisyo; obserbasyonal alang sa nutrisyon)</span><span data-lang="kap" class="lang-hidden">Katamtaman (sistematikung pamagsuri ning ehersisyo; obserbasyonal para king nutrisyon)</span></td>
         </tr>
         <tr>
-          <td><span class="tier-badge tier-4">Tier 4</span><br>Pharmacologic</td>
-          <td>Targeted drug therapy</td>
-          <td><strong>L-Carnitine 1 g IV post-HD:</strong> For confirmed carnitine deficiency; may reduce fatigue and muscle cramps<br><strong>Melatonin 3–5 mg qhs:</strong> For circadian disruption and sleep disorder<br><strong>SSRI:</strong> For comorbid depression (treat the depression, not the fatigue directly)<br><strong>Modafinil:</strong> Off-label; limited evidence; discuss with your nephrologist</td>
-          <td>Weak–Moderate (carnitine: mixed RCTs; melatonin: small trials)</td>
+          <td><span data-lang="en"><span class="tier-badge tier-4">Tier 4</span><br>Pharmacologic</span><span data-lang="tl" class="lang-hidden"><span class="tier-badge tier-4">Antas 4</span><br>Gumagamit ng Gamot</span><span data-lang="ceb" class="lang-hidden"><span class="tier-badge tier-4">Lebel 4</span><br>Paggamit og Tambal</span><span data-lang="kap" class="lang-hidden"><span class="tier-badge tier-4">Antas 4</span><br>Gagamit Gamut</span></td>
+          <td><span data-lang="en">Targeted drug therapy</span><span data-lang="tl" class="lang-hidden">Tumpak na panggamot sa gamot</span><span data-lang="ceb" class="lang-hidden">Tukmang pagtambal sa tambal</span><span data-lang="kap" class="lang-hidden">Tumpak a panggamut king gamut</span></td>
+          <td><span data-lang="en"><strong>L-Carnitine 1 g IV post-HD:</strong> For confirmed carnitine deficiency; may reduce fatigue and muscle cramps<br><strong>Melatonin 3–5 mg qhs:</strong> For circadian disruption and sleep disorder<br><strong>SSRI:</strong> For comorbid depression (treat the depression, not the fatigue directly)<br><strong>Modafinil:</strong> Off-label; limited evidence; discuss with your nephrologist</span><span data-lang="tl" class="lang-hidden"><strong>L-Carnitine 1 g IV pagkatapos ng HD:</strong> Para sa kumpirmadong kakulangan ng carnitine; maaaring bawasan ang pagkapagod at pulikat ng kalamnan<br><strong>Melatonin 3–5 mg tuwing gabi:</strong> Para sa gulo sa circadian at problema sa pagtulog<br><strong>SSRI:</strong> Para sa kaakibat na depresyon (gamutin ang depresyon, hindi diretso ang pagkapagod)<br><strong>Modafinil:</strong> Off-label; limitadong ebidensya; talakayin sa inyong nephrologist</span><span data-lang="ceb" class="lang-hidden"><strong>L-Carnitine 1 g IV human sa HD:</strong> Alang sa kumpirmadong kakulang sa carnitine; mahimong makunhod ang kakapoy ug kombulsyon sa kaunuran<br><strong>Melatonin 3–5 mg matag gabii:</strong> Alang sa kasamok sa circadian ug sakit sa pagtulog<br><strong>SSRI:</strong> Alang sa kauban nga depresyon (tambali ang depresyon, dili direkta ang kakapoy)<br><strong>Modafinil:</strong> Off-label; limitadong ebidensya; hisguti sa imong nephrologist</span><span data-lang="kap" class="lang-hidden"><strong>L-Carnitine 1 g IV kaibat ning HD:</strong> Para king kumpirmadung kakulangan ning carnitine; malyaring bawasan ing kapaguran at pulikat ning laman<br><strong>Melatonin 3–5 mg balang bengi:</strong> Para king gulu king circadian at problema king pamitudtud<br><strong>SSRI:</strong> Para king kayabe a depresyon (gamutan ing depresyon, e diretsu ing kapaguran)<br><strong>Modafinil:</strong> Off-label; limitadung ebidensya; pisabian me king kekang nephrologist</span></td>
+          <td><span data-lang="en">Weak–Moderate (carnitine: mixed RCTs; melatonin: small trials)</span><span data-lang="tl" class="lang-hidden">Mahina–Katamtaman (carnitine: magkakahalong RCT; melatonin: maliliit na pagsubok)</span><span data-lang="ceb" class="lang-hidden">Huyang–Kasarangan (carnitine: nagkasagol nga RCT; melatonin: gagmayng pagsulay)</span><span data-lang="kap" class="lang-hidden">Maluya–Katamtaman (carnitine: mesalu-salung RCT; melatonin: malating pamagsubuk)</span></td>
         </tr>
       </tbody>
     </table>
@@ -1940,190 +1951,190 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
   <div class="alert alert-amber">
     <div class="alert-icon">⚠️</div>
     <div class="alert-body">
-      <h4>Never start or stop medications without your nephrologist</h4>
-      <p>L-carnitine, sleep aids, and antidepressants all require dose adjustment in kidney failure. Some over-the-counter supplements marketed for "energy" contain herbs that are nephrotoxic or interact with dialysis.</p>
+      <h4><span data-lang="en">Never start or stop medications without your nephrologist</span><span data-lang="tl" class="lang-hidden">Huwag magsimula o magtigil ng gamot nang wala ang inyong nephrologist</span><span data-lang="ceb" class="lang-hidden">Ayaw pagsugod o paghunong og tambal nga wala ang imong nephrologist</span><span data-lang="kap" class="lang-hidden">E ka mag-umpisa o mag-untat gamut nung ala ing kekang nephrologist</span></h4>
+      <p><span data-lang="en">L-carnitine, sleep aids, and antidepressants all require dose adjustment in kidney failure. Some over-the-counter supplements marketed for "energy" contain herbs that are nephrotoxic or interact with dialysis.</span><span data-lang="tl" class="lang-hidden">Ang L-carnitine, mga pampatulog, at antidepressant ay pawang nangangailangan ng pagbabago sa dosis sa pagpalya ng bato. May ilang suplemento na binibenta nang walang reseta para sa "enerhiya" na naglalaman ng mga halamang nakakalason sa bato o nakikialam sa dialysis.</span><span data-lang="ceb" class="lang-hidden">Ang L-carnitine, mga pampakatulog, ug antidepressant tanan nagkinahanglan og pag-usab sa dosis sa pagkapakyas sa kidney. Adunay pipila ka suplemento nga gibaligya nga walay reseta alang sa "enerhiya" nga adunay mga tanom nga makahilo sa kidney o makasagbat sa dialysis.</span><span data-lang="kap" class="lang-hidden">Ing L-carnitine, deng pampatudtud, at antidepressant ing anggang mangailangan pamagbayu king dosis king pamagpalya ning batu. Ating pilang suplementu a pisali nung ala reseta para king "enerhiya" a atin dutung a makalason king batu o makialam king dialysis.</span></p>
     </div>
   </div>
 </section>
 
 <section class="section mode-patient" id="qa">
-  <div class="section-tag">Your Questions Answered</div>
-  <h2>Common questions about <em>dialysis fatigue.</em></h2>
+  <div class="section-tag"><span data-lang="en">Your Questions Answered</span><span data-lang="tl" class="lang-hidden">Nasagot ang Inyong mga Tanong</span><span data-lang="ceb" class="lang-hidden">Natubag ang Imong mga Pangutana</span><span data-lang="kap" class="lang-hidden">Mepakibat Ding Kekang Kutang</span></div>
+  <h2><span data-lang="en">Common questions about <em>dialysis fatigue.</em></span><span data-lang="tl" class="lang-hidden">Mga karaniwang tanong tungkol sa <em>pagkapagod sa dialysis.</em></span><span data-lang="ceb" class="lang-hidden">Mga komon nga pangutana bahin sa <em>kakapoy sa dialysis.</em></span><span data-lang="kap" class="lang-hidden">Deng karaniwan a kutang tungkul king <em>kapaguran king dialysis.</em></span></h2>
 
   <div class="qa-item">
-    <div class="qa-q">Is fatigue after dialysis normal?</div>
-    <div class="qa-a">Yes — it is extremely common and has real physiologic causes (see the 5 mechanisms above). It is not a sign that something went wrong during your session, but persistent or worsening fatigue always deserves evaluation. Fatigue that keeps getting worse over weeks should prompt a blood test to check your hemoglobin, Kt/V, albumin, and electrolytes.</div>
+    <div class="qa-q"><span data-lang="en">Is fatigue after dialysis normal?</span><span data-lang="tl" class="lang-hidden">Normal ba ang pagkapagod pagkatapos ng dialysis?</span><span data-lang="ceb" class="lang-hidden">Normal ba ang kakapoy human sa dialysis?</span><span data-lang="kap" class="lang-hidden">Normal ya ba ing kapaguran kaibat ning dialysis?</span></div>
+    <div class="qa-a"><span data-lang="en">Yes — it is extremely common and has real physiologic causes (see the 5 mechanisms above). It is not a sign that something went wrong during your session, but persistent or worsening fatigue always deserves evaluation. Fatigue that keeps getting worse over weeks should prompt a blood test to check your hemoglobin, Kt/V, albumin, and electrolytes.</span><span data-lang="tl" class="lang-hidden">Oo — napakakaraniwan nito at may tunay na dahilang pisyolohikal (tingnan ang 5 mekanismo sa itaas). Hindi ito tanda na may nangyaring mali habang sesyon, ngunit ang patuloy o lumalalang pagkapagod ay laging nararapat suriin. Ang pagkapagod na patuloy na lumalala sa loob ng ilang linggo ay dapat magtulak ng blood test upang suriin ang inyong hemoglobin, Kt/V, albumin, at electrolytes.</span><span data-lang="ceb" class="lang-hidden">Oo — komon kaayo kini ug adunay tinuod nga hinungdan nga pisyolohikal (tan-awa ang 5 ka mekanismo sa ibabaw). Dili kini timailhan nga adunay nasayop atol sa imong sesyon, apan ang padayon o nagkagrabe nga kakapoy angay kanunay nga susihon. Ang kakapoy nga padayon nga mograbe sulod sa pipila ka semana angay magtukmod og blood test aron susihon ang imong hemoglobin, Kt/V, albumin, ug electrolytes.</span><span data-lang="kap" class="lang-hidden">Wa — masiadu yang karaniwan at atin yang tune a sanhing pisyolohikal (lawan me ing 5 mekanismu king babo). E ya tanda a atin melaung mali kabang sesyon, dapat ing tuluy-tuluy o lumalalang kapaguran ing pane a dapat suriian. Ing kapaguran a tuluy-tuluy a lumalala king lub ning pilang dominggu ing dapat magtulak blood test ban suriian ing kekang hemoglobin, Kt/V, albumin, at electrolytes.</span></div>
   </div>
 
   <div class="qa-item">
-    <div class="qa-q">How long should post-dialysis fatigue last?</div>
-    <div class="qa-a">For most patients, the worst fatigue resolves within 4–8 hours. If you are regularly wiped out for more than 12 hours — or the entire day after HD — that is beyond typical and suggests a correctable cause such as anemia, inadequate dialysis, or intradialytic hypotension. Keep a simple fatigue log for 2 weeks and show it to your nephrologist.</div>
+    <div class="qa-q"><span data-lang="en">How long should post-dialysis fatigue last?</span><span data-lang="tl" class="lang-hidden">Gaano katagal dapat ang pagkapagod pagkatapos ng dialysis?</span><span data-lang="ceb" class="lang-hidden">Unsa ka dugay angay ang kakapoy human sa dialysis?</span><span data-lang="kap" class="lang-hidden">Makananu kaba ing dapat a kapaguran kaibat ning dialysis?</span></div>
+    <div class="qa-a"><span data-lang="en">For most patients, the worst fatigue resolves within 4–8 hours. If you are regularly wiped out for more than 12 hours — or the entire day after HD — that is beyond typical and suggests a correctable cause such as anemia, inadequate dialysis, or intradialytic hypotension. Keep a simple fatigue log for 2 weeks and show it to your nephrologist.</span><span data-lang="tl" class="lang-hidden">Para sa karamihan ng pasyente, nawawala ang pinakamatinding pagkapagod sa loob ng 4–8 oras. Kung palagi kayong sobrang pagod nang mahigit 12 oras — o buong araw pagkatapos ng HD — lampas na ito sa karaniwan at nagpapahiwatig ng maaayos na dahilan tulad ng anemya, kulang na dialysis, o intradialytic hypotension. Panatilihin ang simpleng talaan ng pagkapagod sa loob ng 2 linggo at ipakita ito sa inyong nephrologist.</span><span data-lang="ceb" class="lang-hidden">Alang sa kadaghanan sa mga pasyente, mawala ang pinakagrabe nga kakapoy sulod sa 4–8 ka oras. Kon kanunay kang grabeng gikapoy sulod og kapin sa 12 ka oras — o tibuok adlaw human sa HD — lapas na kini sa naandan ug nagpakita og maayohan nga hinungdan sama sa anemya, kulang nga dialysis, o intradialytic hypotension. Ipadayon ang yano nga talaan sa kakapoy sulod sa 2 ka semana ug ipakita kini sa imong nephrologist.</span><span data-lang="kap" class="lang-hidden">Para king kalakalan ding pasyente, mawala ing pekamasakit a kapaguran king lub ning 4–8 oras. Nung pane kang masiadung pagal nang mag 12 oras — o mabilug a aldo kaibat ning HD — milabas ne ini king karaniwan at magpakit yang maayus a sanhi antimong anemya, kulang a dialysis, o intradialytic hypotension. Ituluy me ing simpleng talaan ning kapaguran king lub ning 2 dominggu at ipakit me king kekang nephrologist.</span></div>
   </div>
 
   <div class="qa-item">
-    <div class="qa-q">My phosphate is high. Does that cause more fatigue?</div>
-    <div class="qa-a">Indirectly, yes. Hyperphosphatemia accelerates CKD-MBD and is a marker of the uremic burden — the same milieu that worsens all five fatigue mechanisms. It is not a direct cause of acute post-HD fatigue, but controlling your phosphate binders as prescribed addresses the broader problem.</div>
+    <div class="qa-q"><span data-lang="en">My phosphate is high. Does that cause more fatigue?</span><span data-lang="tl" class="lang-hidden">Mataas ang aking phosphate. Nagdudulot ba iyon ng mas maraming pagkapagod?</span><span data-lang="ceb" class="lang-hidden">Taas ang akong phosphate. Magpahinabo ba kana og mas daghang kakapoy?</span><span data-lang="kap" class="lang-hidden">Matas ing kakung phosphate. Magdala ya ba yan kapamilatan king mas dakal a kapaguran?</span></div>
+    <div class="qa-a"><span data-lang="en">Indirectly, yes. Hyperphosphatemia accelerates chronic kidney disease–mineral and bone disorder (CKD-MBD) and is a marker of the uremic burden — the same milieu that worsens all five fatigue mechanisms. It is not a direct cause of acute post-HD fatigue, but controlling your phosphate binders as prescribed addresses the broader problem.</span><span data-lang="tl" class="lang-hidden">Hindi tuwiran, oo. Pinabibilis ng hyperphosphatemia ang chronic kidney disease–mineral and bone disorder (CKD-MBD) at isang tanda ito ng uremikong pasanin — ang parehong kalagayan na nagpapalala sa lahat ng limang mekanismo ng pagkapagod. Hindi ito tuwirang sanhi ng biglaang pagkapagod pagkatapos ng HD, ngunit ang pagkontrol sa inyong mga phosphate binder ayon sa reseta ay tumutugon sa mas malawak na problema.</span><span data-lang="ceb" class="lang-hidden">Dili direkta, oo. Ang hyperphosphatemia magpapaspas sa chronic kidney disease–mineral and bone disorder (CKD-MBD) ug usa kini ka timailhan sa uremic nga palas-anon — ang samang kahimtang nga magpagrabe sa tanang lima ka mekanismo sa kakapoy. Dili kini direktang hinungdan sa kalit nga kakapoy human sa HD, apan ang pagkontrol sa imong mga phosphate binder sumala sa reseta motubag sa mas lapad nga problema.</span><span data-lang="kap" class="lang-hidden">E diretsu, wa. Ing hyperphosphatemia ing magpasiglang king chronic kidney disease–mineral and bone disorder (CKD-MBD) at metung yang tanda ning uremikung pasan — ing kalupang kalagayan a magpalala king anggang limang mekanismu ning kapaguran. E ya diretsung sanhi ning biglang kapaguran kaibat ning HD, dapat ing pamagkontrol kareng kekang phosphate binder agpang king reseta ing tutugun king mas malwang a problema.</span></div>
   </div>
 
   <div class="qa-item">
-    <div class="qa-q">Can I exercise after dialysis even when I'm tired?</div>
-    <div class="qa-a">Light to moderate activity on non-dialysis days is strongly encouraged and reduces fatigue over time. On dialysis days, wait at least 2–4 hours after your session, start with a short gentle walk (10–15 minutes), and stop if you feel dizzy or short of breath. Intradialytic cycling (pedaling during HD) is the best-studied intervention and can be done under nursing supervision.</div>
+    <div class="qa-q"><span data-lang="en">Can I exercise after dialysis even when I'm tired?</span><span data-lang="tl" class="lang-hidden">Puwede ba akong mag-ehersisyo pagkatapos ng dialysis kahit pagod ako?</span><span data-lang="ceb" class="lang-hidden">Mahimo ba kong mag-ehersisyo human sa dialysis bisan kapoy ko?</span><span data-lang="kap" class="lang-hidden">Malyari ku wari mag-ehersisyo kaibat ning dialysis maski pagal ku?</span></div>
+    <div class="qa-a"><span data-lang="en">Light to moderate activity on non-dialysis days is strongly encouraged and reduces fatigue over time. On dialysis days, wait at least 2–4 hours after your session, start with a short gentle walk (10–15 minutes), and stop if you feel dizzy or short of breath. Intradialytic cycling (pedaling during HD) is the best-studied intervention and can be done under nursing supervision.</span><span data-lang="tl" class="lang-hidden">Ang magaan hanggang katamtamang gawain sa mga araw na walang dialysis ay lubos na hinihikayat at nagpapabawas ng pagkapagod sa paglipas ng panahon. Sa mga araw na may dialysis, maghintay ng hindi bababa sa 2–4 oras pagkatapos ng sesyon, magsimula sa maikling mabagal na lakad (10–15 minuto), at huminto kung nahihilo o hinihingal. Ang intradialytic cycling (pagpepedal habang HD) ang pinakapinag-aralang hakbang at maaaring gawin sa ilalim ng pangangasiwa ng nars.</span><span data-lang="ceb" class="lang-hidden">Ang gaan ngadto sa kasarangang kalihokan sa mga adlaw nga walay dialysis kusganong giawhag ug magpakunhod sa kakapoy paglabay sa panahon. Sa mga adlaw nga may dialysis, hulat og labing menos 2–4 ka oras human sa sesyon, sugdi sa mubo nga hinay nga lakaw (10–15 ka minuto), ug hunong kon malipong ka o gikapoy sa pagginhawa. Ang intradialytic cycling (pagpedal atol sa HD) mao ang labing gitun-an nga lakang ug mahimong buhaton ubos sa pagbantay sa nars.</span><span data-lang="kap" class="lang-hidden">Ing magaan angga king katamtaman a dapat kareng aldo a alang dialysis ing masikan a pisumbung at magpabawas king kapaguran king paglabas ning panaun. Kareng aldo a atin dialysis, manaya kang e mababa king 2–4 oras kaibat ning sesyon, umpisan me king makuyad a marahan a lakad (10–15 minutu), at itigil me nung malilingu ka o mangalding-alding. Ing intradialytic cycling (pamamedal kabang HD) iya ing pekapinag-aralan a dapat at malyaring gawan king lalam ning pamanuknangan ning nars.</span></div>
   </div>
 
   <div class="qa-item">
-    <div class="qa-q">Will energy drinks or coffee help?</div>
-    <div class="qa-a">Caffeine can temporarily reduce perceived fatigue but does not address any underlying cause. More importantly, most commercial energy drinks contain high potassium, high phosphate, and excessive sugar — all dangerous in dialysis patients. Avoid them entirely. A cup of black coffee or plain brewed tea is generally tolerable in small amounts — check with your dietitian about your specific fluid and potassium allowance.</div>
+    <div class="qa-q"><span data-lang="en">Will energy drinks or coffee help?</span><span data-lang="tl" class="lang-hidden">Makakatulong ba ang mga energy drink o kape?</span><span data-lang="ceb" class="lang-hidden">Makatabang ba ang mga energy drink o kape?</span><span data-lang="kap" class="lang-hidden">Makasaup la wari ding energy drink o kape?</span></div>
+    <div class="qa-a"><span data-lang="en">Caffeine can temporarily reduce perceived fatigue but does not address any underlying cause. More importantly, most commercial energy drinks contain high potassium, high phosphate, and excessive sugar — all dangerous in dialysis patients. Avoid them entirely. A cup of black coffee or plain brewed tea is generally tolerable in small amounts — check with your dietitian about your specific fluid and potassium allowance.</span><span data-lang="tl" class="lang-hidden">Ang caffeine ay maaaring pansamantalang bawasan ang nararamdamang pagkapagod ngunit hindi tinutugunan ang anumang pinagmumulang sanhi. Higit sa lahat, karamihan sa mga komersyal na energy drink ay naglalaman ng mataas na potassium, mataas na phosphate, at labis na asukal — pawang mapanganib sa mga pasyente sa dialysis. Iwasan ang mga ito nang lubusan. Ang isang tasa ng itim na kape o simpleng tsaa ay karaniwang katanggap-tanggap sa maliit na dami — kumonsulta sa inyong dietitian tungkol sa inyong tiyak na limitasyon sa likido at potassium.</span><span data-lang="ceb" class="lang-hidden">Ang caffeine mahimong temporaryong makunhod ang gibating kakapoy apan dili motubag sa bisan unsang gigikanang hinungdan. Labaw sa tanan, kadaghanan sa mga komersyal nga energy drink adunay taas nga potassium, taas nga phosphate, ug sobra nga asukal — tanan peligroso sa mga pasyente sa dialysis. Likayi kini sa hingpit. Usa ka tasa nga itom nga kape o yano nga tsa kasagaran madawat sa gamayng gidaghanon — pagkonsulta sa imong dietitian bahin sa imong espisipikong limitasyon sa likido ug potassium.</span><span data-lang="kap" class="lang-hidden">Ing caffeine ing malyaring pansamantalang bawasan ing daramdaman a kapaguran dapat e na tutugun king nanumang pekaugatan a sanhi. Labis king anggang, kalakalan kareng komersyal a energy drink ing atin matas a potassium, matas a phosphate, at malabis a asukal — anggang makapangan kareng pasyente king dialysis. Itakwil la deni nang mabilug. Ing metung a tasa ning maitim a kape o simpleng tsa ing karaniwan a makatanggap king malating dami — magtanung ka king kekang dietitian tungkul king kekang espesipikung limitasyon king danum at potassium.</span></div>
   </div>
 </section>
 
 <section class="section mode-patient" id="lifestyle">
-  <div class="section-tag">Recovery Toolkit</div>
-  <h2>7 strategies to recover faster after dialysis.</h2>
+  <div class="section-tag"><span data-lang="en">Recovery Toolkit</span><span data-lang="tl" class="lang-hidden">Kagamitan sa Paggaling</span><span data-lang="ceb" class="lang-hidden">Himan sa Pagpaayo</span><span data-lang="kap" class="lang-hidden">Kasangkapan king Pamagaling</span></div>
+  <h2><span data-lang="en">7 strategies to recover faster after dialysis.</span><span data-lang="tl" class="lang-hidden">7 estratehiya upang gumaling nang mas mabilis pagkatapos ng dialysis.</span><span data-lang="ceb" class="lang-hidden">7 ka estratehiya aron mas paspas nga maulian human sa dialysis.</span><span data-lang="kap" class="lang-hidden">7 estratehiya ban gumaling nang mas masigla kaibat ning dialysis.</span></h2>
   <figure style="margin:28px 0 0;">
     <picture>
       <source srcset="../images/post-dialysis-fatigue-02-recovery-strategies.webp" type="image/webp">
       <img src="../images/post-dialysis-fatigue-02-recovery-strategies.png" loading="lazy" width="1536" height="1024" alt="Seven evidence-based strategies to recover faster after hemodialysis — rest, hydration, nutrition, gentle movement, sleep, stress reduction, and dialysis optimisation" style="width:100%;height:auto;display:block;border-radius:10px;">
     </picture>
-    <figcaption style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+    <figcaption style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
   </figure>
   <div class="lifestyle-grid">
     <div class="lifestyle-card">
       <div class="lc-icon">💧</div>
-      <h4>1. Smart pre-HD hydration</h4>
-      <p>Arrive at dialysis with your weight as close to dry weight as possible. A large fluid load means more aggressive ultrafiltration, more hemodynamic stress, and worse fatigue.</p>
+      <h4><span data-lang="en">1. Smart pre-HD hydration</span><span data-lang="tl" class="lang-hidden">1. Matalinong hidrasyon bago ang HD</span><span data-lang="ceb" class="lang-hidden">1. Maalamong hydration una sa HD</span><span data-lang="kap" class="lang-hidden">1. Matalinung hidrasyon bayu ning HD</span></h4>
+      <p><span data-lang="en">Arrive at dialysis with your weight as close to dry weight as possible. A large fluid load means more aggressive ultrafiltration, more hemodynamic stress, and worse fatigue.</span><span data-lang="tl" class="lang-hidden">Dumating sa dialysis na ang inyong timbang ay pinakamalapit sa dry weight hangga't maaari. Ang malaking dami ng likido ay nangangahulugang mas agresibong ultrafiltration, mas maraming hemodinamikong stress, at mas malalang pagkapagod.</span><span data-lang="ceb" class="lang-hidden">Pag-abot sa dialysis nga ang imong timbang mao ang labing duol sa dry weight kutob sa mahimo. Ang dako nga gidaghanon sa likido nagpasabot og mas agresibong ultrafiltration, mas daghang hemodynamic nga stress, ug mas grabeng kakapoy.</span><span data-lang="kap" class="lang-hidden">Datang ka king dialysis a ing kekang timbang iya ing pekamalapit king dry weight hanggang kaya. Ing maragul a dami ning danum ing sinabi na mas agresibung ultrafiltration, mas dakal a hemodinamikung stress, at mas malalang kapaguran.</span></p>
     </div>
     <div class="lifestyle-card">
       <div class="lc-icon">🛋️</div>
-      <h4>2. Planned post-HD rest</h4>
-      <p>Give yourself a 20–30 minute rest period immediately after returning home. Lie down, close your eyes. Do not push through. This brief recovery window helps your blood pressure and autonomic system stabilize.</p>
+      <h4><span data-lang="en">2. Planned post-HD rest</span><span data-lang="tl" class="lang-hidden">2. Nakaplanong pahinga pagkatapos ng HD</span><span data-lang="ceb" class="lang-hidden">2. Giplanong pahulay human sa HD</span><span data-lang="kap" class="lang-hidden">2. Plinanung painawa kaibat ning HD</span></h4>
+      <p><span data-lang="en">Give yourself a 20–30 minute rest period immediately after returning home. Lie down, close your eyes. Do not push through. This brief recovery window helps your blood pressure and autonomic system stabilize.</span><span data-lang="tl" class="lang-hidden">Bigyan ang sarili ng 20–30 minutong pahinga kaagad pagkauwi. Humiga, ipikit ang mga mata. Huwag pilitin. Ang maikling panahong ito ng paggaling ay tumutulong na mag-stabilize ang inyong presyon ng dugo at awtonomikong sistema.</span><span data-lang="ceb" class="lang-hidden">Hatagi ang imong kaugalingon og 20–30 ka minuto nga pahulay dayon human makauli. Higda, piyunga ang imong mata. Ayaw pugsa. Kini nga mubo nga panahon sa pagpaayo motabang nga mo-stabilize ang imong presyon sa dugo ug autonomic nga sistema.</span><span data-lang="kap" class="lang-hidden">Dinan me ing sarili mu 20–30 minutu a painawa kaagad kaibat na kang muli. Migeh ka, ipikit mo ding kekang mata. E me pipilitan. Ing makuyad a panaun a ini ning pamagaling ing sasaup ban mag-stabilize ing kekang presyon ning daya at awtonomikung sistema.</span></p>
     </div>
     <div class="lifestyle-card">
       <div class="lc-icon">🚶</div>
-      <h4>3. Gentle movement after rest</h4>
-      <p>Once the initial crash passes (2–4 hours post-HD), a short slow walk of 10–15 minutes improves circulation and speeds recovery better than staying in bed all day.</p>
+      <h4><span data-lang="en">3. Gentle movement after rest</span><span data-lang="tl" class="lang-hidden">3. Marahang paggalaw pagkatapos ng pahinga</span><span data-lang="ceb" class="lang-hidden">3. Hinay nga paglihok human sa pahulay</span><span data-lang="kap" class="lang-hidden">3. Marahan a pamagkimut kaibat ning painawa</span></h4>
+      <p><span data-lang="en">Once the initial crash passes (2–4 hours post-HD), a short slow walk of 10–15 minutes improves circulation and speeds recovery better than staying in bed all day.</span><span data-lang="tl" class="lang-hidden">Kapag lumipas na ang unang pagbagsak (2–4 oras pagkatapos ng HD), ang maikling mabagal na lakad na 10–15 minuto ay nagpapabuti ng sirkulasyon at nagpapabilis ng paggaling nang mas mabuti kaysa manatili sa kama buong araw.</span><span data-lang="ceb" class="lang-hidden">Kon molabay na ang unang pagkahagsa (2–4 ka oras human sa HD), ang mubo nga hinay nga lakaw og 10–15 ka minuto magpauswag sa sirkulasyon ug magpapaspas sa pagpaayo nga mas maayo kaysa maghigda sa katre tibuok adlaw.</span><span data-lang="kap" class="lang-hidden">Nung milabas ne ing mumunang pamibagsak (2–4 oras kaibat ning HD), ing makuyad a marahan a lakad a 10–15 minutu ing magpayap king sirkulasyon at magpasiglang king pamagaling a mas mayap kesa manatili king pandan mabilug a aldo.</span></p>
     </div>
     <div class="lifestyle-card">
       <div class="lc-icon">❄️</div>
-      <h4>4. Cool down after dialysis</h4>
-      <p>Your core temperature rises slightly during HD. A cool environment, a fan, or a lukewarm shower post-HD helps your body thermoregulate and reduces the inflammatory fatigue signal.</p>
+      <h4><span data-lang="en">4. Cool down after dialysis</span><span data-lang="tl" class="lang-hidden">4. Magpalamig pagkatapos ng dialysis</span><span data-lang="ceb" class="lang-hidden">4. Pagpabugnaw human sa dialysis</span><span data-lang="kap" class="lang-hidden">4. Magpalamig kaibat ning dialysis</span></h4>
+      <p><span data-lang="en">Your core temperature rises slightly during HD. A cool environment, a fan, or a lukewarm shower post-HD helps your body thermoregulate and reduces the inflammatory fatigue signal.</span><span data-lang="tl" class="lang-hidden">Bahagyang tumataas ang temperatura ng inyong katawan habang HD. Ang malamig na kapaligiran, isang bentilador, o maligamgam na paliligo pagkatapos ng HD ay tumutulong sa katawan na mag-thermoregulate at binabawasan ang senyas ng pamamaga na pagkapagod.</span><span data-lang="ceb" class="lang-hidden">Gamayng motaas ang temperatura sa imong lawas atol sa HD. Ang bugnaw nga palibot, usa ka bentilador, o maligamgam nga paligo human sa HD motabang sa lawas nga mo-thermoregulate ug magpakunhod sa senyales sa panghubag nga kakapoy.</span><span data-lang="kap" class="lang-hidden">Kaunti yang tutas ing temperatura ning kekang katawan kabang HD. Ing malamig a paligid, metung a bentilador, o maligamgam a pamaligu kaibat ning HD ing sasaup king katawan a mag-thermoregulate at magbawas king senyas ning pamanlati a kapaguran.</span></p>
     </div>
     <div class="lifestyle-card">
       <div class="lc-icon">🍚</div>
-      <h4>5. Time your nutrition</h4>
-      <p>Eat a small kidney-friendly snack 1 hour before dialysis. Have a proper meal 1–2 hours after HD — your body is in a catabolic state and needs protein for muscle repair.</p>
+      <h4><span data-lang="en">5. Time your nutrition</span><span data-lang="tl" class="lang-hidden">5. I-tiyempo ang inyong nutrisyon</span><span data-lang="ceb" class="lang-hidden">5. I-tiyempo ang imong nutrisyon</span><span data-lang="kap" class="lang-hidden">5. Tiyempuan me ing kekang nutrisyon</span></h4>
+      <p><span data-lang="en">Eat a small kidney-friendly snack 1 hour before dialysis. Have a proper meal 1–2 hours after HD — your body is in a catabolic state and needs protein for muscle repair.</span><span data-lang="tl" class="lang-hidden">Kumain ng maliit na meryendang mabuti sa bato 1 oras bago ang dialysis. Kumain ng maayos na pagkain 1–2 oras pagkatapos ng HD — ang inyong katawan ay nasa catabolic na kalagayan at nangangailangan ng protina para sa pagkukumpuni ng kalamnan.</span><span data-lang="ceb" class="lang-hidden">Kaon og gamayng meryenda nga maayo sa kidney 1 ka oras una sa dialysis. Kaon og hustong pagkaon 1–2 ka oras human sa HD — ang imong lawas anaa sa catabolic nga kahimtang ug nagkinahanglan og protina alang sa pag-ayo sa kaunuran.</span><span data-lang="kap" class="lang-hidden">Mangan kang malating meryendang mayap king batu 1 oras bayu ning dialysis. Mangan kang mayap a pamangan 1–2 oras kaibat ning HD — ing kekang katawan atyu ya king catabolic a kalagayan at mangailangan yang protina para king pamagkumpuni ning laman.</span></p>
     </div>
     <div class="lifestyle-card">
       <div class="lc-icon">🌙</div>
-      <h4>6. Protect your sleep schedule</h4>
-      <p>Sleep disturbance is near-universal in dialysis patients and amplifies daytime fatigue. Go to bed and wake at the same time every day. Avoid screens for 30 minutes before bed.</p>
+      <h4><span data-lang="en">6. Protect your sleep schedule</span><span data-lang="tl" class="lang-hidden">6. Protektahan ang inyong oras ng tulog</span><span data-lang="ceb" class="lang-hidden">6. Panalipdi ang imong iskedyul sa tulog</span><span data-lang="kap" class="lang-hidden">6. Ingatan me ing kekang oras ning tudtud</span></h4>
+      <p><span data-lang="en">Sleep disturbance is near-universal in dialysis patients and amplifies daytime fatigue. Go to bed and wake at the same time every day. Avoid screens for 30 minutes before bed.</span><span data-lang="tl" class="lang-hidden">Ang gulo sa pagtulog ay halos pangkalahatan sa mga pasyente sa dialysis at nagpapalala ng pagkapagod sa maghapon. Matulog at gumising sa parehong oras araw-araw. Iwasan ang mga screen 30 minuto bago matulog.</span><span data-lang="ceb" class="lang-hidden">Ang kasamok sa pagtulog halos naa sa tanang pasyente sa dialysis ug magpagrabe sa kakapoy sa adlaw. Matulog ug momata sa samang oras matag adlaw. Likayi ang mga screen 30 ka minuto una matulog.</span><span data-lang="kap" class="lang-hidden">Ing gulu king pamitudtud ing malapit-kabuuan kareng pasyente king dialysis at magpalala king kapaguran king aldo. Matudtud at mimata king kalupang oras balang aldo. Itakwil la ding screen 30 minutu bayu matudtud.</span></p>
     </div>
     <div class="lifestyle-card">
       <div class="lc-icon">🫂</div>
-      <h4>7. Emotional support</h4>
-      <p>Depression and fatigue are strongly intertwined in dialysis patients. Peer support groups, family involvement, and — when needed — professional mental health support all independently reduce fatigue burden.</p>
+      <h4><span data-lang="en">7. Emotional support</span><span data-lang="tl" class="lang-hidden">7. Suportang emosyonal</span><span data-lang="ceb" class="lang-hidden">7. Suportang emosyonal</span><span data-lang="kap" class="lang-hidden">7. Suportang emosyonal</span></h4>
+      <p><span data-lang="en">Depression and fatigue are strongly intertwined in dialysis patients. Peer support groups, family involvement, and — when needed — professional mental health support all independently reduce fatigue burden.</span><span data-lang="tl" class="lang-hidden">Ang depresyon at pagkapagod ay matibay na magkaugnay sa mga pasyente sa dialysis. Ang mga grupong sumusuporta ng kapwa, pakikialam ng pamilya, at — kung kailangan — propesyonal na suporta sa kalusugan ng isip ay bawat isang nagbabawas ng pasanin ng pagkapagod.</span><span data-lang="ceb" class="lang-hidden">Ang depresyon ug kakapoy kusganong nagkalambigit sa mga pasyente sa dialysis. Ang mga grupo sa pagsuporta sa isigkatawo, pag-apil sa pamilya, ug — kon gikinahanglan — propesyonal nga suporta sa panghunahuna nga panglawas ang matag usa magpakunhod sa palas-anon sa kakapoy.</span><span data-lang="kap" class="lang-hidden">Ing depresyon at kapaguran ing masikan a mekakabit kareng pasyente king dialysis. Ding grupung susuporta king kapwa, pamiyabe ning pamilya, at — nung kailangan — propesyonal a suporta king kalusugan ning isip ing balang metung magbawas king pasan ning kapaguran.</span></p>
     </div>
   </div>
 </section>
 
 <section class="section mode-patient" id="warning-signs">
-  <div class="section-tag">When to Act Immediately</div>
-  <h2>Warning signs that are <em>not</em> normal fatigue.</h2>
-  <p>The following symptoms during or after dialysis are medical emergencies — do not wait until your next session.</p>
+  <div class="section-tag"><span data-lang="en">When to Act Immediately</span><span data-lang="tl" class="lang-hidden">Kailan Dapat Kumilos Agad</span><span data-lang="ceb" class="lang-hidden">Kanus-a Molihok Dayon</span><span data-lang="kap" class="lang-hidden">Kapilan Dapat Kumilos Agad</span></div>
+  <h2><span data-lang="en">Warning signs that are <em>not</em> normal fatigue.</span><span data-lang="tl" class="lang-hidden">Mga babalang senyales na <em>hindi</em> normal na pagkapagod.</span><span data-lang="ceb" class="lang-hidden">Mga pasidaan nga timailhan nga <em>dili</em> normal nga kakapoy.</span><span data-lang="kap" class="lang-hidden">Deng senyas a babala a <em>e</em> normal a kapaguran.</span></h2>
+  <p><span data-lang="en">The following symptoms during or after dialysis are medical emergencies — do not wait until your next session.</span><span data-lang="tl" class="lang-hidden">Ang mga sumusunod na sintomas habang o pagkatapos ng dialysis ay mga emerhensiyang medikal — huwag maghintay hanggang sa susunod na sesyon.</span><span data-lang="ceb" class="lang-hidden">Ang mosunod nga mga simtomas atol o human sa dialysis mga emerhensiyang medikal — ayaw paghulat hangtod sa sunod nga sesyon.</span><span data-lang="kap" class="lang-hidden">Ding tutuking sintomas kabang o kaibat ning dialysis ing deng emerhensiyang medikal — e ka manaya angga king tutuking sesyon.</span></p>
   <div class="red-flags">
-    <h3>⚠️ Seek emergency care immediately if you have:</h3>
+    <h3><span data-lang="en">⚠️ Seek emergency care immediately if you have:</span><span data-lang="tl" class="lang-hidden">⚠️ Humingi ng emerhensiyang pangangalaga agad kung mayroon kayo ng:</span><span data-lang="ceb" class="lang-hidden">⚠️ Pangita og emerhensiyang pag-atiman dayon kon aduna kay:</span><span data-lang="kap" class="lang-hidden">⚠️ Manyad kang emerhensiyang pamaalaga agad nung atin kang:</span></h3>
     <div class="red-flags-grid">
-      <div class="red-flag-item"><div class="rf-dot"></div>Chest pain or pressure during or after HD</div>
-      <div class="red-flag-item"><div class="rf-dot"></div>Sudden severe shortness of breath</div>
-      <div class="red-flag-item"><div class="rf-dot"></div>Loss of consciousness or near-fainting (syncope)</div>
-      <div class="red-flag-item"><div class="rf-dot"></div>Seizure activity</div>
-      <div class="red-flag-item"><div class="rf-dot"></div>Sudden weakness of one arm, leg, or face (stroke signs)</div>
-      <div class="red-flag-item"><div class="rf-dot"></div>Prolonged vomiting preventing you from taking medications</div>
-      <div class="red-flag-item"><div class="rf-dot"></div>Fatigue so severe you cannot stand or communicate normally</div>
-      <div class="red-flag-item"><div class="rf-dot"></div>Fever &gt; 38°C after your session (possible access infection)</div>
+      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Chest pain or pressure during or after HD</span><span data-lang="tl" class="lang-hidden">Sakit o paninikip ng dibdib habang o pagkatapos ng HD</span><span data-lang="ceb" class="lang-hidden">Sakit o pagkapiit sa dughan atol o human sa HD</span><span data-lang="kap" class="lang-hidden">Sakit o panikip ning salu kabang o kaibat ning HD</span></div>
+      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Sudden severe shortness of breath</span><span data-lang="tl" class="lang-hidden">Biglaang matinding hirap sa paghinga</span><span data-lang="ceb" class="lang-hidden">Kalit nga grabeng lisod sa pagginhawa</span><span data-lang="kap" class="lang-hidden">Biglang masakit a hirap king pamaginawa</span></div>
+      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Loss of consciousness or near-fainting (syncope)</span><span data-lang="tl" class="lang-hidden">Pagkawala ng malay o halos manghina (syncope)</span><span data-lang="ceb" class="lang-hidden">Pagkawala sa panimuot o hapit malipong (syncope)</span><span data-lang="kap" class="lang-hidden">Pamawala ning isip o malapit malsik (syncope)</span></div>
+      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Seizure activity</span><span data-lang="tl" class="lang-hidden">Pangingisay o seizure</span><span data-lang="ceb" class="lang-hidden">Pangisay o seizure</span><span data-lang="kap" class="lang-hidden">Pamanginsay o seizure</span></div>
+      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Sudden weakness of one arm, leg, or face (stroke signs)</span><span data-lang="tl" class="lang-hidden">Biglaang panghihina ng isang braso, binti, o mukha (senyales ng stroke)</span><span data-lang="ceb" class="lang-hidden">Kalit nga kaluya sa usa ka bukton, paa, o nawong (timailhan sa stroke)</span><span data-lang="kap" class="lang-hidden">Biglang kalunusan ning metung a takle, bitis, o lupa (senyas ning stroke)</span></div>
+      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Prolonged vomiting preventing you from taking medications</span><span data-lang="tl" class="lang-hidden">Tuloy-tuloy na pagsuka na pumipigil sa inyong pag-inom ng gamot</span><span data-lang="ceb" class="lang-hidden">Padayong pagsuka nga makapugong kanimo sa pag-inom og tambal</span><span data-lang="kap" class="lang-hidden">Tuluy-tuluy a pamanuka a magpigil kekang minum gamut</span></div>
+      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Fatigue so severe you cannot stand or communicate normally</span><span data-lang="tl" class="lang-hidden">Pagkapagod na sobrang tindi kaya hindi kayo makatayo o makapag-usap nang normal</span><span data-lang="ceb" class="lang-hidden">Kakapoy nga grabe kaayo mao nga dili ka makatindog o makasulti og normal</span><span data-lang="kap" class="lang-hidden">Kapaguran a masiadung sakit kaya e ka makatalakad o makapamisabi a normal</span></div>
+      <div class="red-flag-item"><div class="rf-dot"></div><span data-lang="en">Fever &gt; 38°C after your session (possible access infection)</span><span data-lang="tl" class="lang-hidden">Lagnat na &gt; 38°C pagkatapos ng inyong sesyon (posibleng impeksyon sa access)</span><span data-lang="ceb" class="lang-hidden">Hilanat nga &gt; 38°C human sa imong sesyon (posibleng impeksyon sa access)</span><span data-lang="kap" class="lang-hidden">Pilay a &gt; 38°C kaibat ning kekang sesyon (posibleng impeksyon king access)</span></div>
     </div>
   </div>
   <div class="alert alert-amber" style="margin-top:24px;">
     <div class="alert-icon">📞</div>
     <div class="alert-body">
-      <h4>Call your dialysis center if fatigue is suddenly much worse than usual</h4>
-      <p>A sudden increase in post-HD fatigue — especially with dizziness or muscle cramps — can signal worsening anemia, an access problem, under-dialysis, or electrolyte imbalance. Your dialysis team can check your blood on your next session or arrange an urgent visit.</p>
+      <h4><span data-lang="en">Call your dialysis center if fatigue is suddenly much worse than usual</span><span data-lang="tl" class="lang-hidden">Tawagan ang inyong dialysis center kung biglang mas malala ang pagkapagod kaysa dati</span><span data-lang="ceb" class="lang-hidden">Tawagi ang imong dialysis center kon kalit nga mas grabe ang kakapoy kaysa naandan</span><span data-lang="kap" class="lang-hidden">Ausan me ing kekang dialysis center nung biglang mas malala ing kapaguran kesa dati</span></h4>
+      <p><span data-lang="en">A sudden increase in post-HD fatigue — especially with dizziness or muscle cramps — can signal worsening anemia, an access problem, under-dialysis, or electrolyte imbalance. Your dialysis team can check your blood on your next session or arrange an urgent visit.</span><span data-lang="tl" class="lang-hidden">Ang biglaang pagdami ng pagkapagod pagkatapos ng HD — lalo na kung may pagkahilo o pulikat ng kalamnan — ay maaaring senyales ng lumalalang anemya, problema sa access, kulang na dialysis, o kawalan ng balanse ng electrolyte. Masusuri ng inyong dialysis team ang inyong dugo sa susunod na sesyon o mag-aayos ng agarang pagbisita.</span><span data-lang="ceb" class="lang-hidden">Ang kalit nga pagdugang sa kakapoy human sa HD — labi na kon adunay kalipong o kombulsyon sa kaunuran — mahimong timailhan sa nagkagrabeng anemya, problema sa access, kulang nga dialysis, o kawalay balanse sa electrolyte. Masusi sa imong dialysis team ang imong dugo sa sunod nga sesyon o mag-areglo og dinaliang pagbisita.</span><span data-lang="kap" class="lang-hidden">Ing biglang pamidagdag ning kapaguran kaibat ning HD — lalu na nung atin kalilingu o pulikat ning laman — ing malyaring senyas ning lumalalang anemya, problema king access, kulang a dialysis, o alang balanse king electrolyte. Masuri ne ning kekang dialysis team ing kekang daya king tutuking sesyon o mag-ayus lang agad a pamibisita.</span></p>
     </div>
   </div>
 </section>
 
 <section class="section mode-patient" id="followup">
-  <div class="section-tag">Monitoring Plan</div>
-  <h2>What your team should check — and how often.</h2>
-  <p>These lab values are most closely linked to post-dialysis fatigue. Review them with your nephrologist at each visit.</p>
+  <div class="section-tag"><span data-lang="en">Monitoring Plan</span><span data-lang="tl" class="lang-hidden">Plano sa Pagsubaybay</span><span data-lang="ceb" class="lang-hidden">Plano sa Pagbantay</span><span data-lang="kap" class="lang-hidden">Plano king Pamanubaybay</span></div>
+  <h2><span data-lang="en">What your team should check — and how often.</span><span data-lang="tl" class="lang-hidden">Ano ang dapat suriin ng inyong team — at gaano kadalas.</span><span data-lang="ceb" class="lang-hidden">Unsa ang angay susihon sa imong team — ug unsa ka subsob.</span><span data-lang="kap" class="lang-hidden">Nanu ing dapat suriian ning kekang team — at makananu kadalas.</span></h2>
+  <p><span data-lang="en">These lab values are most closely linked to post-dialysis fatigue. Review them with your nephrologist at each visit.</span><span data-lang="tl" class="lang-hidden">Ang mga halaga ng laboratoryong ito ay pinakamalapit na nakaugnay sa pagkapagod pagkatapos ng dialysis. Suriin ang mga ito kasama ang inyong nephrologist sa bawat pagbisita.</span><span data-lang="ceb" class="lang-hidden">Kining mga bili sa laboratoryo mao ang labing suod nga nalambigit sa kakapoy human sa dialysis. Susiha kini uban sa imong nephrologist sa matag pagbisita.</span><span data-lang="kap" class="lang-hidden">Deng halaga ning laboratoryu a deni iya ing pekamalapit a mekakabit king kapaguran kaibat ning dialysis. Suriian la deni kayabe ning kekang nephrologist king balang pamibisita.</span></p>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th>Parameter</th>
-          <th>Target (HD patient)</th>
-          <th>Frequency</th>
-          <th>Why It Matters for Fatigue</th>
+          <th><span data-lang="en">Parameter</span><span data-lang="tl" class="lang-hidden">Parameter</span><span data-lang="ceb" class="lang-hidden">Parameter</span><span data-lang="kap" class="lang-hidden">Parameter</span></th>
+          <th><span data-lang="en">Target (HD patient)</span><span data-lang="tl" class="lang-hidden">Target (pasyente sa HD)</span><span data-lang="ceb" class="lang-hidden">Target (pasyente sa HD)</span><span data-lang="kap" class="lang-hidden">Target (pasyente king HD)</span></th>
+          <th><span data-lang="en">Frequency</span><span data-lang="tl" class="lang-hidden">Dalas</span><span data-lang="ceb" class="lang-hidden">Kasubsob</span><span data-lang="kap" class="lang-hidden">Kadalas</span></th>
+          <th><span data-lang="en">Why It Matters for Fatigue</span><span data-lang="tl" class="lang-hidden">Bakit Mahalaga Ito sa Pagkapagod</span><span data-lang="ceb" class="lang-hidden">Nganong Importante Kini sa Kakapoy</span><span data-lang="kap" class="lang-hidden">Bakit Mahalaga Ya king Kapaguran</span></th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><strong>Hemoglobin</strong></td>
           <td>10.0–11.5 g/dL</td>
-          <td>Monthly</td>
-          <td>Low Hgb is the single strongest modifiable fatigue driver</td>
+          <td><span data-lang="en">Monthly</span><span data-lang="tl" class="lang-hidden">Buwan-buwan</span><span data-lang="ceb" class="lang-hidden">Binulan</span><span data-lang="kap" class="lang-hidden">Bulan-bulan</span></td>
+          <td><span data-lang="en">Low Hgb is the single strongest modifiable fatigue driver</span><span data-lang="tl" class="lang-hidden">Ang mababang Hgb ang pinakamalakas na maaayos na sanhi ng pagkapagod</span><span data-lang="ceb" class="lang-hidden">Ang ubos nga Hgb mao ang pinakakusgang maayohan nga hinungdan sa kakapoy</span><span data-lang="kap" class="lang-hidden">Ing mababang Hgb iya ing pekamasikan a maayus a sanhi ning kapaguran</span></td>
         </tr>
         <tr>
           <td><strong>Kt/V (dialysis dose)</strong></td>
           <td>≥ 1.4 (single-pool)</td>
-          <td>Monthly</td>
-          <td>Under-dialysis → toxin accumulation → worsened fatigue</td>
+          <td><span data-lang="en">Monthly</span><span data-lang="tl" class="lang-hidden">Buwan-buwan</span><span data-lang="ceb" class="lang-hidden">Binulan</span><span data-lang="kap" class="lang-hidden">Bulan-bulan</span></td>
+          <td><span data-lang="en">Under-dialysis → toxin accumulation → worsened fatigue</span><span data-lang="tl" class="lang-hidden">Kulang na dialysis → pag-ipon ng lason → lumalalang pagkapagod</span><span data-lang="ceb" class="lang-hidden">Kulang nga dialysis → pagtapok sa hilo → nagkagrabeng kakapoy</span><span data-lang="kap" class="lang-hidden">Kulang a dialysis → pamitipun ning lason → lumalalang kapaguran</span></td>
         </tr>
         <tr>
           <td><strong>Serum albumin</strong></td>
           <td>≥ 3.5 g/dL</td>
-          <td>Monthly</td>
-          <td>Malnutrition amplifies fatigue and impairs recovery</td>
+          <td><span data-lang="en">Monthly</span><span data-lang="tl" class="lang-hidden">Buwan-buwan</span><span data-lang="ceb" class="lang-hidden">Binulan</span><span data-lang="kap" class="lang-hidden">Bulan-bulan</span></td>
+          <td><span data-lang="en">Malnutrition amplifies fatigue and impairs recovery</span><span data-lang="tl" class="lang-hidden">Pinalalala ng malnutrisyon ang pagkapagod at humahadlang sa paggaling</span><span data-lang="ceb" class="lang-hidden">Ang malnutrisyon magpagrabe sa kakapoy ug makababag sa pagpaayo</span><span data-lang="kap" class="lang-hidden">Ing malnutrisyon ing magpalala king kapaguran at magsagka king pamagaling</span></td>
         </tr>
         <tr>
           <td><strong>Serum potassium</strong></td>
           <td>3.5–5.5 mEq/L</td>
-          <td>Monthly</td>
-          <td>Dyskalemia causes muscle weakness and cardiac instability</td>
+          <td><span data-lang="en">Monthly</span><span data-lang="tl" class="lang-hidden">Buwan-buwan</span><span data-lang="ceb" class="lang-hidden">Binulan</span><span data-lang="kap" class="lang-hidden">Bulan-bulan</span></td>
+          <td><span data-lang="en">Dyskalemia causes muscle weakness and cardiac instability</span><span data-lang="tl" class="lang-hidden">Ang dyskalemia ay nagdudulot ng panghihina ng kalamnan at kawalang-tatag ng puso</span><span data-lang="ceb" class="lang-hidden">Ang dyskalemia magpahinabo og kaluya sa kaunuran ug kawalay-lig-on sa kasingkasing</span><span data-lang="kap" class="lang-hidden">Ing dyskalemia ing magdala kapamilatan king kalunusan ning laman at alang-tatag ning pusu</span></td>
         </tr>
         <tr>
           <td><strong>Serum phosphate</strong></td>
           <td>3.5–5.5 mg/dL</td>
-          <td>Monthly</td>
-          <td>Hyperphosphatemia indicates uremic burden and CKD-MBD</td>
+          <td><span data-lang="en">Monthly</span><span data-lang="tl" class="lang-hidden">Buwan-buwan</span><span data-lang="ceb" class="lang-hidden">Binulan</span><span data-lang="kap" class="lang-hidden">Bulan-bulan</span></td>
+          <td><span data-lang="en">Hyperphosphatemia indicates uremic burden and CKD-MBD</span><span data-lang="tl" class="lang-hidden">Ang hyperphosphatemia ay tanda ng uremikong pasanin at CKD-MBD</span><span data-lang="ceb" class="lang-hidden">Ang hyperphosphatemia timailhan sa uremic nga palas-anon ug CKD-MBD</span><span data-lang="kap" class="lang-hidden">Ing hyperphosphatemia iya ing tanda ning uremikung pasan at CKD-MBD</span></td>
         </tr>
         <tr>
-          <td><strong>Ferritin / TSAT</strong></td>
+          <td><strong>Ferritin / transferrin saturation (TSAT)</strong></td>
           <td>Ferritin 200–500 ng/mL; TSAT ≥ 20%</td>
-          <td>Every 3 months</td>
-          <td>Iron deficiency limits ESA response and worsens anemia-fatigue</td>
+          <td><span data-lang="en">Every 3 months</span><span data-lang="tl" class="lang-hidden">Bawat 3 buwan</span><span data-lang="ceb" class="lang-hidden">Matag 3 ka bulan</span><span data-lang="kap" class="lang-hidden">Balang 3 bulan</span></td>
+          <td><span data-lang="en">Iron deficiency limits ESA response and worsens anemia-fatigue</span><span data-lang="tl" class="lang-hidden">Ang kakulangan sa bakal ay nililimitahan ang tugon sa ESA at pinalalala ang pagkapagod dulot ng anemya</span><span data-lang="ceb" class="lang-hidden">Ang kakulang sa puthaw magpugong sa tubag sa ESA ug magpagrabe sa kakapoy tungod sa anemya</span><span data-lang="kap" class="lang-hidden">Ing kakulangan king bakal ing maglimita king tugun king ESA at magpalala king kapaguran dulut ning anemya</span></td>
         </tr>
         <tr>
           <td><strong>Pre-HD weight / UF rate</strong></td>
           <td>UF rate ≤ 10 mL/kg/h</td>
-          <td>Each session</td>
-          <td>High UF rates → IDH → hemodynamic stunning → severe post-HD fatigue</td>
+          <td><span data-lang="en">Each session</span><span data-lang="tl" class="lang-hidden">Bawat sesyon</span><span data-lang="ceb" class="lang-hidden">Matag sesyon</span><span data-lang="kap" class="lang-hidden">Balang sesyon</span></td>
+          <td><span data-lang="en">High UF rates → IDH → hemodynamic stunning → severe post-HD fatigue</span><span data-lang="tl" class="lang-hidden">Mataas na UF rate → IDH → hemodinamikong stunning → matinding pagkapagod pagkatapos ng HD</span><span data-lang="ceb" class="lang-hidden">Taas nga UF rate → IDH → hemodynamic nga stunning → grabeng kakapoy human sa HD</span><span data-lang="kap" class="lang-hidden">Matas a UF rate → IDH → hemodinamikung stunning → masakit a kapaguran kaibat ning HD</span></td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="checklist">
-    <h4>Questions to bring to your next nephrology visit</h4>
+    <h4><span data-lang="en">Questions to bring to your next nephrology visit</span><span data-lang="tl" class="lang-hidden">Mga tanong na dalhin sa inyong susunod na pagbisita sa nephrology</span><span data-lang="ceb" class="lang-hidden">Mga pangutana nga dad-on sa imong sunod nga pagbisita sa nephrology</span><span data-lang="kap" class="lang-hidden">Deng kutang a dalan king kekang tutuking pamibisita king nephrology</span></h4>
     <ul>
-      <li>What is my latest hemoglobin and what is the plan to reach 10–11.5 g/dL?</li>
-      <li>What is my Kt/V and is my dialysis prescription adequate?</li>
-      <li>Am I a candidate for cool dialysate (35–36°C) to reduce intradialytic hypotension?</li>
-      <li>Should I be screened for sleep apnea?</li>
-      <li>Is intradialytic cycling available at my center?</li>
-      <li>Do I have carnitine deficiency, and would supplementation help me?</li>
+      <li><span data-lang="en">What is my latest hemoglobin and what is the plan to reach 10–11.5 g/dL?</span><span data-lang="tl" class="lang-hidden">Ano ang aking pinakahuling hemoglobin at ano ang plano upang maabot ang 10–11.5 g/dL?</span><span data-lang="ceb" class="lang-hidden">Unsa ang akong pinakabag-ong hemoglobin ug unsa ang plano aron maabot ang 10–11.5 g/dL?</span><span data-lang="kap" class="lang-hidden">Nanu ing kakung pekatauling hemoglobin at nanu ing plano ban miras ing 10–11.5 g/dL?</span></li>
+      <li><span data-lang="en">What is my Kt/V and is my dialysis prescription adequate?</span><span data-lang="tl" class="lang-hidden">Ano ang aking Kt/V at sapat ba ang aking reseta ng dialysis?</span><span data-lang="ceb" class="lang-hidden">Unsa ang akong Kt/V ug igo ba ang akong reseta sa dialysis?</span><span data-lang="kap" class="lang-hidden">Nanu ing kakung Kt/V at sukat ya ba ing kakung reseta ning dialysis?</span></li>
+      <li><span data-lang="en">Am I a candidate for cool dialysate (35–36°C) to reduce intradialytic hypotension?</span><span data-lang="tl" class="lang-hidden">Kandidato ba ako para sa malamig na dialysate (35–36°C) upang bawasan ang intradialytic hypotension?</span><span data-lang="ceb" class="lang-hidden">Kandidato ba ko alang sa bugnaw nga dialysate (35–36°C) aron makunhod ang intradialytic hypotension?</span><span data-lang="kap" class="lang-hidden">Kandidatu ku ba para king malamig a dialysate (35–36°C) ban bawasan ing intradialytic hypotension?</span></li>
+      <li><span data-lang="en">Should I be screened for sleep apnea?</span><span data-lang="tl" class="lang-hidden">Dapat ba akong suriin para sa sleep apnea?</span><span data-lang="ceb" class="lang-hidden">Angay ba kong susihon alang sa sleep apnea?</span><span data-lang="kap" class="lang-hidden">Dapat ku ba suriian para king sleep apnea?</span></li>
+      <li><span data-lang="en">Is intradialytic cycling available at my center?</span><span data-lang="tl" class="lang-hidden">Available ba ang intradialytic cycling sa aking center?</span><span data-lang="ceb" class="lang-hidden">Available ba ang intradialytic cycling sa akong center?</span><span data-lang="kap" class="lang-hidden">Available ya ba ing intradialytic cycling king kakung center?</span></li>
+      <li><span data-lang="en">Do I have carnitine deficiency, and would supplementation help me?</span><span data-lang="tl" class="lang-hidden">Mayroon ba akong kakulangan sa carnitine, at makakatulong ba sa akin ang suplemento?</span><span data-lang="ceb" class="lang-hidden">Aduna ba koy kakulang sa carnitine, ug makatabang ba kanako ang suplemento?</span><span data-lang="kap" class="lang-hidden">Atin ku ba kakulangan king carnitine, at makasaup ya ba kaku ing suplementu?</span></li>
     </ul>
   </div>
   <div class="disclaimer">
-    <strong>Educational use only.</strong> This guide does not replace the advice of your nephrologist or dialysis team. Post-dialysis fatigue has many causes, and the right intervention depends on your individual labs, dialysis prescription, comorbidities, and medications. Always discuss changes with your care team.
+    <span data-lang="en"><strong>Educational use only.</strong> This guide does not replace the advice of your nephrologist or dialysis team. Post-dialysis fatigue has many causes, and the right intervention depends on your individual labs, dialysis prescription, comorbidities, and medications. Always discuss changes with your care team.</span><span data-lang="tl" class="lang-hidden"><strong>Para sa edukasyon lamang.</strong> Ang gabay na ito ay hindi pumapalit sa payo ng inyong nephrologist o dialysis team. Ang pagkapagod pagkatapos ng dialysis ay may maraming sanhi, at ang tamang panggagamot ay nakadepende sa inyong indibidwal na mga resulta ng laboratoryo, reseta ng dialysis, mga karamdamang kaakibat, at gamot. Lagi ninyong talakayin ang mga pagbabago sa inyong care team.</span><span data-lang="ceb" class="lang-hidden"><strong>Alang sa edukasyon lamang.</strong> Kini nga giya dili mopuli sa tambag sa imong nephrologist o dialysis team. Ang kakapoy human sa dialysis adunay daghang hinungdan, ug ang husto nga pagtambal nagdepende sa imong indibidwal nga mga resulta sa laboratoryo, reseta sa dialysis, mga kauban nga sakit, ug tambal. Kanunay hisguti ang mga kausaban sa imong care team.</span><span data-lang="kap" class="lang-hidden"><strong>Para king edukasyon mu.</strong> Ing gabay a ini e ya salili king payu ning kekang nephrologist o dialysis team. Ing kapaguran kaibat ning dialysis ing atin dakal a sanhi, at ing tamang panggamut ing dependi king kekang indibidwal a resulta ning laboratoryu, reseta ning dialysis, deng kayabe a sakit, at gamut. Pane yong pisabian ding pamagbayu king kekang care team.</span>
   </div>
 </section>
 
@@ -2148,7 +2159,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <source srcset="../images/post-dialysis-fatigue-md-01-clinical-reference.webp" type="image/webp">
         <img src="../images/post-dialysis-fatigue-md-01-clinical-reference.png" loading="lazy" width="1024" height="1536" alt="Clinician quick-reference chart: systematic workup of post-dialysis fatigue — what to check and when" style="width:100%;height:auto;display:block;border-radius:10px;">
       </picture>
-      <figcaption style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</figcaption>
+      <figcaption style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</figcaption>
     </figure>
 
     <h3>Hemodynamic mechanisms</h3>
@@ -2165,7 +2176,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <p>Blood-membrane contact activates the complement cascade (C3a, C5a) and stimulates monocyte secretion of IL-1β, IL-6, and TNF-α. Peak cytokine levels occur 1–2 hours post-HD and are highest with low-flux membranes and older cellulose-based materials. Modern high-flux polysulfone membranes reduce but do not eliminate this response. TNF-α directly suppresses hypothalamic orexin signaling — the same pathway implicated in narcolepsy — producing the sickness-behavior fatigue phenotype seen post-HD.</p>
 
     <h3>Autonomic dysfunction</h3>
-    <p>Uremia impairs both sympathetic and parasympathetic arms of the autonomic nervous system. Reduced heart rate variability (HRV), impaired baroreflex sensitivity, and exaggerated orthostatic hypotension post-HD create a prolonged recovery window. Interventions that improve autonomic tone — regular moderate exercise, adequate sleep, and appropriate RAAS blockade — correlate with improved post-HD fatigue scores.</p>
+    <p>Uremia impairs both sympathetic and parasympathetic arms of the autonomic nervous system. Reduced heart rate variability (HRV), impaired baroreflex sensitivity, and exaggerated orthostatic hypotension post-HD create a prolonged recovery window. Interventions that improve autonomic tone — regular moderate exercise, adequate sleep, and appropriate renin–angiotensin–aldosterone system (RAAS) blockade — correlate with improved post-HD fatigue scores.</p>
   </div>
 </section>
 
@@ -2181,11 +2192,11 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     </div>
     <div class="algo-row">
       <div class="algo-step-num">2</div>
-      <div class="algo-content"><strong>Anemia workup:</strong> CBC with indices, reticulocyte count, serum ferritin, TSAT, TIBC, CRP (to distinguish iron deficiency from functional iron restriction). Ensure ESA dose and IV iron are optimized to Hgb 10–11.5 g/dL.</div>
+      <div class="algo-content"><strong>Anemia workup:</strong> complete blood count (CBC) with indices, reticulocyte count, serum ferritin, TSAT, TIBC, CRP (to distinguish iron deficiency from functional iron restriction). Ensure ESA dose and IV iron are optimized to Hgb 10–11.5 g/dL.</div>
     </div>
     <div class="algo-row">
       <div class="algo-step-num">3</div>
-      <div class="algo-content"><strong>Dialysis adequacy:</strong> Single-pool Kt/V ≥ 1.4 or URR ≥ 70%. Review access recirculation, session time, blood flow rate, and membrane type. A Kt/V &lt; 1.2 mandates prescription change before attributing fatigue to other causes.</div>
+      <div class="algo-content"><strong>Dialysis adequacy:</strong> Single-pool Kt/V ≥ 1.4 or urea reduction ratio (URR) ≥ 70%. Review access recirculation, session time, blood flow rate, and membrane type. A Kt/V &lt; 1.2 mandates prescription change before attributing fatigue to other causes.</div>
     </div>
     <div class="algo-row">
       <div class="algo-step-num">4</div>
@@ -2197,7 +2208,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     </div>
     <div class="algo-row">
       <div class="algo-step-num">6</div>
-      <div class="algo-content"><strong>Sleep and mood screen:</strong> Epworth Sleepiness Scale (ESS ≥ 10 = excessive daytime sleepiness). PHQ-9 for depression. STOP-BANG for OSA risk stratification (prevalence ~70% in HD patients). Refer for polysomnography if indicated.</div>
+      <div class="algo-content"><strong>Sleep and mood screen:</strong> Epworth Sleepiness Scale (ESS ≥ 10 = excessive daytime sleepiness). PHQ-9 for depression. STOP-BANG for obstructive sleep apnea (OSA) risk stratification (prevalence ~70% in HD patients). Refer for polysomnography if indicated.</div>
     </div>
     <div class="algo-row">
       <div class="algo-step-num">7</div>
@@ -2274,7 +2285,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <div class="alert-icon">⚠️</div>
     <div class="alert-body">
       <h4>When to suspect a different diagnosis</h4>
-      <p>Consider alternative diagnoses when PDF is: (1) acutely worse than baseline without prescription change; (2) associated with fever, rigors, access site changes (bacteremia/access infection); (3) associated with new chest pain, dyspnea, or ECG changes (acute coronary syndrome, pericardial effusion); (4) onset post-medication change; (5) accompanied by weight loss and night sweats (malignancy).</p>
+      <p>Consider alternative diagnoses when PDF is: (1) acutely worse than baseline without prescription change; (2) associated with fever, rigors, access site changes (bacteremia/access infection); (3) associated with new chest pain, dyspnea, or electrocardiogram (ECG) changes (acute coronary syndrome, pericardial effusion); (4) onset post-medication change; (5) accompanied by weight loss and night sweats (malignancy).</p>
     </div>
   </div>
 </section>
@@ -2324,25 +2335,25 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <div class="related-card-title">Living with Dialysis</div>
         <div class="related-card-desc">Diet, fluid limits, fistula care, travel, and maintaining quality of life on hemodialysis.</div>
       
-          <img class="related-card-thumb" src="../images/living-with-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/living-with-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="hemodialysis-complications.html">
         <div class="related-card-tag">Complications</div>
         <div class="related-card-title">Hemodialysis Complications</div>
         <div class="related-card-desc">Cramps, hypotension, access problems, and other HD complications — causes, prevention, and what to tell your team.</div>
       
-          <img class="related-card-thumb" src="../images/hemodialysis-complications-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hemodialysis-complications-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="exercise-guide-ckd.html">
         <div class="related-card-tag">Exercise</div>
         <div class="related-card-title">Exercise Guide for CKD &amp; Dialysis</div>
         <div class="related-card-desc">Safe activity levels, intradialytic exercise, and how movement fights fatigue and muscle loss in kidney disease.</div>
       
-          <img class="related-card-thumb" src="../images/exercise-guide-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/exercise-guide-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="ckd-mental-health-sleep.html">
         <div class="related-card-tag">Mental Health</div>
         <div class="related-card-title">CKD Mental Health &amp; Sleep</div>
         <div class="related-card-desc">Depression, anxiety, sleep apnea, and insomnia in kidney disease — screening tools and treatment options.</div>
       
-          <img class="related-card-thumb" src="../images/ckd-mental-health-sleep-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-mental-health-sleep-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     </div>
   </div>
 </div>
@@ -2520,5 +2531,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

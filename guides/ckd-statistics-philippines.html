@@ -15,6 +15,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1761,7 +1772,7 @@ html[data-theme="dark"] .bar-track { background: #1a2535; border-color: #2a3548;
     <img fetchpriority="high" loading="eager" src="../images/ckd-statistics-ph-overview.png" width="1536" height="1024"
          alt="CKD Statistics in the Philippines: 1 in 10 Filipinos has CKD, 6 out of 10 unaware, rising kidney failure incidence, and prevention strategies" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.1);">
   </picture>
-  <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">CKD in the Philippines: key statistics, trends, and what you can do.</figcaption>
+  <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">CKD (chronic kidney disease) in the Philippines: key statistics, trends, and what you can do.</figcaption>
 </figure>
 
 <div class="intro-callout">
@@ -1813,7 +1824,7 @@ html[data-theme="dark"] .bar-track { background: #1a2535; border-color: #2a3548;
 <span class="lang-hidden" data-lang="ceb">Nanguna nga hinungdan sa kamatayon sa Pilipinas</span>
 <span class="lang-hidden" data-lang="kap">Nangungunang dahilan ning kamatayan king Pilipinas</span>
 </div>
-<div class="stat-source">DOH, 2024</div>
+<div class="stat-source">DOH (Department of Health), 2024</div>
 </div>
 </div>
 
@@ -1995,7 +2006,7 @@ html[data-theme="dark"] .bar-track { background: #1a2535; border-color: #2a3548;
 <td><span data-lang="en">Significant uremia symptoms, severe anemia, electrolyte problems — urgent referral needed</span><span class="lang-hidden" data-lang="tl">Makabuluhang sintomas ng uremia, malubhang anemya, mga problema sa electrolyte — kailangan ng agarang referral</span><span class="lang-hidden" data-lang="ceb">Makasabot nga sintomas sa uremia, grabe nga anemya, mga problema sa electrolyte — kinahanglan agarang referral</span><span class="lang-hidden" data-lang="kap">Makabuluhang sintomas ning uremia, malubhang anemya, deng problema king electrolyte — kailangan agad a referral</span></td>
 </tr>
 <tr>
-<td><strong><span data-lang="en">Stage 5 / ESKD</span><span class="lang-hidden" data-lang="tl">Yugto 5 / ESKD</span><span class="lang-hidden" data-lang="ceb">Yugto 5 / ESKD</span><span class="lang-hidden" data-lang="kap">Yugto 5 / ESKD</span></strong></td>
+<td><strong><span data-lang="en">Stage 5 / ESKD (end-stage kidney disease)</span><span class="lang-hidden" data-lang="tl">Yugto 5 / ESKD</span><span class="lang-hidden" data-lang="ceb">Yugto 5 / ESKD</span><span class="lang-hidden" data-lang="kap">Yugto 5 / ESKD</span></strong></td>
 <td>&lt;15 <span style="font-weight:400;color:var(--text-muted);font-size:12px;">(or on dialysis)</span></td>
 <td>~0.64M (5%)</td>
 <td><span data-lang="en">Severe uremia, fluid overload — requires dialysis or transplant to survive</span><span class="lang-hidden" data-lang="tl">Malubhang uremia, sobrang likido — nangangailangan ng dialysis o transplant para mabuhay</span><span class="lang-hidden" data-lang="ceb">Grabe nga uremia, sobrang likido — nanginahanglan og dialysis o transplant aron mabuhi</span><span class="lang-hidden" data-lang="kap">Malubhang uremia, sobrang likido — nangangailangan ning dialysis o transplant para mabuhay</span></td>
@@ -2274,12 +2285,12 @@ html[data-theme="dark"] .bar-track { background: #1a2535; border-color: #2a3548;
 <span class="lang-hidden" data-lang="ceb">Direkta nga gastos sa dialysis lamang alang sa karon nga 64,845 ka pasyente</span>
 <span class="lang-hidden" data-lang="kap">Direktang gastos king dialysis lamang para king kasalukuyang 64,845 a pasyente</span>
 </div>
-<div class="stat-source">NKTI / PhilHealth estimates</div>
+<div class="stat-source">NKTI / PhilHealth (Philippine Health Insurance Corporation) estimates</div>
 </div>
 <div class="stat-card">
 <div class="stat-number">₱234k</div>
 <div class="stat-label">
-<span data-lang="en">Maximum PhilHealth Z-benefit per year (90 sessions × ~₱2,600) — standard HD requires 156 sessions</span>
+<span data-lang="en">Maximum PhilHealth Z-benefit per year (90 sessions × ~₱2,600) — standard HD (hemodialysis) requires 156 sessions</span>
 <span class="lang-hidden" data-lang="tl">Maximum na saklaw ng PhilHealth Z-benefit bawat taon — ang karaniwang HD ay nangangailangan ng 156 sesyon</span>
 <span class="lang-hidden" data-lang="ceb">Maximum nga gisakop sa PhilHealth Z-benefit matag tuig — ang sumbanan nga HD nanginahanglan og 156 ka sesyon</span>
 <span class="lang-hidden" data-lang="kap">Maximum a saklaw ning PhilHealth Z-benefit kada taon — ing karaniwang HD nangangailangan ning 156 sesyon</span>
@@ -2318,7 +2329,7 @@ html[data-theme="dark"] .bar-track { background: #1a2535; border-color: #2a3548;
 <div class="two-col">
 <div class="feature-card">
 <h4><span class="dot dot-teal"></span> <span data-lang="en">What PhilHealth Covers (Z-Benefit, HD)</span><span class="lang-hidden" data-lang="tl">Ano ang Sinasaklaw ng PhilHealth (Z-Benefit, HD)</span><span class="lang-hidden" data-lang="ceb">Unsa ang Gisabot sa PhilHealth (Z-Benefit, HD)</span><span class="lang-hidden" data-lang="kap">Ano ing Sinasasaklaw ning PhilHealth (Z-Benefit, HD)</span></h4>
-<p><span data-lang="en">PhilHealth's Z-benefit package covers <strong>90 hemodialysis sessions per year</strong> at ~₱2,600/session = up to ₱234,000/year. However, standard HD requires 3 sessions per week (156 sessions/year), leaving <strong>66 uncovered sessions annually</strong> — a structural shortfall built into the benefit. EPO injections for anemia, phosphate binders, vitamin D analogs, and antihypertensives add ₱80,000–200,000/year more in expenses that PhilHealth covers only partially.</span>
+<p><span data-lang="en">PhilHealth's Z-benefit package covers <strong>90 hemodialysis sessions per year</strong> at ~₱2,600/session = up to ₱234,000/year. However, standard HD requires 3 sessions per week (156 sessions/year), leaving <strong>66 uncovered sessions annually</strong> — a structural shortfall built into the benefit. EPO (erythropoietin) injections for anemia, phosphate binders, vitamin D analogs, and antihypertensives add ₱80,000–200,000/year more in expenses that PhilHealth covers only partially.</span>
 <span class="lang-hidden" data-lang="tl">Ang Z-benefit package ng PhilHealth ay sumasaklaw sa <strong>90 sesyon ng hemodialysis bawat taon</strong> sa ~₱2,600/sesyon = hanggang ₱234,000/taon. Gayunpaman, ang karaniwang HD ay nangangailangan ng 3 sesyon bawat linggo (156 sesyon/taon), na nag-iiwan ng <strong>66 walang saklawang sesyon bawat taon</strong>.</span>
 <span class="lang-hidden" data-lang="ceb">Ang Z-benefit package sa PhilHealth naglangkob sa <strong>90 ka sesyon sa hemodialysis matag tuig</strong> sa ~₱2,600/sesyon = hangtod ₱234,000/tuig. Apan ang sumbanan nga HD nanginahanglan og 3 ka sesyon matag semana (156 ka sesyon/tuig), nagbiya sa <strong>66 ka wala masakup nga sesyon matag tuig</strong>.</span>
 <span class="lang-hidden" data-lang="kap">Ing Z-benefit package ning PhilHealth sumasaklaw king <strong>90 sesyon ning hemodialysis kada taon</strong> sa ~₱2,600/sesyon = anggang ₱234,000/taon. Gayunpaman, ing karaniwang HD nangangailangan ning 3 sesyon kada linggo (156 sesyon/taon), nag-iiwan ning <strong>66 walang saklawang sesyon kada taon</strong>.</span>
@@ -2339,7 +2350,7 @@ html[data-theme="dark"] .bar-track { background: #1a2535; border-color: #2a3548;
 </div>
 <div class="feature-card">
 <h4><span class="dot dot-navy"></span> <span data-lang="en">Prevention vs. Dialysis: The Cost Equation</span><span class="lang-hidden" data-lang="tl">Pag-iwas kumpara sa Dialysis: Ang Equation ng Gastos</span><span class="lang-hidden" data-lang="ceb">Paglikay kumpara sa Dialysis: Ang Equation sa Gastos</span><span class="lang-hidden" data-lang="kap">Pag-iwas kumpara king Dialysis: Ing Equation ning Gastos</span></h4>
-<p><span data-lang="en">The ~₱720,000/year cost of keeping one patient on HD could alternatively fund: <strong>blood pressure + creatinine + urinalysis screening for 7,000+ Filipinos</strong>; or 10 years of optimized antihypertensive + SGLT2 inhibitor therapy for the same patient — potentially preventing kidney failure from ever occurring. This is why the WHO, ISN, and Philippine nephrology societies all prioritize prevention: it is 10–100× more cost-effective than treating ESKD.</span>
+<p><span data-lang="en">The ~₱720,000/year cost of keeping one patient on HD could alternatively fund: <strong>blood pressure + creatinine + urinalysis screening for 7,000+ Filipinos</strong>; or 10 years of optimized antihypertensive + SGLT2 (sodium–glucose cotransporter-2) inhibitor therapy for the same patient — potentially preventing kidney failure from ever occurring. This is why the WHO (World Health Organization), ISN, and Philippine nephrology societies all prioritize prevention: it is 10–100× more cost-effective than treating ESKD.</span>
 <span class="lang-hidden" data-lang="tl">Ang ~₱720,000/taon na gastos para sa isang pasyente sa HD ay maaaring gamitin bilang kahalili para sa: <strong>pagsusuri ng presyon ng dugo + creatinine + urinalysis para sa 7,000+ Pilipino</strong>; o 10 taon ng na-optimize na antihypertensive + SGLT2 inhibitor therapy para sa parehong pasyente. Kaya naman inuuna ng WHO, ISN, at mga Philippine nephrology society ang pag-iwas: ito ay 10–100× mas cost-effective kaysa sa paggamot ng ESKD.</span>
 <span class="lang-hidden" data-lang="ceb">Ang ~₱720,000/tuig nga gastos alang sa usa ka pasyente sa HD mahimong gamiton alang sa: <strong>pagsusi sa presyon sa dugo + creatinine + urinalysis alang sa 7,000+ Pilipino</strong>; o 10 ka tuig sa gi-optimize nga antihypertensive + SGLT2 inhibitor therapy alang sa mao nga pasyente. Mao kini ngano ang WHO, ISN, ug Philippine nephrology societies nauna-una ang paglikay: 10–100× mas cost-effective kaysa pagtambal sa ESKD.</span>
 <span class="lang-hidden" data-lang="kap">Ing ~₱720,000/taon a gastos para king metung a pasyente king HD maaaring gamitin bilang kahalili para king: <strong>pagsusuri ning presyon ning dala + creatinine + urinalysis para king 7,000+ Pilipino</strong>; o 10 taon ning na-optimize a antihypertensive + SGLT2 inhibitor therapy para king parehong pasyente. Kaya naman uunahin ning WHO, ISN, at deng Philippine nephrology society ing pag-iwas: 10–100× mas cost-effective kaysa king paggamot ning ESKD.</span>
@@ -2734,28 +2745,28 @@ html[data-theme="dark"] .bar-track { background: #1a2535; border-color: #2a3548;
           <div class="related-card-desc">What chronic kidney disease means, how stages are classified, and the practical strategies that keep your kidneys working longer.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="slowing-ckd-progression.html">
           <div class="related-card-tag">Prevention</div>
           <div class="related-card-title">Slowing CKD Progression</div>
           <div class="related-card-desc">The medications, diet changes, and lifestyle strategies that can slow or stop kidney disease progression.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/slowing-ckd-progression-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/slowing-ckd-progression-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="managing-hypertension.html">
           <div class="related-card-tag">Risk Factor #1</div>
           <div class="related-card-title">Managing Hypertension</div>
           <div class="related-card-desc">The #1 cause of kidney disease in the Philippines — how to control blood pressure and protect your kidneys.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/managing-hypertension-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/managing-hypertension-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="diabetes-kidneys.html">
           <div class="related-card-tag">Risk Factor #2</div>
           <div class="related-card-title">Diabetes and the Kidneys</div>
           <div class="related-card-desc">How uncontrolled blood sugar silently damages kidney filters, and what to do about it.</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/diabetes-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/diabetes-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -2845,5 +2856,6 @@ function setLang(lang) {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

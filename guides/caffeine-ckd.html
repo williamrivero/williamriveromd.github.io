@@ -27,6 +27,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -141,6 +142,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1309,8 +1318,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1874,7 +1885,7 @@ html[data-theme="dark"] .log-widget-frame{background:#0d1420;}
 <!-- INTRO CALLOUT -->
 <div class="intro-callout" style="margin-top:40px;">
   <p>
-    <span class="lang-en">If you have chronic kidney disease but <strong>NOT</strong> polycystic kidney disease, moderate coffee consumption may actually be protective — large meta-analyses show a <strong>13% lower risk</strong> of developing CKD among regular coffee drinkers. But energy drinks, sugar-loaded 3-in-1 sachets, and high-dose pre-workout caffeine are a very different story. This guide untangles the nuance — with clear rules for your specific situation.</span>
+    <span class="lang-en">If you have chronic kidney disease (CKD) but <strong>NOT</strong> polycystic kidney disease, moderate coffee consumption may actually be protective — large meta-analyses show a <strong>13% lower risk</strong> of developing CKD among regular coffee drinkers. But energy drinks, sugar-loaded 3-in-1 sachets, and high-dose pre-workout caffeine are a very different story. This guide untangles the nuance — with clear rules for your specific situation.</span>
     <span class="lang-tl" style="display:none;">Kung mayroon kang chronic kidney disease ngunit <strong>WALANG</strong> polycystic kidney disease, ang moderate na pag-inom ng kape ay maaaring makapagprotekta — malaking meta-analysis ang nagpapakita ng <strong>13% na mas mababang panganib</strong> ng CKD sa regular na umiinom. Ngunit ang energy drinks, 3-in-1 na puno ng asukal, at mataas na dosis ng caffeine sa pre-workout ay ibang usapan. Inilalahad ng gabay na ito ang pagkakaiba — na may malinaw na tuntunin para sa inyong sitwasyon.</span>
     <span class="lang-ceb" style="display:none;">Kung adunay ikaw chronic kidney disease apan <strong>WALAY</strong> polycystic kidney disease, ang moderate nga pag-inom sa kape mahimong magprotekta — dagkong meta-analysis nagpakita og <strong>13% nga mas ubos nga peligro</strong> sa CKD sa regular nga moinom. Apan ang energy drinks, 3-in-1 puno sa asukal, ug taas nga dosis sa caffeine sa pre-workout lahi ang istorya. Gilinaw sa giya kini ang kalainan — nga adunay klaro nga mga lagda alang sa imong sitwasyon.</span>
     <span class="lang-kap" style="display:none;">Kung mayroon kang chronic kidney disease pero <strong>WALA</strong> kang polycystic kidney disease, ing moderate na pag-inom ning kape maaring makagprotekta — malalaking meta-analysis nagpapakita ning <strong>13% mas mababang panganib</strong> ning CKD king regular na umiinom. Pero ing energy drinks, 3-in-1 na puno ning asukal, at mataas na dosis ning caffeine king pre-workout ay iba nang usapan. Inilalahad ning gabay ini ing pagkakaiba — na may malinaw na patakaran para king inyong sitwasyon.</span>
@@ -1905,7 +1916,7 @@ html[data-theme="dark"] .log-widget-frame{background:#0d1420;}
       <p><span class="lang-en">1–2 cups of plain brewed coffee daily is likely safe and may even be modestly protective against kidney disease progression based on population data.</span><span class="lang-tl" style="display:none;">Ang 1–2 tasa ng simpleng brewed coffee araw-araw ay malamang ligtas at maaaring bahagyang nagpoprotekta laban sa pag-usad ng kidney disease batay sa population data.</span><span class="lang-ceb" style="display:none;">Ang 1–2 tasa sa simpleng brewed coffee adlaw-adlaw lagmit luwas ug mahimong bahagyang magprotekta batok sa pag-abante sa kidney disease base sa population data.</span><span class="lang-kap" style="display:none;">Ing 1–2 tasa ning simpleng brewed coffee kada aldo malamang ligtas at maaring bahagyang magprotekta laban king pag-usad ning kidney disease batay king population data.</span></p>
     </div>
     <div class="feature-card">
-      <h4><span style="font-size:18px;margin-right:6px;">⚠️</span> <span class="lang-en">PKD (ADPKD / ARPKD)</span></h4>
+      <h4><span style="font-size:18px;margin-right:6px;">⚠️</span> <span class="lang-en">PKD (ADPKD / ARPKD)</span><span class="lang-tl" style="display:none;">PKD (ADPKD / ARPKD)</span><span class="lang-ceb" style="display:none;">PKD (ADPKD / ARPKD)</span><span class="lang-kap" style="display:none;">PKD (ADPKD / ARPKD)</span></h4>
       <p><span class="lang-en">Caffeine stimulates cyst growth directly. Limit to less than 1 cup per day and prefer decaffeinated coffee. Avoid energy drinks entirely.</span><span class="lang-tl" style="display:none;">Ang caffeine ay direktang nagpapabilis ng paglaki ng cyst. Limitahan sa wala pang 1 tasa bawat araw at piliin ang decaf. Iwasang ganap ang energy drinks.</span><span class="lang-ceb" style="display:none;">Ang caffeine direkta nga magpadali sa pagdako sa cyst. Limitahan sa ubos sa 1 tasa matag adlaw ug pilion ang decaf. Likayi ang energy drinks.</span><span class="lang-kap" style="display:none;">Ing caffeine direktang nagpapabilis ning paglaki ning cyst. Limitahan king mas mababa sa 1 tasa kada aldo at piliin ing decaf. Iwasang ganap ing energy drinks.</span></p>
     </div>
     <div class="feature-card">
@@ -2091,7 +2102,7 @@ html[data-theme="dark"] .log-widget-frame{background:#0d1420;}
           <td><strong><span class="lang-en">Hemodialysis</span><span class="lang-tl" style="display:none;">Hemodialysis</span><span class="lang-ceb" style="display:none;">Hemodialysis</span><span class="lang-kap" style="display:none;">Hemodialysis</span></strong></td>
           <td><span class="amber-badge"><span class="lang-en">1–2 cups/day (steady)</span><span class="lang-tl" style="display:none;">1–2 tasa/araw (tuloy-tuloy)</span><span class="lang-ceb" style="display:none;">1–2 tasa/adlaw (padayon)</span><span class="lang-kap" style="display:none;">1–2 tasa/aldo (tuluy-tuloy)</span></span></td>
           <td><span class="warn-badge"><span class="lang-en">Avoid</span><span class="lang-tl" style="display:none;">Iwasan</span><span class="lang-ceb" style="display:none;">Likayi</span><span class="lang-kap" style="display:none;">Iwasan</span></span></td>
-          <td><span class="lang-en">Caffeine is ~50% removed per HD session; abrupt cessation causes withdrawal headaches — maintain a steady, low intake rather than stopping and restarting</span><span class="lang-tl" style="display:none;">Ang caffeine ay ~50% tinatanggal sa bawat HD session; ang biglang paghinto ay nagdudulot ng withdrawal headache — panatilihing mababa at tuloy-tuloy ang pag-inom</span><span class="lang-ceb" style="display:none;">Ang caffeine ~50% gikuha sa matag HD session; ang kalit nga paghunong nagdala og withdrawal headache — padayon ug gamay ra ang pag-inom kaysa mohunong ug magsugod pag-usab</span><span class="lang-kap" style="display:none;">Ing caffeine ~50% tinatanggal sa bawat HD session; ing biglang paghinto magdudulot ning withdrawal headaches — panatilihing mababa at tuluy-tuloy ing pag-inom kaysa huminto at magsimulang muli</span></td>
+          <td><span class="lang-en">Caffeine is ~50% removed per HD (hemodialysis) session; abrupt cessation causes withdrawal headaches — maintain a steady, low intake rather than stopping and restarting</span><span class="lang-tl" style="display:none;">Ang caffeine ay ~50% tinatanggal sa bawat HD session; ang biglang paghinto ay nagdudulot ng withdrawal headache — panatilihing mababa at tuloy-tuloy ang pag-inom</span><span class="lang-ceb" style="display:none;">Ang caffeine ~50% gikuha sa matag HD session; ang kalit nga paghunong nagdala og withdrawal headache — padayon ug gamay ra ang pag-inom kaysa mohunong ug magsugod pag-usab</span><span class="lang-kap" style="display:none;">Ing caffeine ~50% tinatanggal sa bawat HD session; ing biglang paghinto magdudulot ning withdrawal headaches — panatilihing mababa at tuluy-tuloy ing pag-inom kaysa huminto at magsimulang muli</span></td>
         </tr>
         <tr>
           <td><strong><span class="lang-en">Peritoneal Dialysis</span><span class="lang-tl" style="display:none;">Peritoneal Dialysis</span><span class="lang-ceb" style="display:none;">Peritoneal Dialysis</span><span class="lang-kap" style="display:none;">Peritoneal Dialysis</span></strong></td>
@@ -2212,7 +2223,7 @@ html[data-theme="dark"] .log-widget-frame{background:#0d1420;}
           <td><strong>Monster Energy</strong></td>
           <td>473 mL (1 can)</td>
           <td>160 mg</td>
-          <td><span class="lang-en">Very high caffeine + sugar in one serving; cases of AKI linked to energy drink overconsumption in literature</span><span class="lang-tl" style="display:none;">Napakataas na caffeine + asukal sa isang serving; may mga kaso ng AKI na nauugnay sa labis na pag-inom ng energy drink</span><span class="lang-ceb" style="display:none;">Hataas kaayo nga caffeine + asukal sa usa ka serving; adunay mga kaso sa AKI nga may kalabotan sa sobra nga pag-inom sa energy drink</span><span class="lang-kap" style="display:none;">Napakataas na caffeine + asukal king isang serving; may mga kaso ning AKI na nauugnay king labis na pag-inom ning energy drink</span></td>
+          <td><span class="lang-en">Very high caffeine + sugar in one serving; cases of AKI (acute kidney injury) linked to energy drink overconsumption in literature</span><span class="lang-tl" style="display:none;">Napakataas na caffeine + asukal sa isang serving; may mga kaso ng AKI na nauugnay sa labis na pag-inom ng energy drink</span><span class="lang-ceb" style="display:none;">Hataas kaayo nga caffeine + asukal sa usa ka serving; adunay mga kaso sa AKI nga may kalabotan sa sobra nga pag-inom sa energy drink</span><span class="lang-kap" style="display:none;">Napakataas na caffeine + asukal king isang serving; may mga kaso ning AKI na nauugnay king labis na pag-inom ning energy drink</span></td>
           <td><span class="contraindicated-badge"><span class="lang-en">Avoid all stages</span><span class="lang-tl" style="display:none;">Iwasan sa lahat ng stage</span><span class="lang-ceb" style="display:none;">Likayi sa tanan nga stage</span><span class="lang-kap" style="display:none;">Iwasan king lahat ning stage</span></span></td>
         </tr>
         <tr>
@@ -2609,5 +2620,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

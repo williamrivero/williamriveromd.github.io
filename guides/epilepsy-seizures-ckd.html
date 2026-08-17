@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1844,8 +1855,8 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 <div class="mode-patient">
@@ -1856,7 +1867,7 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">10&times;</span><span class="l">higher seizure risk in ESKD vs general population</span></div>
+<div class="ov-stat"><span class="v">10&times;</span><span class="l">higher seizure risk in end-stage kidney disease (ESKD) vs general population</span></div>
 <div class="ov-stat"><span class="v">5&ndash;10%</span><span class="l">epilepsy prevalence in ESKD cohorts</span></div>
 <div class="ov-stat"><span class="v">30%</span><span class="l">uremic encephalopathy cases with clinical seizures</span></div>
 </div>
@@ -1926,7 +1937,7 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 </div>
 <div class="feature-card">
 <h4><span class="dot dot-navy"></span> <span data-lang="en">Absence Seizure</span><span data-lang="tl" class="lang-hidden">Absence na Atake</span><span data-lang="ceb" class="lang-hidden">Absence nga Konbulsyon</span><span data-lang="kap" class="lang-hidden">Absence na Konbulsyon</span></h4>
-<p><span data-lang="en">Brief "staring spells" lasting 5–30 seconds. The person seems to zone out and doesn't respond. Common in children but can occur in CKD-related encephalopathy in adults.</span><span data-lang="tl" class="lang-hidden">Maikling "staring spells" na tumatagal ng 5–30 segundo. Mukhang nag-iisip ang tao at hindi tumutugon. Karaniwan sa mga bata ngunit maaari ding mangyari sa mga nasa hustong gulang na may CKD-related encephalopathy.</span><span data-lang="ceb" class="lang-hidden">Mubo nga "staring spells" nga molungtad og 5–30 segundo. Daw naghunahuna ang tawo ug dili motubag. Sagad sa mga bata apan mahimong mahitabo sa mga hamtong nga adunay CKD-related encephalopathy.</span><span data-lang="kap" class="lang-hidden">Maikling "staring spells" ning 5–30 segundo. Daw nagiisip ing tao at ali tumutugon. Karaniwan king deng bata pero malyari itong mangyari king deng matanda na may CKD-related encephalopathy.</span></p>
+<p><span data-lang="en">Brief "staring spells" lasting 5–30 seconds. The person seems to zone out and doesn't respond. Common in children but can occur in chronic kidney disease (CKD)-related encephalopathy in adults.</span><span data-lang="tl" class="lang-hidden">Maikling "staring spells" na tumatagal ng 5–30 segundo. Mukhang nag-iisip ang tao at hindi tumutugon. Karaniwan sa mga bata ngunit maaari ding mangyari sa mga nasa hustong gulang na may CKD-related encephalopathy.</span><span data-lang="ceb" class="lang-hidden">Mubo nga "staring spells" nga molungtad og 5–30 segundo. Daw naghunahuna ang tawo ug dili motubag. Sagad sa mga bata apan mahimong mahitabo sa mga hamtong nga adunay CKD-related encephalopathy.</span><span data-lang="kap" class="lang-hidden">Maikling "staring spells" ning 5–30 segundo. Daw nagiisip ing tao at ali tumutugon. Karaniwan king deng bata pero malyari itong mangyari king deng matanda na may CKD-related encephalopathy.</span></p>
 </div>
 <div class="feature-card">
 <h4><span class="dot dot-red"></span> <span data-lang="en">Myoclonic Seizure</span><span data-lang="tl" class="lang-hidden">Myoclonic na Atake</span><span data-lang="ceb" class="lang-hidden">Myoclonic nga Konbulsyon</span><span data-lang="kap" class="lang-hidden">Myoclonic na Konbulsyon</span></h4>
@@ -1994,7 +2005,7 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 <div class="step-num">2</div>
 <div class="step-body">
 <h4><span data-lang="en">Dialysis Disequilibrium Seizures</span><span data-lang="tl" class="lang-hidden">Atake Dahil sa Dialysis Disequilibrium</span><span data-lang="ceb" class="lang-hidden">Konbulsyon Tungod sa Dialysis Disequilibrium</span><span data-lang="kap" class="lang-hidden">Konbulsyon Dahil sa Dialysis Disequilibrium</span></h4>
-<p><span data-lang="en">This happens during or right after hemodialysis, especially for new dialysis patients. When dialysis removes waste products too quickly, a temporary imbalance causes the brain to swell slightly. Symptoms include headache, nausea, restlessness, confusion, and rarely seizures. This is why new HD patients start with shorter, gentler sessions.</span><span data-lang="tl" class="lang-hidden">Nangyayari ito sa panahon ng o kaagad pagkatapos ng hemodialysis, lalo na para sa mga bagong pasyente ng dialysis. Kapag ang dialysis ay nag-aalis ng mga basura nang masyadong mabilis, ang pansamantalang kawalan ng balanse ay nagdudulot ng bahagyang pamamaga ng utak. Kasama sa mga sintomas ang sakit ng ulo, pagduduwal, kaguluhan, pagkalito, at bihirang mga atake. Kaya naman ang mga bagong pasyente ng HD ay nagsisimula sa mas maiikling, mas malambot na mga sesyon.</span><span data-lang="ceb" class="lang-hidden">Mahitabo kini sa panahon sa o dayon pagkahuman sa hemodialysis, labi na alang sa mga bag-ong pasyente sa dialysis. Kon ang dialysis nagtangtang sa mga basura nga paspas kaayo, ang temporaryo nga kagubot nagdulot sa bahaw nga pamamaga sa utok. Ang mga sintoma naglakip sa sakit sa ulo, pagkapangit og pagkaon, kagubot, pagkalibog, ug panagsa mga konbulsyon. Mao kini ang hinungdan nga ang mga bag-ong pasyente sa HD nagsugod sa mas mubu, mas humok nga mga sesyon.</span><span data-lang="kap" class="lang-hidden">Nangyayari ito king panahon ning o kaagad pagkatapos ning hemodialysis, lalo na para king deng bagong pasyente ning dialysis. Nung ing dialysis nag-aalis ning deng basura nang masyadong mabilis, ing temporaryo a kawalan ning balanse nagdudulot ning bahagyang pamamaga ning utak. Kasama king deng sintomas ing sakit ning ulo, pagduduwal, kaguluhan, pagkalito, at bihirang deng konbulsyon. Kaya naman deng bagong pasyente ning HD nagsisimula sa mas maikling, mas malambot na deng sesyon.</span></p>
+<p><span data-lang="en">This happens during or right after hemodialysis (HD), especially for new dialysis patients. When dialysis removes waste products too quickly, a temporary imbalance causes the brain to swell slightly. Symptoms include headache, nausea, restlessness, confusion, and rarely seizures. This is why new HD patients start with shorter, gentler sessions.</span><span data-lang="tl" class="lang-hidden">Nangyayari ito sa panahon ng o kaagad pagkatapos ng hemodialysis, lalo na para sa mga bagong pasyente ng dialysis. Kapag ang dialysis ay nag-aalis ng mga basura nang masyadong mabilis, ang pansamantalang kawalan ng balanse ay nagdudulot ng bahagyang pamamaga ng utak. Kasama sa mga sintomas ang sakit ng ulo, pagduduwal, kaguluhan, pagkalito, at bihirang mga atake. Kaya naman ang mga bagong pasyente ng HD ay nagsisimula sa mas maiikling, mas malambot na mga sesyon.</span><span data-lang="ceb" class="lang-hidden">Mahitabo kini sa panahon sa o dayon pagkahuman sa hemodialysis, labi na alang sa mga bag-ong pasyente sa dialysis. Kon ang dialysis nagtangtang sa mga basura nga paspas kaayo, ang temporaryo nga kagubot nagdulot sa bahaw nga pamamaga sa utok. Ang mga sintoma naglakip sa sakit sa ulo, pagkapangit og pagkaon, kagubot, pagkalibog, ug panagsa mga konbulsyon. Mao kini ang hinungdan nga ang mga bag-ong pasyente sa HD nagsugod sa mas mubu, mas humok nga mga sesyon.</span><span data-lang="kap" class="lang-hidden">Nangyayari ito king panahon ning o kaagad pagkatapos ning hemodialysis, lalo na para king deng bagong pasyente ning dialysis. Nung ing dialysis nag-aalis ning deng basura nang masyadong mabilis, ing temporaryo a kawalan ning balanse nagdudulot ning bahagyang pamamaga ning utak. Kasama king deng sintomas ing sakit ning ulo, pagduduwal, kaguluhan, pagkalito, at bihirang deng konbulsyon. Kaya naman deng bagong pasyente ning HD nagsisimula sa mas maikling, mas malambot na deng sesyon.</span></p>
 </div>
 </div>
 <div class="step">
@@ -2209,7 +2220,7 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 <div class="ov-list">
 <div class="ov-stat"><span class="v">10×</span><span class="l">seizure risk in ESKD vs general population</span></div>
 <div class="ov-stat"><span class="v">5–10%</span><span class="l">epilepsy prevalence in ESKD cohorts</span></div>
-<div class="ov-stat"><span class="v">KDIGO<br>AAN</span><span class="l">guideline-aligned dosing</span></div>
+<div class="ov-stat"><span class="v">KDIGO (Kidney Disease: Improving Global Outcomes) / AAN</span><span class="l">guideline-aligned dosing</span></div>
 </div>
 <a class="ov-foot" href="#md-epidemiology">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 </div>
@@ -2273,13 +2284,13 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 <h2>Seizure Syndromes Specific to CKD/ESKD</h2>
 
 <h3>1. Uremic Encephalopathy with Seizures</h3>
-<p>Occurs in advanced CKD (typically eGFR &lt;10 mL/min/1.73m² or missed HD) presenting as progressive encephalopathy culminating in focal or generalized tonic-clonic seizures. EEG shows diffuse slowing with triphasic waves. BUN typically &gt;100 mg/dL. Treatment is urgent dialysis initiation — AEDs alone are insufficient and may be hazardous (levetiracetam is first-line if bridge therapy is needed). Seizures usually resolve within hours of adequate dialysis.</p>
+<p>Occurs in advanced CKD (typically eGFR &lt;10 mL/min/1.73m² or missed HD) presenting as progressive encephalopathy culminating in focal or generalized tonic-clonic seizures. EEG shows diffuse slowing with triphasic waves. BUN (blood urea nitrogen) typically &gt;100 mg/dL. Treatment is urgent dialysis initiation — AEDs alone are insufficient and may be hazardous (levetiracetam is first-line if bridge therapy is needed). Seizures usually resolve within hours of adequate dialysis.</p>
 
 <h3>2. Dialysis Disequilibrium Syndrome (DDS)</h3>
 <p>Occurs during or immediately after hemodialysis, particularly with first sessions or after prolonged uremia. Rapid urea clearance creates a temporary reverse osmotic gradient, with brain urea exceeding plasma urea, driving water into the CNS. Cerebral edema manifests as headache, nausea, restlessness, confusion, and — in severe cases — seizures and coma. Prevention: use slow blood flow rates (150–200 mL/min), short initial sessions (2 hours), high-sodium dialysate, and reduce target BUN reduction to &lt;40% per session for high-risk patients.</p>
 
 <h3>3. PRES (Posterior Reversible Encephalopathy Syndrome)</h3>
-<p>Hypertensive emergency in the CKD/transplant population causing vasogenic edema predominantly in posterior white matter. Classic triad: acute severe hypertension + seizures + visual disturbance. MRI shows bilateral posterior FLAIR hyperintensity. Prompt BP reduction (IV labetalol or nicardipine targeting MAP reduction of 20–25% in first hour) with seizure control is curative in most cases. AEDs can be tapered once PRES resolves (typically 4–8 weeks).</p>
+<p>Hypertensive emergency in the CKD/transplant population causing vasogenic edema predominantly in posterior white matter. Classic triad: acute severe hypertension + seizures + visual disturbance. MRI (magnetic resonance imaging) shows bilateral posterior FLAIR hyperintensity. Prompt BP reduction (IV labetalol or nicardipine targeting MAP reduction of 20–25% in first hour) with seizure control is curative in most cases. AEDs can be tapered once PRES resolves (typically 4–8 weeks).</p>
 
 <h3>4. Drug-Induced Seizures in CKD</h3>
 <div class="table-wrap">
@@ -2306,7 +2317,7 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 <div class="step-num">1</div>
 <div class="step-body">
 <h4>Immediate Labs (within 1 hour)</h4>
-<p>BMP/CMP (glucose, sodium, calcium, magnesium, BUN, creatinine), CBC, fingerstick glucose, venous blood gas (metabolic acidosis severity), phosphorus. Assess for uremic emergency, electrolyte seizure triggers, and hypoglycemia.</p>
+<p>BMP/CMP (glucose, sodium, calcium, magnesium, BUN, creatinine), CBC (complete blood count), fingerstick glucose, venous blood gas (metabolic acidosis severity), phosphorus. Assess for uremic emergency, electrolyte seizure triggers, and hypoglycemia.</p>
 </div>
 </div>
 <div class="step">
@@ -2320,7 +2331,7 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 <div class="step-num">3</div>
 <div class="step-body">
 <h4>Neuroimaging</h4>
-<p>Non-contrast CT head urgently (if altered consciousness, focal deficits, papilledema, or first-ever seizure). MRI brain with FLAIR sequences is superior for PRES, encephalitis, cortical lesions — defer contrast unless absolutely necessary (CIN risk). GFR-based risk stratification for contrast: generally safe if eGFR ≥30 with prehydration.</p>
+<p>Non-contrast CT (computed tomography) head urgently (if altered consciousness, focal deficits, papilledema, or first-ever seizure). MRI brain with FLAIR sequences is superior for PRES, encephalitis, cortical lesions — defer contrast unless absolutely necessary (CIN risk). GFR-based risk stratification for contrast: generally safe if eGFR ≥30 with prehydration.</p>
 </div>
 </div>
 <div class="step">
@@ -2334,7 +2345,7 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 <div class="step-num">5</div>
 <div class="step-body">
 <h4>Dialysis Adequacy Assessment</h4>
-<p>Review most recent Kt/V (target ≥1.2 for HD), dialysis prescription, and last session attendance. Missed HD sessions are the most common and reversible seizure trigger in ESKD. Calculate URR; BUN pre-HD in context.</p>
+<p>Review most recent Kt/V (target ≥1.2 for HD), dialysis prescription, and last session attendance. Missed HD sessions are the most common and reversible seizure trigger in ESKD. Calculate URR (urea reduction ratio); BUN pre-HD in context.</p>
 </div>
 </div>
 <div class="step">
@@ -2705,7 +2716,7 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <h4>Peritoneal Dialysis (CAPD/APD) and AEDs</h4>
-<p>PD removes AEDs to a much lesser extent than intermittent HD due to lower clearance volumes and absence of high-flux membranes. In general, supplemental post-PD dosing is NOT required for most AEDs. Exception: continuous high-volume PD (automated PD with 24h clearance) may remove levetiracetam and gabapentin to a clinically relevant degree — monitor levels. AED maintenance dosing for PD patients is typically the same as for pre-dialysis CKD G5 (eGFR &lt;15).</p>
+<p>PD (peritoneal dialysis) removes AEDs to a much lesser extent than intermittent HD due to lower clearance volumes and absence of high-flux membranes. In general, supplemental post-PD dosing is NOT required for most AEDs. Exception: continuous high-volume PD (automated PD with 24h clearance) may remove levetiracetam and gabapentin to a clinically relevant degree — monitor levels. AED maintenance dosing for PD patients is typically the same as for pre-dialysis CKD G5 (eGFR &lt;15).</p>
 </div>
 </div>
 </div>
@@ -2748,7 +2759,7 @@ try{(function(){var v=localStorage.getItem('wgmr-epilepsy-seizures-mode');if(v==
 <div class="step-num">3</div>
 <div class="step-body">
 <h4>20–40 min: Repeat Second-Line or Third Agent</h4>
-<p>If second-line fails: repeat with a different second-line agent (if not tried) OR proceed to third-line. At this stage, ICU admission and anesthesiologist consultation are recommended. Continue monitoring for NCSE (EEG).</p>
+<p>If second-line fails: repeat with a different second-line agent (if not tried) OR proceed to third-line. At this stage, ICU (intensive care unit) admission and anesthesiologist consultation are recommended. Continue monitoring for NCSE (EEG).</p>
 </div>
 </div>
 <div class="step">
@@ -2865,7 +2876,7 @@ Content updated June 2026 · For educational purposes only
 <span class="related-card-tag">CKD · Overview</span>
 <span class="related-card-title">Understanding Chronic Kidney Disease</span>
 
-          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card" href="pres-kidney-disease.html">
 <span class="related-card-tag">PRES · Neurology</span>
 <span class="related-card-title">PRES in Kidney Disease</span>
@@ -3268,5 +3279,6 @@ function calcAedLookup() {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

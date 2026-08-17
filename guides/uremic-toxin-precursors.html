@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1752,7 +1763,7 @@ body.dark .related-card-title {
       <span data-lang="kap" class="lang-hidden">Ing deng Nakatagong Dahilan ning Pag-unlad ning CKD</span></div>
     <h2><span data-lang="en">What Are Uremic Toxins — and Why Are They Invisible on Standard Blood Tests?</span><span data-lang="tl" class="lang-hidden">Ano ang mga Uremic Toxin — at Bakit Hindi Sila Nakikita sa Mga Karaniwang Pagsusuri ng Dugo?</span><span data-lang="ceb" class="lang-hidden">Unsa ang mga Uremic Toxin — ug Ngano nga Dili Makita sa Mga Karaniwang Pagsusuri sa Dugo?</span>
       <span data-lang="kap" class="lang-hidden">Ano ing deng Uremic Toxin — at Bakit Ali Sila Nakikita king Deng Karaniwang Pagsusuri ning Daya?</span></h2>
-    <figure style="margin:0 0 24px 0"><picture><source srcset="../images/uremic-toxin-hero-overview.webp" type="image/webp"><img fetchpriority="high" loading="eager" src="../images/uremic-toxin-hero-overview.png" alt="The hidden chemical threat to kidney health — infographic showing gut bacteria producing indoxyl sulfate, p-cresyl sulfate, and TMAO that silently damage the kidneys beyond what standard blood tests detect" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:10px;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">Uremic toxins — IS, pCS, and TMAO — are produced silently in the gut and accumulate in CKD. Most are invisible on standard blood tests, yet they drive inflammation, fibrosis, and cardiovascular death.</figcaption></figure>
+    <figure style="margin:0 0 24px 0"><picture><source srcset="../images/uremic-toxin-hero-overview.webp" type="image/webp"><img fetchpriority="high" loading="eager" src="../images/uremic-toxin-hero-overview.png" alt="The hidden chemical threat to kidney health — infographic showing gut bacteria producing indoxyl sulfate, p-cresyl sulfate, and TMAO that silently damage the kidneys beyond what standard blood tests detect" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:10px;" width="1536" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">Uremic toxins — IS, pCS, and TMAO — are produced silently in the gut and accumulate in chronic kidney disease (CKD). Most are invisible on standard blood tests, yet they drive inflammation, fibrosis, and cardiovascular death.</figcaption></figure>
 
     <div class="intro-callout">
       <p><span data-lang="en">Uremic toxins are metabolic waste products that accumulate in CKD and directly damage the kidneys, heart, vessels, and immune system. <strong>Most are not measured on routine blood panels</strong> — yet they are responsible for much of the inflammation, cardiovascular mortality, and CKD progression that occurs even in well-dialyzed patients. Their dietary precursors are specific, identifiable, and reducible.</span><span data-lang="tl" class="lang-hidden">Ang mga uremic toxin ay mga metabolic waste na nag-iipon sa CKD at direktang nasisira ang mga bato, puso, mga daluyan ng dugo, at immune system. <strong>Karamihan ay hindi sinusukat sa mga karaniwang pagsusuri ng dugo</strong> — ngunit sila ang responsable sa malaking bahagi ng pamamaga, pagkamatay sa cardiovascular, at pag-unlad ng CKD na nangyayari kahit sa mga pasyenteng maayos ang dialysis. Ang kanilang mga dietary precursor ay tiyak, matutukoy, at mababawasan.</span><span data-lang="ceb" class="lang-hidden">Ang mga uremic toxin mao ang mga metabolic waste nga nag-ipon sa CKD ug direktang nakahalit sa mga kidney, puso, mga ugat, ug immune system. <strong>Kadaghanan dili gisukod sa mga karaniwang pagsusuri sa dugo</strong> — apan sila ang responsable sa dakong bahin sa pamamagang, pagkamatay sa cardiovascular, ug pag-abante sa CKD nga mahitabo bisan sa mga pasyente nga maayong nadialysis. Ang ilang mga dietary precursor espesipiko, matudloan, ug mapagpabawan.</span>
@@ -1898,7 +1909,7 @@ body.dark .related-card-title {
       <span data-lang="kap" class="lang-hidden">Platelet dysfunction → panganib ning thrombosis</span></li>
             <li><span data-lang="en">Endothelial toxicity → vascular calcification</span><span data-lang="tl" class="lang-hidden">Endothelial toxicity → vascular calcification</span><span data-lang="ceb" class="lang-hidden">Endothelial toxicity → vascular calcification</span>
       <span data-lang="kap" class="lang-hidden">Endothelial toxicity → vascular calcification</span></li>
-            <li><span data-lang="en">High pCS independently predicts mortality in HD patients</span><span data-lang="tl" class="lang-hidden">Ang mataas na pCS ay independyenteng nagtataya ng mortality sa mga pasyenteng HD</span><span data-lang="ceb" class="lang-hidden">Ang taas nga pCS independyente nga nagpredikto sa mortality sa mga pasyente sa HD</span>
+            <li><span data-lang="en">High pCS independently predicts mortality in hemodialysis (HD) patients</span><span data-lang="tl" class="lang-hidden">Ang mataas na pCS ay independyenteng nagtataya ng mortality sa mga pasyenteng HD</span><span data-lang="ceb" class="lang-hidden">Ang taas nga pCS independyente nga nagpredikto sa mortality sa mga pasyente sa HD</span>
       <span data-lang="kap" class="lang-hidden">Ing matas a pCS ya independyenteng nagtataya ning mortality king deng pasyenteng HD</span></li>
           </ul>
         </div>
@@ -2020,7 +2031,7 @@ body.dark .related-card-title {
           <ul>
             <li><span data-lang="en"><strong>All dietary protein</strong> — every gram of protein metabolized generates nitrogen, which becomes urea via the urea cycle</span><span data-lang="tl" class="lang-hidden"><strong>Lahat ng dietary protein</strong> — bawat gramo ng protinang na-metabolize ay gumagawa ng nitrogen, na nagiging urea sa pamamagitan ng urea cycle</span><span data-lang="ceb" class="lang-hidden"><strong>Tanan nga dietary protein</strong> — ang matag gramo sa protina nga na-metabolize nagprodyus sa nitrogen, nga nahimong urea pinaagi sa urea cycle</span>
       <span data-lang="kap" class="lang-hidden"><strong>Amin ning dietary protein</strong> — bawat gramo ning protinang a-metabolize ya gumagawa ning nitrogen, a nagiging urea king pamamagitan ning urea cycle</span></li>
-            <li><span data-lang="en">High-protein diets (≥1.2 g/kg/day in pre-dialysis) dramatically raise BUN</span><span data-lang="tl" class="lang-hidden">Ang mga diyetang mataas sa protina (≥1.2 g/kg/araw sa pre-dialysis) ay dramatikong nagpapataas ng BUN</span><span data-lang="ceb" class="lang-hidden">Ang mga diyeta nga taas sa protina (≥1.2 g/kg/adlaw sa pre-dialysis) dramatiko nga nagpadako sa BUN</span>
+            <li><span data-lang="en">High-protein diets (≥1.2 g/kg/day in pre-dialysis) dramatically raise blood urea nitrogen (BUN)</span><span data-lang="tl" class="lang-hidden">Ang mga diyetang mataas sa protina (≥1.2 g/kg/araw sa pre-dialysis) ay dramatikong nagpapataas ng BUN</span><span data-lang="ceb" class="lang-hidden">Ang mga diyeta nga taas sa protina (≥1.2 g/kg/adlaw sa pre-dialysis) dramatiko nga nagpadako sa BUN</span>
       <span data-lang="kap" class="lang-hidden">Ing deng diyetang matas king protina (≥1.2 g/kg/aldo king pre-dialysis) ya dramatikong nagpapataas ning BUN</span></li>
             <li><span data-lang="en">Hidden protein sources: bagoong, processed meats, high-protein snacks</span><span data-lang="tl" class="lang-hidden">Mga nakatagong pinagkukunan ng protina: bagoong, processed meats, high-protein snacks</span><span data-lang="ceb" class="lang-hidden">Mga nagtago nga tinubdan sa protina: bagoong, processed meats, high-protein snacks</span>
       <span data-lang="kap" class="lang-hidden">Deng nakatagong pinagkukunan ning protina: bagoong, processed meats, high-protein snacks</span></li>
@@ -2032,7 +2043,7 @@ body.dark .related-card-title {
           <ul>
             <li><span data-lang="en">Carbamylates proteins — reacts with albumin, lipoproteins, hemoglobin — causing structural dysfunction</span><span data-lang="tl" class="lang-hidden">Nagca-carbamylate ng mga protina — nakikipag-react sa albumin, lipoproteins, hemoglobin — nagdudulot ng structural dysfunction</span><span data-lang="ceb" class="lang-hidden">Nagcarbamylate sa mga protina — nakig-react sa albumin, lipoproteins, hemoglobin — nagdala sa structural dysfunction</span>
       <span data-lang="kap" class="lang-hidden">Nagca-carbamylate ning deng protina — nakikipag-react king albumin, lipoproteins, hemoglobin — nagdudulot ning structural dysfunction</span></li>
-            <li><span data-lang="en">Carbamylated LDL is more atherogenic than native LDL</span><span data-lang="tl" class="lang-hidden">Ang carbamylated LDL ay mas atherogenic kaysa native LDL</span><span data-lang="ceb" class="lang-hidden">Ang carbamylated LDL mas atherogenic kaysa native LDL</span>
+            <li><span data-lang="en">Carbamylated low-density lipoprotein (LDL) is more atherogenic than native LDL</span><span data-lang="tl" class="lang-hidden">Ang carbamylated LDL ay mas atherogenic kaysa native LDL</span><span data-lang="ceb" class="lang-hidden">Ang carbamylated LDL mas atherogenic kaysa native LDL</span>
       <span data-lang="kap" class="lang-hidden">Ing carbamylated LDL ya mas atherogenic kaysa native LDL</span></li>
             <li><span data-lang="en">Carbamylated albumin impairs drug binding — alters drug metabolism</span><span data-lang="tl" class="lang-hidden">Ang carbamylated albumin ay nagpapahina ng drug binding — nagbabago ng drug metabolism</span><span data-lang="ceb" class="lang-hidden">Ang carbamylated albumin nagpapug-os sa drug binding — nagbag-o sa drug metabolism</span>
       <span data-lang="kap" class="lang-hidden">Ing carbamylated albumin ya nagpapahina ning drug binding — nagbabago ning drug metabolism</span></li>
@@ -2209,28 +2220,28 @@ body.dark .related-card-title {
           <div class="related-card-desc">Many common foods — eaten daily by millions of Filipinos — generate compounds that healthy kidneys e</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/food-kidney-toxins-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/food-kidney-toxins-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="microbiome-probiotics-health.html">
           <div class="related-card-tag">The Inner Ecosystem</div>
           <div class="related-card-title">Your Microbiome & the Role of Biotics in Health</div>
           <div class="related-card-desc">The 38 trillion microorganisms living in your gut are not passengers — they are active participants </div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/microbiome-probiotics-health-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/microbiome-probiotics-health-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="nutrition-kidney-patients.html">
           <div class="related-card-tag">Why Food Is Medicine</div>
           <div class="related-card-title">Nutrition for Kidney Patients</div>
           <div class="related-card-desc">A practical Filipino guide to eating well with CKD — what to limit, what is safe, how to read food l</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="dialysis-adequacy.html">
           <div class="related-card-tag">The Foundation</div>
           <div class="related-card-title">Is My Dialysis Working? Understanding Dialysis Adequacy</div>
           <div class="related-card-desc">What Kt/V and URR mean, why they matter, what your target should be, and how to calculate your own d</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/dialysis-adequacy-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -2323,5 +2334,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

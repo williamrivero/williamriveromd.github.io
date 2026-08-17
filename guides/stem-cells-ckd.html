@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -137,6 +138,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1305,8 +1314,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1839,7 +1850,7 @@ body.dark .related-card-title {
       <span data-lang="kap" class="lang-hidden">Nasaan tamu king pananaliksik</span>
       </h4>
       <p>
-        <span data-lang="en">Phase 1–2 clinical trials for CKD. Promising in animal models. A few human trials show modest safety signals. No Phase 3 trial has demonstrated clinical benefit sufficient for approval.</span>
+        <span data-lang="en">Phase 1–2 clinical trials for CKD (chronic kidney disease). Promising in animal models. A few human trials show modest safety signals. No Phase 3 trial has demonstrated clinical benefit sufficient for approval.</span>
         <span data-lang="tl" class="lang-hidden">Phase 1–2 clinical trials para sa CKD. Promising sa mga modelo ng hayop. Ilang mga pagsubok sa tao ay nagpapakita ng katamtamang signal ng kaligtasan. Walang Phase 3 na pagsubok na nagpakita ng sapat na klinikal na benepisyo para sa pag-apruba.</span>
         <span data-lang="ceb" class="lang-hidden">Phase 1–2 clinical trials alang sa CKD. Promising sa mga modelo sa hayop. Pipila ka mga pagsulay sa tawo nagpakita ug modest nga signal sa kaligtasan. Walay Phase 3 trial nga nagpakita ug sapat nga clinical nga benepisyo alang sa pag-apruba.</span>
       <span data-lang="kap" class="lang-hidden">Phase 1–2 clinical trials para king CKD. Promising king deng modelo ning hayop. Ilang deng pagsubok king tao ya nagpapakita ning katamtamang signal ning kaligtasan. Alang Phase 3 a pagsubok a nagpakita ning sapat a klinikal a benepisyo para king pag-apruba.</span>
@@ -1853,7 +1864,7 @@ body.dark .related-card-title {
       <span data-lang="kap" class="lang-hidden">Ano ing HINDI pa posible</span>
       </h4>
       <p>
-        <span data-lang="en">Reversing established CKD, replacing lost nephrons, eliminating the need for dialysis, or curing ESKD. Any clinic claiming otherwise is not being truthful with you.</span>
+        <span data-lang="en">Reversing established CKD, replacing lost nephrons, eliminating the need for dialysis, or curing ESKD (end-stage kidney disease). Any clinic claiming otherwise is not being truthful with you.</span>
         <span data-lang="tl" class="lang-hidden">Ang pagbabago ng naitatag na CKD, pagpapalit ng nawalang nephrons, pag-aalis ng pangangailangan para sa dialysis, o pag-alis ng ESKD. Ang anumang klinika na nag-aangkin nito ay hindi nagsasabi ng katotohanan sa inyo.</span>
         <span data-lang="ceb" class="lang-hidden">Ang pag-reverse sa established nga CKD, pagpuli sa nawala nga nephrons, pagwagtang sa kinahanglan alang sa dialysis, o pagayo sa ESKD. Bisan unsang klinika nga nag-angkon niini dili nagasulti ug tinuod kanimo.</span>
       <span data-lang="kap" class="lang-hidden">Ing pagbabago ning naitatag a CKD, pagpapalit ning nawalang nephrons, pag-aalis ning pangangailangan para king dialysis, o pag-alis ning ESKD. Ing anumang klinika a nag-aangkin nini ya ali nagsasabi ning katotohanan king inyo.</span>
@@ -1954,7 +1965,7 @@ body.dark .related-card-title {
       <h4><span data-lang="en">The honest scientific position (2025)</span><span data-lang="tl" class="lang-hidden">Ang tapat na posisyon ng agham (2025)</span><span data-lang="ceb" class="lang-hidden">Ang matinud-anon nga posisyon sa agham (2025)</span>
       <span data-lang="kap" class="lang-hidden">Ing tapat a posisyon ning agham (2025)</span></h4>
       <p>
-        <span data-lang="en">Stem cell therapy for CKD is a legitimate area of scientific inquiry. MSC-based therapies have shown anti-inflammatory and anti-fibrotic effects in animal models of CKD and AKI. Early-phase human trials suggest these cells are mostly safe at the doses studied. However, <strong>no stem cell therapy for CKD has completed Phase 3 trials or received regulatory approval from FDA, EMA, or FDA Philippines.</strong> All commercial "stem cell treatments" being sold today for kidney disease exist outside the boundaries of proven medicine.</span>
+        <span data-lang="en">Stem cell therapy for CKD is a legitimate area of scientific inquiry. MSC-based therapies have shown anti-inflammatory and anti-fibrotic effects in animal models of CKD and AKI (acute kidney injury). Early-phase human trials suggest these cells are mostly safe at the doses studied. However, <strong>no stem cell therapy for CKD has completed Phase 3 trials or received regulatory approval from FDA (Food and Drug Administration), EMA, or FDA Philippines.</strong> All commercial "stem cell treatments" being sold today for kidney disease exist outside the boundaries of proven medicine.</span>
         <span data-lang="tl" class="lang-hidden">Ang stem cell therapy para sa CKD ay isang lehitimong lugar ng pang-agham na pagsisiyasat. Ang mga therapy batay sa MSC ay nagpakita ng anti-inflammatory at anti-fibrotic na epekto sa mga modelo ng hayop ng CKD at AKI. Ang maagang yugto ng mga pagsubok sa tao ay nagmumungkahi na ang mga cell na ito ay karaniwang ligtas sa mga dosis na pinag-aralan. Gayunpaman, <strong>walang stem cell therapy para sa CKD na nakumpleto ang Phase 3 trials o nakatanggap ng regulatorya na pag-apruba mula sa FDA, EMA, o FDA Philippines.</strong></span>
         <span data-lang="ceb" class="lang-hidden">Ang stem cell therapy alang sa CKD usa ka lehitimong lugar sa siyentipikong pagsusi. Ang mga therapy base sa MSC nagpakita ug anti-inflammatory ug anti-fibrotic nga mga epekto sa mga modelo sa hayop sa CKD ug AKI. Ang sayo-pang yugto sa mga pagsulay sa tawo nagsugyot nga kini nga mga selula kasagarang luwas sa mga dosis nga gipag-aralan. Bisan pa niana, <strong>walay stem cell therapy alang sa CKD ang nakompleto sa Phase 3 trials o nakatanggap ug regulatorya nga pag-apruba gikan sa FDA, EMA, o FDA Philippines.</strong></span>
       <span data-lang="kap" class="lang-hidden">Ing stem cell therapy para king CKD ya metung a lehitimong lugar ning pang-agham a pagsisiyasat. Ing deng therapy batay king MSC ya nagpakita ning anti-inflammatory at anti-fibrotic a epekto king deng modelo ning hayop ning CKD at AKI. Ing maagang yugto ning deng pagsubok king tao ya nagmumungkahi a ing deng cell a ini ya karaniwang ligtas king deng dosis a pinag-aralan. Gayunpaman, <strong>alang stem cell therapy para king CKD a nakumpleto ing Phase 3 trials o nakatanggap ning regulatorya a pag-apruba mula king FDA, EMA, o FDA Philippines.</strong></span>
@@ -2232,7 +2243,7 @@ body.dark .related-card-title {
       <tr>
         <td>Bone marrow transplant for blood cancers</td>
         <td><span class="ev-badge ev-approved">Approved</span></td>
-        <td><span data-lang="en">Established, evidence-based, FDA/DOH-approved. Not relevant to kidney disease treatment.</span><span data-lang="tl" class="lang-hidden">Naitatag, batay-sa-ebidensya, naaprubahan ng FDA/DOH. Hindi kaugnay sa paggamot ng sakit sa bato.</span><span data-lang="ceb" class="lang-hidden">Naitatag, batay sa ebidensya, giaprobahan sa FDA/DOH. Dili may kalabotan sa pagtambal sa sakit sa kidney.</span>
+        <td><span data-lang="en">Established, evidence-based, FDA/DOH (Department of Health)-approved. Not relevant to kidney disease treatment.</span><span data-lang="tl" class="lang-hidden">Naitatag, batay-sa-ebidensya, naaprubahan ng FDA/DOH. Hindi kaugnay sa paggamot ng sakit sa bato.</span><span data-lang="ceb" class="lang-hidden">Naitatag, batay sa ebidensya, giaprobahan sa FDA/DOH. Dili may kalabotan sa pagtambal sa sakit sa kidney.</span>
       <span data-lang="kap" class="lang-hidden">Naitatag, batay-king-ebidensya, naaprubahan ning FDA/DOH. Ali kaugnay king paggamut ning sakit king batu.</span></td>
         <td><span data-lang="en">Yes — but not for CKD</span><span data-lang="tl" class="lang-hidden">Oo — ngunit hindi para sa CKD</span><span data-lang="ceb" class="lang-hidden">Oo — apan dili alang sa CKD</span>
       <span data-lang="kap" class="lang-hidden">Oo — ngarud ali para king CKD</span></td>
@@ -2628,7 +2639,7 @@ body.dark .related-card-title {
       <span data-lang="kap" class="lang-hidden">Ing mayroon tamu ngayon ya makapangyarihan pa rin</span>
         </h4>
         <p>
-          <span data-lang="en">SGLT2 inhibitors (dapagliflozin, empagliflozin) slow CKD progression with Level 1A evidence. RAAS blockade, blood pressure control, protein-controlled diet, finerenone, uric acid management — these are real, proven, available therapies. They do not cure CKD either, but they extend kidney life by years to decades when used correctly. They are not glamorous, but they work.</span>
+          <span data-lang="en">SGLT2 (sodium–glucose cotransporter-2) inhibitors (dapagliflozin, empagliflozin) slow CKD progression with Level 1A evidence. RAAS (renin–angiotensin–aldosterone system) blockade, blood pressure control, protein-controlled diet, finerenone, uric acid management — these are real, proven, available therapies. They do not cure CKD either, but they extend kidney life by years to decades when used correctly. They are not glamorous, but they work.</span>
           <span data-lang="tl" class="lang-hidden">Ang mga SGLT2 inhibitor ay nagpapabagal ng pag-unlad ng CKD na may Level 1A na ebidensya. Ang RAAS blockade, kontrol ng presyon ng dugo, diyeta na kontrolado ng protina, finerenone, pamamahala ng uric acid — ang mga ito ay tunay, napatunayang available na mga therapy. Hindi rin sila nagpapagaling ng CKD, ngunit pinapahaba nila ang buhay ng bato ng mga taon hanggang dekada kapag ginagamit nang tama.</span>
           <span data-lang="ceb" class="lang-hidden">Ang mga SGLT2 inhibitor nagpabagal sa pag-uswag sa CKD nga adunay Level 1A nga ebidensya. Ang RAAS blockade, kontrol sa presyon sa dugo, protein-controlled nga diyeta, finerenone, pamamahala sa uric acid — kini mga tinuod, napatunayang available nga mga therapy. Wala usab sila nag-ayo sa CKD, apan gipadugay nila ang kinabuhi sa kidney ug mga tuig hangtud mga dekada kung gigamit nang husto.</span>
       <span data-lang="kap" class="lang-hidden">Ing deng SGLT2 inhibitor ya nagpapabagal ning pag-unlad ning CKD a atin Level 1A a ebidensya. Ing RAAS blockade, kontrol ning presyon ning daya, diyeta a kontrolado ning protina, finerenone, pamamahala ning uric acid — ing deng ini ya tunay, napatunayang available a deng therapy. Ali rin sila nagpapagaling ning CKD, ngarud pinapahaba nila ing biye ning batu ning deng banua anggang dekada nung ginagamit nang tama.</span>
@@ -2645,7 +2656,7 @@ body.dark .related-card-title {
       <span data-lang="kap" class="lang-hidden">Manatiling atin kaalaman — ing hinaharap ya tunay a promising</span>
         </h4>
         <p>
-          <span data-lang="en">The day may come when a stem cell-based therapy for CKD is approved, proven safe and effective, and available in the Philippines. I hope that day comes in my career. When it does, I will tell you about it — and it will be covered by guidelines, PhilHealth, and available at accredited institutions, not sold through social media for ₱300,000 in an unregulated clinic.</span>
+          <span data-lang="en">The day may come when a stem cell-based therapy for CKD is approved, proven safe and effective, and available in the Philippines. I hope that day comes in my career. When it does, I will tell you about it — and it will be covered by guidelines, PhilHealth (Philippine Health Insurance Corporation), and available at accredited institutions, not sold through social media for ₱300,000 in an unregulated clinic.</span>
           <span data-lang="tl" class="lang-hidden">Maaaring dumating ang araw na ang isang therapy para sa CKD batay sa stem cell ay naaprubahan, napatunayang ligtas at epektibo, at available sa Pilipinas. Umaasa ako na darating ang araw na iyon sa aking karera. Kapag nangyari iyon, sasabihin ko ito sa inyo — at ito ay sasaklawin ng mga alituntunin, PhilHealth, at available sa mga accredited na institusyon.</span>
           <span data-lang="ceb" class="lang-hidden">Mahimong moabot ang adlaw nga ang usa ka therapy alang sa CKD base sa stem cell giaprobahan, napatunayang luwas ug epektibo, ug available sa Pilipinas. Naglaom ako nga moabot ang adlaw nga kana sa akong karera. Kung moabot kana, sultihan ko ikaw bahin niini — ug kini sakopan sa mga guidelines, PhilHealth, ug available sa mga accredited nga institusyon.</span>
       <span data-lang="kap" class="lang-hidden">Maaaring dumating ing aldo a ing metung a therapy para king CKD batay king stem cell ya naaprubahan, napatunayang ligtas at epektibo, at available king Pilipinas. Umaasa ako a darating ing aldo a iyun king aking karera. Nung nangyari iyun, sasabihin ko ini king inyo — at ini ya sasaklawin ning deng alituntunin, PhilHealth, at available king deng accredited a institusyon.</span>
@@ -2715,21 +2726,21 @@ body.dark .related-card-title {
           <div class="related-card-desc">What herbal remedies and holistic therapies are safe, which ones are harmful, and how integrative me</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/ckd-alternative-holistic-medicine-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-alternative-holistic-medicine-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="innovative-technologies-ckd.html">
           <div class="related-card-tag">Precision Diagnostics</div>
           <div class="related-card-title">Innovative Technologies & Approaches in Kidney Care</div>
           <div class="related-card-desc">From wearable artificial kidneys and biomarker-guided precision medicine to gene therapy and remote </div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/innovative-technologies-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/innovative-technologies-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="ckd-top5-mistakes.html">
           <div class="related-card-tag">Why This Guide Exists</div>
           <div class="related-card-title">Top 5 Mistakes CKD Patients Make</div>
           <div class="related-card-desc">These are not failures of character — they are gaps in information. Every one of these mistakes is u</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/ckd-top5-mistakes-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-top5-mistakes-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -2838,5 +2849,6 @@ function setLang(lang){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

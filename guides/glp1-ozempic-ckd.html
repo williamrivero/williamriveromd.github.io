@@ -13,6 +13,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -138,6 +139,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1306,8 +1315,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1893,7 +1904,7 @@ html[data-theme="dark"] .drug-card h4{color:#e8eaf0;}
     <img fetchpriority="high" loading="eager" src="../images/glp1-ckd-overview.png" width="1536" height="1024"
          alt="GLP-1 Medications (Ozempic and others) in CKD infographic: how GLP-1 works, potential benefits in CKD, who may benefit, safety and side effects, dose and kidney function guidance, important reminders, and common GLP-1 medications (semaglutide, liraglutide, dulaglutide, exenatide)." style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.1);">
   </picture>
-  <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Overview: GLP-1 medications in CKD — benefits, who qualifies, safety, and tips for best results.</figcaption>
+  <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Overview: glucagon-like peptide-1 (GLP-1) medications in chronic kidney disease (CKD) — benefits, who qualifies, safety, and tips for best results.</figcaption>
 </figure>
 
 <div class="intro-callout">
@@ -1910,14 +1921,14 @@ html[data-theme="dark"] .drug-card h4{color:#e8eaf0;}
 <div class="dc-class">GLP-1 RA — Injectable</div>
 <h4>Semaglutide</h4>
 <div class="dc-drug">Ozempic® (weekly injection) · Rybelsus® (daily oral)</div>
-<p><span data-lang="en">The most studied GLP-1 drug for kidney protection. Once-weekly subcutaneous injection (0.5mg → 1mg). Now FDA-approved for CKD + T2DM since January 2025.</span><span class="lang-hidden" data-lang="tl">Ang pinaka-pinag-aralan na GLP-1 na gamot para sa proteksyon ng bato. Isang beses sa isang linggo na subcutaneous injection. Inaaprubahan ng FDA para sa CKD + T2DM mula Enero 2025.</span><span class="lang-hidden" data-lang="ceb">Ang pinaka-gistudyohan nga GLP-1 nga tambal alang sa proteksyon sa kidney. Kausa sa usa ka semana nga subcutaneous injection. FDA-approved alang sa CKD + T2DM sukad Enero 2025.</span><span class="lang-hidden" data-lang="kap">Ing pinaka-pinag-aralan a GLP-1 a gamut para king proteksyon ning batu. Metung beses king metung a linggu a subcutaneous injection. FDA-approved para king CKD + T2DM mula Enero 2025.</span></p>
+<p><span data-lang="en">The most studied GLP-1 drug for kidney protection. Once-weekly subcutaneous injection (0.5mg → 1mg). Now Food and Drug Administration (FDA)-approved for CKD + type 2 diabetes mellitus (T2DM) since January 2025.</span><span class="lang-hidden" data-lang="tl">Ang pinaka-pinag-aralan na GLP-1 na gamot para sa proteksyon ng bato. Isang beses sa isang linggo na subcutaneous injection. Inaaprubahan ng FDA para sa CKD + T2DM mula Enero 2025.</span><span class="lang-hidden" data-lang="ceb">Ang pinaka-gistudyohan nga GLP-1 nga tambal alang sa proteksyon sa kidney. Kausa sa usa ka semana nga subcutaneous injection. FDA-approved alang sa CKD + T2DM sukad Enero 2025.</span><span class="lang-hidden" data-lang="kap">Ing pinaka-pinag-aralan a GLP-1 a gamut para king proteksyon ning batu. Metung beses king metung a linggu a subcutaneous injection. FDA-approved para king CKD + T2DM mula Enero 2025.</span></p>
 <span class="dc-trial">FLOW Trial 2025 ✓</span>
 </div>
 <div class="drug-card lira">
 <div class="dc-class">GLP-1 RA — Injectable</div>
 <h4>Liraglutide</h4>
 <div class="dc-drug">Victoza® (daily injection) · Saxenda® (obesity dose)</div>
-<p><span data-lang="en">Daily injection. First GLP-1 to show cardiovascular benefit in CKD patients. Kidney protection shown in LEADER trial (2016). Safe down to eGFR 15.</span><span class="lang-hidden" data-lang="tl">Araw-araw na injection. Unang GLP-1 na nagpakita ng benepisyo sa cardiovascular sa mga pasyente ng CKD. Ang proteksyon ng bato ay ipinakita sa LEADER trial.</span><span class="lang-hidden" data-lang="ceb">Adlaw-adlaw nga injection. Unang GLP-1 nga nagpakita sa cardiovascular nga benepisyo sa mga pasyente sa CKD. Proteksyon sa kidney gipakita sa LEADER trial.</span><span class="lang-hidden" data-lang="kap">Araw-araw a injection. Unang GLP-1 a nagpakita ning cardiovascular a benepisyo king deng pasyente ning CKD. Proteksyon ning batu ipinakita king LEADER trial.</span></p>
+<p><span data-lang="en">Daily injection. First GLP-1 to show cardiovascular benefit in CKD patients. Kidney protection shown in LEADER trial (2016). Safe down to estimated glomerular filtration rate (eGFR) 15.</span><span class="lang-hidden" data-lang="tl">Araw-araw na injection. Unang GLP-1 na nagpakita ng benepisyo sa cardiovascular sa mga pasyente ng CKD. Ang proteksyon ng bato ay ipinakita sa LEADER trial.</span><span class="lang-hidden" data-lang="ceb">Adlaw-adlaw nga injection. Unang GLP-1 nga nagpakita sa cardiovascular nga benepisyo sa mga pasyente sa CKD. Proteksyon sa kidney gipakita sa LEADER trial.</span><span class="lang-hidden" data-lang="kap">Araw-araw a injection. Unang GLP-1 a nagpakita ning cardiovascular a benepisyo king deng pasyente ning CKD. Proteksyon ning batu ipinakita king LEADER trial.</span></p>
 <span class="dc-trial">LEADER Trial 2016</span>
 </div>
 <div class="drug-card dula">
@@ -2066,7 +2077,7 @@ html[data-theme="dark"] .drug-card h4{color:#e8eaf0;}
 </tr>
 <tr>
 <td><span data-lang="en">✅ Already on standard care</span><span class="lang-hidden" data-lang="tl">✅ Kasalukuyan na nasa standard care</span><span class="lang-hidden" data-lang="ceb">✅ Naa na sa standard care</span><span class="lang-hidden" data-lang="kap">✅ Kasalukuyan nang nasa standard care</span></td>
-<td><span data-lang="en">Semaglutide is used IN ADDITION to — not instead of — ACE inhibitors/ARBs, SGLT2 inhibitors, blood pressure control, and diet. It is an add-on therapy.</span><span class="lang-hidden" data-lang="tl">Ang semaglutide ay ginagamit BILANG KARAGDAGAN SA — hindi bilang kapalit ng — mga ACE inhibitor/ARB, SGLT2 inhibitor, kontrol ng presyon ng dugo, at diyeta.</span><span class="lang-hidden" data-lang="ceb">Ang semaglutide gigamit ISIP DUGANG SA — dili isip kailis sa — mga ACE inhibitor/ARB, SGLT2 inhibitor, kontrol sa presyon sa dugo, ug diyeta.</span><span class="lang-hidden" data-lang="kap">Ing semaglutide ginagamit BILANG KARAGDAGAN SA — hindi bilang kapalit ning — deng ACE inhibitor/ARB, SGLT2 inhibitor, kontrol ning presyon ning dala, at diyeta.</span></td>
+<td><span data-lang="en">Semaglutide is used IN ADDITION to — not instead of — ACE inhibitors/angiotensin receptor blockers (ARBs), sodium–glucose cotransporter-2 (SGLT2) inhibitors, blood pressure control, and diet. It is an add-on therapy.</span><span class="lang-hidden" data-lang="tl">Ang semaglutide ay ginagamit BILANG KARAGDAGAN SA — hindi bilang kapalit ng — mga ACE inhibitor/ARB, SGLT2 inhibitor, kontrol ng presyon ng dugo, at diyeta.</span><span class="lang-hidden" data-lang="ceb">Ang semaglutide gigamit ISIP DUGANG SA — dili isip kailis sa — mga ACE inhibitor/ARB, SGLT2 inhibitor, kontrol sa presyon sa dugo, ug diyeta.</span><span class="lang-hidden" data-lang="kap">Ing semaglutide ginagamit BILANG KARAGDAGAN SA — hindi bilang kapalit ning — deng ACE inhibitor/ARB, SGLT2 inhibitor, kontrol ning presyon ning dala, at diyeta.</span></td>
 </tr>
 <tr>
 <td><span data-lang="en">❌ Not on dialysis</span><span class="lang-hidden" data-lang="tl">❌ Hindi nasa dialysis</span><span class="lang-hidden" data-lang="ceb">❌ Wala sa dialysis</span><span class="lang-hidden" data-lang="kap">❌ Hindi nasa dialysis</span></td>
@@ -2128,7 +2139,7 @@ html[data-theme="dark"] .drug-card h4{color:#e8eaf0;}
 <span class="lang-hidden" data-lang="kap">Semaglutide king Pilipinas: Access at Gastos</span>
 </h2>
 <p>
-<span data-lang="en">Ozempic (semaglutide) is available in the Philippines through licensed distributors, but remains expensive and is not currently covered by PhilHealth for the CKD indication. The typical cost is PHP 7,000–12,000 per pen (4-week supply at 0.5mg or 1mg dose). This is a significant barrier for most Filipino patients.</span>
+<span data-lang="en">Ozempic (semaglutide) is available in the Philippines through licensed distributors, but remains expensive and is not currently covered by PhilHealth (Philippine Health Insurance Corporation) for the CKD indication. The typical cost is PHP 7,000–12,000 per pen (4-week supply at 0.5mg or 1mg dose). This is a significant barrier for most Filipino patients.</span>
 <span class="lang-hidden" data-lang="tl">Ang Ozempic (semaglutide) ay available sa Pilipinas sa pamamagitan ng mga lisensyadong distributor, ngunit nananatiling mahal at kasalukuyang hindi sakop ng PhilHealth para sa CKD indication. Ang karaniwang gastos ay PHP 7,000–12,000 bawat pen.</span>
 <span class="lang-hidden" data-lang="ceb">Ang Ozempic (semaglutide) available sa Pilipinas pinaagi sa mga lisensyadong distributor, apan nagpabilin nga mahal ug kasalukuyang wala gisakop sa PhilHealth alang sa CKD indication. Ang tipikal nga gasto PHP 7,000–12,000 kada pen.</span>
 <span class="lang-hidden" data-lang="kap">Ing Ozempic (semaglutide) available king Pilipinas sa pamamagitan ning deng lisensyadong distributor, ngunit nananatiling mahal at kasalukuyang hindi sakop ning PhilHealth para king CKD indication. Ing tipikal a gastos PHP 7,000–12,000 kada pen.</span>
@@ -2221,13 +2232,13 @@ html[data-theme="dark"] .drug-card h4{color:#e8eaf0;}
 <h2><span data-lang="en">Related Guides</span><span class="lang-hidden" data-lang="tl">Mga Kaugnay na Gabay</span><span class="lang-hidden" data-lang="ceb">Mga May Kalabtan nga Giya</span><span class="lang-hidden" data-lang="kap">Ding Kaugnay nga Gabay</span></h2>
 <div class="related-cards">
 <a class="related-card has-thumb" href="diabetes-kidneys.html"><div class="related-card-tag">Diabetic Nephropathy</div><div class="related-card-title">Diabetes & Your Kidneys</div><div class="related-card-desc">How uncontrolled blood sugar silently damages kidney filters, and what to do about it.</div><div class="related-card-arrow">Read →</div>
-          <img class="related-card-thumb" src="../images/diabetes-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/diabetes-kidneys-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="new-therapeutic-agents-ckd.html"><div class="related-card-tag">New Treatments</div><div class="related-card-title">New Therapeutic Agents for CKD</div><div class="related-card-desc">SGLT2 inhibitors, finerenone, and other recently approved kidney-protective medications.</div><div class="related-card-arrow">Read →</div>
-          <img class="related-card-thumb" src="../images/new-therapeutic-agents-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/new-therapeutic-agents-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="slowing-ckd-progression.html"><div class="related-card-tag">Prevention</div><div class="related-card-title">Slowing CKD Progression</div><div class="related-card-desc">The full strategy for keeping your kidneys working longer — medications, diet, and lifestyle.</div><div class="related-card-arrow">Read →</div>
-          <img class="related-card-thumb" src="../images/slowing-ckd-progression-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/slowing-ckd-progression-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="heart-kidney-connection.html"><div class="related-card-tag">Cardio-Renal</div><div class="related-card-title">Heart & Kidney Connection</div><div class="related-card-desc">Why protecting your kidneys also protects your heart — and vice versa.</div><div class="related-card-arrow">Read →</div>
-          <img class="related-card-thumb" src="../images/heart-kidney-connection-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/heart-kidney-connection-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 </div>
 </div>
 
@@ -2278,5 +2289,6 @@ function setLang(lang){localStorage.setItem(GLANG_KEY,lang);['en','tl','ceb','ka
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

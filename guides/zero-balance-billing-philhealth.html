@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1826,7 +1837,7 @@ html[data-theme="dark"] .myth-card .myth-label.reality{background:#0e2a1c;color:
 <div class="hero-grid">
 <div class="hero-copy">
 <div class="hero-tag">
-<span data-lang="en">Universal Health Care &middot; PhilHealth &middot; Patient Rights</span>
+<span data-lang="en">Universal Health Care &middot; PhilHealth (Philippine Health Insurance Corporation) &middot; Patient Rights</span>
 <span class="lang-hidden" data-lang="tl">Universal Health Care &middot; PhilHealth &middot; Karapatan ng Pasyente</span>
 <span class="lang-hidden" data-lang="ceb">Universal Health Care &middot; PhilHealth &middot; Katungod sa Pasyente</span>
 <span class="lang-hidden" data-lang="kap">"Zero Balance" &middot; PhilHealth &middot; Katungkulan ning Pasyente</span>
@@ -1967,7 +1978,7 @@ html[data-theme="dark"] .myth-card .myth-label.reality{background:#0e2a1c;color:
 <div class="myth-card">
 <span class="myth-label myth"><span data-lang="en">Myth 4</span><span class="lang-hidden" data-lang="tl">Maling Paniniwala 4</span><span class="lang-hidden" data-lang="ceb">Sayop nga Pagsabot 4</span><span class="lang-hidden" data-lang="kap">Mali 4</span></span>
 <h4><span data-lang="en">"Zero balance works the same in all hospitals."</span><span class="lang-hidden" data-lang="tl">"Ang zero balance ay parehong gumagana sa lahat ng ospital."</span><span class="lang-hidden" data-lang="ceb">"Ang zero balance pareho ang pagtrabaho sa tanan nga mga ospital."</span><span class="lang-hidden" data-lang="kap">"Ing zero balance pareho ing trabaho sa lahat ning ospital."</span></h4>
-<p><span data-lang="en"><strong>The reality:</strong> Implementation varies significantly across hospitals. A large tertiary government hospital has different capacity, staffing, and administrative systems than a rural district hospital. Some hospitals are more fully integrated into ZBB programs than others. Access to specialists, ICU beds, imaging, and laboratory services differs widely. The policy is uniform &mdash; the on-the-ground reality is not.</span>
+<p><span data-lang="en"><strong>The reality:</strong> Implementation varies significantly across hospitals. A large tertiary government hospital has different capacity, staffing, and administrative systems than a rural district hospital. Some hospitals are more fully integrated into ZBB programs than others. Access to specialists, intensive care unit (ICU) beds, imaging, and laboratory services differs widely. The policy is uniform &mdash; the on-the-ground reality is not.</span>
 <span class="lang-hidden" data-lang="tl"><strong>Ang katotohanan:</strong> Ang pagpapatupad ay nag-iiba-iba nang malaki sa iba't ibang ospital. Ang isang malaking tertiary na pampublikong ospital ay may iba't ibang kakayahan, kawani, at mga sistema ng administrasyon kaysa sa isang rural na distrito ng ospital. Ang patakaran ay pare-pareho &mdash; ang katotohanang nasa lupa ay hindi.</span>
 <span class="lang-hidden" data-lang="ceb"><strong>Ang katinuoran:</strong> Ang implementasyon nagkalainlain pag-ayo sa lain-laing mga ospital. Ang usa ka dakong tertiary nga publiko nga ospital adunay lain nga kapasidad, kawani, ug mga sistema sa administrasyon kaysa sa usa ka rural nga distrito nga ospital. Ang palisiya uniporme &mdash; ang katinuoran sa yuta dili.</span>
 <span class="lang-hidden" data-lang="kap"><strong>Ing katotohanan:</strong> Ing implementasyon nagkakaiba nang malaki sa iba't ibang ospital. Ing isang malaking tertiary a pampublikong ospital maki ibang kapasidad, kawani, at mga sistema ning administrasyon kaysa sa isang rural a distrito ng ospital. Ing patakaran uniporme &mdash; ing katotohanan sa lupa ali.</span>
@@ -2115,7 +2126,7 @@ html[data-theme="dark"] .myth-card .myth-label.reality{background:#0e2a1c;color:
 <div class="alert-body">
 <h4><span data-lang="en">What this means for you as a patient</span><span class="lang-hidden" data-lang="tl">Ano ang ibig sabihin nito para sa iyo bilang pasyente</span><span class="lang-hidden" data-lang="ceb">Unsa kini nagpasabut alang kanimo isip pasyente</span><span class="lang-hidden" data-lang="kap">Nano ing ibig sabihin nito para kekata bilang pasyente</span></h4>
 <ul>
-<li><span data-lang="en"><strong>If you have CKD, diabetes, heart disease, or multiple conditions:</strong> Under DRG, your hospital will be reimbursed more appropriately for the true complexity of your care &mdash; reducing the financial pressure that currently leads to shorter stays and fewer tests for complex patients.</span><span class="lang-hidden" data-lang="tl"><strong>Kung mayroon kang CKD, diabetes, sakit sa puso, o maraming kondisyon:</strong> Sa ilalim ng DRG, ang iyong ospital ay mas naaangkop na mababayaran para sa tunay na kumplikasyon ng iyong pangangalaga &mdash; binabawasan ang pinansiyal na presyon na kasalukuyang humahantong sa mas maikling pananatili at mas kaunting pagsusuri para sa mga kumplikadong pasyente.</span><span class="lang-hidden" data-lang="ceb"><strong>Kung adunay kang CKD, diabetes, sakit sa kasingkasing, o daghang kondisyon:</strong> Ubos sa DRG, ang imong ospital mas angay nga mabayaran alang sa tinuod nga komplikasyon sa imong pag-atiman &mdash; nagpagamay sa pinansiyal nga presyur nga karon nagtultol sa mas mubo nga pag-ostay ug mas gamay nga mga test alang sa mga komplikadong pasyente.</span><span class="lang-hidden" data-lang="kap"><strong>Kung maki kang CKD, diabetes, sakit sa puso, o daming kondisyon:</strong> Sa ilalim ning DRG, ing ating ospital mas angkop na mababayaran para sa tunay a kumplikasyon ning ating alaga &mdash; binabawasan ing pinansiyal a presyon a kasalukuyang humahantong sa mas maikling pananatili at kaunting mga test para sa mga kumplikadong pasyente.</span></li>
+<li><span data-lang="en"><strong>If you have chronic kidney disease (CKD), diabetes, heart disease, or multiple conditions:</strong> Under DRG, your hospital will be reimbursed more appropriately for the true complexity of your care &mdash; reducing the financial pressure that currently leads to shorter stays and fewer tests for complex patients.</span><span class="lang-hidden" data-lang="tl"><strong>Kung mayroon kang CKD, diabetes, sakit sa puso, o maraming kondisyon:</strong> Sa ilalim ng DRG, ang iyong ospital ay mas naaangkop na mababayaran para sa tunay na kumplikasyon ng iyong pangangalaga &mdash; binabawasan ang pinansiyal na presyon na kasalukuyang humahantong sa mas maikling pananatili at mas kaunting pagsusuri para sa mga kumplikadong pasyente.</span><span class="lang-hidden" data-lang="ceb"><strong>Kung adunay kang CKD, diabetes, sakit sa kasingkasing, o daghang kondisyon:</strong> Ubos sa DRG, ang imong ospital mas angay nga mabayaran alang sa tinuod nga komplikasyon sa imong pag-atiman &mdash; nagpagamay sa pinansiyal nga presyur nga karon nagtultol sa mas mubo nga pag-ostay ug mas gamay nga mga test alang sa mga komplikadong pasyente.</span><span class="lang-hidden" data-lang="kap"><strong>Kung maki kang CKD, diabetes, sakit sa puso, o daming kondisyon:</strong> Sa ilalim ning DRG, ing ating ospital mas angkop na mababayaran para sa tunay a kumplikasyon ning ating alaga &mdash; binabawasan ing pinansiyal a presyon a kasalukuyang humahantong sa mas maikling pananatili at kaunting mga test para sa mga kumplikadong pasyente.</span></li>
 <li><span data-lang="en"><strong>Accurate documentation of your conditions matters more than ever:</strong> Under DRG, the hospital is paid based on the complete picture of your health. Make sure your doctor knows and records <em>all</em> your active diagnoses &mdash; not just the reason for admission. An undocumented comorbidity means the hospital is underpaid for your care, which creates exactly the pressure ZBB is meant to eliminate.</span><span class="lang-hidden" data-lang="tl"><strong>Ang tumpak na dokumentasyon ng iyong mga kondisyon ay mas mahalaga kaysa dati:</strong> Sa ilalim ng DRG, ang ospital ay binabayaran batay sa kumpletong larawan ng iyong kalusugan. Tiyaking alam at nire-record ng iyong doktor ang <em>lahat</em> ng iyong mga aktibong diagnosis &mdash; hindi lamang ang dahilan ng pag-admit.</span><span class="lang-hidden" data-lang="ceb"><strong>Ang tukma nga dokumentasyon sa imong mga kondisyon mas importante kaysa kaniadto:</strong> Ubos sa DRG, ang ospital gibayaran base sa kompleto nga litrato sa imong kahimsog. Siguroha nga nahibaloan ug na-record sa imong doktor ang <em>tanan</em> nimo nga aktibong mga diagnosis &mdash; dili lang ang hinungdan sa pag-admit.</span><span class="lang-hidden" data-lang="kap"><strong>Ing tumpak a dokumentasyon ning ating mga kondisyon mas mahalaga kaysa dati:</strong> Sa ilalim ning DRG, ing ospital binabayaran batay sa kumpletong larawan ning ating kalusugan. Tiyakin a alam at nire-record ning ating doktor ing <em>lahat</em> ning ating aktibong mga diagnosis &mdash; ali lamang ing dahilan ning pag-admit.</span></li>
 <li><span data-lang="en"><strong>The system is not perfect yet &mdash; but it is moving in the right direction.</strong> DRG implementation in the Philippines is phased and ongoing. Ask your hospital if they are already operating under DRG classifications, as this affects how your care is coded and billed.</span><span class="lang-hidden" data-lang="tl"><strong>Ang sistema ay hindi pa perpekto &mdash; ngunit ito ay gumagalaw sa tamang direksyon.</strong> Ang implementasyon ng DRG sa Pilipinas ay phasado at nagpapatuloy. Tanungin ang iyong ospital kung nag-ooperate na sila sa ilalim ng mga klasipikasyon ng DRG.</span><span class="lang-hidden" data-lang="ceb"><strong>Ang sistema dili pa perpekto &mdash; apan nagmobili kini sa hustong direksyon.</strong> Ang implementasyon sa DRG sa Pilipinas phasado ug nagpadayon. Pangutana ang imong ospital kung naglihok na sila ubos sa mga klasipikasyon sa DRG.</span><span class="lang-hidden" data-lang="kap"><strong>Ing sistema ali pa perpekto &mdash; pero gumagalaw ito sa tamang direksyon.</strong> Ing implementasyon ning DRG king Pilipinas phasado at nagpapatuloy. Tanungin ing ating ospital kung nag-ooperate na sila sa ilalim ning mga klasipikasyon ning DRG.</span></li>
 </ul>
@@ -2265,12 +2276,12 @@ html[data-theme="dark"] .myth-card .myth-label.reality{background:#0e2a1c;color:
 <h2><span data-lang="en">Related Guides</span><span class="lang-hidden" data-lang="tl">Mga Kaugnay na Gabay</span><span class="lang-hidden" data-lang="ceb">Mga May Kalabtan nga Giya</span><span class="lang-hidden" data-lang="kap">Ding Kaugnay nga Gabay</span></h2>
 <div class="related-cards">
 <a class="related-card has-thumb" href="advance-care-planning-dialysis.html"><div class="related-card-tag">Know Your Options</div><div class="related-card-title">Advance Care Planning for Dialysis Patients</div><div class="related-card-desc">Making your voice heard before a crisis — DNR, CKM, goals of care, and dialysis withdrawal.</div><div class="related-card-arrow">Read &rarr;</div>
-          <img class="related-card-thumb" src="../images/advance-care-planning-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/advance-care-planning-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="organ-donation-philippines.html"><div class="related-card-tag">Philippine Health System</div><div class="related-card-title">Organ Donation in the Philippines</div><div class="related-card-desc">The donation crisis, PCP 2025 declaration, myth-busting, and how to register with PODRRS.</div><div class="related-card-arrow">Read &rarr;</div>
-          <img class="related-card-thumb" src="../images/organ-donation-philippines-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/organ-donation-philippines-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card" href="ckd-understanding.html"><div class="related-card-tag">Know Your Diagnosis</div><div class="related-card-title">Understanding CKD: Stages 1–5</div><div class="related-card-desc">What your eGFR means, what to expect at each stage, and how to slow progression.</div><div class="related-card-arrow">Read &rarr;</div></a>
 <a class="related-card has-thumb" href="hemodialysis-elderly.html"><div class="related-card-tag">Complex Decisions</div><div class="related-card-title">Dialysis in the Elderly</div><div class="related-card-desc">Frailty, functional decline, and when conservative care may be the more compassionate path.</div><div class="related-card-arrow">Read &rarr;</div>
-          <img class="related-card-thumb" src="../images/hemodialysis-elderly-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hemodialysis-elderly-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 </div>
 </div>
 <!-- RELATED-GUIDES-END -->
@@ -2318,5 +2329,6 @@ function setLang(lang){localStorage.setItem(GLANG_KEY,lang);['en','tl','ceb','ka
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

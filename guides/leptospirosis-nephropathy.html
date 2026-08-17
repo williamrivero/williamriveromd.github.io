@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -141,6 +142,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1309,8 +1318,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1982,8 +1993,8 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span></button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -2133,7 +2144,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
       <div class="feature-card">
         <h4><span class="dot dot-red"></span><span data-lang="en">Severe leptospirosis (Weil's disease)</span><span data-lang="tl" class="lang-hidden">Malubhang Leptospirosis (Weil's disease)</span><span data-lang="ceb" class="lang-hidden">Grabe nga Leptospirosis (Weil's disease)</span><span data-lang="kap" class="lang-hidden">Mabigat nga Leptospirosis (Weil's disease)</span></h4>
         <p>
-          <span data-lang="en">10–15% of cases progress to Weil's disease — a life-threatening triad of <strong>acute kidney injury, jaundice</strong> (liver failure), and <strong>bleeding</strong>. Pulmonary hemorrhage syndrome (ARDS-like massive lung bleeding) can occur in the most severe cases and carries up to 70% mortality even with treatment. This is why early recognition is critical. Across studies, AKI complicates nearly <strong>1 in 2 leptospirosis admissions</strong> (pooled incidence 49.2%, 95% CI 38–60%; 48 studies; Kidney Int 2026), and roughly 1 in 7 of those patients require dialysis (14.4%).</span>
+          <span data-lang="en">10–15% of cases progress to Weil's disease — a life-threatening triad of <strong>acute kidney injury, jaundice</strong> (liver failure), and <strong>bleeding</strong>. Pulmonary hemorrhage syndrome (ARDS-like massive lung bleeding) can occur in the most severe cases and carries up to 70% mortality even with treatment. This is why early recognition is critical. Across studies, AKI (acute kidney injury) complicates nearly <strong>1 in 2 leptospirosis admissions</strong> (pooled incidence 49.2%, 95% CI 38–60%; 48 studies; Kidney Int 2026), and roughly 1 in 7 of those patients require dialysis (14.4%).</span>
           <span data-lang="tl" class="lang-hidden">10–15% ng mga kaso ay umuusad sa Weil's disease — isang banta sa buhay na tatluhang sintomas ng <strong>talamak na pinsala sa bato, jaundice</strong> (pagpalya ng atay), at <strong>pagdudugo</strong>. Ang pulmonary hemorrhage syndrome (malawak na pagdudugo sa baga na katulad ng ARDS) ay maaaring mangyari sa pinaka-malubhang kaso at may hanggang 70% na mortality kahit may paggamot. Ito ang dahilan kung bakit napakahalaga ng maagang pagkilala.</span>
           <span data-lang="ceb" class="lang-hidden">10–15% sa mga kaso moabante sa Weil's disease — usa ka hulga sa kinabuhi nga triad sa <strong>acute kidney injury, jaundice</strong> (kabigo sa atay), ug <strong>pagdugo</strong>. Ang pulmonary hemorrhage syndrome (dako nga pagdugo sa baga nga susama sa ARDS) mahimong mahitabo sa labing grabe nga mga kaso ug adunay hangtod 70% nga mortality bisan adunay pagtambal. Mao kini kung ngano ang sayo nga pag-ila kritikal.</span>
           <span data-lang="kap" class="lang-hidden">10–15% sa ding kaso lumusad king Weil's disease — metung yang banta king biye na tatlong sintomas ning <strong>acute kidney injury, jaundice</strong> (pagpalya ning atay), at <strong>pagdugo</strong>. Ing pulmonary hemorrhage syndrome (malawak na pagdugo king baga a katulad ning ARDS) maaring mangyari king pinakagrabe na kaso at adwang hanggang 70% na mortality bisan adwang paggamot. Iti ing dahilan bakit napakahalaga ning maagang pamakilala.</span>
@@ -2378,7 +2389,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
 
     <div class="intro-callout">
       <p>
-        <span data-lang="en">Leptospirosis can deteriorate from mild fever to life-threatening organ failure within <strong>24–48 hours</strong>. The following signs indicate that the infection has entered the severe Weil's disease phase and requires immediate emergency hospitalization. Do not take these to a clinic — go directly to a hospital emergency room with nephrology and ICU capability.</span>
+        <span data-lang="en">Leptospirosis can deteriorate from mild fever to life-threatening organ failure within <strong>24–48 hours</strong>. The following signs indicate that the infection has entered the severe Weil's disease phase and requires immediate emergency hospitalization. Do not take these to a clinic — go directly to a hospital emergency room with nephrology and ICU (intensive care unit) capability.</span>
         <span data-lang="tl" class="lang-hidden">Ang leptospirosis ay maaaring lumala mula sa banayad na lagnat tungo sa nakamamatay na pagpalya ng organ sa loob ng <strong>24–48 oras</strong>. Ang mga sumusunod na palatandaan ay nagpapahiwatig na ang impeksyon ay pumasok na sa matinding yugto ng Weil's disease at nangangailangan ng agarang emergency hospitalization. Huwag dalhin ito sa isang klinika — pumunta nang direkta sa emergency room ng ospital na may kakayahan sa nephrology at ICU.</span>
         <span data-lang="ceb" class="lang-hidden">Ang leptospirosis mahimong mograbe gikan sa hinay nga hilanat ngadto sa nagpadak-on nga kabigo sa organo sulod sa <strong>24–48 ka oras</strong>. Ang mosunod nga mga timailhan nagpaila nga ang impeksyon nasulod na sa grabe nga Weil's disease phase ug nanginahanglan og daling emergency hospitalization. Ayaw dad-a kini sa usa ka klinika — lakaw diretso sa emergency room sa ospital nga adunay kakayahan sa nephrology ug ICU.</span>
         <span data-lang="kap" class="lang-hidden">Ing leptospirosis makulung lumubha tikid malumo pang lagnat papunta delikadong pagpalya ning organ king sulod ning <strong>24–48 oras</strong>. Ding sumusunod na tanda magpaliwanag na ing impeksyon pumasuk na king mabigat na phase ning Weil's disease at kailangan ning agarang emergency hospitalization. Iyag danan iti king klinika — lumakad naman diretso king emergency room ning ospital a adwang nephrology at ICU.</span>
@@ -2436,9 +2447,9 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
     <div class="alert alert-teal">
       <div class="alert-icon">🩺</div>
       <div class="alert-body">
-        <h4><span data-lang="en">3-point bedside severity score — can be checked without lab tests</span></h4>
+        <h4><span data-lang="en">3-point bedside severity score — can be checked without lab tests</span><span class="lang-hidden" data-lang="tl">3-puntong bedside severity score — pwedeng suriin kahit walang lab tests</span><span class="lang-hidden" data-lang="ceb">3-puntos nga bedside severity score — mahimong susihon bisan walay lab tests</span><span class="lang-hidden" data-lang="kap">3-puntung bedside severity score — malyaring suryan agyang alang lab tests</span></h4>
         <p>
-          <span data-lang="en">Research shows three bedside findings each independently predict severe leptospirosis: (1) <strong>abnormal lung sounds</strong> on listening (wheezing or crackles suggesting fluid or hemorrhage); (2) <strong>low blood pressure</strong> (hypotension, systolic &lt;90 mmHg); and (3) <strong>reduced urine output</strong> (oliguria). Any one of these three signs at presentation should prompt urgent hospital transfer and close monitoring. This scoring approach can be applied by any healthcare worker with a stethoscope and blood pressure cuff — no lab tests required (Smith S et al., PLoS Negl Trop Dis 2019; cited in Kidney Int 2026).</span>
+          <span data-lang="en">Research shows three bedside findings each independently predict severe leptospirosis: (1) <strong>abnormal lung sounds</strong> on listening (wheezing or crackles suggesting fluid or hemorrhage); (2) <strong>low blood pressure</strong> (hypotension, systolic &lt;90 mmHg); and (3) <strong>reduced urine output</strong> (oliguria). Any one of these three signs at presentation should prompt urgent hospital transfer and close monitoring. This scoring approach can be applied by any healthcare worker with a stethoscope and blood pressure cuff — no lab tests required (Smith S et al., PLoS Negl Trop Dis 2019; cited in Kidney Int 2026).</span><span class="lang-hidden" data-lang="tl">Ipinapakita ng pananaliksik na tatlong bedside na natuklasan ang bawat isa ay hiwalay na nakakapaghula ng malubhang leptospirosis: (1) <strong>abnormal na tunog ng baga</strong> kapag pinakinggan (paghinga na parang plauta o lagitik na nagpapahiwatig ng likido o pagdurugo); (2) <strong>mababang presyon ng dugo</strong> (hypotension, systolic &lt;90 mmHg); at (3) <strong>kakaunting ihi</strong> (oliguria). Ang alinman sa tatlong palatandaang ito sa unang pagsusuri ay dapat magtulak ng agarang paglilipat sa ospital at maingat na pagmamanman. Ang paraang ito ng pagsu-score ay maaaring gawin ng sinumang healthcare worker na may stethoscope at blood pressure cuff — walang kailangang lab tests (Smith S et al., PLoS Negl Trop Dis 2019; sinipi sa Kidney Int 2026).</span><span class="lang-hidden" data-lang="ceb">Gipakita sa panukiduki nga tulo ka bedside nga nakit-an ang matag usa managlahi nga makatagna sa grabe nga leptospirosis: (1) <strong>abnormal nga tingog sa baga</strong> kung paminawon (paghangos nga daw plawta o kagitkit nga nagpasabot og likido o pagdugo); (2) <strong>ubos nga presyon sa dugo</strong> (hypotension, systolic &lt;90 mmHg); ug (3) <strong>gamay nga ihi</strong> (oliguria). Ang bisan usa niining tulo ka timailhan sa unang pagsusi kinahanglan mohatod sa dinaliang pagbalhin sa ospital ug hugot nga pagbantay. Kining paagi sa pag-score mahimong buhaton sa bisan kinsa nga healthcare worker nga adunay stethoscope ug blood pressure cuff — walay gikinahanglan nga lab tests (Smith S et al., PLoS Negl Trop Dis 2019; gikutlo sa Kidney Int 2026).</span><span class="lang-hidden" data-lang="kap">Pakit ning pananaliksik a atlung bedside a kabaldugan ing balang metung mag-isa yang makapamanaya king grabing leptospirosis: (1) <strong>abnormal a tunug ning baga</strong> nung pakiramdaman (pamaniga a anti plawta o kagitkit a maglaraw king danum o pamagdaya); (2) <strong>mababang presyun ning daya</strong> (hypotension, systolic &lt;90 mmHg); at (3) <strong>kaunting ihi</strong> (oliguria). Ing nanu man kareng atlung tanda king mumunang pamanigap dapat na mag-udyuk king tambing a pamaglipat king ospital at maingat a pamamanman. Ini a paralan ning pag-score malyaring daptan ning ninu mang healthcare worker a atin stethoscope at blood pressure cuff — alang kailangan a lab tests (Smith S et al., PLoS Negl Trop Dis 2019; binanggit king Kidney Int 2026).</span>
         </p>
       </div>
     </div>
@@ -2540,7 +2551,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
         <div class="step-body">
           <h4><span data-lang="en">Know the DOH leptospirosis alert system</span><span data-lang="tl" class="lang-hidden">Alamin ang Alert System ng DOH para sa Leptospirosis</span><span data-lang="ceb" class="lang-hidden">Hibaloi ang Alert System sa DOH para sa Leptospirosis</span><span data-lang="kap" class="lang-hidden">Alaman ing Alert System ning DOH para king Leptospirosis</span></h4>
           <p>
-            <span data-lang="en">The DOH issues leptospirosis alerts after major typhoons and flooding events. Monitor the DOH website and local LGU announcements — alerts specify which provinces and municipalities are at elevated risk and may include guidance on prophylaxis availability at barangay health centers. The Research Institute for Tropical Medicine (RITM) coordinates surveillance data.</span>
+            <span data-lang="en">The DOH (Department of Health) issues leptospirosis alerts after major typhoons and flooding events. Monitor the DOH website and local LGU announcements — alerts specify which provinces and municipalities are at elevated risk and may include guidance on prophylaxis availability at barangay health centers. The Research Institute for Tropical Medicine (RITM) coordinates surveillance data.</span>
             <span data-lang="tl" class="lang-hidden">Ang DOH ay naglalabas ng mga alerto sa leptospirosis pagkatapos ng mga pangunahing bagyo at pagbaha. Subaybayan ang website ng DOH at mga anunsyo ng lokal na LGU — tinutukoy ng mga alerto kung aling mga lalawigan at munisipyo ang nasa mataas na panganib at maaaring may gabay sa availability ng prophylaxis sa mga barangay health center. Ang Research Institute for Tropical Medicine (RITM) ay nag-uugnay ng datos ng surveillance.</span>
             <span data-lang="ceb" class="lang-hidden">Ang DOH nagpagawas og mga alerto sa leptospirosis human sa mga nag-una nga bagyo ug pagbaha. Bantayi ang website sa DOH ug mga anunsyo sa lokal nga LGU — ang mga alerto nagpasabut kung unsang mga lalawigan ug munisipyo ang naa sa taas nga risgo ug mahimong may giya sa availability sa prophylaxis sa mga barangay health center. Ang Research Institute for Tropical Medicine (RITM) nag-koordinar sa datos sa surveillance.</span>
             <span data-lang="kap" class="lang-hidden">Ing DOH naglalabas ning ding alerto king leptospirosis kasumpal ning ding pangunahing bagyo at pagbaha. Subaybayan ing website ning DOH at ding anunsyo ning lokal na LGU — tinutukoy ning ding alerto kung ding lalawigan at munisipyo ing nasa mataas na peligru at maaring adwang gabay king availability ning prophylaxis king ding barangay health center. Ing Research Institute for Tropical Medicine (RITM) nag-uugnay ning datos ning surveillance.</span>
@@ -2648,7 +2659,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
         <tr><td>Severe hypokalemia &lt;2.5 mEq/L</td><td>IV KCl replacement — continuous</td><td>Cardiac monitoring required; rate ≤20 mEq/hr IV</td></tr>
         <tr><td>Pulmonary hemorrhage</td><td>ICU, mechanical ventilation, consider plasmapheresis</td><td>Mortality &gt;70%; needs tertiary center</td></tr>
         <tr><td>Thrombocytopenia &lt;50,000</td><td>Platelet transfusion if active bleeding</td><td>Prophylactic transfusion if &lt;10,000</td></tr>
-        <tr><td>Jaundice + rising LFTs</td><td>Supportive; avoid hepatotoxic drugs</td><td>Hepatic recovery typically follows renal recovery</td></tr>
+        <tr><td>Jaundice + rising LFTs (liver function tests)</td><td>Supportive; avoid hepatotoxic drugs</td><td>Hepatic recovery typically follows renal recovery</td></tr>
         <tr><td>Uveitis (eye inflammation)</td><td>Topical steroids + mydriatics</td><td>Can occur weeks after acute illness; ophthalmology consult</td></tr>
       </tbody>
     </table>
@@ -2658,7 +2669,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
       <div class="alert-body">
         <h4><span data-lang="en">Drugs to avoid in leptospiral AKI</span><span data-lang="tl" class="lang-hidden">Mga Gamot na Dapat Iwasan sa Leptospiral AKI</span><span data-lang="ceb" class="lang-hidden">Mga Tambal nga Kinahanglan Likayan sa Leptospiral AKI</span><span data-lang="kap" class="lang-hidden">Ding Gamot a Dapat Iwasan king Leptospiral AKI</span></h4>
         <p>
-          <span data-lang="en"><strong>NSAIDs</strong> (ibuprofen, mefenamic acid, naproxen, aspirin in anti-inflammatory doses) — worsen renal perfusion, increase bleeding risk from thrombocytopenia, and are associated with higher mortality in leptospirosis. <strong>Aminoglycoside antibiotics</strong> (gentamicin, amikacin) — directly nephrotoxic and must be avoided entirely. <strong>Contrast dye</strong> for CT scans — must be used with extreme caution or avoided; discuss with the radiologist and nephrologist. <strong>Herbal preparations</strong> — no evidence of benefit and potential for hepatotoxicity in an already stressed liver.</span>
+          <span data-lang="en"><strong>NSAIDs</strong> (ibuprofen, mefenamic acid, naproxen, aspirin in anti-inflammatory doses) — worsen renal perfusion, increase bleeding risk from thrombocytopenia, and are associated with higher mortality in leptospirosis. <strong>Aminoglycoside antibiotics</strong> (gentamicin, amikacin) — directly nephrotoxic and must be avoided entirely. <strong>Contrast dye</strong> for CT (computed tomography) scans — must be used with extreme caution or avoided; discuss with the radiologist and nephrologist. <strong>Herbal preparations</strong> — no evidence of benefit and potential for hepatotoxicity in an already stressed liver.</span>
           <span data-lang="tl" class="lang-hidden"><strong>Mga NSAIDs</strong> (ibuprofen, mefenamic acid, naproxen, aspirin sa anti-inflammatory na dosis) — nagpapalala ng renal perfusion, nagpapataas ng panganib ng pagdudugo mula sa thrombocytopenia, at kaugnay ng mas mataas na mortality sa leptospirosis. <strong>Mga aminoglycoside antibiotics</strong> (gentamicin, amikacin) — direktang nephrotoxic at dapat ganap na iwasan. <strong>Contrast dye</strong> para sa CT scan — dapat gamitin nang may matinding pag-iingat o iwasan; talakayin sa radiologist at nephrologist. <strong>Mga herbal na paghahanda</strong> — walang katibayan ng benepisyo at may potensyal na hepatotoxicity sa isang atay na stressed na.</span>
           <span data-lang="ceb" class="lang-hidden"><strong>Mga NSAIDs</strong> (ibuprofen, mefenamic acid, naproxen, aspirin sa anti-inflammatory nga dosis) — nagpalala sa renal perfusion, nagdugang sa risgo sa pagdugo gikan sa thrombocytopenia, ug nalambigit sa mas taas nga mortality sa leptospirosis. <strong>Mga aminoglycoside antibiotics</strong> (gentamicin, amikacin) — direkta nga nephrotoxic ug kinahanglan hingpit nga likayan. <strong>Contrast dye</strong> para sa CT scan — kinahanglan gamiton nga adunay hilabihang pag-amping o likayon; hisgutan sa radiologist ug nephrologist. <strong>Mga herbal nga paghanda</strong> — walay ebidensya sa benepisyo ug may potensyal nga hepatotoxicity sa usa ka atay nga stressed na.</span>
           <span data-lang="kap" class="lang-hidden"><strong>Ding NSAIDs</strong> (ibuprofen, mefenamic acid, naproxen, aspirin king anti-inflammatory na dosis) — nagpapalala ning renal perfusion, nagpapataas ning peligru ning pagdugo tikid thrombocytopenia, at kaugnay ning mas mataas na mortality king leptospirosis. <strong>Ding aminoglycoside antibiotics</strong> (gentamicin, amikacin) — direktang nephrotoxic at dapat ganap na iwasan. <strong>Contrast dye</strong> para king CT scan — dapat gamitin ning may matinding pag-iingat o iwasan; talakayin king radiologist at nephrologist. <strong>Ding herbal na paghahanda</strong> — ala katibayan ning benepisyo at adwang potensyal na hepatotoxicity king metung atay a stressed na.</span>
@@ -2704,7 +2715,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
         </tr>
       </thead>
       <tbody>
-        <tr><td>Creatinine / BUN</td><td>Elevated — rises rapidly in Phase 2</td><td><span class="badge-red">Critical</span> Monitor every 12–24 hrs to guide dialysis decision</td></tr>
+        <tr><td>Creatinine / BUN (blood urea nitrogen)</td><td>Elevated — rises rapidly in Phase 2</td><td><span class="badge-red">Critical</span> Monitor every 12–24 hrs to guide dialysis decision</td></tr>
         <tr><td>Potassium (K+)</td><td>Low (hypokalemia) — classic and unique finding</td><td><span class="badge-red">Critical</span> Low K+ in AKI = leptospirosis until proven otherwise</td></tr>
         <tr><td>Platelet count</td><td>Low (thrombocytopenia) — often &lt;100,000</td><td><span class="badge-amber">Important</span> Predicts bleeding risk; &lt;50,000 = high risk</td></tr>
         <tr><td>Total bilirubin / LFTs</td><td>Elevated — jaundice, hepatitis pattern</td><td><span class="badge-amber">Important</span> Confirms liver involvement (Weil's disease)</td></tr>
@@ -2713,7 +2724,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
         <tr><td>Leptospira IgM ELISA</td><td>Positive from Day 5–7 onward</td><td><span class="badge-green">Confirmatory</span> Most widely available rapid test in PH hospitals</td></tr>
         <tr><td>MAT (Microscopic Agglutination Test)</td><td>Gold standard — 4-fold titre rise between samples; pooled sensitivity only 68%, specificity 75% (Kidney Int 2026) — especially unreliable in the first week</td><td><span class="badge-green">Confirmatory</span> RITM reference laboratory; takes days. When MAT infrastructure is unavailable, <strong>combined PCR + ELISA is a valid alternative</strong></td></tr>
         <tr><td>Leptospira PCR</td><td>Positive in leptospiremic phase (Days 1–7)</td><td><span class="badge-green">Confirmatory</span> Most sensitive in early phase; available at RITM. Pairs with IgM ELISA to replace MAT in resource-limited settings (Kidney Int 2026)</td></tr>
-        <tr><td>CBC</td><td>Leukocytosis (elevated WBC), anemia, low platelets</td><td>Distinguishes from dengue (which has leukopenia)</td></tr>
+        <tr><td>CBC (complete blood count)</td><td>Leukocytosis (elevated WBC), anemia, low platelets</td><td>Distinguishes from dengue (which has leukopenia)</td></tr>
       </tbody>
     </table>
 
@@ -2770,7 +2781,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
       <div class="feature-card">
         <h4><span class="dot dot-amber"></span><span data-lang="en">When recovery is incomplete</span><span data-lang="tl" class="lang-hidden">Kapag Hindi Kumpleto ang Pagbawi</span><span data-lang="ceb" class="lang-hidden">Kung Dili Kompleto ang Pagbawi</span><span data-lang="kap" class="lang-hidden">Nung Eya Kompleto ing Pagbawi</span></h4>
         <p>
-          <span data-lang="en">Delayed treatment, severe pulmonary hemorrhage, or prolonged hypotension (shock) can lead to partial kidney recovery with persistent CKD. Risk factors for incomplete recovery: creatinine &gt;800 µmol/L at peak, oliguria lasting &gt;10 days, age &gt;60, and diabetes. Patients who do not return to baseline creatinine within 3 months should be evaluated by a nephrologist for CKD staging and management. Importantly, new evidence shows that <strong>new-onset CKD after leptospirosis is far more common than previously recognized</strong> — across four studies, 13–62% of patients developed CKD after apparent recovery (Kidney Int 2026). This means every person who survives leptospiral AKI needs long-term kidney follow-up, even if they feel completely well.</span>
+          <span data-lang="en">Delayed treatment, severe pulmonary hemorrhage, or prolonged hypotension (shock) can lead to partial kidney recovery with persistent CKD (chronic kidney disease). Risk factors for incomplete recovery: creatinine &gt;800 µmol/L at peak, oliguria lasting &gt;10 days, age &gt;60, and diabetes. Patients who do not return to baseline creatinine within 3 months should be evaluated by a nephrologist for CKD staging and management. Importantly, new evidence shows that <strong>new-onset CKD after leptospirosis is far more common than previously recognized</strong> — across four studies, 13–62% of patients developed CKD after apparent recovery (Kidney Int 2026). This means every person who survives leptospiral AKI needs long-term kidney follow-up, even if they feel completely well.</span>
           <span data-lang="tl" class="lang-hidden">Ang naantalang paggamot, malubhang pulmonary hemorrhage, o matagalang hypotension (shock) ay maaaring humantong sa bahagyang pagbawi ng bato na may patuloy na CKD. Mga risk factor para sa hindi kumpletong pagbawi: creatinine &gt;800 µmol/L sa pinakamataas, oliguria na tumatagal ng &gt;10 araw, edad &gt;60, at diabetes. Ang mga pasyente na hindi bumabalik sa baseline na creatinine sa loob ng 3 buwan ay dapat suriin ng isang nephrologist para sa CKD staging at pamamahala.</span>
           <span data-lang="ceb" class="lang-hidden">Ang naantalang pagtambal, grabe nga pulmonary hemorrhage, o dugay nga hypotension (shock) mahimong mosangpot sa partial nga pagbawi sa kidney nga adunay padayon nga CKD. Mga risk factor alang sa dili kompleto nga pagbawi: creatinine &gt;800 µmol/L sa pinakataas, oliguria nga molungtad og &gt;10 ka adlaw, edad &gt;60, ug diabetes. Ang mga pasyente nga dili mobalik sa baseline nga creatinine sulod sa 3 ka buwan kinahanglan susihon sa usa ka nephrologist para sa CKD staging ug pagdumala.</span>
           <span data-lang="kap" class="lang-hidden">Ing naantalang paggamot, mabigat na pulmonary hemorrhage, o matagalang hypotension (shock) maaring humantong king bahagyang pagbawi ning kidney a adwang patuloy na CKD. Ding risk factor para king hindi kumpletong pagbawi: creatinine &gt;800 µmol/L king pinakamataas, oliguria a tumatagal ning &gt;10 aldaw, edad &gt;60, at diabetes. Ding pasyente a eya bumabalik king baseline na creatinine king sulod ning 3 bulan dapat suriin ning metung nephrologist para king CKD staging at pamamahala.</span>
@@ -2848,7 +2859,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
       <div class="feature-card">
         <h4><span class="dot dot-teal"></span><span data-lang="en">Where to get tested and treated</span><span data-lang="tl" class="lang-hidden">Saan Magpasuri at Magpagamot</span><span data-lang="ceb" class="lang-hidden">Asa Magpatest ug Magpaayo</span><span data-lang="kap" class="lang-hidden">Nokarin Magpasuri at Magpagamot</span></h4>
         <p>
-          <span data-lang="en"><strong>Diagnosis:</strong> Leptospira IgM rapid tests available at most public hospitals. MAT (gold standard) and PCR available at <strong>RITM (Research Institute for Tropical Medicine)</strong>, Muntinlupa City — (02) 8807-2628. <strong>Treatment:</strong> All DOH-licensed hospitals, public health centers during outbreaks, and PhilHealth-accredited facilities. <strong>Chemoprophylaxis dispensing:</strong> Available free at many barangay health centers during active DOH leptospirosis alerts — bring valid ID and proof of flood exposure.</span>
+          <span data-lang="en"><strong>Diagnosis:</strong> Leptospira IgM rapid tests available at most public hospitals. MAT (gold standard) and PCR available at <strong>RITM (Research Institute for Tropical Medicine)</strong>, Muntinlupa City — (02) 8807-2628. <strong>Treatment:</strong> All DOH-licensed hospitals, public health centers during outbreaks, and PhilHealth (Philippine Health Insurance Corporation)-accredited facilities. <strong>Chemoprophylaxis dispensing:</strong> Available free at many barangay health centers during active DOH leptospirosis alerts — bring valid ID and proof of flood exposure.</span>
           <span data-lang="tl" class="lang-hidden"><strong>Diagnosis:</strong> Ang mga rapid test ng Leptospira IgM ay makukuha sa karamihang pampublikong ospital. Ang MAT (gold standard) at PCR ay makukuha sa <strong>RITM (Research Institute for Tropical Medicine)</strong>, Muntinlupa City — (02) 8807-2628. <strong>Paggamot:</strong> Lahat ng ospital na lisensyado ng DOH, mga pampublikong health center sa panahon ng outbreak, at mga pasilidad na accredited ng PhilHealth. <strong>Pagbibigay ng chemoprophylaxis:</strong> Makukuha nang libre sa maraming barangay health center sa panahon ng mga aktibong alerto ng DOH sa leptospirosis — magdala ng valid na ID at patunay ng pagkakalantad sa baha.</span>
           <span data-lang="ceb" class="lang-hidden"><strong>Diagnosis:</strong> Ang mga rapid test sa Leptospira IgM available sa kadaghanan nga pampublikong ospital. Ang MAT (gold standard) ug PCR available sa <strong>RITM (Research Institute for Tropical Medicine)</strong>, Muntinlupa City — (02) 8807-2628. <strong>Pagtambal:</strong> Tanan nga ospital nga lisensyado sa DOH, mga pampublikong health center atol sa mga outbreak, ug mga pasilidad nga accredited sa PhilHealth. <strong>Paghatag sa chemoprophylaxis:</strong> Available nga libre sa daghang barangay health center atol sa mga aktibong alerto sa DOH sa leptospirosis — magdala og valid nga ID ug prueba sa pagkaladlad sa baha.</span>
           <span data-lang="kap" class="lang-hidden"><strong>Diagnosis:</span> Ding rapid test ning Leptospira IgM available king karamiyan sa ding pampublikong ospital. Ing MAT (gold standard) at PCR available king <strong>RITM (Research Institute for Tropical Medicine)</strong>, Muntinlupa City — (02) 8807-2628. <strong>Paggamot:</strong> Lahat ning ospital a lisensyado ning DOH, ding pampublikong health center panahon ning ding outbreak, at ding pasilidad a accredited ning PhilHealth. <strong>Pagbibigay ning chemoprophylaxis:</strong> Available a libre king dakal na barangay health center panahon ning ding aktibong alerto ning DOH king leptospirosis — magdala ning valid na ID at patunay ning pagkakalantad king baha.</span>
@@ -2890,7 +2901,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
     </h2>
     <div class="intro-callout">
       <p>
-        <span data-lang="en">This section is designed for physicians, residents, and emergency medicine practitioners managing suspected or confirmed leptospirosis. It provides structured clinical decision algorithms, severity scoring, antibiotic selection guidance, dialysis initiation criteria, and discharge planning — aligned with WHO, IDSA, DOH Philippines, and KDIGO AKI 2024 guidelines.</span>
+        <span data-lang="en">This section is designed for physicians, residents, and emergency medicine practitioners managing suspected or confirmed leptospirosis. It provides structured clinical decision algorithms, severity scoring, antibiotic selection guidance, dialysis initiation criteria, and discharge planning — aligned with WHO (World Health Organization), IDSA, DOH Philippines, and KDIGO (Kidney Disease: Improving Global Outcomes) AKI 2024 guidelines.</span>
         <span data-lang="tl" class="lang-hidden">Ang seksyon na ito ay dinisenyo para sa mga doktor, resident, at emergency medicine practitioner na namamahala ng suspected o kumpirmadong leptospirosis. Nagbibigay ito ng mga structured clinical decision algorithm, severity scoring, gabay sa pagpili ng antibiotic, pamantayan sa pagsisimula ng dialysis, at discharge planning — naaayon sa WHO, IDSA, DOH Philippines, at KDIGO AKI 2024 guidelines.</span>
         <span data-lang="ceb" class="lang-hidden">Kini nga seksyon gidesinyo para sa mga doktor, resident, ug emergency medicine practitioner nga nagdumala sa suspected o nakumpirmahang leptospirosis. Naghatag kini sa mga structured clinical decision algorithm, severity scoring, gabay sa pagpili sa antibiotic, criteria sa pagsugod sa dialysis, ug discharge planning — nahiuyon sa WHO, IDSA, DOH Philippines, ug KDIGO AKI 2024 guidelines.</span>
         <span data-lang="kap" class="lang-hidden">Ing seksyon a iti gawa para king ding doktor, resident, at emergency medicine practitioner a mamahalaga king suspected o kumpirmadong leptospirosis. Nagbibigay iti ning mga structured clinical decision algorithm, severity scoring, gabay king pagpili ning antibiotic, pamantayan king pagsimula ning dialysis, at discharge planning — naaayon king WHO, IDSA, DOH Philippines, at KDIGO AKI 2024 guidelines.</span>
@@ -2990,7 +3001,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
         <div class="tl-dot tl-dot-red">3</div>
         <div class="tl-body">
           <h4>Identify red flags requiring ICU admission</h4>
-          <p>SpO₂ &lt;92% or respiratory distress. MAP &lt;65 mmHg or requiring vasopressors. GCS &lt;14. Creatinine &gt;3.0 mg/dL or anuria &gt;6 hours. Active hemorrhage (hemoptysis, melena, petechiae). Platelet &lt;30,000. K+ &lt;2.5 mEq/L with ECG changes.</p>
+          <p>SpO₂ &lt;92% or respiratory distress. MAP &lt;65 mmHg or requiring vasopressors. GCS &lt;14. Creatinine &gt;3.0 mg/dL or anuria &gt;6 hours. Active hemorrhage (hemoptysis, melena, petechiae). Platelet &lt;30,000. K+ &lt;2.5 mEq/L with ECG (electrocardiogram) changes.</p>
         </div>
       </div>
       <div class="tl-item">
@@ -3162,7 +3173,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
       </thead>
       <tbody>
         <tr><td>Target MAP in leptospirosis with shock</td><td><strong>65–70 mmHg</strong> in all patients — regardless of prior hypertension or heart failure</td><td><span class="md-grade" style="color:var(--green);font-weight:700;">Strong · High</span></td></tr>
-        <tr><td>Initial fluid of choice</td><td><strong>Balanced crystalloids.</strong> If potassium is high-normal or with hyperkalemia, use <strong>isotonic saline.</strong> <strong>Do NOT use hydroxyethyl starch</strong> — it raises the risk of AKI, RRT, and mortality</td><td><span class="md-grade" style="color:#9a6500;font-weight:700;">Strong · Low</span></td></tr>
+        <tr><td>Initial fluid of choice</td><td><strong>Balanced crystalloids.</strong> If potassium is high-normal or with hyperkalemia, use <strong>isotonic saline.</strong> <strong>Do NOT use hydroxyethyl starch</strong> — it raises the risk of AKI, RRT (renal replacement therapy), and mortality</td><td><span class="md-grade" style="color:#9a6500;font-weight:700;">Strong · Low</span></td></tr>
         <tr><td>Initial resuscitation rate</td><td><strong>20 mL/kg/h</strong> (or 500 mL crystalloid over 15–30 min); patients are prone to ARDS from down-regulated ENaC / Na-K-ATPase / aquaporin-5 — reassess after each bolus</td><td><span class="md-grade" style="color:#9a6500;font-weight:700;">Strong · Low</span></td></tr>
         <tr><td>Persistent oliguria after adequate hydration</td><td>Trial of <strong>IV furosemide 1 mg/kg</strong>; if no response, double the dose once and repeat creatinine — escalate to dialysis rather than prolonging diuretics</td><td><span class="md-grade" style="color:var(--text-muted);font-weight:700;">Algorithm</span></td></tr>
       </tbody>
@@ -3187,9 +3198,9 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
         <div class="rf-icon">💧</div>
         <h5 style="color:var(--green);">Modality &amp; frequency</h5>
         <p style="color:#2a5a3a;">
-          • <strong>Hemodialysis preferred over peritoneal dialysis</strong> (GRADE High); PD is a valid option if an HD machine is unavailable<br>
+          • <strong>Hemodialysis preferred over peritoneal dialysis (PD)</strong> (GRADE High); PD is a valid option if an HD machine is unavailable<br>
           • <strong>CRRT</strong> suggested for hemodynamically unstable patients (GRADE Moderate)<br>
-          • No survival difference between conventional HD and HDF, or between SLED and SLEDf<br>
+          • No survival difference between conventional HD and HDF (hemodiafiltration), or between SLED (sustained low-efficiency dialysis) and SLEDf<br>
           • <strong>Daily dialysis</strong> for severe leptospirosis — especially with pulmonary hemorrhage — to control azotemia and volume and improve survival (GRADE Moderate)
         </p>
       </div>
@@ -3209,7 +3220,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
       <div class="alert-icon">🔭</div>
       <div class="alert-body">
         <h4><span data-lang="en">Long-term: overlooked CKD risk</span><span data-lang="tl" class="lang-hidden">Pangmatagalan: hindi napapansing panganib ng CKD</span><span data-lang="ceb" class="lang-hidden">Dugay: wala-matagad nga risgo sa CKD</span><span data-lang="kap" class="lang-hidden">Pangmatagalan: eya pansin a panganib ning CKD</span></h4>
-        <p><span data-lang="en">Leptospiral infection carries an <strong>overlooked long-term risk of chronic kidney disease</strong> (population-based cohort evidence). Even after apparent recovery, arrange follow-up creatinine and urine albumin-to-creatinine ratio — proximal tubular defects (Fanconi-like phosphaturia, uricosuria, glycosuria) and reduced eGFR may persist. Do not discharge a recovered leptospiral-AKI patient without a renal follow-up plan.</span><span data-lang="tl" class="lang-hidden">Ang impeksyon ng lepto ay may <strong>hindi napapansing pangmatagalang panganib ng chronic kidney disease.</strong> Kahit pagkatapos ng tila paggaling, magsaayos ng follow-up creatinine at urine albumin-to-creatinine ratio. Huwag i-discharge ang gumaling na pasyente nang walang renal follow-up plan.</span><span data-lang="ceb" class="lang-hidden">Ang impeksyon sa lepto adunay <strong>wala-matagad nga dugay nga risgo sa chronic kidney disease.</strong> Bisan human sa morag pag-ayo, hikaya ang follow-up creatinine ug urine albumin-to-creatinine ratio. Ayaw i-discharge ang naayo nga pasyente nga walay renal follow-up plan.</span><span data-lang="kap" class="lang-hidden">Ing impeksyon ning lepto atin <strong>eya pansin a pangmatagalang panganib ning chronic kidney disease.</strong> Kahit kaybat ning agpang a pamagaling, magsaayos kang follow-up creatinine at urine albumin-to-creatinine ratio. Eya i-discharge ing gumaling a pasyente a alang renal follow-up plan.</span></p>
+        <p><span data-lang="en">Leptospiral infection carries an <strong>overlooked long-term risk of chronic kidney disease</strong> (population-based cohort evidence). Even after apparent recovery, arrange follow-up creatinine and urine albumin-to-creatinine ratio — proximal tubular defects (Fanconi-like phosphaturia, uricosuria, glycosuria) and reduced eGFR (estimated glomerular filtration rate) may persist. Do not discharge a recovered leptospiral-AKI patient without a renal follow-up plan.</span><span data-lang="tl" class="lang-hidden">Ang impeksyon ng lepto ay may <strong>hindi napapansing pangmatagalang panganib ng chronic kidney disease.</strong> Kahit pagkatapos ng tila paggaling, magsaayos ng follow-up creatinine at urine albumin-to-creatinine ratio. Huwag i-discharge ang gumaling na pasyente nang walang renal follow-up plan.</span><span data-lang="ceb" class="lang-hidden">Ang impeksyon sa lepto adunay <strong>wala-matagad nga dugay nga risgo sa chronic kidney disease.</strong> Bisan human sa morag pag-ayo, hikaya ang follow-up creatinine ug urine albumin-to-creatinine ratio. Ayaw i-discharge ang naayo nga pasyente nga walay renal follow-up plan.</span><span data-lang="kap" class="lang-hidden">Ing impeksyon ning lepto atin <strong>eya pansin a pangmatagalang panganib ning chronic kidney disease.</strong> Kahit kaybat ning agpang a pamagaling, magsaayos kang follow-up creatinine at urine albumin-to-creatinine ratio. Eya i-discharge ing gumaling a pasyente a alang renal follow-up plan.</span></p>
       </div>
     </div>
 
@@ -3237,7 +3248,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
         <tr><td>Cr / BUN / K+ / Na+</td><td>Daily</td><td>Q12h</td><td>Q6–8h</td></tr>
         <tr><td>CBC with platelet</td><td>Daily</td><td>Q12–24h</td><td>Q8–12h</td></tr>
         <tr><td>LFTs (TB/DB/AST/ALT)</td><td>On admission, Day 3</td><td>Daily</td><td>Daily</td></tr>
-        <tr><td>PT/INR</td><td>On admission</td><td>Daily if &lt;50k plt</td><td>Q12h if bleeding</td></tr>
+        <tr><td>PT/INR (international normalized ratio)</td><td>On admission</td><td>Daily if &lt;50k plt</td><td>Q12h if bleeding</td></tr>
         <tr><td>ABG / lactate</td><td>If SpO₂ &lt;94%</td><td>Q12h</td><td>Q6–8h</td></tr>
         <tr><td>Chest X-ray</td><td>On admission</td><td>Q48h or if SpO₂ drops</td><td>Daily or PRN</td></tr>
         <tr><td>ECG</td><td>If K+ &lt;3.0</td><td>Daily</td><td>Continuous telemetry</td></tr>
@@ -3315,7 +3326,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
           <li><strong>Week 1:</strong> Cr/K+/CBC — confirm continued renal recovery. Complete oral antibiotic course.</li>
           <li><strong>Week 2:</strong> Cr/urinalysis — check for persistent proteinuria or hematuria. LFTs if jaundice was present.</li>
           <li><strong>Month 1:</strong> Cr, eGFR calculation, urinalysis, BP. Assess for residual CKD (eGFR &lt;60 = referral to nephrology).</li>
-          <li><strong>Month 3:</strong> Cr, eGFR, urine ACR. ~95% will have full recovery. Refer the 5% with persistent dysfunction.</li>
+          <li><strong>Month 3:</strong> Cr, eGFR, urine ACR (albumin-to-creatinine ratio). ~95% will have full recovery. Refer the 5% with persistent dysfunction.</li>
           <li><strong>Month 6–12:</strong> Ophthalmology referral if eye symptoms (uveitis can present weeks to months later). Annual Cr if AKI was severe.</li>
           <li><strong>Counsel:</strong> Re-exposure during next flood season — advise boots, prophylactic doxycycline 200 mg weekly if high-risk.</li>
         </ul>
@@ -3458,7 +3469,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
         <div class="related-card-desc">How to prepare before, survive during, and recover safely after a typhoon — go-bag, missed sessions, PD guidance, and emergency contacts.</div>
         <div class="related-card-arrow">Read →</div>
       
-          <img class="related-card-thumb" src="../images/typhoon-disaster-preparedness-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/typhoon-disaster-preparedness-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card" href="acute-kidney-injury.html">
         <div class="related-card-tag">Acute Nephrology</div>
         <div class="related-card-title">Acute Kidney Injury (AKI) — Causes, Stages &amp; Recovery</div>
@@ -3471,7 +3482,7 @@ try{(function(){var v=localStorage.getItem('wgmr-lepto-mode');if(v===null){var p
         <div class="related-card-desc">How high blood pressure silently destroys the kidneys over decades, and what interventions slow or halt its progression.</div>
         <div class="related-card-arrow">Read →</div>
       
-          <img class="related-card-thumb" src="../images/hypertensive-kidney-disease-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/hypertensive-kidney-disease-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     </div>
   </div>
 </div>
@@ -3525,5 +3536,6 @@ function setGuideLang(lang){localStorage.setItem(GLANG_KEY,lang);['en','tl','ceb
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

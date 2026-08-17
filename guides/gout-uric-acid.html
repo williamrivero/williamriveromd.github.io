@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1703,8 +1714,8 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
     <div class="hero-grid">
     <div class="hero-copy">
     <div class="hero-tag">Internal Medicine · Nephrology · Patient Guide</div>
-    <h1>Gout — The <em>Crystal Disease</em> You Can <em>Actually Conquer</em></h1>
-    <p class="hero-sub">Why <em>uric acid builds up</em>, how it damages joints and kidneys, which foods matter most — and how to prevent <em>painful flares</em> for good.</p>
+    <h1><span data-lang="en">Gout — The <em>Crystal Disease</em> You Can <em>Actually Conquer</em></span><span data-lang="tl" class="lang-hidden">Gout — Ang <em>Sakit na Kristal</em> na <em>Kaya Mo Talagang Malupig</em></span><span data-lang="ceb" class="lang-hidden">Gout — Ang <em>Sakit sa Kristal</em> nga <em>Tinuod Nimong Mabuntog</em></span><span data-lang="kap" class="lang-hidden">Gout — Ing <em>Sakit a Kristal</em> a <em>Talagang Agyu Meng Dake</em></span></h1>
+    <p class="hero-sub"><span data-lang="en">Why <em>uric acid builds up</em>, how it damages joints and kidneys, which foods matter most — and how to prevent <em>painful flares</em> for good.</span><span data-lang="tl" class="lang-hidden">Kung bakit <em>tumataas ang uric acid</em>, paano nito sinisira ang mga kasukasuan at bato, aling mga pagkain ang pinakamahalaga — at paano maiwasan ang <em>masasakit na flare</em> nang tuluyan.</span><span data-lang="ceb" class="lang-hidden">Ngano nga <em>motaas ang uric acid</em>, unsaon niini pagdaot sa mga kasukasuan ug kidney, unsa nga mga pagkaon ang labing hinungdanon — ug unsaon pagpugong sa <em>sakit nga mga flare</em> hangtod sa hangtod.</span><span data-lang="kap" class="lang-hidden">Bakit <em>tumataas ing uric acid</em>, paano nini sinisira ing deng kasukasuan at batu, nokarin a deng pamangan ing pinakamahalaga — at paano maiwasan ing <em>masakit a deng flare</em> nang tuluyan.</span></p>
     <div class="hero-meta">
 <span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
 <span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">3</span></span>
@@ -1758,7 +1769,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <source srcset="../images/gout-what-uric-acid.webp" type="image/webp">
       <img src="../images/gout-what-uric-acid.png" alt="How uric acid builds up and causes damage: food → liver xanthine oxidase → blood UA → MSU crystal formation → gout attack and kidney damage pathway" loading="lazy" width="1024" height="1024" style="width:100%;height:auto;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.10);margin:24px auto;display:block">
     </picture>
-      <p class="illus-caption"><span data-lang="en">Uric acid is not just a gout problem — elevated levels directly damage kidney tubules even without joint symptoms. Every CKD patient should have uric acid checked and kept below 6.0 mg/dL.</span><span data-lang="tl" class="lang-hidden">Ang uric acid ay hindi lamang problema sa gout — ang mataas na antas ay direktang nakakasama sa mga kidney tubule kahit walang sintomas sa kasukasuan. Bawat pasyenteng may CKD ay dapat suriin ang uric acid at panatilihing wala sa 6.0 mg/dL.</span><span data-lang="ceb" class="lang-hidden">Ang uric acid dili lamang problema sa gout — ang taas nga antas direktang nakadaot sa mga kidney tubule bisan walay sintomas sa mga kasukasuan. Ang matag pasyente nga adunay CKD kinahanglan masusi ang uric acid ug mapadayon ubos sa 6.0 mg/dL.</span>
+      <p class="illus-caption"><span data-lang="en">Uric acid is not just a gout problem — elevated levels directly damage kidney tubules even without joint symptoms. Every CKD (chronic kidney disease) patient should have uric acid checked and kept below 6.0 mg/dL.</span><span data-lang="tl" class="lang-hidden">Ang uric acid ay hindi lamang problema sa gout — ang mataas na antas ay direktang nakakasama sa mga kidney tubule kahit walang sintomas sa kasukasuan. Bawat pasyenteng may CKD ay dapat suriin ang uric acid at panatilihing wala sa 6.0 mg/dL.</span><span data-lang="ceb" class="lang-hidden">Ang uric acid dili lamang problema sa gout — ang taas nga antas direktang nakadaot sa mga kidney tubule bisan walay sintomas sa mga kasukasuan. Ang matag pasyente nga adunay CKD kinahanglan masusi ang uric acid ug mapadayon ubos sa 6.0 mg/dL.</span>
       <span data-lang="kap" class="lang-hidden">Ing uric acid ya ali lamang problema king gout — ing matas a antas ya direktang nakakasama king deng kidney tubule kahit alang sintomas king kasukasuan. Bawat pasyenteng atin CKD ya dapat suriin ing uric acid at panatilihing ala king 6.0 mg/dL.</span></p>
 
       <p><span data-lang="en">Gout is caused by too much <strong>uric acid in the blood</strong> (hyperuricemia). When uric acid levels stay too high for too long, needle-shaped crystals form and deposit in joints, kidneys, and soft tissues — triggering <strong>sudden, intensely painful attacks</strong> and, over time, silent kidney damage.</span><span data-lang="tl" class="lang-hidden">Ang gout ay dulot ng sobrang <strong>uric acid sa dugo</strong> (hyperuricemia). Kapag nanatiling mataas ang antas ng uric acid nang matagal, nagbubuo ang mga kristal na hugis karayom at nagdideposito sa mga kasukasuan, bato, at malambot na tisyu — na nagti-trigger ng <strong>biglaan, matinding masakit na pag-atake</strong> at, sa paglipas ng panahon, tahimik na pinsala sa bato.</span><span data-lang="ceb" class="lang-hidden">Ang gout hinungdan sa sobrang <strong>uric acid sa dugo</strong> (hyperuricemia). Sa higala nga nagpabilin nga taas ang antas sa uric acid og dugay, nagporma ang mga kristal nga hugis dagom ug nagdeposito sa mga kasukasuan, kidney, ug malambok nga tisyu — nagpahinabog <strong>kalit, hilabihan ka-sakit nga pag-atake</strong> ug, sa paglabay sa panahon, hilom nga kadaot sa kidney.</span>
@@ -1785,13 +1796,13 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
         <div class="n-val">&lt;6.0</div>
         <div class="n-label"><span data-lang="en">Target serum uric acid (mg/dL) — general</span><span data-lang="tl" class="lang-hidden">Target na serum uric acid (mg/dL) — pangkalahatan</span><span data-lang="ceb" class="lang-hidden">Target nga serum uric acid (mg/dL) — pangkinatibuk-an</span>
       <span data-lang="kap" class="lang-hidden">Target a serum uric acid (mg/dL) — pangkalahatan</span></div>
-        <div class="n-target">KDIGO 2024</div>
+        <div class="n-target">KDIGO (Kidney Disease: Improving Global Outcomes) 2024</div>
       </div>
       <div class="num-card">
         <div class="n-val">&lt;5.0</div>
         <div class="n-label"><span data-lang="en">Target with visible tophi or frequent flares</span><span data-lang="tl" class="lang-hidden">Target na may nakikitang tophi o madalas na flares</span><span data-lang="ceb" class="lang-hidden">Target nga adunay makita nga tophi o sagad nga flares</span>
       <span data-lang="kap" class="lang-hidden">Target a atin nakikitang tophi o madalas a flares</span></div>
-        <div class="n-target">ACR Guidelines</div>
+        <div class="n-target">ACR (American College of Rheumatology) Guidelines</div>
       </div>
       <div class="num-card">
         <div class="n-val">6.8</div>
@@ -1973,12 +1984,12 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
         <h4><span data-lang="en">🐟 Hidden seafood and bagoong</span><span data-lang="tl" class="lang-hidden">🐟 Nakatagong pagkaing-dagat at bagoong</span><span data-lang="ceb" class="lang-hidden">🐟 Nagtago nga pagkaon sa dagat ug bagoong</span>
       <span data-lang="kap" class="lang-hidden">🐟 Nakatagong pagkaing-dagat at bagoong</span></h4>
         <ul style="margin:6px 0 0 18px;font-size:14px;color:var(--text-mid);line-height:1.65;">
-          <li><strong>Bagoong alamang and bagoong isda</strong> in kare-kare, pinakbet, and as dipping sauce — concentrated dried-shrimp purines.</li>
-          <li><strong>Patis</strong> as a finishing sauce — small volume but every dish adds up.</li>
-          <li><strong>Hibe / dried small shrimp</strong> in lugaw, palabok, and tikoy.</li>
-          <li><strong>Sardines and anchovies</strong> in pasta, sinigang base packets, and Caesar dressings.</li>
-          <li><strong>Anchovy paste</strong> hidden in commercial Worcestershire, Maggi seasoning, and many oyster sauces.</li>
-          <li><strong>Bouillon cubes (Knorr, Maggi)</strong> often contain hydrolysed yeast and meat extracts that are purine-rich.</li>
+          <li><span data-lang="en"><strong>Bagoong alamang and bagoong isda</strong> in kare-kare, pinakbet, and as dipping sauce — concentrated dried-shrimp purines.</span><span data-lang="tl" class="lang-hidden"><strong>Bagoong alamang at bagoong isda</strong> sa kare-kare, pinakbet, at bilang sawsawan — konsentradong purine ng tuyong hipon.</span><span data-lang="ceb" class="lang-hidden"><strong>Bagoong alamang ug bagoong isda</strong> sa kare-kare, pinakbet, ug isip sawsawan — konsentradong purine sa uga nga pasayan.</span><span data-lang="kap" class="lang-hidden"><strong>Bagoong alamang at bagoong isda</strong> king kare-kare, pinakbet, at bilang sawsawan — konsentradong purine ning malangi a pasayan.</span></li>
+          <li><span data-lang="en"><strong>Patis</strong> as a finishing sauce — small volume but every dish adds up.</span><span data-lang="tl" class="lang-hidden"><strong>Patis</strong> bilang pampalasa — maliit ang dami ngunit nagdadagdag bawat ulam.</span><span data-lang="ceb" class="lang-hidden"><strong>Patis</strong> isip pampalasa — gamay ra ang gidaghanon apan matag putahe magdugang.</span><span data-lang="kap" class="lang-hidden"><strong>Patis</strong> bilang pampalasa — malati ing dami dapot dagdag ya keng balang ulam.</span></li>
+          <li><span data-lang="en"><strong>Hibe / dried small shrimp</strong> in lugaw, palabok, and tikoy.</span><span data-lang="tl" class="lang-hidden"><strong>Hibe / tuyong maliliit na hipon</strong> sa lugaw, palabok, at tikoy.</span><span data-lang="ceb" class="lang-hidden"><strong>Hibe / uga nga gagmayng pasayan</strong> sa lugaw, palabok, ug tikoy.</span><span data-lang="kap" class="lang-hidden"><strong>Hibe / malangi a maliliit a pasayan</strong> king lugaw, palabok, at tikoy.</span></li>
+          <li><span data-lang="en"><strong>Sardines and anchovies</strong> in pasta, sinigang base packets, and Caesar dressings.</span><span data-lang="tl" class="lang-hidden"><strong>Sardinas at dilis</strong> sa pasta, sinigang base packets, at Caesar dressings.</span><span data-lang="ceb" class="lang-hidden"><strong>Sardinas ug dilis</strong> sa pasta, sinigang base packets, ug Caesar dressings.</span><span data-lang="kap" class="lang-hidden"><strong>Sardinas at dilis</strong> king pasta, sinigang base packets, at Caesar dressings.</span></li>
+          <li><span data-lang="en"><strong>Anchovy paste</strong> hidden in commercial Worcestershire, Maggi seasoning, and many oyster sauces.</span><span data-lang="tl" class="lang-hidden"><strong>Anchovy paste</strong> na nakatago sa commercial Worcestershire, Maggi seasoning, at maraming oyster sauce.</span><span data-lang="ceb" class="lang-hidden"><strong>Anchovy paste</strong> nga natago sa commercial Worcestershire, Maggi seasoning, ug daghang oyster sauce.</span><span data-lang="kap" class="lang-hidden"><strong>Anchovy paste</strong> a nakatago king commercial Worcestershire, Maggi seasoning, at dakal a oyster sauce.</span></li>
+          <li><span data-lang="en"><strong>Bouillon cubes (Knorr, Maggi)</strong> often contain hydrolysed yeast and meat extracts that are purine-rich.</span><span data-lang="tl" class="lang-hidden"><strong>Bouillon cubes (Knorr, Maggi)</strong> ay kadalasang naglalaman ng hydrolysed yeast at meat extract na mayaman sa purine.</span><span data-lang="ceb" class="lang-hidden"><strong>Bouillon cubes (Knorr, Maggi)</strong> kasagarang adunay hydrolysed yeast ug meat extract nga daghan og purine.</span><span data-lang="kap" class="lang-hidden"><strong>Bouillon cubes (Knorr, Maggi)</strong> kadalasan atin lang hydrolysed yeast at meat extract a dakal a purine.</span></li>
         </ul>
       </div>
 
@@ -1986,12 +1997,12 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
         <h4><span data-lang="en">🥤 Sweet drinks and "healthy" liquids</span><span data-lang="tl" class="lang-hidden">🥤 Matamis na inumin at mga "malusog" na likido</span><span data-lang="ceb" class="lang-hidden">🥤 Tam-is nga mga ilimnon ug mga "malusog" nga likido</span>
       <span data-lang="kap" class="lang-hidden">🥤 Matamis a inumin at deng "malusog" a likido</span></h4>
         <ul style="margin:6px 0 0 18px;font-size:14px;color:var(--text-mid);line-height:1.65;">
-          <li><strong>Powdered juice mixes</strong> (Tang, Eight O'Clock, Zest-O) — almost pure fructose + sucrose.</li>
-          <li><strong>Sweetened soy milk, almond milk, oat milk</strong> — read the label; many are loaded with sugar.</li>
-          <li><strong>Sago't gulaman, taho, palamig</strong> — sweetened with arnibal (cane syrup) and HFCS.</li>
-          <li><strong>Fruit smoothies</strong> with mango, banana, or pineapple plus added syrup.</li>
-          <li><strong>Sports drinks (Gatorade, Pocari)</strong> contain sugar that raises urate; not the right rehydration choice for gout.</li>
-          <li><strong>Sweetened condensed milk and creamers</strong> in iced coffee shops.</li>
+          <li><span data-lang="en"><strong>Powdered juice mixes</strong> (Tang, Eight O'Clock, Zest-O) — almost pure fructose + sucrose.</span><span data-lang="tl" class="lang-hidden"><strong>Powdered juice mixes</strong> (Tang, Eight O'Clock, Zest-O) — halos purong fructose + sucrose.</span><span data-lang="ceb" class="lang-hidden"><strong>Powdered juice mixes</strong> (Tang, Eight O'Clock, Zest-O) — halos lunsay nga fructose + sucrose.</span><span data-lang="kap" class="lang-hidden"><strong>Powdered juice mixes</strong> (Tang, Eight O'Clock, Zest-O) — halos puru a fructose + sucrose.</span></li>
+          <li><span data-lang="en"><strong>Sweetened soy milk, almond milk, oat milk</strong> — read the label; many are loaded with sugar.</span><span data-lang="tl" class="lang-hidden"><strong>Matamis na soy milk, almond milk, oat milk</strong> — basahin ang label; marami ang puno ng asukal.</span><span data-lang="ceb" class="lang-hidden"><strong>Tam-is nga soy milk, almond milk, oat milk</strong> — basaha ang label; daghan ang puno sa asukal.</span><span data-lang="kap" class="lang-hidden"><strong>Matamis a soy milk, almond milk, oat milk</strong> — basan ing label; dakal a mitmu king asukal.</span></li>
+          <li><span data-lang="en"><strong>Sago't gulaman, taho, palamig</strong> — sweetened with arnibal (cane syrup) and HFCS.</span><span data-lang="tl" class="lang-hidden"><strong>Sago't gulaman, taho, palamig</strong> — pinatamis ng arnibal (cane syrup) at HFCS.</span><span data-lang="ceb" class="lang-hidden"><strong>Sago't gulaman, taho, palamig</strong> — gipatam-is sa arnibal (cane syrup) ug HFCS.</span><span data-lang="kap" class="lang-hidden"><strong>Sago't gulaman, taho, palamig</strong> — pepanyaman king arnibal (cane syrup) at HFCS.</span></li>
+          <li><span data-lang="en"><strong>Fruit smoothies</strong> with mango, banana, or pineapple plus added syrup.</span><span data-lang="tl" class="lang-hidden"><strong>Fruit smoothies</strong> na may mangga, saging, o pinya na may dagdag na syrup.</span><span data-lang="ceb" class="lang-hidden"><strong>Fruit smoothies</strong> nga adunay mangga, saging, o pinya nga adunay dugang nga syrup.</span><span data-lang="kap" class="lang-hidden"><strong>Fruit smoothies</strong> a atin mangga, saging, o pinya a atin dagdag a syrup.</span></li>
+          <li><span data-lang="en"><strong>Sports drinks (Gatorade, Pocari)</strong> contain sugar that raises urate; not the right rehydration choice for gout.</span><span data-lang="tl" class="lang-hidden"><strong>Sports drinks (Gatorade, Pocari)</strong> ay naglalaman ng asukal na nagpapataas ng urate; hindi ang tamang pagpili ng rehydration para sa gout.</span><span data-lang="ceb" class="lang-hidden"><strong>Sports drinks (Gatorade, Pocari)</strong> adunay asukal nga nagpataas sa urate; dili ang husto nga pagpili sa rehydration alang sa gout.</span><span data-lang="kap" class="lang-hidden"><strong>Sports drinks (Gatorade, Pocari)</strong> atin lang asukal a nagpapataas king urate; ali ya ing tamang pamipili king rehydration para king gout.</span></li>
+          <li><span data-lang="en"><strong>Sweetened condensed milk and creamers</strong> in iced coffee shops.</span><span data-lang="tl" class="lang-hidden"><strong>Matamis na condensed milk at creamers</strong> sa mga iced coffee shop.</span><span data-lang="ceb" class="lang-hidden"><strong>Tam-is nga condensed milk ug creamers</strong> sa mga iced coffee shop.</span><span data-lang="kap" class="lang-hidden"><strong>Matamis a condensed milk at creamers</strong> king deng iced coffee shop.</span></li>
         </ul>
       </div>
 
@@ -1999,13 +2010,13 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
         <h4><span data-lang="en">💊 Medications and supplements</span><span data-lang="tl" class="lang-hidden">💊 Mga gamot at supplement</span><span data-lang="ceb" class="lang-hidden">💊 Mga medisina ug supplement</span>
       <span data-lang="kap" class="lang-hidden">💊 Deng gamut at supplement</span></h4>
         <ul style="margin:6px 0 0 18px;font-size:14px;color:var(--text-mid);line-height:1.65;">
-          <li><strong>Thiazide diuretics</strong> (HCTZ, often in BP combinations like Co-Diovan, Co-Aprovel, Co-Approvel-D) — single most common drug-induced gout cause.</li>
-          <li><strong>Loop diuretics</strong> (furosemide, torsemide) — same mechanism, especially in heart-failure patients.</li>
-          <li><strong>Low-dose aspirin (81 mg)</strong> blocks urate excretion mildly. (Do not stop your cardiac aspirin without your doctor's advice — manage gout instead.)</li>
-          <li><strong>Cyclosporine, tacrolimus</strong> in transplant recipients — raise uric acid markedly.</li>
-          <li><strong>Niacin (vitamin B3, "no-flush" supplements)</strong> at high doses for cholesterol.</li>
-          <li><strong>Beta-blockers (metoprolol, atenolol)</strong> mild upward push.</li>
-          <li><strong>Vitamin C megadoses (&gt;500 mg/day)</strong> — paradoxically, low-dose vitamin C lowers uric acid; very high doses can shift it.</li>
+          <li><span data-lang="en"><strong>Thiazide diuretics</strong> (HCTZ, often in BP combinations like Co-Diovan, Co-Aprovel, Co-Approvel-D) — single most common drug-induced gout cause.</span><span data-lang="tl" class="lang-hidden"><strong>Thiazide diuretics</strong> (HCTZ, kadalasan sa mga BP combination tulad ng Co-Diovan, Co-Aprovel, Co-Approvel-D) — pinakakaraniwang sanhi ng gout na dulot ng gamot.</span><span data-lang="ceb" class="lang-hidden"><strong>Thiazide diuretics</strong> (HCTZ, kasagaran sa mga BP combination sama sa Co-Diovan, Co-Aprovel, Co-Approvel-D) — pinakakasagarang hinungdan sa gout gikan sa tambal.</span><span data-lang="kap" class="lang-hidden"><strong>Thiazide diuretics</strong> (HCTZ, kadalasan king deng BP combination anti Co-Diovan, Co-Aprovel, Co-Approvel-D) — pinakakaraniwang sanhi ning gout a dulot ning gamut.</span></li>
+          <li><span data-lang="en"><strong>Loop diuretics</strong> (furosemide, torsemide) — same mechanism, especially in heart-failure patients.</span><span data-lang="tl" class="lang-hidden"><strong>Loop diuretics</strong> (furosemide, torsemide) — parehong mekanismo, lalo na sa mga pasyenteng may heart failure.</span><span data-lang="ceb" class="lang-hidden"><strong>Loop diuretics</strong> (furosemide, torsemide) — parehong mekanismo, labi na sa mga pasyente nga adunay heart failure.</span><span data-lang="kap" class="lang-hidden"><strong>Loop diuretics</strong> (furosemide, torsemide) — parehong mekanismo, lalo na king deng pasyenteng atin heart failure.</span></li>
+          <li><span data-lang="en"><strong>Low-dose aspirin (81 mg)</strong> blocks urate excretion mildly. (Do not stop your cardiac aspirin without your doctor's advice — manage gout instead.)</span><span data-lang="tl" class="lang-hidden"><strong>Low-dose aspirin (81 mg)</strong> ay bahagyang humahadlang sa paglabas ng urate. (Huwag itigil ang inyong cardiac aspirin nang walang payo ng inyong doktor — pamahalaan ang gout sa halip.)</span><span data-lang="ceb" class="lang-hidden"><strong>Low-dose aspirin (81 mg)</strong> gamay nga nagbabag sa paggula sa urate. (Ayaw undanga ang inyong cardiac aspirin nga walay tambag sa inyong doktor — dumalaha hinuon ang gout.)</span><span data-lang="kap" class="lang-hidden"><strong>Low-dose aspirin (81 mg)</strong> bahagya yang humahadlang king paglual ning urate. (E yu itigil ing inyu cardiac aspirin a alang payo ning inyu doktor — pamahalaan ing gout imbes.)</span></li>
+          <li><span data-lang="en"><strong>Cyclosporine, tacrolimus</strong> in transplant recipients — raise uric acid markedly.</span><span data-lang="tl" class="lang-hidden"><strong>Cyclosporine, tacrolimus</strong> sa mga transplant recipient — malaki ang pagpapataas ng uric acid.</span><span data-lang="ceb" class="lang-hidden"><strong>Cyclosporine, tacrolimus</strong> sa mga transplant recipient — dako ang pagpataas sa uric acid.</span><span data-lang="kap" class="lang-hidden"><strong>Cyclosporine, tacrolimus</strong> king deng transplant recipient — dakal ing pagpapataas ning uric acid.</span></li>
+          <li><span data-lang="en"><strong>Niacin (vitamin B3, "no-flush" supplements)</strong> at high doses for cholesterol.</span><span data-lang="tl" class="lang-hidden"><strong>Niacin (vitamin B3, "no-flush" supplements)</strong> sa mataas na dosis para sa cholesterol.</span><span data-lang="ceb" class="lang-hidden"><strong>Niacin (vitamin B3, "no-flush" supplements)</strong> sa taas nga dosis alang sa cholesterol.</span><span data-lang="kap" class="lang-hidden"><strong>Niacin (vitamin B3, "no-flush" supplements)</strong> king matas a dosis para king cholesterol.</span></li>
+          <li><span data-lang="en"><strong>Beta-blockers (metoprolol, atenolol)</strong> mild upward push.</span><span data-lang="tl" class="lang-hidden"><strong>Beta-blockers (metoprolol, atenolol)</strong> banayad na pagtaas.</span><span data-lang="ceb" class="lang-hidden"><strong>Beta-blockers (metoprolol, atenolol)</strong> banayad nga pagtaas.</span><span data-lang="kap" class="lang-hidden"><strong>Beta-blockers (metoprolol, atenolol)</strong> banayad a pamitas.</span></li>
+          <li><span data-lang="en"><strong>Vitamin C megadoses (&gt;500 mg/day)</strong> — paradoxically, low-dose vitamin C lowers uric acid; very high doses can shift it.</span><span data-lang="tl" class="lang-hidden"><strong>Vitamin C megadoses (&gt;500 mg/araw)</strong> — paradoxically, ang low-dose vitamin C ay nagpapababa ng uric acid; ang napakataas na dosis ay maaaring magbago nito.</span><span data-lang="ceb" class="lang-hidden"><strong>Vitamin C megadoses (&gt;500 mg/adlaw)</strong> — paradoxically, ang low-dose vitamin C nagpakunhod sa uric acid; ang taas kaayo nga dosis mahimong mobalhin niini.</span><span data-lang="kap" class="lang-hidden"><strong>Vitamin C megadoses (&gt;500 mg/aldo)</strong> — paradoxically, ing low-dose vitamin C ya nagpapababa king uric acid; ing matas ya pin a dosis ya maaaring magbago nini.</span></li>
         </ul>
       </div>
 
@@ -2013,13 +2024,13 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
         <h4><span data-lang="en">🍽️ Cooking and lifestyle traps</span><span data-lang="tl" class="lang-hidden">🍽️ Mga bitag sa pagluluto at pamumuhay</span><span data-lang="ceb" class="lang-hidden">🍽️ Mga lit-ag sa pagluto ug pamumuhay</span>
       <span data-lang="kap" class="lang-hidden">🍽️ Deng bitag king pagluluto at pamumuhay</span></h4>
         <ul style="margin:6px 0 0 18px;font-size:14px;color:var(--text-mid);line-height:1.65;">
-          <li><strong>Sabaw of nilaga, sinigang, bulalo, and bone broth</strong> &mdash; purines leach out of bones and meat into the broth. Eat the meat in measured portions; <em>skip the broth</em>.</li>
-          <li><strong>Crash diets, fasting, and ketogenic diets</strong> raise uric acid through ketone competition for excretion. Lose weight gradually.</li>
-          <li><strong>Dehydration</strong> from a long day in heat, El Niño, gym sessions, or food poisoning can trigger flares within 24 hours.</li>
-          <li><strong>Big single &ldquo;blowout&rdquo; meals</strong> (boodle fight, lechon party, all-you-can-eat) deliver days' worth of purines at once.</li>
-          <li><strong>Heavy weekend drinking ("binge")</strong> &mdash; even one beer-night can trigger a Monday morning flare.</li>
-          <li><strong>Trauma to a joint</strong> &mdash; even mild bumps to the big toe, ankle, or knee can precipitate an attack.</li>
-          <li><strong>Recent surgery, severe illness, or starting a new urate-lowering drug</strong> can paradoxically trigger flares in the first weeks.</li>
+          <li><span data-lang="en"><strong>Sabaw of nilaga, sinigang, bulalo, and bone broth</strong> &mdash; purines leach out of bones and meat into the broth. Eat the meat in measured portions; <em>skip the broth</em>.</span><span data-lang="tl" class="lang-hidden"><strong>Sabaw ng nilaga, sinigang, bulalo, at bone broth</strong> &mdash; ang mga purine ay lumalabas mula sa buto at karne patungo sa sabaw. Kainin ang karne sa sinusukat na dami; <em>laktawan ang sabaw</em>.</span><span data-lang="ceb" class="lang-hidden"><strong>Sabaw sa nilaga, sinigang, bulalo, ug bone broth</strong> &mdash; ang mga purine mogula gikan sa bukog ug karne ngadto sa sabaw. Kan-a ang karne sa sinukod nga bahin; <em>laktawi ang sabaw</em>.</span><span data-lang="kap" class="lang-hidden"><strong>Sabaw ning nilaga, sinigang, bulalo, at bone broth</strong> &mdash; ing deng purine ya lumalual mula king butul at karne papunta king sabaw. Kanan ing karne king susukat a dami; <em>laktawan ing sabaw</em>.</span></li>
+          <li><span data-lang="en"><strong>Crash diets, fasting, and ketogenic diets</strong> raise uric acid through ketone competition for excretion. Lose weight gradually.</span><span data-lang="tl" class="lang-hidden"><strong>Crash diets, fasting, at ketogenic diets</strong> ay nagpapataas ng uric acid sa pamamagitan ng kompetisyon ng ketone para sa paglabas. Magbawas ng timbang nang paunti-unti.</span><span data-lang="ceb" class="lang-hidden"><strong>Crash diets, fasting, ug ketogenic diets</strong> nagpataas sa uric acid pinaagi sa kompetisyon sa ketone alang sa paggula. Pagakunhod og timbang hinay-hinay.</span><span data-lang="kap" class="lang-hidden"><strong>Crash diets, fasting, at ketogenic diets</strong> ya nagpapataas king uric acid king pamamagitan ning kompetisyon ning ketone para king paglual. Magbawas timbang a paunti-unti.</span></li>
+          <li><span data-lang="en"><strong>Dehydration</strong> from a long day in heat, El Niño, gym sessions, or food poisoning can trigger flares within 24 hours.</span><span data-lang="tl" class="lang-hidden"><strong>Dehydration</strong> mula sa mahabang araw sa init, El Niño, gym sessions, o food poisoning ay maaaring mag-trigger ng flare sa loob ng 24 oras.</span><span data-lang="ceb" class="lang-hidden"><strong>Dehydration</strong> gikan sa taas nga adlaw sa init, El Niño, gym sessions, o food poisoning mahimong magtrigger sa flare sulod sa 24 ka oras.</span><span data-lang="kap" class="lang-hidden"><strong>Dehydration</strong> mula king mahabang aldo king init, El Niño, gym sessions, o food poisoning ya maaaring mag-trigger ning flare king loob ning 24 oras.</span></li>
+          <li><span data-lang="en"><strong>Big single &ldquo;blowout&rdquo; meals</strong> (boodle fight, lechon party, all-you-can-eat) deliver days' worth of purines at once.</span><span data-lang="tl" class="lang-hidden"><strong>Malalaking isahang &ldquo;blowout&rdquo; na kainan</strong> (boodle fight, lechon party, all-you-can-eat) ay naghahatid ng ilang araw na halaga ng purine nang sabay-sabay.</span><span data-lang="ceb" class="lang-hidden"><strong>Dagko nga usa ka &ldquo;blowout&rdquo; nga pagkaon</strong> (boodle fight, lechon party, all-you-can-eat) naghatod og pila ka adlaw nga kantidad sa purine nga dungan.</span><span data-lang="kap" class="lang-hidden"><strong>Maragul a isahang &ldquo;blowout&rdquo; a kakanan</strong> (boodle fight, lechon party, all-you-can-eat) ya naghahatid ning pilang aldo a halaga ning purine a sabay-sabay.</span></li>
+          <li><span data-lang="en"><strong>Heavy weekend drinking ("binge")</strong> &mdash; even one beer-night can trigger a Monday morning flare.</span><span data-lang="tl" class="lang-hidden"><strong>Matinding pag-inom tuwing katapusan ng linggo ("binge")</strong> &mdash; kahit isang gabi ng beer ay maaaring mag-trigger ng flare sa umaga ng Lunes.</span><span data-lang="ceb" class="lang-hidden"><strong>Kusog nga pag-inom tuwing katapusan sa semana ("binge")</strong> &mdash; bisan usa ka gabii sa beer mahimong magtrigger sa flare sa buntag sa Lunes.</span><span data-lang="kap" class="lang-hidden"><strong>Matinding pamininum tuwing katapusan ning lutu ("binge")</strong> &mdash; kahit metung a bengi ning beer ya maaaring mag-trigger ning flare king umaga ning Lunes.</span></li>
+          <li><span data-lang="en"><strong>Trauma to a joint</strong> &mdash; even mild bumps to the big toe, ankle, or knee can precipitate an attack.</span><span data-lang="tl" class="lang-hidden"><strong>Trauma sa isang kasukasuan</strong> &mdash; kahit banayad na pagkabangga sa malaking daliri ng paa, bukung-bukong, o tuhod ay maaaring magpasimula ng pag-atake.</span><span data-lang="ceb" class="lang-hidden"><strong>Trauma sa usa ka kasukasuan</strong> &mdash; bisan banayad nga pagkabangga sa dagko nga tudlo sa tiil, buko-buko, o tuhod mahimong magpahinabo sa pag-atake.</span><span data-lang="kap" class="lang-hidden"><strong>Trauma king metung a kasukasuan</strong> &mdash; kahit banayad a pamangga king malaking taliri ning bitis, bukung-bukong, o tud ya maaaring magpasimula ning pag-atake.</span></li>
+          <li><span data-lang="en"><strong>Recent surgery, severe illness, or starting a new urate-lowering drug</strong> can paradoxically trigger flares in the first weeks.</span><span data-lang="tl" class="lang-hidden"><strong>Kamakailang operasyon, malubhang sakit, o pagsisimula ng bagong urate-lowering na gamot</strong> ay maaaring paradoxically mag-trigger ng flare sa mga unang linggo.</span><span data-lang="ceb" class="lang-hidden"><strong>Bag-o lang nga operasyon, grabe nga sakit, o pagsugod sa bag-ong urate-lowering nga tambal</strong> mahimong paradoxically magtrigger sa flare sa unang mga semana.</span><span data-lang="kap" class="lang-hidden"><strong>Kamakailang operasyon, malubhang sakit, o pagsisimula ning bayung urate-lowering a gamut</strong> ya maaaring paradoxically mag-trigger ning flare king deng unang lutu.</span></li>
         </ul>
       </div>
     </div>
@@ -2060,7 +2071,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
       <span data-lang="kap" class="lang-hidden">Pangmatagalang pagpapababa ning UA</span></td>
           <td><span data-lang="en">Xanthine oxidase inhibitor — blocks final step of uric acid synthesis</span><span data-lang="tl" class="lang-hidden">Xanthine oxidase inhibitor — hinaharangan ang huling hakbang ng synthesis ng uric acid</span><span data-lang="ceb" class="lang-hidden">Xanthine oxidase inhibitor — gibabagan ang katapusang lakang sa synthesis sa uric acid</span>
       <span data-lang="kap" class="lang-hidden">Xanthine oxidase inhibitor — hinaharangan ing huling hakbang ning synthesis ning uric acid</span></td>
-          <td><span data-lang="en"><strong>Preferred in CKD.</strong> Does not require dose reduction until eGFR &lt;15. Take daily, not just during flares.</span><span data-lang="tl" class="lang-hidden"><strong>Mas gugustuhin sa CKD.</strong> Hindi nangangailangan ng dose reduction hanggang eGFR &lt;15. Inumin araw-araw, hindi lamang sa panahon ng mga flare.</span><span data-lang="ceb" class="lang-hidden"><strong>Mas gusto sa CKD.</strong> Dili nagkinahanglan og dose reduction hangtod eGFR &lt;15. Inumon adlaw-adlaw, dili lamang sa panahon sa mga flare.</span>
+          <td><span data-lang="en"><strong>Preferred in CKD.</strong> Does not require dose reduction until eGFR (estimated glomerular filtration rate) &lt;15. Take daily, not just during flares.</span><span data-lang="tl" class="lang-hidden"><strong>Mas gugustuhin sa CKD.</strong> Hindi nangangailangan ng dose reduction hanggang eGFR &lt;15. Inumin araw-araw, hindi lamang sa panahon ng mga flare.</span><span data-lang="ceb" class="lang-hidden"><strong>Mas gusto sa CKD.</strong> Dili nagkinahanglan og dose reduction hangtod eGFR &lt;15. Inumon adlaw-adlaw, dili lamang sa panahon sa mga flare.</span>
       <span data-lang="kap" class="lang-hidden"><strong>Mas gugustuhin king CKD.</strong> Ali nangangailangan ning dose reduction anggang eGFR &lt;15. Inumin aldo-aldo, ali lamang king panahon ning deng flare.</span></td>
         </tr>
         <tr>
@@ -2085,7 +2096,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
           <td>Naproxen / Indomethacin</td>
           <td><span data-lang="en">Acute flare treatment</span><span data-lang="tl" class="lang-hidden">Paggamot ng acute flare</span><span data-lang="ceb" class="lang-hidden">Pagtambal sa acute flare</span>
       <span data-lang="kap" class="lang-hidden">Paggamut ning acute flare</span></td>
-          <td><span data-lang="en">NSAID — reduces joint inflammation rapidly</span><span data-lang="tl" class="lang-hidden">NSAID — mabilis na nagpapababa ng pamamaga ng kasukasuan</span><span data-lang="ceb" class="lang-hidden">NSAID — dali nga nagpakunhod sa implamason sa kasukasuan</span>
+          <td><span data-lang="en">NSAID (non-steroidal anti-inflammatory drug) — reduces joint inflammation rapidly</span><span data-lang="tl" class="lang-hidden">NSAID — mabilis na nagpapababa ng pamamaga ng kasukasuan</span><span data-lang="ceb" class="lang-hidden">NSAID — dali nga nagpakunhod sa implamason sa kasukasuan</span>
       <span data-lang="kap" class="lang-hidden">NSAID — mabilis a nagpapababa ning pamamaga ning kasukasuan</span></td>
           <td><span data-lang="en"><strong>Avoid in CKD, heart failure, or peptic ulcer disease.</strong> Use only if kidney function is preserved.</span><span data-lang="tl" class="lang-hidden"><strong>Iwasan sa CKD, heart failure, o peptic ulcer disease.</strong> Gamitin lamang kung napanatili ang function ng bato.</span><span data-lang="ceb" class="lang-hidden"><strong>Iwasan sa CKD, heart failure, o peptic ulcer disease.</strong> Gamiton lamang kon napreserbar ang function sa kidney.</span>
       <span data-lang="kap" class="lang-hidden"><strong>Iwasan king CKD, heart failure, o peptic ulcer disease.</strong> Gamitin lamang nung napanatili ing function ning batu.</span></td>
@@ -2209,7 +2220,7 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
         <div class="calc-verdict-text" id="g-verdict"></div>
         <div class="calc-action-text" id="g-action"></div>
       </div>
-      <p class="calc-disclaimer">⚕ FEUA = (Urine UA × Serum Cr) ÷ (Serum UA × Urine Cr) × 100. FEUA &lt;5.5% = under-excretor (most common in CKD); FEUA &gt;10% = over-producer. ULT preference per Dr. Rivero practice protocol: febuxostat 40–80mg OD preferred over allopurinol in CKD (no dose adjustment needed for eGFR &gt;30). Losartan is the only ARB with clinically meaningful uricosuric effect (Nishida 2014). This tool is educational — ULT initiation and flare management require physician supervision.</p>
+      <p class="calc-disclaimer">⚕ FEUA = (Urine UA × Serum Cr) ÷ (Serum UA × Urine Cr) × 100. FEUA &lt;5.5% = under-excretor (most common in CKD); FEUA &gt;10% = over-producer. ULT preference per Dr. Rivero practice protocol: febuxostat 40–80mg OD preferred over allopurinol in CKD (no dose adjustment needed for eGFR &gt;30). Losartan is the only ARB (angiotensin receptor blocker) with clinically meaningful uricosuric effect (Nishida 2014). This tool is educational — ULT initiation and flare management require physician supervision.</p>
     </div>
   </section>
 
@@ -2354,21 +2365,21 @@ html[data-theme="dark"] .calc-card{background:rgba(26,107,114,.16);border-color:
           <div class="related-card-desc">Why kidney stones form, what the different types mean, how to pass one safely — and the dietary and </div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/managing-kidney-stones-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/managing-kidney-stones-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="nutrition-kidney-patients.html">
           <div class="related-card-tag">Why Food Is Medicine</div>
           <div class="related-card-title">Nutrition for Kidney Patients</div>
           <div class="related-card-desc">A practical Filipino guide to eating well with CKD — what to limit, what is safe, how to read food l</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/nutrition-kidney-patients-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         <a class="related-card has-thumb" href="slowing-ckd-progression.html">
           <div class="related-card-tag">Understanding the Disease</div>
           <div class="related-card-title">Slowing CKD Progression</div>
           <div class="related-card-desc">The strategies, medications, and lifestyle changes that keep your kidneys working longer — and the t</div>
           <div class="related-card-arrow">Read →</div>
         
-          <img class="related-card-thumb" src="../images/slowing-ckd-progression-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/slowing-ckd-progression-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
         </div>
       </div>
     <!-- RELATED-GUIDES-END -->
@@ -2593,5 +2604,6 @@ function calcGout() {
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

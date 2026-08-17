@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -139,6 +140,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1307,8 +1316,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -2000,8 +2011,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab tab-pt active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab tab-md" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -2012,7 +2023,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">2&times;</span><span class="l">rise in PH pediatric CKD, 2023&ndash;24 (NKTI)</span></div>
+<div class="ov-stat"><span class="v">2&times;</span><span class="l">rise in PH pediatric chronic kidney disease (CKD), 2023&ndash;24 (NKTI)</span></div>
 <div class="ov-stat"><span class="v">57%</span><span class="l">of Filipino CKD patients aged 20&ndash;59</span></div>
 <div class="ov-stat"><span class="v">41%</span><span class="l">of PH pediatric CKD is CAKUT (PNSP 2023)</span></div>
 </div>
@@ -2176,37 +2187,37 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
   <div class="age-cause-col" style="border-top:3px solid var(--teal);">
     <h5>Infants &lt;5 yrs</h5>
     <ul>
-      <li>CAKUT</li>
-      <li>Renal dysplasia</li>
-      <li>Urethral valves</li>
-      <li>PKD</li>
+      <li><span data-lang="en">CAKUT</span><span class="lang-hidden" data-lang="tl">CAKUT</span><span class="lang-hidden" data-lang="ceb">CAKUT</span><span class="lang-hidden" data-lang="kap">CAKUT</span></li>
+      <li><span data-lang="en">Renal dysplasia</span><span class="lang-hidden" data-lang="tl">Renal dysplasia</span><span class="lang-hidden" data-lang="ceb">Renal dysplasia</span><span class="lang-hidden" data-lang="kap">Renal dysplasia</span></li>
+      <li><span data-lang="en">Urethral valves</span><span class="lang-hidden" data-lang="tl">Urethral valves</span><span class="lang-hidden" data-lang="ceb">Urethral valves</span><span class="lang-hidden" data-lang="kap">Urethral valves</span></li>
+      <li><span data-lang="en">PKD</span><span class="lang-hidden" data-lang="tl">PKD</span><span class="lang-hidden" data-lang="ceb">PKD</span><span class="lang-hidden" data-lang="kap">PKD</span></li>
     </ul>
   </div>
   <div class="age-cause-col" style="border-top:3px solid #25949d;">
     <h5>School age 5–12</h5>
     <ul>
-      <li>Nephrotic syndrome</li>
-      <li>IgA nephropathy</li>
-      <li>Lupus nephritis</li>
-      <li>FSGS / HUS</li>
+      <li><span data-lang="en">Nephrotic syndrome</span><span class="lang-hidden" data-lang="tl">Nephrotic syndrome</span><span class="lang-hidden" data-lang="ceb">Nephrotic syndrome</span><span class="lang-hidden" data-lang="kap">Nephrotic syndrome</span></li>
+      <li><span data-lang="en">IgA nephropathy</span><span class="lang-hidden" data-lang="tl">IgA nephropathy</span><span class="lang-hidden" data-lang="ceb">IgA nephropathy</span><span class="lang-hidden" data-lang="kap">IgA nephropathy</span></li>
+      <li><span data-lang="en">Lupus nephritis</span><span class="lang-hidden" data-lang="tl">Lupus nephritis</span><span class="lang-hidden" data-lang="ceb">Lupus nephritis</span><span class="lang-hidden" data-lang="kap">Lupus nephritis</span></li>
+      <li><span data-lang="en">FSGS / HUS</span><span class="lang-hidden" data-lang="tl">FSGS / HUS</span><span class="lang-hidden" data-lang="ceb">FSGS / HUS</span><span class="lang-hidden" data-lang="kap">FSGS / HUS</span></li>
     </ul>
   </div>
   <div class="age-cause-col" style="border-top:3px solid var(--purple);">
     <h5>Adolescents 13–18</h5>
     <ul>
-      <li>Lupus nephritis</li>
-      <li>IgA nephropathy</li>
-      <li>Alport syndrome</li>
-      <li>FSGS / early DM</li>
+      <li><span data-lang="en">Lupus nephritis</span><span class="lang-hidden" data-lang="tl">Lupus nephritis</span><span class="lang-hidden" data-lang="ceb">Lupus nephritis</span><span class="lang-hidden" data-lang="kap">Lupus nephritis</span></li>
+      <li><span data-lang="en">IgA nephropathy</span><span class="lang-hidden" data-lang="tl">IgA nephropathy</span><span class="lang-hidden" data-lang="ceb">IgA nephropathy</span><span class="lang-hidden" data-lang="kap">IgA nephropathy</span></li>
+      <li><span data-lang="en">Alport syndrome</span><span class="lang-hidden" data-lang="tl">Alport syndrome</span><span class="lang-hidden" data-lang="ceb">Alport syndrome</span><span class="lang-hidden" data-lang="kap">Alport syndrome</span></li>
+      <li><span data-lang="en">FSGS / early DM</span><span class="lang-hidden" data-lang="tl">FSGS / maagang DM</span><span class="lang-hidden" data-lang="ceb">FSGS / sayo nga DM</span><span class="lang-hidden" data-lang="kap">FSGS / maagang DM</span></li>
     </ul>
   </div>
   <div class="age-cause-col" style="border-top:3px solid var(--amber);">
     <h5>Young adults 19–35</h5>
     <ul>
-      <li>IgA nephropathy</li>
-      <li>Lupus nephritis</li>
-      <li>ADPKD onset</li>
-      <li>ANCA vasculitis</li>
+      <li><span data-lang="en">IgA nephropathy</span><span class="lang-hidden" data-lang="tl">IgA nephropathy</span><span class="lang-hidden" data-lang="ceb">IgA nephropathy</span><span class="lang-hidden" data-lang="kap">IgA nephropathy</span></li>
+      <li><span data-lang="en">Lupus nephritis</span><span class="lang-hidden" data-lang="tl">Lupus nephritis</span><span class="lang-hidden" data-lang="ceb">Lupus nephritis</span><span class="lang-hidden" data-lang="kap">Lupus nephritis</span></li>
+      <li><span data-lang="en">ADPKD onset</span><span class="lang-hidden" data-lang="tl">Pagsisimula ng ADPKD</span><span class="lang-hidden" data-lang="ceb">Sinugdan sa ADPKD</span><span class="lang-hidden" data-lang="kap">Kasimulan ning ADPKD</span></li>
+      <li><span data-lang="en">ANCA vasculitis</span><span class="lang-hidden" data-lang="tl">ANCA vasculitis</span><span class="lang-hidden" data-lang="ceb">ANCA vasculitis</span><span class="lang-hidden" data-lang="kap">ANCA vasculitis</span></li>
     </ul>
   </div>
 </div>
@@ -2253,7 +2264,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 <div class="age-band young-adult">
 <h4><span data-lang="en">Young adults (19&ndash;35) — Invisible patients, unique burdens</span><span class="lang-hidden" data-lang="tl">Mga Kabataang adulto (19&ndash;35) — Mga di-nakikitang pasyente, natatanging mga pasanin</span><span class="lang-hidden" data-lang="ceb">Mga Batan-ong hamtong (19&ndash;35) — Mga dili makita nga pasyente, talagsaong mga burden</span><span class="lang-hidden" data-lang="kap">Deng kabatan a adulto (19&ndash;35) — Deng e makita a pasyente, natatanging deng pasanin</span></h4>
-<p><span data-lang="en">Young adults with CKD face a distinct and underrecognized set of challenges. Career: CKD requires frequent clinic visits and dialysis sessions that interfere with full-time employment; many face discrimination when disclosing their diagnosis. Insurance: commercial health insurance often excludes pre-existing conditions or becomes unaffordable; PhilHealth is the critical safety net. Fertility and pregnancy: some CKD medications are teratogenic; pregnancy in CKD requires specialist co-management; women on dialysis have very low pregnancy rates but not zero; transplant significantly improves fertility. Housing and independence: starting dialysis in one's twenties can mean living near a dialysis center rather than near family or work. Financial: the economic impact of CKD at 25 is categorically different from CKD at 65 &mdash; it derails decades of projected income and savings.</span>
+<p><span data-lang="en">Young adults with CKD face a distinct and underrecognized set of challenges. Career: CKD requires frequent clinic visits and dialysis sessions that interfere with full-time employment; many face discrimination when disclosing their diagnosis. Insurance: commercial health insurance often excludes pre-existing conditions or becomes unaffordable; PhilHealth (Philippine Health Insurance Corporation) is the critical safety net. Fertility and pregnancy: some CKD medications are teratogenic; pregnancy in CKD requires specialist co-management; women on dialysis have very low pregnancy rates but not zero; transplant significantly improves fertility. Housing and independence: starting dialysis in one's twenties can mean living near a dialysis center rather than near family or work. Financial: the economic impact of CKD at 25 is categorically different from CKD at 65 &mdash; it derails decades of projected income and savings.</span>
 <span class="lang-hidden" data-lang="tl">Ang mga kabataang adulto na may CKD ay nahaharap sa isang natatangi at hindi gaanong kinikilalang hanay ng mga hamon. Karera: ang CKD ay nangangailangan ng madalas na pagbisita sa klinika at mga sesyon ng dialysis na nakakagambala sa full-time na trabaho. Insurance: ang komersyal na health insurance ay madalas nagtatanggal ng mga pre-existing na kondisyon. Fertility at pagbubuntis: ang ilang mga gamot sa CKD ay teratogenic; ang pagbubuntis sa CKD ay nangangailangan ng espesyalistang co-management. Pabahay at kalayaan: ang pagsisimula ng dialysis sa dalawampung taon ay maaaring mangahulugang mabuhay malapit sa isang dialysis center sa halip na malapit sa pamilya o trabaho.</span>
 <span class="lang-hidden" data-lang="ceb">Ang mga batan-ong hamtong nga adunay CKD nag-atubang sa talagsaon ug dili kaayo giilang set sa mga hagit. Karera: ang CKD nagkinahanglan og kanunay nga pagbisita sa klinika ug mga sesyon sa dialysis nga nagguba sa full-time nga trabaho. Insurance: ang komersyal nga health insurance kasagaran nagwagtang sa mga pre-existing nga kondisyon. Fertility ug pagbubuntis: ang pipila ka mga tambal sa CKD teratogenic; ang pagbubuntis sa CKD nagkinahanglan og espesyalista nga co-management. Pabahay ug kagawasan: ang pagsugod sa dialysis sa edad bente mahimong magpasabut nga mabuhay duol sa usa ka dialysis center kaysa sa pamilya o trabaho.</span>
 <span class="lang-hidden" data-lang="kap">Deng kabatan a adulto a maki CKD nahaharap sa natatangi at e gaanong kinikilalang hanay da ring mga hamon. Karera: ing CKD kailangan ning madalas a pagbisita sa klinika at deng sesyon ning dialysis a nakakagambala sa full-time a trabaho. Insurance: ing komersyal a health insurance madalas nagtatanggal da ring pre-existing a kondisyon. Fertility at pagbubuntis: ilang mga gamut sa CKD teratogenic; ing pagbubuntis sa CKD kailangan ning espesyalista a co-management. Pabahay at kalayaan: ing pagsisimula ning dialysis sa dalawampung taon maaaring mangahulugang mabuhay malapit sa metung a dialysis center kaysa sa pamilya o trabaho.</span>
@@ -2292,7 +2303,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 </div>
 <div class="feature-card">
 <h4><span class="dot dot-amber"></span><span data-lang="en">Dialysis and the school day</span><span class="lang-hidden" data-lang="tl">Dialysis at ang araw ng paaralan</span><span class="lang-hidden" data-lang="ceb">Dialysis ug ang adlaw sa eskwela</span><span class="lang-hidden" data-lang="kap">Dialysis at ing aldo ning paaralan</span></h4>
-<p><span data-lang="en">Three dialysis sessions a week, each lasting 4&ndash;5 hours, means roughly 15 hours of treatment time weekly &mdash; before accounting for transport and post-dialysis fatigue. Many children on HD schedule sessions for after school or on weekends where possible. Home peritoneal dialysis (automated PD at night) can preserve school attendance almost entirely and should be discussed with the nephrologist as a modality option specifically for school-age patients.</span>
+<p><span data-lang="en">Three dialysis sessions a week, each lasting 4&ndash;5 hours, means roughly 15 hours of treatment time weekly &mdash; before accounting for transport and post-dialysis fatigue. Many children on HD (hemodialysis) schedule sessions for after school or on weekends where possible. Home peritoneal dialysis (automated PD at night) can preserve school attendance almost entirely and should be discussed with the nephrologist as a modality option specifically for school-age patients.</span>
 <span class="lang-hidden" data-lang="tl">Tatlong sesyon ng dialysis sa isang linggo, bawat isa ay tumatagal ng 4&ndash;5 oras, ay nangangahulugang humigit-kumulang 15 oras ng oras ng paggamot sa bawat linggo &mdash; bago pa isaalang-alang ang transportasyon at pagod pagkatapos ng dialysis. Maraming mga batang nasa HD ang nag-i-schedule ng mga sesyon pagkatapos ng paaralan o sa mga katapusan ng linggo kung maaari. Ang home peritoneal dialysis (automated PD sa gabi) ay maaaring mapanatili ang pagdalo sa paaralan nang halos buo at dapat talakayin sa nephrologist bilang opsyon ng modality para sa mga pasyenteng may edad paaralan.</span>
 <span class="lang-hidden" data-lang="ceb">Tulo ka sesyon sa dialysis matag semana, ang matag isa molungtad og 4&ndash;5 oras, nagpasabut og mga 15 oras sa oras sa pagtambal matag semana. Daghan sa mga bata sa HD nag-schedule og mga sesyon human sa eskwela o sa mga katapusan sa semana kung mahimo. Ang home peritoneal dialysis (automated PD sa gabii) mahimong magpreserba sa pagdalo sa eskwela nga hapit tibuok ug kinahanglan talakayon sa nephrologist isip opsyon sa modality alang sa mga pasyente nga naa sa edad sa eskwela.</span>
 <span class="lang-hidden" data-lang="kap">Tatlung sesyon ning dialysis bawat lingo, bawat metung tumatagal ning 4&ndash;5 oras, nangangahulugan ning humigit-kumulang 15 oras ning oras ning paggamot bawat lingo. Karinan deng bata sa HD nag-i-schedule deng sesyon pagkatapos ning paaralan o sa deng katapusan ning lingo kung maaari. Ing home peritoneal dialysis (automated PD sa gabi) maaaring mapanatili ing pagdalo sa paaralan nang halos buo at dapat talakayin sa nephrologist bilang opsyon ning modality para king deng pasyenteng nasa edad ning paaralan.</span>
@@ -2316,7 +2327,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(192,57,43,.3);border:1px solid rgba(192,57,43,.3);vertical-align:middle;margin-right:4px;"></span>Dialysis day (school often missed)</span>
     <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--teal-light);border:1px solid rgba(26,107,114,.2);vertical-align:middle;margin-right:4px;"></span>Regular day</span>
   </div>
-  <p style="font-size:12px;color:var(--text-muted);margin-top:12px;margin-bottom:0;"><strong>Alternative:</strong> Home peritoneal dialysis (automated, nightly) eliminates daytime treatment sessions entirely — preserving near-full school attendance.</p>
+  <p style="font-size:12px;color:var(--text-muted);margin-top:12px;margin-bottom:0;"><span data-lang="en"><strong>Alternative:</strong> Home peritoneal dialysis (automated, nightly) eliminates daytime treatment sessions entirely — preserving near-full school attendance.</span><span class="lang-hidden" data-lang="tl"><strong>Alternatibo:</strong> Ang home peritoneal dialysis (automated, tuwing gabi) ay ganap na inaalis ang mga daytime na treatment session — napananatili ang halos buong pagpasok sa paaralan.</span><span class="lang-hidden" data-lang="ceb"><strong>Alternatibo:</strong> Ang home peritoneal dialysis (automated, matag gabii) hingpit nga nagwagtang sa mga daytime nga treatment session — napreserbar ang halos bug-os nga pag-eskwela.</span><span class="lang-hidden" data-lang="kap"><strong>Alternatibo:</strong> Ing home peritoneal dialysis (automated, kada bengi) ganap nang inaalis deng daytime a treatment session — mepanatili ing halos buong pamamasa king eskwela.</span></p>
 </div>
 
 <div class="alert alert-green">
@@ -2361,7 +2372,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <div class="tt-item">
       <div class="tt-dot">17</div>
       <div class="tt-age">Age 17</div>
-      <div class="tt-desc">Patient knows own diagnosis, all meds by name, and current eGFR</div>
+      <div class="tt-desc">Patient knows own diagnosis, all meds by name, and current eGFR (estimated glomerular filtration rate)</div>
     </div>
     <div class="tt-item">
       <div class="tt-dot">18–19</div>
@@ -2493,8 +2504,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 <!-- Mental health prevalence comparison bars -->
 <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin:28px 0;">
-  <p style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Depression &amp; anxiety rates — CKD patients vs. healthy peers</p>
-  <p style="font-size:12px;color:var(--text-muted);margin-bottom:18px;">Rates are 2–3× higher in young CKD patients than age-matched controls</p>
+  <p style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;"><span data-lang="en">Depression &amp; anxiety rates — CKD patients vs. healthy peers</span><span class="lang-hidden" data-lang="tl">Antas ng depression at anxiety — mga pasyenteng may CKD vs. malulusog na kapantay</span><span class="lang-hidden" data-lang="ceb">Ang-ang sa depression ug anxiety — mga pasyente nga may CKD vs. himsog nga kaedad</span><span class="lang-hidden" data-lang="kap">Antas ning depression at anxiety — deng pasyenteng atin CKD vs. malusug a kayabe</span></p>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:18px;"><span data-lang="en">Rates are 2–3× higher in young CKD patients than age-matched controls</span><span class="lang-hidden" data-lang="tl">2–3× na mas mataas ang antas sa mga batang pasyenteng may CKD kaysa sa mga kontrol na kaparehong edad</span><span class="lang-hidden" data-lang="ceb">2–3× nga mas taas ang ang-ang sa batan-ong pasyente nga may CKD kaysa sa mga kontrol nga parehas og edad</span><span class="lang-hidden" data-lang="kap">2–3× a mas matas ing antas king deng batang pasyenteng atin CKD kesa king deng kontrol a kaparehong edad</span></p>
   <div class="mental-compare">
     <div class="mc-row"><div class="mc-label">Children with CKD</div><div class="mc-bar-track"><div class="mc-bar-fill mc-ckd" style="width:72%;"></div></div><div class="mc-pct" style="color:var(--red);">~36%</div></div>
     <div class="mc-row"><div class="mc-label">Healthy children</div><div class="mc-bar-track"><div class="mc-bar-fill mc-healthy" style="width:24%;"></div></div><div class="mc-pct" style="color:var(--teal);">~12%</div></div>
@@ -2502,7 +2513,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <div class="mc-row"><div class="mc-label">Young adults with CKD</div><div class="mc-bar-track"><div class="mc-bar-fill mc-ckd" style="width:80%;"></div></div><div class="mc-pct" style="color:var(--red);">~40%</div></div>
     <div class="mc-row"><div class="mc-label">Healthy young adults</div><div class="mc-bar-track"><div class="mc-bar-fill mc-healthy" style="width:28%;"></div></div><div class="mc-pct" style="color:var(--teal);">~14%</div></div>
   </div>
-  <p style="font-size:11px;color:var(--text-muted);margin-top:8px;margin-bottom:0;">Sources: Palmer et al. JASN 2012; Lopes et al. Kidney Int 2004. Approximate estimates — rates vary by CKD stage, treatment modality, and population.</p>
+  <p style="font-size:11px;color:var(--text-muted);margin-top:8px;margin-bottom:0;"><span data-lang="en">Sources: Palmer et al. JASN 2012; Lopes et al. Kidney Int 2004. Approximate estimates — rates vary by CKD stage, treatment modality, and population.</span><span class="lang-hidden" data-lang="tl">Mga pinagkunan: Palmer et al. JASN 2012; Lopes et al. Kidney Int 2004. Tinatayang estima — nagkakaiba ang antas ayon sa CKD stage, paraan ng paggamot, at populasyon.</span><span class="lang-hidden" data-lang="ceb">Mga tinubdan: Palmer et al. JASN 2012; Lopes et al. Kidney Int 2004. Gibana-banang estima — magkalahi ang ang-ang depende sa CKD stage, paagi sa pagtambal, ug populasyon.</span><span class="lang-hidden" data-lang="kap">Deng pikuanan: Palmer et al. JASN 2012; Lopes et al. Kidney Int 2004. Tantiyang estima — mikaiba ing antas agpang king CKD stage, paralan ning panlunas, at populasyon.</span></p>
 </div>
 
 <div class="three-col">
@@ -2622,7 +2633,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <div class="alert-icon">⚠</div>
 <div class="alert-body">
 <h4><span data-lang="en">A note on employment and insurance discrimination for young adults</span><span class="lang-hidden" data-lang="tl">Isang tala sa diskriminasyon sa trabaho at insurance para sa mga kabataang adulto</span><span class="lang-hidden" data-lang="ceb">Usa ka tala sa diskriminasyon sa trabaho ug insurance alang sa mga batan-ong hamtong</span><span class="lang-hidden" data-lang="kap">Metung a tala sa diskriminasyon sa trabaho at insurance para king deng kabatan a adulto</span></h4>
-<p><span data-lang="en">Under R.A. 9442 (Magna Carta for Persons with Disability), Filipinos with CKD that significantly impairs daily function may be entitled to PWD registration and the associated employment protections and benefits. Young adults who face difficulty obtaining or retaining employment due to their CKD condition should consult the NCDA (National Council on Disability Affairs) or PDAO (Persons with Disability Affairs Office) in their city or municipality. Regarding insurance: PhilHealth remains the primary protection. Young adults transitioning off a parent's coverage or starting employment should ensure uninterrupted PhilHealth enrollment and consider DOH-accredited HMO products that cannot legally exclude pre-existing conditions after a waiting period.</span>
+<p><span data-lang="en">Under R.A. 9442 (Magna Carta for Persons with Disability), Filipinos with CKD that significantly impairs daily function may be entitled to PWD (person with disability) registration and the associated employment protections and benefits. Young adults who face difficulty obtaining or retaining employment due to their CKD condition should consult the NCDA (National Council on Disability Affairs) or PDAO (Persons with Disability Affairs Office) in their city or municipality. Regarding insurance: PhilHealth remains the primary protection. Young adults transitioning off a parent's coverage or starting employment should ensure uninterrupted PhilHealth enrollment and consider DOH (Department of Health)-accredited HMO (health maintenance organization) products that cannot legally exclude pre-existing conditions after a waiting period.</span>
 <span class="lang-hidden" data-lang="tl">Sa ilalim ng R.A. 9442 (Magna Carta para sa Mga Taong may Kapansanan), ang mga Pilipinong may CKD na malaki ang epekto sa pang-araw-araw na gawain ay maaaring may karapatang magparehistro ng PWD at ang kaugnay na proteksyon at benepisyo sa trabaho. Ang mga kabataang adulto na nahaharap sa kahirapan sa pagkuha o pagpapanatili ng trabaho dahil sa kanilang kondisyon ng CKD ay dapat kumonsulta sa NCDA o PDAO sa kanilang lungsod o munisipyo.</span>
 <span class="lang-hidden" data-lang="ceb">Sa ilalim sa R.A. 9442 (Magna Carta alang sa Mga Tawo nga adunay Kapansanan), ang mga Pilipino nga adunay CKD nga dako ang epekto sa adlaw-adlaw nga kalihokan mahimong adunay katungod sa PWD nga pagparehistro ug ang mga kaugnay nga proteksyon ug benepisyo sa trabaho. Ang mga batan-ong hamtong nga nag-atubang sa kalisud sa pagkuha o pagpatabi sa trabaho tungod sa ilang kondisyon sa CKD kinahanglan kumonsulta sa NCDA o PDAO sa ilang lungsod o munisipyo.</span>
 <span class="lang-hidden" data-lang="kap">Sa ilalim ning R.A. 9442 (Magna Carta para king Deng Taung maki Kapansanan), deng Pilipinong maki CKD a malaki ing epekto sa pang-araw-araw a gawain maaaring maki karapatang magparehistro ning PWD at deng kaugnay a proteksyon at benepisyo sa trabaho. Deng kabatan a adulto a nahaharap sa kahirapan sa pagkuha o pagpapanatili ning trabaho dahil sa kondisyon nila ning CKD dapat kumonsulta sa NCDA o PDAO king lungsod o munisipyo nila.</span>
@@ -2643,7 +2654,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <h2>Epidemiology of Pediatric CKD — Philippine &amp; Global Data</h2>
 
 <div class="intro-callout">
-<p><strong>Pediatric CKD incidence in the Philippines doubled between 2023 and 2024</strong> per the NKTI Annual Report 2024, constituting the sharpest single-year rise in the registry's history. More than 57% of all Filipino CKD patients are aged 20–59 — disproportionately young compared to high-income country registries (US USRDS: median ESKD age 64). The ESPN/ERA-EDTA registry (2000–2019, n=18,286 pediatric patients in 38 countries) reports CKD prevalence of 59–74 per million age-related population (pmarp) in Europe. Philippine pediatric prevalence is not systematically tracked, but NKTI Pediatric Nephrology Section data and registry estimates suggest significant underdiagnosis, analogous to the pattern seen in adult IgAN. The 2023 PNSP (Philippine Normal Society of Pediatrics) Renal Census identified CAKUT as the leading pediatric diagnosis (∼41% of cases), followed by primary GN (∼29%) and hereditary nephropathies (∼12%).</p>
+<p><strong>Pediatric CKD incidence in the Philippines doubled between 2023 and 2024</strong> per the NKTI Annual Report 2024, constituting the sharpest single-year rise in the registry's history. More than 57% of all Filipino CKD patients are aged 20–59 — disproportionately young compared to high-income country registries (US USRDS: median ESKD age 64). The ESPN/ERA-EDTA registry (2000–2019, n=18,286 pediatric patients in 38 countries) reports CKD prevalence of 59–74 per million age-related population (pmarp) in Europe. Philippine pediatric prevalence is not systematically tracked, but NKTI Pediatric Nephrology Section data and registry estimates suggest significant underdiagnosis, analogous to the pattern seen in adult IgAN (immunoglobulin A nephropathy). The 2023 PNSP (Philippine Normal Society of Pediatrics) Renal Census identified CAKUT as the leading pediatric diagnosis (∼41% of cases), followed by primary GN (∼29%) and hereditary nephropathies (∼12%).</p>
 </div>
 
 <div class="stat-grid">
@@ -2677,9 +2688,9 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <thead><tr><th>Age Stratum</th><th>Primary Diagnoses</th><th>Key Investigations</th><th>Clinical Notes</th></tr></thead>
 <tbody>
 <tr><td>Infants / toddlers (&lt;5 yrs)</td><td>CAKUT (renal agenesis, dysplasia, UPJ/UVJ obstruction, PUV), ARPKD, ADPKD (rare early), Bartter syndrome</td><td>Antenatal USS, MCUG, DMSA scan, genetic panel (PKD1/2, PKHD1), electrolytes, renin-aldosterone</td><td>Antenatal hydronephrosis: postnatal MCUG mandatory if bilateral / grade III+. Growth failure and electrolyte imbalance dominate early morbidity. PUV: azotaemia severity at presentation predicts long-term outcome.</td></tr>
-<tr><td>School-age (5–12 yrs)</td><td>Nephrotic syndrome (MCD, FSGS), IgA nephropathy, lupus nephritis class III/IV, HUS (Stx-HUS, aHUS), CAKUT with progressive decline</td><td>Urine protein:creatinine, C3/C4, ANA, anti-dsDNA, ANCA, complement genetics (aHUS panel), kidney biopsy per KDIGO</td><td>MCD: 80–90% steroid-responsive; FSGS: steroid-resistant more common. Steroid-resistant NS: biopsy mandatory. aHUS: eculizumab (anti-C5) approved — requires complement genetic panel. Lupus nephritis: mandatory ANA/anti-dsDNA in young females before biopsy.</td></tr>
-<tr><td>Adolescents (13–18 yrs)</td><td>Lupus nephritis (peak incidence female 15–25 yrs), IgA nephropathy, Alport syndrome (X-linked COL4A5; AR COL4A3/4), FSGS, early-onset T2DM nephropathy in obese teens, ADPKD</td><td>Genetic testing for Alport (COL4A3/4/5 NGS panel), audiogram, ophthalmology review; lupus serology, kidney biopsy with EM for Alport</td><td>Alport syndrome: electron microscopy shows GBM thinning/lamellation. X-linked Alport in males progresses to ESKD by mean age 25 without treatment. ACEi/ARB delays ESKD in Alport (Gross et al., JASN 2012). Female carriers of X-linked Alport progress less predictably — regular monitoring required.</td></tr>
-<tr><td>Young adults (19–35 yrs)</td><td>IgA nephropathy (most common primary GN in Asia in this age group), lupus nephritis, FSGS, ADPKD (symptomatic onset), ANCA vasculitis, early diabetic / hypertensive nephropathy</td><td>Per KDIGO 2024/2025 adult CKD protocols; Gd-IgA1 measurement (research), ANCA serology, renal USS + GFR estimation</td><td>ADPKD (PKD1 mutation): mean ESKD age 54; PKD2: mean 74. Mayo Imaging Classification (class 1C–1E) predicts rapid progression — tolvaptan indicated (TEMPO 3:4 trial). Young adults with T2DM: SGLT2i first-line renoprotection alongside RAS blockade.</td></tr>
+<tr><td>School-age (5–12 yrs)</td><td>Nephrotic syndrome (MCD, FSGS), IgA nephropathy, lupus nephritis class III/IV, HUS (Stx-HUS, aHUS), CAKUT with progressive decline</td><td>Urine protein:creatinine, C3/C4, ANA, anti-dsDNA, ANCA, complement genetics (aHUS panel), kidney biopsy per KDIGO (Kidney Disease: Improving Global Outcomes)</td><td>MCD: 80–90% steroid-responsive; FSGS: steroid-resistant more common. Steroid-resistant NS: biopsy mandatory. aHUS: eculizumab (anti-C5) approved — requires complement genetic panel. Lupus nephritis: mandatory ANA/anti-dsDNA in young females before biopsy.</td></tr>
+<tr><td>Adolescents (13–18 yrs)</td><td>Lupus nephritis (peak incidence female 15–25 yrs), IgA nephropathy, Alport syndrome (X-linked COL4A5; AR COL4A3/4), FSGS, early-onset T2DM (type 2 diabetes mellitus) nephropathy in obese teens, ADPKD</td><td>Genetic testing for Alport (COL4A3/4/5 NGS panel), audiogram, ophthalmology review; lupus serology, kidney biopsy with EM for Alport</td><td>Alport syndrome: electron microscopy shows GBM thinning/lamellation. X-linked Alport in males progresses to ESKD by mean age 25 without treatment. ACEi (angiotensin-converting enzyme inhibitor)/ARB (angiotensin receptor blocker) delays ESKD in Alport (Gross et al., JASN 2012). Female carriers of X-linked Alport progress less predictably — regular monitoring required.</td></tr>
+<tr><td>Young adults (19–35 yrs)</td><td>IgA nephropathy (most common primary GN in Asia in this age group), lupus nephritis, FSGS, ADPKD (symptomatic onset), ANCA vasculitis, early diabetic / hypertensive nephropathy</td><td>Per KDIGO 2024/2025 adult CKD protocols; Gd-IgA1 measurement (research), ANCA serology, renal USS + GFR estimation</td><td>ADPKD (PKD1 mutation): mean ESKD age 54; PKD2: mean 74. Mayo Imaging Classification (class 1C–1E) predicts rapid progression — tolvaptan indicated (TEMPO 3:4 trial). Young adults with T2DM: SGLT2i (sodium&ndash;glucose cotransporter-2 inhibitor) first-line renoprotection alongside RAS blockade.</td></tr>
 </tbody>
 </table>
 
@@ -2754,9 +2765,9 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <tbody>
 <tr><td>Height velocity</td><td>&lt;−2 SDS height-for-age or decline crossing centile</td><td>Optimize nutrition, correct acidosis and anemia first; then recombinant human growth hormone (rhGH) if eGFR &lt;75 mL/min/1.73m²</td><td>KDIGO 2024 ✓; Haffner et al. NEJM 2000 (rhGH significantly improved height SDS in CKD children, RCT n=145)</td></tr>
 <tr><td>Metabolic acidosis</td><td>Bicarbonate &lt;22 mEq/L</td><td>Sodium bicarbonate supplementation to maintain HCO₃ ≥22 mEq/L — corrects growth impairment, preserves residual GFR</td><td>KDIGO 2024 Grade 1B; Mahajan et al. JASN 2010</td></tr>
-<tr><td>Nutritional support</td><td>DRI for chronological age for energy; protein 100–140% of RDA for height-age in CKD G1–3; protein restriction only in G4–5 non-dialysis with nephrologist dietitian guidance</td><td>Nasogastric or gastrostomy tube feeding if oral intake &lt;80% EER</td><td>KDIGO 2024; Rees et al. Pediatr Nephrol 2011</td></tr>
+<tr><td>Nutritional support</td><td>DRI (Dietary Reference Intake) for chronological age for energy; protein 100–140% of RDA (Recommended Dietary Allowance) for height-age in CKD G1–3; protein restriction only in G4–5 non-dialysis with nephrologist dietitian guidance</td><td>Nasogastric or gastrostomy tube feeding if oral intake &lt;80% EER</td><td>KDIGO 2024; Rees et al. Pediatr Nephrol 2011</td></tr>
 <tr><td>Anemia</td><td>Hb 10–12 g/dL (pediatric target differs from adults)</td><td>Optimize iron first (IV iron if ferritin &lt;100 or TSAT &lt;20%); ESA (darbepoetin alfa or rHuEPO) if Hb &lt;10 g/dL after iron optimisation</td><td>KDIGO 2012 (pediatric chapter); TREAT-equivalent not available for children</td></tr>
-<tr><td>CKD-MBD</td><td>PTH: 2–9× upper limit of normal for CKD G5; phosphorus in age-adjusted normal range; 25-OH-D ≥20 ng/mL</td><td>Phosphate binders (calcium-based preferred in children due to lower cardiovascular calcification risk at young age); active vitamin D (calcitriol or alfacalcidol) per PTH</td><td>KDIGO 2017 CKD-MBD; Kidney Disease Improving Global Outcomes</td></tr>
+<tr><td>CKD-MBD (chronic kidney disease&ndash;mineral and bone disorder)</td><td>PTH (parathyroid hormone): 2–9× upper limit of normal for CKD G5; phosphorus in age-adjusted normal range; 25-OH-D ≥20 ng/mL</td><td>Phosphate binders (calcium-based preferred in children due to lower cardiovascular calcification risk at young age); active vitamin D (calcitriol or alfacalcidol) per PTH</td><td>KDIGO 2017 CKD-MBD; Kidney Disease Improving Global Outcomes</td></tr>
 </tbody>
 </table>
 </section>
@@ -2878,7 +2889,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <h2>Pharmacotherapy in Pediatric CKD — Dosing, Evidence, and Safety</h2>
 
 <h3>Immunosuppression Protocols</h3>
-<figure style="margin:24px 0;"><picture><source srcset="../images/ckd-children-md-immunosuppression.webp" type="image/webp"><img src="../images/ckd-children-md-immunosuppression.png" alt="Immunosuppression decision framework in pediatric CKD — vertical flowchart from nephrotic syndrome first episode through steroid-resistant disease, rituximab, lupus nephritis, aHUS, and IgA nephropathy pathways, with SGLT2i quick reference panel" style="width:100%;border-radius:10px;display:block;" width="1024" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">Immunosuppression strategy in pediatric CKD is diagnosis- and response-driven. Steroid-resistant nephrotic syndrome requires mandatory biopsy before escalating to CNI. Rituximab is Grade 2A for frequently relapsing/steroid-dependent NS. SGLT2 inhibitors are off-label in adolescents ≥16y with eGFR ≥25 and proteinuric CKD — informed consent required.</figcaption></figure>
+<figure style="margin:24px 0;"><picture><source srcset="../images/ckd-children-md-immunosuppression.webp" type="image/webp"><img src="../images/ckd-children-md-immunosuppression.png" alt="Immunosuppression decision framework in pediatric CKD — vertical flowchart from nephrotic syndrome first episode through steroid-resistant disease, rituximab, lupus nephritis, aHUS, and IgA nephropathy pathways, with SGLT2i quick reference panel" style="width:100%;border-radius:10px;display:block;" width="1024" height="1024"></picture><figcaption style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;text-align:center;">Immunosuppression strategy in pediatric CKD is diagnosis- and response-driven. Steroid-resistant nephrotic syndrome requires mandatory biopsy before escalating to CNI. Rituximab is Grade 2A for frequently relapsing/steroid-dependent NS. SGLT2 (sodium&ndash;glucose cotransporter-2) inhibitors are off-label in adolescents ≥16y with eGFR ≥25 and proteinuric CKD — informed consent required.</figcaption></figure>
 <table class="clin-table">
 <thead><tr><th>Indication</th><th>Agent / Protocol</th><th>Pediatric Dosing</th><th>Evidence / Safety Notes</th></tr></thead>
 <tbody>
@@ -2895,14 +2906,14 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <div class="two-col">
   <div class="feature-card">
     <h4><span class="dot dot-teal"></span>Dapagliflozin</h4>
-    <p>FDA approved ≥10 years for T1DM (2023) and ≥18 years for CKD. Philippine FDA: approved for T2DM and HFrEF in adults. DAPA-CKD IgAN subgroup: 33% relative risk reduction in composite renal endpoint. <strong>Off-label use in adolescents ≥16 years with eGFR ≥25 mL/min/1.73m²</strong> and UPCR &gt;0.5 g/g is increasingly adopted in pediatric nephrology centers with informed consent and eGFR monitoring. Avoid in T1DM due to DKA risk without insulin adjustment. <span class="ev-grade ev-2c">2C evidence</span></p>
+    <p>FDA (Food and Drug Administration) approved ≥10 years for T1DM (2023) and ≥18 years for CKD. Philippine FDA: approved for T2DM and HFrEF in adults. DAPA-CKD IgAN subgroup: 33% relative risk reduction in composite renal endpoint. <strong>Off-label use in adolescents ≥16 years with eGFR ≥25 mL/min/1.73m²</strong> and UPCR &gt;0.5 g/g is increasingly adopted in pediatric nephrology centers with informed consent and eGFR monitoring. Avoid in T1DM due to DKA risk without insulin adjustment. <span class="ev-grade ev-2c">2C evidence</span></p>
   </div>
   <div class="feature-card">
     <h4><span class="dot dot-purple"></span>Empagliflozin</h4>
     <p>FDA approved ≥10 years for T2DM. EMPA-KIDNEY (2023): CKD benefit consistent across eGFR 20–45 subgroup; no pediatric data. Not approved for CKD indication in patients &lt;18 years. Practical consideration: in young adults 18–25 years with CKD G3–4, empagliflozin 10 mg OD is guideline-recommended (KDIGO 2024) and should not be withheld due to age-based hesitancy. <span class="ev-grade ev-1b">1B evidence (adults)</span></p>
   </div>
 </div>
-<p style="margin-top:16px;font-size:13px;color:var(--text-muted);"><strong>Contraindications in pediatric CKD:</strong> eGFR &lt;20 mL/min/1.73m² (reduced efficacy); type 1 diabetes (DKA risk); recurrent UTI / prior urosepsis; upcoming surgery (hold 3 days before). Genital mycotic infections more common — counsel and monitor.</p>
+<p style="margin-top:16px;font-size:13px;color:var(--text-muted);"><strong>Contraindications in pediatric CKD:</strong> eGFR &lt;20 mL/min/1.73m² (reduced efficacy); type 1 diabetes (DKA risk); recurrent UTI (urinary tract infection) / prior urosepsis; upcoming surgery (hold 3 days before). Genital mycotic infections more common — counsel and monitor.</p>
 </section>
 
 <!-- MD S7: MONITORING -->
@@ -2918,11 +2929,11 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <tr><td>eGFR (Schwartz / CKiD U25)</td><td>6-monthly</td><td>3–4 monthly</td><td>Monthly (dialysis: q visit)</td><td>Cystatin C-based if muscle wasting / growth failure</td></tr>
 <tr><td>Urine UPCR</td><td>6-monthly</td><td>3-monthly</td><td>3-monthly</td><td>Target &lt;0.2 g/g on RAS blockade</td></tr>
 <tr><td>BP (office measurement)</td><td>Every visit</td><td>Every visit</td><td>Every visit</td><td>Use appropriate cuff size; auscultatory preferred in children</td></tr>
-<tr><td>Hemoglobin / CBC</td><td>Annually</td><td>3-monthly</td><td>Monthly</td><td>Hb target 10–12 g/dL in children; iron indices before ESA</td></tr>
+<tr><td>Hemoglobin / CBC (complete blood count)</td><td>Annually</td><td>3-monthly</td><td>Monthly</td><td>Hb target 10–12 g/dL in children; iron indices before ESA</td></tr>
 <tr><td>Electrolytes, bicarbonate, phosphate, calcium</td><td>Annually</td><td>3-monthly</td><td>Monthly</td><td>HCO₃ target ≥22 mEq/L; phosphate in age-normal range</td></tr>
 <tr><td>PTH, 25-OH-D</td><td>Annually</td><td>6-monthly</td><td>3-monthly</td><td>PTH 2–9× ULN target in CKD G5</td></tr>
 <tr><td>Lipid panel</td><td>Annually</td><td>Annually</td><td>Annually</td><td>Statins: data limited in children &lt;8y; consider in CKD G3+ ≥8y</td></tr>
-<tr><td>Height, weight, BMI, SDS</td><td>3-monthly</td><td>3-monthly</td><td>Every visit</td><td>Plot on WHO / NCHS growth chart; flag &lt;−2 SDS for rhGH assessment</td></tr>
+<tr><td>Height, weight, BMI (body mass index), SDS</td><td>3-monthly</td><td>3-monthly</td><td>Every visit</td><td>Plot on WHO (World Health Organization) / NCHS growth chart; flag &lt;−2 SDS for rhGH assessment</td></tr>
 <tr><td>Neurodevelopmental / school performance</td><td>Annually</td><td>Annually</td><td>6-monthly</td><td>Formal assessment via clinical psychologist if decline noted</td></tr>
 <tr><td>Depression screen (PHQ-A)</td><td>Annually (≥12y)</td><td>Every 6 months</td><td>Every visit (dialysis)</td><td>PHQ-A score ≥11: refer child psychiatry / psychology. PHQ-A score ≥15: urgent referral. All dialysis patients ≥12y should be screened at every annual review per KDIGO.</td></tr>
 <tr><td>Transition readiness (TRAQ or STARx)</td><td>—</td><td>Annually from age 12</td><td>Annually from age 12; repeat 6-monthly if score &lt;3.0</td><td>TRAQ score &lt;3.0 in medication management = high-risk for post-transfer non-adherence</td></tr>
@@ -3009,13 +3020,13 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <h2>Related Guides</h2>
 <div class="related-cards">
 <a class="related-card has-thumb" href="understanding-ckd.html"><div class="related-card-tag">Foundation</div><div class="related-card-title">Understanding CKD</div><div class="related-card-desc">What CKD means, how stages are classified, and the strategies that keep kidneys working longer.</div><div class="related-card-arrow">Read &rarr;</div>
-          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="caregiver-guide-ckd.html"><div class="related-card-tag">For Families</div><div class="related-card-title">CKD Family Caregiver&rsquo;s Guide</div><div class="related-card-desc">For the spouse, parent, or sibling managing medications, transport, and the day-to-day reality of CKD care.</div><div class="related-card-arrow">Read &rarr;</div>
-          <img class="related-card-thumb" src="../images/caregiver-guide-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/caregiver-guide-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="ckd-mental-health-sleep.html"><div class="related-card-tag">Wellbeing</div><div class="related-card-title">Mental Health &amp; Sleep in CKD</div><div class="related-card-desc">Depression, anxiety, and sleep disorders in kidney disease — causes, treatments, and when to ask for help.</div><div class="related-card-arrow">Read &rarr;</div>
-          <img class="related-card-thumb" src="../images/ckd-mental-health-sleep-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-mental-health-sleep-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 <a class="related-card has-thumb" href="ckd-financial-stress.html"><div class="related-card-tag">Financial Help</div><div class="related-card-title">CKD &amp; Financial Stress</div><div class="related-card-desc">PhilHealth, PCSO, DSWD, and 20+ financial assistance resources for CKD families in the Philippines.</div><div class="related-card-arrow">Read &rarr;</div>
-          <img class="related-card-thumb" src="../images/ckd-financial-stress-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/ckd-financial-stress-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
 </div>
 </div>
 <!-- RELATED-GUIDES-END -->
@@ -3177,5 +3188,6 @@ function setMode(mode){
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

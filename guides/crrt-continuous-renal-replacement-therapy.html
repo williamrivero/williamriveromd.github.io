@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -143,6 +144,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1311,8 +1320,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1769,7 +1780,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
     <div class="alert-icon">🩺</div>
     <div class="alert-body">
       <h4>Scope of this guide</h4>
-      <p>A layered, multidisciplinary bedside reference for the CRRT team — usable by nephrology and internal-medicine trainees, ICU and dialysis nursing staff, and attending physicians. Sections progress from core physiology through advanced prescription, regional citrate anticoagulation, operational setup, structured documentation, and systematic alarm troubleshooting. <strong>Guideline anchor:</strong> the KDIGO 2012 AKI Clinical Practice Guideline (the current published standard), with forward reference to the KDIGO 2026 AKI/AKD guideline, which was in public review at the time of writing.</p>
+      <p>A layered, multidisciplinary bedside reference for the CRRT (continuous renal replacement therapy) team — usable by nephrology and internal-medicine trainees, ICU (intensive care unit) and dialysis nursing staff, and attending physicians. Sections progress from core physiology through advanced prescription, regional citrate anticoagulation, operational setup, structured documentation, and systematic alarm troubleshooting. <strong>Guideline anchor:</strong> the KDIGO (Kidney Disease: Improving Global Outcomes) 2012 AKI (acute kidney injury) Clinical Practice Guideline (the current published standard), with forward reference to the KDIGO 2026 AKI/AKD (acute kidney disease) guideline, which was in public review at the time of writing.</p>
     </div>
   </div>
 
@@ -1789,7 +1800,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
       <tbody>
         <tr><td><strong>Trainee</strong> (Nephro/IM)</td><td>Parts I–III</td><td>Physiology, indications, timing evidence, dosing math, anticoagulation rationale, drug dosing</td></tr>
         <tr><td><strong>ICU / dialysis nurse &amp; tech</strong></td><td>Parts VI–VIII</td><td>Setup &amp; priming, documentation &amp; monitoring, alarm troubleshooting, citrate titration table</td></tr>
-        <tr><td><strong>Attending physician</strong></td><td>Parts II–V, IX</td><td>Patient selection, prescription optimization, citrate strategy, special populations, weaning, QA</td></tr>
+        <tr><td><strong>Attending physician</strong></td><td>Parts II–V, IX</td><td>Patient selection, prescription optimization, citrate strategy, special populations, weaning, QA (Quality Assurance)</td></tr>
       </tbody>
     </table>
   </div>
@@ -1839,7 +1850,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
       <thead><tr><th>Mechanism</th><th>Driving force</th><th>What it clears</th><th>Clinical lever</th></tr></thead>
       <tbody>
         <tr><td><strong>Diffusion</strong></td><td>Concentration gradient (counter-current dialysate)</td><td>Small solutes best (urea, K⁺, creatinine); clearance falls with molecular size</td><td>Dialysate flow rate (Qd)</td></tr>
-        <tr><td><strong>Convection</strong></td><td>Hydrostatic pressure → ultrafiltration (solvent drag)</td><td>Small AND middle molecules equally (up to membrane cutoff); solutes swept with water</td><td>Replacement / UF rate (Qr)</td></tr>
+        <tr><td><strong>Convection</strong></td><td>Hydrostatic pressure → ultrafiltration (solvent drag)</td><td>Small AND middle molecules equally (up to membrane cutoff); solutes swept with water</td><td>Replacement / UF (ultrafiltration) rate (Qr)</td></tr>
         <tr><td><strong>Ultrafiltration</strong></td><td>Transmembrane pressure (TMP)</td><td>Plasma water — the mechanism of net fluid removal</td><td>Net UF (patient fluid removal) rate</td></tr>
         <tr><td><strong>Adsorption</strong></td><td>Binding to membrane surface</td><td>Some cytokines/peptides; saturates over time, contributes minimally to routine clearance</td><td>Membrane type / change interval</td></tr>
       </tbody>
@@ -1866,7 +1877,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
         <dt>Qr</dt><dd>Replacement fluid flow rate</dd>
         <dt>TMP</dt><dd>Transmembrane pressure</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -1876,10 +1887,10 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
     <table>
       <thead><tr><th>Modality</th><th>Mechanism</th><th>Dialysate?</th><th>Replacement fluid?</th><th>Typical use</th></tr></thead>
       <tbody>
-        <tr><td><strong>SCUF</strong></td><td>Ultrafiltration only</td><td>No</td><td>No</td><td>Pure volume removal (e.g., diuretic-resistant fluid overload); negligible solute clearance</td></tr>
-        <tr><td><strong>CVVH</strong></td><td>Convection</td><td>No</td><td>Yes (pre and/or post-filter)</td><td>Solute + fluid control; better middle-molecule clearance</td></tr>
-        <tr><td><strong>CVVHD</strong></td><td>Diffusion</td><td>Yes</td><td>No</td><td>Small-solute control; efficient, often lower circuit clotting</td></tr>
-        <tr><td><strong>CVVHDF</strong></td><td>Diffusion + convection</td><td>Yes</td><td>Yes</td><td>Combined clearance; most flexible, most widely used</td></tr>
+        <tr><td><strong>SCUF (slow continuous ultrafiltration)</strong></td><td>Ultrafiltration only</td><td>No</td><td>No</td><td>Pure volume removal (e.g., diuretic-resistant fluid overload); negligible solute clearance</td></tr>
+        <tr><td><strong>CVVH (continuous veno-venous hemofiltration)</strong></td><td>Convection</td><td>No</td><td>Yes (pre and/or post-filter)</td><td>Solute + fluid control; better middle-molecule clearance</td></tr>
+        <tr><td><strong>CVVHD (continuous veno-venous hemodialysis)</strong></td><td>Diffusion</td><td>Yes</td><td>No</td><td>Small-solute control; efficient, often lower circuit clotting</td></tr>
+        <tr><td><strong>CVVHDF (continuous veno-venous hemodiafiltration)</strong></td><td>Diffusion + convection</td><td>Yes</td><td>Yes</td><td>Combined clearance; most flexible, most widely used</td></tr>
       </tbody>
     </table>
   </div>
@@ -1905,7 +1916,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
         <dt>CVVHD</dt><dd>Continuous venovenous hemodialysis</dd>
         <dt>CVVHDF</dt><dd>Continuous venovenous hemodiafiltration</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -1938,7 +1949,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
         <dt>CRRT</dt><dd>Continuous renal replacement therapy</dd>
         <dt>TMP</dt><dd>Transmembrane pressure (post-filter minus pre-filter)</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 </section>
@@ -1949,7 +1960,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
   <h2>Patient Selection, Indications &amp; Timing</h2>
 
   <h3>2.1 Indications for renal replacement therapy</h3>
-  <p>The threshold to initiate RRT integrates the classic life-threatening indications with the overall trajectory and demand-versus-capacity balance of the kidney. The mnemonic <strong>AEIOU</strong> captures the emergent triggers:</p>
+  <p>The threshold to initiate RRT (renal replacement therapy) integrates the classic life-threatening indications with the overall trajectory and demand-versus-capacity balance of the kidney. The mnemonic <strong>AEIOU</strong> captures the emergent triggers:</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th></th><th>Indication</th><th>Notes</th></tr></thead>
@@ -1972,7 +1983,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
   </div>
 
   <h3>2.2 Timing of initiation — what the trials show</h3>
-  <p>Five landmark RCTs have tested "early/accelerated" versus "delayed/standard" initiation. The aggregate signal is clear: in the absence of a life-threatening indication, earlier initiation does not improve survival, and a watchful-waiting strategy lets a substantial minority of patients recover without ever needing RRT.</p>
+  <p>Five landmark RCTs (randomized controlled trials) have tested "early/accelerated" versus "delayed/standard" initiation. The aggregate signal is clear: in the absence of a life-threatening indication, earlier initiation does not improve survival, and a watchful-waiting strategy lets a substantial minority of patients recover without ever needing RRT.</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Trial (year)</th><th>Design / population</th><th>Bottom line</th></tr></thead>
@@ -2006,12 +2017,12 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
         <dt>MODS</dt><dd>Multiple organ dysfunction syndrome</dd>
         <dt>MAP</dt><dd>Mean arterial pressure</dd>
         <dt>SVC–RA</dt><dd>Superior vena cava–right atrium junction</dd>
-        <dt>Qb / Qd</dt><dd>Blood flow rate / dialysate flow rate</dd>
+        <dt>Qb (blood flow rate) / Qd</dt><dd>Blood flow rate / dialysate flow rate</dd>
         <dt>TMP</dt><dd>Transmembrane pressure</dd>
         <dt>aPTT</dt><dd>Activated partial thromboplastin time</dd>
         <dt>anti-Xa</dt><dd>Anti-factor Xa assay</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -2019,14 +2030,14 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
   <p>Modality of RRT is chosen from the patient's hemodynamics, neurological status, and logistics. KDIGO recommends using CRRT and IHD as complementary therapies, with CRRT preferred for hemodynamically unstable patients and for acute brain injury / raised intracranial pressure.</p>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Feature</th><th>CRRT</th><th>IHD</th><th>SLED / PIRRT</th></tr></thead>
+      <thead><tr><th>Feature</th><th>CRRT</th><th>IHD</th><th>SLED (sustained low-efficiency dialysis) / PIRRT (prolonged intermittent renal replacement therapy)</th></tr></thead>
       <tbody>
         <tr><td>Duration</td><td>Continuous (24 h/day)</td><td>3–4 h sessions</td><td>6–12 h ("hybrid")</td></tr>
         <tr><td>Hemodynamic tolerance</td><td><strong>Best</strong></td><td>Poorest</td><td>Intermediate</td></tr>
         <tr><td>Solute clearance/hr</td><td>Low (steady)</td><td>High (rapid)</td><td>Intermediate</td></tr>
         <tr><td>Fluid removal control</td><td>Precise, gradual</td><td>Rapid, less forgiving</td><td>Intermediate</td></tr>
         <tr><td>Anticoagulation need</td><td>Higher (long circuit life)</td><td>Lower</td><td>Intermediate</td></tr>
-        <tr><td>Raised ICP / cerebral edema</td><td><strong>Preferred</strong></td><td>Avoid (osmotic shifts)</td><td>Caution</td></tr>
+        <tr><td>Raised ICP (intracranial pressure) / cerebral edema</td><td><strong>Preferred</strong></td><td>Avoid (osmotic shifts)</td><td>Caution</td></tr>
         <tr><td>Mobilization / procedures</td><td>Limits mobility</td><td>Frees patient between runs</td><td>Intermediate</td></tr>
         <tr><td>Cost / nursing intensity</td><td>Highest</td><td>Lower</td><td>Intermediate</td></tr>
       </tbody>
@@ -2137,7 +2148,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
         <tr><td>Clearance efficiency</td><td>Lower (~10–15% loss; solutes diluted before filter)</td><td>Higher (maximal)</td></tr>
         <tr><td>Filter/clotting risk</td><td>Lower (dilutes blood, lowers TMP)</td><td>Higher (hemoconcentration)</td></tr>
         <tr><td>Filtration fraction</td><td>Effectively lowered</td><td>Must monitor; keep &lt; 25%</td></tr>
-        <tr><td>Best when</td><td>High Hct, clotting-prone, no/low anticoagulation</td><td>Clearance-limited and filter tolerating well</td></tr>
+        <tr><td>Best when</td><td>High Hct (hematocrit), clotting-prone, no/low anticoagulation</td><td>Clearance-limited and filter tolerating well</td></tr>
       </tbody>
     </table>
   </div>
@@ -2181,7 +2192,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
         <tr><td><strong>Right internal jugular</strong></td><td>First choice</td><td>Short, straight path to the right atrium; best flows, lowest dysfunction</td></tr>
         <tr><td>Femoral</td><td>Reasonable, esp. urgent/unstable</td><td>Easy, safe in coagulopathy/urgency; higher infection concern with prolonged use; length matters</td></tr>
         <tr><td>Left internal jugular</td><td>Third choice</td><td>Longer, more curved course → more positional/flow problems</td></tr>
-        <tr><td><strong>Subclavian</strong></td><td>Avoid if possible</td><td>Highest risk of central-vein stenosis — jeopardizes future permanent access in patients who may progress to CKD/ESKD</td></tr>
+        <tr><td><strong>Subclavian</strong></td><td>Avoid if possible</td><td>Highest risk of central-vein stenosis — jeopardizes future permanent access in patients who may progress to CKD (chronic kidney disease)/ESKD (end-stage kidney disease)</td></tr>
       </tbody>
     </table>
   </div>
@@ -2201,7 +2212,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
         <dt>Qb</dt><dd>Blood flow rate</dd>
         <dt>SVC–RA</dt><dd>Superior vena cava–right atrium junction</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -2234,8 +2245,8 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
       <thead><tr><th>Strategy</th><th>Where it acts</th><th>Pros</th><th>Cons / cautions</th></tr></thead>
       <tbody>
         <tr><td><strong>Regional citrate (RCA)</strong></td><td>Circuit only (chelates ionized Ca; reversed by systemic Ca)</td><td>Longest filter life; no systemic anticoagulation → less bleeding; KDIGO-preferred first line</td><td>Complex; metabolic/acid-base effects; citrate accumulation risk in liver failure/shock; needs Ca replacement &amp; monitoring</td></tr>
-        <tr><td><strong>Unfractionated heparin</strong></td><td>Systemic</td><td>Familiar, cheap, reversible (protamine)</td><td>Systemic bleeding; HIT; unpredictable in critical illness</td></tr>
-        <tr><td><strong>LMWH</strong></td><td>Systemic</td><td>Predictable dosing</td><td>Accumulates in renal failure; not easily reversed</td></tr>
+        <tr><td><strong>Unfractionated heparin</strong></td><td>Systemic</td><td>Familiar, cheap, reversible (protamine)</td><td>Systemic bleeding; HIT (heparin-induced thrombocytopenia); unpredictable in critical illness</td></tr>
+        <tr><td><strong>LMWH (low-molecular-weight heparin)</strong></td><td>Systemic</td><td>Predictable dosing</td><td>Accumulates in renal failure; not easily reversed</td></tr>
         <tr><td><strong>No anticoagulation</strong></td><td>—</td><td>Appropriate with high bleeding risk or coagulopathy</td><td>Shorter filter life; mitigate with pre-dilution, higher Qb, saline flushes</td></tr>
       </tbody>
     </table>
@@ -2268,11 +2279,11 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
     <figcaption>
       <p class="fig-desc">The two-calcium-target loop in one diagram: citrate infuses pre-filter on the arterial line and chelates calcium to anticoagulate the circuit; the post-filter sample is drawn before any calcium is added back; calcium is then returned on the venous line, downstream of the sampling port, to keep the patient's systemic calcium normal.</p>
       <dl class="fig-abbrevs">
-        <dt>iCa</dt><dd>Ionized calcium</dd>
+        <dt>iCa</dt><dd>(ionized calcium)</dd>
         <dt>CaCl₂</dt><dd>Calcium chloride</dd>
         <dt>TMP</dt><dd>Transmembrane pressure</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -2453,7 +2464,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
     <a href="calc-crrt-flowsheet.html" class="calc-card">
       <div class="calc-card-icon">⌬</div>
       <div class="calc-card-body">
-        <div class="calc-card-title">CRRT Flowsheet &amp; SBAR Handoff</div>
+        <div class="calc-card-title">CRRT Flowsheet &amp; SBAR (Situation, Background, Assessment, Recommendation) Handoff</div>
         <div class="calc-card-desc">Print-ready shift template — prescription, hourly pressures, a self-totaling fluid ledger, delivered:prescribed ratio, filter age, labs, events, and this SBAR box, all fillable.</div>
       </div>
       <span class="calc-card-arrow">Open →</span>
@@ -2501,7 +2512,7 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
         <dt>Qd</dt><dd>Dialysate flow rate</dd>
         <dt>Hct</dt><dd>Hematocrit</dd>
       </dl>
-      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© williamriveromd.com</p>
+      <p style="font-size:11px;color:var(--text-faint);text-align:right;margin-top:6px;">© renalcarematters.com</p>
     </figcaption>
   </figure>
 
@@ -3044,37 +3055,37 @@ html[data-theme="dark"] .jump-nav-list a:hover{background:#0a2830;color:var(--te
       <div class="related-card-title">Hemodialysis Water Treatment Systems</div>
       <div class="related-card-desc">The companion operational reference — treatment-train design, capacity, and troubleshooting for the water that feeds every dialysate.</div>
       <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/dialysis-water-treatment-systems-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <img class="related-card-thumb" src="../images/dialysis-water-treatment-systems-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card has-thumb" href="code-blue-acls-dialysis-unit.html">
       <div class="related-card-tag">Related Guide</div>
       <div class="related-card-title">Code Blue &amp; ACLS in a Dialysis Unit</div>
       <div class="related-card-desc">Cardiac arrest response and reversible causes for a patient on extracorporeal therapy — the emergency counterpart to routine CRRT troubleshooting.</div>
       <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/code-blue-acls-dialysis-unit-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <img class="related-card-thumb" src="../images/code-blue-acls-dialysis-unit-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card has-thumb" href="hemodiafiltration-deep-dive.html">
       <div class="related-card-tag">Related Guide</div>
       <div class="related-card-title">Hemodiafiltration Deep Dive</div>
       <div class="related-card-desc">Diffusion + convection mechanics explained in depth — the same combined-clearance logic behind CVVHDF.</div>
       <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/hemodiafiltration-deep-dive-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <img class="related-card-thumb" src="../images/hemodiafiltration-deep-dive-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card has-thumb" href="dialysis-access-infection.html">
       <div class="related-card-tag">Related Guide</div>
       <div class="related-card-title">Dialysis Access Infection</div>
       <div class="related-card-desc">Infection-control protocols for vascular access — essential for the non-tunneled catheters CRRT depends on.</div>
       <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/dialysis-access-infection-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <img class="related-card-thumb" src="../images/dialysis-access-infection-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card has-thumb" href="pocus-nephrology.html">
       <div class="related-card-tag">Related Guide</div>
       <div class="related-card-title">Point-of-Care Ultrasound in Nephrology</div>
       <div class="related-card-desc">Bedside IVC, VEXUS, and lung B-line assessment to guide the same net-UF and volume decisions CRRT prescribing requires.</div>
       <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/pocus-nephrology-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <img class="related-card-thumb" src="../images/pocus-nephrology-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card has-thumb" href="fluid-management-dialysis.html">
       <div class="related-card-tag">Related Guide</div>
       <div class="related-card-title">Fluid Management in Dialysis</div>
       <div class="related-card-desc">The broader fluid-balance framework — dry weight, IDWG, and volume assessment that underlies CRRT's net-UF prescription.</div>
       <div class="related-card-arrow">Read →</div>
-      <img class="related-card-thumb" src="../images/fluid-management-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+      <img class="related-card-thumb" src="../images/fluid-management-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
   </div>
 </div>
 <!-- RELATED-GUIDES-END -->
@@ -3141,5 +3152,6 @@ function setGuideLang(lang) { localStorage.setItem(GLANG_KEY, lang); }
 </script>
 <script src="../assets/symptom-checker-widget.js" defer></script>
 <script src="../assets/image-lightbox.js" defer></script>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

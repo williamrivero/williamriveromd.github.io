@@ -12,6 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -140,6 +141,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1308,8 +1317,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1868,8 +1879,8 @@ try{(function(){var v=localStorage.getItem('wgmr-thyroid-ckd-mode');if(v===null)
 <!-- TOGGLE / LANG BAR -->
 <div class="guide-toggle-bar">
   <div style="display:flex;align-items:center;gap:8px;">
-    <button class="toggle-btn active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span></button>
-    <button class="toggle-btn" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span></button>
+    <button class="toggle-btn active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="toggle-btn" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
     <span class="lang-label">LANG:</span>
@@ -1890,9 +1901,9 @@ try{(function(){var v=localStorage.getItem('wgmr-thyroid-ckd-mode');if(v===null)
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">~21%</span><span class="l">hypothyroidism prevalence in HD patients</span></div>
-<div class="ov-stat"><span class="v">TSH &gt;10</span><span class="l">mIU/L &mdash; treat regardless of stage</span></div>
-<div class="ov-stat"><span class="v">&uarr;5&ndash;10</span><span class="l">mL/min eGFR after levothyroxine</span></div>
+<div class="ov-stat"><span class="v">~21%</span><span class="l">hypothyroidism prevalence in hemodialysis (HD) patients</span></div>
+<div class="ov-stat"><span class="v">&gt;10</span><span class="l">thyroid-stimulating hormone (TSH) mIU/L &mdash; treat regardless of stage</span></div>
+<div class="ov-stat"><span class="v">&uarr;5&ndash;10</span><span class="l">mL/min estimated glomerular filtration rate (eGFR) after levothyroxine</span></div>
 </div>
 <a class="ov-foot" href="#c-scht">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 </div>
@@ -1967,7 +1978,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thyroid-ckd-mode');if(v===null)
 <section class="section" id="ckd-thyroid">
   <div class="section-tag">The Connection</div>
   <h2><span data-lang="en">How CKD Affects Your Thyroid</span><span data-lang="tl" class="lang-hidden">Paano Nakakaapekto ang CKD sa Iyong Thyroid</span><span data-lang="ceb" class="lang-hidden">Unsaon Pakaapekto sa CKD sa Imong Thyroid</span><span data-lang="kap" class="lang-hidden">Papanung Nakakaapekto ing CKD king Thyroid Mu</span></h2>
-  <p><span data-lang="en">CKD affects the thyroid in several ways. As kidney function declines, waste products build up in the blood — a state called <strong>uremia</strong>. Uremia suppresses the thyroid gland and reduces the body's ability to convert T4 into the active form T3. The kidneys also retain too much iodine in CKD, which can slow hormone production further.</span><span data-lang="tl" class="lang-hidden">Nakakaapekto ang CKD sa thyroid sa maraming paraan. Habang bumababa ang paggana ng bato, nag-iipon ang mga basura sa dugo — isang kondisyong tinatawag na <strong>uremia</strong>. Pinipigilan ng uremia ang thyroid gland at binabawasan ang kakayahan ng katawan na gawing T3 ang T4. Nananatili rin ang masyadong maraming yodo sa mga bato sa CKD, na maaaring magpabagal ng produksyon ng hormone.</span><span data-lang="ceb" class="lang-hidden">Nakaapekto ang CKD sa thyroid sa daghang paagi. Samtang mokunhod ang function sa bato, nag-ipon ang mga basura sa dugo — usa ka kondisyon nga gitawag <strong>uremia</strong>. Gipugngan sa uremia ang thyroid gland ug gipakunhod ang abilidad sa lawas nga himoong T3 ang T4. Nagpabilin usab ang sobrang yodo sa mga bato sa CKD, nga makapahinay pa sa produksyon sa hormone.</span><span data-lang="kap" class="lang-hidden">Nakakaapekto ing CKD king thyroid king daramihang paraan. Habang bumababa ing paggana ning batu, nag-iipon ing mga basura king dugo — metung a kondisyon a tinatawag na <strong>uremia</strong>. Pinipigilan ning uremia ing thyroid gland at binabawasan ing kakayahan ning katawan na gawing T3 ing T4. Nananatili naman ing masyadong daming yodo king mga batu king CKD, a makapagpabagal pa ning produksyon ning hormone.</span></p>
+  <p><span data-lang="en">Chronic kidney disease (CKD) affects the thyroid in several ways. As kidney function declines, waste products build up in the blood — a state called <strong>uremia</strong>. Uremia suppresses the thyroid gland and reduces the body's ability to convert T4 into the active form T3. The kidneys also retain too much iodine in CKD, which can slow hormone production further.</span><span data-lang="tl" class="lang-hidden">Nakakaapekto ang CKD sa thyroid sa maraming paraan. Habang bumababa ang paggana ng bato, nag-iipon ang mga basura sa dugo — isang kondisyong tinatawag na <strong>uremia</strong>. Pinipigilan ng uremia ang thyroid gland at binabawasan ang kakayahan ng katawan na gawing T3 ang T4. Nananatili rin ang masyadong maraming yodo sa mga bato sa CKD, na maaaring magpabagal ng produksyon ng hormone.</span><span data-lang="ceb" class="lang-hidden">Nakaapekto ang CKD sa thyroid sa daghang paagi. Samtang mokunhod ang function sa bato, nag-ipon ang mga basura sa dugo — usa ka kondisyon nga gitawag <strong>uremia</strong>. Gipugngan sa uremia ang thyroid gland ug gipakunhod ang abilidad sa lawas nga himoong T3 ang T4. Nagpabilin usab ang sobrang yodo sa mga bato sa CKD, nga makapahinay pa sa produksyon sa hormone.</span><span data-lang="kap" class="lang-hidden">Nakakaapekto ing CKD king thyroid king daramihang paraan. Habang bumababa ing paggana ning batu, nag-iipon ing mga basura king dugo — metung a kondisyon a tinatawag na <strong>uremia</strong>. Pinipigilan ning uremia ing thyroid gland at binabawasan ing kakayahan ning katawan na gawing T3 ing T4. Nananatili naman ing masyadong daming yodo king mga batu king CKD, a makapagpabagal pa ning produksyon ning hormone.</span></p>
 
   <figure style="margin:24px 0;">
     <picture>
@@ -1975,7 +1986,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thyroid-ckd-mode');if(v===null)
       <img src="../images/thyroid-ckd-mechanism.png"
            alt="Circular diagram showing how thyroid hormones regulate kidney function and how CKD suppresses the thyroid"
            loading="lazy"
-           style="width:100%;height:auto;display:block;max-width:600px;margin:0 auto;border-radius:12px;">
+           style="width:100%;height:auto;display:block;max-width:600px;margin:0 auto;border-radius:12px;" width="1254" height="1254">
     </picture>
     <figcaption style="text-align:center;font-size:12px;color:#5c6a7e;margin-top:8px;font-style:italic;">
       <span data-lang="en">Thyroid hormones help regulate blood flow to your kidneys. In CKD, uremia suppresses the thyroid — creating a cycle.</span>
@@ -2006,7 +2017,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thyroid-ckd-mode');if(v===null)
       <img src="../images/thyroid-ckd-symptom-overlap.png"
            alt="Venn diagram showing symptom overlap between hypothyroidism and CKD: fatigue, swelling, constipation, brain fog, and more appear in both"
            loading="lazy"
-           style="width:100%;height:auto;display:block;border-radius:12px;">
+           style="width:100%;height:auto;display:block;border-radius:12px;" width="1536" height="1024">
     </picture>
     <figcaption style="text-align:center;font-size:12px;color:#5c6a7e;margin-top:8px;font-style:italic;">
       <span data-lang="en">Many symptoms of an underactive thyroid are the same as symptoms of CKD and uremia.</span>
@@ -2238,13 +2249,13 @@ try{(function(){var v=localStorage.getItem('wgmr-thyroid-ckd-mode');if(v===null)
   <h2><span data-lang="en">Related Guides</span><span data-lang="tl" class="lang-hidden">Mga Kaugnay na Gabay</span><span data-lang="ceb" class="lang-hidden">Mga May Kalabtan nga Giya</span><span data-lang="kap" class="lang-hidden">Ding Kaugnay nga Gabay</span></h2>
   <div class="related-cards">
     <a class="related-card has-thumb" href="understanding-ckd.html"><div class="related-card-tag">Foundation</div><div class="related-card-title">Understanding CKD</div><div class="related-card-desc">What chronic kidney disease is, how it progresses, and what the five stages mean for your daily life.</div><div class="related-card-arrow">Read →</div>
-          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card has-thumb" href="anemia-management.html"><div class="related-card-tag">Common Complication</div><div class="related-card-title">Anemia in CKD</div><div class="related-card-desc">Why kidney disease causes anemia, how iron and ESA therapy work, and what targets to aim for.</div><div class="related-card-arrow">Read →</div>
-          <img class="related-card-thumb" src="../images/anemia-management-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/anemia-management-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card" href="hypertension-ckd.html"><div class="related-card-tag">Blood Pressure</div><div class="related-card-title">Hypertension and CKD</div><div class="related-card-desc">How high blood pressure damages kidneys and how to protect both heart and kidneys.</div><div class="related-card-arrow">Read →</div></a>
     <a class="related-card" href="dialysis-basics.html"><div class="related-card-tag">Treatment</div><div class="related-card-title">Dialysis Basics</div><div class="related-card-desc">How hemodialysis and peritoneal dialysis work, what to expect, and how to prepare.</div><div class="related-card-arrow">Read →</div></a>
     <a class="related-card has-thumb" href="kidney-transplant.html"><div class="related-card-tag">Next Step</div><div class="related-card-title">Kidney Transplant</div><div class="related-card-desc">The transplant process, candidacy, what to expect before and after surgery.</div><div class="related-card-arrow">Read →</div>
-          <img class="related-card-thumb" src="../images/kidney-transplant-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/kidney-transplant-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
   </div>
 </div>
 <!-- RELATED-GUIDES-END -->
@@ -2333,7 +2344,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thyroid-ckd-mode');if(v===null)
       <img src="../images/thyroid-ckd-anatomy.png"
            alt="Medical illustration showing thyroid-kidney hormonal axis: T3/T4 secretion regulates renal blood flow and GFR; uremia and iodine retention suppress thyroid and reduce T4-to-T3 conversion"
            loading="lazy"
-           style="width:100%;height:auto;display:block;border-radius:12px;">
+           style="width:100%;height:auto;display:block;border-radius:12px;" width="1536" height="1024">
     </picture>
     <figcaption style="text-align:center;font-size:12px;color:#5c6a7e;margin-top:8px;font-style:italic;">Bidirectional thyroid–kidney hormonal axis. Upper pathway: T3/T4 → renal vasodilatation → GFR maintenance. Lower pathway: uremia + iodine retention → ↓ TBG → ↓ peripheral T4→T3 conversion.</figcaption>
   </figure>
@@ -2356,7 +2367,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thyroid-ckd-mode');if(v===null)
       <img src="../images/thyroid-ckd-lab-table.png"
            alt="Clinical reference card: TSH, Free T4, Total T3, Anti-TPO interpretation pitfalls and guidance in CKD"
            loading="lazy"
-           style="width:100%;height:auto;display:block;max-width:600px;margin:0 auto;border-radius:12px;">
+           style="width:100%;height:auto;display:block;max-width:600px;margin:0 auto;border-radius:12px;" width="1536" height="1024">
     </picture>
   <figcaption><p class="fig-desc">A reference card explaining how to read common thyroid blood tests — TSH, Free T4, Total T3, and Anti-TPO — in people with chronic kidney disease, noting where results can be misleading and offering interpretation guidance.</p></figcaption>
   </figure>
@@ -2468,7 +2479,7 @@ try{(function(){var v=localStorage.getItem('wgmr-thyroid-ckd-mode');if(v===null)
       <img src="../images/organ-donation-ph-kd-01b-living-donor-consultation-landscape.png"
            alt="Filipino nephrologist conducting a living donor transplant consultation — thyroid evaluation is part of the pre-transplant workup"
            loading="lazy"
-           style="width:100%;height:auto;display:block;border-radius:12px;">
+           style="width:100%;height:auto;display:block;border-radius:12px;" width="1659" height="948">
     </picture>
     <figcaption style="text-align:center;font-size:12px;color:#5c6a7e;margin-top:8px;font-style:italic;">Pre-transplant evaluation includes thyroid function testing. Thyroid malignancy found during workup should not automatically trigger a prolonged waiting period.</figcaption>
   </figure>
@@ -2683,12 +2694,12 @@ try{(function(){var v=localStorage.getItem('wgmr-thyroid-ckd-mode');if(v===null)
   <h2>Related Guides</h2>
   <div class="related-cards">
     <a class="related-card has-thumb" href="understanding-ckd.html"><div class="related-card-tag">Foundation</div><div class="related-card-title">Understanding CKD</div><div class="related-card-desc">CKD staging, progression, and the evidence base for slowing kidney disease.</div><div class="related-card-arrow">Read →</div>
-          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/understanding-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card has-thumb" href="anemia-management.html"><div class="related-card-tag">Complication</div><div class="related-card-title">Anemia in CKD</div><div class="related-card-desc">KDIGO 2024 iron targets, ESA protocols, HIF-PHI, ERI calculation.</div><div class="related-card-arrow">Read →</div>
-          <img class="related-card-thumb" src="../images/anemia-management-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/anemia-management-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     <a class="related-card" href="hypertension-ckd.html"><div class="related-card-tag">Cardiovascular</div><div class="related-card-title">Hypertension and CKD</div><div class="related-card-desc">BP targets, RAAS strategy, and cardiorenal protection in CKD.</div><div class="related-card-arrow">Read →</div></a>
     <a class="related-card has-thumb" href="kidney-transplant.html"><div class="related-card-tag">Transplant</div><div class="related-card-title">Kidney Transplant</div><div class="related-card-desc">Candidacy, immunosuppression, and long-term post-transplant care.</div><div class="related-card-arrow">Read →</div>
-          <img class="related-card-thumb" src="../images/kidney-transplant-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/kidney-transplant-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
   </div>
 </div>
 <!-- RELATED-GUIDES-END -->
@@ -2973,5 +2984,6 @@ function calcScreening(){
 </button>
 
 <script src="../assets/symptom-checker-widget.js" defer></script>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>

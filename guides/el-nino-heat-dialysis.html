@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0f1e33">
@@ -139,6 +140,14 @@
   }
   .header-lang .lang-btn-g:hover { border-color: rgba(255,255,255,.55); color: #fff; }
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+  /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
+     Kapampangan pills are darkened and disabled — only EN stays usable. The
+     force-EN behaviour is wired by the clinician-lang-lock script. */
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
+  body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
+    opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
+    background: transparent; border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.38);
+  }
   @media (max-width: 640px) {
     .site-header { padding: 0 14px; gap: 10px; }
     .header-lang .lang-lbl { display: none; }
@@ -1307,8 +1316,10 @@
     font-size: clamp(22px, 4vw, 38px); font-weight: 600; line-height: 1.2;
     color: white; margin-bottom: 14px; letter-spacing: -.02em;
   }
-  .md-hero-sub {
-    font-size: 15px; color: rgba(255,255,255,.82);
+  /* Scoped `.md-hero .md-hero-sub` (0,0,2,0) so it outranks `.section p`
+     (0,0,1,1), which otherwise paints this subtitle dark-on-dark in light mode. */
+  .md-hero .md-hero-sub {
+    font-size: 15px; color: rgba(255,255,255,.9);
     max-width: 580px; line-height: 1.7; margin-bottom: 28px;
   }
   .md-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -1933,8 +1944,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 </header>
 <div class="audience-tabs">
   <div class="tabs-inner">
-    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')">Patients &amp; Families</button>
-    <button class="aud-tab" id="tab-md" onclick="setMode('physician')">Clinicians</button>
+    <button class="aud-tab active" id="tab-pt" onclick="setMode('patient')"><span data-lang="en">Patients &amp; Families</span><span data-lang="tl" class="lang-hidden">Mga Pasyente at Pamilya</span><span data-lang="ceb" class="lang-hidden">Mga Pasyente ug Pamilya</span><span data-lang="kap" class="lang-hidden">Reng Pasyente at Pamilya</span></button>
+    <button class="aud-tab" id="tab-md" onclick="setMode('physician')"><span data-lang="en">Clinicians</span><span data-lang="tl" class="lang-hidden">Mga Kliniko</span><span data-lang="ceb" class="lang-hidden">Mga Kliniko</span><span data-lang="kap" class="lang-hidden">Reng Kliniko</span></button>
   </div>
 </div>
 
@@ -2087,7 +2098,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
   </figure>
 
   <p>
-    <span data-lang="en">What follows is the practical playbook. It assumes you are an adult on hemodialysis or peritoneal dialysis, living anywhere in the Philippines, with whatever resources you have. Where the recommendations differ between HD and PD, both are spelled out. Where they differ between high-resource and low-resource settings, both are spelled out.</span>
+    <span data-lang="en">What follows is the practical playbook. It assumes you are an adult on hemodialysis (HD) or peritoneal dialysis (PD), living anywhere in the Philippines, with whatever resources you have. Where the recommendations differ between HD and PD, both are spelled out. Where they differ between high-resource and low-resource settings, both are spelled out.</span>
     <span data-lang="tl" class="lang-hidden">Ang sumusunod ay ang praktikal na playbook. Inaasahan na ikaw ay nasa tamang gulang at nasa hemodialysis o peritoneal dialysis, naninirahan kahit saan sa Pilipinas, kung anumang rekurso ang mayroon ka. Kung iba ang rekomendasyon para sa HD at PD, parehong ipinaliliwanag. Kung iba para sa may sapat o kulang na rekurso, parehong ipinaliliwanag.</span>
     <span data-lang="ceb" class="lang-hidden">Ang mosunod mao ang praktikal nga playbook. Gituohan nga ikaw usa ka hamtong nga anaa sa hemodialysis o peritoneal dialysis, nagpuyo bisan asa sa Pilipinas, sa unsa mang rekurso nga anaa kanimo. Kung lahi ang rekomendasyon alang sa HD ug PD, duha gipasabot. Kung lahi sa adunahan o kulang nga rekurso, duha gipasabot.</span><span data-lang="kap" class="lang-hidden">Ing sumusunod ya ing praktikal na playbook. Inaasahan na ikaw ya nasa tamang gulang at nasa hemodialysis o perinineal dialysis, naninirahan kahit saan king Pilipinas, nung anumang rekurso ing mayroon ka. Nung iba ing rekomendasyon para king HD at PD, parehong ipinaliliwanag. Nung iba para king may sapat o kulang na rekurso, parehong ipinaliliwanag.</span>
   </p>
@@ -2405,7 +2416,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <span data-lang="ceb" class="lang-hidden">Pakunhura og kusog ang asin</span><span data-lang="kap" class="lang-hidden">Bawasan nang husto ing asin</span>
       </h4>
       <p>
-        <span data-lang="en">Sodium drives thirst more powerfully than heat does. Cut patis, toyo, bagoong, instant noodles, processed meats, and Maggi cubes <em>especially</em> in summer. See the <a href="sodium-salt-reduction-ckd.html" style="color:var(--teal);font-weight:600;">CKD Sodium Reduction guide</a> for the full Filipino food list.</span>
+        <span data-lang="en">Sodium drives thirst more powerfully than heat does. Cut patis, toyo, bagoong, instant noodles, processed meats, and Maggi cubes <em>especially</em> in summer. See the <a href="sodium-salt-reduction-ckd.html" style="color:var(--teal);font-weight:600;">CKD (chronic kidney disease) Sodium Reduction guide</a> for the full Filipino food list.</span>
         <span data-lang="tl" class="lang-hidden">Mas malakas pa kaysa sa init ang sodium sa pagdulot ng uhaw. Bawasan ang patis, toyo, bagoong, instant noodles, processed meats, at Maggi cubes <em>lalo na</em> sa tag-init. Tingnan ang <a href="sodium-salt-reduction-ckd.html" style="color:var(--teal);font-weight:600;">CKD Sodium Reduction guide</a> para sa buong listahan ng Filipino food.</span>
         <span data-lang="ceb" class="lang-hidden">Mas kusog pa kaysa init ang sodium sa pagpukaw sa kauhaw. Pakunhura ang patis, toyo, bagoong, instant noodles, processed meats, ug Maggi cubes <em>labi na</em> sa init nga panahon. Tan-awa ang <a href="sodium-salt-reduction-ckd.html" style="color:var(--teal);font-weight:600;">CKD Sodium Reduction guide</a> alang sa kompletong listahan sa Filipino food.</span><span data-lang="kap" class="lang-hidden">Mas malakas pa kaysa sa init ing sodium sa pagdulot ning uhaw. Bawasan ing patis, toyo, bagoong, instant noodles, processed meats, at Maggi cubes <em>lalo na</em> sa tag-init. Tingnan ing <a href="sodium-salt-reduction-ckd.html" style="color:var(--teal);font-weight:600;">CKD Sodium Reduction guide</a> para king buong listahan ning Filipino food.</span>
       </p>
@@ -2734,7 +2745,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <span data-lang="ceb" class="lang-hidden">Para sa pag-inom ug pagluto</span><span data-lang="kap" class="lang-hidden">Para king pag-inom at pagluluto</span>
       </h4>
       <p>
-        <span data-lang="en">Boil all tap water for 1 minute before drinking or cooking during rationing periods. Refilling-station water is not always safer — during droughts, contaminants concentrate in groundwater sources. PhilHealth-grade bottled water is acceptable but expensive.</span>
+        <span data-lang="en">Boil all tap water for 1 minute before drinking or cooking during rationing periods. Refilling-station water is not always safer — during droughts, contaminants concentrate in groundwater sources. PhilHealth (Philippine Health Insurance Corporation)-grade bottled water is acceptable but expensive.</span>
         <span data-lang="tl" class="lang-hidden">Pakuluan lahat ng tap water ng 1 minuto bago inumin o lutuin sa panahon ng rationing. Hindi laging mas ligtas ang refilling-station water — sa panahon ng tagtuyot, mas konsentrado ang dumi sa groundwater sources. Ok ang PhilHealth-grade bottled water pero mahal.</span>
         <span data-lang="ceb" class="lang-hidden">Pakuhana ang tanang tap water sa 1 minuto sa wala pa imnon o lutuon sa panahon sa rationing. Dili kanunay nga mas luwas ang refilling-station water — sa panahon sa hulaw, mas konsentrado ang hugaw sa groundwater sources. Ok ang PhilHealth-grade bottled water apan mahal.</span><span data-lang="kap" class="lang-hidden">Pakuluan lahat ning tap water ning 1 minuto bago inumin o lutuin sa panahon ning rationing. Ali pirming mas ligtas ing refilling-station water — sa panahon ning tagtuyot, mas konsentrado ing dumi sa groundwater sources. Ok ing PhilHealth-grade bottled water pero mahal.</span>
       </p>
@@ -2746,7 +2757,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <span data-lang="ceb" class="lang-hidden">Para sa hygiene</span><span data-lang="kap" class="lang-hidden">Para king hygiene</span>
       </h4>
       <p>
-        <span data-lang="en">Bathing can be reduced to once per day during severe rationing — but <strong>access-site cleaning must continue daily</strong>. Use stored water for the dialysis catheter or AVF cleaning specifically.</span>
+        <span data-lang="en">Bathing can be reduced to once per day during severe rationing — but <strong>access-site cleaning must continue daily</strong>. Use stored water for the dialysis catheter or AVF (arteriovenous fistula) cleaning specifically.</span>
 
         <span data-lang="tl" class="lang-hidden">Maaaring isang beses lang sa isang araw maligo sa matinding rationing — pero <strong>dapat ipagpatuloy araw-araw ang paglilinis ng access site</strong>. Gumamit ng nakatabing tubig para sa paglilinis ng dialysis catheter o AVF.</span>
         <span data-lang="ceb" class="lang-hidden">Mahimong kausa lang sa adlaw maligo sa grabe nga rationing — apan <strong>kinahanglan ipadayon adlaw-adlaw ang paghinlo sa access site</strong>. Gamita ang gitipigan nga tubig alang sa paghinlo sa dialysis catheter o AVF.</span><span data-lang="kap" class="lang-hidden">Maaaring metung a beses lang sa metung a aldo maligo sa matinding rationing — pero <strong>dapat ipagpatuloy aldo-aldo ing paglilinis ning access site</strong>. Gumamit ning nakatabining danum para king paglilinis ning dialysis catheter o AVF.</span>
@@ -2790,7 +2801,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <tr>
         <td><strong><span data-lang="en">Erythropoietin / Aranesp</span><span data-lang="tl" class="lang-hidden">Erythropoietin / Aranesp</span><span data-lang="ceb" class="lang-hidden">Erythropoietin / Aranesp</span><span class="lang-hidden" data-lang="kap">Erythropoietin / Aranesp</span></strong></td>
         <td><span data-lang="en">Strict refrigeration 2–8°C. Loses potency rapidly above 25°C.</span><span data-lang="tl" class="lang-hidden">Mahigpit na refrigeration 2–8°C. Mabilis nawawala ang bisa sa lampas 25°C.</span><span data-lang="ceb" class="lang-hidden">Hugot nga refrigeration 2–8°C. Paspas mawala ang bisa sa labaw sa 25°C.</span><span class="lang-hidden" data-lang="kap">Mahigpit na refrigeration 2–8°C. Mabilis nawaala ing bisa king lampas 25°C.</span></td>
-        <td><span data-lang="en">If your center provides EPO at dialysis sessions, this is their problem, not yours. If you self-administer at home: insulated container, cool packs, use within hours of any temperature breach.</span><span data-lang="tl" class="lang-hidden">Kung ang center mo ang nagbibigay ng EPO sa dialysis sessions, sila ang may problema, hindi ikaw. Kung self-administer ka sa bahay: insulated container, cool packs, gamitin sa loob ng ilang oras kung lumampas sa temperatura.</span><span data-lang="ceb" class="lang-hidden">Kung ang center nimo ang naghatag og EPO sa dialysis sessions, sila ang naa'y problema, dili ikaw. Kung self-administer ka sa balay: insulated container, cool packs, gamita sulod sa pipila ka oras kung milabaw sa temperatura.</span><span class="lang-hidden" data-lang="kap">Nung ing center mo ing nagbibigay ning EPO king dialysis sessions, sila ing may problema, ali ikaw. Nung self-administer ka king bale: insulated container, cool packs, gamitin sa loob ning ilang oras nung lumampas sa temperatura.</span></td>
+        <td><span data-lang="en">If your center provides EPO (erythropoietin) at dialysis sessions, this is their problem, not yours. If you self-administer at home: insulated container, cool packs, use within hours of any temperature breach.</span><span data-lang="tl" class="lang-hidden">Kung ang center mo ang nagbibigay ng EPO sa dialysis sessions, sila ang may problema, hindi ikaw. Kung self-administer ka sa bahay: insulated container, cool packs, gamitin sa loob ng ilang oras kung lumampas sa temperatura.</span><span data-lang="ceb" class="lang-hidden">Kung ang center nimo ang naghatag og EPO sa dialysis sessions, sila ang naa'y problema, dili ikaw. Kung self-administer ka sa balay: insulated container, cool packs, gamita sulod sa pipila ka oras kung milabaw sa temperatura.</span><span class="lang-hidden" data-lang="kap">Nung ing center mo ing nagbibigay ning EPO king dialysis sessions, sila ing may problema, ali ikaw. Nung self-administer ka king bale: insulated container, cool packs, gamitin sa loob ning ilang oras nung lumampas sa temperatura.</span></td>
       </tr>
       <tr>
         <td><strong><span data-lang="en">Phosphate binders</span><span data-lang="tl" class="lang-hidden">Phosphate binders</span><span data-lang="ceb" class="lang-hidden">Phosphate binders</span><span class="lang-hidden" data-lang="kap">Phosphate binders</span></strong> (sevelamer, calcium acetate, lanthanum)</td>
@@ -2798,7 +2809,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <td><span data-lang="en">No special precautions.</span><span data-lang="tl" class="lang-hidden">Walang espesyal na pag-iingat.</span><span data-lang="ceb" class="lang-hidden">Walay espesyal nga pag-amping.</span><span class="lang-hidden" data-lang="kap">Alang espesyal na pag-iingat.</span></td>
       </tr>
       <tr>
-        <td><strong><span data-lang="en">ACE inhibitors / ARBs</span><span data-lang="tl" class="lang-hidden">ACE inhibitors / ARBs</span><span data-lang="ceb" class="lang-hidden">ACE inhibitors / ARBs</span><span class="lang-hidden" data-lang="kap">ACE inhibinirs / ARBs</span></strong></td>
+        <td><strong><span data-lang="en">ACE inhibitors / ARBs (angiotensin receptor blockers)</span><span data-lang="tl" class="lang-hidden">ACE inhibitors / ARBs</span><span data-lang="ceb" class="lang-hidden">ACE inhibitors / ARBs</span><span class="lang-hidden" data-lang="kap">ACE inhibinirs / ARBs</span></strong></td>
         <td><span data-lang="en">Room temperature stable.</span><span data-lang="tl" class="lang-hidden">Stable sa room temperature.</span><span data-lang="ceb" class="lang-hidden">Stable sa room temperature.</span><span class="lang-hidden" data-lang="kap">Stable sa room temperature.</span></td>
         <td><span data-lang="en">No special precautions.</span><span data-lang="tl" class="lang-hidden">Walang espesyal na pag-iingat.</span><span data-lang="ceb" class="lang-hidden">Walay espesyal nga pag-amping.</span><span class="lang-hidden" data-lang="kap">Alang espesyal na pag-iingat.</span></td>
       </tr>
@@ -3158,7 +3169,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <section class="section mode-physician" id="md-quickprotocol">
   <div class="section-tag">For Clinicians · Rapid Protocol</div>
   <h2>El Niño 2026 — clinician rapid protocol.</h2>
-  <p>A one-page Philippine-adapted heat-event reference for HD and PD units: why ESKD patients tolerate heat poorly, the every-session pre-dialysis screen, intradialytic protocol (cool dialysate 35.0–35.5°C, UF cap 10 mL/kg/hour, sodium profiling, monitoring cadence), heat-emergency triage (exhaustion vs stroke), the center surge-readiness checklist, the power-outage SOP, special populations, and the three hyperkalemia traps to avoid. Detailed sections with references follow below.</p>
+  <p>A one-page Philippine-adapted heat-event reference for HD and PD units: why ESKD (end-stage kidney disease) patients tolerate heat poorly, the every-session pre-dialysis screen, intradialytic protocol (cool dialysate 35.0–35.5°C, UF cap 10 mL/kg/hour, sodium profiling, monitoring cadence), heat-emergency triage (exhaustion vs stroke), the center surge-readiness checklist, the power-outage SOP, special populations, and the three hyperkalemia traps to avoid. Detailed sections with references follow below.</p>
   <figure style="margin:24px 0;">
     <picture>
       <source srcset="../images/el-nino-heat-dialysis-clinician-quickguide.webp" type="image/webp">
@@ -3189,7 +3200,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <div class="alert-icon">📊</div>
     <div class="alert-body">
       <h4>What we should track this cycle that we did not last cycle</h4>
-      <p>The 2015–16 data was retrospective and patchy. For 2026–27, the Philippine Society of Nephrology has indicated interest in a prospective sentinel-site cohort across NCR, Cebu, and Davao tertiary centers, capturing daily ambient temperature, interdialytic weight gain, intradialytic hypotension events, hyperkalemia presentations, and heat-related hospitalisations. Centers wishing to participate should contact PSN. Standardised data capture from this El Niño would let us write better protocols for the next one.</p>
+      <p>The 2015–16 data was retrospective and patchy. For 2026–27, the Philippine Society of Nephrology (PSN) has indicated interest in a prospective sentinel-site cohort across NCR, Cebu, and Davao tertiary centers, capturing daily ambient temperature, interdialytic weight gain, intradialytic hypotension events, hyperkalemia presentations, and heat-related hospitalisations. Centers wishing to participate should contact PSN. Standardised data capture from this El Niño would let us write better protocols for the next one.</p>
     </div>
   </div>
 </section>
@@ -3217,7 +3228,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <section class="section mode-physician" id="md-protocol">
   <div class="section-tag">For Clinicians · Center Surge Protocol</div>
   <h2>A proposed dialysis-center surge protocol for El Niño 2026.</h2>
-  <p>The protocol below is intended as a starting point for unit medical directors. It is consistent with KDIGO general principles and with consensus practices from Singapore, Hong Kong, and Malaysian centers that operate under year-round heat conditions. Adapt to your local resources.</p>
+  <p>The protocol below is intended as a starting point for unit medical directors. It is consistent with KDIGO (Kidney Disease: Improving Global Outcomes) general principles and with consensus practices from Singapore, Hong Kong, and Malaysian centers that operate under year-round heat conditions. Adapt to your local resources.</p>
 
   <div class="algo-card">
     <div class="algo-header">Pre-dialysis screening (every patient, every session, during heat events)</div>
@@ -3229,7 +3240,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
   <div class="algo-card">
     <div class="algo-header">Intradialytic adjustments during heat events</div>
-    <div class="algo-row"><div class="algo-step-num">1</div><div class="algo-content"><strong>Dialysate temperature:</strong> reduce to 35.0–35.5°C (from the typical 36.5–37.0°C). The single most evidence-based intervention to reduce intradialytic hypotension. Cochrane meta-analysis: ~70% reduction in IDH episodes with cooler dialysate.</div></div>
+    <div class="algo-row"><div class="algo-step-num">1</div><div class="algo-content"><strong>Dialysate temperature:</strong> reduce to 35.0–35.5°C (from the typical 36.5–37.0°C). The single most evidence-based intervention to reduce intradialytic hypotension (IDH). Cochrane meta-analysis: ~70% reduction in IDH episodes with cooler dialysate.</div></div>
     <div class="algo-row"><div class="algo-step-num">2</div><div class="algo-content"><strong>UF rate:</strong> cap at 10 mL/kg/hour where possible. Higher rates correlate with cardiovascular events and IDH. In patients arriving with excessive fluid gain, prefer prolonged session over aggressive UF.</div></div>
     <div class="algo-row"><div class="algo-step-num">3</div><div class="algo-content"><strong>Sodium profiling</strong> in volume-depleted patients: stepped-down dialysate sodium (e.g., 140 → 138 mEq/L over the session) reduces post-dialysis thirst and improves intradialytic stability without promoting interdialytic weight gain.</div></div>
     <div class="algo-row"><div class="algo-step-num">4</div><div class="algo-content"><strong>Monitoring frequency:</strong> BP every 15 minutes (vs the usual 30) during the first hour and last hour of session. Temperature every 30 minutes if patient arrived &gt;37.5°C. Continuous pulse oximetry if any cardiopulmonary symptoms.</div></div>
@@ -3262,8 +3273,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
       <tr><td>Mental status</td><td>Preserved; may be anxious, irritable</td><td><strong>Altered</strong> — confusion, agitation, seizures, coma</td></tr>
       <tr><td>Skin</td><td>Cool, moist (sweating intact)</td><td>Hot, often dry (sweating may have ceased)</td></tr>
       <tr><td>Hemodynamics</td><td>Tachycardia; orthostatic hypotension common</td><td>Hyperdynamic early → cardiovascular collapse late</td></tr>
-      <tr><td>Labs</td><td>Mild AKI on top of CKD; mild K+ ↑; lactate ≤2</td><td>Marked transaminitis (AST/ALT often &gt;1000), rhabdomyolysis, coagulopathy, lactic acidosis, severe hyperkalemia</td></tr>
-      <tr><td>Disposition</td><td>ED observation; rehydrate <em>cautiously</em> (oliguric/anuric); same-day or next-day dialysis if K+ rising</td><td>ICU; aggressive cooling, advanced organ support; emergency dialysis often required</td></tr>
+      <tr><td>Labs</td><td>Mild AKI (acute kidney injury) on top of CKD; mild K+ ↑; lactate ≤2</td><td>Marked transaminitis (AST/ALT often &gt;1000), rhabdomyolysis, coagulopathy, lactic acidosis, severe hyperkalemia</td></tr>
+      <tr><td>Disposition</td><td>ED observation; rehydrate <em>cautiously</em> (oliguric/anuric); same-day or next-day dialysis if K+ rising</td><td>ICU (intensive care unit); aggressive cooling, advanced organ support; emergency dialysis often required</td></tr>
     </tbody>
   </table>
 
@@ -3277,7 +3288,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <li><strong>Cold water immersion</strong> if available and patient is alert: gold standard for exertional heat stroke; less commonly used in classical heat stroke but acceptable.</li>
         <li><strong>Iced gastric or bladder lavage</strong> in unconscious patients (specialized centers).</li>
         <li><strong>Avoid IV fluid bolus reflex</strong> — anuric/oliguric patients tolerate volume poorly. Limit to 250–500 mL crystalloid initially, then reassess. If persistent hypotension, consider vasopressor over more fluid.</li>
-        <li><strong>Antipyretics are useless</strong> — heat stroke is a thermoregulatory failure, not a cytokine-mediated fever. Paracetamol/NSAIDs do not help and may worsen hepatic injury.</li>
+        <li><strong>Antipyretics are useless</strong> — heat stroke is a thermoregulatory failure, not a cytokine-mediated fever. Paracetamol/NSAIDs (non-steroidal anti-inflammatory drugs) do not help and may worsen hepatic injury.</li>
         <li><strong>Treat hyperkalemia aggressively</strong> — severe heat stroke typically presents with K+ &gt;6.0. See dedicated algorithm below.</li>
       </ul>
     </div>
@@ -3294,7 +3305,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
 
   <table class="lab-table">
-    <thead><tr><th>Serum K+ (mEq/L)</th><th>ECG findings</th><th>Action</th></tr></thead>
+    <thead><tr><th>Serum K+ (mEq/L)</th><th>ECG (electrocardiogram) findings</th><th>Action</th></tr></thead>
     <tbody>
       <tr><td><strong>&lt;5.5</strong></td><td>None expected</td><td>Dietary counselling. Reassess after next dialysis. No acute intervention.</td></tr>
       <tr><td><strong>5.5–6.0</strong></td><td>Usually normal; may show peaked T waves</td><td>Pre-dialysis: proceed with session at scheduled time; consider K-removal optimisation (lower dialysate K, longer session). Outside dialysis: oral patiromer 8.4 g daily, or sodium polystyrene sulfonate 15 g (less preferred — colonic necrosis risk). Tighten dietary K&lt;sup&gt;+&lt;/sup&gt;.</td></tr>
@@ -3437,25 +3448,25 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
         <div class="related-card-title">Typhoon &amp; Disaster Preparedness for Dialysis Patients</div>
         <div class="related-card-desc">The companion guide for the wet end of the climate cycle — typhoons, flooding, evacuation planning, and post-disaster dialysis continuity.</div>
       
-          <img class="related-card-thumb" src="../images/typhoon-disaster-preparedness-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/typhoon-disaster-preparedness-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="sodium-salt-reduction-ckd.html">
         <div class="related-card-tag">Nutrition</div>
         <div class="related-card-title">Sodium &amp; Salt Reduction for CKD Filipinos</div>
         <div class="related-card-desc">Reducing sodium reduces thirst — critical during heat events when fluid budgets are hardest to keep.</div>
       
-          <img class="related-card-thumb" src="../images/sodium-salt-reduction-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/sodium-salt-reduction-ckd-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="fluid-management-dialysis.html">
         <div class="related-card-tag">Dialysis</div>
         <div class="related-card-title">Fluid Management for Dialysis Patients</div>
         <div class="related-card-desc">Daily fluid budgeting, interdialytic weight gain targets, and the practical strategies that keep dialysis sessions safer year-round.</div>
       
-          <img class="related-card-thumb" src="../images/fluid-management-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/fluid-management-dialysis-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
       <a class="related-card has-thumb" href="dialysis-access-care.html">
         <div class="related-card-tag">Dialysis</div>
         <div class="related-card-title">Dialysis Access Care</div>
         <div class="related-card-desc">AVF, AVG, tunneled catheter, and PD catheter care — including the heat-specific hygiene rules referenced in this guide.</div>
       
-          <img class="related-card-thumb" src="../images/dialysis-access-care-rg-thumb.webp" alt="" loading="lazy" decoding="async"></a>
+          <img class="related-card-thumb" src="../images/dialysis-access-care-rg-thumb.webp" alt="" loading="lazy" decoding="async" width="220" height="160"></a>
     </div>
   </div>
 </div>
@@ -3566,5 +3577,6 @@ calcRisk();
     <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+<script src="../assets/clinician-lang-lock.js" defer></script>
 </body>
 </html>
