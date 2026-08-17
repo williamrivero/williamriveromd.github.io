@@ -2,9 +2,9 @@
 
 **Guide:** `guides/home-hemodialysis-philippines.html`
 **Canonical URL:** https://renalcarematters.com/guides/home-hemodialysis-philippines.html *(not yet deployed)*
-**Total images:** 8 (2 already specified, 6 new)
+**Total images:** 9 (2 already specified, 7 new)
 **Visual anchor:** `ckd-understanding-overview.webp`
-**Skills used:** `williamriveromd-image-planner` (plan structure) · `williamriveromd-hero-vignette` (IMG 1) · `williamriveromd-infographic-skill` (IMG 2, 5) · `williamriveromd-simple-figure` (IMG 4, 6, 7, 8) · `williamriveromd-biomedical-mechanism-figure` (IMG 3)
+**Skills used:** `williamriveromd-image-planner` (plan structure) · `williamriveromd-hero-vignette` (IMG 1) · `williamriveromd-infographic-skill` (IMG 2, 5) · `williamriveromd-simple-figure` (IMG 4, 6, 7, 8, 9) · `williamriveromd-biomedical-mechanism-figure` (IMG 3)
 **Generated:** 17 August 2026
 
 Stage 1 output (prompt authoring). Paste each **PROMPT** block into the ChatGPT
@@ -14,13 +14,13 @@ Image Generator GPT: https://chatgpt.com/g/g-pmuQfob8d-image-generator
 
 ## 0. Architecture decisions (read before generating)
 
-### 0.1 Why 8 images and not the planner's cap of 6
+### 0.1 Why 9 images and not the planner's cap of 6
 
 The planner caps a guide at 6 images "unless the guide is explicitly a
 multi-chapter reference." This guide qualifies: **17 sections, ~9,000 English
 words, dual-mode**, with eight discrete barrier chapters and a separate
 first-principles physiology chapter. The image budget is split deliberately —
-**4 patient-mode, 4 clinician-mode** — so neither audience tab carries an
+**5 patient-mode, 4 clinician-mode** — so neither audience tab carries an
 unillustrated wall of text.
 
 ### 0.2 Three visuals deliberately NOT generated as images
@@ -42,7 +42,7 @@ inline versions.
 ### 0.3 Style-system arbitration
 
 The four skills disagree on two points. Resolved as follows, and applied
-uniformly across all eight prompts:
+uniformly across all nine prompts:
 
 | Conflict | Resolution | Reason |
 |---|---|---|
@@ -56,11 +56,24 @@ Inter, Nunito Sans, IBM Plex Sans or Manrope, named explicitly; and the
 `williamriveromd.com` attribution on every image except IMG 1, which is wordless
 by vignette-hero spec.
 
+### 0.6 Water strategy must appear in the mix
+
+Home hemodialysis has **three** water strategies, not one, and the guide now says
+so explicitly: a fixed on-site treatment train plumbed into the dwelling; a
+low-dialysate-volume machine served by a **compact or portable reverse-osmosis
+unit** that connects to an ordinary tap; or a prepackaged-dialysate system that
+treats no water at home at all. The portable-RO option is the one that most
+changes the Philippine calculation, because it usually avoids permanent plumbing
+and so relieves the tenure problem in rented, condominium, crowded and informal
+housing. **No image may depict a fixed, plumbed-in water plant as the only way to
+dialyze at home.** IMG 9 exists to carry this distinction; IMG 4, 5 and 6 were
+amended to stay consistent with it.
+
 ### 0.4 Editorial constraint inherited from the guide
 
 This guide's discipline is calibrated certainty. **No image may state a claim
 more confidently than the prose does.** Concretely: surrogate outcomes must be
-labelled as surrogates (IMG 7), household assessment must read as a conversation
+labeled as surrogates (IMG 7), household assessment must read as a conversation
 rather than a pass/fail checklist (IMG 6), and no image may imply that home
 hemodialysis is prohibited in the Philippines or that a national pathway exists.
 No image contains needles in skin, blood, or distress imagery.
@@ -71,7 +84,7 @@ No image contains needles in skin, blood, or distress imagery.
 |---|---|---|
 | 1 | IMG 1, 2, 3, 4, 5 | Submit all five |
 | — | — | **Wait a full 60 seconds** |
-| 2 | IMG 6, 7, 8 | Submit remaining three |
+| 2 | IMG 6, 7, 8, 9 | Submit remaining four |
 
 ---
 
@@ -105,8 +118,8 @@ edges). Composition archetype: J, Environmental Storytelling — one cohesive sc
 floating panels or collage tiles. Camera: wide-angle environmental view from the
 doorway, slightly below eye level.
 
-Subject: a single modern hemodialysis machine on castors — a tall white-and-grey
-clinical console with a hollow-fibre dialyzer mounted vertically on its front, coiled
+Subject: a single modern hemodialysis machine on castors — a tall white-and-gray
+clinical console with a hollow-fiber dialyzer mounted vertically on its front, coiled
 clear blood tubing, and a small dark screen that is switched off — standing on the
 tiled floor of an ordinary, modest Filipino living room. Beside it, one empty reclining
 chair with a folded clean towel on the armrest. Supporting environmental details, small
@@ -116,12 +129,12 @@ it, and a short length of drainage tubing disappearing toward a doorway. Everyth
 clean, ordinary and domestic — a family home, not a clinic.
 
 Visual hierarchy: the dialysis machine and chair occupy 60–70% of the circle, placed
-right of centre; 2–4 supporting environmental elements (window light, wall outlet,
+right of center; 2–4 supporting environmental elements (window light, wall outlet,
 drainage line, tiled floor) occupy 20–30%; reserve the UPPER-LEFT 20–25% of the circle
 as a TITLE SAFE ZONE of softly lit blank wall and diffuse window glow, containing no
 objects, equipment, cables, furniture, faces or callouts.
 
-Bright, airy, calm documentary colour grade harmonizing with clinical teal #1a6b72 and
+Bright, airy, calm documentary color grade harmonizing with clinical teal #1a6b72 and
 navy #0f1e2e against a light background of warm white wall and pale floor tile. Gentle
 shallow depth of field, soft natural daylight, no dramatic shadows. Soft edge falloff
 toward a slightly deeper warm neutral at the rim. Full-bleed within the inscribed
@@ -177,7 +190,7 @@ standing attentively mid-frame checking a machine, a glimpse through an interior
 of a water-treatment room with vertical reverse-osmosis columns and blue pressure
 vessels, and a wall-mounted emergency light. Institutional, staffed, supervised.
 
-RIGHT HALF (approximately 45% of the frame): the same lighting and colour grade, but a
+RIGHT HALF (approximately 45% of the frame): the same lighting and color grade, but a
 single modest Filipino living room — one hemodialysis machine beside one reclining
 chair, one older Filipino woman seated calmly with a light blanket over her lap, and one
 adult daughter standing beside her looking at the machine. Domestic tiled floor, plain
@@ -199,7 +212,7 @@ all typography.
 
 Overall: premium healthcare publication aesthetic, restrained and calm, natural Filipino
 skin texture, realistic equipment, bright airy daylight throughout, white to off-white
-(#fafafa) base with soft grey (#f3f4f6) section separation, navy and teal accents only.
+(#fafafa) base with soft gray (#f3f4f6) section separation, navy and teal accents only.
 No red, no alarm imagery, no distressed or frightened expressions — analytical, not
 fearful.
 
@@ -217,9 +230,9 @@ attribution.
 
 QUALITY CHECK:
 Exactly 1200 × 630. Mobile-readable, clinically plausible, visually calm,
-publication-grade. Both halves share one lighting scheme and one colour grade so the
+publication-grade. Both halves share one lighting scheme and one color grade so the
 frame reads as a single image, not a collage. Machines, dialyzers and tubing mechanically
-plausible. Background white / off-white / soft light grey. Title occupies clean negative
+plausible. Background white / off-white / soft light gray. Title occupies clean negative
 space. Attribution visible bottom-right.
 ```
 
@@ -267,8 +280,8 @@ dialyzer, and the return line. Annotate the blood path "300–400 mL/min · ~70�
 panel on the right.
 
 CENTER PANEL — magnified dialyzer, inside a dashed border:
-A vertical hollow-fibre dialyzer cartridge drawn in cutaway, with fine parallel lines
-inside suggesting the fibre bundle. Port topology must be exactly as follows and must not
+A vertical hollow-fiber dialyzer cartridge drawn in cutaway, with fine parallel lines
+inside suggesting the fiber bundle. Port topology must be exactly as follows and must not
 be altered:
   · ARTERIAL port (blood IN) at the BOTTOM end cap.
   · VENOUS port (blood OUT) at the TOP end cap.
@@ -285,7 +298,7 @@ relevant part of the circuit:
   1. On the vascular access / needle: "VENOUS NEEDLE DISLODGEMENT — blood loss at pump
      speed; venous-pressure alarm may not detect it" (red accent).
   2. On the dialyzer membrane: "DIALYSATE-BORNE EXPOSURE — no gut barrier, no first-pass
-     liver; chloramine → haemolysis, aluminium → CNS and bone, endotoxin →
+     liver; chloramine → hemolysis, aluminum → CNS and bone, endotoxin →
      inflammation" (red accent).
   3. Beside a small inset of a capillary and surrounding interstitium: "ULTRAFILTRATION >
      PLASMA REFILL — intravascular volume falls despite total-body fluid excess →
@@ -320,16 +333,16 @@ IBM Plex Sans, or Manrope.
 QUALITY CHECK:
 White background, review-article figure discipline, generous whitespace. Dialyzer port
 topology correct: blood bottom-in / top-out, dialysate in near the top, effluent out near
-the bottom, countercurrent arrow present and labelled. Exactly three failure-mode
+the bottom, countercurrent arrow present and labeled. Exactly three failure-mode
 callouts. Bottom flow reads injury → clinic containment → home service. All labels
 legible at slide-viewing size. Attribution present bottom-right.
 ```
 
 ---
 
-## IMAGE 4 — 120 LITRES vs 2 LITRES (side-by-side comparison)
+## IMAGE 4 — 120 LITERS vs 2 LITERS (side-by-side comparison)
 
-**Placement:** patient tab, `#how-it-works`, directly after the "2. About 120 litres of water pass beside your blood" subsection
+**Placement:** patient tab, `#how-it-works`, directly after the "2. About 120 liters of water pass beside your blood" subsection
 **Style:** `williamriveromd-simple-figure` Scaffold B — one idea, two panels. This is the single most memorable teaching point in the guide and the one that stops readers equating a clean tap with dialysis-grade water.
 **Filename:** `home-hemodialysis-philippines-water-exposure.png` (+ `.webp`)
 
@@ -340,32 +353,35 @@ ASPECT RATIO: 16:9
 PIXEL DIMENSIONS: 1792 × 1024
 AUDIENCE: Patients, families, and clinicians
 VISUAL GOAL: Make it immediately obvious why water that is safe to drink is not
-  automatically safe to dialyse with.
+  automatically safe to dialyze with.
 
 PROMPT:
 Medical education comparison infographic, AJKD/NEJM graphical abstract style. White
-(#ffffff) background. Title centred at top in bold navy (#0f1e2e) Inter: "Safe to drink
-is not safe to dialyse with". Subtitle beneath in clinical teal (#1a6b72): "The same
+(#ffffff) background. Title centerd at top in bold navy (#0f1e2e) Inter: "Safe to drink
+is not safe to dialyze with". Subtitle beneath in clinical teal (#1a6b72): "The same
 water meets two completely different standards". Soft dashed vertical divider splitting
 the canvas into two equal panels.
 
-LEFT PANEL, header band in renal green (#1f7a4d), label "DRINKING — about 2 litres a
-day": a simple flat-vector drinking glass, then a downward flow through two labelled
+LEFT PANEL, header band in renal green (#1f7a4d), label "DRINKING — about 2 liters a
+day": a simple flat-vector drinking glass, then a downward flow through two labeled
 protective stages drawn as rounded cards — first "GUT WALL — a selective barrier that
 admits some substances and refuses others", then "LIVER — first-pass clearance before
 the bloodstream". End with a small card: "Standard: household drinking-water quality".
 
-RIGHT PANEL, header band in amber (#b8860b), label "DIALYSING — about 120 litres per
-treatment": a simple flat-vector hollow-fibre dialyzer shown in cutaway with fine
-parallel fibre lines, blood on one side and dialysate on the other, separated by a thin
-membrane drawn as a dotted line. Beside it, two crossed-out grey cards mirroring the left
+RIGHT PANEL, header band in amber (#b8860b), label "DIALYSING — about 120 liters per
+treatment": a simple flat-vector hollow-fiber dialyzer shown in cutaway with fine
+parallel fiber lines, blood on one side and dialysate on the other, separated by a thin
+membrane drawn as a dotted line. Beside it, two crossed-out gray cards mirroring the left
 panel — "NO GUT BARRIER" and "NO FIRST-PASS LIVER" — each with a thin diagonal strike.
 Below, three small red-accented (#b91c1c) chips naming what this exposes the blood to:
-"Chloramine → red-cell damage", "Aluminium → bone and brain", "Endotoxin fragments →
+"Chloramine → red-cell damage", "Aluminum → bone and brain", "Endotoxin fragments →
 inflammation". End with a card in teal: "Standard: ISO 23500 dialysis fluid quality —
-treated, tested on a schedule, signed off by a technician".
+treated, tested on a schedule, signed off by a technician". Directly beneath that
+card, one smaller navy line: "Same standard whether the water comes from a fixed
+plant or a portable RO unit — a smaller machine treats less water, not dirtier
+water."
 
-Between the two panels, centred low, a single bold navy annotation: "≈ 60× the volume,
+Between the two panels, centerd low, a single bold navy annotation: "≈ 60× the volume,
 straight past the blood, with neither barrier in between".
 
 Bottom strip, full width, soft gray (#f3f4f6), one sentence in navy: "A clean-tasting
@@ -428,8 +444,9 @@ and two short lines of body text in navy. No panel exceeds two lines.
      monitoring." Icon: stethoscope.
   2. TRAINING — "Weeks of supervised teaching, tested on real competence, then refreshed."
      Icon: two figures, one teaching.
-  3. TECHNICAL — "A machine authorised for home use, its water arrangement, safe wiring,
-     drainage, maintenance." Icon: wrench and droplet.
+  3. TECHNICAL — "A machine authorized for home use, its water arrangement — fixed plant,
+     portable RO unit, or pre-made dialysate bags — plus safe wiring, drainage and
+     maintenance." Icon: wrench and droplet.
   4. REMOTE SUPPORT — "Someone to call at any hour, records that reach the team, missed
      treatments noticed." Icon: phone with a clock.
   5. EMERGENCY NETWORK — "A plan for power and water failure, a route to hospital, a
@@ -440,14 +457,14 @@ and two short lines of body text in navy. No panel exceeds two lines.
 FULL-WIDTH FOOTER BANNER in clinical teal (#1a6b72), white Inter text, one line: "Every
 layer has to keep working on a bad day — a brownout, a typhoon, a fever at 2 a.m."
 
-Clean panel-grid structure with even panel sizes and consistent colour across panels.
+Clean panel-grid structure with even panel sizes and consistent color across panels.
 Generous whitespace, mobile-readable at 900 px width, flat illustration with no
 directional lighting. Bottom-right, just above the teal footer: "williamriveromd.com" in
 small semi-transparent navy text.
 
 NEGATIVE INSTRUCTIONS:
 Avoid cartoon appearance, visual clutter, text walls, tiny unreadable text, mismatched
-panel sizes, uneven grid, missing teal header bars, inconsistent colour across panels,
+panel sizes, uneven grid, missing teal header bars, inconsistent color across panels,
 floating elements without panel containers, AI gibberish text, stock-photo corporate
 aesthetic. Do not draw the dialysis machine larger or more prominent than the six panels
 — its small size is the message. Avoid fear-inducing imagery, storm damage, or alarm
@@ -466,12 +483,12 @@ white. Attribution present.
 ## IMAGE 6 — WHAT THE HOUSE IS BEING ASKED TO DO
 
 **Placement:** patient tab, `#your-home`, after the intro paragraph and before the household `.table-wrap`
-**Style:** `williamriveromd-simple-figure` Scaffold E adapted to a labelled cutaway — a reference card rather than a checklist, because the guide explicitly refuses to publish a pass/fail household test.
+**Style:** `williamriveromd-simple-figure` Scaffold E adapted to a labeled cutaway — a reference card rather than a checklist, because the guide explicitly refuses to publish a pass/fail household test.
 **Filename:** `home-hemodialysis-philippines-household.png` (+ `.webp`)
 
 ```
 FILE NAME: home-hemodialysis-philippines-household.png
-IMAGE TYPE: Scaffold E — annotated reference card / labelled cutaway
+IMAGE TYPE: Scaffold E — annotated reference card / labeled cutaway
 ASPECT RATIO: 4:3
 PIXEL DIMENSIONS: 1536 × 1152
 AUDIENCE: Patients, families, and home-assessment teams
@@ -484,12 +501,12 @@ Bold navy (#0f1e2e) Inter title at top: "What the house is being asked to do". S
 in clinical teal (#1a6b72): "A conversation with your provider and an engineer — not a
 test you pass or fail".
 
-CENTRE: a clean flat-vector cutaway of a modest single-storey Filipino home in light
+CENTER: a clean flat-vector cutaway of a modest single-story Filipino home in light
 gray-blue line work — one room shown in section with a tiled floor, a jalousie window, a
 plain wall, a treatment chair and a small dialysis machine. Keep the drawing simple and
 uncluttered; it is a diagram, not an illustration.
 
-SIX LABELLED CALLOUTS with thin navy leader lines pointing to specific parts of the
+SIX LABELED CALLOUTS with thin navy leader lines pointing to specific parts of the
 cutaway, each a small rounded card with a teal header word and one short line of navy body
 text:
   · SPACE → pointing at the room: "Machine, chair, supplies, medicines, hand hygiene and
@@ -497,8 +514,8 @@ text:
   · TENURE → pointing at the wall: "Renting may need the owner's written consent for
     plumbing and electrical work."
   · WATER → pointing at a pipe entering the wall: "Availability and dialysis suitability
-    are different questions. Suitability is measured, treated, then monitored on a
-    schedule."
+    are different questions. Some systems use a portable RO unit on an ordinary tap
+    instead of fixed plumbing — often what makes a rented home workable."
   · POWER → pointing at a wall outlet: "Correct voltage and capacity, proper grounding and
     protection — and a plan for losing power mid-treatment."
   · DRAINAGE → pointing at a floor drain line: "Used fluid needs somewhere safe to go."
@@ -510,7 +527,7 @@ depend on the specific machine and configuration — only the provider, a qualif
 technician and the device manufacturer can set them."
 
 Flat illustration, no directional lighting, ample whitespace, mobile-readable labels at
-11pt equivalent or larger, rounded card corners. Bottom-centre: "williamriveromd.com" in
+11pt equivalent or larger, rounded card corners. Bottom-center: "williamriveromd.com" in
 small semi-transparent navy text.
 
 NEGATIVE INSTRUCTIONS:
@@ -525,8 +542,8 @@ williamriveromd.com attribution.
 
 QUALITY CHECK:
 Exactly 1536 × 1152. Six callouts, each anchored by a leader line to a real feature of the
-cutaway. No tickboxes, no pass/fail colour coding, no score anywhere. Tone neutral and
-respectful about housing. White background. Attribution bottom-centre.
+cutaway. No tickboxes, no pass/fail color coding, no score anywhere. Tone neutral and
+respectful about housing. White background. Attribution bottom-center.
 ```
 
 ---
@@ -540,7 +557,7 @@ respectful about housing. White background. Attribution bottom-centre.
 > **This is the most important figure in the plan.** It carries the guide's
 > correction of the source blueprint. Every number below has been verified against
 > PubMed — do not let the generator round, reword, or "improve" any of them, and
-> do not let it drop the surrogate labelling.
+> do not let it drop the surrogate labeling.
 
 ```
 FILE NAME: home-hemodialysis-philippines-trial-evidence.png
@@ -563,11 +580,11 @@ white on a clinical teal (#1a6b72) band: "Trial", "Design", "Primary result",
 "Read it as". Alternating row fills, white and very soft gray (#f3f4f6). Reproduce the
 following text exactly — do not round, rephrase, or omit any value:
 
-Row 1 — FHN Daily Trial (NEJM 2010) | 245 patients, 6×/week vs 3×/week, IN-CENTRE,
-12 months | Both coprimary composites favoured frequent HD: death or increase in LV mass
+Row 1 — FHN Daily Trial (NEJM 2010) | 245 patients, 6×/week vs 3×/week, IN-CENTER,
+12 months | Both coprimary composites favored frequent HD: death or increase in LV mass
 HR 0.61 (95% CI 0.46–0.82); death or decline in physical-health score HR 0.70 (95% CI
 0.53–0.92). Vascular-access interventions increased, HR 1.71 (95% CI 1.08–2.73). |
-Composites anchored on a SURROGATE (LV mass on MRI). Conducted in-centre — evidence about
+Composites anchored on a SURROGATE (LV mass on MRI). Conducted in-center — evidence about
 FREQUENCY, not about the home.
 
 Row 2 — FHN Nocturnal Trial (Kidney Int 2011) | 87 patients, 6×/week HOME nocturnal vs
@@ -576,15 +593,15 @@ HR 0.68; death or change in physical-health composite HR 0.91 — neither signif
 Phosphate and BP control improved. | The only randomized trial of HOME nocturnal HD. Small
 and underpowered — a failure to demonstrate benefit, not a demonstration of no benefit.
 
-Row 3 — ACTIVE Dialysis (JASN 2017) | 200 patients, ≥24 h/week vs 12–15 h/week, in-centre
+Row 3 — ACTIVE Dialysis (JASN 2017) | 200 patients, ≥24 h/week vs 12–15 h/week, in-center
 and home, 12 months | NO difference in EQ-5D quality of life: mean difference 0.04 (95% CI
 −0.03 to 0.11), p = 0.29. LV mass substudy null. Lower phosphate and potassium, higher
-haemoglobin, fewer BP and phosphate-binder medications. | The autonomy argument's own
+hemoglobin, fewer BP and phosphate-binder medications. | The autonomy argument's own
 primary endpoint was not met. Medication burden fell — an intermediate outcome.
 
 BENEATH THE TABLE, three small summary chips in a single row:
   · Renal green (#1f7a4d): "RELIABLY IMPROVES — phosphate, blood pressure, medication
-    burden, haemoglobin (all surrogates or intermediate outcomes)".
+    burden, hemoglobin (all surrogates or intermediate outcomes)".
   · Amber (#b8860b): "NOT DEMONSTRATED — generic quality of life; benefit of home delivery
     specifically".
   · Clinical red (#b91c1c): "CONSISTENT COST — vascular-access interventions".
@@ -593,7 +610,7 @@ BOTTOM STRIP, full width, soft gray (#f3f4f6), one line in navy: "A business cas
 superior hard outcomes rests on evidence that does not exist. One built on autonomy and
 eliminated travel rests on something real."
 
-Compact, well-organised, generous line spacing, mobile-readable at 11pt equivalent or
+Compact, well-organized, generous line spacing, mobile-readable at 11pt equivalent or
 larger, no clutter. Bottom-right: "williamriveromd.com" in small semi-transparent navy
 text.
 
@@ -639,12 +656,12 @@ a Philippine home hemodialysis program is ready". Subtitle in clinical teal (#1a
 staged policy argument — not an operating blueprint".
 
 FIVE rounded rectangular gate nodes stacked vertically, connected by bold navy downward
-arrows. Each gate is a wide card with a coloured left edge, a bold gate label, and two or
+arrows. Each gate is a wide card with a colored left edge, a bold gate label, and two or
 three short bullet lines in navy. Between each pair of gates, place a small horizontal
-teal bar labelled "GATE" to make the sequence read as gated rather than merely ordered.
+teal bar labeled "GATE" to make the sequence read as gated rather than merely ordered.
 
   GATE 0 — NATIONAL CLARIFICATION (left edge clinical red #b91c1c, the blocking gate):
-    · Written DOH-HFSRB position: licence holder, home-site status, device authorisation,
+    · Written DOH-HFSRB position: license holder, home-site status, device authorization,
       personnel scope, inspection, reporting.
     · Written PhilHealth position or a dedicated package.
     · PSN-led clinical and program standard aligned to ISO 23500 and manufacturer IFU.
@@ -660,8 +677,8 @@ teal bar labelled "GATE" to make the sequence read as gated rather than merely o
     · Predefined stop rules, incident review, guaranteed backup treatment.
 
   GATE 3 — MEASURE BEFORE SCALING (left edge clinical teal #1a6b72):
-    · Publish the enrolment denominator AND the reasons for non-entry.
-    · Adverse events, hospitalisation, technique survival, water and technical failures.
+    · Publish the enrollment denominator AND the reasons for non-entry.
+    · Adverse events, hospitalization, technique survival, water and technical failures.
     · Household cost, care-partner strain, and equity by income, region and disability.
 
   GATE 4 — SCALE THROUGH HUBS (left edge renal green #1f7a4d):
@@ -678,7 +695,7 @@ charged experimental or unclear costs without fully informed agreement and regul
 approval."
 
 Strictly linear top-to-bottom flow with no branching and no decision diamonds. Generous
-whitespace, mobile-readable labels, no spaghetti connectors. Bottom-centre:
+whitespace, mobile-readable labels, no spaghetti connectors. Bottom-center:
 "williamriveromd.com" in small semi-transparent navy text.
 
 NEGATIVE INSTRUCTIONS:
@@ -694,7 +711,106 @@ QUALITY CHECK:
 Exactly 1024 × 1536 portrait. Five gates, in order, strictly linear. Gate 0 is visually the
 blocking gate (red left edge plus the annotation card). No checkmarks, progress indicators,
 dates, or completion states anywhere. No branching. White background. Attribution
-bottom-centre.
+bottom-center.
+```
+
+---
+
+## IMAGE 9 — THREE WAYS TO MAKE DIALYSIS WATER AT HOME
+
+**Placement:** patient tab, `#not-appliance`, after the closing "which machine, in which configuration" paragraph
+**Style:** `williamriveromd-simple-figure` Scaffold E adapted to a three-column comparison — three parallel options that must be read against each other; a two-panel comparison (Scaffold B) cannot hold three.
+**Filename:** `home-hemodialysis-philippines-water-strategies.png` (+ `.webp`)
+
+> **Why this image exists:** without it, readers default to assuming home
+> hemodialysis means installing a water plant — which is false, and which makes
+> the therapy look impossible in exactly the housing where most Filipino renters
+> live. The figure must not rank the three options; suitability is device- and
+> household-specific, and the guide takes no position on which is better.
+
+```
+FILE NAME: home-hemodialysis-philippines-water-strategies.png
+IMAGE TYPE: Scaffold E — three-column comparison / reference card
+ASPECT RATIO: 16:9
+PIXEL DIMENSIONS: 1792 × 1024
+AUDIENCE: Patients, families, clinicians, and providers scoping a program
+VISUAL GOAL: Show that home hemodialysis has three water strategies, that they place
+  very different demands on the house, and that the fluid-quality standard is identical
+  across all three.
+
+PROMPT:
+Clinical reference infographic card, publication-grade nephrology design, white
+(#ffffff) background. Bold navy (#0f1e2e) Inter title at top: "Three ways to make
+dialysis water at home". Subtitle in clinical teal (#1a6b72): "They ask very different
+things of the house — and meet exactly the same standard".
+
+MAIN ELEMENT: three equal-width rounded columns side by side on a very soft gray
+(#f3f4f6) field, each with a clinical teal (#1a6b72) header bar in white text, one simple
+flat-vector icon at the top, and four short labeled rows beneath. Reproduce the row
+labels identically in all three columns so the eye can compare across: "What it is",
+"What the house needs", "Best suited to", "Still required".
+
+COLUMN 1 — header "FIXED WATER PLANT". Icon: a wall-mounted treatment train of three
+upright cylinders (softener, carbon, RO) with a pipe into the wall.
+  - What it is: "A conventional machine with its own softener, carbon and reverse-osmosis
+    train, plumbed permanently into the dwelling."
+  - What the house needs: "Dedicated plumbing and drainage, a wall or floor footprint,
+    electrical capacity, and permission to modify the building."
+  - Best suited to: "Owned homes with space and stable utilities."
+  - Still required: "ISO 23500 fluid quality. Scheduled disinfection, testing and
+    membrane changes."
+
+COLUMN 2 — header "PORTABLE RO UNIT". Icon: a small wheeled cabinet with a flexible hose
+running to an ordinary faucet, and a plug going to a wall outlet.
+  - What it is: "A low-dialysate-volume machine served by a compact or portable
+    reverse-osmosis unit that connects to an ordinary tap and a standard outlet and makes
+    dialysate on demand."
+  - What the house needs: "A working tap, a standard outlet, a drain for reject water,
+    and floor space — usually no permanent building modification."
+  - Best suited to: "Rented homes, condominiums, and smaller or shared housing."
+  - Still required: "ISO 23500 fluid quality. Scheduled disinfection, testing and
+    membrane changes."
+
+COLUMN 3 — header "PRE-MADE DIALYSATE BAGS". Icon: a neat stack of sealed sterile fluid
+bags beside a small machine.
+  - What it is: "A system that runs on pre-packaged sterile dialysate and treats no water
+    in the home at all."
+  - What the house needs: "Substantial clean, dry storage and reliable scheduled
+    delivery - no water treatment."
+  - Best suited to: "Homes where water treatment is impractical but storage and delivery
+    are dependable."
+  - Still required: "Correct storage conditions, batch and expiry tracking, and a
+    disaster buffer of stock."
+
+Set the "Still required" row of all three columns on a shared pale teal tint so it reads
+visually as one continuous band running across the whole figure — that shared band is the
+point of the image.
+
+BOTTOM STRIP, full width, soft gray (#f3f4f6), one line in navy: "A smaller machine
+treats less water, not dirtier water. Which option fits is a question for the provider,
+a technician and the device manufacturer — not a ranking."
+
+Flat illustration, no directional lighting, even column widths, generous whitespace,
+mobile-readable labels at 11pt equivalent or larger, rounded corners. Bottom-right:
+"williamriveromd.com" in small semi-transparent navy text.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, clutter, tiny unreadable labels, AI gibberish text, overprocessed
+HDR, excessive saturation, photorealism. Do NOT rank, score, star, or number the three
+columns, and do NOT use green/amber/red coding, checkmarks, crosses, or "best choice"
+badges — the guide takes no position on which strategy is superior. Do NOT make any column
+visually dominant or wider than the others. Do NOT show a portable RO unit connected to a
+drinking-water dispenser or a bottled-water jug — it connects to a tap. Do NOT omit the
+shared "Still required" band or vary its wording between columns 1 and 2. NEVER use dark,
+navy, charcoal, or black backgrounds. Use ONLY Inter, Nunito Sans, IBM Plex Sans, or
+Manrope. Never omit the williamriveromd.com attribution.
+
+QUALITY CHECK:
+Exactly 1792 x 1024. Three equal columns, identical row labels in each, no ranking or
+verdict imagery of any kind. The "Still required" band is visually continuous across all
+three columns and carries the same ISO 23500 obligation in columns 1 and 2. Portable RO
+shown connected to an ordinary tap and a standard outlet. White background. Attribution
+bottom-right.
 ```
 
 ---
@@ -706,7 +822,7 @@ bottom-centre.
   dimensions and alt text; they 404 until generated. No markup changes needed.
 
 ### Requires markup after generation
-**IMG 3–8 are not yet referenced in the guide.** Each needs a `<figure>` inserted
+**IMG 3–9 are not yet referenced in the guide.** Each needs a `<figure>` inserted
 at its placement anchor, and — per the guide-wide policy in `CLAUDE.md` — each
 figcaption must carry a `<p class="fig-desc">` plain-language description, plus a
 `<dl class="fig-abbrevs">` block wherever the image contains an acronym. IMG 3
@@ -719,6 +835,7 @@ Insertion anchors, in document order:
 |---|---|
 | IMG 4 | `#how-it-works`, after the "≈60× / no liver in between" paragraph |
 | IMG 5 | `#not-appliance`, before the six-layer `.table-wrap` |
+| IMG 9 | `#not-appliance`, after the closing "which machine, in which configuration" paragraph |
 | IMG 6 | `#your-home`, before the household `.table-wrap` |
 | IMG 3 | `#md-physiology`, after the intro paragraph, before the first H3 |
 | IMG 7 | `#md-benefits`, after the ACTIVE paragraph, before the purple alert |
@@ -726,7 +843,7 @@ Insertion anchors, in document order:
 
 ### After the images are received
 1. Save each as `.png` **and** a `.webp` twin in `images/`.
-2. Wire IMG 3–8 as `<figure><picture>…</picture><figcaption>…</figcaption></figure>`
+2. Wire IMG 3–9 as `<figure><picture>…</picture><figcaption>…</figcaption></figure>`
    blocks at the anchors above.
 3. Run, in order:
    ```
@@ -737,19 +854,22 @@ Insertion anchors, in document order:
    python3 patch_image_lightbox.py --guide home-hemodialysis-philippines.html
    python3 patch_reading_time.py --guide home-hemodialysis-philippines.html
    ```
-4. Re-check dark mode: IMG 4, 6, 7 and 8 are white-background figures and will sit
+4. Re-check dark mode: IMG 4, 6, 7, 8 and 9 are white-background figures and will sit
    on a dark card in dark mode. They are self-contained images with their own white
    field, so no contrast remap is needed — but confirm the figcaption text below
-   them still resolves through the `--text-mid` token rather than a literal colour.
+   them still resolves through the `--text-mid` token rather than a literal color.
 
 ### Flagged for the operator
 - **IMG 3** is the highest regeneration risk. Dialyzer port topology is the single
   most common failure across this library's past figures; check blood bottom-in /
   top-out, dialysate side-port near the top, effluent side-port near the bottom, and
-  a labelled countercurrent arrow before accepting.
+  a labeled countercurrent arrow before accepting.
 - **IMG 7** must be proofread character by character against the prompt. Every
   hazard ratio, confidence interval and sample size is PubMed-verified, and a
   transcription error here would misrepresent the trial evidence the guide exists
   to correct.
 - **IMG 8** must not acquire checkmarks or progress indicators. Gate 0 is
   unanswered in the Philippines; any completion state would be a factual error.
+- **IMG 9** must not rank the three water strategies. If the generator adds a
+  "best" badge, a star, or green/red coding, regenerate — suitability is device-
+  and household-specific and the guide deliberately takes no position.
