@@ -11,6 +11,7 @@ Usage:
     python3 build_companion_pdfs.py                 # render all companion HTMLs
     python3 build_companion_pdfs.py wgmr-gout-uric-acid-guide   # render one (no .html)
     python3 build_companion_pdfs.py --list          # list buildable companions
+    python3 build_companion_pdfs.py <name> --pdf-ua # render tagged PDF/UA-1 (needs real <h1>/<h2>)
 
 Requires: weasyprint  (pip install weasyprint)
 Files beginning with "_" (e.g. _companion-style.css) are partials and skipped.
@@ -28,10 +29,12 @@ def companions():
     return sorted(p for p in DL.glob("*.html") if not p.name.startswith("_"))
 
 
-def build(html_path: Path):
+def build(html_path: Path, pdf_ua: bool = False):
     pdf_path = html_path.with_suffix(".pdf")
-    HTML(str(html_path)).write_pdf(str(pdf_path))
-    print(f"  ✓ {html_path.name}  →  {pdf_path.name}  ({pdf_path.stat().st_size // 1024} KB)")
+    kwargs = {"pdf_variant": "pdf/ua-1"} if pdf_ua else {}
+    HTML(str(html_path)).write_pdf(str(pdf_path), **kwargs)
+    tag = "  [PDF/UA]" if pdf_ua else ""
+    print(f"  ✓ {html_path.name}  →  {pdf_path.name}  ({pdf_path.stat().st_size // 1024} KB){tag}")
 
 
 def main(argv):
@@ -39,6 +42,10 @@ def main(argv):
         for p in companions():
             print(p.stem)
         return
+    # Opt-in accessible output: tagged PDF with a real structure tree, for
+    # companions whose HTML uses proper heading elements. Off by default so the
+    # existing companions render byte-for-byte as before.
+    pdf_ua = "--pdf-ua" in argv
     names = [a for a in argv if not a.startswith("-")]
     if names:
         targets = [DL / (n if n.endswith(".html") else n + ".html") for n in names]
@@ -49,7 +56,7 @@ def main(argv):
         if not t.exists():
             print(f"  ✗ {t.name} not found")
             continue
-        build(t)
+        build(t, pdf_ua=pdf_ua)
 
 
 if __name__ == "__main__":
