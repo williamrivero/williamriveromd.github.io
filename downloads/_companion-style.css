@@ -454,3 +454,19 @@ p.body{font-size:7.5pt;color:#374151;line-height:1.4;margin-top:4px;}
 .ms-what{font-size:6.6pt;color:#374151;line-height:1.3;margin-top:2px;}
 .ms-fill{font-size:6.2pt;color:#6b7280;margin-top:3px;line-height:1.6;}
 .ms-fill .fl{display:inline-block;border-bottom:1px solid #9aa7b6;min-width:44px;margin-left:3px;}
+
+/* ---------- fillable-PDF field zones (build_fillable_pdf.py) ----------------
+   These anchors exist only in the generated fillable variant. WeasyPrint turns
+   each one into a /Link annotation whose /Rect the build script rewrites into an
+   AcroForm widget. They must be invisible and must fill their writing area, so
+   the printed page is identical to the write-in booklet. ---------------------*/
+/* Absolutely positioned so a field zone is OUT OF FLOW and can never change a
+   row height — the fillable PDF must paginate identically to the write-in one. */
+.pl-tbl td.wr, .wb-cover-fields td{position:relative;}
+a.fld{text-decoration:none;color:transparent;}
+/* Only CELL field zones are absolute — they fill the cell without touching flow. */
+.pl-tbl td.wr > a.fld, .wb-cover-fields td > a.fld{position:absolute;inset:0;}
+/* Inline rules stay in flow, mirroring .pl-field .fl exactly. */
+a.fld.fld-inline{position:static;display:inline-block;height:11px;min-width:70px;border-bottom:1px solid #9aa7b6;margin:0 6px;vertical-align:bottom;}
+a.fld.fld-inline.wide{min-width:150px;}
+a.chk.chk-fld{text-decoration:none;color:transparent;}
