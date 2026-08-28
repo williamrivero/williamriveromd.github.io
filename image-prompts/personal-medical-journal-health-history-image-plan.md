@@ -788,3 +788,47 @@ python3 patch_reading_time.py --guide personal-medical-journal-health-history.ht
 - Legible at thumbnail width (300 px)
 - WCAG AA contrast for any text rendered inside the image
 - Save both `.png` and a `.webp` twin at the stated pixel dimensions
+
+---
+
+## Post-generation QA — 28 Aug 2026
+
+All ten assets were generated, verified, and wired into the guide. Pixel dimensions match
+the plan exactly; every figure carries a `fig-desc` caption, descriptive `alt`, explicit
+`width`/`height`, and a WebP twin that the browser actually serves. The lightbox opens each
+figure at full resolution and reads its caption.
+
+**Accepted as-is (8):** 01 hero · 02 OG · 03 four-record system · 04 three medication lists ·
+05 anatomy of a summary · 06 photograph the whole page · 07 symptom entry sequence.
+Figure 07's four statistics were checked digit-by-digit against the supplied strings and are
+exact (53.6%, 3–20%, 12–34%, and the omission wording).
+
+**Two assets need a regeneration pass** — both are wired in and usable, so the guide is
+complete; these are quality defects, not blockers.
+
+### `…-06-home-bp-technique.png` — leader lines land on the wrong anatomy
+
+Three of the five leader lines terminate on the wrong body part: "Feet flat" points at the
+upper arm, "Bare skin" points at the table leg, and "Quiet first" points at the feet. The
+label text is correct and self-contained, so the figure still teaches — but a reader who
+follows a pointer is misled. Add this clause to the prompt and regenerate:
+
+> Each of the five leader lines MUST terminate exactly on the body part it names: "Back
+> supported" on the back where it meets the chair; "Feet flat" on the feet at the floor;
+> "Arm at heart level" on the cuffed forearm resting on the table; "Bare skin" on the bare
+> upper arm under the cuff; "Quiet first" on the seated figure's torso. No leader line may
+> end on furniture, on empty floor, or on a body part it does not describe.
+
+### `…-08-md-bpmh-algorithm.png` — British spellings
+
+The rendered figure reads **"hyperkalaemia"**, **"angio-oedema"**, and **"judgement"**.
+The site is American English throughout (CLAUDE.md, non-negotiable). Add to the prompt:
+
+> Use American English spelling exactly as written here and do not re-spell any word:
+> "hyperkalemia", "angioedema", "judgment", "analgesics". Never use British variants
+> (-aemia, -oedema, -gement).
+
+**Add both clauses to the standing accept/reject checklist:**
+
+- Leader lines terminate on the structure they name
+- American English only — reject -aemia, -oedema, and "judgement"
