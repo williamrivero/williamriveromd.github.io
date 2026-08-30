@@ -97,6 +97,13 @@ GLOBAL_ACRONYMS = {
     # meds / conditions
     "NSAID","ACEi","ARB","ARNI","SGLT2","SGLT2i","GLP-1","MRA","T2DM","T1DM",
     "SLE","OSA","ICU","ADL","IADL",
+    # renal glucose handling (kidney-glucose-homeostasis guide)
+    # NOTE: DKA, MACE, ASCVD, HFrEF, HFpEF, CGM and TGF are deliberately NOT listed
+    # here yet -- they appear unexpanded in ~27 pre-existing guides, and TGF is
+    # ambiguous (tubuloglomerular feedback vs transforming growth factor beta).
+    # Add them as part of a dedicated site-wide remediation pass, not piecemeal.
+    "SGLT1","GLUT","GLUT1","GLUT2","TmG","NHE3","ATP","ARR",
+
 }
 
 # Ubiquitous or symbol/formula tokens where a parenthetical on first use adds
