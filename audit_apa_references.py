@@ -82,7 +82,7 @@ def check_apa(cite):
         'URL':   bool(re.search(r'https?://', cite)),
         'YEAR':  bool(re.search(r'\(\s*(19|20)\d{2}\s*[a-z]?\)', cite)),
         'AUTH':  bool(re.search(r'[A-Z][a-zA-Z\-]+,\s+[A-Z]\.', cite)) or
-                 bool(re.search(r'\([A-Z]{2,8}\)[^()]{0,60}\.\s*\(\s*(19|20)\d{2}', cite)),
+                 bool(re.search(r'\([A-Z][A-Z0-9\-]{1,10}\)[^()]{0,60}\.\s*\(\s*(19|20)\d{2}', cite)),
         'PAGES': bool(re.search(r'\b\d+[–-]\d+\b|e\d{4,}', cite)),
     }
     # Pass = italics + (DOI or URL) + year + at least one Author, X. block.
