@@ -82,14 +82,14 @@ gently glowing tubule looping through soft focus, with its glomerulus as the
 luminous focal point at the lower left of the circle. Fine suspended particles of
 light travel with the fluid down the tubule and a visible proportion of them curve
 back out through the tubule wall toward the surrounding capillary — the reclaiming
-motion is the whole idea of the picture. Restrained clinical colour: renal reds and
+motion is the whole idea of the picture. Restrained clinical color: renal reds and
 warm coral for the glomerular tuft, translucent pearl-grey for the tubule, teal
 #1a6b72 accents on the returning particles, on a soft, uncluttered light teal-tinted
 off-white background with gentle studio lighting and a soft contact shadow.
 Anatomically plausible proportions, not garish, not neon.
 
 Visual hierarchy: the nephron occupies 60–70% of the circle in the lower-left and
-lower-centre; 2–3 supporting cues (a suggestion of surrounding peritubular capillary,
+lower-center; 2–3 supporting cues (a suggestion of surrounding peritubular capillary,
 a faint out-of-focus second nephron) occupy 20–30%; reserve the UPPER-RIGHT 20–25%
 of the circle as a TITLE SAFE ZONE of empty soft gradient background — absolutely no
 anatomy, leader lines, labels, or callouts in that zone. Soft falloff toward a
@@ -177,7 +177,7 @@ her, a Filipino nephrologist in his late fifties with close-cropped grey hair, a
 beard and a pale blue open-collar shirt under a white coat listens with his pen down
 and his hands open on the desk — he is answering, not lecturing. Soft natural daylight
 from a large window at camera left, bright airy white walls, shallow depth of field
-with the background clinic softly blurred. Warm, calm, documentary-realistic colour
+with the background clinic softly blurred. Warm, calm, documentary-realistic color
 grade harmonizing with clinical teal #1a6b72 and navy #0f1e2e. Natural skin texture,
 correct hands, calm engaged expressions, no exaggerated smiles. Small semi-transparent
 navy text "© renalcarematters.com" in the bottom-right corner.
@@ -419,7 +419,7 @@ sufficient, and the arteriolar mechanism differs between type 1 and type 2 diabe
 Right pale-blue box — "Every therapeutic target in this guide interrupts one node of
 this loop"
 
-Colour logic without relying on colour alone: number every node, and use red for injury,
+Color logic without relying on color alone: number every node, and use red for injury,
 blue for the anatomy, pale yellow for the highlighted nephron. Muted clinical palette,
 thin dashed connectors, generous whitespace, no photorealism, no dark background. Small
 semi-transparent navy "© renalcarematters.com" bottom-right.
@@ -521,7 +521,7 @@ slowly, crossing the navy curve and diverging above it toward the right edge. Sh
 early interval very lightly and label it "Acute hemodynamic dip — reduced intraglomerular
 pressure, reversible". Label the long right-hand divergence "Chronic slope — the outcome
 that matters". Add a small annotation at the crossing point: "curves cross, then diverge
-in the patient's favour".
+in the patient's favor".
 
 Beneath the chart, a single full-width amber-bordered #b8860b caution card with a bold
 navy heading "Do not generalize the 30% creatinine rule" and one short line of body text:
@@ -582,7 +582,7 @@ Footer: a single-line field labelled "Next labs due" with a blank rule, and bene
 one short gray line: "Bring this card to every visit, including the emergency room."
 
 Deliberately leave every value blank — this is a form, not a result sheet. Generous
-whitespace, high contrast, print-friendly (nothing depends on colour alone; every row is
+whitespace, high contrast, print-friendly (nothing depends on color alone; every row is
 labelled in words). Small semi-transparent navy "© renalcarematters.com" centered at the
 bottom.
 
@@ -594,7 +594,7 @@ boxes — they must be empty. Never omit the attribution.
 
 QUALITY CHECK:
 Five rows, five blank boxes, zero numbers anywhere on the card. Prints legibly in
-black and white. Attribution bottom-centre.
+black and white. Attribution bottom-center.
 ```
 
 ---
@@ -613,8 +613,8 @@ VISUAL GOAL: Make the euglycemic-ketoacidosis red flags recognizable before the
 PROMPT:
 Patient safety reference card, 1024 × 1024, on a white #ffffff background, publication-
 grade clinic design, all typography in Inter. Three stacked full-width bands, each a
-rounded card with a thick left colour rail, a bold word label, an icon, and body text —
-so the card works in black and white and for colour-blind readers.
+rounded card with a thick left color rail, a bold word label, an icon, and body text —
+so the card works in black and white and for color-blind readers.
 
 BAND 1 — green #1f7a4d rail, check-circle icon, label "GREEN — WELL":
 "Eating and drinking normally, no fever, no vomiting. Continue your medicines exactly as
@@ -645,7 +645,7 @@ hold — that list is individual and must come from the patient's own clinician.
 omit the attribution.
 
 QUALITY CHECK:
-Three bands, each labelled in WORDS as well as colour. The "normal glucose" caveat is
+Three bands, each labelled in WORDS as well as color. The "normal glucose" caveat is
 visually the most prominent statement after the red band. No numbers, no drug hold list.
 ```
 
@@ -699,7 +699,7 @@ staircase, pyramid, or numbered flow — any of those would contradict the capti
 add brand names or doses. Never omit the attribution.
 
 QUALITY CHECK:
-Four concentric rings, no numbers, no arrows. Foundation is at the centre. The caption
+Four concentric rings, no numbers, no arrows. Foundation is at the center. The caption
 about individualization is legible. Off-white background.
 ```
 
@@ -730,7 +730,7 @@ EMPA-REG OUTCOME.
 
 CELLS: where a trial covers a column, place a solid teal #1a6b72 filled rounded square
 containing a white check mark. Where it does not, leave the cell empty with a faint gray
-dot. Do not use colour alone — every filled cell carries the check glyph.
+dot. Do not use color alone — every filled cell carries the check glyph.
 
 Fill pattern, exactly as follows and no other:
 CREDENCE — dedicated CKD ✓
@@ -764,7 +764,7 @@ fill pattern given. Never omit the attribution.
 
 QUALITY CHECK:
 Nine rows, four coverage columns plus one class column. Every filled cell carries a check
-glyph, not colour alone. Zero numeric values on the entire figure. The fill pattern
+glyph, not color alone. Zero numeric values on the entire figure. The fill pattern
 matches the list exactly.
 ```
 
