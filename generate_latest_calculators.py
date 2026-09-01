@@ -30,6 +30,27 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
+
+
+def image_dims(project_dir: Path, rel_thumb: str):
+    """Return (width, height) of a thumb image referenced as '../images/x.webp'
+    (relative to guides/), read straight off the file on disk. Returns None if
+    Pillow is unavailable or the file can't be opened."""
+    if Image is None or not rel_thumb:
+        return None
+    path = project_dir / "images" / rel_thumb.rsplit("/", 1)[-1]
+    if not path.exists():
+        return None
+    try:
+        with Image.open(path) as im:
+            return im.size
+    except Exception:
+        return None
+
 START = "<!-- LATEST-CALCS-START -->"
 END = "<!-- LATEST-CALCS-END -->"
 ANCHOR = '<main class="container">'
@@ -190,6 +211,7 @@ def collect(project_dir: Path, colors: dict, fallbacks: dict):
         else:
             thumb = fallbacks.get(path.name, "")
             alt = path.stem.replace("-", " ")
+        dims = image_dims(project_dir, thumb)
         rows.append({
             "file": path.name,
             "published": pub,
@@ -197,6 +219,8 @@ def collect(project_dir: Path, colors: dict, fallbacks: dict):
             "title": clean_title(text, path.stem),
             "desc": desc,
             "thumb": thumb,
+            "thumb_w": dims[0] if dims else None,
+            "thumb_h": dims[1] if dims else None,
             "alt": alt,
             "color": colors.get(path.name, "#1f3864"),
         })
@@ -214,8 +238,12 @@ def card_html(r) -> str:
     desc_html = (
         f'        <span class="lc-desc">{r["desc"]}</span>\n' if r.get("desc") else ""
     )
+    dim_attrs = (
+        f' width="{r["thumb_w"]}" height="{r["thumb_h"]}"'
+        if r.get("thumb_w") and r.get("thumb_h") else ""
+    )
     thumb_html = (
-        f'        <img class="lc-thumb" src="{r["thumb"]}" alt="{alt}" loading="lazy" decoding="async">\n'
+        f'        <img class="lc-thumb" src="{r["thumb"]}" alt="{alt}" loading="lazy" decoding="async"{dim_attrs}>\n'
         if r.get("thumb") else ""
     )
     return (

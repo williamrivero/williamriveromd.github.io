@@ -45,6 +45,30 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
+
+
+def image_dims(project_dir: Path, rel_thumb: str):
+    """Return (width, height) of a thumb image referenced as '../images/x.webp'
+    (relative to guides/), read straight off the file on disk. Returns None if
+    Pillow is unavailable or the file can't be opened — callers must omit the
+    width/height attributes rather than emit a wrong guess (a missing attribute
+    is invisible; a wrong one bakes in a CLS bug the same way a stale hand-typed
+    number would)."""
+    if Image is None or not rel_thumb:
+        return None
+    path = project_dir / "images" / rel_thumb.rsplit("/", 1)[-1]
+    if not path.exists():
+        return None
+    try:
+        with Image.open(path) as im:
+            return im.size
+    except Exception:
+        return None
+
 START = "<!-- LATEST-GUIDES-START -->"
 END = "<!-- LATEST-GUIDES-END -->"
 ANCHOR = "<!-- MOBILE FILTER BAR -->"
@@ -239,6 +263,8 @@ def collect(project_dir: Path):
             except ValueError:
                 pass
         section = file_section.get(path.name, "")
+        thumb = local_thumb(project_dir, og_image, path.stem)
+        dims = image_dims(project_dir, thumb)
         rows.append({
             "file": path.name,
             "published": shown,
@@ -247,7 +273,9 @@ def collect(project_dir: Path):
             "kind": "updated" if is_updated else "new",
             "dt": shown_dt,
             "title": clean_title(text, path.stem),
-            "thumb": local_thumb(project_dir, og_image, path.stem),
+            "thumb": thumb,
+            "thumb_w": dims[0] if dims else None,
+            "thumb_h": dims[1] if dims else None,
             "alt": meta(text, "og:image:alt"),
             "section": section,
             "color": SECTION_COLORS.get(section, DEFAULT_CARD_COLOR),
@@ -266,12 +294,19 @@ def card_html(r) -> str:
     eyebrow = "Updated guide" if updated else "New guide"
     eyebrow_mod = " latest-eyebrow--updated" if updated else ""
     alt = (r["alt"] or "").replace('"', "&quot;")
+    # width/height are read straight off the thumb file (see image_dims()) so the
+    # browser can reserve the right box before the image loads — omitting them
+    # is exactly the CLS regression this attribute pair exists to prevent.
+    dim_attrs = (
+        f' width="{r["thumb_w"]}" height="{r["thumb_h"]}"'
+        if r.get("thumb_w") and r.get("thumb_h") else ""
+    )
     return (
         f'      <a href="{r["file"]}" class="latest-card" style="--card-color:{r["color"]}">\n'
         f'        <span class="latest-eyebrow{eyebrow_mod}"><span class="latest-dot"></span>{eyebrow}</span>\n'
         f'        <span class="latest-title">{r["title"]}</span>\n'
         f'        <span class="latest-date"><time datetime="{r["published"]}">{label}</time></span>\n'
-        f'        <img class="latest-thumb" src="{r["thumb"]}" alt="{alt}" loading="lazy" decoding="async">\n'
+        f'        <img class="latest-thumb" src="{r["thumb"]}" alt="{alt}" loading="lazy" decoding="async"{dim_attrs}>\n'
         f'      </a>'
     )
 
