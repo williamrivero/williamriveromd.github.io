@@ -1,69 +1,102 @@
-# Image Plan — *When Blood Pressure Stays High* (`difficult-to-control-hypertension.html`)
+# Image Plan Blueprint — *When Blood Pressure Stays High*
 
-**Guide:** Difficult-to-control and resistant hypertension in Filipinos — dual-mode (Patients & Families / Clinicians), Philippine context
-**Prepared:** 2026-09-27 · **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the
-ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
-**Skills used:** `williamriveromd-hero-vignette` · `williamriveromd-infographic-skill` ·
-`williamriveromd-simple-figure` · `williamriveromd-biomedical-mechanism-figure` ·
-`williamriveromd-algorithm-generator-skill`
-
----
-
-## House rules baked into every prompt
-- **Light backgrounds only** (white `#ffffff` / off-white `#fafafa` / soft gray `#f3f4f6` / pale teal `#eef6f7`).
-  Never navy, charcoal, or black. Navy is for text and accents only.
-- **Fonts:** on-image type is one of **Inter · Nunito Sans · IBM Plex Sans · Manrope**. No serif, no decorative type.
-- **Palette:** navy `#0f1e2e` (text), clinical teal `#1a6b72` (headings, decisions), renal green `#1f7a4d`
-  (safe/do this), amber `#b8860b` (caution), red `#b91c1c` (urgent), soft purple `#6c3d8e` (specialist/add-on).
-- **Attribution:** small semi-transparent `renalcarematters.com` (algorithm and mechanism figures:
-  `© renalcarematters.com`) bottom-right on landscape/square images, bottom-center on the portrait algorithm.
-  **Exception:** the wordless vignette hero carries no text at all.
-- **American English** on every label (e.g., "color," "organizer," "labeled").
-- **Save each asset** as `.png` **and** a matching `.webp` twin under `images/`, using the exact FILE NAME below
-  (the guide HTML already references `../images/<name>.webp` + `.png`).
-
-### Clinical guardrails for THIS guide (must hold in every graphic)
-- **No blame.** Patient figures never say "you failed," "noncompliant," or "lazy." Use "medicines not taken as
-  prescribed," "refills hard to get," "hidden salt." Access and cost are system problems, not character flaws.
-- **Apparent before true.** Every clinician graphic checks measurement, white-coat effect, adherence/access, and
-  regimen *before* labeling resistance "true." Out-of-office BP (HBPM/ABPM) is the gatekeeper.
-- **Generic names only.** No brand names, no doses, no mg strengths on any drug graphic.
-- **ACE inhibitor OR ARB — never both.** Draw it as a choice, never a combination.
-- **Spironolactone thresholds are guideline-attributed**, never invented: AHA/ACC eGFR ≥45; ESC eGFR ≥30 and
-  K⁺ ≤4.5 mmol/L. Label potassium and kidney-function monitoring after starting.
-- **Investigational means investigational.** Aldosterone synthase inhibitors (baxdrostat, lorundrostat) are labeled
-  "investigational"; aprocitentan and renal denervation are "specialist / limited availability," not routine care.
-- **No precise per-item sodium numbers** on the food figure. The only number is the WHO adult goal
-  (<2,000 mg sodium/day ≈ 5 g salt ≈ 1 teaspoon, from all sources).
-- **Potassium salt substitute caveat** always appears: people with kidney disease ask first.
-- **No fear imagery.** No clutching-chest scenes, no exploding gauges, no red "danger" BP dials in patient art.
-
-## Asset roster
-
-| # | File (`images/…`) | Skill | Aspect | Size (px) | Audience |
-|---|---|---|---|---|---|
-| 1 | `difficult-to-control-hypertension-vignette-hero` | hero-vignette (Scaffold A) | 1:1 | 2048 × 2048 | mixed |
-| 2 | `difficult-to-control-hypertension-01-why-bp-stays-high` | infographic (Archetype 4) | 4:3 | 1536 × 1152 | patients |
-| 3 | `difficult-to-control-hypertension-02-home-bp-technique` | infographic (Archetype 4, numbered steps) | 4:3 | 1536 × 1152 | patients |
-| 4 | `difficult-to-control-hypertension-03-apparent-vs-true-resistance` | simple-figure (Scaffold D, funnel) | 16:9 | 1792 × 1024 | clinicians |
-| 5 | `difficult-to-control-hypertension-04-volume-aldosterone-mechanism` | biomedical-mechanism | 16:9 | 1792 × 1024 | clinicians |
-| 6 | `difficult-to-control-hypertension-05-consultation-algorithm` | algorithm (Style Mode A, AHA) | 3:4 portrait | 1152 × 1536 | clinicians |
-| 7 | `difficult-to-control-hypertension-06-ph-medication-ladder` | simple-figure (Scaffold C, ladder) | 16:9 | 1792 × 1024 | clinicians |
-| 8 | `difficult-to-control-hypertension-07-filipino-sodium-swaps` | infographic (Archetype 6, food matrix) | 4:3 | 1536 × 1152 | patients |
-| 9 | `difficult-to-control-hypertension-og` | infographic (OG / editorial poster) | 1.91:1 | 1200 × 630 (FIXED) | mixed |
-
-> **After generating:** save PNG + WebP twins, then run `patch_hero_fetchpriority.py`, `patch_hero_fullwidth.py`,
-> `patch_hero_maxwidth.py`, and `patch_image_lightbox.py` on the guide. Pair the OG card with
-> `og:image:width="1200"` and `og:image:height="630"`. Each figure's `alt`, `fig-desc`, and `fig-abbrevs`
-> lines below are ready to paste into its `<img alt>` and `<figcaption>`.
+**Guide:** [`guides/difficult-to-control-hypertension.html`](../guides/difficult-to-control-hypertension.html) · dual-mode (Patients & Families EN/TL/CEB/KAP · Clinicians EN) · 24 sections
+**Prepared:** 2026-09-27 · **Total assets:** 10 (8 in-body figures + 1 hero + 1 OG card) · **Status:** all slots wired in the HTML; images not yet generated
+**Where to generate:** ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Skills used:** `williamriveromd-image-planner` (architecture, style taxonomy, 10-point spec) · `williamriveromd-hero-vignette` ·
+`williamriveromd-infographic-skill` · `williamriveromd-simple-figure` · `williamriveromd-biomedical-mechanism-figure` ·
+`williamriveromd-algorithm-generator-skill` · `medical-teaching-standard` (clinical accuracy of every label)
+**Visual anchor:** `images/ckd-understanding-overview.webp` — teal header bars, navy text, one idea per panel, calm Filipino realism.
 
 ---
 
-## 1 · Circular vignette hero
+## Part A — Architecture
 
-**alt:** A Filipino woman in her late 50s sits upright at a sunlit kitchen table with her arm resting on the table, measuring her blood pressure with an upper-arm cuff while her adult son sits beside her with a notebook and a weekly pill organizer.
-**fig-desc:** *(hero — no figcaption; wordless image)*
-**fig-abbrevs:** none
+### A1. Why 10 images (image-planner rubric)
+The planner's rubric caps a guide at 6 images unless it is a multi-chapter reference. This guide is one: 11 patient
+sections plus 13 clinician sections, with two distinct clinician decision pathways (the consultation sequence and the
+medication ladder). The planner also adds one flowchart per major decision tree. Each image covers one thematic
+**cluster**, not one section:
+
+| Cluster | Sections covered | Image |
+|---|---|---|
+| First impression | hero | Vignette hero |
+| Why BP stays high | `#why`, `#raisers`, `#medicines` | 01 six reasons |
+| Measure correctly | `#numbers`, `#measure`, `#visit` | 02 home technique |
+| Safety | `#urgent` | **08 urgent-help card (new)** |
+| Food | `#food`, `#kidney` | 07 sodium swaps |
+| Confirm the phenotype | `#md-problem`, `#md-confirm`, `#md-regimen` | 03 funnel |
+| Mechanism | `#md-secondary`, `#md-addon`, `#md-lifestyle` | 04 aldosterone mechanism |
+| Decision pathway 1 | `#md-urgent` → `#md-specialist` | 05 consultation algorithm |
+| Decision pathway 2 | `#md-ladder`, `#md-ckd`, `#md-philippines` | 06 PH medication ladder |
+| Social share | meta tags | OG card |
+
+Sections deliberately left **without** raster images, because an HTML table is sharper, searchable, and translatable:
+the framework comparison (`#md-problem`), the phenotype table, the contributor table, the MRA pre-check table, and the
+emerging-therapies table. `#faq` and `#md-pearls` are text-first by design.
+
+### A2. Placement and style map
+
+| # | File (`images/…`) | Placement anchor | Mode | Planner style | Authoring skill | Size | Batch |
+|---|---|---|---|---|---|---|---|
+| 1 | `difficult-to-control-hypertension-vignette-hero` | Hero, right of the title, inside `figure.hero-figure.mode-patient` (hidden in Clinician mode) | Patients (hero) | EDITORIAL_PHOTO | williamriveromd-hero-vignette (Scaffold A, Archetype J) | 2048 × 2048 (1:1) | 1 |
+| 2 | `difficult-to-control-hypertension-01-why-bp-stays-high` | `#why` section, after the garden-hose paragraph | Patients | CLINICAL_FLAT_VECTOR | williamriveromd-infographic-skill (Archetype 4) | 1536 × 1152 (4:3) | 1 |
+| 3 | `difficult-to-control-hypertension-02-home-bp-technique` | `#measure` section, after the 5-step list | Patients | CLINICAL_FLAT_VECTOR | williamriveromd-infographic-skill (Archetype 4, numbered steps) | 1536 × 1152 (4:3) | 1 |
+| 4 | `difficult-to-control-hypertension-08-urgent-help-card` | `#urgent` section, directly after the red emergency alert | Patients | CLINICAL_FLAT_VECTOR (reference card) | williamriveromd-infographic-skill (Archetype 5, reference card) | 1536 × 1152 (4:3) | 1 |
+| 5 | `difficult-to-control-hypertension-07-filipino-sodium-swaps` | `#food` section, after the WHO sodium paragraph | Patients | CLINICAL_FLAT_VECTOR (food matrix) | williamriveromd-infographic-skill (Archetype 6) | 1536 × 1152 (4:3) | 1 |
+| 6 | `difficult-to-control-hypertension-03-apparent-vs-true-resistance` | `#md-confirm`, after the phenotype table | Clinicians | ALGORITHM_FLOWCHART (funnel) | williamriveromd-simple-figure (Scaffold D) | 1792 × 1024 (16:9) | 2 |
+| 7 | `difficult-to-control-hypertension-04-volume-aldosterone-mechanism` | `#md-secondary`, after the Filipino PA pilot paragraph | Clinicians | MINIMAL_MEDICAL_3D (review-article mechanism) | williamriveromd-biomedical-mechanism-figure | 1792 × 1024 (16:9) | 2 |
+| 8 | `difficult-to-control-hypertension-05-consultation-algorithm` | `#md-optimize`, after the dosing-time paragraph | Clinicians | ALGORITHM_FLOWCHART | williamriveromd-algorithm-generator-skill (Style Mode A, AHA) | 1152 × 1536 (3:4 portrait) | 2 |
+| 9 | `difficult-to-control-hypertension-06-ph-medication-ladder` | `#md-ladder`, after the hierarchy table | Clinicians | ALGORITHM_FLOWCHART (treatment ladder) | williamriveromd-simple-figure (Scaffold C) | 1792 × 1024 (16:9) | 2 |
+| 10 | `difficult-to-control-hypertension-og` | `og:image` + `twitter:image` meta (not placed in the body) | Mixed | EDITORIAL_PHOTO + title | williamriveromd-infographic-skill (Archetype 1, OG) | 1200 × 630 (fixed) | 2 |
+
+> **Dimensions note.** The planner's generic size policy (1536×1024, 1280×960, 1400×1000) is overridden by the
+> house skills' canonical sizes, which the guide's `<img width/height>` attributes already declare. If the GPT
+> returns a different size, see C2 before uploading.
+
+### A3. House rules baked into every prompt
+- **Light backgrounds only** (white `#ffffff`, off-white `#fafafa`, soft gray `#f3f4f6`, pale teal `#eef6f7`). Navy is for text and accents only.
+- **Fonts on the image:** Inter, Nunito Sans, IBM Plex Sans, or Manrope. Never serif or decorative.
+- **Palette:** navy `#0f1e2e` text · teal `#1a6b72` headings · green `#1f7a4d` safe/do · amber `#b8860b` caution · red `#b91c1c` urgent · purple `#6c3d8e` specialist.
+- **Attribution:** `renalcarematters.com` (`© renalcarematters.com` on algorithms/mechanisms), bottom-right; bottom-center on the portrait algorithm. The wordless hero is the only exception.
+- **American English** on every label.
+
+### A4. Clinical guardrails (checked against the published guide text)
+- **No blame.** "Medicines not taken as prescribed," "refills hard to get," never "noncompliant."
+- **Apparent before true.** Out-of-office BP gates every "resistant" label.
+- **Generic names only.** No brands, doses, or mg strengths.
+- **ACE inhibitor OR ARB, never both.**
+- **Spironolactone limits are guideline-attributed:** AHA/ACC 2025 eGFR ≥45; ESC 2024 eGFR ≥30 and K⁺ ≤4.5 mmol/L.
+- **Investigational stays investigational:** baxdrostat, lorundrostat; aprocitentan and renal denervation = specialist / limited availability.
+- **Sodium figure:** the only number is the WHO adult goal (<2,000 mg sodium ≈ 5 g salt ≈ 1 teaspoon); the potassium salt-substitute caution is always present.
+- **Urgent card:** symptom-first; 911 is the Philippine national emergency hotline; no rescue dosing. The 180/110 example matches the guide's conservative same-day-call threshold (the 2024 Philippine acute-severe-BP guideline's 110-vs-120 DBP inconsistency is flagged in the clinician text, not resolved on the card).
+- **No fear imagery** in patient art.
+
+---
+
+## Part B — Production prompts (paste each PROMPT block into the Image Generator GPT)
+
+### 1 · Circular vignette hero
+
+**Placement:** Hero, right of the title, inside `figure.hero-figure.mode-patient` (hidden in Clinician mode) · **Mode:** Patients (hero) · **Batch:** 1
+**Style:** EDITORIAL_PHOTO · **Skill:** williamriveromd-hero-vignette (Scaffold A, Archetype J)
+
+**10-point spec (image-planner)**
+
+| | |
+|---|---|
+| IMAGE TYPE | Hero |
+| PRIMARY VISUAL STYLE | EDITORIAL_PHOTO |
+| SUBJECT | Filipino woman in her late 50s measuring BP correctly at home with her son logging the reading |
+| COMPOSITION | Side profile at seated eye level, 60–70% hero subject, 20–25% empty title-safe zone upper-left, circle 85–90% of canvas with white margin |
+| BACKGROUND | Bright Philippine home kitchen, soft daylight |
+| LIGHTING | Soft natural window light, documentary realism |
+| COLOR PALETTE | Teal #1a6b72 / navy #0f1e2e harmony on a light scene |
+| MEDICAL DETAILS | Textbook posture: back supported, feet flat, legs uncrossed, arm at heart level, cuff on bare upper arm; no readable digits |
+| MOOD | Calm, capable, hopeful |
+| DIMENSIONS | 2048 × 2048 |
+
+**Live `alt` (in guide):** A Filipino woman in her late 50s seated at a sunlit kitchen table measuring her blood pressure with an upper-arm cuff while her adult son writes the reading in a notebook beside a weekly pill organizer.
 
 ```
 FILE NAME: difficult-to-control-hypertension-vignette-hero.png
@@ -133,22 +166,31 @@ the circle.
 
 ---
 
-## 2 · Why BP can stay high — six common reasons (patient)
+### 2 · Why BP can stay high: six reasons
 
-**alt:** Six rounded tiles explaining why blood pressure can stay high: measurement problems, the white-coat effect, medicines not taken as prescribed or refills hard to get, hidden salt in Filipino foods, medicines or products that raise BP, and another hidden condition such as aldosterone excess, sleep apnea, or kidney disease.
-**fig-desc:** Blood pressure that stays high is usually a puzzle with fixable pieces. The six tiles show the most common reasons — how the reading is taken, nervousness at the clinic, trouble getting or taking medicines, hidden salt, products that push BP up, and a second condition your doctor can test for.
-**fig-abbrevs:** BP — Blood pressure · NSAIDs — Nonsteroidal anti-inflammatory drugs (pain relievers such as ibuprofen, naproxen, mefenamic acid) · CKD — Chronic kidney disease
+**Placement:** `#why` section, after the garden-hose paragraph · **Mode:** Patients · **Batch:** 1
+**Style:** CLINICAL_FLAT_VECTOR · **Skill:** williamriveromd-infographic-skill (Archetype 4)
 
-```html
-<figcaption>
-  <p class="fig-desc">Blood pressure that stays high is usually a puzzle with fixable pieces. The six tiles show the most common reasons — how the reading is taken, nervousness at the clinic, trouble getting or taking medicines, hidden salt, products that push BP up, and a second condition your doctor can test for.</p>
-  <dl class="fig-abbrevs">
-    <dt>BP</dt><dd>Blood pressure</dd>
-    <dt>NSAIDs</dt><dd>Nonsteroidal anti-inflammatory drugs (pain relievers such as ibuprofen, naproxen, mefenamic acid)</dd>
-    <dt>CKD</dt><dd>Chronic kidney disease</dd>
-  </dl>
-</figcaption>
-```
+**10-point spec (image-planner)**
+
+| | |
+|---|---|
+| IMAGE TYPE | Inline |
+| PRIMARY VISUAL STYLE | CLINICAL_FLAT_VECTOR |
+| SUBJECT | Six blame-free, fixable reasons BP stays above goal |
+| COMPOSITION | 3 × 2 equal tile grid, teal accent bars, header band, green footer |
+| BACKGROUND | White |
+| LIGHTING | Flat, no directional light |
+| COLOR PALETTE | Teal / navy, green footer, one amber accent (tile 5), no red |
+| MEDICAL DETAILS | Patis, toyo, bagoong spelled correctly; NSAIDs named generically; no brand logos |
+| MOOD | Reassuring, non-judgmental |
+| DIMENSIONS | 1536 × 1152 |
+
+**Live `alt` (in guide):** Six-tile infographic showing common reasons blood pressure stays high: measurement problems, white-coat effect, medicines not taken as prescribed, hidden salt, interfering substances, and another hidden condition.
+
+**Live `fig-desc`:** Six common reasons blood pressure can stay above goal: the reading itself may be off (wrong cuff or technique), the clinic may raise it (white-coat effect), medicines may be missed or hard to refill, salt may be hidden in food, some pain relievers such as NSAID (nonsteroidal anti-inflammatory drug) medicines or supplements may push it up, and another condition such as excess aldosterone, sleep apnea, or kidney disease may be driving it.
+
+**Live `fig-abbrevs`:** BP — Blood pressure · NSAID — Nonsteroidal anti-inflammatory drug
 
 ```
 FILE NAME: difficult-to-control-hypertension-01-why-bp-stays-high.png
@@ -203,20 +245,31 @@ QUALITY CHECK:
 
 ---
 
-## 3 · Home BP — how to measure it right (patient)
+### 3 · Home BP technique
 
-**alt:** Seven numbered steps for home blood pressure: use a validated upper-arm device, choose the right cuff size at heart level, sit quietly for 5 minutes with back supported and feet flat, avoid caffeine, exercise, and smoking for 30 minutes, take 2 readings 1 minute apart morning and evening, write every reading down, and measure for about 7 days before a visit.
-**fig-desc:** A correct home reading is the most useful BP number your doctor can have. Follow the seven steps — right device, right cuff, right posture, quiet rest, two readings twice a day, a written log, and about a week of readings before your visit.
-**fig-abbrevs:** BP — Blood pressure
+**Placement:** `#measure` section, after the 5-step list · **Mode:** Patients · **Batch:** 1
+**Style:** CLINICAL_FLAT_VECTOR · **Skill:** williamriveromd-infographic-skill (Archetype 4, numbered steps)
 
-```html
-<figcaption>
-  <p class="fig-desc">A correct home reading is the most useful BP number your doctor can have. Follow the seven steps — right device, right cuff, right posture, quiet rest, two readings twice a day, a written log, and about a week of readings before your visit.</p>
-  <dl class="fig-abbrevs">
-    <dt>BP</dt><dd>Blood pressure</dd>
-  </dl>
-</figcaption>
-```
+**10-point spec (image-planner)**
+
+| | |
+|---|---|
+| IMAGE TYPE | Inline |
+| PRIMARY VISUAL STYLE | CLINICAL_FLAT_VECTOR |
+| SUBJECT | Correct home BP measurement |
+| COMPOSITION | Central correctly seated figure with leader callouts, 7 numbered step cards clockwise |
+| BACKGROUND | White |
+| LIGHTING | Flat |
+| COLOR PALETTE | Teal badges, navy text, amber strike-throughs |
+| MEDICAL DETAILS | Upper-arm validated device; 5 min rest; 2 readings 1 min apart morning and evening; ~7 days |
+| MOOD | Instructional, calm |
+| DIMENSIONS | 1536 × 1152 |
+
+**Live `alt` (in guide):** Illustrated step-by-step guide to correct home blood pressure measurement with an upper-arm cuff.
+
+**Live `fig-desc`:** Correct home blood pressure technique: a validated upper-arm monitor and properly sized cuff, five quiet minutes seated with back supported and feet flat, the cuff at heart level, two readings a minute apart morning and evening, and every reading written down.
+
+**Live `fig-abbrevs`:** BP — Blood pressure
 
 ```
 FILE NAME: difficult-to-control-hypertension-02-home-bp-technique.png
@@ -273,26 +326,195 @@ Mobile-readable. renalcarematters.com visible bottom-right.
 
 ---
 
-## 4 · Apparent vs. true resistant hypertension — the funnel (clinician)
+### 4 · Urgent-help action card (NEW)
 
-**alt:** A funnel diagram. At the top, uncontrolled office BP on three drugs; five filters narrow the funnel — measurement error, white-coat effect checked with home or ambulatory BP, nonadherence or access barriers, a suboptimal regimen or no diuretic, and interfering substances. At the narrow bottom, true resistant hypertension leads to screening for primary aldosteronism, obstructive sleep apnea, CKD, and renovascular disease.
-**fig-desc:** Most "resistant" hypertension is apparent, not true. Each filter removes a common, correctable cause of pseudoresistance; only patients who pass through all five have true resistant hypertension and warrant a structured search for secondary causes.
-**fig-abbrevs:** BP — Blood pressure · HBPM — Home blood pressure monitoring · ABPM — Ambulatory blood pressure monitoring · NSAIDs — Nonsteroidal anti-inflammatory drugs · OSA — Obstructive sleep apnea · CKD — Chronic kidney disease · PA — Primary aldosteronism
+**Placement:** `#urgent` section, directly after the red emergency alert · **Mode:** Patients · **Batch:** 1
+**Style:** CLINICAL_FLAT_VECTOR (reference card) · **Skill:** williamriveromd-infographic-skill (Archetype 5, reference card)
 
-```html
-<figcaption>
-  <p class="fig-desc">Most "resistant" hypertension is apparent, not true. Each filter removes a common, correctable cause of pseudoresistance; only patients who pass through all five have true resistant hypertension and warrant a structured search for secondary causes.</p>
-  <dl class="fig-abbrevs">
-    <dt>BP</dt><dd>Blood pressure</dd>
-    <dt>HBPM</dt><dd>Home blood pressure monitoring</dd>
-    <dt>ABPM</dt><dd>Ambulatory blood pressure monitoring (24-hour)</dd>
-    <dt>NSAIDs</dt><dd>Nonsteroidal anti-inflammatory drugs</dd>
-    <dt>PA</dt><dd>Primary aldosteronism</dd>
-    <dt>OSA</dt><dd>Obstructive sleep apnea</dd>
-    <dt>CKD</dt><dd>Chronic kidney disease</dd>
-  </dl>
-</figcaption>
+**10-point spec (image-planner)**
+
+| | |
+|---|---|
+| IMAGE TYPE | Reference Card |
+| PRIMARY VISUAL STYLE | CLINICAL_FLAT_VECTOR |
+| SUBJECT | Symptom-first triage: go now vs. call today |
+| COMPOSITION | Two lanes side by side with lane labels, icon rows, bottom pregnancy strip |
+| BACKGROUND | White |
+| LIGHTING | Flat |
+| COLOR PALETTE | Red lane + amber lane, each with text labels and icons (never color alone) |
+| MEDICAL DETAILS | 911 as the PH emergency number; no BP-lowering instructions; no rescue dosing |
+| MOOD | Clear, steady, not frightening |
+| DIMENSIONS | 1536 × 1152 |
+
+**Live `alt` (in guide):** Two-lane action card. Left lane, labeled Go now: chest pain, severe breathlessness, sudden weakness or face drooping, trouble speaking, confusion, sudden severe headache, or vision loss means calling 911 or going to the emergency room. Right lane, labeled Call today: a very high reading with no symptoms means resting 5 minutes, measuring again, and calling the doctor the same day if it stays high. A bottom strip warns pregnant or recently delivered women to seek same-day care.
+
+**Live `fig-desc`:** Symptoms decide how fast to act, not the number alone. Warning symptoms with high blood pressure mean emergency care now; a very high reading without symptoms means a careful recheck and a same-day call to your doctor. Never take extra tablets on your own, and during pregnancy or after delivery, seek same-day care.
+
 ```
+FILE NAME: difficult-to-control-hypertension-08-urgent-help-card.png
+IMAGE TYPE: Clinician-style reference card adapted for patients (Archetype 5) — two-lane symptom-first action card
+ASPECT RATIO: 4:3
+PIXEL DIMENSIONS: 1536 × 1152
+AUDIENCE: patients and families
+VISUAL GOAL: In one glance, a patient knows whether high BP means "go to the emergency room now" or "recheck and call the doctor today."
+
+PROMPT:
+Patient safety reference card, 4:3 landscape, 1536×1152, clean WHITE (#ffffff) background, calm modern clinic
+aesthetic, large mobile-readable type. All text in Inter (bold headings) and Nunito Sans (body), navy #0f1e2e.
+
+Title at top in bold Inter navy: "High BP: when to get help". Subtitle in teal #1a6b72: "Your symptoms decide how
+fast to act — not the number alone".
+
+Two equal rounded vertical LANES side by side, each with a bold text label in a colored header band AND an icon, so
+the meaning never depends on color alone:
+
+LEFT LANE — header band clinical red #b91c1c with white bold text "GO NOW" and a small ambulance icon. Subheader in
+navy: "High BP with ANY of these → call 911 or go to the emergency room". Six icon rows, each a simple flat
+line icon in red plus a short navy label:
+- chest outline with a pressure mark: "Chest pain or pressure"
+- lungs: "Severe shortness of breath"
+- face with one-sided droop and an arm: "Sudden weakness, numbness, or face drooping"
+- speech bubble with a break: "Trouble speaking"
+- head with a small swirl: "Confusion or a seizure"
+- eye with a lightning mark: "Sudden severe headache or vision loss"
+Bottom line inside the lane, bold navy: "Do not take extra tablets. Do not wait to finish your BP log."
+
+RIGHT LANE — header band amber #b8860b with navy bold text "CALL TODAY" and a small phone icon. Subheader in navy:
+"Very high reading (e.g., 180/110 or above) but you feel well". Three numbered steps with teal number badges:
+1) chair and 5-minute timer icon: "Sit quietly for 5 minutes"
+2) upper-arm cuff icon: "Measure again the correct way"
+3) phone icon: "Still very high? Call your doctor or clinic the SAME DAY"
+Bottom line inside the lane, navy: "BP is lowered gradually over hours to days — not all at once."
+
+BOTTOM STRIP, full width, soft pale purple (#f3eef8) rounded band with a small pregnant-figure icon and bold navy
+text: "Pregnant or gave birth in the last 6 weeks? BP of 140/90 or higher, severe headache, vision changes, or
+upper-belly pain → same-day assessment by your obstetric team."
+
+Generous whitespace, strong left–right symmetry, icons simple and consistent line weight, labels never smaller
+than ~12pt equivalent. Small semi-transparent navy "renalcarematters.com" attribution in the bottom-right corner.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid unrealistic
+anatomy, avoid overprocessed HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark,
+navy, charcoal, or black backgrounds — light backgrounds only. Use ONLY the sans-serif fonts Inter, Nunito Sans,
+IBM Plex Sans, or Manrope — no other fonts, no serif fonts, no decorative or handwritten typefaces. No photos of
+people in distress, no clutching-chest poses, no sirens or flashing lights, no BP dial gauges, no drug names or
+doses, no "take this pill now" instructions, no US-specific numbers other than 911 (which is also the Philippine
+national emergency hotline). Never omit the renalcarematters.com attribution.
+
+QUALITY CHECK:
+4:3, 1536×1152, white background. Two lanes with TEXT labels "GO NOW" and "CALL TODAY" plus icons (not color
+alone). Six red-lane symptoms, three amber-lane steps, pregnancy strip present. "911", "180/110", "140/90",
+"5 minutes", and "SAME DAY" spelled exactly. Mobile-readable. renalcarematters.com visible bottom-right.
+```
+
+---
+
+### 5 · Filipino sodium swaps
+
+**Placement:** `#food` section, after the WHO sodium paragraph · **Mode:** Patients · **Batch:** 1
+**Style:** CLINICAL_FLAT_VECTOR (food matrix) · **Skill:** williamriveromd-infographic-skill (Archetype 6)
+
+**10-point spec (image-planner)**
+
+| | |
+|---|---|
+| IMAGE TYPE | Inline |
+| PRIMARY VISUAL STYLE | CLINICAL_FLAT_VECTOR |
+| SUBJECT | Hidden sodium sources in Filipino food and realistic swaps |
+| COMPOSITION | Instead-of → Try two-column matrix, goal bar, amber kidney caution panel |
+| BACKGROUND | White |
+| LIGHTING | Flat with realistic food renders |
+| COLOR PALETTE | Amber "Instead of", green "Try", teal goal bar |
+| MEDICAL DETAILS | Only number is the WHO goal (<2,000 mg sodium ≈ 5 g salt); potassium-substitute caution |
+| MOOD | Appetizing, practical |
+| DIMENSIONS | 1536 × 1152 |
+
+**Live `alt` (in guide):** Infographic of common high-sodium Filipino foods and lower-salt swaps, with the daily sodium goal.
+
+**Live `fig-desc`:** Common high-sodium foods in Filipino kitchens (patis, toyo, bagoong, seasoning cubes, instant noodles, dried fish, processed meats) paired with lower-salt swaps such as calamansi, garlic, onion, ginger, fresh fish and vegetables, and using half the noodle seasoning packet. The adult goal is under 2,000 mg sodium a day from all sources.
+
+**Live `fig-abbrevs`:** WHO — World Health Organization
+
+```
+FILE NAME: difficult-to-control-hypertension-07-filipino-sodium-swaps.png
+IMAGE TYPE: Food matrix / nutrition infographic (Archetype 6) — "instead of → try" swap grid
+ASPECT RATIO: 4:3
+PIXEL DIMENSIONS: 1536 × 1152
+AUDIENCE: patients and families
+VISUAL GOAL: Make hidden Filipino sodium sources recognizable and each one paired with a realistic, tasty swap.
+
+PROMPT:
+CKD and hypertension nutrition infographic, clean educational food matrix, 4:3 landscape, 1536×1152, WHITE
+(#ffffff) background. All text in Inter (bold headings) and Nunito Sans (body), navy #0f1e2e.
+
+Title at top in bold Inter navy: "Cut the hidden salt — Filipino swaps". Subtitle in teal #1a6b72: "Flavor stays.
+Sodium goes down."
+
+GOAL BAR directly under the title, a soft pale-teal rounded band with a simple teaspoon icon: "Adult goal (WHO):
+less than 2,000 mg sodium a day ≈ 5 g salt ≈ 1 teaspoon — from ALL food and condiments combined."
+
+MAIN GRID: two columns joined by small green right-arrows. Left column header in amber #b8860b "Instead of…",
+right column header in renal green #1f7a4d "Try…". Seven rows, each with realistic, appetizing small food
+renders (generic, NO brand logos or readable labels):
+1) Patis (fish sauce bottle) → calamansi squeeze, garlic, and a little patis only at the table, not in the pot.
+2) Toyo (soy sauce bottle) → calamansi, garlic, onion, and a splash of vinegar.
+3) Bagoong (small jar) → a small side portion shared, with fresh green mango or vegetables.
+4) Seasoning cubes / powdered seasoning → garlic, onion, ginger, tanglad (lemongrass), and black pepper.
+5) Instant noodles (generic cup and pack) → cook with HALF the seasoning packet and add fresh vegetables and egg.
+6) Tuyo and daing (dried salted fish) → fresh fish — grilled, steamed, or sinigang with plenty of vegetables.
+7) Processed meats — hotdog, longganisa, corned beef (can) → fresh chicken or pork; if using canned goods,
+   rinse and drain them first.
+Show NO sodium numbers on any individual food item.
+
+CAUTION PANEL at bottom-right, pale amber rounded box with a small kidney icon and amber accent: "Kidney disease?
+Ask your doctor before using 'lite' or potassium-based salt substitutes — they can raise potassium."
+
+FOOTER strip, soft gray, navy text: "Taste food before salting · read labels · keep condiments off the table."
+Rounded category cards, generous whitespace, mobile-readable labels. Small semi-transparent navy
+"renalcarematters.com" attribution in the bottom-right corner.
+
+NEGATIVE INSTRUCTIONS:
+Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid overprocessed
+HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black
+backgrounds — light backgrounds only. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or
+Manrope — no other fonts, no serif fonts, no decorative or handwritten typefaces. No brand names or readable
+packaging, no per-food sodium milligram values, no shaming words ("bad food," "forbidden"). Never omit the
+renalcarematters.com attribution.
+
+QUALITY CHECK:
+4:3, 1536×1152, white background. Seven instead-of → try rows with Filipino items spelled correctly (patis, toyo,
+bagoong, tuyo, daing, longganisa, calamansi, tanglad). The only number is the WHO goal. Potassium-substitute
+caution present. Mobile-readable. renalcarematters.com visible bottom-right.
+```
+
+---
+
+### 6 · Apparent vs. true resistance funnel
+
+**Placement:** `#md-confirm`, after the phenotype table · **Mode:** Clinicians · **Batch:** 2
+**Style:** ALGORITHM_FLOWCHART (funnel) · **Skill:** williamriveromd-simple-figure (Scaffold D)
+
+**10-point spec (image-planner)**
+
+| | |
+|---|---|
+| IMAGE TYPE | Inline |
+| PRIMARY VISUAL STYLE | ALGORITHM_FLOWCHART |
+| SUBJECT | Filtering pseudoresistance before labeling true resistance |
+| COMPOSITION | Vertical funnel, 5 filter bands with amber side exits, green outlet to secondary-cause box |
+| BACKGROUND | White |
+| LIGHTING | Flat |
+| COLOR PALETTE | Pale teal funnel, amber exits, green outlet |
+| MEDICAL DETAILS | No prevalence numbers, no drugs or doses |
+| MOOD | Analytical, publication-grade |
+| DIMENSIONS | 1792 × 1024 |
+
+**Live `alt` (in guide):** Funnel diagram filtering apparent resistant hypertension down to true resistant hypertension.
+
+**Live `fig-desc`:** From apparent to true resistant hypertension: uncontrolled office BP on three drugs passes through filters for measurement error, white-coat effect (checked with home or ambulatory monitoring), nonadherence and access, a suboptimal regimen without an appropriate diuretic, and interfering substances. What remains is true resistant hypertension, which prompts screening for secondary causes such as primary aldosteronism (PA) and obstructive sleep apnea (OSA).
+
+**Live `fig-abbrevs`:** BP — Blood pressure · HBPM — Home blood pressure monitoring · ABPM — Ambulatory blood pressure monitoring · OSA — Obstructive sleep apnea · CKD — Chronic kidney disease · PA — Primary aldosteronism · NSAIDs — Nonsteroidal anti-inflammatory drugs
 
 ```
 FILE NAME: difficult-to-control-hypertension-03-apparent-vs-true-resistance.png
@@ -346,27 +568,31 @@ bottom-right.
 
 ---
 
-## 5 · Volume and aldosterone — the mechanism behind resistance (clinician)
+### 7 · Volume and aldosterone mechanism
 
-**alt:** Mechanism schematic. Left: organ panel showing the adrenal gland releasing aldosterone onto the kidney, with inputs of high sodium intake, obstructive sleep apnea, and CKD. Center-right: a dashed magnified inset of a collecting-duct principal cell showing aldosterone binding the mineralocorticoid receptor, more ENaC channels absorbing sodium, and ROMK secreting potassium. Bottom: a flow from sodium and aldosterone excess, through spironolactone, a thiazide-like diuretic, and sodium restriction, to lower BP; aldosterone synthase inhibitors are marked investigational upstream at CYP11B2.
-**fig-desc:** In many people with resistant hypertension, BP stays high because the body holds on to too much sodium and fluid, often driven by excess aldosterone. Aldosterone acts on the collecting duct to open sodium channels and push out potassium. Blocking the receptor (spironolactone), adding a thiazide-like diuretic, and cutting dietary sodium each target this loop; aldosterone synthase inhibitors, which block aldosterone production upstream, remain investigational.
-**fig-abbrevs:** BP — Blood pressure · MR — Mineralocorticoid receptor · ENaC — Epithelial sodium channel · ROMK — Renal outer medullary potassium channel · CYP11B2 — Aldosterone synthase gene/enzyme · OSA — Obstructive sleep apnea · CKD — Chronic kidney disease · RAAS — Renin–angiotensin–aldosterone system · Na⁺ / K⁺ — Sodium / potassium ions
+**Placement:** `#md-secondary`, after the Filipino PA pilot paragraph · **Mode:** Clinicians · **Batch:** 2
+**Style:** MINIMAL_MEDICAL_3D (review-article mechanism) · **Skill:** williamriveromd-biomedical-mechanism-figure
 
-```html
-<figcaption>
-  <p class="fig-desc">In many people with resistant hypertension, BP stays high because the body holds on to too much sodium and fluid, often driven by excess aldosterone. Aldosterone acts on the collecting duct to open sodium channels and push out potassium. Blocking the receptor (spironolactone), adding a thiazide-like diuretic, and cutting dietary sodium each target this loop; aldosterone synthase inhibitors, which block aldosterone production upstream, remain investigational.</p>
-  <dl class="fig-abbrevs">
-    <dt>MR</dt><dd>Mineralocorticoid receptor</dd>
-    <dt>ENaC</dt><dd>Epithelial sodium channel</dd>
-    <dt>ROMK</dt><dd>Renal outer medullary potassium channel</dd>
-    <dt>CYP11B2</dt><dd>Aldosterone synthase — the enzyme that makes aldosterone in the adrenal gland</dd>
-    <dt>RAAS</dt><dd>Renin–angiotensin–aldosterone system</dd>
-    <dt>OSA</dt><dd>Obstructive sleep apnea</dd>
-    <dt>CKD</dt><dd>Chronic kidney disease</dd>
-    <dt>Na⁺ / K⁺</dt><dd>Sodium / potassium ions</dd>
-  </dl>
-</figcaption>
-```
+**10-point spec (image-planner)**
+
+| | |
+|---|---|
+| IMAGE TYPE | Inline |
+| PRIMARY VISUAL STYLE | MINIMAL_MEDICAL_3D |
+| SUBJECT | Aldosterone and sodium excess driving resistant hypertension, with drug sites of action |
+| COMPOSITION | Organ panel → dashed principal-cell inset → pink / white / blue bottom flow |
+| BACKGROUND | White |
+| LIGHTING | Soft semi-3D, flat vector |
+| COLOR PALETTE | Muted clinical: gray-blue anatomy, yellow principal cell, red drivers, blue benefit |
+| MEDICAL DETAILS | ENaC + ROMK apical, Na⁺/K⁺-ATPase basolateral, MR intracellular; CYP11B2 inhibitors = investigational |
+| MOOD | Scientific, calm |
+| DIMENSIONS | 1792 × 1024 |
+
+**Live `alt` (in guide):** Mechanism schematic of aldosterone and sodium retention in the collecting duct driving resistant hypertension, with sites of drug action.
+
+**Live `fig-desc`:** Why volume and aldosterone drive resistant hypertension: aldosterone from the adrenal gland acts on the mineralocorticoid receptor in collecting-duct principal cells, increasing sodium reabsorption through ENaC and potassium secretion through the renal outer medullary potassium channel (ROMK). High salt intake, sleep apnea, and CKD add to the sodium and volume load. Spironolactone blocks the receptor, thiazide-like diuretics and salt restriction reduce the sodium load, and investigational aldosterone synthase inhibitors block aldosterone production upstream.
+
+**Live `fig-abbrevs`:** MR — Mineralocorticoid receptor · ENaC — Epithelial sodium channel · ROMK — Renal outer medullary potassium channel · CYP11B2 — Aldosterone synthase · OSA — Obstructive sleep apnea · CKD — Chronic kidney disease
 
 ```
 FILE NAME: difficult-to-control-hypertension-04-volume-aldosterone-mechanism.png
@@ -436,32 +662,31 @@ investigational. Labels medically precise and legible. © renalcarematters.com v
 
 ---
 
-## 6 · Consultation algorithm — persistently high BP (clinician)
+### 8 · Consultation algorithm
 
-**alt:** A vertical algorithm for persistently high blood pressure. Two early exits: urgent symptoms or acute organ injury route to the emergency department, and pregnancy or postpartum route to obstetric care. The main path then verifies measurement with home or ambulatory BP, reconciles the actual regimen and access, addresses contributors, screens for secondary causes, optimizes a RAS blocker plus a long-acting calcium channel blocker plus a thiazide-like diuretic, adds spironolactone if kidney function and potassium allow, and refers to a hypertension specialist or nephrology if BP remains uncontrolled.
-**fig-desc:** A stepwise consultation for BP that stays high. Emergencies and pregnancy leave the pathway first; then the true BP is confirmed out of the office, the real-world regimen is checked, contributors and secondary causes are addressed, and only then is therapy escalated — with spironolactone when kidney function and potassium allow, and specialist referral if control is still not reached.
-**fig-abbrevs:** BP — Blood pressure · HBPM — Home blood pressure monitoring · ABPM — Ambulatory blood pressure monitoring · NSAIDs — Nonsteroidal anti-inflammatory drugs · PA — Primary aldosteronism · OSA — Obstructive sleep apnea · CKD — Chronic kidney disease · RAS — Renin–angiotensin system · CCB — Calcium channel blocker · eGFR — Estimated glomerular filtration rate · K⁺ — Serum potassium · AHA/ACC — American Heart Association / American College of Cardiology · ESC — European Society of Cardiology
+**Placement:** `#md-optimize`, after the dosing-time paragraph · **Mode:** Clinicians · **Batch:** 2
+**Style:** ALGORITHM_FLOWCHART · **Skill:** williamriveromd-algorithm-generator-skill (Style Mode A, AHA)
 
-```html
-<figcaption>
-  <p class="fig-desc">A stepwise consultation for BP that stays high. Emergencies and pregnancy leave the pathway first; then the true BP is confirmed out of the office, the real-world regimen is checked, contributors and secondary causes are addressed, and only then is therapy escalated — with spironolactone when kidney function and potassium allow, and specialist referral if control is still not reached.</p>
-  <dl class="fig-abbrevs">
-    <dt>BP</dt><dd>Blood pressure</dd>
-    <dt>HBPM</dt><dd>Home blood pressure monitoring</dd>
-    <dt>ABPM</dt><dd>Ambulatory blood pressure monitoring (24-hour)</dd>
-    <dt>NSAIDs</dt><dd>Nonsteroidal anti-inflammatory drugs</dd>
-    <dt>PA</dt><dd>Primary aldosteronism</dd>
-    <dt>OSA</dt><dd>Obstructive sleep apnea</dd>
-    <dt>CKD</dt><dd>Chronic kidney disease</dd>
-    <dt>RAS</dt><dd>Renin–angiotensin system (ACE inhibitor or ARB)</dd>
-    <dt>CCB</dt><dd>Calcium channel blocker</dd>
-    <dt>eGFR</dt><dd>Estimated glomerular filtration rate</dd>
-    <dt>K⁺</dt><dd>Serum potassium</dd>
-    <dt>AHA/ACC</dt><dd>American Heart Association / American College of Cardiology</dd>
-    <dt>ESC</dt><dd>European Society of Cardiology</dd>
-  </dl>
-</figcaption>
-```
+**10-point spec (image-planner)**
+
+| | |
+|---|---|
+| IMAGE TYPE | Flowchart |
+| PRIMARY VISUAL STYLE | ALGORITHM_FLOWCHART |
+| SUBJECT | Stepwise consultation for persistently high BP |
+| COMPOSITION | Top-to-bottom, two early exits, dashed divider between verify/correct and treat/escalate |
+| BACKGROUND | White |
+| LIGHTING | Flat |
+| COLOR PALETTE | Peach assessment, pink diamonds, blue treatment, green verification, purple referral |
+| MEDICAL DETAILS | Exits before verification; spironolactone limits attributed (AHA/ACC eGFR ≥45; ESC eGFR ≥30, K⁺ ≤4.5) |
+| MOOD | Authoritative, uncluttered |
+| DIMENSIONS | 1152 × 1536 |
+
+**Live `alt` (in guide):** Clinical algorithm for evaluating and managing difficult-to-control hypertension, from urgent exits through measurement, regimen review, secondary causes, optimization, add-on therapy, and referral.
+
+**Live `fig-desc`:** Consultation algorithm: exclude urgent organ injury and pregnancy, confirm with out-of-office BP, reconcile the actual regimen and access, address contributors, screen for secondary causes, optimize the RAS blocker plus long-acting CCB plus thiazide-like diuretic, add spironolactone if kidney function and potassium allow under the named framework, and refer when control or safety remains uncertain &mdash; including for renal denervation (RDN) at expert centers.
+
+**Live `fig-abbrevs`:** HBPM — Home blood pressure monitoring · ABPM — Ambulatory blood pressure monitoring · PA — Primary aldosteronism · RAS — Renin&ndash;angiotensin system · CCB — Calcium-channel blocker · eGFR — Estimated glomerular filtration rate · K+ — Potassium · RDN — Renal denervation · NSAIDs — Nonsteroidal anti-inflammatory drugs · OSA — Obstructive sleep apnea · CKD — Chronic kidney disease · AHA/ACC — American Heart Association / American College of Cardiology · ESC — European Society of Cardiology
 
 ```
 FILE NAME: difficult-to-control-hypertension-05-consultation-algorithm.png
@@ -529,26 +754,31 @@ AHA/ACC and ESC exactly as written. © renalcarematters.com visible bottom-cente
 
 ---
 
-## 7 · Philippine medication ladder (clinician)
+### 9 · Philippine medication ladder
 
-**alt:** A rising staircase of blood pressure treatment steps. Level 0 fixes the reason first; Level 1 is an ACE inhibitor or ARB, never both, plus amlodipine; Level 2 adds a thiazide-like diuretic, with a CKD overlay for furosemide; Level 3 adds spironolactone, with eplerenone or amiloride as Level 3A if not tolerated; Level 4 adds bisoprolol or carvedilol; Level 5 is clonidine with a rebound caution; Level 6 is specialist care with doxazosin, hydralazine, minoxidil, renal denervation, and emerging agents.
-**fig-desc:** A practical, stepwise medicine ladder built for what is usually available in the Philippines. The first step is always fixing the reason BP is high; drugs are then added one level at a time, with a kidney-disease overlay for loop diuretics and a specialist tier for the last-line and emerging options. Generic names only; doses are set by your doctor.
-**fig-abbrevs:** BP — Blood pressure · ACE — Angiotensin-converting enzyme · ARB — Angiotensin II receptor blocker · SR — Sustained release · HCTZ — Hydrochlorothiazide · CKD — Chronic kidney disease · K⁺ — Serum potassium
+**Placement:** `#md-ladder`, after the hierarchy table · **Mode:** Clinicians · **Batch:** 2
+**Style:** ALGORITHM_FLOWCHART (treatment ladder) · **Skill:** williamriveromd-simple-figure (Scaffold C)
 
-```html
-<figcaption>
-  <p class="fig-desc">A practical, stepwise medicine ladder built for what is usually available in the Philippines. The first step is always fixing the reason BP is high; drugs are then added one level at a time, with a kidney-disease overlay for loop diuretics and a specialist tier for the last-line and emerging options. Generic names only; doses are set by your doctor.</p>
-  <dl class="fig-abbrevs">
-    <dt>BP</dt><dd>Blood pressure</dd>
-    <dt>ACE</dt><dd>Angiotensin-converting enzyme</dd>
-    <dt>ARB</dt><dd>Angiotensin II receptor blocker</dd>
-    <dt>SR</dt><dd>Sustained release</dd>
-    <dt>HCTZ</dt><dd>Hydrochlorothiazide</dd>
-    <dt>CKD</dt><dd>Chronic kidney disease</dd>
-    <dt>K⁺</dt><dd>Serum potassium</dd>
-  </dl>
-</figcaption>
-```
+**10-point spec (image-planner)**
+
+| | |
+|---|---|
+| IMAGE TYPE | Inline |
+| PRIMARY VISUAL STYLE | ALGORITHM_FLOWCHART |
+| SUBJECT | Stepwise resistant-hypertension medication ladder, Philippine availability |
+| COMPOSITION | Ascending 8-step staircase with CKD overlay tag and 3A side step |
+| BACKGROUND | White |
+| LIGHTING | Flat |
+| COLOR PALETTE | Green L0, teal L1–4, amber L3A/L5, purple L6 |
+| MEDICAL DETAILS | Generic names only, no doses; ACE inhibitor OR ARB; investigational items labeled |
+| MOOD | Practical, orderly |
+| DIMENSIONS | 1792 × 1024 |
+
+**Live `alt` (in guide):** Stepped ladder of resistant-hypertension medication levels using generic drugs obtainable in the Philippines.
+
+**Live `fig-desc`:** Philippine medication hierarchy for resistant hypertension, by generic name: fix the reason first, then one ACE inhibitor or ARB with amlodipine, then a thiazide-like diuretic such as indapamide SR (loop diuretic in advanced CKD or volume overload), then spironolactone, with alternatives, beta-blockers, clonidine, and specialist options as conditional later steps.
+
+**Live `fig-abbrevs`:** ACE — Angiotensin-converting enzyme · ARB — Angiotensin receptor blocker · SR — Sustained release · HCTZ — Hydrochlorothiazide · CKD — Chronic kidney disease · MRA — Mineralocorticoid-receptor antagonist · K+ — Potassium
 
 ```
 FILE NAME: difficult-to-control-hypertension-06-ph-medication-ladder.png
@@ -605,82 +835,27 @@ Investigational items labeled. renalcarematters.com visible bottom-right.
 
 ---
 
-## 8 · Filipino sodium swaps (patient)
+### 10 · OG / social share card
 
-**alt:** A food matrix pairing common high-sodium Filipino items — patis, toyo, bagoong, seasoning cubes, instant noodles, tuyo and daing, and processed meats such as hotdog, longganisa, and corned beef — with lower-sodium swaps such as calamansi, garlic, onion, ginger, fresh fish and vegetables, using half the noodle seasoning packet, and rinsing canned goods. A goal bar shows the WHO adult limit of less than 2,000 mg sodium a day, about 5 g of salt or 1 teaspoon, and a caution panel advises people with kidney disease to ask before using potassium-based salt substitutes.
-**fig-desc:** Most of the salt Filipinos eat comes from condiments, dried fish, instant noodles, and processed meats rather than the salt shaker. Each high-salt item is paired with an easy swap. The daily goal for adults is less than 2,000 mg of sodium from all sources — about one teaspoon of salt in total. If you have kidney disease, ask your doctor before using a "lite" or potassium-based salt substitute.
-**fig-abbrevs:** WHO — World Health Organization · mg — milligrams · g — grams
+**Placement:** `og:image` + `twitter:image` meta (not placed in the body) · **Mode:** Mixed · **Batch:** 2
+**Style:** EDITORIAL_PHOTO + title · **Skill:** williamriveromd-infographic-skill (Archetype 1, OG)
 
-```html
-<figcaption>
-  <p class="fig-desc">Most of the salt Filipinos eat comes from condiments, dried fish, instant noodles, and processed meats rather than the salt shaker. Each high-salt item is paired with an easy swap. The daily goal for adults is less than 2,000 mg of sodium from all sources — about one teaspoon of salt in total. If you have kidney disease, ask your doctor before using a "lite" or potassium-based salt substitute.</p>
-  <dl class="fig-abbrevs">
-    <dt>WHO</dt><dd>World Health Organization</dd>
-    <dt>mg</dt><dd>Milligrams</dd>
-    <dt>g</dt><dd>Grams</dd>
-  </dl>
-</figcaption>
-```
+**10-point spec (image-planner)**
 
-```
-FILE NAME: difficult-to-control-hypertension-07-filipino-sodium-swaps.png
-IMAGE TYPE: Food matrix / nutrition infographic (Archetype 6) — "instead of → try" swap grid
-ASPECT RATIO: 4:3
-PIXEL DIMENSIONS: 1536 × 1152
-AUDIENCE: patients and families
-VISUAL GOAL: Make hidden Filipino sodium sources recognizable and each one paired with a realistic, tasty swap.
+| | |
+|---|---|
+| IMAGE TYPE | Hero (social) |
+| PRIMARY VISUAL STYLE | EDITORIAL_PHOTO |
+| SUBJECT | Home BP scene with the guide title |
+| COMPOSITION | Left ~52% photo fading to white, right ~48% title panel, 48 px safe margins |
+| BACKGROUND | White / off-white |
+| LIGHTING | Soft daylight |
+| COLOR PALETTE | Navy title, teal subtitle and accent rule |
+| MEDICAL DETAILS | Correct posture; no readable monitor digits |
+| MOOD | Hopeful, credible |
+| DIMENSIONS | 1200 × 630 |
 
-PROMPT:
-CKD and hypertension nutrition infographic, clean educational food matrix, 4:3 landscape, 1536×1152, WHITE
-(#ffffff) background. All text in Inter (bold headings) and Nunito Sans (body), navy #0f1e2e.
-
-Title at top in bold Inter navy: "Cut the hidden salt — Filipino swaps". Subtitle in teal #1a6b72: "Flavor stays.
-Sodium goes down."
-
-GOAL BAR directly under the title, a soft pale-teal rounded band with a simple teaspoon icon: "Adult goal (WHO):
-less than 2,000 mg sodium a day ≈ 5 g salt ≈ 1 teaspoon — from ALL food and condiments combined."
-
-MAIN GRID: two columns joined by small green right-arrows. Left column header in amber #b8860b "Instead of…",
-right column header in renal green #1f7a4d "Try…". Seven rows, each with realistic, appetizing small food
-renders (generic, NO brand logos or readable labels):
-1) Patis (fish sauce bottle) → calamansi squeeze, garlic, and a little patis only at the table, not in the pot.
-2) Toyo (soy sauce bottle) → calamansi, garlic, onion, and a splash of vinegar.
-3) Bagoong (small jar) → a small side portion shared, with fresh green mango or vegetables.
-4) Seasoning cubes / powdered seasoning → garlic, onion, ginger, tanglad (lemongrass), and black pepper.
-5) Instant noodles (generic cup and pack) → cook with HALF the seasoning packet and add fresh vegetables and egg.
-6) Tuyo and daing (dried salted fish) → fresh fish — grilled, steamed, or sinigang with plenty of vegetables.
-7) Processed meats — hotdog, longganisa, corned beef (can) → fresh chicken or pork; if using canned goods,
-   rinse and drain them first.
-Show NO sodium numbers on any individual food item.
-
-CAUTION PANEL at bottom-right, pale amber rounded box with a small kidney icon and amber accent: "Kidney disease?
-Ask your doctor before using 'lite' or potassium-based salt substitutes — they can raise potassium."
-
-FOOTER strip, soft gray, navy text: "Taste food before salting · read labels · keep condiments off the table."
-Rounded category cards, generous whitespace, mobile-readable labels. Small semi-transparent navy
-"renalcarematters.com" attribution in the bottom-right corner.
-
-NEGATIVE INSTRUCTIONS:
-Avoid cartoon style, avoid clutter, avoid tiny unreadable labels, avoid AI gibberish text, avoid overprocessed
-HDR, avoid generic stock-photo look, avoid excessive saturation. NEVER use dark, navy, charcoal, or black
-backgrounds — light backgrounds only. Use ONLY the sans-serif fonts Inter, Nunito Sans, IBM Plex Sans, or
-Manrope — no other fonts, no serif fonts, no decorative or handwritten typefaces. No brand names or readable
-packaging, no per-food sodium milligram values, no shaming words ("bad food," "forbidden"). Never omit the
-renalcarematters.com attribution.
-
-QUALITY CHECK:
-4:3, 1536×1152, white background. Seven instead-of → try rows with Filipino items spelled correctly (patis, toyo,
-bagoong, tuyo, daing, longganisa, calamansi, tanglad). The only number is the WHO goal. Potassium-substitute
-caution present. Mobile-readable. renalcarematters.com visible bottom-right.
-```
-
----
-
-## 9 · OG / social share card
-
-**alt:** Social share card for "When Blood Pressure Stays High": a Filipino woman measuring her blood pressure at home with an upper-arm cuff on the left, and the title with the subtitle "Difficult-to-control & resistant hypertension · A guide for Filipino patients and clinicians" on the right.
-**fig-desc:** *(OG card — not placed in a figure; no figcaption)*
-**fig-abbrevs:** none
+**Meta already in guide:** `og:image` → `https://renalcarematters.com/images/difficult-to-control-hypertension-og.png`, `og:image:width` 1200, `og:image:height` 630.
 
 ```
 FILE NAME: difficult-to-control-hypertension-og.png
@@ -728,13 +903,48 @@ visible bottom-right. Pair with og:image:width="1200" og:image:height="630".
 
 ---
 
-## Final checklist before wiring
-1. Every file saved as `.png` + `.webp` under `images/` with the exact names above.
-2. Every in-body figure's `<img>` carries the `alt` above, the stated `width`/`height`, and a `<figcaption>` with
-   `p.fig-desc` + `dl.fig-abbrevs` (rule 11); every acronym in the figure also appears in the guide's Glossary
-   (rule 12).
-3. Spot-check each generated image for: American spelling, correct Filipino food names, no brand names, no doses,
-   ACE inhibitor OR ARB (never both), investigational labels intact, correct ENaC/ROMK/pump sidedness, and the
-   renalcarematters.com attribution.
-4. Re-run `patch_hero_fetchpriority.py`, `patch_hero_fullwidth.py`, `patch_hero_maxwidth.py`, and
-   `patch_image_lightbox.py` on `guides/difficult-to-control-hypertension.html`.
+## Part C — Production pipeline
+
+### C1. Run order in the GPT (patients see these first)
+- **Batch 1 (patient view):** 1 hero → 2 six reasons → 3 home technique → 4 urgent card → 5 sodium swaps
+- **Batch 2 (clinician view + social):** 6 funnel → 7 mechanism → 8 algorithm → 9 medication ladder → 10 OG card
+
+One prompt per GPT turn. If a render garbles text, reply in the same thread with a targeted fix ("re-render with the
+label exactly: …") instead of starting over, so the layout is kept. If you move to the `/generate-image` API later,
+keep to 5 requests per minute (the planner's rate limit).
+
+### C2. Save, convert, and check sizes
+Save each download under `images/` with the exact file name. Then, from the repo root:
+
+```bash
+cd images && for f in difficult-to-control-hypertension-*.png; do cwebp -quiet -q 82 "$f" -o "${f%.png}.webp"; sips -g pixelWidth -g pixelHeight "$f" | tail -2 | tr '\n' ' '; echo " $f"; done
+```
+
+If a PNG's pixel size differs from the table in A2 (the GPT sometimes returns 1536×1024 or 1024×1536), keep the
+image and update that figure's `width`/`height` attributes in the guide to the real size. Do not stretch it. The OG
+card is the exception: it must be exactly 1200 × 630, so crop or pad it to that size.
+
+### C3. Wire and verify
+All 10 slots are already in the guide HTML with their `alt`, `fig-desc`, and `fig-abbrevs`. After uploading:
+
+```bash
+python3 patch_hero_fetchpriority.py --guide difficult-to-control-hypertension.html
+python3 patch_hero_fullwidth.py --guide difficult-to-control-hypertension.html
+python3 patch_hero_maxwidth.py --guide difficult-to-control-hypertension.html
+python3 patch_image_lightbox.py --guide difficult-to-control-hypertension.html
+python3 audit_acronym_expansion.py --guide difficult-to-control-hypertension.html
+```
+
+For the Stage 2 manifest and folder layout, run the `williamriveromd-local-image-generator` skill on this file.
+
+### C4. Per-image QA before upload
+- [ ] Text spelled exactly as in the prompt (patis, toyo, bagoong, tuyo, daing, longganisa, calamansi, tanglad; every generic drug name)
+- [ ] American spelling on every label
+- [ ] No brand names, doses, or readable monitor digits
+- [ ] ACE inhibitor OR ARB only; investigational labels intact
+- [ ] ENaC and ROMK apical, Na⁺/K⁺-ATPase basolateral (mechanism)
+- [ ] Emergency and pregnancy exits before verification (algorithm)
+- [ ] "GO NOW" / "CALL TODAY" carry text labels and icons, not color alone (urgent card)
+- [ ] Light background; approved fonts; attribution present (except the hero)
+- [ ] Every acronym on the image appears in that figure's `fig-abbrevs` and in the guide Glossary
+- [ ] Hero circle not cropped; title-safe zone empty
