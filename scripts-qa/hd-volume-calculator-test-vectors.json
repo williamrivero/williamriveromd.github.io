@@ -1,0 +1,218 @@
+{
+  "version": "1.0-design",
+  "absoluteTolerance": 1e-09,
+  "assertionsNotImplementationTestResults": true,
+  "cases": [
+    {
+      "id": "ufr-basic",
+      "calculator": "ufr",
+      "inputs": {
+        "ufVolumeMl": 3000,
+        "treatmentMinutes": 240,
+        "postWeightKg": 70
+      },
+      "expected": {
+        "mlPerHour": 750,
+        "mlPerKgPerHour": 10.714285714285714
+      }
+    },
+    {
+      "id": "ufr-high",
+      "calculator": "ufr",
+      "inputs": {
+        "ufVolumeMl": 4000,
+        "treatmentMinutes": 240,
+        "postWeightKg": 60
+      },
+      "expected": {
+        "mlPerHour": 1000,
+        "mlPerKgPerHour": 16.666666666666668
+      }
+    },
+    {
+      "id": "ufr-zero",
+      "calculator": "ufr",
+      "inputs": {
+        "ufVolumeMl": 0,
+        "treatmentMinutes": 240,
+        "postWeightKg": 70
+      },
+      "expected": {
+        "mlPerHour": 0,
+        "mlPerKgPerHour": 0
+      },
+      "requiredMessage": "No inference about dialysis adequacy or safety"
+    },
+    {
+      "id": "ufr-13",
+      "calculator": "ufr",
+      "inputs": {
+        "ufVolumeMl": 3640,
+        "treatmentMinutes": 240,
+        "postWeightKg": 70
+      },
+      "expected": {
+        "mlPerHour": 910,
+        "mlPerKgPerHour": 13
+      },
+      "requiredMessage": "No universally safe threshold"
+    },
+    {
+      "id": "ufr-round-below",
+      "calculator": "ufr",
+      "inputs": {
+        "ufVolumeMl": 3639.72,
+        "treatmentMinutes": 240,
+        "postWeightKg": 70
+      },
+      "expected": {
+        "mlPerKgPerHour": 12.999
+      },
+      "requiredMessage": "Compare unrounded value; no safety verdict"
+    },
+    {
+      "id": "ufr-round-above",
+      "calculator": "ufr",
+      "inputs": {
+        "ufVolumeMl": 3640.28,
+        "treatmentMinutes": 240,
+        "postWeightKg": 70
+      },
+      "expected": {
+        "mlPerKgPerHour": 13.001
+      },
+      "requiredMessage": "Compare unrounded value; no safety verdict"
+    },
+    {
+      "id": "ufr-zero-time",
+      "calculator": "ufr",
+      "inputs": {
+        "ufVolumeMl": 3000,
+        "treatmentMinutes": 0,
+        "postWeightKg": 70
+      },
+      "error": "NONPOSITIVE_DURATION"
+    },
+    {
+      "id": "ufr-zero-weight",
+      "calculator": "ufr",
+      "inputs": {
+        "ufVolumeMl": 3000,
+        "treatmentMinutes": 240,
+        "postWeightKg": 0
+      },
+      "error": "NONPOSITIVE_WEIGHT"
+    },
+    {
+      "id": "ufr-negative-uf",
+      "calculator": "ufr",
+      "inputs": {
+        "ufVolumeMl": -100,
+        "treatmentMinutes": 240,
+        "postWeightKg": 70
+      },
+      "error": "NEGATIVE_VOLUME"
+    },
+    {
+      "id": "ufr-missing-weight",
+      "calculator": "ufr",
+      "inputs": {
+        "ufVolumeMl": 3000,
+        "treatmentMinutes": 240,
+        "postWeightKg": null
+      },
+      "error": "MISSING_WEIGHT"
+    },
+    {
+      "id": "time-basic",
+      "calculator": "timeComparison",
+      "inputs": {
+        "ufVolumeMl": 3000,
+        "weightKg": 70,
+        "comparisonRate": 10
+      },
+      "expected": {
+        "hours": 4.285714285714286,
+        "minutes": 257.14285714285717
+      }
+    },
+    {
+      "id": "time-zero-rate",
+      "calculator": "timeComparison",
+      "inputs": {
+        "ufVolumeMl": 3000,
+        "weightKg": 70,
+        "comparisonRate": 0
+      },
+      "error": "NONPOSITIVE_COMPARISON_RATE"
+    },
+    {
+      "id": "idwg",
+      "calculator": "idwg",
+      "inputs": {
+        "preWeightKg": 72.5,
+        "previousActualPostWeightKg": 70,
+        "targetWeightKg": 69.5
+      },
+      "expected": {
+        "idwgKg": 2.5,
+        "idwgPercent": 3.5714285714285716,
+        "preTargetDeviationKg": 3
+      }
+    },
+    {
+      "id": "idwg-negative",
+      "calculator": "idwg",
+      "inputs": {
+        "preWeightKg": 69,
+        "previousActualPostWeightKg": 70
+      },
+      "expected": {
+        "idwgKg": -1,
+        "idwgPercent": -1.4285714285714286
+      },
+      "requiredMessage": "Review context; no replacement-fluid order"
+    },
+    {
+      "id": "balance",
+      "calculator": "plannedBalance",
+      "inputs": {
+        "preWeightKg": 73,
+        "intendedPostWeightKg": 70,
+        "inputsMl": 500,
+        "nonUfOutputsMl": 200
+      },
+      "expected": {
+        "desiredNetLossMl": 3000,
+        "estimatedMachineUfMl": 3300,
+        "predictedPostWeightKg": 70
+      }
+    },
+    {
+      "id": "balance-negative",
+      "calculator": "plannedBalance",
+      "inputs": {
+        "preWeightKg": 69.5,
+        "intendedPostWeightKg": 70,
+        "inputsMl": 100,
+        "nonUfOutputsMl": 0
+      },
+      "expected": {
+        "desiredNetLossMl": -500,
+        "estimatedMachineUfMl": -400,
+        "predictedPostWeightKg": 70
+      },
+      "requiredMessage": "Signed balance only; no replacement-fluid recommendation"
+    }
+  ],
+  "additionalRequiredTests": [
+    "nonfinite_runtime_values",
+    "invalid_unit_string",
+    "empty_input_not_zero",
+    "liters_to_ml_equivalence",
+    "planned_delivered_label_integrity",
+    "no_persistence_or_network",
+    "no_duplicate_fluid_items",
+    "postweight_basis_visible"
+  ]
+}
