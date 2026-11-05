@@ -1787,6 +1787,7 @@ html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
 html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </style>
 <script src="../assets/ckd-anemia-2026.js"></script>
+<link rel="stylesheet" href="../assets/ckd-anemia-2026.css">
 </head>
 <body class="calc-page">
 <header class="site-header">
@@ -1808,10 +1809,10 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <div class="container">
 <div class="hero-tag">Nephrology · Clinical Calculator · Iron &amp; Anemia</div>
 <h1>Iron Deficit &amp; IV Iron Dose <em>Ganzoni Equation</em></h1>
-<p class="hero-sub">Enter body weight and hemoglobin values to calculate the total iron deficit using the Ganzoni formula and estimate the number of IV iron sucrose (Ferrofer) infusion sessions required to reach the KDIGO hemoglobin target in CKD and dialysis patients.</p>
+<p class="hero-sub">Estimate an adult iron deficit from weight, a clinician-selected hemoglobin assumption, and a storage allowance. Review iron-treatment eligibility and formulation limits separately; this estimate is not a prescription.</p>
 <div class="hero-meta">
 <span class="hero-published"><strong>Published:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
-<span class="hero-refcount"><strong>References:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">4</span></span>
+<span class="hero-refcount"><strong>References:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2</span></span>
 <span class="hero-readtime"><strong>Read time:</strong> <time datetime="PT7M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~7 min</time></span>
 </div>
 <p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="understanding-iron.html" class="hero-xlink">Full iron &amp; anemia guide →</a></p>
@@ -1870,7 +1871,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
     <div class="calc-field">
       <label id="iron-lbl-target">Target Hemoglobin (g/dL)</label>
       <input id="ir-target" type="number" min="8" max="14" step="0.1" placeholder="e.g. 11.0" oninput="calcIron()">
-      <div class="field-hint" id="iron-hint-target">CKD/dialysis target: 10–&lt;11.5 g/dL. Non-dialysis CKD: individualized; below 11.5 g/dL on ESA</div>
+      <div class="field-hint" id="iron-hint-target">Clinician-selected calculation assumption; adult ESA goal below 11.5 g/dL</div>
     </div>
     <div class="calc-field">
       <label>Route of Iron Replacement</label>
@@ -1902,7 +1903,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
     <div class="calc-verdict-text" id="ir-verdict"></div>
     <div class="calc-action-text" id="ir-action"></div>
   </div>
-  <p class="calc-disclaimer">⚕ Ganzoni formula: Iron deficit (mg) = Weight (kg) × (Target Hgb − Actual Hgb) × 2.4 + 500 (depot iron). Depot iron 500 mg is standard for replenishment; omit for maintenance dosing. IV iron sucrose (Ferrofer): standard infusion 100–200 mg per session. This is a dosing guide — actual prescribing requires physician authorization and consideration of ferritin, TSAT, and clinical status.</p>
+  <p class="calc-disclaimer">Ganzoni estimate (mg) = weight (kg) × Hb gap (g/dL) × 2.4 + the selected storage allowance (mg). With Hb in g/L, use 0.24 instead. A 500-mg storage allowance is a common adult estimate; individualize it for body size and prior replacement. This is a deficit estimate, not an automatic repletion or maintenance prescription.</p>
 </div>
 </section>
 
@@ -2052,7 +2053,7 @@ function switchIronUnit(u) {
     document.getElementById('iron-hint-hgb').textContent = 'Current Hgb from CBC. Example: 85 g/L = 8.5 g/dL';
     document.getElementById('iron-lbl-target').textContent = 'Target Hemoglobin (g/L)';
     tgt.placeholder = 'e.g. 110'; tgt.min = '80'; tgt.max = '140'; tgt.step = '1';
-    document.getElementById('iron-hint-target').textContent = 'CKD/dialysis target: 100–115 g/L. Non-dialysis CKD: individualized; below 115 g/L on ESA';
+    document.getElementById('iron-hint-target').textContent = 'Clinician-selected calculation assumption; adult ESA goal below 115 g/L';
     document.getElementById('iron-lbl-wt').textContent = 'Body Weight (kg)';
     wt.placeholder = 'e.g. 58'; wt.min = '20'; wt.max = '200'; wt.step = '0.1';
     document.getElementById('iron-hint-wt').textContent = 'Actual body weight in kg';
@@ -2062,7 +2063,7 @@ function switchIronUnit(u) {
     document.getElementById('iron-hint-hgb').textContent = 'Current Hgb from CBC. Normal: 12–16 g/dL (F), 13.5–17.5 g/dL (M)';
     document.getElementById('iron-lbl-target').textContent = 'Target Hemoglobin (g/dL)';
     tgt.placeholder = 'e.g. 11.0'; tgt.min = '8'; tgt.max = '14'; tgt.step = '0.1';
-    document.getElementById('iron-hint-target').textContent = 'CKD/dialysis target: 10–&lt;11.5 g/dL. Non-dialysis CKD: individualized; below 11.5 g/dL on ESA';
+    document.getElementById('iron-hint-target').textContent = 'Clinician-selected calculation assumption; adult ESA goal below 11.5 g/dL';
     document.getElementById('iron-lbl-wt').textContent = 'Body Weight (kg)';
     wt.placeholder = 'e.g. 58'; wt.min = '20'; wt.max = '200'; wt.step = '0.1';
     document.getElementById('iron-hint-wt').textContent = 'Actual body weight in kg. Use dry weight for dialysis patients';

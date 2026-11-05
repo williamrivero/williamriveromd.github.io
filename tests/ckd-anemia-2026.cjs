@@ -36,7 +36,7 @@ function ui(page,fn,values,read,si=false){
 for(const page of ['calc-iron-deficit-ganzoni','understanding-iron'])for(const si of [false,true])eq(ui(page,'calcIron',{'ir-wt':60,'ir-hgb':si?80:8,'ir-target':si?110:11,'ir-stores':500,'ir-route':'iv'},['ir-deficit-val','ir-sessions-val'],si),[932,10]);
 for(const page of ['calc-esa-dose-adjustment','esa-dose-cancer-risk']){
  eq(ui(page,'calcESA',{'esa-agent':'epoetin','esa-hgb':11.5,'esa-delta':0,'esa-dose':6000,'esa-weeks':4},['esa-action-val']),['REDUCE / REVIEW']);
- eq(ui(page,'calcESAInit',{'init-agent':'epoetin','init-hgb':9.5,'init-weight':60,'init-setting':'nd'},['init-decision-val']),['INDIVIDUALIZE']);
+ eq(ui(page,'calcESAInit',{'init-agent':'epoetin','init-hgb':9.5,'init-weight':60,'init-setting':'nondialysis'},['init-decision-val']),['INDIVIDUALIZE']);
 }
 for(const page of ['anemia-management','calc-iron-status-tsat','esa-dose-cancer-risk'])eq(ui(page,'calcAnemia',{'a-dialysis':'ckd','a-si':70,'a-tibc':200,'a-ferritin':80},['a-type-val']),['CONSIDER IRON']);
 eq(ui('calc-iv-iron-dose','calcIVIron',{'iron-setting':'nd','iron-tsat':35,'iron-ferritin':80},['iron-decision-val']),['CONSIDER IRON']);
