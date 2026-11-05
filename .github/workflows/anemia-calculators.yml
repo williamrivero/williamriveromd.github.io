@@ -1,0 +1,24 @@
+name: CKD anemia calculator regression checks
+on:
+  push:
+    paths:
+      - 'assets/ckd-anemia-2026.js'
+      - 'guides/**'
+      - 'tests/ckd-anemia-2026.cjs'
+      - '.github/workflows/anemia-calculators.yml'
+  pull_request:
+    paths:
+      - 'assets/ckd-anemia-2026.js'
+      - 'guides/**'
+      - 'tests/ckd-anemia-2026.cjs'
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node tests/ckd-anemia-2026.cjs

@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="William Gregory M. Rivero, MD"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2026-06-23T04:42:42+08:00">
-<meta property="article:modified_time" content="2026-05-01T00:00:00+08:00">
+<meta property="article:modified_time" content="2026-11-06T12:00:00+08:00">
 <meta property="og:url" content="https://renalcarematters.com/guides/lab-interpreter-guide.html"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Lab Results Interpreter — W Rivero, MD"/>
@@ -2155,7 +2155,7 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
     "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
     "url": "https://renalcarematters.com/"
   },
-  "dateModified": "2026-05-01",
+  "dateModified": "2026-11-06",
   "datePublished": "2026-06-23",
   "inLanguage": "en-PH",
   "audience": {
@@ -2183,6 +2183,7 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
   }
 })();
 </script>
+<script src="../assets/ckd-anemia-2026.js"></script>
 </head>
 
 <body>
@@ -2237,7 +2238,7 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
   </div>
 </nav>
 
-<main class="container">
+<main class="container"><p id="kdigo-anemia-review" class="calc-disclaimer">CKD anemia content reviewed November 6, 2026 against KDIGO 2026. <a href="anemia-management.html#clin-kdigo">Population-specific reference</a>.</p>
 
 <!-- ═══════════════════════════════════════════════════════════════
      SECTION 1 — HOW TO USE
@@ -2346,12 +2347,12 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
     <tr>
       <td>Hemoglobin 110 g/L</td>
       <td class="tc-amber">Watch — mild anemia, investigate</td>
-      <td class="tc-green">At Goal — within KDIGO HD target 100–115</td>
+      <td class="tc-green">Anemia by adult diagnostic criteria; assess treatment context</td>
     </tr>
     <tr>
       <td>Ferritin 350 ng/mL</td>
       <td class="tc-amber">Watch — elevated, likely inflammatory</td>
-      <td class="tc-green">At Goal — within KDIGO dialysis target</td>
+      <td class="tc-green">Interpret with TSAT and current iron treatment</td>
     </tr>
     <tr>
       <td>LDL-C 65 mg/dL</td>
@@ -2481,7 +2482,7 @@ html[data-theme="dark"] .upload-zone-text strong{color:#dde3eb;}
   <div class="unit-desc" id="unit-desc">mg/dL for glucose, cholesterol, creatinine · g/dL for albumin · g/L for Hgb · µIU/mL for insulin</div>
 
   <hr class="settings-divider"/>
-  <div class="settings-section-label">Clinical Context <span style="font-weight:400;color:var(--text-muted);font-size:11px;">— refines KDIGO targets</span></div>
+  <p><label for="ctx-esa">Currently receiving an ESA?</label><select class="ctx-input" id="ctx-esa" onchange="STATE.onESA=this.value;reinterpAll()"><option value="unknown">Not specified</option><option value="yes">Yes</option><option value="no">No</option></select></p><div class="settings-section-label">Clinical Context <span style="font-weight:400;color:var(--text-muted);font-size:11px;">— refines KDIGO targets</span></div>
   <div class="ctx-grid">
     <div>
       <span class="ctx-label">Diagnosis</span>
@@ -2997,19 +2998,13 @@ function interpKey(key) {
     bun: v<=20?['NORMAL','Normal']:v<=30?['WATCH','Mildly elevated — assess hydration/protein']:['FLAG','Elevated — assess for uremia'],
     uacr: v<30?['NORMAL','A1 — no significant albuminuria']:v<=300?['WATCH','A2 microalbuminuria — optimize RAAS blockade']:['FLAG','A3 macroalbuminuria — active kidney damage'],
     upcr: v<0.2?['NORMAL','Normal']:v<=0.5?['WATCH','Borderline — confirm with UACR']:v<=3.5?['FLAG','Significant proteinuria']:['FLAG','Nephrotic-range (>3.5 g/g)'],
-    hgb: hd ? (v>=100&&v<=115?['NORMAL','KDIGO HD target 100–115 g/L']:v<100?['FLAG','Below KDIGO target — review ESA/iron']:['WATCH','Above KDIGO target (>115 g/L) — reduce ESA dose; HTN/thrombosis risk'])
-            : hasCKD
-              ? (v>=100&&v<=130?['NORMAL','Within CKD non-dialysis acceptable range (100–130 g/L)']:v<100?['FLAG','Below KDIGO initiation threshold (<100 g/L) — consider ESA if symptomatic']:v>130?['WATCH','Above 130 g/L — assess for polycythemia or over-treatment']:['WATCH','Borderline — monitor trend'])
-              : (f ? (v>=120?['NORMAL','Normal']:v>=100?['WATCH','Mild anemia']:['FLAG','Significant anemia'])
-                   : (v>=130?['NORMAL','Normal']:v>=100?['WATCH','Mild anemia']:['FLAG','Significant anemia'])),
+    hgb: (function(){var r=CKDAnemia2026.lab({key:'hgb',value:v,sex:STATE.sex,age:parseFloat(document.getElementById('ctx-age').value),onESA:STATE.onESA==='yes'});return [r.status,r.note];})(),
     hct: f?(v>=36&&v<=46?['NORMAL','Normal']:['WATCH','Outside normal range']):(v>=40&&v<=50?['NORMAL','Normal']:['WATCH','Outside normal range']),
     mcv: v>=80&&v<=100?['NORMAL','Normocytic']:v<80?['WATCH','Microcytic — IDA or thalassemia']:['WATCH','Macrocytic — B12/folate or medication'],
     rdw: v<=14.5?['NORMAL','Normal — homogeneous RBC population']:['WATCH','Elevated — favors IDA over thalassemia trait'],
     rbc: f?(v>=4.2&&v<=5.4?['NORMAL','Normal']:['WATCH','Outside normal range']):(v>=4.7&&v<=6.1?['NORMAL','Normal']:['WATCH','Outside normal range']),
-    ferritin: hd?(v>=200&&v<=500?['NORMAL','KDIGO target 200–500 ng/mL']:v<200?['FLAG','Iron depleted — IV iron indicated']:['WATCH','High — inflammation? Check TSAT'])
-               :(v>=12&&v<=300?['NORMAL','Normal']:v<12?['FLAG','Iron deficiency']:['WATCH','Elevated — likely inflammatory']),
-    tsat: hd?(v>=30?['NORMAL','KDIGO target >30%']:v>=20?['WATCH','Borderline']:['FLAG','Functional iron deficiency — IV iron per KDIGO'])
-            :(v>=20?['NORMAL','Normal']:['WATCH','Reduced — iron-restricted erythropoiesis']),
+    ferritin: (function(){var r=CKDAnemia2026.lab({key:'ferritin',value:v,age:parseFloat(document.getElementById('ctx-age').value),setting:hd?'hd':diag==='eskd-pd'?'pd':diag==='transplant'?'transplant':'nd',tsat:toConv('tsat',STATE.fields.tsat)});return [r.status,r.note];})(),
+    tsat: (function(){var r=CKDAnemia2026.lab({key:'tsat',value:v,age:parseFloat(document.getElementById('ctx-age').value),setting:hd?'hd':diag==='eskd-pd'?'pd':diag==='transplant'?'transplant':'nd',ferritin:toConv('ferritin',STATE.fields.ferritin)});return [r.status,r.note];})(),
     reticulocyte: v>=0.5&&v<=2.5?['NORMAL','Normal marrow response']:v<0.5?['FLAG','Hypoproliferative — ESA resistance or marrow suppression']:['WATCH','Elevated — blood loss or recovery'],
     wbc: v>=4.5&&v<=11?['NORMAL','Normal']:v<3?['FLAG','Leukopenia — review meds/marrow']:v<=15?['WATCH','Mildly elevated — infection/inflammation']:['FLAG','Significantly elevated — active infection likely'],
     platelets: v>=150&&v<=400?['NORMAL','Normal']:v<100?['FLAG','Thrombocytopenia — bleeding risk']:v<150?['WATCH','Borderline low']:v<=600?['WATCH','Mildly elevated — reactive']:['FLAG','Thrombocytosis — evaluate'],
@@ -3202,15 +3197,10 @@ function calcDerived() {
       note:crc>=2?'Adequate marrow response to anemia':'Hypoproliferative — marrow not responding; ESA resistance, B12/folate, or marrow disorder?'});
   }
 
-  // Iron Status Pattern
+  // Iron treatment eligibility is population-specific, not an isolated normal range.
   if (hasConv('ferritin','tsat')) {
-    var fer=getConv('ferritin'), ts=getConv('tsat');
-    var pattern='', ps='NORMAL';
-    if(fer<200&&ts<20){pattern='Absolute iron deficiency (low ferritin + low TSAT)';ps='FLAG';}
-    else if(fer>=200&&ts<20){pattern='Functional iron deficiency (stores adequate but TSAT low) — IV iron trial per KDIGO';ps='WATCH';}
-    else if(fer>=200&&ts>=30){pattern='Iron replete — adequate for erythropoiesis';ps='NORMAL';}
-    else{pattern='Borderline iron status — monitor closely';ps='WATCH';}
-    res.push({domain:'Anemia Differential', label:'Iron Status Pattern (Ferritin + TSAT)', value:'', unit:'', status:ps, note:pattern});
+    var ironRule=CKDAnemia2026.lab({key:'ferritin',value:getConv('ferritin'),age:parseFloat(document.getElementById('ctx-age').value),setting:hd?'hd':STATE.ckdDiag==='eskd-pd'?'pd':STATE.ckdDiag==='transplant'?'transplant':'nd',tsat:getConv('tsat')});
+    res.push({domain:'Anemia Differential',label:'Iron review (ferritin + TSAT)',value:'',unit:'',status:ironRule.status,note:ironRule.note+' Confirm anemia and infection status before treatment.'});
   }
 
   // AST:ALT
@@ -5324,9 +5314,9 @@ function handlePDFDrop(event) {
 <summary style="cursor:pointer;list-style:none;padding:15px 20px;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;color:var(--text);display:flex;align-items:center;gap:10px;">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;color:var(--teal);"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
 <span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>
-<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">5 sources</span>
+<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">6 sources</span>
 </summary>
-<ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);">
+<ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);"><li>Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group. (2026). KDIGO 2026 clinical practice guideline for the management of anemia in chronic kidney disease (CKD). <em>Kidney International</em>, <em>109</em>(1S), S1–S99. <a href="https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf">https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf</a></li>
 <li>KDIGO 2024</li>
 <li>ACC/AHA 2026 Dyslipidemia</li>
 <li>ADA 2025</li>
