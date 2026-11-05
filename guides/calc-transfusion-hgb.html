@@ -19,7 +19,7 @@
 <meta name="theme-color" content="#0f1e33">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2026-06-28T15:00:00+08:00">
-<meta property="article:modified_time" content="2026-06-28T00:00:00+08:00">
+<meta property="article:modified_time" content="2026-11-06T07:00:39+08:00">
 <meta property="og:site_name" content="William Gregory M. Rivero, MD">
 <meta property="og:title" content="Transfusion Hemoglobin Predictor — ΔHgb ↔ RBC Volume">
 <meta property="og:description" content="Predict the rise in hemoglobin from a planned RBC transfusion, or compute the volume of packed red cells (or whole blood) required to reach a target Hgb. Age-stratified, restrictive-threshold framing.">
@@ -1665,7 +1665,7 @@
     "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
     "url": "https://renalcarematters.com/"
   },
-  "dateModified": "2026-06-28",
+  "dateModified": "2026-11-06",
   "datePublished": "2026-06-28",
   "inLanguage": "en-PH",
   "audience": {
@@ -1714,6 +1714,7 @@ html[data-theme="dark"] .calc-action-text{color:var(--text-mid)!important;}
 html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
 html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </style>
+<link rel="stylesheet" href="../assets/ckd-anemia-2026.css">
 </head>
 <body class="calc-page">
 <header class="site-header">
@@ -1740,7 +1741,6 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <div class="hero-meta">
 <span class="hero-published"><strong>Published:</strong> <time datetime="2026-06-28T15:00:00+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 28, 2026</time></span>
 <span class="hero-refcount"><strong>References:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">4</span></span>
-<span class="hero-reviewed"><strong>Last Reviewed:</strong> <span style="display:inline-block;background:rgba(20,92,99,.18);border:1px solid rgba(20,92,99,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2026</span></span>
 <span class="hero-readtime"><strong>Read time:</strong> <time datetime="PT6M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~6 min read</time></span>
 </div>
 <p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="calc-eri.html" class="hero-xlink">ESA Resistance Index →</a> &nbsp;·&nbsp; <a href="calc-esa-dose-adjustment.html" class="hero-xlink">ESA dose adjustment →</a></p>
@@ -1756,7 +1756,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <a class="nav-pill" href="#evidence">Evidence</a>
 </div>
 </nav>
-<main class="container">
+<main class="container"><p id="kdigo-anemia-review" class="calc-disclaimer">CKD anemia content reviewed November 6, 2026 against KDIGO 2026. <a href="anemia-management.html#clin-kdigo">Population-specific reference</a>.</p>
 
 <div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
 <ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
@@ -1765,56 +1765,12 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <li>Select the <strong>blood product</strong> (PRBC Hct ≈ 60% / whole blood ≈ 38% / reconstituted ≈ 51%, or enter a custom donor Hct). Hgb of the unit is taken as Hct ÷ 3.</li>
 <li>Enter the <strong>volume to transfuse</strong> (Mode A) or the <strong>target Hgb</strong> (Mode B). Result updates as you type and is colour-coded by severity.</li>
 </ol>
-<p style="font-size:.92rem;color:var(--text-muted);">For CKD, MDS, thalassemia, and other chronic anemias, restrictive thresholds (Hgb 7 g/dL; 8 g/dL with cardiac disease/ACS) apply — over-transfusing suppresses native erythropoiesis and worsens iron overload. All computation runs in your browser; no values are stored or transmitted.</p>
+<p style="font-size:.92rem;color:var(--text-muted);">For chronic CKD anemia, use symptoms, signs, and the clinical setting to decide on transfusion. This volume predictor does not establish an indication. Acute coronary syndromes, active bleeding, and pediatric or disease-specific transfusion programs require their own protocols. All computation runs in your browser; no values are stored or transmitted.</p>
 </div>
 
-<details class="mdc-acc" id="when">
-<summary>When to Use</summary>
-<div class="mdc-acc-body">
-<p>Use this calculator when ordering or planning a packed-red-cell or whole-blood transfusion — either to <strong>predict the expected post-transfusion Hgb rise</strong> from a planned volume (e.g., a paediatric 10 mL/kg order, or one adult unit), or to <strong>back-calculate the volume required</strong> to reach a target Hgb. It is built around the conservation equation <em>ΔHgb × total blood volume = transfused volume × donor-product Hgb</em>, with age-stratified blood-volume per kg.</p>
-<div class="alert alert-teal">
-<div class="alert-icon">✅</div>
-<div class="alert-body">
-<h4>Appropriate population</h4>
-<p>Adults and children receiving RBC transfusion for chronic anemia (CKD/ESKD on dialysis, MDS, thalassemia, sickle cell), peri-procedural anemia, or symptomatic acute blood loss after volume resuscitation. Especially useful in <strong>paediatric dosing</strong> (10–15 mL/kg per episode), in patients with <strong>HF/CKD where volume overload risk</strong> dictates conservative single-episode dosing, and in <strong>chronic transfusion-dependent</strong> patients where the formulary unit dose drives iron-overload trajectory.</p>
-</div>
-</div>
-<div class="alert alert-amber">
-<div class="alert-icon">⚠️</div>
-<div class="alert-body">
-<h4>When NOT to rely on it</h4>
-<p>This is an <strong>estimate</strong> — donor unit Hct, plasma volume changes, ongoing blood loss, splenic sequestration, hemolysis, and intravascular dilution can all move the actual post-transfusion Hgb away from the predicted value. Do not use it as a substitute for a measured post-transfusion CBC. It does not address transfusion <em>indication</em>; for chronic anemia, restrictive thresholds (Hgb 7 g/dL; 8 g/dL with cardiac disease/ACS) should drive the decision to transfuse at all (see ERI and ESA-dose tools first for CKD anemia).</p>
-</div>
-</div>
-</div>
-</details>
+<details class="mdc-acc" id="when"><summary>When to use</summary><div class="mdc-acc-body"><p>For chronic anemia in CKD, base red-cell transfusion on symptoms and signs attributable to anemia and the individual balance of benefits and harms, rather than an arbitrary Hb threshold (practice point 4.4). Restrictive thresholds from other settings are context-specific and are not universal CKD orders.</p><p>Acute hemorrhage, unstable coronary disease, or urgent surgery may require rapid correction. Avoid transfusion when possible in transplant candidates to reduce allosensitization. Leukoreduction does not eliminate sensitization risk. When transfusion is appropriate, account for volume overload, potassium, iron burden, and reassess the response; stable patients are often managed one unit at a time under local protocols.</p><p class="calc-disclaimer">Source: <a href="https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf">KDIGO 2026 Anemia in CKD</a>, recommendations 2.1–2.4 and 3.2.1–3.3.1; practice points 2.2–2.8 and 3.4.1.2–3.4.3.5. Reviewed November 6, 2026. Apply clinical judgment and the locally approved product label.</p></div></details>
 
-<details class="mdc-acc" id="pearls">
-<summary>Pearls &amp; Pitfalls</summary>
-<div class="mdc-acc-body">
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Bedside rules of thumb</h4>
-<p><strong>1 unit of adult PRBC ≈ 1 g/dL rise</strong> in a typical 70-kg adult. <strong>10 mL/kg of PRBC ≈ 2–3 g/dL rise</strong> in a child. Donor-unit Hgb is taken as Hct ÷ 3 (PRBC ≈ 22 g/dL, whole blood ≈ 14 g/dL, reconstituted ≈ 17 g/dL). The calculator's verdict text shows the math <em>(volume × product Hgb ÷ total blood volume)</em> so you can audit it at the bedside.</p>
-</div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Iron and the chronically transfused</h4>
-<p>One adult PRBC unit delivers <strong>~200 mg of elemental iron</strong>. Patients on chronic transfusion (transfusion-dependent thalassemia, MDS, regularly transfused dialysis patients) accumulate iron predictably; pair every transfusion decision with a ferritin trend and consider chelation referral once ferritin trends &gt; 1000 ng/mL or after ~20 lifetime units. Over-transfusion in CKD also suppresses endogenous erythropoiesis and may worsen ESA hyporesponsiveness.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Donor-unit Hct is variable (typically 55–70% for PRBC, lower for additive-solution units, higher for older units) — always check the actual ordered unit's label volume. (2) Infuse over <strong>2–4 hours per unit</strong>; in CKD, HF, or the elderly, slow to 4 hours and consider <strong>IV furosemide 0.5–1 mg/kg</strong> between units if volume overload risk is high. (3) Post-transfusion Hgb is most reliable when drawn <strong>15 min to 1 hour after</strong> the unit finishes (steady-state). (4) The formula does not account for ongoing blood loss; if the patient is actively bleeding, the predicted rise will overshoot reality.</p>
-</div>
-</div>
-</div>
-</details>
+<details class="mdc-acc" id="pearls"><summary>CKD transfusion decisions</summary><div class="mdc-acc-body"><p>For chronic anemia in CKD, base red-cell transfusion on symptoms and signs attributable to anemia and the individual balance of benefits and harms, rather than an arbitrary Hb threshold (practice point 4.4). Restrictive thresholds from other settings are context-specific and are not universal CKD orders.</p><p>Acute hemorrhage, unstable coronary disease, or urgent surgery may require rapid correction. Avoid transfusion when possible in transplant candidates to reduce allosensitization. Leukoreduction does not eliminate sensitization risk. When transfusion is appropriate, account for volume overload, potassium, iron burden, and reassess the response; stable patients are often managed one unit at a time under local protocols.</p><p class="calc-disclaimer">Source: <a href="https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf">KDIGO 2026 Anemia in CKD</a>, recommendations 2.1–2.4 and 3.2.1–3.3.1; practice points 2.2–2.8 and 3.4.1.2–3.4.3.5. Reviewed November 6, 2026. Apply clinical judgment and the locally approved product label.</p></div></details>
 
 <details class="mdc-acc" id="why">
 <summary>Why Use It</summary>
@@ -1916,20 +1872,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </div>
 </section>
 
-<details class="mdc-acc" id="nextsteps">
-<summary>Next Steps</summary>
-<div class="mdc-acc-body">
-<p><strong>Anchor every transfusion decision to a restrictive threshold and to the patient's underlying disease.</strong></p>
-<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
-<li><strong>Chronic anemia (CKD, MDS, transfusion-dependent thalassemia):</strong> restrictive threshold Hgb 7 g/dL (8 g/dL with cardiac disease or ACS); typical post-transfusion target Hgb 7–9 g/dL. Over-transfusing suppresses native erythropoiesis and accelerates iron overload (each PRBC unit ≈ 200 mg elemental iron).</li>
-<li><strong>Sickle cell disease (simple transfusion):</strong> target ~10 g/dL; do not exceed because hyperviscosity worsens vaso-occlusion. For higher targets, switch to <strong>exchange transfusion</strong> (goal HbS &lt; 30%).</li>
-<li><strong>CKD / HF / elderly:</strong> infuse over <strong>4 hours per unit</strong>, consider <strong>IV furosemide 0.5–1 mg/kg</strong> between units, and limit to one unit at a time with reassessment.</li>
-<li><strong>Paediatric:</strong> usual dose 10–15 mL/kg PRBC per episode (give over 2–4 h). Volumes &gt; 20 mL/kg in a single non-emergent transfusion risk acute volume overload — split into two episodes.</li>
-<li>For CKD anemia, transfusion should be a <em>last resort</em>: first optimize iron, then ESA — see <a href="calc-eri.html" style="color:var(--teal);font-weight:600;">ESA Resistance Index</a> and <a href="calc-esa-dose-adjustment.html" style="color:var(--teal);font-weight:600;">ESA / EPO Dose Adjustment</a>.</li>
-<li>Always confirm response with a post-transfusion CBC drawn 15 min–1 h after the unit completes.</li>
-</ul>
-</div>
-</details>
+<details class="mdc-acc" id="nextsteps"><summary>Next steps</summary><div class="mdc-acc-body"><p>For chronic anemia in CKD, base red-cell transfusion on symptoms and signs attributable to anemia and the individual balance of benefits and harms, rather than an arbitrary Hb threshold (practice point 4.4). Restrictive thresholds from other settings are context-specific and are not universal CKD orders.</p><p>Acute hemorrhage, unstable coronary disease, or urgent surgery may require rapid correction. Avoid transfusion when possible in transplant candidates to reduce allosensitization. Leukoreduction does not eliminate sensitization risk. When transfusion is appropriate, account for volume overload, potassium, iron burden, and reassess the response; stable patients are often managed one unit at a time under local protocols.</p><p class="calc-disclaimer">Source: <a href="https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf">KDIGO 2026 Anemia in CKD</a>, recommendations 2.1–2.4 and 3.2.1–3.3.1; practice points 2.2–2.8 and 3.4.1.2–3.4.3.5. Reviewed November 6, 2026. Apply clinical judgment and the locally approved product label.</p></div></details>
 
 <details class="mdc-acc" id="evidence">
 <summary>Evidence &amp; References</summary>
@@ -2205,7 +2148,7 @@ function calcTx() {
     if (dHgb > 4) {
       action = 'A single-episode rise > 4 g/dL is excessive for most stable patients — risks acute volume overload (especially CKD/HF/elderly) and abrupt erythrocytosis. Consider splitting into two episodes with re-check between, or reducing the order.';
     } else {
-      action = 'For chronic anemia (CKD, MDS, thalassemia) target restrictive Hgb 7–9 g/dL (8 g/dL with cardiac disease/ACS); for simple-transfusion SCD target ~10 g/dL. Infuse over 2–4 h/unit (4 h in CKD/HF/elderly; consider IV furosemide 0.5–1 mg/kg between units). Verify with post-transfusion CBC 15 min–1 h after the unit completes.';
+      action = 'Set an individualized goal for the indication. Chronic CKD anemia is symptom-guided; acute coronary disease, hemoglobinopathies, and chronic transfusion programs require condition-specific guidance. Infuse over 2–4 h/unit (4 h in CKD/HF/elderly; assess volume status and whether a diuretic is appropriate). Verify with post-transfusion CBC 15 min–1 h after the unit completes.';
     }
 
   } else {
@@ -2225,7 +2168,7 @@ function calcTx() {
       m3lbl = 'mL/kg';
       m3cmt = '—';
       verdict = 'Mode B: current Hgb ' + (Math.round(hgb * 10) / 10) + ' g/dL already meets or exceeds the target ' + (Math.round(target * 10) / 10) + ' g/dL. No transfusion is indicated by Hgb alone.';
-      action = 'Reassess the indication — restrictive thresholds (Hgb 7 g/dL; 8 g/dL with cardiac disease/ACS) typically govern the decision. For CKD anemia, optimize iron and ESA first (see ERI and ESA-dose tools).';
+      action = 'Reassess the indication — for chronic CKD anemia, symptoms and signs guide the decision rather than an arbitrary Hb threshold (KDIGO 2026). For CKD anemia, optimize iron and ESA first (see ERI and ESA-dose tools).';
     } else {
       volume = deltaTarget * bloodVolume / hgbProduct; // mL
       var mlPerKgB = volume / weight;
@@ -2275,7 +2218,7 @@ function calcTx() {
       } else if (isPed && mlPerKgB > 15) {
         action = 'Required volume 15–20 mL/kg is on the upper edge of single-episode paediatric dosing — consider splitting into two episodes with re-check between, especially in CKD/HF.';
       } else if (!isPed && unitsB > 2) {
-        action = '> 2 units in a single episode is conservative-threshold territory — give one unit at a time with re-check between for stable patients, and slow infusion (4 h/unit) with inter-unit IV furosemide 0.5–1 mg/kg in CKD/HF/elderly.';
+        action = '> 2 units in a single episode is conservative-threshold territory — give one unit at a time with re-check between for stable patients, and slow infusion (4 h/unit) with individualized volume-overload prevention in CKD/HF/older adults.';
       } else {
         action = 'Within typical single-episode dosing. For chronic CKD anemia, transfusion is a last resort — optimize iron and ESA first (see ERI and ESA-dose tools). Verify response with post-transfusion CBC 15 min–1 h after the unit completes.';
       }

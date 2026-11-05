@@ -18,7 +18,7 @@
 <meta name="theme-color" content="#0f1e33">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2026-06-23T04:42:42+08:00">
-<meta property="article:modified_time" content="2025-05-01T00:00:00+08:00">
+<meta property="article:modified_time" content="2026-11-06T07:00:39+08:00">
 <meta property="og:site_name" content="William Gregory M. Rivero, MD">
 <meta property="og:title" content="Iron Deficit &amp; IV Iron Dose — Ganzoni Equation">
 <meta property="og:description" content="Calculate total iron deficit and IV iron replacement dose using the Ganzoni equation. With indications, formula, evidence and references.">
@@ -1693,7 +1693,7 @@ body.dark .related-card-title {
     "name": "William Gregory M. Rivero, MD, FPCP, DPSN",
     "url": "https://renalcarematters.com/"
   },
-  "dateModified": "2026-06-01",
+  "dateModified": "2026-11-06",
   "datePublished": "2026-06-23",
   "inLanguage": "en-PH",
   "audience": {
@@ -1786,6 +1786,8 @@ html[data-theme="dark"] .calc-action-text{color:var(--text-mid)!important;}
 html[data-theme="dark"] .mdc-acc#nextsteps>summary{color:var(--teal)!important;}
 html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </style>
+<script src="../assets/ckd-anemia-2026.js"></script>
+<link rel="stylesheet" href="../assets/ckd-anemia-2026.css">
 </head>
 <body class="calc-page">
 <header class="site-header">
@@ -1807,10 +1809,10 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <div class="container">
 <div class="hero-tag">Nephrology · Clinical Calculator · Iron &amp; Anemia</div>
 <h1>Iron Deficit &amp; IV Iron Dose <em>Ganzoni Equation</em></h1>
-<p class="hero-sub">Enter body weight and hemoglobin values to calculate the total iron deficit using the Ganzoni formula and estimate the number of IV iron sucrose (Ferrofer) infusion sessions required to reach the KDIGO hemoglobin target in CKD and dialysis patients.</p>
+<p class="hero-sub">Estimate an adult iron deficit from weight, a clinician-selected hemoglobin assumption, and a storage allowance. Review iron-treatment eligibility and formulation limits separately; this estimate is not a prescription.</p>
 <div class="hero-meta">
 <span class="hero-published"><strong>Published:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
-<span class="hero-refcount"><strong>References:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">4</span></span>
+<span class="hero-refcount"><strong>References:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">2</span></span>
 <span class="hero-readtime"><strong>Read time:</strong> <time datetime="PT7M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~7 min</time></span>
 </div>
 <p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;·&nbsp; <a href="understanding-iron.html" class="hero-xlink">Full iron &amp; anemia guide →</a></p>
@@ -1827,73 +1829,19 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </div>
 </nav>
 
-<main class="container">
+<main class="container"><p id="kdigo-anemia-review" class="calc-disclaimer">CKD anemia content reviewed November 6, 2026 against KDIGO 2026. <a href="anemia-management.html#clin-kdigo">Population-specific reference</a>.</p>
 
-<div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
-<ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Choose <strong>Conventional</strong> (g/dL, kg) or <strong>SI</strong> (g/L, kg) units to match your CBC report. Switching units clears the hemoglobin fields.</li>
-<li>Enter the patient's <strong>body weight</strong> in kg. Use the post-dialysis dry weight for hemodialysis patients, not the inter-dialytic weight.</li>
-<li>Enter the <strong>current (actual) hemoglobin</strong> from the most recent CBC.</li>
-<li>Enter the <strong>target hemoglobin</strong>. For most dialysis patients use 10.0–11.5 g/dL (KDIGO 2012/2024); for non-dialysis CKD use 10.0–12.0 g/dL. The calculator requires target &gt; actual Hgb.</li>
-<li>Select the <strong>route of iron replacement</strong>: IV iron sucrose for hemodialysis patients, oral iron for pre-dialysis CKD.</li>
-<li>Results show: total iron deficit in mg, estimated number of IV infusion sessions at 100 mg each, and the hemoglobin gap. Plain-language verdict and treatment protocol appear below the metrics.</li>
-</ol>
-<p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted.</p>
-</div>
+<div id="instructions" class="mdc-instructions"><span class="mdc-instr-label">Instructions</span><ol><li>Select conventional (g/dL) or SI (g/L) units.</li><li>Enter positive body weight, current Hb, and a clinician-selected target above current Hb.</li><li>Choose route and an individualized storage allowance; 500 mg is a common adult estimate.</li><li>Read the estimated deficit. For 60 kg and Hb 8→11 g/dL with 500 mg storage: 932 mg. This estimate does not establish treatment eligibility.</li></ol></div>
 
-<details class="mdc-acc" id="when">
-<summary>When to Use</summary>
-<div class="mdc-acc-body">
-<p>Use this tool when a CKD or dialysis patient has iron-deficiency anemia and you need to estimate the total amount of iron required to bring hemoglobin from its current value to a defined KDIGO target. It applies the Ganzoni formula — the standard pharmacokinetic method used to calculate IV iron sucrose dosing in renal anemia — and automatically divides the total deficit into individual 100 mg infusion sessions appropriate for the dialysis circuit.</p>
-<div class="alert alert-teal">
-<div class="alert-icon">✅</div>
-<div class="alert-body">
-<h4>Appropriate population</h4>
-<p>Adults with CKD G3–G5 or on maintenance hemodialysis or peritoneal dialysis who have confirmed iron-deficiency anemia (TSAT &lt;20%, ferritin &lt;100 ng/mL in non-dialysis CKD or &lt;200 ng/mL in dialysis), a recent hemoglobin below the KDIGO target range, and a clinical indication for iron repletion. Most useful when preparing a cumulative IV iron sucrose prescription for the hemodialysis care team.</p>
-</div>
-</div>
-<div class="alert alert-amber">
-<div class="alert-icon">⚠️</div>
-<div class="alert-body">
-<h4>When NOT to use it</h4>
-<p>Do not use this calculator in patients who are iron-replete (ferritin &gt;800 ng/mL or TSAT &gt;30%) — the formula does not apply and further iron loading risks hemosiderosis and oxidative vascular injury. The calculator does not adjust for concurrent erythropoiesis-stimulating agent (ESA) use, ongoing blood loss, or functional iron deficiency (high ferritin with low TSAT in inflammation). Use the result as a starting estimate; recheck CBC and iron studies 4–6 weeks after completing repletion before prescribing a second course.</p>
-</div>
-</div>
-</div>
-</details>
+<details class="mdc-acc" id="when"><summary>When to use</summary><div class="mdc-acc-body"><div style="overflow-x:auto"><table class="lab-table"><thead><tr><th>Population / decision</th><th>KDIGO 2026 guidance</th></tr></thead><tbody><tr><td>Anemia + hemodialysis (HD): initiate iron</td><td>Ferritin ≤500 ng/mL <strong>and</strong> TSAT ≤30%. IV iron is suggested; use a proactive, monitored approach.</td></tr><tr><td>Anemia + non-dialysis CKD or peritoneal dialysis (PD): initiate iron</td><td>Ferritin &lt;100 ng/mL <strong>and</strong> TSAT &lt;40%, <strong>or</strong> ferritin ≥100 and &lt;300 ng/mL <strong>and</strong> TSAT &lt;25%.</td></tr><tr><td>Route outside HD</td><td>Choose oral or IV iron using severity, response, tolerance, preference, availability, and cost. Switch an optimal oral regimen to IV if ineffective after 1–3 months or poorly tolerated.</td></tr><tr><td>Withhold routine iron</td><td>Ferritin &gt;700 ng/mL <strong>or</strong> TSAT ≥40%. An elevated ferritin alone does not diagnose iron overload.</td></tr><tr><td>Systemic infection</td><td>Consider temporarily suspending iron. Inflammation without infection needs clinical assessment rather than an automatic infection diagnosis.</td></tr><tr><td>Monitoring during iron treatment</td><td>Hb, ferritin, TSAT every 3 months in non-dialysis CKD/PD; every 1–3 months in HD, often monthly. Test sooner after blood loss, hospitalization, ESA escalation, or rapidly changing iron indices.</td></tr></tbody></table></div><div style="overflow-x:auto"><table class="lab-table"><thead><tr><th>Decision</th><th>KDIGO 2026 guidance</th></tr></thead><tbody><tr><td>Adult HD or PD: consider initiation</td><td>After reversible causes are addressed, consider ESA when Hb is ≤9–10 g/dL. Select the threshold within that range using symptoms, risks, and patient preferences.</td></tr><tr><td>Non-dialysis CKD, including transplant recipients</td><td>Individualize initiation using symptoms, potential benefit, transfusion avoidance, ESA risks, and preferences; Hb &lt;10 alone is not an automatic start order.</td></tr><tr><td>Adult maintenance goal</td><td>Target Hb <strong>below 11.5 g/dL (115 g/L)</strong>, individualized. A common working range is about 10 to &lt;11.5 g/dL; this is not an anemia diagnostic range.</td></tr><tr><td>Dose changes</td><td>Use the lowest effective dose. Generally avoid adjustments more often than every 4 weeks. If Hb rises &gt;1 g/dL in 2–4 weeks, reduce by 25–50%. Prefer reduction to holding while Hb does not exceed 11.5, as clinically appropriate.</td></tr><tr><td>Monitoring</td><td>Hb every 2–4 weeks after initiation or adjustment; at least every 3 months during maintenance, usually more often in HD.</td></tr><tr><td>Stroke, thrombosis, and cancer</td><td>Consider suspending ESA during hospitalization for acute stroke, vascular access thrombosis, or thromboembolism. Active or previous cancer calls for shared decision-making, especially when treatment aims at cure. Uncontrolled hypertension and product-specific contraindications require review.</td></tr></tbody></table></div><p class="calc-disclaimer">Source: <a href="https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf">KDIGO 2026 Anemia in CKD</a>, recommendations 2.1–2.4 and 3.2.1–3.3.1; practice points 2.2–2.8 and 3.4.1.2–3.4.3.5. Reviewed November 6, 2026. Apply clinical judgment and the locally approved product label.</p></div></details>
 
-<details class="mdc-acc" id="pearls">
-<summary>Pearls &amp; Pitfalls</summary>
-<div class="mdc-acc-body">
-<div class="alert alert-green">
-<div class="alert-icon">💡</div>
-<div class="alert-body">
-<h4>Check iron studies before prescribing</h4>
-<p>Always confirm iron deficiency with TSAT and ferritin before initiating IV iron. A low hemoglobin alone does not indicate iron deficiency — in inflammation, ferritin is elevated (acute-phase reactant) but TSAT may still be low (functional iron deficiency). The Ganzoni formula gives a total dose estimate; the treating physician must confirm the biochemical indication.</p>
-</div>
-</div>
-<div class="alert alert-teal">
-<div class="alert-icon">🔬</div>
-<div class="alert-body">
-<h4>Use dry weight for dialysis patients</h4>
-<p>Hemodialysis patients accumulate several kilograms of fluid between sessions. Always use the post-dialysis dry weight (the weight at which the patient feels well with no signs of fluid overload) when calculating the iron dose — using the pre-dialysis or inter-dialytic weight will overestimate the deficit. Typical dry-weight targets are 0.5–1.0 kg above the estimated normovolemic weight.</p>
-</div>
-</div>
-<div class="alert alert-red">
-<div class="alert-icon">🚫</div>
-<div class="alert-body">
-<h4>Pitfalls</h4>
-<p>(1) Do not give IV iron if ferritin &gt;800 ng/mL — iron overload from excessive repletion causes oxidative stress, endothelial injury, and increased infection risk. (2) The formula assumes no concurrent bleeding; if the patient has ongoing GI or dialysis-access bleeding, the calculated dose will be insufficient and must be re-estimated after the bleeding source is addressed. (3) IV iron sucrose infusions should be administered slowly (100 mg over 15 minutes into the venous return line, or over 30 minutes if given peripherally) to reduce the risk of hypotension and hypersensitivity reactions.</p>
-</div>
-</div>
-</div>
-</details>
+<details class="mdc-acc" id="pearls"><summary>Interpretation and limitations</summary><div class="mdc-acc-body"><div style="overflow-x:auto"><table class="lab-table"><thead><tr><th>Population / decision</th><th>KDIGO 2026 guidance</th></tr></thead><tbody><tr><td>Anemia + hemodialysis (HD): initiate iron</td><td>Ferritin ≤500 ng/mL <strong>and</strong> TSAT ≤30%. IV iron is suggested; use a proactive, monitored approach.</td></tr><tr><td>Anemia + non-dialysis CKD or peritoneal dialysis (PD): initiate iron</td><td>Ferritin &lt;100 ng/mL <strong>and</strong> TSAT &lt;40%, <strong>or</strong> ferritin ≥100 and &lt;300 ng/mL <strong>and</strong> TSAT &lt;25%.</td></tr><tr><td>Route outside HD</td><td>Choose oral or IV iron using severity, response, tolerance, preference, availability, and cost. Switch an optimal oral regimen to IV if ineffective after 1–3 months or poorly tolerated.</td></tr><tr><td>Withhold routine iron</td><td>Ferritin &gt;700 ng/mL <strong>or</strong> TSAT ≥40%. An elevated ferritin alone does not diagnose iron overload.</td></tr><tr><td>Systemic infection</td><td>Consider temporarily suspending iron. Inflammation without infection needs clinical assessment rather than an automatic infection diagnosis.</td></tr><tr><td>Monitoring during iron treatment</td><td>Hb, ferritin, TSAT every 3 months in non-dialysis CKD/PD; every 1–3 months in HD, often monthly. Test sooner after blood loss, hospitalization, ESA escalation, or rapidly changing iron indices.</td></tr></tbody></table></div><div style="overflow-x:auto"><table class="lab-table"><thead><tr><th>Decision</th><th>KDIGO 2026 guidance</th></tr></thead><tbody><tr><td>Adult HD or PD: consider initiation</td><td>After reversible causes are addressed, consider ESA when Hb is ≤9–10 g/dL. Select the threshold within that range using symptoms, risks, and patient preferences.</td></tr><tr><td>Non-dialysis CKD, including transplant recipients</td><td>Individualize initiation using symptoms, potential benefit, transfusion avoidance, ESA risks, and preferences; Hb &lt;10 alone is not an automatic start order.</td></tr><tr><td>Adult maintenance goal</td><td>Target Hb <strong>below 11.5 g/dL (115 g/L)</strong>, individualized. A common working range is about 10 to &lt;11.5 g/dL; this is not an anemia diagnostic range.</td></tr><tr><td>Dose changes</td><td>Use the lowest effective dose. Generally avoid adjustments more often than every 4 weeks. If Hb rises &gt;1 g/dL in 2–4 weeks, reduce by 25–50%. Prefer reduction to holding while Hb does not exceed 11.5, as clinically appropriate.</td></tr><tr><td>Monitoring</td><td>Hb every 2–4 weeks after initiation or adjustment; at least every 3 months during maintenance, usually more often in HD.</td></tr><tr><td>Stroke, thrombosis, and cancer</td><td>Consider suspending ESA during hospitalization for acute stroke, vascular access thrombosis, or thromboembolism. Active or previous cancer calls for shared decision-making, especially when treatment aims at cure. Uncontrolled hypertension and product-specific contraindications require review.</td></tr></tbody></table></div><p class="calc-disclaimer">Source: <a href="https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf">KDIGO 2026 Anemia in CKD</a>, recommendations 2.1–2.4 and 3.2.1–3.3.1; practice points 2.2–2.8 and 3.4.1.2–3.4.3.5. Reviewed November 6, 2026. Apply clinical judgment and the locally approved product label.</p></div></details>
 
 <details class="mdc-acc" id="why">
 <summary>Why Use It</summary>
 <div class="mdc-acc-body">
 <p>Iron deficiency is the most common correctable cause of anemia in CKD, affecting over 60% of predialysis patients and nearly all hemodialysis patients. Adequate iron stores are a prerequisite for the erythropoietic response to ESA therapy — without iron repletion, ESA doses escalate, costs rise, and hyporesponsiveness persists. The Ganzoni equation converts the hemoglobin gap and body weight into a total iron dose that accounts for both the circulating hemoglobin-bound iron deficit and a 500 mg depot reserve for bone marrow stores.</p>
-<p>In hemodialysis patients, IV iron sucrose (iron sucrose — marketed as Ferrofer in the Philippines) is preferred over oral iron because intestinal absorption is severely impaired by hepcidin upregulation. IV iron delivered directly into the dialysis venous return line at 100–200 mg per session avoids gastrointestinal intolerance and achieves reliable tissue loading. The KDIGO 2012 Anemia Guideline and its 2024 update recommend IV iron for dialysis patients who are iron-deficient and on ESA, targeting ferritin 200–500 ng/mL and TSAT 20–30%.</p>
+<p>In hemodialysis patients, IV iron sucrose (iron sucrose — marketed as Ferrofer in the Philippines) is preferred over oral iron because intestinal absorption is severely impaired by hepcidin upregulation. IV iron delivered directly into the dialysis venous return line at 100–200 mg per session avoids gastrointestinal intolerance and achieves reliable tissue loading. The KDIGO 2026 Anemia Guideline and its 2024 update recommend IV iron for dialysis patients who are iron-deficient and on ESA, targeting ferritin 200–500 ng/mL and TSAT 20–30%.</p>
 </div>
 </details>
 
@@ -1923,7 +1871,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
     <div class="calc-field">
       <label id="iron-lbl-target">Target Hemoglobin (g/dL)</label>
       <input id="ir-target" type="number" min="8" max="14" step="0.1" placeholder="e.g. 11.0" oninput="calcIron()">
-      <div class="field-hint" id="iron-hint-target">CKD/dialysis target: 10–11.5 g/dL. Non-dialysis CKD: 10–12 g/dL</div>
+      <div class="field-hint" id="iron-hint-target">Clinician-selected calculation assumption; adult ESA goal below 11.5 g/dL</div>
     </div>
     <div class="calc-field">
       <label>Route of Iron Replacement</label>
@@ -1934,7 +1882,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
       </select>
     </div>
   </div>
-  <div class="calc-result-box" id="iron-result">
+  <div class="calc-field"><label for="ir-stores">Storage allowance (mg)</label><input id="ir-stores" type="number" min="0" value="500" step="50" oninput="calcIron()"><div class="field-hint">500 mg is a common adult estimate. Individualize for body size and prior replacement; use 0 only when clinically appropriate.</div></div><div class="calc-result-box" id="iron-result">
     <div class="calc-metrics-row">
       <div class="calc-metric-card">
         <div class="cmv" id="ir-deficit-val">—</div>
@@ -1955,56 +1903,13 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
     <div class="calc-verdict-text" id="ir-verdict"></div>
     <div class="calc-action-text" id="ir-action"></div>
   </div>
-  <p class="calc-disclaimer">⚕ Ganzoni formula: Iron deficit (mg) = Weight (kg) × (Target Hgb − Actual Hgb) × 0.24 + 500 (depot iron). Depot iron 500 mg is standard for replenishment; omit for maintenance dosing. IV iron sucrose (Ferrofer): standard infusion 100–200 mg per session. This is a dosing guide — actual prescribing requires physician authorization and consideration of ferritin, TSAT, and clinical status.</p>
+  <p class="calc-disclaimer">Ganzoni estimate (mg) = weight (kg) × Hb gap (g/dL) × 2.4 + the selected storage allowance (mg). With Hb in g/L, use 0.24 instead. A 500-mg storage allowance is a common adult estimate; individualize it for body size and prior replacement. This is a deficit estimate, not an automatic repletion or maintenance prescription.</p>
 </div>
 </section>
 
-<details class="mdc-acc" id="nextsteps">
-<summary>Next Steps</summary>
-<div class="mdc-acc-body">
-<p><strong>Use the result to support — not replace — clinical judgment.</strong></p>
-<ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
-<li>Interpret the value against the targets shown in the calculator and the Evidence section below, in the context of the full clinical picture.</li>
-<li>Trend serial measurements rather than acting on a single result; confirm abnormal or unexpected values before changing management.</li>
-<li>Apply the relevant KDIGO / specialty-guideline threshold and document the indication.</li>
-<li>Escalate or refer to nephrology when results are out of range, rapidly changing, or discordant with the clinical picture — and discuss the implications with the patient.</li>
-</ul>
-</div>
-</details>
+<details class="mdc-acc" id="nextsteps"><summary>Next steps</summary><div class="mdc-acc-body"><div style="overflow-x:auto"><table class="lab-table"><thead><tr><th>Population / decision</th><th>KDIGO 2026 guidance</th></tr></thead><tbody><tr><td>Anemia + hemodialysis (HD): initiate iron</td><td>Ferritin ≤500 ng/mL <strong>and</strong> TSAT ≤30%. IV iron is suggested; use a proactive, monitored approach.</td></tr><tr><td>Anemia + non-dialysis CKD or peritoneal dialysis (PD): initiate iron</td><td>Ferritin &lt;100 ng/mL <strong>and</strong> TSAT &lt;40%, <strong>or</strong> ferritin ≥100 and &lt;300 ng/mL <strong>and</strong> TSAT &lt;25%.</td></tr><tr><td>Route outside HD</td><td>Choose oral or IV iron using severity, response, tolerance, preference, availability, and cost. Switch an optimal oral regimen to IV if ineffective after 1–3 months or poorly tolerated.</td></tr><tr><td>Withhold routine iron</td><td>Ferritin &gt;700 ng/mL <strong>or</strong> TSAT ≥40%. An elevated ferritin alone does not diagnose iron overload.</td></tr><tr><td>Systemic infection</td><td>Consider temporarily suspending iron. Inflammation without infection needs clinical assessment rather than an automatic infection diagnosis.</td></tr><tr><td>Monitoring during iron treatment</td><td>Hb, ferritin, TSAT every 3 months in non-dialysis CKD/PD; every 1–3 months in HD, often monthly. Test sooner after blood loss, hospitalization, ESA escalation, or rapidly changing iron indices.</td></tr></tbody></table></div><div style="overflow-x:auto"><table class="lab-table"><thead><tr><th>Decision</th><th>KDIGO 2026 guidance</th></tr></thead><tbody><tr><td>Adult HD or PD: consider initiation</td><td>After reversible causes are addressed, consider ESA when Hb is ≤9–10 g/dL. Select the threshold within that range using symptoms, risks, and patient preferences.</td></tr><tr><td>Non-dialysis CKD, including transplant recipients</td><td>Individualize initiation using symptoms, potential benefit, transfusion avoidance, ESA risks, and preferences; Hb &lt;10 alone is not an automatic start order.</td></tr><tr><td>Adult maintenance goal</td><td>Target Hb <strong>below 11.5 g/dL (115 g/L)</strong>, individualized. A common working range is about 10 to &lt;11.5 g/dL; this is not an anemia diagnostic range.</td></tr><tr><td>Dose changes</td><td>Use the lowest effective dose. Generally avoid adjustments more often than every 4 weeks. If Hb rises &gt;1 g/dL in 2–4 weeks, reduce by 25–50%. Prefer reduction to holding while Hb does not exceed 11.5, as clinically appropriate.</td></tr><tr><td>Monitoring</td><td>Hb every 2–4 weeks after initiation or adjustment; at least every 3 months during maintenance, usually more often in HD.</td></tr><tr><td>Stroke, thrombosis, and cancer</td><td>Consider suspending ESA during hospitalization for acute stroke, vascular access thrombosis, or thromboembolism. Active or previous cancer calls for shared decision-making, especially when treatment aims at cure. Uncontrolled hypertension and product-specific contraindications require review.</td></tr></tbody></table></div><p class="calc-disclaimer">Source: <a href="https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf">KDIGO 2026 Anemia in CKD</a>, recommendations 2.1–2.4 and 3.2.1–3.3.1; practice points 2.2–2.8 and 3.4.1.2–3.4.3.5. Reviewed November 6, 2026. Apply clinical judgment and the locally approved product label.</p></div></details>
 
-<details class="mdc-acc" id="evidence">
-<summary>Evidence &amp; References</summary>
-<div class="mdc-acc-body">
-<h3 class="mdc-sub">Formula &amp; Equations</h3>
-<table class="lab-table">
-<thead><tr><th>Quantity</th><th>Equation</th></tr></thead>
-<tbody>
-<tr><td>Total iron deficit (mg)</td><td>Iron deficit = Body weight (kg) × (Target Hgb − Actual Hgb) × 0.24 + 500</td></tr>
-<tr><td>Hemoglobin iron constant (0.24)</td><td>Derived from: blood volume 70 mL/kg × Hgb iron content 3.4 mg/g × correction factor 1.0 = 0.24 mg iron per g/dL Hgb per kg body weight</td></tr>
-<tr><td>Depot iron (500 mg)</td><td>Fixed addend to replenish bone marrow iron stores and prevent rapid re-depletion after repletion</td></tr>
-<tr><td>Number of IV sessions at 100 mg/session</td><td>Sessions = ceil(Total iron deficit ÷ 100)</td></tr>
-</tbody>
-</table>
-<h3 style="margin-top:24px;">KDIGO hemoglobin targets (2012 / 2024)</h3>
-<table class="lab-table">
-<thead><tr><th>Population</th><th>Hemoglobin target</th></tr></thead>
-<tbody>
-<tr><td>Hemodialysis or peritoneal dialysis (on ESA)</td><td>10.0–11.5 g/dL (100–115 g/L)</td></tr>
-<tr><td>Non-dialysis CKD G3–G5 (on ESA)</td><td>10.0–12.0 g/dL (100–120 g/L)</td></tr>
-<tr><td>Iron repletion threshold — ferritin (HD)</td><td>Ferritin &lt;200 ng/mL or TSAT &lt;20% → give IV iron</td></tr>
-<tr><td>Iron repletion threshold — ferritin (non-dialysis)</td><td>Ferritin &lt;100 ng/mL or TSAT &lt;20% → give iron (oral or IV)</td></tr>
-<tr><td>Upper safety limit — do not give iron if</td><td>Ferritin &gt;800 ng/mL regardless of TSAT</td></tr>
-</tbody>
-</table>
-<p style="font-size:.88rem;color:var(--text-muted);margin-top:10px;">The constant 0.24 in the Ganzoni formula is a rounded value; some authors use 0.2412 from the original 1970 paper. The 500 mg depot term is a consensus addend; KDIGO notes that this may need adjustment in patients who have received recent partial iron repletion. SI conversion: Hgb in g/L ÷ 10 = g/dL.</p>
-<h3 class="mdc-sub">Evidence &amp; References</h3>
-<p>The Ganzoni formula was first described in 1970 and remains the most widely used method to calculate parenteral iron dose for iron-deficiency anemia. Hemoglobin targets and iron repletion thresholds follow the KDIGO 2012 Anemia Guideline and its 2024 update, which specify ferritin and TSAT thresholds for initiating IV iron in CKD and dialysis patients. IV iron sucrose (Ferrofer) is recommended over oral iron in dialysis patients due to hepcidin-mediated suppression of intestinal iron absorption.</p>
-<ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
-<li>Ganzoni AM. Eisen-Dextran intravenös: therapeutische und experimentelle Möglichkeiten. <em>Schweiz Med Wochenschr.</em> 1970;100(7):301–303.</li>
-<li>KDIGO Clinical Practice Guideline for Anemia in CKD. <em>Kidney Int Suppl.</em> 2012;2(4):279–335.</li>
-</ol>
-</div>
-</details>
+<details class="mdc-acc" id="evidence"><summary>Evidence and clinical rules</summary><div class="mdc-acc-body"><div style="overflow-x:auto"><table class="lab-table"><thead><tr><th>Population / decision</th><th>KDIGO 2026 guidance</th></tr></thead><tbody><tr><td>Anemia + hemodialysis (HD): initiate iron</td><td>Ferritin ≤500 ng/mL <strong>and</strong> TSAT ≤30%. IV iron is suggested; use a proactive, monitored approach.</td></tr><tr><td>Anemia + non-dialysis CKD or peritoneal dialysis (PD): initiate iron</td><td>Ferritin &lt;100 ng/mL <strong>and</strong> TSAT &lt;40%, <strong>or</strong> ferritin ≥100 and &lt;300 ng/mL <strong>and</strong> TSAT &lt;25%.</td></tr><tr><td>Route outside HD</td><td>Choose oral or IV iron using severity, response, tolerance, preference, availability, and cost. Switch an optimal oral regimen to IV if ineffective after 1–3 months or poorly tolerated.</td></tr><tr><td>Withhold routine iron</td><td>Ferritin &gt;700 ng/mL <strong>or</strong> TSAT ≥40%. An elevated ferritin alone does not diagnose iron overload.</td></tr><tr><td>Systemic infection</td><td>Consider temporarily suspending iron. Inflammation without infection needs clinical assessment rather than an automatic infection diagnosis.</td></tr><tr><td>Monitoring during iron treatment</td><td>Hb, ferritin, TSAT every 3 months in non-dialysis CKD/PD; every 1–3 months in HD, often monthly. Test sooner after blood loss, hospitalization, ESA escalation, or rapidly changing iron indices.</td></tr></tbody></table></div><div style="overflow-x:auto"><table class="lab-table"><thead><tr><th>Decision</th><th>KDIGO 2026 guidance</th></tr></thead><tbody><tr><td>Adult HD or PD: consider initiation</td><td>After reversible causes are addressed, consider ESA when Hb is ≤9–10 g/dL. Select the threshold within that range using symptoms, risks, and patient preferences.</td></tr><tr><td>Non-dialysis CKD, including transplant recipients</td><td>Individualize initiation using symptoms, potential benefit, transfusion avoidance, ESA risks, and preferences; Hb &lt;10 alone is not an automatic start order.</td></tr><tr><td>Adult maintenance goal</td><td>Target Hb <strong>below 11.5 g/dL (115 g/L)</strong>, individualized. A common working range is about 10 to &lt;11.5 g/dL; this is not an anemia diagnostic range.</td></tr><tr><td>Dose changes</td><td>Use the lowest effective dose. Generally avoid adjustments more often than every 4 weeks. If Hb rises &gt;1 g/dL in 2–4 weeks, reduce by 25–50%. Prefer reduction to holding while Hb does not exceed 11.5, as clinically appropriate.</td></tr><tr><td>Monitoring</td><td>Hb every 2–4 weeks after initiation or adjustment; at least every 3 months during maintenance, usually more often in HD.</td></tr><tr><td>Stroke, thrombosis, and cancer</td><td>Consider suspending ESA during hospitalization for acute stroke, vascular access thrombosis, or thromboembolism. Active or previous cancer calls for shared decision-making, especially when treatment aims at cure. Uncontrolled hypertension and product-specific contraindications require review.</td></tr></tbody></table></div><p class="calc-disclaimer">Source: <a href="https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf">KDIGO 2026 Anemia in CKD</a>, recommendations 2.1–2.4 and 3.2.1–3.3.1; practice points 2.2–2.8 and 3.4.1.2–3.4.3.5. Reviewed November 6, 2026. Apply clinical judgment and the locally approved product label.</p></div></details>
 
 <div class="disclaimer"><strong>Important:</strong> This calculator is an educational aid for clinicians and patients. The Ganzoni formula provides a starting estimate — actual IV iron prescriptions must be verified against current ferritin, TSAT, hemoglobin, and clinical status by the treating nephrologist. Do not administer IV iron without a physician order and monitoring for infusion reactions.</div>
 
@@ -2019,14 +1924,9 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <summary style="cursor:pointer;list-style:none;padding:15px 20px;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;color:var(--text);display:flex;align-items:center;gap:10px;">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;color:var(--teal);"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
 <span data-lang="en">References</span>
-<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">4 sources</span>
+<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">2 sources</span>
 </summary>
-<ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);">
-<li>KDIGO 2024 Anemia Guidelines</li>
-<li>WHO Iron Deficiency Anemia 2001</li>
-<li>NKF KDOQI Nutrition 2020</li>
-<li>Moretti et al., Iron absorption 2015</li>
-</ol>
+<ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);"><li>Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group. (2026). KDIGO 2026 clinical practice guideline for the management of anemia in chronic kidney disease (CKD). <em>Kidney International</em>, <em>109</em>(1S), S1–S99. <a href="https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf">https://kdigo.org/wp-content/uploads/2026/04/KDIGO-2026-Anemia-in-CKD-Guideline.pdf</a></li><li>Vifor Pharma UK Limited. (2023). <em>Venofer (iron sucrose): Summary of product characteristics</em>. <a href="https://www.medicines.org.uk/emc/product/5911/smpc">Product information and Ganzoni equation</a>.</li></ol>
 </details>
 </section>
 <!-- REFERENCES-ACC-END -->
@@ -2153,7 +2053,7 @@ function switchIronUnit(u) {
     document.getElementById('iron-hint-hgb').textContent = 'Current Hgb from CBC. Example: 85 g/L = 8.5 g/dL';
     document.getElementById('iron-lbl-target').textContent = 'Target Hemoglobin (g/L)';
     tgt.placeholder = 'e.g. 110'; tgt.min = '80'; tgt.max = '140'; tgt.step = '1';
-    document.getElementById('iron-hint-target').textContent = 'CKD/dialysis target: 100–115 g/L. Non-dialysis CKD: 100–120 g/L';
+    document.getElementById('iron-hint-target').textContent = 'Clinician-selected calculation assumption; adult ESA goal below 115 g/L';
     document.getElementById('iron-lbl-wt').textContent = 'Body Weight (kg)';
     wt.placeholder = 'e.g. 58'; wt.min = '20'; wt.max = '200'; wt.step = '0.1';
     document.getElementById('iron-hint-wt').textContent = 'Actual body weight in kg';
@@ -2163,7 +2063,7 @@ function switchIronUnit(u) {
     document.getElementById('iron-hint-hgb').textContent = 'Current Hgb from CBC. Normal: 12–16 g/dL (F), 13.5–17.5 g/dL (M)';
     document.getElementById('iron-lbl-target').textContent = 'Target Hemoglobin (g/dL)';
     tgt.placeholder = 'e.g. 11.0'; tgt.min = '8'; tgt.max = '14'; tgt.step = '0.1';
-    document.getElementById('iron-hint-target').textContent = 'CKD/dialysis target: 10–11.5 g/dL. Non-dialysis CKD: 10–12 g/dL';
+    document.getElementById('iron-hint-target').textContent = 'Clinician-selected calculation assumption; adult ESA goal below 11.5 g/dL';
     document.getElementById('iron-lbl-wt').textContent = 'Body Weight (kg)';
     wt.placeholder = 'e.g. 58'; wt.min = '20'; wt.max = '200'; wt.step = '0.1';
     document.getElementById('iron-hint-wt').textContent = 'Actual body weight in kg. Use dry weight for dialysis patients';
@@ -2173,58 +2073,13 @@ function switchIronUnit(u) {
   if (res) res.style.display = 'none';
 }
 
-function calcIron() {
-  const wtRaw = parseFloat(document.getElementById('ir-wt').value);
-  const hgbRaw = parseFloat(document.getElementById('ir-hgb').value);
-  const targetRaw = parseFloat(document.getElementById('ir-target').value);
-  const route = document.getElementById('ir-route').value;
-  const res = document.getElementById('iron-result');
-
-  const isSI = document.getElementById('iron-btn-si').classList.contains('active');
-  // Convert to g/dL and kg for Ganzoni formula
-  const hgb    = isSI ? hgbRaw / 10    : hgbRaw;     // g/L → g/dL
-  const target = isSI ? targetRaw / 10 : targetRaw;  // g/L → g/dL
-  const wt     = wtRaw;  // weight always in kg
-
-  if ([wt, hgb, target].some(isNaN) || !route || target <= hgb) { res.style.display = 'none'; return; }
-
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-
-  // Helper: display Hgb values in the chosen unit
-  const dHgb = v => isSI ? (v * 10).toFixed(0) + ' g/L' : v.toFixed(1) + ' g/dL';
-
-  // Ganzoni formula (always uses g/dL and kg)
-  const deficit = Math.round(wt * (target - hgb) * 0.24 * 100) / 100 + 500;
-  const deficitTotal = Math.round(deficit);
-  const sessions = Math.ceil(deficitTotal / 100);
-  const hgbGap = Math.round((target - hgb) * 10) / 10;
-  const hgbGapDisplay = isSI ? (hgbGap * 10).toFixed(0) : hgbGap.toFixed(1);
-  const hgbGapUnit = isSI ? 'g/L' : 'g/dL';
-
-  const borderColor = '#1a6b72';
-  const bg = isDark ? 'rgba(26,107,114,.08)' : '#e1f5f0';
-  res.style.display = 'block'; res.style.background = bg; res.style.borderColor = borderColor;
-
-  document.getElementById('ir-deficit-val').textContent = deficitTotal;
-  document.getElementById('ir-deficit-val').style.color = '#1a6b72';
-  document.getElementById('ir-deficit-badge').textContent = 'Total iron needed';
-  document.getElementById('ir-sessions-val').textContent = route === 'iv' ? sessions : 'Oral';
-  document.getElementById('ir-sessions-val').style.color = '#1a6b72';
-  document.getElementById('ir-sessions-badge').textContent = route === 'iv' ? '100mg/session × ' + sessions : 'Daily for 3 months';
-  document.getElementById('ir-hgb-gap-val').textContent = hgbGapDisplay;
-  document.getElementById('ir-hgb-gap-val').style.color = hgbGap <= 2 ? '#9a6500' : '#c0392b';
-  document.getElementById('ir-hgb-gap-badge').textContent = dHgb(hgb) + ' → ' + dHgb(target);
-
-  let verdict = '', action = '';
-  if (route === 'iv') {
-    verdict = 'Estimated iron deficit of ' + deficitTotal + ' mg (Ganzoni formula). This requires approximately ' + sessions + ' IV iron sucrose sessions at 100 mg per session, given over ' + sessions + ' dialysis sessions. Hgb is ' + hgbGapDisplay + ' ' + hgbGapUnit + ' below target (' + dHgb(target) + ').';
-    action = 'IV iron sucrose (Ferrofer) 100–200 mg per infusion administered into the venous side of the dialysis circuit during the last hour of the session. Check TSAT and ferritin before starting — do not give IV iron if ferritin >800 ng/mL. Recheck CBC and iron panel after completing the repletion course (4–6 weeks after last dose).';
-  } else {
-    verdict = 'Estimated iron deficit of ' + deficitTotal + ' mg. For non-dialysis CKD, oral iron is first-line if tolerated. Iron absorption from oral supplements is typically 10–20 mg/day — repletion of ' + deficitTotal + ' mg deficit takes approximately ' + Math.ceil(deficitTotal / 15) + ' days (2–4 months) of consistent therapy.';
-    action = 'Ferrous sulfate 325 mg (65 mg elemental iron) on empty stomach for best absorption, or with food if causing GI upset. Take 2 hours apart from phosphate binders, antacids, and calcium supplements — these block iron absorption. IV iron (ferric carboxymaltose or iron sucrose) if oral is not tolerated or TSAT is critically low.';
-  }
-  document.getElementById('ir-verdict').innerHTML = '<strong style="color:' + borderColor + '">Iron Deficit: ' + deficitTotal + ' mg</strong> — ' + verdict;
-  document.getElementById('ir-action').innerHTML = '<strong style="color:' + borderColor + '">Treatment protocol:</strong> ' + action;
+function calcIron(){
+ const el=id=>document.getElementById(id),weight=parseFloat(el('ir-wt').value),actual=parseFloat(el('ir-hgb').value),target=parseFloat(el('ir-target').value),stores=parseFloat(el('ir-stores').value),route=el('ir-route').value,si=el('iron-btn-si').classList.contains('active'),res=el('iron-result');
+ const mg=CKDAnemia2026.ganzoni({weight,actual,target,stores,unit:si?'g/L':'g/dL'});
+ if(mg===null||!route){res.style.display='none';return;}
+ const total=Math.round(mg),sessions=Math.ceil(mg/100);res.style.display='block';el('ir-deficit-val').textContent=total;el('ir-deficit-badge').textContent='Estimated deficit, not a prescription';el('ir-sessions-val').textContent=route==='iv'?sessions:'Oral';el('ir-sessions-badge').textContent=route==='iv'?'If 100 mg/session is selected':'Response varies';el('ir-hgb-gap-val').textContent=(target-actual).toFixed(si?0:1);el('ir-hgb-gap-badge').textContent=si?'g/L':'g/dL';
+ el('ir-verdict').textContent='Ganzoni estimate: '+total+' mg, including '+stores+' mg storage allowance. The formula uses 2.4 with Hb in g/dL, or 0.24 with g/L. A calculated deficit does not establish iron deficiency or guarantee Hb response.';
+ el('ir-action').textContent='Confirm iron eligibility using ferritin and TSAT, current iron exposure, infection status, and the selected formulation’s dosing limits. HD generally favors IV iron; oral or IV is individualized outside HD. The target entered is a calculation assumption, not a universal CKD Hb target. For adults on ESA, the maintenance Hb goal is below 11.5 g/dL. Reassess Hb and iron indices during treatment; do not use this estimate as an automatic maintenance course.';
 }
 </script>
 
