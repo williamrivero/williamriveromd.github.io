@@ -24,6 +24,9 @@ eq(A.lab({key:'tsat',value:45,ferritin:300,setting:'hd'}).status,'FLAG');
 eq(A.lab({key:'ferritin',value:750,tsat:20,setting:'nd'}).status,'FLAG');
 function ui(page,fn,values,read,si=false){
  const html=fs.readFileSync(path.join(root,'guides',page+'.html'),'utf8');const nodes={};for(const m of html.matchAll(/\bid=["']([^"']+)["']/g))nodes[m[1]]={value:'',checked:false,style:{},textContent:'',innerHTML:'',classList:{contains:()=>si}};
+ for(const sel of html.matchAll(/<select\b[^>]*id=["']([^"']+)["'][^>]*>([\s\S]*?)<\/select>/g)){
+  if(sel[1]==='a-dialysis'){const options=[...sel[2].matchAll(/<option\b[^>]*value=["']([^"']*)["']/g)].map(m=>m[1]);assert.equal(new Set(options).size,options.length,page+' duplicate population option');checks++;}
+ }
  for(const [id,value]of Object.entries(values)){assert(nodes[id],page+' missing input '+id);if(typeof value==='boolean')nodes[id].checked=value;else nodes[id].value=value;}
  const document={getElementById:id=>nodes[id]||null};
  const match=html.match(new RegExp('function '+fn+'\\([^)]*\\)\\s*\\{[\\s\\S]*?^\\}','m'));assert(match,page+' missing '+fn);
