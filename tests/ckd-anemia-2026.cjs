@@ -39,6 +39,11 @@ for(const page of ['anemia-management','calc-iron-status-tsat','esa-dose-cancer-
 eq(ui('calc-iv-iron-dose','calcIVIron',{'iron-setting':'nd','iron-tsat':35,'iron-ferritin':80},['iron-decision-val']),['CONSIDER IRON']);
 for(const page of ['anemia-management','calc-eri'])eq(ui(page,'calcERI',{'eri-esa-type':'cera','eri-dose':50,'eri-freq':0.25,'eri-weight':60,'eri-hgb':10},['eri-val']),['Not converted']);
 ui('anemia-management','updateChecklist',{'chk-hgb':11.5,'chk-tsat':40,'chk-fer':701,'chk-esa-type':'none'},['chk-hgb-status','chk-tsat-status','chk-fer-status']);
+eq(A.ganzoni({weight:60,actual:80,target:110,unit:'g/dL'}),null);
+eq(A.iron({setting:'pd',ferritin:300,tsat:24}).action,'REASSESS');
+eq(A.iron({setting:'hd',ferritin:700,tsat:39,ongoing:true}).action,'REVIEW MAINTENANCE');
+eq(A.lab({key:'tsat',value:110,ferritin:200}).status,'FLAG');
+eq(A.lab({key:'hgb',value:110,age:12}).status,'WATCH');
 const changedExtra=require('child_process').execFileSync('git',['diff','--name-only'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(x=>x.endsWith('.html'));
 const changed=[...new Set(['anemia-management','calc-eri','calc-esa-dose-adjustment','calc-iron-deficit-ganzoni','calc-iron-status-tsat','calc-iv-iron-dose','calc-reticulocyte-rpi','calc-transfusion-hgb','esa-dose-cancer-risk','epo-resistant-renal-anemia','understanding-iron','lab-interpreter-guide','medication-operational-guide','practical-outpatient-algorithms'].map(n=>'guides/'+n+'.html').concat(changedExtra))];
 for(const file of changed){const html=fs.readFileSync(path.join(root,file),'utf8');for(const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)){if(!/application\/ld\+json/.test(m[1]))new vm.Script(m[2],{filename:file});}checks++;}

@@ -2588,7 +2588,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
           <input type="number" id="chk-hgb" min="4" max="18" step="0.1" placeholder="g/dL e.g. 10.8" oninput="updateChecklist()" style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:15px;font-family:'Manrope',sans-serif;color:var(--text);">
           <div id="chk-hgb-dot" style="width:12px;height:12px;border-radius:50%;background:#d1d5db;flex-shrink:0;"></div>
         </div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Adult ESA goal: <strong>below 11.5 g/dL</strong> (100–115 g/L)</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Adult ESA goal: <strong>below 11.5 g/dL</strong> (below 115 g/L)</div>
         <div id="chk-hgb-status" style="font-size:11px;font-weight:600;margin-top:3px;min-height:15px;"></div>
       </div>
       <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
@@ -2597,7 +2597,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
           <input type="number" id="chk-tsat" min="0" max="100" step="0.1" placeholder="% e.g. 24" oninput="updateChecklist()" style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:15px;font-family:'Manrope',sans-serif;color:var(--text);">
           <div id="chk-tsat-dot" style="width:12px;height:12px;border-radius:50%;background:#d1d5db;flex-shrink:0;"></div>
         </div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Target: <strong>≥20%</strong>; withhold routine iron if ≥40%</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Interpret with ferritin; withhold routine iron at <strong>TSAT ≥40%</strong></div>
         <div id="chk-tsat-status" style="font-size:11px;font-weight:600;margin-top:3px;min-height:15px;"></div>
       </div>
       <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
@@ -2606,7 +2606,7 @@ try{(function(){var v=localStorage.getItem('wgmr-anemia-mode');if(v===null){var 
           <input type="number" id="chk-fer" min="0" max="2000" step="1" placeholder="ng/mL e.g. 280" oninput="updateChecklist()" style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:7px;font-size:15px;font-family:'Manrope',sans-serif;color:var(--text);">
           <div id="chk-fer-dot" style="width:12px;height:12px;border-radius:50%;background:#d1d5db;flex-shrink:0;"></div>
         </div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Target: <strong>200–500 ng/mL</strong>; withhold routine iron &gt;700</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">HD initiation: ferritin ≤500 AND TSAT ≤30%; withhold routine iron if ferritin &gt;700</div>
         <div id="chk-fer-status" style="font-size:11px;font-weight:600;margin-top:3px;min-height:15px;"></div>
       </div>
       <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
@@ -3233,7 +3233,7 @@ function calcAnemia(){
   if(!pop||![si,tibc,ferritin].every(Number.isFinite)||si<0||tibc<=0||ferritin<0||si>tibc){res.style.display='none';return;}
   const tsat=si/tibc*100;
   const r=pop==='pediatric'?{action:'SPECIALIST REVIEW',detail:'Pediatric anemia diagnosis, iron treatment, and Hb targets require age-specific specialist assessment. Adult rules are not applied.',monitor:''}:CKDAnemia2026.iron({setting:pop==='ckd'?'nd':pop,tsat,ferritin,infection:!!el('a-inflam')?.checked});
-  res.style.display='block';el('a-tsat-val').textContent=tsat.toFixed(1);el('a-ferritin-val').textContent=ferritin;el('a-type-val').textContent=r.action;
+  res.style.display='block';el('a-tsat-val').textContent=tsat.toFixed(1);el('a-ferritin-val').textContent=ferritin;el('a-type-val').textContent=r.action;el('a-type-val').style.fontSize='18px';
   el('a-tsat-badge').textContent='Interpret with ferritin';el('a-ferritin-badge').textContent='ng/mL';el('a-type-badge').textContent='KDIGO 2026';
   el('a-verdict').textContent=r.detail;el('a-action').textContent=(r.monitor||'')+' Confirm anemia, symptoms, and reversible causes before treatment. Results are clinician decision support.';
   if(el('a-warnings')){el('a-warnings').style.display='block';el('a-warnings').textContent='Ferritin can rise with inflammation. Investigate bleeding, hemolysis, B12/folate deficiency, marrow disease, and dialysis adequacy as appropriate. No result here diagnoses iron overload or sets an ESA dose.';}

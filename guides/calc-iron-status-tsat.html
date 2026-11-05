@@ -2540,7 +2540,7 @@ function calcAnemia(){
   if(!pop||![si,tibc,ferritin].every(Number.isFinite)||si<0||tibc<=0||ferritin<0||si>tibc){res.style.display='none';return;}
   const tsat=si/tibc*100;
   const r=pop==='pediatric'?{action:'SPECIALIST REVIEW',detail:'Pediatric anemia diagnosis, iron treatment, and Hb targets require age-specific specialist assessment. Adult rules are not applied.',monitor:''}:CKDAnemia2026.iron({setting:pop==='ckd'?'nd':pop,tsat,ferritin,infection:!!el('a-inflam')?.checked});
-  res.style.display='block';el('a-tsat-val').textContent=tsat.toFixed(1);el('a-ferritin-val').textContent=ferritin;el('a-type-val').textContent=r.action;
+  res.style.display='block';el('a-tsat-val').textContent=tsat.toFixed(1);el('a-ferritin-val').textContent=ferritin;el('a-type-val').textContent=r.action;el('a-type-val').style.fontSize='18px';
   el('a-tsat-badge').textContent='Interpret with ferritin';el('a-ferritin-badge').textContent='ng/mL';el('a-type-badge').textContent='KDIGO 2026';
   el('a-verdict').textContent=r.detail;el('a-action').textContent=(r.monitor||'')+' Confirm anemia, symptoms, and reversible causes before treatment. Results are clinician decision support.';
   if(el('a-warnings')){el('a-warnings').style.display='block';el('a-warnings').textContent='Ferritin can rise with inflammation. Investigate bleeding, hemolysis, B12/folate deficiency, marrow disease, and dialysis adequacy as appropriate. No result here diagnoses iron overload or sets an ESA dose.';}

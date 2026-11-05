@@ -2407,7 +2407,7 @@ function calcESA(){
   const el=id=>document.getElementById(id),agent=el('esa-agent').value,hb=parseFloat(el('esa-hgb').value),change=parseFloat(el('esa-delta').value),dose=parseFloat(el('esa-dose').value),weeks=parseFloat(el('esa-weeks').value),res=el('esa-result');
   if(!agent||![hb,change,dose,weeks].every(Number.isFinite)||hb<=0||dose<=0||weeks<0){res.style.display='none';return;}
   const r=CKDAnemia2026.esa({hb,change,dose,weeks});const unit=agent==='cera'?'mcg/month':agent.startsWith('epoetin')?'units/week':'mcg/week';
-  res.style.display='block';el('esa-action-val').textContent=r.action;el('esa-action-sub').textContent='Individualized adult ESA review';
+  res.style.display='block';el('esa-action-val').textContent=r.action;el('esa-action-val').style.fontSize='18px';el('esa-action-sub').textContent='Individualized adult ESA review';
   el('esa-newdose-val').textContent=r.dose===undefined?'Review':r.dose.toFixed(agent.startsWith('epoetin')?0:1);el('esa-newdose-lbl').textContent=r.dose===undefined?'Clinical assessment':'Dose example';el('esa-newdose-unit').textContent=r.dose===undefined?'No automatic increase':unit;
   el('esa-hgb-display').textContent=hb.toFixed(1)+' g/dL';el('esa-trend-text').textContent=change.toFixed(1)+' g/dL over 2–4 weeks';el('esa-verdict').textContent=r.detail;
   el('esa-action-detail').textContent='Before applying any dose example, confirm the dosing interval, product label, iron status, blood pressure, symptoms, and recent events. During hospitalization for acute stroke, access thrombosis, or thromboembolism, consider suspending ESA. Discuss active or previous cancer with the treating team. Do not combine ESA and HIF-PHI.';
@@ -2422,7 +2422,7 @@ function calcAnemia(){
   if(!pop||![si,tibc,ferritin].every(Number.isFinite)||si<0||tibc<=0||ferritin<0||si>tibc){res.style.display='none';return;}
   const tsat=si/tibc*100;
   const r=pop==='pediatric'?{action:'SPECIALIST REVIEW',detail:'Pediatric anemia diagnosis, iron treatment, and Hb targets require age-specific specialist assessment. Adult rules are not applied.',monitor:''}:CKDAnemia2026.iron({setting:pop==='ckd'?'nd':pop,tsat,ferritin,infection:!!el('a-inflam')?.checked});
-  res.style.display='block';el('a-tsat-val').textContent=tsat.toFixed(1);el('a-ferritin-val').textContent=ferritin;el('a-type-val').textContent=r.action;
+  res.style.display='block';el('a-tsat-val').textContent=tsat.toFixed(1);el('a-ferritin-val').textContent=ferritin;el('a-type-val').textContent=r.action;el('a-type-val').style.fontSize='18px';
   el('a-tsat-badge').textContent='Interpret with ferritin';el('a-ferritin-badge').textContent='ng/mL';el('a-type-badge').textContent='KDIGO 2026';
   el('a-verdict').textContent=r.detail;el('a-action').textContent=(r.monitor||'')+' Confirm anemia, symptoms, and reversible causes before treatment. Results are clinician decision support.';
   if(el('a-warnings')){el('a-warnings').style.display='block';el('a-warnings').textContent='Ferritin can rise with inflammation. Investigate bleeding, hemolysis, B12/folate deficiency, marrow disease, and dialysis adequacy as appropriate. No result here diagnoses iron overload or sets an ESA dose.';}
@@ -2440,7 +2440,7 @@ function calcESAInit(){
  if(agent==='epoetin'||agent==='epoetin-beta'){dose=Math.round(weight*50/100)*100;unit='units/dose';schedule=setting==='dialysis'?'3 times weekly (KDIGO example)':'Once weekly (KDIGO example; 1–2 times weekly may be used)';}
  else if(agent==='cera'){dose=Math.round(weight*0.6*10)/10;unit='mcg/dose';schedule='Every 2 weeks (initial regimen)';}
  else{dose=Math.round(weight*0.45*10)/10;unit='mcg/dose';schedule='Once weekly (KDIGO example)';}
- res.style.display='block';el('init-decision-val').textContent=r.action;el('init-decision-sub').textContent='Adult '+(setting==='dialysis'?'HD / PD':'non-dialysis CKD');
+ res.style.display='block';el('init-decision-val').textContent=r.action;el('init-decision-val').style.fontSize='18px';el('init-decision-sub').textContent='Adult '+(setting==='dialysis'?'HD / PD':'non-dialysis CKD');
  el('init-dose-val').textContent=dose;el('init-dose-lbl').textContent='Example only if prescribed';el('init-dose-unit').textContent=unit;el('init-freq-val').textContent=schedule;el('init-freq-sub').textContent='Confirm regional label and practical dose';
  el('init-verdict').textContent=r.detail;
  el('init-detail').textContent='KDIGO 2026 Table 7 examples: select product, route, starting dose, and interval clinically; regional epoetin-beta labels may differ. Correct reversible causes, review iron and blood pressure, and discuss malignancy, stroke, and thrombotic risks. Target Hb below 11.5 g/dL; recheck in 2–4 weeks. Severe symptoms, active bleeding, or instability require urgent assessment; an ESA will not provide immediate correction.';
