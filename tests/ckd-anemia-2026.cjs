@@ -54,8 +54,8 @@ for(const file of changed){const html=fs.readFileSync(path.join(root,file),'utf8
 eq(A.iron({setting:'nd',ferritin:20,tsat:10}).profound,true);
 eq(/Profound iron deficiency/.test(A.iron({setting:'hd',ferritin:25,tsat:15}).detail),true);
 eq(A.iron({setting:'nd',ferritin:30,tsat:19}).profound,false);
-eq(/extension/.test(A.iron({setting:'transplant',ferritin:80,tsat:20}).detail),true);
-eq(/extension/.test(A.iron({setting:'nd',ferritin:80,tsat:20}).detail),false);
+eq(/Appendix Figure 4/.test(A.iron({setting:'transplant',ferritin:80,tsat:20}).detail),true);
+eq(/Appendix Figure 4/.test(A.iron({setting:'nd',ferritin:80,tsat:20}).detail),false);
 eq(ui('calc-iron-status-tsat','calcAnemia',{'a-dialysis':'hd','a-si':300,'a-tibc':250,'a-ferritin':200},['a-type-val']),['CHECK ENTRY']);
 eq(ui('calc-iv-iron-dose','calcIVIron',{'iron-setting':'transplant','iron-tsat':20,'iron-ferritin':80},['iron-decision-val']),['CONSIDER IRON']);
 eq(ui('calc-iv-iron-dose','calcIVIron',{'iron-setting':'hd','iron-tsat':25,'iron-ferritin':600},['iron-decision-val']),['REASSESS']);

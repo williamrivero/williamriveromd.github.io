@@ -14,7 +14,7 @@
     const route=setting==='hd'?'IV iron is suggested; use a proactive, monitored regimen and the formulation’s dosing limits.':'Oral or IV iron may be chosen according to severity, response, tolerance, preference, availability, and cost. Switch an optimal oral regimen to IV if ineffective after 1–3 months or poorly tolerated.';
     const profound=ferritin<30 && tsat<20;
     const profoundNote=profound?' Profound iron deficiency (ferritin <30 ng/mL and TSAT <20%): even without anemia, KDIGO 2026 suggests considering oral or IV iron, especially with symptoms.':'';
-    const extension=setting==='transplant'?' Kidney transplant recipients are not named in the KDIGO 2026 iron-initiation recommendation; the non-dialysis criteria are applied as an extension.':'';
+    const extension=setting==='transplant'?' Kidney transplant recipients: KDIGO 2026 applies the non-dialysis criteria (Appendix Figure 4); monitor phosphate after iron preparations that raise FGF23.':'';
     if(ongoing) return {action:'REVIEW MAINTENANCE',eligible,profound,detail:'No routine laboratory withhold threshold is met. Review the current regimen against Hb and iron trends, blood loss, response, and tolerance; this is not an automatic instruction to continue or increase iron. '+route+extension,monitor};
     return eligible?{action:'CONSIDER IRON',eligible,profound,detail:'If anemia is present, these results meet KDIGO 2026 suggested iron-initiation criteria. '+route+profoundNote+extension,monitor}:{action:'REASSESS',eligible,profound,detail:'The suggested iron-initiation criteria are not met. This does not establish adequate iron, iron overload, or a mandatory stop to an existing regimen. Investigate persistent anemia and individualize further management.'+extension,monitor};
   }
