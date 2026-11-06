@@ -42,29 +42,31 @@ The patient tab is read by people with very different schooling, often on a phon
 
 ### 1.3 Asset register
 
+**Status (2026-11-07):** all 19 GPT renders passed QC and are live on the guide; the code-native interims remain in `image-prompts/onconephrology-chemotherapy-kidney-svg/` as source only.
+
 **Status key:** *Interim live* = a code-native version is already on the page and is replaced by the GPT render after QC. *New* = needs generating, then the HTML snippet in Part 3 is pasted at the anchor shown.
 
 | ID | File (`images/`) | Size | Skill / scaffold | Anchor | Tab | Job | Status |
 |---|---|---|---|---|---|---|---|
-| 001 | `onconephrology-chemotherapy-kidney-vignette-hero.png` | 2048 × 2048 | hero-vignette v3, Scaffold A | Hero disc | Patient | Shared plan | Interim live |
-| 006 | `onconephrology-chemotherapy-kidney-og.png` | 1200 × 630 | infographic, OG card | `og:image`, Latest strip | — | Shared plan | Interim live |
-| 02 | `onconephrology-chemotherapy-kidney-02-exit-door-target.png` | 1792 × 1024 | mechanism figure | `#why-kidneys` | Patient | Exit door and target | Interim live |
-| 07 | `onconephrology-chemotherapy-kidney-07-two-way-street.png` | 1024 × 1024 | organ-crosstalk sigil | `#cancer-itself` (top) | Patient | Exit door and target | New |
-| 08 | `onconephrology-chemotherapy-kidney-08-cancer-itself.png` | 1792 × 1024 | simple-figure, Scaffold C | `#cancer-itself` (after the list) | Patient | Mechanism | New |
-| 09 | `onconephrology-chemotherapy-kidney-09-creatinine-trap.png` | 1792 × 1024 | simple-figure, Scaffold B | `#before-treatment` (after "normal creatinine") | Patient | Measure correctly | New |
-| 10 | `onconephrology-chemotherapy-kidney-10-cycle-check.png` | 1792 × 1024 | simple-figure, Scaffold C | `#before-treatment` (before the table) | Patient | Act | New |
-| 11 | `onconephrology-chemotherapy-kidney-11-three-ways.png` | 1792 × 1024 | mechanism figure (simplified) | `#higher-risk-drugs` (before the table) | Patient | Mechanism | New |
-| 12 | `onconephrology-chemotherapy-kidney-12-dialysis-timing.png` | 1792 × 1024 | simple-figure, Scaffold B | `#ckd-dialysis` | Patient | Shared plan | New |
-| 13 | `onconephrology-chemotherapy-kidney-13-protect-do-avoid.png` | 1792 × 1024 | infographic, food-matrix style | `#protect` (after the Do/Avoid cards) | Patient | Act | New |
-| 14 | `onconephrology-chemotherapy-kidney-14-after-treatment-loop.png` | 1024 × 1024 | infographic, circular workflow | `#after-treatment` | Patient | Act | New |
-| 15 | `onconephrology-chemotherapy-kidney-15-smarter-screening.png` | 1792 × 1024 | simple-figure, Scaffold B | `#screening` | Patient | Act | New |
-| 03 | `onconephrology-chemotherapy-kidney-03-injury-pattern-map.png` | 1792 × 1024 | mechanism figure | `#md-drugs` | Clinician | Mechanism | Interim live |
-| 04 | `onconephrology-chemotherapy-kidney-04-before-cisplatin-checklist.png` | 1792 × 1024 | algorithm, Mode C | `#md-drugs` (cisplatin) | Clinician | Act | Interim live |
-| 05 | `onconephrology-chemotherapy-kidney-05-gfr-for-dosing.png` | 1792 × 1024 | algorithm, Mode C | `#md-kidney-function` | Clinician | Measure correctly | Interim live |
-| 16 | `onconephrology-chemotherapy-kidney-16-mtx-crystals-rescue.png` | 1792 × 1024 | mechanism figure | `#md-methotrexate` (after the physiology paragraph) | Clinician | Mechanism | New |
-| 17 | `onconephrology-chemotherapy-kidney-17-hdmtx-timeline.png` | 1792 × 1024 | algorithm, Mode B (timeline) | `#md-methotrexate` (after the checklist) | Clinician | Act | New |
-| 18 | `onconephrology-chemotherapy-kidney-18-tma-type1-type2.png` | 1792 × 1024 | simple-figure, Scaffold B | `#md-tma` | Clinician | Mechanism | New |
-| 19 | `onconephrology-chemotherapy-kidney-19-beyond-cytotoxics.png` | 1792 × 1024 | simple-figure, Scaffold C | `#md-other-classes` | Clinician | Mechanism | New |
+| 001 | `onconephrology-chemotherapy-kidney-vignette-hero.png` | 2048 × 2048 | hero-vignette v3, Scaffold A | Hero disc | Patient | Shared plan | Live (GPT render, 2026-11-07) |
+| 006 | `onconephrology-chemotherapy-kidney-og.png` | 1200 × 630 | infographic, OG card | `og:image`, Latest strip | — | Shared plan | Live (GPT render, 2026-11-07) |
+| 02 | `onconephrology-chemotherapy-kidney-02-exit-door-target.png` | 1792 × 1024 | mechanism figure | `#why-kidneys` | Patient | Exit door and target | Live (GPT render, 2026-11-07) |
+| 07 | `onconephrology-chemotherapy-kidney-07-two-way-street.png` | 1024 × 1024 | organ-crosstalk sigil | `#cancer-itself` (top) | Patient | Exit door and target | Live (GPT render, 2026-11-07) |
+| 08 | `onconephrology-chemotherapy-kidney-08-cancer-itself.png` | 1792 × 1024 | simple-figure, Scaffold C | `#cancer-itself` (after the list) | Patient | Mechanism | Live (GPT render, 2026-11-07) |
+| 09 | `onconephrology-chemotherapy-kidney-09-creatinine-trap.png` | 1792 × 1024 | simple-figure, Scaffold B | `#before-treatment` (after "normal creatinine") | Patient | Measure correctly | Live (GPT render, 2026-11-07) |
+| 10 | `onconephrology-chemotherapy-kidney-10-cycle-check.png` | 1792 × 1024 | simple-figure, Scaffold C | `#before-treatment` (before the table) | Patient | Act | Live (GPT render, 2026-11-07) |
+| 11 | `onconephrology-chemotherapy-kidney-11-three-ways.png` | 1792 × 1024 | mechanism figure (simplified) | `#higher-risk-drugs` (before the table) | Patient | Mechanism | Live (GPT render, 2026-11-07) |
+| 12 | `onconephrology-chemotherapy-kidney-12-dialysis-timing.png` | 1792 × 1024 | simple-figure, Scaffold B | `#ckd-dialysis` | Patient | Shared plan | Live (GPT render, 2026-11-07) |
+| 13 | `onconephrology-chemotherapy-kidney-13-protect-do-avoid.png` | 1792 × 1024 | infographic, food-matrix style | `#protect` (after the Do/Avoid cards) | Patient | Act | Live (GPT render, 2026-11-07) |
+| 14 | `onconephrology-chemotherapy-kidney-14-after-treatment-loop.png` | 1024 × 1024 | infographic, circular workflow | `#after-treatment` | Patient | Act | Live (GPT render, 2026-11-07) |
+| 15 | `onconephrology-chemotherapy-kidney-15-smarter-screening.png` | 1792 × 1024 | simple-figure, Scaffold B | `#screening` | Patient | Act | Live (GPT render, 2026-11-07) |
+| 03 | `onconephrology-chemotherapy-kidney-03-injury-pattern-map.png` | 1792 × 1024 | mechanism figure | `#md-drugs` | Clinician | Mechanism | Live (GPT render, 2026-11-07) |
+| 04 | `onconephrology-chemotherapy-kidney-04-before-cisplatin-checklist.png` | 1792 × 1024 | algorithm, Mode C | `#md-drugs` (cisplatin) | Clinician | Act | Live (GPT render, 2026-11-07) |
+| 05 | `onconephrology-chemotherapy-kidney-05-gfr-for-dosing.png` | 1792 × 1024 | algorithm, Mode C | `#md-kidney-function` | Clinician | Measure correctly | Live (GPT render, 2026-11-07) |
+| 16 | `onconephrology-chemotherapy-kidney-16-mtx-crystals-rescue.png` | 1792 × 1024 | mechanism figure | `#md-methotrexate` (after the physiology paragraph) | Clinician | Mechanism | Live (GPT render, 2026-11-07) |
+| 17 | `onconephrology-chemotherapy-kidney-17-hdmtx-timeline.png` | 1792 × 1024 | algorithm, Mode B (timeline) | `#md-methotrexate` (after the checklist) | Clinician | Act | Live (GPT render, 2026-11-07) |
+| 18 | `onconephrology-chemotherapy-kidney-18-tma-type1-type2.png` | 1792 × 1024 | simple-figure, Scaffold B | `#md-tma` | Clinician | Mechanism | Live (GPT render, 2026-11-07) |
+| 19 | `onconephrology-chemotherapy-kidney-19-beyond-cytotoxics.png` | 1792 × 1024 | simple-figure, Scaffold C | `#md-other-classes` | Clinician | Mechanism | Live (GPT render, 2026-11-07) |
 
 That gives 19 images: 6 interims already live to be upgraded, and 13 new ones. Every patient section now has at least one picture, and every clinician section that turns on a mechanism or a sequence has one.
 
