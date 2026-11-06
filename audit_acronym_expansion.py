@@ -103,6 +103,10 @@ GLOBAL_ACRONYMS = {
     # ambiguous (tubuloglomerular feedback vs transforming growth factor beta).
     # Add them as part of a dedicated site-wide remediation pass, not piecemeal.
     "SGLT1","GLUT","GLUT1","GLUT2","TmG","NHE3","ATP","ARR",
+    # tubular injury / fibrosis biology (Kidney International Sept 2026 updates).
+    # NOTE: KIM-1 deliberately NOT global yet -- unexpanded in innovative-technologies-ckd,
+    # leptospirosis-nephropathy, heart-kidney-connection; enforced via per-guide glossaries.
+    "CDH11",
 
 }
 
