@@ -107,8 +107,12 @@
   /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
   .header-nav {
     display: flex; align-items: center; gap: 14px;
-    margin-left: auto; flex: 0 0 auto;
+    margin-left: auto; flex: 0 1 auto; min-width: 0;
+    /* Narrow phones: scroll the nav inside the header instead of widening the
+       page (the 5 links overflowed 390-px viewports by ~24 px). */
+    overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
   }
+  .header-nav::-webkit-scrollbar { display: none; }
   .header-nav a {
     font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
     text-transform: uppercase;
@@ -121,6 +125,10 @@
   @media (max-width: 640px) {
     .header-nav { gap: 10px; }
     .header-nav a { font-size: 10.5px; letter-spacing: .04em; }
+  }
+  @media (max-width: 420px) {
+    .header-nav { gap: 8px; }
+    .header-nav a { font-size: 10px; letter-spacing: .02em; }
   }
   /* Inline lang chips inside the header (next to the brand). */
   .header-lang {
@@ -1221,6 +1229,10 @@
   html[data-theme="dark"] .section a:not([class]),
   html[data-theme="dark"] .ref-acc a,
   html[data-theme="dark"] .glossary-acc a { color:#5fd0d8; }
+  .ref-acc a, .ref-section a { color: var(--teal); word-break: break-word; }
+  html[data-theme="dark"] .ref-section a { color:#5fd0d8; }
+  /* White step numbers on --teal fall below 4.5:1 once --teal brightens in dark mode. */
+  html[data-theme="dark"] .step-num { background:#0e4a50; }
 
   /* Dark-mode contrast remaps — anywhere a guide hard-codes color:var(--navy)
      on text that sits on a dark surface in dark mode (navy-on-navy = invisible). */

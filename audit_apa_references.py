@@ -80,7 +80,7 @@ def check_apa(cite):
         'ITAL':  bool(re.search(r'<em>[^<]+</em>', cite)),
         'DOI':   bool(re.search(r'doi\.org/', cite, re.I)),
         'URL':   bool(re.search(r'https?://', cite)),
-        'YEAR':  bool(re.search(r'\(\s*(19|20)\d{2}\s*[a-z]?\)', cite)),
+        'YEAR':  bool(re.search(r'\(\s*(19|20)\d{2}\s*[a-z]?(?:,\s*[A-Z][a-z]+(?:\s+\d{1,2})?)?\)', cite)),  # also APA news/web dates: (2025, March 28)
         'AUTH':  bool(re.search(r'[A-Z][a-zA-Z\-]+,\s+[A-Z]\.', cite)) or
                  bool(re.search(r'\([A-Z][A-Z0-9\-]{1,10}\)[^()]{0,60}\.\s*\(\s*(19|20)\d{2}', cite)) or
                  # named group author, e.g. "MyTEMP Writing Committee. (2022)."
