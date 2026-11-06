@@ -1,0 +1,36 @@
+{
+  "_comment": "Numerical source for the clinician cohort chart in guides/al-amyloidosis-kidneys.html. The chart and the static table must both match this file (checked by tests/al-amyloidosis-tools.cjs). Values verified against the PubMed abstract (PMID 42498058) on 2026-11-06; per-score group sizes and the competing-risk hazard ratio are intentionally null until checked against the full text.",
+  "source": {
+    "citation": "Rauf, M. U., et al. (2026). Evaluation of CD68+ macrophages in relation to kidney outcomes in immunoglobulin light-chain amyloidosis. Kidney International, 110(5), 1283-1293.",
+    "pmid": "42498058",
+    "doi": "10.1016/j.kint.2026.06.036",
+    "design": "Retrospective single-center cohort (UK National Amyloidosis Centre), observational"
+  },
+  "population": "Consecutive patients with kidney AL amyloidosis treated 2000-2022 who achieved a deep and sustained hematologic response to chemotherapy",
+  "cohort_n": 708,
+  "outcome": "Renal replacement therapy (RRT)",
+  "horizon_years": 5,
+  "macrophage_scores": [
+    { "score": 0, "rrt_cuminc_5y_pct": 14 },
+    { "score": 1, "rrt_cuminc_5y_pct": 22 },
+    { "score": 2, "rrt_cuminc_5y_pct": 40 },
+    { "score": 3, "rrt_cuminc_5y_pct": 52 }
+  ],
+  "group_sizes": null,
+  "percent_ci": null,
+  "cox_hr_per_score_point": {
+    "hr": 1.31,
+    "ci95": [1.09, 1.56],
+    "model": "Multivariable Cox regression",
+    "covariates_named_in_abstract": ["baseline eGFR", "proteinuria", "interstitial fibrosis and tubular atrophy (IFTA)"]
+  },
+  "competing_risk_hr": null,
+  "sap_landmark": {
+    "n": 396,
+    "landmark": "Serial SAP scintigraphy at diagnosis and at 2 years; outcome counted from the 2-year landmark",
+    "comparison": "Amyloid accumulation vs regression",
+    "hr": 9.44,
+    "ci95": [3.25, 27.39],
+    "note": "Conditional hazard ratio among patients alive and RRT-free at 2 years with serial scans; not an absolute risk and not part of the bar chart."
+  }
+}
