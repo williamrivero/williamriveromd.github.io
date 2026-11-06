@@ -50,4 +50,26 @@ eq(A.lab({key:'hgb',value:110,age:12}).status,'WATCH');
 const changedExtra=require('child_process').execFileSync('git',['diff','--name-only'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(x=>x.endsWith('.html'));
 const changed=[...new Set(['anemia-management','calc-eri','calc-esa-dose-adjustment','calc-iron-deficit-ganzoni','calc-iron-status-tsat','calc-iv-iron-dose','calc-reticulocyte-rpi','calc-transfusion-hgb','esa-dose-cancer-risk','epo-resistant-renal-anemia','understanding-iron','lab-interpreter-guide','medication-operational-guide','practical-outpatient-algorithms'].map(n=>'guides/'+n+'.html').concat(changedExtra))];
 for(const file of changed){const html=fs.readFileSync(path.join(root,file),'utf8');for(const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)){if(!/application\/ld\+json/.test(m[1]))new vm.Script(m[2],{filename:file});}checks++;}
+// Re-audit additions (Nov 6, 2026): profound iron deficiency, transplant extension, TSAT entry check, nutrition calculators, stale-threshold lint.
+eq(A.iron({setting:'nd',ferritin:20,tsat:10}).profound,true);
+eq(/Profound iron deficiency/.test(A.iron({setting:'hd',ferritin:25,tsat:15}).detail),true);
+eq(A.iron({setting:'nd',ferritin:30,tsat:19}).profound,false);
+eq(/extension/.test(A.iron({setting:'transplant',ferritin:80,tsat:20}).detail),true);
+eq(/extension/.test(A.iron({setting:'nd',ferritin:80,tsat:20}).detail),false);
+eq(ui('calc-iron-status-tsat','calcAnemia',{'a-dialysis':'hd','a-si':300,'a-tibc':250,'a-ferritin':200},['a-type-val']),['CHECK ENTRY']);
+eq(ui('calc-iv-iron-dose','calcIVIron',{'iron-setting':'transplant','iron-tsat':20,'iron-ferritin':80},['iron-decision-val']),['CONSIDER IRON']);
+eq(ui('calc-iv-iron-dose','calcIVIron',{'iron-setting':'hd','iron-tsat':25,'iron-ferritin':600},['iron-decision-val']),['REASSESS']);
+for(const page of ['calc-ckd-nutrition-rx','ckd-dri-calculator']){
+ const html=fs.readFileSync(path.join(root,'guides',page+'.html'),'utf8');
+ assert(/stage==='HD'\)\{ feTarget='IV iron preferred'; feNote='[^']*ferritin &le;500 ng\/mL and TSAT &le;30%/.test(html),page+' HD iron rule');checks++;
+ assert(/stage==='PD'\)\{ feTarget='Oral or IV iron'/.test(html),page+' PD iron rule');checks++;
+ assert(!/TSAT 20–40%|ferritin &lt;100 or TSAT &lt;20%/.test(html),page+' stale iron targets');checks++;
+}
+// Stale thresholds must not reappear anywhere in guides or downloads.
+const stale=[/\(target\s*[−-]\s*actual[^)]*\)\s*×\s*0\.24\s*\+\s*500/i,/Target: ferritin 200–500, TSAT 20–40%/,/ferritin (?:&gt;|>)\s?800 (?:or|o) TSAT/,/ferritin (?:&gt;|>)\s?800 n(?:in)?g\/mL, TSAT (?:&gt;|>)50%/,/KDIGO 2024 (?:CKD Anemia|iron targets|\(anemia)/,/Hgb\) 100–115 g\/L \(KDIGO 2024\)/,/TSAT 30–50%/,/and its 2024 update/,/Population-specific reference<\/a>\.<\/p>/];
+for(const dir of ['guides','downloads'])for(const file of fs.readdirSync(path.join(root,dir)).filter(f=>f.endsWith('.html'))){
+ const html=fs.readFileSync(path.join(root,dir,file),'utf8');for(const re of stale)assert(!re.test(html),`${dir}/${file} contains stale iron text ${re}`);checks++;
+}
+// Iron-tool pages keep exactly one full KDIGO table (in Evidence), not one per accordion.
+for(const page of ['calc-iron-deficit-ganzoni','calc-iron-status-tsat','calc-iv-iron-dose']){const html=fs.readFileSync(path.join(root,'guides',page+'.html'),'utf8');eq([page,(html.match(/<td>Withhold routine iron<\/td>/g)||[]).length],[page,1]);}
 console.log(`${checks} checks passed: thresholds, unit equivalence, invalid inputs, ESA timing, lab interpretation, embedded UI, and script syntax.`);
