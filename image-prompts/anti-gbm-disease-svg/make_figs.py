@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Original code-native figures for anti-gbm-disease (SVG source -> PNG master -> WebP).
-Usage: python3 make_figs.py <repo-root>
+Usage: python3 make_figs.py <repo-root>  (interim figures; production prompts in image-prompts/anti-gbm-disease-image-plan.md)
 Numbers drawn on figure 05 come from Floyd et al. (2023) JASN 34(3):505-514 (abstract, verified on PubMed)."""
 import os, subprocess, sys, math
 from PIL import Image
