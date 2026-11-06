@@ -2079,7 +2079,7 @@ html[data-theme="dark"] .wg-stat-val{color:#e8eaf0;}
 <tr><td>Phosphorus</td><td>700 mg</td><td>800–1,000 mg all stages; tighter with elevated serum P</td><td>Phosphorus drives PTH elevation, vascular calcification, and FGF-23 excess — a triad that kills dialysis patients. Binders required at most meals if dietary restriction insufficient.</td></tr>
 <tr><td>Calcium</td><td>1,000 mg</td><td>Total ≤1,500 mg (dietary + binders) KDIGO 2024</td><td>Excess calcium from binders contributes to vascular calcification. Calcium-based binders (CaCO₃) counted toward the 1,500 mg total.</td></tr>
 <tr><td>Magnesium</td><td>420 mg</td><td>Generally maintained; monitor if using antacids</td><td>Accumulates in ESKD; excess causes neuromuscular depression. Avoid magnesium-containing antacids and laxatives.</td></tr>
-<tr><td>Iron</td><td>8 mg (M) / 18 mg (F)</td><td>Supplement if ferritin &lt;200, TSAT &lt;20% on dialysis</td><td>CKD causes iron-restricted erythropoiesis due to hepcidin excess. IV iron (Ferrofer) preferred on dialysis — oral iron poorly absorbed with high hepcidin.</td></tr>
+<tr><td>Iron</td><td>8 mg (M) / 18 mg (F)</td><td>Iron therapy per KDIGO 2026: HD — ferritin ≤500 and TSAT ≤30%; non-dialysis/PD — ferritin &lt;100 and TSAT &lt;40%, or ferritin 100–&lt;300 and TSAT &lt;25%</td><td>CKD causes iron-restricted erythropoiesis due to hepcidin excess. IV iron (Ferrofer) is suggested in HD, where oral iron is poorly absorbed; oral or IV iron in PD and non-dialysis CKD.</td></tr>
 </tbody>
 </table>
 <div class="alert alert-teal">
@@ -4248,9 +4248,10 @@ function runCalc(){
 
   // ── IRON ──
   let feTarget, feNote;
-  if(isDialysis){ feTarget='IV iron preferred'; feNote='Oral iron poorly absorbed in CKD (high hepcidin). IV iron sucrose (Ferrofer) given during HD sessions. Target: ferritin 200–500, TSAT 20–40%.'; }
+  if(stage==='HD'){ feTarget='IV iron preferred'; feNote='Oral iron is poorly absorbed in HD (high hepcidin). KDIGO 2026: start IV iron, such as iron sucrose (Ferrofer) during HD sessions, when ferritin &le;500 ng/mL and TSAT &le;30%. Withhold routine iron if ferritin &gt;700 ng/mL or TSAT &ge;40%.'; }
+  else if(stage==='PD'){ feTarget='Oral or IV iron'; feNote='KDIGO 2026: consider iron if ferritin &lt;100 ng/mL and TSAT &lt;40%, or ferritin 100&ndash;&lt;300 ng/mL and TSAT &lt;25%. Oral or IV by preference and tolerance; switch to IV if oral is ineffective after 1&ndash;3 months. Withhold if ferritin &gt;700 ng/mL or TSAT &ge;40%.'; }
   else if(isHealthy){ feTarget=sex==='M'?'8 mg':'18 mg (27 mg if pregnant)'; feNote=sex==='F'?'Premenopausal women need 18 mg/day due to menstrual losses. Good sources: lean red meat, liver, legumes, dark leafy greens + vitamin C for absorption.':'8 mg/day. Red meat, legumes, and fortified cereals are good sources. Most men easily meet this from diet.'; }
-  else { feTarget=sex==='M'?'8 mg':'18 mg'; feNote='Supplement orally if ferritin &lt;100 or TSAT &lt;20%. Consider IV iron if not tolerating oral or if eGFR &lt;30.'; }
+  else { feTarget=sex==='M'?'8 mg':'18 mg'; feNote='KDIGO 2026: consider oral or IV iron if ferritin &lt;100 ng/mL and TSAT &lt;40%, or ferritin 100&ndash;&lt;300 ng/mL and TSAT &lt;25%. Switch to IV if oral is ineffective after 1&ndash;3 months or poorly tolerated.'; }
 
   // ══ VITAMINS ══
   const vitDTarget = isHealthy ? '15–20 mcg (600–800 IU) cholecalciferol' : '25–50 mcg (1,000–2,000 IU) cholecalciferol';
