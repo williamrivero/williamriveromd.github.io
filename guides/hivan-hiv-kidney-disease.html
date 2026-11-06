@@ -103,8 +103,12 @@
   /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
   .header-nav {
     display: flex; align-items: center; gap: 14px;
-    margin-left: auto; flex: 0 0 auto;
+    margin-left: auto; flex: 0 1 auto; min-width: 0;
+    /* Narrow phones: scroll the nav inside the header instead of widening the
+       page (the 5 links overflowed 390-px viewports by ~24 px). */
+    overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
   }
+  .header-nav::-webkit-scrollbar { display: none; }
   .header-nav a {
     font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
     text-transform: uppercase;
@@ -117,6 +121,10 @@
   @media (max-width: 640px) {
     .header-nav { gap: 10px; }
     .header-nav a { font-size: 10.5px; letter-spacing: .04em; }
+  }
+  @media (max-width: 420px) {
+    .header-nav { gap: 8px; }
+    .header-nav a { font-size: 10px; letter-spacing: .02em; }
   }
   /* Inline lang chips inside the header (next to the brand). */
   .header-lang {
@@ -1727,7 +1735,7 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
 <p class="hero-sub"><span data-lang="en"><em>HIV can harm your kidneys — but starting treatment changes everything</em></span><span data-lang="tl" class="lang-hidden"><em>Maaaring makapinsala ang HIV sa inyong mga bato — ngunit binabago ng pagsisimula ng gamutan ang lahat</em></span><span data-lang="ceb" class="lang-hidden"><em>Makadaot ang HIV sa imong mga kidney — apan ang pagsugod sa tambal mag-usab sa tanan</em></span><span data-lang="kap" class="lang-hidden"><em>Malyaring makasira ing HIV karing bato mu — dapot ing pamagsimula ning gamut babago ne ing anggang bagay</em></span></p>
 <div class="hero-meta">
 <span class="hero-published"><strong><span data-lang="en">Published</span><span class="lang-hidden" data-lang="tl">Nailathala</span><span class="lang-hidden" data-lang="ceb">Gipatik</span><span class="lang-hidden" data-lang="kap">Pepalwal</span>:</strong> <time datetime="2026-06-23T04:42:42+08:00" style="display:inline-block;background:rgba(26,107,114,.18);border:1px solid rgba(26,107,114,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">Jun 23, 2026</time></span>
-<span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">7</span></span>
+<span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">5</span></span>
 <span class="hero-readtime"><strong><span data-lang="en">Read time</span><span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span><span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span><span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>:</strong> <time datetime="PT9M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~9 min</time></span>
 </div>
 </div>
@@ -2601,15 +2609,13 @@ try{(function(){var v=localStorage.getItem('wgmr-hivan-mode');if(v===null){var p
 <summary style="cursor:pointer;list-style:none;padding:15px 20px;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;color:var(--text);display:flex;align-items:center;gap:10px;">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;color:var(--teal);"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
 <span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>
-<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">7 sources</span>
+<span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">5 sources</span>
 </summary>
 <ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);">
-<li>KDIGO CKD Guidelines 2024</li>
-<li>WHO HIV Treatment Guidelines 2021</li>
-<li>INSIGHT START Study Group</li>
-<li>DISCOVER Trial</li>
-<li>Philippine Society of Nephrology Guidelines</li>
-<li>PSMID HIV Guidelines</li>
+<li>Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. (2024). KDIGO 2024 clinical practice guideline for the evaluation and management of chronic kidney disease. <em>Kidney International</em>, <em>105</em>(4S), S117–S314. <a href="https://doi.org/10.1016/j.kint.2023.10.018" target="_blank" rel="noopener">https://doi.org/10.1016/j.kint.2023.10.018</a></li>
+<li>World Health Organization (WHO). (2021). <em>Consolidated guidelines on HIV prevention, testing, treatment, service delivery and monitoring: Recommendations for a public health approach</em>. World Health Organization. <a href="https://www.ncbi.nlm.nih.gov/books/NBK572729/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/books/NBK572729/</a></li>
+<li>INSIGHT START Study Group, Lundgren, J. D., Babiker, A. G., Gordin, F., Emery, S., Grund, B., Sharma, S., Avihingsanon, A., Cooper, D. A., Fätkenheuer, G., Llibre, J. M., Molina, J.-M., Munderi, P., Schechter, M., Wood, R., Klingman, K. L., Collins, S., Lane, H. C., Phillips, A. N., &amp; Neaton, J. D. (2015). Initiation of antiretroviral therapy in early asymptomatic HIV infection. <em>New England Journal of Medicine</em>, <em>373</em>(9), 795–807. <a href="https://doi.org/10.1056/NEJMoa1506816" target="_blank" rel="noopener">https://doi.org/10.1056/NEJMoa1506816</a></li>
+<li>Mayer, K. H., Molina, J.-M., Thompson, M. A., Anderson, P. L., Mounzer, K. C., De Wet, J. J., DeJesus, E., Jessen, H., Grant, R. M., Ruane, P. J., Wong, P., Ebrahimi, R., Zhong, L., Mathias, A., Callebaut, C., Collins, S. E., Das, M., McCallister, S., Brainard, D. M., . . . Hare, C. B. (2020). Emtricitabine and tenofovir alafenamide vs emtricitabine and tenofovir disoproxil fumarate for HIV pre-exposure prophylaxis (DISCOVER): Primary results from a randomised, double-blind, multicentre, active-controlled, phase 3, non-inferiority trial. <em>The Lancet</em>, <em>396</em>(10246), 239–254. <a href="https://doi.org/10.1016/S0140-6736(20)31065-5" target="_blank" rel="noopener">https://doi.org/10.1016/S0140-6736(20)31065-5</a></li>
 <li>Shankar, M., Karam, S., Bahous, S. A., Davidson, B., Kumar, V., Sharma, S., Vareesangthip, K., Rosner, M. H., &amp; Wijewickrama, E. (2026). Unique aspects of acute kidney injury associated with infections in the tropics: Presentation, challenges, and opportunities. <em>Kidney International</em>, <em>110</em>(1), 61–69. <a href="https://doi.org/10.1016/j.kint.2026.02.025" target="_blank" rel="noopener">https://doi.org/10.1016/j.kint.2026.02.025</a></li>
 </ol>
 </details>

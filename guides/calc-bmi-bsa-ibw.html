@@ -14,7 +14,7 @@
 <meta name="theme-color" content="#0f1e33">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2026-06-23T04:42:42+08:00">
-<meta property="article:modified_time" content="2035-05-01T00:00:00+08:00">
+<meta property="article:modified_time" content="2026-06-23T04:42:42+08:00">
 <meta property="og:site_name" content="William Gregory M. Rivero, MD">
 <meta property="og:title" content="BMI, BSA, Ideal &amp; Adjusted Body Weight Calculator (Asian-Pacific cutoffs)">
 <meta property="og:description" content="Calculate BMI with WHO Asian-Pacific cutoffs, body surface area (Mosteller), Devine ideal body weight, and adjusted body weight in one tool — with formulas, evidence, and clinical pearls.">
@@ -108,8 +108,12 @@
   /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
   .header-nav {
     display: flex; align-items: center; gap: 14px;
-    margin-left: auto; flex: 0 0 auto;
+    margin-left: auto; flex: 0 1 auto; min-width: 0;
+    /* Narrow phones: scroll the nav inside the header instead of widening the
+       page (the 5 links overflowed 390-px viewports by ~24 px). */
+    overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
   }
+  .header-nav::-webkit-scrollbar { display: none; }
   .header-nav a {
     font-size: 11.5px; font-weight: 600; letter-spacing: .08em;
     text-transform: uppercase;
@@ -122,6 +126,10 @@
   @media (max-width: 640px) {
     .header-nav { gap: 10px; }
     .header-nav a { font-size: 10.5px; letter-spacing: .04em; }
+  }
+  @media (max-width: 420px) {
+    .header-nav { gap: 8px; }
+    .header-nav a { font-size: 10px; letter-spacing: .02em; }
   }
   /* Inline lang chips inside the header (next to the brand). */
   .header-lang {

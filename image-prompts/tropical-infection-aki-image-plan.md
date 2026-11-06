@@ -42,22 +42,22 @@ Patient figures use minimal English labels that are also common in Filipino clin
 | 03 | `#scrub-typhus` | `tropical-infection-aki-03-eschar-sites.png` | simple-figure | Where to search for the eschar | 1024 × 1536 | **Core** | Wired |
 | 04 | `#md-comparison` | `tropical-infection-aki-04-comparison.png` | infographic (reference card) | Four infections compared | 1792 × 1024 | **Core** | Wired |
 | 05 | `#md-approach` | `tropical-infection-aki-05-first-24h-algorithm.png` | algorithm-generator (Mode C) | First-24-hour pathway | 1024 × 1536 | **Core** | Wired |
-| 06 | `#four-infections` (top) | `tropical-infection-aki-06-how-you-catch-it.png` | infographic (multi-panel) | Four everyday exposure scenes | 1792 × 1024 | **Core** | Add |
-| 07 | `#tr-urgent` (after alert) | `tropical-infection-aki-07-warning-signs.png` | simple-figure (reference card) | Six go-to-hospital-today signs | 1024 × 1024 | **Core** | Add |
-| 08 | `#fever-kidneys` (after list) | `tropical-infection-aki-08-urine-color-guide.png` | simple-figure (comparison) | What urine color and amount mean | 1792 × 1024 | **Core** | Add |
-| 09 | `#scrub-typhus` (before eschar) | `tropical-infection-aki-09-chigger-to-fever.png` | simple-figure (step sequence) | How a chigger bite becomes fever | 1792 × 1024 | Recommended | Add |
-| 10 | `#malaria` (top) | `tropical-infection-aki-10-malaria-where-now.png` | simple-figure (schematic map) | Malaria now is mostly southern Palawan or travel | 1024 × 1024 | Recommended | Add |
-| 11 | `#malaria` (after first paragraph) | `tropical-infection-aki-11-knowlesi-sigil.png` | organ-crosstalk sigil | Monkey → mosquito → human | 1024 × 1024 | Optional | Add |
-| 12 | `#prevention` | `tropical-infection-aki-12-prevention-card.png` | infographic (multi-panel) | One protective action per infection | 1792 × 1024 | **Core** | Add |
-| 13 | `#recovery` | `tropical-infection-aki-13-recovery-timeline.png` | simple-figure (step sequence) | Follow-up from discharge to 3 months | 1792 × 1024 | Recommended | Add |
-| 14 | `#md-scrub-typhus` (pathophysiology) | `tropical-infection-aki-14-scrub-typhus-mechanism.png` | biomedical-mechanism | Endothelial infection → kidney injury → treatment | 1792 × 1024 | **Core** | Add |
-| 15 | `#md-scrub-typhus` (INTREST para) | `tropical-infection-aki-15-scrub-multiorgan-sigil.png` | organ-crosstalk sigil | One vasculitis, five organs | 1024 × 1024 | Optional | Add |
-| 16 | `#md-malaria` (mechanisms) | `tropical-infection-aki-16-malaria-aki-mechanism.png` | biomedical-mechanism | Sequestration and cell-free hemoglobin → ATN | 1792 × 1024 | **Core** | Add |
-| 17 | `#md-krt` | `tropical-infection-aki-17-krt-modality.png` | simple-figure (comparison) | Blood-based therapy vs acute PD | 1792 × 1024 | Recommended | Add |
+| 06 | `#four-infections` (top) | `tropical-infection-aki-06-how-you-catch-it.png` | infographic (multi-panel) | Four everyday exposure scenes | 1792 × 1024 | **Core** | Wired |
+| 07 | `#tr-urgent` (after alert) | `tropical-infection-aki-07-warning-signs.png` | simple-figure (reference card) | Six go-to-hospital-today signs | 1024 × 1024 | **Core** | Wired |
+| 08 | `#fever-kidneys` (after list) | `tropical-infection-aki-08-urine-color-guide.png` | simple-figure (comparison) | What urine color and amount mean | 1792 × 1024 | **Core** | Wired |
+| 09 | `#scrub-typhus` (before eschar) | `tropical-infection-aki-09-chigger-to-fever.png` | simple-figure (step sequence) | How a chigger bite becomes fever | 1792 × 1024 | Recommended | Wired |
+| 10 | `#malaria` (top) | `tropical-infection-aki-10-malaria-where-now.png` | simple-figure (schematic map) | Malaria now is mostly southern Palawan or travel | 1024 × 1024 | Recommended | Wired |
+| 11 | `#malaria` (after first paragraph) | `tropical-infection-aki-11-knowlesi-sigil.png` | organ-crosstalk sigil | Monkey → mosquito → human | 1024 × 1024 | Optional | Wired |
+| 12 | `#prevention` | `tropical-infection-aki-12-prevention-card.png` | infographic (multi-panel) | One protective action per infection | 1792 × 1024 | **Core** | Wired |
+| 13 | `#recovery` | `tropical-infection-aki-13-recovery-timeline.png` | simple-figure (step sequence) | Follow-up from discharge to 3 months | 1792 × 1024 | Recommended | Wired |
+| 14 | `#md-scrub-typhus` (pathophysiology) | `tropical-infection-aki-14-scrub-typhus-mechanism.png` | biomedical-mechanism | Endothelial infection → kidney injury → treatment | 1792 × 1024 | **Core** | Wired |
+| 15 | `#md-scrub-typhus` (INTREST para) | `tropical-infection-aki-15-scrub-multiorgan-sigil.png` | organ-crosstalk sigil | One vasculitis, five organs | 1024 × 1024 | Optional | Wired |
+| 16 | `#md-malaria` (mechanisms) | `tropical-infection-aki-16-malaria-aki-mechanism.png` | biomedical-mechanism | Sequestration and cell-free hemoglobin → ATN | 1792 × 1024 | **Core** | Wired |
+| 17 | `#md-krt` | `tropical-infection-aki-17-krt-modality.png` | simple-figure (comparison) | Blood-based therapy vs acute PD | 1792 × 1024 | Recommended | Wired |
 
 **Production order (biggest gain for least effort):** H → 07 → 06 → 08 → 03 → 02 → 12 → 05 → 04 → 16 → 14 → OG → 13 → 10 → 09 → 17 → 11 → 15.
 
-"Add" rows need a `<figure>` slot in the guide; §6 gives the ready-to-paste captions. Ask Claude to wire them once the images exist, so no empty slots go live.
+**All 18 slots are already wired in the guide** with plain-language captions (four languages in the patient tab). Each `<img>` carries an `onerror` hook that hides its whole `<figure>` until the file exists, so missing images never show as broken boxes. Uploading `images/<file>.png` + `.webp` makes each figure appear automatically, with no HTML edit.
 
 ---
 
@@ -555,9 +555,9 @@ Exactly 1200 × 630; title legible at 300 px wide; light background; attribution
 
 ---
 
-## 5. Charts to build in HTML (not AI-generated)
+## 5. Charts built in HTML (not AI-generated) — done
 
-These carry exact numbers. Inline SVG keeps them accurate, dark-mode aware, and translatable, as with the CD68 chart in `al-amyloidosis-kidneys.html`.
+These carry exact numbers, so they are inline SVG in the guide (built Nov 6, 2026): accurate, dark-mode aware, and screen-reader labeled. No image generation needed.
 
 | Chart | Placement | Data |
 |---|---|---|
@@ -565,13 +565,13 @@ These carry exact numbers. Inline SVG keeps them accurate, dark-mode aware, and 
 | Kidney involvement by infection, horizontal bars | `#md-comparison` | Leptospirosis AKI 49.2% (dialysis 14.4%); malaria AKI in adults 26.5%; scrub typhus AKI 18–53% shown as a range bar; pediatric scrub typhus 13.7%. Footnote: different populations, not directly comparable. |
 | Recovery at 3 months by infection | `#md-comparison` or `#recovery` | Dengue 85%, malaria 91%, leptospirosis 61%, scrub typhus 67% (Surya Prakash 2026, n = 149) |
 
-Ask Claude to add these as inline SVG; they need no image generation.
+Each chart has an accessible `<title>`/`<desc>` and a source note under it.
 
 ---
 
-## 6. Captions for the new figure slots
+## 6. Captions for the new figure slots (already in the guide)
 
-Each new figure needs a `<figcaption>` with `<p class="fig-desc">` (CLAUDE.md rule 11) and `<dl class="fig-abbrevs">` when acronyms appear. Patient-tab captions get four-language `data-lang` spans when wired.
+Each figure has a `<figcaption>` with `<p class="fig-desc">` (CLAUDE.md rule 11) and `<dl class="fig-abbrevs">` where the image shows acronyms. Patient-tab captions are wired in all four languages. The English text is listed here for reference when proofing the generated images.
 
 | # | `fig-desc` (English) | `fig-abbrevs` |
 |---|---|---|
@@ -596,5 +596,5 @@ Each new figure needs a `<figcaption>` with `<p class="fig-desc">` (CLAUDE.md ru
 2. Save `images/<file>.png` plus `images/<file>.webp` (same stem).
 3. For the hero, confirm nothing important sits in the upper-left title-safe zone.
 4. For 10 (map) and 15 (sigil with numbers), apply the extra checks noted under each prompt.
-5. Tell Claude when the images are in place to: wire figures 06–17 with four-language captions, add the three HTML charts (§5), and run `patch_image_lightbox.py`, `patch_hero_fetchpriority.py`, and the contrast check.
+5. Commit the images to `images/`. Each figure appears automatically. Then spot-check the page in light and dark mode on a phone.
 6. Optional Stage 2: `williamriveromd-local-image-generator` for `image-manifest.csv/json`.

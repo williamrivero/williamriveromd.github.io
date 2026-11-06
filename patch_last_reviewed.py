@@ -57,20 +57,32 @@ def find_project_dir(script_path: Path) -> Path:
     raise FileNotFoundError("Cannot find project root. Run from the repo directory.")
 
 
+# Year guessing must ignore pixel sizes (width="2048"), DOI/ID digits and any
+# year in the future — a guide cannot have been reviewed after today. Without
+# this, 2048-px hero images produced "Last reviewed 2048" (fixed Nov 2026).
+import datetime as _dt
+_THIS_YEAR = _dt.date.today().year
+
+def _year_tokens(text: str):
+    text = re.sub(r'(?:width|height|sizes|srcset|viewBox)\s*=\s*"[^"]*"', ' ', text)
+    text = re.sub(r'\b\d{2,}[x×]\d{2,}\b', ' ', text)
+    return re.findall(r'(?<![\d./-])\b(20\d{2})\b(?![\d/])', text)
+
+
 def extract_year(text: str) -> int:
     """Highest 4-digit year ≥ 2024 found in text, else 2025."""
-    years = [int(y) for y in re.findall(r'\b(20\d{2})\b', text) if int(y) >= 2024]
+    years = [int(y) for y in _year_tokens(text) if 2024 <= int(y) <= _THIS_YEAR]
     return max(years) if years else 2025
 
 
 def guess_year(html: str) -> int:
     """For dateless guides: scan early meta section then full file for a relevant year."""
     # Prefer years ≥ 2025 in first 1 KB (title, meta desc, og tags)
-    years_early = [int(y) for y in re.findall(r'\b(20\d{2})\b', html[:1000]) if int(y) >= 2025]
+    years_early = [int(y) for y in _year_tokens(html[:1000]) if 2025 <= int(y) <= _THIS_YEAR]
     if years_early:
         return max(years_early)
     # Fall back to entire file
-    years_all = [int(y) for y in re.findall(r'\b(20\d{2})\b', html) if int(y) >= 2025]
+    years_all = [int(y) for y in _year_tokens(html) if 2025 <= int(y) <= _THIS_YEAR]
     return max(years_all) if years_all else 2025
 
 
