@@ -538,12 +538,14 @@ def main():
     rows = collect(project_dir)
 
     # Every guide tagged `updated` is guaranteed a card — that is the point of
-    # the strip being "latest AND updated". The remaining slots go to the most
-    # recently published guides, and the whole set is re-sorted by date so the
-    # strip still reads newest-first.
+    # the strip being "latest AND updated". New guides get their OWN `--count`
+    # slots on top of that: when updated guides shared the same 12-slot budget,
+    # nine `updated` tags squeezed new guides down to three, and freshly
+    # published guides silently vanished from the strip. The whole set is
+    # re-sorted by date so the strip still reads newest-first (it scrolls).
     upd = [r for r in rows if r["kind"] == "updated"][: args.count]
     new = [r for r in rows if r["kind"] != "updated"]
-    featured = upd + new[: max(0, args.count - len(upd))]
+    featured = upd + new[: args.count]
     featured.sort(key=lambda r: (r["dt"], r["file"]), reverse=True)
 
     print(f"Latest and updated — {len(featured)} card(s) "
