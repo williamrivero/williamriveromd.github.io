@@ -49,7 +49,7 @@ The patient tab is read by people with very different schooling, often on a phon
 | ID | File (`images/`) | Size | Skill / scaffold | Anchor | Tab | Job | Status |
 |---|---|---|---|---|---|---|---|
 | 001 | `onconephrology-chemotherapy-kidney-vignette-hero.png` | 2048 × 2048 | hero-vignette v3, Scaffold A | Hero disc | Patient | Shared plan | Live (GPT render, 2026-11-07) |
-| 006 | `onconephrology-chemotherapy-kidney-og.png` | 1200 × 630 | infographic, OG card | `og:image`, Latest strip | — | Shared plan | Live (GPT render, 2026-11-07) |
+| 006 | `onconephrology-chemotherapy-kidney-og-v2.png` | 1200 × 630 | infographic, OG card | `og:image`, Latest strip | — | Shared plan | Live (GPT render, 2026-11-07) |
 | 02 | `onconephrology-chemotherapy-kidney-02-exit-door-target.png` | 1792 × 1024 | mechanism figure | `#why-kidneys` | Patient | Exit door and target | Live (GPT render, 2026-11-07) |
 | 07 | `onconephrology-chemotherapy-kidney-07-two-way-street.png` | 1024 × 1024 | organ-crosstalk sigil | `#cancer-itself` (top) | Patient | Exit door and target | Live (GPT render, 2026-11-07) |
 | 08 | `onconephrology-chemotherapy-kidney-08-cancer-itself.png` | 1792 × 1024 | simple-figure, Scaffold C | `#cancer-itself` (after the list) | Patient | Mechanism | Live (GPT render, 2026-11-07) |
@@ -141,7 +141,7 @@ Square 2048×2048. Circle fills 85–90% of the canvas with a visible white marg
 ### 006 — OG social card (interim live)
 
 ```
-FILE NAME: onconephrology-chemotherapy-kidney-og.png
+FILE NAME: onconephrology-chemotherapy-kidney-og-v2.png
 IMAGE TYPE: OG / social share card
 ASPECT RATIO: 1.91:1
 PIXEL DIMENSIONS: 1200 × 630 (fixed)
