@@ -67,7 +67,7 @@ for(const page of ['calc-ckd-nutrition-rx','ckd-dri-calculator']){
 }
 // Stale thresholds must not reappear anywhere in guides or downloads.
 const stale=[/\(target\s*[−-]\s*actual[^)]*\)\s*×\s*0\.24\s*\+\s*500/i,/Target: ferritin 200–500, TSAT 20–40%/,/ferritin (?:&gt;|>)\s?800 (?:or|o) TSAT/,/ferritin (?:&gt;|>)\s?800 n(?:in)?g\/mL, TSAT (?:&gt;|>)50%/,/KDIGO 2024 (?:CKD Anemia|iron targets|\(anemia)/,/Hgb\) 100–115 g\/L \(KDIGO 2024\)/,/TSAT 30–50%/,/and its 2024 update/,/Population-specific reference<\/a>\.<\/p>/];
-for(const dir of ['guides','downloads'])for(const file of fs.readdirSync(path.join(root,dir)).filter(f=>f.endsWith('.html'))){
+for(const dir of ['guides','downloads'].filter(d=>fs.existsSync(path.join(root,d))))for(const file of fs.readdirSync(path.join(root,dir)).filter(f=>f.endsWith('.html'))){
  const html=fs.readFileSync(path.join(root,dir,file),'utf8');for(const re of stale)assert(!re.test(html),`${dir}/${file} contains stale iron text ${re}`);checks++;
 }
 // Iron-tool pages keep exactly one full KDIGO table (in Evidence), not one per accordion.
