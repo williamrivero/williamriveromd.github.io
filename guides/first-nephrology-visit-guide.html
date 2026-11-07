@@ -64,6 +64,13 @@
      All contrast ratios WCAG AA verified. Do not edit per-guide — edit here.
   ═══════════════════════════════════════════════════════════════════════════ */
 
+  /* ── TEXT SIZE STABILITY ─────────────────────────────────────────────────
+     Stop mobile browsers from enlarging text on their own (Safari's landscape
+     text inflation on iPhone and iPad; Chrome's font boosting on Android).
+     Without this, long paragraphs grew much more than table, card and tile
+     text in landscape, so a page looked lopsided. Pinch-zoom still works. */
+  html { -webkit-text-size-adjust: 100%; -moz-text-size-adjust: 100%; text-size-adjust: 100%; }
+
   /* ── COLOR TOKENS (light mode) ──────────────────────────────────────────── */
   :root {
     --navy:       #1f3864;
@@ -175,7 +182,7 @@
   .header-lang .lang-btn-g.active { background: var(--teal); border-color: var(--teal); color: #fff; }
   /* Clinician (physician) mode is English-only, so the Tagalog/Cebuano/
      Kapampangan pills are darkened and disabled — only EN stays usable. The
-     force-EN behaviour is wired by the clinician-lang-lock script. */
+     force-EN behavior is wired by the clinician-lang-lock script. */
   body.physician-mode .header-lang .lang-btn-g:not(#glb-en),
   body.physician-mode .header-lang .lang-btn-g:not(#glb-en).active {
     opacity: .3; filter: grayscale(1); cursor: not-allowed; pointer-events: none;
@@ -1246,7 +1253,7 @@
   /* Dark-mode contrast fixes (Nov 2026 audit): the active language pill and
      plain in-text / reference links fell below WCAG AA (4.5:1) because --teal
      brightens in dark mode. Deep-teal pill + light-teal links clear AA. The
-     greyed TL/CEB/KAP pills in clinician mode are intentionally disabled
+     grayed TL/CEB/KAP pills in clinician mode are intentionally disabled
      controls (WCAG 1.4.3 exempts inactive components) and are left as-is. */
   html[data-theme="dark"] .lang-btn-g.active { background:#0e4a50 !important; border-color:#3a8f96 !important; color:#ffffff !important; }
   html[data-theme="dark"] .section a:not([class]),
@@ -1412,7 +1419,7 @@
   .pathway-banner-desc { font-size: 13px; color: var(--text-muted); margin: 0; }
 
   /* ── AUDIENCE TAB SYSTEM ─────────────────────────────────────────────────── */
-  /* Audience tabs inherit the hero background colour so the bar reads as part
+  /* Audience tabs inherit the hero background color so the bar reads as part
      of the hero (mint in patient mode, periwinkle in clinician mode). */
   .audience-tabs{background:linear-gradient(135deg,#d3ece8 0%,#ecf6f2 100%);border-bottom:1px solid rgba(15,90,90,.18);position:sticky;top:56px;z-index:150;}
   body.physician-mode .audience-tabs{background:linear-gradient(135deg,#e0e8f6 0%,#eff3fc 100%);border-bottom-color:rgba(31,56,100,.18);}
