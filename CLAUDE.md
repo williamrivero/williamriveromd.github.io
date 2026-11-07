@@ -88,7 +88,7 @@ python3 patch_symptom_widget.py --guide hmo-ckd-coverage.html  # single guide
 
 python3 generate_latest_guides.py         # regenerate the "Latest guides" strip on guides/index.html
 python3 generate_latest_guides.py --dry-run
-python3 generate_latest_guides.py --count 6   # show N cards (default 12; the strip scrolls horizontally)
+python3 generate_latest_guides.py --count 6   # up to N updated + N new guides (default 15 each)
 
 python3 generate_latest_calculators.py    # regenerate the "Latest calculators" carousel atop guides/calculators.html
 python3 generate_latest_calculators.py --dry-run

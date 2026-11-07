@@ -529,7 +529,7 @@ def sync_filter_counts(guides_index_text: str) -> tuple[str, int]:
 def main():
     ap = argparse.ArgumentParser(description="Regenerate the Latest-guides strip.")
     ap.add_argument("--dry-run", action="store_true", help="preview without writing")
-    ap.add_argument("--count", type=int, default=12, help="number of cards (default 12; the strip scrolls horizontally)")
+    ap.add_argument("--count", type=int, default=15, help="cards per group: up to N updated + N new (default 15)")
     args = ap.parse_args()
 
     project_dir = find_project_dir(Path(__file__).resolve())
