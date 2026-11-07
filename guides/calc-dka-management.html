@@ -1675,6 +1675,348 @@
     @page { margin: 18mm 15mm; size: A4; }
   }
 </style>
+<style id="calc-shared-style">
+/* Shared calculator components — managed by patch_calc_shared_css.py. Do not edit per page. */
+/* Layout safety: long strings wrap, wide tables scroll inside their box, never the page. */
+main.container{overflow-wrap:break-word;}
+.mdc-acc-body,.calc-disclaimer,.calc-verdict-text,.calc-action-text,.ref-acc li,.disclaimer,.alert-body{overflow-wrap:anywhere;}
+.mdc-acc-body table,.calc-wrap table{max-width:100%;}
+.mdc-acc-body .table-wrap,.calc-wrap .table-wrap{overflow-x:auto;}
+.calc-wrap input,.calc-wrap select,.calc-wrap textarea{max-width:100%;box-sizing:border-box;}
+/* Result boxes: master CSS hides .calc-result-box until a page shows it. Pages that reveal it via a
+   state class (show / res-ok / res-warn / res-bad) need these rules, which were lost in a master rewrite. */
+.calc-result-box.show,.calc-result-box.res-ok,.calc-result-box.res-warn,.calc-result-box.res-bad{display:block;}
+/* Hero cross-links */
+.hero-xlink{color:#0e4a50;font-weight:600;text-decoration:underline;text-decoration-color:var(--gold-light);text-decoration-thickness:1.5px;text-underline-offset:3px;border-radius:6px;padding:2px 4px;}
+.hero-xlink:hover{color:#0b3a40;}
+.hero-xlink:focus-visible{outline:2px solid var(--gold-light);outline-offset:2px;}
+/* MDCalc-style instructions + accordions */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:0;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;text-align:left;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Inter',sans-serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body p,.calc-wrap p,.calc-result-box p{text-align:left;hyphens:manual;}
+/* Checklist scoring items (HAS-BLED, STOP-BANG, CURB-65, ...) */
+.check-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-bottom:16px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:11px 13px;cursor:pointer;transition:border-color .15s,background .15s;}
+.check-item:hover{border-color:var(--teal);}
+.check-item input[type="checkbox"],.check-item input[type="radio"]{accent-color:var(--teal);width:16px;height:16px;flex-shrink:0;margin-top:2px;cursor:pointer;}
+.check-item-body{flex:1;min-width:0;}
+.ci-label{font-size:13.5px;font-weight:600;color:var(--text);line-height:1.4;}
+.ci-pts{font-size:11.5px;color:var(--text-muted);margin-top:2px;}
+.check-group{margin-bottom:14px;}
+/* Rating / pill rows wrap instead of overflowing on phones */
+.ipss-opts,.ipss-qol-row,.tx-pills,.qol-row,.likert-row{flex-wrap:wrap;}
+/* Result cards built by JS on ~20 pages (GCS, 4Ts, keGFR, NRI, Parkland...) */
+.result-card{border-radius:12px;padding:18px 22px;margin-top:16px;border:2px solid var(--border,#e2e6eb);background:var(--white,#fff);}
+.result-card.result-normal{background:var(--green-soft,#edf7f2);border-color:var(--green,#2d7a4f);}
+.result-card.result-caution{background:var(--amber-soft,#fef9ec);border-color:#d97706;}
+.result-card.result-danger{background:var(--red-soft,#fdf0ef);border-color:var(--red,#c0392b);}
+.result-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted,#6b7a8d);}
+.result-value{font-size:30px;font-weight:700;line-height:1.15;margin:2px 0 4px;color:var(--navy,#0f1e2e);}
+.result-sublabel{font-size:14px;font-weight:700;color:var(--text,#2c3a4a);}
+.result-card.result-normal .result-sublabel{color:var(--green,#2d7a4f);}
+.result-card.result-caution .result-sublabel{color:#9a6500;}
+.result-card.result-danger .result-sublabel{color:var(--red,#c0392b);}
+.result-action{font-size:13.5px;line-height:1.65;color:var(--text-mid,#3a4a5c);margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.1);}
+html[data-theme="dark"] .result-card{background:rgba(255,255,255,.04);}
+html[data-theme="dark"] .result-card.result-normal{background:rgba(45,122,79,.12);}
+html[data-theme="dark"] .result-card.result-caution{background:rgba(217,119,6,.12);}
+html[data-theme="dark"] .result-card.result-danger{background:rgba(192,57,43,.12);}
+html[data-theme="dark"] .result-value{color:var(--text);}
+html[data-theme="dark"] .result-action{color:var(--text-mid);border-top-color:rgba(255,255,255,.12);}
+html[data-theme="dark"] .result-card.result-normal .result-sublabel{color:#7fdca4;}
+html[data-theme="dark"] .result-card.result-caution .result-sublabel{color:#f3c06b;}
+html[data-theme="dark"] .result-card.result-danger .result-sublabel{color:#fca5a5;}
+/* Dark mode */
+html[data-theme="dark"] .hero-xlink{color:#5fd0d8;}
+html[data-theme="dark"] .mdc-instructions{background:rgba(26,107,114,.12);}
+html[data-theme="dark"] .mdc-acc{background:#141c2a;border-color:#26314a;}
+html[data-theme="dark"] .mdc-acc>summary{color:var(--text);}
+html[data-theme="dark"] .check-item{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .ci-label{color:var(--text);}
+html[data-theme="dark"] .ci-pts{color:#9ba6b8;}
+
+/* Dark mode: default-blue links inside content panels */
+html[data-theme="dark"] :is(.calc-wrap,.mdc-acc,.disclaimer,.alert,.qs-intro,.mw-intro,.calc-result-box,.mdc-instructions) a:not([class]){color:#5fd0d8;}
+/* Dark mode: hard-coded light inline panel backgrounds */
+html[data-theme="dark"] :is([style*="background:#f0" i],[style*="background:#f5" i],[style*="background:#f8" i],[style*="background:#fe" i],[style*="background:#ff" i],[style*="background: #f0" i],[style*="background: #fe" i],[style*="background:#ec" i],[style*="background:#ed" i],[style*="background:#ef" i],[style*="background:white" i],[style*="background-color:#f" i],[style*="background: rgb(2" i]):not(button):not(.calc-result-box):not([style*="color:#fff" i]):not([style*="color:white" i]):not([style*="color: rgb(255, 255, 255)"]){background:rgba(255,255,255,.05)!important;}
+/* Dark mode: white text on the bright dark-theme teal is only ~2.9:1; deepen it */
+html[data-theme="dark"] :is(.ln-wt-badge,.iief-num,.fs-sbar-letter,.wkt-qnum,.btn-primary,.tb-btn,.prom-tab-btn.active,.prom-calc-btn,.hd-tab.active,.ipss-btn-print,.badge,.btn-calc,.sbirt-tab.active,button.sel,.ln-tab.active,.ln-pill.sel,.tx-tab.active,.tx-btn-primary,.ut-btn.active,.wells-modebtn.active,.quiz-btn,.unit-btn.active,.calc-btn:not(.secondary),.cbtn.active){background-color:#157f87!important;border-color:#157f87!important;color:#fff!important;}
+html[data-theme="dark"] .calc-btn.secondary{color:#0f1520;}
+html[data-theme="dark"] .fs-sbar-item label{color:var(--text);}
+html[data-theme="dark"] [style*="color:var(--navy)" i]{color:var(--text)!important;}
+html[data-theme="dark"] .check-item{color:var(--text);}
+html[data-theme="dark"] .ipss-q-text{color:var(--text);}
+html[data-theme="dark"] :is(button,a)[style*="background:var(--teal)" i]{background:#157f87!important;border-color:#157f87!important;}
+html[data-theme="dark"] [style^="color:#1a6b72" i],
+html[data-theme="dark"] [style^="color: #1a6b72" i],
+html[data-theme="dark"] [style*=";color:#1a6b72" i],
+html[data-theme="dark"] [style*="; color:#1a6b72" i],
+html[data-theme="dark"] [style*=";color: #1a6b72" i],
+html[data-theme="dark"] [style^="color:rgb(26, 107, 114)" i],
+html[data-theme="dark"] [style^="color: rgb(26, 107, 114)" i],
+html[data-theme="dark"] [style*=";color:rgb(26, 107, 114)" i],
+html[data-theme="dark"] [style*="; color:rgb(26, 107, 114)" i],
+html[data-theme="dark"] [style*=";color: rgb(26, 107, 114)" i],
+html[data-theme="dark"] [style^="color:#145c63" i],
+html[data-theme="dark"] [style^="color: #145c63" i],
+html[data-theme="dark"] [style*=";color:#145c63" i],
+html[data-theme="dark"] [style*="; color:#145c63" i],
+html[data-theme="dark"] [style*=";color: #145c63" i],
+html[data-theme="dark"] [style^="color:rgb(20, 92, 99)" i],
+html[data-theme="dark"] [style^="color: rgb(20, 92, 99)" i],
+html[data-theme="dark"] [style*=";color:rgb(20, 92, 99)" i],
+html[data-theme="dark"] [style*="; color:rgb(20, 92, 99)" i],
+html[data-theme="dark"] [style*=";color: rgb(20, 92, 99)" i],
+html[data-theme="dark"] [style^="color:#0d4f55" i],
+html[data-theme="dark"] [style^="color: #0d4f55" i],
+html[data-theme="dark"] [style*=";color:#0d4f55" i],
+html[data-theme="dark"] [style*="; color:#0d4f55" i],
+html[data-theme="dark"] [style*=";color: #0d4f55" i],
+html[data-theme="dark"] [style^="color:rgb(13, 79, 85)" i],
+html[data-theme="dark"] [style^="color: rgb(13, 79, 85)" i],
+html[data-theme="dark"] [style*=";color:rgb(13, 79, 85)" i],
+html[data-theme="dark"] [style*="; color:rgb(13, 79, 85)" i],
+html[data-theme="dark"] [style*=";color: rgb(13, 79, 85)" i]{color:#5fd0d8!important;}
+html[data-theme="dark"] [style^="color:#1f3864" i],
+html[data-theme="dark"] [style^="color: #1f3864" i],
+html[data-theme="dark"] [style*=";color:#1f3864" i],
+html[data-theme="dark"] [style*="; color:#1f3864" i],
+html[data-theme="dark"] [style*=";color: #1f3864" i],
+html[data-theme="dark"] [style^="color:rgb(31, 56, 100)" i],
+html[data-theme="dark"] [style^="color: rgb(31, 56, 100)" i],
+html[data-theme="dark"] [style*=";color:rgb(31, 56, 100)" i],
+html[data-theme="dark"] [style*="; color:rgb(31, 56, 100)" i],
+html[data-theme="dark"] [style*=";color: rgb(31, 56, 100)" i],
+html[data-theme="dark"] [style^="color:#1a3c72" i],
+html[data-theme="dark"] [style^="color: #1a3c72" i],
+html[data-theme="dark"] [style*=";color:#1a3c72" i],
+html[data-theme="dark"] [style*="; color:#1a3c72" i],
+html[data-theme="dark"] [style*=";color: #1a3c72" i],
+html[data-theme="dark"] [style^="color:rgb(26, 60, 114)" i],
+html[data-theme="dark"] [style^="color: rgb(26, 60, 114)" i],
+html[data-theme="dark"] [style*=";color:rgb(26, 60, 114)" i],
+html[data-theme="dark"] [style*="; color:rgb(26, 60, 114)" i],
+html[data-theme="dark"] [style*=";color: rgb(26, 60, 114)" i],
+html[data-theme="dark"] [style^="color:#0f1e2e" i],
+html[data-theme="dark"] [style^="color: #0f1e2e" i],
+html[data-theme="dark"] [style*=";color:#0f1e2e" i],
+html[data-theme="dark"] [style*="; color:#0f1e2e" i],
+html[data-theme="dark"] [style*=";color: #0f1e2e" i],
+html[data-theme="dark"] [style^="color:rgb(15, 30, 46)" i],
+html[data-theme="dark"] [style^="color: rgb(15, 30, 46)" i],
+html[data-theme="dark"] [style*=";color:rgb(15, 30, 46)" i],
+html[data-theme="dark"] [style*="; color:rgb(15, 30, 46)" i],
+html[data-theme="dark"] [style*=";color: rgb(15, 30, 46)" i],
+html[data-theme="dark"] [style^="color:#0e1929" i],
+html[data-theme="dark"] [style^="color: #0e1929" i],
+html[data-theme="dark"] [style*=";color:#0e1929" i],
+html[data-theme="dark"] [style*="; color:#0e1929" i],
+html[data-theme="dark"] [style*=";color: #0e1929" i],
+html[data-theme="dark"] [style^="color:rgb(14, 25, 41)" i],
+html[data-theme="dark"] [style^="color: rgb(14, 25, 41)" i],
+html[data-theme="dark"] [style*=";color:rgb(14, 25, 41)" i],
+html[data-theme="dark"] [style*="; color:rgb(14, 25, 41)" i],
+html[data-theme="dark"] [style*=";color: rgb(14, 25, 41)" i],
+html[data-theme="dark"] [style^="color:#3a4a5c" i],
+html[data-theme="dark"] [style^="color: #3a4a5c" i],
+html[data-theme="dark"] [style*=";color:#3a4a5c" i],
+html[data-theme="dark"] [style*="; color:#3a4a5c" i],
+html[data-theme="dark"] [style*=";color: #3a4a5c" i],
+html[data-theme="dark"] [style^="color:rgb(58, 74, 92)" i],
+html[data-theme="dark"] [style^="color: rgb(58, 74, 92)" i],
+html[data-theme="dark"] [style*=";color:rgb(58, 74, 92)" i],
+html[data-theme="dark"] [style*="; color:rgb(58, 74, 92)" i],
+html[data-theme="dark"] [style*=";color: rgb(58, 74, 92)" i],
+html[data-theme="dark"] [style^="color:#4a5a6a" i],
+html[data-theme="dark"] [style^="color: #4a5a6a" i],
+html[data-theme="dark"] [style*=";color:#4a5a6a" i],
+html[data-theme="dark"] [style*="; color:#4a5a6a" i],
+html[data-theme="dark"] [style*=";color: #4a5a6a" i],
+html[data-theme="dark"] [style^="color:rgb(74, 90, 106)" i],
+html[data-theme="dark"] [style^="color: rgb(74, 90, 106)" i],
+html[data-theme="dark"] [style*=";color:rgb(74, 90, 106)" i],
+html[data-theme="dark"] [style*="; color:rgb(74, 90, 106)" i],
+html[data-theme="dark"] [style*=";color: rgb(74, 90, 106)" i],
+html[data-theme="dark"] [style^="color:#2c3a4a" i],
+html[data-theme="dark"] [style^="color: #2c3a4a" i],
+html[data-theme="dark"] [style*=";color:#2c3a4a" i],
+html[data-theme="dark"] [style*="; color:#2c3a4a" i],
+html[data-theme="dark"] [style*=";color: #2c3a4a" i],
+html[data-theme="dark"] [style^="color:rgb(44, 58, 74)" i],
+html[data-theme="dark"] [style^="color: rgb(44, 58, 74)" i],
+html[data-theme="dark"] [style*=";color:rgb(44, 58, 74)" i],
+html[data-theme="dark"] [style*="; color:rgb(44, 58, 74)" i],
+html[data-theme="dark"] [style*=";color: rgb(44, 58, 74)" i]{color:#dde3eb!important;}
+html[data-theme="dark"] [style^="color:#6b7280" i],
+html[data-theme="dark"] [style^="color: #6b7280" i],
+html[data-theme="dark"] [style*=";color:#6b7280" i],
+html[data-theme="dark"] [style*="; color:#6b7280" i],
+html[data-theme="dark"] [style*=";color: #6b7280" i],
+html[data-theme="dark"] [style^="color:rgb(107, 114, 128)" i],
+html[data-theme="dark"] [style^="color: rgb(107, 114, 128)" i],
+html[data-theme="dark"] [style*=";color:rgb(107, 114, 128)" i],
+html[data-theme="dark"] [style*="; color:rgb(107, 114, 128)" i],
+html[data-theme="dark"] [style*=";color: rgb(107, 114, 128)" i],
+html[data-theme="dark"] [style^="color:#6b7a8d" i],
+html[data-theme="dark"] [style^="color: #6b7a8d" i],
+html[data-theme="dark"] [style*=";color:#6b7a8d" i],
+html[data-theme="dark"] [style*="; color:#6b7a8d" i],
+html[data-theme="dark"] [style*=";color: #6b7a8d" i],
+html[data-theme="dark"] [style^="color:rgb(107, 122, 141)" i],
+html[data-theme="dark"] [style^="color: rgb(107, 122, 141)" i],
+html[data-theme="dark"] [style*=";color:rgb(107, 122, 141)" i],
+html[data-theme="dark"] [style*="; color:rgb(107, 122, 141)" i],
+html[data-theme="dark"] [style*=";color: rgb(107, 122, 141)" i]{color:#9ba6b8!important;}
+html[data-theme="dark"] [style^="color:#4a2080" i],
+html[data-theme="dark"] [style^="color: #4a2080" i],
+html[data-theme="dark"] [style*=";color:#4a2080" i],
+html[data-theme="dark"] [style*="; color:#4a2080" i],
+html[data-theme="dark"] [style*=";color: #4a2080" i],
+html[data-theme="dark"] [style^="color:rgb(74, 32, 128)" i],
+html[data-theme="dark"] [style^="color: rgb(74, 32, 128)" i],
+html[data-theme="dark"] [style*=";color:rgb(74, 32, 128)" i],
+html[data-theme="dark"] [style*="; color:rgb(74, 32, 128)" i],
+html[data-theme="dark"] [style*=";color: rgb(74, 32, 128)" i],
+html[data-theme="dark"] [style^="color:#5b21b6" i],
+html[data-theme="dark"] [style^="color: #5b21b6" i],
+html[data-theme="dark"] [style*=";color:#5b21b6" i],
+html[data-theme="dark"] [style*="; color:#5b21b6" i],
+html[data-theme="dark"] [style*=";color: #5b21b6" i],
+html[data-theme="dark"] [style^="color:rgb(91, 33, 182)" i],
+html[data-theme="dark"] [style^="color: rgb(91, 33, 182)" i],
+html[data-theme="dark"] [style*=";color:rgb(91, 33, 182)" i],
+html[data-theme="dark"] [style*="; color:rgb(91, 33, 182)" i],
+html[data-theme="dark"] [style*=";color: rgb(91, 33, 182)" i]{color:#c9b3f2!important;}
+html[data-theme="dark"] [style^="color:#7a4800" i],
+html[data-theme="dark"] [style^="color: #7a4800" i],
+html[data-theme="dark"] [style*=";color:#7a4800" i],
+html[data-theme="dark"] [style*="; color:#7a4800" i],
+html[data-theme="dark"] [style*=";color: #7a4800" i],
+html[data-theme="dark"] [style^="color:rgb(122, 72, 0)" i],
+html[data-theme="dark"] [style^="color: rgb(122, 72, 0)" i],
+html[data-theme="dark"] [style*=";color:rgb(122, 72, 0)" i],
+html[data-theme="dark"] [style*="; color:rgb(122, 72, 0)" i],
+html[data-theme="dark"] [style*=";color: rgb(122, 72, 0)" i],
+html[data-theme="dark"] [style^="color:#92400e" i],
+html[data-theme="dark"] [style^="color: #92400e" i],
+html[data-theme="dark"] [style*=";color:#92400e" i],
+html[data-theme="dark"] [style*="; color:#92400e" i],
+html[data-theme="dark"] [style*=";color: #92400e" i],
+html[data-theme="dark"] [style^="color:rgb(146, 64, 14)" i],
+html[data-theme="dark"] [style^="color: rgb(146, 64, 14)" i],
+html[data-theme="dark"] [style*=";color:rgb(146, 64, 14)" i],
+html[data-theme="dark"] [style*="; color:rgb(146, 64, 14)" i],
+html[data-theme="dark"] [style*=";color: rgb(146, 64, 14)" i],
+html[data-theme="dark"] [style^="color:#b45309" i],
+html[data-theme="dark"] [style^="color: #b45309" i],
+html[data-theme="dark"] [style*=";color:#b45309" i],
+html[data-theme="dark"] [style*="; color:#b45309" i],
+html[data-theme="dark"] [style*=";color: #b45309" i],
+html[data-theme="dark"] [style^="color:rgb(180, 83, 9)" i],
+html[data-theme="dark"] [style^="color: rgb(180, 83, 9)" i],
+html[data-theme="dark"] [style*=";color:rgb(180, 83, 9)" i],
+html[data-theme="dark"] [style*="; color:rgb(180, 83, 9)" i],
+html[data-theme="dark"] [style*=";color: rgb(180, 83, 9)" i]{color:#f3c06b!important;}
+html[data-theme="dark"] [style^="color:#166534" i],
+html[data-theme="dark"] [style^="color: #166534" i],
+html[data-theme="dark"] [style*=";color:#166534" i],
+html[data-theme="dark"] [style*="; color:#166534" i],
+html[data-theme="dark"] [style*=";color: #166534" i],
+html[data-theme="dark"] [style^="color:rgb(22, 101, 52)" i],
+html[data-theme="dark"] [style^="color: rgb(22, 101, 52)" i],
+html[data-theme="dark"] [style*=";color:rgb(22, 101, 52)" i],
+html[data-theme="dark"] [style*="; color:rgb(22, 101, 52)" i],
+html[data-theme="dark"] [style*=";color: rgb(22, 101, 52)" i],
+html[data-theme="dark"] [style^="color:#2d7a4f" i],
+html[data-theme="dark"] [style^="color: #2d7a4f" i],
+html[data-theme="dark"] [style*=";color:#2d7a4f" i],
+html[data-theme="dark"] [style*="; color:#2d7a4f" i],
+html[data-theme="dark"] [style*=";color: #2d7a4f" i],
+html[data-theme="dark"] [style^="color:rgb(45, 122, 79)" i],
+html[data-theme="dark"] [style^="color: rgb(45, 122, 79)" i],
+html[data-theme="dark"] [style*=";color:rgb(45, 122, 79)" i],
+html[data-theme="dark"] [style*="; color:rgb(45, 122, 79)" i],
+html[data-theme="dark"] [style*=";color: rgb(45, 122, 79)" i],
+html[data-theme="dark"] [style^="color:#15803d" i],
+html[data-theme="dark"] [style^="color: #15803d" i],
+html[data-theme="dark"] [style*=";color:#15803d" i],
+html[data-theme="dark"] [style*="; color:#15803d" i],
+html[data-theme="dark"] [style*=";color: #15803d" i],
+html[data-theme="dark"] [style^="color:rgb(21, 128, 61)" i],
+html[data-theme="dark"] [style^="color: rgb(21, 128, 61)" i],
+html[data-theme="dark"] [style*=";color:rgb(21, 128, 61)" i],
+html[data-theme="dark"] [style*="; color:rgb(21, 128, 61)" i],
+html[data-theme="dark"] [style*=";color: rgb(21, 128, 61)" i]{color:#7fdca4!important;}
+html[data-theme="dark"] [style^="color:#b91c1c" i],
+html[data-theme="dark"] [style^="color: #b91c1c" i],
+html[data-theme="dark"] [style*=";color:#b91c1c" i],
+html[data-theme="dark"] [style*="; color:#b91c1c" i],
+html[data-theme="dark"] [style*=";color: #b91c1c" i],
+html[data-theme="dark"] [style^="color:rgb(185, 28, 28)" i],
+html[data-theme="dark"] [style^="color: rgb(185, 28, 28)" i],
+html[data-theme="dark"] [style*=";color:rgb(185, 28, 28)" i],
+html[data-theme="dark"] [style*="; color:rgb(185, 28, 28)" i],
+html[data-theme="dark"] [style*=";color: rgb(185, 28, 28)" i],
+html[data-theme="dark"] [style^="color:#991b1b" i],
+html[data-theme="dark"] [style^="color: #991b1b" i],
+html[data-theme="dark"] [style*=";color:#991b1b" i],
+html[data-theme="dark"] [style*="; color:#991b1b" i],
+html[data-theme="dark"] [style*=";color: #991b1b" i],
+html[data-theme="dark"] [style^="color:rgb(153, 27, 27)" i],
+html[data-theme="dark"] [style^="color: rgb(153, 27, 27)" i],
+html[data-theme="dark"] [style*=";color:rgb(153, 27, 27)" i],
+html[data-theme="dark"] [style*="; color:rgb(153, 27, 27)" i],
+html[data-theme="dark"] [style*=";color: rgb(153, 27, 27)" i],
+html[data-theme="dark"] [style^="color:#7f1d1d" i],
+html[data-theme="dark"] [style^="color: #7f1d1d" i],
+html[data-theme="dark"] [style*=";color:#7f1d1d" i],
+html[data-theme="dark"] [style*="; color:#7f1d1d" i],
+html[data-theme="dark"] [style*=";color: #7f1d1d" i],
+html[data-theme="dark"] [style^="color:rgb(127, 29, 29)" i],
+html[data-theme="dark"] [style^="color: rgb(127, 29, 29)" i],
+html[data-theme="dark"] [style*=";color:rgb(127, 29, 29)" i],
+html[data-theme="dark"] [style*="; color:rgb(127, 29, 29)" i],
+html[data-theme="dark"] [style*=";color: rgb(127, 29, 29)" i],
+html[data-theme="dark"] [style^="color:#dc2626" i],
+html[data-theme="dark"] [style^="color: #dc2626" i],
+html[data-theme="dark"] [style*=";color:#dc2626" i],
+html[data-theme="dark"] [style*="; color:#dc2626" i],
+html[data-theme="dark"] [style*=";color: #dc2626" i],
+html[data-theme="dark"] [style^="color:rgb(220, 38, 38)" i],
+html[data-theme="dark"] [style^="color: rgb(220, 38, 38)" i],
+html[data-theme="dark"] [style*=";color:rgb(220, 38, 38)" i],
+html[data-theme="dark"] [style*="; color:rgb(220, 38, 38)" i],
+html[data-theme="dark"] [style*=";color: rgb(220, 38, 38)" i]{color:#fca5a5!important;}
+html[data-theme="dark"] [style^="color:#0369a1" i],
+html[data-theme="dark"] [style^="color: #0369a1" i],
+html[data-theme="dark"] [style*=";color:#0369a1" i],
+html[data-theme="dark"] [style*="; color:#0369a1" i],
+html[data-theme="dark"] [style*=";color: #0369a1" i],
+html[data-theme="dark"] [style^="color:rgb(3, 105, 161)" i],
+html[data-theme="dark"] [style^="color: rgb(3, 105, 161)" i],
+html[data-theme="dark"] [style*=";color:rgb(3, 105, 161)" i],
+html[data-theme="dark"] [style*="; color:rgb(3, 105, 161)" i],
+html[data-theme="dark"] [style*=";color: rgb(3, 105, 161)" i],
+html[data-theme="dark"] [style^="color:#1e40af" i],
+html[data-theme="dark"] [style^="color: #1e40af" i],
+html[data-theme="dark"] [style*=";color:#1e40af" i],
+html[data-theme="dark"] [style*="; color:#1e40af" i],
+html[data-theme="dark"] [style*=";color: #1e40af" i],
+html[data-theme="dark"] [style^="color:rgb(30, 64, 175)" i],
+html[data-theme="dark"] [style^="color: rgb(30, 64, 175)" i],
+html[data-theme="dark"] [style*=";color:rgb(30, 64, 175)" i],
+html[data-theme="dark"] [style*="; color:rgb(30, 64, 175)" i],
+html[data-theme="dark"] [style*=";color: rgb(30, 64, 175)" i]{color:#8cc8f0!important;}
+</style>
 
 <script type="application/ld+json">
 {
@@ -1780,7 +2122,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 
 <div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
 <ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
-<li>Confirm the diagnosis of <strong>DKA</strong> clinically (hyperglycemia, elevated anion gap, ketonemia/ketonuria, acidosis) — remember that <strong>euglycemic DKA</strong> (e.g. on SGLT2 inhibitors) can present with near-normal glucose, so keep the anion gap and ketones central.</li>
+<li>Confirm the diagnosis of <strong>DKA</strong> clinically (hyperglycemia, elevated anion gap, ketonemia/ketonuria, acidosis) — remember that <strong>euglycemic DKA</strong> (e.g. on SGLT2 inhibitors) can present with near-normal glucose, so keep blood ketones central.</li>
 <li>Enter <strong>weight (kg)</strong>, <strong>serum glucose</strong>, and <strong>serum potassium</strong> (all required). The structured plan appears once these three are entered.</li>
 <li><strong>Optionally</strong> add venous/arterial <strong>pH</strong>, serum <strong>bicarbonate</strong>, and serum <strong>sodium</strong> for corrected-Na guidance, severity flags, and resolution criteria.</li>
 <li>The tool returns weight-based <strong>fluid rates</strong>, the <strong>insulin infusion</strong> rate (and optional bolus), the matching <strong>potassium branch</strong>, and the <strong>resolution checklist</strong>. Every number is shown so the math is auditable.</li>
@@ -1816,7 +2158,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <div class="alert-icon">🛑</div>
 <div class="alert-body">
 <h4>Potassium before insulin — always</h4>
-<p>Insulin drives potassium intracellularly and can precipitate dangerous hypokalemia. <strong>Do not start the insulin infusion until serum K⁺ is ≥ 3.3 mEq/L.</strong> If K⁺ &lt; 3.3, hold insulin and replace potassium (20–30 mEq/hr) until it recovers. This is the single most important safety rule in DKA and the tool flags it explicitly.</p>
+<p>Insulin drives potassium intracellularly and can precipitate dangerous hypokalemia. <strong>Do not start the insulin infusion until serum K⁺ is above 3.5 mmol/L.</strong> If K⁺ is below 3.5, delay insulin and give potassium at 10 mmol/h until it recovers (2024 consensus). This is the single most important safety rule in DKA and the tool flags it explicitly.</p>
 </div>
 </div>
 <div class="alert alert-green">
@@ -1837,7 +2179,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <div class="alert-icon">🚫</div>
 <div class="alert-body">
 <h4>Pitfalls</h4>
-<p>(1) Avoid bicarbonate unless arterial pH &lt; 6.9 — routine bicarbonate does not improve outcomes and may worsen hypokalemia and cerebral edema. (2) Watch for <strong>cerebral edema</strong>, especially in children/adolescents, with overly rapid correction. (3) Always identify and treat the <strong>precipitant</strong> (infection, missed insulin, MI, pancreatitis, new diabetes). (4) Euglycemic DKA can be missed if you anchor on glucose — track the anion gap and ketones. (5) In CKD/ESKD/heart failure the default weight-based fluid and potassium numbers can be harmful — individualize.</p>
+<p>(1) Consider bicarbonate only if pH &lt; 7.0 — routine bicarbonate does not improve outcomes and may worsen hypokalemia and cerebral edema. (2) Watch for <strong>cerebral edema</strong>, especially in children/adolescents, with overly rapid correction. (3) Always identify and treat the <strong>precipitant</strong> (infection, missed insulin, MI, pancreatitis, new diabetes). (4) Euglycemic DKA can be missed if you anchor on glucose — measure blood ketones (β-hydroxybutyrate). (5) In CKD/ESKD/heart failure the default weight-based fluid and potassium numbers can be harmful — individualize.</p>
 </div>
 </div>
 </div>
@@ -1894,7 +2236,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
       <div class="calc-metric-card">
         <div class="cmv" id="dka-fluid" style="font-size:22px;line-height:1.2;">—</div>
         <div class="cml">Initial fluids (0.9% NaCl)</div>
-        <div class="cmt" id="dka-fluid-cmt">15–20 mL/kg/hr</div>
+        <div class="cmt" id="dka-fluid-cmt">500–1000 mL/hr, first 2–4 h</div>
       </div>
       <div class="calc-metric-card">
         <div class="cmv" id="dka-insulin" style="font-size:22px;line-height:1.2;">—</div>
@@ -1909,7 +2251,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
     </div>
     <div class="calc-verdict-text" id="dka-verdict"></div>
     <div class="calc-action-text" id="dka-action"></div>
-    <p class="calc-disclaimer">⚕ ADA / AACE / JBDS-aligned educational decision-support (Kitabchi 2009; ADA Standards of Care 2024; JBDS 2023). Weight-based starting numbers only — <strong>your institution's DKA protocol governs.</strong> Do NOT start insulin until K⁺ ≥ 3.3 mEq/L. In CKD/ESKD, dialysis, and heart failure, reduce fluids and titrate potassium with great caution. For licensed clinicians; not a substitute for individualized assessment.</p>
+    <p class="calc-disclaimer">⚕ ADA / AACE / JBDS-aligned educational decision-support (Umpierrez et al. 2024 consensus; ADA Standards of Care). Weight-based starting numbers only — <strong>your institution's DKA protocol governs.</strong> Do NOT start insulin until K⁺ is above 3.5 mmol/L. In CKD/ESKD, dialysis, and heart failure, reduce fluids and titrate potassium with great caution. For licensed clinicians; not a substitute for individualized assessment.</p>
   </div>
 </div>
 </section>
@@ -1919,11 +2261,11 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <div class="mdc-acc-body">
 <p><strong>Start the three pillars together, monitor closely, and re-check labs on a schedule.</strong></p>
 <ul style="margin:8px 0 0 1.1em;padding:0;line-height:1.8;">
-<li><strong>Fluids:</strong> begin 0.9% NaCl 15–20 mL/kg/hr (≈ 1–1.5 L in the first hour), then 250–500 mL/hr — switching to 0.45% NaCl if corrected Na is normal/high, 0.9% if low. Add 5% dextrose once glucose &lt; 200–250 mg/dL and keep insulin running.</li>
-<li><strong>Insulin:</strong> regular insulin IV infusion 0.1 U/kg/hr (an optional 0.1 U/kg bolus), or 0.14 U/kg/hr with no bolus. Target a glucose fall of 50–75 mg/dL/hr. <strong>Never start until K⁺ ≥ 3.3 mEq/L.</strong></li>
-<li><strong>Potassium:</strong> K⁺ &lt; 3.3 → hold insulin, give 20–30 mEq/hr until ≥ 3.3; K⁺ 3.3–5.2 → add 20–30 mEq per litre of fluid; K⁺ &gt; 5.2 → no potassium, recheck every 2 h.</li>
-<li><strong>Monitor:</strong> glucose hourly; electrolytes, venous pH, and anion gap every 2–4 h. Identify and treat the precipitant. Avoid bicarbonate unless pH &lt; 6.9. Watch for cerebral edema.</li>
-<li><strong>Resolution:</strong> glucose &lt; 200 mg/dL AND two of (HCO₃⁻ ≥ 15, venous pH &gt; 7.3, anion gap ≤ 12). Transition to subcutaneous insulin with a 1–2 h overlap.</li>
+<li><strong>Fluids:</strong> isotonic saline or a balanced crystalloid at 500–1000 mL/hr for the first 2–4 hours (250 mL boluses with frequent review in older adults, heart failure, or kidney failure on dialysis), then adjust to hydration and sodium. Once glucose is below 250 mg/dL, add 5–10% dextrose and reduce insulin to 0.05 U/kg/hr.</li>
+<li><strong>Insulin:</strong> fixed-rate IV insulin infusion at 0.1 U/kg/hr; give a 0.1 U/kg bolus only if IV access is delayed. <strong>Never start until K⁺ is above 3.5 mmol/L.</strong></li>
+<li><strong>Potassium:</strong> K⁺ &lt; 3.5 → delay insulin, give 10 mmol/h until above 3.5; K⁺ 3.5–4.9 → add 20–30 mmol per litre of fluid (target 4–5); K⁺ ≥ 5.0 → no potassium, recheck every 2 h.</li>
+<li><strong>Monitor:</strong> glucose hourly; electrolytes, venous pH, and blood ketones every 2–4 h. Identify and treat the precipitant. Consider bicarbonate only if pH &lt; 7.0. Watch for cerebral edema.</li>
+<li><strong>Resolution:</strong> blood ketones &lt; 0.6 mmol/L AND venous pH ≥ 7.3 or HCO₃⁻ ≥ 18 mmol/L (glucose ideally &lt; 200 mg/dL); the anion gap is no longer a resolution criterion. Transition to subcutaneous insulin with a 1–2 h overlap.</li>
 <li>Pair with the <a href="calc-anion-gap-acid-base.html" style="color:var(--teal);font-weight:600;">anion gap &amp; acid–base</a> tool to track gap closure, and <a href="calc-insulin-dose.html" style="color:var(--teal);font-weight:600;">insulin dosing in CKD</a> when planning the subcutaneous transition.</li>
 </ul>
 </div>
@@ -1936,9 +2278,9 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <table class="lab-table">
 <thead><tr><th>Quantity</th><th>Formula / target</th></tr></thead>
 <tbody>
-<tr><td>Initial fluid rate</td><td>0.9% NaCl 15–20 mL/kg/hr (≈ 1–1.5 L first hour)</td></tr>
+<tr><td>Initial fluid rate</td><td>Isotonic saline or balanced crystalloid 500–1000 mL/hr for 2–4 h</td></tr>
 <tr><td>Maintenance fluids</td><td>250–500 mL/hr; 0.45% NaCl if corrected Na normal/high, 0.9% if low</td></tr>
-<tr><td>Insulin infusion</td><td>Regular insulin 0.1 U/kg/hr (± 0.1 U/kg bolus) OR 0.14 U/kg/hr, no bolus</td></tr>
+<tr><td>Insulin infusion</td><td>Fixed rate 0.1 U/kg/hr (0.1 U/kg bolus only if IV access is delayed); 0.05 U/kg/hr plus dextrose once glucose &lt; 250 mg/dL</td></tr>
 <tr><td>Glucose target</td><td>Fall 50–75 mg/dL/hr; add 5% dextrose when glucose &lt; 200–250 mg/dL</td></tr>
 <tr><td>Corrected Na</td><td>Measured Na + 1.6 × ((glucose − 100)/100)  (some use 2.4)</td></tr>
 </tbody>
@@ -1947,31 +2289,31 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <table class="lab-table">
 <thead><tr><th>Serum K⁺ (mEq/L)</th><th>Action</th></tr></thead>
 <tbody>
-<tr><td>&lt; 3.3</td><td>HOLD insulin; give 20–30 mEq/hr K⁺ until ≥ 3.3</td></tr>
-<tr><td>3.3 – 5.2</td><td>Add 20–30 mEq K⁺ per litre of IV fluid; start insulin</td></tr>
-<tr><td>&gt; 5.2</td><td>No K⁺; recheck every 2 h</td></tr>
+<tr><td>&lt; 3.5</td><td>Delay insulin; give K⁺ 10 mmol/h until above 3.5</td></tr>
+<tr><td>3.5 – 4.9</td><td>Add 20–30 mmol K⁺ per litre of IV fluid; start insulin</td></tr>
+<tr><td>≥ 5.0</td><td>No K⁺; recheck every 2 h</td></tr>
 </tbody>
 </table>
 <h3 class="mdc-sub">Resolution criteria</h3>
 <table class="lab-table">
 <thead><tr><th>Criterion</th><th>Threshold</th></tr></thead>
 <tbody>
-<tr><td>Glucose</td><td>&lt; 200 mg/dL (required)</td></tr>
-<tr><td>Plus two of</td><td>HCO₃⁻ ≥ 15 · venous pH &gt; 7.3 · anion gap ≤ 12</td></tr>
+<tr><td>Glucose</td><td>Ideally &lt; 200 mg/dL</td></tr>
+<tr><td>Plus</td><td>Blood ketones &lt; 0.6 mmol/L and venous pH ≥ 7.3 or HCO₃⁻ ≥ 18</td></tr>
 <tr><td>Transition</td><td>SC insulin with 1–2 h overlap</td></tr>
 </tbody>
 </table>
-<p style="font-size:.9rem;color:var(--text-muted);">Avoid bicarbonate unless arterial pH &lt; 6.9. Identify and treat the precipitant; watch for cerebral edema (more common in children). Euglycemic DKA (e.g. SGLT2 inhibitors) may present with near-normal glucose — keep the anion gap and ketones central. In CKD/ESKD and heart failure, reduce fluids and titrate potassium with great caution.</p>
+<p style="font-size:.9rem;color:var(--text-muted);">Consider bicarbonate only if pH &lt; 7.0. Identify and treat the precipitant; watch for cerebral edema (more common in children). Euglycemic DKA (e.g. SGLT2 inhibitors) may present with near-normal glucose — keep blood ketones central. In CKD/ESKD and heart failure, reduce fluids and titrate potassium with great caution.</p>
 <h3 class="mdc-sub">References</h3>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
-<li>Kitabchi AE, Umpierrez GE, Miles JM, Fisher JN. <em>Hyperglycemic crises in adult patients with diabetes</em> (ADA consensus statement). Diabetes Care. 2009;32(7):1335–1343.</li>
+<li>Umpierrez GE, Davis GM, ElSayed NA, et al. <em>Hyperglycaemic crises in adults with diabetes: a consensus report.</em> Diabetologia. 2024;67(8):1455–1479. doi:10.1007/s00125-024-06183-8</li>
 <li>ElSayed NA, Aleppo G, Aroda VR, et al. <em>American Diabetes Association Standards of Care in Diabetes — 2024.</em> Diabetes Care. 2024;47(Suppl 1).</li>
 <li>Joint British Diabetes Societies (JBDS) for Inpatient Care. <em>The Management of Diabetic Ketoacidosis in Adults.</em> 2023.</li>
 </ol>
 </div>
 </details>
 
-<div class="disclaimer"><strong>Important:</strong> This calculator is an educational decision-support aid for licensed clinicians and does <em>not</em> replace your institution's diabetic-ketoacidosis protocol, which always governs. It generates standard ADA/AACE/JBDS-aligned weight-based starting numbers; it does not diagnose DKA, account for every comorbidity, or cover pediatric DKA, the hyperosmolar hyperglycemic state, or pregnancy-specific care. Never start the insulin infusion until serum potassium is ≥ 3.3 mEq/L. In CKD, ESKD/dialysis dependence, and heart failure, reduce fluid volumes and titrate (or withhold) potassium with great caution, anticipating hyperkalemia and fluid intolerance. Always integrate the result with the full clinical picture, repeat labs (glucose hourly; electrolytes, venous pH, and anion gap every 2–4 h), the precipitant, and senior/specialist input before making management decisions.</div>
+<div class="disclaimer"><strong>Important:</strong> This calculator is an educational decision-support aid for licensed clinicians and does <em>not</em> replace your institution's diabetic-ketoacidosis protocol, which always governs. It generates standard ADA/AACE/JBDS-aligned weight-based starting numbers; it does not diagnose DKA, account for every comorbidity, or cover pediatric DKA, the hyperosmolar hyperglycemic state, or pregnancy-specific care. Never start the insulin infusion until serum potassium is above 3.5 mmol/L. In CKD, ESKD/dialysis dependence, and heart failure, reduce fluid volumes and titrate (or withhold) potassium with great caution, anticipating hyperkalemia and fluid intolerance. Always integrate the result with the full clinical picture, repeat labs (glucose hourly; electrolytes, venous pH, and anion gap every 2–4 h), the precipitant, and senior/specialist input before making management decisions.</div>
 
 </main>
 <!-- FOOTER -->
@@ -1987,6 +2329,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <span style="margin-left:auto;font-weight:500;font-size:12px;color:var(--text-muted);">3 sources</span>
 </summary>
 <ol style="margin:0;padding:4px 26px 18px 44px;font-size:13.5px;line-height:1.75;color:var(--text-mid);">
+<li>Umpierrez, G. E., Davis, G. M., ElSayed, N. A., Fadini, G. P., Galindo, R. J., Hirsch, I. B., Klonoff, D. C., McCoy, R. G., Misra, S., Gabbay, R. A., Bannuru, R. R., &amp; Dhatariya, K. K. (2024). Hyperglycaemic crises in adults with diabetes: A consensus report. <em>Diabetologia</em>, <em>67</em>(8), 1455–1479. <a href="https://doi.org/10.1007/s00125-024-06183-8">https://doi.org/10.1007/s00125-024-06183-8</a></li>
 <li>Kitabchi AE, et al. Hyperglycemic crises in adult patients with diabetes (ADA consensus). Diabetes Care. 2009;32(7):1335–1343.</li>
 <li>ElSayed NA, et al. American Diabetes Association Standards of Care in Diabetes. Diabetes Care. 2024;47(Suppl 1).</li>
 <li>Joint British Diabetes Societies (JBDS) for Inpatient Care. The Management of Diabetic Ketoacidosis in Adults. 2023.</li>
@@ -2098,6 +2441,11 @@ function r1(x){ return Math.round(x * 10) / 10; }
 function r0(x){ return Math.round(x); }
 
 function calcDKA() {
+  /* Updated to the 2024 ADA/EASD/JBDS/AACE/DTS consensus (Umpierrez GE et al. Diabetologia 2024;67:1455; Diabetes Care 2024):
+     fluids 500–1000 mL/h for 2–4 h; FRIII 0.1 U/kg/h (0.1 U/kg bolus only if IV access delayed);
+     K <3.5: give K 10 mmol/h and delay insulin; add 20–30 mmol K per litre once K <5.0 (target 4–5);
+     glucose <250: add 5–10% dextrose, reduce insulin to 0.05 U/kg/h; resolution = ketones <0.6 mmol/L AND (pH ≥7.3 OR HCO3 ≥18);
+     consider bicarbonate if pH <7.0. */
   var res = document.getElementById('dka-result');
   var wt   = parseFloat(document.getElementById('dka-weight').value);
   var glu  = parseFloat(document.getElementById('dka-glucose').value);
@@ -2108,122 +2456,71 @@ function calcDKA() {
   var hco3 = parseFloat(hco3V);
   var naV  = document.getElementById('dka-na').value;
   var na   = parseFloat(naV);
-
-  // Required: weight, glucose, potassium (all positive)
-  if (isNaN(wt) || wt <= 0 || isNaN(glu) || glu <= 0 || isNaN(k) || k <= 0) {
-    res.style.display = 'none';
-    return;
-  }
-
+  if (isNaN(wt) || wt <= 0 || isNaN(glu) || glu <= 0 || isNaN(k) || k <= 0) { res.style.display = 'none'; return; }
   var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
-  /* ── 1) FLUIDS — weight-based isotonic 0.9% NaCl 15–20 mL/kg/hr ──────────── */
-  var fluidLo = r0(15 * wt);   // mL in the first hour at 15 mL/kg
-  var fluidHi = r0(20 * wt);   // mL in the first hour at 20 mL/kg
-
-  /* ── Corrected sodium (only if Na entered) — 1.6 factor (2.4 variant noted) */
   var corrNaTxt = '';
-  var fluidChoiceTxt = 'After the first hour, run 250–500 mL/hr. Choose 0.45% NaCl if corrected Na is normal/high, 0.9% NaCl if corrected Na is low.';
+  var fluidChoiceTxt = 'After the first 2–4 hours, adjust the rate and fluid to hydration, blood pressure, urine output, and sodium.';
   if (naV !== '' && !isNaN(na)) {
     var corrNa16 = na + 1.6 * ((glu - 100) / 100);
     var corrNa24 = na + 2.4 * ((glu - 100) / 100);
     corrNaTxt = ' Corrected Na ≈ ' + r1(corrNa16) + ' mEq/L (1.6 factor; 2.4-factor variant ≈ ' + r1(corrNa24) + ').';
-    if (corrNa16 >= 135) {
-      fluidChoiceTxt = 'Corrected Na is normal/high (≈ ' + r1(corrNa16) + ' mEq/L) → after the first hour use 0.45% NaCl at 250–500 mL/hr.';
-    } else {
-      fluidChoiceTxt = 'Corrected Na is low (≈ ' + r1(corrNa16) + ' mEq/L) → after the first hour use 0.9% NaCl at 250–500 mL/hr.';
-    }
+    fluidChoiceTxt = (corrNa16 >= 135)
+      ? 'Corrected Na is normal or high (≈ ' + r1(corrNa16) + ' mEq/L): after volume restoration, 0.45% NaCl is reasonable at a lower rate.'
+      : 'Corrected Na is low (≈ ' + r1(corrNa16) + ' mEq/L): continue isotonic fluid after volume restoration.';
   }
-
-  /* ── Dextrose trigger ────────────────────────────────────────────────────── */
   var dextroseTxt = (glu < 250)
-    ? 'Glucose is ' + r0(glu) + ' mg/dL (< 200–250) → add 5% dextrose to the fluids and CONTINUE the insulin infusion until the anion gap closes.'
-    : 'When glucose falls below 200–250 mg/dL, add 5% dextrose to the fluids and continue insulin.';
+    ? 'Glucose is ' + r0(glu) + ' mg/dL (< 250): add 5–10% dextrose and reduce insulin to 0.05 U/kg/h (≈ ' + r1(0.05 * wt) + ' U/h); keep glucose near 200 mg/dL until ketoacidosis resolves.'
+    : 'When glucose falls below 250 mg/dL, add 5–10% dextrose and reduce insulin to 0.05 U/kg/h (≈ ' + r1(0.05 * wt) + ' U/h).';
 
-  /* ── 2) INSULIN — 0.1 U/kg/hr (± 0.1 U/kg bolus) OR 0.14 U/kg/hr, no bolus ─ */
-  var insRate = r1(0.1 * wt);     // U/hr standard infusion
-  var insBolus = r1(0.1 * wt);    // U optional bolus
-  var insRate14 = r1(0.14 * wt);  // U/hr alternative, no bolus
-
-  /* ── 3) POTASSIUM branch ─────────────────────────────────────────────────── */
+  var insRate = r1(0.1 * wt), insBolus = r1(0.1 * wt);
   var kTag, kCmt, kBranch;
-  if (k < 3.3) {
-    kTag = 'K⁺ < 3.3 — HOLD insulin';
+  if (k < 3.5) {
+    kTag = 'K⁺ < 3.5 — DELAY insulin';
     kCmt = 'K⁺ ' + r1(k) + ' (low)';
-    kBranch = 'POTASSIUM: K⁺ ' + r1(k) + ' mEq/L is < 3.3 → HOLD insulin and give 20–30 mEq/hr K⁺ until K⁺ ≥ 3.3 mEq/L. Do NOT start the insulin infusion yet.';
-  } else if (k <= 5.2) {
-    kTag = 'K⁺ 3.3–5.2 — replace in fluids';
+    kBranch = 'POTASSIUM: K⁺ ' + r1(k) + ' mmol/L is < 3.5: give potassium at 10 mmol/h and delay insulin until K⁺ > 3.5 mmol/L.';
+  } else if (k < 5.0) {
+    kTag = 'K⁺ 3.5–4.9 — replace in fluids';
     kCmt = 'K⁺ ' + r1(k) + ' (replace)';
-    kBranch = 'POTASSIUM: K⁺ ' + r1(k) + ' mEq/L is 3.3–5.2 → add 20–30 mEq K⁺ per litre of IV fluid to keep K⁺ at 4–5 mEq/L. Insulin may proceed.';
+    kBranch = 'POTASSIUM: K⁺ ' + r1(k) + ' mmol/L is 3.5–4.9: add 20–30 mmol K⁺ per litre of IV fluid to keep K⁺ at 4–5 mmol/L. Insulin may proceed.';
   } else {
-    kTag = 'K⁺ > 5.2 — no K⁺ now';
+    kTag = 'K⁺ ≥ 5.0 — no K⁺ now';
     kCmt = 'K⁺ ' + r1(k) + ' (high)';
-    kBranch = 'POTASSIUM: K⁺ ' + r1(k) + ' mEq/L is > 5.2 → give NO potassium now; recheck K⁺ every 2 hours and begin replacement once it falls below 5.2.';
+    kBranch = 'POTASSIUM: K⁺ ' + r1(k) + ' mmol/L is ≥ 5.0: give no potassium now; recheck every 2 hours and start replacement once it falls below 5.0.';
   }
+  var insulinNote = (k < 3.5)
+    ? 'Insulin is ON HOLD until K⁺ > 3.5 mmol/L. Then start a fixed-rate IV insulin infusion at 0.1 U/kg/h (≈ ' + insRate + ' U/h); a 0.1 U/kg bolus (≈ ' + insBolus + ' U) is used only if IV access is delayed.'
+    : 'Start a fixed-rate IV insulin infusion at 0.1 U/kg/h (≈ ' + insRate + ' U/h); a 0.1 U/kg bolus (≈ ' + insBolus + ' U) is used only if IV access is delayed.';
 
-  /* ── Insulin gating on potassium ─────────────────────────────────────────── */
-  var insulinNote;
-  if (k < 3.3) {
-    insulinNote = 'Insulin is ON HOLD until K⁺ ≥ 3.3 mEq/L. Once corrected, start regular insulin IV 0.1 U/kg/hr (≈ ' + insRate + ' U/hr), with an optional 0.1 U/kg bolus (≈ ' + insBolus + ' U) — or 0.14 U/kg/hr (≈ ' + insRate14 + ' U/hr) with no bolus. Target a glucose fall of 50–75 mg/dL/hr.';
-  } else {
-    insulinNote = 'Start regular insulin IV 0.1 U/kg/hr (≈ ' + insRate + ' U/hr), with an optional 0.1 U/kg bolus (≈ ' + insBolus + ' U) — or 0.14 U/kg/hr (≈ ' + insRate14 + ' U/hr) with no bolus. Target a glucose fall of 50–75 mg/dL/hr.';
-  }
-
-  /* ── 4) RESOLUTION criteria (uses optional pH / HCO₃; AG not entered) ─────── */
-  var resCrit = 'Resolution: glucose < 200 mg/dL AND any two of — serum HCO₃⁻ ≥ 15, venous pH > 7.3, anion gap ≤ 12. Then transition to SC insulin with a 1–2 h overlap.';
+  var resCrit = 'Resolution (2024 consensus): blood ketones < 0.6 mmol/L AND venous pH ≥ 7.3 or HCO₃⁻ ≥ 18 mmol/L (glucose ideally < 200 mg/dL). Do not use the anion gap. Then transition to SC insulin with a 1–2 h overlap.';
   var resMet = [];
+  if (phV !== '' && !isNaN(ph) && ph >= 7.3) resMet.push('pH ≥ 7.3 ✓');
+  if (hco3V !== '' && !isNaN(hco3) && hco3 >= 18) resMet.push('HCO₃⁻ ≥ 18 ✓');
   if (glu < 200) resMet.push('glucose < 200 ✓');
-  if (hco3V !== '' && !isNaN(hco3) && hco3 >= 15) resMet.push('HCO₃⁻ ≥ 15 ✓');
-  if (phV !== '' && !isNaN(ph) && ph > 7.3) resMet.push('venous pH > 7.3 ✓');
-  if (resMet.length) {
-    resCrit += ' Met so far: ' + resMet.join(', ') + '.';
-  }
+  if (resMet.length) resCrit += ' Met so far: ' + resMet.join(', ') + ' (check ketones).';
 
-  /* ── Severity / acuity colour ────────────────────────────────────────────── */
-  var severe = (k < 3.3) || (k > 5.2) || (phV !== '' && !isNaN(ph) && ph < 7.0);
+  var severe = (k < 3.5) || (k >= 5.5) || (phV !== '' && !isNaN(ph) && ph < 7.0);
   var borderColor, bg, valColor;
-  if (severe) {
-    borderColor = '#b91c1c';
-    bg = isDark ? 'rgba(185,28,28,.08)' : '#fff0f0';
-    valColor = isDark ? 'var(--red)' : '#b91c1c';
-  } else {
-    borderColor = '#d97706';
-    bg = isDark ? 'rgba(146,64,14,.08)' : '#fffbeb';
-    valColor = isDark ? 'var(--amber)' : '#92400e';
-  }
-  // K-branch tag colour follows acuity of the branch specifically
-  var kColor = (k < 3.3 || k > 5.2)
-    ? (isDark ? 'var(--red)' : '#b91c1c')
-    : (isDark ? 'var(--green)' : '#166534');
+  if (severe) { borderColor = '#b91c1c'; bg = isDark ? 'rgba(185,28,28,.08)' : '#fff0f0'; valColor = isDark ? 'var(--red)' : '#b91c1c'; }
+  else { borderColor = '#d97706'; bg = isDark ? 'rgba(146,64,14,.08)' : '#fffbeb'; valColor = isDark ? 'var(--amber)' : '#92400e'; }
+  var kColor = (k < 3.5 || k >= 5.0) ? (isDark ? 'var(--red)' : '#b91c1c') : (isDark ? 'var(--green)' : '#166534');
 
-  /* ── Render metric cards ─────────────────────────────────────────────────── */
-  res.style.display = 'block';
-  res.style.background = bg;
-  res.style.borderColor = borderColor;
-
+  res.style.display = 'block'; res.style.background = bg; res.style.borderColor = borderColor;
   var fEl = document.getElementById('dka-fluid');
-  fEl.textContent = fluidLo + '–' + fluidHi + ' mL/hr';
-  fEl.style.color = valColor;
-  document.getElementById('dka-fluid-cmt').textContent = '0.9% NaCl, first hour (15–20 mL/kg)';
-
+  fEl.textContent = '500–1000 mL/hr'; fEl.style.color = valColor;
+  document.getElementById('dka-fluid-cmt').textContent = 'isotonic saline or balanced crystalloid, first 2–4 h';
   var iEl = document.getElementById('dka-insulin');
   iEl.textContent = insRate + ' U/hr';
-  iEl.style.color = (k < 3.3) ? (isDark ? 'var(--red)' : '#b91c1c') : valColor;
-  document.getElementById('dka-insulin-cmt').textContent = (k < 3.3)
-    ? 'HOLD until K⁺ ≥ 3.3 · bolus ' + insBolus + ' U'
-    : '0.1 U/kg/hr · bolus ' + insBolus + ' U';
-
+  iEl.style.color = (k < 3.5) ? (isDark ? 'var(--red)' : '#b91c1c') : valColor;
+  document.getElementById('dka-insulin-cmt').textContent = (k < 3.5) ? 'HOLD until K⁺ > 3.5 · 0.1 U/kg/h' : '0.1 U/kg/h fixed rate';
   var kEl = document.getElementById('dka-k-tag');
-  kEl.textContent = kTag;
-  kEl.style.color = kColor;
+  kEl.textContent = kTag; kEl.style.color = kColor;
   document.getElementById('dka-k-cmt').textContent = kCmt;
 
-  /* ── Verdict + action narrative ──────────────────────────────────────────── */
-  var verdict = 'For ' + r1(wt) + ' kg: FLUIDS — 0.9% NaCl 15–20 mL/kg/hr ≈ ' + fluidLo + '–' + fluidHi + ' mL/hr in the first hour (≈ 1–1.5 L). ' + fluidChoiceTxt + corrNaTxt + ' ' + dextroseTxt;
+  var verdict = 'For ' + r1(wt) + ' kg: FLUIDS — isotonic saline or a balanced crystalloid at 500–1000 mL/hr for the first 2–4 hours (smaller 250 mL boluses in older adults, heart failure, or kidney failure on dialysis). ' + fluidChoiceTxt + corrNaTxt + ' ' + dextroseTxt;
   var action = 'INSULIN — ' + insulinNote + '  ' + kBranch + '  ' + resCrit
-    + (severe ? '  ⚠ SEVERE markers present (pH < 7.0 and/or K⁺ out of the 3.3–5.2 range) — manage in a monitored setting per your institutional DKA protocol.' : '')
-    + '  Educational aid only — institutional protocol governs; in CKD/ESKD/heart failure reduce fluids and titrate potassium with caution. Avoid bicarbonate unless pH < 6.9.';
-
+    + (severe ? '  ⚠ SEVERE markers present (pH < 7.0 and/or K⁺ < 3.5 or ≥ 5.5) — manage in a monitored setting per your institutional DKA protocol.' : '')
+    + '  Educational aid only — institutional protocol governs; in CKD/ESKD/heart failure reduce fluids and titrate potassium with caution. Consider bicarbonate only if pH < 7.0.';
   document.getElementById('dka-verdict').textContent = verdict;
   document.getElementById('dka-action').textContent = action;
 }

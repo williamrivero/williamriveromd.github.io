@@ -1674,6 +1674,356 @@
     @page { margin: 18mm 15mm; size: A4; }
   }
 </style>
+<style id="calc-shared-style">
+/* Shared calculator components — managed by patch_calc_shared_css.py. Do not edit per page. */
+/* Layout safety: long strings wrap, wide tables scroll inside their box, never the page. */
+main.container{overflow-wrap:break-word;}
+.mdc-acc-body,.calc-disclaimer,.calc-verdict-text,.calc-action-text,.ref-acc li,.disclaimer,.alert-body{overflow-wrap:anywhere;}
+.mdc-acc-body table,.calc-wrap table{max-width:100%;}
+.mdc-acc-body .table-wrap,.calc-wrap .table-wrap{overflow-x:auto;}
+.calc-wrap input,.calc-wrap select,.calc-wrap textarea{max-width:100%;box-sizing:border-box;}
+/* Result boxes: master CSS hides .calc-result-box until a page shows it. Pages that reveal it via a
+   state class (show / res-ok / res-warn / res-bad) need these rules, which were lost in a master rewrite. */
+.calc-result-box.show,.calc-result-box.res-ok,.calc-result-box.res-warn,.calc-result-box.res-bad{display:block;}
+/* Hero cross-links */
+.hero-xlink{color:#0e4a50;font-weight:600;text-decoration:underline;text-decoration-color:var(--gold-light);text-decoration-thickness:1.5px;text-underline-offset:3px;border-radius:6px;padding:2px 4px;}
+.hero-xlink:hover{color:#0b3a40;}
+.hero-xlink:focus-visible{outline:2px solid var(--gold-light);outline-offset:2px;}
+/* MDCalc-style instructions + accordions */
+.mdc-instructions{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:0;padding:14px 18px 12px;margin:22px 0 18px;}
+.mdc-instr-label{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.mdc-instructions ol,.mdc-instructions ul{margin:0 0 0 1.1em;padding:0;}
+.mdc-instructions p{margin:0;text-align:left;}
+.mdc-acc{border:1px solid var(--border);border-radius:10px;margin:10px 0;background:var(--white);}
+.mdc-acc>summary{cursor:pointer;list-style:none;padding:15px 20px;font-family:'Inter',sans-serif;font-weight:600;color:var(--navy);font-size:1.06rem;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mdc-acc>summary::-webkit-details-marker{display:none;}
+.mdc-acc>summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--teal);font-weight:400;flex:none;}
+.mdc-acc[open]>summary::after{content:"\2212";}
+.mdc-acc[open]>summary{border-bottom:1px solid var(--border);}
+.mdc-acc-body{padding:6px 20px 18px;}
+.mdc-acc-body p,.calc-wrap p,.calc-result-box p{text-align:left;hyphens:manual;}
+/* Checklist scoring items (HAS-BLED, STOP-BANG, CURB-65, ...) */
+.check-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-bottom:16px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:11px 13px;cursor:pointer;transition:border-color .15s,background .15s;}
+.check-item:hover{border-color:var(--teal);}
+.check-item input[type="checkbox"],.check-item input[type="radio"]{accent-color:var(--teal);width:16px;height:16px;flex-shrink:0;margin-top:2px;cursor:pointer;}
+.check-item-body{flex:1;min-width:0;}
+.ci-label{font-size:13.5px;font-weight:600;color:var(--text);line-height:1.4;}
+.ci-pts{font-size:11.5px;color:var(--text-muted);margin-top:2px;}
+.check-group{margin-bottom:14px;}
+/* Rating / pill rows wrap instead of overflowing on phones */
+.ipss-opts,.ipss-qol-row,.tx-pills,.qol-row,.likert-row{flex-wrap:wrap;}
+/* Result cards built by JS on ~20 pages (GCS, 4Ts, keGFR, NRI, Parkland...) */
+.result-card{border-radius:12px;padding:18px 22px;margin-top:16px;border:2px solid var(--border,#e2e6eb);background:var(--white,#fff);}
+.result-card.result-normal{background:var(--green-soft,#edf7f2);border-color:var(--green,#2d7a4f);}
+.result-card.result-caution{background:var(--amber-soft,#fef9ec);border-color:#d97706;}
+.result-card.result-danger{background:var(--red-soft,#fdf0ef);border-color:var(--red,#c0392b);}
+.result-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted,#6b7a8d);}
+.result-value{font-size:30px;font-weight:700;line-height:1.15;margin:2px 0 4px;color:var(--navy,#0f1e2e);}
+.result-sublabel{font-size:14px;font-weight:700;color:var(--text,#2c3a4a);}
+.result-card.result-normal .result-sublabel{color:var(--green,#2d7a4f);}
+.result-card.result-caution .result-sublabel{color:#9a6500;}
+.result-card.result-danger .result-sublabel{color:var(--red,#c0392b);}
+.result-action{font-size:13.5px;line-height:1.65;color:var(--text-mid,#3a4a5c);margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.1);}
+html[data-theme="dark"] .result-card{background:rgba(255,255,255,.04);}
+html[data-theme="dark"] .result-card.result-normal{background:rgba(45,122,79,.12);}
+html[data-theme="dark"] .result-card.result-caution{background:rgba(217,119,6,.12);}
+html[data-theme="dark"] .result-card.result-danger{background:rgba(192,57,43,.12);}
+html[data-theme="dark"] .result-value{color:var(--text);}
+html[data-theme="dark"] .result-action{color:var(--text-mid);border-top-color:rgba(255,255,255,.12);}
+html[data-theme="dark"] .result-card.result-normal .result-sublabel{color:#7fdca4;}
+html[data-theme="dark"] .result-card.result-caution .result-sublabel{color:#f3c06b;}
+html[data-theme="dark"] .result-card.result-danger .result-sublabel{color:#fca5a5;}
+/* Dark mode */
+html[data-theme="dark"] .hero-xlink{color:#5fd0d8;}
+html[data-theme="dark"] .mdc-instructions{background:rgba(26,107,114,.12);}
+html[data-theme="dark"] .mdc-acc{background:#141c2a;border-color:#26314a;}
+html[data-theme="dark"] .mdc-acc>summary{color:var(--text);}
+html[data-theme="dark"] .check-item{background:#1a2535;border-color:#2a3548;}
+html[data-theme="dark"] .ci-label{color:var(--text);}
+html[data-theme="dark"] .ci-pts{color:#9ba6b8;}
+
+/* Dark mode: default-blue links inside content panels */
+html[data-theme="dark"] :is(.calc-wrap,.mdc-acc,.disclaimer,.alert,.qs-intro,.mw-intro,.calc-result-box,.mdc-instructions) a:not([class]){color:#5fd0d8;}
+/* Dark mode: hard-coded light inline panel backgrounds */
+html[data-theme="dark"] :is([style*="background:#f0" i],[style*="background:#f5" i],[style*="background:#f8" i],[style*="background:#fe" i],[style*="background:#ff" i],[style*="background: #f0" i],[style*="background: #fe" i],[style*="background:#ec" i],[style*="background:#ed" i],[style*="background:#ef" i],[style*="background:white" i],[style*="background-color:#f" i],[style*="background: rgb(2" i]):not(button):not(.calc-result-box):not([style*="color:#fff" i]):not([style*="color:white" i]):not([style*="color: rgb(255, 255, 255)"]){background:rgba(255,255,255,.05)!important;}
+/* Dark mode: white text on the bright dark-theme teal is only ~2.9:1; deepen it */
+html[data-theme="dark"] :is(.ln-wt-badge,.iief-num,.fs-sbar-letter,.wkt-qnum,.btn-primary,.tb-btn,.prom-tab-btn.active,.prom-calc-btn,.hd-tab.active,.ipss-btn-print,.badge,.btn-calc,.sbirt-tab.active,button.sel,.ln-tab.active,.ln-pill.sel,.tx-tab.active,.tx-btn-primary,.ut-btn.active,.wells-modebtn.active,.quiz-btn,.unit-btn.active,.calc-btn:not(.secondary),.cbtn.active){background-color:#157f87!important;border-color:#157f87!important;color:#fff!important;}
+html[data-theme="dark"] .calc-btn.secondary{color:#0f1520;}
+html[data-theme="dark"] .fs-sbar-item label{color:var(--text);}
+html[data-theme="dark"] [style*="color:var(--navy)" i]{color:var(--text)!important;}
+html[data-theme="dark"] .check-item{color:var(--text);}
+html[data-theme="dark"] .ipss-q-text{color:var(--text);}
+html[data-theme="dark"] :is(button,a)[style*="background:var(--teal)" i]{background:#157f87!important;border-color:#157f87!important;}
+html[data-theme="dark"] [style^="color:#1a6b72" i],
+html[data-theme="dark"] [style^="color: #1a6b72" i],
+html[data-theme="dark"] [style*=";color:#1a6b72" i],
+html[data-theme="dark"] [style*="; color:#1a6b72" i],
+html[data-theme="dark"] [style*=";color: #1a6b72" i],
+html[data-theme="dark"] [style^="color:rgb(26, 107, 114)" i],
+html[data-theme="dark"] [style^="color: rgb(26, 107, 114)" i],
+html[data-theme="dark"] [style*=";color:rgb(26, 107, 114)" i],
+html[data-theme="dark"] [style*="; color:rgb(26, 107, 114)" i],
+html[data-theme="dark"] [style*=";color: rgb(26, 107, 114)" i],
+html[data-theme="dark"] [style^="color:#145c63" i],
+html[data-theme="dark"] [style^="color: #145c63" i],
+html[data-theme="dark"] [style*=";color:#145c63" i],
+html[data-theme="dark"] [style*="; color:#145c63" i],
+html[data-theme="dark"] [style*=";color: #145c63" i],
+html[data-theme="dark"] [style^="color:rgb(20, 92, 99)" i],
+html[data-theme="dark"] [style^="color: rgb(20, 92, 99)" i],
+html[data-theme="dark"] [style*=";color:rgb(20, 92, 99)" i],
+html[data-theme="dark"] [style*="; color:rgb(20, 92, 99)" i],
+html[data-theme="dark"] [style*=";color: rgb(20, 92, 99)" i],
+html[data-theme="dark"] [style^="color:#0d4f55" i],
+html[data-theme="dark"] [style^="color: #0d4f55" i],
+html[data-theme="dark"] [style*=";color:#0d4f55" i],
+html[data-theme="dark"] [style*="; color:#0d4f55" i],
+html[data-theme="dark"] [style*=";color: #0d4f55" i],
+html[data-theme="dark"] [style^="color:rgb(13, 79, 85)" i],
+html[data-theme="dark"] [style^="color: rgb(13, 79, 85)" i],
+html[data-theme="dark"] [style*=";color:rgb(13, 79, 85)" i],
+html[data-theme="dark"] [style*="; color:rgb(13, 79, 85)" i],
+html[data-theme="dark"] [style*=";color: rgb(13, 79, 85)" i]{color:#5fd0d8!important;}
+html[data-theme="dark"] [style^="color:#1f3864" i],
+html[data-theme="dark"] [style^="color: #1f3864" i],
+html[data-theme="dark"] [style*=";color:#1f3864" i],
+html[data-theme="dark"] [style*="; color:#1f3864" i],
+html[data-theme="dark"] [style*=";color: #1f3864" i],
+html[data-theme="dark"] [style^="color:rgb(31, 56, 100)" i],
+html[data-theme="dark"] [style^="color: rgb(31, 56, 100)" i],
+html[data-theme="dark"] [style*=";color:rgb(31, 56, 100)" i],
+html[data-theme="dark"] [style*="; color:rgb(31, 56, 100)" i],
+html[data-theme="dark"] [style*=";color: rgb(31, 56, 100)" i],
+html[data-theme="dark"] [style^="color:#1a3c72" i],
+html[data-theme="dark"] [style^="color: #1a3c72" i],
+html[data-theme="dark"] [style*=";color:#1a3c72" i],
+html[data-theme="dark"] [style*="; color:#1a3c72" i],
+html[data-theme="dark"] [style*=";color: #1a3c72" i],
+html[data-theme="dark"] [style^="color:rgb(26, 60, 114)" i],
+html[data-theme="dark"] [style^="color: rgb(26, 60, 114)" i],
+html[data-theme="dark"] [style*=";color:rgb(26, 60, 114)" i],
+html[data-theme="dark"] [style*="; color:rgb(26, 60, 114)" i],
+html[data-theme="dark"] [style*=";color: rgb(26, 60, 114)" i],
+html[data-theme="dark"] [style^="color:#0f1e2e" i],
+html[data-theme="dark"] [style^="color: #0f1e2e" i],
+html[data-theme="dark"] [style*=";color:#0f1e2e" i],
+html[data-theme="dark"] [style*="; color:#0f1e2e" i],
+html[data-theme="dark"] [style*=";color: #0f1e2e" i],
+html[data-theme="dark"] [style^="color:rgb(15, 30, 46)" i],
+html[data-theme="dark"] [style^="color: rgb(15, 30, 46)" i],
+html[data-theme="dark"] [style*=";color:rgb(15, 30, 46)" i],
+html[data-theme="dark"] [style*="; color:rgb(15, 30, 46)" i],
+html[data-theme="dark"] [style*=";color: rgb(15, 30, 46)" i],
+html[data-theme="dark"] [style^="color:#0e1929" i],
+html[data-theme="dark"] [style^="color: #0e1929" i],
+html[data-theme="dark"] [style*=";color:#0e1929" i],
+html[data-theme="dark"] [style*="; color:#0e1929" i],
+html[data-theme="dark"] [style*=";color: #0e1929" i],
+html[data-theme="dark"] [style^="color:rgb(14, 25, 41)" i],
+html[data-theme="dark"] [style^="color: rgb(14, 25, 41)" i],
+html[data-theme="dark"] [style*=";color:rgb(14, 25, 41)" i],
+html[data-theme="dark"] [style*="; color:rgb(14, 25, 41)" i],
+html[data-theme="dark"] [style*=";color: rgb(14, 25, 41)" i],
+html[data-theme="dark"] [style^="color:#3a4a5c" i],
+html[data-theme="dark"] [style^="color: #3a4a5c" i],
+html[data-theme="dark"] [style*=";color:#3a4a5c" i],
+html[data-theme="dark"] [style*="; color:#3a4a5c" i],
+html[data-theme="dark"] [style*=";color: #3a4a5c" i],
+html[data-theme="dark"] [style^="color:rgb(58, 74, 92)" i],
+html[data-theme="dark"] [style^="color: rgb(58, 74, 92)" i],
+html[data-theme="dark"] [style*=";color:rgb(58, 74, 92)" i],
+html[data-theme="dark"] [style*="; color:rgb(58, 74, 92)" i],
+html[data-theme="dark"] [style*=";color: rgb(58, 74, 92)" i],
+html[data-theme="dark"] [style^="color:#4a5a6a" i],
+html[data-theme="dark"] [style^="color: #4a5a6a" i],
+html[data-theme="dark"] [style*=";color:#4a5a6a" i],
+html[data-theme="dark"] [style*="; color:#4a5a6a" i],
+html[data-theme="dark"] [style*=";color: #4a5a6a" i],
+html[data-theme="dark"] [style^="color:rgb(74, 90, 106)" i],
+html[data-theme="dark"] [style^="color: rgb(74, 90, 106)" i],
+html[data-theme="dark"] [style*=";color:rgb(74, 90, 106)" i],
+html[data-theme="dark"] [style*="; color:rgb(74, 90, 106)" i],
+html[data-theme="dark"] [style*=";color: rgb(74, 90, 106)" i],
+html[data-theme="dark"] [style^="color:#2c3a4a" i],
+html[data-theme="dark"] [style^="color: #2c3a4a" i],
+html[data-theme="dark"] [style*=";color:#2c3a4a" i],
+html[data-theme="dark"] [style*="; color:#2c3a4a" i],
+html[data-theme="dark"] [style*=";color: #2c3a4a" i],
+html[data-theme="dark"] [style^="color:rgb(44, 58, 74)" i],
+html[data-theme="dark"] [style^="color: rgb(44, 58, 74)" i],
+html[data-theme="dark"] [style*=";color:rgb(44, 58, 74)" i],
+html[data-theme="dark"] [style*="; color:rgb(44, 58, 74)" i],
+html[data-theme="dark"] [style*=";color: rgb(44, 58, 74)" i]{color:#dde3eb!important;}
+html[data-theme="dark"] [style^="color:#6b7280" i],
+html[data-theme="dark"] [style^="color: #6b7280" i],
+html[data-theme="dark"] [style*=";color:#6b7280" i],
+html[data-theme="dark"] [style*="; color:#6b7280" i],
+html[data-theme="dark"] [style*=";color: #6b7280" i],
+html[data-theme="dark"] [style^="color:rgb(107, 114, 128)" i],
+html[data-theme="dark"] [style^="color: rgb(107, 114, 128)" i],
+html[data-theme="dark"] [style*=";color:rgb(107, 114, 128)" i],
+html[data-theme="dark"] [style*="; color:rgb(107, 114, 128)" i],
+html[data-theme="dark"] [style*=";color: rgb(107, 114, 128)" i],
+html[data-theme="dark"] [style^="color:#6b7a8d" i],
+html[data-theme="dark"] [style^="color: #6b7a8d" i],
+html[data-theme="dark"] [style*=";color:#6b7a8d" i],
+html[data-theme="dark"] [style*="; color:#6b7a8d" i],
+html[data-theme="dark"] [style*=";color: #6b7a8d" i],
+html[data-theme="dark"] [style^="color:rgb(107, 122, 141)" i],
+html[data-theme="dark"] [style^="color: rgb(107, 122, 141)" i],
+html[data-theme="dark"] [style*=";color:rgb(107, 122, 141)" i],
+html[data-theme="dark"] [style*="; color:rgb(107, 122, 141)" i],
+html[data-theme="dark"] [style*=";color: rgb(107, 122, 141)" i]{color:#9ba6b8!important;}
+html[data-theme="dark"] [style^="color:#4a2080" i],
+html[data-theme="dark"] [style^="color: #4a2080" i],
+html[data-theme="dark"] [style*=";color:#4a2080" i],
+html[data-theme="dark"] [style*="; color:#4a2080" i],
+html[data-theme="dark"] [style*=";color: #4a2080" i],
+html[data-theme="dark"] [style^="color:rgb(74, 32, 128)" i],
+html[data-theme="dark"] [style^="color: rgb(74, 32, 128)" i],
+html[data-theme="dark"] [style*=";color:rgb(74, 32, 128)" i],
+html[data-theme="dark"] [style*="; color:rgb(74, 32, 128)" i],
+html[data-theme="dark"] [style*=";color: rgb(74, 32, 128)" i],
+html[data-theme="dark"] [style^="color:#5b21b6" i],
+html[data-theme="dark"] [style^="color: #5b21b6" i],
+html[data-theme="dark"] [style*=";color:#5b21b6" i],
+html[data-theme="dark"] [style*="; color:#5b21b6" i],
+html[data-theme="dark"] [style*=";color: #5b21b6" i],
+html[data-theme="dark"] [style^="color:rgb(91, 33, 182)" i],
+html[data-theme="dark"] [style^="color: rgb(91, 33, 182)" i],
+html[data-theme="dark"] [style*=";color:rgb(91, 33, 182)" i],
+html[data-theme="dark"] [style*="; color:rgb(91, 33, 182)" i],
+html[data-theme="dark"] [style*=";color: rgb(91, 33, 182)" i]{color:#c9b3f2!important;}
+html[data-theme="dark"] [style^="color:#7a4800" i],
+html[data-theme="dark"] [style^="color: #7a4800" i],
+html[data-theme="dark"] [style*=";color:#7a4800" i],
+html[data-theme="dark"] [style*="; color:#7a4800" i],
+html[data-theme="dark"] [style*=";color: #7a4800" i],
+html[data-theme="dark"] [style^="color:rgb(122, 72, 0)" i],
+html[data-theme="dark"] [style^="color: rgb(122, 72, 0)" i],
+html[data-theme="dark"] [style*=";color:rgb(122, 72, 0)" i],
+html[data-theme="dark"] [style*="; color:rgb(122, 72, 0)" i],
+html[data-theme="dark"] [style*=";color: rgb(122, 72, 0)" i],
+html[data-theme="dark"] [style^="color:#92400e" i],
+html[data-theme="dark"] [style^="color: #92400e" i],
+html[data-theme="dark"] [style*=";color:#92400e" i],
+html[data-theme="dark"] [style*="; color:#92400e" i],
+html[data-theme="dark"] [style*=";color: #92400e" i],
+html[data-theme="dark"] [style^="color:rgb(146, 64, 14)" i],
+html[data-theme="dark"] [style^="color: rgb(146, 64, 14)" i],
+html[data-theme="dark"] [style*=";color:rgb(146, 64, 14)" i],
+html[data-theme="dark"] [style*="; color:rgb(146, 64, 14)" i],
+html[data-theme="dark"] [style*=";color: rgb(146, 64, 14)" i],
+html[data-theme="dark"] [style^="color:#b45309" i],
+html[data-theme="dark"] [style^="color: #b45309" i],
+html[data-theme="dark"] [style*=";color:#b45309" i],
+html[data-theme="dark"] [style*="; color:#b45309" i],
+html[data-theme="dark"] [style*=";color: #b45309" i],
+html[data-theme="dark"] [style^="color:rgb(180, 83, 9)" i],
+html[data-theme="dark"] [style^="color: rgb(180, 83, 9)" i],
+html[data-theme="dark"] [style*=";color:rgb(180, 83, 9)" i],
+html[data-theme="dark"] [style*="; color:rgb(180, 83, 9)" i],
+html[data-theme="dark"] [style*=";color: rgb(180, 83, 9)" i]{color:#f3c06b!important;}
+html[data-theme="dark"] [style^="color:#166534" i],
+html[data-theme="dark"] [style^="color: #166534" i],
+html[data-theme="dark"] [style*=";color:#166534" i],
+html[data-theme="dark"] [style*="; color:#166534" i],
+html[data-theme="dark"] [style*=";color: #166534" i],
+html[data-theme="dark"] [style^="color:rgb(22, 101, 52)" i],
+html[data-theme="dark"] [style^="color: rgb(22, 101, 52)" i],
+html[data-theme="dark"] [style*=";color:rgb(22, 101, 52)" i],
+html[data-theme="dark"] [style*="; color:rgb(22, 101, 52)" i],
+html[data-theme="dark"] [style*=";color: rgb(22, 101, 52)" i],
+html[data-theme="dark"] [style^="color:#2d7a4f" i],
+html[data-theme="dark"] [style^="color: #2d7a4f" i],
+html[data-theme="dark"] [style*=";color:#2d7a4f" i],
+html[data-theme="dark"] [style*="; color:#2d7a4f" i],
+html[data-theme="dark"] [style*=";color: #2d7a4f" i],
+html[data-theme="dark"] [style^="color:rgb(45, 122, 79)" i],
+html[data-theme="dark"] [style^="color: rgb(45, 122, 79)" i],
+html[data-theme="dark"] [style*=";color:rgb(45, 122, 79)" i],
+html[data-theme="dark"] [style*="; color:rgb(45, 122, 79)" i],
+html[data-theme="dark"] [style*=";color: rgb(45, 122, 79)" i],
+html[data-theme="dark"] [style^="color:#15803d" i],
+html[data-theme="dark"] [style^="color: #15803d" i],
+html[data-theme="dark"] [style*=";color:#15803d" i],
+html[data-theme="dark"] [style*="; color:#15803d" i],
+html[data-theme="dark"] [style*=";color: #15803d" i],
+html[data-theme="dark"] [style^="color:rgb(21, 128, 61)" i],
+html[data-theme="dark"] [style^="color: rgb(21, 128, 61)" i],
+html[data-theme="dark"] [style*=";color:rgb(21, 128, 61)" i],
+html[data-theme="dark"] [style*="; color:rgb(21, 128, 61)" i],
+html[data-theme="dark"] [style*=";color: rgb(21, 128, 61)" i]{color:#7fdca4!important;}
+html[data-theme="dark"] [style^="color:#b91c1c" i],
+html[data-theme="dark"] [style^="color: #b91c1c" i],
+html[data-theme="dark"] [style*=";color:#b91c1c" i],
+html[data-theme="dark"] [style*="; color:#b91c1c" i],
+html[data-theme="dark"] [style*=";color: #b91c1c" i],
+html[data-theme="dark"] [style^="color:rgb(185, 28, 28)" i],
+html[data-theme="dark"] [style^="color: rgb(185, 28, 28)" i],
+html[data-theme="dark"] [style*=";color:rgb(185, 28, 28)" i],
+html[data-theme="dark"] [style*="; color:rgb(185, 28, 28)" i],
+html[data-theme="dark"] [style*=";color: rgb(185, 28, 28)" i],
+html[data-theme="dark"] [style^="color:#991b1b" i],
+html[data-theme="dark"] [style^="color: #991b1b" i],
+html[data-theme="dark"] [style*=";color:#991b1b" i],
+html[data-theme="dark"] [style*="; color:#991b1b" i],
+html[data-theme="dark"] [style*=";color: #991b1b" i],
+html[data-theme="dark"] [style^="color:rgb(153, 27, 27)" i],
+html[data-theme="dark"] [style^="color: rgb(153, 27, 27)" i],
+html[data-theme="dark"] [style*=";color:rgb(153, 27, 27)" i],
+html[data-theme="dark"] [style*="; color:rgb(153, 27, 27)" i],
+html[data-theme="dark"] [style*=";color: rgb(153, 27, 27)" i],
+html[data-theme="dark"] [style^="color:#7f1d1d" i],
+html[data-theme="dark"] [style^="color: #7f1d1d" i],
+html[data-theme="dark"] [style*=";color:#7f1d1d" i],
+html[data-theme="dark"] [style*="; color:#7f1d1d" i],
+html[data-theme="dark"] [style*=";color: #7f1d1d" i],
+html[data-theme="dark"] [style^="color:rgb(127, 29, 29)" i],
+html[data-theme="dark"] [style^="color: rgb(127, 29, 29)" i],
+html[data-theme="dark"] [style*=";color:rgb(127, 29, 29)" i],
+html[data-theme="dark"] [style*="; color:rgb(127, 29, 29)" i],
+html[data-theme="dark"] [style*=";color: rgb(127, 29, 29)" i],
+html[data-theme="dark"] [style^="color:#dc2626" i],
+html[data-theme="dark"] [style^="color: #dc2626" i],
+html[data-theme="dark"] [style*=";color:#dc2626" i],
+html[data-theme="dark"] [style*="; color:#dc2626" i],
+html[data-theme="dark"] [style*=";color: #dc2626" i],
+html[data-theme="dark"] [style^="color:rgb(220, 38, 38)" i],
+html[data-theme="dark"] [style^="color: rgb(220, 38, 38)" i],
+html[data-theme="dark"] [style*=";color:rgb(220, 38, 38)" i],
+html[data-theme="dark"] [style*="; color:rgb(220, 38, 38)" i],
+html[data-theme="dark"] [style*=";color: rgb(220, 38, 38)" i]{color:#fca5a5!important;}
+html[data-theme="dark"] [style^="color:#0369a1" i],
+html[data-theme="dark"] [style^="color: #0369a1" i],
+html[data-theme="dark"] [style*=";color:#0369a1" i],
+html[data-theme="dark"] [style*="; color:#0369a1" i],
+html[data-theme="dark"] [style*=";color: #0369a1" i],
+html[data-theme="dark"] [style^="color:rgb(3, 105, 161)" i],
+html[data-theme="dark"] [style^="color: rgb(3, 105, 161)" i],
+html[data-theme="dark"] [style*=";color:rgb(3, 105, 161)" i],
+html[data-theme="dark"] [style*="; color:rgb(3, 105, 161)" i],
+html[data-theme="dark"] [style*=";color: rgb(3, 105, 161)" i],
+html[data-theme="dark"] [style^="color:#1e40af" i],
+html[data-theme="dark"] [style^="color: #1e40af" i],
+html[data-theme="dark"] [style*=";color:#1e40af" i],
+html[data-theme="dark"] [style*="; color:#1e40af" i],
+html[data-theme="dark"] [style*=";color: #1e40af" i],
+html[data-theme="dark"] [style^="color:rgb(30, 64, 175)" i],
+html[data-theme="dark"] [style^="color: rgb(30, 64, 175)" i],
+html[data-theme="dark"] [style*=";color:rgb(30, 64, 175)" i],
+html[data-theme="dark"] [style*="; color:rgb(30, 64, 175)" i],
+html[data-theme="dark"] [style*=";color: rgb(30, 64, 175)" i]{color:#8cc8f0!important;}
+</style>
+<style id="page-restored-style">
+/* Page-specific styles restored from commit b21d579a after a master-CSS rewrite dropped them.
+   Kept in a SECOND <style> block so patch_master_css.py cannot strip them again. */
+.ln-pill{padding: 4px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 12px; font-weight: 600; cursor: pointer; background: white; color: var(--text-mid); transition: all .12s;}
+.ln-pill.sel{background: var(--teal); border-color: var(--teal); color: white;}
+html[data-theme="dark"] .ln-pill{background: #0f1e2e; border-color: #2a3548; color: #c0cad8;}
+html[data-theme="dark"] .ln-pill.sel{background: var(--teal); border-color: var(--teal); color: white;}
+</style>
 
 <script type="application/ld+json">
 {
@@ -1815,18 +2165,18 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 .ln-calc-actions button{padding:9px 22px;border-radius:20px;border:2px solid var(--border,#e2e6eb);background:white;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-mid,#2c3a4a);transition:all .18s;}
 .ln-calc-actions .btn-primary{background:var(--teal,#1a6b72);border-color:var(--teal,#1a6b72);color:white;}
 .ln-calc-actions button:hover{opacity:.85;}
-body.dark .ln-calc-wrap{background:#1a2535;border-color:#2a3a4a;}
-body.dark .ln-info-field input,body.dark .ln-info-field select{background:#0f1e2e;border-color:#2a3a4a;color:#e8edf2;}
-body.dark .ln-tab{background:#1a2535;border-color:#2a3a4a;color:#c0cad8;}
-body.dark .ln-tab.active{background:var(--teal,#1a6b72);border-color:var(--teal,#1a6b72);color:white;}
-body.dark .ln-group-hdr{background:rgba(26,107,114,.15);}
-body.dark .ln-group-hdr-name{color:#e8edf2;}
-body.dark .ln-item-label{color:#e8edf2;}
-body.dark .ln-item-hint{color:#8a9ab0;}
-body.dark .ln-score-panel{background:#0f1e2e;border-color:#2a3a4a;}
-body.dark .ln-score-label{color:#c0cad8;}
-body.dark .ln-calc-actions button{background:#1a2535;border-color:#2a3a4a;color:#c0cad8;}
-body.dark .ln-calc-actions .btn-primary{background:var(--teal,#1a6b72);border-color:var(--teal,#1a6b72);color:white;}
+html[data-theme="dark"] body .ln-calc-wrap{background:#1a2535;border-color:#2a3a4a;}
+html[data-theme="dark"] body .ln-info-field input,html[data-theme="dark"] body .ln-info-field select{background:#0f1e2e;border-color:#2a3a4a;color:#e8edf2;}
+html[data-theme="dark"] body .ln-tab{background:#1a2535;border-color:#2a3a4a;color:#c0cad8;}
+html[data-theme="dark"] body .ln-tab.active{background:var(--teal,#1a6b72);border-color:var(--teal,#1a6b72);color:white;}
+html[data-theme="dark"] body .ln-group-hdr{background:rgba(26,107,114,.15);}
+html[data-theme="dark"] body .ln-group-hdr-name{color:#e8edf2;}
+html[data-theme="dark"] body .ln-item-label{color:#e8edf2;}
+html[data-theme="dark"] body .ln-item-hint{color:#8a9ab0;}
+html[data-theme="dark"] body .ln-score-panel{background:#0f1e2e;border-color:#2a3a4a;}
+html[data-theme="dark"] body .ln-score-label{color:#c0cad8;}
+html[data-theme="dark"] body .ln-calc-actions button{background:#1a2535;border-color:#2a3a4a;color:#c0cad8;}
+html[data-theme="dark"] body .ln-calc-actions .btn-primary{background:var(--teal,#1a6b72);border-color:var(--teal,#1a6b72);color:white;}
   document.querySelectorAll('.ln-pills').forEach(function(grp){
 </style>
 </head>

@@ -1873,6 +1873,33 @@ html[data-theme="dark"] .calc-formula.f3{ color:#a88ce6; }
 .float-tooltip{position:absolute;right:54px;background:rgba(15,30,46,.92);color:#fff;font-size:12px;font-weight:500;white-space:nowrap;padding:5px 10px;border-radius:6px;pointer-events:none;opacity:0;transition:opacity .15s;}
 .float-btn:hover .float-tooltip{opacity:1;}
 </style>
+<style id="calc-index-compact">
+/* Calculator index — compact tiles (A) + collapsible categories (C). Second-level block; patch_master_css.py does not touch it. */
+.calc-results > section.section{padding:6px 0;border-bottom:1px solid var(--border);}
+.calc-results .section-tag{display:none;}
+.calc-results .cat-head{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;cursor:pointer;padding:12px 4px;border-radius:8px;}
+.calc-results .cat-head:hover{background:color-mix(in srgb,var(--sec-color,var(--teal)) 8%,transparent);}
+.calc-results .cat-head:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+.calc-results .cat-head .cat-bar{width:4px;height:22px;border-radius:2px;background:var(--sec-color,var(--teal));flex:none;}
+.calc-results .cat-head h2{margin:0;font-size:1.12rem;line-height:1.3;flex:1;}
+.calc-results .cat-count{font:600 12px/1 'Inter',sans-serif;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:4px 9px;}
+.calc-results .cat-chev{width:18px;height:18px;color:var(--text-muted);transition:transform .2s;flex:none;}
+.calc-results .section:not(.collapsed) .cat-chev,.calc-results .section.force-open .cat-chev{transform:rotate(180deg);}
+.calc-results .section.collapsed:not(.force-open) .related-cards{display:none;}
+.calc-results .related-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:8px;margin:2px 0 14px;}
+.calc-results .related-card,.calc-results .related-card.has-thumb{min-height:0;padding:9px 34px 10px 12px;border-radius:9px;}
+.calc-results .related-card-thumb{display:none !important;}
+.calc-results .related-card-arrow{display:none;}
+.calc-results .related-card-tag{font-size:9.5px;letter-spacing:.06em;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.calc-results .related-card-title{font-size:13.5px;line-height:1.3;margin:0;}
+.calc-results .related-card-desc{font-size:.74rem;line-height:1.35;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.calc-results .cf-fav{top:6px;right:6px;}
+.cat-toolbar{display:flex;justify-content:flex-end;gap:8px;margin:4px 0 2px;}
+.cat-toolbar button{font:600 12px 'Inter',sans-serif;color:var(--teal);background:none;border:1px solid var(--border);border-radius:999px;padding:5px 12px;cursor:pointer;}
+.cat-toolbar button:hover{border-color:var(--teal);}
+@media (max-width:760px){.calc-results .related-cards{grid-template-columns:1fr 1fr;gap:6px;}.calc-results .related-card-desc{display:none;}.calc-results .related-card{padding:8px 30px 9px 10px;}}
+@media (max-width:380px){.calc-results .related-cards{grid-template-columns:1fr;}}
+</style>
 </head>
 <body class="calc-page">
 <header class="site-header">
@@ -3903,5 +3930,38 @@ function calcMBD() {
 })();
 </script>
 <script src="../assets/clinician-lang-lock.js" defer></script>
+<script>
+/* Collapsible categories + live counts (calculator index, option C) */
+(function(){
+  var res=document.querySelector('.calc-results'); if(!res) return;
+  var secs=[].slice.call(res.querySelectorAll(':scope > section.section'));
+  var chev='<svg class="cat-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+  secs.forEach(function(sec){
+    var h2=sec.querySelector(':scope > h2'); if(!h2) return;
+    var n=sec.querySelectorAll('.related-card').length;
+    var cards=sec.querySelector('.related-cards'); if(cards&&!cards.id) cards.id='cards-'+sec.id;
+    var btn=document.createElement('button'); btn.type='button'; btn.className='cat-head';
+    btn.setAttribute('aria-expanded','false'); if(cards) btn.setAttribute('aria-controls',cards.id);
+    btn.innerHTML='<span class="cat-bar"></span>';
+    h2.parentNode.insertBefore(btn,h2); btn.appendChild(h2);
+    btn.insertAdjacentHTML('beforeend','<span class="cat-count">'+n+'</span>'+chev);
+    sec.classList.add('collapsed');
+    btn.addEventListener('click',function(){ var c=sec.classList.toggle('collapsed'); sec.classList.remove('force-open'); btn.setAttribute('aria-expanded',c?'false':'true'); });
+    var fb=document.querySelector('.cf-btn[data-filter="'+sec.id+'"] .cf-count'); if(fb) fb.textContent=n;
+  });
+  var all=document.querySelector('.cf-btn[data-filter="all"] .cf-count'); if(all) all.textContent=res.querySelectorAll('.related-card').length;
+  res.querySelectorAll('.related-card').forEach(function(c){ var d=c.querySelector('.related-card-desc'); if(d&&!c.title) c.title=d.textContent.trim(); });
+  var bar=document.createElement('div'); bar.className='cat-toolbar';
+  bar.innerHTML='<button type="button" data-act="open">Expand all</button><button type="button" data-act="close">Collapse all</button>';
+  res.insertBefore(bar,res.firstChild);
+  bar.addEventListener('click',function(e){ var a=e.target.getAttribute('data-act'); if(!a) return;
+    secs.forEach(function(s){ s.classList.toggle('collapsed',a==='close'); s.classList.remove('force-open'); var b=s.querySelector('.cat-head'); if(b) b.setAttribute('aria-expanded',a==='open'?'true':'false'); }); });
+  function sync(){ var q=((document.getElementById('cf-search')||{}).value||'').trim();
+    var act=document.querySelector('.cf-btn.active'); var cat=act?act.getAttribute('data-filter'):'all';
+    var force=(q!==''||cat!=='all'); secs.forEach(function(s){ s.classList.toggle('force-open',force); }); }
+  var s=document.getElementById('cf-search'); if(s) s.addEventListener('input',sync);
+  document.querySelectorAll('.cf-btn').forEach(function(b){ b.addEventListener('click',function(){ setTimeout(sync,0); }); });
+})();
+</script>
 </body>
 </html>
