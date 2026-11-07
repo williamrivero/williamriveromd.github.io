@@ -422,7 +422,9 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    progression), `glomerular` (GN, nephrotic, stones, cancers, tubulointerstitial),
    `complications` (anemia, MBD, acid–base, potassium, skin, neuro, thyroid),
    `krt` (dialysis, access, transplant) and `life` (children, pregnancy,
-   caregivers). **A new Nephrology tile goes inside the matching sub-group**,
+   caregivers). Sub-groups are themselves collapsible (class
+   `sub-collapsed`, collapsed by default; search, filters, jump links and
+   "Expand all" open them). **A new Nephrology tile goes inside the matching sub-group**,
    not directly under `.section-body`.
 
 The **Latest guides** strip lives on `guides/index.html` between `<!-- LATEST-GUIDES-START -->`
