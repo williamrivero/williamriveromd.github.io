@@ -84,6 +84,9 @@ SECTION_COLORS = {
     "lifestyle":    "#7c3aed",   # violet
     "advanced":     "#6b46c1",   # purple
     "dialysis":     "#1f3864",   # navy
+    "critical":     "#b91c1c",   # red (AKI & critical care)
+    "infections":   "#0e7490",   # cyan-teal
+    "medicines":    "#9d174d",   # rose
     "philippines":  "#c2410c",   # amber-orange
     "download":     "#92710a",   # gold
 }

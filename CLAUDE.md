@@ -394,6 +394,9 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    - `lifestyle` → `#7c3aed` (violet)
    - `advanced` → `#6b46c1` (purple)
    - `dialysis` → `#1f3864` (navy)
+   - `critical` → `#b91c1c` (red — Acute Kidney Injury & Critical Care Nephrology)
+   - `infections` → `#0e7490` (cyan-teal — Infections & the Kidney)
+   - `medicines` → `#9d174d` (rose — Medicines, Supplements & Kidney Safety)
    - `philippines` → `#c2410c` (amber-orange)
    - `download` → `#92710a` (gold)
 
@@ -415,17 +418,22 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    every matching section; clearing both returns to the collapsed overview;
    "Expand all / Collapse all" sit above the sections. Section counts, sidebar
    "Jump to section" counts and sub-group counts are computed from the tiles at
-   load — **do not hand-edit those numbers.** The **Nephrology & Kidney Disease**
-   section is split into six sub-groups
-   (`<div class="sub-group" id="neph-<key>" data-sub="<key>">`): `basics`
-   (physiology, testing, when to see a nephrologist), `ckd` (CKD, AKI, BP,
-   progression), `glomerular` (GN, nephrotic, stones, cancers, tubulointerstitial),
-   `complications` (anemia, MBD, acid–base, potassium, skin, neuro, thyroid),
-   `krt` (dialysis, access, transplant) and `life` (children, pregnancy,
-   caregivers). Sub-groups are themselves collapsible (class
-   `sub-collapsed`, collapsed by default; search, filters, jump links and
-   "Expand all" open them). **A new Nephrology tile goes inside the matching sub-group**,
-   not directly under `.section-body`.
+   load — **do not hand-edit those numbers.** Category order (Nov 8 2026 recategorization,
+   each guide filed by its main subject): Nephrology & Kidney Disease → Dialysis → Acute
+   Kidney Injury & Critical Care Nephrology → Internal Medicine & Metabolic Health →
+   Infections & the Kidney → Medicines, Supplements & Kidney Safety → Nutrition & Diet →
+   Lifestyle & Rehabilitation → Advanced & Emerging Topics → Perspectives → Philippine
+   Access, Coverage & Local Habits → Downloads. Three sections have sub-groups
+   (`<div class="sub-group" id="<prefix>-<key>" data-sub="<key>">`):
+   **Nephrology** (`neph-`): `basics`, `ckd`, `glomerular`, `complications`, `transplant`,
+   `life`. **Dialysis** (`dial-`): `start` (preparing & living), `hd` (prescription,
+   adequacy, technique), `pd`, `access`, `complications`, `unit` (unit operations & safety).
+   **AKI & Critical Care** (`crit-`): `aki`, `icu` (CRRT, blood purification, POCUS).
+   All dialysis guides live under Dialysis, not Nephrology or Advanced. Sub-groups are
+   themselves collapsible (class `sub-collapsed`, collapsed by default; search, filters,
+   jump links and
+   "Expand all" open them). **A new tile in a sub-grouped section goes inside the matching
+   sub-group**, not directly under `.section-body`; add any new sidebar jump link by hand.
    The **"Latest & Updated Guides"** category pinned at the top of the list
    is built in the browser from the strip that `generate_latest_guides.py`
    writes between the `LATEST-GUIDES` markers (the strip itself is hidden on
