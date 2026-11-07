@@ -431,7 +431,9 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    writes between the `LATEST-GUIDES` markers (the strip itself is hidden on
    this page). It copies the matching category tiles into "New guides" and
    "Recently updated" sub-groups, is not a `.guide-section` (so it never
-   affects counts), and hides while a search or filter is active. Keep running
+   affects counts), and hides while a search or filter is active. On first
+   load (and after a search or filter is cleared) it opens with "New guides"
+   expanded; a URL #anchor to another section skips this. Keep running
    the generator as before; nothing in this block is hand-edited.
 
 The **Latest guides** strip lives on `guides/index.html` between `<!-- LATEST-GUIDES-START -->`

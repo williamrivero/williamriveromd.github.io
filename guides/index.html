@@ -6458,7 +6458,7 @@ document.addEventListener('DOMContentLoaded', function() {
     refresh();
     var f=filtering();
     if(f){sections.forEach(function(sec){if(sec.style.display!=='none'){setOpen(sec,true);setSubs(sec,true);}});}
-    else if(wasFiltering){sections.forEach(function(sec){setOpen(sec,false);setSubs(sec,false);});}
+    else if(wasFiltering){sections.forEach(function(sec){setOpen(sec,false);setSubs(sec,false);});landing();}
     if(latestSec)latestSec.style.display=f?'none':'';
     wasFiltering=f;
   }
@@ -6517,9 +6517,18 @@ document.addEventListener('DOMContentLoaded', function() {
     h.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tog();}});
     return sec;
   }
+  /* Landing state: Latest & Updated open with "New guides" expanded;
+     everything else collapsed. Used on first load (unless the URL points at
+     a section) and when a search or filter is cleared. */
+  function landing(){
+    if(!latestSec)return;
+    setOpen(latestSec,true);
+    var g=document.getElementById('latest-new');if(g)setSub(g,true);
+  }
   function init(){
     latestSec=buildLatest();
     if(latestSec){wireSubHeads(latestSec);setOpen(latestSec,false);setSubs(latestSec,false);}
+    if(!location.hash)landing();
     sections.forEach(function(sec){setOpen(sec,false);setSubs(sec,false);});
     sync();
     if(search){search.addEventListener('input',function(){setTimeout(sync,0);});}
