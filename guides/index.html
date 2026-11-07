@@ -2183,6 +2183,27 @@
 .sub-group.sub-collapsed .sub-head{border-bottom:none;}
 body.dark-mode .sub-head:hover{background:rgba(94,234,212,.1);}
 body.dark-mode .sub-chev{color:#5eead4;}
+.latest-path{display:none;}
+/* Narrow phones: scroll the header links inside the header instead of widening
+   the page (same rule as the guide pages' master CSS). */
+.header-nav{flex:0 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
+.header-nav::-webkit-scrollbar{display:none;}
+.header-nav a{white-space:nowrap;}
+.content-area{min-width:0;}
+.spotlight-grid,.pinned-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+@media (max-width:1100px){.spotlight-grid,.pinned-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.spotlight-card{min-width:0;}
+.main-layout{grid-template-columns:200px minmax(0,1fr);}
+@media (max-width:700px){.main-layout{grid-template-columns:minmax(0,1fr);}}
+@media (max-width:640px){.header-nav{gap:10px;}.header-nav a{font-size:10.5px;letter-spacing:.04em;}}
+@media (max-width:420px){.header-nav{gap:8px;}.header-nav a{font-size:10px;letter-spacing:.02em;}}
+.latest-section{margin-bottom:16px;--cat-color:#b45309;}
+.latest-section .section-color-bar{background:#b45309;}
+.latest-section .section-header{border-color:color-mix(in srgb,#b45309 35%,var(--border));}
+.latest-section .section-name::before{content:"\2605  ";color:#b45309;}
+.tile-date{font-size:.7rem;color:var(--ink-muted);margin-left:6px;white-space:nowrap;}
+body.dark-mode .latest-section .section-name::before{color:#f3c06b;}
+body.dark-mode .latest-section .sub-name,body.dark-mode .latest-section .sub-chev{color:#f3c06b;}
 .sub-count{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--ink-muted);}
 .sub-group .guide-tile:last-child{border-bottom:none;}
 .guide-tile.tile-stagger{animation-delay:min(var(--tile-delay,0ms),300ms);}
@@ -6397,6 +6418,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var f=filtering();
     if(f){sections.forEach(function(sec){if(sec.style.display!=='none'){setOpen(sec,true);setSubs(sec,true);}});}
     else if(wasFiltering){sections.forEach(function(sec){setOpen(sec,false);setSubs(sec,false);});}
+    if(latestSec)latestSec.style.display=f?'none':'';
     wasFiltering=f;
   }
   sections.forEach(function(sec){
@@ -6405,23 +6427,66 @@ document.addEventListener('DOMContentLoaded', function() {
     h.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();window.toggleSection(h);h.setAttribute('aria-expanded',h.classList.contains('collapsed')?'false':'true');}});
     h.addEventListener('click',function(){h.setAttribute('aria-expanded',h.classList.contains('collapsed')?'false':'true');});
   });
-  document.querySelectorAll('.sub-group .sub-head').forEach(function(h){
+  function wireSubHeads(root){root.querySelectorAll('.sub-group .sub-head').forEach(function(h){
     var g=h.parentNode;
     var c=document.createElement('span');c.className='sub-chev';c.setAttribute('aria-hidden','true');c.textContent='\u25BE';h.appendChild(c);
     h.setAttribute('role','button');h.setAttribute('tabindex','0');
     var tog=function(){setSub(g,g.classList.contains('sub-collapsed'));};
     h.addEventListener('click',tog);
     h.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tog();}});
-  });
+  });}
+  wireSubHeads(document);
+  /* "Latest & Updated Guides": built from the generated strip
+     (<!-- LATEST-GUIDES-START --> … END, written by generate_latest_guides.py)
+     as a collapsible category pinned to the top, with New / Updated sub-groups.
+     Tiles are copies of the category tiles, so this block is kept out of the
+     section list used for counts and is hidden while searching or filtering. */
+  var latestSec=null;
+  function buildLatest(){
+    var cards=[].slice.call(document.querySelectorAll('.latest-path .latest-card'));
+    var box=document.getElementById('sections-container');
+    if(!cards.length||!box)return null;
+    var groups={new:[],upd:[]};
+    cards.forEach(function(c){
+      var href=c.getAttribute('href');
+      var src=document.querySelector('.guide-section a.guide-tile[href="'+href+'"]');
+      if(!src)return;
+      var t=src.cloneNode(true);
+      t.removeAttribute('style');t.classList.remove('tile-stagger');
+      t.querySelectorAll('.pin-btn').forEach(function(b){b.remove();});
+      var tm=c.querySelector('time');
+      if(tm){var d=document.createElement('span');d.className='tile-date';d.textContent=tm.textContent;var meta=t.querySelector('.tile-meta');if(meta)meta.appendChild(d);}
+      (c.querySelector('.latest-eyebrow--updated')?groups.upd:groups.new).push(t);
+    });
+    var total=groups.new.length+groups.upd.length;if(!total)return null;
+    var sec=document.createElement('div');sec.className='latest-section';sec.id='sec-latest';
+    sec.innerHTML='<div class="section-header"><div class="section-color-bar"></div><span class="section-name">Latest &amp; Updated Guides</span><span class="section-count">'+total+'</span><span class="section-chevron">\u25BE</span></div><div class="section-body"></div>';
+    var body=sec.querySelector('.section-body');
+    [['new','New guides',groups.new],['updated','Recently updated',groups.upd]].forEach(function(x){
+      if(!x[2].length)return;
+      var g=document.createElement('div');g.className='sub-group';g.id='latest-'+x[0];g.dataset.sub='latest-'+x[0];
+      g.innerHTML='<div class="sub-head"><span class="sub-name">'+x[1]+'</span><span class="sub-count">'+x[2].length+'</span></div>';
+      x[2].forEach(function(t){g.appendChild(t);});body.appendChild(g);
+    });
+    box.insertBefore(sec,box.firstChild);
+    var h=sec.querySelector('.section-header');
+    h.setAttribute('role','button');h.setAttribute('tabindex','0');
+    var tog=function(){var open=h.classList.contains('collapsed');setOpen(sec,open);};
+    h.addEventListener('click',tog);
+    h.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tog();}});
+    return sec;
+  }
   function init(){
+    latestSec=buildLatest();
+    if(latestSec){wireSubHeads(latestSec);setOpen(latestSec,false);setSubs(latestSec,false);}
     sections.forEach(function(sec){setOpen(sec,false);setSubs(sec,false);});
     sync();
     if(search){search.addEventListener('input',function(){setTimeout(sync,0);});}
     document.querySelectorAll('.filter-btn,.mf-pill').forEach(function(b){b.addEventListener('click',function(){setTimeout(sync,0);});});
     var sc=document.getElementById('search-clear');if(sc)sc.addEventListener('click',function(){setTimeout(sync,0);});
     var ex=document.getElementById('gi-expand'),co=document.getElementById('gi-collapse');
-    if(ex)ex.addEventListener('click',function(){sections.forEach(function(sec){if(sec.style.display!=='none'){var was=sec.querySelector('.section-body').classList.contains('hidden');setOpen(sec,true);setSubs(sec,true);if(was&&window.requestAnimationFrame){var b=sec.querySelector('.section-body');b.querySelectorAll('a.guide-tile').forEach(function(t,i){t.classList.remove('tile-stagger');void t.offsetWidth;t.style.setProperty('--tile-delay',Math.min(i*20,400)+'ms');t.classList.add('tile-stagger');});}}});});
-    if(co)co.addEventListener('click',function(){sections.forEach(function(sec){setOpen(sec,false);setSubs(sec,false);});var t=document.getElementById('gi-toolbar');if(t&&t.getBoundingClientRect().top<0)t.scrollIntoView({block:'start'});});
+    if(ex)ex.addEventListener('click',function(){if(latestSec&&latestSec.style.display!=='none'){setOpen(latestSec,true);setSubs(latestSec,true);}sections.forEach(function(sec){if(sec.style.display!=='none'){var was=sec.querySelector('.section-body').classList.contains('hidden');setOpen(sec,true);setSubs(sec,true);if(was&&window.requestAnimationFrame){var b=sec.querySelector('.section-body');b.querySelectorAll('a.guide-tile').forEach(function(t,i){t.classList.remove('tile-stagger');void t.offsetWidth;t.style.setProperty('--tile-delay',Math.min(i*20,400)+'ms');t.classList.add('tile-stagger');});}}});});
+    if(co)co.addEventListener('click',function(){if(latestSec){setOpen(latestSec,false);setSubs(latestSec,false);}sections.forEach(function(sec){setOpen(sec,false);setSubs(sec,false);});var t=document.getElementById('gi-toolbar');if(t&&t.getBoundingClientRect().top<0)t.scrollIntoView({block:'start'});});
     /* Sidebar jump links: live counts, and opening the target section */
     document.querySelectorAll('a.jump-link[href^="#"]').forEach(function(a){
       var t=document.querySelector(a.getAttribute('href'));if(!t)return;

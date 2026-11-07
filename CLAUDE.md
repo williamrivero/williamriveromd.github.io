@@ -426,6 +426,13 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    `sub-collapsed`, collapsed by default; search, filters, jump links and
    "Expand all" open them). **A new Nephrology tile goes inside the matching sub-group**,
    not directly under `.section-body`.
+   The **"Latest & Updated Guides"** category pinned at the top of the list
+   is built in the browser from the strip that `generate_latest_guides.py`
+   writes between the `LATEST-GUIDES` markers (the strip itself is hidden on
+   this page). It copies the matching category tiles into "New guides" and
+   "Recently updated" sub-groups, is not a `.guide-section` (so it never
+   affects counts), and hides while a search or filter is active. Keep running
+   the generator as before; nothing in this block is hand-edited.
 
 The **Latest guides** strip lives on `guides/index.html` between `<!-- LATEST-GUIDES-START -->`
 and `<!-- LATEST-GUIDES-END -->` (above the mobile filter bar / "Continue reading" rail). Each
