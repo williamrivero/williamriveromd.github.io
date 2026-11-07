@@ -2200,7 +2200,13 @@ body.dark-mode .sub-chev{color:#5eead4;}
 .latest-section{margin-bottom:16px;--cat-color:#b45309;}
 .latest-section .section-color-bar{background:#b45309;}
 .latest-section .section-header{border-color:color-mix(in srgb,#b45309 35%,var(--border));}
-.latest-section .section-name::before{content:"\2605  ";color:#b45309;}
+.latest-section .section-name::before{content:"\2605";margin-right:7px;color:#b45309;}
+@keyframes latestGlow{0%{box-shadow:0 0 0 0 rgba(180,83,9,0)}35%{box-shadow:0 0 0 4px rgba(180,83,9,.16)}100%{box-shadow:0 0 0 0 rgba(180,83,9,0)}}
+@keyframes starPop{0%,100%{transform:scale(1)}40%{transform:scale(1.25)}}
+.latest-section .section-name::before{display:inline-block;}
+.latest-section.latest-glow .section-header{animation:latestGlow 1.4s ease-out;}
+.latest-section.latest-glow .section-name::before{animation:starPop .7s ease-out .1s;}
+@media (prefers-reduced-motion: reduce){.latest-section.latest-glow .section-header,.latest-section.latest-glow .section-name::before{animation:none;}}
 .tile-date{font-size:.7rem;color:var(--ink-muted);margin-left:6px;white-space:nowrap;}
 body.dark-mode .latest-section .section-name::before{color:#f3c06b;}
 body.dark-mode .latest-section .sub-name,body.dark-mode .latest-section .sub-chev{color:#f3c06b;}
@@ -6520,15 +6526,37 @@ document.addEventListener('DOMContentLoaded', function() {
   /* Landing state: Latest & Updated open with "New guides" expanded;
      everything else collapsed. Used on first load (unless the URL points at
      a section) and when a search or filter is cleared. */
-  function landing(){
+  function landing(animate){
     if(!latestSec)return;
-    setOpen(latestSec,true);
-    var g=document.getElementById('latest-new');if(g)setSub(g,true);
+    var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var open=function(){
+      setOpen(latestSec,true);
+      var g=document.getElementById('latest-new');if(g)setSub(g,true);
+    };
+    if(!animate||reduce){open();return;}
+    /* Subtle first-load reveal: after a short beat the category slides open
+       (height 0 -> content), the header's star gives one soft glow, and the
+       tiles fade up in a short stagger (existing .tile-stagger). */
+    setTimeout(function(){
+      if(!latestSec.querySelector('.section-body').classList.contains('hidden'))return; /* user already acted */
+      if(latestSec.style.display==='none')return; /* searching/filtering */
+      var body=latestSec.querySelector('.section-body');
+      open();
+      var h=body.scrollHeight;
+      body.style.overflow='hidden';body.style.height='0px';body.style.opacity='0';
+      void body.offsetHeight;
+      body.style.transition='height .55s cubic-bezier(.2,.7,.2,1), opacity .4s ease';
+      body.style.height=h+'px';body.style.opacity='1';
+      latestSec.classList.add('latest-glow');
+      var done=function(e){if(e&&(e.target!==body||e.propertyName!=='height'))return;body.removeEventListener('transitionend',done);body.style.transition='';body.style.height='';body.style.overflow='';body.style.opacity='';};
+      body.addEventListener('transitionend',done);setTimeout(done,900);
+      setTimeout(function(){latestSec.classList.remove('latest-glow');},1600);
+    },450);
   }
   function init(){
     latestSec=buildLatest();
     if(latestSec){wireSubHeads(latestSec);setOpen(latestSec,false);setSubs(latestSec,false);}
-    if(!location.hash)landing();
+    if(!location.hash)landing(true);
     sections.forEach(function(sec){setOpen(sec,false);setSubs(sec,false);});
     sync();
     if(search){search.addEventListener('input',function(){setTimeout(sync,0);});}
