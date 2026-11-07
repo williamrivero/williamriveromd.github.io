@@ -409,6 +409,22 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    the single source of truth for any future category-tinted UI (filter pills,
    guide-tile accents, related-guide chips).
 
+   **Guides index layout (Nov 2026).** Every section starts **collapsed**
+   (script `#guides-index-collapse-js` at the end of `guides/index.html`;
+   styles in `<style id="guides-index-collapse">`). Search or a filter opens
+   every matching section; clearing both returns to the collapsed overview;
+   "Expand all / Collapse all" sit above the sections. Section counts, sidebar
+   "Jump to section" counts and sub-group counts are computed from the tiles at
+   load — **do not hand-edit those numbers.** The **Nephrology & Kidney Disease**
+   section is split into six sub-groups
+   (`<div class="sub-group" id="neph-<key>" data-sub="<key>">`): `basics`
+   (physiology, testing, when to see a nephrologist), `ckd` (CKD, AKI, BP,
+   progression), `glomerular` (GN, nephrotic, stones, cancers, tubulointerstitial),
+   `complications` (anemia, MBD, acid–base, potassium, skin, neuro, thyroid),
+   `krt` (dialysis, access, transplant) and `life` (children, pregnancy,
+   caregivers). **A new Nephrology tile goes inside the matching sub-group**,
+   not directly under `.section-body`.
+
 The **Latest guides** strip lives on `guides/index.html` between `<!-- LATEST-GUIDES-START -->`
 and `<!-- LATEST-GUIDES-END -->` (above the mobile filter bar / "Continue reading" rail). Each
 card shows the guide title, its publish date, and the guide's OG share image *peeking* on the
