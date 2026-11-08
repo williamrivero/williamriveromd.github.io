@@ -1,7 +1,7 @@
 # Image Plan Blueprint & Prompt Pack — Strengthening Kidney Resilience to AKI
 
 **Guide:** `guides/strengthening-kidney-resilience-to-aki.html` · **Canonical:** https://renalcarematters.com/guides/strengthening-kidney-resilience-to-aki.html
-**Version:** v2 (re-architected November 8, 2026; replaces the v1 seven-image pack)
+**Version:** v2.1 (November 9, 2026). v2.1 adds a STYLE LOCK to every prompt: the first v2 render came out as flat vector diagrams that did not match the rest of the site, so those files were removed from the guide. Generate every image in the Image Generator GPT, not as SVG or code-drawn graphics.
 **Pipeline:** Stage 1 (this file) → paste each prompt into the ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator) → Stage 2 `williamriveromd-local-image-generator` (validation, manifests, `og:image` tags).
 **Skills used:** `williamriveromd-hero-vignette` v3 · `williamriveromd-infographic-skill` v5 · `williamriveromd-simple-figure` · `williamriveromd-biomedical-mechanism-figure` · `williamriveromd-algorithm-generator-skill` (Mode C) · `williamriveromd-organ-crosstalk-sigil-graphic`.
 
@@ -53,6 +53,7 @@ Clinician images do a different job: compress a decision (escalation, contrast, 
 | **Text and structure** | Navy #0f1e2e; headings clinical teal #1a6b72 |
 
 ### 1.4 House constitution (applies to every prompt)
+- **Rendering style:** rich, full-color, semi-3D illustrated infographics that match the existing guide figures (for example `aki-icu-dialysis-decisions-03-bridge-not-cure.png` and `aki-does-not-end-at-discharge-02-five-domains.png`). Never flat vector, SVG-style, or thin line art.
 - Light backgrounds only (white #ffffff, off-white #fafafa, soft gray #f3f4f6, light teal #eef6f7, warm cream #f8f5f0). Never navy, charcoal, or black.
 - Fonts: **Inter, Nunito Sans, IBM Plex Sans, or Manrope only**; each prompt names its font. Never serif.
 - Attribution on every image except the wordless hero: `© renalcarematters.com`, small, ~70% opacity, bottom-right (bottom-center for portrait).
@@ -169,6 +170,8 @@ AUDIENCE: social feeds, Messenger and Viber link previews
 VISUAL GOAL: A practical prevention guide, legible at thumbnail size.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Social share card, exactly 1200×630 landscape. Off-white (#fafafa) background with a very light teal
 (#eef6f7) rounded panel filling the right 45%. Left side, set in Inter: title in bold navy (#0f1e2e), two
 lines, large: "Strengthening Kidney" / "Resilience to AKI". Below in clinical teal (#1a6b72), Nunito Sans,
@@ -182,7 +185,7 @@ small gray at 70% opacity. All text crisp and correctly spelled; every element i
 
 NEGATIVE INSTRUCTIONS:
 No dark background, no faces, no blood, no clutter, no serif fonts, no gibberish text, no drug names, no
-guideline acronyms or journal names; the only mark is the © renalcarematters.com footer.
+guideline acronyms or journal names; the only mark is the © renalcarematters.com footer. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Exactly 1200 × 630; title legible at 300 px wide; "Resilience" spelled correctly.
@@ -203,6 +206,8 @@ AUDIENCE: patients and families (all literacy levels)
 VISUAL GOAL: The kidney has backup capacity that switches on under stress, and that reserve cannot be seen on an ordinary blood test.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Patient education infographic, white (#ffffff) background, all text in Nunito Sans with the title in
 Inter. Title at top center in bold navy (#0f1e2e): "Your kidneys have backup pumps". Two side-by-side
 panels on soft gray (#f3f4f6) rounded cards.
@@ -221,7 +226,7 @@ semi-transparent navy text.
 
 NEGATIVE INSTRUCTIONS:
 Avoid cartoon style, faces, clutter, tiny labels, AI gibberish text, HDR, excessive saturation. NEVER dark
-backgrounds. Use ONLY Nunito Sans and Inter. No numbers, no medical acronyms. Never omit the attribution.
+backgrounds. Use ONLY Nunito Sans and Inter. No numbers, no medical acronyms. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Two panels, same station drawn identically; 2 pumps running on the left, 5 on the right; captions exact;
@@ -239,6 +244,8 @@ AUDIENCE: patients and families
 VISUAL GOAL: The same illness can pass harmlessly in one person and injure the kidney in another; the difference is the starting reserve.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Medical education comparison infographic, white (#ffffff) background, text in Manrope with title in Inter.
 Title at top center in bold navy (#0f1e2e): "Same illness, different kidneys". Under the title, one amber
 (#b8860b) lightning bolt centered with the label "2 days of diarrhea", and two thin arrows splitting left
@@ -260,7 +267,7 @@ navy text.
 NEGATIVE INSTRUCTIONS:
 No distressed faces, no hospital scene, no readable medicine labels, no numbers, no percentages, no
 cartoon style, no clutter, no gibberish. NEVER dark backgrounds. Use ONLY Manrope and Inter. Never omit
-the attribution.
+the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 One shared "hit" at top; two clearly different people (age, sex, setting); gauge full-green versus
@@ -278,6 +285,8 @@ AUDIENCE: patients
 VISUAL GOAL: Four everyday habits surround and protect the kidney.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Clean clinical education infographic, white (#ffffff) background, set in Manrope with titles in Inter.
 Title at top center in bold navy (#0f1e2e): "Four habits for a more resilient kidney". In the center, one
 soft bean-shaped kidney with a teal (#1a6b72) outline and light teal (#eef6f7) fill. Around it, four
@@ -292,7 +301,7 @@ circle, deflected by the cards. Generous whitespace; labels at least 11 pt. Bott
 
 NEGATIVE INSTRUCTIONS:
 Avoid cartoon style, clutter, tiny labels, gibberish text, HDR. NEVER dark backgrounds. Use ONLY Inter and
-Manrope. No drug names, no numbers other than "3", no acronyms. Never omit the attribution.
+Manrope. No drug names, no numbers other than "3", no acronyms. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Four cards, one kidney, one clockwise loop; icons match the shared vocabulary; labels exact; light
@@ -310,6 +319,8 @@ AUDIENCE: patients
 VISUAL GOAL: A quick self-check — if any of these apply, ask your doctor for a written plan.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Clinical reference card, white (#ffffff) background, text in Nunito Sans with title in Inter. Bold navy
 (#0f1e2e) title: "Ask for a kidney plan if you have…". A 3×3 grid of soft gray (#f3f4f6) rounded tiles,
 each with one simple teal line icon and a 1–4 word navy label: kidney with a small crack line — "Kidney
@@ -322,7 +333,7 @@ semi-transparent navy text.
 
 NEGATIVE INSTRUCTIONS:
 No faces, no readable labels on bottles or meters, no numbers except "65", no cartoon style, no clutter,
-no gibberish. NEVER dark backgrounds. Use ONLY Nunito Sans and Inter. Never omit the attribution.
+no gibberish. NEVER dark backgrounds. Use ONLY Nunito Sans and Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Nine tiles, nine labels spelled exactly; icons simple and consistent line weight; footer present; light
@@ -340,6 +351,8 @@ AUDIENCE: patients and caregivers
 VISUAL GOAL: Four things to keep with you so any doctor can judge your kidneys quickly.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Clean clinical education infographic, white (#ffffff) background, text in Manrope with title in Inter.
 Title at top center in bold navy (#0f1e2e): "Keep these four with you". Four rounded cards in one
 horizontal row on a soft gray (#f3f4f6) panel, each with a teal (#1a6b72) top accent band and a compass
@@ -357,7 +370,7 @@ room, and surgery appointment." Bottom-right: "© renalcarematters.com" in small
 
 NEGATIVE INSTRUCTIONS:
 No readable lab values, drug names, or packaging text; no faces; no cartoon style; no gibberish. NEVER dark
-backgrounds. Use ONLY Manrope and Inter. Never omit the attribution.
+backgrounds. Use ONLY Manrope and Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Four cards in order; labels exact; no readable medical specifics; light background; attribution
@@ -375,6 +388,8 @@ AUDIENCE: patients and families
 VISUAL GOAL: The kidney filter keeps its pressure with an inflow valve and an outflow valve; dehydration plus certain medicines can loosen both at once.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Medical education infographic, white (#ffffff) background, text in Nunito Sans with title in Inter.
 Title at top in bold navy (#0f1e2e): "Why a sick day can strain the kidney"; subtitle in teal (#1a6b72):
 "The filter keeps its pressure with two valves".
@@ -395,7 +410,7 @@ kidney: the filter is the glomerulus; the valves are small arteries." Bottom-rig
 
 NEGATIVE INSTRUCTIONS:
 No brand names, no doses, no numbers on the dial, no anatomy realism, no cartoon faces, no clutter, no
-gibberish. NEVER dark backgrounds. Use ONLY Nunito Sans and Inter. Never omit the attribution.
+gibberish. NEVER dark backgrounds. Use ONLY Nunito Sans and Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 One pipe, one filter, two valves; three amber cards pointing to the correct part (water, IN valve, OUT
@@ -413,6 +428,8 @@ AUDIENCE: patients (Philippine over-the-counter context)
 VISUAL GOAL: Which common pain relievers to review with a doctor, and what is usually the kidney-safer first choice.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Medical education comparison infographic, white (#ffffff) background, text in Manrope with title in
 Inter. Title in bold navy (#0f1e2e): "Pain relievers: check before you take". Soft dashed vertical divider,
 two panels.
@@ -431,7 +448,7 @@ semi-transparent navy text.
 
 NEGATIVE INSTRUCTIONS:
 No brand names, no packaging text, no doses or milligrams, no red "forbidden" symbols, no cartoon style,
-no gibberish. NEVER dark backgrounds. Use ONLY Manrope and Inter. Never omit the attribution.
+no gibberish. NEVER dark backgrounds. Use ONLY Manrope and Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Generic names spelled exactly; no brands; paracetamol caveat present; light background; attribution
@@ -449,6 +466,8 @@ AUDIENCE: patients
 VISUAL GOAL: The card is written before illness, followed during illness, and closed by the team at restart.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Clean clinical education infographic, white (#ffffff) background, text in Nunito Sans with titles in
 Inter. Title at top center in bold navy (#0f1e2e): "Your sick-day card — three moments". Three rounded
 cards in one horizontal row on a very soft gray panel (#f3f4f6), joined by bold navy right-pointing
@@ -468,7 +487,7 @@ text.
 NEGATIVE INSTRUCTIONS:
 No readable drug names, doses, or fluid amounts on any card; hands only, no faces; no hospital beds; no
 cartoon style, clutter, gibberish, HDR. NEVER dark backgrounds. Use ONLY Nunito Sans and Inter. Never omit
-the attribution.
+the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Exactly three cards, left-to-right arrows, labels exact, cards blank of medical specifics, light
@@ -486,6 +505,8 @@ AUDIENCE: patients and families in the Philippines
 VISUAL GOAL: Two local hazards, their warning signs, and the one action for each.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Patient education infographic, landscape 16:9, white (#ffffff) background, text in Nunito Sans with
 title in Inter. Title at top center in bold navy (#0f1e2e): "Two Philippine kidney hazards". Two equal
 rounded panels.
@@ -505,7 +526,7 @@ your plan." Bottom-right: "© renalcarematters.com" in small semi-transparent na
 NEGATIVE INSTRUCTIONS:
 No dramatic disaster imagery, no injuries, no rescue scenes, no distressed faces, no dark storm skies,
 no readable signs or brands, no numbers other than "2", no cartoon style, no gibberish. NEVER dark
-backgrounds. Use ONLY Nunito Sans and Inter. Never omit the attribution.
+backgrounds. Use ONLY Nunito Sans and Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Two different people (adult woman vendor; teenage boy); warning-sign labels exact; action pills present;
@@ -523,6 +544,8 @@ AUDIENCE: patients and families (numeracy-friendly)
 VISUAL GOAL: Show the kidney-protection plan's benefit as people, not percentages.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Medical education comparison infographic, white (#ffffff) background, text in Manrope with title in
 Inter. Title in bold navy (#0f1e2e): "A kidney-protection plan for major surgery". Subtitle in teal
 (#1a6b72): "Out of every 100 high-risk adults, how many had moderate or severe kidney injury in the first 3
@@ -541,7 +564,7 @@ control blood sugar". Small gray note: "Selected high-risk adults in one 2025 tr
 NEGATIVE INSTRUCTIONS:
 Icon counts must be exact (22 and 14 amber); no percentages, odds ratios, or other numbers; no trial
 name; no faces on icons; no cartoon style; no gibberish. NEVER dark backgrounds. Use ONLY Manrope and
-Inter. Never omit the attribution.
+Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Count the amber icons: 22 left, 14 right; both grids 10×10; badge reads "about 8 fewer in every 100";
@@ -559,6 +582,8 @@ AUDIENCE: patients
 VISUAL GOAL: For a needed scan, the benefit of a timely diagnosis usually outweighs the small contrast risk; the team adds protection when kidney function is very low.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Medical education illustration, white (#ffffff) background, text in Nunito Sans with title in Inter.
 Title in bold navy (#0f1e2e): "CT scan dye: keeping the risk in proportion". Center: a clean semi-flat
 balance scale. The heavier, lower left pan holds a teal (#1a6b72) magnifying glass over a simple body
@@ -572,7 +597,7 @@ Bottom-right: "© renalcarematters.com" in small semi-transparent navy text.
 
 NEGATIVE INSTRUCTIONS:
 No scanner brand, no needles, no numbers, no eGFR values, no fear imagery, no cartoon style, no gibberish.
-NEVER dark backgrounds. Use ONLY Nunito Sans and Inter. Never omit the attribution.
+NEVER dark backgrounds. Use ONLY Nunito Sans and Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Scale clearly tipped toward diagnosis; both cards present; light background; attribution bottom-right.
@@ -589,6 +614,8 @@ AUDIENCE: patients and families
 VISUAL GOAL: Kidney injury in hospital is treated by finding its cause; more IV fluid is not always the answer.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Clean medical education radial infographic, white (#ffffff) background, text in Manrope with title in
 Inter. Title at top in bold navy (#0f1e2e): "In hospital, the cause decides the treatment". Center: a teal
 (#1a6b72) kidney with a small amber lightning bolt, labeled "Kidney under stress". Five rounded cards
@@ -604,7 +631,7 @@ navy text.
 
 NEGATIVE INSTRUCTIONS:
 No drug names, no procedures shown graphically, no catheters inserted, no numbers, no cartoon style, no
-gibberish. NEVER dark backgrounds. Use ONLY Manrope and Inter. Never omit the attribution.
+gibberish. NEVER dark backgrounds. Use ONLY Manrope and Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Five cause→fix cards around one kidney; caution strip present; labels exact; light background;
@@ -622,6 +649,8 @@ AUDIENCE: patients (uses the guide's synthetic example)
 VISUAL GOAL: "Better" is not "back to baseline": discharge creatinine can still be above usual.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Patient education chart, white (#ffffff) background, text in Inter. Title in bold navy (#0f1e2e):
 "Leave the hospital with three numbers". Subtitle in teal (#1a6b72): "Example — not a real patient".
 A clean line chart, y-axis "Creatinine (mg/dL)" from 0 to 2.5 with light gridlines, x-axis with four
@@ -637,7 +666,7 @@ dates". Bottom-right: "© renalcarematters.com" in small semi-transparent navy t
 NEGATIVE INSTRUCTIONS:
 Plot exactly 1.00, 2.10, and 1.40 at the correct heights; draw no value at "Next checks"; no other
 numbers; no stage labels; no cartoon style; no gibberish. NEVER dark backgrounds. Use ONLY Inter. Never
-omit the attribution.
+omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Three values at correct heights on a 0–2.5 axis; "40% above usual" bracket; no invented future value;
@@ -655,6 +684,8 @@ AUDIENCE: patients and families
 VISUAL GOAL: Recovery has milestones after discharge; keep every appointment even when you feel well.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Clean clinical education infographic, white (#ffffff) background, text in Nunito Sans with title in
 Inter. Title in bold navy (#0f1e2e): "The road after a kidney injury". A gently curving semi-flat road
 from lower left to upper right on a soft teal (#eef6f7) landscape with low hills. Four milestone signposts
@@ -669,7 +700,7 @@ behind. Footer strip in soft gray: "Feeling well does not mean you can skip the 
 
 NEGATIVE INSTRUCTIONS:
 No other numbers; no hospital interior; no cartoon style; no gibberish. NEVER dark backgrounds. Use ONLY
-Nunito Sans and Inter. Never omit the attribution.
+Nunito Sans and Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Four signposts in order; timing labels exact; light background; attribution bottom-right.
@@ -686,6 +717,8 @@ AUDIENCE: patients and families
 VISUAL GOAL: Repeated kidney injuries can add up over the years; protective habits keep the line higher.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Patient education concept chart, white (#ffffff) background, text in Manrope with title in Inter. Title
 in bold navy (#0f1e2e): "Each injury can leave a step down". Subtitle in teal (#1a6b72): "Concept drawing —
 not anyone's real numbers".
@@ -702,7 +735,7 @@ navy text.
 
 NEGATIVE INSTRUCTIONS:
 No axis numbers, no percentages, no stage labels, no medical acronyms, no cartoon style, no gibberish.
-NEVER dark backgrounds. Use ONLY Manrope and Inter. Never omit the attribution.
+NEVER dark backgrounds. Use ONLY Manrope and Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Two lines from one starting point; amber staircase versus green near-flat line; "concept drawing" note
@@ -720,6 +753,8 @@ AUDIENCE: patients and families
 VISUAL GOAL: Summarize the three made-up stories so readers remember the action in each.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Case snapshot infographic, white (#ffffff) background, text in Nunito Sans with title in Inter. Title in
 bold navy (#0f1e2e): "Three stories, three right moves". Subtitle in gray: "Made-up examples". Three
 rounded cards in a row, each with a small semi-flat portrait illustration at the top, a bold navy
@@ -738,7 +773,7 @@ Bottom-right: "© renalcarematters.com" in small semi-transparent navy text.
 NEGATIVE INSTRUCTIONS:
 No readable drug names, no hospital beds, no distress, no numbers other than 1.00, 2.10, 1.40; no cartoon
 exaggeration; no gibberish. NEVER dark backgrounds. Use ONLY Nunito Sans and Inter. Never omit the
-attribution.
+attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Three distinct people (different ages, sexes, hairstyles); action pills exact; light background;
@@ -756,6 +791,8 @@ AUDIENCE: clinicians
 VISUAL GOAL: Glomerular pressure is defended at the afferent and efferent arterioles; volume depletion plus common drugs removes both defenses.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Create a publication-grade biomedical mechanism schematic. Topic: autoregulation of glomerular
 filtration pressure and its failure during volume depletion. Disease context: acute kidney injury risk on
 sick days. White background, flat vector with soft semi-3D shading, muted clinical palette, thin dashed
@@ -792,7 +829,7 @@ navy "© renalcarematters.com" in the bottom-right corner.
 
 NEGATIVE INSTRUCTIONS:
 Do not place afferent and efferent arterioles at opposite poles; no numbers or thresholds; no drug brand
-names; no gibberish; NEVER dark backgrounds. Use ONLY IBM Plex Sans. Never omit the attribution.
+names; no gibberish; NEVER dark backgrounds. Use ONLY IBM Plex Sans. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Correct vascular-pole anatomy; efferent narrower; two blue defenses with the correct ones crossed out;
@@ -811,6 +848,8 @@ AUDIENCE: clinicians (also calm enough for patients)
 VISUAL GOAL: Kidney susceptibility is shaped by the heart, liver, and gut and by the environment; stresses flow in and congestion flows back.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Create a simple medical organ-crosstalk sigil illustration featuring the two kidneys at the center, the
 heart at the top, the liver at the lower left, and the intestine at the lower right.
 
@@ -821,16 +860,15 @@ congestion and fluid overload, forming a calm loop. Outside the triangle, two ti
 the edge of the composition: a small sun (heat) at upper right and a small wave (floodwater infection) at
 upper left, each with a single short dotted arrow pointing toward the kidneys.
 
-Minimal clinical line-art, thin monoline strokes, soft teal-blue palette with the kidneys in teal
-(#1a6b72) and the arrows in slate, white background, clean rounded organ shapes, balanced radial
-sigil-like composition, generous whitespace. Small labels only, set in Inter, in slate gray: "heart",
+Render the organs as soft semi-3D anatomical illustrations (red-brown kidneys, red heart, brown liver, pink intestine) with
+dotted teal arrows on a white background, balanced radial composition, generous whitespace. Small labels only, set in Inter, in slate gray: "heart",
 "liver", "gut", "kidneys", "heat", "floodwater". No other text. Include a small semi-transparent
 "© renalcarematters.com" attribution in the bottom-right corner.
 
 NEGATIVE INSTRUCTIONS:
 Avoid photorealistic anatomy, surgical detail, extra labels, dark background, neon colors, crowded arrows,
 thick cartoon outlines, 3D rendering, glossy icons. Only Inter for the six labels. Never omit the
-attribution.
+attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Four organs in a balanced triangle around the kidneys; one return arrow to the heart; two environmental
@@ -848,6 +886,8 @@ AUDIENCE: clinicians
 VISUAL GOAL: From a creatinine or urine-output change to escalation, staging, and cause-directed care in parallel.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Create a clean publication-ready clinical algorithm flowchart in the renalcarematters.com house style.
 White background, restrained navy and teal typography set in Inter, thin teal connector arrows, generous
 margins, centered layout.
@@ -877,7 +917,7 @@ positioned at the bottom-right corner in subtle gray medical-publication styling
 
 NEGATIVE INSTRUCTIONS:
 No numeric thresholds other than those written; no drug doses; no dark background; no spaghetti arrows;
-no gibberish. Use ONLY Inter. Never omit the attribution.
+no gibberish. Use ONLY Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 One urgent-threat diamond; staging and cause nodes visibly parallel; four physiologic-state nodes;
@@ -895,6 +935,8 @@ AUDIENCE: clinicians
 VISUAL GOAL: A sick-day plan works only when six fields are completed and taught back.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Clinical reference infographic card for clinicians, publication-grade nephrology design, white (#ffffff)
 background, text in IBM Plex Sans. Bold navy (#0f1e2e) title: "Write a sick-day plan patients can use".
 Teal (#1a6b72) subtitle: "Individualized, not generic". A 3×2 grid of soft gray (#f3f4f6) rounded
@@ -911,7 +953,7 @@ and fixed fluid targets." Bottom-right: "© renalcarematters.com" in small semi-
 
 NEGATIVE INSTRUCTIONS:
 No drug names, doses, or fluid volumes; no dark backgrounds; no clutter; no gibberish. Use ONLY IBM Plex
-Sans. Never omit the attribution.
+Sans. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Six numbered cards; teach-back strip; amber caution note; light background; attribution bottom-right.
@@ -928,6 +970,8 @@ AUDIENCE: clinicians (anesthesia, surgery, medicine)
 VISUAL GOAL: Kidney protection is a sequence of actions before, during, and after surgery, each with an owner.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Clean clinical education infographic, white (#ffffff) background, text in Inter. Title in bold navy
 (#0f1e2e): "Kidney protection around major surgery". Subtitle in teal (#1a6b72): "Clinically high-risk
 adults". Three wide rounded columns joined by navy arrows, each with a colored header band and a simple
@@ -945,7 +989,7 @@ text.
 
 NEGATIVE INSTRUCTIONS:
 No drug doses, no blood-pressure numbers, no trial or society names, no dark backgrounds, no clutter, no
-gibberish. Use ONLY Inter. Never omit the attribution.
+gibberish. Use ONLY Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Three columns in order; bullets exact; the "48–72 hours" text correct; light background; attribution
@@ -963,6 +1007,8 @@ AUDIENCE: clinicians
 VISUAL GOAL: Show the short-term absolute benefit and the absent 90-day difference side by side.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Medical education comparison chart, publication style, white (#ffffff) background, all text in IBM Plex
 Sans. Title in bold navy (#0f1e2e): "BigpAK-2: prevention bundle in high-risk major surgery". Subtitle in
 teal (#1a6b72): "Selected adults at high risk by clinical factors and urine stress biomarkers".
@@ -980,7 +1026,7 @@ semi-transparent navy text.
 NEGATIVE INSTRUCTIONS:
 Bar heights proportional on a shared 0–25% axis; do not add odds ratios, confidence intervals, p-values,
 or other numbers; no journal names; no 3D bars; NEVER dark backgrounds. Use ONLY IBM Plex Sans. Never
-omit the attribution.
+omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Four bars with exact values 22.3, 14.4, 10.6, 11.0; denominators 131/588 and 84/584; shared axis; light
@@ -998,6 +1044,8 @@ AUDIENCE: clinicians
 VISUAL GOAL: Risk-based intravenous saline prophylaxis for CT contrast, without delaying indicated imaging.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Create a clean publication-ready clinical algorithm flowchart in the renalcarematters.com house style.
 White background, navy and teal typography set in Inter, thin teal connector arrows, generous margins,
 centered layout. Colors: navy #0f1e2e text; teal #1a6b72 decision diamonds; green #1f7a4d recommended
@@ -1023,7 +1071,7 @@ positioned at the bottom-right corner in subtle gray medical-publication styling
 
 NEGATIVE INSTRUCTIONS:
 Only the eGFR thresholds 30, 44, and 45 written above; no fluid volumes or rates; no dark background; no
-gibberish. Use ONLY Inter. Never omit the attribution.
+gibberish. Use ONLY Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Emergency branch first; thresholds exactly <30, 30–44, ≥45; dialysis exclusion present; two side notes;
@@ -1041,6 +1089,8 @@ AUDIENCE: clinicians (also readable by patients)
 VISUAL GOAL: Show the time windows and the follow-up checkpoints that catch incomplete recovery.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Clean clinical timeline infographic, white (#ffffff) background, labels in Inter. Title in bold navy
 (#0f1e2e): "From injury to recovery — one continuum". A single horizontal arrow-shaped timeline divided
 into three segments: left amber (#b8860b) "AKI" with "Day 0–7" beneath; middle soft purple (#6c3d8e) "AKD"
@@ -1055,7 +1105,7 @@ criterion for CKD; chronicity and context still decide the diagnosis." Bottom-ri
 
 NEGATIVE INSTRUCTIONS:
 No other numbers or thresholds; no guideline acronyms; no cartoon style; no gibberish. NEVER dark
-backgrounds. Use ONLY Inter. Never omit the attribution.
+backgrounds. Use ONLY Inter. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Three segments in order and color; checkpoint labels exact; "eGFR" lowercase e; light background;
@@ -1073,6 +1123,8 @@ AUDIENCE: clinicians (and curious patients)
 VISUAL GOAL: Place the guide's main claims on a certainty ladder so readers see what is proven, suggested, associated, or unproven.
 
 PROMPT:
+STYLE LOCK — match the existing renalcarematters.com guide figures (reference look: the "Dialysis is a bridge, not a cure" and "five domains of recovery" figures): a rich, full-color, semi-3D illustrated infographic like a premium health-magazine explainer. Render organs as realistic 3D anatomy (textured red-brown kidneys with vessels), icons as glossy dimensional illustrations (droplets, pills, organs, people), and any scenery as soft painterly illustration. Very bold, heavy sans-serif headings in near-black navy; large readable labels; full-color rounded panels with solid colored header bands (renal green, amber, teal); thick colored card outlines; soft shadows and depth. This must NOT look like a flat vector diagram, SVG export, wireframe, or thin-stroke line art.
+
 Clinical reference card, white (#ffffff) background, text in IBM Plex Sans. Bold navy (#0f1e2e) title:
 "How sure are we?" Subtitle in teal (#1a6b72): "The guide's main claims by strength of evidence". A
 vertical ladder of five rungs, top to bottom, each a rounded horizontal card with a colored left band and
@@ -1091,7 +1143,7 @@ A thin navy arrow beside the ladder pointing up, labeled "more certain". Bottom-
 
 NEGATIVE INSTRUCTIONS:
 No numbers, effect sizes, or trial names; no dark backgrounds; no clutter; no gibberish. Use ONLY IBM
-Plex Sans. Never omit the attribution.
+Plex Sans. Never omit the attribution. Do NOT produce a flat vector / SVG-style / thin line-art / wireframe diagram; render dimensional, illustrated, full-color artwork.
 
 QUALITY CHECK:
 Five rungs in order; claims placed on the correct rungs exactly as written; light background;
