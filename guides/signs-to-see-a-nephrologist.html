@@ -496,8 +496,11 @@
   /* Hero holding the Evidence card AND a vignette figure as siblings: three
      columns (card | copy | figure) so the copy is never squeezed (desktop) */
   @media (min-width: 821px) {
-    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
-      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure:not(.mode-patient)) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(0, 280px);
+    }
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure:not(.mode-patient)) > .hero-figure {
+      grid-column: 3; min-width: 0;
     }
   }
   /* ≤820px: one column — title first, Evidence card underneath */
